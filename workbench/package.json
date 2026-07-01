@@ -1,7 +1,7 @@
 {
   "name": "workbench",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "KOL component workbench — develop components in isolation with Ladle. Consumer-tier app; imports the @kolkrabbi/kol-* packages by name. Never published.",
   "scripts": {

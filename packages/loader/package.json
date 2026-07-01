@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-loader",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "KOL icon loader — <Icon/> plus the 341-icon registry and raw SVG entries. Vite-only (uses import.meta.glob).",
   "license": "MIT",
   "type": "module",
