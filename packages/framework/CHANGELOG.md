@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-framework
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [de4c33f]
+  - @kolkrabbi/kol-loader@0.2.0
+  - @kolkrabbi/kol-component@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
