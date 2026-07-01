@@ -21,4 +21,4 @@ import { Icon } from '@kolkrabbi/kol-loader'
 <Badge variant="success">Active</Badge>
 ```
 
-Atoms (Button, Input, Slider, Toggle\*, …), molecules (Dropdown, Tag, Badge, Modal, Popover, …), primitives (Accordion, Carousel, CodeBlock, Image, …), an organism (Table), graphics, and hooks (`useReveal`, `useScrollSpy`). See the [usage reference](https://github.com/kolkrabbi/kol-design-system/tree/main/docs/usage) for real examples of each.
+Atoms (Button, Input, Slider, Toggle\*, …), molecules (Dropdown, Tag, Badge, Modal, Popover, …), primitives (Accordion, Carousel, CodeBlock, Image, …), an organism (Table), graphics, and hooks (`useReveal`, `useScrollSpy`). See the [usage reference](https://github.com/Tor-Grimsson/kol-ds/tree/main/docs/usage) for real examples of each.

@@ -33,15 +33,18 @@ Two live paths — pick one before more showcase work:
 
 Toolchain: Ladle bundles **Vite 6** (repo is Vite 8) — isolated to the package, verified working with Tailwind v4 + React 19. New story **files** need a server restart to register (HMR handles edits). Opens in **dark** by default (matches KOL's `data-theme="dark"`). **Coverage: all 50 components / 125 stories** — every one verified rendering clean (full build + runtime sweep). Usage walkthrough: `workbench/01-using-the-workbench.md`; story convention: `workbench/README.md`. Stage is **centred**; `args`-driven **Controls (live prop knobs) not yet added** — next up.
 
-## Not done yet (the one hard blocker — needs the human)
+## Hard blockers — all cleared (2026-07-01) 🎉
 
-1. **Publish to npm.** Publish-readiness is now **proven** — the 2026-07-01 `npm pack` → fresh-Vite-app test built + rendered clean (`session-log/2026-07-01-prove-external-install-npm-pack.md`). The only thing left is `@kolkrabbi` npm-scope auth: confirm/create the org, then `npm login` + `pnpm release` (or set the `NPM_TOKEN` CI secret).
+- **Published to npm** — `@kolkrabbi/kol-{theme,loader,component,framework}@0.1.0` are live; tags pushed. KOL is publicly installable. (`session-log/2026-07-01-first-npm-publish.md`)
+- **Version control + GitHub** — repo git-initialised, `.gitignore` hardened (`build/`, `.playwright-mcp/`, `.env*`, `.npmrc`), security scan clean, pushed. Fonts (~17 MB) tracked — LFS later if bloat bites.
 
-**Done (2026-07-01):** version control + GitHub — repo is git-initialised, `.gitignore` extended (`build/`, `.playwright-mcp/`, `.env*`), pre-commit security scan clean, committed and pushed to GitHub. Fonts (~17 MB) tracked — LFS later if bloat bites.
+### Loose ends from the publish (fix before v0.2.0)
+- **Repo URL mismatch** — ~~package.json `repository.url` ×4 point at a nonexistent repo~~ **fixed in source (2026-07-01):** all four `repository.url` + the component README link now point at `github.com/Tor-Grimsson/kol-ds`. Ships correct in **v0.2.0**; the already-published **0.1.0** still carries the dead link (no republish).
+- **CI publish not yet working:** local 0.1.0 went out via npm **browser web-auth** (account enforces 2FA on writes). `release.yml` needs an **Automation/Granular 2FA-bypass token** as `NPM_TOKEN` before it can auto-publish.
 
 ## Gameplan (2026-06-26, updated 2026-07-01) — pick up here
 
-Sequence: ~~**1.** workbench Controls (`args` knobs)~~ (still open, polish) → **2.** `git init` + `.gitignore` + commit + push ✅ **done (2026-07-01, on GitHub)** → **3.** prove external install: `npm pack` → fresh Vite app → render ✅ **done (2026-07-01) — clean** → **4.** real `changeset publish` (**needs `@kolkrabbi` npm auth** — the only remaining blocker) → **5.** showcase = `ladle build` vs a polished catalog (open fork; lean to the Ladle build) → **6.** write the 4-point contract into every package README. The past consume-pain = KOL's unwritten **4-point consumer contract** (cascade order / `@source` at package `src` / React dedupe / fonts at `/fonts/`), now **proven** by the step-3 install test. Detail: `session-log/2026-07-01-prove-external-install-npm-pack.md`.
+Sequence: ~~**1.** workbench Controls (`args` knobs)~~ (still open, polish) → **2.** `git init` + `.gitignore` + commit + push ✅ **done (2026-07-01, on GitHub)** → **3.** prove external install: `npm pack` → fresh Vite app → render ✅ **done (2026-07-01) — clean** → **4.** real `changeset publish` ✅ **done (2026-07-01) — 0.1.0 live on npm** → **5.** showcase = `ladle build` vs a polished catalog (open fork; lean to the Ladle build) ← **next** → **6.** write the 4-point contract into every package README. The past consume-pain = KOL's unwritten **4-point consumer contract** (cascade order / `@source` at package `src` / React dedupe / fonts at `/fonts/`), now **proven** by the step-3 install test. Detail: `session-log/2026-07-01-prove-external-install-npm-pack.md`.
 
 ## Roadmap
 

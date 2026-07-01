@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kolkrabbi/kol-design-system.git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
     "directory": "packages/framework"
   },
   "publishConfig": {
