@@ -10,3 +10,5 @@ build/
 
 # spike/scratch artifacts
 phase*-*.png
+
+/_tmp/
