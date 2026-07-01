@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* KOL packages ship raw JSX, and Tailwind's auto-detection skips node_modules —
+   so utility classes used inside KOL components never get generated unless
+   scanned explicitly. Point @source at the installed (symlinked) package source.
+   Paths are relative to this file → workbench/node_modules/@kolkrabbi/*. */
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-loader/src";
+
+/* Cascade order is load-bearing (ARCHITECTURE §5): theme tokens → brand color →
+   framework chrome. Never reorder. */
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+@import "@kolkrabbi/kol-framework/kol-framework.css";
+
+/* Default unclassed text to KOL sans (incidental workbench chrome). */
+body {
+  font-family: var(--kol-font-family-sans);
+}

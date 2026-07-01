@@ -1,0 +1,28 @@
+{
+  "name": "showcase",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "KOL design-system showcase — presentation of every component plus a live, mined usage reference for humans and LLMs.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "@tailwindcss/vite": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10",
+    "vite-plugin-svgr": "^5.2.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@kolkrabbi/kol-component",
+  "version": "0.1.0",
+  "description": "KOL design-system components — atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "react",
+    "components"
+  ],
+  "dependencies": {
+    "@kolkrabbi/kol-loader": "workspace:*",
+    "@floating-ui/react": "^0.27.19",
+    "embla-carousel-react": "^8.6.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "react-router-dom": "^6.0.0 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-router-dom": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolkrabbi/kol-design-system.git",
+    "directory": "packages/component"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

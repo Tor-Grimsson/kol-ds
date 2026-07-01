@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+.vite/
+*.log
+.DS_Store
+.env*
+.playwright-mcp/
+
+# spike/scratch artifacts
+phase*-*.png

@@ -1,0 +1,34 @@
+{
+  "name": "@kolkrabbi/kol-theme",
+  "version": "0.1.0",
+  "description": "KOL (Kolkrabbi) design-system tokens + base CSS — brand-neutral. The canonical token/cascade layer every other KOL package and consumer builds on.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "style": "./kol-theme.css",
+  "exports": {
+    ".": "./kol-theme.css",
+    "./*": "./*"
+  },
+  "files": [
+    "*.css",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "css",
+    "design-tokens"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolkrabbi/kol-design-system.git",
+    "directory": "packages/theme"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

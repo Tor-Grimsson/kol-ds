@@ -1,0 +1,25 @@
+{
+  "name": "workbench",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "KOL component workbench — develop components in isolation with Ladle. Consumer-tier app; imports the @kolkrabbi/kol-* packages by name. Never published.",
+  "scripts": {
+    "ladle": "ladle serve",
+    "ladle:build": "ladle build"
+  },
+  "dependencies": {
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "@tailwindcss/vite": "^4.2.4"
+  },
+  "devDependencies": {
+    "@ladle/react": "^5.1.1"
+  }
+}

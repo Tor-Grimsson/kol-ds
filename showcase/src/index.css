@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* KOL packages ship raw JSX, and Tailwind's auto-detection skips node_modules —
+   so utility classes used inside KOL components (SideNav, atoms, loaders) never
+   get generated unless scanned explicitly. This is the recipe EVERY consumer
+   needs, not a workspace shortcut: point @source at the installed package source. */
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-loader/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+@import "@kolkrabbi/kol-framework/kol-framework.css";
+
+/* Showcase-local safety net: the brand app gives every text node an explicit
+   kol-sans / kol-mono class, so it never needs a base body font. This docs site
+   has more incidental text — default the body to the KOL sans so anything
+   unclassed still renders on-brand instead of system-ui. Lives here, NOT in
+   kol-theme: the canonical packages stay class-driven. */
+body {
+  font-family: var(--kol-font-family-sans);
+}

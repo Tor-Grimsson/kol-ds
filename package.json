@@ -1,0 +1,23 @@
+{
+  "name": "kol-design-system",
+  "private": true,
+  "version": "0.0.0",
+  "description": "KOL (Kolkrabbi) design system — the single maintenance home for the published @kolkrabbi/kol-* packages, plus the showcase app. Source of truth; consumers install published versions (no linking).",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter showcase dev",
+    "build": "pnpm --filter showcase build",
+    "preview": "pnpm --filter showcase preview",
+    "workbench": "pnpm --filter workbench ladle",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
