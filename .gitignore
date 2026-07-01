@@ -5,6 +5,7 @@ build/
 *.log
 .DS_Store
 .env*
+.npmrc
 .playwright-mcp/
 
 # spike/scratch artifacts

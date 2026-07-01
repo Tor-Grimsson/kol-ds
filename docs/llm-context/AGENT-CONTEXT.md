@@ -33,14 +33,15 @@ Two live paths — pick one before more showcase work:
 
 Toolchain: Ladle bundles **Vite 6** (repo is Vite 8) — isolated to the package, verified working with Tailwind v4 + React 19. New story **files** need a server restart to register (HMR handles edits). Opens in **dark** by default (matches KOL's `data-theme="dark"`). **Coverage: all 50 components / 125 stories** — every one verified rendering clean (full build + runtime sweep). Usage walkthrough: `workbench/01-using-the-workbench.md`; story convention: `workbench/README.md`. Stage is **centred**; `args`-driven **Controls (live prop knobs) not yet added** — next up.
 
-## Not done yet (the two hard blockers — need the human)
+## Not done yet (the one hard blocker — needs the human)
 
-1. **Publish to npm.** Everything is publish-ready, but `pnpm release` needs `@kolkrabbi` npm-scope auth. Nothing has been published. Confirm the npm org exists / create it, then `npm login` and `pnpm release` (or set the `NPM_TOKEN` CI secret).
-2. **Version control + GitHub.** (2026-07-01) `git init` **done**; `.gitignore` extended (`build/`, `.playwright-mcp/`, `.env*`) and pre-commit security scan is clean (see `session-log/2026-07-01-*`). Still needed: **first commit**, then create the `kolkrabbi/kol-design-system` remote (URLs in package.json + workflow assume that exact owner/name) and push. Fonts (~17 MB) left tracked — commit, or LFS if bloat bites.
+1. **Publish to npm.** Publish-readiness is now **proven** — the 2026-07-01 `npm pack` → fresh-Vite-app test built + rendered clean (`session-log/2026-07-01-prove-external-install-npm-pack.md`). The only thing left is `@kolkrabbi` npm-scope auth: confirm/create the org, then `npm login` + `pnpm release` (or set the `NPM_TOKEN` CI secret).
 
-## Gameplan (2026-06-26) — pick up here
+**Done (2026-07-01):** version control + GitHub — repo is git-initialised, `.gitignore` extended (`build/`, `.playwright-mcp/`, `.env*`), pre-commit security scan clean, committed and pushed to GitHub. Fonts (~17 MB) tracked — LFS later if bloat bites.
 
-Sequence (1–3 need no human): **1.** workbench Controls (`args` knobs) → **2.** `git init` + `.gitignore` + first commit + push → **3.** prove external install: `npm pack` → fresh Vite app → render → **4.** real `changeset publish` (needs `@kolkrabbi` npm auth) → **5.** showcase = `ladle build` vs a polished catalog (open fork; lean to the Ladle build). The past consume-pain = KOL's unwritten **4-point consumer contract** (cascade order / `@source` at package `src` / React dedupe / fonts at `/fonts/`), now satisfied by the workbench. Detail: `session-log/2026-06-26-docs-front-door-and-gameplan.md`.
+## Gameplan (2026-06-26, updated 2026-07-01) — pick up here
+
+Sequence: ~~**1.** workbench Controls (`args` knobs)~~ (still open, polish) → **2.** `git init` + `.gitignore` + commit + push ✅ **done (2026-07-01, on GitHub)** → **3.** prove external install: `npm pack` → fresh Vite app → render ✅ **done (2026-07-01) — clean** → **4.** real `changeset publish` (**needs `@kolkrabbi` npm auth** — the only remaining blocker) → **5.** showcase = `ladle build` vs a polished catalog (open fork; lean to the Ladle build) → **6.** write the 4-point contract into every package README. The past consume-pain = KOL's unwritten **4-point consumer contract** (cascade order / `@source` at package `src` / React dedupe / fonts at `/fonts/`), now **proven** by the step-3 install test. Detail: `session-log/2026-07-01-prove-external-install-npm-pack.md`.
 
 ## Roadmap
 
