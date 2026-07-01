@@ -7,7 +7,7 @@ import {
 } from '../lib/registry.js'
 
 function ComponentCard({ c }) {
-  const Demo = c.demo?.render
+  const Demo = c.demo?.Component
   return (
     <Link
       to={`/components/${c.slug}`}

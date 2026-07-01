@@ -21,6 +21,19 @@ const componentChildren = componentsByCategory().map(([cat, items]) => ({
 
 export const NAV_TREE = [
   { id: 'home', label: 'Home', to: '/', icon: 'book-open' },
+  {
+    id: 'foundations', label: 'Foundations', to: '/foundations', icon: 'layers',
+    children: [
+      { id: 'opacity', label: 'Opacity & foreground' },
+      { id: 'surfaces', label: 'Surface tiers' },
+      { id: 'brand', label: 'Brand ramps' },
+      { id: 'type', label: 'Type scale' },
+      { id: 'radius', label: 'Corner radius' },
+      { id: 'shadow', label: 'Shadow scale' },
+      { id: 'components', label: 'Components' },
+    ],
+  },
+  { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid-02' },
   { id: 'components', label: 'Components', to: '/components', icon: 'component', children: componentChildren },
 ]
 

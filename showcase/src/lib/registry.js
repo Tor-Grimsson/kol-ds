@@ -1,11 +1,11 @@
 import USAGE from '../usage/usage-index.json'
-import { DEMOS } from './demos.jsx'
+import { DEMOS } from './demos-registry.js'
 
 /**
  * The component registry — single source of truth for the showcase.
  * Marries three layers:
  *   1. usage-index.json  — mined metadata (pkg, category, count, apps, examples)
- *   2. DEMOS             — live preview + canonical snippet (lib/demos.jsx)
+ *   2. DEMOS             — one-file live demos: render + ?raw source (lib/demos-registry.js)
  *   3. DESCRIPTIONS      — one-line human summary, authored here
  * Drives the sidebar nav, the /components index, and each /components/:slug page.
  */
