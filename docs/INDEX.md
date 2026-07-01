@@ -28,6 +28,7 @@ Everything documented about the KOL (Kolkrabbi) design system — how to use it,
 | **Use the design system — run the workbench, view components & their states** | **[[workbench/01-using-the-workbench\|Using the workbench]]** ← start here |
 | Look up how one component is used (props, real call-sites) | `usage/` — one file per component (`Button.md`, `Icon.md`, …), mined from real KOL apps |
 | Learn how other teams build design systems (Storybook, tokens, distribution…) | [[workflows/INDEX\|Workflows]] |
+| **Ship a new version of the packages to npm** | [[release/01-release-pipeline\|Release pipeline]] |
 | See how KOL compares to shadcn/ui, and the gaps | [[benchmark/INDEX\|shadcn ⇄ KOL benchmark]] |
 | Understand the architecture & the load-bearing decisions | [[llm-context/ARCHITECTURE\|Architecture]] |
 | Know the current state / what's in flight | [[llm-context/AGENT-CONTEXT\|Agent context]] |
@@ -41,6 +42,7 @@ Everything documented about the KOL (Kolkrabbi) design system — how to use it,
 | **`workbench/`** | How to run and use the Ladle component browser | **Users — start here** |
 | `usage/` | One reference file per component, mined from real KOL apps | Users + agents |
 | `workflows/` | The design-system landscape — how others isolate, compose, token, distribute, test | Learning / decisions |
+| `release/` | The runbook for publishing a new package version (Changesets → CI) | Maintainers shipping a release |
 | `benchmark/` | KOL vs shadcn/ui — side-by-side comparison + prioritised gaps | Strategy |
 | `migration/` | Forward-looking plans (dated) | What's coming |
 | `llm-context/` | Architecture, current state, session logs | Agents + maintainers |

@@ -32,8 +32,10 @@ related:
 - **Repo URL mismatch (baked into 0.1.0):** all four `package.json` `repository.url` = `github.com/kolkrabbi/kol-design-system`, but the real remote is **`github.com/Tor-Grimsson/kol-ds`**. npm "Repository" links on 0.1.0 404. Decide canonical home, then fix the fields (and the README/workflow refs) for the next version. No republish of 0.1.0.
 - **Registry propagation:** at publish time the read endpoints still 404'd for the new packages (write confirmed by the CLI `+ pkg@version` + success list). Brand-new-package lag; confirm resolved at `npmjs.com/package/@kolkrabbi/kol-theme`.
 
+## Update (same day) — CI proven, 0.1.1 shipped
+Closed both follow-ups in one CI release: fixed `repository.url` ×4 (+ component README) and pushed it through the pipeline as **0.1.1**, which also proved CI end-to-end. Two setup snags, both fixed: GitHub Actions needed "Allow … create and approve pull requests" ON (to open the Version PR), and the `NPM_TOKEN` had to be a **Granular token with "Bypass 2FA" checked + R/W on `@kolkrabbi`** — a classic "Publish" token throws `EOTP` in CI. All four now live at **0.1.1** (verified). The release flow is now: `pnpm changeset` → push → merge the auto-opened Version PR.
+
 ## Next steps
-- Confirm all four resolve (`npm view @kolkrabbi/kol-theme version`) once propagated.
-- Pick canonical repo name → fix `repository.url` ×4 + package READMEs + any `kolkrabbi/kol-design-system` refs.
-- For hands-off CI releases: create an Automation/Granular npm token → GitHub secret `NPM_TOKEN`.
+- **Token hygiene (next rotation):** current `NPM_TOKEN` over-scoped with Organizations R/W → tighten to `No access` on Orgs. Granular tokens expire → rotate.
+- `git pull` locally — the 0.1.1 version-bump commit is on `main` (remote), not local.
 - Remaining gameplan: step 5 (showcase = `ladle build` vs polished catalog), step 6 (write the 4-point consumer contract into every package README).

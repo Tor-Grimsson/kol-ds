@@ -13,6 +13,7 @@ aliases:
 related:
   - "[[05-distribution|distribution]]"
   - "[[02-workbench-tools|workbench tools]]"
+  - "[[01-release-pipeline|release pipeline]]"
 ---
 
 # Versioning & testing

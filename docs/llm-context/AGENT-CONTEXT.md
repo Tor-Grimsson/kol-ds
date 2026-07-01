@@ -35,12 +35,16 @@ Toolchain: Ladle bundles **Vite 6** (repo is Vite 8) — isolated to the package
 
 ## Hard blockers — all cleared (2026-07-01) 🎉
 
-- **Published to npm** — `@kolkrabbi/kol-{theme,loader,component,framework}@0.1.0` are live; tags pushed. KOL is publicly installable. (`session-log/2026-07-01-first-npm-publish.md`)
+- **Published to npm** — `@kolkrabbi/kol-{theme,loader,component,framework}` are live at **0.1.1** (0.1.0 first-published manually, 0.1.1 via CI). Verified resolvable. KOL is publicly installable. (`session-log/2026-07-01-first-npm-publish.md`)
 - **Version control + GitHub** — repo git-initialised, `.gitignore` hardened (`build/`, `.playwright-mcp/`, `.env*`, `.npmrc`), security scan clean, pushed. Fonts (~17 MB) tracked — LFS later if bloat bites.
+- **CI release pipeline — proven end-to-end (2026-07-01).** `pnpm changeset` → push → merge the auto-opened "Version Packages" PR → CI publishes. 0.1.1 went out this way. **The release flow from here on is: add a changeset, push, merge the PR.**
 
-### Loose ends from the publish (fix before v0.2.0)
-- **Repo URL mismatch** — ~~package.json `repository.url` ×4 point at a nonexistent repo~~ **fixed in source (2026-07-01):** all four `repository.url` + the component README link now point at `github.com/Tor-Grimsson/kol-ds`. Ships correct in **v0.2.0**; the already-published **0.1.0** still carries the dead link (no republish).
-- **CI publish not yet working:** local 0.1.0 went out via npm **browser web-auth** (account enforces 2FA on writes). `release.yml` needs an **Automation/Granular 2FA-bypass token** as `NPM_TOKEN` before it can auto-publish.
+### Loose ends / notes
+- **Repo URL** — fixed + shipped in **0.1.1** (`repository.url` ×4 + component README now point at `github.com/Tor-Grimsson/kol-ds`). Only the orphaned **0.1.0** carries the old dead link.
+- **CI setup gotchas (for reference / other repos):** required (a) repo Settings → Actions → "Allow GitHub Actions to create and approve pull requests" ON (else the Version PR can't be opened), and (b) `NPM_TOKEN` = a **Granular token with "Bypass 2FA" checked + Read/Write on `@kolkrabbi`** — a classic "Publish" token throws `EOTP` in CI.
+- **Token cleanup (next rotation):** current `NPM_TOKEN` is over-scoped with Organizations Read/Write — tighten to `No access` on Orgs (packages R/W + bypass-2FA is all publishing needs). Granular tokens expire → rotation will be needed.
+
+⚠️ **Local tree is behind `main`** — the "Version Packages" commit (0.1.1 bumps) is on GitHub, not local. `git pull` before new work.
 
 ## Gameplan (2026-06-26, updated 2026-07-01) — pick up here
 
