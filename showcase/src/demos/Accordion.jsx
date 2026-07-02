@@ -1,5 +1,7 @@
 import { Accordion, AccordionPanel } from '@kolkrabbi/kol-component'
 
+export const stage = 'md'
+
 export default function AccordionDemo() {
   return (
     <Accordion className="w-full max-w-md">

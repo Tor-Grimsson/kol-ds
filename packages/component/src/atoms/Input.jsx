@@ -102,10 +102,15 @@ export default function Input({
       {prefix !== undefined && (
         <span aria-hidden="true" className="text-meta pr-1 shrink-0">{prefix}</span>
       )}
+      {/* Controlled only when a `value` prop is passed — otherwise stay
+        * uncontrolled so prop-less usages (search stubs, quick demos) type
+        * normally instead of freezing on a value-without-onChange input.
+        * Controlled + no onChange = deliberate display-only → readOnly. */}
       <input
         type={type}
-        value={value ?? ''}
-        onChange={onChange}
+        {...(value !== undefined
+          ? { value: value ?? '', onChange, readOnly: !onChange || undefined }
+          : { onChange })}
         placeholder={placeholder}
         disabled={disabled}
         spellCheck={false}

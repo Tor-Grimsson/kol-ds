@@ -1,0 +1,964 @@
+{
+  "AssetPlaceholder": [
+    {
+      "prop": "aspectRatio",
+      "type": "—",
+      "def": "'16 / 9'",
+      "desc": ""
+    },
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "'missing'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Avatar": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Badge": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Button": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'primary'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "animateIcon",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "quiet",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'button'",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "CopyButton": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Divider": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'horizontal'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "opacity",
+      "type": "—",
+      "def": "'08'",
+      "desc": ""
+    },
+    {
+      "prop": "inverse",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "DropdownTagFilter": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "selectedValues",
+      "type": "—",
+      "def": "new Set()",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "Input": [
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'filled'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "uppercase",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "inputClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Label": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "LabeledControl": [
+    {
+      "prop": "inline",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "labelWidth",
+      "type": "—",
+      "def": "48",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Pill": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'outline'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Tooltip": [
+    {
+      "prop": "placement",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "offset",
+      "type": "—",
+      "def": "6",
+      "desc": ""
+    },
+    {
+      "prop": "triggerClassName",
+      "type": "—",
+      "def": "'inline-flex'",
+      "desc": ""
+    }
+  ],
+  "PopoverPanel": [
+    {
+      "prop": "panel",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "modal",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "focus",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "QuantityInput": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "99",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "QuantityStepper": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Section": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SectionLabel": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SegmentedToggle": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Stepper": [
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    }
+  ],
+  "Tag": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "solid",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "hash",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Textarea": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'filled'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ToggleBracket": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "offLabel",
+      "type": "—",
+      "def": "'OFF'",
+      "desc": ""
+    },
+    {
+      "prop": "onLabel",
+      "type": "—",
+      "def": "'ON'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ToggleCheckbox": [
+    {
+      "prop": "checked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ToggleSwitch": [
+    {
+      "prop": "checked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TransparentX": [
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'warning'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ViewToggle": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[\n  { value: 'grid', label: 'Grid view', icon: 'grid-06' },\n  { value: 'list', label: 'List view', icon: 'list-01' }\n]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Accordion": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AccordionPanel": [
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "ColorSwatch": [
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "radius",
+      "type": "—",
+      "def": "'tight'",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "hoverable",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showTransparent",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "transparentTone",
+      "type": "—",
+      "def": "'warning'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Dropdown": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Image": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "'lazy'",
+      "desc": ""
+    }
+  ],
+  "MenuItem": [
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'start'",
+      "desc": ""
+    },
+    {
+      "prop": "panelClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "buttonClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "PropertyInput": [
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Slider": [
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "displayWidth",
+      "type": "—",
+      "def": "6",
+      "desc": ""
+    },
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    }
+  ],
+  "Carousel": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "{ align: 'start', loop: false, dragFree: true, containScroll: 'trimSnaps' }",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ContentFilters": [
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "defaultViewMode",
+      "type": "—",
+      "def": "'list'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultLayout",
+      "type": "—",
+      "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "mutuallyExclusiveFilters",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "customFilterKeys",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "searchKeys",
+      "type": "—",
+      "def": "['label', 'name', 'title', 'type']",
+      "desc": ""
+    },
+    {
+      "prop": "showCountOnlyWhenFiltering",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "Table": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Graphic": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "aspectRatio",
+      "type": "—",
+      "def": "'1 / 1'",
+      "desc": ""
+    }
+  ],
+  "AppShell": [
+    {
+      "prop": "navTree",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "SideNav": [
+    {
+      "prop": "drawerOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "navTree",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "ThemeToggle": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'icon'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PageSection": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fullbleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "divider",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "BrandHero": [
+    {
+      "prop": "id",
+      "type": "—",
+      "def": "'hero'",
+      "desc": ""
+    }
+  ]
+}

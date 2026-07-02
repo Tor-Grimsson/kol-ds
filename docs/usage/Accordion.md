@@ -1,9 +1,9 @@
 # Accordion
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
-- **Real-world usages found:** 11 across 11 files in 8 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom, kol-resume
+- **Category:** molecules
+- **Real-world usages found:** 10 across 10 files in 7 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
 
 ## Import
 

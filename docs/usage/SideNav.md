@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 10 across 10 files in 10 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-editor, kol-labs-single, kol-lightroom, kol-resume
+- **Real-world usages found:** 9 across 9 files in 9 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-editor, kol-labs-single, kol-lightroom
 
 ## Import
 

@@ -8,6 +8,8 @@ const SLIDES = [
   { label: 'Slide 05', tint: 'var(--kol-fg-20)' },
 ]
 
+export const stage = 'full'
+
 export default function CarouselDemo() {
   return (
     <Carousel className="w-full max-w-xl">

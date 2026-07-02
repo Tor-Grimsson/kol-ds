@@ -1,7 +1,7 @@
 # QuantityStepper
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 12 across 11 files in 6 apps
 - **Used in:** kol-client-kolkrabbi, kol-divs, kol-mirror, kol-modulator, kol-monitor, kol-radar
 

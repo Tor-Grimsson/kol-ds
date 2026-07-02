@@ -29,6 +29,7 @@ export default function DropdownTagFilterDemo() {
       options={OPTIONS}
       selectedValues={selected}
       onChange={handleChange}
+      defaultOpen
     />
   )
 }

@@ -29,6 +29,10 @@ Everything documented about the KOL (Kolkrabbi) design system — how to use it,
 | Look up how one component is used (props, real call-sites) | `usage/` — one file per component (`Button.md`, `Icon.md`, …), mined from real KOL apps |
 | Learn how other teams build design systems (Storybook, tokens, distribution…) | [[workflows/INDEX\|Workflows]] |
 | **Ship a new version of the packages to npm** | [[release/01-release-pipeline\|Release pipeline]] |
+| Pick or port an app shell (docs shell, workshop shell, blocks) | [[shells/01-reference-shells\|Reference shells]] |
+| See what's queued from the last review | [[backlog/2026-07-02-review-backlog\|Review backlog]] · [[plan\|execution plan]] |
+| Decide where a new component goes (atom / molecule / organism) | [[taxonomy/01-component-placement\|Component placement]] |
+| Pick a type class (helper vs line-height sets, full inventory) | [[typography/01-type-classes\|Type classes]] |
 | See how KOL compares to shadcn/ui, and the gaps | [[benchmark/INDEX\|shadcn ⇄ KOL benchmark]] |
 | Understand the architecture & the load-bearing decisions | [[llm-context/ARCHITECTURE\|Architecture]] |
 | Know the current state / what's in flight | [[llm-context/AGENT-CONTEXT\|Agent context]] |

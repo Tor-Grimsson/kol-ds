@@ -2,7 +2,7 @@ import { MenuItem, MenuDropdownItem, MenuDropdownNest, Icon } from '@kolkrabbi/k
 
 export default function MenuDropdownNestDemo() {
   return (
-    <MenuItem label="Insert">
+    <MenuItem label="Insert" defaultOpen>
       <div className="min-w-[200px] py-1">
         <MenuDropdownItem onClick={() => {}}>Text block</MenuDropdownItem>
         <MenuDropdownNest iconLeft={<Icon name="img-01" size={14} />} label="Media">

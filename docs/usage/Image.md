@@ -1,7 +1,7 @@
 # Image
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
+- **Category:** molecules
 - **Real-world usages found:** 13 across 7 files in 5 apps
 - **Used in:** kol-client, kol-client-ac, kol-client-kolkrabbi, kol-editor, kol-noter
 

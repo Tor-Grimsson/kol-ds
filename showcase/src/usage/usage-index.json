@@ -3,7 +3,7 @@
     "name": "Icon",
     "pkg": "@kolkrabbi/kol-loader",
     "category": "loaders",
-    "count": 942,
+    "count": 949,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -24,10 +24,9 @@
       "kol-monitor",
       "kol-noter",
       "kol-radar",
-      "kol-radial",
-      "kol-resume"
+      "kol-radial"
     ],
-    "files": 408,
+    "files": 403,
     "examples": [
       {
         "app": "kol-divs",
@@ -57,63 +56,10 @@
     ]
   },
   {
-    "name": "Button",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 591,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-distress",
-      "kol-divs",
-      "kol-draw-3d",
-      "kol-editor",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-media-admin",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-noter",
-      "kol-radar",
-      "kol-radial",
-      "kol-resume"
-    ],
-    "files": 182,
-    "examples": [
-      {
-        "app": "kol-divs",
-        "file": "kol-apparat/kol-docs/kol-divs/src/components/site/CopyButton.jsx",
-        "code": "<Button variant=\"outline\" size={size} onClick={handle} className={className}>\n      {copied ? 'copied' : 'copy'}\n    </Button>"
-      },
-      {
-        "app": "kol-noter",
-        "file": "kol-apparat/kol-docs/kol-noter/src/components/app-shell/ConflictResolutionDialog.tsx",
-        "code": "<Button\n              variant={localNewer ? 'default' : 'secondary'}\n              onClick={onKeepLocal}\n              className=\"flex items-center gap-2\"\n            >\n              <CheckCircle className=\"w-4 h-4\" />"
-      },
-      {
-        "app": "kol-draw-3d",
-        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/studio/LayersPanel.jsx",
-        "code": "<Button\n          variant=\"primary\"\n          size=\"sm\"\n          animateIcon\n          quiet\n          iconOnly=\"plus\"\n          iconSize={12}\n          aria-label=\"Insert layer\"\n          title=\"Insert layer\"\n          style={{ padding: 6 }}\n        />"
-      },
-      {
-        "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/src/components/organisms/InspectorPanel.jsx",
-        "code": "<Button\n            variant=\"primary\"\n            onClick={onExpandBooleanGroup}\n            className=\"w-full\"\n          >\n            Expand Vector Shape\n          </Button>\n        </div>\n      )}\n\n    </>"
-      },
-      {
-        "app": "kol-radar",
-        "file": "kol-apparat/kol-editors/kol-radar/src/App.jsx",
-        "code": "<Button variant=\"outline\" size=\"sm\" onClick={() => fileInputRef.current?.click()} iconLeft=\"upload\" className=\"w-full\">\n          Upload Image\n        </Button>\n\n        {sourceImage && (\n          <Button variant=\"primary\" size=\"sm\" onClick={handleDownload} iconLeft=\"download\" className=\"w-full\">\n            Download\n          </Button>\n        )}\n      </div>\n\n      <input ref={fileInputRef} type=\"file\" accept=\"image/*,.svg\" onChange={handleFileUpload} className=\"hidden\" />"
-      }
-    ]
-  },
-  {
     "name": "Slider",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 389,
+    "category": "molecules",
+    "count": 866,
     "apps": [
       "kol-client-ac",
       "kol-client-hrafn",
@@ -128,10 +74,9 @@
       "kol-modulator",
       "kol-monitor",
       "kol-radar",
-      "kol-radial",
-      "kol-resume"
+      "kol-radial"
     ],
-    "files": 112,
+    "files": 166,
     "examples": [
       {
         "app": "kol-draw-3d",
@@ -161,17 +106,17 @@
     ]
   },
   {
-    "name": "Divider",
+    "name": "Button",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 308,
+    "count": 777,
     "apps": [
-      "kol-client",
       "kol-client-ac",
       "kol-client-hrafn",
       "kol-client-kolkrabbi",
+      "kol-distress",
       "kol-divs",
-      "kol-docs",
+      "kol-draw-3d",
       "kol-editor",
       "kol-labs-single",
       "kol-lightroom",
@@ -179,35 +124,78 @@
       "kol-mirror",
       "kol-modulator",
       "kol-monitor",
+      "kol-noter",
       "kol-radar",
-      "kol-resume"
+      "kol-radial"
     ],
-    "files": 127,
+    "files": 239,
     "examples": [
       {
-        "app": "kol-radar",
-        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/mirror/VariantControls.jsx",
-        "code": "<Divider key={`divider-${idx}`} className=\"my-2\" />"
-      },
-      {
         "app": "kol-divs",
-        "file": "kol-apparat/kol-docs/kol-divs/src/components/sections/PageSection.jsx",
-        "code": "<Divider className=\"kol-page-section-divider\" />"
+        "file": "kol-apparat/kol-docs/kol-divs/src/components/site/CopyButton.jsx",
+        "code": "<Button variant=\"outline\" size={size} onClick={handle} className={className}>\n      {copied ? 'copied' : 'copy'}\n    </Button>"
       },
       {
-        "app": "kol-docs",
-        "file": "kol-apparat/kol-docs/kol-docs/src/components/WikiSidebar.jsx",
-        "code": "<Divider className=\"my-8\" />"
+        "app": "kol-noter",
+        "file": "kol-apparat/kol-docs/kol-noter/src/components/app-shell/ConflictResolutionDialog.tsx",
+        "code": "<Button\n              variant={localNewer ? 'default' : 'secondary'}\n              onClick={onKeepLocal}\n              className=\"flex items-center gap-2\"\n            >\n              <CheckCircle className=\"w-4 h-4\" />"
       },
       {
-        "app": "kol-mirror",
-        "file": "kol-apparat/kol-video/kol-mirror/src/components/hall-of-mirrors/ExpressionReference.jsx",
-        "code": "<Divider className=\"py-2\" />"
+        "app": "kol-draw-3d",
+        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/studio/LayersPanel.jsx",
+        "code": "<Button\n          variant=\"primary\"\n          size=\"sm\"\n          animateIcon\n          quiet\n          iconOnly=\"plus\"\n          iconSize={12}\n          aria-label=\"Insert layer\"\n          title=\"Insert layer\"\n          style={{ padding: 6 }}\n        />"
       },
       {
-        "app": "kol-modulator",
-        "file": "kol-apparat/kol-video/kol-modulator/src/components/structure/nav/WorkshopSidebar.jsx",
-        "code": "<Divider className=\"my-6 w-full\" />"
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/src/components/organisms/InspectorPanel.jsx",
+        "code": "<Button\n            variant=\"primary\"\n            onClick={onExpandBooleanGroup}\n            className=\"w-full\"\n          >\n            Expand Vector Shape\n          </Button>\n        </div>\n      )}\n\n    </>"
+      },
+      {
+        "app": "kol-radar",
+        "file": "kol-apparat/kol-editors/kol-radar/src/App.jsx",
+        "code": "<Button variant=\"outline\" size=\"sm\" onClick={() => fileInputRef.current?.click()} iconLeft=\"upload\" className=\"w-full\">\n          Upload Image\n        </Button>\n\n        {sourceImage && (\n          <Button variant=\"primary\" size=\"sm\" onClick={handleDownload} iconLeft=\"download\" className=\"w-full\">\n            Download\n          </Button>\n        )}\n      </div>\n\n      <input ref={fileInputRef} type=\"file\" accept=\"image/*,.svg\" onChange={handleFileUpload} className=\"hidden\" />"
+      }
+    ]
+  },
+  {
+    "name": "Section",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 460,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom"
+    ],
+    "files": 88,
+    "examples": [
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx",
+        "code": "<Section label=\"Aspect\">\n            <Dropdown\n              variant=\"subtle\"\n              size=\"sm\"\n              className=\"w-full\"\n              options={ASPECT_OPTIONS}\n              value={aspect}\n              onChange={setAspect}\n            />"
+      },
+      {
+        "app": "kol-lightroom",
+        "file": "kol-apparat/kol-lightroom/src/pages/Develop.jsx",
+        "code": "<Section title=\"Info\" defaultOpen={false}>\n              <dl className=\"flex flex-col gap-3 kol-mono-12 text-body\">\n                <Row k=\"File\" v={info?.fileName} />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/components/framework/SettingsPanel.jsx",
+        "code": "<Section label={label}>\n      {showTheme && (\n        <>\n          <LabeledControl inline label=\"Theme\">\n            <Dropdown size=\"sm\" variant=\"subtle\" className=\"w-full\" options={themeOptions} value={theme} onChange={onTheme} />"
+      },
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx",
+        "code": "<Section label=\"Layout\">\n            <Dropdown variant=\"subtle\" size=\"sm\" className=\"w-full\" options={LAYOUT_OPTIONS} value={layoutId} onChange={setLayoutId} />"
+      },
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx",
+        "code": "<Section label=\"Pool\">\n            <Dropdown variant=\"subtle\" size=\"sm\" className=\"w-full\" options={POOL_OPTIONS} value={poolId} onChange={changePool} />"
       }
     ]
   },
@@ -215,7 +203,7 @@
     "name": "Dropdown",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
-    "count": 244,
+    "count": 401,
     "apps": [
       "kol-client-ac",
       "kol-client-kolkrabbi",
@@ -226,7 +214,7 @@
       "kol-monitor",
       "kol-radar"
     ],
-    "files": 82,
+    "files": 135,
     "examples": [
       {
         "app": "kol-editor",
@@ -256,45 +244,96 @@
     ]
   },
   {
-    "name": "Section",
+    "name": "Divider",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 201,
+    "category": "atoms",
+    "count": 304,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-divs",
+      "kol-docs",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom",
+      "kol-media-admin",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor",
+      "kol-radar"
+    ],
+    "files": 126,
+    "examples": [
+      {
+        "app": "kol-radar",
+        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/mirror/VariantControls.jsx",
+        "code": "<Divider key={`divider-${idx}`} className=\"my-2\" />"
+      },
+      {
+        "app": "kol-divs",
+        "file": "kol-apparat/kol-docs/kol-divs/src/components/sections/PageSection.jsx",
+        "code": "<Divider className=\"kol-page-section-divider\" />"
+      },
+      {
+        "app": "kol-docs",
+        "file": "kol-apparat/kol-docs/kol-docs/src/components/WikiSidebar.jsx",
+        "code": "<Divider className=\"my-8\" />"
+      },
+      {
+        "app": "kol-mirror",
+        "file": "kol-apparat/kol-video/kol-mirror/src/components/hall-of-mirrors/ExpressionReference.jsx",
+        "code": "<Divider className=\"py-2\" />"
+      },
+      {
+        "app": "kol-modulator",
+        "file": "kol-apparat/kol-video/kol-modulator/src/components/structure/nav/WorkshopSidebar.jsx",
+        "code": "<Divider className=\"my-6 w-full\" />"
+      }
+    ]
+  },
+  {
+    "name": "LabeledControl",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 212,
     "apps": [
       "kol-client-ac",
       "kol-client-hrafn",
       "kol-client-kolkrabbi",
-      "kol-editor",
+      "kol-draw-3d",
       "kol-labs-single",
       "kol-lightroom",
-      "kol-resume"
+      "kol-media-admin",
+      "kol-monitor"
     ],
-    "files": 35,
+    "files": 62,
     "examples": [
       {
-        "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx",
-        "code": "<Section label=\"Aspect\">\n            <Dropdown\n              variant=\"subtle\"\n              size=\"sm\"\n              className=\"w-full\"\n              options={ASPECT_OPTIONS}\n              value={aspect}\n              onChange={setAspect}\n            />"
+        "app": "kol-draw-3d",
+        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/studio/ControlsPanel.jsx",
+        "code": "<LabeledControl label=\"Distance\" hint={knobs.distance.toFixed(1)}>\n        <Slider min={-60} max={60} step={0.1} value={knobs.distance} onChange={(v) => setKnobs({ distance: v })} />"
+      },
+      {
+        "app": "kol-monitor",
+        "file": "kol-apparat/kol-video/kol-monitor/src/modules/generators/DitherModule.jsx",
+        "code": "<LabeledControl key={item.value} label={item.text}>\n                <IconButton icon={item.icon} title={item.value} active={mode === item.value} onClick={() => onModeChange(item.value)} />"
       },
       {
         "app": "kol-lightroom",
         "file": "kol-apparat/kol-lightroom/src/pages/Develop.jsx",
-        "code": "<Section title=\"Info\" defaultOpen={false}>\n              <dl className=\"flex flex-col gap-3 kol-mono-12 text-body\">\n                <Row k=\"File\" v={info?.fileName} />"
+        "code": "<LabeledControl key={s.key} label={s.label}>\n                    <Slider\n                      variant=\"minimal\"\n                      min={s.min}\n                      max={s.max}\n                      step={s.step}\n                      value={adj[s.key]}\n                      onChange={set(s.key)}\n                    />"
       },
       {
         "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/components/ControlsPanel.jsx",
-        "code": "<Section label=\"Source\">\n        <input\n          ref={fileRef}\n          type=\"file\"\n          accept=\".svg\"\n          onChange={onUpload}\n          className=\"hidden\"\n        />"
+        "file": "kol-apparat/kol-labs-single/src/components/framework/SettingsPanel.jsx",
+        "code": "<LabeledControl inline label=\"Theme\">\n            <Dropdown size=\"sm\" variant=\"subtle\" className=\"w-full\" options={themeOptions} value={theme} onChange={onTheme} />"
       },
       {
         "app": "kol-client-ac",
-        "file": "kol-client/kol-client-ac/src/editor/modes/palette/PaletteControls.jsx",
-        "code": "<Section label=\"Aspect\">\n              <Dropdown\n                variant=\"subtle\" size=\"sm\" className=\"w-full\"\n                options={ASPECT_OPTIONS}\n                value={aspect}\n                onChange={setAspect}\n              />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-client/kol-client-kolkrabbi/src/editor/modes/palette/PaletteControls.jsx",
-        "code": "<Section label=\"Logo\">\n            <ViewToggle\n              variant=\"single\"\n              options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}\n              viewMode={logoId === 'no-logo' ? 'off' : 'on'}\n              onViewChange={(v) => setLogoId(v === 'off' ? 'no-logo' : 'client')}\n            />"
+        "file": "kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx",
+        "code": "<LabeledControl inline label={label} hint={hint}>\n      <Slider min={0} max={max} value={value} onChange={onChange} />"
       }
     ]
   },
@@ -302,7 +341,7 @@
     "name": "Input",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 179,
+    "count": 185,
     "apps": [
       "kol-client-ac",
       "kol-client-hrafn",
@@ -317,10 +356,9 @@
       "kol-modulator",
       "kol-monitor",
       "kol-noter",
-      "kol-radar",
-      "kol-resume"
+      "kol-radar"
     ],
-    "files": 104,
+    "files": 108,
     "examples": [
       {
         "app": "kol-divs",
@@ -346,51 +384,6 @@
         "app": "kol-radar",
         "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/molecules/InputPreview.jsx",
         "code": "<Input\n                  type=\"text\"\n                  placeholder=\"Enter text...\"\n                  size=\"md\"\n                  style={inputBreakpointStyles.md[bp.id]}\n                />"
-      }
-    ]
-  },
-  {
-    "name": "LabeledControl",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 140,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-draw-3d",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-media-admin",
-      "kol-monitor",
-      "kol-resume"
-    ],
-    "files": 30,
-    "examples": [
-      {
-        "app": "kol-draw-3d",
-        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/studio/ControlsPanel.jsx",
-        "code": "<LabeledControl label=\"Distance\" hint={knobs.distance.toFixed(1)}>\n        <Slider min={-60} max={60} step={0.1} value={knobs.distance} onChange={(v) => setKnobs({ distance: v })} />"
-      },
-      {
-        "app": "kol-monitor",
-        "file": "kol-apparat/kol-video/kol-monitor/src/modules/generators/DitherModule.jsx",
-        "code": "<LabeledControl key={item.value} label={item.text}>\n                <IconButton icon={item.icon} title={item.value} active={mode === item.value} onClick={() => onModeChange(item.value)} />"
-      },
-      {
-        "app": "kol-lightroom",
-        "file": "kol-apparat/kol-lightroom/src/pages/Develop.jsx",
-        "code": "<LabeledControl key={s.key} label={s.label}>\n                    <Slider\n                      variant=\"minimal\"\n                      min={s.min}\n                      max={s.max}\n                      step={s.step}\n                      value={adj[s.key]}\n                      onChange={set(s.key)}\n                    />"
-      },
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/gradient/GradientPage.jsx",
-        "code": "<LabeledControl inline label=\"style\">\n            <Dropdown\n              size=\"sm\"\n              variant=\"subtle\"\n              className=\"w-full\"\n              options={BG_STYLES.map((s) => ({ value: String(s.id), label: s.label }))}\n              value={String(bgStyle)}\n              onChange={(v) => setBgStyle(Number(v))}\n            />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx",
-        "code": "<LabeledControl inline label={label} hint={hint}>\n      <Slider min={0} max={max} value={value} onChange={onChange} />"
       }
     ]
   },
@@ -439,19 +432,18 @@
   {
     "name": "Badge",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 137,
+    "category": "atoms",
+    "count": 136,
     "apps": [
       "kol-client-ac",
       "kol-client-kolkrabbi",
-      "kol-labs-single",
       "kol-mirror",
       "kol-modulator",
       "kol-monitor",
       "kol-noter",
       "kol-radar"
     ],
-    "files": 30,
+    "files": 29,
     "examples": [
       {
         "app": "kol-noter",
@@ -474,16 +466,59 @@
         "code": "<Badge variant=\"outline\" size={size} className={className}>\n        Unset\n      </Badge>"
       },
       {
+        "app": "kol-client-ac",
+        "file": "kol-client/kol-client-ac/src/pages/site/BlogArticle.jsx",
+        "code": "<Badge variant=\"outline\" size=\"sm\">{article.tag}</Badge>\n            </div>\n          )}\n          <h1 className=\"kol-prose-display-md\">{article.title}</h1>\n          <p className=\"kol-prose-lede\">{article.excerpt}</p>\n          <Divider className=\"pt-4\" />"
+      }
+    ]
+  },
+  {
+    "name": "ToggleSwitch",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 122,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-kolkrabbi",
+      "kol-labs-single",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor",
+      "kol-radar"
+    ],
+    "files": 58,
+    "examples": [
+      {
+        "app": "kol-radar",
+        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/atoms/TogglesPreview.jsx",
+        "code": "<ToggleSwitch\n            label=\"Dark mode\"\n            checked={switchState}\n            onChange={setSwitchState}\n          />"
+      },
+      {
         "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/components/ModesPanel.jsx",
-        "code": "<Badge key={tag} variant=\"secondary\" size=\"sm\">\n              {tag}\n            </Badge>\n          ))}\n        </div>\n      </Section>\n    </>"
+        "file": "kol-apparat/kol-labs-single/src/pages/Home.jsx",
+        "code": "<ToggleSwitch\n              variant=\"plain\"\n              checked={!!autoplay}\n              onChange={(v) => setAppSetting('autoplay', v)}\n            />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-client/kol-client-ac/src/components/styleguide/LogoCard.jsx",
+        "code": "<ToggleSwitch\n            variant=\"plain\"\n            label=\"Clearspace\"\n            checked={showFramework}\n            onToggle={setShowFramework}\n          />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/atoms/TogglesPreview.jsx",
+        "code": "<ToggleSwitch label=\"Dark mode\" checked={switchState} onChange={setSwitchState} />"
+      },
+      {
+        "app": "kol-mirror",
+        "file": "kol-apparat/kol-video/kol-mirror/src/components/styleguide/Components.jsx",
+        "code": "<ToggleSwitch label=\"Off\" />"
       }
     ]
   },
   {
     "name": "ViewToggle",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 106,
     "apps": [
       "kol-client",
@@ -525,6 +560,48 @@
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/editor/compose/AssetsBody.jsx",
         "code": "<ViewToggle\n          variant=\"icon\"\n          viewMode={view}\n          onViewChange={setView}\n          options={VIEW_OPTIONS}\n        />"
+      }
+    ]
+  },
+  {
+    "name": "SegmentedToggle",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 90,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-labs-single",
+      "kol-lightroom",
+      "kol-media-admin"
+    ],
+    "files": 56,
+    "examples": [
+      {
+        "app": "kol-media-admin",
+        "file": "kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/SegmentedToggle.jsx",
+        "code": "<SegmentedToggle\n *     value={current}\n *     onChange={setCurrent}\n *     options={[{ value, label }]}\n *   />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/components/framework/MediaPicker.jsx",
+        "code": "<SegmentedToggle\n            className=\"w-56 shrink-0\"\n            value={source}\n            onChange={setSource}\n            options={[{ value: 'library', label: 'Library' }, { value: 'gallery', label: 'Gallery' }]}\n          />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx",
+        "code": "<SegmentedToggle value={model} onChange={setModel} options={MODEL_OPTIONS} />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-client/kol-client-kolkrabbi/src/editor/color/StrokePanel.jsx",
+        "code": "<SegmentedToggle size=\"sm\" value={style} onChange={onStyle} options={STYLE_OPTIONS} />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/pages/_shared/ImagePlacement.jsx",
+        "code": "<SegmentedToggle\n        options={[{ value: 'cover', label: 'Cover' }, { value: 'contain', label: 'Fit' }]}\n        value={fit}\n        onChange={onFit}\n        className=\"w-full\"\n      />"
       }
     ]
   },
@@ -577,7 +654,7 @@
     "name": "ToggleCheckbox",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 62,
+    "count": 54,
     "apps": [
       "kol-client-kolkrabbi",
       "kol-distress",
@@ -588,7 +665,7 @@
       "kol-radar",
       "kol-radial"
     ],
-    "files": 18,
+    "files": 16,
     "examples": [
       {
         "app": "kol-radar",
@@ -606,14 +683,14 @@
         "code": "<ToggleCheckbox\n              label={<span className=\"kol-mono-xs tracking-[0.08em]\">Sym X</span>}\n              checked={params.lfoSymmetryX}\n              onChange={(next) => onParamChange('lfoSymmetryX', next)}\n            />"
       },
       {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/pages/RefinePage.jsx",
-        "code": "<ToggleCheckbox\n                        label=\"Nodes\"\n                        checked={showNodes}\n                        onChange={setShowNodes}\n                      />"
-      },
-      {
         "app": "kol-client-kolkrabbi",
         "file": "kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/apparatus/WavyCircleControls.jsx",
         "code": "<ToggleCheckbox\n            label={<span className=\"kol-mono-text-xs uppercase tracking-[0.08em]\">Grid</span>}\n            checked={ui.showGrid}\n            onChange={(next) => onUiToggle('showGrid', next)}\n          />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/pages/interfaces/ParamControls.jsx",
+        "code": "<ToggleCheckbox key={p.key} label={p.label} checked={!!opts[p.key]} onChange={(v) => onChange(p.key, v)} />"
       }
     ]
   },
@@ -629,8 +706,7 @@
       "kol-draw-3d",
       "kol-labs-single",
       "kol-lightroom",
-      "kol-media-admin",
-      "kol-resume"
+      "kol-media-admin"
     ],
     "files": 13,
     "examples": [
@@ -645,6 +721,11 @@
         "code": "<MenuDropdownItem\n                key={option.value}\n                onClick={() => handleSelect(option)}\n                shortcut={isActive ? <Icon name=\"check\" size={11} />"
       },
       {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/pages/kinetic/OpenTypeMenu.jsx",
+        "code": "<MenuDropdownItem\n              key={f.tag}\n              onClick={() => onToggle(f.tag, !value[f.tag])}\n              shortcut={value[f.tag] ? <Icon name=\"check\" size={11} />"
+      },
+      {
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/editor/compose/LayerStack.jsx",
         "code": "<MenuDropdownItem\n                    key={k.id}\n                    iconLeft={<EditorIcon name={k.icon} size={12} />"
@@ -653,18 +734,13 @@
         "app": "kol-client-kolkrabbi",
         "file": "kol-client/kol-client-kolkrabbi/src/editor/compose/LayerStack.jsx",
         "code": "<MenuDropdownItem\n              key={t.id}\n              iconLeft={<EditorIcon name={TYPE_ICONS[t.id] ?? 'layer-shape'} size={12} />"
-      },
-      {
-        "app": "kol-draw-3d",
-        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/chrome/TopBar.jsx",
-        "code": "<MenuDropdownItem onClick={() => setArmature({ showLines: !armature.showLines })} shortcut={check(armature.showLines)}>Lines</MenuDropdownItem>\n            <MenuDropdownItem onClick={() => setArmature({ showNodes: !armature.showNodes })} shortcut={check(armature.showNodes)}>Nodes</MenuDropdownItem>\n            <MenuDropdownItem onClick={() => setArmature({ snap: !armature.snap })} shortcut={check(armature.snap)}>Snap</MenuDropdownItem>\n            <MenuDropdownDivider />"
       }
     ]
   },
   {
     "name": "Tag",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 50,
     "apps": [
       "kol-client-ac",
@@ -711,7 +787,7 @@
     "name": "Graphic",
     "pkg": "@kolkrabbi/kol-component",
     "category": "graphics",
-    "count": 50,
+    "count": 49,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -719,10 +795,9 @@
       "kol-client-kolkrabbi",
       "kol-editor",
       "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
+      "kol-lightroom"
     ],
-    "files": 17,
+    "files": 16,
     "examples": [
       {
         "app": "kol-client",
@@ -754,7 +829,7 @@
   {
     "name": "Pill",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 35,
     "apps": [
       "kol-client-kolkrabbi",
@@ -793,52 +868,9 @@
     ]
   },
   {
-    "name": "ToggleSwitch",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 30,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-kolkrabbi",
-      "kol-labs-single",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-radar"
-    ],
-    "files": 16,
-    "examples": [
-      {
-        "app": "kol-radar",
-        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/atoms/TogglesPreview.jsx",
-        "code": "<ToggleSwitch\n            label=\"Dark mode\"\n            checked={switchState}\n            onChange={setSwitchState}\n          />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-client/kol-client-ac/src/components/styleguide/LogoCard.jsx",
-        "code": "<ToggleSwitch\n            variant=\"plain\"\n            label=\"Clearspace\"\n            checked={showFramework}\n            onToggle={setShowFramework}\n          />"
-      },
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/radar/pages/AsciiPage.jsx",
-        "code": "<ToggleSwitch label=\"Invert\" checked={params.invert} onChange={(v) => updateParam('invert', v)} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/atoms/TogglesPreview.jsx",
-        "code": "<ToggleSwitch label=\"Dark mode\" checked={switchState} onChange={setSwitchState} />"
-      },
-      {
-        "app": "kol-mirror",
-        "file": "kol-apparat/kol-video/kol-mirror/src/components/styleguide/Components.jsx",
-        "code": "<ToggleSwitch label=\"Off\" />"
-      }
-    ]
-  },
-  {
     "name": "SectionLabel",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 30,
     "apps": [
       "kol-client-kolkrabbi",
@@ -880,7 +912,7 @@
   {
     "name": "ColorSwatch",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 29,
     "apps": [
       "kol-client-ac",
@@ -892,8 +924,13 @@
       "kol-monitor",
       "kol-radar"
     ],
-    "files": 19,
+    "files": 20,
     "examples": [
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/components/color/ColorPicker.jsx",
+        "code": "<ColorSwatch\n              key={`${p}-${i}`}\n              hex={p}\n              size={18}\n              radius=\"tight\"\n              frame={false}\n              selected={clampHex(p) === hex}\n              onClick={() => set(p)}\n              title={clampHex(p)}\n            />"
+      },
       {
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/editor/color/SwatchesPanel.jsx",
@@ -910,11 +947,6 @@
         "code": "<ColorSwatch value={frame.color} onChange={(hex) => onUpdate({ color: hex })} />"
       },
       {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/pages/RefinePage.jsx",
-        "code": "<ColorSwatch\n                          hex={strokeColor}\n                          size={32}\n                          radius=\"full\"\n                          showTransparent={!strokeEnabled}\n                          transparentTone=\"error\"\n                          aria-haspopup=\"dialog\"\n                          aria-expanded={showStrokePicker}\n                          onClick={(event) => {\n                            if (event.altKey) {\n                              setStrokeEnabled((prev) => !prev)\n                            } else {\n                              setShowStrokePicker((prev) => !prev)\n                            }\n                          }}\n                        />"
-      },
-      {
         "app": "kol-radar",
         "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/ColorPalette.jsx",
         "code": "<ColorSwatch key={token} token={token} />"
@@ -922,58 +954,10 @@
     ]
   },
   {
-    "name": "Tooltip",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 29,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-draw-3d",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-media-admin",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-noter",
-      "kol-resume"
-    ],
-    "files": 17,
-    "examples": [
-      {
-        "app": "kol-noter",
-        "file": "kol-apparat/kol-docs/kol-noter/src/components/app-shell/ExplorerSidebar.tsx",
-        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <Network className=\"w-4 h-4\" />"
-      },
-      {
-        "app": "kol-mirror",
-        "file": "kol-apparat/kol-video/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
-        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <Folder className=\"w-4 h-4\" />"
-      },
-      {
-        "app": "kol-modulator",
-        "file": "kol-apparat/kol-video/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
-        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <FileText className=\"w-4 h-4\" />"
-      },
-      {
-        "app": "kol-monitor",
-        "file": "kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
-        "code": "<Tooltip>\n                  <TooltipTrigger asChild>\n                    <button\n                      onClick={(e) => {\n                        e.stopPropagation();\n                        collapseAll();\n                      }}\n                      className=\"p-1.5 rounded hover:bg-sidebar-item transition-colors\"\n                      title=\"Collapse all\"\n                    >\n                      <FoldVertical className=\"w-4 h-4 text-muted-foreground\" />"
-      },
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/pages/RefinePage.jsx",
-        "code": "<Tooltip key={action.label} label={action.label} placement=\"right\">\n                    <button\n                      type=\"button\"\n                      onClick={action.onClick}\n                      disabled={action.disabled}\n                      className={`w-12 h-12 flex items-center justify-center rounded border border-auto transition disabled:opacity-40 ${\n                        action.tone === 'light'\n                          ? 'bg-surface-inverse'\n                          : 'bg-surface-primary'\n                      }`}\n                      aria-label={action.label}\n                    >\n                      <Icon name={action.icon} size={24} />"
-      }
-    ]
-  },
-  {
     "name": "ThemeToggle",
     "pkg": "@kolkrabbi/kol-framework",
     "category": "framework",
-    "count": 29,
+    "count": 28,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -987,10 +971,9 @@
       "kol-mirror",
       "kol-modulator",
       "kol-monitor",
-      "kol-radar",
-      "kol-resume"
+      "kol-radar"
     ],
-    "files": 23,
+    "files": 22,
     "examples": [
       {
         "app": "kol-divs",
@@ -1020,10 +1003,57 @@
     ]
   },
   {
-    "name": "Label",
+    "name": "Tooltip",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
     "count": 27,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-draw-3d",
+      "kol-labs-single",
+      "kol-lightroom",
+      "kol-media-admin",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor",
+      "kol-noter"
+    ],
+    "files": 15,
+    "examples": [
+      {
+        "app": "kol-noter",
+        "file": "kol-apparat/kol-docs/kol-noter/src/components/app-shell/ExplorerSidebar.tsx",
+        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <Network className=\"w-4 h-4\" />"
+      },
+      {
+        "app": "kol-mirror",
+        "file": "kol-apparat/kol-video/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
+        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <Folder className=\"w-4 h-4\" />"
+      },
+      {
+        "app": "kol-modulator",
+        "file": "kol-apparat/kol-video/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
+        "code": "<Tooltip>\n              <TooltipTrigger asChild>\n                <Button size=\"icon\" variant=\"ghost\" className=\"w-10 h-10\">\n                  <FileText className=\"w-4 h-4\" />"
+      },
+      {
+        "app": "kol-monitor",
+        "file": "kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
+        "code": "<Tooltip>\n                  <TooltipTrigger asChild>\n                    <button\n                      onClick={(e) => {\n                        e.stopPropagation();\n                        collapseAll();\n                      }}\n                      className=\"p-1.5 rounded hover:bg-sidebar-item transition-colors\"\n                      title=\"Collapse all\"\n                    >\n                      <FoldVertical className=\"w-4 h-4 text-muted-foreground\" />"
+      },
+      {
+        "app": "kol-draw-3d",
+        "file": "kol-apparat/kol-editors/kol-draw-3d/src/components/molecules/Popover.jsx",
+        "code": "<Tooltip label=\"Pattern\" shortcut=\"P\" placement=\"bottom\">\n *     <Button iconOnly=\"ptrn-checker\" ... />"
+      }
+    ]
+  },
+  {
+    "name": "Label",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 26,
     "apps": [
       "kol-client-ac",
       "kol-client-hrafn",
@@ -1036,10 +1066,9 @@
       "kol-mirror",
       "kol-modulator",
       "kol-monitor",
-      "kol-noter",
-      "kol-resume"
+      "kol-noter"
     ],
-    "files": 20,
+    "files": 19,
     "examples": [
       {
         "app": "kol-noter",
@@ -1069,52 +1098,9 @@
     ]
   },
   {
-    "name": "SegmentedToggle",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 23,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-media-admin",
-      "kol-resume"
-    ],
-    "files": 18,
-    "examples": [
-      {
-        "app": "kol-media-admin",
-        "file": "kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/SegmentedToggle.jsx",
-        "code": "<SegmentedToggle\n *     value={current}\n *     onChange={setCurrent}\n *     options={[{ value, label }]}\n *   />"
-      },
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/pages/MainPage.jsx",
-        "code": "<SegmentedToggle\n          value={railTab}\n          onChange={setRailTab}\n          options={[\n            { value: 'modes', label: 'Modes' },\n            { value: 'controls', label: 'Controls' },\n          ]}\n        />"
-      },
-      {
-        "app": "kol-resume",
-        "file": "kol-resume/app/src/pages/CoverLetter.jsx",
-        "code": "<SegmentedToggle\n          value={id}\n          onChange={setId}\n          options={LETTERS.map((l) => ({ value: l.id, label: l.label }))}\n          className=\"mb-8 max-w-md print:hidden\"\n        />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx",
-        "code": "<SegmentedToggle value={model} onChange={setModel} options={MODEL_OPTIONS} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-client/kol-client-kolkrabbi/src/editor/color/StrokePanel.jsx",
-        "code": "<SegmentedToggle size=\"sm\" value={style} onChange={onStyle} options={STYLE_OPTIONS} />"
-      }
-    ]
-  },
-  {
     "name": "ToggleBracket",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 22,
     "apps": [
       "kol-client-kolkrabbi",
@@ -1232,91 +1218,6 @@
     ]
   },
   {
-    "name": "AccordionPanel",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
-    "count": 22,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-editor",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
-    ],
-    "files": 12,
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
-        "code": "<AccordionPanel title=\"Brand\"     meta={`${BRAND.length} tokens`} defaultOpen>\n          <TokenTable rows={BRAND} />"
-      },
-      {
-        "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx",
-        "code": "<AccordionPanel>"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
-        "code": "<AccordionPanel title=\"Surfaces\"  meta={`${UI_SURFACE.length} tokens`}>\n          <TokenTable rows={UI_SURFACE} />"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
-        "code": "<AccordionPanel title=\"Text\"      meta={`${UI_INK.length} tokens`}>\n          <TokenTable rows={UI_INK} />"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
-        "code": "<AccordionPanel title=\"Structure\" meta={`${UI_STRUCTURE.length} tokens`}>\n          <TokenTable rows={UI_STRUCTURE} />"
-      }
-    ]
-  },
-  {
-    "name": "QuantityInput",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
-    "count": 21,
-    "apps": [
-      "kol-client-kolkrabbi",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-radar"
-    ],
-    "files": 9,
-    "examples": [
-      {
-        "app": "kol-radar",
-        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/mirror/MirrorSidebar.jsx",
-        "code": "<QuantityInput value={state.hallCustomWidth} onChange={state.setHallCustomWidth} min={100} max={4096} />"
-      },
-      {
-        "app": "kol-mirror",
-        "file": "kol-apparat/kol-video/kol-mirror/src/components/mirror/MirrorSidebar.jsx",
-        "code": "<QuantityInput value={state.hallCustomHeight} onChange={state.setHallCustomHeight} min={100} max={4096} />"
-      },
-      {
-        "app": "kol-monitor",
-        "file": "kol-apparat/kol-video/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components/mirror/MirrorSidebar.jsx",
-        "code": "<QuantityInput value={state.symphonyCustomWidth} onChange={state.setSymphonyCustomWidth} min={100} max={4096} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/atoms/QuantityStepperPreview.jsx",
-        "code": "<QuantityInput value={inputValue} onChange={setInputValue} min={1} max={10} />"
-      },
-      {
-        "app": "kol-modulator",
-        "file": "kol-apparat/kol-video/kol-modulator/src/components/styleguide/Components.jsx",
-        "code": "<QuantityInput value={1} min={0} max={10} />"
-      }
-    ]
-  },
-  {
     "name": "Avatar",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
@@ -1360,10 +1261,51 @@
     ]
   },
   {
-    "name": "AssetPlaceholder",
+    "name": "QuantityInput",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
-    "count": 19,
+    "category": "atoms",
+    "count": 21,
+    "apps": [
+      "kol-client-kolkrabbi",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor",
+      "kol-radar"
+    ],
+    "files": 9,
+    "examples": [
+      {
+        "app": "kol-radar",
+        "file": "kol-apparat/kol-editors/kol-radar/src-grab/components/mirror/MirrorSidebar.jsx",
+        "code": "<QuantityInput value={state.hallCustomWidth} onChange={state.setHallCustomWidth} min={100} max={4096} />"
+      },
+      {
+        "app": "kol-mirror",
+        "file": "kol-apparat/kol-video/kol-mirror/src/components/mirror/MirrorSidebar.jsx",
+        "code": "<QuantityInput value={state.hallCustomHeight} onChange={state.setHallCustomHeight} min={100} max={4096} />"
+      },
+      {
+        "app": "kol-monitor",
+        "file": "kol-apparat/kol-video/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components/mirror/MirrorSidebar.jsx",
+        "code": "<QuantityInput value={state.symphonyCustomWidth} onChange={state.setSymphonyCustomWidth} min={100} max={4096} />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/atoms/QuantityStepperPreview.jsx",
+        "code": "<QuantityInput value={inputValue} onChange={setInputValue} min={1} max={10} />"
+      },
+      {
+        "app": "kol-modulator",
+        "file": "kol-apparat/kol-video/kol-modulator/src/components/styleguide/Components.jsx",
+        "code": "<QuantityInput value={1} min={0} max={10} />"
+      }
+    ]
+  },
+  {
+    "name": "AccordionPanel",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 21,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -1371,10 +1313,52 @@
       "kol-client-kolkrabbi",
       "kol-editor",
       "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
+      "kol-lightroom"
     ],
-    "files": 19,
+    "files": 11,
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
+        "code": "<AccordionPanel title=\"Brand\"     meta={`${BRAND.length} tokens`} defaultOpen>\n          <TokenTable rows={BRAND} />"
+      },
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx",
+        "code": "<AccordionPanel>"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
+        "code": "<AccordionPanel title=\"Surfaces\"  meta={`${UI_SURFACE.length} tokens`}>\n          <TokenTable rows={UI_SURFACE} />"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
+        "code": "<AccordionPanel title=\"Text\"      meta={`${UI_INK.length} tokens`}>\n          <TokenTable rows={UI_INK} />"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
+        "code": "<AccordionPanel title=\"Structure\" meta={`${UI_STRUCTURE.length} tokens`}>\n          <TokenTable rows={UI_STRUCTURE} />"
+      }
+    ]
+  },
+  {
+    "name": "AssetPlaceholder",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 17,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom"
+    ],
+    "files": 17,
     "examples": [
       {
         "app": "kol-editor",
@@ -1399,10 +1383,50 @@
     ]
   },
   {
-    "name": "Stepper",
+    "name": "Textarea",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
     "count": 17,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-kolkrabbi",
+      "kol-labs-single",
+      "kol-noter"
+    ],
+    "files": 11,
+    "examples": [
+      {
+        "app": "kol-noter",
+        "file": "kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockItem.tsx",
+        "code": "<Textarea\n            value={block.content}\n            onChange={(e) => onUpdate(block.id, e.target.value)}\n            placeholder=\"Start writing...\"\n            className=\"bg-transparent !border-0 !rounded-none focus-visible:!ring-0 focus:!ring-0 focus:!outline-none !shadow-none px-0 min-h-[100px] resize-none text-xs ring-0 ring-offset-0\"\n          />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-client/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx",
+        "code": "<Textarea\n            variant=\"ghost\" size=\"sm\" rows={3}\n            value={layer.customSvg ?? ''}\n            onChange={(e) => setProp('customSvg', e.target.value)}\n            placeholder='<svg viewBox=\"0 0 24 24\">…</svg>'\n          />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-client/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspector.jsx",
+        "code": "<Textarea\n          variant=\"ghost\"\n          size=\"sm\"\n          rows={2}\n          value={layer.text ?? ''}\n          onChange={(e) => setProp('text', e.target.value)}\n        />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/pages/kinetic/DesignControls.jsx",
+        "code": "<Textarea key={ins.id} value={ins.text} onChange={(e) => onText(ins.id, e.target.value)} rows={2} resize=\"vertical\" placeholder=\"Type…\" />"
+      },
+      {
+        "app": "kol-noter",
+        "file": "kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockItem.tsx",
+        "code": "<Textarea\n              value={block.content}\n              onChange={(e) => onUpdate(block.id, e.target.value)}\n              placeholder=\"// Enter your code...\"\n              className=\"bg-code-bg border border-code-border font-mono text-xs min-h-[200px] resize-none\"\n            />"
+      }
+    ]
+  },
+  {
+    "name": "Stepper",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 16,
     "apps": [
       "kol-client-ac",
       "kol-client-hrafn",
@@ -1411,10 +1435,9 @@
       "kol-editor",
       "kol-labs-single",
       "kol-lightroom",
-      "kol-media-admin",
-      "kol-resume"
+      "kol-media-admin"
     ],
-    "files": 13,
+    "files": 12,
     "examples": [
       {
         "app": "kol-editor",
@@ -1444,49 +1467,9 @@
     ]
   },
   {
-    "name": "Textarea",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 17,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-kolkrabbi",
-      "kol-labs-single",
-      "kol-noter"
-    ],
-    "files": 11,
-    "examples": [
-      {
-        "app": "kol-noter",
-        "file": "kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockItem.tsx",
-        "code": "<Textarea\n            value={block.content}\n            onChange={(e) => onUpdate(block.id, e.target.value)}\n            placeholder=\"Start writing...\"\n            className=\"bg-transparent !border-0 !rounded-none focus-visible:!ring-0 focus:!ring-0 focus:!outline-none !shadow-none px-0 min-h-[100px] resize-none text-xs ring-0 ring-offset-0\"\n          />"
-      },
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/pages/distress/components/ControlsPanel.jsx",
-        "code": "<Textarea\n          rows={6}\n          size=\"sm\"\n          placeholder=\"<svg>…</svg>\"\n          value={svgInput}\n          onChange={onPasteChange}\n        />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-client/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx",
-        "code": "<Textarea\n            variant=\"ghost\" size=\"sm\" rows={3}\n            value={layer.customSvg ?? ''}\n            onChange={(e) => setProp('customSvg', e.target.value)}\n            placeholder='<svg viewBox=\"0 0 24 24\">…</svg>'\n          />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-client/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspector.jsx",
-        "code": "<Textarea\n          variant=\"ghost\"\n          size=\"sm\"\n          rows={2}\n          value={layer.text ?? ''}\n          onChange={(e) => setProp('text', e.target.value)}\n        />"
-      },
-      {
-        "app": "kol-noter",
-        "file": "kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockItem.tsx",
-        "code": "<Textarea\n              value={block.content}\n              onChange={(e) => onUpdate(block.id, e.target.value)}\n              placeholder=\"// Enter your code...\"\n              className=\"bg-code-bg border border-code-border font-mono text-xs min-h-[200px] resize-none\"\n            />"
-      }
-    ]
-  },
-  {
     "name": "Carousel",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
+    "category": "organisms",
     "count": 15,
     "apps": [
       "kol-client",
@@ -1531,7 +1514,7 @@
   {
     "name": "DropdownTagFilter",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 13,
     "apps": [
       "kol-client-kolkrabbi",
@@ -1562,7 +1545,7 @@
   {
     "name": "Image",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
+    "category": "molecules",
     "count": 13,
     "apps": [
       "kol-client",
@@ -1603,7 +1586,7 @@
   {
     "name": "QuantityStepper",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 12,
     "apps": [
       "kol-client-kolkrabbi",
@@ -1643,77 +1626,9 @@
     ]
   },
   {
-    "name": "Accordion",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
-    "count": 11,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-editor",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
-    ],
-    "files": 11,
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
-        "code": "<Accordion>\n        <AccordionPanel title=\"Brand\"     meta={`${BRAND.length} tokens`} defaultOpen>\n          <TokenTable rows={BRAND} />"
-      },
-      {
-        "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx",
-        "code": "<Accordion>"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/ColorUI.jsx",
-        "code": "<Accordion>\n        <AccordionPanel title=\"Neutrals\" meta={`${NEUTRALS.length} tokens`} defaultOpen>\n          <div className=\"kol-prose mb-6\">\n            <p>\n              Cool grey scale — slate-leaning to contrast warm burgundy. Surfaces\n              go dark-to-light in dark mode; ink runs the inverse. Border and divider\n              split the remaining structural duties.\n            </p>\n          </div>\n          <SwatchGrid items={NEUTRALS} />"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-client/kol-client/src/pages/foundations/TypographySections.jsx",
-        "code": "<Accordion>\n          {active.display && (\n            <AccordionPanel\n              title=\"Display\"\n              meta={`${active.display.length} specimens`}\n              defaultOpen\n            >\n              {active.display.map((d) => (\n                <DisplaySpec key={d.token} family={active.label} fontFamily={active.family} spec={d} />"
-      }
-    ]
-  },
-  {
-    "name": "TransparentX",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 10,
-    "apps": [
-      "kol-client-ac",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-editor",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-media-admin",
-      "kol-resume"
-    ],
-    "files": 9,
-    "examples": [
-      {
-        "app": "kol-media-admin",
-        "file": "kol-apparat/kol-plugin/kol-media-admin/src/components/atoms/ColorSwatch.jsx",
-        "code": "<TransparentX tone={transparentTone} />"
-      },
-      {
-        "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/social/ColorPicker.jsx",
-        "code": "<TransparentX />"
-      }
-    ]
-  },
-  {
     "name": "FullscreenOverlay",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
+    "category": "atoms",
     "count": 10,
     "apps": [
       "kol-client",
@@ -1738,6 +1653,44 @@
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/components/brand/AssetCarousel.jsx",
         "code": "<FullscreenOverlay open={!!current} onClose={() => setCurrent(null)}>\n        {current && <img src={current.src} alt={current.caption ?? current.alt ?? ''} />"
+      }
+    ]
+  },
+  {
+    "name": "Accordion",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 10,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom"
+    ],
+    "files": 10,
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorTokens.jsx",
+        "code": "<Accordion>\n        <AccordionPanel title=\"Brand\"     meta={`${BRAND.length} tokens`} defaultOpen>\n          <TokenTable rows={BRAND} />"
+      },
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx",
+        "code": "<Accordion>"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/ColorUI.jsx",
+        "code": "<Accordion>\n        <AccordionPanel title=\"Neutrals\" meta={`${NEUTRALS.length} tokens`} defaultOpen>\n          <div className=\"kol-prose mb-6\">\n            <p>\n              Cool grey scale — slate-leaning to contrast warm burgundy. Surfaces\n              go dark-to-light in dark mode; ink runs the inverse. Border and divider\n              split the remaining structural duties.\n            </p>\n          </div>\n          <SwatchGrid items={NEUTRALS} />"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-client/kol-client/src/pages/foundations/TypographySections.jsx",
+        "code": "<Accordion>\n          {active.display && (\n            <AccordionPanel\n              title=\"Display\"\n              meta={`${active.display.length} specimens`}\n              defaultOpen\n            >\n              {active.display.map((d) => (\n                <DisplaySpec key={d.token} family={active.label} fontFamily={active.family} spec={d} />"
       }
     ]
   },
@@ -1800,7 +1753,7 @@
     ]
   },
   {
-    "name": "SideNav",
+    "name": "ScrollToTop",
     "pkg": "@kolkrabbi/kol-framework",
     "category": "framework",
     "count": 10,
@@ -1813,10 +1766,62 @@
       "kol-divs",
       "kol-editor",
       "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
+      "kol-lightroom"
     ],
     "files": 10,
+    "examples": [
+      {
+        "app": "kol-divs",
+        "file": "kol-apparat/kol-docs/kol-divs/src/components/layouts/Layout.jsx",
+        "code": "<ScrollToTop />"
+      }
+    ]
+  },
+  {
+    "name": "TransparentX",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 9,
+    "apps": [
+      "kol-client-ac",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom",
+      "kol-media-admin"
+    ],
+    "files": 8,
+    "examples": [
+      {
+        "app": "kol-media-admin",
+        "file": "kol-apparat/kol-plugin/kol-media-admin/src/components/atoms/ColorSwatch.jsx",
+        "code": "<TransparentX tone={transparentTone} />"
+      },
+      {
+        "app": "kol-editor",
+        "file": "kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/social/ColorPicker.jsx",
+        "code": "<TransparentX />"
+      }
+    ]
+  },
+  {
+    "name": "SideNav",
+    "pkg": "@kolkrabbi/kol-framework",
+    "category": "framework",
+    "count": 9,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-canalix",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-divs",
+      "kol-editor",
+      "kol-labs-single",
+      "kol-lightroom"
+    ],
+    "files": 9,
     "examples": [
       {
         "app": "kol-lightroom",
@@ -1841,36 +1846,10 @@
     ]
   },
   {
-    "name": "ScrollToTop",
-    "pkg": "@kolkrabbi/kol-framework",
-    "category": "framework",
-    "count": 10,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-canalix",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-divs",
-      "kol-editor",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
-    ],
-    "files": 10,
-    "examples": [
-      {
-        "app": "kol-divs",
-        "file": "kol-apparat/kol-docs/kol-divs/src/components/layouts/Layout.jsx",
-        "code": "<ScrollToTop />"
-      }
-    ]
-  },
-  {
     "name": "ExitPreview",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
-    "count": 9,
+    "category": "atoms",
+    "count": 8,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -1879,10 +1858,9 @@
       "kol-client-kolkrabbi",
       "kol-editor",
       "kol-labs-single",
-      "kol-lightroom",
-      "kol-resume"
+      "kol-lightroom"
     ],
-    "files": 9,
+    "files": 8,
     "examples": [
       {
         "app": "kol-editor",
@@ -1894,7 +1872,7 @@
   {
     "name": "CodeBlock",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "primitives",
+    "category": "molecules",
     "count": 7,
     "apps": [
       "kol-divs"
@@ -1931,7 +1909,7 @@
   {
     "name": "ContentFilters",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 5,
     "apps": [
       "kol-client-ac",
@@ -2024,25 +2002,6 @@
     ]
   },
   {
-    "name": "AppShell",
-    "pkg": "@kolkrabbi/kol-framework",
-    "category": "framework",
-    "count": 3,
-    "apps": [
-      "kol-client-hrafn",
-      "kol-labs-single",
-      "kol-resume"
-    ],
-    "files": 3,
-    "examples": [
-      {
-        "app": "kol-labs-single",
-        "file": "kol-apparat/kol-labs-single/src/App.jsx",
-        "code": "<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />"
-      }
-    ]
-  },
-  {
     "name": "PortalFooter",
     "pkg": "@kolkrabbi/kol-framework",
     "category": "framework",
@@ -2085,6 +2044,40 @@
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/pages/CasedocWebsites.jsx",
         "code": "<SubPageHero\n        backTo=\"/casedoc\"\n        backLabel=\"← back to casedoc\"\n        label=\"casedoc · websites\"\n        title=\"casedoc.io\"\n        lede=\"Home family + Product detail + loose screens. Click a comp to open fullscreen.\"\n      />"
+      }
+    ]
+  },
+  {
+    "name": "CopyButton",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 1,
+    "apps": [
+      "kol-divs"
+    ],
+    "files": 1,
+    "examples": [
+      {
+        "app": "kol-divs",
+        "file": "kol-apparat/kol-docs/kol-divs/src/pages/Figma.jsx",
+        "code": "<CopyButton text={row.tailwind} />"
+      }
+    ]
+  },
+  {
+    "name": "AppShell",
+    "pkg": "@kolkrabbi/kol-framework",
+    "category": "framework",
+    "count": 1,
+    "apps": [
+      "kol-labs-single"
+    ],
+    "files": 1,
+    "examples": [
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apparat/kol-labs-single/src/App.jsx",
+        "code": "<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />"
       }
     ]
   },

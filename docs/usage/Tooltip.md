@@ -1,9 +1,9 @@
 # Tooltip
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
-- **Real-world usages found:** 29 across 17 files in 12 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 27 across 15 files in 11 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter
 
 ## Import
 
@@ -56,20 +56,9 @@ From `kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-
                       <FoldVertical className="w-4 h-4 text-muted-foreground" />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/pages/RefinePage.jsx`:
+From `kol-apparat/kol-editors/kol-draw-3d/src/components/molecules/Popover.jsx`:
 
 ```jsx
-<Tooltip key={action.label} label={action.label} placement="right">
-                    <button
-                      type="button"
-                      onClick={action.onClick}
-                      disabled={action.disabled}
-                      className={`w-12 h-12 flex items-center justify-center rounded border border-auto transition disabled:opacity-40 ${
-                        action.tone === 'light'
-                          ? 'bg-surface-inverse'
-                          : 'bg-surface-primary'
-                      }`}
-                      aria-label={action.label}
-                    >
-                      <Icon name={action.icon} size={24} />
+<Tooltip label="Pattern" shortcut="P" placement="bottom">
+ *     <Button iconOnly="ptrn-checker" ... />
 ```

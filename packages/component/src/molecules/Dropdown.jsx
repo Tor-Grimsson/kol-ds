@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-loader'
 import { MenuDropdownItem } from './MenuItem.jsx'
-import { PopoverPanel, usePopover } from './Popover.jsx'
+import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
 
 const SIZE_MAP = {
   sm: { fontSize: 12, paddingY: 4, paddingX: 12, radius: 14, panelRadius: 14, icon: 10 },
@@ -17,9 +17,10 @@ const Dropdown = ({
   onChange,
   size,
   variant = 'default',
+  defaultOpen = false,
   className = ''
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(defaultOpen)
   const [resolvedSize, setResolvedSize] = useState('md')
   const [dropdownWidth, setDropdownWidth] = useState('100px')
 

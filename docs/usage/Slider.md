@@ -1,9 +1,9 @@
 # Slider
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
-- **Real-world usages found:** 389 across 112 files in 15 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-distress, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radar, kol-radial, kol-resume
+- **Category:** molecules
+- **Real-world usages found:** 866 across 166 files in 14 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-distress, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radar, kol-radial
 
 ## Import
 

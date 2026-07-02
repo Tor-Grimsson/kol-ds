@@ -1,9 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button, Pill } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import TopBar from '../lib/TopBar.jsx'
+import DemoStage from '../lib/DemoStage.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
-import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 
 /**
  * Home — the KOL design-system front door.
@@ -25,37 +24,13 @@ const WALL = [
 function Tile({ name }) {
   const entry = DEMOS[name]
   if (!entry) return null
-  const Demo = entry.Component
   return (
     <div className="mb-4 break-inside-avoid rounded-[var(--kol-radius-md)] border border-fg-08 bg-surface-primary p-5">
       <p className="kol-helper-10 text-meta uppercase mb-4">{name}</p>
-      <ErrorBoundary>{Demo ? <Demo /> : null}</ErrorBoundary>
-    </div>
-  )
-}
-
-function TopNav() {
-  return (
-    <header className="sticky top-0 z-30 border-b border-fg-08 bg-surface-primary/80 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-[1900px] items-center gap-6 px-5 md:px-8">
-        <Link to="/" className="kol-mono-13 text-emphasis tracking-tight">Kolkrabbi</Link>
-        <nav className="flex items-center gap-5 kol-mono-12">
-          <Link to="/" className="text-emphasis">Home</Link>
-          <Link to="/foundations" className="text-meta hover:text-emphasis transition-colors">Foundations</Link>
-          <Link to="/icons" className="text-meta hover:text-emphasis transition-colors">Icons</Link>
-          <Link to="/components" className="text-meta hover:text-emphasis transition-colors">Components</Link>
-        </nav>
-        <div className="ml-auto flex items-center gap-3">
-          <a
-            href="https://github.com/Tor-Grimsson/kol-ds"
-            className="inline-flex items-center gap-1.5 kol-mono-12 text-meta hover:text-emphasis transition-colors"
-          >
-            <Icon name="code" size={14} /> Source
-          </a>
-          <ThemeToggle variant="icon" />
-        </div>
+      <div className="flex justify-center">
+        <DemoStage entry={entry} />
       </div>
-    </header>
+    </div>
   )
 }
 
@@ -64,7 +39,7 @@ export default function Home() {
 
   return (
     <>
-      <TopNav />
+      <TopBar />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center px-5 pt-20 md:pt-28 pb-16">

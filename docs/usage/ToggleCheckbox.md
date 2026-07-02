@@ -2,7 +2,7 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 62 across 18 files in 8 apps
+- **Real-world usages found:** 54 across 16 files in 8 apps
 - **Used in:** kol-client-kolkrabbi, kol-distress, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-radar, kol-radial
 
 ## Import
@@ -43,16 +43,6 @@ From `kol-apparat/kol-video/kol-radial/src/radial/apparatus/WavyCircleControls.j
             />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/pages/RefinePage.jsx`:
-
-```jsx
-<ToggleCheckbox
-                        label="Nodes"
-                        checked={showNodes}
-                        onChange={setShowNodes}
-                      />
-```
-
 From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/apparatus/WavyCircleControls.jsx`:
 
 ```jsx
@@ -61,4 +51,10 @@ From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/worksho
             checked={ui.showGrid}
             onChange={(next) => onUiToggle('showGrid', next)}
           />
+```
+
+From `kol-apparat/kol-labs-single/src/pages/interfaces/ParamControls.jsx`:
+
+```jsx
+<ToggleCheckbox key={p.key} label={p.label} checked={!!opts[p.key]} onChange={(v) => onChange(p.key, v)} />
 ```

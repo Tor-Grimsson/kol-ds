@@ -2,7 +2,7 @@ import { MenuPopover, MenuDropdownItem, MenuDropdownDivider } from '@kolkrabbi/k
 
 export default function MenuPopoverDemo() {
   return (
-    <MenuPopover label="Actions" panelClassName="min-w-[160px] py-1">
+    <MenuPopover label="Actions" panelClassName="min-w-[160px] py-1" defaultOpen>
       <MenuDropdownItem onClick={() => {}}>Duplicate</MenuDropdownItem>
       <MenuDropdownItem onClick={() => {}}>Rename</MenuDropdownItem>
       <MenuDropdownItem onClick={() => {}}>Move to…</MenuDropdownItem>

@@ -253,3 +253,53 @@
   padding: 0 12px;
   font-size: 14px;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * SegmentedToggle — molecules/SegmentedToggle.jsx
+ *   Bordered strip of joined cells sharing one outer stroke, thin
+ *   dividers between cells, filled active cell.
+ *
+ *   Chrome lives HERE, not in Tailwind utilities: Tailwind never scans
+ *   package sources, so utility-class chrome inside a published
+ *   component silently vanishes for every consumer. Any component whose
+ *   look depends on flex/border/rounded utilities needs a kol-* class
+ *   in this package instead.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-seg {
+  display: flex;
+  height: 26px;
+  border: 1px solid var(--kol-fg-04);
+  border-radius: var(--kol-radius-sm);
+  overflow: hidden;
+}
+
+.kol-seg--sm { height: 16px; }
+
+.kol-seg-cell {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--kol-fg-meta);
+  transition: color var(--kol-transition-base),
+              background-color var(--kol-transition-base);
+}
+
+.kol-seg-cell + .kol-seg-cell { border-left: 1px solid var(--kol-fg-04); }
+
+.kol-seg-cell:hover { color: var(--kol-fg-emphasis); }
+
+.kol-seg-cell.is-active {
+  background: var(--kol-surface-secondary);
+  color: var(--kol-fg-emphasis);
+}
+
+.kol-seg-cell:focus-visible {
+  outline: 1px solid var(--kol-fg-emphasis);
+  outline-offset: -2px;
+}

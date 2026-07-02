@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PageSection } from '@kolkrabbi/kol-framework'
+import DocHeader from '../lib/DocHeader.jsx'
 import { Icon, ICON_INDEX, ICON_ENTRIES } from '@kolkrabbi/kol-loader'
 import { Button, ContentFilters } from '@kolkrabbi/kol-component'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
+import DocLayout from '../lib/DocLayout.jsx'
 
 /**
  * Icons — the KOL icon inventory. Ported from the brand app's /icons page
@@ -105,11 +106,13 @@ export default function Icons() {
   }
 
   return (
-    <PageSection
-      label="KOL · Icons"
-      title="Icon library"
-      body={`${ICON_ENTRIES.length} icons across ${CATEGORIES.length} categories, from @kolkrabbi/kol-loader. Toggle stroke / fill and size; click any icon to copy its name.`}
-    >
+    <DocLayout wide>
+      <DocHeader
+        eyebrow="KOL · Icons"
+        title="Icon library"
+        lede={`${ICON_ENTRIES.length} icons across ${CATEGORIES.length} categories, from @kolkrabbi/kol-loader. Toggle stroke / fill and size; click any icon to copy its name.`}
+      />
+      <div>
       <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/icons/variants')}>
         View variants
       </Button>
@@ -134,6 +137,7 @@ export default function Icons() {
         defaultViewMode="grid"
         showCountOnlyWhenFiltering
       />
-    </PageSection>
+      </div>
+    </DocLayout>
   )
 }

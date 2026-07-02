@@ -10,15 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kolkrabbi/kol-theme": "workspace:*",
-    "@kolkrabbi/kol-loader": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "chess.js": "^1.4.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.14.2",
-    "tailwindcss": "^4.2.4",
-    "@tailwindcss/vite": "^4.2.4"
+    "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

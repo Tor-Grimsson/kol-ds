@@ -1,9 +1,9 @@
 # Badge
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
-- **Real-world usages found:** 137 across 30 files in 8 apps
-- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar
+- **Category:** atoms
+- **Real-world usages found:** 136 across 29 files in 7 apps
+- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar
 
 ## Import
 
@@ -48,14 +48,13 @@ From `kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-
       </Badge>
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/components/ModesPanel.jsx`:
+From `kol-client/kol-client-ac/src/pages/site/BlogArticle.jsx`:
 
 ```jsx
-<Badge key={tag} variant="secondary" size="sm">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </Section>
-    </>
+<Badge variant="outline" size="sm">{article.tag}</Badge>
+            </div>
+          )}
+          <h1 className="kol-prose-display-md">{article.title}</h1>
+          <p className="kol-prose-lede">{article.excerpt}</p>
+          <Divider className="pt-4" />
 ```

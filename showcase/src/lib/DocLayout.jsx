@@ -1,61 +1,62 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import { Link, useLocation } from 'react-router-dom'
+import TopBar from './TopBar.jsx'
 import { componentsByCategory, CATEGORY_LABELS } from './registry.js'
 
 /**
- * DocLayout — the shadcn-style doc chrome, shared by every component page:
- * full-bleed top bar (nav / search / GitHub / theme) + component sidebar +
- * centred content + on-this-page TOC. Page content is passed as children;
- * `toc` drives the right rail; `activeSlug` highlights the sidebar.
+ * DocLayout — the shadcn-style doc shell shared by every docs page:
+ * TopBar + unified sidebar (overview pages, then the component tree) +
+ * content + on-this-page TOC. Active sidebar link derives from the path.
+ *
+ * `wide` mode hands layout to the children (Foundations/Icons pages own
+ * their width via PageSection); default mode centres a max-w-3xl column.
  */
 
-const REPO = 'https://github.com/Tor-Grimsson/kol-ds'
+const OVERVIEW = [
+  { to: '/foundations', label: 'Foundations' },
+  { to: '/foundations/color', label: 'Color' },
+  { to: '/foundations/typography', label: 'Typography' },
+  { to: '/icons', label: 'Icons' },
+  { to: '/icons/variants', label: 'Icon variants' },
+  { to: '/components', label: 'Components' },
+  { to: '/blocks', label: 'Blocks' },
+]
 
-function TopBar() {
-  const navigate = useNavigate()
-  return (
-    <header className="sticky top-0 z-40 border-b border-fg-08 bg-surface-primary/90 backdrop-blur">
-      <div className="flex h-14 items-center gap-6 px-6">
-        <button type="button" onClick={() => navigate('/')} className="kol-mono-13 tracking-tight text-emphasis">Kolkrabbi</button>
-        <nav className="hidden items-center gap-5 kol-mono-12 md:flex">
-          <Link to="/" className="text-meta hover:text-emphasis transition-colors">Home</Link>
-          <Link to="/foundations" className="text-meta hover:text-emphasis transition-colors">Foundations</Link>
-          <Link to="/icons" className="text-meta hover:text-emphasis transition-colors">Icons</Link>
-          <Link to="/components" className="text-emphasis">Components</Link>
-        </nav>
-        <div className="ml-auto flex items-center gap-3">
-          <div className="hidden items-center gap-2 rounded-[var(--kol-radius-sm)] border border-fg-12 px-2.5 py-1.5 text-meta sm:flex">
-            <Icon name="search" size={14} />
-            <span className="kol-mono-12">Search…</span>
-          </div>
-          <a href={REPO} className="text-meta hover:text-emphasis transition-colors" aria-label="GitHub"><Icon name="code" size={16} /></a>
-          <ThemeToggle variant="icon" />
-        </div>
-      </div>
-    </header>
+const DOCS = [
+  { to: '/docs/shell-and-layout', label: 'Shell & Layout' },
+  { to: '/docs/menus', label: 'Menus' },
+  { to: '/docs/loaders', label: 'Loaders' },
+  { to: '/workshop-preview', label: 'Workshop shell ↗' },
+]
+
+/* Components grouped by type (atoms/molecules/…), A→Z within each group —
+ * a new component's location is fixed: its type group, alphabetical slot.
+ * Function tags stay filter metadata on the index. */
+function DocSidebar() {
+  const { pathname } = useLocation()
+  const linkCls = (active) =>
+    `kol-sans-body-02 py-1 transition-colors ${active ? 'text-emphasis' : 'text-meta hover:text-emphasis'}`
+
+  const group = (label, links) => (
+    <div>
+      <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">{label}</p>
+      <nav className="flex flex-col">
+        {links.map((l) => (
+          <Link key={l.to} to={l.to} className={linkCls(pathname === l.to)}>
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+    </div>
   )
-}
 
-function ComponentSidebar({ activeSlug }) {
-  const groups = componentsByCategory()
   return (
     <aside className="hidden w-56 shrink-0 border-r border-fg-08 lg:block">
       <div className="sticky top-14 flex max-h-[calc(100vh-3.5rem)] flex-col gap-6 overflow-y-auto px-5 py-8">
-        {groups.map(([cat, items]) => (
+        {group('Overview', OVERVIEW)}
+        {group('Docs', DOCS)}
+        {componentsByCategory().map(([cat, items]) => (
           <div key={cat}>
-            <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">{CATEGORY_LABELS[cat] ?? cat}</p>
-            <nav className="flex flex-col">
-              {items.map((c) => (
-                <Link
-                  key={c.slug}
-                  to={`/components/${c.slug}`}
-                  className={`kol-sans-body-02 py-1 transition-colors ${c.slug === activeSlug ? 'text-emphasis' : 'text-meta hover:text-emphasis'}`}
-                >
-                  {c.name}
-                </Link>
-              ))}
-            </nav>
+            {group(CATEGORY_LABELS[cat] ?? cat, items.map((c) => ({ to: `/components/${c.slug}`, label: c.name })))}
           </div>
         ))}
       </div>
@@ -63,33 +64,40 @@ function ComponentSidebar({ activeSlug }) {
   )
 }
 
+/* The rail is ALWAYS reserved (even with no items) so the main column never
+ * shifts between pages that have a TOC and pages that don't. */
 function Toc({ items }) {
-  if (!items?.length) return null
   return (
     <aside className="hidden w-56 shrink-0 py-12 pr-8 xl:block">
-      <div className="sticky top-20">
-        <p className="kol-helper-10 uppercase tracking-widest text-meta mb-3">On this page</p>
-        <nav className="flex flex-col gap-2">
-          {items.map((t) => (
-            <a key={t.id} href={`#${t.id}`} className={`kol-mono-12 text-meta hover:text-emphasis transition-colors ${t.sub ? 'pl-3' : ''}`}>
-              {t.label}
-            </a>
-          ))}
-        </nav>
-      </div>
+      {items?.length > 0 && (
+        <div className="sticky top-20">
+          <p className="kol-helper-10 uppercase tracking-widest text-meta mb-3">On this page</p>
+          <nav className="flex flex-col gap-2">
+            {items.map((t) => (
+              <a key={t.id} href={`#${t.id}`} className={`kol-mono-12 text-meta hover:text-emphasis transition-colors ${t.sub ? 'pl-3' : ''}`}>
+                {t.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
     </aside>
   )
 }
 
-export default function DocLayout({ activeSlug, toc, children }) {
+export default function DocLayout({ toc, wide = false, children }) {
   return (
     <div>
       <TopBar />
       <div className="flex">
-        <ComponentSidebar activeSlug={activeSlug} />
+        <DocSidebar />
         <div className="flex min-w-0 flex-1">
+          {/* One column system for every page: same padding, same header
+              position; `wide` only raises the width cap. */}
           <div className="flex min-w-0 flex-1 justify-center px-8 py-12 lg:px-12">
-            <main className="flex w-full min-w-0 max-w-3xl flex-col gap-10">{children}</main>
+            <main className={`flex w-full min-w-0 flex-col gap-10 ${wide ? 'max-w-5xl' : 'max-w-3xl'}`}>
+              {children}
+            </main>
           </div>
           <Toc items={toc} />
         </div>

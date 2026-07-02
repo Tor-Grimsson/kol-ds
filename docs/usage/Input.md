@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 179 across 104 files in 15 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar, kol-resume
+- **Real-world usages found:** 185 across 108 files in 14 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar
 
 ## Import
 

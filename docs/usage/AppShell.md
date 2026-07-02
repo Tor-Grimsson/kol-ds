@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 3 across 3 files in 3 apps
-- **Used in:** kol-client-hrafn, kol-labs-single, kol-resume
+- **Real-world usages found:** 1 across 1 files in 1 apps
+- **Used in:** kol-labs-single
 
 ## Import
 

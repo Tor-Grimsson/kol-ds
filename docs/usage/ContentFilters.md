@@ -1,7 +1,7 @@
 # ContentFilters
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** organisms
 - **Real-world usages found:** 5 across 5 files in 3 apps
 - **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-monitor
 

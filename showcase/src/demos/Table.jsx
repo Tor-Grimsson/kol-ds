@@ -1,5 +1,7 @@
 import { Table } from '@kolkrabbi/kol-component'
 
+export const stage = 'full'
+
 const columns = [
   { accessor: 'token', header: 'Token' },
   { accessor: 'value', header: 'Value' },

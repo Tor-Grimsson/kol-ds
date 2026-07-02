@@ -43,8 +43,8 @@ export const DOC_DATA = {
       { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires with the new value.' },
       { prop: 'min / max', type: 'number', def: '0 / 100', desc: 'Range bounds.' },
       { prop: 'step', type: 'number', def: '1', desc: 'Step increment.' },
-      { prop: 'label', type: 'string', def: '—', desc: 'Field label.' },
-      { prop: 'variant', type: 'default | minimal', def: 'default', desc: 'Visual style.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Inline label — part of the slider\'s single-row anatomy (label · track · editable readout). For a stacked label around a label-less control, use `LabeledControl`.' },
+      { prop: 'variant', type: 'default | minimal | subtle', def: 'default', desc: 'Visual style — bordered track, bare track, or filled chip.' },
     ],
   },
 
@@ -448,5 +448,75 @@ export const DOC_DATA = {
       { prop: 'searchKeys', type: 'array', def: "['label','name',…]", desc: 'Fields matched by the search input.' },
       { prop: 'viewModeOptions', type: 'array', def: '—', desc: 'Optional grid/list view toggles.' },
     ],
+  },
+
+  /* ── Framework ─────────────────────────────────────────── */
+
+  BrandHero: {
+    usage: '<BrandHero label="Kolkrabbi" title="Brand portal" lede="…" />',
+    api: [
+      { prop: 'label', type: 'string', def: '—', desc: 'Small eyebrow above the title.' },
+      { prop: 'title', type: 'ReactNode', def: '—', desc: 'Display headline.' },
+      { prop: 'lede', type: 'string', def: '—', desc: 'Intro paragraph under the title.' },
+      { prop: 'mark', type: 'ReactNode', def: '—', desc: 'Optional logo mark beside the title.' },
+      { prop: 'id', type: 'string', def: 'hero', desc: 'Section anchor id.' },
+    ],
+  },
+
+  SubPageHero: {
+    usage: '<SubPageHero backTo="/" backLabel="← Back" label="Reference" title="Icons" lede="…" />',
+    api: [
+      { prop: 'title', type: 'ReactNode', def: '—', desc: 'Display headline.' },
+      { prop: 'lede', type: 'string', def: '—', desc: 'Intro paragraph.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Eyebrow above the title.' },
+      { prop: 'backTo', type: 'string', def: '—', desc: 'Route for the back link (renders when set).' },
+      { prop: 'backLabel', type: 'string', def: '—', desc: 'Back-link text.' },
+    ],
+  },
+
+  PageSection: {
+    usage: '<PageSection label="01 — Colour" title="Surfaces" body="…">…</PageSection>',
+    api: [
+      { prop: 'label', type: 'string', def: '—', desc: 'Numbered mono eyebrow.' },
+      { prop: 'title', type: 'string', def: '—', desc: 'Section h2.' },
+      { prop: 'body', type: 'string', def: '—', desc: 'Lede paragraph under the title.' },
+      { prop: 'id', type: 'string', def: '—', desc: 'Anchor id for scroll-spy / TOC.' },
+      { prop: 'fullbleed', type: 'boolean', def: 'false', desc: 'Edge-to-edge canvas mode — zero horizontal padding. Not for content.' },
+      { prop: 'divider', type: 'boolean', def: 'false', desc: 'Rule above the section.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'Section content.' },
+    ],
+  },
+
+  PortalFooter: {
+    usage: '<PortalFooter />',
+    api: [],
+  },
+
+  AppShell: {
+    usage: '<Route element={<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />}>…</Route>',
+    api: [
+      { prop: 'navTree', type: 'array', def: '[]', desc: 'Nav tree consumed by SideNav (groups + route/anchor leaves).' },
+      { prop: 'getActivePage', type: '(pathname) => node', def: '—', desc: 'Resolves the active top-level page.' },
+    ],
+  },
+
+  SideNav: {
+    usage: '<SideNav navTree={NAV_TREE} getActivePage={getActivePage} />',
+    api: [
+      { prop: 'navTree', type: 'array', def: '[]', desc: 'Groups + leaves ({ to } routes, { id } anchors).' },
+      { prop: 'getActivePage', type: 'function', def: '—', desc: 'Active-page resolver for highlight + scroll-spy.' },
+      { prop: 'drawerOpen', type: 'boolean', def: '—', desc: 'Mobile drawer state (managed by AppShell).' },
+      { prop: 'onCloseDrawer', type: 'function', def: '—', desc: 'Close callback for the mobile drawer.' },
+    ],
+  },
+
+  Layout: {
+    usage: '<Route element={<Layout />}>…</Route>',
+    api: [],
+  },
+
+  ScrollToTop: {
+    usage: '<ScrollToTop />',
+    api: [],
   },
 }

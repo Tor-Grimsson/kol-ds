@@ -8,7 +8,7 @@
  * category/name labeled — missing graphics are visible rather than silently
  * empty. Matches the logo loader pattern (loader lives with assets).
  */
-import AssetPlaceholder from '../primitives/AssetPlaceholder.jsx'
+import AssetPlaceholder from '../atoms/AssetPlaceholder.jsx'
 
 const svgModules = import.meta.glob('./svg/**/*.svg', { eager: true, query: '?raw', import: 'default' })
 

@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 53 across 13 files in 8 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-resume
+- **Real-world usages found:** 53 across 13 files in 7 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin
 
 ## Import
 
@@ -37,6 +37,15 @@ From `kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/Dropdown.j
                 shortcut={isActive ? <Icon name="check" size={11} />
 ```
 
+From `kol-apparat/kol-labs-single/src/pages/kinetic/OpenTypeMenu.jsx`:
+
+```jsx
+<MenuDropdownItem
+              key={f.tag}
+              onClick={() => onToggle(f.tag, !value[f.tag])}
+              shortcut={value[f.tag] ? <Icon name="check" size={11} />
+```
+
 From `kol-client/kol-client-ac/src/editor/compose/LayerStack.jsx`:
 
 ```jsx
@@ -51,13 +60,4 @@ From `kol-client/kol-client-kolkrabbi/src/editor/compose/LayerStack.jsx`:
 <MenuDropdownItem
               key={t.id}
               iconLeft={<EditorIcon name={TYPE_ICONS[t.id] ?? 'layer-shape'} size={12} />
-```
-
-From `kol-apparat/kol-editors/kol-draw-3d/src/components/chrome/TopBar.jsx`:
-
-```jsx
-<MenuDropdownItem onClick={() => setArmature({ showLines: !armature.showLines })} shortcut={check(armature.showLines)}>Lines</MenuDropdownItem>
-            <MenuDropdownItem onClick={() => setArmature({ showNodes: !armature.showNodes })} shortcut={check(armature.showNodes)}>Nodes</MenuDropdownItem>
-            <MenuDropdownItem onClick={() => setArmature({ snap: !armature.snap })} shortcut={check(armature.snap)}>Snap</MenuDropdownItem>
-            <MenuDropdownDivider />
 ```

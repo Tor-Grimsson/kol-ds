@@ -24,18 +24,6 @@ From `kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockIte
           />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/components/ControlsPanel.jsx`:
-
-```jsx
-<Textarea
-          rows={6}
-          size="sm"
-          placeholder="<svg>…</svg>"
-          value={svgInput}
-          onChange={onPasteChange}
-        />
-```
-
 From `kol-client/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx`:
 
 ```jsx
@@ -57,6 +45,12 @@ From `kol-client/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspect
           value={layer.text ?? ''}
           onChange={(e) => setProp('text', e.target.value)}
         />
+```
+
+From `kol-apparat/kol-labs-single/src/pages/kinetic/DesignControls.jsx`:
+
+```jsx
+<Textarea key={ins.id} value={ins.text} onChange={(e) => onText(ins.id, e.target.value)} rows={2} resize="vertical" placeholder="Type…" />
 ```
 
 From `kol-apparat/kol-docs/kol-noter/src/components/note-editor/modular/BlockItem.tsx`:

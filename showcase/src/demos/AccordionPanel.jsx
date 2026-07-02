@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Accordion, AccordionPanel } from '@kolkrabbi/kol-component'
 
+export const stage = 'md'
+
 export default function AccordionPanelDemo() {
   const [open, setOpen] = useState(true)
   return (

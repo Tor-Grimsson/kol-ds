@@ -1,7 +1,7 @@
 # SectionLabel
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 30 across 17 files in 6 apps
 - **Used in:** kol-client-kolkrabbi, kol-mirror, kol-modulator, kol-monitor, kol-radar, kol-years
 

@@ -31,7 +31,7 @@ const ToggleCheckbox = ({
       </span>
       <span className="toggle-checkbox-label kol-helper-12 uppercase tracking-[0.08em]">
         {label}
-        {hint ? <span className="ml-2 opacity-60 normal-case tracking-normal text-[10px]">{hint}</span> : null}
+        {hint ? <span className="ml-2 opacity-60 normal-case tracking-normal kol-helper-10">{hint}</span> : null}
       </span>
     </label>
   )

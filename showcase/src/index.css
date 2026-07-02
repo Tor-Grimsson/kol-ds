@@ -20,3 +20,12 @@
 body {
   font-family: var(--kol-font-family-sans);
 }
+
+/* kol-framework.css disables selection globally (editor-app decision — chrome
+   isn't selectable there). This is a DOCS site: everything is reading
+   material. Opt back in. */
+html,
+body {
+  -webkit-user-select: text;
+  user-select: text;
+}

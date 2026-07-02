@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { PropertyInput } from '@kolkrabbi/kol-component'
 
+export const stage = 'md'
+
 export default function PropertyInputDemo() {
   const [x, setX] = useState(707)
   const [y, setY] = useState(499)

@@ -1,103 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
+import { MenuItem as MenuTrigger } from './MenuItem.jsx'
 
 /**
- * MenuPopover — generic action-menu / popover primitive.
+ * MenuPopover — DEPRECATED alias of MenuItem (2026-07-02 menu-family
+ * unification).
  *
- *   <MenuPopover label="File">
- *     <MenuItem onClick={…}>Save</MenuItem>
- *     <MenuItem onClick={…}>Export…</MenuItem>
- *   </MenuPopover>
- *
- * Opens on click, closes on outside-click + Escape, anchors to the trigger
- * via getBoundingClientRect + position:fixed so it escapes overflow:auto
- * clipping. Pass `panelClassName` to size the panel (e.g. wider for
- * Templates).
- *
- * For value-list selection (single value, active state) use `Dropdown`
- * instead — this primitive is for action menus / popover panels that
- * hold arbitrary children.
+ * The two triggers had an identical API (label, children incl. ({ close })
+ * render-prop, align, panelClassName, panelStyle, buttonClassName,
+ * defaultOpen) and did the same job — MenuPopover with hand-rolled
+ * fixed positioning, MenuItem on floating-ui (portal, auto-flip, focus
+ * management). One implementation now: MenuItem. This alias keeps existing
+ * call-sites working; migrate imports to MenuItem. Removal in the next major.
  */
-export function MenuPopover({
-  label,
-  children,
-  align = 'start',
-  panelClassName = '',
-  panelStyle,
-  buttonClassName = '',
-}) {
-  const [open, setOpen] = useState(false)
-  const wrapRef   = useRef(null)
-  const buttonRef = useRef(null)
-  const [panelPos, setPanelPos] = useState(null)
-
-  useEffect(() => {
-    if (!open) return
-    const onDown = (e) => {
-      if (!wrapRef.current?.contains(e.target)) setOpen(false)
-    }
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown',   onKey)
-    return () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown',   onKey)
-    }
-  }, [open])
-
-  useEffect(() => {
-    if (!open) { setPanelPos(null); return }
-    const update = () => {
-      const rect = buttonRef.current?.getBoundingClientRect()
-      if (!rect) return
-      setPanelPos({ top: rect.bottom + 4, left: rect.left, right: rect.right })
-    }
-    update()
-    window.addEventListener('resize', update)
-    window.addEventListener('scroll', update, true)
-    return () => {
-      window.removeEventListener('resize', update)
-      window.removeEventListener('scroll', update, true)
-    }
-  }, [open])
-
-  const close = () => setOpen(false)
-
-  const positioned = panelPos && (
-    align === 'end'
-      ? { top: panelPos.top, right: window.innerWidth - panelPos.right }
-      : { top: panelPos.top, left: panelPos.left }
-  )
-
-  return (
-    <div ref={wrapRef} className="relative inline-block">
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        className={`kol-helper-12 px-3 h-8 inline-flex items-center gap-1 rounded text-meta hover:text-emphasis transition-colors ${buttonClassName}`}
-      >
-        <span>{label}</span>
-        <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true">
-          <path d="m3 5 3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        </svg>
-      </button>
-      {open && positioned && (
-        <div
-          role="menu"
-          className={`fixed z-[1000] bg-surface-primary border border-fg-08 rounded shadow-lg ${panelClassName}`}
-          style={{ ...positioned, ...panelStyle }}
-          onClick={(e) => {
-            /* close on item click — items inside fire their handler then bubble. */
-            if (e.target.closest('[data-menu-item]')) close()
-          }}
-        >
-          {typeof children === 'function' ? children({ close }) : children}
-        </div>
-      )}
-    </div>
-  )
+export function MenuPopover(props) {
+  return <MenuTrigger {...props} />
 }
 
 /**

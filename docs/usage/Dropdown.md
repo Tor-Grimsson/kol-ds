@@ -2,7 +2,7 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 244 across 82 files in 8 apps
+- **Real-world usages found:** 401 across 135 files in 8 apps
 - **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-radar
 
 ## Import

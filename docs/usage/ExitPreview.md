@@ -1,9 +1,9 @@
 # ExitPreview
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
-- **Real-world usages found:** 9 across 9 files in 9 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 8 across 8 files in 8 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
 
 ## Import
 

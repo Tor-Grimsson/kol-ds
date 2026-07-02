@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-loader'
-import { PopoverPanel, usePopover } from './Popover.jsx'
+import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
 
 /**
  * MenuItem — top-level menu entry. Trigger button + popover panel.
@@ -26,8 +26,9 @@ export function MenuItem({
   panelClassName = '',
   panelStyle,
   buttonClassName = '',
+  defaultOpen = false,
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const popover = usePopover({
     open,
     onOpenChange: setOpen,

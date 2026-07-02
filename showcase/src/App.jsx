@@ -1,27 +1,41 @@
 import { Routes, Route } from 'react-router-dom'
-import { AppShell } from '@kolkrabbi/kol-framework'
-import { NAV_TREE, getActivePage } from './sidebars.config'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
+import FoundationsColor from './pages/FoundationsColor'
+import FoundationsTypography from './pages/FoundationsTypography'
 import Icons from './pages/Icons'
 import IconsVariants from './pages/IconsVariants'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
+import Blocks from './pages/Blocks'
+import DocsShellLayout from './pages/DocsShellLayout'
+import DocsMenus from './pages/DocsMenus'
+import DocsLoaders from './pages/DocsLoaders'
+import WorkshopPreview from './pages/WorkshopPreview'
 
+/**
+ * One chrome everywhere: Home renders TopBar standalone (landing, no sidebar);
+ * every docs page carries the shared DocLayout shell (TopBar + unified sidebar
+ * + TOC) itself — no route-level shell wrapper.
+ */
 export default function App() {
   return (
     <Routes>
-      {/* Home stands alone — top nav, no sidebar (shadcn-style landing). */}
       <Route path="/" element={<Home />} />
-      {/* Every component page → the generic data-driven doc (own chrome via DocLayout). */}
+      <Route path="/foundations" element={<Foundations />} />
+      <Route path="/foundations/color" element={<FoundationsColor />} />
+      <Route path="/foundations/typography" element={<FoundationsTypography />} />
+      <Route path="/icons" element={<Icons />} />
+      <Route path="/icons/variants" element={<IconsVariants />} />
+      <Route path="/components" element={<Components />} />
       <Route path="/components/:slug" element={<ComponentPage />} />
-      {/* Docs area keeps the sidebar chrome. */}
-      <Route element={<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />}>
-        <Route path="/foundations" element={<Foundations />} />
-        <Route path="/icons" element={<Icons />} />
-        <Route path="/icons/variants" element={<IconsVariants />} />
-        <Route path="/components" element={<Components />} />
-      </Route>
+      <Route path="/blocks" element={<Blocks />} />
+      <Route path="/docs/shell-and-layout" element={<DocsShellLayout />} />
+      <Route path="/docs/menus" element={<DocsMenus />} />
+      <Route path="/docs/loaders" element={<DocsLoaders />} />
+      {/* Ported workshop shell — standalone chrome, splat so sidebar child
+          paths resolve inside its own layout route. */}
+      <Route path="/workshop-preview/*" element={<WorkshopPreview />} />
     </Routes>
   )
 }

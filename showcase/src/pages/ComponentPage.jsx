@@ -2,10 +2,36 @@ import { useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-loader'
 import DocLayout from '../lib/DocLayout.jsx'
+import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import PreviewCard from '../lib/PreviewCard.jsx'
+import ApiTable from '../lib/ApiTable.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
-import { getComponentBySlug, CATEGORY_LABELS } from '../lib/registry.js'
+import { Link } from 'react-router-dom'
+import { getComponentBySlug, CATEGORY_LABELS, COMPONENTS_AZ, slugify } from '../lib/registry.js'
 import { DOC_DATA } from '../lib/component-docs.js'
-import ErrorBoundary from '../lib/ErrorBoundary.jsx'
+import API_GEN from '../usage/api-tables.json'
+
+/* API rows = authored ∪ generated (scripts/extract-api.mjs). Authored rows
+ * keep their curated order + descriptions; generated rows fill defaults and
+ * append the props the hand-authored table missed (the drift this kills).
+ * react-docgen on plain JS only sees defaulted props reliably, so neither
+ * side is complete alone. */
+function mergeApi(authored, generated) {
+  if (!generated.length) return authored
+  const gen = new Map(generated.map((r) => [r.prop, r]))
+  const rows = authored.map((a) => {
+    const g = gen.get(a.prop)
+    return g ? {
+      prop: a.prop,
+      type: a.type && a.type !== '—' ? a.type : g.type,
+      def: a.def && a.def !== '—' ? a.def : g.def,
+      desc: a.desc || g.desc,
+    } : a
+  })
+  const have = new Set(authored.map((a) => a.prop))
+  for (const g of generated) if (!have.has(g.prop)) rows.push(g)
+  return rows
+}
 
 /**
  * ComponentPage — the generic shadcn-style component doc, driven by:
@@ -47,31 +73,6 @@ function CodeLine({ text }) {
   )
 }
 
-function Preview({ name }) {
-  const [tab, setTab] = useState('preview')
-  const entry = DEMOS[name]
-  const C = entry?.Component
-  return (
-    <div className="overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-12">
-      <div className="flex items-center gap-1 border-b border-fg-12 px-3 py-2">
-        {['preview', 'code'].map((t) => (
-          <button key={t} type="button" onClick={() => setTab(t)}
-            className={`kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 capitalize transition-colors ${tab === t ? 'bg-fg-08 text-emphasis' : 'text-meta hover:text-emphasis'}`}>
-            {t}
-          </button>
-        ))}
-      </div>
-      {tab === 'preview' ? (
-        <div className="flex min-h-[20rem] flex-wrap items-center justify-center gap-3 bg-fg-02 p-10">
-          <ErrorBoundary>{C ? <C /> : <span className="kol-mono-12 text-meta">no live preview — see usage below</span>}</ErrorBoundary>
-        </div>
-      ) : (
-        <pre className="kol-mono-12 overflow-x-auto whitespace-pre-wrap bg-fg-04 px-4 py-3 text-fg">{entry?.source || '// no source'}</pre>
-      )}
-    </div>
-  )
-}
-
 function InstallBlock({ pkg }) {
   const [pm, setPm] = useState('pnpm')
   const cmd = `${PMS[pm]} ${pkg}`
@@ -93,10 +94,6 @@ function InstallBlock({ pkg }) {
   )
 }
 
-function H2({ id, children }) {
-  return <h2 id={id} className="kol-sans-heading-04 text-emphasis scroll-mt-20">{children}</h2>
-}
-
 export default function ComponentPage() {
   const { slug } = useParams()
   const c = getComponentBySlug(slug)
@@ -104,7 +101,7 @@ export default function ComponentPage() {
 
   const data = DOC_DATA[c.name] || {}
   const examples = data.examples || []
-  const api = data.api || []
+  const api = mergeApi(data.api || [], API_GEN[c.name] || [])
   const hasMainDemo = !!DEMOS[c.name]
 
   const toc = [
@@ -115,65 +112,101 @@ export default function ComponentPage() {
   ]
 
   return (
-    <DocLayout activeSlug={c.slug} toc={toc}>
-      <header className="flex flex-col gap-3">
-        <p className="kol-helper-10 uppercase tracking-widest text-meta">Components / {CATEGORY_LABELS[c.category] ?? c.category}</p>
-        <h1 className="kol-sans-heading-03 text-emphasis">{c.name}</h1>
-        {c.description && <p className="kol-sans-body-01 text-body">{c.description}</p>}
-      </header>
+    <DocLayout toc={toc}>
+      <DocHeader
+        eyebrow={`Components / ${CATEGORY_LABELS[c.category] ?? c.category}`}
+        title={c.name}
+        lede={c.description}
+      />
 
-      {hasMainDemo && <Preview name={c.name} />}
+      {hasMainDemo && <PreviewCard entry={DEMOS[c.name]} />}
 
-      <section className="flex flex-col gap-4">
-        <H2 id="installation">Installation</H2>
+      <MetaRows meta={c.meta} />
+
+      <DocSection id="installation" title="Installation">
         <InstallBlock pkg={c.pkg} />
-      </section>
+      </DocSection>
 
-      <section className="flex flex-col gap-4">
-        <H2 id="usage">Usage</H2>
+      <DocSection id="usage" title="Usage">
         <CodeLine text={`import { ${c.name} } from '${c.pkg}'`} />
         {data.usage && <CodeLine text={data.usage} />}
-      </section>
+      </DocSection>
 
       {examples.length > 0 && (
-        <section className="flex flex-col gap-6">
-          <H2 id="examples">Examples</H2>
+        <DocSection id="examples" title="Examples">
           {examples.map((e) => (
             <div key={e.id} className="flex flex-col gap-3">
               <h3 id={e.id} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{e.label}</h3>
               {e.desc && <p className="kol-sans-body-02 text-body"><RichText text={e.desc} /></p>}
-              <Preview name={e.demo} />
+              <PreviewCard entry={DEMOS[e.demo]} />
             </div>
           ))}
-        </section>
+        </DocSection>
       )}
 
       {api.length > 0 && (
-        <section className="flex flex-col gap-4">
-          <H2 id="api">API Reference</H2>
-          <div className="overflow-x-auto rounded-[var(--kol-radius-md)] border border-fg-12">
-            <table className="w-full text-left kol-sans-body-02">
-              <thead>
-                <tr className="border-b border-fg-12 text-meta">
-                  {['Prop', 'Type', 'Default', 'Description'].map((h) => (
-                    <th key={h} className="px-4 py-2.5 kol-helper-10 font-normal uppercase tracking-widest">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {api.map((r) => (
-                  <tr key={r.prop} className="border-b border-fg-08 align-top last:border-0">
-                    <td className="whitespace-nowrap px-4 py-3 kol-mono-12 text-emphasis">{r.prop}</td>
-                    <td className="px-4 py-3 kol-mono-12 text-meta">{r.type}</td>
-                    <td className="whitespace-nowrap px-4 py-3 kol-mono-12 text-meta">{r.def}</td>
-                    <td className="px-4 py-3 text-body">{r.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <DocSection id="api" title="API Reference">
+          <ApiTable rows={api} />
+        </DocSection>
       )}
+
+      <Pager slug={c.slug} />
     </DocLayout>
+  )
+}
+
+/* Source-mined meta under the preview (scripts/extract-docs-meta.mjs):
+ * D1 — the kol type classes the component renders text with, so system
+ * conformance vs freestyle Tailwind is visible at a glance;
+ * D2 — a "Composes" row linking the KOL components it nests. */
+function MetaRows({ meta }) {
+  if (!meta) return null
+  const composed = (meta.composes || [])
+    .map((n) => ({ name: n, comp: getComponentBySlug(slugify(n)) }))
+  if (!meta.typeClasses?.length && !composed.length) return null
+  return (
+    <div className="flex flex-col gap-2">
+      {meta.typeClasses?.length > 0 && (
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="kol-helper-10 text-meta uppercase tracking-widest shrink-0">Type styles</span>
+          {meta.typeClasses.map((t) => (
+            <code key={t} className="kol-mono-12 rounded-[var(--kol-radius-sm)] border border-fg-08 bg-fg-04 px-2 py-0.5 text-body">.{t}</code>
+          ))}
+        </div>
+      )}
+      {composed.length > 0 && (
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="kol-helper-10 text-meta uppercase tracking-widest shrink-0">Composes</span>
+          {composed.map(({ name, comp }) => comp ? (
+            <Link key={name} to={`/components/${comp.slug}`} className="kol-mono-12 text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current">{name}</Link>
+          ) : (
+            <span key={name} className="kol-mono-12 text-meta">{name}</span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* Prev / next through the A→Z order (matches the sidebar within groups). */
+function Pager({ slug }) {
+  const i = COMPONENTS_AZ.findIndex((x) => x.slug === slug)
+  const prev = i > 0 ? COMPONENTS_AZ[i - 1] : null
+  const next = i >= 0 && i < COMPONENTS_AZ.length - 1 ? COMPONENTS_AZ[i + 1] : null
+  return (
+    <nav className="mt-2 flex items-center justify-between gap-3 border-t border-fg-08 pt-6">
+      {prev ? (
+        <Link to={`/components/${prev.slug}`} className="group flex flex-col gap-0.5 text-left">
+          <span className="kol-mono-12 text-meta">← Prev</span>
+          <span className="kol-sans-body-02 text-body group-hover:text-emphasis">{prev.name}</span>
+        </Link>
+      ) : <span />}
+      {next ? (
+        <Link to={`/components/${next.slug}`} className="group flex flex-col gap-0.5 text-right">
+          <span className="kol-mono-12 text-meta">Next →</span>
+          <span className="kol-sans-body-02 text-body group-hover:text-emphasis">{next.name}</span>
+        </Link>
+      ) : <span />}
+    </nav>
   )
 }

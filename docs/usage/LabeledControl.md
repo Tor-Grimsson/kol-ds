@@ -1,9 +1,9 @@
 # LabeledControl
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
-- **Real-world usages found:** 140 across 30 files in 9 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-monitor, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 212 across 62 files in 8 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-monitor
 
 ## Import
 
@@ -41,18 +41,11 @@ From `kol-apparat/kol-lightroom/src/pages/Develop.jsx`:
                     />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/gradient/GradientPage.jsx`:
+From `kol-apparat/kol-labs-single/src/components/framework/SettingsPanel.jsx`:
 
 ```jsx
-<LabeledControl inline label="style">
-            <Dropdown
-              size="sm"
-              variant="subtle"
-              className="w-full"
-              options={BG_STYLES.map((s) => ({ value: String(s.id), label: s.label }))}
-              value={String(bgStyle)}
-              onChange={(v) => setBgStyle(Number(v))}
-            />
+<LabeledControl inline label="Theme">
+            <Dropdown size="sm" variant="subtle" className="w-full" options={themeOptions} value={theme} onChange={onTheme} />
 ```
 
 From `kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx`:

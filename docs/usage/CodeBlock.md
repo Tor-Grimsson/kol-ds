@@ -1,7 +1,7 @@
 # CodeBlock
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
+- **Category:** molecules
 - **Real-world usages found:** 7 across 4 files in 1 apps
 - **Used in:** kol-divs
 

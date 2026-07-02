@@ -1,5 +1,7 @@
 import { AssetPlaceholder } from '@kolkrabbi/kol-component'
 
+export const stage = 'md'
+
 export default function AssetPlaceholderDemo() {
   return (
     <div className="grid grid-cols-2 gap-4 w-full max-w-lg">

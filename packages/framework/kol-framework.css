@@ -657,30 +657,12 @@ code, pre {
   padding-top: 32px;
 }
 
+/* Positioning only — the chip look itself is the CopyButton atom
+ * (.kol-copy-btn in kol-theme). */
 .kol-codeblock-copy {
   position: absolute;
   top: 8px;
   right: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  background: color-mix(in srgb, var(--kol-surface-primary) 80%, transparent);
-  border: 1px solid var(--kol-fg-16);
-  border-radius: 3px;
-  color: var(--kol-fg-64);
-  cursor: pointer;
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
-}
-
-.kol-codeblock-copy:hover {
-  color: var(--kol-surface-on-primary);
-  border-color: var(--kol-fg-48);
 }
 
 /* ───── Reveal utility ───── */

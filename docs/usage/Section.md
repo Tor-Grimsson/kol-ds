@@ -1,9 +1,9 @@
 # Section
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
-- **Real-world usages found:** 201 across 35 files in 7 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 460 across 88 files in 6 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
 
 ## Import
 
@@ -35,39 +35,26 @@ From `kol-apparat/kol-lightroom/src/pages/Develop.jsx`:
                 <Row k="File" v={info?.fileName} />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/components/ControlsPanel.jsx`:
+From `kol-apparat/kol-labs-single/src/components/framework/SettingsPanel.jsx`:
 
 ```jsx
-<Section label="Source">
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".svg"
-          onChange={onUpload}
-          className="hidden"
-        />
+<Section label={label}>
+      {showTheme && (
+        <>
+          <LabeledControl inline label="Theme">
+            <Dropdown size="sm" variant="subtle" className="w-full" options={themeOptions} value={theme} onChange={onTheme} />
 ```
 
-From `kol-client/kol-client-ac/src/editor/modes/palette/PaletteControls.jsx`:
+From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
 
 ```jsx
-<Section label="Aspect">
-              <Dropdown
-                variant="subtle" size="sm" className="w-full"
-                options={ASPECT_OPTIONS}
-                value={aspect}
-                onChange={setAspect}
-              />
+<Section label="Layout">
+            <Dropdown variant="subtle" size="sm" className="w-full" options={LAYOUT_OPTIONS} value={layoutId} onChange={setLayoutId} />
 ```
 
-From `kol-client/kol-client-kolkrabbi/src/editor/modes/palette/PaletteControls.jsx`:
+From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
 
 ```jsx
-<Section label="Logo">
-            <ViewToggle
-              variant="single"
-              options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
-              viewMode={logoId === 'no-logo' ? 'off' : 'on'}
-              onViewChange={(v) => setLogoId(v === 'off' ? 'no-logo' : 'client')}
-            />
+<Section label="Pool">
+            <Dropdown variant="subtle" size="sm" className="w-full" options={POOL_OPTIONS} value={poolId} onChange={changePool} />
 ```

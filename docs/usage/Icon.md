@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-loader`
 - **Category:** loaders
-- **Real-world usages found:** 942 across 408 files in 21 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-aftra, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-distress, kol-divs, kol-docs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar, kol-radial, kol-resume
+- **Real-world usages found:** 949 across 403 files in 20 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-aftra, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-distress, kol-divs, kol-docs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar, kol-radial
 
 ## Import
 

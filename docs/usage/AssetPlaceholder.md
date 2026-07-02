@@ -1,9 +1,9 @@
 # AssetPlaceholder
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
-- **Real-world usages found:** 19 across 19 files in 8 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 17 across 17 files in 7 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
 
 ## Import
 

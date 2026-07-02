@@ -2,7 +2,7 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider, Icon } from '@kolkrabb
 
 export default function MenuItemDemo() {
   return (
-    <MenuItem label="File">
+    <MenuItem label="File" defaultOpen>
       <div className="min-w-[180px] py-1">
         <MenuDropdownItem iconLeft={<Icon name="add-file" size={14} />} onClick={() => {}}>
           New file

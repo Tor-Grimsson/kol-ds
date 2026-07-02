@@ -707,3 +707,33 @@ a:hover .icon-hover,
   transform: translate(0, 0) scale(1);
   opacity: 1;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * CopyButton — atoms/CopyButton.jsx
+ *   Copy-to-clipboard chip: clipboard icon + Copy/Copied label.
+ *   Look extracted from CodeBlock's inline copy button; CodeBlock's
+ *   .kol-codeblock-copy (kol-framework) now only positions it.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--kol-surface-primary) 80%, transparent);
+  border: 1px solid var(--kol-fg-16);
+  border-radius: 3px;
+  color: var(--kol-fg-64);
+  cursor: pointer;
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.kol-copy-btn:hover {
+  color: var(--kol-surface-on-primary);
+  border-color: var(--kol-fg-48);
+}

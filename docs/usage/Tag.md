@@ -1,7 +1,7 @@
 # Tag
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 50 across 22 files in 10 apps
 - **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-docs, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar
 

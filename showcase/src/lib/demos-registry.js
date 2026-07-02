@@ -19,6 +19,8 @@ const keyOf = (path) => (path.split('/').pop() || '').replace('.jsx', '')
 export const DEMOS = Object.fromEntries(
   Object.entries(modules).map(([path, mod]) => [
     keyOf(path),
-    { Component: mod.default, source: sources[path] },
+    // `stage` is the demo's presentation preset (see lib/DemoStage.jsx);
+    // omitted → 'hug'.
+    { Component: mod.default, source: sources[path], stage: mod.stage || 'hug' },
   ]),
 )

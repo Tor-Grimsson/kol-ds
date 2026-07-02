@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PageSection } from '@kolkrabbi/kol-framework'
+import DocLayout from '../lib/DocLayout.jsx'
+import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import Swatch from '../lib/Swatch.jsx'
 import { TOTAL } from '../lib/registry.js'
 import {
   OPACITY_SCALE, FG_SEMANTIC, SURFACES, BRAND_RAMPS, GREY_RAMP,
@@ -8,13 +10,21 @@ import {
 } from '../lib/tokens.js'
 
 /**
- * Foundations — the KOL token reference as one authored scroll.
- *
- * Built on the framework's own layout classes (.kol-grid, .kol-swatch,
- * .kol-ramp-chips, .kol-type-sample) inside plain PageSection chapters — NOT
- * hand-rolled Tailwind. Every value is read LIVE from the installed theme so
- * the page can't drift.
+ * Foundations — the KOL token reference. DocLayout (wide) + the shared
+ * content contract (DocHeader/DocSection); swatch primitives come from the
+ * framework CSS (.kol-grid, .kol-swatch, .kol-ramp-chips). Every value is
+ * read LIVE from the installed theme so the page can't drift.
  */
+
+const TOC = [
+  { id: 'opacity', label: 'Opacity & foreground' },
+  { id: 'surfaces', label: 'Surface tiers' },
+  { id: 'brand', label: 'Brand ramps' },
+  { id: 'type', label: 'Type scale' },
+  { id: 'radius', label: 'Corner radius' },
+  { id: 'shadow', label: 'Shadow scale' },
+  { id: 'components', label: 'Components' },
+]
 
 // Read live CSS-var values off <html>; re-read on theme change. Chip *fills*
 // use var() directly and re-colour on their own — this is only for the text.
@@ -35,61 +45,42 @@ function useResolved(tokens) {
   return vals
 }
 
-// Only show the resolved value when it's a short literal (hex/rgb). The
-// opacity tokens resolve to a long color-mix() string — the label carries the
-// meaning there, so we don't print the noise.
-const shortVal = (v) => (v && v.length <= 9 ? v : '')
-
-function Swatch({ token, label, resolved, style }) {
-  return (
-    <div className="kol-swatch">
-      <div className="kol-swatch-chip border border-fg-08" style={{ background: `var(${token})`, ...style }} />
-      <div className="kol-swatch-meta">
-        <span className="text-emphasis">{label}</span>
-        <span className="text-meta">{shortVal(resolved)}</span>
-      </div>
-    </div>
-  )
-}
+/* Swatch is the ported brand styleguide swatch (lib/Swatch.jsx, E2) —
+ * token name meta-left, resolved value strong-right. */
 
 export default function Foundations() {
   const resolved = useResolved(ALL_TOKENS)
   const val = (t) => resolved[t]
 
   return (
-    <div>
-      <PageSection
-        label="KOL · Foundations"
+    <DocLayout wide toc={TOC}>
+      <DocHeader
+        eyebrow="KOL · Foundations"
         title="Foundations"
-        body="The tokens, scales, and primitives every KOL component is built from — read live from the installed @kolkrabbi/kol-theme, so this page is always the truth."
+        lede="The tokens, scales, and primitives every KOL component is built from — read live from the installed @kolkrabbi/kol-theme, so this page is always the truth."
       />
 
-      {/* 01 — Opacity & foreground scale (the moat) */}
-      <PageSection
+      <DocSection
         id="opacity"
-        label="01 — Colour"
         title="Opacity & foreground scale"
-        body="KOL's signature: a 14-stop translucent-ink scale for layered editor UI — more expressive than flat fg/bg pairs."
-        divider
+        lede="KOL's signature: a 14-stop translucent-ink scale for layered editor UI — more expressive than flat fg/bg pairs."
       >
         <div className="kol-grid">
           {OPACITY_SCALE.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
         </div>
-        <p className="kol-helper-10 text-meta uppercase mt-10 mb-4">Semantic foreground</p>
+        <p className="kol-helper-10 text-meta uppercase mt-6 mb-2">Semantic foreground</p>
         <div className="kol-grid">
           {FG_SEMANTIC.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 02 — Surfaces */}
-      <PageSection id="surfaces" label="02 — Colour" title="Surface tiers" divider>
+      <DocSection id="surfaces" title="Surface tiers">
         <div className="kol-grid">
           {SURFACES.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 03 — Brand ramps */}
-      <PageSection id="brand" label="03 — Colour" title="Brand ramps" divider>
+      <DocSection id="brand" title="Brand ramps">
         <div className="flex flex-col gap-8">
           {[...BRAND_RAMPS, GREY_RAMP].map((ramp) => (
             <div key={ramp.name}>
@@ -103,10 +94,9 @@ export default function Foundations() {
             </div>
           ))}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 04 — Type scale */}
-      <PageSection id="type" label="04 — Type" title="Type scale" divider>
+      <DocSection id="type" title="Type scale">
         <div>
           {TYPE_SCALE.map((t) => (
             <div key={t.cls} className="kol-type-sample flex flex-col gap-3 py-6 sm:flex-row sm:items-baseline sm:gap-10">
@@ -118,10 +108,9 @@ export default function Foundations() {
             </div>
           ))}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 05 — Radius */}
-      <PageSection id="radius" label="05 — Primitives" title="Corner radius" divider>
+      <DocSection id="radius" title="Corner radius">
         <div className="kol-grid">
           {RADII.map((t) => (
             <Swatch
@@ -133,10 +122,9 @@ export default function Foundations() {
             />
           ))}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 06 — Shadow */}
-      <PageSection id="shadow" label="06 — Primitives" title="Shadow scale" divider>
+      <DocSection id="shadow" title="Shadow scale">
         <div className="kol-grid">
           {SHADOWS.map((t) => (
             <div key={t.token} className="kol-swatch">
@@ -144,21 +132,24 @@ export default function Foundations() {
                 className="kol-swatch-chip bg-surface-primary border border-fg-04"
                 style={{ boxShadow: `var(${t.token})` }}
               />
-              <div className="kol-swatch-meta"><span className="text-emphasis">{t.label}</span></div>
+              <div className="kol-swatch-meta kol-helper-10"><span className="text-emphasis">{t.label}</span></div>
             </div>
           ))}
         </div>
-      </PageSection>
+      </DocSection>
 
-      {/* 07 — Components hop */}
-      <PageSection id="components" label="07 — Components" title="Components" body="Tokens become components on their own page — every one live, with a canonical snippet and real mined usage." divider>
+      <DocSection
+        id="components"
+        title="Components"
+        lede="Tokens become components on their own pages — every one live, with a canonical snippet and real mined usage."
+      >
         <Link
           to="/components"
-          className="inline-flex items-center gap-2 kol-mono-13 text-emphasis border border-fg-16 hover:border-fg-40 rounded-[var(--kol-radius-sm)] px-4 py-2 transition-colors"
+          className="inline-flex w-fit items-center gap-2 kol-mono-13 text-emphasis border border-fg-16 hover:border-fg-40 rounded-[var(--kol-radius-sm)] px-4 py-2 transition-colors"
         >
           Browse all {TOTAL} components →
         </Link>
-      </PageSection>
-    </div>
+      </DocSection>
+    </DocLayout>
   )
 }

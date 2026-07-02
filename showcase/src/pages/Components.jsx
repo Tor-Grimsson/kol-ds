@@ -1,28 +1,36 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PageSection } from '@kolkrabbi/kol-framework'
-import ErrorBoundary from '../lib/ErrorBoundary.jsx'
+import { Input, Tag } from '@kolkrabbi/kol-component'
+import DocLayout from '../lib/DocLayout.jsx'
+import DocHeader from '../lib/DocHeader.jsx'
+import DemoStage from '../lib/DemoStage.jsx'
 import {
-  COMPONENTS, componentsByCategory, CATEGORY_LABELS, TOTAL, WITH_DEMOS,
+  componentsByCategory, CATEGORY_LABELS, FUNCTIONS, TOTAL, WITH_DEMOS,
 } from '../lib/registry.js'
 
+/**
+ * Components index — grouped by type (atoms / molecules / organisms /
+ * framework tiers), A→Z within each group, function
+ * chips as a cross-cutting filter. Cards flow in waterfall columns with a
+ * capped preview so tall demos can't blow holes in the layout.
+ */
+
 function ComponentCard({ c }) {
-  const Demo = c.demo?.Component
   return (
     <Link
       to={`/components/${c.slug}`}
-      className="group rounded-[var(--kol-radius-sm)] border border-fg-12 hover:border-fg-24 transition-colors flex flex-col overflow-hidden"
+      className="group mb-4 block break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24"
     >
-      <div className="flex items-center justify-center flex-wrap gap-2 p-5 min-h-[6rem] bg-fg-02 pointer-events-none">
-        {Demo ? (
-          <ErrorBoundary><Demo /></ErrorBoundary>
+      <div className="pointer-events-none flex max-h-56 min-h-[6rem] items-center justify-center overflow-hidden bg-fg-02 p-5">
+        {c.demo ? (
+          <DemoStage entry={c.demo} />
         ) : (
           <span className="kol-mono-12 text-meta opacity-50">{c.name}</span>
         )}
       </div>
-      <div className="flex items-baseline justify-between gap-2 px-4 py-3 border-t border-fg-08">
+      <div className="flex items-baseline justify-between gap-2 border-t border-fg-08 px-4 py-3">
         <span className="kol-sans-body-02 text-emphasis">{c.name}</span>
-        <span className="kol-mono-12 text-meta">{c.count} uses</span>
+        <span className="kol-helper-10 uppercase text-meta">{FUNCTIONS[c.function]}</span>
       </div>
     </Link>
   )
@@ -30,41 +38,52 @@ function ComponentCard({ c }) {
 
 export default function Components() {
   const [q, setQ] = useState('')
+  const [fn, setFn] = useState(null)
+
   const grouped = useMemo(() => {
-    const filtered = q
-      ? COMPONENTS.filter((c) => c.name.toLowerCase().includes(q.toLowerCase()))
-      : COMPONENTS
-    return componentsByCategory(filtered)
-  }, [q])
+    let filter = (c) => true
+    if (fn && q) filter = (c) => c.function === fn && c.name.toLowerCase().includes(q.toLowerCase())
+    else if (fn) filter = (c) => c.function === fn
+    else if (q) filter = (c) => c.name.toLowerCase().includes(q.toLowerCase())
+    return componentsByCategory().map(([cat, items]) => [cat, items.filter(filter)]).filter(([, items]) => items.length)
+  }, [q, fn])
+
+  const shown = grouped.reduce((n, [, items]) => n + items.length, 0)
+  const toc = grouped.map(([cat]) => ({ id: cat, label: CATEGORY_LABELS[cat] ?? cat }))
 
   return (
-    <PageSection
-      title="Components"
-      body={`${TOTAL} published components · ${WITH_DEMOS} with live previews. Every component carries a canonical snippet plus verbatim examples mined from real KOL apps. Click any card for its page.`}
-    >
-      <div className="flex flex-col gap-8 mt-8">
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="filter components…"
-          className="self-start kol-mono-14 rounded-[var(--kol-radius-sm)] border border-fg-12 bg-fg-02 px-3 py-1.5 text-fg outline-none focus:border-fg-40"
-        />
+    <DocLayout wide toc={toc}>
+      <DocHeader
+        eyebrow="KOL · Components"
+        title="Components"
+        lede={`${TOTAL} published components · ${WITH_DEMOS} with live previews. Every component carries a canonical snippet plus verbatim examples mined from real KOL apps.`}
+      />
 
-        {grouped.map(([cat, items]) => (
-          <section key={cat} className="flex flex-col gap-4">
-            <h2 className="kol-helper-10 uppercase tracking-widest text-meta">
-              {CATEGORY_LABELS[cat] ?? cat} · {items.length}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((c) => <ComponentCard key={c.name} c={c} />)}
-            </div>
-          </section>
-        ))}
-
-        {grouped.length === 0 && (
-          <p className="kol-sans-body-01 text-meta">no components match “{q}”.</p>
-        )}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <Input variant="filled" size="sm" placeholder="filter components…" value={q} onChange={(e) => setQ(e?.target?.value ?? e)} iconLeft="search" />
+        <div className="flex flex-wrap items-center gap-2">
+          {Object.entries(FUNCTIONS).map(([key, label]) => (
+            <button key={key} type="button" onClick={() => setFn(fn === key ? null : key)}>
+              <Tag hash={false} className={fn === key ? 'border-fg-32' : 'border-fg-08'}>{label}</Tag>
+            </button>
+          ))}
+        </div>
+        <span className="kol-helper-12 text-meta ml-auto">{shown} of {TOTAL}</span>
       </div>
-    </PageSection>
+
+      {grouped.map(([cat, items]) => (
+        <section key={cat} id={cat} className="scroll-mt-20">
+          <h2 className="kol-helper-10 uppercase tracking-widest text-meta mb-4 border-b border-fg-08 pb-2">
+            {CATEGORY_LABELS[cat] ?? cat} · {items.length}
+          </h2>
+          {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid. */}
+          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+            {items.map((c) => <ComponentCard key={c.name} c={c} />)}
+          </div>
+        </section>
+      ))}
+
+      {shown === 0 && <p className="kol-sans-body-01 text-meta">no components match.</p>}
+    </DocLayout>
   )
 }

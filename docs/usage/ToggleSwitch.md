@@ -2,7 +2,7 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 30 across 16 files in 7 apps
+- **Real-world usages found:** 122 across 58 files in 7 apps
 - **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-radar
 
 ## Import
@@ -23,6 +23,16 @@ From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/a
           />
 ```
 
+From `kol-apparat/kol-labs-single/src/pages/Home.jsx`:
+
+```jsx
+<ToggleSwitch
+              variant="plain"
+              checked={!!autoplay}
+              onChange={(v) => setAppSetting('autoplay', v)}
+            />
+```
+
 From `kol-client/kol-client-ac/src/components/styleguide/LogoCard.jsx`:
 
 ```jsx
@@ -32,12 +42,6 @@ From `kol-client/kol-client-ac/src/components/styleguide/LogoCard.jsx`:
             checked={showFramework}
             onToggle={setShowFramework}
           />
-```
-
-From `kol-apparat/kol-labs-single/src/pages/radar/pages/AsciiPage.jsx`:
-
-```jsx
-<ToggleSwitch label="Invert" checked={params.invert} onChange={(v) => updateParam('invert', v)} />
 ```
 
 From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/atoms/TogglesPreview.jsx`:

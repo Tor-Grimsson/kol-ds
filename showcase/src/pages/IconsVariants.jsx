@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PageSection } from '@kolkrabbi/kol-framework'
+import DocHeader from '../lib/DocHeader.jsx'
 import { Icon, ICON_ENTRIES } from '@kolkrabbi/kol-loader'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
+import DocLayout from '../lib/DocLayout.jsx'
 
 /**
  * Icons · Variants — ported from the brand app's /icons/variants page.
@@ -42,11 +43,13 @@ export default function IconsVariants() {
   const [bgLight, setBgLight] = useState(false)
 
   return (
-    <PageSection
-      label="KOL · Icons"
-      title="Icon variants"
-      body={`Every icon in both cuts — solid, stroke, and stroke on the keyline grid. ${UNIQUE.length} icons.`}
-    >
+    <DocLayout wide>
+      <DocHeader
+        eyebrow="KOL · Icons"
+        title="Icon variants"
+        lede={`Every icon in both cuts — solid, stroke, and stroke on the keyline grid. ${UNIQUE.length} icons.`}
+      />
+      <div>
       <Link
         to="/icons"
         className="inline-flex items-center gap-2 kol-helper-12 text-fg-80 border border-fg-16 hover:border-fg-40 rounded-sm px-3 py-2 transition-colors"
@@ -82,6 +85,7 @@ export default function IconsVariants() {
           </div>
         ))}
       </div>
-    </PageSection>
+      </div>
+    </DocLayout>
   )
 }

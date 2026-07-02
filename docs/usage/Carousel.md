@@ -1,7 +1,7 @@
 # Carousel
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** primitives
+- **Category:** organisms
 - **Real-world usages found:** 15 across 15 files in 9 apps
 - **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-noter
 

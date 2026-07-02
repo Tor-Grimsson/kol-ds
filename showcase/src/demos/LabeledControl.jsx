@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { LabeledControl, Slider, Input } from '@kolkrabbi/kol-component'
 
+export const stage = 'md'
+
 export default function LabeledControlDemo() {
   const [n, setN] = useState(8)
   const [hex, setHex] = useState('AD5038')

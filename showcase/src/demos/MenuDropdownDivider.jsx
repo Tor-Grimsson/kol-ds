@@ -2,7 +2,7 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '@kolkrabbi/kol-
 
 export default function MenuDropdownDividerDemo() {
   return (
-    <MenuItem label="View">
+    <MenuItem label="View" defaultOpen>
       <div className="min-w-[180px] py-1">
         <MenuDropdownItem onClick={() => {}}>Zoom in</MenuDropdownItem>
         <MenuDropdownItem onClick={() => {}}>Zoom out</MenuDropdownItem>

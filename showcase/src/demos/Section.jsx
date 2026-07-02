@@ -1,5 +1,7 @@
 import { Section } from '@kolkrabbi/kol-component'
 
+export const stage = 'sm'
+
 export default function SectionDemo() {
   return (
     <Section label="Aspect">

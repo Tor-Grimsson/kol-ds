@@ -1,9 +1,9 @@
 # SegmentedToggle
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
-- **Real-world usages found:** 23 across 18 files in 7 apps
-- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-labs-single, kol-lightroom, kol-media-admin, kol-resume
+- **Category:** atoms
+- **Real-world usages found:** 90 across 56 files in 6 apps
+- **Used in:** kol-client-ac, kol-client-hrafn, kol-client-kolkrabbi, kol-labs-single, kol-lightroom, kol-media-admin
 
 ## Import
 
@@ -23,28 +23,15 @@ From `kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/SegmentedT
  *   />
 ```
 
-From `kol-apparat/kol-labs-single/src/pages/distress/pages/MainPage.jsx`:
+From `kol-apparat/kol-labs-single/src/components/framework/MediaPicker.jsx`:
 
 ```jsx
 <SegmentedToggle
-          value={railTab}
-          onChange={setRailTab}
-          options={[
-            { value: 'modes', label: 'Modes' },
-            { value: 'controls', label: 'Controls' },
-          ]}
-        />
-```
-
-From `kol-resume/app/src/pages/CoverLetter.jsx`:
-
-```jsx
-<SegmentedToggle
-          value={id}
-          onChange={setId}
-          options={LETTERS.map((l) => ({ value: l.id, label: l.label }))}
-          className="mb-8 max-w-md print:hidden"
-        />
+            className="w-56 shrink-0"
+            value={source}
+            onChange={setSource}
+            options={[{ value: 'library', label: 'Library' }, { value: 'gallery', label: 'Gallery' }]}
+          />
 ```
 
 From `kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx`:
@@ -57,4 +44,15 @@ From `kol-client/kol-client-kolkrabbi/src/editor/color/StrokePanel.jsx`:
 
 ```jsx
 <SegmentedToggle size="sm" value={style} onChange={onStyle} options={STYLE_OPTIONS} />
+```
+
+From `kol-apparat/kol-labs-single/src/pages/_shared/ImagePlacement.jsx`:
+
+```jsx
+<SegmentedToggle
+        options={[{ value: 'cover', label: 'Cover' }, { value: 'contain', label: 'Fit' }]}
+        value={fit}
+        onChange={onFit}
+        className="w-full"
+      />
 ```

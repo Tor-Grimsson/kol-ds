@@ -1,4 +1,5 @@
 import USAGE from '../usage/usage-index.json'
+import DOCS_META from '../usage/docs-meta.json'
 import { DEMOS } from './demos-registry.js'
 
 /**
@@ -81,20 +82,40 @@ const DESCRIPTIONS = {
   Icon: 'An SVG icon by name, from a 341-icon set across 14 categories.',
 }
 
-/* Display order + labels for category groupings. */
+/* Display order + labels for category groupings. `primitives` is dead —
+ * not part of the atomic system; its 8 components were reclassified into
+ * atoms/molecules/organisms (docs/taxonomy/01-component-placement.md).
+ * `loaders`/`graphics` are gone too: loaders are functional infrastructure,
+ * documented on /docs/loaders — galleries stay on the Icons pages (C4). */
 export const CATEGORY_ORDER = [
-  'atoms', 'molecules', 'primitives', 'organisms', 'graphics', 'framework', 'loaders', 'hooks', 'misc',
+  'atoms', 'molecules', 'organisms',
+  'fw-chrome', 'fw-structure', 'fw-behavior', 'hooks', 'misc',
 ]
 export const CATEGORY_LABELS = {
   atoms: 'Atoms',
   molecules: 'Molecules',
-  primitives: 'Primitives',
   organisms: 'Organisms',
-  graphics: 'Graphics',
-  framework: 'Framework',
-  loaders: 'Loaders',
+  'fw-chrome': 'Framework · Chrome',
+  'fw-structure': 'Framework · Structure',
+  'fw-behavior': 'Framework · Behaviors',
   hooks: 'Hooks',
   misc: 'Misc',
+}
+
+/* Framework taxonomy — the flat 'framework' bucket split by function:
+ * chrome (shell pieces), page structure (heroes/sections), behaviors
+ * (render-null utilities). Open question, logged: do the heroes belong in
+ * atomic 'organisms' instead of the framework tier? */
+const FRAMEWORK_GROUPS = {
+  AppShell: 'fw-chrome',
+  Layout: 'fw-chrome',
+  SideNav: 'fw-chrome',
+  PortalFooter: 'fw-chrome',
+  ThemeToggle: 'fw-chrome',
+  BrandHero: 'fw-structure',
+  SubPageHero: 'fw-structure',
+  PageSection: 'fw-structure',
+  ScrollToTop: 'fw-behavior',
 }
 
 /* CamelCase / UPPER_SNAKE → kebab-case slug. Stable + unique per component. */
@@ -106,13 +127,70 @@ export function slugify(name) {
     .toLowerCase()
 }
 
+/* Drop non-component exports — UPPER_SNAKE data exports (GRAPHICS, GRAPHIC_RAW)
+ * are maps/strings, not components, and shouldn't get doc pages. */
+const isDataExport = (name) => /^[A-Z0-9_]+$/.test(name)
+
+/* Not components in the traditional sense — route wrappers / behaviors /
+ * loaders. Documented on the Docs pages instead (shadcn model: meta material
+ * lives in Docs, never in the components list). Icon + Graphic are the
+ * loader tier (/docs/loaders); their visual galleries stay on /icons. */
+export const DOCS_ONLY = ['Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic']
+
+/* Functional classification — a CLOSED set (Material-style). Every current
+ * and future component maps to exactly one; the sidebar stays flat A→Z so a
+ * new component always has a location (its alphabetical slot) — functions
+ * are filter metadata, never ordering. */
+export const FUNCTIONS = {
+  action: 'Action',
+  input: 'Input',
+  display: 'Display',
+  feedback: 'Feedback',
+  navigation: 'Navigation',
+  overlay: 'Overlay',
+  media: 'Media',
+  structure: 'Structure',
+  utility: 'Utility',
+}
+const FUNCTION_MAP = {
+  Button: 'action', ThemeToggle: 'action',
+  Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
+  QuantityInput: 'input', QuantityStepper: 'input', PropertyInput: 'input',
+  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input',
+  SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
+  DropdownTagFilter: 'input', LabeledControl: 'input', Label: 'input',
+  Badge: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
+  ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
+  Table: 'display', SectionLabel: 'display', Icon: 'display',
+  SideNav: 'navigation', ExitPreview: 'navigation',
+  Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
+  MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
+  MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
+  Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
+  Divider: 'structure', Section: 'structure', Accordion: 'structure',
+  AccordionPanel: 'structure', PageSection: 'structure', BrandHero: 'structure',
+  SubPageHero: 'structure', PortalFooter: 'structure', ContentFilters: 'structure',
+  useReveal: 'utility', useScrollSpy: 'utility',
+}
+
 /* Enriched, slugged component list (mining order preserved = usage-ranked). */
-export const COMPONENTS = USAGE.map((c) => ({
-  ...c,
-  slug: slugify(c.name),
-  demo: DEMOS[c.name] || null,
-  description: DESCRIPTIONS[c.name] || '',
-}))
+export const COMPONENTS = USAGE
+  .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name))
+  .map((c) => ({
+    ...c,
+    category: FRAMEWORK_GROUPS[c.name] ?? c.category,
+    function: FUNCTION_MAP[c.name] ?? 'display',
+    slug: slugify(c.name),
+    demo: DEMOS[c.name] || null,
+    description: DESCRIPTIONS[c.name] || '',
+    /* Source-mined doc meta (scripts/extract-docs-meta.mjs): the kol type
+     * classes it renders text with + the KOL components it composes. */
+    meta: DOCS_META[c.name] || null,
+  }))
+
+/* Flat A→Z — the sidebar/index ordering. New components slot alphabetically;
+ * nothing ever reorders. */
+export const COMPONENTS_AZ = [...COMPONENTS].sort((a, b) => a.name.localeCompare(b.name))
 
 const BY_SLUG = new Map(COMPONENTS.map((c) => [c.slug, c]))
 export const getComponentBySlug = (slug) => BY_SLUG.get(slug) || null

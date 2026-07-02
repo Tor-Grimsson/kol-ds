@@ -1,0 +1,310 @@
+/* Ported verbatim from kol-monorepo packages/ui/css/components.css
+ * (SHELL NAVIGATION CLASSES section, lines 2881-3187). */
+
+/* =============================================================================
+ * SHELL NAVIGATION CLASSES
+ * =============================================================================
+ * Shell layout classes shared across Workshop, Docs, and future apps.
+ * Moved from docs.css and renamed from docs-* to shell-*.
+ */
+
+/* Shell Page Header */
+.shell-page-header {
+  background: var(--kol-surface-primary);
+}
+
+/* Shell Tab Row */
+.shell-tabrow-items {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  padding-top: 8px;
+  padding-bottom: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.shell-tabrow-items::-webkit-scrollbar {
+  display: none;
+}
+
+.shell-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 60%, transparent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.shell-tab:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
+}
+
+.shell-tab.active,
+.shell-tab:active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Sidebar sticky wrappers — hidden scrollbar, still scrollable */
+.shell-sidebar-sticky {
+  scrollbar-width: none;
+}
+
+.shell-sidebar-sticky::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar toggle buttons (collapsible section headers) */
+.shell-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  transition: color 0.15s ease;
+}
+
+.shell-sidebar-toggle:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.shell-sidebar-toggle.primary {
+  color: var(--kol-palette-blue);
+}
+
+/* Sidebar section labels */
+.shell-sidebar-label {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* Sidebar links */
+.shell-sidebar-link {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  padding: 4px 0;
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  display: block;
+}
+
+.shell-sidebar-link:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-sidebar-link.active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Sidebar action buttons */
+.shell-sidebar-action {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  padding: 4px 0;
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.shell-sidebar-action:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* TOC expand button */
+.shell-toc-expand-button {
+  padding: 2px;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shell-toc-expand-button:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Navigation header label */
+.shell-nav-header {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* Navigation group */
+.shell-nav-group-header {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+  padding: 6px 0 6px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.shell-nav-group-header:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
+}
+
+.shell-nav-group-count {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.shell-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Navigation items */
+.shell-nav-item {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 4px 12px 4px 20px;
+  border-radius: 0px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  display: block;
+}
+
+.shell-nav-item:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-nav-item.active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-nav-item-doc {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shell-nav-item-id {
+  font-size: 11px;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.shell-nav-item-title {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* Wide viewport nav font bumps */
+@media (min-width: 1600px) {
+  .shell-tabrow-items {
+    gap: 32px;
+  }
+
+  .shell-tab {
+    font-size: 16px;
+    gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+
+  .shell-tab svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .shell-sidebar-link,
+  .shell-sidebar-action,
+  .shell-nav-group-header,
+  .shell-nav-item-title {
+    font-size: 16px;
+  }
+
+  .shell-sidebar-action svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .shell-nav-item {
+    font-size: 16px;
+    padding: 5px 14px 5px 24px;
+  }
+
+  .shell-sidebar-label,
+  .shell-nav-header,
+  .shell-nav-group-count,
+  .shell-nav-item-id,
+  .toggle-switch-label {
+    font-size: 13px;
+  }
+
+  /* Wide header logo */
+  .shell-header-logo {
+    width: 320px;
+  }
+
+  /* Wide grid columns + gap */
+  .shell-content-grid {
+    gap: 48px;
+  }
+
+  .shell-content-grid[data-layout="nav-toc"] {
+    grid-template-columns: 320px minmax(0, 1fr) 256px;
+  }
+
+  .shell-content-grid[data-layout="nav"] {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  .shell-content-grid[data-layout="toc"] {
+    grid-template-columns: minmax(0, 1fr) 256px;
+  }
+}

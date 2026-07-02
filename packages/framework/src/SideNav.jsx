@@ -139,7 +139,7 @@ export default function SideNav({ drawerOpen = false, onCloseDrawer, navTree = [
     >
       <button
         type="button"
-        className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer text-[14px] leading-none transition-colors duration-150 text-meta hover:text-emphasis hover:border-fg-24"
+        className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer kol-helper-14 transition-colors duration-150 text-meta hover:text-emphasis hover:border-fg-24"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         title={collapsed ? 'Expand' : 'Collapse'}
         onClick={() => setCollapsed((v) => !v)}

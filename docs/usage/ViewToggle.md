@@ -1,7 +1,7 @@
 # ViewToggle
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 106 across 41 files in 12 apps
 - **Used in:** kol-client, kol-client-ac, kol-client-canalix, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radar
 

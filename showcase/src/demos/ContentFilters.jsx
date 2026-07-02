@@ -23,6 +23,8 @@ const renderItem = (filteredItems) => (
   </ul>
 )
 
+export const stage = 'full'
+
 export default function ContentFiltersDemo() {
   return (
     <ContentFilters

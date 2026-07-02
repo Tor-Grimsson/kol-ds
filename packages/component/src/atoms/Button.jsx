@@ -117,13 +117,16 @@ const Button = ({
       return renderIcon(iconOnly, iconOnlyHover)
     }
 
-    // Button with icon(s) and text
+    // Button with icon(s) and text. Icons render directly as flex items —
+    // wrapper spans (with the old -2px optical margins) sat the glyphs on
+    // the span's text baseline instead of letting align-items center them
+    // against the label.
     if (iconLeft || iconRight || iconLeftHover || iconRightHover) {
       return (
         <span className="flex items-center" style={{ gap: iconGap ?? 8 }}>
-          {(iconLeft || iconLeftHover) && <span style={{ marginLeft: -2 }}>{renderIcon(iconLeft, iconLeftHover)}</span>}
+          {(iconLeft || iconLeftHover) && renderIcon(iconLeft, iconLeftHover)}
           {children}
-          {(iconRight || iconRightHover) && <span style={{ marginRight: -2 }}>{renderIcon(iconRight, iconRightHover)}</span>}
+          {(iconRight || iconRightHover) && renderIcon(iconRight, iconRightHover)}
         </span>
       )
     }
