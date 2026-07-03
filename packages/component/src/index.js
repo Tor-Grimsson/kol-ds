@@ -6,7 +6,7 @@
  * lives in @kol/theme (kol-components-*.css).
  *
  * Placement follows the taxonomy rules in
- * docs/taxonomy/01-component-placement.md:
+ * docs/documentation/02-components/02-placement.md:
  *   atom     — nests no KOL component (kol-loader Icon/Graphic are
  *              infrastructure, they don't count)
  *   molecule — nests at least one KOL component

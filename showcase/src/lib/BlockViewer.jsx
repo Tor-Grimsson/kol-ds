@@ -44,7 +44,7 @@ function IconBtn({ icon, label, active, onClick, href }) {
   )
 }
 
-export default function BlockViewer({ entry }) {
+export default function BlockViewer({ entry, previewBase = '/blocks/preview', srcDir = 'blocks' }) {
   const [tab, setTab] = useState('preview')
   const [device, setDevice] = useState('desktop')
   const [width, setWidth] = useState('100%')
@@ -53,7 +53,7 @@ export default function BlockViewer({ entry }) {
   const [dragging, setDragging] = useState(false)
   const bodyRef = useRef(null)
 
-  const previewPath = `/blocks/preview/${entry.key}`
+  const previewPath = `${previewBase}/${entry.key}`
   const isDesktop = width === '100%'
 
   const pickDevice = (d) => {
@@ -132,7 +132,7 @@ export default function BlockViewer({ entry }) {
             onClick={copySource}
             title="Copy the block source"
           >
-            {copied ? 'copied' : `blocks/${entry.key}.jsx`}
+            {copied ? 'copied' : `${srcDir}/${entry.key}.jsx`}
           </Button>
         </div>
       </div>

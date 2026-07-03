@@ -57,7 +57,7 @@ Linking is fine **inside** this repo — that's the whole point of the workspace
 Every component carries real-world examples pulled verbatim from ~25 KOL apps:
 
 - **Browse:** `pnpm dev` → the **Components** page. Live demos + mined examples per component.
-- **Read/diff:** [`docs/usage/<Component>.md`](docs/usage) — one file per component, attributed by app.
+- **Read/diff:** [`docs/documentation/07-usage/<Component>.md`](docs/documentation/07-usage) — one file per component, attributed by app.
 - **Regenerate:** `node scripts/extract-usage.mjs` (re-mines the consumer apps).
 
 ## Publishing

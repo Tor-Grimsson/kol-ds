@@ -1,0 +1,144 @@
+{
+  "blocks": {
+    "FilterBar": {
+      "kol": [
+        "Divider",
+        "Dropdown",
+        "Input",
+        "Tag",
+        "ViewToggle"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "InspectorPanel": {
+      "kol": [
+        "ColorSwatch",
+        "Divider",
+        "LabeledControl",
+        "PropertyInput",
+        "Section",
+        "SegmentedToggle",
+        "Slider"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "SettingsForm": {
+      "kol": [
+        "Button",
+        "Divider",
+        "Input",
+        "LabeledControl",
+        "Textarea",
+        "ToggleSwitch"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "SidenavDocs": {
+      "kol": [
+        "Icon",
+        "Input"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "SidenavKol": {
+      "kol": [
+        "Icon"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "SidenavWorkshop": {
+      "kol": [
+        "Icon"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    }
+  },
+  "sets": {
+    "ChessApparatus": {
+      "kol": [
+        "Dropdown",
+        "Icon",
+        "Input",
+        "Pill",
+        "Table",
+        "Tag"
+      ],
+      "local": {
+        "workshop/chess": [
+          "AlternativeControlsMock",
+          "ChessAnalysisLayout",
+          "ChessBoard",
+          "ChessBoardWithControls",
+          "ChessControlsContext",
+          "ChessPiece",
+          "GameArchiveTable",
+          "NotationPanel",
+          "PlaybackControls",
+          "VariationTree"
+        ]
+      },
+      "support": [
+        "lightweight",
+        "parsePgnTree",
+        "sample-games"
+      ],
+      "external": [
+        "chess.js"
+      ]
+    },
+    "MetricsDashboard": {
+      "kol": [
+        "Badge",
+        "Icon",
+        "Table"
+      ],
+      "local": {
+        "workshop/dashboards": [
+          "Candlestick",
+          "CardHeader",
+          "DashAlertCard",
+          "DashChartCard",
+          "DashFeaturedCard",
+          "DashListCard",
+          "DashMetricCard",
+          "DashSlotCard",
+          "DashStackedBarCard",
+          "DashTableCard",
+          "DashTooltip",
+          "DashboardGrid",
+          "DonutChart",
+          "GridCard",
+          "Heatmap",
+          "Histogram",
+          "LegendRow",
+          "LineChart",
+          "ScatterPlot",
+          "Sparkline"
+        ],
+        "workshop/metrics": [
+          "MetricsDashboard"
+        ]
+      },
+      "support": [
+        "demo-data",
+        "formatMetric",
+        "useChartTooltip",
+        "useCountUp",
+        "useMetricsData"
+      ],
+      "external": []
+    }
+  }
+}

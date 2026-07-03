@@ -2,57 +2,23 @@
 title: KOL design-system docs
 type: index
 status: active
-updated: 2026-06-26
-description: Front door to the KOL docs — routes you by task. New here? Start with the workbench walkthrough.
+updated: 2026-07-03
+description: Front door to docs/ — documentation/ is the design system; repo machinery lives in .kol/ at the repo root.
 aliases:
   - docs
   - docs-home
 tags:
   - domain/design-system
 related:
-  - "[[workbench/01-using-the-workbench|using the workbench]]"
-  - "[[_framework/INDEX|framework]]"
+  - "[[documentation/INDEX|KOL documentation]]"
 ---
 
 # KOL design-system docs
 
-Everything documented about the KOL (Kolkrabbi) design system — how to use it, how it's built, how it compares, and what's planned. This page routes you; you shouldn't have to guess which folder to open.
+**[[documentation/INDEX|documentation/]]** is the design system, documented — numbered sections: overview · foundations · components · compositions · brand kit · operations · research · usage. Start with [[documentation/00-overview/INDEX|the overview]].
 
-> [!tip] New here, and you just want to *use* the design system?
-> → **[[workbench/01-using-the-workbench|Using the workbench]]** — start the component browser and view every component and all its states, step by step. That's the only walkthrough you need to get going.
+Anything else that lands in `docs/` is repo-related documentation that isn't the design system itself. The machinery lives **outside** the vault, at the repo root:
 
-## Find your path
-
-| I want to… | Go to |
-|---|---|
-| **Use the design system — run the workbench, view components & their states** | **[[workbench/01-using-the-workbench\|Using the workbench]]** ← start here |
-| Look up how one component is used (props, real call-sites) | `usage/` — one file per component (`Button.md`, `Icon.md`, …), mined from real KOL apps |
-| Learn how other teams build design systems (Storybook, tokens, distribution…) | [[workflows/INDEX\|Workflows]] |
-| **Ship a new version of the packages to npm** | [[release/01-release-pipeline\|Release pipeline]] |
-| Pick or port an app shell (docs shell, workshop shell, blocks) | [[shells/01-reference-shells\|Reference shells]] |
-| See what's queued from the last review | [[backlog/2026-07-02-review-backlog\|Review backlog]] · [[plan\|execution plan]] |
-| Decide where a new component goes (atom / molecule / organism) | [[taxonomy/01-component-placement\|Component placement]] |
-| Pick a type class (helper vs line-height sets, full inventory) | [[typography/01-type-classes\|Type classes]] |
-| See how KOL compares to shadcn/ui, and the gaps | [[benchmark/INDEX\|shadcn ⇄ KOL benchmark]] |
-| Understand the architecture & the load-bearing decisions | [[llm-context/ARCHITECTURE\|Architecture]] |
-| Know the current state / what's in flight | [[llm-context/AGENT-CONTEXT\|Agent context]] |
-| Read planned or in-progress restructures | [[migration/2026-06-26-workbench-adoption\|workbench plan]] · [[migration/2026-06-18-src-first-restructure\|src-first plan]] |
-| Author or fix a doc (the spec these docs follow) | [[_framework/INDEX\|Framework]] |
-
-## The folders
-
-| Folder | What's in it | Mainly for |
-|---|---|---|
-| **`workbench/`** | How to run and use the Ladle component browser | **Users — start here** |
-| `usage/` | One reference file per component, mined from real KOL apps | Users + agents |
-| `workflows/` | The design-system landscape — how others isolate, compose, token, distribute, test | Learning / decisions |
-| `release/` | The runbook for publishing a new package version (Changesets → CI) | Maintainers shipping a release |
-| `benchmark/` | KOL vs shadcn/ui — side-by-side comparison + prioritised gaps | Strategy |
-| `migration/` | Forward-looking plans (dated) | What's coming |
-| `llm-context/` | Architecture, current state, session logs | Agents + maintainers |
-| `_framework/` | The doc spec every doc here conforms to | Doc authors |
-
-## Two kinds of doc here
-
-- **To use or understand the system** → `workbench/`, `usage/`, `workflows/`, `benchmark/`. Start here as a human.
-- **Maintenance & meta** → `llm-context/` (architecture, current state, logs), `migration/` (plans), `_framework/` (the doc spec). Real, but not where a user begins.
+- `.kol/llm-context/` — agent state (architecture, current state, plan, backlog, session logs)
+- `.kol/docs-framework/` — the kol-docs spec these files conform to
+- `LLM_RULES.md` — the boot pointer every agent reads first

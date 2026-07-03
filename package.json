@@ -10,7 +10,7 @@
     "preview": "pnpm --filter showcase preview",
     "workbench": "pnpm --filter workbench ladle",
     "extract:usage": "node scripts/extract-usage.mjs",
-    "extract:docs": "node scripts/extract-docs-meta.mjs && node scripts/extract-api.mjs",
+    "extract:docs": "node scripts/extract-docs-meta.mjs && node scripts/extract-api.mjs && node scripts/extract-composition.mjs",
     "validate:taxonomy": "node scripts/validate-taxonomy.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",

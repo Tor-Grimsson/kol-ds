@@ -86,7 +86,7 @@ const DESCRIPTIONS = {
 
 /* Display order + labels for category groupings. `primitives` is dead —
  * not part of the atomic system; its 8 components were reclassified into
- * atoms/molecules/organisms (docs/taxonomy/01-component-placement.md).
+ * atoms/molecules/organisms (docs/documentation/02-components/02-placement.md).
  * `loaders`/`graphics` are gone too: loaders are functional infrastructure,
  * documented on /docs/loaders — galleries stay on the Icons pages (C4). */
 export const CATEGORY_ORDER = [

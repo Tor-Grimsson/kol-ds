@@ -7,6 +7,8 @@
  * not blocks — see sets-registry.js.
  */
 
+import COMPOSITION from '../usage/composition.json'
+
 const modules = import.meta.glob('../blocks/*.jsx', { eager: true })
 const sources = import.meta.glob('../blocks/*.jsx', { eager: true, query: '?raw', import: 'default' })
 
@@ -22,6 +24,8 @@ export const BLOCKS = Object.entries(modules)
     description: mod.meta?.description || '',
     category: mod.meta?.category || 'other',
     featured: mod.meta?.featured || false,
+    /* Scanner-derived manifest (scripts/extract-composition.mjs → pnpm extract:docs) */
+    composition: COMPOSITION.blocks?.[keyOf(path)] ?? null,
   }))
   .sort((a, b) => a.title.localeCompare(b.title))
 

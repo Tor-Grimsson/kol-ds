@@ -62,6 +62,12 @@ export default function Home() {
           <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
             Browse components
           </Button>
+          <Button variant="primary" onClick={() => navigate('/blocks')}>
+            Blocks
+          </Button>
+          <Button variant="primary" onClick={() => navigate('/sets')}>
+            Sets
+          </Button>
           <Button variant="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
             Source
           </Button>
