@@ -1,35 +1,222 @@
 {
   "blocks": {
-    "FilterBar": {
+    "article-grid": {
+      "kol": [
+        "ArticleCard",
+        "AssetPlaceholder",
+        "Image",
+        "Pill"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "bento-wall": {
+      "kol": [
+        "AssetPlaceholder",
+        "BentoCard",
+        "Button",
+        "HlsVideo",
+        "Icon",
+        "Image"
+      ],
+      "local": {},
+      "support": [
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "framer-motion",
+        "hls.js"
+      ]
+    },
+    "color-picker": {
+      "kol": [
+        "ColorInputRow",
+        "ColorSwatch",
+        "Divider",
+        "Icon",
+        "Input",
+        "LabeledControl",
+        "Popover",
+        "Section",
+        "SpectrumControls",
+        "SwatchControls",
+        "TransparentX"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "color-tools": {
+      "kol": [
+        "Button",
+        "ColorInputRow",
+        "ColorSwatch",
+        "Icon",
+        "Input",
+        "LabeledControl",
+        "MenuItem",
+        "Popover",
+        "ShapeDropdown",
+        "TabsRow",
+        "TransparentX"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "command-palette": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SearchInput",
+        "ShellSearchOverlay"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "cta-band": {
+      "kol": [
+        "CtaGlobal"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "feature-showcase": {
+      "kol": [
+        "Button",
+        "CardFeatureItem",
+        "FeaturesCardSection",
+        "Icon"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "filter-bar": {
       "kol": [
         "Divider",
         "Dropdown",
+        "Icon",
         "Input",
+        "MenuItem",
+        "Popover",
         "Tag",
         "ViewToggle"
       ],
       "local": {},
       "support": [],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
-    "InspectorPanel": {
+    "hero-full-bleed": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "FullBleedHero",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "hls.js"
+      ]
+    },
+    "inspector-panel": {
       "kol": [
         "ColorSwatch",
         "Divider",
+        "Icon",
+        "Input",
+        "Label",
         "LabeledControl",
         "PropertyInput",
         "Section",
         "SegmentedToggle",
-        "Slider"
+        "Slider",
+        "Stepper",
+        "TransparentX"
       ],
       "local": {},
       "support": [],
       "external": []
     },
-    "SettingsForm": {
+    "media-carousel": {
+      "kol": [
+        "AssetPlaceholder",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Image",
+        "OverlayGlassPanel"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "newsletter-signup": {
+      "kol": [
+        "Button",
+        "Icon",
+        "Input",
+        "NewsletterBand"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "palette-reference": {
+      "kol": [
+        "ColorRamp",
+        "ColorSwatch",
+        "SpectrumGrid",
+        "TransparentX"
+      ],
+      "local": {},
+      "support": [
+        "cssVar"
+      ],
+      "external": []
+    },
+    "product-panel": {
       "kol": [
         "Button",
         "Divider",
+        "Dropdown",
+        "Icon",
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "PriceDisplay",
+        "ProductDetailLayout",
+        "QuantityInput",
+        "SpecList",
+        "TabsRow"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "settings-form": {
+      "kol": [
+        "Button",
+        "Divider",
+        "Icon",
         "Input",
         "LabeledControl",
         "Textarea",
@@ -39,7 +226,19 @@
       "support": [],
       "external": []
     },
-    "SidenavDocs": {
+    "shell-topbar": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SearchInput",
+        "ShellHeader",
+        "ThemeToggle"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "sidenav-docs": {
       "kol": [
         "Icon",
         "Input"
@@ -48,7 +247,7 @@
       "support": [],
       "external": []
     },
-    "SidenavKol": {
+    "sidenav-kol": {
       "kol": [
         "Icon"
       ],
@@ -56,22 +255,61 @@
       "support": [],
       "external": []
     },
-    "SidenavWorkshop": {
+    "sidenav-workshop": {
       "kol": [
         "Icon"
       ],
       "local": {},
       "support": [],
       "external": []
+    },
+    "site-footer": {
+      "kol": [
+        "PortalFooter"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "type-scale": {
+      "kol": [
+        "TypeSample",
+        "TypeSpecCard"
+      ],
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "work-grid": {
+      "kol": [
+        "AssetPlaceholder",
+        "Icon",
+        "Image",
+        "Tag",
+        "TiltCard",
+        "WorkCard",
+        "WorkListItem",
+        "WorkViewToggle"
+      ],
+      "local": {},
+      "support": [
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "framer-motion"
+      ]
     }
   },
   "sets": {
-    "ChessApparatus": {
+    "chess-apparatus": {
       "kol": [
         "Dropdown",
         "Icon",
         "Input",
+        "MenuItem",
         "Pill",
+        "Popover",
         "Table",
         "Tag"
       ],
@@ -95,10 +333,65 @@
         "sample-games"
       ],
       "external": [
+        "@floating-ui/react",
         "chess.js"
       ]
     },
-    "MetricsDashboard": {
+    "design-editor": {
+      "kol": [
+        "AlignmentGrid",
+        "Button",
+        "Canvas",
+        "ColorInputRow",
+        "ColorSwatch",
+        "Divider",
+        "EditorShell",
+        "EmptyState",
+        "Icon",
+        "Input",
+        "LabeledControl",
+        "Popover",
+        "SelectionOverlay",
+        "TabsRow",
+        "TransparentX"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "foundry-specimen": {
+      "kol": [
+        "Button",
+        "Divider",
+        "Dropdown",
+        "FontPreviewSection",
+        "FoundryCharacterSets",
+        "GlyphMetricsGrid",
+        "Icon",
+        "Input",
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "Slider",
+        "SpecimenSectionHeader",
+        "Table",
+        "Tag",
+        "TypefaceHero",
+        "VariableFontSection"
+      ],
+      "local": {},
+      "support": [
+        "glyphData",
+        "useAxisAnimation",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "metrics-dashboard": {
       "kol": [
         "Badge",
         "Icon",
@@ -139,6 +432,83 @@
         "useMetricsData"
       ],
       "external": []
+    },
+    "prints-store": {
+      "kol": [
+        "Button",
+        "DiagonalMarqueeRiver",
+        "Divider",
+        "Dropdown",
+        "Icon",
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "PriceDisplay",
+        "ProductDetailLayout",
+        "QuantityInput",
+        "SpecList",
+        "TabsRow"
+      ],
+      "local": {},
+      "support": [
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
+    },
+    "stack-blog": {
+      "kol": [
+        "ArticleCard",
+        "ArticleHeader",
+        "AssetPlaceholder",
+        "Avatar",
+        "CodeBlock",
+        "CopyButton",
+        "Divider",
+        "Figure",
+        "FullBleedHero",
+        "HlsVideo",
+        "Image",
+        "ImageBlock",
+        "Pill",
+        "PortableTextRenderer",
+        "StackHero",
+        "Table",
+        "VideoBlock"
+      ],
+      "local": {},
+      "support": [],
+      "external": [
+        "hls.js"
+      ]
+    },
+    "work-portfolio": {
+      "kol": [
+        "AssetPlaceholder",
+        "Carousel",
+        "FullscreenOverlay",
+        "GalleryCarousel",
+        "Icon",
+        "Image",
+        "MediaViewer",
+        "ParallaxShelf",
+        "Tag",
+        "TiltCard",
+        "WorkCard",
+        "WorkListItem",
+        "WorkViewToggle"
+      ],
+      "local": {},
+      "support": [
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "framer-motion"
+      ]
     }
   }
 }

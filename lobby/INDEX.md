@@ -11,7 +11,7 @@ and does not follow the `.kol/docs-framework` conventions.
 
 ## Queue
 
-Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps/brand`), grouped by set. All cross-checked against `@kol/component` + `@kol/ui` so no existing DS export is re-staged; each spec flags its app coupling to drop and any DS twin to reconcile.
+Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps/brand`), grouped by set. All cross-checked against `@kol/component` + `@kol/ui` so no existing DS export is re-staged; each spec flags its app coupling to drop and any DS twin to reconcile. **Batch worklog: [WORKLOG-2026-07-03-monorepo.md](WORKLOG-2026-07-03-monorepo.md)** — phases, change log, bug ledger.
 
 | Component | Source | Staged | Status |
 |-----------|--------|--------|--------|

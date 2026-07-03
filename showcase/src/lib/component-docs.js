@@ -488,8 +488,14 @@ export const DOC_DATA = {
   },
 
   PortalFooter: {
-    usage: '<PortalFooter />',
-    api: [],
+    usage: '<PortalFooter brand={<Wordmark />} columns={columns} socials={socials} note="© 2026 Kolkrabbi" />',
+    api: [
+      { prop: 'brand', type: 'ReactNode', def: '—', desc: 'Brand block slot; zero-prop default keeps the favicon mark.' },
+      { prop: 'columns', type: 'array', def: '—', desc: 'Link columns: { title, links: [{ label, href }] }. Plain anchors, router-agnostic.' },
+      { prop: 'socials', type: 'array', def: '—', desc: 'Bottom-bar links: { label, href, icon? }; label renders when no icon.' },
+      { prop: 'note', type: 'ReactNode', def: '—', desc: 'Bottom-bar legal/credit line.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'Escape hatch between columns and the bottom bar.' },
+    ],
   },
 
   AppShell: {
@@ -497,6 +503,8 @@ export const DOC_DATA = {
     api: [
       { prop: 'navTree', type: 'array', def: '[]', desc: 'Nav tree consumed by SideNav (groups + route/anchor leaves).' },
       { prop: 'getActivePage', type: '(pathname) => node', def: '—', desc: 'Resolves the active top-level page.' },
+      { prop: 'header / footer', type: 'ReactNode', def: '—', desc: 'Optional chrome above/below the outlet in the content column; mount consumer search/topbar in header.' },
+      { prop: 'defaultTocContent', type: 'ReactNode', def: '—', desc: 'Right-rail content when the active page registers none via ShellTocContext.' },
     ],
   },
 
@@ -507,6 +515,10 @@ export const DOC_DATA = {
       { prop: 'getActivePage', type: 'function', def: '—', desc: 'Active-page resolver for highlight + scroll-spy.' },
       { prop: 'drawerOpen', type: 'boolean', def: '—', desc: 'Mobile drawer state (managed by AppShell).' },
       { prop: 'onCloseDrawer', type: 'function', def: '—', desc: 'Close callback for the mobile drawer.' },
+      { prop: 'onNavigate', type: '(event) => void', def: '—', desc: 'Fired when any nav link is clicked (drawer close, analytics).' },
+      { prop: 'collapsed / onToggle', type: 'boolean / function', def: '—', desc: 'Controlled rail collapse; presence switches to controlled mode.' },
+      { prop: 'collapsibleSections', type: 'boolean', def: 'false', desc: 'Per-page section expand/collapse with chevron + child count; active section auto-expands.' },
+      { prop: 'isActive', type: '(path) => boolean', def: '—', desc: 'Overrides router active detection for hops and route leaves.' },
     ],
   },
 
@@ -518,5 +530,231 @@ export const DOC_DATA = {
   ScrollToTop: {
     usage: '<ScrollToTop />',
     api: [],
+  },
+
+  EmptyState: {
+    usage: '<EmptyState eyebrow="Phase 2" title="Layer inspector" body="Select a layer to edit its properties." />',
+    api: [
+      { prop: 'eyebrow', type: 'string', def: '—', desc: 'Kicker line above the title (rendered as authored — no auto casing).' },
+      { prop: 'title', type: 'string', def: '—', desc: 'Headline.' },
+      { prop: 'body', type: 'string', def: '—', desc: 'Optional supporting line.' },
+      { prop: 'footer', type: 'string', def: '—', desc: 'Optional note above a top hairline.' },
+    ],
+  },
+
+  OverlayGlassPanel: {
+    usage: '<OverlayGlassPanel maxWidth="max-w-[420px]">…</OverlayGlassPanel>',
+    api: [
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'The content stack (eyebrow/title/description/CTA).' },
+      { prop: 'surfaceOpacity', type: 'number', def: '80', desc: '% of surface-primary in the color-mix — panel translucency.' },
+      { prop: 'blur', type: 'string', def: "'1px'", desc: 'backdrop-filter blur radius.' },
+      { prop: 'align', type: 'center | start | end', def: 'center', desc: 'Cross-axis alignment + text alignment.' },
+      { prop: 'gap', type: 'string', def: "'gap-6'", desc: 'Vertical rhythm class between children.' },
+      { prop: 'maxWidth', type: 'string', def: '—', desc: 'Optional max-w-* class; adds mx-auto.' },
+      { prop: 'className', type: 'string', def: '—', desc: 'Extra wrapper classes / padding override.' },
+    ],
+  },
+
+  Figure: {
+    usage: '<Figure label="Fig. 01" caption="…" aspect="5/3"><img … /></Figure>',
+    api: [
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'Media inside the aspect-locked frame.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Small mono label above the frame.' },
+      { prop: 'caption', type: 'string', def: '—', desc: 'figcaption below the frame.' },
+      { prop: 'aspect', type: 'string', def: "'5/3'", desc: "CSS aspect-ratio value; '' for natural height." },
+      { prop: 'className', type: 'string', def: '—', desc: 'Extra classes on the figure.' },
+    ],
+  },
+
+  MediaViewer: {
+    usage: '<MediaViewer open={open} media={media} onClose={() => setOpen(false)} />',
+    api: [
+      { prop: 'open', type: 'boolean', def: '—', desc: 'Viewer visible.' },
+      { prop: 'media', type: 'array', def: '[]', desc: "Items: { url, alt?, kind: 'image' | 'video' }." },
+      { prop: 'initialIndex', type: 'number', def: '0', desc: 'Item shown on open.' },
+      { prop: 'onClose', type: 'function', def: '—', desc: 'Close request (Esc, backdrop, close button).' },
+      { prop: 'onIndexChange', type: 'function', def: '—', desc: 'Fires with the new index on page.' },
+    ],
+  },
+
+  AssetGrid: {
+    usage: '<AssetGrid cols={4} gap="gap-2">{figures}</AssetGrid>',
+    api: [
+      { prop: 'cols', type: '2 | 3 | 4', def: '3', desc: 'Column count at full width; unknown values fall back to 3.' },
+      { prop: 'gap', type: 'string', def: "'gap-4'", desc: 'Tailwind gap utility applied to both axes.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'Grid items.' },
+      { prop: 'className', type: 'string', def: '—', desc: 'Extra classes.' },
+    ],
+  },
+
+  CurveOverlay: {
+    usage: '<CurveOverlay width={320} height={120} curve="ease" blend={0.5} />',
+    api: [
+      { prop: 'width / height', type: 'number', def: '—', desc: 'Frame px size — viewBox scale; y is inverted (value 0 at bottom).' },
+      { prop: 'curve', type: 'string', def: "'linear'", desc: "'custom' → bezier editor; else preset: flat | linear | reverse | ease | expo-in | expo-out | log | sine." },
+      { prop: 'blend', type: 'number 0..1', def: '0.5', desc: 'Curve amount / up-down bias.' },
+      { prop: 'cp1 / cp2', type: '{ x, y } 0..1', def: '—', desc: 'Normalized control points (required in custom mode).' },
+      { prop: 'easing', type: '(t) => v', def: '—', desc: 'Custom sampler replacing presets (48 samples, clamped).' },
+    ],
+  },
+
+  DocsToc: {
+    usage: "<DocsToc toc={[{ id: 'overview', label: 'Overview' }]} />",
+    api: [
+      { prop: 'toc', type: '{ id, label }[]', def: '—', desc: 'Headings to render and observe — a matching in-page element must exist per id.' },
+      { prop: 'onNavigate', type: '(event) => void', def: '—', desc: 'Optional click handler on every link.' },
+      { prop: 'rootMargin', type: 'string', def: "'-80px 0px -80% 0px'", desc: 'IntersectionObserver band passed to useScrollSpy.' },
+    ],
+  },
+
+  HlsVideo: {
+    usage: '<HlsVideo src="https://cdn…/master.m3u8" className="absolute inset-0 h-full w-full object-cover" />',
+    api: [
+      { prop: 'src', type: 'string', def: '—', desc: 'HLS manifest URL (.m3u8); attach effect re-runs on change.' },
+      { prop: 'poster', type: 'string', def: '—', desc: 'Poster frame before playback.' },
+      { prop: 'onEnded', type: 'function', def: '—', desc: 'End-of-playback callback; its presence disables loop.' },
+      { prop: 'className / …props', type: '—', def: '—', desc: 'Layout is consumer-supplied; extra props spread onto <video>.' },
+    ],
+  },
+
+  PriceDisplay: {
+    usage: '<PriceDisplay amount={220} currency="EUR" secondary="(€180 + €40 shipping)" />',
+    api: [
+      { prop: 'amount', type: 'number', def: '—', desc: 'Primary price (whole units, maximumFractionDigits 0).' },
+      { prop: 'currency', type: 'string', def: "'EUR'", desc: 'ISO 4217 code — honored (the app source ignored it).' },
+      { prop: 'locale', type: 'string', def: "'de-DE'", desc: 'Intl.NumberFormat locale.' },
+      { prop: 'secondary', type: 'ReactNode', def: '—', desc: 'Muted trailing note on the same baseline.' },
+    ],
+  },
+
+  ProsePreview: {
+    usage: "<ProsePreview h1='Page title' paragraph='…' code='const x = 1' pullout='…' />",
+    api: [
+      { prop: 'h1', type: 'string', def: '—', desc: 'Trailing text of the H1 line.' },
+      { prop: 'paragraph', type: 'string', def: '—', desc: 'Body paragraph text.' },
+      { prop: 'code', type: 'string', def: '—', desc: 'Contents of the code block.' },
+      { prop: 'pullout', type: 'string', def: '—', desc: 'Trailing text of the pullout.' },
+      { prop: 'quote', type: 'string', def: '—', desc: 'Blockquote text.' },
+    ],
+  },
+
+  RotaryDial: {
+    usage: '<RotaryDial label="Drive" value={v} onChange={setV} min={0} max={100} />',
+    api: [
+      { prop: 'value', type: 'number', def: '0', desc: 'Controlled value; drives rotation and readout.' },
+      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'RAF-throttled while dragging; immediate on arrow keys.' },
+      { prop: 'min / max / step', type: 'number', def: '0 / 100 / 1', desc: 'Range and increment.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Label + % readout rows; omit for a bare knob.' },
+      { prop: 'size', type: 'number', def: '80', desc: 'Dial px size.' },
+    ],
+  },
+
+  TypeSample: {
+    usage: '<TypeSample label="Sans · 700 · 48/52" weight={700} size={48} lineHeight={52}>Hamburgefonstiv</TypeSample>',
+    api: [
+      { prop: 'family', type: 'string', def: '—', desc: 'Font family; unset falls back to var(--kol-font-family-sans).' },
+      { prop: 'weight', type: 'number', def: '400', desc: 'font-weight.' },
+      { prop: 'italic', type: 'boolean', def: 'false', desc: 'Italic sample.' },
+      { prop: 'size / lineHeight', type: 'number', def: '32 / —', desc: 'px values; unitless 1.2 line-height when unset.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Mono caption above the sample.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'The specimen text.' },
+    ],
+  },
+
+  TypeSpecCard: {
+    usage: "<TypeSpecCard label='Heading 01' meta={[['Family', 'Sans'], ['Size', '48px']]}><TypeSample … /></TypeSpecCard>",
+    api: [
+      { prop: 'label', type: 'string', def: '—', desc: 'Corner caption, absolute top-left.' },
+      { prop: 'meta', type: '[key, value][]', def: '[]', desc: 'Key/value metric rows.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'The live sample (often a TypeSample).' },
+    ],
+  },
+
+  ShapeDropdown: {
+    usage: '<ShapeDropdown options={opts} value={v} onChange={setV} onAction={draw} />',
+    api: [
+      { prop: 'options', type: '{ id, label, icon? }[]', def: '[]', desc: 'Variants — menu rows + trigger glyph.' },
+      { prop: 'value', type: 'string', def: '—', desc: 'Active variant id (controlled).' },
+      { prop: 'onChange', type: '(id) => void', def: '—', desc: 'Fires with the picked variant id.' },
+      { prop: 'onAction', type: '(id) => void', def: '—', desc: 'Fires with the current id on main-button click.' },
+    ],
+  },
+
+  SpecList: {
+    usage: "<SpecList items={[{ label: 'Edition', value: 'Limited (30)' }]} framed />",
+    api: [
+      { prop: 'items', type: '{ label, value }[]', def: '[]', desc: 'Rows; value may be a node — caller formats.' },
+      { prop: 'framed', type: 'boolean', def: 'false', desc: 'Leading + trailing Divider frame.' },
+    ],
+  },
+
+  TabsRow: {
+    usage: "<TabsRow tabs={[{ id: 'overview', label: 'Overview' }]} value={v} onChange={setV} />",
+    api: [
+      { prop: 'tabs', type: '{ id, label }[]', def: '[]', desc: 'Tab items; labels render verbatim.' },
+      { prop: 'value', type: 'string', def: '—', desc: 'Active tab id (controlled).' },
+      { prop: 'onChange', type: '(id) => void', def: '—', desc: 'Fires on click or arrow-key move.' },
+      { prop: 'onClose / onMinimise', type: 'function', def: '—', desc: 'Show + wire the leading close / trailing chevron.' },
+    ],
+  },
+
+  ErrorBoundary: {
+    usage: '<ErrorBoundary homeHref="/"><App /></ErrorBoundary>',
+    api: [
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'The guarded subtree.' },
+      { prop: 'homeHref', type: 'string', def: "'/'", desc: '"Go home" destination.' },
+      { prop: 'fallback', type: '({ error, errorInfo, reset }) => ReactNode', def: '—', desc: 'Render-prop override for the fallback screen.' },
+      { prop: 'onReset', type: 'function', def: '—', desc: 'Called after "Try again" clears the error.' },
+    ],
+  },
+
+  SearchInput: {
+    usage: "<SearchInput value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} shortcutHint=\"⌘K\" />",
+    api: [
+      { prop: 'value', type: 'string', def: "''", desc: 'Controlled value.' },
+      { prop: 'onChange', type: '(event) => void', def: '—', desc: 'Input change handler.' },
+      { prop: 'placeholder', type: 'string', def: "'Search…'", desc: 'Placeholder text.' },
+      { prop: 'onClear', type: '() => void', def: '—', desc: 'Trailing × click; renders only while set AND value non-empty.' },
+      { prop: 'shortcutHint', type: 'string', def: '—', desc: 'Caller-authored kbd chip (e.g. "⌘K") shown while empty; no key handling here.' },
+      { prop: 'size', type: 'sm | md', def: 'md', desc: 'Control size + matched mono type class.' },
+      { prop: 'variant', type: 'filled | ghost | outline', def: 'filled', desc: 'Same chrome as Input; ignored when bare.' },
+      { prop: 'bare', type: 'boolean', def: 'false', desc: 'Borderless inline field for overlay/palette panels.' },
+    ],
+  },
+
+  ShellDrawer: {
+    usage: '<ShellDrawer open={open} onClose={() => setOpen(false)} side="left" width={320}>{nav}</ShellDrawer>',
+    api: [
+      { prop: 'open', type: 'boolean', def: '—', desc: 'Drawer visible; drives the slide in/out.' },
+      { prop: 'onClose', type: 'function', def: '—', desc: 'Esc, backdrop, and close button all call it.' },
+      { prop: 'side', type: 'left | right', def: 'left', desc: 'Edge the panel slides from.' },
+      { prop: 'width', type: 'number | string', def: '—', desc: 'Panel width; omit for a full-width sheet.' },
+      { prop: 'header', type: 'ReactNode', def: '—', desc: 'Header-row content beside the built-in close button.' },
+      { prop: 'children', type: 'ReactNode', def: '—', desc: 'Scrollable panel body.' },
+    ],
+  },
+
+  ShellSearchOverlay: {
+    usage: '<ShellSearchOverlay open={open} onClose={close} results={results} query={q} onQueryChange={setQ} onSelect={(item) => go(item.id)} />',
+    api: [
+      { prop: 'open', type: 'boolean', def: '—', desc: 'Mount/unmount the overlay.' },
+      { prop: 'onClose', type: '() => void', def: '—', desc: 'Backdrop, Escape, and post-select.' },
+      { prop: 'results', type: '{ id, label, group?, hint? }[]', def: '[]', desc: 'Pre-filtered rows — the consumer owns matching.' },
+      { prop: 'query', type: 'string', def: "''", desc: 'Controlled query; drives match highlighting.' },
+      { prop: 'onQueryChange', type: '(string) => void', def: '—', desc: 'Input change (value, not event).' },
+      { prop: 'onSelect', type: '(item) => void', def: '—', desc: 'Row click / Enter on active row; fires then closes.' },
+    ],
+  },
+
+  FeatureSplit: {
+    usage: '<FeatureSplit kicker="THE FLEET" title={<>Built to hold <em>course</em></>} body="…" media={<img … />} />',
+    api: [
+      { prop: 'kicker / title / body', type: 'ReactNode', def: '—', desc: 'Eyebrow, display pull (<em> = italic accent), lede.' },
+      { prop: 'meta', type: '{ num, label }[]', def: '—', desc: 'Stats strip (mutually exclusive with ctas).' },
+      { prop: 'ctas', type: 'ReactNode', def: '—', desc: 'Button row (mutually exclusive with meta).' },
+      { prop: 'media / caption', type: 'ReactNode', def: '—', desc: 'Visual column + mono caption with gradient veil.' },
+      { prop: 'bgImage', type: 'string', def: '—', desc: 'Inline cover background URL.' },
+      { prop: 'fullBleed', type: 'boolean', def: 'false', desc: '100vw breakout.' },
+    ],
   },
 }

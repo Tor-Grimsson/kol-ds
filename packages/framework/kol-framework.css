@@ -1205,3 +1205,113 @@ code, pre {
 }
 
 /* .kol-checker + .kol-grid-bg — moved to src/editor/styles/kol-editor.css */
+
+/* ───── AppShell TOC rail + SideNav collapsible-sections (monorepo shell merge, 2026-07-03) ───── */
+
+:root {
+  --kol-toc-w: 160px;
+}
+
+/* Opt-in third grid column: AppShell sets data-toc="true" on .kol-brand-layout
+   only when a page registers TOC content (ShellTocContext) or the app passes
+   defaultTocContent. Without the attribute the base 2-col template applies. */
+@media (min-width: 1280px) {
+  .kol-brand-layout[data-toc="true"] {
+    grid-template-columns: var(--kol-sidenav-w) minmax(0, 1fr) var(--kol-toc-w);
+  }
+}
+
+/* SideNav collapsibleSections chrome — inert unless that mode renders.
+   Rail (collapsed) + forced rail (≤1024px) hide count/toggle with the labels;
+   the open ≤767px drawer restores them, mirroring -hop-label. */
+.kol-sidenav.is-collapsed .kol-sidenav-hop-count,
+.kol-sidenav.is-collapsed .kol-sidenav-section-toggle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .kol-sidenav-hop-count,
+  .kol-sidenav-section-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .kol-sidenav.is-drawer-open .kol-sidenav-hop-count { display: inline; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-section-toggle { display: inline-flex; }
+}
+
+/* ── ShellHeader — kol-shell-header-* ─────────────────────────────────────
+   Chrome the JSX utilities can't express: hidden scrollbar on the tab strip,
+   the tab type/underline recipe with its active state, and the wide-viewport
+   (1600px) bumps. Colors are --kol-fg-* tokens; no raw color-mix() here.
+   Target: packages/framework/kol-framework.css */
+
+/* Brand block — reserves the nav-column width at lg+ so Row-2 tabs align to
+   the shell grid (keyed to the live sidenav token; source used lg:w-[256px]). */
+@media (min-width: 1024px) {
+  .kol-shell-header-brand {
+    width: var(--kol-sidenav-w, 256px);
+  }
+}
+
+/* Tab strip — horizontally scrollable, scrollbar hidden. */
+.kol-shell-header-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  padding-top: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.kol-shell-header-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Section tab — mono type, muted rest, underline on active (aria-current). */
+.kol-shell-header-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--kol-fg-64);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 8px 0 12px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.kol-shell-header-tab:hover {
+  color: var(--kol-fg-88);
+}
+
+.kol-shell-header-tab[aria-current="page"] {
+  color: var(--kol-surface-on-primary);
+  border-bottom-color: var(--kol-surface-on-primary);
+}
+
+/* Wide-viewport bumps (matches the shell's 1600px nav font step). */
+@media (min-width: 1600px) {
+  .kol-shell-header-tabs {
+    gap: 32px;
+  }
+
+  .kol-shell-header-tab {
+    font-size: 16px;
+    gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+
+  .kol-shell-header-tab svg {
+    width: 18px;
+    height: 18px;
+  }
+}

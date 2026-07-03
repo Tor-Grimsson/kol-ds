@@ -98,7 +98,7 @@
       {
         "app": "kol-distress",
         "file": "kol-apparat/kol-video/kol-distress/a-ref/kolkrabbi-radial/src/radial/apparatus/WavyCircleControls.jsx",
-        "code": "<Slider\n            label=\"Speed\"\n            min={0.1}\n            max={5}\n            step={0.1}\n            value={ui.animateSpeed}\n            onChange={(value) => onUiToggle('animateSpeed', value)}\n            variant=\"minimal\"\n            className=\"flex-1\"\n            formatValue={(value) => `${value.toFixed(1)}×`}\n          />"
+        "code": "<Slider\n            label=\"Speed\"\n            min={0.1}\n            max={5}\n            step={0.1}\n            value={ui.animateSpeed}\n            onChange={(value) => onUiToggle('animateSpeed', value)}\n            variant=\"minimal\"\n            className=\"flex-1\"\n            formatValue={(value) => `${value.toFixed(1)}\u00d7`}\n          />"
       },
       {
         "app": "kol-mirror",
@@ -371,7 +371,7 @@
       {
         "app": "kol-divs",
         "file": "kol-apparat/kol-docs/kol-divs/src/pages/Figma.jsx",
-        "code": "<Input\n            placeholder=\"search figma term, tailwind class, css property, or note…\"\n            value={query}\n            onChange={(e) => setQuery(e.target.value)}\n            iconLeft=\"search\"\n            size=\"sm\"\n          />"
+        "code": "<Input\n            placeholder=\"search figma term, tailwind class, css property, or note\u2026\"\n            value={query}\n            onChange={(e) => setQuery(e.target.value)}\n            iconLeft=\"search\"\n            size=\"sm\"\n          />"
       },
       {
         "app": "kol-noter",
@@ -414,7 +414,7 @@
       {
         "app": "kol-divs",
         "file": "kol-apparat/kol-docs/kol-divs/src/pages/Figma.jsx",
-        "code": "<PageSection\n        id=\"figma-overview\"\n        label=\"01 — figma → tailwind\"\n        title=\"figma → tailwind\"\n        body=\"Figma and CSS use different words for the same things. You are not stupid for getting confused — the names actually are different. Here is the dictionary.\"\n      />"
+        "code": "<PageSection\n        id=\"figma-overview\"\n        label=\"01 \u2014 figma \u2192 tailwind\"\n        title=\"figma \u2192 tailwind\"\n        body=\"Figma and CSS use different words for the same things. You are not stupid for getting confused \u2014 the names actually are different. Here is the dictionary.\"\n      />"
       },
       {
         "app": "kol-editor",
@@ -424,12 +424,12 @@
       {
         "app": "kol-client",
         "file": "kol-client/kol-client/src/pages/Brand.jsx",
-        "code": "<PageSection\n        id=\"logo\"\n        label=\"03 — logo\"\n        title=\"The crest\"\n        body=\"Four-blade rotary. Burgundy body with a cream blade. Rounded-square containment variant for bridge consoles. Full lockup family below.\"\n      >\n        <LogoCarousel logos={logoVariants} light />"
+        "code": "<PageSection\n        id=\"logo\"\n        label=\"03 \u2014 logo\"\n        title=\"The crest\"\n        body=\"Four-blade rotary. Burgundy body with a cream blade. Rounded-square containment variant for bridge consoles. Full lockup family below.\"\n      >\n        <LogoCarousel logos={logoVariants} light />"
       },
       {
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/pages/Acyr.jsx",
-        "code": "<PageSection id=\"identity\" label=\"01 — identity\" title=\"Identity\" body=\"Pulled live from src/data/brand-info.js.\">\n        <div className=\"mt-8\"><Table columns={identityCols} rows={identityRows} />"
+        "code": "<PageSection id=\"identity\" label=\"01 \u2014 identity\" title=\"Identity\" body=\"Pulled live from src/data/brand-info.js.\">\n        <div className=\"mt-8\"><Table columns={identityCols} rows={identityRows} />"
       },
       {
         "app": "kol-client-acyr-website",
@@ -1224,7 +1224,7 @@
       {
         "app": "kol-editor",
         "file": "kol-apparat/kol-editors/kol-editor/src/components/molecules/Menu.jsx",
-        "code": "<MenuItem onSelect={onSave} shortcut=\"⌘S\">Save</MenuItem>\n *     <MenuSeparator />"
+        "code": "<MenuItem onSelect={onSave} shortcut=\"\u2318S\">Save</MenuItem>\n *     <MenuSeparator />"
       },
       {
         "app": "kol-client-ac",
@@ -1234,7 +1234,7 @@
       {
         "app": "kol-client-acyr-website",
         "file": "kol-client/kol-client-acyr-website/apps/styleguide/src/editor/shell/MenuTop.jsx",
-        "code": "<MenuItem label=\"File\">\n          <div className=\"py-1 w-[220px]\">\n            <MenuDropdownItem onClick={onSave}>\n              {currentPresetId ? 'Save' : 'Save…'}\n            </MenuDropdownItem>\n            <MenuDropdownItem onClick={onSaveAs}>\n              Save as…\n            </MenuDropdownItem>\n            <MenuDropdownItem onClick={clearLayers} disabled={layers.length === 0}>\n              Clear\n            </MenuDropdownItem>\n            <MenuDropdownDivider />"
+        "code": "<MenuItem label=\"File\">\n          <div className=\"py-1 w-[220px]\">\n            <MenuDropdownItem onClick={onSave}>\n              {currentPresetId ? 'Save' : 'Save\u2026'}\n            </MenuDropdownItem>\n            <MenuDropdownItem onClick={onSaveAs}>\n              Save as\u2026\n            </MenuDropdownItem>\n            <MenuDropdownItem onClick={clearLayers} disabled={layers.length === 0}>\n              Clear\n            </MenuDropdownItem>\n            <MenuDropdownDivider />"
       },
       {
         "app": "kol-client-kolkrabbi",
@@ -1430,7 +1430,7 @@
       {
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx",
-        "code": "<Textarea\n            variant=\"ghost\" size=\"sm\" rows={3}\n            value={layer.customSvg ?? ''}\n            onChange={(e) => setProp('customSvg', e.target.value)}\n            placeholder='<svg viewBox=\"0 0 24 24\">…</svg>'\n          />"
+        "code": "<Textarea\n            variant=\"ghost\" size=\"sm\" rows={3}\n            value={layer.customSvg ?? ''}\n            onChange={(e) => setProp('customSvg', e.target.value)}\n            placeholder='<svg viewBox=\"0 0 24 24\">\u2026</svg>'\n          />"
       },
       {
         "app": "kol-client-acyr-website",
@@ -1440,12 +1440,12 @@
       {
         "app": "kol-client-kolkrabbi",
         "file": "kol-client/kol-client-kolkrabbi/src/editor/modes/pattern/PatternControls.jsx",
-        "code": "<Textarea\n              variant=\"filled\" size=\"sm\"\n              value={customSvg}\n              onChange={(e) => setCustomSvg(e.target.value)}\n              placeholder='<svg viewBox=\"0 0 24 24\">…</svg>'\n            />"
+        "code": "<Textarea\n              variant=\"filled\" size=\"sm\"\n              value={customSvg}\n              onChange={(e) => setCustomSvg(e.target.value)}\n              placeholder='<svg viewBox=\"0 0 24 24\">\u2026</svg>'\n            />"
       },
       {
         "app": "kol-labs-single",
         "file": "kol-apparat/kol-labs-single/src/pages/kinetic/DesignControls.jsx",
-        "code": "<Textarea key={ins.id} value={ins.text} onChange={(e) => onText(ins.id, e.target.value)} rows={2} resize=\"vertical\" placeholder=\"Type…\" />"
+        "code": "<Textarea key={ins.id} value={ins.text} onChange={(e) => onText(ins.id, e.target.value)} rows={2} resize=\"vertical\" placeholder=\"Type\u2026\" />"
       }
     ]
   },
@@ -1790,22 +1790,22 @@
       {
         "app": "kol-client",
         "file": "kol-client/kol-client/src/pages/Brand.jsx",
-        "code": "<BrandHero\n        label=\"/ command\"\n        title={BRAND.name}\n        lede=\"Federation flag. Fleet commission. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of sovereign institutions.\"\n      />"
+        "code": "<BrandHero\n        label=\"/ command\"\n        title={BRAND.name}\n        lede=\"Federation flag. Fleet commission. Strong, trustworthy, and elegant \u2014 yet flexible enough to counter the rigid nature of sovereign institutions.\"\n      />"
       },
       {
         "app": "kol-client-ac",
         "file": "kol-client/kol-client-ac/src/pages/Styleguide.jsx",
-        "code": "<BrandHero\n        label=\"brand guidelines\"\n        title={BRAND.name}\n        lede=\"Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.\"\n      />"
+        "code": "<BrandHero\n        label=\"brand guidelines\"\n        title={BRAND.name}\n        lede=\"Client-facing identity guidelines \u2014 chapter-structured for handoff. Mirrors the shape of the deliverable PDF.\"\n      />"
       },
       {
         "app": "kol-client-acyr-website",
         "file": "kol-client/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx",
-        "code": "<BrandHero\n        label=\"demo · unlisted\"\n        title=\"Button\"\n        lede=\"Four variants share the same padding scale as .ac-control (sm 4/12 · md 6/16 · lg 8/20). Heavier-background variants (secondary, accent) use font-weight 500 for ink punch; primary and outline stay at the ac-mono default 400.\"\n      />"
+        "code": "<BrandHero\n        label=\"demo \u00b7 unlisted\"\n        title=\"Button\"\n        lede=\"Four variants share the same padding scale as .ac-control (sm 4/12 \u00b7 md 6/16 \u00b7 lg 8/20). Heavier-background variants (secondary, accent) use font-weight 500 for ink punch; primary and outline stay at the ac-mono default 400.\"\n      />"
       },
       {
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/pages/Canalix.jsx",
-        "code": "<BrandHero\n        label=\"/ canalix\"\n        title=\"Canalix\"\n        lede=\"Master brand. Branded house. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of governmental institutions.\"\n        mark={<BrandLogo brand=\"canalix\" name=\"logomark-light\" className=\"kol-hero-mark\" title=\"Canalix\" />"
+        "code": "<BrandHero\n        label=\"/ canalix\"\n        title=\"Canalix\"\n        lede=\"Master brand. Branded house. Strong, trustworthy, and elegant \u2014 yet flexible enough to counter the rigid nature of governmental institutions.\"\n        mark={<BrandLogo brand=\"canalix\" name=\"logomark-light\" className=\"kol-hero-mark\" title=\"Canalix\" />"
       },
       {
         "app": "kol-client-acyr-website",
@@ -1844,7 +1844,7 @@
       {
         "app": "kol-client",
         "file": "kol-client/kol-client/src/pages/foundations/ColorUI.jsx",
-        "code": "<Accordion>\n        <AccordionPanel title=\"Neutrals\" meta={`${NEUTRALS.length} tokens`} defaultOpen>\n          <div className=\"kol-prose mb-6\">\n            <p>\n              Cool grey scale — slate-leaning to contrast warm burgundy. Surfaces\n              go dark-to-light in dark mode; ink runs the inverse. Border and divider\n              split the remaining structural duties.\n            </p>\n          </div>\n          <SwatchGrid items={NEUTRALS} />"
+        "code": "<Accordion>\n        <AccordionPanel title=\"Neutrals\" meta={`${NEUTRALS.length} tokens`} defaultOpen>\n          <div className=\"kol-prose mb-6\">\n            <p>\n              Cool grey scale \u2014 slate-leaning to contrast warm burgundy. Surfaces\n              go dark-to-light in dark mode; ink runs the inverse. Border and divider\n              split the remaining structural duties.\n            </p>\n          </div>\n          <SwatchGrid items={NEUTRALS} />"
       },
       {
         "app": "kol-client",
@@ -2077,17 +2077,17 @@
       {
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/pages/CanalixMarks.jsx",
-        "code": "<SubPageHero\n        backTo=\"/canalix\"\n        backLabel=\"← back to canalix\"\n        label=\"canalix · marks\"\n        title=\"Marks\"\n        lede={<>Product icon family — 15 accented + 21 monochrome. Every fill that was white / near-white is now <code>currentColor</code>, so the marks inherit the theme. Accent colors remain fixed per icon.</>"
+        "code": "<SubPageHero\n        backTo=\"/canalix\"\n        backLabel=\"\u2190 back to canalix\"\n        label=\"canalix \u00b7 marks\"\n        title=\"Marks\"\n        lede={<>Product icon family \u2014 15 accented + 21 monochrome. Every fill that was white / near-white is now <code>currentColor</code>, so the marks inherit the theme. Accent colors remain fixed per icon.</>"
       },
       {
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/pages/CanalixWebsites.jsx",
-        "code": "<SubPageHero\n        backTo=\"/canalix\"\n        backLabel=\"← back to canalix\"\n        label=\"canalix · websites\"\n        title=\"canalix.io\"\n        lede=\"Marketing-site comps — desktop pages stacked for scroll context, mobile mocks follow in a tighter grid. Click any comp to open fullscreen.\"\n      />"
+        "code": "<SubPageHero\n        backTo=\"/canalix\"\n        backLabel=\"\u2190 back to canalix\"\n        label=\"canalix \u00b7 websites\"\n        title=\"canalix.io\"\n        lede=\"Marketing-site comps \u2014 desktop pages stacked for scroll context, mobile mocks follow in a tighter grid. Click any comp to open fullscreen.\"\n      />"
       },
       {
         "app": "kol-client-canalix",
         "file": "kol-client/kol-client-canalix/src/pages/CasedocWebsites.jsx",
-        "code": "<SubPageHero\n        backTo=\"/casedoc\"\n        backLabel=\"← back to casedoc\"\n        label=\"casedoc · websites\"\n        title=\"casedoc.io\"\n        lede=\"Home family + Product detail + loose screens. Click a comp to open fullscreen.\"\n      />"
+        "code": "<SubPageHero\n        backTo=\"/casedoc\"\n        backLabel=\"\u2190 back to casedoc\"\n        label=\"casedoc \u00b7 websites\"\n        title=\"casedoc.io\"\n        lede=\"Home family + Product detail + loose screens. Click a comp to open fullscreen.\"\n      />"
       }
     ]
   },
@@ -2121,7 +2121,7 @@
       {
         "app": "kol-media-admin",
         "file": "kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx",
-        "code": "<MediaCard\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  meta={`${formatSize(o.size)} · ${formatDate(o.uploaded)}`}\n                  actions={renderActions(o)}\n                  downloadHref={downloadUrl(o.key)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
+        "code": "<MediaCard\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  meta={`${formatSize(o.size)} \u00b7 ${formatDate(o.uploaded)}`}\n                  actions={renderActions(o)}\n                  downloadHref={downloadUrl(o.key)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
       }
     ]
   },
@@ -2172,6 +2172,618 @@
     "name": "GRAPHICS",
     "pkg": "@kolkrabbi/kol-component",
     "category": "graphics",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "AnimatedTitle",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "AssetGrid",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "CurveOverlay",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "DocsToc",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "EmptyState",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "Figure",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "HlsVideo",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "OverlayGlassPanel",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "PriceDisplay",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ProsePreview",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "RotaryDial",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SearchInput",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TextPressure",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TiltCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TypeSample",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TypeSpecCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "CardFeatureItem",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ColorInputRow",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ColorRamp",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FramedMediaBand",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ShapeDropdown",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ShellDrawer",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ShellSearchOverlay",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SpecList",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SpectrumControls",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SwatchControls",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TabsRow",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "AsciiCursor",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "BentoCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ColorLoader",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "CtaGlobal",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ErrorBoundary",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FeatureSplit",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FeaturedCarousel",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FeaturesCardSection",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FullBleedHero",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "LoaderOverlay",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "MediaViewer",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "NewsletterBand",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SpectrumGrid",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ShellHeader",
+    "pkg": "@kolkrabbi/kol-framework",
+    "category": "framework",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ArticleCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ImageBlock",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "VideoBlock",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "WorkListItem",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "AlignmentGrid",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SelectionOverlay",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ArticleHeader",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "PortableTextRenderer",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "StackHero",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "WorkCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "WorkViewToggle",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "GalleryCarousel",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ParallaxShelf",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ProductDetailLayout",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "DiagonalMarqueeRiver",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "ScrollDriftGallery",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "Canvas",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "EditorShell",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "SpecimenSectionHeader",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "GlyphMetricsGrid",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "VariableFontSection",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TypefaceHero",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "TypefaceStyleSection",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FontPreviewSection",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "FoundryCharacterSets",
+    "pkg": "@kolkrabbi/kol-component/foundry",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "Popover",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "examples": []
+  },
+  {
+    "name": "Modal",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
     "count": 0,
     "apps": [],
     "files": 0,

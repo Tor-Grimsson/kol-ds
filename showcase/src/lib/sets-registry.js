@@ -32,6 +32,11 @@ export const SETS = Object.entries(modules)
 export const SET_CATEGORY_LABELS = {
   game: 'Games',
   dashboard: 'Dashboards',
+  editorial: 'Editorial / CMS',
+  portfolio: 'Portfolio',
+  store: 'Store',
+  foundry: 'Foundry',
+  editor: 'Editors',
   other: 'Other',
 }
 

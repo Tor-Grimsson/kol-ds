@@ -1,3 +1,4 @@
+import { isValidElement } from 'react'
 import { Icon } from '@kolkrabbi/kol-loader'
 
 /**
@@ -28,6 +29,8 @@ import { Icon } from '@kolkrabbi/kol-loader'
  * @param {string} props.type - Button type attribute (default: 'button')
  * @param {boolean} props.disabled - Disabled state
  * @param {boolean} props.selected - Selected/active state (toggle highlight)
+ * @param {ElementType|ReactNode} props.iconComponent - Icon renderer seam — a component that receives `{ name, size, className, style }` in place of the DS Icon (custom icon registries plug in here), or a pre-rendered node dropped in verbatim where the glyph would go. Defaults to DS Icon.
+ * @param {boolean} props.pressed - Toggle state — sets `aria-pressed` (true/false) and `kol-btn-pressed`; a `quiet` button drops its dimming while pressed. Leave undefined for non-toggle buttons.
  */
 const Button = ({
   children,
@@ -50,6 +53,8 @@ const Button = ({
   type = 'button',
   disabled = false,
   selected = false,
+  iconComponent,
+  pressed,
   ...props
 }) => {
   const resolvedIconSize = iconSize ?? (size === 'sm' ? 14 : size === 'lg' ? 18 : 16)
@@ -77,30 +82,36 @@ const Button = ({
 
   // Add kol-btn-animate class if animateIcon is true to disable default hover states
   const animateClass = animateIcon ? 'kol-btn-animate' : ''
-  const quietClass    = quiet ? 'kol-btn-quiet' : ''
+  const quietClass    = quiet && !pressed ? 'kol-btn-quiet' : ''
   const selectedClass = selected ? 'kol-btn-selected' : ''
+  const pressedClass  = pressed ? 'kol-btn-pressed' : ''
 
-  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${selectedClass} ${className}`.trim().replace(/\s+/g, ' ')
+  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${selectedClass} ${pressedClass} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
   const renderIcon = (iconName, iconHoverName) => {
     if (!iconName && !iconHoverName) return null
 
+    // Icon injection seam — a component type resolves names against a custom
+    // registry (EditorIcon etc.); a pre-rendered node drops in verbatim.
+    if (isValidElement(iconComponent)) return iconComponent
+    const IconCmp = iconComponent || Icon
+
     // If no hover icon, render single icon
     if (!iconHoverName) {
-      return <Icon name={iconName} size={resolvedIconSize} />
+      return <IconCmp name={iconName} size={resolvedIconSize} />
     }
 
     // Render both default and hover icons with positioning
     return (
       <span className="kol-icon-swap-container" style={{ position: 'relative', display: 'inline-flex', width: resolvedIconSize, height: resolvedIconSize, overflow: 'hidden' }}>
-        <Icon
+        <IconCmp
           name={iconName}
           size={resolvedIconSize}
           className="kol-icon-default"
           style={{ position: 'absolute' }}
         />
-        <Icon
+        <IconCmp
           name={iconHoverName}
           size={resolvedIconSize}
           className="kol-icon-hover"
@@ -149,7 +160,7 @@ const Button = ({
         className={combinedClass}
         style={mergedStyle}
         disabled={disabled}
-        aria-pressed={selected ? true : undefined}
+        aria-pressed={pressed !== undefined ? pressed : (selected ? true : undefined)}
         aria-label={iconOnly ? (props['aria-label'] || 'Button') : undefined}
         {...props}
       >

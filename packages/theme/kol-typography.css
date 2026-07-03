@@ -1088,3 +1088,45 @@
   --font-narrow:  'Right Grotesk Narrow', 'Right Grotesk', sans-serif;
   /* --font-mono lives in kol-typography-mono.css — keeps mono concerns in one file. */
 }
+
+/* TARGET: packages/theme/kol-typography.css — append to the `.kol-prose` section
+ * ---------------------------------------------------------------------------
+ * PortableTextRenderer (organism) leans on three prose hooks this repo's prose
+ * sheet is missing. Figure's `.kol-prose-figure` / `.kol-caption-label` /
+ * `.kol-caption-text` already exist; these three do not. The renderer degrades
+ * gracefully without them (segmentTitle → plain inline text, caption → normal
+ * paragraph, links → inherited color), so this is polish, not a hard dep.
+ *
+ * NOTE ON PLACEMENT: these are prose *typography* classes, so their home is
+ * kol-typography.css, NOT the kol-components-{atoms,molecules,organisms}.css
+ * component-chrome sheets. Flagged so it lands in the right file.
+ */
+
+/* inline mark — emphasised run inside a paragraph */
+.kol-segment-title {
+  font-family: var(--kol-font-family-sans-compact);
+  font-weight: 500;
+  color: var(--kol-surface-on-primary);
+}
+
+/* standalone caption block (the `caption` block type) */
+.kol-prose .caption {
+  margin: -12px 0 24px;
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: var(--kol-fg-48, color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent));
+}
+
+/* inline links (the `link` mark) */
+.kol-prose a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--kol-fg-32, color-mix(in srgb, var(--kol-surface-on-primary) 32%, transparent));
+  transition: text-decoration-color 0.15s ease;
+}
+.kol-prose a:hover {
+  text-decoration-color: currentColor;
+}

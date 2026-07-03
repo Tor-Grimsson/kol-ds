@@ -218,3 +218,192 @@
     padding: 6px 10px;
   }
 }
+
+/*
+ * ─────────────────────────────────────────────────────────────────────
+ * FeatureSplit — src/components/organisms/FeatureSplit.jsx
+ * ─────────────────────────────────────────────────────────────────────
+ *
+ * Destined for kol-components-organisms.css.
+ *
+ * Structural (applied by FeatureSplit.jsx; do not use directly):
+ *   .kol-feature-split                  section — surface bg + ink
+ *   .kol-feature-split-kicker           mono eyebrow, accent color
+ *   .kol-feature-split-pull             display pull headline
+ *   .kol-feature-split-pull em          italic accent inside the pull
+ *   .kol-feature-split-body             lede paragraph, 72% ink
+ *   .kol-feature-split-meta             stats strip — hairline top border
+ *   .kol-feature-split-meta-num         stat number
+ *   .kol-feature-split-meta-label       stat label — mono, 48% ink
+ *   .kol-feature-split-visual img       cover-fit media
+ *   .kol-feature-split-visual-veil      bottom gradient (caption legibility)
+ *   .kol-feature-split-visual-caption   mono caption over the media
+ *
+ * Port notes (from apps/brand kol-site.css `.site-feature*`):
+ *   - text-transform: uppercase DROPPED from kicker / meta-label / caption —
+ *     KOL rule: author casing at the call site.
+ *   - Hardcoded "Right Grotesk" / "Right Grotesk Text" / "Right Grotesk Wide"
+ *     families → var(--kol-font-family-sans) (this theme tokenizes only
+ *     sans / sans-narrow / sans-compact; no Text/Wide tokens).
+ *   - App `--kol-pad-page-*` padding and the shared `.site-*` full-bleed
+ *     rule moved to Tailwind utilities in the JSX (`fullBleed` prop).
+ */
+
+/* =============================================================================
+ * FeatureSplit
+ * ============================================================================= */
+
+.kol-feature-split {
+  background: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+}
+
+.kol-feature-split-kicker {
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--kol-accent-primary);
+}
+
+.kol-feature-split-pull {
+  margin: 0;
+  font-family: var(--kol-font-family-sans);
+  font-weight: 700;
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--kol-surface-on-primary);
+}
+
+.kol-feature-split-pull em {
+  font-family: var(--kol-font-family-sans);
+  font-feature-settings: "liga", "dlig";
+  font-weight: 700;
+  font-style: italic;
+  color: var(--kol-accent-primary);
+}
+
+.kol-feature-split-body {
+  margin: 0;
+  font-family: var(--kol-font-family-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.kol-feature-split-meta {
+  border-top: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+}
+
+.kol-feature-split-meta-num {
+  font-family: var(--kol-font-family-sans);
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--kol-surface-on-primary);
+}
+
+.kol-feature-split-meta-label {
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+}
+
+.kol-feature-split-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kol-feature-split-visual-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 60%,
+    color-mix(in srgb, var(--kol-surface-primary) 48%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+.kol-feature-split-visual-caption {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+}
+
+/*
+ * ─────────────────────────────────────────────────────────────────────
+ * FullBleedHero — src/components/organisms/FullBleedHero.jsx
+ * ─────────────────────────────────────────────────────────────────────
+ *
+ * Destined for kol-components-organisms.css.
+ *
+ * Structural (applied by FullBleedHero.jsx; do not use directly):
+ *   .kol-full-bleed-hero          section root — surface bg behind the media
+ *   .kol-full-bleed-hero-media    cover-fit media layer (Image / HlsVideo /
+ *                                 plain <video> / caller-supplied node)
+ *
+ * Why CSS and not Tailwind for the media layer: the Image molecule bakes
+ * `max-w-full h-auto` into every <img>; an inline `h-full` utility can't
+ * reliably out-cascade `h-auto` (same utilities layer — stylesheet order,
+ * not class order, decides). This unlayered rule wins over Tailwind's
+ * layered utilities and pins cover-fill identically for img, video, and
+ * caller-supplied media nodes.
+ */
+
+/* =============================================================================
+ * FullBleedHero
+ * ============================================================================= */
+
+.kol-full-bleed-hero {
+  background: var(--kol-surface-primary);
+}
+
+.kol-full-bleed-hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* =============================================================================
+ * FeaturedCarousel — src/components/organisms/FeaturedCarousel.jsx
+ * =============================================================================
+ *
+ * Append to packages/theme/kol-components-organisms.css.
+ *
+ * FeaturedCarousel rebuilds on the shared Carousel *core* — it reuses the
+ * `.kol-embla*` chrome verbatim (viewport / container / slide / controls /
+ * `.is-slides` wide-slide width), so NONE of that is redefined here. Frame,
+ * progress bar, and glass positioning are Tailwind utilities on the JSX.
+ *
+ * The one rule that can't be a utility: the media layer. The Image molecule
+ * bakes `h-auto` (a Tailwind layer utility), so an inline `h-full` can't
+ * reliably out-cascade it — the same reason FullBleedHero uses a theme rule.
+ * This unlayered rule wins and pins image / video / caller-node media as a
+ * cover-fit background over the frame.
+ */
+
+.kol-featured-carousel-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}

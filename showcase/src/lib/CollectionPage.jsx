@@ -2,13 +2,16 @@ import { Link } from 'react-router-dom'
 import DocLayout from './DocLayout.jsx'
 import DocHeader from './DocHeader.jsx'
 import BlockViewer from './BlockViewer.jsx'
-import { slugify, getComponentBySlug } from './registry.js'
+import DemoStage from './DemoStage.jsx'
+import ErrorBoundary from './ErrorBoundary.jsx'
+import { DEMOS } from './demos-registry.js'
+import { slugify, getComponentBySlug, FUNCTIONS } from './registry.js'
 
 /**
  * CollectionPage — the dedicated page for ONE collection item (block or set)
  * at `<basePath>/:slug`: docs chrome + header + the full viewer stage + the
- * COMPOSITION manifest (every component the item is compiled from, scanner-
- * derived — see scripts/extract-composition.mjs) + prev/next pager.
+ * COMPOSITION gallery (EVERY component the item is compiled from, scanner-
+ * derived, each rendered live in its own container) + prev/next pager.
  */
 
 /* KOL loaders are documented on /docs/loaders, not component pages. */
@@ -22,6 +25,38 @@ const kolHref = (name) => {
 
 const chipCls = 'inline-flex items-center rounded-[var(--kol-radius-sm)] border border-fg-12 px-2.5 py-1 kol-mono-12'
 
+/* One component of the collection, in its own container — live demo where one
+ * exists, otherwise a labelled card linking to the component's own page. */
+function ComponentSpecimen({ name, local = false }) {
+  const slug = slugify(name)
+  const comp = getComponentBySlug(slug)
+  const href = kolHref(name)
+  const demo = DEMOS[name]
+  const fn = comp?.function ? FUNCTIONS[comp.function] : null
+  const tag = local ? 'LOCAL PART' : fn
+
+  return (
+    <div className="overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-08 bg-surface-primary">
+      <div className="flex items-center justify-between border-b border-fg-08 px-4 py-2.5">
+        <div className="flex items-center gap-3">
+          <span className="kol-mono-13 text-emphasis">{name}</span>
+          {tag && <span className="kol-helper-10 uppercase tracking-widest text-meta">{tag}</span>}
+        </div>
+        {href && (
+          <Link to={href} className="kol-mono-12 text-meta transition-colors hover:text-emphasis">View →</Link>
+        )}
+      </div>
+      <div className="flex min-h-[96px] items-center justify-center p-6">
+        <ErrorBoundary>
+          {demo
+            ? <DemoStage entry={demo} />
+            : <p className="max-w-[52ch] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
+        </ErrorBoundary>
+      </div>
+    </div>
+  )
+}
+
 function Composition({ composition }) {
   if (!composition) return null
   const { kol = [], local = {}, support = [], external = [] } = composition
@@ -29,33 +64,25 @@ function Composition({ composition }) {
 
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="kol-sans-heading-03 text-emphasis">Components</h2>
+      <div className="flex flex-col gap-1">
+        <h2 className="kol-sans-heading-03 text-emphasis">Components</h2>
+        <p className="kol-mono-12 text-meta">Every KOL component this collection is built from ({kol.length}) — rendered live, one after another.</p>
+      </div>
 
+      {/* Live gallery — one container per KOL component, stacked */}
       {kol.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <p className="kol-helper-10 uppercase tracking-widest text-meta">KOL components ({kol.length})</p>
-          <div className="flex flex-wrap gap-2">
-            {kol.map((name) => {
-              const href = kolHref(name)
-              return href ? (
-                <Link key={name} to={href} className={`${chipCls} text-emphasis transition-colors hover:border-fg-40`}>
-                  {name}
-                </Link>
-              ) : (
-                <span key={name} className={`${chipCls} text-body`}>{name}</span>
-              )
-            })}
-          </div>
+        <div className="flex flex-col gap-4">
+          {kol.map((name) => <ComponentSpecimen key={name} name={name} />)}
         </div>
       )}
 
+      {/* Showcase-local parts (chess board, dashboard cards…) — same container
+          treatment, one after another, live where a demo exists. */}
       {localAreas.map(([area, names]) => (
-        <div key={area} className="flex flex-col gap-3">
+        <div key={area} className="flex flex-col gap-4">
           <p className="kol-helper-10 uppercase tracking-widest text-meta">{area} — local parts ({names.length})</p>
-          <div className="flex flex-wrap gap-2">
-            {names.map((name) => (
-              <span key={name} className={`${chipCls} text-body`}>{name}</span>
-            ))}
+          <div className="flex flex-col gap-4">
+            {names.map((name) => <ComponentSpecimen key={name} name={name} local />)}
           </div>
         </div>
       ))}

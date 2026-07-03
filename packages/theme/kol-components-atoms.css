@@ -737,3 +737,114 @@ a:hover .icon-hover,
   color: var(--kol-surface-on-primary);
   border-color: var(--kol-fg-48);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Figure — atoms/Figure.jsx
+ *   Caption'd media shell for long-form prose (label above, aspect-locked
+ *   frame, figcaption below). Ported from the monorepo prose sheet; the
+ *   label's text-transform:uppercase was dropped per the KOL no-auto-
+ *   casing rule — author labels in their final case.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-prose-figure {
+  margin-block: 2rem;
+}
+
+.kol-caption-label {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  margin-block-end: 0.5rem;
+}
+
+.kol-caption-text {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  margin-block-start: 0.75rem;
+}
+
+/* ── target-file: packages/theme/kol-components-atoms.css ──────────────
+ * Append directly after the .kol-btn-quiet block
+ * (after `.kol-btn-quiet:not(:disabled):hover { opacity: 1; }`). */
+
+/* .kol-btn-pressed — toggle-on state (Button `pressed` prop, aria-pressed).
+ * Hover-level fill held at rest so a pressed toggle reads as lit. Pairs
+ * with `quiet`: Button drops kol-btn-quiet while pressed, giving the
+ * tool-palette dim-at-rest → lit-when-active idiom. */
+.kol-btn-pressed {
+  background-color: var(--kol-fg-08);
+  color: var(--kol-surface-on-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Type-specimen kit — TARGET: packages/theme/kol-components-atoms.css
+ *   (the two .kol-prose-* rules may alternatively land in the prose
+ *   section of packages/theme/kol-typography.css per the ProsePreview
+ *   lobby spec — pick one home, not both.)
+ *
+ * Ported from kol-monorepo apps/brand/src/components/framework/
+ * kol-framework.css. NOT ported (already in kol-typography.css, richer
+ * DS versions win): .kol-prose pre, .kol-prose code, .kol-prose pre code.
+ * Also already in kol-components-atoms.css: .kol-prose-figure,
+ * .kol-caption-label, .kol-caption-text.
+ * No text-transform rules existed in the source CSS; the components'
+ * Tailwind `uppercase` classes were dropped per the KOL no-auto-casing
+ * rule — author labels/pullouts in their final case.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* ─── TypeSample — atoms/TypeSample.jsx ───
+   Wrapper padding inlined in the component; adjacent-sibling hairline
+   separates stacked samples. */
+.kol-type-sample + .kol-type-sample {
+  border-top: 1px solid var(--kol-fg-08);
+}
+
+/* ─── TypeSpecCard — atoms/TypeSpecCard.jsx ───
+   Layout inlined in the component; descendant <p> overrides give sample
+   prose 16px rhythm (Preflight zeroes <p> margin). */
+.kol-type-spec-sample p { margin: 0 0 16px; }
+.kol-type-spec-sample p:last-child { margin-bottom: 0; }
+
+/* ─── ProsePreview — atoms/ProsePreview.jsx ───
+   Prose chrome beyond the base .kol-prose contract. */
+.kol-prose-indented {
+  padding-left: 32px;
+  border-left: 1px solid var(--kol-fg-16);
+}
+
+.kol-prose-pullout {
+  padding: 16px 0;
+  margin: 32px 0;
+  border-top: 1px solid var(--kol-fg-08);
+  border-bottom: 1px solid var(--kol-fg-08);
+}
+
+/* =============================================================================
+ * TextPressure  (atom)
+ * append to packages/theme/kol-components-atoms.css
+ *
+ * Only the outlined-ghost layer lives here — it needs a ::after pseudo-element
+ * and -webkit-text-stroke, neither expressible in Tailwind or inline style.
+ * Everything else (layout, sizing, weight) is Tailwind utilities / inline vars
+ * on the JSX. Stroke color comes in through the inline `--kol-text-pressure-
+ * stroke` custom property (defaulted here so the rule is standalone-safe).
+ * ============================================================================= */
+
+.kol-text-pressure--stroke .kol-text-pressure-char {
+  position: relative;
+}
+
+.kol-text-pressure--stroke .kol-text-pressure-char::after {
+  content: attr(data-char);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: transparent;
+  z-index: -1;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: var(--kol-text-pressure-stroke, var(--kol-accent-primary));
+}

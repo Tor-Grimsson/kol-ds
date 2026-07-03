@@ -303,3 +303,49 @@
   outline: 1px solid var(--kol-fg-emphasis);
   outline-offset: -2px;
 }
+
+/* =============================================================================
+ * Color-doc widget chrome — ColorRamp · SpectrumGrid
+ *
+ * Almost everything is Tailwind/inline in the components; only the ONE bit
+ * Tailwind can't express against a dynamic grid template lives here: the
+ * SpectrumGrid responsive narrowing. Fold into packages/theme (e.g.
+ * kol-components-organisms.css) when these graduate from the lobby.
+ *
+ * How it works: SpectrumGrid declares its template inline with var() fallbacks —
+ *   grid-template-columns: var(--kol-sg-label-w, 100px) repeat(N, minmax(0,1fr));
+ *   gap: var(--kol-sg-gap, 4px);
+ * so it renders correctly with NO stylesheet loaded. On narrow viewports we just
+ * re-declare those two custom properties on the grid CLASS; the inline var()
+ * reads pick them up (the class provides the value, so a media-query override
+ * cascades — there's no competing inline *set* of the same property). The
+ * per-cell hex readout is hidden separately via Tailwind `max-[900px]:hidden`.
+ * ============================================================================= */
+
+@media (max-width: 900px) {
+  .kol-spectrum-grid {
+    --kol-sg-label-w: 72px;
+    --kol-sg-gap: 2px;
+  }
+}
+
+/* SwatchControls chrome — the only bespoke CSS the component needs.
+ *
+ * The paint chips + sample chip reuse ColorSwatch's `halo` variant for the
+ * tuned double-ring, so the ONLY rule left is the NoneMarker's "set to none"
+ * affordance: a red diagonal slash on white (a two-stop 45° gradient) over a
+ * themed 1px ring. Neither is a Tailwind utility, so it lands here.
+ *
+ * Append to packages/theme/kol-components-molecules.css. */
+.kol-swatch-none-marker {
+  background: linear-gradient(
+    45deg,
+    #fff 0%,
+    #fff 42%,
+    #DC2626 42%,
+    #DC2626 58%,
+    #fff 58%,
+    #fff 100%
+  );
+  box-shadow: 0 0 0 1px var(--kol-fg-32);
+}

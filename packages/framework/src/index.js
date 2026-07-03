@@ -8,7 +8,9 @@
  */
 
 export { default as AppShell } from './AppShell.jsx'
+export { ShellTocContext, ShellTocCollapsedContext } from './AppShell.jsx'
 export { default as SideNav } from './SideNav.jsx'
+export { default as ShellHeader } from './ShellHeader.jsx'
 export { default as ThemeToggle } from './ThemeToggle.jsx'
 export { default as Layout } from './Layout.jsx'
 export { default as PageSection } from './PageSection.jsx'

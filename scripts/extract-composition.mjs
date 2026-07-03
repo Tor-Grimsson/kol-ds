@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 /**
  * extract-composition — for every block and set, derive the FULL component
- * manifest from source: which published KOL components it uses (transitively),
- * which showcase-local parts compose it, and which external deps it pulls.
+ * manifest from source: EVERY published KOL component it uses (walked
+ * TRANSITIVELY into the package sources, so nested components a set only
+ * uses indirectly still show up), which showcase-local parts compose it,
+ * and which external deps it pulls.
  *
  * Scanner-first (the repo doctrine): the slug pages render this file; nothing
  * is hand-authored, so the list can't drift from the code.
+ *
+ * Transitivity: a set imports `ArticleCard` from the package — the scanner
+ * resolves that to packages/component/src/molecules/ArticleCard.jsx (via the
+ * barrels) and walks INTO it, so `Figure`, `Button`, `Image`, … that
+ * ArticleCard composes all land in the manifest too. This is why a set slug
+ * shows a long list of every component in use, not just the handful the set
+ * file names directly.
  *
  * Output: showcase/src/usage/composition.json
  *   { blocks: { <key>: { kol: [..], local: { '<area>': [..] }, support: [..], external: [..] } },
@@ -20,7 +29,7 @@ import { fileURLToPath } from 'node:url'
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(REPO, 'showcase/src')
 
-const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-loader', '@kolkrabbi/kol-framework']
+const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-component/foundry', '@kolkrabbi/kol-loader', '@kolkrabbi/kol-framework']
 
 /* Resolve a relative import to a real file (mirrors Vite's resolution). */
 function resolveImport(fromFile, spec) {
@@ -31,7 +40,7 @@ function resolveImport(fromFile, spec) {
   return null
 }
 
-/* All import statements of a module: [{ spec, names }] — names = named + default specifiers. */
+/* All import + re-export statements of a module: [{ spec, names }]. */
 function importsOf(file) {
   const txt = readFileSync(file, 'utf8')
   const out = []
@@ -59,7 +68,29 @@ function importsOf(file) {
   return out
 }
 
-/* Area label for a local file — the composition list groups by this. */
+/* name -> package source file, built from the published barrels. Lets a
+ * `@kolkrabbi/*` import be walked transitively into the real component. */
+const BARRELS = [
+  join(REPO, 'packages/component/src/index.js'),
+  join(REPO, 'packages/component/src/organisms/foundry/index.js'),
+  join(REPO, 'packages/framework/src/index.js'),
+  join(REPO, 'packages/loader/src/index.js'),
+]
+const EXPORT_MAP = {}
+for (const barrel of BARRELS) {
+  if (!existsSync(barrel)) continue
+  for (const { spec, names } of importsOf(barrel)) {
+    if (!spec.startsWith('.')) continue
+    const target = resolveImport(barrel, spec)
+    if (!target) continue
+    for (const n of names) if (!(n in EXPORT_MAP)) EXPORT_MAP[n] = target
+  }
+}
+
+const isConst = (n) => /^[A-Z0-9_]+$/.test(n)       // GRAPHICS, CANVAS_VIRTUAL_W → data, not a component
+const isComponent = (n) => /^[A-Z]/.test(n) && !isConst(n)
+
+/* Area label for a showcase-local file — the composition groups by this. */
 function areaOf(file) {
   const rel = relative(SRC, file).replace(/\\/g, '/')
   const parts = rel.split('/')
@@ -67,12 +98,14 @@ function areaOf(file) {
   return parts[0]
 }
 
-/* Walk one entry transitively; collect the manifest. */
+const inPkg = (f) => f.replace(/\\/g, '/').includes('/packages/')
+
+/* Walk one entry transitively — INTO the package sources — and collect the manifest. */
 function scan(entry) {
   const kol = new Set()
   const external = new Set()
-  const localParts = {} // area -> Set of component names (.jsx)
-  const support = new Set() // local .js modules (hooks/utils/data)
+  const localParts = {} // area -> Set of showcase-local component names (.jsx)
+  const support = new Set() // hooks/utils (local .js modules + lowercase package exports)
   const visited = new Set()
   const queue = [entry]
 
@@ -80,17 +113,28 @@ function scan(entry) {
     const file = queue.pop()
     if (visited.has(file)) continue
     visited.add(file)
+    const fromPkg = inPkg(file)
 
     for (const { spec, names } of importsOf(file)) {
       if (KOL_PKGS.includes(spec)) {
-        names.forEach((n) => kol.add(n))
+        // published KOL import — record every name, then walk into its source
+        for (const n of names) {
+          if (isComponent(n)) kol.add(n)
+          else if (!isConst(n)) support.add(n) // useTilt, resolveCssVar, getEmbedUrl…
+          const target = EXPORT_MAP[n]
+          if (target) queue.push(target)
+        }
       } else if (spec.startsWith('.')) {
         if (spec.endsWith('.css')) continue
         const target = resolveImport(file, spec)
         if (!target) continue
         const name = (target.split('/').pop() || '').replace(/\.(jsx|js)$/, '')
         if (target !== entry) {
-          if (target.endsWith('.jsx')) {
+          if (fromPkg) {
+            // inside the package: relative imports ARE nested KOL components/utils
+            if (target.endsWith('.jsx') && isComponent(name)) kol.add(name)
+            else if (!/^index$/.test(name) && !isConst(name)) support.add(name)
+          } else if (target.endsWith('.jsx')) {
             const area = areaOf(target)
             ;(localParts[area] ||= new Set()).add(name)
           } else if (!/^index$/.test(name)) {
@@ -99,7 +143,7 @@ function scan(entry) {
         }
         queue.push(target)
       } else if (!spec.startsWith('@kolkrabbi/') && spec !== 'react' && spec !== 'react-dom') {
-        external.add(spec.startsWith('react-') && spec !== 'react-router-dom' ? spec : spec)
+        external.add(spec)
       }
     }
   }
@@ -122,5 +166,4 @@ for (const kind of ['blocks', 'sets']) {
 
 const out = join(SRC, 'usage/composition.json')
 writeFileSync(out, JSON.stringify(result, null, 2))
-const counts = Object.entries(result).map(([k, v]) => `${k}: ${Object.keys(v).length}`).join(' · ')
-console.log(`composition: ${counts} → ${relative(REPO, out)}`)
+console.log(`composition: blocks: ${Object.keys(result.blocks).length} · sets: ${Object.keys(result.sets).length} → showcase/src/usage/composition.json`)

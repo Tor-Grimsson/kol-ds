@@ -16,6 +16,7 @@ tags:
 related:
   - "[[../02-components/01-inventory|components]]"
   - "[[02-shells|reference shells]]"
+  - "[[03-slug-composition-gallery|slug pages & the composition gallery]]"
 ---
 
 # Blocks & sets — composed layers above components

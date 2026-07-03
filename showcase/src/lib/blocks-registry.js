@@ -31,10 +31,17 @@ export const BLOCKS = Object.entries(modules)
 
 // Human labels for the category tab strip; unlisted keys fall back to the key.
 export const CATEGORY_LABELS = {
+  hero: 'Heroes',
+  marketing: 'Marketing',
+  content: 'Content',
+  media: 'Media',
+  color: 'Color',
   sidenav: 'Sidenav',
+  chrome: 'Shell chrome',
   panel: 'Panels',
   form: 'Forms',
   toolbar: 'Toolbars',
+  footer: 'Footers',
   other: 'Other',
 }
 
