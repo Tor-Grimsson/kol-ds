@@ -5,7 +5,8 @@
  *
  * SegGroup/SegBtn is the minimal labelled segmented control (BG · SIZE ·
  * STYLE · GRID) — deliberately NOT SegmentedToggle, which is a filled pill
- * toggle for a different job. KeylineBg is the pixel-grid overlay.
+ * toggle for a different job. KeylineBg is the icon keyline guide (dashed
+ * diagonals + keyline rects + circle on the 24×24 grid).
  */
 
 export const SegBtn = ({ active, onClick, children }) => (
@@ -33,15 +34,24 @@ export const SegGroup = ({ label, options, value, onChange }) => (
 )
 
 export function KeylineBg({ bgLight }) {
-  const stroke = bgLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.12)'
+  const diag = '#0A8DA4'
+  const key  = bgLight ? '#CA3ABC' : '#F2D24B'
   return (
-    <svg className="absolute inset-0 h-full w-full" style={{ zIndex: 0 }} aria-hidden="true">
-      <defs>
-        <pattern id="kol-keyline" width="8" height="8" patternUnits="userSpaceOnUse">
-          <path d="M8 0H0V8" fill="none" stroke={stroke} strokeWidth="0.5" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#kol-keyline)" />
+    <svg
+      width="100%" height="100%" viewBox="0 0 24 24"
+      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+      aria-hidden="true"
+    >
+      <g stroke={diag} strokeWidth="0.1" strokeDasharray="0.4 0.6" opacity="1" fill="none">
+        <path d="M0 0 L24 24" />
+        <path d="M24 0 L0 24" />
+      </g>
+      <g stroke={key} strokeWidth="0.1" strokeDasharray="0.4 0.6" opacity="1" fill="none">
+        <rect x="4" y="2" width="16" height="20" rx="1" />
+        <rect x="3" y="3" width="18" height="18" rx="1" />
+        <rect x="2" y="4" width="20" height="16" rx="1" />
+        <circle cx="12" cy="12" r="4" />
+      </g>
     </svg>
   )
 }

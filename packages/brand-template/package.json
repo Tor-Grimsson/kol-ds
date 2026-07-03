@@ -1,0 +1,34 @@
+{
+  "name": "@kolkrabbi/kol-brand-template",
+  "version": "0.0.0",
+  "description": "The KOL brand manifest schema + a placeholder reference implementation — the blank slate copied for each new client brand and the dev fixture for generic styleguide renderers. Plain ESM, no React.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./schema": "./src/schema.js",
+    "./adapter": "./src/adapter.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "brand",
+    "brand-kit",
+    "manifest"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/brand-template"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

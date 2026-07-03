@@ -14,13 +14,16 @@ import { Icon } from '@kolkrabbi/kol-loader'
  *                      where a segmented two-button toggle is overkill.
  *
  * Built on the .kol-control shell. Default options use grid-06 / list-01
- * icons; consumers can pass `options` to override. For `variant="single"`,
- * the FIRST option in `options` is the "off" value; the SECOND is "on".
+ * icons; consumers can pass `options` to override. `iconVariant` picks the
+ * icon cut for variant="icon" ('stroke' default; 'solid' reads better at
+ * 14px). For `variant="single"`, the FIRST option in `options` is the "off"
+ * value; the SECOND is "on".
  */
 const ViewToggle = ({
   viewMode,
   onViewChange,
   variant = 'text',
+  iconVariant = 'stroke',
   options = [
     { value: 'grid', label: 'Grid view', icon: 'grid-06' },
     { value: 'list', label: 'List view', icon: 'list-01' }
@@ -88,7 +91,7 @@ const ViewToggle = ({
           title={option.label}
         >
           {isIconVariant && option.icon ? (
-            <Icon name={option.icon} size={14} />
+            <Icon name={option.icon} size={14} variant={iconVariant} />
           ) : (
             option.label
           )}

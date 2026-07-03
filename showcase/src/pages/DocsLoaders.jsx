@@ -85,9 +85,10 @@ export default function DocsLoaders() {
         <ApiTable
           rows={[
             { prop: 'ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-loader', desc: 'Flat list globbed from the canonical stroke SVGs.' },
+            { prop: 'SOLID_ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-loader', desc: 'Solid-cut inventory (keys-only) for mirror-gap diffing.' },
             { prop: 'ICON_INDEX / ICONS', type: '{ [folder]: name[] }', def: 'kol-loader', desc: 'Inventory grouped by folder; ICONS aliases ICON_INDEX.' },
             { prop: 'ALL_ICONS / hasIcon / getCategory', type: 'list / fn / fn', def: 'kol-loader', desc: 'Flattened names + lookup helpers.' },
-            { prop: 'GRAPHICS / GRAPHIC_RAW', type: 'map / raw svg map', def: 'kol-component', desc: 'Graphic categories→names and raw SVG source strings.' },
+            { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
           ]}
         />
       </DocSection>

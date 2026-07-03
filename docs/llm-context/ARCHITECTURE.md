@@ -19,9 +19,11 @@ This repo **maintains**, **hosts**, and **showcases** the KOL design system. The
 
 The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-monorepo` are downstream and migrate onto the published versions. When package code changes, it changes **here** first.
 
-## §3 — Four packages, fixed boundaries
+## §3 — Four UI packages (fixed) + a clients tier
 
 `theme` (CSS only) ← `loader` (Icon) ← `component` (atoms→organisms) ← `framework` (app shell). Cross-package imports use the `@kolkrabbi/*` specifier; **within** a package, imports stay relative file-to-file. The split was derived from the recent single-app source (`_kol-labs-single-init-state`), re-packaged into the monorepo's published topology.
+
+**Clients tier** (added 2026-07-03): headless service SDKs — **one package per service contract** (`@kolkrabbi/kol-*-client`), plain ESM, no React, no deps on or from the UI packages; the package version tracks its API contract. First: `kol-media-client`. **Do not** merge clients into a grab-bag package — unrelated contracts must not version in lock-step.
 
 **Do not** collapse packages back into one app, and do not add reverse dependencies (e.g. component importing framework).
 

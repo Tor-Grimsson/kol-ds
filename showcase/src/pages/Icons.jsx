@@ -22,7 +22,7 @@ const ICON_ITEMS = ICON_ENTRIES.map((e) => ({ name: e.name, category: e.folder }
 function Tile({ name, size, variant, bgLight, gridOverlay, copied, onCopy }) {
   const cell = size + 16
   return (
-    <button type="button" onClick={() => onCopy(name)} title={name} className="flex flex-col items-center gap-1">
+    <button type="button" onClick={() => onCopy(name)} title={name} className="flex flex-col items-center gap-1 p-0">
       <div
         className="relative flex items-center justify-center rounded-sm"
         style={{
@@ -82,15 +82,26 @@ export default function Icons() {
                 key={name}
                 type="button"
                 onClick={() => copy(name)}
-                className="flex items-center gap-4 py-2 border-b border-fg-04 hover:bg-fg-02 text-left"
+                title={`${cat}/${name}`}
+                className="flex items-center gap-4 py-1.5 border-b border-fg-04 hover:bg-fg-02 text-left p-0"
               >
                 <span
-                  className="flex items-center justify-center shrink-0 rounded-sm"
-                  style={{ width: 32, height: 32, background: bgLight ? '#FFFFFF' : '#0E0E11', color: bgLight ? '#0E0E11' : '#FFFFFF' }}
+                  className="relative flex items-center justify-center shrink-0 rounded-sm"
+                  style={{
+                    width: Math.max(40, size + 16),
+                    height: Math.max(40, size + 16),
+                    background: bgLight ? '#FFFFFF' : '#0E0E11',
+                    color: bgLight ? '#0E0E11' : '#FFFFFF',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                  }}
                 >
-                  <Icon name={name} size={20} variant={variant} />
+                  {gridOverlay && <KeylineBg bgLight={bgLight} />}
+                  <span className="relative" style={{ zIndex: 1 }}>
+                    <Icon name={name} size={size} variant={variant} />
+                  </span>
                 </span>
-                <span className="kol-mono-12 text-fg-80">{copied === name ? 'copied!' : name}</span>
+                <span className="kol-helper-12 text-fg-80 flex-1 truncate">{copied === name ? 'copied!' : name}</span>
+                <span className="kol-helper-10 text-fg-48">{cat}</span>
               </button>
             ))}
           </div>

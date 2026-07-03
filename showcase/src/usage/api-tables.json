@@ -597,6 +597,12 @@
       "desc": ""
     },
     {
+      "prop": "iconVariant",
+      "type": "—",
+      "def": "'stroke'",
+      "desc": ""
+    },
+    {
       "prop": "options",
       "type": "—",
       "def": "[\n  { value: 'grid', label: 'Grid view', icon: 'grid-06' },\n  { value: 'list', label: 'List view', icon: 'list-01' }\n]",
@@ -724,6 +730,46 @@
       "prop": "loading",
       "type": "—",
       "def": "'lazy'",
+      "desc": ""
+    }
+  ],
+  "MediaCard": [
+    {
+      "prop": "selectMode",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "MediaRow": [
+    {
+      "prop": "dateWidth",
+      "type": "—",
+      "def": "'w-24'",
+      "desc": ""
+    },
+    {
+      "prop": "sizeWidth",
+      "type": "—",
+      "def": "'w-20'",
+      "desc": ""
+    },
+    {
+      "prop": "selectMode",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],

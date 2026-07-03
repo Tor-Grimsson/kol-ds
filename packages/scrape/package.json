@@ -1,0 +1,39 @@
+{
+  "name": "@kolkrabbi/kol-scrape",
+  "version": "0.0.0",
+  "description": "All-purpose presence/press scraper CLI — fetch a URL, emit a structured scrape record (title, og/twitter meta, socials, feeds, favicons). Subject-agnostic; brand coupling lives in adapters, not here. Zero dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "kol-scrape": "./bin/kol-scrape.js"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "scraper",
+    "presence",
+    "press",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/scrape"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

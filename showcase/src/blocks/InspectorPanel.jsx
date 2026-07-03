@@ -5,7 +5,8 @@ import {
 
 export const meta = {
   title: 'Inspector panel',
-  description: 'The KOL moat in one block — numeric properties, sliders, swatches, and mode toggles composed as an editor inspector.',
+  description: 'An editor inspector with properties, sliders and swatches',
+  category: 'panel',
 }
 export const stage = 'sm'
 

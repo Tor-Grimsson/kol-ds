@@ -50,6 +50,8 @@ export { default as CodeBlock } from './molecules/CodeBlock.jsx'
 export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
 export { default as Image } from './molecules/Image.jsx'
+export { default as MediaCard } from './molecules/MediaCard.jsx'
+export { default as MediaRow } from './molecules/MediaRow.jsx'
 export { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from './molecules/MenuItem.jsx'
 export { MenuPopover } from './molecules/MenuPopover.jsx'
 export { ModalProvider, useModal } from './molecules/Modal.jsx'
@@ -65,7 +67,7 @@ export { default as Table } from './organisms/Table.jsx'
 export { Icon } from '@kolkrabbi/kol-loader'
 
 // graphics (SVG illustration loader — globs its own ./graphics/svg/**)
-export { default as Graphic, GRAPHICS, GRAPHIC_RAW } from './graphics/Graphic.jsx'
+export { default as Graphic, GRAPHICS } from './graphics/Graphic.jsx'
 
 // hooks
 export { default as useReveal } from './hooks/useReveal.js'

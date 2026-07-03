@@ -1,0 +1,32 @@
+{
+  "name": "@kolkrabbi/kol-media-client",
+  "version": "0.0.0",
+  "description": "Read-only client for the kol-media CDN — listMedia / mediaUrl / type guards / canvas-safe proxied(), plus the optional library-upload helper. Plain ESM, no React.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "media",
+    "cdn",
+    "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/media-client"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

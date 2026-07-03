@@ -18,6 +18,7 @@ const LINKS = [
   { to: '/icons', label: 'Icons' },
   { to: '/components', label: 'Components' },
   { to: '/blocks', label: 'Blocks' },
+  { to: '/sets', label: 'Sets' },
 ]
 
 export default function TopBar() {

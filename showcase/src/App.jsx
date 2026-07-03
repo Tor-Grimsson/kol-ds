@@ -8,6 +8,9 @@ import IconsVariants from './pages/IconsVariants'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
 import Blocks from './pages/Blocks'
+import BlockPage from './pages/BlockPage'
+import BlockPreview from './pages/BlockPreview'
+import Sets from './pages/Sets'
 import DocsShellLayout from './pages/DocsShellLayout'
 import DocsMenus from './pages/DocsMenus'
 import DocsLoaders from './pages/DocsLoaders'
@@ -30,6 +33,9 @@ export default function App() {
       <Route path="/components" element={<Components />} />
       <Route path="/components/:slug" element={<ComponentPage />} />
       <Route path="/blocks" element={<Blocks />} />
+      <Route path="/blocks/preview/:slug" element={<BlockPreview />} />
+      <Route path="/blocks/:slug" element={<BlockPage />} />
+      <Route path="/sets" element={<Sets />} />
       <Route path="/docs/shell-and-layout" element={<DocsShellLayout />} />
       <Route path="/docs/menus" element={<DocsMenus />} />
       <Route path="/docs/loaders" element={<DocsLoaders />} />

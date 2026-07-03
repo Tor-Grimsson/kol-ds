@@ -3,7 +3,7 @@
     "name": "Icon",
     "pkg": "@kolkrabbi/kol-loader",
     "category": "loaders",
-    "count": 949,
+    "count": 950,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -26,7 +26,7 @@
       "kol-radar",
       "kol-radial"
     ],
-    "files": 403,
+    "files": 405,
     "examples": [
       {
         "app": "kol-divs",
@@ -247,7 +247,7 @@
     "name": "Divider",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 304,
+    "count": 305,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -2065,6 +2065,40 @@
     ]
   },
   {
+    "name": "MediaCard",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 1,
+    "apps": [
+      "kol-media-admin"
+    ],
+    "files": 1,
+    "examples": [
+      {
+        "app": "kol-media-admin",
+        "file": "kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx",
+        "code": "<MediaCard\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  meta={`${formatSize(o.size)} · ${formatDate(o.uploaded)}`}\n                  actions={renderActions(o)}\n                  downloadHref={downloadUrl(o.key)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
+      }
+    ]
+  },
+  {
+    "name": "MediaRow",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 1,
+    "apps": [
+      "kol-media-admin"
+    ],
+    "files": 1,
+    "examples": [
+      {
+        "app": "kol-media-admin",
+        "file": "kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx",
+        "code": "<MediaRow\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  date={formatDate(o.uploaded)}\n                  size={formatSize(o.size)}\n                  actions={renderActions(o)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
+      }
+    ]
+  },
+  {
     "name": "AppShell",
     "pkg": "@kolkrabbi/kol-framework",
     "category": "framework",
@@ -2092,15 +2126,6 @@
   },
   {
     "name": "GRAPHICS",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "graphics",
-    "count": 0,
-    "apps": [],
-    "files": 0,
-    "examples": []
-  },
-  {
-    "name": "GRAPHIC_RAW",
     "pkg": "@kolkrabbi/kol-component",
     "category": "graphics",
     "count": 0,

@@ -19,6 +19,7 @@ const OVERVIEW = [
   { to: '/icons/variants', label: 'Icon variants' },
   { to: '/components', label: 'Components' },
   { to: '/blocks', label: 'Blocks' },
+  { to: '/sets', label: 'Sets' },
 ]
 
 const DOCS = [

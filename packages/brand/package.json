@@ -1,0 +1,35 @@
+{
+  "name": "@kolkrabbi/kol-brand",
+  "version": "0.0.0",
+  "description": "Kolkrabbi's brand kit — the studio's brand manifest (identity, color ramps, type, logos, presence) conforming to the @kolkrabbi/kol-brand-template schema. Data + assets, no server, no React.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./logos/*": "./src/logos/*"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "brand",
+    "brand-kit",
+    "manifest"
+  ],
+  "dependencies": {
+    "@kolkrabbi/kol-brand-template": "workspace:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/brand"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

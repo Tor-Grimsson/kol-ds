@@ -214,6 +214,22 @@
       "AssetPlaceholder"
     ]
   },
+  "MediaCard": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "MediaRow": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SelectIndicator"
+    ]
+  },
   "MenuItem": {
     "typeClasses": [
       "kol-helper-10",
@@ -317,12 +333,6 @@
     ]
   },
   "GRAPHICS": {
-    "typeClasses": [],
-    "composes": [
-      "AssetPlaceholder"
-    ]
-  },
-  "GRAPHIC_RAW": {
     "typeClasses": [],
     "composes": [
       "AssetPlaceholder"

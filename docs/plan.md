@@ -25,7 +25,7 @@ related:
 
 Sequences [[backlog/2026-07-02-review-backlog|the review backlog]] into executable phases and folds in seven system improvements the backlog implied but didn't name.
 
-> **Executed 2026-07-02** in one autonomous run — see [[llm-context/session-log/2026-07-02-backlog-execution-phases-0-6|the session log]]. Still open: user review, E3 tier-1 port approvals, the batched publish.
+> **Executed 2026-07-02** in one autonomous run — see [[llm-context/session-log/2026-07-02-backlog-execution-phases-0-6|the session log]]. **E3 closed 2026-07-03** (LabeledSection ported; 22 reasoned rejections — see the scan doc). Still open: user review, the batched publish.
 
 ## Why
 
@@ -73,7 +73,7 @@ Zero console errors; every backlog item closed or explicitly deferred with a ver
 - [x] Phase 2: A3/A5/B2 changesets staged (+ taxonomy-restructure); release still parked; SegmentedToggle radiogroup/arrows/focus-visible shipped, Stepper spinbutton + arrows are native (`input type=number`, no code needed)
 - [x] Phase 3: C1 doc exists; zero `primitives`; `pnpm validate:taxonomy` green
 - [x] Phase 4: D1/D2 rows render from scanner output; API tables generated (43/44, ScrollToTop renders null); offender report delivered — 7 components (AssetPlaceholder, Avatar, ToggleCheckbox, ToggleSwitch, Accordion/Panel, SideNav)
-- [x] Phase 5: E3 report delivered (**tier-1 approvals pending**); E2 swatch live on Foundations
+- [x] Phase 5: E3 **closed 2026-07-03** — LabeledSection ported (`showcase/src/lib/LabeledSection.jsx`); Ramp/TypeSample/SpectrumGrid + all tier-2 rejected with reasons (redundant with the table-driven Foundations pages / no present consumer / brand-locked); E2 swatch live on Foundations
 - [ ] Phase 6: shell verdict recorded ✓; **pending user:** type-conformance fix approval, publish (8 changesets, one batch)
 
 When executed, mark `status: superseded` and point at the closing session log.

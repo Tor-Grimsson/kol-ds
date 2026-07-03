@@ -3,7 +3,8 @@ import { Input, Textarea, ToggleSwitch, Button, LabeledControl, Divider } from '
 
 export const meta = {
   title: 'Settings form',
-  description: 'Labeled fields, a textarea, toggles, and actions composed as a settings panel.',
+  description: 'A settings form with labeled fields and toggles',
+  category: 'form',
 }
 export const stage = 'md'
 

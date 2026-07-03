@@ -59,13 +59,15 @@ const DESCRIPTIONS = {
   ExitPreview: 'A router-aware link out of preview mode.',
   CodeBlock: 'A syntax-highlighted code block with copy-to-clipboard.',
 
+  MediaCard: 'A grid tile for one media object — thumbnail, name, meta, actions, with a select mode.',
+  MediaRow: 'A list row for one media object — thumbnail, name, date/size columns, actions, with a select mode.',
+
   /* organisms */
   Table: 'A data table driven by column definitions and rows.',
 
   /* graphics */
   Graphic: 'An SVG illustration loader addressed by category + name.',
   GRAPHICS: 'A map of available graphic categories to their names (data export).',
-  GRAPHIC_RAW: 'Raw SVG source strings for every graphic (data export).',
 
   /* framework */
   PageSection: 'A titled, labeled content section with anchor support.',
