@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-brand",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Kolkrabbi's brand kit — the studio's brand manifest (identity, color ramps, type, logos, presence) conforming to the @kolkrabbi/kol-brand-template schema. Data + assets, no server, no React.",
   "license": "MIT",
   "type": "module",

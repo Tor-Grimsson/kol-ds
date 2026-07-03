@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-media-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Read-only client for the kol-media CDN — listMedia / mediaUrl / type guards / canvas-safe proxied(), plus the optional library-upload helper. Plain ESM, no React.",
   "license": "MIT",
   "type": "module",
