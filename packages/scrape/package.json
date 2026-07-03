@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-scrape",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "All-purpose presence/press scraper CLI — fetch a URL, emit a structured scrape record (title, og/twitter meta, socials, feeds, favicons). Subject-agnostic; brand coupling lives in adapters, not here. Zero dependencies.",
   "license": "MIT",
   "type": "module",
