@@ -104,9 +104,12 @@ export default function ComponentPage() {
   const api = mergeApi(data.api || [], API_GEN[c.name] || [])
   const hasMainDemo = !!DEMOS[c.name]
 
+  const members = c.members || []
+
   const toc = [
     { id: 'installation', label: 'Installation' },
     { id: 'usage', label: 'Usage' },
+    ...(members.length ? [{ id: 'parts', label: 'Parts' }, ...members.map((m) => ({ id: slugify(m.name), label: m.name, sub: true }))] : []),
     ...(examples.length ? [{ id: 'examples', label: 'Examples' }, ...examples.map((e) => ({ id: e.id, label: e.label, sub: true }))] : []),
     ...(api.length ? [{ id: 'api', label: 'API Reference' }] : []),
   ]
@@ -128,9 +131,21 @@ export default function ComponentPage() {
       </DocSection>
 
       <DocSection id="usage" title="Usage">
-        <CodeLine text={`import { ${c.name} } from '${c.pkg}'`} />
+        <CodeLine text={`import { ${[c.name, ...members.map((m) => m.name)].join(', ')} } from '${c.pkg}'`} />
         {data.usage && <CodeLine text={data.usage} />}
       </DocSection>
+
+      {members.length > 0 && (
+        <DocSection id="parts" title="Parts" lede={`${c.name} composes from these parts — import them from the same package.`}>
+          {members.map((m) => (
+            <div key={m.name} className="flex flex-col gap-3">
+              <h3 id={slugify(m.name)} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{m.name}</h3>
+              {m.description && <p className="kol-sans-body-02 text-body">{m.description}</p>}
+              {DEMOS[m.name] && <PreviewCard entry={DEMOS[m.name]} />}
+            </div>
+          ))}
+        </DocSection>
+      )}
 
       {examples.length > 0 && (
         <DocSection id="examples" title="Examples">

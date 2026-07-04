@@ -4,10 +4,9 @@ import { QuantityInput } from '@kolkrabbi/kol-component'
 export default function QuantityInputDemo() {
   const [qty, setQty] = useState(3)
   return (
-    <>
-      {['sm', 'md', 'lg'].map((size) => (
-        <QuantityInput key={size} value={qty} onChange={setQty} min={1} max={20} size={size} />
-      ))}
-    </>
+    <div className="flex flex-col gap-4">
+      <QuantityInput value={qty} onChange={setQty} min={1} max={20} size="md" />
+      <QuantityInput value={qty} onChange={setQty} min={1} max={20} size="md" controls="split" />
+    </div>
   )
 }

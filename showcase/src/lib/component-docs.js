@@ -262,21 +262,12 @@ export const DOC_DATA = {
   },
 
   QuantityInput: {
-    usage: '<QuantityInput value={qty} onChange={setQty} min={1} max={20} />',
+    usage: '<QuantityInput value={qty} onChange={setQty} min={1} max={20} controls="split" />',
     api: [
       { prop: 'value', type: 'number', def: '1', desc: 'Current quantity (controlled).' },
       { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires with the new value.' },
       { prop: 'min / max', type: 'number', def: '1 / 99', desc: 'Bounds; buttons disable at edges.' },
-      { prop: 'size', type: 'sm | md | lg', def: 'responsive', desc: 'Overrides the viewport-based preset.' },
-    ],
-  },
-
-  QuantityStepper: {
-    usage: '<QuantityStepper value={qty} onChange={setQty} min={1} max={10} />',
-    api: [
-      { prop: 'value', type: 'number', def: '1', desc: 'Current quantity (controlled).' },
-      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires when − / + is pressed.' },
-      { prop: 'min / max', type: 'number', def: '1 / 10', desc: 'Bounds; buttons disable at edges.' },
+      { prop: 'controls', type: 'chevron | split', def: 'chevron', desc: 'chevron = value + up/down pair; split = − value + pill (former QuantityStepper).' },
       { prop: 'size', type: 'sm | md | lg', def: 'responsive', desc: 'Overrides the viewport-based preset.' },
     ],
   },

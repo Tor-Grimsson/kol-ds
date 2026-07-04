@@ -1,6 +1,7 @@
 import USAGE from '../usage/usage-index.json'
 import DOCS_META from '../usage/docs-meta.json'
 import { DEMOS } from './demos-registry.js'
+import { COMPONENT_GROUPS, MEMBER_OF } from './component-groups.js'
 
 /**
  * The component registry — single source of truth for the showcase.
@@ -41,9 +42,8 @@ const DESCRIPTIONS = {
   ToggleBracket: 'A `Label [STATE]` text toggle.',
   PropertyInput: 'A stacked label + number/text input for inspector panels.',
   MenuItem: 'A composable menu trigger with a dropdown panel.',
-  QuantityInput: 'An inline quantity selector with +/− buttons.',
+  QuantityInput: 'A compact integer quantity picker — chevron pair or a − value + split pill.',
   DropdownTagFilter: 'A multi-select tag filter (all selected by default).',
-  QuantityStepper: 'An N-way quantity stepper.',
   MenuDropdownDivider: 'A separator row inside a dropdown menu.',
   MenuDropdownNest: 'A nested submenu inside a dropdown menu.',
   ContentFilters: 'A full filter bar — search, tag groups, view modes — for content grids.',
@@ -220,6 +220,14 @@ const isDataExport = (name) => /^[A-Z0-9_]+$/.test(name)
  * loader tier (/docs/loaders); their visual galleries stay on /icons. */
 export const DOCS_ONLY = ['Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic']
 
+/* Off the roster — deprecated aliases and merged-away exports that still
+ * linger as hand-seeded usage-index entries (we don't re-mine — it wipes
+ * the seed). Their story lives on the surviving component's page:
+ *   MenuPopover     — MenuItem's alias (2026-07-02 unify); removed next major.
+ *   QuantityStepper — merged into QuantityInput `controls="split"` (Phase 4);
+ *                     export deleted, entry survives only in the mined index. */
+export const DEPRECATED = ['MenuPopover', 'QuantityStepper']
+
 /* Functional classification — a CLOSED set (Material-style). Every current
  * and future component maps to exactly one; the sidebar stays flat A→Z so a
  * new component always has a location (its alphabetical slot) — functions
@@ -238,7 +246,7 @@ export const FUNCTIONS = {
 const FUNCTION_MAP = {
   Button: 'action', ThemeToggle: 'action',
   Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
-  QuantityInput: 'input', QuantityStepper: 'input', PropertyInput: 'input',
+  QuantityInput: 'input', PropertyInput: 'input',
   ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input',
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   DropdownTagFilter: 'input', LabeledControl: 'input', Label: 'input',
@@ -283,7 +291,7 @@ const FUNCTION_MAP = {
 
 /* Enriched, slugged component list (mining order preserved = usage-ranked). */
 export const COMPONENTS = USAGE
-  .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name))
+  .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name) && !DEPRECATED.includes(c.name))
   .map((c) => ({
     ...c,
     category: FRAMEWORK_GROUPS[c.name] ?? c.category,
@@ -296,20 +304,55 @@ export const COMPONENTS = USAGE
     meta: DOCS_META[c.name] || null,
   }))
 
+/* Sub-part grouping (component-groups.js overlay): a member renders inside
+ * its parent's page, never as its own row. Attach members to parents, and
+ * drop members from the browsable roster. Members stay resolvable by slug
+ * (direct URLs + composition galleries), just off the nav. */
+const BY_NAME = new Map(COMPONENTS.map((c) => [c.name, c]))
+for (const [parent, members] of Object.entries(COMPONENT_GROUPS)) {
+  const p = BY_NAME.get(parent)
+  if (p) p.members = members.map((m) => BY_NAME.get(m)).filter(Boolean)
+}
+
+/* The browsable roster — every component MINUS the sub-part members. Drives
+ * the sidebar, the /components index, and the prev/next pager. */
+export const TOP_LEVEL = COMPONENTS.filter((c) => !MEMBER_OF[c.name])
+
 /* Flat A→Z — the sidebar/index ordering. New components slot alphabetically;
  * nothing ever reorders. */
-export const COMPONENTS_AZ = [...COMPONENTS].sort((a, b) => a.name.localeCompare(b.name))
+export const COMPONENTS_AZ = [...TOP_LEVEL].sort((a, b) => a.name.localeCompare(b.name))
 
+/* getComponentBySlug resolves the FULL set (members included) so member URLs
+ * and composition-gallery lookups never 404. */
 const BY_SLUG = new Map(COMPONENTS.map((c) => [c.slug, c]))
 export const getComponentBySlug = (slug) => BY_SLUG.get(slug) || null
 
 /* [ [categoryKey, [components…]], … ] in CATEGORY_ORDER, components A→Z within. */
-export function componentsByCategory(list = COMPONENTS) {
+export function componentsByCategory(list = TOP_LEVEL) {
   const by = {}
   for (const c of list) (by[c.category] ||= []).push(c)
   for (const k of Object.keys(by)) by[k].sort((a, b) => a.name.localeCompare(b.name))
   return CATEGORY_ORDER.filter((k) => by[k]).map((k) => [k, by[k]])
 }
 
-export const TOTAL = COMPONENTS.length
-export const WITH_DEMOS = COMPONENTS.filter((c) => c.demo).length
+/* [ [functionKey, [components…]], … ] in FUNCTIONS order, components A→Z. */
+export function componentsByFunction(list = TOP_LEVEL) {
+  const by = {}
+  for (const c of list) (by[c.function] ||= []).push(c)
+  for (const k of Object.keys(by)) by[k].sort((a, b) => a.name.localeCompare(b.name))
+  return Object.keys(FUNCTIONS).filter((k) => by[k]).map((k) => [k, by[k]])
+}
+
+/* The one grouping entry point both the sidebar and the index call.
+ * Returns [ [key, label, items], … ] for the active axis (D1 toggle):
+ *   'atomic'   → Tier groups (CATEGORY_LABELS)
+ *   'function' → Function groups (FUNCTIONS) — default. */
+export function groupComponents(mode = 'function', list = TOP_LEVEL) {
+  if (mode === 'atomic') {
+    return componentsByCategory(list).map(([k, items]) => [k, CATEGORY_LABELS[k] ?? k, items])
+  }
+  return componentsByFunction(list).map(([k, items]) => [k, FUNCTIONS[k] ?? k, items])
+}
+
+export const TOTAL = TOP_LEVEL.length
+export const WITH_DEMOS = TOP_LEVEL.filter((c) => c.demo).length

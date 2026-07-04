@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
+import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import TopBar from './TopBar.jsx'
-import { componentsByCategory, CATEGORY_LABELS } from './registry.js'
+import { groupComponents } from './registry.js'
+import { useGrouping } from './grouping.jsx'
 
 /**
  * DocLayout — the shadcn-style doc shell shared by every docs page:
@@ -29,11 +31,11 @@ const DOCS = [
   { to: '/workshop-preview', label: 'Workshop shell ↗' },
 ]
 
-/* Components grouped by type (atoms/molecules/…), A→Z within each group —
- * a new component's location is fixed: its type group, alphabetical slot.
- * Function tags stay filter metadata on the index. */
+/* Components grouped by the active axis (D1 toggle): Function (default) or
+ * Atomic/Tier. A→Z within each group — a component's slot is fixed. */
 function DocSidebar() {
   const { pathname } = useLocation()
+  const { mode, setMode } = useGrouping()
   const linkCls = (active) =>
     `kol-sans-body-02 py-1 transition-colors ${active ? 'text-emphasis' : 'text-meta hover:text-emphasis'}`
 
@@ -55,9 +57,19 @@ function DocSidebar() {
       <div className="sticky top-14 flex max-h-[calc(100vh-3.5rem)] flex-col gap-6 overflow-y-auto px-5 py-8">
         {group('Overview', OVERVIEW)}
         {group('Docs', DOCS)}
-        {componentsByCategory().map(([cat, items]) => (
-          <div key={cat}>
-            {group(CATEGORY_LABELS[cat] ?? cat, items.map((c) => ({ to: `/components/${c.slug}`, label: c.name })))}
+        <div>
+          <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">Group by</p>
+          <SegmentedToggle
+            ariaLabel="Group components by"
+            value={mode}
+            onChange={setMode}
+            options={[{ value: 'function', label: 'Function' }, { value: 'atomic', label: 'Atomic' }]}
+            className="w-full"
+          />
+        </div>
+        {groupComponents(mode).map(([key, label, items]) => (
+          <div key={key}>
+            {group(label, items.map((c) => ({ to: `/components/${c.slug}`, label: c.name })))}
           </div>
         ))}
       </div>
