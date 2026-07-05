@@ -12,7 +12,7 @@ tags:
 related:
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
   - "[[../02-components/01-inventory|components]]"
-  - "[[../05-operations/01-release-pipeline|release pipeline]]"
+  - "[[../../operations/01-release-pipeline|release pipeline]]"
 ---
 
 # KOL design system — overview
@@ -55,4 +55,4 @@ Packages ship **raw source** (`.jsx`/`.css`, no build step) — the consumer mus
 ## Seeing it
 
 - **Showcase** (`pnpm dev` in `showcase/`) — the docs site: Foundations, Icons, Components, Blocks, Sets.
-- **Workbench** (`pnpm workbench`) — Ladle app, every component × every state in isolation. See [[../05-operations/02-workbench|using the workbench]].
+- **Workbench** (`pnpm workbench`) — Ladle app, every component × every state in isolation. See [[../../operations/02-workbench|using the workbench]].

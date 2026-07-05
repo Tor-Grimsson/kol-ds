@@ -2,8 +2,8 @@
 title: KOL documentation
 type: index
 status: active
-updated: 2026-07-03
-description: The design system, documented — numbered sections for overview, foundations, components, compositions, brand kit, operations, research, and the generated usage references.
+updated: 2026-07-04
+description: The design system, documented — numbered sections for overview, foundations, components, compositions, brand kit, research, and the generated usage references.
 aliases:
   - documentation
 tags:
@@ -23,6 +23,7 @@ The written mirror of the KOL design system — the same material the showcase r
 | **02 — Components** | [[02-components/00-taxonomy\|taxonomy]] · [[02-components/01-inventory\|inventory]] · [[02-components/02-placement\|placement rules]] · [[02-components/03-icons\|icons]] · [[02-components/04-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components`, `/icons` |
 | **03 — Compositions** | [[03-compositions/01-blocks-and-sets\|blocks & sets]] · [[03-compositions/02-shells\|shells]] | `/blocks`, `/sets`, `/docs/shell-and-layout` |
 | [[04-brand/INDEX\|04 — Brand kit]] | The manifest schema, kol-brand, template, scrape + adapter | — |
-| **05 — Operations** | [[05-operations/01-release-pipeline\|release pipeline]] · [[05-operations/02-workbench\|workbench]] | GitHub Actions, `pnpm workbench` |
-| **06 — Research** | [[06-research/benchmark/INDEX\|shadcn ⇄ KOL benchmark]] · [[06-research/workflows/INDEX\|how other teams work]] | — |
-| **07 — Usage** | Generated per-component references — real call-sites mined from ~25 consumer apps (`node scripts/extract-usage.mjs` to refresh) | `/components/:slug` |
+| **05 — Research** | [[05-research/benchmark/INDEX\|shadcn ⇄ KOL benchmark]] · [[05-research/workflows/INDEX\|how other teams work]] | — |
+| **06 — Usage** | Generated per-component references — real call-sites mined from ~25 consumer apps (`node scripts/extract-usage.mjs` to refresh) | `/components/:slug` |
+
+> **Operations moved out.** Release pipeline and workbench are repo machinery, not design-system content — they now live at [[../operations/INDEX|docs/operations/]].

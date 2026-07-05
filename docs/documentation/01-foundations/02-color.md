@@ -55,4 +55,4 @@ Ramp notes: yellow is a **pure-yellow lock** (`#FF` red channel through all stop
 
 ## Known gap
 
-KOL is **sRGB, not OKLCH** — flagged in the shadcn benchmark ([[../06-research/benchmark/INDEX|benchmark]], gap 4). A future ramp regeneration in OKLCH would keep perceptual lightness even across stops.
+KOL is **sRGB, not OKLCH** — flagged in the shadcn benchmark ([[../05-research/benchmark/INDEX|benchmark]], gap 4). A future ramp regeneration in OKLCH would keep perceptual lightness even across stops.

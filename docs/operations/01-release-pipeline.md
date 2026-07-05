@@ -2,7 +2,7 @@
 title: The release pipeline
 type: playbook
 status: active
-updated: 2026-07-01
+updated: 2026-07-04
 audience: internal
 description: How to ship a new version of the @kolkrabbi/kol-* packages — the Changesets → Version PR → CI-publish loop, plus the one-time setup and the errors that bite.
 providers:
@@ -15,9 +15,9 @@ tags:
   - provider/npm
   - pattern/changesets-release
 related:
-  - "[[../06-research/workflows/06-versioning-testing|versioning & testing]]"
-  - "[[../06-research/workflows/05-distribution|distribution]]"
-  - "[first publish log](../../../.kol/llm-context/session-log/2026-07-01-first-npm-publish.md)"
+  - "[[../documentation/05-research/workflows/06-versioning-testing|versioning & testing]]"
+  - "[[../documentation/05-research/workflows/05-distribution|distribution]]"
+  - "[first publish log](../../.kol/llm-context/session-log/2026-07-01-first-npm-publish.md)"
 ---
 
 # The release pipeline
@@ -90,6 +90,17 @@ CI sees the pending changeset and opens a PR titled **"Version Packages"** (auth
 - generates/updates the `CHANGELOG.md`s.
 
 **Merge it.** This is the point of no return — merging is the decision to cut the release.
+
+From the CLI, without leaving the terminal:
+
+```
+gh pr list                             # find the PR number (first column, e.g. #5)
+gh pr merge 5 --merge --delete-branch  # merge it; no '#' — that's a shell comment
+```
+
+- Use **`--merge`** (keep the release commit intact), not `--rebase`. `--squash` also works.
+- **`--delete-branch`** removes the throwaway `changeset-release/main` head branch — it does **not** touch `main` (that's the base).
+- No number = acts on the current branch's PR. If `gh pr list` opens a pager, quit it with **`q`**.
 
 ## 5. CI publishes — automatically
 

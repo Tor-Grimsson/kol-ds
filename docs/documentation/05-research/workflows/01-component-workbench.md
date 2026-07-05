@@ -13,7 +13,7 @@ aliases:
 related:
   - "[[02-workbench-tools|workbench tools]]"
   - "[[INDEX|workflows]]"
-  - "[[../../05-operations/02-workbench|using the workbench]]"
+  - "[[../../../operations/02-workbench|using the workbench]]"
 ---
 
 # The component workbench

@@ -13,7 +13,7 @@ sources:
   - showcase/src/lib/DocLayout.jsx
   - showcase/src/lib/TopBar.jsx
 related:
-  - "[[../06-research/workflows/01-component-workbench|component workbench]]"
+  - "[[../05-research/workflows/01-component-workbench|component workbench]]"
 ---
 
 # Reference shells
