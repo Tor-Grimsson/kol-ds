@@ -1,5 +1,16 @@
 # @kolkrabbi/kol-framework
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies [8b4c850]
+- Updated dependencies [8b4c850]
+- Updated dependencies [8b4c850]
+- Updated dependencies [8b4c850]
+  - @kolkrabbi/kol-component@0.6.0
+  - @kolkrabbi/kol-icons@0.5.0
+
 ## 0.3.1
 
 ### Patch Changes

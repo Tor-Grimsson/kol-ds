@@ -1,5 +1,30 @@
 # @kolkrabbi/kol-theme
 
+## 0.6.0
+
+### Minor Changes
+
+- 8b4c850: Chrome law: every control references the Button — two variants (primary; outline = always secondary), button size scale (26/32/40). Old variant names are aliased, nothing breaks.
+
+  - **Dropdown** — trigger now emits `kol-btn kol-btn-{primary|outline} kol-btn-{size}` (fills/hover/active/focus come from the button rules; inline-style chrome removed per the theme-CSS rule). Open state is fused: primary panel continues the trigger fill (no border, no gap, hairline divider inside), outline panel carries the trigger's border. Big per-size radii (14/22/24) replaced by `--kol-radius-sm`; type pairing corrected to mono 12/14/16; chevron sizes aligned to button icon sizes. Variant aliases: `default`→primary, `subtle`→primary, `minimal`→outline.
+  - **Input** — `ghost` folds into `outline` (alias kept): one secondary treatment. `.kol-control--ghost` CSS retained but deprecated.
+  - **Textarea** — resize is real now: the `resize-grip` icon (kol-icon-set-v1) is the actual drag handle (JS corner drag, both axes, min 120×40). Native `resize` stays off — Firefox's built-in grip can't be hidden any other way, so this is the only route to one identical grip in every browser. Previously a decorative icon sat over `resize: none` — an affordance that didn't exist.
+  - **Input/control** — `.kol-control--outline` border moves `fg-16` → `oq-16` (opaque), matching the button outline.
+  - **ToggleSwitch** — rewritten: **bare by default** (label + track, no box); `primary`/`outline` shell variants at exact button geometry; new `size` prop (sm/md/lg) scales shell and track; on-state = inverted ink (matches `.kol-btn-pressed`); focus ring added; the auto-uppercase label removed (no-auto-casing rule). Aliases: `plain`→bare, `default`→outline.
+
+### Patch Changes
+
+- 8b4c850: Button states rebuilt on the opaque (`oq`) tier — interactive fills never go see-through over content again. The reported bug: every filled `.kol-btn` variant swapped its solid fill for a translucent `fg-*` wash on hover (primary 92% transparent, secondary 80% + an ink swap, accent 20% via the `--kol-accent-primary-strong` token), so buttons over images vanished on plain desktop hover.
+
+  - Hover fills swapped to married opaque stops: primary `oq-08`, outline `oq-02` (border `oq-16`), ghost `oq-04` (label `oq-48`); secondary hovers on the inverse tier (`oq-inverse-40`, label stays light — no ink swap); `--kol-accent-primary-strong` is now an accent-based opaque mix.
+  - New `:focus-visible` ring (2px `--kol-focus-ring`, offset 2) — previously no focus style existed.
+  - New `:active` press states — one stop past hover per variant (primary `oq-16`, secondary `oq-inverse-48`, accent 70% mix, outline/ghost `oq-08`).
+  - `.kol-btn-pressed` (toggle-on) is now solid inverted ink instead of a faint translucent wash.
+  - Same opaque treatment for sibling chrome that shared the translucent-fill idiom: `.tag-control` hover/active (`oq-12`), `.toggle-switch-indicator` track (`oq-16`), `.kol-control--ghost` resting fill (4% black baked onto the surface).
+  - The `@media (hover: hover)` touch guards from the earlier cut of this changeset remain.
+
+- 8b4c850: Slider collapsed to one bare row — the `minimal` look is now the only slider. The component mapped `variant="minimal"` (the dominant real usage) to `.control-slider-minimal`, a class no CSS defined, so those call sites rendered with no container layout and leaned on their parent to compensate. The `variant` prop is gone; every Slider now resolves to the bare `.control-slider` inline row (label · track · editable readout) and finally gets its intended layout. Bordered `default` and chip `subtle` variants removed. Passing a `variant` is a harmless no-op for back-compat.
+
 ## 0.5.0
 
 ### Minor Changes
