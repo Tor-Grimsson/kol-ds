@@ -97,7 +97,7 @@ export default function WorkGrid() {
     : PROJECTS
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 px-6 py-12 md:px-10">
       <div className="flex items-center justify-between gap-4">
         <div className="kol-label-mono-xs text-fg-64">Selected work</div>
         <WorkViewToggle

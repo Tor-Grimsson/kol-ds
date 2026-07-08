@@ -8,7 +8,7 @@
  * stroke icons in the kol curated set. For a plain number input without
  * bump affordance, use `<Input type="number" />`.
  */
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 const SIZE_TYPE    = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 const CHEVRON_SIZE = { sm: 8,             md: 10,            lg: 12 }

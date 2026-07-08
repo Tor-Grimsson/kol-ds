@@ -5,7 +5,7 @@
 ### Patch Changes
 
 - Updated dependencies [de4c33f]
-  - @kolkrabbi/kol-loader@0.2.0
+  - @kolkrabbi/kol-icons@0.2.0
   - @kolkrabbi/kol-component@0.1.2
   - @kolkrabbi/kol-framework@0.1.2
 
@@ -15,6 +15,6 @@
 
 - Updated dependencies [fcfa14c]
   - @kolkrabbi/kol-theme@0.1.1
-  - @kolkrabbi/kol-loader@0.1.1
+  - @kolkrabbi/kol-icons@0.1.1
   - @kolkrabbi/kol-component@0.1.1
   - @kolkrabbi/kol-framework@0.1.1

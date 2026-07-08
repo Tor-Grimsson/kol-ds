@@ -6,7 +6,7 @@
  *
  * The raw SVG strings (~4.8 MB) live in ./graphicData.js behind a single
  * dynamic import — their chunk streams in parallel with boot instead of
- * bloating the consumer's entry chunk (same pattern as kol-loader's Icon).
+ * bloating the consumer's entry chunk (same pattern as kol-icons's Icon).
  * Until the chunk lands, renders a sized empty box (no layout shift); a
  * genuinely missing asset renders an AssetPlaceholder so it's visible rather
  * than silently empty.

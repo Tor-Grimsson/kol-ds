@@ -7,7 +7,7 @@
  *
  * Placement follows the taxonomy rules in
  * docs/documentation/02-components/02-placement.md:
- *   atom     — nests no KOL component (kol-loader Icon/Graphic are
+ *   atom     — nests no KOL component (kol-icons Icon/Graphic are
  *              infrastructure, they don't count)
  *   molecule — nests at least one KOL component
  *   organism — a self-contained composed UI region
@@ -124,7 +124,7 @@ export { default as SpectrumGrid } from './organisms/SpectrumGrid.jsx'
 export { default as Table } from './organisms/Table.jsx'
 
 // loaders (re-export — infrastructure, documented on /docs/loaders)
-export { Icon } from '@kolkrabbi/kol-loader'
+export { Icon } from '@kolkrabbi/kol-icons'
 
 // graphics (SVG illustration loader — globs its own ./graphics/svg/**)
 export { default as Graphic, GRAPHICS } from './graphics/Graphic.jsx'

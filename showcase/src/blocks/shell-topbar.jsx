@@ -62,7 +62,7 @@ export default function ShellTopbar() {
 
       {/* Product surface beneath the chrome. */}
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto grid max-w-[1800px] grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }, (_, i) => (
             <div key={i} className="aspect-[4/5] rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
           ))}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Documentation sidenav',
@@ -73,7 +73,7 @@ export default function SidebarDocs() {
           <span className="kol-helper-12 text-emphasis">{active}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Skeleton className="h-28" />
             <Skeleton className="h-28" />
             <Skeleton className="h-28" />

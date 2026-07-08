@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
  * SearchInput — controlled search field on the .kol-control shell. The

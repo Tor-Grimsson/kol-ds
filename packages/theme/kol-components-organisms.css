@@ -45,6 +45,17 @@
   scrollbar-width: none;
   border: 1px solid var(--kol-fg-08);
   border-radius: 4px;
+  /* Scroll affordance: with the scrollbar hidden, a clipped table reads as
+   * cut-off data on narrow viewports. Edge shadows appear only on the
+   * scrollable side (surface-colored covers ride the content and mask them
+   * at the extremes). */
+  background:
+    linear-gradient(to right, var(--kol-surface-primary) 40%, transparent) left / 32px 100%,
+    linear-gradient(to left, var(--kol-surface-primary) 40%, transparent) right / 32px 100%,
+    linear-gradient(to right, var(--kol-fg-16), transparent) left / 14px 100%,
+    linear-gradient(to left, var(--kol-fg-16), transparent) right / 14px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
 }
 
 .kol-table-wrapper::-webkit-scrollbar { display: none; }

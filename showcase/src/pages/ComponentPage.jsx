@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import DocLayout from '../lib/DocLayout.jsx'
 import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
 import PreviewCard from '../lib/PreviewCard.jsx'

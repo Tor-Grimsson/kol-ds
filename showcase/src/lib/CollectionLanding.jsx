@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button, Pill, ViewToggle } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import TopBar from './TopBar.jsx'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
@@ -105,7 +105,7 @@ export default function CollectionLanding({
         </div>
         <h1 className="kol-prose-display">{hero.title}</h1>
         <div className="flex justify-center">
-          <p className="kol-prose-lede max-w-[58ch]">{hero.lede}</p>
+          <p className="kol-prose-lede max-w-[65ch]">{hero.lede}</p>
         </div>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Button variant="primary" iconRight="arrow-right" onClick={() => setTab('all')}>

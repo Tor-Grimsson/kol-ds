@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
-/* taxonomy-ok: nests kol-loader's Icon (a package import the relative-import
+/* taxonomy-ok: nests kol-icons's Icon (a package import the relative-import
  * check can't see). */
 
 const FOCUSABLE =

@@ -50,7 +50,7 @@ function ComponentSpecimen({ name, local = false }) {
         <ErrorBoundary>
           {demo
             ? <DemoStage entry={demo} />
-            : <p className="max-w-[52ch] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
+            : <p className="max-w-[65ch] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
         </ErrorBoundary>
       </div>
     </div>

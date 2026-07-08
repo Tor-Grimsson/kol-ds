@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import DocHeader from '../lib/DocHeader.jsx'
-import { Icon, ICON_INDEX, ICON_ENTRIES } from '@kolkrabbi/kol-loader'
-import { Button, ContentFilters } from '@kolkrabbi/kol-component'
+import { Icon, ICON_INDEX, ICON_ENTRIES } from '@kolkrabbi/kol-icons'
+import { ContentFilters } from '@kolkrabbi/kol-component'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
 import DocLayout from '../lib/DocLayout.jsx'
 
@@ -20,7 +19,9 @@ const CATEGORIES = Object.keys(ICON_INDEX)
 const ICON_ITEMS = ICON_ENTRIES.map((e) => ({ name: e.name, category: e.folder }))
 
 function Tile({ name, size, variant, bgLight, gridOverlay, copied, onCopy }) {
-  const cell = size + 16
+  /* Plate = the icon canvas exactly. Any padding ring here reads as
+     "guides don't reach the container" once the keyline grid is on. */
+  const cell = size
   return (
     <button type="button" onClick={() => onCopy(name)} title={name} className="flex flex-col items-center gap-1 p-0">
       <div
@@ -33,8 +34,10 @@ function Tile({ name, size, variant, bgLight, gridOverlay, copied, onCopy }) {
           border: '1px solid rgba(255,255,255,0.06)',
         }}
       >
-        {gridOverlay && <KeylineBg bgLight={bgLight} />}
-        <span className="relative" style={{ zIndex: 1 }}>
+        {/* Keyline guides live INSIDE the icon-sized span — sized to the cell
+            they render ~25% oversized and nothing aligns. */}
+        <span className="relative" style={{ zIndex: 1, width: size, height: size }}>
+          {gridOverlay && <KeylineBg bgLight={bgLight} />}
           <Icon name={name} size={size} variant={variant} />
         </span>
       </div>
@@ -46,12 +49,11 @@ function Tile({ name, size, variant, bgLight, gridOverlay, copied, onCopy }) {
 }
 
 export default function Icons() {
-  const [bgLight, setBgLight] = useState(false)
+  const [bgLight, setBgLight] = useState(true)
   const [size, setSize] = useState(24)
-  const [variant, setVariant] = useState('stroke')
+  const variant = 'stroke'
   const [gridOverlay, setGridOverlay] = useState(false)
   const [copied, setCopied] = useState(null)
-  const navigate = useNavigate()
 
   const copy = (name) => {
     navigator.clipboard?.writeText(name).catch(() => {})
@@ -88,15 +90,15 @@ export default function Icons() {
                 <span
                   className="relative flex items-center justify-center shrink-0 rounded-sm"
                   style={{
-                    width: Math.max(40, size + 16),
-                    height: Math.max(40, size + 16),
+                    width: size,
+                    height: size,
                     background: bgLight ? '#FFFFFF' : '#0E0E11',
                     color: bgLight ? '#0E0E11' : '#FFFFFF',
                     border: '1px solid rgba(255,255,255,0.06)',
                   }}
                 >
-                  {gridOverlay && <KeylineBg bgLight={bgLight} />}
-                  <span className="relative" style={{ zIndex: 1 }}>
+                  <span className="relative" style={{ zIndex: 1, width: size, height: size }}>
+                    {gridOverlay && <KeylineBg bgLight={bgLight} />}
                     <Icon name={name} size={size} variant={variant} />
                   </span>
                 </span>
@@ -121,18 +123,13 @@ export default function Icons() {
       <DocHeader
         eyebrow="KOL · Icons"
         title="Icon library"
-        lede={`${ICON_ENTRIES.length} icons across ${CATEGORIES.length} categories, from @kolkrabbi/kol-loader. Toggle stroke / fill and size; click any icon to copy its name.`}
+        lede={`${ICON_ENTRIES.length} icons across ${CATEGORIES.length} categories, from @kolkrabbi/kol-icons. Adjust size; click any icon to copy its name.`}
       />
       <div>
-      <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/icons/variants')}>
-        View variants
-      </Button>
-
-      {/* Display controls — ported SegGroup row (BG · SIZE · STYLE · GRID) */}
-      <div className="flex items-center flex-wrap gap-6 mt-8 mb-6">
+      {/* Display controls — BG · SIZE · GRID (stroke-only; solid retired) */}
+      <div className="flex items-center flex-wrap gap-6 mb-6">
         <SegGroup label="BG" options={[{ value: false, label: 'DARK' }, { value: true, label: 'LIGHT' }]} value={bgLight} onChange={setBgLight} />
         <SegGroup label="SIZE" options={SIZES.map((v) => ({ value: v, label: String(v) }))} value={size} onChange={setSize} />
-        <SegGroup label="STYLE" options={[{ value: 'stroke', label: 'STROKE' }, { value: 'solid', label: 'FILL' }]} value={variant} onChange={setVariant} />
         <SegGroup label="GRID" options={[{ value: false, label: 'OFF' }, { value: true, label: 'ON' }]} value={gridOverlay} onChange={setGridOverlay} />
       </div>
 

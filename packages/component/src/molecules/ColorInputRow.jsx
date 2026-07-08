@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import ColorSwatch from './ColorSwatch'
 import Input from '../atoms/Input'
 import LabeledControl from '../atoms/LabeledControl'

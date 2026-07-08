@@ -14,7 +14,7 @@ tags:
   - pattern/component-workbench
 related:
   - "[workbench adoption plan](../../.kol/llm-context/migration/2026-06-26-workbench-adoption.md)"
-  - "[[../documentation/05-research/workflows/01-component-workbench|component workbench]]"
+  - "[[../documentation/06-research/workflows/01-component-workbench|component workbench]]"
 ---
 
 # Using the workbench

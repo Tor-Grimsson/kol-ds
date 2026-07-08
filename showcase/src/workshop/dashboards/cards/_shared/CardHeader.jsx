@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 const CardHeader = ({ icon, title, subtitle }) => {
   return (

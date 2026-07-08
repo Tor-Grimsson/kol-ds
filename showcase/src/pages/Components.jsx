@@ -38,10 +38,12 @@ function useInView(rootMargin = '250px') {
 function ComponentCard({ c }) {
   const [ref, inView] = useInView()
   return (
-    <Link
-      to={`/components/${c.slug}`}
-      className="group mb-4 block break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24"
-    >
+    /* Overlay link, not a wrapping <Link>: live demos contain real anchors
+       (footers, work cards) and <a>-in-<a> is invalid HTML — React logs a
+       nesting error for every such card. The absolute Link keeps the whole
+       card clickable without containing the demo. */
+    <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24">
+      <Link to={`/components/${c.slug}`} className="absolute inset-0 z-[1]" aria-label={c.name} />
       <div ref={ref} className="pointer-events-none flex max-h-56 min-h-[6rem] items-center justify-center overflow-hidden bg-fg-02 p-5">
         {c.demo && inView ? (
           <DemoStage entry={c.demo} />
@@ -53,7 +55,7 @@ function ComponentCard({ c }) {
         <span className="kol-sans-body-02 text-emphasis">{c.name}</span>
         <span className="kol-helper-10 uppercase text-meta">{FUNCTIONS[c.function]}</span>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -99,7 +101,7 @@ export default function Components() {
             {label} · {items.length}
           </h2>
           {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid. */}
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
             {items.map((c) => <ComponentCard key={c.name} c={c} />)}
           </div>
         </section>

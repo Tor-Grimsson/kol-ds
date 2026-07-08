@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { ChessPiece } from '../index.js'
 import { useChessControls } from '../context/ChessControlsContext'
 import NotationPanel from './NotationPanel'

@@ -1,5 +1,5 @@
 import { isValidElement } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
  * Button — canonical KOL button. Emits kol-btn* classes (CSS in @kol/theme).

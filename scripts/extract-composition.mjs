@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url'
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(REPO, 'showcase/src')
 
-const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-component/foundry', '@kolkrabbi/kol-loader', '@kolkrabbi/kol-framework']
+const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-component/foundry', '@kolkrabbi/kol-icons', '@kolkrabbi/kol-framework']
 
 /* Resolve a relative import to a real file (mirrors Vite's resolution). */
 function resolveImport(fromFile, spec) {
@@ -74,7 +74,7 @@ const BARRELS = [
   join(REPO, 'packages/component/src/index.js'),
   join(REPO, 'packages/component/src/organisms/foundry/index.js'),
   join(REPO, 'packages/framework/src/index.js'),
-  join(REPO, 'packages/loader/src/index.js'),
+  join(REPO, 'packages/icons/src/index.js'),
 ]
 const EXPORT_MAP = {}
 for (const barrel of BARRELS) {

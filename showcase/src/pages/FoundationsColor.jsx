@@ -88,7 +88,7 @@ function SystemSection({ section, columnsDict }) {
   return (
     <DocSection id={section.id} title={section.title} lede={section.intro}>
       {section.reasoning && (
-        <div className="kol-prose max-w-[60ch]">
+        <div className="kol-prose max-w-[65ch]">
           <p className="text-meta">{section.reasoning}</p>
         </div>
       )}

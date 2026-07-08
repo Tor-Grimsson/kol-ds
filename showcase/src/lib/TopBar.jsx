@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { Input } from '@kolkrabbi/kol-component'
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import NavDrawer from './NavDrawer.jsx'
 
 /**
- * TopBar — the site-wide top navigation (shadcn-style): wordmark, section
- * links, search stub, GitHub, theme toggle. Shared by the Home landing and
- * every DocLayout page; active link derived from the current path.
+ * TopBar — the site-wide top navigation (shadcn-style): hamburger (<lg),
+ * wordmark, section links (≥lg), search stub, GitHub, theme toggle. Shared by
+ * the Home landing and every DocLayout page; active link derived from the
+ * current path. Below lg the section links live in the NavDrawer — the full
+ * link row + search + icons needs ~850px, so md was too early a reveal.
  */
 
 const REPO = 'https://github.com/Tor-Grimsson/kol-ds'
@@ -23,13 +27,23 @@ const LINKS = [
 
 export default function TopBar() {
   const { pathname } = useLocation()
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const isActive = (l) => (l.exact ? pathname === l.to : pathname.startsWith(l.prefix ?? l.to))
 
   return (
     <header className="sticky top-0 z-40 border-b border-fg-08 bg-surface-primary/90 backdrop-blur">
-      <div className="flex h-14 items-center gap-6 px-6">
+      <div className="flex h-14 items-center gap-4 px-4 lg:gap-6 lg:px-6">
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open navigation menu"
+          className="inline-flex h-8 w-8 items-center justify-center text-meta transition-colors hover:text-emphasis lg:hidden"
+        >
+          <Icon name="menu" size={18} />
+        </button>
+        <NavDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
         <Link to="/" className="kol-mono-13 tracking-tight text-emphasis">Kolkrabbi</Link>
-        <nav className="hidden items-center gap-5 kol-mono-12 md:flex">
+        <nav className="hidden items-center gap-5 kol-mono-12 lg:flex">
           {LINKS.map((l) => (
             <Link
               key={l.to}

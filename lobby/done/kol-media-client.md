@@ -25,7 +25,7 @@ The core (`listMedia` / `mediaUrl` / type guards) is byte-identical between them
 ## Proposed placement
 New package `packages/media-client/` → publishes as `@kolkrabbi/kol-media-client`, sibling to `component` / `framework` / `loader` / `theme`.
 
-- `kol-loader` was considered and rejected — it's an SVG icon/graphics loader, wrong domain.
+- `kol-icons` was considered and rejected — it's an SVG icon/graphics loader, wrong domain.
 - No React, no JSX — plain ESM. Framework-agnostic; the pickers (MediaCard/MediaRow, separately lobbied) consume its output.
 
 ## The contract it wraps

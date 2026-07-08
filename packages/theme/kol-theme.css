@@ -25,19 +25,25 @@
  *   (NEW)                 → kol-utilities.css   (curated slice of _new-css/utilities.css)
  */
 
-@import "./kol-base-tokens.css";
-@import "./kol-color.css";
-@import "./kol-opacity.css";
-@import "./kol-opaque.css";
-@import "./kol-typography.css";
-@import "./kol-typography-mono.css";
-@import "./kol-type-mono-classes.css";
-@import "./kol-utilities.css";
-@import "./kol-components-atoms.css";
-@import "./kol-components-molecules.css";
-@import "./kol-components-organisms.css";
+/* Everything KOL ships lives in the `components` cascade layer. Tailwind v4
+ * declares `@layer theme, base, components, utilities` — layering here means
+ * consumer utility classes (a later layer) can always override KOL chrome,
+ * while KOL still beats preflight (`base`). Unlayered consumer CSS wins over
+ * all of it, as it should. */
+@import "./kol-base-tokens.css" layer(components);
+@import "./kol-color.css" layer(components);
+@import "./kol-opacity.css" layer(components);
+@import "./kol-opaque.css" layer(components);
+@import "./kol-typography.css" layer(components);
+@import "./kol-typography-mono.css" layer(components);
+@import "./kol-type-mono-classes.css" layer(components);
+@import "./kol-utilities.css" layer(components);
+@import "./kol-components-atoms.css" layer(components);
+@import "./kol-components-molecules.css" layer(components);
+@import "./kol-components-organisms.css" layer(components);
 
 /* Theme-level design tokens */
+@layer components {
 :root {
   /* Spacing scale (4px base) */
   --kol-spacing-1: 0.25rem;    /* 4px */
@@ -107,4 +113,5 @@
   --kol-shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.08);
   --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
   --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
+}
 }

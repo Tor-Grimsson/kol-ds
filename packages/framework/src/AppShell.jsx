@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import SideNav from './SideNav.jsx'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { ModalProvider } from '@kolkrabbi/kol-component'
 
 /* Pages can register right-rail TOC content via this context.

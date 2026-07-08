@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import SearchInput from '../vendor/SearchInput.jsx'
 import { useTheme } from '../vendor/useTheme.js'
 import KolWordmark from '../vendor/Wordmark.jsx'

@@ -11,7 +11,7 @@ tags:
   - domain/design-system
 related:
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
-  - "[[../02-components/01-inventory|components]]"
+  - "[[../03-components/01-inventory|components]]"
   - "[[../../operations/01-release-pipeline|release pipeline]]"
 ---
 
@@ -23,7 +23,7 @@ related:
 
 | Tier | Packages | Job |
 |---|---|---|
-| **UI** (fixed, 4) | `kol-theme` ← `kol-loader` ← `kol-component` ← `kol-framework` | CSS tokens/chrome → Icon/Graphic loading → atoms→organisms → app shell |
+| **UI** (fixed, 4) | `kol-theme` ← `kol-icons` ← `kol-component` ← `kol-framework` | CSS tokens/chrome → Icon/Graphic loading → atoms→organisms → app shell |
 | **Clients** | `kol-media-client` | Headless service SDKs — one package per service contract |
 | **Brand kit** | `kol-brand-template` · `kol-brand` | The brand-manifest schema + conforming data packages |
 | **Tools** | `kol-scrape` | CLIs (presence/catalog scraper) |
@@ -35,7 +35,7 @@ The UI dependency arrow only points left — no reverse deps, ever. Clients/bran
 | Package | What it is |
 |---|---|
 | `@kolkrabbi/kol-theme` | CSS only: tokens, typography classes, component chrome (`.kol-btn*`, `.kol-seg*`, `.kol-prose`) |
-| `@kolkrabbi/kol-loader` | `<Icon>` (stroke + solid cuts, async data chunk) + keys-only inventories |
+| `@kolkrabbi/kol-icons` | `<Icon>` (stroke + solid cuts, async data chunk) + keys-only inventories |
 | `@kolkrabbi/kol-component` | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | App shell: `AppShell`, `SideNav`, `Layout`, heroes, footer, `ThemeToggle` |
 | `@kolkrabbi/kol-media-client` | Read-only client for the kol-media CDN |

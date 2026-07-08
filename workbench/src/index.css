@@ -6,7 +6,7 @@
    Paths are relative to this file → workbench/node_modules/@kolkrabbi/*. */
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-component/src";
-@source "../node_modules/@kolkrabbi/kol-loader/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
 
 /* Cascade order is load-bearing (ARCHITECTURE §5): theme tokens → brand color →
    framework chrome. Never reorder. */

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * validate-taxonomy — enforces docs/documentation/02-components/02-placement.md.
+ * validate-taxonomy — enforces docs/documentation/03-components/02-placement.md.
  *
  *   1. Closed folder set: every component source folder is one of
  *      atoms / molecules / organisms / graphics / hooks.

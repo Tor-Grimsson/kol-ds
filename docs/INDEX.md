@@ -15,7 +15,7 @@ related:
 
 # KOL design-system docs
 
-**[[documentation/INDEX|documentation/]]** is the design system, documented — numbered sections: overview · foundations · components · compositions · brand kit · research · usage. Start with [[documentation/00-overview/INDEX|the overview]].
+**[[documentation/INDEX|documentation/]]** is the design system, documented — numbered sections: overview · foundations · icons · components · compositions · brand kit · research · usage. Start with [[documentation/00-overview/INDEX|the overview]].
 
 Anything else that lands in `docs/` is repo-related documentation that isn't the design system itself:
 

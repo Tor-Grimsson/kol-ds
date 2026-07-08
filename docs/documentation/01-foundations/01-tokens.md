@@ -17,6 +17,7 @@ tags:
 related:
   - "[[02-color|color]]"
   - "[[03-typography|typography]]"
+  - "[[04-layout-breakpoints|layout & breakpoints]]"
 ---
 
 # Foundations — the token system

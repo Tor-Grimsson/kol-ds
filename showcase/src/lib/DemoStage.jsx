@@ -14,11 +14,13 @@ import ErrorBoundary from './ErrorBoundary.jsx'
  *   full — stretches to the canvas (tables, heroes, footers)
  */
 
+/* mx-auto: capped stages centre themselves so they behave in any w-full
+ * parent (CollectionPreview) as well as in parents that centre for them. */
 const STAGE = {
   hug: 'flex flex-wrap items-center justify-center gap-4',
-  sm: 'w-full max-w-[20rem] flex flex-col gap-4',
-  md: 'w-full max-w-[28rem] flex flex-col gap-4',
-  lg: 'w-full max-w-[40rem] flex flex-col gap-4',
+  sm: 'w-full max-w-[20rem] mx-auto flex flex-col gap-4',
+  md: 'w-full max-w-[28rem] mx-auto flex flex-col gap-4',
+  lg: 'w-full max-w-[40rem] mx-auto flex flex-col gap-4',
   full: 'w-full',
 }
 

@@ -22,7 +22,7 @@
     "components"
   ],
   "dependencies": {
-    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
     "@floating-ui/react": "^0.27.19",
     "embla-carousel-react": "^8.6.0"
   },

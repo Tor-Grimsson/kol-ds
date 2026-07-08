@@ -1,0 +1,39 @@
+{
+  "name": "@kolkrabbi/kol-icons",
+  "version": "0.3.0",
+  "description": "KOL icons — <Icon/>, the curated kol-icon-set-v1 + registerIcons (bring-your-own), and the legacy inventory. Vite-only (import.meta.glob).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "kol-icons": "./bin/kol-icons.mjs"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "icons",
+    "react"
+  ],
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/icons"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

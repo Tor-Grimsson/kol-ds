@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useChessControls } from '../context/ChessControlsContext'
 
 const GameSelector = () => {

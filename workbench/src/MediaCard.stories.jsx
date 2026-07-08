@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MediaCard, Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 const Thumb = ({ icon = 'image' }) => (
   <div className="flex h-full w-full items-center justify-center bg-fg-08 text-meta">

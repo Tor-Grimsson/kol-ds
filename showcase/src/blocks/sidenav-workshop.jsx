@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Workshop sidenav',
@@ -112,7 +112,7 @@ export default function SidebarWorkshop() {
           <span className="kol-helper-12 text-emphasis">{active}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />

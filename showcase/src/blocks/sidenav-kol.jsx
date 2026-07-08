@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'KOL sidenav',
@@ -38,7 +38,7 @@ export default function SidebarNav() {
   return (
     <div className="flex h-full min-h-0 w-full bg-surface-primary">
       {/* ── The sidenav ─────────────────────────────────────── */}
-      <aside className={`kol-sidenav relative flex h-full flex-col border-r border-fg-08 bg-surface-primary${collapsed ? ' is-collapsed' : ''}`}>
+      <aside className={`kol-sidenav relative flex h-full flex-col border-r border-fg-08 bg-surface-primary px-3${collapsed ? ' is-collapsed' : ''}`}>
         <button
           type="button"
           className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer kol-helper-14 transition-colors duration-150 text-meta hover:text-emphasis hover:border-fg-24"
@@ -109,7 +109,7 @@ export default function SidebarNav() {
           <span className="kol-helper-12 text-emphasis">{activeLeaf}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
             <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />

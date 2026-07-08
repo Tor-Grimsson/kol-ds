@@ -9,6 +9,10 @@
  * Global rule: border-radius never exceeds 4px.
  */
 
+/* All KOL-shipped rule CSS lives in the `components` cascade layer so consumer
+ * Tailwind utilities (the `utilities` layer) can always override it. */
+@layer components {
+
 html,
 body {
   background: var(--kol-surface-primary);
@@ -1314,4 +1318,6 @@ code, pre {
     width: 18px;
     height: 18px;
   }
+}
+
 }

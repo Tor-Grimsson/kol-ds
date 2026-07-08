@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { SearchInput } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle.jsx'
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MediaCard, Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 export const stage = 'lg'
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import ColorSwatch from './ColorSwatch.jsx'
 
 /* taxonomy-ok: the default composed control nests the same-file SwatchStack

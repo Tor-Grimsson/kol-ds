@@ -1,77 +1,21 @@
-import { Link, useLocation } from 'react-router-dom'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import TopBar from './TopBar.jsx'
-import { groupComponents } from './registry.js'
-import { useGrouping } from './grouping.jsx'
+import SidebarNav from './SidebarNav.jsx'
 
 /**
  * DocLayout — the shadcn-style doc shell shared by every docs page:
  * TopBar + unified sidebar (overview pages, then the component tree) +
  * content + on-this-page TOC. Active sidebar link derives from the path.
+ * Below lg the same nav renders in TopBar's NavDrawer instead.
  *
  * `wide` mode hands layout to the children (Foundations/Icons pages own
  * their width via PageSection); default mode centres a max-w-3xl column.
  */
 
-const OVERVIEW = [
-  { to: '/foundations', label: 'Foundations' },
-  { to: '/foundations/color', label: 'Color' },
-  { to: '/foundations/typography', label: 'Typography' },
-  { to: '/icons', label: 'Icons' },
-  { to: '/icons/variants', label: 'Icon variants' },
-  { to: '/components', label: 'Components' },
-  { to: '/blocks', label: 'Blocks' },
-  { to: '/sets', label: 'Sets' },
-]
-
-const DOCS = [
-  { to: '/docs/shell-and-layout', label: 'Shell & Layout' },
-  { to: '/docs/menus', label: 'Menus' },
-  { to: '/docs/loaders', label: 'Loaders' },
-  { to: '/workshop-preview', label: 'Workshop shell ↗' },
-]
-
-/* Components grouped by the active axis (D1 toggle): Function (default) or
- * Atomic/Tier. A→Z within each group — a component's slot is fixed. */
 function DocSidebar() {
-  const { pathname } = useLocation()
-  const { mode, setMode } = useGrouping()
-  const linkCls = (active) =>
-    `kol-sans-body-02 py-1 transition-colors ${active ? 'text-emphasis' : 'text-meta hover:text-emphasis'}`
-
-  const group = (label, links) => (
-    <div>
-      <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">{label}</p>
-      <nav className="flex flex-col">
-        {links.map((l) => (
-          <Link key={l.to} to={l.to} className={linkCls(pathname === l.to)}>
-            {l.label}
-          </Link>
-        ))}
-      </nav>
-    </div>
-  )
-
   return (
     <aside className="hidden w-56 shrink-0 border-r border-fg-08 lg:block">
       <div className="sticky top-14 flex max-h-[calc(100vh-3.5rem)] flex-col gap-6 overflow-y-auto px-5 py-8">
-        {group('Overview', OVERVIEW)}
-        {group('Docs', DOCS)}
-        <div>
-          <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">Group by</p>
-          <SegmentedToggle
-            ariaLabel="Group components by"
-            value={mode}
-            onChange={setMode}
-            options={[{ value: 'function', label: 'Function' }, { value: 'atomic', label: 'Atomic' }]}
-            className="w-full"
-          />
-        </div>
-        {groupComponents(mode).map(([key, label, items]) => (
-          <div key={key}>
-            {group(label, items.map((c) => ({ to: `/components/${c.slug}`, label: c.name })))}
-          </div>
-        ))}
+        <SidebarNav />
       </div>
     </aside>
   )

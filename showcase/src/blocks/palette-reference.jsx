@@ -18,7 +18,7 @@ const ANCHORS = [
 
 export default function PaletteReference() {
   return (
-    <div className="flex w-full flex-col gap-10">
+    <div className="flex w-full flex-col gap-10 px-6 py-10 md:px-10">
       <div className="flex flex-col">
         {/* `ramp` sugar → each chip resolves --{ramp}-{stop} live from the theme */}
         <ColorRamp ramp="kol-color-yellow" anchor={300} note="Pure-yellow lock — anchor at 300." />

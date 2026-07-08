@@ -13,7 +13,8 @@ tags:
   - domain/design-system
   - domain/typography
 related:
-  - "[[../02-components/02-placement|component placement]]"
+  - "[[04-layout-breakpoints|layout & breakpoints]]"
+  - "[[../03-components/02-placement|component placement]]"
 ---
 
 # Type classes — the two families and when to use which

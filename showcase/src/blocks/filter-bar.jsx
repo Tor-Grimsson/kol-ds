@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Input, Tag, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
+import { Input, Tag, ViewToggle, Dropdown, Divider, AssetPlaceholder } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Filter bar',
@@ -65,15 +65,15 @@ export default function FilterBar() {
 
       {/* The results the bar filters — grid or rows per the view mode. */}
       {view === 'grid' ? (
-        <div className="grid flex-1 grid-cols-2 content-start gap-4 md:grid-cols-4">
+        <div className="grid flex-1 grid-cols-2 content-start gap-4 sm:grid-cols-4">
           {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="aspect-[4/3] rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
+            <AssetPlaceholder key={i} aspectRatio="4 / 3" note="result" name={`print-0${i + 1}`} />
           ))}
         </div>
       ) : (
         <div className="flex flex-1 flex-col content-start gap-3">
           {Array.from({ length: 6 }, (_, i) => (
-            <div key={i} className="h-14 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
+            <AssetPlaceholder key={i} aspectRatio="" className="h-14 !p-2" note="result" name={`print-0${i + 1}`} />
           ))}
         </div>
       )}

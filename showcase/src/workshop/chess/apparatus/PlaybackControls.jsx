@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useChessControls } from '../context/ChessControlsContext'
 
 const PlaybackControls = () => {

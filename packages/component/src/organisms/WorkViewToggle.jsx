@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: composites a segmented toggle + an inline search into one
- * space-trading control (organism); nests kol-loader's Icon (infrastructure). */
+ * space-trading control (organism); nests kol-icons's Icon (infrastructure). */
 
 const CUBIC_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
 /* The pill uses a springier overshoot ease, distinct from CUBIC_EASE. */

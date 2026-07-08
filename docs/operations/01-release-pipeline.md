@@ -15,8 +15,8 @@ tags:
   - provider/npm
   - pattern/changesets-release
 related:
-  - "[[../documentation/05-research/workflows/06-versioning-testing|versioning & testing]]"
-  - "[[../documentation/05-research/workflows/05-distribution|distribution]]"
+  - "[[../documentation/06-research/workflows/06-versioning-testing|versioning & testing]]"
+  - "[[../documentation/06-research/workflows/05-distribution|distribution]]"
   - "[first publish log](../../.kol/llm-context/session-log/2026-07-01-first-npm-publish.md)"
 ---
 

@@ -11,7 +11,7 @@ const PANGRAM = 'The quick brown fox jumps over the lazy dog'
 
 export default function TypeScale() {
   return (
-    <div className="flex w-full flex-col gap-8">
+    <div className="flex w-full flex-col gap-8 px-6 py-10 md:px-10">
       {/* The scale, display → caption. Sizes are px on purpose (spec, not stops). */}
       <div className="flex flex-col">
         <TypeSample label="Display · 700 · 64/68" weight={700} size={64} lineHeight={68}>

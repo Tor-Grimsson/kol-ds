@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
  * Input — single-input atom built on the .kol-control shell.

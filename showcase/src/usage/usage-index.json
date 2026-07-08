@@ -1,7 +1,7 @@
 [
   {
     "name": "Icon",
-    "pkg": "@kolkrabbi/kol-loader",
+    "pkg": "@kolkrabbi/kol-icons",
     "category": "loaders",
     "count": 1003,
     "apps": [
@@ -698,7 +698,7 @@
       },
       {
         "app": "kol-editor",
-        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-loader/src/graphics/Graphic.jsx",
+        "file": "kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-icons/src/graphics/Graphic.jsx",
         "code": "<Graphic category=\"patterns\" name=\"pattern-05\" />"
       },
       {

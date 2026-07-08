@@ -6,7 +6,7 @@
    needs, not a workspace shortcut: point @source at the installed package source. */
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-component/src";
-@source "../node_modules/@kolkrabbi/kol-loader/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
 
 @import "@kolkrabbi/kol-theme";
 @import "@kolkrabbi/kol-framework/kol-brand-color.css";
@@ -28,4 +28,27 @@ html,
 body {
   -webkit-user-select: text;
   user-select: text;
+}
+
+/* Chart palette for the ported workshop dashboards (Sparkline, LineChart,
+   DashStackedBarCard, borderColors). Ported verbatim from the monorepo's
+   packages/ui/theme.css — these vars were used by the ported apparatus but
+   never defined here, so every chart color silently resolved transparent.
+   Global (not dashboard.css) because the Home wall renders the cards too. */
+:root {
+  --kol-palette-blue: #3740D3;
+  --kol-palette-teal: #49a0a2;
+  --kol-palette-green: #66a44c;
+  --kol-palette-yellow: #ffe32e;
+  --kol-palette-red: #ce4646;
+  --kol-palette-orange: #db8000;
+  --kol-palette-purple: #9437FF;
+
+  --kol-palette-blue-light: #c8caf4;
+  --kol-palette-teal-light: #d0e8e9;
+  --kol-palette-green-light: #d4e6cb;
+  --kol-palette-yellow-light: #d0d79d;
+  --kol-palette-red-light: #f0caca;
+  --kol-palette-orange-light: #f5ddb3;
+  --kol-palette-purple-light: #e0c8ff;
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { Graphic } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
 import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
@@ -37,14 +37,14 @@ export default function DocsLoaders() {
       >
         <p className="kol-sans-body-02 text-body">
           Browse the inventories on <Link className="text-emphasis underline" to="/icons">Icons</Link> and{' '}
-          <Link className="text-emphasis underline" to="/icons/variants">Icon variants</Link>.
+          <Link className="text-emphasis underline" to="/icons/v1">kol-icon-set-v1</Link>.
         </p>
       </DocSection>
 
       <DocSection
         id="icon"
         title="Icon"
-        lede="From @kolkrabbi/kol-loader. Resolves a filename-derived name across the canonical stroke set, the solid set, the legacy loader set, and the web app set — in that order, so the canonical cut always wins."
+        lede="From @kolkrabbi/kol-icons. Resolves a filename-derived name across the canonical stroke set, the solid set, the legacy loader set, and the web app set — in that order, so the canonical cut always wins."
       >
         <PreviewCard>
           <div className="flex items-center gap-4">
@@ -84,10 +84,10 @@ export default function DocsLoaders() {
       >
         <ApiTable
           rows={[
-            { prop: 'ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-loader', desc: 'Flat list globbed from the canonical stroke SVGs.' },
-            { prop: 'SOLID_ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-loader', desc: 'Solid-cut inventory (keys-only) for mirror-gap diffing.' },
-            { prop: 'ICON_INDEX / ICONS', type: '{ [folder]: name[] }', def: 'kol-loader', desc: 'Inventory grouped by folder; ICONS aliases ICON_INDEX.' },
-            { prop: 'ALL_ICONS / hasIcon / getCategory', type: 'list / fn / fn', def: 'kol-loader', desc: 'Flattened names + lookup helpers.' },
+            { prop: 'ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-icons', desc: 'Flat list globbed from the canonical stroke SVGs.' },
+            { prop: 'SOLID_ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-icons', desc: 'Solid-cut inventory (keys-only) for mirror-gap diffing.' },
+            { prop: 'ICON_INDEX / ICONS', type: '{ [folder]: name[] }', def: 'kol-icons', desc: 'Inventory grouped by folder; ICONS aliases ICON_INDEX.' },
+            { prop: 'ALL_ICONS / hasIcon / getCategory', type: 'list / fn / fn', def: 'kol-icons', desc: 'Flattened names + lookup helpers.' },
             { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
           ]}
         />
@@ -99,9 +99,9 @@ export default function DocsLoaders() {
         lede="One real one: the registries are built with import.meta.glob, which Vite only expands in source-transformed files."
       >
         <p className="kol-sans-body-02 text-body">
-          A consumer that pre-bundles <span className="kol-mono-12">@kolkrabbi/kol-loader</span> (Vite's default for
+          A consumer that pre-bundles <span className="kol-mono-12">@kolkrabbi/kol-icons</span> (Vite's default for
           node_modules) gets an <em>empty</em> registry in dev — every icon warns "not found" while prod builds are fine.
-          Exclude it: <span className="kol-mono-12">optimizeDeps.exclude: ['@kolkrabbi/kol-loader']</span>.
+          Exclude it: <span className="kol-mono-12">optimizeDeps.exclude: ['@kolkrabbi/kol-icons']</span>.
         </p>
       </DocSection>
     </DocLayout>

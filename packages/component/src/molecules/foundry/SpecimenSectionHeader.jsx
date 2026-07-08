@@ -1,8 +1,8 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import Dropdown from '../Dropdown.jsx'
 import Divider from '../../atoms/Divider.jsx'
 
-/* taxonomy-ok: nests DS Dropdown + Divider (relative imports) plus kol-loader's
+/* taxonomy-ok: nests DS Dropdown + Divider (relative imports) plus kol-icons's
  * Icon (a package import the relative-import check can't see). */
 
 /**

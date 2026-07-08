@@ -313,7 +313,7 @@ const SiteTab = ({ data, range, host, setHost, allHosts }) => {
   return (
     <>
       <HostFilterPills host={host} setHost={setHost} allHosts={allHosts} />
-      <div className="dash-grid">
+      <div style={{ containerType: 'inline-size' }}><div className="dash-grid">
         <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
           <HostSummaryCard host={MAIN_HOST} label="Main site" range={range} borderColor="var(--kol-palette-yellow)" />
         </div>
@@ -424,7 +424,7 @@ const SiteTab = ({ data, range, host, setHost, allHosts }) => {
           </div>
         </DashChartCard>
       </div>
-      </div>
+      </div></div>
     </>
   )
 }
@@ -437,7 +437,7 @@ const ProjectTab = ({ data, sanity }) => {
   const t = sanity.types
 
   return (
-    <div className="dash-grid">
+    <div style={{ containerType: 'inline-size' }}><div className="dash-grid">
       <DashMetricCard label="Components" value={data.components} delta="packages/ui" borderColor="var(--kol-palette-blue)" />
       <DashMetricCard label="Routes" value={data.routes} delta="app pages" borderColor="var(--kol-palette-green)" />
       <DashMetricCard label="Lines of code" value={data.linesOfCode} delta="jsx + js + css" borderColor="var(--kol-palette-purple)" />
@@ -465,7 +465,7 @@ const ProjectTab = ({ data, sanity }) => {
       </div>
       <DashMetricCard label="Packages" value={data.packages} delta="workspaces" borderColor="var(--kol-palette-teal)" />
       <DashMetricCard label="Fonts" value={data.fonts} delta="typeface files" borderColor="var(--kol-palette-red)" />
-    </div>
+    </div></div>
   )
 }
 
@@ -511,7 +511,7 @@ const InfraTab = ({ deploys, b2 }) => {
   }, [deploys])
 
   return (
-    <div className="dash-grid">
+    <div style={{ containerType: 'inline-size' }}><div className="dash-grid">
       <DashMetricCard className="h-full" label="Latest deploy" value={latestState} delta={latest ? timeAgo(latest.created) : '—'} borderColor={latestColor} />
       <DashMetricCard className="h-full" label="Avg build time" value={`${avgBuild}s`} delta={`last ${totalDeploys} deploys`} borderColor="var(--kol-palette-purple)"
         sparkline={buildDurations.length > 2 ? <Sparkline data={buildDurations.slice(0, 20).reverse()} height={24} fill color="var(--kol-palette-purple)" /> : null} />
@@ -556,7 +556,7 @@ const InfraTab = ({ deploys, b2 }) => {
           footer="Sorted by upload date"
         />
       </div>
-    </div>
+    </div></div>
   )
 }
 
@@ -566,12 +566,12 @@ const InfraTab = ({ deploys, b2 }) => {
 
 const SessionsTab = ({ data }) => {
   return (
-    <div className="dash-grid">
+    <div style={{ containerType: 'inline-size' }}><div className="dash-grid">
       <DashMetricCard className="h-full" label="Session logs" value={data.sessionLogs} delta="total logged" borderColor="var(--kol-palette-blue)" />
       <DashMetricCard className="h-full" label="Docs files" value={data.docsFiles} delta="documentation" borderColor="var(--kol-palette-green)" />
       <DashMetricCard className="h-full" label="Commits" value={data.commits} delta="git history" borderColor="var(--kol-palette-purple)" />
       <DashMetricCard className="h-full" label="Components" value={data.components} delta="total built" borderColor="var(--kol-palette-orange)" />
-    </div>
+    </div></div>
   )
 }
 

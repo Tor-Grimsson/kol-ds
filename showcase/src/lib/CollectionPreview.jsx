@@ -29,10 +29,12 @@ export default function CollectionPreview({ slug, getItem }) {
 
   /* m-auto (not items/justify-center): centers when the content fits, but
    * degrades to scrollable from the start edge when it overflows — flex
-   * centering would crop the overflowing start. */
+   * centering would crop the overflowing start. w-full is load-bearing: a
+   * bare shrink-wrapping flex item resolves the stage's `w-full max-w-[…]`
+   * against intrinsic content width, collapsing panels to min-content. */
   return (
     <div className="flex min-h-dvh w-full overflow-auto bg-surface-primary p-6">
-      <div className="m-auto">
+      <div className="m-auto w-full">
         <DemoStage entry={entry} />
       </div>
     </div>

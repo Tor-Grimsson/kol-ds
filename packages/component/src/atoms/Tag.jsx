@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
 

@@ -28,9 +28,9 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.19
         version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@kolkrabbi/kol-loader':
+      '@kolkrabbi/kol-icons':
         specifier: workspace:*
-        version: link:../loader
+        version: link:../icons
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.7)
@@ -61,9 +61,9 @@ importers:
       '@kolkrabbi/kol-component':
         specifier: workspace:*
         version: link:../component
-      '@kolkrabbi/kol-loader':
+      '@kolkrabbi/kol-icons':
         specifier: workspace:*
-        version: link:../loader
+        version: link:../icons
       react:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7
@@ -74,7 +74,7 @@ importers:
         specifier: ^6.0.0 || ^7.0.0
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
 
-  packages/loader:
+  packages/icons:
     dependencies:
       react:
         specifier: ^18.3.0 || ^19.0.0
@@ -97,9 +97,9 @@ importers:
       '@kolkrabbi/kol-framework':
         specifier: workspace:*
         version: link:../packages/framework
-      '@kolkrabbi/kol-loader':
+      '@kolkrabbi/kol-icons':
         specifier: workspace:*
-        version: link:../packages/loader
+        version: link:../packages/icons
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../packages/theme
@@ -152,9 +152,9 @@ importers:
       '@kolkrabbi/kol-framework':
         specifier: workspace:*
         version: link:../packages/framework
-      '@kolkrabbi/kol-loader':
+      '@kolkrabbi/kol-icons':
         specifier: workspace:*
-        version: link:../packages/loader
+        version: link:../packages/icons
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../packages/theme

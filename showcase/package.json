@@ -12,7 +12,7 @@
   "dependencies": {
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
-    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "chess.js": "^1.4.0",

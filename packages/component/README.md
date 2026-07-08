@@ -15,7 +15,7 @@ Requires a **Vite + Tailwind v4** app and the theme CSS imported (see the theme 
 
 ```jsx
 import { Button, Tag, Badge, Slider, Dropdown, Table } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 <Button variant="primary" iconLeft="plus">New</Button>
 <Badge variant="success">Active</Badge>

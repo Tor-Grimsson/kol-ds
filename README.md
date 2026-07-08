@@ -13,7 +13,7 @@ All published under `@kolkrabbi/*`. The UI tier is a four-layer stack: `theme �
 | Package | Tier | What it is |
 | --- | --- | --- |
 | `kol-theme` | UI | Brand-neutral tokens + base CSS. The cascade everything builds on. |
-| `kol-loader` | UI | `<Icon/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
+| `kol-icons` | UI | `<Icon/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
 | `kol-component` | UI | Atoms → organisms, emitting canonical `kol-*` classes. |
 | `kol-framework` | UI | App shell — sidenav, layout, theme toggle, heroes, brand color layer. |
 | `kol-media-client` | Client | Read-only client for the kol-media CDN. Plain ESM, no React. |
@@ -24,7 +24,7 @@ All published under `@kolkrabbi/*`. The UI tier is a four-layer stack: `theme �
 ## Consuming
 
 ```sh
-npm i @kolkrabbi/kol-theme @kolkrabbi/kol-component @kolkrabbi/kol-loader
+npm i @kolkrabbi/kol-theme @kolkrabbi/kol-component @kolkrabbi/kol-icons
 ```
 
 Needs a **Vite + Tailwind v4** app — packages ship raw JSX/CSS, your bundler compiles them. `react`, `react-dom` (and `react-router-dom` for some components) are peers.
@@ -40,7 +40,7 @@ CSS cascade order is load-bearing — import in exactly this order:
 
 ```jsx
 import { Button, Tag } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 <Button variant="primary" iconLeft="plus">New</Button>
 ```

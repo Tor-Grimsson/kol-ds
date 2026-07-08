@@ -5,7 +5,7 @@
  * CSS classes live in components.css under 2-LABELS → Badges.
  */
 
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 const VARIANT_MAP = {
   default: 'kol-badge-default',

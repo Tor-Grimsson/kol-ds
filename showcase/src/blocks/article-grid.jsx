@@ -87,10 +87,10 @@ const MINI = [
 
 export default function ArticleGrid() {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 px-6 py-12 md:px-10">
       <ArticleCard size="hero" {...HERO} />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {ROW.map((a) => (
           <ArticleCard key={a.href} size="default" {...a} />
         ))}

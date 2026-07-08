@@ -2,6 +2,10 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider, Icon } from '@kolkrabb
 
 export default function MenuItemDemo() {
   return (
+    /* The panel is portalled (escapes overflow by design), so the demo must
+       reserve the space it lands on — otherwise the open-by-default menu
+       overlays whatever sits under the card in dense galleries. */
+    <div className="flex min-h-[220px] w-full items-start justify-center">
     <MenuItem label="File" defaultOpen>
       <div className="min-w-[180px] py-1">
         <MenuDropdownItem iconLeft={<Icon name="add-file" size={14} />} onClick={() => {}}>
@@ -19,5 +23,6 @@ export default function MenuItemDemo() {
         </MenuDropdownItem>
       </div>
     </MenuItem>
+    </div>
   )
 }

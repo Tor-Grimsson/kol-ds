@@ -1,6 +1,6 @@
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
-/* taxonomy-ok: nests kol-loader's Icon (a package import the relative-import
+/* taxonomy-ok: nests kol-icons's Icon (a package import the relative-import
  * check can't see) plus the same-file SelectIndicator. */
 
 /**

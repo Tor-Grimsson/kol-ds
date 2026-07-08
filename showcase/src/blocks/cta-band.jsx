@@ -10,6 +10,7 @@ export const stage = 'full'
 export default function CtaBand() {
   return (
     <CtaGlobal
+      className="px-6 md:px-10"
       eyebrow="/ Connect"
       promptLabel="Working on a project?"
       heading="Tell us what you're building"

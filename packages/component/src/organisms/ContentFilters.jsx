@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import Tag from '../atoms/Tag.jsx'
 import Divider from '../atoms/Divider.jsx'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 import ViewToggle from '../atoms/ViewToggle'
 
 /**

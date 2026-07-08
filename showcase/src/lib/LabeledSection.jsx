@@ -19,7 +19,7 @@ export default function LabeledSection({ label, meta = [], children }) {
           {label}
         </span>
       )}
-      <div className="kol-labeled-section-row grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12 items-start pt-6">
+      <div className="kol-labeled-section-row grid grid-cols-1 gap-6 lg:grid-cols-[256px_minmax(0,1fr)] lg:gap-12 items-start pt-6">
         {meta.length > 0 && (
           <div className="kol-labeled-section-meta flex flex-col">
             {meta.map(([key, value]) => (

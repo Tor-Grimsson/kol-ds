@@ -38,7 +38,7 @@
 ### Minor Changes
 
 - fa8ce05: New `CopyButton` atom — the copy-to-clipboard chip (clipboard icon + Copy/Copied swap, 1.8s reset, silent on blocked clipboard) extracted from CodeBlock's inline button so it's a logged atom before being lifted into composites. `CodeBlock` now nests it. Chip look lives in kol-theme (`.kol-copy-btn`); kol-framework's `.kol-codeblock-copy` slims to positioning only. Props: `text` (string or thunk), `label` (false = icon-only).
-- c750436: Graphic: move the ~4.8 MB of raw illustration SVGs (several wrap embedded base64 rasters) behind a single dynamic `import()` (`graphicData.js`) — the same entry-chunk fix as kol-loader's Icon. The consumer's entry chunk no longer carries the graphic payload; it streams as its own async chunk. `GRAPHICS` (inventory) is now built from a keys-only glob and stays synchronous. Removes the dead `GRAPHIC_RAW` export (zero consumers; it forced the eager inline). On a cold first paint a graphic may render as a same-sized empty box for a frame.
+- c750436: Graphic: move the ~4.8 MB of raw illustration SVGs (several wrap embedded base64 rasters) behind a single dynamic `import()` (`graphicData.js`) — the same entry-chunk fix as kol-icons's Icon. The consumer's entry chunk no longer carries the graphic payload; it streams as its own async chunk. `GRAPHICS` (inventory) is now built from a keys-only glob and stays synchronous. Removes the dead `GRAPHIC_RAW` export (zero consumers; it forced the eager inline). On a cold first paint a graphic may render as a same-sized empty box for a frame.
 - c750436: New molecules `MediaCard` + `MediaRow` — the grid tile and list row for one media object (recreated from kol-media-admin's lobby specs, same slot contract: thumb / name / actions + select mode with shift-range `onSelect`). Both share a passive `SelectIndicator` (deliberately not ToggleCheckbox — the card/row is the click target; a nested real checkbox double-fires). MediaRow column widths exposed as `dateWidth` / `sizeWidth` props.
 - fa8ce05: Add `defaultOpen` to the open-state components — `Dropdown`, `DropdownTagFilter`, `MenuItem`, `MenuPopover`. Non-breaking; seeds the internal open state so panels can render expanded (docs previews, restored UI state).
 - fa8ce05: Menu-family unification, step 1: `MenuPopover` is now a deprecated alias of `MenuItem` — the two triggers had identical APIs and duplicate implementations (hand-rolled fixed positioning vs floating-ui). One implementation remains (floating-ui: portal, auto-flip, scroll-tracking, focus management). Existing `MenuPopover` call-sites keep working; note the trigger now renders MenuItem's chrome (chevron) and the panel is portal-rendered. Migrate imports to `MenuItem`; the alias goes away in the next major.
@@ -54,14 +54,14 @@
 - Updated dependencies [c750436]
 - Updated dependencies [fa8ce05]
 - Updated dependencies [c750436]
-  - @kolkrabbi/kol-loader@0.3.0
+  - @kolkrabbi/kol-icons@0.3.0
 
 ## 0.1.2
 
 ### Patch Changes
 
 - Updated dependencies [de4c33f]
-  - @kolkrabbi/kol-loader@0.2.0
+  - @kolkrabbi/kol-icons@0.2.0
 
 ## 0.1.1
 
@@ -69,4 +69,4 @@
 
 - fcfa14c: Fix `repository.url` to `github.com/Tor-Grimsson/kol-ds` (and the component README usage link). Corrects the npm "Repository" link that pointed at a nonexistent repo in 0.1.0.
 - Updated dependencies [fcfa14c]
-  - @kolkrabbi/kol-loader@0.1.1
+  - @kolkrabbi/kol-icons@0.1.1

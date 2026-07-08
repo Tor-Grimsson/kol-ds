@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import { Icon } from '@kolkrabbi/kol-loader'
+import { Icon } from '@kolkrabbi/kol-icons'
 
-/* taxonomy-ok: nests kol-loader's Icon */
+/* taxonomy-ok: nests kol-icons's Icon */
 
 /**
  * TabsRow — labeled underline tab strip: text tabs where the active tab gets

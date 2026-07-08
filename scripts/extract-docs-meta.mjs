@@ -6,7 +6,7 @@
  *   typeClasses — kol type classes the component renders text with
  *                 (kol-sans-* / kol-mono-* / kol-helper-* / kol-prose*)
  *   composes    — KOL components it nests (relative imports, named or
- *                 default; + Icon when kol-loader is used; + the same-file
+ *                 default; + Icon when kol-icons is used; + the same-file
  *                 augments the import scan can't see)
  *   freestyle   — Tailwind font-size/family utilities in source (text-sm,
  *                 text-[13px], font-sans …): the type-conformance sweep.
@@ -52,7 +52,7 @@ function mineFile(absPath) {
     }
     else if (m[2] && /^[A-Z]/.test(m[2])) composes.add(m[2])
   }
-  if (/@kolkrabbi\/kol-loader/.test(txt) && /<Icon\b/.test(txt)) composes.add('Icon')
+  if (/@kolkrabbi\/kol-icons/.test(txt) && /<Icon\b/.test(txt)) composes.add('Icon')
   const freestyle = [...new Set(txt.match(FREESTYLE_RE) || [])].sort()
   return { typeClasses, composes: [...composes], freestyle }
 }

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@kolkrabbi/kol-theme": "workspace:*",
-    "@kolkrabbi/kol-loader": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "framer-motion": "^12.23.22",

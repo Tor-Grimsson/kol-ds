@@ -28,6 +28,7 @@ const FEATURES = [
 export default function FeatureShowcase() {
   return (
     <FeaturesCardSection
+      sectionClassName="px-6 py-12 md:px-10"
       headerLabel="Everything you need to ship"
       headerDescription="A production-ready toolkit that scales from a single button to a full marketing page — no design debt, no divergence."
       features={FEATURES}

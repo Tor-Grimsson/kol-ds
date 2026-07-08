@@ -153,7 +153,7 @@ export default function PrintsStore() {
       id: 'details',
       label: 'Details',
       content: (
-        <dl className="grid grid-cols-3 gap-4">
+        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <dt className="kol-helper-uc-xs text-fg-48 mb-1">Edition</dt>
             <dd className="kol-mono-12">{selected.edition}</dd>
