@@ -26,15 +26,16 @@
  *   value     — current option value
  *   onChange  — handler (newValue) => void
  *   options   — [{ value, label, ariaLabel? }]
- *   size      — 'md' (default, 26px) | 'sm' (16px). `sm` is for icon/preview-
- *               only options (e.g. line-style previews) where text labels
- *               aren't used; the cells still center their contents but the
- *               outer height is tighter.
+ *   size      — mirrors Button exactly: 'sm' (26px, mono-12, 4/12 pad) |
+ *               'md' (default, 32px, mono-14, 6/16 pad) | 'lg' (40px,
+ *               mono-16, 8/20 pad). Same cell padding + mono type as the
+ *               matching `.kol-btn-{sm,md,lg}`, so a segmented strip lines
+ *               up with a Button of the same size.
  *   ariaLabel — accessible name for the group
  *   className — additional classes on the outer shell
  */
 export default function SegmentedToggle({ value, onChange, options = [], size = 'md', ariaLabel, className = '' }) {
-  const cellType = size === 'sm' ? '' : 'kol-mono-12'
+  const cellType = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
   const focusIdx = Math.max(0, options.findIndex((opt) => opt.value === value))
 
   const handleKeyDown = (e) => {
@@ -51,7 +52,7 @@ export default function SegmentedToggle({ value, onChange, options = [], size = 
       role="radiogroup"
       aria-label={ariaLabel}
       onKeyDown={handleKeyDown}
-      className={['kol-seg', size === 'sm' && 'kol-seg--sm', className].filter(Boolean).join(' ')}
+      className={['kol-seg', size !== 'md' && `kol-seg--${size}`, className].filter(Boolean).join(' ')}
     >
       {options.map((opt, i) => {
         const isActive = opt.value === value

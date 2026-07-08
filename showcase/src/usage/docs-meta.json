@@ -1,4 +1,12 @@
 {
+  "AnimatedTitle": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "AssetGrid": {
+    "typeClasses": [],
+    "composes": []
+  },
   "AssetPlaceholder": {
     "typeClasses": [
       "kol-helper-12",
@@ -27,11 +35,13 @@
       "kol-mono-14",
       "kol-mono-16"
     ],
-    "composes": [
-      "Icon"
-    ]
+    "composes": []
   },
   "CopyButton": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CurveOverlay": {
     "typeClasses": [],
     "composes": []
   },
@@ -39,15 +49,40 @@
     "typeClasses": [],
     "composes": []
   },
+  "DocsToc": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": []
+  },
   "DropdownTagFilter": {
     "typeClasses": [],
+    "composes": []
+  },
+  "EmptyState": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-helper-16",
+      "kol-sans-body-03"
+    ],
     "composes": []
   },
   "ExitPreview": {
     "typeClasses": [],
     "composes": []
   },
+  "Figure": {
+    "typeClasses": [
+      "kol-prose-figure"
+    ],
+    "composes": []
+  },
   "FullscreenOverlay": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "HlsVideo": {
     "typeClasses": [],
     "composes": []
   },
@@ -74,6 +109,10 @@
     ],
     "composes": []
   },
+  "OverlayGlassPanel": {
+    "typeClasses": [],
+    "composes": []
+  },
   "Pill": {
     "typeClasses": [],
     "composes": []
@@ -86,13 +125,42 @@
     "typeClasses": [],
     "composes": []
   },
+  "PriceDisplay": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-sans-heading-03"
+    ],
+    "composes": []
+  },
+  "ProsePreview": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-prose",
+      "kol-prose-indented",
+      "kol-prose-pullout",
+      "kol-sans-body-01"
+    ],
+    "composes": []
+  },
   "QuantityInput": {
     "typeClasses": [],
     "composes": []
   },
-  "QuantityStepper": {
-    "typeClasses": [],
+  "RotaryDial": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
     "composes": []
+  },
+  "SearchInput": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-mono-14"
+    ],
+    "composes": [
+      "Icon"
+    ]
   },
   "Section": {
     "typeClasses": [
@@ -108,7 +176,9 @@
   },
   "SegmentedToggle": {
     "typeClasses": [
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
     ],
     "composes": []
   },
@@ -157,8 +227,29 @@
     ],
     "composes": []
   },
+  "TextPressure": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "TiltCard": {
+    "typeClasses": [],
+    "composes": []
+  },
   "TransparentX": {
     "typeClasses": [],
+    "composes": []
+  },
+  "TypeSample": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": []
+  },
+  "TypeSpecCard": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
     "composes": []
   },
   "ViewToggle": {
@@ -185,10 +276,87 @@
     ],
     "composes": []
   },
+  "AlignmentGrid": {
+    "typeClasses": [],
+    "composes": [
+      "Button"
+    ]
+  },
+  "ArticleCard": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-helper-14",
+      "kol-helper-16",
+      "kol-mono-14",
+      "kol-mono-20",
+      "kol-sans-heading-03"
+    ],
+    "composes": [
+      "Pill",
+      "Image"
+    ]
+  },
+  "ImageBlock": {
+    "typeClasses": [],
+    "composes": [
+      "Figure",
+      "Image"
+    ]
+  },
+  "SelectionOverlay": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "VideoBlock": {
+    "typeClasses": [],
+    "composes": [
+      "Figure"
+    ]
+  },
+  "WorkListItem": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-sans-heading-03"
+    ],
+    "composes": [
+      "Image",
+      "Tag"
+    ]
+  },
+  "CardFeatureItem": {
+    "typeClasses": [
+      "kol-helper-16",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
   "CodeBlock": {
     "typeClasses": [],
     "composes": [
       "CopyButton"
+    ]
+  },
+  "ColorInputRow": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "Input",
+      "LabeledControl",
+      "PopoverPanel",
+      "Icon"
+    ]
+  },
+  "ColorRamp": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "ColorSwatch"
     ]
   },
   "ColorSwatch": {
@@ -206,6 +374,14 @@
       "MenuDropdownItem",
       "PopoverPanel",
       "Icon"
+    ]
+  },
+  "FramedMediaBand": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Image"
     ]
   },
   "Image": {
@@ -271,10 +447,7 @@
     ]
   },
   "MenuPopover": {
-    "typeClasses": [
-      "kol-helper-10",
-      "kol-helper-12"
-    ],
+    "typeClasses": [],
     "composes": [
       "MenuItem"
     ]
@@ -298,6 +471,31 @@
       "Stepper"
     ]
   },
+  "ShapeDropdown": {
+    "typeClasses": [],
+    "composes": [
+      "Button",
+      "PopoverPanel",
+      "MenuDropdownItem",
+      "Icon"
+    ]
+  },
+  "ShellDrawer": {
+    "typeClasses": [],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "ShellSearchOverlay": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-mono-14"
+    ],
+    "composes": [
+      "SearchInput"
+    ]
+  },
   "Slider": {
     "typeClasses": [
       "kol-helper-12"
@@ -306,9 +504,208 @@
       "Input"
     ]
   },
+  "SpecList": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Divider"
+    ]
+  },
+  "SpectrumControls": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "HueStrip": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "SBSquare": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "WheelTriangle": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "SwatchControls": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "Icon"
+    ]
+  },
+  "SwatchStack": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "Icon"
+    ]
+  },
+  "EyedropPick": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "Icon"
+    ]
+  },
+  "TabsRow": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "ArticleHeader": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-prose-title"
+    ],
+    "composes": [
+      "Pill",
+      "Avatar",
+      "Image"
+    ]
+  },
+  "Canvas": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CanvasFrame": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "PanViewport": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CANVAS_VIRTUAL_W": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "DEFAULT_ASPECTS": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CANVAS_DEFAULTS": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "DiagonalMarqueeRiver": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "EditorShell": {
+    "typeClasses": [],
+    "composes": [
+      "Divider"
+    ]
+  },
+  "GalleryCarousel": {
+    "typeClasses": [],
+    "composes": [
+      "Carousel",
+      "MediaViewer"
+    ]
+  },
+  "ParallaxShelf": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "WorkCard"
+    ]
+  },
+  "PortableTextRenderer": {
+    "typeClasses": [
+      "kol-prose"
+    ],
+    "composes": [
+      "CodeBlock",
+      "ImageBlock",
+      "VideoBlock",
+      "Table",
+      "Divider"
+    ]
+  },
+  "ProductDetailLayout": {
+    "typeClasses": [
+      "kol-helper-uc-xs",
+      "kol-mono-text",
+      "kol-mono-xs"
+    ],
+    "composes": [
+      "PriceDisplay",
+      "Pill",
+      "Divider",
+      "QuantityInput",
+      "SpecList",
+      "TabsRow",
+      "Dropdown"
+    ]
+  },
+  "ScrollDriftGallery": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "StackHero": {
+    "typeClasses": [
+      "kol-mono-14",
+      "kol-prose-display"
+    ],
+    "composes": [
+      "FullBleedHero",
+      "Image"
+    ]
+  },
+  "WorkCard": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-sans-display-02"
+    ],
+    "composes": [
+      "TiltCard",
+      "AssetPlaceholder"
+    ]
+  },
+  "WorkViewToggle": {
+    "typeClasses": [
+      "kol-helper-14"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "AsciiCursor": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "BentoCard": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-text",
+      "kol-sans-heading-01"
+    ],
+    "composes": [
+      "HlsVideo",
+      "AssetPlaceholder",
+      "Button",
+      "Image"
+    ]
+  },
   "Carousel": {
     "typeClasses": [],
     "composes": []
+  },
+  "ColorLoader": {
+    "typeClasses": [],
+    "composes": [
+      "TextPressure"
+    ]
   },
   "ContentFilters": {
     "typeClasses": [
@@ -320,6 +717,88 @@
       "Divider",
       "ViewToggle",
       "Icon"
+    ]
+  },
+  "CtaGlobal": {
+    "typeClasses": [
+      "kol-helper-16",
+      "kol-sans-display-01",
+      "kol-sans-heading-01"
+    ],
+    "composes": []
+  },
+  "ErrorBoundary": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16",
+      "kol-sans-display-02"
+    ],
+    "composes": [
+      "Button"
+    ]
+  },
+  "FeatureSplit": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "FeaturedCarousel": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-sans-display-01"
+    ],
+    "composes": [
+      "Image",
+      "HlsVideo",
+      "OverlayGlassPanel"
+    ]
+  },
+  "FeaturesCardSection": {
+    "typeClasses": [
+      "kol-mono-14",
+      "kol-sans-heading-03"
+    ],
+    "composes": [
+      "CardFeatureItem"
+    ]
+  },
+  "FullBleedHero": {
+    "typeClasses": [],
+    "composes": [
+      "HlsVideo",
+      "Image"
+    ]
+  },
+  "LoaderOverlay": {
+    "typeClasses": [],
+    "composes": [
+      "FullscreenOverlay",
+      "ColorLoader"
+    ]
+  },
+  "MediaViewer": {
+    "typeClasses": [],
+    "composes": [
+      "FullscreenOverlay",
+      "Icon"
+    ]
+  },
+  "NewsletterBand": {
+    "typeClasses": [
+      "kol-mono-14",
+      "kol-sans-display-01"
+    ],
+    "composes": [
+      "Input",
+      "Button"
+    ]
+  },
+  "SpectrumGrid": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "composes": [
+      "ColorSwatch"
     ]
   },
   "Table": {
@@ -345,12 +824,33 @@
       "Icon"
     ]
   },
+  "ShellTocContext": {
+    "typeClasses": [],
+    "composes": [
+      "SideNav",
+      "Icon"
+    ]
+  },
+  "ShellTocCollapsedContext": {
+    "typeClasses": [],
+    "composes": [
+      "SideNav",
+      "Icon"
+    ]
+  },
   "SideNav": {
     "typeClasses": [
       "kol-helper-10",
       "kol-helper-12",
       "kol-helper-14"
     ],
+    "composes": [
+      "ThemeToggle",
+      "Icon"
+    ]
+  },
+  "ShellHeader": {
+    "typeClasses": [],
     "composes": [
       "ThemeToggle",
       "Icon"
@@ -380,7 +880,8 @@
   },
   "PortalFooter": {
     "typeClasses": [
-      "kol-helper-12"
+      "kol-helper-12",
+      "kol-sans-heading-03"
     ],
     "composes": []
   },
