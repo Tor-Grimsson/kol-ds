@@ -132,16 +132,55 @@
               color var(--kol-transition-base);
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+ * Dropdown — molecules/Dropdown.jsx (2026-07-08 chrome law).
+ *   The trigger IS button chrome: JSX emits kol-btn kol-btn-{primary|
+ *   outline} kol-btn-{size}, so fills/hover/active/focus come from the
+ *   button rules. Classes below only add trigger layout + the open/panel
+ *   fusion: primary = one piece (same fill, no border, no gap, hairline
+ *   divider inside); outline = bordered pair, trigger's bottom edge is
+ *   the divider.
+ * ───────────────────────────────────────────────────────────────────── */
+
+.kol-dd-trigger {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.kol-dd-trigger--open {
+  border-radius: var(--kol-radius-sm) var(--kol-radius-sm) 0 0;
+}
+
+.kol-dd-panel {
+  color: var(--kol-surface-on-primary);
+  border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
+  padding-bottom: 4px;
+}
+
+.kol-dd-panel--primary { background-color: var(--kol-surface-secondary); }
+
+.kol-dd-panel--outline {
+  background-color: var(--kol-surface-primary);
+  border: 1px solid var(--kol-oq-16);
+  border-top: none;
+}
+
+.kol-dd-div {
+  height: 1px;
+  background-color: var(--kol-border-default);
+  margin: 0 12px;
+}
+
 .tag-control:hover {
-  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+  background-color: var(--kol-oq-12);
   color: var(--kol-surface-on-primary);
   border-color: transparent;
 }
 
 .tag-control.is-active {
-  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+  background-color: var(--kol-oq-12);
   color: var(--kol-surface-on-primary);
-  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+  border-color: var(--kol-oq-12);
 }
 
 .tag-sm { font-size: 10px; font-weight: 470; padding: 4px 10px; }

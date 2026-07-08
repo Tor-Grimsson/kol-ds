@@ -21,7 +21,7 @@ The written mirror of the KOL design system — the same material the showcase r
 | [[00-overview/INDEX\|00 — Overview]] | What KOL is — tiers, the 8 packages, install, the consumer contract | `/` |
 | **01 — Foundations** | [[01-foundations/01-tokens\|tokens]] · [[01-foundations/02-color\|color]] · [[01-foundations/03-typography\|typography]] · [[01-foundations/04-layout-breakpoints\|layout & breakpoints]] | `/foundations`, `/foundations/color`, `/foundations/typography` |
 | **02 — Icons** | [[02-icons/INDEX\|loader, set & BYO]] · [[02-icons/01-inventory\|names by category]] | `/icons`, `/icons/v1` |
-| **03 — Components** | [[03-components/00-taxonomy\|taxonomy]] · [[03-components/01-inventory\|inventory]] · [[03-components/02-placement\|placement rules]] · [[03-components/03-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components` |
+| **03 — Components** | [[03-components/00-taxonomy\|taxonomy]] · [[03-components/01-inventory\|inventory]] · [[03-components/04-diamond-tier\|diamond tier]] · [[03-components/05-control-chrome\|control chrome]] · [[03-components/02-placement\|placement rules]] · [[03-components/03-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components` |
 | **04 — Compositions** | [[04-compositions/01-blocks-and-sets\|blocks & sets]] · [[04-compositions/02-shells\|shells]] | `/blocks`, `/sets`, `/docs/shell-and-layout` |
 | [[05-brand/INDEX\|05 — Brand kit]] | The manifest schema, kol-brand, template, scrape + adapter | — |
 | **06 — Research** | [[06-research/benchmark/INDEX\|shadcn ⇄ KOL benchmark]] · [[06-research/workflows/INDEX\|how other teams work]] | — |

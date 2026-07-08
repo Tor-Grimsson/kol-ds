@@ -82,11 +82,15 @@ const Button = ({
 
   // Add kol-btn-animate class if animateIcon is true to disable default hover states
   const animateClass = animateIcon ? 'kol-btn-animate' : ''
-  const quietClass    = quiet && !pressed ? 'kol-btn-quiet' : ''
-  const selectedClass = selected ? 'kol-btn-selected' : ''
-  const pressedClass  = pressed ? 'kol-btn-pressed' : ''
+  // `selected` is a legacy alias of `pressed` — both express the aria-pressed
+  // toggle-on state and render through .kol-btn-pressed. (The old
+  // .kol-btn-selected class never had a CSS rule, so `selected` was a no-op.)
+  // Resolve to one flag so the quiet-drop and the pressed fill agree.
+  const isPressed     = pressed !== undefined ? pressed : selected
+  const quietClass    = quiet && !isPressed ? 'kol-btn-quiet' : ''
+  const pressedClass  = isPressed ? 'kol-btn-pressed' : ''
 
-  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${selectedClass} ${pressedClass} ${className}`.trim().replace(/\s+/g, ' ')
+  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
   const renderIcon = (iconName, iconHoverName) => {

@@ -1,3 +1,4 @@
+
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
@@ -11,8 +12,10 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *   size="sm" / "md" (default) / "lg" — padding + type class
  *
  * Default rows = 3 (kept short — long content gets scrollbars instead of
- * dominating the panel). No native resize handle — fixed size, scrollable
- * overflow. The kol resize-corner icon in the bottom-right is decorative.
+ * dominating the panel). Resize is real (2026-07-08): native resize is
+ * OFF (Firefox's built-in grip cannot be hidden any other way) and the
+ * kol-icon-set-v1 `resize-grip` icon IS the drag handle — corner drag,
+ * both axes, min 120×40. One grip, every browser.
  *
  * Controlled OR uncontrolled:
  *   - pass `value` + `onChange` for controlled,
@@ -34,9 +37,12 @@ export default function Textarea({
   className = '',
   ...props
 }) {
+  // ghost folds into outline (2026-07-08 chrome law): one secondary treatment.
+  const resolvedVariant = variant === 'ghost' ? 'outline' : variant
+
   const wrapperCls = [
     'kol-control',
-    `kol-control--${variant}`,
+    `kol-control--${resolvedVariant}`,
     'kol-control--textarea',
     `kol-control-${size}`,
     SIZE_TYPE[size],
@@ -62,8 +68,33 @@ export default function Textarea({
         style={{ resize: 'none' }}
         {...props}
       />
-      <span aria-hidden="true" className="kol-textarea-resize-icon text-meta pointer-events-none">
-        <Icon name="resize-corner" size={12} />
+      <span
+        aria-hidden="true"
+        className="kol-textarea-resize-icon"
+        onPointerDown={(e) => {
+          // The grip IS the resize handle — corner drag, both axes
+          // (min 120×40). Width lands on the shell, height on the textarea.
+          const shell = e.currentTarget.parentElement
+          const ta = shell?.querySelector('textarea')
+          if (!shell || !ta) return
+          e.preventDefault()
+          const startX = e.clientX
+          const startY = e.clientY
+          const startW = shell.offsetWidth
+          const startH = ta.offsetHeight
+          const move = (ev) => {
+            shell.style.width = `${Math.max(startW + ev.clientX - startX, 120)}px`
+            ta.style.height = `${Math.max(startH + ev.clientY - startY, 40)}px`
+          }
+          const up = () => {
+            window.removeEventListener('pointermove', move)
+            window.removeEventListener('pointerup', up)
+          }
+          window.addEventListener('pointermove', move)
+          window.addEventListener('pointerup', up)
+        }}
+      >
+        <Icon name="resize-grip" size={12} />
       </span>
     </label>
   )

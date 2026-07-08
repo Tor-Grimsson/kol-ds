@@ -44,7 +44,6 @@ export const DOC_DATA = {
       { prop: 'min / max', type: 'number', def: '0 / 100', desc: 'Range bounds.' },
       { prop: 'step', type: 'number', def: '1', desc: 'Step increment.' },
       { prop: 'label', type: 'string', def: '—', desc: 'Inline label — part of the slider\'s single-row anatomy (label · track · editable readout). For a stacked label around a label-less control, use `LabeledControl`.' },
-      { prop: 'variant', type: 'default | minimal | subtle', def: 'default', desc: 'Visual style — bordered track, bare track, or filled chip.' },
     ],
   },
 
@@ -117,7 +116,8 @@ export const DOC_DATA = {
       { prop: 'onChange', type: '(bool) => void', def: '—', desc: 'Fires with the next state.' },
       { prop: 'label', type: 'string', def: '—', desc: 'Field label.' },
       { prop: 'hint', type: 'string', def: '—', desc: 'Secondary hint text.' },
-      { prop: 'variant', type: 'default | …', def: 'default', desc: 'Visual style.' },
+      { prop: 'variant', type: 'bare | primary | outline', def: 'bare', desc: 'Bare = label + track, no box. Shells use button geometry. Legacy: plain → bare, default → outline.' },
+      { prop: 'size', type: 'sm | md | lg', def: 'md', desc: 'Shell matches button heights (26/32/40); track scales in all variants.' },
     ],
   },
 
@@ -146,7 +146,7 @@ export const DOC_DATA = {
     api: [
       { prop: 'value', type: 'string', def: '—', desc: 'Field value (controlled).' },
       { prop: 'onChange', type: '(event) => void', def: '—', desc: 'Change handler.' },
-      { prop: 'variant', type: 'filled | ghost | outline', def: 'filled', desc: 'Visual style.' },
+      { prop: 'variant', type: 'filled | outline', def: 'filled', desc: 'Filled = button-primary chrome; outline = the one secondary treatment. ghost is a legacy alias for outline.' },
       { prop: 'size', type: 'sm | md | lg', def: 'md', desc: 'Field size.' },
       { prop: 'prefix / suffix', type: 'ReactNode', def: '—', desc: 'Adornments inside the field.' },
       { prop: 'iconLeft', type: 'string', def: '—', desc: 'Leading icon name.' },
@@ -170,7 +170,7 @@ export const DOC_DATA = {
     api: [
       { prop: 'value', type: 'string', def: '—', desc: 'Field value (controlled).' },
       { prop: 'onChange', type: '(event) => void', def: '—', desc: 'Change handler.' },
-      { prop: 'variant', type: 'filled | ghost | outline', def: 'filled', desc: 'Visual style.' },
+      { prop: 'variant', type: 'filled | outline', def: 'filled', desc: 'Filled = button-primary chrome; outline = the one secondary treatment. ghost is a legacy alias for outline.' },
       { prop: 'size', type: 'sm | md | lg', def: 'md', desc: 'Field size.' },
       { prop: 'rows', type: 'number', def: '3', desc: 'Visible rows.' },
     ],
@@ -336,7 +336,7 @@ export const DOC_DATA = {
       { prop: 'options', type: '{ value, label }[]', def: '[]', desc: 'Selectable entries.' },
       { prop: 'value', type: 'string', def: '—', desc: 'Selected value (defaults to first).' },
       { prop: 'onChange', type: '(value) => void', def: '—', desc: 'Fires with the chosen value.' },
-      { prop: 'variant', type: 'default | minimal | subtle', def: 'default', desc: 'Chrome + width preset.' },
+      { prop: 'variant', type: 'primary | outline', def: 'primary', desc: 'Button chrome on the trigger (chrome law). Legacy aliases: default/subtle → primary, minimal → outline.' },
       { prop: 'size', type: 'sm | md | lg', def: 'auto', desc: 'Overrides the viewport-derived size.' },
     ],
   },
@@ -708,7 +708,7 @@ export const DOC_DATA = {
       { prop: 'onClear', type: '() => void', def: '—', desc: 'Trailing × click; renders only while set AND value non-empty.' },
       { prop: 'shortcutHint', type: 'string', def: '—', desc: 'Caller-authored kbd chip (e.g. "⌘K") shown while empty; no key handling here.' },
       { prop: 'size', type: 'sm | md', def: 'md', desc: 'Control size + matched mono type class.' },
-      { prop: 'variant', type: 'filled | ghost | outline', def: 'filled', desc: 'Same chrome as Input; ignored when bare.' },
+      { prop: 'variant', type: 'filled | outline', def: 'filled', desc: 'Same chrome as Input (ghost = legacy alias); ignored when bare.' },
       { prop: 'bare', type: 'boolean', def: 'false', desc: 'Borderless inline field for overlay/palette panels.' },
     ],
   },

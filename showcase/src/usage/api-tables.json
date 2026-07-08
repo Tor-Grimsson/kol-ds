@@ -1,4 +1,50 @@
 {
+  "AnimatedTitle": [
+    {
+      "prop": "stagger",
+      "type": "—",
+      "def": "0.02",
+      "desc": ""
+    },
+    {
+      "prop": "start",
+      "type": "—",
+      "def": "'100 bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "'center bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "immediate",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "AssetGrid": [
+    {
+      "prop": "cols",
+      "type": "—",
+      "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "'gap-4'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "AssetPlaceholder": [
     {
       "prop": "aspectRatio",
@@ -123,6 +169,20 @@
       "desc": ""
     }
   ],
+  "CurveOverlay": [
+    {
+      "prop": "curve",
+      "type": "—",
+      "def": "'linear'",
+      "desc": ""
+    },
+    {
+      "prop": "blend",
+      "type": "—",
+      "def": "0.5",
+      "desc": ""
+    }
+  ],
   "Divider": [
     {
       "prop": "variant",
@@ -149,6 +209,14 @@
       "desc": ""
     }
   ],
+  "DocsToc": [
+    {
+      "prop": "rootMargin",
+      "type": "—",
+      "def": "'-80px 0px -80% 0px'",
+      "desc": ""
+    }
+  ],
   "DropdownTagFilter": [
     {
       "prop": "options",
@@ -172,6 +240,20 @@
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "Figure": [
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'5/3'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -253,6 +335,44 @@
       "desc": ""
     }
   ],
+  "OverlayGlassPanel": [
+    {
+      "prop": "surfaceOpacity",
+      "type": "—",
+      "def": "80",
+      "desc": ""
+    },
+    {
+      "prop": "blur",
+      "type": "—",
+      "def": "'1px'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "'gap-6'",
+      "desc": ""
+    },
+    {
+      "prop": "maxWidth",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "Pill": [
     {
       "prop": "variant",
@@ -319,6 +439,28 @@
       "desc": ""
     }
   ],
+  "PriceDisplay": [
+    {
+      "prop": "currency",
+      "type": "—",
+      "def": "'EUR'",
+      "desc": ""
+    },
+    {
+      "prop": "locale",
+      "type": "—",
+      "def": "'de-DE'",
+      "desc": ""
+    }
+  ],
+  "ProsePreview": [
+    {
+      "prop": "quote",
+      "type": "—",
+      "def": "'Above as below — justice is a starfield.'",
+      "desc": ""
+    }
+  ],
   "QuantityInput": [
     {
       "prop": "value",
@@ -339,29 +481,79 @@
       "desc": ""
     },
     {
+      "prop": "controls",
+      "type": "—",
+      "def": "'chevron'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
       "desc": ""
     }
   ],
-  "QuantityStepper": [
+  "RotaryDial": [
     {
       "prop": "value",
       "type": "—",
-      "def": "1",
+      "def": "0",
       "desc": ""
     },
     {
       "prop": "min",
       "type": "—",
-      "def": "1",
+      "def": "0",
       "desc": ""
     },
     {
       "prop": "max",
       "type": "—",
-      "def": "10",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "80",
+      "desc": ""
+    }
+  ],
+  "SearchInput": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "'Search…'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'filled'",
+      "desc": ""
+    },
+    {
+      "prop": "bare",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -565,13 +757,143 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'bare'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
       "desc": ""
     },
     {
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "TextPressure": [
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'Compressa'",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "italic",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "alpha",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "flex",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "stroke",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "scale",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "textColor",
+      "type": "—",
+      "def": "'var(--kol-fg-emphasis)'",
+      "desc": ""
+    },
+    {
+      "prop": "strokeColor",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "minFontSize",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "maxFontSize",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "returnToDefault",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "TiltCard": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "magnitude",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "perspective",
+      "type": "—",
+      "def": "700",
       "desc": ""
     }
   ],
@@ -586,6 +908,34 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "TypeSample": [
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "400",
+      "desc": ""
+    },
+    {
+      "prop": "italic",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "32",
+      "desc": ""
+    }
+  ],
+  "TypeSpecCard": [
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "[]",
       "desc": ""
     }
   ],
@@ -628,6 +978,204 @@
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "AlignmentGrid": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[\n  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },\n  { axis: 'h', mode: 'center', icon: 'align-horizontal-center', title: 'Align horizontal center' },\n  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right',  title: 'Align right' },\n  { axis: 'v', mode: 'start',  icon: 'align-vertical-top',      title: 'Align top' },\n  { axis: 'v', mode: 'center', icon: 'align-vertical-center',   title: 'Align vertical center' },\n  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },\n]",
+      "desc": ""
+    }
+  ],
+  "ArticleCard": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'landscape'",
+      "desc": ""
+    },
+    {
+      "prop": "showHeader",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ImageBlock": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'5/3'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SelectionOverlay": [
+    {
+      "prop": "showHandles",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showLabel",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "handleSize",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "accentColor",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "labelFormatter",
+      "type": "—",
+      "def": "(b) => `${Math.round(b.w)} × ${Math.round(b.h)}`",
+      "desc": ""
+    }
+  ],
+  "VideoBlock": [
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'5/3'",
+      "desc": ""
+    },
+    {
+      "prop": "autoplay",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "muted",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "controls",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "loop",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "WorkListItem": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "CardFeatureItem": [
+    {
+      "prop": "backgroundColor",
+      "type": "—",
+      "def": "'bg-surface-primary'",
+      "desc": ""
+    },
+    {
+      "prop": "imageAspectRatio",
+      "type": "—",
+      "def": "'auto'",
+      "desc": ""
+    },
+    {
+      "prop": "imagePosition",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    }
+  ],
+  "ColorInputRow": [
+    {
+      "prop": "swatchSize",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "transparentTone",
+      "type": "—",
+      "def": "'warning'",
+      "desc": ""
+    },
+    {
+      "prop": "inputVariant",
+      "type": "—",
+      "def": "'filled'",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ColorRamp": [
+    {
+      "prop": "stops",
+      "type": "—",
+      "def": "[100, 200, 300, 400, 500]",
       "desc": ""
     }
   ],
@@ -697,13 +1245,45 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'primary'",
       "desc": ""
     },
     {
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FramedMediaBand": [
+    {
+      "prop": "sizes",
+      "type": "—",
+      "def": "'(max-width: 1400px) 100vw, 1400px'",
+      "desc": ""
+    },
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "aspectRatio",
+      "type": "—",
+      "def": "'2/1'",
+      "desc": ""
+    },
+    {
+      "prop": "maxWidth",
+      "type": "—",
+      "def": "'max-w-[1400px]'",
       "desc": ""
     },
     {
@@ -813,6 +1393,40 @@
       "desc": ""
     }
   ],
+  "ShapeDropdown": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ShellSearchOverlay": [
+    {
+      "prop": "results",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "query",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "'Search…'",
+      "desc": ""
+    }
+  ],
   "Slider": [
     {
       "prop": "min",
@@ -830,12 +1444,6 @@
       "prop": "value",
       "type": "—",
       "def": "0",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'default'",
       "desc": ""
     },
     {
@@ -857,6 +1465,494 @@
       "desc": ""
     }
   ],
+  "SpecList": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "framed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "SwatchStack": [
+    {
+      "prop": "fillColor",
+      "type": "—",
+      "def": "'#FFFFFF'",
+      "desc": ""
+    },
+    {
+      "prop": "strokeColor",
+      "type": "—",
+      "def": "'#000000'",
+      "desc": ""
+    },
+    {
+      "prop": "activePaint",
+      "type": "—",
+      "def": "'fill'",
+      "desc": ""
+    }
+  ],
+  "EyedropPick": [
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "SwatchControls": [
+    {
+      "prop": "activePaint",
+      "type": "—",
+      "def": "'fill'",
+      "desc": ""
+    },
+    {
+      "prop": "eyedropDisabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TabsRow": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "ArticleHeader": [
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "CanvasFrame": [
+    {
+      "prop": "guideColor",
+      "type": "—",
+      "def": "'#F5F3EF'",
+      "desc": ""
+    }
+  ],
+  "Canvas": [
+    {
+      "prop": "guideColor",
+      "type": "—",
+      "def": "'#F5F3EF'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "panEnabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "DiagonalMarqueeRiver": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "colCount",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "columnSpeeds",
+      "type": "—",
+      "def": "[28, 38, 22, 34]",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'300vh'",
+      "desc": ""
+    },
+    {
+      "prop": "rotate",
+      "type": "—",
+      "def": "-15",
+      "desc": ""
+    },
+    {
+      "prop": "scale",
+      "type": "—",
+      "def": "1.3",
+      "desc": ""
+    },
+    {
+      "prop": "shuffle",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "EditorShell": [
+    {
+      "prop": "railWidth",
+      "type": "—",
+      "def": "320",
+      "desc": ""
+    },
+    {
+      "prop": "canvasBg",
+      "type": "—",
+      "def": "'var(--kol-surface-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'100dvh'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "GalleryCarousel": [
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "defaultAspect",
+      "type": "—",
+      "def": "0.8",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ParallaxShelf": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fromLeft",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PortableTextRenderer": [
+    {
+      "prop": "blocks",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "prose",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ProductDetailLayout": [
+    {
+      "prop": "mediaItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "specs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sizeOptions",
+      "type": "—",
+      "def": "['A3']",
+      "desc": ""
+    },
+    {
+      "prop": "defaultQuantity",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "minQuantity",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "maxQuantity",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    }
+  ],
+  "ScrollDriftGallery": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "bgKeyframes",
+      "type": "—",
+      "def": "[\n  { backgroundColor: '#000000', duration: 0 },\n  { backgroundColor: '#0a0a08', duration: 0.15 },\n  { backgroundColor: '#1a1812', duration: 0.3 },\n  { backgroundColor: '#f5f0e8', duration: 0.5 }, // warm cream\n  { backgroundColor: '#e8df00', duration: 0.7 }, // acid yellow\n  { backgroundColor: '#c8ff00', duration: 0.85 }, // electric chartreuse\n  { backgroundColor: '#0a0a0a', duration: 1 }, // back to black\n]",
+      "desc": ""
+    },
+    {
+      "prop": "cardSpacing",
+      "type": "—",
+      "def": "520",
+      "desc": ""
+    }
+  ],
+  "StackHero": [
+    {
+      "prop": "sizes",
+      "type": "—",
+      "def": "'100vw'",
+      "desc": ""
+    },
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "objectFit",
+      "type": "—",
+      "def": "'cover'",
+      "desc": ""
+    },
+    {
+      "prop": "objectPosition",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "WorkCard": [
+    {
+      "prop": "index",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "perspective",
+      "type": "—",
+      "def": "800",
+      "desc": ""
+    },
+    {
+      "prop": "heights",
+      "type": "—",
+      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
+      "desc": ""
+    }
+  ],
+  "WorkViewToggle": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'shelf'",
+      "desc": ""
+    },
+    {
+      "prop": "query",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "shelfLabel",
+      "type": "—",
+      "def": "'Shelf'",
+      "desc": ""
+    },
+    {
+      "prop": "listLabel",
+      "type": "—",
+      "def": "'List'",
+      "desc": ""
+    },
+    {
+      "prop": "shelfIcon",
+      "type": "—",
+      "def": "'library'",
+      "desc": ""
+    },
+    {
+      "prop": "listIcon",
+      "type": "—",
+      "def": "'list'",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "BentoCard": [
+    {
+      "prop": "bodyContent",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "overlayOpacity",
+      "type": "—",
+      "def": "60",
+      "desc": ""
+    },
+    {
+      "prop": "alignRight",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "enableTilt",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "'kol-sans-heading-01 text-absolute-white'",
+      "desc": ""
+    },
+    {
+      "prop": "contentClassName",
+      "type": "—",
+      "def": "'max-w-[384px]'",
+      "desc": ""
+    },
+    {
+      "prop": "imageClassName",
+      "type": "—",
+      "def": "'object-cover object-center'",
+      "desc": ""
+    },
+    {
+      "prop": "contentStackClassName",
+      "type": "—",
+      "def": "'relative z-20 h-full flex flex-col justify-start items-start gap-4 p-6 md:p-8'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "Carousel": [
     {
       "prop": "options",
@@ -868,6 +1964,56 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "ColorLoader": [
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'KOLKRABBI'",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "dismissOnClick",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "bgColor",
+      "type": "—",
+      "def": "'var(--kol-surface-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "markColor",
+      "type": "—",
+      "def": "'var(--kol-fg-emphasis)'",
+      "desc": ""
+    },
+    {
+      "prop": "wordmarkDelay",
+      "type": "—",
+      "def": "1000",
+      "desc": ""
+    },
+    {
+      "prop": "scrollDelay",
+      "type": "—",
+      "def": "2000",
+      "desc": ""
+    },
+    {
+      "prop": "exitDuration",
+      "type": "—",
+      "def": "1.8",
       "desc": ""
     }
   ],
@@ -912,6 +2058,226 @@
       "prop": "showCountOnlyWhenFiltering",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "CtaGlobal": [
+    {
+      "prop": "secondaryRows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FeatureSplit": [
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "innerClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "columnClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FeaturedCarousel": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sectionLabel",
+      "type": "—",
+      "def": "'Featured'",
+      "desc": ""
+    },
+    {
+      "prop": "ctaLabel",
+      "type": "—",
+      "def": "'Learn more'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'h-[440px] md:h-[640px]'",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "showHeader",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlay",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlayInterval",
+      "type": "—",
+      "def": "5000",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "{ align: 'center', loop: true }",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FeaturesCardSection": [
+    {
+      "prop": "features",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sectionClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "wrapperClassName",
+      "type": "—",
+      "def": "'w-full flex flex-col gap-8 md:gap-10 max-w-[1400px] mx-auto'",
+      "desc": ""
+    },
+    {
+      "prop": "cardsWrapperClassName",
+      "type": "—",
+      "def": "'self-stretch inline-flex flex-col md:flex-row md:h-72 justify-start items-center gap-6'",
+      "desc": ""
+    },
+    {
+      "prop": "ctasClassName",
+      "type": "—",
+      "def": "'pt-10 pb-24'",
+      "desc": ""
+    },
+    {
+      "prop": "headerClassName",
+      "type": "—",
+      "def": "'w-full pt-[224px]'",
+      "desc": ""
+    },
+    {
+      "prop": "headerTextWidthClass",
+      "type": "—",
+      "def": "'w-full md:w-[30%]'",
+      "desc": ""
+    }
+  ],
+  "FullBleedHero": [
+    {
+      "prop": "overlayOpacity",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'lg'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "MediaViewer": [
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "initialIndex",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    }
+  ],
+  "NewsletterBand": [
+    {
+      "prop": "successCopy",
+      "type": "—",
+      "def": "'Thanks for subscribing!'",
+      "desc": ""
+    },
+    {
+      "prop": "errorCopy",
+      "type": "—",
+      "def": "'Please enter a valid email address.'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SpectrumGrid": [
+    {
+      "prop": "stops",
+      "type": "—",
+      "def": "[50, 100, 200, 300, 400, 500, 600, 700, 800, 900]",
+      "desc": ""
+    },
+    {
+      "prop": "brandAnchors",
+      "type": "—",
+      "def": "[]",
       "desc": ""
     }
   ],
@@ -962,6 +2328,32 @@
       "prop": "navTree",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "collapsibleSections",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "ShellHeader": [
+    {
+      "prop": "nav",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "showThemeToggle",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],

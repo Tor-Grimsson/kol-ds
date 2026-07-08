@@ -38,7 +38,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 ## kol-icon-set-v1 — the curated set
 
-The system is converging from the sprawling legacy inventory onto one small, hand-reviewed set: **107 icons across 20 groups**, a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and resolves first (before legacy). It renders on `/icons/v1`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`. The legacy set still ships alongside during migration; it's dropped in a future major once consumers are off it.
+The system is converging from the sprawling legacy inventory onto one small, hand-reviewed set: **108 icons across 20 groups**, a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and resolves first (before legacy). It renders on `/icons/v1`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`. The legacy set still ships alongside during migration; it's dropped in a future major once consumers are off it.
 
 - **Grouped, flat-by-name.** Foldered by group (chevron, arrow, nav, singletons, layout, files, code, atomic, shape-primitives, …) but resolved by basename — so no two icons share a name across groups.
 - **Single cut.** No stroke/solid duality; intentional solids (filled carets, dots) are baked into the individual icon, not a parallel tree.

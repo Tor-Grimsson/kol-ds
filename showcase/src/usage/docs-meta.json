@@ -223,7 +223,11 @@
   },
   "ToggleSwitch": {
     "typeClasses": [
-      "kol-helper-10"
+      "kol-helper-10",
+      "kol-mono",
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
     ],
     "composes": []
   },
@@ -368,7 +372,8 @@
   "Dropdown": {
     "typeClasses": [
       "kol-mono-12",
-      "kol-mono-14"
+      "kol-mono-14",
+      "kol-mono-16"
     ],
     "composes": [
       "MenuDropdownItem",

@@ -17,6 +17,7 @@ import DocsShellLayout from './pages/DocsShellLayout'
 import DocsMenus from './pages/DocsMenus'
 import DocsLoaders from './pages/DocsLoaders'
 import WorkshopPreview from './pages/WorkshopPreview'
+import Demo from './pages/Demo'
 
 /**
  * One chrome everywhere: Home renders TopBar standalone (landing, no sidebar);
@@ -46,6 +47,8 @@ export default function App() {
       {/* Ported workshop shell — standalone chrome, splat so sidebar child
           paths resolve inside its own layout route. */}
       <Route path="/workshop-preview/*" element={<WorkshopPreview />} />
+      {/* Live review page for the 2026-07-08 chrome-law landing. */}
+      <Route path="/demo" element={<Demo />} />
     </Routes>
   )
 }

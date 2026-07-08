@@ -4,11 +4,9 @@ import Input from '../atoms/Input.jsx'
 /**
  * Slider — range slider with label and an editable value readout.
  *
- * Variants (track/shell styling):
- *   default — bordered track + boxed value.
- *   minimal — bare track + boxed value. 99% of real usage (foundry previews,
- *             inline controls). PRESERVED from web.
- *   subtle  — filled rounded chip; for inspector-style controls.
+ * One bare inline row: label · track · editable readout. (Bordered
+ * `default` and chip `subtle` variants retired 2026-07-08 — minimal is
+ * the only slider.)
  *
  * The value readout is an editable <Input> (type a value, commit on
  * blur / Enter, revert on Escape). Track color is exposed as the
@@ -21,7 +19,6 @@ import Input from '../atoms/Input.jsx'
  * @param {number} props.max - Maximum value
  * @param {number} props.value - Current value
  * @param {Function} props.onChange - Change handler
- * @param {'default'|'minimal'|'subtle'} props.variant - Visual variant (default: 'default')
  * @param {string} props.className - Additional wrapper classes
  * @param {number} props.displayWidth - Width of the value readout, in characters (default: 6)
  * @param {string} props.fontSize - Font size for label/value (e.g., '11px')
@@ -34,7 +31,6 @@ const Slider = ({
   max = 100,
   value = 0,
   onChange,
-  variant = 'default',
   className = '',
   displayWidth = 6,
   fontSize,
@@ -46,12 +42,6 @@ const Slider = ({
       onChange(Number(e.target.value))
     }
   }
-
-  const variantClass = variant === 'minimal'
-    ? 'control-slider-minimal'
-    : variant === 'subtle'
-    ? 'control-slider-subtle'
-    : 'control-slider'
 
   const decimals = useMemo(() => {
     if (formatValue) return null
@@ -94,7 +84,7 @@ const Slider = ({
   }
 
   return (
-    <div className={`${variantClass} gap-3 shadow-none ${className}`}>
+    <div className={`control-slider gap-3 shadow-none ${className}`}>
       {label && (
         <label className="kol-helper-12 whitespace-nowrap shrink-0 w-fit" style={fontSize ? { fontSize } : undefined}>
           {label}

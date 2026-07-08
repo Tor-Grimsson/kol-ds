@@ -2,7 +2,7 @@
 title: Foundations — the token system
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-08
 description: The token foundation every KOL component is built from — the 14-stop opacity scale (the signature), semantic foregrounds, surface tiers, radii, and shadows.
 aliases:
   - foundations
@@ -32,7 +32,9 @@ A 14-stop translucent foreground scale — `--kol-fg-01 … --kol-fg-96` — ink
 01 02 04 08 12 16 24 32 40 48 64 80 88 96
 ```
 
-Used everywhere: borders (`border-fg-08`), dividers, hover fills (`hover:bg-fg-04`), dimmed text. Utilities: `text-fg-*`, `bg-fg-*`, `border-fg-*`. The `fg-absolute-*` variants are theme-invariant black — for overlays that must read on any thumbnail.
+Used everywhere: borders (`border-fg-08`), dividers, washes, dimmed text. Utilities: `text-fg-*`, `bg-fg-*`, `border-fg-*`. The `fg-absolute-*` variants are theme-invariant black — for overlays that must read on any thumbnail.
+
+**Opaque neutrals (`--kol-oq-*`)** are the married solid mirror of the same 14 stops (`kol-opaque.css`) — ink mixed into the surface instead of into transparent, plus an `oq-inverse-*` twin. Since 2026-07-08 the rule is: **interactive fills (button/tag/switch states, anything that can sit over media) use `oq`; decoration that always sits on a panel (dividers, table washes) keeps `fg`.** `--kol-accent-primary-strong` is likewise an opaque accent mix now, not a transparency.
 
 ## Semantic foregrounds
 

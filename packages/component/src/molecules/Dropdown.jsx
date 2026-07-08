@@ -3,20 +3,34 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
 
-const SIZE_MAP = {
-  sm: { fontSize: 12, paddingY: 4, paddingX: 12, radius: 14, panelRadius: 14, icon: 10 },
-  md: { fontSize: 12, paddingY: 6, paddingX: 16, radius: 22, panelRadius: 22, icon: 12 },
-  lg: { fontSize: 14, paddingY: 8, paddingX: 20, radius: 24, panelRadius: 24, icon: 14 }
-}
+/**
+ * Dropdown — trigger IS button chrome (2026-07-08 chrome law).
+ *
+ * The trigger emits `kol-btn kol-btn-{variant} kol-btn-{size}` so it renders
+ * pixel-identical to a Button of the same variant/size — fills, hover,
+ * active, focus ring all come from the button rules in kol-theme.
+ * `.kol-dd-*` classes only add trigger layout + the open/panel fusion.
+ *
+ *   variant="primary" (default) — filled trigger; open panel continues the
+ *     same fill (one piece: no border, no gap, hairline divider inside)
+ *   variant="outline"           — bordered trigger; open panel carries the
+ *     same border, trigger's bottom edge acts as the divider
+ *
+ * Legacy aliases (pre-law variants, kept so call-sites don't break):
+ *   default → primary · subtle → primary · minimal → outline
+ */
 
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-12', lg: 'kol-mono-14' }
+const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+const ICON_SIZE = { sm: 14, md: 16, lg: 18 }
+
+const LEGACY_VARIANTS = { default: 'primary', subtle: 'primary', minimal: 'outline' }
 
 const Dropdown = ({
   options = [],
   value,
   onChange,
   size,
-  variant = 'default',
+  variant = 'primary',
   defaultOpen = false,
   className = ''
 }) => {
@@ -24,15 +38,17 @@ const Dropdown = ({
   const [resolvedSize, setResolvedSize] = useState('md')
   const [dropdownWidth, setDropdownWidth] = useState('100px')
 
+  const resolvedVariant = LEGACY_VARIANTS[variant] || variant
+
   /* Floating-ui popover. `flip: false` keeps the panel below the button
-   * — the seamless border-radius edge between button and panel assumes
-   * the panel sits below; flipping above would visually disconnect them.
+   * — the seamless fused edge between trigger and panel assumes the panel
+   * sits below; flipping above would visually disconnect them.
    * `matchReferenceWidth: true` pins panel min-width to the button. */
   const popover = usePopover({
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: 'bottom-start',
-    offset: variant === 'minimal' ? 0 : -1,
+    offset: -1,
     flip: false,
     matchReferenceWidth: true,
     role: 'listbox',
@@ -67,63 +83,23 @@ const Dropdown = ({
     }
   }, [size])
 
-  // Width management for variants
+  // Width management — 100px mobile, 140px tablet, 180px desktop
   useEffect(() => {
     const updateWidth = () => {
       if (typeof window === 'undefined') return
 
-      if (variant === 'minimal' || variant === 'subtle') {
-        // Minimal/subtle: 100px mobile, 140px tablet+
-        setDropdownWidth(window.innerWidth >= 768 ? '140px' : '100px')
-      } else if (variant === 'default') {
-        // Default: 100px mobile, 140px tablet, 180px desktop
-        if (window.innerWidth >= 1024) {
-          setDropdownWidth('180px')
-        } else if (window.innerWidth >= 768) {
-          setDropdownWidth('140px')
-        } else {
-          setDropdownWidth('100px')
-        }
+      if (window.innerWidth >= 1024) {
+        setDropdownWidth('180px')
+      } else if (window.innerWidth >= 768) {
+        setDropdownWidth('140px')
+      } else {
+        setDropdownWidth('100px')
       }
     }
     updateWidth()
     window.addEventListener('resize', updateWidth)
     return () => window.removeEventListener('resize', updateWidth)
-  }, [variant])
-
-  const metrics = SIZE_MAP[resolvedSize] || SIZE_MAP.md
-
-  // Variant-specific styles
-  const variantStyles = {
-    default: {
-      border: '1px solid var(--kol-border-default)',
-      borderRadius: isOpen
-        ? `${metrics.radius}px ${metrics.radius}px 0 0`
-        : `${metrics.radius}px`,
-      backgroundColor: 'var(--kol-surface-primary)',
-      padding: `${metrics.paddingY}px ${metrics.paddingX}px`
-    },
-    minimal: {
-      border: 'none',
-      borderRadius: '0',
-      backgroundColor: 'transparent',
-      padding: '0',
-      height: '24px',
-      display: 'flex',
-      alignItems: 'center'
-    },
-    subtle: {
-      /* 1px transparent border so total height matches Button + Input + the
-       * other shared-control atoms (which have a transparent 1px border for
-       * hover/focus consistency). Without this, subtle is 2px shorter. */
-      border: '1px solid transparent',
-      borderRadius: isOpen ? '4px 4px 0 0' : '4px',
-      backgroundColor: 'var(--kol-surface-secondary)',
-      padding: `${metrics.paddingY}px ${metrics.paddingX}px`
-    }
-  }
-
-  const styles = variantStyles[variant] || variantStyles.default
+  }, [])
 
   const handleSelect = (option) => {
     onChange?.(option.value)
@@ -132,11 +108,20 @@ const Dropdown = ({
 
   const currentOption = options.find((opt) => opt.value === value) || options[0]
 
+  const triggerCls = [
+    'kol-btn',
+    `kol-btn-${resolvedVariant}`,
+    `kol-btn-${resolvedSize}`,
+    SIZE_TYPE[resolvedSize],
+    'kol-dd-trigger',
+    isOpen && 'kol-dd-trigger--open',
+  ].filter(Boolean).join(' ')
+
   return (
     <div
       className={`relative block ${className}`}
       style={{
-        ...((variant === 'minimal' || variant === 'default' || variant === 'subtle') && dropdownWidth && !className.includes('w-full') && {
+        ...(dropdownWidth && !className.includes('w-full') && {
           width: dropdownWidth,
           minWidth: dropdownWidth
         })
@@ -146,26 +131,15 @@ const Dropdown = ({
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         type="button"
-        className={`w-full flex items-center justify-between transition-colors duration-200 ${SIZE_TYPE[resolvedSize]}`}
-        style={{
-          border: styles.border,
-          borderRadius: styles.borderRadius,
-          backgroundColor: styles.backgroundColor,
-          color: 'var(--kol-surface-on-primary)',
-          padding: styles.padding,
-          transition: 'background-color 0.2s, color 0.2s, border-color 0.2s',
-          ...(variant === 'minimal' && {
-            height: styles.height,
-          }),
-        }}
+        className={triggerCls}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         data-state={isOpen ? 'open' : 'closed'}
       >
-        <span className="opacity-100">{currentOption?.label}</span>
+        <span>{currentOption?.label}</span>
         <Icon
           name="chevron-down"
-          size={metrics.icon}
+          size={ICON_SIZE[resolvedSize]}
           className="ml-auto"
           style={{
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -178,29 +152,9 @@ const Dropdown = ({
         popover={popover}
         panel={false}
         focus={false}
-        style={{
-          backgroundColor: variant === 'minimal'
-            ? 'var(--kol-surface-primary)'
-            : styles.backgroundColor,
-          color: 'var(--kol-surface-on-primary)',
-          border: variant === 'subtle' ? 'none' : styles.border,
-          borderRadius: variant === 'minimal'
-            ? '0'
-            : (variant === 'subtle'
-                ? '0 0 4px 4px'
-                : `0 0 ${metrics.panelRadius}px ${metrics.panelRadius}px`),
-        }}
+        className={`kol-dd-panel kol-dd-panel--${resolvedVariant}`}
       >
-        {variant !== 'minimal' && (
-          <div style={{ padding: `0 ${metrics.paddingX}px` }}>
-            <div
-              style={{
-                height: '1px',
-                backgroundColor: 'var(--kol-border-default)'
-              }}
-            />
-          </div>
-        )}
+        {resolvedVariant === 'primary' && <div className="kol-dd-div" />}
 
         <div className="flex max-h-[300px] flex-col items-stretch overflow-y-auto" role="listbox">
           {options.map((option) => {

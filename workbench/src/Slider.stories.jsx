@@ -14,19 +14,6 @@ export const Default = () => {
   )
 }
 
-export const Variants = () => {
-  const [a, setA] = useState(40)
-  const [b, setB] = useState(60)
-  const [c, setC] = useState(80)
-  return (
-    <Column>
-      <Slider variant="default" label="Default" value={a} onChange={setA} />
-      <Slider variant="minimal" label="Minimal" value={b} onChange={setB} />
-      <Slider variant="subtle" label="Subtle" value={c} onChange={setC} />
-    </Column>
-  )
-}
-
 export const Formatted = () => {
   const [speed, setSpeed] = useState(1)
   const [pct, setPct] = useState(50)
@@ -39,7 +26,6 @@ export const Formatted = () => {
         step={0.1}
         value={speed}
         onChange={setSpeed}
-        variant="minimal"
         formatValue={(v) => `${v.toFixed(1)}×`}
       />
       <Slider
@@ -49,7 +35,6 @@ export const Formatted = () => {
         step={1}
         value={pct}
         onChange={setPct}
-        variant="minimal"
         formatValue={(v) => `${Math.round(v)}%`}
       />
     </Column>

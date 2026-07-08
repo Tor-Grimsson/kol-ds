@@ -178,6 +178,62 @@ const fgPrimitiveRows = [
   { token: '--kol-fg-96', utility: 'text-fg-96',                                            use: 'Strong text just below full ink' },
 ]
 
+/* Inverse tier — married 1:1 to fg-NN. Same 14 stops, inked with
+ * --kol-surface-on-inverse for painting ON the inverse surface. */
+const fgInverseRows = [
+  { token: '--kol-fg-inverse-01', utility: 'text-fg-inverse-01 / bg-fg-inverse-01 / border-fg-inverse-01', use: 'Barely visible — texture, near-invisible washes' },
+  { token: '--kol-fg-inverse-02', utility: 'text-fg-inverse-02 / bg-fg-inverse-02 / border-fg-inverse-02', use: 'Faint background tint' },
+  { token: '--kol-fg-inverse-04', utility: 'text-fg-inverse-04 / bg-fg-inverse-04 / border-fg-inverse-04', use: 'Code block bg, very subtle fill' },
+  { token: '--kol-fg-inverse-08', utility: 'text-fg-inverse-08 / bg-fg-inverse-08 / border-fg-inverse-08', use: 'Hairlines, dividers, default border (workhorse)' },
+  { token: '--kol-fg-inverse-12', utility: 'text-fg-inverse-12 / bg-fg-inverse-12 / border-fg-inverse-12', use: 'Soft borders, hover-state bgs' },
+  { token: '--kol-fg-inverse-16', utility: 'text-fg-inverse-16 / bg-fg-inverse-16 / border-fg-inverse-16', use: 'Faint elements, secondary borders' },
+  { token: '--kol-fg-inverse-24', utility: 'text-fg-inverse-24 / bg-fg-inverse-24 / border-fg-inverse-24', use: 'Disabled hints, lightest descriptor stop' },
+  { token: '--kol-fg-inverse-32', utility: 'text-fg-inverse-32 / bg-fg-inverse-32 / border-fg-inverse-32', use: 'Dim labels, quiet UI hints' },
+  { token: '--kol-fg-inverse-40', utility: 'text-fg-inverse-40 / bg-fg-inverse-40 / border-fg-inverse-40', use: 'Outline-button border' },
+  { token: '--kol-fg-inverse-48', utility: 'text-fg-inverse-48 / bg-fg-inverse-48 / border-fg-inverse-48', use: 'Labels, eyebrows, captions' },
+  { token: '--kol-fg-inverse-64', utility: 'text-fg-inverse-64 / bg-fg-inverse-64 / border-fg-inverse-64', use: 'Running copy, link default' },
+  { token: '--kol-fg-inverse-80', utility: 'text-fg-inverse-80 / bg-fg-inverse-80 / border-fg-inverse-80', use: 'Lede paragraphs, emphasized body, <strong>' },
+  { token: '--kol-fg-inverse-88', utility: 'text-fg-inverse-88 / bg-fg-inverse-88 / border-fg-inverse-88', use: 'Near-emphasis (rarely needed; prefer text-emphasis)' },
+  { token: '--kol-fg-inverse-96', utility: 'text-fg-inverse-96 / bg-fg-inverse-96 / border-fg-inverse-96', use: 'Strong text just below full ink' },
+]
+
+/* Opaque neutrals — the solid mirror of fg-*. Same 14 stops, same ink,
+ * mixed into the surface instead of into transparent (kol-opaque.css).
+ * oq is a baked grey, not a transparency. */
+const oqStandardRows = [
+  { token: '--kol-oq-01', utility: 'text-oq-01 / bg-oq-01 / border-oq-01', use: 'Barely visible — texture, near-invisible washes' },
+  { token: '--kol-oq-02', utility: 'text-oq-02 / bg-oq-02 / border-oq-02', use: 'Faint background tint' },
+  { token: '--kol-oq-04', utility: 'text-oq-04 / bg-oq-04 / border-oq-04', use: 'Code block bg, very subtle fill' },
+  { token: '--kol-oq-08', utility: 'text-oq-08 / bg-oq-08 / border-oq-08', use: 'Hairlines, dividers, default border (workhorse)' },
+  { token: '--kol-oq-12', utility: 'text-oq-12 / bg-oq-12 / border-oq-12', use: 'Soft borders, hover-state bgs' },
+  { token: '--kol-oq-16', utility: 'text-oq-16 / bg-oq-16 / border-oq-16', use: 'Faint elements, secondary borders' },
+  { token: '--kol-oq-24', utility: 'text-oq-24 / bg-oq-24 / border-oq-24', use: 'Disabled hints, lightest descriptor stop' },
+  { token: '--kol-oq-32', utility: 'text-oq-32 / bg-oq-32 / border-oq-32', use: 'Dim labels, quiet UI hints' },
+  { token: '--kol-oq-40', utility: 'text-oq-40 / bg-oq-40 / border-oq-40', use: 'Outline-button border' },
+  { token: '--kol-oq-48', utility: 'text-oq-48 / bg-oq-48 / border-oq-48', use: 'Labels, eyebrows, captions' },
+  { token: '--kol-oq-64', utility: 'text-oq-64 / bg-oq-64 / border-oq-64', use: 'Running copy, link default' },
+  { token: '--kol-oq-80', utility: 'text-oq-80 / bg-oq-80 / border-oq-80', use: 'Lede paragraphs, emphasized body, <strong>' },
+  { token: '--kol-oq-88', utility: 'text-oq-88 / bg-oq-88 / border-oq-88', use: 'Near-emphasis (rarely needed; prefer text-emphasis)' },
+  { token: '--kol-oq-96', utility: 'text-oq-96 / bg-oq-96 / border-oq-96', use: 'Strong text just below full ink' },
+]
+
+const oqInverseRows = [
+  { token: '--kol-oq-inverse-01', utility: 'text-oq-inverse-01 / bg-oq-inverse-01 / border-oq-inverse-01', use: 'Barely visible — texture, near-invisible washes' },
+  { token: '--kol-oq-inverse-02', utility: 'text-oq-inverse-02 / bg-oq-inverse-02 / border-oq-inverse-02', use: 'Faint background tint' },
+  { token: '--kol-oq-inverse-04', utility: 'text-oq-inverse-04 / bg-oq-inverse-04 / border-oq-inverse-04', use: 'Code block bg, very subtle fill' },
+  { token: '--kol-oq-inverse-08', utility: 'text-oq-inverse-08 / bg-oq-inverse-08 / border-oq-inverse-08', use: 'Hairlines, dividers, default border (workhorse)' },
+  { token: '--kol-oq-inverse-12', utility: 'text-oq-inverse-12 / bg-oq-inverse-12 / border-oq-inverse-12', use: 'Soft borders, hover-state bgs' },
+  { token: '--kol-oq-inverse-16', utility: 'text-oq-inverse-16 / bg-oq-inverse-16 / border-oq-inverse-16', use: 'Faint elements, secondary borders' },
+  { token: '--kol-oq-inverse-24', utility: 'text-oq-inverse-24 / bg-oq-inverse-24 / border-oq-inverse-24', use: 'Disabled hints, lightest descriptor stop' },
+  { token: '--kol-oq-inverse-32', utility: 'text-oq-inverse-32 / bg-oq-inverse-32 / border-oq-inverse-32', use: 'Dim labels, quiet UI hints' },
+  { token: '--kol-oq-inverse-40', utility: 'text-oq-inverse-40 / bg-oq-inverse-40 / border-oq-inverse-40', use: 'Outline-button border' },
+  { token: '--kol-oq-inverse-48', utility: 'text-oq-inverse-48 / bg-oq-inverse-48 / border-oq-inverse-48', use: 'Labels, eyebrows, captions' },
+  { token: '--kol-oq-inverse-64', utility: 'text-oq-inverse-64 / bg-oq-inverse-64 / border-oq-inverse-64', use: 'Running copy, link default' },
+  { token: '--kol-oq-inverse-80', utility: 'text-oq-inverse-80 / bg-oq-inverse-80 / border-oq-inverse-80', use: 'Lede paragraphs, emphasized body, <strong>' },
+  { token: '--kol-oq-inverse-88', utility: 'text-oq-inverse-88 / bg-oq-inverse-88 / border-oq-inverse-88', use: 'Near-emphasis (rarely needed; prefer text-emphasis)' },
+  { token: '--kol-oq-inverse-96', utility: 'text-oq-inverse-96 / bg-oq-inverse-96 / border-oq-inverse-96', use: 'Strong text just below full ink' },
+]
+
 /* Numeric-suffix class families — same NN suffix, different property prefix. */
 const fgFamilyRows = [
   { property: 'text-fg-NN',   example: 'text-fg-08',   hover: 'hover:text-fg-08',   use: 'Foreground ink — paragraph color, link color, currentColor for icons' },
@@ -309,6 +365,7 @@ export const UI_COLORS_SECTIONS = [
       "invariant black) for one-off use.",
     tables: [
       { caption: 'Numeric primitives — 14 stops, standard tier', columns: 'fg-primitives', rows: fgPrimitiveRows },
+      { caption: 'Inverse tier — married 1:1 to fg-NN, inked with --kol-surface-on-inverse', columns: 'fg-primitives', rows: fgInverseRows },
     ],
   },
   {
@@ -327,6 +384,29 @@ export const UI_COLORS_SECTIONS = [
       "workhorses of the entire chrome system.",
     tables: [
       { caption: 'Numeric class families', columns: 'fg-families', rows: fgFamilyRows },
+    ],
+  },
+  {
+    id: 'oq-primitives',
+    label: '10 — ui · opaque neutrals',
+    title: 'Opaque neutrals (--kol-oq-NN)',
+    intro:
+      "The solid mirror of the fg-* ramp (formerly the opacity-hex family, " +
+      "renamed oq). Same 14 stops, same ink — mixed into the surface instead " +
+      "of into transparent. oq is a baked grey, not a transparency: use it " +
+      "when a fill must hide what's behind it (cover layers, chips over " +
+      "media, filled-control hover states).",
+    reasoning:
+      "fg → color-mix(ink NN%, transparent) — alpha; the background bleeds " +
+      "through. oq → color-mix(ink NN%, surface) — opaque; flattened onto " +
+      "the surface. Married 1:1 per stop, and each tier carries its own " +
+      "inverse twin, so the full neutral system is two married pairs sharing " +
+      "one 14-stop scale. Auto-themes for free: both mix inputs flip in dark " +
+      "mode, so there are no hardcoded light/dark blocks. Hover variants " +
+      "exist for bg (hover:bg-oq-NN, hover:bg-oq-inverse-NN).",
+    tables: [
+      { caption: 'Standard tier — ink-on-primary flattened onto the primary surface', columns: 'fg-primitives', rows: oqStandardRows },
+      { caption: 'Inverse tier — married 1:1 to oq-NN, flattened onto the inverse surface', columns: 'fg-primitives', rows: oqInverseRows },
     ],
   },
 ]

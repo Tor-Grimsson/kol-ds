@@ -34,7 +34,7 @@
  *     [aria-disabled="true"] /
  *     :disabled                    auto opacity-50 + pointer-events-none
  *
- * Single visible-border tone (--kol-fg-16). No hover/focus escalation,
+ * Single visible-border tone (--kol-oq-16, opaque — chrome law). No hover/focus escalation,
  * no `--bordered` modifier. When you want a ghost field to render
  * persistently visible (e.g. "is-edited" indicator), switch the variant
  * to `--outline` — same visual, clearer semantic.
@@ -68,12 +68,10 @@
 }
 
 .kol-control--ghost {
-  /* Subtle resting bg so the input bounds are discoverable without
-   * hovering. Theme-independent darken via fg-absolute-04 (4% black);
-   * on dark theme this reads as a softly sunken input area, on light
-   * theme as a faintly tinted field. Hover/focus then reveals the
-   * border for affordance. */
-  background-color: var(--kol-fg-absolute-04);
+  /* DEPRECATED (2026-07-08 chrome law) — ghost folded into outline; Input
+   * aliases variant="ghost" → outline. Rule kept only for stray direct
+   * class consumers; do not use in new code. Opaque 4% black on surface. */
+  background-color: color-mix(in srgb, var(--kol-color-absolute-black) 4%, var(--kol-surface-primary));
   color: var(--kol-fg-meta);
 }
 .kol-control--ghost:hover,
@@ -85,14 +83,17 @@
 .kol-control--outline {
   background-color: transparent;
   color: var(--kol-surface-on-primary);
-  border-color: var(--kol-fg-16);
+  border-color: var(--kol-oq-16);
 }
 
 /* Textarea modifier — flips the inline-flex shell to block so a multi-line
- * textarea takes full width. Resize is disabled (textarea is fixed at its
- * `rows` count, content scrolls). The kol resize-corner icon in the
- * bottom-right is decorative. Used by atoms/Textarea.jsx. */
-.kol-control--textarea {
+ * textarea takes full width. Vertical resize is real (2026-07-08): the
+ * resize-grip icon is the JS drag handle (both axes); native resize is
+ * off (a Firefox grip can't be hidden otherwise). atoms/Textarea.jsx. */
+.kol-control.kol-control--textarea {
+  /* compound selector: must out-specify the .kol-control-{size} padding
+   * rules below, which otherwise win by order and double the padding
+   * (shell 6/16 + inner textarea 6/16). */
   display: block;
   position: relative;
   padding: 0; /* outer label is purely a wrapper; inner textarea owns padding */
@@ -102,13 +103,27 @@
 }
 .kol-control--textarea.kol-control-md > textarea { padding: 6px 16px; }
 .kol-control--textarea.kol-control-lg > textarea { padding: 8px 20px; }
+/* The grip — kol-icon-set-v1 `resize-grip` at the native placement. It IS
+ * the resize handle (JS corner drag, both axes, in Textarea.jsx); native
+ * resize is OFF because Firefox's grip can't be hidden any other way. */
 .kol-textarea-resize-icon {
   position: absolute;
   bottom: 4px;
   right: 4px;
   display: inline-flex;
+  color: var(--kol-fg-48);
+  cursor: nwse-resize;
+  touch-action: none;
 }
-
+/* Micro-glyph: at size 10 the set's 1.5 keyline scales to 0.625px — mush.
+ * non-scaling-stroke pins the stroke at a crisp 1.5 CSS px regardless of
+ * render size; the set asset stays keyline-conform. */
+.kol-textarea-resize-icon svg {
+  overflow: visible; /* round caps sit on the viewBox edge — don't clip them */
+}
+.kol-textarea-resize-icon svg path {
+  vector-effect: non-scaling-stroke;
+}
 /* ─── Sizes (padding only — type class applied via JSX) ─── */
 
 .kol-control-sm { padding: 4px 12px; }
@@ -160,14 +175,21 @@
   cursor: pointer;
 }
 
+.kol-btn:focus-visible {
+  outline: 2px solid var(--kol-focus-ring);
+  outline-offset: 2px;
+}
+
 .kol-btn-primary {
   background: var(--kol-surface-secondary);
   color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
 }
-.kol-btn-primary:not(.kol-btn-animate):hover {
-  background-color: var(--kol-fg-08);
-  color: var(--kol-surface-on-primary);
+@media (hover: hover) {
+  .kol-btn-primary:not(.kol-btn-animate):hover {
+    background-color: var(--kol-oq-08);
+    color: var(--kol-surface-on-primary);
+  }
 }
 
 .kol-btn-secondary {
@@ -176,10 +198,12 @@
   border: 1px solid transparent;
   font-weight: 500;
 }
-.kol-btn-secondary:not(.kol-btn-animate):hover {
-  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 20%, transparent);
-  color: var(--kol-surface-on-primary);
-  border-color: transparent;
+@media (hover: hover) {
+  .kol-btn-secondary:not(.kol-btn-animate):hover {
+    background-color: var(--kol-oq-inverse-40);
+    color: var(--kol-surface-primary);
+    border-color: transparent;
+  }
 }
 
 .kol-btn-accent {
@@ -188,35 +212,49 @@
   border: 1px solid transparent;
   font-weight: 500;
 }
-.kol-btn-accent:not(.kol-btn-animate):hover {
-  background-color: var(--kol-accent-primary-strong);
-  color: var(--kol-accent-on-primary);
+@media (hover: hover) {
+  .kol-btn-accent:not(.kol-btn-animate):hover {
+    background-color: var(--kol-accent-primary-strong);
+    color: var(--kol-accent-on-primary);
+  }
 }
 
 .kol-btn-outline {
   background: transparent;
   color: var(--kol-surface-on-primary);
-  border: 1px solid var(--kol-fg-16);
+  border: 1px solid var(--kol-oq-16);
 }
-.kol-btn-outline:not(.kol-btn-animate):hover {
-  background-color: var(--kol-fg-08);
-  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 25%, transparent);
-  color: var(--kol-surface-on-primary);
+@media (hover: hover) {
+  .kol-btn-outline:not(.kol-btn-animate):hover {
+    background-color: var(--kol-oq-02);
+    border-color: color-mix(in srgb, var(--kol-surface-on-primary) 25%, var(--kol-surface-primary));
+    color: var(--kol-surface-on-primary);
+  }
 }
 
 .kol-btn-ghost {
   background: transparent;
-  color: var(--kol-fg-48);
+  color: var(--kol-oq-48);
   border: 1px solid transparent;
 }
-.kol-btn-ghost:not(.kol-btn-animate):hover {
-  background-color: var(--kol-fg-08);
-  color: var(--kol-surface-on-primary);
+@media (hover: hover) {
+  .kol-btn-ghost:not(.kol-btn-animate):hover {
+    background-color: var(--kol-oq-04);
+    color: var(--kol-surface-on-primary);
+  }
 }
 
 .kol-btn-sm { padding: 4px 12px; }
 .kol-btn-md { padding: 6px 16px; }
 .kol-btn-lg { padding: 8px 20px; }
+
+/* Press feedback — one stop past hover (2026-07-08 button-states spec).
+ * Outside the hover guard: :active fires on touch too. */
+.kol-btn-primary:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-16); }
+.kol-btn-secondary:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-inverse-48); color: var(--kol-surface-primary); }
+.kol-btn-accent:not(.kol-btn-animate):not(:disabled):active { background-color: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-primary)); }
+.kol-btn-outline:not(.kol-btn-animate):not(:disabled):active,
+.kol-btn-ghost:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-08); }
 
 .kol-btn:disabled,
 .kol-btn[disabled] {
@@ -236,8 +274,10 @@
   opacity: var(--kol-opacity-disabled);
   transition: opacity 150ms ease;
 }
-.kol-btn-quiet:not(:disabled):hover {
-  opacity: 1;
+@media (hover: hover) {
+  .kol-btn-quiet:not(:disabled):hover {
+    opacity: 1;
+  }
 }
 
 /* Icon-swap animation (Button.jsx iconLeft / iconRight with hover icon) */
@@ -262,14 +302,16 @@
               transform var(--kol-transition-base);
 }
 
-.kol-btn:hover .kol-icon-default {
-  opacity: 0;
-  transform: translateY(-4px);
-}
+@media (hover: hover) {
+  .kol-btn:hover .kol-icon-default {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 
-.kol-btn:hover .kol-icon-hover {
-  opacity: 1;
-  transform: translateY(0);
+  .kol-btn:hover .kol-icon-hover {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -296,38 +338,49 @@
  * absolute-white, indicator absolute-black (theme-invariant).
  * ═══════════════════════════════════════════════════════════════ */
 
+/* Toggle Switch — atoms/ToggleSwitch.jsx (2026-07-08 chrome law rewrite).
+ * Bare by default: label + track, no box. Shell variants (primary/outline)
+ * only when the switch must read as chrome — button geometry exactly
+ * (pad 4/12 · 6/16 · 8/20 → heights 26/32/40). Type via kol-mono-{12,14,16}
+ * in JSX; the old auto-uppercase label died with the box (no-auto-casing).
+ * On = inverted ink (surface-on-primary track / surface-primary thumb) —
+ * same identity as .kol-btn-pressed. JSX aliases: plain→bare, default→outline. */
+
 .toggle-switch {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 14px;
-  border-radius: 4px;
-  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 12%, transparent);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--kol-radius-sm);
   background-color: transparent;
   color: var(--kol-surface-on-primary);
+  cursor: pointer;
   transition: background-color var(--kol-transition-base),
               border-color var(--kol-transition-base);
 }
 
-.toggle-switch:hover,
 .toggle-switch:focus-visible {
-  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 18%, transparent);
+  outline: 2px solid var(--kol-focus-ring);
+  outline-offset: 2px;
 }
 
-.toggle-switch-label {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
+.toggle-switch--primary { background-color: var(--kol-surface-secondary); }
+.toggle-switch--outline { border-color: var(--kol-oq-16); }
+
+/* shells take button padding; bare stays padding 0 */
+.toggle-switch--primary.toggle-switch--sm, .toggle-switch--outline.toggle-switch--sm { padding: 4px 12px; }
+.toggle-switch--primary.toggle-switch--md, .toggle-switch--outline.toggle-switch--md { padding: 6px 16px; }
+.toggle-switch--primary.toggle-switch--lg, .toggle-switch--outline.toggle-switch--lg { padding: 8px 20px; }
 
 .toggle-switch-indicator {
   width: 20px;
   height: 12px;
   border-radius: var(--kol-radius-full);
-  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
+  background-color: var(--kol-oq-16);
   position: relative;
+  flex-shrink: 0;
   transition: background-color var(--kol-transition-base);
 }
 
@@ -344,26 +397,23 @@
               background-color var(--kol-transition-base);
 }
 
+/* track scales with size */
+.toggle-switch--sm .toggle-switch-indicator { width: 16px; height: 10px; }
+.toggle-switch--sm .toggle-switch-indicator::after { width: 6px; height: 6px; }
+.toggle-switch--lg .toggle-switch-indicator { width: 24px; height: 14px; }
+.toggle-switch--lg .toggle-switch-indicator::after { width: 10px; height: 10px; }
+
 .toggle-switch[data-state='on'] .toggle-switch-indicator {
-  background-color: var(--kol-color-absolute-white);
+  background-color: var(--kol-surface-on-primary);
 }
 
 .toggle-switch[data-state='on'] .toggle-switch-indicator::after {
   transform: translateX(8px);
-  background-color: var(--kol-color-absolute-black);
+  background-color: var(--kol-surface-primary);
 }
 
-.toggle-switch--plain {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-}
-
-.toggle-switch--plain:hover,
-.toggle-switch--plain:focus-visible {
-  background-color: transparent;
-  border-color: transparent;
-}
+.toggle-switch--sm[data-state='on'] .toggle-switch-indicator::after { transform: translateX(6px); }
+.toggle-switch--lg[data-state='on'] .toggle-switch-indicator::after { transform: translateX(10px); }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -416,18 +466,18 @@
 
 
 /* ═══════════════════════════════════════════════════════════════
- * Slider — atoms/Slider.jsx
+ * Slider — molecules/Slider.jsx
  *
- * Range-input with custom track + thumb pseudo-elements. Two variants
- * post-2026-04-30 restructure (bordered `default` retired):
- *
- *   default   bare track + boxed value (was `minimal`). Most-used —
- *             Pattern Lab cols/rows/gap, Compositor sliders, Type Lab.
- *   subtle    filled rounded chip — for inspector-style controls.
+ * Range-input with custom track + thumb pseudo-elements. One bare
+ * inline-flex row (label · track · editable readout) — the sole slider
+ * look. Bordered `default` and chip `subtle` variants retired
+ * (2026-07-08); the phantom `.control-slider-minimal` the JSX used to
+ * emit never had a rule, so real `variant="minimal"` call sites now
+ * resolve here and finally get their intended layout.
  *
  * Track color is exposed as `--kol-slider-track` (set on `.slider-black`)
- * so consumers can override per-instance via inline style or className.
- * Default = fg-64 (dim grey); subtle overrides to full ink.
+ * so consumers can override per-instance via inline style or className;
+ * default = fg-64 (dim grey).
  * ═══════════════════════════════════════════════════════════════ */
 
 .control-slider {
@@ -451,26 +501,6 @@
   width: 64px;
   text-align: center;
   flex-shrink: 0;
-}
-
-.control-slider-subtle {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 6px 16px;
-  border-radius: 4px;
-  background-color: var(--kol-surface-secondary);
-  border: none;
-  transition: background-color var(--kol-transition-base),
-              color var(--kol-transition-base);
-}
-
-.control-slider-subtle label {
-  color: var(--kol-fg-48);
-}
-
-.control-slider-subtle .slider-black {
-  --kol-slider-track: var(--kol-surface-on-primary);
 }
 
 .slider-black {
@@ -772,12 +802,14 @@ a:hover .icon-hover,
  * (after `.kol-btn-quiet:not(:disabled):hover { opacity: 1; }`). */
 
 /* .kol-btn-pressed — toggle-on state (Button `pressed` prop, aria-pressed).
- * Hover-level fill held at rest so a pressed toggle reads as lit. Pairs
- * with `quiet`: Button drops kol-btn-quiet while pressed, giving the
- * tool-palette dim-at-rest → lit-when-active idiom. */
+ * Solid inverted ink so a pressed toggle reads as unmistakably lit
+ * (2026-07-08 button-states spec). Pairs with `quiet`: Button drops
+ * kol-btn-quiet while pressed, giving the tool-palette dim-at-rest →
+ * lit-when-active idiom. Always composes with a variant class — the
+ * variant supplies the border that suppresses UA button chrome. */
 .kol-btn-pressed {
-  background-color: var(--kol-fg-08);
-  color: var(--kol-surface-on-primary);
+  background-color: var(--kol-surface-on-primary);
+  color: var(--kol-surface-primary);
 }
 
 /* ─────────────────────────────────────────────────────────────────────

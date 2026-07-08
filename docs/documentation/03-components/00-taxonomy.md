@@ -19,6 +19,8 @@ tags:
 related:
   - "[[02-placement|component placement]]"
   - "[[01-inventory|component inventory]]"
+  - "[[04-diamond-tier|diamond tier]]"
+  - "[[05-control-chrome|control chrome law]]"
   - "[[03-taxonomy-audit-and-plan|taxonomy audit & plan]]"
 ---
 

@@ -32,7 +32,7 @@
 
   --kol-accent-primary:        var(--kol-surface-on-primary);
   --kol-accent-on-primary:     var(--kol-surface-primary);
-  --kol-accent-primary-strong: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+  --kol-accent-primary-strong: color-mix(in srgb, var(--kol-accent-primary) 80%, var(--kol-surface-primary));
 
   /* ---------------------------------------------------------------------------
    * UI STATE — error / warning / info / success.

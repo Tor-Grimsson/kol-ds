@@ -2,7 +2,7 @@
 title: Backlog execution plan — phases 0–6
 type: plan
 status: active
-updated: 2026-07-02
+updated: 2026-07-08
 description: The 2026-07-02 review backlog sequenced into six executable phases, batched by layer, plus seven system improvements (scanner-first docs data, react-docgen API tables, enforceable taxonomy, a11y ride-along, type-conformance sweep).
 phases:
   - 0 — sync + recon
@@ -25,7 +25,7 @@ related:
 
 Sequences [[backlog/2026-07-02-review-backlog|the review backlog]] into executable phases and folds in seven system improvements the backlog implied but didn't name.
 
-> **Executed 2026-07-02** in one autonomous run — see [[llm-context/session-log/2026-07-02-backlog-execution-phases-0-6|the session log]]. **E3 closed 2026-07-03** (LabeledSection ported; 22 reasoned rejections — see the scan doc). Still open: user review, the batched publish.
+> **Executed 2026-07-02** in one autonomous run — see [[llm-context/session-log/2026-07-02-backlog-execution-phases-0-6|the session log]]. **E3 closed 2026-07-03** (LabeledSection ported; 22 reasoned rejections — see the scan doc). Those changesets **shipped in the 0.4.x release** (PR #6). Work since is the **2026-07-08 chrome-law arc** — see the *Post-plan* section at the bottom for what's actually left.
 
 ## Why
 
@@ -74,6 +74,19 @@ Zero console errors; every backlog item closed or explicitly deferred with a ver
 - [x] Phase 3: C1 doc exists; zero `primitives`; `pnpm validate:taxonomy` green
 - [x] Phase 4: D1/D2 rows render from scanner output; API tables generated (43/44, ScrollToTop renders null); offender report delivered — 7 components (AssetPlaceholder, Avatar, ToggleCheckbox, ToggleSwitch, Accordion/Panel, SideNav)
 - [x] Phase 5: E3 **closed 2026-07-03** — LabeledSection ported (`showcase/src/lib/LabeledSection.jsx`); Ramp/TypeSample/SpectrumGrid + all tier-2 rejected with reasons (redundant with the table-driven Foundations pages / no present consumer / brand-locked); E2 swatch live on Foundations
-- [ ] Phase 6: shell verdict recorded ✓; **pending user:** type-conformance fix approval, publish (8 changesets, one batch)
+- [ ] Phase 6: shell verdict recorded ✓; the phase's 8 changesets **shipped in 0.4.x** (PR #6). **Pending user:** type-conformance fix approval; the chrome-law arc's publish (5 changesets — see Post-plan)
 
 When executed, mark `status: superseded` and point at the closing session log.
+
+## Post-plan (2026-07-08) — the chrome-law arc + what's actually left
+
+The phases above shipped (the 0.4.x release). Work since is a separate arc, tracked in `backlog/2026-07-08-button-chrome-audit.md` and now mirrored in the vault.
+
+- **Button-vanish root-caused → the chrome law.** Filled button hovers swapped opaque fills for translucent `fg-*` washes, so buttons vanished over media. Fix = the opaque (`oq`) tier, then generalized: **every control = Button chrome** — two variants (primary/outline), one size scale (26/32/40), states on `oq`. Landed across Button, Dropdown, Input, Textarea, ToggleSwitch, SegmentedToggle.
+- **F6 fixed** (`selected` → `pressed` alias; dead `.kol-btn-selected` removed). **F7 won't-fix** (ghost retiring). **Slider** collapsed to the single bare `minimal` row (phantom `.control-slider-minimal` bug fixed; `default`/`subtle` deleted).
+- **Two new vault docs:** `docs/documentation/03-components/05-control-chrome.md` (the chrome law) + `docs/documentation/03-components/04-diamond-tier.md` (the 4h+ battle-tested components — maintained on standing command).
+
+### What's actually left
+
+1. **Publish (user / git).** commit + push → merge the Version Packages PR → CI publishes → `git pull`. **5 changesets:** `chrome-law-controls`, `btn-hover-touch-guard`, `icon-resize-grip`, `btn-selected-alias-pressed`, `slider-minimal-only`. Then bump `kol-design-editor` onto the new versions.
+2. **Legacy-alias sweep → next major.** Sweep consumers off `ghost`/`default`/`subtle`/`minimal`/`plain`/`control`, then drop them all in one breaking bump. Retires `ghost` (closes F7).

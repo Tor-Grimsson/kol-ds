@@ -3,11 +3,11 @@ import { Icon } from '@kolkrabbi/kol-icons'
 /**
  * Input — single-input atom built on the .kol-control shell.
  *
- *   variant="filled" (default) — persistent solid bg
- *   variant="ghost"            — borderless at rest, reveals on hover/focus
- *   variant="outline"          — bordered, transparent bg (also: the
- *                                forced-reveal / "is-edited" state of a
- *                                ghost field — flip variant to outline)
+ *   variant="filled" (default) — persistent solid bg (= button primary chrome)
+ *   variant="outline"          — bordered, transparent bg — THE secondary
+ *                                treatment (2026-07-08 chrome law: one
+ *                                secondary, always subordinate to filled)
+ *   variant="ghost"            — legacy alias, resolves to outline
  *
  *   size="sm" / "md" (default) / "lg" — matched padding + type class
  *
@@ -57,9 +57,12 @@ export default function Input({
   const fixedChars = typeof chars === 'number'
   const resolvedIconSize = iconSize ?? ICON_SIZE[size] ?? 14
 
+  // ghost folds into outline (2026-07-08 chrome law): one secondary treatment.
+  const resolvedVariant = variant === 'ghost' ? 'outline' : variant
+
   const shellCls = [
     'kol-control',
-    `kol-control--${variant}`,
+    `kol-control--${resolvedVariant}`,
     `kol-control-${size}`,
     SIZE_TYPE[size],
     'cursor-text',
