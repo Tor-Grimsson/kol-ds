@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-08
 **Agent:** Grim (Opus 4.8 1M)
-**Summary:** Renamed kol-loader→kol-icons, built the curated kol-icon-set-v1 (Figma-reviewed, usage-grounded), added registerIcons (bring-your-own) + the /kol-lobby-icon promotion loop, and replaced a docs-hygiene gap and the 4-skill reinforcement bundle with global hooks.
+**Summary:** Renamed kol-loader→kol-icons, built the curated kol-icon-set-v1 (Figma-reviewed, usage-grounded), added registerIcons (bring-your-own) + the /kol-lobby-icon promotion loop, replaced a docs-hygiene gap and the 4-skill reinforcement bundle with global hooks — **then shipped it: v1 moved into the package, published `@kolkrabbi/kol-icons@0.4.0` (non-breaking, legacy alongside), and migrated the one published consumer (kol-design-editor).**
 
 ## Changes Made
 
@@ -30,20 +30,26 @@
 - **`doc-sync-reminder`** (`PostToolUse(Edit|Write)`): on edit of a file declared in a doc's `sources:` frontmatter, reminds to update that doc same-turn. Global, precise, fail-open.
 - **`agent-reinforce`** (`UserPromptSubmit`): report-shape + rules + no-git on a cadence (full turn 1, compact every ~5 turns) — **replaced the 4-skill bundle** (deleted `agent-reinforce` + `agent-output-format` + `-rules` + `-memory`); 10 dotfiles files repointed; hooks-doc + skill-catalog updated. `claude-clear`/`claude-bullet` kept (user-invoked tools).
 
+### Shipped — v1 into package, published, editor migrated (Phase 1–3)
+- **v1 into the package:** moved `showcase/src/kol-icon-set-v1/` → `packages/icons/src/kol-icon-set-v1/`; `iconData.js` globs a `V1` map; `Icon.resolveIcon` = custom → **v1** → legacy. Exports `KOL_ICON_SET_V1` + `KOL_ICON_SET_V1_NAMES`; `/icons/v1` dogfoods the package `<Icon>`. Changeset `icons-v1-into-package`.
+- **Migration helpers:** (1) legacy resolution `console.warn`s once per name; (2) **`npx kol-icons audit`** bin (`packages/icons/bin/kol-icons.mjs`) — scans `<Icon name>` usage → in-v1 / legacy-only / not-in-package.
+- **Published:** merged the Version Packages PR (#6) → CI green → **`@kolkrabbi/kol-icons@0.4.0` live on npm** (also component 0.4.1 · framework 0.3.0 · theme 0.4.0). Non-breaking — legacy ships alongside.
+- **Consumer migrated:** `kol-design-editor` (the *only* repo importing the published pkg) → `kol-icons@0.4.0`: peer+dev deps, 2 imports, `vite.config` `optimizeDeps.exclude`, `pnpm-workspace` release-age pin, README. `pnpm install`'d, running.
+
 ## Current State
 
 ### Working
-- kol-icons renamed + builds; `registerIcons` live. kol-icon-set-v1 (107) renders at `/icons/v1`. Both hooks tested + wired global (harness picked up reinforce mid-session).
+- **`@kolkrabbi/kol-icons@0.4.0` is live on npm.** v1 (107) ships in the package + resolves first; `registerIcons` + `npx kol-icons audit` shipped; `/icons/v1` dogfoods it. `kol-design-editor` migrated + running. Both global hooks live (doc-sync fired correctly on this session's Icon.jsx/index.js edits).
 
 ### Known Issues
-- kol-icon-set-v1 lives in `showcase/src/` (not the package) — package still ships the legacy ~800; it slims onto the set only once repos adopt BYO (**53 app-used names are not in v1** — a hard replace breaks apps until then).
+- **Phase 4 (slim) is gated:** the legacy ~800 still ships (the non-breaking bridge). Drop it + major-bump only after `kol-design-editor` registers its own `tool-*`/`align-*` icons and clears its 6 legacy-only (its `npx kol-icons audit` goes clean).
+- `kol-loader@0.3.0` still on npm — **deprecate** it once ready (`npm deprecate` → kol-icons); optional, sole consumer is migrated.
 - Oversizing refits + search/zoom magnifier harmony = Figma redraws (deferred).
-- doc-sync hook blind spot: checks the *current* repo's docs, so dotfiles-doc edits from another repo's session aren't caught (caused this session's hooks-doc miss).
-- Everything uncommitted (repo **and** dotfiles).
+- doc-sync hook blind spot: checks the *current* repo's docs, so dotfiles-doc edits from another repo's session aren't caught.
+- Uncommitted: `kol-design-editor` migration + the dotfiles tooling. (kol-design-system **is** committed — it published via the release.)
 
 ## Next Steps
-1. ~~Rename `transfer-01/02` → `download`/`upload`~~ ✅ done.
-2. When repos adopt `registerIcons`: slim the package onto kol-icon-set-v1, drop legacy, major bump.
-3. Figma redraws (oversizing refits, search/zoom magnifier) → re-clean via `/kol-lobby-icon`.
-4. Publish decisions: kol-icons rename (deprecate `kol-loader@0.3.0`) + the held changesets.
-5. Consider a separate dotfiles session log for the hooks/skill/reinforcement work (it spanned two repos).
+1. Commit the `kol-design-editor` migration + the dotfiles tooling (both uncommitted, both yours).
+2. Deprecate `kol-loader@0.3.0` → `kol-icons` (optional, now safe).
+3. **Phase 4 (slim):** `kol-design-editor` registers its own `tool-*`/`align-*` icons + clears its 6 legacy-only → then delete the legacy 800 → major bump.
+4. Figma redraws (oversizing refits, search/zoom magnifier) → re-clean via `/kol-lobby-icon`.
