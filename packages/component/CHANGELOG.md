@@ -1,5 +1,20 @@
 # @kolkrabbi/kol-component
 
+## 0.4.1
+
+### Patch Changes
+
+- 8448e47: Renamed the icon package `@kolkrabbi/kol-loader` → `@kolkrabbi/kol-icons`. The name now describes the domain (icons) rather than the load mechanism, matching the `theme`/`component`/`framework` convention. The public API is unchanged (`Icon`, `ICONS`, `ICON_ENTRIES`, `SOLID_ICON_ENTRIES`, `ICON_INDEX`, `ALL_ICONS`, `hasIcon`, `getCategory`).
+
+  Consumers must update the import specifier and the Tailwind `@source` glob to `@kolkrabbi/kol-icons`. `component` and `framework` retarget their internal dependency to the new name (patch).
+
+- Updated dependencies [8448e47]
+- Updated dependencies [8448e47]
+- Updated dependencies [8448e47]
+- Updated dependencies [8448e47]
+- Updated dependencies [8448e47]
+  - @kolkrabbi/kol-icons@0.4.0
+
 ## 0.4.0
 
 ### Minor Changes
