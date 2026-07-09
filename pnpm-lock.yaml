@@ -199,6 +199,9 @@ importers:
 
   packages/workshop:
     dependencies:
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../brand
       '@kolkrabbi/kol-component':
         specifier: workspace:*
         version: link:../component

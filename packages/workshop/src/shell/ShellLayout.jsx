@@ -4,6 +4,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
 import { ShellDrawer, ShellSearchOverlay } from '@kolkrabbi/kol-component'
+import { Asset } from '@kolkrabbi/kol-brand/svg'
 
 // Pages can register right-rail TOC content via this context.
 // Usage: const setTocContent = useContext(ShellTocContext)
@@ -100,10 +101,16 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
     }
   }
   const brand = (
-    <Link to={basePath} className="shell-header-logo flex items-center gap-2">
-      {brandLogoSrc
-        ? <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
-        : <span className="kol-helper-12 text-emphasis">{brandLogoAlt || 'Workshop'}</span>}
+    <Link to={basePath} className="shell-header-logo flex items-center gap-2 text-emphasis">
+      {brandLogoSrc ? (
+        <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
+      ) : (
+        <>
+          <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-5 [&>svg]:w-auto" />
+          <span className="text-fg-24" aria-hidden="true">/</span>
+          <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-4 [&>svg]:w-auto" />
+        </>
+      )}
     </Link>
   )
   const searchTrigger = (

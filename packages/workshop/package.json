@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "d3": "^7.9.0",
+    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
