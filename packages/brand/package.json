@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-brand",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Kolkrabbi's brand kit — the studio's brand manifest (identity, color ramps, type, presence) conforming to the @kolkrabbi/kol-brand-template schema, plus the brand SVG assets (logos, wordmark, favicons) under ./svg with an <Asset> loader (the Icon-loader pattern). Manifest is data-only; the loader needs React (optional peer).",
   "license": "MIT",
   "type": "module",
