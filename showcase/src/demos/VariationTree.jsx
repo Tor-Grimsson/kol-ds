@@ -1,5 +1,4 @@
-import VariationTree from '../workshop/chess/apparatus/VariationTree.jsx'
-import { ChessControlsProvider } from '../workshop/chess/context/ChessControlsContext.jsx'
+import { VariationTree, ChessControlsProvider } from '@kolkrabbi/kol-chess'
 
 export const stage = 'md'
 

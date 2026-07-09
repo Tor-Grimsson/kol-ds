@@ -5,6 +5,7 @@
    get generated unless scanned explicitly. This is the recipe EVERY consumer
    needs, not a workspace shortcut: point @source at the installed package source. */
 @source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-chess/src";
 @source "../node_modules/@kolkrabbi/kol-component/src";
 @source "../node_modules/@kolkrabbi/kol-dashboards/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";

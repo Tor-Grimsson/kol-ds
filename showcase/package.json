@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@kolkrabbi/kol-chess": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-dashboards": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",

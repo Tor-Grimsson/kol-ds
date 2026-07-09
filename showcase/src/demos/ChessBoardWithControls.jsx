@@ -1,4 +1,4 @@
-import ChessBoardWithControls from '../workshop/chess/apparatus/ChessBoardWithControls.jsx'
+import { ChessBoardWithControls } from '@kolkrabbi/kol-chess'
 
 export const stage = 'lg'
 

@@ -1,4 +1,4 @@
-import { ChessPiece } from '../workshop/chess/index.js'
+import { ChessPiece } from '@kolkrabbi/kol-chess'
 
 export const stage = 'hug'
 

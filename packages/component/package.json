@@ -8,8 +8,7 @@
   "module": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./foundry": "./src/organisms/foundry/index.js",
-    "./chess": "./src/chess/index.js"
+    "./foundry": "./src/organisms/foundry/index.js"
   },
   "files": [
     "src",

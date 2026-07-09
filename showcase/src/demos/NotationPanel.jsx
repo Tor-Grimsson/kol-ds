@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import NotationPanel from '../workshop/chess/apparatus/NotationPanel.jsx'
+import { NotationPanel } from '@kolkrabbi/kol-chess'
 
 export const stage = 'md'
 

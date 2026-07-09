@@ -1,5 +1,5 @@
-import { ChessAnalysisLayout } from '@kolkrabbi/kol-component/chess'
-import * as chessData from '../workshop/chess/data/sample-games.js'
+import { ChessAnalysisLayout } from '@kolkrabbi/kol-chess'
+import * as chessData from '@kolkrabbi/kol-chess/data'
 
 export const meta = {
   title: 'Chess apparatus',
@@ -9,12 +9,12 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* Renders the SHIPPED package (@kolkrabbi/kol-component/chess) — the same code the
- * monorepo installs — so the gallery can't drift from what's published. Styling comes
- * from @kolkrabbi/kol-theme (kol-components-chess.css). Game data is not bundled in the
- * package; the showcase feeds its local sample dataset via the `chessData` adapter
- * (getSampleGames / getManifest / getMonthlySummary / getRandomMonth / loadMonthGames /
- * getGamePgnByIdAsync — all exported by workshop/chess/data/sample-games.js). */
+/* Renders the SHIPPED package (@kolkrabbi/kol-chess) — the same code the monorepo
+ * installs — so the gallery can't drift from what's published. Styling comes from
+ * @kolkrabbi/kol-theme (kol-components-chess.css). Game data comes from the package's
+ * own adapter (@kolkrabbi/kol-chess/data — getSampleGames / getManifest /
+ * getMonthlySummary / getRandomMonth / loadMonthGames / getGamePgnByIdAsync; demo set
+ * bundled, full archive fetched from the B2 CDN). */
 export default function ChessApparatusSet() {
   return (
     <div className="p-6">

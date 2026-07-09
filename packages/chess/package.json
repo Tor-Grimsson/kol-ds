@@ -1,0 +1,45 @@
+{
+  "name": "@kolkrabbi/kol-chess",
+  "version": "0.1.0",
+  "private": false,
+  "description": "KOL chess system — board, pieces (3 SVG sets), playback/notation/variation-tree apparatus, PGN engine, and a game-data adapter (bundled demo set + Backblaze-B2 CDN fetch for the full 27k-game archive). Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./data": "./src/data/sample-games.js"
+  },
+  "dependencies": {
+    "chess.js": "^1.4.0",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "chess",
+    "pgn",
+    "board",
+    "analysis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/chess"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

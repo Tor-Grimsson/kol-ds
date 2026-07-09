@@ -1,5 +1,4 @@
-import PlaybackControls from '../workshop/chess/apparatus/PlaybackControls.jsx'
-import { ChessControlsProvider } from '../workshop/chess/context/ChessControlsContext.jsx'
+import { PlaybackControls, ChessControlsProvider } from '@kolkrabbi/kol-chess'
 
 export const stage = 'hug'
 

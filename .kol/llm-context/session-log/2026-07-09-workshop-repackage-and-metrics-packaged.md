@@ -38,7 +38,15 @@
 - **Still un-unified:** the 15 standalone dashboard demos + Home bento + the 7 chess demos still import the drifted `showcase/src/workshop/{dashboards,chess}` local copies. Metrics-via-set is now on the package; the demos are not.
 - **kol-workshop@0.1.0 is now on npm** (monorepo agent confirmed: 28 files, zero CSS). My README/description edits need a **0.1.1** bump to land (doc-only; repoint not blocked).
 
+## Follow-on — standalone package extractions (same session)
+
+Metrics was first packaged as a `component/dashboards` subpath, then **both dashboards and chess were extracted OUT of `component` into standalone packages** on the user's call (trigger: multiple consumers + independent versioning):
+
+- **`@kolkrabbi/kol-dashboards@0.1.0`** — the whole `dashboards/` dir (primitives + charts + MetricsDashboard + metrics-constants). One escaping import fixed (SegmentedToggle → package specifier). `./dashboards` subpath dropped from component. Set + hook repointed. Render-verified `/sets/preview/metrics-dashboard` (0 errors).
+- **`@kolkrabbi/kol-chess@0.1.0`** — the whole `chess/` dir + a bundled **`./data`** adapter (moved from `showcase/src/workshop/chess/data` — demo set `lightweight.js` ~136 KB + B2 CDN fetch for the 27k-game archive). **9 escaping imports** (Button/Input/Dropdown/Pill/Table/Tag) rewritten to `@kolkrabbi/kol-component`. `./chess` subpath dropped. Chess set + all **7 chess demos** repointed; drifted `showcase/src/workshop/chess/` **deleted**. Render-verified `/sets/preview/chess-apparatus` (0 errors — 106-month archive, table, board, pieces live). 11 console warnings are pre-existing legacy-icon deprecations, not regressions.
+- CSS for both stays in `kol-theme`. `chess.js` is a `kol-chess` dep. **ARCHITECTURE §3 amended five→seven UI packages.**
+
 ## Next Steps
-1. Decide the publish path: changesets + Version PR (recommended) vs. push-to-publish the hand-bumped 0.7.0.
-2. Unify the remaining dashboard + chess **demos** onto the packages (repoint `../workshop/*` imports, delete local trees) — same shape as this metrics move.
+1. **Push** (user gate) — publishes `kol-dashboards@0.1.0` + `kol-chess@0.1.0` + component/theme `0.7.0` + framework/icons. Decide changesets + Version-PR vs. push-to-publish the hand-bumps first.
+2. Unify the remaining **15 dashboard demos + Home bento** onto `@kolkrabbi/kol-dashboards` (delete the local `workshop/dashboards` copy) — chess demos already done.
 3. Monorepo: relay to the repoint agent — workshop chrome CSS comes from `@kolkrabbi/kol-theme` (`kol-components-workshop.css`), **not** `@kol/ui`.

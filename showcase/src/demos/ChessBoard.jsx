@@ -1,4 +1,4 @@
-import ChessBoard from '../workshop/chess/apparatus/ChessBoard.jsx'
+import { ChessBoard } from '@kolkrabbi/kol-chess'
 
 export const stage = 'md'
 

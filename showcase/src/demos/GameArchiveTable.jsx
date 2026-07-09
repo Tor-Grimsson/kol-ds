@@ -1,4 +1,4 @@
-import GameArchiveTable from '../workshop/chess/apparatus/GameArchiveTable.jsx'
+import { GameArchiveTable } from '@kolkrabbi/kol-chess'
 
 export const stage = 'md'
 
