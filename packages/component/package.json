@@ -1,14 +1,16 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.6.0",
-  "description": "KOL design-system components — atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
+  "version": "0.7.0",
+  "description": "KOL design-system components \u2014 atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
   "module": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./foundry": "./src/organisms/foundry/index.js"
+    "./foundry": "./src/organisms/foundry/index.js",
+    "./dashboards": "./src/dashboards/index.js",
+    "./chess": "./src/chess/index.js"
   },
   "files": [
     "src",

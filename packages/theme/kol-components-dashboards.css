@@ -1,0 +1,348 @@
+/* ---------------------------------------------------------------------------
+ * Dashboard Grid — responsive via container queries
+ * --------------------------------------------------------------------------- */
+
+.dash-grid {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(240px, auto);
+  gap: 1rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+@container (min-width: 540px) {
+  .dash-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+@container (min-width: 1024px) {
+  .dash-grid { gap: 1.5rem; }
+}
+
+/* On 2-col mobile grid, clamp oversized spans via data attribute + !important
+   to override inline styles. At 540px+ the grid is 4-col so no clamping needed. */
+@container (max-width: 539px) {
+  .dash-grid > [data-cols="3"],
+  .dash-grid > [data-cols="4"] {
+    grid-column: span 2 !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Dashboard Card Base
+ * --------------------------------------------------------------------------- */
+
+.dash-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 2%, transparent);
+  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 4%, transparent);
+  border-radius: 0.25rem;
+  overflow: visible;
+  min-height: 0;
+}
+
+@container (min-width: 768px) {
+  .dash-card {
+    padding: 1.5rem;
+  }
+}
+
+@container (min-width: 1024px) {
+  .dash-card {
+    padding: 2rem;
+  }
+}
+
+.dash-card__footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 8%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+ * Dashboard Typography (JetBrains Mono)
+ * --------------------------------------------------------------------------- */
+
+/* Card titles — 16px → 20px, medium weight */
+.dash-title {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-title {
+    font-size: 20px;
+  }
+}
+
+/* Big metric values — 24px → 32px, medium weight */
+.dash-value {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-value {
+    font-size: 28px;
+  }
+}
+
+@container (min-width: 1024px) {
+  .dash-value {
+    font-size: 32px;
+  }
+}
+
+/* Sub-headings — 16px → 22px, medium weight */
+.dash-subtitle {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 125%;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-subtitle {
+    font-size: 22px;
+  }
+}
+
+/* List items, descriptions — 12px → 14px, regular weight */
+.dash-body {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 125%;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-body {
+    font-size: 14px;
+  }
+}
+
+/* Footers, secondary text — 10px → 12px, regular weight */
+.dash-detail {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-detail {
+    font-size: 12px;
+  }
+}
+
+/* Chart axes, compact items, legends — 8px → 11px, regular weight */
+.dash-caption {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 400;
+  font-size: 8px;
+  line-height: 1;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-caption {
+    font-size: 10px;
+  }
+}
+
+@container (min-width: 1024px) {
+  .dash-caption {
+    font-size: 11px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Chart Utilities
+ * --------------------------------------------------------------------------- */
+
+.chart__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--chart-color-value, var(--kol-accent-primary));
+  transition: opacity 0.2s ease;
+}
+
+.chart__segment {
+  stroke: var(--chart-color-value, var(--kol-accent-primary));
+  fill: none;
+  transition: opacity 0.2s ease;
+}
+
+.chart__bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--chart-color-value, var(--kol-accent-primary));
+  transition: width 0.3s ease, opacity 0.2s ease;
+}
+
+.chart__dot.is-muted,
+.chart__segment.is-muted,
+.chart__bar-fill.is-muted {
+  opacity: 0.35;
+}
+
+/* ---------------------------------------------------------------------------
+ * Chart Color Classes (palette-based)
+ * --------------------------------------------------------------------------- */
+
+.chart-color-blue    { --chart-color-value: var(--kol-palette-blue); }
+.chart-color-green   { --chart-color-value: var(--kol-palette-green); }
+.chart-color-yellow  { --chart-color-value: var(--kol-palette-yellow); }
+.chart-color-red     { --chart-color-value: var(--kol-palette-red); }
+.chart-color-orange  { --chart-color-value: var(--kol-palette-orange); }
+.chart-color-purple  { --chart-color-value: var(--kol-palette-purple); }
+.chart-color-teal    { --chart-color-value: var(--kol-palette-teal); }
+
+/* ---------------------------------------------------------------------------
+ * Chart Tooltips
+ * --------------------------------------------------------------------------- */
+
+.dash-tooltip {
+  position: absolute;
+  left: var(--tx);
+  top: var(--ty);
+  transform: translate(-50%, -110%);
+  z-index: 10;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.25rem;
+  background-color: var(--kol-surface-primary);
+  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 12%, transparent);
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.dash-chart-element--active {
+  filter: brightness(1.2);
+}
+
+/* ---------------------------------------------------------------------------
+ * Scatter Plot Hit Area
+ * --------------------------------------------------------------------------- */
+
+.dash-scatter-point {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+}
+
+.dash-scatter-point::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------------------------------------------------------------------------
+ * List Item Hover
+ * --------------------------------------------------------------------------- */
+
+.dash-list-item {
+  padding: 0.375rem 0.5rem;
+  margin: -0.375rem -0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease;
+}
+
+.dash-list-item:hover {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
+}
+
+.dash-list-item__detail {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.2s ease, opacity 0.15s ease;
+}
+
+.dash-list-item:hover .dash-list-item__detail {
+  max-height: 2rem;
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * Metric Card Cycling
+ * --------------------------------------------------------------------------- */
+
+.dash-metric--interactive {
+  cursor: pointer;
+}
+
+.dash-metric-dots {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.dash-metric-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--kol-surface-on-primary);
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.dash-metric-dot--active {
+  opacity: 1;
+}
+
+.dash-metric-value {
+  transition: opacity 0.15s ease;
+}
+
+.dash-metric-value--fading {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Line Chart
+ * --------------------------------------------------------------------------- */
+
+.dash-line-path {
+  stroke-width: 2;
+  fill: none;
+}
+
+.dash-line-area {
+  stroke: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Donut Chart
+ * --------------------------------------------------------------------------- */
+
+.dash-donut-segment {
+  transition: opacity 0.2s ease;
+}
+
+/* ---------------------------------------------------------------------------
+ * Heatmap
+ * --------------------------------------------------------------------------- */
+
+.dash-heatmap-cell {
+  border-radius: 2px;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}

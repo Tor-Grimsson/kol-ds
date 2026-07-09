@@ -41,6 +41,8 @@
 @import "./kol-components-atoms.css" layer(components);
 @import "./kol-components-molecules.css" layer(components);
 @import "./kol-components-organisms.css" layer(components);
+@import "./kol-components-dashboards.css" layer(components);
+@import "./kol-components-chess.css" layer(components);
 
 /* Theme-level design tokens */
 @layer components {
