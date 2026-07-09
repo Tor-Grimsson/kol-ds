@@ -28,6 +28,17 @@
   }
 }
 
+/* Hide the scrollbar on the dashboard's horizontal strips (timeline, host
+   pills) while keeping them scrollable. Firefox uses scrollbar-width; WebKit
+   the pseudo-element. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---------------------------------------------------------------------------
  * Dashboard Card Base
  * --------------------------------------------------------------------------- */

@@ -5,45 +5,24 @@ import { useState, useEffect, useRef, useCallback } from 'react'
  * backend, so MOCK short-circuits every fetch and the *_FALLBACK data renders
  * — same shape as the real responses. Flip to false in an app that serves
  * the APIs. (Was `import.meta.env.DEV` in the monorepo.) */
-import { DEMO } from './demo-data.js'
+import { DEMO, DEMO_HOST_SUMMARY } from './demo-data.js'
+import {
+  RANGES,
+  DEPLOY_STATE_COLORS,
+  DEPLOY_STATE_LABELS,
+  TYPE_COLORS,
+  formatB2Size,
+  timeAgo,
+} from '@kolkrabbi/kol-component/dashboards'
 const MOCK = true
 
 // =============================================================================
-// Constants
+// Constants + formatters — now owned by @kolkrabbi/kol-component/dashboards.
+// Re-exported here so existing consumers (Home.jsx imports `timeAgo`) keep
+// resolving them from this module.
 // =============================================================================
 
-export const RANGES = [
-  { id: 'today', label: 'Today', ms: 86400000 },
-  { id: '7d', label: '7d', ms: 7 * 86400000 },
-  { id: '30d', label: '30d', ms: 30 * 86400000 },
-  { id: '90d', label: '90d', ms: 90 * 86400000 },
-  { id: 'year', label: '1y', ms: 365 * 86400000 },
-]
-
-export const DEPLOY_STATE_COLORS = {
-  READY: 'var(--kol-palette-green)',
-  ERROR: 'var(--kol-palette-red)',
-  BUILDING: 'var(--kol-palette-orange)',
-  QUEUED: 'var(--kol-palette-purple)',
-  CANCELED: 'var(--kol-palette-red)',
-}
-
-export const DEPLOY_STATE_LABELS = {
-  READY: 'Live',
-  ERROR: 'Failed',
-  BUILDING: 'Building...',
-  QUEUED: 'Queued',
-  CANCELED: 'Canceled',
-}
-
-export const TYPE_COLORS = {
-  blog: 'var(--kol-palette-green)',
-  project: 'var(--kol-palette-blue)',
-  page: 'var(--kol-palette-purple)',
-  category: 'var(--kol-palette-orange)',
-  author: 'var(--kol-palette-teal)',
-  tag: 'var(--kol-palette-red)',
-}
+export { RANGES, DEPLOY_STATE_COLORS, DEPLOY_STATE_LABELS, TYPE_COLORS, formatB2Size, timeAgo }
 
 export const durationBuckets = [
   { range: '0-10s', count: 0, percentage: 0 },
@@ -53,28 +32,6 @@ export const durationBuckets = [
   { range: '2-5m', count: 0, percentage: 0 },
   { range: '5m+', count: 0, percentage: 0 },
 ]
-
-// =============================================================================
-// Utilities
-// =============================================================================
-
-export function formatB2Size(bytes) {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`
-}
-
-export function timeAgo(ts) {
-  const diff = Date.now() - ts
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'just now'
-  if (mins < 60) return `${mins}m ago`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs}h ago`
-  const days = Math.floor(hrs / 24)
-  return `${days}d ago`
-}
 
 // =============================================================================
 // Fallbacks
@@ -243,6 +200,10 @@ export default function useMetricsData(initialRange = '30d') {
   // remain stable regardless of the currently-selected host.
   const allHosts = allData.topHosts || []
 
+  // Per-host visitor summaries. MOCK serves the demo map; a live app would
+  // populate this from /api/metrics-summary in its own adapter.
+  const hostSummaries = MOCK ? DEMO_HOST_SUMMARY : {}
+
   return {
     siteData,
     allHosts,
@@ -255,5 +216,6 @@ export default function useMetricsData(initialRange = '30d') {
     error,
     range,
     setRange,
+    hostSummaries,
   }
 }

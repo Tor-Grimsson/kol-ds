@@ -26,3 +26,16 @@ export { default as DashTooltip } from './shared/DashTooltip'
 export { default as useChartTooltip } from './shared/useChartTooltip'
 export { default as useCountUp } from './shared/useCountUp'
 export { default as formatMetric, formatCompact, formatPercent, formatDelta } from './shared/formatMetric'
+
+// Compositions — full apparatus (data injected by the consumer)
+export { default as MetricsDashboard } from './MetricsDashboard'
+export {
+  RANGES,
+  DEPLOY_STATE_COLORS,
+  DEPLOY_STATE_LABELS,
+  TYPE_COLORS,
+  PALETTE,
+  MILESTONE_COLORS,
+  formatB2Size,
+  timeAgo,
+} from './metrics-constants.js'

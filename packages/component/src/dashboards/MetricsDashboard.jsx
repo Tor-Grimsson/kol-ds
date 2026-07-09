@@ -1,28 +1,40 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import {
   DashMetricCard,
   DashChartCard,
   DashListCard,
   DashFeaturedCard,
-  DashAlertCard,
-  DashSlotCard,
   DashTableCard,
   DashStackedBarCard,
   LineChart,
   DonutChart,
   Sparkline,
   Heatmap,
-} from '../dashboards/index.js'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
-import { DEMO_HOST_SUMMARY } from './demo-data.js'
-import useMetricsData, {
+} from './index.js'
+import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import {
   RANGES,
   DEPLOY_STATE_COLORS,
   DEPLOY_STATE_LABELS,
-  TYPE_COLORS,
+  PALETTE,
+  MILESTONE_COLORS,
   formatB2Size,
   timeAgo,
-} from './useMetricsData.js'
+} from './metrics-constants.js'
+
+/**
+ * MetricsDashboard — a full analytics apparatus (site / project / infra /
+ * sessions) built on the dashboards primitives.
+ *
+ * Presentation only: all data is injected via the `data` prop (the consumer
+ * owns the fetch/mock adapter). `milestones` and `mainHost` are consumer
+ * content. See metrics-constants.js for the view-level tokens.
+ *
+ * data = {
+ *   siteData, allHosts, host, setHost, projectData, sanityData,
+ *   deploys, b2Data, error, range, setRange, hostSummaries
+ * }
+ */
 
 // =============================================================================
 // Tabs
@@ -33,20 +45,6 @@ const TABS = [
   { id: 'project', label: 'Project' },
   { id: 'infra', label: 'Infrastructure' },
   { id: 'sessions', label: 'Sessions' },
-]
-
-// =============================================================================
-// Palette
-// =============================================================================
-
-const PALETTE = [
-  'var(--kol-palette-blue)',
-  'var(--kol-palette-green)',
-  'var(--kol-palette-orange)',
-  'var(--kol-palette-purple)',
-  'var(--kol-palette-red)',
-  'var(--kol-palette-teal)',
-  'var(--kol-palette-yellow)',
 ]
 
 // =============================================================================
@@ -160,34 +158,10 @@ const DeployBar = ({ deploys }) => {
 }
 
 // =============================================================================
-// Project milestones
+// Timeline bar — milestones are consumer content (injected)
 // =============================================================================
 
-const MILESTONES = [
-  { date: '2026-03-05', type: 'ship', text: 'Metrics dashboard live with Umami' },
-  { date: '2026-03-05', type: 'ship', text: 'GSAP prints hero + workshop expand-all' },
-  { date: '2026-03-04', type: 'ship', text: 'CodeBlock consolidation to @kol/ui' },
-  { date: '2026-03-03', type: 'ship', text: 'GLIF image gen + screen recording skills' },
-  { date: '2026-03-01', type: 'ship', text: 'Table consolidation + @apply removal' },
-  { date: '2026-02-28', type: 'ship', text: 'ShellLayout extracted to @kol/ui' },
-  { date: '2026-02-18', type: 'ship', text: '24-print CDN migration' },
-  { date: '2025-11-15', type: 'launch', text: 'kolkrabbi.io launched on Vercel' },
-  { date: '2025-11-07', type: 'ship', text: 'Chess analytics — 19 cards, 27k games' },
-  { date: '2025-10-16', type: 'ship', text: 'Color system refactor — 69 tokens' },
-]
-
-const MILESTONE_COLORS = {
-  ship: 'var(--kol-palette-green)',
-  launch: 'var(--kol-palette-blue)',
-  warn: 'var(--kol-palette-orange)',
-  fail: 'var(--kol-palette-red)',
-}
-
-// =============================================================================
-// Timeline bar
-// =============================================================================
-
-const TimelineBar = ({ range, onRangeChange }) => {
+const TimelineBar = ({ range, onRangeChange, milestones }) => {
   return (
     <div className="flex items-center gap-3 py-1.5 border-b border-fg-08">
       <SegmentedToggle
@@ -201,7 +175,7 @@ const TimelineBar = ({ range, onRangeChange }) => {
 
       <div className="flex-1 overflow-hidden">
         <div className="flex gap-4 kol-helper-12 text-fg-48 overflow-x-auto scrollbar-none">
-          {MILESTONES.slice(0, 6).map((m, i) => (
+          {milestones.slice(0, 6).map((m, i) => (
             <span key={i} className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
               <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: MILESTONE_COLORS[m.type] }} />
               <span className="text-fg-32">{m.date.slice(5)}</span>
@@ -215,29 +189,13 @@ const TimelineBar = ({ range, onRangeChange }) => {
 }
 
 // =============================================================================
-// Host summary card (pinned + dynamic)
+// Host summary card — summary object injected (no self-fetch)
 // =============================================================================
 
-const useHostSummary = (host, range) => {
-  /* Showcase adaptation: serve the demo summary — no /api/metrics-summary here. */
-  const [data, setData] = useState(() => DEMO_HOST_SUMMARY[host] ?? null)
-  useEffect(() => {
-    if (DEMO_HOST_SUMMARY[host]) { setData(DEMO_HOST_SUMMARY[host]); return }
-    if (!host) { setData(null); return }
-    const rangeMs = RANGES.find(r => r.id === range)?.ms ?? 30 * 86400000
-    fetch(`/api/metrics-summary?host=${encodeURIComponent(host)}&range=${rangeMs}`)
-      .then(r => r.ok ? r.json() : null)
-      .then(setData)
-      .catch(() => setData(null))
-  }, [host, range])
-  return data
-}
-
-const HostSummaryCard = ({ host, label, range, borderColor }) => {
-  const data = useHostSummary(host, range)
+const HostSummaryCard = ({ host, label, summary, borderColor }) => {
   if (!host) return null
-  const visitors = data?.visitors ?? '—'
-  const delta = data?.visitorsDelta ? `${data.visitorsDelta} vs prev period` : ''
+  const visitors = summary?.visitors ?? '—'
+  const delta = summary?.visitorsDelta ? `${summary.visitorsDelta} vs prev period` : ''
   return (
     <DashMetricCard
       className="h-full"
@@ -245,7 +203,7 @@ const HostSummaryCard = ({ host, label, range, borderColor }) => {
       value={visitors}
       delta={delta}
       borderColor={borderColor}
-      sparkline={data?.trend?.length > 2 ? <Sparkline data={data.trend} height={24} fill color={borderColor} /> : null}
+      sparkline={summary?.trend?.length > 2 ? <Sparkline data={summary.trend} height={24} fill color={borderColor} /> : null}
     />
   )
 }
@@ -275,9 +233,7 @@ const HostFilterPills = ({ host, setHost, allHosts }) => {
 // Site tab
 // =============================================================================
 
-const MAIN_HOST = 'kolkrabbi.io'
-
-const SiteTab = ({ data, range, host, setHost, allHosts }) => {
+const SiteTab = ({ data, range, host, setHost, allHosts, hostSummaries, mainHost }) => {
   const { visitors, pageviews, session, bounce, dailyVisits, totalVisitsMonth, topPages, topCountries, topHosts, blogPosts, referrers, weeklyTraffic, devices, totalSessions } = data
   const rangeLabel = RANGES.find(r => r.id === range)?.label ?? range
   const visitorsLabel = range === 'today' ? 'Visitors today' : `Visitors (${rangeLabel})`
@@ -285,20 +241,20 @@ const SiteTab = ({ data, range, host, setHost, allHosts }) => {
 
   // Right summary card: when a non-main host is filtered, show that host.
   // Otherwise, show the top-traffic non-main subdomain for comparison.
-  const topCompareHost = allHosts.find(h => h.label !== MAIN_HOST)?.label
-  const rightHost = isFiltered && host !== MAIN_HOST ? host : topCompareHost
-  const rightLabel = isFiltered && host !== MAIN_HOST ? 'Viewing' : 'Top subdomain'
+  const topCompareHost = allHosts.find(h => h.label !== mainHost)?.label
+  const rightHost = isFiltered && host !== mainHost ? host : topCompareHost
+  const rightLabel = isFiltered && host !== mainHost ? 'Viewing' : 'Top subdomain'
 
   return (
     <>
       <HostFilterPills host={host} setHost={setHost} allHosts={allHosts} />
       <div style={{ containerType: 'inline-size' }}><div className="dash-grid">
         <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
-          <HostSummaryCard host={MAIN_HOST} label="Main site" range={range} borderColor="var(--kol-palette-yellow)" />
+          <HostSummaryCard host={mainHost} label="Main site" summary={hostSummaries?.[mainHost]} borderColor="var(--kol-palette-yellow)" />
         </div>
         {rightHost && (
           <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
-            <HostSummaryCard host={rightHost} label={rightLabel} range={range} borderColor="var(--kol-palette-teal)" />
+            <HostSummaryCard host={rightHost} label={rightLabel} summary={hostSummaries?.[rightHost]} borderColor="var(--kol-palette-teal)" />
           </div>
         )}
       <DashMetricCard label={visitorsLabel} value={visitors.today} delta={visitors.delta} borderColor="var(--kol-palette-blue)"
@@ -558,7 +514,7 @@ const SessionsTab = ({ data }) => {
 // Main
 // =============================================================================
 
-const Metrics = () => {
+export default function MetricsDashboard({ data, milestones = [], mainHost }) {
   const [tab, setTab] = useState('site')
   const {
     siteData,
@@ -572,21 +528,16 @@ const Metrics = () => {
     error,
     range,
     setRange,
-  } = useMetricsData()
+    hostSummaries,
+  } = data
 
-  useEffect(() => {
-    const link = document.querySelector('link[rel="icon"]')
-    if (!link) return
-    const prev = link.href
-    link.href = '/favicons/favicon-metrics.svg'
-    return () => { link.href = prev }
-  }, [])
+  const resolvedMainHost = mainHost ?? allHosts?.[0]?.label
 
   return (
     <div className="min-h-screen bg-surface-primary text-fg-88 p-3 flex flex-col">
       <div className="flex flex-wrap items-center justify-between gap-2 pb-2">
         <div className="flex items-baseline gap-3">
-          <h1 className="dash-label text-fg-88">kolkrabbi.io / metrics</h1>
+          <h1 className="dash-title text-fg-88">{resolvedMainHost ? `${resolvedMainHost} / metrics` : 'metrics'}</h1>
           <span className="dash-detail text-fg-48">
             {error ? `error: ${error}` : 'live'}
           </span>
@@ -600,11 +551,11 @@ const Metrics = () => {
         />
       </div>
 
-      <TimelineBar range={range} onRangeChange={setRange} />
+      <TimelineBar range={range} onRangeChange={setRange} milestones={milestones} />
       <DeployBar deploys={deploys} />
 
       <div className="flex-1 min-h-0 pt-3" style={{ containerType: 'inline-size' }}>
-        {tab === 'site' && <SiteTab data={siteData} range={range} host={host} setHost={setHost} allHosts={allHosts} />}
+        {tab === 'site' && <SiteTab data={siteData} range={range} host={host} setHost={setHost} allHosts={allHosts} hostSummaries={hostSummaries} mainHost={resolvedMainHost} />}
         {tab === 'project' && <ProjectTab data={projectData} sanity={sanityData} />}
         {tab === 'infra' && <InfraTab deploys={deploys} b2={b2Data} />}
         {tab === 'sessions' && <SessionsTab data={projectData} />}
@@ -612,5 +563,3 @@ const Metrics = () => {
     </div>
   )
 }
-
-export default Metrics
