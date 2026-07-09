@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ColorLoader, Button } from '@kolkrabbi/kol-component'
+import { Button } from '@kolkrabbi/kol-component'
+import { ColorLoader } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'lg'
 

@@ -63,5 +63,5 @@ The PDP skeleton stays presentational by default. Pass the opt-in props to fold 
 - **Product data is injected** — flat prop bags, no fetch. Router (`Link`/`useNavigate`) and `framer-motion` are page concerns; the grid/card/gallery take injected click handlers and use gsap where the source used gsap.
 - **Form primitives stay in `kol-component`** — `Pill`, `Divider`, `QuantityInput`, `SpecList`, `TabsRow`, `Dropdown`, `ContentFilters`, `Button` (used across the store components). This package depends on them; `PriceDisplay` lives **only** here (no duplicate in `kol-component`).
 - **`gsap` is a peer** (the marquee + the drift gallery); `usePrefersReducedMotion` (from `kol-component`) gates the animation.
-- **CSS** ships in `@kolkrabbi/kol-theme`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-store/src"`).
+- **CSS** ships in `@kolkrabbi/kol-theme`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-store/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live storefront: `showcase/src/sets/prints-store.jsx`; product panel block: `showcase/src/blocks/product-panel.jsx`.

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
+import { usePrefersReducedMotion } from '@kolkrabbi/kol-component'
 
 // Variable-font axis rest values — where every glyph sits with no pointer near.
 const DEFAULTS = { wdth: 100, wght: 400, ital: 0, alpha: 1 }

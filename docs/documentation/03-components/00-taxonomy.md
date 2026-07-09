@@ -2,7 +2,7 @@
 title: Component taxonomy — the two axes
 type: reference
 status: canonical
-updated: 2026-07-04
+updated: 2026-07-09
 verified: 2026-07-04
 description: How KOL classifies components — the Tier axis (atom/molecule/organism/framework/loader/hook, a mechanical nesting test, deliberately not Brad Frost atomic) and the Function axis (a closed Material-style set), how they combine in the sidebar, and the one-page-per-component rule.
 aliases:
@@ -86,13 +86,16 @@ A **closed, Material-style set**. Every current and future component maps to exa
 | **Input** | Captures a value — Input, Slider, Stepper, Toggle*, Dropdown, RotaryDial. |
 | **Display** | Presents read-only content — Badge, Tag, Avatar, Table, ColorSwatch. |
 | **Feedback** | Communicates state — EmptyState, ErrorBoundary. |
-| **Navigation** | Moves between views — SideNav, TabsRow, DocsToc. |
+| **Navigation** | Moves between views — SideNav, TabsRow. |
+| **Wayfinding** | How a user moves through or re-slices a site — navigation, filtering, search, site chrome: ContentFilters, DropdownTagFilter, ShellSearchOverlay, ShellDrawer, DocsToc, AsciiCursor. |
 | **Overlay** | Floats over content — Menu, Tooltip, Modal, FullscreenOverlay. |
-| **Media** | Images/video/galleries — Image, Carousel, HlsVideo, MediaViewer. |
+| **Media** | Images/video/galleries — Image, Carousel, HlsVideo, MediaViewer, MediaTileGallery. |
 | **Structure** | Lays out regions — heroes, FeatureSplit, AssetGrid, EditorShell. |
 | **Utility** | Non-visual helpers — hooks, cssVar resolvers. |
 
 Closed means **new components slot into an existing Function** — you don't invent a new one. If nothing fits, that's a signal to reconsider the component, not to grow the set.
+
+*Amended 2026-07-09:* **Wayfinding** joined the set — the deliberate-amendment path, not an exception to closedness. Members: ContentFilters, DropdownTagFilter, ShellSearchOverlay, ShellDrawer, DocsToc, and AsciiCursor (site-chrome delight), plus the cross-package members WorkViewToggle (kol-content) and ShellHeader + PortalFooter (kol-framework) — the registry's `FUNCTION_MAP` carries all of them, cross-package included.
 
 ---
 

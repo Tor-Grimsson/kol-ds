@@ -61,7 +61,7 @@ export default function ShellHeader({
     <div className={`kol-shell-header sticky top-0 z-50 shrink-0 bg-surface-primary ${className}`.trim()}>
       {/* Row 1: brand block + controls */}
       <div className="border-b border-fg-08">
-        <div className="mx-auto max-w-[1800px] px-4 py-4 md:px-6 lg:px-8">
+        <div className="w-full px-4 py-4 md:px-5 lg:px-6">
           <div className="flex items-center justify-between">
             {/* kol-shell-header-brand reserves the nav-column width at lg+ so
              * the Row-2 tabs align to the shell grid. */}
@@ -89,7 +89,7 @@ export default function ShellHeader({
       {/* Row 2: section tabs + inline search + rail toggles */}
       {hasTabRow && (
         <div className="border-b border-fg-08">
-          <div className="mx-auto max-w-[1800px] px-4 md:px-5 lg:px-6">
+          <div className="w-full px-4 md:px-5 lg:px-6">
             <div className="kol-shell-header-tabs">
               <nav className="flex flex-1 gap-6" aria-label="Sections">
                 {nav.map((item) => {

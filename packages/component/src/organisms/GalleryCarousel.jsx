@@ -75,7 +75,8 @@ export default function GalleryCarousel({ media = [], title = '', defaultAspect 
       <MediaViewer
         open={viewerIndex !== null}
         media={media}
-        initialIndex={viewerIndex ?? 0}
+        index={viewerIndex ?? 0}
+        onIndexChange={setViewerIndex}
         onClose={() => setViewerIndex(null)}
       />
     </section>

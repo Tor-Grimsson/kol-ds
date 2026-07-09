@@ -11,6 +11,14 @@ npm i @kolkrabbi/kol-component @kolkrabbi/kol-theme
 
 Requires a **Vite + Tailwind v4** app and the theme CSS imported (see the theme package).
 
+## Tailwind v4 consumers
+
+Tailwind skips `node_modules` when scanning, so point it at this package's source — otherwise the utility classes inside the components never generate and layouts collapse:
+
+```css
+@source "../node_modules/@kolkrabbi/kol-component/src";
+```
+
 ## Use
 
 ```jsx

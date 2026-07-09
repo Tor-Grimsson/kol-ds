@@ -100,18 +100,19 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
       navigate(item.href)
     }
   }
-  const brand = (
-    <Link to={basePath} className="shell-header-logo flex items-center gap-2 text-emphasis">
-      {brandLogoSrc ? (
-        <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
-      ) : (
-        <>
-          <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-5 [&>svg]:w-auto" />
-          <span className="text-fg-24" aria-hidden="true">/</span>
-          <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-4 [&>svg]:w-auto" />
-        </>
-      )}
+  const brand = brandLogoSrc ? (
+    <Link to={basePath} className="shell-header-logo flex items-center text-emphasis">
+      <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
     </Link>
+  ) : (
+    // Two separate wordmarks: KOLKRABBI holds the logo slot (reserves the 256px
+    // nav column at lg+), WORKSHOP falls at the content-column edge. Both h-6.
+    <>
+      <Link to={basePath} className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
+        <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
+      </Link>
+      <Asset name="wordmark-workshop" title="Workshop" className="inline-flex text-emphasis [&>svg]:h-6 [&>svg]:w-auto" />
+    </>
   )
   const searchTrigger = (
     <button

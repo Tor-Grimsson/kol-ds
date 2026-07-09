@@ -1,4 +1,4 @@
-import { TypeSpecCard, TypeSample } from '@kolkrabbi/kol-component'
+import { TypeSpecCard, TypeSample } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'full'
 

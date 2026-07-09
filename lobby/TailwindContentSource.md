@@ -2,9 +2,23 @@
 component: TailwindContentSource
 source: kol-monorepo/apps/web/src/index.css (consumer patch) → DS packaging concern
 date: 2026-07-09
-status: draft
+status: decided
 deps: [kol-theme, kol-component, kol-framework, kol-dashboards, kol-chess, kol-workshop]
 ---
+
+> **DECIDED 2026-07-09 — the `@source` consumer contract stays; per-package utility compilation is rejected.**
+>
+> Per [ARCHITECTURE §4](../.kol/llm-context/ARCHITECTURE.md) (raw source, zero build infra, source-availability): a per-package
+> Tailwind utility-compilation step is exactly the dist/transpile pipeline §4 forbids, and it would also
+> freeze each package's utility output against the consumer's Tailwind version. The `@source` lines are
+> few, one-time, and already proven in two consumers (showcase `src/index.css` + kol-monorepo `apps/web`).
+> The fix is making the contract **impossible to miss**, not eliminating it.
+>
+> **Done (2026-07-09):** the root `README.md` now carries the canonical copy-pasteable `@source` block for
+> all **nine** utility-shipping packages — chess, component, content, dashboards, foundry, framework,
+> **icons**, store, workshop (icons is *not* exempt: `Icon.jsx` hardcodes `inline-block` / `inline-flex
+> items-center justify-center`) — and every affected package README carries its own line + the why.
+> The "each package owns its own CSS" section below is the **rejected direction**, kept for the record.
 
 # Tailwind content-source requirement for @kolkrabbi UI packages
 
@@ -28,6 +42,10 @@ from the published `src/`):
 | `@kolkrabbi/kol-chess` | 15 | board/controls layout |
 
 `kol-theme` (CSS-only) and `kol-icons` (SVG data) are unaffected — no utility JSX.
+(**Correction 2026-07-09:** wrong on two counts — `kol-icons` *does* ship utilities (`Icon.jsx`
+hardcodes `inline-block` / `inline-flex items-center justify-center`), and four more utility-JSX
+packages exist since (`content`, `foundry`, `store` + icons). Only `kol-theme` is exempt; the
+current nine-package list is in the decision block at top.)
 
 ## Root cause
 The packages ship **JSX that references Tailwind utility classes** (`grid-cols-[256px_minmax(0,1fr)]`,
@@ -69,7 +87,7 @@ every package and every consumer. Tailwind utilities are the leaf layer that gen
 **on top of** that shared ancestor, in the consumer's build. This is the lens for the
 options below: whatever keeps a single ancestry wins.
 
-## Decision (2026-07-09): each package owns its own CSS
+## Rejected direction (2026-07-09, superseded same day — see block at top): each package owns its own CSS
 Before today the monorepo consumed effectively **one** package, so `@source` was a single
 invisible line. At 5 packages and climbing, the direction is decided: **each package
 compiles and ships its own CSS**, so consumers just `@import` it — zero `@source`.
@@ -90,18 +108,17 @@ No `@source`, no `node_modules` scanning, no dev-server-restart footgun.
 | | Ships | Consumer | Ancestry |
 |---|---|---|---|
 | Now (`@source`) | JSX only | scans `node_modules/src`, generates utilities | shared (kol-theme vars) |
-| **Target (decided)** | `kol-<pkg>.css` | `@import` it | shared (kol-theme vars) |
+| Target (rejected) | `kol-<pkg>.css` | `@import` it | shared (kol-theme vars) |
 
 ### Cost
 A per-package Tailwind build step (config + script) in each `packages/*`. That's the whole
 price — and it's the right one at this package count.
 
 ## Recreation notes
-- Tier: **build/packaging**, not a component. Lives in each package's build config, not
-  `packages/component/src/*`.
-- **Interim:** the monorepo's 5 `@source` lines are the **bridge** — keep them until each
-  package ships its own CSS, then delete them (track that removal here).
-- Do the packages in consume-order: `kol-workshop` (broke first) → `kol-component` →
-  `kol-framework` → `kol-dashboards` → `kol-chess`.
-- Footgun to kill with this: newly-added `node_modules` `@source` paths need a
-  **dev-server restart** — self-contained CSS removes that entirely.
+- Tier: **build/packaging**, not a component. Resolved as a **documentation contract**, not a
+  build step (see the decision block at top).
+- The `@source` lines are the **permanent consumer contract** — canonical nine-line block in the
+  root `README.md`, one line + the why in every affected package README, mirrored in
+  `docs/documentation/00-overview` and the composition docs.
+- Footgun that stays (documented, not eliminated): newly-added `node_modules` `@source` paths
+  need a **dev-server restart** — HMR won't pick them up.

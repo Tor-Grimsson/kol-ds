@@ -31,4 +31,4 @@ import { MetricsDashboard } from '@kolkrabbi/kol-dashboards'
 ## Consumer requirements
 
 - **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-dashboards.css`, in the theme aggregate) — this package ships JS only.
-- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-dashboards/src"` so utility classes used inside the components are generated.
+- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-dashboards/src"` so utility classes used inside the components are generated — Tailwind skips `node_modules` when scanning, so without this line the grid/card layouts collapse.

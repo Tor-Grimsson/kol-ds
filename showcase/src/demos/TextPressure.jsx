@@ -1,4 +1,4 @@
-import { TextPressure } from '@kolkrabbi/kol-component'
+import { TextPressure } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'lg'
 

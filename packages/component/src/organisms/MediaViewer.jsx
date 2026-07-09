@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import FullscreenOverlay from '../atoms/FullscreenOverlay.jsx'
 
@@ -7,89 +8,113 @@ import FullscreenOverlay from '../atoms/FullscreenOverlay.jsx'
  * lightbox/gallery opener (the monorepo's ImageLightbox, FullscreenGallery
  * and WorkDetail's inline gallery all collapse onto this).
  *
- * The shell (scrim, scroll-lock, Escape, backdrop-close, close button) is
- * FullscreenOverlay — not reimplemented. This adds paging: prev/next chips,
- * arrow keys, touch swipe, wrap-around.
+ * Composed, not forked: the shell (scrim, scroll-lock, Escape, backdrop-close,
+ * close button, stacking) is FullscreenOverlay; paging (touch swipe, snap,
+ * wrap-around) is embla — the same core Carousel wraps, wired directly here
+ * because Carousel's API has no controlled index and its slide chrome is
+ * strip-width, not full-stage. ArrowLeft/ArrowRight bind to scrollPrev/Next.
  *
- * ponytail: paging is ~20 lines of state + swipe, so it's inline rather than
- * composing Carousel — embla's drag physics buy nothing for a one-item stage;
- * revisit if momentum/preview-of-next is ever wanted.
+ * Controlled: the parent owns `index`. Embla's select event reports back
+ * through `onIndexChange`; an external `index` change scrolls the stage.
  *
  * @param {boolean}  open           viewer visible
- * @param {Array}    media          [{ url, alt?, kind: 'image' | 'video' }]
- * @param {number}   initialIndex   item shown on open
- * @param {Function} onClose        close request
+ * @param {Array}    media          [{ url, alt?, kind: 'image' | 'video', caption? }]
+ * @param {number}   index          active item index (parent-owned)
  * @param {Function} onIndexChange  fires with the new index on page
+ * @param {Function} onClose        close request (Esc, backdrop, close button)
  */
-export default function MediaViewer({ open, media = [], initialIndex = 0, onClose, onIndexChange }) {
-  const [index, setIndex] = useState(initialIndex)
-  const touchStart = useRef(null)
 
-  // re-anchor to initialIndex each time the viewer opens
+/* Inverse-tier chip tokens: the overlay scrim is surface-inverse, and .kol-overlay
+ * carries no surface-context class, so the standard fg ramp doesn't flip there. */
+const CHIP =
+  'kol-embla-btn absolute top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center border border-fg-inverse-16 text-inverse hover:border-fg-inverse-32 md:flex'
+
+/* Mounted only while the overlay is open, so embla initializes fresh each open
+ * with `startIndex` frozen at mount — no reInit games on later index changes. */
+function ViewerStage({ media, index, onIndexChange }) {
+  const [options] = useState(() => ({ loop: true, startIndex: index }))
+  const [emblaRef, emblaApi] = useEmblaCarousel(options)
+
+  // embla → parent: keep the parent authoritative over the active index
   useEffect(() => {
-    if (open) setIndex(initialIndex)
-  }, [open, initialIndex])
+    if (!emblaApi) return
+    const onSelect = () => onIndexChange?.(emblaApi.selectedScrollSnap())
+    emblaApi.on('select', onSelect)
+    return () => emblaApi.off('select', onSelect)
+  }, [emblaApi, onIndexChange])
 
-  const page = (delta) => {
-    if (media.length < 2) return
-    setIndex((i) => {
-      const next = (i + delta + media.length) % media.length
-      onIndexChange?.(next)
-      return next
-    })
-  }
-
+  // parent → embla: external index changes scroll the stage
   useEffect(() => {
-    if (!open) return
+    if (emblaApi && emblaApi.selectedScrollSnap() !== index) emblaApi.scrollTo(index)
+  }, [emblaApi, index])
+
+  // Escape lives in FullscreenOverlay; the viewer only adds arrow paging
+  useEffect(() => {
+    if (!emblaApi) return
     const onKey = (e) => {
-      if (e.key === 'ArrowLeft') page(-1)
-      if (e.key === 'ArrowRight') page(1)
+      if (e.key === 'ArrowLeft') emblaApi.scrollPrev()
+      if (e.key === 'ArrowRight') emblaApi.scrollNext()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, media.length]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const item = media[index]
-  if (!open || !item) return null
-
-  const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
-  const onTouchEnd = (e) => {
-    if (touchStart.current == null) return
-    const delta = e.changedTouches[0].clientX - touchStart.current
-    if (delta > 50) page(-1)
-    if (delta < -50) page(1)
-    touchStart.current = null
-  }
-
-  const chip = 'absolute top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-fg-04 hover:bg-fg-08 transition-colors cursor-pointer border-0'
+  }, [emblaApi])
 
   return (
-    <FullscreenOverlay open={open} onClose={onClose}>
-      <div className="relative flex h-full w-full items-center justify-center" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-        {media.length > 1 && (
-          <button type="button" className={`${chip} left-4`} aria-label="Previous" onClick={() => page(-1)}>
+    <div className="relative w-full">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex items-center">
+          {media.map((item, i) => (
+            <figure key={i} className="flex min-w-0 flex-[0_0_100%] flex-col items-center justify-center gap-3">
+              {item.kind === 'video' ? (
+                <video
+                  src={item.url}
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="max-h-[90vh] max-w-full object-contain"
+                />
+              ) : (
+                <img src={item.url} alt={item.alt || ''} className="max-h-[90vh] max-w-full object-contain" />
+              )}
+              {item.caption && (
+                <figcaption className="kol-helper-12 text-fg-inverse-64">{item.caption}</figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      </div>
+
+      {media.length > 1 && (
+        <>
+          <button
+            type="button"
+            className={`${CHIP} left-4`}
+            aria-label="Previous"
+            onClick={(e) => { e.stopPropagation(); emblaApi?.scrollPrev() }}
+          >
             <Icon name="chevron-left" size={20} />
           </button>
-        )}
-        {item.kind === 'video' ? (
-          <video
-            key={item.url}
-            src={item.url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="max-h-[85vh] max-w-full object-contain"
-          />
-        ) : (
-          <img src={item.url} alt={item.alt || ''} className="max-h-[85vh] max-w-full object-contain" />
-        )}
-        {media.length > 1 && (
-          <button type="button" className={`${chip} right-4`} aria-label="Next" onClick={() => page(1)}>
+          <button
+            type="button"
+            className={`${CHIP} right-4`}
+            aria-label="Next"
+            onClick={(e) => { e.stopPropagation(); emblaApi?.scrollNext() }}
+          >
             <Icon name="chevron-right" size={20} />
           </button>
-        )}
-      </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default function MediaViewer({ open, media = [], index = 0, onIndexChange, onClose }) {
+  if (!open || !media[index]) return null
+
+  return (
+    <FullscreenOverlay open onClose={onClose}>
+      <ViewerStage media={media} index={index} onIndexChange={onIndexChange} />
     </FullscreenOverlay>
   )
 }

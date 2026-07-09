@@ -16,4 +16,4 @@ import { ProductDetailLayout, DiagonalMarqueeRiver } from '@kolkrabbi/kol-store'
 
 ## Requirements
 
-Product data is consumer-injected (flat prop bags). Shared form primitives (`Pill`, `Divider`, `QuantityInput`, `SpecList`, `TabsRow`, `Dropdown`) stay in `@kolkrabbi/kol-component`; this package depends on them. Styling comes from `@kolkrabbi/kol-theme`. Peer: `gsap` (the marquee). Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-store/src"`).
+Product data is consumer-injected (flat prop bags). Shared form primitives (`Pill`, `Divider`, `QuantityInput`, `SpecList`, `TabsRow`, `Dropdown`) stay in `@kolkrabbi/kol-component`; this package depends on them. Styling comes from `@kolkrabbi/kol-theme`. Peer: `gsap` (the marquee). Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-store/src"` — Tailwind skips `node_modules` when scanning, so without this line the product-detail layout utilities never generate).

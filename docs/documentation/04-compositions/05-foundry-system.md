@@ -4,7 +4,7 @@ type: reference
 status: canonical
 updated: 2026-07-09
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); every export renders, inspects, or manipulates a live font.
+description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); the type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure, ColorLoader) moved in from kol-component later that day (0.3.0). Every export renders, inspects, or manipulates a live font.
 aliases:
   - foundry
   - kol-foundry
@@ -42,6 +42,19 @@ import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 | `GlyphMetricsSection` | section wrapper — header (style/axis dropdowns) over `GlyphMetricsGrid` | font URLs, axis defs |
 | `SpecimenSectionHeader` | shared section header (title + `Divider`) | title |
 
+### Type-specimen kit + live-font effects (moved from `kol-component` 2026-07-09)
+
+Four components moved in from `@kolkrabbi/kol-component` — each passes the membership test (renders, inspects, or manipulates a live font). `kol-component` never imports back (topology §3: no reverse dependency).
+
+| Component | What it is |
+|-----------|-----------|
+| `TypeSample` | a single labeled type-specimen block — family/weight/size/line-height rendered live via props |
+| `TypeSpecCard` | two-column type-spec row — font-metric key/value panel beside a live sample slot |
+| `TextPressure` | a line of variable-font text whose glyphs deform toward the pointer — manipulates `wght`/`wdth`/`ital` per glyph, each frame |
+| `ColorLoader` | full-height branded loading curtain — times in a live TextPressure variable-font wordmark (**peer:** `framer-motion`) |
+
+`kol-component`'s `LoaderOverlay` now takes a `loader` SLOT instead of hardcoding ColorLoader — consumers inject `<ColorLoader/>` from this package.
+
 ### Catalog + composition (added 2026-07-09)
 
 The typeface-catalog family and the assembled specimen page. Each ships a bundled default fixture and takes overrides via props.
@@ -66,8 +79,8 @@ The typeface-catalog family and the assembled specimen page. Each ships a bundle
 ## Consumer notes
 
 - **Data is injected** — typeface metrics / font files are consumer-supplied flat props (or the bundled `typefaceConfig` fixture).
-- **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation` (+ `Icon` from `kol-icons`). This package depends on them.
+- **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation`, `usePrefersReducedMotion` (+ `Icon` from `kol-icons`). This package depends on them.
 - **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take an injected `linkComponent` (receives `to`), falling back to a plain `<a href>`. The severed page's `FullBleedHero` is an injectable `HeroComponent` slot with a minimal built-in default.
-- **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back.
-- **No package CSS** — the kept components style entirely with `@kolkrabbi/kol-theme` utility classes; the old `kol-components-foundry.css` (only the cut pairing/feature cards referenced it) was deleted. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).
+- **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back. **`framer-motion` is a peer** — `ColorLoader`'s curtain motion (2026-07-09).
+- **CSS lives in `kol-theme`** — `kol-components-foundry.css` (recreated 2026-07-09 for the moved kit: type-sample/spec rules + the TextPressure stroke ghost); everything else styles with `@kolkrabbi/kol-theme` utility classes. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.

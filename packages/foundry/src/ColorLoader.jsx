@@ -1,7 +1,7 @@
 import { motion as Motion, useAnimationControls } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import TextPressure from '../atoms/TextPressure.jsx'
-import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
+import { usePrefersReducedMotion } from '@kolkrabbi/kol-component'
+import TextPressure from './TextPressure.jsx'
 
 /**
  * ColorLoader — a full-height branded intro/loading curtain. Fills its parent

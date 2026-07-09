@@ -84,5 +84,5 @@ import { MetricsDashboard } from '@kolkrabbi/kol-dashboards'
 - **Data is injected** — the apparatus never fetches; the consumer supplies the adapter.
 - **Shared primitives stay in `kol-component`** — this package depends on `kol-component` + `kol-icons` + `kol-theme`.
 - **No d3** — every chart is hand-rolled SVG; `react` / `react-dom` are the only peers.
-- **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-dashboards.css`) — this package ships JS only. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-dashboards/src"`).
+- **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-dashboards.css`) — this package ships JS only. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-dashboards/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live dashboard: `showcase/src/sets/metrics-dashboard.jsx`.

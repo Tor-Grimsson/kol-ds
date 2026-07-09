@@ -4,7 +4,7 @@ type: plan
 status: superseded
 superseded_by:
   - "[[00-taxonomy|component taxonomy]]"
-updated: 2026-07-04
+updated: 2026-07-09
 description: Audit of how KOL categorizes and lists components (two axes, the atomic definitions, doc↔sidebar drift, over-fragmented families) and a phased plan to lock the convention, de-fragment the presentation, and collapse true variant families.
 aliases:
   - taxonomy-audit
@@ -81,7 +81,7 @@ Key point the user already intuited: **this is *not* Brad Frost atomic.** Classi
 
 ### Axis 2 — Function (Material-style). The browsing/filter axis.
 
-`registry.js → FUNCTIONS`: a closed set `action · input · display · feedback · navigation · overlay · media · structure · utility`. Every component maps to exactly one. Today it's **filter-chip metadata only** — it never groups or orders the sidebar.
+`registry.js → FUNCTIONS`: a closed set `action · input · display · feedback · navigation · wayfinding · overlay · media · structure · utility` *(wayfinding added 2026-07-09 — see [[00-taxonomy|the taxonomy doc]])*. Every component maps to exactly one. Today it's **filter-chip metadata only** — it never groups or orders the sidebar.
 
 ### What the sidebar actually renders
 

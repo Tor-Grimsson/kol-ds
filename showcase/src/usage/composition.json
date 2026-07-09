@@ -1,12 +1,7 @@
 {
   "blocks": {
     "article-grid": {
-      "kol": [
-        "ArticleCard",
-        "AssetPlaceholder",
-        "Image",
-        "Pill"
-      ],
+      "kol": [],
       "local": {},
       "support": [],
       "external": []
@@ -38,7 +33,6 @@
         "Divider",
         "Icon",
         "Input",
-        "LabeledControl",
         "Popover",
         "Section",
         "SpectrumControls",
@@ -60,7 +54,6 @@
         "ColorSwatch",
         "Icon",
         "Input",
-        "LabeledControl",
         "MenuItem",
         "Popover",
         "ShapeDropdown",
@@ -212,25 +205,13 @@
     "product-panel": {
       "kol": [
         "Button",
-        "Divider",
-        "Dropdown",
-        "Icon",
-        "MenuItem",
-        "Pill",
-        "Popover",
-        "PriceDisplay",
-        "ProductDetailLayout",
-        "QuantityInput",
-        "SpecList",
-        "TabsRow"
+        "Icon"
       ],
       "local": {},
       "support": [
         "registerIcons"
       ],
-      "external": [
-        "@floating-ui/react"
-      ]
+      "external": []
     },
     "settings-form": {
       "kol": [
@@ -311,63 +292,18 @@
       "external": []
     },
     "work-grid": {
-      "kol": [
-        "AssetPlaceholder",
-        "Icon",
-        "Image",
-        "Tag",
-        "TiltCard",
-        "WorkCard",
-        "WorkListItem",
-        "WorkViewToggle"
-      ],
+      "kol": [],
       "local": {},
-      "support": [
-        "registerIcons",
-        "usePrefersReducedMotion",
-        "useTilt"
-      ],
-      "external": [
-        "framer-motion"
-      ]
+      "support": [],
+      "external": []
     }
   },
   "sets": {
     "chess-apparatus": {
-      "kol": [
-        "Dropdown",
-        "Icon",
-        "Input",
-        "MenuItem",
-        "Pill",
-        "Popover",
-        "Table",
-        "Tag"
-      ],
-      "local": {
-        "workshop/chess": [
-          "AlternativeControlsMock",
-          "ChessAnalysisLayout",
-          "ChessBoard",
-          "ChessBoardWithControls",
-          "ChessControlsContext",
-          "ChessPiece",
-          "GameArchiveTable",
-          "NotationPanel",
-          "PlaybackControls",
-          "VariationTree"
-        ]
-      },
-      "support": [
-        "lightweight",
-        "parsePgnTree",
-        "registerIcons",
-        "sample-games"
-      ],
-      "external": [
-        "@floating-ui/react",
-        "chess.js"
-      ]
+      "kol": [],
+      "local": {},
+      "support": [],
+      "external": []
     },
     "design-editor": {
       "kol": [
@@ -381,7 +317,6 @@
         "EmptyState",
         "Icon",
         "Input",
-        "LabeledControl",
         "Popover",
         "SelectionOverlay",
         "TabsRow",
@@ -397,74 +332,17 @@
     },
     "foundry-specimen": {
       "kol": [
-        "Button",
-        "Divider",
-        "Dropdown",
-        "FontPreviewSection",
-        "FoundryCharacterSets",
-        "GlyphMetricsGrid",
-        "Icon",
-        "Input",
-        "MenuItem",
-        "Pill",
-        "Popover",
-        "Slider",
-        "SpecimenSectionHeader",
-        "Table",
-        "Tag",
-        "TypefaceHero",
-        "VariableFontSection"
-      ],
-      "local": {},
-      "support": [
-        "glyphData",
-        "registerIcons",
-        "useAxisAnimation",
-        "usePrefersReducedMotion"
-      ],
-      "external": [
-        "@floating-ui/react"
-      ]
-    },
-    "metrics-dashboard": {
-      "kol": [
-        "Badge",
-        "Icon",
         "Table"
       ],
-      "local": {
-        "workshop/dashboards": [
-          "Candlestick",
-          "CardHeader",
-          "DashAlertCard",
-          "DashChartCard",
-          "DashFeaturedCard",
-          "DashListCard",
-          "DashMetricCard",
-          "DashSlotCard",
-          "DashStackedBarCard",
-          "DashTableCard",
-          "DashTooltip",
-          "DashboardGrid",
-          "DonutChart",
-          "GridCard",
-          "Heatmap",
-          "Histogram",
-          "LegendRow",
-          "LineChart",
-          "ScatterPlot",
-          "Sparkline"
-        ],
-        "workshop/metrics": [
-          "MetricsDashboard"
-        ]
-      },
+      "local": {},
+      "support": [],
+      "external": []
+    },
+    "metrics-dashboard": {
+      "kol": [],
+      "local": {},
       "support": [
         "demo-data",
-        "formatMetric",
-        "registerIcons",
-        "useChartTooltip",
-        "useCountUp",
         "useMetricsData"
       ],
       "external": []
@@ -472,80 +350,34 @@
     "prints-store": {
       "kol": [
         "Button",
-        "DiagonalMarqueeRiver",
-        "Divider",
-        "Dropdown",
-        "Icon",
-        "MenuItem",
-        "Pill",
-        "Popover",
-        "PriceDisplay",
-        "ProductDetailLayout",
-        "QuantityInput",
-        "SpecList",
-        "TabsRow"
+        "Icon"
       ],
       "local": {},
       "support": [
-        "registerIcons",
-        "usePrefersReducedMotion"
+        "registerIcons"
       ],
-      "external": [
-        "@floating-ui/react",
-        "gsap"
-      ]
+      "external": []
     },
     "stack-blog": {
-      "kol": [
-        "ArticleCard",
-        "ArticleHeader",
-        "AssetPlaceholder",
-        "Avatar",
-        "CodeBlock",
-        "CopyButton",
-        "Divider",
-        "Figure",
-        "FullBleedHero",
-        "HlsVideo",
-        "Image",
-        "ImageBlock",
-        "Pill",
-        "PortableTextRenderer",
-        "StackHero",
-        "Table",
-        "VideoBlock"
-      ],
+      "kol": [],
       "local": {},
       "support": [],
-      "external": [
-        "hls.js"
-      ]
+      "external": []
     },
     "work-portfolio": {
       "kol": [
-        "AssetPlaceholder",
         "Carousel",
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
-        "Image",
-        "MediaViewer",
-        "ParallaxShelf",
-        "Tag",
-        "TiltCard",
-        "WorkCard",
-        "WorkListItem",
-        "WorkViewToggle"
+        "MediaViewer"
       ],
       "local": {},
       "support": [
-        "registerIcons",
-        "usePrefersReducedMotion",
-        "useTilt"
+        "registerIcons"
       ],
       "external": [
-        "embla-carousel-react",
-        "framer-motion"
+        "embla-carousel-react"
       ]
     }
   }

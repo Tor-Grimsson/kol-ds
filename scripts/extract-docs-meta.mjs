@@ -63,6 +63,7 @@ const freestyleReport = []
 const roots = [
   { index: join(REPO, 'packages/component/src/index.js'), base: join(REPO, 'packages/component/src') },
   { index: join(REPO, 'packages/framework/src/index.js'), base: join(REPO, 'packages/framework/src') },
+  { index: join(REPO, 'packages/foundry/src/index.js'), base: join(REPO, 'packages/foundry/src') },
 ]
 for (const { index, base } of roots) {
   for (const { name, src } of parseExports(index)) {

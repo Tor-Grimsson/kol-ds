@@ -12,6 +12,7 @@
     "@kolkrabbi/kol-theme": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-foundry": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",

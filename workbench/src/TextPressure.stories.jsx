@@ -1,4 +1,4 @@
-import { TextPressure } from '@kolkrabbi/kol-component'
+import { TextPressure } from '@kolkrabbi/kol-foundry'
 
 /* Hover the box: glyphs deform toward the pointer, then coast back to rest on
  * leave and the rAF loop auto-stops. The wdth/wght/ital axes only move on a

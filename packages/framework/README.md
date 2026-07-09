@@ -28,3 +28,11 @@ import { NAV_TREE, getActivePage } from './sidebars.config'
 ```
 
 Exports: `AppShell`, `SideNav`, `ThemeToggle`, `Layout`, `PageSection`, `PortalFooter`, `ScrollToTop`, `BrandHero`, `SubPageHero`.
+
+## Tailwind v4 consumers
+
+Tailwind skips `node_modules` when scanning, so add this next to the imports above — otherwise the shell's layout utilities never generate and the AppShell grid collapses:
+
+```css
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+```

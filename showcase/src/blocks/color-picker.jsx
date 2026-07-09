@@ -89,7 +89,8 @@ export default function ColorPicker() {
       </Section>
       <Divider />
       <Section label="Hex">
-        <ColorInputRow value={fillHex} onChange={(h) => setFill(hexToHsv(h))} label="Fill" />
+        {/* ColorInputRow emits #UPPER per keystroke — only fold complete hexes into HSV */}
+        <ColorInputRow value={fillHex} onChange={(h) => { if (/^#[0-9A-F]{6}$/.test(h)) setFill(hexToHsv(h)) }} label="Fill" />
       </Section>
     </div>
   )

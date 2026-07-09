@@ -65,5 +65,6 @@ import { StackHero, ArticleHeader, PortableTextRenderer } from '@kolkrabbi/kol-c
 
 - Shared primitives stay in `kol-component` — `ContentFilters`, `DropdownTagFilter`, `ShellSearchOverlay`, `GalleryCarousel`, `Avatar`, `Tag`. This package depends on them.
 - **CSS** in `@kolkrabbi/kol-theme` (`.kol-prose` + component sheets). Peer: `gsap`; dep: `embla-carousel-react`.
+- Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-content/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - No auto text-transform — strings render in their authored case (KOL rule).
 - Live: `showcase/src/sets/stack-blog.jsx` · `work-portfolio.jsx`.

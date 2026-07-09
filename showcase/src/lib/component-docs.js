@@ -39,11 +39,14 @@ export const DOC_DATA = {
   Slider: {
     usage: '<Slider label="Opacity" min={0} max={100} value={v} onChange={setV} />',
     api: [
-      { prop: 'value', type: 'number', def: '—', desc: 'Current value (controlled).' },
-      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires with the new value.' },
+      { prop: 'value', type: 'number', def: '—', desc: 'Current value (controlled). Shared value-control contract with `RotaryDial` — the knob variant.' },
+      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires with the plain number.' },
       { prop: 'min / max', type: 'number', def: '0 / 100', desc: 'Range bounds.' },
       { prop: 'step', type: 'number', def: '1', desc: 'Step increment.' },
       { prop: 'label', type: 'string', def: '—', desc: 'Inline label — part of the slider\'s single-row anatomy (label · track · editable readout). For a stacked label around a label-less control, use `LabeledControl`.' },
+      { prop: 'size', type: 'number', def: '—', desc: 'Track length in px; unset = fluid track. Mirrors `RotaryDial`\'s dial px size.' },
+      { prop: 'disabled', type: 'boolean', def: 'false', desc: 'Disables track + readout and dims the control.' },
+      { prop: 'formatValue', type: '(n) => string', def: '—', desc: 'Formatter for the displayed value.' },
     ],
   },
 
@@ -558,13 +561,23 @@ export const DOC_DATA = {
   },
 
   MediaViewer: {
-    usage: '<MediaViewer open={open} media={media} onClose={() => setOpen(false)} />',
+    usage: '<MediaViewer open={open} media={media} index={index} onIndexChange={setIndex} onClose={() => setOpen(false)} />',
     api: [
       { prop: 'open', type: 'boolean', def: '—', desc: 'Viewer visible.' },
-      { prop: 'media', type: 'array', def: '[]', desc: "Items: { url, alt?, kind: 'image' | 'video' }." },
-      { prop: 'initialIndex', type: 'number', def: '0', desc: 'Item shown on open.' },
+      { prop: 'media', type: 'array', def: '[]', desc: "Items: { url, alt?, kind: 'image' | 'video', caption? }." },
+      { prop: 'index', type: 'number', def: '0', desc: 'Active item index (parent-owned).' },
+      { prop: 'onIndexChange', type: 'function', def: '—', desc: 'Fires with the new index on page (embla select).' },
       { prop: 'onClose', type: 'function', def: '—', desc: 'Close request (Esc, backdrop, close button).' },
-      { prop: 'onIndexChange', type: 'function', def: '—', desc: 'Fires with the new index on page.' },
+    ],
+  },
+
+  MediaTileGallery: {
+    usage: '<MediaTileGallery items={items} layout="grid" cols={3} />',
+    api: [
+      { prop: 'items', type: 'array', def: '[]', desc: "Tiles, in the viewer's media shape: { url, alt?, kind?, caption? }." },
+      { prop: 'layout', type: "'stack' | 'grid'", def: "'stack'", desc: 'Flow column vs cols-column grid.' },
+      { prop: 'cols', type: 'number', def: '4', desc: 'Grid column count (grid layout only).' },
+      { prop: 'tileClassName', type: 'string', def: "''", desc: 'Extra classes merged onto each tile button.' },
     ],
   },
 
@@ -632,11 +645,13 @@ export const DOC_DATA = {
   RotaryDial: {
     usage: '<RotaryDial label="Drive" value={v} onChange={setV} min={0} max={100} />',
     api: [
-      { prop: 'value', type: 'number', def: '0', desc: 'Controlled value; drives rotation and readout.' },
-      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'RAF-throttled while dragging; immediate on arrow keys.' },
+      { prop: 'value', type: 'number', def: '0', desc: 'Controlled value; drives rotation and readout. Shared value-control contract with `Slider` — the linear variant.' },
+      { prop: 'onChange', type: '(n) => void', def: '—', desc: 'Fires with the plain number. RAF-throttled while dragging; immediate on arrow keys.' },
       { prop: 'min / max / step', type: 'number', def: '0 / 100 / 1', desc: 'Range and increment.' },
-      { prop: 'label', type: 'string', def: '—', desc: 'Label + % readout rows; omit for a bare knob.' },
+      { prop: 'label', type: 'string', def: '—', desc: 'Label + readout rows; omit for a bare knob.' },
       { prop: 'size', type: 'number', def: '80', desc: 'Dial px size.' },
+      { prop: 'disabled', type: 'boolean', def: 'false', desc: 'Blocks drag + keyboard and dims the control.' },
+      { prop: 'formatValue', type: '(n) => string', def: '`${v}%`', desc: 'Formatter for the readout.' },
     ],
   },
 

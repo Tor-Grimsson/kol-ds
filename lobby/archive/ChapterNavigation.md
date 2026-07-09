@@ -2,9 +2,11 @@
 component: ChapterNavigation
 source: kol-monorepo/apps/web/src/components/sections/shared/ChapterNavigation.jsx#L1-L139
 date: 2026-07-03
-status: draft
+status: archived
 deps: [Divider]
 ---
+
+> **Archived 2026-07-09** — zero consumers in the app (spec itself flags it); DocsToc supersedes.
 
 # ChapterNavigation
 

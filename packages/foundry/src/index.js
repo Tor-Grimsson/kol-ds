@@ -22,6 +22,14 @@ export { default as TypefaceLibraryGridWithVariables } from './TypefaceLibraryGr
 export { default as TypefaceLibraryItem } from './TypefaceLibraryItem.jsx'
 export { default as TypefaceVariablePreview } from './TypefaceVariablePreview.jsx'
 
+// type-specimen kit — prop-driven specimen blocks (moved from @kolkrabbi/kol-component 2026-07-09)
+export { default as TypeSample } from './TypeSample.jsx'
+export { default as TypeSpecCard } from './TypeSpecCard.jsx'
+
+// live-font effects — variable-font axes, animated
+export { default as TextPressure } from './TextPressure.jsx'
+export { default as ColorLoader } from './ColorLoader.jsx'
+
 // reference composition (severed page — data via props, no router/SEO/data-fetch)
 export { default as TypefaceSpecimenPage } from './TypefaceSpecimenPage.jsx'
 

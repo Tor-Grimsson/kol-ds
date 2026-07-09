@@ -3,24 +3,30 @@ import { Button, MediaViewer } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
-const slide = (label, bg) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><rect width="800" height="500" fill="${bg}"/><text x="400" y="265" font-family="monospace" font-size="48" fill="#e8e8ec" text-anchor="middle">${label}</text></svg>`,
-  )}`
-
 const MEDIA = [
-  { url: slide('1 / 3', '#1d1d21'), alt: 'Slide one', kind: 'image' },
-  { url: slide('2 / 3', '#26262c'), alt: 'Slide two', kind: 'image' },
-  { url: slide('3 / 3', '#30303a'), alt: 'Slide three', kind: 'image' },
+  { url: '/kol-images/tt-01.jpg', alt: 'Plate 01', kind: 'image', caption: 'Plate 01 — tt-01' },
+  { url: '/kol-images/tt-02.jpg', alt: 'Plate 02', kind: 'image', caption: 'Plate 02 — tt-02' },
+  { url: '/kol-images/tt-03.jpg', alt: 'Plate 03', kind: 'image', caption: 'Plate 03 — tt-03' },
+  { url: '/kol-images/tt-04.jpg', alt: 'Plate 04', kind: 'image', caption: 'Plate 04 — tt-04' },
 ]
 
 export default function MediaViewerDemo() {
   const [open, setOpen] = useState(false)
+  const [index, setIndex] = useState(0)
+
   return (
     <div className="flex items-center gap-4">
       <Button onClick={() => setOpen(true)}>Open viewer</Button>
-      <p className="kol-mono-12 text-fg-48">Arrow keys page · Esc closes</p>
-      <MediaViewer open={open} media={MEDIA} onClose={() => setOpen(false)} />
+      <p className="kol-mono-12 text-fg-48">
+        Arrows / swipe page · Esc closes · at {index + 1} / {MEDIA.length}
+      </p>
+      <MediaViewer
+        open={open}
+        media={MEDIA}
+        index={index}
+        onIndexChange={setIndex}
+        onClose={() => setOpen(false)}
+      />
     </div>
   )
 }

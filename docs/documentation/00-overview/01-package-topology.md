@@ -65,10 +65,10 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 | **chess** | `ChessAnalysisLayout`, `ChessBoard`(+WithControls/WithSidebar/Fullscreen), `ChessSidebar`, `GameSelector`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `ChessPiece`, `ChessHero`, `ChessControlsProvider`, `buildMoveTree`; data adapter at `@kolkrabbi/kol-chess/data` |
 | **dashboards** | `DashMetricCard`/`DashChartCard`/`DashListCard`/`DashFeaturedCard`/`DashTableCard`/`DashStackedBarCard`/`DashAlertCard`/`DashSlotCard`, `LineChart`/`DonutChart`/`Sparkline`/`Heatmap`/`Histogram`/`ScatterPlot`/`Candlestick`, `DashboardGrid`, `MetricsDashboard` |
 | **content** | Stack: `StackHero`, `ArticleHeader`, `AuthorLine`, `ArticleCard`, `PortableTextRenderer`, `ShareButtons`, `SourcesReferences`. Work: `WorkCard`, `WorkListItem`, `WorkViewToggle`, `ParallaxShelf`, `ScrollDriftGallery` |
-| **foundry** | see [[05-foundry-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture |
+| **foundry** | see [[05-foundry-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture. Moved in from `kol-component` 2026-07-09 (they pass the live-font membership test): `TypeSample`, `TypeSpecCard`, `TextPressure`, `ColorLoader` |
 | **store** | see [[06-store-system]] — `ProductDetailLayout`, `PriceDisplay`, `DiagonalMarqueeRiver`, `PrintsGrid`, `PrintGridCard`, `PrintGridCardGsap`, `PrintBuyButton`; `./data` demo catalog subpath. (The "Drift" gallery reuses content's `ScrollDriftGallery` — not duplicated here.) |
 
 ## Deps at a glance
 
-- `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `opentype.js` (optional peer) → specimen.
+- `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `framer-motion` (peer) → foundry (ColorLoader). `opentype.js` (optional peer) → specimen.
 - Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons). CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).

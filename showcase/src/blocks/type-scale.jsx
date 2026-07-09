@@ -1,4 +1,4 @@
-import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-component'
+import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
 
 export const meta = {
   title: 'Type scale',

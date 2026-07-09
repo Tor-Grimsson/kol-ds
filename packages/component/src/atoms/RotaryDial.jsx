@@ -7,22 +7,29 @@ const snapTo = (v, min, max, step) => {
 }
 
 /**
- * RotaryDial — drag-to-set rotary knob numeric input. Vertical pointer drag
- * rotates the whole dial over a 270° sweep (−135° to +135°) mapped onto
- * min–max; a full sweep is ~200px of drag, movement measured absolute from
- * drag start. Controlled (`value`/`onChange`) with a local visual buffer so
- * rotation stays smooth while parent updates are RAF-throttled; the final
- * value fires on release. Focus + arrow keys step the value
- * (role="slider" with aria-valuemin/max/now). The label and `%` readout
- * rows render only when `label` is set; label text renders as authored.
+ * RotaryDial — drag-to-set rotary knob numeric input. The KNOB VARIANT of
+ * Slider (molecules/Slider.jsx): both implement the shared value-control
+ * contract — `value` / `min` / `max` / `step` / `onChange(next: number)` /
+ * `label` / `size` / `disabled` / `formatValue`. Controlled; onChange always
+ * fires with the plain number.
  *
- * @param {string}   label    text under the dial; also gates the label + readout rows
- * @param {number}   value    controlled value within min–max
- * @param {Function} onChange (next: number) => void — RAF-throttled while dragging, final on release
- * @param {number}   min      minimum value (default 0)
- * @param {number}   max      maximum value (default 100)
- * @param {number}   step     drag snap / arrow-key increment (default 1)
- * @param {number}   size     dial px size (default 80); derives ring + disc radii
+ * Vertical pointer drag rotates the whole dial over a 270° sweep (−135° to
+ * +135°) mapped onto min–max; a full sweep is ~200px of drag, movement
+ * measured absolute from drag start. A local visual buffer keeps rotation
+ * smooth while parent updates are RAF-throttled; the final value fires on
+ * release. Focus + arrow keys step the value (role="slider" with
+ * aria-valuemin/max/now). The label and readout rows render only when
+ * `label` is set; label text renders as authored.
+ *
+ * @param {string}   label       text under the dial; also gates the label + readout rows
+ * @param {number}   value       controlled value within min–max
+ * @param {Function} onChange    (next: number) => void — RAF-throttled while dragging, final on release
+ * @param {number}   min         minimum value (default 0)
+ * @param {number}   max         maximum value (default 100)
+ * @param {number}   step        drag snap / arrow-key increment (default 1)
+ * @param {number}   size        dial px size (default 80); derives ring + disc radii
+ * @param {boolean}  disabled    blocks drag + keyboard and dims the control (default false)
+ * @param {Function} formatValue optional readout formatter (value: number) => string; default `${value}%`
  */
 export default function RotaryDial({
   label,
@@ -32,6 +39,8 @@ export default function RotaryDial({
   max = 100,
   step = 1,
   size = 80,
+  disabled = false,
+  formatValue,
 }) {
   const [isDragging, setIsDragging] = useState(false)
   const [localValue, setLocalValue] = useState(value) // visual buffer — updates every move
@@ -99,23 +108,24 @@ export default function RotaryDial({
   const angle = -135 + ((localValue - min) / (max - min || 1)) * 270
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className={`flex flex-col items-center gap-2 ${disabled ? 'opacity-50' : ''}`}>
       <div
         role="slider"
-        tabIndex={0}
+        tabIndex={disabled ? -1 : 0}
         aria-label={label}
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuenow={localValue}
-        className="relative cursor-pointer select-none touch-none"
+        aria-disabled={disabled || undefined}
+        className={`relative select-none touch-none ${disabled ? 'cursor-default' : 'cursor-pointer'}`}
         style={{
           width: size,
           height: size,
           transform: `rotate(${angle}deg)`,
           willChange: isDragging ? 'transform' : 'auto',
         }}
-        onPointerDown={handlePointerDown}
-        onKeyDown={handleKeyDown}
+        onPointerDown={disabled ? undefined : handlePointerDown}
+        onKeyDown={disabled ? undefined : handleKeyDown}
       >
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ overflow: 'visible' }}>
           {/* outer dashed tick ring */}
@@ -144,7 +154,11 @@ export default function RotaryDial({
         </svg>
       </div>
       {label && <div className="kol-helper-12 text-fg-64">{label}</div>}
-      {label && <div className="kol-helper-12 text-fg-96">{value}%</div>}
+      {label && (
+        <div className="kol-helper-12 text-fg-96">
+          {formatValue ? String(formatValue(value)) : `${value}%`}
+        </div>
+      )}
     </div>
   )
 }

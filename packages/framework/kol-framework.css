@@ -285,13 +285,8 @@ code, pre {
   gap: 4px;
 }
 
-/* ───── Type sample (brand type specimen) ─────
-   Wrapper padding inlined in TypeSample.jsx; body margin handled by Preflight.
-   CSS retains the adjacent-sibling border-top that separates stacked samples. */
-
-.kol-type-sample + .kol-type-sample {
-  border-top: 1px solid var(--kol-fg-08);
-}
+/* Type-sample rule removed 2026-07-09 — was drift-flagged duplicate of the
+   theme-owned rule (now packages/theme/kol-components-foundry.css). */
 
 /* Prose moved to DS typography — see kol-typography-mono.css.
    See docs/documentation/06-framework/06-amendments.md 2026-04-23. */
@@ -529,13 +524,8 @@ code, pre {
   max-width: 100%;
 }
 
-/* ───── Typography spec card (meta panel + live sample) ─────
-   Wrappers + meta-row grid + responsive layout inlined in TypeSpecCard.jsx.
-   CSS retains the descendant <p> overrides for sample prose (Preflight zeros
-   <p> margin; specs need 16px gap between paragraphs). */
-
-.kol-type-spec-sample p { margin: 0 0 16px; }
-.kol-type-spec-sample p:last-child { margin-bottom: 0; }
+/* Type-spec-card rules removed 2026-07-09 — were drift-flagged duplicates of
+   the theme-owned rules (now packages/theme/kol-components-foundry.css). */
 
 /* ───── Exit preview (floating × button on client surfaces) ───── */
 

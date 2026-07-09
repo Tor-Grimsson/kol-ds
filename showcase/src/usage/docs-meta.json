@@ -125,13 +125,6 @@
     "typeClasses": [],
     "composes": []
   },
-  "PriceDisplay": {
-    "typeClasses": [
-      "kol-mono-12",
-      "kol-sans-heading-03"
-    ],
-    "composes": []
-  },
   "ProsePreview": {
     "typeClasses": [
       "kol-helper-12",
@@ -231,29 +224,12 @@
     ],
     "composes": []
   },
-  "TextPressure": {
-    "typeClasses": [],
-    "composes": []
-  },
   "TiltCard": {
     "typeClasses": [],
     "composes": []
   },
   "TransparentX": {
     "typeClasses": [],
-    "composes": []
-  },
-  "TypeSample": {
-    "typeClasses": [
-      "kol-helper-12"
-    ],
-    "composes": []
-  },
-  "TypeSpecCard": {
-    "typeClasses": [
-      "kol-helper-10",
-      "kol-helper-12"
-    ],
     "composes": []
   },
   "ViewToggle": {
@@ -280,24 +256,16 @@
     ],
     "composes": []
   },
+  "ButtonGroup": {
+    "typeClasses": [
+      "kol-sans-heading-05"
+    ],
+    "composes": []
+  },
   "AlignmentGrid": {
     "typeClasses": [],
     "composes": [
       "Button"
-    ]
-  },
-  "ArticleCard": {
-    "typeClasses": [
-      "kol-helper-12",
-      "kol-helper-14",
-      "kol-helper-16",
-      "kol-mono-14",
-      "kol-mono-20",
-      "kol-sans-heading-03"
-    ],
-    "composes": [
-      "Pill",
-      "Image"
     ]
   },
   "ImageBlock": {
@@ -317,17 +285,6 @@
       "Figure"
     ]
   },
-  "WorkListItem": {
-    "typeClasses": [
-      "kol-mono-12",
-      "kol-mono-14",
-      "kol-sans-heading-03"
-    ],
-    "composes": [
-      "Image",
-      "Tag"
-    ]
-  },
   "CardFeatureItem": {
     "typeClasses": [
       "kol-helper-16",
@@ -344,11 +301,13 @@
     ]
   },
   "ColorInputRow": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
     "composes": [
       "ColorSwatch",
       "Input",
-      "LabeledControl",
       "PopoverPanel",
       "Icon"
     ]
@@ -534,6 +493,16 @@
     "typeClasses": [],
     "composes": []
   },
+  "SplitToolButton": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "composes": [
+      "PopoverPanel",
+      "Icon"
+    ]
+  },
   "SwatchControls": {
     "typeClasses": [],
     "composes": [
@@ -563,19 +532,6 @@
       "Icon"
     ]
   },
-  "ArticleHeader": {
-    "typeClasses": [
-      "kol-helper-12",
-      "kol-mono-12",
-      "kol-mono-14",
-      "kol-prose-title"
-    ],
-    "composes": [
-      "Pill",
-      "Avatar",
-      "Image"
-    ]
-  },
   "Canvas": {
     "typeClasses": [],
     "composes": []
@@ -600,10 +556,6 @@
     "typeClasses": [],
     "composes": []
   },
-  "DiagonalMarqueeRiver": {
-    "typeClasses": [],
-    "composes": []
-  },
   "EditorShell": {
     "typeClasses": [],
     "composes": [
@@ -615,74 +567,6 @@
     "composes": [
       "Carousel",
       "MediaViewer"
-    ]
-  },
-  "ParallaxShelf": {
-    "typeClasses": [
-      "kol-helper-12"
-    ],
-    "composes": [
-      "WorkCard"
-    ]
-  },
-  "PortableTextRenderer": {
-    "typeClasses": [
-      "kol-prose"
-    ],
-    "composes": [
-      "CodeBlock",
-      "ImageBlock",
-      "VideoBlock",
-      "Table",
-      "Divider"
-    ]
-  },
-  "ProductDetailLayout": {
-    "typeClasses": [
-      "kol-helper-uc-xs",
-      "kol-mono-text",
-      "kol-mono-xs"
-    ],
-    "composes": [
-      "PriceDisplay",
-      "Pill",
-      "Divider",
-      "QuantityInput",
-      "SpecList",
-      "TabsRow",
-      "Dropdown"
-    ]
-  },
-  "ScrollDriftGallery": {
-    "typeClasses": [],
-    "composes": []
-  },
-  "StackHero": {
-    "typeClasses": [
-      "kol-mono-14",
-      "kol-prose-display"
-    ],
-    "composes": [
-      "FullBleedHero",
-      "Image"
-    ]
-  },
-  "WorkCard": {
-    "typeClasses": [
-      "kol-mono-12",
-      "kol-sans-display-02"
-    ],
-    "composes": [
-      "TiltCard",
-      "AssetPlaceholder"
-    ]
-  },
-  "WorkViewToggle": {
-    "typeClasses": [
-      "kol-helper-14"
-    ],
-    "composes": [
-      "Icon"
     ]
   },
   "AsciiCursor": {
@@ -705,12 +589,6 @@
   "Carousel": {
     "typeClasses": [],
     "composes": []
-  },
-  "ColorLoader": {
-    "typeClasses": [],
-    "composes": [
-      "TextPressure"
-    ]
   },
   "ContentFilters": {
     "typeClasses": [
@@ -776,12 +654,21 @@
   "LoaderOverlay": {
     "typeClasses": [],
     "composes": [
-      "FullscreenOverlay",
-      "ColorLoader"
+      "FullscreenOverlay"
+    ]
+  },
+  "MediaTileGallery": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "MediaViewer"
     ]
   },
   "MediaViewer": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-helper-12"
+    ],
     "composes": [
       "FullscreenOverlay",
       "Icon"
@@ -908,6 +795,133 @@
       "kol-sans-body-01",
       "kol-sans-display-01"
     ],
+    "composes": []
+  },
+  "SpecimenSectionHeader": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16",
+      "kol-mono-sm-regular",
+      "kol-mono-text-lg"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "TypefaceHero": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": []
+  },
+  "TypefaceStyleSection": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SpecimenSectionHeader"
+    ]
+  },
+  "FontPreviewSection": {
+    "typeClasses": [],
+    "composes": [
+      "SpecimenSectionHeader",
+      "SPECIMEN_SAMPLE_TEXT"
+    ]
+  },
+  "VariableFontSection": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-10"
+    ],
+    "composes": [
+      "SpecimenSectionHeader"
+    ]
+  },
+  "GlyphMetricsGrid": {
+    "typeClasses": [
+      "kol-mono-text"
+    ],
+    "composes": []
+  },
+  "GlyphMetricsSection": {
+    "typeClasses": [],
+    "composes": [
+      "SpecimenSectionHeader",
+      "GlyphMetricsGrid"
+    ]
+  },
+  "FoundryCharacterSets": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SpecimenSectionHeader"
+    ]
+  },
+  "TypefaceLibraryGrid": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "TypefaceLibraryGridWithVariables": {
+    "typeClasses": [],
+    "composes": [
+      "TypefaceLibraryItem",
+      "TypefaceVariablePreview"
+    ]
+  },
+  "TypefaceLibraryItem": {
+    "typeClasses": [
+      "kol-helper-lg",
+      "kol-helper-s",
+      "kol-mono-sm",
+      "kol-mono-xs"
+    ],
+    "composes": []
+  },
+  "TypefaceVariablePreview": {
+    "typeClasses": [
+      "kol-mono-sm",
+      "kol-mono-xs"
+    ],
+    "composes": []
+  },
+  "TypeSample": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": []
+  },
+  "TypeSpecCard": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "composes": []
+  },
+  "TextPressure": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "ColorLoader": {
+    "typeClasses": [],
+    "composes": [
+      "TextPressure"
+    ]
+  },
+  "TypefaceSpecimenPage": {
+    "typeClasses": [
+      "kol-mono-xs"
+    ],
+    "composes": [
+      "TypefaceStyleSection",
+      "FontPreviewSection",
+      "VariableFontSection",
+      "GlyphMetricsSection"
+    ]
+  },
+  "SPECIMEN_SAMPLE_TEXT": {
+    "typeClasses": [],
     "composes": []
   }
 }

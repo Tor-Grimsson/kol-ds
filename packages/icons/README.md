@@ -39,3 +39,11 @@ registerIcons(import.meta.glob('./icons/**/*.svg', { eager: true, query: '?raw',
 ```
 
 Registered icons are keyed by filename (basename), win over the packaged set (add **or** override), and resolve synchronously. Author them with `currentColor` so they theme.
+
+## Tailwind v4 consumers
+
+`Icon`'s wrapper uses Tailwind utilities (`inline-block`, `inline-flex items-center justify-center`), and Tailwind skips `node_modules` when scanning — so point it at this package's source or icon alignment breaks:
+
+```css
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+```

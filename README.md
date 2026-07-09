@@ -38,6 +38,22 @@ CSS cascade order is load-bearing — import in exactly this order:
 @import "@kolkrabbi/kol-framework/kol-framework.css";
 ```
 
+**`@source` every KOL package you install — this is not optional.** The packages ship raw JSX full of Tailwind utility classes, and Tailwind v4 skips `node_modules` when scanning — so without these lines the class attributes land in the DOM but the utilities never generate, and layouts silently collapse. Add them next to the imports above (trim to the packages you actually install):
+
+```css
+@source "../node_modules/@kolkrabbi/kol-chess/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-content/src";
+@source "../node_modules/@kolkrabbi/kol-dashboards/src";
+@source "../node_modules/@kolkrabbi/kol-foundry/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-store/src";
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
+```
+
+Only `kol-theme` (CSS-only) and the non-UI packages (`kol-media-client`, `kol-brand*`, `kol-scrape`) need no line. Newly added `@source` paths need a dev-server restart — HMR won't pick them up.
+
 ```jsx
 import { Button, Tag } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'

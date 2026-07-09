@@ -1,0 +1,49 @@
+/* =============================================================================
+ * KOL components — foundry (@kolkrabbi/kol-foundry)
+ * =============================================================================
+ * Component CSS for the type-specimen apparatus. Recreated 2026-07-09 when the
+ * type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure,
+ * ColorLoader) moved from @kolkrabbi/kol-component into @kolkrabbi/kol-foundry;
+ * their rules moved here from kol-components-atoms.css with them. CSS always
+ * lives in kol-theme — the foundry package ships JS only.
+ *
+ * Layer: this file ships unlayered; kol-theme.css assigns the layer at import —
+ *   @import "./kol-components-foundry.css" layer(components);
+ * placing it in the `components` cascade layer alongside the rest of KOL chrome,
+ * so consumer utilities (a later Tailwind layer) still override it.
+ * ============================================================================= */
+
+/* ─── TypeSample — TypeSample.jsx ───
+   Wrapper padding inlined in the component; adjacent-sibling hairline
+   separates stacked samples. */
+.kol-type-sample + .kol-type-sample {
+  border-top: 1px solid var(--kol-fg-08);
+}
+
+/* ─── TypeSpecCard — TypeSpecCard.jsx ───
+   Layout inlined in the component; descendant <p> overrides give sample
+   prose 16px rhythm (Preflight zeroes <p> margin). */
+.kol-type-spec-sample p { margin: 0 0 16px; }
+.kol-type-spec-sample p:last-child { margin-bottom: 0; }
+
+/* ─── TextPressure — TextPressure.jsx ───
+   Only the outlined-ghost layer lives here — it needs a ::after pseudo-element
+   and -webkit-text-stroke, neither expressible in Tailwind or inline style.
+   Everything else (layout, sizing, weight) is Tailwind utilities / inline vars
+   on the JSX. Stroke color comes in through the inline `--kol-text-pressure-
+   stroke` custom property (defaulted here so the rule is standalone-safe).
+   ColorLoader composes TextPressure and needs no rules of its own. */
+.kol-text-pressure--stroke .kol-text-pressure-char {
+  position: relative;
+}
+
+.kol-text-pressure--stroke .kol-text-pressure-char::after {
+  content: attr(data-char);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: transparent;
+  z-index: -1;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: var(--kol-text-pressure-stroke, var(--kol-accent-primary));
+}

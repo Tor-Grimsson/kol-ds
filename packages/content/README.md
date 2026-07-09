@@ -33,6 +33,6 @@ Data is **consumer-injected** (portable text / project docs). The shared primiti
 Components take flat prop bags / adapters — they never fetch. Portable-text bodies are passed as `blocks`; work items as arrays.
 
 - **CSS** ships in `@kolkrabbi/kol-theme` (`.kol-prose` in `kol-typography.css` + the component sheets, all in the theme aggregate) — this package ships JS only.
-- **Vite** consumer; **Tailwind v4** `@source "…/node_modules/@kolkrabbi/kol-content/src"`.
+- **Vite** consumer; **Tailwind v4** `@source "…/node_modules/@kolkrabbi/kol-content/src"` — Tailwind skips `node_modules` when scanning, so without this line the components' utility classes never generate.
 - Peer: `gsap` (ScrollDriftGallery); dep: `embla-carousel-react` (ParallaxShelf).
 - No auto text-transform — every string renders in its authored case (KOL rule).

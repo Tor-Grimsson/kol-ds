@@ -51,15 +51,13 @@ export { default as Textarea } from './atoms/Textarea.jsx'
 export { default as ToggleBracket } from './atoms/ToggleBracket.jsx'
 export { default as ToggleCheckbox } from './atoms/ToggleCheckbox.jsx'
 export { default as ToggleSwitch } from './atoms/ToggleSwitch.jsx'
-export { default as TextPressure } from './atoms/TextPressure.jsx'
 export { default as TiltCard } from './atoms/TiltCard.jsx'
 export { default as TransparentX } from './atoms/TransparentX.jsx'
-export { default as TypeSample } from './atoms/TypeSample.jsx'
-export { default as TypeSpecCard } from './atoms/TypeSpecCard.jsx'
 export { default as ViewToggle } from './atoms/ViewToggle.jsx'
 
 // molecules
 export { Accordion, AccordionPanel } from './molecules/Accordion.jsx'
+export { default as ButtonGroup } from './molecules/ButtonGroup.jsx'
 /* monorepo sets (P6–P10) — molecule members */
 export { default as AlignmentGrid } from './molecules/AlignmentGrid.jsx'
 export { default as ImageBlock } from './molecules/ImageBlock.jsx'
@@ -85,19 +83,20 @@ export { default as ShellSearchOverlay } from './molecules/ShellSearchOverlay.js
 export { default as Slider } from './molecules/Slider.jsx'
 export { default as SpecList } from './molecules/SpecList.jsx'
 export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle } from './molecules/SpectrumControls.jsx'
+export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
 export { default as TabsRow } from './molecules/TabsRow.jsx'
 
 // organisms
-/* monorepo sets (P6–P10) — organism members. Foundry members are isolated
-   under the './foundry' subpath (opentype-heavy) — not re-exported here. */
+/* monorepo sets (P6–P10) — organism members. Foundry members live in the
+   standalone @kolkrabbi/kol-foundry package (with the type-specimen kit +
+   live-font effects moved there 2026-07-09) — never re-exported here. */
 export { default as Canvas, CanvasFrame, PanViewport, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
 export { default as EditorShell } from './organisms/EditorShell.jsx'
 export { default as GalleryCarousel } from './organisms/GalleryCarousel.jsx'
 export { default as AsciiCursor } from './organisms/AsciiCursor.jsx'
 export { default as BentoCard } from './organisms/BentoCard.jsx'
 export { default as Carousel } from './organisms/Carousel.jsx'
-export { default as ColorLoader } from './organisms/ColorLoader.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as CtaGlobal } from './organisms/CtaGlobal.jsx'
 export { default as ErrorBoundary } from './organisms/ErrorBoundary.jsx'
@@ -106,6 +105,7 @@ export { default as FeaturedCarousel } from './organisms/FeaturedCarousel.jsx'
 export { default as FeaturesCardSection } from './organisms/FeaturesCardSection.jsx'
 export { default as FullBleedHero } from './organisms/FullBleedHero.jsx'
 export { default as LoaderOverlay } from './organisms/LoaderOverlay.jsx'
+export { default as MediaTileGallery } from './organisms/MediaTileGallery.jsx'
 export { default as MediaViewer } from './organisms/MediaViewer.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'
 export { default as SpectrumGrid } from './organisms/SpectrumGrid.jsx'

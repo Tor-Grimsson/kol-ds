@@ -16,25 +16,18 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | Component | Source | Staged | Status |
 |-----------|--------|--------|--------|
 | [HlsVideo](HlsVideo.md) | web `components/media/HlsVideo.jsx` | 2026-07-03 | draft |
-| [RotaryDial](RotaryDial.md) | web `components/workshop/molecules/RotaryDial.jsx` | 2026-07-03 | draft |
 | [ErrorBoundary](ErrorBoundary.md) | web `components/errors/ErrorBoundary.jsx` | 2026-07-03 | draft |
 | [DocsToc](DocsToc.md) | web `components/workshop/docs/DocsToc.jsx` | 2026-07-03 | draft (reconcile → useScrollSpy) |
 | [AsciiCursor](AsciiCursor.md) | web `components/ui/AsciiCursor.jsx` | 2026-07-03 | draft (effect · framer-motion) |
 | [AnimatedTitle](AnimatedTitle.md) | web `components/animation/AnimatedTitle.jsx` | 2026-07-03 | draft (effect · gsap ScrollTrigger) |
-| [InteractiveImage](InteractiveImage.md) | web `components/media/InteractiveImage.jsx` | 2026-07-03 | draft (effect · orphaned) |
+| [InteractiveImage](InteractiveImage.md) | web `components/media/InteractiveImage.jsx` | 2026-07-03 | parked (orphaned effect · SVG-id collision bug · revisit on a real consumer) |
 | [TiltCard](TiltCard.md) | web `components/animation/TiltCard.jsx` | 2026-07-03 | draft (effect · hook promotes with it) |
-| [TextPressure](TextPressure.md) | web `components/react-bits/TextPressure.jsx` | 2026-07-03 | draft (effect · collapse 3 variants) |
 | [PageSection](PageSection.md) | brand `components/framework/PageSection.jsx` | 2026-07-03 | draft (rename vs DS Section) |
 | [FeatureSplit](FeatureSplit.md) | brand `components/styleguide/FeatureSplit.jsx` | 2026-07-03 | draft (CSS moves with it) |
 | [AssetGrid](AssetGrid.md) | brand `components/styleguide/AssetGrid.jsx` | 2026-07-03 | draft (merge → DS Grid) |
 | [EditorButton](EditorButton.md) | brand `editor/components/EditorButton.jsx` | 2026-07-03 | draft (Button `iconComponent` enhancement, not new atom) |
-| [ImageLightbox](ImageLightbox.md) | web `components/work/ImageLightbox.jsx` | 2026-07-03 | draft (compose FullscreenOverlay + Carousel) |
-| [FullscreenGallery](FullscreenGallery.md) | brand `components/styleguide/FullscreenGallery.jsx` | 2026-07-03 | draft (shares one viewer w/ ImageLightbox) |
-| [TypeSample](TypeSample.md) | brand `components/styleguide/TypeSample.jsx` | 2026-07-03 | draft (type-specimen kit) |
-| [TypeSpecCard](TypeSpecCard.md) | brand `components/styleguide/TypeSpecCard.jsx` | 2026-07-03 | draft (type-specimen kit) |
 | [ProsePreview](ProsePreview.md) | brand `components/styleguide/ProsePreview.jsx` | 2026-07-03 | draft (→ ProseStylesViewer children) |
-| [TypeScaleSection](TypeScaleSection.md) | brand `components/styleguide/TypeScaleSection.jsx` | 2026-07-03 | draft (thin · composes PageSection+Table) |
-| [Ramp](Ramp.md) | brand `components/styleguide/Ramp.jsx` | 2026-07-03 | draft (color kit · compose ColorSwatch) |
+| [TypeScaleSection](TypeScaleSection.md) | brand `components/styleguide/TypeScaleSection.jsx` | 2026-07-03 | recipe (Table + PageSection exist — document a columns recipe, don't build) |
 | [SpectrumGrid](SpectrumGrid.md) | brand `components/styleguide/SpectrumGrid.jsx` | 2026-07-03 | draft (color kit · live CSS-var matrix) |
 | [ColorRamp](ColorRamp.md) | brand `components/sections/ColorRamp.jsx` | 2026-07-03 | draft (color kit · extract resolveCssVar util) |
 | [ShellLayout](ShellLayout.md) | web `components/shell/ShellLayout.jsx` | 2026-07-03 | draft (shell set · centerpiece organism) |
@@ -43,17 +36,8 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [ShellDrawer](ShellDrawer.md) | web `components/shell/ShellDrawer.jsx` | 2026-07-03 | draft (shell set · new drawer primitive) |
 | [ShellSearchOverlay](ShellSearchOverlay.md) | web `components/shell/ShellSearchOverlay.jsx` | 2026-07-03 | draft (shell set · Cmd-K palette) |
 | [Footer](Footer.md) | web `components/layout/Footer.jsx` | 2026-07-03 | draft (shell set · DS had no footer) |
-| [GlyphMetricsGrid](GlyphMetricsGrid.md) | web `components/fontviewer/GlyphMetricsGrid.jsx` | 2026-07-03 | draft (foundry · reconcile vs fontviewer MetricsOverlay) |
-| [GlyphMetricsSection](GlyphMetricsSection.md) | web `routes/foundry/components/GlyphMetricsSection.jsx` | 2026-07-03 | draft (foundry · axis playground) |
-| [VariableFontSection](VariableFontSection.md) | web `routes/foundry/components/VariableFontSection.jsx` | 2026-07-03 | draft (foundry · extract useAxisAnimation) |
-| [FoundrySection](FoundrySection.md) | web `routes/foundry/components/FoundrySection.jsx` | 2026-07-03 | draft (foundry · → SpecimenSectionHeader) |
-| [TypefaceHero](TypefaceHero.md) | web `routes/foundry/components/TypefaceHero.jsx` | 2026-07-03 | draft (foundry · specimen hero) |
-| [TypefaceStyleSection](TypefaceStyleSection.md) | web `routes/foundry/components/TypefaceStyleSection.jsx` | 2026-07-03 | draft (foundry · composes StylesGrid) |
-| [FontPreviewSection](FontPreviewSection.md) | web `routes/foundry/components/FontPreviewSection.jsx` | 2026-07-03 | draft (foundry · composes FontPreviewItemAlt) |
-| [FoundryCharacterSets](FoundryCharacterSets.md) | web `routes/foundry/components/FoundryCharacterSets.jsx` | 2026-07-03 | draft (foundry · composes GlyphCategory) |
 | [ArticleHeader](ArticleHeader.md) | web `components/prose/layouts/ArticleHeader.jsx` | 2026-07-03 | draft (CMS · flat-prop masthead) |
 | [BentoCard](BentoCard.md) | web `components/cards/BentoCard.jsx` | 2026-07-03 | draft (CMS · media card · needs useBentoTilt too) |
-| [PortableTextRenderer](PortableTextRenderer.md) | web `components/prose/core/PortableTextBlog.jsx` | 2026-07-03 | draft (CMS · missing Sanity→React renderer set) |
 | [StackHero](StackHero.md) | web `components/sections/stack-detail/StackHero.jsx` | 2026-07-03 | draft (CMS · full-bleed hero + Tall variant) |
 | [VideoBlock](VideoBlock.md) | web `components/prose/blocks/VideoBlock.jsx` | 2026-07-03 | draft (CMS · → VideoFigure/VideoEmbed) |
 | [ImageBlock](ImageBlock.md) | web `components/prose/blocks/ImageBlock.jsx` | 2026-07-03 | draft (CMS · split a Figure primitive) |
@@ -65,9 +49,6 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [ArticleCard](ArticleCard.md) | web `components/{prose/cards,sections/blog}/ArticleCard.jsx` | 2026-07-03 | draft (stack · card family default · 2 dupes byte-identical) |
 | [ArticleCardHero](ArticleCardHero.md) | web `components/{prose/cards,sections/blog}/ArticleCardHero.jsx` | 2026-07-03 | draft (stack · hero variant · converge on fg-tokens) |
 | [ArticleCardMini](ArticleCardMini.md) | web `components/{prose/cards,sections/blog}/ArticleCardMini.jsx` | 2026-07-03 | draft (stack · mini variant · 2 dupes byte-identical) |
-| [ColorLoader](ColorLoader.md) | web `components/loaders/ColorLoader.jsx` | 2026-07-03 | draft (loader · brand → slot · uses TextPressure) |
-| [LoaderOverlay](LoaderOverlay.md) | web `components/layout/LoaderOverlay.jsx` | 2026-07-03 | draft (loader · compose FullscreenOverlay) |
-| [RouteLoader](RouteLoader.md) | web `components/layout/RouteLoader.jsx` | 2026-07-03 | draft (loader · no-op stub in source · spec'd intended) |
 | [PriceDisplay](PriceDisplay.md) | web `routes/prints/PrintDetail.jsx` (inline) | 2026-07-03 | draft (store · price atom · no DS twin · formatPrice bug flagged) |
 | [SpecList](SpecList.md) | web `routes/prints/PrintDetail.jsx` (inline) | 2026-07-03 | draft (store · spec/definition-list atom) |
 | [DiagonalMarqueeRiver](DiagonalMarqueeRiver.md) | web `routes/prints/PrintsGridGsap.jsx` (inline) | 2026-07-03 | draft (store · GSAP diagonal marquee grid) |
@@ -77,16 +58,8 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [SelectionOverlay](SelectionOverlay.md) | brand `editor/compose/SelectionOverlay.jsx` | 2026-07-03 | draft (editor · transform handles · box prop) |
 | [EditorShell](EditorShell.md) | brand `editor/EditorShell.jsx` | 2026-07-03 | draft (editor · 2-rail layout + panel registry) |
 | [TabsRow](TabsRow.md) | brand `editor/color/PanelTabs.jsx` | 2026-07-03 | draft (editor · underline tabs · DS has no Tabs) |
-| [Placeholder](Placeholder.md) | brand `editor/compose/inspectors/Placeholder.jsx` | 2026-07-03 | draft (editor · inspector empty-state atom) |
-| [AlignmentGrid](AlignmentGrid.md) | brand `editor/compose/AlignmentPanel.jsx` | 2026-07-03 | draft (editor · align grid · onAlign seam) |
-| [SpectrumControls](SpectrumControls.md) | brand `editor/color/SpectrumControls.jsx` | 2026-07-03 | draft (editor · HSV picker family · DS has no picker) |
-| [SwatchControls](SwatchControls.md) | brand `editor/color/SwatchControls.jsx` | 2026-07-03 | draft (editor · paint-chip stack + eyedropper) |
-| [ColorField](ColorField.md) | brand `editor/compose/inspectors/LayerInspector.jsx` | 2026-07-03 | draft (editor · color input + palette-ref popover) |
-| [SwatchRow](SwatchRow.md) | brand `editor/compose/SwatchRow.jsx` | 2026-07-03 | draft (editor · color-slot row · dedupe w/ ColorField) |
-| [ToolButton](ToolButton.md) | brand `editor/shell/panels/ToolPalette.jsx` | 2026-07-03 | draft (editor · icon toggle + ShapeDropdown · reconcile ControlButton) |
 | [CurveOverlay](CurveOverlay.md) | brand `editor/modes/type/CurveOverlay.jsx` | 2026-07-03 | draft (editor · SVG curve/easing editor) |
 | [FullBleedHero](FullBleedHero.md) | web `components/sections/shared/FullBleedHero.jsx` | 2026-07-03 | draft (layout · generic hero · pairs OverlayGlassPanel) |
-| [StudioHero](StudioHero.md) | web `components/sections/studio/StudioHero.jsx` | 2026-07-03 | draft (layout · orphan · fold into FullBleedHero or drop) |
 | [OverlayGlassPanel](OverlayGlassPanel.md) | web (4× inline: StudioHero/StudioAboutCard/FeaturedCarousel/TypefacePage) | 2026-07-03 | draft (layout · glass content card · dedupe 4×) |
 | [FeaturedCarousel](FeaturedCarousel.md) | web `components/sections/shared/FeaturedCarousel.jsx` | 2026-07-03 | draft (layout · converge INTO @kol/ui FeaturedItemsCarousel) |
 | [FramedMediaBand](FramedMediaBand.md) | web `routes/foundry/components/TypefacePage.jsx` (5× inline) | 2026-07-03 | draft (layout · framed media band · dedupe 5×) |
@@ -94,9 +67,7 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [CardFeatureItem](CardFeatureItem.md) | web `components/workshop/molecules/CardFeatureItem.jsx` | 2026-07-03 | draft (layout · feature card molecule) |
 | [CtaGlobal](CtaGlobal.md) | web `components/sections/cta/CtaGlobal.jsx` | 2026-07-03 | draft (layout · editorial CTA band · DS gap) |
 | [NewsletterBand](NewsletterBand.md) | web `components/sections/home/HomeSignup.jsx` | 2026-07-03 | draft (layout · subscribe band · DS gap) |
-| [ChapterNavigation](ChapterNavigation.md) | web `components/sections/shared/ChapterNavigation.jsx` | 2026-07-03 | draft (layout · TOC nav · LOW/dead · dedupe w/ DocsToc) |
-| [TailwindContentSource](TailwindContentSource.md) | kol-monorepo `apps/web/src/index.css` (packaging gap) | 2026-07-09 | draft (build · @kolkrabbi pkgs ship utility JSX but no compiled CSS · 5 consumer @source lines · recommend compiling utilities into each pkg's CSS) |
-| [ButtonGroup](ButtonGroup.md) | ui `molecules/ButtonGroup.jsx` | 2026-07-09 | draft (molecule · composes Button · array-config vs children API · dynamic-class align bug) |
+| [TailwindContentSource](TailwindContentSource.md) | kol-monorepo `apps/web/src/index.css` (packaging gap) | 2026-07-09 | **decided** (2026-07-09: `@source` consumer contract is permanent per ARCHITECTURE §4 — compilation rejected; canonical 9-line block in root README, per-package README sections stamped; icons included on evidence) |
 
 ## Processed
 
@@ -105,3 +76,17 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [MediaCard](done/MediaCard.md) | `MediaCard` molecule | `packages/component/src/molecules/MediaCard.jsx` | 2026-07-03 | Slot contract per spec; checkbox = passive `SelectIndicator` (same file), NOT ToggleCheckbox — the card is the click target, a nested real input double-fires. `downloadHref` kept as anchor. Demo + story + changeset staged. |
 | [MediaRow](done/MediaRow.md) | `MediaRow` molecule | `packages/component/src/molecules/MediaRow.jsx` | 2026-07-03 | Shares `SelectIndicator` with MediaCard; column widths exposed as `dateWidth`/`sizeWidth` props (defaults `w-24`/`w-20`). Demo + story + changeset staged. |
 | [@kolkrabbi/kol-media-client](done/kol-media-client.md) | `@kolkrabbi/kol-media-client` package | `packages/media-client/` | 2026-07-03 | First of the **clients tier** (ARCHITECTURE §3). Factory `createMediaClient({adminBase, publicBase, proxyPath})` + default prod instance; core + `proxied` + `formatSize` + optional `uploadToLibrary` (`saveToGallery` not ported, per spec). Changeset staged; publishes with the held batch. |
+| [TypefaceHero](done/TypefaceHero.md) · [VariableFontSection](done/VariableFontSection.md) · [GlyphMetricsGrid](done/GlyphMetricsGrid.md) · [GlyphMetricsSection](done/GlyphMetricsSection.md) · [TypefaceStyleSection](done/TypefaceStyleSection.md) · [FontPreviewSection](done/FontPreviewSection.md) · [FoundryCharacterSets](done/FoundryCharacterSets.md) | foundry set | `packages/foundry/src/` | 2026-07-09 | Already recreated during the foundry extraction; user-confirmed at the lobby-wall triage. All render in `showcase/src/sets/foundry-specimen.jsx`. |
+| [FoundrySection](done/FoundrySection.md) | `SpecimenSectionHeader` | `packages/foundry/src/SpecimenSectionHeader.jsx` | 2026-07-09 | Recreated under the spec's own "→ SpecimenSectionHeader" note. |
+| [PortableTextRenderer](done/PortableTextRenderer.md) | `PortableTextRenderer` | `packages/content/src/PortableTextRenderer.jsx` | 2026-07-09 | Landed with the kol-content extraction (stack stream). |
+| [SpectrumControls](done/SpectrumControls.md) · [SwatchControls](done/SwatchControls.md) | editor color kit | `packages/component/src/molecules/` | 2026-07-09 | Landed with the editor-kit sweep; user-confirmed ("already in the DS through the editor"). |
+| [AlignmentGrid](done/AlignmentGrid.md) | `AlignmentGrid` | `packages/component/src/molecules/AlignmentGrid.jsx` | 2026-07-09 | Landed with the editor sweep on the DS Icon seam; alignment glyphs already in kol-icons (`stroke/layout/align*`). |
+| [Placeholder](done/Placeholder.md) | `EmptyState` | `packages/component/src/atoms/EmptyState.jsx` | 2026-07-09 | Already recreated pre-triage (renamed — AssetPlaceholder owns "placeholder"; generic `eyebrow/title/body/footer` props per the spec's own notes). Wave-1 agent caught the duplicate and refused to re-build — correct. |
+| [Ramp](done/Ramp.md) | `ColorRamp` `colors` prop | `packages/component/src/molecules/ColorRamp.jsx` | 2026-07-09 | ColorRamp's header records it merged the former Ramp (static-hex mode via `colors` — bare strings or `[name, color]` pairs). A wave-1 build was killed same-day as a duplicate. |
+| [ButtonGroup](done/ButtonGroup.md) | `ButtonGroup` | `packages/component/src/molecules/ButtonGroup.jsx` | 2026-07-09 | Children-composition API (config array dropped — KOL composes children); `sm:${align}` interpolation bug fixed with static class maps; title on `kol-sans-heading-05` (source's `kol-heading-md` doesn't exist here); `taxonomy-ok:` exemption (imports no KOL component by design). |
+| [ColorField](done/ColorField.md) · [SwatchRow](done/SwatchRow.md) | `ColorInputRow` (merged) | `packages/component/src/molecules/ColorInputRow.jsx` | 2026-07-09 | One swatch+hex core with additive slots (`refs` popover / `locked`+`tokenName`), per both specs' merge flags. Rewrote a narrower pre-existing ColorInputRow; surviving consumers' props preserved, per-keystroke emission guarded in the color-picker block. Refs arrive pre-resolved — no `palette:` convention. |
+| [ImageLightbox](done/ImageLightbox.md) · [FullscreenGallery](done/FullscreenGallery.md) | `MediaViewer` + `MediaTileGallery` (one shared viewer) | `packages/component/src/organisms/` | 2026-07-09 | FullscreenOverlay shell + direct embla (Carousel has no controlled-index seam); parent-authoritative `index`/`onIndexChange`; overlay text on the inverse fg tier (scrim is surface-inverse); 4px chips reuse `.kol-embla-btn`; GalleryCarousel re-wired off the old `initialIndex`. Kills the hand-rolled swipe + capture-Escape hacks from both sources. |
+| [ToolButton](done/ToolButton.md) | `SplitToolButton` (new half only) + DS Button `quiet`/`pressed` (toggle half) | `packages/component/src/molecules/SplitToolButton.jsx` | 2026-07-09 | Per the spec's own reconcile note: the 28×28 toggle is a Button preset, not a new atom (demo proves it). New: single-trigger arm-and-open split with fold-indicator corner glyph (inline 4px SVG — icon-set candidate). ⚠ Cross-referenced with the pre-existing two-button `ShapeDropdown` molecule — future reconciliation candidate. |
+| [RotaryDial](done/RotaryDial.md) | `RotaryDial` (knob variant of Slider) | `packages/component/src/atoms/RotaryDial.jsx` | 2026-07-09 | Was already built; closed by the API marriage (user call) — shared contract `value/min/max/step/onChange/label/size/disabled/formatValue` with Slider, cross-referenced JSDoc, 15 call sites verified unbroken. Editable readout deliberately not ported (atoms nest no KOL component — validator law); `formatValue` covers it. |
+| [TextPressure](done/TextPressure.md) · [TypeSample](done/TypeSample.md) · [TypeSpecCard](done/TypeSpecCard.md) · [ColorLoader](done/ColorLoader.md) | foundry move-of-four (user call) | `packages/foundry/src/` | 2026-07-09 | Font-facing set moved out of component (§3-safe: foundry→component only). CSS re-homed to a recreated `kol-components-foundry.css` (framework dupes deleted); foundry gains `framer-motion` peer. component 0.8.0 · foundry 0.3.0 · theme 0.7.3. |
+| [LoaderOverlay](done/LoaderOverlay.md) | `LoaderOverlay` (`loader` slot) | `packages/component/src/organisms/LoaderOverlay.jsx` | 2026-07-09 | Its own "brand → slot" spec executed: hardcoded ColorLoader default → injected `loader` ReactNode (consumers pass foundry's ColorLoader); dead `onEnter` removed under the 0.8.0 breaking bump. |

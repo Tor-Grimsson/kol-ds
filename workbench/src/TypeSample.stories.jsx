@@ -1,4 +1,4 @@
-import { TypeSample } from '@kolkrabbi/kol-component'
+import { TypeSample } from '@kolkrabbi/kol-foundry'
 
 export const Default = () => (
   <div className="w-[560px]">

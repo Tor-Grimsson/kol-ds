@@ -2,9 +2,9 @@
 
 The type-foundry / specimen apparatus. **The membership test: does the component render, inspect, or manipulate an actual font?** Type tools and live specimens belong; generic cards, marketing chrome, and prose-that-mentions-type do not — even if they sit in the monorepo's `routes/foundry/` folder. Data is consumer-injected; shared primitives stay in `@kolkrabbi/kol-component`.
 
-**Status:** `core` = present before the 2026-07-09 monorepo extraction · `new` = pulled in that extraction.
+**Status:** `core` = present before the 2026-07-09 monorepo extraction · `new` = pulled in that extraction · `moved` = moved in from `@kolkrabbi/kol-component` (2026-07-09) — they pass the membership test, and foundry may depend on component but never the reverse.
 
-## Components (13)
+## Components (17)
 
 ### Specimen tools — one typeface, inspected
 
@@ -27,6 +27,15 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 | `TypefaceLibraryItem` | Single catalog card (Ðð → pangram, rendered in the font) | new |
 | `TypefaceVariablePreview` | Interactive size / leading / spacing on a live weight | new |
 
+### Type-specimen kit + live-font effects
+
+| Component | Role — what it does *to the font* | Status |
+|-----------|-----------------------------------|--------|
+| `TypeSample` | Renders one labeled live specimen — family/weight/size/line-height via props | moved |
+| `TypeSpecCard` | Font-metric data sheet beside a live sample slot | moved |
+| `TextPressure` | Manipulates variable-font axes (`wght`/`wdth`/`ital`) per glyph toward the pointer | moved |
+| `ColorLoader` | Branded loading curtain — times in a live TextPressure variable-font wordmark | moved |
+
 ### Scaffold + composition
 
 | Component | Role | Status |
@@ -43,9 +52,9 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 
 ## Dependencies
 
-- **Shared primitives** (from `@kolkrabbi/kol-component`, never bundled): `Button` · `Divider` · `Icon` · `Slider` · `Dropdown` · `Pill` · `Tag` · `ContentFilters` · `useAxisAnimation`.
-- **Optional peer:** `opentype.js` (`GlyphMetricsGrid` falls back without it).
-- **CSS:** `kol-components-specimen.css` in `@kolkrabbi/kol-theme` — re-slim to only classes the kept set references.
+- **Shared primitives** (from `@kolkrabbi/kol-component`, never bundled): `Button` · `Divider` · `Icon` · `Slider` · `Dropdown` · `Pill` · `Tag` · `ContentFilters` · `useAxisAnimation` · `usePrefersReducedMotion`.
+- **Peer:** `framer-motion` (`ColorLoader`'s curtain motion). **Optional peer:** `opentype.js` (`GlyphMetricsGrid` falls back without it).
+- **CSS:** `kol-components-foundry.css` in `@kolkrabbi/kol-theme` (type-sample/spec rules + the TextPressure stroke ghost); everything else is theme utility classes.
 - **Router:** none — injected `linkComponent` prop (defaults to `<a>`).
 
 ## Explicitly excluded — not type-specific

@@ -57,5 +57,5 @@ The adapter exposes `getSampleGames`, `getManifest`, `getMonthlySummary`, `getRa
 - **Data is adapter-injected** via the `chessData` prop — components never fetch directly.
 - **Shared primitives stay in `kol-component`** — this package depends on `kol-component` + `kol-icons` + `kol-theme`.
 - **`chess.js` is a dependency** (move legality / FEN); `react` / `react-dom` are peers.
-- **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-chess.css`) — this package ships JS + SVG assets only. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-chess/src"`).
+- **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-chess.css`) — this package ships JS + SVG assets only. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-chess/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live apparatus: `showcase/src/sets/chess-apparatus.jsx`.

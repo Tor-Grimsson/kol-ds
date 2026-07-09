@@ -2,7 +2,7 @@
 title: KOL design system — overview
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-09
 description: What KOL is — the tiers, the ten UI packages (full map in the package topology), how consumers install it, and the four-point consumer contract. Start here.
 aliases:
   - overview
@@ -51,7 +51,7 @@ The six standalone **domain** packages (workshop, dashboards, chess, content, fo
 Packages ship **raw source** (`.jsx`/`.css`, no build step) — the consumer must be **Vite + Tailwind v4 + React 18/19**. The four-point contract every consumer follows:
 
 1. **Cascade order is load-bearing:** `tailwindcss` → `@kolkrabbi/kol-theme` → `kol-brand-color.css` → `kol-framework.css`. Never reorder.
-2. **`@source` the package sources** — Tailwind skips `node_modules`, so add `@source "../node_modules/@kolkrabbi/kol-*/src"` to your CSS or component-internal utilities never generate.
+2. **`@source` the package sources** — Tailwind skips `node_modules`, so add `@source "../node_modules/@kolkrabbi/kol-*/src"` to your CSS or component-internal utilities never generate. One line per installed UI package (nine ship utility JSX — everything except `kol-theme`); the canonical copy-pasteable block is in the root `README.md`. This contract is permanent by decision (2026-07-09) — packages will **not** compile their own utilities (see ARCHITECTURE §4).
 3. **One React** — dedupe react/react-dom (workspace hoisting can leave two copies → hook dispatcher errors).
 4. **Fonts are yours to serve** — theme CSS references brand fonts at absolute `/fonts/…`; the packages don't bundle font files.
 

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ColorLoader, Button } from '@kolkrabbi/kol-component'
+import { Button } from '@kolkrabbi/kol-component'
+import { ColorLoader } from '@kolkrabbi/kol-foundry'
 
 /* Mounted behind a toggle inside a framed stage (the loader fills h-full).
  * dismissOnClick → click the curtain to slide it up + fire onComplete, which

@@ -47,4 +47,12 @@ const inventory = buildInventory(modules)
 
 So the package ships the **engine + chrome**, never the content — bring your own docs.
 
+## Tailwind v4 consumers
+
+Tailwind skips `node_modules` when scanning, so point it at this package's source — otherwise the shell's grid/sidebar/toc layout utilities never generate and the docs shell collapses to a single column:
+
+```css
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
+```
+
 Self-check: `node src/engine/__check.mjs`.

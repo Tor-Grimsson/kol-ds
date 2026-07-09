@@ -2,9 +2,11 @@
 component: RouteLoader
 source: kol-monorepo/apps/web/src/components/layout/RouteLoader.jsx#L1-L12
 date: 2026-07-03
-status: draft
+status: archived
 deps: [LoaderOverlay]
 ---
+
+> **Archived 2026-07-09** — source is a no-op stub (`() => null`); LoaderOverlay + Suspense fallback covers the intent.
 
 # RouteLoader
 

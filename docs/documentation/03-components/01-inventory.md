@@ -2,9 +2,9 @@
 title: Components — the full inventory
 type: reference
 status: active
-updated: 2026-07-04
+updated: 2026-07-09
 verified: 2026-07-04
-description: Every exported KOL component by tier — 42 atoms, 29 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
+description: Every exported KOL component by tier — 39 atoms, 31 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
 aliases:
   - components
   - component-list
@@ -35,7 +35,7 @@ Every public export of `@kolkrabbi/kol-component` and `@kolkrabbi/kol-framework`
 
 One row per source file — a component's compositional sub-parts are members of one component ([[00-taxonomy|taxonomy]] → "one page per component"), noted under each tier, not listed separately. Tier rules (what makes an atom an atom) live in [[02-placement|component placement]] and are machine-enforced by `pnpm validate:taxonomy`.
 
-## Atoms (42) — nest no KOL component
+## Atoms (39) — nest no KOL component
 
 | Component | Job |
 |---|---|
@@ -71,29 +71,27 @@ One row per source file — a component's compositional sub-parts are members of
 | `SegmentedToggle` | A joined N-way segmented control. |
 | `Stepper` | Increment or decrement a number with +/− controls (editable field). |
 | `Tag` | A removable, optionally hashed keyword chip. |
-| `TextPressure` | A line of variable-font text whose glyphs deform toward the pointer — width/weight/italic falling off with distance. |
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
 | `ToggleBracket` | A `Label [STATE]` text toggle. |
 | `ToggleCheckbox` | A labeled checkbox for a binary opt-in. |
 | `ToggleSwitch` | A labeled on/off switch. |
 | `TransparentX` | A checkerboard fill marking transparency. |
-| `TypeSample` | A single labeled type-specimen block driven by family/weight/size/line-height props. |
-| `TypeSpecCard` | A two-column type-spec row — font metrics beside a live sample slot. |
 | `ViewToggle` | Switch between view modes — grid/list, icon, or binary. |
 
-Support exports on the atoms tier: the `Popover` module ships `usePopover` / `PopoverPanel` / `Tooltip`.
+Support exports on the atoms tier: the `Popover` module ships `usePopover` / `PopoverPanel` / `Tooltip`. The type-specimen kit (`TypeSample`, `TypeSpecCard`) and `TextPressure` moved to `@kolkrabbi/kol-foundry` on 2026-07-09 — they render/manipulate a live font, the foundry membership test.
 
-## Molecules (29) — nest a KOL component
+## Molecules (31) — nest a KOL component
 
 | Component | Job |
 |---|---|
 | `Accordion` | A stack of independently collapsible panels. |
 | `AlignmentGrid` | An align-to-artboard control — DS Button cells firing an onAlign seam. |
+| `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
 | `ArticleCard` | A blog/editorial card family — one component with default / hero / mini sizes. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
 | `CodeBlock` | A syntax-highlighted code block with copy-to-clipboard. |
-| `ColorInputRow` | A swatch chip + # hex input row — the merged ColorField/SwatchRow with an optional palette-ref popover. |
+| `ColorInputRow` | A swatch chip + # hex input row — the merged ColorField/SwatchRow with optional palette-ref popover, lock toggle, and token-name column. |
 | `ColorRamp` | One specimen row of color chips — label + note above captioned ColorSwatch chips, from live CSS vars or static colors. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `Dropdown` | A single-select menu with size and minimal/subtle variants. |
@@ -113,6 +111,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `Slider` | Select a numeric value from a range with a draggable track. |
 | `SpecList` | A compact label/value definition list with Divider-separated rows. |
 | `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, and the composed square picker. |
+| `SplitToolButton` | A single-trigger split tool button — one click arms the last-picked variant and opens the variant menu. |
 | `SwatchControls` | A paint-chip stack + eyedropper — swatch slots on ColorSwatch with an EyeDropper-API pick affordance. |
 | `TabsRow` | A labeled underline tab strip — active tab gets a 2px underline. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
@@ -129,7 +128,6 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `BentoCard` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. |
 | `Canvas` | A pan/zoom artboard stage owning the 1080-virtual-pixel coordinate contract. |
 | `Carousel` | A draggable, loopable slider built on Embla. |
-| `ColorLoader` | A full-height branded intro/loading curtain — a timed variable-font wordmark and scroll cue, with click-to-dismiss. |
 | `ContentFilters` | A full filter bar — search, tag groups, view modes — for content grids. |
 | `CtaGlobal` | An editorial two-column contact/CTA band — a display wordmark beside stacked label-over-value rows. |
 | `DiagonalMarqueeRiver` | A gsap diagonal marquee grid with a renderItem slot (reduced-motion static). |
@@ -140,8 +138,9 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
-| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or a default ColorLoader. |
-| `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay. |
+| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
+| `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
+| `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |
 | `NewsletterBand` | A centered subscribe band — heading + lede over an email Input and submit Button with an aria-live status line. |
 | `ParallaxShelf` | A scroll-parallax horizontal shelf of WorkCards. |
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
@@ -153,7 +152,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `WorkCard` | A portfolio grid tile composing TiltCard, with a hover content drawer. |
 | `WorkViewToggle` | A sliding-pill grid/list toggle with inline search (controlled). |
 
-Foundry specimen organisms ship under the `@kolkrabbi/kol-component/foundry` subpath (opentype-heavy) — not the main barrel; see the showcase `/sets/foundry-specimen`.
+Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `ColorLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
 
 ## Loaders & hooks
 

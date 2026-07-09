@@ -39,4 +39,4 @@ The adapter provides `getSampleGames`, `getManifest`, `getMonthlySummary`, `getR
 
 - **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-chess.css`, in the theme aggregate) — this package ships JS + SVG assets only.
 - **Vite** consumer — `ChessPiece` loads its SVG sets via `import.meta.glob`, and the CDN adapter uses `fetch`.
-- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-chess/src"`.
+- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-chess/src"` — Tailwind skips `node_modules` when scanning, so without this line the board/controls layout utilities never generate.

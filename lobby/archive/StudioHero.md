@@ -2,9 +2,11 @@
 component: StudioHero
 source: kol-monorepo/apps/web/src/components/sections/studio/StudioHero.jsx#L1-L35
 date: 2026-07-03
-status: draft
+status: archived
 deps: [HlsVideo, OverlayGlassPanel, Button]
 ---
+
+> **Archived 2026-07-09** — orphaned; identical to FullBleedHero(video variant) + OverlayGlassPanel, both built.
 
 # StudioHero
 
