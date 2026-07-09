@@ -7,6 +7,7 @@
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-component/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
 
 @import "@kolkrabbi/kol-theme";
 @import "@kolkrabbi/kol-framework/kol-brand-color.css";

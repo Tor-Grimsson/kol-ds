@@ -43,6 +43,7 @@
 @import "./kol-components-organisms.css" layer(components);
 @import "./kol-components-dashboards.css" layer(components);
 @import "./kol-components-chess.css" layer(components);
+@import "./kol-components-workshop.css" layer(components);
 
 /* Theme-level design tokens */
 @layer components {

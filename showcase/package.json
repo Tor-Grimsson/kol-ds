@@ -14,6 +14,7 @@
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-workshop": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "chess.js": "^1.4.0",
     "framer-motion": "^12.23.22",

@@ -1,0 +1,700 @@
+/* =============================================================================
+ * KOL components — workshop / docs chrome
+ * =============================================================================
+ * Shell + docs layout chrome shared across the Workshop and Docs surfaces.
+ * Relocated from the monorepo's private @kol/ui package:
+ *   packages/ui/css/components.css  → the .shell-* navigation classes
+ *   packages/ui/css/docs.css        → the .docs-* content classes
+ *                                     (+ docs-only .inline-tag-pill, .tag-graph-*)
+ *
+ * Class hooks are preserved verbatim so the JSX bindings keep resolving.
+ *
+ * Layer: this file ships unlayered; kol-theme.css assigns the layer at import —
+ *   @import "./kol-components-workshop.css" layer(components);
+ * placing it in the `components` cascade layer alongside the rest of KOL chrome,
+ * so consumer utilities (a later Tailwind layer) still override it.
+ *
+ * KOL conformance on relocation:
+ *   - text-transform: uppercase | capitalize stripped (casing is a content
+ *     concern in KOL) — 5 declarations removed.
+ *   - font-family / color / spacing kept as var(--kol-*) token refs.
+ * ============================================================================= */
+
+/* =============================================================================
+ * SHELL NAVIGATION CLASSES
+ * =============================================================================
+ * Shell layout classes shared across Workshop, Docs, and future apps.
+ */
+
+/* Shell Page Header */
+.shell-page-header {
+  background: var(--kol-surface-primary);
+}
+
+/* Shell Tab Row */
+.shell-tabrow-items {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  padding-top: 8px;
+  padding-bottom: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.shell-tabrow-items::-webkit-scrollbar {
+  display: none;
+}
+
+.shell-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 60%, transparent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.shell-tab:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
+}
+
+.shell-tab.active,
+.shell-tab:active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Sidebar sticky wrappers — hidden scrollbar, still scrollable */
+.shell-sidebar-sticky {
+  scrollbar-width: none;
+}
+
+.shell-sidebar-sticky::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar toggle buttons (collapsible section headers) */
+.shell-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  transition: color 0.15s ease;
+}
+
+.shell-sidebar-toggle:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.shell-sidebar-toggle.primary {
+  color: var(--kol-palette-blue);
+}
+
+/* Sidebar section labels */
+.shell-sidebar-label {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* Sidebar links */
+.shell-sidebar-link {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  padding: 4px 0;
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  display: block;
+}
+
+.shell-sidebar-link:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-sidebar-link.active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Sidebar action buttons */
+.shell-sidebar-action {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  padding: 4px 0;
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.shell-sidebar-action:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* TOC expand button */
+.shell-toc-expand-button {
+  padding: 2px;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shell-toc-expand-button:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+/* Navigation header label */
+.shell-nav-header {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* Navigation group */
+.shell-nav-group-header {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+  padding: 6px 0 6px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.shell-nav-group-header:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
+}
+
+.shell-nav-group-count {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.shell-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Navigation items */
+.shell-nav-item {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 4px 12px 4px 20px;
+  border-radius: 0px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  display: block;
+}
+
+.shell-nav-item:hover {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-nav-item.active {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+}
+
+.shell-nav-item-doc {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shell-nav-item-id {
+  font-size: 11px;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.shell-nav-item-title {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* Wide viewport nav font bumps */
+@media (min-width: 1600px) {
+  .shell-tabrow-items {
+    gap: 32px;
+  }
+
+  .shell-tab {
+    font-size: 16px;
+    gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+
+  .shell-tab svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .shell-sidebar-link,
+  .shell-sidebar-action,
+  .shell-nav-group-header,
+  .shell-nav-item-title {
+    font-size: 16px;
+  }
+
+  .shell-sidebar-action svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .shell-nav-item {
+    font-size: 16px;
+    padding: 5px 14px 5px 24px;
+  }
+
+  .shell-sidebar-label,
+  .shell-nav-header,
+  .shell-nav-group-count,
+  .shell-nav-item-id,
+  .toggle-switch-label {
+    font-size: 13px;
+  }
+
+  /* Wide grid gap */
+  .shell-content-grid {
+    gap: 48px;
+  }
+}
+
+/* =============================================================================
+ * DOCS CONTENT CLASSES
+ * =============================================================================
+ * Content-rendering styles for documentation pages: cards, article, prose,
+ * frontmatter, callouts, code, tags, and the tag-graph sidebar.
+ */
+
+/* Documentation Card (used in inventory listing) */
+.docs-card {
+  display: block;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
+  background: transparent;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.docs-card:hover {
+  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 2%, transparent);
+}
+
+.docs-card:hover * {
+  color: inherit;
+}
+
+/* Compact doc card for sidebar */
+.docs-card--compact {
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.docs-title {
+  font-family: var(--kol-font-family-sans);
+  font-size: 32px; /* 32px → 40px */
+  line-height: 1.1;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+}
+@media (min-width: 768px) {
+  .docs-title { font-size: 40px; }
+}
+
+.docs-title-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.docs-subtitle {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
+}
+
+.docs-meta {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.docs-meta strong {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.docs-article {
+  width: 100%;
+  margin-inline: 0;
+  container-type: inline-size;
+  font-family: var(--kol-font-family-sans);
+  font-size: 15px; /* 15px → 16px */
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+}
+
+@media (min-width: 768px) {
+  .docs-article { font-size: 16px; }
+  .docs-article .kol-codeblock { padding: 24px; }
+}
+
+@media (min-width: 1024px) {
+  .docs-article .kol-codeblock { padding: 32px; }
+}
+
+.docs-article h2 {
+  font-family: var(--kol-font-family-sans-narrow);
+  font-size: 24px; /* 24px → 32px */
+  line-height: 1.2;
+  margin-block-start: 2rem;
+  margin-block-end: 1rem;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+}
+@media (min-width: 768px) {
+  .docs-article h2 { font-size: 32px; }
+}
+
+.docs-article h2:first-child,
+.docs-article section:first-child h2:first-child {
+  margin-block-start: 0;
+}
+
+.docs-article h3 {
+  font-family: var(--kol-font-family-sans-compact);
+  font-size: 20px; /* 20px → 28px */
+  line-height: 1.25;
+  margin-block-start: 1.5rem;
+  margin-block-end: 0.75rem;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+}
+@media (min-width: 768px) {
+  .docs-article h3 { font-size: 28px; }
+}
+
+.docs-article h4 {
+  font-family: var(--kol-font-family-sans-compact);
+  font-size: 20px;
+  line-height: 1.3;
+  margin-block-start: 1.25rem;
+  margin-block-end: 0.5rem;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.docs-article p {
+  margin-block-end: 1.5rem;
+}
+
+.docs-article a:not(.tag),
+.docs-link {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+.docs-article a:not(.tag):hover,
+.docs-link:hover {
+  color: var(--kol-accent-primary);
+}
+
+/* Frontmatter properties block */
+.docs-frontmatter {
+  border-bottom: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.docs-frontmatter .shell-sidebar-label {
+  margin-block-end: 8px;
+}
+
+.docs-frontmatter-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.docs-frontmatter-key {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 40%, transparent);
+}
+
+.docs-frontmatter-value {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+}
+
+.docs-frontmatter-row:has(.tag) {
+  align-items: center;
+}
+
+.docs-article code {
+  font-family: var(--kol-font-family-mono);
+  font-size: 13px;
+  padding: 2px 6px;
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 6%, transparent);
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+}
+
+.docs-color-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.docs-color-swatch-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.docs-article strong {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+}
+
+.docs-article em {
+  font-style: italic;
+}
+
+.docs-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-block: 1.5rem;
+}
+
+.docs-meta-inline {
+  font-family: var(--kol-font-family-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
+  margin-block-end: 1rem;
+}
+
+.docs-meta-inline strong {
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+  font-weight: 600;
+}
+
+.docs-article ul,
+.docs-article ol {
+  margin-block: 1.25rem;
+  padding-inline-start: 1.5rem;
+  font-size: inherit;
+  line-height: 1.6;
+}
+
+.docs-list {
+  list-style: disc;
+  line-height: 1.6;
+}
+
+.docs-list.docs-list--ordered {
+  list-style: decimal;
+}
+
+.docs-list.tight li {
+  margin-block-end: 6px;
+}
+
+.docs-article hr {
+  margin-block: 2rem;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 12%, transparent);
+}
+
+.docs-divider {
+  width: 100%;
+  margin-block: 2rem;
+}
+
+.docs-divider > div {
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent) !important;
+}
+
+.docs-callout {
+  padding: 0;
+  padding-left: 16px;
+  margin-block-end: 1.5rem;
+  background: none;
+  border: none;
+  border-left: 1px solid var(--kol-palette-red);
+}
+
+/* Inline hashtag pills */
+.inline-tag-pill {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  font-weight: 470;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.inline-tag-pill:hover {
+  background: var(--kol-accent-primary);
+  color: var(--kol-surface-primary);
+}
+
+/* View toggle buttons */
+.docs-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 56%, transparent);
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.docs-view-toggle:hover {
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+
+.docs-view-toggle.active {
+  background: color-mix(in srgb, var(--kol-accent-primary) 16%, transparent);
+  border-color: color-mix(in srgb, var(--kol-accent-primary) 40%, transparent);
+  color: var(--kol-accent-primary);
+}
+
+.docs-view-toggle--small {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Tag Graph - Main content area */
+.tag-graph-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.tag-graph-svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.tag-graph-tooltip {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+  background: color-mix(in srgb, var(--kol-surface-primary) 92%, transparent);
+  padding: 4px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tag Graph - Sidebar */
+.tag-graph-sidebar {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
+}
+
+.tag-graph-sidebar .tag-graph-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-graph-sidebar .tag-graph-tooltip {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: auto;
+  z-index: 10;
+}
+
+.tag-graph-sidebar-wrapper {
+  margin-top: 4px;
+}

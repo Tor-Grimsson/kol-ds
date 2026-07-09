@@ -23,11 +23,11 @@ function Section({ label, children }) {
     <div>
       <button
         type="button"
-        className="kol-helper-10 uppercase text-subtle hover:text-body w-full flex items-center justify-between pr-1 pb-3 transition-colors"
+        className="kol-helper-10 text-subtle hover:text-body w-full flex items-center justify-between pr-1 pb-3 transition-colors"
         onClick={() => setCollapsed((v) => !v)}
       >
         <span>{label}</span>
-        <Icon name="stroke-chevron-down" size={10} className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
+        <Icon name="chevron-down" size={10} className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
       </button>
       {!collapsed && children}
     </div>
@@ -93,7 +93,7 @@ export default function SidebarWorkshop() {
                 Back
               </button>
               <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
-                <Icon name="dashboard-book-open" size={14} />
+                <Icon name="book-open" size={14} />
                 All documentation
               </button>
               <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
