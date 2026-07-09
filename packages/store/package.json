@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-store",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "KOL commerce/storefront system — the product-detail layout, price display, and the gsap diagonal marquee river. Product data is consumer-injected. Sits above @kolkrabbi/kol-{theme,component}.",
   "license": "MIT",
