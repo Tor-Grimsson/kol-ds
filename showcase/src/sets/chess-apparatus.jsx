@@ -1,4 +1,5 @@
-import ChessAnalysisLayout from '../workshop/chess/apparatus/ChessAnalysisLayout.jsx'
+import { ChessAnalysisLayout } from '@kolkrabbi/kol-component/chess'
+import * as chessData from '../workshop/chess/data/sample-games.js'
 
 export const meta = {
   title: 'Chess apparatus',
@@ -8,15 +9,16 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* The complete apparatus from the monorepo chess program (ported verbatim):
- * GameArchiveTable (sample-game archive with search/filters) feeding
- * ChessBoardWithControls — fluid board + piece-set/theme controls, playback,
- * notation panel, and the variation tree. Self-providing (ChessControlsProvider
- * lives inside), sample games ship in workshop/chess/data/. */
+/* Renders the SHIPPED package (@kolkrabbi/kol-component/chess) — the same code the
+ * monorepo installs — so the gallery can't drift from what's published. Styling comes
+ * from @kolkrabbi/kol-theme (kol-components-chess.css). Game data is not bundled in the
+ * package; the showcase feeds its local sample dataset via the `chessData` adapter
+ * (getSampleGames / getManifest / getMonthlySummary / getRandomMonth / loadMonthGames /
+ * getGamePgnByIdAsync — all exported by workshop/chess/data/sample-games.js). */
 export default function ChessApparatusSet() {
   return (
     <div className="p-6">
-      <ChessAnalysisLayout />
+      <ChessAnalysisLayout chessData={chessData} />
     </div>
   )
 }
