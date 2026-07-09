@@ -36,13 +36,10 @@ const SearchInput = ({ value, onChange, placeholder = 'Search…', size, classNa
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          className="kol-mono-16"
           style={{
             flex: 1,
             minWidth: 0,
-            fontFamily: 'var(--kol-font-family-mono)',
-            fontSize: '14px',
-            fontWeight: 500,
-            letterSpacing: '0.05em',
             color: 'inherit',
             background: 'transparent',
             border: 'none',

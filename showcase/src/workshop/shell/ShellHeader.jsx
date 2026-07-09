@@ -110,7 +110,7 @@ const ShellHeader = ({
                     key={route.id}
                     to={to}
                     end={isRoot}
-                    className="shell-tab"
+                    className={({ isActive }) => `shell-tab kol-helper-14 hover:text-emphasis ${isActive ? 'active text-emphasis' : 'text-meta'}`}
                   >
                     {route.icon && <Icon name={route.icon} size={14} />}
                     {route.label}

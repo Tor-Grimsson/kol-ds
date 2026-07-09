@@ -13,7 +13,7 @@ const SidebarSection = ({ sectionKey, label, collapsedSections, toggleSection, c
   <div>
     <button
       type="button"
-      className="shell-sidebar-toggle shell-sidebar-label"
+      className="shell-sidebar-toggle shell-sidebar-label kol-helper-10 text-meta"
       onClick={() => toggleSection(sectionKey)}
     >
       {label}
@@ -48,23 +48,23 @@ const DocReaderSidebar = ({ toc, allTags, docId, docsIndexHref, componentsHref, 
         <div className="space-y-1">
           <button
             type="button"
-            className="shell-sidebar-action"
+            className="shell-sidebar-action kol-mono-14 text-body"
             onClick={() => navigate(-1)}
           >
             <Icon name="arrow-left" size={14} />
             Back
           </button>
-          <Link to={docsIndexHref} className="shell-sidebar-action">
+          <Link to={docsIndexHref} className="shell-sidebar-action kol-mono-14 text-body">
             <Icon name="book-open" size={14} />
             All documentation
           </Link>
-          <Link to={componentsHref} className="shell-sidebar-action">
+          <Link to={componentsHref} className="shell-sidebar-action kol-mono-14 text-body">
             <Icon name="grid" size={14} />
             View components
           </Link>
           <button
             type="button"
-            className="shell-sidebar-action"
+            className="shell-sidebar-action kol-mono-14 text-body"
             onClick={() => navigator.clipboard.writeText(docFilePath(docId))}
             title="Copy file path to clipboard"
           >
@@ -243,7 +243,7 @@ const DocumentationReader = ({
     <DocsArticle>
         <DocsFrontmatter metadata={doc.metadata} docId={docId} />
         {docTitle && (
-          <h1 className="docs-title">{docTitle}</h1>
+          <h1>{docTitle}</h1>
         )}
         {/* Render intro blocks (excluding H1 which is docTitle) */}
         {introBlocks.filter(b => b.type !== 'heading1').map((block, index) => {

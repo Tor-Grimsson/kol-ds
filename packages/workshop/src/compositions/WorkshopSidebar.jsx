@@ -62,7 +62,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
   return (
     <div className="space-y-4">
       <div className="shell-sidebar-toggle shell-sidebar-label" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
-        <Link to={docHref()} className="shell-sidebar-label" onClick={(e) => {
+        <Link to={docHref()} className="shell-sidebar-label kol-helper-10 text-meta" onClick={(e) => {
           if (collapsed && onToggle) onToggle()
           if (onNavigate) onNavigate(e)
         }}>
@@ -92,7 +92,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
               <div key={major} className="shell-nav-group">
                 <button
                   type="button"
-                  className="shell-nav-group-header w-full text-left"
+                  className="shell-nav-group-header w-full text-left kol-helper-14 text-body"
                   onClick={() => toggleGroup(major)}
                 >
                   <span className="flex items-center gap-2">
@@ -103,7 +103,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
                     />
                     {categoryLabels[major] || 'Other'}
                   </span>
-                  <span className="shell-nav-group-count">({docs.length})</span>
+                  <span className="kol-helper-12 text-subtle">({docs.length})</span>
                 </button>
                 {!isCollapsed && (
                   <div className="shell-nav-items">
@@ -113,11 +113,11 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
                         <Link
                           key={d.id}
                           to={docHref(d.id)}
-                          className={`shell-nav-item shell-nav-item-doc ${isActive ? 'active' : ''}`}
+                          className={`shell-nav-item shell-nav-item-doc kol-mono-14 ${isActive ? 'text-emphasis' : 'text-body'}`}
                           onClick={onNavigate}
                         >
                           <span className="shell-nav-item-title">{cleanTitle(d.title, d.id)}</span>
-                          <span className="shell-nav-item-id">{extractDocNumber(d.id)}</span>
+                          <span className="shell-nav-item-id kol-helper-10 text-subtle">{extractDocNumber(d.id)}</span>
                         </Link>
                       )
                     })}

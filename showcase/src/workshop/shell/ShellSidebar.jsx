@@ -67,14 +67,14 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
     <div className="space-y-4">
       <div className="shell-sidebar-toggle shell-sidebar-label" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
         {labelTo ? (
-          <Link to={labelTo} className="shell-sidebar-label" onClick={(e) => {
+          <Link to={labelTo} className="shell-sidebar-label kol-helper-10 text-meta" onClick={(e) => {
             if (navCollapsed && handleToggle) handleToggle()
             if (onNavigate) onNavigate(e)
           }}>
             {label}
           </Link>
         ) : (
-          <button type="button" onClick={handleToggle}>{label}</button>
+          <button type="button" onClick={handleToggle} className="kol-helper-10 text-meta">{label}</button>
         )}
         <button
           type="button"
@@ -99,7 +99,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
             <div key={route.id} className="shell-nav-group">
               <button
                 type="button"
-                className="shell-nav-group-header w-full text-left"
+                className="shell-nav-group-header w-full text-left kol-helper-14 text-body hover:text-emphasis"
                 onClick={() => handleSectionClick(route)}
               >
                 <span className="flex items-center gap-2">
@@ -114,7 +114,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
                   {route.label}
                 </span>
                 {route.children?.length > 0 && (
-                  <span className="shell-nav-group-count">({route.children.length})</span>
+                  <span className="shell-nav-group-count kol-helper-12 text-subtle">({route.children.length})</span>
                 )}
               </button>
 
@@ -128,7 +128,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
                         to={childPath}
                         end
                         className={({ isActive }) =>
-                          `shell-nav-item${isActive ? ' active' : ''}`
+                          `shell-nav-item kol-mono-14 hover:text-emphasis ${isActive ? 'active text-emphasis' : 'text-body'}`
                         }
                         onClick={onNavigate}
                       >

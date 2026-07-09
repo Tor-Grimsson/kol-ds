@@ -7,7 +7,7 @@ import DocsToc from './DocsToc'
 const SidebarSection = ({ label, collapsed, onToggle, children, indent = false }) => (
   <div>
     <button type="button" className="shell-sidebar-toggle shell-sidebar-label" onClick={onToggle} style={{ justifyContent: 'space-between', paddingRight: '4px', paddingBottom: '12px' }}>
-      <span>{label}</span>
+      <span className="kol-helper-10 text-meta">{label}</span>
       <Icon
         name="stroke-chevron-down"
         size={10}
@@ -39,7 +39,7 @@ const WorkshopSidebarContent = ({ sections = [], links = [], allExpanded, onTogg
         <SidebarSection label="Documentation" collapsed={docsCollapsed} onToggle={() => setDocsCollapsed(p => !p)}>
           <nav className="space-y-0">
             {links.map(({ id, label }) => (
-              <Link key={id} to={`/workshop-preview/docs/${id}`} className="shell-sidebar-link block">
+              <Link key={id} to={`/workshop-preview/docs/${id}`} className="shell-sidebar-link block kol-mono-14 text-body hover:text-emphasis">
                 {label}
               </Link>
             ))}
@@ -50,23 +50,23 @@ const WorkshopSidebarContent = ({ sections = [], links = [], allExpanded, onTogg
       <SidebarSection label="Quick actions" collapsed={actionsCollapsed} onToggle={() => setActionsCollapsed(p => !p)}>
         <div className="space-y-1">
           <button
-            className="shell-sidebar-action"
+            className="shell-sidebar-action kol-mono-14 text-body hover:text-emphasis"
             type="button"
             onClick={() => navigate(-1)}
           >
             <Icon name="arrow-left" size={14} />
             Back
           </button>
-          <Link to="/workshop-preview/docs" className="shell-sidebar-action">
+          <Link to="/workshop-preview/docs" className="shell-sidebar-action kol-mono-14 text-body hover:text-emphasis">
             <Icon name="dashboard-book-open" size={14} />
             All documentation
           </Link>
-          <Link to="/workshop-preview" className="shell-sidebar-action">
+          <Link to="/workshop-preview" className="shell-sidebar-action kol-mono-14 text-body hover:text-emphasis">
             <Icon name="layout" size={14} />
             Workshop home
           </Link>
           <button
-            className="shell-sidebar-action"
+            className="shell-sidebar-action kol-mono-14 text-body hover:text-emphasis"
             type="button"
             onClick={() => navigator.clipboard.writeText(window.location.pathname)}
             title="Copy page path to clipboard"

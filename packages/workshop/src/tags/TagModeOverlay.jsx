@@ -141,7 +141,7 @@ const TagModeOverlay = () => {
                     </button>
                   ))}
                   {visibleTags.length === 0 && (
-                    <p className="text-fg-48 kol-mono-xs py-4">No tags matching "{search}"</p>
+                    <p className="text-fg-48 kol-mono-12 py-4">No tags matching "{search}"</p>
                   )}
                 </div>
 

@@ -33,18 +33,18 @@ const DocsFrontmatter = ({ metadata, docId }) => {
 
   return (
     <div className="docs-frontmatter">
-      <p className="shell-sidebar-label">Frontmatter</p>
+      <p className="shell-sidebar-label kol-helper-10 text-meta">Frontmatter</p>
       {fields.map((key) => {
         const value = metadata[key]
         const icon = FIELD_ICONS[key]
 
         return (
           <div key={key} className="docs-frontmatter-row">
-            <span className="docs-frontmatter-key">
+            <span className="docs-frontmatter-key kol-helper-12 text-meta">
               {icon && <Icon name={icon} size={14} />}
               {key}
             </span>
-            <span className="docs-frontmatter-value">
+            <span className="kol-mono-12 text-strong">
               {key === 'tags' && Array.isArray(value) ? (
                 <span className="flex flex-wrap gap-1.5">
                   {value.map((tag) => (

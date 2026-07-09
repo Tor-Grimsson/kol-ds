@@ -83,7 +83,7 @@ export const renderInlineTokens = (
           <Link
             key={tokenKey}
             to={tagHref(token.tag)}
-            className="inline-tag-pill"
+            className="inline-tag-pill kol-helper-12 bg-fg-08 text-strong"
           >
             #{token.tag}
           </Link>

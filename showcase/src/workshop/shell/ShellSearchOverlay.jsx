@@ -91,20 +91,20 @@ const ShellSearchOverlay = ({ isOpen, onClose, routes = [], basePath = '/', item
               <li key={item.id}>
                 <button
                   type="button"
-                  className="shell-nav-item"
+                  className="shell-nav-item kol-mono-14 text-body hover:text-emphasis"
                   style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px' }}
                   onClick={() => handleSelect(item.path)}
                 >
                   <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                     <HighlightMatch label={item.label} query={query} />
                     {item.matchedHeading && (
-                      <span style={{ fontSize: '11px', opacity: 0.48 }}>§ {item.matchedHeading}</span>
+                      <span className="kol-helper-10 text-meta">§ {item.matchedHeading}</span>
                     )}
                     {item.matchedKeyword && (
-                      <span style={{ fontSize: '11px', opacity: 0.48 }}>⤷ {item.matchedKeyword}</span>
+                      <span className="kol-helper-10 text-meta">⤷ {item.matchedKeyword}</span>
                     )}
                   </span>
-                  <span style={{ marginLeft: 'auto', opacity: 0.48, fontSize: '11px', flexShrink: 0 }}>{item.sectionLabel}</span>
+                  <span className="kol-helper-10 text-meta" style={{ marginLeft: 'auto', flexShrink: 0 }}>{item.sectionLabel}</span>
                 </button>
               </li>
             ))}

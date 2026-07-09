@@ -1,5 +1,13 @@
-/* Ported verbatim from kol-monorepo packages/ui/css/components.css
- * (SHELL NAVIGATION CLASSES section, lines 2881-3187). */
+/* Ported from kol-monorepo packages/ui/css/components.css
+ * (SHELL NAVIGATION CLASSES section).
+ *
+ * Type + color de-drifted to inline kol-* classes in the JSX (2026-07-09).
+ * Every .shell-* rule below now carries ONLY structure that Tailwind / the
+ * kol type classes can't express — sticky wrappers, hidden scrollbars, grid
+ * templates, borders, padding, flex geometry. Font-family / font-size /
+ * font-weight / line-height / letter-spacing / color live inline on the
+ * component's className, visible in dev tools.
+ */
 
 /* =============================================================================
  * SHELL NAVIGATION CLASSES
@@ -33,11 +41,6 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 60%, transparent);
   white-space: nowrap;
   flex-shrink: 0;
   padding-top: 8px;
@@ -47,13 +50,10 @@
   text-decoration: none;
 }
 
-.shell-tab:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
-}
-
+/* Active tab underline — border colour is structural, kept here.
+ * Text colour is inline (text-emphasis on the active NavLink). */
 .shell-tab.active,
 .shell-tab:active {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
   border-bottom-color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
@@ -77,57 +77,28 @@
   background: transparent;
   padding: 0;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   transition: color 0.15s ease;
-}
-
-.shell-sidebar-toggle:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
-}
-
-.shell-sidebar-toggle.primary {
-  color: var(--kol-palette-blue);
 }
 
 /* Sidebar section labels */
 .shell-sidebar-label {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   margin-bottom: 8px;
-  font-weight: 500;
 }
 
 /* Sidebar links */
 .shell-sidebar-link {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
   padding: 4px 0;
   border-radius: 4px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   text-decoration: none;
   transition: all 0.15s ease;
   display: block;
 }
 
-.shell-sidebar-link:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
-.shell-sidebar-link.active {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
 /* Sidebar action buttons */
 .shell-sidebar-action {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
   padding: 4px 0;
   border-radius: 4px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   transition: all 0.15s ease;
   display: flex;
   align-items: center;
@@ -140,16 +111,11 @@
   text-decoration: none;
 }
 
-.shell-sidebar-action:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
 /* TOC expand button */
 .shell-toc-expand-button {
   padding: 2px;
   border: none;
   background: transparent;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   cursor: pointer;
   transition: color 0.15s ease;
   display: flex;
@@ -158,42 +124,20 @@
   flex-shrink: 0;
 }
 
-.shell-toc-expand-button:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
 /* Navigation header label */
 .shell-nav-header {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   margin-bottom: 12px;
-  font-weight: 500;
 }
 
 /* Navigation group */
 .shell-nav-group-header {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
   padding: 6px 0 6px 0;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: color 0.15s ease;
-}
-
-.shell-nav-group-header:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
-}
-
-.shell-nav-group-count {
-  font-size: 11px;
-  opacity: 0.6;
 }
 
 .shell-nav-items {
@@ -205,24 +149,11 @@
 
 /* Navigation items */
 .shell-nav-item {
-  font-family: var(--kol-font-family-mono);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
   padding: 4px 12px 4px 20px;
   border-radius: 0px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   text-decoration: none;
   transition: all 0.15s ease;
   display: block;
-}
-
-.shell-nav-item:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
-.shell-nav-item.active {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
 .shell-nav-item-doc {
@@ -233,24 +164,18 @@
 }
 
 .shell-nav-item-id {
-  font-size: 11px;
   opacity: 0.4;
   flex-shrink: 0;
 }
 
-.shell-nav-item-title {
-  font-size: 13px;
-  letter-spacing: 0.05em;
-}
-
-/* Wide viewport nav font bumps */
+/* Wide viewport nav spacing bumps (structural only — font-size bumps removed;
+ * fixed kol type classes govern size at every width) */
 @media (min-width: 1600px) {
   .shell-tabrow-items {
     gap: 32px;
   }
 
   .shell-tab {
-    font-size: 16px;
     gap: 8px;
     padding-top: 10px;
     padding-bottom: 14px;
@@ -261,29 +186,13 @@
     height: 18px;
   }
 
-  .shell-sidebar-link,
-  .shell-sidebar-action,
-  .shell-nav-group-header,
-  .shell-nav-item-title {
-    font-size: 16px;
-  }
-
   .shell-sidebar-action svg {
     width: 18px;
     height: 18px;
   }
 
   .shell-nav-item {
-    font-size: 16px;
     padding: 5px 14px 5px 24px;
-  }
-
-  .shell-sidebar-label,
-  .shell-nav-header,
-  .shell-nav-group-count,
-  .shell-nav-item-id,
-  .toggle-switch-label {
-    font-size: 13px;
   }
 
   /* Wide header logo */

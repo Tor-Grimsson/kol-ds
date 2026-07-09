@@ -217,7 +217,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
 
   if (graphData.nodes.length === 0) {
     return (
-      <div className="text-fg-48 kol-mono-xs py-4 px-2">
+      <div className="text-fg-48 kol-mono-12 py-4 px-2">
         No tags found.
       </div>
     )
@@ -232,7 +232,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
         className="tag-graph-svg"
       />
       {hoveredNode && (
-        <div className="tag-graph-tooltip">
+        <div className="tag-graph-tooltip kol-helper-10 text-emphasis">
           #{hoveredNode.id} ({hoveredNode.count} {hoveredNode.count === 1 ? 'doc' : 'docs'})
         </div>
       )}

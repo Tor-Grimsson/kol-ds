@@ -1,7 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const TagModeContext = createContext(null)
+// Singleton across duplicate module instances: Vite dev can serve this file
+// under two URLs (barrel `?v=` vs direct import), which would otherwise create
+// two distinct contexts and break useTagMode. Stash on globalThis so every
+// instance shares one context object. Harmless in prod (single instance).
+const TagModeContext = (globalThis.__KOL_TAGMODE_CONTEXT__ ||= createContext(null))
 
 /**
  * Default route helpers. These are the ONLY place the old hardcoded workshop

@@ -27,14 +27,14 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
     <div className="space-y-4">
       {siblings.length > 1 && (
         <div>
-          <div className="shell-sidebar-label">{parentRoute.label}</div>
+          <div className="shell-sidebar-label kol-helper-10 text-meta">{parentRoute.label}</div>
           <nav className="space-y-0">
             {siblings.map(child => (
               <Link
                 key={child.id}
                 to={`${basePath}/${child.path}`}
-                className={`shell-sidebar-link block ${
-                  location.pathname === `${basePath}/${child.path}` ? 'active' : ''
+                className={`shell-sidebar-link block kol-mono-14 ${
+                  location.pathname === `${basePath}/${child.path}` ? 'text-emphasis' : 'text-body'
                 }`}
               >
                 {child.label}
@@ -46,16 +46,16 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
 
       {links && (
         <div>
-          <div className="shell-sidebar-label">Repository</div>
+          <div className="shell-sidebar-label kol-helper-10 text-meta">Repository</div>
           <div className="space-y-1">
             {links.live && (
-              <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action">
+              <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action kol-mono-14 text-body">
                 <Icon name="external-link" size={14} />
                 Live site
               </a>
             )}
             {links.repo && (
-              <a href={links.repo} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action">
+              <a href={links.repo} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action kol-mono-14 text-body">
                 <Icon name="external-link" size={14} />
                 GitHub
               </a>
@@ -65,15 +65,15 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
       )}
 
       <div>
-        <div className="shell-sidebar-label">Quick actions</div>
+        <div className="shell-sidebar-label kol-helper-10 text-meta">Quick actions</div>
         <div className="space-y-1">
-          <Link to={basePath} className="shell-sidebar-action">
+          <Link to={basePath} className="shell-sidebar-action kol-mono-14 text-body">
             <Icon name="layout" size={14} />
             Workshop home
           </Link>
           <button
             type="button"
-            className="shell-sidebar-action"
+            className="shell-sidebar-action kol-mono-14 text-body"
             onClick={() => navigator.clipboard.writeText(window.location.pathname)}
             title="Copy page path to clipboard"
           >

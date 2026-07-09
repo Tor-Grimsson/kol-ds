@@ -7,24 +7,33 @@
  *   packages/ui/css/docs.css        → the .docs-* content classes
  *                                     (+ docs-only .inline-tag-pill, .tag-graph-*)
  *
- * Class hooks are preserved verbatim so the JSX bindings keep resolving.
+ * Class hooks are preserved so the JSX bindings keep resolving.
  *
  * Layer: this file ships unlayered; kol-theme.css assigns the layer at import —
  *   @import "./kol-components-workshop.css" layer(components);
  * placing it in the `components` cascade layer alongside the rest of KOL chrome,
  * so consumer utilities (a later Tailwind layer) still override it.
  *
- * KOL conformance on relocation:
- *   - text-transform: uppercase | capitalize stripped (casing is a content
- *     concern in KOL) — 5 declarations removed.
- *   - font-family / color / spacing kept as var(--kol-*) token refs.
+ * KOL conformance (type/color de-drift):
+ *   - Resting type + text color moved OUT to `kol-*` type classes + kol color
+ *     utilities carried DIRECTLY on the JSX className (visible in dev tools).
+ *     font-family / font-size / font-weight / line-height / letter-spacing /
+ *     color were stripped from these rules; rules that were type/color only
+ *     were deleted. Active color is a conditional kol color class in the JSX;
+ *     the rendered markdown body is wrapped in `.kol-prose`.
+ *   - Only structural props Tailwind/kol utilities can't express are kept here
+ *     (sticky, scrollbar hiding, grid/flex layout, container-query, absolute
+ *     positioning). `:hover` COLOR rules are kept — hover is a pure pointer
+ *     state with no JSX hook and the kol color utilities have no hover variant.
+ *   - `.shell-tab`, `.shell-nav-header`, `.shell-toc-expand-button`,
+ *     `.toggle-switch-label` are rendered by out-of-package / currently-unused
+ *     JSX, so their type is left in place (nothing in this repo's scope carries
+ *     a replacement class for them yet).
  * ============================================================================= */
 
 /* =============================================================================
  * SHELL NAVIGATION CLASSES
- * =============================================================================
- * Shell layout classes shared across Workshop, Docs, and future apps.
- */
+ * ============================================================================= */
 
 /* Shell Page Header */
 .shell-page-header {
@@ -47,15 +56,13 @@
   display: none;
 }
 
+/* .shell-tab — structure only. Type + color live inline on the tab element
+ * (kol-helper-14 + text-meta / active text-emphasis). The active underline
+ * stays here as structure, fired by the `active` marker class. */
 .shell-tab {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 60%, transparent);
   white-space: nowrap;
   flex-shrink: 0;
   padding-top: 8px;
@@ -65,14 +72,9 @@
   text-decoration: none;
 }
 
-.shell-tab:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
-}
-
 .shell-tab.active,
 .shell-tab:active {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
+  border-bottom-color: var(--kol-surface-on-primary);
 }
 
 /* Sidebar sticky wrappers — hidden scrollbar, still scrollable */
@@ -84,7 +86,8 @@
   display: none;
 }
 
-/* Sidebar toggle buttons (collapsible section headers) */
+/* Sidebar toggle buttons (collapsible section headers) — layout only.
+ * Type/color carried in JSX (kol-helper-10 text-meta). */
 .shell-sidebar-toggle {
   display: flex;
   align-items: center;
@@ -94,8 +97,6 @@
   border: none;
   background: transparent;
   padding: 0;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   transition: color 0.15s ease;
 }
 
@@ -103,23 +104,15 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
 }
 
-.shell-sidebar-toggle.primary {
-  color: var(--kol-palette-blue);
-}
-
-/* Sidebar section labels */
+/* Sidebar section labels — margin only; type/color in JSX. */
 .shell-sidebar-label {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   margin-bottom: 8px;
 }
 
-/* Sidebar links */
+/* Sidebar links — layout only; type/color (+ active) in JSX. */
 .shell-sidebar-link {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
   padding: 4px 0;
   border-radius: 4px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   text-decoration: none;
   transition: all 0.15s ease;
   display: block;
@@ -129,17 +122,10 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
-.shell-sidebar-link.active {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
-/* Sidebar action buttons */
+/* Sidebar action buttons — layout only; type/color in JSX. */
 .shell-sidebar-action {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
   padding: 4px 0;
   border-radius: 4px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   transition: all 0.15s ease;
   display: flex;
   align-items: center;
@@ -156,7 +142,7 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
-/* TOC expand button */
+/* TOC expand button — no in-package JSX consumer; kept as-is (icon button). */
 .shell-toc-expand-button {
   padding: 2px;
   border: none;
@@ -174,19 +160,13 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
-/* Navigation header label */
+/* Navigation header label — structure only; type/color inline (kol-helper-10 text-meta). */
 .shell-nav-header {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   margin-bottom: 12px;
-  font-weight: 500;
 }
 
-/* Navigation group */
+/* Navigation group header — layout only; type/color in JSX. */
 .shell-nav-group-header {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
   padding: 6px 0 6px 0;
   cursor: pointer;
   display: flex;
@@ -199,10 +179,6 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
 }
 
-.shell-nav-group-count {
-  opacity: 0.6;
-}
-
 .shell-nav-items {
   display: flex;
   flex-direction: column;
@@ -210,21 +186,16 @@
   margin-top: 4px;
 }
 
-/* Navigation items */
+/* Navigation items — layout only; type/color (+ active) in JSX. */
 .shell-nav-item {
   padding: 4px 12px 4px 20px;
   border-radius: 0px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   text-decoration: none;
   transition: all 0.15s ease;
   display: block;
 }
 
 .shell-nav-item:hover {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
-}
-
-.shell-nav-item.active {
   color: color-mix(in srgb, var(--kol-surface-on-primary) 100%, transparent);
 }
 
@@ -236,8 +207,6 @@
 }
 
 .shell-nav-item-id {
-  font-size: 11px;
-  opacity: 0.4;
   flex-shrink: 0;
 }
 
@@ -245,14 +214,13 @@
   min-width: 0;
 }
 
-/* Wide viewport nav font bumps */
+/* Wide viewport nav layout bumps */
 @media (min-width: 1600px) {
   .shell-tabrow-items {
     gap: 32px;
   }
 
   .shell-tab {
-    font-size: 16px;
     gap: 8px;
     padding-top: 10px;
     padding-bottom: 14px;
@@ -261,11 +229,6 @@
   .shell-tab svg {
     width: 18px;
     height: 18px;
-  }
-
-  .shell-sidebar-link,
-  .shell-sidebar-action {
-    font-size: 16px;
   }
 
   .shell-sidebar-action svg {
@@ -277,8 +240,6 @@
     padding: 5px 14px 5px 24px;
   }
 
-  .shell-nav-header,
-  .shell-nav-item-id,
   .toggle-switch-label {
     font-size: 13px;
   }
@@ -292,8 +253,11 @@
 /* =============================================================================
  * DOCS CONTENT CLASSES
  * =============================================================================
- * Content-rendering styles for documentation pages: cards, article, prose,
- * frontmatter, callouts, code, tags, and the tag-graph sidebar.
+ * Content-rendering styles for documentation pages. The rendered markdown body
+ * is wrapped in `.kol-prose` (headings / p / code / lists / blockquote / links),
+ * so the per-element `.docs-article *` type rules that used to live here are
+ * gone. Only structural doc chrome (cards, frontmatter layout, callout rule,
+ * media, tag graph) remains.
  */
 
 /* Documentation Card (used in inventory listing) */
@@ -324,17 +288,6 @@
   border-radius: 6px;
 }
 
-.docs-title {
-  font-family: var(--kol-font-family-sans);
-  font-size: 32px; /* 32px → 40px */
-  line-height: 1.1;
-  font-weight: 500;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
-}
-@media (min-width: 768px) {
-  .docs-title { font-size: 40px; }
-}
-
 .docs-title-link {
   color: inherit;
   text-decoration: none;
@@ -343,101 +296,26 @@
   gap: 8px;
 }
 
-.docs-subtitle {
-  font-family: var(--kol-font-family-mono);
-  font-size: 14px;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
-}
-
+/* Doc meta row — layout only; type/color in JSX (kol-helper-10 text-body). */
 .docs-meta {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.docs-meta strong {
-  font-weight: 600;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
-}
-
+/* Article shell — structural only; body type owned by `.kol-prose`. */
 .docs-article {
   width: 100%;
   margin-inline: 0;
   container-type: inline-size;
-  font-family: var(--kol-font-family-sans);
-  font-size: 15px; /* 15px → 16px */
-  line-height: 1.75;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
 }
 
 @media (min-width: 768px) {
-  .docs-article { font-size: 16px; }
   .docs-article .kol-codeblock { padding: 24px; }
 }
 
 @media (min-width: 1024px) {
   .docs-article .kol-codeblock { padding: 32px; }
-}
-
-.docs-article h2 {
-  font-family: var(--kol-font-family-sans-narrow);
-  font-size: 24px; /* 24px → 32px */
-  line-height: 1.2;
-  margin-block-start: 2rem;
-  margin-block-end: 1rem;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
-}
-@media (min-width: 768px) {
-  .docs-article h2 { font-size: 32px; }
-}
-
-.docs-article h2:first-child,
-.docs-article section:first-child h2:first-child {
-  margin-block-start: 0;
-}
-
-.docs-article h3 {
-  font-family: var(--kol-font-family-sans-compact);
-  font-size: 20px; /* 20px → 28px */
-  line-height: 1.25;
-  margin-block-start: 1.5rem;
-  margin-block-end: 0.75rem;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
-}
-@media (min-width: 768px) {
-  .docs-article h3 { font-size: 28px; }
-}
-
-.docs-article h4 {
-  font-family: var(--kol-font-family-sans-compact);
-  font-size: 20px;
-  line-height: 1.3;
-  margin-block-start: 1.25rem;
-  margin-block-end: 0.5rem;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
-}
-
-.docs-article p {
-  margin-block-end: 1.5rem;
-}
-
-.docs-article a:not(.tag),
-.docs-link {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: color 0.15s ease;
-}
-
-.docs-article a:not(.tag):hover,
-.docs-link:hover {
-  color: var(--kol-accent-primary);
 }
 
 /* Frontmatter properties block */
@@ -458,33 +336,16 @@
   padding: 4px 0;
 }
 
+/* Frontmatter key — layout only; type/color in JSX (kol-helper-12 text-meta). */
 .docs-frontmatter-key {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 120px;
-  font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 40%, transparent);
-}
-
-.docs-frontmatter-value {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
 }
 
 .docs-frontmatter-row:has(.tag) {
   align-items: center;
-}
-
-.docs-article code {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  padding: 2px 6px;
-  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 6%, transparent);
-  border-radius: 4px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
 }
 
 .docs-color-swatch {
@@ -501,15 +362,6 @@
   flex-shrink: 0;
 }
 
-.docs-article strong {
-  font-weight: 600;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
-}
-
-.docs-article em {
-  font-style: italic;
-}
-
 .docs-image {
   max-width: 100%;
   height: auto;
@@ -518,37 +370,7 @@
 }
 
 .docs-meta-inline {
-  font-family: var(--kol-font-family-sans);
-  font-size: 14px;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
   margin-block-end: 1rem;
-}
-
-.docs-meta-inline strong {
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
-  font-weight: 600;
-}
-
-.docs-article ul,
-.docs-article ol {
-  margin-block: 1.25rem;
-  padding-inline-start: 1.5rem;
-  font-size: inherit;
-  line-height: 1.6;
-}
-
-.docs-list {
-  list-style: disc;
-  line-height: 1.6;
-}
-
-.docs-list.docs-list--ordered {
-  list-style: decimal;
-}
-
-.docs-list.tight li {
-  margin-block-end: 6px;
 }
 
 .docs-article hr {
@@ -566,24 +388,21 @@
   background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent) !important;
 }
 
+/* Callout / blockquote rule — structural; only the broken palette token fixed. */
 .docs-callout {
   padding: 0;
   padding-left: 16px;
   margin-block-end: 1.5rem;
   background: none;
   border: none;
-  border-left: 1px solid var(--kol-palette-red);
+  border-left: 1px solid var(--kol-color-red-200);
 }
 
-/* Inline hashtag pills */
+/* Inline hashtag pills — layout only; type + resting bg/color in JSX
+ * (kol-helper-12 bg-fg-08 text-strong). Hover state kept. */
 .inline-tag-pill {
-  font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  font-weight: 470;
   padding: 2px 8px;
   border-radius: 9999px;
-  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 80%, transparent);
   text-decoration: none;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -594,7 +413,7 @@
   color: var(--kol-surface-primary);
 }
 
-/* View toggle buttons */
+/* View toggle buttons — no in-package JSX consumer; layout kept, type stripped. */
 .docs-view-toggle {
   display: inline-flex;
   align-items: center;
@@ -603,9 +422,6 @@
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
   border-radius: 6px;
   background: transparent;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 56%, transparent);
-  font-family: var(--kol-font-family-mono);
-  font-size: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -638,10 +454,8 @@
   margin: 0 auto;
 }
 
+/* Tag graph tooltip — layout only; type/color in JSX (kol-helper-10 text-emphasis). */
 .tag-graph-tooltip {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
   background: color-mix(in srgb, var(--kol-surface-primary) 92%, transparent);
   padding: 4px 8px;
   border-radius: 4px;

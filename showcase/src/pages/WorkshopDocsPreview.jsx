@@ -27,7 +27,7 @@ function DocsSidebar() {
   return (
     <nav className="space-y-0.5">
       {inventory.map((d) => (
-        <Link key={d.id} to={docHref(d.id)} className="shell-nav-item block">
+        <Link key={d.id} to={docHref(d.id)} className="shell-nav-item block kol-mono-14 text-body hover:text-emphasis">
           <span className="shell-nav-item-title">{d.title}</span>
         </Link>
       ))}

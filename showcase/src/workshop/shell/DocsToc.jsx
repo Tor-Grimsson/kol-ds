@@ -48,7 +48,7 @@ const DocsToc = ({ toc, onNavigate }) => {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className={`shell-sidebar-link block ${activeId === item.id ? 'active' : ''}`}
+              className={`shell-sidebar-link block kol-helper-12 hover:text-emphasis ${activeId === item.id ? 'active text-emphasis' : 'text-meta'}`}
               onClick={handleNavigate}
             >
               {item.label}
