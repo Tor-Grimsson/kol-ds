@@ -13,11 +13,11 @@ import {
   TYPE_COLORS,
   formatB2Size,
   timeAgo,
-} from '@kolkrabbi/kol-component/dashboards'
+} from '@kolkrabbi/kol-dashboards'
 const MOCK = true
 
 // =============================================================================
-// Constants + formatters — now owned by @kolkrabbi/kol-component/dashboards.
+// Constants + formatters — now owned by @kolkrabbi/kol-dashboards.
 // Re-exported here so existing consumers (Home.jsx imports `timeAgo`) keep
 // resolving them from this module.
 // =============================================================================

@@ -6,6 +6,7 @@
    needs, not a workspace shortcut: point @source at the installed package source. */
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-dashboards/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 @source "../node_modules/@kolkrabbi/kol-workshop/src";
 

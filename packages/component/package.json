@@ -9,7 +9,6 @@
   "exports": {
     ".": "./src/index.js",
     "./foundry": "./src/organisms/foundry/index.js",
-    "./dashboards": "./src/dashboards/index.js",
     "./chess": "./src/chess/index.js"
   },
   "files": [

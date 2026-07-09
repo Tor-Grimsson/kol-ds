@@ -19,11 +19,13 @@ This repo **maintains**, **hosts**, and **showcases** the KOL design system. The
 
 The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-monorepo` are downstream and migrate onto the published versions. When package code changes, it changes **here** first.
 
-## §3 — Five UI packages + a clients tier
+## §3 — Six UI packages + a clients tier
 
 `theme` (CSS only) ← `loader` (Icon) ← `component` (atoms→organisms) ← `framework` (app shell). Cross-package imports use the `@kolkrabbi/*` specifier; **within** a package, imports stay relative file-to-file. The split was derived from the recent single-app source (`_kol-labs-single-init-state`), re-packaged into the monorepo's published topology.
 
 **Fifth UI package — `kol-workshop` (added 2026-07-09):** the docs/workshop *system* lifted from the monorepo `apps/web` — a handrolled markdown engine (no remark/gray-matter/fuse.js), search, a tag system (incl. a d3 tag graph), and the docs shell. It sits **above** the other four (consumes `theme` + `icons` + `component` + `framework`); its **pure engine is React-free** and **content is injected by the consumer** (the package never globs docs itself — no baked-in Vite `import.meta.glob`). This **supersedes the earlier "four packages (fixed)" constraint** — deliberately, to avoid bloating `framework` with a markdown parser + d3. Lifted in phases; ships once the KOL-conformance sweep (Button / Icon-v1 / no text-transform / chrome CSS → theme) is complete.
+
+**Sixth UI package — `kol-dashboards` (added 2026-07-09):** the dashboards/analytics system — hand-rolled SVG charts (**no d3**), the card family, a responsive dashboard grid, and the `MetricsDashboard` apparatus — **lifted out of `component`** into its own package. Trigger was **not** dep weight (it carries none): it's a shared capability with **multiple consumers** (every repo with a metrics/analytics view) that must **version on its own cadence**, independent of the core UI atoms. Sits above `theme`/`icons`/`component`; data is **consumer-injected** (never fetches). CSS stays in `kol-theme` (`kol-components-dashboards.css`). This **supersedes the earlier five-package count.** **Do not** fold dashboards back into `component`.
 
 **Clients tier** (added 2026-07-03): headless service SDKs — **one package per service contract** (`@kolkrabbi/kol-*-client`), plain ESM, no React, no deps on or from the UI packages; the package version tracks its API contract. First: `kol-media-client`. **Do not** merge clients into a grab-bag package — unrelated contracts must not version in lock-step.
 

@@ -1,4 +1,4 @@
-import { MetricsDashboard } from '@kolkrabbi/kol-component/dashboards'
+import { MetricsDashboard } from '@kolkrabbi/kol-dashboards'
 import useMetricsData from '../workshop/metrics/useMetricsData.js'
 
 export const meta = {

@@ -11,7 +11,7 @@ import {
   Sparkline,
   Heatmap,
 } from './index.js'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import {
   RANGES,
   DEPLOY_STATE_COLORS,
