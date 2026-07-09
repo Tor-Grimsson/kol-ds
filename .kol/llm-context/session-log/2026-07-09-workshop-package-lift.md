@@ -13,6 +13,7 @@
 - **`.kol/llm-context/ARCHITECTURE.md`** — §3 amended: four→**five** UI packages (+ `kol-workshop`, with rationale).
 - **`docs/documentation/04-compositions/04-workshop-system.md`** — NEW knowledge/reference doc (the full system map) + listed in `documentation/INDEX.md`.
 - **`kol-monorepo/MIGRATION-workshop-package-brief.md`** — NEW cross-repo brief for the monorepo agent (repoint steps, injection seam, gotchas).
+- **`showcase/`** — live dogfood: route `/workshop-docs` (`src/pages/WorkshopDocsPreview.jsx` + `workshop-sample/*.md` fed through the injection seam), `App.jsx` route, `@kolkrabbi/kol-workshop` dep + `@source` in `index.css`. Fixed `kol-mono-xs`→`kol-mono-12` in the reader's not-found branch.
 
 ### Features Added/Removed
 - New package `@kolkrabbi/kol-workshop` (+ `./engine` subpath). Deleted 5 lifted duplicates that already ship in the DS.
@@ -26,12 +27,12 @@
 - `pnpm install` clean — `kol-workshop@0.1.0` is a workspace project, `d3` resolves.
 
 ### Known Issues
-- **NOT render-tested** — static verification only. First live render is the acceptance gate; watch the `.shell-*` / `.kol-btn` cascade on reverted chrome buttons.
+- **Render-verified (2026-07-09)** — live dogfood at showcase `/workshop-docs`: **0 console errors**; ShellHeader-API adaptation + reverted chrome buttons (flush rows, no double-chrome) + icons + remapped fonts all correct. **Showcase-only artifact:** eyebrow labels render uppercase because the showcase's legacy `src/workshop/shell/shell.css` (used by `/workshop-preview`, eager-loaded via `App.jsx`) collides on `.shell-*` — the package CSS is correctly stripped, so real consumers render title-case.
 - Icon gaps: 5 frontmatter field icons (`type`/`calendar`/`layers`/`tag`/`clock`) have no v1 equivalent → dropped (label kept); `share-2`→`polygon` (eyeball).
 - DS `ShellHeader` `dock-right` uses a legacy-fallback icon (no `panel-right` in v1) — pre-existing DS gap, not ours.
 
 ## Next Steps
-1. **`pnpm dev`** → open the workshop route → **eyeball** the render (user validates live).
+1. ~~Render eyeball~~ — **done** (dogfood `/workshop-docs`, 0 errors). All 10 planned tasks complete.
 2. If clean: **push** → CI publishes `kol-workshop@0.1.0` (+ the staged 0.7.0 component/theme). Un-rendered, so patch to 0.1.1 if a fix is needed.
 3. **Monorepo:** repoint `apps/web` onto the package per `MIGRATION-workshop-package-brief.md`; delete the local shell/docs/tag copies.
 4. Optional: author the 5 missing frontmatter icons into `kol-icon-set-v1`.
