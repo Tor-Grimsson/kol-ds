@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 const buttonClass = (isActive, hasMove) => {
-  let base = 'text-left kol-mono-xs transition-colors'
+  let base = 'text-left kol-mono-12 transition-colors'
   if (!hasMove) {
     return `${base} text-fg-40 cursor-not-allowed`
   }
@@ -30,7 +30,7 @@ const NotationPanel = ({ notationPairs = [], activePly = 0, onSelectPly = () => 
   }
 
   if (!notationPairs.length) {
-    return <p className="kol-mono-xs text-fg-64">No notation available for this game.</p>
+    return <p className="kol-mono-12 text-fg-64">No notation available for this game.</p>
   }
 
   return (
@@ -41,7 +41,7 @@ const NotationPanel = ({ notationPairs = [], activePly = 0, onSelectPly = () => 
 
         return (
           <div key={pair.moveNumber} className="flex items-start gap-4" ref={isWhiteActive || isBlackActive ? activeRef : null}>
-            <span className="kol-mono-xs text-fg-64 w-6 text-right">{pair.moveNumber}.</span>
+            <span className="kol-mono-12 text-fg-64 w-6 text-right">{pair.moveNumber}.</span>
             <div className="flex flex-1 gap-8">
               <button
                 type="button"

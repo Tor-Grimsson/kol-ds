@@ -13,6 +13,7 @@ import {
   Sparkline,
   Heatmap,
 } from '../dashboards/index.js'
+import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { DEMO_HOST_SUMMARY } from './demo-data.js'
 import useMetricsData, {
   RANGES,
@@ -132,10 +133,10 @@ const DeployBar = ({ deploys }) => {
   const label = DEPLOY_STATE_LABELS[latest.state] || latest.state
 
   return (
-    <div className="flex items-center gap-3 py-1 border-b border-fg-08 text-xs">
+    <div className="flex items-center gap-3 py-1 border-b border-fg-08 kol-helper-12">
       <div className="flex items-center gap-1.5 shrink-0">
         <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: color }} />
-        <span className="font-medium" style={{ color }}>{label}</span>
+        <span style={{ color }}>{label}</span>
         <span className="text-fg-48">{timeAgo(latest.created)}</span>
         {latest.duration && <span className="text-fg-32">{latest.duration}s build</span>}
       </div>
@@ -189,24 +190,17 @@ const MILESTONE_COLORS = {
 const TimelineBar = ({ range, onRangeChange }) => {
   return (
     <div className="flex items-center gap-3 py-1.5 border-b border-fg-08">
-      <div className="flex gap-0.5 shrink-0">
-        {RANGES.map(r => (
-          <button
-            key={r.id}
-            onClick={() => onRangeChange(r.id)}
-            className={`px-2 py-0.5 text-xs rounded transition-colors ${
-              range === r.id
-                ? 'bg-accent-primary text-surface-primary font-medium'
-                : 'text-fg-48 hover:text-fg-64'
-            }`}
-          >
-            {r.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedToggle
+        size="sm"
+        ariaLabel="Time range"
+        value={range}
+        onChange={onRangeChange}
+        options={RANGES.map(r => ({ value: r.id, label: r.label }))}
+        className="shrink-0"
+      />
 
       <div className="flex-1 overflow-hidden">
-        <div className="flex gap-4 text-xs text-fg-48 overflow-x-auto scrollbar-none">
+        <div className="flex gap-4 kol-helper-12 text-fg-48 overflow-x-auto scrollbar-none">
           {MILESTONES.slice(0, 6).map((m, i) => (
             <span key={i} className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
               <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: MILESTONE_COLORS[m.type] }} />
@@ -265,29 +259,14 @@ const HostFilterPills = ({ host, setHost, allHosts }) => {
   return (
     <div className="flex items-center gap-1.5 pb-2 overflow-x-auto scrollbar-none">
       <span className="dash-caption text-fg-48 shrink-0">Host</span>
-      <button
-        onClick={() => setHost(null)}
-        className={`px-2 py-0.5 text-xs rounded transition-colors shrink-0 ${
-          host === null
-            ? 'bg-accent-primary text-surface-primary font-medium'
-            : 'text-fg-48 hover:text-fg-64'
-        }`}
-      >
-        All
-      </button>
-      {allHosts.map(h => (
-        <button
-          key={h.label}
-          onClick={() => setHost(h.label)}
-          className={`px-2 py-0.5 text-xs rounded transition-colors shrink-0 ${
-            host === h.label
-              ? 'bg-accent-primary text-surface-primary font-medium'
-              : 'text-fg-48 hover:text-fg-64'
-          }`}
-        >
-          {h.label}
-        </button>
-      ))}
+      <SegmentedToggle
+        size="sm"
+        ariaLabel="Host filter"
+        value={host ?? '__all__'}
+        onChange={(v) => setHost(v === '__all__' ? null : v)}
+        options={[{ value: '__all__', label: 'All' }, ...allHosts.map(h => ({ value: h.label, label: h.label }))]}
+        className="shrink-0"
+      />
     </div>
   )
 }
@@ -612,21 +591,13 @@ const Metrics = () => {
             {error ? `error: ${error}` : 'live'}
           </span>
         </div>
-        <div className="flex gap-1">
-          {TABS.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-                tab === t.id
-                  ? 'bg-surface-secondary text-fg-88'
-                  : 'text-fg-48 hover:text-fg-64'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        <SegmentedToggle
+          size="sm"
+          ariaLabel="Dashboard section"
+          value={tab}
+          onChange={setTab}
+          options={TABS.map(t => ({ value: t.id, label: t.label }))}
+        />
       </div>
 
       <TimelineBar range={range} onRangeChange={setRange} />

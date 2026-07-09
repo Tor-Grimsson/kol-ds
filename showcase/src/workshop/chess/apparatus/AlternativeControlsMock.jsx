@@ -156,7 +156,7 @@ const AlternativeControlsMock = () => {
       <div className="flex flex-col gap-3 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="kol-mono-xs text-fg-64">Setup Position</span>
+            <span className="kol-mono-12 text-fg-64">Setup Position</span>
           </div>
           <div className="flex items-center gap-2 text-fg-64">
             <button
@@ -191,17 +191,17 @@ const AlternativeControlsMock = () => {
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search games"
-            className="bg-oq-02 border border-oq-16 rounded px-2 py-1 kol-mono-xxs text-fg-80"
+            className="bg-oq-02 border border-oq-16 rounded px-2 py-1 kol-mono-10 text-fg-80"
           />
         )}
 
         {/* Piece Set Selector */}
         <div className="flex items-center gap-2">
-          <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Piece Set</span>
+          <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Piece Set</span>
           <select
             value={pieceSet}
             onChange={(e) => setPieceSet(e.target.value)}
-            className="bg-oq-04 border border-oq-16 rounded px-2 py-1 kol-mono-xxs text-fg-80"
+            className="bg-oq-04 border border-oq-16 rounded px-2 py-1 kol-mono-10 text-fg-80"
           >
             <option value="default">Default</option>
             <option value="set-1">Set 1</option>
@@ -212,11 +212,11 @@ const AlternativeControlsMock = () => {
 
         {/* Board Theme Selector */}
         <div className="flex items-center gap-2">
-          <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Board Theme</span>
+          <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Board Theme</span>
           <select
             value={boardTheme}
             onChange={(e) => setBoardTheme(e.target.value)}
-            className="bg-oq-04 border border-oq-16 rounded px-2 py-1 kol-mono-xxs text-fg-80"
+            className="bg-oq-04 border border-oq-16 rounded px-2 py-1 kol-mono-10 text-fg-80"
           >
             <option value="green-white">Green & White</option>
             <option value="blue-gray">Blue & Gray</option>
@@ -230,7 +230,7 @@ const AlternativeControlsMock = () => {
 
       <div className="p-3 border-t border-oq-08 bg-fg-02">
         {isEditMode && selectedPalettePiece ? (
-          <div className="kol-mono-xs text-fg-64 mb-2">
+          <div className="kol-mono-12 text-fg-64 mb-2">
             Placing: {selectedPalettePiece.color} {selectedPalettePiece.piece}
           </div>
         ) : null}
@@ -269,13 +269,13 @@ const AlternativeControlsMock = () => {
               onClick={() => setShowGameSelector(!showGameSelector)}
             >
               <div className="flex items-center justify-between">
-                <span className="kol-mono-xs text-fg-80 uppercase tracking-[0.2em]">
+                <span className="kol-mono-12 text-fg-80 uppercase tracking-[0.2em]">
                   {selectedGame?.player?.username || 'Player'} vs {selectedGame?.opponent?.username || 'Opponent'}
                 </span>
                 <Icon name="chevron-down" size={16} className="text-fg-80" />
               </div>
               {selectedGame?.opening?.name && (
-                <span className="kol-mono-xxs text-fg-64">
+                <span className="kol-mono-10 text-fg-64">
                   {selectedGame.opening.name}
                 </span>
               )}
@@ -285,7 +285,7 @@ const AlternativeControlsMock = () => {
                 {filteredGames.map((game) => (
                   <div
                     key={game.id}
-                    className="px-3 py-2 kol-mono-xs text-fg-80 hover:bg-oq-16 cursor-pointer"
+                    className="px-3 py-2 kol-mono-12 text-fg-80 hover:bg-oq-16 cursor-pointer"
                     onClick={() => {
                       setSelectedGameId(game.id)
                       setShowGameSelector(false)
@@ -309,9 +309,9 @@ const AlternativeControlsMock = () => {
         {/* Material Evaluation Bar */}
         <div className="flex flex-col gap-2 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Material</span>
+            <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Material</span>
             {materialEvaluation.advantage !== 'equal' && (
-              <span className="kol-mono-xxs text-fg-80">
+              <span className="kol-mono-10 text-fg-80">
                 {materialEvaluation.advantage === 'white' ? '+' : ''}{materialEvaluation.diff}
               </span>
             )}
@@ -339,9 +339,9 @@ const AlternativeControlsMock = () => {
             return (
               <div key={color} className="flex flex-col gap-2 flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">{color}</span>
+                  <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">{color}</span>
                   {materialValue > 0 && (
-                    <span className="kol-mono-xxs text-fg-80">+{materialValue}</span>
+                    <span className="kol-mono-10 text-fg-80">+{materialValue}</span>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-1 min-h-[24px]">
@@ -359,50 +359,50 @@ const AlternativeControlsMock = () => {
         {selectedGame && (
           <div className="flex flex-col gap-2 flex-shrink-0 border-t border-oq-08 pt-4">
             <div className="flex-1 rounded bg-oq-04 px-3 py-3 flex items-center justify-between cursor-pointer" onClick={() => setShowGameInfo(!showGameInfo)}>
-              <span className="kol-mono-xs text-fg-80 uppercase tracking-[0.2em]">Game Info</span>
+              <span className="kol-mono-12 text-fg-80 uppercase tracking-[0.2em]">Game Info</span>
               <Icon name={showGameInfo ? 'chevron-up' : 'chevron-down'} size={16} className="text-fg-80" />
             </div>
             {showGameInfo && (
               <div className="rounded bg-oq-04 p-3">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
-                    <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Players</span>
-                    <span className="kol-mono-xs text-fg-80">
+                    <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Players</span>
+                    <span className="kol-mono-12 text-fg-80">
                       {selectedGame.player?.rating || '—'} vs {selectedGame.opponent?.rating || '—'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Result</span>
-                    <span className="kol-mono-xs text-fg-80 capitalize">
+                    <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Result</span>
+                    <span className="kol-mono-12 text-fg-80 capitalize">
                       {selectedGame.playerResult || '—'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Time Control</span>
-                    <span className="kol-mono-xs text-fg-80 capitalize">
+                    <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Time Control</span>
+                    <span className="kol-mono-12 text-fg-80 capitalize">
                       {selectedGame.timeClass || '—'}
                     </span>
                   </div>
                   {selectedGame.endTime && (
                     <div className="flex items-center justify-between">
-                      <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Date</span>
-                      <span className="kol-mono-xs text-fg-80">
+                      <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Date</span>
+                      <span className="kol-mono-12 text-fg-80">
                         {new Date(selectedGame.endTime * 1000).toLocaleDateString()}
                       </span>
                     </div>
                   )}
                   {selectedGame.opening?.name && (
                     <div className="flex flex-col gap-1">
-                      <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Opening</span>
-                      <span className="kol-mono-xs text-fg-80">
+                      <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Opening</span>
+                      <span className="kol-mono-12 text-fg-80">
                         {selectedGame.opening.name}
                       </span>
                     </div>
                   )}
                   {selectedGame.termination && (
                     <div className="flex flex-col gap-1">
-                      <span className="kol-mono-xxs text-fg-64 uppercase tracking-[0.3em]">Termination</span>
-                      <span className="kol-mono-xs text-fg-80">
+                      <span className="kol-mono-10 text-fg-64 uppercase tracking-[0.3em]">Termination</span>
+                      <span className="kol-mono-12 text-fg-80">
                         {selectedGame.termination}
                       </span>
                     </div>
@@ -416,7 +416,7 @@ const AlternativeControlsMock = () => {
         <div className="flex flex-col gap-2 flex-1 min-h-0">
           <div className="flex items-center gap-2 pt-4 border-t border-oq-08 flex-shrink-0">
             <div className="flex-1 rounded bg-oq-04 px-3 py-3 flex items-center justify-between cursor-pointer" onClick={() => setShowNotation(!showNotation)}>
-              <span className="kol-mono-xs text-fg-80 uppercase tracking-[0.2em]">{notationLabel}</span>
+              <span className="kol-mono-12 text-fg-80 uppercase tracking-[0.2em]">{notationLabel}</span>
               <Icon name={showNotation ? 'chevron-up' : 'chevron-down'} size={16} className="text-fg-80" />
             </div>
           </div>
@@ -434,7 +434,7 @@ const AlternativeControlsMock = () => {
 
         <div className="flex flex-col gap-3 flex-shrink-0">
           <div className="flex items-center justify-center">
-            <span className="kol-mono-xs text-fg-64 uppercase tracking-[0.2em]">
+            <span className="kol-mono-12 text-fg-64 uppercase tracking-[0.2em]">
               Move {moveIndex}/{notationPairs.length || 0}
             </span>
           </div>

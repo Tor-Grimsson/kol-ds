@@ -13,13 +13,13 @@ const GameSelector = () => {
         onClick={() => setShowGameSelector(!showGameSelector)}
       >
         <div className="flex items-center justify-between">
-          <span className="kol-mono-xs text-fg-80 uppercase tracking-[0.2em]">
+          <span className="kol-mono-12 text-fg-80 uppercase tracking-[0.2em]">
             {selectedGame?.player?.username || 'Player'} vs {selectedGame?.opponent?.username || 'Opponent'}
           </span>
           <Icon name="chevron-down" size={16} className="text-fg-80" />
         </div>
         {selectedGame?.opening?.name && (
-          <span className="kol-mono-xxs text-fg-64">
+          <span className="kol-mono-10 text-fg-64">
             {selectedGame.opening.name}
           </span>
         )}
@@ -29,7 +29,7 @@ const GameSelector = () => {
           {filteredGames.map((game) => (
             <div
               key={game.id}
-              className="px-3 py-2 kol-mono-xs text-fg-80 hover:bg-oq-16 cursor-pointer"
+              className="px-3 py-2 kol-mono-12 text-fg-80 hover:bg-oq-16 cursor-pointer"
               onClick={() => {
                 setSelectedGameId(game.id)
                 setShowGameSelector(false)

@@ -1,13 +1,23 @@
 import { ChessControlsProvider, useChessControls } from '../context/ChessControlsContext'
+import Button from '../../atoms/Button.jsx'
 import ChessBoard from './ChessBoard'
 import ChessBoardFullscreen from './ChessBoardFullscreen'
 import ChessSidebar from './ChessSidebar'
 
-const ToolbarButton = ({ label, onClick }) => (
-  <button type="button" onClick={onClick} className="board-toolbar__button">
-    {label}
-  </button>
-)
+// Map the legacy glyph labels to KOL icon names + accessible labels (icon names
+// reused verbatim from PlaybackControls, which renders the same controls).
+const GLYPH_TO_ICON = {
+  '⏮': { icon: 'play-arrow-start', label: 'Jump to start' },
+  '◀': { icon: 'play-arrow-back', label: 'Step backward' },
+  '▶': { icon: 'play-Play', label: 'Play moves' },
+  '▸': { icon: 'play-arrow-forward', label: 'Step forward' },
+  '⏭': { icon: 'play-arrow-end', label: 'Jump to end' }
+}
+
+const ToolbarButton = ({ label, onClick }) => {
+  const { icon, label: ariaLabel } = GLYPH_TO_ICON[label]
+  return <Button variant="primary" size="sm" iconOnly={icon} onClick={onClick} aria-label={ariaLabel} />
+}
 
 const ChessBoardWithSidebarContent = ({ className = '', onToggleFullscreen = null, isFullscreen = false }) => {
   const {

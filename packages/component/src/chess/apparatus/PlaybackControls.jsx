@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import Button from '../../atoms/Button.jsx'
 import { useChessControls } from '../context/ChessControlsContext'
 
 const PlaybackControls = () => {
@@ -28,21 +28,20 @@ const PlaybackControls = () => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-center">
-        <span className="kol-mono-xs text-fg-64 uppercase tracking-[0.2em]">
+        <span className="kol-mono-12 text-fg-64 uppercase tracking-[0.2em]">
           Move {moveIndex}/{notationPairs.length || 0}
         </span>
       </div>
       <div className="grid grid-cols-5 gap-3">
         {playbackButtons.map(({ icon, label, action }) => (
-          <button
+          <Button
             key={icon}
-            type="button"
+            variant="primary"
+            size="sm"
+            iconOnly={icon}
             aria-label={label}
-            className="h-12 rounded bg-oq-02 border border-fg-08 text-fg-80 flex items-center justify-center hover:bg-oq-04 transition-colors"
             onClick={action}
-          >
-            <Icon name={icon} size={18} className="text-fg-80" />
-          </button>
+          />
         ))}
       </div>
     </div>

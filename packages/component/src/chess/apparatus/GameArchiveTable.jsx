@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Dropdown from '../../molecules/Dropdown.jsx'
 import Input from '../../atoms/Input.jsx'
+import Button from '../../atoms/Button.jsx'
 import Table from '../../organisms/Table.jsx'
 import Tag from '../../atoms/Tag.jsx'
 import Pill from '../../atoms/Pill.jsx'
@@ -305,9 +306,9 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         headerClassName: 'kol-table-cell-title analysis-table__actions-header',
         render: (game) => (
           <div className="analysis-table__actions">
-            <button
-              type="button"
-              className="analysis-table__link analysis-table__link-button"
+            <Button
+              variant="primary"
+              size="sm"
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -316,7 +317,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
             >
               <span className="hidden sm:inline">Load here</span>
               <span className="inline sm:hidden">Load</span>
-            </button>
+            </Button>
             {game.url ? (
               <a
                 href={game.url}
@@ -357,10 +358,10 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-surface-secondary border border-fg-08 rounded">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h3 className="kol-label-mono-xs uppercase">Game Archive Status</h3>
+            <h3 className="kol-mono-12 uppercase">Game Archive Status</h3>
             {isLoading && <Pill variant="subtle" size="sm">Loading...</Pill>}
           </div>
-          <p className="kol-mono-xs text-fg-64">
+          <p className="kol-mono-12 text-fg-64">
             {loadedMonths.size} of {monthOptions.length} months loaded · {loadedGamesCount.toLocaleString()} games in memory
           </p>
         </div>
@@ -378,12 +379,12 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h3 className="kol-heading-subsection">Browse Games</h3>
+          <h3 className="kol-mono-16">Browse Games</h3>
           <Tag>
             {`${tableRows.length} shown · ${filteredGames.length.toLocaleString()} filtered`}
           </Tag>
         </div>
-        <p className="kol-text-md text-auto/70 leading-relaxed">
+        <p className="kol-mono-14 text-auto/70 leading-relaxed">
           Select a month to load games. Initially showing a random sample of 5 games.
           Use filters to narrow your search or load the full month.
         </p>
@@ -401,23 +402,25 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
           />
 
           {selectedMonth && !loadedMonths.has(selectedMonth) && (
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => handleLoadMonth(selectedMonth)}
               disabled={isLoading}
-              className="px-4 py-2 bg-accent-primary text-surface-primary rounded kol-mono-sm hover:bg-accent-80 transition-colors disabled:opacity-50"
             >
               {isLoading ? 'Loading...' : `Load ${selectedMonthInfo?.total || 0} games from ${monthLabel}`}
-            </button>
+            </Button>
           )}
 
           {selectedMonth && loadedMonths.has(selectedMonth) && !isMonthFullyLoaded && (
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => handleLoadMonth(selectedMonth)}
               disabled={isLoading}
-              className="px-4 py-2 bg-surface-tertiary text-auto rounded kol-mono-sm border border-fg-08 hover:bg-surface-secondary transition-colors"
             >
               Load full month ({selectedMonthInfo?.total || 0} games)
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -454,7 +457,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
       <div className="analysis-table-wrapper">
         {!selectedMonth || !loadedMonths.has(selectedMonth) ? (
           <div className="analysis-table-empty">
-            <p className="kol-text-md text-auto/70">
+            <p className="kol-mono-14 text-auto/70">
               {selectedMonth
                 ? 'Click "Load games" to view this month\'s games'
                 : 'Select a month from the dropdown above to get started'}
@@ -462,7 +465,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
           </div>
         ) : tableRows.length === 0 ? (
           <div className="analysis-table-empty">
-            <p className="kol-text-md text-auto/70">
+            <p className="kol-mono-14 text-auto/70">
               No games match the current filters. Try expanding your search criteria.
             </p>
           </div>
@@ -475,15 +478,15 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         )}
 
         {canShowAll && (
-          <button
-            type="button"
-            className="analysis-table__toggle"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setShowAllGames((value) => !value)}
           >
             {showAllGames
               ? 'Show fewer games'
               : `Show all ${filteredGames.length.toLocaleString()} games`}
-          </button>
+          </Button>
         )}
       </div>
     </section>

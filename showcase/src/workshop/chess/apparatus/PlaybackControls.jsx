@@ -28,7 +28,7 @@ const PlaybackControls = () => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-center">
-        <span className="kol-mono-xs text-fg-64 uppercase tracking-[0.2em]">
+        <span className="kol-mono-12 text-fg-64 uppercase tracking-[0.2em]">
           Move {moveIndex}/{notationPairs.length || 0}
         </span>
       </div>

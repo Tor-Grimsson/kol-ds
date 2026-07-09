@@ -84,7 +84,7 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
   const piecePixelSize = getPieceSize(size)
   const squarePixelSize = isFluid ? '100%' : `${parseInt(boardPixelSize) / 8}px`
   const coordinatePaddingClass = size === 'mobile' ? 'p-1' : size === 'tablet' ? '!p-1.5' : 'p-2'
-  const coordinateTypographyClass = size === 'mobile' ? 'kol-helper-xxxs' : 'kol-helper-xs'
+  const coordinateTypographyClass = size === 'mobile' ? 'kol-helper-8' : 'kol-helper-12'
   const rankIndices =
     orientation === 'white'
       ? [...Array(boardState.length).keys()]

@@ -1,13 +1,14 @@
 // Data is consumer-provided via the `chessData` prop (no bundled dataset).
 // Required: chessData.getManifest(), chessData.getMonthlySummary().
 import { useMemo } from 'react'
+import Button from '../../atoms/Button.jsx'
 
 const MetricCard = ({ icon, label, value, delta, trend = 'up' }) => {
   return (
     <div className="chess-hero-metric">
       <div className="chess-hero-metric__header">
         <div className="chess-hero-metric__icon">{icon}</div>
-        <button type="button" className="chess-hero-metric__menu">⋯</button>
+        <Button variant="primary" size="sm" iconOnly="more" aria-label="More" className="chess-hero-metric__menu-btn" />
       </div>
       <div className="chess-hero-metric__label">{label}</div>
       <div className="chess-hero-metric__value">{value}</div>
@@ -256,7 +257,7 @@ const ChessHero = ({ chessData }) => {
 
           <div className="chess-hero__side-footer">
             <span className="chess-hero__side-period">Last 12 months</span>
-            <button type="button" className="chess-hero__side-link">View report</button>
+            <Button variant="primary" size="sm">View report</Button>
           </div>
 
           <div className="chess-hero__side-metric">
@@ -292,7 +293,7 @@ const ChessHero = ({ chessData }) => {
               <span className="chess-hero__side-status-dot" />
               Live data
             </span>
-            <button type="button" className="chess-hero__side-link">View report</button>
+            <Button variant="primary" size="sm">View report</Button>
           </div>
         </div>
       </div>

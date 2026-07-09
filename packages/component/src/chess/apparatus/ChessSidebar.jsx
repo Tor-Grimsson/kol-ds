@@ -1,4 +1,7 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { ChessPiece } from '../index.js'
+import Button from '../../atoms/Button.jsx'
+import Dropdown from '../../molecules/Dropdown.jsx'
 
 const getPieceSize = (size) => {
   const sizeMap = {
@@ -40,10 +43,8 @@ const ChessSidebar = ({
   const sidebarClass = getSidebarClass(variant)
   const showFullscreenToggle = typeof onToggleFullscreen === 'function'
   const fullscreenLabel = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'
-  const toolbarButton = (label, onClick) => (
-    <button type="button" onClick={onClick} className="board-toolbar__button">
-      {label}
-    </button>
+  const toolbarButton = (iconName, onClick, ariaLabel) => (
+    <Button variant="primary" size="sm" iconOnly={iconName} onClick={onClick} aria-label={ariaLabel} />
   )
 
   return (
@@ -52,13 +53,9 @@ const ChessSidebar = ({
         <div className="flex items-center justify-between gap-3">
           <span className="board-playback__badge">{'{}'} Setup Position</span>
           {showFullscreenToggle ? (
-            <button
-              type="button"
-              onClick={onToggleFullscreen}
-              className="board-toolbar__button board-toolbar__button--compact"
-            >
+            <Button variant="outline" size="sm" onClick={onToggleFullscreen}>
               {fullscreenLabel}
-            </button>
+            </Button>
           ) : null}
         </div>
 
@@ -73,17 +70,15 @@ const ChessSidebar = ({
           </p>
         </div>
 
-        <select
+        <Dropdown
           value={selectedGameId ?? ''}
-          onChange={(e) => onSelectGame(e.target.value || null)}
+          onChange={(value) => onSelectGame(value || null)}
+          options={(sampleGames || []).map((game) => ({
+            value: game.id,
+            label: `${game.player?.username} vs ${game.opponent?.username}`
+          }))}
           className="board-playback__select"
-        >
-          {(sampleGames || []).map((game) => (
-            <option value={game.id} key={game.id}>
-              {game.player?.username} vs {game.opponent?.username}
-            </option>
-          ))}
-        </select>
+        />
       </header>
 
       <div className="board-playback__palette">
@@ -104,15 +99,15 @@ const ChessSidebar = ({
       </div>
 
       <div className="board-playback__controls">
-        {toolbarButton('⏮', onGoToStart)}
-        {toolbarButton('◀', onStepBackward)}
-        {toolbarButton('▶', onTogglePlayback)}
-        {toolbarButton('▸', onStepForward)}
-        {toolbarButton('⏭', onGoToEnd)}
+        {toolbarButton('play-arrow-start', onGoToStart, 'Jump to start')}
+        {toolbarButton('play-arrow-back', onStepBackward, 'Step backward')}
+        {toolbarButton('play-Play', onTogglePlayback, 'Toggle playback')}
+        {toolbarButton('play-arrow-forward', onStepForward, 'Step forward')}
+        {toolbarButton('play-arrow-end', onGoToEnd, 'Jump to end')}
       </div>
 
       <div className="board-playback__footer">
-        <span>⚙</span>
+        <Icon name="settings-01" size={16} />
         <span>♜</span>
         <span>♘</span>
         <span>♞</span>

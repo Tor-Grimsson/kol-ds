@@ -16,7 +16,7 @@ const VariationTree = () => {
   }
 
   if (!moveTree?.length) {
-    return <p className="kol-mono-xs text-fg-64">No variation data.</p>
+    return <p className="kol-mono-12 text-fg-64">No variation data.</p>
   }
 
   return (
@@ -29,16 +29,16 @@ const VariationTree = () => {
       />
       {userVariations?.length ? (
         <div className="mt-3 border-t border-oq-08 pt-3">
-          <div className="kol-mono-xxs uppercase tracking-[0.2em] text-fg-50 mb-2">
+          <div className="kol-mono-10 uppercase tracking-[0.2em] text-fg-50 mb-2">
             Custom Variations
           </div>
           {userVariations.map((variation) => (
             <div key={variation.id} className="flex flex-col gap-1 mb-2">
               <div className="flex items-center justify-between text-fg-80">
-                <span className="kol-mono-xs">{variation.label}</span>
+                <span className="kol-mono-12">{variation.label}</span>
                 <button
                   type="button"
-                  className="kol-mono-xxs text-status-danger hover:text-status-danger-foreground"
+                  className="kol-mono-10 text-status-danger hover:text-status-danger-foreground"
                   onClick={() => removeUserVariation(variation.id)}
                 >
                   remove
@@ -49,7 +49,7 @@ const VariationTree = () => {
                   <button
                     type="button"
                     key={`${variation.id}-${idx}`}
-                    className={`kol-mono-xxs px-2 py-1 rounded border border-oq-12 ${
+                    className={`kol-mono-10 px-2 py-1 rounded border border-oq-12 ${
                       move.ply === moveIndex ? 'text-accent-primary border-accent-primary' : ''
                     }`}
                     onClick={() => setMoveIndex(move.ply)}
@@ -72,7 +72,7 @@ const VariationBranch = ({ moves, depth, moveIndex, onSelectPly, label }) => {
   return (
     <div className="flex flex-col gap-1">
       {label ? (
-        <div className="kol-mono-xxs uppercase tracking-[0.2em] text-fg-50">{label}</div>
+        <div className="kol-mono-10 uppercase tracking-[0.2em] text-fg-50">{label}</div>
       ) : null}
       {moves.map((node, idx) => (
         <VariationNode
@@ -101,7 +101,7 @@ const VariationNode = ({ node, depth, moveIndex, onSelectPly }) => {
         }`}
         style={{ paddingLeft: `${depth * 12 + 8}px` }}
       >
-        <span className="kol-mono-xs">
+        <span className="kol-mono-12">
           {node.moveNumber}
           {node.color === 'black' ? '...' : '.'} {node.san}
         </span>

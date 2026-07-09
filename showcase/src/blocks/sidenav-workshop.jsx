@@ -8,9 +8,9 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* The monorepo workshop shell's sidebar, recreated presentationally on its own
- * shell-* chrome (workshop/shell/shell.css, loaded app-wide via the vendored
- * /workshop-preview). Router links become local state so it renders anywhere. */
+/* The monorepo workshop shell's sidebar, recreated presentationally with KOL
+ * primitives (kol-helper-* type, text-* roles, Icon) — no foreign shell-* chrome.
+ * Router links become local state so it renders anywhere. */
 
 const GROUPS = [
   { id: 'guides', label: 'Guides', items: ['Getting started', 'Theming', 'Publishing'] },
@@ -23,9 +23,8 @@ function Section({ label, children }) {
     <div>
       <button
         type="button"
-        className="shell-sidebar-toggle shell-sidebar-label w-full"
+        className="kol-helper-10 uppercase text-subtle hover:text-body w-full flex items-center justify-between pr-1 pb-3 transition-colors"
         onClick={() => setCollapsed((v) => !v)}
-        style={{ justifyContent: 'space-between', paddingRight: 4, paddingBottom: 12 }}
       >
         <span>{label}</span>
         <Icon name="stroke-chevron-down" size={10} className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
@@ -55,26 +54,28 @@ export default function SidebarWorkshop() {
               {GROUPS.map((group) => {
                 const open = openGroups.has(group.id)
                 return (
-                  <div key={group.id} className="shell-nav-group">
-                    <button type="button" className="shell-nav-group-header w-full text-left" onClick={() => toggleGroup(group.id)}>
+                  <div key={group.id}>
+                    <button
+                      type="button"
+                      className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center justify-between py-1.5 text-left transition-colors"
+                      onClick={() => toggleGroup(group.id)}
+                    >
                       <span className="flex items-center gap-2">
-                        <svg className={`h-3 w-3 transition-transform ${open ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                        <Icon name="chevron-right" size={12} className={`transition-transform ${open ? 'rotate-90' : ''}`} />
                         {group.label}
                       </span>
-                      <span className="shell-nav-group-count">({group.items.length})</span>
+                      <span className="kol-helper-10 text-subtle">({group.items.length})</span>
                     </button>
                     {open && (
-                      <div className="shell-nav-items">
+                      <div className="mt-1 flex flex-col gap-1">
                         {group.items.map((item) => (
                           <button
                             key={item}
                             type="button"
                             onClick={() => setActive(item)}
-                            className={`shell-nav-item w-full text-left${active === item ? ' active' : ''}`}
+                            className={`kol-helper-12 w-full text-left py-1 pl-5 pr-3 transition-colors ${active === item ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
                           >
-                            <span className="shell-nav-item-title">{item}</span>
+                            {item}
                           </button>
                         ))}
                       </div>
@@ -87,15 +88,15 @@ export default function SidebarWorkshop() {
 
           <Section label="Quick actions">
             <div className="space-y-1">
-              <button className="shell-sidebar-action w-full" type="button">
+              <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
                 <Icon name="arrow-left" size={14} />
                 Back
               </button>
-              <button className="shell-sidebar-action w-full" type="button">
+              <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
                 <Icon name="dashboard-book-open" size={14} />
                 All documentation
               </button>
-              <button className="shell-sidebar-action w-full" type="button">
+              <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
                 <Icon name="copy" size={14} />
                 Copy path
               </button>
