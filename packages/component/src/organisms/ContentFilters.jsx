@@ -210,7 +210,7 @@ const ContentFilters = ({
                   key={opt.value}
                   onClick={() => handleViewModeChange(opt.value)}
                   className={`kol-helper-14 cursor-pointer select-none ${viewMode === opt.value ? 'text-fg-96' : 'text-fg-32 hover:text-fg-48'}`}
-                  style={{ textTransform: 'uppercase', letterSpacing: 1 }}
+                  style={{ letterSpacing: 1 }}
                 >
                   {opt.label}
                 </span>
@@ -245,7 +245,7 @@ const ContentFilters = ({
               key={opt.value}
               onClick={() => setLayout(opt.value)}
               className={`kol-helper-12 cursor-pointer select-none ${layout === opt.value ? 'text-fg-96' : 'text-fg-32 hover:text-fg-48'}`}
-              style={{ textTransform: 'uppercase', letterSpacing: 1 }}
+              style={{ letterSpacing: 1 }}
             >
               {opt.label}
             </span>

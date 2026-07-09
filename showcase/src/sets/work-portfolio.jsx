@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { GalleryCarousel } from '@kolkrabbi/kol-component'
 import {
-  WorkCard, WorkListItem, WorkViewToggle, ParallaxShelf, GalleryCarousel,
-} from '@kolkrabbi/kol-component'
+  WorkCard, WorkListItem, WorkViewToggle, ParallaxShelf,
+} from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Work / portfolio',
@@ -11,18 +12,14 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* Self-contained inline SVG cover — a gradient plate with a mono caption. No
- * network; `w`/`h` set the aspect so gallery tiles read wide vs portrait. */
-function cover(w, h, label, c1, c2) {
-  const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'>` +
-    `<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>` +
-    `<stop offset='0' stop-color='${c1}'/><stop offset='1' stop-color='${c2}'/></linearGradient></defs>` +
-    `<rect width='${w}' height='${h}' fill='url(#g)'/>` +
-    `<circle cx='${(w * 0.74).toFixed(0)}' cy='${(h * 0.28).toFixed(0)}' r='${(Math.min(w, h) * 0.17).toFixed(0)}' fill='rgba(255,255,255,0.12)'/>` +
-    `<text x='40' y='${h - 44}' font-family='ui-monospace, SFMono-Regular, monospace' font-size='30' fill='rgba(255,255,255,0.92)'>${label}</text>` +
-    `</svg>`
-  return `data:image/svg+xml,${encodeURIComponent(svg)}`
+/* Real project imagery from the KOL image library (served at /kol-images),
+ * cycled through the gallery tiles. `cover()` keeps its signature; args ignored. */
+const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
+let _phi = 0
+function cover() {
+  const img = KOL_IMAGES[_phi % KOL_IMAGES.length]
+  _phi += 1
+  return img
 }
 
 /* Flat project bag (no Sanity) — the identical shape drives both the WorkCard

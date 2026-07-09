@@ -2,7 +2,7 @@
 title: Brand kit — the manifest schema and its satellites
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-09
 description: The brand-kit tier — the manifest schema as the contract, the template slate, Kolkrabbi's own kol-brand package, the kol-scrape CLI + adapter that feed it, and the confidentiality rule for client instances.
 aliases:
   - brand-kit
@@ -36,7 +36,7 @@ A **brand kit** is a data + assets package — no server (unlike the clients tie
 | Package | Role | Registry |
 |---|---|---|
 | `kol-brand-template` | Schema + placeholder "Norðurljós" data — the **slate** for new clients and the **dev fixture** for generic styleguide renderers. Also ships the scrape **adapter**. | public |
-| `kol-brand` | Kolkrabbi's real manifest — identity, 4 anchors, 7 ramps, type, the four logo marks (`./logos/*` export). Public-appropriate facts only. | public |
+| `kol-brand` | Kolkrabbi's real manifest — identity, 4 anchors, 7 ramps, type; plus the brand SVG assets (logos, wordmark, favicons) in `src/svg/` with an `<Asset>` loader (`./svg` + `./svg/*` raw). Public-appropriate facts only. | public |
 | per-client instances | Copy of the template, filled. | **NEVER public npm** — local package in the client's repo |
 
 ## Feeding it

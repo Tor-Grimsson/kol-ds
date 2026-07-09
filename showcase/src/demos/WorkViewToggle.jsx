@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { WorkViewToggle } from '@kolkrabbi/kol-component'
+import { WorkViewToggle } from '@kolkrabbi/kol-content'
 
 export const stage = 'md'
 

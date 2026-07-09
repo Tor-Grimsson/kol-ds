@@ -1,4 +1,4 @@
-import { PortableTextRenderer } from '@kolkrabbi/kol-component'
+import { PortableTextRenderer } from '@kolkrabbi/kol-content'
 
 export const stage = 'full'
 

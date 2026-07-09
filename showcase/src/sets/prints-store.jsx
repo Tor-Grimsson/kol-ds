@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ProductDetailLayout, DiagonalMarqueeRiver, Button } from '@kolkrabbi/kol-component'
+import { Button } from '@kolkrabbi/kol-component'
+import { ProductDetailLayout, DiagonalMarqueeRiver } from '@kolkrabbi/kol-store'
 
 export const meta = {
   title: 'Prints / store',

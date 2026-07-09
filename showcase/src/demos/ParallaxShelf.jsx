@@ -1,4 +1,4 @@
-import { ParallaxShelf } from '@kolkrabbi/kol-component'
+import { ParallaxShelf } from '@kolkrabbi/kol-content'
 
 export const stage = 'full'
 

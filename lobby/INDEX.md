@@ -95,6 +95,7 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 | [CtaGlobal](CtaGlobal.md) | web `components/sections/cta/CtaGlobal.jsx` | 2026-07-03 | draft (layout · editorial CTA band · DS gap) |
 | [NewsletterBand](NewsletterBand.md) | web `components/sections/home/HomeSignup.jsx` | 2026-07-03 | draft (layout · subscribe band · DS gap) |
 | [ChapterNavigation](ChapterNavigation.md) | web `components/sections/shared/ChapterNavigation.jsx` | 2026-07-03 | draft (layout · TOC nav · LOW/dead · dedupe w/ DocsToc) |
+| [TailwindContentSource](TailwindContentSource.md) | kol-monorepo `apps/web/src/index.css` (packaging gap) | 2026-07-09 | draft (build · @kolkrabbi pkgs ship utility JSX but no compiled CSS · 5 consumer @source lines · recommend compiling utilities into each pkg's CSS) |
 
 ## Processed
 

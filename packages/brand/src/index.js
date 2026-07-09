@@ -145,13 +145,19 @@ export const brand = defineBrand({
     ],
   },
 
-  /* Package-relative SVG assets (src/logos/) — importable via the
-   * "./logos/*" export (Vite: append ?raw for the markup). */
+  /* Package-relative SVG assets (src/svg/) — importable via the
+   * "./svg/*" export (Vite: append ?raw for the markup). */
   logos: [
-    { id: 'logomark', name: 'Logomark', file: './logos/kol-logomark.svg', use: 'Square/compact contexts, avatars, favicons' },
-    { id: 'wordmark', name: 'Wordmark', file: './logos/kol-wordmark.svg', use: 'Text-led contexts, headers' },
-    { id: 'lockup-hori', name: 'Lockup · horizontal', file: './logos/kol-lockup-hori.svg', use: 'Default lockup, wide formats' },
-    { id: 'lockup-vert', name: 'Lockup · vertical', file: './logos/kol-lockup-vert.svg', use: 'Stacked/narrow formats' },
+    { id: 'logomark', name: 'Logomark', file: './svg/kol-logomark.svg', use: 'Square/compact contexts, avatars, favicons' },
+    { id: 'wordmark', name: 'Wordmark', file: './svg/kol-wordmark.svg', use: 'Text-led contexts, headers' },
+    { id: 'lockup-hori', name: 'Lockup · horizontal', file: './svg/kol-lockup-hori.svg', use: 'Default lockup, wide formats' },
+    { id: 'lockup-vert', name: 'Lockup · vertical', file: './svg/kol-lockup-vert.svg', use: 'Stacked/narrow formats' },
+  ],
+
+  favicons: [
+    { id: 'kolkrabbi', name: 'Kolkrabbi', file: './svg/favicon-kolkrabbi.svg', use: 'Default site favicon' },
+    { id: 'kol-ds', name: 'KOL design system', file: './svg/favicon-kol-ds.svg', use: 'The design-system showcase' },
+    { id: 'metrics', name: 'Metrics', file: './svg/favicon-metrics.svg', use: 'The metrics dashboard' },
   ],
 
   clearspace: { rule: 'Clearspace equals the logomark height on all sides of any lockup.' },

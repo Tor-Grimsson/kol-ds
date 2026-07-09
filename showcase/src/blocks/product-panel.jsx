@@ -1,4 +1,5 @@
-import { ProductDetailLayout, Button } from '@kolkrabbi/kol-component'
+import { Button } from '@kolkrabbi/kol-component'
+import { ProductDetailLayout } from '@kolkrabbi/kol-store'
 
 export const meta = {
   title: 'Product panel',

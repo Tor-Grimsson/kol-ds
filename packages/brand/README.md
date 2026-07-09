@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-brand
 
-Kolkrabbi's **brand kit** — the studio's brand manifest conforming to the [`@kolkrabbi/kol-brand-template`](../brand-template) schema. Data + assets; no server, no React.
+Kolkrabbi's **brand kit** — the studio's brand manifest conforming to the [`@kolkrabbi/kol-brand-template`](../brand-template) schema, plus the brand SVG assets under `src/svg/`. Manifest is data-only; the `<Asset>` loader needs React (optional peer).
 
 ```js
 import { brand } from '@kolkrabbi/kol-brand'
@@ -11,11 +11,19 @@ brand.colors.anchors       // the four semantic identity anchors
 brand.logos                // package-relative SVG paths
 ```
 
-Logo assets ship in the package and resolve via the `./logos/*` export:
+## Brand assets — `src/svg/` + the `<Asset>` loader
 
-```js
-import wordmark from '@kolkrabbi/kol-brand/logos/kol-wordmark.svg?raw'  // Vite
+All brand marks (logos, wordmark, favicons) live in one `src/svg/` folder with the loader co-located — the `<Icon>`/`<Graphic>` pattern rehomed here. **Nothing is inlined in source; assets are files, loaded.** Two ways in:
+
+```jsx
+import { Asset, ASSET_NAMES } from '@kolkrabbi/kol-brand/svg'
+<Asset name="kol-wordmark" className="h-6 w-auto text-fg-88" />
+
+// or a raw single-file import (Vite):
+import wordmark from '@kolkrabbi/kol-brand/svg/kol-wordmark.svg?raw'
 ```
+
+Names: `kol-wordmark`, `kol-logomark`, `kol-lockup-hori`, `kol-lockup-vert`, `favicon-kolkrabbi`, `favicon-kol-ds`. The **Workshop wordmark** is font-set (not yet an SVG) — its treatment is preserved at `svg/wordmark-workshop.spec.md` for tracing to `wordmark-workshop.svg` later.
 
 ## Sources & scope
 

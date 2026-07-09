@@ -1,4 +1,4 @@
-import { FoundryCharacterSets } from '@kolkrabbi/kol-component/foundry'
+import { FoundryCharacterSets } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'full'
 

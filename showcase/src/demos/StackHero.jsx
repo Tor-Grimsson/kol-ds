@@ -1,4 +1,4 @@
-import { StackHero } from '@kolkrabbi/kol-component'
+import { StackHero } from '@kolkrabbi/kol-content'
 
 export const stage = 'full'
 

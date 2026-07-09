@@ -3,13 +3,14 @@ title: KOL design system — overview
 type: reference
 status: active
 updated: 2026-07-03
-description: What KOL is — the tiers, the eight published packages, how consumers install it, and the four-point consumer contract. Start here.
+description: What KOL is — the tiers, the ten UI packages (full map in the package topology), how consumers install it, and the four-point consumer contract. Start here.
 aliases:
   - overview
   - kol-overview
 tags:
   - domain/design-system
 related:
+  - "[[01-package-topology|package topology]]"
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
   - "[[../03-components/01-inventory|components]]"
   - "[[../../operations/01-release-pipeline|release pipeline]]"
@@ -23,14 +24,16 @@ related:
 
 | Tier | Packages | Job |
 |---|---|---|
-| **UI** (fixed, 4) | `kol-theme` ← `kol-icons` ← `kol-component` ← `kol-framework` | CSS tokens/chrome → Icon/Graphic loading → atoms→organisms → app shell |
+| **UI** (10) | foundation `kol-theme` · `kol-icons`; core `kol-component` · `kol-framework`; + 6 domain packages (workshop · dashboards · chess · content · foundry · store) | see [[01-package-topology]] |
 | **Clients** | `kol-media-client` | Headless service SDKs — one package per service contract |
 | **Brand kit** | `kol-brand-template` · `kol-brand` | The brand-manifest schema + conforming data packages |
 | **Tools** | `kol-scrape` | CLIs (presence/catalog scraper) |
 
 The UI dependency arrow only points left — no reverse deps, ever. Clients/brand/tools have no deps on or from the UI packages.
 
-## The eight packages
+## The packages
+
+The six standalone **domain** packages (workshop, dashboards, chess, content, foundry, store) are mapped in [[01-package-topology]]. The foundation, core, and non-UI packages:
 
 | Package | What it is |
 |---|---|

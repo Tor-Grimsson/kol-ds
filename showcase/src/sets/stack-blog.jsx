@@ -3,7 +3,9 @@ import {
   ArticleHeader,
   PortableTextRenderer,
   ArticleCard,
-} from '@kolkrabbi/kol-component'
+  ShareButtons,
+  SourcesReferences,
+} from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Blog / editorial',
@@ -13,21 +15,14 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* ─── Self-contained placeholder art ───────────────────────────────────────
- * No Sanity, no CDN, no network: every image is an inline data-URI SVG so the
- * set renders identically offline. `ph()` returns a soft two-stop gradient
- * with a faint mono label — the editorial stand-in for a real photo. */
-const ph = (label, a = '#1b1b21', b = '#33333d', w = 1200, h = 675) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">` +
-      `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">` +
-      `<stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>` +
-      `<rect width="${w}" height="${h}" fill="url(#g)"/>` +
-      `<line x1="0" y1="${h / 2}" x2="${w}" y2="${h / 2}" stroke="#ffffff" stroke-opacity="0.06"/>` +
-      `<line x1="${w / 2}" y1="0" x2="${w / 2}" y2="${h}" stroke="#ffffff" stroke-opacity="0.06"/>` +
-      `<text x="56" y="${h - 48}" fill="#ffffff" fill-opacity="0.30" ` +
-      `font-family="monospace" font-size="30" letter-spacing="2">${label}</text></svg>`,
-  )}`
+/* ─── Editorial imagery ─────────────────────────────────────────────────────
+ * Real typeface-specimen photos from the KOL image library (served at
+ * /kol-images), cycled through the article's hero, figures, and card
+ * thumbnails. `ph()` keeps its old signature so every call site is unchanged —
+ * it ignores its args and hands back the next image in the set. */
+const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
+let _phi = 0
+const ph = () => KOL_IMAGES[_phi++ % KOL_IMAGES.length]
 
 const heroArt = ph('STACK / 001', '#101014', '#2a2a34', 1600, 900)
 const mastheadArt = ph('FIG.00 — the fixed grid', '#15151a', '#30303a')
@@ -234,6 +229,17 @@ export default function StackBlogSet() {
         />
 
         <PortableTextRenderer blocks={body} className="pt-4" />
+
+        <div className="pt-10 flex flex-col gap-10">
+          <ShareButtons url="https://kolkrabbi.io/stack/monospace" title="On Monospace and the Discipline of Constraint" />
+          <SourcesReferences
+            sources={[
+              { title: 'The Elements of Typographic Style — Robert Bringhurst', href: 'https://example.com/bringhurst', note: 'On the measure and the fixed grid.' },
+              { title: 'JetBrains Mono — design notes', href: 'https://www.jetbrains.com/lp/mono/', note: 'The mono family this STACK sets in.' },
+              { title: 'Butterick’s Practical Typography', href: 'https://practicaltypography.com/' },
+            ]}
+          />
+        </div>
       </div>
 
       <section className="max-w-[1400px] mx-auto px-6 pt-24">

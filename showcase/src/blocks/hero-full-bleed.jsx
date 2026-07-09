@@ -8,36 +8,9 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* Inline cover art — a data-URI SVG so the block ships with zero network. */
-const COVER = `data:image/svg+xml,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
-    <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#0E0E11"/>
-        <stop offset="0.55" stop-color="#241a17"/>
-        <stop offset="1" stop-color="#AD5038"/>
-      </linearGradient>
-      <radialGradient id="glow" cx="0.72" cy="0.28" r="0.85">
-        <stop offset="0" stop-color="#F5C9B4" stop-opacity="0.5"/>
-        <stop offset="1" stop-color="#F5C9B4" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-    <rect width="1600" height="900" fill="url(#bg)"/>
-    <rect width="1600" height="900" fill="url(#glow)"/>
-    <g fill="none" stroke="#FAFAFA" stroke-opacity="0.10" stroke-width="1.5">
-      <circle cx="1180" cy="250" r="120"/>
-      <circle cx="1180" cy="250" r="220"/>
-      <circle cx="1180" cy="250" r="320"/>
-      <path d="M0 640 C 360 560, 620 720, 940 620 S 1420 500, 1600 580"/>
-      <path d="M0 720 C 360 640, 620 800, 940 700 S 1420 580, 1600 660"/>
-    </g>
-    <g fill="#FAFAFA" fill-opacity="0.08">
-      <rect x="120" y="120" width="64" height="64" rx="6"/>
-      <rect x="120" y="200" width="64" height="64" rx="6"/>
-      <rect x="200" y="120" width="64" height="64" rx="6"/>
-    </g>
-  </svg>`,
-)}`
+/* Real full-bleed cover from the KOL image library (the ASCII radar graphic,
+ * served at /kol-images). */
+const COVER = '/kol-images/radar-ascii.png'
 
 export default function HeroFullBleed() {
   return (

@@ -1,4 +1,4 @@
-import { ScrollDriftGallery } from '@kolkrabbi/kol-component'
+import { ScrollDriftGallery } from '@kolkrabbi/kol-content'
 
 export const stage = 'full'
 

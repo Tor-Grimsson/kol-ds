@@ -1,0 +1,46 @@
+{
+  "name": "@kolkrabbi/kol-content",
+  "version": "0.1.0",
+  "private": false,
+  "description": "KOL content/CMS system — the /stack (blog editorial) + /work (portfolio) streams: article masthead + author/share/sources pieces, a portable-text renderer, blog cards, and the work shelf/list apparatus (embla shelf, scroll-drift gallery, view toggle). Data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "embla-carousel-react": "^8.6.0",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "gsap": "^3.13.0"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "cms",
+    "content",
+    "blog",
+    "portfolio",
+    "editorial"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/content"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

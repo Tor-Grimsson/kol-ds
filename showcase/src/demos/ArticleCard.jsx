@@ -1,4 +1,4 @@
-import { ArticleCard } from '@kolkrabbi/kol-component'
+import { ArticleCard } from '@kolkrabbi/kol-content'
 
 export const stage = 'lg'
 

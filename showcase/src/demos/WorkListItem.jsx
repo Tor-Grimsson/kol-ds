@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { WorkListItem } from '@kolkrabbi/kol-component'
+import { WorkListItem } from '@kolkrabbi/kol-content'
 
 export const stage = 'md'
 

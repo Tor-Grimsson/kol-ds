@@ -1,4 +1,4 @@
-import { WorkCard } from '@kolkrabbi/kol-component'
+import { WorkCard } from '@kolkrabbi/kol-content'
 
 export const stage = 'md'
 

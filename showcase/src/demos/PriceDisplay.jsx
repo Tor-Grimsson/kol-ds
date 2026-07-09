@@ -1,4 +1,4 @@
-import { PriceDisplay } from '@kolkrabbi/kol-component'
+import { PriceDisplay } from '@kolkrabbi/kol-store'
 
 export const stage = 'md'
 

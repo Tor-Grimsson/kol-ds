@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { WorkViewToggle, WorkCard, WorkListItem } from '@kolkrabbi/kol-component'
+import { WorkViewToggle, WorkCard, WorkListItem } from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Work grid',
@@ -8,18 +8,10 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* Inline project cover — standalone SVG document, no network. */
-const cover = (a, b, seed = 0) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'>` +
-      `<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>` +
-      `<stop offset='0' stop-color='${a}'/><stop offset='1' stop-color='${b}'/>` +
-      `</linearGradient></defs>` +
-      `<rect width='800' height='1000' fill='url(#g)'/>` +
-      `<circle cx='${180 + seed * 90}' cy='300' r='200' fill='#ffffff' opacity='0.08'/>` +
-      `<rect x='${420 - seed * 40}' y='560' width='300' height='300' rx='24' fill='#000000' opacity='0.12'/>` +
-      `</svg>`,
-  )}`
+/* Real project imagery (served at /kol-images), cycled through the grid. */
+const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
+let _phi = 0
+const cover = () => KOL_IMAGES[_phi++ % KOL_IMAGES.length]
 
 const PROJECTS = [
   {

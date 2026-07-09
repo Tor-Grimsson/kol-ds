@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SpecimenSectionHeader } from '@kolkrabbi/kol-component/foundry'
+import { SpecimenSectionHeader } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'md'
 

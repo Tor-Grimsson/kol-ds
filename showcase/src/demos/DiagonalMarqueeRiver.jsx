@@ -1,4 +1,4 @@
-import { DiagonalMarqueeRiver } from '@kolkrabbi/kol-component'
+import { DiagonalMarqueeRiver } from '@kolkrabbi/kol-store'
 
 export const stage = 'full'
 

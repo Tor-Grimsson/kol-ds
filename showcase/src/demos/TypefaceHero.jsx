@@ -1,4 +1,4 @@
-import { TypefaceHero } from '@kolkrabbi/kol-component/foundry'
+import { TypefaceHero } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'full'
 

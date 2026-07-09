@@ -1,4 +1,4 @@
-import { ArticleCard } from '@kolkrabbi/kol-component'
+import { ArticleCard } from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Article grid',
@@ -7,18 +7,10 @@ export const meta = {
 }
 export const stage = 'full'
 
-/* Inline editorial thumbnail — standalone SVG document, no network. */
-const thumb = (a, b, seed = 0) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>` +
-      `<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>` +
-      `<stop offset='0' stop-color='${a}'/><stop offset='1' stop-color='${b}'/>` +
-      `</linearGradient></defs>` +
-      `<rect width='1200' height='800' fill='url(#g)'/>` +
-      `<circle cx='${240 + seed * 120}' cy='260' r='210' fill='#ffffff' opacity='0.08'/>` +
-      `<rect x='${640 - seed * 60}' y='420' width='380' height='380' rx='24' fill='#000000' opacity='0.10'/>` +
-      `</svg>`,
-  )}`
+/* Real editorial imagery (served at /kol-images), cycled through the grid. */
+const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
+let _phi = 0
+const thumb = () => KOL_IMAGES[_phi++ % KOL_IMAGES.length]
 
 const HERO = {
   title: 'How a small studio built its own type foundry from scratch',

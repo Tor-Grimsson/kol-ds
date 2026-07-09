@@ -1,4 +1,4 @@
-import { ArticleHeader } from '@kolkrabbi/kol-component'
+import { ArticleHeader } from '@kolkrabbi/kol-content'
 
 export const stage = 'full'
 
