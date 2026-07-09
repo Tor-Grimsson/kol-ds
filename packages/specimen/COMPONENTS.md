@@ -1,4 +1,4 @@
-# `@kolkrabbi/kol-foundry` — target component list
+# `@kolkrabbi/kol-specimen` — target component list
 
 The type-foundry / specimen apparatus. **The membership test: does the component render, inspect, or manipulate an actual font?** Type tools and live specimens belong; generic cards, marketing chrome, and prose-that-mentions-type do not — even if they sit in the monorepo's `routes/foundry/` folder. Data is consumer-injected; shared primitives stay in `@kolkrabbi/kol-component`.
 
@@ -45,7 +45,7 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 
 - **Shared primitives** (from `@kolkrabbi/kol-component`, never bundled): `Button` · `Divider` · `Icon` · `Slider` · `Dropdown` · `Pill` · `Tag` · `ContentFilters` · `useAxisAnimation`.
 - **Optional peer:** `opentype.js` (`GlyphMetricsGrid` falls back without it).
-- **CSS:** `kol-components-foundry.css` in `@kolkrabbi/kol-theme` — re-slim to only classes the kept set references.
+- **CSS:** `kol-components-specimen.css` in `@kolkrabbi/kol-theme` — re-slim to only classes the kept set references.
 - **Router:** none — injected `linkComponent` prop (defaults to `<a>`).
 
 ## Explicitly excluded — not type-specific

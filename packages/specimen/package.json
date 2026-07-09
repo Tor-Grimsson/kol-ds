@@ -1,5 +1,5 @@
 {
-  "name": "@kolkrabbi/kol-foundry",
+  "name": "@kolkrabbi/kol-specimen",
   "version": "0.1.0",
   "private": false,
   "description": "KOL type-foundry system — the type-specimen apparatus: typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, and font-preview. Typeface data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",

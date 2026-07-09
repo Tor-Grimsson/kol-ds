@@ -5,7 +5,7 @@ import {
   FoundryCharacterSets,
   FontPreviewSection,
   SpecimenSectionHeader,
-} from '@kolkrabbi/kol-foundry'
+} from '@kolkrabbi/kol-specimen'
 import { Table } from '@kolkrabbi/kol-component'
 
 export const meta = {

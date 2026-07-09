@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  * KOL foundry components — the CSS the type-specimen layer
- * (@kolkrabbi/kol-foundry) needs beyond Tailwind utilities. Extracted from the
+ * (@kolkrabbi/kol-specimen) needs beyond Tailwind utilities. Extracted from the
  * monorepo `packages/ui/css/components.css` FOUNDRY block; only the classes the
  * shipped foundry components actually reference are pulled (`.foundry-title`,
  * `.pairing-card`, `.feature-card`). The rest of the monorepo foundry block

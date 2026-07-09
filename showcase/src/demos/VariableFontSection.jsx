@@ -1,4 +1,4 @@
-import { VariableFontSection } from '@kolkrabbi/kol-foundry'
+import { VariableFontSection } from '@kolkrabbi/kol-specimen'
 
 export const stage = 'full'
 

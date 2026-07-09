@@ -14,7 +14,7 @@
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-content": "workspace:*",
     "@kolkrabbi/kol-dashboards": "workspace:*",
-    "@kolkrabbi/kol-foundry": "workspace:*",
+    "@kolkrabbi/kol-specimen": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-store": "workspace:*",

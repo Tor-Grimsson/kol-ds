@@ -4,22 +4,17 @@ import TypefaceStyleSection from './TypefaceStyleSection.jsx'
 import FontPreviewSection from './FontPreviewSection.jsx'
 import VariableFontSection from './VariableFontSection.jsx'
 import GlyphMetricsSection from './GlyphMetricsSection.jsx'
-import FoundryOpentypeFeatures from './FoundryOpentypeFeatures.jsx'
-import FoundryTypefacePairing from './FoundryTypefacePairing.jsx'
-import FoundryOtherTypefaces from './FoundryOtherTypefaces.jsx'
-import FoundryCTA from './FoundryCTA.jsx'
 
 /**
  * TypefaceSpecimenPage — the full data-driven typeface specimen composition:
- * hero → styles → preview → variable axes → glyph metrics → OpenType features →
- * pairings → other typefaces → licence CTA, interleaved with editorial photos.
- * Drives every section generically from one `typeface` config object (see the
- * bundled `typefaceConfig` / `getTypefaceConfig`).
+ * hero → styles → preview → variable axes → glyph metrics, interleaved with
+ * editorial photos. Drives every section generically from one `typeface` config
+ * object (see the bundled `typefaceConfig` / `getTypefaceConfig`).
  *
  * SEVERED from the monorepo route (`TypefacePage`), which is why this is a pure
  * composition, not a route:
  * - No router: navigation is an injected `linkComponent` prop (receives `to`),
- *   defaulting to a plain `<a href>`. Forwarded to FoundryCTA / FoundryOtherTypefaces.
+ *   defaulting to a plain `<a href>`.
  * - No app theme control: the route's `applyTheme`/`getInitialTheme` effect and
  *   `toggleTheme` were dropped — theme is the consuming app's concern.
  * - No app-shell hero: the route's `FullBleedHero` (consumer chrome) is now an
@@ -203,17 +198,6 @@ const TypefaceSpecimenPage = ({
             </div>
           </section>
 
-          {/* Section 6: OpenType Features */}
-          <div className="my-8">
-            <FoundryOpentypeFeatures />
-          </div>
-
-          {/* Section 9: Pairings */}
-          <FoundryTypefacePairing />
-
-          {/* Section 10: Other Typefaces */}
-          <FoundryOtherTypefaces linkComponent={linkComponent} />
-
           {/* Image Section 5 */}
           <section className="w-full py-16 overflow-hidden">
             <div className="max-w-[1400px] mx-auto aspect-[2/1]">
@@ -230,17 +214,6 @@ const TypefaceSpecimenPage = ({
             </div>
           </section>
 
-          {/* Section 8: License */}
-          <FoundryCTA
-            heading="Licence"
-            description="TG Málrómur is available for both personal and commercial use. Please review licensing terms before use."
-            action={{
-              to: '/foundry/licensing',
-              label: 'Licence details',
-              variant: 'primary'
-            }}
-            linkComponent={linkComponent}
-          />
         </div>
       </main>
     </div>

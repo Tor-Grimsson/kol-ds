@@ -4,14 +4,14 @@ type: reference
 status: canonical
 updated: 2026-07-09
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview), graduated from the component/foundry subpath to its own package on 2026-07-09.
+description: Component index and consumer guide for @kolkrabbi/kol-specimen — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview), graduated from the component/foundry subpath to its own package on 2026-07-09.
 aliases:
   - foundry
-  - kol-foundry
+  - kol-specimen
   - type specimen
 sources:
-  - packages/foundry/src/index.js
-  - packages/foundry/README.md
+  - packages/specimen/src/index.js
+  - packages/specimen/README.md
   - showcase/src/sets/foundry-specimen.jsx
 tags:
   - domain/design-system
@@ -21,12 +21,12 @@ related:
   - "[[06-store-system|store system]]"
 ---
 
-# Foundry system — `@kolkrabbi/kol-foundry`
+# Foundry system — `@kolkrabbi/kol-specimen`
 
 The type-foundry / specimen apparatus. A distinct content domain (typefaces, glyph metrics, variable-font axes — **not** Sanity CMS) with its own consumer (kolkrabbi.io/foundry) and versioning cadence. Lifted out of the `component/foundry` subpath into its own package on 2026-07-09.
 
 ```js
-import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
+import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-specimen'
 ```
 
 ## Component index
@@ -72,5 +72,5 @@ Pulled from the monorepo `apps/web/routes/foundry` delta. Every section ships a 
 - **Shared primitives stay in `kol-component`** — `Tag`, `Pill`, `Slider`, `Button`, `Divider`, `Dropdown`, `Icon`, `SectionLabel`, `ContentFilters`, `TiltCard`, `FeaturesCardSection`, `useAxisAnimation`. This package depends on them.
 - **No router / app-shell dependency** — the sections that navigated (`FoundryCTA`, `TypefaceLibraryGridWithVariables`, `FoundryFeatureSection`, `TypefaceSpecimenPage`) take an injected `linkComponent` (receives `to`), falling back to a plain `<a href>`. The severed page's `FullBleedHero` is an injectable `HeroComponent` slot with a minimal built-in default.
 - **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back.
-- **CSS** ships in `@kolkrabbi/kol-theme` — foundry classes (`.foundry-title`, `.pairing-card`, `.feature-card`) in `kol-components-foundry.css`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).
+- **CSS** ships in `@kolkrabbi/kol-theme` — foundry classes (`.foundry-title`, `.pairing-card`, `.feature-card`) in `kol-components-specimen.css`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-specimen/src"`).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.

@@ -1,4 +1,4 @@
-import { FontPreviewSection } from '@kolkrabbi/kol-foundry'
+import { FontPreviewSection } from '@kolkrabbi/kol-specimen'
 
 export const stage = 'full'
 

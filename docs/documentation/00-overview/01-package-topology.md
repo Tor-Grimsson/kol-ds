@@ -11,7 +11,7 @@ aliases:
   - which package
 sources:
   - packages/component/src/index.js
-  - packages/foundry/src/index.js
+  - packages/specimen/src/index.js
   - packages/store/src/index.js
   - .kol/llm-context/ARCHITECTURE.md
 tags:
@@ -42,7 +42,7 @@ Ten UI packages plus a clients tier. Every content/domain system that was drifti
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
 | | `@kolkrabbi/kol-chess` | chess apparatus + pieces + `./data` adapter |
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
-| | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |
+| | `@kolkrabbi/kol-specimen` | type-specimen apparatus — see [[05-foundry-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
