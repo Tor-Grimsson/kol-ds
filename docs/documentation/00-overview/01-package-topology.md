@@ -4,7 +4,7 @@ type: reference
 status: canonical
 updated: 2026-07-09
 verified: 2026-07-09
-description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the six standalone domain packages (workshop, dashboards, chess, content, foundry, store), and the clients tier. What each owns, what stays shared, and which component lives where.
+description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the six standalone domain packages (workshop, dashboards, chess, content, specimen, store), and the clients tier. What each owns, what stays shared, and which component lives where.
 aliases:
   - package map
   - topology
@@ -19,7 +19,7 @@ tags:
   - domain/architecture
 related:
   - "[[04-workshop-system|workshop system]]"
-  - "[[05-foundry-system|foundry component index]]"
+  - "[[05-specimen-system|specimen component index]]"
   - "[[06-store-system|store component index]]"
   - "[[07-content-system|content system]]"
   - "[[08-chess-system|chess system]]"
@@ -42,7 +42,7 @@ Ten UI packages plus a clients tier. Every content/domain system that was drifti
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
 | | `@kolkrabbi/kol-chess` | chess apparatus + pieces + `./data` adapter |
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
-| | `@kolkrabbi/kol-specimen` | type-specimen apparatus — see [[05-foundry-system]] |
+| | `@kolkrabbi/kol-specimen` | type-specimen apparatus — see [[05-specimen-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
@@ -65,10 +65,10 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 | **chess** | `ChessAnalysisLayout`, `ChessBoard`(+WithControls/WithSidebar/Fullscreen), `ChessSidebar`, `GameSelector`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `ChessPiece`, `ChessHero`, `ChessControlsProvider`, `buildMoveTree`; data adapter at `@kolkrabbi/kol-chess/data` |
 | **dashboards** | `DashMetricCard`/`DashChartCard`/`DashListCard`/`DashFeaturedCard`/`DashTableCard`/`DashStackedBarCard`/`DashAlertCard`/`DashSlotCard`, `LineChart`/`DonutChart`/`Sparkline`/`Heatmap`/`Histogram`/`ScatterPlot`/`Candlestick`, `DashboardGrid`, `MetricsDashboard` |
 | **content** | Stack: `StackHero`, `ArticleHeader`, `AuthorLine`, `ArticleCard`, `PortableTextRenderer`, `ShareButtons`, `SourcesReferences`. Work: `WorkCard`, `WorkListItem`, `WorkViewToggle`, `ParallaxShelf`, `ScrollDriftGallery` |
-| **foundry** | see [[05-foundry-system]] — specimen sections + typeface collection/pairings/features + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture |
+| **specimen** | see [[05-specimen-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture |
 | **store** | see [[06-store-system]] — `ProductDetailLayout`, `PriceDisplay`, `DiagonalMarqueeRiver`, `PrintsGrid`, `PrintGridCard`, `PrintGridCardGsap`, `PrintBuyButton`; `./data` demo catalog subpath. (The "Drift" gallery reuses content's `ScrollDriftGallery` — not duplicated here.) |
 
 ## Deps at a glance
 
-- `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `opentype.js` (optional peer) → foundry.
+- `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `opentype.js` (optional peer) → specimen.
 - Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons). CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).

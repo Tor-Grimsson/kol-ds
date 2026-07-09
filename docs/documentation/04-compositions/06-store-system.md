@@ -19,7 +19,7 @@ tags:
   - domain/store
 related:
   - "[[01-package-topology|package topology]]"
-  - "[[05-foundry-system|foundry system]]"
+  - "[[05-specimen-system|specimen system]]"
 ---
 
 # Store system — `@kolkrabbi/kol-store`

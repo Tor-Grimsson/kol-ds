@@ -24,7 +24,7 @@ related:
 
 | Tier | Packages | Job |
 |---|---|---|
-| **UI** (10) | foundation `kol-theme` · `kol-icons`; core `kol-component` · `kol-framework`; + 6 domain packages (workshop · dashboards · chess · content · foundry · store) | see [[01-package-topology]] |
+| **UI** (10) | foundation `kol-theme` · `kol-icons`; core `kol-component` · `kol-framework`; + 6 domain packages (workshop · dashboards · chess · content · specimen · store) | see [[01-package-topology]] |
 | **Clients** | `kol-media-client` | Headless service SDKs — one package per service contract |
 | **Brand kit** | `kol-brand-template` · `kol-brand` | The brand-manifest schema + conforming data packages |
 | **Tools** | `kol-scrape` | CLIs (presence/catalog scraper) |
@@ -33,7 +33,7 @@ The UI dependency arrow only points left — no reverse deps, ever. Clients/bran
 
 ## The packages
 
-The six standalone **domain** packages (workshop, dashboards, chess, content, foundry, store) are mapped in [[01-package-topology]]. The foundation, core, and non-UI packages:
+The six standalone **domain** packages (workshop, dashboards, chess, content, specimen, store) are mapped in [[01-package-topology]]. The foundation, core, and non-UI packages:
 
 | Package | What it is |
 |---|---|

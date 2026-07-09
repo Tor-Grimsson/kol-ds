@@ -35,7 +35,7 @@ export const SET_CATEGORY_LABELS = {
   editorial: 'Editorial / CMS',
   portfolio: 'Portfolio',
   store: 'Store',
-  foundry: 'Foundry',
+  specimen: 'Specimen',
   editor: 'Editors',
   other: 'Other',
 }

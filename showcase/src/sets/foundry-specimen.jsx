@@ -9,10 +9,10 @@ import {
 import { Table } from '@kolkrabbi/kol-component'
 
 export const meta = {
-  title: 'Foundry / type specimen',
+  title: 'Type specimen',
   description:
-    'The full FOUNDRY type-specimen apparatus — hero, live weight-axis playground, parsed-metric glyph inspector, character-set browser, size ladder, and a type-scale recipe.',
-  category: 'foundry',
+    'The full type-specimen apparatus — hero, live weight-axis playground, parsed-metric glyph inspector, character-set browser, size ladder, and a type-scale recipe.',
+  category: 'specimen',
   featured: true,
 }
 export const stage = 'full'
