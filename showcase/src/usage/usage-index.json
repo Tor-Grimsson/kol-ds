@@ -2719,7 +2719,7 @@
   },
   {
     "name": "SpecimenSectionHeader",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "molecules",
     "count": 0,
     "apps": [],
@@ -2728,7 +2728,7 @@
   },
   {
     "name": "GlyphMetricsGrid",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],
@@ -2737,7 +2737,7 @@
   },
   {
     "name": "VariableFontSection",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],
@@ -2746,7 +2746,7 @@
   },
   {
     "name": "TypefaceHero",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],
@@ -2755,7 +2755,7 @@
   },
   {
     "name": "TypefaceStyleSection",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],
@@ -2764,7 +2764,7 @@
   },
   {
     "name": "FontPreviewSection",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],
@@ -2773,7 +2773,7 @@
   },
   {
     "name": "FoundryCharacterSets",
-    "pkg": "@kolkrabbi/kol-component/foundry",
+    "pkg": "@kolkrabbi/kol-foundry",
     "category": "organisms",
     "count": 0,
     "apps": [],

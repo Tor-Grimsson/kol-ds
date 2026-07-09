@@ -8,7 +8,7 @@ This repo is the source of truth. The older copies in `kol-monorepo` are downstr
 
 ## Packages
 
-All published under `@kolkrabbi/*`. The UI tier is a four-layer stack: `theme ← loader ← component ← framework`.
+All published under `@kolkrabbi/*`. The UI tier is a four-layer stack — `theme ← icons ← component ← framework` — with six standalone **domain** packages above it and a clients tier alongside. See [`docs/documentation/00-overview/01-package-topology.md`](docs/documentation/00-overview/01-package-topology.md) for the full map.
 
 | Package | Tier | What it is |
 | --- | --- | --- |
@@ -16,6 +16,12 @@ All published under `@kolkrabbi/*`. The UI tier is a four-layer stack: `theme �
 | `kol-icons` | UI | `<Icon/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
 | `kol-component` | UI | Atoms → organisms, emitting canonical `kol-*` classes. |
 | `kol-framework` | UI | App shell — sidenav, layout, theme toggle, heroes, brand color layer. |
+| `kol-workshop` | Domain | Docs system — hand-rolled markdown engine, docs viewer, tag graph, shell. |
+| `kol-dashboards` | Domain | Analytics — card family, hand-rolled SVG charts (no d3), `MetricsDashboard`. |
+| `kol-chess` | Domain | Chess board + apparatus + pieces + a bundled `./data` adapter. |
+| `kol-content` | Domain | CMS — the `/stack` (blog) + `/work` (portfolio) Sanity streams. |
+| `kol-foundry` | Domain | Type-specimen apparatus + the font-facing set (TextPressure, TypeSample, …). |
+| `kol-store` | Domain | Commerce — `ProductDetailLayout`, `PriceDisplay`, marquee. |
 | `kol-media-client` | Client | Read-only client for the kol-media CDN. Plain ESM, no React. |
 | `kol-brand-template` | Brand | The brand-manifest schema — the blank slate copied per client. |
 | `kol-brand` | Brand | Kolkrabbi's own manifest + logo SVGs. Public-safe. |

@@ -2,7 +2,7 @@
 title: Color — anchors and ramps
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-09
 description: The brand color system — four semantic identity anchors and seven ramps (five hues + cream + grey) with literal hex per stop. Values are verbatim from kol-brand-color.css; the same data ships portably in @kolkrabbi/kol-brand.
 aliases:
   - color
@@ -35,17 +35,21 @@ Semantic identity tokens — consume these, not raw stops, for brand-tinted UI:
 
 ## The ramps
 
-Five hue families × 5 stops (100–500) + cream + a 10-stop grey. **Anchor positions vary per ramp** (yellow at 300, red at 200, blue at 400 — marked •). Tokens: `--kol-color-<ramp>-<stop>` (grey: `--grey-<stop>`).
+Seven hue families × 5 stops (100–500) + cream + a 10-stop grey. **Anchor positions vary per ramp** (yellow at 300, red at 200, blue at 400 — marked •). Tokens: `--kol-color-<ramp>-<stop>` (grey: `--grey-<stop>`).
 
-| Stop | Yellow | Orange | Red | Blue | Teal | Cream |
-|---|---|---|---|---|---|---|
-| 100 | `#FFEA57` | `#F5CF81` | `#CC7762` | `#497DA2` | `#9BCCCD` | `#FAF7F0` • |
-| 200 | `#FFDF43` | `#E3A054` | `#AD5038` • | `#3F6485` | `#6FB6B7` | `#F5F0E6` |
-| 300 | `#FFCF33` • | `#DF760B` • | `#913F2B` | `#314152` | `#49A0A2` • | `#F5EBD8` |
-| 400 | `#FFBC1F` | `#A54209` | `#662C1E` | `#222D3D` • | `#387E7F` | `#F0E0C0` |
-| 500 | `#FFA113` | `#7C2900` | `#522418` | `#181F29` | `#275A5B` | `#EBD5A9` |
+| Stop | Yellow | Orange | Red | Blue | Teal | Green | Purple | Cream |
+|---|---|---|---|---|---|---|---|---|
+| 100 | `#FFEA57` | `#F5CF81` | `#CC7762` | `#497DA2` | `#9BCCCD` | `#A8CBA0` | `#B9A8D6` | `#FAF7F0` • |
+| 200 | `#FFDF43` | `#E3A054` | `#AD5038` • | `#3F6485` | `#6FB6B7` | `#7FB073` | `#9179B8` | `#F5F0E6` |
+| 300 | `#FFCF33` • | `#DF760B` • | `#913F2B` | `#314152` | `#49A0A2` • | `#4C9A5F` • | `#6B4E9E` • | `#F5EBD8` |
+| 400 | `#FFBC1F` | `#A54209` | `#662C1E` | `#222D3D` • | `#387E7F` | `#37733F` | `#4E3873` | `#F0E0C0` |
+| 500 | `#FFA113` | `#7C2900` | `#522418` | `#181F29` | `#275A5B` | `#285229` | `#38285A` | `#EBD5A9` |
 
-Ramp notes: yellow is a **pure-yellow lock** (`#FF` red channel through all stops, no orange contamination); blue is a **hybrid hue lock** (light tints + deep stops, no yellow lean at saturated mid).
+Ramp notes: yellow is a **pure-yellow lock** (`#FF` red channel through all stops, no orange contamination); blue is a **hybrid hue lock** (light tints + deep stops, no yellow lean at saturated mid). **Green + purple (added 2026-07-09)** are chart-categorical hues, not core identity anchors — they complete the 7-hue `--kol-palette-*` chart scale (below); the four identity anchors stay yellow / red / blue / teal.
+
+## Chart palette + semantic aliases
+
+The dashboards + chess chart classes consume a categorical `--kol-palette-<hue>` scale (7 hues) plus `--kol-font-family-heading` and `--kol-status-danger` / `-muted`. All live in `kol-brand-color.css` and alias the ramps/theme tokens — chart-legible mid-stops, **not** the identity anchors (blue → `blue-200`, others → their `-300`, red → `-200`). `--kol-font-family-heading` → `--kol-font-family-sans-narrow`; `--kol-status-danger` → `--ui-error`. Before 2026-07-09 these resolved to nothing, collapsing every chart series onto the accent color.
 
 ### Grey (10 stops)
 
