@@ -1,4 +1,4 @@
-import { GlyphMetricsGrid } from '@kolkrabbi/kol-specimen'
+import { GlyphMetricsGrid } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'full'
 

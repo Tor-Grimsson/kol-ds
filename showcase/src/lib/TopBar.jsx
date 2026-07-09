@@ -23,6 +23,7 @@ const LINKS = [
   { to: '/components', label: 'Components' },
   { to: '/blocks', label: 'Blocks' },
   { to: '/sets', label: 'Sets' },
+  { to: '/lobby', label: 'Lobby' },
 ]
 
 export default function TopBar() {

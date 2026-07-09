@@ -18,6 +18,7 @@ import DocsMenus from './pages/DocsMenus'
 import DocsLoaders from './pages/DocsLoaders'
 import WorkshopPreview from './pages/WorkshopPreview'
 import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
+import Lobby from './pages/Lobby'
 import Demo from './pages/Demo'
 
 /**
@@ -50,6 +51,8 @@ export default function App() {
       <Route path="/workshop-preview/*" element={<WorkshopPreview />} />
       {/* Live dogfood of @kolkrabbi/kol-workshop — shell + docs viewer. */}
       <Route path="/workshop-docs/*" element={<WorkshopDocsPreview />} />
+      {/* The repo-root lobby/ queue, rendered live via the workshop viewer. */}
+      <Route path="/lobby/*" element={<Lobby />} />
       {/* Live review page for the 2026-07-08 chrome-law landing. */}
       <Route path="/demo" element={<Demo />} />
     </Routes>

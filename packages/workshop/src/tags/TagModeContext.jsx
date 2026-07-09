@@ -96,10 +96,26 @@ export const TagModeProvider = ({
   )
 }
 
-export const useTagMode = () => {
-  const ctx = useContext(TagModeContext)
-  if (!ctx) throw new Error('useTagMode must be used within TagModeProvider')
-  return ctx
+/**
+ * No-provider fallback: tag mode degrades to inert (tags render, clicks no-op)
+ * instead of crashing the reader. Wrap with TagModeProvider to enable it.
+ */
+const noop = () => {}
+const DEFAULT_TAG_MODE = {
+  isOpen: false,
+  activeTags: [],
+  activeTag: null,
+  openTagMode: noop,
+  closeTagMode: noop,
+  toggleTag: noop,
+  removeTag: noop,
+  clearTags: noop,
+  setActiveTag: noop,
+  inventory: [],
+  docHref: defaultDocHref,
+  tagHref: defaultTagHref
 }
+
+export const useTagMode = () => useContext(TagModeContext) ?? DEFAULT_TAG_MODE
 
 export default TagModeContext

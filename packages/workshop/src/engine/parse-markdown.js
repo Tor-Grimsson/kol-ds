@@ -36,6 +36,20 @@ const processInlineMarkdown = (text) => {
       continue
     }
 
+    // Wikilink: [[target]] / [[target|display]] / [[target#anchor|display]] (Obsidian).
+    // Emitted as a .md link so it routes through the same resolveDocLink cross-link path.
+    const wikiMatch = remaining.match(/^\[\[([^\]|#]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]/)
+    if (wikiMatch) {
+      const target = wikiMatch[1].trim().replace(/\.md$/, '')
+      const anchor = wikiMatch[2]
+        ? wikiMatch[2].trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        : ''
+      const display = wikiMatch[3] ? wikiMatch[3].trim() : (wikiMatch[1].trim().split('/').pop())
+      tokens.push({ type: 'link', text: display, url: `${target}.md${anchor ? `#${anchor}` : ''}` })
+      remaining = remaining.slice(wikiMatch[0].length)
+      continue
+    }
+
     // Link: [text](url)
     const linkMatch = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/)
     if (linkMatch) {

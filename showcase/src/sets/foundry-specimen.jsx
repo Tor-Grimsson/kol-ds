@@ -5,14 +5,14 @@ import {
   FoundryCharacterSets,
   FontPreviewSection,
   SpecimenSectionHeader,
-} from '@kolkrabbi/kol-specimen'
+} from '@kolkrabbi/kol-foundry'
 import { Table } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Type specimen',
   description:
     'The full type-specimen apparatus — hero, live weight-axis playground, parsed-metric glyph inspector, character-set browser, size ladder, and a type-scale recipe.',
-  category: 'specimen',
+  category: 'foundry',
   featured: true,
 }
 export const stage = 'full'

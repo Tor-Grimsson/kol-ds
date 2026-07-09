@@ -1,4 +1,4 @@
-# `@kolkrabbi/kol-specimen` — target component list
+# `@kolkrabbi/kol-foundry` — target component list
 
 The type-foundry / specimen apparatus. **The membership test: does the component render, inspect, or manipulate an actual font?** Type tools and live specimens belong; generic cards, marketing chrome, and prose-that-mentions-type do not — even if they sit in the monorepo's `routes/foundry/` folder. Data is consumer-injected; shared primitives stay in `@kolkrabbi/kol-component`.
 

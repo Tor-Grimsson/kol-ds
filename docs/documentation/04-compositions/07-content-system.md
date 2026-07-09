@@ -21,7 +21,7 @@ tags:
   - domain/content
 related:
   - "[[01-package-topology|package topology]]"
-  - "[[05-specimen-system|specimen system]]"
+  - "[[05-foundry-system|foundry system]]"
   - "[[06-store-system|store system]]"
 ---
 

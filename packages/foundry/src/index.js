@@ -1,5 +1,5 @@
 /**
- * @kolkrabbi/kol-specimen — the type-specimen apparatus. Every export renders,
+ * @kolkrabbi/kol-foundry — the type-specimen apparatus. Every export renders,
  * inspects, or manipulates a live font (see COMPONENTS.md for the membership
  * test). Data is consumer-injected; shared primitives stay in @kolkrabbi/kol-component.
  */

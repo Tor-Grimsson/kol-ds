@@ -125,6 +125,27 @@ importers:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
 
+  packages/foundry:
+    dependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../component
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../theme
+      opentype.js:
+        specifier: ^1.3.4
+        version: 1.3.5
+      react:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7(react@19.2.7)
+
   packages/framework:
     dependencies:
       '@kolkrabbi/kol-component':
@@ -155,27 +176,6 @@ importers:
   packages/media-client: {}
 
   packages/scrape: {}
-
-  packages/specimen:
-    dependencies:
-      '@kolkrabbi/kol-component':
-        specifier: workspace:*
-        version: link:../component
-      '@kolkrabbi/kol-icons':
-        specifier: workspace:*
-        version: link:../icons
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:*
-        version: link:../theme
-      opentype.js:
-        specifier: ^1.3.4
-        version: 1.3.5
-      react:
-        specifier: ^18.3.0 || ^19.0.0
-        version: 19.2.7
-      react-dom:
-        specifier: ^18.3.0 || ^19.0.0
-        version: 19.2.7(react@19.2.7)
 
   packages/store:
     dependencies:
@@ -241,15 +241,15 @@ importers:
       '@kolkrabbi/kol-dashboards':
         specifier: workspace:*
         version: link:../packages/dashboards
+      '@kolkrabbi/kol-foundry':
+        specifier: workspace:*
+        version: link:../packages/foundry
       '@kolkrabbi/kol-framework':
         specifier: workspace:*
         version: link:../packages/framework
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../packages/icons
-      '@kolkrabbi/kol-specimen':
-        specifier: workspace:*
-        version: link:../packages/specimen
       '@kolkrabbi/kol-store':
         specifier: workspace:*
         version: link:../packages/store

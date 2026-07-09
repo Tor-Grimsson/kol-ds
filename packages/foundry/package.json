@@ -1,8 +1,8 @@
 {
-  "name": "@kolkrabbi/kol-specimen",
-  "version": "0.1.0",
+  "name": "@kolkrabbi/kol-foundry",
+  "version": "0.2.0",
   "private": false,
-  "description": "KOL type-specimen system — typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font-preview, and the typeface-catalog grid. Every component renders, inspects, or manipulates a live font. Typeface data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "description": "KOL foundry component set — the type-specimen apparatus: typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font-preview, and the typeface-catalog grid. Every component renders, inspects, or manipulates a live font. Typeface data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -41,7 +41,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
-    "directory": "packages/specimen"
+    "directory": "packages/foundry"
   },
   "publishConfig": {
     "access": "public"

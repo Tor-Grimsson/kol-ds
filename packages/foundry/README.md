@@ -1,4 +1,4 @@
-# @kolkrabbi/kol-specimen
+# @kolkrabbi/kol-foundry
 
 The KOL **type-foundry system** — the type-specimen apparatus, lifted out of `@kolkrabbi/kol-component` (was the `/foundry` subpath) into its own package. It's a distinct content domain (typefaces, glyph metrics, variable-font axes — not Sanity CMS) with its own consumer (kolkrabbi.io/foundry) and versioning cadence.
 
@@ -16,9 +16,9 @@ The KOL **type-foundry system** — the type-specimen apparatus, lifted out of `
 | `glyphSets`, `glyphCategories`, `SPECIMEN_SAMPLE_TEXT` | glyph data |
 
 ```js
-import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-specimen'
+import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 ```
 
 ## Requirements
 
-Components take flat prop bags — typeface metrics / font files are consumer-supplied. Shared primitives (`Tag`, `Pill`, `Slider`, `Button`, `Divider`, `Dropdown`, `useAxisAnimation`) stay in `@kolkrabbi/kol-component`; this package depends on them. Styling comes from `@kolkrabbi/kol-theme`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-specimen/src"`).
+Components take flat prop bags — typeface metrics / font files are consumer-supplied. Shared primitives (`Tag`, `Pill`, `Slider`, `Button`, `Divider`, `Dropdown`, `useAxisAnimation`) stay in `@kolkrabbi/kol-component`; this package depends on them. Styling comes from `@kolkrabbi/kol-theme`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).

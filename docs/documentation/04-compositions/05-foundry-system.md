@@ -1,17 +1,17 @@
 ---
-title: Specimen system — the type-specimen package
+title: Foundry components — the type-specimen apparatus
 type: reference
 status: canonical
 updated: 2026-07-09
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-specimen — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Renamed from kol-foundry on 2026-07-09 after cutting the non-type components; every export renders, inspects, or manipulates a live font.
+description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); every export renders, inspects, or manipulates a live font.
 aliases:
   - foundry
-  - kol-specimen
+  - kol-foundry
   - type specimen
 sources:
-  - packages/specimen/src/index.js
-  - packages/specimen/README.md
+  - packages/foundry/src/index.js
+  - packages/foundry/README.md
   - showcase/src/sets/foundry-specimen.jsx
 tags:
   - domain/design-system
@@ -21,12 +21,12 @@ related:
   - "[[06-store-system|store system]]"
 ---
 
-# Specimen system — `@kolkrabbi/kol-specimen`
+# Foundry components — `@kolkrabbi/kol-foundry`
 
-The type-specimen apparatus. **Every component renders, inspects, or manipulates a live font** — the commercial *foundry* chrome (pairings, licensing, CTAs, descriptor cards) is excluded, which is why the package is `specimen`, not `foundry`. A distinct content domain (typefaces, glyph metrics, variable-font axes — **not** Sanity CMS) with its own consumer (kolkrabbi.io/foundry) and versioning cadence. Graduated from the `component/foundry` subpath; renamed from `kol-foundry` on 2026-07-09, pre-publish.
+The type-specimen apparatus — the component set a type foundry's site is built from. **Every component renders, inspects, or manipulates a live font**; the commercial chrome (pairings, licensing, CTAs, descriptor cards) was cut on 2026-07-09 (see below). A distinct content domain (typefaces, glyph metrics, variable-font axes — **not** Sanity CMS) with its own consumer (kolkrabbi.io/foundry) and versioning cadence. Graduated from the `component/foundry` subpath.
 
 ```js
-import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-specimen'
+import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 ```
 
 ## Component index
@@ -52,7 +52,7 @@ The typeface-catalog family and the assembled specimen page. Each ships a bundle
 | `TypefaceLibraryGrid` / `TypefaceLibraryGridWithVariables` | filtered typeface-catalog grids (wrap `ContentFilters`); the second adds a "By Typeface" weight-variant mode |
 | `TypefaceLibraryItem` / `TypefaceVariablePreview` | catalog card/list item (renders the live font) + interactive per-weight preview (size / leading / spacing) |
 
-> **Cut on 2026-07-09** — failed the membership test (they describe or market type, never act on the font): `FoundryOtherTypefaces` (redundant vs the grid); `FoundryTypefacePairing` / `PairingsList` / `PairingCard` (editorial pairing cards); `FoundryOpentypeFeatures` / `FoundryTypefaceDetails` / `FeatureGrid` / `FeatureCard` (descriptor cards); `FoundryCTA` / `FoundryFeatureSection` / `FoundryLicenseQuestions` / `InDevelopmentSection` (marketing chrome); and the vendored `ButtonGroup`. See `packages/specimen/COMPONENTS.md`.
+> **Cut on 2026-07-09** — failed the membership test (they describe or market type, never act on the font): `FoundryOtherTypefaces` (redundant vs the grid); `FoundryTypefacePairing` / `PairingsList` / `PairingCard` (editorial pairing cards); `FoundryOpentypeFeatures` / `FoundryTypefaceDetails` / `FeatureGrid` / `FeatureCard` (descriptor cards); `FoundryCTA` / `FoundryFeatureSection` / `FoundryLicenseQuestions` / `InDevelopmentSection` (marketing chrome); and the vendored `ButtonGroup`. See `packages/foundry/COMPONENTS.md`.
 
 ### Data exports
 
@@ -69,5 +69,5 @@ The typeface-catalog family and the assembled specimen page. Each ships a bundle
 - **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation` (+ `Icon` from `kol-icons`). This package depends on them.
 - **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take an injected `linkComponent` (receives `to`), falling back to a plain `<a href>`. The severed page's `FullBleedHero` is an injectable `HeroComponent` slot with a minimal built-in default.
 - **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back.
-- **No package CSS** — the kept components style entirely with `@kolkrabbi/kol-theme` utility classes; the old `kol-components-foundry.css` (only the cut pairing/feature cards referenced it) was deleted. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-specimen/src"`).
+- **No package CSS** — the kept components style entirely with `@kolkrabbi/kol-theme` utility classes; the old `kol-components-foundry.css` (only the cut pairing/feature cards referenced it) was deleted. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.
