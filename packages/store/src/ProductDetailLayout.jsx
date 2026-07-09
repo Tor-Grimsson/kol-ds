@@ -38,6 +38,26 @@ import { Dropdown } from '@kolkrabbi/kol-component'
  * @param {ReactNode}   actions       CTA slot — pass the "Add to cart" Button
  * @param {ReactNode}   shippingNote  fine-print line under the CTA
  * @param {ReactNode}   backLink      back-to-catalog link slot
+ *
+ * --- Optional commerce block (all opt-in; omit for the plain skeleton) ---
+ * Folds the print-store PDP's size/edition→price matrix, shipping-region total
+ * and CTA-selection logic in additively. Passing `editionOptions` swaps the
+ * single Size <select> for a "Size & Edition" one; passing `shippingOptions`
+ * swaps the Quantity stepper for a "Shipping" <select>. `computePrice` recomputes
+ * the PriceDisplay from the live {edition, shipping} selection (wire it to the
+ * `resolvePrintPrice` helper from `@kolkrabbi/kol-store/data`); `renderActions`
+ * turns the CTA into a function of that selection (e.g. to pick the right
+ * PayPal link). None of these touch the default API — leave them unset and the
+ * skeleton behaves exactly as before.
+ *
+ * @param {Array<{label,value}>} editionOptions size+edition <select> options (enables the commerce Size&Edition select)
+ * @param {string}      defaultEdition  initially-selected edition (default editionOptions[0].value)
+ * @param {Function}    onEditionChange (value) => void — fires on edition select
+ * @param {Array<{label,value}>} shippingOptions shipping-region <select> options (enables the Shipping select)
+ * @param {string}      defaultShipping initially-selected shipping region (default shippingOptions[0].value)
+ * @param {Function}    onShippingChange (value) => void — fires on shipping select
+ * @param {Function}    computePrice   ({edition,shipping}) => number | PriceDisplayProps — live total; overrides `price`
+ * @param {Function}    renderActions  ({edition,shipping,price}) => ReactNode — CTA as a fn of the selection; overrides `actions`
  */
 export default function ProductDetailLayout({
   mediaItems = [],
@@ -58,13 +78,27 @@ export default function ProductDetailLayout({
   actions,
   shippingNote,
   backLink,
+  editionOptions = [],
+  defaultEdition,
+  onEditionChange,
+  shippingOptions = [],
+  defaultShipping,
+  onShippingChange,
+  computePrice,
+  renderActions,
 }) {
   const [activeMedia, setActiveMedia] = useState(0)
   const [size, setSize] = useState(defaultSize ?? sizeOptions[0])
   const [quantity, setQuantity] = useState(defaultQuantity)
   const [activeTab, setActiveTab] = useState(tabs[0]?.id)
+  const [edition, setEdition] = useState(defaultEdition ?? editionOptions[0]?.value)
+  const [shipping, setShipping] = useState(defaultShipping ?? shippingOptions[0]?.value)
 
   const activeTabItem = tabs.find((t) => t.id === activeTab) ?? tabs[0]
+
+  // Commerce block is opt-in: enabled only when its option lists are supplied.
+  const hasEditionSelect = editionOptions.length > 0
+  const hasShippingSelect = shippingOptions.length > 0
 
   const handleSize = (value) => {
     setSize(value)
@@ -74,6 +108,24 @@ export default function ProductDetailLayout({
     setQuantity(value)
     onQuantityChange?.(value)
   }
+  const handleEdition = (value) => {
+    setEdition(value)
+    onEditionChange?.(value)
+  }
+  const handleShipping = (value) => {
+    setShipping(value)
+    onShippingChange?.(value)
+  }
+
+  // Live price: computePrice (matrix) wins over the static `price` prop. A bare
+  // number is treated as `amount`; an object is spread onto PriceDisplay.
+  const computed = computePrice ? computePrice({ edition, shipping }) : null
+  const priceProps =
+    computed != null ? (typeof computed === 'number' ? { amount: computed } : computed) : price
+
+  const resolvedActions = renderActions
+    ? renderActions({ edition, shipping, price: priceProps })
+    : actions
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-surface-primary text-auto">
@@ -152,31 +204,58 @@ export default function ProductDetailLayout({
 
             {/* Purchase block */}
             <div className="mt-auto space-y-6 border-t border-auto pt-6">
-              {price != null && <PriceDisplay {...price} />}
+              {priceProps != null && <PriceDisplay {...priceProps} />}
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <span className="kol-helper-uc-xs text-fg-48">Size</span>
-                  <Dropdown
-                    options={sizeOptions.map((s) => ({ label: s, value: s }))}
-                    value={size}
-                    onChange={handleSize}
-                    className="w-full"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <span className="kol-helper-uc-xs text-fg-48">Quantity</span>
-                  <QuantityInput
-                    value={quantity}
-                    onChange={handleQuantity}
-                    min={minQuantity}
-                    max={maxQuantity}
-                    className="w-full"
-                  />
-                </div>
+                {/* Left cell: Size & Edition (commerce) or plain Size */}
+                {hasEditionSelect ? (
+                  <div className="space-y-2">
+                    <span className="kol-helper-uc-xs text-fg-48">Size & Edition</span>
+                    <Dropdown
+                      options={editionOptions}
+                      value={edition}
+                      onChange={handleEdition}
+                      className="w-full"
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <span className="kol-helper-uc-xs text-fg-48">Size</span>
+                    <Dropdown
+                      options={sizeOptions.map((s) => ({ label: s, value: s }))}
+                      value={size}
+                      onChange={handleSize}
+                      className="w-full"
+                    />
+                  </div>
+                )}
+
+                {/* Right cell: Shipping (commerce) or plain Quantity */}
+                {hasShippingSelect ? (
+                  <div className="space-y-2">
+                    <span className="kol-helper-uc-xs text-fg-48">Shipping</span>
+                    <Dropdown
+                      options={shippingOptions}
+                      value={shipping}
+                      onChange={handleShipping}
+                      className="w-full"
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <span className="kol-helper-uc-xs text-fg-48">Quantity</span>
+                    <QuantityInput
+                      value={quantity}
+                      onChange={handleQuantity}
+                      min={minQuantity}
+                      max={maxQuantity}
+                      className="w-full"
+                    />
+                  </div>
+                )}
               </div>
 
-              {actions}
+              {resolvedActions}
 
               {shippingNote != null && <p className="kol-mono-xs text-fg-48">{shippingNote}</p>}
               {backLink}

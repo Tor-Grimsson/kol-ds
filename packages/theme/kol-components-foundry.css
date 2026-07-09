@@ -1,0 +1,62 @@
+/* ---------------------------------------------------------------------------
+ * KOL foundry components — the CSS the type-specimen layer
+ * (@kolkrabbi/kol-foundry) needs beyond Tailwind utilities. Extracted from the
+ * monorepo `packages/ui/css/components.css` FOUNDRY block; only the classes the
+ * shipped foundry components actually reference are pulled (`.foundry-title`,
+ * `.pairing-card`, `.feature-card`). The rest of the monorepo foundry block
+ * (`.typeface-card`, `.style-card*`, `.foundryCard*`, the "Control Components –
+ * Foundry Specific" set) is intentionally omitted: no shipped component uses
+ * them, or the control-* rules already ship in kol-components-{atoms,molecules}.css.
+ *
+ * Imported into kol-theme.css under layer(components) — no @layer wrapper here.
+ * --------------------------------------------------------------------------- */
+
+/* PairingCard — the large pairing display title (default face). */
+.foundry-title {
+  font-family: 'TGMalromur';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 100%;
+  color: var(--kol-surface-on-primary);
+}
+
+/* PairingCard — bordered card with a subtle hover lift. */
+.pairing-card {
+  background-color: transparent;
+  border: 1px solid;
+  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  transition: all 0.3s ease;
+}
+
+.pairing-card:hover {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 1%, transparent);
+  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+}
+
+/* FeatureCard — opacity flip (50% → 100%) on hover / .active. */
+.feature-card {
+  padding: 1rem; /* 16px */
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+}
+@media (min-width: 768px) {
+  .feature-card { padding: 1.25rem; /* 20px */ }
+}
+@media (min-width: 1024px) {
+  .feature-card { padding: 1.5rem; /* 24px */ }
+}
+
+.feature-card:hover,
+.feature-card.active {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 1%, transparent);
+  border-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+  opacity: 1;
+}

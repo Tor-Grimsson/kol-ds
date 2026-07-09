@@ -39,7 +39,23 @@ import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 | `FoundryCharacterSets` | character-set browser (by category) | `glyphSets`, `glyphCategories` |
 | `TypefaceStyleSection` | per-style specimen block | style meta |
 | `FontPreviewSection` | size-ladder / free-preview control (size + text) | preview text |
+| `GlyphMetricsSection` | section wrapper — header (style/axis dropdowns) over `GlyphMetricsGrid` | font URLs, axis defs |
 | `SpecimenSectionHeader` | shared section header (title + `Divider`) | title |
+
+### Collection + sections (added 2026-07-09)
+
+Pulled from the monorepo `apps/web/routes/foundry` delta. Every section ships a bundled default fixture and takes overrides via props.
+
+| Component | What it is |
+|-----------|-----------|
+| `TypefaceSpecimenPage` | full data-driven specimen composition (severed route — no router/SEO/data-fetch). Hero is an injectable `HeroComponent` slot; navigation via `linkComponent` prop |
+| `FoundryOtherTypefaces` | "other typefaces" collection over `TypefaceLibraryGridWithVariables` |
+| `TypefaceLibraryGrid` / `TypefaceLibraryGridWithVariables` | filtered library grids (wrap `ContentFilters`); the second adds a "By Typeface" weight-variant mode |
+| `TypefaceLibraryItem` / `TypefaceVariablePreview` | library card/list item + interactive per-weight preview |
+| `FoundryTypefacePairing` · `PairingsList` · `PairingCard` | font-pairing section + list + card |
+| `FoundryOpentypeFeatures` · `FoundryTypefaceDetails` · `FeatureGrid` · `FeatureCard` | OpenType-feature / font-detail sections + grid + card |
+| `FoundryCTA` · `FoundryFeatureSection` · `FoundryLicenseQuestions` · `InDevelopmentSection` | CTA band, split feature section, licence band, in-development showcase |
+| `ButtonGroup` | **vendored** — not yet in `kol-component`; delete + repoint if it graduates |
 
 ### Data exports
 
@@ -48,11 +64,13 @@ import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 | `glyphSets` | glyph inventory by set |
 | `glyphCategories` | category groupings |
 | `SPECIMEN_SAMPLE_TEXT` | default specimen copy |
+| `typefaceConfig` · `getTypefaceConfig` · `getAllTypefaceIds` · `getAllTypefaces` | bundled default typeface fixture + accessors (consumers can inject their own via props) |
 
 ## Consumer notes
 
-- **Data is injected** — typeface metrics / font files are consumer-supplied flat props.
-- **Shared primitives stay in `kol-component`** — `Tag`, `Pill`, `Slider`, `Button`, `Divider`, `Dropdown`, `useAxisAnimation`. This package depends on them.
+- **Data is injected** — typeface metrics / font files are consumer-supplied flat props (or the bundled `typefaceConfig` fixture).
+- **Shared primitives stay in `kol-component`** — `Tag`, `Pill`, `Slider`, `Button`, `Divider`, `Dropdown`, `Icon`, `SectionLabel`, `ContentFilters`, `TiltCard`, `FeaturesCardSection`, `useAxisAnimation`. This package depends on them.
+- **No router / app-shell dependency** — the sections that navigated (`FoundryCTA`, `TypefaceLibraryGridWithVariables`, `FoundryFeatureSection`, `TypefaceSpecimenPage`) take an injected `linkComponent` (receives `to`), falling back to a plain `<a href>`. The severed page's `FullBleedHero` is an injectable `HeroComponent` slot with a minimal built-in default.
 - **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back.
-- **CSS** ships in `@kolkrabbi/kol-theme`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).
+- **CSS** ships in `@kolkrabbi/kol-theme` — foundry classes (`.foundry-title`, `.pairing-card`, `.feature-card`) in `kol-components-foundry.css`. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"`).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.
