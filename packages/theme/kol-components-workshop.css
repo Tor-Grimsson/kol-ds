@@ -109,12 +109,8 @@
 
 /* Sidebar section labels */
 .shell-sidebar-label {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
   color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
   margin-bottom: 8px;
-  font-weight: 500;
 }
 
 /* Sidebar links */
@@ -190,9 +186,6 @@
 
 /* Navigation group */
 .shell-nav-group-header {
-  font-family: var(--kol-font-family-mono);
-  font-size: 13px;
-  font-weight: 500;
   color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
   padding: 6px 0 6px 0;
   cursor: pointer;
@@ -207,7 +200,6 @@
 }
 
 .shell-nav-group-count {
-  font-size: 11px;
   opacity: 0.6;
 }
 
@@ -220,10 +212,6 @@
 
 /* Navigation items */
 .shell-nav-item {
-  font-family: var(--kol-font-family-mono);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
   padding: 4px 12px 4px 20px;
   border-radius: 0px;
   color: color-mix(in srgb, var(--kol-surface-on-primary) 64%, transparent);
@@ -254,8 +242,7 @@
 }
 
 .shell-nav-item-title {
-  font-size: 13px;
-  letter-spacing: 0.05em;
+  min-width: 0;
 }
 
 /* Wide viewport nav font bumps */
@@ -277,9 +264,7 @@
   }
 
   .shell-sidebar-link,
-  .shell-sidebar-action,
-  .shell-nav-group-header,
-  .shell-nav-item-title {
+  .shell-sidebar-action {
     font-size: 16px;
   }
 
@@ -289,13 +274,10 @@
   }
 
   .shell-nav-item {
-    font-size: 16px;
     padding: 5px 14px 5px 24px;
   }
 
-  .shell-sidebar-label,
   .shell-nav-header,
-  .shell-nav-group-count,
   .shell-nav-item-id,
   .toggle-switch-label {
     font-size: 13px;
