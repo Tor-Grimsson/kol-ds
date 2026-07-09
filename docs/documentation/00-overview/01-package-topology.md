@@ -18,9 +18,12 @@ tags:
   - domain/design-system
   - domain/architecture
 related:
+  - "[[04-workshop-system|workshop system]]"
   - "[[05-foundry-system|foundry component index]]"
   - "[[06-store-system|store component index]]"
-  - "[[04-workshop-system|workshop system]]"
+  - "[[07-content-system|content system]]"
+  - "[[08-chess-system|chess system]]"
+  - "[[09-dashboards-system|dashboards system]]"
 ---
 
 # Package topology
