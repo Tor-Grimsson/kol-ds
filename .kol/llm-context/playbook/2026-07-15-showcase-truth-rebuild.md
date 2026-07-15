@@ -71,3 +71,43 @@
   changed: 21 imports repointed · deleted: 36 vendored files + 1 dead · moved: 2 fixtures · new gate: validate:imports
   kills: P0-3 · P1-3 (workshop-route half) · P2-1 · P2-5 · build ✓ gates ✓
   next: phase 3 (attribution done in ph1 → prose + live token cells) on user go
+
+[13:32 GMT · 2026-07-15] · interlude/backport · packages/content 0.1.0→0.2.0 (user-driven, not the showcase arc)
+  what → /work backport brief executed: WorkCard.titleClassName + WorkListItem.previewClassName (replace-not-append display-face seams) + ParallaxShelf.plugins embla pass-through ✓
+  note → AsciiClouds REJECTED (user: not DS material) · theme token slot deferred to a 2nd consumer · resolution appended to _tmp/03-work-surface-ds-backport.md for the website repo · user pushed → CI published 0.2.0
+
+[13:32 GMT · 2026-07-15] · phase3/live-tokens · lib/resolve-css-var.jsx + FoundationsColor/Typography + data/{color,typography}.js
+  what → resolveTokenThemed (CSSOM walk: light+dark columns from the LOADED theme CSS) + measureClass/LiveClassValue (class-probe) ✓; surface/state hex literals + mono/helper size-lh-weight-ls literals + sans weights DELETED from data files   why → P1-4: "resolves live" claim was false for those tables; now true by construction
+  note → prose rows keep authored family/weight — descendant selectors ('.kol-prose h1') can't be probed by class; exempted in the gate
+
+[13:32 GMT · 2026-07-15] · phase3/gate · scripts/validate-foundations.mjs (new)
+  what → bans hex literals in data/color.js + size/lh literals & single-class-row weights in data/typography.js ✓ wired into build + release.yml   why → copied token values become a red build, not a review comment
+
+[13:32 GMT · 2026-07-15] · phase3/prose · scripts/extract-descriptions.mjs (new) + registry precedence
+  what → JSDoc `Name — sentence.` first-sentence extraction (camel-spaced/case-insensitive name match), 136/185 covered, regenerated EVERY build; registry: extracted ?? authored-fallback ✓   why → P1-5: one-liners rot (ThemeToggle's did same-day); source prose can't
+  note → no-JSDoc components (ChessBoard, MetricsDashboard, …) fall back to authored map or '' — fix = add JSDoc headers upstream (package edits, future bumps), not map entries
+
+──────────── MILESTONE: phase 3 — prose + token truth ──────────── [13:32]
+  changed: 9 files (2 new scripts, 1 new gate) · descriptions 136 source-derived · foundations cells 100% live-read
+  kills: P1-4 · P1-5 (+P0-4 landed in ph1) · gates: roster+imports+foundations clean · build ✓ 2.61s
+  next: phase 4 (provenance badges · wire search · de-nav lobby+demo · composition fix) on user go
+
+[13:40 GMT · 2026-07-15] · phase4/composition · scripts/extract-composition.mjs
+  what → EXPORT_MAP + KOL_PKGS now derive from packages/ via parse-barrel (dead foundry path gone, workshop star-barrels walked, styleguide included) ✓ re-ran: blocks 22 · sets 8   why → P2-3: headline promise ("every package walked") is finally true
+
+[13:40 GMT · 2026-07-15] · phase4/provenance · lib/CollectionLanding.jsx
+  what → ProvenanceBadge (N KOL · M local · external deps, from composition.json) on every /blocks + /sets card AND stage header ✓   why → P1-2: product-vs-recipe signal was buried on the detail page
+
+[13:40 GMT · 2026-07-15] · phase4/search · lib/TopBar.jsx
+  what → dead stub → real ⌘K search: SearchInput trigger (readOnly, shortcutHint) + ShellSearchOverlay over COMPONENTS_AZ (name+description filter, 12 cap, grouped by tier) + navigate on select ✓   why → P1-1: the only dead control in real chrome; the DS already shipped the overlay
+  note → ⌘K binding lives in TopBar per the overlay's own contract (binding-free component)
+
+[13:40 GMT · 2026-07-15] · phase4/dev-flag · App.jsx + TopBar LINKS
+  what → /lobby + /demo routes and the Lobby nav link behind import.meta.env.DEV — dev server keeps them, deployed site never ships them ✓   why → P1-3: maintainer tooling had equal billing with Components
+  verify → build ✓ 2.58s · all 3 gates clean · docs synced: 02-shells.md (search row) + 03-slug-composition-gallery.md (walk + badges)
+
+──────────── MILESTONE: phase 4 — provenance + search ──────────── [13:40]
+  changed: 5 files · kills: P1-1 · P1-2 · P1-3 (nav half) · P2-3
+  ═══ ARC COMPLETE: phases 1-4 all executed · P0 ×5 dead · P1 ×5 dead · P2-1/3/5 dead ═══
+  residual (accepted): P2-2 dead fallback keys (harmless as fallbacks) · P2-4 Home hero copy (user-facing text — his call) · no-JSDoc packages ride fallbacks · CollectionLanding pre-existing uppercase classes (type-conform job, not this arc)
+  log: session-log pending user /log-work

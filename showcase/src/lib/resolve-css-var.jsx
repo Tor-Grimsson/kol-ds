@@ -71,3 +71,66 @@ export function LiveValue({ token }) {
   useEffect(() => { setValue(resolveCssVarRaw(token)) }, [token])
   return <span>{value}</span>
 }
+
+/**
+ * Resolve a custom property's declared value PER THEME by walking the loaded
+ * stylesheets (CSSOM) — the only way to show light AND dark columns at once,
+ * since getComputedStyle can only see the active theme. Reads the real theme
+ * CSS, so an edit to kol-base-tokens/kol-color updates these cells on reload —
+ * no copied literals (2026-07-15 audit P1-4).
+ *
+ * Buckets: `[data-theme="light"]` → light · `[data-theme="dark"]`/`.dark` or a
+ * `prefers-color-scheme: dark` media block → dark · plain :root → base
+ * (fallback for both). Later declarations win, matching the cascade.
+ */
+export function resolveTokenThemed(name) {
+  if (typeof document === 'undefined') return { light: '', dark: '' }
+  let base = ''; let light = ''; let dark = ''
+  const visit = (rules, inDarkMedia) => {
+    for (const rule of rules) {
+      if (rule.cssRules) {
+        const darkMedia = inDarkMedia || /prefers-color-scheme:\s*dark/.test(rule.conditionText || rule.media?.mediaText || '')
+        visit(rule.cssRules, darkMedia)
+      } else if (rule.style) {
+        const v = rule.style.getPropertyValue(name)
+        if (!v) continue
+        const sel = rule.selectorText || ''
+        if (/data-theme=.?light/.test(sel)) light = v.trim()
+        else if (/data-theme=.?dark|\.dark\b/.test(sel) || inDarkMedia) dark = v.trim()
+        else base = v.trim()
+      }
+    }
+  }
+  for (const sheet of document.styleSheets) {
+    try { visit(sheet.cssRules, false) } catch { /* cross-origin sheet — skip */ }
+  }
+  return { light: light || base, dark: dark || base }
+}
+
+/**
+ * Measure a CSS CLASS's computed properties on a hidden probe element — for
+ * class-driven scales (.kol-mono-N, .kol-helper-N) whose values live in class
+ * rules, not custom properties. Same truth contract as resolveCssVar: the
+ * loaded theme CSS is the single source, nothing is hand-copied.
+ */
+export function measureClass(cls, props = ['font-size']) {
+  if (typeof document === 'undefined') return {}
+  const probe = document.createElement('span')
+  probe.className = cls.replace(/^\./, '')
+  probe.textContent = 'x'
+  probe.style.position = 'absolute'
+  probe.style.visibility = 'hidden'
+  document.body.appendChild(probe)
+  const cs = getComputedStyle(probe)
+  const out = {}
+  for (const p of props) out[p] = cs.getPropertyValue(p).trim()
+  document.body.removeChild(probe)
+  return out
+}
+
+/** Live table cell for one measured class property. */
+export function LiveClassValue({ cls, prop, format }) {
+  const [value, setValue] = useState('')
+  useEffect(() => { setValue(measureClass(cls, [prop])[prop] || '') }, [cls, prop])
+  return <span>{format ? format(value) : value}</span>
+}

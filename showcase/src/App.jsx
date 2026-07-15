@@ -49,10 +49,11 @@ export default function App() {
           docs viewer). The vendored-shell /workshop-preview twin was deleted
           in the 2026-07-15 de-fork; one shell, consumed from the package. */}
       <Route path="/workshop-docs/*" element={<WorkshopDocsPreview />} />
-      {/* The repo-root lobby/ queue, rendered live via the workshop viewer. */}
-      <Route path="/lobby/*" element={<Lobby />} />
-      {/* Live review page for the 2026-07-08 chrome-law landing. */}
-      <Route path="/demo" element={<Demo />} />
+      {/* Maintainer tooling — dev server only, never the deployed site
+          (2026-07-15 audit P1-3): the repo-root lobby/ work queue and the
+          chrome-law review page. */}
+      {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
+      {import.meta.env.DEV && <Route path="/demo" element={<Demo />} />}
     </Routes>
   )
 }

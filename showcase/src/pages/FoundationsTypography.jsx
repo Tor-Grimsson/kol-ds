@@ -1,7 +1,7 @@
 import { Table } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
 import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
-import { LiveValue } from '../lib/resolve-css-var.jsx'
+import { LiveValue, LiveClassValue } from '../lib/resolve-css-var.jsx'
 import { TYPOGRAPHY_SECTIONS } from '../data/typography.js'
 
 /**
@@ -35,7 +35,7 @@ const TYPE_COLUMNS = {
       render: (r) => <span className={r.cls.replace(/^\./, '')}>Sample {r.cls.split('-').slice(-2).join('-')}</span> },
     { accessor: 'size',   header: 'Size',   render: (r) => r.tokenName ? <LiveValue token={r.tokenName} /> : '—' },
     { accessor: 'family', header: 'Family' },
-    { accessor: 'weight', header: 'Weight' },
+    { accessor: 'weight', header: 'Weight (live)', render: (r) => <LiveClassValue cls={r.cls} prop="font-weight" /> },
   ],
   prose: [
     { accessor: 'role',   header: 'Role',  render: (r) => <TokenName>{r.role}</TokenName> },
@@ -48,10 +48,10 @@ const TYPE_COLUMNS = {
     { accessor: 'cls',    header: 'Class',  render: (r) => <TokenName>{r.cls}</TokenName> },
     { accessor: 'sample', header: 'Sample',
       render: (r) => <span className={r.cls.replace(/^\./, '')}>{r.cls.replace(/^\./, '')}</span> },
-    { accessor: 'size',   header: 'Size',   render: (r) => `${r.size}px` },
-    { accessor: 'weight', header: 'Weight' },
-    { accessor: 'lh',     header: 'LH',     render: (r) => typeof r.lh === 'number' ? `${r.lh}px` : r.lh },
-    { accessor: 'ls',     header: 'LS' },
+    { accessor: 'size',   header: 'Size (live)',   render: (r) => <LiveClassValue cls={r.cls} prop="font-size" /> },
+    { accessor: 'weight', header: 'Weight (live)', render: (r) => <LiveClassValue cls={r.cls} prop="font-weight" /> },
+    { accessor: 'lh',     header: 'LH (live)',     render: (r) => <LiveClassValue cls={r.cls} prop="line-height" /> },
+    { accessor: 'ls',     header: 'LS (live)',     render: (r) => <LiveClassValue cls={r.cls} prop="letter-spacing" /> },
   ],
   descriptors: [
     { accessor: 'name',   header: 'Name',   render: (r) => <TokenName>.text-{r.name}</TokenName> },

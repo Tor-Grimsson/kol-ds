@@ -123,13 +123,15 @@ const aliasRows = [
  * UI · surface — page chrome, mode-flipping pairs
  * ============================================================================ */
 
+/* light/dark cells resolve LIVE from the loaded theme CSS (ThemedHex →
+ * resolveTokenThemed CSSOM walk) — literals are banned here (validate:foundations). */
 const surfaceRows = [
-  { token: '--kol-surface-primary',    light: '#FAFAFA', dark: '#121215', use: 'Page background' },
-  { token: '--kol-surface-on-primary', light: '#121215', dark: '#FAFAFA', use: 'Text on page (text-auto)' },
-  { token: '--kol-surface-secondary',  light: '#F2F2F2', dark: '#19191D', use: 'Raised surface (cards, panels)' },
-  { token: '--kol-surface-tertiary',   light: '#FFFFFF', dark: '#0E0E11', use: 'Elevated tier' },
-  { token: '--kol-surface-inverse',    light: '#0E0E11', dark: '#FCFBF8', use: 'Inverted panel (.bg-surface-inverse)' },
-  { token: '--kol-surface-on-inverse', light: '#FCFBF8', dark: '#0E0E11', use: 'Text on inverse panel' },
+  { token: '--kol-surface-primary',    use: 'Page background' },
+  { token: '--kol-surface-on-primary', use: 'Text on page (text-auto)' },
+  { token: '--kol-surface-secondary',  use: 'Raised surface (cards, panels)' },
+  { token: '--kol-surface-tertiary',   use: 'Elevated tier' },
+  { token: '--kol-surface-inverse',    use: 'Inverted panel (.bg-surface-inverse)' },
+  { token: '--kol-surface-on-inverse', use: 'Text on inverse panel' },
 ]
 
 /* ============================================================================
@@ -137,10 +139,10 @@ const surfaceRows = [
  * ============================================================================ */
 
 const stateRows = [
-  { state: 'error',   sample: 'Submission blocked', token: '--ui-error',   dark: '#B91C1C', light: '#DC2626', use: 'Destructive, blocking, invalid' },
-  { state: 'warning', sample: 'Attention needed',   token: '--ui-warning', dark: '#EAB308', light: '#CA8A04', use: 'Caution, attention required' },
-  { state: 'info',    sample: 'Heads up',           token: '--ui-info',    dark: '#1D4ED8', light: '#2563EB', use: 'Neutral system message' },
-  { state: 'success', sample: 'Confirmed',          token: '--ui-success', dark: '#15803D', light: '#16A34A', use: 'Confirmation, completion' },
+  { state: 'error',   sample: 'Submission blocked', token: '--ui-error',   use: 'Destructive, blocking, invalid' },
+  { state: 'warning', sample: 'Attention needed',   token: '--ui-warning', use: 'Caution, attention required' },
+  { state: 'info',    sample: 'Heads up',           token: '--ui-info',    use: 'Neutral system message' },
+  { state: 'success', sample: 'Confirmed',          token: '--ui-success', use: 'Confirmation, completion' },
 ]
 
 /* ============================================================================

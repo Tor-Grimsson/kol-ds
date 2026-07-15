@@ -2,7 +2,10 @@
   "blocks": {
     "article-grid": {
       "kol": [
-        "ArticleCard"
+        "ArticleCard",
+        "AssetPlaceholder",
+        "Image",
+        "Pill"
       ],
       "local": {},
       "support": [],
@@ -207,14 +210,25 @@
     "product-panel": {
       "kol": [
         "Button",
+        "Divider",
+        "Dropdown",
         "Icon",
-        "ProductDetailLayout"
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "PriceDisplay",
+        "ProductDetailLayout",
+        "QuantityInput",
+        "SpecList",
+        "TabsRow"
       ],
       "local": {},
       "support": [
         "registerIcons"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "settings-form": {
       "kol": [
@@ -296,23 +310,63 @@
     },
     "work-grid": {
       "kol": [
+        "AssetPlaceholder",
+        "Icon",
+        "Image",
+        "Tag",
+        "TiltCard",
         "WorkCard",
         "WorkListItem",
         "WorkViewToggle"
       ],
       "local": {},
-      "support": [],
-      "external": []
+      "support": [
+        "registerIcons",
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "framer-motion"
+      ]
     }
   },
   "sets": {
     "chess-apparatus": {
       "kol": [
-        "ChessAnalysisLayout"
+        "AlternativeControlsMock",
+        "Button",
+        "ChessAnalysisLayout",
+        "ChessBoard",
+        "ChessBoardFullscreen",
+        "ChessBoardWithControls",
+        "ChessBoardWithSidebar",
+        "ChessControlsContext",
+        "ChessHero",
+        "ChessPiece",
+        "ChessSidebar",
+        "Dropdown",
+        "GameArchiveTable",
+        "GameSelector",
+        "Icon",
+        "Input",
+        "MenuItem",
+        "NotationPanel",
+        "Pill",
+        "PlaybackControls",
+        "Popover",
+        "Table",
+        "Tag",
+        "VariationTree"
       ],
       "local": {},
-      "support": [],
-      "external": []
+      "support": [
+        "parsePgnTree",
+        "registerIcons"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "chess.js"
+      ]
     },
     "design-editor": {
       "kol": [
@@ -341,27 +395,73 @@
     },
     "foundry-specimen": {
       "kol": [
+        "Button",
+        "Divider",
+        "Dropdown",
         "FontPreviewSection",
         "FoundryCharacterSets",
         "GlyphMetricsGrid",
+        "Icon",
+        "Input",
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "Slider",
         "SpecimenSectionHeader",
         "Table",
+        "Tag",
         "TypefaceHero",
         "VariableFontSection"
       ],
       "local": {},
-      "support": [],
-      "external": []
+      "support": [
+        "glyphData",
+        "registerIcons",
+        "useAxisAnimation",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "metrics-dashboard": {
       "kol": [
-        "MetricsDashboard"
+        "Badge",
+        "Candlestick",
+        "CardHeader",
+        "DashAlertCard",
+        "DashChartCard",
+        "DashFeaturedCard",
+        "DashListCard",
+        "DashMetricCard",
+        "DashSlotCard",
+        "DashStackedBarCard",
+        "DashTableCard",
+        "DashTooltip",
+        "DashboardGrid",
+        "DonutChart",
+        "GridCard",
+        "Heatmap",
+        "Histogram",
+        "Icon",
+        "LegendRow",
+        "LineChart",
+        "MetricsDashboard",
+        "ScatterPlot",
+        "SegmentedToggle",
+        "Sparkline",
+        "Table"
       ],
       "local": {},
       "support": [
         "demo-data",
         "formatB2Size",
+        "formatMetric",
+        "metrics-constants",
+        "registerIcons",
         "timeAgo",
+        "useChartTooltip",
+        "useCountUp",
         "useMetricsData"
       ],
       "external": []
@@ -370,48 +470,95 @@
       "kol": [
         "Button",
         "DiagonalMarqueeRiver",
+        "Divider",
+        "Dropdown",
         "Icon",
-        "ProductDetailLayout"
+        "MenuItem",
+        "Pill",
+        "Popover",
+        "PriceDisplay",
+        "ProductDetailLayout",
+        "QuantityInput",
+        "SpecList",
+        "TabsRow"
       ],
       "local": {},
       "support": [
-        "registerIcons"
+        "registerIcons",
+        "usePrefersReducedMotion"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
     },
     "stack-blog": {
       "kol": [
         "ArticleCard",
         "ArticleHeader",
+        "AssetPlaceholder",
+        "AuthorLine",
+        "Avatar",
+        "Button",
+        "CodeBlock",
+        "CopyButton",
+        "Divider",
+        "Figure",
+        "FullBleedHero",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "ImageBlock",
+        "Pill",
         "PortableTextRenderer",
         "ShareButtons",
         "SourcesReferences",
-        "StackHero"
+        "StackHero",
+        "Table",
+        "VideoBlock"
       ],
       "local": {},
-      "support": [],
-      "external": []
+      "support": [
+        "registerIcons"
+      ],
+      "external": [
+        "hls.js"
+      ]
     },
     "styleguide": {
       "kol": [
         "AssetGrid",
+        "AssetTable",
+        "ClearspaceDiagram",
+        "ColorAnatomy",
         "ColorInputRow",
         "ColorRamp",
         "ColorSwatch",
+        "ComboLab",
         "FeatureSplit",
         "Icon",
         "Input",
+        "LogoCard",
+        "LogoScaling",
+        "MoodTile",
         "Popover",
         "ProsePreview",
         "SpectrumGrid",
+        "Table",
+        "ToggleSwitch",
         "TransparentX",
+        "TypeBlock",
         "TypeSample",
-        "TypeSpecCard"
+        "TypeSpecCard",
+        "ViewToggle"
       ],
       "local": {},
       "support": [
+        "comboLayouts",
+        "comboMath",
         "cssVar",
-        "registerIcons"
+        "registerIcons",
+        "typographyCuts"
       ],
       "external": [
         "@floating-ui/react"
@@ -419,22 +566,29 @@
     },
     "work-portfolio": {
       "kol": [
+        "AssetPlaceholder",
         "Carousel",
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
+        "Image",
         "MediaViewer",
         "ParallaxShelf",
+        "Tag",
+        "TiltCard",
         "WorkCard",
         "WorkListItem",
         "WorkViewToggle"
       ],
       "local": {},
       "support": [
-        "registerIcons"
+        "registerIcons",
+        "usePrefersReducedMotion",
+        "useTilt"
       ],
       "external": [
-        "embla-carousel-react"
+        "embla-carousel-react",
+        "framer-motion"
       ]
     }
   }

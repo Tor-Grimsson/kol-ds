@@ -48,22 +48,22 @@ const familyRows = [
  * ============================================================================ */
 
 const sansDisplayRows = [
-  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', family: 'sans-narrow', weight: 600 },
-  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', family: 'sans-narrow', weight: 600 },
+  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', family: 'sans-narrow' },
+  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', family: 'sans-narrow' },
 ]
 
 const sansHeadingRows = [
-  { cls: '.kol-sans-heading-01', tokenName: '--kol-text-heading-01', family: 'sans-narrow',  weight: 500 },
-  { cls: '.kol-sans-heading-02', tokenName: '--kol-text-heading-02', family: 'sans-compact', weight: 500 },
-  { cls: '.kol-sans-heading-03', tokenName: '--kol-text-heading-03', family: 'sans-compact', weight: 500 },
-  { cls: '.kol-sans-heading-04', tokenName: '--kol-text-heading-04', family: 'sans-compact', weight: 500 },
-  { cls: '.kol-sans-heading-05', tokenName: '--kol-text-heading-05', family: 'sans-compact', weight: 500 },
+  { cls: '.kol-sans-heading-01', tokenName: '--kol-text-heading-01', family: 'sans-narrow' },
+  { cls: '.kol-sans-heading-02', tokenName: '--kol-text-heading-02', family: 'sans-compact' },
+  { cls: '.kol-sans-heading-03', tokenName: '--kol-text-heading-03', family: 'sans-compact' },
+  { cls: '.kol-sans-heading-04', tokenName: '--kol-text-heading-04', family: 'sans-compact' },
+  { cls: '.kol-sans-heading-05', tokenName: '--kol-text-heading-05', family: 'sans-compact' },
 ]
 
 const sansBodyRows = [
-  { cls: '.kol-sans-body-01', tokenName: '--kol-text-body-01', family: 'sans (base)', weight: 400 },
-  { cls: '.kol-sans-body-02', tokenName: '--kol-text-body-02', family: 'sans (base)', weight: 400 },
-  { cls: '.kol-sans-body-03', tokenName: '--kol-text-body-03', family: 'sans (base)', weight: 400 },
+  { cls: '.kol-sans-body-01', tokenName: '--kol-text-body-01', family: 'sans (base)' },
+  { cls: '.kol-sans-body-02', tokenName: '--kol-text-body-02', family: 'sans (base)' },
+  { cls: '.kol-sans-body-03', tokenName: '--kol-text-body-03', family: 'sans (base)' },
 ]
 
 /* ============================================================================
@@ -94,22 +94,24 @@ const proseRows = [
  * Mono — kol-mono-N + kol-helper-N
  * ============================================================================ */
 
+/* size/lh/weight/ls cells are MEASURED live from the loaded classes
+ * (LiveClassValue probe) — literals are banned here (validate:foundations). */
 const monoRows = [
-  { cls: '.kol-mono-20', size: 20, lh: 26, weight: 400, ls: 'normal' },
-  { cls: '.kol-mono-16', size: 16, lh: 22, weight: 400, ls: 'normal' },
-  { cls: '.kol-mono-14', size: 14, lh: 18, weight: 400, ls: 'normal' },
-  { cls: '.kol-mono-12', size: 12, lh: 16, weight: 400, ls: 'normal' },
-  { cls: '.kol-mono-10', size: 10, lh: 14, weight: 400, ls: 'normal' },
-  { cls: '.kol-mono-8',  size:  8, lh: 12, weight: 400, ls: 'normal' },
+  { cls: '.kol-mono-20' },
+  { cls: '.kol-mono-16' },
+  { cls: '.kol-mono-14' },
+  { cls: '.kol-mono-12' },
+  { cls: '.kol-mono-10' },
+  { cls: '.kol-mono-8' },
 ]
 
 const helperRows = [
-  { cls: '.kol-helper-20', size: 20, lh: '1', weight: 500, ls: '0.06em' },
-  { cls: '.kol-helper-16', size: 16, lh: '1', weight: 500, ls: '0.06em' },
-  { cls: '.kol-helper-14', size: 14, lh: '1', weight: 500, ls: '0.06em' },
-  { cls: '.kol-helper-12', size: 12, lh: '1', weight: 500, ls: '0.06em' },
-  { cls: '.kol-helper-10', size: 10, lh: '1', weight: 500, ls: '0.10em' },
-  { cls: '.kol-helper-8',  size:  8, lh: '1', weight: 500, ls: '0.10em' },
+  { cls: '.kol-helper-20' },
+  { cls: '.kol-helper-16' },
+  { cls: '.kol-helper-14' },
+  { cls: '.kol-helper-12' },
+  { cls: '.kol-helper-10' },
+  { cls: '.kol-helper-8' },
 ]
 
 /* ============================================================================

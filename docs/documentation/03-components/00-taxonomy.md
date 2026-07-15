@@ -128,6 +128,7 @@ The rule: **if you'd only ever use it inside its parent, it's a member.** Groupi
 - **Tier**: kol-component from its folders; kol-framework = `framework`; flat packages from the authored `TIERS` map in `showcase/src/lib/classification.js`.
 - **Function**: `FUNCTIONS_BY_NAME` in the same file — no silent `display` default anywhere.
 - **The gate**: `pnpm validate:roster` (wired into `build` + the release workflow) fails when any barrel export lacks a classification or a written exemption (`EXEMPT` / `DOCS_ONLY` / `DEPRECATED` / member overlay), when a classification key matches no live export, or when two packages export one name without a re-export ruling. Adding a component to any barrel either appears in the docs or breaks the build.
+- **Prose from source (2026-07-15)**: the description on a component's page is its file's own JSDoc first sentence (`Name — sentence.` convention; `pnpm extract:descriptions`, regenerated every build). The `DESCRIPTIONS` map in `registry.js` is a fallback for components without a JSDoc header — fix the JSDoc, don't author the map.
 
 ---
 

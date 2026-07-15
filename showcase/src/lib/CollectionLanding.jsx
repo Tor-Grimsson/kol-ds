@@ -5,6 +5,25 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import TopBar from './TopBar.jsx'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
+import COMPOSITION from '../usage/composition.json'
+
+/* Provenance at browse level (2026-07-15 audit P1-2): what a set/block is
+ * actually made of — KOL components vs local scaffolding vs external deps —
+ * derived from the transitive composition manifest, shown on every card and
+ * stage header instead of buried on the detail page. */
+function ProvenanceBadge({ itemKey, basePath }) {
+  const m = COMPOSITION[basePath.replace('/', '')]?.[itemKey]
+  if (!m) return null
+  const local = Object.keys(m.local || {}).length
+  const parts = [
+    `${m.kol.length} KOL`,
+    local ? `${local} local` : null,
+    m.external?.length ? m.external.join(' · ') : null,
+  ].filter(Boolean)
+  return (
+    <span className="kol-helper-10 text-subtle whitespace-nowrap">{parts.join(' · ')}</span>
+  )
+}
 
 /**
  * CollectionLanding — the shadcn /blocks landing, generalized so Blocks and
@@ -35,7 +54,11 @@ function GalleryCard({ item, labels, basePath, previewBase }) {
           <Link to={`${basePath}/${item.key}`} className="block truncate kol-sans-body-02 text-emphasis hover:underline">
             {item.title}
           </Link>
-          <p className="kol-helper-10 uppercase tracking-widest text-meta">{labels[item.category] ?? item.category}</p>
+          <p className="kol-helper-10 uppercase tracking-widest text-meta">
+            {labels[item.category] ?? item.category}
+            {' '}
+            <ProvenanceBadge itemKey={item.key} basePath={basePath} />
+          </p>
         </div>
         <Link
           to={`${previewBase}/${item.key}`}
@@ -68,6 +91,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
             <span className="kol-helper-10 uppercase tracking-widest text-meta">
               {labels[b.category] ?? b.category}
             </span>
+            <ProvenanceBadge itemKey={b.key} basePath={basePath} />
           </div>
           <BlockViewer entry={b} previewBase={previewBase} srcDir={srcDir} />
         </div>

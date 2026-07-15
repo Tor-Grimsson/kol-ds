@@ -1,5 +1,6 @@
 import USAGE from '../usage/usage-index.json'
 import DOCS_META from '../usage/docs-meta.json'
+import EXTRACTED_DESCRIPTIONS from '../usage/descriptions.json'
 import { DEMOS } from './demos-registry.js'
 import { COMPONENT_GROUPS, MEMBER_OF } from './component-groups.js'
 import { ROSTER } from './roster.js'
@@ -14,6 +15,11 @@ import { FUNCTIONS_BY_NAME, DOCS_ONLY, DEPRECATED } from './classification.js'
  * Drives the sidebar nav, the /components index, and each /components/:slug page.
  */
 
+/* AUTHORED FALLBACKS ONLY (2026-07-15, audit P1-5): the rendered description
+ * is the component's own JSDoc first sentence (scripts/extract-descriptions.mjs
+ * → descriptions.json, regenerated every build) and CANNOT rot. An entry here
+ * only surfaces for a component whose file has no `Name — sentence.` header —
+ * fix the JSDoc rather than editing this map. */
 const DESCRIPTIONS = {
   /* atoms */
   Button: 'Trigger an action or event — primary, secondary, outline, ghost, or icon-only.',
@@ -266,7 +272,8 @@ export const COMPONENTS = ROSTER
       examples: usage?.examples ?? [],
       slug: slugify(c.name),
       demo: DEMOS[c.name] || null,
-      description: DESCRIPTIONS[c.name] || '',
+      /* JSDoc-extracted first (source truth, build-fresh) → authored fallback */
+      description: EXTRACTED_DESCRIPTIONS[c.name] || DESCRIPTIONS[c.name] || '',
       /* Source-mined doc meta (scripts/extract-docs-meta.mjs): the kol type
        * classes it renders text with + the KOL components it composes. */
       meta: DOCS_META[c.name] || null,

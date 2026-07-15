@@ -2,7 +2,7 @@
 title: Reference shells
 type: reference
 status: active
-updated: 2026-07-02
+updated: 2026-07-15
 description: The documented app shells in the KOL ecosystem — the shadcn-style docs shell (this repo), the workshop shell (kol-monorepo), and the blocks/collections concept. What each is made of and when to reach for it.
 aliases:
   - reference-shells
@@ -26,7 +26,7 @@ The showcase's unified chrome, modelled on ui.shadcn.com. **Every docs page wear
 
 | Piece | File | Role |
 |---|---|---|
-| `TopBar` | `showcase/src/lib/TopBar.jsx` | Wordmark · section links (path-active) · search stub · GitHub (`social-github` icon) · `ThemeToggle` |
+| `TopBar` | `showcase/src/lib/TopBar.jsx` | Wordmark · section links (path-active) · component search (⌘K → `ShellSearchOverlay` over the barrel-derived roster; Lobby link is dev-only) · GitHub (`social-github` icon) · `ThemeToggle` |
 | `DocSidebar` | in `DocLayout.jsx` | Overview links (Foundations / Icons / Components) + the full component tree, grouped by category; sticky, scrollable |
 | Content column | in `DocLayout.jsx` | Default: centred `max-w-3xl`. `wide`: layout handed to the page (PageSection owns width/padding) |
 | `Toc` | in `DocLayout.jsx` | "On this page" right rail, anchor links, `sub` indent |

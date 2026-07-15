@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && pnpm --filter showcase build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:imports": "node scripts/validate-imports.mjs",
+    "validate:foundations": "node scripts/validate-foundations.mjs",
+    "extract:descriptions": "node scripts/extract-descriptions.mjs",
     "preview": "pnpm --filter showcase preview",
     "workbench": "pnpm --filter workbench ladle",
     "extract:usage": "node scripts/extract-usage.mjs",

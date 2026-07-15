@@ -44,6 +44,10 @@ jobs:
       - name: Validate imports
         run: pnpm validate:imports
 
+      # Token-truth lock — no hand-copied hex/px in the Foundations data (P1-4).
+      - name: Validate foundations
+        run: pnpm validate:foundations
+
       # Opens/updates a "Version Packages" PR; when that PR merges, publishes.
       - name: Create release PR or publish
         uses: changesets/action@v1

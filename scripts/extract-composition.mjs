@@ -25,11 +25,19 @@
 import { readFileSync, readdirSync, writeFileSync, existsSync, statSync } from 'node:fs'
 import { join, dirname, resolve, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { parseBarrelExports } from './lib/parse-barrel.mjs'
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(REPO, 'showcase/src')
 
-const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-icons', '@kolkrabbi/kol-framework', '@kolkrabbi/kol-foundry', '@kolkrabbi/kol-dashboards', '@kolkrabbi/kol-chess', '@kolkrabbi/kol-content', '@kolkrabbi/kol-store', '@kolkrabbi/kol-workshop', '@kolkrabbi/kol-brand']
+/* every published package, derived — a new package can't silently fall out
+ * of the walk (2026-07-15 audit P2-3: the hand list was missing styleguide) */
+const KOL_PKGS = readdirSync(join(REPO, 'packages'))
+  .map((d) => {
+    try { return JSON.parse(readFileSync(join(REPO, 'packages', d, 'package.json'), 'utf8')).name }
+    catch { return null }
+  })
+  .filter(Boolean)
 
 /* Resolve a relative import to a real file (mirrors Vite's resolution). */
 function resolveImport(fromFile, spec) {
@@ -68,22 +76,28 @@ function importsOf(file) {
   return out
 }
 
-/* name -> package source file, built from the published barrels. Lets a
- * `@kolkrabbi/*` import be walked transitively into the real component. */
-const BARRELS = [
-  join(REPO, 'packages/component/src/index.js'),
-  join(REPO, 'packages/component/src/organisms/foundry/index.js'),
-  join(REPO, 'packages/framework/src/index.js'),
-  join(REPO, 'packages/icons/src/index.js'),
-]
+/* name -> package source file, built from EVERY package barrel via the shared
+ * parser (scripts/lib/parse-barrel.mjs — same enumeration as the roster and
+ * the validate:roster gate). Lets a `@kolkrabbi/*` import be walked
+ * transitively into the real component. Replaces the 4-barrel hand list that
+ * silently skipped the domain packages (2026-07-15 audit P2-3). */
 const EXPORT_MAP = {}
-for (const barrel of BARRELS) {
-  if (!existsSync(barrel)) continue
-  for (const { spec, names } of importsOf(barrel)) {
-    if (!spec.startsWith('.')) continue
-    const target = resolveImport(barrel, spec)
-    if (!target) continue
-    for (const n of names) if (!(n in EXPORT_MAP)) EXPORT_MAP[n] = target
+for (const dir of readdirSync(join(REPO, 'packages'))) {
+  const src = join(REPO, 'packages', dir, 'src')
+  const entry = join(src, 'index.js')
+  if (!existsSync(entry)) continue
+  const files = {}
+  const collect = (d) => {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const full = join(d, e.name)
+      if (e.isDirectory() && e.name !== 'node_modules') collect(full)
+      else if (e.name === 'index.js') files[relative(src, full)] = readFileSync(full, 'utf8')
+    }
+  }
+  collect(src)
+  for (const { name, src: ref } of parseBarrelExports(files)) {
+    const target = resolveImport(entry, ref)
+    if (target && !(name in EXPORT_MAP)) EXPORT_MAP[name] = target
   }
 }
 
