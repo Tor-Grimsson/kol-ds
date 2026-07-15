@@ -22,7 +22,9 @@ export const TIERS = {
   ColorAnatomy: 'molecules', AssetTable: 'molecules', LogoCard: 'molecules',
   ComboLab: 'organisms',
   /* kol-content */
-  SourcesReferences: 'atoms', WorkViewToggle: 'atoms',
+  SourcesReferences: 'atoms',
+  /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
+  WorkViewToggle: 'molecules',
   ArticleCard: 'molecules', PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
   ShareButtons: 'molecules', WorkCard: 'molecules', WorkListItem: 'molecules',
   StackHero: 'organisms', ArticleHeader: 'organisms', ParallaxShelf: 'organisms',
@@ -32,7 +34,7 @@ export const TIERS = {
   PrintBuyButton: 'molecules',
   ProductDetailLayout: 'organisms', DiagonalMarqueeRiver: 'organisms', PrintsGrid: 'organisms',
   /* kol-chess */
-  ChessBoard: 'atoms', GameSelector: 'atoms', ChessPiece: 'atoms',
+  ChessBoard: 'atoms', ChessPiece: 'atoms',
   NotationPanel: 'molecules', PlaybackControls: 'molecules', VariationTree: 'molecules',
   ChessAnalysisLayout: 'organisms', ChessBoardWithControls: 'organisms',
   ChessBoardWithSidebar: 'organisms', ChessBoardFullscreen: 'organisms',
@@ -132,7 +134,7 @@ export const FUNCTIONS_BY_NAME = {
   /* chess */
   ChessAnalysisLayout: 'structure', ChessBoard: 'display', ChessBoardWithControls: 'display',
   ChessBoardWithSidebar: 'display', ChessBoardFullscreen: 'display', ChessSidebar: 'action',
-  GameArchiveTable: 'display', GameSelector: 'input', NotationPanel: 'display',
+  GameArchiveTable: 'display', NotationPanel: 'display',
   PlaybackControls: 'action', VariationTree: 'display', AlternativeControlsMock: 'action',
   ChessPiece: 'media', ChessHero: 'display',
   /* dashboards */

@@ -41,12 +41,21 @@
   border-radius: 4px;
 }
 
+/* fluid sizes by width AND height (2026-07-15 100dvh stage): the square is
+ * the largest that fits both the column width and the viewport minus the
+ * stage chrome. Mobile budget is bigger (strip + transport + notation min). */
 .chess-board--fluid {
-  width: 100%;
+  width: min(100%, calc(100dvh - 200px));
   height: auto;
   aspect-ratio: 1;
   max-width: 760px;
   min-width: 280px;
+}
+
+@media (max-width: 1023px) {
+  .chess-board--fluid {
+    width: min(100%, calc(100dvh - 380px));
+  }
 }
 
 
@@ -535,6 +544,8 @@
   color: var(--kol-status-danger);
 }
 
+/* no text-transform (casing law) — the JSX authors 'CHESS.COM' in-case;
+ * color rides the theme link tokens instead of accent (= ink) */
 .analysis-table__link {
   display: inline-flex;
   align-items: center;
@@ -542,11 +553,11 @@
   font-family: var(--kol-font-family-mono);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--kol-accent-primary);
+  color: var(--kol-link);
 }
 
 .analysis-table__link:hover {
+  color: var(--kol-link-hover);
   text-decoration: underline;
 }
 

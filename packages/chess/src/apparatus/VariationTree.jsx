@@ -30,17 +30,16 @@ const VariationTree = () => {
       />
       {userVariations?.length ? (
         <div className="mt-3 border-t border-oq-08 pt-3">
-          <div className="kol-mono-10 uppercase tracking-[0.2em] text-fg-50 mb-2">
-            Custom Variations
+          <div className="kol-helper-10 text-fg-50 mb-2">
+            CUSTOM VARIATIONS
           </div>
           {userVariations.map((variation) => (
             <div key={variation.id} className="flex flex-col gap-1 mb-2">
               <div className="flex items-center justify-between text-fg-80">
                 <span className="kol-mono-12">{variation.label}</span>
                 <Button
-                  variant="primary"
+                  variant="danger"
                   size="sm"
-                  className="text-status-danger hover:text-status-danger-foreground"
                   onClick={() => removeUserVariation(variation.id)}
                 >
                   remove
@@ -49,7 +48,7 @@ const VariationTree = () => {
               <div className="flex flex-wrap gap-2 text-fg-70">
                 {variation.moves.map((move, idx) => (
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     key={`${variation.id}-${idx}`}
                     selected={move.ply === moveIndex}
@@ -73,7 +72,7 @@ const VariationBranch = ({ moves, depth, moveIndex, onSelectPly, label }) => {
   return (
     <div className="flex flex-col gap-1">
       {label ? (
-        <div className="kol-mono-10 uppercase tracking-[0.2em] text-fg-50">{label}</div>
+        <div className="kol-helper-10 text-fg-50">{label}</div>
       ) : null}
       {moves.map((node, idx) => (
         <VariationNode
@@ -95,7 +94,7 @@ const VariationNode = ({ node, depth, moveIndex, onSelectPly }) => {
   return (
     <div className="flex flex-col gap-1">
       <Button
-        variant="primary"
+        variant="ghost"
         size="sm"
         onClick={() => onSelectPly(node.ply)}
         selected={isActive}

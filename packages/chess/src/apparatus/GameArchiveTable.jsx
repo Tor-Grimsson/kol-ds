@@ -2,7 +2,9 @@
 // Required chessData functions: loadMonthGames(month), getMonthlySummary(),
 // getRandomMonth(), getGamePgnByIdAsync(id, month).
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Dropdown, Input, Button, Table, Tag, Pill } from '@kolkrabbi/kol-component'
+import { Dropdown, Input, Button, Table, Pill } from '@kolkrabbi/kol-component'
+
+import { TIME_CLASS_LABELS, RESULT_LABELS } from './labels.js'
 
 const MAX_VISIBLE_GAMES = 5
 
@@ -93,7 +95,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
     return [
       { label: 'All Time Classes', value: 'all' },
       ...unique.map((timeClass) => ({
-        label: timeClass.charAt(0).toUpperCase() + timeClass.slice(1),
+        label: TIME_CLASS_LABELS[timeClass] ?? timeClass,
         value: timeClass
       }))
     ]
@@ -107,7 +109,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
     return [
       { label: 'All Results', value: 'all' },
       ...unique.map((result) => ({
-        label: result.charAt(0).toUpperCase() + result.slice(1),
+        label: RESULT_LABELS[result] ?? result,
         value: result
       }))
     ]
@@ -198,7 +200,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
       case 'resigned':
         return 'Resigned'
       default:
-        return result.charAt(0).toUpperCase() + result.slice(1)
+        return RESULT_LABELS[result] ?? result
     }
   }, [])
 
@@ -216,15 +218,12 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
     if (onGameLoad) {
       onGameLoad(loadedGame)
     }
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
   }, [onGameLoad])
 
   const columns = useMemo(
     () => [
       {
-        header: 'Date',
+        header: 'DATE',
         accessor: 'date',
         className: 'kol-table-cell-text analysis-table__cell',
         render: (game) => (
@@ -237,13 +236,13 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         )
       },
       {
-        header: 'Opponent',
+        header: 'OPPONENT',
         accessor: 'opponent',
         className: 'kol-table-cell-text analysis-table__cell',
         render: (game) => <span>{game.opponent?.username ?? 'Opponent'}</span>
       },
       {
-        header: 'Result',
+        header: 'RESULT',
         accessor: 'result',
         className: 'kol-table-cell-text analysis-table__cell',
         render: (game) => {
@@ -254,7 +253,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         }
       },
       {
-        header: 'Color',
+        header: 'COLOR',
         accessor: 'color',
         className: 'kol-table-cell-text analysis-table__cell hidden lg:table-cell',
         headerClassName: 'kol-table-cell-title hidden lg:table-cell',
@@ -269,19 +268,19 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         )
       },
       {
-        header: 'Time Control',
+        header: 'TIME CONTROL',
         accessor: 'timeControl',
         className: 'kol-table-cell-text analysis-table__cell hidden md:table-cell',
         headerClassName: 'kol-table-cell-title hidden md:table-cell',
         render: (game) => {
           const label = game.timeClass
-            ? game.timeClass.charAt(0).toUpperCase() + game.timeClass.slice(1)
+            ? (TIME_CLASS_LABELS[game.timeClass] ?? game.timeClass)
             : '—'
           return <span>{label}</span>
         }
       },
       {
-        header: 'Rating',
+        header: 'RATING',
         accessor: 'ratings',
         className: 'kol-table-cell-text analysis-table__cell hidden lg:table-cell',
         headerClassName: 'kol-table-cell-title hidden lg:table-cell',
@@ -295,14 +294,14 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         )
       },
       {
-        header: 'Link',
+        header: 'LINK',
         accessor: 'url',
         className: 'kol-table-cell-text analysis-table__actions-cell',
         headerClassName: 'kol-table-cell-title analysis-table__actions-header',
         render: (game) => (
           <div className="analysis-table__actions">
             <Button
-              variant="primary"
+              variant="outline"
               size="sm"
               onClick={(e) => {
                 e.preventDefault()
@@ -320,7 +319,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                Chess.com →
+                CHESS.COM →
               </a>
             ) : (
               <span className="analysis-table__meta">No link</span>
@@ -353,7 +352,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-surface-secondary border border-fg-08 rounded">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h3 className="kol-mono-12 uppercase">Game Archive Status</h3>
+            <h3 className="kol-helper-12">GAME ARCHIVE STATUS</h3>
             {isLoading && <Pill variant="subtle" size="sm">Loading...</Pill>}
           </div>
           <p className="kol-mono-12 text-fg-64">
@@ -374,10 +373,10 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h3 className="kol-mono-16">Browse Games</h3>
-          <Tag>
+          <h3 className="kol-sans-heading-05">Browse Games</h3>
+          <Pill variant="subtle" size="sm">
             {`${tableRows.length} shown · ${filteredGames.length.toLocaleString()} filtered`}
-          </Tag>
+          </Pill>
         </div>
         <p className="kol-mono-14 text-auto/70 leading-relaxed">
           Select a month to load games. Initially showing a random sample of 5 games.
@@ -389,6 +388,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
           <Dropdown
+            size="sm"
             options={monthOptions}
             value={selectedMonth}
             onChange={setSelectedMonth}
@@ -400,6 +400,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
             <Button
               variant="primary"
               size="sm"
+              className="analysis-control"
               onClick={() => handleLoadMonth(selectedMonth)}
               disabled={isLoading}
             >
@@ -409,12 +410,13 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
 
           {selectedMonth && loadedMonths.has(selectedMonth) && !isMonthFullyLoaded && (
             <Button
-              variant="outline"
+              variant="primary"
               size="sm"
+              className="analysis-control"
               onClick={() => handleLoadMonth(selectedMonth)}
               disabled={isLoading}
             >
-              Load full month ({selectedMonthInfo?.total || 0} games)
+              Load all ({selectedMonthInfo?.total || 0})
             </Button>
           )}
         </div>
@@ -425,12 +427,14 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
             <Dropdown
+              size="sm"
               options={timeClassOptions}
               value={selectedTimeClass}
               onChange={setSelectedTimeClass}
               className="analysis-control w-full sm:w-auto"
             />
             <Dropdown
+              size="sm"
               options={resultOptions}
               value={selectedResult}
               onChange={setSelectedResult}
@@ -439,10 +443,12 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
           </div>
           <div className="w-full md:w-auto md:min-w-[280px]">
             <Input
+              size="sm"
+              width="100%"
               placeholder="Search opponent, ECO, or control…"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              iconLeft="search-16"
+              iconLeft="search"
             />
           </div>
         </div>

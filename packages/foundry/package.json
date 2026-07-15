@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-foundry",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": false,
   "description": "KOL foundry component set — the type-specimen apparatus: typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font-preview, and the typeface-catalog grid. Every component renders, inspects, or manipulates a live font. Typeface data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",

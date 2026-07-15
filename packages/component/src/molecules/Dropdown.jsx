@@ -13,6 +13,8 @@ import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
  *
  *   variant="primary" (default) — filled trigger; open panel continues the
  *     same fill (one piece: no border, no gap, hairline divider inside)
+ *   variant="grey"              — oq-12 filled trigger (opaque per the fill
+ *                                 law); panel continues it
  *   variant="outline"           — bordered trigger; open panel carries the
  *     same border, trigger's bottom edge acts as the divider
  *
@@ -110,7 +112,9 @@ const Dropdown = ({
 
   const triggerCls = [
     'kol-btn',
-    `kol-btn-${resolvedVariant}`,
+    /* grey is dropdown-only chrome (2026-07-15) — no kol-btn-* class so it
+     * never leaks into Button's variant set */
+    resolvedVariant === 'grey' ? 'kol-dd-trigger--grey' : `kol-btn-${resolvedVariant}`,
     `kol-btn-${resolvedSize}`,
     SIZE_TYPE[resolvedSize],
     'kol-dd-trigger',
@@ -154,7 +158,7 @@ const Dropdown = ({
         focus={false}
         className={`kol-dd-panel kol-dd-panel--${resolvedVariant}`}
       >
-        {resolvedVariant === 'primary' && <div className="kol-dd-div" />}
+        {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
 
         <div className="flex max-h-[300px] flex-col items-stretch overflow-y-auto" role="listbox">
           {options.map((option) => {

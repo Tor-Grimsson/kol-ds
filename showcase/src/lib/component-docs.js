@@ -25,7 +25,7 @@ export const DOC_DATA = {
   Button: {
     usage: '<Button variant="primary" iconLeft="plus">New</Button>',
     api: [
-      { prop: 'variant', type: 'primary | secondary | accent | outline | ghost | control', def: 'primary', desc: 'Visual style.' },
+      { prop: 'variant', type: 'primary | secondary | accent | outline | ghost | danger | grey | control', def: 'primary', desc: 'Visual style. `danger` is the destructive treatment (--ui-error fill).' },
       { prop: 'size', type: 'sm | md | lg', def: 'md', desc: 'Button size.' },
       { prop: 'iconLeft / iconRight', type: 'string', def: '—', desc: 'Icon name on a given side.' },
       { prop: 'iconOnly', type: 'string', def: '—', desc: 'Renders an icon-only button.' },

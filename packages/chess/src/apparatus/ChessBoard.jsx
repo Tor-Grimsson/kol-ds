@@ -12,7 +12,7 @@ const PIECE_TYPE_MAP = {
   k: 'king'
 }
 
-const BOARD_THEMES = {
+export const BOARD_THEMES = {
   'blue-gray': { light: '#E8EDF9', dark: '#B7C0D8' },
   'gray': { light: '#EFEFEF', dark: '#A6A6A6' },
   'green-white': { light: '#ffffff', dark: '#0a682a' },

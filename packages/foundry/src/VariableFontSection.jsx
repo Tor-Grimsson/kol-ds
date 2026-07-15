@@ -144,7 +144,6 @@ const VariableFontSection = ({
                 max={maxWeight}
                 value={Math.round(weight)}
                 onChange={handleSliderChange}
-                variant="minimal"
                 className="w-full"
               />
             </div>

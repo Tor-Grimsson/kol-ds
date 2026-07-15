@@ -1,14 +1,9 @@
-import { useEffect, useRef } from 'react'
+import React from 'react'
 import { Button } from '@kolkrabbi/kol-component'
 
+/* no autoscroll on playback (2026-07-15 user ruling): the list plays without
+ * stealing scroll — the user brings the active move into view if they want */
 const NotationPanel = ({ notationPairs = [], activePly = 0, onSelectPly = () => {}, isLoading = false }) => {
-  const activeRef = useRef(null)
-
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    }
-  }, [activePly])
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2 text-fg-48">
@@ -23,36 +18,40 @@ const NotationPanel = ({ notationPairs = [], activePly = 0, onSelectPly = () => 
     return <p className="kol-mono-12 text-fg-64">No notation available for this game.</p>
   }
 
+  /* one grid, three columns (number · white · black) — every move lands on
+   * the same column edge regardless of SAN length; tight y rhythm */
   return (
-    <div className="flex flex-col gap-2">
+    <div className="grid grid-cols-[auto_1fr_1fr] items-center gap-x-3 gap-y-1">
       {notationPairs.map((pair) => {
         const isWhiteActive = pair.white?.ply === activePly
         const isBlackActive = pair.black?.ply === activePly
 
         return (
-          <div key={pair.moveNumber} className="flex items-start gap-4" ref={isWhiteActive || isBlackActive ? activeRef : null}>
-            <span className="kol-mono-12 text-fg-64 w-6 text-right">{pair.moveNumber}.</span>
-            <div className="flex flex-1 gap-8">
-              <Button
-                variant="primary"
-                size="sm"
-                disabled={!pair.white}
-                selected={isWhiteActive}
-                onClick={() => pair.white && onSelectPly(pair.white.ply)}
-              >
-                {pair.white?.san ?? '—'}
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                disabled={!pair.black}
-                selected={isBlackActive}
-                onClick={() => pair.black && onSelectPly(pair.black.ply)}
-              >
-                {pair.black?.san ?? '—'}
-              </Button>
-            </div>
-          </div>
+          <React.Fragment key={pair.moveNumber}>
+            <span className="kol-mono-12 text-fg-64 text-right">
+              {pair.moveNumber}.
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start"
+              disabled={!pair.white}
+              selected={isWhiteActive}
+              onClick={() => pair.white && onSelectPly(pair.white.ply)}
+            >
+              {pair.white?.san ?? '—'}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start"
+              disabled={!pair.black}
+              selected={isBlackActive}
+              onClick={() => pair.black && onSelectPly(pair.black.ply)}
+            >
+              {pair.black?.san ?? '—'}
+            </Button>
+          </React.Fragment>
         )
       })}
     </div>

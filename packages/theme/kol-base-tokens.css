@@ -49,6 +49,9 @@
 
 /* Dark Mode — surface overrides */
 :is([data-theme="dark"], .dark) {
+  --kol-link:       #60A5FA;
+  --kol-link-hover: #93C5FD;
+
   --kol-surface-primary: #121215;
   --kol-surface-on-primary: #fafafa;
 

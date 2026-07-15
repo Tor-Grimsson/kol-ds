@@ -111,7 +111,6 @@ const TypefaceVariablePreview = ({
             max={200}
             value={size}
             onChange={setSize}
-            variant="minimal"
             className="flex-1"
           />
           <Slider
@@ -120,7 +119,6 @@ const TypefaceVariablePreview = ({
             max={50}
             value={leading}
             onChange={setLeading}
-            variant="minimal"
             className="flex-1"
             formatValue={(val) => 90 + val}
           />
@@ -130,7 +128,6 @@ const TypefaceVariablePreview = ({
             max={50}
             value={spacing}
             onChange={setSpacing}
-            variant="minimal"
             className="flex-1"
           />
         </div>

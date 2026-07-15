@@ -147,6 +147,21 @@
   justify-content: space-between;
 }
 
+/* Dropdowns have NO hover and NO clicked state (2026-07-15 ruling) — the
+ * trigger borrows Button chrome for geometry/fill but its only states are
+ * rest and open. Scoped here so Button's own rules stay untouched. */
+.kol-dd-trigger.kol-btn-primary:not(.kol-btn-animate):hover,
+.kol-dd-trigger.kol-btn-primary:not(.kol-btn-animate):not(:disabled):active {
+  background: var(--kol-surface-secondary);
+  color: var(--kol-surface-on-primary);
+}
+.kol-dd-trigger.kol-btn-outline:not(.kol-btn-animate):hover,
+.kol-dd-trigger.kol-btn-outline:not(.kol-btn-animate):not(:disabled):active {
+  background: transparent;
+  border-color: var(--kol-oq-16);
+  color: var(--kol-surface-on-primary);
+}
+
 .kol-dd-trigger--open {
   border-radius: var(--kol-radius-sm) var(--kol-radius-sm) 0 0;
 }
@@ -164,6 +179,18 @@
   border: 1px solid var(--kol-oq-16);
   border-top: none;
 }
+
+/* grey — the opaque grey chrome (oq-12, fill law:
+ * interactive surfaces never translucent). Dropdown-only chrome; rest = hover
+ * = active per the no-states dropdown ruling (no kol-btn-* class emitted, so
+ * no button state rules ever apply). */
+.kol-dd-trigger--grey {
+  background-color: var(--kol-oq-12);
+  color: var(--kol-surface-on-primary);
+  border: 1px solid transparent;
+}
+
+.kol-dd-panel--grey { background-color: var(--kol-oq-12); }
 
 .kol-dd-div {
   height: 1px;

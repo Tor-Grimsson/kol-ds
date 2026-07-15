@@ -14,7 +14,6 @@ export { default as ChessBoardWithSidebar } from './apparatus/ChessBoardWithSide
 export { default as ChessBoardFullscreen } from './apparatus/ChessBoardFullscreen.jsx'
 export { default as ChessSidebar } from './apparatus/ChessSidebar.jsx'
 export { default as GameArchiveTable } from './apparatus/GameArchiveTable.jsx'
-export { default as GameSelector } from './apparatus/GameSelector.jsx'
 export { default as NotationPanel } from './apparatus/NotationPanel.jsx'
 export { default as PlaybackControls } from './apparatus/PlaybackControls.jsx'
 export { default as VariationTree } from './apparatus/VariationTree.jsx'

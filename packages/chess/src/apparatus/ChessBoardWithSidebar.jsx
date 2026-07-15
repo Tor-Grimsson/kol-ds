@@ -7,11 +7,11 @@ import ChessSidebar from './ChessSidebar'
 // Map the legacy glyph labels to KOL icon names + accessible labels (icon names
 // reused verbatim from PlaybackControls, which renders the same controls).
 const GLYPH_TO_ICON = {
-  '⏮': { icon: 'play-arrow-start', label: 'Jump to start' },
-  '◀': { icon: 'play-arrow-back', label: 'Step backward' },
-  '▶': { icon: 'play-Play', label: 'Play moves' },
-  '▸': { icon: 'play-arrow-forward', label: 'Step forward' },
-  '⏭': { icon: 'play-arrow-end', label: 'Jump to end' }
+  '⏮': { icon: 'skip-start', label: 'Jump to start' },
+  '◀': { icon: 'skip-back', label: 'Step backward' },
+  '▶': { icon: 'play', label: 'Play moves' },
+  '▸': { icon: 'skip-forward', label: 'Step forward' },
+  '⏭': { icon: 'skip-end', label: 'Jump to end' }
 }
 
 const ToolbarButton = ({ label, onClick }) => {

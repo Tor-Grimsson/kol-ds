@@ -35,6 +35,16 @@
   --kol-accent-primary-strong: color-mix(in srgb, var(--kol-accent-primary) 80%, var(--kol-surface-primary));
 
   /* ---------------------------------------------------------------------------
+   * HYPERLINKS — the one text role with its own color (2026-07-15, chess
+   * consumer audit finding 3: no link token, no a{} rule → links rendered as
+   * body ink). Theme-owned hex defaults in the --ui-info blue family; the
+   * brand layer overrides the tokens, consumers override per element.
+   * --------------------------------------------------------------------------- */
+
+  --kol-link:       #2563EB;
+  --kol-link-hover: #1D4ED8;
+
+  /* ---------------------------------------------------------------------------
    * UI STATE — error / warning / info / success.
    * Direct hex (not ramp-dependent). Intentionally not part of the brand layer
    * so consumers get sensible defaults out of the box.
@@ -74,6 +84,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --kol-link:       #60A5FA;
+    --kol-link-hover: #93C5FD;
+
     --kol-surface-primary: #121215;
     --kol-surface-on-primary: #FAFAFA;
 
@@ -87,6 +100,15 @@
     --kol-surface-on-inverse: #0E0E11;
   }
 }
+
+/* =============================================================================
+ * BASE ANCHOR RULE — unstyled links get the link color. Sits in the
+ * components layer, so any utility class or later-loading chrome sheet
+ * (kol-framework, brand) still wins per the cascade contract (§5).
+ * ============================================================================= */
+
+a { color: var(--kol-link); }
+a:hover { color: var(--kol-link-hover); }
 
 /* =============================================================================
  * CONTEXT-AWARE SURFACE INVERSE

@@ -10,7 +10,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'control'} props.variant - Visual variant. `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'danger'|'grey'|'control'} props.variant - Visual variant. `danger` is the destructive treatment (--ui-error fill); `control` is an alias for `ghost` (legacy call-sites).
  * @param {'sm'|'md'|'lg'} props.size - Button size (default: 'md')
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
@@ -71,6 +71,10 @@ const Button = ({
     ? 'kol-btn-outline'
     : resolvedVariant === 'ghost'
     ? 'kol-btn-ghost'
+    : resolvedVariant === 'danger'
+    ? 'kol-btn-danger'
+    : resolvedVariant === 'grey'
+    ? 'kol-btn-grey'
     : 'kol-btn-secondary'
 
   // Add size class — pairs the padding rule with its mono type class.

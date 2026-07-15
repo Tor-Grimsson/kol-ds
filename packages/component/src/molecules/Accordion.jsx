@@ -38,8 +38,10 @@ export function AccordionPanel({
         onClick={toggle}
         aria-expanded={open}
       >
-        <span className="kol-accordion-title kol-helper-12 uppercase tracking-widest">{title}</span>
-        {meta && <span className="kol-accordion-meta kol-helper-12 uppercase tracking-widest text-fg-48 ml-auto mr-3">{meta}</span>}
+        {/* no text-transform (casing law 2026-07-15): titles render as authored —
+          * kol-helper-12 already carries the tracked-caps letterspacing */}
+        <span className="kol-accordion-title kol-helper-12">{title}</span>
+        {meta && <span className="kol-accordion-meta kol-helper-12 text-fg-48 ml-auto mr-3">{meta}</span>}
         <span className="kol-accordion-chevron kol-helper-16 text-fg-48 min-w-3 transition-colors duration-[120ms] ml-auto" aria-hidden="true">{open ? '−' : '+'}</span>
       </button>
       {open && <div className="kol-accordion-body pt-2 pb-6">{children}</div>}

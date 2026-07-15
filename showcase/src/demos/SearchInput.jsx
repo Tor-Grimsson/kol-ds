@@ -7,6 +7,7 @@ export default function SearchInputDemo() {
   const [a, setA] = useState('')
   const [b, setB] = useState('')
   const [c, setC] = useState('')
+  const [d, setD] = useState('')
   return (
     <>
       <SearchInput
@@ -26,6 +27,13 @@ export default function SearchInputDemo() {
         size="sm"
         value={c}
         onChange={(e) => setC(e.target.value)}
+      />
+      {/* expanding body plan — the /work navbar pattern (uncontrolled open) */}
+      <SearchInput
+        expanding
+        value={d}
+        onChange={(e) => setD(e.target.value)}
+        placeholder="Search projects…"
       />
     </>
   )

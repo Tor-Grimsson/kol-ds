@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function FullscreenOverlay({ open, onClose, children }) {
+export default function FullscreenOverlay({ open, onClose, closeButton = true, children }) {
   const sheetRef = useRef(null)
 
   useEffect(() => {
@@ -24,14 +24,16 @@ export default function FullscreenOverlay({ open, onClose, children }) {
   return (
     <div className="kol-overlay" role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
       <div ref={sheetRef} className="kol-overlay-sheet">
-        <button
-          type="button"
-          className="kol-overlay-close"
-          onClick={onClose}
-          aria-label="Close"
-        >
-          ×
-        </button>
+        {closeButton && (
+          <button
+            type="button"
+            className="kol-overlay-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ×
+          </button>
+        )}
         {children}
       </div>
     </div>

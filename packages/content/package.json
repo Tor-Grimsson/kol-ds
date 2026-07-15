@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-content",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "KOL content/CMS system — the /stack (blog editorial) + /work (portfolio) streams: article masthead + author/share/sources pieces, a portable-text renderer, blog cards, and the work shelf/list apparatus (embla shelf, scroll-drift gallery, view toggle). Data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",

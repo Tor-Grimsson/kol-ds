@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import { SearchInput } from '@kolkrabbi/kol-component'
 
-/* taxonomy-ok: composites a segmented toggle + an inline search into one
- * space-trading control (organism); nests kol-icons's Icon (infrastructure). */
+/* taxonomy-ok: molecule — nests the DS SearchInput (expanding mode, extracted
+ * from this component 2026-07-15); this file keeps the toggle + the sibling
+ * space-trading choreography. */
 
 const CUBIC_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
 /* The pill uses a springier overshoot ease, distinct from CUBIC_EASE. */
@@ -54,16 +56,14 @@ export default function WorkViewToggle({
   className = '',
 }) {
   const [open, setOpen] = useState(false)
-  const inputRef = useRef(null)
 
-  useEffect(() => {
-    if (open) inputRef.current?.focus()
-  }, [open])
-
-  const closeSearch = () => {
-    setOpen(false)
-    onQuery?.('')
+  /* SearchInput owns focus + Escape; clearing on close is this parent's call */
+  const handleOpenChange = (next) => {
+    setOpen(next)
+    if (!next) onQuery?.('')
   }
+
+  const closeSearch = () => handleOpenChange(false)
 
   const isShelf = view === 'shelf'
   const isList = view === 'list'
@@ -140,31 +140,16 @@ export default function WorkViewToggle({
         </button>
       </div>
 
-      {/* Search — icon button expands to a search field */}
-      <div
-        className="flex items-center bg-fg-04 rounded-full h-9"
-        style={{ width: open ? 280 : 36, transition: `width 600ms ${CUBIC_EASE}` }}
-      >
-        <button
-          type="button"
-          className={`flex items-center justify-center w-9 h-9 rounded-full text-auto flex-shrink-0 border border-transparent ${open ? '' : 'transition-colors hover:border-fg-12'}`}
-          onClick={() => !open && setOpen(true)}
-          aria-label="Search projects"
-        >
-          <Icon name="search" size={16} className="text-fg-80" />
-        </button>
-        {open && (
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => onQuery?.(e.target.value)}
-            placeholder={placeholder}
-            className="bg-transparent outline-none kol-helper-14 flex-1 text-fg-80 caret-current pr-4 min-w-0"
-            onKeyDown={(e) => { if (e.key === 'Escape') closeSearch() }}
-          />
-        )}
-      </div>
+      {/* Search — the DS SearchInput in its expanding body plan */}
+      <SearchInput
+        expanding
+        open={open}
+        onOpenChange={handleOpenChange}
+        value={query}
+        onChange={(e) => onQuery?.(e.target.value)}
+        placeholder={placeholder}
+        triggerLabel="Search projects"
+      />
     </div>
   )
 }

@@ -59,22 +59,20 @@ function FontPreviewItem({
             options={weightOptions}
             value={selectedWeight}
             onChange={setSelectedWeight}
-            variant="minimal"
           />
         </div>
         <div className="flex-1 flex justify-start items-start gap-8">
-          <Slider label="Size" min={12} max={200} value={size} onChange={setSize} variant="minimal" className="flex-1" />
+          <Slider label="Size" min={12} max={200} value={size} onChange={setSize} className="flex-1" />
           <Slider
             label="Leading"
             min={0}
             max={50}
             value={leading}
             onChange={setLeading}
-            variant="minimal"
             className="hidden md:flex flex-1"
             formatValue={(val) => 90 + val}
           />
-          <Slider label="Spacing" min={-50} max={50} value={spacing} onChange={setSpacing} variant="minimal" className="hidden md:flex flex-1" />
+          <Slider label="Spacing" min={-50} max={50} value={spacing} onChange={setSpacing} className="hidden md:flex flex-1" />
         </div>
       </div>
 

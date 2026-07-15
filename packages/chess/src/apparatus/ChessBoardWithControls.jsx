@@ -18,12 +18,16 @@ const ChessBoardView = () => {
 }
 
 const ChessBoardWithControlsContent = () => {
+  /* married heights (2026-07-15): at lg+ the BOARD alone defines the row —
+   * the rail is absolutely pinned to the board's box (inset-y-0) and its
+   * content scrolls inside; flex/grid can't do "B follows A" once B's
+   * content is taller, so B leaves the flow. Stacked below lg. */
   return (
-    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-      <div className="flex-1 min-w-0">
+    <div className="flex h-full min-h-0 flex-col gap-4 lg:block lg:h-auto lg:relative lg:pr-[472px]">
+      <div className="mx-auto w-full max-w-[calc(100dvh-380px)] flex-shrink-0 min-w-0 lg:mx-0 lg:max-w-none">
         <ChessBoardView />
       </div>
-      <div className="w-full lg:w-[440px] lg:flex-shrink-0">
+      <div className="mx-auto min-h-0 flex-1 w-full max-w-[calc(100dvh-380px)] overflow-y-auto lg:overflow-hidden lg:mx-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-[440px] lg:max-w-none lg:flex-none">
         <AlternativeControlsMock />
       </div>
     </div>

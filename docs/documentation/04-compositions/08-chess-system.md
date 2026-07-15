@@ -2,7 +2,7 @@
 title: Chess system — the analysis/play package
 type: reference
 status: canonical
-updated: 2026-07-09
+updated: 2026-07-15
 verified: 2026-07-09
 description: Component index and consumer guide for @kolkrabbi/kol-chess — the board + variants, pieces (3 SVG sets), the play/analysis apparatus (notation, playback, variation tree, game-archive table), a PGN engine, and a bundled ./data adapter (demo set + B2 CDN fetch for the 27k-game archive), lifted out of kol-component on 2026-07-09. Presentation takes an injected chessData adapter; a ready one ships at ./data.
 aliases:
@@ -36,7 +36,7 @@ import * as chessData from '@kolkrabbi/kol-chess/data'
 | Group | Exports | What it is |
 |-------|---------|-----------|
 | **Board + variants** | `ChessBoard`, `ChessBoardWithControls`, `ChessBoardWithSidebar`, `ChessBoardFullscreen` | the board and its four framings (bare / +controls / +sidebar / fullscreen) |
-| **Apparatus** | `ChessAnalysisLayout`, `ChessSidebar`, `GameSelector`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `GameArchiveTable`, `AlternativeControlsMock` | the full analysis layout — game picker, move notation, playback transport, variation tree, and the archive table |
+| **Apparatus** | `ChessAnalysisLayout`, `ChessSidebar`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `GameArchiveTable`, `AlternativeControlsMock` | the full analysis layout — move notation, playback transport, variation tree, and the archive table (the game picker is a DS `Dropdown` inside the controls since 0.2.0; the dead `GameSelector` export was deleted 2026-07-15) |
 | **Pieces** | `ChessPiece` | piece renderer + 3 bundled SVG sets (`chess-vector-set`, `chess-extra-set/set-1,2,3`) |
 | **Hero** | `ChessHero` | landing / specimen hero |
 | **State** | `ChessControlsProvider`, `useChessControls`, `createSnapshotsFromPgn` | context that drives board ⇄ notation ⇄ playback sync |

@@ -51,7 +51,7 @@ export default function App() {
       <Route path="/workshop-docs/*" element={<WorkshopDocsPreview />} />
       {/* Maintainer tooling — dev server only, never the deployed site
           (2026-07-15 audit P1-3): the repo-root lobby/ work queue and the
-          chrome-law review page. */}
+          chess-consumer mirror (1:1 stand-in for the kol-chess app). */}
       {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
       {import.meta.env.DEV && <Route path="/demo" element={<Demo />} />}
     </Routes>

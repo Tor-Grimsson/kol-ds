@@ -42,9 +42,9 @@ function getInitialTheme() {
  * the system preference. `data-theme` + localStorage are written ONLY on a
  * user toggle — mounting the component leaves the DOM untouched, so an
  * undecided page keeps following prefers-color-scheme via the theme CSS.
- * The icon-swap animation slides the `mode-toggle-01` / `mode-toggle-02`
- * pair (v1 set) horizontally — two different halves of the split circle,
- * so the slide is a visible flip.
+ * The icon-swap animation slides a doubled `mode-toggle-01` (v1 set)
+ * horizontally — the split-circle glyph makes the slide itself read as
+ * the flip (same-icon slide, per design).
  */
 export default function ThemeToggle({ variant = 'icon', className = '' }) {
   const [theme, setTheme] = useState(getInitialTheme)
@@ -93,7 +93,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }) {
         style={{ width: size * 2, transform: isDark ? 'translateX(0)' : `translateX(-${size}px)` }}
       >
         <Icon name="mode-toggle-01" size={size} />
-        <Icon name="mode-toggle-02" size={size} />
+        <Icon name="mode-toggle-01" size={size} />
       </span>
     </span>
   )

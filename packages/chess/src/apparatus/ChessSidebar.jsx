@@ -98,11 +98,11 @@ const ChessSidebar = ({
       </div>
 
       <div className="board-playback__controls">
-        {toolbarButton('play-arrow-start', onGoToStart, 'Jump to start')}
-        {toolbarButton('play-arrow-back', onStepBackward, 'Step backward')}
-        {toolbarButton('play-Play', onTogglePlayback, 'Toggle playback')}
-        {toolbarButton('play-arrow-forward', onStepForward, 'Step forward')}
-        {toolbarButton('play-arrow-end', onGoToEnd, 'Jump to end')}
+        {toolbarButton('skip-start', onGoToStart, 'Jump to start')}
+        {toolbarButton('skip-back', onStepBackward, 'Step backward')}
+        {toolbarButton('play', onTogglePlayback, 'Toggle playback')}
+        {toolbarButton('skip-forward', onStepForward, 'Step forward')}
+        {toolbarButton('skip-end', onGoToEnd, 'Jump to end')}
       </div>
 
       <div className="board-playback__footer">

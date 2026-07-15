@@ -2,7 +2,7 @@
 title: Foundations — the token system
 type: reference
 status: active
-updated: 2026-07-08
+updated: 2026-07-15
 description: The token foundation every KOL component is built from — the 14-stop opacity scale (the signature), semantic foregrounds, surface tiers, radii, and shadows.
 aliases:
   - foundations
@@ -65,3 +65,7 @@ Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme
 ## UI state colors
 
 `--ui-error` / `--ui-warning` / `--ui-info` / `--ui-success` — theme-tuned pairs (dark and light values differ; see `kol-color.css`).
+
+## Hyperlinks (2026-07-15)
+
+`--kol-link` / `--kol-link-hover` — the one text role with its own color, theme-tuned (blue-600/700 light · blue-400/300 dark, same family as `--ui-info`). A base `a {}` rule in `kol-color.css` applies it to unstyled anchors; it sits in the components layer, so utilities and later chrome sheets (framework, brand) always win. `.kol-table a` consumes the same tokens. Added for the chess consumer audit (finding 3: links rendered as body ink — no token, no rule, and `--kol-accent-primary` resolves to ink in the neutral theme).
