@@ -1,5 +1,3 @@
-// Relative import: ColorRamp isn't in the package barrel yet (barrels are
-// off-limits this pass) — pull it straight from source so the demo renders.
 import { ColorRamp } from '@kolkrabbi/kol-component'
 
 export const stage = 'full'

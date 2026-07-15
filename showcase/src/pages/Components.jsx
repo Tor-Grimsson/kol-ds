@@ -46,7 +46,7 @@ function ComponentCard({ c }) {
       <Link to={`/components/${c.slug}`} className="absolute inset-0 z-[1]" aria-label={c.name} />
       <div ref={ref} className="pointer-events-none flex max-h-56 min-h-[6rem] items-center justify-center overflow-hidden bg-fg-02 p-5">
         {c.demo && inView ? (
-          <DemoStage entry={c.demo} />
+          c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />
         ) : (
           <span className="kol-mono-12 text-meta opacity-50">{c.name}</span>
         )}

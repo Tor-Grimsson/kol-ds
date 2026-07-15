@@ -36,6 +36,8 @@ const TYPE_LABELS = { client: 'Client', collection: 'Collection', typeface: 'Typ
  * @param {string[]}        heights     override the ragged-height ramp (chosen by index % heights.length)
  * @param {Function}        onNavigate  (href, event) => void — anchor click seam for SPA routing
  * @param {string}          titleClassName  type class for the drawer title (default 'kol-sans-display-02').
+ * @param {string}          metaClassName   type class for the drawer meta line (default 'kol-mono-12');
+ *                          REPLACES the type class (color/opacity/tracking stay component-owned).
  *                          The display-face seam: it REPLACES the type class (color/leading stay
  *                          component-owned), so a consumer restores its own display face without forking.
  */
@@ -51,6 +53,7 @@ export default function WorkCard({
   heights = HEIGHTS,
   onNavigate,
   titleClassName = 'kol-sans-display-02',
+  metaClassName = 'kol-mono-12',
 }) {
   const [ready, setReady] = useState(false)
   // Evaluated once at mount (SSR-safe): drop perspective on coarse/small screens.
@@ -79,7 +82,7 @@ export default function WorkCard({
     <div className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-6 bg-surface-inverse opacity-0 group-hover:opacity-100 transition-opacity duration-300">
       <p className={`${titleClassName} text-fg-inverse leading-tight`}>{title}</p>
       {meta && (
-        <p className="kol-mono-12 text-fg-inverse opacity-60 tracking-widest mt-2">{meta}</p>
+        <p className={`${metaClassName} text-fg-inverse opacity-60 tracking-widest mt-2`}>{meta}</p>
       )}
     </div>
   )

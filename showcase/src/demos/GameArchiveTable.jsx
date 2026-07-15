@@ -1,10 +1,11 @@
 import { GameArchiveTable } from '@kolkrabbi/kol-chess'
+import * as chessData from '@kolkrabbi/kol-chess/data'
 
 export const stage = 'md'
 
-/* GameArchiveTable owns its own data layer: the month dropdown and archive
- * status read from the bundled lightweight sample set. `onGameLoad` is the only
- * prop — a no-op here since there's no board to feed. */
+/* Data is consumer-injected via `chessData` — the package's `/data` adapter
+ * feeds the month dropdown and archive rows. `onGameLoad` is a no-op here
+ * since there's no board to feed. */
 export default function GameArchiveTableDemo() {
-  return <GameArchiveTable onGameLoad={() => {}} />
+  return <GameArchiveTable chessData={chessData} onGameLoad={() => {}} />
 }

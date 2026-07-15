@@ -29,9 +29,9 @@ const ToggleCheckbox = ({
           <polyline points="1 5 4 8 11 1" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-      <span className="toggle-checkbox-label kol-helper-12 uppercase tracking-[0.08em]">
+      <span className="toggle-checkbox-label kol-helper-12 tracking-[0.08em]">
         {label}
-        {hint ? <span className="ml-2 opacity-60 normal-case tracking-normal kol-helper-10">{hint}</span> : null}
+        {hint ? <span className="ml-2 opacity-60 tracking-normal kol-helper-10">{hint}</span> : null}
       </span>
     </label>
   )

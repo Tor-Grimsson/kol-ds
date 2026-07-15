@@ -9,8 +9,17 @@ export default function InputDemo() {
   return (
     <>
       <Input variant="filled" placeholder="filled" value={v} onChange={onChange} />
-      <Input variant="ghost" placeholder="ghost" value={v} onChange={onChange} />
       <Input variant="outline" placeholder="outline" value={v} onChange={onChange} />
     </>
+  )
+}
+
+/* Index card: one canonical instance. */
+export function Card() {
+  const [v, setV] = useState('')
+  return (
+    <div className="w-full max-w-xs">
+      <Input variant="filled" placeholder="Input" value={v} onChange={(e) => setV(e?.target?.value ?? e)} />
+    </div>
   )
 }

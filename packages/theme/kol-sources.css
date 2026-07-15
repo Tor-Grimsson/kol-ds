@@ -1,0 +1,31 @@
+/**
+ * kol-sources.css — the @source manifest for every raw-JSX @kolkrabbi package.
+ *
+ * KOL packages publish raw .jsx, and Tailwind v4 skips node_modules during
+ * auto-detection — so utilities used INSIDE package components are never
+ * generated unless the consumer declares each package as a source. Forgetting
+ * one is silent breakage (unstyled chrome). This manifest carries the line for
+ * every raw-JSX package; the consumer imports it ONCE:
+ *
+ *   @import "tailwindcss";
+ *   @import "@kolkrabbi/kol-theme";
+ *   @import "@kolkrabbi/kol-theme/kol-sources.css";
+ *
+ * `@source` resolves relative to THIS file (node_modules/@kolkrabbi/kol-theme/),
+ * so sibling package paths work from inside node_modules. A path that doesn't
+ * exist (package not installed) matches nothing — installing a subset is fine.
+ * New raw-JSX packages get their line added here, DS-side, so consumers never
+ * chase the footgun again.
+ */
+
+@source "../kol-brand/src";
+@source "../kol-chess/src";
+@source "../kol-component/src";
+@source "../kol-content/src";
+@source "../kol-dashboards/src";
+@source "../kol-foundry/src";
+@source "../kol-framework/src";
+@source "../kol-icons/src";
+@source "../kol-store/src";
+@source "../kol-styleguide/src";
+@source "../kol-workshop/src";

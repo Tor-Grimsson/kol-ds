@@ -3,5 +3,5 @@ import { ToggleCheckbox } from '@kolkrabbi/kol-component'
 
 export default function ToggleCheckboxDemo() {
   const [on, setOn] = useState(false)
-  return <ToggleCheckbox label="Accept" checked={on} onChange={setOn} />
+  return <ToggleCheckbox label="ACCEPT" checked={on} onChange={setOn} />
 }

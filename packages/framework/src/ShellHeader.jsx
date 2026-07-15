@@ -78,7 +78,7 @@ export default function ShellHeader({
                   onClick={onMenuClick}
                   aria-label="Open navigation menu"
                 >
-                  <Icon name="menu" size={18} />
+                  <Icon name="hamburger" size={18} />
                 </button>
               )}
             </div>
@@ -123,7 +123,7 @@ export default function ShellHeader({
                       onClick={onNavToggle}
                       aria-label="Toggle navigation sidebar"
                     >
-                      <Icon name="dock-left" size={18} />
+                      <Icon name="panel-left" size={18} />
                     </button>
                   )}
                   {onTocToggle && (

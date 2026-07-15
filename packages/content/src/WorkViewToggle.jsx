@@ -38,8 +38,8 @@ const PILL_EASE = 'cubic-bezier(0.34, 1.2, 0.64, 1)'
  * @param {Function} onQuery     (value) => void — fires on input change; called with '' on close
  * @param {string}   shelfLabel  first option label (default 'Shelf')
  * @param {string}   listLabel   second option label (default 'List')
- * @param {string}   shelfIcon   first option icon name (default 'library')
- * @param {string}   listIcon    second option icon name (default 'list')
+ * @param {string}   shelfIcon   first option icon name (default 'book-open')
+ * @param {string}   listIcon    second option icon name (default 'view-list')
  * @param {string}   placeholder search input placeholder (default '')
  * @param {string}   className   extra classes on the root
  */
@@ -50,8 +50,8 @@ export default function WorkViewToggle({
   onQuery,
   shelfLabel = 'Shelf',
   listLabel = 'List',
-  shelfIcon = 'library',
-  listIcon = 'list',
+  shelfIcon = 'book-open',
+  listIcon = 'view-list',
   placeholder = '',
   className = '',
 }) {

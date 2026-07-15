@@ -49,7 +49,7 @@ export default function SidebarWorkshop() {
       {/* ── Sidebar ─────────────────────────────────────────── */}
       <aside className="w-64 shrink-0 overflow-y-auto border-r border-fg-08 px-4 py-5 [scrollbar-width:thin]">
         <div className="space-y-10">
-          <Section label="Documentation">
+          <Section label="DOCUMENTATION">
             <div className="space-y-4">
               {GROUPS.map((group) => {
                 const open = openGroups.has(group.id)
@@ -86,7 +86,7 @@ export default function SidebarWorkshop() {
             </div>
           </Section>
 
-          <Section label="Quick actions">
+          <Section label="QUICK ACTIONS">
             <div className="space-y-1">
               <button type="button" className="kol-helper-12 text-body hover:text-emphasis w-full flex items-center gap-2 py-1 text-left transition-colors">
                 <Icon name="arrow-left" size={14} />

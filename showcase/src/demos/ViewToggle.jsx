@@ -7,6 +7,13 @@ export default function ViewToggleDemo() {
     <>
       <ViewToggle viewMode={view} onViewChange={setView} />
       <ViewToggle viewMode={view} onViewChange={setView} variant="icon" />
+      <ViewToggle viewMode={view} onViewChange={setView} variant="single" />
     </>
   )
+}
+
+/* Index card: one canonical instance. */
+export function Card() {
+  const [view, setView] = useState('grid')
+  return <ViewToggle viewMode={view} onViewChange={setView} />
 }

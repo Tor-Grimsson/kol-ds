@@ -20,7 +20,9 @@ export const DEMOS = Object.fromEntries(
   Object.entries(modules).map(([path, mod]) => [
     keyOf(path),
     // `stage` is the demo's presentation preset (see lib/DemoStage.jsx);
-    // omitted → 'hug'.
-    { Component: mod.default, source: sources[path], stage: mod.stage || 'hug' },
+    // omitted → 'hug'. `Card` is an optional slim single-specimen export the
+    // /components index prefers over the full demo — small cards show ONE
+    // canonical instance, the component page keeps full variant coverage.
+    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug' },
   ]),
 )

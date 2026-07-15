@@ -73,7 +73,7 @@ function GroupNode({ group, basePath, activeSectionId, indent, onNavigate, isAct
   return (
     <li>
       <div
-        className={`kol-sidenav-group kol-helper-10 uppercase ${isAncestor ? 'text-emphasis' : 'text-subtle'}`}
+        className={`kol-sidenav-group kol-helper-10 ${isAncestor ? 'text-emphasis' : 'text-subtle'}`}
         style={{ paddingLeft: indent }}
       >
         {group.label}

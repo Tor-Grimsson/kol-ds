@@ -136,7 +136,6 @@ export default function ColorInputRow({
       prefix="#"
       chars={6}
       maxLength={6}
-      uppercase
       value={digits}
       onChange={(e) => onChange?.('#' + e.target.value.replace(/^#/, '').toUpperCase())}
       disabled={disabled}

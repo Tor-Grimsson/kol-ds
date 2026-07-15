@@ -17,3 +17,9 @@ export default function SegmentedToggleDemo() {
     </div>
   )
 }
+
+/* Index card: one canonical instance. */
+export function Card() {
+  const [v, setV] = useState('grid')
+  return <SegmentedToggle value={v} onChange={setV} options={OPTIONS} size="md" />
+}

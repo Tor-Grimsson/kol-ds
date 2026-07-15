@@ -12,18 +12,24 @@ export default function DropdownDemo() {
   const [value, setValue] = useState('newest')
   return (
     <div className="flex flex-wrap items-start gap-6">
-      {['default', 'minimal', 'subtle'].map((variant) => (
+      {[['primary', 'PRIMARY'], ['grey', 'GREY'], ['outline', 'OUTLINE']].map(([variant, label]) => (
         <div key={variant} className="flex flex-col gap-2">
-          <span className="kol-helper-10 text-meta uppercase">{variant}</span>
+          <span className="kol-helper-10 text-meta">{label}</span>
           <Dropdown
             value={value}
             onChange={setValue}
             variant={variant}
             options={OPTIONS}
-            defaultOpen={variant === 'default'}
+            defaultOpen={variant === 'primary'}
           />
         </div>
       ))}
     </div>
   )
+}
+
+/* Index card: one canonical instance, closed. */
+export function Card() {
+  const [value, setValue] = useState('newest')
+  return <Dropdown value={value} onChange={setValue} options={OPTIONS} />
 }

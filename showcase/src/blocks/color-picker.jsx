@@ -70,13 +70,13 @@ export default function ColorPicker() {
 
   return (
     <div className="flex flex-col gap-4 rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary p-4">
-      <Section label="Spectrum">
+      <Section label="SPECTRUM">
         <div className="h-[200px]">
           <SpectrumControls value={fill} onChange={setFill} />
         </div>
       </Section>
       <Divider />
-      <Section label="Swatches">
+      <Section label="SWATCHES">
         <SwatchControls
           fillColor={fillHex}
           strokeColor={strokeHex}
@@ -88,7 +88,7 @@ export default function ColorPicker() {
         />
       </Section>
       <Divider />
-      <Section label="Hex">
+      <Section label="HEX">
         {/* ColorInputRow emits #UPPER per keystroke — only fold complete hexes into HSV */}
         <ColorInputRow value={fillHex} onChange={(h) => { if (/^#[0-9A-F]{6}$/.test(h)) setFill(hexToHsv(h)) }} label="Fill" />
       </Section>

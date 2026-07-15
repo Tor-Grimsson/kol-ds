@@ -28,7 +28,7 @@ export default function MediaRowDemo() {
   return (
     <div className="flex w-full flex-col gap-4">
       <div>
-        <Button variant="primary" size="sm" selected={selectMode} onClick={() => setSelectMode((v) => !v)}>
+        <Button variant="primary" size="sm" pressed={selectMode} onClick={() => setSelectMode((v) => !v)}>
           {selectMode ? 'Done' : 'Select'}
         </Button>
       </div>

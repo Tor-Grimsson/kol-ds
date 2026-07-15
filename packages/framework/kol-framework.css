@@ -630,6 +630,29 @@ code, pre {
   padding-top: 32px;
 }
 
+/* Filename chip — same scale as the lang chip; no text-transform (casing
+ * law: filenames render as authored). When both chips show, the lang chip
+ * yields the top-left slot and sits inboard of the copy button. */
+.kol-codeblock-filename {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-family: var(--kol-font-family-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--kol-fg-40);
+}
+
+.kol-codeblock-filename ~ .kol-codeblock-lang {
+  left: auto;
+  right: 56px;
+}
+
+.kol-codeblock-filename + pre {
+  padding-top: 32px;
+}
+
 /* Positioning only — the chip look itself is the CopyButton atom
  * (.kol-copy-btn in kol-theme). */
 .kol-codeblock-copy {

@@ -18,15 +18,15 @@ export default function InspectorPanel() {
 
   return (
     <div className="flex flex-col gap-5 rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary p-4">
-      <Section label="Position">
+      <Section label="POSITION">
         <div className="grid grid-cols-2 gap-3">
           <PropertyInput label="X" type="number" value={x} onChange={(e) => setX(Number(e.target.value))} step={1} />
           <PropertyInput label="Y" type="number" value={y} onChange={(e) => setY(Number(e.target.value))} step={1} />
         </div>
       </Section>
       <Divider />
-      <Section label="Appearance">
-        <LabeledControl label={`Opacity · ${opacity}%`}>
+      <Section label="APPEARANCE">
+        <LabeledControl label={`OPACITY · ${opacity}%`}>
           <Slider min={0} max={100} value={opacity} onChange={setOpacity} variant="minimal" />
         </LabeledControl>
         <SegmentedToggle
@@ -40,7 +40,7 @@ export default function InspectorPanel() {
         />
       </Section>
       <Divider />
-      <Section label="Fill">
+      <Section label="FILL">
         <div className="flex items-center gap-2">
           {['#0E0E11', '#AD5038', '#3b82f6', '#22c55e', '#FAFAFA'].map((hex) => (
             <ColorSwatch key={hex} hex={hex} selected={hex === '#AD5038'} />

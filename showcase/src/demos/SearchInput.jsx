@@ -3,6 +3,16 @@ import { SearchInput } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
+/* Index card: one canonical instance. */
+export function Card() {
+  const [v, setV] = useState('')
+  return (
+    <div className="w-full max-w-xs">
+      <SearchInput value={v} onChange={(e) => setV(e.target.value)} onClear={() => setV('')} shortcutHint="⌘K" />
+    </div>
+  )
+}
+
 export default function SearchInputDemo() {
   const [a, setA] = useState('')
   const [b, setB] = useState('')

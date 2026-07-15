@@ -44,7 +44,7 @@ export default function LabeledControl({
       <div className={`flex items-center gap-3 ${className}`}>
         {showLabel && (
           <span
-            className="kol-helper-10 uppercase tracking-widest text-meta shrink-0"
+            className="kol-helper-10 tracking-widest text-meta shrink-0"
             style={{ width: labelWidth }}
           >
             {labelInner}
@@ -58,7 +58,7 @@ export default function LabeledControl({
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {showLabel && (
-        <span className="kol-helper-10 uppercase tracking-widest text-meta">{labelInner}</span>
+        <span className="kol-helper-10 tracking-widest text-meta">{labelInner}</span>
       )}
       {children}
     </div>

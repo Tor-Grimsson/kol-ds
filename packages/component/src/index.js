@@ -117,6 +117,7 @@ export { Icon } from '@kolkrabbi/kol-icons'
 
 // graphics (SVG illustration loader — globs its own ./graphics/svg/**)
 export { default as Graphic, GRAPHICS } from './graphics/Graphic.jsx'
+export { GRAPHIC_RAW } from './graphics/graphicData.js'
 
 // hooks
 export { default as usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'

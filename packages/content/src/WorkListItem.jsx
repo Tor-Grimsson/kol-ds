@@ -33,6 +33,8 @@ import { Tag } from '@kolkrabbi/kol-component'
  *                        'kol-sans-heading-03'). The display-face seam: it REPLACES the type class
  *                        (color/overflow stay component-owned), so a consumer restores its own
  *                        display face without forking.
+ * @param {string}        tagsSeparator  when set, rendered between tag chips (e.g. ' · ') —
+ *                        the live-design joined-tags treatment without pre-joining at the call site.
  */
 export default function WorkListItem({
   title,
@@ -46,6 +48,7 @@ export default function WorkListItem({
   onMouseEnter,
   onNavigate,
   previewClassName = 'kol-sans-heading-03',
+  tagsSeparator,
 }) {
   return (
     <a
@@ -65,9 +68,12 @@ export default function WorkListItem({
           <div className="flex flex-col gap-1 md:gap-2 min-w-0">
             <div className="kol-mono-14 truncate">{title}</div>
             {tags?.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {tags.map((t) => (
-                  <Tag key={t} size="sm" variant="naked" hash={false}>{t}</Tag>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {tags.map((t, i) => (
+                  <span key={t} className="inline-flex items-center gap-1.5">
+                    {tagsSeparator && i > 0 && <span className="kol-mono-12 text-fg-48">{tagsSeparator}</span>}
+                    <Tag size="sm" variant="naked" hash={false}>{t}</Tag>
+                  </span>
                 ))}
               </div>
             )}

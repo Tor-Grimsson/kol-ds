@@ -71,7 +71,7 @@ export default function Tag({
           className="tag-dismiss"
           onClick={handleRemove}
         >
-          <Icon name="cross" size={iconSize} />
+          <Icon name="x" size={iconSize} />
         </span>
       )}
     </Element>

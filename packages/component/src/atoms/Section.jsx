@@ -8,7 +8,7 @@ export default function Section({ label, children, className = '' }) {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {label && (
-        <p className="kol-helper-10 uppercase tracking-widest text-meta">{label}</p>
+        <p className="kol-helper-10 tracking-widest text-meta">{label}</p>
       )}
       {children}
     </div>

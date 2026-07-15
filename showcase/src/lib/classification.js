@@ -184,8 +184,13 @@ export const EXEMPT = {
 /* ── Off-roster lists (moved from registry.js so the CI gate can import
  *    them without touching Vite-bound modules) ───────────────────────────── */
 
-/* Route wrappers / behaviors / loaders — documented on /docs pages. */
-export const DOCS_ONLY = ['Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic']
+/* Route wrappers / behaviors / loaders — documented on /docs pages.
+ * Providers/contexts render nothing themselves — a card would always be a
+ * ghost; their story lives on the pages of the components they power. */
+export const DOCS_ONLY = [
+  'Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
+  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext',
+]
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = ['MenuPopover', 'QuantityStepper']

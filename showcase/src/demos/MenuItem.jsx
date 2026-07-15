@@ -8,7 +8,7 @@ export default function MenuItemDemo() {
     <div className="flex min-h-[220px] w-full items-start justify-center">
     <MenuItem label="File" defaultOpen>
       <div className="min-w-[180px] py-1">
-        <MenuDropdownItem iconLeft={<Icon name="add-file" size={14} />} onClick={() => {}}>
+        <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>
           New file
         </MenuDropdownItem>
         <MenuDropdownItem iconLeft={<Icon name="save" size={14} />} shortcut="⌘S" onClick={() => {}}>

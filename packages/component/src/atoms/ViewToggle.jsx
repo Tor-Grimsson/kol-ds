@@ -13,7 +13,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *                      inactive = off (bare text). Use for compact on/off
  *                      where a segmented two-button toggle is overkill.
  *
- * Built on the .kol-control shell. Default options use grid-06 / list-01
+ * Built on the .kol-control shell. Default options use grid / view-list
  * icons; consumers can pass `options` to override. `iconVariant` picks the
  * icon cut for variant="icon" ('stroke' default; 'solid' reads better at
  * 14px). For `variant="single"`, the FIRST option in `options` is the "off"
@@ -25,8 +25,8 @@ const ViewToggle = ({
   variant = 'text',
   iconVariant = 'stroke',
   options = [
-    { value: 'grid', label: 'Grid view', icon: 'grid-06' },
-    { value: 'list', label: 'List view', icon: 'list-01' }
+    { value: 'grid', label: 'Grid view', icon: 'grid' },
+    { value: 'list', label: 'List view', icon: 'view-list' }
   ],
   className = ''
 }) => {

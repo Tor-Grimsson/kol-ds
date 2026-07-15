@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-icons",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "KOL icons — <Icon/>, the curated kol-icon-set-v1 + registerIcons (bring-your-own), and the legacy inventory. Vite-only (import.meta.glob).",
   "license": "MIT",
   "type": "module",

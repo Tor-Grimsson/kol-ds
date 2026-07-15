@@ -107,7 +107,7 @@ const VariableFontSection = ({
           onStyleChange={setSelectedStyle}
           showDropdown={showDropdown}
           badgeText={badgeText}
-          icon="foundation"
+          icon="book-open"
           size="sm"
         />
 

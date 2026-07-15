@@ -10,7 +10,7 @@ export default function AssetPlaceholder({
   category,
   name,
   aspectRatio = '16 / 9',
-  note = 'missing',
+  note = 'MISSING',
   className = '',
 }) {
   const label = [category, name].filter(Boolean).join(' · ')
@@ -23,7 +23,8 @@ export default function AssetPlaceholder({
     >
       {/* note is single-line → helper scale; label can wrap (category · name
         * in a narrow tile) → line-height-bearing mono scale */}
-      <span className="kol-asset-placeholder-note kol-helper-12 uppercase [letter-spacing:0.12em] text-fg-48">{note}</span>
+      {/* no text-transform (casing law) — note is authored in-case */}
+      <span className="kol-asset-placeholder-note kol-helper-12 [letter-spacing:0.12em] text-fg-48">{note}</span>
       {label && <span className="kol-asset-placeholder-label kol-mono-12 text-fg-40 [letter-spacing:0.04em]">{label}</span>}
     </div>
   )

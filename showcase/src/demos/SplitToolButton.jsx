@@ -20,7 +20,7 @@ export default function SplitToolButtonDemo() {
         <Button
           variant="ghost"
           quiet
-          iconOnly="pointer"
+          iconOnly="target"
           iconSize={14}
           pressed={tool === 'select'}
           onClick={() => setTool('select')}
@@ -31,7 +31,7 @@ export default function SplitToolButtonDemo() {
         <Button
           variant="ghost"
           quiet
-          iconOnly="type"
+          iconOnly="edit"
           iconSize={14}
           pressed={tool === 'text'}
           onClick={() => setTool('text')}

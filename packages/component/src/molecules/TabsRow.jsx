@@ -43,7 +43,7 @@ export default function TabsRow({ tabs = [], value, onChange, onClose, onMinimis
           className="text-meta hover:text-emphasis self-center"
           style={{ lineHeight: 0 }}
         >
-          <Icon name="close" size={12} />
+          <Icon name="x" size={12} />
         </button>
       )}
 

@@ -5,8 +5,8 @@ export const stage = 'full'
 
 const NAV = [
   { label: 'Overview', href: '#overview', icon: 'book-open' },
-  { label: 'Components', href: '#components', icon: 'grid-02' },
-  { label: 'Icons', href: '#icons', icon: 'library' },
+  { label: 'Components', href: '#components', icon: 'grid' },
+  { label: 'Icons', href: '#icons', icon: 'star' },
   { label: 'Tokens', href: '#tokens' },
 ]
 

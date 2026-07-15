@@ -35,7 +35,7 @@ export default function CardFeatureItemDemo() {
       {/* Node visual + header icon, static (no href) */}
       <CardFeatureItem
         title="Design tokens"
-        icon="grid-02"
+        icon="grid"
         visual={Glyph}
         description="Themeable primitives, one source of truth."
       />
@@ -54,7 +54,7 @@ export default function CardFeatureItemDemo() {
       {/* No visual → the 96px header-icon fallback fills the middle */}
       <CardFeatureItem
         title="Iconography"
-        icon="library"
+        icon="scribble"
         description="One loader, every glyph on demand."
       />
     </div>

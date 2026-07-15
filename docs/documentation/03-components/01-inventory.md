@@ -2,7 +2,7 @@
 title: Components — the full inventory
 type: reference
 status: active
-updated: 2026-07-10
+updated: 2026-07-15
 verified: 2026-07-04
 description: Every exported KOL component by tier — 39 atoms, 32 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
 aliases:
@@ -182,5 +182,6 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 | `SubPageHero` | structure | A compact hero for subpages. |
 | `PageSection` | structure | A titled, labeled content section with anchor support. |
 | `ScrollToTop` | behavior | Resets scroll position on route change. |
+| `useTheme` | behavior | Theme-state hook — live light/dark state synced across consumers; ships with `applyTheme`, `getInitialTheme`, `THEME_STORAGE_KEY`. ThemeToggle is its UI. |
 
 The framework tier splits three ways for browsing — chrome / structure / behavior ([[00-taxonomy|taxonomy]]).

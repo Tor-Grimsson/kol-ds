@@ -21,14 +21,14 @@ const features = [
   },
   {
     title: 'Design systems',
-    icon: 'grid-02',
+    icon: 'grid',
     visual: gradient('#0984E3', '#6C5CE7'),
     imageAspectRatio: '10/6',
     description: 'Tokenised, themeable component kits.',
   },
   {
     title: 'Client work',
-    icon: 'library',
+    icon: 'folder',
     visual: gradient('#E17055', '#FDCB6E'),
     imageAspectRatio: '10/6',
     description: 'Brand, editorial, and product design.',

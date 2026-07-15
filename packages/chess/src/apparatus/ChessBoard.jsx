@@ -3,6 +3,8 @@ import { Chess } from 'chess.js'
 import { ChessPiece } from '../index.js'
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+// no text-transform (casing law) — coordinate labels are authored in-case
+const FILE_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 const PIECE_TYPE_MAP = {
   p: 'pawn',
   r: 'rook',
@@ -127,7 +129,7 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
               const highlightClass = isLastMoveSquare ? 'chess-square--highlighted' : ''
 
               const rankNum = 8 - rankIndex
-              const fileLetter = FILES[fileIndex]
+              const fileLetter = FILE_LABELS[fileIndex]
               const isDarkSquare = tone === 'dark'
               const textColor = isDarkSquare ? 'text-white' : 'text-[#166534]'
               const isFirstRank = rankNum === 1
@@ -156,20 +158,20 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
                       isFirstRank ? (
                         coordinate === 'a1' ? (
                           <div className={`${coordinatePaddingClass} flex justify-between w-full h-full`}>
-                            <div className={`flex items-start text-white ${coordinateTypographyClass} uppercase`}>
+                            <div className={`flex items-start text-white ${coordinateTypographyClass}`}>
                               <span>1</span>
                             </div>
-                            <div className={`flex items-end text-white ${coordinateTypographyClass} uppercase`}>
+                            <div className={`flex items-end text-white ${coordinateTypographyClass}`}>
                               <span>A</span>
                             </div>
                           </div>
                         ) : (
-                          <div className={`${coordinatePaddingClass} flex justify-end items-end ${textColor} ${coordinateTypographyClass} uppercase w-full h-full`}>
+                          <div className={`${coordinatePaddingClass} flex justify-end items-end ${textColor} ${coordinateTypographyClass} w-full h-full`}>
                             <span>{fileLetter}</span>
                           </div>
                         )
                       ) : isAFile ? (
-                        <div className={`${coordinatePaddingClass} flex justify-start items-start ${textColor} ${coordinateTypographyClass} uppercase w-full h-full`}>
+                        <div className={`${coordinatePaddingClass} flex justify-start items-start ${textColor} ${coordinateTypographyClass} w-full h-full`}>
                           <span>{rankNum}</span>
                         </div>
                       ) : null
@@ -178,20 +180,20 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
                       isFirstRankFromBlack ? (
                         coordinate === 'a8' ? (
                           <div className={`${coordinatePaddingClass} flex justify-between w-full h-full`}>
-                            <div className={`flex items-start text-white ${coordinateTypographyClass} uppercase`}>
+                            <div className={`flex items-start text-white ${coordinateTypographyClass}`}>
                               <span>8</span>
                             </div>
-                            <div className={`flex items-end text-white ${coordinateTypographyClass} uppercase`}>
+                            <div className={`flex items-end text-white ${coordinateTypographyClass}`}>
                               <span>A</span>
                             </div>
                           </div>
                         ) : (
-                          <div className={`${coordinatePaddingClass} flex justify-end items-end ${textColor} ${coordinateTypographyClass} uppercase w-full h-full`}>
+                          <div className={`${coordinatePaddingClass} flex justify-end items-end ${textColor} ${coordinateTypographyClass} w-full h-full`}>
                             <span>{fileLetter}</span>
                           </div>
                         )
                       ) : isAFile ? (
-                        <div className={`${coordinatePaddingClass} flex justify-start items-start ${textColor} ${coordinateTypographyClass} uppercase w-full h-full`}>
+                        <div className={`${coordinatePaddingClass} flex justify-start items-start ${textColor} ${coordinateTypographyClass} w-full h-full`}>
                           <span>{rankNum}</span>
                         </div>
                       ) : null

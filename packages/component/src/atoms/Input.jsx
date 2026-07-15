@@ -25,7 +25,6 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *     the shell at text-meta. aria-hidden — affordances, not labels.
  *   iconLeft — name of a leading icon rendered inside the shell (e.g.
  *     "search-16"). iconSize overrides the size-derived default.
- *   uppercase — adds Tailwind `uppercase` to the input element only.
  *
  * Chrome (bg/border/padding/transition/disabled) comes from .kol-control;
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
@@ -47,7 +46,6 @@ export default function Input({
   iconSize = null,
   placeholder,
   disabled = false,
-  uppercase = false,
   width,
   className = '',
   inputClassName = '',
@@ -86,7 +84,6 @@ export default function Input({
      * the affordance than to the empty edge, reads off-balance. */
     prefix !== undefined && 'pr-1',
     suffix !== undefined && 'pl-1',
-    uppercase && 'uppercase',
     isNumber && 'hide-number-spinners',
     inputClassName,
   ].filter(Boolean).join(' ')

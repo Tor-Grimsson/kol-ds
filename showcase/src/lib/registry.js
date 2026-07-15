@@ -36,7 +36,7 @@ const DESCRIPTIONS = {
   TransparentX: 'A checkerboard fill marking transparency.',
 
   /* molecules */
-  Dropdown: 'A single-select menu with size and minimal/subtle variants.',
+  Dropdown: 'A single-select menu with size and primary/grey/outline variants.',
   Section: 'A small-caps label above a stack of controls, for inspectors.',
   LabeledControl: 'A label-and-hint wrapper around any control.',
   Badge: 'A status pill — success, warning, critical, info, outline.',

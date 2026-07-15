@@ -6,13 +6,13 @@ export default function SubPageHero({ backTo, backLabel, label, title, lede }) {
       {backTo && (
         <Link
           to={backTo}
-          className="kol-back-link kol-helper-12 uppercase tracking-widest text-body hover:text-emphasis no-underline"
+          className="kol-back-link kol-helper-12 tracking-widest text-body hover:text-emphasis no-underline"
         >
           {backLabel}
         </Link>
       )}
       {label && (
-        <p className="kol-helper-12 uppercase tracking-widest text-meta m-0 mb-4">
+        <p className="kol-helper-12 tracking-widest text-meta m-0 mb-4">
           {label}
         </p>
       )}

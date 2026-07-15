@@ -9,7 +9,6 @@ export default function ColorSwatchDemo() {
         ))}
       </div>
       <ColorSwatch hex="#AD5038" selected />
-      <ColorSwatch hex="#3b82f6" frame={false} />
       <ColorSwatch hex="#22c55e" size={32} />
       <ColorSwatch hex="#0a0a0a" showTransparent />
     </>

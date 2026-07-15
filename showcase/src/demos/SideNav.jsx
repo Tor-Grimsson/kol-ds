@@ -1,15 +1,15 @@
 import { SideNav } from '@kolkrabbi/kol-framework'
 
 const NAV_TREE = [
-  { id: 'home', label: 'Home', to: '/', icon: 'book-open' },
+  { id: 'home', label: 'Home', to: '/', icon: 'home-01' },
   {
-    id: 'library', label: 'Library', to: '/components', icon: 'library',
+    id: 'library', label: 'LIBRARY', to: '/components', icon: 'book-open',
     children: [
       { to: '/components/button', label: 'Button' },
       { to: '/components/badge', label: 'Badge' },
     ],
   },
-  { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid-02' },
+  { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid' },
 ]
 
 const getActivePage = (pathname) =>

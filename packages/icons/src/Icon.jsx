@@ -105,22 +105,21 @@ const normalizeSize = (value) => {
   return '16px'
 }
 
+/* Size the ROOT <svg> tag only. The old unanchored regex rewrote the first
+ * `width="…"` anywhere in the markup — on a cleaned (viewBox-only) SVG that
+ * was a path's `stroke-width`, turning the glyph into a solid blob. The
+ * lookbehind keeps `stroke-width` untouched even on the root tag. */
 const applySizeToMarkup = (markup, sizeValue) => {
-  let updated = markup
-
-  if (/width="/i.test(updated)) {
-    updated = updated.replace(/width="[^"]*"/i, `width="${sizeValue}"`)
-  } else {
-    updated = updated.replace('<svg', `<svg width="${sizeValue}"`)
-  }
-
-  if (/height="/i.test(updated)) {
-    updated = updated.replace(/height="[^"]*"/i, `height="${sizeValue}"`)
-  } else {
-    updated = updated.replace('<svg', `<svg height="${sizeValue}"`)
-  }
-
-  return updated
+  return markup.replace(/<svg\b[^>]*>/i, (tag) => {
+    let t = tag
+    t = /(?<![-\w])width="/i.test(t)
+      ? t.replace(/(?<![-\w])width="[^"]*"/i, `width="${sizeValue}"`)
+      : t.replace('<svg', `<svg width="${sizeValue}"`)
+    t = /(?<![-\w])height="/i.test(t)
+      ? t.replace(/(?<![-\w])height="[^"]*"/i, `height="${sizeValue}"`)
+      : t.replace('<svg', `<svg height="${sizeValue}"`)
+    return t
+  })
 }
 
 const Icon = ({

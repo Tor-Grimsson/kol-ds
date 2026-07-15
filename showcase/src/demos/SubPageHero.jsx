@@ -8,8 +8,8 @@ export default function SubPageHeroDemo() {
     <div className="w-full [&_.kol-page-hero]:min-h-0 [&_.kol-page-hero]:py-8">
       <SubPageHero
         backTo="/"
-        backLabel="← Back"
-        label="Reference"
+        backLabel="← BACK"
+        label="REFERENCE"
         title="Icon inventory"
         lede="Every icon in the set, grouped by category."
       />

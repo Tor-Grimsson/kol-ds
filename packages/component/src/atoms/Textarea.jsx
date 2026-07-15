@@ -6,7 +6,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * `--textarea` modifier (display: block).
  *
  *   variant="filled" (default) — persistent solid bg
- *   variant="ghost"            — borderless at rest, reveals on hover/focus
+ *   variant="ghost"            — legacy alias, resolves to outline
  *   variant="outline"          — bordered, transparent bg
  *
  *   size="sm" / "md" (default) / "lg" — padding + type class

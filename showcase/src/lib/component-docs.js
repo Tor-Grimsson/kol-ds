@@ -153,7 +153,6 @@ export const DOC_DATA = {
       { prop: 'size', type: 'sm | md | lg', def: 'md', desc: 'Field size.' },
       { prop: 'prefix / suffix', type: 'ReactNode', def: '—', desc: 'Adornments inside the field.' },
       { prop: 'iconLeft', type: 'string', def: '—', desc: 'Leading icon name.' },
-      { prop: 'uppercase', type: 'boolean', def: 'false', desc: 'Force uppercase input.' },
     ],
   },
 
