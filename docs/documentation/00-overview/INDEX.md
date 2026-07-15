@@ -10,6 +10,7 @@ aliases:
 tags:
   - domain/design-system
 related:
+  - "[[../../operations/SHIPPED-PACKAGES|shipped packages]]"
   - "[[01-package-topology|package topology]]"
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
   - "[[../03-components/01-inventory|components]]"
@@ -33,7 +34,7 @@ The UI dependency arrow only points left — no reverse deps, ever. Clients/bran
 
 ## The packages
 
-The seven standalone **domain** packages (workshop, dashboards, chess, content, foundry, store, styleguide) are mapped in [[01-package-topology]]. The foundation, core, and non-UI packages:
+**The full 15-package list with current versions lives at [[../../operations/SHIPPED-PACKAGES|SHIPPED PACKAGES]]** — the one canonical table. The seven standalone **domain** packages (workshop, dashboards, chess, content, foundry, store, styleguide) are mapped in [[01-package-topology]]. The foundation, core, and non-UI packages:
 
 | Package | What it is |
 |---|---|

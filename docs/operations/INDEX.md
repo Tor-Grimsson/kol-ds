@@ -2,7 +2,7 @@
 title: Operations
 type: index
 status: active
-updated: 2026-07-04
+updated: 2026-07-15
 description: Repo machinery for the KOL packages — the release pipeline (Changesets → CI publish) and the component workbench. Repo/CI process, not design-system content.
 tags:
   - domain/workflow
@@ -17,5 +17,6 @@ Repo machinery — how the KOL packages get versioned, published, and eyeballed.
 
 | Doc | What it covers |
 |---|---|
+| [[SHIPPED-PACKAGES\|SHIPPED PACKAGES]] | **THE package list** — every `@kolkrabbi/*` package + current version, one table. Updated with every publish. |
 | [[01-release-pipeline\|release pipeline]] | Changesets → Version PR → CI publish. Add a changeset, merge the auto-opened PR, CI ships to npm. |
 | [[02-workbench\|workbench]] | The Ladle component workbench — render every component × every state in isolation. |

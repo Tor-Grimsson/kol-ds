@@ -15,6 +15,7 @@ tags:
   - provider/npm
   - pattern/changesets-release
 related:
+  - "[[SHIPPED-PACKAGES|shipped packages]]"
   - "[[../documentation/06-research/workflows/06-versioning-testing|versioning & testing]]"
   - "[[../documentation/06-research/workflows/05-distribution|distribution]]"
   - "[first publish log](../../.kol/llm-context/session-log/2026-07-01-first-npm-publish.md)"
@@ -110,6 +111,7 @@ You do nothing in this step — just watch the Actions run.
 
 ## 6. Verification
 
+0. **Bump [[SHIPPED-PACKAGES|SHIPPED-PACKAGES.md]]** — the canonical package/version table ships with the batch; update its versions as part of every publish.
 1. **Actions run is green** — the second run (the merge commit) succeeded.
 2. **Registry has the new version:**
    ```
