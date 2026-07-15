@@ -36,7 +36,7 @@ export default function FeaturedCarouselDemo() {
   return (
     <FeaturedCarousel
       items={ITEMS}
-      sectionLabel="Featured"
+      sectionLabel="FEATURED"
       autoPlay
       autoPlayInterval={4000}
     />

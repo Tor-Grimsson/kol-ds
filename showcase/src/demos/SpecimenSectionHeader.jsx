@@ -10,7 +10,7 @@ export default function SpecimenSectionHeaderDemo() {
   return (
     <SpecimenSectionHeader
       label="Character Set"
-      icon="book-open"
+      icon="foundation"
       selectedStyle={style}
       onStyleChange={setStyle}
       selectedWeight={weight}

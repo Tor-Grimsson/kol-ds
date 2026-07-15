@@ -2,7 +2,7 @@
 title: Package topology — the eleven UI packages + clients tier
 type: reference
 status: canonical
-updated: 2026-07-09
+updated: 2026-07-15
 verified: 2026-07-09
 description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the seven standalone domain packages (workshop, dashboards, chess, content, foundry, store, styleguide), and the clients tier. What each owns, what stays shared, and which component lives where.
 aliases:
@@ -47,6 +47,8 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
 | | `@kolkrabbi/kol-styleguide` | brand guide — colour anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
+
+**Static assets (ARCHITECTURE §7, 2026-07-15):** ONE `public/` at the repo root (fonts, images, favicons) — every app points at it via Vite `publicDir: '../public'`; symlink only for tools that can't be configured. Never a second per-app `public/`.
 
 ## What stays in `kol-component` (shared by the domain packages)
 

@@ -114,7 +114,7 @@ const TypefaceStyleSection = ({
           styleOptions={styleOptions || undefined}
           showDropdown={showDropdown}
           badgeText={badgeText}
-          icon="book-open"
+          icon="foundation"
           size="sm"
         />
 

@@ -53,6 +53,10 @@ No build step. Packages publish raw `.jsx` / `.css`. The loader uses `import.met
 
 `showcase/` is a Vite app that consumes the packages like any consumer. Its Components gallery renders live demos (safe atoms, error-boundaried) **and** a usage reference mined verbatim from ~25 real KOL apps via `scripts/extract-usage.mjs` → `docs/usage/*.md` + `showcase/src/usage/usage-index.json`. The reference is for both humans and LLMs.
 
+## §7 — ONE `public/`, at repo root (2026-07-15 user ruling)
+
+Static assets (fonts, images, favicons) live in **one** `public/` at the repo root — never per-app copies. Every Vite app points at it via `publicDir: '../public'` in its config (native mechanism, preferred); a **symlink** is the fallback only for tools that can't be configured. Rationale: multiple `public/` dirs per repo made assets untrackable. **Do not** create a second `public/` — point or link to the root one.
+
 ## §N — Non-goals (do not reopen without an explicit ask)
 
 - No build/transpile pipeline for packages (§4).

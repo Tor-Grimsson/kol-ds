@@ -89,7 +89,7 @@ export default function ArticleGrid() {
       </div>
 
       <div className="flex flex-col gap-6 border-t border-fg-08 pt-8">
-        <div className="kol-label-mono-xs text-fg-64">More to read</div>
+        <div className="kol-helper-12 text-fg-64">MORE TO READ</div>
         {MINI.map((a) => (
           <ArticleCard key={a.href} size="mini" {...a} />
         ))}

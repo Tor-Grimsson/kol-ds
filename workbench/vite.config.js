@@ -10,7 +10,7 @@ export default {
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
-  // KOL theme references brand fonts at absolute /fonts/* paths. Serve the
-  // showcase's existing font files (no ~17MB duplication) instead of a local copy.
-  publicDir: '../showcase/public',
+  // ONE public/ at repo root (repo rule, 2026-07-15) — the KOL theme references
+  // brand fonts at absolute /fonts/* paths; every app points here via publicDir.
+  publicDir: '../public',
 }

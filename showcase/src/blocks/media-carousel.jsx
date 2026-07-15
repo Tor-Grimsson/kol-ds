@@ -40,7 +40,7 @@ export default function MediaCarousel() {
   return (
     <FeaturedCarousel
       items={ITEMS}
-      sectionLabel="Featured stories"
+      sectionLabel="FEATURED STORIES"
       autoPlay
       autoPlayInterval={6000}
     />

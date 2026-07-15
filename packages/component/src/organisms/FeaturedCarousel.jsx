@@ -183,7 +183,8 @@ export default function FeaturedCarousel({
     >
       {showHeader && (
         <div className="mb-6 flex items-center gap-4">
-          <span className="kol-label-mono-xs text-auto">{sectionLabel}</span>
+          {/* migrated off the deleted legacy kol-label-* family — label renders as authored */}
+          <span className="kol-helper-12 text-auto">{sectionLabel}</span>
           <span className="kol-mono-12 text-fg-64">{selectedIndex + 1} / {items.length}</span>
         </div>
       )}

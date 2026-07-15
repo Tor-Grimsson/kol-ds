@@ -133,7 +133,7 @@ export default function ShellHeader({
                       onClick={onTocToggle}
                       aria-label="Toggle table of contents sidebar"
                     >
-                      <Icon name="dock-right" size={18} />
+                      <Icon name="panel-right" size={18} />
                     </button>
                   )}
                 </div>

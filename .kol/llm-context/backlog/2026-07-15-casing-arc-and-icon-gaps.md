@@ -12,7 +12,7 @@ enforcement changes rendered casing in every consumer and needs the user's go.
 call-site strings are re-authored:
 - `theme/kol-components-chess.css` — ~20 rules (113, 129, 170, 212, 285, 299, 313, 331,
   351, 368, 411, 435, 446, 527, 593, 747, 835, 1167) + one `capitalize` (1041)
-- `theme/kol-components-atoms.css` — 9 rules (643, 718–778 block, 841)
+- `theme/kol-components-atoms.css` — 9 rules (643, 718–778 block, 841). **The 718–778 block IS the legacy `.kol-label-*` family (6 classes, uppercase baked in)** — pre-numeric-scale naming, superseded by `kol-helper-*`/`kol-mono-*`. Remaining users after the 2026-07-15 late-night sweep cleared the showcase blocks (article-grid, work-grid → `kol-helper-12` + authored caps): `component/SectionLabel.jsx` (`kol-label-compact-md/lg`) and `component/FeaturedCarousel.jsx:186` (`kol-label-mono-xs`). Casing arc should migrate those two, then DELETE the family from the theme.
 - `theme/kol-components-styleguide.css` — 3 rules (78, 201, 366)
 - `theme/kol-typography.css` — 3 rules (916, 972, 998 `.kol-prose h6`)
 
@@ -24,16 +24,14 @@ call-site strings are re-authored:
 **Showcase app chrome (not a package):**
 - `showcase/src/lib/SidebarNav.jsx` — group headers + "Group by" label use `uppercase`
 
-## v1 icon-set gaps (legacy names left in place — need designed v1 icons, not remaps)
+## v1 icon-set gaps — ✅ ALL CLOSED (2026-07-15 late night, icons 0.7.0)
 
-| Legacy name | Lives in | Note |
-|---|---|---|
-| `dock-right` | framework/ShellHeader.jsx:136 | dock-left→panel-left shipped; no mirrored icon in v1 |
-| ~~`arrow-downright`~~ | ~~component/SectionLabel.jsx~~ | ✅ SHIPPED into v1 arrow/ (brief-2.0 defect 3, icons 0.7.0) |
-| `cut` | (demo now uses `x`) | scissors glyph missing |
-| `library` | (remapped to book-open where hit) | dedicated library glyph? |
-| `pointer`, `type` | (demos remapped to target/edit) | editor-tool glyphs missing |
-| `foundation` | (remapped to book-open ×4 in foundry) | dedicated foundry glyph? |
+The "missing" glyphs all existed in the legacy trees (stroke/solid/svg-web) — normalized
+into v1 and consumers restored to real semantics: `layout/panel-right` (ShellHeader),
+`singletons/cut` (menu demo x→cut), `files/library`, `tools/pointer` + `tools/type`
+(SplitToolButton demo restored), `misc/foundation` (foundry ×4 + demo restored),
+`arrow/arrow-downright` (earlier, SectionLabel). Verified live: zero legacy-set
+warnings from packages.
 
 ## Legacy icons still firing live (observed in console during the demo sweep)
 

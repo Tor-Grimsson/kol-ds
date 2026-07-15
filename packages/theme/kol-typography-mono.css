@@ -14,7 +14,7 @@
  */
 
 /* =============================================================================
- * FONT-FACE — JetBrains Mono (4 weights: 400, 500, 500i, 600)
+ * FONT-FACE — JetBrains Mono (6 faces: 400, 400i, 500, 500i, 600, 600i)
  * ============================================================================= */
 
 @font-face {
@@ -22,6 +22,14 @@
   src: url('/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -46,6 +54,14 @@
   src: url('/fonts/jetbrains-mono/JetBrainsMono-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
   font-display: swap;
 }
 

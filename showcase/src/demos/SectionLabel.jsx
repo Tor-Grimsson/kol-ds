@@ -5,9 +5,9 @@ export const stage = 'sm'
 export default function SectionLabelDemo() {
   return (
     <>
-      <SectionLabel text="Collections" size="sm" />
-      <SectionLabel text="Featured work" size="md" />
-      <SectionLabel text="Latest prints" size="lg" />
+      <SectionLabel text="COLLECTIONS" size="sm" />
+      <SectionLabel text="FEATURED WORK" size="md" />
+      <SectionLabel text="LATEST PRINTS" size="lg" />
     </>
   )
 }
