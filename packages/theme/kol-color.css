@@ -73,41 +73,12 @@
 
 /* =============================================================================
  * DARK MODE
- * Explicit dark-mode surface overrides ([data-theme="dark"], .dark) now come
- * from @kol/theme/kol-base-tokens.css (shared with apps/web). The system-
- * preference auto-dark block below stays brand-local — web has no equivalent.
+ * Explicit dark-mode surface overrides ([data-theme="dark"], .dark) come from
+ * kol-base-tokens.css. There is deliberately NO OS-preference auto-dark block:
+ * user ruling 2026-07-15 (ledger 2.4) — light mode first until migration
+ * completion; theme is decided only by an explicit data-theme. Reinstating
+ * OS-follow is a user ruling, not a cleanup.
  * ============================================================================= */
-
-/* =============================================================================
- * SYSTEM PREFERENCE (Automatic Dark Mode)
- *
- * KEPT deliberately (ruling applied 2026-07-15, ledger-2.0 #2.4): KOL policy
- * is light-first + FOLLOW-SYSTEM — an undecided page respects the visitor's
- * OS preference; an explicit choice (app-set data-theme or a saved toggle)
- * always wins because [data-theme="light"] opts out of this block and
- * [data-theme="dark"] doesn't need it. A repo wanting hard light-always
- * stamps data-theme="light" at boot — that's the per-repo seam, not a theme
- * edit. ThemeToggle + useTheme implement the same policy JS-side.
- * ============================================================================= */
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --kol-link:       #60A5FA;
-    --kol-link-hover: #93C5FD;
-
-    --kol-surface-primary: #121215;
-    --kol-surface-on-primary: #FAFAFA;
-
-    --kol-surface-secondary: #19191D;
-    --kol-surface-on-secondary: #F8F8F8;
-
-    --kol-surface-tertiary: #0E0E11;
-    --kol-surface-on-tertiary: #FFFFFF;
-
-    --kol-surface-inverse: #FCFBF8;
-    --kol-surface-on-inverse: #0E0E11;
-  }
-}
 
 /* =============================================================================
  * BASE ANCHOR RULE — unstyled links get the link color. Sits in the

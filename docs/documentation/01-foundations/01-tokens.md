@@ -55,7 +55,7 @@ Used everywhere: borders (`border-fg-08`), dividers, washes, dimmed text. Utilit
 | `--kol-surface-tertiary` | `#0E0E11` | — |
 | `--kol-surface-inverse` | `#FCFBF8` | `#0E0E11` |
 
-Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>`; **light is the boot default** on the showcase.
+Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` — the theme ships **no OS-preference auto-dark**, so an undecided page renders light (user ruling 2026-07-15: light-first until migration completion). **Light is the boot default** on the showcase.
 
 ## Radius & shadow scales
 
