@@ -18,7 +18,9 @@ const PIECE_MAP = {
 }
 
 const AlternativeControlsMock = () => {
-  const palettePieces = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
+  /* the six real piece types — the old rook…rook mirror row was decorative
+   * (mock era) and had no pawn, which made removed pawns unrecoverable */
+  const palettePieces = ['pawn', 'rook', 'knight', 'bishop', 'queen', 'king']
   const {
     searchQuery,
     setSearchQuery,
@@ -222,7 +224,7 @@ const AlternativeControlsMock = () => {
               {palettePieces.map((piece, index) => (
                 <div
                   key={`${color}-${piece}-${index}`}
-                  className={`flex items-center justify-center bg-oq-02 rounded transition ring-offset-1 flex-1 aspect-square ${
+                  className={`flex items-center justify-center rounded transition flex-1 aspect-square ${
                     isEditMode
                       ? 'cursor-pointer border border-dashed border-oq-12'
                       : ''
@@ -230,8 +232,8 @@ const AlternativeControlsMock = () => {
                     editPlacement &&
                     editPlacement.color === color &&
                     editPlacement.piece === piece
-                      ? 'ring-2 ring-accent-primary'
-                      : ''
+                      ? 'chess-palette--armed'
+                      : 'bg-oq-02'
                   }`}
                   onClick={() => handlePaletteClick(color, piece)}
                 >

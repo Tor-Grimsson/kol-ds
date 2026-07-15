@@ -22,6 +22,7 @@ const SidelineRow = ({ line, activeSideline, onSelectSidelineMove }) => (
         key={`${line.id}-${index}`}
         variant="ghost"
         size="sm"
+        className="chess-notation-sideline"
         selected={activeSideline?.id === line.id && activeSideline?.index === index}
         onClick={() => onSelectSidelineMove(line.id, index)}
       >

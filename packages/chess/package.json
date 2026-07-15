@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-chess",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": false,
   "description": "KOL chess system — board, pieces (3 SVG sets), playback/notation/variation-tree apparatus, PGN engine, and a game-data adapter (bundled demo set + Backblaze-B2 CDN fetch for the full 27k-game archive). Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",
