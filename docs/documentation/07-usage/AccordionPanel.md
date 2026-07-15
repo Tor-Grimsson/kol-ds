@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 22 across 12 files in 8 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
+- **Real-world usages found:** 24 across 14 files in 10 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Import
 
@@ -13,34 +13,34 @@ import { AccordionPanel } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorTokens.jsx`:
 
 ```jsx
 <AccordionPanel title="Brand"     meta={`${BRAND.length} tokens`} defaultOpen>
           <TokenTable rows={BRAND} />
 ```
 
-From `kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx`:
+From `kol-apps/kol-client-ac/src/components/primitives/Accordion.jsx`:
 
 ```jsx
 <AccordionPanel>
 ```
 
-From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorTokens.jsx`:
 
 ```jsx
 <AccordionPanel title="Surfaces"  meta={`${UI_SURFACE.length} tokens`}>
           <TokenTable rows={UI_SURFACE} />
 ```
 
-From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorTokens.jsx`:
 
 ```jsx
 <AccordionPanel title="Text"      meta={`${UI_INK.length} tokens`}>
           <TokenTable rows={UI_INK} />
 ```
 
-From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorTokens.jsx`:
 
 ```jsx
 <AccordionPanel title="Structure" meta={`${UI_STRUCTURE.length} tokens`}>

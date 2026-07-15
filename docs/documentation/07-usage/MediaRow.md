@@ -13,7 +13,7 @@ import { MediaRow } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx`:
+From `kol-apps/kol-media-admin/src/FileList.jsx`:
 
 ```jsx
 <MediaRow

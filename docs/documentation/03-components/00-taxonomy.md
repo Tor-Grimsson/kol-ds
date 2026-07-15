@@ -122,7 +122,12 @@ A component's compositional **sub-parts and infrastructure sub-exports are membe
 
 The rule: **if you'd only ever use it inside its parent, it's a member.** Grouping lives in a hand-authored overlay (`showcase/src/lib/component-groups.js`), never in the mined `usage-index.json`. *(Presentation is converging on this — see [[03-taxonomy-audit-and-plan|the audit & plan]].)*
 
-**Roster completeness (2026-07-15):** every component in every package belongs on the roster with a Tier + Function — no omissions. The usage miner (`scripts/extract-usage.mjs`) still reads only the component + framework barrels, so domain-package components it can't see are carried by an authored `UNMINED` list in `registry.js` (first: `SourcesReferences`, kol-content, molecule) until the miner is widened. The 54-component coverage gap is logged for the showcase audit.
+**Roster completeness (2026-07-15) — mechanical, CI-gated.** Every component in every package is on the roster with a Tier + Function — no omissions, enforced:
+
+- **The roster derives from the package barrels** (`showcase/src/lib/roster.js` parses every `packages/*/src/index.js` at build time via `scripts/lib/parse-barrel.mjs`) — there is no generated roster file to go stale. `usage-index.json` is enrichment only (counts + real call-site examples).
+- **Tier**: kol-component from its folders; kol-framework = `framework`; flat packages from the authored `TIERS` map in `showcase/src/lib/classification.js`.
+- **Function**: `FUNCTIONS_BY_NAME` in the same file — no silent `display` default anywhere.
+- **The gate**: `pnpm validate:roster` (wired into `build` + the release workflow) fails when any barrel export lacks a classification or a written exemption (`EXEMPT` / `DOCS_ONLY` / `DEPRECATED` / member overlay), when a classification key matches no live export, or when two packages export one name without a re-export ruling. Adding a component to any barrel either appears in the docs or breaks the build.
 
 ---
 

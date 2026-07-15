@@ -23,8 +23,10 @@ const EDGE_GUTTER = 'max(4rem, calc((100vw - 1400px) / 2 + 16rem))'
  * Calls `useEmblaCarousel` directly (FeaturedCarousel's precedent) because the
  * parallax nudge needs `internalEngine()`, which DS Carousel encapsulates and
  * must not be modified. The source's `WheelGesturesPlugin` is dropped (not a
- * DS dependency). Parallax is disabled under prefers-reduced-motion and on
- * small screens — both fall back to a plain wheel/drag carousel.
+ * DS dependency) — consumers re-inject it (or any Embla plugin) through the
+ * `plugins` pass-through; the DS itself stays plugin-free. Parallax is
+ * disabled under prefers-reduced-motion and on small screens — both fall
+ * back to a plain wheel/drag carousel.
  *
  * Card-agnostic via `renderCard`; defaults to DS **WorkCard** with an
  * `index`-staggered ragged height. Pass a plain `items` array of flat project
@@ -39,6 +41,8 @@ const EDGE_GUTTER = 'max(4rem, calc((100vw - 1400px) / 2 + 16rem))'
  * @param {Function}       renderCard (item, index) => ReactNode — card renderer (default WorkCard)
  * @param {Function}       onNavigate (href, event) => void — forwarded to the default WorkCard
  * @param {string}         className  extra classes on the section
+ * @param {Array}          plugins    Embla plugins, forwarded verbatim to `useEmblaCarousel`
+ *                         (e.g. the consumer's own WheelGesturesPlugin) — the DS carries none
  */
 export default function ParallaxShelf({
   type,
@@ -47,6 +51,7 @@ export default function ParallaxShelf({
   renderCard,
   onNavigate,
   className = '',
+  plugins,
 }) {
   const reduced = usePrefersReducedMotion()
   const [isMobile] = useState(
@@ -58,7 +63,7 @@ export default function ParallaxShelf({
     align: fromLeft ? 'end' : 'start',
     containScroll: 'trimSnaps',
     ...(fromLeft && { startIndex: items.length - 1 }),
-  })
+  }, plugins)
 
   const sectionRef = useRef(null)
   const lastScrollY = useRef(0)

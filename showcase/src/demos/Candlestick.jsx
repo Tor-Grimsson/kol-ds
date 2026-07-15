@@ -1,4 +1,4 @@
-import { Candlestick } from '../workshop/dashboards/index.js'
+import { Candlestick } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "pnpm --filter showcase build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && pnpm --filter showcase build",
+    "validate:roster": "node scripts/validate-roster.mjs",
+    "validate:imports": "node scripts/validate-imports.mjs",
     "preview": "pnpm --filter showcase preview",
     "workbench": "pnpm --filter workbench ladle",
     "extract:usage": "node scripts/extract-usage.mjs",

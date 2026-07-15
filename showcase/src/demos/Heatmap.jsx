@@ -1,4 +1,4 @@
-import { Heatmap } from '../workshop/dashboards/index.js'
+import { Heatmap } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

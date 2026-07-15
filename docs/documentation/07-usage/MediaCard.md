@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 1 across 1 files in 1 apps
-- **Used in:** kol-media-admin
+- **Real-world usages found:** 2 across 2 files in 2 apps
+- **Used in:** kol-media-admin, kol-video-editor
 
 ## Import
 
@@ -13,7 +13,7 @@ import { MediaCard } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx`:
+From `kol-apps/kol-media-admin/src/FileList.jsx`:
 
 ```jsx
 <MediaCard
@@ -27,4 +27,21 @@ From `kol-apparat/kol-plugin/kol-media-admin/src/FileList.jsx`:
                   selected={selected.has(o.key)}
                   onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}
                 />
+```
+
+From `kol-apps/kol-video-editor/Clypra/src/components/editor/media-tabs/MediaTab.tsx`:
+
+```jsx
+<MediaCard
+                key={asset.id}
+                asset={asset}
+                isSelected={previewMediaId === asset.id}
+                isUsedInTimeline={usedMediaIds.has(asset.id)}
+                onClick={() => setPreviewMedia(asset.id)}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setContextMenu({ x: e.clientX, y: e.clientY, mediaId: asset.id });
+                }}
+                onAddToTimeline={() => onAddToTimeline?.(asset, "media")}
+              />
 ```

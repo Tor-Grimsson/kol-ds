@@ -1,4 +1,4 @@
-import { Histogram } from '../workshop/dashboards/index.js'
+import { Histogram } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

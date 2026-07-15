@@ -2,6 +2,8 @@ import USAGE from '../usage/usage-index.json'
 import DOCS_META from '../usage/docs-meta.json'
 import { DEMOS } from './demos-registry.js'
 import { COMPONENT_GROUPS, MEMBER_OF } from './component-groups.js'
+import { ROSTER } from './roster.js'
+import { FUNCTIONS_BY_NAME, DOCS_ONLY, DEPRECATED } from './classification.js'
 
 /**
  * The component registry — single source of truth for the showcase.
@@ -218,19 +220,10 @@ export function slugify(name) {
  * are maps/strings, not components, and shouldn't get doc pages. */
 const isDataExport = (name) => /^[A-Z0-9_]+$/.test(name)
 
-/* Not components in the traditional sense — route wrappers / behaviors /
- * loaders. Documented on the Docs pages instead (shadcn model: meta material
- * lives in Docs, never in the components list). Icon + Graphic are the
- * loader tier (/docs/loaders); their visual galleries stay on /icons. */
-export const DOCS_ONLY = ['Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic']
-
-/* Off the roster — deprecated aliases and merged-away exports that still
- * linger as hand-seeded usage-index entries (we don't re-mine — it wipes
- * the seed). Their story lives on the surviving component's page:
- *   MenuPopover     — MenuItem's alias (2026-07-02 unify); removed next major.
- *   QuantityStepper — merged into QuantityInput `controls="split"` (Phase 4);
- *                     export deleted, entry survives only in the mined index. */
-export const DEPRECATED = ['MenuPopover', 'QuantityStepper']
+/* DOCS_ONLY + DEPRECATED live in classification.js (plain data — the CI gate
+ * imports them without touching this Vite-bound module); re-exported here
+ * for the existing consumers. */
+export { DOCS_ONLY, DEPRECATED } from './classification.js'
 
 /* Functional classification — a CLOSED set (Material-style). Every current
  * and future component maps to exactly one; the sidebar stays flat A→Z so a
@@ -248,82 +241,38 @@ export const FUNCTIONS = {
   structure: 'Structure',
   utility: 'Utility',
 }
-const FUNCTION_MAP = {
-  Button: 'action', ThemeToggle: 'action',
-  Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
-  QuantityInput: 'input', PropertyInput: 'input',
-  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input',
-  SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
-  LabeledControl: 'input', Label: 'input',
-  Badge: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
-  ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
-  Table: 'display', SectionLabel: 'display', Icon: 'display',
-  SideNav: 'navigation', ExitPreview: 'navigation',
-  Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
-  MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
-  MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
-  Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
-  MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media', OverlayGlassPanel: 'display', EmptyState: 'feedback',
-  HlsVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
-  CurveOverlay: 'input', RotaryDial: 'input',
-  TabsRow: 'navigation',
-  /* wayfinding — moves through / re-slices the site: nav, filtering, search,
-   * site chrome (set amended 2026-07-09; taxonomy doc carries the note). */
-  ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
-  ShellSearchOverlay: 'wayfinding', ShellDrawer: 'wayfinding',
-  DocsToc: 'wayfinding', AsciiCursor: 'wayfinding',
-  WorkViewToggle: 'wayfinding', ShellHeader: 'wayfinding', PortalFooter: 'wayfinding',
-  PriceDisplay: 'display', ProsePreview: 'display', TypeSample: 'display', TypeSpecCard: 'display', SpecList: 'display',
-  ShapeDropdown: 'action', SplitToolButton: 'action', ErrorBoundary: 'feedback',
-  SearchInput: 'input',
-  FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure',
-  FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input',
-  BentoCard: 'display', FeaturedCarousel: 'media',
-  TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
-  ColorLoader: 'display', LoaderOverlay: 'overlay',
-  SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
-  ColorRamp: 'display', SpectrumGrid: 'display',
-  ArticleCard: 'display', ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
-  SourcesReferences: 'display',
-  PortableTextRenderer: 'display', StackHero: 'structure',
-  WorkCard: 'display', WorkListItem: 'display',
-  GalleryCarousel: 'media', ParallaxShelf: 'media',
-  ProductDetailLayout: 'structure', DiagonalMarqueeRiver: 'media', ScrollDriftGallery: 'media',
-  Canvas: 'structure', SelectionOverlay: 'overlay', EditorShell: 'structure', AlignmentGrid: 'input',
-  SpecimenSectionHeader: 'structure', GlyphMetricsGrid: 'display', VariableFontSection: 'input',
-  TypefaceHero: 'display', TypefaceStyleSection: 'display', FontPreviewSection: 'display', FoundryCharacterSets: 'display',
-  Popover: 'overlay', Modal: 'overlay',
-  Divider: 'structure', Section: 'structure', Accordion: 'structure', ButtonGroup: 'structure',
-  AccordionPanel: 'structure', PageSection: 'structure', BrandHero: 'structure',
-  SubPageHero: 'structure',
-  useReveal: 'utility', useScrollSpy: 'utility',
-  usePrefersReducedMotion: 'utility', useTilt: 'utility',
-  resolveCssVar: 'utility', resolveCssColor: 'utility', isLight: 'utility',
-}
+/* Function assignments live in classification.js (FUNCTIONS_BY_NAME) —
+ * validated for completeness by `pnpm validate:roster`: a roster component
+ * with no function is a RED BUILD, never a silent 'display' default. */
 
-/* Authored roster rows for components the usage miner can't see yet —
- * extract-usage.mjs reads only the component + framework barrels, so
- * newer domain-package exports never enter usage-index.json. Widening the
- * miner is the registry-coverage arc; delete these rows when it lands.
- * Shape mirrors usage-index.json. */
-const UNMINED = [
-  { name: 'SourcesReferences', pkg: '@kolkrabbi/kol-content', category: 'molecules', count: 0, apps: [], files: 0, examples: [] },
-]
+/* usage-index.json is ENRICHMENT ONLY (counts, apps, real call-site
+ * examples) — the roster itself derives from the package barrels
+ * (lib/roster.js), so a new export can never silently miss the docs. */
+const USAGE_BY_NAME = new Map(USAGE.map((u) => [u.name, u]))
 
-/* Enriched, slugged component list (mining order preserved = usage-ranked). */
-export const COMPONENTS = USAGE.concat(UNMINED)
+/* Enriched, slugged component list — usage-ranked (count desc), then A→Z. */
+export const COMPONENTS = ROSTER
   .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name) && !DEPRECATED.includes(c.name))
-  .map((c) => ({
-    ...c,
-    category: FRAMEWORK_GROUPS[c.name] ?? c.category,
-    function: FUNCTION_MAP[c.name] ?? 'display',
-    slug: slugify(c.name),
-    demo: DEMOS[c.name] || null,
-    description: DESCRIPTIONS[c.name] || '',
-    /* Source-mined doc meta (scripts/extract-docs-meta.mjs): the kol type
-     * classes it renders text with + the KOL components it composes. */
-    meta: DOCS_META[c.name] || null,
-  }))
+  .map((c) => {
+    const usage = USAGE_BY_NAME.get(c.name)
+    return {
+      name: c.name,
+      pkg: c.pkg, /* true owner, from the barrel — InstallBlock can't lie */
+      category: FRAMEWORK_GROUPS[c.name] ?? c.tier,
+      function: FUNCTIONS_BY_NAME[c.name],
+      count: usage?.count ?? 0,
+      apps: usage?.apps ?? [],
+      files: usage?.files ?? 0,
+      examples: usage?.examples ?? [],
+      slug: slugify(c.name),
+      demo: DEMOS[c.name] || null,
+      description: DESCRIPTIONS[c.name] || '',
+      /* Source-mined doc meta (scripts/extract-docs-meta.mjs): the kol type
+       * classes it renders text with + the KOL components it composes. */
+      meta: DOCS_META[c.name] || null,
+    }
+  })
+  .sort((a, b) => (b.count - a.count) || a.name.localeCompare(b.name))
 
 /* Sub-part grouping (component-groups.js overlay): a member renders inside
  * its parent's page, never as its own row. Attach members to parents, and

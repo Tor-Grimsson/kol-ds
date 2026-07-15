@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 123 across 48 files in 13 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radar
+- **Real-world usages found:** 184 across 73 files in 15 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,41 +13,7 @@ import { ViewToggle } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/type-lab/TypeControls.jsx`:
-
-```jsx
-<ViewToggle
-              options={CASE_OPTIONS}
-              viewMode={frame.case}
-              onViewChange={v => update({ case: v })}
-            />
-```
-
-From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/atoms/TogglesPreview.jsx`:
-
-```jsx
-<ViewToggle
-            variant="icon"
-            viewMode={gridMode}
-            onViewChange={setGridMode}
-            options={gridOptions}
-            className="w-fit"
-          />
-```
-
-From `kol-apparat/kol-video/kol-mirror/src/components/styleguide/preview/atoms/TogglesPreview.jsx`:
-
-```jsx
-<ViewToggle
-            variant="icon"
-            viewMode={gridModeInverse}
-            onViewChange={setGridModeInverse}
-            options={gridOptions}
-            className="w-fit"
-          />
-```
-
-From `kol-client/kol-client/src/pages/foundations/TypographySections.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/TypographySections.jsx`:
 
 ```jsx
 <ViewToggle
@@ -57,7 +23,7 @@ From `kol-client/kol-client/src/pages/foundations/TypographySections.jsx`:
           />
 ```
 
-From `kol-client/kol-client-ac/src/editor/compose/AssetsBody.jsx`:
+From `kol-apps/kol-client-ac/src/editor/compose/AssetsBody.jsx`:
 
 ```jsx
 <ViewToggle
@@ -66,4 +32,34 @@ From `kol-client/kol-client-ac/src/editor/compose/AssetsBody.jsx`:
           onViewChange={setView}
           options={VIEW_OPTIONS}
         />
+```
+
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/compose/inspectors/LayerInspector.jsx`:
+
+```jsx
+<ViewToggle
+            options={SHAPE_FIT_OPTIONS}
+            viewMode={layer.fit ?? 'fill'}
+            onViewChange={(v) => setProp('fit', v)}
+          />
+```
+
+From `kol-apps/kol-client-canalix/src/pages/branded-house/LockupControls.jsx`:
+
+```jsx
+<ViewToggle
+          viewMode={parent}
+          onViewChange={(v) => onChange({ parent: v })}
+          options={toOptions(PARENTS)}
+        />
+```
+
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/organisms/filters/ContentFilters.jsx`:
+
+```jsx
+<ViewToggle
+              viewMode={viewMode}
+              onViewChange={handleViewModeChange}
+              options={viewModeOptions}
+            />
 ```

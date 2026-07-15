@@ -13,7 +13,7 @@ import { SubPageHero } from '@kolkrabbi/kol-framework'
 
 ## Real usage
 
-From `kol-client/kol-client-canalix/src/pages/CanalixMarks.jsx`:
+From `kol-apps/kol-client-canalix/src/pages/CanalixMarks.jsx`:
 
 ```jsx
 <SubPageHero
@@ -24,7 +24,7 @@ From `kol-client/kol-client-canalix/src/pages/CanalixMarks.jsx`:
         lede={<>Product icon family — 15 accented + 21 monochrome. Every fill that was white / near-white is now <code>currentColor</code>, so the marks inherit the theme. Accent colors remain fixed per icon.</>
 ```
 
-From `kol-client/kol-client-canalix/src/pages/CanalixWebsites.jsx`:
+From `kol-apps/kol-client-canalix/src/pages/CanalixWebsites.jsx`:
 
 ```jsx
 <SubPageHero
@@ -36,7 +36,7 @@ From `kol-client/kol-client-canalix/src/pages/CanalixWebsites.jsx`:
       />
 ```
 
-From `kol-client/kol-client-canalix/src/pages/CasedocWebsites.jsx`:
+From `kol-apps/kol-client-canalix/src/pages/CasedocWebsites.jsx`:
 
 ```jsx
 <SubPageHero

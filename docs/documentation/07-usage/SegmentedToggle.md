@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 95 across 59 files in 7 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-labs-single, kol-lightroom, kol-media-admin
+- **Real-world usages found:** 105 across 65 files in 9 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website
 
 ## Import
 
@@ -13,7 +13,7 @@ import { SegmentedToggle } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/SegmentedToggle.jsx`:
+From `kol-apps/kol-client-ac/src/components/molecules/SegmentedToggle.jsx`:
 
 ```jsx
 <SegmentedToggle
@@ -23,7 +23,7 @@ From `kol-apparat/kol-plugin/kol-media-admin/src/components/molecules/SegmentedT
  *   />
 ```
 
-From `kol-apparat/kol-labs-single/src/components/framework/MediaPicker.jsx`:
+From `kol-apps/kol-labs-single/src/components/framework/MediaPicker.jsx`:
 
 ```jsx
 <SegmentedToggle
@@ -34,19 +34,19 @@ From `kol-apparat/kol-labs-single/src/components/framework/MediaPicker.jsx`:
           />
 ```
 
-From `kol-client/kol-client-ac/src/editor/color/ColourPanel.jsx`:
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/ColourPanel.jsx`:
 
 ```jsx
 <SegmentedToggle value={model} onChange={setModel} options={MODEL_OPTIONS} />
 ```
 
-From `kol-client/kol-client-acyr-website/apps/styleguide/src/editor/color/StrokePanel.jsx`:
+From `kol-apps/kol-client-kolkrabbi/src/editor/color/StrokePanel.jsx`:
 
 ```jsx
 <SegmentedToggle size="sm" value={style} onChange={onStyle} options={STYLE_OPTIONS} />
 ```
 
-From `kol-client/kol-client-kolkrabbi/src/editor/color/StrokePanel.jsx`:
+From `kol-apps/kol-labs-monorepo/apps/generator/src/editor/color/StrokePanel.jsx`:
 
 ```jsx
 <SegmentedToggle value={cap}   onChange={(v) => setProp('strokeLinecap',  v)} options={CAP_OPTIONS}   />

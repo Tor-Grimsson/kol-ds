@@ -29,6 +29,10 @@ import { Tag } from '@kolkrabbi/kol-component'
  * @param {boolean}       active       persist the hover treatment (last-hovered row)
  * @param {Function}      onMouseEnter hover callback (parent tracks the active row)
  * @param {Function}      onNavigate   (href, event) => void — anchor click seam for SPA routing
+ * @param {string}        previewClassName  type class for the description preview line (default
+ *                        'kol-sans-heading-03'). The display-face seam: it REPLACES the type class
+ *                        (color/overflow stay component-owned), so a consumer restores its own
+ *                        display face without forking.
  */
 export default function WorkListItem({
   title,
@@ -41,6 +45,7 @@ export default function WorkListItem({
   active = false,
   onMouseEnter,
   onNavigate,
+  previewClassName = 'kol-sans-heading-03',
 }) {
   return (
     <a
@@ -74,7 +79,7 @@ export default function WorkListItem({
           </div>
         </div>
 
-        <p className="kol-sans-heading-03 text-auto leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+        <p className={`${previewClassName} text-auto leading-tight whitespace-nowrap overflow-hidden text-ellipsis`}>
           {description}
         </p>
       </div>

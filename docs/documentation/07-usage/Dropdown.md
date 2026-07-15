@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 433 across 145 files in 9 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-radar
+- **Real-world usages found:** 544 across 182 files in 11 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,7 +13,44 @@ import { Dropdown } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/compose/LayerStack.jsx`:
+From `kol-apps/kol-client-ac/src/editor/color/ColourPanel.jsx`:
+
+```jsx
+<Dropdown
+          variant="subtle"
+          size="sm"
+          options={MODE_OPTIONS}
+          value={mode}
+          onChange={setMode}
+          className="w-[110px]"
+        />
+```
+
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/SwatchesPanel.jsx`:
+
+```jsx
+<Dropdown
+        variant="subtle"
+        size="sm"
+        options={PALETTES}
+        value={palette}
+        onChange={setPalette}
+        className="w-full"
+      />
+```
+
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/foundry/FontControlsPanel.jsx`:
+
+```jsx
+<Dropdown
+            options={weightOptions}
+            value={selectedWeight}
+            onChange={onWeightChange}
+            className="min-w-[140px]"
+          />
+```
+
+From `kol-apps/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/compose/LayerStack.jsx`:
 
 ```jsx
 <Dropdown
@@ -24,7 +61,7 @@ From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-revi
           />
 ```
 
-From `kol-apparat/kol-editors/kol-radar/src/App.jsx`:
+From `kol-apps/kol-editor-radar/src/App.jsx`:
 
 ```jsx
 <Dropdown
@@ -34,43 +71,4 @@ From `kol-apparat/kol-editors/kol-radar/src/App.jsx`:
           variant="minimal"
           className="w-full"
         />
-```
-
-From `kol-apparat/kol-video/kol-mirror/src/components/hall-of-mirrors/MasterModule.jsx`:
-
-```jsx
-<Dropdown
-                  options={BLEND_OPTIONS}
-                  value={ch.blendMode || 'normal'}
-                  onChange={(v) => onChannelUpdate(i, { blendMode: v })}
-                  variant="minimal"
-                  size="md"
-                />
-```
-
-From `kol-apparat/kol-video/kol-modulator/src/components/styleguide/preview/molecules/ComponentPreview.jsx`:
-
-```jsx
-<Dropdown
-            {...props}
-            value={dropdownValue}
-            onChange={setDropdownValue}
-          />
-```
-
-From `kol-apparat/kol-video/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components/mirror/MirrorSidebar.jsx`:
-
-```jsx
-<Dropdown
-              options={[
-                { value: 'contain', label: 'Contain' },
-                { value: 'fit-width', label: 'Fit Width' },
-                { value: 'fit-height', label: 'Fit Height' },
-                { value: 'manual', label: 'Manual' },
-              ]}
-              value={state.imageFitMode}
-              onChange={(v) => state.setImageFitMode(v)}
-              variant="minimal"
-              size="md"
-            />
 ```

@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 35 across 11 files in 5 apps
-- **Used in:** kol-client-kolkrabbi, kol-mirror, kol-modulator, kol-monitor, kol-radar
+- **Real-world usages found:** 48 across 20 files in 6 apps
+- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,7 +13,24 @@ import { Pill } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/Components.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/foundry/VariableFontDisplay.jsx`:
+
+```jsx
+<Pill variant="subtle">wght {weight}</Pill>
+            {width !== undefined && <Pill variant="subtle">wdth {width}</Pill>}
+          </div>
+        </div>
+
+        {/* Bottom Row - Play/Pause + Sliders */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-4">
+            <PlayPauseButton
+              isPlaying={isAnimating}
+              onToggle={onToggleAnimation}
+            />
+```
+
+From `kol-apps/kol-editor-radar/src-grab/components/styleguide/Components.jsx`:
 
 ```jsx
 <Pill size="sm">Small</Pill>
@@ -31,7 +48,7 @@ function QuantityInputShowcase() {
         <QuantityInput value={1} min={0} max={10} />
 ```
 
-From `kol-apparat/kol-video/kol-mirror/src/components/styleguide/Components.jsx`:
+From `kol-apps/kol-mirror/src/components/styleguide/Components.jsx`:
 
 ```jsx
 <Pill size="md">Medium</Pill>
@@ -48,7 +65,7 @@ function QuantityInputShowcase() {
         <QuantityInput value={1} min={0} max={10} />
 ```
 
-From `kol-apparat/kol-video/kol-modulator/src/components/styleguide/Components.jsx`:
+From `kol-apps/kol-modulator/src/components/styleguide/Components.jsx`:
 
 ```jsx
 <Pill size="lg">Large</Pill>
@@ -64,42 +81,10 @@ function QuantityInputShowcase() {
         <QuantityInput value={1} min={0} max={10} />
 ```
 
-From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/foundry/VariableFontDisplay.jsx`:
+From `kol-website/apps/web/_quarantine/ArticleRichProse.jsx`:
 
 ```jsx
-<Pill variant="subtle">wght {weight}</Pill>
-            {width !== undefined && <Pill variant="subtle">wdth {width}</Pill>}
-          </div>
-        </div>
-
-        {/* Bottom Row - Play/Pause + Sliders */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-4">
-            <PlayPauseButton
-              isPlaying={isAnimating}
-              onToggle={onToggleAnimation}
-            />
-```
-
-From `kol-apparat/kol-video/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/Components.jsx`:
-
-```jsx
-<Pill variant="inverse">Inverse</Pill>
-        <Pill variant="subtle">Subtle</Pill>
-        <Pill variant="outline">Outline</Pill>
-      </VariantGroup>
-      <VariantGroup label="Sizes">
-        <Pill size="sm">Small</Pill>
-        <Pill size="md">Medium</Pill>
-        <Pill size="lg">Large</Pill>
-      </VariantGroup>
-    </ComponentShowcase>
-  )
-}
-
-function QuantityInputShowcase() {
-  return (
-    <ComponentShowcase name="QuantityInput" description="Quantity input with +/- controls">
-      <VariantGroup label="Default">
-        <QuantityInput value={1} min={0} max={10} />
+<Pill key={calloutTag ?? index} variant="inverse">
+                        {calloutTag}
+                      </Pill>
 ```

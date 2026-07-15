@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 10 across 9 files in 8 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin
+- **Real-world usages found:** 14 across 12 files in 10 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website
 
 ## Import
 
@@ -13,13 +13,13 @@ import { TransparentX } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-plugin/kol-media-admin/src/components/atoms/ColorSwatch.jsx`:
+From `kol-apps/kol-client-ac/src/components/atoms/ColorSwatch.jsx`:
 
 ```jsx
 <TransparentX tone={transparentTone} />
 ```
 
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/social/ColorPicker.jsx`:
+From `kol-apps/kol-client-kolkrabbi/src/pages/Components.jsx`:
 
 ```jsx
 <TransparentX />

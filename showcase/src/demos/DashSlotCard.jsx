@@ -1,4 +1,4 @@
-import { DashSlotCard, LineChart } from '../workshop/dashboards/index.js'
+import { DashSlotCard, LineChart } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'lg'
 

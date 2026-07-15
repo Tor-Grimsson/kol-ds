@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 25 across 6 files in 5 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-editor
+- **Real-world usages found:** 47 across 11 files in 7 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-editor, kol-labs-monorepo, kol-website
 
 ## Import
 
@@ -13,23 +13,7 @@ import { MenuItem } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-draw-3d/src/components/chrome/TopBar.jsx`:
-
-```jsx
-<MenuItem label="File">
-          <div className="py-1 w-[220px]">
-            <MenuDropdownItem onClick={exportSvg} disabled={viewMode === 'three'}>Export SVG</MenuDropdownItem>
-            <MenuDropdownDivider />
-```
-
-From `kol-apparat/kol-editors/kol-editor/src/components/molecules/Menu.jsx`:
-
-```jsx
-<MenuItem onSelect={onSave} shortcut="⌘S">Save</MenuItem>
- *     <MenuSeparator />
-```
-
-From `kol-client/kol-client-ac/src/editor/shell/MenuTop.jsx`:
+From `kol-apps/kol-client-ac/src/editor/shell/MenuTop.jsx`:
 
 ```jsx
 <MenuItem label="Mode">
@@ -41,7 +25,7 @@ From `kol-client/kol-client-ac/src/editor/shell/MenuTop.jsx`:
                 shortcut={currentMode === m.id ? <EditorIcon name="check" size={11} />
 ```
 
-From `kol-client/kol-client-acyr-website/apps/styleguide/src/editor/shell/MenuTop.jsx`:
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/shell/MenuTop.jsx`:
 
 ```jsx
 <MenuItem label="File">
@@ -58,7 +42,7 @@ From `kol-client/kol-client-acyr-website/apps/styleguide/src/editor/shell/MenuTo
             <MenuDropdownDivider />
 ```
 
-From `kol-client/kol-client-kolkrabbi/src/editor/shell/MenuTop.jsx`:
+From `kol-apps/kol-client-kolkrabbi/src/editor/shell/MenuTop.jsx`:
 
 ```jsx
 <MenuItem label="Canvas">
@@ -69,4 +53,20 @@ From `kol-client/kol-client-kolkrabbi/src/editor/shell/MenuTop.jsx`:
                   key={opt.value}
                   onClick={() => setAspect(opt.value)}
                   shortcut={aspect === opt.value ? <EditorIcon name="check" size={11} />
+```
+
+From `kol-apps/kol-draw-3d/src/components/chrome/TopBar.jsx`:
+
+```jsx
+<MenuItem label="File">
+          <div className="py-1 w-[220px]">
+            <MenuDropdownItem onClick={exportSvg} disabled={viewMode === 'three'}>Export SVG</MenuDropdownItem>
+            <MenuDropdownDivider />
+```
+
+From `kol-apps/kol-editor/src/components/molecules/Menu.jsx`:
+
+```jsx
+<MenuItem onSelect={onSave} shortcut="⌘S">Save</MenuItem>
+ *     <MenuSeparator />
 ```

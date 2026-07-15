@@ -1,4 +1,4 @@
-import { Sparkline } from '../workshop/dashboards/index.js'
+import { Sparkline } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

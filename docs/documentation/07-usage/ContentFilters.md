@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 5 across 5 files in 3 apps
-- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-monitor
+- **Real-world usages found:** 17 across 17 files in 4 apps
+- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-monitor, kol-website
 
 ## Import
 
@@ -13,19 +13,7 @@ import { ContentFilters } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-video/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx`:
-
-```jsx
-<ContentFilters
-            items={shuffledPrints}
-            title="All Prints"
-            totalCount={prints.length}
-            filterGroups={filterGroups}
-            renderItem={renderPrints}
-          />
-```
-
-From `kol-client/kol-client-ac/src/pages/site/Shop.jsx`:
+From `kol-apps/kol-client-ac/src/pages/site/Shop.jsx`:
 
 ```jsx
 <ContentFilters
@@ -37,7 +25,7 @@ From `kol-client/kol-client-ac/src/pages/site/Shop.jsx`:
           renderItem={(filteredItems) => <ShopGrid items={filteredItems} />
 ```
 
-From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CollectionFiltersPreview.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CollectionFiltersPreview.jsx`:
 
 ```jsx
 <ContentFilters
@@ -49,7 +37,38 @@ From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/worksho
         />
 ```
 
-From `kol-client/kol-client-kolkrabbi/src/pages/Icons.jsx`:
+From `kol-apps/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx`:
+
+```jsx
+<ContentFilters
+            items={shuffledPrints}
+            title="All Prints"
+            totalCount={prints.length}
+            filterGroups={filterGroups}
+            renderItem={renderPrints}
+          />
+```
+
+From `kol-website/apps/brand/src/pages/Icons.jsx`:
+
+```jsx
+<ContentFilters
+        items={iconEntries}
+        title="Icons"
+        totalCount={iconEntries.length}
+        filterGroups={filterGroups}
+        renderItem={renderItems}
+        searchKeys={['name', 'folder']}
+        viewModeOptions={[
+          { value: 'grid', label: 'Grid' },
+          { value: 'list', label: 'List' },
+        ]}
+        defaultViewMode="grid"
+        showCountOnlyWhenFiltering
+      />
+```
+
+From `kol-apps/kol-client-kolkrabbi/src/pages/Icons.jsx`:
 
 ```jsx
 <ContentFilters
@@ -64,20 +83,6 @@ From `kol-client/kol-client-kolkrabbi/src/pages/Icons.jsx`:
           { value: 'list', label: 'List' },
         ]}
         defaultViewMode="grid"
-        showCountOnlyWhenFiltering
-      />
-```
-
-From `kol-client/kol-client-kolkrabbi/src/pages/IconsVariants.jsx`:
-
-```jsx
-<ContentFilters
-        items={items}
-        title="Variants"
-        totalCount={items.length}
-        filterGroups={filterGroups}
-        renderItem={renderItems}
-        searchKeys={['name', 'folder']}
         showCountOnlyWhenFiltering
       />
 ```

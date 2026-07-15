@@ -16,7 +16,6 @@ import SetPreview from './pages/SetPreview'
 import DocsShellLayout from './pages/DocsShellLayout'
 import DocsMenus from './pages/DocsMenus'
 import DocsLoaders from './pages/DocsLoaders'
-import WorkshopPreview from './pages/WorkshopPreview'
 import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import Demo from './pages/Demo'
@@ -46,10 +45,9 @@ export default function App() {
       <Route path="/docs/shell-and-layout" element={<DocsShellLayout />} />
       <Route path="/docs/menus" element={<DocsMenus />} />
       <Route path="/docs/loaders" element={<DocsLoaders />} />
-      {/* Ported workshop shell — standalone chrome, splat so sidebar child
-          paths resolve inside its own layout route. */}
-      <Route path="/workshop-preview/*" element={<WorkshopPreview />} />
-      {/* Live dogfood of @kolkrabbi/kol-workshop — shell + docs viewer. */}
+      {/* THE workshop route — live dogfood of @kolkrabbi/kol-workshop (shell +
+          docs viewer). The vendored-shell /workshop-preview twin was deleted
+          in the 2026-07-15 de-fork; one shell, consumed from the package. */}
       <Route path="/workshop-docs/*" element={<WorkshopDocsPreview />} />
       {/* The repo-root lobby/ queue, rendered live via the workshop viewer. */}
       <Route path="/lobby/*" element={<Lobby />} />

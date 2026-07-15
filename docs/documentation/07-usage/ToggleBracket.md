@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 22 across 11 files in 5 apps
-- **Used in:** kol-client-kolkrabbi, kol-mirror, kol-modulator, kol-monitor, kol-radar
+- **Real-world usages found:** 26 across 13 files in 6 apps
+- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,7 +13,19 @@ import { ToggleBracket } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/Components.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/apparatus/WavyCircleControls.jsx`:
+
+```jsx
+<ToggleBracket
+          label="Symmetric Editing"
+          value={ui.symmetricEdit}
+          onToggle={(next) => onUiToggle('symmetricEdit', next)}
+          variant="plain"
+          className="justify-between text-left text-fg-64"
+        />
+```
+
+From `kol-apps/kol-editor-radar/src-grab/components/styleguide/Components.jsx`:
 
 ```jsx
 <ToggleBracket>Off</ToggleBracket>
@@ -30,7 +42,7 @@ function UnitSelectorShowcase() {
         <UnitSelector options={[{value: 'px', label: 'px'}, {value: 'em', label: 'em'}]} />
 ```
 
-From `kol-apparat/kol-video/kol-mirror/src/components/styleguide/Components.jsx`:
+From `kol-apps/kol-mirror/src/components/styleguide/Components.jsx`:
 
 ```jsx
 <ToggleBracket active>On</ToggleBracket>
@@ -46,7 +58,7 @@ function UnitSelectorShowcase() {
         <UnitSelector options={[{value: 'px', label: 'px'}, {value: 'em', label: 'em'}]} />
 ```
 
-From `kol-apparat/kol-video/kol-modulator/src/components/styleguide/preview/atoms/TogglesPreview.jsx`:
+From `kol-apps/kol-modulator/src/components/styleguide/preview/atoms/TogglesPreview.jsx`:
 
 ```jsx
 <ToggleBracket
@@ -56,26 +68,8 @@ From `kol-apparat/kol-video/kol-modulator/src/components/styleguide/preview/atom
           />
 ```
 
-From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/apparatus/WavyCircleControls.jsx`:
+From `kol-website/apps/brand/src/pages/Components.jsx`:
 
 ```jsx
-<ToggleBracket
-          label="Symmetric Editing"
-          value={ui.symmetricEdit}
-          onToggle={(next) => onUiToggle('symmetricEdit', next)}
-          variant="plain"
-          className="justify-between text-left text-fg-64"
-        />
-```
-
-From `kol-client/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/apparatus/WavyCircleControls.jsx`:
-
-```jsx
-<ToggleBracket
-          label="Symmetrical Handles"
-          value={ui.symmetricalBezier}
-          onToggle={(next) => onUiToggle('symmetricalBezier', next)}
-          variant="plain"
-          className="justify-between text-left text-fg-64"
-        />
+<ToggleBracket label="Default off"  value={br1} onToggle={setBr1} />
 ```

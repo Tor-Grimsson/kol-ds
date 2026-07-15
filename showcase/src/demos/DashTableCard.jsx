@@ -1,4 +1,4 @@
-import { DashTableCard } from '../workshop/dashboards/index.js'
+import { DashTableCard } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'full'
 

@@ -35,6 +35,15 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # Roster completeness gate — every barrel export must be classified or
+      # exempted (scripts/validate-roster.mjs); red build otherwise.
+      - name: Validate roster
+        run: pnpm validate:roster
+
+      # De-fork lock — no vendored package code in showcase/src (P0-3).
+      - name: Validate imports
+        run: pnpm validate:imports
+
       # Opens/updates a "Version Packages" PR; when that PR merges, publishes.
       - name: Create release PR or publish
         uses: changesets/action@v1

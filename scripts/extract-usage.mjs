@@ -13,6 +13,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, basename, relative, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { parseBarrelExports, isComponentName, folderOf } from './lib/parse-barrel.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO = join(HERE, '..')
@@ -20,54 +21,52 @@ const DEV = '/Users/biskup/dev/projects'
 
 // --- consumer roots: the real KOL use cases (exclude this repo + the seeds) ---
 // kind 'group' = each child folder is its own app; kind 'app' = the root is the app.
+// Post-2026-07 rename: consumers live under kol-apps/* + kol-website.
 const ROOT_DEFS = [
-  { path: 'kol-apparat/kol-create', kind: 'group' },
-  { path: 'kol-apparat/kol-docs', kind: 'group' },
-  { path: 'kol-apparat/kol-editors', kind: 'group' },
-  { path: 'kol-apparat/kol-video', kind: 'group' },
-  { path: 'kol-apparat/kol-plugin', kind: 'group' },
-  { path: 'kol-apparat/kol-lightroom', kind: 'app' },
-  { path: 'kol-apparat/kol-labs-single', kind: 'app' },
-  { path: 'kol-client', kind: 'group' },
-  { path: 'kol-resume', kind: 'app' },
+  { path: 'kol-apps', kind: 'group' },
+  { path: 'kol-website', kind: 'app' },
 ].map((r) => ({ ...r, abs: join(DEV, r.path) }))
 const ROOTS = ROOT_DEFS.map((r) => r.abs)
+
+// A missing root means the repo layout moved again — hard-fail so this miner
+// can never silently emit an empty index over the real one (2026-07-15 audit:
+// nine dead roots produced a "clean" run that would have wiped the data).
+for (const r of ROOT_DEFS) {
+  if (!existsSync(r.abs)) {
+    console.error(`extract-usage: consumer root MISSING: ${r.abs} — fix ROOT_DEFS before mining.`)
+    process.exit(1)
+  }
+}
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', '.vite', 'build', '.next', 'coverage'])
 const CODE_RE = /\.(jsx|tsx|js|ts)$/
 
-// --- the component registry: parse the package index files ---------------------
-function parseExports(indexPath) {
-  const out = []
-  if (!existsSync(indexPath)) return out
-  const txt = readFileSync(indexPath, 'utf8')
-  const fileFor = {}
-  // default re-exports:  export { default as X } from './atoms/X.jsx'
-  for (const m of txt.matchAll(/export \{ default as (\w+)(?:, [^}]*)? \} from '(\.\/[^']+)'/g)) {
-    out.push(m[1]); fileFor[m[1]] = m[2]
-  }
-  // named re-exports:    export { A, B, C } from './molecules/Y.jsx'
-  for (const m of txt.matchAll(/export \{ ([^}]*) \} from '(\.\/[^']+)'/g)) {
-    for (const raw of m[1].split(',')) {
-      const name = raw.replace(/default as /, '').trim()
-      if (/^[A-Z]\w+$/.test(name) && !out.includes(name)) { out.push(name); fileFor[name] = m[2] }
+// --- the component registry: EVERY package barrel, via the shared parser -------
+// (scripts/lib/parse-barrel.mjs — same enumeration as the showcase roster and
+// the validate:roster CI gate, so the three can never disagree.)
+const registry = []
+{
+  const pkgsDir = join(REPO, 'packages')
+  for (const dir of readdirSync(pkgsDir)) {
+    const src = join(pkgsDir, dir, 'src')
+    if (!existsSync(join(src, 'index.js'))) continue
+    const files = {}
+    const collect = (d) => {
+      for (const name of readdirSync(d, { withFileTypes: true })) {
+        const full = join(d, name.name)
+        if (name.isDirectory() && name.name !== 'node_modules') collect(full)
+        else if (name.name === 'index.js') files[relative(src, full)] = readFileSync(full, 'utf8')
+      }
+    }
+    collect(src)
+    const pkg = JSON.parse(readFileSync(join(pkgsDir, dir, 'package.json'), 'utf8')).name
+    for (const e of parseBarrelExports(files)) {
+      if (!isComponentName(e.name)) continue
+      const cat = folderOf(e.src) || (dir === 'framework' ? 'framework' : 'flat')
+      registry.push({ name: e.name, pkg, category: cat, src: e.src })
     }
   }
-  return out.map((name) => ({ name, src: fileFor[name] }))
 }
-
-const compIndex = join(REPO, 'packages/component/src/index.js')
-const fwIndex = join(REPO, 'packages/framework/src/index.js')
-
-const registry = []
-for (const e of parseExports(compIndex)) {
-  const cat = (e.src.match(/\.\/(\w+)\//) || [])[1] || 'misc'
-  registry.push({ name: e.name, pkg: '@kolkrabbi/kol-component', category: cat, src: e.src })
-}
-for (const e of parseExports(fwIndex)) {
-  registry.push({ name: e.name, pkg: '@kolkrabbi/kol-framework', category: 'framework', src: e.src })
-}
-registry.push({ name: 'Icon', pkg: '@kolkrabbi/kol-icons', category: 'loaders', src: './Icon.jsx' })
 
 // non-component exports we don't hunt for as JSX tags
 const NON_JSX = new Set(['ModalProvider', 'PopoverPanel'])

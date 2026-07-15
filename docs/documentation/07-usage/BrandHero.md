@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 12 across 9 files in 5 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi
+- **Real-world usages found:** 13 across 10 files in 6 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-website
 
 ## Import
 
@@ -13,7 +13,7 @@ import { BrandHero } from '@kolkrabbi/kol-framework'
 
 ## Real usage
 
-From `kol-client/kol-client/src/pages/Brand.jsx`:
+From `kol-apps/kol-client/src/pages/Brand.jsx`:
 
 ```jsx
 <BrandHero
@@ -23,7 +23,7 @@ From `kol-client/kol-client/src/pages/Brand.jsx`:
       />
 ```
 
-From `kol-client/kol-client-ac/src/pages/Styleguide.jsx`:
+From `kol-apps/kol-client-ac/src/pages/Styleguide.jsx`:
 
 ```jsx
 <BrandHero
@@ -33,7 +33,7 @@ From `kol-client/kol-client-ac/src/pages/Styleguide.jsx`:
       />
 ```
 
-From `kol-client/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx`:
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx`:
 
 ```jsx
 <BrandHero
@@ -43,7 +43,7 @@ From `kol-client/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx`:
       />
 ```
 
-From `kol-client/kol-client-canalix/src/pages/Canalix.jsx`:
+From `kol-apps/kol-client-canalix/src/pages/Canalix.jsx`:
 
 ```jsx
 <BrandHero
@@ -53,7 +53,7 @@ From `kol-client/kol-client-canalix/src/pages/Canalix.jsx`:
         mark={<BrandLogo brand="canalix" name="logomark-light" className="kol-hero-mark" title="Canalix" />
 ```
 
-From `kol-client/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx`:
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx`:
 
 ```jsx
 <BrandHero

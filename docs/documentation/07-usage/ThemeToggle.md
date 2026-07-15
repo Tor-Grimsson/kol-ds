@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 30 across 24 files in 14 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-radar
+- **Real-world usages found:** 47 across 37 files in 17 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix-contract, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,32 +13,32 @@ import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
 ## Real usage
 
-From `kol-apparat/kol-docs/kol-divs/src/components/navigation/SideNav.jsx`:
-
-```jsx
-<ThemeToggle variant="hop" />
-```
-
-From `kol-apparat/kol-editors/kol-draw-3d/src/components/chrome/SideRail.jsx`:
+From `kol-apps/kol-client-ac/src/components/framework/SideNav.jsx`:
 
 ```jsx
 <ThemeToggle variant="hop-bare" />
 ```
 
-From `kol-apparat/kol-editors/kol-editor/src/components/atoms/ThemeToggle.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/atoms/ThemeToggle.jsx`:
 
 ```jsx
 <ThemeToggle variant="default" />
 ```
 
-From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/molecules/ComponentPreview.jsx`:
+From `kol-apps/kol-divs/src/components/navigation/SideNav.jsx`:
 
 ```jsx
-<ThemeToggle variant={variantId} previewOnly />
+<ThemeToggle variant="hop" />
 ```
 
-From `kol-client/kol-client-kolkrabbi/src/pages/Components.jsx`:
+From `kol-apps/kol-editor/src/components/organisms/TopNav.jsx`:
 
 ```jsx
 <ThemeToggle variant="icon" />
+```
+
+From `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules/ComponentPreview.jsx`:
+
+```jsx
+<ThemeToggle variant={variantId} previewOnly />
 ```

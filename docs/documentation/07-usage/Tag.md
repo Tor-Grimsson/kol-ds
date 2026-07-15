@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 53 across 24 files in 11 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar
+- **Real-world usages found:** 71 across 35 files in 14 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs, kol-docs-md, kol-docs-noter, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,48 +13,7 @@ import { Tag } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-docs/kol-docs/src/components/docs/DocsHeader.jsx`:
-
-```jsx
-<Tag id={headingId} className={`docs-heading ${headingClasses[level]}`}>
-          {title}
-        </Tag>
-```
-
-From `kol-apparat/kol-docs/kol-noter/src/components/note-browsing/NoteCard.tsx`:
-
-```jsx
-<Tag
-                  key={tag}
-                  label={tag}
-                  color={note.tagColors?.[tag]}
-                  variant="default"
-                  size="sm"
-                />
-```
-
-From `kol-apparat/kol-editors/kol-radar/src-grab/components/styleguide/preview/molecules/ComponentPreview.jsx`:
-
-```jsx
-<Tag {...props}>{props.children}</Tag>
-      case 'dropdown':
-        return (
-          <Dropdown
-            {...props}
-            value={dropdownValue}
-            onChange={setDropdownValue}
-          />
-```
-
-From `kol-apparat/kol-lightroom/src/pages/Library.jsx`:
-
-```jsx
-<Tag key={t} size="sm">
-                {t}
-              </Tag>
-```
-
-From `kol-client/kol-client-ac/src/editor/color/SwatchControls.jsx`:
+From `kol-apps/kol-client-ac/src/editor/color/SwatchControls.jsx`:
 
 ```jsx
 <Tag
@@ -72,4 +31,49 @@ From `kol-client/kol-client-ac/src/editor/color/SwatchControls.jsx`:
         ...style,
       }}
     />
+```
+
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/SwatchControls.jsx`:
+
+```jsx
+<Tag
+      {...props}
+      className={`rounded-full overflow-hidden ${className}`}
+      style={{
+        width: 10,
+        height: 10,
+        background:
+          'linear-gradient(45deg, #fff 0%, #fff 42%, #DC2626 42%, #DC2626 58%, #fff 58%, #fff 100%)',
+        boxShadow: '0 0 0 1px var(--ac-fg-32)',
+        ...style,
+      }}
+    />
+```
+
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/CollectionCard.jsx`:
+
+```jsx
+<Tag variant="light" size="sm">
+                {item.type}
+              </Tag>
+```
+
+From `kol-apps/kol-docs/src/components/docs/DocsHeader.jsx`:
+
+```jsx
+<Tag id={headingId} className={`docs-heading ${headingClasses[level]}`}>
+          {title}
+        </Tag>
+```
+
+From `kol-apps/kol-docs-noter/src/components/note-browsing/NoteCard.tsx`:
+
+```jsx
+<Tag
+                  key={tag}
+                  label={tag}
+                  color={note.tagColors?.[tag]}
+                  variant="default"
+                  size="sm"
+                />
 ```

@@ -6,7 +6,7 @@ import DemoStage from '../lib/DemoStage.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
 import { BLOCKS } from '../lib/blocks-registry.js'
-import useMetricsData, { timeAgo } from '../workshop/metrics/useMetricsData.js'
+import useMetricsData, { timeAgo } from '../data/metrics/useMetricsData.js'
 /* Workspace-relative on purpose: the component package's exports map doesn't
  * expose package.json, and the badge must track the real installed version
  * instead of a hand-typed string that goes stale (it read v0.1.1 at v0.4.0). */
@@ -22,7 +22,7 @@ import {
   LineChart,
   DonutChart,
   Sparkline,
-} from '../workshop/dashboards/index.js'
+} from '@kolkrabbi/kol-dashboards'
 
 /**
  * Home — the KOL design-system front door.
@@ -34,7 +34,7 @@ import {
  * error-boundaried — the page is the proof.
  */
 
-// ── Metrics transformers (ported from workshop/metrics/MetricsDashboard) ──────
+// ── Metrics transformers (ported from kol-dashboards' MetricsDashboard) ──────
 const PALETTE = [
   'var(--kol-palette-blue)',
   'var(--kol-palette-green)',

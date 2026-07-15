@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 501 across 93 files in 7 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
+- **Real-world usages found:** 585 across 105 files in 9 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Import
 
@@ -13,7 +13,38 @@ import { Section } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
+From `kol-apps/kol-client-ac/src/editor/modes/palette/PaletteControls.jsx`:
+
+```jsx
+<Section label="Aspect">
+              <Dropdown
+                variant="subtle" size="sm" className="w-full"
+                options={ASPECT_OPTIONS}
+                value={aspect}
+                onChange={setAspect}
+              />
+```
+
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/modes/palette/PaletteControls.jsx`:
+
+```jsx
+<Section label="Logo">
+            <ViewToggle
+              variant="single"
+              options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
+              viewMode={logoId === 'no-logo' ? 'off' : 'on'}
+              onViewChange={(v) => setLogoId(v === 'off' ? 'no-logo' : 'client')}
+            />
+```
+
+From `kol-apps/kol-client-kolkrabbi/src/editor/modes/palette/PaletteControls.jsx`:
+
+```jsx
+<Section label="Layout">
+              <Dropdown variant="subtle" size="sm" className="w-full" options={LAYOUT_OPTIONS} value={layoutId} onChange={setLayoutId} />
+```
+
+From `kol-apps/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
 
 ```jsx
 <Section label="Aspect">
@@ -27,34 +58,14 @@ From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-revi
             />
 ```
 
-From `kol-apparat/kol-lightroom/src/pages/Develop.jsx`:
+From `kol-apps/kol-labs-monorepo/apps/generator/src/editor/modes/palette/PaletteControls.jsx`:
 
 ```jsx
-<Section title="Info" defaultOpen={false}>
-              <dl className="flex flex-col gap-3 kol-mono-12 text-body">
-                <Row k="File" v={info?.fileName} />
-```
-
-From `kol-apparat/kol-labs-single/src/components/framework/SettingsPanel.jsx`:
-
-```jsx
-<Section label={label}>
-      {showTheme && (
-        <>
-          <LabeledControl inline label="Theme">
-            <Dropdown size="sm" variant="subtle" className="w-full" options={themeOptions} value={theme} onChange={onTheme} />
-```
-
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
-
-```jsx
-<Section label="Layout">
-            <Dropdown variant="subtle" size="sm" className="w-full" options={LAYOUT_OPTIONS} value={layoutId} onChange={setLayoutId} />
-```
-
-From `kol-apparat/kol-editors/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/combo-lab/ComboLab.jsx`:
-
-```jsx
-<Section label="Pool">
-            <Dropdown variant="subtle" size="sm" className="w-full" options={POOL_OPTIONS} value={poolId} onChange={changePool} />
+<Section label="BG">
+            <ViewToggle
+              variant="single"
+              options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
+              viewMode={bgOn ? 'on' : 'off'}
+              onViewChange={(v) => { if ((v === 'on') !== bgOn) toggleBg() }}
+            />
 ```

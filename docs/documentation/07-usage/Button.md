@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 810 across 255 files in 17 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-distress, kol-divs, kol-draw-3d, kol-editor, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter, kol-radar, kol-radial
+- **Real-world usages found:** 925 across 309 files in 20 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-docs-noter, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radial, kol-svg-distress, kol-video-editor, kol-website
 
 ## Import
 
@@ -13,7 +13,38 @@ import { Button } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-docs/kol-divs/src/components/site/CopyButton.jsx`:
+From `kol-apps/kol-client-ac/src/pages/site/Cart.jsx`:
+
+```jsx
+<Button variant="primary" size="lg" className="w-full" onClick={() => navigate('/site/checkout')}>
+                  Checkout
+                </Button>
+```
+
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx`:
+
+```jsx
+<Button variant={variant} size={size}>
+                    {variant.charAt(0).toUpperCase() + variant.slice(1)} {size}
+                  </Button>
+                </div>
+              ))}
+              <span aria-hidden="true" />
+```
+
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/atoms/PrintBuyButton.jsx`:
+
+```jsx
+<Button
+          variant="secondary"
+          size={size}
+          disabled
+        >
+          Coming Soon
+        </Button>
+```
+
+From `kol-apps/kol-divs/src/components/site/CopyButton.jsx`:
 
 ```jsx
 <Button variant="outline" size={size} onClick={handle} className={className}>
@@ -21,7 +52,7 @@ From `kol-apparat/kol-docs/kol-divs/src/components/site/CopyButton.jsx`:
     </Button>
 ```
 
-From `kol-apparat/kol-docs/kol-noter/src/components/app-shell/ConflictResolutionDialog.tsx`:
+From `kol-apps/kol-docs-noter/src/components/app-shell/ConflictResolutionDialog.tsx`:
 
 ```jsx
 <Button
@@ -30,53 +61,4 @@ From `kol-apparat/kol-docs/kol-noter/src/components/app-shell/ConflictResolution
               className="flex items-center gap-2"
             >
               <CheckCircle className="w-4 h-4" />
-```
-
-From `kol-apparat/kol-editors/kol-draw-3d/src/components/studio/LayersPanel.jsx`:
-
-```jsx
-<Button
-          variant="primary"
-          size="sm"
-          animateIcon
-          quiet
-          iconOnly="plus"
-          iconSize={12}
-          aria-label="Insert layer"
-          title="Insert layer"
-          style={{ padding: 6 }}
-        />
-```
-
-From `kol-apparat/kol-editors/kol-editor/src/components/organisms/InspectorPanel.jsx`:
-
-```jsx
-<Button
-            variant="primary"
-            onClick={onExpandBooleanGroup}
-            className="w-full"
-          >
-            Expand Vector Shape
-          </Button>
-        </div>
-      )}
-
-    </>
-```
-
-From `kol-apparat/kol-editors/kol-radar/src/App.jsx`:
-
-```jsx
-<Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} iconLeft="upload" className="w-full">
-          Upload Image
-        </Button>
-
-        {sourceImage && (
-          <Button variant="primary" size="sm" onClick={handleDownload} iconLeft="download" className="w-full">
-            Download
-          </Button>
-        )}
-      </div>
-
-      <input ref={fileInputRef} type="file" accept="image/*,.svg" onChange={handleFileUpload} className="hidden" />
 ```

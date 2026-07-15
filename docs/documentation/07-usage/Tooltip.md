@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 28 across 16 files in 12 apps
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-noter
+- **Real-world usages found:** 64 across 30 files in 15 apps
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-docs-noter, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-video-editor, kol-website
 
 ## Import
 
@@ -13,7 +13,7 @@ import { Tooltip } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-docs/kol-noter/src/components/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-docs-noter/src/components/app-shell/ExplorerSidebar.tsx`:
 
 ```jsx
 <Tooltip>
@@ -22,7 +22,16 @@ From `kol-apparat/kol-docs/kol-noter/src/components/app-shell/ExplorerSidebar.ts
                   <Network className="w-4 h-4" />
 ```
 
-From `kol-apparat/kol-video/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess-elite.jsx`:
+
+```jsx
+<Tooltip 
+                  contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333', borderRadius: '8px' }}
+                  labelStyle={{ color: '#999', fontSize: '11px' }}
+                />
+```
+
+From `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
 
 ```jsx
 <Tooltip>
@@ -31,7 +40,7 @@ From `kol-apparat/kol-video/kol-mirror/a_torg/design-system/components/00-dont-t
                   <Folder className="w-4 h-4" />
 ```
 
-From `kol-apparat/kol-video/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
 
 ```jsx
 <Tooltip>
@@ -40,7 +49,7 @@ From `kol-apparat/kol-video/kol-modulator/design-system/components/00-dont-touch
                   <FileText className="w-4 h-4" />
 ```
 
-From `kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
 
 ```jsx
 <Tooltip>
@@ -54,11 +63,4 @@ From `kol-apparat/kol-video/kol-monitor/a_torg/design-system/components/00-dont-
                       title="Collapse all"
                     >
                       <FoldVertical className="w-4 h-4 text-muted-foreground" />
-```
-
-From `kol-apparat/kol-editors/kol-draw-3d/src/components/molecules/Popover.jsx`:
-
-```jsx
-<Tooltip label="Pattern" shortcut="P" placement="bottom">
- *     <Button iconOnly="ptrn-checker" ... />
 ```

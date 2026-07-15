@@ -1,4 +1,4 @@
-import { ScatterPlot } from '../workshop/dashboards/index.js'
+import { ScatterPlot } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

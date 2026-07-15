@@ -1,4 +1,4 @@
-import { DashAlertCard } from '../workshop/dashboards/index.js'
+import { DashAlertCard } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

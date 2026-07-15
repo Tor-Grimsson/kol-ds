@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 11 across 11 files in 8 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-single, kol-lightroom
+- **Real-world usages found:** 13 across 13 files in 10 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Import
 
@@ -13,7 +13,7 @@ import { Accordion } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorTokens.jsx`:
 
 ```jsx
 <Accordion>
@@ -21,13 +21,13 @@ From `kol-client/kol-client/src/pages/foundations/ColorTokens.jsx`:
           <TokenTable rows={BRAND} />
 ```
 
-From `kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx`:
+From `kol-apps/kol-client-ac/src/components/primitives/Accordion.jsx`:
 
 ```jsx
 <Accordion>
 ```
 
-From `kol-client/kol-client/src/pages/foundations/ColorUI.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/ColorUI.jsx`:
 
 ```jsx
 <Accordion>
@@ -42,7 +42,7 @@ From `kol-client/kol-client/src/pages/foundations/ColorUI.jsx`:
           <SwatchGrid items={NEUTRALS} />
 ```
 
-From `kol-client/kol-client/src/pages/foundations/TypographySections.jsx`:
+From `kol-apps/kol-client/src/pages/foundations/TypographySections.jsx`:
 
 ```jsx
 <Accordion>

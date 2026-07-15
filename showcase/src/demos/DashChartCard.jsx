@@ -1,4 +1,4 @@
-import { DashChartCard, DonutChart } from '../workshop/dashboards/index.js'
+import { DashChartCard, DonutChart } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 

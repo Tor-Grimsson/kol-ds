@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 18 across 18 files in 10 apps
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-noter
+- **Real-world usages found:** 20 across 20 files in 11 apps
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-docs-noter, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Import
 
@@ -13,7 +13,7 @@ import { Carousel } from '@kolkrabbi/kol-component'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/brand/AssetCarousel.jsx`:
+From `kol-apps/kol-client/src/components/framework/brand/AssetCarousel.jsx`:
 
 ```jsx
 <Carousel className={`kol-asset-carousel ${className}`.trim()} {...(options ? { options } : {})}>
@@ -21,7 +21,7 @@ From `kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-fra
           <AssetCard key={item.src ?? i} item={item} category={category} onOpen={() => setCurrent(item)} />
 ```
 
-From `kol-client/kol-client/src/components/framework/sections/LogoCarousel.jsx`:
+From `kol-apps/kol-client-ac/src/components/styleguide/LogoCarousel.jsx`:
 
 ```jsx
 <Carousel>
@@ -35,7 +35,7 @@ From `kol-client/kol-client/src/components/framework/sections/LogoCarousel.jsx`:
         />
 ```
 
-From `kol-client/kol-client-acyr-website/apps/styleguide/src/components/styleguide/AssetCarousel.jsx`:
+From `kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/AssetCarousel.jsx`:
 
 ```jsx
 <Carousel className={`ac-asset-carousel ${className}`.trim()} {...(options ? { options } : {})}>
@@ -43,7 +43,7 @@ From `kol-client/kol-client-acyr-website/apps/styleguide/src/components/stylegui
           <AssetCard key={item.src ?? i} item={item} category={category} onOpen={() => setCurrent(item)} />
 ```
 
-From `kol-client/kol-client-canalix/src/components/brand/AssetCarousel.jsx`:
+From `kol-apps/kol-client-canalix/src/components/brand/AssetCarousel.jsx`:
 
 ```jsx
 <Carousel className={`kol-asset-carousel ${className}`.trim()} {...(options ? { options } : {})}>
@@ -51,19 +51,8 @@ From `kol-client/kol-client-canalix/src/components/brand/AssetCarousel.jsx`:
           <AssetCard key={item.src ?? i} item={item} onOpen={() => setCurrent(item)} />
 ```
 
-From `kol-client/kol-client-ac/src/pages/site/About.jsx`:
+From `kol-apps/kol-docs-noter/src/components/ui/carousel.tsx`:
 
 ```jsx
-<Carousel
-          className="[&_.kol-embla-container]:!gap-0 [&_.kol-embla-slide]:!w-[clamp(200px,70vw,300px)] [&_.kol-embla-slide]:!h-[clamp(280px,90vw,400px)]"
-          options={{ align: 'start', loop: false, dragFree: true, containScroll: 'trimSnaps' }}
-        >
-          {STORY_GALLERY.map((src) => (
-            <img
-              key={src}
-              src={src}
-              alt=""
-              className="block w-full h-full object-cover"
-              loading="lazy"
-            />
+<Carousel />
 ```

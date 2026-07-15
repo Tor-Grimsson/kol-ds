@@ -13,7 +13,7 @@ import { PortalFooter } from '@kolkrabbi/kol-framework'
 
 ## Real usage
 
-From `kol-apparat/kol-editors/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/chrome/Layout.jsx`:
+From `kol-apps/kol-client/src/components/framework/chrome/Layout.jsx`:
 
 ```jsx
 <PortalFooter />

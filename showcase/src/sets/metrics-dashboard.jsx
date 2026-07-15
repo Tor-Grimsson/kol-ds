@@ -1,5 +1,5 @@
 import { MetricsDashboard } from '@kolkrabbi/kol-dashboards'
-import useMetricsData from '../workshop/metrics/useMetricsData.js'
+import useMetricsData from '../data/metrics/useMetricsData.js'
 
 export const meta = {
   title: 'Metrics dashboard',

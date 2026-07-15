@@ -1,4 +1,4 @@
-import { DashFeaturedCard, LineChart } from '../workshop/dashboards/index.js'
+import { DashFeaturedCard, LineChart } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'full'
 

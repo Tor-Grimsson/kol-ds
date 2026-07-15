@@ -1,4 +1,4 @@
-import { DashMetricCard, Sparkline } from '../workshop/dashboards/index.js'
+import { DashMetricCard, Sparkline } from '@kolkrabbi/kol-dashboards'
 
 export const stage = 'md'
 
