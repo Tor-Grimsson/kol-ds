@@ -2,7 +2,7 @@
 title: Type classes — the two families and when to use which
 type: reference
 status: active
-updated: 2026-07-02
+updated: 2026-07-15
 description: The kol type-class inventory split by its real fault line — line-height-bearing sets for anything that can wrap vs the line-height-1 helper scale for single-line chrome — with the full class table and the 2026-07-02 conformance conversions as worked examples.
 aliases:
   - type-classes
@@ -81,3 +81,7 @@ Beyond the missing leading, helpers differ from mono in **weight (500 vs 400)** 
 ## Enforcement
 
 `pnpm extract:docs` reports any component source using freestyle Tailwind type utilities (`text-xs…xl`, `text-[Npx]`, `font-sans/serif`) — currently clean. Each component page also lists its type classes in the **Type styles** row, mined from source.
+
+## Prose color contract (2026-07-15)
+
+`.kol-prose` maps onto the kol-opacity **text roles**, not raw `fg-*` stops — body copy at `--kol-fg-body` (64), `em` climbs to `--kol-fg-strong` (80, italic), `strong` and all headings land on `--kol-fg-emphasis` (full ink); captions/cites sit at `--kol-fg-meta` (48). Edit the role token, every prose consumer follows. Raw stops remain only where a role has no business meaning (blockquote border `fg-32`, code wash `fg-04`).

@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-theme",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "KOL (Kolkrabbi) design-system tokens + base CSS \u2014 brand-neutral. The canonical token/cascade layer every other KOL package and consumer builds on.",
   "license": "MIT",
   "type": "module",

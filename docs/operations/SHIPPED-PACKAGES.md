@@ -27,7 +27,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.9.2** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets) |
+| `@kolkrabbi/kol-theme` | **0.9.3** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets) |
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.5.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |

@@ -897,7 +897,9 @@
   font-weight: 300;
   line-height: 24px;
   letter-spacing: 0.02em;
-  color: var(--kol-fg-80);
+  /* Text-role contract (kol-opacity roles): body copy sits at the body role;
+   * emphasis/strong/headings climb the ladder from there. */
+  color: var(--kol-fg-body);
 }
 
 .kol-prose > :first-child { margin-top: 0; }
@@ -970,7 +972,7 @@
   line-height: 16px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--kol-fg-64);
+  color: var(--kol-fg-body);
   margin: 0;
 }
 
@@ -987,7 +989,7 @@
 .kol-prose h5,
 .kol-prose h6 {
   font-weight: 500;
-  color: var(--kol-surface-on-primary);
+  color: var(--kol-fg-emphasis);
 }
 
 .kol-prose h1 { font-family: var(--kol-font-family-sans-narrow);  font-size: var(--kol-text-heading-01); line-height: 52px; margin: 0 0 24px; }
@@ -1010,8 +1012,10 @@
 
 /* ─── Inline ─── */
 
-.kol-prose em     { font-style: italic; }
-.kol-prose strong { font-weight: 700; }
+/* Inline emphasis climbs the role ladder out of the body color:
+ * em stresses at the strong role, strong lands on full-ink emphasis. */
+.kol-prose em     { font-style: italic; color: var(--kol-fg-strong); }
+.kol-prose strong { font-weight: 700; color: var(--kol-fg-emphasis); }
 
 /* ─── Code (inline + block) — JetBrains Mono via the mono token. Same family
  *     as `.kol-mono-N` so a future swap cascades. Body weight 400. ─── */
@@ -1058,7 +1062,7 @@
   margin: 0 0 8px;
   font-size: 24px;
   line-height: 32px;
-  color: var(--kol-surface-on-primary);
+  color: var(--kol-fg-emphasis);
 }
 
 .kol-prose blockquote cite {
@@ -1069,7 +1073,7 @@
   font-weight: 500;
   line-height: 16px;
   letter-spacing: 0.04em;
-  color: var(--kol-fg-48);
+  color: var(--kol-fg-meta);
 }
 
 .kol-prose blockquote cite::before { content: '— '; opacity: 0.6; }
@@ -1106,7 +1110,7 @@
 .kol-segment-title {
   font-family: var(--kol-font-family-sans-compact);
   font-weight: 500;
-  color: var(--kol-surface-on-primary);
+  color: var(--kol-fg-emphasis);
 }
 
 /* standalone caption block (the `caption` block type) */
@@ -1116,7 +1120,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.02em;
-  color: var(--kol-fg-48, color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent));
+  color: var(--kol-fg-meta);
 }
 
 /* inline links (the `link` mark) */
