@@ -94,7 +94,7 @@ export const FUNCTIONS_BY_NAME = {
   ShapeDropdown: 'action', SplitToolButton: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure',
-  FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input',
+  FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input',
   BentoCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   ColorLoader: 'display', LoaderOverlay: 'overlay',
