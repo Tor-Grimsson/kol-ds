@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-brand-template",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The KOL brand manifest schema + a placeholder reference implementation — the blank slate copied for each new client brand and the dev fixture for generic styleguide renderers. Plain ESM, no React.",
   "license": "MIT",
   "type": "module",
@@ -9,7 +9,9 @@
   "exports": {
     ".": "./src/index.js",
     "./schema": "./src/schema.js",
-    "./adapter": "./src/adapter.js"
+    "./adapter": "./src/adapter.js",
+    "./defaults": "./src/defaults.js",
+    "./emit-css": "./src/emit-css.js"
   },
   "files": [
     "src",

@@ -45,6 +45,7 @@
 @import "./kol-components-chess.css" layer(components);
 @import "./kol-components-workshop.css" layer(components);
 @import "./kol-components-foundry.css" layer(components);
+@import "./kol-components-styleguide.css" layer(components);
 
 /* Theme-level design tokens */
 @layer components {

@@ -51,10 +51,26 @@
  * @property {string} [cut]        e.g. "Right Grotesk Narrow"
  * @property {(number|string)[]} [weights]
  *
+ * @typedef {Object} BrandTypeCut   a font family @font-face declared for the brand
+ * @property {string} [family]     e.g. "Right Grotesk Compact"
+ * @property {string} [weights]    display string, e.g. "100i / 400 / 500 / 700"
+ * @property {string} [use]
+ *
  * @typedef {Object} BrandTypeStyle
  * @property {string} [cls]        e.g. ".kol-sans-heading-01"
  * @property {string} [family]
  * @property {number} [weight]
+ *
+ * @typedef {Object} BrandIdentity  role → ramp-stop bindings — the rebrand surface.
+ *   Each value is a ramp-stop shorthand ("yellow-300", "grey-500"), a full CSS
+ *   custom-property token ("--kol-color-red-200"), or a literal ("#FFCF33").
+ *   The emitter (emit-css.js) turns these into the BRAND ROLES + ACCENT REBIND
+ *   sections. House default = the Kolkrabbi binding (see defaults.js).
+ * @property {string} [primary]       dominant identity color
+ * @property {string} [onPrimary]     ink on primary
+ * @property {string} [primaryStrong] hover / active accent
+ * @property {string} [secondary]     secondary identity color
+ * @property {string} [onSecondary]   ink on secondary
  *
  * @typedef {Object} BrandLogo
  * @property {string} [id]         e.g. "wordmark"
@@ -82,9 +98,10 @@
  *
  * @typedef {Object} BrandManifest
  * @property {BrandMeta} [meta]
- * @property {{ anchors?: BrandColorAnchor[] }} [colors]
+ * @property {BrandIdentity} [identity]  role → ramp bindings (the rebrand surface; emitter input)
+ * @property {{ anchors?: BrandColorAnchor[] }} [colors]  legacy declared-anchor doc surface — superseded by `identity` for emission
  * @property {BrandRamp[]} [ramps]
- * @property {{ families?: BrandTypeFamily[], scale?: BrandTypeStyle[] }} [type]
+ * @property {{ families?: BrandTypeFamily[], cuts?: BrandTypeCut[], scale?: BrandTypeStyle[] }} [type]
  * @property {BrandLogo[]} [logos]
  * @property {{ rule?: string }} [clearspace]
  * @property {{ assets?: Array<{ id?: string, name?: string, file?: string }> }} [stationery]
@@ -113,6 +130,7 @@ export function validateBrand(m) {
 
   if (m.meta !== undefined) check(isObj(m.meta), 'meta must be an object')
   if (m.meta?.socials !== undefined) check(isObj(m.meta.socials), 'meta.socials must be an object map')
+  if (m.identity !== undefined) check(isObj(m.identity), 'identity must be an object of role → ramp-stop bindings')
   if (m.colors !== undefined) check(isObj(m.colors), 'colors must be an object')
   if (m.colors?.anchors !== undefined) check(isArr(m.colors.anchors), 'colors.anchors must be an array')
   if (m.ramps !== undefined) {
@@ -126,6 +144,7 @@ export function validateBrand(m) {
   }
   if (m.type !== undefined) check(isObj(m.type), 'type must be an object')
   if (m.type?.families !== undefined) check(isArr(m.type.families), 'type.families must be an array')
+  if (m.type?.cuts !== undefined) check(isArr(m.type.cuts), 'type.cuts must be an array')
   if (m.type?.scale !== undefined) check(isArr(m.type.scale), 'type.scale must be an array')
   if (m.logos !== undefined) check(isArr(m.logos), 'logos must be an array')
   if (m.clearspace !== undefined) check(isObj(m.clearspace), 'clearspace must be an object')

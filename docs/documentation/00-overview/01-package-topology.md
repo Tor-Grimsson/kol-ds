@@ -1,10 +1,10 @@
 ---
-title: Package topology — the ten UI packages + clients tier
+title: Package topology — the eleven UI packages + clients tier
 type: reference
 status: canonical
 updated: 2026-07-09
 verified: 2026-07-09
-description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the six standalone domain packages (workshop, dashboards, chess, content, foundry, store), and the clients tier. What each owns, what stays shared, and which component lives where.
+description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the seven standalone domain packages (workshop, dashboards, chess, content, foundry, store, styleguide), and the clients tier. What each owns, what stays shared, and which component lives where.
 aliases:
   - package map
   - topology
@@ -24,11 +24,12 @@ related:
   - "[[07-content-system|content system]]"
   - "[[08-chess-system|chess system]]"
   - "[[09-dashboards-system|dashboards system]]"
+  - "[[10-styleguide-system|styleguide system]]"
 ---
 
 # Package topology
 
-Ten UI packages plus a clients tier. Every content/domain system that was drifting, faked, or crammed into `kol-component` is now its own published package. The rule (ARCHITECTURE §3): a package earns standalone status when it's **reused across consumers** and **versions on its own cadence**; general primitives stay in `kol-component` and domain packages depend on them.
+Eleven UI packages plus a clients tier. Every content/domain system that was drifting, faked, or crammed into `kol-component` is now its own published package. The rule (ARCHITECTURE §3): a package earns standalone status when it's **reused across consumers** and **versions on its own cadence**; general primitives stay in `kol-component` and domain packages depend on them.
 
 ## The map
 
@@ -44,6 +45,7 @@ Ten UI packages plus a clients tier. Every content/domain system that was drifti
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
+| | `@kolkrabbi/kol-styleguide` | brand guide — colour anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
 ## What stays in `kol-component` (shared by the domain packages)

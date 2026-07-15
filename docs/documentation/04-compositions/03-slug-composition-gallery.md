@@ -2,7 +2,7 @@
 title: Slug pages & the composition gallery — how a set/block lists every component it uses
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-09
 description: How every /sets/:slug and /blocks/:slug page derives and renders its full component manifest — the transitive composition scanner plus the live per-component gallery, one container per component.
 aliases:
   - composition
@@ -54,9 +54,10 @@ graph **transitively** and sorts every reference into four buckets:
 
 **Transitivity is the point.** A set that imports only `ArticleCard` still
 lists `Figure`, `Button`, `Avatar`, `Image`, … because the scanner resolves each
-`@kolkrabbi/*` import through the package barrels
-(`packages/*/src/index.js`, incl. the `@kolkrabbi/kol-component/foundry`
-subpath) to the real source file and keeps walking. That's why `stack-blog`
+`@kolkrabbi/*` import through the package barrels (`packages/*/src/index.js`,
+across the full `KOL_PKGS` allowlist — component, icons, framework, and the
+domain packages foundry / dashboards / chess / content / store / workshop /
+brand) to the real source file and keeps walking. That's why `stack-blog`
 shows **17** components, not the 4 it names directly.
 
 Rules the scanner applies:

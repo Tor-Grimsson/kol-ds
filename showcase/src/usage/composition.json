@@ -1,7 +1,9 @@
 {
   "blocks": {
     "article-grid": {
-      "kol": [],
+      "kol": [
+        "ArticleCard"
+      ],
       "local": {},
       "support": [],
       "external": []
@@ -205,7 +207,8 @@
     "product-panel": {
       "kol": [
         "Button",
-        "Icon"
+        "Icon",
+        "ProductDetailLayout"
       ],
       "local": {},
       "support": [
@@ -292,7 +295,11 @@
       "external": []
     },
     "work-grid": {
-      "kol": [],
+      "kol": [
+        "WorkCard",
+        "WorkListItem",
+        "WorkViewToggle"
+      ],
       "local": {},
       "support": [],
       "external": []
@@ -300,7 +307,9 @@
   },
   "sets": {
     "chess-apparatus": {
-      "kol": [],
+      "kol": [
+        "ChessAnalysisLayout"
+      ],
       "local": {},
       "support": [],
       "external": []
@@ -332,17 +341,27 @@
     },
     "foundry-specimen": {
       "kol": [
-        "Table"
+        "FontPreviewSection",
+        "FoundryCharacterSets",
+        "GlyphMetricsGrid",
+        "SpecimenSectionHeader",
+        "Table",
+        "TypefaceHero",
+        "VariableFontSection"
       ],
       "local": {},
       "support": [],
       "external": []
     },
     "metrics-dashboard": {
-      "kol": [],
+      "kol": [
+        "MetricsDashboard"
+      ],
       "local": {},
       "support": [
         "demo-data",
+        "formatB2Size",
+        "timeAgo",
         "useMetricsData"
       ],
       "external": []
@@ -350,7 +369,9 @@
     "prints-store": {
       "kol": [
         "Button",
-        "Icon"
+        "DiagonalMarqueeRiver",
+        "Icon",
+        "ProductDetailLayout"
       ],
       "local": {},
       "support": [
@@ -359,10 +380,42 @@
       "external": []
     },
     "stack-blog": {
-      "kol": [],
+      "kol": [
+        "ArticleCard",
+        "ArticleHeader",
+        "PortableTextRenderer",
+        "ShareButtons",
+        "SourcesReferences",
+        "StackHero"
+      ],
       "local": {},
       "support": [],
       "external": []
+    },
+    "styleguide": {
+      "kol": [
+        "AssetGrid",
+        "ColorInputRow",
+        "ColorRamp",
+        "ColorSwatch",
+        "FeatureSplit",
+        "Icon",
+        "Input",
+        "Popover",
+        "ProsePreview",
+        "SpectrumGrid",
+        "TransparentX",
+        "TypeSample",
+        "TypeSpecCard"
+      ],
+      "local": {},
+      "support": [
+        "cssVar",
+        "registerIcons"
+      ],
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "work-portfolio": {
       "kol": [
@@ -370,7 +423,11 @@
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
-        "MediaViewer"
+        "MediaViewer",
+        "ParallaxShelf",
+        "WorkCard",
+        "WorkListItem",
+        "WorkViewToggle"
       ],
       "local": {},
       "support": [

@@ -76,6 +76,7 @@ export { default as MediaRow } from './molecules/MediaRow.jsx'
 export { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from './molecules/MenuItem.jsx'
 export { MenuPopover } from './molecules/MenuPopover.jsx'
 export { ModalProvider, useModal } from './molecules/Modal.jsx'
+export { default as PaletteHarmonyWheel } from './molecules/PaletteHarmonyWheel.jsx'
 export { default as PropertyInput } from './molecules/PropertyInput.jsx'
 export { default as ShapeDropdown } from './molecules/ShapeDropdown.jsx'
 export { default as ShellDrawer } from './molecules/ShellDrawer.jsx'
@@ -123,4 +124,12 @@ export { default as useReveal } from './hooks/useReveal.js'
 export { default as useScrollSpy } from './hooks/useScrollSpy.js'
 export { default as useTilt } from './hooks/useTilt.js'
 export { default as useAxisAnimation } from './hooks/useAxisAnimation.js'
+export { useEyedropper, pickFromCanvasElement } from './hooks/useEyedropper.js'
 export { resolveCssVar, resolveCssColor, isLight } from './hooks/cssVar.js'
+
+// color math (support module — HSL/hex conversion + harmony generation)
+export {
+  hexToHsl, hslToHex, rgbToHex, normHue,
+  HARMONIES, harmonyById, harmonyColors, generateHarmony,
+  SEED_MODE_IDS, seedHarmony,
+} from './hooks/colorMath.js'

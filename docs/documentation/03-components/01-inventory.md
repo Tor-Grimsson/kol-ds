@@ -2,9 +2,9 @@
 title: Components — the full inventory
 type: reference
 status: active
-updated: 2026-07-09
+updated: 2026-07-10
 verified: 2026-07-04
-description: Every exported KOL component by tier — 39 atoms, 31 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
+description: Every exported KOL component by tier — 39 atoms, 32 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
 aliases:
   - components
   - component-list
@@ -81,7 +81,7 @@ One row per source file — a component's compositional sub-parts are members of
 
 Support exports on the atoms tier: the `Popover` module ships `usePopover` / `PopoverPanel` / `Tooltip`. The type-specimen kit (`TypeSample`, `TypeSpecCard`) and `TextPressure` moved to `@kolkrabbi/kol-foundry` on 2026-07-09 — they render/manipulate a live font, the foundry membership test.
 
-## Molecules (31) — nest a KOL component
+## Molecules (32) — nest a KOL component
 
 | Component | Job |
 |---|---|
@@ -103,6 +103,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
+| `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change (a SpectrumControls sibling; nests no KOL component but lives here by the color-picker family exception). |
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
 | `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
 | `ShapeDropdown` | A split icon-button + variant-menu — act on the current variant or pick another. |
@@ -162,6 +163,8 @@ Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` packa
 | `Icon` | Re-exported from `kol-icons` — see [[../02-icons/INDEX|icons]]. |
 | `useReveal` / `useScrollSpy` | In-view reveal animation / active-section tracking. |
 | `usePrefersReducedMotion` / `useTilt` | DS-wide motion gate / pointer-tilt spring. |
+| `useEyedropper` / `pickFromCanvasElement` | Cross-browser color sampling — the native `EyeDropper` API (Chromium) with an injected fallback; `pickFromCanvasElement` is the reusable fallback that reads a pixel from a consumer's `<canvas>` (Firefox/Safari). |
+| `colorMath` | Pure HSL/hex + harmony helpers for the color pickers — `hexToHsl` / `hslToHex`, deterministic `generateHarmony` / `harmonyColors` (+ the `HARMONIES` table), and jittered `seedHarmony`. |
 
 Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy|taxonomy]]). Documented on `/docs/loaders`; galleries live on `/icons`.
 

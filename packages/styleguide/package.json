@@ -1,0 +1,43 @@
+{
+  "name": "@kolkrabbi/kol-styleguide",
+  "version": "0.1.0",
+  "private": false,
+  "description": "KOL style-guide / brand-guide component set — the visual specimens a brand manual is built from: color anatomy + combination lab, logo construction / clearspace / scaling, mood tiles, type blocks, and asset spec tables. Raided from the apps/brand styleguide. Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-foundry": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "styleguide",
+    "brand-guide",
+    "specimen"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/styleguide"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

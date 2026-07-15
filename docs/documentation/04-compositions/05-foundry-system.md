@@ -2,15 +2,17 @@
 title: Foundry components — the type-specimen apparatus
 type: reference
 status: canonical
-updated: 2026-07-09
+updated: 2026-07-10
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); the type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure, ColorLoader) moved in from kol-component later that day (0.3.0). Every export renders, inspects, or manipulates a live font.
+description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); the type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure, ColorLoader) moved in from kol-component later that day (0.3.0). The 2026-07-10 engine upgrades add TypeSpecimenLive (self-measuring specimen) + useFontMetrics (opentype.js parse/outline), with the parametric ParaType synth spec'd but deferred. Every export renders, inspects, or manipulates a live font.
 aliases:
   - foundry
   - kol-foundry
   - type specimen
 sources:
   - packages/foundry/src/index.js
+  - packages/foundry/src/TypeSpecimenLive.jsx
+  - packages/foundry/src/useFontMetrics.js
   - packages/foundry/README.md
   - showcase/src/sets/foundry-specimen.jsx
 tags:
@@ -66,6 +68,17 @@ The typeface-catalog family and the assembled specimen page. Each ships a bundle
 | `TypefaceLibraryItem` / `TypefaceVariablePreview` | catalog card/list item (renders the live font) + interactive per-weight preview (size / leading / spacing) |
 
 > **Cut on 2026-07-09** — failed the membership test (they describe or market type, never act on the font): `FoundryOtherTypefaces` (redundant vs the grid); `FoundryTypefacePairing` / `PairingsList` / `PairingCard` (editorial pairing cards); `FoundryOpentypeFeatures` / `FoundryTypefaceDetails` / `FeatureGrid` / `FeatureCard` (descriptor cards); `FoundryCTA` / `FoundryFeatureSection` / `FoundryLicenseQuestions` / `InDevelopmentSection` (marketing chrome); and the vendored `ButtonGroup`. See `packages/foundry/COMPONENTS.md`.
+
+### Live-measurement engine (added 2026-07-10)
+
+The bucket-B engine upgrades — the specimen tools gain a self-measuring row and a parse-only metrics core beneath `GlyphMetricsGrid`.
+
+| Export | What it is |
+|--------|-----------|
+| `TypeSpecimenLive` | self-measuring type specimen — one row per type class, each reading its OWN `getComputedStyle` to print the resolved typeface / weight / size / leading / tracking beside a live sample, so the labels can never drift from the CSS. The live cousin of the static `TypeSpecCard` (a hand-typed data sheet): nothing to type, nothing to keep in sync. (`readMeta` also exported for reuse.) |
+| `useFontMetrics` | opentype.js glyph-metric parse + text→outline — per-glyph advance / bounding-box readouts and true glyph OUTLINE path data (`<path d>`) for any string at any size/tracking, wrapped to a box. The reusable parse-only layer beneath `GlyphMetricsGrid`. **Optional peer** (`opentype.js`): absent it, resolves to `status: 'unavailable'` and every helper returns an empty/zero result instead of throwing. |
+
+> **Parametric type (ParaType) — spec'd, deferred.** A parametric font *synthesizer* — generates letterforms from ~30 numeric parameters, no font file — is specced but intentionally NOT built unattended (an 864-line composition + 6 effect modules + 2 engines + ~8 external libs; too large to rush-port). Recreate-from brief: [`ParaType lobby spec`](../../../lobby/ParaType.md).
 
 ### Data exports
 

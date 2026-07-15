@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url'
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(REPO, 'showcase/src')
 
-const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-component/foundry', '@kolkrabbi/kol-icons', '@kolkrabbi/kol-framework']
+const KOL_PKGS = ['@kolkrabbi/kol-component', '@kolkrabbi/kol-icons', '@kolkrabbi/kol-framework', '@kolkrabbi/kol-foundry', '@kolkrabbi/kol-dashboards', '@kolkrabbi/kol-chess', '@kolkrabbi/kol-content', '@kolkrabbi/kol-store', '@kolkrabbi/kol-workshop', '@kolkrabbi/kol-brand']
 
 /* Resolve a relative import to a real file (mirrors Vite's resolution). */
 function resolveImport(fromFile, spec) {

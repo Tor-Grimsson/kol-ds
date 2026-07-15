@@ -25,6 +25,10 @@ export { default as TypefaceVariablePreview } from './TypefaceVariablePreview.js
 // type-specimen kit — prop-driven specimen blocks (moved from @kolkrabbi/kol-component 2026-07-09)
 export { default as TypeSample } from './TypeSample.jsx'
 export { default as TypeSpecCard } from './TypeSpecCard.jsx'
+export { default as TypeSpecimenLive, readMeta } from './TypeSpecimenLive.jsx'
+
+// font-metric hook — opentype.js parsing (optional peer, degrades gracefully)
+export { default as useFontMetrics, extractFaceMetrics, buildOutlinePaths, glyphMetricsOf } from './useFontMetrics.js'
 
 // live-font effects — variable-font axes, animated
 export { default as TextPressure } from './TextPressure.jsx'

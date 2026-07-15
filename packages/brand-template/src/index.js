@@ -2,24 +2,38 @@
  * @kolkrabbi/kol-brand-template — the placeholder brand.
  *
  * The reference implementation of the brand manifest schema, filled with
- * OBVIOUSLY-DUMMY data ("Norðurljós Vinnustofa"). Two jobs:
+ * OBVIOUSLY-DUMMY identity ("Norðurljós Vinnustofa"). Two jobs:
  *
  *   1. The SLATE — starting a new client brand? Copy this file into the
  *      client's repo as a local package, fill the fields, delete what you
- *      don't need. Every field is optional; nothing here is required.
+ *      don't need. Every field is optional. Colors, type, and the seven-hue
+ *      palette are the HOUSE defaults (see ./defaults.js) — a client declares
+ *      only what differs and inherits the rest via `withHouseDefaults`.
  *      Per-client instances NEVER ship to public npm.
  *   2. The DEV FIXTURE — generic styleguide renderers (type specimens,
  *      swatches, spectrum grids) develop and preview against this brand.
  *
- * Values below are placeholders, not recommendations. The schema is the
- * contract: see ./schema.js (re-exported here).
+ * The identity below is a placeholder. The COLOR + TYPE come straight from the
+ * house baseline — this fixture overrides only the identity binding (a
+ * teal-forward accent, to read as visibly not-Kolkrabbi) to demonstrate the
+ * "override only what differs" flow. The schema is the contract: see
+ * ./schema.js. Generate the CSS with ./emit-css.js.
  */
 import { defineBrand } from './schema.js'
+import { withHouseDefaults } from './defaults.js'
 
 export { defineBrand, validateBrand } from './schema.js'
 export { draftFromScrape } from './adapter.js'
+export {
+  HOUSE, HOUSE_GREY, HOUSE_CREAM, HOUSE_HUES, HOUSE_TYPE, HOUSE_IDENTITY,
+  RAMP_ORDER, withHouseDefaults,
+} from './defaults.js'
+export { emitBrandColorCss } from './emit-css.js'
 
-export const brand = defineBrand({
+/* The deltas this dummy client declares. Everything else — the 7 hue ramps,
+ * cream, the fixed grey, the Right Grotesk + JetBrains Mono type — is inherited
+ * from the house baseline. */
+export const brand = defineBrand(withHouseDefaults({
   meta: {
     name: 'Norðurljós',
     nameShort: 'NLJ',
@@ -34,48 +48,14 @@ export const brand = defineBrand({
     socials: { instagram: 'nordurljos_', youtube: '@nordurljos' },
   },
 
-  colors: {
-    anchors: [
-      { token: '--brand-accent-primary', value: '#5B8DEF', use: 'Dominant identity color' },
-      { token: '--brand-accent-on-primary', value: '#0E1220', use: 'Ink on top of accent-primary' },
-    ],
-  },
-
-  ramps: [
-    {
-      id: 'blue', label: 'Blue', anchor: 300,
-      note: 'Placeholder ramp — five stops, anchor at 300.',
-      stops: [
-        { stop: 100, value: '#C8D9FA' },
-        { stop: 200, value: '#8FB1F5' },
-        { stop: 300, value: '#5B8DEF', note: 'Anchor.' },
-        { stop: 400, value: '#3465C4' },
-        { stop: 500, value: '#1F4187' },
-      ],
-    },
-    {
-      id: 'grey', label: 'Grey', anchor: 500,
-      stops: [
-        { stop: 100, value: '#EDEDEF' },
-        { stop: 300, value: '#A5A5AA' },
-        { stop: 500, value: '#38383D', note: 'Anchor.' },
-        { stop: 700, value: '#232327' },
-        { stop: 900, value: '#121215' },
-      ],
-    },
-  ],
-
-  type: {
-    families: [
-      { token: '--brand-font-family-sans', role: 'Sans everything', cut: 'Placeholder Sans', weights: [400, 500, 600] },
-      { token: '--brand-font-family-mono', role: 'Mono details', cut: 'Placeholder Mono', weights: [400] },
-    ],
-    scale: [
-      { cls: '.brand-display', family: 'sans', weight: 600 },
-      { cls: '.brand-heading', family: 'sans', weight: 500 },
-      { cls: '.brand-body', family: 'sans', weight: 400 },
-      { cls: '.brand-mono', family: 'mono', weight: 400 },
-    ],
+  // Override ONLY the identity binding — inherit all seven house hue ramps,
+  // cream, grey, and the type pair. Rebrand = these five lines.
+  identity: {
+    primary:       'teal-300',
+    onPrimary:     'cream-100',
+    primaryStrong: 'teal-400',
+    secondary:     'orange-300',
+    onSecondary:   'blue-500',
   },
 
   logos: [
@@ -93,6 +73,6 @@ export const brand = defineBrand({
   timeline: [
     { date: '2020', title: 'Studio founded', note: 'Placeholder milestone.' },
   ],
-})
+}))
 
 export default brand
