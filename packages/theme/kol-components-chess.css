@@ -97,6 +97,45 @@
   z-index: 1;
 }
 
+/* board input (brief 3.0) — selection wash + legal-target marks; amber
+ * rides the same highlight language as --highlighted so it reads on all
+ * six board themes */
+.chess-square--interactive {
+  cursor: pointer;
+}
+
+.chess-square--selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(251, 191, 36, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chess-square--target::before {
+  content: '';
+  position: absolute;
+  left: 36%;
+  top: 36%;
+  width: 28%;
+  height: 28%;
+  border-radius: 999px;
+  background-color: rgba(251, 191, 36, 0.7);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chess-square--target-capture::before {
+  content: '';
+  position: absolute;
+  inset: 6%;
+  border: 3px solid rgba(251, 191, 36, 0.7);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 11; /* over the piece (its wrapper is z-10) */
+}
+
 .chess-board__coordinate-label {
   display: inline-flex;
   align-items: center;

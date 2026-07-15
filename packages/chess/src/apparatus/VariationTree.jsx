@@ -3,7 +3,7 @@ import { Button } from '@kolkrabbi/kol-component'
 import { useChessControls } from '../context/ChessControlsContext'
 
 const VariationTree = () => {
-  const { moveTree, userVariations, moveIndex, setMoveIndex, isLoading, removeUserVariation } =
+  const { moveTree, sidelines, activeSideline, goToSidelineMove, removeSideline, moveIndex, setMoveIndex, isLoading } =
     useChessControls()
 
   if (isLoading) {
@@ -28,31 +28,33 @@ const VariationTree = () => {
         moveIndex={moveIndex}
         onSelectPly={setMoveIndex}
       />
-      {userVariations?.length ? (
+      {sidelines?.length ? (
         <div className="mt-3 border-t border-oq-08 pt-3">
           <div className="kol-helper-10 text-fg-50 mb-2">
-            CUSTOM VARIATIONS
+            SIDELINES
           </div>
-          {userVariations.map((variation) => (
-            <div key={variation.id} className="flex flex-col gap-1 mb-2">
+          {sidelines.map((line) => (
+            <div key={line.id} className="flex flex-col gap-1 mb-2">
               <div className="flex items-center justify-between text-fg-80">
-                <span className="kol-mono-12">{variation.label}</span>
+                <span className="kol-mono-12">
+                  From move {Math.ceil((line.parentPly + 1) / 2)}
+                </span>
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => removeUserVariation(variation.id)}
+                  onClick={() => removeSideline(line.id)}
                 >
                   remove
                 </Button>
               </div>
               <div className="flex flex-wrap gap-2 text-fg-70">
-                {variation.moves.map((move, idx) => (
+                {line.moves.map((move, idx) => (
                   <Button
                     variant="ghost"
                     size="sm"
-                    key={`${variation.id}-${idx}`}
-                    selected={move.ply === moveIndex}
-                    onClick={() => setMoveIndex(move.ply)}
+                    key={`${line.id}-${idx}`}
+                    selected={activeSideline?.id === line.id && activeSideline?.index === idx}
+                    onClick={() => goToSidelineMove(line.id, idx)}
                   >
                     {move.san}
                   </Button>

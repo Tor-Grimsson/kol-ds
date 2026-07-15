@@ -256,7 +256,8 @@
       ],
       "local": {},
       "support": [
-        "registerIcons"
+        "registerIcons",
+        "theme"
       ],
       "external": []
     },
@@ -313,6 +314,7 @@
         "AssetPlaceholder",
         "Icon",
         "Image",
+        "SearchInput",
         "Tag",
         "TiltCard",
         "WorkCard",
@@ -344,9 +346,10 @@
         "ChessHero",
         "ChessPiece",
         "ChessSidebar",
+        "Divider",
         "Dropdown",
+        "FullscreenOverlay",
         "GameArchiveTable",
-        "GameSelector",
         "Icon",
         "Input",
         "MenuItem",
@@ -354,14 +357,18 @@
         "Pill",
         "PlaybackControls",
         "Popover",
+        "PopoverPanel",
         "Table",
-        "Tag",
         "VariationTree"
       ],
       "local": {},
       "support": [
+        "chessFen",
+        "labels",
         "parsePgnTree",
-        "registerIcons"
+        "registerIcons",
+        "useChessControls",
+        "usePopover"
       ],
       "external": [
         "@floating-ui/react",
@@ -574,6 +581,7 @@
         "Image",
         "MediaViewer",
         "ParallaxShelf",
+        "SearchInput",
         "Tag",
         "TiltCard",
         "WorkCard",

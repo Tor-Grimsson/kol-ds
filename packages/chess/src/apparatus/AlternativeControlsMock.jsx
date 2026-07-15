@@ -7,7 +7,6 @@ import { ChessPiece } from '../index.js'
 import { useChessControls } from '../context/ChessControlsContext'
 import NotationPanel from './NotationPanel'
 import PlaybackControls from './PlaybackControls'
-import VariationTree from './VariationTree'
 
 const PIECE_MAP = {
   p: 'pawn',
@@ -29,7 +28,10 @@ const AlternativeControlsMock = () => {
     setSelectedGameId,
     notationPairs,
     moveIndex,
-    setMoveIndex,
+    selectPly,
+    sidelines,
+    activeSideline,
+    goToSidelineMove,
     goToStart,
     goToEnd,
     stepBackward,
@@ -41,11 +43,11 @@ const AlternativeControlsMock = () => {
     orientation,
     toggleOrientation,
     loadEmptyPosition,
-    addUserVariation,
-    userVariations,
-    getPgnWithUserVariations,
+    getPgnWithVariations,
     isEditMode,
     toggleEditMode,
+    editPlacement,
+    setEditPlacement,
     capturedPieces,
     pieceSet,
     setPieceSet,
@@ -53,7 +55,6 @@ const AlternativeControlsMock = () => {
     setBoardTheme
   } = useChessControls()
 
-  const [selectedPalettePiece, setSelectedPalettePiece] = useState(null)
   const [showSearch, setShowSearch] = useState(false)
   const [mobileSettingsOpen, setMobileSettingsOpen] = useState(false)
   const [infoOpen, setInfoOpen] = useState(false)
@@ -77,18 +78,8 @@ const AlternativeControlsMock = () => {
     return { diff, percentage, advantage: diff > 0 ? 'white' : diff < 0 ? 'black' : 'equal' }
   })()
 
-  const handleAddVariation = () => {
-    const label = window.prompt('Name this variation:', `Variation ${userVariations.length + 1}`)
-    if (label === null) return
-    const sanInput = window.prompt('Enter SAN moves separated by spaces:', 'Nc3 Bb5 d4')
-    if (!sanInput) return
-    const sanSequence = sanInput.split(' ').map((san) => san.trim()).filter(Boolean)
-    if (!sanSequence.length) return
-    addUserVariation(label, sanSequence)
-  }
-
   const handleExportPgn = async () => {
-    const value = getPgnWithUserVariations()
+    const value = getPgnWithVariations()
     try {
       await navigator.clipboard.writeText(value)
     } catch (error) {
@@ -96,9 +87,14 @@ const AlternativeControlsMock = () => {
     }
   }
 
+  /* palette selection lives in context (editPlacement) — the BOARD consumes
+   * it via placePiece; clicking the selected piece again deselects (bare
+   * click on the board then clears the square) */
   const handlePaletteClick = (color, piece) => {
     if (!isEditMode) return
-    setSelectedPalettePiece({ color, piece })
+    setEditPlacement((prev) =>
+      prev && prev.color === color && prev.piece === piece ? null : { color, piece }
+    )
   }
 
   // Keyboard shortcuts
@@ -162,7 +158,6 @@ const AlternativeControlsMock = () => {
             />
             <Button variant="ghost" size="sm" iconOnly="refresh" onClick={toggleOrientation} title="Flip board" aria-label="Flip board" />
             <Button variant="ghost" size="sm" iconOnly="x" onClick={loadEmptyPosition} title="Clear board" aria-label="Clear board" />
-            <Button variant="ghost" size="sm" iconOnly="component-01" onClick={handleAddVariation} title="New variation" aria-label="New variation" />
             <Button variant="ghost" size="sm" iconOnly="copy" onClick={handleExportPgn} title="Copy PGN" aria-label="Copy PGN" />
             <Button variant="ghost" size="sm" iconOnly="edit" onClick={toggleEditMode} selected={isEditMode} title="Toggle edit mode" aria-label="Toggle edit mode" />
           </div>
@@ -216,9 +211,9 @@ const AlternativeControlsMock = () => {
       </div>
 
       <div className="hidden p-3 border-t border-oq-08 bg-fg-02 lg:block">
-        {isEditMode && selectedPalettePiece ? (
+        {isEditMode && editPlacement ? (
           <div className="kol-mono-12 text-fg-64 mb-2">
-            Placing: {selectedPalettePiece.color} {selectedPalettePiece.piece}
+            Placing: {editPlacement.color} {editPlacement.piece}
           </div>
         ) : null}
         <div className="flex flex-col gap-3">
@@ -232,9 +227,9 @@ const AlternativeControlsMock = () => {
                       ? 'cursor-pointer border border-dashed border-oq-12'
                       : ''
                   } ${
-                    selectedPalettePiece &&
-                    selectedPalettePiece.color === color &&
-                    selectedPalettePiece.piece === piece
+                    editPlacement &&
+                    editPlacement.color === color &&
+                    editPlacement.piece === piece
                       ? 'ring-2 ring-accent-primary'
                       : ''
                   }`}
@@ -399,8 +394,11 @@ const AlternativeControlsMock = () => {
             <NotationPanel
               notationPairs={notationPairs}
               activePly={moveIndex}
-              onSelectPly={setMoveIndex}
+              onSelectPly={selectPly}
               isLoading={isLoading}
+              sidelines={sidelines}
+              activeSideline={activeSideline}
+              onSelectSidelineMove={goToSidelineMove}
             />
           </div>
         </div>

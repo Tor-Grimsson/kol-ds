@@ -4,15 +4,21 @@ import AlternativeControlsMock from './AlternativeControlsMock'
 import PlaybackControls from './PlaybackControls'
 
 const ChessBoardView = () => {
-  const { snapshots, moveIndex, orientation, lastMove, pieceSet, boardTheme } = useChessControls()
+  const { activeFen, orientation, lastMove, pieceSet, boardTheme, playMove, isEditMode, placePiece } = useChessControls()
+  /* Board input (brief 3.0): click-to-move feeds the provider's playMove
+   * (mainline follow or sideline branch); edit mode bypasses move legality
+   * and reports raw squares to the position editor. */
   return (
     <ChessBoard
-      fen={snapshots[moveIndex]?.fen}
+      fen={activeFen}
       size="fluid"
       orientation={orientation}
       lastMove={lastMove}
       pieceSet={pieceSet}
       boardTheme={boardTheme}
+      interactive={!isEditMode}
+      onMove={playMove}
+      onSquareClick={isEditMode ? placePiece : null}
     />
   )
 }

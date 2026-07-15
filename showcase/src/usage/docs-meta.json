@@ -148,6 +148,7 @@
   "SearchInput": {
     "typeClasses": [
       "kol-helper-10",
+      "kol-helper-14",
       "kol-mono-12",
       "kol-mono-14"
     ],
@@ -162,7 +163,11 @@
     "composes": []
   },
   "SectionLabel": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-helper-20",
+      "kol-sans-heading-03"
+    ],
     "composes": [
       "Icon"
     ]
@@ -425,6 +430,12 @@
       "Input"
     ]
   },
+  "PaletteHarmonyWheel": {
+    "typeClasses": [],
+    "composes": [
+      "HARMONIES"
+    ]
+  },
   "PropertyInput": {
     "typeClasses": [
       "kol-helper-10"
@@ -626,6 +637,7 @@
   },
   "FeaturedCarousel": {
     "typeClasses": [
+      "kol-helper-12",
       "kol-mono-12",
       "kol-sans-display-01"
     ],
@@ -709,6 +721,10 @@
       "AssetPlaceholder"
     ]
   },
+  "GRAPHIC_RAW": {
+    "typeClasses": [],
+    "composes": []
+  },
   "AppShell": {
     "typeClasses": [],
     "composes": [
@@ -755,6 +771,10 @@
     "composes": [
       "Icon"
     ]
+  },
+  "THEME_STORAGE_KEY": {
+    "typeClasses": [],
+    "composes": []
   },
   "Layout": {
     "typeClasses": [],
@@ -896,6 +916,14 @@
     "typeClasses": [
       "kol-helper-10",
       "kol-helper-12"
+    ],
+    "composes": []
+  },
+  "TypeSpecimenLive": {
+    "typeClasses": [
+      "kol-mono-10",
+      "kol-sans-body-03",
+      "kol-sans-heading-04"
     ],
     "composes": []
   },

@@ -55,7 +55,7 @@
     {
       "prop": "note",
       "type": "—",
-      "def": "'missing'",
+      "def": "'MISSING'",
       "desc": ""
     },
     {
@@ -257,6 +257,14 @@
       "desc": ""
     }
   ],
+  "FullscreenOverlay": [
+    {
+      "prop": "closeButton",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
   "Input": [
     {
       "prop": "type",
@@ -284,12 +292,6 @@
     },
     {
       "prop": "disabled",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "uppercase",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -509,6 +511,12 @@
       "type": "—",
       "def": "80",
       "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
     }
   ],
   "SearchInput": [
@@ -540,6 +548,24 @@
       "prop": "bare",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "expanding",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "expandedWidth",
+      "type": "—",
+      "def": "280",
+      "desc": ""
+    },
+    {
+      "prop": "triggerLabel",
+      "type": "—",
+      "def": "'Open search'",
       "desc": ""
     },
     {
@@ -759,98 +785,6 @@
       "desc": ""
     }
   ],
-  "TextPressure": [
-    {
-      "prop": "text",
-      "type": "—",
-      "def": "'Compressa'",
-      "desc": ""
-    },
-    {
-      "prop": "fontFamily",
-      "type": "—",
-      "def": "'var(--kol-font-family-sans)'",
-      "desc": ""
-    },
-    {
-      "prop": "width",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "weight",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "italic",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "alpha",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "flex",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "stroke",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "scale",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "textColor",
-      "type": "—",
-      "def": "'var(--kol-fg-emphasis)'",
-      "desc": ""
-    },
-    {
-      "prop": "strokeColor",
-      "type": "—",
-      "def": "'var(--kol-accent-primary)'",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "minFontSize",
-      "type": "—",
-      "def": "24",
-      "desc": ""
-    },
-    {
-      "prop": "maxFontSize",
-      "type": "—",
-      "def": "null",
-      "desc": ""
-    },
-    {
-      "prop": "returnToDefault",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    }
-  ],
   "TiltCard": [
     {
       "prop": "alt",
@@ -897,34 +831,6 @@
       "desc": ""
     }
   ],
-  "TypeSample": [
-    {
-      "prop": "weight",
-      "type": "—",
-      "def": "400",
-      "desc": ""
-    },
-    {
-      "prop": "italic",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "32",
-      "desc": ""
-    }
-  ],
-  "TypeSpecCard": [
-    {
-      "prop": "meta",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    }
-  ],
   "ViewToggle": [
     {
       "prop": "variant",
@@ -941,7 +847,7 @@
     {
       "prop": "options",
       "type": "—",
-      "def": "[\n  { value: 'grid', label: 'Grid view', icon: 'grid-06' },\n  { value: 'list', label: 'List view', icon: 'list-01' }\n]",
+      "def": "[\n  { value: 'grid', label: 'Grid view', icon: 'grid' },\n  { value: 'list', label: 'List view', icon: 'view-list' }\n]",
       "desc": ""
     },
     {
@@ -1345,6 +1251,38 @@
       "desc": ""
     }
   ],
+  "PaletteHarmonyWheel": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "248",
+      "desc": ""
+    },
+    {
+      "prop": "harmony",
+      "type": "—",
+      "def": "'analogous'",
+      "desc": ""
+    },
+    {
+      "prop": "saturation",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "lightness",
+      "type": "—",
+      "def": "50",
+      "desc": ""
+    },
+    {
+      "prop": "harmonies",
+      "type": "—",
+      "def": "[\n  { id: 'analogous',     label: 'Analogous',           roleOffsets: [0, -30, -15, 15, 30] },\n  { id: 'complementary', label: 'Complementary',       roleOffsets: [0, 0, 0, 180, 180] },\n  { id: 'split',         label: 'Split complementary', roleOffsets: [0, 150, 210, 0, 150] },\n  { id: 'triadic',       label: 'Triadic',             roleOffsets: [0, 120, 240, 0, 120] },\n  { id: 'tetradic',      label: 'Tetradic',            roleOffsets: [0, 90, 180, 270, 0] },\n]",
+      "desc": ""
+    }
+  ],
   "PropertyInput": [
     {
       "prop": "type",
@@ -1413,6 +1351,18 @@
       "desc": ""
     },
     {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -1422,12 +1372,6 @@
       "prop": "displayWidth",
       "type": "—",
       "def": "6",
-      "desc": ""
-    },
-    {
-      "prop": "step",
-      "type": "—",
-      "def": "1",
       "desc": ""
     }
   ],
@@ -1442,6 +1386,38 @@
       "prop": "framed",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "SplitToolButton": [
+    {
+      "prop": "variants",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "28",
+      "desc": ""
+    },
+    {
+      "prop": "blurOnClick",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -1648,56 +1624,6 @@
       "prop": "className",
       "type": "—",
       "def": "''",
-      "desc": ""
-    }
-  ],
-  "ColorLoader": [
-    {
-      "prop": "text",
-      "type": "—",
-      "def": "'KOLKRABBI'",
-      "desc": ""
-    },
-    {
-      "prop": "fontFamily",
-      "type": "—",
-      "def": "'var(--kol-font-family-sans)'",
-      "desc": ""
-    },
-    {
-      "prop": "dismissOnClick",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "bgColor",
-      "type": "—",
-      "def": "'var(--kol-surface-primary)'",
-      "desc": ""
-    },
-    {
-      "prop": "markColor",
-      "type": "—",
-      "def": "'var(--kol-fg-emphasis)'",
-      "desc": ""
-    },
-    {
-      "prop": "wordmarkDelay",
-      "type": "—",
-      "def": "1000",
-      "desc": ""
-    },
-    {
-      "prop": "scrollDelay",
-      "type": "—",
-      "def": "2000",
-      "desc": ""
-    },
-    {
-      "prop": "exitDuration",
-      "type": "—",
-      "def": "1.8",
       "desc": ""
     }
   ],
@@ -1917,6 +1843,32 @@
       "desc": ""
     }
   ],
+  "MediaTileGallery": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'stack'",
+      "desc": ""
+    },
+    {
+      "prop": "cols",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "tileClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "MediaViewer": [
     {
       "prop": "media",
@@ -1925,7 +1877,7 @@
       "desc": ""
     },
     {
-      "prop": "initialIndex",
+      "prop": "index",
       "type": "—",
       "def": "0",
       "desc": ""

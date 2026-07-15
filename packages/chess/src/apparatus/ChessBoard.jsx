@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
-import { Chess } from 'chess.js'
+import { useEffect, useMemo, useState } from 'react'
 import { ChessPiece } from '../index.js'
+import buildChessFromFen from '../utils/chessFen'
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 // no text-transform (casing law) — coordinate labels are authored in-case
@@ -21,35 +21,6 @@ export const BOARD_THEMES = {
   'olive': { light: '#EFEED2', dark: '#779557' },
   'dark': { light: '#4D4D51', dark: '#242427' },
   'brown': { light: '#F0D9B5', dark: '#B58863' }
-}
-
-const buildBoardState = (fen) => {
-  const chess = new Chess()
-  if (fen) {
-    /* chess.js v1 load() returns void and THROWS on invalid FENs — and it
-     * validates playability (kings required), not renderability. Display
-     * states like the cleared board are legitimate here, so on throw we
-     * place the FEN's board portion piece-by-piece instead of reverting
-     * to the start position. */
-    try {
-      chess.load(fen)
-    } catch {
-      chess.clear()
-      const ranks = fen.split(' ')[0].split('/')
-      ranks.forEach((rank, r) => {
-        let file = 0
-        for (const ch of rank) {
-          if (/\d/.test(ch)) { file += Number(ch); continue }
-          const square = 'abcdefgh'[file] + (8 - r)
-          try {
-            chess.put({ type: ch.toLowerCase(), color: ch === ch.toLowerCase() ? 'b' : 'w' }, square)
-          } catch { /* unplaceable char — leave square empty */ }
-          file += 1
-        }
-      })
-    }
-  }
-  return chess.board()
 }
 
 const getSquareTone = (fileIndex, rankIndex) =>
@@ -78,8 +49,49 @@ const getPieceSize = (size) => {
   return sizeMap[size] || sizeMap.lg
 }
 
-const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces = true, lastMove = null, pieceSet = 'default', boardTheme = 'green-white' }) => {
-  const boardState = useMemo(() => buildBoardState(fen), [fen])
+/* Board input (brief 3.0). Two mutually exclusive entry points:
+ *   interactive + onMove — click-to-move: tap a side-to-move piece, legal
+ *     targets mark up, tap one → onMove({ from, to, promotion }). Illegal
+ *     targets no-op. Legality comes from chess.js on the rendered fen, so
+ *     the board never emits a move the position doesn't allow.
+ *   onSquareClick — raw square reporting (edit mode): every click calls
+ *     onSquareClick(coordinate, piece) and the selection UX is bypassed. */
+const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces = true, lastMove = null, pieceSet = 'default', boardTheme = 'green-white', interactive = false, onMove = null, onSquareClick = null }) => {
+  const { chess, boardState } = useMemo(() => {
+    const instance = buildChessFromFen(fen)
+    return { chess: instance, boardState: instance.board() }
+  }, [fen])
+
+  const [selectedSquare, setSelectedSquare] = useState(null)
+  useEffect(() => { setSelectedSquare(null) }, [fen])
+
+  const legalTargets = useMemo(() => {
+    if (!interactive || !onMove || !selectedSquare) return new Map()
+    try {
+      return new Map(chess.moves({ square: selectedSquare, verbose: true }).map((move) => [move.to, move]))
+    } catch { return new Map() /* kingless display positions can't generate moves */ }
+  }, [interactive, onMove, selectedSquare, chess])
+
+  const hasInput = Boolean(onSquareClick || (interactive && onMove))
+
+  const handleSquareClick = (coordinate, squarePiece) => {
+    if (onSquareClick) { onSquareClick(coordinate, squarePiece); return }
+    if (!interactive || !onMove) return
+    if (selectedSquare) {
+      if (coordinate === selectedSquare) { setSelectedSquare(null); return }
+      const move = legalTargets.get(coordinate)
+      if (move) {
+        setSelectedSquare(null)
+        // ponytail: auto-queen; promotion picker when someone underpromotes
+        onMove({ from: move.from, to: move.to, promotion: 'q' })
+        return
+      }
+    }
+    let turn = 'w'
+    try { turn = chess.turn() } catch { /* keep default */ }
+    setSelectedSquare(squarePiece && squarePiece.color === turn ? coordinate : null)
+  }
+
   const isFluid = size === 'fluid'
   const boardPixelSize = getBoardSize(size)
   const piecePixelSize = getPieceSize(size)
@@ -126,6 +138,13 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
                   ? 'chess-square chess-square--light'
                   : 'chess-square chess-square--dark'
 
+              const targetMove = legalTargets.get(coordinate)
+              const inputClasses = [
+                hasInput ? 'chess-square--interactive' : '',
+                coordinate === selectedSquare ? 'chess-square--selected' : '',
+                targetMove ? (square ? 'chess-square--target-capture' : 'chess-square--target') : ''
+              ].filter(Boolean).join(' ')
+
               const highlightClass = isLastMoveSquare ? 'chess-square--highlighted' : ''
 
               const rankNum = 8 - rankIndex
@@ -141,9 +160,10 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
               return (
                 <div
                   key={coordinate}
-                  className={`${squareClass} ${highlightClass}`}
+                  className={`${squareClass} ${highlightClass} ${inputClasses}`}
                   data-square={coordinate}
                   style={{ backgroundColor: squareColor }}
+                  onClick={hasInput ? () => handleSquareClick(coordinate, square) : undefined}
                 >
                   {showPieces && pieceName ? (
                     <div className="relative z-10 flex items-center justify-center" style={{ width: squarePixelSize, height: squarePixelSize }}>
