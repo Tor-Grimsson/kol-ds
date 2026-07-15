@@ -2,7 +2,7 @@
 title: The workshop docs system — @kolkrabbi/kol-workshop
 type: reference
 status: active
-updated: 2026-07-09
+updated: 2026-07-15
 description: Everything the workshop "navbar set" actually is — a handrolled docs subsystem (markdown engine, search, tag system, shell, compositions) lifted from the monorepo apps/web into @kolkrabbi/kol-workshop, dedup'd against the DS shell chrome.
 aliases:
   - workshop system
@@ -83,6 +83,7 @@ Conformed on lift (verified by grep + esbuild parse across 25 files):
 - **Icons** — every `Icon name` resolves in **kol-icon-set-v1**.
 - **Fonts** — `--kol-font-family-rgrot-*` → `sans-*` (the DS's Right-Grotesk token names).
 - **Casing** — 0 `text-transform`/`uppercase`/`capitalize`.
+- **Sidebar rhythm (2026-07-15, ledger-2.0 #2.6 — ruled, user-reviewed):** the right rail keeps its quieter `kol-helper-10` label scale (deliberate hierarchy vs the nav's `kol-helper-14`), but **row rhythm is shared** — `.shell-sidebar-toggle` adopts the nav-group-header's 6px vertical padding, and the group-toggle wrapper is typed (`kol-helper-10`; was an untyped 16px box).
 
 ### Known gaps (carried, not silently faked)
 

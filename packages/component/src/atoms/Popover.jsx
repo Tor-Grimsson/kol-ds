@@ -175,7 +175,11 @@ export function PopoverPanel({
   if (!popover.open) return null
 
   const { refs, floatingStyles, context, getFloatingProps } = popover
-  const cls = [panel && 'kol-popover', className].filter(Boolean).join(' ')
+  /* kol-popover-float rides every floating node (panel chrome or not): it
+   * carries the stacking guarantee — floats must top overlay chrome
+   * (.kol-overlay z-100), or a dropdown inside a FullscreenOverlay renders
+   * under the sheet and its options can't be clicked. */
+  const cls = ['kol-popover-float', panel && 'kol-popover', className].filter(Boolean).join(' ')
 
   /* `data-editor-keep-selection` mirrors the marker on the EditorShell
    * root. Popovers render via FloatingPortal (mounted on <body>, outside

@@ -69,16 +69,17 @@ export default function ThemeToggle({ variant = 'icon', className = '' }) {
     )
   }
 
-  // variant === 'icon' (default)
+  // variant === 'icon' (default) — 36×36 button / 20px glyph, the DS reference
+  // (user-verified 2026-07-15; was 32/18, which consumers shimmed via CSS)
   return (
     <button
       type="button"
       onClick={handleToggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className={`inline-flex items-center justify-center w-8 h-8 p-0 bg-transparent border-0 cursor-pointer text-emphasis hover:opacity-80 transition-opacity duration-300 ${className}`.trim()}
+      className={`inline-flex items-center justify-center w-9 h-9 p-0 bg-transparent border-0 cursor-pointer text-emphasis hover:opacity-80 transition-opacity duration-300 ${className}`.trim()}
     >
-      {iconSwap(18)}
+      {iconSwap(20)}
     </button>
   )
 }

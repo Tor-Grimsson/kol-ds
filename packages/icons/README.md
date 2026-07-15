@@ -47,3 +47,20 @@ Registered icons are keyed by filename (basename), win over the packaged set (ad
 ```css
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 ```
+
+(Or import `@kolkrabbi/kol-theme/kol-sources.css` once — it carries the `@source` line for every raw-JSX KOL package.)
+
+## Vite consumers: exclude from prebundling
+
+The icon maps are built with `import.meta.glob`, which esbuild's dependency
+prebundling doesn't execute — a prebundled copy ships **empty maps**, and every
+icon resolves to "not found" in dev. Exclude the package:
+
+```js
+// vite.config.js
+export default defineConfig({
+  optimizeDeps: { exclude: ['@kolkrabbi/kol-icons'] },
+})
+```
+
+Production builds are unaffected (Rollup handles the glob natively).

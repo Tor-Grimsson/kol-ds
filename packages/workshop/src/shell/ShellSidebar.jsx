@@ -65,7 +65,8 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
 
   return (
     <div className="space-y-4">
-      <div className="shell-sidebar-toggle shell-sidebar-label" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
+      {/* kol-helper-10 types the wrapper box itself (was an untyped 16px box) */}
+      <div className="shell-sidebar-toggle shell-sidebar-label kol-helper-10" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
         {labelTo ? (
           <Link to={labelTo} className="shell-sidebar-label kol-helper-10 text-meta" onClick={(e) => {
             if (navCollapsed && handleToggle) handleToggle()

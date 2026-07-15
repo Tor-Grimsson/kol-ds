@@ -2,7 +2,7 @@
 title: Blocks & sets — composed layers above components
 type: reference
 status: active
-updated: 2026-07-03
+updated: 2026-07-15
 description: The two composition layers on the showcase — blocks (copy-pasteable UI compositions with the shadcn-style viewer stage) and sets (full-apparatus compositions like the chess board) — and the contracts they follow.
 aliases:
   - blocks
@@ -31,7 +31,7 @@ Two layers sit between raw components and full apps, both on the showcase:
 ## The blocks model (shadcn `/blocks`, faithfully)
 
 - **One file = one block** (`showcase/src/blocks/<Name>.jsx`) exporting `meta = { title, description, category, featured? }` — it renders live AND ships its own `?raw` source. Drop a file in, it appears everywhere.
-- **The viewer stage** (`lib/BlockViewer.jsx`): Preview/Code · device breakpoints (desktop flush full-width, tablet/mobile anchored **left** over a dot-grid with a **drag handle**) · open-standalone · refresh · copy-source. One persistent iframe — device switches never reboot the app inside.
+- **The viewer stage** (`lib/BlockViewer.jsx`): Preview/Code · device breakpoints (desktop flush full-width, tablet/mobile anchored **left** over a dot-grid with a **drag handle**) · open-standalone · refresh · copy-source. One persistent iframe — device switches never reboot the app inside. The frame is **800px tall** (a real device height — dvh-budgeted layouts like the chess board need it) and presets **scale-to-fit, never lie**: each renders at its true device width (desktop = 1280 when the card sits under the lg breakpoint) and shrinks visually via transform, so the iframe's media queries always fire at the width the chip claims.
 - **Three routes per block**: the landing stage (`/blocks`, category tabs + browse-all list/grid), a dedicated page (`/blocks/:slug`), and the bare **product view** (`/blocks/preview/:slug` — full-bleed, no chrome; also the iframe src).
 
 ## Contracts

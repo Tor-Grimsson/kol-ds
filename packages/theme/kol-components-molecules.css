@@ -14,6 +14,14 @@
  * ─────────────────────────────────────────────────────────────────────
  */
 
+/* Every floating node (PopoverPanel root, with or without panel chrome).
+ * Floats must top overlay chrome (.kol-overlay is z-100) — without this a
+ * dropdown/menu/tooltip opened INSIDE a FullscreenOverlay stacks under the
+ * sheet and its options intercept nothing. */
+.kol-popover-float {
+  z-index: 110;
+}
+
 /* Popover — default chrome for floating-ui-positioned panels.
  * Used by molecules/Popover.jsx PopoverPanel. */
 .kol-popover {
@@ -196,6 +204,27 @@
   height: 1px;
   background-color: var(--kol-border-default);
   margin: 0 12px;
+}
+
+/* The option list — chrome, not consumer utilities (brief-2.0 defect 2: a
+ * consumer without @source got an uncapped, unscrollable panel). */
+.kol-dd-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* The trigger chevron — pushed to the trailing edge, flips on open state.
+ * Replaces the ml-auto utility + inline rotate style in Dropdown.jsx. */
+.kol-dd-caret {
+  margin-left: auto;
+  transition: transform 300ms;
+}
+
+.kol-dd-trigger[data-state="open"] .kol-dd-caret {
+  transform: rotate(180deg);
 }
 
 .tag-control:hover {

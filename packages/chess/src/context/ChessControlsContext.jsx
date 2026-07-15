@@ -138,6 +138,13 @@ export const ChessControlsProvider = ({ children, externalGame = null, chessData
     })
   }, [filteredGames])
 
+  /* A newly injected externalGame ACTIVATES (brief 2.0 §2.3): the archive
+   * table / paste flow hands a game in expecting the BOARD to switch — the
+   * old keep-prev rule above left it as just another dropdown row. */
+  useEffect(() => {
+    if (externalGame?.id) setSelectedGameId(externalGame.id)
+  }, [externalGame])
+
   const selectedGame = useMemo(() => {
     if (!selectedGameId) {
       return filteredGames[0] ?? null

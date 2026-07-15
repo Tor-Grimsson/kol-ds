@@ -88,6 +88,10 @@
 
 /* Sidebar toggle buttons (collapsible section headers) — layout only.
  * Type/color carried in JSX (kol-helper-10 text-meta). */
+/* Vertical rhythm matches .shell-nav-group-header (6px rows) — ledger-2.0
+ * #2.6 ruling (final, user-reviewed 2026-07-15): the rail keeps its quieter
+ * 10px label scale (deliberate hierarchy vs the nav's 14px), row rhythm is
+ * shared. */
 .shell-sidebar-toggle {
   display: flex;
   align-items: center;
@@ -96,7 +100,7 @@
   width: 100%;
   border: none;
   background: transparent;
-  padding: 0;
+  padding: 6px 0;
   transition: color 0.15s ease;
 }
 

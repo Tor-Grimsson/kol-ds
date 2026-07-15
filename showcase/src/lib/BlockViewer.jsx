@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Button } from '@kolkrabbi/kol-component'
 
@@ -22,6 +22,14 @@ const DEVICES = [
 ]
 
 const MIN_W = 340
+/* Real-device frame height — 620 starved every dvh-budgeted layout (the chess
+ * board sizes itself off 100dvh; at 620 it collapsed). ~real iPhone height. */
+const FRAME_H = 800
+/* Desktop preset must actually BE desktop: when the card is narrower than the
+ * lg breakpoint the frame renders at a true desktop width and scales down to
+ * fit, so the iframe's media queries fire at 1280, not at the card width. */
+const DESKTOP_W = 1280
+const LG = 1024
 
 const DOT_GRID = {
   backgroundImage: 'radial-gradient(var(--kol-fg-16) 1px, transparent 1px)',
@@ -51,10 +59,30 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
   const [reloadKey, setReloadKey] = useState(0)
   const [copied, setCopied] = useState(false)
   const [dragging, setDragging] = useState(false)
+  const [bodyW, setBodyW] = useState(0)
   const bodyRef = useRef(null)
+
+  /* Track the card width so presets can scale-to-fit instead of lying:
+   * a 768 tablet frame in a 700px card renders at 768 and shrinks visually. */
+  useEffect(() => {
+    if (!bodyRef.current) return
+    const ro = new ResizeObserver(([e]) => setBodyW(e.contentRect.width))
+    ro.observe(bodyRef.current)
+    return () => ro.disconnect()
+  }, [])
 
   const previewPath = `${previewBase}/${entry.key}`
   const isDesktop = width === '100%'
+
+  /* The frame's TRUE width — what the iframe's media queries key on.
+   * Desktop: the card itself when it's already ≥ lg, else a real desktop
+   * width (scaled down). Presets/custom: their pixel width. */
+  const handleW = isDesktop ? 0 : 24
+  const availW = Math.max(bodyW - handleW, 0)
+  const frameW = isDesktop
+    ? (bodyW >= LG ? bodyW : DESKTOP_W)
+    : width
+  const scale = availW > 0 && frameW > availW ? availW / frameW : 1
 
   const pickDevice = (d) => {
     setDevice(d.key)
@@ -150,14 +178,22 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
       >
         <div
           className={`overflow-hidden bg-surface-primary ${isDesktop ? '' : 'rounded-r-[var(--kol-radius-md)] border-r border-fg-12'} ${dragging ? '' : 'transition-[width] duration-200 ease-out'}`}
-          style={{ width }}
+          style={bodyW ? { width: Math.round(frameW * scale), height: Math.round(FRAME_H * scale) } : { width: '100%', height: FRAME_H }}
         >
+          {/* The iframe holds its TRUE device dimensions (media queries fire
+            * there) and scales down visually when the card is narrower. */}
           <iframe
             key={reloadKey}
             src={previewPath}
             title={entry.title}
             loading="lazy"
-            className={`block h-[620px] w-full border-0 ${dragging ? 'pointer-events-none' : ''}`}
+            className={`block border-0 ${dragging ? 'pointer-events-none' : ''}`}
+            style={{
+              width: frameW,
+              height: FRAME_H,
+              transform: scale === 1 ? undefined : `scale(${scale})`,
+              transformOrigin: 'top left',
+            }}
           />
         </div>
         {!isDesktop && (

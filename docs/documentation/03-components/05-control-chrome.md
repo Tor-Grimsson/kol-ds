@@ -71,7 +71,7 @@ Plus: a `:focus-visible` ring everywhere (2px `--kol-focus-ring`, offset 2); `:d
 
 | Control | How it wears the chrome |
 |---|---|
-| **Button** | The origin. Emits `kol-btn kol-btn-{variant} kol-btn-{size}`. |
+| **Button** | The origin. Emits `kol-btn kol-btn-{variant} kol-btn-{size}` (+ `kol-btn-icon` when iconOnly — was an inline style, which beat every consumer display utility; chrome is layered CSS now, so `lg:hidden` et al. stay sovereign, brief-2.0 defect 1). |
 | **Dropdown** | Trigger emits the `kol-btn` classes (inline-style chrome gone); open state fuses with the panel. Aliases: default/subtle→primary, minimal→outline. |
 | **Input / Textarea** | `.kol-control` chrome; `ghost`→`outline` alias. |
 | **ToggleSwitch** | Bare by default; optional primary/outline shells at button geometry; track scales; on = inverted ink. |

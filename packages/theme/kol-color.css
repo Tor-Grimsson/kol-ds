@@ -80,6 +80,14 @@
 
 /* =============================================================================
  * SYSTEM PREFERENCE (Automatic Dark Mode)
+ *
+ * KEPT deliberately (ruling applied 2026-07-15, ledger-2.0 #2.4): KOL policy
+ * is light-first + FOLLOW-SYSTEM — an undecided page respects the visitor's
+ * OS preference; an explicit choice (app-set data-theme or a saved toggle)
+ * always wins because [data-theme="light"] opts out of this block and
+ * [data-theme="dark"] doesn't need it. A repo wanting hard light-always
+ * stamps data-theme="light" at boot — that's the per-repo seam, not a theme
+ * edit. ThemeToggle + useTheme implement the same policy JS-side.
  * ============================================================================= */
 
 @media (prefers-color-scheme: dark) {

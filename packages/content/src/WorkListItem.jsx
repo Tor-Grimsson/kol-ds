@@ -35,6 +35,8 @@ import { Tag } from '@kolkrabbi/kol-component'
  *                        display face without forking.
  * @param {string}        tagsSeparator  when set, rendered between tag chips (e.g. ' · ') —
  *                        the live-design joined-tags treatment without pre-joining at the call site.
+ * @param {string}        titleClassName  type class for the header title (default 'kol-mono-14');
+ *                        REPLACES the type class (truncation stays component-owned) — WorkCard's seam, mirrored.
  */
 export default function WorkListItem({
   title,
@@ -49,6 +51,7 @@ export default function WorkListItem({
   onNavigate,
   previewClassName = 'kol-sans-heading-03',
   tagsSeparator,
+  titleClassName = 'kol-mono-14',
 }) {
   return (
     <a
@@ -66,7 +69,7 @@ export default function WorkListItem({
       <div className="flex flex-col justify-between min-w-0 flex-1 gap-3 md:gap-4">
         <div className="flex justify-between items-start md:items-center gap-4">
           <div className="flex flex-col gap-1 md:gap-2 min-w-0">
-            <div className="kol-mono-14 truncate">{title}</div>
+            <div className={`${titleClassName} truncate`}>{title}</div>
             {tags?.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5">
                 {tags.map((t, i) => (

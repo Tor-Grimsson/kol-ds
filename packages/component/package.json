@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "KOL design-system components \u2014 atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
   "license": "MIT",
   "type": "module",

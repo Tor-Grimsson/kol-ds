@@ -29,7 +29,7 @@ call-site strings are re-authored:
 | Legacy name | Lives in | Note |
 |---|---|---|
 | `dock-right` | framework/ShellHeader.jsx:136 | dock-left→panel-left shipped; no mirrored icon in v1 |
-| `arrow-downright` | component/SectionLabel.jsx:45,51 | no diagonal arrows in v1 |
+| ~~`arrow-downright`~~ | ~~component/SectionLabel.jsx~~ | ✅ SHIPPED into v1 arrow/ (brief-2.0 defect 3, icons 0.7.0) |
 | `cut` | (demo now uses `x`) | scissors glyph missing |
 | `library` | (remapped to book-open where hit) | dedicated library glyph? |
 | `pointer`, `type` | (demos remapped to target/edit) | editor-tool glyphs missing |

@@ -58,4 +58,4 @@ The adapter exposes `getSampleGames`, `getManifest`, `getMonthlySummary`, `getRa
 - **Shared primitives stay in `kol-component`** — this package depends on `kol-component` + `kol-icons` + `kol-theme`.
 - **`chess.js` is a dependency** (move legality / FEN); `react` / `react-dom` are peers.
 - **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-chess.css`) — this package ships JS + SVG assets only. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-chess/src"` — Tailwind skips `node_modules`, or the utilities never generate).
-- Live apparatus: `showcase/src/sets/chess-apparatus.jsx`.
+- Live apparatus: `showcase/src/sets/chess-apparatus.jsx` — wraps the layout in the consumer's exact shell (`mx-auto max-w-[1232px] px-4 md:px-6`, mirroring `/demo`), so the set stage and the shipped kol-chess app render identical geometry. Exercises the brief-2.0 **`panel` seam**: a compact strip inside the provider reading `useChessControls()` (the stand-in for the consumer's app-side EnginePanel/OpeningStrip); `ChessAnalysisLayout` also takes a controlled **`externalGame`** that merges with archive loads (latest wins) and **activates** on the board.

@@ -141,15 +141,9 @@ const Dropdown = ({
         data-state={isOpen ? 'open' : 'closed'}
       >
         <span>{currentOption?.label}</span>
-        <Icon
-          name="chevron-down"
-          size={ICON_SIZE[resolvedSize]}
-          className="ml-auto"
-          style={{
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 300ms',
-          }}
-        />
+        {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
+          * keyed off the trigger's data-state, no inline styles */}
+        <Icon name="chevron-down" size={ICON_SIZE[resolvedSize]} className="kol-dd-caret" />
       </button>
 
       <PopoverPanel
@@ -160,7 +154,7 @@ const Dropdown = ({
       >
         {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
 
-        <div className="flex max-h-[300px] flex-col items-stretch overflow-y-auto" role="listbox">
+        <div className="kol-dd-list" role="listbox">
           {options.map((option) => {
             const isActive = option.value === currentOption?.value
             return (

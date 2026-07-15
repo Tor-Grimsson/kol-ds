@@ -225,6 +225,14 @@
   outline-offset: 2px;
 }
 
+/* Icon-only buttons — was an inline style in Button.jsx, which beat every
+ * consumer display utility (`lg:hidden` could never hide an iconOnly button).
+ * Chrome belongs here, layered, so utilities stay sovereign. The flex
+ * centering comes from .kol-btn; the icon-only extra is only line-height. */
+.kol-btn-icon {
+  line-height: 0;
+}
+
 .kol-btn-primary {
   background: var(--kol-surface-secondary);
   color: var(--kol-surface-on-primary);

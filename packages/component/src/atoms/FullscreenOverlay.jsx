@@ -17,8 +17,13 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
 
   if (!open) return null
 
+  /* Dismiss ONLY when the backdrop itself is hit. The old check ("target not
+   * inside the sheet") closed the overlay on clicks in PORTALLED children —
+   * React portals bubble events through the React tree, so a Dropdown panel
+   * opened from inside the sheet (mounted on <body> via FloatingPortal)
+   * registered as an outside click and killed the overlay on option-select. */
   const onBackdropClick = (e) => {
-    if (sheetRef.current && !sheetRef.current.contains(e.target)) onClose?.()
+    if (e.target === e.currentTarget) onClose?.()
   }
 
   return (

@@ -94,7 +94,10 @@ const Button = ({
   const quietClass    = quiet && !isPressed ? 'kol-btn-quiet' : ''
   const pressedClass  = isPressed ? 'kol-btn-pressed' : ''
 
-  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${className}`.trim().replace(/\s+/g, ' ')
+  // .kol-btn-icon replaces the old iconOnly INLINE style — inline display
+  // beat every consumer utility (lg:hidden could never hide the button).
+  const iconOnlyClass = iconOnly ? 'kol-btn-icon' : ''
+  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
   const renderIcon = (iconName, iconHoverName) => {
@@ -154,10 +157,7 @@ const Button = ({
     return children
   }
 
-  // Merge icon-only specific styles with user-provided styles
-  const mergedStyle = iconOnly
-    ? { lineHeight: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', ...style }
-    : style
+  const mergedStyle = style
 
   // Render as button
   if (onClick || !href) {
