@@ -57,7 +57,7 @@ export default function TopBar() {
         </nav>
         <div className="ml-auto flex items-center gap-3">
           {/* KOL Input (primary/filled), not a hand-rolled outline box. */}
-          <Input variant="filled" size="sm" placeholder="Search…" iconLeft="search" className="hidden sm:block" />
+          <Input variant="filled" size="sm" placeholder="Search…" iconLeft="search" className="hidden sm:inline-flex" />
           {/* 32px hit-box to align with ThemeToggle's w-8 h-8. */}
           <a
             href={REPO}

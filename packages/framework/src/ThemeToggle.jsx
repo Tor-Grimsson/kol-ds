@@ -3,9 +3,24 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 const STORAGE_KEY = 'kol-theme'
 
+/* An explicit choice is an app-set data-theme attribute or a saved user
+ * toggle. Absent both, the DS is light-first and follows the system
+ * (prefers-color-scheme) — matching the theme CSS, which only darkens via
+ * explicit [data-theme="dark"] or the media query. */
+function getExplicitTheme() {
+  const attr = document.documentElement.dataset.theme
+  if (attr === 'light' || attr === 'dark') return attr
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === 'light' || saved === 'dark') return saved
+  } catch { /* storage blocked */ }
+  return null
+}
+
 function getInitialTheme() {
-  if (typeof document === 'undefined') return 'dark'
-  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+  if (typeof document === 'undefined') return 'light'
+  return getExplicitTheme()
+    ?? (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light')
 }
 
 /**
@@ -22,22 +37,50 @@ function getInitialTheme() {
  *              bg, no hover bg). For sidenav rows where the row should read
  *              as plain text + icon, not a button.
  *
- * Self-contained: owns theme state, writes `data-theme` to <html>, persists
- * to localStorage under `kol-theme`. The icon-swap animation slides a pair
- * of half-split theme-toggle icons horizontally — the `theme-toggle` SVG is
- * designed as a split circle, so the slide produces a visible light/dark flip.
+ * Self-contained but never imposing: initial state is the app-set
+ * `data-theme` attribute, else the user's saved toggle (`kol-theme`), else
+ * the system preference. `data-theme` + localStorage are written ONLY on a
+ * user toggle — mounting the component leaves the DOM untouched, so an
+ * undecided page keeps following prefers-color-scheme via the theme CSS.
+ * The icon-swap animation slides the `mode-toggle-01` / `mode-toggle-02`
+ * pair (v1 set) horizontally — two different halves of the split circle,
+ * so the slide is a visible flip.
  */
 export default function ThemeToggle({ variant = 'icon', className = '' }) {
   const [theme, setTheme] = useState(getInitialTheme)
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    try { localStorage.setItem(STORAGE_KEY, theme) } catch { /* storage blocked */ }
-  }, [theme])
+    /* Re-stamp a previously saved user choice so persistence works in apps
+     * with no theme boot script — but only when the app itself hasn't set
+     * data-theme (an app-set attribute always wins over storage). */
+    const attr = document.documentElement.dataset.theme
+    let saved = null
+    try { saved = localStorage.getItem(STORAGE_KEY) } catch { /* storage blocked */ }
+    if (attr !== 'light' && attr !== 'dark') {
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.dataset.theme = saved
+        return
+      }
+      /* No explicit choice anywhere — CSS follows the system on its own;
+       * this listener only keeps the toggle's icon in sync with it. */
+      const mq = window.matchMedia?.('(prefers-color-scheme: dark)')
+      if (!mq?.addEventListener) return
+      const onChange = (e) => {
+        try { if (localStorage.getItem(STORAGE_KEY)) return } catch { /* storage blocked */ }
+        setTheme(e.matches ? 'dark' : 'light')
+      }
+      mq.addEventListener('change', onChange)
+      return () => mq.removeEventListener('change', onChange)
+    }
+  }, [])
 
   const isDark = theme === 'dark'
   const next = isDark ? 'light' : 'dark'
-  const handleToggle = () => setTheme(next)
+  const handleToggle = () => {
+    setTheme(next)
+    document.documentElement.dataset.theme = next
+    try { localStorage.setItem(STORAGE_KEY, next) } catch { /* storage blocked */ }
+  }
 
   const iconSwap = (size) => (
     <span
@@ -49,8 +92,8 @@ export default function ThemeToggle({ variant = 'icon', className = '' }) {
         className="flex transition-transform duration-500 ease-in-out"
         style={{ width: size * 2, transform: isDark ? 'translateX(0)' : `translateX(-${size}px)` }}
       >
-        <Icon name="theme-toggle" size={size} />
-        <Icon name="theme-toggle" size={size} />
+        <Icon name="mode-toggle-01" size={size} />
+        <Icon name="mode-toggle-02" size={size} />
       </span>
     </span>
   )
