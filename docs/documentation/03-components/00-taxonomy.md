@@ -2,7 +2,7 @@
 title: Component taxonomy — the two axes
 type: reference
 status: canonical
-updated: 2026-07-09
+updated: 2026-07-15
 verified: 2026-07-04
 description: How KOL classifies components — the Tier axis (atom/molecule/organism/framework/loader/hook, a mechanical nesting test, deliberately not Brad Frost atomic) and the Function axis (a closed Material-style set), how they combine in the sidebar, and the one-page-per-component rule.
 aliases:
@@ -121,6 +121,8 @@ A component's compositional **sub-parts and infrastructure sub-exports are membe
 - `Accordion` → `AccordionPanel`.
 
 The rule: **if you'd only ever use it inside its parent, it's a member.** Grouping lives in a hand-authored overlay (`showcase/src/lib/component-groups.js`), never in the mined `usage-index.json`. *(Presentation is converging on this — see [[03-taxonomy-audit-and-plan|the audit & plan]].)*
+
+**Roster completeness (2026-07-15):** every component in every package belongs on the roster with a Tier + Function — no omissions. The usage miner (`scripts/extract-usage.mjs`) still reads only the component + framework barrels, so domain-package components it can't see are carried by an authored `UNMINED` list in `registry.js` (first: `SourcesReferences`, kol-content, molecule) until the miner is widened. The 54-component coverage gap is logged for the showcase audit.
 
 ---
 

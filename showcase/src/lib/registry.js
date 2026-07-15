@@ -114,6 +114,7 @@ const DESCRIPTIONS = {
 
   /* P6–P10 set members */
   ArticleCard: 'A blog/editorial card family — one component with default / hero / mini sizes.',
+  SourcesReferences: 'An end-of-article sources & references list — numbered boxes with title, optional note, and link.',
   ArticleHeader: 'An article masthead — flat-prop title, meta, and an Avatar byline (de-Sanitized).',
   ImageBlock: 'A prose image block on the Figure shell — aspect-locked frame, label, caption.',
   VideoBlock: 'A prose video block on the Figure shell — embed or poster with a caption.',
@@ -283,6 +284,7 @@ const FUNCTION_MAP = {
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
   ArticleCard: 'display', ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
+  SourcesReferences: 'display',
   PortableTextRenderer: 'display', StackHero: 'structure',
   WorkCard: 'display', WorkListItem: 'display',
   GalleryCarousel: 'media', ParallaxShelf: 'media',
@@ -299,8 +301,17 @@ const FUNCTION_MAP = {
   resolveCssVar: 'utility', resolveCssColor: 'utility', isLight: 'utility',
 }
 
+/* Authored roster rows for components the usage miner can't see yet —
+ * extract-usage.mjs reads only the component + framework barrels, so
+ * newer domain-package exports never enter usage-index.json. Widening the
+ * miner is the registry-coverage arc; delete these rows when it lands.
+ * Shape mirrors usage-index.json. */
+const UNMINED = [
+  { name: 'SourcesReferences', pkg: '@kolkrabbi/kol-content', category: 'molecules', count: 0, apps: [], files: 0, examples: [] },
+]
+
 /* Enriched, slugged component list (mining order preserved = usage-ranked). */
-export const COMPONENTS = USAGE
+export const COMPONENTS = USAGE.concat(UNMINED)
   .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name) && !DEPRECATED.includes(c.name))
   .map((c) => ({
     ...c,
