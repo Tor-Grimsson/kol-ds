@@ -56,6 +56,30 @@
   --ui-success:  #15803D;
 
   /* ---------------------------------------------------------------------------
+   * PALETTE — shared categorical colors for tags, charts, data viz.
+   * Lifted verbatim from the monorepo theme (2026-07-16): the dashboards +
+   * chess component CSS already reference these vars, but the definitions
+   * never migrated — first real kol-dashboards consumer found them dangling.
+   * --------------------------------------------------------------------------- */
+
+  --kol-palette-blue:   #3740D3;
+  --kol-palette-teal:   #49a0a2;
+  --kol-palette-green:  #66a44c;
+  --kol-palette-yellow: #ffe32e;
+  --kol-palette-red:    #ce4646;
+  --kol-palette-orange: #db8000;
+  --kol-palette-purple: #9437FF;
+
+  /* Palette Light — muted variants for light-mode backgrounds */
+  --kol-palette-blue-light:   #c8caf4;
+  --kol-palette-teal-light:   #d0e8e9;
+  --kol-palette-green-light:  #d4e6cb;
+  --kol-palette-yellow-light: #d0d79d;
+  --kol-palette-red-light:    #f0caca;
+  --kol-palette-orange-light: #f5ddb3;
+  --kol-palette-purple-light: #e0c8ff;
+
+  /* ---------------------------------------------------------------------------
    * BORDER
    * --------------------------------------------------------------------------- */
 

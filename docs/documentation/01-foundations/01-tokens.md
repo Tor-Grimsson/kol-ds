@@ -2,7 +2,7 @@
 title: Foundations — the token system
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-16
 description: The token foundation every KOL component is built from — the 14-stop opacity scale (the signature), semantic foregrounds, surface tiers, radii, and shadows.
 aliases:
   - foundations
@@ -65,6 +65,10 @@ Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme
 ## UI state colors
 
 `--ui-error` / `--ui-warning` / `--ui-info` / `--ui-success` — theme-tuned pairs (dark and light values differ; see `kol-color.css`).
+
+## Palette tokens (2026-07-16)
+
+`--kol-palette-{blue,teal,green,yellow,red,orange,purple}` + `-light` muted variants — the shared categorical palette for tags, charts, and data viz, lifted verbatim from the monorepo theme. The dashboards and chess component CSS were already referencing these; the definitions had never migrated (found dangling by the first real kol-dashboards consumer, the kol-chess stats page). Defined once in `:root` — deliberately not theme-tuned.
 
 ## Hyperlinks (2026-07-15)
 

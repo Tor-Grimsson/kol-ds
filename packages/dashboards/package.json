@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-dashboards",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "KOL dashboards/analytics system — hand-rolled SVG charts (no d3), metric/list/table/chart cards, a responsive dashboard grid, and the MetricsDashboard apparatus. Data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",
@@ -10,12 +10,10 @@
   "exports": {
     ".": "./src/index.js"
   },
-  "dependencies": {
-    "@kolkrabbi/kol-component": "workspace:*",
-    "@kolkrabbi/kol-icons": "workspace:*",
-    "@kolkrabbi/kol-theme": "workspace:*"
-  },
   "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.11.0",
+    "@kolkrabbi/kol-icons": ">=0.7.0",
+    "@kolkrabbi/kol-theme": ">=0.9.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0"
   },
