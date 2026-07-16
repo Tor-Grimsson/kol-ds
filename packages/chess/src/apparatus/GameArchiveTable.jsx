@@ -1,6 +1,6 @@
 // Data is consumer-provided via the `chessData` prop (no bundled dataset).
-// Required chessData functions: loadMonthGames(month), getMonthlySummary(),
-// getRandomMonth(), getGamePgnByIdAsync(id, month).
+// Required chessData functions: loadMonthGames(month), loadFullDataset(),
+// getMonthlySummary(), getGamePgnByIdAsync(id, month).
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Dropdown, Input, Button, Table, Pill } from '@kolkrabbi/kol-component'
 
@@ -8,11 +8,14 @@ import { TIME_CLASS_LABELS, RESULT_LABELS } from './labels.js'
 
 const MAX_VISIBLE_GAMES = 5
 
+// Dropdown sentinel for the whole-archive scope (brief 4.0).
+const ALL_GAMES = 'all'
+
 const GameArchiveTable = ({ chessData, onGameLoad }) => {
   const {
     loadMonthGames = async () => [],
+    loadFullDataset = async () => [],
     getMonthlySummary = () => [],
-    getRandomMonth = () => null,
     getGamePgnByIdAsync = async () => null
   } = chessData ?? {}
 
@@ -28,17 +31,18 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
   // Lightweight data - always loaded
   const monthlySummary = useMemo(() => getMonthlySummary(), [])
 
-  // Heavy data - loaded on demand
+  // Heavy data - loaded on demand. No fetch on mount (brief 4.0): the archive
+  // opens on "All games" selected, and data only moves on the button press.
   const [loadedMonths, setLoadedMonths] = useState(new Set())
-  const [monthlyGames, setMonthlyGames] = useState({}) // { "2024-08": [...games] }
+  const [monthlyGames, setMonthlyGames] = useState({}) // { "2024-08": [...games], all: [...] }
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedMonth, setSelectedMonth] = useState(null)
+  const [selectedMonth, setSelectedMonth] = useState(ALL_GAMES)
   const [selectedTimeClass, setSelectedTimeClass] = useState('all')
   const [selectedResult, setSelectedResult] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [showAllGames, setShowAllGames] = useState(false)
 
-  // Month options (from lightweight summary)
+  // Scope options: "All games" first (the item the dropdown opens on), months below
   const monthOptions = useMemo(() => {
     const formatted = (monthlySummary || [])
       .filter((entry) => entry?.month && entry.month !== 'unknown')
@@ -48,24 +52,11 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         count: entry.total
       }))
       .reverse()
-    return formatted
+    return [{ label: 'All games', value: ALL_GAMES }, ...formatted]
   }, [monthlySummary, monthFormatter])
 
-  // Load random month on mount
-  useEffect(() => {
-    const loadInitialMonth = async () => {
-      const randomMonth = getRandomMonth()
-      setIsLoading(true)
-      const games = await loadMonthGames(randomMonth)
-      setMonthlyGames({ [randomMonth]: games.slice(0, 5) }) // Only first 5 games
-      setLoadedMonths(new Set([randomMonth]))
-      setSelectedMonth(randomMonth)
-      setIsLoading(false)
-    }
-    loadInitialMonth()
-  }, [])
-
-  // Load month data when explicitly requested
+  // Load scope data when explicitly requested — the `all` path hits the same
+  // memoized fetch as the month path, so whichever runs first pays the one fetch.
   const handleLoadMonth = useCallback(async (month) => {
     if (loadedMonths.has(month)) {
       // Already loaded, just switch to it
@@ -74,7 +65,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
     }
 
     setIsLoading(true)
-    const games = await loadMonthGames(month)
+    const games = month === ALL_GAMES ? await loadFullDataset() : await loadMonthGames(month)
     setMonthlyGames(prev => ({ ...prev, [month]: games }))
     setLoadedMonths(prev => new Set([...prev, month]))
     setSelectedMonth(month)
@@ -162,6 +153,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
 
   const monthLabel = useMemo(() => {
     if (!selectedMonth) return 'No month selected'
+    if (selectedMonth === ALL_GAMES) return 'All games'
     try {
       return monthFormatter.format(new Date(`${selectedMonth}-01T00:00:00Z`))
     } catch {
@@ -337,14 +329,12 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
   }, [monthlyGames])
 
   const selectedMonthInfo = useMemo(() => {
+    if (selectedMonth === ALL_GAMES) {
+      const total = monthlySummary.reduce((sum, entry) => sum + (entry?.total ?? 0), 0)
+      return { month: ALL_GAMES, total }
+    }
     return monthlySummary.find(entry => entry.month === selectedMonth)
   }, [monthlySummary, selectedMonth])
-
-  const isMonthFullyLoaded = useMemo(() => {
-    if (!selectedMonth || !selectedMonthInfo) return false
-    const loadedCount = monthlyGames[selectedMonth]?.length || 0
-    return loadedCount === selectedMonthInfo.total
-  }, [selectedMonth, selectedMonthInfo, monthlyGames])
 
   return (
     <section className="space-y-6">
@@ -356,7 +346,10 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
             {isLoading && <Pill variant="subtle" size="sm">Loading...</Pill>}
           </div>
           <p className="kol-mono-12 text-fg-64">
-            {loadedMonths.size} of {monthOptions.length} months loaded · {loadedGamesCount.toLocaleString()} games in memory
+            {loadedMonths.has(ALL_GAMES)
+              ? 'entire set loaded'
+              : `${[...loadedMonths].filter((m) => m !== ALL_GAMES).length} of ${monthOptions.length - 1} months loaded`}
+            {' · '}{loadedGamesCount.toLocaleString()} games in memory
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -379,8 +372,8 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
           </Pill>
         </div>
         <p className="kol-mono-14 text-auto/70 leading-relaxed">
-          Select a month to load games. Initially showing a random sample of 5 games.
-          Use filters to narrow your search or load the full month.
+          Pick a scope — the entire set or a single month — then load games.
+          Use filters to narrow your search.
         </p>
       </div>
 
@@ -396,6 +389,8 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
             placeholder="Select month..."
           />
 
+          {/* Scope-aware, generic labels (brief 4.0) — the dropdown already
+            * names the month, so the button never repeats it. */}
           {selectedMonth && !loadedMonths.has(selectedMonth) && (
             <Button
               variant="primary"
@@ -404,19 +399,11 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
               onClick={() => handleLoadMonth(selectedMonth)}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : `Load ${selectedMonthInfo?.total || 0} games from ${monthLabel}`}
-            </Button>
-          )}
-
-          {selectedMonth && loadedMonths.has(selectedMonth) && !isMonthFullyLoaded && (
-            <Button
-              variant="primary"
-              size="sm"
-              className="analysis-control"
-              onClick={() => handleLoadMonth(selectedMonth)}
-              disabled={isLoading}
-            >
-              Load all ({selectedMonthInfo?.total || 0})
+              {isLoading
+                ? 'Loading...'
+                : selectedMonth === ALL_GAMES
+                  ? 'Load entire set'
+                  : 'Load month'}
             </Button>
           )}
         </div>
@@ -460,8 +447,8 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
           <div className="analysis-table-empty">
             <p className="kol-mono-14 text-auto/70">
               {selectedMonth
-                ? 'Click "Load games" to view this month\'s games'
-                : 'Select a month from the dropdown above to get started'}
+                ? `Click "${selectedMonth === ALL_GAMES ? 'Load entire set' : 'Load month'}" to view games`
+                : 'Select a scope from the dropdown above to get started'}
             </p>
           </div>
         ) : tableRows.length === 0 ? (

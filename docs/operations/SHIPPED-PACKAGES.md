@@ -33,7 +33,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-framework` | **0.5.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
 | `@kolkrabbi/kol-workshop` | **0.1.6** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
 | `@kolkrabbi/kol-dashboards` | **0.1.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
-| `@kolkrabbi/kol-chess` | **0.4.1** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, `./data` adapter |
+| `@kolkrabbi/kol-chess` | **0.5.0** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, archive all/month scopes, `./data` adapter |
 | `@kolkrabbi/kol-content` | **0.4.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.5.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.1.1** | Commerce — product-detail layout, price display, marquee river |
