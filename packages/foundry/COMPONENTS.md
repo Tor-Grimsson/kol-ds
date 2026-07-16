@@ -4,7 +4,7 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 
 **Status:** `core` = present before the 2026-07-09 monorepo extraction · `new` = pulled in that extraction · `moved` = moved in from `@kolkrabbi/kol-component` (2026-07-09) — they pass the membership test, and foundry may depend on component but never the reverse.
 
-## Components (17)
+## Components (20)
 
 ### Specimen tools — one typeface, inspected
 
@@ -74,3 +74,16 @@ These were in the first (folder-based) selection and are cut. They fail the memb
 | `FoundryOpentypeFeatures`, `FeatureGrid`, `FeatureCard` | Prose descriptor cards ("Ligatures — …") that never apply a feature to the font |
 
 > A *genuine* OpenType tester (live `font-feature-settings` toggles) or a real pairing tester would qualify — but they'd be new builds, not these editorial cards.
+
+## Fontviewer engine (lobbied 2026-07-16, `./engine` sources)
+
+The variable-font viewer instrument, from the elder `@kol/fontviewer` package — passes the membership test wholesale (it exists only to load, render, and inspect live fonts).
+
+| Export | Role — what it does *to the font* | Status |
+|--------|-----------------------------------|--------|
+| `FontViewerComponent` | Canvas glyph stage + metrics overlay + axis controls, one instrument | new |
+| `FontViewerSection` | Thin section wrapper around the viewer | new |
+| `GlyphItem` | Renders one live glyph (atom; from elder `@kol/ui`) | new |
+| `FontLoader`, `GlyphAnimator`, `MetricsOverlay`, `UIControls`, `FontInfoRenderer`, `VariationAxes`, `AXIS` | React-free instrument classes (`export *` — not on the showcase roster) | new |
+
+Chrome CSS lives in `kol-theme/kol-components-foundry.css` (own `--fv-*` tokens — kol-token conformance is a flagged follow-up). Font files are consumer-served, never bundled.

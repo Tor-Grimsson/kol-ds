@@ -54,6 +54,7 @@ export const TIERS = {
   ShellLayout: 'organisms', DocumentationReader: 'organisms',
   /* kol-foundry */
   TypefaceLibraryItem: 'atoms', TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
+  GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
   SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', ColorLoader: 'molecules',
   TypefaceHero: 'organisms', TypefaceStyleSection: 'organisms', FontPreviewSection: 'organisms',
   VariableFontSection: 'organisms', GlyphMetricsGrid: 'organisms', GlyphMetricsSection: 'organisms',
@@ -97,6 +98,7 @@ export const FUNCTIONS_BY_NAME = {
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input',
   BentoCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
+  GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   ColorLoader: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',

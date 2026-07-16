@@ -47,3 +47,308 @@
   -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: var(--kol-text-pressure-stroke, var(--kol-accent-primary));
 }
+
+/* =============================================================================
+ * FONTVIEWER ENGINE CHROME — the variable-font viewer instrument (canvas stage,
+ * metrics overlay, axis controls). Lobbied verbatim from the elder
+ * @kol/fontviewer package 2026-07-16 alongside the engine (kol-foundry ./engine).
+ * ponytail: carries its own --fv-* token set + system-ui stack from the source —
+ * kol-token conformance is a follow-up pass, not done blind in the lobby.
+ * ============================================================================= */
+
+:root {
+  --system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --fv-white: rgb(255, 255, 255);
+  --fv-black: rgb(0, 0, 0);
+  --fv-metrics-color: rgba(0, 0, 0, 0.4);
+  --fv-border-color: var(--fv-black);
+  --fv-surface: rgba(255, 255, 255, 0.1);
+  --fv-panel-bg: rgba(255, 255, 255, 0.1);
+  --fv-panel-border: var(--fv-black);
+  --fv-panel-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.fontviewer-section,
+.fontviewer-container {
+  width: 100%;
+  height: 100%;
+}
+
+.fontviewer-section {
+  margin: 0;
+  padding: 0;
+}
+
+.fontviewer-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.font-viewer-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: var(--system-ui);
+  font-size: 0.7rem;
+  background: var(--fv-white);
+  color: var(--fv-black);
+}
+
+.font-viewer-display-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fv-white);
+}
+
+.font-viewer-glyph-buffer {
+  color: var(--fv-black);
+  text-align: center;
+  position: relative;
+}
+
+.font-viewer-metrics-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.font-viewer-wrapper {
+  --fv-controls-background: rgba(255, 255, 255, 0.2);
+}
+
+.font-viewer-wrapper[data-color-scheme='dark'] {
+  --fv-controls-background: rgba(0, 0, 0, 0.2);
+}
+
+.font-viewer-controls {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--fv-controls-background);
+  backdrop-filter: blur(2px);
+  padding: 7px 14px;
+  border-top: 1px solid var(--fv-border-color);
+  z-index: 99999;
+  color: var(--fv-black);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+.font-viewer-controls.is-visible {
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+.font-viewer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+  pointer-events: auto !important;
+}
+
+.font-viewer-btn {
+  font-size: 0.7rem;
+  cursor: pointer;
+  height: 23px;
+  padding: 0 8px;
+  margin-right: 5px;
+  margin-bottom: 7px;
+  background: transparent;
+  color: var(--fv-black);
+  border: 1px solid var(--fv-border-color);
+  border-radius: 5px;
+  transition: 0.2s;
+  pointer-events: auto !important;
+}
+
+.font-viewer-btn:last-child {
+  margin-right: 0;
+}
+
+.font-viewer-btn.active {
+  background-color: var(--fv-black);
+  color: var(--fv-white);
+}
+
+.font-viewer-btn.disabled,
+.font-viewer-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.font-viewer-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 14px;
+}
+
+.font-viewer-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.font-viewer-slider-group label {
+  min-width: 120px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.font-viewer-slider-group span {
+  min-width: 60px;
+  text-align: right;
+  font-size: 0.7rem;
+}
+
+.font-viewer-slider-group input[type='range'] {
+  flex: 1;
+  height: 15px;
+  padding: 7px 0;
+  cursor: pointer;
+  background: linear-gradient(var(--fv-black), var(--fv-black)) center/100% 1px no-repeat;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.font-viewer-slider-group input[type='range']::-webkit-slider-runnable-track,
+.font-viewer-slider-group input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 1px;
+  background: transparent;
+}
+
+.font-viewer-slider-group input[type='range']::-webkit-slider-runnable-track {
+  border-radius: 9999px;
+}
+
+.font-viewer-slider-group input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background: var(--fv-black);
+  cursor: pointer;
+  margin-top: 0;
+}
+
+.font-viewer-slider-group input[type='range']::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background: var(--fv-black);
+  cursor: pointer;
+}
+
+.font-viewer-slider-group input[type='range']::-moz-range-track {
+  border-radius: 9999px;
+}
+
+.font-viewer-slider-group input[type='range']::-ms-track {
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.font-viewer-slider-group input[type='range']::-ms-fill-lower,
+.font-viewer-slider-group input[type='range']::-ms-fill-upper {
+  background: var(--fv-black);
+}
+
+.font-viewer-slider-group input[type='range']::-ms-thumb {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background: var(--fv-black);
+  cursor: pointer;
+}
+
+.font-viewer-slider-group input[type='range']::-webkit-slider-thumb,
+.font-viewer-slider-group input[type='range']::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background: var(--fv-black);
+  cursor: pointer;
+}
+
+.font-viewer-variable-axes {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.font-viewer-info-panel {
+  position: absolute;
+  z-index: 10001;
+  padding: 14px;
+  border-radius: 8px;
+  color: var(--fv-black);
+}
+
+.font-viewer-font-info {
+  width: 300px;
+  top: 8px;
+  left: 8px;
+}
+
+.font-viewer-glyph-info {
+  width: 150px;
+  top: 8px;
+  right: 8px;
+}
+
+.font-viewer-metrics-overlay .metric-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: var(--fv-metrics-color);
+}
+
+.font-viewer-metrics-overlay .side-bearing-line {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: var(--fv-metrics-color);
+  top: 0;
+}
+
+.font-viewer-metrics-overlay .legend {
+  position: absolute;
+  padding-left: 14px;
+  color: var(--fv-black);
+}
+
+.axis-controls {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.glyph-info-container {
+  display: flex;
+  gap: 16px;
+}
+
+.glyph-info-container .info-column {
+  min-width: 120px;
+}
+
+.font-viewer-wrapper .monospaced {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}

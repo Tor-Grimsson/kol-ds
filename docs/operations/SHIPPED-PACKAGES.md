@@ -27,7 +27,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.10.0** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets) |
+| `@kolkrabbi/kol-theme` | **0.11.0** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets) |
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.5.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
@@ -35,7 +35,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-dashboards` | **0.1.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
 | `@kolkrabbi/kol-chess` | **0.4.1** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, `./data` adapter |
 | `@kolkrabbi/kol-content` | **0.4.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
-| `@kolkrabbi/kol-foundry` | **0.4.2** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
+| `@kolkrabbi/kol-foundry` | **0.5.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.1.1** | Commerce — product-detail layout, price display, marquee river |
 | `@kolkrabbi/kol-styleguide` | **0.1.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks |
 

@@ -40,3 +40,21 @@ export { default as TypefaceSpecimenPage } from './TypefaceSpecimenPage.jsx'
 // data
 export { glyphSets, glyphCategories, SPECIMEN_SAMPLE_TEXT } from './glyphData.js'
 export { typefaceConfig, getTypefaceConfig, getAllTypefaceIds, getAllTypefaces } from './typefaceConfig.js'
+
+// fontviewer engine (lobbied from elder @kol/fontviewer 2026-07-16) — the
+// variable-font viewer instrument: canvas glyph stage + parsed-metrics overlay
+// + axis controls. Plain-JS utils are React-free; opentype.js is the optional
+// peer. Chrome CSS lives in kol-theme/kol-components-foundry.css. Font files
+// are consumer-served (never bundled) — pass fontUrl/defaultFontUrl props.
+export { default as FontViewerComponent } from './engine/FontViewerComponent.jsx'
+export { default as FontViewerSection } from './engine/FontViewerSection.jsx'
+export * from './engine/FontLoader.js'
+export * from './engine/FontInfo.js'
+export * from './engine/GlyphAnimator.js'
+export * from './engine/MetricsOverlay.js'
+export * from './engine/Types.js'
+export * from './engine/UIControls.js'
+export * from './engine/VariationAxes.js'
+
+// glyph atom (lobbied from elder @kol/ui 2026-07-16) — renders one live glyph
+export { default as GlyphItem } from './GlyphItem.jsx'
