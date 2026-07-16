@@ -2,7 +2,7 @@
 title: Type classes — the two families and when to use which
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-16
 description: The kol type-class inventory split by its real fault line — line-height-bearing sets for anything that can wrap vs the line-height-1 helper scale for single-line chrome — with the full class table and the 2026-07-02 conformance conversions as worked examples.
 aliases:
   - type-classes
@@ -66,6 +66,17 @@ Beyond the missing leading, helpers differ from mono in **weight (500 vs 400)** 
 | `kol-sans-body-01/02/03` | 16 / 14 / 12px | 160/160/150% | sans 400 |
 
 (`display-03`, `heading-06` tokens exist; classes deferred until a consumer needs them. Sizes step up at the responsive breakpoint — see `kol-typography.css`.)
+
+### Display Tight — the condensed-caps display voice (lobbied 2026-07-16)
+
+| Class | Ladder (base → 768 → 1024) | Family / weight |
+|---|---|---|
+| `kol-display-lg` | 48 → 64 → 96px | sans + `font-stretch: extra-condensed`, 470 |
+| `kol-display-section` | 40 → 48 → 64px | same |
+| `kol-display-section-sm` | 32 → 40 → 48px | same |
+| `kol-display-subsection` | 32 → 40 → 48px | sans-narrow, 470 |
+
+All four are `text-transform: uppercase` **by contract** — the display voice is caps by design language, the one type family that carries a transform. Own token ladder (`--kol-text-display-tight-01/02/03`) with a 1024px top step, deliberately not the sans-display ladder. Lobbied verbatim from the website's elder type system; elder `kol-heading-display` was a byte-identical duplicate of `kol-display-lg` and maps to it.
 
 ## Worked examples — the 2026-07-02 conformance sweep
 

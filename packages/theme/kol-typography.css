@@ -772,6 +772,14 @@
   --kol-text-body-01: 16px;
   --kol-text-body-02: 14px;
   --kol-text-body-03: 12px;
+
+  /* Display Tight — the condensed-caps display voice (lobbied from the
+   * website's elder type system 2026-07-16). Own ladder with a 1024px step —
+   * deliberately NOT the sans-display ladder: values preserve the lobbied
+   * rendering exactly. */
+  --kol-text-display-tight-01: 48px;
+  --kol-text-display-tight-02: 40px;
+  --kol-text-display-tight-03: 32px;
 }
 
 @media (min-width: 768px) {
@@ -780,6 +788,18 @@
     --kol-text-display-02: 56px;
     --kol-text-display-03: 42px;
     --kol-text-heading-01: 56px;
+    --kol-text-display-tight-01: 64px;
+    --kol-text-display-tight-02: 48px;
+    --kol-text-display-tight-03: 40px;
+  }
+}
+
+/* Display Tight tops out at 1024, not 1280 — the lobbied ladder's own step. */
+@media (min-width: 1024px) {
+  :root {
+    --kol-text-display-tight-01: 96px;
+    --kol-text-display-tight-02: 64px;
+    --kol-text-display-tight-03: 48px;
   }
 }
 
@@ -812,6 +832,53 @@
 
 /* .kol-sans-display-03 deferred — orphan in current consumers. Token defined.
  * Add the class when a consumer needs it. */
+
+/* =============================================================================
+ * DISPLAY TIGHT — the condensed-caps display voice: base sans + the variable
+ * width axis (font-stretch), weight 470. Uppercase BY CONTRACT — display
+ * classes are the one type family that carries text-transform; the display
+ * voice is caps by design language.
+ * Lobbied verbatim from the website's elder type system (2026-07-16) so call
+ * sites migrate without renames. `kol-heading-display` was a byte-identical
+ * duplicate of `kol-display-lg` and was not carried — map it to display-lg.
+ * ============================================================================= */
+
+.kol-display-lg {
+  font-family: var(--kol-font-family-sans);
+  font-stretch: extra-condensed;
+  font-weight: 470;
+  font-size: var(--kol-text-display-tight-01);
+  line-height: 100%;
+  text-transform: uppercase;
+  color: var(--kol-fg-emphasis);
+}
+
+.kol-display-section {
+  font-family: var(--kol-font-family-sans);
+  font-stretch: extra-condensed;
+  font-weight: 470;
+  font-size: var(--kol-text-display-tight-02);
+  line-height: 100%;
+  text-transform: uppercase;
+}
+
+.kol-display-section-sm {
+  font-family: var(--kol-font-family-sans);
+  font-stretch: extra-condensed;
+  font-weight: 470;
+  font-size: var(--kol-text-display-tight-03);
+  line-height: 100%;
+  text-transform: uppercase;
+}
+
+/* subsection — the Narrow face, one voice quieter than section-sm */
+.kol-display-subsection {
+  font-family: var(--kol-font-family-sans-narrow);
+  font-weight: 470;
+  font-size: var(--kol-text-display-tight-03);
+  line-height: 100%;
+  text-transform: uppercase;
+}
 
 /* =============================================================================
  * HEADINGS — H1 sans Narrow, H2-H5 sans Compact, weight 500.
