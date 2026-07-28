@@ -75,3 +75,36 @@
   --kol-surface-absolute-split: #000000;
   --kol-surface-absolute-split-inverse: #ffffff;
 }
+
+/* System-follow dark (0.11.6, user law: explicit choice > system > light).
+ * Applies ONLY when no explicit theme is stamped — a consumer that sets
+ * data-theme (any value) vetoes the OS. MIRROR of the block above — edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --kol-link:       #60A5FA;
+    --kol-link-hover: #93C5FD;
+
+    --kol-surface-primary: #121215;
+    --kol-surface-on-primary: #fafafa;
+
+    --kol-surface-secondary: #19191d;
+    --kol-surface-on-secondary: #f8f8f8;
+
+    --kol-surface-tertiary: #0e0e11;
+    --kol-surface-on-tertiary: #ffffff;
+
+    --kol-surface-inverse: #fcfbf8;
+    --kol-surface-on-inverse: #0e0e11;
+
+    --kol-surface-secondary-inverse: #e0e0e0;
+    --kol-surface-tertiary-inverse: #d4d4d8;
+
+    --kol-surface-contrast: #0b0b0c;
+
+    /* Surface split tokens - Dark Mode */
+    --kol-surface-support-split: #202026;
+    --kol-surface-support-split-inverse: #eeeeee;
+    --kol-surface-absolute-split: #000000;
+    --kol-surface-absolute-split-inverse: #ffffff;
+  }
+}

@@ -119,4 +119,16 @@
   --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
   --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
 }
+
+/* System-follow dark (0.11.6) — only when no explicit theme is stamped.
+ * MIRROR of the block above — edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --kol-shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.03);
+    --kol-shadow-md: 0 4px 6px rgba(255, 255, 255, 0.05);
+    --kol-shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.08);
+    --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
+    --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
+  }
+}
 }
