@@ -32,16 +32,16 @@ export function RatioBar({ palette, logo }) {
   return (
     <div className="kol-combo-stage kol-combo-frame kol-combo-stage--fill kol-combo-stage--ratio">
       <div className="kol-combo-slab" style={{ background: primary, color: fgOn(primary) }}>
-        <span className="kol-combo-label">Primary</span>
+        <span className="kol-combo-label">PRIMARY</span>
         <LogoSlot logo={logo} size={48} />
         <span className="kol-combo-number">10</span>
       </div>
       <div className="kol-combo-slab" style={{ background: secondary, color: fgOn(secondary) }}>
-        <span className="kol-combo-label">Secondary</span>
+        <span className="kol-combo-label">SECONDARY</span>
         <span className="kol-combo-number">30</span>
       </div>
       <div className="kol-combo-slab" style={{ background: light, color: fgOn(light) }}>
-        <span className="kol-combo-label">Neutral</span>
+        <span className="kol-combo-label">NEUTRAL</span>
         <span className="kol-combo-number">60</span>
       </div>
     </div>
@@ -60,11 +60,11 @@ export function Tower({ palette, logo }) {
     <div className="kol-combo-stage kol-combo-frame kol-combo-stage--tower">
       <div className="kol-combo-slab kol-combo-slab--between" style={{ background: primary, color: fgOn(primary) }}>
         <LogoSlot logo={logo} size={48} />
-        <span className="kol-combo-label">Primary</span>
+        <span className="kol-combo-label">PRIMARY</span>
       </div>
-      {band(secondary, 'Secondary')}
-      {band(light, 'Light')}
-      {band(dark, 'Dark')}
+      {band(secondary, 'SECONDARY')}
+      {band(light, 'LIGHT')}
+      {band(dark, 'DARK')}
     </div>
   )
 }
@@ -76,15 +76,15 @@ export function QuadSplit({ palette, logo }) {
     <div className="kol-combo-stage kol-combo-frame kol-combo-stage--fill kol-combo-stage--quad">
       <div className="kol-combo-slab kol-combo-slab--between" style={{ background: primary, color: fgOn(primary) }}>
         <LogoSlot logo={logo} size={64} />
-        <span className="kol-combo-label">Primary · 50</span>
+        <span className="kol-combo-label">PRIMARY · 50</span>
       </div>
       <div className="kol-combo-quad-col">
         <div className="kol-combo-slab kol-combo-slab--end" style={{ background: light, color: fgOn(light) }}>
-          <span className="kol-combo-label">Light · 25</span>
+          <span className="kol-combo-label">LIGHT · 25</span>
         </div>
         <div className="kol-combo-slab kol-combo-slab--between" style={{ background: dark, color: fgOn(dark) }}>
-          <span className="kol-combo-label" style={{ color: accent }}>Accent</span>
-          <span className="kol-combo-label">Dark · 25</span>
+          <span className="kol-combo-label" style={{ color: accent }}>ACCENT</span>
+          <span className="kol-combo-label">DARK · 25</span>
         </div>
       </div>
     </div>
@@ -105,10 +105,10 @@ export function CardRow({ palette, logo }) {
   )
   return (
     <div className="kol-combo-stage kol-combo-stage--card-row">
-      {card(primary, 'Primary', true)}
-      {card(secondary, 'Secondary')}
-      {card(light, 'Light')}
-      {card(dark, 'Dark')}
+      {card(primary, 'PRIMARY', true)}
+      {card(secondary, 'SECONDARY')}
+      {card(light, 'LIGHT')}
+      {card(dark, 'DARK')}
     </div>
   )
 }
@@ -133,7 +133,7 @@ export function StripeRow({ palette }) {
           <div className="kol-combo-stripe-seg kol-combo-stripe-seg--6" style={{ background: primary }} />
           <div className="kol-combo-stripe-seg kol-combo-stripe-seg--3 kol-combo-stripe-neutral" style={{ background: light }} />
           <div className="kol-combo-stripe-seg kol-combo-stripe-seg--1" style={{ background: accent }} />
-          <span className="kol-combo-stripe-method">Method 01</span>
+          <span className="kol-combo-stripe-method">METHOD 01</span>
         </div>
       </div>
       {/* Method 02 — split-row */}
@@ -151,7 +151,7 @@ export function StripeRow({ palette }) {
             <div className="kol-combo-stripe-seg kol-combo-stripe-seg--1" style={{ background: accent }} />
             <div className="kol-combo-stripe-seg kol-combo-stripe-seg--1" style={{ background: dark }} />
           </div>
-          <span className="kol-combo-stripe-method">Method 02</span>
+          <span className="kol-combo-stripe-method">METHOD 02</span>
         </div>
       </div>
     </div>

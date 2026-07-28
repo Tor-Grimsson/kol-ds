@@ -75,7 +75,6 @@
   font-weight: 500;
   line-height: 100%;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .kol-combo-number {
@@ -198,7 +197,6 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   line-height: 100%;
-  text-transform: uppercase;
   color: white;
   pointer-events: none;
 }
@@ -363,7 +361,6 @@
 
 .kol-combo-swatch-hex {
   font-family: var(--kol-font-family-mono, monospace);
-  text-transform: uppercase;
 }
 
 .kol-combo-summary { margin-top: 16px; }

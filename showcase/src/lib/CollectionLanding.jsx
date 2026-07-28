@@ -54,7 +54,7 @@ function GalleryCard({ item, labels, basePath, previewBase }) {
           <Link to={`${basePath}/${item.key}`} className="block truncate kol-sans-body-02 text-emphasis hover:underline">
             {item.title}
           </Link>
-          <p className="kol-helper-10 uppercase tracking-widest text-meta">
+          <p className="kol-doc-eyebrow">
             {labels[item.category] ?? item.category}
             {' '}
             <ProvenanceBadge itemKey={item.key} basePath={basePath} />
@@ -88,7 +88,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
               {b.title}
               <Icon name="arrow-upright" size={16} className="text-meta transition-colors group-hover:text-emphasis" />
             </Link>
-            <span className="kol-helper-10 uppercase tracking-widest text-meta">
+            <span className="kol-doc-eyebrow">
               {labels[b.category] ?? b.category}
             </span>
             <ProvenanceBadge itemKey={b.key} basePath={basePath} />

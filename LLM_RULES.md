@@ -19,6 +19,22 @@
 
 ---
 
+## 📢 BULLETIN (dated — newest first; prune entries older than a month)
+
+- **2026-07-28 · Icons are v1-only since `kol-icons@0.8.x`.** The legacy trees
+  (stroke/solid/svg/svg-web, ~1,900 SVGs) are GONE from the package. A dead
+  name renders nothing. Hotfix path: grab the SVG from the local shelf
+  `_tmp/legacy-icons/` → the consumer registers it via `registerIcons()` —
+  or promote it into `kol-icon-set-v1` here. Downstream repos break-and-fix
+  on their next bump (user ruling, no compat layer).
+- **2026-07-28 · Type roles + width law shipped.** `kol-doc-*`/`kol-card-*`
+  role sets (theme, `kol-type-roles.css`) — no hand-stacked eyebrow/heading
+  recipes; ONE page frame (`--kol-content-shell`) + framework padding ramp —
+  no page invents widths or padding. Law: `docs/documentation/01-foundations/04-layout-breakpoints.md`,
+  live reference: showcase `/docs/type-roles`.
+
+---
+
 # LLM Agent Onboarding
 
 **kol-design-system** — the maintenance home, npm host, and showcase of the KOL (Kolkrabbi) design system.

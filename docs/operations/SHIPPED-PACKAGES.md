@@ -27,9 +27,9 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.11.22** | Foundation CSS — tokens, type classes, all component chrome; 0.11.9/0.11.10 the `kol-doc-*` (11) + `kol-card-*` (6) type-role sets (footer mono 10/14; 0.11.11 radius law 4px; 0.11.14-19 CodeBlock chrome verbatim from the live reference + doc-body tracking 0.04em + table scroll edge = surface fade only (no shadow); 0.11.20-22 `--kol-content-*` = ONE frame + two caps (shell 1800 · column 768 · measure 65ch; page/wide tiers killed same day — width is content, not page identity)) (`kol-type-roles.css`, prose-twinned furniture, opt-in); 0.11.7 nav opacity ladder | 
+| `@kolkrabbi/kol-theme` | **0.11.23** | Foundation CSS — tokens, type classes, all component chrome; 0.11.9/0.11.10 the `kol-doc-*` (11) + `kol-card-*` (6) type-role sets (footer mono 10/14; 0.11.11 radius law 4px; 0.11.14-19 CodeBlock chrome verbatim from the live reference + doc-body tracking 0.04em + table scroll edge = surface fade only (no shadow); 0.11.20-22 `--kol-content-*` = ONE frame + two caps (shell 1800 · column 768 · measure 65ch; page/wide tiers killed same day — width is content, not page identity)) (`kol-type-roles.css`, prose-twinned furniture, opt-in); 0.11.7 nav opacity ladder | 
 | `@kolkrabbi/kol-icons` | **0.8.4** | `<Icon>` + kol-icon-set-v1 (144 icons / 23 groups; diagonals in their own arrow-diagonal group; 0.8.4 v1 `copy` = the elder glyph, old one retired to the shelf) + `registerIcons` (BYO); 0.8.0 v1-ONLY — legacy stroke/solid/svg/svg-web trees removed (local shelf `_tmp/legacy-icons/`), `variant` prop dropped, 17 promotions in; 0.8.1 keyline conformance — chevrons+carets fit 18×18, expanded redrawn stroke-1.5, arrow family complete: 4 diagonals baked from the downright master; chevron-expanded killed (twin of chevron-up) |
-| `@kolkrabbi/kol-component` | **0.12.5** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.5 CodeBlock REPLICATED from the elder reference (react-syntax-highlighter + oneDark, filename-or-language chip, 32×32 icon copy w/ `copy`→check) |
+| `@kolkrabbi/kol-component` | **0.12.6** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.5 CodeBlock REPLICATED from the elder reference (react-syntax-highlighter + oneDark, filename-or-language chip, 32×32 icon copy w/ `copy`→check); 0.12.6 Figure rides the doc-eyebrow/caption roles |
 | `@kolkrabbi/kol-framework` | **0.5.8** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.5 icon names → v1 (`hamburger`/`x`); 0.5.4 theme state = explicit > system > light; 0.5.8 codeblock chrome moved OUT (home = kol-theme) |
 | `@kolkrabbi/kol-workshop` | **0.1.11** | Docs/workshop system — markdown engine, search, tag graph, docs shell; 0.1.8/0.1.9 the `Doc*` kit over the kol-doc-* roles — DocTable = PRESET over the kol-component Table, unframed flush minimal (0.1.10) |
 | `@kolkrabbi/kol-dashboards` | **0.2.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps = peerDeps + workspace:* devDeps (0.2.1); 0.2.2 icon names → v1 (`book-open`/`bookmark`/`roadmap`/`trending-up`) |
@@ -37,7 +37,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-content` | **0.4.1** | CMS — `/stack` (blog) + `/work` (portfolio) streams; 0.4.1 icon names → v1 (`x`) |
 | `@kolkrabbi/kol-foundry` | **0.5.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.1.1** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.1.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks |
+| `@kolkrabbi/kol-styleguide` | **0.1.1** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks; 0.1.1 no-auto-casing conform (labels authored in caps, CSS transforms dropped) |
 
 ## Clients / brand / tools
 

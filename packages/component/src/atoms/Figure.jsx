@@ -14,14 +14,14 @@
 export default function Figure({ label, caption, aspect = '5/3', className = '', children }) {
   return (
     <figure className={`kol-prose-figure ${className}`.trim()}>
-      {label && <div className="kol-caption-label">{label}</div>}
+      {label && <div className="kol-doc-eyebrow mb-2">{label}</div>}
       <div
         className="border border-fg-08 rounded overflow-hidden"
         style={aspect ? { aspectRatio: aspect } : undefined}
       >
         {children}
       </div>
-      {caption && <figcaption className="kol-caption-text">{caption}</figcaption>}
+      {caption && <figcaption className="kol-doc-caption mt-3">{caption}</figcaption>}
     </figure>
   )
 }

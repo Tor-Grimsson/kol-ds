@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-styleguide",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "KOL style-guide / brand-guide component set — the visual specimens a brand manual is built from: color anatomy + combination lab, logo construction / clearspace / scaling, mood tiles, type blocks, and asset spec tables. Raided from the apps/brand styleguide. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",
