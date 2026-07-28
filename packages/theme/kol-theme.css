@@ -37,6 +37,7 @@
 @import "./kol-typography.css" layer(components);
 @import "./kol-typography-mono.css" layer(components);
 @import "./kol-type-mono-classes.css" layer(components);
+@import "./kol-type-roles.css" layer(components);
 @import "./kol-utilities.css" layer(components);
 @import "./kol-components-atoms.css" layer(components);
 @import "./kol-components-molecules.css" layer(components);
@@ -70,6 +71,14 @@
   --kol-spacing-gap-sm: var(--kol-spacing-2);
   --kol-spacing-gap-md: var(--kol-spacing-4);
   --kol-spacing-gap-lg: var(--kol-spacing-6);
+
+  /* Content widths (2026-07-28) — ONE frame, two inner caps (chess law).
+   * Every page: mx-auto max-w-shell + the one padding rhythm, content
+   * LEFT-ANCHORED inside. Width is a content decision, never a page identity:
+   * column caps reading blocks, measure caps running text. Nothing else. */
+  --kol-content-shell: 1800px;
+  --kol-content-column: 768px;
+  --kol-content-measure: 65ch;
 
   /* Border radius (4px increments) */
   --kol-radius-none: 0;

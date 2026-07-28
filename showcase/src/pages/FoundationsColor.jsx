@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import { resolveCssVar, resolveTokenThemed } from '../lib/resolve-css-var.jsx'
 import { BRAND_COLORS_SECTIONS, UI_COLORS_SECTIONS } from '../data/color.js'
 
@@ -102,7 +102,7 @@ function SystemSection({ section, columnsDict }) {
   return (
     <DocSection id={section.id} title={section.title} lede={section.intro}>
       {section.reasoning && (
-        <div className="kol-prose max-w-[65ch]">
+        <div className="kol-prose max-w-[var(--kol-content-measure)]">
           <p className="text-meta">{section.reasoning}</p>
         </div>
       )}
@@ -128,7 +128,7 @@ const TOC = [...BRAND_COLORS_SECTIONS, ...UI_COLORS_SECTIONS].map((s) => ({
 
 export default function FoundationsColor() {
   return (
-    <DocLayout wide toc={TOC}>
+    <DocLayout toc={TOC}>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Color"

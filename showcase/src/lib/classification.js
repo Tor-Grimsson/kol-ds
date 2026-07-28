@@ -55,6 +55,8 @@ export const TIERS = {
   ShellSidebar: 'atoms', WorkshopDefaultSidebar: 'atoms',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
   ShellLayout: 'organisms', DocumentationReader: 'organisms',
+  /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
+  DocHeader: 'molecules', DocSection: 'molecules', DocTable: 'molecules', DocFigure: 'molecules',
   /* kol-foundry */
   TypefaceLibraryItem: 'atoms', TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
@@ -154,6 +156,7 @@ export const FUNCTIONS_BY_NAME = {
   MetricsDashboard: 'display',
   /* workshop */
   ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display',
+  DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
   /* foundry additions */
   GlyphMetricsSection: 'display', TypefaceLibraryGrid: 'wayfinding',

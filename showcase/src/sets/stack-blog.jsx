@@ -216,7 +216,7 @@ export default function StackBlogSet() {
         objectPosition="center"
       />
 
-      <div className="max-w-[880px] mx-auto px-6 pt-16">
+      <div className="max-w-[var(--kol-content-column)] mx-auto px-6 pt-16">
         <ArticleHeader
           tags={['Typography', 'Systems', 'Craft']}
           title="On Monospace and the Discipline of Constraint"
@@ -242,7 +242,7 @@ export default function StackBlogSet() {
         </div>
       </div>
 
-      <section className="max-w-[1400px] mx-auto px-6 pt-24">
+      <section className="max-w-[var(--kol-content-shell)] mx-auto px-6 pt-24">
         <h2 className="kol-sans-heading-04 pb-8">More from the Stack</h2>
 
         <div className="pb-16">
@@ -255,7 +255,7 @@ export default function StackBlogSet() {
           ))}
         </div>
 
-        <div className="max-w-[720px] flex flex-col gap-8">
+        <div className="max-w-[var(--kol-content-column)] flex flex-col gap-8">
           <h3 className="kol-sans-heading-05 pb-2">Also worth your time</h3>
           {more.map((card) => (
             <ArticleCard key={card.href} size="mini" {...card} />

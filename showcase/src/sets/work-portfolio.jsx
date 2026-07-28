@@ -113,7 +113,7 @@ export default function WorkPortfolioSet() {
         <ParallaxShelf type={{ label: 'Client Work' }} items={PROJECTS} onNavigate={stay} />
       </section>
 
-      <section className="max-w-[1400px] mx-auto w-full">
+      <section className="max-w-[var(--kol-content-shell)] mx-auto w-full">
         <div className="mb-6">
           <p className="kol-mono-12 text-fg-48 tracking-widest mb-2">Selected project</p>
           <h2 className="kol-sans-heading-02 text-auto">{FEATURED.title}</h2>

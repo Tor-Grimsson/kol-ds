@@ -324,7 +324,7 @@ export default function Home() {
         {/* Lede: max-w on the element (so `ch` is measured in its 24px font);
             centre via flex since the kol-prose-* `margin` clobbers mx-auto. */}
         <div className="flex justify-center">
-          <p className="kol-prose-lede max-w-[65ch]">
+          <p className="kol-prose-lede max-w-[var(--kol-content-measure)]">
             A set of source-available React components — inspectors, colour and
             transparency controls, an icon loader, and an opacity token scale.
             Installed from npm, rendered live on this page.
@@ -356,7 +356,7 @@ export default function Home() {
         </p>
         <GhostFlank side="left" />
         <GhostFlank side="right" />
-        <div className="relative z-10 mx-auto max-w-[1400px] gap-5 columns-1 px-5 sm:columns-2 md:px-8 lg:columns-3 xl:columns-4">
+        <div className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 columns-1 sm:columns-2 lg:columns-3 xl:columns-4" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
           {tiles.map((t, i) => (
             <Tile key={`${t.label}-${i}`} label={t.label}>
               {t.node}

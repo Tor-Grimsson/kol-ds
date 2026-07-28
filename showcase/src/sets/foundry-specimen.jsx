@@ -119,7 +119,7 @@ export default function FoundrySpecimenSet() {
 
       {/* Glyph inspector with parsed-metric overlay */}
       <section className="w-full py-12 lg:py-16">
-        <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+        <div className="max-w-[var(--kol-content-shell)] mx-auto flex flex-col gap-8">
           <SpecimenSectionHeader
             label="Glyph Metrics"
             size="sm"
@@ -146,7 +146,7 @@ export default function FoundrySpecimenSet() {
 
       {/* TypeScaleSection recipe */}
       <section className="w-full py-12 lg:py-16">
-        <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+        <div className="max-w-[var(--kol-content-shell)] mx-auto flex flex-col gap-8">
           <SpecimenSectionHeader
             label="Type Scale"
             size="sm"

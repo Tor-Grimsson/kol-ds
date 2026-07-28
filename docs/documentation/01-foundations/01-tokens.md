@@ -2,7 +2,7 @@
 title: Foundations — the token system
 type: reference
 status: active
-updated: 2026-07-16
+updated: 2026-07-28
 description: The token foundation every KOL component is built from — the 14-stop opacity scale (the signature), semantic foregrounds, surface tiers, radii, and shadows.
 aliases:
   - foundations
@@ -56,6 +56,11 @@ Used everywhere: borders (`border-fg-08`), dividers, washes, dimmed text. Utilit
 | `--kol-surface-inverse` | `#FCFBF8` | `#0E0E11` |
 
 Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` — the theme ships **no OS-preference auto-dark**, so an undecided page renders light (user ruling 2026-07-15: light-first until migration completion). **Light is the boot default** on the showcase.
+
+## Content-width tiers (2026-07-28)
+
+`--kol-content-{shell,column,measure}` — 1800/768/65ch: ONE frame per page, two
+inner caps, width is never a page identity. Detail: [[04-layout-breakpoints|layout]].
 
 ## Radius & shadow scales
 

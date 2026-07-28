@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
-import ApiTable from '../lib/ApiTable.jsx'
+import { DocTable } from '@kolkrabbi/kol-workshop'
 import { DEMOS } from '../lib/demos-registry.js'
 import { Link } from 'react-router-dom'
 import { getComponentBySlug, CATEGORY_LABELS, COMPONENTS_AZ, slugify } from '../lib/registry.js'
@@ -161,7 +161,7 @@ export default function ComponentPage() {
 
       {api.length > 0 && (
         <DocSection id="api" title="API Reference">
-          <ApiTable rows={api} />
+          <DocTable rows={api} />
         </DocSection>
       )}
 

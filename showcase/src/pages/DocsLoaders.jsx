@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Graphic } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
-import ApiTable from '../lib/ApiTable.jsx'
+import { DocTable } from '@kolkrabbi/kol-workshop'
 
 /**
  * Docs · Loaders — Icon and Graphic are functional infrastructure, not
@@ -36,15 +36,14 @@ export default function DocsLoaders() {
         lede="A component is a visual UI element with its own anatomy. A loader is a registry lookup: it has an inventory, a resolution order, and a size prop. Docs treatment follows Shell & Layout's precedent — infrastructure lives in Docs; the galleries stay visual."
       >
         <p className="kol-sans-body-02 text-body">
-          Browse the inventories on <Link className="text-emphasis underline" to="/icons">Icons</Link> and{' '}
-          <Link className="text-emphasis underline" to="/icons">kol-icon-set-v1</Link>.
+          Browse the set on <Link className="text-emphasis underline" to="/icons">Icons</Link>.
         </p>
       </DocSection>
 
       <DocSection
         id="icon"
         title="Icon"
-        lede="From @kolkrabbi/kol-icons. Resolves a filename-derived name across the canonical stroke set, the solid set, the legacy loader set, and the web app set — in that order, so the canonical cut always wins."
+        lede="From @kolkrabbi/kol-icons. Resolves a name from consumer-registered SVGs first, then kol-icon-set-v1 — the whole chain since 0.8.0 (legacy sets removed); a miss renders nothing."
       >
         <PreviewCard>
           <div className="flex items-center gap-4">
@@ -54,10 +53,9 @@ export default function DocsLoaders() {
             <Icon name="social-github" size={18} />
           </div>
         </PreviewCard>
-        <ApiTable
+        <DocTable
           rows={[
             { prop: 'name', type: 'string', def: '—', desc: 'SVG filename without extension.' },
-            { prop: 'variant', type: "'stroke' | 'solid'", def: "'stroke'", desc: 'Preferred cut; falls back to the other, then legacy sets.' },
             { prop: 'size', type: 'number | string', def: '16', desc: 'Rendered box size.' },
             { prop: 'className / style', type: 'string / object', def: '—', desc: 'Pass-through styling.' },
           ]}
@@ -82,7 +80,7 @@ export default function DocsLoaders() {
         title="Data exports"
         lede="The loaders ship their inventories as data — these are maps and lists, not components, and never get doc pages."
       >
-        <ApiTable
+        <DocTable
           rows={[
             { prop: 'KOL_ICON_SET_V1 / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it.' },
             { prop: 'KOL_ICON_SET_V1_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS aliases it.' },

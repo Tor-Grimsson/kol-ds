@@ -7,10 +7,10 @@ import DemoStage from './DemoStage.jsx'
  * Code tab shows the demo file's own ?raw source. Used by component pages
  * and blocks — one card, everywhere.
  */
-export default function PreviewCard({ entry, minH = 'min-h-[20rem]' }) {
+export default function PreviewCard({ entry, minH = 'min-h-[20rem]', children }) {
   const [tab, setTab] = useState('preview')
   return (
-    <div className="overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-12">
+    <div className="kol-doc-figure">
       <div className="flex items-center gap-1 border-b border-fg-12 px-3 py-2">
         {['preview', 'code'].map((t) => (
           <button
@@ -27,7 +27,7 @@ export default function PreviewCard({ entry, minH = 'min-h-[20rem]' }) {
         <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>
           {entry?.Component ? (
             <DemoStage entry={entry} />
-          ) : (
+          ) : children || (
             <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
           )}
         </div>

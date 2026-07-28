@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Tag } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader from '../lib/DocHeader.jsx'
+import { DocHeader } from '@kolkrabbi/kol-workshop'
 import DemoStage from '../lib/DemoStage.jsx'
 import { groupComponents, FUNCTIONS, TOTAL, WITH_DEMOS } from '../lib/registry.js'
 import { useGrouping } from '../lib/grouping.jsx'
@@ -76,7 +76,7 @@ export default function Components() {
   const toc = grouped.map(([key, label]) => ({ id: key, label }))
 
   return (
-    <DocLayout wide toc={toc}>
+    <DocLayout toc={toc}>
       <DocHeader
         eyebrow="KOL · Components"
         title="Components"

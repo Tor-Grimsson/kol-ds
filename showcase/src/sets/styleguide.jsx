@@ -162,7 +162,7 @@ const ASSET_ROWS = [
 function Section({ title, children }) {
   return (
     <section className="w-full py-12 lg:py-16">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-8">
+      <div className="mx-auto flex max-w-[var(--kol-content-shell)] flex-col gap-8">
         <h2 className="kol-sans-heading-04 text-auto">{title}</h2>
         {children}
       </div>

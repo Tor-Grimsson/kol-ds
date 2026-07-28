@@ -129,7 +129,7 @@ export default function CollectionLanding({
         </div>
         <h1 className="kol-prose-display">{hero.title}</h1>
         <div className="flex justify-center">
-          <p className="kol-prose-lede max-w-[65ch]">{hero.lede}</p>
+          <p className="kol-prose-lede max-w-[var(--kol-content-measure)]">{hero.lede}</p>
         </div>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Button variant="primary" iconRight="arrow-right" onClick={() => setTab('all')}>
@@ -142,7 +142,7 @@ export default function CollectionLanding({
       </section>
 
       {/* ── Category tab strip + Browse all ──────────────────── */}
-      <div className="mx-auto max-w-[1400px] px-5 md:px-8">
+      <div className="mx-auto max-w-[var(--kol-content-shell)]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-fg-08 pb-4">
           <nav className="flex flex-wrap items-center gap-5 kol-sans-body-02">
             {tabs.map((t) => (

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import DocHeader from '../lib/DocHeader.jsx'
+import { DocHeader } from '@kolkrabbi/kol-workshop'
 import { Icon, KOL_ICON_SET_V1 } from '@kolkrabbi/kol-icons'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
 import DocLayout from '../lib/DocLayout.jsx'
@@ -87,7 +87,7 @@ export default function Icons() {
   const rowProps = useMemo(() => ({ size, bgLight, gridOverlay, copied, onCopy: copy }), [size, bgLight, gridOverlay, copied])
 
   return (
-    <DocLayout wide>
+    <DocLayout>
       <DocHeader
         eyebrow="KOL · Icons"
         title="Icons"

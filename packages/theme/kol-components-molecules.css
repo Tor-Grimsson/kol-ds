@@ -447,3 +447,63 @@
   );
   box-shadow: 0 0 0 1px var(--kol-fg-32);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * CodeBlock — molecules/CodeBlock.jsx (chrome REPLICATED from the elder
+ * reference build, 2026-07-28; moved here from kol-framework.css — theme
+ * is chrome's home). Text metrics/colors come from the component's oneDark
+ * overrides (14px/1.6); this is frame + chip + copy button only.
+ * ──────────────────────────────────────────────────────────────────── */
+.kol-codeblock-wrapper {
+  margin-block: 1.5rem;
+}
+
+.kol-codeblock {
+  /* verbatim from the reference build's rule (user DevTools, 2026-07-28) */
+  background: var(--kol-surface-tertiary);
+  border: 1px solid var(--kol-border-default);
+  font-family: var(--kol-font-family-mono);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border-radius: 4px;
+  padding: 1rem;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: auto;
+}
+
+/* the ONE chip — filename if present, else the language. In-flow above the
+ * code. VERBATIM from the live reference build (index-Bro9Jnn6.css). */
+.kol-codeblock-filename {
+  font-family: var(--kol-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 40%, transparent);
+  margin-block-end: 0.75rem;
+}
+
+/* icon copy button — VERBATIM from the live reference build: 16px icon +
+ * 0.5rem padding = the 32×32 box, offset 0.75rem into the 1rem pad. */
+.kol-codeblock-copy {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 2%, transparent);
+  border: none;
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.kol-codeblock-copy:hover {
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  color: var(--kol-surface-on-primary);
+}

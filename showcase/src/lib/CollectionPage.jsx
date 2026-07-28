@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import DocLayout from './DocLayout.jsx'
-import DocHeader from './DocHeader.jsx'
+import { DocHeader } from '@kolkrabbi/kol-workshop'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
@@ -36,7 +36,7 @@ function ComponentSpecimen({ name, local = false }) {
   const tag = local ? 'LOCAL PART' : fn
 
   return (
-    <div className="overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-08 bg-surface-primary">
+    <div className="overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-08 bg-surface-primary">
       <div className="flex items-center justify-between border-b border-fg-08 px-4 py-2.5">
         <div className="flex items-center gap-3">
           <span className="kol-mono-13 text-emphasis">{name}</span>
@@ -50,7 +50,7 @@ function ComponentSpecimen({ name, local = false }) {
         <ErrorBoundary>
           {demo
             ? <DemoStage entry={demo} />
-            : <p className="max-w-[65ch] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
+            : <p className="max-w-[var(--kol-content-measure)] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
         </ErrorBoundary>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
   const next = items[i + 1]
 
   return (
-    <DocLayout wide>
+    <DocLayout>
       <DocHeader
         eyebrow={`${eyebrow} · ${labels[entry.category] ?? entry.category}`}
         title={entry.title}

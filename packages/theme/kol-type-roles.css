@@ -1,0 +1,253 @@
+/**
+ * kol-type-roles.css — the DOC + CARD role sets (2026-07-28 epic).
+ *
+ * Two opt-in role families that end per-repo re-derivation of the same stacks:
+ *
+ *   .kol-doc-*  — content/doc chrome roles (eyebrow → footer). The docs-scale
+ *                 ramp: quieter than the editorial .kol-prose-* head family
+ *                 (label/display/title/lede), which stays the long-form voice.
+ *   .kol-card-* — card text roles (title/kicker/meta/excerpt/value/tag),
+ *                 grounded in the shipped card families (ArticleCard et al).
+ *
+ * ONE RULE, TWO ENTRY POINTS (the epic's law): content-furniture roles carry a
+ * `.kol-prose <tag>` twin selector so generated markdown/CMS markup and
+ * authored divs resolve to the SAME rule. Head roles (eyebrow/heading/lede/…)
+ * are deliberately NOT twinned — prose's editorial head sizes differ by
+ * design, and prose h1-h6 stay pixel-frozen in kol-typography.css.
+ * Prose gains table/figure styling here for the first time (pure addition).
+ *
+ * Everything is opt-in: inert until markup references a class.
+ */
+
+/* =============================================================================
+ * DOC SET — 11 roles
+ * ============================================================================= */
+
+/* eyebrow — the overline label above a title ("KOL · ICONS"). Single-line
+ * chrome → helper ramp (line-height 1); never carries paragraphs. */
+.kol-doc-eyebrow {
+  font-family: var(--kol-font-family-mono);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kol-fg-meta);
+}
+
+/* heading — the page H1 of doc chrome (matches the DocHeader contract). */
+.kol-doc-heading {
+  font-family: var(--kol-font-family-sans-compact);
+  font-size: var(--kol-text-heading-03);
+  line-height: 120%;
+  font-weight: 500;
+  color: var(--kol-fg-emphasis);
+}
+
+/* section title — the anchored section H2 (DocSection contract). */
+.kol-doc-section-title {
+  font-family: var(--kol-font-family-sans-compact);
+  font-size: var(--kol-text-heading-04);
+  line-height: 100%;
+  font-weight: 500;
+  color: var(--kol-fg-emphasis);
+}
+
+/* lede — the descriptive paragraph under a heading. +0.04em tracking (user-tuned up from the prose 0.02em). */
+.kol-doc-lede {
+  font-family: var(--kol-font-family-sans);
+  font-size: var(--kol-text-body-01);
+  line-height: 160%;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--kol-fg-body);
+  max-width: var(--kol-content-measure);
+}
+
+/* body — doc running copy one rung under the lede. Running text self-caps
+ * at the measure (one-frame law: text never runs the full shell). */
+.kol-doc-body {
+  font-family: var(--kol-font-family-sans);
+  font-size: var(--kol-text-body-02);
+  line-height: 160%;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--kol-fg-body);
+  max-width: var(--kol-content-measure);
+}
+
+/* ── Content furniture — twinned with prose (one rule, two entry points) ── */
+
+/* code block */
+.kol-prose pre,
+.kol-doc-code {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;             /* matches CodeBlock's reference voice (14/1.6) */
+  font-weight: 400;
+  line-height: 1.6;
+  padding: 16px 20px;
+  background: var(--kol-fg-04);
+  border-radius: var(--kol-radius-sm);
+  overflow-x: auto;
+}
+.kol-doc-code { margin: 0; }
+.kol-prose pre { margin: 24px 0; }   /* prose keeps its editorial block rhythm */
+
+/* inline code */
+.kol-prose code,
+.kol-doc-code-inline {
+  font-family: var(--kol-font-family-mono);
+  font-size: 0.875em;
+  font-weight: 400;
+  background: var(--kol-fg-04);
+  padding: 0.1em 0.35em;
+  border-radius: var(--kol-radius-sm);
+}
+/* code inside pre stays stripped (rule preserved from the prose sheet) */
+.kol-prose pre code,
+.kol-doc-code code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+/* table — the ApiTable contract generalised: body-02 cells, helper-10 header
+ * row, mono for value-ish cells via .kol-doc-table-value on the td. */
+.kol-prose table,
+.kol-doc-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-family: var(--kol-font-family-sans);
+  font-size: var(--kol-text-body-02);
+  line-height: 160%;
+  font-weight: 400;
+}
+.kol-prose thead tr,
+.kol-doc-table thead tr {
+  border-bottom: 1px solid var(--kol-fg-12);
+}
+.kol-prose th,
+.kol-doc-table th {
+  font-family: var(--kol-font-family-mono);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kol-fg-meta);
+  padding: 10px 16px;
+}
+.kol-prose td,
+.kol-doc-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--kol-fg-08);
+  vertical-align: top;
+  color: var(--kol-fg-body);
+}
+.kol-prose tbody tr:last-child td,
+.kol-doc-table tbody tr:last-child td { border-bottom: 0; }
+.kol-doc-table td.kol-doc-table-value {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+.kol-doc-table td.kol-doc-table-value--wrap { white-space: normal; }
+
+/* figure — the framed content container (preview cards, embedded media). */
+.kol-prose figure,
+.kol-doc-figure {
+  margin: 0;
+  border: 1px solid var(--kol-fg-12);
+  border-radius: var(--kol-radius-sm);   /* 4px — THE radius law */
+  overflow: hidden;
+}
+
+/* caption */
+.kol-prose figcaption,
+.kol-doc-caption {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--kol-fg-meta);
+}
+
+/* footer — wrappable closing chrome (attributions, notes, updated-lines).
+ * Mono ramp BY LAW: helper is line-height-1 single-line chrome and never
+ * carries wrapping text. */
+.kol-prose footer,
+.kol-doc-footer {
+  font-family: var(--kol-font-family-mono);
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--kol-fg-meta);
+}
+
+/* =============================================================================
+ * CARD SET — 6 roles. Grounded in the shipped card families: mono body voice,
+ * helper kickers/meta, compact sans titles.
+ * ============================================================================= */
+
+.kol-card-title {
+  font-family: var(--kol-font-family-sans-compact);
+  font-size: var(--kol-text-heading-05);
+  line-height: 125%;
+  font-weight: 500;
+  color: var(--kol-fg-emphasis);
+}
+
+.kol-card-kicker {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--kol-fg-64);
+}
+
+.kol-card-meta {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--kol-fg-48);
+}
+
+/* excerpt — clamped card copy; lines via --kol-card-excerpt-lines (default 3) */
+.kol-card-excerpt {
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--kol-fg-48);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--kol-card-excerpt-lines, 3);
+  overflow: hidden;
+}
+
+.kol-card-value {
+  font-family: var(--kol-font-family-mono);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  color: var(--kol-fg-emphasis);
+}
+
+.kol-card-tag {
+  font-family: var(--kol-font-family-mono);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kol-fg-48);
+}

@@ -22,7 +22,7 @@ const docHref = (id) => `${basePath}/${id}`
 
 function Wall() {
   return (
-    <div className="max-w-[1600px] mx-auto px-6 py-8 space-y-10">
+    <div className="max-w-[var(--kol-content-shell)] mx-auto space-y-10" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {rendered.map((d) => (
           <Link key={d.id} to={docHref(d.id)} className="block">
@@ -48,7 +48,7 @@ function Wall() {
 
 function SpecView() {
   return (
-    <div className="max-w-[900px] mx-auto px-6 py-8">
+    <div className="max-w-[var(--kol-content-column)] mx-auto" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
       <DocumentationReader
         inventory={inventory}
         modules={modules}

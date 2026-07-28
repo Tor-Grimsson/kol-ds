@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import Swatch from '../lib/Swatch.jsx'
 import { TOTAL } from '../lib/registry.js'
 import {
@@ -53,7 +53,7 @@ export default function Foundations() {
   const val = (t) => resolved[t]
 
   return (
-    <DocLayout wide toc={TOC}>
+    <DocLayout toc={TOC}>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Foundations"

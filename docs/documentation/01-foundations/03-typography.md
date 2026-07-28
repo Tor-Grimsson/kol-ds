@@ -2,7 +2,7 @@
 title: Type classes — the two families and when to use which
 type: reference
 status: active
-updated: 2026-07-16
+updated: 2026-07-28
 description: The kol type-class inventory split by its real fault line — line-height-bearing sets for anything that can wrap vs the line-height-1 helper scale for single-line chrome — with the full class table and the 2026-07-02 conformance conversions as worked examples.
 aliases:
   - type-classes
@@ -31,6 +31,14 @@ Every piece of text in a KOL component uses a `kol-*` type class — never frees
 The quick test: *can this string ever wrap?* Yes → line-height set. No (structurally single-line) → helper.
 
 ## Inventory
+
+### Role sets — `kol-doc-*` + `kol-card-*` (2026-07-28, `kol-type-roles.css`)
+
+Opt-in role families over the scales below — see [[../../operations/2026-07-28-doc-card-sets|the doc+card sets plan]].
+**Doc set** (11): `kol-doc-{eyebrow,heading,section-title,lede,body,code,code-inline,table,figure,caption,footer}` — doc-chrome ramp; the content-furniture roles (code/table/figure/caption/footer) are twin-selectored with `.kol-prose` bare tags (one rule, two entry points; prose code rules moved there, prose gains table/figure styling).
+**Card set** (6): `kol-card-{title,kicker,meta,excerpt,value,tag}` — the shared card text ramp (mono voice, compact titles, clamp knob `--kol-card-excerpt-lines`).
+Head roles are deliberately NOT twinned with prose — the editorial `.kol-prose-*` head family stays its own scale.
+
 
 ### Helper scale — mono, weight 500, `line-height: 1`, letter-spaced
 

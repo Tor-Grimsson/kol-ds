@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
 

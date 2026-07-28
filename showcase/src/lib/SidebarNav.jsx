@@ -24,6 +24,7 @@ export const DOCS = [
   { to: '/docs/shell-and-layout', label: 'Shell & Layout' },
   { to: '/docs/menus', label: 'Menus' },
   { to: '/docs/loaders', label: 'Loaders' },
+  { to: '/docs/type-roles', label: 'Type roles' },
   { to: '/workshop-docs', label: 'Workshop shell ↗' },
 ]
 

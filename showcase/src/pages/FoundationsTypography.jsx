@@ -1,7 +1,7 @@
 import { createRef } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import { LiveValue, LiveClassValue, LiveNodeValue, LiveNodeFace } from '../lib/resolve-css-var.jsx'
 import { TYPOGRAPHY_SECTIONS } from '../data/typography.js'
 
@@ -125,7 +125,7 @@ function SystemSection({ section, columnsDict }) {
   return (
     <DocSection id={section.id} title={section.title} lede={section.intro}>
       {section.reasoning && (
-        <div className="kol-prose max-w-[65ch]">
+        <div className="kol-prose max-w-[var(--kol-content-measure)]">
           <p className="text-meta">{section.reasoning}</p>
         </div>
       )}
@@ -148,7 +148,7 @@ const TOC = TYPOGRAPHY_SECTIONS.map((s) => ({ id: s.id, label: s.title }))
 
 export default function FoundationsTypography() {
   return (
-    <DocLayout wide toc={TOC}>
+    <DocLayout toc={TOC}>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Typography"

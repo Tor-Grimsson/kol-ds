@@ -52,13 +52,13 @@
    * cut-off data on narrow viewports. Edge shadows appear only on the
    * scrollable side (surface-colored covers ride the content and mask them
    * at the extremes). */
+  /* scroll edges: surface-colored FADE only — no shadow band (user ruling
+   * 2026-07-28: the content dissolves into the background, no 3d edge) */
   background:
     linear-gradient(to right, var(--kol-surface-primary) 40%, transparent) left / 32px 100%,
-    linear-gradient(to left, var(--kol-surface-primary) 40%, transparent) right / 32px 100%,
-    linear-gradient(to right, var(--kol-fg-16), transparent) left / 14px 100%,
-    linear-gradient(to left, var(--kol-fg-16), transparent) right / 14px 100%;
+    linear-gradient(to left, var(--kol-surface-primary) 40%, transparent) right / 32px 100%;
   background-repeat: no-repeat;
-  background-attachment: local, local, scroll, scroll;
+  background-attachment: local, local;
 }
 
 .kol-table-wrapper::-webkit-scrollbar { display: none; }

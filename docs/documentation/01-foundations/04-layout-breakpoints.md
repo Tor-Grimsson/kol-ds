@@ -2,12 +2,13 @@
 title: Foundations — layout & breakpoints
 type: reference
 status: active
-updated: 2026-07-07
-description: The one breakpoint law for showcase-owned surfaces — Tailwind scale only, two content caps, one chrome reveal, canonical grid collapse points, one prose measure.
+updated: 2026-07-28
+description: The one layout law — ONE shell frame (1800) on every page, content left-anchored, two inner caps only (column 768, measure 65ch); one padding rhythm; Tailwind-scale breakpoints.
 aliases:
   - breakpoints
   - layout-law
 sources:
+  - packages/theme/kol-theme.css
   - showcase/src/lib/DocLayout.jsx
   - showcase/src/lib/TopBar.jsx
   - showcase/src/lib/CollectionLanding.jsx
@@ -33,14 +34,23 @@ breakpoint systems.
 `xl` 1280 · `2xl` 1536. No custom pixel media queries, no desktop-first
 `max-width` queries in showcase-owned code.
 
-## Content caps — exactly two
+## Content-width tiers (2026-07-28 — supersedes the two-cap law)
 
-| Cap | Class | Used by |
-| --- | --- | --- |
-| Reading column | `max-w-3xl` (`max-w-5xl` when `wide`) | `DocLayout` — every docs page |
-| Gallery frame | `max-w-[1400px]` | Landing walls (Home, Blocks, Sets), collection galleries |
+THE page-width system, tokenized in `kol-theme.css` (user-approved, modeled on
+the chess app's one-container discipline). No page invents a width number.
 
-No other page-level max-width. `1600`, `1800`, `1232` are retired.
+| Tier | Token | Value | For |
+|---|---|---|---|
+| shell | `--kol-content-shell` | 1800px | THE outer page container |
+| page | `--kol-content-page` | 1400px | galleries, indexes, Home, styleguide surfaces |
+| wide | `--kol-content-wide` | 1024px | specimen/table-heavy doc pages |
+| column | `--kol-content-column` | 768px | reading columns — docs, articles, workshop |
+| measure | `--kol-content-measure` | 65ch | running-text cap inside any tier |
+
+Usage: `max-w-[var(--kol-content-page)]` in JSX, `max-width: var(--kol-content-*)`
+in chrome CSS. `DocLayout` takes `width="column|wide|page"` (the `wide` boolean
+is a legacy alias). Full-bleed surfaces (chess stage, block previews) use no
+cap. **The padding rhythm is the kol-framework ramp** — `padding: var(--kol-pad-section-y) var(--kol-pad-section-x)` (x: 20 → 32 @768 → 48 @1024 · y: 48 → 64 → 80). No Tailwind padding steps on page containers; the tokens carry the responsive ramp.
 
 ## Chrome reveal — one breakpoint
 

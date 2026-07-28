@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import DocLayout from '../lib/DocLayout.jsx'
-import DocHeader, { DocSection } from '../lib/DocHeader.jsx'
+import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
-import ApiTable from '../lib/ApiTable.jsx'
+import { DocTable } from '@kolkrabbi/kol-workshop'
 import { DEMOS } from '../lib/demos-registry.js'
 import { DOC_DATA } from '../lib/component-docs.js'
 
@@ -88,7 +88,7 @@ export default function DocsShellLayout() {
         lede="The portal chrome: SideNav + mobile drawer (hamburger, backdrop, Escape) + ModalProvider around the route Outlet. Give it a navTree and an active-page resolver."
       >
         <pre className="kol-mono-12 overflow-x-auto rounded-[var(--kol-radius-sm)] border border-fg-08 bg-fg-04 px-3 py-2.5 text-fg">{DOC_DATA.AppShell.usage}</pre>
-        <ApiTable rows={DOC_DATA.AppShell.api} />
+        <DocTable rows={DOC_DATA.AppShell.api} />
       </DocSection>
 
       <DocSection

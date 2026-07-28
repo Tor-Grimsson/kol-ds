@@ -1,27 +1,122 @@
-import CopyButton from '../atoms/CopyButton.jsx'
+import { useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
- * CodeBlock — a chrome'd code block with language chip, filename chip, and copy.
+ * CodeBlock — REPLICATED from the elder reference
+ * (kol-website/packages/ui/src/molecules/CodeBlock.jsx, 2026-07-28 user
+ * mandate): react-syntax-highlighter (Prism) with the oneDark theme flattened
+ * onto KOL chrome — transparent bg, 14px/1.6 mono, no text-shadow — a single
+ * filename-or-language chip, and a 32×32 icon copy button (`copy` glyph →
+ * check on copied). Chrome lives in kol-theme (kol-components-molecules.css).
  *
- * Accepts three input shapes (first match wins per field):
- *   • Portable Text: `value={{ code, language, filename }}` — the Sanity code-block
- *     object can be passed straight through from a portable-text map.
- *   • Direct props: `code` / `language` / `filename`.
- *   • Children: `<CodeBlock language="js">{'…'}</CodeBlock>` (the original API).
- *
- * DOM order is copy → filename → lang → pre so the `.kol-codeblock-*` + pre
- * adjacency rules in the chrome CSS can pad the pre when chips are present.
+ * Input shapes (first match wins per field):
+ *   • Portable Text: `value={{ code, language, filename }}`
+ *   • Direct props: `code` / `language` / `filename`
+ *   • Children: `<CodeBlock language="js">{'…'}</CodeBlock>`
  */
-export default function CodeBlock({ children, code, language, filename, value }) {
-  const src = code ?? value?.code ?? children
-  const lang = language ?? value?.language
-  const file = filename ?? value?.filename
+
+const CheckMarkIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19.4697 6.41987C19.7626 6.12697 20.2373 6.12697 20.5302 6.41987C20.8231 6.71276 20.8231 7.18752 20.5302 7.48041L10.9443 17.0663C9.87038 18.1401 8.12951 18.1401 7.05561 17.0663L3.46967 13.4804C3.17678 13.1875 3.17678 12.7128 3.46967 12.4199C3.76256 12.127 4.23732 12.127 4.53022 12.4199L8.11615 16.0058C8.60427 16.4938 9.39561 16.4938 9.88373 16.0058L19.4697 6.41987Z" fill="currentColor"/>
+  </svg>
+)
+
+const syntaxTheme = (foregroundToken = 80) => ({
+  ...oneDark,
+  'pre[class*="language-"]': {
+    ...oneDark['pre[class*="language-"]'],
+    background: 'transparent',
+    margin: 0,
+    padding: 0,
+    fontSize: '14px',
+    lineHeight: '1.6',
+    textShadow: 'none',
+    letterSpacing: '0',
+    overflow: 'visible',
+    border: 'none',
+    borderRadius: 0,
+    color: `color-mix(in srgb, var(--kol-surface-on-primary) ${foregroundToken}%, transparent)`
+  },
+  'code[class*="language-"]': {
+    ...oneDark['code[class*="language-"]'],
+    background: 'transparent',
+    fontFamily: 'var(--kol-font-family-mono)',
+    fontSize: '14px',
+    textShadow: 'none',
+    letterSpacing: '0',
+    textDecoration: 'none',
+    display: 'block',
+    borderRadius: 0,
+    border: 'none',
+    color: `color-mix(in srgb, var(--kol-surface-on-primary) ${foregroundToken}%, transparent)`
+  },
+  comment: {
+    ...oneDark['comment'],
+    fontStyle: 'normal'
+  }
+})
+
+export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value }) {
+  const [copied, setCopied] = useState(false)
+
+  const code = String(value?.code ?? codeProp ?? children ?? '')
+  const language = value?.language ?? languageProp ?? 'text'
+  const filename = value?.filename ?? filenameProp
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      /* clipboard blocked — silent */
+    }
+  }
+
   return (
-    <div className="kol-codeblock">
-      <CopyButton text={String(src ?? '')} className="kol-codeblock-copy" />
-      {file && <span className="kol-codeblock-filename">{file}</span>}
-      {lang && <span className="kol-codeblock-lang">{lang}</span>}
-      <pre><code>{src}</code></pre>
+    <div className="kol-codeblock-wrapper">
+      <div className="kol-codeblock">
+        {(filename || (language && language !== 'text')) && (
+          <div className="kol-codeblock-filename">{filename || language}</div>
+        )}
+        <SyntaxHighlighter
+          language={language}
+          style={syntaxTheme(80)}
+          customStyle={{
+            margin: 0,
+            padding: 0,
+            background: 'transparent',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+            overflow: 'visible',
+            height: 'auto',
+            maxHeight: 'none',
+          }}
+          wrapLines={true}
+          wrapLongLines={true}
+          PreTag="div"
+          lineProps={{
+            style: {
+              border: 'none',
+              background: 'transparent',
+              display: 'block',
+            }
+          }}
+        >
+          {code}
+        </SyntaxHighlighter>
+        <button
+          type="button"
+          className="kol-codeblock-copy"
+          onClick={handleCopy}
+          aria-label={copied ? 'Code copied!' : 'Copy code'}
+          title={copied ? 'Code copied!' : 'Copy code'}
+        >
+          {copied ? <CheckMarkIcon /> : <Icon name="copy" size={16} />}
+        </button>
+      </div>
     </div>
   )
 }
