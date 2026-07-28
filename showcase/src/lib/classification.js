@@ -40,6 +40,9 @@ export const TIERS = {
   ChessBoardWithSidebar: 'organisms', ChessBoardFullscreen: 'organisms',
   ChessSidebar: 'organisms', GameArchiveTable: 'organisms', AlternativeControlsMock: 'organisms',
   ChessHero: 'organisms',
+  /* rail blocks — AlternativeControlsMock's parts, barrel-exported 0.5.2 */
+  SetupPanel: 'molecules', PiecePalette: 'molecules', GamePicker: 'molecules',
+  MaterialSummary: 'molecules',
   /* kol-dashboards */
   DashMetricCard: 'atoms', DashStackedBarCard: 'atoms', DashSlotCard: 'atoms',
   Sparkline: 'atoms', DashboardGrid: 'atoms', GridCard: 'atoms', DashTooltip: 'atoms',
@@ -139,6 +142,8 @@ export const FUNCTIONS_BY_NAME = {
   GameArchiveTable: 'display', NotationPanel: 'display',
   PlaybackControls: 'action', VariationTree: 'display', AlternativeControlsMock: 'action',
   ChessPiece: 'media', ChessHero: 'display',
+  SetupPanel: 'action', PiecePalette: 'input', GamePicker: 'input',
+  MaterialSummary: 'display', useChessKeyboardShortcuts: 'utility',
   /* dashboards */
   DashMetricCard: 'display', DashStackedBarCard: 'display', DashChartCard: 'display',
   DashListCard: 'display', DashFeaturedCard: 'display', DashAlertCard: 'feedback',
