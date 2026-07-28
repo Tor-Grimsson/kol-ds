@@ -297,6 +297,32 @@
   }
 }
 
+/* Navigation (2026-07-28, user-ordered) — chrome for links that move between
+ * pages, not tool actions. SQUARE container: padding = the rung's vertical pad
+ * on all four sides (sm 24 / md 30 / lg 36 outer — the text-button height of
+ * the same rung, so mixed bars line up). Quiet states: rest dimmed, hover the
+ * ghost wash, and ACTIVE keys off aria-current="page" (NavLink sets it
+ * natively) — brighter glyph on a faint wash, never the pressed fill;
+ * navigation is location, not a toggled tool. */
+.kol-btn-nav {
+  background: transparent;
+  color: var(--kol-oq-48);
+  border: 1px solid transparent;
+}
+@media (hover: hover) {
+  .kol-btn-nav:not(.kol-btn-animate):hover {
+    background-color: var(--kol-oq-04);
+    color: var(--kol-surface-on-primary);
+  }
+}
+.kol-btn-nav[aria-current="page"] {
+  background-color: var(--kol-oq-08);
+  color: var(--kol-surface-on-primary);
+}
+.kol-btn-nav.kol-btn-sm { padding: 4px; }
+.kol-btn-nav.kol-btn-md { padding: 6px; }
+.kol-btn-nav.kol-btn-lg { padding: 8px; }
+
 /* Grey (2026-07-15, user-ordered) — pill-subtle's visual weight as a real
  * Button variant on the opaque tier: rest oq-12, hover/active one stop past
  * each, same state math as the rest of the family. */

@@ -6,8 +6,9 @@ import { useTheme } from './theme.js'
  *
  * Variants:
  *   icon     — icon-only button on the DS button ladder: `size` 'sm'|'md'|'lg'
- *              → 14/16/18px glyph, box + hover from the ghost .kol-btn chrome,
- *              so the toggle sizes exactly like sibling icon buttons in a bar.
+ *              → 14/16/18px glyph, square box + quiet states from the
+ *              .kol-btn-nav chrome (theme ≥0.11.4), so the toggle sits flush
+ *              with sibling navigation buttons in a bar.
  *   hop      — full-width labeled Button-primary-styled sidenav row
  *              (bg-fg-04, on-primary text). For sidenav rows where it pairs
  *              with other Button-primary "hop" entries.
@@ -80,7 +81,7 @@ export default function ThemeToggle({ variant = 'icon', size = 'md', className =
       onClick={handleToggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className={`kol-btn kol-btn-ghost kol-btn-${size} kol-btn-icon ${className}`.trim()}
+      className={`kol-btn kol-btn-nav kol-btn-${size} kol-btn-icon ${className}`.trim()}
     >
       {iconSwap(glyph)}
     </button>
