@@ -27,7 +27,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.11.4** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.4 adds `.kol-btn-nav` — the navigation-button variant (square ladder box, quiet states, active via `aria-current="page"`); 0.11.3 made link blue opt-in `.kol-link` |
+| `@kolkrabbi/kol-theme` | **0.11.5** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.5 makes icon-only SQUARE in every variant (`.kol-btn-icon` geometry override, sm 24/md 30/lg 36); 0.11.4 added `.kol-btn-nav`; 0.11.3 made link blue opt-in `.kol-link` |
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.5.3** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.3 ThemeToggle icon variant on `.kol-btn-nav` (square, quiet — needs theme ≥0.11.4); 0.5.2 put it on the ladder (`size` sm/md/lg) |
