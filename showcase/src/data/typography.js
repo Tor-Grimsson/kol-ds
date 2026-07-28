@@ -88,6 +88,7 @@ const proseRows = [
   { role: 'Label',       class: '.kol-prose-label',          family: 'mono',         weight: 500 },
   { role: 'Code (inline)',class: '.kol-prose code',          family: 'mono',         weight: 400 },
   { role: 'Code (block)', class: '.kol-prose pre',           family: 'mono',         weight: 400 },
+  { role: 'List item',    class: '.kol-prose ul li',         family: 'sans (base)',  weight: 300 },
 ]
 
 /* ============================================================================
@@ -207,7 +208,11 @@ export const TYPOGRAPHY_SECTIONS = [
       ".kol-prose is a rich-text container that cascades to native HTML " +
       "elements (h1–h6, p, ul, blockquote, code, pre). Wrap CMS / blog / " +
       "markdown output in it; the container styles every element via " +
-      "descendant selectors.",
+      "descendant selectors. Each row below renders the real element inside " +
+      "a real .kol-prose container (the self-contained .kol-prose-* heads " +
+      "render standalone, per their contract) and measures that rendered " +
+      "node live — loaded face, weight, size, leading, tracking — beside " +
+      "the spec, so rendered-vs-spec drift is visible per row.",
     reasoning:
       "H2 intentionally skips heading-02 (40px) and uses heading-03 (32px). " +
       "48 → 40 reads as \"same family\"; 48 → 32 reads as \"structural break\" " +

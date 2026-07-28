@@ -2,7 +2,7 @@
 title: Shipped packages
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-28
 description: THE package list — every @kolkrabbi package this repo ships, with current version and one-line job. The single canonical table; update versions with every publish.
 aliases:
   - shipped-packages
@@ -32,7 +32,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-component` | **0.12.1** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.1 Slider a11y: label↔input paired via `useId` (`htmlFor`/`id`) |
 | `@kolkrabbi/kol-framework` | **0.5.4** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.4 theme state = explicit > system > light (matchMedia fallback + live OS listener back, matches theme 0.11.6); 0.5.3 ThemeToggle on `.kol-btn-nav` |
 | `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
-| `@kolkrabbi/kol-dashboards` | **0.2.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides) |
+| `@kolkrabbi/kol-dashboards` | **0.2.1** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides); 0.2.1 workspace:* devDeps beside the peer ranges so the workspace links local copies (kills the registry-copy/icon-blackout dev bug) |
 | `@kolkrabbi/kol-chess` | **0.5.1** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, archive all/month scopes, `./data` adapter; 0.5.1 stage self-caps + centers off 100dvh at lg (`--chess-stage-reserve` knob) |
 | `@kolkrabbi/kol-content` | **0.4.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.5.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |

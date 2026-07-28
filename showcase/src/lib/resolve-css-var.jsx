@@ -134,3 +134,77 @@ export function LiveClassValue({ cls, prop, format }) {
   useEffect(() => { setValue(measureClass(cls, [prop])[prop] || '') }, [cls, prop])
   return <span>{format ? format(value) : value}</span>
 }
+
+/**
+ * Node-measured live cells — the specimen variant of LiveClassValue. Where
+ * LiveClassValue measures a hidden probe carrying a class, these read the
+ * ACTUAL rendered specimen node (via ref) — required for descendant-selector
+ * roles ('.kol-prose h2') that a class probe can't reproduce. Same truth
+ * contract: the loaded theme CSS + font set is the single source, nothing
+ * hand-copied. Cells re-read once the font set settles (document.fonts).
+ */
+
+const GENERIC_FAMILIES = new Set([
+  'serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui',
+  'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'math', 'emoji',
+])
+
+/** Live computed property read from a real rendered node. */
+export function LiveNodeValue({ nodeRef, prop, format }) {
+  const [value, setValue] = useState('')
+  useEffect(() => {
+    let alive = true
+    const read = () => {
+      const node = nodeRef.current
+      if (!alive || !node) return
+      setValue(getComputedStyle(node).getPropertyValue(prop).trim())
+    }
+    read()
+    if (typeof document !== 'undefined') document.fonts?.ready?.then(read).catch(() => {})
+    return () => { alive = false }
+  }, [nodeRef, prop])
+  return <span>{format ? format(value) : value}</span>
+}
+
+/**
+ * Resolve which face a rendered node ACTUALLY draws with: walk its computed
+ * font-family list and report the first face `document.fonts.check(style
+ * weight size "family")` confirms loaded. A generic-family win (sans-serif,
+ * monospace, …) or no win at all means the declared webfont never loaded —
+ * flagged FALLBACK so a broken @font-face / missing cut is visible on sight.
+ */
+export function LiveNodeFace({ nodeRef }) {
+  const [state, setState] = useState({ face: '', fallback: false })
+  useEffect(() => {
+    let alive = true
+    const read = () => {
+      const node = nodeRef.current
+      if (!alive || !node || !document.fonts) return
+      const cs = getComputedStyle(node)
+      const families = cs.fontFamily.split(',')
+        .map((f) => f.trim().replace(/^["']|["']$/g, ''))
+        .filter(Boolean)
+      for (const fam of families) {
+        let loaded = false
+        try {
+          loaded = document.fonts.check(`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} "${fam}"`)
+        } catch { loaded = false }
+        if (loaded) {
+          setState({ face: fam, fallback: GENERIC_FAMILIES.has(fam.toLowerCase()) })
+          return
+        }
+      }
+      setState({ face: families[0] || '—', fallback: true })
+    }
+    read()
+    document.fonts?.ready?.then(read).catch(() => {})
+    document.fonts?.addEventListener?.('loadingdone', read)
+    return () => { alive = false; document.fonts?.removeEventListener?.('loadingdone', read) }
+  }, [nodeRef])
+  return (
+    <span>
+      {state.face}
+      {state.fallback ? <span className="text-meta"> — FALLBACK</span> : null}
+    </span>
+  )
+}
