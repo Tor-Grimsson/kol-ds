@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import Input from '../atoms/Input.jsx'
 
 /**
@@ -46,6 +46,10 @@ const Slider = ({
   displayWidth = 6,
   fontSize,
 }) => {
+  /* Label ↔ input pairing — the <label> is a sibling of the range input, so
+   * without an htmlFor/id pair the visible label confers no accessible name. */
+  const sliderId = useId()
+
   const handleChange = (e) => {
     if (onChange) {
       onChange(Number(e.target.value))
@@ -96,6 +100,7 @@ const Slider = ({
     <div className={`control-slider gap-3 shadow-none ${className}`}>
       {label && (
         <label
+          htmlFor={sliderId}
           className={`kol-helper-12 whitespace-nowrap shrink-0 w-fit ${disabled ? 'opacity-50' : ''}`}
           style={fontSize ? { fontSize } : undefined}
         >
@@ -103,6 +108,7 @@ const Slider = ({
         </label>
       )}
       <input
+        id={sliderId}
         type="range"
         min={min}
         max={max}

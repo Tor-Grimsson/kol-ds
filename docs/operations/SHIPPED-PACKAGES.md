@@ -29,7 +29,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 |---|---|---|
 | `@kolkrabbi/kol-theme` | **0.11.7** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.7 nav states = opacity ladder only (rest oq-64, active oq-88, no bg); 0.11.6 system-follow dark; 0.11.5 icon-only square |
 | `@kolkrabbi/kol-icons` | **0.7.1** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO); 0.7.1 v1 curation: foundation art replaced (dice out), true frequency in, cone + database moved in |
-| `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
+| `@kolkrabbi/kol-component` | **0.12.1** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.1 Slider a11y: label↔input paired via `useId` (`htmlFor`/`id`) |
 | `@kolkrabbi/kol-framework` | **0.5.4** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.4 theme state = explicit > system > light (matchMedia fallback + live OS listener back, matches theme 0.11.6); 0.5.3 ThemeToggle on `.kol-btn-nav` |
 | `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
 | `@kolkrabbi/kol-dashboards` | **0.2.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides) |
