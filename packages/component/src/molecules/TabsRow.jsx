@@ -34,7 +34,7 @@ export default function TabsRow({ tabs = [], value, onChange, onClose, onMinimis
   }
 
   return (
-    <div className="flex items-stretch gap-4 px-3 h-10">
+    <div className="flex items-stretch gap-4 h-10">
       {onClose && (
         <button
           type="button"

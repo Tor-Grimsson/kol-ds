@@ -19,6 +19,14 @@ export { default as PlaybackControls } from './apparatus/PlaybackControls.jsx'
 export { default as VariationTree } from './apparatus/VariationTree.jsx'
 export { default as AlternativeControlsMock } from './apparatus/AlternativeControlsMock.jsx'
 
+// Rail blocks — the Mock's parts, exported individually (0.5.2) so consumers
+// can compose their own rail
+export { default as SetupPanel } from './apparatus/SetupPanel.jsx'
+export { default as PiecePalette } from './apparatus/PiecePalette.jsx'
+export { default as GamePicker } from './apparatus/GamePicker.jsx'
+export { default as MaterialSummary } from './apparatus/MaterialSummary.jsx'
+export { default as useChessKeyboardShortcuts } from './apparatus/useChessKeyboardShortcuts.js'
+
 // Piece renderer
 export { default as ChessPiece } from './ChessPiece.jsx'
 
