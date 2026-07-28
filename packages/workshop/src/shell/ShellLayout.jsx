@@ -22,27 +22,26 @@ export const ShellFullHeightContext = createContext(null)
 export const ShellTocCollapsedContext = createContext(null)
 
 const NavColumn = ({ children }) => (
-  <aside className="hidden lg:block shrink-0 pt-6 md:pt-6 lg:pt-8">
-    <div className="shell-sidebar-sticky sticky top-8 max-h-[calc(100vh-8rem)] overflow-y-auto">
-      {children}
-    </div>
+  <aside className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+    {children}
   </aside>
 )
 
 const MainColumn = ({ children, fullHeight }) => (
-  <main className={`w-full min-w-0${fullHeight ? ' h-full flex flex-col' : ''}`}>
+  <main
+    className={`w-full min-w-0 h-full min-h-0 ${fullHeight ? 'overflow-hidden flex flex-col' : 'overflow-y-auto overscroll-none'}`}
+    style={fullHeight ? undefined : { scrollbarGutter: 'stable' }}
+  >
     {fullHeight
       ? children
-      : <div className="pt-6 md:pt-6 lg:pt-8 pb-8">{children}</div>
+      : <div className="pt-6 md:pt-6 lg:pt-8 pb-16">{children}</div>
     }
   </main>
 )
 
 const TocColumn = ({ children }) => (
-  <aside className="hidden lg:block shrink-0 pt-6 md:pt-6 lg:pt-8">
-    <div className="sticky top-8 max-h-[calc(100vh-8rem)] overflow-y-auto">
-      {children}
-    </div>
+  <aside className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+    {children}
   </aside>
 )
 
@@ -150,10 +149,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
             tocCollapsed={tocCollapsed}
           />
 
+          {/* Three independent scroll regions: each rail scrolls its own overflow,
+            * main scrolls unless a page locks it (ShellFullHeightContext — embeds).
+            * overscroll-none stops chaining between regions and the edge bounce. */}
           <div className="flex-1 overflow-hidden">
-            <div className={`h-full ${isFullHeight ? 'overflow-hidden' : 'overflow-y-auto'}`} style={{ scrollbarGutter: 'stable' }}>
-              <div className={`w-full px-4 md:px-5 lg:px-6${isFullHeight ? ' h-full' : ' pb-16'}`}>
-                <div className={`shell-content-grid grid gap-8 ${gridCols}${isFullHeight ? ' h-full' : ''}`} data-layout={layoutType}>
+            <div className="h-full w-full px-4 md:px-5 lg:px-6">
+              <div className={`shell-content-grid grid gap-8 ${gridCols} h-full min-h-0`} data-layout={layoutType}>
                   {showNav && (
                     <NavColumn>
                       {renderSidebar ? renderSidebar({}) : <ShellSidebar routes={routes} basePath={basePath} />}
@@ -176,7 +177,6 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
                 </div>
               </div>
             </div>
-          </div>
 
           <ShellDrawer
             isOpen={isNavDrawerOpen}

@@ -31,7 +31,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.5.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
-| `@kolkrabbi/kol-workshop` | **0.1.6** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
+| `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
 | `@kolkrabbi/kol-dashboards` | **0.2.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides) |
 | `@kolkrabbi/kol-chess` | **0.5.0** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, archive all/month scopes, `./data` adapter |
 | `@kolkrabbi/kol-content` | **0.4.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
