@@ -37,7 +37,7 @@ export default function DocsLoaders() {
       >
         <p className="kol-sans-body-02 text-body">
           Browse the inventories on <Link className="text-emphasis underline" to="/icons">Icons</Link> and{' '}
-          <Link className="text-emphasis underline" to="/icons/v1">kol-icon-set-v1</Link>.
+          <Link className="text-emphasis underline" to="/icons">kol-icon-set-v1</Link>.
         </p>
       </DocSection>
 
@@ -50,7 +50,7 @@ export default function DocsLoaders() {
           <div className="flex items-center gap-4">
             <Icon name="search" size={16} />
             <Icon name="chevron-down" size={16} />
-            <Icon name="theme-toggle" size={18} />
+            <Icon name="mode-toggle-01" size={18} />
             <Icon name="social-github" size={18} />
           </div>
         </PreviewCard>
@@ -84,10 +84,9 @@ export default function DocsLoaders() {
       >
         <ApiTable
           rows={[
-            { prop: 'ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-icons', desc: 'Flat list globbed from the canonical stroke SVGs.' },
-            { prop: 'SOLID_ICON_ENTRIES', type: '{ name, folder }[]', def: 'kol-icons', desc: 'Solid-cut inventory (keys-only) for mirror-gap diffing.' },
-            { prop: 'ICON_INDEX / ICONS', type: '{ [folder]: name[] }', def: 'kol-icons', desc: 'Inventory grouped by folder; ICONS aliases ICON_INDEX.' },
-            { prop: 'ALL_ICONS / hasIcon / getCategory', type: 'list / fn / fn', def: 'kol-icons', desc: 'Flattened names + lookup helpers.' },
+            { prop: 'KOL_ICON_SET_V1 / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it.' },
+            { prop: 'KOL_ICON_SET_V1_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS aliases it.' },
+            { prop: 'hasIcon / getCategory', type: 'fn / fn', def: 'kol-icons', desc: 'Name lookup helpers over the v1 set.' },
             { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
           ]}
         />

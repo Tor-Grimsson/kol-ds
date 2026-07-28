@@ -27,14 +27,14 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.11.7** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.7 nav states = opacity ladder only (rest oq-64, active oq-88, no bg); 0.11.6 system-follow dark; 0.11.5 icon-only square |
-| `@kolkrabbi/kol-icons` | **0.7.1** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO); 0.7.1 v1 curation: foundation art replaced (dice out), true frequency in, cone + database moved in |
-| `@kolkrabbi/kol-component` | **0.12.1** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.1 Slider a11y: label↔input paired via `useId` (`htmlFor`/`id`) |
-| `@kolkrabbi/kol-framework` | **0.5.4** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.4 theme state = explicit > system > light (matchMedia fallback + live OS listener back, matches theme 0.11.6); 0.5.3 ThemeToggle on `.kol-btn-nav` |
+| `@kolkrabbi/kol-theme` | **0.11.8** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.8 display-tight fix — new `--kol-font-family-sans-tight` token, display tier names the Tight cut @500 (font-stretch selection dead: static faces have no stretch descriptors); 0.11.7 nav states = opacity ladder only; 0.11.6 system-follow dark |
+| `@kolkrabbi/kol-icons` | **0.8.0** | `<Icon>` + kol-icon-set-v1 (143 icons / 22 groups) + `registerIcons` (BYO); 0.8.0 v1-ONLY — legacy stroke/solid/svg/svg-web trees removed (local shelf `_tmp/legacy-icons/`), `variant` prop dropped, 17 promotions in |
+| `@kolkrabbi/kol-component` | **0.12.3** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.3 icon names → v1 (`x`); 0.12.1 Slider a11y `useId` pairing |
+| `@kolkrabbi/kol-framework` | **0.5.5** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.5 icon names → v1 (`hamburger`/`x`); 0.5.4 theme state = explicit > system > light |
 | `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
-| `@kolkrabbi/kol-dashboards` | **0.2.1** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides); 0.2.1 workspace:* devDeps beside the peer ranges so the workspace links local copies (kills the registry-copy/icon-blackout dev bug) |
-| `@kolkrabbi/kol-chess` | **0.5.1** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, archive all/month scopes, `./data` adapter; 0.5.1 stage self-caps + centers off 100dvh at lg (`--chess-stage-reserve` knob) |
-| `@kolkrabbi/kol-content` | **0.4.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
+| `@kolkrabbi/kol-dashboards` | **0.2.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps = peerDeps + workspace:* devDeps (0.2.1); 0.2.2 icon names → v1 (`book-open`/`bookmark`/`roadmap`/`trending-up`) |
+| `@kolkrabbi/kol-chess` | **0.5.3** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks (0.5.2), `./data` adapter; 0.5.3 ChessHero emoji-as-icon-name → v1 names |
+| `@kolkrabbi/kol-content` | **0.4.1** | CMS — `/stack` (blog) + `/work` (portfolio) streams; 0.4.1 icon names → v1 (`x`) |
 | `@kolkrabbi/kol-foundry` | **0.5.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.1.1** | Commerce — product-detail layout, price display, marquee river |
 | `@kolkrabbi/kol-styleguide` | **0.1.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks |

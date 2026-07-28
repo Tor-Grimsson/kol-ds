@@ -156,7 +156,7 @@ export default function ShellDrawer({
             aria-label="Close"
             className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center rounded-md border-0 bg-transparent cursor-pointer text-fg-64 transition-colors hover:bg-fg-08 hover:text-emphasis"
           >
-            <Icon name="close" size={14} />
+            <Icon name="x" size={14} />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto pr-1" style={{ overflowAnchor: 'none' }}>

@@ -4,7 +4,6 @@ import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
 import Icons from './pages/Icons'
-import IconsV1 from './pages/IconsV1'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
 import Blocks from './pages/Blocks'
@@ -33,7 +32,6 @@ export default function App() {
       <Route path="/foundations/color" element={<FoundationsColor />} />
       <Route path="/foundations/typography" element={<FoundationsTypography />} />
       <Route path="/icons" element={<Icons />} />
-      <Route path="/icons/v1" element={<IconsV1 />} />
       <Route path="/components" element={<Components />} />
       <Route path="/components/:slug" element={<ComponentPage />} />
       <Route path="/blocks" element={<Blocks />} />

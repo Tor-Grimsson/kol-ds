@@ -94,7 +94,7 @@ export default function WorkViewToggle({
           onClick={closeSearch}
           aria-label="Close search"
         >
-          <Icon name="cross" size={20} />
+          <Icon name="x" size={20} />
         </button>
       </span>
 

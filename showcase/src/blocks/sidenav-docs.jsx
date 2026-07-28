@@ -67,7 +67,7 @@ export default function SidebarDocs() {
       {/* ── Content ─────────────────────────────────────────── */}
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-14 items-center gap-3 border-b border-fg-08 px-5">
-          <Icon name="sidebar" size={16} className="text-meta" />
+          <Icon name="panel-left" size={16} className="text-meta" />
           <span className="kol-helper-12 text-meta">Build Your Application</span>
           <Icon name="chevron-right" size={12} className="text-subtle" />
           <span className="kol-helper-12 text-emphasis">{active}</span>

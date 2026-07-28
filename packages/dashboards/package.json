@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-dashboards",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": false,
   "description": "KOL dashboards/analytics system — hand-rolled SVG charts (no d3), metric/list/table/chart cards, a responsive dashboard grid, and the MetricsDashboard apparatus. Data is consumer-injected. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",

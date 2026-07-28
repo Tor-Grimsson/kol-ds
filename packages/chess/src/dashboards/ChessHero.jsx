@@ -122,28 +122,28 @@ const ChessHero = ({ chessData }) => {
     <div className="chess-hero">
       <div className="chess-hero__metrics">
         <MetricCard
-          icon="♔"
+          icon="chess-rook"
           label="Total games"
           value={metrics.totalGames.toLocaleString()}
           delta="106 months"
           trend="neutral"
         />
         <MetricCard
-          icon="⚡"
+          icon="bolt"
           label="Win rate"
           value={`${metrics.winRate.toFixed(1)}%`}
           delta={`${metrics.wins} wins`}
           trend="up"
         />
         <MetricCard
-          icon="⭐"
+          icon="star"
           label="Rated games"
           value={metrics.ratedGames.toLocaleString()}
           delta={`${metrics.ratedPct.toFixed(1)}%`}
           trend="up"
         />
         <MetricCard
-          icon="🎯"
+          icon="target"
           label="Net score"
           value={`+${metrics.wins - metrics.losses}`}
           delta={`${metrics.losses} losses`}

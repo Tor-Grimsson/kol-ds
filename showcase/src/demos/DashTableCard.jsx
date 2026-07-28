@@ -24,7 +24,7 @@ export default function DashTableCardDemo() {
     <DashTableCard
       title="Recent deploys"
       subtitle="Vercel deployment history"
-      icon="dashboard-roadmap"
+      icon="roadmap"
       columns={columns}
       rows={rows}
       footer="6 total deploys"

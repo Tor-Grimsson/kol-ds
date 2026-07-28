@@ -49,7 +49,7 @@ export default function AppShell({ navTree = [], getActivePage, header, footer, 
               aria-expanded={drawerOpen}
               onClick={() => setDrawerOpen((v) => !v)}
             >
-              <Icon name={drawerOpen ? 'x' : 'menu'} size={18} />
+              <Icon name={drawerOpen ? 'x' : 'hamburger'} size={18} />
             </button>
 
             <div

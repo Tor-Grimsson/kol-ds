@@ -23,7 +23,7 @@ const HOPS = [
       { label: 'Molecules', leaves: ['LabeledControl', 'PropertyInput'] },
     ],
   },
-  { id: 'icons', icon: 'grid-02', label: 'Icons' },
+  { id: 'icons', icon: 'grid', label: 'Icons' },
   { id: 'foundations', icon: 'layers', label: 'Foundations' },
 ]
 

@@ -77,7 +77,7 @@ export default function TopBar() {
           aria-label="Open navigation menu"
           className="inline-flex h-8 w-8 items-center justify-center text-meta transition-colors hover:text-emphasis lg:hidden"
         >
-          <Icon name="menu" size={18} />
+          <Icon name="hamburger" size={18} />
         </button>
         <NavDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
         <Link to="/" className="kol-mono-13 tracking-tight text-emphasis">Kolkrabbi</Link>

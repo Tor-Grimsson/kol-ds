@@ -1,4 +1,9 @@
 {
+  "AlternativeControlsMock": "The reference rail composition: SetupPanel, PiecePalette, GamePicker, MaterialSummary, notation and playback stacked in one column.",
+  "SetupPanel": "The SETUP POSITION block: header + icon actions (search, flip, clear, copy PGN, edit mode) and the piece-set / board-theme selectors.",
+  "PiecePalette": "The edit-mode placement palette: one row per color, six piece types each.",
+  "GamePicker": "The game-selection row: filtered-games dropdown + opening name, and the game-info popover (players / result / time control / date / opening / termination) behind a star button.",
+  "MaterialSummary": "The MATERIAL evaluation bar (tinted by the active board theme) plus the per-side captured-piece rows with point totals.",
   "AnimatedTitle": "Scroll-triggered heading that reveals its words one by one as it scrolls into view: each word starts far off-screen right, rotated in 3D, and flies into place with a fast stagger (GSAP + ScrollTrigger; plays entering the viewport, reverses scrolling back out).",
   "AssetGrid": "Thin responsive N-column grid for tiling asset figures (swatches, placeholders, spec cards).",
   "AssetPlaceholder": "Deliberate \"missing asset\" frame.",

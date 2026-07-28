@@ -16,9 +16,9 @@ import { Button } from '@kolkrabbi/kol-component'
  */
 
 const DEVICES = [
-  { key: 'desktop', icon: 'monitor', width: '100%', label: 'Desktop' },
+  { key: 'desktop', icon: 'desktop', width: '100%', label: 'Desktop' },
   { key: 'tablet', icon: 'tablet', width: 768, label: 'Tablet' },
-  { key: 'mobile', icon: 'smartphone', width: 390, label: 'Mobile' },
+  { key: 'mobile', icon: 'mobile', width: 390, label: 'Mobile' },
 ]
 
 const MIN_W = 340
@@ -148,7 +148,7 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
               <Divider />
               {/* shadcn's expand control: the standalone, chrome-less view */}
               <IconBtn icon="maximize" label="Open standalone view" href={previewPath} />
-              <IconBtn icon="refresh-cw" label="Refresh preview" onClick={() => setReloadKey((k) => k + 1)} />
+              <IconBtn icon="refresh" label="Refresh preview" onClick={() => setReloadKey((k) => k + 1)} />
               <Divider />
             </>
           )}

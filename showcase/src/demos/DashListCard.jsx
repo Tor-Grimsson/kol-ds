@@ -24,7 +24,7 @@ export default function DashListCardDemo() {
         variant="meter"
         title="Top pages"
         subtitle="By pageviews"
-        icon="dashboard-bookmark"
+        icon="bookmark"
         items={topPages}
         footer="Last 30 days"
       />
@@ -32,7 +32,7 @@ export default function DashListCardDemo() {
         variant="ratings"
         title="Top countries"
         subtitle="By visitors"
-        icon="dashboard-roadmap"
+        icon="roadmap"
         items={topCountries}
         footer="Geo from headers"
       />

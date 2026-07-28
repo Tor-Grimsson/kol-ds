@@ -1,7 +1,7 @@
 /**
  * Icon Component
  *
- * Dynamically loads and renders SVG icons from the svg/ directory (including subdirectories)
+ * Dynamically loads and renders SVG icons from kol-icon-set-v1 (or consumer-registered sets)
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (matches SVG filename without extension)
@@ -12,15 +12,14 @@
  */
 import { useEffect, useState } from 'react'
 
-/* Unified icon home. Canonical mirrored set (stroke + solid) + legacy loader set
- * + web's app-specific set (chess/dashboard/docs), all folded into this package so
- * a name always resolves across web + brand. `variant` picks stroke vs solid.
+/* ONE icon home: kol-icon-set-v1. Legacy sets removed 0.8.0 (2026-07-28) —
+ * a name either resolves from v1 or from consumer-registered SVGs, nothing else.
  *
  * The raw SVG strings live in ./iconData.js and are pulled in via a single
  * dynamic import — that keeps them out of the entry chunk (off the critical first-
- * paint path) and streams them in their own async chunk. Once loaded the maps are
+ * paint path) and streams them in their own async chunk. Once loaded the map is
  * cached at module scope, so resolution stays synchronous for every render after. */
-let ICONS = null            // { STROKE, SOLID, WEB, LEGACY } once the chunk resolves
+let ICONS = null            // { V1 } once the chunk resolves
 let loadPromise = null
 const subscribers = new Set()
 
@@ -75,24 +74,12 @@ export const registerIcons = (globMap) => {
   }
 }
 
-/* Resolution order: consumer-registered → kol-icon-set-v1 (the curated set) →
- * legacy stroke/solid/svg/svg-web. Falling through to the legacy set warns once:
- * that name isn't in v1, so it's on borrowed time — register it locally or migrate
- * to a v1 name before the legacy set is dropped (a future major). */
-const warnedLegacy = new Set()
-const resolveIcon = (name, variant) => {
+/* Resolution order: consumer-registered → kol-icon-set-v1. That's the whole
+ * chain — a miss is a real miss. */
+const resolveIcon = (name) => {
   if (CUSTOM[name]) return CUSTOM[name]
   if (!ICONS) return undefined
-  if (ICONS.V1[name]) return ICONS.V1[name]
-  const legacy = (variant === 'solid' ? ICONS.SOLID : ICONS.STROKE)[name]
-    ?? (variant === 'solid' ? ICONS.STROKE : ICONS.SOLID)[name]
-    ?? ICONS.LEGACY[name]
-    ?? ICONS.WEB[name]
-  if (legacy && !warnedLegacy.has(name)) {
-    warnedLegacy.add(name)
-    console.warn(`[kol-icons] "${name}" resolved from the legacy set — not in kol-icon-set-v1. registerIcons() it locally or migrate to a v1 name; the legacy set is dropped in a future major.`)
-  }
-  return legacy
+  return ICONS.V1[name]
 }
 
 const normalizeSize = (value) => {
@@ -125,7 +112,6 @@ const applySizeToMarkup = (markup, sizeValue) => {
 const Icon = ({
   name,
   size = 16,
-  variant = 'stroke',
   className = '',
   style = {},
   children
@@ -156,7 +142,7 @@ const Icon = ({
 
   // Consumer-registered icons resolve synchronously; the packaged set needs its
   // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.
-  const svgMarkup = resolveIcon(name, variant)
+  const svgMarkup = resolveIcon(name)
 
   if (!svgMarkup) {
     // Not resolved yet. If the packaged chunk is still streaming, hold the layout

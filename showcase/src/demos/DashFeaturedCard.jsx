@@ -26,7 +26,7 @@ export default function DashFeaturedCardDemo() {
     <DashFeaturedCard
       badge="Last 14 days"
       title="Site Traffic"
-      icon="trending"
+      icon="trending-up"
       description="New visitors, returning visitors, and bounces."
       metricLabel="Total visits"
       metricValue="9,412"

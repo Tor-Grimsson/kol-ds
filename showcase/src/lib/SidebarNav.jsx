@@ -15,7 +15,6 @@ export const OVERVIEW = [
   { to: '/foundations/color', label: 'Color' },
   { to: '/foundations/typography', label: 'Typography' },
   { to: '/icons', label: 'Icons' },
-  { to: '/icons/v1', label: 'kol-icon-set-v1' },
   { to: '/components', label: 'Components' },
   { to: '/blocks', label: 'Blocks' },
   { to: '/sets', label: 'Sets' },

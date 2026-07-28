@@ -2,8 +2,8 @@
 title: Icons — the loader, the set, and bring-your-own
 type: reference
 status: active
-updated: 2026-07-08
-description: The kol-icons model — the async Icon loader, the curated kol-icon-set-v1 (single stroke cut, currentColor, grouped), registerIcons() for per-repo custom icons, and the /kol-lobby-icon promotion loop. Its own top-level tier, not part of the component library.
+updated: 2026-07-28
+description: The kol-icons model — the async Icon loader, kol-icon-set-v1 as THE only packaged set (v1-only since 0.8.0; legacy trees removed), registerIcons() for per-repo custom icons, and the /kol-lobby-icon promotion loop. Its own top-level tier, not part of the component library.
 aliases:
   - icons
   - iconography
@@ -21,7 +21,7 @@ related:
 
 # Icons — the loader, the set, and bring-your-own
 
-`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and **kol-icon-set-v1** (the curated set the system is converging on). Browse live: showcase `/icons` (legacy gallery — BG · SIZE · GRID keyline controls, click-to-copy) and `/icons/v1` (kol-icon-set-v1, grouped).
+`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and **kol-icon-set-v1** (the curated set the system is converging on). Browse live: showcase `/icons` (kol-icon-set-v1, grouped — the legacy gallery and `/icons/v1` were consolidated into it, 2026-07-28).
 
 ## The Icon component
 
@@ -30,15 +30,15 @@ import { Icon } from '@kolkrabbi/kol-icons'
 <Icon name="download" size={16} />
 ```
 
-- **Resolution order:** consumer-registered (see *Bring your own icons*) → **kol-icon-set-v1** (the curated set) → legacy stroke / solid / `svg/` / `svg-web/`. A name that falls through to the legacy set **warns once** (`console.warn` — it isn't in v1, so register it locally or migrate before legacy is dropped). A registered or v1 name always resolves clean.
+- **Resolution order:** consumer-registered (see *Bring your own icons*) → **kol-icon-set-v1**. That is the whole chain (v1-only since **0.8.0**, 2026-07-28) — a miss is a real miss and renders nothing (`console.warn`).
 - **Async by design** — the packaged SVG maps live in `iconData.js` behind one dynamic `import()`, so the SVG text streams as its own chunk instead of blocking the consumer's first paint. Consumer-registered icons resolve synchronously (no wait).
 - **Vite-only** (`import.meta.glob`).
 
-> The `variant="solid"` prop still resolves the legacy solid cut, but the curated direction (kol-icon-set-v1) is a **single stroke cut**. The showcase's stroke/solid toggle and the `/icons/variants` page were retired.
+> The `variant` prop was removed in 0.8.0 with the legacy solid cut — the set is a **single stroke cut**; intentional solids are their own named icons (e.g. `star-solid`).
 
 ## kol-icon-set-v1 — the curated set
 
-The system is converging from the sprawling legacy inventory onto one small, hand-reviewed set: **108 icons across 20 groups**, a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and resolves first (before legacy). It renders on `/icons/v1`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`. The legacy set still ships alongside during migration; it's dropped in a future major once consumers are off it.
+One small, hand-reviewed set — **143 icons across 22 groups** (2026-07-28: +17 promotions incl. the align-* six, social-github, user, video, eyedrop, swap, layers, trending-up/-down, arrow-upright, chevron-expanded, customize, shield-check), a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and is the ONLY packaged set. It renders on `/icons`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`.
 
 - **Grouped, flat-by-name.** Foldered by group (chevron, arrow, nav, singletons, layout, files, code, atomic, shape-primitives, …) but resolved by basename — so no two icons share a name across groups.
 - **Single cut.** No stroke/solid duality; intentional solids (filled carets, dots) are baked into the individual icon, not a parallel tree.
@@ -56,14 +56,9 @@ registerIcons(import.meta.glob('./icons/**/*.svg', { eager: true, query: '?raw',
 
 Registered icons are keyed by filename, **win over the packaged set** (add *or* override), and render synchronously. Author them with `currentColor`.
 
-## Migrating off legacy
+## Legacy is gone — the hotfix shelf
 
-v1 and the legacy set ship together so the rename breaks nothing. Two helpers show each repo where it stands:
-
-- **`console.warn` on legacy resolution** — `<Icon>` warns once per name that resolves from the legacy set (not in v1). Running the app surfaces exactly which icons are on borrowed time.
-- **`npx kol-icons audit`** — scans the repo's `<Icon name>` / `iconLeft` usage and reports **in v1** / **legacy-only** (migrate to a v1 name or `registerIcons` locally) / **not in package**. Run it until legacy-only is empty — then the repo is slim-ready.
-
-The legacy set is dropped in a future major once consumers are clear.
+The legacy trees (stroke / solid / svg / svg-web, ~1,900 SVGs) were **removed from the package in 0.8.0** (user ruling 2026-07-28: audience-of-one repos break-and-fix, no compat layer). The editable local shelf is **`_tmp/legacy-icons/`** in this repo (gitignored, this machine only). Downstream repo breaks on a dead name → grab the SVG from the shelf, drop it in that repo's own icons folder, `registerIcons()` picks it up — and if a glyph keeps earning hotfixes, promote it into v1 here instead.
 
 ## The promotion loop
 
@@ -76,18 +71,15 @@ Icons flow both ways, keeping the shared set clean while every repo stays lean:
 
 | Export | What |
 |---|---|
-| `KOL_ICON_SET_V1` | the curated v1 set grouped `{ group: names[] }` (keys-only) — resolves first |
-| `KOL_ICON_SET_V1_NAMES` | flat sorted v1 names — lets consumers/audits tell curated names from legacy |
-| `ICON_ENTRIES` | `{ name, folder }[]` from the (legacy) stroke tree |
-| `SOLID_ICON_ENTRIES` | same for the solid tree — diff the two for mirror gaps |
-| `ICON_INDEX` / `ICONS` | grouped `{ folder: names[] }` |
-| `ALL_ICONS` / `hasIcon()` / `getCategory()` | flat list + lookups |
+| `KOL_ICON_SET_V1` / `ICONS` | THE set grouped `{ group: names[] }` (keys-only); `ICONS` aliases it |
+| `KOL_ICON_SET_V1_NAMES` / `ALL_ICONS` | flat sorted names; `ALL_ICONS` aliases it |
+| `hasIcon()` / `getCategory()` | name lookups over the v1 set |
 
-Legacy packaged inventory: **881 stroke · 849 solid · 21 categories** — the transitional set the package still ships until it slims onto kol-icon-set-v1. Full per-category roster + mirror gaps: [[01-inventory|icon inventory]].
+`ICON_ENTRIES` / `SOLID_ICON_ENTRIES` / `ICON_INDEX` died with the legacy trees (0.8.0). Per-category roster: [[01-inventory|icon inventory]].
 
 ## The keyline guide
 
-The gallery's GRID toggle overlays the icon **keyline** (Material-style paint-by-numbers): dashed diagonals + three keyline rounded-rects + center circle on the 24×24 grid — yellow on dark, magenta on light. Shared component: `showcase/src/lib/icon-controls.jsx` (`KeylineBg`).
+The gallery's GRID toggle overlays the icon **keyline** (Material-style paint-by-numbers): dashed diagonals + three keyline rounded-rects + center circle on the 24×24 grid — yellow on dark, magenta on light. The keyline-guide chrome (`icon-controls.jsx`) died with the legacy gallery (2026-07-28); the concept lives in this doc and the icon QA checks.
 
 ## Graphics
 

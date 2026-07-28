@@ -1,0 +1,11 @@
+# Session: v1-only icons wave — kol-icons 0.8.0 + five call-site bumps
+
+**Date:** 2026-07-28
+**Agent:** Grim (Fable 5)
+**Summary:** USER ruling executed: kol-icon-set-v1 is THE set, everything else legacy — no compat layer, downstream repos break-and-fix on next touch. The legacy trees (stroke/solid/svg/svg-web, 1,898 SVGs) moved out of the package to the user's editable hotfix shelf **`_tmp/legacy-icons/`** (gitignored, this machine). 17 glyphs promoted into v1 (**143 icons / 22 groups**, new `social` group): align-* ×6, eyedrop, swap, layers, social-github, user, video, trending-up + trending-down (symmetric pair; lone `trending` name died), arrow-upright (name conformed), chevron-expanded, customize, shield-check. All call sites swapped to v1 names (close/cross→x, menu→hamburger, refresh-cw→refresh, monitor/smartphone→desktop/mobile, grid-02→grid, list-01→view-list, sidebar→panel-left, theme-toggle→mode-toggle-01, dashboard-*→bare names, ChessHero emoji→chess-rook/bolt/star/target). Icon.jsx resolution = CUSTOM → V1 only, `variant` prop removed, both legacy warns deleted; index.js legacy inventories (ICON_ENTRIES/SOLID_ICON_ENTRIES/ICON_INDEX) died, ICONS/ALL_ICONS alias v1. Showcase: legacy `/icons` page + `icon-controls.jsx` deleted, IconsV1 promoted to `/icons`, `/icons/v1` route/link/sidebar removed, DocsLoaders API table synced. Post-wave sweep: **zero names missing from v1** (`ring`/`dot` = registerIcons demo, intentional). Gates 4/4 green.
+
+**Published:** icons **0.8.0** · component **0.12.3** · content **0.4.1** · framework **0.5.5** · dashboards **0.2.2** · chess **0.5.3**. SHIPPED-PACKAGES synced (also corrected stale component 0.12.2/chess 0.5.2 self-shipped rows). Docs synced: `docs/documentation/02-icons/INDEX.md` (v1-only model, hotfix-shelf section) + `01-inventory.md` (regenerated 143/22 roster).
+
+**Also this session (pre-wave):** `/upig` skill created (project-level; global `~/.claude/skills` write classifier-blocked) + memory saved — install/publish are the agent's, git is the user's, ping when push due.
+
+**Open:** user's dev-server bounce still pending (running vite holds the pre-install module graph) — icons verify live after it. Downstream repos on legacy names break on their next bump; shelf + `registerIcons()` is the hotfix path.

@@ -55,7 +55,7 @@ export default function FilterBar() {
               iconVariant="solid"
               options={[
                 { value: 'grid', label: 'Grid view', icon: 'grid' },
-                { value: 'list', label: 'List view', icon: 'list-01' },
+                { value: 'list', label: 'List view', icon: 'view-list' },
               ]}
             />
           </div>

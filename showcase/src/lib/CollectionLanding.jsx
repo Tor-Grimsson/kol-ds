@@ -86,7 +86,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
               className="group inline-flex items-center gap-2 kol-sans-heading-03 text-emphasis underline decoration-fg-24 underline-offset-4 hover:decoration-current"
             >
               {b.title}
-              <Icon name="arrow-up-right" size={16} className="text-meta transition-colors group-hover:text-emphasis" />
+              <Icon name="arrow-upright" size={16} className="text-meta transition-colors group-hover:text-emphasis" />
             </Link>
             <span className="kol-helper-10 uppercase tracking-widest text-meta">
               {labels[b.category] ?? b.category}
@@ -165,7 +165,7 @@ export default function CollectionLanding({
                 iconVariant="solid"
                 options={[
                   { value: 'grid', label: 'Grid view', icon: 'grid' },
-                  { value: 'list', label: 'List view', icon: 'list-01' },
+                  { value: 'list', label: 'List view', icon: 'view-list' },
                 ]}
               />
             )}

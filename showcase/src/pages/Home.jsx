@@ -175,7 +175,7 @@ export default function Home() {
         <DashFeaturedCard
           badge="Last 30 days"
           title="Site traffic"
-          icon="trending"
+          icon="trending-up"
           description="New visitors, returning visitors, and bounces."
           metricLabel="Total visits"
           metricValue={totalVisitsMonth}
@@ -196,7 +196,7 @@ export default function Home() {
           variant="meter"
           title="Top pages"
           subtitle="By pageviews"
-          icon="dashboard-bookmark"
+          icon="bookmark"
           items={topPages}
           footer="Last 30 days"
         />
@@ -294,7 +294,7 @@ export default function Home() {
           variant="ratings"
           title="Top countries"
           subtitle="By visitors"
-          icon="dashboard-roadmap"
+          icon="roadmap"
           items={topCountries}
           footer="Geo from headers"
         />

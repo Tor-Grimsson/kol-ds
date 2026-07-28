@@ -1,19 +1,16 @@
 /**
- * iconData — the raw SVG maps behind <Icon>.
+ * iconData — the raw SVG map behind <Icon>: kol-icon-set-v1, the ONE set.
  *
- * ~2,000+ SVGs are eager-inlined here as raw strings, but this module is only
+ * The SVGs are eager-inlined here as raw strings, but this module is only
  * ever reached via the dynamic `import()` in Icon.jsx — so the bundler splits
- * all of it into its own async chunk instead of folding ~1.2 MB of SVG text
- * into the consumer's entry chunk. (Ported from kol-labs-single's 2026-06-19
- * entry-chunk fix: entry 509 kB → 204 kB gzip.)
+ * it into its own async chunk instead of folding the SVG text into the
+ * consumer's entry chunk.
+ *
+ * Legacy sets (stroke/solid/svg/svg-web) were removed 2026-07-28 (0.8.0) —
+ * v1-only by user ruling. Consumers needing a dead name registerIcons() their
+ * own SVG or promote a glyph into v1 here.
  */
-// kol-icon-set-v1 — the curated set; resolves FIRST (before the legacy trees below).
-const v1Modules     = import.meta.glob('./kol-icon-set-v1/**/*.svg', { eager: true, query: '?raw', import: 'default' })
-const strokeModules = import.meta.glob('./stroke/**/*.svg',  { eager: true, query: '?raw', import: 'default' })
-const solidModules  = import.meta.glob('./solid/**/*.svg',   { eager: true, query: '?raw', import: 'default' })
-const legacyModules = import.meta.glob('./svg/**/*.svg',     { eager: true, query: '?raw', import: 'default' })
-const kolLegacy     = import.meta.glob('./svg/00-kol/*.svg', { eager: true, query: '?raw', import: 'default' })
-const webModules    = import.meta.glob('./svg-web/**/*.svg', { eager: true, query: '?raw', import: 'default' })
+const v1Modules = import.meta.glob('./kol-icon-set-v1/**/*.svg', { eager: true, query: '?raw', import: 'default' })
 
 const byName = (mods) => {
   const c = {}
@@ -23,8 +20,4 @@ const byName = (mods) => {
   return c
 }
 
-export const V1     = byName(v1Modules)
-export const STROKE = byName(strokeModules)
-export const SOLID  = byName(solidModules)
-export const WEB    = byName(webModules)
-export const LEGACY = (() => { const c = byName(legacyModules); Object.assign(c, byName(kolLegacy)); return c })()
+export const V1 = byName(v1Modules)

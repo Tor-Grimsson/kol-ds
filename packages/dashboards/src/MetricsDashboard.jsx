@@ -270,7 +270,7 @@ const SiteTab = ({ data, range, host, setHost, allHosts, hostSummaries, mainHost
           className="h-full"
           badge={`Last ${rangeLabel}`}
           title="Site Traffic"
-          icon="trending"
+          icon="trending-up"
           description="New visitors, returning visitors, and bounces."
           metricLabel="Total visits"
           metricValue={totalVisitsMonth}
@@ -313,10 +313,10 @@ const SiteTab = ({ data, range, host, setHost, allHosts, hostSummaries, mainHost
       </div>
 
       <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
-        <DashListCard className="h-full" variant="meter" title="Top pages" subtitle="By pageviews" icon="dashboard-bookmark" items={topPages.length > 0 ? topPages : [{ label: 'No data yet', value: '—', percent: 0, color: 'var(--kol-palette-blue)' }]} footer={`Last ${rangeLabel}`} />
+        <DashListCard className="h-full" variant="meter" title="Top pages" subtitle="By pageviews" icon="bookmark" items={topPages.length > 0 ? topPages : [{ label: 'No data yet', value: '—', percent: 0, color: 'var(--kol-palette-blue)' }]} footer={`Last ${rangeLabel}`} />
       </div>
       <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
-        <DashListCard className="h-full" variant="ratings" title="Top countries" subtitle="By visitors" icon="dashboard-roadmap" items={topCountries.length > 0 ? topCountries : [{ label: 'No data yet', value: '—', detail: '', color: 'var(--kol-palette-blue)' }]} footer="Geo from headers" />
+        <DashListCard className="h-full" variant="ratings" title="Top countries" subtitle="By visitors" icon="roadmap" items={topCountries.length > 0 ? topCountries : [{ label: 'No data yet', value: '—', detail: '', color: 'var(--kol-palette-blue)' }]} footer="Geo from headers" />
       </div>
 
       {!isFiltered && (
@@ -326,7 +326,7 @@ const SiteTab = ({ data, range, host, setHost, allHosts, hostSummaries, mainHost
             variant="meter"
             title="Top hosts"
             subtitle="By pageviews"
-            icon="dashboard-roadmap"
+            icon="roadmap"
             items={(topHosts || []).length > 0
               ? topHosts.map(h => ({ ...h, detail: h.delta }))
               : [{ label: 'No data yet', value: '—', percent: 0, color: 'var(--kol-palette-blue)' }]}
@@ -336,7 +336,7 @@ const SiteTab = ({ data, range, host, setHost, allHosts, hostSummaries, mainHost
       )}
 
       <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
-        <DashListCard className="h-full" variant="text" title="Stack posts" subtitle="Most read" icon="dashboard-book-open" items={blogPosts.length > 0 ? blogPosts : [{ label: 'No data yet', value: '—' }]} footer={`/stack/* — last ${rangeLabel}`} />
+        <DashListCard className="h-full" variant="text" title="Stack posts" subtitle="Most read" icon="book-open" items={blogPosts.length > 0 ? blogPosts : [{ label: 'No data yet', value: '—' }]} footer={`/stack/* — last ${rangeLabel}`} />
       </div>
       <div data-cols="2" style={{ gridColumn: 'span 2' }} className="min-h-0">
         <DashListCard className="h-full" variant="meter" title="Referrers" subtitle="Traffic sources" icon="stat-chart-a" items={referrers.length > 0 ? referrers : [{ label: 'No data yet', value: '—', percent: 0, color: 'var(--kol-palette-blue)' }]} footer="Excl. direct" />
