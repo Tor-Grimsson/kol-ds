@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 
 /* Theme-state machinery — the logic behind ThemeToggle, exported so app code
  * (navbars, heroes, anything theme-aware) can read/set the theme without
- * mounting the toggle UI. Policy (unchanged from ThemeToggle): the DS is
- * light-first; an explicit choice is an app-set data-theme attribute or a
- * saved user toggle, and absent both the page follows prefers-color-scheme
- * via the theme CSS. `data-theme` + localStorage are written ONLY through
+ * mounting the toggle UI. Policy: the DS is light-first (USER law, theme
+ * 0.9.2 dropped the OS-follow auto-dark CSS); an explicit choice is an
+ * app-set data-theme attribute or a saved user toggle, and absent both the
+ * theme is light — never the OS preference, so state can't disagree with
+ * what the CSS renders. `data-theme` + localStorage are written ONLY through
  * applyTheme (a user action) — mounting a reader leaves the DOM untouched. */
 
 export const THEME_STORAGE_KEY = 'kol-theme'
@@ -22,8 +23,7 @@ function getExplicitTheme() {
 
 export function getInitialTheme() {
   if (typeof document === 'undefined') return 'light'
-  return getExplicitTheme()
-    ?? (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light')
+  return getExplicitTheme() ?? 'light'
 }
 
 /** Stamp + persist an explicit theme choice. */
@@ -37,8 +37,8 @@ export function applyTheme(theme) {
  *
  * All instances observe the html `data-theme` attribute, so any writer
  * (this hook's setTheme, ThemeToggle, an app boot script) updates every
- * reader. When the page has no explicit choice, instances follow the
- * system preference. Returns { theme, isDark, setTheme, toggle }.
+ * reader. When the page has no explicit choice, the theme is light
+ * (light-first law). Returns { theme, isDark, setTheme, toggle }.
  */
 export function useTheme() {
   const [theme, setThemeState] = useState(getInitialTheme)
@@ -62,18 +62,8 @@ export function useTheme() {
     })
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 
-    /* No explicit choice anywhere — follow the system, like the theme CSS. */
-    const mq = window.matchMedia?.('(prefers-color-scheme: dark)')
-    const onChange = (e) => {
-      try { if (localStorage.getItem(THEME_STORAGE_KEY)) return } catch { /* storage blocked */ }
-      if (document.documentElement.dataset.theme) return
-      setThemeState(e.matches ? 'dark' : 'light')
-    }
-    mq?.addEventListener?.('change', onChange)
-
     return () => {
       observer.disconnect()
-      mq?.removeEventListener?.('change', onChange)
     }
   }, [])
 
