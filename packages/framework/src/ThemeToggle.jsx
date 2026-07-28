@@ -5,9 +5,9 @@ import { useTheme } from './theme.js'
  * Theme toggle — horizontal icon-swap button.
  *
  * Variants:
- *   icon     — minimal 32×32 icon-only button (no container chrome). For
- *              top-bar / nav-bar use where the toggle sits inline with other
- *              icon buttons.
+ *   icon     — icon-only button on the DS button ladder: `size` 'sm'|'md'|'lg'
+ *              → 14/16/18px glyph, box + hover from the ghost .kol-btn chrome,
+ *              so the toggle sizes exactly like sibling icon buttons in a bar.
  *   hop      — full-width labeled Button-primary-styled sidenav row
  *              (bg-fg-04, on-primary text). For sidenav rows where it pairs
  *              with other Button-primary "hop" entries.
@@ -22,7 +22,7 @@ import { useTheme } from './theme.js'
  * horizontally — the split-circle glyph makes the slide itself read as
  * the flip (same-icon slide, per design).
  */
-export default function ThemeToggle({ variant = 'icon', className = '' }) {
+export default function ThemeToggle({ variant = 'icon', size = 'md', className = '' }) {
   const { isDark, toggle } = useTheme()
 
   const next = isDark ? 'light' : 'dark'
@@ -69,17 +69,20 @@ export default function ThemeToggle({ variant = 'icon', className = '' }) {
     )
   }
 
-  // variant === 'icon' (default) — 36×36 button / 20px glyph, the DS reference
-  // (user-verified 2026-07-15; was 32/18, which consumers shimmed via CSS)
+  // variant === 'icon' (default) — geometry from the DS button ladder
+  // (sm 14 / md 16 / lg 18 glyph), chrome = ghost icon-only .kol-btn.
+  // Overrules the 2026-07-15 "36×36/20 reference" one-off (user ruling
+  // 2026-07-28: the button ladder is the reference, bar icons included).
+  const glyph = size === 'sm' ? 14 : size === 'lg' ? 18 : 16
   return (
     <button
       type="button"
       onClick={handleToggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className={`inline-flex items-center justify-center w-9 h-9 p-0 bg-transparent border-0 cursor-pointer text-emphasis hover:opacity-80 transition-opacity duration-300 ${className}`.trim()}
+      className={`kol-btn kol-btn-ghost kol-btn-${size} kol-btn-icon ${className}`.trim()}
     >
-      {iconSwap(20)}
+      {iconSwap(glyph)}
     </button>
   )
 }

@@ -30,7 +30,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-theme` | **0.11.3** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.3 kills the global `a { color }` rule — link blue is opt-in `.kol-link` (chrome owns its anchors, prose links unchanged) |
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
-| `@kolkrabbi/kol-framework` | **0.5.1** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.1 theme state is light-first (matchMedia OS-follow removed, matches theme 0.9.2 law) |
+| `@kolkrabbi/kol-framework` | **0.5.2** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.2 ThemeToggle icon variant rides the button ladder (`size` sm/md/lg → 14/16/18 glyph, ghost .kol-btn chrome — the 36/20 one-off is overruled) |
 | `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
 | `@kolkrabbi/kol-dashboards` | **0.2.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard`; kol deps now peerDeps (consumer provides) |
 | `@kolkrabbi/kol-chess` | **0.5.1** | Chess apparatus — interactive board (click-to-move), 3 piece sets, playback/notation/sidelines, archive all/month scopes, `./data` adapter; 0.5.1 stage self-caps + centers off 100dvh at lg (`--chess-stage-reserve` knob) |
