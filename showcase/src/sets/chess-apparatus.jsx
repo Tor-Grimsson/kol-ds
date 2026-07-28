@@ -33,9 +33,10 @@ function PanelStrip() {
 export default function ChessApparatusSet() {
   return (
     /* The consumer's exact shell wrapper (kol-chess src/App.jsx, mirrored by
-     * /demo) — the stage owns vertical, the wrapper owns max-width + gutters. */
+     * /demo) — the wrapper owns gutters only; since chess 0.5.1 the stage
+     * sizes + centers itself off 100dvh (no consumer width cap). */
     <div className="min-h-screen bg-surface-primary">
-      <div className="mx-auto max-w-[1232px] px-4 md:px-6">
+      <div className="px-4 md:px-6">
         <ChessAnalysisLayout chessData={chessData} panel={<PanelStrip />} />
       </div>
     </div>

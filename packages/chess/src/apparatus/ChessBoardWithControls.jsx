@@ -34,8 +34,17 @@ const ChessBoardWithControlsContent = ({ panel = null }) => {
    * holds — the shared width cap budgets ~90px for the strip. The cap is
    * shared board↔rail so their widths stay married. */
   const widthCap = panel ? 'max-w-[calc(100dvh-470px)]' : 'max-w-[calc(100dvh-380px)]'
+  /* lg: the stage caps its own width off viewport height (board is square, so
+   * board width == board height) — the mobile dvh caps above never applied at
+   * lg (`lg:max-w-none`), so the board was width-driven and a wide shell left
+   * it small with dead space below. Reserve = consumer chrome above+below the
+   * stage, tunable via --chess-stage-reserve (default 200px); the panel strip
+   * budgets +106px; +472px re-adds the rail (440) + gap (32) beside the board. */
+  const lgStageCap = panel
+    ? 'lg:max-w-[calc(100dvh_-_var(--chess-stage-reserve,200px)_-_106px_+_472px)]'
+    : 'lg:max-w-[calc(100dvh_-_var(--chess-stage-reserve,200px)_+_472px)]'
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4 lg:block lg:h-auto lg:relative lg:pr-[472px]">
+    <div className={`flex h-full min-h-0 flex-col gap-4 lg:block lg:h-auto lg:relative lg:mx-auto lg:pr-[472px] ${lgStageCap}`}>
       {panel && (
         <div className={`mx-auto w-full ${widthCap} flex-shrink-0 min-w-0 lg:mx-0 lg:max-w-none lg:mb-4`}>
           {panel}

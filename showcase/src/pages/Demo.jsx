@@ -17,8 +17,9 @@ import { ThemeToggle } from '@kolkrabbi/kol-framework'
 export default function Demo() {
   return (
     <div className="min-h-screen bg-surface-primary">
-      {/* the consumer's exact shell wrapper (kol-chess src/App.jsx) */}
-      <div className="mx-auto max-w-[1232px] px-4 md:px-6">
+      {/* the consumer's exact shell wrapper (kol-chess src/App.jsx) — no width
+          cap since chess 0.5.1: the stage sizes + centers itself off 100dvh */}
+      <div className="px-4 md:px-6">
         <ChessAnalysisLayout chessData={chessData} overlayActions={<ThemeToggle variant="icon" />} />
       </div>
     </div>

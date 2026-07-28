@@ -45,10 +45,12 @@
  * the largest that fits both the column width and the viewport minus the
  * stage chrome. Mobile budget is bigger (strip + transport + notation min). */
 .chess-board--fluid {
-  width: min(100%, calc(100dvh - 200px));
+  /* height-fenced, no hard px cap (0.11.2): the board fills its column up to
+   * what fits the viewport height; reserve = consumer chrome above+below,
+   * same knob the stage cap reads (--chess-stage-reserve, chess 0.5.1) */
+  width: min(100%, calc(100dvh - var(--chess-stage-reserve, 200px)));
   height: auto;
   aspect-ratio: 1;
-  max-width: 760px;
   min-width: 280px;
 }
 
