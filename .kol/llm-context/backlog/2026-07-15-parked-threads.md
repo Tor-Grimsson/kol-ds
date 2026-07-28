@@ -8,13 +8,11 @@ Each is parked deliberately, not forgotten — pick up on an explicit ask.
   Rewrite proposed 2026-07-15, user never green-lit.
 - ~~**ComboLab CSS `text-transform: uppercase` ×3**~~ — **DONE 2026-07-28** (labels authored in caps, 3 CSS rules dropped, styleguide 0.1.1). — JSX-coordinated conformance pass
   (author labels in-case, drop the CSS rules). From the overnight raid.
-- **green/purple ramps + chart palette** — provisional hexes need a real categorical-palette
-  design pass. From the raid (bucket D defaults).
+- ~~**green/purple ramps + chart palette**~~ — **CLOSED 2026-07-28, user ruling: sitting dismissed, shipped palette stands** (provisional hexes are now the values; retune on demand).
 - ~~**SplitToolButton ⇄ ShapeDropdown reconciliation**~~ — **RULED 2026-07-15: reasoned keep.**
   Deliberately distinct contracts (two-button split vs single-trigger arm-and-open); the trio
   ruling (incl. Dropdown) is law in `docs/documentation/03-components/05-control-chrome.md`.
-- **Ghost resting-label AA contrast (`oq-48`)** — live again since ghost was un-retired
-  (2026-07-15 ruling); needs a contrast pass.
+- ~~**Ghost resting-label AA contrast (`oq-48`)**~~ — **CLOSED 2026-07-28, user ruling: sitting dismissed, shipped oq-48 stands** (revisit only on a real consumer complaint).
 - **JSDoc headers for chess/dashboards packages** — components without `Name — sentence.`
   headers ride authored fallbacks ('' for chess/dashboards) on their doc pages; adding headers
   = package edits + bumps.
