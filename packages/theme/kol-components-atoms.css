@@ -314,7 +314,7 @@
  * navigation is location, not a toggled tool. */
 .kol-btn-nav {
   background: transparent;
-  color: var(--kol-oq-48);
+  color: var(--kol-oq-64);
   border: 1px solid transparent;
 }
 @media (hover: hover) {
@@ -323,9 +323,11 @@
     color: var(--kol-surface-on-primary);
   }
 }
+/* active = brightness only (0.11.7, user-ordered): quiet chrome states ride
+ * the opacity ladder — a background block is pressed-tool language, not
+ * location. Hover keeps its transient wash (feedback, not state). */
 .kol-btn-nav[aria-current="page"] {
-  background-color: var(--kol-oq-08);
-  color: var(--kol-surface-on-primary);
+  color: var(--kol-oq-88);
 }
 /* square box comes from .kol-btn-icon (geometry, all variants) — no
  * nav-specific padding rules needed */

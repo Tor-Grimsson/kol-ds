@@ -15,6 +15,7 @@ Staged 2026-07-03 — a 42-component sweep of `kol-monorepo` (`apps/web` + `apps
 
 | Component | Source | Staged | Status |
 |-----------|--------|--------|--------|
+| [WorkshopSystemVendored](WorkshopSystemVendored.md) | kol-website nav-ownership restructure | 2026-07-28 | queued (architecture note — kol-workshop package fate: snapshot-not-parent, stop-publish vs deprecate; nothing urgent) |
 | [ChessApparatusDemotion](ChessApparatusDemotion.md) | kol-chess consumer restructure | 2026-07-28 | queued (architecture note — apparatus fate, rail rename, mirror drift, geometry helper; nothing urgent) |
 | [ThemeToggle](ThemeToggle.md) | web `workshop-system/shell/ThemeToggle.jsx` | 2026-07-10 | draft (icon-swap · mode-toggle-01/02 · reconcile → ShellHeader ThemeToggleButton) |
 | [HlsVideo](HlsVideo.md) | web `components/media/HlsVideo.jsx` | 2026-07-03 | draft |
