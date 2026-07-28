@@ -27,6 +27,7 @@ const ContentFilters = ({
   items,
   title,
   totalCount,
+  titleIcon,
   filterGroups = [],
   renderItem,
   viewModeOptions,
@@ -120,7 +121,7 @@ const ContentFilters = ({
           const isActive = activeFilters.has(filterKey)
           return (
             <div key={value} onClick={() => toggleFilter(group.key, value)}>
-              <Tag size="md" variant="default" hash={false} className={isActive ? 'border-fg-32' : 'border-fg-08'}>
+              <Tag size="sm" variant="default" hash={false} className={isActive ? 'border-fg-32' : 'border-fg-08'}>
                 {value}
               </Tag>
             </div>
@@ -134,7 +135,8 @@ const ContentFilters = ({
     <div className="w-full" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-6">
-          <h2 className="kol-helper-14">{title}</h2>
+          <h2 className="kol-helper-16 flex items-center gap-3">{titleIcon && <Icon name={titleIcon} size={20} />}{title}</h2>
+          <Divider variant="vertical" className="h-5" />
           <div className="flex items-center gap-1">
             <button
               type="button"
@@ -143,14 +145,15 @@ const ContentFilters = ({
               aria-label="Toggle filters"
               style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit' }}
             >
-              <Icon name="filter" size={16} />
+              <Icon name="filter" size={20} />
             </button>
             <div
               className="flex items-center rounded-full cursor-pointer"
               style={{
                 height: 28,
                 width: searchOpen ? 200 : 28,
-                background: searchOpen ? 'var(--kol-opacity-hex-04, rgba(255,255,255,0.04))' : 'transparent',
+                background: searchOpen ? 'var(--kol-fg-04)' : 'transparent',
+                border: searchOpen ? '1px solid var(--kol-fg-08)' : '1px solid transparent',
                 transition: 'width 600ms cubic-bezier(0.16, 1, 0.3, 1), background 400ms cubic-bezier(0.16, 1, 0.3, 1)',
                 overflow: 'hidden',
               }}
@@ -168,7 +171,7 @@ const ContentFilters = ({
                   position: searchOpen ? 'absolute' : 'relative',
                 }}
               >
-                <Icon name="search" size={16} />
+                <Icon name="search" size={20} />
               </span>
               {searchOpen && (
                 <input
@@ -203,19 +206,16 @@ const ContentFilters = ({
               {filteredItems.length} of {totalCount}
             </span>
           )}
+          {/* View-mode toggle — active = filled chip, inactive = bare text
+            * (user ruling 2026-07-28, live look). ViewToggle's text variant IS
+            * that pattern (kol-control--filled active / bare inactive). */}
           {viewModeOptions && (
-            <div className="flex gap-6">
-              {viewModeOptions.map((opt) => (
-                <span
-                  key={opt.value}
-                  onClick={() => handleViewModeChange(opt.value)}
-                  className={`kol-helper-14 cursor-pointer select-none ${viewMode === opt.value ? 'text-fg-96' : 'text-fg-32 hover:text-fg-48'}`}
-                  style={{ letterSpacing: 1 }}
-                >
-                  {opt.label}
-                </span>
-              ))}
-            </div>
+            <ViewToggle
+              size="md"
+              viewMode={viewMode}
+              onViewChange={handleViewModeChange}
+              options={viewModeOptions}
+            />
           )}
         </div>
       </div>

@@ -24,7 +24,8 @@ function GlyphItem({ glyph, fontFamily, fontStyle }) {
 function GlyphCategory({ title, glyphs, fontFamily, fontStyle, className = '' }) {
   return (
     <div className={`w-full flex flex-col gap-4 ${className}`.trim()}>
-      <h3 className="kol-mono-12">{title}</h3>
+      {/* Single-line chrome title → helper stop (type protocol fault line). */}
+      <h3 className="kol-helper-12">{title}</h3>
       <div className="flex flex-wrap gap-4 w-full">
         {glyphs?.map((glyph, i) => (
           <GlyphItem key={i} glyph={glyph} fontFamily={fontFamily} fontStyle={fontStyle} />

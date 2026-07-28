@@ -57,9 +57,8 @@ const SpecimenSectionHeader = ({
   weightOptions = [],
 }) => {
   const title = label || badgeText
-  // kol-mono-text-lg / kol-mono-sm-regular don't exist in the DS theme; the
-  // nearest mono stops are kol-mono-16 (lg) and kol-mono-12 (sm).
-  const titleClass = size === 'sm' ? 'kol-mono-12' : 'kol-mono-16'
+  // Single-line label → helper (line-height 1), per the type fault line.
+  const titleClass = size === 'sm' ? 'kol-helper-16' : 'kol-helper-20'
 
   return (
     <div className="flex flex-col gap-[13px]">

@@ -20,6 +20,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * value; the SECOND is "on".
  */
 const ViewToggle = ({
+  size = 'sm',
   viewMode,
   onViewChange,
   variant = 'text',
@@ -75,8 +76,8 @@ const ViewToggle = ({
      * border-reveal hover. (Earlier ghost variant revealed an outline on
      * hover; that's deliberately gone.) */
     return isActive
-      ? 'kol-control kol-control--filled kol-control-sm kol-mono-12'
-      : 'kol-control kol-control-sm kol-mono-12 text-meta hover:text-emphasis'
+      ? `kol-control kol-control--filled kol-control-${size} kol-mono-${size === 'md' ? '14' : '12'}`
+      : `kol-control kol-control-${size} kol-mono-${size === 'md' ? '14' : '12'} text-meta hover:text-emphasis`
   }
 
   return (

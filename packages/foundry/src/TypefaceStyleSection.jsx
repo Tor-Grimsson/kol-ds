@@ -5,33 +5,51 @@ import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
  * same-file StyleCard row; owns the axis/selection state. */
 
 /**
- * StyleCard (same-file) — one style row: the label rendered live in its own
- * weight/width/italic on the left, the numeric value on the right, with an
- * active/hover flip. Inlined (the monorepo's `.style-card` CSS classes aren't
- * in the DS theme) and rebuilt Tailwind-first.
+ * StyleCard (same-file) — one 120px-tall style card replicating the live
+ * `.style-card` rules (kol-website components.css) exactly: name on the left
+ * rendered in its own weight/width/italic, numeric value on the right (both in
+ * the display typeface, inherited size). At REST the name sits bottom-left and
+ * the value top-right; on hover/active the layout FLIPS — name top-left, value
+ * bottom-right. Hovering also brightens the border (fg-08 → fg-24) and fades
+ * both texts 50% → 100% opacity over 0.2s. (The live source also "transitioned"
+ * justify-content, which is not animatable — the corner swap snaps, as on the
+ * live site.) Hover sets the card active in the parent, so the whole flip keys
+ * off `isActive` — no CSS hover variants needed.
+ *
+ * Height is inline (the live card's height lived in a CSS rule, so it never
+ * depended on the consumer's Tailwind scan).
  */
 function StyleCard({ label, weight, width, italic, isActive, onHover, onClick, fontFamily }) {
+  const textCls = `transition-opacity duration-200 ${isActive ? 'opacity-100' : 'opacity-50'}`
   return (
     <div
       onMouseEnter={onHover}
       onClick={onClick}
-      className={`flex items-center justify-between gap-4 px-4 py-3 rounded cursor-pointer border transition-colors duration-150 ${
-        isActive ? 'bg-surface-inverse' : 'border-transparent hover:bg-fg-08'
+      className={`w-full flex justify-between p-4 rounded cursor-pointer border transition-colors duration-200 ${
+        isActive ? 'border-fg-24' : 'border-fg-08 hover:border-fg-24'
       }`}
-      style={{ borderColor: isActive ? 'transparent' : undefined }}
+      style={{ height: 120, minHeight: 120 }}
     >
-      <span
-        className="text-2xl md:text-3xl leading-none truncate"
-        style={{
-          fontFamily,
-          fontStyle: italic ? 'italic' : 'normal',
-          fontWeight: weight || 400,
-          fontVariationSettings: width ? `'wdth' ${width}` : undefined,
-        }}
-      >
-        {label}
-      </span>
-      <span className="kol-mono-12 shrink-0 opacity-70">{width || weight}</span>
+      {/* Left: name — bottom at rest, top on hover/active */}
+      <div className={`h-full flex flex-col ${isActive ? 'justify-start' : 'justify-end'}`}>
+        <span
+          className={textCls}
+          style={{
+            fontFamily,
+            fontStyle: italic ? 'italic' : 'normal',
+            fontWeight: weight || 400,
+            fontVariationSettings: width ? `'wdth' ${width}` : undefined,
+          }}
+        >
+          {label}
+        </span>
+      </div>
+      {/* Right: value — top at rest, bottom on hover/active */}
+      <div className={`h-full flex flex-col ${isActive ? 'justify-end' : 'justify-start'}`}>
+        <span className={textCls} style={{ fontFamily }}>
+          {width || weight}
+        </span>
+      </div>
     </div>
   )
 }
@@ -114,13 +132,13 @@ const TypefaceStyleSection = ({
           styleOptions={styleOptions || undefined}
           showDropdown={showDropdown}
           badgeText={badgeText}
-          icon="foundation"
+          icon="type"
           size="sm"
         />
 
         <div className="flex flex-row gap-4 md:gap-6 lg:gap-8 items-start w-full">
           {/* Left: sticky inverted preview panel */}
-          <div className="w-1/2 aspect-[4/3] p-6 md:p-12 transition-colors duration-300 sticky top-24 bg-surface-inverse rounded">
+          <div className="w-1/2 aspect-[4/3] p-6 md:p-12 transition-colors duration-300 sticky top-24 bg-fg-80 rounded">
             <div
               className="text-center transition-colors duration-300 w-full h-full flex flex-col justify-center items-center gap-2"
               style={previewStyle}

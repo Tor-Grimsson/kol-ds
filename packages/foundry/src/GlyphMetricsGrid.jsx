@@ -236,7 +236,7 @@ const GlyphMetricsGrid = ({
 
   const renderGrid = (glyphs, title) => (
     <div className="w-full flex flex-col gap-4">
-      <div className="text-auto text-base md:text-lg kol-mono-text leading-7">{title}</div>
+      <div className="kol-helper-16 text-auto">{title}</div>
       <div
         className="inline-flex justify-start items-start flex-wrap"
         onMouseLeave={() => setHoveredGlyph(null)}
@@ -265,7 +265,9 @@ const GlyphMetricsGrid = ({
     <div className="bg-surface-primary flex flex-col lg:flex-row justify-start items-start gap-6 md:gap-8 lg:gap-10">
       {/* Left: glyph viewer + metrics overlay */}
       <div className="w-full lg:flex-[504] flex flex-col justify-start items-start gap-4 md:gap-6">
-        <div className="text-auto text-base md:text-lg kol-mono-text leading-7">Glyph Viewer</div>
+        {/* Single-line chrome titles → kol-helper-16 (retired kol-mono-text +
+          * freestyle text-base/lg dropped; 18px → tighter stop per protocol). */}
+        <div className="kol-helper-16 text-auto">Glyph Viewer</div>
 
         <div className="w-full flex flex-col justify-start items-start gap-4 md:gap-6 lg:gap-10">
           <div className="self-stretch h-64 md:h-80 lg:h-96 relative rounded-md overflow-hidden">
@@ -288,15 +290,17 @@ const GlyphMetricsGrid = ({
           </div>
 
           {/* Metadata */}
+          {/* Multi-line (<br>-stacked) readout needs leading → kol-mono-16,
+            * not a line-height-1 helper (type protocol fault line). */}
           <div className="hidden md:inline-flex justify-start items-start gap-8">
-            <div className="opacity-80 text-auto text-sm md:text-base lg:text-lg kol-mono-text leading-7">
+            <div className="opacity-80 text-auto kol-mono-16">
               Font style<br />
               Glyph name<br />
               Unicode<br />
               Decimal<br />
               Hex
             </div>
-            <div className="opacity-80 text-auto text-sm md:text-base lg:text-lg kol-mono-text leading-7">
+            <div className="opacity-80 text-auto kol-mono-16">
               {fontStyle === 'italic' ? 'Italic' : 'Roman'}<br />
               {displayGlyph}<br />
               U+{unicodeHex}<br />

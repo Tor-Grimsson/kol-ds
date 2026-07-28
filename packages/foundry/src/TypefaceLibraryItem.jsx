@@ -84,11 +84,14 @@ const TypefaceLibraryItem = ({ typeface, variant = 'card', isActive = false, onM
           {/* Details at Top */}
           <div className={`p-6 space-y-2 group-hover:opacity-0 transition-opacity duration-300 relative z-10 ${isActive ? 'opacity-0' : ''}`}>
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <h3 className={`kol-helper-lg group-hover:text-auto-inverse transition-colors ${isActive ? 'text-auto-inverse' : 'text-auto'}`}>
+              {/* kol-helper-lg / kol-helper-s were retired t-shirt stops (dead
+                * in the DS theme) — mapped to the numeric scale: 18px → the
+                * tighter kol-helper-16, 14px → kol-helper-14. */}
+              <h3 className={`kol-helper-16 group-hover:text-auto-inverse transition-colors ${isActive ? 'text-auto-inverse' : 'text-auto'}`}>
                 {typeface.name}
               </h3>
             </div>
-            <p className={`kol-helper-s group-hover:text-fg-inverse-64 transition-colors ${isActive ? 'text-fg-inverse-64' : 'text-fg-64'}`}>
+            <p className={`kol-helper-14 group-hover:text-fg-inverse-64 transition-colors ${isActive ? 'text-fg-inverse-64' : 'text-fg-64'}`}>
               {typeface.styles}
             </p>
           </div>
@@ -145,11 +148,14 @@ const TypefaceLibraryItem = ({ typeface, variant = 'card', isActive = false, onM
         {/* Left: Typeface Name & Info */}
         <div className="w-64 flex justify-start items-start gap-6">
           <div className="flex-1 flex flex-col justify-start items-start gap-3">
+            {/* Left column is width-clamped (w-64) → strings can wrap → mono
+              * stops with leading, not helpers. Dead kol-mono-sm/xs mapped to
+              * kol-mono-14 / kol-mono-12. */}
             <div className="self-stretch flex flex-col justify-start items-start gap-2">
-              <div className="self-stretch kol-mono-sm uppercase">
+              <div className="self-stretch kol-mono-14 uppercase">
                 {typeface.name}
               </div>
-              <div className="self-stretch kol-mono-xs text-fg-64">
+              <div className="self-stretch kol-mono-12 text-fg-64">
                 {typeface.styles}
               </div>
             </div>
@@ -157,11 +163,13 @@ const TypefaceLibraryItem = ({ typeface, variant = 'card', isActive = false, onM
         </div>
 
         {/* Right: Status/Year info */}
+        {/* Right column values are structurally single-line (unclamped,
+          * end-aligned) → helper stops per the protocol fault line. */}
         <div className="flex flex-col items-end gap-2">
-          <span className="kol-mono-sm">
+          <span className="kol-helper-14">
             {typeface.classification}
           </span>
-          <span className="kol-mono-xs text-fg-64">
+          <span className="kol-helper-12 text-fg-64">
             {typeface.year}
           </span>
         </div>

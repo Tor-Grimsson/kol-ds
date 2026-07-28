@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pill } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
 import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
@@ -63,6 +63,16 @@ function PlayPauseButton({ isPlaying = false, onToggle, size = 28 }) {
  * static value); brand copy defaults ('Málrómur Aa' / 'Variable' / TGMalromur)
  * are dropped for neutral defaults.
  *
+ * Card geometry replicates the live VariableFontDisplay EXACTLY and is applied
+ * INLINE, not via Tailwind classes: height 30vh below 768px / 60vh above (a
+ * full-width tall card, roughly 2:1 on desktop), specimen word 80px / 144px
+ * centered in the middle, axes label top-left, wght badge top-right, the
+ * Weight slider row pinned along the bottom edge. Inline because the live site
+ * consumed the package WITHOUT scanning it for Tailwind (`@source` missing),
+ * so class-driven heights (`h-[40vh] md:h-[60vh]`) generated nothing and the
+ * card collapsed to the slider row (~24px). Load-bearing geometry must not
+ * depend on the consumer's Tailwind scan.
+ *
  * Text casing: badgeText, text and dropdown labels render verbatim.
  *
  * @param {Object} props
@@ -83,6 +93,17 @@ const VariableFontSection = ({
 }) => {
   const [isAnimating, setIsAnimating] = useState(true)
   const [selectedStyle, setSelectedStyle] = useState(showDropdown ? 'italic' : 'roman')
+
+  /* Live breakpoint switch (VariableFontDisplay's resize listener, as
+   * matchMedia): drives the card's inline height + specimen size. */
+  const [isDesktop, setIsDesktop] = useState(true)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const update = () => setIsDesktop(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   const { value: weight, setValue: setWeight, reduced } = useAxisAnimation({
     min: minWeight,
@@ -107,16 +128,21 @@ const VariableFontSection = ({
           onStyleChange={setSelectedStyle}
           showDropdown={showDropdown}
           badgeText={badgeText}
-          icon="foundation"
+          icon="type"
           size="sm"
         />
 
-        {/* VariableFontDisplay (inlined) — giant text behind, controls in front */}
-        <div className="relative w-full rounded border border-fg-16 bg-surface-primary overflow-hidden p-6 md:p-10 h-[40vh] md:h-[60vh]">
+        {/* VariableFontDisplay (inlined) — giant text behind, controls in front.
+          * Height + specimen size are INLINE (live geometry; see docblock). */}
+        <div
+          className="relative w-full rounded border border-fg-16 bg-surface-primary overflow-hidden p-6 md:p-10"
+          style={{ height: isDesktop ? '60vh' : '30vh' }}
+        >
           <p
-            className="absolute inset-0 flex items-center justify-center text-[80px] md:text-[144px] transition-colors duration-300"
+            className="absolute inset-0 flex items-center justify-center transition-colors duration-300"
             style={{
               fontFamily,
+              fontSize: isDesktop ? 144 : 80,
               fontWeight: Math.round(weight),
               fontStyle,
               color: 'var(--kol-surface-on-primary)',

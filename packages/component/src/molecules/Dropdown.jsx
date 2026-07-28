@@ -20,6 +20,11 @@ import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
  *
  * Legacy aliases (pre-law variants, kept so call-sites don't break):
  *   default → primary · subtle → primary · minimal → outline
+ *
+ * Size: dropdowns are `sm` at EVERY viewport unless the consumer passes an
+ * explicit `size` prop (user law 2026-07-28 — desktop is sm, always, and
+ * smaller viewports never resolve larger than desktop). The old auto-ramp
+ * (lg ≥1024 / md ≥768 / sm below) is gone.
  */
 
 const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
@@ -37,8 +42,10 @@ const Dropdown = ({
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
-  const [resolvedSize, setResolvedSize] = useState('md')
   const [dropdownWidth, setDropdownWidth] = useState('100px')
+
+  // sm everywhere unless explicitly overridden (see docblock size law).
+  const resolvedSize = size || 'sm'
 
   const resolvedVariant = LEGACY_VARIANTS[variant] || variant
 
@@ -55,35 +62,6 @@ const Dropdown = ({
     matchReferenceWidth: true,
     role: 'listbox',
   })
-
-  useEffect(() => {
-    const determineSize = () => {
-      if (size) {
-        setResolvedSize(size)
-        return
-      }
-
-      if (typeof window === 'undefined') {
-        setResolvedSize('md')
-        return
-      }
-
-      if (window.innerWidth >= 1024) {
-        setResolvedSize('lg')
-      } else if (window.innerWidth >= 768) {
-        setResolvedSize('md')
-      } else {
-        setResolvedSize('sm')
-      }
-    }
-
-    determineSize()
-    window.addEventListener('resize', determineSize)
-
-    return () => {
-      window.removeEventListener('resize', determineSize)
-    }
-  }, [size])
 
   // Width management — 100px mobile, 140px tablet, 180px desktop
   useEffect(() => {
