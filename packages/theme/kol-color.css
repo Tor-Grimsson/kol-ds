@@ -105,13 +105,16 @@
  * ============================================================================= */
 
 /* =============================================================================
- * BASE ANCHOR RULE — unstyled links get the link color. Sits in the
- * components layer, so any utility class or later-loading chrome sheet
- * (kol-framework, brand) still wins per the cascade contract (§5).
+ * LINK COLOR — OPT-IN, never global. The old bare `a { color }` rule painted
+ * every anchor in every consumer and out-ranked chrome on two axes: `a:hover`
+ * (0,1,1) beats any single utility class, and an unlayered theme import beats
+ * whole `layer(...)` chrome sheets regardless of specificity. Chrome owns its
+ * anchor colors; content links are `.kol-prose a` (inherit + underline).
+ * Blue is a choice: add `.kol-link` at the call site.
  * ============================================================================= */
 
-a { color: var(--kol-link); }
-a:hover { color: var(--kol-link-hover); }
+.kol-link { color: var(--kol-link); }
+.kol-link:hover { color: var(--kol-link-hover); }
 
 /* =============================================================================
  * CONTEXT-AWARE SURFACE INVERSE

@@ -27,7 +27,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.11.2** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.2 drops the fluid board's 760px cap (height-fenced via `--chess-stage-reserve`) |
+| `@kolkrabbi/kol-theme` | **0.11.3** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.3 kills the global `a { color }` rule — link blue is opt-in `.kol-link` (chrome owns its anchors, prose links unchanged) |
 | `@kolkrabbi/kol-icons` | **0.7.0** | `<Icon>` + the curated `kol-icon-set-v1` + `registerIcons` (BYO) |
 | `@kolkrabbi/kol-component` | **0.12.0** | The components — atoms → molecules → organisms + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.5.1** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.1 theme state is light-first (matchMedia OS-follow removed, matches theme 0.9.2 law) |
