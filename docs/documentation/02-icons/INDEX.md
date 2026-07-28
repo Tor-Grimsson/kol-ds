@@ -38,7 +38,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 ## kol-icon-set-v1 — the curated set
 
-One small, hand-reviewed set — **144 icons across 22 groups** (2026-07-28: 17 promotions with 0.8.0, keyline-conformed in 0.8.1 — chevrons/carets fit the 18×18 rect; 0.8.2 killed chevron-expanded (twin of chevron-up) and completed the four-diagonal arrow family as baked mirrors of the arrow-downright master), a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and is the ONLY packaged set. It renders on `/icons`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`.
+One small, hand-reviewed set — **144 icons across 23 groups** (2026-07-28: 17 promotions with 0.8.0, keyline-conformed in 0.8.1 — chevrons/carets fit the 18×18 rect; 0.8.2 killed chevron-expanded (twin of chevron-up) and completed the four-diagonal arrow family as baked mirrors of the arrow-downright master), a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and is the ONLY packaged set. It renders on `/icons`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`.
 
 - **Grouped, flat-by-name.** Foldered by group (chevron, arrow, nav, singletons, layout, files, code, atomic, shape-primitives, …) but resolved by basename — so no two icons share a name across groups.
 - **Single cut.** No stroke/solid duality; intentional solids (filled carets, dots) are baked into the individual icon, not a parallel tree.

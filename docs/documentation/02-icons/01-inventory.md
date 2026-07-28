@@ -20,12 +20,13 @@ related:
 
 Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any cull or promotion** (not auto-synced; the live `/icons` page and the keys-only `KOL_ICON_SET_V1` export are the runtime source of truth). See [[INDEX|icons]] for the loader model.
 
-**144 icons · 22 groups** (2026-07-28, post v1-only cutover + keyline pass — chevron-expanded killed as chevron-up's twin, diagonal arrow family completed from the downright master). Legacy stroke/solid rosters live only on the local shelf `_tmp/legacy-icons/` and in published `kol-icons@0.7.1`.
+**144 icons · 23 groups** (2026-07-28, post v1-only cutover + keyline pass — chevron-expanded killed as chevron-up's twin, diagonal arrow family completed from the downright master). Legacy stroke/solid rosters live only on the local shelf `_tmp/legacy-icons/` and in published `kol-icons@0.7.1`.
 
 | Group | Count | Names |
 |---|--:|---|
 | `add-remove` | 4 | `check` · `minus` · `plus` · `x` |
-| `arrow` | 8 | `arrow-down` · `arrow-downleft` · `arrow-downright` · `arrow-left` · `arrow-right` · `arrow-up` · `arrow-upleft` · `arrow-upright` |
+| `arrow` | 4 | `arrow-down` · `arrow-left` · `arrow-right` · `arrow-up` |
+| `arrow-diagonal` | 4 | `arrow-downleft` · `arrow-downright` · `arrow-upleft` · `arrow-upright` |
 | `atomic` | 10 | `atomic-atom` · `atomic-atomic-01` · `atomic-atomic-02` · `atomic-molecule-01` · `atomic-molecule-02` · `atomic-molecule-03` · `atomic-organism-01` · `atomic-organism-02` · `atomic-organism-03` · `atomic-organism-04` |
 | `caret` | 4 | `caret-down` · `caret-left` · `caret-right` · `caret-up` |
 | `chevron` | 4 | `chevron-down` · `chevron-left` · `chevron-right` · `chevron-up` |

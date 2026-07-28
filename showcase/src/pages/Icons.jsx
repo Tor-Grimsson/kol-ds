@@ -11,7 +11,7 @@ import DocLayout from '../lib/DocLayout.jsx'
  * Proves the set ships + resolves from the package (not a showcase-local glob).
  */
 
-const ORDER = ['chevron', 'arrow', 'caret', 'add-remove', 'transfer', 'traffic', 'nav', 'singletons',
+const ORDER = ['chevron', 'arrow', 'arrow-diagonal', 'caret', 'add-remove', 'transfer', 'traffic', 'nav', 'singletons',
   'layout', 'files', 'device', 'components', 'code', 'tools', 'notify', 'eye-lock', 'atomic',
   'shape-primitives', 'shape-forms', 'misc']
 const LABELS = { 'add-remove': 'Add / remove', 'eye-lock': 'Eye · lock', 'shape-primitives': 'Shape primitives', 'shape-forms': 'Shape forms' }
