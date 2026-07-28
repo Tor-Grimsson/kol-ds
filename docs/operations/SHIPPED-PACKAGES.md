@@ -28,7 +28,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | Package | Version | Job |
 |---|---|---|
 | `@kolkrabbi/kol-theme` | **0.11.8** | Foundation CSS — tokens, type classes, all component chrome (`.kol-btn*`, `.kol-prose`, per-domain sheets); 0.11.8 display-tight fix — new `--kol-font-family-sans-tight` token, display tier names the Tight cut @500 (font-stretch selection dead: static faces have no stretch descriptors); 0.11.7 nav states = opacity ladder only; 0.11.6 system-follow dark |
-| `@kolkrabbi/kol-icons` | **0.8.0** | `<Icon>` + kol-icon-set-v1 (143 icons / 22 groups) + `registerIcons` (BYO); 0.8.0 v1-ONLY — legacy stroke/solid/svg/svg-web trees removed (local shelf `_tmp/legacy-icons/`), `variant` prop dropped, 17 promotions in |
+| `@kolkrabbi/kol-icons` | **0.8.2** | `<Icon>` + kol-icon-set-v1 (144 icons / 22 groups) + `registerIcons` (BYO); 0.8.0 v1-ONLY — legacy stroke/solid/svg/svg-web trees removed (local shelf `_tmp/legacy-icons/`), `variant` prop dropped, 17 promotions in; 0.8.1 keyline conformance — chevrons+carets fit 18×18, expanded redrawn stroke-1.5, arrow family complete: 4 diagonals baked from the downright master; chevron-expanded killed (twin of chevron-up) |
 | `@kolkrabbi/kol-component` | **0.12.3** | The components — atoms → molecules → organisms + `<Graphic>`; 0.12.3 icon names → v1 (`x`); 0.12.1 Slider a11y `useId` pairing |
 | `@kolkrabbi/kol-framework` | **0.5.5** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer; 0.5.5 icon names → v1 (`hamburger`/`x`); 0.5.4 theme state = explicit > system > light |
 | `@kolkrabbi/kol-workshop` | **0.1.7** | Docs/workshop system — markdown engine, search, tag graph, docs shell |

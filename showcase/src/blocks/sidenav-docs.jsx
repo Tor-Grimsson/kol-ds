@@ -40,7 +40,7 @@ export default function SidebarDocs() {
             <p className="kol-sans-body-02 truncate text-emphasis">Documentation</p>
             <p className="kol-helper-10 text-meta">v1.0.1</p>
           </div>
-          <Icon name="chevron-expanded" size={14} className="text-meta" />
+          <Icon name="chevron-up" size={14} className="text-meta" />
         </div>
         <div className="px-3 pb-2">
           <Input variant="filled" size="sm" iconLeft="search" placeholder="Search the docs…" />
