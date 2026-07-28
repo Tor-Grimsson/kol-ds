@@ -53,6 +53,7 @@ export default function SidebarNav({ onNavigate }) {
       <div>
         <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">Group by</p>
         <SegmentedToggle
+          size="sm"
           ariaLabel="Group components by"
           value={mode}
           onChange={setMode}

@@ -90,8 +90,8 @@ export default function Icons() {
     <DocLayout wide>
       <DocHeader
         eyebrow="KOL · Icons"
-        title="kol-icon-set-v1"
-        lede={`The v1 icon set — ${TOTAL} icons across ${orderedFolders.length} groups, resolved straight from the package (@kolkrabbi/kol-icons). Single stroke cut, currentColor. Click any icon to copy its name.`}
+        title="Icons"
+        lede={`${TOTAL} icons across ${orderedFolders.length} groups (kol-icon-set-v1), resolved straight from the package (@kolkrabbi/kol-icons). Single stroke cut, currentColor. Click any icon to copy its name.`}
       />
 
       <div className="flex items-center flex-wrap gap-6 mt-8 mb-10">
