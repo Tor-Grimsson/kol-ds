@@ -11,12 +11,13 @@ and does not follow the `.kol/docs-framework` conventions.
 
 ## Queue
 
-**6 live entries** (rewritten 2026-07-28 — the old table re-listed ~50 specs that
+**7 live entries** (rewritten 2026-07-28 — the old table re-listed ~50 specs that
 already live in `done/`; the batch story is in the Processed log below and
 **[WORKLOG-2026-07-03-monorepo.md](WORKLOG-2026-07-03-monorepo.md)**).
 
 | Entry | Source | Staged | Status |
 |-------|--------|--------|--------|
+| [ThemeToggleButtonVariant](ThemeToggleButtonVariant.md) | kol-website brand sidebar · framework 0.5.13 / icons 0.8.8 | 2026-07-29 | **queued — 2 declared FAILURES**: roll animation shipped-but-wrong (redo the motion), library.svg redesign rejected (real redesign or kill the glyph) |
 | [WorkshopSystemVendored](WorkshopSystemVendored.md) | kol-website nav-ownership restructure | 2026-07-28 | queued (architecture note — kol-workshop package fate: snapshot-not-parent, stop-publish vs deprecate; nothing urgent) |
 | [ChessApparatusDemotion](ChessApparatusDemotion.md) | kol-chess consumer restructure | 2026-07-28 | queued (architecture note — apparatus fate, rail rename, mirror drift, geometry helper; nothing urgent) |
 | [ParaType](ParaType.md) | web parametric-type composition | 2026-07-10 | **deferred — dedicated session only** (crown-jewel synthesizer; 864-line page + 6 effects + 2 engines + ~8 libs; never build unattended) |

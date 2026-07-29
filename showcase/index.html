@@ -5,10 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon-kol-ds.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>kol-labs</title>
-    <!-- Theme boot: LIGHT default (per-repo preference), restore the user's
-         saved toggle before first paint. Versioned: v2 marks the light-default
-         cutover — saved themes from before it (incl. the old workshop `theme`
-         key) are discarded once so stale dark can't win over the new default. -->
+    <!-- Theme boot (USER law: explicit choice > system/auto > light): restore
+         a SAVED toggle choice before first paint; with no saved choice the
+         page is left un-stamped so the theme CSS's :root:not([data-theme])
+         blocks follow the OS live. Versioned: v2 marks the old light-default
+         cutover — pre-v2 saved themes (incl. the old workshop `theme` key)
+         are discarded once. -->
     <script>
       try {
         if (localStorage.getItem('kol-theme-v') !== '2') {
@@ -16,9 +18,9 @@
           localStorage.removeItem('theme')
           localStorage.setItem('kol-theme-v', '2')
         }
+        var t = localStorage.getItem('kol-theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
       } catch (e) {}
-      document.documentElement.dataset.theme =
-        localStorage.getItem('kol-theme') || 'light'
     </script>
   </head>
   <body>

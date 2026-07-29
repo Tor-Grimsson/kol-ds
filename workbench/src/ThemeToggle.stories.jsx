@@ -1,7 +1,8 @@
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
-/* Clicking any of these flips <html data-theme> and recolours the whole page —
- * that's the component's job, not a story bug. */
+/* Clicking any of these cycles light → dark → system on <html data-theme>
+ * (system REMOVES the attribute and follows the OS) and recolours the whole
+ * page — that's the component's job, not a story bug. */
 
 export const Default = () => <ThemeToggle variant="icon" />
 

@@ -97,11 +97,11 @@
 
 /* =============================================================================
  * DARK MODE
- * Explicit dark-mode surface overrides ([data-theme="dark"], .dark) come from
- * kol-base-tokens.css. There is deliberately NO OS-preference auto-dark block:
- * user ruling 2026-07-15 (ledger 2.4) — light mode first until migration
- * completion; theme is decided only by an explicit data-theme. Reinstating
- * OS-follow is a user ruling, not a cleanup.
+ * Explicit dark-mode surface overrides ([data-theme="dark"], .dark) live in
+ * kol-base-tokens.css, alongside their system-follow MIRROR blocks
+ * (@media prefers-color-scheme gated on :root:not([data-theme])) — USER law
+ * corrected 2026-07-28: explicit choice > system/auto > light. This file
+ * defines no dark rules of its own.
  * ============================================================================= */
 
 /* =============================================================================

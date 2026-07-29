@@ -8,6 +8,11 @@ import { useEffect, useState } from 'react'
  * follows prefers-color-scheme (the theme CSS ≥0.11.6 mirrors this via
  * `:root:not([data-theme])`, so state and render agree); light is the
  * last-resort fallback. A consumer stamps data-theme to veto the OS.
+ *
+ * Tri-state (0.6.0): `mode` is 'light' | 'dark' | 'system'. 'system' is the
+ * absence of an explicit choice — applyTheme('system') clears the stamp and
+ * the saved key, handing the page back to the OS. `theme` stays the RESOLVED
+ * value ('light'|'dark') so existing consumers keep working unchanged.
  * `data-theme` + localStorage are written ONLY through applyTheme (a user
  * action) — mounting a reader leaves the DOM untouched. */
 
@@ -23,14 +28,27 @@ function getExplicitTheme() {
   return null
 }
 
-export function getInitialTheme() {
-  if (typeof document === 'undefined') return 'light'
-  return getExplicitTheme()
-    ?? (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light')
+/* One resolver for both axes: mode (the choice) + theme (what renders). */
+function resolveThemeState() {
+  const explicit = getExplicitTheme()
+  if (explicit) return { mode: explicit, theme: explicit }
+  const dark = window.matchMedia?.('(prefers-color-scheme: dark)')?.matches
+  return { mode: 'system', theme: dark ? 'dark' : 'light' }
 }
 
-/** Stamp + persist an explicit theme choice. */
+export function getInitialTheme() {
+  if (typeof document === 'undefined') return 'light'
+  return resolveThemeState().theme
+}
+
+/** Stamp + persist an explicit theme choice — or 'system' to clear both and
+ * hand the page back to prefers-color-scheme. */
 export function applyTheme(theme) {
+  if (theme === 'system') {
+    delete document.documentElement.dataset.theme
+    try { localStorage.removeItem(THEME_STORAGE_KEY) } catch { /* storage blocked */ }
+    return
+  }
   document.documentElement.dataset.theme = theme
   try { localStorage.setItem(THEME_STORAGE_KEY, theme) } catch { /* storage blocked */ }
 }
@@ -41,16 +59,26 @@ export function applyTheme(theme) {
  * All instances observe the html `data-theme` attribute, so any writer
  * (this hook's setTheme, ThemeToggle, an app boot script) updates every
  * reader. When the page has no explicit choice, the theme follows the
- * system (explicit > system > light). Returns { theme, isDark, setTheme, toggle }.
+ * system (explicit > system > light).
+ * Returns { theme, isDark, mode, setTheme, toggle, cycle }:
+ *   theme  — resolved 'light' | 'dark' (what renders right now)
+ *   mode   — 'light' | 'dark' | 'system' (what is chosen)
+ *   setTheme(t) — stamp 'light'/'dark', or 'system' to follow the OS
+ *   toggle — binary light↔dark (always an explicit choice; kept for compat)
+ *   cycle  — light → dark → system → light (the tri-state control)
  */
 export function useTheme() {
-  const [theme, setThemeState] = useState(getInitialTheme)
+  const [state, setState] = useState(() =>
+    typeof document === 'undefined'
+      ? { mode: 'light', theme: 'light' }
+      : resolveThemeState()
+  )
 
   useEffect(() => {
     /* Re-stamp a previously saved user choice so persistence works in apps
      * with no theme boot script — but only when the app itself hasn't set
      * data-theme (an app-set attribute always wins over storage). Idempotent
-     * across instances. */
+     * across instances; the observer below picks the stamp up. */
     const attr = document.documentElement.dataset.theme
     let saved = null
     try { saved = localStorage.getItem(THEME_STORAGE_KEY) } catch { /* storage blocked */ }
@@ -58,38 +86,33 @@ export function useTheme() {
       document.documentElement.dataset.theme = saved
     }
 
-    /* Sync with any data-theme writer. */
-    const observer = new MutationObserver(() => {
-      const current = document.documentElement.dataset.theme
-      if (current === 'light' || current === 'dark') setThemeState(current)
-    })
+    /* One sync path for every writer: data-theme mutations (stamp OR removal)
+     * and live OS switches both re-resolve. resolveThemeState ignores the OS
+     * whenever an explicit choice exists, so the guards are inherent. */
+    const sync = () => setState(resolveThemeState())
+    const observer = new MutationObserver(sync)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-
-    /* No explicit choice anywhere — follow live OS switches, like the
-     * theme CSS's :root:not([data-theme]) block. */
     const mq = window.matchMedia?.('(prefers-color-scheme: dark)')
-    const onChange = (e) => {
-      try { if (localStorage.getItem(THEME_STORAGE_KEY)) return } catch { /* storage blocked */ }
-      if (document.documentElement.dataset.theme) return
-      setThemeState(e.matches ? 'dark' : 'light')
-    }
-    mq?.addEventListener?.('change', onChange)
+    mq?.addEventListener?.('change', sync)
 
+    sync()
     return () => {
       observer.disconnect()
-      mq?.removeEventListener?.('change', onChange)
+      mq?.removeEventListener?.('change', sync)
     }
   }, [])
 
   const setTheme = (t) => {
-    setThemeState(t)
     applyTheme(t)
+    setState(resolveThemeState())
   }
 
   return {
-    theme,
-    isDark: theme === 'dark',
+    theme: state.theme,
+    isDark: state.theme === 'dark',
+    mode: state.mode,
     setTheme,
-    toggle: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+    toggle: () => setTheme(state.theme === 'dark' ? 'light' : 'dark'),
+    cycle: () => setTheme(state.mode === 'light' ? 'dark' : state.mode === 'dark' ? 'system' : 'light'),
   }
 }
