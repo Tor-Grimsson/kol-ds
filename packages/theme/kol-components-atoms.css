@@ -233,13 +233,12 @@
   line-height: 0;
 }
 /* Icon-only is a GEOMETRY condition, not a variant (2026-07-28, user-ordered):
- * a lone glyph gets a SQUARE box in every variant — the rung's vertical pad on
- * all four sides (sm 24 / md 30 / lg 36 outer = the text-button height of the
- * same rung, so mixed rows line up). Kills the pill shape the horizontal rung
- * padding produced on icon-only buttons. */
-.kol-btn-icon.kol-btn-sm { padding: 4px; }
-.kol-btn-icon.kol-btn-md { padding: 6px; }
-.kol-btn-icon.kol-btn-lg { padding: 8px; }
+ * a lone glyph gets a PINNED SQUARE per rung — sm 28 / md 32 / lg 36 — equal to
+ * the rung's button height and independent of glyph size (padding-derived
+ * squares drifted with icon size; user law: the box never moves). */
+.kol-btn-icon.kol-btn-sm { width: 28px; height: 28px; padding: 0; }
+.kol-btn-icon.kol-btn-md { width: 32px; height: 32px; padding: 0; }
+.kol-btn-icon.kol-btn-lg { width: 36px; height: 36px; padding: 0; }
 
 .kol-btn-primary {
   background: var(--kol-surface-secondary);

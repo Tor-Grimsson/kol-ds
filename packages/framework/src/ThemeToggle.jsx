@@ -58,7 +58,7 @@ export default function ThemeToggle({ variant = 'icon', size = 'md', className =
         className={`${chromeCls} ${className}`.trim()}
       >
         <span className="inline-flex items-center justify-center shrink-0" aria-hidden="true">
-          {iconSwap(16)}
+          {iconSwap(size === "sm" ? 16 : size === "lg" ? 24 : 20)}
         </span>
         {/* kol-sidenav-hop-label keeps the responsive label-hide rule firing
          * at narrow viewports without subjecting the button to the muted
@@ -71,10 +71,10 @@ export default function ThemeToggle({ variant = 'icon', size = 'md', className =
   }
 
   // variant === 'icon' (default) — geometry from the DS button ladder
-  // (sm 14 / md 16 / lg 18 glyph), chrome = ghost icon-only .kol-btn.
+  // (sm 16 / md 20 / lg 24 glyph — 2026-07-28 pairing law), chrome = ghost icon-only .kol-btn.
   // Overrules the 2026-07-15 "36×36/20 reference" one-off (user ruling
   // 2026-07-28: the button ladder is the reference, bar icons included).
-  const glyph = size === 'sm' ? 14 : size === 'lg' ? 18 : 16
+  const glyph = size === 'sm' ? 16 : size === 'lg' ? 24 : 20
   return (
     <button
       type="button"

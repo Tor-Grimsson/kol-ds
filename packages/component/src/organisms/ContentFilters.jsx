@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import Tag from '../atoms/Tag.jsx'
 import Divider from '../atoms/Divider.jsx'
+import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ViewToggle from '../atoms/ViewToggle'
 
@@ -135,25 +136,32 @@ const ContentFilters = ({
     <div className="w-full" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-6">
-          <h2 className="kol-helper-16 flex items-center gap-3">{titleIcon && <Icon name={titleIcon} size={20} />}{title}</h2>
-          <Divider variant="vertical" className="h-5" />
+          <h2 className="flex items-center gap-1">
+            {titleIcon && (
+              <span className="kol-btn kol-btn-secondary kol-btn-md kol-btn-icon">
+                <Icon name={titleIcon} size={20} />
+              </span>
+            )}
+            <span className="kol-btn kol-btn-md kol-helper-16">{title}</span>
+          </h2>
+          <Divider variant="vertical" className="self-stretch py-1" />
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-2 hover:bg-fg-04 rounded-sm transition-colors leading-none"
+              className="kol-btn kol-btn-md kol-btn-icon"
               aria-label="Toggle filters"
               style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit' }}
             >
               <Icon name="filter" size={20} />
             </button>
             <div
-              className="flex items-center rounded-full cursor-pointer"
+              className="flex items-center justify-center rounded-sm cursor-pointer hover:bg-fg-04 transition-colors"
               style={{
-                height: 28,
-                width: searchOpen ? 200 : 28,
-                background: searchOpen ? 'var(--kol-fg-04)' : 'transparent',
-                border: searchOpen ? '1px solid var(--kol-fg-08)' : '1px solid transparent',
+                height: 32,
+                width: searchOpen ? 200 : 32,
+                background: searchOpen ? 'var(--kol-surface-secondary)' : 'transparent',
+                border: 'none',
                 transition: 'width 600ms cubic-bezier(0.16, 1, 0.3, 1), background 400ms cubic-bezier(0.16, 1, 0.3, 1)',
                 overflow: 'hidden',
               }}
@@ -163,9 +171,8 @@ const ContentFilters = ({
               }}
             >
               <span
-                className="flex items-center justify-center flex-shrink-0"
+                className="kol-btn kol-btn-md kol-btn-icon flex items-center justify-center flex-shrink-0"
                 style={{
-                  width: 28, height: 28,
                   opacity: searchOpen ? 0 : 1,
                   transition: 'opacity 300ms cubic-bezier(0.16, 1, 0.3, 1)',
                   position: searchOpen ? 'absolute' : 'relative',
