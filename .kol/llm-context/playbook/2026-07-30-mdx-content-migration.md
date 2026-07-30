@@ -249,3 +249,45 @@
   labels → variant rows named by HOST CONTEXT: icon=toolbars/nav bars · button=THE ladder button, standalone surfaces (brand sidebar today) · hop=sidenav filled · hop-bare=sidenav quiet
   verify → cross-pane sync ✓ · system mode = split circle everywhere, 0 dashed paths in DOM ✓ · console clean (fonts only) · rig killed (8931 + browser + screenshots)
   note → ThemeToggle.jsx untouched — the no-third-glyph change lands as 0.8.2 on approval
+
+[11:36 GMT · 2026-07-30] · ✅ APPROVED · the ThemeToggle 2-variant spec (user: "log that table, that is a nice table")
+  THE SPEC (tree shape — variants = container geometry only, props = content + fill):
+  ThemeToggle
+    variant button — padded rung + corner radius (THE button container)
+      fill        subtle · none    the one bg element — subtle = grey (brand sidebar) · none = the invisible container
+      iconLeft/iconRight  glyph    which side the mode glyph sits
+      label       on · off         text on/off — off pins the square box per rung (28/32/36)
+      fullWidth   off · on         stretches to a sidenav row (the old hop)
+      size        sm · md · lg     moves pad + text + glyph together (4·12/12 · 6·16/14 · 8·20/16; glyph +text 14/16/18, solo 16/20/24)
+    variant flush — no pad, no radius, no fill ever (3.3)
+      iconLeft/iconRight · label · fullWidth · size — same list minus fill; no square pinning (no box); size scales text + glyph only
+  path here → round-2/3 rulings (no third glyph, 2 instances of the split circle) + user's 3.1-3.3 decomposition; outline cut (no consumer, standing law); fill promoted variant→prop per user's own 3.2; "Covers" column confusion resolved by re-rendering the spec in the user's tree shape
+  next → rework ThemeToggle.jsx onto the spec, legacy aliases render old chrome verbatim, framework 0.9.0
+
+[11:40 GMT · 2026-07-30] · ThemeToggle REWORK SHIPPED · framework 0.9.0 published
+  what → ThemeToggle.jsx onto the approved spec: variant button/flush (geometry only) + props fill/label/iconRight/fullWidth/size; strip = 3× mode-toggle-01, all rolling — desktop glyph DELETED from the component
+  aliases → icon/hop/hop-bare render their 0.6.x chrome verbatim (deprecated branches, zero pixel drift for the website consumers); old variant="button" callers land on the new default path with identical classes
+  consumers → ShellHeader migrated to the new API (fill none + label off = the old quiet square, same pixels, lg+md rungs); SideNav stays on its hop-bare alias; showcase demo shows both spec faces
+  docs → ThemeToggle.mdx rewritten (spec tree table + size table + alias map + authored Api rows) · SHIPPED-PACKAGES 0.9.0 · api-tables re-extracted (react-docgen picked up all 6 props)
+  verify → build + gates ✓ · live: demo classes exact (kol-btn-primary/-nav kol-btn-icon), desktop path absent from DOM, 1 glyph identity in strip, header square on new API, 0 page errors · unstamped boot starts at system (correct: explicit > system > light)
+  note → toggle-library proposal page now superseded by the live component page for the roll verdict; library glyph long shipped (0.8.11)
+
+──────────── MILESTONE: wave 4 + the toggle spec ──────────── [12:05]
+  closed: retype · parity 5/5 · provenance · INDEX rescue · 66 prose docs · toggle spec APPROVED + shipped 0.9.0 · 0.8.0 deprecated · em italic RULED KEEP (website lobby note filed) · loader deprecate handed to user
+  published: icons 0.8.11 · workshop 0.3.4-0.3.6 · theme 0.13.3 · framework 0.9.0
+  log: session-log/2026-07-30-MILESTONE-wave4-toggle-spec.md
+
+[12:15 GMT · 2026-07-30] · loader orphan closed · npm deprecate run + verified
+  what → @kolkrabbi/kol-loader deprecated on the registry (user go — the earlier "hand me the command" was meant for the website repo); no packages/loader on disk, nothing to retire
+  docs → SHIPPED-PACKAGES + AGENT-CONTEXT + milestone log all state DONE
+
+[12:22 GMT · 2026-07-30] · lobby hygiene repaired · queue 3 → 1
+  fuck-up → resolved two entries' SUBSTANCE earlier today without doing their lobby bookkeeping (INDEX law: live tasks only, resolved → done/ with resolution, notes → archive/), then "audited" raw files without reading the INDEX ledger — mislabeled parked InteractiveImage as open
+  fixed → ThemeToggleButtonVariant + resolution → done/ (+ Processed row) · NOTE-framework-0.8.x + resolution → archive/ · INDEX queue count + resolved/archived lines updated
+  queue → 1 live entry: InteractiveImage (parked — user's row, user's status, untouched)
+
+──────────── MILESTONE: the close-out — head clean, ledger sealed ──────────── [12:24]
+  closed since capstone: loader deprecated + verified · lobby hygiene repaired (queue 3 → 1, resolutions filed per the lobby's own law)
+  open: NOTHING agent-side · website lobby note awaits their agent · InteractiveImage parked (user's row)
+  law reinforced: open/closed/stale is the USER's call — the agent reports, never classifies
+  log: session-log/2026-07-30-MILESTONE-wave4-toggle-spec.md (amended in place — same arc, no duplicate capstone)

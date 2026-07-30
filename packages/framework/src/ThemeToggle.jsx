@@ -2,121 +2,126 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { useTheme } from './theme.js'
 
 /**
- * Theme toggle — horizontal icon-swap button, tri-state (0.6.0).
+ * Theme toggle — tri-state glyph-roll button (0.9.0, the approved 2-variant spec).
  *
  * Clicking CYCLES light → dark → system → light. 'system' is the no-choice
  * state: the stamp + saved key are cleared and the page follows
- * prefers-color-scheme live (USER law: explicit choice > system/auto > light).
- * The glyph shows the current mode — the split-circle `mode-toggle-01` for
- * light/dark (rolling + spinning exactly as before), the v1 `desktop` glyph
- * for system.
+ * prefers-color-scheme live (USER law: explicit choice > system > light).
  *
- * Variants:
- *   icon     — icon-only button on the DS button ladder: `size` 'sm'|'md'|'lg'
- *              → 14/16/18px glyph, square box + quiet states from the
- *              .kol-btn-nav chrome (theme ≥0.11.4), so the toggle sits flush
- *              with sibling navigation buttons in a bar.
- *   button   — a REAL ladder button (2026-07-29, user-ordered): glyph + label
- *              inside plain `.kol-btn .kol-btn-primary .kol-btn-{size}` with
- *              the rung's mono type and pairing-law glyph (16/20/24) — no
- *              width/justify overrides, so it measures exactly like any
- *              other kol-btn on the rung.
- *   hop      — full-width labeled Button-primary-styled sidenav row
- *              (bg-fg-04, on-primary text). For sidenav rows where it pairs
- *              with other Button-primary "hop" entries.
- *   hop-bare — same shape + padding as hop, but fully transparent (no rest
- *              bg, no hover bg). For sidenav rows where the row should read
- *              as plain text + icon, not a button.
+ * ONE glyph, ever (user ruling 2026-07-30): every position in the roll strip
+ * is `mode-toggle-01`, the split circle — the system state wears it too, told
+ * apart by the label / tooltip, never by a third glyph. The strip rolls like
+ * a coin: rotation ACCUMULATES −180° per slot on the same 500ms clock as the
+ * travel, so one lap shows both directions.
  *
- * Theme state lives in useTheme (./theme.js) — the exported machinery
- * (initial-state resolution, saved-choice re-stamp, system-follow, cross-
- * instance sync). This component is only the glyph-roll UI on top of it.
+ * THE SPEC (approved 2026-07-30 — variants are container GEOMETRY only;
+ * everything else is a prop):
+ *
+ *   variant "button" — padded rung + corner radius (THE button container)
+ *     fill       'subtle' | 'none'   the one bg element — subtle = grey fill
+ *                                    (brand sidebar) · none = the invisible
+ *                                    container (nav-bar chrome)
+ *     iconRight  bool                glyph right of the text (left default)
+ *     label      bool                text on/off — off pins the square box
+ *                                    per rung (28/32/36; icon-only is a
+ *                                    geometry condition, not a variant)
+ *     fullWidth  bool                stretches to a sidenav row
+ *     size       'sm' | 'md' | 'lg'  moves pad + text + glyph together
+ *
+ *   variant "flush" — no pad, no radius, no fill, ever
+ *     same prop list minus `fill`; no square pinning (there is no box);
+ *     size scales text + glyph only.
+ *
+ * Glyph law: text-adjacent 14/16/18 (stays inside the rung line box);
+ * solo 16/20/24 (the pinned-square pairing).
+ *
+ * DEPRECATED aliases (0.6.x variants) — render their old chrome verbatim so
+ * no consumer shifts a pixel; migrate at your own pace:
+ *   icon     → button + fill none + label off
+ *   hop      → button + fill subtle + fullWidth (old: chrome pinned md)
+ *   hop-bare → flush + fullWidth (old: 6/24 padding kept)
+ *
+ * Theme state lives in useTheme (./theme.js); this component is only the
+ * glyph-roll UI on top of it.
  */
 const MODE_LABEL = { light: 'Light mode', dark: 'Dark mode', system: 'System' }
 const NEXT_MODE = { light: 'dark', dark: 'system', system: 'light' }
+const SLOT = { dark: 0, light: 1, system: 2 }
 
-export default function ThemeToggle({ variant = 'icon', size = 'md', className = '' }) {
+export default function ThemeToggle({
+  variant = 'button',
+  fill = 'subtle',
+  size = 'md',
+  label = true,
+  iconRight = false,
+  fullWidth = false,
+  className = '',
+}) {
   const { mode, cycle } = useTheme()
 
   const next = NEXT_MODE[mode]
   const nextLabel = next === 'system' ? 'system theme' : `${next} mode`
-  const handleToggle = cycle
 
-  /* The ROLL (redone 2026-07-30 — the 0.5.13 motion was declared FAILED).
-   * Wheel mechanics, not slide+flip: rotation ACCUMULATES with the slot
-   * (-180° per glyph-width) and runs on the same 500ms/ease clock as the
-   * strip's translateX, so the split-circle reads as a coin rolling to its
-   * next position — travel left = CCW, travel right = CW, two slots = two
-   * full half-turns. The old code rotated on `isDark` alone, desynced from
-   * the travel, which is exactly why it read as a slide with a flip bolted
-   * on. The desktop glyph doesn't spin — it's not a wheel; it slides in as
-   * the no-choice state. */
-  const slot = mode === 'dark' ? 0 : mode === 'light' ? 1 : 2
-  const glyphRoll = {
-    transform: `rotate(${slot * -180}deg)`,
-    lineHeight: 0,
-  }
-  const iconSwap = (size) => (
+  /* The ROLL — wheel mechanics (2026-07-30, one-glyph ruling): three copies
+   * of the split circle; rotation accumulates with the slot (−180° per
+   * glyph-width) on the same 500ms/ease clock as the strip's translateX.
+   * light→dark rolls one way, dark→system rolls back two half-turns,
+   * system→light forward again — both directions in one lap. */
+  const slot = SLOT[mode]
+  const iconSwap = (px) => (
     <span
       className="relative inline-block overflow-hidden"
-      style={{ width: size, height: size }}
+      style={{ width: px, height: px }}
       aria-hidden="true"
     >
       <span
         className="flex transition-transform duration-500 ease-in-out"
-        style={{ width: size * 3, transform: `translateX(-${slot * size}px)` }}
+        style={{ width: px * 3, transform: `translateX(-${slot * px}px)` }}
       >
-        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphRoll}>
-          <Icon name="mode-toggle-01" size={size} />
-        </span>
-        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphRoll}>
-          <Icon name="mode-toggle-01" size={size} />
-        </span>
-        <span className="inline-flex" style={{ lineHeight: 0 }}>
-          <Icon name="desktop" size={size} />
-        </span>
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="inline-flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `rotate(${slot * -180}deg)`, lineHeight: 0 }}
+          >
+            <Icon name="mode-toggle-01" size={px} />
+          </span>
+        ))}
       </span>
     </span>
   )
 
-  if (variant === 'button') {
-    const mono = size === 'sm' ? 'kol-mono-12' : size === 'lg' ? 'kol-mono-16' : 'kol-mono-14'
-    /* Text-adjacent glyph law: the glyph must never exceed the rung's mono
-     * line box (16/18/22), or it inflates the button past the ladder height —
-     * playwright-measured against a same-rung kol-btn: 14/16/18 keeps them
-     * pixel-equal. (The 16/20/24 pairing law is for pinned icon-only squares.) */
-    const glyph = size === 'sm' ? 14 : size === 'lg' ? 18 : 16
+  const mono = size === 'sm' ? 'kol-mono-12' : size === 'lg' ? 'kol-mono-16' : 'kol-mono-14'
+  /* Glyph law: text-adjacent stays inside the rung line box; solo takes the
+   * pinned-square pairing sizes. */
+  const glyphWithText = size === 'sm' ? 14 : size === 'lg' ? 18 : 16
+  const glyphSolo = size === 'sm' ? 16 : size === 'lg' ? 24 : 20
+
+  const shared = {
+    type: 'button',
+    onClick: cycle,
+    'aria-label': `Switch to ${nextLabel}`,
+    title: `Switch to ${nextLabel}`,
+  }
+
+  /* ── DEPRECATED aliases — old chrome verbatim (0.6.x) ── */
+  if (variant === 'icon') {
     return (
-      <button
-        type="button"
-        onClick={handleToggle}
-        aria-label={`Switch to ${nextLabel}`}
-        className={`kol-btn kol-btn-primary kol-btn-${size} ${mono} gap-2 ${className}`.trim()}
-      >
-        {iconSwap(glyph)}
-        <span>{MODE_LABEL[mode]}</span>
+      <button {...shared} className={`kol-btn kol-btn-nav kol-btn-${size} kol-btn-icon ${className}`.trim()}>
+        {iconSwap(glyphSolo)}
       </button>
     )
   }
-
   if (variant === 'hop' || variant === 'hop-bare') {
     const bare = variant === 'hop-bare'
     const chromeCls = bare
       ? 'w-full inline-flex items-center justify-start gap-2 py-1.5 px-6 kol-mono-14 bg-transparent text-emphasis transition-colors'
       : 'kol-btn kol-btn-primary kol-btn-md kol-mono-14 w-full justify-start gap-2'
     return (
-      <button
-        type="button"
-        onClick={handleToggle}
-        aria-label={`Switch to ${nextLabel}`}
-        className={`${chromeCls} ${className}`.trim()}
-      >
+      <button {...shared} className={`${chromeCls} ${className}`.trim()}>
         <span className="inline-flex items-center justify-center shrink-0" aria-hidden="true">
-          {iconSwap(size === "sm" ? 16 : size === "lg" ? 24 : 20)}
+          {iconSwap(glyphSolo)}
         </span>
-        {/* kol-sidenav-hop-label keeps the responsive label-hide rule firing
-         * at narrow viewports without subjecting the button to the muted
-         * sidenav-hop text-color override. */}
         <span className="kol-sidenav-hop-label flex-1 min-w-0 text-left">
           {MODE_LABEL[mode]}
         </span>
@@ -124,20 +129,38 @@ export default function ThemeToggle({ variant = 'icon', size = 'md', className =
     )
   }
 
-  // variant === 'icon' (default) — geometry from the DS button ladder
-  // (sm 16 / md 20 / lg 24 glyph — 2026-07-28 pairing law), chrome = ghost icon-only .kol-btn.
-  // Overrules the 2026-07-15 "36×36/20 reference" one-off (user ruling
-  // 2026-07-28: the button ladder is the reference, bar icons included).
-  const glyph = size === 'sm' ? 16 : size === 'lg' ? 24 : 20
+  /* ── THE SPEC ── */
+  const width = fullWidth ? 'w-full justify-start' : ''
+
+  if (variant === 'flush') {
+    const glyph = label ? glyphWithText : glyphSolo
+    const cls = `inline-flex items-center gap-2 ${mono} bg-transparent text-emphasis transition-colors ${width} ${className}`
+    return (
+      <button {...shared} className={cls.replace(/\s+/g, ' ').trim()}>
+        {!iconRight && iconSwap(glyph)}
+        {label && <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[mode]}</span>}
+        {iconRight && iconSwap(glyph)}
+      </button>
+    )
+  }
+
+  /* variant === 'button' (default) — the padded rung. fill is the one bg
+   * element: subtle = the grey fill (kol-btn-primary), none = the invisible
+   * container (kol-btn-nav — quiet ink + hover wash, geometry identical). */
+  const fillCls = fill === 'none' ? 'kol-btn-nav' : 'kol-btn-primary'
+  if (!label) {
+    // icon-only pins the square box per rung — geometry condition, not a variant
+    return (
+      <button {...shared} className={`kol-btn ${fillCls} kol-btn-${size} kol-btn-icon ${width} ${className}`.replace(/\s+/g, ' ').trim()}>
+        {iconSwap(glyphSolo)}
+      </button>
+    )
+  }
   return (
-    <button
-      type="button"
-      onClick={handleToggle}
-      aria-label={`Switch to ${nextLabel}`}
-      title={`Switch to ${nextLabel}`}
-      className={`kol-btn kol-btn-nav kol-btn-${size} kol-btn-icon ${className}`.trim()}
-    >
-      {iconSwap(glyph)}
+    <button {...shared} className={`kol-btn ${fillCls} kol-btn-${size} ${mono} gap-2 ${width} ${className}`.replace(/\s+/g, ' ').trim()}>
+      {!iconRight && iconSwap(glyphWithText)}
+      <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[mode]}</span>
+      {iconRight && iconSwap(glyphWithText)}
     </button>
   )
 }

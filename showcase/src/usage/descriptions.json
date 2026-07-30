@@ -123,7 +123,7 @@
   "ColorLoader": "A full-height branded intro/loading curtain.",
   "TypefaceSpecimenPage": "The full data-driven typeface specimen composition: hero → styles → preview → variable axes → glyph metrics, interleaved with editorial photos.",
   "ShellHeader": "The shell's sticky two-row top chrome.",
-  "ThemeToggle": "Horizontal icon-swap button, tri-state (0.6.0).",
+  "ThemeToggle": "Tri-state glyph-roll button (0.9.0, the approved 2-variant spec).",
   "PortalFooter": "Site footer chrome.",
   "ProductDetailLayout": "The pure two-column PDP skeleton: a full-height media gallery beside a scrollable details column (eyebrow + title + tags, a SpecList of key facts, an underline TabsRow with its panel, then a purchase block of price / size / quantity / CTA / fine print / back link).",
   "DiagonalMarqueeRiver": "An auto-scrolling multi-column marquee \"river\": `items` are dealt round-robin into `colCount` vertical columns, each column runs an infinite constant-velocity GSAP y-tween at its own speed, and the whole block is rotated + scaled so the columns stream diagonally across a tall stage.",

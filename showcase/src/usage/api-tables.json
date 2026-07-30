@@ -3267,13 +3267,37 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'icon'",
+      "def": "'button'",
+      "desc": ""
+    },
+    {
+      "prop": "fill",
+      "type": "—",
+      "def": "'subtle'",
       "desc": ""
     },
     {
       "prop": "size",
       "type": "—",
       "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "iconRight",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fullWidth",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {

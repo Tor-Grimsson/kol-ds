@@ -78,9 +78,11 @@ export default function ShellHeader({
               {showThemeToggle && (
                 <Tooltip label="Toggle theme">
                   {/* one rung up at lg+ — the bar has room, and the toggle is
-                    * the most-used control in the row */}
-                  <span className="hidden lg:inline-flex"><ThemeToggle size="lg" /></span>
-                  <span className="lg:hidden"><ThemeToggle /></span>
+                    * the most-used control in the row. New spec API (0.9.0):
+                    * quiet square = button geometry + fill none + no label
+                    * (was the old `icon` variant default). */}
+                  <span className="hidden lg:inline-flex"><ThemeToggle fill="none" label={false} size="lg" /></span>
+                  <span className="lg:hidden"><ThemeToggle fill="none" label={false} /></span>
                 </Tooltip>
               )}
               {onMenuClick && (

@@ -252,14 +252,17 @@
         "Icon",
         "SearchInput",
         "ShellHeader",
-        "ThemeToggle"
+        "ThemeToggle",
+        "Tooltip"
       ],
       "local": {},
       "support": [
         "registerIcons",
         "theme"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "sidenav-docs": {
       "kol": [
@@ -350,14 +353,18 @@
         "Dropdown",
         "FullscreenOverlay",
         "GameArchiveTable",
+        "GamePicker",
         "Icon",
         "Input",
+        "MaterialSummary",
         "MenuItem",
         "NotationPanel",
+        "PiecePalette",
         "Pill",
         "PlaybackControls",
         "Popover",
         "PopoverPanel",
+        "SetupPanel",
         "Table",
         "VariationTree"
       ],
@@ -368,6 +375,7 @@
         "parsePgnTree",
         "registerIcons",
         "useChessControls",
+        "useChessKeyboardShortcuts",
         "usePopover"
       ],
       "external": [
@@ -508,7 +516,6 @@
         "Avatar",
         "Button",
         "CodeBlock",
-        "CopyButton",
         "Divider",
         "Figure",
         "FullBleedHero",
@@ -529,7 +536,9 @@
         "registerIcons"
       ],
       "external": [
-        "hls.js"
+        "hls.js",
+        "react-syntax-highlighter",
+        "react-syntax-highlighter/dist/esm/styles/prism"
       ]
     },
     "styleguide": {

@@ -66,3 +66,20 @@ kol-website web + brand are on framework `^0.5.13` / icons `^0.8.8`. Brand
 sidebar seats `<ThemeToggle variant="button" size="md" />`. The old chrome-less
 `hop-bare` seat is gone consumer-side; `hop`/`hop-bare` variants still exist in
 the component for other consumers.
+
+## ✅ RESOLUTION — 2026-07-30
+
+Both failures closed, then the whole variant question superseded by a spec:
+
+- **library glyph** → re-authored (3 books + one leaning, line-based), user-
+  approved via the tmpl-proposal review, shipped in **icons 0.8.11**.
+- **roll motion** → wheel mechanics (rotation accumulates −180°/slot on the
+  travel clock); shipped in framework 0.8.x, then carried into 0.9.0.
+- **system glyph** → user ruling: **no third glyph, ever** — all strip
+  positions are `mode-toggle-01`; the mode is told by label/tooltip.
+- **the variant model** → the user-approved 2-variant spec (framework
+  **0.9.0**): variants are container geometry only (`button`/`flush`),
+  everything else props (`fill`/`label`/`iconRight`/`fullWidth`/`size`);
+  `icon`/`hop`/`hop-bare` live on as deprecated aliases rendering 0.6.x
+  chrome verbatim. Spec table + ruling trail:
+  `.kol/llm-context/playbook/2026-07-30-mdx-content-migration.md`.

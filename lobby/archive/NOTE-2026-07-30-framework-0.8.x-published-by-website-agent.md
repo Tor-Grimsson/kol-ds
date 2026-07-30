@@ -82,3 +82,11 @@ is unusable and currently sits between 0.7.0 and 0.8.1 in the range.
 | `packages/framework/src/ThemeToggle.jsx` | **untouched** — your rework, exactly as you left it |
 | npm | 0.8.0 published-and-broken · 0.8.1 published-and-good · neither deprecated |
 | git | untouched, as always — the user owns it |
+
+## ✅ RESOLUTION — 2026-07-30 (same day, DS side)
+
+- **0.8.0 deprecated on the registry** by the DS agent ("Broken publish:
+  workspace:* shipped raw…"), verified live. 0.8.1 confirmed good.
+- The full-bleed inset parameter is canon (rode into 0.9.0 untouched).
+- The ride-along roll rework was legitimized the same day: the user approved
+  a full 2-variant ThemeToggle spec, shipped as **framework 0.9.0**.

@@ -239,6 +239,7 @@
   },
   "ViewToggle": {
     "typeClasses": [
+      "kol-mono",
       "kol-mono-12"
     ],
     "composes": [
@@ -302,7 +303,7 @@
   "CodeBlock": {
     "typeClasses": [],
     "composes": [
-      "CopyButton"
+      "Icon"
     ]
   },
   "ColorInputRow": {
@@ -604,11 +605,13 @@
   "ContentFilters": {
     "typeClasses": [
       "kol-helper-12",
-      "kol-helper-14"
+      "kol-helper-14",
+      "kol-helper-16"
     ],
     "composes": [
       "Tag",
       "Divider",
+      "Button",
       "ViewToggle",
       "Icon"
     ]
@@ -654,6 +657,15 @@
     ],
     "composes": [
       "CardFeatureItem"
+    ]
+  },
+  "FoundryCTA": {
+    "typeClasses": [
+      "kol-mono-14",
+      "kol-sans-heading-02"
+    ],
+    "composes": [
+      "Button"
     ]
   },
   "FullBleedHero": {
@@ -766,7 +778,9 @@
   },
   "ThemeToggle": {
     "typeClasses": [
-      "kol-mono-14"
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
     ],
     "composes": [
       "Icon"
@@ -819,10 +833,10 @@
   },
   "SpecimenSectionHeader": {
     "typeClasses": [
+      "kol-helper-16",
+      "kol-helper-20",
       "kol-mono-12",
-      "kol-mono-16",
-      "kol-mono-sm-regular",
-      "kol-mono-text-lg"
+      "kol-mono-16"
     ],
     "composes": [
       "Icon"
@@ -835,9 +849,7 @@
     "composes": []
   },
   "TypefaceStyleSection": {
-    "typeClasses": [
-      "kol-mono-12"
-    ],
+    "typeClasses": [],
     "composes": [
       "SpecimenSectionHeader"
     ]
@@ -860,6 +872,8 @@
   },
   "GlyphMetricsGrid": {
     "typeClasses": [
+      "kol-helper-16",
+      "kol-mono-16",
       "kol-mono-text"
     ],
     "composes": []
@@ -873,7 +887,7 @@
   },
   "FoundryCharacterSets": {
     "typeClasses": [
-      "kol-mono-12"
+      "kol-helper-12"
     ],
     "composes": [
       "SpecimenSectionHeader"
@@ -892,10 +906,14 @@
   },
   "TypefaceLibraryItem": {
     "typeClasses": [
+      "kol-helper-12",
+      "kol-helper-14",
+      "kol-helper-16",
       "kol-helper-lg",
       "kol-helper-s",
-      "kol-mono-sm",
-      "kol-mono-xs"
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-sm"
     ],
     "composes": []
   },
@@ -949,6 +967,26 @@
     ]
   },
   "SPECIMEN_SAMPLE_TEXT": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "FontViewerComponent": {
+    "typeClasses": [],
+    "composes": [
+      "FontLoader",
+      "GlyphAnimator",
+      "MetricsOverlay",
+      "UIControls",
+      "FontInfoRenderer"
+    ]
+  },
+  "FontViewerSection": {
+    "typeClasses": [],
+    "composes": [
+      "FontViewer"
+    ]
+  },
+  "GlyphItem": {
     "typeClasses": [],
     "composes": []
   }

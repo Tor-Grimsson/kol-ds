@@ -14,22 +14,54 @@ export const meta = {
 ```jsx
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
-<ThemeToggle variant="icon" />
+<ThemeToggle />                            // THE button — grey fill, glyph + label
+<ThemeToggle fill="none" label={false} />  // quiet square for icon bars
+<ThemeToggle fullWidth />                  // sidenav row
+<ThemeToggle variant="flush" />            // no pad, no radius, no fill
 ```
 
 ## Behavior
 
-Tri-state: clicking cycles **light → dark → system → light**. `system` is the
-no-choice state — the stamp and saved key are cleared and the page follows
-`prefers-color-scheme` live (user law: explicit choice > system/auto >
-light). The glyph shows the current mode. Four variants: `icon` (icon-only on
-the DS button ladder, sits flush in nav bars), `button` (a real ladder button
-with glyph + label), `hop` (full-width Button-primary sidenav row) and
-`hop-bare` (same shape, transparent). Theme state lives in `useTheme` — this
-component is only the glyph UI on top of it.
+Tri-state: clicking cycles **light → dark → system → light** (user law:
+explicit choice > system > light; `system` clears the stamp and follows the
+OS live). **One glyph, ever** — every position in the roll strip is the
+`mode-toggle-01` split circle; the system state wears it too, told apart by
+the label/tooltip, never by a third glyph. The strip rolls like a coin
+(rotation accumulates −180° per slot on the travel clock), so one lap shows
+both directions. Theme state lives in `useTheme` — this component is only
+the glyph UI on top of it.
+
+## Variants
+
+Variants are **container geometry only** (approved spec, 2026-07-30) —
+everything else is a prop:
+
+| Variant | Prop | Values | Description |
+|---|---|---|---|
+| **`button`** — padded rung + corner radius (the button container) | `fill` | `subtle` · `none` | the one bg element — `subtle` = grey fill · `none` = the invisible container |
+| | `iconRight` | `false` · `true` | glyph right of the text (left default) |
+| | `label` | `true` · `false` | text on/off — off pins the square box per rung (28/32/36; icon-only is a geometry condition, not a variant) |
+| | `fullWidth` | `false` · `true` | stretches to a sidenav row |
+| | `size` | `sm` · `md` · `lg` | moves pad + text + glyph together |
+| **`flush`** — no pad, no radius, no fill, ever | `iconRight` / `label` / `fullWidth` / `size` | same | same list minus `fill`; no square pinning — there is no box; `size` scales text + glyph only |
+
+| Size | Container pad | Text class | Glyph +text | Glyph solo (square) |
+|---|---|---|---|---|
+| sm | 4 · 12 | `kol-mono-12` | 14 | 16 (28box) |
+| md | 6 · 16 | `kol-mono-14` | 16 | 20 (32box) |
+| lg | 8 · 20 | `kol-mono-16` | 18 | 24 (36box) |
+
+Deprecated aliases render their 0.6.x chrome verbatim: `icon` →
+`button + fill none + label off` · `hop` → `button + fullWidth` ·
+`hop-bare` → `flush + fullWidth`.
 
 ## Props
 
 <Api name="ThemeToggle" rows={[
-  {"prop":"variant","type":"icon | …","def":"—","desc":"Rendering style. From @kolkrabbi/kol-framework."}
+  {"prop":"variant","type":"button | flush","def":"button","desc":"Container geometry. Deprecated aliases: icon, hop, hop-bare (render old chrome verbatim)."},
+  {"prop":"fill","type":"subtle | none","def":"subtle","desc":"The one bg element — button variant only. subtle = grey fill, none = invisible container."},
+  {"prop":"label","type":"boolean","def":"true","desc":"Text on/off. Off on button geometry pins the square box per rung."},
+  {"prop":"iconRight","type":"boolean","def":"false","desc":"Glyph right of the text (left default)."},
+  {"prop":"fullWidth","type":"boolean","def":"false","desc":"Stretch to a sidenav row (label left-aligned)."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Button: moves pad + text + glyph together. Flush: text + glyph only."}
 ]} />
