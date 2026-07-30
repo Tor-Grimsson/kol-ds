@@ -17,6 +17,15 @@ import { ColorSwatch } from '@kolkrabbi/kol-component'
 <ColorSwatch hex="#3b82f6" />
 ```
 
+## Behavior
+
+Interactivity follows the handler: `onClick` provided → a real `<button>` with
+hover + selected states; omitted → a non-interactive `<span aria-hidden>`
+preview. `showTransparent` renders the
+[TransparentX](/components/transparent-x) overlay for null/unset color slots
+(bg goes transparent regardless of `hex`). `size` takes a px number, or
+`'fill'` for grid cells (w-full, aspect-square).
+
 ## Props
 
 <Api name="ColorSwatch" rows={[

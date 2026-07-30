@@ -1381,6 +1381,14 @@
       "desc": ""
     }
   ],
+  "CodeBlock": [
+    {
+      "prop": "bare",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
   "ColorInputRow": [
     {
       "prop": "hideLabel",

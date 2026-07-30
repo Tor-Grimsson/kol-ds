@@ -243,6 +243,91 @@
 .tag-md { font-size: 12px; font-weight: 470; padding: 5px 12px; }
 .tag-lg { font-size: 14px; font-weight: 470; padding: 6px 14px; }
 
+/* ─────────────────────────────────────────────────────────────────────
+ * Tag color family — molecules/Tag.jsx `color` prop (wave-4 vault parity,
+ * 2026-07-30). Tag emits `tag tag--{color}` (chip) / `tag-naked
+ * tag--{color}` (text-only); the classes shipped in the JSX but the RULES
+ * never migrated out of the monorepo workshop — the same dangling trap as
+ * the palette tokens themselves (kol-color.css, 2026-07-16) — so every
+ * colored tag rendered dead. Re-authored from the monorepo colors spec
+ * (02-design-system/01-colors.md § Tag Color Classes): light mode =
+ * palette-*-light fill + dark ink; dark mode = saturated palette-* fill +
+ * light ink (yellow keeps dark ink); `dark` = the on-primary/surface flip.
+ * Inks are LITERALS (the surface poles): on a fixed palette fill a
+ * theme-flipping token is wrong by definition.
+ * ───────────────────────────────────────────────────────────────────── */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--kol-radius-full);
+  font-family: var(--kol-font-family-mono);
+  border: 1px solid transparent;
+  transition: background-color var(--kol-transition-base),
+              color var(--kol-transition-base);
+}
+
+/* naked — text-only: no fill, no chip padding (the reader-sidebar voice).
+ * Sits AFTER .tag-{size} so its padding reset wins at equal specificity. */
+.tag-naked {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--kol-font-family-mono);
+}
+
+/* Light mode (default): light fill + dark ink */
+.tag--blue   { background-color: var(--kol-palette-blue-light);   color: #121215; }
+.tag--teal   { background-color: var(--kol-palette-teal-light);   color: #121215; }
+.tag--green  { background-color: var(--kol-palette-green-light);  color: #121215; }
+.tag--yellow { background-color: var(--kol-palette-yellow-light); color: #121215; }
+.tag--red    { background-color: var(--kol-palette-red-light);    color: #121215; }
+.tag--orange { background-color: var(--kol-palette-orange-light); color: #121215; }
+.tag--purple { background-color: var(--kol-palette-purple-light); color: #121215; }
+.tag--dark   { background-color: var(--kol-surface-on-primary);   color: var(--kol-surface-primary); }
+
+/* naked + color = saturated text, both modes (no fill to carry the pair) */
+.tag-naked.tag--blue   { background: transparent; color: var(--kol-palette-blue); }
+.tag-naked.tag--teal   { background: transparent; color: var(--kol-palette-teal); }
+.tag-naked.tag--green  { background: transparent; color: var(--kol-palette-green); }
+.tag-naked.tag--yellow { background: transparent; color: var(--kol-palette-yellow); }
+.tag-naked.tag--red    { background: transparent; color: var(--kol-palette-red); }
+.tag-naked.tag--orange { background: transparent; color: var(--kol-palette-orange); }
+.tag-naked.tag--purple { background: transparent; color: var(--kol-palette-purple); }
+.tag-naked.tag--dark   { background: transparent; color: var(--kol-surface-on-primary); }
+
+/* active (Tag.jsx emits .tag--active when active + colored) */
+.tag--active { border-color: currentColor; }
+
+/* Dark mode: saturated fill + light ink (yellow keeps dark ink). Scoped to
+ * .tag.tag--{color} so the chip flips while .tag-naked (equal specificity,
+ * earlier in the sheet) keeps its saturated TEXT — a bare .tag--{color}
+ * override here would out-order the naked rules and give text tags a fill.
+ * MIRROR of the system-follow block below — edit both. */
+:is([data-theme="dark"], .dark) .tag.tag--blue   { background-color: var(--kol-palette-blue);   color: #fafafa; }
+:is([data-theme="dark"], .dark) .tag.tag--teal   { background-color: var(--kol-palette-teal);   color: #fafafa; }
+:is([data-theme="dark"], .dark) .tag.tag--green  { background-color: var(--kol-palette-green);  color: #fafafa; }
+:is([data-theme="dark"], .dark) .tag.tag--yellow { background-color: var(--kol-palette-yellow); color: #121215; }
+:is([data-theme="dark"], .dark) .tag.tag--red    { background-color: var(--kol-palette-red);    color: #fafafa; }
+:is([data-theme="dark"], .dark) .tag.tag--orange { background-color: var(--kol-palette-orange); color: #fafafa; }
+:is([data-theme="dark"], .dark) .tag.tag--purple { background-color: var(--kol-palette-purple); color: #fafafa; }
+
+/* System-follow dark — only when no explicit theme is stamped (explicit >
+ * system > light, USER law). MIRROR of the block above — edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .tag.tag--blue   { background-color: var(--kol-palette-blue);   color: #fafafa; }
+  :root:not([data-theme]) .tag.tag--teal   { background-color: var(--kol-palette-teal);   color: #fafafa; }
+  :root:not([data-theme]) .tag.tag--green  { background-color: var(--kol-palette-green);  color: #fafafa; }
+  :root:not([data-theme]) .tag.tag--yellow { background-color: var(--kol-palette-yellow); color: #121215; }
+  :root:not([data-theme]) .tag.tag--red    { background-color: var(--kol-palette-red);    color: #fafafa; }
+  :root:not([data-theme]) .tag.tag--orange { background-color: var(--kol-palette-orange); color: #fafafa; }
+  :root:not([data-theme]) .tag.tag--purple { background-color: var(--kol-palette-purple); color: #fafafa; }
+}
+
 .control-unified-inverse {
   display: inline-flex;
   align-items: center;
@@ -483,6 +568,14 @@
 
 /* the ONE chip — filename if present, else the language. In-flow above the
  * code. VERBATIM from the live reference build (index-Bro9Jnn6.css). */
+/* bare — the host owns the frame (PreviewCard Code tab); the border/radius go,
+ * the CODE SURFACE stays (2026-07-30: a transparent bare block made the Code
+ * tab a different color from every other code surface on the page). */
+.kol-codeblock--bare {
+  border: none;
+  border-radius: 0;
+}
+
 .kol-codeblock-filename {
   font-family: var(--kol-font-family-mono);
   font-size: 11px;

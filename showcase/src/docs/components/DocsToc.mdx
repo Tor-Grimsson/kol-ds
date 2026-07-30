@@ -17,6 +17,15 @@ import { DocsToc } from '@kolkrabbi/kol-component'
 <DocsToc toc={[{ id: 'overview', label: 'Overview' }]} />
 ```
 
+## Behavior
+
+Renders the nav only — the scroll spy is `useScrollSpy`
+(IntersectionObserver + edge lock), which maps the active heading id onto the
+links. **A matching in-page element must exist for every `toc` id** (the spy
+observes `document.getElementById(id)`). Clicks set the browser hash
+natively; `onNavigate` hooks the click for smooth-scroll or closing a mobile
+drawer. Labels render verbatim — casing is authored at the call site.
+
 ## Props
 
 <Api name="DocsToc" rows={[

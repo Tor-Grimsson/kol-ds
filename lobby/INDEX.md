@@ -11,13 +11,14 @@ and does not follow the `.kol/docs-framework` conventions.
 
 ## Queue
 
-**2 live entries** (queue holds LIVE TASKS ONLY — user ruling 2026-07-30;
+**3 live entries** (queue holds LIVE TASKS ONLY — user ruling 2026-07-30;
 resolved/decided entries move to `done/`, ownership/deferral notes to
 `archive/`, each carrying its resolution section. The 2026-07-30 batch story:
 `.kol/llm-context/playbook/2026-07-30-mdx-content-migration.md`).
 
 | Entry | Source | Staged | Status |
 |-------|--------|--------|--------|
+| [NOTE — framework 0.8.x published by the website agent](NOTE-2026-07-30-framework-0.8.x-published-by-website-agent.md) | kol-website · packages/framework | 2026-07-30 | **read before your next framework publish**: `.kol-full-bleed` inset is now a parameter (`--kol-full-bleed-inset`, non-breaking); **0.8.0 is BROKEN** (published with `npm publish` → raw `workspace:*` deps, same leak as 0.5.11/0.5.12) — **use 0.8.1**, and please `npm deprecate` 0.8.0, I was blocked from it. Also: 0.8.x shipped your unapproved ThemeToggle roll rework — user approved it after the fact ("I'll just change it back later"), but it was never visually reviewed |
 | [ThemeToggleButtonVariant](ThemeToggleButtonVariant.md) | kol-website brand sidebar · framework 0.5.13 / icons 0.8.8 | 2026-07-29 | **awaiting visual approval** — both failures reworked 2026-07-30 and staged at `_tmp/toggle-library-proposals/preview.html`: roll motion rebuilt with wheel mechanics (rotation accumulates −180°/slot on the travel clock; live in workspace `ThemeToggle.jsx`, UNPUBLISHED) + `library` glyph redesigned (3 books + one leaning, line-based). Approve → publish framework 0.7.1 + icons 0.8.11; reject → revert is one file each |
 | [InteractiveImage](InteractiveImage.md) | web `components/media/InteractiveImage.jsx` | 2026-07-03 | parked (orphaned effect · SVG-id collision bug · revisit on a real consumer) |
 

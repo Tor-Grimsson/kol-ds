@@ -62,7 +62,10 @@ const syntaxTheme = (foregroundToken = 80) => ({
   }
 })
 
-export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value }) {
+/* `bare` (2026-07-30): highlight + chip + copy WITHOUT the framed chrome — for
+ * hosts that already own the frame (PreviewCard's Code tab sat a full
+ * CodeBlock frame inside the kol-doc-figure border: frame-in-frame). */
+export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value, bare = false }) {
   const [copied, setCopied] = useState(false)
 
   const code = String(value?.code ?? codeProp ?? children ?? '')
@@ -80,8 +83,8 @@ export default function CodeBlock({ children, code: codeProp, language: language
   }
 
   return (
-    <div className="kol-codeblock-wrapper">
-      <div className="kol-codeblock">
+    <div className={bare ? '' : 'kol-codeblock-wrapper'}>
+      <div className={`kol-codeblock${bare ? ' kol-codeblock--bare' : ''}`}>
         {(filename || (language && language !== 'text')) && (
           <div className="kol-codeblock-filename">{filename || language}</div>
         )}

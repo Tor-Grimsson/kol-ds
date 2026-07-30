@@ -17,6 +17,15 @@ import { PortalFooter } from '@kolkrabbi/kol-framework'
 <PortalFooter brand={<Wordmark />} columns={columns} socials={socials} note="© 2026 Kolkrabbi" />
 ```
 
+## Behavior
+
+Zero-prop by default: the Kolkrabbi favicon mark + credit line. Opt-in slots
+scale it to a full site footer — `brand` (wordmark block), `columns` (link
+columns), `socials` (bottom-bar strip; label renders as text when no icon and
+feeds the aria-label), `note` (legal/credit line), `children` (escape hatch
+between columns and the bottom bar). Links are plain `<a href>` —
+router-agnostic.
+
 ## Props
 
 <Api name="PortalFooter" rows={[

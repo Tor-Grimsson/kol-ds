@@ -20,21 +20,44 @@ export function buildInventory(modules) {
     const lines = raw.split(/\r?\n/)
     const headingLine = lines.find((line) => line.startsWith('# ')) ?? ''
     const title = headingLine.replace(/^#\s+/, '').trim()
+    /* Section headings (## / ###) ride the inventory so search can match a
+     * doc by its CONTENT, not just title/tags — the workshop reference
+     * behavior (matchSearchItems already takes `headings`; consumers shipped
+     * it empty because nothing extracted them — wave-4 parity, 2026-07-30). */
+    const headings = []
+    let inFence = false
+    for (const line of lines) {
+      if (/^\s*```/.test(line)) { inFence = !inFence; continue }
+      if (!inFence && /^#{2,3}\s/.test(line)) {
+        const text = line.replace(/^#{2,3}\s+/, '').trim()
+        if (text) headings.push(text)
+      }
+    }
     const metadata = parseFrontmatter(raw)
     const filename = normalisedPath.split('/').pop() ?? ''
     const parentFolder = normalisedPath.split('/').slice(-2, -1)[0] ?? ''
     const baseId = filename.replace(/\.md$/, '')
 
-    // Make index.md IDs unique by prefixing with parent folder
-    const id = baseId === 'index' ? `${parentFolder}-index` : baseId
+    // Make index.md / INDEX.md IDs unique by prefixing with parent folder
+    const id = baseId.toLowerCase() === 'index' ? `${parentFolder}-${baseId}` : baseId
 
     const rawTitle = title || metadata.title || id
     const cleanTitle = rawTitle
       .replace(/^Design System\s*[-–—:]\s*/i, '')
       .replace(/\bCheat Sheet\b/i, 'Quicklook')
 
-    return { id, file: normalisedPath, title: cleanTitle, metadata }
+    return { id, file: normalisedPath, title: cleanTitle, metadata, headings, parentFolder }
   })
+
+  /* Collision safety (2026-07-30): filename-only ids collide across folders in
+   * any real vault (02-icons/01-inventory vs 03-components/01-inventory — the
+   * React dup-key bug from the 07-29 vault experiment). A collided id gains
+   * its parent folder, same convention the index handling already uses. */
+  const counts = inventory.reduce((m, d) => (m[d.id] = (m[d.id] ?? 0) + 1, m), {})
+  for (const d of inventory) {
+    if (counts[d.id] > 1) d.id = `${d.parentFolder}-${d.id}`
+  }
+  for (const d of inventory) delete d.parentFolder
 
   inventory.sort((a, b) => a.file.localeCompare(b.file))
   return inventory

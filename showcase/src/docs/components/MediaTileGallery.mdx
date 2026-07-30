@@ -17,6 +17,13 @@ import { MediaTileGallery } from '@kolkrabbi/kol-component'
 <MediaTileGallery items={items} layout="grid" cols={3} />
 ```
 
+## Behavior
+
+A stack or grid of framed media tiles that open **THE shared
+[MediaViewer](/components/media-viewer)** at the clicked tile, paged across
+all items. Tiles are real `<button>`s, so Space + Enter activation comes
+free. Captions render verbatim — authored case, no auto-casing.
+
 ## Props
 
 <Api name="MediaTileGallery" rows={[

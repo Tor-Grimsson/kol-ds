@@ -17,6 +17,14 @@ import { AssetPlaceholder } from '@kolkrabbi/kol-component'
 <AssetPlaceholder category="hero" name="cover" />
 ```
 
+## When to use
+
+The deliberate "missing asset" frame — [Image](/components/image) and Graphic
+render it automatically when a resource can't be found, so a missing asset is
+**visibly flagged at its intended size** instead of showing the browser's
+broken-image icon. Reach for it directly when stubbing slots whose assets
+don't exist yet.
+
 ## Props
 
 <Api name="AssetPlaceholder" rows={[

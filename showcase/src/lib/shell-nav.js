@@ -1,6 +1,7 @@
 import { COMPONENTS_AZ, CATEGORY_LABELS, groupComponents } from './registry.js'
 import { BLOCKS } from './blocks-registry.js'
 import { SETS } from './sets-registry.js'
+import { VAULT, VAULT_SEARCH_ITEMS, vaultDocHref } from './vault.js'
 
 /**
  * shell-nav — the adapter from the showcase's own data into the shapes
@@ -58,6 +59,15 @@ export const SHELL_ROUTES = [
       { id: 'docs-type-roles', label: 'Type roles', path: '/docs/type-roles' },
     ],
   },
+  /* Documentation is a SYSTEM (user ruling 2026-07-30) — its own top-level
+   * area with its own URL space, like kolkrabbi.io/workshop's Documentation.
+   * Never a child page under Docs. */
+  {
+    id: 'documentation',
+    label: 'Documentation',
+    icon: 'journal',
+    path: VAULT.length ? vaultDocHref(VAULT[0].id) : '/documentation',
+  },
 ]
 
 /* Which tab lights up for a path. The shell's built-in predicate is
@@ -71,6 +81,9 @@ const TAB_PREFIX = {
   '/sets': '/sets',
   '/docs/shell-and-layout': '/docs',
 }
+/* The Documentation tab's href is its first doc, but it lights across the
+ * whole /documentation space. */
+if (VAULT.length) TAB_PREFIX[vaultDocHref(VAULT[0].id)] = '/documentation'
 
 export const isShellTabActive = (pathname) => (href) => {
   const prefix = TAB_PREFIX[href] ?? href
@@ -95,7 +108,17 @@ export const buildShellSearchItems = () => {
       sectionLabel: r.label,
     }))
   )
-  return [...components, ...surfaces]
+  const vaultDocs = VAULT_SEARCH_ITEMS.map((d) => ({
+    id: d.path,
+    label: d.label,
+    href: d.path,
+    sectionLabel: 'Documentation',
+    keywords: d.tags,
+    /* content search (wave-4 parity): section headings extracted by the
+     * engine — matchSearchItems surfaces the hit as the row's subtext. */
+    headings: d.headings,
+  }))
+  return [...components, ...surfaces, ...vaultDocs]
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one

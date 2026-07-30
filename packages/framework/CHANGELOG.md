@@ -1,5 +1,53 @@
 # @kolkrabbi/kol-framework
 
+## 0.8.0
+
+### Minor Changes
+
+- `.kol-full-bleed`: the cancelled inset is now a parameter, not a hardwire.
+
+  v1 (0.7.0) hardcoded `margin-inline: calc(-1 * var(--kol-pad-section-x))`, which
+  assumed every consumer pads its pages with the DS ladder (20/32/48px). That
+  assumption fails in practice: kol-website's `apps/web` pads with
+  `.breakpoint-padding` (1 / 1.25 / 1.5rem) and uses zero `.kol-page` classes, so
+  adopting the rule over-pulled by 4–24px and every full-bleed hero overhung the
+  viewport. A cancellation utility has to cancel the inset that is actually there,
+  and the package cannot know that from the inside.
+
+  Now:
+
+  ```css
+  .kol-full-bleed {
+    margin-inline: calc(
+      -1 * var(--kol-full-bleed-inset, var(--kol-pad-section-x))
+    );
+  }
+  ```
+
+  **Non-breaking** — the fallback is the previous value, so consumers laying out on
+  `.kol-page` see no change. Consumers running their own inset set the variable on
+  the padded wrapper, or on `:root` for a whole app:
+
+  ```css
+  :root {
+    --kol-full-bleed-inset: 1rem;
+  }
+  @media (min-width: 768px) {
+    :root {
+      --kol-full-bleed-inset: 1.25rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    :root {
+      --kol-full-bleed-inset: 1.5rem;
+    }
+  }
+  ```
+
+  Closes the last open item from `lobby/done/WidthSystemContradictions.md` — its
+  "what kol-website does on the bump" step 2 was unexecutable without first
+  migrating the public site's gutters, which was never the point of the fix.
+
 ## 0.3.2
 
 ### Patch Changes

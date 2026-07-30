@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { CodeBlock } from '@kolkrabbi/kol-component'
 import { getComponentBySlug, COMPONENTS_AZ, slugify } from './registry.js'
+import SOURCES from '../usage/component-sources.json'
+import ORIGINS from '../usage/component-origins.json'
 
 /**
  * The furniture a component doc carries regardless of how its body is authored.
@@ -39,16 +41,37 @@ export function mergeApi(authored = [], generated = []) {
  * D1 — the kol type classes the component renders text with, so system
  * conformance vs freestyle Tailwind is visible at a glance;
  * D2 — a "Composes" row linking the KOL components it nests. */
-export function MetaRows({ meta }) {
-  if (!meta) return null
-  const composed = (meta.composes || [])
+export function MetaRows({ meta, name }) {
+  const composed = ((meta?.composes) || [])
     .map((n) => ({ name: n, comp: getComponentBySlug(slugify(n)) }))
-  if (!meta.typeClasses?.length && !composed.length) return null
+  /* Provenance row (user ruling 2026-07-30): a component without a printed
+   * origin is "a puzzle piece in a pile of 1000" — the source path renders on
+   * every page, always. */
+  const source = name ? SOURCES[name] : null
+  /* Imported-from history (wave-4, 2026-07-30): origin repo + date mined from
+   * the component's lobby/done spec frontmatter (scripts/extract-origins.mjs)
+   * — where it came from and when it entered the DS, printed like the Source
+   * row. No spec (born in-repo) → no row. */
+  const origin = name ? ORIGINS[name] : null
+  if (!meta?.typeClasses?.length && !composed.length && !source && !origin) return null
   return (
     <div className="flex flex-col gap-2">
-      {meta.typeClasses?.length > 0 && (
+      {source && (
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-helper-10 text-meta uppercase tracking-widest shrink-0">Type styles</span>
+          <span className="kol-doc-eyebrow shrink-0">Source</span>
+          <code className="kol-mono-12 text-body">{source}</code>
+        </div>
+      )}
+      {origin && (
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="kol-doc-eyebrow shrink-0">Imported from</span>
+          <code className="kol-mono-12 text-body">{origin.source}</code>
+          {origin.date && <span className="kol-mono-12 text-meta">· {origin.date}</span>}
+        </div>
+      )}
+      {meta?.typeClasses?.length > 0 && (
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="kol-doc-eyebrow shrink-0">Type styles</span>
           {meta.typeClasses.map((t) => (
             <code key={t} className="kol-mono-12 rounded-[var(--kol-radius-sm)] border border-fg-08 bg-fg-04 px-2 py-0.5 text-body">.{t}</code>
           ))}
@@ -56,7 +79,7 @@ export function MetaRows({ meta }) {
       )}
       {composed.length > 0 && (
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-helper-10 text-meta uppercase tracking-widest shrink-0">Composes</span>
+          <span className="kol-doc-eyebrow shrink-0">Composes</span>
           {composed.map(({ name, comp }) => comp ? (
             <Link key={name} to={`/components/${comp.slug}`} className="kol-mono-12 text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current">{name}</Link>
           ) : (
@@ -68,26 +91,13 @@ export function MetaRows({ meta }) {
   )
 }
 
-/* Copy-to-clipboard affordance shared by the code lines below. */
-export function Copy({ text }) {
-  const [done, setDone] = useState(false)
+/* ONE code idiom (user ruling 2026-07-30): every code surface on a doc page is
+ * THE CodeBlock — no bespoke pre/copy twins racing it. CodeLine renders a
+ * single line through it; InstallBlock is the pm-tab row above one. */
+export function CodeLine({ text, language = 'jsx' }) {
   return (
-    <button
-      type="button"
-      onClick={() => { navigator.clipboard?.writeText(text).catch(() => {}); setDone(true); setTimeout(() => setDone(false), 1400) }}
-      className="absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-[var(--kol-radius-sm)] text-meta hover:text-emphasis hover:bg-fg-08 transition-colors"
-      aria-label={done ? 'Copied' : 'Copy'}
-    >
-      <Icon name={done ? 'check' : 'copy'} size={13} />
-    </button>
-  )
-}
-
-export function CodeLine({ text }) {
-  return (
-    <div className="relative max-w-[var(--kol-content-panel)]">
-      <pre className="kol-mono-12 overflow-x-auto rounded-[var(--kol-radius-sm)] border border-fg-08 bg-fg-04 px-3 py-2.5 pr-10 text-fg">{text}</pre>
-      <Copy text={text} />
+    <div className="max-w-[var(--kol-content-panel)]">
+      <CodeBlock code={text} language={language} />
     </div>
   )
 }
@@ -98,8 +108,8 @@ export function InstallBlock({ pkg }) {
   const [pm, setPm] = useState('pnpm')
   const cmd = `${PMS[pm]} ${pkg}`
   return (
-    <div className="overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-12 max-w-[var(--kol-content-panel)]">
-      <div className="flex items-center gap-1 border-b border-fg-12 px-2 py-1.5">
+    <div className="max-w-[var(--kol-content-panel)]">
+      <div className="flex items-center gap-1">
         {Object.keys(PMS).map((k) => (
           <button key={k} type="button" onClick={() => setPm(k)}
             className={`kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 transition-colors ${pm === k ? 'bg-fg-08 text-emphasis' : 'text-meta hover:text-emphasis'}`}>
@@ -107,10 +117,7 @@ export function InstallBlock({ pkg }) {
           </button>
         ))}
       </div>
-      <div className="relative">
-        <pre className="kol-mono-12 overflow-x-auto bg-fg-04 px-4 py-3 pr-10 text-fg">{cmd}</pre>
-        <Copy text={cmd} />
-      </div>
+      <CodeBlock code={cmd} language="bash" />
     </div>
   )
 }
@@ -122,16 +129,17 @@ export function Pager({ slug }) {
   const next = i >= 0 && i < COMPONENTS_AZ.length - 1 ? COMPONENTS_AZ[i + 1] : null
   return (
     <nav className="mt-2 flex items-center justify-between gap-3 border-t border-fg-08 pt-6">
+      {/* mono, not sans — nav chrome is mono-dominated (user ruling 2026-07-30) */}
       {prev ? (
         <Link to={`/components/${prev.slug}`} className="group flex flex-col gap-0.5 text-left">
           <span className="kol-mono-12 text-meta">← Prev</span>
-          <span className="kol-sans-body-02 text-body group-hover:text-emphasis">{prev.name}</span>
+          <span className="kol-mono-14 text-body group-hover:text-emphasis">{prev.name}</span>
         </Link>
       ) : <span />}
       {next ? (
         <Link to={`/components/${next.slug}`} className="group flex flex-col gap-0.5 text-right">
           <span className="kol-mono-12 text-meta">Next →</span>
-          <span className="kol-sans-body-02 text-body group-hover:text-emphasis">{next.name}</span>
+          <span className="kol-mono-14 text-body group-hover:text-emphasis">{next.name}</span>
         </Link>
       ) : <span />}
     </nav>

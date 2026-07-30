@@ -17,6 +17,17 @@ import { SegmentedToggle } from '@kolkrabbi/kol-component'
 <SegmentedToggle value={v} onChange={setV} options={[{ value: "grid", label: "Grid" }]} />
 ```
 
+## Behavior
+
+N-way segmented control: joined cells sharing one outer stroke, thin dividers
+between cells, no gap. Active cell fills with surface-secondary +
+text-emphasis; inactive is text-meta with hover lifting. **Chrome comes from
+`.kol-seg` in kol-theme, not Tailwind utilities** — utilities never generate
+from package sources (the lesson this component taught). Companion to
+[ViewToggle](/components/view-toggle): reach for SegmentedToggle when the
+cells form one joined shell; ViewToggle when they're bare buttons or icon
+wells.
+
 ## Props
 
 <Api name="SegmentedToggle" rows={[

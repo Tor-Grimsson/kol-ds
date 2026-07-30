@@ -12,6 +12,14 @@ DELETED. Journal: `playbook/2026-07-30-mdx-content-migration.md`.
 writing documentation prose per component — authoring, not a transform. It runs
 whenever the user wants, in any order, with no dependency between entries.
 
+**CONTENT AUTHORED — 2026-07-30, wave 4.** All 66 `.mdx` docs carry a prose
+section (Variants / Behavior / When to use) distilled from each component's
+own source-header canon — the laws, family taxonomy and composition contracts,
+cross-linked between siblings (chip family, value-control contract, popover
+family, hero pair). The 9 headerless components were written from their read
+source. Verified: 188 component routes, 0 errors. Awaiting the user's read —
+per-component deepening (recipes, more examples) stays open-ended.
+
 ## The seam (already live)
 
 `showcase/src/pages/ComponentPage.jsx` globs `../docs/components/*.mdx`. A

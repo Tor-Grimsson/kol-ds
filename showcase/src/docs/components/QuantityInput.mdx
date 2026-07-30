@@ -17,6 +17,15 @@ import { QuantityInput } from '@kolkrabbi/kol-component'
 <QuantityInput value={qty} onChange={setQty} min={1} max={20} controls="split" />
 ```
 
+## Variants
+
+Two control layouts: `chevron` (default) — value with a stacked up/down pair
+inside a full-width field; `split` — minus and plus flank the value (the
+former QuantityStepper). **Display-only value** (not text-editable) — for an
+editable number field with bump chevrons use [Stepper](/components/stepper).
+Size auto-adapts to the viewport (sm < 768 ≤ md < 1024 ≤ lg) unless `size`
+pins it. Controlled: `value` + `onChange(next)`.
+
 ## Props
 
 <Api name="QuantityInput" rows={[

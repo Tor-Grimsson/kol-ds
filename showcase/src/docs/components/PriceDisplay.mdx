@@ -17,6 +17,15 @@ import { PriceDisplay } from '@kolkrabbi/kol-store'
 <PriceDisplay amount={220} currency="EUR" secondary="(€180 + €40 shipping)" />
 ```
 
+## Behavior
+
+Baseline-aligned price line: a large primary amount beside a small muted
+secondary note (a second-currency echo or a cost breakdown). `amount` runs
+through `Intl.NumberFormat` in **whole units** — prints are priced in round
+numbers; `secondary` is authored at the call site, parens and all, and
+omitting it renders the primary alone. Pure scalars in, formatted currency
+out.
+
 ## Props
 
 <Api name="PriceDisplay" rows={[

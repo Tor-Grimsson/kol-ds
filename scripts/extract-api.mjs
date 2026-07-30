@@ -37,6 +37,10 @@ const typeOf = (p) =>
   p.tsType?.raw ?? p.tsType?.name ?? p.flowType?.name ?? p.type?.name ?? '—'
 
 const tables = {}
+/* Provenance (2026-07-30 user ruling): every component page must print WHERE
+ * its source lives — "a component without an origin is a puzzle piece in a
+ * pile". name → repo-relative source path, emitted beside the api tables. */
+const sources = {}
 let filesParsed = 0, failed = []
 
 /* Every UI package is scanned, not just component + framework (2026-07-30).
@@ -63,6 +67,7 @@ for (const { index, base } of roots) {
   for (const [src, names] of byFile) {
     const abs = join(base, src)
     if (!existsSync(abs)) continue
+    for (const n of names) sources[n] ??= abs.replace(`${REPO}/`, '')
     let docs
     try {
       docs = parse(readFileSync(abs, 'utf8'), { filename: abs, resolver })
@@ -92,7 +97,10 @@ for (const { index, base } of roots) {
 
 const out = join(REPO, 'showcase/src/usage/api-tables.json')
 writeFileSync(out, JSON.stringify(tables, null, 2) + '\n')
+const srcOut = join(REPO, 'showcase/src/usage/component-sources.json')
+writeFileSync(srcOut, JSON.stringify(sources, null, 2) + '\n')
 console.log(`api-tables: ${Object.keys(tables).length} components from ${filesParsed} files → ${out}`)
+console.log(`sources: ${Object.keys(sources).length} components → ${srcOut}`)
 if (failed.length) {
   console.log(`\nunparsable (${failed.length}):`)
   for (const f of failed) console.log('  · ' + f)

@@ -17,6 +17,13 @@ import { Stepper } from '@kolkrabbi/kol-component'
 <Stepper value={v} onChange={setV} min={0} max={10} />
 ```
 
+## Behavior
+
+Number input + chevron buttons on the `.kol-control` shell; chevron scale
+follows the size (8/10/12px, stacked). For a plain number field without the
+bump affordance use `<Input type="number" />`; for a display-only quantity
+picker use [QuantityInput](/components/quantity-input).
+
 ## Props
 
 <Api name="Stepper" rows={[

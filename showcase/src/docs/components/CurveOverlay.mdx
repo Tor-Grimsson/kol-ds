@@ -17,6 +17,15 @@ import { CurveOverlay } from '@kolkrabbi/kol-component'
 <CurveOverlay width={320} height={120} curve="ease" blend={0.5} />
 ```
 
+## Behavior
+
+Draws an easing/blend curve over its parent — the curve math is ported from
+the brand app's curveMath so the primitive has **no app import**. Presets
+return a blend in 0..1 for a position t; `blend` is the amount knob (for
+`flat` it IS the value, elsewhere it biases the curve; 0.5 = pure curve);
+`custom` biases the bezier. Consumers with their own math bypass all of it
+via the `easing` prop.
+
 ## Props
 
 <Api name="CurveOverlay" rows={[

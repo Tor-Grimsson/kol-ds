@@ -264,11 +264,12 @@
 /* =============================================================================
  * DOCS CONTENT CLASSES
  * =============================================================================
- * Content-rendering styles for documentation pages. The rendered markdown body
- * is wrapped in `.kol-prose` (headings / p / code / lists / blockquote / links),
- * so the per-element `.docs-article *` type rules that used to live here are
- * gone. Only structural doc chrome (cards, frontmatter layout, callout rule,
- * media, tag graph) remains.
+ * Content-rendering styles for documentation pages. The reader types every
+ * element explicitly through the kol-doc-* roles (workshop 0.3.4 retype —
+ * prose is the blog/CMS voice, never docs surfaces), so the per-element
+ * `.docs-article *` type rules that used to live here are gone. Only
+ * structural doc chrome (cards, frontmatter layout, callout rule, media,
+ * tag graph) remains.
  */
 
 /* Documentation Card (used in inventory listing) */

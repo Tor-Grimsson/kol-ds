@@ -17,6 +17,17 @@ import { Dropdown } from '@kolkrabbi/kol-component'
 <Dropdown options={opts} value={v} onChange={setV} />
 ```
 
+## Variants
+
+**The trigger IS button chrome** (2026-07-08 chrome law): it emits
+`kol-btn kol-btn-{variant} kol-btn-{size}`, so it renders pixel-identical to a
+Button of the same rung — the `.kol-dd-*` classes only add trigger layout and
+the open/panel fusion. `primary` (default) is the filled trigger whose open
+panel continues the same fill as one piece; `grey` is the opaque oq-12 fill;
+`outline` is the bordered pair. Dropdowns have **no hover and no clicked
+state** (2026-07-15 ruling) — rest and open are the only states. For menu
+actions use [MenuItem](/components/menu-item); this is value-list selection.
+
 ## Props
 
 <Api name="Dropdown" rows={[

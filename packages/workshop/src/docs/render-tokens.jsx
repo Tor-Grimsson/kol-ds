@@ -14,12 +14,17 @@ import { Link } from 'react-router-dom'
  * @param {Function} tagHref       (tag) => href for `#hashtag` pills. Default
  *                                 keeps hashtags route-agnostic (`/docs?tag=…`);
  *                                 the reader passes a configured href in.
+ * @param {Function} onTagClick    (tag) => void — when provided, hashtag pills
+ *                                 render as buttons (tag mode) instead of Links;
+ *                                 a consumer without a tag route stops shipping
+ *                                 dead `/docs?tag=…` links (wave-4 parity).
  */
 export const renderInlineTokens = (
   tokens,
   key = '',
   resolveDocLink = null,
-  tagHref = (tag) => `/docs?tag=${encodeURIComponent(tag)}`
+  tagHref = (tag) => `/docs?tag=${encodeURIComponent(tag)}`,
+  onTagClick = null
 ) => {
   if (!Array.isArray(tokens)) return null
 
@@ -37,15 +42,19 @@ export const renderInlineTokens = (
         return <em key={tokenKey}>{token.content}</em>
 
       case 'code':
-        return <code key={tokenKey}>{token.content}</code>
+        return <code key={tokenKey} className="kol-doc-code-inline">{token.content}</code>
 
       case 'link': {
+        /* One link idiom across doc surfaces (wave-4 retype): the anchor
+         * treatment from showcase mdx-components.jsx — colorless per the
+         * link law, emphasis + quiet underline. */
+        const linkCls = 'text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current'
         // For .md links, try to resolve to an app route
         if (resolveDocLink && token.url.includes('.md')) {
           const route = resolveDocLink(token.url)
           if (route) {
             return (
-              <Link key={tokenKey} to={route} className="docs-link">
+              <Link key={tokenKey} to={route} className={linkCls}>
                 {token.text}
               </Link>
             )
@@ -54,7 +63,7 @@ export const renderInlineTokens = (
           return token.text
         }
         return (
-          <a key={tokenKey} href={token.url} className="docs-link">
+          <a key={tokenKey} href={token.url} className={linkCls}>
             {token.text}
           </a>
         )
@@ -78,16 +87,26 @@ export const renderInlineTokens = (
           </code>
         )
 
-      case 'hashtag':
+      case 'hashtag': {
+        const pillCls = 'inline-tag-pill kol-helper-12 bg-fg-08 text-strong'
+        if (onTagClick) {
+          return (
+            <button
+              key={tokenKey}
+              type="button"
+              className={pillCls}
+              onClick={() => onTagClick(token.tag)}
+            >
+              #{token.tag}
+            </button>
+          )
+        }
         return (
-          <Link
-            key={tokenKey}
-            to={tagHref(token.tag)}
-            className="inline-tag-pill kol-helper-12 bg-fg-08 text-strong"
-          >
+          <Link key={tokenKey} to={tagHref(token.tag)} className={pillCls}>
             #{token.tag}
           </Link>
         )
+      }
 
       default:
         return null

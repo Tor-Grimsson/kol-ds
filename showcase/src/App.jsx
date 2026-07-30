@@ -1,4 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { TagModeProvider, TagModeGate, DocumentationReader } from '@kolkrabbi/kol-workshop'
+import { VAULT, VAULT_MODULES, vaultDocHref } from './lib/vault.js'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
@@ -41,7 +43,17 @@ export default function App() {
       <Route path="/blocks/preview/:slug" element={<BlockPreview />} />
       <Route path="/sets/preview/:slug" element={<SetPreview />} />
 
-      <Route element={<ShellChrome />}>
+      {/* TagModeProvider wraps the WHOLE shell, not just the vault route: the
+        * reader portals its sidebar into the shell's TOC rail (ShellTocContext),
+        * so a route-scoped provider left that rail outside the context and
+        * every tag click hit the noop fallback (wave-4 parity). */}
+      <Route
+        element={
+          <TagModeProvider inventory={VAULT} docHref={vaultDocHref}>
+            <ShellChrome />
+          </TagModeProvider>
+        }
+      >
         <Route path="/" element={<Home />} />
         <Route path="/foundations" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
@@ -57,6 +69,25 @@ export default function App() {
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
         <Route path="/docs/type-roles" element={<MdxDoc module={TypeRolesDoc} />} />
+        {/* THE VAULT — docs/ rendered by the packaged reader, frontmatter and
+          * all. Documentation is a SYSTEM: its own top-level URL space. */}
+        <Route path="/documentation" element={<Navigate to={VAULT.length ? vaultDocHref(VAULT[0].id) : '/'} replace />} />
+        {/* TagModeGate mounts the tag-mode overlay (list + node graph) over
+          * the reader — it existed in the package but was never mounted, so
+          * every tag click was a silent no-op (wave-4 parity). */}
+        <Route element={<TagModeGate />}>
+          <Route
+            path="/documentation/:docId"
+            element={
+              <DocumentationReader
+                inventory={VAULT}
+                modules={VAULT_MODULES}
+                docHref={vaultDocHref}
+                routes={{ docsIndex: '/documentation', components: '/components' }}
+              />
+            }
+          />
+        </Route>
         {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
       </Route>
       {/* THE workshop route — live dogfood of @kolkrabbi/kol-workshop (shell +

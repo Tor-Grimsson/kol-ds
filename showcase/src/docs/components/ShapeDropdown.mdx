@@ -17,6 +17,17 @@ import { ShapeDropdown } from '@kolkrabbi/kol-component'
 <ShapeDropdown options={opts} value={v} onChange={setV} onAction={draw} />
 ```
 
+## Behavior
+
+Split icon-button + variant-menu molecule — the tool-palette idiom
+(Select · Text · [Shape ▾] · Pattern). The main button reflects the current
+variant and fires `onAction` with its id; the chevron half opens a menu of
+all variants — picking one fires `onChange` and closes. Composed from
+[Button](/components/button), usePopover/PopoverPanel and
+[MenuDropdownItem](/components/menu-dropdown-item) rows (✓ marks the active
+variant). For single-value list selection with a text trigger use
+[Dropdown](/components/dropdown) — this is for tool bars.
+
 ## Props
 
 <Api name="ShapeDropdown" rows={[

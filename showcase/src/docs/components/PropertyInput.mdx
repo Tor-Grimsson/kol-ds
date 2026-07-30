@@ -17,6 +17,13 @@ import { PropertyInput } from '@kolkrabbi/kol-component'
 <PropertyInput label="X" type="number" value={x} onChange={(e) => setX(+e.target.value)} />
 ```
 
+## Behavior
+
+Stacked label + input for inspector-style property panels: `type="number"`
+renders a [Stepper](/components/stepper) (chevron buttons), everything else a
+filled [Input](/components/input). Lay out in a `grid grid-cols-2 gap-4` for
+x/y · width/height · rotation row pairs.
+
 ## Props
 
 <Api name="PropertyInput" rows={[

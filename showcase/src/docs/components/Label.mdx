@@ -17,6 +17,13 @@ import { Label } from '@kolkrabbi/kol-component'
 <Label htmlFor="email">Email</Label>
 ```
 
+## Behavior
+
+Minimal by design: **inherits typography from its parent** — supply
+`kol-helper-N` (or similar) via `className` when a specific voice is needed.
+Defaults to `text-fg-48` for the muted-control look. For a label wired to a
+control body, use [LabeledControl](/components/labeled-control).
+
 ## Props
 
 <Api name="Label" rows={[

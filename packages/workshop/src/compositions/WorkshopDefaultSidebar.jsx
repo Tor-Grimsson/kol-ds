@@ -27,7 +27,7 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
     <div className="space-y-4">
       {siblings.length > 1 && (
         <div>
-          <div className="shell-sidebar-label kol-helper-10 text-meta">{parentRoute.label}</div>
+          <div className="shell-sidebar-label kol-doc-eyebrow">{parentRoute.label}</div>
           <nav className="space-y-0">
             {siblings.map(child => (
               <Link
@@ -46,7 +46,7 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
 
       {links && (
         <div>
-          <div className="shell-sidebar-label kol-helper-10 text-meta">Repository</div>
+          <div className="shell-sidebar-label kol-doc-eyebrow">Repository</div>
           <div className="space-y-1">
             {links.live && (
               <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action kol-mono-14 text-body">
@@ -65,7 +65,7 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
       )}
 
       <div>
-        <div className="shell-sidebar-label kol-helper-10 text-meta">Quick actions</div>
+        <div className="shell-sidebar-label kol-doc-eyebrow">Quick actions</div>
         <div className="space-y-1">
           <Link to={basePath} className="shell-sidebar-action kol-mono-14 text-body">
             <Icon name="layout" size={14} />

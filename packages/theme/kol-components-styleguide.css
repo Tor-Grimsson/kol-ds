@@ -376,11 +376,15 @@
    CSS retains the descendant typography for figcaption + inline <code>.
    ═════════════════════════════════════════════════════════════════════ */
 
+/* mono, upright (2026-07-30 user ruling) — the italic sans rode in with the
+ * styleguide raid unsanctioned; Right Grotesk's italic is a placeholder cut,
+ * not for use. Captions speak the doc-caption voice: mono 12, no slant. */
 .kol-anatomy-sample figcaption {
   margin-top: 12px;
+  font-family: var(--kol-font-family-mono);
   font-size: 12px;
   color: var(--kol-fg-48);
-  font-style: italic;
+  font-style: normal;
 }
 
 .kol-anatomy-sample code {

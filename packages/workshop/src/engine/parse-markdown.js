@@ -316,10 +316,14 @@ export const parseDocsMarkdown = (markdown) => {
       const blocks = getTargetBlocks()
       const lastBlock = blocks[blocks.length - 1]
 
+      /* Split on UNESCAPED pipes only, then unescape: Obsidian tables carry
+       * `[[target\|display]]` wikilinks, and a naive split('|') exploded the
+       * link across two cells and left literal `\` in the text — the reason
+       * hub INDEX pages (tables of wikilinks) rendered as junk (wave-4). */
       const cells = trimmed
         .slice(1, -1)
-        .split('|')
-        .map((cell) => cell.trim())
+        .split(/(?<!\\)\|/)
+        .map((cell) => cell.trim().replace(/\\\|/g, '|'))
 
       // Separator row (|---|---|)
       const isSeparator = cells.every((cell) => /^:?-+:?$/.test(cell))

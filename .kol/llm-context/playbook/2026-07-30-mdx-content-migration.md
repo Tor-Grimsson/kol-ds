@@ -130,3 +130,122 @@
   lobby: 11 → 2 · published: 3 · staged for approval: 2 (roll motion · library glyph)
   awaiting user: open _tmp/toggle-library-proposals/preview.html · hard-reload dev server (theme cutover v3 clears the dark stamp)
   log: pending /log-work
+
+[07:53 GMT · 2026-07-30] · GLANCE-LIST RUN opens · user filed 12 defects from one look; the MDX conversion shipped unreviewed — own miss
+  list → install radius breaks 4px law · fences don't use THE CodeBlock (3 code idioms on one page) · pager sans in a mono nav · right TOC rail off-idiom vs left sidebar · cramped h2 rhythm + zero-gap before pager divider · giant empty preview stage · sidebar internal h-scroll + outer padding white-band · Atomic grouping must be DEFAULT · **the docs vault still not in the shell** (repeatedly ordered: full tree + frontmatter panel à la kolkrabbi workshop)
+
+[08:06 GMT · 2026-07-30] · GLANCE-LIST RUN closed · all 12 + the vault, live-verified
+  code idiom → ONE: mdx `pre` map, CodeLine, InstallBlock (pm tabs above), PreviewCard Code tab ALL render kol-component CodeBlock; bespoke pre/copy twins deleted; radius = CodeBlock chrome 4px ✓ (the install rounded-md violation dies with the bespoke chrome)
+  found en route → `kol-mono-13` NEVER EXISTED — dead class in 4 files (ShellChrome TOC rows + brand, CollectionPreview/Page, Foundations) silently rendering SANS: that was the whole "right rail is sans" mystery + the eyebrow/spacing drift. → kol-mono-14; TOC conformed to the left-rail idiom (shell-sidebar-label kol-helper-10, authored case — dropped an `uppercase` transform violation; second one dropped from "Group by"; PreviewCard's `capitalize` tabs → authored labels)
+  rhythm → h2 mt-6 first:mt-0, h3 mt-2 (heading opens a section = air ABOVE); CodeBlock's own margin-block restores block breathing; stage floor 20rem→10rem (the void around one-row demos)
+  rails → overflow-x-hidden on Nav/Toc columns (long rows panned the whole grid sideways = the white-band bug)
+  grouping → Atomic DEFAULT (grouping.jsx + registry.js + taxonomy doc synced)
+  THE VAULT → showcase/src/lib/vault.js globs docs/**/*.md → buildInventory → grouped "Documentation" rail section + /docs/vault/:docId via DocumentationReader (frontmatter panel live) + ⌘K search items. Engine upgraded for it (workshop 0.3.2): collision-safe ids (dup basenames gain parent folder — the 07-29 dup-key finding SOLVED, not held), uppercase INDEX = index, reader resolves modules by doc.file (endsWith heuristic grabbed first basename match = wrong doc)
+  verify → build ✓ gates 5/5 ✓ /docs/vault: frontmatter ✓ groups incl. usage(205) ✓ both colliding inventories resolve correctly ✓ 202-route sweep 0 errors ✓ ports 4319 opened+killed
+  published → workshop **0.3.2** (framework NOT published — roll motion still approval-gated in its source)
+  docs sync → 02-shells (+vault +code-idiom laws) · 05-layout-systems (MDX row) · SHIPPED-PACKAGES (0.3.2) · 03-components/00-taxonomy (atomic default)
+
+[08:17 GMT · 2026-07-30] · corrections · Documentation = SYSTEM + port mea culpa
+  placement → user: documentation is a SYSTEM, never a sub-page. Vault moved to its OWN top-level tab + URL space: /documentation/:docId (was /docs/vault under the Docs tab child list — wrong hierarchy, mine). TAB_PREFIX lights the tab across /documentation; Docs tab keeps only the 4 MDX guides; rail Documentation section stays.
+  port → I told him his tab (5175) was stale and the server was 5173 — BACKWARDS: vite took 5175 because two OLDER instances squat 5173/5174; his tab was right, the HMR client hits the old ones. His processes — handed the kill command, didn't run it.
+  verify → build ✓ · 7 header tabs incl. Documentation ✓ /documentation/docs-INDEX renders w/ frontmatter ✓
+  still open from the interrupted defect wave → PreviewCard tab-bar border fg-12→oq-08 + doc-figure fg-12→oq-08 (the alpha-seam law, JSX edition) · CodeBlock `bare` for the Code tab double-frame · preview frame cap by stage · DashMetricCard w-full question
+
+[08:20 GMT · 2026-07-30] · defect wave CLOSED · theme 0.13.1 · component 0.14.1 published
+  seam law, JSX edition → .kol-doc-figure border fg-12→oq-08 (theme) · PreviewCard tab bar border → oq-08 inline — figure + bar now the SAME opaque seam at the table wrapper's 08 weight; law row added to the layout-systems registry ("border-fg-* on framed chrome" = never)
+  double frame → CodeBlock gains `bare` (highlight/chip/copy, no chrome; .kol-codeblock--bare in theme); PreviewCard Code tab renders bare inside the figure w/ px-4 py-3 — one frame
+  void → preview frame follows the stage: `full` keeps the column, everything else caps at --kol-content-panel (960). DashMetricCard answer: the CARD is w-full by design (dashboard grid cell) filling its 28rem `md` stage; the void was the FRAME, now 960
+  verify → @1600: figure 960 ✓ figure+bar borders identical opaque ✓ Code tab bare (0 border, transparent bg) ✓ build ✓
+  docs → registry (+seam-law row) · SHIPPED-PACKAGES (0.13.1/0.14.1)
+
+[09:02 GMT · 2026-07-30] · REVIEW WAVE 3 opens (user, 15 items) · rulings received
+  BUILD NOW → (1) atomic taxonomy broken: flat-package components hand-mapped into atoms/molecules (ShellSidebar "atom", DashTableCard "molecule") → tier = PACKAGE for non-core packages, own groups (2) hooks are NOT components — out of the roster/nav (3) rails: right TOC rows = the LEFT tree's shell-nav-item idiom, ONE system (4) every sidebar section label = the kol-doc-eyebrow voice (image 33), both rails + reader sidebar (5) Kolkrabbi logo + KOL-DS wordmark restored in the header (I replaced it with a text span — scope violation, mine) (6) styleguide figcaption italic-sans = unsanctioned → mono normal (never asked; Right Grotesk italic is a placeholder face, user law: classes or ask) (7) kol-doc-figure coherence: frame ALWAYS panel-capped (stage full filled the shell and diverged), Code-tab bare KEEPS the codeblock bg (8) provenance: every component page prints its SOURCE path (extract-api emits name→src map, MetaRows renders it) — "a component without an origin is a puzzle piece in a pile" (9) MDX pages get a frontmatter panel (meta was invisible — hidden metadata is rejected-markdown disease) (10) vault group labels Title-Case
+  LOGGED, next wave (too big for tonight, named honestly) → DocsArticle/vault-reader retype from kol-prose to the doc voice (one layout, one style system) · vault parity: tag colors, working docs search, cross-refs in right rail, node graph view · per-component imported-from-repo history (needs research per component)
+
+[09:12 GMT · 2026-07-30] · WAVE 3 CLOSED · workshop 0.3.3 · theme 0.13.2 published
+  taxonomy → tier = PACKAGE for flat packages (roster.js; validator updated — TIERS no longer required): Atoms 63→39 · Molecules 66→28 · Organisms 52→20 · new groups Workshop(10)/Dashboards(19)/Chess(17)/Foundry(21)/Styleguide(8)/Content(12)/Store(7). Hooks OUT of the roster (scripts, not components).
+  rails → right TOC rows = shell-nav-item kol-mono-14 (the left idiom, verbatim); ALL section labels = kol-doc-eyebrow (ShellSidebar · reader SidebarSection · DocsFrontmatter · WorkshopDefaultSidebar · Group by · On this page)
+  brand → KOLKRABBI wordmark restored (Asset kol-wordmark, logo slot) + "KOL DS" typed mark (no drawn asset yet — flagged as placeholder); the text-span I'd put there was a scope violation, owned
+  figcaption → styleguide italic-sans → mono upright (theme; the one other italic — feature-split-pull em — is an elder deliberate accent, left + noted)
+  figure → ALWAYS panel-capped (stage-conditional cap = geometry disagreement between sibling pages); Code tab bare keeps the code surface (transparent bare was a third bg)
+  provenance → component-sources.json (extract-api) → "Source packages/…/X.jsx" row on EVERY component page (MetaRows, both paths)
+  frontmatter → MDX pages render a Frontmatter panel from meta (id/slug/aliases…) — metadata is content, never hidden
+  vault labels → Title-Case ('Root' for the docs-root group)
+  caught in sweep → my MetaRows guard crashed foundry-cta (null meta + source) — fixed before ship; final sweep 194 routes, 0 errors
+  docs → 00-taxonomy (ownership tiers + hooks ruling) · 02-shells (rail/label/brand/frontmatter laws) · SHIPPED-PACKAGES (0.3.3/0.13.2)
+
+──────────── MILESTONE: wave 3 — ownership taxonomy + one rail voice ──────────── [09:12]
+  built: 10/10 ruled items · published: 2 · routes: 194/194 clean
+  next wave (logged): vault-reader retype to doc voice · tag/search/graph parity · imported-from history
+  log: pending /log-work
+
+──────────── MILESTONE: the glance-list + the vault ──────────── [08:06]
+  defects: 12/12 closed · vault: in the shell, frontmatter and all · published: 1
+  still awaiting user: _tmp/toggle-library-proposals/preview.html (roll motion + library glyph)
+  log: pending /log-work
+
+[09:28 GMT · 2026-07-30] · WAVE 4 opens · proposal verdict in
+  verdict → library glyph APPROVED (→ icons 0.8.11) · ThemeToggle proposal REJECTED as shown: system-state computer icon wrong + page failed to show all variants and all sizes — redo, full matrix
+  rig → dev port is 5176, agent hands off rig entirely (surfacing his rig state was out of scope, owned)
+  queue → glyph landing → toggle-proposal redo → vault-reader retype → vault parity → imported-from history → MDX prose → smalls
+
+[09:52 GMT · 2026-07-30] · WAVE 4.0 · toggle-proposal redo staged + library shipped · icons 0.8.11
+  glyph → approved library (3 books + one leaning) landed at files/library.svg in house style, published 0.8.11, SHIPPED-PACKAGES synced
+  redo → _tmp/toggle-library-proposals/preview.html rebuilt: TWO IFRAMES (each its own :root stamped data-theme — a .dark class mid-tree can't recompute :root-derived fg/oq tokens, single-doc dual-theme was a lie), REAL kol-theme.css chrome, full matrix icon/button/hop/hop-bare × sm/md/lg, all clickable, one shared mode via postMessage relay (= useTheme cross-instance sync)
+  system slot → 4 in-set candidates clickable page-wide: desktop (current·rejected) · dashed-circle (proposed) · mode-toggle-02 · brightness; ramp 16-48 + mode-toggle-01 family ref
+  verify → cross-pane cycle ✓ (click light pane → both read mode·dark) · UA button preflight shimmed · rig killed (8931 + browser)
+
+[09:52 GMT · 2026-07-30] · WAVE 4.1 · vault-reader retype → doc voice · workshop 0.3.4 published
+  what → DocsArticle drops kol-prose (prose = blog only, THE law) → docs-article + flex col gap-6 (MdxDoc rhythm); reader blocks typed through the mdx-components dialect verbatim: h1 kol-doc-heading · sections via packaged DocSection (rule + section-title) · p/lists kol-doc-body · h3 sans-heading-05 / h4 same at font-normal (prose-h4 precedent) · code panel-capped CodeBlock · md tables via kol-component Table variant=simple className=kol-doc-table (dynamic-column DocTable sibling, no parallel table markup) · render-tokens: docs-link killed → colorless emphasis-underline idiom, inline code → kol-doc-code-inline · DocsHeader → doc-heading/-lede
+  dedupe → the two ~80-line intro/section switches (already drifted) folded into ONE renderBlock
+  verify → gates + build ✓ · live preview 4189: /documentation/05-layout-systems renders full doc voice (frontmatter panel · doc-table th helpers · code chips · section rules) ✓ · rig killed
+  note → docs-list/docs-link had NO css rules (kol-prose was carrying them) — deletions lose nothing; TagModeOverlay keeps docs-article wrapper (one child, unaffected); kol-components-workshop.css line ~268 comment still says "wrapped in .kol-prose" — sync it with the NEXT theme bump (no theme change this pass)
+
+[10:04 GMT · 2026-07-30] · WAVE 4.2 · vault parity 4/5 · theme 0.13.3 + workshop 0.3.5 published
+  tag colors → root cause: .tag/.tag-naked/.tag--{color} classes shipped in Tag.jsx since the port, RULES never left the monorepo (same dangling trap as the palette tokens, kol-color 07-16). Authored in molecules css over the palette pair: light = -light fill + dark ink · dark = saturated + light ink (yellow keeps dark) · naked = saturated text · dark-mode block scoped .tag.tag--{c} so naked text rules survive · system-follow mirror
+  search → matchSearchItems always took headings; nothing extracted them. buildInventory now emits fence-aware ## /### headings; shell-nav adapter forwarded them (it was silently dropping the field). "rule of thumb" → lands 05-layout-systems ✓
+  related rail → frontmatter related: wikilinks resolved path-first (../INDEX hops) then basename, rendered in the ONE rail voice (shell-nav-item); dead targets dropped not rendered
+  tag mode/graph → TagModeGate was NEVER mounted (whole apparatus a silent no-op). Mounted as nested route; provider moved UP around ShellChrome — the reader portals its rail through ShellTocContext, a route-scoped provider left the rail on the noop fallback. Hashtag pills: new onTagClick seam → openTagMode (the /docs?tag Link was dead). Graph verified: 27 nodes, filter chip colored ✓
+  view-components action → NOT built: "goes to /components generally" is ambiguous (deep-link the doc's component? different target?) — flagged for user ruling
+  verify → build ✓ · one screenshot carries graph + colored chips + Related rail + eyebrow voice · rig killed
+  docs → SHIPPED-PACKAGES (0.13.3/0.3.5) · 04-workshop-system (doc-voice retype line)
+
+[10:16 GMT · 2026-07-30] · WAVE 4.3 · imported-from history + INDEX rescue · workshop 0.3.6 published
+  provenance → scripts/extract-origins.mjs mines lobby/done frontmatter (component/source/date) → component-origins.json (96 components, 7 origin repos: kol-monorepo 84 · kol-website 4 · kol-ds-fxr 3 · others 5); wired into extract:docs; MetaRows prints "Imported from <source> · <date>" under the Source row. Verified: article-card shows the pair
+  INDEX thinness → BUG, not content. Two compounding defects: (1) table cells split on every pipe incl. the \| escape — Obsidian wikilinks-in-tables exploded across cells with literal backslashes (2) resolveDocLink only tried bare basenames — INDEX/collision ids carry the parent folder, so hub links rendered dead plain text. Fixed: unescaped-pipe split + parentDir-basename fallback. documentation-INDEX: 0 → 34 live links, click lands 00-overview-INDEX
+  sweep → all 36 vault routes, 0 console errors · build ✓
+  docs → SHIPPED-PACKAGES (0.3.6)
+
+[10:26 GMT · 2026-07-30] · WAVE 4.4 · MDX prose authored · 66/66
+  what → every mechanical .mdx gains its prose section (Variants/Behavior/When-to-use), distilled from the component's OWN header canon — laws, family taxonomy, composition contracts — cross-linked between siblings (chip family Pill/Tag/Badge · value-control Slider/RotaryDial · popover family · hero pair · toggle trio)
+  headerless 9 → written from read source (Avatar initials-only — first draft guessed an image fallback, caught + corrected against the source)
+  ledes → NOT added: meta.lede falls back to the registry description already; restating it is churn
+  verify → all 66 carry a section ✓ · build ✓ · spot-check 6 pages render sections in TOC flow ✓ · full sweep 188 component routes 0 errors ✓
+  backlog → 2026-07-30-mdx-content-migration.md stamped CONTENT AUTHORED (deepening stays open-ended)
+
+──────────── MILESTONE: wave 4 — the vault speaks doc ──────────── [10:26]
+  built: retype + parity 4/5 + provenance + INDEX rescue + 66 prose docs
+  published: icons 0.8.11 · workshop 0.3.4→0.3.6 · theme 0.13.3
+  awaiting user: toggle-proposal redo (preview.html, iframe rebuild) · view-components target ruling · feature-split-pull em italic ruling
+  log: pending /log-work
+
+[10:32 GMT · 2026-07-30] · framework 0.8.0 cleanup (website-agent publish) · deprecated
+  what → npm deprecate @kolkrabbi/kol-framework@0.8.0 "Broken publish: workspace:* shipped raw…" — verified live on the registry. 0.8.1 confirmed good (deps resolved 0.14.1/0.8.11), local package.json already 0.8.1, .kol-full-bleed-inset rule present + documented at the rule
+  context → website agent published 0.8.0 (npm publish → workspace leak, the 0.5.11/0.5.12 trap) + 0.8.1 (clean) from this workspace; his note lobby/NOTE-2026-07-30-framework-0.8.x… asked the DS side to deprecate — done
+  rides along → ThemeToggle roll rework is LIVE in 0.8.1, user-approved verbally ("approve, I'll change it back later"), visual review still pending via _tmp/toggle-library-proposals/preview.html; the desktop system glyph it ships is already rejected — fix lands with the proposal verdict (→0.8.2)
+  docs → SHIPPED-PACKAGES (framework 0.8.1 + broken-0.8.0 warning)
+
+[10:55 GMT · 2026-07-30] · toggle review ROUND 2 (user, with screenshots) · rulings received
+  guides chip → color relationship SWAPPED vs the approved round-1 page (mine matched its pane; original was INVERSE — dark chip on light pane) + must align LEFT with the content column, not center
+  system glyph → NO third glyph, ever: "only 2 instances of the split circle." The dashed-circle candidate (and any distinct system icon) is out — system wears mode-toggle-01 too, the mode is told by label/tooltip
+  roll → looks correct but unverdicted until both travel directions are visible without the odd glyph
+  variant Qs → user read button as chrome-less (surface-secondary fill invisible on surface-primary pane — presentation failure, needs guides outlines); asked for the "normal button" which IS the button variant (brand sidebar runs it today)
+  taxonomy → discussion opened: variants labeled by host context, each must EARN its spot with a logical justification
+
+[10:57 GMT · 2026-07-30] · toggle ROUND 3 staged · pane.html rebuilt
+  glyph → ONE identity: strip = 3 copies of mode-toggle-01, ALL roll (−180°/slot on the travel clock); dashed-circle + candidate picker deleted from page + DOM verified clean. One lap shows both directions: light→dark rolls one way, dark→system rolls back two half-turns, system→light forward again
+  guides chip → inverse per pane (surface-inverse/on-inverse: dark chip on light pane, mirror on dark) + left:40px = the content column edge. Verified computed: L(40, #0e0e11/#fcfbf8) D(40, #fcfbf8/#0e0e11)
+  guides outlines → body.guides-on .demo-toggle gets a dashed key-color outline — the button variant's ladder box (padding/rung height) reads even though surface-secondary fill is subtle on surface-primary (the round-2 "no container" misread)
+  labels → variant rows named by HOST CONTEXT: icon=toolbars/nav bars · button=THE ladder button, standalone surfaces (brand sidebar today) · hop=sidenav filled · hop-bare=sidenav quiet
+  verify → cross-pane sync ✓ · system mode = split circle everywhere, 0 dashed paths in DOM ✓ · console clean (fonts only) · rig killed (8931 + browser + screenshots)
+  note → ThemeToggle.jsx untouched — the no-third-glyph change lands as 0.8.2 on approval

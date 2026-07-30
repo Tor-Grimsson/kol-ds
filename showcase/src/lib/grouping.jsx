@@ -7,12 +7,13 @@ import { createContext, useContext, useState, useCallback } from 'react'
  * (how people look for a component). Persisted to localStorage.
  */
 const KEY = 'kol-showcase-grouping'
-const DEFAULT = 'function'
+/* atomic is the default (user ruling 2026-07-30) — function is the opt-in. */
+const DEFAULT = 'atomic'
 const GroupingContext = createContext(null)
 
 export function GroupingProvider({ children }) {
   const [mode, setModeState] = useState(() => {
-    try { return localStorage.getItem(KEY) === 'atomic' ? 'atomic' : DEFAULT } catch { return DEFAULT }
+    try { return localStorage.getItem(KEY) === 'function' ? 'function' : DEFAULT } catch { return DEFAULT }
   })
   const setMode = useCallback((m) => {
     setModeState(m)

@@ -17,6 +17,17 @@ import { CodeBlock } from '@kolkrabbi/kol-component'
 <CodeBlock language="jsx">{code}</CodeBlock>
 ```
 
+## Behavior
+
+**THE code surface** (one-code-idiom law, 2026-07-30): every code block on a
+doc page renders through this component — react-syntax-highlighter (Prism)
+with the oneDark theme flattened onto KOL chrome, a single
+filename-or-language chip, and a 32×32 icon copy button (`copy` → check).
+Three input shapes, first match wins: Portable Text
+(`value={{ code, language, filename }}`), direct props, or children. The
+`bare` prop drops the framed chrome for hosts that own the frame (e.g. a
+preview figure's Code tab) while keeping the code surface itself.
+
 ## Props
 
 <Api name="CodeBlock" rows={[

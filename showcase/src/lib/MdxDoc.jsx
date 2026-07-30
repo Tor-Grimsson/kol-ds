@@ -32,12 +32,30 @@ export default function MdxDoc({ module: mod, component }) {
   const title = meta.title ?? component?.name
   const lede = meta.lede ?? component?.description
 
+  /* Frontmatter panel (user ruling 2026-07-30): a doc's metadata is content,
+   * never hidden — same surface the vault reader gives every markdown doc.
+   * Renders whatever meta carries beyond the header fields. */
+  const fmEntries = Object.entries(meta).filter(([k]) => !['title', 'lede', 'eyebrow'].includes(k))
+
   return (
     <article className="flex w-full min-w-0 flex-col gap-10">
+      {fmEntries.length > 0 && (
+        <div className="docs-frontmatter border-b border-fg-08 pb-4">
+          <p className="shell-sidebar-label kol-doc-eyebrow">Frontmatter</p>
+          <div className="flex flex-col gap-1">
+            {fmEntries.map(([k, v]) => (
+              <div key={k} className="flex gap-6">
+                <span className="kol-mono-12 text-meta w-24 shrink-0">{k}</span>
+                <span className="kol-mono-12 text-body">{Array.isArray(v) ? v.join(' · ') : String(v)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {(title || eyebrow) && (
         <DocHeader eyebrow={eyebrow} title={title} lede={lede} />
       )}
-      {component && <MetaRows meta={component.meta} />}
+      {component && <MetaRows meta={component.meta} name={component.name} />}
       {/* NOT .kol-prose (2026-07-30, user-surfaced bug): the blog container's
         * 720px cap caged previews and tables too. Markdown elements are typed
         * per-tag by the mdx map through the kol-doc-* roles — running text

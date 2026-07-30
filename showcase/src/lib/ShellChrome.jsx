@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ShellLayout, ShellSidebar } from '@kolkrabbi/kol-workshop'
+import { Asset } from '@kolkrabbi/kol-brand/svg'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping } from './grouping.jsx'
 import { SHELL_ROUTES, isShellTabActive, buildShellSearchItems, componentTreeRoutes } from './shell-nav.js'
+import { VAULT_TREE } from './vault.js'
 import useEmbed from './useEmbed.js'
 
 /**
@@ -58,12 +60,15 @@ function useHeadings() {
 
 function AutoToc() {
   const headings = useHeadings()
-  const row = 'kol-mono-13 py-1 text-meta transition-colors hover:text-emphasis'
+  /* ONE rail system (user 2026-07-30): the right rail IS the left rail —
+   * identical row idiom (shell-nav-item + kol-mono-14) and identical section
+   * label (the kol-doc-eyebrow voice, everywhere a rail section starts). */
+  const row = 'shell-nav-item block kol-mono-14 text-body transition-colors hover:text-emphasis'
   if (headings.length === 0) return null
   return (
     <div className="flex flex-col gap-6 pr-2">
       <div>
-        <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">On this page</p>
+        <p className="shell-sidebar-label kol-doc-eyebrow">On this page</p>
         <nav className="flex flex-col">
           {headings.map((h) => (
             <a key={h.id} href={`#${h.id}`} className={`${row} ${h.sub ? 'pl-3' : ''}`}>
@@ -76,11 +81,20 @@ function AutoToc() {
   )
 }
 
+/* The real brand pair (2026-07-30 — a text span had replaced the logo, scope
+ * violation): KOLKRABBI wordmark in the logo slot (reserves the 256px rail
+ * column, links home) + KOL DS as the surface mark. KOL DS has no drawn
+ * wordmark asset yet — typed placeholder until one lands in kol-brand. */
 function ShowcaseBrand() {
   return (
-    <Link to="/" className="shell-header-logo flex shrink-0 items-center text-emphasis lg:w-64">
-      <span className="kol-mono-13 tracking-tight">Kolkrabbi</span>
-    </Link>
+    <>
+      <Link to="/" className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
+        <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
+      </Link>
+      <Link to="/" className="shell-header-logo flex items-center text-emphasis">
+        <span className="kol-mono-14 tracking-[0.2em]">KOL DS</span>
+      </Link>
+    </>
   )
 }
 
@@ -91,7 +105,7 @@ function ShowcaseSidebar({ onNavigate }) {
     <div className="flex flex-col gap-6">
       <ShellSidebar routes={SHELL_ROUTES} basePath="/" label="Showcase" labelTo="/" onNavigate={onNavigate} />
       <div>
-        <p className="kol-helper-10 uppercase tracking-widest text-meta mb-2">Group by</p>
+        <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
         <SegmentedToggle
           options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]}
           value={mode}
@@ -100,6 +114,8 @@ function ShowcaseSidebar({ onNavigate }) {
         />
       </div>
       <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
+      {/* THE VAULT — the repo's docs/ library, grouped by folder (vault.js). */}
+      <ShellSidebar routes={VAULT_TREE} basePath="/" label="Documentation" onNavigate={onNavigate} />
     </div>
   )
 }

@@ -17,6 +17,15 @@ import { MediaViewer } from '@kolkrabbi/kol-component'
 <MediaViewer open={open} media={media} index={index} onIndexChange={setIndex} onClose={() => setOpen(false)} />
 ```
 
+## Behavior
+
+**THE fullscreen paged media viewer** — every lightbox/gallery opener
+collapses onto this one (the monorepo's ImageLightbox, FullscreenGallery and
+WorkDetail gallery all did). Composed, not forked: the shell (scrim,
+scroll-lock, Escape, backdrop-close, stacking) is FullscreenOverlay; paging
+(touch swipe, snap, wrap-around) is embla, with ArrowLeft/ArrowRight bound to
+prev/next. Controlled — the parent owns the open state and index.
+
 ## Props
 
 <Api name="MediaViewer" rows={[

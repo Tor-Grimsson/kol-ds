@@ -21,6 +21,13 @@ import { Accordion, AccordionPanel } from '@kolkrabbi/kol-component'
 
 <Parts name="Accordion" />
 
+## Behavior
+
+Composition-based: `<Accordion>` wraps `<AccordionPanel>` children. Each panel
+owns its open/closed state independently — **multiple panels can be open at
+once** (additive). For single-open behavior, lift the state to the parent and
+pass controlled `open` + `onToggle` to each panel.
+
 ## Props
 
 <Api name="Accordion" rows={[

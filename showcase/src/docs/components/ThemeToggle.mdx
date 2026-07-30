@@ -17,6 +17,17 @@ import { ThemeToggle } from '@kolkrabbi/kol-framework'
 <ThemeToggle variant="icon" />
 ```
 
+## Behavior
+
+Tri-state: clicking cycles **light → dark → system → light**. `system` is the
+no-choice state — the stamp and saved key are cleared and the page follows
+`prefers-color-scheme` live (user law: explicit choice > system/auto >
+light). The glyph shows the current mode. Four variants: `icon` (icon-only on
+the DS button ladder, sits flush in nav bars), `button` (a real ladder button
+with glyph + label), `hop` (full-width Button-primary sidenav row) and
+`hop-bare` (same shape, transparent). Theme state lives in `useTheme` — this
+component is only the glyph UI on top of it.
+
 ## Props
 
 <Api name="ThemeToggle" rows={[

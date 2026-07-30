@@ -17,6 +17,12 @@ import { DropdownTagFilter } from '@kolkrabbi/kol-component'
 <DropdownTagFilter options={opts} selectedValues={set} onChange={toggle} />
 ```
 
+## Behavior
+
+Multi-select dropdown where **all items start selected** — clicking deselects,
+with a "Deselect All" escape. The inverse-logic sibling of a pick-list: use it
+when the default view shows everything and filtering means removing.
+
 ## Props
 
 <Api name="DropdownTagFilter" rows={[

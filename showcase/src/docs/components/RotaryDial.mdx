@@ -17,6 +17,14 @@ import { RotaryDial } from '@kolkrabbi/kol-component'
 <RotaryDial label="Drive" value={v} onChange={setV} min={0} max={100} />
 ```
 
+## Behavior
+
+The rotary member of the shared value-control contract —
+[Slider](/components/slider) is its linear variant; both take
+`value` / `min` / `max` / `step` / `onChange(next)` / `label` / `size` /
+`disabled` / `formatValue`. Values clamp to min–max, snapped to the nearest
+step from min. Controlled; `onChange` always fires with the plain number.
+
 ## Props
 
 <Api name="RotaryDial" rows={[

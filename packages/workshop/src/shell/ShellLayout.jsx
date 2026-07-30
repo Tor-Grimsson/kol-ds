@@ -21,8 +21,12 @@ export const ShellFullHeightContext = createContext(null)
 // useLayoutEffect(() => { setTocCollapsed(true) ; return () => setTocCollapsed(false) }, [setTocCollapsed])
 export const ShellTocCollapsedContext = createContext(null)
 
+/* overflow-x-hidden (2026-07-30): long tree rows (component names + counters)
+ * overflowed the 256px rail into an internal horizontal scroll — with the
+ * scrollbar hidden it read as content silently walking off, and the pan
+ * gesture shoved the whole grid sideways exposing the outer padding. */
 const NavColumn = ({ children }) => (
-  <aside aria-label="Navigation" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Navigation" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )
@@ -41,7 +45,7 @@ const MainColumn = ({ children, fullHeight }) => (
 )
 
 const TocColumn = ({ children }) => (
-  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )

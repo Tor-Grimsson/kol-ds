@@ -17,6 +17,14 @@ import { ContentFilters } from '@kolkrabbi/kol-component'
 <ContentFilters items={items} title="Shop" totalCount={items.length} filterGroups={groups} renderItem={renderItem} />
 ```
 
+## When to use
+
+The universal filter head for content grids — expandable filter panel,
+tag-based filtering, search, and a view-mode toggle in one organism. It owns
+the filtering; **you own the rendering**: pass `renderItem` and it hands back
+`(filteredItems, viewMode, layout)`. Used across shop/collections/specimens/
+typefaces-style indexes — reach for it before composing a bespoke filter bar.
+
 ## Props
 
 <Api name="ContentFilters" rows={[

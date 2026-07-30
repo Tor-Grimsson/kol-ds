@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { DocSection, DocTable } from '@kolkrabbi/kol-workshop'
+import { CodeBlock } from '@kolkrabbi/kol-component'
 import PreviewCard from './PreviewCard.jsx'
 import { DEMOS } from './demos-registry.js'
 import API_GEN from '../usage/api-tables.json'
@@ -98,11 +99,14 @@ export const mdxComponents = {
   Parts,
   DocSection,
   DocTable,
+  /* Section rhythm: a heading opens a section, so it carries extra AIR ABOVE
+   * (gap-6 alone made heading-to-previous-block equal heading-to-own-content —
+   * the cramped read, user 2026-07-30). first:mt-0 keeps the page top tight. */
   h2: ({ children, ...p }) => (
-    <h2 id={slug(children)} className="kol-doc-section-title scroll-mt-20" {...p}>{children}</h2>
+    <h2 id={slug(children)} className="kol-doc-section-title scroll-mt-20 mt-6 first:mt-0" {...p}>{children}</h2>
   ),
   h3: ({ children, ...p }) => (
-    <h3 id={slug(children)} className="kol-sans-heading-05 text-emphasis scroll-mt-20" {...p}>{children}</h3>
+    <h3 id={slug(children)} className="kol-sans-heading-05 text-emphasis scroll-mt-20 mt-2 first:mt-0" {...p}>{children}</h3>
   ),
   /* Body tags typed through the doc roles (NOT .kol-prose — the blog system).
    * kol-doc-body self-caps at --kol-content-measure, so text keeps its
@@ -112,7 +116,18 @@ export const mdxComponents = {
   ul: (props) => <ul className="flex list-disc flex-col gap-2 pl-5 kol-doc-body" {...props} />,
   ol: (props) => <ol className="flex list-decimal flex-col gap-2 pl-5 kol-doc-body" {...props} />,
   code: (props) => <code className="kol-doc-code-inline" {...props} />,
-  pre: (props) => <pre className="kol-doc-code max-w-[var(--kol-content-panel)]" {...props} />,
+  /* Fences render through THE CodeBlock (user ruling 2026-07-30: one code
+   * idiom — the component we built for exactly this, not a bespoke pre). */
+  pre: ({ children }) => {
+    const child = children?.props ?? {}
+    const lang = /language-([\w-]+)/.exec(child.className || '')?.[1] ?? 'text'
+    const code = String(child.children ?? '').replace(/\n$/, '')
+    return (
+      <div className="max-w-[var(--kol-content-panel)]">
+        <CodeBlock code={code} language={lang} />
+      </div>
+    )
+  },
   /* Internal links stay SPA-routed; external ones stay plain anchors. */
   a: ({ href, children, ...p }) => {
     const cls = 'text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current'

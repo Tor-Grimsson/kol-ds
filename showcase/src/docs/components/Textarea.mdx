@@ -17,6 +17,14 @@ import { Textarea } from '@kolkrabbi/kol-component'
 <Textarea variant="filled" placeholder="Notes…" />
 ```
 
+## Behavior
+
+Multi-line sibling of [Input](/components/input) on the `.kol-control` shell
+(`--textarea` modifier). Default `rows` is 3 — kept short so long content
+scrolls instead of dominating the panel. Resize is real (2026-07-08): native
+resize is OFF (Firefox's built-in grip can't be hidden any other way) and the
+kol-icon-set-v1 `resize-grip` icon drives a custom drag handle.
+
 ## Props
 
 <Api name="Textarea" rows={[

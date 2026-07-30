@@ -17,6 +17,15 @@ import { TransparentX } from '@kolkrabbi/kol-component'
 <TransparentX />
 ```
 
+## Behavior
+
+Diagonal stroke indicator for transparent / disabled / unused slots — the
+universal "no value" affordance. Renders absolute-positioned to fill its
+parent: **the parent must be `position: relative`** (and `overflow: hidden`
+for a clean corner clip). Non-scaling stroke keeps the line 1px at any
+container size. `tone` maps to `var(--ui-{tone})` — warning (default) /
+error / info / success.
+
 ## Props
 
 <Api name="TransparentX" rows={[

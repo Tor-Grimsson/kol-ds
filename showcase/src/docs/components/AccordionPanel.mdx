@@ -17,6 +17,13 @@ import { AccordionPanel } from '@kolkrabbi/kol-component'
 <AccordionPanel title="Section" defaultOpen>…</AccordionPanel>
 ```
 
+## Behavior
+
+The panel member of the [Accordion](/components/accordion) pair — they live in
+one file and compose as parent/children. Uncontrolled by default (own
+open/closed state); pass controlled `open` + `onToggle` when the parent
+coordinates panels (e.g. single-open groups).
+
 ## Props
 
 <Api name="AccordionPanel" rows={[

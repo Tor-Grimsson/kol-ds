@@ -17,6 +17,15 @@ import { Input } from '@kolkrabbi/kol-component'
 <Input placeholder="Type…" value={v} onChange={(e) => setV(e.target.value)} />
 ```
 
+## Variants
+
+Built on the `.kol-control` shell. `filled` (default) is the persistent solid
+bg — the same chrome as button primary; `outline` is **THE secondary
+treatment** (2026-07-08 chrome law: one secondary, always subordinate to
+filled); `ghost` is a legacy alias that resolves to outline. Sizes sm/md/lg
+carry matched padding + type class. `chars` maps to the HTML `size` attribute
+so the inner input can size to N characters.
+
 ## Props
 
 <Api name="Input" rows={[

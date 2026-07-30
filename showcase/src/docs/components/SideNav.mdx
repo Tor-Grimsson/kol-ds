@@ -17,6 +17,16 @@ import { SideNav } from '@kolkrabbi/kol-framework'
 <SideNav navTree={NAV_TREE} getActivePage={getActivePage} />
 ```
 
+## Behavior
+
+The framework's page sidenav: a route tree where the active page's leaf
+sections feed a scroll spy (`useScrollSpy`) — in-page anchors light as you
+scroll, and parents know when a descendant is active. Rows ride the
+`kol-sidenav-link` chrome with helper-10 type; a
+[ThemeToggle](/components/theme-toggle) hop row is built in. Distinct from
+the workshop's ShellSidebar (grouped doc trees) — this is the app-site
+navigation rail.
+
 ## Props
 
 <Api name="SideNav" rows={[

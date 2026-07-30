@@ -13,7 +13,7 @@ export default function CollectionPreview({ slug, getItem }) {
   if (!entry) {
     return (
       <div className="flex h-dvh items-center justify-center bg-surface-primary">
-        <p className="kol-mono-13 text-meta">No entry named “{slug}”.</p>
+        <p className="kol-mono-14 text-meta">No entry named “{slug}”.</p>
       </div>
     )
   }

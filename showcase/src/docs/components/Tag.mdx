@@ -17,6 +17,17 @@ import { Tag } from '@kolkrabbi/kol-component'
 <Tag solid>kol</Tag>
 ```
 
+## When to use
+
+**The INTERACTIVE chip** — filterable, selectable, removable. Its
+`active`/`onClick`/`onRemove` states are the point: a Tag with no handler
+renders a `<span>` and is a [Pill](/components/pill) wearing the wrong name;
+system status or counts are [Badge](/components/badge). `color` takes the
+palette names (`blue` … `purple`, `dark`) — chips fill from the palette pair
+per theme, `naked` renders saturated text only. `hash` (default true)
+prepends `#` for the workshop tag style; pass `hash={false}` for plain
+labels.
+
 ## Props
 
 <Api name="Tag" rows={[

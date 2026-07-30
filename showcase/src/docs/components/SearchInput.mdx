@@ -17,6 +17,16 @@ import { SearchInput } from '@kolkrabbi/kol-component'
 <SearchInput value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} shortcutHint="⌘K" />
 ```
 
+## Variants
+
+The search-flavored sibling of [Input](/components/input) — same
+`.kol-control` shell, standalone because atoms can't nest atoms. Leading
+search icon, then two mutually exclusive trailing affordances: a
+caller-authored shortcut kbd chip while empty, a clear × while not.
+`expanding` is the third body plan (after the shell and `bare`): a round
+icon-button pill that animates open into an inline field — the /work navbar
+pattern; `open` is controllable.
+
 ## Props
 
 <Api name="SearchInput" rows={[

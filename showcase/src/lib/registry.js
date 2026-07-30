@@ -183,7 +183,11 @@ const DESCRIPTIONS = {
  * documented on /docs/loaders — galleries stay on the Icons pages (C4). */
 export const CATEGORY_ORDER = [
   'atoms', 'molecules', 'organisms',
-  'fw-chrome', 'fw-structure', 'fw-behavior', 'hooks', 'misc',
+  'fw-chrome', 'fw-structure', 'fw-behavior',
+  /* flat packages classify by OWNERSHIP (2026-07-30 ruling) — a shell piece
+   * is not an "atom", a dashboard card is not a "molecule". */
+  'workshop', 'dashboards', 'chess', 'foundry', 'styleguide', 'content', 'store', 'icons', 'brand', 'brand-template',
+  'misc',
 ]
 export const CATEGORY_LABELS = {
   atoms: 'Atoms',
@@ -192,7 +196,16 @@ export const CATEGORY_LABELS = {
   'fw-chrome': 'Framework · Chrome',
   'fw-structure': 'Framework · Structure',
   'fw-behavior': 'Framework · Behaviors',
-  hooks: 'Hooks',
+  workshop: 'Workshop',
+  dashboards: 'Dashboards',
+  chess: 'Chess',
+  foundry: 'Foundry',
+  styleguide: 'Styleguide',
+  content: 'Content',
+  store: 'Store',
+  icons: 'Icons',
+  brand: 'Brand',
+  'brand-template': 'Brand template',
   misc: 'Misc',
 }
 
@@ -258,6 +271,10 @@ const USAGE_BY_NAME = new Map(USAGE.map((u) => [u.name, u]))
 
 /* Enriched, slugged component list — usage-ranked (count desc), then A→Z. */
 export const COMPONENTS = ROSTER
+  /* hooks are scripts, not components (user ruling 2026-07-30) — nothing to
+   * view, so they get no nav rows and no pages; they belong in documentation,
+   * referenced from the component that uses them. */
+  .filter((c) => c.tier !== 'hooks')
   .filter((c) => !isDataExport(c.name) && !DOCS_ONLY.includes(c.name) && !DEPRECATED.includes(c.name))
   .map((c) => {
     const usage = USAGE_BY_NAME.get(c.name)
@@ -322,9 +339,9 @@ export function componentsByFunction(list = TOP_LEVEL) {
 
 /* The one grouping entry point both the sidebar and the index call.
  * Returns [ [key, label, items], … ] for the active axis (D1 toggle):
- *   'atomic'   → Tier groups (CATEGORY_LABELS)
- *   'function' → Function groups (FUNCTIONS) — default. */
-export function groupComponents(mode = 'function', list = TOP_LEVEL) {
+ *   'atomic'   → Tier groups (CATEGORY_LABELS) — default (user ruling 2026-07-30)
+ *   'function' → Function groups (FUNCTIONS). */
+export function groupComponents(mode = 'atomic', list = TOP_LEVEL) {
   if (mode === 'atomic') {
     return componentsByCategory(list).map(([k, items]) => [k, CATEGORY_LABELS[k] ?? k, items])
   }

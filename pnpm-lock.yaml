@@ -257,6 +257,9 @@ importers:
 
   showcase:
     dependencies:
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:^
+        version: link:../packages/brand
       '@kolkrabbi/kol-chess':
         specifier: workspace:*
         version: link:../packages/chess

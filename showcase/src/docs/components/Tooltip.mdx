@@ -17,6 +17,14 @@ import { Tooltip } from '@kolkrabbi/kol-component'
 <Tooltip label="Copy"><button>copy</button></Tooltip>
 ```
 
+## Behavior
+
+The label-on-hover member of the Popover family (`atoms/Popover.jsx`, built
+on `@floating-ui/react`): portal-rendered, auto-flip + viewport shift. For
+custom anchored floaters use the underlying `usePopover` hook +
+`PopoverPanel` — Tooltip is the packaged convenience for the common case of
+a short label on an icon control.
+
 ## Props
 
 <Api name="Tooltip" rows={[

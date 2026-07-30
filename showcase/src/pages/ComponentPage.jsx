@@ -38,7 +38,7 @@ export default function ComponentPage() {
 
       {DEMOS[c.name] && <PreviewCard entry={DEMOS[c.name]} />}
 
-      <MetaRows meta={c.meta} />
+      <MetaRows meta={c.meta} name={c.name} />
 
       <DocSection id="installation" title="Installation">
         <InstallBlock pkg={c.pkg} />

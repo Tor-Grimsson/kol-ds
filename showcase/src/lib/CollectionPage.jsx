@@ -38,7 +38,7 @@ function ComponentSpecimen({ name, local = false }) {
     <div className="overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-08 bg-surface-primary">
       <div className="flex items-center justify-between border-b border-fg-08 px-4 py-2.5">
         <div className="flex items-center gap-3">
-          <span className="kol-mono-13 text-emphasis">{name}</span>
+          <span className="kol-mono-14 text-emphasis">{name}</span>
           {tag && <span className="kol-helper-10 uppercase tracking-widest text-meta">{tag}</span>}
         </div>
         {href && (
@@ -109,7 +109,7 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
     return (
       <>
         <DocHeader eyebrow={eyebrow} title="Not found" lede={`No entry named “${slug}”.`} />
-        <Link to={basePath} className="kol-mono-13 text-meta hover:text-emphasis transition-colors">← {allLabel}</Link>
+        <Link to={basePath} className="kol-mono-14 text-meta hover:text-emphasis transition-colors">← {allLabel}</Link>
       </>
     )
   }

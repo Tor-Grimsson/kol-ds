@@ -17,6 +17,14 @@ import { LabeledControl } from '@kolkrabbi/kol-component'
 <LabeledControl label="Columns"><Slider min={1} max={32} value={n} onChange={setN} /></LabeledControl>
 ```
 
+## Behavior
+
+The generic label + control slot: label on top by default, `inline` for
+label-left / control-right (label fixed-width, control flex-1). Compose any
+control as children — a Slider, an Input, a Dropdown. `hint` appends a
+secondary lower-weight readout after the label — useful for current-value
+displays like `Columns · 4`.
+
 ## Props
 
 <Api name="LabeledControl" rows={[

@@ -51,6 +51,15 @@ Notes: the 20px preview cap keeps large stops in-row — raise or drop it per
 context; the sample string is a parameter, authored at the call site (no baked
 pangram); default the family to a token, never a hardcoded brand font.
 
+## Variants
+
+**The one table** (2026-07-28 ruling: no parallel table markup). `default` is
+bordered with column dividers and a header bg; `simple` is borderless and
+flush. Columns are objects — `accessor` / `header` / optional `className`
+(string or `(row) => string`) / optional `render(row)` — so cell voices and
+custom cells ride the column definition. The workshop's DocTable and the
+vault reader's markdown tables are both presets over this component.
+
 ## Props
 
 <Api name="Table" rows={[

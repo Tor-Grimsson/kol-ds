@@ -17,6 +17,16 @@ import { HlsVideo } from '@kolkrabbi/kol-component'
 <HlsVideo src="https://cdn…/master.m3u8" className="absolute inset-0 h-full w-full object-cover" />
 ```
 
+## Behavior
+
+Background/decorative HLS streaming on a single native `<video>`: hls.js
+attaches the `.m3u8` stream (Safari falls back to native HLS) and the instance
+is destroyed on unmount/src change. **Deliberately inert** — pointer-events
+none plus the full hardening set (no controls, PiP, context menu, download,
+fullscreen, remote playback); do not strip these without explicit approval.
+All layout/sizing arrives via `className` — the consumer decides
+`absolute inset-0 object-cover` etc.
+
 ## Props
 
 <Api name="HlsVideo" rows={[

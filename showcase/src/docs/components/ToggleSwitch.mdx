@@ -17,6 +17,15 @@ import { ToggleSwitch } from '@kolkrabbi/kol-component'
 <ToggleSwitch label="Enabled" checked={on} onChange={setOn} />
 ```
 
+## Variants
+
+**Bare by default** (2026-07-08 chrome law rewrite): `bare` is label + track
+with no box; `primary` is the filled shell (surface-secondary) on button
+geometry; `outline` the bordered shell. Shells match button heights
+(26/32/40) and the track scales with size in every variant. Legacy aliases:
+`plain` → bare, `default` (the old boxed look) → outline. No auto-uppercase —
+casing is authored at the call site.
+
 ## Props
 
 <Api name="ToggleSwitch" rows={[

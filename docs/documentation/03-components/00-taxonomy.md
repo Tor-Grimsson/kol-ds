@@ -2,7 +2,7 @@
 title: Component taxonomy — the two axes
 type: reference
 status: canonical
-updated: 2026-07-15
+updated: 2026-07-30
 verified: 2026-07-04
 description: How KOL classifies components — the Tier axis (atom/molecule/organism/framework/loader/hook, a mechanical nesting test, deliberately not Brad Frost atomic) and the Function axis (a closed Material-style set), how they combine in the sidebar, and the one-page-per-component rule.
 aliases:
@@ -66,6 +66,8 @@ KOL replaces the judgment with **one mechanical, lint-enforceable question: does
 
 ### How the Tier axis shows in the sidebar
 
+**Ownership tiers (2026-07-30 ruling):** the atomic tiers (Atoms/Molecules/Organisms) belong to `kol-component` ONLY. Every flat package's components classify by OWNERSHIP — Workshop, Dashboards, Chess, Foundry, Styleguide, Content, Store are their own sidebar groups (a shell piece is not an "atom", a dashboard card is not a "molecule"). The hand-mapped `TIERS` table is retired for grouping. **Hooks are not components** — scripts with nothing to view; they carry no nav rows and no pages, and belong in documentation referenced from their owning component.
+
 The "Atomic" sidebar grouping is the full Tier set, in this order:
 
 `atoms · molecules · organisms · framework·chrome · framework·structure · framework·behavior · hooks · misc`
@@ -103,8 +105,8 @@ Closed means **new components slot into an existing Function** — you don't inv
 
 The component sidebar carries a persisted **`Atomic ⇄ Function`** toggle *(rolling out in Phase 2 — see [[03-taxonomy-audit-and-plan|the audit & plan]])*:
 
-- **Function** (default) — groups by what components do. This is how people look for one.
-- **Atomic** — groups by Tier, for when you're thinking about composition/build structure.
+- **Atomic** (default — user ruling 2026-07-30) — groups by Tier, the composition/build view.
+- **Function** — groups by what components do; the opt-in browse axis.
 
 Whichever grouping is active, **each component page shows both**: its Tier as a badge and its Function as a chip. Neither axis is hidden; the toggle only changes the top-level nav spine.
 

@@ -17,6 +17,15 @@ import { FeatureSplit } from '@kolkrabbi/kol-component'
 <FeatureSplit kicker="THE FLEET" title={<>Built to hold <em>course</em></>} body="…" media={<img … />} />
 ```
 
+## Behavior
+
+Editorial media-and-text split: text column (kicker · display pull · lede,
+then a stats strip OR a CTA row) beside a media column (image/video, optional
+gradient veil + caption). Two columns at/above 901px, stacked below.
+Presentational — every piece arrives as a slot; **`meta` and `ctas` are
+mutually exclusive by intent** (pick one), and `ctas` is conventionally a row
+of KOL Buttons. The media column renders only when `media` is passed.
+
 ## Props
 
 <Api name="FeatureSplit" rows={[

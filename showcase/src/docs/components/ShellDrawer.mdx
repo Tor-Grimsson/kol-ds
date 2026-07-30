@@ -17,6 +17,16 @@ import { ShellDrawer } from '@kolkrabbi/kol-component'
 <ShellDrawer open={open} onClose={() => setOpen(false)} side="left" width={320}>{nav}</ShellDrawer>
 ```
 
+## Behavior
+
+**THE edge drawer**: a portalled panel sliding in from the left or right
+viewport edge over a dimming backdrop — distinct from Modal (centered
+prompt/confirm) and FullscreenOverlay (fills the viewport). Escape, backdrop
+click and the built-in close button all call `onClose`; body scroll locks
+while open; focus moves in, is trapped, and returns to the opener on close.
+The slide transition is gated on `prefers-reduced-motion` — reduced users get
+an instant mount with no transform animation.
+
 ## Props
 
 <Api name="ShellDrawer" rows={[

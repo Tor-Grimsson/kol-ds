@@ -17,6 +17,14 @@ import { ErrorBoundary } from '@kolkrabbi/kol-component'
 <ErrorBoundary homeHref="/"><App /></ErrorBoundary>
 ```
 
+## Behavior
+
+Catches render errors in its subtree and swaps in a centered fallback with two
+recovery actions — retry in place and go home. The error/stack panel renders
+**only on dev builds** (`import.meta.env.DEV`); production users never see a
+stack. Wrap app regions individually so a single crash can't blank the whole
+app; `fallback` replaces the default screen when a region needs its own.
+
 ## Props
 
 <Api name="ErrorBoundary" rows={[

@@ -17,6 +17,13 @@ import { AssetGrid } from '@kolkrabbi/kol-component'
 <AssetGrid cols={4} gap="gap-2">{figures}</AssetGrid>
 ```
 
+## Behavior
+
+Purely structural: a fixed 2/3/4-column grid that collapses to 2 columns under
+the `md` breakpoint and to 1 column under 480px. **No styling of the cells, no
+spacing outside itself** — children just fill the tracks. Unknown `cols` values
+fall back to 3.
+
 ## Props
 
 <Api name="AssetGrid" rows={[

@@ -193,7 +193,9 @@
 .kol-prose figure,
 .kol-doc-figure {
   margin: 0;
-  border: 1px solid var(--kol-fg-12);
+  /* oq, not fg (2026-07-30) — the seam law: chrome borders are opaque so they
+   * never brighten over tinted fills; weight 08 matches the table wrapper. */
+  border: 1px solid var(--kol-oq-08);
   border-radius: var(--kol-radius-sm);   /* 4px — THE radius law */
   overflow: hidden;
 }

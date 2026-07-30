@@ -17,6 +17,15 @@ import { TypeSpecCard } from '@kolkrabbi/kol-foundry'
 <TypeSpecCard label='Heading 01' meta={[['Family', 'Sans'], ['Size', '48px']]}><TypeSample … /></TypeSpecCard>
 ```
 
+## Behavior
+
+The "data-sheet" member of the type-specimen kit: a two-column row pairing a
+left meta panel of key/value pairs (font metrics) with a live sample slot on
+the right, plus an optional corner label. Single column on mobile,
+`240px + fluid` at lg. `meta` is arbitrary tuples — no fixed metric schema;
+the sample is usually a [TypeSample](/components/type-sample) composed at the
+call site.
+
 ## Props
 
 <Api name="TypeSpecCard" rows={[

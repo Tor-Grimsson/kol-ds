@@ -21,6 +21,18 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } fro
 
 <Parts name="MenuItem" />
 
+## Behavior
+
+Top-level menu entry: trigger button + popover panel, built on `usePopover`
+(`@floating-ui/react`) — portal-rendered panel that escapes overflow,
+auto-flip + viewport shift, click-outside / Escape dismiss, focus management.
+`align="end"` switches placement to `bottom-end` for right-aligned panels.
+Compose rows from [MenuDropdownItem](/components/menu-dropdown-item),
+[MenuDropdownNest](/components/menu-dropdown-nest) and
+[MenuDropdownDivider](/components/menu-dropdown-divider). For value-list
+selection (pick one of N with active state) use
+[Dropdown](/components/dropdown) instead — MenuItem is for **actions**.
+
 ## Props
 
 <Api name="MenuItem" rows={[

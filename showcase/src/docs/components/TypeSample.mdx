@@ -17,6 +17,15 @@ import { TypeSample } from '@kolkrabbi/kol-foundry'
 <TypeSample label="Sans · 700 · 48/52" weight={700} size={48} lineHeight={52}>Hamburgefonstiv</TypeSample>
 ```
 
+## Behavior
+
+The atomic unit of the type-specimen kit: an optional mono caption over one
+paragraph whose typography is driven entirely by props via inline style —
+**arbitrary px values are the point**, so props map to inline style rather
+than fixed kol- size stops. Stack several to show a scale, a weight range or
+a family; adjacent samples get a hairline separator automatically. Label and
+children render verbatim as authored.
+
 ## Props
 
 <Api name="TypeSample" rows={[

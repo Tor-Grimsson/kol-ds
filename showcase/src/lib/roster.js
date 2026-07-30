@@ -42,10 +42,15 @@ for (const [dir, files] of Object.entries(byPackage)) {
      * row survives via first-owner dedup below */
     if (EXEMPT[name] && !EXEMPT[name].startsWith('re-export')) continue
     const folder = folderOf(src)
+    /* Tier = PACKAGE for the flat packages (user ruling 2026-07-30): a
+     * workshop shell piece is not an "atom", a dashboard card is not a
+     * "molecule" — the atomic tiers belong to kol-component only. The old
+     * hand-mapped TIERS put ShellSidebar in Atoms and DashTableCard in
+     * Molecules; classification by ownership can't lie. */
     const tier =
-      dir === 'component' ? (TIER_FOLDERS.has(folder) ? folder : folder === 'graphics' ? 'misc' : 'misc')
+      dir === 'component' ? (TIER_FOLDERS.has(folder) ? folder : 'misc')
       : dir === 'framework' ? 'framework'
-      : TIERS[name] || 'misc'
+      : dir
     // hooks by name convention land in the hooks tier regardless of folder
     ROSTER.push({ name, pkg, src, tier: /^use[A-Z]/.test(name) ? 'hooks' : tier })
   }

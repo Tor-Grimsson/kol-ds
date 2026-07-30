@@ -17,6 +17,15 @@ import { ToggleCheckbox } from '@kolkrabbi/kol-component'
 <ToggleCheckbox label="Accept" checked={on} onChange={setOn} />
 ```
 
+## Behavior
+
+A real `<input type="checkbox">` wrapped in its label (`.toggle-checkbox`
+chrome, `is-active` when checked) — native semantics and keyboard behavior
+come free. Controlled: `checked` + `onChange(next)` with the plain boolean.
+`hint` appends a muted secondary line. For an on/off switch presentation use
+[ToggleSwitch](/components/toggle-switch); for the text-pair `Label [STATE]`
+idiom use [ToggleBracket](/components/toggle-bracket).
+
 ## Props
 
 <Api name="ToggleCheckbox" rows={[

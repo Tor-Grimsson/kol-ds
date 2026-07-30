@@ -17,6 +17,15 @@ import { Carousel } from '@kolkrabbi/kol-component'
 <Carousel><div>Slide 1</div><div>Slide 2</div></Carousel>
 ```
 
+## Behavior
+
+The embla wrapper: children become slides in the `kol-embla` chrome, with
+prev/next buttons that disable at the ends. `options` passes straight through
+to embla — defaults are `align: 'start'`, no loop, `dragFree`, `trimSnaps`.
+For a controlled fullscreen pager use
+[MediaViewer](/components/media-viewer), which wires embla directly (this
+API has no controlled index).
+
 ## Props
 
 <Api name="Carousel" rows={[

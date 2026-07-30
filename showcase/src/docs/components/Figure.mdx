@@ -17,6 +17,15 @@ import { Figure } from '@kolkrabbi/kol-component'
 <Figure label="Fig. 01" caption="…" aspect="5/3"><img … /></Figure>
 ```
 
+## Behavior
+
+The shared caption'd media shell for long-form prose — optional label above,
+an aspect-locked bordered frame around `children`, optional figcaption below.
+ImageBlock, VideoBlock and the portable-text image renderer all compose this
+one shell. Aspect is an **inline style, not `aspect-[x/y]`**, so any ratio
+works without Tailwind needing to see the class; pass `aspect=""` for natural
+height.
+
 ## Props
 
 <Api name="Figure" rows={[

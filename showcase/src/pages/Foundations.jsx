@@ -135,7 +135,7 @@ export default function Foundations() {
       >
         <Link
           to="/components"
-          className="inline-flex w-fit items-center gap-2 kol-mono-13 text-emphasis border border-fg-16 hover:border-fg-40 rounded-[var(--kol-radius-sm)] px-4 py-2 transition-colors"
+          className="inline-flex w-fit items-center gap-2 kol-mono-14 text-emphasis border border-fg-16 hover:border-fg-40 rounded-[var(--kol-radius-sm)] px-4 py-2 transition-colors"
         >
           Browse all {TOTAL} components →
         </Link>

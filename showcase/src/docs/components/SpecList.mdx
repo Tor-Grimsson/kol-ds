@@ -17,6 +17,14 @@ import { SpecList } from '@kolkrabbi/kol-component'
 <SpecList items={[{ label: 'Edition', value: 'Limited (30)' }]} framed />
 ```
 
+## Behavior
+
+Compact definition list of label | value rows: label left and muted, value
+right-aligned one tone brighter, Divider-separated between rows — never after
+the last. Data-agnostic "key facts" strip: **the caller formats values before
+passing** (e.g. "Limited (30)", "A3, A2, A1"). `framed` wraps the list in
+leading + trailing Dividers.
+
 ## Props
 
 <Api name="SpecList" rows={[

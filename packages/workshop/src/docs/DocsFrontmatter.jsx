@@ -33,7 +33,7 @@ const DocsFrontmatter = ({ metadata, docId }) => {
 
   return (
     <div className="docs-frontmatter">
-      <p className="shell-sidebar-label kol-helper-10 text-meta">Frontmatter</p>
+      <p className="shell-sidebar-label kol-doc-eyebrow">Frontmatter</p>
       {fields.map((key) => {
         const value = metadata[key]
         const icon = FIELD_ICONS[key]

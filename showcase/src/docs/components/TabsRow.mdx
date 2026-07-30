@@ -17,6 +17,16 @@ import { TabsRow } from '@kolkrabbi/kol-component'
 <TabsRow tabs={[{ id: 'overview', label: 'Overview' }]} value={v} onChange={setV} />
 ```
 
+## Behavior
+
+Labeled underline tab strip: the active tab gets a 2px bottom underline and
+emphasis color; inactive tabs are muted and brighten on hover. The leading
+close button and trailing minimise chevron render only when their handlers
+are passed — no outer chrome, the consumer wraps it. **Real tablist
+semantics**: `role="tablist"`/`role="tab"` + `aria-selected`, roving
+tabindex, ArrowLeft/ArrowRight move focus and activate (wrapping). Labels
+render verbatim — no text-transform. Controlled: the parent owns `value`.
+
 ## Props
 
 <Api name="TabsRow" rows={[

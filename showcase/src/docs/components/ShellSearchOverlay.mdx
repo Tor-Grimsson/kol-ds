@@ -17,6 +17,17 @@ import { ShellSearchOverlay } from '@kolkrabbi/kol-component'
 <ShellSearchOverlay open={open} onClose={close} results={results} query={q} onQueryChange={setQ} onSelect={(item) => go(item.id)} />
 ```
 
+## Behavior
+
+The ⌘K command palette: fullscreen dim + centered panel, a bare SearchInput
+on top, result rows beneath (highlighted label, dim hint line, right-aligned
+group label). **Content-agnostic** — the consumer filters (the workshop engine
+pairs it with `matchSearchItems`) and passes `results`; selection emits
+`onSelect(item)` and the consumer navigates. Keyboard: arrows rove, Enter
+selects (index starts at 0), Escape closes, Tab is pinned — rows are combobox
+options via `aria-activedescendant`, never tab stops. Distinct from Modal —
+this is the search/command primitive.
+
 ## Props
 
 <Api name="ShellSearchOverlay" rows={[

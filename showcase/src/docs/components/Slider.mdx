@@ -17,6 +17,17 @@ import { Slider } from '@kolkrabbi/kol-component'
 <Slider label="Opacity" min={0} max={100} value={v} onChange={setV} />
 ```
 
+## Behavior
+
+**The LINEAR variant of [RotaryDial](/components/rotary-dial)** — both
+implement the shared value-control contract
+(`value` / `min` / `max` / `step` / `onChange(next)` / `label` / `size` /
+`disabled` / `formatValue`). One bare inline row: label · track · editable
+readout (bordered `default` and chip `subtle` variants retired 2026-07-08 —
+minimal is the only slider). The readout is an editable Input — type a value,
+commit on blur/Enter, revert on Escape. Controlled; `onChange` always fires
+with the plain number.
+
 ## Props
 
 <Api name="Slider" rows={[

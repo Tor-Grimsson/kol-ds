@@ -17,6 +17,14 @@ import { Image } from '@kolkrabbi/kol-component'
 <Image src="/img.jpg" alt="Cover" aspectRatio="16 / 9" />
 ```
 
+## When to use
+
+Replaces raw `<img>` wherever brand raster assets may be missing: on load
+error it renders [AssetPlaceholder](/components/asset-placeholder) with
+category/name labels, so the slot stays visible at its intended size
+(aspect-ratio preserved) instead of collapsing or showing the broken-image
+icon.
+
 ## Props
 
 <Api name="Image" rows={[

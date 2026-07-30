@@ -167,15 +167,30 @@ body {
 /* ───── Full-bleed (THE one mechanism, 2026-07-30) ─────
  * Cancels the page inset with a negative margin — container-relative, so it is
  * correct inside any layout, including .kol-brand-layout's sidenav grid.
- * Promoted from kol-website's local `@utility full-bleed`; the DS owns the
- * inset (--kol-pad-section-x), so it owns the cancellation.
+ * Promoted from kol-website's local `@utility full-bleed`.
+ *
+ * THE INSET IS A PARAMETER (2026-07-30, second pass). v1 hardwired
+ * --kol-pad-section-x, which silently assumed every consumer pads its pages
+ * with the DS ladder. kol-website's apps/web does not — it pads with
+ * `.breakpoint-padding` (1 / 1.25 / 1.5rem) and uses zero .kol-page classes,
+ * so adopting the hardwired rule over-pulled by 4–24px and every hero
+ * overhung the viewport. A cancellation utility must cancel the inset that is
+ * ACTUALLY THERE; the DS cannot know that from inside the package.
+ *
+ * So: --kol-full-bleed-inset defaults to the DS ladder (zero change for
+ * consumers on .kol-page) and is overridable by any consumer running its own
+ * inset — scope it on the padded wrapper, or on :root for a whole app:
+ *
+ *   :root { --kol-full-bleed-inset: 1rem; }
+ *   @media (min-width: 768px)  { :root { --kol-full-bleed-inset: 1.25rem; } }
+ *   @media (min-width: 1024px) { :root { --kol-full-bleed-inset: 1.5rem; } }
  *
  * NEVER use the viewport trick (`width:100vw; margin-left: calc(50% - 50vw)`):
  * 50vw measures the VIEWPORT, and inside a sidenav grid the content track is
  * not viewport-centred — the element overhangs left by ~half the sidenav width
  * and any `overflow:hidden` ancestor clips it (the /review slice bug). */
 .kol-full-bleed {
-  margin-inline: calc(-1 * var(--kol-pad-section-x));
+  margin-inline: calc(-1 * var(--kol-full-bleed-inset, var(--kol-pad-section-x)));
 }
 
 /* ───── Standard 4-col content grid ─────
