@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
 - **Real-world usages found:** 36 across 26 files in 7 apps
+- **Weighted inbound:** 86★ across 26 edges — 4×5★ · 22×3★
 - **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 5 | 3 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules/ButtonsPreview.jsx` |
+| 5 | 3 | `kol-apps/kol-mirror/src/components/styleguide/preview/molecules/ButtonsPreview.jsx` |
+| 5 | 3 | `kol-apps/kol-modulator/src/components/styleguide/preview/molecules/ButtonsPreview.jsx` |
+| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/preview/molecules/ButtonsPreview.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-single/src/components/molecules/ButtonGroup.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-single/src/pages/radar/refract/LensShell.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/OverviewHero.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/home/WorkshopFeatures.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/shared/FeaturesCardSection.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/molecules/ButtonsPreview.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-single/src/components/framework/EditorFooter.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-single/src/pages/effects/EffectsEditor.jsx` |
+| … | | _14 more_ |
 
 ## Import
 
@@ -47,7 +68,7 @@ From `kol-apps/kol-labs-single/src/components/framework/EditorFooter.jsx`:
         <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={load} />
 ```
 
-From `kol-website/apps/web/_quarantine/TypefaceHero.jsx`:
+From `kol-website/_tmp/web-quarantine-elder/TypefaceHero.jsx`:
 
 ```jsx
 <ButtonGroup

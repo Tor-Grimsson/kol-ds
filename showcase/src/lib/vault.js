@@ -66,3 +66,36 @@ export const VAULT_SEARCH_ITEMS = VAULT.map((d) => ({
   headings: d.headings || [],
   keywords: [],
 }))
+
+/* ── THE TAG INVENTORY ─────────────────────────────────────────────────────
+ * What the tag overlay and the node graph read. It used to be VAULT alone, so
+ * the graph could only ever draw the 46 markdown docs — every component page
+ * was invisible to it no matter how well tagged, which made the graph a map of
+ * a fraction of the system.
+ *
+ * The 66 component MDX pages join it here. They live in a different URL space,
+ * so each entry carries its own `href` (the overlay prefers `d.href` over
+ * `docHref(d.id)`); everything else matches the inventory shape buildInventory
+ * emits, because the co-occurrence math only ever reads `id` + `metadata.tags`.
+ *
+ * The edges this produces are real: a component tagged `domain/typography`
+ * shares a leaf with the typography reference, so they connect — which is the
+ * whole point of tagging pages relative to their content rather than stamping
+ * every one of them with the same pair.
+ */
+const MDX_DOC_MODULES = import.meta.glob('../docs/components/*.mdx', { eager: true })
+
+export const MDX_DOCS = Object.entries(MDX_DOC_MODULES).map(([path, mod]) => {
+  const name = (path.split('/').pop() || '').replace('.mdx', '')
+  const meta = mod.meta ?? {}
+  return {
+    id: `component-${meta.slug ?? name.toLowerCase()}`,
+    title: meta.title ?? name,
+    file: path,
+    href: `/components/${meta.slug ?? name.toLowerCase()}`,
+    metadata: meta,
+    headings: [],
+  }
+})
+
+export const TAG_INVENTORY = [...VAULT, ...MDX_DOCS]

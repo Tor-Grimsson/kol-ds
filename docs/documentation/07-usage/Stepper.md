@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 29 across 21 files in 11 apps
+- **Weighted inbound:** 65★ across 21 edges — 2×4★ · 19×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 4 | `kol-apps/kol-client-kolkrabbi/src/pages/Components.jsx` |
+| 4 | 4 | `kol-website/apps/brand/src/pages/Components.jsx` |
+| 3 | 2 | `kol-apps/kol-editor/src/pages/KolEditor.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/editor/src/pages/KolEditor.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/modes/pattern/RuleRow.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/modes/pattern/RuleRow.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-hrafn/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/editor/modes/pattern/RuleRow.jsx` |
+| 3 | 1 | `kol-apps/kol-draw-3d/src/components/molecules/PropertyInput.jsx` |
+| … | | _9 more_ |
 
 ## Import
 

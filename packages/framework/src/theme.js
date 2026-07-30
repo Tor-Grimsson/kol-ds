@@ -65,7 +65,8 @@ export function applyTheme(theme) {
  *   mode   — 'light' | 'dark' | 'system' (what is chosen)
  *   setTheme(t) — stamp 'light'/'dark', or 'system' to follow the OS
  *   toggle — binary light↔dark (always an explicit choice; kept for compat)
- *   cycle  — light → dark → system → light (the tri-state control)
+ *   cycle  — light ↔ dark (two positions; see the ruling at the call site)
+ *   clear  — hand the page back to the OS (what 'system' actually is)
  */
 export function useTheme() {
   const [state, setState] = useState(() =>
@@ -113,6 +114,14 @@ export function useTheme() {
     mode: state.mode,
     setTheme,
     toggle: () => setTheme(state.theme === 'dark' ? 'light' : 'dark'),
-    cycle: () => setTheme(state.mode === 'light' ? 'dark' : state.mode === 'dark' ? 'system' : 'light'),
+    /* light ↔ dark, TWO positions (user ruling 2026-07-30: "system … that is
+     * not a state"). `system` is the absence of a choice, so a click can land
+     * ON it only by resetting — never by cycling INTO it. From system, cycling
+     * commits the value the OS is currently resolving to, which is the one
+     * thing a user can predict from what they're looking at. */
+    cycle: () => setTheme(state.theme === 'dark' ? 'light' : 'dark'),
+    /* the reset — hands the page back to the OS. Kept as its own verb, not a
+     * rung, so no single click can walk into it. */
+    clear: () => setTheme('system'),
   }
 }

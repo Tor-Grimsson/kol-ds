@@ -5,6 +5,10 @@ export const meta = {
   title: 'Command palette',
   description: 'A ⌘K command palette opened from a button, with grouped fixture results',
   category: 'toolbar',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'md'
 

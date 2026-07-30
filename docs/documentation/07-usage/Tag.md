@@ -2,8 +2,29 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 71 across 35 files in 14 apps
+- **Real-world usages found:** 75 across 38 files in 14 apps
+- **Weighted inbound:** 120★ across 38 edges — 6×4★ · 32×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs, kol-docs-md, kol-docs-noter, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 14 | `kol-apps/kol-docs-noter/src/pages/component-test.tsx` |
+| 4 | 4 | `kol-website/apps/web/src/routes/workshop/DocsComponents.jsx` |
+| 4 | 3 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/Components.jsx` |
+| 4 | 3 | `kol-apps/kol-mirror/src/components/styleguide/Components.jsx` |
+| 4 | 3 | `kol-apps/kol-modulator/src/components/styleguide/Components.jsx` |
+| 4 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/Components.jsx` |
+| 3 | 2 | `kol-apps/kol-client-ac/src/editor/color/SwatchControls.jsx` |
+| 3 | 2 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/SwatchControls.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/molecules/CollectionCard.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphMetricsGrid.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/src/editor/color/SwatchControls.jsx` |
+| 3 | 2 | `kol-apps/kol-docs-noter/src/components/metadata/sections/SectionConnections.tsx` |
+| … | | _26 more_ |
 
 ## Import
 

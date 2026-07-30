@@ -2,8 +2,19 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 8 across 8 files in 1 apps
+- **Real-world usages found:** 3 across 3 files in 1 apps
+- **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-website/apps/web/src/routes/Home.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/Studio.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/foundry/components/InDevelopmentSection.jsx` |
 
 ## Import
 
@@ -28,22 +39,6 @@ From `kol-website/apps/web/src/routes/Studio.jsx`:
           />
 ```
 
-From `kol-website/apps/web/src/routes/collections/CollectionsOverview.jsx`:
-
-```jsx
-<FeaturesCardSection
-        sectionClassName="w-full py-16"
-        wrapperClassName="max-w-[1400px] mx-auto flex flex-col gap-8"
-        headerClassName="w-full"
-        headerTextWidthClass="w-full md:w-[50%]"
-        headerLabel="Explore Collections"
-        headerDescription="Jump into each collection"
-        cardsWrapperClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        features={quickLinkFeatures}
-        showActions={false}
-      />
-```
-
 From `kol-website/apps/web/src/routes/foundry/components/InDevelopmentSection.jsx`:
 
 ```jsx
@@ -60,36 +55,8 @@ From `kol-website/apps/web/src/routes/foundry/components/InDevelopmentSection.js
     />
 ```
 
-From `kol-website/apps/web/src/routes/collections/Grids.jsx`:
+From `kol-website/apps/web/src/routes/Home.jsx`:
 
 ```jsx
-<FeaturesCardSection
-                  showHeader={true}
-                  headerClassName="w-full"
-                  headerTextWidthClass="w-full md:w-[50%]"
-                  headerLabel="Explore Collections"
-                  headerDescription="Jump into each collection"
-                  cardsWrapperClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                  features={quickLinkFeatures}
-                  showActions={false}
-                  sectionClassName="w-full"
-                  wrapperClassName="w-full flex flex-col gap-8"
-                />
-```
-
-From `kol-website/apps/web/src/routes/collections/Illustrations.jsx`:
-
-```jsx
-<FeaturesCardSection
-                showHeader={true}
-                headerClassName="w-full"
-                headerTextWidthClass="w-full md:w-[50%]"
-                headerLabel="Explore Collections"
-                headerDescription="Jump into each collection"
-                cardsWrapperClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                features={quickLinkFeatures}
-                showActions={false}
-                sectionClassName="w-full"
-                wrapperClassName="w-full flex flex-col gap-8"
-              />
+<FeaturesCardSection />
 ```

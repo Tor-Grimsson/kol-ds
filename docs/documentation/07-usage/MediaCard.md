@@ -3,7 +3,17 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
 - **Real-world usages found:** 2 across 2 files in 2 apps
+- **Weighted inbound:** 6★ across 2 edges — 2×3★
 - **Used in:** kol-media-admin, kol-video-editor
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-media-admin/src/FileList.jsx` |
+| 3 | 1 | `kol-apps/kol-video-editor/Clypra/src/components/editor/media-tabs/MediaTab.tsx` |
 
 ## Import
 

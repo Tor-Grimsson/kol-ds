@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Button } from '@kolkrabbi/kol-component'
+import PreviewCard, { ToolbarDivider } from './PreviewCard.jsx'
 
 /**
- * BlockViewer — the shadcn /blocks stage. A toolbar (Preview/Code · description
- * · device breakpoints · open standalone · refresh · copy source) over a
- * resizable preview iframe pointed at the bare /blocks/preview/:slug route, so
- * the block's OWN responsive breakpoints fire at the frame width.
+ * BlockViewer — the /blocks stage BODY. Device breakpoints, a resizable frame,
+ * and a preview iframe pointed at the bare /blocks/preview/:slug route, so the
+ * block's OWN responsive breakpoints fire at the frame width.
  *
- * Sizing follows shadcn exactly: desktop = the preview fills the card flush,
- * no dot background. Tablet/mobile = the frame anchors LEFT, the dot-grid
- * off-canvas area shows on the right, and a drag handle on the frame's right
- * edge resizes it freely (pointer events; iframe pointer-events are cut while
- * dragging so it can't swallow the drag).
+ * It used to be a second card: its own frame, seam, radius, tab bar and code
+ * renderer, all diverging from PreviewCard's. The chrome now comes from
+ * PreviewCard and this file keeps only what is genuinely different — the
+ * iframe, the device presets and the drag handle. Everything the two cards
+ * disagreed about is settled in one place instead of two.
+ *
+ * Sizing follows shadcn: desktop = the preview fills the card flush, no dot
+ * background. Tablet/mobile = the frame anchors LEFT, the dot-grid off-canvas
+ * area shows on the right, and a drag handle on the frame's right edge resizes
+ * it freely (pointer events; iframe pointer-events are cut while dragging so it
+ * can't swallow the drag).
  */
 
 const DEVICES = [
@@ -53,7 +59,6 @@ function IconBtn({ icon, label, active, onClick, href }) {
 }
 
 export default function BlockViewer({ entry, previewBase = '/blocks/preview', srcDir = 'blocks' }) {
-  const [tab, setTab] = useState('preview')
   const [device, setDevice] = useState('desktop')
   const [width, setWidth] = useState('100%')
   const [reloadKey, setReloadKey] = useState(0)
@@ -117,103 +122,93 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
     } catch { /* clipboard blocked — no-op */ }
   }
 
-  const Divider = () => <span className="mx-1 h-4 w-px shrink-0 bg-fg-12" aria-hidden="true" />
-
-  return (
-    <div className="flex flex-col overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary">
-      {/* ── Toolbar ─────────────────────────────────────────── */}
-      <div className="flex items-center gap-2 border-b border-fg-12 px-3 py-2">
-        <div className="flex items-center gap-1">
-          {['preview', 'code'].map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              className={`kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 capitalize transition-colors ${tab === t ? 'bg-fg-08 text-emphasis' : 'text-meta hover:text-emphasis'}`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        <Divider />
-        <span className="kol-mono-12 min-w-0 truncate text-meta">{entry.description}</span>
-
-        <div className="ml-auto flex items-center gap-1">
-          {tab === 'preview' && (
-            <>
-              <div className="hidden items-center gap-1 sm:flex">
-                {DEVICES.map((d) => (
-                  <IconBtn key={d.key} icon={d.icon} label={d.label} active={device === d.key} onClick={() => pickDevice(d)} />
-                ))}
-              </div>
-              <Divider />
-              {/* shadcn's expand control: the standalone, chrome-less view */}
-              <IconBtn icon="maximize" label="Open standalone view" href={previewPath} />
-              <IconBtn icon="refresh" label="Refresh preview" onClick={() => setReloadKey((k) => k + 1)} />
-              <Divider />
-            </>
-          )}
-          {/* Copy source — KOL blocks are copy-paste, not npx-installable */}
-          <Button
-            variant="primary"
-            size="sm"
-            iconLeft={copied ? 'check' : 'terminal'}
-            onClick={copySource}
-            title="Copy the block source"
-          >
-            {copied ? 'copied' : `${srcDir}/${entry.key}.jsx`}
-          </Button>
-        </div>
-      </div>
-
-      {/* ── Body ────────────────────────────────────────────── */}
-      {/* ONE persistent iframe: device switches and Preview/Code flips only
-       * change wrapper classes/width, never remount it — remounting reboots
-       * the whole app inside the frame (the original slow-switch bug).
-       * loading="lazy" keeps off-screen stages (browse-all stacks six) from
-       * loading until scrolled into view. */}
-      <div
-        ref={bodyRef}
-        className={`${tab === 'preview' ? 'flex' : 'hidden'} items-stretch overflow-hidden`}
-        style={isDesktop ? undefined : DOT_GRID}
-      >
-        <div
-          className={`overflow-hidden bg-surface-primary ${isDesktop ? '' : 'rounded-r-[var(--kol-radius-md)] border-r border-fg-12'} ${dragging ? '' : 'transition-[width] duration-200 ease-out'}`}
-          style={bodyW ? { width: Math.round(frameW * scale), height: Math.round(FRAME_H * scale) } : { width: '100%', height: FRAME_H }}
-        >
-          {/* The iframe holds its TRUE device dimensions (media queries fire
-            * there) and scales down visually when the card is narrower. */}
-          <iframe
-            key={reloadKey}
-            src={previewPath}
-            title={entry.title}
-            loading="lazy"
-            className={`block border-0 ${dragging ? 'pointer-events-none' : ''}`}
-            style={{
-              width: frameW,
-              height: FRAME_H,
-              transform: scale === 1 ? undefined : `scale(${scale})`,
-              transformOrigin: 'top left',
-            }}
-          />
-        </div>
-        {!isDesktop && (
-          <div
-            className="flex w-4 shrink-0 cursor-ew-resize items-center justify-center"
-            onPointerDown={startDrag}
-            role="separator"
-            aria-orientation="vertical"
-            aria-label="Resize preview"
-          >
-            <div className="h-10 w-1.5 rounded-full bg-fg-16" />
+  /* Preview-only controls collapse on the Code tab; the source button stays. */
+  const actions = (tab) => (
+    <>
+      {tab === 'preview' && (
+        <>
+          <div className="hidden items-center gap-1 sm:flex">
+            {DEVICES.map((d) => (
+              <IconBtn key={d.key} icon={d.icon} label={d.label} active={device === d.key} onClick={() => pickDevice(d)} />
+            ))}
           </div>
-        )}
+          <ToolbarDivider />
+          {/* the standalone, chrome-less view */}
+          <IconBtn icon="maximize" label="Open standalone view" href={previewPath} />
+          <IconBtn icon="refresh" label="Refresh preview" onClick={() => setReloadKey((k) => k + 1)} />
+          <ToolbarDivider />
+        </>
+      )}
+      {/* Copy source — KOL blocks are copy-paste, not npx-installable */}
+      <Button
+        variant="primary"
+        size="sm"
+        iconLeft={copied ? 'check' : 'terminal'}
+        onClick={copySource}
+        title="Copy the block source"
+      >
+        {copied ? 'copied' : `${srcDir}/${entry.key}.jsx`}
+      </Button>
+    </>
+  )
+
+  /* ONE persistent iframe: device switches and Preview/Code flips only change
+   * wrapper classes/width, never remount it — remounting reboots the whole app
+   * inside the frame (the original slow-switch bug). PreviewCard hides rather
+   * than unmounts this body for the same reason. loading="lazy" keeps
+   * off-screen stages (browse-all stacks six) from loading until scrolled to. */
+  const renderBody = () => (
+    <div
+      ref={bodyRef}
+      className="flex items-stretch overflow-hidden"
+      style={isDesktop ? undefined : DOT_GRID}
+    >
+      <div
+        className={`overflow-hidden bg-surface-primary ${isDesktop ? '' : 'rounded-r-[var(--kol-radius-sm)] border-r'} ${dragging ? '' : 'transition-[width] duration-200 ease-out'}`}
+        style={{
+          ...(isDesktop ? undefined : { borderRightColor: 'var(--kol-oq-08)' }),
+          ...(bodyW
+            ? { width: Math.round(frameW * scale), height: Math.round(FRAME_H * scale) }
+            : { width: '100%', height: FRAME_H }),
+        }}
+      >
+        {/* The iframe holds its TRUE device dimensions (media queries fire
+          * there) and scales down visually when the card is narrower. */}
+        <iframe
+          key={reloadKey}
+          src={previewPath}
+          title={entry.title}
+          loading="lazy"
+          className={`block border-0 ${dragging ? 'pointer-events-none' : ''}`}
+          style={{
+            width: frameW,
+            height: FRAME_H,
+            transform: scale === 1 ? undefined : `scale(${scale})`,
+            transformOrigin: 'top left',
+          }}
+        />
       </div>
-      {tab === 'code' && (
-        <pre className="kol-mono-12 max-h-[620px] overflow-auto whitespace-pre bg-fg-04 px-4 py-3 text-fg">
-          {entry.source || '// no source'}
-        </pre>
+      {!isDesktop && (
+        <div
+          className="flex w-4 shrink-0 cursor-ew-resize items-center justify-center"
+          onPointerDown={startDrag}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize preview"
+        >
+          <div className="h-10 w-1.5 rounded-full bg-fg-16" />
+        </div>
       )}
     </div>
+  )
+
+  return (
+    <PreviewCard
+      entry={entry}
+      cap="shell"
+      description={entry.description}
+      actions={actions}
+      renderBody={renderBody}
+    />
   )
 }

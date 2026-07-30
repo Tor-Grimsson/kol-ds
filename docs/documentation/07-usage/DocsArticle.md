@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-workshop`
 - **Category:** docs
 - **Real-world usages found:** 19 across 13 files in 4 apps
+- **Weighted inbound:** 39★ across 13 edges — 13×3★
 - **Used in:** kol-client-kolkrabbi, kol-docs, kol-docs-md, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-docs/src/pages/WikiComposer.jsx` |
+| 3 | 2 | `kol-apps/kol-docs/src/pages/WikiInput.jsx` |
+| 3 | 2 | `kol-apps/kol-docs/src/pages/WikiMedia.jsx` |
+| 3 | 2 | `kol-apps/kol-docs-md/src/pages/WikiComposer.jsx` |
+| 3 | 2 | `kol-apps/kol-docs-md/src/pages/WikiInput.jsx` |
+| 3 | 2 | `kol-apps/kol-docs-md/src/pages/WikiMedia.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/docs/TagModeOverlay.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/data/wikiPages.js` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiDatabasePage.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/data/wikiPages.js` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiDatabasePage.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/workshop/Documentations.jsx` |
+| … | | _1 more_ |
 
 ## Import
 

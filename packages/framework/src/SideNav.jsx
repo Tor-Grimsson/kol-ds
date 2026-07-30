@@ -131,8 +131,10 @@ export default function SideNav({
   navTree = [],
   getActivePage,
   onNavigate,
-  collapsed: collapsedProp,
-  onToggle,
+  /* INERT since 0.9.2 — accepted so no call site breaks, but nothing reads
+   * them; the collapse feature they drove has no CSS. See below. */
+  collapsed: _collapsed,
+  onToggle: _onToggle,
   collapsibleSections = false,
   isActive,
 }) {
@@ -142,26 +144,15 @@ export default function SideNav({
   const onPageRoot = activePage && pathname === activePage.to
   const activeSectionId = useScrollSpy(onPageRoot ? sectionIds : [])
 
-  /* Root collapse: controlled when `collapsed` is defined (pair with
-   * onToggle), otherwise internal state. */
-  const isEditor = pathname.startsWith('/editor/')
-  const [internalCollapsed, setInternalCollapsed] = useState(isEditor)
-  const isControlled = collapsedProp !== undefined
-  const collapsed = isControlled ? collapsedProp : internalCollapsed
-  const handleToggle = isControlled ? onToggle : () => setInternalCollapsed((v) => !v)
-
-  useEffect(() => {
-    const root = document.documentElement
-    if (collapsed) root.setAttribute('data-sidenav', 'collapsed')
-    else root.removeAttribute('data-sidenav')
-  }, [collapsed])
-
-  /* /editor → collapsed. Anywhere else → expanded. Manual chevron toggle
-   * works for the session but doesn't persist across navigation.
-   * Skipped in controlled mode — the parent owns collapse. */
-  useEffect(() => {
-    if (!isControlled) setInternalCollapsed(isEditor)
-  }, [isEditor, isControlled])
+  /* The collapse state machine went with the button (finding #3). It stamped
+   * `data-sidenav="collapsed"` on <html> and an `is-collapsed` class on the
+   * aside, neither of which any stylesheet has read since 2026-07-29 — state
+   * with no renderer is just a lie the component tells itself.
+   *
+   * `collapsed` / `onToggle` are still ACCEPTED so no consumer's call site
+   * breaks; they are inert, and the prop docs say so. A consumer that wants a
+   * collapsing rail owns it locally (kol-website's apps/brand does exactly
+   * that) until the feature is deliberately rebuilt here. */
 
   /* Per-page section expand/collapse (opt-in via collapsibleSections).
    * The section containing the active route auto-expands on every
@@ -180,17 +171,16 @@ export default function SideNav({
 
   return (
     <aside
-      className={`kol-sidenav sticky top-0 self-start h-dvh flex flex-col border-r border-fg-08 z-20 bg-surface-primary${collapsed ? ' is-collapsed' : ''}${drawerOpen ? ' is-drawer-open' : ''}`}
+      className={`kol-sidenav sticky top-0 self-start h-dvh flex flex-col border-r border-fg-08 z-20 bg-surface-primary${drawerOpen ? ' is-drawer-open' : ''}`}
     >
-      <button
-        type="button"
-        className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer kol-helper-14 transition-colors duration-150 text-meta hover:text-emphasis hover:border-fg-24"
-        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        title={collapsed ? 'Expand' : 'Collapse'}
-        onClick={handleToggle}
-      >
-        <Icon name={collapsed ? 'chevron-right' : 'chevron-left'} size={12} />
-      </button>
+      {/* The collapse chevron was REMOVED 2026-07-30 (lobby ruling, finding
+        * #3). Its CSS — `:root[data-sidenav="collapsed"]` — was deleted
+        * 2026-07-29 when the manual-collapse feature was ruled dead, but the
+        * button, the `data-sidenav` stamp and the `is-collapsed` class all
+        * kept shipping, so every consumer of the package got a control that
+        * did nothing at all. Nothing styles any of it (see the tombstone at
+        * kol-framework.css:85). The surviving narrow mode is the responsive
+        * ≤1024px rail, which needs no control. */}
 
       <div className="kol-sidenav-scroll flex-1 flex flex-col justify-between overflow-y-auto pt-4 pb-4 [scrollbar-width:thin]">
         <ul className="kol-sidenav-tree flex flex-col gap-[2px]">

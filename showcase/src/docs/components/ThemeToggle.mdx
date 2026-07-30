@@ -1,6 +1,31 @@
 export const meta = {
-  id: '2.58.0',
-  slug: 'theme-toggle',
+  id: "2.58.0",
+  slug: "theme-toggle",
+  title: "ThemeToggle",
+  type: "reference",
+  status: "active",
+  updated: "2026-07-10",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "domain/iconography",
+    "domain/typography",
+    "pattern/action",
+    "pattern/app-shell",
+  ],
+  description: "Tri-state glyph-roll button (0.9.0, the approved 2-variant spec).",
+  aliases: [
+    "themetoggle",
+  ],
+  reuses: [
+    "Icon 3★",
+    "kol-btn 2★",
+    "kol-btn-nav 2★",
+    "kol-btn-primary 2★",
+    "kol-mono-14 2★",
+    "kol-btn-icon 1★",
+    "kol-sidenav-hop-label 1★",
+  ],
 }
 
 <Preview name="ThemeToggle" />
@@ -22,14 +47,25 @@ import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
 ## Behavior
 
-Tri-state: clicking cycles **light → dark → system → light** (user law:
-explicit choice > system > light; `system` clears the stamp and follows the
-OS live). **One glyph, ever** — every position in the roll strip is the
-`mode-toggle-01` split circle; the system state wears it too, told apart by
-the label/tooltip, never by a third glyph. The strip rolls like a coin
-(rotation accumulates −180° per slot on the travel clock), so one lap shows
-both directions. Theme state lives in `useTheme` — this component is only
-the glyph UI on top of it.
+**Two positions:** clicking cycles **light ↔ dark**. `system` is not one of
+them — it is the *absence* of a choice, so a click can never walk into it
+(user ruling 2026-07-30). As a labelled third rung it made the control claim
+a mode called "System" when what had actually happened was the user unsetting
+their preference, and it left the button unable to say what the next click
+would do, because from `system` the result depends on the OS.
+
+The label and the roll slot follow the **resolved** theme rather than the
+stored choice, so when the page is unset the button describes what you are
+actually looking at. **Alt- or shift-click resets** — it clears the stamp and
+the saved key and hands the page back to `prefers-color-scheme` (the same
+thing `useTheme().clear()` does). The user law is unchanged: explicit choice
+> system > light.
+
+**One glyph, ever** — both positions in the roll strip are the
+`mode-toggle-01` split circle, told apart by the label/tooltip. The strip
+rolls like a coin (rotation accumulates −180° per slot on the travel clock).
+Theme state lives in `useTheme` — this component is only the glyph UI on top
+of it.
 
 ## Variants
 
@@ -38,7 +74,7 @@ everything else is a prop:
 
 | Variant | Prop | Values | Description |
 |---|---|---|---|
-| **`button`** — padded rung + corner radius (the button container) | `fill` | `subtle` · `none` | the one bg element — `subtle` = grey fill · `none` = the invisible container |
+| **`button`** — padded rung + corner radius (the button container) | `fill` | **`none` (default)** · `subtle` | the one bg element — `none` = the invisible container (nav rows, sidebars) · `subtle` = the grey filled rung. **The default flipped at 0.10.0**: a bare `<ThemeToggle />` used to render the filled rung, which is why sidebars got a button nobody asked for |
 | | `iconRight` | `false` · `true` | glyph right of the text (left default) |
 | | `label` | `true` · `false` | text on/off — off pins the square box per rung (28/32/36; icon-only is a geometry condition, not a variant) |
 | | `fullWidth` | `false` · `true` | stretches to a sidenav row |

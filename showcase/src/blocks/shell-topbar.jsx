@@ -7,6 +7,10 @@ export const meta = {
   description: 'The shell header with brand, section tabs, inline search, theme toggle and trailing actions',
   category: 'chrome',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

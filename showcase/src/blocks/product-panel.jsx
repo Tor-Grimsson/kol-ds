@@ -5,6 +5,10 @@ export const meta = {
   title: 'Product panel',
   description: 'A product detail layout for an art print — media gallery, price, specs, tabs, quantity and add-to-cart',
   category: 'panel',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -3,7 +3,25 @@
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
 - **Real-world usages found:** 13 across 10 files in 6 apps
+- **Weighted inbound:** 31★ across 10 edges — 1×4★ · 9×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 4 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx` |
+| 3 | 1 | `kol-apps/kol-client/src/pages/Brand.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/Styleguide.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Canalix.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Casedoc.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx` |
+| 3 | 1 | `kol-website/apps/brand/src/pages/Styleguide.jsx` |
 
 ## Import
 

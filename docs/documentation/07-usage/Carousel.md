@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
 - **Real-world usages found:** 20 across 20 files in 11 apps
+- **Weighted inbound:** 60★ across 20 edges — 20×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-docs-noter, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client/src/components/framework/brand/AssetCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client/src/components/framework/sections/LogoCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/components/styleguide/AssetCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/components/styleguide/LogoCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/site/About.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/AssetCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/LogoCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/pages/site/About.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/components/brand/AssetCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/styleguide/LogoCarousel.jsx` |
+| … | | _8 more_ |
 
 ## Import
 

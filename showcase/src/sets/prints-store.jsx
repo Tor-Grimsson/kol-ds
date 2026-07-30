@@ -7,6 +7,10 @@ export const meta = {
   description: 'An art-print storefront — a diagonal marquee river of editions above a full product-detail layout for the selected print',
   category: 'store',
   featured: false,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

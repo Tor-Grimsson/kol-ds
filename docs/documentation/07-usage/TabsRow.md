@@ -2,8 +2,29 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 29 across 29 files in 7 apps
+- **Real-world usages found:** 30 across 30 files in 7 apps
+- **Weighted inbound:** 90★ across 30 edges — 30×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/color/ColorModal.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/color/PanelTabs.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/shell/panels/LayersAssetsPanel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/shell/panels/SelectionPalettePanel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/ColorModal.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/color/PanelTabs.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/shell/panels/LayersAssetsPanel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/shell/panels/SelectionPalettePanel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/editor/color/ColorModal.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/editor/color/PanelTabs.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/editor/shell/panels/LayersAssetsPanel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/editor/shell/panels/SelectionPalettePanel.jsx` |
+| … | | _18 more_ |
 
 ## Import
 
@@ -37,8 +58,8 @@ From `kol-apps/kol-labs-monorepo/apps/draw-3d/src/components/studio/InspectorPan
 <TabsRow tabs={['Inspector', 'Variables', 'Overlay']} active={tab} onChange={setTab} />
 ```
 
-From `kol-apps/kol-client-kolkrabbi/src/editor/color/PanelTabs.jsx`:
+From `kol-website/apps/web/src/routes/prints/PrintDetailOverlay.jsx`:
 
 ```jsx
-<TabsRow {...props} />
+<TabsRow tabs={tabs} value={activeTab} onChange={setActiveTab} />
 ```

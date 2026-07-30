@@ -3,7 +3,23 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 8 across 8 files in 2 apps
+- **Weighted inbound:** 24★ across 8 edges — 8×3★
 - **Used in:** kol-client-kolkrabbi, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/cards/BentoCard.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/home/HomeHero.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/shared/FeaturedCarousel.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/studio/StudioHero.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/cards/BentoCard.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/sections/home/HomeHero.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/sections/shared/FeaturedCarousel.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/sections/studio/StudioHero.jsx` |
 
 ## Import
 

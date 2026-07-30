@@ -3,7 +3,18 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
 - **Real-world usages found:** 3 across 3 files in 2 apps
+- **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-client, kol-client-ac
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client/src/pages/Landing.jsx` |
+| 3 | 1 | `kol-apps/kol-client/src/pages/client-site/Home.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/site/Home.jsx` |
 
 ## Import
 

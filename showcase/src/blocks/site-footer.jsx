@@ -4,6 +4,10 @@ export const meta = {
   title: 'Site footer',
   description: 'The rich portal footer with a brand block, link columns, socials and a legal note',
   category: 'footer',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

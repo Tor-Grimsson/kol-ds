@@ -62,6 +62,10 @@ export const SHELL_ROUTES = [
   /* Documentation is a SYSTEM (user ruling 2026-07-30) — its own top-level
    * area with its own URL space, like kolkrabbi.io/workshop's Documentation.
    * Never a child page under Docs. */
+  /* The reference graph — generated, so it sits beside Documentation rather
+   * than under Docs: it is not a written page, it is what the repo measures
+   * about itself. */
+  { id: 'references', label: 'References', icon: 'link', path: '/references' },
   {
     id: 'documentation',
     label: 'Documentation',
@@ -80,6 +84,7 @@ const TAB_PREFIX = {
   '/blocks': '/blocks',
   '/sets': '/sets',
   '/docs/shell-and-layout': '/docs',
+  '/references': '/references',
 }
 /* The Documentation tab's href is its first doc, but it lights across the
  * whole /documentation space. */

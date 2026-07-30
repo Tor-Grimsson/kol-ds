@@ -4,6 +4,10 @@ export const meta = {
   title: 'Palette reference',
   description: 'Token ramps and a full spectrum matrix from the KOL theme',
   category: 'color',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

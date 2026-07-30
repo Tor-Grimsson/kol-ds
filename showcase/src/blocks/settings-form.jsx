@@ -5,6 +5,10 @@ export const meta = {
   title: 'Settings form',
   description: 'A settings form with labeled fields and toggles',
   category: 'form',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'md'
 

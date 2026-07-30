@@ -2,8 +2,28 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 17 across 17 files in 4 apps
+- **Real-world usages found:** 12 across 12 files in 4 apps
+- **Weighted inbound:** 36★ across 12 edges — 12×3★
 - **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/site/Shop.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CollectionFiltersPreview.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/Icons.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/IconsVariants.jsx` |
+| 3 | 1 | `kol-apps/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx` |
+| 3 | 1 | `kol-website/_tmp/brand-triage-elder/pages/Icons.jsx` |
+| 3 | 1 | `kol-website/_tmp/brand-triage-elder/pages/IconsVariants.jsx` |
+| 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/organisms/CollectionFiltersPreview.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/TypefaceLibraryGridWithVariables.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/Stack.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/Work.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/prints/PrintsGrid.jsx` |
 
 ## Import
 
@@ -49,7 +69,7 @@ From `kol-apps/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx`:
           />
 ```
 
-From `kol-website/apps/brand/src/pages/Icons.jsx`:
+From `kol-website/_tmp/brand-triage-elder/pages/Icons.jsx`:
 
 ```jsx
 <ContentFilters

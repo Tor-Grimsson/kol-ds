@@ -8,6 +8,10 @@ export const meta = {
   description: 'An HSV spectrum, swatch stack and hex row on one shared color',
   category: 'color',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'sm'
 

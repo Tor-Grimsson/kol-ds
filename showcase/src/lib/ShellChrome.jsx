@@ -60,22 +60,39 @@ function useHeadings() {
 
 function AutoToc() {
   const headings = useHeadings()
+  const [collapsed, setCollapsed] = useState(false)
   /* ONE rail system (user 2026-07-30): the right rail IS the left rail —
-   * identical row idiom (shell-nav-item + kol-mono-14) and identical section
-   * label (the kol-doc-eyebrow voice, everywhere a rail section starts). */
+   * identical row idiom (shell-nav-item + kol-mono-14), identical section
+   * label (kol-doc-eyebrow), and identical HEADER — rotating chevron, label,
+   * count. This section was a bare <p>: no chevron, no count, and not
+   * collapsible at all, while the vault reader's equivalent collapsed with no
+   * indicator. Two right rails, two behaviours, neither matching the left. */
   const row = 'shell-nav-item block kol-mono-14 text-body transition-colors hover:text-emphasis'
   if (headings.length === 0) return null
   return (
     <div className="flex flex-col gap-6 pr-2">
       <div>
-        <p className="shell-sidebar-label kol-doc-eyebrow">On this page</p>
-        <nav className="flex flex-col">
-          {headings.map((h) => (
-            <a key={h.id} href={`#${h.id}`} className={`${row} ${h.sub ? 'pl-3' : ''}`}>
-              {h.label}
-            </a>
-          ))}
-        </nav>
+        <button
+          type="button"
+          className="shell-nav-group-header w-full text-left shell-sidebar-label kol-doc-eyebrow"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-expanded={!collapsed}
+        >
+          <span className="flex items-center gap-2">
+            <Icon name="chevron-right" size={12} className={`transition-transform ${collapsed ? '' : 'rotate-90'}`} />
+            On this page
+          </span>
+          <span className="kol-mono-14 text-subtle">({headings.length})</span>
+        </button>
+        {!collapsed && (
+          <nav className="flex flex-col">
+            {headings.map((h) => (
+              <a key={h.id} href={`#${h.id}`} className={`${row} ${h.sub ? 'pl-3' : ''}`}>
+                {h.label}
+              </a>
+            ))}
+          </nav>
+        )}
       </div>
     </div>
   )

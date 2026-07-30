@@ -21,21 +21,39 @@ const FIELD_ICONS = {
   modified: null,
 }
 
-/* THE kol-docs contract, in reading order — `.kol/docs-framework/01-conventions.md`:
- * required (title/type/status/updated/tags) then recommended (description,
- * aliases). `related` is excluded on purpose: the rail renders it as links.
+/* Reading ORDER, not an allowlist. The kol-docs contract first
+ * (`.kol/docs-framework/01-conventions.md`: required title/type/status/updated/
+ * tags, then recommended description/aliases, then optional), legacy
+ * sample-dialect keys after, and ANY key not named here after that — so a field
+ * can never be silently dropped for being unknown.
  *
- * This list read ['title','category','date','tags','modified'] — the
+ * This was a filter over ['title','category','date','tags','modified'] — the
  * workshop-SAMPLE dialect. No kol-docs document carries category/date/modified,
- * so the filter below admitted title + tags and silently dropped the other
- * seven fields the parser had already handed it. The panel wasn't missing data;
- * it was screening for the wrong schema. Sample-dialect keys stay at the tail
- * so those docs keep rendering. */
+ * so it admitted title + tags and discarded the seven fields the parser had
+ * already handed it. The panel wasn't missing data; it was screening for the
+ * wrong schema, and screening is now the thing it doesn't do.
+ *
+ * `related` is the one deliberate omission — the rail renders it as live links,
+ * so printing the raw wikilinks here would be the same thing twice. */
 const FIELD_ORDER = [
-  'title', 'type', 'status', 'updated', 'created', 'verified',
-  'description', 'audience', 'aliases', 'tags',
-  'category', 'date', 'modified',
+  'title', 'type', 'status', 'updated', 'tags',
+  'description', 'aliases',
+  'created', 'verified', 'audience', 'superseded_by', 'drift',
+  'category', 'date', 'modified', 'version',
 ]
+
+const HIDDEN = new Set(['related'])
+
+/** Contract order first, then anything else the doc carries, alphabetically. */
+const orderFields = (metadata) => {
+  const present = Object.keys(metadata).filter(
+    (k) => !HIDDEN.has(k) && metadata[k] != null && metadata[k] !== '' &&
+      !(Array.isArray(metadata[k]) && metadata[k].length === 0)
+  )
+  const known = FIELD_ORDER.filter((k) => present.includes(k))
+  const rest = present.filter((k) => !FIELD_ORDER.includes(k)).sort()
+  return [...known, ...rest]
+}
 
 /* Every field rendered as a date. `updated`/`created`/`verified` are the
  * kol-docs names; `date`/`modified` are the sample dialect's. */
@@ -52,7 +70,7 @@ const DocsFrontmatter = ({ metadata, docId }) => {
   const { openTagMode } = useTagMode()
   if (!metadata || Object.keys(metadata).length === 0) return null
 
-  const fields = FIELD_ORDER.filter(key => metadata[key] != null && metadata[key] !== '')
+  const fields = orderFields(metadata)
 
   if (fields.length === 0) return null
 

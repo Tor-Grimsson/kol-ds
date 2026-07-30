@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 145 across 38 files in 10 apps
+- **Weighted inbound:** 133★ across 38 edges — 5×5★ · 9×4★ · 24×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs-noter, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 5 | 18 | `kol-apps/kol-docs-noter/src/components/app-shell/HierarchyContent.tsx` |
+| 5 | 18 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/HierarchyContent.tsx` |
+| 5 | 18 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/HierarchyContent.tsx` |
+| 5 | 18 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/HierarchyContent.tsx` |
+| 5 | 6 | `kol-apps/kol-docs-noter/src/components/metadata/sections/SectionMedia.tsx` |
+| 4 | 6 | `kol-apps/kol-docs-noter/src/components/metadata/sections/SectionConnections.tsx` |
+| 4 | 6 | `kol-apps/kol-docs-noter/src/components/ui-elements/molecules/MetricSelector.tsx` |
+| 4 | 6 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/molecules/MetricSelector.tsx` |
+| 4 | 6 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/ui-elements/molecules/MetricSelector.tsx` |
+| 4 | 6 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/ui-elements/molecules/MetricSelector.tsx` |
+| 4 | 3 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/Components.jsx` |
+| 4 | 3 | `kol-apps/kol-mirror/src/components/styleguide/Components.jsx` |
+| … | | _26 more_ |
 
 ## Import
 

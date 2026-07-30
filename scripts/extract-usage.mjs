@@ -121,7 +121,15 @@ function snippetsFor(name, text) {
   return found
 }
 
-const results = new Map(components.map((c) => [c.name, { ...c, count: 0, apps: new Set(), files: new Set(), candidates: [] }]))
+const results = new Map(components.map((c) => [c.name, {
+  ...c, count: 0, apps: new Set(), files: new Set(), candidates: [],
+  edges: [], weighted: 0,
+}]))
+
+// One record per consuming FILE, so an edge can be weighted by how much of that
+// file the component carries. `count` alone cannot do this: 40 usages spread over
+// 40 files is a different dependency from 40 usages in one wrapper.
+const fileEdges = new Map()
 
 for (const file of files) {
   let text
@@ -135,8 +143,72 @@ for (const file of files) {
     r.count += snips.length
     r.apps.add(app)
     r.files.add(rel)
+    if (!fileEdges.has(rel)) fileEdges.set(rel, { app, uses: new Map() })
+    fileEdges.get(rel).uses.set(c.name, snips.length)
     if (r.candidates.length < 200) for (const s of snips) r.candidates.push({ app, file: rel, code: s })
   }
+}
+
+// --- star weighting ------------------------------------------------------------
+// An edge is (consuming file -> KOL component), and it exists only because the
+// file USES the component: changing or deleting the component changes or breaks
+// the file. That is the derivation test, and it is why two sibling tokens can
+// never edge to each other — neither uses the other.
+//
+// Weights are COMPUTED from what the walk already collected. Nothing is declared
+// and nothing is asked of an author; a self-rated graph looks authoritative while
+// lying. A hand-set value belongs in frontmatter, where sync-mdx-frontmatter.mjs
+// already guarantees the author's value wins and the disagreement is reported.
+//
+//   5  the file's ONLY KOL component, used 3+ times — a near-copy or thin wrapper
+//   4  used 3+ times alongside others
+//   3  used once or twice
+const starsFor = (uses, sole) => (uses >= 3 ? (sole ? 5 : 4) : 3)
+
+for (const [file, rec] of fileEdges) {
+  const sole = rec.uses.size === 1
+  for (const [name, uses] of rec.uses) {
+    const r = results.get(name)
+    if (!r) continue
+    const stars = starsFor(uses, sole)
+    r.edges.push({ file, app: rec.app, uses, stars })
+    r.weighted += stars
+  }
+}
+for (const r of results.values()) r.edges.sort((a, b) => b.stars - a.stars || b.uses - a.uses)
+
+// --- internal composition: which KOL component uses which -----------------------
+// The consumer walk above deliberately excludes this repo, because `count` means
+// "real-world usage in the apps" and must keep meaning that. But the design
+// system's own composition is the other half of the graph — Modal uses Button —
+// and nothing was recording it. Kept in a SEPARATE field so no existing number moves.
+const internalRoots = [join(REPO, 'packages'), join(REPO, 'showcase')].filter(existsSync)
+const internalFiles = []
+for (const root of internalRoots) for (const f of walk(root)) internalFiles.push(f)
+
+const outbound = new Map()   // source file (repo-relative) -> [{ target, uses, stars }]
+for (const file of internalFiles) {
+  let text
+  try { text = readFileSync(file, 'utf8') } catch { continue }
+  const rel = relative(REPO, file)
+  const self = basename(file).replace(/\.\w+$/, '')
+  const uses = new Map()
+  for (const c of components) {
+    if (c.name === self) continue                    // a file is not its own dependent
+    if (!text.includes('<' + c.name)) continue
+    const n = snippetsFor(c.name, text).length
+    if (n) uses.set(c.name, n)
+  }
+  if (!uses.size) continue
+  const sole = uses.size === 1
+  const list = []
+  for (const [name, n] of uses) {
+    const stars = starsFor(n, sole)
+    list.push({ target: name, uses: n, stars })
+    const r = results.get(name)
+    if (r) r.internal = (r.internal || 0) + stars
+  }
+  outbound.set(rel, list.sort((a, b) => b.stars - a.stars || b.uses - a.uses))
 }
 
 // pick the 5 most informative, app-diverse, deduped examples
@@ -171,18 +243,37 @@ for (const r of sorted) {
   const entry = {
     name: r.name, pkg: r.pkg, category: r.category,
     count: r.count, apps, files: r.files.size,
+    weighted: r.weighted,
+    internal: r.internal || 0,        // weighted inbound from inside the design system
+    src: r.src,
+    edgeCount: r.edges.length,        // the true total; `edges` below is capped for file size
+    edges: r.edges.slice(0, 60),
     examples: r.examples,
   }
   index.push(entry)
 
+  const byStar = r.edges.reduce((a, e) => (a[e.stars] = (a[e.stars] || 0) + 1, a), {})
   const md = []
   md.push(`# ${r.name}`)
   md.push('')
   md.push(`- **Package:** \`${r.pkg}\``)
   md.push(`- **Category:** ${r.category}`)
   md.push(`- **Real-world usages found:** ${r.count} across ${r.files.size} files in ${apps.length} apps`)
+  md.push(`- **Weighted inbound:** ${r.weighted}★ across ${r.edges.length} edges`
+    + (r.edges.length ? ` — ${[5, 4, 3].filter((s) => byStar[s]).map((s) => `${byStar[s]}×${s}★`).join(' · ')}` : ''))
   md.push(`- **Used in:** ${apps.length ? apps.join(', ') : '— (no consumer usage found)'}`)
   md.push('')
+  if (r.edges.length) {
+    md.push(`## Who depends on this`)
+    md.push('')
+    md.push('Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.')
+    md.push('')
+    md.push('| ★ | uses | file |')
+    md.push('|---|---|---|')
+    for (const e of r.edges.slice(0, 12)) md.push(`| ${e.stars} | ${e.uses} | \`${e.file}\` |`)
+    if (r.edges.length > 12) md.push(`| … | | _${r.edges.length - 12} more_ |`)
+    md.push('')
+  }
   md.push(`## Import`)
   md.push('')
   md.push('```jsx')
@@ -208,6 +299,11 @@ for (const r of sorted) {
 }
 
 writeFileSync(join(showcaseUsage, 'usage-index.json'), JSON.stringify(index, null, 2))
+// Outbound: what each design-system file DERIVES FROM. This is the side the
+// `reuses:` frontmatter is written from — a component declares what it reused,
+// not who reused it.
+writeFileSync(join(showcaseUsage, 'composition-index.json'),
+  JSON.stringify(Object.fromEntries([...outbound].sort()), null, 2))
 
 const withUsage = index.filter((e) => e.count > 0).length
 console.log(`scanned ${files.length} files across ${ROOTS.length} roots`)
@@ -215,3 +311,17 @@ console.log(`components tracked: ${components.length}  |  with real usage: ${wit
 console.log(`emitted: docs/documentation/07-usage/*.md (${index.length})  +  showcase/src/usage/usage-index.json`)
 console.log('\ntop 15 by usage:')
 for (const e of sorted.slice(0, 15)) console.log(`  ${String(e.count).padStart(5)}  ${e.name.padEnd(18)} ${e.apps.size} apps`)
+
+// Law 3 — high reference = canon — on arithmetic. The bar is 3x the median rather
+// than a fixed number, so it moves with the repo instead of ageing into a lie.
+const weights = index.map((e) => e.weighted).filter(Boolean).sort((a, b) => a - b)
+if (weights.length) {
+  const median = weights[Math.floor(weights.length / 2)]
+  const threshold = Math.max(median * 3, 2)
+  const canon = index.filter((e) => e.weighted >= threshold).sort((a, b) => b.weighted - a.weighted)
+  console.log(`\nweighted median ${median} | canon threshold ${threshold} (3x median) | ${canon.length} over`)
+  console.log('top 15 by WEIGHTED inbound (the canon candidates):')
+  for (const e of canon.slice(0, 15)) {
+    console.log(`  ${String(e.weighted).padStart(5)}★ ${e.name.padEnd(18)} ${e.edgeCount} edges`)
+  }
+}

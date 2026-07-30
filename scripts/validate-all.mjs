@@ -24,13 +24,18 @@ const GATES = [
   ['foundations', 'validate-foundations.mjs'],
   ['width', 'validate-width.mjs'],
   ['rails', 'validate-rails.mjs'],
+  ['frontmatter', 'sync-mdx-frontmatter.mjs'],
+  ['references', 'validate-references.mjs'],
 ]
+
+/* the frontmatter gate is the sync script in --check mode */
+const ARGS = { 'sync-mdx-frontmatter.mjs': ['--check'] }
 
 const results = []
 for (const [name, file] of GATES) {
-  const r = spawnSync(process.execPath, [join(HERE, file)], { encoding: 'utf8' })
+  const r = spawnSync(process.execPath, [join(HERE, file), ...(ARGS[file] ?? [])], { encoding: 'utf8' })
   const out = `${r.stdout || ''}${r.stderr || ''}`
-  const count = Number(out.match(/:\s*(\d+)\s+violation/)?.[1] ?? 0)
+  const count = Number(out.match(/:\s*(\d+)\s+(violation|file)/)?.[1] ?? 0)
   results.push({ name, ok: r.status === 0, count, out: out.trimEnd() })
 }
 

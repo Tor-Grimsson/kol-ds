@@ -2,7 +2,7 @@
 title: Slug pages & the composition gallery — how a set/block lists every component it uses
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-30
 description: How every /sets/:slug and /blocks/:slug page derives and renders its full component manifest — the transitive composition scanner plus the live per-component gallery, one container per component.
 aliases:
   - composition

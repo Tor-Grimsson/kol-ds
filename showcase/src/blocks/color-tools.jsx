@@ -5,6 +5,10 @@ export const meta = {
   title: 'Color tools',
   description: 'A paint toolbar — Fill / Stroke / Effects tabs over a hex + shape row',
   category: 'toolbar',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'md'
 

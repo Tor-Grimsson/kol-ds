@@ -3,7 +3,19 @@
 - **Package:** `@kolkrabbi/kol-foundry`
 - **Category:** flat
 - **Real-world usages found:** 9 across 4 files in 3 apps
+- **Weighted inbound:** 13★ across 4 edges — 1×4★ · 3×3★
 - **Used in:** kol-client, kol-client-canalix, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 6 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/Typography.jsx` |
+| 3 | 1 | `kol-apps/kol-client/src/pages/Brand.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Canalix.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Casedoc.jsx` |
 
 ## Import
 
@@ -13,7 +25,7 @@ import { TypeSample } from '@kolkrabbi/kol-foundry'
 
 ## Real usage
 
-From `kol-website/apps/web/src/routes/workshop/Typography.jsx`:
+From `kol-website/_tmp/workshop-museum-elder/routes/workshop/Typography.jsx`:
 
 ```jsx
 <TypeSample

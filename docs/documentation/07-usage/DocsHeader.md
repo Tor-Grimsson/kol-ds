@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-workshop`
 - **Category:** docs
 - **Real-world usages found:** 15 across 15 files in 3 apps
+- **Weighted inbound:** 45★ across 15 edges — 15×3★
 - **Used in:** kol-docs, kol-docs-md, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-docs/src/data/wikiPages.js` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiDatabaseDetail.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiDatabasePage.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiDatabases.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiHome.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiInput.jsx` |
+| 3 | 1 | `kol-apps/kol-docs/src/pages/WikiMedia.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/data/wikiPages.js` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiDatabaseDetail.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiDatabasePage.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiDatabases.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiHome.jsx` |
+| … | | _3 more_ |
 
 ## Import
 

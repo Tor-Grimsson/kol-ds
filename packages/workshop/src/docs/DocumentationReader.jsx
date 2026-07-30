@@ -10,18 +10,41 @@ import DocsFrontmatter from './DocsFrontmatter.jsx'
 import { DocSection } from './DocKit.jsx'
 import { renderInlineTokens } from './render-tokens.jsx'
 
-const SidebarSection = ({ sectionKey, label, collapsedSections, toggleSection, children }) => (
-  <div>
-    <button
-      type="button"
-      className="shell-sidebar-toggle shell-sidebar-label kol-doc-eyebrow"
-      onClick={() => toggleSection(sectionKey)}
-    >
-      {label}
-    </button>
-    {!collapsedSections[sectionKey] && children}
-  </div>
-)
+/**
+ * A rail section header. Same anatomy as the LEFT tree's group header — a
+ * rotating chevron, the label, and the item count pushed right — because the
+ * two rails are one system and a reader shouldn't have to learn each side
+ * separately.
+ *
+ * These were bare text. They collapsed on click with no chevron, no count and
+ * no hover, so the only way to discover they were interactive was to click
+ * something that looked inert and watch the panel vanish. An affordance that
+ * only announces itself after you've used it isn't one.
+ */
+const SidebarSection = ({ sectionKey, label, count, collapsedSections, toggleSection, children }) => {
+  const isOpen = !collapsedSections[sectionKey]
+  return (
+    <div>
+      <button
+        type="button"
+        className="shell-nav-group-header w-full text-left shell-sidebar-label kol-doc-eyebrow"
+        onClick={() => toggleSection(sectionKey)}
+        aria-expanded={isOpen}
+      >
+        <span className="flex items-center gap-2">
+          <Icon
+            name="chevron-right"
+            size={12}
+            className={`transition-transform ${isOpen ? 'rotate-90' : ''}`}
+          />
+          {label}
+        </span>
+        {count > 0 && <span className="kol-mono-14 text-subtle">({count})</span>}
+      </button>
+      {isOpen && children}
+    </div>
+  )
+}
 
 const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, componentsHref, docFilePath }) => {
   const navigate = useNavigate()
@@ -34,6 +57,7 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
       <SidebarSection
         sectionKey="toc"
         label="On this page"
+        count={toc?.length}
         collapsedSections={collapsedSections}
         toggleSection={toggleSection}
       >
@@ -44,6 +68,7 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
         <SidebarSection
           sectionKey="related"
           label="Related"
+          count={related.length}
           collapsedSections={collapsedSections}
           toggleSection={toggleSection}
         >
@@ -100,6 +125,7 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
       {allTags.length > 0 && (
         <SidebarSection
           sectionKey="tags"
+          count={allTags?.length}
           label="Tags"
           collapsedSections={collapsedSections}
           toggleSection={toggleSection}

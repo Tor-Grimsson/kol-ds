@@ -80,7 +80,7 @@ export const FUNCTIONS_BY_NAME = {
   LabeledControl: 'input', Label: 'input',
   Badge: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
   ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
-  Table: 'display', SectionLabel: 'display', Icon: 'display',
+  Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   SideNav: 'navigation', ExitPreview: 'navigation',
   Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',

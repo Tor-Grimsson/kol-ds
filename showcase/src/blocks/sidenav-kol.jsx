@@ -6,6 +6,10 @@ export const meta = {
   description: 'The KOL app sidenav — icon hops with an expanding page tree',
   category: 'sidenav',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

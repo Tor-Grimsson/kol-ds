@@ -5,6 +5,10 @@ export const meta = {
   title: 'Work grid',
   description: 'A project index that toggles between a tilt-card shelf and a list view',
   category: 'content',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

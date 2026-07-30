@@ -51,7 +51,8 @@
   },
   "DocsToc": {
     "typeClasses": [
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-mono-14"
     ],
     "composes": []
   },
@@ -761,8 +762,7 @@
   "SideNav": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-12",
-      "kol-helper-14"
+      "kol-helper-12"
     ],
     "composes": [
       "ThemeToggle",

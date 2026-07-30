@@ -3,7 +3,26 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
 - **Real-world usages found:** 18 across 11 files in 4 apps
+- **Weighted inbound:** 33★ across 11 edges — 11×3★
 - **Used in:** kol-client-canalix-contract, kol-divs, kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-divs/src/pages/Box.jsx` |
+| 3 | 2 | `kol-apps/kol-divs/src/pages/Flex.jsx` |
+| 3 | 2 | `kol-apps/kol-divs/src/pages/Grid.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/divs/src/pages/Box.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/divs/src/pages/Flex.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/divs/src/pages/Grid.jsx` |
+| 3 | 2 | `kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx` |
+| 3 | 1 | `kol-apps/kol-client-canalix-contract/src/pages/foundations/Overview.jsx` |
+| 3 | 1 | `kol-apps/kol-divs/src/pages/Recipes.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/divs/src/pages/Recipes.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/workshop/Documentations.jsx` |
 
 ## Import
 

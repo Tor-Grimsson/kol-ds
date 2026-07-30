@@ -3,7 +3,23 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
 - **Real-world usages found:** 51 across 8 files in 6 apps
+- **Weighted inbound:** 29★ across 8 edges — 5×4★ · 3×3★
 - **Used in:** kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-editor, kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 14 | `kol-apps/kol-draw-3d/src/components/studio/InspectorPanel.jsx` |
+| 4 | 14 | `kol-apps/kol-labs-monorepo/apps/draw-3d/src/components/studio/InspectorPanel.jsx` |
+| 4 | 9 | `kol-apps/kol-client-acyr-website/apps/website/src/pages/site/Checkout.jsx` |
+| 4 | 5 | `kol-apps/kol-client-kolkrabbi/src/pages/Components.jsx` |
+| 4 | 5 | `kol-website/apps/brand/src/pages/Components.jsx` |
+| 3 | 2 | `kol-apps/kol-editor/src/pages/MoleculesPage.jsx` |
+| 3 | 1 | `kol-apps/kol-editor/src/components/organisms/InspectorPanel.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/editor/src/components/organisms/InspectorPanel.jsx` |
 
 ## Import
 

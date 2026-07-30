@@ -3273,7 +3273,7 @@
     {
       "prop": "fill",
       "type": "—",
-      "def": "'subtle'",
+      "def": "'none'",
       "desc": ""
     },
     {

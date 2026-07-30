@@ -1,5 +1,5 @@
 import { MDXProvider } from '@mdx-js/react'
-import { DocHeader } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { mdxComponents } from './mdx-components.jsx'
 import { MetaRows, Pager } from './component-page-parts.jsx'
 import { CATEGORY_LABELS } from './registry.js'
@@ -32,26 +32,19 @@ export default function MdxDoc({ module: mod, component }) {
   const title = meta.title ?? component?.name
   const lede = meta.lede ?? component?.description
 
-  /* Frontmatter panel (user ruling 2026-07-30): a doc's metadata is content,
-   * never hidden — same surface the vault reader gives every markdown doc.
-   * Renders whatever meta carries beyond the header fields. */
-  const fmEntries = Object.entries(meta).filter(([k]) => !['title', 'lede', 'eyebrow'].includes(k))
+  /* THE frontmatter panel — the same component the vault reader uses, not a
+   * second one. This file carried its own hand-rolled table with the opposite
+   * strategy (a denylist over `meta`) while the reader used an allowlist, so
+   * the two surfaces disagreed about what metadata even is. A doc's metadata
+   * is content and the renderer is one thing.
+   *
+   * `lede`/`eyebrow` are header inputs rather than metadata, so they stay out;
+   * everything else meta carries is printed. */
+  const { title: _t, lede: _l, eyebrow: _e, ...fmMeta } = meta
 
   return (
     <article className="flex w-full min-w-0 flex-col gap-10">
-      {fmEntries.length > 0 && (
-        <div className="docs-frontmatter border-b border-fg-08 pb-4">
-          <p className="shell-sidebar-label kol-doc-eyebrow">Frontmatter</p>
-          <div className="flex flex-col gap-1">
-            {fmEntries.map(([k, v]) => (
-              <div key={k} className="flex gap-6">
-                <span className="kol-mono-12 text-meta w-24 shrink-0">{k}</span>
-                <span className="kol-mono-12 text-body">{Array.isArray(v) ? v.join(' · ') : String(v)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}) }} />
       {(title || eyebrow) && (
         <DocHeader eyebrow={eyebrow} title={title} lede={lede} />
       )}

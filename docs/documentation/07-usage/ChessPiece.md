@@ -3,7 +3,21 @@
 - **Package:** `@kolkrabbi/kol-chess`
 - **Category:** flat
 - **Real-world usages found:** 10 across 6 files in 2 apps
+- **Weighted inbound:** 18★ across 6 edges — 6×3★
 - **Used in:** kol-client-kolkrabbi, kol-labs-monorepo
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/chess/apparatus/AlternativeControlsMock.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/chess/apparatus/ChessSidebar.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/chess/src/chess/apparatus/AlternativeControlsMock.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/chess/src/chess/apparatus/ChessSidebar.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/chess/apparatus/ChessBoard.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/chess/src/chess/apparatus/ChessBoard.jsx` |
 
 ## Import
 

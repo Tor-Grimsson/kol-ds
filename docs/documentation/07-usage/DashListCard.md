@@ -3,7 +3,24 @@
 - **Package:** `@kolkrabbi/kol-dashboards`
 - **Category:** cards
 - **Real-world usages found:** 46 across 9 files in 2 apps
+- **Weighted inbound:** 35★ across 9 edges — 8×4★ · 1×3★
 - **Used in:** kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 9 | `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx` |
+| 4 | 9 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx` |
+| 4 | 6 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/MetricsLive.jsx` |
+| 4 | 6 | `kol-website/apps/web/src/routes/Metrics.jsx` |
+| 4 | 5 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardMetrics.jsx` |
+| 4 | 3 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx` |
+| 4 | 3 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx` |
+| 4 | 3 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardPerformance.jsx` |
 
 ## Import
 
@@ -21,23 +38,7 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
       barColor="var(--kol-palette-green)" footer="Win/draw/loss percentages across all games" />
 ```
 
-From `kol-website/apps/web/src/routes/Metrics.jsx`:
-
-```jsx
-<DashListCard
-            className="h-full"
-            variant="meter"
-            title="Top hosts"
-            subtitle="By pageviews"
-            icon="dashboard-roadmap"
-            items={(topHosts || []).length > 0
-              ? topHosts.map(h => ({ ...h, detail: h.delta }))
-              : [{ label: 'No data yet', value: '—', percent: 0, color: 'var(--kol-palette-blue)' }]}
-            footer={`Subdomains — last ${rangeLabel}`}
-          />
-```
-
-From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
+From `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx`:
 
 ```jsx
 <DashListCard className="h-full" variant="meter" title="Time class share"
@@ -65,4 +66,11 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
       subtitle="Most frequent opponents" icon="dashboard-dual-opponent"
       badge={f.rivalItems[0]?.label ? `vs ${f.rivalItems[0].label}` : null}
       items={f.rivalItems} />
+```
+
+From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
+
+```jsx
+<DashListCard className="h-full" variant="ratings" title="Peak rating by mode"
+      icon="stat-crown" items={f.peakRatingItems} />
 ```

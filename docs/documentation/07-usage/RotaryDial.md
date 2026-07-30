@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 213 across 57 files in 6 apps
+- **Weighted inbound:** 212★ across 57 edges — 12×5★ · 17×4★ · 28×3★
 - **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 5 | 7 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/GeneratorModule.jsx` |
+| 5 | 5 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/DitherModule.jsx` |
+| 5 | 5 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/Geometry3DModule.jsx` |
+| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/EnvelopeModule.jsx` |
+| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/MathsModule.jsx` |
+| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RGBMixModule.jsx` |
+| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RandomSHModule.jsx` |
+| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/VideoMixConsoleModule.jsx` |
+| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/ClockModule.jsx` |
+| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/GateModule.jsx` |
+| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/LFOModule.jsx` |
+| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RGBSplitModule.jsx` |
+| … | | _45 more_ |
 
 ## Import
 

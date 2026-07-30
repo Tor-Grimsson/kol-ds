@@ -5,6 +5,10 @@ export const meta = {
   description: 'A landing hero: a frosted glass panel with eyebrow, title, lede and two actions over full-bleed cover media',
   category: 'hero',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

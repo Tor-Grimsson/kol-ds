@@ -157,9 +157,15 @@ const TagModeOverlay = () => {
                 {hasFilters && filteredDocs.length > 0 && (
                   <div className="flex flex-col pt-4 border-t border-fg-08">
                     {filteredDocs.map((d) => (
+                      /* `d.href` wins over `docHref(d.id)` so ONE tag system can
+                       * span content types that live in different URL spaces —
+                       * a vault doc at /documentation/:id and a component page
+                       * at /components/:slug. Without it the inventory could
+                       * only ever hold one kind of thing, which is why the
+                       * graph saw the vault's 46 docs and nothing else. */
                       <Link
                         key={d.id}
-                        to={docHref(d.id)}
+                        to={d.href ?? docHref(d.id)}
                         className="tag-list-item"
                         onClick={closeTagMode}
                       >

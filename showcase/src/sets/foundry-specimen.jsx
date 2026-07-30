@@ -14,6 +14,10 @@ export const meta = {
     'The full type-specimen apparatus — hero, live weight-axis playground, parsed-metric glyph inspector, character-set browser, size ladder, and a type-scale recipe.',
   category: 'foundry',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

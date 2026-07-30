@@ -12,6 +12,10 @@ export const meta = {
   description: 'A long-form STACK article — full-bleed hero, masthead, portable-text body, and a card index',
   category: 'editorial',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

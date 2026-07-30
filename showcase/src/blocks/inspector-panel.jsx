@@ -7,6 +7,10 @@ export const meta = {
   title: 'Inspector panel',
   description: 'An editor inspector with properties, sliders and swatches',
   category: 'panel',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'sm'
 

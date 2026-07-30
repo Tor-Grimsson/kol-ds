@@ -2,8 +2,29 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 293 across 81 files in 10 apps
+- **Real-world usages found:** 293 across 86 files in 10 apps
+- **Weighted inbound:** 284★ across 86 edges — 26×4★ · 60×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-canalix-contract, kol-client-kolkrabbi, kol-divs, kol-editor, kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 14 | `kol-apps/kol-client-ac/src/pages/Acyr.jsx` |
+| 4 | 14 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Acyr.jsx` |
+| 4 | 14 | `kol-apps/kol-client-kolkrabbi/src/pages/Acyr.jsx` |
+| 4 | 12 | `kol-website/_tmp/brand-triage-elder/pages/Kolkrabbi.jsx` |
+| 4 | 12 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
+| 4 | 10 | `kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx` |
+| 4 | 10 | `kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx` |
+| 4 | 9 | `kol-apps/kol-client-ac/src/pages/Styleguide.jsx` |
+| 4 | 9 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx` |
+| 4 | 9 | `kol-website/apps/brand/src/pages/Styleguide.jsx` |
+| 4 | 8 | `kol-apps/kol-client-ac/src/pages/Reference.jsx` |
+| 4 | 8 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx` |
+| … | | _74 more_ |
 
 ## Import
 

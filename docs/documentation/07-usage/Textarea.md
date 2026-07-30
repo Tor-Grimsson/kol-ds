@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 30 across 19 files in 7 apps
+- **Weighted inbound:** 60★ across 19 edges — 3×4★ · 16×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs-noter, kol-labs-monorepo, kol-labs-single, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 3 | `kol-apps/kol-client-kolkrabbi/src/pages/Components.jsx` |
+| 4 | 3 | `kol-apps/kol-docs-noter/src/components/note-editor/modular/BlockItem.tsx` |
+| 4 | 3 | `kol-website/apps/brand/src/pages/Components.jsx` |
+| 3 | 2 | `kol-apps/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/generator/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-website/_tmp/brand-triage-elder/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/editor/modes/pattern/PatternControls.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/site/Contact.jsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/pages/site/Handmade.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/modes/pattern/PatternControls.jsx` |
+| … | | _7 more_ |
 
 ## Import
 

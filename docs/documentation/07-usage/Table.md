@@ -2,8 +2,29 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 132 across 41 files in 12 apps
+- **Real-world usages found:** 130 across 41 files in 12 apps
+- **Weighted inbound:** 133★ across 41 edges — 10×4★ · 31×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 14 | `kol-apps/kol-client-ac/src/pages/Acyr.jsx` |
+| 4 | 14 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Acyr.jsx` |
+| 4 | 14 | `kol-apps/kol-client-kolkrabbi/src/pages/Acyr.jsx` |
+| 4 | 12 | `kol-website/_tmp/brand-triage-elder/pages/Kolkrabbi.jsx` |
+| 4 | 10 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/Colors.jsx` |
+| 4 | 8 | `kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx` |
+| 4 | 6 | `kol-website/apps/brand/src/pages/Reference.jsx` |
+| 4 | 5 | `kol-apps/kol-client-ac/src/pages/Reference.jsx` |
+| 4 | 5 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx` |
+| 4 | 5 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/Typography.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/molecules/TablePreview.jsx` |
+| 3 | 2 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules/TablePreview.jsx` |
+| … | | _29 more_ |
 
 ## Import
 
@@ -58,7 +79,7 @@ From `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules
           />
 ```
 
-From `kol-website/apps/web/src/components/workshop/molecules/TablePreview.jsx`:
+From `kol-website/_tmp/workshop-museum-elder/components/workshop/molecules/TablePreview.jsx`:
 
 ```jsx
 <Table

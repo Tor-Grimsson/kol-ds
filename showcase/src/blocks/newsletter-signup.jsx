@@ -4,6 +4,10 @@ export const meta = {
   title: 'Newsletter signup',
   description: 'A centered subscribe band with a working local submit that resolves to a success state',
   category: 'form',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

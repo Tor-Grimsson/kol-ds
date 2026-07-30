@@ -5,6 +5,10 @@ export const meta = {
   title: 'Workshop sidenav',
   description: 'A workshop sidenav with collapsible sections and quick actions',
   category: 'sidenav',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -3,7 +3,17 @@
 - **Package:** `@kolkrabbi/kol-foundry`
 - **Category:** flat
 - **Real-world usages found:** 15 across 2 files in 2 apps
+- **Weighted inbound:** 7★ across 2 edges — 1×4★ · 1×3★
 - **Used in:** kol-client-canalix, kol-client-canalix-contract
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 13 | `kol-apps/kol-client-canalix/src/_archive/pages/Typography.jsx` |
+| 3 | 2 | `kol-apps/kol-client-canalix-contract/src/pages/foundations/Typography.jsx` |
 
 ## Import
 

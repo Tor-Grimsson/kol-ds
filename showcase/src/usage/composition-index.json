@@ -1,0 +1,2877 @@
+{
+  "packages/brand/src/svg/AssetLoader.jsx": [
+    {
+      "target": "Graphic",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/AlternativeControlsMock.jsx": [
+    {
+      "target": "NotationPanel",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PlaybackControls",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SetupPanel",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PiecePalette",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GamePicker",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MaterialSummary",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessAnalysisLayout.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ChessBoardWithControls",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GameArchiveTable",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessBoard.jsx": [
+    {
+      "target": "ChessPiece",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessBoardFullscreen.jsx": [
+    {
+      "target": "ChessBoard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ChessSidebar",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessBoardWithControls.jsx": [
+    {
+      "target": "ChessBoard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AlternativeControlsMock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessBoardWithSidebar.jsx": [
+    {
+      "target": "ChessBoard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ChessSidebar",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/ChessSidebar.jsx": [
+    {
+      "target": "ChessPiece",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/GameArchiveTable.jsx": [
+    {
+      "target": "Dropdown",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/GamePicker.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/MaterialSummary.jsx": [
+    {
+      "target": "ChessPiece",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/NotationPanel.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/PiecePalette.jsx": [
+    {
+      "target": "ChessPiece",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/PlaybackControls.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/apparatus/SetupPanel.jsx": [
+    {
+      "target": "Button",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "Dropdown",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/chess/src/dashboards/ChessHero.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Badge.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/IconFrame.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Input.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/LabeledControl.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Popover.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/SearchInput.jsx": [
+    {
+      "target": "Icon",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "packages/component/src/atoms/SectionLabel.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Stepper.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Tag.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/Textarea.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/ViewToggle.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/graphics/Graphic.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/graphics/graphicData.js": [
+    {
+      "target": "Graphic",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Accordion.jsx": [
+    {
+      "target": "AccordionPanel",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/AlignmentGrid.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/CardFeatureItem.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/CodeBlock.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ColorInputRow.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ColorRamp.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ColorSwatch.jsx": [
+    {
+      "target": "TransparentX",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Dropdown.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "MenuDropdownItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/FramedMediaBand.jsx": [
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Image.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ImageBlock.jsx": [
+    {
+      "target": "Figure",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/MediaCard.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/MenuItem.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Modal.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/PropertyInput.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Label",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Stepper",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ShapeDropdown.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "MenuDropdownItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ShellDrawer.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ShellSearchOverlay.jsx": [
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Slider.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/SpecList.jsx": [
+    {
+      "target": "Divider",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "packages/component/src/molecules/SpectrumControls.jsx": [
+    {
+      "target": "HueStrip",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SBSquare",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "WheelTriangle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/SplitToolButton.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/SwatchControls.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SwatchStack",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "EyedropPick",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/TabsRow.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/VideoBlock.jsx": [
+    {
+      "target": "Figure",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/BentoCard.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/Canvas.jsx": [
+    {
+      "target": "CanvasFrame",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PanViewport",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/ContentFilters.jsx": [
+    {
+      "target": "Icon",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Divider",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ViewToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/EditorShell.jsx": [
+    {
+      "target": "Divider",
+      "uses": 5,
+      "stars": 5
+    }
+  ],
+  "packages/component/src/organisms/ErrorBoundary.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/FeaturedCarousel.jsx": [
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/FeaturesCardSection.jsx": [
+    {
+      "target": "CardFeatureItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/FoundryCTA.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/FullBleedHero.jsx": [
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/GalleryCarousel.jsx": [
+    {
+      "target": "Carousel",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaViewer",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/LoaderOverlay.jsx": [
+    {
+      "target": "FullscreenOverlay",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorLoader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/MediaTileGallery.jsx": [
+    {
+      "target": "MediaViewer",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/MediaViewer.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "FullscreenOverlay",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/NewsletterBand.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SpectrumGrid.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/ArticleCard.jsx": [
+    {
+      "target": "Pill",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/ArticleHeader.jsx": [
+    {
+      "target": "Pill",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AuthorLine",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/AuthorLine.jsx": [
+    {
+      "target": "Avatar",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/ParallaxShelf.jsx": [
+    {
+      "target": "WorkCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/PortableTextRenderer.jsx": [
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ImageBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "VideoBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/ShareButtons.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/StackHero.jsx": [
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FullBleedHero",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/WorkCard.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TiltCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/WorkListItem.jsx": [
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/content/src/WorkViewToggle.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/MetricsDashboard.jsx": [
+    {
+      "target": "DashMetricCard",
+      "uses": 30,
+      "stars": 4
+    },
+    {
+      "target": "DashListCard",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "Sparkline",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "SegmentedToggle",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "DashTableCard",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "DashChartCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "DonutChart",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "DashStackedBarCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashFeaturedCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "LineChart",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Heatmap",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashAlertCard.jsx": [
+    {
+      "target": "Badge",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashChartCard.jsx": [
+    {
+      "target": "Badge",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashFeaturedCard.jsx": [
+    {
+      "target": "Badge",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashListCard.jsx": [
+    {
+      "target": "Badge",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashStackedBarCard.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/DashTableCard.jsx": [
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/cards/_shared/CardHeader.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/charts/DonutChart.jsx": [
+    {
+      "target": "DashTooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/charts/Heatmap.jsx": [
+    {
+      "target": "DashTooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/charts/Histogram.jsx": [
+    {
+      "target": "DashTooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/charts/LineChart.jsx": [
+    {
+      "target": "DashTooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/dashboards/src/charts/ScatterPlot.jsx": [
+    {
+      "target": "DashTooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/ColorLoader.jsx": [
+    {
+      "target": "TextPressure",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/FontPreviewSection.jsx": [
+    {
+      "target": "Slider",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/FoundryCharacterSets.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GlyphItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/GlyphMetricsGrid.jsx": [
+    {
+      "target": "Tag",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/GlyphMetricsSection.jsx": [
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GlyphMetricsGrid",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/SpecimenSectionHeader.jsx": [
+    {
+      "target": "Dropdown",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceHero.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Pill",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceLibraryGrid.jsx": [
+    {
+      "target": "ContentFilters",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceLibraryGridWithVariables.jsx": [
+    {
+      "target": "TypefaceLibraryItem",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "TypefaceVariablePreview",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ContentFilters",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceSpecimenPage.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TypefaceStyleSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FontPreviewSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "VariableFontSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GlyphMetricsSection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceStyleSection.jsx": [
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/TypefaceVariablePreview.jsx": [
+    {
+      "target": "Slider",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "packages/foundry/src/VariableFontSection.jsx": [
+    {
+      "target": "Pill",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/AppShell.jsx": [
+    {
+      "target": "SideNav",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/Layout.jsx": [
+    {
+      "target": "ExitPreview",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ScrollToTop",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/PageSection.jsx": [
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/ShellHeader.jsx": [
+    {
+      "target": "Tooltip",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "ThemeToggle",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/SideNav.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ThemeToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/framework/src/ThemeToggle.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/icons/src/iconData.js": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/icons/src/index.js": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/store/src/PrintBuyButton.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "packages/store/src/PrintsGrid.jsx": [
+    {
+      "target": "ContentFilters",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PrintGridCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/store/src/ProductDetailLayout.jsx": [
+    {
+      "target": "Dropdown",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Pill",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "QuantityInput",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecList",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TabsRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PriceDisplay",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/styleguide/src/AssetTable.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/styleguide/src/ColorAnatomy.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/styleguide/src/ComboLab.jsx": [
+    {
+      "target": "ViewToggle",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "packages/styleguide/src/LogoCard.jsx": [
+    {
+      "target": "ClearspaceDiagram",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ToggleSwitch",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/styleguide/src/comboMath.js": [
+    {
+      "target": "ComboLab",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/compositions/WorkshopDefaultSidebar.jsx": [
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 5
+    }
+  ],
+  "packages/workshop/src/compositions/WorkshopSidebar.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellSidebar",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/docs/DocKit.jsx": [
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/docs/DocsFrontmatter.jsx": [
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/docs/DocumentationReader.jsx": [
+    {
+      "target": "Icon",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocsToc",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocsArticle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocsHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocsFrontmatter",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocSection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/shell/ShellLayout.jsx": [
+    {
+      "target": "ShellSidebar",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellDrawer",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellSearchOverlay",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/shell/ShellSidebar.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/tags/TagModeGate.jsx": [
+    {
+      "target": "TagModeOverlay",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/tags/TagModeOverlay.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Tooltip",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagGraph",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/tags/index.js": [
+    {
+      "target": "TagModeGate",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagModeProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/App.jsx": [
+    {
+      "target": "DocumentationReader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagModeGate",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagModeProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/article-grid.jsx": [
+    {
+      "target": "ArticleCard",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/blocks/bento-wall.jsx": [
+    {
+      "target": "BentoCard",
+      "uses": 5,
+      "stars": 5
+    }
+  ],
+  "showcase/src/blocks/color-picker.jsx": [
+    {
+      "target": "Section",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Divider",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ColorInputRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpectrumControls",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SwatchControls",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/color-tools.jsx": [
+    {
+      "target": "ColorInputRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShapeDropdown",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TabsRow",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/command-palette.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellSearchOverlay",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/cta-band.jsx": [
+    {
+      "target": "CtaGlobal",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/feature-showcase.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "FeaturesCardSection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/filter-bar.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ViewToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/hero-full-bleed.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/inspector-panel.jsx": [
+    {
+      "target": "Section",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Divider",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "PropertyInput",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "LabeledControl",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SegmentedToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/media-carousel.jsx": [
+    {
+      "target": "FeaturedCarousel",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/newsletter-signup.jsx": [
+    {
+      "target": "NewsletterBand",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/palette-reference.jsx": [
+    {
+      "target": "ColorRamp",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "SpectrumGrid",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/product-panel.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/settings-form.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Divider",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "LabeledControl",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ToggleSwitch",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Textarea",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/shell-topbar.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/blocks/sidenav-docs.jsx": [
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/sidenav-kol.jsx": [
+    {
+      "target": "Icon",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/blocks/sidenav-workshop.jsx": [
+    {
+      "target": "Icon",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "Section",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/site-footer.jsx": [
+    {
+      "target": "PortalFooter",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/type-scale.jsx": [
+    {
+      "target": "TypeSample",
+      "uses": 7,
+      "stars": 4
+    },
+    {
+      "target": "TypeSpecCard",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/blocks/work-grid.jsx": [
+    {
+      "target": "WorkCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WorkListItem",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WorkViewToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/Accordion.jsx": [
+    {
+      "target": "AccordionPanel",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/AccordionPanel.jsx": [
+    {
+      "target": "Accordion",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/AlternativeControlsMock.jsx": [
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/AnimatedTitle.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/AsciiCursor.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/AssetGrid.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/BadgeSizes.jsx": [
+    {
+      "target": "Badge",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/BadgeWithIcon.jsx": [
+    {
+      "target": "Badge",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/ButtonGroup.jsx": [
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/ButtonPressed.jsx": [
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/ChessBoardFullscreen.jsx": [
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ChessSidebar.jsx": [
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/CodeBlock.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ColorLoader.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/DashChartCard.jsx": [
+    {
+      "target": "DonutChart",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/DashFeaturedCard.jsx": [
+    {
+      "target": "LineChart",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/DashMetricCard.jsx": [
+    {
+      "target": "Sparkline",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/DashSlotCard.jsx": [
+    {
+      "target": "LineChart",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/DashboardGrid.jsx": [
+    {
+      "target": "GridCard",
+      "uses": 7,
+      "stars": 4
+    },
+    {
+      "target": "DashMetricCard",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "DashChartCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Sparkline",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "LineChart",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DonutChart",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/EditorShell.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ErrorBoundary.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/FeatureSplit.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/FeaturesCardSection.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/FullBleedHero.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "OverlayGlassPanel",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/FullscreenOverlay.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
+  "showcase/src/demos/GridCard.jsx": [
+    {
+      "target": "DashboardGrid",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/LabeledControl.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/LoaderOverlay.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorLoader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MediaCard.jsx": [
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MediaRow.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MediaViewer.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MenuDropdownDivider.jsx": [
+    {
+      "target": "MenuDropdownItem",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "MenuItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MenuDropdownItem.jsx": [
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "MenuItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MenuDropdownNest.jsx": [
+    {
+      "target": "MenuDropdownItem",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "MenuItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MenuItem.jsx": [
+    {
+      "target": "MenuDropdownItem",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "MenuDropdownDivider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/OverlayGlassPanel.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/PlaybackControls.jsx": [
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ProductDetailLayout.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ShellDrawer.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ShellSearchOverlay.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SpectrumControls.jsx": [
+    {
+      "target": "WheelTriangle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SplitToolButton.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SwatchControls.jsx": [
+    {
+      "target": "EyedropPick",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SwatchStack",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/Tooltip.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/TypeSpecCard.jsx": [
+    {
+      "target": "TypeSample",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/TypefaceLibraryGrid.jsx": [
+    {
+      "target": "TypefaceLibraryItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/VariationTree.jsx": [
+    {
+      "target": "ChessControlsProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/BlockViewer.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/CollectionLanding.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ViewToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/CollectionPage.jsx": [
+    {
+      "target": "DocHeader",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ErrorBoundary",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocsFrontmatter",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/DemoStage.jsx": [
+    {
+      "target": "ErrorBoundary",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/MdxDoc.jsx": [
+    {
+      "target": "DocsFrontmatter",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/PreviewCard.jsx": [
+    {
+      "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/RampTuner.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorInputRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpectrumControls",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/ShellChrome.jsx": [
+    {
+      "target": "ShellSidebar",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SegmentedToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellLayout",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/component-page-parts.jsx": [
+    {
+      "target": "CodeBlock",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/lib/mdx-components.jsx": [
+    {
+      "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocTable",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/ComponentPage.jsx": [
+    {
+      "target": "DocSection",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocTable",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Components.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Demo.jsx": [
+    {
+      "target": "ChessAnalysisLayout",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ThemeToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/DocsTypeRoles.jsx": [
+    {
+      "target": "DocSection",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "DocHeader",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "CodeBlock",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocTable",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Foundations.jsx": [
+    {
+      "target": "DocSection",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/FoundationsColor.jsx": [
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/FoundationsTypography.jsx": [
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocSection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Home.jsx": [
+    {
+      "target": "DashMetricCard",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "DashListCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Sparkline",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ErrorBoundary",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashStackedBarCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashChartCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashFeaturedCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashAlertCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DashTableCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "LineChart",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DonutChart",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Icons.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Lobby.jsx": [
+    {
+      "target": "DocumentationReader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/WorkshopDocsPreview.jsx": [
+    {
+      "target": "ShellLayout",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocumentationReader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagModeProvider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/chess-apparatus.jsx": [
+    {
+      "target": "ChessAnalysisLayout",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/design-editor.jsx": [
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "EmptyState",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AlignmentGrid",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SelectionOverlay",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorInputRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TabsRow",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/foundry-specimen.jsx": [
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TypefaceHero",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FontPreviewSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "VariableFontSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "GlyphMetricsGrid",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FoundryCharacterSets",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/metrics-dashboard.jsx": [
+    {
+      "target": "MetricsDashboard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/prints-store.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DiagonalMarqueeRiver",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/stack-blog.jsx": [
+    {
+      "target": "ArticleCard",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "StackHero",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ArticleHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PortableTextRenderer",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShareButtons",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SourcesReferences",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/styleguide.jsx": [
+    {
+      "target": "Section",
+      "uses": 9,
+      "stars": 4
+    },
+    {
+      "target": "ColorRamp",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "MoodTile",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "ColorAnatomy",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "TypeBlock",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "ColorInputRow",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "AssetGrid",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ProsePreview",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FeatureSplit",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpectrumGrid",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TypeSample",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AssetTable",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "LogoCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "LogoScaling",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ComboLab",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/work-portfolio.jsx": [
+    {
+      "target": "GalleryCarousel",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WorkCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WorkListItem",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WorkViewToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ParallaxShelf",
+      "uses": 1,
+      "stars": 3
+    }
+  ]
+}

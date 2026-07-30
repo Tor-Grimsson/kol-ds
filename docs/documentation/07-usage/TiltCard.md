@@ -3,7 +3,26 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 13 across 11 files in 6 apps
+- **Weighted inbound:** 33★ across 11 edges — 11×3★
 - **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/animations/InteractivePreview.jsx` |
+| 3 | 2 | `kol-website/_tmp/workshop-museum-elder/components/workshop/animations/InteractivePreview.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/work/ShelfCard.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-apps/kol-mirror/src/components/styleguide/preview/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-apps/kol-modulator/src/components/styleguide/preview/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/preview/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-apps/kol-monitor/a_torg/archive/jsx/ShelfCard.jsx` |
+| 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/organisms/CardResp.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/foundry/components/FoundryFeatureSection.jsx` |
 
 ## Import
 
@@ -33,7 +52,7 @@ From `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/organisms
           />
 ```
 
-From `kol-website/apps/web/src/components/workshop/animations/InteractivePreview.jsx`:
+From `kol-website/_tmp/workshop-museum-elder/components/workshop/animations/InteractivePreview.jsx`:
 
 ```jsx
 <TiltCard

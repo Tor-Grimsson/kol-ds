@@ -3,7 +3,23 @@
 - **Package:** `@kolkrabbi/kol-dashboards`
 - **Category:** cards
 - **Real-world usages found:** 8 across 8 files in 2 apps
+- **Weighted inbound:** 24★ across 8 edges — 8×3★
 - **Used in:** kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardMetrics.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/MetricsLive.jsx` |
+| 3 | 1 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/Metrics.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
 
 ## Import
 
@@ -68,19 +84,19 @@ From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardMetrics.jsx`:
                   ? <LineChart series={dailyToSeries(dailyVisits)} height={200} showArea />
 ```
 
-From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx`:
+From `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx`:
 
 ```jsx
 <DashFeaturedCard
-                badge="TOP OPENING"
-                title="King's Gambit"
-                icon="dashboard-book-open"
-                description="Your most successful opening with 58% win rate across 234 games."
-                metricLabel="Games tracked"
-                metricValue="234"
-                legends={[
-                  { label: 'Win rate', color: 'var(--kol-palette-green)' },
-                  { label: 'Usage volume', color: 'var(--kol-palette-orange)' },
-                ]}
-              />
+            badge="TOP OPENING"
+            title="King's Gambit"
+            icon="book-open"
+            description="Your most successful opening with 58% win rate across 234 games."
+            metricLabel="Games tracked"
+            metricValue="234"
+            legends={[
+              { label: 'Win rate', color: 'var(--kol-palette-green)' },
+              { label: 'Usage volume', color: 'var(--kol-palette-orange)' },
+            ]}
+          />
 ```

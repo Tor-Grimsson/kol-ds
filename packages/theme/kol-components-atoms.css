@@ -867,3 +867,124 @@ a:hover .icon-hover,
   border-top: 1px solid var(--kol-fg-08);
   border-bottom: 1px solid var(--kol-fg-08);
 }
+
+/* ───── IconFrame — a static square frame holding one icon ─────
+ * Promoted 2026-07-30 from kol-website's SectionTitle, where the pattern was an
+ * anonymous <span> wearing `kol-btn kol-btn-secondary kol-btn-md kol-btn-icon`.
+ *
+ * These classes exist INSTEAD of reusing kol-btn-*, and that is the whole point
+ * of the component. On a <span>, the button's hover/active/focus/disabled rules
+ * are suppressed by the ELEMENT — "no states" was an accident of the tag, one
+ * element change away from leaking back. Here there are simply no state rules
+ * to inherit: no :hover, no :active, no :focus-visible, no :disabled, no
+ * transition, no cursor.
+ *
+ * Background/foreground/geometry are byte-identical to the kol-btn equivalents
+ * (declarations mirrored from .kol-btn-{variant} above and the pinned squares
+ * at .kol-btn-icon.kol-btn-{size}), so surfaces that migrate don't shift a
+ * pixel. `primary` and `secondary` are inverse pairs — they flip with the theme
+ * from the tokens alone, no per-theme props. */
+.kol-icon-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+  border-radius: var(--kol-radius-sm);
+  padding: 0;
+}
+
+/* pinned squares — the box never moves with glyph size (user law 2026-07-28) */
+.kol-icon-frame-sm { width: 28px; height: 28px; }
+.kol-icon-frame-md { width: 32px; height: 32px; }
+.kol-icon-frame-lg { width: 36px; height: 36px; }
+
+.kol-icon-frame-primary {
+  background: var(--kol-surface-secondary);
+  color: var(--kol-surface-on-primary);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-secondary {
+  background: var(--kol-surface-on-primary);
+  color: var(--kol-surface-primary);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-accent {
+  background: var(--kol-accent-primary);
+  color: var(--kol-accent-on-primary);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-outline {
+  background: transparent;
+  color: var(--kol-surface-on-primary);
+  border: 1px solid var(--kol-oq-16);
+}
+.kol-icon-frame-ghost {
+  background: transparent;
+  color: var(--kol-oq-48);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-nav {
+  background: transparent;
+  color: var(--kol-oq-64);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-grey {
+  background: var(--kol-oq-12);
+  color: var(--kol-surface-on-primary);
+  border: 1px solid transparent;
+}
+.kol-icon-frame-danger {
+  background: var(--ui-error);
+  color: var(--kol-color-absolute-white);
+  border: 1px solid transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * ThemeToggle — .kol-theme-toggle
+ *
+ * A two-position switch, NOT a button (user ruling 2026-07-30):
+ * *"REMOVE ALL STATES, no fucking hover… no variant at all should have an
+ * interactive state — it's just a click 1-2, and it's themed."*
+ *
+ * It used to emit `.kol-btn` + `.kol-btn-nav`/`.kol-btn-primary`, which dragged
+ * the whole button state machine along: the base transition + focus ring, and
+ * the per-variant :hover wash and [aria-current] shift. Those three classes are
+ * the only state sources — the SIZE classes are pure padding and stay.
+ *
+ * Same disease IconFrame was cured of above: borrow geometry, inherit states.
+ * Resting appearance is byte-identical to what it replaced, so no consumer
+ * shifts a pixel; there is simply nothing to transition to.
+ * ═══════════════════════════════════════════════════════════════ */
+
+.kol-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--kol-radius-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* fill="none" — mirrors .kol-btn-nav at rest */
+.kol-theme-toggle-none {
+  background: transparent;
+  color: var(--kol-oq-64);
+  border: 1px solid transparent;
+}
+
+/* fill="subtle" — mirrors .kol-btn-primary at rest */
+.kol-theme-toggle-subtle {
+  background: var(--kol-surface-secondary);
+  color: var(--kol-surface-on-primary);
+  border: 1px solid transparent;
+}
+
+/* flush — no pad, no radius, no fill, ever */
+.kol-theme-toggle-flush {
+  background: transparent;
+  color: var(--kol-surface-on-primary);
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}

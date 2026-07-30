@@ -6,6 +6,10 @@ export const meta = {
   description: 'The KOL metrics dashboard — KPI cards, charts, deploys, and storage panels',
   category: 'dashboard',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

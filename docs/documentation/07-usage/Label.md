@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
 - **Real-world usages found:** 30 across 23 files in 15 apps
+- **Weighted inbound:** 69★ across 23 edges — 23×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-docs-noter, kol-draw-3d, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx` |
+| 3 | 2 | `kol-apps/kol-docs-noter/src/components/vault-system/MigrationWizard.tsx` |
+| 3 | 2 | `kol-apps/kol-editor/src/pages/AtomsPage.jsx` |
+| 3 | 2 | `kol-apps/kol-editor/src/pages/ComponentShowcase.jsx` |
+| 3 | 2 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx` |
+| 3 | 2 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/UserProfile.tsx` |
+| 3 | 2 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx` |
+| 3 | 1 | `kol-apps/kol-client-ac/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-hrafn/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/molecules/PropertyInput.jsx` |
+| 3 | 1 | `kol-apps/kol-docs-noter/src/components/ui/form.tsx` |
+| … | | _11 more_ |
 
 ## Import
 

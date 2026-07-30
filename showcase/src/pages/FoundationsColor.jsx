@@ -3,6 +3,7 @@ import { Table } from '@kolkrabbi/kol-component'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import { resolveCssVar, resolveTokenThemed } from '../lib/resolve-css-var.jsx'
 import { BRAND_COLORS_SECTIONS, UI_COLORS_SECTIONS } from '../data/color.js'
+import RampTuner from '../lib/RampTuner.jsx'
 
 /**
  * FoundationsColor — the KOL color token reference, ported from the brand
@@ -125,7 +126,33 @@ function SystemSection({ section, columnsDict }) {
 // ─── Page ────────────────────────────────────────────────────────
 
 
+/* The ramp the tuner starts from is READ FROM THE THEME, never transcribed —
+ * same rule as every other value on this page, and the reason
+ * `pnpm validate:foundations` exists. A hardcoded starting ramp would be a
+ * copy that silently stops matching kol-brand-color.css. */
+const RED_STOPS = [100, 200, 300, 400, 500]
+
+function useRedRamp() {
+  const [ramp, setRamp] = useState(null)
+  useEffect(() => {
+    const read = () => {
+      const next = {}
+      for (const s of RED_STOPS) {
+        const v = resolveCssVar(`--kol-color-red-${s}`)
+        if (v) next[s] = v.toUpperCase()
+      }
+      setRamp(Object.keys(next).length === RED_STOPS.length ? next : null)
+    }
+    read()
+    const obs = new MutationObserver(read)
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] })
+    return () => obs.disconnect()
+  }, [])
+  return ramp
+}
+
 export default function FoundationsColor() {
+  const redRamp = useRedRamp()
   return (
     <>
       <DocHeader
@@ -138,6 +165,30 @@ export default function FoundationsColor() {
       {BRAND_COLORS_SECTIONS.map((section) => (
         <SystemSection key={section.id} section={section} columnsDict={COLOR_COLUMNS} />
       ))}
+
+      <DocSection
+        id="tune-red"
+        title="Tune the rust anchor"
+        lede="Retune red-200 in the page that documents it. The other four stops hold their measured offsets from the anchor, so the ramp moves as one — or turn that off and move the anchor alone. Nothing is written to the theme: kol-brand-color.css is a source file, so this hands over the CSS to paste."
+      >
+        {redRamp ? (
+          <RampTuner
+            name="Red — rust / terracotta. ★ anchor at 200 (light-side)."
+            cssVarPrefix="--kol-color-red"
+            anchor={200}
+            stops={redRamp}
+            notes={{
+              100: 'light rust',
+              200: 'anchor · brand secondary',
+              500: 'deepest rust',
+            }}
+          />
+        ) : (
+          <p className="kol-mono-12 text-meta">
+            Ramp unavailable — <code>--kol-color-red-*</code> did not resolve from the loaded theme.
+          </p>
+        )}
+      </DocSection>
 
       {/* UI colors — chrome layer (surface · state · absolute · fg-* opacity) */}
       {UI_COLORS_SECTIONS.map((section) => (

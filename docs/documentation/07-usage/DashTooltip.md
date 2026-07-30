@@ -3,7 +3,25 @@
 - **Package:** `@kolkrabbi/kol-dashboards`
 - **Category:** shared
 - **Real-world usages found:** 10 across 10 files in 2 apps
+- **Weighted inbound:** 30★ across 10 edges — 10×3★
 - **Used in:** kol-client-kolkrabbi, kol-labs-monorepo
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/dashboards/charts/DonutChart.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/dashboards/charts/Heatmap.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/dashboards/charts/Histogram.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/dashboards/charts/LineChart.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/dashboards/charts/ScatterPlot.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/packages/dashboards/src/charts/DonutChart.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/packages/dashboards/src/charts/Heatmap.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/packages/dashboards/src/charts/Histogram.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/packages/dashboards/src/charts/LineChart.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/packages/dashboards/src/charts/ScatterPlot.jsx` |
 
 ## Import
 

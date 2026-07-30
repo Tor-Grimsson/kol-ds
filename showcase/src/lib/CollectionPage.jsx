@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom'
-import { DocHeader } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { DEMOS } from './demos-registry.js'
 import { slugify, getComponentBySlug, FUNCTIONS } from './registry.js'
+
+/** drop keys the page already renders as chrome, so nothing prints twice */
+const omit = (obj = {}, keys) =>
+  Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k)))
 
 /**
  * CollectionPage — the dedicated page for ONE collection item (block or set)
@@ -120,6 +124,13 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
 
   return (
     <>
+      {/* THE frontmatter panel — the same component the vault reader and every
+        * MDX page use. Sets and blocks are JSX modules, not markdown, so their
+        * contract lives in the module's `meta` export; converged 2026-07-30 so
+        * one panel serves all three surfaces instead of one surface showing
+        * nothing. `title`/`description` are already the header, so they're
+        * dropped here rather than printed twice. */}
+      <DocsFrontmatter metadata={omit(entry.meta, ['title', 'description'])} />
       <DocHeader
         eyebrow={`${eyebrow} · ${labels[entry.category] ?? entry.category}`}
         title={entry.title}

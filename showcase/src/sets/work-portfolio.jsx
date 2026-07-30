@@ -9,6 +9,10 @@ export const meta = {
   description: 'A studio work index — a WorkCard shelf/grid toggling to a WorkListItem list, a scroll-parallax "more work" shelf, and a project-detail GalleryCarousel',
   category: 'portfolio',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

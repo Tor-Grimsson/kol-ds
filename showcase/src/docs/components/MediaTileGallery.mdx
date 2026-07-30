@@ -1,6 +1,24 @@
 export const meta = {
-  id: '2.27.0',
-  slug: 'media-tile-gallery',
+  id: "2.27.0",
+  slug: "media-tile-gallery",
+  title: "MediaTileGallery",
+  type: "reference",
+  status: "active",
+  updated: "2026-07-30",
+  tags: [
+    "domain/components",
+    "domain/components/organisms",
+    "domain/design-system",
+    "domain/layout",
+    "pattern/media",
+  ],
+  description: "A stack or grid of framed media tiles that open THE shared fullscreen MediaViewer at the clicked tile, paged across all items (the monorepo's FullscreenGallery recreated on the shared viewer instead of its nav-less single image; the AssetFigure/AssetGrid deps are dropped — tile and grid are inlined).",
+  aliases: [
+    "mediatilegallery",
+  ],
+  reuses: [
+    "MediaViewer 3★",
+  ],
 }
 
 <Preview name="MediaTileGallery" />

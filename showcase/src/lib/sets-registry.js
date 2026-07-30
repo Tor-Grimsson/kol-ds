@@ -23,6 +23,10 @@ export const SETS = Object.entries(modules)
     description: mod.meta?.description || '',
     category: mod.meta?.category || 'other',
     featured: mod.meta?.featured || false,
+    /* the kol-docs contract, carried through so set/block pages render THE
+     * frontmatter panel the vault and MDX pages render (2026-07-30 converge —
+     * these modules were the third of three unrelated metadata dialects) */
+    meta: mod.meta ?? {},
     /* Scanner-derived manifest (scripts/extract-composition.mjs → pnpm extract:docs) */
     composition: COMPOSITION.sets?.[keyOf(path)] ?? null,
   }))

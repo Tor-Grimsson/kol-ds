@@ -2,8 +2,29 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 64 across 30 files in 15 apps
+- **Real-world usages found:** 89 across 42 files in 15 apps
+- **Weighted inbound:** 144★ across 42 edges — 4×5★ · 10×4★ · 28×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-docs-noter, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-video-editor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 5 | 5 | `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess-elite.jsx` |
+| 5 | 5 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess-elite.jsx` |
+| 5 | 4 | `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess-experimental.jsx` |
+| 5 | 4 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess-experimental.jsx` |
+| 4 | 4 | `kol-apps/kol-docs-noter/src/components/app-shell/ExplorerSidebar.tsx` |
+| 4 | 4 | `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess.jsx` |
+| 4 | 4 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
+| 4 | 4 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
+| 4 | 4 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
+| 4 | 4 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess.jsx` |
+| 4 | 4 | `kol-website/apps/web/src/components/layout/Navbar.jsx` |
+| 4 | 4 | `kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx` |
+| … | | _30 more_ |
 
 ## Import
 

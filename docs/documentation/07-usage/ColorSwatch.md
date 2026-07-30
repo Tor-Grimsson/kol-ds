@@ -3,7 +3,28 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
 - **Real-world usages found:** 59 across 39 files in 11 apps
+- **Weighted inbound:** 119★ across 39 edges — 2×4★ · 37×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 6 | `kol-apps/kol-client-kolkrabbi/src/pages/Components.jsx` |
+| 4 | 6 | `kol-website/apps/brand/src/pages/Components.jsx` |
+| 3 | 2 | `kol-apps/kol-client-ac/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-client-ac/src/editor/modes/type/TypeControls.jsx` |
+| 3 | 2 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/modes/type/TypeControls.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-client-kolkrabbi/src/editor/modes/type/TypeControls.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/generator/src/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/generator/src/editor/modes/type/TypeControls.jsx` |
+| 3 | 2 | `kol-website/_tmp/brand-triage-elder/editor/compose/inspectors/LayerInspector.jsx` |
+| 3 | 2 | `kol-website/_tmp/brand-triage-elder/editor/modes/type/TypeControls.jsx` |
+| … | | _27 more_ |
 
 ## Import
 

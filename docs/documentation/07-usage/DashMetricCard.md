@@ -3,7 +3,25 @@
 - **Package:** `@kolkrabbi/kol-dashboards`
 - **Category:** cards
 - **Real-world usages found:** 133 across 10 files in 2 apps
+- **Weighted inbound:** 39★ across 10 edges — 9×4★ · 1×3★
 - **Used in:** kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 4 | 30 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/MetricsLive.jsx` |
+| 4 | 30 | `kol-website/apps/web/src/routes/Metrics.jsx` |
+| 4 | 28 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardMetrics.jsx` |
+| 4 | 12 | `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx` |
+| 4 | 12 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx` |
+| 4 | 6 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx` |
+| 4 | 6 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardPerformance.jsx` |
+| 4 | 4 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx` |
+| 4 | 4 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/workshop/DashboardMetricsSetup.jsx` |
 
 ## Import
 
@@ -20,19 +38,7 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
       delta={`${l.wins.toLocaleString()} wins`} borderColor="var(--kol-palette-green)" />
 ```
 
-From `kol-website/apps/web/src/routes/Metrics.jsx`:
-
-```jsx
-<DashMetricCard
-      className="h-full"
-      label={`${label} — ${host}`}
-      value={visitors}
-      delta={delta}
-      borderColor={borderColor}
-      sparkline={data?.trend?.length > 2 ? <Sparkline data={data.trend} height={24} fill color={borderColor} />
-```
-
-From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
+From `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx`:
 
 ```jsx
 <DashMetricCard className="h-full" label="Draw rate" value={`${l.drawRate.toFixed(1)}%`}
@@ -53,4 +59,11 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
 ```jsx
 <DashMetricCard className="h-full" label="Total games" value={formatCompactNumber(l.totalGames)}
       delta={`${l.uniqueOpponents.toLocaleString()} opponents`} borderColor="var(--kol-palette-orange)" />
+```
+
+From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
+
+```jsx
+<DashMetricCard className="h-full" label="Months tracked" value={l.monthsTracked.toLocaleString()}
+      delta="Continuous record" />
 ```

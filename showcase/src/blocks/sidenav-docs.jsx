@@ -7,6 +7,10 @@ export const meta = {
   description: 'A docs sidenav with grouped navigation and search',
   category: 'sidenav',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

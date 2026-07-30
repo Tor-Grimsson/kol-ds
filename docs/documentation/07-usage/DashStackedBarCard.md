@@ -3,7 +3,22 @@
 - **Package:** `@kolkrabbi/kol-dashboards`
 - **Category:** cards
 - **Real-world usages found:** 10 across 7 files in 2 apps
+- **Weighted inbound:** 21★ across 7 edges — 7×3★
 - **Used in:** kol-labs-monorepo, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx` |
+| 3 | 2 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx` |
+| 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/MetricsLive.jsx` |
+| 3 | 1 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/routes/Metrics.jsx` |
 
 ## Import
 

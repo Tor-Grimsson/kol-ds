@@ -2,7 +2,7 @@
   "name": "kol-design-system",
   "private": true,
   "version": "0.0.0",
-  "description": "KOL (Kolkrabbi) design system — the single maintenance home for the published @kolkrabbi/kol-* packages, plus the showcase app. Source of truth; consumers install published versions (no linking).",
+  "description": "KOL (Kolkrabbi) design system \u2014 the single maintenance home for the published @kolkrabbi/kol-* packages, plus the showcase app. Source of truth; consumers install published versions (no linking).",
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
@@ -17,12 +17,17 @@
     "extract:docs": "node scripts/extract-docs-meta.mjs && node scripts/extract-api.mjs && node scripts/extract-composition.mjs && node scripts/extract-origins.mjs",
     "validate:taxonomy": "node scripts/validate-taxonomy.mjs",
     "validate:groups": "node scripts/validate-groups.mjs",
+    "sync:mdx-frontmatter": "node scripts/sync-mdx-frontmatter.mjs",
+    "validate:frontmatter": "node scripts/sync-mdx-frontmatter.mjs --check",
     "validate:width": "node scripts/validate-width.mjs",
     "validate:rails": "node scripts/validate-rails.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "extract:tokens": "node scripts/extract-tokens.mjs",
+    "extract:graph": "node scripts/extract-usage.mjs && node scripts/extract-tokens.mjs && node scripts/sync-mdx-frontmatter.mjs",
+    "validate:references": "node scripts/validate-references.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",

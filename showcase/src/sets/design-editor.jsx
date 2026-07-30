@@ -16,6 +16,10 @@ export const meta = {
   description: 'A working mini design editor — draggable, resizable, recolourable boxes on a 1080-virtual canvas with a live selection overlay, tool rail, and inspector',
   category: 'editor',
   featured: true,
+  type: 'reference',
+  status: 'active',
+  updated: '2026-07-30',
+  tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -3,7 +3,17 @@
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
 - **Real-world usages found:** 14 across 2 files in 2 apps
+- **Weighted inbound:** 10★ across 2 edges — 2×5★
 - **Used in:** kol-client-kolkrabbi, kol-website
+
+## Who depends on this
+
+Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
+
+| ★ | uses | file |
+|---|---|---|
+| 5 | 7 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/home/HomeHighlights.jsx` |
+| 5 | 7 | `kol-website/apps/web/src/components/sections/home/HomeHighlights.jsx` |
 
 ## Import
 

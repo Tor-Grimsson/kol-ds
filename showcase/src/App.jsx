@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { TagModeProvider, TagModeGate, DocumentationReader } from '@kolkrabbi/kol-workshop'
-import { VAULT, VAULT_MODULES, vaultDocHref } from './lib/vault.js'
+import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref } from './lib/vault.js'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
@@ -16,6 +16,8 @@ import SetPage from './pages/SetPage'
 import SetPreview from './pages/SetPreview'
 import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
+import References from './pages/References'
+import ReferenceNode from './pages/ReferenceNode'
 import Demo from './pages/Demo'
 import ShellChrome from './lib/ShellChrome.jsx'
 import MdxDoc from './lib/MdxDoc.jsx'
@@ -49,7 +51,11 @@ export default function App() {
         * every tag click hit the noop fallback (wave-4 parity). */}
       <Route
         element={
-          <TagModeProvider inventory={VAULT} docHref={vaultDocHref}>
+          /* TAG_INVENTORY, not VAULT: the graph reads what the provider is
+           * given, and given VAULT alone it could only draw the 46 markdown
+           * docs — the 66 component pages were invisible to it however well
+           * they were tagged. */
+          <TagModeProvider inventory={TAG_INVENTORY} docHref={vaultDocHref}>
             <ShellChrome />
           </TagModeProvider>
         }
@@ -65,6 +71,9 @@ export default function App() {
         <Route path="/blocks/:slug" element={<BlockPage />} />
         <Route path="/sets" element={<Sets />} />
         <Route path="/sets/:slug" element={<SetPage />} />
+        {/* The reference graph — generated from usage-index + token-index. */}
+        <Route path="/references" element={<References />} />
+        <Route path="/references/:name" element={<ReferenceNode />} />
         <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
