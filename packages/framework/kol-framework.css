@@ -500,7 +500,9 @@ body {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  /* text-transform REMOVED 2026-07-30 — casing is a content-layer concern and
+   * components never auto-case (standing law). The label is authored as "Exit"
+   * at the call site; if a consumer wants EXIT they type EXIT. */
   text-decoration: none;
   cursor: pointer;
   transition: background 200ms ease, border-color 200ms ease;

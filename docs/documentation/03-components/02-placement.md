@@ -2,7 +2,7 @@
 title: Component placement — where a new component goes
 type: reference
 status: active
-updated: 2026-07-04
+updated: 2026-07-30
 description: The mechanical runbook for placing a new KOL component into its Tier — the decision checklist, the rules that keep the atom/molecule test mechanical, the worked calls from the 2026-07-02 sweep, and validator enforcement. Tier definitions live in the taxonomy doc.
 aliases:
   - component-placement
@@ -65,6 +65,27 @@ The 8 ex-primitives (`primitives` is dead — it was never part of the atomic sy
 - **Carousel → organisms** — a self-contained slider region (checklist step 4 beats "nests nothing").
 
 Loaders verdict (C4): **Docs page**, not a components-list category — `Icon` + `Graphic` joined `DOCS_ONLY` in the showcase registry, documented on `/docs/loaders`, galleries unchanged on `/icons`.
+
+## Membership — does it belong in a published package at all?
+
+Everything above decides **where** a component goes. Nothing above asks **whether** it should ship. That gap is how `ExitPreview` — a router-aware escape hatch worn as CMS draft-mode chrome — passed cleanly as an atom and shipped in `@kolkrabbi/kol-component`: it nests no KOL component, so the placement test had no objection to make.
+
+A component earns a place in a published package only if all three hold:
+
+1. **Plural consumers.** It is used by two or more repos, or is plausibly reusable outside the one that birthed it. One app's chrome is that app's chrome.
+2. **No app-specific assumptions.** No hardcoded routes, no CMS-mode semantics, no knowledge of one product's URL space. `ExitPreview` links to `/` and means "leave Sanity draft mode" — both are assumptions about a specific app.
+3. **Renderable in isolation.** If its preview cannot show it, consumers cannot evaluate it. A component whose demo renders an empty box is telling you something.
+
+Failing the test does not mean deletion — that is the maintainer's call, and removing a published export is a breaking change. It means the component is **flagged, not silently blessed**, and its page says so.
+
+### The worked call — ExitPreview
+
+Fails 1 and 2, and failed 3 until the demo was scoped. Its only in-repo consumer is `packages/framework/src/Layout.jsx`, gated on a `/site` route that does not exist here, so nothing renders it in the showcase but its own demo. **Verdict: flagged for removal, kept pending the owner's decision.**
+
+Two real defects were fixed while there, both consequences of shipping app chrome as a DS atom:
+
+- `position: fixed; bottom: 24px; left: 24px; z-index: 9999` is correct for a button floating over a client site and wrong everywhere else. Its demo card rendered EMPTY while a stray black × parked in the viewport corner — on `/components` too, where the index mounts every demo it scrolls past. The demo now establishes a containing block (`transform: translateZ(0)`); the component is untouched and still floats for real consumers.
+- `text-transform: uppercase` on `.kol-exit-preview` broke the standing no-auto-casing law. Removed — the label is authored as `Exit` at the call site.
 
 ## Enforcement
 

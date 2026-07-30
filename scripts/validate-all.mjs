@@ -26,6 +26,8 @@ const GATES = [
   ['rails', 'validate-rails.mjs'],
   ['frontmatter', 'sync-mdx-frontmatter.mjs'],
   ['references', 'validate-references.mjs'],
+  ['drift', 'validate-drift.mjs'],
+  ['reachable', 'validate-reachable.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

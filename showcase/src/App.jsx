@@ -60,6 +60,11 @@ export default function App() {
           </TagModeProvider>
         }
       >
+        {/* TagModeGate wraps EVERY shell route, not just the vault reader
+          * (2026-07-30 reachability rule). Tag mode is now openable from the
+          * ⌘K palette anywhere, and a gate mounted on one route would have
+          * made that row a no-op on the other twenty. */}
+        <Route element={<TagModeGate />}>
         <Route path="/" element={<Home />} />
         <Route path="/foundations" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
@@ -81,23 +86,19 @@ export default function App() {
         {/* THE VAULT — docs/ rendered by the packaged reader, frontmatter and
           * all. Documentation is a SYSTEM: its own top-level URL space. */}
         <Route path="/documentation" element={<Navigate to={VAULT.length ? vaultDocHref(VAULT[0].id) : '/'} replace />} />
-        {/* TagModeGate mounts the tag-mode overlay (list + node graph) over
-          * the reader — it existed in the package but was never mounted, so
-          * every tag click was a silent no-op (wave-4 parity). */}
-        <Route element={<TagModeGate />}>
-          <Route
-            path="/documentation/:docId"
-            element={
-              <DocumentationReader
-                inventory={VAULT}
-                modules={VAULT_MODULES}
-                docHref={vaultDocHref}
-                routes={{ docsIndex: '/documentation', components: '/components' }}
-              />
-            }
-          />
-        </Route>
+        <Route
+          path="/documentation/:docId"
+          element={
+            <DocumentationReader
+              inventory={VAULT}
+              modules={VAULT_MODULES}
+              docHref={vaultDocHref}
+              routes={{ docsIndex: '/documentation', components: '/components' }}
+            />
+          }
+        />
         {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
+        </Route>
       </Route>
       {/* THE workshop route — live dogfood of @kolkrabbi/kol-workshop (shell +
           docs viewer). The vendored-shell /workshop-preview twin was deleted

@@ -359,3 +359,55 @@
 
 [16:09 GMT · 2026-07-30] · state · colour-picker arc still FROZEN (handoff-2026-07-30-1528)
   open, unchanged: hasToc API change · node-graph entry point · quarantine phases 1–2 · the two ≤1024px rail overflow gaps
+
+[17:12 GMT · 2026-07-30] · PHASE 0 COMPLETE — the four rules + their gates, zero UI regression
+  approved plan: quarantine, "starting with just 1, setting standards that domino each other"
+  gates 9 → 11 (validate-drift, validate-reachable) · build green throughout
+
+[17:12 GMT · 2026-07-30] · R3 · GENERATED WINS — the drift rule
+  mergeApi preferred the AUTHORED def/type, so a source default that changed kept rendering its old value forever
+  2 wrong values were shipping: ThemeToggle fill=subtle (source none) · Tag size=md (source sm)
+  split by KIND not by source: type/def are machine facts (generated wins), desc is prose (author wins)
+  fixed the 5 hits by DELETING the authored value (def → "—"), never retyping — retyping just resets the clock
+  ThemeToggle.mdx description line dropped so the generator refilled it from source
+
+[17:12 GMT · 2026-07-30] · R1 · a rail is never a reserved empty gutter
+  3 fixes REJECTED before the one that shipped: probe deadlocks (column unmounts → probe gone forever) · render-prop makes the consumer's hooks belong to ShellLayout · boolean prop puts the answer in the consumer, which doesn't know
+  shipped: grid track 224px → auto, width moved to the rail's CONTENT as w-56 empty:hidden. the column decides for itself
+  measured: / · /icons · /blocks · /references went 224px empty gutter → 0, main 640 → 864
+  TOC leaks fixed — typography specimens (3 rows all anchoring #prose) + DocsToc demo (4 fake rows); useHeadings skips [data-toc-skip], .kol-doc-figure, .kol-demo-stage. typography 9 rows → 6
+
+[17:12 GMT · 2026-07-30] · R2 · a surface that cannot be found does not exist
+  buildShellSearchItems mapped r.children ONLY → /icons, /references, /documentation unreachable by their own names
+  tags folded into THE palette via an  closure (was a second global search box)
+  TagModeGate lifted to wrap EVERY shell route · graph toggle ungated from hasFilters
+  ? shortcut sheet renders FROM the array that binds the keys — cannot drift · Alt+B (undocumented duplicate) dropped
+  icon 'link' didn't exist in the set (Icon warns + renders null → label-only tab) → 'library'
+
+[17:12 GMT · 2026-07-30] · BUG I INTRODUCED AND CAUGHT BY DRIVING IT, not by reading it
+  tag rows rendered, matched, highlighted, clicked — and did NOTHING
+  cause: ShellLayout's searchResults map rebuilt each row as a fixed 5-field object, silently DROPPING action
+  every other step in the chain was fine (the engine spreads ...item, the overlay passes rows through)
+  the projection was the only lossy step, and it looked correct at every point
+  → validate-reachable E5 now asserts the projection preserves action
+  debugging note: proved it with a temporary window probe, then REMOVED the probe before publishing
+
+[17:12 GMT · 2026-07-30] · R4 · membership — placement decides WHERE, never WHETHER
+  test: plural consumers · no app-specific assumptions · renderable in isolation
+  ExitPreview fails 1+2, and failed 3 until now. VERDICT: flagged for removal, kept pending the owner's call — removing a published export is his decision, not mine
+  its demo rendered an EMPTY card while a stray black × parked in the viewport corner (position:fixed escapes every non-containing ancestor; the /components index mounts every demo it scrolls past)
+  fixed demo-side with a containing block (translateZ(0)) — component untouched, still floats for real consumers
+  text-transform:uppercase removed from .kol-exit-preview (casing law) — label now reads "Exit" not "EXIT", verified
+
+[17:12 GMT · 2026-07-30] · published · component 0.15.1 · framework 0.10.1 · workshop 0.6.0
+  workspace:* rewrite verified on workshop@0.6.0 · a 403 mid-run was my own redundant retry over an already-published version, not a failure
+  11/11 gates · docs synced (02-shells R1+R2+R3 · 02-placement membership · SHIPPED-PACKAGES)
+
+[17:12 GMT · 2026-07-30] · NEXT · Phase 1 quarantine (admitted.js gate, /quarantine page, 07-usage out of the tree) — stops for the user's check
+
+[17:14 GMT · 2026-07-30] · CHECKPOINT · context clear + reload
+  handoff → session-bridge/handoff-2026-07-30-1714-checkpoint-clear-context.md
+  state: Phase 0 COMPLETE (4 rules + 2 new gates) · 11/11 gates clean · build green · published component 0.15.1 / framework 0.10.1 / workshop 0.6.0
+  nothing mid-edit, nothing half-applied — safe point to drop context
+  next on reload: Phase 1 quarantine (admitted.js · roster admitted flag · /quarantine page · 07-usage out of VAULT_TREE), then STOP for the user's check
+  carry forward: gates prove RULES, build proves SYNTAX, browser proves BEHAVIOUR — today needed all three

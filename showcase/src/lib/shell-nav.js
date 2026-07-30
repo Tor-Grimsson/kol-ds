@@ -65,7 +65,7 @@ export const SHELL_ROUTES = [
   /* The reference graph — generated, so it sits beside Documentation rather
    * than under Docs: it is not a written page, it is what the repo measures
    * about itself. */
-  { id: 'references', label: 'References', icon: 'link', path: '/references' },
+  { id: 'references', label: 'References', icon: 'library', path: '/references' },
   {
     id: 'documentation',
     label: 'Documentation',
@@ -105,14 +105,20 @@ export const buildShellSearchItems = () => {
     sectionLabel: CATEGORY_LABELS[c.category] ?? c.category,
     keywords: [c.description, c.pkg].filter(Boolean),
   }))
-  const surfaces = SHELL_ROUTES.flatMap((r) =>
-    (r.children ?? []).map((c) => ({
+  /* EVERY route is a row, parent as well as child (2026-07-30 reachability
+   * rule). This read `r.children` only, so a tab with no children contributed
+   * nothing and was unreachable by search entirely — `/icons`, `/references`
+   * and `/documentation` could not be found by typing their own names.
+   * `/components` only escaped because the roster branch above covers it. */
+  const surfaces = SHELL_ROUTES.flatMap((r) => [
+    { id: `tab-${r.id}`, label: r.label, href: r.path, sectionLabel: 'Surfaces' },
+    ...(r.children ?? []).map((c) => ({
       id: c.id,
       label: c.label,
       href: c.path,
       sectionLabel: r.label,
-    }))
-  )
+    })),
+  ])
   const vaultDocs = VAULT_SEARCH_ITEMS.map((d) => ({
     id: d.path,
     label: d.label,

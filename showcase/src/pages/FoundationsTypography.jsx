@@ -79,7 +79,14 @@ const TYPE_COLUMNS = {
   prose: [
     { accessor: 'role',   header: 'Role' },
     { accessor: 'class',  header: 'Class',  render: (r) => <TokenName>{r.class}</TokenName> },
-    { accessor: 'sample', header: 'Sample', render: (r) => SPECIMENS[r.class]?.render() ?? '—' },
+    /* data-toc-skip: these specimens are real `<h1>`–`<h6>` elements so their
+     * live metrics can be measured — which meant the page TOC counted them as
+     * its own headings. Three rows appeared ("Sample display-md", "Sample
+     * heading-02", "Sample heading-03") all anchoring `#prose`, because the
+     * cell sits inside `DocSection id="prose"`. A specimen describes the class
+     * being documented, not the document. */
+    { accessor: 'sample', header: 'Sample',
+      render: (r) => SPECIMENS[r.class] ? <span data-toc-skip>{SPECIMENS[r.class].render()}</span> : '—' },
     { accessor: 'face',   header: 'Face (live)',
       render: (r) => SPECIMENS[r.class] ? <LiveNodeFace nodeRef={SPECIMENS[r.class].ref} /> : '—' },
     { accessor: 'family', header: 'Family (spec)' },

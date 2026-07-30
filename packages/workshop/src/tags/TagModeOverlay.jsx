@@ -38,18 +38,24 @@ const TagModeOverlay = () => {
         * panel token exists to settle (kol-theme "Content widths"). */}
       <div className="mx-auto max-w-[var(--kol-content-panel)]">
         <div className="flex items-center justify-start gap-1 mb-3">
-          {hasFilters && (
-            <Tooltip label={viewMode === 'graph' ? 'List view' : 'Graph view'}>
-              <Button
-                variant="outline"
-                quiet
-                size="sm"
-                iconOnly={viewMode === 'graph' ? 'view-list' : 'polygon'}
-                onClick={() => setViewMode(viewMode === 'graph' ? 'list' : 'graph')}
-                aria-label={viewMode === 'graph' ? 'List view' : 'Graph view'}
-              />
-            </Tooltip>
-          )}
+          {/* ALWAYS present (2026-07-30). This was gated on `hasFilters`, so
+            * the graph control did not exist in the DOM until a tag was already
+            * active — you had to know it was there to make it appear. The graph
+            * is the whole point of the co-occurrence data; hiding its only
+            * affordance behind a state you reach by accident is why the user
+            * asked "where is the NODE GRAPH? how do I open it?". With no tags
+            * active the graph simply shows the full map, which is the view a
+            * first-time reader wants most. */}
+          <Tooltip label={viewMode === 'graph' ? 'List view' : 'Graph view'}>
+            <Button
+              variant="outline"
+              quiet
+              size="sm"
+              iconOnly={viewMode === 'graph' ? 'view-list' : 'polygon'}
+              onClick={() => setViewMode(viewMode === 'graph' ? 'list' : 'graph')}
+              aria-label={viewMode === 'graph' ? 'List view' : 'Graph view'}
+            />
+          </Tooltip>
           <Tooltip label="Close tag mode">
             <Button
               variant="outline"
@@ -125,10 +131,14 @@ const TagModeOverlay = () => {
               </>
             )}
 
-            {hasFilters && viewMode === 'graph' ? (
+            {/* `hasFilters` dropped from this condition too — with no tag
+              * active the graph renders the WHOLE map, which is the view worth
+              * opening cold. Gated, the button could be clicked and nothing
+              * changed. */}
+            {viewMode === 'graph' ? (
               <div>
                 <TagGraph
-                  docs={filteredDocs}
+                  docs={hasFilters ? filteredDocs : inventory}
                   allDocs={inventory}
                   activeTag={activeTag}
                   onTagClick={(tag) => toggleTag(tag)}

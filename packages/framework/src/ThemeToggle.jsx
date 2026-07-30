@@ -43,18 +43,8 @@ import { useTheme } from './theme.js'
  * no consumer shifts a pixel; migrate at your own pace:
  *   icon     → button + fill none + label off
  *   hop      → button + fill subtle + fullWidth (old: chrome pinned md)
- *   hop-bare → flush + fullWidth (old: 6/24 padding kept)
- *
- * NO INTERACTIVE STATES, ANY VARIANT (user ruling 2026-07-30): *"REMOVE ALL
- * STATES, no fucking hover… no variant at all should have an interactive state
- * — it's just a click 1-2, and it's themed."* It emitted `.kol-btn` +
- * `.kol-btn-nav`/`.kol-btn-primary`, which dragged the button state machine
- * along (base transition + focus ring, per-variant :hover wash, [aria-current]
- * shift). Those three were the only state sources; it now emits
- * `.kol-theme-toggle{,-none,-subtle,-flush}` instead, which declare the same
- * resting appearance and have no state rules to inherit. The SIZE classes
- * (`kol-btn-{sm,md,lg}`, `kol-btn-icon`) are pure padding/geometry and stay.
- * The glyph roll stays too — that animates a state CHANGE, it is not a state.
+ *   hop-bare → flush + fullWidth. Horizontal pad stays 24px (sidenav gutter);
+ *              vertical pad, type and glyph honour `size` since 2026-07-30.
  *
  * Theme state lives in useTheme (./theme.js); this component is only the
  * glyph-roll UI on top of it.
@@ -156,13 +146,24 @@ export default function ThemeToggle({
   }
   if (variant === 'hop' || variant === 'hop-bare') {
     const bare = variant === 'hop-bare'
+    /* hop-bare HONOURS `size` (user ruling 2026-07-30). It used to hardcode
+     * kol-mono-14 while its glyph still tracked `size`, so size="lg" produced a
+     * 24px glyph beside 14px text — and it took the SOLO glyph ladder despite
+     * carrying a label, against the glyph law in this docstring.
+     *
+     * One container across all three rungs: same bare full-width row, only the
+     * vertical pad, the type and the glyph move (4/6/8 · 12/14/16 · 14/16/18).
+     * The 24px horizontal gutter is FIXED at every size — it aligns the row with
+     * the sidenav's own pl-6, which is the whole reason this alias exists.
+     * `hop` stays pinned to md: its docstring promises old chrome verbatim. */
+    const barePadY = size === 'sm' ? 'py-1' : size === 'lg' ? 'py-2' : 'py-1.5'
     const chromeCls = bare
-      ? 'w-full inline-flex items-center justify-start gap-2 py-1.5 px-6 kol-mono-14 bg-transparent text-emphasis'
+      ? `w-full inline-flex items-center justify-start gap-2 ${barePadY} px-6 ${mono} bg-transparent text-emphasis`
       : 'kol-theme-toggle kol-theme-toggle-subtle kol-btn-md kol-mono-14 w-full justify-start gap-2'
     return (
       <button {...shared} className={`${chromeCls} ${className}`.trim()}>
         <span className="inline-flex items-center justify-center shrink-0" aria-hidden="true">
-          {iconSwap(glyphSolo)}
+          {iconSwap(bare ? glyphWithText : glyphSolo)}
         </span>
         <span className="kol-sidenav-hop-label flex-1 min-w-0 text-left">
           {MODE_LABEL[shown]}
@@ -188,7 +189,7 @@ export default function ThemeToggle({
 
   /* variant === 'button' (default) — the padded rung. fill is the one bg
    * element: subtle = the grey fill, none = the invisible container. Geometry
-   * identical; no hover wash on either — see the no-states note below. */
+   * identical; no hover on either — no variant carries an interactive state. */
   const fillCls = fill === 'none' ? 'kol-theme-toggle-none' : 'kol-theme-toggle-subtle'
   if (!label) {
     // icon-only pins the square box per rung — geometry condition, not a variant

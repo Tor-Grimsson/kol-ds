@@ -25,10 +25,17 @@ export function mergeApi(authored = [], generated = []) {
   const gen = new Map(generated.map((r) => [r.prop, r]))
   const rows = authored.map((a) => {
     const g = gen.get(a.prop)
+    /* GENERATED WINS on the machine-derived fields (2026-07-30 drift ruling).
+     * `type` and `def` are facts react-docgen reads off the source; `desc` is
+     * prose a human writes. This used to prefer the authored value for all
+     * three, so a default that changed in the source kept rendering its old
+     * value forever — ThemeToggle shipped `fill: subtle` for a day after the
+     * source said `none`, in the same file whose prose table announced the
+     * flip. Author prose still wins; author FACTS no longer outrank the file. */
     return g ? {
       prop: a.prop,
-      type: a.type && a.type !== '—' ? a.type : g.type,
-      def: a.def && a.def !== '—' ? a.def : g.def,
+      type: g.type && g.type !== '—' ? g.type : a.type,
+      def: g.def && g.def !== '—' ? g.def : a.def,
       desc: a.desc || g.desc,
     } : a
   })

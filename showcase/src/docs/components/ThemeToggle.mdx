@@ -13,7 +13,7 @@ export const meta = {
     "pattern/action",
     "pattern/app-shell",
   ],
-  description: "Tri-state glyph-roll button (0.9.0, the approved 2-variant spec).",
+  description: "Two-position glyph-roll button (the approved 2-variant spec).",
   aliases: [
     "themetoggle",
   ],
@@ -95,7 +95,7 @@ Deprecated aliases render their 0.6.x chrome verbatim: `icon` →
 
 <Api name="ThemeToggle" rows={[
   {"prop":"variant","type":"button | flush","def":"button","desc":"Container geometry. Deprecated aliases: icon, hop, hop-bare (render old chrome verbatim)."},
-  {"prop":"fill","type":"subtle | none","def":"subtle","desc":"The one bg element — button variant only. subtle = grey fill, none = invisible container."},
+  {"prop":"fill","type":"subtle | none","def":"—","desc":"The one bg element — button variant only. subtle = grey fill, none = invisible container."},
   {"prop":"label","type":"boolean","def":"true","desc":"Text on/off. Off on button geometry pins the square box per rung."},
   {"prop":"iconRight","type":"boolean","def":"false","desc":"Glyph right of the text (left default)."},
   {"prop":"fullWidth","type":"boolean","def":"false","desc":"Stretch to a sidenav row (label left-aligned)."},

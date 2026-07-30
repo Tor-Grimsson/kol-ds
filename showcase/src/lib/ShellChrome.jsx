@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { ShellLayout, ShellSidebar } from '@kolkrabbi/kol-workshop'
+import { ShellLayout, ShellSidebar, buildTagCounts, useTagMode } from '@kolkrabbi/kol-workshop'
 import { Asset } from '@kolkrabbi/kol-brand/svg'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping } from './grouping.jsx'
 import { SHELL_ROUTES, isShellTabActive, buildShellSearchItems, componentTreeRoutes } from './shell-nav.js'
-import { VAULT_TREE } from './vault.js'
+import { VAULT_TREE, TAG_INVENTORY } from './vault.js'
 import useEmbed from './useEmbed.js'
 
 /**
@@ -37,8 +37,18 @@ function useHeadings() {
     const read = () => {
       /* The anchor can sit on the heading OR on its wrapping section — DocKit's
        * DocSection puts the id on <section> and the h2 inside it. Take either;
-       * skip headings with no anchor anywhere (nothing to link to). */
+       * skip headings with no anchor anywhere (nothing to link to).
+       *
+       * SPECIMENS ARE NOT THE PAGE (2026-07-30). A heading rendered INSIDE a
+       * demo or a type specimen is sample content — it describes the component
+       * being shown, not the document showing it. Two leaks came from counting
+       * them: the typography page's `<h2>Sample display-md</h2>` specimens sat
+       * inside `DocSection id="prose"`, so three TOC rows appeared all pointing
+       * at `#prose`; and the DocsToc demo renders its own `<section id>` + h3,
+       * injecting four rows named after another component's fake TOC. Anything
+       * inside a preview stage or a demo is excluded at the source. */
       const found = [...main.querySelectorAll('h2, h3')]
+        .filter((h) => !h.closest('[data-toc-skip], .kol-doc-figure, .kol-demo-stage'))
         .map((h) => {
           const id = h.id || h.closest('section[id]')?.id
           return id ? { id, label: h.textContent.trim(), sub: h.tagName === 'H3' } : null
@@ -146,7 +156,25 @@ const REPO = 'https://github.com/Tor-Grimsson/kol-ds'
 export default function ShellChrome() {
   const { pathname } = useLocation()
   const embedded = useEmbed()
-  const searchItems = useMemo(() => buildShellSearchItems(), [])
+  const { openTagMode } = useTagMode()
+
+  /* ONE search (2026-07-30 reachability rule). Tags used to live in a second,
+   * separate search box inside the tag overlay — a global search NUMBER 2 that
+   * knew nothing about this one, and that you could only reach by first
+   * clicking a tag somewhere. Tags are rows here now, carrying an `action`
+   * instead of an `href` because selecting one toggles state rather than
+   * navigating. Built HERE rather than in shell-nav.js because the closure
+   * needs the tag context, and a plain module can't hold a hook. */
+  const searchItems = useMemo(() => {
+    const tags = buildTagCounts(TAG_INVENTORY).map(({ tag, count }) => ({
+      id: `tag-${tag}`,
+      label: tag,
+      sectionLabel: 'Tags',
+      keywords: [`${count} docs`],
+      action: () => openTagMode(tag),
+    }))
+    return [...buildShellSearchItems(), ...tags]
+  }, [openTagMode])
 
   /* ?embed=1 — main content only, for iframing showcase pages into other
    * repos. The shell is fixed inset-0 with its own scroll regions, so embed

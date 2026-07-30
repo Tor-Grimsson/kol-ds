@@ -83,6 +83,38 @@ Two consequences of the sweep worth knowing: a sidebar group **with no children 
 
 **The brand pair:** KOLKRABBI wordmark (logo slot, links home) + the **WORKSHOP wordmark** (`wordmark-workshop.svg`, kol-brand) as the surface mark — the same pair `ShellLayout` ships as its package default. A typed `KOL DS` span held that slot for a day on a comment claiming no drawn asset existed; one did, and it wrapped to two lines in the header. Drawn asset over typed text.
 
+**R1 · A RAIL IS NEVER A RESERVED EMPTY GUTTER (2026-07-30 evening).** Ten routes used to reserve 224px on the right and fill it with nothing — `/`, `/icons`, `/blocks`, `/blocks/:slug`, `/sets`, `/sets/:slug`, `/references`, `/references/:name`, `/lobby`, and every collection page. The cause was one line: `hasToc = Boolean(defaultTocContent)`, and an *element* is truthy even when the component inside it renders null.
+
+Three fixes were tried and rejected before the one that shipped. Measuring the mounted column **deadlocks** — once the column unmounts the probe is gone and can never report content again. Calling a render-prop inline makes the consumer's hooks belong to `ShellLayout`, one refactor away from a crash. A boolean prop puts the answer in the consumer, which does not know it either.
+
+**The column decides for itself.** The grid track is `auto` rather than a fixed `224px`, and the width moved onto the rail's inner wrapper as `w-56 empty:hidden`. A rail whose content renders nothing measures zero, the track collapses, and the main column takes the space back. Nothing to keep in sync, nothing to deadlock. Measured: `/` `/icons` `/blocks` `/references` go from a 224px empty gutter to 0, main 640 → 864.
+
+That is the **floor**, not the standard. The standard is that a rail carries *On this page* when the page has headings **and at least one more section drawn from data the route already holds** — the shape `DocReaderSidebar` already ships (On this page · Related · Quick actions · Tags). Every route has the data: component pages have tags, `reuses`, origin and source path; collection pages have `composition` and prev/next; `/icons` has its group inventory; `/components` has the function chips. None of it needs new extraction. Rails are filled per category as each is readmitted, and verified in a browser — a static gate cannot see a rendered rail, so this rule is checked live rather than pretended to be linted.
+
+**SPECIMENS ARE NOT THE PAGE.** A heading rendered inside a demo or a type specimen describes the component being shown, not the document showing it. Counting them produced two leaks: the typography page's `<h2>Sample display-md</h2>` specimens sat inside `DocSection id="prose"`, giving three TOC rows that all anchored `#prose`; and the DocsToc demo rendered its own `<section id>` + `h3`, injecting four rows named after another component's fake TOC. `useHeadings` now skips anything inside `[data-toc-skip]`, `.kol-doc-figure` or `.kol-demo-stage`. Verified: typography went 9 rows → 6, with the three `Sample …` rows gone.
+
+**R2 · A SURFACE THAT CANNOT BE FOUND DOES NOT EXIST (2026-07-30 evening).** Three failures, all invisible until someone went looking.
+
+`buildShellSearchItems` built rows from `r.children` only, so a top-level tab with no children contributed **nothing** — `/icons`, `/references` and `/documentation` could not be found by typing their own names. Every route is a row now, parent as well as child.
+
+**ONE search.** Tags had their own separate box inside the tag overlay — a second global search that knew nothing about the first, and that you could only reach by clicking a tag somewhere else first. Tags are rows in ⌘K now. Because selecting one *toggles state* rather than navigating, rows may carry an **`action`** closure and `onSelect` prefers it over `href`; the shell stays ignorant of what the closure does.
+
+That seam had a bug worth recording: `ShellLayout` reshapes engine results into the overlay's row shape, and the projection rebuilt each row as a fixed set of fields — **silently dropping `action`**. The row rendered, matched, highlighted, clicked, and did nothing. It looked correct at every step, which is why `validate-reachable` now asserts the projection preserves it.
+
+**The node graph has an entry point.** It was reachable only by clicking a tag inside `/documentation/:docId`, and its only control was gated on `hasFilters` — the button did not exist in the DOM until a tag was already active, so the graph could only be discovered by accident. `TagModeGate` now wraps every shell route, and the graph toggle is always present; with no tags active it renders the whole map, which is the view worth opening cold. Verified from `/foundations`: ⌘K → tag row → graph, 39 nodes and 135 edges.
+
+**Shortcuts are one list.** There was no help UI anywhere: ⌘K was an unlabelled icon button and `Alt+B` was an undocumented duplicate. A `?` sheet now renders **from the same array that binds the keys**, so a shortcut cannot be documented-but-unbound or bound-but-undocumented. `Alt+B` is dropped. The handler ignores keystrokes aimed at inputs, textareas and contenteditable.
+
+**R3 · GENERATED WINS — the drift rule (2026-07-30 evening).** Every doc surface here has two layers: a generator that reads the source, and a hand-authored layer on top. Where they disagree about a **fact**, the generator wins.
+
+`mergeApi` (`showcase/src/lib/component-page-parts.jsx`) used to prefer the authored `def`/`type`, so a default that changed in the source kept rendering its old value forever. That is not hypothetical: `ThemeToggle.mdx` announced *"the default flipped at 0.10.0"* in prose three lines above an `<Api>` row still claiming `fill: subtle`, and `Tag.mdx` claimed `size: md` against a source that says `sm`. Both shipped.
+
+The split is by KIND, not by source: **`type` and `def` are machine facts** and now take the generated value; **`desc` is prose a human writes** and still takes the authored one.
+
+Correcting the render is not enough — a merge that silently fixes a wrong value leaves the wrong value in the file, where the next reader believes it. **`pnpm validate:drift`** (`scripts/validate-drift.mjs`) fails on the disagreement itself, comparing only where the generator *has* a value, so a hand-authored row for something react-docgen cannot see (`children`, `iconLeft / iconRight`) is not drift.
+
+**The fix for a hit is to DELETE the authored value, never to retype it.** The contract stated in `mdx-components.jsx` is that extraction-covered components pass `name` alone and stay drift-free by construction; blanking a `def` to `—` hands the field back to the generator permanently. Retyping it just resets the clock on the next drift.
+
 **ONE metadata contract (2026-07-30 evening):** the frontmatter panel is `DocsFrontmatter`, and it is now the ONLY one — the showcase's `MdxDoc` carried a second panel with the opposite strategy (a denylist over `meta` where the reader used an allowlist), so the two surfaces disagreed about what metadata even is.
 
 It **orders** rather than filters: contract fields first (`title` · `type` · `status` · `updated` · `tags` · `description` · `aliases` · the optional set), legacy sample-dialect keys next, then any key it doesn't recognise — so a field can never be dropped for being unfamiliar. `related` is the single deliberate omission, because the rail already renders it as live links.

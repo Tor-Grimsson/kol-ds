@@ -943,18 +943,13 @@ a:hover .icon-hover,
 /* ═══════════════════════════════════════════════════════════════
  * ThemeToggle — .kol-theme-toggle
  *
- * A two-position switch, NOT a button (user ruling 2026-07-30):
- * *"REMOVE ALL STATES, no fucking hover… no variant at all should have an
- * interactive state — it's just a click 1-2, and it's themed."*
+ * A two-position switch, NOT a button (user ruling 2026-07-30): no interactive
+ * state on ANY variant — no hover, no active, no focus wash, no aria-current
+ * shift. It used to emit `.kol-btn` + `.kol-btn-nav`/`.kol-btn-primary`, which
+ * dragged the whole button state machine along. Those three were the only state
+ * sources; the SIZE classes are pure padding and stay.
  *
- * It used to emit `.kol-btn` + `.kol-btn-nav`/`.kol-btn-primary`, which dragged
- * the whole button state machine along: the base transition + focus ring, and
- * the per-variant :hover wash and [aria-current] shift. Those three classes are
- * the only state sources — the SIZE classes are pure padding and stay.
- *
- * Same disease IconFrame was cured of above: borrow geometry, inherit states.
- * Resting appearance is byte-identical to what it replaced, so no consumer
- * shifts a pixel; there is simply nothing to transition to.
+ * Same cure as IconFrame above: own your classes, inherit no states.
  * ═══════════════════════════════════════════════════════════════ */
 
 .kol-theme-toggle {
@@ -966,14 +961,16 @@ a:hover .icon-hover,
   cursor: pointer;
 }
 
-/* fill="none" — mirrors .kol-btn-nav at rest */
+/* fill="none" — invisible container. FULL-STRENGTH INK (user ruling): the text
+ * and icon drop NO opacity. `.kol-btn-nav` rested at oq-64 only so its hover
+ * could brighten to full; with no states that dim was just a faded label. */
 .kol-theme-toggle-none {
   background: transparent;
-  color: var(--kol-oq-64);
+  color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
 }
 
-/* fill="subtle" — mirrors .kol-btn-primary at rest */
+/* fill="subtle" — the filled rung */
 .kol-theme-toggle-subtle {
   background: var(--kol-surface-secondary);
   color: var(--kol-surface-on-primary);

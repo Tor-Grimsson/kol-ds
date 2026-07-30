@@ -52,7 +52,11 @@ const MainColumn = ({ children, fullHeight }) => (
  * decision and must not be stated twice differently. */
 const TocColumn = ({ children }) => (
   <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden xl:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
-    {children}
+    {/* The 224px lives HERE, not on the grid track (see gridCols). An inner
+      * wrapper with a width means a rail whose content renders null measures
+      * zero and the column collapses — the page gets the space back instead of
+      * staring at a reserved empty gutter. */}
+    <div className="w-56 empty:hidden">{children}</div>
   </aside>
 )
 
@@ -64,17 +68,34 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const [searchQuery, setSearchQuery] = useState('')
   const [tocContent, setTocContent] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
+  /* THE shortcut map. One list, rendered by the `?` overlay AND bound by the
+   * handler below — a shortcut that isn't in this array doesn't exist, so the
+   * help sheet can never drift from the bindings. Before this there was no
+   * help UI at all: ⌘K was an unlabelled icon button and Alt+B was a duplicate
+   * nobody had written down anywhere. */
+  const SHORTCUTS = [
+    { keys: ['⌘', 'K'], label: 'Search everything', match: (e) => (e.metaKey || e.ctrlKey) && e.key === 'k' },
+    { keys: ['?'], label: 'This list', match: (e) => e.key === '?' },
+    { keys: ['Esc'], label: 'Close what is open', match: () => false, note: 'handled per surface' },
+  ]
+
   useEffect(() => {
     const handleKeyDown = (e) => {
+      /* never steal a key from a field the user is typing in */
+      const t = e.target
+      if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName ?? '')) return
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
         setIsSearchOpen(true)
-      } else if ((e.altKey) && e.key === 'b') {
+      } else if (e.key === '?') {
         e.preventDefault()
-        setIsSearchOpen(true)
+        setIsShortcutsOpen((v) => !v)
+      } else if (e.key === 'Escape') {
+        setIsShortcutsOpen(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -82,26 +103,33 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   }, [])
 
   const effectiveTocContent = tocContent ?? defaultTocContent
-  /* KNOWN, deliberately not fixed here: an element is always truthy, so
-   * `<AutoToc/>` reserves a rail even on pages where it renders null. The
-   * obvious fix — measure the mounted column — deadlocks: once the column
-   * unmounts the probe is gone and can never report content again. The real
-   * fix is a consumer-side signal (a render-prop returning null, or an
-   * explicit `hasToc` prop), which is an API change. Filed, not improvised.
-   * The bug this caused — a half-height main column at 1024–1279px — was the
-   * `lg` vs `xl` mismatch on TocColumn above, and that IS fixed. */
+  /* An element is truthy even when the component inside it renders nothing, so
+   * this alone reserved a 224px rail on every route — including ones with no
+   * headings. Three fixes were rejected before this one: measuring the mounted
+   * column DEADLOCKS (once the column unmounts the probe is gone and can never
+   * report content again); calling a render-prop inline makes the consumer's
+   * hooks belong to THIS component, one refactor away from a crash; and a
+   * boolean prop puts the answer in the consumer, which doesn't know either.
+   *
+   * The column decides for itself instead. The track is `auto`, not a fixed
+   * 224px, and the width lives on the rail's CONTENT — so a rail that renders
+   * nothing collapses to zero and the main column takes the space back. No
+   * signal to keep in sync, nothing to deadlock. */
   const hasToc = Boolean(effectiveTocContent)
   const showNav = !navCollapsed
   const showToc = hasToc && !tocCollapsed
 
   const layoutType = showNav && showToc ? 'nav-toc' : showNav ? 'nav' : showToc ? 'toc' : 'none'
 
+  /* `auto`, not `224px` — see hasToc above. The width is declared on the rail's
+   * content (TocColumn's inner wrapper), so a rail with nothing in it measures
+   * zero and the main column reclaims the space. */
   const gridCols = showNav
     ? showToc
-      ? 'lg:grid-cols-[256px_minmax(0,1fr)] xl:grid-cols-[256px_minmax(0,1fr)_224px]'
+      ? 'lg:grid-cols-[256px_minmax(0,1fr)] xl:grid-cols-[256px_minmax(0,1fr)_auto]'
       : 'lg:grid-cols-[256px_minmax(0,1fr)]'
     : showToc
-      ? 'xl:grid-cols-[minmax(0,1fr)_224px]'
+      ? 'xl:grid-cols-[minmax(0,1fr)_auto]'
       : ''
 
   // Adapt the old flat `routes` + callbacks to the DS ShellHeader API
@@ -162,6 +190,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     group: item.sectionLabel ?? item.group,
     hint: item.matchedHeading ?? item.matchedKeyword ?? item.hint,
     href: item.href,
+    /* `action` must survive this reshape. It didn't: the map rebuilt every row
+     * as a fixed five-field object, so a consumer's action closure was dropped
+     * between the engine and onSelect and the row silently did nothing. The
+     * engine spreads `...item` and the overlay passes rows through untouched —
+     * this projection was the only lossy step in the chain. */
+    action: item.action,
   }))
 
   return (
@@ -261,10 +295,61 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             onSelect={(item) => {
               setIsSearchOpen(false)
               setSearchQuery('')
-              if (item?.href) navigate(item.href)
+              /* `action` before `href`: not every hit is a destination. A tag
+               * row toggles state rather than navigating, and without this the
+               * palette could only ever hold things that live at a URL — which
+               * is why the tag search had to be a second, separate search box
+               * that knew nothing about this one. The consumer supplies the
+               * closure; the shell stays ignorant of what it does. */
+              if (typeof item?.action === 'function') item.action()
+              else if (item?.href) navigate(item.href)
             }}
             placeholder="Search…"
           />
+
+          {/* The `?` sheet. Rendered FROM the SHORTCUTS array above, so the help
+            * and the bindings are one source — a shortcut can't be documented
+            * and unbound, or bound and undocumented, which is how Alt+B lived
+            * for months. */}
+          {isShortcutsOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-fg-48"
+              onClick={() => setIsShortcutsOpen(false)}
+              role="presentation"
+            >
+              <div
+                className="kol-doc-figure w-[min(28rem,90vw)] bg-surface-primary"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Keyboard shortcuts"
+              >
+                <div
+                  className="flex items-center justify-between border-b px-4 py-3"
+                  style={{ borderBottomColor: 'var(--kol-oq-08)' }}
+                >
+                  <span className="kol-doc-eyebrow text-meta">Keyboard shortcuts</span>
+                  <Button variant="outline" quiet size="sm" iconOnly="x"
+                    aria-label="Close" onClick={() => setIsShortcutsOpen(false)} />
+                </div>
+                <ul className="flex flex-col px-4 py-3">
+                  {SHORTCUTS.map((s) => (
+                    <li key={s.label} className="flex items-center justify-between gap-6 py-1.5">
+                      <span className="kol-mono-14 text-body">
+                        {s.label}
+                        {s.note && <span className="kol-helper-12 text-subtle"> · {s.note}</span>}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        {s.keys.map((k) => (
+                          <kbd key={k} className="kol-helper-12 rounded-[var(--kol-radius-sm)] bg-fg-08 px-1.5 py-0.5 text-emphasis">{k}</kbd>
+                        ))}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
         </ShellTocCollapsedContext.Provider>
       </ShellFullHeightContext.Provider>
