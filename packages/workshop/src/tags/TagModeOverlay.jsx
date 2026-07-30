@@ -34,7 +34,9 @@ const TagModeOverlay = () => {
 
   return (
     <article className="docs-article">
-      <div className="max-w-[864px] mx-auto">
+      {/* was max-w-[864px] — an improvised value in the ~900–1200 band the
+        * panel token exists to settle (kol-theme "Content widths"). */}
+      <div className="mx-auto max-w-[var(--kol-content-panel)]">
         <div className="flex items-center justify-start gap-1 mb-3">
           {hasFilters && (
             <Tooltip label={viewMode === 'graph' ? 'List view' : 'Graph view'}>

@@ -75,7 +75,12 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
             {label}
           </Link>
         ) : (
-          <button type="button" className="kol-helper-10 text-meta" onClick={handleToggle}>{label}</button>
+          /* Same voice as the labelTo branch. This read `kol-helper-10
+           * text-meta`, so the one rail mounted without a labelTo (the vault's
+           * "Documentation") rendered its label at a different size and colour
+           * from its two siblings — a type fork caused purely by which props
+           * the consumer happened to pass. */
+          <button type="button" className="shell-sidebar-label kol-doc-eyebrow" onClick={handleToggle}>{label}</button>
         )}
         <Tooltip label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}>
           <button
@@ -99,25 +104,49 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
         {routes.map((route) => {
           const isExpanded = !collapsedSections[route.id]
 
+          /* A group with no children is not a group — it is a link. It used to
+           * render as a header anyway: a chevron that rotated over an empty
+           * body, no count, and no navigation, so clicking "Icons" or
+           * "Components" in the tree did nothing at all while looking like it
+           * should. Now the chevron and the toggle only appear when there is
+           * something to expand, and a childless row goes where it says. */
+          const hasChildren = route.children?.length > 0
+          const headerClass = 'shell-nav-group-header w-full text-left kol-mono-14 text-body'
+
           return (
             <div key={route.id} className="shell-nav-group">
-              <button
-                type="button"
-                className="shell-nav-group-header w-full text-left kol-helper-14 text-body"
-                onClick={() => handleSectionClick(route)}
-              >
-                <span className="flex items-center gap-2">
-                  <Icon
-                    name="chevron-right"
-                    size={12}
-                    className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-                  />
-                  {route.label}
-                </span>
-                {route.children?.length > 0 && (
-                  <span className="kol-helper-12 text-subtle">({route.children.length})</span>
-                )}
-              </button>
+              {hasChildren ? (
+                <button
+                  type="button"
+                  className={headerClass}
+                  onClick={() => handleSectionClick(route)}
+                  aria-expanded={isExpanded}
+                >
+                  <span className="flex items-center gap-2">
+                    <Icon
+                      name="chevron-right"
+                      size={12}
+                      className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                    />
+                    {route.label}
+                  </span>
+                  <span className="kol-mono-14 text-subtle">({route.children.length})</span>
+                </button>
+              ) : (
+                <Link
+                  to={getSectionRootPath(route, basePath)}
+                  className={headerClass}
+                  onClick={onNavigate}
+                >
+                  {/* aligned with the expandable rows' label column — the
+                    * chevron's width, kept as space so the two kinds of row
+                    * share a left edge */}
+                  <span className="flex items-center gap-2">
+                    <span aria-hidden="true" style={{ width: 12 }} />
+                    {route.label}
+                  </span>
+                </Link>
+              )}
 
               {isExpanded && route.children?.length > 0 && (
                 <div className="shell-nav-items">

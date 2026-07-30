@@ -5,16 +5,41 @@ import { useTagMode } from '../tags'
 const FIELD_ICONS = {
   file: 'file',
   title: null,
-  version: 'hash-01',
-  date: null,
+  type: 'folder',
   status: 'check',
-  'content-type': null,
+  updated: null,
+  created: null,
+  verified: null,
+  description: null,
+  audience: null,
+  aliases: null,
+  version: 'hash-01',
+  /* legacy dialect (workshop-sample docs) — kept so those still render */
+  date: null,
   category: 'folder',
   tags: null,
-  modified: null
+  modified: null,
 }
 
-const FIELD_ORDER = ['title', 'category', 'date', 'tags', 'modified']
+/* THE kol-docs contract, in reading order — `.kol/docs-framework/01-conventions.md`:
+ * required (title/type/status/updated/tags) then recommended (description,
+ * aliases). `related` is excluded on purpose: the rail renders it as links.
+ *
+ * This list read ['title','category','date','tags','modified'] — the
+ * workshop-SAMPLE dialect. No kol-docs document carries category/date/modified,
+ * so the filter below admitted title + tags and silently dropped the other
+ * seven fields the parser had already handed it. The panel wasn't missing data;
+ * it was screening for the wrong schema. Sample-dialect keys stay at the tail
+ * so those docs keep rendering. */
+const FIELD_ORDER = [
+  'title', 'type', 'status', 'updated', 'created', 'verified',
+  'description', 'audience', 'aliases', 'tags',
+  'category', 'date', 'modified',
+]
+
+/* Every field rendered as a date. `updated`/`created`/`verified` are the
+ * kol-docs names; `date`/`modified` are the sample dialect's. */
+const DATE_FIELDS = new Set(['updated', 'created', 'verified', 'date', 'modified'])
 
 const formatDate = (dateStr) => {
   if (!dateStr) return null
@@ -58,8 +83,10 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                     </Tag>
                   ))}
                 </span>
-              ) : key === 'date' || key === 'modified' ? (
+              ) : DATE_FIELDS.has(key) ? (
                 formatDate(String(value))
+              ) : Array.isArray(value) ? (
+                value.join(' · ')
               ) : (
                 String(value)
               )}

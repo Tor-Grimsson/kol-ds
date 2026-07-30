@@ -64,26 +64,30 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
         collapsedSections={collapsedSections}
         toggleSection={toggleSection}
       >
-        <div className="space-y-1">
+        {/* Quick actions wear the SAME row as On-this-page and Related. They
+          * were `.shell-sidebar-action`, a third geometry with no left indent,
+          * so this rail carried three different row idioms — under the
+          * "ONE rail voice" comment above. */}
+        <div>
           <button
             type="button"
-            className="shell-sidebar-action kol-mono-14 text-body"
+            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
             onClick={() => navigate(-1)}
           >
             <Icon name="arrow-left" size={14} />
             Back
           </button>
-          <Link to={docsIndexHref} className="shell-sidebar-action kol-mono-14 text-body">
+          <Link to={docsIndexHref} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
             <Icon name="book-open" size={14} />
             All documentation
           </Link>
-          <Link to={componentsHref} className="shell-sidebar-action kol-mono-14 text-body">
+          <Link to={componentsHref} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
             <Icon name="grid" size={14} />
             View components
           </Link>
           <button
             type="button"
-            className="shell-sidebar-action kol-mono-14 text-body"
+            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
             onClick={() => navigator.clipboard.writeText(docFilePath(docId))}
             title="Copy file path to clipboard"
           >
@@ -376,7 +380,9 @@ const DocumentationReader = ({
 
   if (!doc) {
     return (
-      <div className="max-w-[1400px] mx-auto px-10 py-16">
+      /* framed to a 1400px tier that was removed from the scale at theme
+       * 0.11.22 and left behind here — a width nothing else still uses */
+      <div className="mx-auto max-w-[var(--kol-content-panel)] py-16">
         <DocsHeader title="Document Not Found" subtitle={`Could not find document: ${docId}`} />
         <p className="kol-mono-12 mt-6">
           <Link to={docsIndex} className="text-accent-primary">

@@ -119,18 +119,18 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
     // Node circles
     node.append('circle')
       .attr('r', d => Math.max(8, Math.min(16, 6 + d.count * 2)))
+      /* Palette tokens, not copies. This held eight hardcoded hexes that were
+       * transcriptions of --kol-palette-* (#3740D3 IS palette-blue) — correct
+       * the day they were typed and frozen ever since, so a retuned palette
+       * would move every chip and leave the graph behind. The chip rules in
+       * kol-components-molecules.css resolve the variables; the graph now
+       * reads the same ones. `dark` has no palette entry — it is a surface
+       * role — so it falls back rather than emitting an invalid var(). */
       .attr('fill', d => {
-        const colorMap = {
-          blue: '#3740D3',
-          teal: '#49a0a2',
-          green: '#66a44c',
-          yellow: '#ffe32e',
-          red: '#ce4646',
-          orange: '#db8000',
-          purple: '#9437FF',
-          dark: '#3a3a40'
-        }
-        return colorMap[getTagColor(d.id)] || '#49a0a2'
+        const key = getTagColor(d.id)
+        return key === 'dark'
+          ? 'var(--kol-surface-on-primary)'
+          : `var(--kol-palette-${key}, var(--kol-palette-teal))`
       })
       .attr('opacity', d => activeTag && d.id !== activeTag ? 0.4 : 0.9)
       .attr('stroke', d => d.id === activeTag ? 'var(--kol-accent-primary)' : 'none')

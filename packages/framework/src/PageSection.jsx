@@ -12,7 +12,10 @@ export default function PageSection({ id, label, title, body, children, classNam
     <section id={id} className={cls}>
       {divider && <Divider className="kol-page-section-divider" />}
       {hasHead && (
-        <header className={fullbleed ? 'max-w-[960px]' : 'max-w-[720px]'}>
+        /* head widths read the scale instead of transcribing it. `960px` was
+         * exactly the panel token; `720px` was an improvised near-miss and
+         * becomes the column token — 768px, so section heads widen by 48px. */
+        <header className={fullbleed ? 'max-w-[var(--kol-content-panel)]' : 'max-w-[var(--kol-content-column)]'}>
           {label && <p  className="kol-prose-label">{label}</p>}
           {title && <h2 className="kol-prose-title">{title}</h2>}
           {body  && <p  className="kol-prose-lede">{body}</p>}

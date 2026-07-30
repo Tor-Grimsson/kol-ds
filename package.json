@@ -17,6 +17,9 @@
     "extract:docs": "node scripts/extract-docs-meta.mjs && node scripts/extract-api.mjs && node scripts/extract-composition.mjs && node scripts/extract-origins.mjs",
     "validate:taxonomy": "node scripts/validate-taxonomy.mjs",
     "validate:groups": "node scripts/validate-groups.mjs",
+    "validate:width": "node scripts/validate-width.mjs",
+    "validate:rails": "node scripts/validate-rails.mjs",
+    "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"

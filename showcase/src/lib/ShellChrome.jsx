@@ -81,10 +81,14 @@ function AutoToc() {
   )
 }
 
-/* The real brand pair (2026-07-30 — a text span had replaced the logo, scope
- * violation): KOLKRABBI wordmark in the logo slot (reserves the 256px rail
- * column, links home) + KOL DS as the surface mark. KOL DS has no drawn
- * wordmark asset yet — typed placeholder until one lands in kol-brand. */
+/* The brand pair: KOLKRABBI wordmark in the logo slot (reserves the 256px rail
+ * column, links home) + the WORKSHOP wordmark as the surface mark — the same
+ * pair ShellLayout ships as its package default.
+ *
+ * This slot held a typed `KOL DS` span, on a comment claiming no drawn asset
+ * existed. One did: `wordmark-workshop.svg`, in kol-brand the whole time,
+ * auto-registered by AssetLoader's glob. The typed placeholder wrapped to two
+ * lines in the header. Drawn asset over typed text, always. */
 function ShowcaseBrand() {
   return (
     <>
@@ -92,7 +96,7 @@ function ShowcaseBrand() {
         <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
       </Link>
       <Link to="/" className="shell-header-logo flex items-center text-emphasis">
-        <span className="kol-mono-14 tracking-[0.2em]">KOL DS</span>
+        <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
       </Link>
     </>
   )

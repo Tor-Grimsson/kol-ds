@@ -33,7 +33,7 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
               <Link
                 key={child.id}
                 to={`${basePath}/${child.path}`}
-                className={`shell-sidebar-link block kol-mono-14 ${
+                className={`shell-nav-item block kol-mono-14 ${
                   location.pathname === `${basePath}/${child.path}` ? 'text-emphasis' : 'text-body'
                 }`}
               >
@@ -47,15 +47,15 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
       {links && (
         <div>
           <div className="shell-sidebar-label kol-doc-eyebrow">Repository</div>
-          <div className="space-y-1">
+          <div>
             {links.live && (
-              <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action kol-mono-14 text-body">
+              <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
                 <Icon name="external-link" size={14} />
                 Live site
               </a>
             )}
             {links.repo && (
-              <a href={links.repo} target="_blank" rel="noopener noreferrer" className="shell-sidebar-action kol-mono-14 text-body">
+              <a href={links.repo} target="_blank" rel="noopener noreferrer" className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
                 <Icon name="external-link" size={14} />
                 GitHub
               </a>
@@ -66,14 +66,14 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
 
       <div>
         <div className="shell-sidebar-label kol-doc-eyebrow">Quick actions</div>
-        <div className="space-y-1">
-          <Link to={basePath} className="shell-sidebar-action kol-mono-14 text-body">
+        <div>
+          <Link to={basePath} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
             <Icon name="layout" size={14} />
             Workshop home
           </Link>
           <button
             type="button"
-            className="shell-sidebar-action kol-mono-14 text-body"
+            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
             onClick={() => navigator.clipboard.writeText(window.location.pathname)}
             title="Copy page path to clipboard"
           >

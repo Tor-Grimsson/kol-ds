@@ -34,8 +34,13 @@ export default function DocsToc({ toc, onNavigate, rootMargin = '-80px 0px -80% 
             <a
               href={`#${item.id}`}
               onClick={onNavigate}
-              className={`kol-mono-12 block rounded py-1 transition-colors focus-visible:ring-focus hover:text-fg-96 ${
-                activeId === item.id ? 'text-fg-96' : 'text-fg-64'
+              /* THE rail row idiom (04-compositions/02-shells: "the right TOC
+               * rail wears the LEFT tree's exact idiom"). This was
+               * `kol-mono-12 … py-1` with no left padding, so on-this-page rows
+               * sat at a smaller size and a different left edge than the
+               * Related rows directly beneath them in the same rail. */
+              className={`shell-nav-item block kol-mono-14 transition-colors focus-visible:ring-focus hover:text-emphasis ${
+                activeId === item.id ? 'text-emphasis' : 'text-body'
               }`}
             >
               {item.label}

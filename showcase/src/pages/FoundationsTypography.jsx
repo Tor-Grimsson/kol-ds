@@ -128,14 +128,16 @@ function SystemSection({ section, columnsDict }) {
           <p className="text-meta">{section.reasoning}</p>
         </div>
       )}
+      {/* panel caps tables — see kol-theme "Content widths" */}
       {section.tables.map((t, i) => (
-        <Table
-          key={`${section.id}-${i}`}
-          caption={t.caption}
-          columns={typeof t.columns === 'string' ? columnsDict[t.columns] : t.columns}
-          rows={t.rows}
-          variant="simple"
-        />
+        <div key={`${section.id}-${i}`} className="max-w-[var(--kol-content-panel)]">
+          <Table
+            caption={t.caption}
+            columns={typeof t.columns === 'string' ? columnsDict[t.columns] : t.columns}
+            rows={t.rows}
+            variant="simple"
+          />
+        </div>
       ))}
     </DocSection>
   )

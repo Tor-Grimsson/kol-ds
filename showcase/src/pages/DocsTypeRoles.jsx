@@ -62,7 +62,10 @@ export default function DocsTypeRoles() {
         <div className="flex items-center flex-wrap gap-6">
           <SegGroup label="LANG" options={['jsx', 'css', 'bash', 'json'].map((v) => ({ value: v, label: v.toUpperCase() }))} value={lang} onChange={setLang} />
         </div>
-        <CodeBlock language={lang} code={CODE_SAMPLES[lang]} />
+        {/* panel caps code — see kol-theme "Content widths" */}
+        <div className="max-w-[var(--kol-content-panel)]">
+          <CodeBlock language={lang} code={CODE_SAMPLES[lang]} />
+        </div>
       </DocSection>
 
       <DocSection

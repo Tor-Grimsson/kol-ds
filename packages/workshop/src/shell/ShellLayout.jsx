@@ -44,8 +44,14 @@ const MainColumn = ({ children, fullHeight }) => (
   </main>
 )
 
+/* `xl`, not `lg` — the grid only declares a third column at xl (gridCols
+ * below). Rendering this at lg put THREE children in a TWO-column grid between
+ * 1024 and 1279px: the rail wrapped to an implicit second row and `h-full`
+ * split the height between them, so main got ~373px of a 900px window and the
+ * page read as empty. The breakpoint here and the one in gridCols are one
+ * decision and must not be stated twice differently. */
 const TocColumn = ({ children }) => (
-  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden xl:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )
@@ -76,6 +82,14 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   }, [])
 
   const effectiveTocContent = tocContent ?? defaultTocContent
+  /* KNOWN, deliberately not fixed here: an element is always truthy, so
+   * `<AutoToc/>` reserves a rail even on pages where it renders null. The
+   * obvious fix — measure the mounted column — deadlocks: once the column
+   * unmounts the probe is gone and can never report content again. The real
+   * fix is a consumer-side signal (a render-prop returning null, or an
+   * explicit `hasToc` prop), which is an API change. Filed, not improvised.
+   * The bug this caused — a half-height main column at 1024–1279px — was the
+   * `lg` vs `xl` mismatch on TocColumn above, and that IS fixed. */
   const hasToc = Boolean(effectiveTocContent)
   const showNav = !navCollapsed
   const showToc = hasToc && !tocCollapsed
@@ -183,7 +197,17 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             * main scrolls unless a page locks it (ShellFullHeightContext — embeds).
             * overscroll-none stops chaining between regions and the edge bounce. */}
           <div className="flex-1 overflow-hidden">
-            <div className="h-full w-full px-4 md:px-5 lg:px-6">
+            {/* THE frame (kol-theme "Content widths"): ONE cap at the shell
+              * token, centred, on the framework padding ramp. This wrapper
+              * carried `w-full px-4 md:px-5 lg:px-6` — no cap at all, and
+              * Tailwind's 16/20/24 steps instead of the ramp's 20/32/48 — so
+              * every consumer page inherited the raw viewport (measured 2152px
+              * of frame at a 2200px window against an 1800px law). Every
+              * page-level width fix is downstream of this line. */}
+            <div
+              className="mx-auto h-full w-full max-w-[var(--kol-content-shell)]"
+              style={{ paddingInline: 'var(--kol-pad-section-x)' }}
+            >
               {/* gap lives in .shell-content-grid (theme) — a gap-8 utility here
                 * outranks the layered theme rule at every width and killed the
                 * 48px wide step (ARCHITECTURE §5: component geometry in its own
