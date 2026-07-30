@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.26.0',
+  slug: 'labeled-control',
+}
+
+<Preview name="LabeledControl" />
+
+## Installation
+
+<Install name="LabeledControl" />
+
+## Usage
+
+```jsx
+import { LabeledControl } from '@kolkrabbi/kol-component'
+
+<LabeledControl label="Columns"><Slider min={1} max={32} value={n} onChange={setN} /></LabeledControl>
+```
+
+## Props
+
+<Api name="LabeledControl" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Control label."},
+  {"prop":"hint","type":"string","def":"—","desc":"Secondary hint text."},
+  {"prop":"inline","type":"boolean","def":"false","desc":"Lay out label + control on one row."},
+  {"prop":"labelWidth","type":"number","def":"48","desc":"Label column width (inline)."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The wrapped control."}
+]} />

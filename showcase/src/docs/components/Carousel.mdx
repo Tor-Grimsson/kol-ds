@@ -1,0 +1,26 @@
+export const meta = {
+  id: '2.9.0',
+  slug: 'carousel',
+}
+
+<Preview name="Carousel" />
+
+## Installation
+
+<Install name="Carousel" />
+
+## Usage
+
+```jsx
+import { Carousel } from '@kolkrabbi/kol-component'
+
+<Carousel><div>Slide 1</div><div>Slide 2</div></Carousel>
+```
+
+## Props
+
+<Api name="Carousel" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Each child becomes one slide."},
+  {"prop":"options","type":"EmblaOptionsType","def":"{ align: \"start\", loop: false }","desc":"Embla carousel options."},
+  {"prop":"className","type":"string","def":"—","desc":"Extra classes on the root."}
+]} />

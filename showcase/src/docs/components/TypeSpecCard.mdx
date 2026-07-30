@@ -1,0 +1,26 @@
+export const meta = {
+  id: '2.65.0',
+  slug: 'type-spec-card',
+}
+
+<Preview name="TypeSpecCard" />
+
+## Installation
+
+<Install name="TypeSpecCard" />
+
+## Usage
+
+```jsx
+import { TypeSpecCard } from '@kolkrabbi/kol-foundry'
+
+<TypeSpecCard label='Heading 01' meta={[['Family', 'Sans'], ['Size', '48px']]}><TypeSample … /></TypeSpecCard>
+```
+
+## Props
+
+<Api name="TypeSpecCard" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Corner caption, absolute top-left."},
+  {"prop":"meta","type":"[key, value][]","def":"[]","desc":"Key/value metric rows."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The live sample (often a TypeSample)."}
+]} />

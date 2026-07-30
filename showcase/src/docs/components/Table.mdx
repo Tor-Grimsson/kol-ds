@@ -1,0 +1,61 @@
+export const meta = {
+  id: '2.54.0',
+  slug: 'table',
+}
+
+<Preview name="Table" />
+
+## Installation
+
+<Install name="Table" />
+
+## Usage
+
+```jsx
+import { Table } from '@kolkrabbi/kol-component'
+
+<Table columns={columns} rows={rows} />
+```
+
+## Recipes
+
+### Type-scale table
+
+The scale-table member of the type-specimen kit is a **columns recipe, not a
+component** (ruled from the `TypeScaleSection` lobby spec, 2026-07-30): it is
+`Table` with one custom render column. Wrap it in your page's section chrome
+(`PageSection` or DocSection) and pass a `Preview` column that renders each
+row's real family/weight/size.
+
+```jsx
+import { Table } from '@kolkrabbi/kol-component'
+
+const typeScaleColumns = (family, sample = 'The quick brown fox') => [
+  { accessor: 'token', header: 'Token', className: 'kol-table-cell-title' },
+  { accessor: 'weight', header: 'Weight' },
+  { accessor: 'size', header: 'Size / LH', render: (r) => `${r.size} / ${r.lh}` },
+  {
+    accessor: 'preview', header: 'Preview', className: 'kol-table-cell-text',
+    render: (r) => (
+      <span style={{ fontFamily: family, fontWeight: r.weight, fontSize: Math.min(r.size, 20), lineHeight: 1.2, whiteSpace: 'normal' }}>
+        {sample}
+      </span>
+    ),
+  },
+]
+
+<Table variant="simple" columns={typeScaleColumns('var(--kol-font-family-sans)')} rows={scaleRows} />
+```
+
+Notes: the 20px preview cap keeps large stops in-row — raise or drop it per
+context; the sample string is a parameter, authored at the call site (no baked
+pangram); default the family to a token, never a hardcoded brand font.
+
+## Props
+
+<Api name="Table" rows={[
+  {"prop":"columns","type":"array","def":"—","desc":"Column configs: { accessor, header, render?, className? }."},
+  {"prop":"rows","type":"array","def":"—","desc":"Row objects; cell read via column.accessor unless render is given."},
+  {"prop":"variant","type":"default | simple","def":"default","desc":"Bordered vs borderless/flush."},
+  {"prop":"caption","type":"string","def":"—","desc":"Screen-reader caption."}
+]} />

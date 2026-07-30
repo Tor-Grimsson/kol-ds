@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.13.0',
+  slug: 'curve-overlay',
+}
+
+<Preview name="CurveOverlay" />
+
+## Installation
+
+<Install name="CurveOverlay" />
+
+## Usage
+
+```jsx
+import { CurveOverlay } from '@kolkrabbi/kol-component'
+
+<CurveOverlay width={320} height={120} curve="ease" blend={0.5} />
+```
+
+## Props
+
+<Api name="CurveOverlay" rows={[
+  {"prop":"width / height","type":"number","def":"—","desc":"Frame px size — viewBox scale; y is inverted (value 0 at bottom)."},
+  {"prop":"curve","type":"string","def":"'linear'","desc":"'custom' → bezier editor; else preset: flat | linear | reverse | ease | expo-in | expo-out | log | sine."},
+  {"prop":"blend","type":"number 0..1","def":"0.5","desc":"Curve amount / up-down bias."},
+  {"prop":"cp1 / cp2","type":"{ x, y } 0..1","def":"—","desc":"Normalized control points (required in custom mode)."},
+  {"prop":"easing","type":"(t) => v","def":"—","desc":"Custom sampler replacing presets (48 samples, clamped)."}
+]} />

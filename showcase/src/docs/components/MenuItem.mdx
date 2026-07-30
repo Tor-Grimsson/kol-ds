@@ -1,0 +1,32 @@
+export const meta = {
+  id: '2.32.0',
+  slug: 'menu-item',
+}
+
+<Preview name="MenuItem" />
+
+## Installation
+
+<Install name="MenuItem" />
+
+## Usage
+
+```jsx
+import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from '@kolkrabbi/kol-component'
+
+<MenuItem label="File"><MenuDropdownItem>New</MenuDropdownItem></MenuItem>
+```
+
+## Parts
+
+<Parts name="MenuItem" />
+
+## Props
+
+<Api name="MenuItem" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Trigger button text."},
+  {"prop":"children","type":"ReactNode | ({ close }) => ReactNode","def":"—","desc":"Panel contents; render-prop gets close()."},
+  {"prop":"align","type":"start | end","def":"start","desc":"Panel edge alignment."},
+  {"prop":"panelClassName","type":"string","def":"—","desc":"Classes on the popover panel."},
+  {"prop":"buttonClassName","type":"string","def":"—","desc":"Classes on the trigger button."}
+]} />

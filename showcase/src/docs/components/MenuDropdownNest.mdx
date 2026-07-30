@@ -1,0 +1,26 @@
+export const meta = {
+  id: '2.31.0',
+  slug: 'menu-dropdown-nest',
+}
+
+<Preview name="MenuDropdownNest" />
+
+## Installation
+
+<Install name="MenuDropdownNest" />
+
+## Usage
+
+```jsx
+import { MenuDropdownNest } from '@kolkrabbi/kol-component'
+
+<MenuDropdownNest label="Export"><MenuDropdownItem>PNG</MenuDropdownItem></MenuDropdownNest>
+```
+
+## Props
+
+<Api name="MenuDropdownNest" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Row label."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Rows revealed when expanded."},
+  {"prop":"iconLeft","type":"ReactNode","def":"—","desc":"Leading icon in a fixed column."}
+]} />

@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.34.0',
+  slug: 'page-section',
+}
+
+<Preview name="PageSection" />
+
+## Installation
+
+<Install name="PageSection" />
+
+## Usage
+
+```jsx
+import { PageSection } from '@kolkrabbi/kol-framework'
+
+<PageSection label="01 — Colour" title="Surfaces" body="…">…</PageSection>
+```
+
+## Props
+
+<Api name="PageSection" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Numbered mono eyebrow."},
+  {"prop":"title","type":"string","def":"—","desc":"Section h2."},
+  {"prop":"body","type":"string","def":"—","desc":"Lede paragraph under the title."},
+  {"prop":"id","type":"string","def":"—","desc":"Anchor id for scroll-spy / TOC."},
+  {"prop":"fullbleed","type":"boolean","def":"false","desc":"Edge-to-edge canvas mode — zero horizontal padding. Not for content."},
+  {"prop":"divider","type":"boolean","def":"false","desc":"Rule above the section."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Section content."}
+]} />

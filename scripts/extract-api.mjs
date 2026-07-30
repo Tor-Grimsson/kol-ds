@@ -11,7 +11,7 @@
  * descriptions win (docgen only sees per-prop JSDoc, which most KOL
  * components don't carry), generated rows win on existence + defaults.
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse, builtinResolvers } from 'react-docgen'
@@ -39,10 +39,21 @@ const typeOf = (p) =>
 const tables = {}
 let filesParsed = 0, failed = []
 
-const roots = [
-  { index: join(REPO, 'packages/component/src/index.js'), base: join(REPO, 'packages/component/src') },
-  { index: join(REPO, 'packages/framework/src/index.js'), base: join(REPO, 'packages/framework/src') },
-]
+/* Every UI package is scanned, not just component + framework (2026-07-30).
+ * The two-root list silently starved the showcase's <Api> of every component
+ * that lives elsewhere — Icon (kol-icons), HlsVideo/PriceDisplay (kol-store),
+ * TypeSample/TypeSpecCard (kol-foundry) rendered an empty props table. Roots
+ * are discovered so a new package is covered the day it lands; the clients
+ * tier is plain ESM with no React to parse (ARCHITECTURE §3). */
+const NON_UI = new Set(['media-client', 'scrape', 'theme'])
+const roots = readdirSync(join(REPO, 'packages'), { withFileTypes: true })
+  .filter((d) => d.isDirectory() && !NON_UI.has(d.name))
+  .map((d) => ({
+    pkg: d.name,
+    index: join(REPO, 'packages', d.name, 'src/index.js'),
+    base: join(REPO, 'packages', d.name, 'src'),
+  }))
+  .filter((r) => existsSync(r.index))
 for (const { index, base } of roots) {
   const byFile = new Map()
   for (const e of parseExports(index)) {

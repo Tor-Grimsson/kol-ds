@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.66.0',
+  slug: 'view-toggle',
+}
+
+<Preview name="ViewToggle" />
+
+## Installation
+
+<Install name="ViewToggle" />
+
+## Usage
+
+```jsx
+import { ViewToggle } from '@kolkrabbi/kol-component'
+
+<ViewToggle viewMode={view} onViewChange={setView} />
+```
+
+## Props
+
+<Api name="ViewToggle" rows={[
+  {"prop":"viewMode","type":"string","def":"—","desc":"Active view value."},
+  {"prop":"onViewChange","type":"(value) => void","def":"—","desc":"Fires with the chosen view."},
+  {"prop":"variant","type":"text | icon","def":"text","desc":"Label or icon rendering."},
+  {"prop":"options","type":"{ value, label, icon }[]","def":"grid / list","desc":"Views to offer."}
+]} />

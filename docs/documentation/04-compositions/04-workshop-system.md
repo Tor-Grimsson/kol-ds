@@ -2,7 +2,7 @@
 title: The workshop docs system — @kolkrabbi/kol-workshop
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-30
 description: Everything the workshop "navbar set" actually is — a handrolled docs subsystem (markdown engine, search, tag system, shell, compositions) lifted from the monorepo apps/web into @kolkrabbi/kol-workshop, dedup'd against the DS shell chrome.
 aliases:
   - workshop system
@@ -34,7 +34,7 @@ This doc is the map: what it is, what the package owns vs. reuses, the engine AP
 | **Engine** | Handrolled markdown parser, frontmatter parser, doc inventory, search-match predicate, tag co-occurrence, doc helpers. **No `remark`/`gray-matter`/`fuse.js`** — all bespoke. | `kol-workshop/src/engine/` (React-free, zero-dep) |
 | **Docs viewer** | Renders a parsed doc — `DocumentationReader` + `DocsArticle`/`DocsHeader`/`DocsFrontmatter` + `render-tokens` (the JSX render layer for the parser). | `kol-workshop/src/docs/` |
 | **Tag system** | `TagMode` context/overlay/gate + `TagGraph` (force-directed, **the only heavy dep — `d3`**). Frontmatter `tags:` + inline `#hashtags` merged. | `kol-workshop/src/tags/` |
-| **Shell composition** | `ShellLayout` (grid + 3 contexts) + `ShellSidebar`. Composes the DS shell primitives; owns the docs-specific `FullHeight` context. | `kol-workshop/src/shell/` |
+| **Shell composition** | `ShellLayout` (grid + 3 contexts) + `ShellSidebar`. Composes the DS shell primitives; owns the docs-specific `FullHeight` context. Grid gutter is theme-owned (0.3.1): `.shell-content-grid` gap 32px / 48px ≥1600 — no `gap-*` utility on the element (§5: a utility outranks the layered rule and killed the wide step). | `kol-workshop/src/shell/` |
 | **Compositions** | `WorkshopSidebar` (primary + docs nav) + `WorkshopDefaultSidebar` (right rail) — example consumers copy. | `kol-workshop/src/compositions/` |
 
 ## Package law — owns vs. reuses

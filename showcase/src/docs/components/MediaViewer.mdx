@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.28.0',
+  slug: 'media-viewer',
+}
+
+<Preview name="MediaViewer" />
+
+## Installation
+
+<Install name="MediaViewer" />
+
+## Usage
+
+```jsx
+import { MediaViewer } from '@kolkrabbi/kol-component'
+
+<MediaViewer open={open} media={media} index={index} onIndexChange={setIndex} onClose={() => setOpen(false)} />
+```
+
+## Props
+
+<Api name="MediaViewer" rows={[
+  {"prop":"open","type":"boolean","def":"—","desc":"Viewer visible."},
+  {"prop":"media","type":"array","def":"[]","desc":"Items: { url, alt?, kind: 'image' | 'video', caption? }."},
+  {"prop":"index","type":"number","def":"0","desc":"Active item index (parent-owned)."},
+  {"prop":"onIndexChange","type":"function","def":"—","desc":"Fires with the new index on page (embla select)."},
+  {"prop":"onClose","type":"function","def":"—","desc":"Close request (Esc, backdrop, close button)."}
+]} />

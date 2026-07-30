@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.30.0',
+  slug: 'menu-dropdown-item',
+}
+
+<Preview name="MenuDropdownItem" />
+
+## Installation
+
+<Install name="MenuDropdownItem" />
+
+## Usage
+
+```jsx
+import { MenuDropdownItem } from '@kolkrabbi/kol-component'
+
+<MenuDropdownItem onClick={fn}>Save</MenuDropdownItem>
+```
+
+## Props
+
+<Api name="MenuDropdownItem" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Main label (truncates)."},
+  {"prop":"onClick","type":"() => void","def":"—","desc":"Fires before the menu closes."},
+  {"prop":"iconLeft","type":"ReactNode","def":"—","desc":"Leading icon in a fixed column."},
+  {"prop":"shortcut","type":"ReactNode","def":"—","desc":"Trailing shortcut / marker."},
+  {"prop":"disabled","type":"boolean","def":"false","desc":"Dims and blocks activation."}
+]} />

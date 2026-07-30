@@ -1,0 +1,26 @@
+export const meta = {
+  id: '2.15.0',
+  slug: 'docs-toc',
+}
+
+<Preview name="DocsToc" />
+
+## Installation
+
+<Install name="DocsToc" />
+
+## Usage
+
+```jsx
+import { DocsToc } from '@kolkrabbi/kol-component'
+
+<DocsToc toc={[{ id: 'overview', label: 'Overview' }]} />
+```
+
+## Props
+
+<Api name="DocsToc" rows={[
+  {"prop":"toc","type":"{ id, label }[]","def":"—","desc":"Headings to render and observe — a matching in-page element must exist per id."},
+  {"prop":"onNavigate","type":"(event) => void","def":"—","desc":"Optional click handler on every link."},
+  {"prop":"rootMargin","type":"string","def":"'-80px 0px -80% 0px'","desc":"IntersectionObserver band passed to useScrollSpy."}
+]} />

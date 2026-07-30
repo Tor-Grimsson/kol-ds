@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.16.0',
+  slug: 'dropdown',
+}
+
+<Preview name="Dropdown" />
+
+## Installation
+
+<Install name="Dropdown" />
+
+## Usage
+
+```jsx
+import { Dropdown } from '@kolkrabbi/kol-component'
+
+<Dropdown options={opts} value={v} onChange={setV} />
+```
+
+## Props
+
+<Api name="Dropdown" rows={[
+  {"prop":"options","type":"{ value, label }[]","def":"[]","desc":"Selectable entries."},
+  {"prop":"value","type":"string","def":"—","desc":"Selected value (defaults to first)."},
+  {"prop":"onChange","type":"(value) => void","def":"—","desc":"Fires with the chosen value."},
+  {"prop":"variant","type":"primary | outline","def":"primary","desc":"Button chrome on the trigger (chrome law). Legacy aliases: default/subtle → primary, minimal → outline."},
+  {"prop":"size","type":"sm | md | lg","def":"auto","desc":"Overrides the viewport-derived size."}
+]} />

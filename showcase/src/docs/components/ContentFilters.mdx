@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.12.0',
+  slug: 'content-filters',
+}
+
+<Preview name="ContentFilters" />
+
+## Installation
+
+<Install name="ContentFilters" />
+
+## Usage
+
+```jsx
+import { ContentFilters } from '@kolkrabbi/kol-component'
+
+<ContentFilters items={items} title="Shop" totalCount={items.length} filterGroups={groups} renderItem={renderItem} />
+```
+
+## Props
+
+<Api name="ContentFilters" rows={[
+  {"prop":"items","type":"array","def":"—","desc":"Full item set; filtered internally."},
+  {"prop":"renderItem","type":"function","def":"—","desc":"(filteredItems, viewMode, layout) => ReactNode."},
+  {"prop":"filterGroups","type":"array","def":"[]","desc":"[{ label, key, values }] → toggleable tags."},
+  {"prop":"title","type":"string","def":"—","desc":"Section heading."},
+  {"prop":"totalCount","type":"number","def":"—","desc":"Total-before-filtering count."},
+  {"prop":"searchKeys","type":"array","def":"['label','name',…]","desc":"Fields matched by the search input."},
+  {"prop":"viewModeOptions","type":"array","def":"—","desc":"Optional grid/list view toggles."}
+]} />

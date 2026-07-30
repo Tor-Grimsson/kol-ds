@@ -3,19 +3,29 @@ import { Icon } from '@kolkrabbi/kol-icons'
 const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
 
 /**
- * Tag — canonical (merged web rich + brand compat).
+ * Tag — the INTERACTIVE chip: filterable, selectable, removable.
  *
- * Web's rich API: variant (default/naked/inverse/solid), size, color, solid,
- * active, icon, onRemove, onClick. Plus:
+ * The chip family (documented at source, 2026-07-30):
+ *   Pill  — static label. No states, no handlers. Reach for this for decoration.
+ *   Tag   — interactive/filterable. THIS component. Its `active`/`onClick`/
+ *           `onRemove` states are the point — a Tag with no handler renders a
+ *           <span> and is a Pill wearing the wrong name.
+ *   Badge — system status or a count.
+ *
+ * Canonical (merged web rich + brand compat). Web's rich API: variant
+ * (default/naked/inverse/solid), size, color, solid, active, icon, onRemove,
+ * onClick. Plus:
  *  - `hash` (default true) — prepend `#` (web's tag style). Pass hash={false}
  *    for plain labels (brand usage).
  *  - `text` — content fallback when no children (brand SwatchControls passes text=).
+ *
+ * `size` defaults to `sm` per the chip law (2026-07-30, same pass as Pill).
  */
 export default function Tag({
   children,
   text,
   variant = 'default',
-  size = 'md',
+  size = 'sm',
   color,
   solid = false,
   active = false,

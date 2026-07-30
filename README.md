@@ -41,8 +41,10 @@ CSS cascade order is load-bearing — import in exactly this order:
 @import "tailwindcss";
 @import "@kolkrabbi/kol-theme";
 @import "@kolkrabbi/kol-framework/kol-brand-color.css";   /* if using the framework */
-@import "@kolkrabbi/kol-framework/kol-framework.css";
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
 ```
+
+**`layer(components)` on the framework import is part of the contract.** Unlayered rules outrank every layered rule regardless of specificity, so importing it bare promotes framework chrome above the theme's type layer — the same package then renders differently in two apps with no version difference.
 
 **`@source` every KOL package you install — this is not optional.** The packages ship raw JSX full of Tailwind utility classes, and Tailwind v4 skips `node_modules` when scanning — so without these lines the class attributes land in the DOM but the utilities never generate, and layouts silently collapse. Add them next to the imports above (trim to the packages you actually install):
 

@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.21.0',
+  slug: 'figure',
+}
+
+<Preview name="Figure" />
+
+## Installation
+
+<Install name="Figure" />
+
+## Usage
+
+```jsx
+import { Figure } from '@kolkrabbi/kol-component'
+
+<Figure label="Fig. 01" caption="…" aspect="5/3"><img … /></Figure>
+```
+
+## Props
+
+<Api name="Figure" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Media inside the aspect-locked frame."},
+  {"prop":"label","type":"string","def":"—","desc":"Small mono label above the frame."},
+  {"prop":"caption","type":"string","def":"—","desc":"figcaption below the frame."},
+  {"prop":"aspect","type":"string","def":"'5/3'","desc":"CSS aspect-ratio value; '' for natural height."},
+  {"prop":"className","type":"string","def":"—","desc":"Extra classes on the figure."}
+]} />

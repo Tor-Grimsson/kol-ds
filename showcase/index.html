@@ -8,15 +8,17 @@
     <!-- Theme boot (USER law: explicit choice > system/auto > light): restore
          a SAVED toggle choice before first paint; with no saved choice the
          page is left un-stamped so the theme CSS's :root:not([data-theme])
-         blocks follow the OS live. Versioned: v2 marks the old light-default
-         cutover — pre-v2 saved themes (incl. the old workshop `theme` key)
-         are discarded once. -->
+         blocks follow the OS live. Versioned cutovers, each discards saved
+         themes ONCE: v2 = the old light-default cutover (killed the workshop
+         `theme` key). v3 = the tri-state cutover (2026-07-30) — stamps written
+         by the OLD two-state toggle (07-15→07-30, every other click stamped
+         'dark') predate the system state and must not outlive it. -->
     <script>
       try {
-        if (localStorage.getItem('kol-theme-v') !== '2') {
+        if (localStorage.getItem('kol-theme-v') !== '3') {
           localStorage.removeItem('kol-theme')
           localStorage.removeItem('theme')
-          localStorage.setItem('kol-theme-v', '2')
+          localStorage.setItem('kol-theme-v', '3')
         }
         var t = localStorage.getItem('kol-theme')
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t

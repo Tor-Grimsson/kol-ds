@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Tag } from '@kolkrabbi/kol-component'
-import DocLayout from '../lib/DocLayout.jsx'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import DemoStage from '../lib/DemoStage.jsx'
 import { groupComponents, FUNCTIONS, TOTAL, WITH_DEMOS } from '../lib/registry.js'
@@ -73,10 +72,9 @@ export default function Components() {
   }, [q, fn, mode])
 
   const shown = grouped.reduce((n, [, , items]) => n + items.length, 0)
-  const toc = grouped.map(([key, label]) => ({ id: key, label }))
 
   return (
-    <DocLayout toc={toc}>
+    <>
       <DocHeader
         eyebrow="KOL · Components"
         title="Components"
@@ -108,6 +106,6 @@ export default function Components() {
       ))}
 
       {shown === 0 && <p className="kol-sans-body-01 text-meta">no components match.</p>}
-    </DocLayout>
+    </>
   )
 }

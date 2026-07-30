@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.59.0',
+  slug: 'toggle-bracket',
+}
+
+<Preview name="ToggleBracket" />
+
+## Installation
+
+<Install name="ToggleBracket" />
+
+## Usage
+
+```jsx
+import { ToggleBracket } from '@kolkrabbi/kol-component'
+
+<ToggleBracket label="Snap" value={on} onToggle={setOn} />
+```
+
+## Props
+
+<Api name="ToggleBracket" rows={[
+  {"prop":"value","type":"boolean","def":"false","desc":"On/off state (controlled)."},
+  {"prop":"onToggle","type":"(bool) => void","def":"—","desc":"Fires with the next state."},
+  {"prop":"label","type":"string","def":"—","desc":"Bracket label."},
+  {"prop":"onLabel / offLabel","type":"string","def":"ON / OFF","desc":"State text."},
+  {"prop":"variant","type":"default | plain","def":"default","desc":"Visual style."}
+]} />

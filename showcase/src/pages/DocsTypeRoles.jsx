@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import DocLayout from '../lib/DocLayout.jsx'
 import { CodeBlock, Table } from '@kolkrabbi/kol-component'
 import { DocHeader, DocSection, DocTable, DocFigure } from '@kolkrabbi/kol-workshop'
 import { SegGroup } from '../lib/icon-controls.jsx'
@@ -10,16 +9,6 @@ import { SegGroup } from '../lib/icon-controls.jsx'
  * sets and the components that ride them (2026-07-28 epic).
  */
 
-const TOC = [
-  { id: 'preview-code', label: 'Preview — CodeBlock' },
-  { id: 'preview-table', label: 'Preview — Table' },
-  { id: 'preview-kit', label: 'Preview — DocKit' },
-  { id: 'preview-doc-roles', label: 'Preview — doc roles' },
-  { id: 'preview-card-roles', label: 'Preview — card roles' },
-  { id: 'specs-doc', label: 'Specs — doc set' },
-  { id: 'specs-card', label: 'Specs — card set' },
-  { id: 'specs-entry', label: 'Specs — entry points' },
-]
 
 /* Specimen row — small meta label above the thing rendered as itself. */
 function Spec({ label, children }) {
@@ -56,7 +45,7 @@ export default function DocsTypeRoles() {
   const [variant, setVariant] = useState('default')
 
   return (
-    <DocLayout toc={TOC}>
+    <>
       <DocHeader
         eyebrow="KOL · Docs"
         title="Type roles"
@@ -261,6 +250,6 @@ export default function DocsTypeRoles() {
           their current stacks until a repo swaps.
         </p>
       </DocSection>
-    </DocLayout>
+    </>
   )
 }

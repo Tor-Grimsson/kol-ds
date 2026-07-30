@@ -1,0 +1,31 @@
+export const meta = {
+  id: '2.42.0',
+  slug: 'search-input',
+}
+
+<Preview name="SearchInput" />
+
+## Installation
+
+<Install name="SearchInput" />
+
+## Usage
+
+```jsx
+import { SearchInput } from '@kolkrabbi/kol-component'
+
+<SearchInput value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} shortcutHint="⌘K" />
+```
+
+## Props
+
+<Api name="SearchInput" rows={[
+  {"prop":"value","type":"string","def":"''","desc":"Controlled value."},
+  {"prop":"onChange","type":"(event) => void","def":"—","desc":"Input change handler."},
+  {"prop":"placeholder","type":"string","def":"'Search…'","desc":"Placeholder text."},
+  {"prop":"onClear","type":"() => void","def":"—","desc":"Trailing × click; renders only while set AND value non-empty."},
+  {"prop":"shortcutHint","type":"string","def":"—","desc":"Caller-authored kbd chip (e.g. \"⌘K\") shown while empty; no key handling here."},
+  {"prop":"size","type":"sm | md","def":"md","desc":"Control size + matched mono type class."},
+  {"prop":"variant","type":"filled | outline","def":"filled","desc":"Same chrome as Input (ghost = legacy alias); ignored when bare."},
+  {"prop":"bare","type":"boolean","def":"false","desc":"Borderless inline field for overlay/palette panels."}
+]} />

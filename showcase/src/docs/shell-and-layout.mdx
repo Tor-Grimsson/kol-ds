@@ -1,0 +1,84 @@
+export const meta = {
+  id: '3.4.0',
+  slug: 'shell-and-layout',
+  eyebrow: 'Docs',
+  title: 'Shell & Layout',
+  lede: 'How a KOL app is framed: Layout is the route-level root, AppShell is the portal chrome nested inside it, SideNav is the navigation rail, ScrollToTop is a render-null behavior. These aren\'t components in the traditional sense — they\'re documented here instead of the components list.',
+}
+
+export function Box({ label, children, className = '' }) {
+  return (
+    <div className={`rounded-[var(--kol-radius-sm)] border border-fg-16 p-3 ${className}`}>
+      <p className="kol-mono-12 text-emphasis mb-2">{label}</p>
+      {children}
+    </div>
+  )
+}
+
+## The composition
+
+The nesting, as used by the brand app: Layout wraps every route; AppShell wraps the route groups that carry portal chrome.
+
+<Box label="<Layout>  — route-level root frame">
+  <div className="flex flex-col gap-2">
+    <div className="rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-3 py-1.5 kol-mono-12 text-meta">
+      {'<ScrollToTop />'} — render-null behavior
+    </div>
+    <Box label="<main> · <Outlet />">
+      <Box label="<AppShell>  — portal chrome (per route group)">
+        <div className="flex gap-2">
+          <div className="w-28 shrink-0 rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-2 py-4 kol-mono-12 text-meta">
+            {'<SideNav />'}
+          </div>
+          <div className="flex-1 rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-2 py-4 kol-mono-12 text-meta">
+            {'<Outlet />'} — pages
+          </div>
+        </div>
+        <p className="kol-mono-12 text-meta mt-2">+ mobile drawer · ModalProvider</p>
+      </Box>
+    </Box>
+  </div>
+</Box>
+
+## Layout
+
+The outermost route wrapper: mounts ScrollToTop, renders pages through `<Outlet />` inside a min-height column, and shows ExitPreview on client-site routes. No props — it's wiring, not UI.
+
+```jsx
+<Route element={<Layout />}>…</Route>
+```
+
+## AppShell
+
+The portal chrome: SideNav + mobile drawer (hamburger, backdrop, Escape) + ModalProvider around the route Outlet. Give it a navTree and an active-page resolver.
+
+```jsx
+<Route element={<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />}>…</Route>
+```
+
+<Api name="AppShell" rows={[
+  {"prop":"navTree","type":"array","def":"[]","desc":"Nav tree consumed by SideNav (groups + route/anchor leaves)."},
+  {"prop":"getActivePage","type":"(pathname) => node","def":"—","desc":"Resolves the active top-level page."},
+  {"prop":"header / footer","type":"ReactNode","def":"—","desc":"Optional chrome above/below the outlet in the content column; mount consumer search/topbar in header."},
+  {"prop":"defaultTocContent","type":"ReactNode","def":"—","desc":"Right-rail content when the active page registers none via ShellTocContext."}
+]} />
+
+## SideNav
+
+The sticky navigation rail — grouped tree, route + anchor leaves, scroll-spy, collapsible. It's a real visual component: live below, full page at Components → SideNav.
+
+<Preview name="SideNav" minH="min-h-[24rem]" />
+
+[Full SideNav component page →](/components/side-nav)
+
+## ScrollToTop
+
+Render-null behavior: on route change scrolls to top; on hash change smooth-scrolls to the anchor. Mount once inside the router (Layout already does).
+
+```jsx
+<ScrollToTop />
+```
+
+## The docs shell (this site)
+
+This site's own chrome — TopBar, DocSidebar (flat A→Z), the content column, and the on-this-page rail — is the shadcn-reference shell, app-local in showcase/src/lib (DocLayout.jsx, TopBar.jsx). The workshop shell (kol-monorepo /workshop) is the second reference shell, queued for import. Registry + comparison: docs/shells/01-reference-shells.md. Promotion into @kolkrabbi/kol-framework is the plan once both stabilise.

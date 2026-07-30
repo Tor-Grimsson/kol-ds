@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import { Icon, KOL_ICON_SET_V1 } from '@kolkrabbi/kol-icons'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
-import DocLayout from '../lib/DocLayout.jsx'
 
 /**
  * Icons — the kol-icon-set-v1 gallery (THE icons page since the legacy gallery died, 2026-07-28), DOGFOODING the package: groups come from
@@ -87,7 +86,7 @@ export default function Icons() {
   const rowProps = useMemo(() => ({ size, bgLight, gridOverlay, copied, onCopy: copy }), [size, bgLight, gridOverlay, copied])
 
   return (
-    <DocLayout>
+    <>
       <DocHeader
         eyebrow="KOL · Icons"
         title="Icons"
@@ -103,6 +102,6 @@ export default function Icons() {
       {orderedFolders.map((folder) => (
         <GroupList key={folder} folder={folder} items={KOL_ICON_SET_V1[folder]} {...rowProps} />
       ))}
-    </DocLayout>
+    </>
   )
 }

@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.36.0',
+  slug: 'portal-footer',
+}
+
+<Preview name="PortalFooter" />
+
+## Installation
+
+<Install name="PortalFooter" />
+
+## Usage
+
+```jsx
+import { PortalFooter } from '@kolkrabbi/kol-framework'
+
+<PortalFooter brand={<Wordmark />} columns={columns} socials={socials} note="© 2026 Kolkrabbi" />
+```
+
+## Props
+
+<Api name="PortalFooter" rows={[
+  {"prop":"brand","type":"ReactNode","def":"—","desc":"Brand block slot; zero-prop default keeps the favicon mark."},
+  {"prop":"columns","type":"array","def":"—","desc":"Link columns: { title, links: [{ label, href }] }. Plain anchors, router-agnostic."},
+  {"prop":"socials","type":"array","def":"—","desc":"Bottom-bar links: { label, href, icon? }; label renders when no icon."},
+  {"prop":"note","type":"ReactNode","def":"—","desc":"Bottom-bar legal/credit line."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Escape hatch between columns and the bottom bar."}
+]} />

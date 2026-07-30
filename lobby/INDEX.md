@@ -11,21 +11,20 @@ and does not follow the `.kol/docs-framework` conventions.
 
 ## Queue
 
-**7 live entries** (rewritten 2026-07-28 — the old table re-listed ~50 specs that
-already live in `done/`; the batch story is in the Processed log below and
-**[WORKLOG-2026-07-03-monorepo.md](WORKLOG-2026-07-03-monorepo.md)**).
+**2 live entries** (queue holds LIVE TASKS ONLY — user ruling 2026-07-30;
+resolved/decided entries move to `done/`, ownership/deferral notes to
+`archive/`, each carrying its resolution section. The 2026-07-30 batch story:
+`.kol/llm-context/playbook/2026-07-30-mdx-content-migration.md`).
 
 | Entry | Source | Staged | Status |
 |-------|--------|--------|--------|
-| [ThemeToggleButtonVariant](ThemeToggleButtonVariant.md) | kol-website brand sidebar · framework 0.5.13 / icons 0.8.8 | 2026-07-29 | **queued — 2 declared FAILURES**: roll animation shipped-but-wrong (redo the motion), library.svg redesign rejected (real redesign or kill the glyph) |
-| [WorkshopSystemVendored](WorkshopSystemVendored.md) | kol-website nav-ownership restructure | 2026-07-28 | queued (architecture note — kol-workshop package fate: snapshot-not-parent, stop-publish vs deprecate; nothing urgent) |
-| [ChessApparatusDemotion](ChessApparatusDemotion.md) | kol-chess consumer restructure | 2026-07-28 | queued (architecture note — apparatus fate, rail rename, mirror drift, geometry helper; nothing urgent) |
-| [ParaType](ParaType.md) | web parametric-type composition | 2026-07-10 | **deferred — dedicated session only** (crown-jewel synthesizer; 864-line page + 6 effects + 2 engines + ~8 libs; never build unattended) |
+| [ThemeToggleButtonVariant](ThemeToggleButtonVariant.md) | kol-website brand sidebar · framework 0.5.13 / icons 0.8.8 | 2026-07-29 | **awaiting visual approval** — both failures reworked 2026-07-30 and staged at `_tmp/toggle-library-proposals/preview.html`: roll motion rebuilt with wheel mechanics (rotation accumulates −180°/slot on the travel clock; live in workspace `ThemeToggle.jsx`, UNPUBLISHED) + `library` glyph redesigned (3 books + one leaning, line-based). Approve → publish framework 0.7.1 + icons 0.8.11; reject → revert is one file each |
 | [InteractiveImage](InteractiveImage.md) | web `components/media/InteractiveImage.jsx` | 2026-07-03 | parked (orphaned effect · SVG-id collision bug · revisit on a real consumer) |
-| [TailwindContentSource](TailwindContentSource.md) | kol-monorepo `apps/web/src/index.css` (packaging gap) | 2026-07-09 | **decided** (`@source` consumer contract permanent per ARCHITECTURE §4; canonical block in root README) |
-| [TypeScaleSection](TypeScaleSection.md) | brand `components/styleguide/TypeScaleSection.jsx` | 2026-07-03 | recipe (Table + PageSection exist — document a columns recipe, don't build) |
 
-Processed specs live in **`done/`** (94 files) · rejects in **`archive/`**.
+Resolved 2026-07-30 (now in `done/` with their resolutions): WidthSystemContradictions (theme 0.13.0 + framework 0.7.0 — panel token, unified ladder, `.kol-full-bleed`) · TableSeamTokenSplit (oq-08) · PillVariantDefaults (primary/secondary) · DocTableAndChipAudit (9/9) · TailwindContentSource (`@source` contract) · TypeScaleSection (columns recipe on Table.mdx).
+Archived 2026-07-30 (ownership/deferral notes): ChessApparatusDemotion (active version = kol-chess repo) · ParaType (source = kol-ds-type; import-on-need) · WorkshopSystemVendored (package stays — the showcase wears the shell).
+
+Processed specs live in **`done/`** (100 files) · notes + rejects in **`archive/`**.
 
 ## Processed
 

@@ -1,0 +1,51 @@
+export const meta = {
+  id: '3.1.0',
+  slug: 'type-roles',
+  eyebrow: 'KOL · Docs',
+  title: 'Type roles',
+  lede: 'Preview first — components live, variants and options exposed. Specs below — the full recipe per role. kol-doc-* and kol-card-* ship in kol-theme; DocKit and CodeBlock ride them.',
+}
+
+## Preview — CodeBlock
+
+The one authored-code apparatus, replicated from the elder reference: Prism
+oneDark highlighting, filename-or-language chip, 32px icon copy.
+
+<Preview name="CodeBlock" />
+
+## Preview — Table
+
+The one table (kol-component), both variants. DocTable is a preset over it —
+fixed props columns, flush minimal, unframed.
+
+<Preview name="Table" />
+
+## The doc roles
+
+Eleven `kol-doc-*` roles ship in `packages/theme/kol-type-roles.css`. They are
+twin-selectored with `.kol-prose`, so the same rule serves authored markup and
+parsed markdown — one definition, two surfaces.
+
+| Role | Job |
+|---|---|
+| `kol-doc-eyebrow` | the small label above a page title |
+| `kol-doc-heading` | page title |
+| `kol-doc-lede` | the standfirst paragraph under a title |
+| `kol-doc-section-title` | section heading |
+| `kol-doc-body` | running copy, capped at the measure |
+| `kol-doc-table-token` | single-line cell: one token, never wraps |
+| `kol-doc-table-copy` | multi-line cell: wraps, carries real leading |
+| `kol-doc-caption` | figure caption |
+
+The two table-cell roles split on the mono fault line: line-height 1 for
+single-line chrome, line-height-bearing for anything that can wrap. A single
+role doing both jobs was the 2026-07-30 defect — a four-line cell read as one
+block.
+
+## DocKit
+
+`DocHeader` · `DocSection` · `DocTable` · `DocFigure` — thin composers over the
+roles above, shipped from `@kolkrabbi/kol-workshop`. They hold no styling of
+their own; the roles do.
+
+<Api name="Table" />

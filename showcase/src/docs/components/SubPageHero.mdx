@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.53.0',
+  slug: 'sub-page-hero',
+}
+
+<Preview name="SubPageHero" />
+
+## Installation
+
+<Install name="SubPageHero" />
+
+## Usage
+
+```jsx
+import { SubPageHero } from '@kolkrabbi/kol-framework'
+
+<SubPageHero backTo="/" backLabel="← Back" label="Reference" title="Icons" lede="…" />
+```
+
+## Props
+
+<Api name="SubPageHero" rows={[
+  {"prop":"title","type":"ReactNode","def":"—","desc":"Display headline."},
+  {"prop":"lede","type":"string","def":"—","desc":"Intro paragraph."},
+  {"prop":"label","type":"string","def":"—","desc":"Eyebrow above the title."},
+  {"prop":"backTo","type":"string","def":"—","desc":"Route for the back link (renders when set)."},
+  {"prop":"backLabel","type":"string","def":"—","desc":"Back-link text."}
+]} />

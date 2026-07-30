@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.38.0',
+  slug: 'property-input',
+}
+
+<Preview name="PropertyInput" />
+
+## Installation
+
+<Install name="PropertyInput" />
+
+## Usage
+
+```jsx
+import { PropertyInput } from '@kolkrabbi/kol-component'
+
+<PropertyInput label="X" type="number" value={x} onChange={(e) => setX(+e.target.value)} />
+```
+
+## Props
+
+<Api name="PropertyInput" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Field label."},
+  {"prop":"value","type":"string | number","def":"—","desc":"Field value (controlled)."},
+  {"prop":"onChange","type":"(event) => void","def":"—","desc":"Change handler."},
+  {"prop":"type","type":"text | number","def":"text","desc":"Input type."},
+  {"prop":"min / max / step","type":"number","def":"—","desc":"Numeric bounds + increment."}
+]} />

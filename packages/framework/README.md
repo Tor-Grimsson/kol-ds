@@ -17,8 +17,13 @@ npm i @kolkrabbi/kol-framework @kolkrabbi/kol-component @kolkrabbi/kol-theme
 @import "tailwindcss";
 @import "@kolkrabbi/kol-theme";
 @import "@kolkrabbi/kol-framework/kol-brand-color.css";
-@import "@kolkrabbi/kol-framework/kol-framework.css";
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
 ```
+
+`layer(components)` is **required**, not optional. Unlayered rules outrank every
+layered rule regardless of specificity, so a bare import promotes framework
+chrome above the theme's type layer and the same package renders differently
+per consumer.
 
 ```jsx
 import { AppShell } from '@kolkrabbi/kol-framework'

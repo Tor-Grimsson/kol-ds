@@ -211,7 +211,11 @@ const DocumentationReader = ({
     return h1Block?.content || null
   }, [introBlocks])
 
+  /* The reader is usable OUTSIDE a ShellLayout (a plain page, a lobby route):
+   * ShellTocContext then defaults to null, so calling it unguarded threw.
+   * No shell → no right rail, and the reader just renders its article. */
   useEffect(() => {
+    if (!setTocContent) return undefined
     setTocContent(
       <DocReaderSidebar
         key={docId}

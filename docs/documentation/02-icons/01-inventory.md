@@ -20,7 +20,7 @@ related:
 
 Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any cull or promotion** (not auto-synced; the live `/icons` page and the keys-only `KOL_ICON_SET_V1` export are the runtime source of truth). See [[INDEX|icons]] for the loader model.
 
-**166 icons · 26 groups** (2026-07-29, regenerated at kol-icons 0.8.7 — new `kolkrabbi` group: the `kolkrabbi` logomark + `kol-ds` mark as currentColor set icons; table also catches up with the 0.8.6 promotions the previous snapshot missed: `editing`/`typography` groups, socials 1→10, tools/layout/misc reshuffle). Legacy stroke/solid rosters live only on the local shelf `_tmp/legacy-icons/` and in published `kol-icons@0.7.1`.
+**165 icons · 26 groups** (2026-07-29, regenerated at kol-icons 0.8.10 — `scribble-02` culled: byte-duplicate of `scribble` minus its stroke-width, user-approved; 0.8.9 landed the stroke-conformance five: `rows` re-authored mirror-exact, `pause`/`more`/`frequency`/`foundation` fill→stroke 1.5. Earlier same day 0.8.7 added the `kolkrabbi` group: the `kolkrabbi` logomark + `kol-ds` mark as currentColor set icons; that regen also caught the 0.8.6 promotions: `editing`/`typography` groups, socials 1→10, tools/layout/misc reshuffle). Legacy stroke/solid rosters live only on the local shelf `_tmp/legacy-icons/` and in published `kol-icons@0.7.1`.
 
 | Group | Count | Names |
 |---|--:|---|
@@ -33,7 +33,7 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | `code` | 6 | `bug-beetle` · `code` · `code-simple` · `hash-01` · `hash-02` · `terminal` |
 | `components` | 5 | `component-01` · `component-02` · `instance-01` · `instance-02` · `variant-01` |
 | `device` | 3 | `desktop` · `mobile` · `tablet` |
-| `editing` | 5 | `highlighter-circle` · `pen-nib` · `pushpin` · `scribble` · `scribble-02` |
+| `editing` | 4 | `highlighter-circle` · `pen-nib` · `pushpin` · `scribble` |
 | `eye-lock` | 5 | `eye-off` · `eye-on` · `lock` · `shield-check` · `unlock` |
 | `files` | 10 | `book-open` · `clipboard` · `database` · `file` · `folder` · `image` · `journal` · `library` · `roadmap` · `video` |
 | `kolkrabbi` | 2 | `kol-ds` · `kolkrabbi` |

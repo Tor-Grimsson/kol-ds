@@ -76,8 +76,9 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
 
   /* The frame's TRUE width — what the iframe's media queries key on.
    * Desktop: the card itself when it's already ≥ lg, else a real desktop
-   * width (scaled down). Presets/custom: their pixel width. */
-  const handleW = isDesktop ? 0 : 24
+   * width (scaled down). Presets/custom: their pixel width.
+   * 16 = the rendered w-4 handle (was 24 — an 8px scale-math drift). */
+  const handleW = isDesktop ? 0 : 16
   const availW = Math.max(bodyW - handleW, 0)
   const frameW = isDesktop
     ? (bodyW >= LG ? bodyW : DESKTOP_W)
@@ -97,7 +98,7 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
     setDevice('custom')
     const rect = bodyRef.current.getBoundingClientRect()
     const onMove = (ev) => {
-      const max = rect.width - 24
+      const max = rect.width - 16
       setWidth(Math.round(Math.min(Math.max(ev.clientX - rect.left, MIN_W), max)))
     }
     const onUp = () => {

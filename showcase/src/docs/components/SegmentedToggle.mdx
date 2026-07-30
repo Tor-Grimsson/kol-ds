@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.45.0',
+  slug: 'segmented-toggle',
+}
+
+<Preview name="SegmentedToggle" />
+
+## Installation
+
+<Install name="SegmentedToggle" />
+
+## Usage
+
+```jsx
+import { SegmentedToggle } from '@kolkrabbi/kol-component'
+
+<SegmentedToggle value={v} onChange={setV} options={[{ value: "grid", label: "Grid" }]} />
+```
+
+## Props
+
+<Api name="SegmentedToggle" rows={[
+  {"prop":"value","type":"string","def":"—","desc":"Selected option value."},
+  {"prop":"onChange","type":"(value) => void","def":"—","desc":"Fires with the chosen value."},
+  {"prop":"options","type":"{ value, label }[]","def":"[]","desc":"Segments to render."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Control size."}
+]} />

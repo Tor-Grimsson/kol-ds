@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button, Pill, ViewToggle } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import TopBar from './TopBar.jsx'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
 import COMPOSITION from '../usage/composition.json'
@@ -120,7 +119,6 @@ export default function CollectionLanding({
 
   return (
     <>
-      <TopBar />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="px-5 pt-20 pb-14 text-center md:pt-28">

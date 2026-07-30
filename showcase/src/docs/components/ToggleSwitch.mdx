@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.61.0',
+  slug: 'toggle-switch',
+}
+
+<Preview name="ToggleSwitch" />
+
+## Installation
+
+<Install name="ToggleSwitch" />
+
+## Usage
+
+```jsx
+import { ToggleSwitch } from '@kolkrabbi/kol-component'
+
+<ToggleSwitch label="Enabled" checked={on} onChange={setOn} />
+```
+
+## Props
+
+<Api name="ToggleSwitch" rows={[
+  {"prop":"checked","type":"boolean","def":"false","desc":"On/off state (controlled)."},
+  {"prop":"onChange","type":"(bool) => void","def":"—","desc":"Fires with the next state."},
+  {"prop":"label","type":"string","def":"—","desc":"Field label."},
+  {"prop":"hint","type":"string","def":"—","desc":"Secondary hint text."},
+  {"prop":"variant","type":"bare | primary | outline","def":"bare","desc":"Bare = label + track, no box. Shells use button geometry. Legacy: plain → bare, default → outline."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Shell matches button heights (26/32/40); track scales in all variants."}
+]} />

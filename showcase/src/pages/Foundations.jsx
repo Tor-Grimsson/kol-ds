@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import DocLayout from '../lib/DocLayout.jsx'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import Swatch from '../lib/Swatch.jsx'
 import { TOTAL } from '../lib/registry.js'
@@ -16,15 +15,6 @@ import {
  * read LIVE from the installed theme so the page can't drift.
  */
 
-const TOC = [
-  { id: 'opacity', label: 'Opacity & foreground' },
-  { id: 'surfaces', label: 'Surface tiers' },
-  { id: 'brand', label: 'Brand ramps' },
-  { id: 'type', label: 'Type scale' },
-  { id: 'radius', label: 'Corner radius' },
-  { id: 'shadow', label: 'Shadow scale' },
-  { id: 'components', label: 'Components' },
-]
 
 // Read live CSS-var values off <html>; re-read on theme change. Chip *fills*
 // use var() directly and re-colour on their own — this is only for the text.
@@ -53,7 +43,7 @@ export default function Foundations() {
   const val = (t) => resolved[t]
 
   return (
-    <DocLayout toc={TOC}>
+    <>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Foundations"
@@ -150,6 +140,6 @@ export default function Foundations() {
           Browse all {TOTAL} components →
         </Link>
       </DocSection>
-    </DocLayout>
+    </>
   )
 }

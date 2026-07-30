@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.47.0',
+  slug: 'shell-drawer',
+}
+
+<Preview name="ShellDrawer" />
+
+## Installation
+
+<Install name="ShellDrawer" />
+
+## Usage
+
+```jsx
+import { ShellDrawer } from '@kolkrabbi/kol-component'
+
+<ShellDrawer open={open} onClose={() => setOpen(false)} side="left" width={320}>{nav}</ShellDrawer>
+```
+
+## Props
+
+<Api name="ShellDrawer" rows={[
+  {"prop":"open","type":"boolean","def":"—","desc":"Drawer visible; drives the slide in/out."},
+  {"prop":"onClose","type":"function","def":"—","desc":"Esc, backdrop, and close button all call it."},
+  {"prop":"side","type":"left | right","def":"left","desc":"Edge the panel slides from."},
+  {"prop":"width","type":"number | string","def":"—","desc":"Panel width; omit for a full-width sheet."},
+  {"prop":"header","type":"ReactNode","def":"—","desc":"Header-row content beside the built-in close button."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Scrollable panel body."}
+]} />

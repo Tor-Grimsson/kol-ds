@@ -41,8 +41,14 @@
    * brand layer overrides the tokens, consumers override per element.
    * --------------------------------------------------------------------------- */
 
-  --kol-link:       #2563EB;
-  --kol-link-hover: #1D4ED8;
+  /* Link color is a PER-REPO decision (user law 2026-07-29): the DS ships the
+   * hook, not a color. currentColor = links render as surrounding ink until a
+   * consumer binds the token at its root, e.g.
+   *   :root { --kol-link: var(--kol-color-yellow-300); --kol-link-hover: … }
+   * (The old defaults were raw Tailwind blue-600/700 — placeholder, never
+   * brand-bound; killed the same day a consumer's DS-Table flush exposed it.) */
+  --kol-link:       currentColor;
+  --kol-link-hover: currentColor;
 
   /* ---------------------------------------------------------------------------
    * UI STATE — error / warning / info / success.
@@ -110,7 +116,9 @@
  * (0,1,1) beats any single utility class, and an unlayered theme import beats
  * whole `layer(...)` chrome sheets regardless of specificity. Chrome owns its
  * anchor colors; content links are `.kol-prose a` (inherit + underline).
- * Blue is a choice: add `.kol-link` at the call site.
+ * COLOR is a per-repo choice (user law 2026-07-29): `.kol-link` and
+ * `.kol-table a` are hooks on `--kol-link`, which defaults to currentColor —
+ * the DS ships NO link color. A repo binds the token at its root to opt in.
  * ============================================================================= */
 
 .kol-link { color: var(--kol-link); }

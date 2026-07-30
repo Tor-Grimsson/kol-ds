@@ -2,7 +2,7 @@
 title: Reference shells
 type: reference
 status: active
-updated: 2026-07-15
+updated: 2026-07-30
 description: The documented app shells in the KOL ecosystem — the shadcn-style docs shell (this repo), the workshop shell (kol-monorepo), and the blocks/collections concept. What each is made of and when to reach for it.
 aliases:
   - reference-shells
@@ -10,8 +10,8 @@ tags:
   - domain/design-system
   - pattern/app-shell
 sources:
-  - showcase/src/lib/DocLayout.jsx
-  - showcase/src/lib/TopBar.jsx
+  - showcase/src/lib/ShellChrome.jsx
+  - packages/workshop/src/shell/ShellLayout.jsx
 related:
   - "[[../06-research/workflows/01-component-workbench|component workbench]]"
 ---
@@ -22,18 +22,58 @@ A **shell** is the reusable page chrome an app hangs its content in: top bar, si
 
 ## 1 — Docs shell (shadcn reference) · this repo
 
-The showcase's unified chrome, modelled on ui.shadcn.com. **Every docs page wears it**; Home renders only the TopBar (landing, no sidebar).
+> **RETIRED 2026-07-30.** The app-local shell (`DocLayout` · `TopBar` · `NavDrawer` · `SidebarNav`) is deleted; the showcase now wears the workshop shell through `showcase/src/lib/ShellChrome.jsx`. Kept here as the record of what it was and why it went. See "The showcase now wears this shell" below.
 
-| Piece | File | Role |
-|---|---|---|
-| `TopBar` | `showcase/src/lib/TopBar.jsx` | Wordmark · section links (path-active) · component search (⌘K → `ShellSearchOverlay` over the barrel-derived roster; Lobby link is dev-only) · GitHub (`social-github` icon) · `ThemeToggle` |
-| `DocSidebar` | in `DocLayout.jsx` | Overview links (Foundations / Icons / Components) + the full component tree, grouped by category; sticky, scrollable |
-| Content column | in `DocLayout.jsx` | Default: centred `max-w-3xl`. `wide`: layout handed to the page (PageSection owns width/padding) |
-| `Toc` | in `DocLayout.jsx` | "On this page" right rail, anchor links, `sub` indent |
+It was the showcase's unified chrome, modelled on ui.shadcn.com: `TopBar` (wordmark · path-active section links · ⌘K search over the barrel-derived roster · GitHub · `ThemeToggle`), a `DocSidebar` and a `Toc` rail both defined inside `DocLayout.jsx`, used as `<DocLayout toc={TOC}>…</DocLayout>`.
 
-Usage: `<DocLayout toc={TOC}>…</DocLayout>` / `<DocLayout wide>…</DocLayout>`. The sidebar derives active state from the path — no props to thread.
+Why it went: the chrome was imported by each page rather than mounted once, so fourteen files carried the same decision and drifted; and every page hand-wrote its own `toc` array, which went stale against its own headings.
 
-**Status:** app-local in the showcase. **Promotion candidate:** move into `@kolkrabbi/kol-framework` once stable, so brand app / consumers can import the same docs shell.
+### Embed mode — `?embed=1` (2026-07-30)
+
+Any showcase URL takes `?embed=1` and renders **main content only**: no TopBar, no sidebar, no TOC rail. For iframing showcase pages into other repos (the website embeds `/components` the way it already embeds the kol-ds-fxr editor at `/workshop`).
+
+| Aspect | Behavior |
+|---|---|
+| Mechanism | `showcase/src/lib/useEmbed.js`, read by `ShellChrome` — **not** per page |
+| Scope | **Layout-level** — every page under the layout route is embeddable, zero page-file changes |
+| Rails | The shell is **bypassed entirely** in embed mode (it is `fixed inset-0` with its own scroll regions); main content renders in a plain capped column |
+| Padding | Content padding KEPT (`--kol-pad-section-*`); only chrome is dropped |
+| Latch | Per-document: a doc that boots embedded stays embedded, so in-frame link-following can't pop chrome into the host |
+| Nav rework | Unaffected by design — embed is defined by ABSENCE of chrome, so there is nothing to keep in sync |
+
+Examples: `/components?embed=1` · `/docs/type-roles?embed=1`. Page-owned `<header>`/`<aside>` elements (a DocHeader, a chess demo's own rail) are content and correctly survive.
+
+**Status:** superseded — the shell now comes from `@kolkrabbi/kol-workshop`, so there is nothing app-local left to promote.
+
+### Convergence with the kol-website fork (2026-07-30, workshop 0.2.0 + framework 0.6.2)
+
+kol-website did **not** consume the package — `apps/web/vite.config.js:37` aliased `@kolkrabbi/kol-workshop` to a local copy at `apps/web/src/workshop-system/` (26 files, 2,749 lines), which is where the shell actually evolved. That copy is now folded back in, so the alias can be dropped.
+
+| Taken from the website | Where it landed |
+|---|---|
+| Tooltips on every icon-only control | `packages/framework/src/ShellHeader.jsx`, `packages/workshop/src/shell/{ShellLayout,ShellSidebar}.jsx`, `compositions/WorkshopSidebar.jsx`, `tags/TagModeOverlay.jsx` |
+| `<header>` landmark · `kol-mono-14` tabs · lg-rung ThemeToggle | `ShellHeader.jsx` — the website's 158-line `WorkshopHeader` fork existed ONLY for these, so it is retired, not imported |
+| `aria-label` on nav/TOC asides · `id="main"` | `shell/ShellLayout.jsx` |
+| Brand link split — KOLKRABBI → site home, WORKSHOP → shell root | `shell/ShellLayout.jsx` |
+
+Five defects both copies carried, fixed here: `ShellDrawer` took `open` not `isOpen` (**no mobile nav at all**); `ShellSearchOverlay` got the pre-0.12 API (**⌘K rendered nothing**, `searchItems` + `matchSearchItems` were dead code — the shell now owns query state and feeds results); the hamburger flipped each rail independently and desynced them; `groupDocsByMajor` only matched dotted or `NN-name-index` ids, so a `NN-slug.md` vault listed **only its INDEX files**; `DocumentationReader` called a possibly-null `ShellTocContext` and crashed outside a shell.
+
+### The showcase now wears this shell (2026-07-30)
+
+`showcase/src/lib/ShellChrome.jsx` mounts `ShellLayout` ONCE as a route-level layout in `showcase/src/App.jsx`. Every page is content only; nothing imports a layout. The four app-local chrome files (`DocLayout.jsx`, `TopBar.jsx`, `NavDrawer.jsx`, `SidebarNav.jsx`) are **deleted** — fourteen pages had each carried their own copy of the same decision, which is how they drifted.
+
+| Was | Now |
+|---|---|
+| 11 pages import `DocLayout`, 3 import `TopBar` | one layout route, pages render into `<Outlet/>` |
+| each page passes a hand-written `toc` array | TOC **derived** from rendered headings (`ShellChrome`), arrays deleted |
+| `?embed=1` unmounts chrome per host | `ShellChrome` bypasses the shell entirely in embed mode |
+| block/set previews wrapped in chrome-suppression | they route **outside** the layout — chrome-less by contract |
+
+Shell seams added for non-workshop consumers (kol-workshop 0.3.0): `brand` (any node), `actions` (row-1 slot), `isActive` (override prefix-only tab matching).
+
+**The rail/main/toc gutter is theme-owned** (kol-workshop 0.3.1 + kol-theme 0.12.2): `.shell-content-grid` states `gap: 32px` base / `48px` ≥1600px in `kol-components-workshop.css`. A `gap-8` utility on the grid element used to outrank the layered theme rule at every width, so the 48px wide step was dead code — the ARCHITECTURE §5 utility-vs-rule disease, in geometry.
+
+**Pages are MDX** (the shadcn model, migration completed 2026-07-30): `@mdx-js/rollup` is wired, `showcase/src/docs/*.mdx` renders through `MdxDoc` with `<Preview name="…" />` reading the demos registry, `<Api name="…" rows={…} />` merging in-document authored rows with the react-docgen extraction (now covering every UI package), `<Install name="…" />` resolving the package from the registry, and `<Parts name="…" />` rendering compound members. `ComponentPage` checks for `src/docs/components/<Name>.mdx` first (66 docs) and falls back to a generated page (header + install + extracted API) for components without one; `component-docs.js` is deleted. Doc furniture (meta rows, pager) renders from `lib/component-page-parts.jsx` on both paths. **MDX bodies do NOT wear `.kol-prose`** (user law 2026-07-30 — prose is the blog system; its 720px cap caged previews and tables too): the mdx element map types markdown per-tag through the `kol-doc-*` roles, so running text self-caps at `--kol-content-measure` while Preview/Api/Install/tables run the full main column — the one-frame law. Vite gotcha: the MDX plugin must be `include: /\.mdx$/` — it claims `.md` too by default and breaks every `?raw` markdown import.
 
 ## 2 — Workshop shell · kol-monorepo
 

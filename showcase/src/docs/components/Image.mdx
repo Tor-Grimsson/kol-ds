@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.23.0',
+  slug: 'image',
+}
+
+<Preview name="Image" />
+
+## Installation
+
+<Install name="Image" />
+
+## Usage
+
+```jsx
+import { Image } from '@kolkrabbi/kol-component'
+
+<Image src="/img.jpg" alt="Cover" aspectRatio="16 / 9" />
+```
+
+## Props
+
+<Api name="Image" rows={[
+  {"prop":"src","type":"string","def":"—","desc":"Image URL; falls back to a placeholder on error."},
+  {"prop":"alt","type":"string","def":"—","desc":"Alt text."},
+  {"prop":"category / name","type":"string","def":"—","desc":"Labels for the fallback placeholder."},
+  {"prop":"aspectRatio","type":"string","def":"—","desc":"CSS aspect-ratio."},
+  {"prop":"loading","type":"lazy | eager","def":"lazy","desc":"Native loading strategy."}
+]} />

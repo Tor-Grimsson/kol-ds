@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-component'
+import { Icon, Tooltip } from '@kolkrabbi/kol-component'
 
 const getSectionRootPath = (route, basePath) => {
   if (route.path !== undefined && route.path !== null) {
@@ -77,19 +77,22 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
         ) : (
           <button type="button" className="kol-helper-10 text-meta" onClick={handleToggle}>{label}</button>
         )}
-        <button
-          type="button"
-          onClick={handleToggle}
-          aria-label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}
-          className="flex items-center justify-center"
-          style={{ height: '16.5px', marginBottom: '8px' }}
-        >
-          <Icon
-            name="chevron-down"
-            size={10}
-            className={`stroke-[2.5] transition-transform ${navCollapsed ? '' : 'rotate-180'}`}
-          />
-        </button>
+        <Tooltip label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}>
+          <button
+            type="button"
+            onClick={handleToggle}
+            aria-label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}
+            aria-expanded={!navCollapsed}
+            className="flex items-center justify-center"
+            style={{ height: '16.5px', marginBottom: '8px' }}
+          >
+            <Icon
+              name="chevron-down"
+              size={10}
+              className={`stroke-[2.5] transition-transform ${navCollapsed ? '' : 'rotate-180'}`}
+            />
+          </button>
+        </Tooltip>
       </div>
 
       {!navCollapsed && <div className="space-y-4">

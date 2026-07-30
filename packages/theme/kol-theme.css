@@ -72,11 +72,18 @@
   --kol-spacing-gap-md: var(--kol-spacing-4);
   --kol-spacing-gap-lg: var(--kol-spacing-6);
 
-  /* Content widths (2026-07-28) — ONE frame, two inner caps (chess law).
-   * Every page: mx-auto max-w-shell + the one padding rhythm, content
-   * LEFT-ANCHORED inside. Width is a content decision, never a page identity:
-   * column caps reading blocks, measure caps running text. Nothing else. */
+  /* Content widths (2026-07-28; panel added 2026-07-30) — ONE frame, three
+   * inner caps (chess law). Every page: mx-auto max-w-shell + the one padding
+   * rhythm, content LEFT-ANCHORED inside. Width is a content decision, never a
+   * page identity: column caps reading blocks, panel caps tables / code /
+   * framed panels (the ~900–1200 band every consumer was improvising —
+   * kol-website audit, lobby/WidthSystemContradictions), measure caps running
+   * text. Nothing else — a hardcoded max-w-[Npx] at a call site means this
+   * scale failed; file it, don't improvise it.
+   * kol-framework's --kol-container-max is the responsive RESOLUTION of the
+   * shell (100% → 1400 → 1600 → shell), not a rival family. */
   --kol-content-shell: 1800px;
+  --kol-content-panel: 960px;
   --kol-content-column: 768px;
   --kol-content-measure: 65ch;
 

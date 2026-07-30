@@ -2,8 +2,8 @@
 title: Foundations — layout & breakpoints
 type: reference
 status: active
-updated: 2026-07-28
-description: The one layout law — ONE shell frame (1800) on every page, content left-anchored, two inner caps only (column 768, measure 65ch); one padding rhythm; Tailwind-scale breakpoints.
+updated: 2026-07-30
+description: The one layout law — ONE shell frame (1800) on every page, content left-anchored, three inner caps only (panel 960, column 768, measure 65ch); one padding rhythm; Tailwind-scale breakpoints. Lookup home: 08-breakpoints.
 aliases:
   - breakpoints
   - layout-law
@@ -19,6 +19,8 @@ tags:
 related:
   - "[[01-tokens|tokens]]"
   - "[[03-typography|typography]]"
+  - "[[05-layout-systems|layout systems registry]]"
+  - "[[../08-breakpoints/INDEX|breakpoints lookup]]"
 ---
 
 # Foundations — layout & breakpoints
@@ -42,15 +44,25 @@ the chess app's one-container discipline). No page invents a width number.
 | Tier | Token | Value | For |
 |---|---|---|---|
 | shell | `--kol-content-shell` | 1800px | THE outer page container |
-| page | `--kol-content-page` | 1400px | galleries, indexes, Home, styleguide surfaces |
-| wide | `--kol-content-wide` | 1024px | specimen/table-heavy doc pages |
+| panel | `--kol-content-panel` | 960px | tables, code blocks, framed panels (added 2026-07-30 — the ~900–1200 band consumers were improvising) |
 | column | `--kol-content-column` | 768px | reading columns — docs, articles, workshop |
 | measure | `--kol-content-measure` | 65ch | running-text cap inside any tier |
+
+*(The `page` 1400 and `wide` 1024 tiers were killed the same day at theme
+0.11.22 — width is content, not page identity. This table was stale until
+2026-07-29; the lookup home is now [[../08-breakpoints/INDEX|08-breakpoints]].)*
 
 Usage: `max-w-[var(--kol-content-page)]` in JSX, `max-width: var(--kol-content-*)`
 in chrome CSS. `DocLayout` takes `width="column|wide|page"` (the `wide` boolean
 is a legacy alias). Full-bleed surfaces (chess stage, block previews) use no
 cap. **The padding rhythm is the kol-framework ramp** — `padding: var(--kol-pad-section-y) var(--kol-pad-section-x)` (x: 20 → 32 @768 → 48 @1024 · y: 48 → 64 → 80). No Tailwind padding steps on page containers; the tokens carry the responsive ramp.
+
+## Embed mode — chrome off entirely
+
+`?embed=1` on any URL renders main content only (no TopBar, no sidebar, no TOC)
+— rails **unmounted**, content padding kept. Layout-level, read by the chrome
+hosts via `showcase/src/lib/useEmbed.js`. Full contract:
+[[../04-compositions/02-shells|shells → embed mode]].
 
 ## Chrome reveal — one breakpoint
 

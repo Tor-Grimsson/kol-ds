@@ -1,4 +1,374 @@
 {
+  "ChessAnalysisLayout": [
+    {
+      "prop": "overlayActions",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "panel",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "ChessBoard": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'desktop'",
+      "desc": ""
+    },
+    {
+      "prop": "orientation",
+      "type": "—",
+      "def": "'white'",
+      "desc": ""
+    },
+    {
+      "prop": "showPieces",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "lastMove",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "pieceSet",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "boardTheme",
+      "type": "—",
+      "def": "'green-white'",
+      "desc": ""
+    },
+    {
+      "prop": "interactive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "onMove",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "onSquareClick",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "ChessBoardWithControls": [
+    {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "panel",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "ChessBoardWithSidebar": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleFullscreen",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "isFullscreen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "ChessBoardFullscreen": [
+    {
+      "prop": "boardProps",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "sidebarProps",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "wrapperClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "sidebarWidth",
+      "type": "—",
+      "def": "'400px'",
+      "desc": ""
+    }
+  ],
+  "ChessSidebar": [
+    {
+      "prop": "selectedGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "selectedGameId",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "sampleGames",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "moveIndex",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectGame",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "onGoToStart",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "onStepBackward",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "onStepForward",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "onGoToEnd",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "onTogglePlayback",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'desktop'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleFullscreen",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "isFullscreen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "NotationPanel": [
+    {
+      "prop": "notationPairs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "activePly",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectPly",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "isLoading",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "sidelines",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "activeSideline",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectSidelineMove",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    }
+  ],
+  "SetupPanel": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "PiecePalette": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "GamePicker": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "MaterialSummary": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ChessPiece": [
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'white'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "64",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "pieceSet",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    }
+  ],
+  "ChessHero": [
+    {
+      "prop": "trend",
+      "type": "—",
+      "def": "'up'",
+      "desc": ""
+    }
+  ],
+  "ChessControlsProvider": [
+    {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
   "AnimatedTitle": [
     {
       "prop": "stagger",
@@ -379,13 +749,13 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'outline'",
+      "def": "'primary'",
       "desc": ""
     },
     {
       "prop": "size",
       "type": "—",
-      "def": "'md'",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -653,7 +1023,7 @@
     {
       "prop": "size",
       "type": "—",
-      "def": "'md'",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -832,6 +1202,12 @@
     }
   ],
   "ViewToggle": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
     {
       "prop": "variant",
       "type": "—",
@@ -1817,6 +2193,14 @@
       "desc": ""
     }
   ],
+  "FoundryCTA": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "FullBleedHero": [
     {
       "prop": "overlayOpacity",
@@ -1945,6 +2329,884 @@
       "desc": ""
     }
   ],
+  "StackHero": [
+    {
+      "prop": "sizes",
+      "type": "—",
+      "def": "'100vw'",
+      "desc": ""
+    },
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "objectFit",
+      "type": "—",
+      "def": "'cover'",
+      "desc": ""
+    },
+    {
+      "prop": "objectPosition",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ArticleHeader": [
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ArticleCard": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'landscape'",
+      "desc": ""
+    },
+    {
+      "prop": "showHeader",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PortableTextRenderer": [
+    {
+      "prop": "blocks",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "prose",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AuthorLine": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'lg'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ShareButtons": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "targets",
+      "type": "—",
+      "def": "['x', 'linkedin', 'email']",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Share'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SourcesReferences": [
+    {
+      "prop": "sources",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Sources & references'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "WorkCard": [
+    {
+      "prop": "index",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "perspective",
+      "type": "—",
+      "def": "800",
+      "desc": ""
+    },
+    {
+      "prop": "heights",
+      "type": "—",
+      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "'kol-sans-display-02'",
+      "desc": ""
+    },
+    {
+      "prop": "metaClassName",
+      "type": "—",
+      "def": "'kol-mono-12'",
+      "desc": ""
+    }
+  ],
+  "WorkListItem": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "previewClassName",
+      "type": "—",
+      "def": "'kol-sans-heading-03'",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "'kol-mono-14'",
+      "desc": ""
+    }
+  ],
+  "WorkViewToggle": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'shelf'",
+      "desc": ""
+    },
+    {
+      "prop": "query",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "shelfLabel",
+      "type": "—",
+      "def": "'Shelf'",
+      "desc": ""
+    },
+    {
+      "prop": "listLabel",
+      "type": "—",
+      "def": "'List'",
+      "desc": ""
+    },
+    {
+      "prop": "shelfIcon",
+      "type": "—",
+      "def": "'book-open'",
+      "desc": ""
+    },
+    {
+      "prop": "listIcon",
+      "type": "—",
+      "def": "'view-list'",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ParallaxShelf": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fromLeft",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ScrollDriftGallery": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "bgKeyframes",
+      "type": "—",
+      "def": "[\n  { backgroundColor: '#000000', duration: 0 },\n  { backgroundColor: '#0a0a08', duration: 0.15 },\n  { backgroundColor: '#1a1812', duration: 0.3 },\n  { backgroundColor: '#f5f0e8', duration: 0.5 }, // warm cream\n  { backgroundColor: '#e8df00', duration: 0.7 }, // acid yellow\n  { backgroundColor: '#c8ff00', duration: 0.85 }, // electric chartreuse\n  { backgroundColor: '#0a0a0a', duration: 1 }, // back to black\n]",
+      "desc": ""
+    },
+    {
+      "prop": "cardSpacing",
+      "type": "—",
+      "def": "520",
+      "desc": ""
+    }
+  ],
+  "SpecimenSectionHeader": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'lg'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "styleOptions",
+      "type": "—",
+      "def": "[\n  { label: 'Roman', value: 'roman' },\n  { label: 'Italic', value: 'italic' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "showWeightDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "weightOptions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "TypefaceHero": [
+    {
+      "prop": "typeface",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "downloadLabel",
+      "type": "—",
+      "def": "'Download font'",
+      "desc": ""
+    },
+    {
+      "prop": "specimenLabel",
+      "type": "—",
+      "def": "'View Specimen'",
+      "desc": ""
+    }
+  ],
+  "TypefaceStyleSection": [
+    {
+      "prop": "typeface",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "sampleLines",
+      "type": "—",
+      "def": "['AaBbCc', '01234567', '{(!@#$?&)}']",
+      "desc": ""
+    }
+  ],
+  "FontPreviewSection": [
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'system-ui, sans-serif'",
+      "desc": ""
+    },
+    {
+      "prop": "badgeText",
+      "type": "—",
+      "def": "'Preview'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "availableWeights",
+      "type": "—",
+      "def": "[\n  'Thin', 'Extralight', 'Light', 'Regular', 'Medium', 'Semibold', 'Bold', 'Extrabold', 'Black',\n]",
+      "desc": ""
+    },
+    {
+      "prop": "initialWeight",
+      "type": "—",
+      "def": "'Regular'",
+      "desc": ""
+    },
+    {
+      "prop": "sizes",
+      "type": "—",
+      "def": "[\n  { size: 96, lines: 1 },\n  { size: 64, lines: 3 },\n  { size: 48, lines: 4 },\n  { size: 24, lines: 5, leading: 50 },\n]",
+      "desc": ""
+    }
+  ],
+  "VariableFontSection": [
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'system-ui, sans-serif'",
+      "desc": ""
+    },
+    {
+      "prop": "badgeText",
+      "type": "—",
+      "def": "'Variable axis'",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'Variable'",
+      "desc": ""
+    },
+    {
+      "prop": "minWeight",
+      "type": "—",
+      "def": "300",
+      "desc": ""
+    },
+    {
+      "prop": "maxWeight",
+      "type": "—",
+      "def": "900",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "GlyphMetricsGrid": [
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'sans-serif'",
+      "desc": ""
+    },
+    {
+      "prop": "fontStyle",
+      "type": "—",
+      "def": "'normal'",
+      "desc": ""
+    },
+    {
+      "prop": "initialGlyph",
+      "type": "—",
+      "def": "'f'",
+      "desc": ""
+    },
+    {
+      "prop": "uppercaseGlyphs",
+      "type": "—",
+      "def": "[...glyphSets.uppercase, ...glyphSets.latin1]",
+      "desc": ""
+    },
+    {
+      "prop": "lowercaseGlyphs",
+      "type": "—",
+      "def": "[...glyphSets.lowercase, ...glyphSets.latinExtended]",
+      "desc": ""
+    },
+    {
+      "prop": "variationSettings",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    }
+  ],
+  "GlyphMetricsSection": [
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'TGMalromur'",
+      "desc": ""
+    },
+    {
+      "prop": "fontStyle",
+      "type": "—",
+      "def": "'normal'",
+      "desc": ""
+    },
+    {
+      "prop": "badgeText",
+      "type": "—",
+      "def": "'Málrómur'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "hasWeight",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "hasWidth",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "weights",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "widths",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "FoundryCharacterSets": [
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'system-ui, sans-serif'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "collapsedCount",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    }
+  ],
+  "TypefaceLibraryGridWithVariables": [
+    {
+      "prop": "typefaceWeights",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    }
+  ],
+  "TypefaceLibraryItem": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'card'",
+      "desc": ""
+    },
+    {
+      "prop": "isActive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "TypefaceVariablePreview": [
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "'Medium'",
+      "desc": ""
+    },
+    {
+      "prop": "weightValue",
+      "type": "—",
+      "def": "400",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'list'",
+      "desc": ""
+    }
+  ],
+  "TypeSample": [
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "400",
+      "desc": ""
+    },
+    {
+      "prop": "italic",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "32",
+      "desc": ""
+    }
+  ],
+  "TypeSpecCard": [
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "TypeSpecimenLive": [
+    {
+      "prop": "specs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sampleClassName",
+      "type": "—",
+      "def": "'text-emphasis'",
+      "desc": ""
+    },
+    {
+      "prop": "sansWeightNames",
+      "type": "—",
+      "def": "{ 100: 'Fine', 300: 'Light', 400: 'Regular', 500: 'Medium', 600: 'Dark', 700: 'Bold', 900: 'Black' }",
+      "desc": ""
+    },
+    {
+      "prop": "monoWeightNames",
+      "type": "—",
+      "def": "{ 400: 'Regular', 500: 'Medium', 600: 'SemiBold', 700: 'Bold' }",
+      "desc": ""
+    },
+    {
+      "prop": "typefaceNames",
+      "type": "—",
+      "def": "{ mono: 'JetBrains Mono', sans: 'Right Grotesk' }",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TextPressure": [
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'Compressa'",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "italic",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "alpha",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "flex",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "stroke",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "scale",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "textColor",
+      "type": "—",
+      "def": "'var(--kol-fg-emphasis)'",
+      "desc": ""
+    },
+    {
+      "prop": "strokeColor",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "minFontSize",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "maxFontSize",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "returnToDefault",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "ColorLoader": [
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'KOLKRABBI'",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "dismissOnClick",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "bgColor",
+      "type": "—",
+      "def": "'var(--kol-surface-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "markColor",
+      "type": "—",
+      "def": "'var(--kol-fg-emphasis)'",
+      "desc": ""
+    },
+    {
+      "prop": "wordmarkDelay",
+      "type": "—",
+      "def": "1000",
+      "desc": ""
+    },
+    {
+      "prop": "scrollDelay",
+      "type": "—",
+      "def": "2000",
+      "desc": ""
+    },
+    {
+      "prop": "exitDuration",
+      "type": "—",
+      "def": "1.8",
+      "desc": ""
+    }
+  ],
+  "TypefaceSpecimenPage": [
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "'text-8xl'",
+      "desc": ""
+    }
+  ],
+  "FontViewerComponent": [
+    {
+      "prop": "showControls",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showMetrics",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "initialFontSize",
+      "type": "—",
+      "def": "600",
+      "desc": ""
+    },
+    {
+      "prop": "autoStart",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "animationDelay",
+      "type": "—",
+      "def": "1000",
+      "desc": ""
+    },
+    {
+      "prop": "config",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    }
+  ],
+  "GlyphItem": [
+    {
+      "prop": "fontStyle",
+      "type": "—",
+      "def": "'normal'",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "'TGMalromur'",
+      "desc": ""
+    },
+    {
+      "prop": "isSelected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "AppShell": [
     {
       "prop": "navTree",
@@ -2001,6 +3263,12 @@
       "desc": ""
     },
     {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -2032,6 +3300,486 @@
       "prop": "id",
       "type": "—",
       "def": "'hero'",
+      "desc": ""
+    }
+  ],
+  "Icon": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "16",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    }
+  ],
+  "ProductDetailLayout": [
+    {
+      "prop": "mediaItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "specs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sizeOptions",
+      "type": "—",
+      "def": "['A3']",
+      "desc": ""
+    },
+    {
+      "prop": "defaultQuantity",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "minQuantity",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "maxQuantity",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "editionOptions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "shippingOptions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "DiagonalMarqueeRiver": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "colCount",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "columnSpeeds",
+      "type": "—",
+      "def": "[28, 38, 22, 34]",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'300vh'",
+      "desc": ""
+    },
+    {
+      "prop": "rotate",
+      "type": "—",
+      "def": "-15",
+      "desc": ""
+    },
+    {
+      "prop": "scale",
+      "type": "—",
+      "def": "1.3",
+      "desc": ""
+    },
+    {
+      "prop": "shuffle",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "PriceDisplay": [
+    {
+      "prop": "currency",
+      "type": "—",
+      "def": "'EUR'",
+      "desc": ""
+    },
+    {
+      "prop": "locale",
+      "type": "—",
+      "def": "'de-DE'",
+      "desc": ""
+    }
+  ],
+  "PrintsGrid": [
+    {
+      "prop": "prints",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'All Prints'",
+      "desc": ""
+    },
+    {
+      "prop": "shuffle",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PrintGridCard": [
+    {
+      "prop": "isFlipped",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PrintGridCardGsap": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PrintBuyButton": [
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'row'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "showPrice",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "buyLabel",
+      "type": "—",
+      "def": "'Buy'",
+      "desc": ""
+    },
+    {
+      "prop": "podLabel",
+      "type": "—",
+      "def": "'Order Print'",
+      "desc": ""
+    },
+    {
+      "prop": "comingSoonLabel",
+      "type": "—",
+      "def": "'Coming Soon'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "MoodTile": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "overlay",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "TypeBlock": [
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'Right Grotesk'",
+      "desc": ""
+    },
+    {
+      "prop": "cut",
+      "type": "—",
+      "def": "'base'",
+      "desc": ""
+    },
+    {
+      "prop": "weight",
+      "type": "—",
+      "def": "400",
+      "desc": ""
+    },
+    {
+      "prop": "italic",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "48",
+      "desc": ""
+    },
+    {
+      "prop": "tracking",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "lineHeight",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "case",
+      "type": "—",
+      "def": "'none'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'left'",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'currentColor'",
+      "desc": ""
+    },
+    {
+      "prop": "strokeWidth",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AssetTable": [
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "emptyLabel",
+      "type": "—",
+      "def": "'No assets.'",
+      "desc": ""
+    }
+  ],
+  "LogoCard": [
+    {
+      "prop": "grid",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "keyline",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "'2 / 1'",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "toggleLabel",
+      "type": "—",
+      "def": "'Clearspace'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultFramework",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ClearspaceDiagram": [
+    {
+      "prop": "grid",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "keyline",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "framework",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "LogoScaling": [
+    {
+      "prop": "variants",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "steps",
+      "type": "—",
+      "def": "[128, 96, 64, 48, 40, 32, 24, 16, 12, 8]",
+      "desc": ""
+    },
+    {
+      "prop": "canvasWidth",
+      "type": "—",
+      "def": "1600",
+      "desc": ""
+    },
+    {
+      "prop": "canvasHeight",
+      "type": "—",
+      "def": "1000",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ComboLab": [
+    {
+      "prop": "layouts",
+      "type": "—",
+      "def": "[\n  { id: 'ratio-603010', label: '60 / 30 / 10' },\n  { id: 'tower',        label: 'Tower' },\n  { id: 'quad-split',   label: 'Quad split' },\n  { id: 'card-row',     label: 'Card row' },\n  { id: 'stripe-row',   label: 'Stripe row' },\n  { id: 'applied-card', label: 'Applied card' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "logo",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'random'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ]

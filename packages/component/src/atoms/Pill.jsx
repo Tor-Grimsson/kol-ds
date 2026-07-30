@@ -1,20 +1,35 @@
 /**
- * Pill Component
+ * Pill — the STATIC chip: a label, category, or status word. Not clickable.
  *
- * Small badge/tag component for labels, categories, or status indicators
- * Uses existing pill classes from components.css (pill-outline, pill-subtle, pill-inverse)
+ * The chip family, so the right one gets reached for (documented at source,
+ * 2026-07-30):
+ *   Pill  — static label. No states, no handlers. THIS component.
+ *   Tag   — interactive/filterable. Its active/onClick/onRemove states are the
+ *           whole point; a Tag with no handler is a Pill wearing the wrong name.
+ *   Badge — system status or a count.
+ *
+ * Defaults follow the standing laws: `primary` (the grey fill; nothing defaults
+ * to outline — outline needs a stated reason) and `sm` (chip law).
+ *
+ * Variant vocabulary joined Button's (user ruling 2026-07-30): `primary` is the
+ * grey/filled chip (was `subtle`), `secondary` is the outlined chip (was
+ * `outline`). The old names remain as deprecated aliases — same classes, no
+ * visual change at any call site.
  *
  * @param {Object} props
  * @param {string} props.children - Text content of the pill
- * @param {string} props.variant - Visual variant: 'outline' | 'subtle' | 'inverse' (default: 'outline')
- * @param {string} props.size - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
+ * @param {string} props.variant - Visual variant: 'primary' | 'secondary' | 'inverse' (deprecated aliases: 'subtle' → primary, 'outline' → secondary) (default: 'primary')
+ * @param {string} props.size - Size variant: 'sm' | 'md' | 'lg' (default: 'sm')
  * @param {string} props.className - Additional classes for customization
  */
-const Pill = ({ children, variant = 'outline', size = 'md', className = '' }) => {
+const Pill = ({ children, variant = 'primary', size = 'sm', className = '' }) => {
   const variantClasses = {
-    outline: 'pill-outline',
+    primary: 'pill-subtle',
+    secondary: 'pill-outline',
+    inverse: 'pill-inverse',
+    /* deprecated aliases (pre-2026-07-30 vocabulary) */
     subtle: 'pill-subtle',
-    inverse: 'pill-inverse'
+    outline: 'pill-outline'
   }
 
   const sizeClasses = {

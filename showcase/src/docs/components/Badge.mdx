@@ -1,0 +1,48 @@
+export const meta = {
+  id: '2.7.0',
+  slug: 'badge',
+}
+
+<Preview name="Badge" />
+
+## Installation
+
+<Install name="Badge" />
+
+## Usage
+
+```jsx
+import { Badge } from '@kolkrabbi/kol-component'
+
+<Badge variant="secondary">Badge</Badge>
+```
+
+## Examples
+
+### Variants
+
+Use the `variant` prop to change the badge style.
+
+<Preview name="Badge" />
+
+### With Icon
+
+Pass an `icon` name to render a leading glyph.
+
+<Preview name="BadgeWithIcon" />
+
+### Sizes
+
+Three sizes via the `size` prop.
+
+<Preview name="BadgeSizes" />
+
+## Props
+
+<Api name="Badge" rows={[
+  {"prop":"variant","type":"default | secondary | destructive | outline | success | warning | critical | info","def":"default","desc":"Visual style of the badge."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Badge size."},
+  {"prop":"icon","type":"string","def":"—","desc":"Icon name rendered before the label."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Badge content."},
+  {"prop":"className","type":"string","def":"—","desc":"Additional classes."}
+]} />

@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.57.0',
+  slug: 'textarea',
+}
+
+<Preview name="Textarea" />
+
+## Installation
+
+<Install name="Textarea" />
+
+## Usage
+
+```jsx
+import { Textarea } from '@kolkrabbi/kol-component'
+
+<Textarea variant="filled" placeholder="Notes…" />
+```
+
+## Props
+
+<Api name="Textarea" rows={[
+  {"prop":"value","type":"string","def":"—","desc":"Field value (controlled)."},
+  {"prop":"onChange","type":"(event) => void","def":"—","desc":"Change handler."},
+  {"prop":"variant","type":"filled | outline","def":"filled","desc":"Filled = button-primary chrome; outline = the one secondary treatment. ghost is a legacy alias for outline."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Field size."},
+  {"prop":"rows","type":"number","def":"3","desc":"Visible rows."}
+]} />

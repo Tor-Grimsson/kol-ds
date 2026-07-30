@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.56.0',
+  slug: 'tag',
+}
+
+<Preview name="Tag" />
+
+## Installation
+
+<Install name="Tag" />
+
+## Usage
+
+```jsx
+import { Tag } from '@kolkrabbi/kol-component'
+
+<Tag solid>kol</Tag>
+```
+
+## Props
+
+<Api name="Tag" rows={[
+  {"prop":"children / text","type":"ReactNode / string","def":"—","desc":"Tag label."},
+  {"prop":"solid","type":"boolean","def":"false","desc":"Solid fill style."},
+  {"prop":"active","type":"boolean","def":"false","desc":"Active/selected state."},
+  {"prop":"hash","type":"boolean","def":"true","desc":"Prefix with `#`."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Tag size."},
+  {"prop":"icon","type":"string","def":"—","desc":"Leading icon name."},
+  {"prop":"onRemove","type":"function","def":"—","desc":"Shows a remove affordance."}
+]} />

@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.64.0',
+  slug: 'type-sample',
+}
+
+<Preview name="TypeSample" />
+
+## Installation
+
+<Install name="TypeSample" />
+
+## Usage
+
+```jsx
+import { TypeSample } from '@kolkrabbi/kol-foundry'
+
+<TypeSample label="Sans · 700 · 48/52" weight={700} size={48} lineHeight={52}>Hamburgefonstiv</TypeSample>
+```
+
+## Props
+
+<Api name="TypeSample" rows={[
+  {"prop":"family","type":"string","def":"—","desc":"Font family; unset falls back to var(--kol-font-family-sans)."},
+  {"prop":"weight","type":"number","def":"400","desc":"font-weight."},
+  {"prop":"italic","type":"boolean","def":"false","desc":"Italic sample."},
+  {"prop":"size / lineHeight","type":"number","def":"32 / —","desc":"px values; unitless 1.2 line-height when unset."},
+  {"prop":"label","type":"string","def":"—","desc":"Mono caption above the sample."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The specimen text."}
+]} />

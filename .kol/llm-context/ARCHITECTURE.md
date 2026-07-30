@@ -49,6 +49,14 @@ No build step. Packages publish raw `.jsx` / `.css`. The loader uses `import.met
 
 `tailwindcss` → `@kolkrabbi/kol-theme` → `kol-brand-color.css` → `kol-framework.css`. Framework chrome reads `--brand-*` / `--kol-*` custom properties defined upstream of it; reordering breaks theming. Documented in the root README and every consumer.
 
+**Order is not enough — the LAYER is part of the contract (added 2026-07-30).** Framework chrome must be imported **into the components layer**:
+
+```css
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+```
+
+Unlayered rules outrank every layered rule regardless of specificity or source order, so a bare import silently promotes all framework chrome above the theme's type/utility layer. Two consumers then render the same package differently with no version difference — exactly what happened: kol-website layered it, the showcase didn't, and shell header tabs rendered 16px here and 14px there. **A component's type belongs in its own rule, never as a `kol-mono-*`/`kol-helper-*` utility class on the element** — equal specificity means the winner is decided by whichever sheet happens to load last.
+
 ## §6 — The showcase is presentation + mined reference
 
 `showcase/` is a Vite app that consumes the packages like any consumer. Its Components gallery renders live demos (safe atoms, error-boundaried) **and** a usage reference mined verbatim from ~25 real KOL apps via `scripts/extract-usage.mjs` → `docs/usage/*.md` + `showcase/src/usage/usage-index.json`. The reference is for both humans and LLMs.

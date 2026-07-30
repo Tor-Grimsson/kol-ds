@@ -82,6 +82,13 @@
   scrollbar-width: none;
 }
 
+/* Shell content grid — the rail/main/toc gutter. The gap lives HERE, not as a
+ * utility on the element: a gap-8 in the JSX outranked this layer at every
+ * width and made the 48px wide step (below, ≥1600px) dead code. */
+.shell-content-grid {
+  gap: 32px;
+}
+
 .shell-sidebar-sticky::-webkit-scrollbar {
   display: none;
 }

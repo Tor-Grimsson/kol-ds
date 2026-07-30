@@ -3,8 +3,8 @@ import { Pill } from '@kolkrabbi/kol-component'
 export default function PillDemo() {
   return (
     <>
-      <Pill variant="outline">Outline</Pill>
-      <Pill variant="subtle">Subtle</Pill>
+      <Pill>Primary</Pill>
+      <Pill variant="secondary">Secondary</Pill>
       <Pill variant="inverse">Inverse</Pill>
     </>
   )

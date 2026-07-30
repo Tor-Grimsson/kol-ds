@@ -17,21 +17,11 @@ html,
 body {
   background: var(--kol-surface-primary);
   color: var(--kol-surface-on-primary);
-
-  /* Editor-style app — selection is mostly meaningless on chrome. Default
-   * to non-selectable; opt back in for prose, tables, inputs, code below. */
-  -webkit-user-select: none;
-  user-select: none;
 }
 
-/* Allowlist — surfaces where reading / copying matters. */
-input, textarea, [contenteditable="true"],
-.kol-prose, .kol-prose *,
-.kol-table, .kol-table *,
-code, pre {
-  -webkit-user-select: text;
-  user-select: text;
-}
+/* The global user-select:none gate + allowlist was REMOVED 2026-07-29 (user
+ * law, brand-app ruling): text is selectable everywhere — copyability beats
+ * chrome purity. */
 
 /* Selection highlight uses brand-primary so it reads on-brand when it appears. */
 ::selection {
@@ -86,8 +76,16 @@ code, pre {
 }
 
 @media (min-width: 1280px) { :root { --kol-container-max: 1600px; } }
+/* The ladder's last rung is the law's frame itself: --kol-container-max is the
+ * responsive RESOLUTION of --kol-content-shell (kol-theme), not a second width
+ * family. Before 2026-07-30 the ladder stopped at 1600 while the stated law
+ * said 1800 — same element, two answers (lobby/WidthSystemContradictions). */
+@media (min-width: 1920px) { :root { --kol-container-max: var(--kol-content-shell, 1800px); } }
 
-:root[data-sidenav="collapsed"] { --kol-sidenav-w: var(--kol-sidenav-w-collapsed); }
+/* :root[data-sidenav="collapsed"] removed 2026-07-29 — the manual collapse
+ * feature died with the editor's exit (brand ruling); the responsive rail
+ * below 1024px is the surviving narrow mode. --kol-sidenav-w-collapsed stays:
+ * the rail still uses it. */
 
 /* ───── Brand doc layout (sidebar + content) ─────
    The grid lives in CSS for its dynamic --kol-sidenav-w + transition. */
@@ -103,7 +101,6 @@ code, pre {
      User's localStorage expand preference is overridden while viewport is narrow;
      restored once they cross back over the threshold. */
   .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
-  .kol-sidenav-toggle { display: none; }
   .kol-sidenav-hops { padding: 0 0 16px; margin-bottom: 16px; }
   .kol-sidenav-hop { padding: 8px 0; justify-content: center; gap: 0; }
   .kol-sidenav-hop-label { display: none; }
@@ -134,30 +131,9 @@ code, pre {
 }
 
 /* SideNav primitives (.kol-sidenav-hop, -hop-icon, -hop-label, -link,
- * -group) promoted to kol-components-atoms.css 2026-04-30. The .is-collapsed
- * responsive cascade rules below stay here — they're page-grid concerns,
- * not component chrome. */
-
-/* ───── SideNav collapsed (rail mode) — overrides inlined hop padding/gap ───── */
-
-.kol-sidenav.is-collapsed .kol-sidenav-hops {
-  padding: 0 0 16px;
-  margin-bottom: 16px;
-}
-
-.kol-sidenav.is-collapsed .kol-sidenav-hop {
-  padding: 8px 0;
-  justify-content: center;
-  gap: 0;
-}
-
-.kol-sidenav.is-collapsed .kol-sidenav-hop-label {
-  display: none;
-}
-
-.kol-sidenav.is-collapsed .kol-sidenav-body {
-  display: none;
-}
+ * -group) promoted to kol-components-atoms.css 2026-04-30. The manual
+ * collapse (.is-collapsed rail mode) was removed 2026-07-29 with the
+ * editor's exit — the ≤1024px responsive rail above is the survivor. */
 
 /* ───── Page scaffold ───── */
 
@@ -186,6 +162,20 @@ code, pre {
   padding: 64px 0;
   display: flex;
   flex-direction: column;
+}
+
+/* ───── Full-bleed (THE one mechanism, 2026-07-30) ─────
+ * Cancels the page inset with a negative margin — container-relative, so it is
+ * correct inside any layout, including .kol-brand-layout's sidenav grid.
+ * Promoted from kol-website's local `@utility full-bleed`; the DS owns the
+ * inset (--kol-pad-section-x), so it owns the cancellation.
+ *
+ * NEVER use the viewport trick (`width:100vw; margin-left: calc(50% - 50vw)`):
+ * 50vw measures the VIEWPORT, and inside a sidenav grid the content track is
+ * not viewport-centred — the element overhangs left by ~half the sidenav width
+ * and any `overflow:hidden` ancestor clips it (the /review slice bug). */
+.kol-full-bleed {
+  margin-inline: calc(-1 * var(--kol-pad-section-x));
 }
 
 /* ───── Standard 4-col content grid ─────
@@ -267,43 +257,13 @@ code, pre {
 /* Type-sample rule removed 2026-07-09 — was drift-flagged duplicate of the
    theme-owned rule (now packages/theme/kol-components-foundry.css). */
 
-/* Prose moved to DS typography — see kol-typography-mono.css.
-   See docs/documentation/06-framework/06-amendments.md 2026-04-23. */
-
-.kol-prose-indented {
-  padding-left: 32px;
-  border-left: 1px solid var(--kol-fg-16);
-}
-
-.kol-prose pre {
-  margin: 0 0 24px;
-  padding: 16px;
-  border-radius: 4px;
-  font-family: 'Right Grotesk Mono', monospace;
-  font-size: 16px;
-  line-height: 24px;
-  overflow-x: auto;
-}
-
-.kol-prose code {
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 0.9em;
-  padding: 1px 4px;
-  border-radius: 3px;
-}
-
-.kol-prose pre code {
-  padding: 0;
-  background: none;
-  border-radius: 0;
-}
-
-.kol-prose-pullout {
-  padding: 16px 0;
-  margin: 32px 0;
-  border-top: 1px solid var(--kol-fg-08);
-  border-bottom: 1px solid var(--kol-fg-08);
-}
+/* Prose chrome lives in kol-theme, ONE home (task 8, 2026-07-30). The copies
+   that stood here (.kol-prose-indented, .kol-prose-pullout, .kol-prose
+   pre/code) duplicated theme selectors exactly, so whichever sheet loaded last
+   won — and the `pre` copy hardcoded 'Right Grotesk Mono' instead of the mono
+   token, so when framework won, prose code rendered in the wrong family.
+   Owners: kol-type-roles.css (pre/code) · kol-components-atoms.css
+   (-indented / -pullout). Do not re-add them here. */
 
 /* ───── Fullscreen overlay ───── */
 
@@ -615,114 +575,11 @@ code, pre {
 
 /* .kol-combo-* (+ @keyframes kol-combo-fade) relocated to kol-theme/kol-components-styleguide.css 2026-07-10 */
 
-/* ═════════════════════════════════════════════════════════════════════
-   SpectrumGrid — matrix color-token grid (9 ramps × 10 stops)
-   ═════════════════════════════════════════════════════════════════════ */
+/* SpectrumGrid chrome moved to kol-theme/kol-components-molecules.css
+   2026-07-30 (task 8): it was defined in BOTH packages, so the cascade picked
+   a winner by load order and a consumer editing the theme copy saw nothing.
+   Theme owns component chrome. */
 
-.kol-spectrum-grid {
-  display: grid;
-  grid-template-columns: 100px repeat(10, minmax(0, 1fr));
-  gap: 4px;
-  width: 100%;
-}
-
-.kol-spectrum-grid--loading {
-  min-height: 400px;
-  background: var(--kol-fg-02);
-  border-radius: 6px;
-}
-
-.kol-spectrum-grid-head {
-  display: contents;
-}
-
-.kol-spectrum-grid-corner {
-  grid-column: 1;
-}
-
-.kol-spectrum-grid-stop-label {
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--kol-fg-48);
-  padding: 4px 6px;
-  text-align: center;
-}
-
-.kol-spectrum-grid-row {
-  display: contents;
-}
-
-.kol-spectrum-grid-row-label {
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--kol-surface-on-primary);
-  align-self: center;
-  padding-right: 12px;
-}
-
-.kol-spectrum-grid-row-label::first-letter {
-  text-transform: uppercase;
-}
-
-.kol-spectrum-grid-cell {
-  position: relative;
-  aspect-ratio: 5 / 3;
-  min-width: 0;
-  border-radius: 4px;
-  padding: 6px 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 120ms ease;
-}
-
-.kol-spectrum-grid-cell-marker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-.kol-spectrum-grid-cell:hover {
-  transform: scale(1.04);
-}
-
-.kol-spectrum-grid-cell-stop {
-  font-family: var(--kol-font-family-mono, monospace);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-}
-
-.kol-spectrum-grid-cell-hex {
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 9px;
-  text-transform: uppercase;
-  opacity: 0.78;
-}
-
-@media (max-width: 900px) {
-  .kol-spectrum-grid {
-    grid-template-columns: 72px repeat(10, minmax(0, 1fr));
-    gap: 2px;
-  }
-  .kol-spectrum-grid-cell {
-    padding: 4px;
-  }
-  .kol-spectrum-grid-cell-hex {
-    display: none;
-  }
-}
 
 
 /* .kol-anatomy-sample-* relocated to kol-theme/kol-components-styleguide.css 2026-07-10 */
@@ -807,13 +664,9 @@ code, pre {
 }
 
 /* SideNav collapsibleSections chrome — inert unless that mode renders.
-   Rail (collapsed) + forced rail (≤1024px) hide count/toggle with the labels;
-   the open ≤767px drawer restores them, mirroring -hop-label. */
-.kol-sidenav.is-collapsed .kol-sidenav-hop-count,
-.kol-sidenav.is-collapsed .kol-sidenav-section-toggle {
-  display: none;
-}
-
+   The forced rail (≤1024px) hides count/toggle with the labels; the open
+   ≤767px drawer restores them, mirroring -hop-label. (Manual .is-collapsed
+   removed 2026-07-29.) */
 @media (max-width: 1024px) {
   .kol-sidenav-hop-count,
   .kol-sidenav-section-toggle {
@@ -861,7 +714,13 @@ code, pre {
   align-items: center;
   gap: 6px;
   font-family: var(--kol-font-family-mono, monospace);
-  font-size: 13px;
+  /* The tab IS kol-mono-14 (14/18). Stated here, not as a utility class on the
+     element: this rule and the utility have equal specificity, so whichever
+     stylesheet loads last wins — and that flipped per consumer depending on
+     whether kol-framework.css was imported into a layer. Type lives in the
+     rule; do not re-add a kol-mono-* class to the tab. */
+  font-size: 14px;
+  line-height: 18px;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--kol-fg-64);
@@ -889,7 +748,8 @@ code, pre {
   }
 
   .kol-shell-header-tab {
-    font-size: 16px;
+    /* No type bump — 14/18 is the tab size at every viewport (user ruling
+       2026-07-30). Only the spacing breathes at wide widths. */
     gap: 8px;
     padding-top: 10px;
     padding-bottom: 14px;

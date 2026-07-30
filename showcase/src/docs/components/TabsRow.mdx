@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.55.0',
+  slug: 'tabs-row',
+}
+
+<Preview name="TabsRow" />
+
+## Installation
+
+<Install name="TabsRow" />
+
+## Usage
+
+```jsx
+import { TabsRow } from '@kolkrabbi/kol-component'
+
+<TabsRow tabs={[{ id: 'overview', label: 'Overview' }]} value={v} onChange={setV} />
+```
+
+## Props
+
+<Api name="TabsRow" rows={[
+  {"prop":"tabs","type":"{ id, label }[]","def":"[]","desc":"Tab items; labels render verbatim."},
+  {"prop":"value","type":"string","def":"—","desc":"Active tab id (controlled)."},
+  {"prop":"onChange","type":"(id) => void","def":"—","desc":"Fires on click or arrow-key move."},
+  {"prop":"onClose / onMinimise","type":"function","def":"—","desc":"Show + wire the leading close / trailing chevron."}
+]} />

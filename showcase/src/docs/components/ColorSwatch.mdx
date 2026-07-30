@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.11.0',
+  slug: 'color-swatch',
+}
+
+<Preview name="ColorSwatch" />
+
+## Installation
+
+<Install name="ColorSwatch" />
+
+## Usage
+
+```jsx
+import { ColorSwatch } from '@kolkrabbi/kol-component'
+
+<ColorSwatch hex="#3b82f6" />
+```
+
+## Props
+
+<Api name="ColorSwatch" rows={[
+  {"prop":"hex","type":"string","def":"—","desc":"Swatch colour."},
+  {"prop":"size","type":"number","def":"24","desc":"Chip size in pixels."},
+  {"prop":"selected","type":"boolean","def":"false","desc":"Selected state."},
+  {"prop":"frame","type":"boolean","def":"true","desc":"Draw a border frame."},
+  {"prop":"radius","type":"tight | …","def":"tight","desc":"Corner radius token."},
+  {"prop":"showTransparent","type":"boolean","def":"false","desc":"Render the transparency marker."},
+  {"prop":"onClick","type":"function","def":"—","desc":"Click handler."}
+]} />

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
-import DocLayout from '../lib/DocLayout.jsx'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import { resolveCssVar, resolveTokenThemed } from '../lib/resolve-css-var.jsx'
 import { BRAND_COLORS_SECTIONS, UI_COLORS_SECTIONS } from '../data/color.js'
@@ -121,14 +120,10 @@ function SystemSection({ section, columnsDict }) {
 
 // ─── Page ────────────────────────────────────────────────────────
 
-const TOC = [...BRAND_COLORS_SECTIONS, ...UI_COLORS_SECTIONS].map((s) => ({
-  id: s.id,
-  label: s.title,
-}))
 
 export default function FoundationsColor() {
   return (
-    <DocLayout toc={TOC}>
+    <>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Color"
@@ -144,6 +139,6 @@ export default function FoundationsColor() {
       {UI_COLORS_SECTIONS.map((section) => (
         <SystemSection key={section.id} section={section} columnsDict={COLOR_COLUMNS} />
       ))}
-    </DocLayout>
+    </>
   )
 }

@@ -21,7 +21,13 @@
    above do the real scanning here. */
 @import "@kolkrabbi/kol-theme/kol-sources.css";
 @import "@kolkrabbi/kol-framework/kol-brand-color.css";
-@import "@kolkrabbi/kol-framework/kol-framework.css";
+/* layer(components) is REQUIRED, not decoration: unlayered rules outrank every
+   layered one regardless of specificity, so importing this bare promoted all
+   framework chrome above the theme's type/utility layer and silently changed
+   how components render — the same package looked different per consumer
+   (kol-website layered it, we didn't; header tabs came out 16px here, 14 there).
+   Every consumer imports framework chrome INTO the components layer. */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
 
 /* Showcase-local safety net: the brand app gives every text node an explicit
    kol-sans / kol-mono class, so it never needs a base body font. This docs site

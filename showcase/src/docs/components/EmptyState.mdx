@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.18.0',
+  slug: 'empty-state',
+}
+
+<Preview name="EmptyState" />
+
+## Installation
+
+<Install name="EmptyState" />
+
+## Usage
+
+```jsx
+import { EmptyState } from '@kolkrabbi/kol-component'
+
+<EmptyState eyebrow="Phase 2" title="Layer inspector" body="Select a layer to edit its properties." />
+```
+
+## Props
+
+<Api name="EmptyState" rows={[
+  {"prop":"eyebrow","type":"string","def":"—","desc":"Kicker line above the title (rendered as authored — no auto casing)."},
+  {"prop":"title","type":"string","def":"—","desc":"Headline."},
+  {"prop":"body","type":"string","def":"—","desc":"Optional supporting line."},
+  {"prop":"footer","type":"string","def":"—","desc":"Optional note above a top hairline."}
+]} />

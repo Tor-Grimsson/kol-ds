@@ -1,3 +1,9 @@
+> **SUPERSEDED 2026-07-30.** The showcase's sidenav is now the packaged
+> `ShellSidebar` from `@kolkrabbi/kol-workshop` (collapsible groups, counts,
+> auto-expand on active), mounted once via `showcase/src/lib/ShellChrome.jsx`.
+> The app-local `SidebarNav.jsx`/`NavDrawer.jsx` this epic was about are
+> deleted. Closed at the shell-adoption milestone — no scoping doc needed.
+
 # Parked: the sidenav epic
 
 Flagged 2026-07-15 (late night), user's words: the sidenav family is wrong and

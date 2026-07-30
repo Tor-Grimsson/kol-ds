@@ -2,7 +2,7 @@
 title: Package topology — the eleven UI packages + clients tier
 type: reference
 status: canonical
-updated: 2026-07-15
+updated: 2026-07-30
 verified: 2026-07-09
 description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the seven standalone domain packages (workshop, dashboards, chess, content, foundry, store, styleguide), and the clients tier. What each owns, what stays shared, and which component lives where.
 aliases:
@@ -76,3 +76,13 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 
 - `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `framer-motion` (peer) → foundry (ColorLoader). `opentype.js` (optional peer) → specimen.
 - Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons). CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).
+
+## Cascade contract — order AND layer
+
+Consumer import order is `tailwindcss` → `kol-theme` → `kol-brand-color.css` → `kol-framework.css`, and the framework import **must** carry `layer(components)`:
+
+```css
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+```
+
+Unlayered rules outrank every layered rule regardless of specificity or source order, so a bare import promotes framework chrome above the theme's type layer — two consumers then render the same package version differently (2026-07-30: shell header tabs came out 16px in the showcase, 14px on kol-website, identical CSS). Corollary: **a component's type belongs in its own CSS rule, never as a `kol-mono-*` utility class on the element** — equal specificity means load order picks the winner. See [[../../../.kol/llm-context/ARCHITECTURE|ARCHITECTURE §5]].

@@ -21,6 +21,13 @@
 
 ## 📢 BULLETIN (dated — newest first; prune entries older than a month)
 
+- **2026-07-29 · Links ship COLORLESS since `kol-theme@0.12.0`.** `--kol-link`/
+  `--kol-link-hover` now default to `currentColor` (the old raw-Tailwind blues
+  are gone, including the dark-mode overrides). `.kol-link` and `.kol-table a`
+  are inert hooks until a repo binds the token at its root — e.g.
+  `:root { --kol-link: var(--kol-color-yellow-300) }`. Link color is a
+  per-repo, per-occasion decision (user law); a repo that wants the old blue
+  sets it itself. Table links keep their underline either way.
 - **2026-07-28 · Icons are v1-only since `kol-icons@0.8.x`.** The legacy trees
   (stroke/solid/svg/svg-web, ~1,900 SVGs) are GONE from the package. A dead
   name renders nothing. Hotfix path: grab the SVG from the local shelf

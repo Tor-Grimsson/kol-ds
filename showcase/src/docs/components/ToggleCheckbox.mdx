@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.60.0',
+  slug: 'toggle-checkbox',
+}
+
+<Preview name="ToggleCheckbox" />
+
+## Installation
+
+<Install name="ToggleCheckbox" />
+
+## Usage
+
+```jsx
+import { ToggleCheckbox } from '@kolkrabbi/kol-component'
+
+<ToggleCheckbox label="Accept" checked={on} onChange={setOn} />
+```
+
+## Props
+
+<Api name="ToggleCheckbox" rows={[
+  {"prop":"checked","type":"boolean","def":"false","desc":"Checked state (controlled)."},
+  {"prop":"onChange","type":"(bool) => void","def":"—","desc":"Fires with the next state."},
+  {"prop":"label","type":"string","def":"—","desc":"Field label."},
+  {"prop":"hint","type":"string","def":"—","desc":"Secondary hint text."}
+]} />

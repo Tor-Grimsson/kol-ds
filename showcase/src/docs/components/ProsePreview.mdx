@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.39.0',
+  slug: 'prose-preview',
+}
+
+<Preview name="ProsePreview" />
+
+## Installation
+
+<Install name="ProsePreview" />
+
+## Usage
+
+```jsx
+import { ProsePreview } from '@kolkrabbi/kol-component'
+
+<ProsePreview h1='Page title' paragraph='…' code='const x = 1' pullout='…' />
+```
+
+## Props
+
+<Api name="ProsePreview" rows={[
+  {"prop":"h1","type":"string","def":"—","desc":"Trailing text of the H1 line."},
+  {"prop":"paragraph","type":"string","def":"—","desc":"Body paragraph text."},
+  {"prop":"code","type":"string","def":"—","desc":"Contents of the code block."},
+  {"prop":"pullout","type":"string","def":"—","desc":"Trailing text of the pullout."},
+  {"prop":"quote","type":"string","def":"—","desc":"Blockquote text."}
+]} />

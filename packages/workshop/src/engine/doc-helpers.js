@@ -93,18 +93,30 @@ export const getTagColor = (tag) => {
   return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length]
 }
 
-/** Group docs by major version number. */
+/** Group docs by major version number.
+ *
+ * Three id dialects are grouped: dotted (`0.0.1-slug`), folder-index
+ * (`04-pages-index`), and PLAIN NUMBERED (`04-layout-breakpoints`) — the last
+ * one was previously unmatched, so a vault of `NN-slug.md` files produced a
+ * tree holding only its INDEX files and every real doc was search-only
+ * (fixed 2026-07-30). Multi-word folder names work too: the old
+ * `^(\d+)-[a-z]+-index$` rejected any hyphen, silently dropping ids like
+ * `09-ds-adoption-index`.
+ */
 export const groupDocsByMajor = (docs) => {
   const groups = {}
   docs.forEach((d) => {
     const majorMatch = d.id.match(/^(\d+)\./)
-    const indexMatch = d.id.match(/^(\d+)-[a-z]+-index$/)
+    const indexMatch = d.id.match(/^(\d+)-[a-z][a-z0-9-]*-index$/)
+    const plainMatch = d.id.match(/^(\d+)-/)
 
     let major = null
     if (majorMatch) {
       major = majorMatch[1]
     } else if (indexMatch) {
       major = indexMatch[1].replace(/^0/, '')
+    } else if (plainMatch) {
+      major = plainMatch[1].replace(/^0(?=\d)/, '')
     } else if (isIndexFile(d.id)) {
       const titleMatch = d.title.match(/^(\d+)\./)
       if (titleMatch) {

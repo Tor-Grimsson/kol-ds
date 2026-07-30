@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.35.0',
+  slug: 'pill',
+}
+
+<Preview name="Pill" />
+
+## Installation
+
+<Install name="Pill" />
+
+## Usage
+
+```jsx
+import { Pill } from '@kolkrabbi/kol-component'
+
+<Pill>Primary</Pill>
+<Pill variant="secondary">Secondary</Pill>
+```
+
+## Props
+
+<Api name="Pill" rows={[
+  {"prop":"variant","type":"primary | secondary | inverse","def":"primary","desc":"Visual style — Button's vocabulary. `primary` is the grey fill, `secondary` the outline. Deprecated aliases: `subtle` → primary, `outline` → secondary."},
+  {"prop":"size","type":"sm | md | lg","def":"sm","desc":"Pill size."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Pill content."}
+]} />

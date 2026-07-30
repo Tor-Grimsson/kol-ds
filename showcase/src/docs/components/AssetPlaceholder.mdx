@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.5.0',
+  slug: 'asset-placeholder',
+}
+
+<Preview name="AssetPlaceholder" />
+
+## Installation
+
+<Install name="AssetPlaceholder" />
+
+## Usage
+
+```jsx
+import { AssetPlaceholder } from '@kolkrabbi/kol-component'
+
+<AssetPlaceholder category="hero" name="cover" />
+```
+
+## Props
+
+<Api name="AssetPlaceholder" rows={[
+  {"prop":"category","type":"string","def":"—","desc":"Category shown in the label."},
+  {"prop":"name","type":"string","def":"—","desc":"Name shown in the label."},
+  {"prop":"aspectRatio","type":"string","def":"16 / 9","desc":"CSS aspect-ratio of the frame."},
+  {"prop":"note","type":"string","def":"missing","desc":"Status note text."}
+]} />

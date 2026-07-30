@@ -195,7 +195,10 @@
 .kol-table-wrapper.kol-table--simple .kol-table td:last-child { padding-inline-end: 0; }
 
 .kol-table th,
-.kol-table td { border-right: 1px solid var(--kol-fg-08); }
+/* oq, not fg — alpha verticals brightened over the thead's fg-04 tint while
+ * the (already-converted) horizontals stayed flat. The fourth seam of the
+ * 2026-07-15 chess-audit finding 4; the first three were converted then. */
+.kol-table td { border-right: 1px solid var(--kol-oq-08); }
 .kol-table th:last-child,
 .kol-table td:last-child { border-right: none; }
 

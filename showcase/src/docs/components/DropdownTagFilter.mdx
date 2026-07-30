@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.17.0',
+  slug: 'dropdown-tag-filter',
+}
+
+<Preview name="DropdownTagFilter" />
+
+## Installation
+
+<Install name="DropdownTagFilter" />
+
+## Usage
+
+```jsx
+import { DropdownTagFilter } from '@kolkrabbi/kol-component'
+
+<DropdownTagFilter options={opts} selectedValues={set} onChange={toggle} />
+```
+
+## Props
+
+<Api name="DropdownTagFilter" rows={[
+  {"prop":"options","type":"{ value, label }[]","def":"[]","desc":"Filterable entries."},
+  {"prop":"selectedValues","type":"Set","def":"new Set()","desc":"Active values (all selected by default)."},
+  {"prop":"onChange","type":"(value | null) => void","def":"—","desc":"Value to toggle, or null to deselect all."},
+  {"prop":"size","type":"sm | md | lg","def":"auto","desc":"Overrides the viewport-derived size."}
+]} />

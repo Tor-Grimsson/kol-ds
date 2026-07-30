@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.27.0',
+  slug: 'media-tile-gallery',
+}
+
+<Preview name="MediaTileGallery" />
+
+## Installation
+
+<Install name="MediaTileGallery" />
+
+## Usage
+
+```jsx
+import { MediaTileGallery } from '@kolkrabbi/kol-component'
+
+<MediaTileGallery items={items} layout="grid" cols={3} />
+```
+
+## Props
+
+<Api name="MediaTileGallery" rows={[
+  {"prop":"items","type":"array","def":"[]","desc":"Tiles, in the viewer's media shape: { url, alt?, kind?, caption? }."},
+  {"prop":"layout","type":"'stack' | 'grid'","def":"'stack'","desc":"Flow column vs cols-column grid."},
+  {"prop":"cols","type":"number","def":"4","desc":"Grid column count (grid layout only)."},
+  {"prop":"tileClassName","type":"string","def":"''","desc":"Extra classes merged onto each tile button."}
+]} />

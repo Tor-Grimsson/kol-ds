@@ -1,0 +1,43 @@
+export const meta = {
+  id: '2.1.0',
+  slug: 'button',
+  lede: 'The action atom. Four variants × three sizes on one padding ladder, with icon-left, icon-right and icon-only forms.',
+}
+
+<Preview name="Button" />
+
+## Installation
+
+<Install name="Button" />
+
+## Usage
+
+```jsx
+import { Button } from '@kolkrabbi/kol-component'
+
+<Button variant="primary" iconRight="arrow-right" onClick={next}>
+  Continue
+</Button>
+```
+
+## Variants
+
+Four variants share one padding scale with `.kol-control` — sm 4/12 · md 6/16 ·
+lg 8/20. `primary` is the default; **nothing defaults to `outline`** (standing
+law — outline needs a stated reason at the call site).
+
+Icon-only is a geometry condition, not a variant: `.kol-btn-icon` pads equally
+on all sides at every variant, giving square 24/30/36 boxes.
+
+## Props
+
+<Api name="Button" rows={[
+  {"prop":"variant","type":"primary | secondary | accent | outline | ghost | danger | grey | control","def":"primary","desc":"Visual style. `danger` is the destructive treatment (--ui-error fill)."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Button size."},
+  {"prop":"iconLeft / iconRight","type":"string","def":"—","desc":"Icon name on a given side."},
+  {"prop":"iconOnly","type":"string","def":"—","desc":"Renders an icon-only button."},
+  {"prop":"href","type":"string","def":"—","desc":"Renders an `<a>` instead of a button."},
+  {"prop":"onClick","type":"function","def":"—","desc":"Click handler (renders a `<button>`)."},
+  {"prop":"disabled","type":"boolean","def":"false","desc":"Disabled state."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Button label."}
+]} />

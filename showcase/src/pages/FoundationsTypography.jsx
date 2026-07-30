@@ -1,6 +1,5 @@
 import { createRef } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
-import DocLayout from '../lib/DocLayout.jsx'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import { LiveValue, LiveClassValue, LiveNodeValue, LiveNodeFace } from '../lib/resolve-css-var.jsx'
 import { TYPOGRAPHY_SECTIONS } from '../data/typography.js'
@@ -144,11 +143,10 @@ function SystemSection({ section, columnsDict }) {
 
 // ─── Page ────────────────────────────────────────────────────────
 
-const TOC = TYPOGRAPHY_SECTIONS.map((s) => ({ id: s.id, label: s.title }))
 
 export default function FoundationsTypography() {
   return (
-    <DocLayout toc={TOC}>
+    <>
       <DocHeader
         eyebrow="KOL · Foundations"
         title="Typography"
@@ -161,6 +159,6 @@ export default function FoundationsTypography() {
       {TYPOGRAPHY_SECTIONS.map((section) => (
         <SystemSection key={section.id} section={section} columnsDict={TYPE_COLUMNS} />
       ))}
-    </DocLayout>
+    </>
   )
 }

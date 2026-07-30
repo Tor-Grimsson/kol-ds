@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.22.0',
+  slug: 'hls-video',
+}
+
+<Preview name="HlsVideo" />
+
+## Installation
+
+<Install name="HlsVideo" />
+
+## Usage
+
+```jsx
+import { HlsVideo } from '@kolkrabbi/kol-component'
+
+<HlsVideo src="https://cdn…/master.m3u8" className="absolute inset-0 h-full w-full object-cover" />
+```
+
+## Props
+
+<Api name="HlsVideo" rows={[
+  {"prop":"src","type":"string","def":"—","desc":"HLS manifest URL (.m3u8); attach effect re-runs on change."},
+  {"prop":"poster","type":"string","def":"—","desc":"Poster frame before playback."},
+  {"prop":"onEnded","type":"function","def":"—","desc":"End-of-playback callback; its presence disables loop."},
+  {"prop":"className / …props","type":"—","def":"—","desc":"Layout is consumer-supplied; extra props spread onto <video>."}
+]} />

@@ -1,0 +1,25 @@
+export const meta = {
+  id: '2.10.0',
+  slug: 'code-block',
+}
+
+<Preview name="CodeBlock" />
+
+## Installation
+
+<Install name="CodeBlock" />
+
+## Usage
+
+```jsx
+import { CodeBlock } from '@kolkrabbi/kol-component'
+
+<CodeBlock language="jsx">{code}</CodeBlock>
+```
+
+## Props
+
+<Api name="CodeBlock" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Code content (stringified for copy)."},
+  {"prop":"language","type":"string","def":"—","desc":"Language tag shown in the corner."}
+]} />

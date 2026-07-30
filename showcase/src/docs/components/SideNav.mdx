@@ -1,0 +1,31 @@
+export const meta = {
+  id: '2.49.0',
+  slug: 'side-nav',
+}
+
+<Preview name="SideNav" />
+
+## Installation
+
+<Install name="SideNav" />
+
+## Usage
+
+```jsx
+import { SideNav } from '@kolkrabbi/kol-framework'
+
+<SideNav navTree={NAV_TREE} getActivePage={getActivePage} />
+```
+
+## Props
+
+<Api name="SideNav" rows={[
+  {"prop":"navTree","type":"array","def":"[]","desc":"Groups + leaves ({ to } routes, { id } anchors)."},
+  {"prop":"getActivePage","type":"function","def":"—","desc":"Active-page resolver for highlight + scroll-spy."},
+  {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile drawer state (managed by AppShell)."},
+  {"prop":"onCloseDrawer","type":"function","def":"—","desc":"Close callback for the mobile drawer."},
+  {"prop":"onNavigate","type":"(event) => void","def":"—","desc":"Fired when any nav link is clicked (drawer close, analytics)."},
+  {"prop":"collapsed / onToggle","type":"boolean / function","def":"—","desc":"Controlled rail collapse; presence switches to controlled mode."},
+  {"prop":"collapsibleSections","type":"boolean","def":"false","desc":"Per-page section expand/collapse with chevron + child count; active section auto-expands."},
+  {"prop":"isActive","type":"(path) => boolean","def":"—","desc":"Overrides router active detection for hops and route leaves."}
+]} />

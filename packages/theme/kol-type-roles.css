@@ -138,6 +138,9 @@
   text-transform: uppercase;
   color: var(--kol-fg-meta);
   padding: 10px 16px;
+  /* Task 1: td sets this but th didn't, so a label centred itself against a
+     4-line value and the label↔value pairing broke. Both cell types agree. */
+  vertical-align: top;
 }
 .kol-prose td,
 .kol-doc-table td {
@@ -148,13 +151,43 @@
 }
 .kol-prose tbody tr:last-child td,
 .kol-doc-table tbody tr:last-child td { border-bottom: 0; }
+/* Cell roles — named by ROLE + TIER, split on the ONE mono fault line
+ * (kol-type-conform law): line-height-1 helper tier for single-line chrome,
+ * line-height-bearing mono tier for anything that can wrap. The old
+ * `kol-doc-table-value` was a slot name doing both jobs — a nowrap 12/16 role
+ * that every wrapping cell inherited, so a 4-line cell read as one block
+ * (tasks 2-4, 2026-07-30). */
+
+/* Single-line: one token — a hex, a class name, a count. Never wraps. */
+.kol-doc-table td.kol-doc-table-token {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Multi-line: prose-ish cell content. Wraps, and carries real leading. */
+.kol-doc-table td.kol-doc-table-copy {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 18px;
+  white-space: normal;
+}
+
+/* DEPRECATED (2026-07-30) — `-value` is a slot name, and `--wrap` flipped
+ * wrapping while leaving single-line leading in place, which was the actual
+ * defect. Aliased so existing consumers keep rendering; use the two roles
+ * above. Remove once no consumer references them. */
 .kol-doc-table td.kol-doc-table-value {
   font-family: var(--kol-font-family-mono);
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1;
   white-space: nowrap;
 }
-.kol-doc-table td.kol-doc-table-value--wrap { white-space: normal; }
+.kol-doc-table td.kol-doc-table-value--wrap {
+  white-space: normal;
+  line-height: 18px;
+}
 
 /* figure — the framed content container (preview cards, embedded media). */
 .kol-prose figure,

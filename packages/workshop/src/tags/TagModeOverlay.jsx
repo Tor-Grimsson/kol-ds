@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Input, Tag, Button } from '@kolkrabbi/kol-component'
+import { Input, Tag, Button, Tooltip } from '@kolkrabbi/kol-component'
 import { useTagMode } from './TagModeContext.jsx'
 import TagGraph from './TagGraph.jsx'
 import { extractDocNumber, cleanTitle, getTagColor } from '../engine/index.js'
@@ -37,29 +37,34 @@ const TagModeOverlay = () => {
       <div className="max-w-[864px] mx-auto">
         <div className="flex items-center justify-start gap-1 mb-3">
           {hasFilters && (
+            <Tooltip label={viewMode === 'graph' ? 'List view' : 'Graph view'}>
+              <Button
+                variant="outline"
+                quiet
+                size="sm"
+                iconOnly={viewMode === 'graph' ? 'view-list' : 'polygon'}
+                onClick={() => setViewMode(viewMode === 'graph' ? 'list' : 'graph')}
+                aria-label={viewMode === 'graph' ? 'List view' : 'Graph view'}
+              />
+            </Tooltip>
+          )}
+          <Tooltip label="Close tag mode">
             <Button
               variant="outline"
               quiet
               size="sm"
-              iconOnly={viewMode === 'graph' ? 'view-list' : 'polygon'}
-              onClick={() => setViewMode(viewMode === 'graph' ? 'list' : 'graph')}
-              aria-label={viewMode === 'graph' ? 'List view' : 'Graph view'}
+              iconOnly="x"
+              onClick={closeTagMode}
+              aria-label="Close tag mode"
             />
-          )}
-          <Button
-            variant="outline"
-            quiet
-            size="sm"
-            iconOnly="x"
-            onClick={closeTagMode}
-            aria-label="Close tag mode"
-          />
+          </Tooltip>
         </div>
 
         <div className="dash-card flex flex-col gap-8 -mt-4">
           <div className="flex items-center gap-2" style={{ width: '100%', alignSelf: 'stretch' }}>
             <Input
               type="text"
+              aria-label="Search tags"
               placeholder="Search tags…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -75,14 +80,16 @@ const TagModeOverlay = () => {
               autoFocus
             />
             {search && (
-              <Button
-                variant="outline"
-                quiet
-                size="sm"
-                iconOnly="x"
-                onClick={() => setSearch('')}
-                aria-label="Clear search"
-              />
+              <Tooltip label="Clear search">
+                <Button
+                  variant="outline"
+                  quiet
+                  size="sm"
+                  iconOnly="x"
+                  onClick={() => setSearch('')}
+                  aria-label="Clear search"
+                />
+              </Tooltip>
             )}
           </div>
 

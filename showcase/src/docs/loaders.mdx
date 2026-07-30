@@ -1,0 +1,70 @@
+import { Icon } from '@kolkrabbi/kol-icons'
+import { Graphic } from '@kolkrabbi/kol-component'
+import PreviewCard from '../lib/PreviewCard.jsx'
+
+export const meta = {
+  id: '3.3.0',
+  slug: 'loaders',
+  eyebrow: 'KOL · Docs',
+  title: 'Loaders',
+  lede: 'Icon and Graphic resolve a name to an SVG asset. They are functional infrastructure — the pipe, not the water — so they\'re documented here rather than listed as components.',
+}
+
+## Why loaders are not components
+
+A component is a visual UI element with its own anatomy. A loader is a registry lookup: it has an inventory, a resolution order, and a size prop. Docs treatment follows Shell & Layout's precedent — infrastructure lives in Docs; the galleries stay visual.
+
+Browse the set on [Icons](/icons).
+
+## Icon
+
+From @kolkrabbi/kol-icons. Resolves a name from consumer-registered SVGs first, then kol-icon-set-v1 — the whole chain since 0.8.0 (legacy sets removed); a miss renders nothing.
+
+<PreviewCard>
+  <div className="flex items-center gap-4">
+    <Icon name="search" size={16} />
+    <Icon name="chevron-down" size={16} />
+    <Icon name="mode-toggle-01" size={18} />
+    <Icon name="social-github" size={18} />
+  </div>
+</PreviewCard>
+
+<DocTable
+  rows={[
+    { prop: 'name', type: 'string', def: '—', desc: 'SVG filename without extension.' },
+    { prop: 'size', type: 'number | string', def: '16', desc: 'Rendered box size.' },
+    { prop: 'className / style', type: 'string / object', def: '—', desc: 'Pass-through styling.' },
+  ]}
+/>
+
+## Graphic
+
+From @kolkrabbi/kol-component. The SVG illustration loader — addresses a graphic by category + name from its own globbed svg/** inventory.
+
+<PreviewCard>
+  <div className="flex items-center gap-6">
+    <Graphic category="patterns" name="patt-03" title="Pattern 03" />
+    <Graphic category="abstract" name="abstract-01" title="Abstract 01" />
+  </div>
+</PreviewCard>
+
+## Data exports
+
+The loaders ship their inventories as data — these are maps and lists, not components, and never get doc pages.
+
+<DocTable
+  rows={[
+    { prop: 'KOL_ICON_SET_V1 / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it.' },
+    { prop: 'KOL_ICON_SET_V1_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS aliases it.' },
+    { prop: 'hasIcon / getCategory', type: 'fn / fn', def: 'kol-icons', desc: 'Name lookup helpers over the v1 set.' },
+    { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
+  ]}
+/>
+
+## Gotchas
+
+One real one: the registries are built with import.meta.glob, which Vite only expands in source-transformed files.
+
+A consumer that pre-bundles <span className="kol-mono-12">@kolkrabbi/kol-icons</span> (Vite's default for
+node_modules) gets an *empty* registry in dev — every icon warns "not found" while prod builds are fine.
+Exclude it: <span className="kol-mono-12">optimizeDeps.exclude: ['@kolkrabbi/kol-icons']</span>.

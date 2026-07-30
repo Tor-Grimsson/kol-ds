@@ -48,10 +48,9 @@
 }
 
 /* Dark Mode — surface overrides */
+/* (no --kol-link override here: link color is a per-repo hook, user law
+   2026-07-29 — a consumer binding it owns both modes) */
 :is([data-theme="dark"], .dark) {
-  --kol-link:       #60A5FA;
-  --kol-link-hover: #93C5FD;
-
   --kol-surface-primary: #121215;
   --kol-surface-on-primary: #fafafa;
 
@@ -81,9 +80,6 @@
  * data-theme (any value) vetoes the OS. MIRROR of the block above — edit both. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --kol-link:       #60A5FA;
-    --kol-link-hover: #93C5FD;
-
     --kol-surface-primary: #121215;
     --kol-surface-on-primary: #fafafa;
 

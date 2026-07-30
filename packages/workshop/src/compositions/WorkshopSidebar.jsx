@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ShellSidebar } from '../shell'
-import { Icon } from '@kolkrabbi/kol-component'
+import { Icon, Tooltip } from '@kolkrabbi/kol-component'
 import {
   extractDocNumber,
   cleanTitle,
@@ -69,19 +69,22 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
         }}>
           Documentation
         </Link>
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-label={collapsed ? 'Expand Documentation' : 'Collapse Documentation'}
-          className="flex items-center justify-center"
-          style={{ height: '16.5px', marginBottom: '8px' }}
-        >
-          <Icon
-            name="chevron-down"
-            size={10}
-            className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`}
-          />
-        </button>
+        <Tooltip label={collapsed ? 'Expand Documentation' : 'Collapse Documentation'}>
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-label={collapsed ? 'Expand Documentation' : 'Collapse Documentation'}
+            aria-expanded={!collapsed}
+            className="flex items-center justify-center"
+            style={{ height: '16.5px', marginBottom: '8px' }}
+          >
+            <Icon
+              name="chevron-down"
+              size={10}
+              className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`}
+            />
+          </button>
+        </Tooltip>
       </div>
 
       {!collapsed && <div className="space-y-4">

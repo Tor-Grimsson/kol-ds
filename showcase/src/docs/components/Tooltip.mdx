@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.62.0',
+  slug: 'tooltip',
+}
+
+<Preview name="Tooltip" />
+
+## Installation
+
+<Install name="Tooltip" />
+
+## Usage
+
+```jsx
+import { Tooltip } from '@kolkrabbi/kol-component'
+
+<Tooltip label="Copy"><button>copy</button></Tooltip>
+```
+
+## Props
+
+<Api name="Tooltip" rows={[
+  {"prop":"label","type":"ReactNode","def":"—","desc":"Tooltip content."},
+  {"prop":"shortcut","type":"ReactNode","def":"—","desc":"Trailing shortcut badge."},
+  {"prop":"placement","type":"top | bottom | left | right","def":"bottom","desc":"Floating-UI placement."},
+  {"prop":"offset","type":"number","def":"6","desc":"Gap between trigger and tooltip."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The trigger element."}
+]} />

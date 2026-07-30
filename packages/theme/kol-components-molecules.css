@@ -427,6 +427,14 @@
   }
 }
 
+/* The elder hardcoded SpectrumGrid block (grid-template-columns: 100px
+   repeat(10,...), per-cell padding/hex chrome) lived in kol-framework.css and
+   was deleted 2026-07-30 (task 8) rather than moved: it predates the inline
+   var() contract above and would fight it by re-declaring the template the
+   component sets itself. The two custom-property overrides above are the
+   whole stylesheet contract. */
+
+
 /* SwatchControls chrome — the only bespoke CSS the component needs.
  *
  * The paint chips + sample chip reuse ColorSwatch's `halo` variant for the

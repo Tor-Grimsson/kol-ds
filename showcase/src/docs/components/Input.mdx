@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.24.0',
+  slug: 'input',
+}
+
+<Preview name="Input" />
+
+## Installation
+
+<Install name="Input" />
+
+## Usage
+
+```jsx
+import { Input } from '@kolkrabbi/kol-component'
+
+<Input placeholder="Type…" value={v} onChange={(e) => setV(e.target.value)} />
+```
+
+## Props
+
+<Api name="Input" rows={[
+  {"prop":"value","type":"string","def":"—","desc":"Field value (controlled)."},
+  {"prop":"onChange","type":"(event) => void","def":"—","desc":"Change handler."},
+  {"prop":"variant","type":"filled | outline","def":"filled","desc":"Filled = button-primary chrome; outline = the one secondary treatment. ghost is a legacy alias for outline."},
+  {"prop":"size","type":"sm | md | lg","def":"md","desc":"Field size."},
+  {"prop":"prefix / suffix","type":"ReactNode","def":"—","desc":"Adornments inside the field."},
+  {"prop":"iconLeft","type":"string","def":"—","desc":"Leading icon name."}
+]} />

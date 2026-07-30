@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.48.0',
+  slug: 'shell-search-overlay',
+}
+
+<Preview name="ShellSearchOverlay" />
+
+## Installation
+
+<Install name="ShellSearchOverlay" />
+
+## Usage
+
+```jsx
+import { ShellSearchOverlay } from '@kolkrabbi/kol-component'
+
+<ShellSearchOverlay open={open} onClose={close} results={results} query={q} onQueryChange={setQ} onSelect={(item) => go(item.id)} />
+```
+
+## Props
+
+<Api name="ShellSearchOverlay" rows={[
+  {"prop":"open","type":"boolean","def":"—","desc":"Mount/unmount the overlay."},
+  {"prop":"onClose","type":"() => void","def":"—","desc":"Backdrop, Escape, and post-select."},
+  {"prop":"results","type":"{ id, label, group?, hint? }[]","def":"[]","desc":"Pre-filtered rows — the consumer owns matching."},
+  {"prop":"query","type":"string","def":"''","desc":"Controlled query; drives match highlighting."},
+  {"prop":"onQueryChange","type":"(string) => void","def":"—","desc":"Input change (value, not event)."},
+  {"prop":"onSelect","type":"(item) => void","def":"—","desc":"Row click / Enter on active row; fires then closes."}
+]} />

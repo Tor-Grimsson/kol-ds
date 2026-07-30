@@ -3,6 +3,10 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Icon } from '@kolkrabbi/kol-icons'
 
+/* taxonomy-ok: molecule — nests <Icon> from @kolkrabbi/kol-icons (the copy
+ * affordance). The gate only counts kol-component nesting, so a molecule whose
+ * only KOL child lives in a sibling package reads as an atom to it. */
+
 /**
  * CodeBlock — REPLICATED from the elder reference
  * (kol-website/packages/ui/src/molecules/CodeBlock.jsx, 2026-07-28 user

@@ -1,0 +1,25 @@
+export const meta = {
+  id: '2.51.0',
+  slug: 'spec-list',
+}
+
+<Preview name="SpecList" />
+
+## Installation
+
+<Install name="SpecList" />
+
+## Usage
+
+```jsx
+import { SpecList } from '@kolkrabbi/kol-component'
+
+<SpecList items={[{ label: 'Edition', value: 'Limited (30)' }]} framed />
+```
+
+## Props
+
+<Api name="SpecList" rows={[
+  {"prop":"items","type":"{ label, value }[]","def":"[]","desc":"Rows; value may be a node — caller formats."},
+  {"prop":"framed","type":"boolean","def":"false","desc":"Leading + trailing Divider frame."}
+]} />

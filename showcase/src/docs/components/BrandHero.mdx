@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.8.0',
+  slug: 'brand-hero',
+}
+
+<Preview name="BrandHero" />
+
+## Installation
+
+<Install name="BrandHero" />
+
+## Usage
+
+```jsx
+import { BrandHero } from '@kolkrabbi/kol-framework'
+
+<BrandHero label="Kolkrabbi" title="Brand portal" lede="…" />
+```
+
+## Props
+
+<Api name="BrandHero" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Small eyebrow above the title."},
+  {"prop":"title","type":"ReactNode","def":"—","desc":"Display headline."},
+  {"prop":"lede","type":"string","def":"—","desc":"Intro paragraph under the title."},
+  {"prop":"mark","type":"ReactNode","def":"—","desc":"Optional logo mark beside the title."},
+  {"prop":"id","type":"string","def":"hero","desc":"Section anchor id."}
+]} />

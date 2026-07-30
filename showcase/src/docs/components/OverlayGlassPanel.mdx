@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.33.0',
+  slug: 'overlay-glass-panel',
+}
+
+<Preview name="OverlayGlassPanel" />
+
+## Installation
+
+<Install name="OverlayGlassPanel" />
+
+## Usage
+
+```jsx
+import { OverlayGlassPanel } from '@kolkrabbi/kol-component'
+
+<OverlayGlassPanel maxWidth="max-w-[420px]">…</OverlayGlassPanel>
+```
+
+## Props
+
+<Api name="OverlayGlassPanel" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The content stack (eyebrow/title/description/CTA)."},
+  {"prop":"surfaceOpacity","type":"number","def":"80","desc":"% of surface-primary in the color-mix — panel translucency."},
+  {"prop":"blur","type":"string","def":"'1px'","desc":"backdrop-filter blur radius."},
+  {"prop":"align","type":"center | start | end","def":"center","desc":"Cross-axis alignment + text alignment."},
+  {"prop":"gap","type":"string","def":"'gap-6'","desc":"Vertical rhythm class between children."},
+  {"prop":"maxWidth","type":"string","def":"—","desc":"Optional max-w-* class; adds mx-auto."},
+  {"prop":"className","type":"string","def":"—","desc":"Extra wrapper classes / padding override."}
+]} />

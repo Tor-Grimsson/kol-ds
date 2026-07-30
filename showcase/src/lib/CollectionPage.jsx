@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import DocLayout from './DocLayout.jsx'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
@@ -108,10 +107,10 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
 
   if (!entry) {
     return (
-      <DocLayout>
+      <>
         <DocHeader eyebrow={eyebrow} title="Not found" lede={`No entry named “${slug}”.`} />
         <Link to={basePath} className="kol-mono-13 text-meta hover:text-emphasis transition-colors">← {allLabel}</Link>
-      </DocLayout>
+      </>
     )
   }
 
@@ -120,7 +119,7 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
   const next = items[i + 1]
 
   return (
-    <DocLayout>
+    <>
       <DocHeader
         eyebrow={`${eyebrow} · ${labels[entry.category] ?? entry.category}`}
         title={entry.title}
@@ -136,6 +135,6 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
           <Link to={`${basePath}/${next.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">{next.title} →</Link>
         ) : <span />}
       </div>
-    </DocLayout>
+    </>
   )
 }

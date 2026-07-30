@@ -2,7 +2,6 @@ import { Routes, Route, Link } from 'react-router-dom'
 import { DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { buildInventory } from '@kolkrabbi/kol-workshop/engine'
 import { DEMOS } from '../lib/demos-registry.js'
-import TopBar from '../lib/TopBar.jsx'
 
 /* The lobby as a memory wall — name + live render, nothing else. Globs the
  * repo-root lobby/ specs; entries with a one-file demo render live. */
@@ -62,7 +61,6 @@ function SpecView() {
 export default function Lobby() {
   return (
     <>
-      <TopBar />
       <Routes>
         <Route index element={<Wall />} />
         <Route path=":docId" element={<SpecView />} />

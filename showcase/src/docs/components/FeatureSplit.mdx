@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.20.0',
+  slug: 'feature-split',
+}
+
+<Preview name="FeatureSplit" />
+
+## Installation
+
+<Install name="FeatureSplit" />
+
+## Usage
+
+```jsx
+import { FeatureSplit } from '@kolkrabbi/kol-component'
+
+<FeatureSplit kicker="THE FLEET" title={<>Built to hold <em>course</em></>} body="…" media={<img … />} />
+```
+
+## Props
+
+<Api name="FeatureSplit" rows={[
+  {"prop":"kicker / title / body","type":"ReactNode","def":"—","desc":"Eyebrow, display pull (<em> = italic accent), lede."},
+  {"prop":"meta","type":"{ num, label }[]","def":"—","desc":"Stats strip (mutually exclusive with ctas)."},
+  {"prop":"ctas","type":"ReactNode","def":"—","desc":"Button row (mutually exclusive with meta)."},
+  {"prop":"media / caption","type":"ReactNode","def":"—","desc":"Visual column + mono caption with gradient veil."},
+  {"prop":"bgImage","type":"string","def":"—","desc":"Inline cover background URL."},
+  {"prop":"fullBleed","type":"boolean","def":"false","desc":"100vw breakout."}
+]} />

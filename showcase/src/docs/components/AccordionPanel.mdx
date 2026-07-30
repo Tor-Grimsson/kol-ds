@@ -1,0 +1,29 @@
+export const meta = {
+  id: '2.3.0',
+  slug: 'accordion-panel',
+}
+
+<Preview name="AccordionPanel" />
+
+## Installation
+
+<Install name="AccordionPanel" />
+
+## Usage
+
+```jsx
+import { AccordionPanel } from '@kolkrabbi/kol-component'
+
+<AccordionPanel title="Section" defaultOpen>…</AccordionPanel>
+```
+
+## Props
+
+<Api name="AccordionPanel" rows={[
+  {"prop":"title","type":"ReactNode","def":"—","desc":"Trigger label."},
+  {"prop":"meta","type":"ReactNode","def":"—","desc":"Right-aligned meta label in the trigger."},
+  {"prop":"defaultOpen","type":"boolean","def":"false","desc":"Initial open state (uncontrolled)."},
+  {"prop":"open","type":"boolean","def":"—","desc":"Controlled open state."},
+  {"prop":"onToggle","type":"(bool) => void","def":"—","desc":"Fires with the next state (controlled)."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Body, rendered when open."}
+]} />

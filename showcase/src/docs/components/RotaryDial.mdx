@@ -1,0 +1,30 @@
+export const meta = {
+  id: '2.41.0',
+  slug: 'rotary-dial',
+}
+
+<Preview name="RotaryDial" />
+
+## Installation
+
+<Install name="RotaryDial" />
+
+## Usage
+
+```jsx
+import { RotaryDial } from '@kolkrabbi/kol-component'
+
+<RotaryDial label="Drive" value={v} onChange={setV} min={0} max={100} />
+```
+
+## Props
+
+<Api name="RotaryDial" rows={[
+  {"prop":"value","type":"number","def":"0","desc":"Controlled value; drives rotation and readout. Shared value-control contract with `Slider` — the linear variant."},
+  {"prop":"onChange","type":"(n) => void","def":"—","desc":"Fires with the plain number. RAF-throttled while dragging; immediate on arrow keys."},
+  {"prop":"min / max / step","type":"number","def":"0 / 100 / 1","desc":"Range and increment."},
+  {"prop":"label","type":"string","def":"—","desc":"Label + readout rows; omit for a bare knob."},
+  {"prop":"size","type":"number","def":"80","desc":"Dial px size."},
+  {"prop":"disabled","type":"boolean","def":"false","desc":"Blocks drag + keyboard and dims the control."},
+  {"prop":"formatValue","type":"(n) => string","def":"`${v}%`","desc":"Formatter for the readout."}
+]} />

@@ -36,20 +36,26 @@ const MODE_LABEL = { light: 'Light mode', dark: 'Dark mode', system: 'System' }
 const NEXT_MODE = { light: 'dark', dark: 'system', system: 'light' }
 
 export default function ThemeToggle({ variant = 'icon', size = 'md', className = '' }) {
-  const { isDark, mode, cycle } = useTheme()
+  const { mode, cycle } = useTheme()
 
   const next = NEXT_MODE[mode]
   const nextLabel = next === 'system' ? 'system theme' : `${next} mode`
   const handleToggle = cycle
 
-  /* The roll: the strip slides one glyph-width per mode while the split-circle
-   * glyphs spin 180° in the same clock — dark→light rolls forward (>>),
-   * light→dark rolls back (<<), system slides on to the desktop glyph. */
-  const glyphSpin = {
-    transform: isDark ? 'rotate(0deg)' : 'rotate(180deg)',
+  /* The ROLL (redone 2026-07-30 — the 0.5.13 motion was declared FAILED).
+   * Wheel mechanics, not slide+flip: rotation ACCUMULATES with the slot
+   * (-180° per glyph-width) and runs on the same 500ms/ease clock as the
+   * strip's translateX, so the split-circle reads as a coin rolling to its
+   * next position — travel left = CCW, travel right = CW, two slots = two
+   * full half-turns. The old code rotated on `isDark` alone, desynced from
+   * the travel, which is exactly why it read as a slide with a flip bolted
+   * on. The desktop glyph doesn't spin — it's not a wheel; it slides in as
+   * the no-choice state. */
+  const slot = mode === 'dark' ? 0 : mode === 'light' ? 1 : 2
+  const glyphRoll = {
+    transform: `rotate(${slot * -180}deg)`,
     lineHeight: 0,
   }
-  const slot = mode === 'dark' ? 0 : mode === 'light' ? 1 : 2
   const iconSwap = (size) => (
     <span
       className="relative inline-block overflow-hidden"
@@ -60,10 +66,10 @@ export default function ThemeToggle({ variant = 'icon', size = 'md', className =
         className="flex transition-transform duration-500 ease-in-out"
         style={{ width: size * 3, transform: `translateX(-${slot * size}px)` }}
       >
-        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphSpin}>
+        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphRoll}>
           <Icon name="mode-toggle-01" size={size} />
         </span>
-        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphSpin}>
+        <span className="inline-flex transition-transform duration-500 ease-in-out" style={glyphRoll}>
           <Icon name="mode-toggle-01" size={size} />
         </span>
         <span className="inline-flex" style={{ lineHeight: 0 }}>

@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
-import { ShellDrawer, ShellSearchOverlay } from '@kolkrabbi/kol-component'
+import { Button, ShellDrawer, ShellSearchOverlay, Tooltip } from '@kolkrabbi/kol-component'
+import { matchSearchItems } from '../engine/search.js'
 import { Asset } from '@kolkrabbi/kol-brand/svg'
 
 // Pages can register right-rail TOC content via this context.
@@ -22,13 +22,14 @@ export const ShellFullHeightContext = createContext(null)
 export const ShellTocCollapsedContext = createContext(null)
 
 const NavColumn = ({ children }) => (
-  <aside className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Navigation" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )
 
 const MainColumn = ({ children, fullHeight }) => (
   <main
+    id="main"
     className={`w-full min-w-0 h-full min-h-0 ${fullHeight ? 'overflow-hidden flex flex-col' : 'overflow-y-auto overscroll-none'}`}
     style={fullHeight ? undefined : { scrollbarGutter: 'stable' }}
   >
@@ -40,16 +41,17 @@ const MainColumn = ({ children, fullHeight }) => (
 )
 
 const TocColumn = ({ children }) => (
-  <aside className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )
 
-const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, defaultTocContent }) => {
+const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, defaultTocContent, isActive: isActiveProp, actions }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
   const [navCollapsed, setNavCollapsed] = useState(false)
   const [tocCollapsed, setTocCollapsed] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const [tocContent, setTocContent] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
   const location = useLocation()
@@ -92,37 +94,57 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
     href: r.path ? joinPath(r.path) : basePath,
     icon: r.icon,
   }))
-  const isActive = (href) => location.pathname === href || location.pathname.startsWith(`${href}/`)
+  /* Prefix matching is the default, but a consumer can override it: a tab whose
+   * href targets a CHILD page (Docs → /docs/shell-and-layout) must still light
+   * up across the whole /docs prefix, which self-matching can't express. */
+  const isActive = isActiveProp ?? ((href) => location.pathname === href || location.pathname.startsWith(`${href}/`))
   const handleNavigate = (event, item) => {
     if (item.href) {
       event.preventDefault()
       navigate(item.href)
     }
   }
-  const brand = brandLogoSrc ? (
+  /* `brand` takes any node — a consumer that isn't the workshop needs its own
+   * wordmark, and brandLogoSrc only ever accepted an <img>. Falls back to the
+   * logo-src form, then to the KOLKRABBI + WORKSHOP pair. */
+  const brand = brandProp ?? (brandLogoSrc ? (
     <Link to={basePath} className="shell-header-logo flex items-center text-emphasis">
       <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
     </Link>
   ) : (
     // Two separate wordmarks: KOLKRABBI holds the logo slot (reserves the 256px
-    // nav column at lg+), WORKSHOP falls at the content-column edge. Both h-6.
+    // nav column at lg+) and links to the SITE home; WORKSHOP falls at the
+    // content-column edge and links to the shell root. Both h-6.
     <>
-      <Link to={basePath} className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
+      <Link to="/" className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
         <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
       </Link>
-      <Asset name="wordmark-workshop" title="Workshop" className="inline-flex text-emphasis [&>svg]:h-6 [&>svg]:w-auto" />
+      <Link to={basePath} className="shell-header-logo flex items-center text-emphasis">
+        <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
+      </Link>
+    </>
+  ))
+  /* Consumer `actions` sit BEFORE the search trigger in row 1 — a showcase
+   * needs its own controls (repo link, etc.) beside the shell's. */
+  const searchTrigger = (
+    <>
+      {actions}
+      <Tooltip label="Search">
+        <Button variant="ghost" quiet iconOnly="search" iconSize={18} onClick={() => setIsSearchOpen(true)} aria-label="Search" />
+      </Tooltip>
     </>
   )
-  const searchTrigger = (
-    <button
-      type="button"
-      onClick={() => setIsSearchOpen(true)}
-      aria-label="Search"
-      className="flex h-9 w-9 items-center justify-center rounded p-0 bg-transparent border-0 cursor-pointer transition-colors text-fg-64 hover:bg-fg-08 hover:text-emphasis"
-    >
-      <Icon name="search" size={18} />
-    </button>
-  )
+
+  /* searchItems ({ id, label, href, sectionLabel?, tags?, headings?, keywords? })
+   * → the overlay's row shape ({ id, label, group?, hint? }), matched by the
+   * engine. hint surfaces WHY a row matched when the label didn't. */
+  const searchResults = matchSearchItems(searchItems ?? [], searchQuery).map((item, i) => ({
+    id: item.id ?? item.href ?? `${item.label}-${i}`,
+    label: item.label,
+    group: item.sectionLabel ?? item.group,
+    hint: item.matchedHeading ?? item.matchedKeyword ?? item.hint,
+    href: item.href,
+  }))
 
   return (
     <ShellTocContext.Provider value={setTocContent}>
@@ -137,8 +159,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
             actions={searchTrigger}
             onMenuClick={() => {
               if (window.matchMedia('(min-width: 1024px)').matches) {
-                setNavCollapsed((p) => !p)
-                setTocCollapsed((p) => !p)
+                /* Both rails to ONE target state — independent `!p` flips made
+                 * them oppose each other once the dock buttons had diverged
+                 * them. Collapse if anything is open, else reopen both. */
+                const collapse = !navCollapsed || !tocCollapsed
+                setNavCollapsed(collapse)
+                setTocCollapsed(collapse)
               } else {
                 setIsNavDrawerOpen(true)
               }
@@ -154,7 +180,11 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
             * overscroll-none stops chaining between regions and the edge bounce. */}
           <div className="flex-1 overflow-hidden">
             <div className="h-full w-full px-4 md:px-5 lg:px-6">
-              <div className={`shell-content-grid grid gap-8 ${gridCols} h-full min-h-0`} data-layout={layoutType}>
+              {/* gap lives in .shell-content-grid (theme) — a gap-8 utility here
+                * outranks the layered theme rule at every width and killed the
+                * 48px wide step (ARCHITECTURE §5: component geometry in its own
+                * rule, never a utility racing it). */}
+              <div className={`shell-content-grid grid ${gridCols} h-full min-h-0`} data-layout={layoutType}>
                   {showNav && (
                     <NavColumn>
                       {renderSidebar ? renderSidebar({}) : <ShellSidebar routes={routes} basePath={basePath} />}
@@ -178,8 +208,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
               </div>
             </div>
 
+          {/* `open`, not `isOpen` — the old prop name silently kept the drawer
+            * shut, so there was no navigation at all below lg. */}
           <ShellDrawer
-            isOpen={isNavDrawerOpen}
+            open={isNavDrawerOpen}
             onClose={() => setIsNavDrawerOpen(false)}
           >
             {renderSidebar
@@ -188,12 +220,22 @@ const ShellLayout = ({ routes = [], basePath = '/', brandLogoSrc, brandLogoAlt =
             }
           </ShellDrawer>
 
+          {/* The overlay owns no filtering — the shell holds the query and
+            * feeds it results (the pre-0.12 API `isOpen/routes/items` matched
+            * nothing, so ⌘K rendered an empty box and searchItems was dead).
+            * Selecting routes to item.href; matchSearchItems is the engine's. */}
           <ShellSearchOverlay
-            isOpen={isSearchOpen}
-            onClose={() => setIsSearchOpen(false)}
-            routes={routes}
-            basePath={basePath}
-            items={searchItems}
+            open={isSearchOpen}
+            onClose={() => { setIsSearchOpen(false); setSearchQuery('') }}
+            query={searchQuery}
+            onQueryChange={setSearchQuery}
+            results={searchResults}
+            onSelect={(item) => {
+              setIsSearchOpen(false)
+              setSearchQuery('')
+              if (item?.href) navigate(item.href)
+            }}
+            placeholder="Search…"
           />
         </div>
         </ShellTocCollapsedContext.Provider>

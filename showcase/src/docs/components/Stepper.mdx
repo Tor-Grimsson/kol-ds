@@ -1,0 +1,28 @@
+export const meta = {
+  id: '2.52.0',
+  slug: 'stepper',
+}
+
+<Preview name="Stepper" />
+
+## Installation
+
+<Install name="Stepper" />
+
+## Usage
+
+```jsx
+import { Stepper } from '@kolkrabbi/kol-component'
+
+<Stepper value={v} onChange={setV} min={0} max={10} />
+```
+
+## Props
+
+<Api name="Stepper" rows={[
+  {"prop":"value","type":"number","def":"—","desc":"Current value (controlled)."},
+  {"prop":"onChange","type":"(n) => void","def":"—","desc":"Fires with the new value."},
+  {"prop":"min / max","type":"number","def":"—","desc":"Bounds."},
+  {"prop":"step","type":"number","def":"1","desc":"Increment."},
+  {"prop":"size","type":"sm | md | lg","def":"sm","desc":"Control size."}
+]} />

@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.4.0',
+  slug: 'asset-grid',
+}
+
+<Preview name="AssetGrid" />
+
+## Installation
+
+<Install name="AssetGrid" />
+
+## Usage
+
+```jsx
+import { AssetGrid } from '@kolkrabbi/kol-component'
+
+<AssetGrid cols={4} gap="gap-2">{figures}</AssetGrid>
+```
+
+## Props
+
+<Api name="AssetGrid" rows={[
+  {"prop":"cols","type":"2 | 3 | 4","def":"3","desc":"Column count at full width; unknown values fall back to 3."},
+  {"prop":"gap","type":"string","def":"'gap-4'","desc":"Tailwind gap utility applied to both axes."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Grid items."},
+  {"prop":"className","type":"string","def":"—","desc":"Extra classes."}
+]} />

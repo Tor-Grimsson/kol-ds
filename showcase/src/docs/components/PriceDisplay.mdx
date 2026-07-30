@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.37.0',
+  slug: 'price-display',
+}
+
+<Preview name="PriceDisplay" />
+
+## Installation
+
+<Install name="PriceDisplay" />
+
+## Usage
+
+```jsx
+import { PriceDisplay } from '@kolkrabbi/kol-store'
+
+<PriceDisplay amount={220} currency="EUR" secondary="(€180 + €40 shipping)" />
+```
+
+## Props
+
+<Api name="PriceDisplay" rows={[
+  {"prop":"amount","type":"number","def":"—","desc":"Primary price (whole units, maximumFractionDigits 0)."},
+  {"prop":"currency","type":"string","def":"'EUR'","desc":"ISO 4217 code — honored (the app source ignored it)."},
+  {"prop":"locale","type":"string","def":"'de-DE'","desc":"Intl.NumberFormat locale."},
+  {"prop":"secondary","type":"ReactNode","def":"—","desc":"Muted trailing note on the same baseline."}
+]} />

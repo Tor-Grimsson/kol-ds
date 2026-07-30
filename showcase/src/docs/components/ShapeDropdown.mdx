@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.46.0',
+  slug: 'shape-dropdown',
+}
+
+<Preview name="ShapeDropdown" />
+
+## Installation
+
+<Install name="ShapeDropdown" />
+
+## Usage
+
+```jsx
+import { ShapeDropdown } from '@kolkrabbi/kol-component'
+
+<ShapeDropdown options={opts} value={v} onChange={setV} onAction={draw} />
+```
+
+## Props
+
+<Api name="ShapeDropdown" rows={[
+  {"prop":"options","type":"{ id, label, icon? }[]","def":"[]","desc":"Variants — menu rows + trigger glyph."},
+  {"prop":"value","type":"string","def":"—","desc":"Active variant id (controlled)."},
+  {"prop":"onChange","type":"(id) => void","def":"—","desc":"Fires with the picked variant id."},
+  {"prop":"onAction","type":"(id) => void","def":"—","desc":"Fires with the current id on main-button click."}
+]} />

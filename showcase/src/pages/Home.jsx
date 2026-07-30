@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Pill } from '@kolkrabbi/kol-component'
-import TopBar from '../lib/TopBar.jsx'
 import DemoStage from '../lib/DemoStage.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
@@ -89,8 +88,11 @@ function Ghost({ h }) {
 const GHOST_HEIGHTS = [148, 210, 120, 268, 160, 184, 128, 232, 152, 200]
 
 // One flank of abstract skeleton blocks, filling the gutter between the capped
-// 1600px content and the viewport edge — only on wide screens, and kept SUPER
-// subtle: very faint, fading out fast toward the edge.
+// content (the shell frame) and the viewport edge — only on wide screens, and
+// kept SUPER subtle: very faint, fading out fast toward the edge.
+// The width MUST track --kol-content-shell: the 2026-07-28 re-cap to 1800 left
+// a hardcoded 1600 here, which drove the flank width to ~0 and buried the
+// ghosts under the wall — the "disappeared ghost-divs" regression.
 function GhostFlank({ side }) {
   return (
     <div
@@ -98,7 +100,7 @@ function GhostFlank({ side }) {
       className="pointer-events-none absolute inset-y-0 hidden overflow-hidden xl:block"
       style={{
         [side]: 0,
-        width: 'max(0px, calc((100vw - 1600px) / 2 - 8px))',
+        width: 'max(0px, calc((100vw - var(--kol-content-shell)) / 2 - 8px))',
         maskImage: `linear-gradient(to ${side}, black 8%, transparent 72%)`,
         WebkitMaskImage: `linear-gradient(to ${side}, black 8%, transparent 72%)`,
       }}
@@ -311,7 +313,6 @@ export default function Home() {
 
   return (
     <>
-      <TopBar />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center px-5 pt-20 md:pt-28 pb-16">

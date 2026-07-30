@@ -1,0 +1,27 @@
+export const meta = {
+  id: '2.19.0',
+  slug: 'error-boundary',
+}
+
+<Preview name="ErrorBoundary" />
+
+## Installation
+
+<Install name="ErrorBoundary" />
+
+## Usage
+
+```jsx
+import { ErrorBoundary } from '@kolkrabbi/kol-component'
+
+<ErrorBoundary homeHref="/"><App /></ErrorBoundary>
+```
+
+## Props
+
+<Api name="ErrorBoundary" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The guarded subtree."},
+  {"prop":"homeHref","type":"string","def":"'/'","desc":"\"Go home\" destination."},
+  {"prop":"fallback","type":"({ error, errorInfo, reset }) => ReactNode","def":"—","desc":"Render-prop override for the fallback screen."},
+  {"prop":"onReset","type":"function","def":"—","desc":"Called after \"Try again\" clears the error."}
+]} />
