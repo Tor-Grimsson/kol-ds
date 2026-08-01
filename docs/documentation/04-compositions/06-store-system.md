@@ -18,7 +18,7 @@ tags:
   - domain/design-system
   - domain/store
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"
 ---
 
@@ -45,7 +45,7 @@ import { prints, printPricing, resolvePrintPrice } from '@kolkrabbi/kol-store/da
 
 > **"The Drift" gallery is NOT a store export.** The generic pinned-scroll engine already ships as `ScrollDriftGallery` in `@kolkrabbi/kol-content` (slot-based: `renderCard`/`intro`/`outro`/`title`). Rather than duplicate a second gsap+ScrollTrigger river here, the prints storefront composes content's gallery with a prints `renderCard` (e.g. `PrintGridCardGsap`).
 
-## Optional commerce block (ProductDetailLayout)
+## Commerce block
 
 The PDP skeleton stays presentational by default. Pass the opt-in props to fold in the print-store purchase logic — the default API is untouched when they are absent:
 
@@ -54,7 +54,7 @@ The PDP skeleton stays presentational by default. Pass the opt-in props to fold 
 - `computePrice({edition,shipping})` → recomputes `PriceDisplay` from the live selection; wire it to `resolvePrintPrice(printPricing, edition, shipping)` from `/data`.
 - `renderActions({edition,shipping,price})` → CTA as a function of the selection (e.g. pick the right PayPal link).
 
-## `./data` subpath — demo fixture
+## `./data` subpath
 
 `@kolkrabbi/kol-store/data` (→ `packages/store/src/data/prints.js`) ships a demo catalog mirroring `@kolkrabbi/kol-chess/data`: `prints` (24 entries), `printPricing`, `editionOptions`, `shippingOptions`, `printInfo`, `paypalLinks`, `filterData`, and helpers `getPrintBySlug` / `formatPrice` / `resolvePrintPrice`. **Severed** — `CDN_BASE` is a placeholder host and `paypalLinks` values are empty; real consumers inject their own catalog + config.
 

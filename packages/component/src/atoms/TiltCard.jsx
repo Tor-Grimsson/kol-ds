@@ -1,27 +1,7 @@
-import { useEffect, useState } from 'react'
 import { motion, useSpring, useTransform } from 'framer-motion'
 import useTilt from '../hooks/useTilt.js'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
-
-/**
- * True on coarse-pointer (touch) devices. Local to TiltCard; re-evaluates on
- * device/orientation change via the media-query change event (the monorepo
- * source froze this in a module-load const — fixed on recreate).
- */
-function useCoarsePointer() {
-  const [coarse, setCoarse] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
-  )
-
-  useEffect(() => {
-    const mq = window.matchMedia('(pointer: coarse)')
-    const onChange = () => setCoarse(mq.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-
-  return coarse
-}
+import useCoarsePointer from '../hooks/useCoarsePointer.js'
 
 /**
  * TiltCard — self-contained image card with a spring-based 3D tilt that

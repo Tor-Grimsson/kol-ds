@@ -22,7 +22,7 @@ related:
 
 Two layers: **brand identity** (the anchors + hue ramps below) and **UI chrome** (surfaces, fg-opacity, state colors — see [[01-tokens|foundations]]). The CSS (`kol-brand-color.css`) is the runtime source of truth; `@kolkrabbi/kol-brand` carries the same values as portable data. The showcase renders all of this live at `/foundations/color`.
 
-## The four anchors
+## Anchors
 
 Semantic identity tokens — consume these, not raw stops, for brand-tinted UI:
 
@@ -47,7 +47,7 @@ Seven hue families × 5 stops (100–500) + cream + a 10-stop grey. **Anchor pos
 
 Ramp notes: yellow is a **pure-yellow lock** (`#FF` red channel through all stops, no orange contamination); blue is a **hybrid hue lock** (light tints + deep stops, no yellow lean at saturated mid). **Green + purple (added 2026-07-09)** are chart-categorical hues, not core identity anchors — they complete the 7-hue `--kol-palette-*` chart scale (below); the four identity anchors stay yellow / red / blue / teal.
 
-## Chart palette + semantic aliases
+## Chart palette
 
 The dashboards + chess chart classes consume a categorical `--kol-palette-<hue>` scale (7 hues) plus `--kol-font-family-heading` and `--kol-status-danger` / `-muted`. All live in `kol-brand-color.css` and alias the ramps/theme tokens — chart-legible mid-stops, **not** the identity anchors (blue → `blue-200`, others → their `-300`, red → `-200`). `--kol-font-family-heading` → `--kol-font-family-sans-narrow`; `--kol-status-danger` → `--ui-error`. Before 2026-07-09 these resolved to nothing, collapsing every chart series onto the accent color.
 

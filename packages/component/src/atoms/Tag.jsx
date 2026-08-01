@@ -12,22 +12,42 @@ const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
  *           <span> and is a Pill wearing the wrong name.
  *   Badge — system status or a count.
  *
- * Canonical (merged web rich + brand compat). Web's rich API: variant
- * (default/naked/inverse/solid), size, color, solid, active, icon, onRemove,
- * onClick. Plus:
- *  - `hash` (default true) — prepend `#` (web's tag style). Pass hash={false}
- *    for plain labels (brand usage).
- *  - `text` — content fallback when no children (brand SwatchControls passes text=).
+ * REBUILT ON PILL'S MODEL (user ruling 2026-08-01). What it was:
  *
- * `size` defaults to `sm` per the chip law (2026-07-30, same pass as Pill).
+ *   - FOUR declared variants (default/naked/inverse/solid) and exactly ONE
+ *     `:hover` rule between them, on `.tag-control`. Every other path rendered
+ *     dead.
+ *   - `color` was a SECOND axis that silently swapped the base class from
+ *     `tag-control` to `tag tag--{color}` — so passing a colour cost you the
+ *     interaction state, invisibly. That is what shipped a solid blue pill you
+ *     could not hover.
+ *   - `variant="solid"` and a `solid` boolean did the same job.
+ *   - FOUR class schemes for one component: `tag-control`, `tag`, `tag-naked`,
+ *     `tag-control-inverse` — not a base plus modifiers, four unrelated bases
+ *     picked by which prop you happened to pass.
+ *
+ * Now it is Pill's vocabulary — `primary` (filled) · `secondary` (outlined) ·
+ * `inverse` — one size scale, ONE class scheme (`kol-tag--*`), and every
+ * variant carries hover + active. Colour is not a prop: a chip's look is its
+ * variant, exactly as it is on Pill and Button. Tag colour BY TAXONOMY returns
+ * later as its own decision, on top of the variants rather than instead of them.
+ *
+ * @param {ReactNode} children   label content
+ * @param {string}    text       content fallback when no children (brand SwatchControls)
+ * @param {string}    variant    'primary' | 'secondary' | 'inverse'
+ * @param {string}    size       'sm' | 'md' | 'lg' — `sm` is the default and
+ *                               should stay the answer; `lg` needs a reason
+ * @param {boolean}   active     selected state (filter chips)
+ * @param {boolean}   hash       prepend `#` (default true); false for plain labels
+ * @param {string}    icon       leading icon name
+ * @param {Function}  onRemove   renders the dismiss affordance
+ * @param {Function}  onClick    makes it a <button>
  */
 export default function Tag({
   children,
   text,
-  variant = 'default',
+  variant = 'primary',
   size = 'sm',
-  color,
-  solid = false,
   active = false,
   hash = true,
   icon,
@@ -40,24 +60,28 @@ export default function Tag({
   const iconSize = ICON_SIZES[size] || 12
   const content = children ?? text
 
-  let baseClass
-  if (variant === 'naked') {
-    baseClass = color ? `tag-naked tag--${color}` : 'tag-naked'
-  } else if (color) {
-    baseClass = `tag tag--${color}`
-  } else {
-    baseClass = variant === 'inverse' ? 'tag-control-inverse' : 'tag-control'
+  /* ONE scheme. `variant` is the only thing that picks a look — there is no
+   * second axis that can swap the base out from under it. */
+  const VARIANTS = {
+    primary: 'kol-tag--primary',
+    secondary: 'kol-tag--secondary',
+    inverse: 'kol-tag--inverse',
   }
 
-  const isSolid = solid || variant === 'solid'
-  const activeClass = active ? (color ? 'tag--active' : 'is-active') : ''
+  /* TYPE COMES FROM THE HELPER RAMP (user ruling 2026-08-01). The size classes
+   * hardcoded font-size + font-weight and set no line-height, so a 10px chip
+   * inherited the body's ~1.5 and stood 22px tall next to 14px rows. A chip is
+   * SINGLE-LINE chrome — that is exactly the kol-helper-* ramp, whose defining
+   * property is `line-height: 1`. The sizes match the scale 1:1 (10/12/14), so
+   * this is adopting the existing system, not restating it. */
+  const TYPE = { sm: 'kol-helper-10', md: 'kol-helper-12', lg: 'kol-helper-14' }
 
   const classes = [
-    baseClass,
-    `tag-${size}`,
-    isSolid && variant !== 'naked' ? 'tag--solid' : '',
-    activeClass,
-    isInteractive ? 'cursor-pointer' : '',
+    'kol-tag',
+    VARIANTS[variant] ?? VARIANTS.primary,
+    `kol-tag--${size}`,
+    TYPE[size] ?? TYPE.sm,
+    active ? 'is-active' : '',
     className
   ].filter(Boolean).join(' ')
 
@@ -78,7 +102,7 @@ export default function Tag({
         <span
           role="button"
           tabIndex={-1}
-          className="tag-dismiss"
+          className="kol-tag-dismiss"
           onClick={handleRemove}
         >
           <Icon name="x" size={iconSize} />

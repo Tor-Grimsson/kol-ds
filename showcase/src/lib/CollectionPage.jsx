@@ -4,7 +4,7 @@ import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { DEMOS } from './demos-registry.js'
-import { slugify, getComponentBySlug, FUNCTIONS } from './registry.js'
+import { slugify, getComponentBySlug, FUNCTIONS } from '../nav/registry.js'
 
 /** drop keys the page already renders as chrome, so nothing prints twice */
 const omit = (obj = {}, keys) =>
@@ -106,7 +106,7 @@ function Composition({ composition }) {
   )
 }
 
-export default function CollectionPage({ slug, items, getItem, labels, eyebrow, basePath, previewBase, srcDir, allLabel }) {
+export default function CollectionPage({ slug, items, getItem, labels, eyebrow, basePath, previewBase, srcDir, allLabel, afterPreview }) {
   const entry = getItem(slug)
 
   if (!entry) {
@@ -137,6 +137,8 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
         lede={entry.description}
       />
       <BlockViewer entry={entry} previewBase={previewBase} srcDir={srcDir} />
+      {/* slot: a SET lists its member components here (set-membership.js) */}
+      {afterPreview}
       <Composition composition={entry.composition} />
       <div className="flex items-center justify-between border-t border-fg-08 pt-6">
         {prev ? (

@@ -1,0 +1,195 @@
+/**
+ * admitted.js — THE admission gate (quarantine plan, phase 1).
+ *
+ * The sidebar is DERIVED (roster.js from the package barrels, shell-nav.js from
+ * the surface list), so quarantine cannot be a hand-edit of a nav array — it has
+ * to be a gate on the derivation. This is that gate, and it is the only
+ * hand-authored part of it: same seam and same spirit as classification.js.
+ *
+ * The rule the plan set: no surface is shown before its rule is written. A
+ * category appears in the shell when — and only when — its key is in ADMITTED,
+ * and it gets there after HE looks at it and says yes. Readmitting is one line;
+ * so is sending something back.
+ *
+ * Quarantine gates the SIDEBAR, never existence. Every held route still
+ * resolves, still renders, and still answers ⌘K by name (2026-07-30
+ * reachability rule) — it is held out of the tree, not deleted from the app.
+ * The holding page at /quarantine links each one.
+ */
+
+/* ── THE SET ───────────────────────────────────────────────────────────────
+ * Foundations first, because everything downstream cites it (plan phase 2,
+ * row 1) and its gate is the only one already closed: R3's wrappers landed on
+ * the swatch grid and both tables, and `pnpm validate:width` is green over
+ * them. Row 0 (the shell frame) is not a category — it landed as the
+ * ShellLayout cap and cannot be quarantined; it IS the frame. */
+export const ADMITTED = new Set([
+  'foundations',
+])
+
+/* ── THE CATEGORIES ────────────────────────────────────────────────────────
+ * The readmission order is the plan's, not a new one. `surfaces` are tab ids
+ * in shell-nav.js; `categories` are registry category keys (which are roster
+ * tiers, plus the fw-* split). `rule` is the document the category waits on —
+ * a path, resolved to its vault link at render time so a moved doc degrades to
+ * text instead of a dead route. */
+export const CATEGORIES = [
+  {
+    key: 'foundations',
+    label: 'Foundations',
+    surfaces: [],
+    /* CHAPTER, not a category (2026-07-31). It is `docs/documentation/
+     * 01-foundations/` — chapter 01 of Documentation — and admitting it opens
+     * that chapter inside the Documentation tree, live React pages included
+     * ("a page is a slot"). It used to be a top-level surface beside
+     * Documentation: one body of content, two doors, no parent. */
+    chapters: ['01-foundations'],
+    categories: [],
+    rule: 'docs/documentation/01-foundations/05-layout-systems.md',
+    awaits: 'R3 · width — content kind → wrapper, enforced by `pnpm validate:width`',
+    why: 'Everything downstream cites it, so it is admitted first.',
+  },
+  {
+    key: 'icons',
+    label: 'Icons',
+    surfaces: [],
+    chapters: ['02-icons'],
+    categories: ['icons'],
+    rule: 'docs/documentation/04-compositions/02-shells.md',
+    awaits: 'R2 · rail — the group header navigates; ramp, keyline overlay and BG toggle verified live',
+    why: 'The icon MODE toggle is not restorable — the variant prop went at kol-icons 0.8.0. That needs its own decision before the page is honest.',
+  },
+  {
+    key: 'documentation',
+    label: 'Documentation',
+    surfaces: ['documentation'],
+    /* Every chapter NOT claimed above. `*` means "the rest of the vault", so a
+     * new chapter folder is visible the moment Documentation is admitted
+     * rather than silently held by an enumeration nobody remembered to edit. */
+    chapters: ['*'],
+    categories: [],
+    rule: 'docs/documentation/INDEX.md',
+    awaits: 'R4 · metadata — one dialect, enforced by `pnpm validate:frontmatter`',
+    why: 'The generated usage catalog left the vault 2026-07-31; the panel, the tag colours and the graph entry are landed but unchecked.',
+  },
+  {
+    key: 'atoms',
+    label: 'Atoms',
+    surfaces: [],
+    categories: ['atoms'],
+    rule: 'docs/documentation/03-components/02-placement.md',
+    awaits: 'R1 · membership — applied component by component, each rejection written down',
+    why: 'ExitPreview already failed two of the three tests. The rest have not been read against them.',
+  },
+  {
+    key: 'molecules-organisms',
+    label: 'Molecules + organisms',
+    surfaces: [],
+    categories: ['molecules', 'organisms'],
+    rule: 'docs/documentation/03-components/02-placement.md',
+    awaits: 'R1 · membership — same pass as atoms',
+    why: 'Held behind atoms: the membership test is calibrated on the smallest tier first.',
+  },
+  {
+    key: 'packages',
+    label: 'Framework, workshop, flat packages',
+    surfaces: [],
+    categories: [
+      'fw-chrome', 'fw-structure', 'fw-behavior',
+      'workshop', 'dashboards', 'chess', 'foundry', 'styleguide',
+      'content', 'store', 'brand', 'brand-template', 'misc',
+    ],
+    rule: 'docs/documentation/03-components/02-placement.md',
+    awaits: 'R1 · membership — same pass, per package',
+    why: 'Classification by ownership landed 2026-07-30; membership never ran over these at all.',
+  },
+  {
+    key: 'blocks-sets',
+    label: 'Blocks + Sets',
+    surfaces: ['blocks', 'sets'],
+    categories: [],
+    rule: 'docs/documentation/04-compositions/01-blocks-and-sets.md',
+    awaits: 'R4 · metadata on the 30 modules — both surfaces rendering identical chrome at identical width',
+    why: 'BlockViewer folded into PreviewCard; the metadata half of that row is unverified.',
+  },
+  {
+    key: 'docs',
+    label: 'Docs',
+    surfaces: ['docs'],
+    categories: [],
+    rule: null,
+    awaits: 'no rule written — the four MDX pages predate the plan and no phase claims them',
+    why: 'Shell & Layout, Menus, Loaders, Type roles. Either a category of their own or absorbed into Documentation — his call.',
+  },
+  {
+    key: 'search',
+    label: 'Search',
+    surfaces: ['search'],
+    categories: [],
+    rule: null,
+    awaits: 'no rule written — the results page landed 2026-08-01 on the user’s ruling ("make a page for me to view, show me a modal and show me a page")',
+    why: 'Reads the SAME items and matcher as the ⌘K overlay, so it cannot drift from the modal; held for placement, not for a defect.',
+  },
+  {
+    key: 'references',
+    label: 'References',
+    surfaces: ['references'],
+    categories: [],
+    rule: null,
+    awaits: 'no rule written — the graph arrived mid-arc, after the plan was fixed',
+    why: 'Generated from usage-index + token-index, so it cannot rot; it is held for the same reason as Docs, not for a defect.',
+  },
+  {
+    /* OPERATIONS is its own category (2026-07-31). Its four chapters used to
+     * fall through the `*` wildcard onto Documentation's gate, so admitting
+     * Documentation would have silently opened Operations too — one admission,
+     * two categories, which is the whole thing this gate exists to prevent.
+     * A category with content gets a key of its own. */
+    key: 'operations',
+    label: 'Operations',
+    surfaces: [],
+    chapters: ['01-release', '02-workbench', '03-showcase', '04-content-pipeline'],
+    categories: [],
+    rule: 'docs/operations/04-content-pipeline/INDEX.md',
+    awaits: 'nothing structural — repo machinery, and the content pipeline that documents this gate lives in it',
+    why: 'Held only because no category is admitted before he has looked at it. Its own chapters, its own key.',
+  },
+]
+
+const BY_SURFACE = new Map()
+const BY_CATEGORY = new Map()
+const BY_CHAPTER = new Map()
+for (const c of CATEGORIES) {
+  for (const s of c.surfaces) BY_SURFACE.set(s, c.key)
+  for (const k of c.categories) BY_CATEGORY.set(k, c.key)
+  for (const ch of c.chapters ?? []) BY_CHAPTER.set(ch, c.key)
+}
+/* The gate key that owns a vault chapter. An explicit claim wins; otherwise
+ * the `*` holder (Documentation) takes it, so a NEW chapter folder appears the
+ * day Documentation is admitted instead of being held by an enumeration that
+ * nobody remembered to update — silent holding is the failure this gate exists
+ * to prevent, pointed the other way. */
+const WILDCARD = CATEGORIES.find((c) => (c.chapters ?? []).includes('*'))?.key ?? null
+export const gateOfChapter = (folder) => BY_CHAPTER.get(folder) ?? WILDCARD
+
+/* A surface tab or a component category with no category key is HELD, never
+ * silently shown — a new tab has to be classified to appear, which is the
+ * whole point of an admission gate. */
+export const categoryOfSurface = (id) => BY_SURFACE.get(id) ?? null
+export const categoryOfComponent = (key) => BY_CATEGORY.get(key) ?? 'packages'
+
+export const isSurfaceAdmitted = (id) => ADMITTED.has(categoryOfSurface(id))
+export const isComponentAdmitted = (key) => ADMITTED.has(categoryOfComponent(key))
+export const isChapterAdmitted = (folder) => ADMITTED.has(gateOfChapter(folder))
+
+/* The Documentation tree opens when ANY chapter inside it is admitted — a
+ * chapter is not reachable without its category showing. */
+export const anyChaptersAdmitted = () =>
+  CATEGORIES.some((c) => (c.chapters ?? []).length && ADMITTED.has(c.key))
+
+/* The components tab is not a category — it is the door to three of them, and
+ * it opens when any one of them is admitted. */
+export const anyComponentsAdmitted = () =>
+  CATEGORIES.some((c) => c.categories.length && ADMITTED.has(c.key))
+
+export const HELD = CATEGORIES.filter((c) => !ADMITTED.has(c.key))

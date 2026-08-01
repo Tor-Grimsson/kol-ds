@@ -1,9 +1,9 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { CodeBlock, Divider, DocsToc, Icon, Table, Tag } from '@kolkrabbi/kol-component'
-import { ShellTocContext } from '../shell'
+import { ShellTocContext, RailSection, RailRow } from '../shell'
 import { useTagMode } from '../tags'
-import { parseDocsMarkdown, isIndexFile, getTagColor } from '../engine'
+import { parseDocsMarkdown, isIndexFile } from '../engine'
 import DocsHeader from './DocsHeader.jsx'
 import DocsArticle from './DocsArticle.jsx'
 import DocsFrontmatter from './DocsFrontmatter.jsx'
@@ -16,35 +16,28 @@ import { renderInlineTokens } from './render-tokens.jsx'
  * two rails are one system and a reader shouldn't have to learn each side
  * separately.
  *
- * These were bare text. They collapsed on click with no chevron, no count and
- * no hover, so the only way to discover they were interactive was to click
- * something that looked inert and watch the panel vanish. An affordance that
- * only announces itself after you've used it isn't one.
+ * These were bare text with no count and no hover. They carry both now, and
+ * the whole row is the toggle — with no chevron drawn at L1 (user ruling
+ * 2026-08-01): the section collapses and expands, the affordance just isn't an
+ * icon.
+ *
+ * It is a thin wrapper over RailSection, which owns the rung: the class, the
+ * box, and WHERE THE COUNT SITS. This header used to hand-write all three and
+ * borrowed `.shell-nav-group-header` + `.shell-sidebar-label` to do it, which
+ * is how the two rails ended up printing their counts on different rows.
  */
-const SidebarSection = ({ sectionKey, label, count, collapsedSections, toggleSection, children }) => {
-  const isOpen = !collapsedSections[sectionKey]
-  return (
-    <div>
-      <button
-        type="button"
-        className="shell-nav-group-header w-full text-left shell-sidebar-label kol-doc-eyebrow"
-        onClick={() => toggleSection(sectionKey)}
-        aria-expanded={isOpen}
-      >
-        <span className="flex items-center gap-2">
-          <Icon
-            name="chevron-right"
-            size={12}
-            className={`transition-transform ${isOpen ? 'rotate-90' : ''}`}
-          />
-          {label}
-        </span>
-        {count > 0 && <span className="kol-mono-14 text-subtle">({count})</span>}
-      </button>
-      {isOpen && children}
-    </div>
-  )
-}
+const SidebarSection = ({ sectionKey, label, count, collapsedSections, toggleSection, children }) => (
+  <RailSection
+    level={2}
+    label={label}
+    count={count > 0 ? count : undefined}
+    collapsed={!!collapsedSections[sectionKey]}
+    onToggle={() => toggleSection(sectionKey)}
+    icon={Icon}
+  >
+    {children}
+  </RailSection>
+)
 
 const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, componentsHref, docFilePath }) => {
   const navigate = useNavigate()
@@ -53,15 +46,21 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
   const toggleSection = (key) => setCollapsedSections(prev => ({ ...prev, [key]: !prev[key] }))
 
   return (
-    <div className="space-y-6">
+    /* THE SAME LADDER AS THE LEFT RAIL (user ruling 2026-08-01). One L1 eyebrow
+     * naming the body, then L2 groups that collapse and carry a chevron + a
+     * count. These four sections used to be four bare L1 eyebrows stacked with
+     * no parent and no chevron — the left rail's shape stated differently on
+     * the other side of the page. */
+    <RailSection level={1} label="This page">
+      <div className="space-y-6">
       <SidebarSection
         sectionKey="toc"
-        label="On this page"
+        label="Contents"
         count={toc?.length}
         collapsedSections={collapsedSections}
         toggleSection={toggleSection}
       >
-        <DocsToc toc={toc} />
+        <DocsToc toc={toc} root="#main" />
       </SidebarSection>
 
       {related.length > 0 && (
@@ -75,9 +74,7 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
           {/* ONE rail voice (user law): rows = the shell-nav-item idiom. */}
           <nav className="flex flex-col">
             {related.map((r) => (
-              <Link key={r.id} to={r.href} className="shell-nav-item block kol-mono-14 text-body transition-colors hover:text-emphasis">
-                {r.label}
-              </Link>
+              <RailRow key={r.id} to={r.href}>{r.label}</RailRow>
             ))}
           </nav>
         </SidebarSection>
@@ -94,49 +91,38 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
           * so this rail carried three different row idioms — under the
           * "ONE rail voice" comment above. */}
         <div>
-          <button
-            type="button"
-            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
-            onClick={() => navigate(-1)}
-          >
-            <Icon name="arrow-left" size={14} />
-            Back
-          </button>
-          <Link to={docsIndexHref} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
-            <Icon name="book-open" size={14} />
-            All documentation
-          </Link>
-          <Link to={componentsHref} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
-            <Icon name="grid" size={14} />
-            View components
-          </Link>
-          <button
-            type="button"
-            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
-            onClick={() => navigator.clipboard.writeText(docFilePath(docId))}
-            title="Copy file path to clipboard"
-          >
-            <Icon name="copy" size={14} />
-            Copy path
-          </button>
+          <RailRow onClick={() => navigate(-1)} icon={<Icon name="arrow-left" size={14} />}>Back</RailRow>
+          <RailRow to={docsIndexHref} icon={<Icon name="book-open" size={14} />}>All documentation</RailRow>
+          <RailRow to={componentsHref} icon={<Icon name="grid" size={14} />}>View components</RailRow>
+          <RailRow onClick={() => navigator.clipboard.writeText(docFilePath(docId))} icon={<Icon name="copy" size={14} />}>Copy path</RailRow>
+          <RailRow onClick={() => openTagMode(null, { view: 'graph' })} icon={<Icon name="polygon" size={14} />}>Graph view</RailRow>
         </div>
       </SidebarSection>
 
-      {allTags.length > 0 && (
-        <SidebarSection
-          sectionKey="tags"
-          count={allTags?.length}
-          label="Tags"
-          collapsedSections={collapsedSections}
-          toggleSection={toggleSection}
-        >
-          <div className="flex flex-col gap-1.5 items-start min-w-0 w-full">
+      {/* TAGS IS A CATEGORY (user ruling 2026-08-01) — not a bare tag dump.
+        * It holds the two ENTRY POINTS into the tag system plus this page's
+        * own tags. The graph view was reachable only through an unlabelled hex
+        * glyph floating at the corner of the overlay: a feature nobody could
+        * find unless they already knew it existed. Both entries are rail rows
+        * now, in the one row idiom. */}
+      <SidebarSection
+        sectionKey="tags"
+        count={allTags?.length}
+        label="Tags"
+        collapsedSections={collapsedSections}
+        toggleSection={toggleSection}
+      >
+        {/* NO Search row (user ruling 2026-08-01) — the nav search icon already
+          * opens the one modal, and a second door to it is the duplication we
+          * just spent an arc deleting. Graph view moved to Quick actions: it
+          * is an ACTION on the tag system, not one of this page's tags. */}
+        {allTags.length > 0 && (
+          /* No `color`, no `size` — see DocsFrontmatter. `sm` is the default
+           * and the only size; a colour would cost the hover state. */
+          <div className="flex flex-wrap gap-1.5 items-start min-w-0 w-full mt-2">
             {allTags.map((tag) => (
               <Tag
                 key={tag}
-                variant="naked"
-                size="lg"
-                color={getTagColor(tag)}
                 onClick={() => openTagMode(tag)}
                 className="max-w-full overflow-hidden text-ellipsis"
               >
@@ -144,9 +130,10 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
               </Tag>
             ))}
           </div>
-        </SidebarSection>
-      )}
-    </div>
+        )}
+      </SidebarSection>
+      </div>
+    </RailSection>
   )
 }
 
@@ -406,9 +393,11 @@ const DocumentationReader = ({
 
   if (!doc) {
     return (
-      /* framed to a 1400px tier that was removed from the scale at theme
-       * 0.11.22 and left behind here — a width nothing else still uses */
-      <div className="mx-auto max-w-[var(--kol-content-panel)] py-16">
+      /* framed to a tier that was removed from the scale at theme 0.11.22 and
+       * left behind here — a width nothing else still uses; now on the panel
+       * token. Left-anchored, not centred (2026-08-01): the frame centres in
+       * the viewport, the content does not centre in the frame. */
+      <div className="max-w-[var(--kol-content-panel)] py-16">
         <DocsHeader title="Document Not Found" subtitle={`Could not find document: ${docId}`} />
         <p className="kol-mono-12 mt-6">
           <Link to={docsIndex} className="text-accent-primary">

@@ -2,8 +2,8 @@
 title: Breakpoints — the lookup
 type: reference
 status: active
-updated: 2026-07-30
-description: Front door for the breakpoint system — the Tailwind-only scale, the three content-width tokens, the padding ramp, and where the laws, practices, and testing methods live.
+updated: 2026-07-31
+description: Front door for the breakpoint system — the Tailwind-only scale, the five content-width tokens, the padding ramp, and where the laws, practices, and testing methods live.
 aliases:
   - breakpoints
   - responsive
@@ -34,6 +34,7 @@ Everything responsive in one folder. The one-glance numbers:
 
 | Width token | Value | For |
 |---|---|---|
+| `--kol-content-canvas` | 87.5rem | the page BODY inside the shell's main column — item fields (swatch grids, icon walls, galleries). Sorts under shell. |
 | `--kol-content-shell` | 1800px | THE outer frame, every page |
 | `--kol-content-panel` | 960px | tables, code, framed panels |
 | `--kol-content-column` | 768px | reading columns |
@@ -41,7 +42,7 @@ Everything responsive in one folder. The one-glance numbers:
 
 Defined in `packages/theme/kol-theme.css:79-81`. Tailwind's scale ONLY, min-width only.
 
-## In this folder
+## Contents
 
 | Doc | What |
 |---|---|

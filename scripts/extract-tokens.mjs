@@ -8,7 +8,7 @@
  *
  * Emits:
  *   - showcase/src/usage/token-index.json   machine-readable, rendered by /references
- *   - docs/documentation/07-usage/_tokens.md a single human/LLM reference
+ *   - showcase/src/usage/components/_tokens.md  a single human/LLM reference
  *
  * THE DERIVATION RULE
  *
@@ -172,7 +172,7 @@ for (const r of results.values()) r.edges.sort((a, b) => b.stars - a.stars || b.
 
 // --- 3 · emit ------------------------------------------------------------------
 const showcaseUsage = join(REPO, 'showcase/src/usage')
-const usageDocs = join(REPO, 'docs/documentation/07-usage')
+const usageDocs = join(REPO, 'showcase/src/usage/components')
 mkdirSync(showcaseUsage, { recursive: true })
 mkdirSync(usageDocs, { recursive: true })
 
@@ -209,7 +209,7 @@ console.log(`scanned ${scanned} files`)
 console.log(`nodes defined: ${defs.size}  |  referenced: ${index.length}  |  unreferenced: ${defs.size - index.length}`)
 console.log(`weighted median ${median} | canon threshold ${threshold} (3x median)`)
 console.log(`by concern: ${Object.entries(byConcern).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(', ')}`)
-console.log(`emitted: showcase/src/usage/token-index.json  +  docs/documentation/07-usage/_tokens.md`)
+console.log(`emitted: showcase/src/usage/token-index.json  +  showcase/src/usage/components/_tokens.md`)
 console.log('\ntop 15 by weighted inbound:')
 for (const e of index.slice(0, 15)) {
   console.log(`  ${String(e.weighted).padStart(5)}★ ${e.name.padEnd(34)} ${String(e.edgeCount).padStart(4)} edges  ${e.concern}`)

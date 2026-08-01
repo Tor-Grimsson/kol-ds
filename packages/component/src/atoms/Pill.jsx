@@ -38,8 +38,17 @@ const Pill = ({ children, variant = 'primary', size = 'sm', className = '' }) =>
     lg: 'pill-lg'
   }
 
+  /* Type from the helper ramp — same ruling as Tag (2026-08-01). The pill-*
+   * classes hardcoded size + weight and no line-height; kol-helper-* is the
+   * single-line ramp (`line-height: 1`) and matches 10/12/14 exactly. */
+  const typeClasses = {
+    sm: 'kol-helper-10',
+    md: 'kol-helper-12',
+    lg: 'kol-helper-14'
+  }
+
   return (
-    <span className={`${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim()}>
+    <span className={`${variantClasses[variant]} ${sizeClasses[size]} ${typeClasses[size]} ${className}`.trim()}>
       {children}
     </span>
   )

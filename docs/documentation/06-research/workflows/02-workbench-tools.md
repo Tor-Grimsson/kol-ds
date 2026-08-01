@@ -57,7 +57,7 @@ Not a workbench — a **cloud visual-regression + review** service by the Storyb
 
 Skip a dedicated tool: **bake a live component playground into a docs framework** (e.g. an MDX-based docs site). You get isolated rendering + docs in one surface, but you build the controls/testing rungs yourself. Common when the system already ships a public docs site.
 
-## Choosing by stack ownership
+## Choosing
 
 - Want **rungs 1–2** (isolated dev + stories as docs)? → Ladle (React) is the lean cut.
 - Want **rungs 3–4** (controls, a11y, interaction tests)? → Storybook earns its weight.

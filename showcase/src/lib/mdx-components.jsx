@@ -5,7 +5,7 @@ import PreviewCard from './PreviewCard.jsx'
 import { DEMOS } from './demos-registry.js'
 import API_GEN from '../usage/api-tables.json'
 import { mergeApi, InstallBlock } from './component-page-parts.jsx'
-import { getComponentBySlug, slugify } from './registry.js'
+import { getComponentBySlug, slugify } from '../nav/registry.js'
 
 /**
  * The MDX component map — what a `.mdx` doc can use without importing anything.

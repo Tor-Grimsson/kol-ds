@@ -28,6 +28,9 @@ const GATES = [
   ['references', 'validate-references.mjs'],
   ['drift', 'validate-drift.mjs'],
   ['reachable', 'validate-reachable.mjs'],
+  ['vault-links', 'validate-vault-links.mjs'],
+  ['headings', 'validate-headings.mjs'],
+  ['chrome', 'validate-chrome.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

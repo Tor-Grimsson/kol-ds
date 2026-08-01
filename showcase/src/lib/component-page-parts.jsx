@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CodeBlock } from '@kolkrabbi/kol-component'
-import { getComponentBySlug, COMPONENTS_AZ, slugify } from './registry.js'
+import PreviewCard from './PreviewCard.jsx'
+import { setsOf, usedIn } from './set-membership.js'
+import { getComponentBySlug, COMPONENTS_AZ, slugify } from '../nav/registry.js'
 import SOURCES from '../usage/component-sources.json'
 import ORIGINS from '../usage/component-origins.json'
+import STYLING from '../usage/styling.json'
 
 /**
  * The furniture a component doc carries regardless of how its body is authored.
@@ -48,54 +51,72 @@ export function mergeApi(authored = [], generated = []) {
  * D1 — the kol type classes the component renders text with, so system
  * conformance vs freestyle Tailwind is visible at a glance;
  * D2 — a "Composes" row linking the KOL components it nests. */
-export function MetaRows({ meta, name }) {
-  const composed = ((meta?.composes) || [])
-    .map((n) => ({ name: n, comp: getComponentBySlug(slugify(n)) }))
-  /* Provenance row (user ruling 2026-07-30): a component without a printed
-   * origin is "a puzzle piece in a pile of 1000" — the source path renders on
-   * every page, always. */
-  const source = name ? SOURCES[name] : null
-  /* Imported-from history (wave-4, 2026-07-30): origin repo + date mined from
-   * the component's lobby/done spec frontmatter (scripts/extract-origins.mjs)
-   * — where it came from and when it entered the DS, printed like the Source
-   * row. No spec (born in-repo) → no row. */
-  const origin = name ? ORIGINS[name] : null
-  if (!meta?.typeClasses?.length && !composed.length && !source && !origin) return null
+/* THE STYLING CONTRACT (user ruling 2026-08-01). A component page carried
+ * frontmatter, tags, install, usage prose and props — and said nothing about
+ * the classes it emits or the tokens it reads, which is the half a design
+ * system exists to define. GENERATED (scripts/extract-styling.mjs), never
+ * authored: an authored block is a second copy of the stylesheet, and it
+ * drifts the first time someone edits CSS without opening the doc. */
+function StylingRows({ name }) {
+  const s = name ? STYLING[name] : null
+  if (!s) return null
+  const chips = [...(s.classes ?? []), ...(s.dynamic ?? [])]
+  if (!chips.length && !s.tokens?.length) return null
+  /* .kol-table-token is THE token chip — the one the tables already use
+   * (kol-components-organisms.css). These rows hand-rolled a near-identical
+   * one in Tailwind, which is how two chip looks existed for one concept. */
+  const chip = 'kol-table-token'
   return (
-    <div className="flex flex-col gap-2">
-      {source && (
+    <>
+      {chips.length > 0 && (
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-doc-eyebrow shrink-0">Source</span>
-          <code className="kol-mono-12 text-body">{source}</code>
+          <span className="kol-doc-eyebrow shrink-0">Classes</span>
+          {chips.map((c) => <code key={c} className={chip}>.{c}</code>)}
         </div>
       )}
-      {origin && (
+      {s.tokens?.length > 0 && (
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-doc-eyebrow shrink-0">Imported from</span>
-          <code className="kol-mono-12 text-body">{origin.source}</code>
-          {origin.date && <span className="kol-mono-12 text-meta">· {origin.date}</span>}
+          <span className="kol-doc-eyebrow shrink-0">Tokens</span>
+          {s.tokens.map((t) => <code key={t} className={chip}>{t}</code>)}
         </div>
       )}
-      {meta?.typeClasses?.length > 0 && (
-        <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-doc-eyebrow shrink-0">Type styles</span>
-          {meta.typeClasses.map((t) => (
-            <code key={t} className="kol-mono-12 rounded-[var(--kol-radius-sm)] border border-fg-08 bg-fg-04 px-2 py-0.5 text-body">.{t}</code>
-          ))}
-        </div>
-      )}
-      {composed.length > 0 && (
-        <div className="flex flex-wrap items-baseline gap-2">
-          <span className="kol-doc-eyebrow shrink-0">Composes</span>
-          {composed.map(({ name, comp }) => comp ? (
-            <Link key={name} to={`/components/${comp.slug}`} className="kol-mono-12 text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current">{name}</Link>
-          ) : (
-            <span key={name} className="kol-mono-12 text-meta">{name}</span>
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   )
+}
+
+/**
+ * buildProvenance — a component's SOURCE / IMPORTED FROM / TYPE STYLES /
+ * CLASSES / TOKENS / COMPOSES as ordinary frontmatter fields.
+ *
+ * This was `MetaRows`, a second metadata panel rendered directly beneath the
+ * frontmatter panel in its own grammar — two blocks of the same class of
+ * information (user ruling 2026-08-01). It returns DATA now; DocsFrontmatter
+ * owns the rendering, so these fields inherit the icon column, the label
+ * column and the chip treatment instead of re-implementing them.
+ */
+export function buildProvenance(component) {
+  const { meta, name } = component || {}
+  const out = {}
+  const source = name ? SOURCES[name] : null
+  const origin = name ? ORIGINS[name] : null
+  const styling = name ? STYLING[name] : null
+
+  if (source) out.source = source
+  if (origin) out.imported_from = origin.date ? `${origin.source} · ${origin.date}` : origin.source
+  if (meta?.typeClasses?.length) out.type_styles = meta.typeClasses.map((t) => `.${t}`)
+  const classes = [...(styling?.classes ?? []), ...(styling?.dynamic ?? [])]
+  if (classes.length) out.classes = classes.map((c) => `.${c}`)
+  if (styling?.tokens?.length) out.tokens = styling.tokens
+  if (meta?.composes?.length) out.composes = meta.composes
+  /* the OTHER direction of set membership — ContentFilters is in two sets and
+   * its page never said so (user ruling 2026-08-01) */
+  const sets = name ? setsOf(name) : []
+  if (sets.length) out.in_sets = sets.map((s) => s.title)
+  /* the WIDER answer, separate from in_sets so neither misleads: ContentFilters
+   * is composed by four surfaces and by zero sets */
+  const used = name ? usedIn(name) : []
+  if (used.length) out.used_in = used
+  return out
 }
 
 /* ONE code idiom (user ruling 2026-07-30): every code surface on a doc page is
@@ -111,21 +132,20 @@ export function CodeLine({ text, language = 'jsx' }) {
 
 const PMS = { pnpm: 'pnpm add', npm: 'npm install', yarn: 'yarn add', bun: 'bun add' }
 
+const PM_TABS = Object.keys(PMS).map((k) => ({ key: k, label: k }))
+
+/* A CALL to PreviewCard, not a sibling (user ruling 2026-08-01). This used to
+ * hand-write a tab row whose class string was byte-identical to PreviewCard's,
+ * in a different frame — one construct, two copies, two looks. `chrome="flush"`
+ * because the CodeBlock below brings its own frame. */
 export function InstallBlock({ pkg }) {
-  const [pm, setPm] = useState('pnpm')
-  const cmd = `${PMS[pm]} ${pkg}`
   return (
-    <div className="max-w-[var(--kol-content-panel)]">
-      <div className="flex items-center gap-1">
-        {Object.keys(PMS).map((k) => (
-          <button key={k} type="button" onClick={() => setPm(k)}
-            className={`kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 transition-colors ${pm === k ? 'bg-fg-08 text-emphasis' : 'text-meta hover:text-emphasis'}`}>
-            {k}
-          </button>
-        ))}
-      </div>
-      <CodeBlock code={cmd} language="bash" />
-    </div>
+    <PreviewCard
+      chrome="flush"
+      tabsLabel="Package manager"
+      tabs={PM_TABS}
+      renderTab={(pm) => <CodeBlock code={`${PMS[pm]} ${pkg}`} language="bash" />}
+    />
   )
 }
 

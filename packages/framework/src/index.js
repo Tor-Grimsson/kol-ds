@@ -10,7 +10,7 @@
 export { default as AppShell } from './AppShell.jsx'
 export { ShellTocContext, ShellTocCollapsedContext } from './AppShell.jsx'
 export { default as SideNav } from './SideNav.jsx'
-export { default as ShellHeader } from './ShellHeader.jsx'
+export { default as ShellHeader, HEADER_ICON } from './ShellHeader.jsx'
 export { default as ThemeToggle } from './ThemeToggle.jsx'
 export { useTheme, applyTheme, getInitialTheme, THEME_STORAGE_KEY } from './theme.js'
 export { default as Layout } from './Layout.jsx'

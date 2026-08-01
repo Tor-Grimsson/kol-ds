@@ -8,14 +8,14 @@ tags:
   - domain/design-system
   - domain/workflow
 related:
-  - "[roadmap](../../docs/operations/03-showcase-recovery-roadmap.md)"
+  - "[roadmap](../../docs/operations/03-showcase/01-recovery-roadmap.md)"
   - "[[playbook/2026-07-30-showcase-quarantine|arc playbook]]"
   - "[[plan|the 2026-07-02 execution plan (historical)]]"
 ---
 
 # Quarantine and readmit — execution plan
 
-The roadmap says *what* and *why*; this says *in what order, touching which file, and where it stops*. Findings and their evidence live in [the roadmap](../../docs/operations/03-showcase-recovery-roadmap.md) — not repeated here.
+The roadmap says *what* and *why*; this says *in what order, touching which file, and where it stops*. Findings and their evidence live in [the roadmap](../../docs/operations/03-showcase/01-recovery-roadmap.md) — not repeated here.
 
 > **Status: two gates built, no styling touched.** Written 2026-07-30 after the review. `pnpm validate` now runs all seven gates and prints a scoreboard — **5 clean, width 14, rails 16, 30 total**. The previous plan at `plan.md` is historical (2026-07-02 backlog, executed); it is not superseded, it is unrelated.
 >

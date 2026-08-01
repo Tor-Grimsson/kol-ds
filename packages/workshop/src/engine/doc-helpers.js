@@ -9,6 +9,28 @@
 export const capitalise = (value) =>
   value ? value.charAt(0).toUpperCase() + value.slice(1) : value
 
+/**
+ * fileLabel — a rail row's name, taken from the FILENAME (user ruling
+ * 2026-08-01).
+ *
+ * The tree used to label rows from the doc's H1, so `01-tokens.md` (opening
+ * `# Foundations — the token system`) rendered as "Foundations" — a row whose
+ * name appears nowhere in the folder, and two files whose H1s both began
+ * "Foundations" collapsed into two identical rows. A tree that mirrors a
+ * folder has to read the folder: what Finder shows is what the sidebar shows.
+ *
+ *   01-tokens.md             → Tokens
+ *   04-layout-breakpoints.md → Layout breakpoints
+ *
+ * Titles still drive SEARCH and the page header; this is the tree label only.
+ */
+export const fileLabel = (file = '') => {
+  const base = file.split('/').pop()?.replace(/\.md$/i, '') ?? ''
+  const named = base.replace(/^\d+(\.\d+)*[-.]?\s*/, '')
+  if (!named) return capitalise(base)
+  return capitalise(named.replace(/[-_]+/g, ' ').trim())
+}
+
 // Index.md files (e.g. "00-metadata-index", "foundry-index") have no version dots
 export const isIndexFile = (id) => id.endsWith('-index') && !id.includes('.')
 
@@ -60,6 +82,15 @@ export const cleanTitle = (title, id) => {
 
   let cleaned = title.replace(/^\d+\.\d+\.\d+\s*/, '')
   cleaned = cleaned.replace(/^[A-Za-z\s]+:\s*/, '')
+  /* SUBTITLE OFF (user ruling 2026-08-01): "dont Foundtation - the token
+   * system, just 'foundation'". A doc's `title` is written for the document —
+   * "Type classes — the two families and when to use which" — and a rail row
+   * is not the place to read a sentence: three of eight rows wrapped to two
+   * and three lines. Everything from the em/en dash on is the subtitle, so the
+   * row keeps the name and drops the explanation. The DOC's own title is
+   * untouched; this is the rail's label only.
+   * Spaced dash only — an unspaced one is a compound word, not a separator. */
+  cleaned = cleaned.replace(/\s+[—–]\s+.*$/, '')
   cleaned = cleaned.trim() || title
 
   const versionMatch = id.match(/^(\d+\.\d+)\.(\d+)/)

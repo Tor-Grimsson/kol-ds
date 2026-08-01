@@ -2,7 +2,7 @@
 title: Foundations — layout & breakpoints
 type: reference
 status: active
-updated: 2026-07-30
+updated: 2026-07-31
 description: The one layout law — ONE shell frame (1800) on every page, content left-anchored, three inner caps only (panel 960, column 768, measure 65ch); one padding rhythm; Tailwind-scale breakpoints. Lookup home: 08-breakpoints.
 aliases:
   - breakpoints
@@ -36,13 +36,14 @@ breakpoint systems.
 `xl` 1280 · `2xl` 1536. No custom pixel media queries, no desktop-first
 `max-width` queries in showcase-owned code.
 
-## Content-width tiers (2026-07-28 — supersedes the two-cap law)
+## Content widths
 
 THE page-width system, tokenized in `kol-theme.css` (user-approved, modeled on
 the chess app's one-container discipline). No page invents a width number.
 
 | Tier | Token | Value | For |
 |---|---|---|---|
+| canvas | `--kol-content-canvas` | 87.5rem | the page BODY inside the shell's main column — item fields (swatch grids, icon walls, galleries). Added 2026-07-31 |
 | shell | `--kol-content-shell` | 1800px | THE outer page container |
 | panel | `--kol-content-panel` | 960px | tables, code blocks, framed panels (added 2026-07-30 — the ~900–1200 band consumers were improvising) |
 | column | `--kol-content-column` | 768px | reading columns — docs, articles, workshop |
@@ -57,21 +58,21 @@ in chrome CSS. `DocLayout` takes `width="column|wide|page"` (the `wide` boolean
 is a legacy alias). Full-bleed surfaces (chess stage, block previews) use no
 cap. **The padding rhythm is the kol-framework ramp** — `padding: var(--kol-pad-section-y) var(--kol-pad-section-x)` (x: 20 → 32 @768 → 48 @1024 · y: 48 → 64 → 80). No Tailwind padding steps on page containers; the tokens carry the responsive ramp.
 
-## Embed mode — chrome off entirely
+## Embed mode
 
 `?embed=1` on any URL renders main content only (no TopBar, no sidebar, no TOC)
 — rails **unmounted**, content padding kept. Layout-level, read by the chrome
 hosts via `showcase/src/lib/useEmbed.js`. Full contract:
 [[../04-compositions/02-shells|shells → embed mode]].
 
-## Chrome reveal — one breakpoint
+## Chrome reveal
 
 Navigation lives in the **NavDrawer below `lg`**, in the chrome at `lg+`
 (TopBar links `lg:flex`, DocLayout sidebar `lg:block`). The TOC rail is a
 progressive enhancement and may stay `xl:block`. Nothing chrome-critical may
 reveal at `sm` or `md`.
 
-## Grid collapse — canonical points
+## Grid collapse
 
 - Card grids: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`. First break is
   always `sm`, never `md`.
@@ -90,7 +91,7 @@ reveal at `sm` or `md`.
 
 Nav rails are **256px** (`w-64` / `lg:grid-cols-[256px_…]`).
 
-## Exemptions — verbatim ports
+## Exemptions
 
 `showcase/src/workshop/**` (shell, chess, dashboards) are ported reference
 apparatus and keep their internal geometry (1800px shell cap, chess

@@ -103,7 +103,7 @@ export function HueStrip({ hue, onChange }) {
       aria-valuenow={Math.round(hue)}
       onPointerDown={onDown}
       onKeyDown={onKeyDown}
-      className="relative rounded-[2px] cursor-pointer touch-none"
+      className="relative rounded-[var(--kol-radius-xs)] cursor-pointer touch-none"
       style={{ height: 12, background: HUE_GRADIENT }}
     >
       {/* Handle positions inside an inset region so 0..100% maps to the
@@ -118,7 +118,7 @@ export function HueStrip({ hue, onChange }) {
 /**
  * SBSquare — 2D saturation/value picker: white→hue horizontal gradient with
  * a black overlay fading upward, crosshair handle. Fills its container
- * (consumer owns the size — and the rounding: apply `rounded-[2px]
+ * (consumer owns the size — and the rounding: apply `rounded-[var(--kol-radius-xs)]
  * overflow-hidden` on the wrapper). Focus + arrow keys nudge: Left/Right =
  * saturation ±1, Up/Down = value ±1 (role="slider").
  *
@@ -174,7 +174,7 @@ export function SBSquare({ hue, sat, val, onChange }) {
 
   const sb = `linear-gradient(to bottom, transparent 0%, #000 100%), linear-gradient(to right, #fff 0%, hsl(${hue},100%,50%) 100%)`
   /* Gradient field is rectangular — rounding is the consumer's job (apply
-   * `rounded-[2px] overflow-hidden` on the wrapper). Putting border-radius
+   * `rounded-[var(--kol-radius-xs)] overflow-hidden` on the wrapper). Putting border-radius
    * on the gradient itself produces tiny antialiasing artifacts at the
    * corners; clipping via overflow-hidden on the parent is cleaner. */
   return (
@@ -480,7 +480,7 @@ function SvgHandle({ cx, cy, r = 2.4 }) {
 /**
  * SpectrumControls — the composed classic square picker: HueStrip stacked
  * over a fill-height SBSquare, per the source color panel's Hue mode layout
- * (SBSquare wrapped in `rounded-[2px] overflow-hidden`, see its comment).
+ * (SBSquare wrapped in `rounded-[var(--kol-radius-xs)] overflow-hidden`, see its comment).
  * Fills its container — the consumer owns the outer size. For the ring
  * picker, use WheelTriangle directly; the primitives are also exported for
  * custom layouts.
@@ -496,7 +496,7 @@ export default function SpectrumControls({ value, onChange }) {
   return (
     <div className="flex flex-col gap-3 w-full h-full min-h-0">
       <HueStrip hue={hue} onChange={(h) => onChange({ hue: h, sat, val })} />
-      <div className="flex-1 min-h-0 rounded-[2px] overflow-hidden">
+      <div className="flex-1 min-h-0 rounded-[var(--kol-radius-xs)] overflow-hidden">
         <SBSquare hue={hue} sat={sat} val={val} onChange={(s, v) => onChange({ hue, sat: s, val: v })} />
       </div>
     </div>

@@ -42,6 +42,13 @@ import ThemeToggle from './ThemeToggle.jsx'
  * @param {string}    className      extra classes on the outer bar
  */
 
+/* ONE header-action glyph size (user 2026-08-01: "icon in navbar is small and
+ * wrong"). The row mixed sizes: the ThemeToggle draws its solo glyph at 24 on
+ * the `lg` rung while search, GitHub and the hamburger sat at 18 — four
+ * controls, two scales, in a row eight inches wide. Named once here so a new
+ * control cannot pick its own. */
+export const HEADER_ICON = 24
+
 const iconBtnCls =
   'flex h-9 w-9 items-center justify-center rounded p-0 bg-transparent border-0 cursor-pointer transition-colors hover:bg-fg-08 hover:text-emphasis'
 
@@ -66,7 +73,11 @@ export default function ShellHeader({
     <header className={`kol-shell-header sticky top-0 z-50 shrink-0 bg-surface-primary ${className}`.trim()}>
       {/* Row 1: brand block + controls */}
       <div className="border-b border-fg-08">
-        <div className="w-full px-4 py-4 md:px-5 lg:px-6">
+        {/* Chrome inset from --kol-pad-chrome-x, not Tailwind steps
+          * (2026-07-31): the header sat on its own improvised steps while the
+          * shell content frame sat on the page ramp, so the sidebar hung right
+          * of the wordmark above it. One token, both surfaces. */}
+        <div className="w-full py-4" style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
           <div className="flex items-center justify-between">
             {/* kol-shell-header-brand reserves the nav-column width at lg+ so
              * the Row-2 tabs align to the shell grid. */}
@@ -93,7 +104,7 @@ export default function ShellHeader({
                     onClick={onMenuClick}
                     aria-label="Open navigation menu"
                   >
-                    <Icon name="hamburger" size={18} />
+                    <Icon name="hamburger" size={HEADER_ICON} />
                   </button>
                 </Tooltip>
               )}
@@ -105,7 +116,7 @@ export default function ShellHeader({
       {/* Row 2: section tabs + inline search + rail toggles */}
       {hasTabRow && (
         <div className="border-b border-fg-08">
-          <div className="w-full px-4 md:px-5 lg:px-6">
+          <div className="w-full" style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
             <div className="kol-shell-header-tabs">
               <nav className="flex flex-1 gap-6" aria-label="Sections">
                 {nav.map((item) => {

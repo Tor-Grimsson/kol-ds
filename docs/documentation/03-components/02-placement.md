@@ -12,7 +12,7 @@ tags:
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[03-taxonomy-audit-and-plan|taxonomy audit & plan]]"
-  - "[[../backlog/2026-07-02-review-backlog|review backlog]]"
+  - "[review backlog](../../../.kol/llm-context/backlog/2026-07-02-review-backlog.md)"
   - "[execution plan](../../../.kol/llm-context/plan.md)"
 ---
 
@@ -22,14 +22,14 @@ This is the **runbook** for placing a new component file into its Tier. The Tier
 
 Every component gets exactly one location, decided by **structure, not vibes or complexity**. A new component slots into its tier and its alphabetical position — nothing else moves.
 
-## The test in one line
+## The test
 
 - **Atom** — nests no KOL component (`Icon`/`Graphic` don't count).
 - **Molecule** — nests at least one KOL component.
 - **Organism** — a self-contained composed region (bar, table, gallery), regardless of nesting.
 - **Framework / Loader / Hook** — see the checklist below.
 
-## Rules that make the tests mechanical
+## Rules
 
 1. **kol-icons `Icon`/`Graphic` are infrastructure, not components.** Nesting an Icon does NOT make an atom a molecule (Button, Stepper, Tag stay atoms).
 2. **Downward-only imports.** Atoms never import molecules or organisms. Molecules may import atoms and sibling molecules. Enforced by `scripts/validate-taxonomy.mjs`.
@@ -46,7 +46,7 @@ Every component gets exactly one location, decided by **structure, not vibes or 
 5. Does it nest a KOL component (imports one, or same-file)? → **molecule**.
 6. Otherwise → **atom**.
 
-## Worked calls — the 2026-07-02 sweep
+## Worked calls
 
 Moves the backlog named, decided by rule 1 + the molecule test:
 
@@ -66,7 +66,7 @@ The 8 ex-primitives (`primitives` is dead — it was never part of the atomic sy
 
 Loaders verdict (C4): **Docs page**, not a components-list category — `Icon` + `Graphic` joined `DOCS_ONLY` in the showcase registry, documented on `/docs/loaders`, galleries unchanged on `/icons`.
 
-## Membership — does it belong in a published package at all?
+## Membership
 
 Everything above decides **where** a component goes. Nothing above asks **whether** it should ship. That gap is how `ExitPreview` — a router-aware escape hatch worn as CMS draft-mode chrome — passed cleanly as an atom and shipped in `@kolkrabbi/kol-component`: it nests no KOL component, so the placement test had no objection to make.
 

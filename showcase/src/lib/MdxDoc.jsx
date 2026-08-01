@@ -1,8 +1,8 @@
 import { MDXProvider } from '@mdx-js/react'
 import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { mdxComponents } from './mdx-components.jsx'
-import { MetaRows, Pager } from './component-page-parts.jsx'
-import { CATEGORY_LABELS } from './registry.js'
+import { buildProvenance, Pager } from './component-page-parts.jsx'
+import { CATEGORY_LABELS } from '../nav/registry.js'
 
 /**
  * MdxDoc — renders one `.mdx` page: its `meta` export becomes the DocHeader,
@@ -42,13 +42,20 @@ export default function MdxDoc({ module: mod, component }) {
    * everything else meta carries is printed. */
   const { title: _t, lede: _l, eyebrow: _e, ...fmMeta } = meta
 
+  /* ONE metadata panel (user ruling 2026-08-01). MetaRows printed SOURCE /
+   * TYPE STYLES / CLASSES / TOKENS / COMPOSES in its own grammar directly
+   * under a frontmatter panel that was already printing the same class of
+   * information — two blocks, two looks, one job. Its fields are folded in
+   * here as ordinary frontmatter entries, so they get the icon column, the
+   * label column and the chip treatment for free. */
+  const provenance = component ? buildProvenance(component) : {}
+
   return (
     <article className="flex w-full min-w-0 flex-col gap-10">
-      <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}) }} />
+      <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}), ...provenance }} />
       {(title || eyebrow) && (
         <DocHeader eyebrow={eyebrow} title={title} lede={lede} />
       )}
-      {component && <MetaRows meta={component.meta} name={component.name} />}
       {/* NOT .kol-prose (2026-07-30, user-surfaced bug): the blog container's
         * 720px cap caged previews and tables too. Markdown elements are typed
         * per-tag by the mdx map through the kol-doc-* roles — running text

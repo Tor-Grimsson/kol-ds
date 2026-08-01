@@ -72,6 +72,15 @@
   --kol-spacing-gap-md: var(--kol-spacing-4);
   --kol-spacing-gap-lg: var(--kol-spacing-6);
 
+  /* RAIL ROW rhythm (2026-08-01) — the y-padding every sidebar row shares:
+   * the eyebrow (.shell-sidebar-toggle) and the nav group header
+   * (.shell-nav-group-header). Deliberately OFF the spacing scale — a tighter
+   * chrome rhythm than --kol-spacing-1, and both rules already carried the
+   * same literal in two places. Named here so the left and right rails cannot
+   * disagree about it again; the row's bottom separation is --kol-spacing-2
+   * and needs no alias of its own. */
+  --kol-pad-rail-row-y: 0.375rem;
+
   /* Content widths (2026-07-28; panel added 2026-07-30) — ONE frame, three
    * inner caps (chess law). Every page: mx-auto max-w-shell + the one padding
    * rhythm, content LEFT-ANCHORED inside. Width is a content decision, never a
@@ -81,7 +90,16 @@
    * text. Nothing else — a hardcoded max-w-[Npx] at a call site means this
    * scale failed; file it, don't improvise it.
    * kol-framework's --kol-container-max is the responsive RESOLUTION of the
-   * shell (100% → 1400 → 1600 → shell), not a rival family. */
+   * shell (100% → 1400 → 1600 → shell), not a rival family.
+   *
+   * canvas (2026-07-31, user ruling) — the rung between shell and panel: the
+   * BODY of a page inside the shell's main column, i.e. item fields (swatch
+   * grids, the icon wall, card galleries) that panel would squeeze and the
+   * frame does not bind. Authored in rem because it is a max-width, not a
+   * device measure: 87.5rem = 1400 at the default root size. Flat at every
+   * breakpoint — a max-width only bites once there is room for it, and it
+   * nests: a table inside it still stops at panel, a paragraph at measure. */
+  --kol-content-canvas: 87.5rem;
   --kol-content-shell: 1800px;
   --kol-content-panel: 960px;
   --kol-content-column: 768px;
@@ -89,6 +107,11 @@
 
   /* Border radius (4px increments) */
   --kol-radius-none: 0;
+  /* xs (2026-08-01) — the hairline rung. Claimed out loud: 2px had SIX
+     hand-written `rounded-[2px]` call sites (swatches, colour rows, the
+     glass panel) and no token, so the scale's 4px floor was simply being
+     ignored rather than followed. A value used six times is a rung. */
+  --kol-radius-xs: 2px;
   --kol-radius-sm: 4px;
   --kol-radius-md: 8px;
   --kol-radius-lg: 12px;

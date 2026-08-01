@@ -163,7 +163,7 @@ export default function SearchInput({
         /* aria-hidden — affordance, not a label (same stance as Input's prefix/suffix) */
         <kbd
           aria-hidden="true"
-          className="inline-flex items-center justify-center shrink-0 h-4 min-w-4 px-1 rounded-[3px] bg-fg-08 kol-helper-10 text-fg-48"
+          className="inline-flex items-center justify-center shrink-0 h-4 min-w-4 px-1 rounded-[var(--kol-radius-xs)] bg-fg-08 kol-helper-10 text-fg-48"
         >
           {shortcutHint}
         </kbd>

@@ -16,7 +16,7 @@ export default function AssetPlaceholder({
   const label = [category, name].filter(Boolean).join(' · ')
   return (
     <div
-      className={`kol-asset-placeholder flex flex-col items-center justify-center gap-[6px] w-full p-6 border border-dashed border-[var(--kol-fg-24)] rounded-[4px] bg-[var(--kol-fg-02)] text-fg-48 font-mono text-center box-border ${className}`.trim()}
+      className={`kol-asset-placeholder flex flex-col items-center justify-center gap-[6px] w-full p-6 border border-dashed border-[var(--kol-fg-24)] rounded-[var(--kol-radius-sm)] bg-[var(--kol-fg-02)] text-fg-48 font-mono text-center box-border ${className}`.trim()}
       style={{ aspectRatio }}
       role="img"
       aria-label={`${label || 'asset'} — ${note}`}

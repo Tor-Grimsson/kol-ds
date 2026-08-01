@@ -2,7 +2,7 @@
 title: Foundations — layout systems registry
 type: reference
 status: active
-updated: 2026-07-30
+updated: 2026-08-01
 description: THE lookup for every active layout/width/text-container system — which system owns what, where its rules live, and which contradictions are open. Read this before picking a width, a container, or a prose class.
 aliases:
   - layout-systems
@@ -39,7 +39,7 @@ used for.
 
 | System | Purpose | Values | Rules live at | Never use for |
 |---|---|---|---|---|
-| **One-frame law** (`--kol-content-*`) | THE width family: one shell frame, content left-anchored, width is a *content* decision | shell 1800 · **panel 960** (tables / code / framed panels) · column 768 · measure 65ch | `kol-theme.css` content block | hardcoded `max-w-[Npx]` at call sites — if no cap fits, file it |
+| **One-frame law** (`--kol-content-*`) | THE width family: one shell frame, content left-anchored, width is a *content* decision | shell 1800 · **canvas 87.5rem** (the page body inside the shell's main column — item fields) · **panel 960** (tables / code / framed panels) · column 768 · measure 65ch | `kol-theme.css` content block | hardcoded `max-w-[Npx]` at call sites — if no cap fits, file it |
 | **Framework container** (`--kol-container-max`) | The **responsive resolution of the shell** — NOT a second family (unified 2026-07-30): `.kol-page`/`.kol-page-hero`/`.kol-overlay-sheet` clamp through it | 100% → 1400 (lg) → 1600 (xl) → `var(--kol-content-shell)` (≥1920) | `kol-framework.css` `:root` blocks | referencing it in new consumer code — reach for `--kol-content-*` |
 | **Full-bleed** (`.kol-full-bleed`) | THE one full-bleed: cancels the DS inset with a negative margin — container-relative, sidenav-safe | `margin-inline: calc(-1 * var(--kol-pad-section-x))` | `kol-framework.css` (with the 50vw-trap warning) | the viewport pull (`50vw`) — clips inside sidenav grids (the /review slice bug) |
 | **Shell content grid** (workshop shell) | rail / main / toc gutters in the packaged shell | gap 32 · 48 ≥1600, theme-owned — **no `gap-*` utility on the element** | `kol-components-workshop.css` (`.shell-content-grid`) · ShellLayout.jsx | per-consumer gutter overrides |
@@ -47,9 +47,12 @@ used for.
 | **`kol-doc-*` roles** | **The docs voice** — DocKit chrome + MDX bodies; per-element roles, text self-caps | body/lede cap at measure (65ch of own size) · code/table/figure/caption roles | `kol-type-roles.css` | editorial/blog copy (that's kol-prose's job) |
 | **MDX page system** (showcase) | Component + docs pages ARE documents; markdown typed per-tag via the doc roles; every code surface = kol-component `CodeBlock` (one code idiom, 2026-07-30); h2 carries the section air (`mt-6 first:mt-0`) | text at measure · fences/tables/Api/Install cap at **panel** · previews (stages) run the full column | `MdxDoc.jsx` + `mdx-components.jsx` + `component-page-parts.jsx` | wrapping the body in any container class; bespoke `pre`/copy twins |
 | **Seam/border law** (chrome borders) | Framed chrome + seams use the OPAQUE tier, weight 08 — alpha `fg-*` borders brighten over tinted fills (the table-seam disease, fought all day 2026-07-30) | `var(--kol-oq-08)` — doc-figure, table wrapper/seams, PreviewCard tab bar | `kol-type-roles.css` (`.kol-doc-figure`) · `kol-components-organisms.css` (table) · PreviewCard.jsx | `border-fg-*` classes on framed chrome |
-| **Padding ladder** (`--kol-pad-*`) | page/section/band padding rhythm — **complete and healthy** | 3-breakpoint responsive ladder | `kol-framework.css:50-74` | — leave it alone |
+| **Padding ladder** (`--kol-pad-*`) | page/section/band padding rhythm for **page content** | 3-breakpoint responsive ladder | `kol-framework.css` `:root` blocks | shell chrome — that is the chrome inset below |
+| **Chrome inset** (`--kol-pad-chrome-x`) | the inset for shell **chrome** — header rows + the shell content frame. Flat, not stepped. Added 2026-07-31 on the user's ruling ("it's what lives in kolkrabbi") | `var(--kol-spacing-6)` at every width | `kol-framework.css` `:root` | page containers — those take `--kol-pad-section-x` |
+| **Rail row rhythm** (`--kol-pad-rail-row-y`) | the y-padding EVERY sidebar row shares — the eyebrow (`.shell-sidebar-toggle` / `.shell-sidebar-label`) and the nav group header (`.shell-nav-group-header`). Added 2026-08-01; see the eyebrow-box law in [[../04-compositions/02-shells\|shells]] | `0.375rem` — deliberately **off** the `--kol-spacing-*` scale (a tighter chrome rhythm than `--kol-spacing-1`) | `kol-theme.css` `:root` | page content — this is rail chrome only |
+| **Rail widths** (`--kol-sidenav-w` · `--kol-shell-toc-w`) | the workshop shell's two rail **grid tracks**. Both are fixed: the right rail holds its column even with nothing in it (user ruling 2026-08-01), because a rail that vanishes on a heading-less page re-flows main and the same shell renders at two widths | `16rem` left · `14rem` right | `kol-framework.css` `:root` | `--kol-toc-w` — that is the BRAND layout's rail, a different shell |
 
-## The one rule of thumb
+## Rule
 
 **Width is content, not page identity.** The page frame is one decision made
 once (the shell); inside it, a block's cap comes from what the block *is* —
@@ -57,7 +60,48 @@ running text takes the measure, reading blocks take the column, chrome and
 furniture take the frame. If you are typing `max-w-[Npx]` at a call site, the
 registry above has failed you — file it, don't improvise it.
 
-## Resolved contradictions (2026-07-30 — shipped in theme 0.13.0 + framework 0.7.0)
+### The component declares its own width (2026-08-01)
+
+A table used to be capped by whatever `<div>` a page happened to wrap it in, and
+`validate:width` policed that by grepping the page for the token *name*. So a
+legitimately wide data table had to buy clearance with a magic `width-ok:`
+comment — a string a human must remember and a gate cannot reason about.
+
+**`Table` declares its width instead**, and applies the cap on its own wrapper:
+
+| `width` | Cap | For |
+|---|---|---|
+| `panel` *(default)* | `--kol-content-panel` | prose tables — props, tokens, specimens |
+| `column` | none; the content column | data tables whose columns need the room (the reference graph's seven) |
+
+Both are correct by construction, so the gate stopped checking for a token name
+and asserts the real law: **a Table may not be hand-wrapped in a panel cap**,
+because the prop is the seam. On its first run that rule caught three pages
+already doing it. `width-ok:` was deleted rather than kept — an exemption that
+survives becomes precedent.
+
+`CodeBlock` keeps the original page-level rule; it has no width prop.
+
+## Left anchoring
+
+The law's own sentence has always been *"one frame, content **LEFT-ANCHORED**
+inside"*, and it names the sanctioned pattern verbatim: `mx-auto max-w-shell`.
+Only that one. The rule in full:
+
+| Cap | `mx-auto`? | Why |
+|---|---|---|
+| `--kol-content-shell` | ✅ **yes** — this is THE frame centring in the viewport | it is the frame token |
+| `canvas` · `panel` · `column` · `measure` | ❌ **never** | these are content *inside* the frame; centring them is centring twice |
+
+`ShellLayout`'s main column carried `mx-auto` for a canvas cap, so above the
+canvas width the page content drifted away from the rail it lines up with —
+the user caught it by eye. Four call sites were centring capped content.
+
+Enforced as **W4** in `pnpm validate:width`. The exemption is the **token**,
+not a file or a magic comment, because the law already draws the line in its
+own vocabulary.
+
+## Resolved contradictions
 
 The kol-website audit's three findings (`lobby/WidthSystemContradictions.md`,
 now carrying the full RESOLUTION table for the consumer):
@@ -68,7 +112,7 @@ now carrying the full RESOLUTION table for the consumer):
 | 2 | No cap between 768 and 1800; consumers improvised `max-w-[920/960/1200px]` | `--kol-content-panel: 960px` |
 | 3 | Three full-bleed mechanisms; the 50vw pull clipped inside the sidenav | `.kol-full-bleed` (negative-margin, container-relative) shipped; trap documented at the rule |
 
-## History (how the systems got here)
+## History
 
 - **2026-07-28** — the one-frame law declared (`--kol-content-*`, "chess law": one outer frame + nested content caps); `kol-doc-*` role set shipped.
 - **2026-07-30** — shell gutter moved theme-side (workshop 0.3.1 / theme 0.12.2) after a `gap-8` utility made the 48px wide step dead code (ARCHITECTURE §5 disease, geometry edition).

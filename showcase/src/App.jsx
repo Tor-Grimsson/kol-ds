@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { TagModeProvider, TagModeGate, DocumentationReader } from '@kolkrabbi/kol-workshop'
-import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref } from './lib/vault.js'
+import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
+import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref } from './nav/vault.js'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
@@ -18,6 +18,8 @@ import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import References from './pages/References'
 import ReferenceNode from './pages/ReferenceNode'
+import SearchResults from './pages/SearchResults'
+import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
 import ShellChrome from './lib/ShellChrome.jsx'
 import MdxDoc from './lib/MdxDoc.jsx'
@@ -60,11 +62,10 @@ export default function App() {
           </TagModeProvider>
         }
       >
-        {/* TagModeGate wraps EVERY shell route, not just the vault reader
-          * (2026-07-30 reachability rule). Tag mode is now openable from the
-          * ⌘K palette anywhere, and a gate mounted on one route would have
-          * made that row a no-op on the other twenty. */}
-        <Route element={<TagModeGate />}>
+        {/* TagModeGate is GONE (user ruling 2026-08-01). It existed to mount a
+          * SECOND overlay beside the palette; the tag browser is the palette's
+          * expanded body now, so the shell mounts it once and there is nothing
+          * left to gate. One surface, one mount. */}
         <Route path="/" element={<Home />} />
         <Route path="/foundations" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
@@ -76,9 +77,14 @@ export default function App() {
         <Route path="/blocks/:slug" element={<BlockPage />} />
         <Route path="/sets" element={<Sets />} />
         <Route path="/sets/:slug" element={<SetPage />} />
+        {/* The holding page. Every route above stays mounted while its category
+          * is quarantined — the gate is on the sidebar, not on the router, so a
+          * held page is reachable by link and by ⌘K and can be checked. */}
+        <Route path="/quarantine" element={<Quarantine />} />
         {/* The reference graph — generated from usage-index + token-index. */}
         <Route path="/references" element={<References />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
+        <Route path="/search" element={<SearchResults />} />
         <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
@@ -98,7 +104,6 @@ export default function App() {
           }
         />
         {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
-        </Route>
       </Route>
       {/* THE workshop route — live dogfood of @kolkrabbi/kol-workshop (shell +
           docs viewer). The vendored-shell /workshop-preview twin was deleted

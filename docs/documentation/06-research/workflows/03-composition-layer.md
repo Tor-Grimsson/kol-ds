@@ -23,7 +23,7 @@ A workbench surfaces this layer: you end up writing a story per variant and per 
 
 ---
 
-## Part 1 — Behavior / a11y primitives (headless)
+## Behavior primitives
 
 Rather than building dropdowns, dialogs, and comboboxes from scratch, most teams **compose on headless primitives**: libraries that supply **keyboard handling, focus management, and ARIA** but ship **no styles**. You bring the Tailwind classes.
 
@@ -43,7 +43,7 @@ The styled, popular systems are mostly **headless primitive + Tailwind**: shadcn
 
 ---
 
-## Part 2 — Variant management
+## Variant management
 
 A component has variants (`primary`/`secondary`, `sm`/`md`/`lg`, `disabled`, `loading`). The question is **how you turn props into class strings**.
 
@@ -88,7 +88,7 @@ A related pattern from Radix: `asChild` lets a component **render as its child e
 
 ---
 
-## How the two parts combine
+## Combining
 
 The full modern recipe for one styled, accessible component:
 

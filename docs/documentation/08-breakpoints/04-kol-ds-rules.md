@@ -2,7 +2,7 @@
 title: Breakpoints — KOL-DS rules
 type: reference
 status: active
-updated: 2026-07-30
+updated: 2026-07-31
 description: The responsive laws with teeth — ONE shell frame, four width tokens, one padding rhythm, one chrome reveal — plus the exemption list for verbatim-ported specimens.
 aliases:
   - breakpoint rules
@@ -28,21 +28,21 @@ four staggered chrome reveals, three parallel breakpoint systems — never again
 | # | Law | Teeth |
 |---|---|---|
 | 1 | **ONE frame** — `--kol-content-shell` (1800) is THE outer container on every page; content left-anchored; rails outside the frame | no page invents a width; a new cap is a token PR, not a class |
-| 2 | **Four width tokens only** — shell / panel / column / measure (`panel` 960 added 2026-07-30 for tables/code/framed panels); `page` + `wide` were killed at theme 0.11.22 | width is content, not page identity |
+| 2 | **Five width tokens only** — shell / **canvas** / panel / column / measure (`panel` added 2026-07-30 for tables/code/framed panels; `canvas` added 2026-07-31 for the page body inside the shell's main column); `page` + `wide` were killed at theme 0.11.22 and stay dead | width is content, not page identity — `canvas` names a content kind (a field of items), not a page identity |
 | 3 | **Tailwind scale, min-width only** — sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536 | no custom px queries, no `max-width` queries in showcase-owned code |
 | 4 | **One padding rhythm** — the framework ramp tokens (`--kol-pad-section-*`: x 20/32/48 · y 48/64/80) | no Tailwind padding steps on page containers |
 | 5 | **One chrome reveal** — NavDrawer below `lg`, rails at `lg+`; TOC may enhance at `xl` | nothing chrome-critical reveals at `sm`/`md` |
 | 6 | **Grid collapse is canonical** — first break `sm`; masonry 1/2/3/4; fixed-N only for tiny cells | see [[01-breakpoints\|values]] for the full table |
 | 7 | **Measure 65ch, rails 256px** | no forks |
 
-## Exemptions — verbatim ports
+## Exemptions
 
 `showcase/src/workshop/**` (shell, chess, dashboards) keep their internal
 geometry (1800 shell cap, chess `max-width:1024` queries, `@container` steps).
 They are specimens, not showcase chrome — do not conform them, do not copy
 their patterns out.
 
-## Where the law is enforced
+## Enforcement
 
 | Surface | Mechanism |
 |---|---|

@@ -27,7 +27,7 @@ related:
 
 A **brand kit** is a data + assets package — no server (unlike the clients tier). It kills the copy-a-client-and-swap-fields workflow: brand facts live in one versioned package per brand, all conforming to one schema.
 
-## The manifest schema
+## Manifest schema
 
 `@kolkrabbi/kol-brand-template` defines `BrandManifest` (JSDoc-typed): `meta` (declared identity) · `identity` (role→ramp bindings — which stop is primary/secondary + the ink pairs) · `colors.anchors` · `ramps` (literal hex per stop) · `type` (families + cuts + scale) · `logos` (package-relative SVGs) · `clearspace` · `stationery` · `presence` (observed footprint, scraper-fed) · `press` · `timeline`.
 

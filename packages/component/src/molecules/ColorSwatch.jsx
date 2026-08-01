@@ -43,7 +43,7 @@ const SIZE_CLASSES = {
 
 const RADIUS_CLASSES = {
   none:  'rounded-none',
-  tight: 'rounded-[2px]',
+  tight: 'rounded-[var(--kol-radius-xs)]',
   sm:    'rounded',
   full:  'rounded-full',
 }

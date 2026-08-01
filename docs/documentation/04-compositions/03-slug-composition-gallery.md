@@ -33,13 +33,13 @@ changes. The page has two halves:
    each rendered live in its own container, one after another.** This doc is
    about that half.
 
-## Slugs are kebab-case
+## Slugs
 
 The slug **is the filename** (`sets-registry`/`blocks-registry` glob the folder
 and `keyOf` = filename without `.jsx`). So the file must be kebab-case:
 `showcase/src/sets/stack-blog.jsx` → `/sets/stack-blog`. No PascalCase files.
 
-## Where the component list comes from — the scanner
+## The scanner
 
 `scripts/extract-composition.mjs` derives the manifest **from source** (nothing
 hand-authored, so it can't drift). For each block/set file it walks the import
@@ -79,7 +79,7 @@ The registries attach `composition[slug]` to each item.
 run the separate usage miner before a release; that regenerates `usage-index.json`
 from mined apps and wipes the hand-seeded new-component entries.
 
-## How the gallery renders — one container per component
+## Rendering
 
 `CollectionPage`'s `Composition` maps every `kol` name (then each `local` area)
 through `ComponentSpecimen`, stacked vertically:
@@ -95,7 +95,7 @@ So the gallery is a live, top-to-bottom showcase of everything the set is built
 from — the same treatment for **every** set (chess & metrics included: their
 dashboard cards / board parts render live as `local` containers).
 
-## Adding or changing a set/block
+## Adding sets
 
 1. Drop `showcase/src/<sets|blocks>/<kebab-name>.jsx` — default export + `meta`.
 2. Make sure **every member component has a demo** at

@@ -37,7 +37,7 @@ A component has exactly one Tier **and** exactly one Function. `Slider` is a *mo
 
 ---
 
-## Axis 1 — Tier
+## Tier
 
 Which `packages/component/src/<folder>/` (or package) a component lives in. Decided by a **mechanical nesting test**, enforced by `scripts/validate-taxonomy.mjs`.
 
@@ -78,7 +78,7 @@ The "Atomic" sidebar grouping is the full Tier set, in this order:
 
 ---
 
-## Axis 2 — Function
+## Function
 
 A **closed, Material-style set**. Every current and future component maps to exactly one. This is the axis you browse by.
 
@@ -101,7 +101,7 @@ Closed means **new components slot into an existing Function** — you don't inv
 
 ---
 
-## How the axes combine in the sidebar
+## Sidebar
 
 The component sidebar carries a persisted **`Atomic ⇄ Function`** toggle *(rolling out in Phase 2 — see [[03-taxonomy-audit-and-plan|the audit & plan]])*:
 
@@ -112,7 +112,7 @@ Whichever grouping is active, **each component page shows both**: its Tier as a 
 
 ---
 
-## One page per *component*, not per *export*
+## Page rule
 
 A component's compositional **sub-parts and infrastructure sub-exports are members of one component, not peers.** They render inside the parent's page (one sidebar row), never as standalone entries:
 

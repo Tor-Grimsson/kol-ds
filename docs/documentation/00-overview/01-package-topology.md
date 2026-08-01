@@ -18,13 +18,13 @@ tags:
   - domain/design-system
   - domain/architecture
 related:
-  - "[[04-workshop-system|workshop system]]"
-  - "[[05-foundry-system|foundry component index]]"
-  - "[[06-store-system|store component index]]"
-  - "[[07-content-system|content system]]"
-  - "[[08-chess-system|chess system]]"
-  - "[[09-dashboards-system|dashboards system]]"
-  - "[[10-styleguide-system|styleguide system]]"
+  - "[[../04-compositions/04-workshop-system|workshop system]]"
+  - "[[../04-compositions/05-foundry-system|foundry component index]]"
+  - "[[../04-compositions/06-store-system|store component index]]"
+  - "[[../04-compositions/07-content-system|content system]]"
+  - "[[../04-compositions/08-chess-system|chess system]]"
+  - "[[../04-compositions/09-dashboards-system|dashboards system]]"
+  - "[[../04-compositions/10-styleguide-system|styleguide system]]"
 ---
 
 # Package topology
@@ -50,7 +50,7 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 
 **Static assets (ARCHITECTURE §7, 2026-07-15):** ONE `public/` at the repo root (fonts, images, favicons) — every app points at it via Vite `publicDir: '../public'`; symlink only for tools that can't be configured. Never a second per-app `public/`.
 
-## What stays in `kol-component` (shared by the domain packages)
+## Shared core
 
 The domain packages import these — they are **not** duplicated:
 
@@ -60,7 +60,7 @@ The domain packages import these — they are **not** duplicated:
 
 Filtering (`ContentFilters`/`DropdownTagFilter`), search (`ShellSearchOverlay`), and the embla wrapper (`GalleryCarousel`) are **core** — used by 7–10 consumers — and stay here on purpose.
 
-## Domain-package component index
+## Domain index
 
 Per-package READMEs carry the authoritative tables; the dedicated docs are linked above.
 
@@ -72,12 +72,12 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 | **foundry** | see [[05-foundry-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture. Moved in from `kol-component` 2026-07-09 (they pass the live-font membership test): `TypeSample`, `TypeSpecCard`, `TextPressure`, `ColorLoader` |
 | **store** | see [[06-store-system]] — `ProductDetailLayout`, `PriceDisplay`, `DiagonalMarqueeRiver`, `PrintsGrid`, `PrintGridCard`, `PrintGridCardGsap`, `PrintBuyButton`; `./data` demo catalog subpath. (The "Drift" gallery reuses content's `ScrollDriftGallery` — not duplicated here.) |
 
-## Deps at a glance
+## Dependencies
 
 - `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `framer-motion` (peer) → foundry (ColorLoader). `opentype.js` (optional peer) → specimen.
 - Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons). CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).
 
-## Cascade contract — order AND layer
+## Cascade contract
 
 Consumer import order is `tailwindcss` → `kol-theme` → `kol-brand-color.css` → `kol-framework.css`, and the framework import **must** carry `layer(components)`:
 

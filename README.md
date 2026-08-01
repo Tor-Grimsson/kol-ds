@@ -1,6 +1,6 @@
 # KOL Design System
 
-[![Live — ds.kolkrabbi.io](https://img.shields.io/badge/live-ds.kolkrabbi.io-000?style=flat-square&logo=vercel)](https://ds.kolkrabbi.io)
+[![Live — ui.kolkrabbi.io](https://img.shields.io/badge/live-ui.kolkrabbi.io-000?style=flat-square&logo=vercel)](https://ui.kolkrabbi.io)
 
 The single maintenance home for the **KOL (Kolkrabbi)** design system — one pnpm workspace that **maintains** the `@kolkrabbi/kol-*` packages, **publishes** them to npm, and **showcases** them live.
 

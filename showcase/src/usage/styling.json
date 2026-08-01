@@ -1,0 +1,1051 @@
+{
+  "AssetPlaceholder": {
+    "classes": [
+      "kol-asset-placeholder",
+      "kol-asset-placeholder-label",
+      "kol-asset-placeholder-note",
+      "kol-fg-02",
+      "kol-fg-24"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "Avatar": {
+    "classes": [
+      "kol-avatar"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-helper-14",
+      "kol-helper-16",
+      "kol-helper-20"
+    ],
+    "tokens": []
+  },
+  "Badge": {
+    "classes": [
+      "kol-badge",
+      "kol-badge-critical",
+      "kol-badge-default",
+      "kol-badge-destructive",
+      "kol-badge-info",
+      "kol-badge-lg",
+      "kol-badge-md",
+      "kol-badge-outline",
+      "kol-badge-secondary",
+      "kol-badge-sm",
+      "kol-badge-success",
+      "kol-badge-warning"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-border-default",
+      "--kol-font-family-mono",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-transition-base"
+    ]
+  },
+  "Button": {
+    "classes": [
+      "kol-btn",
+      "kol-btn-accent",
+      "kol-btn-animate",
+      "kol-btn-danger",
+      "kol-btn-ghost",
+      "kol-btn-grey",
+      "kol-btn-icon",
+      "kol-btn-lg",
+      "kol-btn-md",
+      "kol-btn-outline",
+      "kol-btn-pressed",
+      "kol-btn-primary",
+      "kol-btn-quiet",
+      "kol-btn-secondary",
+      "kol-btn-sm",
+      "kol-icon-default",
+      "kol-icon-hover",
+      "kol-icon-swap-container"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-accent-on-primary",
+      "--kol-accent-primary",
+      "--kol-accent-primary-strong",
+      "--kol-color-absolute-white",
+      "--kol-fg-04",
+      "--kol-focus-ring",
+      "--kol-opacity-disabled",
+      "--kol-oq-02",
+      "--kol-oq-04",
+      "--kol-oq-08",
+      "--kol-oq-12",
+      "--kol-oq-16",
+      "--kol-oq-24",
+      "--kol-oq-48",
+      "--kol-oq-inverse-40",
+      "--kol-oq-inverse-48",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-surface-secondary",
+      "--kol-transition-base"
+    ]
+  },
+  "CopyButton": {
+    "classes": [
+      "kol-copy-btn"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-fg-16",
+      "--kol-fg-48",
+      "--kol-fg-64",
+      "--kol-font-family-mono",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  },
+  "CurveOverlay": {
+    "classes": [
+      "kol-accent-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "DocsToc": {
+    "classes": [
+      "shell-nav-item"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-14"
+    ],
+    "tokens": [
+      "--kol-surface-on-primary"
+    ]
+  },
+  "DropdownTagFilter": {
+    "classes": [
+      "kol-border-default",
+      "kol-font-family-mono",
+      "kol-surface-on-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "EmptyState": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-helper-16",
+      "kol-sans-body-03"
+    ],
+    "tokens": []
+  },
+  "ExitPreview": {
+    "classes": [
+      "kol-exit-preview",
+      "kol-exit-preview-icon",
+      "kol-exit-preview-label"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "Figure": {
+    "classes": [
+      "kol-prose-figure"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-doc-caption",
+      "kol-doc-eyebrow"
+    ],
+    "tokens": [
+      "--kol-fg-16"
+    ]
+  },
+  "FullscreenOverlay": {
+    "classes": [
+      "kol-overlay",
+      "kol-overlay-close",
+      "kol-overlay-sheet"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-color-absolute-black",
+      "--kol-oq-16",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  },
+  "IconFrame": {
+    "classes": [
+      "kol-icon-frame",
+      "kol-icon-frame-radius-full"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-radius-sm"
+    ]
+  },
+  "Input": {
+    "classes": [
+      "kol-control"
+    ],
+    "dynamic": [
+      "kol-control-*",
+      "kol-control--*"
+    ],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-radius-sm"
+    ]
+  },
+  "LabeledControl": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10"
+    ],
+    "tokens": []
+  },
+  "OverlayGlassPanel": {
+    "classes": [
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "Pill": {
+    "classes": [
+      "pill-inverse",
+      "pill-lg",
+      "pill-md",
+      "pill-outline",
+      "pill-sm",
+      "pill-subtle"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-helper-14"
+    ],
+    "tokens": [
+      "--kol-border-default",
+      "--kol-radius-full",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  },
+  "Popover": {
+    "classes": [
+      "kol-popover",
+      "kol-popover-float",
+      "kol-tooltip",
+      "kol-tooltip-key"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-fg-08",
+      "--kol-font-family-mono",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary"
+    ]
+  },
+  "ProsePreview": {
+    "classes": [
+      "kol-prose",
+      "kol-prose-indented",
+      "kol-prose-pullout"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-sans-body-01"
+    ],
+    "tokens": [
+      "--kol-fg-04",
+      "--kol-fg-08",
+      "--kol-fg-12",
+      "--kol-fg-16",
+      "--kol-fg-32",
+      "--kol-fg-48",
+      "--kol-fg-body",
+      "--kol-fg-emphasis",
+      "--kol-fg-meta",
+      "--kol-fg-strong",
+      "--kol-font-family-mono",
+      "--kol-font-family-sans",
+      "--kol-font-family-sans-compact",
+      "--kol-font-family-sans-narrow",
+      "--kol-link",
+      "--kol-oq-08",
+      "--kol-radius-sm",
+      "--kol-spacing-10",
+      "--kol-spacing-2",
+      "--kol-spacing-20",
+      "--kol-spacing-4",
+      "--kol-spacing-6",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-text-body-01",
+      "--kol-text-body-02",
+      "--kol-text-heading-01",
+      "--kol-text-heading-03",
+      "--kol-text-heading-04",
+      "--kol-text-heading-05",
+      "--kol-text-heading-06"
+    ]
+  },
+  "QuantityInput": {
+    "classes": [
+      "kol-border-default",
+      "kol-font-family-mono",
+      "kol-surface-on-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "RotaryDial": {
+    "classes": [
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "SearchInput": {
+    "classes": [
+      "kol-control"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-14",
+      "kol-mono-12",
+      "kol-mono-14"
+    ],
+    "tokens": [
+      "--kol-radius-sm"
+    ]
+  },
+  "Section": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10"
+    ],
+    "tokens": []
+  },
+  "SectionLabel": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-14",
+      "kol-helper-20",
+      "kol-sans-heading-03"
+    ],
+    "tokens": []
+  },
+  "SegmentedToggle": {
+    "classes": [
+      "kol-seg",
+      "kol-seg-cell"
+    ],
+    "dynamic": [
+      "kol-seg--*"
+    ],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-fg-04",
+      "--kol-fg-emphasis",
+      "--kol-fg-meta",
+      "--kol-radius-sm",
+      "--kol-surface-secondary",
+      "--kol-transition-base"
+    ]
+  },
+  "Stepper": {
+    "classes": [
+      "kol-control",
+      "kol-control--filled"
+    ],
+    "dynamic": [
+      "kol-control-*"
+    ],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-accent-on-primary",
+      "--kol-accent-primary",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary"
+    ]
+  },
+  "Tag": {
+    "classes": [
+      "kol-tag",
+      "kol-tag--inverse",
+      "kol-tag--primary",
+      "kol-tag--secondary",
+      "kol-tag-dismiss"
+    ],
+    "dynamic": [
+      "kol-tag--*"
+    ],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-helper-14"
+    ],
+    "tokens": [
+      "--kol-border-default",
+      "--kol-radius-full",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  },
+  "Textarea": {
+    "classes": [
+      "kol-control",
+      "kol-control--textarea",
+      "kol-textarea-resize-icon"
+    ],
+    "dynamic": [
+      "kol-control-*",
+      "kol-control--*"
+    ],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-fg-48",
+      "--kol-radius-sm"
+    ]
+  },
+  "ToggleBracket": {
+    "classes": [
+      "kol-control",
+      "kol-control--filled",
+      "kol-control-md"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": [
+      "--kol-accent-on-primary",
+      "--kol-accent-primary",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary"
+    ]
+  },
+  "ToggleCheckbox": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "ToggleSwitch": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": []
+  },
+  "ViewToggle": {
+    "classes": [
+      "kol-control",
+      "kol-control--filled",
+      "kol-control-sm",
+      "kol-mono"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": [
+      "--kol-accent-on-primary",
+      "--kol-accent-primary",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary"
+    ]
+  },
+  "Accordion": {
+    "classes": [
+      "kol-accordion",
+      "kol-accordion-body",
+      "kol-accordion-chevron",
+      "kol-accordion-meta",
+      "kol-accordion-panel",
+      "kol-accordion-title",
+      "kol-accordion-trigger",
+      "kol-fg-08"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-helper-16"
+    ],
+    "tokens": []
+  },
+  "ButtonGroup": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-sans-heading-05"
+    ],
+    "tokens": []
+  },
+  "CardFeatureItem": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-16",
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "CodeBlock": {
+    "classes": [
+      "kol-codeblock",
+      "kol-codeblock--bare",
+      "kol-codeblock-copy",
+      "kol-codeblock-filename",
+      "kol-codeblock-wrapper",
+      "kol-font-family-mono",
+      "kol-surface-on-primary"
+    ],
+    "dynamic": [
+      "kol-codeblock*"
+    ],
+    "type": [],
+    "tokens": [
+      "--kol-border-default",
+      "--kol-fg-16",
+      "--kol-fg-64",
+      "--kol-font-family-mono",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-surface-tertiary"
+    ]
+  },
+  "ColorInputRow": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "ColorRamp": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "Dropdown": {
+    "classes": [
+      "kol-btn",
+      "kol-dd-caret",
+      "kol-dd-div",
+      "kol-dd-list",
+      "kol-dd-panel",
+      "kol-dd-trigger",
+      "kol-dd-trigger--grey",
+      "kol-dd-trigger--open"
+    ],
+    "dynamic": [
+      "kol-btn-*"
+    ],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16"
+    ],
+    "tokens": [
+      "--kol-focus-ring",
+      "--kol-opacity-disabled",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-transition-base"
+    ]
+  },
+  "FramedMediaBand": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "Image": {
+    "classes": [
+      "kol-image"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "MediaCard": {
+    "classes": [
+      "kol-fg-12",
+      "kol-fg-64",
+      "kol-fg-absolute-12",
+      "kol-fg-absolute-16",
+      "kol-fg-absolute-48",
+      "kol-surface-on-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "MediaRow": {
+    "classes": [
+      "kol-fg-08"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "MenuItem": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "Modal": {
+    "classes": [
+      "kol-modal",
+      "kol-surface-on-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "PropertyInput": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10"
+    ],
+    "tokens": []
+  },
+  "SelectionOverlay": {
+    "classes": [
+      "kol-accent-primary",
+      "kol-font-family-mono"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "ShellSearchOverlay": {
+    "classes": [
+      "kol-radius-2xl"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-mono-14"
+    ],
+    "tokens": []
+  },
+  "Slider": {
+    "classes": [
+      "control-slider"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12"
+    ],
+    "tokens": [
+      "--kol-fg-80",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary",
+      "--kol-transition-base"
+    ]
+  },
+  "SpecList": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "SpectrumControls": {
+    "classes": [
+      "kol-wheel-black-fade",
+      "kol-wheel-ring-clip",
+      "kol-wheel-white-fade"
+    ],
+    "dynamic": [
+      "kol-wheel-black-fade-*",
+      "kol-wheel-ring-clip-*",
+      "kol-wheel-white-fade-*"
+    ],
+    "type": [],
+    "tokens": []
+  },
+  "SplitToolButton": {
+    "classes": [
+      "kol-btn",
+      "kol-btn-ghost",
+      "kol-btn-pressed",
+      "kol-btn-quiet"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "tokens": [
+      "--kol-focus-ring",
+      "--kol-opacity-disabled",
+      "--kol-oq-04",
+      "--kol-oq-08",
+      "--kol-oq-48",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-transition-base"
+    ]
+  },
+  "SwatchControls": {
+    "classes": [
+      "kol-swatch-none-marker"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-fg-32"
+    ]
+  },
+  "TabsRow": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12"
+    ],
+    "tokens": []
+  },
+  "AsciiCursor": {
+    "classes": [
+      "kol-ascii-cursor",
+      "kol-ascii-cursor-hide",
+      "kol-surface-on-primary",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "BentoCard": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-text",
+      "kol-sans-heading-01"
+    ],
+    "tokens": []
+  },
+  "Canvas": {
+    "classes": [
+      "kol-font-family-mono"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "Carousel": {
+    "classes": [
+      "kol-embla",
+      "kol-embla-btn",
+      "kol-embla-container",
+      "kol-embla-controls",
+      "kol-embla-slide",
+      "kol-embla-viewport"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "ContentFilters": {
+    "classes": [
+      "kol-btn",
+      "kol-btn-icon",
+      "kol-btn-md",
+      "kol-btn-secondary",
+      "kol-surface-secondary"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-helper-14",
+      "kol-helper-16"
+    ],
+    "tokens": [
+      "--kol-fg-04",
+      "--kol-focus-ring",
+      "--kol-opacity-disabled",
+      "--kol-oq-12",
+      "--kol-oq-inverse-40",
+      "--kol-oq-inverse-48",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary",
+      "--kol-transition-base"
+    ]
+  },
+  "CtaGlobal": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-16",
+      "kol-sans-display-01",
+      "kol-sans-heading-01"
+    ],
+    "tokens": []
+  },
+  "EditorShell": {
+    "classes": [
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": []
+  },
+  "ErrorBoundary": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-12",
+      "kol-mono-16",
+      "kol-sans-display-02"
+    ],
+    "tokens": []
+  },
+  "FeatureSplit": {
+    "classes": [
+      "kol-feature-split",
+      "kol-feature-split-body",
+      "kol-feature-split-kicker",
+      "kol-feature-split-meta",
+      "kol-feature-split-meta-label",
+      "kol-feature-split-meta-num",
+      "kol-feature-split-pull",
+      "kol-feature-split-visual",
+      "kol-feature-split-visual-caption",
+      "kol-feature-split-visual-veil"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-accent-primary",
+      "--kol-font-family-mono",
+      "--kol-font-family-sans",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  },
+  "FeaturedCarousel": {
+    "classes": [
+      "kol-btn",
+      "kol-btn-primary",
+      "kol-btn-sm",
+      "kol-embla",
+      "kol-embla-btn",
+      "kol-embla-container",
+      "kol-embla-controls",
+      "kol-embla-slide",
+      "kol-embla-viewport",
+      "kol-featured-carousel",
+      "kol-featured-carousel-media"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12",
+      "kol-mono-12",
+      "kol-sans-display-01"
+    ],
+    "tokens": [
+      "--kol-focus-ring",
+      "--kol-opacity-disabled",
+      "--kol-oq-08",
+      "--kol-oq-16",
+      "--kol-radius-sm",
+      "--kol-surface-on-primary",
+      "--kol-surface-secondary",
+      "--kol-transition-base"
+    ]
+  },
+  "FeaturesCardSection": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-14",
+      "kol-sans-heading-03"
+    ],
+    "tokens": []
+  },
+  "FoundryCTA": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-14",
+      "kol-sans-heading-02"
+    ],
+    "tokens": []
+  },
+  "FullBleedHero": {
+    "classes": [
+      "kol-full-bleed-hero",
+      "kol-full-bleed-hero-media",
+      "kol-surface-primary"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-surface-primary"
+    ]
+  },
+  "MediaTileGallery": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "MediaViewer": {
+    "classes": [
+      "kol-embla-btn"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "NewsletterBand": {
+    "classes": [],
+    "dynamic": [],
+    "type": [
+      "kol-mono-14",
+      "kol-sans-display-01"
+    ],
+    "tokens": []
+  },
+  "SpectrumGrid": {
+    "classes": [
+      "kol-sg-gap",
+      "kol-sg-label-w",
+      "kol-spectrum-grid"
+    ],
+    "dynamic": [],
+    "type": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "tokens": []
+  },
+  "Table": {
+    "classes": [
+      "kol-table",
+      "kol-table--simple",
+      "kol-table-cell-text",
+      "kol-table-cell-title",
+      "kol-table-row",
+      "kol-table-thead",
+      "kol-table-wrapper"
+    ],
+    "dynamic": [],
+    "type": [],
+    "tokens": [
+      "--kol-fg-04",
+      "--kol-fg-08",
+      "--kol-fg-12",
+      "--kol-fg-64",
+      "--kol-fg-80",
+      "--kol-font-family-mono",
+      "--kol-link",
+      "--kol-link-hover",
+      "--kol-oq-08",
+      "--kol-surface-on-primary",
+      "--kol-surface-primary"
+    ]
+  }
+}

@@ -2,8 +2,8 @@
 title: Breakpoints — the values
 type: reference
 status: active
-updated: 2026-07-30
-description: Every responsive number in the system — the Tailwind min-width scale, the three content-width tokens, the framework padding ramp, rail widths, and canonical grid-collapse points.
+updated: 2026-07-31
+description: Every responsive number in the system — the Tailwind min-width scale, the five content-width tokens, the framework padding ramp, rail widths, and canonical grid-collapse points.
 aliases:
   - breakpoint values
 sources:
@@ -32,11 +32,16 @@ related:
 
 ## Content-width tokens
 
-Three tokens, `packages/theme/kol-theme.css:79-81`. The `page` (1400) and `wide`
-(1024) tiers were killed at theme 0.11.22 — width is content, not page identity.
+Five tokens, `packages/theme/kol-theme.css` content-widths block. The old `page`
+(1400) and `wide` (1024) tiers were killed at theme 0.11.22 — width is content,
+not page identity — and that still holds: `canvas` is **not** the old `page` tier
+restored. `page` was a page *identity* ("this is a page, so it is 1400"); canvas
+is a content kind ("this is a field of items"), and it earns its rung because the
+shell's main track can never reach the frame value and panel squeezes a grid.
 
 | Token | Value | For |
 |---|---|---|
+| `--kol-content-canvas` | 87.5rem | the page BODY inside the shell's main column — item fields (swatch grids, icon walls, galleries). Sorts under shell. Added 2026-07-31: shell was too wide to ever fire on the middle grid track, panel too tight for a grid. |
 | `--kol-content-shell` | 1800px | THE outer page container — one frame, content left-anchored, rails outside |
 | `--kol-content-panel` | 960px | tables, code blocks, framed panels |
 | `--kol-content-column` | 768px | reading columns — docs, articles, workshop |
@@ -54,7 +59,7 @@ steps on page containers: `padding: var(--kol-pad-section-y) var(--kol-pad-secti
 | x | 20px | 32px | 48px |
 | y | 48px | 64px | 80px |
 
-## Fixed chrome numbers
+## Chrome numbers
 
 | Thing | Value |
 |---|---|
@@ -62,7 +67,7 @@ steps on page containers: `padding: var(--kol-pad-section-y) var(--kol-pad-secti
 | Chrome reveal | `lg` — NavDrawer below, TopBar links + sidebar at `lg+` |
 | TOC rail | `xl:block` (progressive enhancement) |
 
-## Canonical grid collapses
+## Grid collapses
 
 | Pattern | Steps |
 |---|---|

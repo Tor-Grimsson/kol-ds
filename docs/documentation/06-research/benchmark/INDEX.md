@@ -32,7 +32,7 @@ A point-by-point read of **shadcn/ui** (verified against `ui.shadcn.com`, June 2
 
 ---
 
-## Finding 1 — Distribution model
+## Distribution model
 
 | | shadcn/ui | KOL |
 |---|---|---|
@@ -44,7 +44,7 @@ A point-by-point read of **shadcn/ui** (verified against `ui.shadcn.com`, June 2
 
 **Read:** Both reject the opaque-bundle model and ship readable source — same "open code" instinct. They differ on ownership: shadcn hands you the source to fork; KOL keeps a canonical home (ARCHITECTURE §2) and versions it. KOL's model is better for a *single owner across many apps* (one fix propagates by version bump); shadcn's is better for *per-project divergence*. KOL's choice is correct for its situation — **no change recommended**, but see Finding 6 for borrowing shadcn's CLI/registry without giving up versioning.
 
-## Finding 2 — Component catalog coverage
+## Catalog coverage
 
 Mapping shadcn's catalog onto KOL. ✓ = real equivalent · ~ = partial/compose · ✗ = gap.
 
@@ -77,7 +77,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 
 **Read:** The gaps cluster in *general web-app UI*; the surplus clusters in *design-tool UI*. That's coherent and intentional — KOL grew out of editors (kol-editor, kol-draw-3d, kol-radar). The question for each gap below is demand, not prestige.
 
-## Finding 3 — Variant & styling architecture
+## Variant architecture
 
 | | shadcn/ui | KOL |
 |---|---|---|
@@ -87,7 +87,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 
 **Read:** shadcn's `cva` + `cn()` gives one declarative place for variant→class mapping and clean call-site overrides; KOL's variant logic is split between JSX branching and hand-authored CSS, which is harder to audit and prone to drift (the global rule against "two ways to express the same concept" is exactly this risk). Two of KOL's missing pieces are real ergonomics gaps: **no `cn()`/tailwind-merge** (so a consumer's `className` can silently lose to a component's own class) and **no `asChild`** (so `<Button>` can't wrap a router `<Link>` — the brand app works around this with a `href` prop).
 
-## Finding 4 — Theming
+## Theming
 
 | | shadcn/ui | KOL |
 |---|---|---|
@@ -99,7 +99,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 
 **Read:** KOL's opacity scale + surface tiers is *more* expressive than shadcn's flat pairs for layered, translucent UI (exactly what editors need) — this is a genuine KOL advantage. KOL is behind on two counts: **sRGB instead of OKLCH** (KOL won't get shadcn's perceptual-uniform light/dark parity for free), and **no theme generator** (brand themes are hand-cut). Adopting OKLCH for the base tokens is a low-risk, high-quality win.
 
-## Finding 5 — Behavior & accessibility
+## Accessibility
 
 | | shadcn/ui | KOL |
 |---|---|---|
@@ -109,7 +109,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 
 **Read:** **This is KOL's biggest structural risk.** shadcn inherits focus management, ARIA wiring, keyboard nav, and roving tabindex from a battle-tested primitive layer across its entire overlay/menu/form surface. KOL re-implements this per component, which means a11y quality is uneven and unverified — and the gap widens with every overlay/menu component added (Finding 2). KOL already depends on Floating UI; the realistic move is not "adopt Radix" (it would fight the raw-source, zero-build constraint) but **establish a documented a11y baseline** and a shared set of headless behavior hooks (focus-trap, roving-tabindex, dismiss) so new components inherit it instead of re-deriving it.
 
-## Finding 6 — Docs & presentation
+## Presentation
 
 | | shadcn/ui | KOL showcase (now) |
 |---|---|---|
@@ -126,7 +126,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 
 ---
 
-## Recommendations — prioritized
+## Recommendations
 
 1. **Establish an a11y baseline + shared behavior hooks** (Finding 5). Highest structural value. Document the keyboard/ARIA contract every overlay/menu/form component must meet; extract focus-trap / roving-tabindex / dismiss into shared hooks so new components inherit it. Do this *before* filling overlay gaps in Finding 2, or the gaps inherit the same unevenness.
 2. **Add `cn()` (clsx + tailwind-merge) and an `asChild` pattern** (Finding 3). Small, mechanical, immediately removes the silent-className-loss footgun and the `<Button href>` workaround. Lowest effort-to-value ratio on the list.
@@ -135,7 +135,7 @@ This is KOL's moat, and it's substantial: **ColorSwatch, TransparentX** (color/t
 5. **Move base tokens to OKLCH** (Finding 4). Low-risk quality win for light/dark parity; keep the opacity-scale system (it's an advantage).
 6. **Publish a shadcn-compatible registry + (optional) MCP** (Findings 1, 6). shadcn's CLI consumes third-party registries; a `registry.json` for KOL would let any shadcn user `npx shadcn add @kol/<name>` *without* KOL abandoning versioned packages. Pairs naturally with serving the existing mined usage over MCP. Highest-ceiling, lowest-urgency — do it once the catalog and a11y are solid.
 
-## What KOL should NOT copy
+## Rejected
 
 - **Per-project source ownership** — KOL's canonical-home + versioning model (ARCHITECTURE §2) is the right call for one owner across many apps. Keep it.
 - **Radix/Base UI as a hard dependency** — fights the raw-source / zero-build constraint (ARCHITECTURE §4). Borrow the *a11y contract*, not the dependency.

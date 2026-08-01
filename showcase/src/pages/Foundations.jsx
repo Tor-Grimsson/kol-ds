@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import Swatch from '../lib/Swatch.jsx'
-import { TOTAL } from '../lib/registry.js'
+import { TOTAL } from '../nav/registry.js'
 import {
   OPACITY_SCALE, FG_SEMANTIC, SURFACES, BRAND_RAMPS, GREY_RAMP,
   TYPE_SCALE, RADII, SHADOWS, ALL_TOKENS,

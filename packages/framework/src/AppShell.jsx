@@ -53,7 +53,7 @@ export default function AppShell({ navTree = [], getActivePage, header, footer, 
             </button>
 
             <div
-              className="kol-sidenav-backdrop fixed inset-0 z-20 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 md:hidden"
+              className="kol-sidenav-backdrop fixed inset-0 z-20 kol-overlay-scrim opacity-0 pointer-events-none transition-opacity duration-200 md:hidden"
               onClick={() => setDrawerOpen(false)}
               aria-hidden="true"
             />

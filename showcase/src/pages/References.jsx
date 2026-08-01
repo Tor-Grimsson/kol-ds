@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useMemo } from 'react'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { Link } from 'react-router-dom'
+import { ContentFilters, Table, Button } from '@kolkrabbi/kol-component'
+import { NodeLabel, NodePreview, kindLabel } from '../lib/NodeLabel.jsx'
 import usageIndex from '../usage/usage-index.json'
 import tokenIndex from '../usage/token-index.json'
 
@@ -19,9 +21,15 @@ import tokenIndex from '../usage/token-index.json'
  * The canon bar is 3x the median, not a constant: Law 3 (high reference =
  * canon) fires on arithmetic, and the bar moves with the repo instead of
  * ageing into a lie.
+ *
+ * Chrome is borrowed, not built: ContentFilters owns the filter groups, the
+ * name search and the count; Table owns the grid. The previous version
+ * hand-rolled a chip row and a bare <table>, and the result was a header that
+ * read `edgesnode` with every cell in the same weight.
  */
 
-const CONCERNS = ['all', 'color', 'type', 'layout', 'nav', 'chrome', 'component', 'breakpoint']
+const CONCERNS = ['color', 'type', 'layout', 'nav', 'chrome', 'component', 'breakpoint']
+const KINDS = ['component', 'token', 'class']
 
 export function useGraph() {
   return useMemo(() => {
@@ -55,16 +63,105 @@ export function useGraph() {
   }, [])
 }
 
+/* Columns, in scan order: the number that ranks the row, then what it IS, then
+ * where it comes from. Numeric columns are right-aligned and carry the ink;
+ * the provenance columns are deliberately light so the eye lands on the name. */
+function graphColumns(threshold) {
+  return [
+    {
+      accessor: 'weighted',
+      header: '★',
+      sortable: true,
+      headerClassName: 'kol-table-cell-title text-right',
+      className: 'kol-table-cell-text text-right',
+      render: (n) => (
+        <span className="kol-mono-12 text-emphasis font-medium">
+          {n.weighted}
+          {n.weighted >= threshold && <span title="canon candidate" className="text-fg-32"> ●</span>}
+        </span>
+      ),
+    },
+    {
+      accessor: 'edgeCount',
+      header: 'Edges',
+      sortable: true,
+      headerClassName: 'kol-table-cell-title text-right',
+      className: 'kol-table-cell-text text-right',
+      render: (n) => <span className="kol-mono-12 text-meta">{n.edgeCount}</span>,
+    },
+    {
+      accessor: 'name',
+      header: 'Node',
+      sortable: true,
+      render: (n) => <NodeLabel name={n.name} kind={n.kind} to={`/references/${encodeURIComponent(n.name)}`} />,
+    },
+    {
+      accessor: 'preview',
+      header: '',
+      className: 'kol-table-cell-text',
+      render: (n) => <NodePreview name={n.name} kind={n.kind} concern={n.concern} />,
+    },
+    /* PILLS IN CELLS, read off chess.kolkrabbi.io's own DOM 2026-08-01: a
+     * categorical cell wears `.kol-table-pill` (+ -dark/-light/-muted), never
+     * bare text. Those classes have existed in the theme the whole time and
+     * this repo had never used one — the reference site was using our own
+     * design system better than we were. */
+    {
+      accessor: 'kind',
+      header: 'Kind',
+      sortable: true,
+      className: 'kol-table-cell-text',
+      render: (n) => (
+        <span className={`kol-table-pill ${n.kind === 'component' ? 'kol-table-pill-dark' : 'kol-table-pill-muted'}`}>
+          {kindLabel(n.kind)}
+        </span>
+      ),
+    },
+    {
+      accessor: 'concern',
+      header: 'Concern',
+      sortable: true,
+      className: 'kol-table-cell-text',
+      render: (n) => <span className="kol-table-pill kol-table-pill-light">{n.concern}</span>,
+    },
+    /* responsive columns, the same idiom chess uses — provenance is the first
+     * thing to go when the viewport tightens */
+    {
+      accessor: 'definedIn',
+      header: 'Defined in',
+      sortable: true,
+      headerClassName: 'kol-table-cell-title hidden lg:table-cell',
+      className: 'kol-table-cell-meta hidden lg:table-cell',
+      render: (n) => <span className="kol-helper-12 text-meta">{n.definedIn}</span>,
+    },
+    /* per-row ACTIONS — chess's `analysis-table__actions` cell, in DS terms */
+    {
+      accessor: 'actions',
+      header: '',
+      headerClassName: 'kol-table-cell-title text-right',
+      className: 'kol-table-cell-text text-right',
+      render: (n) => (
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => navigator.clipboard?.writeText(n.name)}
+          >
+            Copy
+          </Button>
+          <Link to={`/references/${encodeURIComponent(n.name)}`} className="kol-mono-12 text-meta hover:text-emphasis">
+            Trace →
+          </Link>
+        </div>
+      ),
+    },
+  ]
+}
+
 export default function References() {
   const { nodes, median, threshold } = useGraph()
-  const [concern, setConcern] = useState('all')
-  const [query, setQuery] = useState('')
-
-  const shown = nodes.filter((n) =>
-    (concern === 'all' || n.concern === concern) &&
-    (!query || n.name.toLowerCase().includes(query.toLowerCase())))
-
   const canon = nodes.filter((n) => n.weighted >= threshold).length
+  const columns = useMemo(() => graphColumns(threshold), [threshold])
 
   return (
     <>
@@ -74,63 +171,38 @@ export default function References() {
         lede={`${nodes.length} referenced nodes. Ranked by weighted inbound — a 5★ dependent is a near-copy and breaks if the node goes; a 1★ dependent loses one element. ${canon} nodes sit at or above the canon bar of ${threshold}★ (3× the median of ${median}).`}
       />
 
-      <DocSection title="Filter">
-        <div className="flex flex-wrap items-center gap-2">
-          {CONCERNS.map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setConcern(c)}
-              className={`kol-btn kol-btn-sm ${c === concern ? 'kol-btn-primary' : 'kol-btn-outline'}`}
-            >
-              {c}
-            </button>
-          ))}
-          <input
-            className="kol-input ml-auto"
-            placeholder="Filter by name…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-      </DocSection>
-
-      <DocSection title={`${shown.length} nodes`}>
-        <div className="overflow-x-auto">
-          <table className="kol-table w-full">
-            <thead>
-              <tr>
-                <th className="text-right">★</th>
-                <th className="text-right">edges</th>
-                <th>node</th>
-                <th>concern</th>
-                <th>defined in</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shown.slice(0, 300).map((n) => (
-                <tr key={`${n.kind}:${n.name}`}>
-                  <td className="text-right kol-mono-12">
-                    {n.weighted}
-                    {n.weighted >= threshold && <span title="canon candidate"> ●</span>}
-                  </td>
-                  <td className="text-right kol-mono-12">{n.edgeCount}</td>
-                  <td>
-                    <Link to={`/references/${encodeURIComponent(n.name)}`} className="kol-mono-12">
-                      {n.name}
-                    </Link>
-                  </td>
-                  <td className="kol-helper-12">{n.concern}</td>
-                  <td className="kol-helper-12">{n.definedIn}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {shown.length > 300 && (
-          <p className="kol-helper-12 mt-4">Showing the top 300 of {shown.length}. Narrow with the filter.</p>
+      {/* mt-8: DocHeader's lede butted straight onto the filter row with no
+        * breathing space at all — the header ends, the control bar begins. */}
+      <ContentFilters
+        className="mt-8"
+        items={nodes}
+        title="Nodes"
+        titleIcon="library"
+        totalCount={nodes.length}
+        searchKeys={['name', 'definedIn']}
+        mutuallyExclusiveFilters={['kind', 'concern']}
+        filterGroups={[
+          { label: 'Kind', key: 'kind', values: KINDS },
+          { label: 'Concern', key: 'concern', values: CONCERNS },
+        ]}
+        renderItem={(rows) => (
+          <>
+            {/* A DATA table declares its own width — seven columns need the
+              * content column, not the panel rung meant for two. */}
+            <Table
+              width="column"
+              caption="Reference graph nodes ranked by weighted inbound"
+              columns={columns}
+              rows={rows.slice(0, 300).map((n) => ({ ...n, id: `${n.kind}:${n.name}` }))}
+            />
+            {rows.length > 300 && (
+              <p className="kol-helper-12 text-meta mt-4">
+                Showing the top 300 of {rows.length}. Narrow with the filter.
+              </p>
+            )}
+          </>
         )}
-      </DocSection>
+      />
 
       <DocSection title="How to read this">
         <p>

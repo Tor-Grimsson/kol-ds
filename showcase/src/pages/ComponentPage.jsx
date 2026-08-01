@@ -1,12 +1,12 @@
 import { useParams, Navigate } from 'react-router-dom'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
 import { DocTable } from '@kolkrabbi/kol-workshop'
 import { DEMOS } from '../lib/demos-registry.js'
-import { getComponentBySlug, CATEGORY_LABELS, slugify } from '../lib/registry.js'
+import { getComponentBySlug, CATEGORY_LABELS, slugify } from '../nav/registry.js'
 import MdxDoc from '../lib/MdxDoc.jsx'
 import API_GEN from '../usage/api-tables.json'
-import { mergeApi, MetaRows, Pager, CodeLine, InstallBlock } from '../lib/component-page-parts.jsx'
+import { mergeApi, buildProvenance, Pager, CodeLine, InstallBlock } from '../lib/component-page-parts.jsx'
 
 /* MDX seam (2026-07-30): a component with `src/docs/components/<Name>.mdx`
  * renders that document — the shadcn model, where a component page IS a
@@ -38,7 +38,8 @@ export default function ComponentPage() {
 
       {DEMOS[c.name] && <PreviewCard entry={DEMOS[c.name]} />}
 
-      <MetaRows meta={c.meta} name={c.name} />
+      {/* one panel — the same fold as MdxDoc; see buildProvenance */}
+      <DocsFrontmatter metadata={buildProvenance(c)} />
 
       <DocSection id="installation" title="Installation">
         <InstallBlock pkg={c.pkg} />

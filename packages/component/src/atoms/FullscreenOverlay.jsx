@@ -1,5 +1,17 @@
 import { useEffect, useRef } from 'react'
+import Button from './Button.jsx'
 
+/**
+ * FullscreenOverlay — the scrim + centred sheet every overlay in the repo
+ * wears. Owns dismissal (Escape, backdrop, close button), scroll lock and
+ * stacking; the consumer supplies the panel.
+ *
+ * The close control is the DS `Button` (quiet, icon-only, the `x` glyph) —
+ * the same idiom as ShellLayout's. It was a hand-rolled <button> printing a
+ * literal `×` TEXT CHARACTER until 2026-08-01: no icon, no states, and a
+ * typographic multiplication sign standing in for a glyph the icon set has
+ * always shipped.
+ */
 export default function FullscreenOverlay({ open, onClose, closeButton = true, children }) {
   const sheetRef = useRef(null)
 
@@ -30,14 +42,15 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
     <div className="kol-overlay" role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
       <div ref={sheetRef} className="kol-overlay-sheet">
         {closeButton && (
-          <button
-            type="button"
+          <Button
+            variant="outline"
+            quiet
+            size="sm"
+            iconOnly="x"
             className="kol-overlay-close"
             onClick={onClose}
             aria-label="Close"
-          >
-            ×
-          </button>
+          />
         )}
         {children}
       </div>

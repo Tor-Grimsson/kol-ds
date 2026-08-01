@@ -4,7 +4,7 @@
  *
  * Walks a curated set of consumer projects (the "use cases"), finds every JSX
  * usage of each exported KOL component, and emits:
- *   - docs/documentation/07-usage/<Component>.md    human/LLM reference, one file per component
+ *   - showcase/src/usage/components/<Component>.md   human/LLM reference, one file per component
  *   - showcase/src/usage/usage-index.json   machine-readable, rendered by the gallery
  *
  * Source-available, honest: snippets are copied verbatim from the consumers and
@@ -230,7 +230,7 @@ function pickExamples(cands) {
 for (const r of results.values()) r.examples = pickExamples(r.candidates)
 
 // --- emit ---------------------------------------------------------------------
-const usageDocs = join(REPO, 'docs/documentation/07-usage')
+const usageDocs = join(REPO, 'showcase/src/usage/components')
 const showcaseUsage = join(REPO, 'showcase/src/usage')
 mkdirSync(usageDocs, { recursive: true })
 mkdirSync(showcaseUsage, { recursive: true })
@@ -308,7 +308,7 @@ writeFileSync(join(showcaseUsage, 'composition-index.json'),
 const withUsage = index.filter((e) => e.count > 0).length
 console.log(`scanned ${files.length} files across ${ROOTS.length} roots`)
 console.log(`components tracked: ${components.length}  |  with real usage: ${withUsage}`)
-console.log(`emitted: docs/documentation/07-usage/*.md (${index.length})  +  showcase/src/usage/usage-index.json`)
+console.log(`emitted: showcase/src/usage/components/*.md (${index.length})  +  showcase/src/usage/usage-index.json`)
 console.log('\ntop 15 by usage:')
 for (const e of sorted.slice(0, 15)) console.log(`  ${String(e.count).padStart(5)}  ${e.name.padEnd(18)} ${e.apps.size} apps`)
 

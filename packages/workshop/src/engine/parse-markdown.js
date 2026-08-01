@@ -21,7 +21,11 @@ export const extractHashtags = (content) => {
  * Supports: bold, italic, inline code, links, images, color swatches, hashtags.
  * Returns a token array; the render layer turns tokens into elements.
  */
-const processInlineMarkdown = (text) => {
+/* EXPORTED 2026-08-01. The props table needs the token producer so its cells
+ * can render `backticked` code as a chip instead of printing the backticks.
+ * It was module-private, which is why the table had no way to do it and the
+ * gap read as "the table is bad" rather than "the parser was unreachable". */
+export const processInlineMarkdown = (text) => {
   if (!text) return []
 
   const tokens = []

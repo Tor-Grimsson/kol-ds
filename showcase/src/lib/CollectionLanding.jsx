@@ -4,6 +4,7 @@ import { Button, Pill, ViewToggle } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
+import DocTabs from './DocTabs.jsx'
 import COMPOSITION from '../usage/composition.json'
 
 /* Provenance at browse level (2026-07-15 audit P1-2): what a set/block is
@@ -142,18 +143,8 @@ export default function CollectionLanding({
       {/* ── Category tab strip + Browse all ──────────────────── */}
       <div className="mx-auto max-w-[var(--kol-content-shell)]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-fg-08 pb-4">
-          <nav className="flex flex-wrap items-center gap-5 kol-sans-body-02">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setTab(t.key)}
-                className={`transition-colors ${tab === t.key ? 'text-emphasis' : 'text-meta hover:text-emphasis'}`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </nav>
+          {/* the THIRD copy of the tab construct — same control, sans look */}
+          <DocTabs tabs={tabs} value={tab} onChange={setTab} variant="plain" ariaLabel="Category" />
           <div className="ml-auto flex items-center gap-4">
             {tab === 'all' && (
               <ViewToggle

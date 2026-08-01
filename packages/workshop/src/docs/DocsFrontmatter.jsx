@@ -1,24 +1,80 @@
 import { Icon, Tag } from '@kolkrabbi/kol-component'
-import { getTagColor } from '../engine'
 import { useTagMode } from '../tags'
+import TagPath from '../tags/TagPath.jsx'
 
+/* EVERY field carries an icon (user ruling 2026-08-01). Ten of these were
+ * hard-coded `null`, so two rows had a glyph and the rest sat at a ragged left
+ * edge — a column that is sometimes iconned is worse than one that never is.
+ * Every name below is verified present in kol-icon-set-v1. */
 const FIELD_ICONS = {
   file: 'file',
-  title: null,
-  type: 'folder',
+  title: 'type',
+  type: 'library',
   status: 'check',
-  updated: null,
-  created: null,
-  verified: null,
-  description: null,
-  audience: null,
-  aliases: null,
+  updated: 'refresh',
+  created: 'plus',
+  verified: 'shield-check',
+  description: 'message',
+  audience: 'user',
+  aliases: 'repeat',
+  sources: 'code',
+  superseded_by: 'arrow-right',
+  drift: 'alert-triangle',
   version: 'hash-01',
+  tags: 'hash-02',
+  /* 2026-08-01: these three rendered iconless while the rule above promised
+   * every field carries one — the exact ragged edge that rule exists to stop.
+   * All verified present in kol-icon-set-v1. */
+  id: 'hash-01',
+  reuses: 'repeat',
+  slug: 'external-link',
+  /* provenance — folded in from the retired MetaRows panel 2026-08-01 */
+  source: 'code',
+  imported_from: 'arrow-right',
+  type_styles: 'type',
+  classes: 'library',
+  tokens: 'hash-01',
+  composes: 'component-01',
+  in_sets: 'grid',
+  used_in: 'layers',
   /* legacy dialect (workshop-sample docs) — kept so those still render */
-  date: null,
+  date: 'journal',
   category: 'folder',
-  tags: null,
-  modified: null,
+  modified: 'edit',
+}
+
+/* AUTHORED labels, not the raw key (user ruling 2026-08-01). The row printed
+ * `{key}` straight from the frontmatter, so the column read lowercase and
+ * snake_cased. KOL forbids `text-transform` on a component — casing is a
+ * content decision — so the strings are written here in the case they render.
+ * A key with no entry falls back to its own name rather than vanishing. */
+const FIELD_LABELS = {
+  file: 'File',
+  title: 'Title',
+  type: 'Type',
+  status: 'Status',
+  updated: 'Updated',
+  created: 'Created',
+  verified: 'Verified',
+  description: 'Description',
+  audience: 'Audience',
+  aliases: 'Aliases',
+  sources: 'Sources',
+  superseded_by: 'Superseded by',
+  drift: 'Drift',
+  version: 'Version',
+  tags: 'Tags',
+  source: 'Source',
+  imported_from: 'Imported from',
+  type_styles: 'Type styles',
+  classes: 'Classes',
+  tokens: 'Tokens',
+  composes: 'Composes',
+  in_sets: 'In sets',
+  used_in: 'Used in',
+  date: 'Date',
+  category: 'Category',
+  modified: 'Modified',
 }
 
 /* Reading ORDER, not an allowlist. The kol-docs contract first
@@ -37,7 +93,7 @@ const FIELD_ICONS = {
  * so printing the raw wikilinks here would be the same thing twice. */
 const FIELD_ORDER = [
   'title', 'type', 'status', 'updated', 'tags',
-  'description', 'aliases',
+  'description', 'aliases', 'sources',
   'created', 'verified', 'audience', 'superseded_by', 'drift',
   'category', 'date', 'modified', 'version',
 ]
@@ -85,19 +141,28 @@ const DocsFrontmatter = ({ metadata, docId }) => {
           <div key={key} className="docs-frontmatter-row">
             <span className="docs-frontmatter-key kol-helper-12 text-meta">
               {icon && <Icon name={icon} size={14} />}
-              {key}
+              {FIELD_LABELS[key] ?? key}
             </span>
             <span className="kol-mono-12 text-strong">
               {key === 'tags' && Array.isArray(value) ? (
+                /* `naked`, the SAME Tag rendering the rail's own tag list uses
+                 * (DocReaderSidebar). This was the default filled variant, so
+                 * the one concept rendered as a solid pill here and as plain
+                 * coloured text six inches to the right.
+                 *
+                 * NO `color` (user ruling 2026-08-01): passing one swaps the
+                 * base class from `tag-control` to `tag tag--{color}`, and
+                 * only `tag-control` has a `:hover` rule — so a coloured Tag
+                 * silently loses its interaction state. Right component first;
+                 * colour is its own decision, later.
+                 * `size` is omitted: `sm` is the default and the only size. */
                 <span className="flex flex-wrap gap-1.5">
                   {value.map((tag) => (
-                    <Tag
-                      key={tag}
-                      size="sm"
-                      color={getTagColor(tag)}
-                      onClick={() => openTagMode(tag)}
-                    >
-                      {tag}
+                    <Tag key={tag} onClick={() => openTagMode(tag)}>
+                      {/* the path renderer, not the raw string — namespace dims,
+                        * leaf carries. Shared with the tag overlay so the two
+                        * surfaces cannot spell a tag two ways. */}
+                      <TagPath tag={tag} />
                     </Tag>
                   ))}
                 </span>

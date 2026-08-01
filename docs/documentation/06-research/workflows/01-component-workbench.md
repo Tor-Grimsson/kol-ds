@@ -13,7 +13,7 @@ aliases:
 related:
   - "[[02-workbench-tools|workbench tools]]"
   - "[[INDEX|workflows]]"
-  - "[[../../../operations/02-workbench|using the workbench]]"
+  - "[[../../../operations/02-workbench/INDEX|using the workbench]]"
 ---
 
 # The component workbench
@@ -22,7 +22,7 @@ A separate dev environment whose only job is to **render your components outside
 
 Instead of launching the app and clicking through to reach a state, you open the workbench and **every variant is already laid out and directly addressable**.
 
-## The mental model: the story
+## Mental model
 
 A **story** is a single function that renders a component in one specific state.
 
@@ -43,13 +43,13 @@ You write stories next to the component. The collection becomes a browsable side
 3. the **manual-QA surface** (every state on one screen),
 4. the **input to automated tests** (visual regression, interaction, a11y all read the stories).
 
-## How it changes development
+## Impact
 
 You build a component by building its stories — which **forces you to think in all states up front**, including the awkward ones (empty, error, very long text, loading) that are easy to forget when you only ever hit the happy path inside an app.
 
 For a design system this fits especially well: a DS component's whole value is behaving correctly across **every state and prop combination, in isolation from any app context**.
 
-## The stack of jobs
+## Job stack
 
 A workbench is a *stack*. You can adopt any slice — the lower rungs are the point, the upper ones are optional weight.
 
@@ -63,7 +63,7 @@ A workbench is a *stack*. You can adopt any slice — the lower rungs are the po
 
 Which tool you pick is just **where on this stack it stops** — see [[02-workbench-tools|workbench tools]].
 
-## It runs on a Vite + Tailwind stack natively
+## Stack fit
 
 Modern workbenches use **Vite** as the builder, so they reuse the existing Vite config. **Tailwind** works by importing the compiled CSS once in a global config file — every story picks it up.
 

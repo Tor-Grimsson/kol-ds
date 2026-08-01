@@ -23,7 +23,7 @@ related:
 Desktop emulation is the industry-standard workflow; real devices are last-mile
 QA only. Three tiers, cheapest first.
 
-## 1 — Layout tier: Chrome DevTools Device Mode
+## Layout tier
 
 | Step | How |
 |---|---|
@@ -34,18 +34,18 @@ QA only. Three tiers, cheapest first.
 
 Firefox RDM is genuinely weaker (limited touch simulation) — not a you-problem.
 
-## 2 — Engine tier: real iOS WebKit on the Mac
+## Engine tier
 
 | Tool | What it gives |
 |---|---|
 | **Xcode Simulator** (free with Xcode) | actual iOS Safari — dvh, safe-area-inset, overscroll bounce, browser chrome overlap |
 | Safari → Develop → Responsive Design Mode | quick iPhone/iPad presets; can drive the Simulator |
 
-## 3 — Device tier: the phone
+## Device tier
 
 Final pass only — real touch latency, font rendering, thumb reach. Never the workhorse.
 
-## Agent-side (automated)
+## Agent-side
 
 Playwright viewport sweeps — 375 / 390 / 768 / 834 / 1024 (+ `hasTouch`),
 screenshot per breakpoint per page; Playwright's bundled WebKit for

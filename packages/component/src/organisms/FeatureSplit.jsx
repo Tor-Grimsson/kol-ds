@@ -70,7 +70,7 @@ export default function FeatureSplit({
           {ctas && <div className="flex flex-wrap gap-4 pt-2">{ctas}</div>}
         </div>
         {media && (
-          <div className="kol-feature-split-visual relative aspect-[4/5] rounded-[4px] overflow-hidden">
+          <div className="kol-feature-split-visual relative aspect-[4/5] rounded-[var(--kol-radius-sm)] overflow-hidden">
             {media}
             {caption && <div className="kol-feature-split-visual-veil" aria-hidden="true" />}
             {caption && <span className="kol-feature-split-visual-caption">{caption}</span>}

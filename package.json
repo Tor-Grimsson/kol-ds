@@ -23,12 +23,17 @@
     "validate:rails": "node scripts/validate-rails.mjs",
     "validate:drift": "node scripts/validate-drift.mjs",
     "validate:reachable": "node scripts/validate-reachable.mjs",
+    "validate:vault-links": "node scripts/validate-vault-links.mjs",
+    "validate:headings": "node scripts/validate-headings.mjs",
+    "validate:chrome": "node scripts/validate-chrome.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish",
     "extract:tokens": "node scripts/extract-tokens.mjs",
-    "extract:graph": "node scripts/extract-usage.mjs && node scripts/extract-tokens.mjs && node scripts/sync-mdx-frontmatter.mjs",
+    "extract:manifest": "node scripts/extract-manifest.mjs",
+    "extract:styling": "node scripts/extract-styling.mjs",
+    "extract:graph": "node scripts/extract-usage.mjs && node scripts/extract-tokens.mjs && node scripts/extract-styling.mjs && node scripts/sync-mdx-frontmatter.mjs",
     "validate:references": "node scripts/validate-references.mjs"
   },
   "devDependencies": {

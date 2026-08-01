@@ -47,7 +47,7 @@ function Wall() {
 
 function SpecView() {
   return (
-    <div className="max-w-[var(--kol-content-column)] mx-auto" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
+    <div className="max-w-[var(--kol-content-column)]" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
       <DocumentationReader
         inventory={inventory}
         modules={modules}

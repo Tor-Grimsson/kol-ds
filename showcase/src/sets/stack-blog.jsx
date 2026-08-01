@@ -220,7 +220,7 @@ export default function StackBlogSet() {
         objectPosition="center"
       />
 
-      <div className="max-w-[var(--kol-content-column)] mx-auto px-6 pt-16">
+      <div className="max-w-[var(--kol-content-column)] px-6 pt-16">
         <ArticleHeader
           tags={['Typography', 'Systems', 'Craft']}
           title="On Monospace and the Discipline of Constraint"

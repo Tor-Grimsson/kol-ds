@@ -14,7 +14,7 @@ related:
   - "[[01-package-topology|package topology]]"
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
   - "[[../03-components/01-inventory|components]]"
-  - "[[../../operations/01-release-pipeline|release pipeline]]"
+  - "[[../../operations/01-release/INDEX|release pipeline]]"
 ---
 
 # KOL design system — overview
@@ -47,7 +47,7 @@ The UI dependency arrow only points left — no reverse deps, ever. Clients/bran
 | `@kolkrabbi/kol-brand` | Kolkrabbi's own brand manifest (ramps, type, the four logo SVGs) |
 | `@kolkrabbi/kol-scrape` | Zero-dep scraper CLI — presence records + Squarespace catalog mode |
 
-## Install & the consumer contract
+## Install
 
 Packages ship **raw source** (`.jsx`/`.css`, no build step) — the consumer must be **Vite + Tailwind v4 + React 18/19**. The four-point contract every consumer follows:
 
@@ -59,4 +59,4 @@ Packages ship **raw source** (`.jsx`/`.css`, no build step) — the consumer mus
 ## Seeing it
 
 - **Showcase** (`pnpm dev` in `showcase/`) — the docs site: Foundations, Icons, Components, Blocks, Sets.
-- **Workbench** (`pnpm workbench`) — Ladle app, every component × every state in isolation. See [[../../operations/02-workbench|using the workbench]].
+- **Workbench** (`pnpm workbench`) — Ladle app, every component × every state in isolation. See [[../../operations/02-workbench/INDEX|using the workbench]].

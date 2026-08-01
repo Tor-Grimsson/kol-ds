@@ -21,7 +21,7 @@ How teams and popular open-source design systems work, mapped along the axes whe
 
 The differences are rarely about React or Tailwind themselves. They're about **how you isolate, compose, source, distribute, and version** components.
 
-## The five axes
+## Five axes
 
 | # | Axis | Question it answers | Doc |
 |---|---|---|---|
@@ -31,7 +31,7 @@ The differences are rarely about React or Tailwind themselves. They're about **h
 | 4 | **Distribution** | How does the system reach the apps that use it? | [[05-distribution\|distribution]] |
 | 5 | **Versioning & testing** | How do you ship changes without breaking consumers? | [[06-versioning-testing\|versioning & testing]] |
 
-## The contrast baseline
+## Contrast baseline
 
 Each doc compares against the **hand-rolled solo setup**: build components inside a running app, design values in the Tailwind config, conditional class strings, no isolated test surface. That's the common starting point — these axes are the directions teams move *away* from it.
 

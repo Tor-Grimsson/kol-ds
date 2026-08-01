@@ -21,7 +21,7 @@ related:
 
 Every piece of text in a KOL component uses a `kol-*` type class — never freestyle Tailwind sizing (`text-sm`, `text-[13px]`). The inventory splits on one fault line: **does the class carry a line-height?**
 
-## The fault line
+## Fault line
 
 | Family | Line-height | Use for |
 |---|---|---|
@@ -34,7 +34,7 @@ The quick test: *can this string ever wrap?* Yes → line-height set. No (struct
 
 ### Role sets — `kol-doc-*` + `kol-card-*` (2026-07-28, `kol-type-roles.css`)
 
-Opt-in role families over the scales below — see [[../../operations/2026-07-28-doc-card-sets|the doc+card sets plan]].
+Opt-in role families over the scales below — see [[../../operations/03-showcase/02-doc-card-sets|the doc+card sets plan]].
 **Doc set** (11): `kol-doc-{eyebrow,heading,section-title,lede,body,code,code-inline,table,figure,caption,footer}` — doc-chrome ramp; the content-furniture roles (code/table/figure/caption/footer) are twin-selectored with `.kol-prose` bare tags (one rule, two entry points; prose code rules moved there, prose gains table/figure styling).
 **Card set** (6): `kol-card-{title,kicker,meta,excerpt,value,tag}` — the shared card text ramp (mono voice, compact titles, clamp knob `--kol-card-excerpt-lines`).
 Head roles are deliberately NOT twinned with prose — the editorial `.kol-prose-*` head family stays its own scale.
@@ -86,7 +86,7 @@ Beyond the missing leading, helpers differ from mono in **weight (500 vs 400)** 
 
 All four are `text-transform: uppercase` **by contract** — the display voice is caps by design language, the one type family that carries a transform. Own token ladder (`--kol-text-display-tight-01/02/03`) with a 1024px top step, deliberately not the sans-display ladder. Lobbied verbatim from the website's elder type system; elder `kol-heading-display` was a byte-identical duplicate of `kol-display-lg` and maps to it.
 
-## Worked examples — the 2026-07-02 conformance sweep
+## Worked examples
 
 | Component | Was | Now | Call |
 |---|---|---|---|
@@ -101,6 +101,6 @@ All four are `text-transform: uppercase` **by contract** — the display voice i
 
 `pnpm extract:docs` reports any component source using freestyle Tailwind type utilities (`text-xs…xl`, `text-[Npx]`, `font-sans/serif`) — currently clean. Each component page also lists its type classes in the **Type styles** row, mined from source.
 
-## Prose color contract (2026-07-15)
+## Prose color
 
 `.kol-prose` maps onto the kol-opacity **text roles**, not raw `fg-*` stops — body copy at `--kol-fg-body` (64), `em` climbs to `--kol-fg-strong` (80, italic), `strong` and all headings land on `--kol-fg-emphasis` (full ink); captions/cites sit at `--kol-fg-meta` (48). Edit the role token, every prose consumer follows. Raw stops remain only where a role has no business meaning (blockquote border `fg-32`, code wash `fg-04`).

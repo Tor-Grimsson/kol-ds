@@ -31,8 +31,21 @@ body {
 
 :root {
   --kol-topnav-h: 0px;
-  --kol-sidenav-w: 260px;
+  /* 16rem — the rail width, one number (2026-07-31). It read 260 while every
+     grid track that had to line up with it read 256, so the shell header's
+     brand block sat 4 off the sidebar column it exists to align to. */
+  --kol-sidenav-w: 16rem;
   --kol-sidenav-w-collapsed: 56px;
+  /* The workshop shell's RIGHT rail. EQUAL TO THE LEFT (user ruling
+     2026-08-01) — the two rails frame the same content and a lopsided frame is
+     a frame nobody drew on purpose; it read 14rem against the left's 16rem.
+     Kept as its own token rather than aliased: the right rail can be ruled
+     different later without touching the sidenav.
+     The track is RESERVED whether or not the rail has anything in it — a rail
+     that vanishes on a heading-less page re-flows main, so the same shell
+     renders at two widths. Distinct from --kol-toc-w further down, which is
+     the BRAND layout's rail: same concept, two shells, two numbers. */
+  --kol-shell-toc-w: 16rem;
   --kol-container-max: 100%;
 
   /* Opacity tokens (--kol-fg-*) + text-role tokens (--kol-text-*) live in
@@ -43,6 +56,15 @@ body {
      Distinct from DS --kol-transition-base (which uses a Material cubic-bezier).
      Intentional: site chrome uses browser-ease for a softer feel. */
   --kol-t-btn: background 200ms ease, color 200ms ease, border-color 200ms ease;
+
+  /* Shell CHROME inset (2026-07-31, user ruling: "24, it's what lives in
+     kolkrabbi") — a separate concern from the page ladder below, and
+     deliberately tighter: chrome is not page content. The shell header and the
+     shell content frame both read this, so they cannot disagree; before it,
+     the header carried bare Tailwind steps and the frame carried the page ramp.
+     FLAT, not stepped — one value at every width, on the user's word.
+     Do NOT reach for this on page containers — that is --kol-pad-section-x. */
+  --kol-pad-chrome-x: var(--kol-spacing-6);
 
   /* Stepped page / section / band padding tokens.
      Used by chrome (topnav, sidenav) and landing bands. Scaled at 768 / 1024

@@ -1,26 +1,36 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Input, Tag, Button, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Tooltip } from '@kolkrabbi/kol-component'
+import TagPath from './TagPath.jsx'
 import { useTagMode } from './TagModeContext.jsx'
 import TagGraph from './TagGraph.jsx'
-import { extractDocNumber, cleanTitle, getTagColor } from '../engine/index.js'
+import RailRow from '../shell/RailRow.jsx'
+import { extractDocNumber, cleanTitle } from '../engine/index.js'
 import { buildTagCounts } from '../engine/tags.js'
 
+/**
+ * TagModeOverlay - the tag BROWSER: the list and the graph. It does not search.
+ *
+ * ONE SEARCH (user ruling 2026-08-01: "search SHOULD be ONE system not 2").
+ * This component owned a second one - a raw `Input` plus
+ * `tag.toLowerCase().includes(q)` in a useMemo - over a corpus the shell's own
+ * index already covered. Two matchers, two behaviours, and this one never
+ * called the engine's `matchSearchItems` at all. Deleted rather than aligned:
+ * tags are rows in the shell search index now, so the one modal finds them
+ * like it finds everything else.
+ *
+ * `view` comes from the CONTEXT, not local state - the rail's "Graph view" row
+ * has to say which mode it wants before this component exists.
+ */
 const TagModeOverlay = () => {
-  const { activeTags, activeTag, toggleTag, removeTag, clearTags, closeTagMode, inventory, docHref, tagHref } = useTagMode()
-  const [viewMode, setViewMode] = useState('list')
-  const [search, setSearch] = useState('')
+  const { activeTags, activeTag, toggleTag, clearTags, closeTagMode, inventory, docHref, tagHref, view, setView } = useTagMode()
 
   const allTagsWithCount = useMemo(() => buildTagCounts(inventory), [inventory])
 
-  const visibleTags = useMemo(() => {
-    let tags = allTagsWithCount.filter(({ tag }) => !activeTags.includes(tag))
-    if (search.trim()) {
-      const q = search.toLowerCase()
-      tags = tags.filter(({ tag }) => tag.toLowerCase().includes(q))
-    }
-    return tags
-  }, [allTagsWithCount, search, activeTags])
+  const visibleTags = useMemo(
+    () => allTagsWithCount.filter(({ tag }) => !activeTags.includes(tag)),
+    [allTagsWithCount, activeTags]
+  )
 
   const filteredDocs = useMemo(() => {
     if (activeTags.length === 0) return []
@@ -33,99 +43,36 @@ const TagModeOverlay = () => {
   const hasFilters = activeTags.length > 0
 
   return (
-    <article className="docs-article">
-      {/* was max-w-[864px] — an improvised value in the ~900–1200 band the
-        * panel token exists to settle (kol-theme "Content widths"). */}
-      <div className="mx-auto max-w-[var(--kol-content-panel)]">
-        <div className="flex items-center justify-start gap-1 mb-3">
-          {/* ALWAYS present (2026-07-30). This was gated on `hasFilters`, so
-            * the graph control did not exist in the DOM until a tag was already
-            * active — you had to know it was there to make it appear. The graph
-            * is the whole point of the co-occurrence data; hiding its only
-            * affordance behind a state you reach by accident is why the user
-            * asked "where is the NODE GRAPH? how do I open it?". With no tags
-            * active the graph simply shows the full map, which is the view a
-            * first-time reader wants most. */}
-          <Tooltip label={viewMode === 'graph' ? 'List view' : 'Graph view'}>
-            <Button
-              variant="outline"
-              quiet
-              size="sm"
-              iconOnly={viewMode === 'graph' ? 'view-list' : 'polygon'}
-              onClick={() => setViewMode(viewMode === 'graph' ? 'list' : 'graph')}
-              aria-label={viewMode === 'graph' ? 'List view' : 'Graph view'}
-            />
-          </Tooltip>
-          <Tooltip label="Close tag mode">
-            <Button
-              variant="outline"
-              quiet
-              size="sm"
-              iconOnly="x"
-              onClick={closeTagMode}
-              aria-label="Close tag mode"
-            />
-          </Tooltip>
-        </div>
-
-        <div className="dash-card flex flex-col gap-8 -mt-4">
-          <div className="flex items-center gap-2" style={{ width: '100%', alignSelf: 'stretch' }}>
-            <Input
-              type="text"
-              aria-label="Search tags"
-              placeholder="Search tags…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && visibleTags.length > 0) {
-                  toggleTag(visibleTags[0].tag)
-                  setSearch('')
-                }
-              }}
-              size="md"
-              iconLeft="search"
-              className="w-full"
-              autoFocus
-            />
-            {search && (
-              <Tooltip label="Clear search">
-                <Button
-                  variant="outline"
-                  quiet
-                  size="sm"
-                  iconOnly="x"
-                  onClick={() => setSearch('')}
-                  aria-label="Clear search"
-                />
-              </Tooltip>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-4 px-10">
+    /* NOT AN OVERLAY ANY MORE (user ruling 2026-08-01). This is the EXPANDED
+     * BODY of ShellSearchOverlay, rendered inside its panel — so it owns no
+     * scrim, no panel chrome and no close button. It was a sibling overlay
+     * with its own everything, which is what "two systems" meant. */
+    /* PLAIN BODY (user 2026-08-01). `.docs-article` is the PROSE wrapper — it
+     * centred every row and imposed a reading measure on a filter list, which
+     * is why "everything is center aligned". A results body is chrome, not
+     * prose. The node/graph button is gone too: the rail's Quick actions owns
+     * that entry, and a bare unlabelled hex floating at the corner was "not
+     * the place for it". */
+    <div className="flex flex-col gap-4 py-4">
+      <div className="flex flex-col gap-4">
+          {/* THE SEARCH BOX IS GONE (user ruling 2026-08-01). It was a raw
+            * `Input` driving `tag.toLowerCase().includes(q)` - a second search
+            * system over a corpus the shell index already holds. Tags are rows
+            * in that index now, so the ONE modal searches them. This overlay
+            * browses: the full list, and the graph. */}
+        <div className="flex flex-col gap-4">
             {hasFilters && (
               <>
                 <div className="flex items-center justify-between">
-                  <Button
-                    variant="outline"
-                    quiet
-                    size="sm"
-                    onClick={clearTags}
-                  >
-                    clear filters
+                  {/* PRIMARY (user 2026-08-01). `outline quiet` is the
+                    * recessive rung — this is the one action in the body. */}
+                  <Button variant="primary" size="sm" onClick={clearTags}>
+                    Clear filters
                   </Button>
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    {activeTags.map((tag) => (
-                      <Tag
-                        key={tag}
-                        variant="solid"
-                        color={getTagColor(tag)}
-                        size="md"
-                        onRemove={() => removeTag(tag)}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </div>
+                  {/* NO CHIPS HERE (2026-08-01). The palette renders the
+                    * active tags in its input row — this block repeated them
+                    * inside the body, so one filter showed as two chips. The
+                    * query's facets belong to the query's input. */}
                 </div>
                 <div className="border-t border-fg-08 my-4" />
               </>
@@ -135,7 +82,7 @@ const TagModeOverlay = () => {
               * active the graph renders the WHOLE map, which is the view worth
               * opening cold. Gated, the button could be clicked and nothing
               * changed. */}
-            {viewMode === 'graph' ? (
+            {view === 'graph' ? (
               <div>
                 <TagGraph
                   docs={hasFilters ? filteredDocs : inventory}
@@ -148,24 +95,28 @@ const TagModeOverlay = () => {
             ) : (
               <>
                 <div className="flex flex-col">
+                  {/* RAIL ROWS (user 2026-08-01: "reference the sidebars,
+                    * dont introduce a different text treatment here"). These
+                    * wore `.tag-list-item` / `.tag-list-count`, which have NO
+                    * CSS RULE ANYWHERE — that is the whole reason they centred
+                    * and carried no type. RailRow already is this row. */}
                   {visibleTags.map(({ tag, count }) => (
-                    <button
+                    <RailRow
                       key={tag}
-                      type="button"
-                      className={`tag-list-item${activeTags.includes(tag) ? ' active' : ''}`}
                       onClick={() => toggleTag(tag)}
+                      active={activeTags.includes(tag)}
+                      trailing={count}
                     >
-                      <span>{tag}</span>
-                      <span className="tag-list-count">{count}</span>
-                    </button>
+                      <TagPath tag={tag} />
+                    </RailRow>
                   ))}
                   {visibleTags.length === 0 && (
-                    <p className="text-fg-48 kol-mono-12 py-4">No tags matching "{search}"</p>
+                    <p className="text-fg-48 kol-mono-12 py-4">No tags</p>
                   )}
                 </div>
 
                 {hasFilters && filteredDocs.length > 0 && (
-                  <div className="flex flex-col pt-4 border-t border-fg-08">
+                  <div className="shell-nav-items pt-4 border-t border-fg-08">
                     {filteredDocs.map((d) => (
                       /* `d.href` wins over `docHref(d.id)` so ONE tag system can
                        * span content types that live in different URL spaces —
@@ -173,24 +124,22 @@ const TagModeOverlay = () => {
                        * at /components/:slug. Without it the inventory could
                        * only ever hold one kind of thing, which is why the
                        * graph saw the vault's 46 docs and nothing else. */
-                      <Link
+                      <RailRow
                         key={d.id}
                         to={d.href ?? docHref(d.id)}
-                        className="tag-list-item"
-                        onClick={closeTagMode}
+                        trailing={extractDocNumber(d.id)}
+                        onNavigate={closeTagMode}
                       >
-                        <span>{cleanTitle(d.title, d.id)}</span>
-                        <span className="tag-list-count">{extractDocNumber(d.id)}</span>
-                      </Link>
+                        {cleanTitle(d.title, d.id)}
+                      </RailRow>
                     ))}
                   </div>
                 )}
               </>
             )}
           </div>
-        </div>
       </div>
-    </article>
+    </div>
   )
 }
 

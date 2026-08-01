@@ -3,7 +3,7 @@
     "name": "Icon",
     "pkg": "@kolkrabbi/kol-icons",
     "category": "flat",
-    "count": 1346,
+    "count": 1345,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -7986,7 +7986,7 @@
       {
         "app": "kol-website",
         "file": "kol-website/apps/brand/src/components/framework/SideNav.jsx",
-        "code": "<ThemeToggle variant={collapsed ? 'icon' : 'button'} size=\"md\" />"
+        "code": "<ThemeToggle variant={collapsed ? 'icon' : 'hop-bare'} size=\"md\" />"
       },
       {
         "app": "kol-client-ac",
@@ -17702,6 +17702,46 @@
     ]
   },
   {
+    "name": "IconFrame",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 2,
+    "apps": [
+      "kol-website"
+    ],
+    "files": 2,
+    "weighted": 6,
+    "internal": 0,
+    "src": "./atoms/IconFrame.jsx",
+    "edgeCount": 2,
+    "edges": [
+      {
+        "file": "kol-website/apps/brand/src/components/framework/SideNav.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/brand/src/components/framework/SideNav.jsx",
+        "code": "<IconFrame\n          name={collapsed ? 'chevron-right' : 'chevron-left'}\n          variant=\"secondary\"\n          size=\"lg\"\n          radius=\"full\"\n        />"
+      },
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
+        "code": "<IconFrame name={icon} variant=\"secondary\" size=\"md\" />"
+      }
+    ]
+  },
+  {
     "name": "MediaCard",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
@@ -17789,7 +17829,7 @@
     ],
     "files": 2,
     "weighted": 6,
-    "internal": 6,
+    "internal": 3,
     "src": "./molecules/ShellSearchOverlay.jsx",
     "edgeCount": 2,
     "edges": [
@@ -18366,35 +18406,6 @@
         "app": "kol-website",
         "file": "kol-website/apps/web/src/workshop-system/tags/index.js",
         "code": "<TagModeProvider inventory={...} docHref={...} tagHref={...}>"
-      }
-    ]
-  },
-  {
-    "name": "IconFrame",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 1,
-    "apps": [
-      "kol-website"
-    ],
-    "files": 1,
-    "weighted": 3,
-    "internal": 0,
-    "src": "./atoms/IconFrame.jsx",
-    "edgeCount": 1,
-    "edges": [
-      {
-        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
-        "code": "<IconFrame name={icon} variant=\"secondary\" size=\"md\" />"
       }
     ]
   },
@@ -19529,7 +19540,7 @@
     "apps": [],
     "files": 0,
     "weighted": 0,
-    "internal": 28,
+    "internal": 37,
     "src": "./docs/DocKit.jsx",
     "edgeCount": 0,
     "edges": [],
@@ -19543,7 +19554,7 @@
     "apps": [],
     "files": 0,
     "weighted": 0,
-    "internal": 18,
+    "internal": 27,
     "src": "./docs/DocKit.jsx",
     "edgeCount": 0,
     "edges": [],

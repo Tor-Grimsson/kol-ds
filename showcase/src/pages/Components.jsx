@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Input, Tag } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import DemoStage from '../lib/DemoStage.jsx'
-import { groupComponents, FUNCTIONS, TOTAL, WITH_DEMOS } from '../lib/registry.js'
+import { groupComponents, FUNCTIONS, TOTAL, WITH_DEMOS } from '../nav/registry.js'
 import { useGrouping } from '../lib/grouping.jsx'
 
 /**

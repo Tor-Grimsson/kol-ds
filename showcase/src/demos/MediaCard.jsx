@@ -19,19 +19,22 @@ export default function MediaCardDemo() {
   })
 
   return (
-    <div className="flex w-full flex-col gap-6">
+    /* max-w + auto-fill: on an `lg` stage a bare grid-cols-2 stretched each
+       * tile to half the stage, so the aspect-square thumb grew to a giant
+       * block and the rhythm read as broken. Tiles hold a real size now. */
+    <div className="flex w-full max-w-[36rem] flex-col gap-6">
       {/* Default — download overlay + actions */}
-      <ul className="grid list-none grid-cols-2 gap-4 p-0">
+      <ul className="grid list-none grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-4 p-0">
         <MediaCard
           thumb={<Thumb />}
-          name={<p className="kol-sans-body-02 truncate text-emphasis">poster-spread.png</p>}
+          name={<p className="kol-mono-12 truncate text-emphasis">poster-spread.png</p>}
           meta="1.2 MB · 2026-06-19"
           downloadHref="#"
           actions={<div className="flex gap-2"><Button variant="ghost" size="sm">Rename</Button><Button variant="ghost" size="sm">Delete</Button></div>}
         />
         <MediaCard
           thumb={<Thumb icon="video" />}
-          name={<p className="kol-sans-body-02 truncate text-emphasis">reel-cut-04.mp4</p>}
+          name={<p className="kol-mono-12 truncate text-emphasis">reel-cut-04.mp4</p>}
           meta="48 MB · 2026-06-21"
           downloadHref="#"
           actions={<div className="flex gap-2"><Button variant="ghost" size="sm">Rename</Button><Button variant="ghost" size="sm">Delete</Button></div>}
@@ -39,12 +42,12 @@ export default function MediaCardDemo() {
       </ul>
 
       {/* Select mode — checkbox chip, whole card toggles */}
-      <ul className="grid list-none grid-cols-2 gap-4 p-0">
+      <ul className="grid list-none grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-4 p-0">
         {['a', 'b'].map((id) => (
           <MediaCard
             key={id}
             thumb={<Thumb />}
-            name={<p className="kol-sans-body-02 truncate text-emphasis">{`asset-${id}.png`}</p>}
+            name={<p className="kol-mono-12 truncate text-emphasis">{`asset-${id}.png`}</p>}
             meta="640 KB · 2026-07-01"
             selectMode
             selected={selected.has(id)}

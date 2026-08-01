@@ -1,6 +1,6 @@
 # Component lobby
 
-Staging bay for components flung in from consumer apps via the `kol-lobby` skill.
+Staging bay for components flung in from consumer apps via the `/lobby-ds` skill.
 Each entry is a spec the DS **recreates from** — not source. To promote: build the
 component under `packages/component/src/{atoms,molecules,organisms}/` (or a new
 `packages/*` for non-component work) to spec, then move its entry to `done/`
@@ -9,18 +9,34 @@ component under `packages/component/src/{atoms,molecules,organisms}/` (or a new
 This is a work queue, not published docs — it intentionally sits outside `docs/`
 and does not follow the `.kol/docs-framework` conventions.
 
+**Live entries live in `inbox/`** (moved there 2026-07-31 with the estate-wide
+lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
+
+## States
+
+| | state | means | lives in |
+|---|---|---|---|
+| 🔵 | `filed` | captured, unread | `inbox/` |
+| 🟡 | `read` | understood — the row restates it | `inbox/` |
+| 🟠 | `addressed` | a change shipped that is *meant* to close it | `inbox/` |
+| 🟢 | `closed` | shipped + cited; resolution appended | `done/` |
+| ⚪ | `parked` | deliberately not-now, reason recorded | `archive/` |
+| 🔴 | `needs-ruling` | **flag, not a state** — blocked on the user's call | wherever it is |
+
+**Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
+resolution. `read` and `addressed` are never `closed`.
+
 ## Queue
 
-**3 live entries** (queue holds LIVE TASKS ONLY — user ruling 2026-07-30;
+**2 live entries** (queue holds LIVE TASKS ONLY — user ruling 2026-07-30;
 resolved/decided entries move to `done/`, ownership/deferral notes to
 `archive/`, each carrying its resolution section. The 2026-07-30 batch story:
 `.kol/llm-context/playbook/2026-07-30-mdx-content-migration.md`).
 
-| Entry | Source | Staged | Status |
-|-------|--------|--------|--------|
-| [InteractiveImage](InteractiveImage.md) | web `components/media/InteractiveImage.jsx` | 2026-07-03 | parked (orphaned effect · SVG-id collision bug · revisit on a real consumer) |
-| [IconFrame](IconFrame.md) | web `components/ui/SectionTitle.jsx#L13-L15` | 2026-07-30 | **USER RULING** — promote the anonymous `<span class="kol-btn …">` icon holder to a real atom: icons only, NO states, kol-btn colour set as `variant`, sm/md/lg |
-| [ReferenceGraphPipeline](ReferenceGraphPipeline.md) | `kol-dumpty/humpty` (external agent) | 2026-07-30 | **NEEDS RULING** — an outside agent wrote a rated reference-graph pipeline directly into this repo, uncommitted: 7 new files, 8 modified, 30 mdx + 219 usage docs regenerated. `pnpm validate` 9/9 clean and the showcase builds, but the two new pages were never opened. Keep / adapt / revert — see the entry |
+| | Entry | Source | Staged | Status |
+|---|-------|--------|--------|--------|
+| 🔵 | [ButtonIconOnlyParity](inbox/ButtonIconOnlyParity.md) | `packages/component/src/atoms/Button.jsx#L47-L60` | 2026-08-01 | filed — **defect + 1 prop.** `Button.jsx:60` resolves ONE glyph ladder regardless of `iconOnly`, so an icon-only button puts a text-adjacent glyph (14/16/18) in a solo pinned square where the law says 16/20/24 — the mirror of the `hop-bare` bug framework 0.10.3 already fixed. Caught by an A/B against `IconFrame` in kol-website's SideNav. Also wants `radius` sm\|full mirroring IconFrame. `iconSize` already exists — do not re-add. ⚠ visual break: every bare `iconOnly` gains 2px of glyph |
+| 🔴 | [ReferenceGraphPipeline](inbox/ReferenceGraphPipeline.md) | `kol-dumpty/humpty` (external agent) | 2026-07-30 | **NEEDS RULING** — an outside agent wrote a rated reference-graph pipeline directly into this repo, uncommitted: 7 new files, 8 modified, 30 mdx + 219 usage docs regenerated. `pnpm validate` 9/9 clean and the showcase builds, but the two new pages were never opened. Keep / adapt / revert — see the entry |
 
 Resolved 2026-07-30 (now in `done/` with their resolutions): WidthSystemContradictions (theme 0.13.0 + framework 0.7.0 — panel token, unified ladder, `.kol-full-bleed`) · TableSeamTokenSplit (oq-08) · PillVariantDefaults (primary/secondary) · DocTableAndChipAudit (9/9) · TailwindContentSource (`@source` contract) · TypeScaleSection (columns recipe on Table.mdx) · **ThemeToggleButtonVariant** (library approved + shipped icons 0.8.11; roll motion + variant model superseded by the user-approved 2-variant spec, framework 0.9.0) · **ThemeToggleSystemState** (framework **0.10.0** — the ruling: `system` off the cycle, light ↔ dark only, reset behind alt/shift-click via the new `useTheme().clear()`; `fill` default flipped subtle→none so a bare toggle is no longer a filled button; SideNav's dead collapse chevron + `data-sidenav` stamp removed) · **IconFrame** (component **0.15.0** + theme **0.13.4** — the icon-only span promoted to a named atom with its OWN `.kol-icon-frame*` classes; migration measured at zero differing computed properties).
 Archived 2026-07-30 (ownership/deferral notes): ChessApparatusDemotion (active version = kol-chess repo) · ParaType (source = kol-ds-type; import-on-need) · WorkshopSystemVendored (package stays — the showcase wears the shell) · **NOTE-framework-0.8.x** (its one ask honored — 0.8.0 deprecated on the registry; the ride-along rework legitimized by the 0.9.0 spec).
@@ -52,4 +68,25 @@ Processed specs live in **`done/`** (100 files) · notes + rejects in **`archive
 | **52-spec reconcile** (bulk) | already built in the 2026-07-03 sweep or folded (ArticleCardHero/Mini→ArticleCard size · EditorButton→Button iconComponent · Footer→PortalFooter · wordmark-workshop→Asset wiring) | across `packages/*/src` | 2026-07-10 | The 07-03 sweep built far more than its own INDEX tracked — 47 components existed but their specs were never filed, +5 folded. All 52 moved queue→`done/`. Queue now holds only 3 non-build items: **InteractiveImage** (parked — orphaned, SVG-id collision), **TailwindContentSource** (decided — `@source` contract), **TypeScaleSection** (recipe — Table+PageSection). Lobby effectively cleared. |
 | [ThemeToggleButtonVariant](done/ThemeToggleButtonVariant.md) | ThemeToggle 2-variant spec + `library` glyph | `packages/framework/src/ThemeToggle.jsx` · `packages/icons/.../files/library.svg` | 2026-07-30 | Both filed failures closed (library re-authored → icons 0.8.11; roll → wheel mechanics), then the whole variant question superseded by the user-APPROVED spec: `button`/`flush` geometry + `fill`/`label`/`iconRight`/`fullWidth`/`size` props, one glyph ever, aliases verbatim → framework **0.9.0**. |
 | [ThemeToggleSystemState](done/ThemeToggleSystemState.md) | ThemeToggle two-position cycle + `useTheme().clear()`; SideNav dead-control removal | `packages/framework/src/ThemeToggle.jsx` · `src/theme.js` · `src/SideNav.jsx` | 2026-07-30 | **framework 0.10.0.** The ruling: `system` is a policy, not a rung — cycle is light ↔ dark, label/slot follow the RESOLVED theme so the button can say what the next click does, reset moved behind alt/shift-click. `fill` default flipped subtle→none (a bare `<ThemeToggle />` now renders `kol-btn-nav`, not the filled rung) and the docstring's brand-sidebar claim withdrawn. SideNav's chevron + `data-sidenav` stamp + `is-collapsed` class deleted — nothing had styled them since 2026-07-29; `collapsed`/`onToggle` stay accepted-but-inert so no call site breaks. Verified in-browser. NOT closed, filed: the two ≤1024px rail overflow gaps (labelled toggle + footer wordmark). |
+| [MediaLibrary](done/MediaLibrary.md) | `MediaLibraryProvider` · `useMediaLibrary` · `MediaPicker` · `MediaBrowser` | `packages/component/src/organisms/MediaLibrary.jsx` · `packages/theme/kol-components-organisms.css` | 2026-08-01 | **component 0.19.0 · theme 0.18.0.** Four forks (9 files, ~1542 lines) collapsed onto one module. **No new package** — `packages/media-client` already owned the network contract, and ARCHITECTURE §3 forbids the views living there, so **the client is injected as a prop** and kol-component never imports it. Reused rather than rebuilt: `MediaViewer` is the lightbox (gained an additive `actions` slot), `FullscreenOverlay`/`.kol-overlay` is the modal shell and scrim, `Icon` replaces the hand-rolled chevron. Card width + tile floor became `--kol-media-picker-w` / `--kol-media-tile-min` rather than props — geometry is referenced, which is how four forks got four different ones. Fixed on promotion: video tiles paint (`#t=0.1`, 222 of 433 objects were empty boxes), the page view drills into folders (the brand book's 433 flat tiles), Escape steps back one level, the fetch aborts on unmount. Write ops deliberately not absorbed. Set: `/sets/media-library`. |
+| [InteractiveImage](done/InteractiveImage.md) | `InteractiveImage` atom | `packages/component/src/atoms/InteractiveImage.jsx` · `packages/component/src/hooks/useCoarsePointer.js` | 2026-08-01 | **component 0.19.0.** Unparked by the user ("open all 3 and do the work"). **ATOM, not the spec's molecule** — the taxonomy gate refused it (`nests no KOL component`), and TiltCard sits in atoms for the same reason. **gsap dropped**: `useTilt` calls itself the ONE tilt hook and is framer-motion, so the source's tweens were a fork of it; no dependency added. The collision bug is fixed — both SVG ids are per-instance via `useId()`. `useCoarsePointer` **promoted** out of TiltCard on becoming its second consumer; motion is now double-gated (reduced-motion + coarse pointer). No `--kol-*` carries a blur radius anywhere in the theme — said out loud, left as a prop default. |
 | [IconFrame](done/IconFrame.md) | `IconFrame` atom | `packages/component/src/atoms/IconFrame.jsx` · `packages/theme/kol-components-atoms.css:887` | 2026-07-30 | **component 0.15.0 · theme 0.13.4.** The anonymous `<span class="kol-btn …">` in kol-website's SectionTitle, promoted. Owns `.kol-icon-frame*` rather than borrowing `kol-btn-*` — on a span the button's hover/active/focus are suppressed BY ELEMENT, so "no states" was an accident of the tag; now it is a property of the CSS. 8 variants × sm/md/lg (28/32/36 box, 16/20/24 glyph). Migration verified: **zero differing computed properties** vs the span it replaces. User at approval: *"we dont need all those variants… just ship it"* — only `secondary` has a consumer; trimming to secondary/nav/outline is a one-line patch on request. |
+
+## Filed elsewhere
+
+Tickets **this** ledger does not govern — raised from a kol-ds-ui session, owned by
+another repo's lobby. Each row names the destination ledger that holds the truth.
+The **Remainder** is this repo's to do; the state is theirs to report.
+
+| | Receipt | Destination | Last known | Remainder here |
+|---|---|---|---|---|
+| | [agent-init-docs-index](outbox/agent-init-docs-index.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🟢 `closed` · synced 2026-08-01 | `none` — `/ag-init` + `/agent-init` now load `docs/documentation/INDEX.md` |
+| | [goal-loop-is-repo-scoped](outbox/goal-loop-is-repo-scoped.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` (filed to humpty, re-homed same day) | 🟢 `closed` · synced 2026-08-01 | `none` — a goal now carries its `session_id`; `.active-goal.md` here reads `done` |
+
+## History
+
+| Date | Event |
+|---|---|
+| 2026-07-31 | restructured to the estate-wide standard: live entries moved to `inbox/`, this INDEX became the ledger, emoji states adopted |
+| 2026-08-01 | **MediaLibrary + InteractiveImage closed properly.** Both had reached `done/` with their Processed rows but no `## ✅ RESOLUTION` section, `status: draft` still in frontmatter, and no receipt returned — the closer's half of the lifecycle, skipped. Resolutions appended citing the published versions (component **0.19.0** · theme **0.18.0**), frontmatter flipped to `closed`, receipt returned to `kol-website/lobby/outbox/MediaLibrary.md`. InteractiveImage owes no receipt: its named source no longer exists in any repo (verified). |
+| 2026-08-01 | `outbox/` + **Filed elsewhere** created — the section was missing, so a receipt returned to this repo had nowhere to land. Both existing outbound tickets backfilled straight to `✅ RETURNED`. |

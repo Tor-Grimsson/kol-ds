@@ -30,7 +30,7 @@ related:
 
 > Scope note: this is a **draft plan**. Phases 2–4 touch published package APIs and the showcase; each is gated on sign-off. When executed, this doc gets `status: superseded` and its locked definitions move into the `reference` docs it names.
 
-## Execution status (2026-07-04)
+## Execution status
 
 **All five phases executed** (awaiting your review; changesets held, unpublished).
 
@@ -53,7 +53,7 @@ related:
 
 ---
 
-## Why — the confusion is real, but a convention does exist
+## Why
 
 The premise "I don't see a conventions markdown in docs" is *almost* right. A convention doc exists — `[[02-placement|02-placement.md]]` — but it's **misnamed and buried**: it's framed as "where a **new** component goes" (a routing job for the author of a new file), not "what our **categories mean**" (a definition a browser looks up). Same content, wrong front door. So the definitions are there; nobody finds them.
 
@@ -61,7 +61,7 @@ Two things then compound it: the doc has **drifted** from what the sidebar actua
 
 ---
 
-## Current state — how classification actually works today
+## Current state
 
 There are **two orthogonal axes** in the code. Naming them is half the fix; today they're tangled in the reader's head.
 

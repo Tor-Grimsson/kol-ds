@@ -1,7 +1,7 @@
 # Playbook — showcase audit + the quarantine arc
 
 > **Live work journal.** Append-only, newest at the bottom, real timestamps. One idea per line, no prose.
-> Roadmap (user-facing): `docs/operations/03-showcase-recovery-roadmap.md`. Execution plan: `../plan-2026-07-30-quarantine-reimport.md`.
+> Roadmap (user-facing): `docs/operations/03-showcase/01-recovery-roadmap.md`. Execution plan: `../plan-2026-07-30-quarantine-reimport.md`.
 > Predecessor: `playbook/2026-07-30-mdx-content-migration.md` (the arc whose output this review found broken).
 
 **Goal:** empty the showcase sidebar into a quarantine zone, write the four missing rules, then readmit one category at a time — each behind a user check.
@@ -126,7 +126,7 @@
   silent-drop path: registry.js:322-327 filters by CATEGORY_ORDER — an uncategorised package vanishes with no error (harmless today, a route to a blank page)
 
 [13:41 GMT · 2026-07-30] · pause · docs written, no code touched, waiting on the user
-  roadmap → docs/operations/03-showcase-recovery-roadmap.md
+  roadmap → docs/operations/03-showcase/01-recovery-roadmap.md
   plan → .kol/llm-context/plan-2026-07-30-quarantine-reimport.md
   open question for him: the sidebar paste-JSX-name ask has two readings — a search that accepts a pasted JSX name, or the tree rows dropping PascalCase for spaced labels. not guessing.
 

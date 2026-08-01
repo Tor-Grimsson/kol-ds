@@ -19,7 +19,7 @@ tags:
   - domain/design-system
   - domain/dashboards
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[08-chess-system|chess system]]"
 ---
 
@@ -69,7 +69,7 @@ import { MetricsDashboard } from '@kolkrabbi/kol-dashboards'
 | `MetricsDashboard` | the full site / project / infra / sessions apparatus |
 | `RANGES`, `DEPLOY_STATE_COLORS`, `DEPLOY_STATE_LABELS`, `TYPE_COLORS`, `PALETTE`, `MILESTONE_COLORS`, `formatB2Size`, `timeAgo` | view-level tokens + formatters |
 
-## The content-injection seam
+## Injection seam
 
 `MetricsDashboard` is presentation only — **all data is injected**:
 

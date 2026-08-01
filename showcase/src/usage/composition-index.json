@@ -1478,22 +1478,17 @@
   ],
   "packages/workshop/src/shell/ShellLayout.jsx": [
     {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
       "target": "ShellSidebar",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
       "target": "ShellDrawer",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "ShellSearchOverlay",
       "uses": 1,
       "stars": 3
     },
@@ -2617,6 +2612,42 @@
   "showcase/src/pages/Lobby.jsx": [
     {
       "target": "DocumentationReader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/Quarantine.jsx": [
+    {
+      "target": "DocSection",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/ReferenceNode.jsx": [
+    {
+      "target": "DocHeader",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "DocSection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/References.jsx": [
+    {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocSection",
       "uses": 1,
       "stars": 3
     }

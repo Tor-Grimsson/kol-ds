@@ -168,6 +168,37 @@ INDEX.md is a **position**, not an archetype. It exists **when it adds signal** 
 - `# Title` — matches `title:` in frontmatter, optionally extended with ` — qualifier` for subtitle.
 - No leading numbering in the H1. Filename carries any numbering.
 
+## H2 — the navigable unit (2026-08-01, user ruling)
+
+**An H2 is a NAV LABEL, not a sentence.** Every `##` becomes a row in the
+reader's right rail, in a rail-width column. A heading written as a claim —
+`Resolved contradictions (2026-07-30 — shipped in theme 0.13.0)` — wraps to
+three lines there and stops being scannable, which is the entire job of that
+rail. Rows are the table of contents; the argument goes in the body.
+
+| Rule | Detail |
+|---|---|
+| **Length** | **1–2 words.** Hard ceiling |
+| **No dates** | `(2026-07-28)` belongs in the body or in `updated:`, never in the heading |
+| **No parentheticals** | if it needs a qualifier it is two headings or a body line |
+| **No sentences** | no verbs-as-claims, no `—` clauses, no trailing `?` or `.` |
+| **No numbering** | `3. The roadmap` — the order is the order |
+
+✅ `Surface tiers` · `Palette tokens` · `Membership` · `Hyperlinks`
+❌ `The opacity scale (the signature)` · `Why — the confusion is real, but a convention does exist` · `Root 1 is the one that needs a rule`
+
+**Connectors are not words.** `&`, `+` and `/` join a pair into one label, so
+`Radius & shadows` and `Loaders & hooks` are two words, not three.
+
+**`type: playbook` is EXEMPT.** [[02-archetypes|The playbook archetype]] requires
+numbered step sections (`## 0. Prerequisites` … `## N. Verification`), and a
+step is an instruction, not a nav label — `## 2. Add a changeset` cannot be two
+words without ceasing to be a step. Two rules, two archetypes, no override:
+the gate skips playbooks entirely.
+
+Enforced by **`pnpm validate:headings`**. H3 is unconstrained — it is body
+structure, not a nav row.
+
 ## Dates
 
 - ISO `YYYY-MM-DD`. No timestamps, no timezones.

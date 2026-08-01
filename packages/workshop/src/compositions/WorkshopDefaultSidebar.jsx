@@ -1,5 +1,6 @@
 import { useLocation, Link } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-component'
+import { RailRow } from '../shell'
 
 /**
  * WorkshopDefaultSidebar — EXAMPLE composition. The contextual right rail:
@@ -28,17 +29,9 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
       {siblings.length > 1 && (
         <div>
           <div className="shell-sidebar-label kol-doc-eyebrow">{parentRoute.label}</div>
-          <nav className="space-y-0">
+          <nav className="shell-nav-items">
             {siblings.map(child => (
-              <Link
-                key={child.id}
-                to={`${basePath}/${child.path}`}
-                className={`shell-nav-item block kol-mono-14 ${
-                  location.pathname === `${basePath}/${child.path}` ? 'text-emphasis' : 'text-body'
-                }`}
-              >
-                {child.label}
-              </Link>
+              <RailRow key={child.id} to={`${basePath}/${child.path}`}>{child.label}</RailRow>
             ))}
           </nav>
         </div>
@@ -49,16 +42,10 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
           <div className="shell-sidebar-label kol-doc-eyebrow">Repository</div>
           <div>
             {links.live && (
-              <a href={links.live} target="_blank" rel="noopener noreferrer" className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
-                <Icon name="external-link" size={14} />
-                Live site
-              </a>
+              <RailRow href={links.live} icon={<Icon name="external-link" size={14} />}>Live site</RailRow>
             )}
             {links.repo && (
-              <a href={links.repo} target="_blank" rel="noopener noreferrer" className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
-                <Icon name="external-link" size={14} />
-                GitHub
-              </a>
+              <RailRow href={links.repo} icon={<Icon name="external-link" size={14} />}>GitHub</RailRow>
             )}
           </div>
         </div>
@@ -67,19 +54,8 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
       <div>
         <div className="shell-sidebar-label kol-doc-eyebrow">Quick actions</div>
         <div>
-          <Link to={basePath} className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis">
-            <Icon name="layout" size={14} />
-            Workshop home
-          </Link>
-          <button
-            type="button"
-            className="shell-nav-item flex items-center gap-2 kol-mono-14 text-body transition-colors hover:text-emphasis"
-            onClick={() => navigator.clipboard.writeText(window.location.pathname)}
-            title="Copy page path to clipboard"
-          >
-            <Icon name="copy" size={14} />
-            Copy path
-          </button>
+          <RailRow to={basePath} icon={<Icon name="layout" size={14} />}>Workshop home</RailRow>
+          <RailRow onClick={() => navigator.clipboard.writeText(window.location.pathname)} icon={<Icon name="copy" size={14} />}>Copy path</RailRow>
         </div>
       </div>
     </div>

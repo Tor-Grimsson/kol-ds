@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
-import { Icon, Tooltip } from '@kolkrabbi/kol-component'
+import { useLocation } from 'react-router-dom'
+import { Icon } from '@kolkrabbi/kol-component'
+import RailSection from './RailSection.jsx'
+import RailRow from './RailRow.jsx'
 
 const getSectionRootPath = (route, basePath) => {
   if (route.path !== undefined && route.path !== null) {
@@ -63,115 +65,58 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
     setCollapsedSections((prev) => ({ ...prev, [route.id]: !prev[route.id] }))
   }
 
+  /* No count at L1 — the eyebrow names a body of material and the tally lives
+   * on the groups inside it (user ruling 2026-08-01). RailSection refuses one
+   * at this rung, so there is nothing to compute here. */
   return (
     <div className="space-y-4">
-      {/* kol-helper-10 types the wrapper box itself (was an untyped 16px box) */}
-      <div className="shell-sidebar-toggle shell-sidebar-label kol-doc-eyebrow" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
-        {labelTo ? (
-          <Link to={labelTo} className="shell-sidebar-label kol-doc-eyebrow" onClick={(e) => {
-            if (navCollapsed && handleToggle) handleToggle()
-            if (onNavigate) onNavigate(e)
-          }}>
-            {label}
-          </Link>
-        ) : (
-          /* Same voice as the labelTo branch. This read `kol-helper-10
-           * text-meta`, so the one rail mounted without a labelTo (the vault's
-           * "Documentation") rendered its label at a different size and colour
-           * from its two siblings — a type fork caused purely by which props
-           * the consumer happened to pass. */
-          <button type="button" className="shell-sidebar-label kol-doc-eyebrow" onClick={handleToggle}>{label}</button>
-        )}
-        <Tooltip label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}>
-          <button
-            type="button"
-            onClick={handleToggle}
-            aria-label={navCollapsed ? `Expand ${label}` : `Collapse ${label}`}
-            aria-expanded={!navCollapsed}
-            className="flex items-center justify-center"
-            style={{ height: '16.5px', marginBottom: '8px' }}
-          >
-            <Icon
-              name="chevron-down"
-              size={10}
-              className={`stroke-[2.5] transition-transform ${navCollapsed ? '' : 'rotate-180'}`}
-            />
-          </button>
-        </Tooltip>
-      </div>
+      <RailSection
+        level={1}
+        label={label}
+        to={labelTo}
+        collapsed={navCollapsed}
+        onToggle={handleToggle}
+        onNavigate={onNavigate}
+      >
+        <div className="space-y-4">
+          {routes.map((route) => {
+            /* A group with no children is not a group — it is a link. It used
+             * to render as a header anyway: a chevron that rotated over an
+             * empty body, no count, and no navigation, so clicking "Icons" or
+             * "Components" in the tree did nothing at all while looking like
+             * it should. `collapsible` is what that distinction is now. */
+            const hasChildren = route.children?.length > 0
 
-      {!navCollapsed && <div className="space-y-4">
-        {routes.map((route) => {
-          const isExpanded = !collapsedSections[route.id]
-
-          /* A group with no children is not a group — it is a link. It used to
-           * render as a header anyway: a chevron that rotated over an empty
-           * body, no count, and no navigation, so clicking "Icons" or
-           * "Components" in the tree did nothing at all while looking like it
-           * should. Now the chevron and the toggle only appear when there is
-           * something to expand, and a childless row goes where it says. */
-          const hasChildren = route.children?.length > 0
-          const headerClass = 'shell-nav-group-header w-full text-left kol-mono-14 text-body'
-
-          return (
-            <div key={route.id} className="shell-nav-group">
-              {hasChildren ? (
-                <button
-                  type="button"
-                  className={headerClass}
-                  onClick={() => handleSectionClick(route)}
-                  aria-expanded={isExpanded}
+            return (
+              <div key={route.id} className="shell-nav-group">
+                <RailSection
+                  level={2}
+                  label={route.label}
+                  count={hasChildren ? route.children.length : undefined}
+                  to={hasChildren ? undefined : getSectionRootPath(route, basePath)}
+                  collapsible={hasChildren}
+                  collapsed={!!collapsedSections[route.id]}
+                  onToggle={() => handleSectionClick(route)}
+                  onNavigate={onNavigate}
+                  icon={Icon}
                 >
-                  <span className="flex items-center gap-2">
-                    <Icon
-                      name="chevron-right"
-                      size={12}
-                      className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-                    />
-                    {route.label}
-                  </span>
-                  <span className="kol-mono-14 text-subtle">({route.children.length})</span>
-                </button>
-              ) : (
-                <Link
-                  to={getSectionRootPath(route, basePath)}
-                  className={headerClass}
-                  onClick={onNavigate}
-                >
-                  {/* aligned with the expandable rows' label column — the
-                    * chevron's width, kept as space so the two kinds of row
-                    * share a left edge */}
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden="true" style={{ width: 12 }} />
-                    {route.label}
-                  </span>
-                </Link>
-              )}
-
-              {isExpanded && route.children?.length > 0 && (
-                <div className="shell-nav-items">
-                  {route.children.map((child) => {
-                    const childPath = getChildPath(child, basePath)
-                    return (
-                      <NavLink
+                  <div className="shell-nav-items">
+                    {(route.children ?? []).map((child) => (
+                      <RailRow
                         key={child.id}
-                        to={childPath}
-                        end
-                        className={({ isActive }) =>
-                          `shell-nav-item kol-mono-14 ${isActive ? 'text-emphasis' : 'text-body'}`
-                        }
-                        onClick={onNavigate}
+                        to={getChildPath(child, basePath)}
+                        onNavigate={onNavigate}
                       >
-                        <span className="shell-nav-item-title">{child.label}</span>
-                      </NavLink>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>}
+                        {child.label}
+                      </RailRow>
+                    ))}
+                  </div>
+                </RailSection>
+              </div>
+            )
+          })}
+        </div>
+      </RailSection>
     </div>
   )
 }

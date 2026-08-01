@@ -73,7 +73,6 @@
   padding: 4px 16px;
   border-radius: var(--kol-radius-full);
   background-color: var(--kol-surface-on-primary);
-  font-family: var(--kol-font-family-mono);
   color: var(--kol-surface-primary);
   border: none;
 }
@@ -84,7 +83,6 @@
   padding: 4px 16px;
   border-radius: var(--kol-radius-full);
   background-color: color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
-  font-family: var(--kol-font-family-mono);
   color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
 }
@@ -95,238 +93,102 @@
   padding: 4px 16px;
   border-radius: var(--kol-radius-full);
   background-color: var(--kol-surface-primary);
-  font-family: var(--kol-font-family-mono);
   color: var(--kol-surface-on-primary);
   border: 1px solid var(--kol-border-default);
 }
 
-.pill-sm {
-  font-size: 10px;
-  font-weight: 470;
-  padding: 2px 10px;
-}
-
-.pill-md {
-  font-size: 12px;
-  font-weight: 470;
-  padding: 4px 16px;
-}
-
-.pill-lg {
-  font-size: 14px;
-  font-weight: 470;
-  padding: 6px 20px;
-}
+/* PADDING ONLY — type is kol-helper-*, applied in Pill.jsx. Same ruling as
+ * .kol-tag--* above (2026-08-01). */
+.pill-sm { padding: 2px 10px; }
+.pill-md { padding: 4px 16px; }
+.pill-lg { padding: 6px 20px; }
 
 
 /* ─────────────────────────────────────────────────────────────────────
- * Tag — molecules/Tag.jsx
- *   .tag-control / -sm / -md / -lg
- *   .control-unified-inverse  (inverse variant — ad-hoc legacy naming)
+ * Tag — atoms/Tag.jsx.  REBUILT ON PILL'S MODEL (user ruling 2026-08-01).
+ *
+ * Was: four class schemes for one component (.tag-control, .tag, .tag-naked,
+ * .tag-control-inverse), four declared variants, and exactly ONE :hover rule
+ * between them. Passing `color` swapped the base class off .tag-control and
+ * silently cost the chip its interaction state.
+ *
+ * Now: ONE scheme. `.kol-tag` is the box; `--primary|--secondary|--inverse` is
+ * the look, matching Pill and Button's vocabulary; `--sm|--md|--lg` is the
+ * scale. EVERY variant carries hover and active — a variant without a state is
+ * the defect this rewrite exists to remove, and `pnpm validate:chrome` fails
+ * any that lacks one.
  * ───────────────────────────────────────────────────────────────────── */
 
-.tag-control {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 16px;
-  border-radius: var(--kol-radius-full);
-  background-color: var(--kol-surface-primary);
-  font-size: 10px;
-  font-weight: 400;
-  font-family: var(--kol-font-family-mono);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid var(--kol-border-default);
-  transition: background-color var(--kol-transition-base),
-              color var(--kol-transition-base);
-}
-
-/* ─────────────────────────────────────────────────────────────────────
- * Dropdown — molecules/Dropdown.jsx (2026-07-08 chrome law).
- *   The trigger IS button chrome: JSX emits kol-btn kol-btn-{primary|
- *   outline} kol-btn-{size}, so fills/hover/active/focus come from the
- *   button rules. Classes below only add trigger layout + the open/panel
- *   fusion: primary = one piece (same fill, no border, no gap, hairline
- *   divider inside); outline = bordered pair, trigger's bottom edge is
- *   the divider.
- * ───────────────────────────────────────────────────────────────────── */
-
-.kol-dd-trigger {
-  width: 100%;
-  justify-content: space-between;
-}
-
-/* Dropdowns have NO hover and NO clicked state (2026-07-15 ruling) — the
- * trigger borrows Button chrome for geometry/fill but its only states are
- * rest and open. Scoped here so Button's own rules stay untouched. */
-.kol-dd-trigger.kol-btn-primary:not(.kol-btn-animate):hover,
-.kol-dd-trigger.kol-btn-primary:not(.kol-btn-animate):not(:disabled):active {
-  background: var(--kol-surface-secondary);
-  color: var(--kol-surface-on-primary);
-}
-.kol-dd-trigger.kol-btn-outline:not(.kol-btn-animate):hover,
-.kol-dd-trigger.kol-btn-outline:not(.kol-btn-animate):not(:disabled):active {
-  background: transparent;
-  border-color: var(--kol-oq-16);
-  color: var(--kol-surface-on-primary);
-}
-
-.kol-dd-trigger--open {
-  border-radius: var(--kol-radius-sm) var(--kol-radius-sm) 0 0;
-}
-
-.kol-dd-panel {
-  color: var(--kol-surface-on-primary);
-  border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
-  padding-bottom: 4px;
-}
-
-.kol-dd-panel--primary { background-color: var(--kol-surface-secondary); }
-
-.kol-dd-panel--outline {
-  background-color: var(--kol-surface-primary);
-  border: 1px solid var(--kol-oq-16);
-  border-top: none;
-}
-
-/* grey — the opaque grey chrome (oq-12, fill law:
- * interactive surfaces never translucent). Dropdown-only chrome; rest = hover
- * = active per the no-states dropdown ruling (no kol-btn-* class emitted, so
- * no button state rules ever apply). */
-.kol-dd-trigger--grey {
-  background-color: var(--kol-oq-12);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
-
-.kol-dd-panel--grey { background-color: var(--kol-oq-12); }
-
-.kol-dd-div {
-  height: 1px;
-  background-color: var(--kol-border-default);
-  margin: 0 12px;
-}
-
-/* The option list — chrome, not consumer utilities (brief-2.0 defect 2: a
- * consumer without @source got an uncapped, unscrollable panel). */
-.kol-dd-list {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-/* The trigger chevron — pushed to the trailing edge, flips on open state.
- * Replaces the ml-auto utility + inline rotate style in Dropdown.jsx. */
-.kol-dd-caret {
-  margin-left: auto;
-  transition: transform 300ms;
-}
-
-.kol-dd-trigger[data-state="open"] .kol-dd-caret {
-  transform: rotate(180deg);
-}
-
-.tag-control:hover {
-  background-color: var(--kol-oq-12);
-  color: var(--kol-surface-on-primary);
-  border-color: transparent;
-}
-
-.tag-control.is-active {
-  background-color: var(--kol-oq-12);
-  color: var(--kol-surface-on-primary);
-  border-color: var(--kol-oq-12);
-}
-
-.tag-sm { font-size: 10px; font-weight: 470; padding: 4px 10px; }
-.tag-md { font-size: 12px; font-weight: 470; padding: 5px 12px; }
-.tag-lg { font-size: 14px; font-weight: 470; padding: 6px 14px; }
-
-/* ─────────────────────────────────────────────────────────────────────
- * Tag color family — molecules/Tag.jsx `color` prop (wave-4 vault parity,
- * 2026-07-30). Tag emits `tag tag--{color}` (chip) / `tag-naked
- * tag--{color}` (text-only); the classes shipped in the JSX but the RULES
- * never migrated out of the monorepo workshop — the same dangling trap as
- * the palette tokens themselves (kol-color.css, 2026-07-16) — so every
- * colored tag rendered dead. Re-authored from the monorepo colors spec
- * (02-design-system/01-colors.md § Tag Color Classes): light mode =
- * palette-*-light fill + dark ink; dark mode = saturated palette-* fill +
- * light ink (yellow keeps dark ink); `dark` = the on-primary/surface flip.
- * Inks are LITERALS (the surface poles): on a fixed palette fill a
- * theme-flipping token is wrong by definition.
- * ───────────────────────────────────────────────────────────────────── */
-
-.tag {
+.kol-tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   border-radius: var(--kol-radius-full);
-  font-family: var(--kol-font-family-mono);
   border: 1px solid transparent;
-  transition: background-color var(--kol-transition-base),
-              color var(--kol-transition-base);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-/* naked — text-only: no fill, no chip padding (the reader-sidebar voice).
- * Sits AFTER .tag-{size} so its padding reset wins at equal specificity. */
-.tag-naked {
+/* PADDING ONLY. Type is the kol-helper-* ramp, applied at the call site
+ * (Tag.jsx) — these rules used to hardcode font-size + font-weight and set no
+ * line-height, so a 10px chip inherited the body's ~1.5 and stood 22px tall
+ * beside 14px rows. Two owners of one concept is the drift this repo keeps
+ * paying for; the class owns the type, the rule owns the box. */
+.kol-tag--sm { padding: 2px 10px; }
+.kol-tag--md { padding: 4px 16px; }
+.kol-tag--lg { padding: 6px 20px; }
+
+/* primary — the filled chip. Mirrors .pill-subtle's weight. */
+.kol-tag--primary {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
+  color: var(--kol-surface-on-primary);
+}
+.kol-tag--primary:hover {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+}
+.kol-tag--primary.is-active {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 32%, transparent);
+  border-color: currentColor;
+}
+
+/* secondary — the outlined chip. Mirrors .pill-outline. */
+.kol-tag--secondary {
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+  border-color: var(--kol-border-default);
+}
+.kol-tag--secondary:hover {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 08%, transparent);
+}
+.kol-tag--secondary.is-active {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
+  border-color: currentColor;
+}
+
+/* inverse — the flipped chip. Mirrors .pill-inverse. */
+.kol-tag--inverse {
+  background-color: var(--kol-surface-on-primary);
+  color: var(--kol-surface-primary);
+}
+.kol-tag--inverse:hover {
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 88%, transparent);
+}
+.kol-tag--inverse.is-active {
+  border-color: var(--kol-surface-primary);
+}
+
+.kol-tag-dismiss {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  font-family: var(--kol-font-family-mono);
+  cursor: pointer;
+  opacity: 0.64;
+  transition: opacity 0.15s ease;
 }
+.kol-tag-dismiss:hover { opacity: 1; }
 
-/* Light mode (default): light fill + dark ink */
-.tag--blue   { background-color: var(--kol-palette-blue-light);   color: #121215; }
-.tag--teal   { background-color: var(--kol-palette-teal-light);   color: #121215; }
-.tag--green  { background-color: var(--kol-palette-green-light);  color: #121215; }
-.tag--yellow { background-color: var(--kol-palette-yellow-light); color: #121215; }
-.tag--red    { background-color: var(--kol-palette-red-light);    color: #121215; }
-.tag--orange { background-color: var(--kol-palette-orange-light); color: #121215; }
-.tag--purple { background-color: var(--kol-palette-purple-light); color: #121215; }
-.tag--dark   { background-color: var(--kol-surface-on-primary);   color: var(--kol-surface-primary); }
-
-/* naked + color = saturated text, both modes (no fill to carry the pair) */
-.tag-naked.tag--blue   { background: transparent; color: var(--kol-palette-blue); }
-.tag-naked.tag--teal   { background: transparent; color: var(--kol-palette-teal); }
-.tag-naked.tag--green  { background: transparent; color: var(--kol-palette-green); }
-.tag-naked.tag--yellow { background: transparent; color: var(--kol-palette-yellow); }
-.tag-naked.tag--red    { background: transparent; color: var(--kol-palette-red); }
-.tag-naked.tag--orange { background: transparent; color: var(--kol-palette-orange); }
-.tag-naked.tag--purple { background: transparent; color: var(--kol-palette-purple); }
-.tag-naked.tag--dark   { background: transparent; color: var(--kol-surface-on-primary); }
-
-/* active (Tag.jsx emits .tag--active when active + colored) */
-.tag--active { border-color: currentColor; }
-
-/* Dark mode: saturated fill + light ink (yellow keeps dark ink). Scoped to
- * .tag.tag--{color} so the chip flips while .tag-naked (equal specificity,
- * earlier in the sheet) keeps its saturated TEXT — a bare .tag--{color}
- * override here would out-order the naked rules and give text tags a fill.
- * MIRROR of the system-follow block below — edit both. */
-:is([data-theme="dark"], .dark) .tag.tag--blue   { background-color: var(--kol-palette-blue);   color: #fafafa; }
-:is([data-theme="dark"], .dark) .tag.tag--teal   { background-color: var(--kol-palette-teal);   color: #fafafa; }
-:is([data-theme="dark"], .dark) .tag.tag--green  { background-color: var(--kol-palette-green);  color: #fafafa; }
-:is([data-theme="dark"], .dark) .tag.tag--yellow { background-color: var(--kol-palette-yellow); color: #121215; }
-:is([data-theme="dark"], .dark) .tag.tag--red    { background-color: var(--kol-palette-red);    color: #fafafa; }
-:is([data-theme="dark"], .dark) .tag.tag--orange { background-color: var(--kol-palette-orange); color: #fafafa; }
-:is([data-theme="dark"], .dark) .tag.tag--purple { background-color: var(--kol-palette-purple); color: #fafafa; }
-
-/* System-follow dark — only when no explicit theme is stamped (explicit >
- * system > light, USER law). MIRROR of the block above — edit both. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .tag.tag--blue   { background-color: var(--kol-palette-blue);   color: #fafafa; }
-  :root:not([data-theme]) .tag.tag--teal   { background-color: var(--kol-palette-teal);   color: #fafafa; }
-  :root:not([data-theme]) .tag.tag--green  { background-color: var(--kol-palette-green);  color: #fafafa; }
-  :root:not([data-theme]) .tag.tag--yellow { background-color: var(--kol-palette-yellow); color: #121215; }
-  :root:not([data-theme]) .tag.tag--red    { background-color: var(--kol-palette-red);    color: #fafafa; }
-  :root:not([data-theme]) .tag.tag--orange { background-color: var(--kol-palette-orange); color: #fafafa; }
-  :root:not([data-theme]) .tag.tag--purple { background-color: var(--kol-palette-purple); color: #fafafa; }
-}
+/* The per-colour tag palette was DELETED 2026-08-01 with the `color` prop.
+ * A chip's look is its variant now (kol-tag--primary|secondary|inverse), the
+ * same vocabulary Pill and Button use. Tag colour BY TAXONOMY returns later
+ * as its own decision, layered ON the variants rather than replacing them. */
 
 .control-unified-inverse {
   display: inline-flex;
@@ -607,4 +469,48 @@
 .kol-codeblock-copy:hover {
   background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
   color: var(--kol-surface-on-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * OVERLAY CHROME — the ONE floating surface (user ruling 2026-08-01).
+ *
+ * There was none. `.kol-modal` is an unstyled hook, and ShellSearchOverlay
+ * hand-wrote its own look at the call site: `rounded-[var(--kol-radius-2xl)]`,
+ * `shadow-[0_20px_60px_rgba(0,0,0,0.4)]`, `bg-black/60`, `backdrop-blur-[1px]`
+ * — four arbitrary values, none of them referenced anywhere else. The 20px
+ * radius in particular appears NOWHERE else in this repo's chrome (which uses
+ * `sm` and `full`, counted), which is exactly why it read as foreign.
+ *
+ * TagModeOverlay meanwhile rendered as a page-like <article> with no overlay
+ * chrome at all — one product, two floating surfaces, nothing in common.
+ *
+ * Both wear these two classes now. `validate:chrome` C3 fails any arbitrary
+ * rounded-[…] / shadow-[…] / bg-black/NN / backdrop-blur-[…] in package chrome.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* LOOK ONLY — the call site owns the box. Three scrims exist and two are
+ * `fixed inset-0` while one is `absolute inset-0`; baking position in would
+ * have forced a wrong one on two of them. The class owns what was drifting:
+ * the tint (60 / 50 / 50 across three files) and the blur. */
+.kol-overlay-scrim {
+  background-color: color-mix(in srgb, #000 60%, transparent);
+  backdrop-filter: blur(1px);
+}
+
+.kol-overlay-panel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--kol-surface-primary);
+  /* NO BORDER, NO SHADOW (user 2026-08-01). Both were tried and both were
+   * wrong: the shadow was another product's floating-card idiom, and the
+   * hairline left an empty palette reading as a bordered empty box. The SCRIM
+   * is the separation — a 60% tint plus blur is already a stronger edge than
+   * an 8%-opacity line. */
+  /* `sm` — the radius this repo's chrome actually uses. */
+  border-radius: var(--kol-radius-sm);
+  /* NO SHADOW (user ruling 2026-08-01). The border and the scrim already
+   * separate the panel; a drop-shadow on top is the floating-card idiom from
+   * another product. --kol-shadow-overlay was added for this an hour earlier
+   * and is deleted with it: it solved the wrong problem. */
 }

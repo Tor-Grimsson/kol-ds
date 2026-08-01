@@ -1,9 +1,11 @@
 import { createContext, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { ShellHeader } from '@kolkrabbi/kol-framework'
+import { ShellHeader, HEADER_ICON } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
 import { Button, ShellDrawer, ShellSearchOverlay, Tooltip } from '@kolkrabbi/kol-component'
 import { matchSearchItems } from '../engine/search.js'
+import { useTagMode } from '../tags/TagModeContext.jsx'
+import TagModeOverlay from '../tags/TagModeOverlay.jsx'
 import { Asset } from '@kolkrabbi/kol-brand/svg'
 
 // Pages can register right-rail TOC content via this context.
@@ -37,9 +39,33 @@ const MainColumn = ({ children, fullHeight }) => (
     className={`w-full min-w-0 h-full min-h-0 ${fullHeight ? 'overflow-hidden flex flex-col' : 'overflow-y-auto overscroll-none'}`}
     style={fullHeight ? undefined : { scrollbarGutter: 'stable' }}
   >
+    {/* THE cap lives HERE (2026-07-31), on the CONTENT — not on the grid that
+      * holds the rails. The theme's law is written about a page ("content
+      * LEFT-ANCHORED inside"), and the rails are chrome, not page. Capping the
+      * grid centred all three columns and pulled both rails inward off the
+      * viewport edge; the rails now sit flush at the chrome inset and only the
+      * main column carries a cap.
+      *
+      * It caps at CANVAS, not shell (user ruling 2026-07-31). Shell is the
+      * frame token and the middle grid track can never reach it — after both
+      * rails, gutters and inset there is ~1516 of room at a 2200 window — so a
+      * shell cap here was real code that could never fire, and every page just
+      * inherited whatever the window gave it. Canvas is the rung that binds.
+      * One decision, made once: 14 pages needed no per-page cap.
+      * `fullHeight` stays uncapped on purpose — it IS the fill-the-viewport
+      * escape hatch (iframe embeds).
+      *
+      * LEFT-ANCHORED, not centred (user ruling 2026-08-01). The capped div
+      * below carried `mx-auto`, which centres the column inside the main
+      * track — so above the canvas width the content drifted away from the
+      * rail it is supposed to line up with. The one-frame law has said
+      * "content LEFT-ANCHORED inside" since 2026-07-28 (kol-theme.css content
+      * block; docs/documentation/01-foundations/05-layout-systems.md): the
+      * FRAME centres in the viewport, the CONTENT does not centre in the
+      * frame. `validate:width` W4 asserts it now. */}
     {fullHeight
       ? children
-      : <div className="pt-6 md:pt-6 lg:pt-8 pb-16">{children}</div>
+      : <div className="w-full max-w-[var(--kol-content-canvas)] pt-6 md:pt-6 lg:pt-8 pb-16">{children}</div>
     }
   </main>
 )
@@ -52,11 +78,13 @@ const MainColumn = ({ children, fullHeight }) => (
  * decision and must not be stated twice differently. */
 const TocColumn = ({ children }) => (
   <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden xl:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
-    {/* The 224px lives HERE, not on the grid track (see gridCols). An inner
-      * wrapper with a width means a rail whose content renders null measures
-      * zero and the column collapses — the page gets the space back instead of
-      * staring at a reserved empty gutter. */}
-    <div className="w-56 empty:hidden">{children}</div>
+    {/* The WIDTH IS THE GRID TRACK now (--kol-shell-toc-w, see gridCols), not
+      * an inner wrapper. It used to be `w-56 empty:hidden` here precisely so a
+      * rail whose content rendered null would measure zero and let the main
+      * column reclaim the space — REVERSED by user ruling 2026-08-01: an empty
+      * rail still holds its column, because a rail that disappears re-flows
+      * main and the same page ends up at two different widths. */}
+    <div className="w-full">{children}</div>
   </aside>
 )
 
@@ -64,8 +92,21 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
   const [navCollapsed, setNavCollapsed] = useState(false)
   const [tocCollapsed, setTocCollapsed] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+  /* ONE QUERY (user ruling 2026-08-01). The palette's text used to live here
+   * while tags lived in TagModeContext — two states, and therefore two
+   * surfaces. Both facets are the context's now. The local pair survives ONLY
+   * for a consumer mounting the shell without a TagModeProvider, where the
+   * context is the inert fallback and every keystroke would no-op. */
+  const tagMode = useTagMode()
+  const [localOpen, setLocalOpen] = useState(false)
+  const [localQuery, setLocalQuery] = useState('')
+
+  const isSearchOpen = tagMode.isProvided ? tagMode.isOpen : localOpen
+  const searchQuery = tagMode.isProvided ? tagMode.text : localQuery
+  const setSearchQuery = tagMode.isProvided ? tagMode.setText : setLocalQuery
+  const setIsSearchOpen = tagMode.isProvided
+    ? (v) => (v ? tagMode.openTagMode() : tagMode.closeTagMode())
+    : setLocalOpen
   const [tocContent, setTocContent] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
@@ -103,33 +144,38 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   }, [])
 
   const effectiveTocContent = tocContent ?? defaultTocContent
-  /* An element is truthy even when the component inside it renders nothing, so
-   * this alone reserved a 224px rail on every route — including ones with no
-   * headings. Three fixes were rejected before this one: measuring the mounted
-   * column DEADLOCKS (once the column unmounts the probe is gone and can never
-   * report content again); calling a render-prop inline makes the consumer's
-   * hooks belong to THIS component, one refactor away from a crash; and a
-   * boolean prop puts the answer in the consumer, which doesn't know either.
+  /* THE RAIL HOLDS ITS COLUMN, EMPTY OR NOT (user ruling 2026-08-01).
    *
-   * The column decides for itself instead. The track is `auto`, not a fixed
-   * 224px, and the width lives on the rail's CONTENT — so a rail that renders
-   * nothing collapses to zero and the main column takes the space back. No
-   * signal to keep in sync, nothing to deadlock. */
+   * This used to hunt for a way to tell whether the rail had real content, so
+   * an empty one could collapse and hand its space back to main. That whole
+   * question is now moot — and it was the wrong question. A rail that vanishes
+   * on content-less routes means / renders at one main width and /foundations
+   * at another: the layout becomes a property of the page's content instead of
+   * the shell. The user caught it on the home page, where the TOC has no
+   * headings to show.
+   *
+   * So the track is RESERVED whenever the viewport is wide enough and the user
+   * has not collapsed it by hand. `hasToc` survives for ONE job — whether the
+   * header offers a toggle at all — because a control that collapses an
+   * already-empty rail is noise. Collapsing is still a user action, and a user
+   * action is allowed to change the layout; content appearing is not. */
   const hasToc = Boolean(effectiveTocContent)
   const showNav = !navCollapsed
-  const showToc = hasToc && !tocCollapsed
+  const showToc = !tocCollapsed
 
   const layoutType = showNav && showToc ? 'nav-toc' : showNav ? 'nav' : showToc ? 'toc' : 'none'
 
-  /* `auto`, not `224px` — see hasToc above. The width is declared on the rail's
-   * content (TocColumn's inner wrapper), so a rail with nothing in it measures
-   * zero and the main column reclaims the space. */
+  /* A FIXED track (--kol-shell-toc-w), not `auto`. `auto` sized the column to
+   * its content, which is exactly what let an empty rail measure zero. Both
+   * rail widths are tokens: the left is --kol-sidenav-w (the one number every
+   * grid track that lines up with it already reads), the right is
+   * --kol-shell-toc-w. */
   const gridCols = showNav
     ? showToc
-      ? 'lg:grid-cols-[256px_minmax(0,1fr)] xl:grid-cols-[256px_minmax(0,1fr)_auto]'
-      : 'lg:grid-cols-[256px_minmax(0,1fr)]'
+      ? 'lg:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)] xl:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)_var(--kol-shell-toc-w)]'
+      : 'lg:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)]'
     : showToc
-      ? 'xl:grid-cols-[minmax(0,1fr)_auto]'
+      ? 'xl:grid-cols-[minmax(0,1fr)_var(--kol-shell-toc-w)]'
       : ''
 
   // Adapt the old flat `routes` + callbacks to the DS ShellHeader API
@@ -176,7 +222,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     <>
       {actions}
       <Tooltip label="Search">
-        <Button variant="ghost" quiet iconOnly="search" iconSize={18} onClick={() => setIsSearchOpen(true)} aria-label="Search" />
+        <Button variant="ghost" quiet iconOnly="search" iconSize={HEADER_ICON} onClick={() => setIsSearchOpen(true)} aria-label="Search" />
       </Tooltip>
     </>
   )
@@ -237,10 +283,19 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
               * Tailwind's 16/20/24 steps instead of the ramp's 20/32/48 — so
               * every consumer page inherited the raw viewport (measured 2152px
               * of frame at a 2200px window against an 1800px law). Every
-              * page-level width fix is downstream of this line. */}
+              * page-level width fix is downstream of this line.
+              *
+              * CORRECTED 2026-07-31: that fix capped THIS element, which holds
+              * all three columns — so the whole chrome centred and both rails
+              * were dragged inward off the viewport edge. The chrome frame
+              * takes the full available width and the rails justify to it; the
+              * cap moved one level down onto MainColumn's content, which is
+              * what the theme's law is written about. Same disease as
+              * --kol-container-max stopping at 1600 under an 1800 law: one
+              * element, two answers. */}
             <div
-              className="mx-auto h-full w-full max-w-[var(--kol-content-shell)]"
-              style={{ paddingInline: 'var(--kol-pad-section-x)' }}
+              className="h-full w-full"
+              style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}
             >
               {/* gap lives in .shell-content-grid (theme) — a gap-8 utility here
                 * outranks the layered theme rule at every width and killed the
@@ -261,6 +316,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                     </div>
                   </MainColumn>
 
+                  {/* Mounted on showToc alone — NOT on whether there is content
+                    * to put in it. An empty TocColumn is the point: it holds
+                    * the grid's third track so main keeps one width across
+                    * every route (user ruling 2026-08-01). */}
                   {showToc && (
                     <TocColumn>
                       {effectiveTocContent}
@@ -292,20 +351,32 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             query={searchQuery}
             onQueryChange={setSearchQuery}
             results={searchResults}
+            /* THE EXPANDED BODY (user ruling 2026-08-01). The tag browser is
+             * not a sibling overlay — it is this palette's second state. Enter
+             * commits the query and swaps the result rows for the full body;
+             * committed tags ride along as chips on the same query. */
+            expanded={tagMode.isProvided && tagMode.expanded}
+            onExpand={() => tagMode.setExpanded?.(true)}
+            chips={tagMode.isProvided ? tagMode.activeTags : []}
+            onRemoveChip={tagMode.removeTag}
+            placeholder="Search…"
             onSelect={(item) => {
+              /* `action` before `href`: not every hit is a destination. A tag
+               * row FILTERS the same query and the palette STAYS OPEN — closing
+               * it was the behaviour that forced tags into a second overlay.
+               * Only a destination dismisses. */
+              if (typeof item?.action === 'function') {
+                item.action()
+                setSearchQuery('')
+                return
+              }
               setIsSearchOpen(false)
               setSearchQuery('')
-              /* `action` before `href`: not every hit is a destination. A tag
-               * row toggles state rather than navigating, and without this the
-               * palette could only ever hold things that live at a URL — which
-               * is why the tag search had to be a second, separate search box
-               * that knew nothing about this one. The consumer supplies the
-               * closure; the shell stays ignorant of what it does. */
-              if (typeof item?.action === 'function') item.action()
-              else if (item?.href) navigate(item.href)
+              if (item?.href) navigate(item.href)
             }}
-            placeholder="Search…"
-          />
+          >
+            {tagMode.isProvided && tagMode.expanded ? <TagModeOverlay /> : null}
+          </ShellSearchOverlay>
 
           {/* The `?` sheet. Rendered FROM the SHORTCUTS array above, so the help
             * and the bindings are one source — a shortcut can't be documented

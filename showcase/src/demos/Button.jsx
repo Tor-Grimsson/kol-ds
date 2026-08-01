@@ -1,17 +1,19 @@
 import { Button } from '@kolkrabbi/kol-component'
 
-export default function ButtonDemo() {
+/* Exporting `variants` puts a picker in the preview toolbar; the active one
+ * arrives as the `variant` prop, so every size and shape below re-renders in
+ * that variant instead of needing one demo file per variant. */
+export const variants = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'danger', 'grey']
+
+export default function ButtonDemo({ variant = 'primary' }) {
   return (
     <>
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="accent">Accent</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="danger">Danger</Button>
-      <Button variant="grey">Grey</Button>
-      <Button variant="primary" iconLeft="plus">New</Button>
-      <Button variant="outline" iconOnly="settings-01" />
+      <Button variant={variant} size="sm">Small</Button>
+      <Button variant={variant}>Medium</Button>
+      <Button variant={variant} size="lg">Large</Button>
+      <Button variant={variant} iconLeft="plus">With icon</Button>
+      <Button variant={variant} iconOnly="settings-01" />
+      <Button variant={variant} disabled>Disabled</Button>
     </>
   )
 }

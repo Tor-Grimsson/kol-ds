@@ -22,6 +22,9 @@ import FullscreenOverlay from '../atoms/FullscreenOverlay.jsx'
  * @param {number}   index          active item index (parent-owned)
  * @param {Function} onIndexChange  fires with the new index on page
  * @param {Function} onClose        close request (Esc, backdrop, close button)
+ * @param {Function|ReactNode} actions  optional row under the stage; a function
+ *   receives `(activeItem, index)` so openers can offer per-item actions
+ *   (MediaPicker's Use / Copy URL) without forking a second lightbox
  */
 
 /* Inverse-tier chip tokens: the overlay scrim is surface-inverse, and .kol-overlay
@@ -109,12 +112,17 @@ function ViewerStage({ media, index, onIndexChange }) {
   )
 }
 
-export default function MediaViewer({ open, media = [], index = 0, onIndexChange, onClose }) {
+export default function MediaViewer({ open, media = [], index = 0, onIndexChange, onClose, actions }) {
   if (!open || !media[index]) return null
+
+  const actionRow = typeof actions === 'function' ? actions(media[index], index) : actions
 
   return (
     <FullscreenOverlay open onClose={onClose}>
       <ViewerStage media={media} index={index} onIndexChange={onIndexChange} />
+      {actionRow && (
+        <div className="mt-4 flex items-center justify-center gap-2">{actionRow}</div>
+      )}
     </FullscreenOverlay>
   )
 }

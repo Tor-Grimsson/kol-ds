@@ -28,7 +28,7 @@ export default function OverlayGlassPanel({
 
   return (
     <div
-      className={`flex flex-col ${alignCls} ${gap} rounded-[2px] px-6 py-8 ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
+      className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-xs)] px-6 py-8 ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
       style={{
         backgroundColor: `color-mix(in srgb, var(--kol-surface-primary) ${surfaceOpacity}%, transparent)`,
         backdropFilter: `blur(${blur})`,

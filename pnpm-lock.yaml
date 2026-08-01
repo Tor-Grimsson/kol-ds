@@ -281,6 +281,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../packages/media-client
       '@kolkrabbi/kol-store':
         specifier: workspace:*
         version: link:../packages/store

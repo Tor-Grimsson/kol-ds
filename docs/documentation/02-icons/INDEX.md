@@ -23,7 +23,7 @@ related:
 
 `@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and **kol-icon-set-v1** (the curated set the system is converging on). Browse live: showcase `/icons` (kol-icon-set-v1, grouped — the legacy gallery and `/icons/v1` were consolidated into it, 2026-07-28).
 
-## The Icon component
+## Icon component
 
 ```jsx
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -36,7 +36,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 > The `variant` prop was removed in 0.8.0 with the legacy solid cut — the set is a **single stroke cut**; intentional solids are their own named icons (e.g. `star-solid`).
 
-## kol-icon-set-v1 — the curated set
+## kol-icon-set-v1
 
 One small, hand-reviewed set — **144 icons across 23 groups** (2026-07-28: 17 promotions with 0.8.0, keyline-conformed in 0.8.1 — chevrons/carets fit the 18×18 rect; 0.8.2 killed chevron-expanded (twin of chevron-up) and completed the four-diagonal arrow family as baked mirrors of the arrow-downright master), a **single stroke cut**, every icon authored with `currentColor` and normalised to the 1.5 keyline. It **ships in the package** at `packages/icons/src/kol-icon-set-v1/<group>/<name>.svg` and is the ONLY packaged set. It renders on `/icons`, which **dogfoods** it — groups from the `KOL_ICON_SET_V1` inventory, each icon via the package `<Icon>`.
 
@@ -44,7 +44,7 @@ One small, hand-reviewed set — **144 icons across 23 groups** (2026-07-28: 17 
 - **Single cut.** No stroke/solid duality; intentional solids (filled carets, dots) are baked into the individual icon, not a parallel tree.
 - **Grows slowly, curated** — new icons enter via the promotion loop below, not bulk import.
 
-## Bring your own icons
+## Custom icons
 
 The package ships the *small* shared set; each consumer repo registers the extra icons it needs from its own folder — so no repo pulls hundreds of icons it never uses.
 
@@ -56,18 +56,18 @@ registerIcons(import.meta.glob('./icons/**/*.svg', { eager: true, query: '?raw',
 
 Registered icons are keyed by filename, **win over the packaged set** (add *or* override), and render synchronously. Author them with `currentColor`.
 
-## Legacy is gone — the hotfix shelf
+## Legacy
 
 The legacy trees (stroke / solid / svg / svg-web, ~1,900 SVGs) were **removed from the package in 0.8.0** (user ruling 2026-07-28: audience-of-one repos break-and-fix, no compat layer). The editable local shelf is **`_tmp/legacy-icons/`** in this repo (gitignored, this machine only). Downstream repo breaks on a dead name → grab the SVG from the shelf, drop it in that repo's own icons folder, `registerIcons()` picks it up — and if a glyph keeps earning hotfixes, promote it into v1 here instead.
 
-## The promotion loop
+## Promotion loop
 
 Icons flow both ways, keeping the shared set clean while every repo stays lean:
 
 - **⬇ down** — a repo consumes the shared set and `registerIcons` its own locals.
 - **⬆ up** — when a local icon earns a place in the shared set, `/kol-lobby-icon` promotes it: **clean** (currentColor, strip export junk, normalise the name), **check** (stroke-weight, keyline fit, false/expanded stroke, name collision), then drop it into `kol-icon-set` under a group.
 
-## Inventories (keys-only, zero content cost)
+## Inventories
 
 | Export | What |
 |---|---|
@@ -77,7 +77,7 @@ Icons flow both ways, keeping the shared set clean while every repo stays lean:
 
 `ICON_ENTRIES` / `SOLID_ICON_ENTRIES` / `ICON_INDEX` died with the legacy trees (0.8.0). Per-category roster: [[01-inventory|icon inventory]].
 
-## The keyline guide
+## Keyline guide
 
 The gallery's GRID toggle overlays the icon **keyline** (Material-style paint-by-numbers): dashed diagonals + three keyline rounded-rects + center circle on the 24×24 grid — yellow on dark, magenta on light. Shared component: `showcase/src/lib/icon-controls.jsx` (`KeylineBg` + the `SegGroup` BG · SIZE · GRID toggles) — consumed by the `/icons` v1 gallery.
 

@@ -17,9 +17,9 @@ tags:
   - domain/design-system
   - domain/styleguide
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"
-  - "[[02-color|color]]"
+  - "[[../01-foundations/02-color|color]]"
 ---
 
 # Style-guide system — `@kolkrabbi/kol-styleguide`

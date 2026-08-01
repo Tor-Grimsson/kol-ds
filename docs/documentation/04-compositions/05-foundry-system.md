@@ -19,7 +19,7 @@ tags:
   - domain/design-system
   - domain/foundry
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[06-store-system|store system]]"
 ---
 

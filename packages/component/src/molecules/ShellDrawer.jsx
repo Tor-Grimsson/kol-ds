@@ -134,7 +134,7 @@ export default function ShellDrawer({
   return createPortal(
     <>
       <div
-        className={`fixed inset-0 z-[100] bg-black/50 ${motionBackdrop}`}
+        className={`fixed inset-0 z-[100] kol-overlay-scrim ${motionBackdrop}`}
         onClick={onClose}
         aria-hidden="true"
       />

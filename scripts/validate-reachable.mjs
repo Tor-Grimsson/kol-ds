@@ -18,7 +18,7 @@
  * gate on a boolean, a route the gate didn't wrap. Anything requiring a rendered
  * page is verified in a browser per category instead of faked here.
  *
- *   E1  every SHELL_ROUTES entry contributes a search row (parent, not just children)
+ *   E1  every ALL_ROUTES entry contributes a search row (parent, not just children)
  *   E2  tag rows reach the palette
  *   E3  the tag overlay's graph control is not gated behind having filters
  *   E4  every icon named in SHELL_ROUTES exists in the icon set
@@ -31,14 +31,50 @@ const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(REPO, p), 'utf8')
 const errors = []
 
-/* ── E1 · every route is a search row ── */
-const navSrc = read('showcase/src/lib/shell-nav.js')
+/* ── E1 · every route is a search row ──
+ * Two failures now, not one. The original: mapping `r.children` only, so a
+ * childless tab contributed nothing. The second arrived with the quarantine
+ * gate — `SHELL_ROUTES` is the ADMITTED subset, so searching it instead of the
+ * full `ALL_ROUTES` would make every held surface unfindable by name. That is
+ * the same defect this file exists to stop, reintroduced by a gate that is
+ * supposed to be reversible. Search reads the complete list; the tree is what
+ * gets filtered. */
+const navSrc = read('showcase/src/nav/shell-nav.js')
 const buildFn = navSrc.slice(navSrc.indexOf('buildShellSearchItems'))
-if (!/SHELL_ROUTES\.flatMap\(\(r\)\s*=>\s*\[/.test(buildFn)) {
+if (!/ALL_ROUTES\.flatMap\(\(r\)\s*=>\s*\[/.test(buildFn)) {
   errors.push(
-    'showcase/src/lib/shell-nav.js  buildShellSearchItems maps children only — ' +
-    'a childless tab contributes no search row and is unreachable by name'
+    'showcase/src/nav/shell-nav.js  buildShellSearchItems must flatMap ALL_ROUTES ' +
+    'with the parent row included — mapping children only, or mapping the ' +
+    'admitted SHELL_ROUTES, leaves surfaces unreachable by name'
   )
+}
+
+/* ── E1b · slot-pages are search rows too ──
+ * Added 2026-07-31, in the same change that created the hole. Foundations and
+ * Icons stopped being top-level surfaces and became chapter pages
+ * (nav/chapter-pages.js), which is correct taxonomy — and it lifted them clean
+ * out of ALL_ROUTES, the only list E1 knows about. A route that moves house
+ * without telling search is the exact defect this file exists to stop, so the
+ * gate has to know about the second house. */
+if (!/CHAPTER_PAGES/.test(buildFn)) {
+  errors.push(
+    'showcase/src/nav/shell-nav.js  buildShellSearchItems ignores CHAPTER_PAGES — ' +
+    'slot-pages live in a vault chapter, not in ALL_ROUTES, so without this ' +
+    'every live page inside a chapter is unfindable by name'
+  )
+}
+{
+  const pagesSrc = read('showcase/src/nav/chapter-pages.js')
+  const paths = [...pagesSrc.matchAll(/path:\s*'([^']+)'/g)].map((m) => m[1])
+  const appSrc = read('showcase/src/App.jsx')
+  for (const p of paths) {
+    if (!appSrc.includes(`path="${p}"`)) {
+      errors.push(
+        `showcase/src/nav/chapter-pages.js  slot-page ${p} has no matching Route in ` +
+        'App.jsx — the sidebar would offer a row that leads nowhere'
+      )
+    }
+  }
 }
 
 /* ── E2 · tags reach the palette ── */
@@ -100,7 +136,7 @@ if (existsSync(iconDir)) {
 for (const m of navSrc.matchAll(/icon:\s*'([^']+)'/g)) {
   if (iconNames.size && !iconNames.has(m[1])) {
     errors.push(
-      `showcase/src/lib/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-v1 — ` +
+      `showcase/src/nav/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-v1 — ` +
       'Icon warns and renders null, so the tab ships label-only'
     )
   }

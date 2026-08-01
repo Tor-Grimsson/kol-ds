@@ -27,7 +27,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, dirname, basename, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseBarrelExports, isComponentName, folderOf } from './lib/parse-barrel.mjs'
-import { TIERS, FUNCTIONS_BY_NAME } from '../showcase/src/lib/classification.js'
+import { TIERS, FUNCTIONS_BY_NAME } from '../showcase/src/nav/classification.js'
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const MDX_DIR = join(REPO, 'showcase/src/docs/components')
@@ -48,7 +48,7 @@ const origins = readJson('showcase/src/usage/component-origins.json')
 /* ── reuses ────────────────────────────────────────────────────────────────
  * The reference graph, written onto the page of the thing that DID the reusing.
  * A component declares what it derived from; who derived from IT is the inbound
- * side and already lives in docs/documentation/07-usage/<Name>.md.
+ * side and already lives in showcase/src/usage/components/<Name>.md.
  *
  * Carried as string[] — `"Button 4★"` — because parseMeta below understands
  * strings and string arrays and nothing else. An object list would be reported

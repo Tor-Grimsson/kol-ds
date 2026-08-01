@@ -19,7 +19,7 @@ related:
 
 How the system **reaches the apps that use it**. This choice drives everything about versioning, ownership, and how updates propagate. Three common patterns — not mutually exclusive (1 and 2 often combine).
 
-## 1 — Versioned npm package
+## Npm package
 
 The system is **published to a registry**; apps `npm install @scope/ui` and pin a version.
 
@@ -28,7 +28,7 @@ The system is **published to a registry**; apps `npm install @scope/ui` and pin 
 - Update lag: a consumer is on whatever version they installed until they upgrade.
 - The model for shipping to **teams/apps you don't control**.
 
-## 2 — Monorepo workspace
+## Monorepo workspace
 
 The system lives in the **same repo** as the apps that use it, linked locally.
 
@@ -37,7 +37,7 @@ The system lives in the **same repo** as the apps that use it, linked locally.
 - **Internal-only by nature.** External consumers can't reach a workspace link — they need a published version (so monorepos that also ship externally still publish, combining 1 + 2).
 - Fast iteration; the boundary is enforced by convention/lint, not by a version wall.
 
-## 3 — The shadcn/ui copy-in model
+## Copy-in model
 
 **Not a dependency at all.** A **CLI copies component source into the consumer's repo**; they own and edit it.
 
@@ -57,7 +57,7 @@ The system lives in the **same repo** as the apps that use it, linked locally.
 | External consumers | yes | no (publish to reach them) | yes (via CLI) |
 | Needs release infra | yes | no | registry, not releases |
 
-## Reading which model is in use
+## Reading models
 
 - `dependencies: { "@scope/ui": "^1.2.0" }` → **package** (1).
 - `workspace:*` + a `pnpm-workspace.yaml` / `turbo.json` → **monorepo** (2).

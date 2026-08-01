@@ -13,7 +13,7 @@ aliases:
 related:
   - "[[05-distribution|distribution]]"
   - "[[02-workbench-tools|workbench tools]]"
-  - "[[01-release-pipeline|release pipeline]]"
+  - "[[../../../operations/01-release/INDEX|release pipeline]]"
 ---
 
 # Versioning & testing
@@ -37,7 +37,7 @@ Changesets workflow:
 
 It also replaces `workspace:*` with the **real resolved version** at publish time — internal links never leak to consumers.
 
-## Testing — three layers
+## Testing layers
 
 ### Visual regression
 
@@ -68,6 +68,6 @@ Script user behavior (click, type, assert) and replay it as a test.
 - **Storybook `play` functions** — interaction tests attached to a story, using Testing Library syntax; run in the workbench and in CI.
 - **Testing Library + Vitest/Jest** — the same, outside a workbench.
 
-## What "skipping this" looks like
+## Skipping
 
 The solo baseline: no changesets (hand-edited versions or none), no visual regression (eyeball it), no automated a11y. **Fine until you have consumers** — at which point a silent visual or a11y regression ships to every app at once, and an un-versioned breaking change has no changelog to explain it.

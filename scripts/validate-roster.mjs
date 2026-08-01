@@ -15,7 +15,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseBarrelExports, isComponentName, folderOf } from './lib/parse-barrel.mjs'
-import { TIERS, FUNCTIONS_BY_NAME, EXEMPT, DOCS_ONLY, DEPRECATED } from '../showcase/src/lib/classification.js'
+import { TIERS, FUNCTIONS_BY_NAME, EXEMPT, DOCS_ONLY, DEPRECATED } from '../showcase/src/nav/classification.js'
 import { MEMBER_OF } from '../showcase/src/lib/component-groups.js'
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')

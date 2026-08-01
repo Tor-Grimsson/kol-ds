@@ -11,10 +11,36 @@
  * It had no gate, so it drifted into three row idioms inside a single rail —
  * one of them directly beneath a comment that reads `ONE rail voice (user law)`.
  *
- * Two mechanical checks over the six files that render rail chrome:
+ * Four mechanical checks over the six files that render rail chrome:
  *
  *   R1  rows wear ONE type class      — kol-mono-14, nothing else
  *   R2  labels wear ONE voice         — kol-doc-eyebrow, nothing else
+ *   R3  eyebrows wear ONE box         — shell-sidebar-toggle, and no second
+ *                                       spacing owner stacked on top of it
+ *   R4  headers come from RailSection — no hand-written rung class, no
+ *                                       hand-placed count, order is the law
+ *
+ * R4 was added 2026-08-01 for the same reason R3 was, one level up. R3 made
+ * the eyebrow's BOX have one owner; the user then pointed at the COUNT — (7)
+ * on the right rail's L1, (8) on the left rail's L2, two rails printing the
+ * same affordance on different rows. The classes were never the problem: the
+ * three rungs already had a class each. What was missing is that nothing
+ * declared them a LADDER, and every affordance hanging off a rung — count,
+ * collapse, chevron — was hand-typed at each call site.
+ *
+ * So the fix is a component, not a class: `RailSection` owns the rung and
+ * therefore owns where the count goes. R4 asserts nobody bypasses it. The
+ * proof this works was already in the repo — L3 is the one rung a component
+ * (`DocsToc`) already owned, and the one rung that never drifted.
+ *
+ * R3 was added 2026-08-01 after the user measured the two rails against each
+ * other: the left eyebrow carried `shell-sidebar-toggle shell-sidebar-label`
+ * on the wrapper AND `shell-sidebar-label` again on the inner label plus an
+ * inline height, the right borrowed `shell-nav-group-header` + one
+ * `shell-sidebar-label`. Same row, two boxes. R1 and R2 both passed the whole
+ * time — they lock the VOICE, and nothing locked the BOX. The failure mode is
+ * not a wrong value, it is spacing owned in more than one place at once, so
+ * the gate counts owners rather than measuring pixels.
  *
  * Scope is the rail COMPONENTS, not the rail files. DocumentationReader.jsx
  * holds both the rail and the article-body renderer; scoping by file flagged
@@ -52,6 +78,55 @@ const FOREIGN_TYPE = /\b(kol-mono-(?!14\b)\d+|kol-helper-\d+|kol-sans-[\w-]+)\b/
  * and `shell-sidebar-action` are alternate row geometries — the law says the
  * rails have one. */
 const FOREIGN_ROW = /\b(shell-sidebar-link|shell-sidebar-action)\b/
+
+/* R3 — the eyebrow's box has exactly ONE owner.
+ *
+ * Two box classes are legal, by role, and they share one CSS definition:
+ *   `shell-sidebar-toggle`  the eyebrow that collapses its section
+ *   `shell-sidebar-label`   the eyebrow that is just a label
+ * Either alone is correct. The fault is COUNT, not identity — two of them on
+ * one element, or one of them beside the nav row's box, or y-spacing set
+ * inline where the CSS cannot see it. Each is silent: nothing renders broken,
+ * the two rails just stop agreeing. */
+const EYEBROW_BOXES = ['shell-sidebar-toggle', 'shell-sidebar-label', 'shell-nav-group-header']
+/* An eyebrow is any element wearing the label voice. */
+const IS_EYEBROW = new RegExp(`\\b${LABEL_CLASS}\\b`)
+/* y-spacing set inline is another owner — invisible from the stylesheet. */
+const INLINE_Y = /\b(padding|paddingTop|paddingBottom|paddingBlock|margin|marginTop|marginBottom|marginBlock|height)\s*:\s*['"]?[\d.]/
+
+/* R4 — the rungs come from RailSection.
+ *
+ * RailSection.jsx is the ONE file allowed to name a rung class or write a
+ * count span; that is the whole point of it. Everywhere else, a rung class in
+ * a className means a header was hand-built, and a `({...})` span means a
+ * count was hand-placed — which is how (7) landed on L1 and (8) on L2. */
+const LADDER_OWNER = 'packages/workshop/src/shell/RailSection.jsx'
+/* L3's owner. `.shell-nav-item` was a shared NAME and nothing else: nine
+ * hand-written utility stacks across five files wore it, and their containers
+ * disagreed too (space-y-0 against space-y-4 for one list). RailRow emits the
+ * string; the class owns the look. */
+const ROW_OWNERS = [
+  'packages/workshop/src/shell/RailRow.jsx',
+  /* DocsToc is the OTHER row owner and cannot be folded into RailRow: it lives
+   * in kol-component, and importing from kol-workshop would be a reverse
+   * dependency (ARCHITECTURE §3). Two owners, both components — the fault this
+   * rule stops is a hand-written row at a CALL SITE, not a second component
+   * that owns the idiom in a lower package. Named here rather than passed
+   * silently. */
+  'packages/component/src/atoms/DocsToc.jsx',
+]
+const ROW_CLASS_RE = /\bshell-nav-item\b/
+const RUNG_CLASSES = /\b(shell-sidebar-toggle|shell-nav-group-header)\b/
+/* Anchored to JSX-TEXT position — `>({expr})<` — not a bare `({…})`, which
+ * also matches a destructuring arrow param like `({ isActive }) =>`. The count
+ * is the only thing that renders as parens-around-an-expression between tags. */
+const HAND_COUNT = />\(\{[^}]*\}\)</
+
+/* The left rail's section order. `02-shells.md:165` has stated it since
+ * 2026-07-31 and ShellChrome rendered it exactly backwards, because nothing
+ * asserted it. A body of material outranks the routes the app serves. */
+const SECTION_ORDER = ['Documentation', 'Components', 'Tools']
+const ORDER_FILE = 'showcase/src/lib/ShellChrome.jsx'
 
 const isComment = (l) => {
   const t = l.trim()
@@ -91,6 +166,71 @@ for (const relPath of RAIL_FILES) {
         `the rails have one ('shell-nav-item')`
       )
     }
+
+    /* R3 — one box owner per eyebrow. */
+    if (IS_EYEBROW.test(line)) {
+      const owners = EYEBROW_BOXES.filter((c) => new RegExp(`\\b${c}\\b`).test(line))
+      if (owners.length > 1) {
+        errors.push(
+          `${relPath}:${i + 1}  ${owners.length} box owners on one eyebrow ` +
+          `(${owners.join(' + ')}) — padding and margin belong to exactly one`
+        )
+      }
+      if (owners.includes('shell-nav-group-header')) {
+        errors.push(
+          `${relPath}:${i + 1}  an eyebrow wearing 'shell-nav-group-header' — ` +
+          `that is the NAV row's box; eyebrows use 'shell-sidebar-toggle' or 'shell-sidebar-label'`
+        )
+      }
+    }
+    if (INLINE_Y.test(line) && EYEBROW_BOXES.some((c) => new RegExp(`\\b${c}\\b`).test(line))) {
+      errors.push(
+        `${relPath}:${i + 1}  y-spacing set inline on a rail row — ` +
+        `it belongs in the shared box rule, where both rails can read it`
+      )
+    }
+
+    /* R4 — the rung is RailSection's to name, the row is RailRow's, and the
+     * count is theirs to place. */
+    if (!ROW_OWNERS.includes(relPath) && ROW_CLASS_RE.test(line) && /class(Name)?\s*=/.test(line)) {
+      errors.push(
+        `${relPath}:${i + 1}  'shell-nav-item' written by hand — rail rows come ` +
+        `from <RailRow>, which owns the one row string`
+      )
+    }
+    if (relPath !== LADDER_OWNER) {
+      const rung = line.match(RUNG_CLASSES)
+      if (rung && /class(Name)?\s*=/.test(line)) {
+        errors.push(
+          `${relPath}:${i + 1}  '${rung[0]}' written by hand — rail headers come ` +
+          `from <RailSection level={1|2}>, which owns the rung's class AND its count`
+        )
+      }
+      if (HAND_COUNT.test(line)) {
+        errors.push(
+          `${relPath}:${i + 1}  a count span placed by hand — pass \`count\` to ` +
+          `RailSection so both rails put it on the same rung`
+        )
+      }
+    }
+  }
+}
+
+/* R4b — section order. Read outside the per-line walk: it is a property of the
+ * file's whole sequence, not of any one row. */
+{
+  const src = readFileSync(join(REPO, ORDER_FILE), 'utf8')
+  const seen = SECTION_ORDER
+    .map((label) => ({ label, at: src.indexOf(`label="${label}"`) }))
+    .filter((s) => s.at !== -1)
+  const actual = [...seen].sort((a, b) => a.at - b.at).map((s) => s.label)
+  const expected = SECTION_ORDER.filter((l) => actual.includes(l))
+  if (actual.join(' > ') !== expected.join(' > ')) {
+    errors.push(
+      `${ORDER_FILE}  rail sections render '${actual.join(' > ')}' but ` +
+      `02-shells.md:165 states '${expected.join(' > ')}' — a body of material ` +
+      `outranks the routes the app serves`
+    )
   }
 }
 
@@ -99,4 +239,4 @@ if (errors.length) {
   for (const e of errors) console.error('  ' + e)
   process.exit(1)
 }
-console.log('rails: clean (one row idiom, one label voice)')
+console.log('rails: clean (one row idiom, one label voice, one eyebrow box, one ladder)')

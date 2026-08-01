@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import SearchInput from '../atoms/SearchInput.jsx'
+import Tag from '../atoms/Tag.jsx'
 
 /**
  * HighlightMatch — default row renderer: underlines the first
@@ -51,6 +52,15 @@ export default function ShellSearchOverlay({
   open,
   onClose,
   results = [],
+  /* EXPANDED — the palette's second state (user ruling 2026-08-01). Enter
+   * commits the query and opens `children` as the results body; the palette
+   * and the old tag overlay are one surface with two states, not two
+   * components. `chips` are the committed tag facets of the same query. */
+  expanded = false,
+  onExpand,
+  chips = [],
+  onRemoveChip,
+  children,
   query = '',
   onQueryChange,
   onSelect,
@@ -60,6 +70,9 @@ export default function ShellSearchOverlay({
   const listRef = useRef(null)
   const listId = useId()
   const [activeIndex, setActiveIndex] = useState(0)
+  /* Has the user actually chosen a row? See the Enter branch — without this,
+   * index 0 counts as a selection and Enter navigates somewhere unasked. */
+  const [navigated, setNavigated] = useState(false)
   const active = results.length > 0 ? Math.min(activeIndex, results.length - 1) : -1
 
   /* Focus in on open, restore the opener on close. querySelector instead of
@@ -73,7 +86,7 @@ export default function ShellSearchOverlay({
   }, [open])
 
   /* Roving row resets to the top on every query change / reopen. */
-  useEffect(() => { setActiveIndex(0) }, [query, open])
+  useEffect(() => { setActiveIndex(0); setNavigated(false) }, [query, open])
 
   /* Keep the active row visible inside the scrolling list. */
   useEffect(() => {
@@ -96,13 +109,21 @@ export default function ShellSearchOverlay({
       onClose?.()
     } else if (e.key === 'ArrowDown') {
       e.preventDefault()
+      setNavigated(true)
       setActiveIndex((i) => Math.min(i + 1, results.length - 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
+      setNavigated(true)
       setActiveIndex((i) => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter' && active >= 0) {
+    } else if (e.key === 'Enter') {
       e.preventDefault()
-      select(results[active])
+      /* Enter COMMITS the query and expands. It only selects when the user has
+       * actually arrowed to a row — `activeIndex` starts at 0, so "a row is
+       * highlighted" is true from the first keystroke and testing `active >= 0`
+       * made Enter navigate to whatever happened to be first. Committing a
+       * query must never be a navigation you didn't choose. */
+      if (navigated) select(results[active])
+      else onExpand?.()
     } else if (e.key === 'Tab') {
       /* Focus trap — the input is the palette's only tab stop. */
       e.preventDefault()
@@ -112,7 +133,7 @@ export default function ShellSearchOverlay({
   return (
     <div className="fixed inset-0 z-[300] flex items-start justify-center pt-[20vh]">
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-[1px]"
+        className="absolute inset-0 kol-overlay-scrim"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -121,13 +142,26 @@ export default function ShellSearchOverlay({
         role="dialog"
         aria-modal="true"
         aria-label="Search"
-        className="relative w-full max-w-lg mx-4 overflow-hidden bg-surface-primary border border-fg-08 rounded-[var(--kol-radius-2xl)] shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+        className={`kol-overlay-panel mx-4 ${expanded ? 'max-w-[var(--kol-content-panel)]' : 'max-w-lg'}`}
       >
+        {/* THE MODE, said out loud (user 2026-08-01: "how do you set search
+          * mode? theres no helper, message or mode clearly readble"). Two
+          * modes exist — FILTER (tags narrow a set) and FIND (a keyword jumps
+          * to a destination) — and the only signal was whether chips happened
+          * to be present. The chips ARE the mode, so they get a label. */}
+        {chips.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5 px-4 pt-3">
+            <span className="kol-helper-10 text-fg-48 shrink-0">FILTERING BY</span>
+            {chips.map((t) => (
+              <Tag key={t} onRemove={() => onRemoveChip?.(t)}>{t}</Tag>
+            ))}
+          </div>
+        )}
         <SearchInput
           bare
           value={query}
           onChange={(e) => onQueryChange?.(e.target.value)}
-          placeholder={placeholder}
+          placeholder={chips.length > 0 ? 'Narrow these results…' : placeholder}
           onKeyDown={handleKeyDown}
           role="combobox"
           aria-expanded={results.length > 0}
@@ -135,7 +169,24 @@ export default function ShellSearchOverlay({
           aria-activedescendant={active >= 0 ? optionId(results[active]) : undefined}
         />
 
-        {results.length > 0 && (
+        {/* WHY THIS IS NOT `molecules/Dropdown` (asked 2026-08-01). Dropdown is
+          * a SELECT: a trigger, a `value`, `onChange(value)`, and rows that are
+          * options. This is a COMBOBOX — a text query filtering a live list
+          * whose rows carry a `group`, a `hint`, and may fire an `action`
+          * instead of selecting a value. Same ARIA family, different control.
+          * Folding one into the other would mean giving Dropdown a query, a
+          * hint slot and an action escape hatch, i.e. building this inside it.
+          *
+          * THE ROW CONTRACT (was documented nowhere):
+          *   label     the row's text, match-highlighted against the query
+          *   group     right-aligned origin — 'Atoms', 'Documentation', 'Tags'
+          *   hint      subtext shown when the LABEL was not what matched
+          *   href      a destination; dismisses the palette
+          *   action    a closure; runs and KEEPS the palette open (tag rows)
+          * Built by `buildShellSearchItems` (showcase/src/nav/shell-nav.js). */}
+        {expanded ? (
+          <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto">{children}</div>
+        ) : results.length > 0 && (
           <ul
             ref={listRef}
             id={listId}
@@ -151,7 +202,7 @@ export default function ShellSearchOverlay({
                 /* preventDefault keeps focus in the input through the click */
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => select(item)}
-                onMouseEnter={() => setActiveIndex(i)}
+                onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
                 className={`flex items-center gap-2 px-4 py-1.5 cursor-pointer kol-mono-14 transition-colors ${
                   i === active ? 'bg-fg-08 text-fg' : 'text-fg-64'
                 }`}

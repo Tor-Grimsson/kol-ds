@@ -5,7 +5,12 @@ import { useEffect, useRef, useState } from 'react'
  * IntersectionObserver with an edge-lock so first/last sections stay active
  * when the user reaches the top/bottom of the page.
  */
-export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', edgeOffset = 100 } = {}) {
+/* `root` (2026-08-01) — the SCROLL CONTAINER, not always the viewport. The
+ * workshop shell scrolls `#main` internally (it is `fixed inset-0` with its own
+ * scroll regions), so an observer rooted at the viewport never fired and the
+ * right rail could not highlight anything. The edge-lock reads the same
+ * element for the same reason: `window.scrollY` is 0 forever in that shell. */
+export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', edgeOffset = 100, root = null } = {}) {
   const [activeId, setActiveId] = useState(null)
   const edgeLockRef = useRef(null)
   const key = ids.join(',')
@@ -15,11 +20,14 @@ export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', ed
     const elements = ids.map((id) => document.getElementById(id)).filter(Boolean)
     if (!elements.length) return
 
+    const scroller = typeof root === 'string' ? document.querySelector(root) : root
+
     const checkEdges = () => {
-      const atTop = window.scrollY < edgeOffset
-      const atBottom =
-        window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - edgeOffset * 0.8
+      const top = scroller ? scroller.scrollTop : window.scrollY
+      const viewH = scroller ? scroller.clientHeight : window.innerHeight
+      const fullH = scroller ? scroller.scrollHeight : document.documentElement.scrollHeight
+      const atTop = top < edgeOffset
+      const atBottom = top + viewH >= fullH - edgeOffset * 0.8
       if (atTop) {
         edgeLockRef.current = 'top'
         setActiveId(null)
@@ -39,18 +47,19 @@ export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', ed
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
         if (visible[0]) setActiveId(visible[0].target.id)
       },
-      { rootMargin, threshold: 0 },
+      { root: scroller ?? null, rootMargin, threshold: 0 },
     )
 
     elements.forEach((el) => observer.observe(el))
-    window.addEventListener('scroll', checkEdges, { passive: true })
+    const target = scroller ?? window
+    target.addEventListener('scroll', checkEdges, { passive: true })
     checkEdges()
 
     return () => {
       observer.disconnect()
-      window.removeEventListener('scroll', checkEdges)
+      target.removeEventListener('scroll', checkEdges)
     }
-  }, [key, rootMargin, edgeOffset])
+  }, [key, rootMargin, edgeOffset, root])
 
   return activeId
 }

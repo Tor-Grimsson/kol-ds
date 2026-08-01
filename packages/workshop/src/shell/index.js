@@ -9,3 +9,10 @@
 export { default as ShellLayout } from './ShellLayout.jsx'
 export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext } from './ShellLayout.jsx'
 export { default as ShellSidebar } from './ShellSidebar.jsx'
+/* RailSection — THE rail ladder. Every rail header at every rung comes from
+ * here, in both rails; see the file header for why a class alone was not
+ * enough. `pnpm validate:rails` R4 asserts it. */
+export { default as RailSection } from './RailSection.jsx'
+/* RailRow — THE L3 rail row. The look lives in `.shell-nav-item`; this owns the
+ * markup so nine hand-written utility stacks cannot come back. R4 asserts it. */
+export { default as RailRow } from './RailRow.jsx'

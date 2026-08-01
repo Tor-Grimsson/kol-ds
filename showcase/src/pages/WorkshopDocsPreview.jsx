@@ -37,7 +37,7 @@ function DocsSidebar() {
 
 function DocsLanding() {
   return (
-    <div className="max-w-[var(--kol-content-column)] mx-auto" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
+    <div className="max-w-[var(--kol-content-column)]" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
       <h1 className="kol-mono-16 text-emphasis">Workshop docs — live dogfood</h1>
       <p className="text-body mt-3">
         Pick a doc on the left. This renders the real <code>@kolkrabbi/kol-workshop</code> shell and docs viewer.

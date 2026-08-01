@@ -4,6 +4,7 @@ import Divider from '../atoms/Divider.jsx'
 import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ViewToggle from '../atoms/ViewToggle'
+import IconFrame from '../atoms/IconFrame.jsx'
 
 /**
  * ContentFilters — universal filter component for content grids.
@@ -43,6 +44,7 @@ const ContentFilters = ({
   searchKeys = ['label', 'name', 'title', 'type'],
   headerActions,
   showCountOnlyWhenFiltering = false,
+  className = '',
 }) => {
   const [activeFilters, setActiveFilters] = useState(new Set())
   const [isExpanded, setIsExpanded] = useState(false)
@@ -133,16 +135,19 @@ const ContentFilters = ({
   )
 
   return (
-    <div className="w-full" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+    /* minHeight 0 on both this root and the body below: without it a flex
+     * child refuses to shrink past its content, so a scrollable body pushed
+     * the whole card taller instead of scrolling inside it. */
+    <div className={`w-full ${className}`.trim()} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-6">
-          <h2 className="flex items-center gap-1">
-            {titleIcon && (
-              <span className="kol-btn kol-btn-secondary kol-btn-md kol-btn-icon">
-                <Icon name={titleIcon} size={20} />
-              </span>
-            )}
-            <span className="kol-btn kol-btn-md kol-helper-16">{title}</span>
+          {/* IconFrame, NOT a kol-btn span: this is decoration and clicks
+            * nothing, so it must not wear a button's chrome. The atom exists
+            * for exactly this (lobby ruling 2026-07-30 — "icons only, NO
+            * states"); the span here was the same defect that promoted it. */}
+          <h2 className="flex items-center gap-2">
+            {titleIcon && <IconFrame name={titleIcon} variant="secondary" size="md" />}
+            <span className="kol-helper-16">{title}</span>
           </h2>
           <Divider variant="vertical" className="self-stretch py-1" />
           <div className="flex items-center gap-1">
@@ -170,8 +175,11 @@ const ContentFilters = ({
                 else setSearchOpen(true)
               }}
             >
+              {/* Same fake-button defect as the title icon: a decorative glyph
+                * wearing kol-btn chrome. The clickable thing is the wrapper
+                * div, not this span. */}
               <span
-                className="kol-btn kol-btn-md kol-btn-icon flex items-center justify-center flex-shrink-0"
+                className="flex items-center justify-center flex-shrink-0"
                 style={{
                   opacity: searchOpen ? 0 : 1,
                   transition: 'opacity 300ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -260,7 +268,7 @@ const ContentFilters = ({
         </div>
       )}
 
-      <div className="mt-8" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div className="mt-8" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         {renderItem(filteredItems, viewMode, layout)}
       </div>
     </div>

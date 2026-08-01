@@ -20,7 +20,7 @@ tags:
   - domain/design-system
   - domain/content
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"
   - "[[06-store-system|store system]]"
 ---
@@ -57,7 +57,7 @@ import { StackHero, ArticleHeader, PortableTextRenderer } from '@kolkrabbi/kol-c
 | `ParallaxShelf` | embla-driven horizontal shelf |
 | `ScrollDriftGallery` | gsap scroll-triggered outside-in drift gallery |
 
-## The data boundary — CMS is per-repo
+## Data boundary
 
 **Presentation only.** Components take flat prop bags / injected portable text; they never fetch. The **Sanity collection layer** (client + GROQ + the `blog`/`project` collection queries) lives in **each consumer repo**, not this package — because every consumer has its own Sanity project (dataset, schema, project ID). This is the opposite of `kol-chess/data` (one canonical public dataset, so bundled). The only shared contract is the doc *shape* the components expect, documented in their props.
 

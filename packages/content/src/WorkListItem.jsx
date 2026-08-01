@@ -75,7 +75,7 @@ export default function WorkListItem({
                 {tags.map((t, i) => (
                   <span key={t} className="inline-flex items-center gap-1.5">
                     {tagsSeparator && i > 0 && <span className="kol-mono-12 text-fg-48">{tagsSeparator}</span>}
-                    <Tag size="sm" variant="naked" hash={false}>{t}</Tag>
+                    <Tag variant="secondary" hash={false}>{t}</Tag>
                   </span>
                 ))}
               </div>

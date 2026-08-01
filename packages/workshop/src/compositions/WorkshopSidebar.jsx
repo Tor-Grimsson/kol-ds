@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ShellSidebar } from '../shell'
-import { Icon, Tooltip } from '@kolkrabbi/kol-component'
+import { ShellSidebar, RailSection, RailRow } from '../shell'
+import { Icon } from '@kolkrabbi/kol-component'
 import {
   extractDocNumber,
   cleanTitle,
@@ -61,76 +61,51 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
 
   return (
     <div className="space-y-4">
-      {/* kol-helper-10 types the wrapper box itself (was an untyped 16px box) */}
-      <div className="shell-sidebar-toggle shell-sidebar-label kol-doc-eyebrow" style={{ justifyContent: 'space-between', paddingRight: '4px' }}>
-        <Link to={docHref()} className="shell-sidebar-label kol-doc-eyebrow" onClick={(e) => {
-          if (collapsed && onToggle) onToggle()
-          if (onNavigate) onNavigate(e)
-        }}>
-          Documentation
-        </Link>
-        <Tooltip label={collapsed ? 'Expand Documentation' : 'Collapse Documentation'}>
-          <button
-            type="button"
-            onClick={onToggle}
-            aria-label={collapsed ? 'Expand Documentation' : 'Collapse Documentation'}
-            aria-expanded={!collapsed}
-            className="flex items-center justify-center"
-            style={{ height: '16.5px', marginBottom: '8px' }}
-          >
-            <Icon
-              name="chevron-down"
-              size={10}
-              className={`stroke-[2.5] transition-transform ${collapsed ? '' : 'rotate-180'}`}
-            />
-          </button>
-        </Tooltip>
-      </div>
-
-      {!collapsed && <div className="space-y-4">
+      {/* L1 from RailSection — the same rung and the same box as every other
+        * rail header. No count: the eyebrow names the material, the groups
+        * inside carry the tally (user ruling 2026-08-01). */}
+      <RailSection
+        level={1}
+        label="Documentation"
+        to={docHref()}
+        collapsed={collapsed}
+        onToggle={onToggle}
+        onNavigate={onNavigate}
+      >
+        <div className="space-y-4">
         {Object.entries(groupedDocs)
           .sort(([a], [b]) => a.localeCompare(b))
           .map(([major, docs]) => {
             const isCollapsed = collapsedGroups[major]
             return (
               <div key={major} className="shell-nav-group">
-                <button
-                  type="button"
-                  className="shell-nav-group-header w-full text-left kol-mono-14 text-body"
-                  onClick={() => toggleGroup(major)}
+                <RailSection
+                  level={2}
+                  label={categoryLabels[major] || 'Other'}
+                  count={docs.length}
+                  collapsed={!!isCollapsed}
+                  onToggle={() => toggleGroup(major)}
+                  icon={Icon}
                 >
-                  <span className="flex items-center gap-2">
-                    <Icon
-                      name="chevron-right"
-                      size={12}
-                      className={`h-3 w-3 transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
-                    />
-                    {categoryLabels[major] || 'Other'}
-                  </span>
-                  <span className="kol-mono-14 text-subtle">({docs.length})</span>
-                </button>
-                {!isCollapsed && (
                   <div className="shell-nav-items">
-                    {docs.map((d) => {
-                      const isActive = d.id === activeDocId
-                      return (
-                        <Link
-                          key={d.id}
-                          to={docHref(d.id)}
-                          className={`shell-nav-item shell-nav-item-doc kol-mono-14 ${isActive ? 'text-emphasis' : 'text-body'}`}
-                          onClick={onNavigate}
-                        >
-                          <span className="shell-nav-item-title">{cleanTitle(d.title, d.id)}</span>
-                          <span className="shell-nav-item-id kol-mono-14 text-subtle">{extractDocNumber(d.id)}</span>
-                        </Link>
-                      )
-                    })}
+                    {docs.map((d) => (
+                      <RailRow
+                        key={d.id}
+                        to={docHref(d.id)}
+                        active={d.id === activeDocId}
+                        trailing={extractDocNumber(d.id)}
+                        onNavigate={onNavigate}
+                      >
+                        {cleanTitle(d.title, d.id)}
+                      </RailRow>
+                    ))}
                   </div>
-                )}
+                </RailSection>
               </div>
             )
           })}
-      </div>}
+        </div>
+      </RailSection>
     </div>
   )
 }

@@ -175,13 +175,22 @@
   display: inline-flex;
   align-items: center;
   padding: 2px 4px;
-  margin: 0 4px;
+  /* No outer margin: spacing is the CONTAINER's job. The margin here
+   * double-spaced against every flex row's own gap, which is the ragged
+   * rhythm the metadata rows showed. */
   border-radius: 2px;
   font-family: var(--kol-font-family-mono);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
+  /* Carries its OWN fill as of 2026-08-01. The look lived only in the
+   * `.kol-table code` descendant rule below, so a token chip rendered right
+   * inside a table and completely unstyled anywhere else — which is why the
+   * component pages hand-rolled a Tailwind lookalike. One concept, two
+   * spellings: exactly the drift `.text-fg-*` vs `--kol-fg-*` taught. */
+  color: var(--kol-fg-80);
+  background-color: var(--kol-fg-08);
 }
 
 .kol-table-wrapper.kol-table--simple { border: none; border-radius: 0; }
@@ -425,3 +434,125 @@
   object-fit: cover;
   object-position: center;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+ * MediaLibrary — organisms/MediaLibrary.jsx
+ * The picker card, the tile grid, the tree rows and the path bar.
+ * The card width and tile floor were inline literals in the four consumer
+ * forks (kol-ds-fxr MediaPicker.jsx:214 and :274) — they are tokens here
+ * because geometry is referenced, never re-guessed per consumer.
+ * NOT here: the scrim, the centring, Esc/backdrop dismiss and the corner
+ * close — FullscreenOverlay (.kol-overlay) already owns all of it.
+ * NO elevation. A drop shadow under the modal was smuggled in 2026-08-01
+ * and struck out the same day (user ruling) — the scrim is the separation.
+ * ═══════════════════════════════════════════════════════════════ */
+
+.kol-media-picker {
+  /* The card's resting width. Was 45rem and the ContentFilters header could
+   * not fit in it: "10 of 10" wrapped to three lines, the view toggle clipped,
+   * and the close button collided with it. The header is the constraint, not
+   * the grid. It still shrinks inside .kol-overlay's padding. */
+  --kol-media-picker-w: 64rem;
+  /* the grid's tile floor — auto-fill packs as many as clear this */
+  --kol-media-tile-min: 10rem;
+
+  display: flex;
+  flex-direction: column;
+  width: var(--kol-media-picker-w);
+  max-width: 100%;
+  max-height: 85vh;
+  /* min-height:0 + the body owning the scroll — the card itself scrolling was
+   * what dragged the sticky header out of view. */
+  min-height: 0;
+  overflow: hidden;
+  /* Extra block-start: FullscreenOverlay's close button is absolutely placed
+   * on the SHEET corner, so at even padding it landed on top of the view
+   * toggle. The card reserves the lane instead of the close moving. */
+  padding: var(--kol-spacing-12) var(--kol-spacing-5) var(--kol-spacing-5);
+  border: 1px solid var(--kol-oq-08);
+  border-radius: var(--kol-radius-sm);
+  background: var(--kol-surface-primary);
+}
+
+/* The browser is the same body with no card around it — it fills whatever
+ * box the consumer gives it, so a page can host it full-bleed. */
+.kol-media-browser {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  --kol-media-tile-min: 10rem;
+}
+
+.kol-media-grid {
+  display: grid;
+  gap: var(--kol-spacing-4);
+  grid-template-columns: repeat(auto-fill, minmax(var(--kol-media-tile-min), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kol-media-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* One folder row in the tree. Finder's list model: the chevron discloses in
+ * place, so the parent never leaves the screen and there is no breadcrumb
+ * stacked above a divider. Same row idiom as the rails — a drill-down and a
+ * nav row are the same gesture. */
+.kol-media-folder {
+  display: flex;
+  align-items: center;
+  gap: var(--kol-spacing-2);
+  padding-block: var(--kol-pad-rail-row-y);
+  border-radius: var(--kol-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--kol-transition-fast);
+}
+
+.kol-media-folder:hover {
+  background: var(--kol-oq-04);
+}
+
+/* The path bar rides the FOOT, where Finder puts it. */
+.kol-media-pathbar {
+  display: flex;
+  align-items: center;
+  gap: var(--kol-spacing-1);
+  margin-block-start: auto;
+  padding-block-start: var(--kol-spacing-3);
+  border-top: 1px solid var(--kol-oq-08);
+}
+
+/* The BODY scrolls, never the card — a scrolling card dragged the header out
+ * of view, which is what made the picker feel broken. */
+.kol-media-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Sortable header — a real button inside the <th> so it is keyboard-reachable.
+ * The glyph is always in the layout box (opacity, not display) so the header
+ * does not reflow on first sort. */
+.kol-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--kol-spacing-1);
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.kol-table-sort:hover { color: var(--kol-surface-on-primary); }
+.kol-table-sort svg { opacity: 0.25; transition: opacity var(--kol-transition-fast); }
+.kol-table-sort:hover svg { opacity: 0.6; }
+[aria-sort] .kol-table-sort svg { opacity: 1; }

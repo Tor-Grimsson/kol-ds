@@ -166,23 +166,17 @@
   max-width: 100%;
 }
 
+/* POSITION ONLY. The control is a DS Button (quiet, icon-only) as of
+ * 2026-08-01 — it brings its own box, border, colour set and states, so this
+ * class stopped painting one. It used to hand-draw a bordered square around a
+ * literal `×` CHARACTER, which is why the button had no hover, no focus ring
+ * and no glyph. The inset is --kol-spacing-3, the rung that already carried
+ * this value. */
 .kol-overlay-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: var(--kol-spacing-3);
+  right: var(--kol-spacing-3);
   z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--kol-radius-sm);
-  border: 1px solid var(--kol-oq-16);
-  background: var(--kol-surface-primary);
-  color: var(--kol-surface-on-primary);
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -893,6 +887,13 @@ a:hover .icon-hover,
   border-radius: var(--kol-radius-sm);
   padding: 0;
 }
+
+/* Radius (2026-07-30 ruling): either the system's 4px or a full round, nothing
+ * between. `sm` is the default and carries no class — it's on .kol-icon-frame
+ * above. `full` is a deliberate exception to the hard 4px repo invariant,
+ * because a round frame is its own chrome idiom (edge-straddling controls,
+ * avatars, status dots) rather than a radius tweak. */
+.kol-icon-frame-radius-full { border-radius: 9999px; }
 
 /* pinned squares — the box never moves with glyph size (user law 2026-07-28) */
 .kol-icon-frame-sm { width: 28px; height: 28px; }

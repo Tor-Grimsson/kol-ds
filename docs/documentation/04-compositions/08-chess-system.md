@@ -18,7 +18,7 @@ tags:
   - domain/design-system
   - domain/chess
 related:
-  - "[[01-package-topology|package topology]]"
+  - "[[../00-overview/01-package-topology|package topology]]"
   - "[[09-dashboards-system|dashboards system]]"
 ---
 
@@ -31,7 +31,7 @@ import { ChessAnalysisLayout, ChessBoard } from '@kolkrabbi/kol-chess'
 import * as chessData from '@kolkrabbi/kol-chess/data'
 ```
 
-## Component index (`.`)
+## Component index
 
 | Group | Exports | What it is |
 |-------|---------|-----------|
@@ -42,7 +42,7 @@ import * as chessData from '@kolkrabbi/kol-chess/data'
 | **State** | `ChessControlsProvider`, `useChessControls`, `createSnapshotsFromPgn` | context that drives board ⇄ notation ⇄ playback sync |
 | **PGN engine** | `buildMoveTree` | parses PGN into a move tree (variations included) |
 
-## The data adapter — `./data`
+## Data adapter
 
 The apparatus takes a **`chessData` prop** and never fetches on its own. This package ships a ready adapter at `@kolkrabbi/kol-chess/data` — pass it straight in:
 

@@ -25,8 +25,15 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * pairs that flip with the theme, so light/dark comes free from the tokens with
  * no per-theme props.
  *
- * `size` moves the square and the glyph together — one prop, never two — on the
- * solo-glyph law (16/20/24 against the pinned squares 28/32/36).
+ * `size` moves the square and the glyph together on the solo-glyph ladder
+ * (16/20/24 against the pinned squares 28/32/36) — that pairing is the DEFAULT,
+ * and it is what every call site should take. `iconSize` unbinds the glyph for
+ * the cases the ladder cannot serve, exactly as it does on `Button` and `Input`:
+ * a `radius="full"` frame reads heavier than the square it was tuned against (a
+ * circle inscribes ~78.5% of its bounding box), so an edge-straddling round
+ * control wants a smaller glyph in the same pinned square. The square never
+ * moves with it — that is the 2026-07-28 law, and it only means something if the
+ * two are separable.
  *
  * Deliberately absent: `onClick`, `href`, `disabled`, `aria-pressed`, `title`.
  * Wanting any of those means wanting a `Button` with `iconOnly`, not this.
@@ -34,6 +41,14 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {string} name       icon name (kol-icons)
  * @param {string} variant    primary|secondary|accent|outline|ghost|nav|grey|danger
  * @param {string} size       sm|md|lg — square + glyph together
+ * @param {string} radius     sm (default, the system's 4px) | full (9999px).
+ *                            Two values, nothing between: a round frame is its
+ *                            own chrome idiom (edge-straddling controls, avatars),
+ *                            and it is the only sanctioned exception to the hard
+ *                            4px repo invariant.
+ * @param {number} iconSize   glyph size in px — overrides the size-derived
+ *                            default. Null (the default) keeps the ladder. The
+ *                            square is unaffected; only the centred glyph moves.
  * @param {string} className  escape hatch
  */
 const GLYPH = { sm: 16, md: 20, lg: 24 }
@@ -42,16 +57,20 @@ export default function IconFrame({
   name,
   variant = 'secondary',
   size = 'md',
+  radius = 'sm',
+  iconSize = null,
   className = '',
   ...rest
 }) {
   if (!name) return null
+  const radiusCls = radius === 'full' ? ' kol-icon-frame-radius-full' : ''
+  const resolvedIconSize = iconSize ?? GLYPH[size] ?? GLYPH.md
   return (
     <span
-      className={`kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size} ${className}`.trim()}
+      className={`kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${className}`.trim()}
       {...rest}
     >
-      <Icon name={name} size={GLYPH[size] ?? GLYPH.md} />
+      <Icon name={name} size={resolvedIconSize} />
     </span>
   )
 }

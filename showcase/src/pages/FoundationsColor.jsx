@@ -110,14 +110,13 @@ function SystemSection({ section, columnsDict }) {
         * the full shell — a 24-row colour table stretched to 1800px with the
         * value column marooned at the far edge. */}
       {section.tables.map((t, i) => (
-        <div key={`${section.id}-${i}`} className="max-w-[var(--kol-content-panel)]">
-          <Table
-            caption={t.caption}
-            columns={typeof t.columns === 'string' ? columnsDict[t.columns] : t.columns}
-            rows={t.rows}
-            variant="simple"
-          />
-        </div>
+        <Table
+          key={`${section.id}-${i}`}
+          caption={t.caption}
+          columns={typeof t.columns === 'string' ? columnsDict[t.columns] : t.columns}
+          rows={t.rows}
+          variant="simple"
+        />
       ))}
     </DocSection>
   )

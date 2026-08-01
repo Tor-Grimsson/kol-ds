@@ -29,7 +29,7 @@ Two layers sit between raw components and full apps, both on the showcase:
 | **Blocks** | UI compositions — bigger than a component, smaller than a page. Copy the source, keep the wiring. | sidenavs (docs / KOL / workshop), inspector panel, settings form, filter bar | `/blocks` |
 | **Sets** | Full-apparatus compositions — an app-like thing you drop in whole. | chess board (metrics dashboards later) | `/sets` |
 
-## The blocks model (shadcn `/blocks`, faithfully)
+## Blocks model
 
 - **One file = one block** (`showcase/src/blocks/<Name>.jsx`) exporting `meta = { title, description, category, featured? }` — it renders live AND ships its own `?raw` source. Drop a file in, it appears everywhere.
 - **The viewer stage** (`lib/BlockViewer.jsx`) is a **body, not a card** (2026-07-30). The frame, seam, radius, tab bar and Code tab all come from `lib/PreviewCard.jsx` — THE card for every preview surface in the showcase. BlockViewer keeps only what is genuinely different: the iframe, the device presets and the drag handle.

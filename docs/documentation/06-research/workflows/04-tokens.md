@@ -45,7 +45,7 @@ tokens (JSON)  ──Style Dictionary──▶  tailwind config
 - Cost: a real pipeline (authoring format + transform + generated outputs to wire into the build).
 - Worth it when you ship to **more than one platform** or want **design-tool ↔ code** parity. Overkill for a single web target.
 
-## The pieces (model B)
+## The pieces
 
 | Piece | What it is |
 |---|---|
@@ -53,7 +53,7 @@ tokens (JSON)  ──Style Dictionary──▶  tailwind config
 | **Tokens Studio** | Figma plugin — authors/edits tokens **inside Figma**, exports the JSON. Keeps design and code reading the same values. |
 | **Style Dictionary** | The transform engine (originally Amazon). Reads token JSON → emits **platform-specific outputs**: CSS vars, Tailwind config/theme, SCSS, iOS, Android, JS. The "one source → many targets" workhorse. |
 
-## How to read which model a system uses
+## Reading models
 
 - Values only in `tailwind.config` / `@theme`, web-only → **model A**. Fine until a second consumer appears.
 - A `tokens/` folder of JSON + a `style-dictionary` build step + generated config → **model B**. Look for a `build:tokens` script and a *generated* (not hand-edited) Tailwind config.

@@ -23,12 +23,12 @@ import useScrollSpy from '../hooks/useScrollSpy.js'
  *                               top band (useScrollSpy's own default is
  *                               '-30% 0px -60% 0px')
  */
-export default function DocsToc({ toc, onNavigate, rootMargin = '-80px 0px -80% 0px' }) {
-  const activeId = useScrollSpy(toc.map((item) => item.id), { rootMargin })
+export default function DocsToc({ toc, onNavigate, rootMargin = '-80px 0px -80% 0px', root = null }) {
+  const activeId = useScrollSpy(toc.map((item) => item.id), { rootMargin, root })
 
   return (
     <nav>
-      <ul className="space-y-0">
+      <ul className="shell-nav-items">
         {toc.map((item) => (
           <li key={item.id}>
             <a
@@ -39,9 +39,14 @@ export default function DocsToc({ toc, onNavigate, rootMargin = '-80px 0px -80% 
                * `kol-mono-12 … py-1` with no left padding, so on-this-page rows
                * sat at a smaller size and a different left edge than the
                * Related rows directly beneath them in the same rail. */
-              className={`shell-nav-item block kol-mono-14 transition-colors focus-visible:ring-focus hover:text-emphasis ${
-                activeId === item.id ? 'text-emphasis' : 'text-body'
-              }`}
+              /* THE one row string (user ruling 2026-08-01). This carried
+               * `block transition-colors focus-visible:ring-focus
+               * hover:text-emphasis text-body` as utilities, so the same rung
+               * rendered a different className here than in the left tree.
+               * Layout, colour, hover and focus live in `.shell-nav-item` now;
+               * active is the shared `is-active` marker, not `text-emphasis`
+               * typed at one call site. Matches RailRow exactly. */
+              className={`shell-nav-item kol-mono-14${activeId === item.id ? ' is-active' : ''}`}
             >
               {item.label}
             </a>
