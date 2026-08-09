@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
@@ -79,6 +79,16 @@ const Dropdown = ({
 
   const currentOption = options.find((opt) => opt.value === value) || options[0]
 
+  /* A clamped list (Popover caps the panel to the viewport) can open with the
+   * checked row past the fold — scroll it into reach. Keyboard focus after
+   * that scrolls natively; the list's children are the option buttons 1:1. */
+  const listRef = useRef(null)
+  useEffect(() => {
+    if (!isOpen) return
+    const idx = options.findIndex((opt) => opt.value === currentOption?.value)
+    listRef.current?.children[idx]?.scrollIntoView({ block: 'nearest' })
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const triggerCls = [
     'kol-btn',
     /* grey is dropdown-only chrome (2026-07-15) — no kol-btn-* class so it
@@ -125,7 +135,7 @@ const Dropdown = ({
       >
         {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
 
-        <div className="kol-dd-list" role="listbox">
+        <div ref={listRef} className="kol-dd-list" role="listbox">
           {options.map((option) => {
             const isActive = option.value === currentOption?.value
             return (

@@ -3,16 +3,15 @@ import { RecordManager } from '@kolkrabbi/kol-component'
 
 export const stage = 'full'
 
-/* mock cover art — filled so the tile reads as a photo, not an outline */
-const thumb = (seed) => `data:image/svg+xml,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 80"><rect width="140" height="80" fill="#3a3a41"/><rect width="140" height="${28 + seed * 8}" y="${52 - seed * 8}" fill="#1d1d21"/><circle cx="${30 + seed * 18}" cy="${24 + seed * 4}" r="${10 + seed * 3}" fill="#8a8a94"/></svg>`,
-)}`
+/* cover art — real photos from the root public/ (the SVG mock read as a
+ * grey blob, nothing like a photo tile) */
+const thumb = (n) => `/kol-images/tt-0${n}.jpg`
 
 const SEED = [
   { id: 1, title: 'Blue print No. 4', status: 'Live', series: 'editions', artwork: { thumb: thumb(1), name: 'blue-print-04.png' } },
   { id: 2, title: 'Harbour study', status: 'Draft', series: 'studies', artwork: { thumb: thumb(2), name: 'harbour-study.png' } },
   { id: 3, title: 'Meridian poster', status: 'Live', series: 'posters', artwork: { thumb: thumb(3), name: 'meridian.png' } },
-  { id: 4, title: 'Field notes I', status: 'Archived', series: 'studies', artwork: { thumb: thumb(0), name: 'field-notes-1.png' } },
+  { id: 4, title: 'Field notes I', status: 'Archived', series: 'studies', artwork: { thumb: thumb(4), name: 'field-notes-1.png' } },
 ]
 
 const STATUS = [
@@ -69,7 +68,6 @@ export default function RecordManagerDemo() {
         onAdd={() => {}}
         onSortToggle={() => {}}
         onFilterToggle={() => {}}
-        onOverflow={() => {}}
       />
     </div>
   )

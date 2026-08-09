@@ -75,6 +75,22 @@
   --kol-surface-absolute-split-inverse: #ffffff;
 }
 
+/* UI STATE — dark tier. The base ladder (kol-color.css) is authored for
+ * light surfaces; on dark it read as dull ink (StatusChip frame, user
+ * 2026-08-09 — success sampled off the reference mint). Own block, NOT the
+ * one above: kol-color.css loads AFTER this file, so its bare `:root` beats
+ * an equal-specificity dark selector on the tie — the :root-qualified forms
+ * here outrank it; bare `.dark` stays for subtree-scoped dark wrappers,
+ * where the element's own props beat anything inherited. */
+:root[data-theme="dark"],
+:root.dark,
+.dark {
+  --ui-error:    #F87171;
+  --ui-warning:  #FACC15;
+  --ui-info:     #60A5FA;
+  --ui-success:  #3DD68C;
+}
+
 /* System-follow dark (0.11.6, user law: explicit choice > system > light).
  * Applies ONLY when no explicit theme is stamped — a consumer that sets
  * data-theme (any value) vetoes the OS. MIRROR of the block above — edit both. */
@@ -102,5 +118,11 @@
     --kol-surface-support-split-inverse: #eeeeee;
     --kol-surface-absolute-split: #000000;
     --kol-surface-absolute-split-inverse: #ffffff;
+
+    /* UI STATE — dark tier (mirror of the block above — edit both) */
+    --ui-error:    #F87171;
+    --ui-warning:  #FACC15;
+    --ui-info:     #60A5FA;
+    --ui-success:  #3DD68C;
   }
 }

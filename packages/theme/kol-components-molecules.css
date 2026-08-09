@@ -81,9 +81,15 @@
  * trigger squares its bottom corners, panel squares its top, and the fill
  * continues (panel offset is -1 in Dropdown.jsx for the same reason). */
 .kol-dd-trigger--open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+/* Flex column so the viewport clamp (Popover size middleware sets maxHeight
+ * on this element) reaches the list: the hairline keeps its 1px, the list
+ * takes the rest and scrolls inside — the panel itself never overflows the
+ * viewport (2026-08-09, kol-ds-fxr long-dropdown ticket). */
 .kol-dd-panel {
   border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .kol-dd-panel--primary { background: var(--kol-surface-secondary); }
 .kol-dd-panel--grey    { background: var(--kol-oq-12); }
@@ -93,7 +99,7 @@
   border-top: none; /* the trigger's bottom edge is the divider (docs page) */
 }
 .kol-dd-div  { border-top: 1px solid var(--kol-fg-08); }
-.kol-dd-list { padding: var(--kol-spacing-1); }
+.kol-dd-list { padding: var(--kol-spacing-1); overflow-y: auto; min-height: 0; }
 
 /* Popover — default chrome for floating-ui-positioned panels.
  * Used by molecules/Popover.jsx PopoverPanel. */
@@ -278,6 +284,22 @@
   color: var(--kol-surface-on-primary);
   background-color: color-mix(in srgb, var(--kol-surface-on-primary) 8%, var(--kol-surface-primary));
 }
+/* ── FieldRow — .kol-field-row ────────────────────────────────────────────
+ * Row anatomy: label column LEFT beside the control column (reference,
+ * 2026-08-09). Lives here, not in a Tailwind arbitrary utility — package
+ * chrome rides theme CSS (the SegmentedToggle lesson): an arbitrary class
+ * silently missed generation in a consumer build and the rows stacked. */
+.kol-field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+}
+
+/* Chevron weight (user frames 2026-08-09): at the chip size the set
+ * chevron's 1.5 stroke renders a 0.75px hairline; 4 units read too thick.
+ * 3 units on the 24 viewBox → 1.5px rendered at size 12. Chip-scoped: the
+ * keyline law governs the set's drawings; chrome may weight a glyph in
+ * context. */
+.kol-status-chip svg path { stroke-width: 3px; }
 .kol-status-chip--success {
   color: var(--ui-success);
   background-color: color-mix(in srgb, var(--ui-success) 15%, var(--kol-surface-primary));
@@ -293,6 +315,13 @@
 .kol-status-chip--info {
   color: var(--ui-info);
   background-color: color-mix(in srgb, var(--ui-info) 15%, var(--kol-surface-primary));
+}
+/* --primary — the Dropdown-primary trigger's fill + ink on the pill box
+ * (select columns in record surfaces, user frame 2026-08-09: "use status
+ * pill, but same look as dropdown primary"). Values mirror .kol-btn-primary. */
+.kol-status-chip--primary {
+  color: var(--kol-surface-on-primary);
+  background-color: var(--kol-surface-secondary);
 }
 
 /* inverse — the flipped chip. Mirrors .pill-inverse. */

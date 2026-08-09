@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
@@ -28,6 +29,7 @@ const FOCUSABLE =
  * @param {string}        side      'left' | 'right' — edge the panel slides from
  * @param {number|string} width     panel width (px number or CSS length); omit for full-width sheet
  * @param {ReactNode}     header    header-row content beside the close button (replaces the source's baked-in wordmark)
+ * @param {boolean}       backdrop  render the dimming scrim (default true); false = panel alone, no darken/blur, close via × / Esc
  * @param {ReactNode}     children  scrollable panel body
  * @param {string}        className extra classes on the panel
  */
@@ -38,6 +40,7 @@ export default function ShellDrawer({
   width,
   header,
   closeSide = 'end',
+  backdrop = true,
   children,
   className = '',
 }) {
@@ -134,26 +137,40 @@ export default function ShellDrawer({
 
   return createPortal(
     <>
-      <div
-        className={`fixed inset-0 z-[100] kol-overlay-scrim ${motionBackdrop}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      {backdrop && (
+        <div
+          className={`fixed inset-0 z-[100] kol-overlay-scrim ${motionBackdrop}`}
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
-        className={`fixed inset-y-0 z-[200] flex max-w-full flex-col bg-surface-primary px-4 py-4 shadow-2xl outline-none md:px-5 lg:px-6 ${
+        className={`fixed inset-y-0 z-[200] flex max-w-full flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop ? 'shadow-2xl' : ''} ${
           side === 'right' ? 'right-0 border-l' : 'left-0 border-r'
         } border-fg-08 ${width == null ? 'w-full' : ''} ${motionPanel} ${className}`}
         style={width != null ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
       >
-        <div className="mb-6 flex items-center gap-4">
+        {/* closeSide="start": the reference sets the × glyph ~9px deeper than
+          * the label column's edge, with extra top air (both reference frames
+          * 2026-08-09 measure the same inset) */}
+        <div className={`mb-6 flex items-center gap-4${closeSide === 'start' ? ' pt-3 pl-2' : ''}`}>
           {/* closeSide="start" — the record-surface anatomy (reference frame,
             * 2026-08-09): × leads, the header's actions sit at the far end. */}
           {closeSide === 'start' && (
-            <Button variant="nav" size="md" iconOnly="x" iconSize={14} onClick={onClose} aria-label="Close" className="shrink-0" />
+            /* bare glyph, no container (user 2026-08-09: "the X close icon
+             * does not need a container") — body ink at rest, emphasis on hover */
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={onClose}
+              className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-body transition-colors duration-150 hover:text-emphasis"
+            >
+              <Icon name="x" size={18} />
+            </button>
           )}
           {header != null && <div className="min-w-0 flex-1">{header}</div>}
           {/* The box has an owner (2026-08-01). This hand-wrote the icon-button

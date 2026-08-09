@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input'
-import Tag from '../atoms/Tag'
-import Button from '../atoms/Button'
 import { usePopover, PopoverPanel } from '../atoms/Popover'
-import { INDICATOR } from '../hooks/glyphLadders.js'
 import Dropdown from './Dropdown'
 
 /**
@@ -27,7 +24,7 @@ import Dropdown from './Dropdown'
 
 /* StatusChip — the interactive status control ("Live ▾" in the reference,
  * rebuilt to it 2026-08-09 after the user's screenshots: the chip carries a
- * TONE tint + a trailing caret at the INDICATOR rung, and the open panel is
+ * TONE tint + a trailing chevron, and the open panel is
  * the reference's grammar — current chip on top, hairline, then option rows
  * with a leading check column).
  * Chip taxonomy (Tag source, 2026-07-30): interactive → Tag, never Pill. The
@@ -37,8 +34,13 @@ import Dropdown from './Dropdown'
  *
  * Options: strings, or { value, label, tone } — tone ∈ success|warning|error|
  * info maps onto the --ui-* ladder (.kol-status-chip--* in kol-theme); the
- * chip wears the ACTIVE option's tone. No tone → the plain Tag look. */
-export function StatusChip({ value, options = [], onChange, size = 'sm' }) {
+ * chip wears the ACTIVE option's tone. No tone → the plain Tag look.
+ *
+ * variant="primary" — the toneless pill wears the Dropdown-primary fill
+ * instead of the neutral mix (RecordManager's select columns, user frame
+ * 2026-08-09: "use status pill, but same look as dropdown primary"). An
+ * option's tone always outranks the variant. */
+export function StatusChip({ value, options = [], onChange, variant = 'neutral', size = 'sm' }) {
   const [open, setOpen] = useState(false)
   const popover = usePopover({
     open,
@@ -49,18 +51,21 @@ export function StatusChip({ value, options = [], onChange, size = 'sm' }) {
   })
   const norm = options.map((opt) => (typeof opt === 'object' ? opt : { value: opt, label: opt }))
   const activeOpt = norm.find((o) => o.value === value)
-  const toneCls = activeOpt?.tone ? ` kol-status-chip--${activeOpt.tone}` : ''
-  /* BUILT ON THE COVER-FOCUS SPECS (user ruling 2026-08-09: "same component
-   * as cover focus"): the chip wears the Dropdown-sm trigger metrics — the
-   * kol-btn-sm box (py-1 px-3) and mono-12 type — as a pill with the tone
-   * tint. The caret is a direct child of the flex row, centred by
-   * items-center; it cannot sit off the label's middle. */
+  const toneCls = activeOpt?.tone
+    ? ` kol-status-chip--${activeOpt.tone}`
+    : variant === 'primary' ? ' kol-status-chip--primary' : ''
+  /* CHIP BOX: px-2 is the user's exact value (2026-08-09: "x padding 2
+   * (8px)"). py-0.5 — the same-day py-0 collapsed the pill to the bare line
+   * box, and the reference chip ("why cant you make the chip look like
+   * this?") carries visible air; 2px is the minimum that restores it.
+   * mono-12 at its own 16px leading. The chevron is a direct child of the flex
+   * row, centred by items-center; it cannot sit off the label's middle. */
   const chip = (interactive) => (
     <button
       type="button"
       disabled={!interactive || undefined}
       aria-expanded={interactive ? open : undefined}
-      className={`kol-status-chip${toneCls} kol-mono-12 inline-flex items-center gap-1 rounded-full border-0 px-2 py-1 leading-none${interactive ? ' cursor-pointer' : ''}`}
+      className={`kol-status-chip${toneCls} kol-mono-12 inline-flex items-center gap-2 rounded-full border-0 px-2 py-0.5${interactive ? ' cursor-pointer' : ''}`}
       onClick={interactive ? () => setOpen((o) => !o) : undefined}
     >
       {activeOpt?.label ?? value}
@@ -69,7 +74,7 @@ export function StatusChip({ value, options = [], onChange, size = 'sm' }) {
           className={`inline-flex shrink-0 transition-transform duration-150${open ? ' rotate-180' : ''}`}
           aria-hidden="true"
         >
-          <Icon name="chevron-down" size={INDICATOR.sm} />
+          <Icon name="chevron-down" size={10} />
         </span>
       )}
     </button>
@@ -114,9 +119,10 @@ export function StatusChip({ value, options = [], onChange, size = 'sm' }) {
   )
 }
 
-/* Media thumbnail — the reference panel's proportions (frame 39,
- * 2026-08-09): a generous rounded tile, remove × inset at its corner. */
-const THUMB_CLS = 'h-16 w-28 rounded-lg object-cover bg-fg-04'
+/* Media thumbnail — measured off the reference panel (2026-08-09): 136×72,
+ * remove × riding the corner. Radius is the system's 4px — the repo ships
+ * 4px or full, nothing between. */
+const THUMB_CLS = 'h-18 w-34 rounded object-cover bg-fg-04'
 
 export default function FieldRow({
   label,
@@ -140,7 +146,9 @@ export default function FieldRow({
       aria-label={label}
       disabled={disabled || !onPick}
       onClick={onPick}
-      className="flex h-16 w-28 items-center justify-center rounded-lg border border-fg-16 bg-fg-02 text-body transition-colors duration-150 enabled:cursor-pointer enabled:hover:text-emphasis disabled:opacity-60"
+      /* reference empty tile: FILLED, no border — a plain grey slab with the
+       * + centred (frame 2026-08-09) */
+      className="flex h-18 w-34 items-center justify-center rounded border-0 bg-fg-04 text-body transition-colors duration-150 enabled:cursor-pointer enabled:hover:text-emphasis disabled:opacity-60"
     >
       <Icon name="plus" size={16} />
     </button>
@@ -153,15 +161,16 @@ export default function FieldRow({
       onClick={onPick}
       className="kol-control kol-control--filled kol-control-sm kol-mono-12 w-full text-left text-meta enabled:cursor-pointer disabled:opacity-60"
     >
-      Choose file…
+      Choose File...
     </button>
   )
 
   let control = null
   if (type === 'text') {
     control = (
-      /* sm — record rows are compact chrome (the reference's density); md
-       * read as a form field ("input is large? why?", 2026-08-09). */
+      /* sm — the repo's control rung, no special box for this component
+       * (user ruling 2026-08-09: "why would this component be different
+       * than every other rule in the repo"). */
       <Input
         size="sm"
         value={value ?? ''}
@@ -174,40 +183,60 @@ export default function FieldRow({
   } else if (type === 'status') {
     control = <StatusChip value={value} options={options} onChange={onChange} />
   } else if (type === 'select') {
-    control = <Dropdown options={options} value={value} onChange={onChange} />
+    /* full-width — the reference's focus selects span the control column,
+     * caret at the far edge (panel frame 2026-08-09) */
+    control = <Dropdown options={options} value={value} onChange={onChange} className="w-full" />
   } else if (type === 'media') {
     control = value ? (
-      <span className="group relative inline-flex">
+      <span className="relative inline-flex">
         <img src={value.thumb ?? value.url} alt={value.name ?? ''} className={THUMB_CLS} />
         {onChange && (
-          <Button
-            variant="nav"
-            size="sm"
-            iconOnly="x"
-            iconSize={10}
+          /* the reference badge: ALWAYS visible, a small dark disc riding the
+           * tile's corner — scrim ink is theme-invariant over imagery (panel
+           * frame 2026-08-09; hover-reveal repealed) */
+          <button
+            type="button"
             aria-label={label}
-            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
             onClick={() => onChange(null)}
-          />
+            className="absolute top-1 right-1 inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-0 kol-overlay-scrim text-white"
+          >
+            <Icon name="x" size={10} />
+          </button>
         )}
       </span>
     ) : mediaEmpty
   } else if (type === 'file') {
     control = value ? (
-      /* kol-tag--data: a filename renders VERBATIM — the chip uppercase is
-       * for label strings, and transforming data misquotes it (2026-08-09). */
-      <Tag variant="secondary" size="sm" hash={false} className="kol-tag--data" onRemove={onChange ? () => onChange(null) : undefined}>
-        {value.name ?? value}
-      </Tag>
+      /* the reference's file value is a FULL-WIDTH filled row — filename at
+       * the leading edge (verbatim, data is never case-transformed), × at the
+       * far end (panel frame 2026-08-09; the kol-tag--data chip repealed) */
+      <span className="kol-control kol-control--filled kol-control-sm kol-mono-12 flex w-full items-center gap-2">
+        <span className="min-w-0 flex-1 truncate">{value.name ?? value}</span>
+        {onChange && (
+          <button
+            type="button"
+            aria-label={label}
+            onClick={() => onChange(null)}
+            className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-body hover:text-emphasis"
+          >
+            <Icon name="x" size={12} />
+          </button>
+        )}
+      </span>
     ) : fileEmpty
   }
 
   return (
-    <div className="grid grid-cols-[minmax(0,10rem)_minmax(0,1fr)] items-center gap-x-6 py-4 border-b border-fg-08">
-      <div className="kol-mono-12 text-body">{label}</div>
+    /* reference rhythm (2026-08-09): roomy rows on hairlines, narrow label
+     * column, labels white; media rows top-align their label to the tile.
+     * Controls stay on the repo's sm rung — no special box here. */
+    /* .kol-field-row carries the grid anatomy in kol-theme (package chrome
+     * never rides arbitrary utilities — they can miss generation) */
+    <div className="kol-field-row items-center gap-x-6 py-3 border-b border-fg-08">
+      <div className={`kol-mono-12 text-emphasis${type === 'media' ? ' self-start pt-1' : ''}`}>{label}</div>
       <div className="min-w-0">{control}</div>
       {hint != null && (
-        <div className="col-start-2 kol-helper-10 text-meta pt-1 truncate">{hint}</div>
+        <div className="col-start-2 kol-helper-12 text-meta pt-2 truncate">{hint}</div>
       )}
     </div>
   )

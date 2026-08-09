@@ -38,3 +38,21 @@ None new.
 
 ## Recreation notes
 The set already carries `skip-start`/`skip-back`; if a new drawing would be redundant, shipping `stop`/`rewind` as aliases of existing drawings is acceptable — the contract is that the **names resolve**. The names are what TransportBar (and any future transport consumer) requests literally.
+
+---
+
+## Resolution (2026-08-09) — 🟢 closed
+
+Shipped in **`@kolkrabbi/kol-icons@0.13.0`** (published, verified on the
+registry). Both names resolve as real drawings in `playback/` — not aliases:
+the user pointed at the legacy stroke shelf (`_tmp/legacy-icons/stroke/media/`)
+as the source, so `stop` is the legacy outline square and `rewind` the legacy
+double-triangle ⏪, each conformed to the family dialect (24-box, 6–18 keyline,
+`currentColor` stroke 1.5, family attribute format — legacy `stop` sat at
+5.5–18.5, legacy `rewind` at 2–20 × 5–19, both off-grid). Note the ticket's
+described glyph for `rewind` (bar + left triangle) is literally `skip-start`'s
+existing drawing — the legacy double-triangle gives the name its own distinct
+glyph instead. Inventory doc regenerated: **171 icons · 26 groups** (the
+header had been stale at 165 since 0.8.10). `playback` is now 8:
+`pause` · `play` · `rewind` · `skip-back` · `skip-end` · `skip-forward` ·
+`skip-start` · `stop`.

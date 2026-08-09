@@ -4,8 +4,8 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button'
 import SearchInput from '../molecules/SearchInput'
 import ToggleCheckbox from '../atoms/ToggleCheckbox'
+import IconFrame from '../atoms/IconFrame'
 import ShellDrawer from '../molecules/ShellDrawer'
-import Dropdown from '../molecules/Dropdown'
 import FieldRow, { StatusChip } from '../molecules/FieldRow'
 import { Tooltip } from '../atoms/Popover'
 import Table from './Table'
@@ -101,7 +101,14 @@ export default function RecordManager({
 
   const rowId = (row, i) => row.id ?? i
 
+  /* panel = 60% of the table area (user ruling 2026-08-09) — the surface's
+   * own width IS the table pane, measured at open. ponytail: not re-measured
+   * on live resize. */
+  const [panelW, setPanelW] = useState(null)
+
   const openRecord = (row) => {
+    const w = wrapRef.current?.getBoundingClientRect().width
+    setPanelW(w ? Math.round(w * 0.6) : null)
     setActive(row)
     onSelectRow?.(row)
   }
@@ -154,14 +161,22 @@ export default function RecordManager({
              * the text (user frames 2026-08-09). Hover-revealed per row. */
             <span className="flex items-center justify-between gap-2 min-w-0 max-w-full">
               <span className="truncate text-emphasis">{col.render ? col.render(row) : row[col.accessor]}</span>
-              <button
-                type="button"
+              {/* the ICON CONTAINER is IconFrame (2026-08-01 ruling), box-model
+                * proper (user 2026-08-09, "padding should control the size"):
+                * the box stays pinned, the glyph FILLS the content box, and
+                * padding is the only inset knob — p-[3px] on user instruction
+                * (2026-08-09, "use 3px … use [3px]"); arbitrary utilities have
+                * missed consumer generation before — if this renders unpadded
+                * in a consumer, this class is why. */}
+              <IconFrame
+                name="toggle-overlay"
+                variant="outline"
+                size="sm"
+                iconSize="100%"
                 aria-label="Toggle overlay"
-                className="shrink-0 inline-flex cursor-pointer rounded-md border border-fg-16 bg-transparent p-1 text-body opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100 hover:text-emphasis"
                 onClick={() => openRecord(row)}
-              >
-                <Icon name="toggle-overlay" size={18} />
-              </button>
+                className="p-[3px] opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+              />
             </span>
           ),
         }
@@ -181,10 +196,14 @@ export default function RecordManager({
       if (col.type === 'select') {
         return {
           ...col,
+          /* the reference's select cell ("Center ▾") is a PILL, not the square
+           * Dropdown trigger — the StatusChip apparatus in its NEUTRAL grey,
+           * the same chip Archived wears (user ruling 2026-08-09: "grey like
+           * 'archived'"). Panel select fields stay Dropdown. */
           render: (row) => (
-            <Dropdown
-              options={col.options ?? []}
+            <StatusChip
               value={row[col.accessor]}
+              options={col.options ?? []}
               onChange={(next) => col.onSelectChange?.(row, next)}
             />
           ),
@@ -196,7 +215,9 @@ export default function RecordManager({
           render: (row) => {
             const media = row[col.accessor]
             return media ? (
-              <img src={media.thumb ?? media.url} alt={media.name ?? ''} className="h-10 w-14 rounded object-cover bg-fg-04" />
+              /* measured off the reference frame: the tile is chip-height —
+               * ~24px tall, 2:1 — not a 40px block (user re-call 2026-08-09) */
+              <img src={media.thumb ?? media.url} alt={media.name ?? ''} className="h-6 w-12 rounded object-cover bg-fg-04" />
             ) : (
               <span className="kol-helper-10 text-meta">—</span>
             )
@@ -292,8 +313,10 @@ export default function RecordManager({
         rows={rows}
         width="column"
         compact
+        /* align-middle: cell content centres in the row (reference grammar,
+         * user frame 2026-08-09) — scoped here; Table's base stays v-top */
         rowClassName={(row, i) =>
-          `group${drag && i === drag.from ? ' opacity-40' : ''}${
+          `group align-middle${drag && i === drag.from ? ' opacity-40' : ''}${
             drag && i === drag.over && drag.over !== drag.from ? ' bg-fg-04' : ''
           }`
         }
@@ -316,8 +339,9 @@ export default function RecordManager({
         open={!!active}
         onClose={() => setActive(null)}
         side="right"
-        width="min(37.5rem, 92vw)"
+        width={panelW ? `${panelW}px` : '50vw'}
         closeSide="start"
+        backdrop={false}
         header={
           /* reference header anatomy (frame 45, 2026-08-09): × leads the row
            * (closeSide above); every action clusters at the far end —
@@ -339,7 +363,9 @@ export default function RecordManager({
         }
       >
         {record && (
-          <div className="flex flex-col">
+          /* border-t: the reference rules EVERY seam — including above the
+           * first row; each FieldRow carries its own border-b (frame 2026-08-09) */
+          <div className="flex flex-col border-t border-fg-08">
             {fields.map((f) => (
               <FieldRow
                 key={f.key}

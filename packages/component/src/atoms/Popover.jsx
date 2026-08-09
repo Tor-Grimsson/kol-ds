@@ -67,7 +67,8 @@ export function usePopover({
   if (matchReferenceWidth) {
     middleware.push(
       sizeMw({
-        apply({ rects, elements }) {
+        padding: 8,
+        apply({ rects, elements, availableHeight }) {
           /* FLOOR again, not exact (2026-08-09 evening, user: "if you have
            * to truncate 'centered' then its too narrow" — overrides the
            * morning's exact-width reading of the one-piece ruling for the
@@ -81,8 +82,14 @@ export function usePopover({
            * row. Letting the panel size itself was the broken middle: an
            * abs-positioned float with auto width sizes against available
            * space, not content. Sole consumer is Dropdown. */
+          /* VIEWPORT CLAMP (2026-08-09, kol-ds-fxr lobby ticket): flip is
+           * off on Dropdown (fused edge), so a long list (the labs 30-item
+           * "Add FX…" picker) otherwise renders past the viewport bottom.
+           * Cap the panel to the space below the trigger; .kol-dd-list
+           * scrolls inside (panel is a flex column in kol-theme). */
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
+            maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
           })
         },
       })
