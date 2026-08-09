@@ -30,11 +30,11 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.33.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-theme` | **0.34.0** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.14.0** | `<Icon>` + kol-icon-set-v1, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.33.1** | The components — atoms → molecules → organisms + `<Graphic>` |
-| `@kolkrabbi/kol-framework` | **0.17.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
-| `@kolkrabbi/kol-workshop` | **0.20.1** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
+| `@kolkrabbi/kol-component` | **0.34.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-framework` | **0.18.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
+| `@kolkrabbi/kol-workshop` | **0.21.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
 | `@kolkrabbi/kol-dashboards` | **0.2.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
 | `@kolkrabbi/kol-chess` | **0.5.3** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
 | `@kolkrabbi/kol-content` | **0.4.1** | CMS — `/stack` (blog) + `/work` (portfolio) streams |

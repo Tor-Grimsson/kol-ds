@@ -73,7 +73,7 @@ export default function ColorPicker() {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary p-4">
+    <div className="flex flex-col gap-4 rounded border border-fg-12 bg-surface-primary p-4">
       <Section label="SPECTRUM">
         <div className="h-[200px]">
           <SpectrumControls value={fill} onChange={setFill} />

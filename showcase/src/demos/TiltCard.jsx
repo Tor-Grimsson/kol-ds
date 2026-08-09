@@ -13,12 +13,12 @@ const art = `data:image/svg+xml,${encodeURIComponent(
 export default function TiltCardDemo() {
   return (
     <div className="flex flex-wrap gap-6">
-      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded-lg">
+      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded">
         <span className="absolute bottom-3 left-3 kol-mono-12" style={{ color: '#8a8a94' }}>
           default
         </span>
       </TiltCard>
-      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded-lg" variant="grounded">
+      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded" variant="grounded">
         <span className="absolute bottom-3 left-3 kol-mono-12" style={{ color: '#8a8a94' }}>
           grounded
         </span>

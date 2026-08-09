@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
-import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
+import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { MenuDropdownItem } from './MenuItem.jsx'
 
 /**
@@ -68,11 +68,15 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
       >
         <Button variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={10} aria-label="Variants" />
       </span>
+      {/* w-max: a float sizes to its CONTENT (floating-ui contract) — without
+        * it the absolutely-positioned panel can stretch against its containing
+        * block and ignore both its rows and its trigger (2026-08-09 review,
+        * the shape menu spanning the whole card). */}
       <PopoverPanel
         popover={popover}
         panel={false}
         focus={false}
-        className="bg-surface-secondary border border-fg-08 rounded shadow-lg"
+        className="w-max bg-surface-secondary border border-fg-08 rounded shadow-lg"
       >
         {options.map((option) => (
           <MenuDropdownItem

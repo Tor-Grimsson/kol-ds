@@ -215,7 +215,7 @@
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-secondary) 12%, transparent);
   background: color-mix(in srgb, var(--kol-surface-on-secondary) 6%, transparent);
   color: var(--kol-surface-on-secondary);
-  border-radius: 10px;
+  border-radius: var(--kol-radius-sm);
   padding: 10px 14px;
   font-family: var(--kol-font-family-mono);
   font-size: 0.75rem;
@@ -376,7 +376,7 @@
   flex: 1;
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-secondary) 10%, transparent);
   background: color-mix(in srgb, var(--kol-surface-on-secondary) 4%, transparent);
-  border-radius: 10px;
+  border-radius: var(--kol-radius-sm);
   padding: 10px;
   font-family: var(--kol-font-family-mono);
   font-size: 0.75rem;
@@ -448,7 +448,7 @@
 .board-playback__section {
   background: color-mix(in srgb, var(--kol-surface-on-secondary) 3%, transparent);
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-secondary) 8%, transparent);
-  border-radius: 10px;
+  border-radius: var(--kol-radius-sm);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -479,7 +479,7 @@
 
 .board-playback__notes {
   min-height: 110px;
-  border-radius: 10px;
+  border-radius: var(--kol-radius-sm);
   padding: 16px;
   background: color-mix(in srgb, var(--kol-surface-on-secondary) 4%, transparent);
   font-family: var(--kol-font-family-mono);
@@ -557,7 +557,7 @@
 .analysis-table-empty {
   padding: 32px;
   text-align: center;
-  border-radius: 16px;
+  border-radius: var(--kol-radius-sm);
   border: 1px solid var(--kol-border-default);
   background: color-mix(in srgb, var(--kol-surface-secondary) 92%, transparent);
   color: var(--kol-surface-on-secondary);
@@ -749,7 +749,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
   align-self: flex-start;
 }
 
@@ -820,7 +820,7 @@
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
   background: color-mix(in srgb, #0a682a 20%, transparent);
   color: #5dd27f;
 }
@@ -970,7 +970,7 @@
 .chess-hero__line-chart {
   height: 60px;
   background: color-mix(in srgb, var(--kol-surface-on-secondary) 4%, transparent);
-  border-radius: 8px;
+  border-radius: var(--kol-radius-sm);
   padding: 12px;
 }
 

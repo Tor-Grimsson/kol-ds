@@ -68,7 +68,7 @@ export default function ShellTopbar() {
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto grid max-w-[var(--kol-content-shell)] grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="aspect-[4/5] rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
+            <div key={i} className="aspect-[4/5] rounded border border-fg-08 bg-fg-02" />
           ))}
         </div>
       </div>

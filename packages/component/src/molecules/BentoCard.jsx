@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import HlsVideo from '../atoms/HlsVideo.jsx'
-import AssetPlaceholder from '../atoms/AssetPlaceholder.jsx'
+import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 import Button from '../atoms/Button.jsx'
 import Image from '../atoms/Image.jsx'
 import useTilt from '../hooks/useTilt.js'

@@ -222,12 +222,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     <>
       {actions}
       <Tooltip label="Search">
-        {/* IconFrame at the `lg` rung (user ruling 2026-08-01). Two faults in
-          * one call: it was a Button, and at the default `md` rung it drew the
-          * solo-lg glyph inside an `md` square while every neighbour sat on
-          * `lg`. `quiet` is gone too — on ghost it rested at oq-48 × 0.5, which
-          * made search the faintest thing in a row of oq-64 controls. */}
-        <IconFrame name="search" variant="nav" size="lg" onClick={() => setIsSearchOpen(true)} aria-label="Search" />
+        {/* `md` + full-ink nav (user re-rule 2026-08-09; repeals the 2026-08-01
+          * lg ruling). The row law is unchanged: every header glyph on ONE
+          * rung, one variant — the rung is just md now. */}
+        <IconFrame name="search" variant="nav" size="md" onClick={() => setIsSearchOpen(true)} aria-label="Search" />
       </Tooltip>
     </>
   )

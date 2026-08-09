@@ -3,7 +3,12 @@
 **Filed:** 2026-08-01 → **humpty**
 **Entry:** `~/dev/projects/kol-dumpty/humpty/lobby/inbox/deletion-is-never-authorised.md`
 **Ledger:** `~/dev/projects/kol-dumpty/humpty/lobby/LEDGER.md` — **the truth about this ticket**
-**Last known:** 🔵 `filed` · synced 2026-08-01
+**Last known:** ⚫ `retired` · closed here 2026-08-09 — **user's call: outdated**
+
+> Closed from this side, not from humpty's. Nothing here was ever outstanding
+> (`Remainder here: none` — the files were restored, the two `CLAUDE.md` law
+> edits shipped). This repo stops tracking it; whatever humpty's ledger says
+> about `rm-gate.sh` is humpty's to say.
 
 ## Why it went there
 

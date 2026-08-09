@@ -105,7 +105,10 @@ export const CATEGORIES = [
     key: 'molecules-organisms',
     label: 'Molecules + organisms',
     surfaces: [],
-    categories: ['molecules', 'organisms'],
+    /* `utilities` rides this gate (2026-08-09 "atoms paint" ruling): its 13
+     * members were all admitted here or under atoms before the re-file — the
+     * shelf moved, the admission didn't. */
+    categories: ['molecules', 'organisms', 'utilities'],
     rule: 'docs/documentation/03-components/02-placement.md',
     awaits: 'R1 · membership — same 2026-08-09 pass',
     why: 'All kept; demo gaps (PopoverPanel, the five color-tool molecules) recorded as gaps, not failures.',

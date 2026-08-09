@@ -118,10 +118,14 @@
      ignored rather than followed. A value used six times is a rung. */
   --kol-radius-xs: 2px;
   --kol-radius-sm: 4px;
-  --kol-radius-md: 8px;
-  --kol-radius-lg: 12px;
-  --kol-radius-xl: 16px;
-  --kol-radius-2xl: 20px;
+  /* CONTAINERS ARE 4px (user ruling 2026-08-09, "change 8px radius to 4px in
+     containers. everywhere."). The repo ships 4px or full, nothing between —
+     md/lg/xl/2xl stay resolvable so no consumer's var() breaks, but they all
+     collapse to the 4px value. Do not re-widen a rung without a ruling. */
+  --kol-radius-md: 4px;
+  --kol-radius-lg: 4px;
+  --kol-radius-xl: 4px;
+  --kol-radius-2xl: 4px;
   --kol-radius-full: 9999px;
 
   /* Shadows (subtle elevation) */

@@ -65,6 +65,21 @@ The repeal (2026-08-09) re-judged all 93 kol-component files. 20 moved; the judg
 
 Unmoved judgment anchors: `Button`/`Input`/`Tag`/`Popover` atoms · `Slider`/`Dropdown`/`Modal`/`FieldRow`/`ShellDrawer` molecules · `Table`/`ContentFilters`/`MediaLibrary`/`RecordManager` + the heroes/bands organisms.
 
+### The utilities re-file (2026-08-09, evening — the "atoms paint" ruling)
+
+The second half of the same day's re-rule ([[00-taxonomy|taxonomy]] § An atom PAINTS): the visual tiers hold interface elements only, and everything with purpose but no face moved to the new `utilities/` — one folder, one sidebar group. 13 members, all challenged and two struck by the user before sign-off:
+
+| From | Components | The failure |
+|---|---|---|
+| atoms | `AssetGrid` · `Popover` · `OverlayGlassPanel` · `TiltCard` | Paint nothing of their own: a grid wrapper, a positioning mechanism, a surface treatment, a transform wrapper |
+| atoms | `AssetPlaceholder` · `TransparentX` · `ExitPreview` · `ProsePreview` | Paint, but never stand alone: Image/Graphic's fallback state, a mark drawn onto a slot, fixed-position chrome (its CSS ships from kol-framework), a type specimen |
+| molecules | `ButtonGroup` · `FullscreenOverlay` · `LoaderOverlay` · `ErrorBoundary` | Pure layout (its own docblock's word) · the scrim+sheet mechanism five components wear · a slot pass-through · a guard that paints only on crash |
+| organisms | `EditorShell` | A slot frame — AssetGrid at region scale |
+
+Struck by the user: `MenuPopover` (renders a MenuItem — visual; dies on its own deprecation track) · the `Section`/`LabeledControl` merge flag (group header vs field label — different roles). `FullscreenOverlay` is the one row held on the placement test alone — it does paint, but is only ever worn.
+
+Post-sweep re-files (user rulings, same night): **`EmptyState` atoms → molecules** — eyebrow + title + body + footer is a small assembly working as one unit, not an irreducible element. **`PaletteHarmonyWheel` atoms → molecules** — the user's call, and the file's own `taxonomy-ok` comment had argued it belongs beside its color-picker siblings all along. **`AsciiCursor` atoms → utilities** — fixed-position whole-viewport chrome fails "stands alone" (the ExitPreview precedent; also why its index card was empty). **`InteractiveImage` RETIRED** to `_tmp/2026-08-09-interactive-image-retire/` (with its demo) — zero consumers in any app or package, ever; barrel export removed.
+
 Loaders verdict (C4): **Docs page**, not a components-list category — `Icon` + `Graphic` joined `DOCS_ONLY` in the showcase registry, documented on `/docs/loaders`, galleries unchanged on `/icons`.
 
 ## Membership

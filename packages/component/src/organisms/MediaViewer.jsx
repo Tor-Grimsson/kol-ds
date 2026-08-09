@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
+import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 
 /**
  * MediaViewer — THE fullscreen paged media viewer. One viewer for every

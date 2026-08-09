@@ -41,9 +41,10 @@ export default function FilterBar() {
             ))}
           </div>
           <div className="ml-auto flex items-center gap-4">
+            {/* primary, not outline/minimal — variants are primary unless
+              * stated (user ruling 2026-08-09). */}
             <Dropdown
               size="sm"
-              variant="minimal"
               value={sort}
               onChange={setSort}
               options={[
@@ -68,9 +69,10 @@ export default function FilterBar() {
       </div>
 
       {/* The results the bar filters — grid or rows per the view mode. */}
+      {/* 2×2 max — 4×2 never renders in this space (user ruling 2026-08-09). */}
       {view === 'grid' ? (
-        <div className="grid flex-1 grid-cols-2 content-start gap-4 sm:grid-cols-4">
-          {Array.from({ length: 8 }, (_, i) => (
+        <div className="grid flex-1 grid-cols-2 content-start gap-4">
+          {Array.from({ length: 4 }, (_, i) => (
             <AssetPlaceholder key={i} aspectRatio="4 / 3" note="result" name={`print-0${i + 1}`} />
           ))}
         </div>

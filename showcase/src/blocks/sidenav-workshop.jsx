@@ -118,11 +118,11 @@ export default function SidebarWorkshop() {
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
-            <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
-            <div className="h-28 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
+            <div className="h-28 rounded border border-fg-08 bg-fg-02" />
+            <div className="h-28 rounded border border-fg-08 bg-fg-02" />
+            <div className="h-28 rounded border border-fg-08 bg-fg-02" />
           </div>
-          <div className="flex-1 rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02" />
+          <div className="flex-1 rounded border border-fg-08 bg-fg-02" />
         </div>
       </div>
     </div>

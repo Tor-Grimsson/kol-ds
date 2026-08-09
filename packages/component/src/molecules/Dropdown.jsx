@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem } from './MenuItem.jsx'
-import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
+import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { indicatorSize } from '../hooks/glyphLadders.js'
 
 /**

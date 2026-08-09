@@ -7,7 +7,7 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox'
 import IconFrame from '../atoms/IconFrame'
 import ShellDrawer from '../molecules/ShellDrawer'
 import FieldRow, { StatusChip } from '../molecules/FieldRow'
-import { Tooltip } from '../atoms/Popover'
+import { Tooltip } from '../utilities/Popover'
 import Table from './Table'
 import MediaLibrary from './MediaLibrary'
 

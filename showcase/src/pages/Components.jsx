@@ -74,7 +74,10 @@ export default function Components() {
   const shown = grouped.reduce((n, [, , items]) => n + items.length, 0)
 
   return (
-    <>
+    /* The page stack (user, 2026-08-09: "make a breather in the layout") —
+     * header, filter row and sections were flush; gap-8 is the Foundations
+     * page's stack rhythm. */
+    <div className="flex flex-col gap-8">
       <DocHeader
         eyebrow="KOL · Components"
         title="Components"
@@ -108,6 +111,6 @@ export default function Components() {
       ))}
 
       {shown === 0 && <p className="kol-sans-body-01 text-meta">no components match.</p>}
-    </>
+    </div>
   )
 }

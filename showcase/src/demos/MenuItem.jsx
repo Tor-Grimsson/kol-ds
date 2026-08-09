@@ -1,5 +1,13 @@
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider, Icon } from '@kolkrabbi/kol-component'
 
+/* Index card: the CLOSED trigger only. The full demo below opens by default
+ * and its panel is PORTALLED to <body> — floating-ui escapes overflow by
+ * design, so a clipped index card cannot contain it and the open menu floated
+ * over the whole /components page (user bug report 2026-08-09). */
+export function Card() {
+  return <MenuItem label="File">{null}</MenuItem>
+}
+
 export default function MenuItemDemo() {
   return (
     /* The panel is portalled (escapes overflow by design), so the demo must

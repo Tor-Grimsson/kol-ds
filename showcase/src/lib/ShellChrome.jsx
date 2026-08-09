@@ -273,7 +273,7 @@ export default function ShellChrome() {
         <IconFrame
           name="social-github"
           variant="nav"
-          size="lg"
+          size="md"
           href={REPO}
           aria-label="GitHub"
         />

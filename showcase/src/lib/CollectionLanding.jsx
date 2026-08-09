@@ -39,7 +39,7 @@ function ProvenanceBadge({ itemKey, basePath }) {
  * item's page, the icon opens the standalone view. */
 function GalleryCard({ item, labels, basePath, previewBase }) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary">
+    <div className="flex flex-col overflow-hidden rounded border border-fg-12 bg-surface-primary">
       <div className="relative h-48 overflow-hidden border-b border-fg-08 bg-fg-02">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="h-[200%] w-[200%] origin-top-left scale-50">

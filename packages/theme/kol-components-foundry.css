@@ -165,7 +165,7 @@
   background: transparent;
   color: var(--fv-black);
   border: 1px solid var(--fv-border-color);
-  border-radius: 5px;
+  border-radius: var(--kol-radius-sm);
   transition: 0.2s;
   pointer-events: auto !important;
 }
@@ -296,7 +296,7 @@
   position: absolute;
   z-index: 10001;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: var(--kol-radius-sm);
   color: var(--fv-black);
 }
 

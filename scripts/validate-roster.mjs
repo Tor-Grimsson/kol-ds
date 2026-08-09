@@ -20,7 +20,8 @@ import { MEMBER_OF } from '../showcase/src/lib/component-groups.js'
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const PKGS = join(REPO, 'packages')
-const TIER_FOLDERS = new Set(['atoms', 'molecules', 'organisms', 'hooks'])
+/* `utilities` joined 2026-08-09 — the "atoms paint" ruling's shelf. */
+const TIER_FOLDERS = new Set(['atoms', 'molecules', 'organisms', 'utilities', 'hooks'])
 const VALID_TIERS = new Set(['atom', 'molecule', 'organism', 'hook', ...TIER_FOLDERS])
 const VALID_FUNCTIONS = new Set(['action', 'input', 'display', 'feedback', 'navigation', 'wayfinding', 'overlay', 'media', 'structure', 'utility'])
 

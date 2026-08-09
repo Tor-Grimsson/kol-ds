@@ -108,12 +108,10 @@ export default function ShellHeader({
               {actions}
               {showThemeToggle && (
                 <Tooltip label="Toggle theme">
-                  {/* one rung up at lg+ — the bar has room, and the toggle is
-                    * the most-used control in the row. New spec API (0.9.0):
-                    * quiet square = button geometry + fill none + no label
-                    * (was the old `icon` variant default). */}
-                  <span className="hidden lg:inline-flex"><ThemeToggle fill="none" label={false} size="lg" /></span>
-                  <span className="lg:hidden"><ThemeToggle fill="none" label={false} size="lg" /></span>
+                  {/* md at every width (user re-rule 2026-08-09: the whole
+                    * header glyph row rides md, full ink — the earlier lg-at-lg+
+                    * split is repealed, which also collapsed the two spans). */}
+                  <ThemeToggle fill="none" label={false} size="md" />
                 </Tooltip>
               )}
               {onMenuClick && (
@@ -121,13 +119,12 @@ export default function ShellHeader({
                   {/* IconFrame, not Button (user ruling 2026-08-01). Header
                     * chrome takes a click but must not light up; the frame has
                     * no state rules at all, which is the property Button can
-                    * only approximate by dropping its own. `nav` rests at
-                    * oq-64 — the `text-fg-64` this control hand-wrote for
-                    * months. */}
+                    * only approximate by dropping its own. `nav` rests at FULL
+                    * ink since the 2026-08-09 re-rule (was oq-64). */}
                   <IconFrame
                     name="hamburger"
                     variant="nav"
-                    size="lg"
+                    size="md"
                     onClick={onMenuClick}
                     aria-label="Open navigation menu"
                   />

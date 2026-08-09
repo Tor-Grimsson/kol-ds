@@ -7,14 +7,18 @@
 
 import { Icon } from '@kolkrabbi/kol-icons'
 
+/* Tone names mirror StatusChip's --ui-* ladder (error/warning/info/success —
+ * siblings, one language). `destructive` and `critical` are legacy aliases
+ * of `error`; canonical name in new call sites is `error`. */
 const VARIANT_MAP = {
   default: 'kol-badge-default',
   secondary: 'kol-badge-secondary',
-  destructive: 'kol-badge-destructive',
+  error: 'kol-badge-error',
+  destructive: 'kol-badge-error',
+  critical: 'kol-badge-error',
   outline: 'kol-badge-outline',
   success: 'kol-badge-success',
   warning: 'kol-badge-warning',
-  critical: 'kol-badge-critical',
   info: 'kol-badge-info'
 }
 

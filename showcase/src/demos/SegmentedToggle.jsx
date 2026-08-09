@@ -7,15 +7,13 @@ const OPTIONS = [
   { value: 'feed', label: 'Feed' },
 ]
 
-export default function SegmentedToggleDemo() {
+/* One instance; size rides the toolbar picker (2026-08-09 consistency
+ * ruling — no inline size ramps in previews). */
+export const sizes = ['sm', 'md', 'lg']
+
+export default function SegmentedToggleDemo({ size = 'sm' }) {
   const [v, setV] = useState('grid')
-  return (
-    <div className="flex flex-col items-start gap-4">
-      {['sm', 'md', 'lg'].map((size) => (
-        <SegmentedToggle key={size} value={v} onChange={setV} options={OPTIONS} size={size} />
-      ))}
-    </div>
-  )
+  return <SegmentedToggle value={v} onChange={setV} options={OPTIONS} size={size} />
 }
 
 /* Index card: one canonical instance. */

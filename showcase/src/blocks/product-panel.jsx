@@ -20,7 +20,7 @@ export const stage = 'full'
 function PrintFrame({ children, bg }) {
   return (
     <div
-      className="aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-08 shadow-[0_24px_64px_rgba(0,0,0,0.18)]"
+      className="aspect-[4/5] w-full max-w-sm overflow-hidden rounded border border-fg-08 shadow-[0_24px_64px_rgba(0,0,0,0.18)]"
       style={{ background: bg }}
     >
       <svg viewBox="0 0 400 500" width="100%" height="100%" role="img" aria-label="Art print artwork">

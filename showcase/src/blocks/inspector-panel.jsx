@@ -21,7 +21,7 @@ export default function InspectorPanel() {
   const [blend, setBlend] = useState('normal')
 
   return (
-    <div className="flex flex-col gap-5 rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary p-4">
+    <div className="flex flex-col gap-5 rounded border border-fg-12 bg-surface-primary p-4">
       <Section label="POSITION">
         <div className="grid grid-cols-2 gap-3">
           <PropertyInput label="X" type="number" value={x} onChange={(e) => setX(Number(e.target.value))} step={1} />
@@ -33,7 +33,10 @@ export default function InspectorPanel() {
         <LabeledControl label={`OPACITY · ${opacity}%`}>
           <Slider min={0} max={100} value={opacity} onChange={setOpacity} variant="minimal" />
         </LabeledControl>
+        {/* ONE size per composition (user ruling 2026-08-09, "DO NOT MIX
+          * SIZES") — the panel's steppers are sm, so the toggle is sm. */}
         <SegmentedToggle
+          size="sm"
           value={blend}
           onChange={setBlend}
           options={[

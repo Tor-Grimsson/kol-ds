@@ -26,7 +26,7 @@ const NAV = [
 ]
 
 function Skeleton({ className = '' }) {
-  return <div className={`rounded-[var(--kol-radius-md)] border border-fg-08 bg-fg-02 ${className}`} />
+  return <div className={`rounded border border-fg-08 bg-fg-02 ${className}`} />
 }
 
 export default function SidebarDocs() {
@@ -37,7 +37,7 @@ export default function SidebarDocs() {
       {/* ── Sidebar ─────────────────────────────────────────── */}
       <aside className="flex w-64 shrink-0 flex-col border-r border-fg-08">
         <div className="flex items-center gap-3 px-4 py-4">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--kol-radius-md)] bg-fg-08 text-emphasis">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-fg-08 text-emphasis">
             <Icon name="book-open" size={16} />
           </span>
           <div className="min-w-0 flex-1">

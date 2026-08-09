@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ColorSwatch from '../atoms/ColorSwatch'
 import Input from '../atoms/Input'
-import { usePopover, PopoverPanel } from '../atoms/Popover'
+import { usePopover, PopoverPanel } from '../utilities/Popover'
 
 /**
  * ColorInputRow — swatch chip + `#` hex input row. The single merged form of

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Button, Pill } from '@kolkrabbi/kol-component'
+import { slugify } from '../nav/registry.js'
 import DemoStage from '../lib/DemoStage.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
@@ -72,7 +73,7 @@ const DEPLOY_COLUMNS = [
 function Ghost({ h }) {
   return (
     <div
-      className="mb-5 break-inside-avoid rounded-[var(--kol-radius-md)] border border-fg-04 p-4"
+      className="mb-5 break-inside-avoid rounded border border-fg-04 p-4"
       style={{ height: h }}
     >
       <div className="mb-4 h-2 w-1/3 rounded-full bg-fg-04" />
@@ -113,10 +114,18 @@ function GhostFlank({ side }) {
 }
 
 // ── Tile frame — uniform labeled specimen, error-boundaried ───────────────────
-function Tile({ label, children }) {
+// The label is the way IN (user ask 2026-08-09, "make the section header link
+// to it") — every tile with a destination renders its header as a Link.
+function Tile({ label, to, children }) {
   return (
-    <div className="mb-5 break-inside-avoid overflow-hidden rounded-[var(--kol-radius-md)] border border-fg-08 bg-surface-primary p-4">
-      <p className="kol-helper-10 text-meta uppercase mb-3">{label}</p>
+    <div className="mb-5 break-inside-avoid overflow-hidden rounded border border-fg-08 bg-surface-primary p-4">
+      {to ? (
+        <Link to={to} className="kol-helper-10 text-meta uppercase mb-3 block hover:text-emphasis hover:underline">
+          {label}
+        </Link>
+      ) : (
+        <p className="kol-helper-10 text-meta uppercase mb-3">{label}</p>
+      )}
       <ErrorBoundary>{children}</ErrorBoundary>
     </div>
   )
@@ -149,9 +158,11 @@ export default function Home() {
 
   const block = (key) => {
     const b = BLOCKS.find((x) => x.key === key)
-    return b ? { label: b.title, node: stageNode(b.Component, b.stage) } : null
+    return b ? { label: b.title, to: `/blocks/${key}`, node: stageNode(b.Component, b.stage) } : null
   }
-  const demo = (name) => ({ label: name, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
+  const demo = (name) => ({ label: name, to: `/components/${slugify(name)}`, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
+  /* Analytics/infra tiles link to the dashboards component they render. */
+  const compTo = (name) => `/components/${slugify(name)}`
 
   const hasDaily = dailyVisits.length > 2
 
@@ -160,6 +171,7 @@ export default function Home() {
   const tiles = useMemo(() => [
     {
       label: 'Analytics · visitors',
+      to: compTo('DashMetricCard'),
       node: (
         <DashMetricCard
           label="Visitors (30d)"
@@ -173,6 +185,7 @@ export default function Home() {
     block('inspector-panel'),
     {
       label: 'Analytics · site traffic',
+      to: compTo('DashFeaturedCard'),
       node: (
         <DashFeaturedCard
           badge="Last 30 days"
@@ -193,6 +206,7 @@ export default function Home() {
     demo('Button'),
     {
       label: 'Analytics · top pages',
+      to: compTo('DashListCard'),
       node: (
         <DashListCard
           variant="meter"
@@ -207,6 +221,7 @@ export default function Home() {
     block('color-picker'),
     {
       label: 'Analytics · pageviews',
+      to: compTo('DashMetricCard'),
       node: (
         <DashMetricCard
           label="Pageviews (30d)"
@@ -219,6 +234,7 @@ export default function Home() {
     },
     {
       label: 'Infra · recent deploys',
+      to: compTo('DashTableCard'),
       node: (
         <DashTableCard
           title="Recent deploys"
@@ -232,6 +248,7 @@ export default function Home() {
     block('settings-form'),
     {
       label: 'Analytics · devices',
+      to: compTo('DashChartCard'),
       node: (
         <DashChartCard title="Devices" subtitle="Sessions by device">
           <div className="flex justify-center py-2">
@@ -249,6 +266,7 @@ export default function Home() {
     demo('SegmentedToggle'),
     {
       label: 'Analytics · traffic mix',
+      to: compTo('DashStackedBarCard'),
       node: (
         <DashStackedBarCard
           title="Traffic mix"
@@ -262,6 +280,7 @@ export default function Home() {
     demo('Badge'),
     {
       label: 'Analytics · avg session',
+      to: compTo('DashMetricCard'),
       node: (
         <DashMetricCard
           label="Avg session"
@@ -274,6 +293,7 @@ export default function Home() {
     block('color-tools'),
     {
       label: 'Infra · storage',
+      to: compTo('DashAlertCard'),
       node: (
         <DashAlertCard
           label="B2 storage"
@@ -291,6 +311,7 @@ export default function Home() {
     demo('ViewToggle'),
     {
       label: 'Analytics · top countries',
+      to: compTo('DashListCard'),
       node: (
         <DashListCard
           variant="ratings"
@@ -361,7 +382,7 @@ export default function Home() {
           * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
         <div className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
           {tiles.map((t, i) => (
-            <Tile key={`${t.label}-${i}`} label={t.label}>
+            <Tile key={`${t.label}-${i}`} label={t.label} to={t.to}>
               {t.node}
             </Tile>
           ))}

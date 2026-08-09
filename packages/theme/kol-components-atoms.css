@@ -951,7 +951,9 @@ a.kol-icon-frame {
 }
 .kol-icon-frame-nav {
   background: transparent;
-  color: var(--kol-oq-64);
+  /* full ink, not oq-64 (user re-rule 2026-08-09: header glyphs at 100%
+   * opacity — the dimmed row read as disabled beside the ThemeToggle). */
+  color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
 }
 .kol-icon-frame-grey {

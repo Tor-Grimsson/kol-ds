@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input'
-import { usePopover, PopoverPanel } from '../atoms/Popover'
+import { usePopover, PopoverPanel } from '../utilities/Popover'
 import Dropdown from './Dropdown'
 
 /**

@@ -22,7 +22,10 @@ const pkgJsons = import.meta.glob('../../../packages/*/package.json', {
   eager: true, import: 'default',
 })
 
-const TIER_FOLDERS = new Set(['atoms', 'molecules', 'organisms', 'hooks'])
+/* `utilities` joined 2026-08-09 (the "atoms paint" ruling): purpose-without-a-
+ * face components — layout wrappers, worn mechanisms, guards, fallback states —
+ * out of the visual tiers into one shelf. */
+const TIER_FOLDERS = new Set(['atoms', 'molecules', 'organisms', 'utilities', 'hooks'])
 
 /* group the raw glob into per-package { 'index.js': txt, 'shell/index.js': txt } */
 const byPackage = {}

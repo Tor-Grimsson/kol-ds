@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
+import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 
 /**
  * MenuItem — top-level menu entry. Trigger button + popover panel.
@@ -54,11 +54,13 @@ export function MenuItem({
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
         />
       </button>
+      {/* w-max: floats size to CONTENT, never to the containing block —
+        * same family law as ShapeDropdown's panel (2026-08-09 review). */}
       <PopoverPanel
         popover={popover}
         panel={false}
         focus={false}
-        className={`bg-surface-secondary rounded ${panelClassName}`}
+        className={`w-max bg-surface-secondary rounded ${panelClassName}`}
         style={panelStyle}
       >
         <div

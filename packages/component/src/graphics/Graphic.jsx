@@ -12,7 +12,7 @@
  * than silently empty.
  */
 import { useEffect, useState } from 'react'
-import AssetPlaceholder from '../atoms/AssetPlaceholder.jsx'
+import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 
 let RAW = null              // category → name → raw svg, once the chunk resolves
 let loadPromise = null

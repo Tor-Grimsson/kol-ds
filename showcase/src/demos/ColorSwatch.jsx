@@ -1,16 +1,16 @@
 import { ColorSwatch } from '@kolkrabbi/kol-component'
 
-export default function ColorSwatchDemo() {
+/* Color is a PROPERTY, not a variant (user ruling 2026-08-09) — the demo
+ * shows the STATES on one color: rest, selected, and no-color. Size rides
+ * the toolbar picker. */
+export const sizes = [24, 32]
+
+export default function ColorSwatchDemo({ size = 24 }) {
   return (
-    <>
-      <div className="flex items-center gap-2">
-        {['#0a0a0a', '#3b82f6', '#22c55e', '#ef4444'].map((c) => (
-          <ColorSwatch key={c} hex={c} />
-        ))}
-      </div>
-      <ColorSwatch hex="#AD5038" selected />
-      <ColorSwatch hex="#22c55e" size={32} />
-      <ColorSwatch hex="#0a0a0a" showTransparent />
-    </>
+    <div className="flex items-center gap-2">
+      <ColorSwatch hex="#AD5038" size={size} />
+      <ColorSwatch hex="#AD5038" size={size} selected />
+      <ColorSwatch size={size} showTransparent />
+    </div>
   )
 }

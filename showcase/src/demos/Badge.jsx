@@ -8,7 +8,7 @@ export default function BadgeDemo({ size = 'md' }) {
     <>
       <Badge variant="default" size={size}>Default</Badge>
       <Badge variant="secondary" size={size}>Secondary</Badge>
-      <Badge variant="destructive" size={size}>Destructive</Badge>
+      <Badge variant="error" size={size}>Error</Badge>
       <Badge variant="outline" size={size}>Outline</Badge>
       <Badge variant="success" size={size}>Success</Badge>
       <Badge variant="warning" size={size}>Warning</Badge>

@@ -113,7 +113,6 @@ export const FUNCTIONS_BY_NAME = {
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input',
   BentoCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
-  InteractiveImage: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   ColorLoader: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',

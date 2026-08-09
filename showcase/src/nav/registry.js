@@ -111,7 +111,6 @@ const DESCRIPTIONS = {
 
   /* P4 — effects */
   TiltCard: 'A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge.',
-  InteractiveImage: 'An image seen through an organic blob mask that re-centres on the cursor, floating over a blurred copy of itself; the whole stage tilts in 3D.',
   AnimatedTitle: 'A scroll-triggered heading that reveals its words one by one as it enters the viewport (GSAP + ScrollTrigger).',
   TextPressure: 'A line of variable-font text whose glyphs deform toward the pointer — width/weight/italic falling off with distance.',
   AsciiCursor: 'A decorative ASCII cursor-follow overlay; vanishes on coarse pointers and prefers-reduced-motion.',
@@ -187,7 +186,9 @@ const DESCRIPTIONS = {
  * `loaders`/`graphics` are gone too: loaders are functional infrastructure,
  * documented on /docs/loaders — galleries stay on the Icons pages (C4). */
 export const CATEGORY_ORDER = [
-  'atoms', 'molecules', 'organisms',
+  /* `utilities` closes the atomic set (2026-08-09 "atoms paint" ruling):
+   * purpose-without-a-face components, one group, bottom of the atomic run. */
+  'atoms', 'molecules', 'organisms', 'utilities',
   'fw-chrome', 'fw-structure', 'fw-behavior',
   /* flat packages classify by OWNERSHIP (2026-07-30 ruling) — a shell piece
    * is not an "atom", a dashboard card is not a "molecule". */
@@ -198,6 +199,7 @@ export const CATEGORY_LABELS = {
   atoms: 'Atoms',
   molecules: 'Molecules',
   organisms: 'Organisms',
+  utilities: 'Utilities',
   'fw-chrome': 'Framework · Chrome',
   'fw-structure': 'Framework · Structure',
   'fw-behavior': 'Framework · Behaviors',

@@ -106,7 +106,7 @@
 .kol-popover {
   background: var(--kol-surface-secondary);
   border: 1px solid var(--kol-fg-08);
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4),
               0 2px 6px -2px rgba(0, 0, 0, 0.3);
   z-index: 1000;
@@ -121,7 +121,7 @@
   align-items: center;
   gap: 6px;
   background: var(--kol-surface-secondary);
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
   padding: 4px 4px 4px 8px;
   font-family: var(--kol-font-family-mono);
   font-size: 11px;
@@ -402,10 +402,16 @@
   border: 1px solid transparent;
 }
 
-.kol-badge-destructive {
-  background-color: color-mix(in srgb, #ef4444 20%, transparent);
-  color: #ef4444;
-  border: 1px solid color-mix(in srgb, #ef4444 30%, transparent);
+/* Tones ride the --ui-* ladder with StatusChip's exact fill formula — Badge
+ * and StatusChip are siblings and speak one language (user ruling
+ * 2026-08-09, "like a button and dropdown"). Canonical tone name is
+ * `error`; destructive/critical are legacy aliases of the same rule. */
+.kol-badge-error,
+.kol-badge-destructive,
+.kol-badge-critical {
+  color: var(--ui-error);
+  background-color: color-mix(in srgb, var(--ui-error) 15%, var(--kol-surface-primary));
+  border: 1px solid transparent;
 }
 
 .kol-badge-outline {
@@ -415,27 +421,21 @@
 }
 
 .kol-badge-success {
-  background-color: color-mix(in srgb, #22c55e 20%, transparent);
-  color: #22c55e;
-  border: 1px solid color-mix(in srgb, #22c55e 30%, transparent);
+  color: var(--ui-success);
+  background-color: color-mix(in srgb, var(--ui-success) 15%, var(--kol-surface-primary));
+  border: 1px solid transparent;
 }
 
 .kol-badge-warning {
-  background-color: color-mix(in srgb, #eab308 20%, transparent);
-  color: #eab308;
-  border: 1px solid color-mix(in srgb, #eab308 30%, transparent);
-}
-
-.kol-badge-critical {
-  background-color: color-mix(in srgb, #ef4444 20%, transparent);
-  color: #ef4444;
-  border: 1px solid color-mix(in srgb, #ef4444 30%, transparent);
+  color: var(--ui-warning);
+  background-color: color-mix(in srgb, var(--ui-warning) 15%, var(--kol-surface-primary));
+  border: 1px solid transparent;
 }
 
 .kol-badge-info {
-  background-color: color-mix(in srgb, #3b82f6 20%, transparent);
-  color: #3b82f6;
-  border: 1px solid color-mix(in srgb, #3b82f6 30%, transparent);
+  color: var(--ui-info);
+  background-color: color-mix(in srgb, var(--ui-info) 15%, var(--kol-surface-primary));
+  border: 1px solid transparent;
 }
 
 .kol-badge-sm {

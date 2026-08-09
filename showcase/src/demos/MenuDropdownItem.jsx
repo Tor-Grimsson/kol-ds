@@ -1,5 +1,11 @@
 import { MenuItem, MenuDropdownItem, Icon } from '@kolkrabbi/kol-component'
 
+/* Index card: closed trigger — the open panel is portalled to <body> and
+ * floats over the index (see demos/MenuItem.jsx). */
+export function Card() {
+  return <MenuItem label="Edit">{null}</MenuItem>
+}
+
 export default function MenuDropdownItemDemo() {
   return (
     <MenuItem label="Edit" defaultOpen>

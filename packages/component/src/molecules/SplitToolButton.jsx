@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
+import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 
 /**
  * SplitToolButton — single-trigger split tool button + variant menu (the
@@ -100,11 +100,12 @@ const SplitToolButton = ({
         {triggerVariant && <Icon name={triggerVariant.icon} size={14} />}
         <FoldIndicator />
       </button>
+      {/* w-max — floats size to content, the menu-family law (2026-08-09). */}
       <PopoverPanel
         popover={popover}
         panel={false}
         focus={false}
-        className="bg-surface-secondary border border-fg-08 rounded shadow-lg"
+        className="w-max bg-surface-secondary border border-fg-08 rounded shadow-lg"
       >
         {variants.map((variant) => {
           const isActive = active && variant.id === value

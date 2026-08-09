@@ -19,7 +19,7 @@ export default function SettingsForm() {
   const [newsletter, setNewsletter] = useState(false)
 
   return (
-    <div className="flex flex-col gap-5 rounded-[var(--kol-radius-md)] border border-fg-12 bg-surface-primary p-5">
+    <div className="flex flex-col gap-5 rounded border border-fg-12 bg-surface-primary p-5">
       <LabeledControl label="Studio name">
         <Input value={name} onChange={(e) => setName(e?.target?.value ?? e)} />
       </LabeledControl>

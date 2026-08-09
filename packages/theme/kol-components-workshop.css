@@ -473,7 +473,7 @@
 .docs-card {
   display: block;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: var(--kol-radius-sm);
   border: 1px solid;
   border-color: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
   background: transparent;
@@ -494,7 +494,7 @@
 /* Compact doc card for sidebar */
 .docs-card--compact {
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
 }
 
 .docs-title-link {
@@ -625,7 +625,7 @@
 .docs-image {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: var(--kol-radius-sm);
   margin-block: 1.5rem;
 }
 
@@ -680,7 +680,7 @@
   gap: 6px;
   padding: 6px 12px;
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
-  border-radius: 6px;
+  border-radius: var(--kol-radius-sm);
   background: transparent;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -733,7 +733,7 @@
   aspect-ratio: 1;
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: var(--kol-radius-sm);
   background: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
 }
 
