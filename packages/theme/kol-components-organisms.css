@@ -180,6 +180,11 @@
 .kol-table-wrapper.kol-table--simple { border: none; border-radius: 0; }
 .kol-table-wrapper.kol-table--simple .kol-table-thead { background: none; border-bottom: 1px solid var(--kol-fg-12); }
 .kol-table-wrapper.kol-table--simple .kol-table-row   { border-bottom: 1px solid var(--kol-fg-08); }
+/* compact — record-surface density (2026-08-09): tighter cell box for the
+ * RecordManager table; the reference's rows sit near half the default. */
+.kol-table-wrapper.kol-table--compact .kol-table th,
+.kol-table-wrapper.kol-table--compact .kol-table td { padding: 0.5rem 0.75rem; }
+
 .kol-table-wrapper.kol-table--simple .kol-table th,
 .kol-table-wrapper.kol-table--simple .kol-table td { border-right: none; }
 .kol-table-wrapper.kol-table--simple .kol-table th:first-child,

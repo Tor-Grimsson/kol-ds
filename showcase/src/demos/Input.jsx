@@ -3,13 +3,16 @@ import { Input } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
-export default function InputDemo() {
+/* Variants ramp inline; size rides the toolbar picker. */
+export const sizes = ['sm', 'md', 'lg']
+
+export default function InputDemo({ size = 'md' }) {
   const [v, setV] = useState('')
   const onChange = (e) => setV(e?.target?.value ?? e)
   return (
     <>
-      <Input variant="filled" placeholder="filled" value={v} onChange={onChange} />
-      <Input variant="outline" placeholder="outline" value={v} onChange={onChange} />
+      <Input variant="filled" size={size} placeholder="filled" value={v} onChange={onChange} />
+      <Input variant="outline" size={size} placeholder="outline" value={v} onChange={onChange} />
     </>
   )
 }

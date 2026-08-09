@@ -45,7 +45,10 @@ import { Link } from 'react-router-dom'
  * @param {string}   label        header text, rendered verbatim (casing is authored)
  * @param {number}   [count]      leaf rows this section contains — L1 counts the
  *                                whole subtree, L2 counts its own children
- * @param {string}   [to]         make the LABEL a link; the rest of the row still toggles
+ * @param {string}   [to]         L2: make the LABEL a link (the rest of the row
+ *                                still toggles). Non-collapsible rungs: the whole
+ *                                row is the link. Ignored on a collapsible L1 —
+ *                                the eyebrow is a pure two-way toggle (2026-08-09)
  * @param {boolean}  [collapsible=true]  false → a static header, no toggle, no aria
  * @param {boolean}  [collapsed]  controlled state; omit for uncontrolled
  * @param {Function} [onToggle]   required when `collapsed` is passed
@@ -103,12 +106,17 @@ export default function RailSection({
     ? <span className="kol-mono-14 text-subtle">({count})</span>
     : null
 
-  const labelNode = to ? (
+  /* L1 EYEBROW IS ONE GESTURE (user ruling 2026-08-09, repealing the
+   * 2026-08-01 label-door at L1): the whole row toggles BOTH ways — a label
+   * link never collapses, and the text is most of the perceived target, so
+   * the eyebrow felt expand-only. A category's door lives in the header tabs.
+   * L2 keeps the split (2026-08-02 ruling): its label is a chapter's only
+   * door to the landing page, and the chevron marks the toggle. */
+  const labelNode = to && level === 2 ? (
     /* The label navigates; the rest of the row toggles. stopPropagation keeps
      * one click from doing both. */
     <Link
       to={to}
-      className={level === 1 ? 'kol-doc-eyebrow' : undefined}
       onClick={(e) => {
         e.stopPropagation()
         if (isCollapsed && toggle) toggle()

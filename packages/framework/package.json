@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-framework",
-  "version": "0.14.0",
+  "version": "0.17.0",
   "description": "KOL app shell — sidenav, layout, theme toggle, footer, heroes + brand color layer. SideNav takes nav data as props so the tree stays app-local.",
   "license": "MIT",
   "type": "module",
@@ -27,8 +27,8 @@
     "app-shell"
   ],
   "dependencies": {
-    "@kolkrabbi/kol-component": "workspace:*",
-    "@kolkrabbi/kol-icons": "workspace:*"
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^"
   },
   "peerDependencies": {
     "react": "^18.3.0 || ^19.0.0",

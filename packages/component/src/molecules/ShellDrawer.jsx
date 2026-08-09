@@ -37,6 +37,7 @@ export default function ShellDrawer({
   side = 'left',
   width,
   header,
+  closeSide = 'end',
   children,
   className = '',
 }) {
@@ -149,6 +150,11 @@ export default function ShellDrawer({
         style={width != null ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
       >
         <div className="mb-6 flex items-center gap-4">
+          {/* closeSide="start" — the record-surface anatomy (reference frame,
+            * 2026-08-09): × leads, the header's actions sit at the far end. */}
+          {closeSide === 'start' && (
+            <Button variant="nav" size="md" iconOnly="x" iconSize={14} onClick={onClose} aria-label="Close" className="shrink-0" />
+          )}
           {header != null && <div className="min-w-0 flex-1">{header}</div>}
           {/* The box has an owner (2026-08-01). This hand-wrote the icon-button
             * square and its hover wash; `Button variant="nav"` IS that string.
@@ -156,15 +162,17 @@ export default function ShellDrawer({
             * heavier than a drawer close wants, and Button documents iconSize
             * for exactly the cases the ladder cannot serve. The SQUARE is what
             * needed an owner, and it now has one. */}
-          <Button
-            variant="nav"
-            size="md"
-            iconOnly="x"
-            iconSize={14}
-            onClick={onClose}
-            aria-label="Close"
-            className="ml-auto shrink-0"
-          />
+          {closeSide !== 'start' && (
+            <Button
+              variant="nav"
+              size="md"
+              iconOnly="x"
+              iconSize={14}
+              onClick={onClose}
+              aria-label="Close"
+              className="ml-auto shrink-0"
+            />
+          )}
         </div>
         <div className="flex-1 overflow-y-auto pr-1" style={{ overflowAnchor: 'none' }}>
           {children}

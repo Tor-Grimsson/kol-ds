@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "embla-carousel-react": "^8.6.0",
-    "@kolkrabbi/kol-component": "workspace:*",
-    "@kolkrabbi/kol-icons": "workspace:*",
-    "@kolkrabbi/kol-theme": "workspace:*"
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
   },
   "peerDependencies": {
     "react": "^18.3.0 || ^19.0.0",

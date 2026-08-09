@@ -129,6 +129,7 @@
   "TextPressure": "A single line of variable-font text whose glyphs deform toward the pointer: characters nearest the cursor grow widest / heaviest / most italic, and the effect falls off linearly with distance.",
   "ColorLoader": "A full-height branded intro/loading curtain.",
   "TypefaceSpecimenPage": "The full data-driven typeface specimen composition: hero → styles → preview → variable axes → glyph metrics, interleaved with editorial photos.",
+  "SideNav": "The grouped navigation rail.",
   "ShellHeader": "The shell's sticky two-row top chrome.",
   "ThemeToggle": "Two-position glyph-roll button (the approved 2-variant spec).",
   "PortalFooter": "Site footer chrome.",

@@ -7,8 +7,32 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox'
 import ShellDrawer from '../molecules/ShellDrawer'
 import Dropdown from '../molecules/Dropdown'
 import FieldRow, { StatusChip } from '../molecules/FieldRow'
+import { Tooltip } from '../atoms/Popover'
 import Table from './Table'
 import MediaLibrary from './MediaLibrary'
+
+/* TOOLBAR ICONS ARE BARE GLYPHS (user ruling 2026-08-09, verbatim: "did I
+ * ask for a button?? … the only thing that should hover is full opacity and
+ * popover"): no Button chrome, no fill, no box — body ink at rest, emphasis
+ * on hover, a Tooltip as the name. */
+const ToolbarIcon = ({ name, label, onClick, active = false, triggerClassName }) => (
+  <Tooltip label={label} placement="bottom" triggerClassName={triggerClassName}>
+    <button
+      type="button"
+      aria-label={label}
+      aria-pressed={active}
+      onClick={onClick}
+      /* PRESSED gets the box (user ruling, reference frame 2026-08-09): a
+       * snug rounded fill hugging the glyph — "container relative to the
+       * icon, and only when pressed". Rest is bare; hover is ink only. */
+      /* 20px glyph, half-step pad — "TOO SMALL, TOO MUCH PADDING" (user
+       * frames 2026-08-09): the reference icons nearly fill their box. */
+      className={`inline-flex cursor-pointer rounded-sm border-0 p-0.5 transition-colors duration-150 ${active ? 'bg-fg-08 text-emphasis' : 'bg-transparent text-body hover:text-emphasis'}`}
+    >
+      <Icon name={name} size={20} />
+    </button>
+  </Tooltip>
+)
 
 /**
  * RecordManager — full-screen CMS record surface (lobby: RecordManager,
@@ -61,9 +85,14 @@ export default function RecordManager({
   onOverflow,
   mediaClient,
   reorderLabel = (n) => `Reorder row ${n}`,
+  /* pressed states for the toolbar's sort/filter controls — the consumer owns
+   * those panels, so it tells the toolbar which control is open */
+  sortActive = false,
+  filterActive = false,
   className = '',
 }) {
   const wrapRef = useRef(null)
+  const [searchOpen, setSearchOpen] = useState(false)
   const dragRef = useRef(null)
   const [drag, setDrag] = useState(null) // { from, over, x, y } during a drag
   const [active, setActive] = useState(null)
@@ -120,17 +149,19 @@ export default function RecordManager({
         return {
           ...col,
           render: (row) => (
-            <span className="inline-flex items-center gap-2 min-w-0 max-w-full">
+            /* the open affordance is the reference's BOXED toggle-overlay
+             * button, pinned at the cell's end — not an inline icon riding
+             * the text (user frames 2026-08-09). Hover-revealed per row. */
+            <span className="flex items-center justify-between gap-2 min-w-0 max-w-full">
               <span className="truncate text-emphasis">{col.render ? col.render(row) : row[col.accessor]}</span>
-              <Button
-                variant="nav"
-                size="sm"
-                iconOnly="maximize"
-                iconSize={12}
-                aria-label={typeof col.header === 'string' ? col.header : 'Open'}
-                className="shrink-0 opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+              <button
+                type="button"
+                aria-label="Toggle overlay"
+                className="shrink-0 inline-flex cursor-pointer rounded-md border border-fg-16 bg-transparent p-1 text-body opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100 hover:text-emphasis"
                 onClick={() => openRecord(row)}
-              />
+              >
+                <Icon name="toggle-overlay" size={18} />
+              </button>
             </span>
           ),
         }
@@ -175,52 +206,52 @@ export default function RecordManager({
       return col
     })
 
-    const prefix = []
-    if (onReorder) {
-      prefix.push({
-        accessor: '__handle',
-        header: '',
-        className: 'kol-table-cell-text w-8',
-        render: (row) => {
-          const i = rows.indexOf(row)
-          return (
-            <button
-              type="button"
-              aria-label={reorderLabel(i + 1)}
-              className="cursor-grab touch-none bg-transparent border-0 p-0 text-meta hover:text-emphasis opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
-              onPointerDown={(e) => startDrag(e, i)}
-            >
-              <Icon name="resize-grip" size={14} />
-            </button>
-          )
-        },
-      })
-    }
-    prefix.push({
-      accessor: '__select',
+    /* ONE LEADING FIELD (reference row anatomy, user frames 2026-08-09:
+     * "reorder and the toggle is the same field — look at the sizes"): the
+     * grip and the row checkbox share a single cell at matched sizes. The
+     * grip is rest-visible, dim; the header keeps only the select-all box,
+     * with the grip column held as space so the checkboxes align. */
+    const prefix = [{
+      accessor: '__lead',
       header: (
-        <ToggleCheckbox
-          checked={rows.length > 0 && selected.size === rows.length}
-          onChange={() =>
-            updateSelection(selected.size === rows.length ? new Set() : new Set(rows.map(rowId)))
-          }
-        />
-      ),
-      className: 'kol-table-cell-text w-8',
-      render: (row) => {
-        const id = rowId(row, rows.indexOf(row))
-        return (
+        <span className="inline-flex items-center gap-2">
+          {onReorder && <span className="w-4" aria-hidden="true" />}
           <ToggleCheckbox
-            checked={selected.has(id)}
-            onChange={() => {
-              const next = new Set(selected)
-              next.has(id) ? next.delete(id) : next.add(id)
-              updateSelection(next)
-            }}
+            checked={rows.length > 0 && selected.size === rows.length}
+            onChange={() =>
+              updateSelection(selected.size === rows.length ? new Set() : new Set(rows.map(rowId)))
+            }
           />
+        </span>
+      ),
+      className: 'kol-table-cell-text w-14',
+      render: (row) => {
+        const i = rows.indexOf(row)
+        const id = rowId(row, i)
+        return (
+          <span className="inline-flex items-center gap-2">
+            {onReorder && (
+              <button
+                type="button"
+                aria-label={reorderLabel(i + 1)}
+                className="inline-flex w-4 cursor-grab touch-none justify-center border-0 bg-transparent p-0 text-meta hover:text-emphasis"
+                onPointerDown={(e) => startDrag(e, i)}
+              >
+                <Icon name="drag-handle" size={16} />
+              </button>
+            )}
+            <ToggleCheckbox
+              checked={selected.has(id)}
+              onChange={() => {
+                const next = new Set(selected)
+                next.has(id) ? next.delete(id) : next.add(id)
+                updateSelection(next)
+              }}
+            />
+          </span>
         )
       },
-    })
+    }]
     return [...prefix, ...resolved]
   }, [columns, rows, selected, onReorder, drag]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -230,18 +261,28 @@ export default function RecordManager({
   return (
     <div ref={wrapRef} className={`flex flex-col min-w-0 ${className}`}>
       {hasToolbar && (
-        <div className="flex items-center gap-1 pb-3">
-          {onAdd && <Button variant="nav" size="md" iconOnly="plus" iconSize={14} onClick={onAdd} aria-label="Add" />}
-          {onSortToggle && <Button variant="nav" size="md" iconOnly="swap" iconSize={14} onClick={onSortToggle} aria-label="Sort" />}
-          {onFilterToggle && <Button variant="nav" size="md" iconOnly="filter" iconSize={14} onClick={onFilterToggle} aria-label="Filter" />}
-          {onQueryChange && (
+        /* the reference cluster (user screenshots 2026-08-09): bare + · ↑↓ ·
+         * ≡ · 🔍, search expanding into a COMPACT field on press, … far right */
+        <div className="flex items-center gap-2 pb-3">
+          {onAdd && <ToolbarIcon name="plus" label="Add" onClick={onAdd} />}
+          {onSortToggle && <ToolbarIcon name="arrows-vertical" label="Sort" active={sortActive} onClick={onSortToggle} />}
+          {onFilterToggle && <ToolbarIcon name="filter-lines" label="Filter" active={filterActive} onClick={onFilterToggle} />}
+          {onQueryChange && (searchOpen || query ? (
             <SearchInput
+              autoFocus
+              size="sm"
+              className="w-56"
               value={query ?? ''}
               onChange={(e) => onQueryChange(e?.target ? e.target.value : e)}
               placeholder={searchPlaceholder}
-              size="sm"
-              className="ml-2"
+              onClear={() => { onQueryChange(''); setSearchOpen(false) }}
+              onBlur={() => { if (!query) setSearchOpen(false) }}
             />
+          ) : (
+            <ToolbarIcon name="search" label="Search" onClick={() => setSearchOpen(true)} />
+          ))}
+          {onOverflow && (
+            <ToolbarIcon name="more" label="More" triggerClassName="ml-auto" onClick={() => onOverflow(null)} />
           )}
         </div>
       )}
@@ -250,6 +291,7 @@ export default function RecordManager({
         columns={builtColumns}
         rows={rows}
         width="column"
+        compact
         rowClassName={(row, i) =>
           `group${drag && i === drag.from ? ' opacity-40' : ''}${
             drag && i === drag.over && drag.over !== drag.from ? ' bg-fg-04' : ''
@@ -275,17 +317,21 @@ export default function RecordManager({
         onClose={() => setActive(null)}
         side="right"
         width="min(37.5rem, 92vw)"
+        closeSide="start"
         header={
-          <div className="flex items-center gap-2 min-w-0">
+          /* reference header anatomy (frame 45, 2026-08-09): × leads the row
+           * (closeSide above); every action clusters at the far end —
+           * … ▶ save-state Publish. */
+          <div className="flex items-center justify-end gap-2 min-w-0">
             {onOverflow && (
-              <Button variant="nav" size="md" iconOnly="more" iconSize={14} onClick={() => onOverflow(record)} aria-label="More" />
+              <ToolbarIcon name="more" label="More" onClick={() => onOverflow(record)} />
             )}
             {onPreview && (
-              <Button variant="nav" size="md" iconOnly="play" iconSize={14} onClick={() => onPreview(record)} aria-label="Preview" />
+              <ToolbarIcon name="play" label="Preview" onClick={() => onPreview(record)} />
             )}
-            {saveState != null && <span className="kol-helper-10 text-meta ml-auto truncate">{saveState}</span>}
+            {saveState != null && <span className="kol-helper-10 text-meta truncate">{saveState}</span>}
             {onPublish && (
-              <Button variant="primary" size="sm" className={saveState == null ? 'ml-auto' : ''} onClick={() => onPublish(record)}>
+              <Button variant="primary" size="sm" onClick={() => onPublish(record)}>
                 {publishLabel}
               </Button>
             )}

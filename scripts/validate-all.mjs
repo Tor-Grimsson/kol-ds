@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url'
 const HERE = dirname(fileURLToPath(import.meta.url))
 
 const GATES = [
+  ['syntax', 'validate-syntax.mjs'],
   ['roster', 'validate-roster.mjs'],
   ['imports', 'validate-imports.mjs'],
   ['taxonomy', 'validate-taxonomy.mjs'],

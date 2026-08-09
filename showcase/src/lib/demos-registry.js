@@ -23,9 +23,10 @@ export const DEMOS = Object.fromEntries(
     // omitted → 'hug'. `Card` is an optional slim single-specimen export the
     // /components index prefers over the full demo — small cards show ONE
     // canonical instance, the component page keeps full variant coverage.
-        /* `variants` (2026-08-01): a demo exporting a string array gets a picker in
-       PreviewCard's toolbar and receives the active one as its `variant` prop —
-       variants preview in place instead of needing a demo file each. */
-    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null },
+        /* `variants` (2026-08-01) / `sizes` (2026-08-09): a demo exporting a string
+       array gets a picker in PreviewCard's toolbar and receives the active one
+       as its `variant` / `size` prop — the axes preview in place instead of
+       needing a demo file each. */
+    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null, sizes: mod.sizes || null },
   ]),
 )

@@ -4,13 +4,14 @@ export const meta = {
   title: "SideNav",
   type: "reference",
   status: "active",
-  updated: "2026-07-30",
+  updated: "2026-08-09",
   tags: [
     "domain/components",
     "domain/design-system",
     "pattern/app-shell",
     "pattern/navigation",
   ],
+  description: "The grouped navigation rail.",
   aliases: [
     "sidenav",
   ],
@@ -40,28 +41,37 @@ export const meta = {
 ```jsx
 import { SideNav } from '@kolkrabbi/kol-framework'
 
-<SideNav navTree={NAV_TREE} getActivePage={getActivePage} />
+<SideNav navTree={NAV_TREE} />
 ```
 
 ## Behavior
 
-The framework's page sidenav: a route tree where the active page's leaf
-sections feed a scroll spy (`useScrollSpy`) — in-page anchors light as you
-scroll, and parents know when a descendant is active. Rows ride the
-`kol-sidenav-link` chrome with helper-10 type; a
-[ThemeToggle](/components/theme-toggle) hop row is built in. Distinct from
-the workshop's ShellSidebar (grouped doc trees) — this is the app-site
-navigation rail.
+The app-site navigation rail, replicated from the elder reference
+(kol-website apps/brand, 2026-08-09 user mandate). **Two levels only**: a
+category is a disclosure button — icon, label, trailing caret — whose pages
+list opens in place; a category with `to` and no `pages` (Home) renders as a
+plain link row. Disclosure is independent per category and loads closed.
+The active category is derived from the route — no resolver prop.
+
+**One control: the pill-marked grab edge** (2026-08-09 build order — the
+chip Button is gone in both states). Click toggles expand↔collapse (a 3px
+slop keeps toggle presses from jitter-resizing); drag resizes, snap-collapses
+under the threshold, and snap-to-defaults on release near the stylesheet
+width; keyboard on the focused separator: arrows resize, Home resets,
+Enter/Space toggle. Everything drives `:root[data-sidenav="collapsed"]` and
+the `kol-sidenav` storage schema.
+Collapsed rows carry a DS [Tooltip](/components/popover-panel); the footer
+wordmark swaps for its initial; the built-in
+[ThemeToggle](/components/theme-toggle) falls back to its icon variant.
+Distinct from the workshop's ShellSidebar (grouped doc trees).
 
 ## Props
 
 <Api name="SideNav" rows={[
-  {"prop":"navTree","type":"array","def":"[]","desc":"Groups + leaves ({ to } routes, { id } anchors)."},
-  {"prop":"getActivePage","type":"function","def":"—","desc":"Active-page resolver for highlight + scroll-spy."},
+  {"prop":"navTree","type":"array","def":"[]","desc":"Categories: { id, label, icon, pages: [{ label, to }] }, or { id, label, icon, to } for a link row."},
+  {"prop":"background","type":"boolean","def":"true","desc":"false renders the rail chromeless — no fill, no hairline — to float over consumer media (the brand-hero model)."},
   {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile drawer state (managed by AppShell)."},
   {"prop":"onCloseDrawer","type":"function","def":"—","desc":"Close callback for the mobile drawer."},
   {"prop":"onNavigate","type":"(event) => void","def":"—","desc":"Fired when any nav link is clicked (drawer close, analytics)."},
-  {"prop":"collapsed / onToggle","type":"boolean / function","def":"—","desc":"Controlled rail collapse; presence switches to controlled mode."},
-  {"prop":"collapsibleSections","type":"boolean","def":"false","desc":"Per-page section expand/collapse with chevron + child count; active section auto-expands."},
-  {"prop":"isActive","type":"(path) => boolean","def":"—","desc":"Overrides router active detection for hops and route leaves."}
+  {"prop":"isActive","type":"(path) => boolean","def":"—","desc":"Overrides router active detection for pages and link rows."}
 ]} />

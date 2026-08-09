@@ -3,7 +3,7 @@ title: Layout systems registry
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-09
 description: Which system owns which width, and where
 aliases:
   - layout-systems
@@ -47,6 +47,7 @@ used for.
 | **`.kol-prose`** | **The blog/editorial system** — CMS portable text (kol-content), workshop vault viewer (`DocsArticle`) | 720px cap · 16/24 w300 editorial voice | `kol-typography.css:962` | **docs pages — ever** (user law 2026-07-30); anything containing previews/tables |
 | **`kol-doc-*` roles** | **The docs voice** — DocKit chrome + MDX bodies; per-element roles, text self-caps | body/lede cap at measure (65ch of own size) · code/table/figure/caption roles | `kol-type-roles.css` | editorial/blog copy (that's kol-prose's job) |
 | **MDX page system** (showcase) | Component + docs pages ARE documents; markdown typed per-tag via the doc roles; every code surface = kol-component `CodeBlock` (one code idiom, 2026-07-30); h2 carries the section air (`mt-6 first:mt-0`) | text at measure · fences/tables/Api/Install cap at **panel** · previews (stages) run the full column | `MdxDoc.jsx` + `mdx-components.jsx` + `component-page-parts.jsx` | wrapping the body in any container class; bespoke `pre`/copy twins |
+| **Card wall** (masonry columns) | THE demo/card wall — column count derives from the wall's **own width**, never the viewport: the shell rails eat width that viewport breakpoints can't see, so a forced count compresses every card (user call 2026-08-09) | `columns: 4 20rem` — min card 20rem, cap 4; the count falls 4→3→2→1 as the wall narrows | `Home.jsx` (bento wall) · `Components.jsx` (waterfall index) | `sm:columns-2 … xl:columns-4` viewport steps — that is how the compression started |
 | **Inline-code chip** (`.kol-doc-code-inline` · `.kol-table-token`) | ONE chip, two entry points — prose inline code and a code token inside a Table. Fill, radius and colour are one answer (`--kol-fg-08` · `--kol-radius-sm` · `--kol-fg-80`); only **size** differs, relative in prose (`0.875em`) and fixed in chrome. They had drifted on every one of those values. `.kol-doc-table-token` is **not** a chip — it is a `td` slot that types a whole cell, sharing only the word | fill `--kol-fg-08` · radius `--kol-radius-sm` | `kol-type-roles.css` (inline code) · `kol-components-organisms.css` (`.kol-table-token`) | a hand-rolled Tailwind lookalike — that is how the second spelling started |
 | **Seam/border law** (chrome borders) | Framed chrome + seams use the OPAQUE tier, weight 08 — alpha `fg-*` borders brighten over tinted fills (the table-seam disease, fought all day 2026-07-30) | `var(--kol-oq-08)` — doc-figure, table wrapper/seams, PreviewCard tab bar | `kol-type-roles.css` (`.kol-doc-figure`) · `kol-components-organisms.css` (table) · PreviewCard.jsx | `border-fg-*` classes on framed chrome |
 | **Padding ladder** (`--kol-pad-*`) | page/section/band padding rhythm for **page content** | 3-breakpoint responsive ladder | `kol-framework.css` `:root` blocks | shell chrome — that is the chrome inset below |

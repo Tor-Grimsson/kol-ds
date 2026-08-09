@@ -33,7 +33,7 @@ const WIDTHS = {
   column: '',
 }
 
-const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName }) => {
+const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false }) => {
   const [sort, setSort] = useState({ key: null, dir: null })
 
   const cycle = (key) =>
@@ -56,7 +56,9 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
   }, [rows, columns, sort])
 
   const variantClass = variant === 'simple' ? 'kol-table--simple' : ''
-  const wrapperClass = ['kol-table-wrapper', variantClass, WIDTHS[width] ?? WIDTHS.panel, className].filter(Boolean).join(' ')
+  /* compact — record-surface density (RecordManager, 2026-08-09): the default
+   * 12/16 cell box read as bloated rows against the reference table. */
+  const wrapperClass = ['kol-table-wrapper', variantClass, compact && 'kol-table--compact', WIDTHS[width] ?? WIDTHS.panel, className].filter(Boolean).join(' ')
   return (
   <div className={wrapperClass}>
     <table className="kol-table">

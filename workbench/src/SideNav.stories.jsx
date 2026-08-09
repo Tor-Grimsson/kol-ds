@@ -1,58 +1,35 @@
 import { MemoryRouter } from 'react-router-dom'
 import { SideNav } from '@kolkrabbi/kol-framework'
 
-/* navTree leaf/group shapes (from showcase/src/sidebars.config.js):
- *   { id, to, label, icon, children } — top-level page
- *   { id, label }   — section anchor leaf   { to, label } — sub-route leaf
- *   { label, children } — group */
+/* navTree shape (two-level, the 2026-08-09 elder port):
+ *   { id, label, icon, pages: [{ label, to }] } — category (disclosure button)
+ *   { id, label, icon, to }                     — link row (nothing to disclose) */
 const navTree = [
+  { id: 'home', label: 'Home', to: '/', icon: 'search' },
   {
-    id: 'home', label: 'Home', to: '/', icon: 'search',
-    children: [
-      { id: 'overview', label: 'Overview' },
-      { id: 'principles', label: 'Principles' },
-      {
-        label: 'Foundations',
-        children: [
-          { id: 'color', label: 'Color' },
-          { id: 'type', label: 'Typography' },
-        ],
-      },
+    id: 'library', label: 'Library', icon: 'library',
+    pages: [
+      { label: 'Button', to: '/components/button' },
+      { label: 'Icon', to: '/components/icon' },
+      { label: 'Table', to: '/components/table' },
     ],
   },
-  {
-    id: 'components', label: 'Components', to: '/components', icon: 'settings-01',
-    children: [
-      {
-        label: 'Atoms',
-        children: [
-          { to: '/components/button', label: 'Button' },
-          { to: '/components/icon', label: 'Icon' },
-        ],
-      },
-      {
-        label: 'Molecules',
-        children: [{ to: '/components/table', label: 'Table' }],
-      },
-    ],
-  },
+  { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid' },
 ]
 
-function getActivePage(pathname) {
-  if (pathname === '/') return navTree.find((n) => n.to === '/')
-  return navTree.find((n) => n.to !== '/' && pathname.startsWith(n.to))
-}
-
-/* Home active — expands section anchors + a nested group. */
+/* Categories load closed; click a category to disclose its pages. */
 export const Default = () => (
   <MemoryRouter initialEntries={['/']}>
-    <SideNav navTree={navTree} getActivePage={getActivePage} />
+    <SideNav navTree={navTree} />
   </MemoryRouter>
 )
 
-/* Components active — expands route-leaf children under category groups. */
-export const ComponentsActive = () => (
-  <MemoryRouter initialEntries={['/components']}>
-    <SideNav navTree={navTree} getActivePage={getActivePage} />
+/* background={false} — the chromeless rail floating over consumer media
+ * (the brand-hero model; the consumer owns the plane). */
+export const Chromeless = () => (
+  <MemoryRouter initialEntries={['/components/button']}>
+    <div className="bg-fg-08 min-h-dvh">
+      <SideNav navTree={navTree} background={false} />
+    </div>
   </MemoryRouter>
 )

@@ -98,8 +98,10 @@ export default function Components() {
           <h2 className="kol-helper-10 uppercase tracking-widest text-meta mb-4 border-b border-fg-08 pb-2">
             {label} · {items.length}
           </h2>
-          {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid. */}
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+          {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid.
+            * Column count derives from the wall's own width (min card 20rem, cap 4)
+            * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
+          <div className="gap-4 [columns:4_20rem]">
             {items.map((c) => <ComponentCard key={c.name} c={c} />)}
           </div>
         </section>

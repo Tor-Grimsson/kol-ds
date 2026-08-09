@@ -24,15 +24,16 @@ const STAGE = {
   full: 'w-full',
 }
 
-/* `variant` is threaded straight through to the demo component. A demo opts in
- * by exporting `variants` (see PreviewCard's toolbar picker); demos that don't
- * simply ignore the prop, so this is additive for all ~180 of them. */
-export default function DemoStage({ entry, variant }) {
+/* `variant` / `size` are threaded straight through to the demo component. A
+ * demo opts in by exporting `variants` / `sizes` (see PreviewCard's toolbar
+ * pickers); demos that don't simply ignore the props, so this is additive for
+ * all ~180 of them. */
+export default function DemoStage({ entry, variant, size }) {
   const C = entry?.Component
   if (!C) return null
   return (
     <div className={STAGE[entry.stage] ?? STAGE.hug}>
-      <ErrorBoundary><C variant={variant} /></ErrorBoundary>
+      <ErrorBoundary><C variant={variant} size={size} /></ErrorBoundary>
     </div>
   )
 }

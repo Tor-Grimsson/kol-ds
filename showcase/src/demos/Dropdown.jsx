@@ -8,7 +8,10 @@ const OPTIONS = [
   { value: 'za', label: 'Z → A' },
 ]
 
-export default function DropdownDemo() {
+/* Variants ramp inline; size rides the toolbar picker. */
+export const sizes = ['sm', 'md', 'lg']
+
+export default function DropdownDemo({ size = 'sm' }) {
   const [value, setValue] = useState('newest')
   return (
     <div className="flex flex-wrap items-start gap-6">
@@ -19,6 +22,7 @@ export default function DropdownDemo() {
             value={value}
             onChange={setValue}
             variant={variant}
+            size={size}
             options={OPTIONS}
             defaultOpen={variant === 'primary'}
           />

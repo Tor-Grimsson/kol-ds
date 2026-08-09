@@ -132,7 +132,7 @@ export const FUNCTIONS_BY_NAME = {
   AccordionPanel: 'structure', PageSection: 'structure', BrandHero: 'structure',
   SubPageHero: 'structure',
   TagPath: 'display',
-  useReveal: 'utility', useScrollSpy: 'utility',
+  useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
   usePrefersReducedMotion: 'utility', useTilt: 'utility',
   useCoarsePointer: 'utility',
   useAxisAnimation: 'utility', useChartTooltip: 'utility', useCountUp: 'utility',

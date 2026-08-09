@@ -247,6 +247,8 @@ Verified: `/` and `/foundations` compute an identical `grid-template-columns`. B
 
 Two consequences of the sweep worth knowing: a sidebar group **with no children is now a Link, not a toggle** — it used to render a chevron that rotated over an empty body and never navigated, so "Icons" and "Components" did nothing when clicked — and the rail label no longer forks on whether the consumer passed `labelTo`.
 
+**The L1 eyebrow is ONE gesture (user ruling 2026-08-09).** The whole eyebrow row toggles collapse/expand BOTH ways; it carries no door — a label link never collapses, and the text is most of the perceived target, so a door-eyebrow read as expand-only. `labelTo`/`to` is inert on a collapsible L1 (`RailSection.jsx`); a category's door is its header tab. **L2 keeps the split** (2026-08-02): its label navigates to the chapter landing — the header is that page's only door — and the chevron marks the toggle.
+
 **The brand pair:** KOLKRABBI wordmark (logo slot, links home) + the **WORKSHOP wordmark** (`wordmark-workshop.svg`, kol-brand) as the surface mark — the same pair `ShellLayout` ships as its package default. A typed `KOL DS` span held that slot for a day on a comment claiming no drawn asset existed; one did, and it wrapped to two lines in the header. Drawn asset over typed text.
 
 **R1 · A RAIL IS NEVER A RESERVED EMPTY GUTTER (2026-07-30 evening).** Ten routes used to reserve 224px on the right and fill it with nothing — `/`, `/icons`, `/blocks`, `/blocks/:slug`, `/sets`, `/sets/:slug`, `/references`, `/references/:name`, `/lobby`, and every collection page. The cause was one line: `hasToc = Boolean(defaultTocContent)`, and an *element* is truthy even when the component inside it renders null.

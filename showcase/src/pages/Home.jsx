@@ -357,7 +357,9 @@ export default function Home() {
         </p>
         <GhostFlank side="left" />
         <GhostFlank side="right" />
-        <div className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 columns-1 sm:columns-2 lg:columns-3 xl:columns-4" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+        {/* Column count derives from the wall's OWN width (min card 20rem, cap 4)
+          * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
+        <div className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
           {tiles.map((t, i) => (
             <Tile key={`${t.label}-${i}`} label={t.label}>
               {t.node}

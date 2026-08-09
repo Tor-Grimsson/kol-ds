@@ -113,7 +113,8 @@ product URLs). Verdicts, not restyling — nothing was removed.
 **Demo gaps noted, not failed** (test 3 is about renderability):
 `IconFrame` · `PopoverPanel` · the five color-tool molecules
 (`EyedropPick`/`HueStrip`/`SBSquare`/`SwatchStack`/`WheelTriangle`, 5–6 apps
-each) · `FieldRow`/`StatusChip`/`RecordManager` (born 2026-08-09).
+each). `FieldRow`/`StatusChip`/`RecordManager` were on this list at the pass;
+their demos landed later the same day.
 
 **Twin-suspect for a future wave:** workshop ships `DocHeader` *and*
 `DocsHeader`, `DocSection` *and* `DocsArticle` — two spellings that smell like

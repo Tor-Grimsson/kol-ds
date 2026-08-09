@@ -184,18 +184,18 @@ function ShowcaseSidebar({ onNavigate }) {
               size="sm"
             />
           </div>
-          <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
+          <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" onNavigate={onNavigate} />
         </>
       )}
       {showTools && (
         <ShellSidebar
-          /* components stays a header tab, but inside the rail its door is the
-           * eyebrow above — a second row here is "one body of content, two
-           * doors" (the documented anti-pattern, same call as documentation) */
+          /* components stays out of Tools — its door is the header tab; a row
+           * here would be "one body of content, two doors" (the documented
+           * anti-pattern). Eyebrows carry no door at all since 2026-08-09 —
+           * the L1 row is a pure two-way toggle. */
           routes={SHELL_ROUTES.filter((r) => r.id !== 'components')}
           basePath="/"
           label="Tools"
-          labelTo="/"
           onNavigate={onNavigate}
         />
       )}

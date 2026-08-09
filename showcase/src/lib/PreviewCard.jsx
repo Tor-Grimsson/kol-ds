@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { CodeBlock } from '@kolkrabbi/kol-component'
+import { CodeBlock, Dropdown, SegmentedToggle } from '@kolkrabbi/kol-component'
 import DemoStage from './DemoStage.jsx'
 import DocTabs from './DocTabs.jsx'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
 
 /**
  * PreviewCard — THE Preview/Code card. One chrome, every surface.
@@ -45,6 +44,27 @@ export const ToolbarDivider = () => (
   <span className="mx-1 h-4 w-px shrink-0" style={{ backgroundColor: 'var(--kol-oq-08)' }} aria-hidden="true" />
 )
 
+/* One axis, one control: a SegmentedToggle while the options fit at a glance,
+ * the Dropdown above four — long variant sets (Button's seven) were eating
+ * the whole toolbar lane as a toggle. */
+const AxisPicker = ({ options, value, onChange, label }) =>
+  options.length > 4 ? (
+    <Dropdown
+      size="sm"
+      options={options.map((v) => ({ value: v, label: v }))}
+      value={value}
+      onChange={onChange}
+    />
+  ) : (
+    <SegmentedToggle
+      size="sm"
+      value={value}
+      onChange={onChange}
+      options={options.map((v) => ({ value: v, label: v }))}
+      ariaLabel={label}
+    />
+  )
+
 export default function PreviewCard({
   entry,
   minH = 'min-h-[10rem]',
@@ -69,11 +89,14 @@ export default function PreviewCard({
   children,
 }) {
   const [tab, setTab] = useState(tabs[0]?.key ?? 'preview')
-  /* Variant preview (user ruling 2026-08-01): a demo exports `variants` and the
-   * picker rides the toolbar's EXISTING actions lane, so variants flip in place
-   * instead of needing a second demo file or a trip off the page. */
+  /* Variant preview (user ruling 2026-08-01) / size preview (2026-08-09): a
+   * demo exports `variants` / `sizes` and the pickers ride the toolbar's
+   * EXISTING actions lane, so both axes flip in place instead of needing a
+   * second demo file or a trip off the page. */
   const variants = entry?.variants ?? null
   const [variant, setVariant] = useState(variants?.[0] ?? null)
+  const sizes = entry?.sizes ?? null
+  const [size, setSize] = useState(sizes?.[0] ?? null)
 
   return (
     <div className={`${CHROME[chrome] ?? CHROME.figure} ${CAPS[cap] ?? CAPS.panel}`.trim()}>
@@ -91,13 +114,10 @@ export default function PreviewCard({
         )}
         <div className="ml-auto flex items-center gap-2">
           {variants?.length > 1 && tab === 'preview' && (
-            <SegmentedToggle
-              size="sm"
-              value={variant}
-              onChange={setVariant}
-              options={variants.map((v) => ({ value: v, label: v }))}
-              ariaLabel="Variant"
-            />
+            <AxisPicker options={variants} value={variant} onChange={setVariant} label="Variant" />
+          )}
+          {sizes?.length > 1 && tab === 'preview' && (
+            <AxisPicker options={sizes} value={size} onChange={setSize} label="Size" />
           )}
           {actions && <div className="flex items-center gap-1">{actions(tab)}</div>}
         </div>
@@ -112,7 +132,7 @@ export default function PreviewCard({
         tab === 'preview' && (
           <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>
             {entry?.Component ? (
-              <DemoStage entry={entry} variant={variant} />
+              <DemoStage entry={entry} variant={variant} size={size} />
             ) : children || (
               <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
             )}

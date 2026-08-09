@@ -68,9 +68,19 @@ export function usePopover({
     middleware.push(
       sizeMw({
         apply({ rects, elements }) {
-          /* EXACT width, not a floor (2026-08-09) — "one piece means one
-           * width": with minWidth alone, a wide row let the panel outgrow the
-           * trigger it claims to continue. Sole consumer is Dropdown. */
+          /* FLOOR again, not exact (2026-08-09 evening, user: "if you have
+           * to truncate 'centered' then its too narrow" — overrides the
+           * morning's exact-width reading of the one-piece ruling for the
+           * narrow case). The panel is never NARROWER than the trigger, and
+           * grows when its rows carry chrome the trigger doesn't (the
+           * selected row's check). Sole consumer is Dropdown. */
+          /* EXACT width — the one-piece fusion restored (2026-08-09 night).
+           * The truncation that briefly justified a floor is solved at the
+           * TRIGGER instead: the ghost stack reserves the panel row's check
+           * column (.kol-dd-ghost slack), so the one shared width fits every
+           * row. Letting the panel size itself was the broken middle: an
+           * abs-positioned float with auto width sizes against available
+           * space, not content. Sole consumer is Dropdown. */
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
           })

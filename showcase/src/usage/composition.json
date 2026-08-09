@@ -556,6 +556,43 @@
         "gsap"
       ]
     },
+    "record-manager-cms": {
+      "kol": [
+        "Button",
+        "ContentFilters",
+        "Divider",
+        "Dropdown",
+        "FieldRow",
+        "FullscreenOverlay",
+        "Icon",
+        "IconFrame",
+        "Input",
+        "MediaCard",
+        "MediaLibrary",
+        "MediaRow",
+        "MediaViewer",
+        "MenuItem",
+        "Popover",
+        "RecordManager",
+        "SearchInput",
+        "SegmentedToggle",
+        "ShellDrawer",
+        "Table",
+        "Tag",
+        "ToggleCheckbox",
+        "ViewToggle"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "embla-carousel-react"
+      ]
+    },
     "stack-blog": {
       "kol": [
         "ArticleCard",

@@ -383,7 +383,9 @@
       "Tag",
       "Button",
       "PopoverPanel",
-      "Dropdown"
+      "INDICATOR",
+      "Dropdown",
+      "Icon"
     ]
   },
   "StatusChip": {
@@ -397,7 +399,9 @@
       "Tag",
       "Button",
       "PopoverPanel",
-      "Dropdown"
+      "INDICATOR",
+      "Dropdown",
+      "Icon"
     ]
   },
   "FramedMediaBand": {

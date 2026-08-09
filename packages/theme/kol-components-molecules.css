@@ -61,7 +61,11 @@
  * edge, Input's model. */
 .kol-dd-label { display: inline-grid; min-width: 0; text-align: start; }
 .kol-dd-label > span { grid-area: 1 / 1; white-space: nowrap; }
-.kol-dd-ghost { visibility: hidden; }
+/* Ghost slack: each hidden option reserves the PANEL row's trailing check
+ * column on top of its label, so the fused one-piece width fits every row
+ * without truncating (2026-08-09 night — closes the "Cen…" defect at the
+ * trigger instead of un-fusing the panel). */
+.kol-dd-ghost { visibility: hidden; padding-right: 1rem; }
 .kol-dd-caret {
   flex-shrink: 0;
   transition: rotate var(--kol-transition-base);
@@ -221,6 +225,12 @@
   letter-spacing: 0.04em;
 }
 
+/* DATA CHIPS RENDER VERBATIM (2026-08-09). The uppercase above exists for
+ * LABEL strings with no authoring site (frontmatter tags). A filename is
+ * DATA — transforming it misquotes it (certificate.pdf ≠ CERTIFICATE.PDF).
+ * FieldRow's file token wears this; any chip carrying user data should. */
+.kol-tag.kol-tag--data { text-transform: none; letter-spacing: normal; }
+
 /* PADDING ONLY. Type is the kol-helper-* ramp, applied at the call site
  * (Tag.jsx) — these rules used to hardcode font-size + font-weight and set no
  * line-height, so a 10px chip inherited the body's ~1.5 and stood 22px tall
@@ -255,6 +265,34 @@
 .kol-tag--secondary.is-active {
   background-color: color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
   border-color: currentColor;
+}
+
+/* StatusChip — the record-surface status control (reference: Framer CMS,
+ * 2026-08-09; rebuilt off Tag onto the Dropdown-sm metrics the same day).
+ * Tint + ink ride the --ui-* ladder; box/type live in the JSX (kol-btn-sm
+ * values + mono-12). No tone → the neutral chip. */
+/* OPAQUE tone fills (user frame 43, 2026-08-09): the tone blends INTO the
+ * surface — a solid dark tint that holds steady over any row background.
+ * The earlier transparent wash let zebra/hover rows bleed through the pill. */
+.kol-status-chip {
+  color: var(--kol-surface-on-primary);
+  background-color: color-mix(in srgb, var(--kol-surface-on-primary) 8%, var(--kol-surface-primary));
+}
+.kol-status-chip--success {
+  color: var(--ui-success);
+  background-color: color-mix(in srgb, var(--ui-success) 15%, var(--kol-surface-primary));
+}
+.kol-status-chip--warning {
+  color: var(--ui-warning);
+  background-color: color-mix(in srgb, var(--ui-warning) 15%, var(--kol-surface-primary));
+}
+.kol-status-chip--error {
+  color: var(--ui-error);
+  background-color: color-mix(in srgb, var(--ui-error) 15%, var(--kol-surface-primary));
+}
+.kol-status-chip--info {
+  color: var(--ui-info);
+  background-color: color-mix(in srgb, var(--ui-info) 15%, var(--kol-surface-primary));
 }
 
 /* inverse — the flipped chip. Mirrors .pill-inverse. */

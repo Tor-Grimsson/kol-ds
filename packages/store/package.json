@@ -12,8 +12,8 @@
     "./data": "./src/data/prints.js"
   },
   "dependencies": {
-    "@kolkrabbi/kol-component": "workspace:*",
-    "@kolkrabbi/kol-theme": "workspace:*"
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
   },
   "peerDependencies": {
     "react": "^18.3.0 || ^19.0.0",

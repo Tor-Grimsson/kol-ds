@@ -33,10 +33,11 @@ resolution. `read` and `addressed` are never `closed`.
 
 ## Queue
 
-**0 live entries.** The queue holds LIVE TASKS ONLY (user ruling 2026-07-30).
+**1 live entry.** The queue holds LIVE TASKS ONLY (user ruling 2026-07-30).
 
 | | Entry | Source | Staged | Status |
 |---|-------|--------|--------|--------|
+| 🔵 | [TransportIcons](inbox/TransportIcons.md) | kol-ds-fxr `TransportBar.jsx` | 2026-08-09 | `filed` |
 
 ## Filed elsewhere
 
@@ -62,3 +63,4 @@ graduated to `.kol/llm-context/lobby-history/archive/`.
 | 2026-08-06 | **Two briefs filed from kol-website.** `RecordManager` — the Framer-CMS-shaped record table + FieldRow detail panel (three reference screenshots in `_assets/`, light/dark parity part of the ask); `SideNavGrabResize` — grab-edge resize/snap-collapse for SideNav, prior art cited from kol-mirror, two `--kol-sidenav-*` tokens to mint |
 | 2026-08-09 | **The table shadow, killed at the source.** The loose clip at the lobby root (now `_assets/2026-08-06-table-shadow-brand-graphics.png`) showed a shadow band inside the brand app's Graphics table. Root cause was ours: `.kol-table-wrapper` still carried two `--kol-surface-primary` "cover" gradients orphaned by the 2026-07-28 fade ruling — invisible on primary surfaces, a shadow band on every other. Deleted; shipped as **theme 0.30.2** |
 | 2026-08-09 | **Queue emptied — both 2026-08-06 briefs closed with receipts returned.** `RecordManager` → **component 0.25.0** (organism + `FieldRow` molecule + `StatusChip`; `Table` gained `rowClassName`; no kol-theme half needed — all chrome reused). `SideNavGrabResize` → **framework 0.14.0** (grab edge + snap-collapse; the `data-sidenav="collapsed"` renderer rebuilt deliberately after its 2026-07-29 deletion; three `--kol-sidenav-*` tokens minted, in kol-framework.css where that family actually lives — the brief said kol-theme). kol-website's outbox stubs synced 🟢; its adoption remainders (slide-deck manager + Library onto RecordManager, retire the brand SideNav toggle) stay with kol-website |
+| 2026-08-09 | **TransportIcons filed from kol-ds-fxr.** kol-icons 0.10.0 ships `play`/`pause`/`skip-*` but not `stop`/`rewind`; the editor's TransportBar requests both by name and logs `Icon "…" not found in icon set` on every mount (editor + labs chrome). Ask: add the two glyphs — or alias existing skip drawings — so the names resolve |

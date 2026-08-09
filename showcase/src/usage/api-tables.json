@@ -2485,44 +2485,6 @@
       "desc": ""
     }
   ],
-  "RecordManager": [
-    {
-      "prop": "columns",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "rows",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "fields",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "publishLabel",
-      "type": "—",
-      "def": "'Publish'",
-      "desc": ""
-    },
-    {
-      "prop": "reorderLabel",
-      "type": "—",
-      "def": "(n) => `Reorder row ${n}`",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
   "SpectrumGrid": [
     {
       "prop": "stops",
@@ -3471,9 +3433,9 @@
       "desc": ""
     },
     {
-      "prop": "collapsibleSections",
+      "prop": "background",
       "type": "—",
-      "def": "false",
+      "def": "true",
       "desc": ""
     }
   ],

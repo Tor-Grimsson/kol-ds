@@ -15,7 +15,10 @@ export const ShellTocContext = createContext(null)
  * useLayoutEffect(() => { setTocCollapsed(true); return () => setTocCollapsed(false) }, [setTocCollapsed]) */
 export const ShellTocCollapsedContext = createContext(null)
 
-export default function AppShell({ navTree = [], getActivePage, header, footer, defaultTocContent }) {
+/* `getActivePage` — ACCEPTED-but-inert since the 2026-08-09 SideNav port (the
+ * two-level elder model derives the active category from the route); kept so
+ * no call site breaks. */
+export default function AppShell({ navTree = [], getActivePage: _getActivePage, header, footer, defaultTocContent }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [tocContent, setTocContent] = useState(null)
   const [tocCollapsed, setTocCollapsed] = useState(false)
@@ -58,7 +61,7 @@ export default function AppShell({ navTree = [], getActivePage, header, footer, 
               aria-hidden="true"
             />
 
-            <SideNav navTree={navTree} getActivePage={getActivePage} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} />
+            <SideNav navTree={navTree} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} />
             <div className="min-w-0">
               {header}
               <Outlet />

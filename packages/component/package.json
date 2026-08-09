@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.27.0",
+  "version": "0.32.2",
   "description": "KOL design-system components — atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
   "license": "MIT",
   "type": "module",
@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
-    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:^",
     "embla-carousel-react": "^8.6.0",
     "react-syntax-highlighter": "^16.1.1"
   },

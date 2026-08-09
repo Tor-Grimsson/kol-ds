@@ -26,7 +26,7 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | Group | Count | Names |
 |---|--:|---|
 | `add-remove` | 4 | `check` · `minus` · `plus` · `x` |
-| `arrow` | 4 | `arrow-down` · `arrow-left` · `arrow-right` · `arrow-up` |
+| `arrow` | 5 | `arrow-down` · `arrow-left` · `arrow-right` · `arrow-up` · `arrows-vertical` |
 | `arrow-diagonal` | 4 | `arrow-downleft` · `arrow-downright` · `arrow-upleft` · `arrow-upright` |
 | `atomic` | 10 | `atomic-atom` · `atomic-atomic-01` · `atomic-atomic-02` · `atomic-molecule-01` · `atomic-molecule-02` · `atomic-molecule-03` · `atomic-organism-01` · `atomic-organism-02` · `atomic-organism-03` · `atomic-organism-04` |
 | `caret` | 4 | `caret-down` · `caret-left` · `caret-right` · `caret-up` |
@@ -38,16 +38,16 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | `eye-lock` | 5 | `eye-off` · `eye-on` · `lock` · `shield-check` · `unlock` |
 | `files` | 10 | `book-open` · `clipboard` · `database` · `file` · `folder` · `image` · `journal` · `library` · `roadmap` · `video` |
 | `kolkrabbi` | 2 | `kol-ds` · `kolkrabbi` |
-| `layout` | 10 | `grid` · `layers` · `layout` · `maximize` · `panel-left` · `panel-right` · `row` · `rows` · `user-interface` · `view-list` |
+| `layout` | 11 | `grid` · `layers` · `layout` · `maximize` · `panel-left` · `panel-right` · `row` · `rows` · `toggle-overlay` · `user-interface` · `view-list` |
 | `misc` | 7 | `chess-pawn` · `chess-rook` · `foundation` · `resize-grip` · `stat-chart-a` · `trending-down` · `trending-up` |
 | `nav` | 6 | `hamburger` · `home-01` · `home-02` · `more` · `settings-01` · `user` |
 | `notify` | 6 | `attach` · `bell` · `email-01` · `email-02` · `fingerprint` · `message` |
 | `playback` | 6 | `pause` · `play` · `skip-back` · `skip-end` · `skip-forward` · `skip-start` |
 | `shape-forms` | 7 | `bolt` · `bookmark` · `bucket` · `cloud` · `drop` · `flag` · `heart` |
 | `shape-primitives` | 9 | `circle` · `cone` · `diamond` · `polygon` · `rectangle` · `square` · `star` · `star-solid` · `triangle` |
-| `singletons` | 10 | `alert-triangle` · `copy` · `cut` · `edit` · `external-link` · `filter` · `info` · `save` · `search` · `trash` |
+| `singletons` | 11 | `alert-triangle` · `copy` · `cut` · `edit` · `external-link` · `filter` · `filter-lines` · `info` · `save` · `search` · `trash` |
 | `social` | 10 | `social-behance` · `social-dribbble` · `social-facebook` · `social-github` · `social-instagram` · `social-instagram-2` · `social-linkedin` · `social-tiktok` · `social-twitter` · `social-youtube` |
-| `tools` | 19 | `align-horizontal-center` · `align-horizontal-left` · `align-horizontal-right` · `align-vertical-bottom` · `align-vertical-center` · `align-vertical-top` · `brightness` · `customize` · `dashed-circle` · `eyedrop` · `frequency` · `mode-toggle-01` · `mode-toggle-02` · `overlap` · `pointer` · `slider-01` · `slider-02` · `swap` · `target` |
+| `tools` | 20 | `align-horizontal-center` · `align-horizontal-left` · `align-horizontal-right` · `align-vertical-bottom` · `align-vertical-center` · `align-vertical-top` · `brightness` · `customize` · `dashed-circle` · `drag-handle` · `eyedrop` · `frequency` · `mode-toggle-01` · `mode-toggle-02` · `overlap` · `pointer` · `slider-01` · `slider-02` · `swap` · `target` |
 | `traffic` | 4 | `direction-cross` · `direction-opposite` · `refresh` · `repeat` |
 | `transfer` | 2 | `download` · `upload` |
 | `typography` | 4 | `italic-a` · `type` · `type-02` · `underline` |
