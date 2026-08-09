@@ -30,10 +30,25 @@ export const SOLO = { sm: 16, md: 20, lg: 24 }
 export const ADJACENT = { sm: 14, md: 16, lg: 18 }
 
 /**
+ * Indicator glyph — a caret/chevron that DECORATES a control rather than
+ * naming it (a dropdown caret, a sort arrow). Pairs 1:1 with the control's
+ * mono text rung, one step under ADJACENT: an indicator never outweighs the
+ * label it points at. Promoted 2026-08-09 — Table's sort chevron and
+ * Dropdown's caret each hand-typed their number (Dropdown took the ADJACENT
+ * rung, the oversize the user called): two transcriptions, the folklore
+ * threshold. */
+export const INDICATOR = { sm: 12, md: 14, lg: 16 }
+
+/**
  * Resolve a glyph size. `solo` picks the ladder; `size` indexes it.
  * Falls back to the md rung so an unknown size never yields undefined.
  */
 export function glyphSize(size, solo = false) {
   const ladder = solo ? SOLO : ADJACENT
   return ladder[size] ?? ladder.md
+}
+
+/** Resolve an indicator size. Separate helper — `solo` never applies. */
+export function indicatorSize(size) {
+  return INDICATOR[size] ?? INDICATOR.md
 }

@@ -167,24 +167,12 @@ function ShowcaseSidebar({ onNavigate }) {
   const showTools = SHELL_ROUTES.length > 0
   return (
     <div className="shell-rail-stack">
-      {/* ORDER IS THE LAW, not an accident of JSX (2026-08-01).
-        * `docs/documentation/04-compositions/02-shells.md:165` has said
-        * "Documentation · Components · Tools" since 2026-07-31 and this file
-        * rendered it exactly backwards — Tools, the routes the app serves,
-        * standing above the body of material. Nothing gated section order, so
-        * it drifted the day it was written. `validate:rails` R4 asserts it now.
-        *
-        * THE VAULT — the repo's docs/ library as CATEGORY → chapter → page,
-        * filtered to admitted chapters. */}
-      {vaultCategories.map(([category, groups]) => (
-        <ShellSidebar
-          key={category}
-          routes={groups}
-          basePath="/"
-          label={labelFromSlug(category)}
-          onNavigate={onNavigate}
-        />
-      ))}
+      {/* ORDER IS THE LAW, not an accident of JSX (2026-08-01; re-ruled
+        * 2026-08-09). `docs/documentation/04-compositions/02-shells.md:138`
+        * now states "Components · Tools · Documentation · Operations" — the
+        * user's 2026-08-09 ruling: in the design system's own showcase, the
+        * showcase sections outrank the written record. `validate:rails` R4b
+        * asserts the sequence, including the vault block's position. */}
       {showComponents && (
         <>
           <div>
@@ -200,8 +188,29 @@ function ShowcaseSidebar({ onNavigate }) {
         </>
       )}
       {showTools && (
-        <ShellSidebar routes={SHELL_ROUTES} basePath="/" label="Tools" labelTo="/" onNavigate={onNavigate} />
+        <ShellSidebar
+          /* components stays a header tab, but inside the rail its door is the
+           * eyebrow above — a second row here is "one body of content, two
+           * doors" (the documented anti-pattern, same call as documentation) */
+          routes={SHELL_ROUTES.filter((r) => r.id !== 'components')}
+          basePath="/"
+          label="Tools"
+          labelTo="/"
+          onNavigate={onNavigate}
+        />
       )}
+      {/* THE VAULT — the repo's docs/ library as CATEGORY → chapter → page,
+        * filtered to admitted chapters. Below the showcase sections by the
+        * 2026-08-09 ruling. */}
+      {vaultCategories.map(([category, groups]) => (
+        <ShellSidebar
+          key={category}
+          routes={groups}
+          basePath="/"
+          label={labelFromSlug(category)}
+          onNavigate={onNavigate}
+        />
+      ))}
     </div>
   )
 }

@@ -95,3 +95,22 @@ No consumer helpers to replace; this is a greenfield brief.
 - All labels/casing authored at call sites — no auto text-transform.
 - Ship the CSS half in kol-theme in the same wave (standing consumer law:
   component and theme move together).
+
+---
+
+## Resolution (2026-08-09) — 🟢 closed
+
+Shipped in **`@kolkrabbi/kol-component@0.25.0`** (published, verified on the
+registry). Built to spec as **`RecordManager`** (organism) + **`FieldRow`**
+(new molecule, `StatusChip` exported beside it) — the molecule carries the five
+control types (text/status/select/media/file). Composes existing DS only:
+`Table` (which gained a `rowClassName` prop for the drag lift), `ShellDrawer`
+as the slide-over (it owns the close ×), `MediaLibrary variant="modal"` as the
+picker with `mediaClient` injected per §3, `ToggleCheckbox` for selection,
+`SearchInput`/`Button` for the toolbar. Reorder is the brief's ~50-line pointer
+sort — no dependency; the "Reorder row N" label rides the existing
+`.kol-tooltip` chrome. No new CSS was needed: every surface reuses existing
+chrome classes + utilities, so there is no kol-theme half to this wave.
+Status chip is `Tag` (interactive, per the chip taxonomy); slug/filename tokens
+sit on the `kol-helper-*` rung; separators are the `fg-08` hairline; both
+reference screenshots fall out of one markup via tokens.

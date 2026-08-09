@@ -122,10 +122,14 @@ const RUNG_CLASSES = /\b(shell-sidebar-toggle|shell-nav-group-header)\b/
  * is the only thing that renders as parens-around-an-expression between tags. */
 const HAND_COUNT = />\(\{[^}]*\}\)</
 
-/* The left rail's section order. `02-shells.md:165` has stated it since
- * 2026-07-31 and ShellChrome rendered it exactly backwards, because nothing
- * asserted it. A body of material outranks the routes the app serves. */
-const SECTION_ORDER = ['Documentation', 'Components', 'Tools']
+/* The left rail's section order. Re-ruled by the user 2026-08-09
+ * ("components, sets, blocks etc. should be before Documentation"):
+ * `02-shells.md:138` now states Components · Tools · Documentation ·
+ * Operations. The vault eyebrows render dynamically (labelFromSlug), so the
+ * literal check covers the showcase sections and VAULT_MARKER anchors the
+ * vault block's position after them. */
+const SECTION_ORDER = ['Components', 'Tools']
+const VAULT_MARKER = 'vaultCategories.map'
 const ORDER_FILE = 'showcase/src/lib/ShellChrome.jsx'
 
 const isComment = (l) => {
@@ -228,8 +232,18 @@ for (const relPath of RAIL_FILES) {
   if (actual.join(' > ') !== expected.join(' > ')) {
     errors.push(
       `${ORDER_FILE}  rail sections render '${actual.join(' > ')}' but ` +
-      `02-shells.md:165 states '${expected.join(' > ')}' — a body of material ` +
-      `outranks the routes the app serves`
+      `02-shells.md:138 states '${expected.join(' > ')}' — the showcase ` +
+      `sections outrank the written record (user ruling 2026-08-09)`
+    )
+  }
+  /* The vault block (dynamic labels) must sit BELOW the last literal section —
+   * the JSX return renders top-to-bottom, so file position is render position. */
+  const vaultAt = src.indexOf(VAULT_MARKER, src.indexOf('shell-rail-stack'))
+  const lastLiteral = Math.max(...seen.map((s) => s.at))
+  if (vaultAt !== -1 && seen.length && vaultAt < lastLiteral) {
+    errors.push(
+      `${ORDER_FILE}  the vault eyebrows render above the showcase sections — ` +
+      `02-shells.md:138 puts Documentation/Operations last (user ruling 2026-08-09)`
     )
   }
 }

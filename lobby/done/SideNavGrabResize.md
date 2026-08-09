@@ -92,3 +92,24 @@ None new. Lives where `SideNav` lives (kol-framework owns the
   a focusable control (visually minimal is fine) that toggles collapse, or give
   the strip `role="separator"` + `aria-orientation="vertical"` with arrow-key
   resize. The pointer gesture is an enhancement, never the only path.
+
+---
+
+## Resolution (2026-08-09) — 🟢 closed
+
+Shipped in **`@kolkrabbi/kol-framework@0.14.0`** (published, verified). The
+grab edge lives inside `SideNav` with the mechanics from the cited mirror prior
+art (`useDragResize.js`); drag under the snap threshold stamps
+`data-sidenav="collapsed"`, double-click and Home reset, arrows resize from the
+keyboard (the strip is a focusable `role="separator"`). Width + state persist —
+`kol-sidenav` keeps the consumers' `'collapsed'|'expanded'` schema, width under
+its own `kol-sidenav-w` key.
+
+Two brief corrections found in the build: the `--kol-sidenav-*` tokens live in
+**`kol-framework.css:37`**, not kol-theme; and the `data-sidenav="collapsed"`
+CSS the brief called an existing contract was **deleted 2026-07-29** — the
+renderer was rebuilt deliberately in this wave, mirroring the ≤1024 narrow mode.
+THREE tokens minted, not two: `--kol-sidenav-grab-w` and `--kol-sidenav-step`
+reference the spacing ladder, `--kol-sidenav-snap: 12rem`. Consumer remainder
+(retiring the brand app's Button toggle + local collapse CSS) stays with
+kol-website per its receipt.

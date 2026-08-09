@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
+import { indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
  * Dropdown — trigger IS button chrome (2026-07-08 chrome law).
@@ -28,7 +29,10 @@ import { PopoverPanel, usePopover } from '../atoms/Popover.jsx'
  */
 
 const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
-const ICON_SIZE = { sm: 14, md: 16, lg: 18 }
+/* Caret size comes from the INDICATOR ladder (glyphLadders.js) — the private
+ * map that lived here was a transcription of ADJACENT, which is the wrong
+ * ladder for a decoration: it put a caret one rung HEAVIER than the label
+ * beside it (2026-08-09 user call). */
 
 const LEGACY_VARIANTS = { default: 'primary', subtle: 'primary', minimal: 'outline' }
 
@@ -42,7 +46,6 @@ const Dropdown = ({
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
-  const [dropdownWidth, setDropdownWidth] = useState('100px')
 
   // sm everywhere unless explicitly overridden (see docblock size law).
   const resolvedSize = size || 'sm'
@@ -63,23 +66,11 @@ const Dropdown = ({
     role: 'listbox',
   })
 
-  // Width management — 100px mobile, 140px tablet, 180px desktop
-  useEffect(() => {
-    const updateWidth = () => {
-      if (typeof window === 'undefined') return
-
-      if (window.innerWidth >= 1024) {
-        setDropdownWidth('180px')
-      } else if (window.innerWidth >= 768) {
-        setDropdownWidth('140px')
-      } else {
-        setDropdownWidth('100px')
-      }
-    }
-    updateWidth()
-    window.addEventListener('resize', updateWidth)
-    return () => window.removeEventListener('resize', updateWidth)
-  }, [])
+  /* Width belongs to the CALL SITE (2026-08-09 user call — "width without any
+   * regard to context"). The viewport-keyed resize listener that handed every
+   * dropdown a fixed width by window size is gone: default is hug-content,
+   * and the consumer sizes it through className exactly as on Input. The open
+   * panel follows the trigger via matchReferenceWidth either way. */
 
   const handleSelect = (option) => {
     onChange?.(option.value)
@@ -100,15 +91,7 @@ const Dropdown = ({
   ].filter(Boolean).join(' ')
 
   return (
-    <div
-      className={`relative block ${className}`}
-      style={{
-        ...(dropdownWidth && !className.includes('w-full') && {
-          width: dropdownWidth,
-          minWidth: dropdownWidth
-        })
-      }}
-    >
+    <div className={`relative inline-block align-middle ${className}`}>
       <button
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
@@ -118,10 +101,20 @@ const Dropdown = ({
         aria-expanded={isOpen}
         data-state={isOpen ? 'open' : 'closed'}
       >
-        <span>{currentOption?.label}</span>
+        {/* every option's label rides along hidden so the trigger is as wide
+          * as its widest value — the panel matches the trigger's width, so
+          * trigger and list stay one piece at every selection */}
+        <span className="kol-dd-label">
+          <span>{currentOption?.label}</span>
+          {options.map((option) => (
+            <span key={option.value} className="kol-dd-ghost" aria-hidden="true">
+              {option.label}
+            </span>
+          ))}
+        </span>
         {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
           * keyed off the trigger's data-state, no inline styles */}
-        <Icon name="chevron-down" size={ICON_SIZE[resolvedSize]} className="kol-dd-caret" />
+        <Icon name="chevron-down" size={indicatorSize(resolvedSize)} className="kol-dd-caret" />
       </button>
 
       <PopoverPanel

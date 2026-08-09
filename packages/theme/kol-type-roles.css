@@ -117,16 +117,23 @@
  * The two chips had drifted on every value that makes them look alike: fg-04
  * against fg-08, radius-sm against a bare literal, no colour against fg-80.
  * Same concept, two spellings — the `.text-fg-*` vs `--kol-fg-*` lesson again.
- * FILL, RADIUS and COLOUR are now one answer; size and padding stay per role,
- * because relative-in-prose and fixed-in-chrome is a real difference. */
+ * ONE RECIPE NOW, size and padding included (user ruling 2026-08-09: "it's
+ * basically the same style, so why are they so different"). The earlier
+ * size-and-padding-stay-per-role line — relative-in-prose vs fixed-in-chrome
+ * — is reversed: the chip is CHROME wherever it appears, and it takes the
+ * chrome numbers (the table token's shipped values, not the prose em). Only
+ * wrap behaviour stays per context: prose chips wrap mid-phrase, the table
+ * token stays single-line — that lives in the organisms sheet. */
 .kol-prose code,
-.kol-doc-code-inline {
+.kol-doc-code-inline,
+.kol-table-token,
+.kol-table code {
   font-family: var(--kol-font-family-mono);
-  font-size: 0.875em;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--kol-fg-80);
   background: var(--kol-fg-08);
-  padding: 0.1em 0.35em;
+  padding: 2px var(--kol-spacing-1);
   border-radius: var(--kol-radius-sm);
 }
 /* code inside pre stays stripped (rule preserved from the prose sheet) */

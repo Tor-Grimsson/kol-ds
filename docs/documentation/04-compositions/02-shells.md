@@ -3,7 +3,7 @@ title: Reference shells
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-09
 description: The documented app shells, and their uses
 aliases:
   - reference-shells
@@ -135,7 +135,7 @@ The proof was already in the repo: **L3 is the one rung a component already owne
 
 > **Known collision:** `Foundations — the token system` and `Foundations — layout & breakpoints` both shorten to **`Foundations`**, so chapter 01 shows two identically-named rows. Resolving it means retitling one of the docs — user-facing text, so it waits on a ruling.
 
-**Section order is the law, and now a gate.** `Documentation · Components · Tools` — stated in this file since 2026-07-31 and rendered exactly backwards by `ShellChrome` from the day it was written, because nothing asserted it. A body of material outranks the routes the app serves.
+**Section order is the law, and now a gate.** `Components · Tools · Documentation · Operations` — **re-ruled by the user 2026-08-09** (*"components, sets, blocks etc. should be before Documentation"*): in the design system's own showcase, the showcase sections outrank the written record. This reverses the 2026-07-31 order (`Documentation · Components · Tools`), which had itself been rendered backwards by `ShellChrome` until the gate existed — the lesson both times is the same: nothing holds an order but the gate.
 
 All of it is **R4**: a rung class written by hand fails, a `({n})` span placed by hand fails, section order out of sequence fails.
 

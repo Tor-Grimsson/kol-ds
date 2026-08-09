@@ -89,6 +89,7 @@ export const FUNCTIONS_BY_NAME = {
   Badge: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
   ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
+  RecordManager: 'display', FieldRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
   Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
@@ -217,3 +218,16 @@ export const DOCS_ONLY = [
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = ['MenuPopover', 'QuantityStepper']
+
+/* R1 membership flags — the 2026-08-09 pass, ledger at
+ * docs/documentation/03-components/02-placement.md § The pass. A flagged
+ * component stays LISTED and stays shipping: "flagged, not silently blessed,
+ * and its page says so." Removal is the owner's call, never this file's. */
+export const MEMBERSHIP_FLAGS = {
+  ExitPreview:
+    "fails membership tests 1 + 2 — a router-aware CMS escape hatch worn as DS chrome; flagged for removal, kept pending the owner's decision",
+  TagModeGate:
+    'orphaned export — its only mount was deleted by the ONE-search ruling (2026-08-01); the package still ships it',
+  AlternativeControlsMock:
+    'a demo harness in a published API — it assembles the chess control apparatus for showing, not for consuming',
+}

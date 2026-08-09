@@ -71,6 +71,7 @@ export { default as ColorInputRow } from './molecules/ColorInputRow.jsx'
 export { default as ColorRamp } from './molecules/ColorRamp.jsx'
 export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
+export { default as FieldRow, StatusChip } from './molecules/FieldRow.jsx'
 export { default as FramedMediaBand } from './molecules/FramedMediaBand.jsx'
 export { default as Image } from './molecules/Image.jsx'
 export { default as MediaCard } from './molecules/MediaCard.jsx'
@@ -113,6 +114,7 @@ export { default as MediaLibrary, MediaLibraryProvider, useMediaLibrary, MediaPi
 export { default as MediaTileGallery } from './organisms/MediaTileGallery.jsx'
 export { default as MediaViewer } from './organisms/MediaViewer.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'
+export { default as RecordManager } from './organisms/RecordManager.jsx'
 export { default as SpectrumGrid } from './organisms/SpectrumGrid.jsx'
 export { default as Table } from './organisms/Table.jsx'
 
@@ -129,7 +131,7 @@ export { GRAPHIC_RAW } from './graphics/graphicData.js'
  * took `20`, and neither could reference the rule it was meant to follow.
  * Cross-package imports go through the `@kolkrabbi/*` specifier (ARCHITECTURE
  * §3), so an export is the only way another package can obey the ladder. */
-export { SOLO, ADJACENT, glyphSize } from './hooks/glyphLadders.js'
+export { SOLO, ADJACENT, INDICATOR, glyphSize, indicatorSize } from './hooks/glyphLadders.js'
 
 // hooks
 export { default as usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'

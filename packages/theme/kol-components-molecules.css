@@ -22,6 +22,71 @@
   z-index: 110;
 }
 
+/* ── Dropdown — .kol-dd-* ─────────────────────────────────────────────────
+ * IMPLEMENTED 2026-08-09. Dropdown.jsx stamped these classes and the docs
+ * page recorded their contract (2026-07-08 chrome law) — but no stylesheet
+ * ever carried them, so triggers rendered gapless bare buttons at whatever
+ * width a resize listener guessed. The trigger IS button chrome (kol-btn
+ * rules own fill/focus); these add ONLY trigger layout + the open/panel
+ * fusion. No hover, no clicked state (2026-07-15 ruling) — rest and open. */
+.kol-dd-trigger {
+  justify-content: space-between;
+  gap: var(--kol-spacing-1);
+  width: 100%;
+}
+/* REST AND OPEN ARE THE ONLY STATES (2026-07-15 ruling, re-called twice
+ * 2026-08-09). The trigger wears button chrome, and button chrome hovers AND
+ * presses — so every kol-btn variant :hover and :active is PINNED BACK TO
+ * REST here. The :not(:disabled) carries the weight of the atoms :active
+ * selectors; this sheet loads after atoms in the same layer, so ties resolve
+ * to these rules. */
+.kol-dd-trigger.kol-btn-primary:not(:disabled):hover,
+.kol-dd-trigger.kol-btn-primary:not(:disabled):active {
+  background: var(--kol-surface-secondary);
+  color: var(--kol-surface-on-primary);
+}
+.kol-dd-trigger.kol-btn-outline:not(:disabled):hover,
+.kol-dd-trigger.kol-btn-outline:not(:disabled):active {
+  background: transparent;
+  color: var(--kol-surface-on-primary);
+  border-color: var(--kol-oq-16);
+}
+/* ONE PIECE MEANS ONE WIDTH (2026-08-09 user call — "they are connected").
+ * The trigger reserves the widest option's width by stacking every label in
+ * one grid cell (hidden ghosts), so the panel — pinned to the trigger by
+ * matchReferenceWidth — is exactly as wide as the trigger at every value. */
+.kol-dd-label { display: inline-grid; min-width: 0; }
+.kol-dd-label > span { grid-area: 1 / 1; white-space: nowrap; }
+.kol-dd-ghost { visibility: hidden; }
+.kol-dd-caret {
+  flex-shrink: 0;
+  transition: rotate var(--kol-transition-base);
+}
+.kol-dd-trigger[data-state="open"] .kol-dd-caret { rotate: 180deg; }
+/* grey — the opaque oq-12 fill, dropdown-only (never a kol-btn-* variant) */
+.kol-dd-trigger--grey {
+  background: var(--kol-oq-12);
+  color: var(--kol-surface-on-primary);
+  border: 1px solid transparent;
+}
+/* open/panel fusion — the open trigger and its panel read as ONE piece:
+ * trigger squares its bottom corners, panel squares its top, and the fill
+ * continues (panel offset is -1 in Dropdown.jsx for the same reason). */
+.kol-dd-trigger--open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.kol-dd-panel {
+  border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
+  overflow: hidden;
+}
+.kol-dd-panel--primary { background: var(--kol-surface-secondary); }
+.kol-dd-panel--grey    { background: var(--kol-oq-12); }
+.kol-dd-panel--outline {
+  background: var(--kol-surface-primary);
+  border: 1px solid var(--kol-oq-16);
+  border-top: none; /* the trigger's bottom edge is the divider (docs page) */
+}
+.kol-dd-div  { border-top: 1px solid var(--kol-fg-08); }
+.kol-dd-list { padding: var(--kol-spacing-1); }
+
 /* Popover — default chrome for floating-ui-positioned panels.
  * Used by molecules/Popover.jsx PopoverPanel. */
 .kol-popover {

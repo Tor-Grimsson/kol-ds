@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import { INDICATOR } from '../hooks/glyphLadders.js'
 
 /**
  * Table — data table.
@@ -32,7 +33,7 @@ const WIDTHS = {
   column: '',
 }
 
-const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel' }) => {
+const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName }) => {
   const [sort, setSort] = useState({ key: null, dir: null })
 
   const cycle = (key) =>
@@ -79,7 +80,7 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
                   {column.header}
                   <Icon
                     name={sort.key === column.accessor && sort.dir === 'desc' ? 'chevron-down' : 'chevron-up'}
-                    size={12}
+                    size={INDICATOR.sm}
                     className={sort.key === column.accessor ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}
                   />
                 </button>
@@ -92,7 +93,7 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
       </thead>
       <tbody>
         {sorted.map((row, rowIndex) => (
-          <tr key={row.id ?? row.token ?? rowIndex} className="kol-table-row">
+          <tr key={row.id ?? row.token ?? rowIndex} className={`kol-table-row${rowClassName ? ` ${rowClassName(row, rowIndex)}` : ''}`}>
             {columns.map((column) => (
               <td key={column.accessor} className={(typeof column.className === 'function' ? column.className(row) : column.className) ?? 'kol-table-cell-text'} style={column.style}>
                 {column.render ? column.render(row) : row[column.accessor] ?? '—'}

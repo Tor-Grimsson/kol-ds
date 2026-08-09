@@ -164,29 +164,17 @@
 .kol-table-pill-dark  { background-color: var(--kol-surface-on-primary); color: var(--kol-surface-primary); }
 
 .kol-table-token {
+  /* THE LOOK LIVES IN ONE PLACE (2026-08-09) — the shared chip recipe in
+   * kol-type-roles.css (`.kol-prose code, .kol-doc-code-inline,
+   * .kol-table-token`): font, size, weight, colour, fill, padding, radius.
+   * This rule keeps only the CELL mechanics the prose chip must not have. */
   display: inline-flex;
   align-items: center;
-  padding: 2px 4px;
   /* No outer margin: spacing is the CONTAINER's job. The margin here
    * double-spaced against every flex row's own gap, which is the ragged
    * rhythm the metadata rows showed. */
-  /* Radius is the shared chip radius, not a literal (2026-08-01). This one
-   * value was the last thing making a table token and a prose inline code chip
-   * read as two different objects — see the inline-code block in
-   * kol-type-roles.css, which owns the shared fill/radius/colour answer. */
-  border-radius: var(--kol-radius-sm);
-  font-family: var(--kol-font-family-mono);
-  font-size: 0.75rem;
-  font-weight: 400;
   line-height: 1;
   white-space: nowrap;
-  /* Carries its OWN fill as of 2026-08-01. The look lived only in the
-   * `.kol-table code` descendant rule below, so a token chip rendered right
-   * inside a table and completely unstyled anywhere else — which is why the
-   * component pages hand-rolled a Tailwind lookalike. One concept, two
-   * spellings: exactly the drift `.text-fg-*` vs `--kol-fg-*` taught. */
-  color: var(--kol-fg-80);
-  background-color: var(--kol-fg-08);
 }
 
 .kol-table-wrapper.kol-table--simple { border: none; border-radius: 0; }
@@ -207,14 +195,10 @@
 .kol-table th:last-child,
 .kol-table td:last-child { border-right: none; }
 
-.kol-table code {
-  font-family: var(--kol-font-family-mono);
-  font-size: 11px;
-  color: var(--kol-fg-80);
-  padding: 2px 5px;
-  background-color: var(--kol-fg-08);
-  border-radius: 3px;
-}
+/* `.kol-table code` — the THIRD spelling of the inline chip, found and folded
+ * 2026-08-09 (an off-scale font size and a bare radius literal). A bare
+ * <code> in a cell now takes the ONE recipe in kol-type-roles.css beside
+ * .kol-doc-code-inline and .kol-table-token. */
 
 .kol-table a {
   color: var(--kol-link);

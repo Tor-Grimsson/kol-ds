@@ -33,12 +33,10 @@ resolution. `read` and `addressed` are never `closed`.
 
 ## Queue
 
-**2 live entries.** The queue holds LIVE TASKS ONLY (user ruling 2026-07-30).
+**0 live entries.** The queue holds LIVE TASKS ONLY (user ruling 2026-07-30).
 
 | | Entry | Source | Staged | Status |
 |---|-------|--------|--------|--------|
-| 🔵 | [RecordManager](inbox/RecordManager.md) | kol-website — Framer CMS reference, screenshots in `_assets/` | 2026-08-06 | `filed` |
-| 🔵 | [SideNavGrabResize](inbox/SideNavGrabResize.md) | kol-website — prior art `kol-mirror/src/pages/MirrorPlayground.jsx#L21-L76` | 2026-08-06 | `filed` |
 
 ## Filed elsewhere
 
@@ -62,3 +60,5 @@ graduated to `.kol/llm-context/lobby-history/archive/`.
 | 2026-08-01 | **`llm-rules-bulletin-in-scaffold` filed to dotfiles.** theme **0.24.0** deleted `.text-body` / `--kol-fg-body` with no fallback — a consumer loses its text colour silently — and that is what `LLM_RULES.md` § BULLETIN exists to announce. This repo's copy has one and has used it before (`kol-theme@0.12.0` colorless links), but it is a **local file**: kol-website is the only repo on the shared symlink, and that template has no BULLETIN section at all. Second ask in the same ticket: put this repo on the symlink too — 3 of 4 hold a regular file, and the per-repo content needs a home first |
 | 2026-08-01 | **LOBBY EMPTIED.** 119 records graduated to `.kol/llm-context/lobby-history/`; `inbox/` · `done/` · `archive/` · `outbox/` all hold nothing but `.gitkeep`. The ledger keeps the states, the bar and this history — the records themselves are agent history and now live where history lives |
 | 2026-08-06 | **Two briefs filed from kol-website.** `RecordManager` — the Framer-CMS-shaped record table + FieldRow detail panel (three reference screenshots in `_assets/`, light/dark parity part of the ask); `SideNavGrabResize` — grab-edge resize/snap-collapse for SideNav, prior art cited from kol-mirror, two `--kol-sidenav-*` tokens to mint |
+| 2026-08-09 | **The table shadow, killed at the source.** The loose clip at the lobby root (now `_assets/2026-08-06-table-shadow-brand-graphics.png`) showed a shadow band inside the brand app's Graphics table. Root cause was ours: `.kol-table-wrapper` still carried two `--kol-surface-primary` "cover" gradients orphaned by the 2026-07-28 fade ruling — invisible on primary surfaces, a shadow band on every other. Deleted; shipped as **theme 0.30.2** |
+| 2026-08-09 | **Queue emptied — both 2026-08-06 briefs closed with receipts returned.** `RecordManager` → **component 0.25.0** (organism + `FieldRow` molecule + `StatusChip`; `Table` gained `rowClassName`; no kol-theme half needed — all chrome reused). `SideNavGrabResize` → **framework 0.14.0** (grab edge + snap-collapse; the `data-sidenav="collapsed"` renderer rebuilt deliberately after its 2026-07-29 deletion; three `--kol-sidenav-*` tokens minted, in kol-framework.css where that family actually lives — the brief said kol-theme). kol-website's outbox stubs synced 🟢; its adoption remainders (slide-deck manager + Library onto RecordManager, retire the brand SideNav toggle) stay with kol-website |

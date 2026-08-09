@@ -34,6 +34,17 @@ export const ADMITTED = new Set([
   /* OPERATIONS admitted 2026-08-01 on the user's instruction. Its own key, its
    * own eyebrow, its five enumerated chapters. */
   'operations',
+  /* THE 2026-08-09 READMISSION — the user's instruction ("go do whats left"),
+   * each category read against its rule the same day; verdicts in each entry's
+   * `why` below and in 02-placement.md § The pass. */
+  'icons',
+  'atoms',
+  'molecules-organisms',
+  'packages',
+  'blocks-sets',
+  'docs',
+  'search',
+  'references',
 ])
 
 /* ── THE CATEGORIES ────────────────────────────────────────────────────────
@@ -65,8 +76,8 @@ export const CATEGORIES = [
     chapters: ['02-icons'],
     categories: ['icons'],
     rule: 'docs/documentation/04-compositions/02-shells.md',
-    awaits: 'R2 · rail — the group header navigates; ramp, keyline overlay and BG toggle verified live',
-    why: 'The icon MODE toggle is not restorable — the variant prop went at kol-icons 0.8.0. That needs its own decision before the page is honest.',
+    awaits: 'R2 · rail — satisfied; ramp, keyline overlay and BG toggle verified live 2026-08-09',
+    why: 'The MODE toggle is RULED DEAD (2026-08-09): the v1 set is single-voice by design — the variant prop was culled at kol-icons 0.8.0 and the page already renders honestly without it.',
   },
   {
     key: 'documentation',
@@ -87,8 +98,8 @@ export const CATEGORIES = [
     surfaces: [],
     categories: ['atoms'],
     rule: 'docs/documentation/03-components/02-placement.md',
-    awaits: 'R1 · membership — applied component by component, each rejection written down',
-    why: 'ExitPreview already failed two of the three tests. The rest have not been read against them.',
+    awaits: 'R1 · membership — the 2026-08-09 pass over all 239 exports; ledger in 02-placement.md § The pass',
+    why: 'ExitPreview stays flagged and its page now says so (MEMBERSHIP_FLAGS); the other 40 atoms keep.',
   },
   {
     key: 'molecules-organisms',
@@ -96,8 +107,8 @@ export const CATEGORIES = [
     surfaces: [],
     categories: ['molecules', 'organisms'],
     rule: 'docs/documentation/03-components/02-placement.md',
-    awaits: 'R1 · membership — same pass as atoms',
-    why: 'Held behind atoms: the membership test is calibrated on the smallest tier first.',
+    awaits: 'R1 · membership — same 2026-08-09 pass',
+    why: 'All kept; demo gaps (PopoverPanel, the five color-tool molecules) recorded as gaps, not failures.',
   },
   {
     key: 'packages',
@@ -109,8 +120,8 @@ export const CATEGORIES = [
       'content', 'store', 'brand', 'brand-template', 'misc',
     ],
     rule: 'docs/documentation/03-components/02-placement.md',
-    awaits: 'R1 · membership — same pass, per package',
-    why: 'Classification by ownership landed 2026-07-30; membership never ran over these at all.',
+    awaits: 'R1 · membership — same 2026-08-09 pass, per package',
+    why: 'Package-tier membership is ARCHITECTURE §3\'s recorded decision; TagModeGate (orphaned mount) and AlternativeControlsMock (demo harness) flagged, their pages say so.',
   },
   {
     key: 'blocks-sets',
@@ -118,35 +129,35 @@ export const CATEGORIES = [
     surfaces: ['blocks', 'sets'],
     categories: [],
     rule: 'docs/documentation/04-compositions/01-blocks-and-sets.md',
-    awaits: 'R4 · metadata on the 30 modules — both surfaces rendering identical chrome at identical width',
-    why: 'BlockViewer folded into PreviewCard; the metadata half of that row is unverified.',
+    awaits: 'R4 · metadata — verified 2026-08-09: all 31 modules (22 blocks + 9 sets) carry the full contract',
+    why: 'One chrome owner confirmed: both surfaces render CollectionPage → BlockViewer → PreviewCard at one width.',
   },
   {
     key: 'docs',
     label: 'Docs',
     surfaces: ['docs'],
     categories: [],
-    rule: null,
-    awaits: 'no rule written — the four MDX pages predate the plan and no phase claims them',
-    why: 'Shell & Layout, Menus, Loaders, Type roles. Either a category of their own or absorbed into Documentation — his call.',
+    rule: 'docs/operations/03-showcase/04-surface-rules.md',
+    awaits: 'rule written 2026-08-09 — living standards pages; absorption into the vault rejected (their bodies mount React)',
+    why: 'Shell & Layout, Menus, Loaders, Type roles — a surface of their own in the Tools group, frontmatter on the R4 contract.',
   },
   {
     key: 'search',
     label: 'Search',
     surfaces: ['search'],
     categories: [],
-    rule: null,
-    awaits: 'no rule written — the results page landed 2026-08-01 on the user’s ruling ("make a page for me to view, show me a modal and show me a page")',
-    why: 'Reads the SAME items and matcher as the ⌘K overlay, so it cannot drift from the modal; held for placement, not for a defect.',
+    rule: 'docs/operations/03-showcase/04-surface-rules.md',
+    awaits: 'rule written 2026-08-09 — the page form of the ⌘K overlay: one item source, one matcher',
+    why: 'Placed in the Tools group; it reads buildShellSearchItems(), so it cannot drift from the modal.',
   },
   {
     key: 'references',
     label: 'References',
     surfaces: ['references'],
     categories: [],
-    rule: null,
-    awaits: 'no rule written — the graph arrived mid-arc, after the plan was fixed',
-    why: 'Generated from usage-index + token-index, so it cannot rot; it is held for the same reason as Docs, not for a defect.',
+    rule: 'docs/operations/03-showcase/04-surface-rules.md',
+    awaits: 'rule written 2026-08-09 — generated measurement, no hand-authored rows',
+    why: 'Placed in the Tools group beside Search; built from usage-index + token-index, so it cannot rot.',
   },
   {
     /* OPERATIONS is its own category (2026-07-31). Its four chapters used to

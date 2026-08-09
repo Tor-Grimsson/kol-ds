@@ -68,8 +68,11 @@ export function usePopover({
     middleware.push(
       sizeMw({
         apply({ rects, elements }) {
+          /* EXACT width, not a floor (2026-08-09) — "one piece means one
+           * width": with minWidth alone, a wide row let the panel outgrow the
+           * trigger it claims to continue. Sole consumer is Dropdown. */
           Object.assign(elements.floating.style, {
-            minWidth: `${rects.reference.width}px`,
+            width: `${rects.reference.width}px`,
           })
         },
       })

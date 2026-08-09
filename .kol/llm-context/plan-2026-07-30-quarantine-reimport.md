@@ -17,6 +17,21 @@ related:
 
 The roadmap says *what* and *why*; this says *in what order, touching which file, and where it stops*. Findings and their evidence live in [the roadmap](../../docs/operations/03-showcase/01-recovery-roadmap.md) — not repeated here.
 
+> **EXECUTED — 2026-08-09, all 11 categories admitted, quarantine holds zero.**
+> The user's instruction (*"go do whats left, Im not gonna hold your hand through
+> this"*) replaced the per-row stop protocol with recorded decisions. The R1
+> membership pass ran over all 239 exports — ledger at
+> `docs/documentation/03-components/02-placement.md` § The pass; 3 flagged
+> (ExitPreview · TagModeGate · AlternativeControlsMock), each page says so via
+> `MEMBERSHIP_FLAGS`. R4 verified on all 31 block/set modules. The three
+> ruleless surfaces got their rule at
+> `docs/operations/03-showcase/04-surface-rules.md`. The icon MODE toggle is
+> ruled dead (v1 is single-voice by design). **The open question below was
+> resolved by reading 1** — the results page already reads the palette's items.
+> Section order re-ruled the same day: showcase sections above Documentation
+> (`02-shells.md:138`, gate updated). Verified live at every step; all 18 gates
+> clean; nothing published (showcase + scripts + docs only).
+
 > **Status: two gates built, no styling touched.** Written 2026-07-30 after the review. `pnpm validate` now runs all seven gates and prints a scoreboard — **5 clean, width 14, rails 16, 30 total**. The previous plan at `plan.md` is historical (2026-07-02 backlog, executed); it is not superseded, it is unrelated.
 >
 > The gates came first on purpose: the user's standing instruction is that a report he has to read is worth nothing, and a command he runs himself is worth something. Progress on this plan is measured by that number falling, not by anything written here.

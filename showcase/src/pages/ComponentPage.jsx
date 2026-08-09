@@ -4,6 +4,7 @@ import PreviewCard from '../lib/PreviewCard.jsx'
 import { DocTable } from '@kolkrabbi/kol-workshop'
 import { DEMOS } from '../lib/demos-registry.js'
 import { getComponentBySlug, CATEGORY_LABELS, slugify } from '../nav/registry.js'
+import { MEMBERSHIP_FLAGS } from '../nav/classification.js'
 import MdxDoc from '../lib/MdxDoc.jsx'
 import API_GEN from '../usage/api-tables.json'
 import { mergeApi, buildProvenance, Pager, CodeLine, InstallBlock } from '../lib/component-page-parts.jsx'
@@ -22,14 +23,25 @@ export default function ComponentPage() {
   const c = getComponentBySlug(slug)
   if (!c) return <Navigate to="/components" replace />
 
+  /* R1 membership flag (classification.js MEMBERSHIP_FLAGS) — rendered above
+   * BOTH document branches: "flagged, not silently blessed, and its page says
+   * so" (02-placement.md § Membership). */
+  const flag = MEMBERSHIP_FLAGS[c.name]
+  const flagNotice = flag ? (
+    <p className="kol-helper-12 text-emphasis border border-fg-32 rounded px-4 py-3 mb-6">
+      Membership — {flag}
+    </p>
+  ) : null
+
   const mdx = mdxFor(c.name)
-  if (mdx) return <MdxDoc module={mdx} component={c} />
+  if (mdx) return <>{flagNotice}<MdxDoc module={mdx} component={c} /></>
 
   const api = mergeApi([], API_GEN[c.name] || [])
   const members = c.members || []
 
   return (
     <>
+      {flagNotice}
       <DocHeader
         eyebrow={`Components / ${CATEGORY_LABELS[c.category] ?? c.category}`}
         title={c.name}
