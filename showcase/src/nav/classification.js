@@ -57,6 +57,10 @@ export const TIERS = {
    * previews in isolation. It is the rail LADDER — every rail header at every
    * rung comes from it (2026-08-01). */
   ShellSidebar: 'atoms', WorkshopDefaultSidebar: 'atoms', RailSection: 'atoms', RailRow: 'atoms',
+  /* RightRail is a MOLECULE: it composes RailSection and RailRow, which is the
+   * nesting test. THE right rail for every route — it replaced two components
+   * that disagreed about which sections exist (2026-08-01). */
+  RightRail: 'molecules',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
   ShellLayout: 'organisms', DocumentationReader: 'organisms',
   /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
@@ -164,7 +168,7 @@ export const FUNCTIONS_BY_NAME = {
   MetricsDashboard: 'display',
   /* workshop */
   ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display',
-  RailSection: 'navigation', RailRow: 'navigation',
+  RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
   /* foundry additions */

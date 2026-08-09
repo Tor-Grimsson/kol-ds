@@ -29,8 +29,15 @@ export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', ed
       const atTop = top < edgeOffset
       const atBottom = top + viewH >= fullH - edgeOffset * 0.8
       if (atTop) {
+        /* THE FIRST HEADING, not null (user ruling 2026-08-01): *"at any given
+         * time you are at some place in the file, THAT LOCATION SHOULD
+         * HIGHLIGHT"*. The top lock used to clear the active id, so the rail
+         * highlighted nothing at rest — and a page opens at rest, which made
+         * "no active row" the state the reader saw first and most. The bottom
+         * lock has always activated the LAST id; this is that rule, both ends.
+         * You are at the top of the document, so you are in its first section. */
         edgeLockRef.current = 'top'
-        setActiveId(null)
+        setActiveId(ids[0])
       } else if (atBottom) {
         edgeLockRef.current = 'bottom'
         setActiveId(ids[ids.length - 1])

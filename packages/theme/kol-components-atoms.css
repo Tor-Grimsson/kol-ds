@@ -888,12 +888,40 @@ a:hover .icon-hover,
   padding: 0;
 }
 
+/* An ACTIONABLE frame — `onClick`/`href` (user ruling 2026-08-01: *"you dont
+ * use a button… you use the ICON COMPONENT… it has no interactive states"*).
+ *
+ * The "no states" property used to be an accident of the element: a <span>
+ * cannot be hovered-as-a-control, so the frame's own docstring warned that
+ * reusing kol-btn-* on one suppressed states BY TAG rather than by contract.
+ * Handing the frame a click makes it a <button>/<a>, which brings the user
+ * agent's own chrome back with it — so the reset is declared here and the
+ * absence of state rules stays a PROPERTY OF THE CLASS, which is what the
+ * original ruling actually asked for. There is deliberately no :hover, no
+ * :active and no :focus fill below: a frame that lights up is a Button. */
+button.kol-icon-frame,
+a.kol-icon-frame {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 /* Radius (2026-07-30 ruling): either the system's 4px or a full round, nothing
  * between. `sm` is the default and carries no class — it's on .kol-icon-frame
  * above. `full` is a deliberate exception to the hard 4px repo invariant,
  * because a round frame is its own chrome idiom (edge-straddling controls,
- * avatars, status dots) rather than a radius tweak. */
-.kol-icon-frame-radius-full { border-radius: 9999px; }
+ * avatars, status dots) rather than a radius tweak.
+ *
+ * Shared with `.kol-btn-radius-full` (component 0.20.0): Button gained the same
+ * two-value `radius` prop, and an icon-only Button IS this control with states.
+ * ONE rule rather than a second copy of the value — no --kol-* token holds a
+ * full round today (checked, zero hits), and inventing one for a single value
+ * used by one rule adds a name without adding a source of truth. If such a
+ * token ever lands beside --kol-radius-sm, this one selector reads it. */
+.kol-icon-frame-radius-full,
+.kol-btn-radius-full { border-radius: 9999px; }
 
 /* pinned squares — the box never moves with glyph size (user law 2026-07-28) */
 .kol-icon-frame-sm { width: 28px; height: 28px; }

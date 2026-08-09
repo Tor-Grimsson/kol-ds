@@ -1,17 +1,18 @@
 ---
-title: Icon inventory — kol-icon-set-v1 names by group
+title: Icon inventory
 type: reference
 status: active
-updated: 2026-07-29
-description: The full per-group roster of kol-icon-set-v1 names — THE packaged set since 0.8.0 (legacy stroke/solid trees removed; local shelf at _tmp/legacy-icons). Generated from packages/icons/src/kol-icon-set-v1 — regenerate after any cull or promotion.
+created: 2026-07-29
+updated: 2026-08-01
+description: Every kol-icon-set-v1 name, listed by group
 aliases:
   - icon inventory
   - icon list
 sources:
   - packages/icons/src/kol-icon-set-v1
 tags:
-  - domain/design-system
   - domain/iconography
+  - audience/consumer
 related:
   - "[[INDEX|icons]]"
 ---

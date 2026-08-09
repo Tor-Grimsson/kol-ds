@@ -123,6 +123,14 @@ export { Icon } from '@kolkrabbi/kol-icons'
 export { default as Graphic, GRAPHICS } from './graphics/Graphic.jsx'
 export { GRAPHIC_RAW } from './graphics/graphicData.js'
 
+/* The glyph ladders, exported 2026-08-01. They were internal, so anything
+ * OUTSIDE this package that pairs an icon with a label had to hardcode a
+ * number — the shell header's tabs took `size={14}`, foundry's section header
+ * took `20`, and neither could reference the rule it was meant to follow.
+ * Cross-package imports go through the `@kolkrabbi/*` specifier (ARCHITECTURE
+ * §3), so an export is the only way another package can obey the ladder. */
+export { SOLO, ADJACENT, glyphSize } from './hooks/glyphLadders.js'
+
 // hooks
 export { default as usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'
 export { default as useReveal } from './hooks/useReveal.js'

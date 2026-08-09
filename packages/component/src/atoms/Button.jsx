@@ -1,5 +1,6 @@
 import { isValidElement } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
  * Button — canonical KOL button. Emits kol-btn* classes (CSS in @kol/theme).
@@ -10,7 +11,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'danger'|'grey'|'control'} props.variant - Visual variant. `danger` is the destructive treatment (--ui-error fill); `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'nav'|'danger'|'grey'|'control'} props.variant - Visual variant. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
  * @param {'sm'|'md'|'lg'} props.size - Button size (default: 'md')
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
@@ -20,7 +21,8 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {string} props.iconOnlyHover - Icon to show on hover (icon-only)
  * @param {boolean} props.animateIcon - Disable default hover states to focus on icon animation
  * @param {boolean} props.quiet - Dimmed at rest, brightens on hover; stays dimmed when disabled. For secondary icon-only chrome.
- * @param {number} props.iconSize - Size of the icon in pixels (default: auto by size)
+ * @param {number} props.iconSize - Size of the icon in pixels (default: auto by size — SOLO when iconOnly, ADJACENT otherwise)
+ * @param {'sm'|'full'} props.radius - sm (default, the system's radius token) | full (a full round). Two values, nothing between — mirrors IconFrame, and a round control is its own chrome idiom (edge-straddling controls, avatars), the only sanctioned exception to the hard radius invariant.
  * @param {number} props.iconGap - Gap between icon and text (default: 8)
  * @param {string} props.href - Link destination (makes it an <a>)
  * @param {Function} props.onClick - Click handler (makes it a <button>)
@@ -42,6 +44,7 @@ const Button = ({
   iconRightHover,
   iconOnly,
   iconOnlyHover,
+  radius = 'sm',
   animateIcon = false,
   quiet = false,
   iconSize,
@@ -57,7 +60,11 @@ const Button = ({
   pressed,
   ...props
 }) => {
-  const resolvedIconSize = iconSize ?? (size === 'sm' ? 14 : size === 'lg' ? 18 : 16)
+  // Two ladders, split on whether a label sits beside the glyph. An icon-only
+  // button is a solo glyph in a pinned square, so it takes SOLO (16/20/24) —
+  // it took the text-adjacent ladder until component 0.20.0, which put a 14px
+  // glyph in a 28px square at `sm`. `iconSize` still overrides either.
+  const resolvedIconSize = iconSize ?? glyphSize(size, Boolean(iconOnly))
 
   // `control` is a legacy alias for `ghost` (kept so web call-sites passing
   // variant="control" keep working post-migration).
@@ -75,6 +82,14 @@ const Button = ({
     ? 'kol-btn-danger'
     : resolvedVariant === 'grey'
     ? 'kol-btn-grey'
+    /* `nav` — transparent box, oq-64 ink (2026-08-01). The class had lived in
+     * the theme since the shell landed with NO component able to emit it, so
+     * every consumer that wanted this exact weight hand-wrote the box instead:
+     * that orphan is the direct cause of the four-container header. It is the
+     * chrome rung — one step brighter than `ghost` at oq-48 — and it is what
+     * `text-fg-64` meant every time a call site typed it. */
+    : resolvedVariant === 'nav'
+    ? 'kol-btn-nav'
     : 'kol-btn-secondary'
 
   // Add size class — pairs the padding rule with its mono type class.
@@ -97,7 +112,12 @@ const Button = ({
   // .kol-btn-icon replaces the old iconOnly INLINE style — inline display
   // beat every consumer utility (lg:hidden could never hide the button).
   const iconOnlyClass = iconOnly ? 'kol-btn-icon' : ''
-  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${className}`.trim().replace(/\s+/g, ' ')
+
+  // `sm` is the default and carries no class — it's on .kol-btn itself.
+  // The rule for `full` is shared with .kol-icon-frame-radius-full, one
+  // selector, so the two controls can never disagree on the value.
+  const radiusClass   = radius === 'full' ? 'kol-btn-radius-full' : ''
+  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${radiusClass} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
   const renderIcon = (iconName, iconHoverName) => {

@@ -1,9 +1,10 @@
 ---
-title: The workshop docs system — @kolkrabbi/kol-workshop
+title: Workshop system
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
-description: Everything the workshop "navbar set" actually is — a handrolled docs subsystem (markdown engine, search, tag system, shell, compositions) lifted from the monorepo apps/web into @kolkrabbi/kol-workshop, dedup'd against the DS shell chrome.
+description: The handrolled docs subsystem in kol-workshop
 aliases:
   - workshop system
   - kol-workshop
@@ -13,8 +14,9 @@ sources:
   - packages/workshop/src
   - packages/theme/kol-components-workshop.css
 tags:
-  - domain/design-system
-  - domain/docs
+  - domain/compositions
+  - audience/consumer
+  - pattern/app-shell
 related:
   - "[[01-blocks-and-sets|blocks & sets]]"
   - "[[02-shells|shells]]"
@@ -88,6 +90,16 @@ Conformed on lift (verified by grep + esbuild parse across 25 files):
 - **No chevron on a rail eyebrow (user ruling 2026-08-01).** Sections still collapse and expand on click; the glyph is not drawn. Reverses the 2026-07-30 affordance note in `DocumentationReader`.
 - **`RailSection` owns the rail ladder (user ruling 2026-08-01).** Three rungs — L1 section (`.shell-sidebar-toggle`, no chevron, **no count**), L2 group (`.shell-nav-group-header`, chevron, **count**), L3 row (`.shell-nav-item`) — and **one component owns L1 and L2 in both rails**, including where the count sits. The classes existed all along; what was missing is that nothing declared them a ladder, so each call site hand-typed its own count and the two rails printed theirs on different rows. L3 was the proof: the only rung a component (`DocsToc`) already owned, and the only one that never drifted. `validate:rails` **R4** fails a hand-written rung class, a hand-placed `({n})`, or the section order out of sequence. Full law: [[02-shells|reference shells]].
 - **The count is an L2 affordance, and rail rows show the NAME (user rulings 2026-08-01).** An eyebrow names a body of material and never tallies it — `RailSection` drops a `count` passed at L1. And `cleanTitle` now strips everything after a spaced em/en dash, so `Type classes — the two families and when to use which` renders as `Type classes`; **search still reads the full title**, and the doc's own title is untouched.
+- **ONE RAIL STACK (user ruling 2026-08-01, said in anger and said before).** *"I HAVE TOLD YOU LEFT AND RIGHT = THE SAME LAYOUT MARGINPADDING."* The row gap was given one owner earlier that day and the stack above it was not, so a single layout shipped as **four** idioms — `flex flex-col gap-6` (left rail), `space-y-6` (right rail), `space-y-4` (shell sidebars), `space-y-0` (rows). `.shell-rail-stack` / `.shell-rail-stack-inner` own it now, and they are flex `gap` rather than `space-y-*` on purpose: `space-y` is a margin on every child but the first, so it fights the eyebrow box, which owns its own margin. Full law: [[../01-foundations/05-layout-systems|layout systems registry]].
+- **BOTH right rails carry the same three categories, in the same order.** `AutoToc` (every non-vault page) and `DocReaderSidebar` (the vault) had drifted into different structures again — Quick actions and Tags hanging inside "This page", which claims they describe the document. Order is `THIS PAGE` → `LINKS` → `TAGS`: contents, then exits, then filing.
+- **Every category keeps its CHAPTER rung.** Collapsing `This page` straight onto `DocsToc` deleted the middle rung on the one side of the page that had just been given it — *"why did you remove the 'this page' collapsable chapter? when you do YOU BREAK THE RULE"*. `Contents` is a group and stays one.
+- **The tag shelf is indented to the ROW text edge** — `.shell-rail-tags` reads `--kol-pad-rail-row-x`. It used to sit flush left, the only block in the rail setting its own left margin.
+- **The scroll spy activates the FIRST heading at rest (user ruling 2026-08-01).** The top edge-lock cleared the active id, so the rail highlighted nothing — and a page *opens* at rest, which made "no active row" the state the reader saw first and most. The bottom lock had always activated the last id; this is that rule at both ends.
+- **The right rail is THREE eyebrow categories (user ruling 2026-08-01, the fourth asking).** `THIS PAGE` · `TAGS` · `LINKS`. It was one category — "This page" — with four L2 groups under it, so `Tags` rendered as a nav row in `kol-mono-14` beside a category rendered as an eyebrow: *"for the 4th time Tags, change it from this style to EYEBROW"*. A category is a **body of material**, and contents / filing / where-you-can-go are three of them — which is why `Tags` could never be a peer of `Contents`, and why `Related` and `Quick actions` now sit inside `LINKS` rather than under "This page", a category making the opposite claim. The count rule is unchanged: `TAGS` carries none, because a count sits inside a category and never beside its label.
+- **CHAPTER is Medium + `shout`, PAGE is Thin (user rulings 2026-08-01, settled after six attempts).** `.shell-nav-group-header` **500 + `--kol-fg-shout` (88)** against `.shell-nav-item` **100 + `fg-64`**. Every weight-only attempt failed on arithmetic, not cascade: 400→500, 300→500 and 200→500 all applied correctly and none read as hierarchy — measured on the H stem, 300 against 500 is a **0.28 device-pixel** difference in stroke. 700/100 was tried for one turn and reverted: once the rows sit at Thin the weight gap already carries, so the chapter buys its prominence from **ink** instead and stays inside the ramp's normal range. **Weight and colour each do half the work.** Thin is renderable only because the family went **variable** the same day (`wght 100 800`, two faces, 151 kb replacing 1024 kb of statics) — see [[../01-foundations/03-typography|type classes]]. L2 carries **no colour class**: the rule owns weight and ink together, and `text-body` was removed from the rung string rather than left to fight it.
+- **The active row is `emphasis`, in both rails (user ruling 2026-08-01).** `.shell-nav-item.is-active` reads `var(--kol-fg-emphasis)`, not the raw `--kol-surface-on-primary` it used to — same value, but reached through the ladder. Where-you-are is the one thing in a rail that earns max ink, and the left tree's current PAGE and the right rail's current SECTION are the same state. A call site that reaches past the role set is how a role set ends up with consumers that do not know it exists.
+- **An array frontmatter field is a LIST (user ruling 2026-08-01).** `sources`/`aliases` were `value.join(' · ')` — one run-on string, so three file paths ran off the right edge of the panel with no way to see where one ended. They stack one per line, and `.docs-frontmatter-value` finally carries the `min-width: 0` half of the flex contract that let a long value overflow at all.
+- **The unnamed key is a label too (user ruling 2026-08-01).** `FIELD_LABELS[key] ?? key` printed an unlisted field raw — `imported_from`, snake_case, in a column where every neighbour is sentence case. It falls back to a humanised label now, cased at the data layer as the no-`text-transform` law requires.
 - **ONE search (user ruling 2026-08-01).** `TagModeOverlay` owned a second search — a raw `Input` driving `tag.toLowerCase().includes(q)` — over a corpus the shell's index already covered. It is **deleted, not aligned**: tags are rows in `buildShellSearchItems` carrying an `action` closure instead of an `href`, so the one modal finds a tag the way it finds a doc. The overlay browses (list + graph); it does not search.
 - **Tag mode's `view` lives in the CONTEXT.** `openTagMode(tag, { view })` — the overlay held local `viewMode`, so the graph was reachable only by finding an unlabelled hex glyph inside the already-open overlay. The rail's **Graph view** row needs to name the mode before the overlay exists.
 - **Tags: no `color`, no `size` (user ruling 2026-08-01).** Passing `color` swaps the base class from `tag-control` to `tag tag--{color}`, and **only `tag-control` has a `:hover` rule** — a coloured Tag silently loses its interaction state. `sm` is the default and the only size; `lg` is never used. Colour returns later as its own decision.

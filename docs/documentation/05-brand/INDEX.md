@@ -1,9 +1,10 @@
 ---
-title: Brand kit — the manifest schema and its satellites
+title: Brand kit
 type: reference
 status: active
-updated: 2026-07-10
-description: The brand-kit tier — the manifest schema as the contract, its baked house defaults + emit-css generator, the template slate, Kolkrabbi's own kol-brand package, the kol-scrape CLI + adapter that feed it, and the confidentiality rule for client instances.
+created: 2026-07-10
+updated: 2026-08-01
+description: The manifest schema and its satellite packages
 aliases:
   - brand-kit
 sources:
@@ -13,7 +14,8 @@ sources:
   - packages/brand/src/index.js
   - packages/scrape/src/index.js
 tags:
-  - domain/design-system
+  - domain/brand
+  - audience/consumer
   - brand/assets
 related:
   - "[[../01-foundations/02-color|color]]"
@@ -27,29 +29,12 @@ related:
 
 A **brand kit** is a data + assets package — no server (unlike the clients tier). It kills the copy-a-client-and-swap-fields workflow: brand facts live in one versioned package per brand, all conforming to one schema.
 
-## Manifest schema
+## The chapter
 
-`@kolkrabbi/kol-brand-template` defines `BrandManifest` (JSDoc-typed): `meta` (declared identity) · `identity` (role→ramp bindings — which stop is primary/secondary + the ink pairs) · `colors.anchors` · `ramps` (literal hex per stop) · `type` (families + cuts + scale) · `logos` (package-relative SVGs) · `clearspace` · `stationery` · `presence` (observed footprint, scraper-fed) · `press` · `timeline`.
+| Page | What it holds |
+|---|---|
+| [[01-manifest\|Brand manifest]] | The schema, the house defaults, the emit-css generator |
+| [[02-packages\|Brand packages]] | kol-brand, the template slate, what each owns |
+| [[03-feeding\|Feeding a brand]] | kol-scrape, the adapter, and the confidentiality rule |
 
-**Every field is optional** — fill or leave empty; renderers must degrade gracefully. `defineBrand()` is the type anchor; `validateBrand()` checks types of present fields only.
-
-**House defaults + generator.** `withHouseDefaults()` bakes the shared KOL baseline — the fixed 10-stop grey ramp, the seven house hues + cream, the Right Grotesk (PP) / JetBrains Mono type pair, and the default Kolkrabbi `identity` binding — so a client declares only its deltas (a hue, the identity lines, an overriding `type.families`). `emitBrandColorCss(manifest)` then projects the manifest into the de-facto **4-section `kol-brand-color.css`** skeleton — palette primitives (`--kol-color-*` / `--grey-*`) → brand roles (`--brand-*`) → accent rebind (`--kol-accent-*`) → Tailwind `@theme` contract — ending the hand-authored per-client colour file.
-
-## The packages
-
-| Package | Role | Registry |
-|---|---|---|
-| `kol-brand-template` | Schema + baked **house defaults** (`withHouseDefaults`) + the **emit-css** generator (`emitBrandColorCss`) + placeholder "Norðurljós" **slate** (dev fixture for generic styleguide renderers). Also ships the scrape **adapter**. | public |
-| `kol-brand` | Kolkrabbi's real manifest — identity, 4 anchors, 7 ramps, type; plus the brand SVG assets (logos, wordmark, favicons) in `src/svg/` with an `<Asset>` loader (`./svg` + `./svg/*` raw). Public-appropriate facts only. | public |
-| per-client instances | Copy of the template, filled. | **NEVER public npm** — local package in the client's repo |
-
-## Feeding it
-
-- **Mechanical:** `kol-scrape <url>` → presence record → `draftFromScrape(record)` (`@kolkrabbi/kol-brand-template/adapter`) → partial manifest (meta hints + presence). Catalog mode (`kol-scrape catalog <url> --download dir`) pulls Squarespace product catalogs + assets.
-- **Judgment:** the `kol-press-research` skill (dotfiles repo) — press/mention/timeline research, every hit fetch-verified, output already manifest-shaped.
-
-## Rules
-
-1. **One schema** — a tool growing its own shape reintroduces the conversion glue this tier exists to kill.
-2. **Confidentiality** — client brand data never ships to public npm; PII (kennitala, birthdates, addresses) never enters any public package, including Kolkrabbi's own.
-3. **Tools are not contents** — scrapers and generators are producers/consumers of the manifest, never inside a data package; one tool package per tool (no grab-bags).
+**Three pages, not one** (2026-08-01) — a chapter earns its folder with three documents beside its index, and these were three subjects under three headings in a single file.

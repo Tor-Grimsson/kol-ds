@@ -19,6 +19,14 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *   • Portable Text: `value={{ code, language, filename }}`
  *   • Direct props: `code` / `language` / `filename`
  *   • Children: `<CodeBlock language="js">{'…'}</CodeBlock>`
+ *
+ * `language` falls back to `'text'`, and a `'text'` block draws NO chip — so a
+ * fence that declares nothing renders as an unlabelled slab. That fallback is
+ * kept (a chip reading "text" is worse than none) and the fix is upstream:
+ * every fence declares a language, enforced by `pnpm validate:fences`.
+ *
+ * @param {string} [size='md']  'sm' | 'md' — the box and the type step together.
+ * @param {boolean} [bare]      drop the FRAME; the host owns it. Not a size.
  */
 
 const CheckMarkIcon = () => (
@@ -65,7 +73,13 @@ const syntaxTheme = (foregroundToken = 80) => ({
 /* `bare` (2026-07-30): highlight + chip + copy WITHOUT the framed chrome — for
  * hosts that already own the frame (PreviewCard's Code tab sat a full
  * CodeBlock frame inside the kol-doc-figure border: frame-in-frame). */
-export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value, bare = false }) {
+/* `size` (2026-08-01, user ruling). The block had no size at all — its padding
+ * and type size sat in `.kol-codeblock` as unnamed constants, so *"its just
+ * whatever its defaulting to"* was literally true and no call site could ask
+ * for anything else. `md` is those exact values, named; `sm` is one step down
+ * on both axes. Size is INDEPENDENT of `bare`: bare removes the frame, size
+ * sets the box, and a bare block still has one. */
+export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value, bare = false, size = 'md' }) {
   const [copied, setCopied] = useState(false)
 
   const code = String(value?.code ?? codeProp ?? children ?? '')
@@ -84,7 +98,7 @@ export default function CodeBlock({ children, code: codeProp, language: language
 
   return (
     <div className={bare ? '' : 'kol-codeblock-wrapper'}>
-      <div className={`kol-codeblock${bare ? ' kol-codeblock--bare' : ''}`}>
+      <div className={`kol-codeblock kol-codeblock--${size}${bare ? ' kol-codeblock--bare' : ''}`}>
         {(filename || (language && language !== 'text')) && (
           <div className="kol-codeblock-filename">{filename || language}</div>
         )}

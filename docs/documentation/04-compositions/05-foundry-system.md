@@ -1,10 +1,11 @@
 ---
-title: Foundry components — the type-specimen apparatus
+title: Foundry system
 type: reference
 status: canonical
-updated: 2026-07-10
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-foundry — the type-specimen apparatus (typeface hero, variable-font axis playground, parsed-metric glyph inspector, character-set browser, font preview, typeface-catalog grid). Cut to type-only on 2026-07-09 (non-type chrome removed, republished 0.2.0); the type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure, ColorLoader) moved in from kol-component later that day (0.3.0). The 2026-07-10 engine upgrades add TypeSpecimenLive (self-measuring specimen) + useFontMetrics (opentype.js parse/outline), with the parametric ParaType synth spec'd but deferred. Every export renders, inspects, or manipulates a live font.
+description: The type-specimen apparatus in kol-foundry
 aliases:
   - foundry
   - kol-foundry
@@ -16,8 +17,8 @@ sources:
   - packages/foundry/README.md
   - showcase/src/sets/foundry-specimen.jsx
 tags:
-  - domain/design-system
-  - domain/foundry
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[06-store-system|store system]]"

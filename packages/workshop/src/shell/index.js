@@ -16,3 +16,7 @@ export { default as RailSection } from './RailSection.jsx'
 /* RailRow — THE L3 rail row. The look lives in `.shell-nav-item`; this owns the
  * markup so nine hand-written utility stacks cannot come back. R4 asserts it. */
 export { default as RailRow } from './RailRow.jsx'
+/* RightRail — THE right rail, one component for every route. It replaced two
+ * that disagreed about which sections exist, which is why sections used to
+ * appear and vanish. The section set is fixed and unconditional. */
+export { default as RightRail } from './RightRail.jsx'

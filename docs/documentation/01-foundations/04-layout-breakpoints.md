@@ -1,9 +1,10 @@
 ---
-title: Foundations — layout & breakpoints
+title: Layout & breakpoints
 type: reference
 status: active
-updated: 2026-07-31
-description: The one layout law — ONE shell frame (1800) on every page, content left-anchored, three inner caps only (panel 960, column 768, measure 65ch); one padding rhythm; Tailwind-scale breakpoints. Lookup home: 08-breakpoints.
+created: 2026-07-31
+updated: 2026-08-01
+description: One shell frame, three inner caps, one rhythm
 aliases:
   - breakpoints
   - layout-law
@@ -14,8 +15,8 @@ sources:
   - showcase/src/lib/CollectionLanding.jsx
   - showcase/src/pages/Home.jsx
 tags:
-  - domain/design-system
   - domain/layout
+  - audience/consumer
 related:
   - "[[01-tokens|tokens]]"
   - "[[03-typography|typography]]"

@@ -77,6 +77,19 @@ const FIELD_LABELS = {
   modified: 'Modified',
 }
 
+/* THE FALLBACK IS A LABEL TOO (user ruling 2026-08-01). `FIELD_LABELS[key] ??
+ * key` printed an unnamed key raw, so a doc carrying `imported_from` before it
+ * was listed rendered the row as `imported_from` — snake_case and lowercase, in
+ * a column where every neighbour is sentence case. *"its very amateur that you
+ * cant start a sentence or word with a Capital?"*
+ *
+ * Casing is authored at the data layer, never by CSS (the no-auto-text-transform
+ * law) — so the fallback authors it here, where the string is made. */
+const humanise = (key) => {
+  const words = String(key).replace(/[-_]+/g, ' ').trim()
+  return words.charAt(0).toUpperCase() + words.slice(1)
+}
+
 /* Reading ORDER, not an allowlist. The kol-docs contract first
  * (`.kol/docs-framework/01-conventions.md`: required title/type/status/updated/
  * tags, then recommended description/aliases, then optional), legacy
@@ -92,13 +105,33 @@ const FIELD_LABELS = {
  * `related` is the one deliberate omission — the rail renders it as live links,
  * so printing the raw wikilinks here would be the same thing twice. */
 const FIELD_ORDER = [
-  'title', 'type', 'status', 'updated', 'tags',
+  /* `created` sits ABOVE `updated` (user ruling 2026-08-01) — a document's age
+   * reads oldest-first, and `updated` on its own says nothing about how long
+   * the thing has existed. */
+  'title', 'type', 'status', 'created', 'updated', 'tags',
   'description', 'aliases', 'sources',
-  'created', 'verified', 'audience', 'superseded_by', 'drift',
+  'verified', 'audience', 'superseded_by', 'drift',
   'category', 'date', 'modified', 'version',
 ]
 
-const HIDDEN = new Set(['related'])
+/* `related` — the rail renders it as live links; printing the raw wikilinks
+ * here would be the same thing twice.
+ *
+ * `aliases` — user ruling 2026-08-01: *"why is this a category in frontmatter?
+ * what purpose … its just not relevant"*. It is an OBSIDIAN field, not a tag
+ * and not a document fact: `.kol/docs-framework/01-conventions.md:65` says it
+ * feeds the Quick Switcher and search autocomplete and explicitly does **not**
+ * affect wikilink resolution. Nothing in this app reads it. It stays in the
+ * file for Obsidian and stops taking a row in a panel that renders facts. */
+const HIDDEN = new Set(['related', 'aliases'])
+
+/* VALUES ARE SENTENCE CASE TOO (user ruling 2026-08-01). The labels were fixed
+ * and the values were not, so the panel read `Type  reference` / `Status
+ * active` — a capitalised label pointing at a lowercase word. These two fields
+ * carry closed enums from the kol-docs contract, so the case is authored here
+ * against the key, never with a text-transform. Every other value is content
+ * and is printed exactly as written. */
+const CASED_VALUE_FIELDS = new Set(['type', 'status'])
 
 /** Contract order first, then anything else the doc carries, alphabetically. */
 const orderFields = (metadata) => {
@@ -141,9 +174,9 @@ const DocsFrontmatter = ({ metadata, docId }) => {
           <div key={key} className="docs-frontmatter-row">
             <span className="docs-frontmatter-key kol-helper-12 text-meta">
               {icon && <Icon name={icon} size={14} />}
-              {FIELD_LABELS[key] ?? key}
+              {FIELD_LABELS[key] ?? humanise(key)}
             </span>
-            <span className="kol-mono-12 text-strong">
+            <span className="docs-frontmatter-value kol-mono-12 text-strong">
               {key === 'tags' && Array.isArray(value) ? (
                 /* `naked`, the SAME Tag rendering the rail's own tag list uses
                  * (DocReaderSidebar). This was the default filled variant, so
@@ -168,8 +201,31 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                 </span>
               ) : DATE_FIELDS.has(key) ? (
                 formatDate(String(value))
+              ) : CASED_VALUE_FIELDS.has(key) ? (
+                humanise(String(value))
               ) : Array.isArray(value) ? (
-                value.join(' · ')
+                /* STACKED, ONE PER LINE (user ruling 2026-08-01). Arrays were
+                 * `value.join(' · ')` — a single run-on string, so `sources`
+                 * with three file paths ran straight off the right edge of the
+                 * panel and the reader could not tell where one path ended and
+                 * the next began. A list of paths IS a list; the dot-join was
+                 * printing it as a sentence.
+                 *
+                 * `break-all` because these are paths, not words: a wrapped
+                 * path must break at the character, never leave a gap and drop
+                 * the whole segment to the next line.
+                 *
+                 * THE LIST SCROLLS PAST ITS CAP (user question 2026-08-01:
+                 * "I just wonder what it will be when the sources are f.e. more
+                 * then 15?"). Unbounded, fifteen paths push the article fifteen
+                 * lines down and the metadata panel becomes the page. No
+                 * file-type icons — a path already ends in its own extension,
+                 * and a glyph restating it is decoration. */
+                <span className="docs-frontmatter-list">
+                  {value.map((item, i) => (
+                    <span key={i} className="break-all">{String(item)}</span>
+                  ))}
+                </span>
               ) : (
                 String(value)
               )}

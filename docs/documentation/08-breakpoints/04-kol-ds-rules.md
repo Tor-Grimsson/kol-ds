@@ -1,9 +1,10 @@
 ---
-title: Breakpoints — KOL-DS rules
+title: Breakpoint rules
 type: reference
 status: active
-updated: 2026-07-31
-description: The responsive laws with teeth — ONE shell frame, four width tokens, one padding rhythm, one chrome reveal — plus the exemption list for verbatim-ported specimens.
+created: 2026-07-31
+updated: 2026-08-01
+description: The responsive laws with a validator behind them
 aliases:
   - breakpoint rules
   - layout law
@@ -11,11 +12,11 @@ sources:
   - packages/theme/kol-theme.css
   - docs/documentation/01-foundations/04-layout-breakpoints.md
 tags:
-  - domain/design-system
   - domain/layout
+  - audience/consumer
 related:
   - "[[INDEX|breakpoints]]"
-  - "[[01-breakpoints|breakpoint values]]"
+  - "[[01-values|breakpoint values]]"
   - "[[../01-foundations/04-layout-breakpoints|layout law (foundations)]]"
   - "[[../01-foundations/05-layout-systems|layout systems registry]]"
 ---
@@ -32,7 +33,7 @@ four staggered chrome reveals, three parallel breakpoint systems — never again
 | 3 | **Tailwind scale, min-width only** — sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536 | no custom px queries, no `max-width` queries in showcase-owned code |
 | 4 | **One padding rhythm** — the framework ramp tokens (`--kol-pad-section-*`: x 20/32/48 · y 48/64/80) | no Tailwind padding steps on page containers |
 | 5 | **One chrome reveal** — NavDrawer below `lg`, rails at `lg+`; TOC may enhance at `xl` | nothing chrome-critical reveals at `sm`/`md` |
-| 6 | **Grid collapse is canonical** — first break `sm`; masonry 1/2/3/4; fixed-N only for tiny cells | see [[01-breakpoints\|values]] for the full table |
+| 6 | **Grid collapse is canonical** — first break `sm`; masonry 1/2/3/4; fixed-N only for tiny cells | see [[01-values\|values]] for the full table |
 | 7 | **Measure 65ch, rails 256px** | no forks |
 
 ## Exemptions

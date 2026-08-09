@@ -1,9 +1,10 @@
 ---
-title: Foundations — layout systems registry
+title: Layout systems registry
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
-description: THE lookup for every active layout/width/text-container system — which system owns what, where its rules live, and which contradictions are open. Read this before picking a width, a container, or a prose class.
+description: Which system owns which width, and where
 aliases:
   - layout-systems
   - width-systems
@@ -17,8 +18,8 @@ sources:
   - showcase/src/lib/MdxDoc.jsx
   - showcase/src/lib/mdx-components.jsx
 tags:
-  - domain/design-system
   - domain/layout
+  - audience/consumer
 related:
   - "[[04-layout-breakpoints|layout & breakpoints]]"
   - "[[03-typography|typography]]"
@@ -46,11 +47,14 @@ used for.
 | **`.kol-prose`** | **The blog/editorial system** — CMS portable text (kol-content), workshop vault viewer (`DocsArticle`) | 720px cap · 16/24 w300 editorial voice | `kol-typography.css:962` | **docs pages — ever** (user law 2026-07-30); anything containing previews/tables |
 | **`kol-doc-*` roles** | **The docs voice** — DocKit chrome + MDX bodies; per-element roles, text self-caps | body/lede cap at measure (65ch of own size) · code/table/figure/caption roles | `kol-type-roles.css` | editorial/blog copy (that's kol-prose's job) |
 | **MDX page system** (showcase) | Component + docs pages ARE documents; markdown typed per-tag via the doc roles; every code surface = kol-component `CodeBlock` (one code idiom, 2026-07-30); h2 carries the section air (`mt-6 first:mt-0`) | text at measure · fences/tables/Api/Install cap at **panel** · previews (stages) run the full column | `MdxDoc.jsx` + `mdx-components.jsx` + `component-page-parts.jsx` | wrapping the body in any container class; bespoke `pre`/copy twins |
+| **Inline-code chip** (`.kol-doc-code-inline` · `.kol-table-token`) | ONE chip, two entry points — prose inline code and a code token inside a Table. Fill, radius and colour are one answer (`--kol-fg-08` · `--kol-radius-sm` · `--kol-fg-80`); only **size** differs, relative in prose (`0.875em`) and fixed in chrome. They had drifted on every one of those values. `.kol-doc-table-token` is **not** a chip — it is a `td` slot that types a whole cell, sharing only the word | fill `--kol-fg-08` · radius `--kol-radius-sm` | `kol-type-roles.css` (inline code) · `kol-components-organisms.css` (`.kol-table-token`) | a hand-rolled Tailwind lookalike — that is how the second spelling started |
 | **Seam/border law** (chrome borders) | Framed chrome + seams use the OPAQUE tier, weight 08 — alpha `fg-*` borders brighten over tinted fills (the table-seam disease, fought all day 2026-07-30) | `var(--kol-oq-08)` — doc-figure, table wrapper/seams, PreviewCard tab bar | `kol-type-roles.css` (`.kol-doc-figure`) · `kol-components-organisms.css` (table) · PreviewCard.jsx | `border-fg-*` classes on framed chrome |
 | **Padding ladder** (`--kol-pad-*`) | page/section/band padding rhythm for **page content** | 3-breakpoint responsive ladder | `kol-framework.css` `:root` blocks | shell chrome — that is the chrome inset below |
 | **Chrome inset** (`--kol-pad-chrome-x`) | the inset for shell **chrome** — header rows + the shell content frame. Flat, not stepped. Added 2026-07-31 on the user's ruling ("it's what lives in kolkrabbi") | `var(--kol-spacing-6)` at every width | `kol-framework.css` `:root` | page containers — those take `--kol-pad-section-x` |
+| **Rail stack** (`.shell-rail-stack` · `-inner`) | the SECTION container in every rail — categories at 24, groups inside a category at 16. Added 2026-08-01 after the user found one layout shipping as **four** idioms: `flex flex-col gap-6` (left), `space-y-6` (right), `space-y-4` (sidebars), `space-y-0` (rows). `space-y-*` is a margin on every child but the first, so it fights the eyebrow box, which owns its own margin — flex `gap` does not | `--kol-spacing-6` outer · `--kol-spacing-4` inner | `kol-components-workshop.css` | a `space-y-*` or `gap-*` utility on a rail container — that is how the four started |
+| **Rail row indent** (`--kol-pad-rail-row-x`) | the row's TEXT edge, so anything that must line up with a row (the tag shelf) reads the indent instead of retyping it. It was the last value of `.shell-nav-item`'s padding shorthand and unreadable from anywhere else | `1.25rem` | `kol-theme.css` `:root` | page content |
 | **Rail row rhythm** (`--kol-pad-rail-row-y`) | the y-padding EVERY sidebar row shares — the eyebrow (`.shell-sidebar-toggle` / `.shell-sidebar-label`) and the nav group header (`.shell-nav-group-header`). Added 2026-08-01; see the eyebrow-box law in [[../04-compositions/02-shells\|shells]] | `0.375rem` — deliberately **off** the `--kol-spacing-*` scale (a tighter chrome rhythm than `--kol-spacing-1`) | `kol-theme.css` `:root` | page content — this is rail chrome only |
-| **Rail widths** (`--kol-sidenav-w` · `--kol-shell-toc-w`) | the workshop shell's two rail **grid tracks**. Both are fixed: the right rail holds its column even with nothing in it (user ruling 2026-08-01), because a rail that vanishes on a heading-less page re-flows main and the same shell renders at two widths | `16rem` left · `14rem` right | `kol-framework.css` `:root` | `--kol-toc-w` — that is the BRAND layout's rail, a different shell |
+| **Rail widths** (`--kol-sidenav-w` · `--kol-shell-toc-w`) | the workshop shell's two rail **grid tracks**. Both are fixed: the right rail holds its column even with nothing in it (user ruling 2026-08-01), because a rail that vanishes on a heading-less page re-flows main and the same shell renders at two widths | `16rem` both — equal since 2026-08-01 (this row still said `14rem` right until 2026-08-01 evening) | `kol-framework.css` `:root` | `--kol-toc-w` — that is the BRAND layout's rail, a different shell |
 
 ## Rule
 

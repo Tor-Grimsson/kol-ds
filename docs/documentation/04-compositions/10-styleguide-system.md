@@ -1,10 +1,11 @@
 ---
-title: Style-guide system — the brand-guide package
+title: Style-guide system
 type: reference
 status: canonical
-updated: 2026-07-10
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-10
-description: Component index and consumer guide for @kolkrabbi/kol-styleguide — the brand/style-guide specimens (colour anatomy + combination lab, logo construction/clearspace/scaling, mood tiles, type blocks, asset tables), raided read-only from the studio's styleguide sources on 2026-07-10. Data is consumer-injected; the package re-exports the shared colour/type primitives so a brand guide imports from one place.
+description: Brand-guide specimens for colour, logo and type
 aliases:
   - styleguide
   - kol-styleguide
@@ -14,8 +15,8 @@ sources:
   - packages/styleguide/src/index.js
   - packages/styleguide/README.md
 tags:
-  - domain/design-system
-  - domain/styleguide
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"

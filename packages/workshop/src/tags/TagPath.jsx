@@ -17,7 +17,10 @@ export default function TagPath({ tag }) {
   if (!parts.length) return leaf
   return (
     <>
-      <span className="text-fg-32">{parts.join('/')}/</span>
+      {/* 64, not 32 (user ruling 2026-08-01). The namespace dims — it does not
+        * disappear. At 32 the prefix dropped so far under the leaf that a
+        * nested tag read as a one-word tag with dirt in front of it. */}
+      <span className="text-fg-64">{parts.join('/')}/</span>
       {leaf}
     </>
   )

@@ -1,15 +1,16 @@
 ---
-title: The nav manifest
+title: Nav manifest
 type: decisions
 status: active
-updated: 2026-07-31
-description: Why the sidebar is a manifest of pointers rather than a mirrored folder tree, which model was chosen and why, and the six files that already are the manifest but were never named as one system.
+created: 2026-07-31
+updated: 2026-08-01
+description: Why the sidebar is pointers, not a mirror
 aliases:
   - nav-manifest
   - system-pipeline
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
   - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"

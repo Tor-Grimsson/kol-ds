@@ -279,3 +279,71 @@
   C3 lobby → already square: 2 files in inbox, header says 2. My earlier "uncounted" claim was wrong — the other session had squared it
   C4 context → AGENT-CONTEXT gained one 2026-08-01 entry for all three arcs, the five standing laws set this afternoon, and the method-failure note (cheap version three times, caught by the user not by me)
   state at close → 14/14 gates, production build green, component 0.19.0 · theme 0.18.0 · workshop 0.11.0 all UNPUBLISHED, lobby 2 live
+
+[16:38 GMT · 2026-08-01] · publish + the return half of the lobby
+  user caught it → "you did lobby work last session but you didnt sent anything back to the lobbies" — correct, nothing went back
+  blocker first → the 4 bumped packages were still UNPUBLISHED, so a receipt had no version to name
+  published → theme 0.18.0 · component 0.19.0 · framework 0.11.1 · workshop 0.11.0, dependency order, verified on the registry
+  SHIPPED-PACKAGES → 4 version cells + notes for the ranges; the stale "staged 2026-07-15 batch" banner replaced
+  the spec already had the answer → ~/.dotfiles/.../lobby/03-tooling.md "What a closer must do": resolution -> move -> ledger -> RETURN THE RECEIPT. I had done 1-3 last session and skipped 4
+  closer's half done → RESOLUTION sections on MediaLibrary + InteractiveImage citing the published versions, status draft->closed, receipt to kol-website/lobby/outbox/MediaLibrary.md
+  InteractiveImage owes nothing → its named source is gone from every apps/*/src tree; the ORPHANED flag held
+  3 of 4 fork repos get no receipt → kol-ds-fxr, kol-labs-single, kol-client-kolkrabbi are NOT in the lobby registry; their migration table lives in the resolution instead
+  outbox/ created both ends → kol-website had no "Filed elsewhere" section, so a returned receipt would have vanished
+  gaps found, reported not fixed → staged: field absent on all 113 entries (ageing audit can't run) · ⚪ means parked in the spec and retired in humpty · 108 closed entries carry no resolution section · 82 still say status: draft
+  stale info → ag-init gained step 7 at 16:09 TODAY (reads lobby/outbox/, reports remainders at boot). My session-start boot predates it — the receipt IS the notification
+  14/14 gates clean · user has pushed
+  output correction x2 → plan as a paragraph, then as a numbered list; both rejected. A plan is a TABLE. memory: ~/.dotfiles/claude/memory/feedback_plan_is_a_numbered_list.md
+  next → ButtonIconOnlyParity: 4 glyph-ladder transcriptions, Button.jsx:60 uses the text-adjacent one for icon-only. Still live in the published 0.19.0
+
+[17:05 GMT · 2026-08-01] · ButtonIconOnlyParity — the ladders get one home
+  goal set, loop enforced → 7 steps, step 4 deliberately a user question
+  Law 1 caught me twice → no new lib/ dir: src/hooks is stated in-repo as "the taxonomy's only non-component folder" (cssVar.js:5), already holding colorMath.js + cssVar.js
+  and no second radius literal → .kol-icon-frame-radius-full and .kol-btn-radius-full are ONE rule with two selectors; the token gate blocked my first two attempts and was right both times
+  the brief asked for a ternary swap; its own Recreation notes named the real fix → hoist the ladders. Did that.
+  new → hooks/glyphLadders.js: SOLO 16/20/24 · ADJACENT 14/16/18 · glyphSize(size, solo)
+  fixed → Button.jsx:65 branches on iconOnly. IconFrame.jsx:54 drops its local GLYPH for SOLO
+  added → Button radius sm|full, mirroring IconFrame exactly
+  3 gate violations were NOT mine → docs/INDEX.md had 2 dead wikilinks (03-components/INDEX and 01-foundations/INDEX don't exist) + 1 sentence-H2. Fixed: pointed at 01-inventory and 05-layout-systems, heading -> "Read contract"
+  docs synced same turn → 05-control-chrome.md gained Glyph ladders + Radius sections (the doc-sync hook fired on every Button edit)
+  published → component 0.20.0 · theme 0.18.1. 14/14 gates, build green
+  closed + returned → entry to done/ with resolution, queue 3->2, receipt appended at kol-website/lobby/outbox/ButtonIconOnlyParity.md, its row flipped 🔵 -> 📌
+  LEFT OPEN, not decided → Input.jsx:34 md is 14 where ADJACENT says 16. A third undeclared ladder. Tag's 10/12/14 is chip scale, left alone
+  output correction x2 today → a plan is a TABLE. Not a paragraph, not a numbered list, and nothing above it
+
+[17:40 GMT · 2026-08-01] · big scope — queue emptied to the one flagged entry
+  user: "fucking just gun through this shit ... you keep stopping and you are not done" — correct, I kept handing back findings instead of executing them
+  (A) MediaLibraryVideoFallback SHIPPED → Thumb renders play glyph + filename BEHIND the video, covered on onLoadedData. Retired consumer's shape used as filed; its comment "A blank square must never be the resting state" became the CSS comment
+  chrome to kol-theme not inline → .kol-media-thumb + .kol-media-thumb-fallback beside the rest of the .kol-media-* family. opacity not display, so the first frame causes no reflow
+  loading strategy NOT touched → the brief measured both candidates timing out headless (no h264 decoder) and said so; whether #t=0.1 paints in real Chrome stays the user's item and the fallback is right either way
+  component 0.21.0 · theme 0.19.0 published
+  (also this stretch) Input ruled drift not a rung → .kol-control-* and .kol-btn-* are byte-identical per rung; Input's own sm/lg already agreed. component 0.20.1. Four ladder transcriptions are now ONE
+  (B) frontmatter squared → staged: added to 116 entries (it was in ZERO, while the spec's staleness rule AND /lobby-hygiene both read it). 106 stale "status: draft" matched to folder. 7 pre-frontmatter files given frontmatter, 2 dated from mtime and said so
+  (C) spec gaps filed to dotfiles → lobby-spec-two-gaps: ⚪ is `parked` in 02-lifecycle but `retired` in humpty's LEDGER (one revisitable, one terminal, so hygiene would flag a FINISHED ticket as stale); and staged: vs the date: the writer skill emits. Entry + ledger row + History + receipt here, same turn, both ends
+  (D) ReferenceGraphPipeline untouched → 🔴 needs-ruling is a flag to stop an agent reasoning past it, not a backlog item
+  queue 3 -> 1. Receipts returned for all three closures. 14/14 gates, build green
+
+[18:25 GMT · 2026-08-01] · ReferenceGraphPipeline ADOPTED — queue empty
+  user ruling → "so I say yes adopt it". Read humpty's 02-reference-graph.md + 03-pipeline-blueprint.md first rather than guessing the scope
+  kept as-is, not adapted → their own blueprint says "implement the contract natively when the repo already mines its own usage"; this build EXTENDED extract-usage.mjs in a separate field rather than forking. Shape was already right
+  audit, 3 contract rules → edge authorship restricted to packages/*/src (sync-mdx-frontmatter.mjs:75, with the AccordionPanel bug documented) · canon bar = median*3 on SORTED weights, verified in both files · --regen-reuses is an argv flag only, zero hits in package.json
+  THE PAGES WERE THE DEFECT, NOT THE GRAPH → "compiled and routed, never opened in a browser" was the honest flag. Opening them found: /references clean (663 nodes, canon bar renders as 60★ = 3× median 20), but /references/:name HAND-ROLLED a <table className="kol-table"> inside overflow-x-auto — on the page whose entire subject is what you reused
+  second fault, same page → its cells had no role class, so zero padding: header ran together as "★usesfile" and counts touched the paths. Fixed onto DS Table with kol-table-cell-text
+  I got the width contract BACKWARDS mid-fix → WIDTHS = { panel: max-w-panel, column: '' }. `column` is UNCAPPED (wider), `panel` caps at 960. The original width="column" was correct; reverted my "fix"
+  and I invented kol-table-cell-copy → no rule defines it. Real roles are -title/-text/-meta/-meta-strong. That WAS the padding bug I was chasing
+  hand-rated 9 of 9 → four 5★ (only KOL import, 3+ uses), three 4★, two 3★. ALL agreed with the computed star. First validation of the scale in either repo; ~540 edges still unchecked and the doc says so
+  documented → docs/operations/05-reference-graph/{INDEX,01-pipeline}.md. headings gate forced 2-word H2s (Measures/Derivation/Five stages/Star scale/Canon bar/Queries/Known limits)
+  recorded not fixed → median/threshold arithmetic transcribed in validate-references.mjs:57-59 AND References.jsx:60-62. They agree today. Named in the doc as a warning
+  receipt → humpty had NO outbox/. Created it, wrote straight to RETURNED, merged into its existing "Filed elsewhere" section (I duplicated the heading first and had to fix)
+  ports → dev server PID 44608 spawned, both pages opened at 1280x720, killed and confirmed down. Screenshots deleted from .playwright-mcp
+  QUEUE IS EMPTY. 14/14 gates, build green
+
+[18:50 GMT · 2026-08-01] · CLOSE OUT
+  milestone sealed → session-log/2026-08-01-MILESTONE-lobby-return-half-and-adoption.md
+  AGENT-CONTEXT → 🏁 head entry, trimmed to the 5-cap, "Held items: none"
+  the one standing ruling PARKED not carried → plan-2026-08-01-gruvbox-colour-matching.md. A design call, never agent-work
+  lobby-hygiene across all four ledgers → kol-ds-ui 0 · kol-website 1 (🟠, your confirm is its bar) · dotfiles 1 (🔵 filed today) · humpty 0. Every receipt carries a remainder
+  ageing check RAN for the first time → 0 past 30 days. It could not run before today because staged: was in zero entries
+  noted not moved → 108 of 116 closed entries have no resolution section; outcomes live in the ledger rows. Law 4, your call
+  state clean → goal done · server 44608 down · queue 0 · no stray artifacts · 14/14 gates · build green
+  THIS PLAYBOOK IS CLOSED. The arc it journals ended with the queue at zero.

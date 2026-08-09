@@ -1,10 +1,11 @@
 ---
-title: Store system — the commerce package
+title: Store system
 type: reference
 status: canonical
-updated: 2026-07-09
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-store — the commerce/storefront system (product-detail layout, price display, gsap diagonal marquee river), lifted out of kol-component on 2026-07-09. The prints store is its consumer.
+description: The commerce and storefront package
 aliases:
   - store
   - kol-store
@@ -15,8 +16,8 @@ sources:
   - packages/store/README.md
   - showcase/src/sets/prints-store.jsx
 tags:
-  - domain/design-system
-  - domain/store
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"

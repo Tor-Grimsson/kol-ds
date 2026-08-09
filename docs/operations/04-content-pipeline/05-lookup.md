@@ -1,15 +1,17 @@
 ---
-title: Lookup
+title: Content-pipeline lookup
 type: reference
 status: active
-updated: 2026-07-31
-description: The at-a-glance cheat sheet for the content pipeline — every root, every derivation file, every surface, every gate, and the answer to "where do I put this" in one table.
+created: 2026-08-01
+updated: 2026-08-01
+description: Where do I put this, in one table
 aliases:
   - pipeline-lookup
   - cheatsheet
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
+  - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"
   - "[[01-sources|the seven content roots]]"

@@ -1,10 +1,11 @@
 ---
-title: Content system — the CMS package (stack + work)
+title: Content system
 type: reference
 status: canonical
-updated: 2026-07-09
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-content — the two Sanity CMS streams /stack (blog editorial) and /work (portfolio), lifted out of kol-component on 2026-07-09. Presentation only; data is consumer-injected. The Sanity collection/query layer is deliberately per-repo, not packaged.
+description: The two Sanity CMS streams, stack and work
 aliases:
   - content
   - kol-content
@@ -17,8 +18,8 @@ sources:
   - showcase/src/sets/stack-blog.jsx
   - showcase/src/sets/work-portfolio.jsx
 tags:
-  - domain/design-system
-  - domain/content
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"

@@ -1,14 +1,16 @@
 ---
-title: The manifest tree
+title: Manifest tree
 type: reference
 status: active
-updated: 2026-07-31
-description: The declared sidebar, generated from the real sources — every category, chapter and page with its source path and renderer. Regenerate with pnpm extract:manifest.
+created: 2026-07-31
+updated: 2026-08-01
+description: The declared sidebar, generated from real sources
 aliases:
   - manifest-tree
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
+  - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"
   - "[[02-taxonomy|categories, chapters, pages]]"
@@ -95,7 +97,7 @@ the design system, documented. Source root: `docs/documentation`
 
 | Page | Path | Source | Render |
 |---|---|---|---|
-| shadcn ⇄ KOL — system comparison & gap analysis | `/documentation/benchmark-INDEX` | `docs/documentation/06-research/benchmark/INDEX.md` | `vault` |
+| shadcn ⇄ KOL — system comparison & gap analysis | `/documentation/benchmark-INDEX` | `docs/documentation/06-research/01-comparison.md` | `vault` |
 | The component workbench | `/documentation/01-component-workbench` | `docs/documentation/06-research/workflows/01-component-workbench.md` | `vault` |
 | Workbench tools — cut-points on the stack | `/documentation/02-workbench-tools` | `docs/documentation/06-research/workflows/02-workbench-tools.md` | `vault` |
 | The composition layer — behavior primitives + variants | `/documentation/03-composition-layer` | `docs/documentation/06-research/workflows/03-composition-layer.md` | `vault` |
@@ -108,7 +110,7 @@ the design system, documented. Source root: `docs/documentation`
 
 | Page | Path | Source | Render |
 |---|---|---|---|
-| Breakpoints — the values | `/documentation/01-breakpoints` | `docs/documentation/08-breakpoints/01-breakpoints.md` | `vault` |
+| Breakpoints — the values | `/documentation/01-breakpoints` | `docs/documentation/08-breakpoints/01-values.md` | `vault` |
 | Breakpoints — best practices | `/documentation/02-best-practices` | `docs/documentation/08-breakpoints/02-best-practices.md` | `vault` |
 | Breakpoints — testing methods | `/documentation/03-methods` | `docs/documentation/08-breakpoints/03-methods.md` | `vault` |
 | Breakpoints — KOL-DS rules | `/documentation/04-kol-ds-rules` | `docs/documentation/08-breakpoints/04-kol-ds-rules.md` | `vault` |
@@ -411,7 +413,7 @@ repo machinery. Source root: `docs/operations`
 | Page | Path | Source | Render |
 |---|---|---|---|
 | Operations | `/documentation/operations-INDEX` | `docs/operations/INDEX.md` | `vault` |
-| Shipped packages | `/documentation/SHIPPED-PACKAGES` | `docs/operations/SHIPPED-PACKAGES.md` | `vault` |
+| Shipped packages | `/documentation/SHIPPED-PACKAGES` | `docs/operations/01-release/02-shipped-packages.md` | `vault` |
 
 ### Release · `01-release`
 

@@ -33153,7 +33153,7 @@
     ]
   },
   {
-    "name": "--kol-fg-body",
+    "name": "--kol-fg-default",
     "kind": "token",
     "definedIn": "packages/theme/kol-opacity.css",
     "concern": "color",

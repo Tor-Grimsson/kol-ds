@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { ShellHeader, HEADER_ICON } from '@kolkrabbi/kol-framework'
+import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
-import { Button, ShellDrawer, ShellSearchOverlay, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, IconFrame, ShellDrawer, ShellSearchOverlay, Tooltip } from '@kolkrabbi/kol-component'
 import { matchSearchItems } from '../engine/search.js'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -222,7 +222,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     <>
       {actions}
       <Tooltip label="Search">
-        <Button variant="ghost" quiet iconOnly="search" iconSize={HEADER_ICON} onClick={() => setIsSearchOpen(true)} aria-label="Search" />
+        {/* IconFrame at the `lg` rung (user ruling 2026-08-01). Two faults in
+          * one call: it was a Button, and at the default `md` rung it drew the
+          * solo-lg glyph inside an `md` square while every neighbour sat on
+          * `lg`. `quiet` is gone too — on ghost it rested at oq-48 × 0.5, which
+          * made search the faintest thing in a row of oq-64 controls. */}
+        <IconFrame name="search" variant="nav" size="lg" onClick={() => setIsSearchOpen(true)} aria-label="Search" />
       </Tooltip>
     </>
   )

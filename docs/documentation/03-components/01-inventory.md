@@ -1,10 +1,11 @@
 ---
-title: Components — the full inventory
+title: Component inventory
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
 verified: 2026-07-04
-description: Every exported KOL component by tier — 39 atoms, 32 molecules, 28 organisms, the Graphic + Icon loaders, hooks, and 10 framework pieces — with one-line jobs and where to see each live.
+description: Every exported component, by tier, with its job
 aliases:
   - components
   - component-list
@@ -12,7 +13,8 @@ sources:
   - packages/component/src/index.js
   - packages/framework/src/index.js
 tags:
-  - domain/design-system
+  - domain/components
+  - audience/consumer
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[04-diamond-tier|diamond tier]]"
@@ -142,7 +144,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
 | `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
 | `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
-| `MediaLibrary` | A browser over an object bucket — **ONE component, two variants**: `page` fills its box, `modal` opens over the app. Variant is container geometry only (the ThemeToggle precedent); everything else is a prop. Folders disclose in place, Finder's list model. Composes `ContentFilters` + `MediaCard`/`MediaRow` + `MediaViewer` + `FullscreenOverlay`. **The client is injected, never imported** — ARCHITECTURE §3. |
+| `MediaLibrary` | A browser over an object bucket — **ONE component, two variants**: `page` fills its box, `modal` opens over the app. Variant is container geometry only (the ThemeToggle precedent); everything else is a prop. Folders disclose in place, Finder's list model. Composes `ContentFilters` + `MediaCard`/`MediaRow` + `MediaViewer` + `FullscreenOverlay`. **The client is injected, never imported** — ARCHITECTURE §3. A video tile carries a **fallback resting state** (play glyph + filename, `.kol-media-thumb-fallback`) behind the video, because a `<video>` paints nothing until a frame decodes — the `<img alt>` equivalent. |
 | `MediaBrowser` / `MediaPicker` | Thin **aliases** of `MediaLibrary` at `variant="page"` / `variant="modal"`, kept so existing call sites keep working. They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
 | `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, client-side TREE derivation (folders disclose in place), the open-folder set and the sort key. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
 | `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |

@@ -35,6 +35,14 @@ body {
      grid track that had to line up with it read 256, so the shell header's
      brand block sat 4 off the sidebar column it exists to align to. */
   --kol-sidenav-w: 16rem;
+  /* Grab-edge gesture (lobby: SideNavGrabResize, 2026-08-09). Minted HERE —
+     no --kol-* token carried these before (checked: only -w, -w-collapsed,
+     -dot-left shipped). kol-mirror carried them as bare literals, the
+     consumer-app slack the brief bans copying; both widths reference the
+     spacing ladder (the mirror strip's width lands on the ladder's first rung). */
+  --kol-sidenav-grab-w: var(--kol-spacing-1);  /* the strip's hit width */
+  --kol-sidenav-snap: 12rem;                   /* drag under this snaps to -w-collapsed */
+  --kol-sidenav-step: var(--kol-spacing-4);    /* keyboard resize increment */
   --kol-sidenav-w-collapsed: 56px;
   /* The workshop shell's RIGHT rail. EQUAL TO THE LEFT (user ruling
      2026-08-01) — the two rails frame the same content and a lopsided frame is
@@ -104,10 +112,36 @@ body {
  * said 1800 — same element, two answers (lobby/WidthSystemContradictions). */
 @media (min-width: 1920px) { :root { --kol-container-max: var(--kol-content-shell, 1800px); } }
 
-/* :root[data-sidenav="collapsed"] removed 2026-07-29 — the manual collapse
- * feature died with the editor's exit (brand ruling); the responsive rail
- * below 1024px is the surviving narrow mode. --kol-sidenav-w-collapsed stays:
- * the rail still uses it. */
+/* :root[data-sidenav="collapsed"] — the manual collapse, rebuilt DELIBERATELY
+ * 2026-08-09 (lobby: SideNavGrabResize) after the 2026-07-29 removal of the
+ * renderer-less stamp. SideNav's grab edge (useDragResize.js) owns the state
+ * now; these rules mirror the narrow mode below, so "collapsed" is that same
+ * rail — one look, two triggers. */
+:root[data-sidenav="collapsed"] .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
+:root[data-sidenav="collapsed"] .kol-sidenav-hops { padding: 0 0 var(--kol-spacing-4); margin-bottom: var(--kol-spacing-4); }
+:root[data-sidenav="collapsed"] .kol-sidenav-hop { padding: var(--kol-spacing-2) 0; justify-content: center; gap: 0; }
+:root[data-sidenav="collapsed"] .kol-sidenav-hop-label { display: none; }
+:root[data-sidenav="collapsed"] .kol-sidenav-body { display: none; }
+:root[data-sidenav="collapsed"] .kol-sidenav-hop-count,
+:root[data-sidenav="collapsed"] .kol-sidenav-section-toggle { display: none; }
+
+/* The grab edge itself — invisible by spec (col-resize cursor is the pointer
+ * affordance, the focus ring the keyboard one — recipe from
+ * .kol-btn:focus-visible, offset pulled inside because the strip hugs the
+ * layout edge). Positioning utilities ride inline in SideNav.jsx; the narrow
+ * mode hides the strip in its own block further down. */
+.kol-sidenav-grab {
+  width: var(--kol-sidenav-grab-w);
+  cursor: col-resize;
+}
+.kol-sidenav-grab:focus-visible {
+  outline: 2px solid var(--kol-focus-ring);
+  outline-offset: -2px;
+}
+/* Live drag writes --kol-sidenav-w per pointermove — the grid's ease below
+ * would render the rail a frame behind the pointer, so the drag suspends it
+ * (useDragResize stamps the attribute for the drag's duration). */
+:root[data-sidenav-dragging] .kol-brand-layout { transition: none; }
 
 /* ───── Brand doc layout (sidebar + content) ─────
    The grid lives in CSS for its dynamic --kol-sidenav-w + transition. */
@@ -123,10 +157,12 @@ body {
      User's localStorage expand preference is overridden while viewport is narrow;
      restored once they cross back over the threshold. */
   .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
-  .kol-sidenav-hops { padding: 0 0 16px; margin-bottom: 16px; }
-  .kol-sidenav-hop { padding: 8px 0; justify-content: center; gap: 0; }
+  .kol-sidenav-hops { padding: 0 0 var(--kol-spacing-4); margin-bottom: var(--kol-spacing-4); }
+  .kol-sidenav-hop { padding: var(--kol-spacing-2) 0; justify-content: center; gap: 0; }
   .kol-sidenav-hop-label { display: none; }
   .kol-sidenav-body { display: none; }
+  /* forced narrow / drawer modes own the rail below lg — no resize here */
+  .kol-sidenav-grab { display: none; }
 }
 
 @media (max-width: 767px) {
@@ -699,6 +735,10 @@ body {
 @media (min-width: 1280px) {
   .kol-brand-layout[data-toc="true"] {
     grid-template-columns: var(--kol-sidenav-w) minmax(0, 1fr) var(--kol-toc-w);
+  }
+  /* collapsed + TOC: the third column survives; only the rail track narrows */
+  :root[data-sidenav="collapsed"] .kol-brand-layout[data-toc="true"] {
+    grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr) var(--kol-toc-w);
   }
 }
 

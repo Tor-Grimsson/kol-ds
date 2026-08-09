@@ -1,9 +1,10 @@
 ---
-title: Color — anchors and ramps
+title: Color
 type: reference
 status: active
-updated: 2026-07-09
-description: The brand color system — four semantic identity anchors and seven ramps (five hues + cream + grey) with literal hex per stop. Values are verbatim from kol-brand-color.css; the same data ships portably in @kolkrabbi/kol-brand.
+created: 2026-07-09
+updated: 2026-08-01
+description: Four identity anchors and seven brand ramps
 aliases:
   - color
   - ramps
@@ -11,8 +12,8 @@ sources:
   - packages/framework/kol-brand-color.css
   - packages/brand/src/index.js
 tags:
-  - domain/design-system
-  - domain/color
+  - domain/tokens
+  - audience/consumer
 related:
   - "[[01-tokens|foundations]]"
   - "[[../05-brand/INDEX|brand kit]]"
@@ -59,4 +60,4 @@ The dashboards + chess chart classes consume a categorical `--kol-palette-<hue>`
 
 ## Known gap
 
-KOL is **sRGB, not OKLCH** — flagged in the shadcn benchmark ([[../06-research/benchmark/INDEX|benchmark]], gap 4). A future ramp regeneration in OKLCH would keep perceptual lightness even across stops.
+KOL is **sRGB, not OKLCH** — flagged in the shadcn benchmark ([[../06-research/01-comparison|benchmark]], gap 4). A future ramp regeneration in OKLCH would keep perceptual lightness even across stops.

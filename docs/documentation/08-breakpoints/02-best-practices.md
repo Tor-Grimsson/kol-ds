@@ -1,19 +1,20 @@
 ---
-title: Breakpoints — best practices
+title: Breakpoint practices
 type: reference
 status: active
-updated: 2026-07-30
-description: How to write responsive KOL code without inventing numbers — mobile-first min-width, tokens over pixels, canonical collapse points, and the habits that keep one system from becoming three.
+created: 2026-07-29
+updated: 2026-08-01
+description: Writing responsive code without inventing numbers
 aliases:
   - responsive best practices
 sources:
   - packages/theme/kol-theme.css
 tags:
-  - domain/design-system
   - domain/layout
+  - audience/consumer
 related:
   - "[[INDEX|breakpoints]]"
-  - "[[03-methods|testing methods]]"
+  - "[[../../operations/06-workflows/07-device-testing|testing methods]]"
 ---
 
 # Breakpoints — best practices
@@ -29,4 +30,4 @@ related:
 | 7 | **Full-bleed is a decision, not a default** — chess stage, block previews; everything else rides the shell | uncapped surfaces are where horizontal scroll bugs breed |
 | 8 | **`@container` only for embedded product UI** (dashboard cards), with the ancestor declared | container queries without `container-type` silently never fire |
 | 9 | **Don't copy workshop/** geometry into showcase code | those are verbatim-ported specimens with their own internal laws |
-| 10 | **Verify at the breakpoints, not between them** — 640/768/1024/1280 + one mid-width sanity | bugs live at the seams; see [[03-methods\|methods]] for the rig |
+| 10 | **Verify at the breakpoints, not between them** — 640/768/1024/1280 + one mid-width sanity | bugs live at the seams; see [[../../operations/06-workflows/07-device-testing\|methods]] for the rig |

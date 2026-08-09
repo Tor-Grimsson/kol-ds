@@ -1,14 +1,15 @@
 ---
-title: Component placement — where a new component goes
+title: Component placement
 type: reference
 status: active
-updated: 2026-07-30
-description: The mechanical runbook for placing a new KOL component into its Tier — the decision checklist, the rules that keep the atom/molecule test mechanical, the worked calls from the 2026-07-02 sweep, and validator enforcement. Tier definitions live in the taxonomy doc.
+created: 2026-07-31
+updated: 2026-08-01
+description: The runbook for placing a new component
 aliases:
   - component-placement
 tags:
-  - domain/design-system
-  - domain/conventions
+  - domain/components
+  - audience/consumer
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[03-taxonomy-audit-and-plan|taxonomy audit & plan]]"

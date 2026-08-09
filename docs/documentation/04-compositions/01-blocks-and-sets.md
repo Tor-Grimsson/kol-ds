@@ -1,9 +1,10 @@
 ---
-title: Blocks & sets — composed layers above components
+title: Blocks & sets
 type: reference
 status: active
-updated: 2026-07-30
-description: The two composition layers on the showcase — blocks (copy-pasteable UI compositions with the shadcn-style viewer stage) and sets (full-apparatus compositions like the chess board) — and the contracts they follow.
+created: 2026-07-30
+updated: 2026-08-01
+description: The two composition layers above components
 aliases:
   - blocks
   - sets
@@ -12,8 +13,8 @@ sources:
   - showcase/src/lib/BlockViewer.jsx
   - showcase/src/lib/PreviewCard.jsx
 tags:
-  - domain/design-system
-  - pattern/blocks
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../03-components/01-inventory|components]]"
   - "[[02-shells|reference shells]]"

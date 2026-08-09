@@ -20,6 +20,11 @@ import { Link } from 'react-router-dom'
  *
  *   L1  section  `.shell-sidebar-toggle` + kol-doc-eyebrow    quiet, no chevron
  *   L2  group    `.shell-nav-group-header` + kol-mono-14      louder, chevron
+ *
+ * L2 carries NO colour class: `.shell-nav-group-header` owns weight 500 and
+ * `--kol-fg-shout` itself (user ruling 2026-08-01). It used to carry
+ * `text-body` — a utility that resolved to nothing at the time, and would now
+ * fight the rule for the same property. One owner.
  *   L3  row      `.shell-nav-item` + kol-mono-14              leaf, DocsToc/links
  *
  * THE RULES THIS COMPONENT ENFORCES BY CONSTRUCTION
@@ -71,13 +76,13 @@ export default function RailSection({
    * four call sites in two rails, spelled differently at each. */
   const headerClass = level === 1
     ? 'shell-sidebar-toggle kol-doc-eyebrow'
-    : 'shell-nav-group-header kol-mono-14 text-body'
+    : 'shell-nav-group-header kol-mono-14'
 
   /* A static header is not a button and must not claim to be one. It still
    * wears the same box — `.shell-sidebar-label` shares L1's rule. */
   const staticClass = level === 1
     ? 'shell-sidebar-label kol-doc-eyebrow'
-    : 'shell-nav-group-header kol-mono-14 text-body'
+    : 'shell-nav-group-header kol-mono-14'
 
   /* L2 only. At L1 the caret is not drawn (user ruling) — the row is still the
    * toggle, so the affordance exists, it just isn't a glyph. */

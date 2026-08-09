@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ThemeToggle from './ThemeToggle'
+import useDragResize from './useDragResize'
 import { useScrollSpy } from '@kolkrabbi/kol-component'
 
 /* Walk the active page's children and return all leaf section ids (for scroll-spy). */
@@ -144,15 +145,14 @@ export default function SideNav({
   const onPageRoot = activePage && pathname === activePage.to
   const activeSectionId = useScrollSpy(onPageRoot ? sectionIds : [])
 
-  /* The collapse state machine went with the button (finding #3). It stamped
-   * `data-sidenav="collapsed"` on <html> and an `is-collapsed` class on the
-   * aside, neither of which any stylesheet has read since 2026-07-29 — state
-   * with no renderer is just a lie the component tells itself.
-   *
-   * `collapsed` / `onToggle` are still ACCEPTED so no consumer's call site
-   * breaks; they are inert, and the prop docs say so. A consumer that wants a
-   * collapsing rail owns it locally (kol-website's apps/brand does exactly
-   * that) until the feature is deliberately rebuilt here. */
+  /* Collapse, rebuilt DELIBERATELY 2026-08-09 (lobby: SideNavGrabResize) —
+   * the 2026-07-29/30 removals killed a stamp with no renderer; the grab edge
+   * below reinstates BOTH halves. useDragResize owns the state, stamps
+   * :root[data-sidenav="collapsed"], and kol-framework.css renders it again.
+   * `collapsed` / `onToggle` remain ACCEPTED-but-inert — the gesture is
+   * self-contained, so call sites still don't break. */
+  const asideRef = useRef(null)
+  const { grabProps } = useDragResize(asideRef)
 
   /* Per-page section expand/collapse (opt-in via collapsibleSections).
    * The section containing the active route auto-expands on every
@@ -171,16 +171,14 @@ export default function SideNav({
 
   return (
     <aside
+      ref={asideRef}
       className={`kol-sidenav sticky top-0 self-start h-dvh flex flex-col border-r border-fg-08 z-20 bg-surface-primary${drawerOpen ? ' is-drawer-open' : ''}`}
     >
-      {/* The collapse chevron was REMOVED 2026-07-30 (lobby ruling, finding
-        * #3). Its CSS — `:root[data-sidenav="collapsed"]` — was deleted
-        * 2026-07-29 when the manual-collapse feature was ruled dead, but the
-        * button, the `data-sidenav` stamp and the `is-collapsed` class all
-        * kept shipping, so every consumer of the package got a control that
-        * did nothing at all. Nothing styles any of it (see the tombstone at
-        * kol-framework.css:85). The surviving narrow mode is the responsive
-        * ≤1024px rail, which needs no control. */}
+      {/* The collapse chevron Button was REMOVED 2026-07-30 (lobby ruling,
+        * finding #3) as a control with no renderer. The grab edge at the end
+        * of this aside is its deliberate 2026-08-09 replacement — pointer-drag
+        * resizes, drag under --kol-sidenav-snap collapses, double-click and
+        * Home reset, arrows resize from the keyboard. See useDragResize.js. */}
 
       <div className="kol-sidenav-scroll flex-1 flex flex-col justify-between overflow-y-auto pt-4 pb-4 [scrollbar-width:thin]">
         <ul className="kol-sidenav-tree flex flex-col gap-[2px]">
@@ -267,6 +265,10 @@ export default function SideNav({
           <span className="text-meta group-hover:text-emphasis"> · {new Date().getFullYear()}</span>
         </a>
       </div>
+
+      {/* Grab edge — width/cursor/focus chrome in kol-framework.css
+        * (.kol-sidenav-grab); hidden below lg by the narrow-mode block. */}
+      <div className="kol-sidenav-grab absolute top-0 right-0 bottom-0 z-[1]" {...grabProps} />
     </aside>
   )
 }

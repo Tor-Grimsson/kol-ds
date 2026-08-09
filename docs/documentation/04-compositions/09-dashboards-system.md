@@ -1,10 +1,11 @@
 ---
-title: Dashboards system — the analytics package
+title: Dashboards system
 type: reference
 status: canonical
-updated: 2026-07-09
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-dashboards — hand-rolled SVG charts (no d3), the card family, a responsive dashboard grid, and the composed MetricsDashboard apparatus, lifted out of kol-component on 2026-07-09. Presentation only; all data is consumer-injected.
+description: Hand-rolled SVG charts and the dashboard grid
 aliases:
   - dashboards
   - kol-dashboards
@@ -16,8 +17,8 @@ sources:
   - packages/dashboards/README.md
   - showcase/src/sets/metrics-dashboard.jsx
 tags:
-  - domain/design-system
-  - domain/dashboards
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[08-chess-system|chess system]]"

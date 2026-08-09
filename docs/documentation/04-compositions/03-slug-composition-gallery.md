@@ -1,9 +1,10 @@
 ---
-title: Slug pages & the composition gallery — how a set/block lists every component it uses
+title: Composition gallery
 type: reference
 status: active
-updated: 2026-07-30
-description: How every /sets/:slug and /blocks/:slug page derives and renders its full component manifest — the transitive composition scanner plus the live per-component gallery, one container per component.
+created: 2026-07-15
+updated: 2026-08-01
+description: How a slug page lists its components
 aliases:
   - composition
   - set slug
@@ -13,8 +14,8 @@ sources:
   - showcase/src/lib/CollectionPage.jsx
   - showcase/src/usage/composition.json
 tags:
-  - domain/design-system
-  - pattern/blocks
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[01-blocks-and-sets|blocks & sets]]"
   - "[[../03-components/01-inventory|components]]"

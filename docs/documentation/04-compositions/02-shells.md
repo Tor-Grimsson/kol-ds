@@ -2,18 +2,20 @@
 title: Reference shells
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
-description: The documented app shells in the KOL ecosystem — the shadcn-style docs shell (this repo), the workshop shell (kol-monorepo), and the blocks/collections concept. What each is made of and when to reach for it.
+description: The documented app shells, and their uses
 aliases:
   - reference-shells
 tags:
-  - domain/design-system
+  - domain/layout
+  - audience/consumer
   - pattern/app-shell
 sources:
   - showcase/src/lib/ShellChrome.jsx
   - packages/workshop/src/shell/ShellLayout.jsx
 related:
-  - "[[../06-research/workflows/01-component-workbench|component workbench]]"
+  - "[[../../operations/06-workflows/01-component-workbench|component workbench]]"
 ---
 
 # Reference shells
@@ -163,7 +165,7 @@ Four rungs, four names, used in code comments, gate messages and here:
 | **Page** | `Tokens` | `.shell-nav-item` | **400** |
 | **Section** | the right rail's rows | `.shell-nav-item` (same idiom, deliberately) | 400 |
 
-Chapter and Page were **indistinguishable**: both `kol-mono-14`, and the only difference was `.text-body` — a **colour** utility, not type. A parent that reads identically to its children is not a hierarchy. The weight is the difference and it stays **inside one ramp**: R1 exists to stop a second *ramp* in the rails, and a weight within one is not one.
+Chapter and Page were **indistinguishable**: both `kol-mono-14`, and the only difference was `.text-body` — a **colour** utility, not type (that class was renamed `.text-default` on 2026-08-01; the point stands). A parent that reads identically to its children is not a hierarchy. The weight is the difference and it stays **inside one ramp**: R1 exists to stop a second *ramp* in the rails, and a weight within one is not one.
 
 **Both rails are `--kol-sidenav-w` wide.** The right read 14rem against the left's 16rem; two rails framing the same content at different widths is a frame nobody drew on purpose.
 
@@ -360,3 +362,4 @@ Both shells lived side-by-side since the workshop port; the comparison lands on 
 - Chaptered knowledge base, markdown-driven, tags/quick-actions → **workshop shell**.
 - Selling compositions, not parts → **blocks**.
 - New page in either shell: the shell is imported, never re-authored per page.
+- **Every icon control in the header is `IconFrame variant="nav" size="lg"`** (2026-08-01). Six controls had been running four containers and two glyph sizes — GitHub, search, hamburger and both rail toggles now share one frame and take the glyph from `SOLO`; `ShellHeader`'s private `iconBtnCls` is deleted and the showcase's hand-written GitHub anchor with it. Not `Button`: header chrome takes a click but must never light up, so `IconFrame` gained an interactive path instead. The theme toggle keeps its full-ink no-hover model, which is a 2026-07-30 ruling and not drift. Law + gate: [[../03-components/05-control-chrome\|control chrome]] § Icon box.

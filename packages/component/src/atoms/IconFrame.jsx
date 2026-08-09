@@ -1,4 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import { SOLO } from '../hooks/glyphLadders.js'
 
 /**
  * IconFrame — a STATIC square frame holding one icon.
@@ -35,8 +36,27 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * moves with it — that is the 2026-07-28 law, and it only means something if the
  * two are separable.
  *
- * Deliberately absent: `onClick`, `href`, `disabled`, `aria-pressed`, `title`.
- * Wanting any of those means wanting a `Button` with `iconOnly`, not this.
+ * IT TAKES A CLICK (2026-08-01 ruling) — *"you dont use a button… you use the
+ * ICON COMPONENT… it has no interactive states."* This file used to say the
+ * opposite, and called it "the entire point": no `onClick`, no `href`, and
+ * *"wanting any of those means wanting a Button with iconOnly, not this."*
+ *
+ * That was one sentence too strong. Two separate things had been welded
+ * together — **is it clickable** and **does it light up** — and only the second
+ * was ever the point. The shell header proved it: six chrome controls all
+ * needing a click, none wanting a hover wash, so every one of them hand-wrote
+ * its own box and the row ended up on four different containers.
+ *
+ * So `onClick` renders a `<button>`, `href` renders an `<a>`, and neither
+ * gains a state rule. The UA's own button chrome is reset in the theme
+ * (`button.kol-icon-frame, a.kol-icon-frame`) so "no states" is a property of
+ * the CLASS rather than of the tag — which is exactly the correction this
+ * component's own docstring already argued for when it refused to borrow
+ * `kol-btn-*` on a span.
+ *
+ * Still deliberately absent: `disabled` and `aria-pressed`. Both describe a
+ * control that CHANGES appearance with state, which is the line that stays.
+ * Want the wash, the pressed fill or the disabled dim? That is `Button`.
  *
  * @param {string} name       icon name (kol-icons)
  * @param {string} variant    primary|secondary|accent|outline|ghost|nav|grey|danger
@@ -51,7 +71,9 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *                            square is unaffected; only the centred glyph moves.
  * @param {string} className  escape hatch
  */
-const GLYPH = { sm: 16, md: 20, lg: 24 }
+// The solo-glyph ladder, from its one source. This was a local transcription
+// until component 0.20.0 — see hooks/glyphLadders.js for why that mattered.
+const GLYPH = SOLO
 
 export default function IconFrame({
   name,
@@ -59,18 +81,39 @@ export default function IconFrame({
   size = 'md',
   radius = 'sm',
   iconSize = null,
+  onClick,
+  href,
   className = '',
   ...rest
 }) {
   if (!name) return null
   const radiusCls = radius === 'full' ? ' kol-icon-frame-radius-full' : ''
   const resolvedIconSize = iconSize ?? GLYPH[size] ?? GLYPH.md
+  const cls = `kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${className}`.trim()
+  const glyph = <Icon name={name} size={resolvedIconSize} />
+
+  /* The element follows the affordance, and the CLASS is identical in all three
+   * branches — that is the whole contract. A frame that can be clicked must be
+   * a real button or a real link (keyboard, focus order, middle-click, screen
+   * readers); a frame that cannot must not be either, or it lands in the tab
+   * order announcing itself as something to press. */
+  if (href) {
+    return (
+      <a className={cls} href={href} {...rest}>
+        {glyph}
+      </a>
+    )
+  }
+  if (onClick) {
+    return (
+      <button type="button" className={cls} onClick={onClick} {...rest}>
+        {glyph}
+      </button>
+    )
+  }
   return (
-    <span
-      className={`kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${className}`.trim()}
-      {...rest}
-    >
-      <Icon name={name} size={resolvedIconSize} />
+    <span className={cls} {...rest}>
+      {glyph}
     </span>
   )
 }

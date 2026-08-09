@@ -15,6 +15,7 @@
   "EmptyState": "A stacked \"nothing here yet / nothing selected\" text block for inspectors, empty rails and unshipped panels.",
   "IconFrame": "A STATIC square frame holding one icon.",
   "Figure": "The shared caption'd media shell for long-form prose: optional label above, an aspect-locked bordered frame around `children`, optional figcaption below.",
+  "FullscreenOverlay": "The scrim + centred sheet every overlay in the repo wears.",
   "HlsVideo": "Background/decorative HLS-streaming video atom.",
   "Input": "Single-input atom built on the .kol-control shell.",
   "Label": "Minimal form label.",
@@ -75,6 +76,7 @@
   "FoundryCTA": "The simple centered tier of the CTA-band family: a centered column with a short rule line, a heading, a mono description, and one or more Button actions.",
   "FullBleedHero": "Full-bleed media hero: cover-fit background media (image or video) filling a fixed-height section, an optional surface scrim, and one content slot laid over it.",
   "LoaderOverlay": "Mounts a loading curtain over everything, dead center.",
+  "MediaLibrary": "A browser over an object bucket, in two views over one headless core.",
   "MediaTileGallery": "A stack or grid of framed media tiles that open THE shared fullscreen MediaViewer at the clicked tile, paged across all items (the monorepo's FullscreenGallery recreated on the shared viewer instead of its nav-less single image; the AssetFigure/AssetGrid deps are dropped — tile and grid are inlined).",
   "MediaViewer": "THE fullscreen paged media viewer.",
   "NewsletterBand": "Centered newsletter-subscribe band: heading + lede over an email Input + submit Button, with an inline success/error status line under the form.",
@@ -94,6 +96,7 @@
   "SwatchStack": "The overlapping fill + stroke paint chips.",
   "EyedropPick": "Eyedropper icon button + a sample chip of the sampled colour.",
   "PanViewport": "Space + drag pan wrapper.",
+  "MediaLibraryProvider": "The headless core: one list call, client-side tree derivation, the open-folder set and the sort key.",
   "StackHero": "Full-bleed image hero with a bottom-anchored, centered title + description under a bottom-up scrim.",
   "ArticleHeader": "Long-form article masthead: a row of tag Pills, a display title, an author cluster (DS Avatar + name + role), a `date • readingTime` meta line, an optional excerpt, and an optional hero image.",
   "ArticleCard": "One blog-card family with three sizes (`default` / `hero` / `mini`), collapsing what were three byte-identical duplicate components.",
@@ -145,6 +148,7 @@
   "RailSection": "THE rail ladder.",
   "RailRow": "THE L3 rail row.",
   "DocumentationReader": "The docs render surface, decoupled from Vite.",
+  "TagPath": "A tag is a PATH, not a string.",
   "WorkshopSidebar": "EXAMPLE composition.",
   "WorkshopDefaultSidebar": "EXAMPLE composition."
 }

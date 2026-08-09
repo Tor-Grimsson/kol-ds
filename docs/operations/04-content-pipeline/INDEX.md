@@ -1,16 +1,17 @@
 ---
-title: The content pipeline
+title: Content pipeline
 type: index
 status: active
-updated: 2026-07-31
-description: How seven content roots become one showcase — the audience split that governs where content may live, the manifest that builds the sidebar, and the taxonomy that names what the reader sees.
+created: 2026-08-01
+updated: 2026-08-01
+description: How seven content roots become one showcase
 aliases:
   - content-pipeline
   - parsing-system
   - port-hub
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
   - pattern/docs-as-data
 related:
   - "[[01-sources|the seven content roots]]"
@@ -42,7 +43,7 @@ This repo serves its own documentation. The showcase at `ui.kolkrabbi.io` is a l
 
 ## The pipeline
 
-```
+```text
 SOURCES                          DERIVATION                    SURFACES
 ─────────────────────────        ────────────────────────      ─────────────────────
 packages/*/src/index.js   ──┐

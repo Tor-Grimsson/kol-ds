@@ -48,17 +48,9 @@
    * audit finding 4); oq-* mirrors the same visual weight without alpha */
   border: 1px solid var(--kol-oq-08);
   border-radius: 4px;
-  /* Scroll affordance: with the scrollbar hidden, a clipped table reads as
-   * cut-off data on narrow viewports. Edge shadows appear only on the
-   * scrollable side (surface-colored covers ride the content and mask them
-   * at the extremes). */
-  /* scroll edges: surface-colored FADE only — no shadow band (user ruling
-   * 2026-07-28: the content dissolves into the background, no 3d edge) */
-  background:
-    linear-gradient(to right, var(--kol-surface-primary) 40%, transparent) left / 32px 100%,
-    linear-gradient(to left, var(--kol-surface-primary) 40%, transparent) right / 32px 100%;
-  background-repeat: no-repeat;
-  background-attachment: local, local;
+  /* no scroll-edge paint — the 2026-07-28 ruling bans shadow bands, and the
+   * surface-primary "cover" gradients that outlived it rendered as exactly
+   * that band on any non-primary surface (brand app dark, 2026-08-09) */
 }
 
 .kol-table-wrapper::-webkit-scrollbar { display: none; }
@@ -178,7 +170,11 @@
   /* No outer margin: spacing is the CONTAINER's job. The margin here
    * double-spaced against every flex row's own gap, which is the ragged
    * rhythm the metadata rows showed. */
-  border-radius: 2px;
+  /* Radius is the shared chip radius, not a literal (2026-08-01). This one
+   * value was the last thing making a table token and a prose inline code chip
+   * read as two different objects — see the inline-code block in
+   * kol-type-roles.css, which owns the shared fill/radius/colour answer. */
+  border-radius: var(--kol-radius-sm);
   font-family: var(--kol-font-family-mono);
   font-size: 0.75rem;
   font-weight: 400;
@@ -535,6 +531,58 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+/* Thumb — the tile's media box. It is the positioning context for the video
+ * fallback below, which is the only reason it carries `position`. */
+.kol-media-thumb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* A blank square must never be the resting state (lobby/MediaLibraryVideoFallback,
+ * filed from kol-website 2026-08-01, quoting the consumer this replaced).
+ *
+ * A <video> paints NOTHING until a frame decodes — so on a slow link, or a codec
+ * the browser cannot decode at all, a video tile is an empty grey box with no
+ * name and no type marker, and the page reads as broken rather than as loading.
+ * 222 of the 433 objects in the reference bucket are video/mp4.
+ *
+ * This is the <img alt> equivalent: a play glyph and the filename, sitting
+ * BEHIND the video and revealed only while it has nothing to show. The video
+ * covers it the moment a frame lands, so a decoding tile never flashes it.
+ *
+ * NB the loading strategy is deliberately untouched. The brief probed
+ * preload=metadata + #t= against preload=auto + seek and BOTH timed out
+ * headless (no h264 decoder), so that test discriminates nothing and no
+ * evidence exists either way. The fallback needs no decoder to justify it. */
+.kol-media-thumb-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kol-spacing-2);
+  padding-inline: var(--kol-spacing-3);
+  text-align: center;
+  color: var(--kol-fg-48);
+  pointer-events: none;
+}
+
+.kol-media-thumb-fallback > span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Painted — the video has a frame, so the fallback stops being the tile's
+ * resting state. Kept in the layout box (opacity, not display) so nothing
+ * reflows when the first frame arrives. */
+.kol-media-thumb-fallback[data-painted='true'] {
+  opacity: 0;
 }
 
 /* Sortable header — a real button inside the <th> so it is keyboard-reachable.

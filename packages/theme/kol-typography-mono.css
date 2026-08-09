@@ -7,60 +7,44 @@
  * the scale with its own mono font — fonts are per-app (brand = JetBrains Mono,
  * web = RightGroteskMono). The umbrella kol-theme.css imports both files.
  *
- * Italic note: only 500i is bundled (Medium Italic). 400i (Regular Italic)
- * deferred until a consumer requires it.
+ * VARIABLE, since 2026-08-01. Two files carry every weight in the family.
  *
  * Architecture: docs/kol-migration/locked/typography-system.md
  */
 
 /* =============================================================================
- * FONT-FACE — JetBrains Mono (6 faces: 400, 400i, 500, 500i, 600, 600i)
+ * FONT-FACE — JetBrains Mono, VARIABLE (2 faces: roman + italic, wght 100–800)
+ *
+ * WHY (user ruling 2026-08-01). This was SEVEN static cuts and it still could
+ * not answer a simple design question. The rail needed a Page weight lighter
+ * than its Chapter; the folder's lightest cut was 300, and 300 against 500 is a
+ * 0.28px difference in stroke at 14px — applied, correct in the cascade, and
+ * invisible. Reaching a weight that reads meant shipping another static, and
+ * the next question would have meant another one.
+ *
+ * The axis removes the question. `wght 100 800` means any weight is a NUMBER,
+ * not a new file — and the payload went DOWN: two variable faces at ~230 kb
+ * against 1024 kb of statics, with four weights the statics never had.
+ *
+ * The tradeoff, stated: a variable file is one download, so the page fetches
+ * the whole axis or none of it. At this size that is still less than the two
+ * static cuts it replaces.
  * ============================================================================= */
 
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2');
-  font-weight: 400;
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2-variations'),
+       url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Italic-Variable.woff2') format('woff2-variations'),
+       url('/fonts/jetbrains-mono/JetBrainsMono-Italic-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: italic;
   font-display: swap;
 }

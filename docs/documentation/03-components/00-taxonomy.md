@@ -1,10 +1,11 @@
 ---
-title: Component taxonomy — the two axes
+title: Component taxonomy
 type: reference
 status: canonical
-updated: 2026-07-30
+created: 2026-07-15
+updated: 2026-08-01
 verified: 2026-07-04
-description: How KOL classifies components — the Tier axis (atom/molecule/organism/framework/loader/hook, a mechanical nesting test, deliberately not Brad Frost atomic) and the Function axis (a closed Material-style set), how they combine in the sidebar, and the one-page-per-component rule.
+description: The tier axis and the function axis
 aliases:
   - taxonomy
   - categories
@@ -14,8 +15,8 @@ sources:
   - showcase/src/lib/registry.js
   - scripts/validate-taxonomy.mjs
 tags:
-  - domain/design-system
-  - domain/conventions
+  - domain/components
+  - audience/consumer
 related:
   - "[[02-placement|component placement]]"
   - "[[01-inventory|component inventory]]"

@@ -8,3 +8,4 @@
 - [Workshop sweep is joint](workshop-sweep-is-joint.md) — the website workshop-gallery elder sweep happens in a live session with the user, never solo; bring the twin-map
 - [upig — install/publish mine, git his](upig-install-publish-mine-git-his.md) — run pnpm install/publish directly, never hand off; git is the only wall; ping when push is due
 - [tmpl- prefix for standardised outputs](tmpl-prefix-standardised-outputs.md) — skills that canonise an output format are named tmpl-*; first: tmpl-proposal; names are the user's ruling
+- [Never delete — quarantine to _tmp](never-delete-quarantine-to-tmp.md) — `rm` is not an available verb; removing anything means moving it to `_tmp/<date>-<what>/` and saying where

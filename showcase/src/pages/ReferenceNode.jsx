@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { Table } from '@kolkrabbi/kol-component'
 import composition from '../usage/composition-index.json'
 import { useGraph } from './References.jsx'
 
@@ -57,22 +58,30 @@ export default function ReferenceNode() {
               {[5, 4, 3, 2, 1].filter((s) => byStar[s]).map((s) => `${byStar[s]}×${s}★`).join(' · ')}
               {' — '}a 5★ dependent is a near-copy and will break; a 1★ dependent loses one element.
             </p>
-            <div className="overflow-x-auto">
-              <table className="kol-table w-full">
-                <thead>
-                  <tr><th className="text-right">★</th><th className="text-right">uses</th><th>file</th></tr>
-                </thead>
-                <tbody>
-                  {node.edges.map((e) => (
-                    <tr key={e.file}>
-                      <td className="text-right kol-mono-12">{e.stars}</td>
-                      <td className="text-right kol-mono-12">{e.uses}</td>
-                      <td className="kol-mono-12">{e.file}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {/* THE DS Table, not a hand-rolled one. The first cut wrote its own
+              * `<table className="kol-table">` inside an `overflow-x-auto` div —
+              * on a page whose entire subject is "what did you reuse". It also
+              * cost the cell roles: the header ran together as `★usesfile` and
+              * the counts touched the paths. The Table caps itself, so the
+              * wrapper div goes too. */}
+            <Table
+              width="column"
+              caption={`Files that depend on ${node.name}, by star weight`}
+              columns={[
+                /* The documented cell roles carry their own padding. `-text` is
+                 * the default nowrap body cell. An earlier pass here invented
+                 * `kol-table-cell-copy`, which no rule defines, so those cells
+                 * rendered unpadded and the counts touched the paths. */
+                { accessor: 'stars', header: '★', sortable: true, className: 'kol-table-cell-text text-right' },
+                /* Sentence case, like every other header in References.jsx
+                 * (`Edges`, `Node`, `Kind`, `Defined in`). These two were the
+                 * only lowercase headers in the repo — one page's table
+                 * disagreeing with its own sibling. */
+                { accessor: 'uses', header: 'Uses', sortable: true, className: 'kol-table-cell-text text-right' },
+                { accessor: 'file', header: 'File', sortable: true, className: 'kol-table-cell-text' },
+              ]}
+              rows={node.edges.map((e) => ({ id: e.file, stars: e.stars, uses: e.uses, file: e.file }))}
+            />
             {node.edgeCount > node.edges.length && (
               <p className="kol-helper-12 mt-4">
                 Showing {node.edges.length} of {node.edgeCount} edges — the index caps the list.

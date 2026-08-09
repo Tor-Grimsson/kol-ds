@@ -19,7 +19,24 @@ export const VAULT_MODULES = import.meta.glob('../../../docs/**/*.md', {
   import: 'default',
 })
 
-export const VAULT = buildInventory(VAULT_MODULES)
+/* A DOC LIVES AT `docs/<category>/…` — a markdown file sitting directly in
+ * `docs/` is NOT content (user ruling 2026-08-01: *"this is not for the
+ * parser"*). `docs/INDEX.md` is the vault's front door: it exists for a human
+ * opening the folder and for the agent read-contract, and it names the two
+ * categories rather than being one. Parsed, it became `docs-INDEX` — a doc with
+ * no chapter, in a tree whose whole grammar is category → chapter → page.
+ *
+ * The filter is on the ROOT DEPTH, not on the filename: `INDEX.md` inside a
+ * chapter is a real page and stays. Same law the tree already states two
+ * comments down — docs/<category>/<chapter>/… */
+const VAULT_CONTENT = Object.fromEntries(
+  Object.entries(VAULT_MODULES).filter(([path]) => {
+    const rel = path.replace(/^.*?docs\//, '')
+    return rel.includes('/')
+  })
+)
+
+export const VAULT = buildInventory(VAULT_CONTENT)
 
 /* Own URL space — Documentation is a SYSTEM (user ruling 2026-07-30), a
  * top-level area beside Components, never a child page under Docs. */
@@ -38,12 +55,9 @@ export const vaultDocHref = (id) => `/documentation/${id}`
 const relPath = (file) => file.replace(/^.*?docs\//, '')
 
 /* Title-Case group labels (2026-07-30 — lowercase folder names read as raw
- * slugs next to the Components tree's Title-Case groups). Authored casing at
- * the data layer, no CSS transform. */
-const label = (seg) => {
-  const words = seg.replace(/^\d+-/, '').replace(/-/g, ' ')
-  return words.charAt(0).toUpperCase() + words.slice(1)
-}
+ * slugs next to the Components tree's Title-Case groups). THE rule, imported;
+ * it was duplicated in shell-nav.js until 2026-08-01. See nav/labels.js. */
+import { labelFromSlug as label } from './labels.js'
 
 /* The OFF_TREE filter is GONE (2026-07-31). It hid the 219 generated usage
  * docs from the tree while they stayed bundled, searchable and routable — a
@@ -56,34 +70,72 @@ export const VAULT_TREE = (() => {
   const groups = new Map()
   for (const d of VAULT) {
     const segs = relPath(d.file).split('/')
+
+    /* A CATEGORY'S OWN `INDEX.md` IS NOT A PAGE (user ruling 2026-08-01). It is
+     * the landing page for `docs/documentation/` or `docs/operations/` — the
+     * same thing `docs/INDEX.md` is one level up, and excluded for the same
+     * reason. Left in, it formed a group of ONE whose label was the category's
+     * own name, so the rail read `Documentation › Documentation (1) › INDEX`.
+     * The category is the eyebrow; it does not also appear inside itself. */
+    if (segs.length === 2 && segs[1].toLowerCase() === 'index.md') continue
+
     /* A chapter's own subfolders (06-research/workflows/) fold INTO the
      * chapter — the taxonomy has three levels, so a nested folder is an
-     * authoring convenience, not a fourth rung. */
-    const key = segs.length === 1
-      ? '_root'
-      : segs.length > 2
-        ? `${segs[0]}/${segs[1]}`
-        : segs[0]
+     * authoring convenience, not a fourth rung.
+     *
+     * A loose file at the category root (`operations/SHIPPED-PACKAGES.md`) has
+     * no chapter and gets its OWN key, so it renders as a direct row under the
+     * category eyebrow rather than being swept into a group named after the
+     * category. Finder shows it beside the chapter folders; so does the rail. */
+    const key = segs.length > 2
+      ? `${segs[0]}/${segs[1]}`
+      : `${segs[0]}//${segs[1]}`
     if (!groups.has(key)) groups.set(key, [])
     groups.get(key).push(d)
   }
   return [...groups.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, docs]) => {
-      const segs = key.split('/')
-      /* `chapter` is null for a category ROOT group (docs/documentation/*.md
-       * or docs/*.md) — those are not chapters and must not be matched by a
-       * chapter gate. Carried as a field rather than re-derived from the id:
-       * parsing `vault-documentation` back into a chapter name yields garbage,
-       * and a gate reading garbage fails open. */
-      const chapter = segs.length > 1 ? segs[1] : null
+      /* `//` marks a LOOSE file at the category root — it has no chapter, so it
+       * renders as a childless route, which ShellSidebar draws as a plain row.
+       * `chapter` stays null for it: a gate that matched it would be gating a
+       * file against a chapter rule it was never part of. */
+      const loose = key.includes('//')
+      const segs = key.split(loose ? '//' : '/')
+      const chapter = loose ? null : segs[1]
+      /* THE CHAPTER HEADER OPENS ITS OWN INDEX (user ruling 2026-08-02). The
+       * index used to render as a row INSIDE the chapter, labelled `INDEX` —
+       * a chapter listing its own front door among its contents. Clicking the
+       * chapter now opens it, the way clicking a folder opens its landing
+       * page, and the row moves to the TOP of the list as `About` rather than
+       * sorting alphabetically into the middle of its own siblings.
+       *
+       * `About`, NOT `Overview` — `00-overview` is a chapter, so an index row
+       * labelled Overview printed `Overview › Overview`. The row's label has to
+       * be a word that can never also be a chapter name, and `About` is the
+       * word the user used for this page when he described it.
+       *
+       * The FILE keeps the name `INDEX.md`: it is the framework's contract
+       * (docs-framework 01-conventions) and how Obsidian resolves a folder
+       * note. The label is a render decision; the filename is a contract. */
+      const indexDoc = loose ? null : docs.find((d) => /\/index\.md$/i.test(d.file))
+
       return {
-        id: `vault-${key.replace(/\//g, '-')}`,
-        category: key === '_root' ? null : segs[0],
+        id: `vault-${key.replace(/\/+/g, '-')}`,
+        category: segs[0],
         chapter,
-        label: key === '_root' ? 'Root' : label(chapter ?? segs[0]),
-        children: [
+        loose,
+        label: loose ? fileLabel(segs[1]) : label(chapter),
+        ...(indexDoc ? { path: vaultDocHref(indexDoc.id) } : {}),
+        /* A loose file IS its own row — `path` and no children, which is the
+         * shape ShellSidebar draws as a link rather than a collapsible group. */
+        ...(loose ? { path: vaultDocHref(docs[0].id), children: [] } : {}),
+        children: loose ? [] : [
+          /* The index leads the list — it is the chapter's opening page, not
+           * one of its entries, so it never sorts alphabetically among them. */
+          ...(indexDoc ? [{ id: `vd-${indexDoc.id}`, label: 'About', path: vaultDocHref(indexDoc.id) }] : []),
           ...docs
+            .filter((d) => !/\/index\.md$/i.test(d.file))
             .slice()
             .sort((a, b) => a.file.localeCompare(b.file))
             /* `railTitle`, not `d.title` — the rail row keeps the NAME and

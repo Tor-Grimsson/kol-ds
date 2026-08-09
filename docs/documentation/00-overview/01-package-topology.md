@@ -1,10 +1,11 @@
 ---
-title: Package topology — the eleven UI packages + clients tier
+title: Package topology
 type: reference
 status: canonical
-updated: 2026-07-30
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: The full KOL package map after the 2026-07-09 domain-extraction pass — the two foundation packages, the two core packages, the seven standalone domain packages (workshop, dashboards, chess, content, foundry, store, styleguide), and the clients tier. What each owns, what stays shared, and which component lives where.
+description: The eleven UI packages and the clients tier
 aliases:
   - package map
   - topology
@@ -15,8 +16,8 @@ sources:
   - packages/store/src/index.js
   - .kol/llm-context/ARCHITECTURE.md
 tags:
-  - domain/design-system
   - domain/architecture
+  - audience/consumer
 related:
   - "[[../04-compositions/04-workshop-system|workshop system]]"
   - "[[../04-compositions/05-foundry-system|foundry component index]]"

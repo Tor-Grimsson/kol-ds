@@ -60,11 +60,16 @@ function GalleryCard({ item, labels, basePath, previewBase }) {
             <ProvenanceBadge itemKey={item.key} basePath={basePath} />
           </p>
         </div>
+        {/* The box has an owner (2026-08-01) — same square and hover wash as
+          * BlockViewer's IconBtn, hand-written a second time. `asChild` does not
+          * exist here, so Link stays the element and Button supplies nothing;
+          * instead the CLASS comes from Button's own chrome names. */}
         <Link
           to={`${previewBase}/${item.key}`}
           target="_blank"
-          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--kol-radius-sm)] text-meta transition-colors hover:bg-fg-04 hover:text-emphasis"
+          className="kol-btn kol-btn-nav kol-btn-sm kol-btn-icon"
           title="Open standalone view"
+          aria-label="Open standalone view"
         >
           <Icon name="maximize" size={15} />
         </Link>

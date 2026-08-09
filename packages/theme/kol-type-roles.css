@@ -24,7 +24,15 @@
  * ============================================================================= */
 
 /* eyebrow — the overline label above a title ("KOL · ICONS"). Single-line
- * chrome → helper ramp (line-height 1); never carries paragraphs. */
+ * chrome → helper ramp (line-height 1); never carries paragraphs.
+ *
+ * Ink: --kol-fg-strong (80%), raised from --kol-fg-meta (48%) on 2026-08-01 by
+ * user ruling. An eyebrow is a SECTION HEADER, not a caption: it names the
+ * material below it and is what the eye lands on when scanning a rail. At the
+ * meta stop it sat at the same weight as the captions and disabled hints it is
+ * supposed to outrank, so the rail read as one flat field. Uppercase mono at
+ * the smallest step with wide tracking is already a quiet treatment — the ink
+ * does not also need to whisper. */
 .kol-doc-eyebrow {
   font-family: var(--kol-font-family-mono);
   font-size: 10px;
@@ -32,7 +40,7 @@
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--kol-fg-meta);
+  color: var(--kol-fg-strong);
 }
 
 /* heading — the page H1 of doc chrome (matches the DocHeader contract). */
@@ -60,7 +68,7 @@
   line-height: 160%;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: var(--kol-fg-body);
+  color: var(--kol-fg-default);
   max-width: var(--kol-content-measure);
 }
 
@@ -72,7 +80,7 @@
   line-height: 160%;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: var(--kol-fg-body);
+  color: var(--kol-fg-default);
   max-width: var(--kol-content-measure);
 }
 
@@ -93,13 +101,31 @@
 .kol-doc-code { margin: 0; }
 .kol-prose pre { margin: 24px 0; }   /* prose keeps its editorial block rhythm */
 
-/* inline code */
+/* INLINE CODE — the chip look, shared with `.kol-table-token` (user question
+ * 2026-08-01: *"list all the inline code classes, why do we have more then
+ * one?"*). There are three, and only two of them are one concept:
+ *
+ *   .kol-doc-code-inline   prose inline code. Size is RELATIVE (0.875em) so it
+ *                          tracks whatever text it sits in. Wraps.
+ *   .kol-table-token       the same chip as fixed-size chrome inside a Table.
+ *                          Never wraps. Defined in kol-components-organisms.css
+ *                          because it belongs to that component.
+ *   .kol-doc-table-token   NOT a chip — a `td` SLOT (no fill, no padding, no
+ *                          radius) that types a whole cell as one token. It
+ *                          only shares the word "token".
+ *
+ * The two chips had drifted on every value that makes them look alike: fg-04
+ * against fg-08, radius-sm against a bare literal, no colour against fg-80.
+ * Same concept, two spellings — the `.text-fg-*` vs `--kol-fg-*` lesson again.
+ * FILL, RADIUS and COLOUR are now one answer; size and padding stay per role,
+ * because relative-in-prose and fixed-in-chrome is a real difference. */
 .kol-prose code,
 .kol-doc-code-inline {
   font-family: var(--kol-font-family-mono);
   font-size: 0.875em;
   font-weight: 400;
-  background: var(--kol-fg-04);
+  color: var(--kol-fg-80);
+  background: var(--kol-fg-08);
   padding: 0.1em 0.35em;
   border-radius: var(--kol-radius-sm);
 }
@@ -147,7 +173,7 @@
   padding: 12px 16px;
   border-bottom: 1px solid var(--kol-fg-08);
   vertical-align: top;
-  color: var(--kol-fg-body);
+  color: var(--kol-fg-default);
 }
 .kol-prose tbody tr:last-child td,
 .kol-doc-table tbody tr:last-child td { border-bottom: 0; }

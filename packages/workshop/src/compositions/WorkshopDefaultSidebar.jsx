@@ -25,7 +25,7 @@ const WorkshopDefaultSidebar = ({ routes = [], basePath = '/workshop' }) => {
   const links = currentChild?.links
 
   return (
-    <div className="space-y-4">
+    <div className="shell-rail-stack-inner">
       {siblings.length > 1 && (
         <div>
           <div className="shell-sidebar-label kol-doc-eyebrow">{parentRoute.label}</div>

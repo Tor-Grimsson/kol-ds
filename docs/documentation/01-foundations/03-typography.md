@@ -1,17 +1,18 @@
 ---
-title: Type classes — the two families and when to use which
+title: Type classes
 type: reference
 status: active
-updated: 2026-07-28
-description: The kol type-class inventory split by its real fault line — line-height-bearing sets for anything that can wrap vs the line-height-1 helper scale for single-line chrome — with the full class table and the 2026-07-02 conformance conversions as worked examples.
+created: 2026-07-31
+updated: 2026-08-01
+description: The two families, and when to use which
 aliases:
   - type-classes
 sources:
   - packages/theme/kol-type-mono-classes.css
   - packages/theme/kol-typography.css
 tags:
-  - domain/design-system
   - domain/typography
+  - audience/consumer
 related:
   - "[[04-layout-breakpoints|layout & breakpoints]]"
   - "[[../03-components/02-placement|component placement]]"
@@ -34,7 +35,7 @@ The quick test: *can this string ever wrap?* Yes → line-height set. No (struct
 
 ### Role sets — `kol-doc-*` + `kol-card-*` (2026-07-28, `kol-type-roles.css`)
 
-Opt-in role families over the scales below — see [[../../operations/03-showcase/02-doc-card-sets|the doc+card sets plan]].
+Opt-in role families over the scales below — see [[07-doc-card-sets|the doc+card sets plan]].
 **Doc set** (11): `kol-doc-{eyebrow,heading,section-title,lede,body,code,code-inline,table,figure,caption,footer}` — doc-chrome ramp; the content-furniture roles (code/table/figure/caption/footer) are twin-selectored with `.kol-prose` bare tags (one rule, two entry points; prose code rules moved there, prose gains table/figure styling).
 **Card set** (6): `kol-card-{title,kicker,meta,excerpt,value,tag}` — the shared card text ramp (mono voice, compact titles, clamp knob `--kol-card-excerpt-lines`).
 Head roles are deliberately NOT twinned with prose — the editorial `.kol-prose-*` head family stays its own scale.
@@ -52,6 +53,24 @@ Head roles are deliberately NOT twinned with prose — the editorial `.kol-prose
 | `kol-helper-20` | 20px | 0.06em |
 
 Beyond the missing leading, helpers differ from mono in **weight (500 vs 400)** and **letter-spacing** — they're labels, not copy.
+
+**A CHIP TAKES THE LEADING AND REFUSES THE TRACKING (user finding 2026-08-01).** `Tag` and `Pill` were moved onto this ramp for its `line-height: 1` — a `sm` chip was inheriting the body's ~1.5 and standing twice its own height beside the rail rows — and they inherited `0.10em` with it. That tracking exists for **uppercase labels** at the smallest two stops; a tag renders an authored string (`#domain/design-system`) and at that tracking it reads as a spaced-out caption. `.kol-tag` and `.pill-{sm,md,lg}` now declare `letter-spacing: normal`.
+
+**The general rule this makes explicit:** adopting a ramp for ONE of its properties adopts all of them. If only the leading is wanted, the component's own rule says so — at the component, not by forking the ramp.
+
+### The mono family is VARIABLE (2026-08-01)
+
+JetBrains Mono ships as **two** `@font-face` rules — roman and italic, each `font-weight: 100 800` — not seven static cuts. Any weight is a number, not a new file.
+
+| | Before | After |
+|---|---|---|
+| Files | 7 static woff2 | 2 variable woff2 |
+| Payload | 1024 kb | **151 kb** |
+| Weights | 300 · 400 · 500 · 600 | every value 100–800 |
+
+**Why it changed.** The rail needed a Page weight lighter than its Chapter, and the lightest cut in the folder was 300. Measured on the H stem at the 14 stop: 400→500 is 1.26→1.39 device px, 300→500 is 1.11→1.39 — a **0.28** difference, applied and correct in the cascade and completely invisible. Reaching a weight that reads meant shipping another static, and the next question would have meant another one. The axis removes the question.
+
+**The pair that reads** (user ruling, after five attempts): `100` = 0.70 against `700` = 1.75 — **150%**, both ends of the usable axis. Everything narrower failed: 400/500, 300/500 and 200/500 all applied correctly and none of them looked like hierarchy.
 
 ### Mono scale — mono, weight 400, with leading
 
@@ -103,4 +122,4 @@ All four are `text-transform: uppercase` **by contract** — the display voice i
 
 ## Prose color
 
-`.kol-prose` maps onto the kol-opacity **text roles**, not raw `fg-*` stops — body copy at `--kol-fg-body` (64), `em` climbs to `--kol-fg-strong` (80, italic), `strong` and all headings land on `--kol-fg-emphasis` (full ink); captions/cites sit at `--kol-fg-meta` (48). Edit the role token, every prose consumer follows. Raw stops remain only where a role has no business meaning (blockquote border `fg-32`, code wash `fg-04`).
+`.kol-prose` maps onto the kol-opacity **text roles**, not raw `fg-*` stops — body copy at `--kol-fg-default` (64), `em` climbs to `--kol-fg-strong` (80, italic), `strong` and all headings land on `--kol-fg-emphasis` (full ink); captions/cites sit at `--kol-fg-meta` (48). Edit the role token, every prose consumer follows. Raw stops remain only where a role has no business meaning (blockquote border `fg-32`, code wash `fg-04`).

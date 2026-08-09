@@ -215,11 +215,11 @@
  *   SECTION   the right rail's rows (same PAGE row idiom)
  *
  * CHAPTER and PAGE were indistinguishable: both `kol-mono-14`, and the only
- * difference was `.text-body` — which is a COLOUR utility, not type. A parent
+ * difference was `.text-default` — which is a COLOUR utility, not type. A parent
  * and its children reading identically is not a hierarchy.
  *
- * The weight is the difference, and it stays INSIDE the one ramp: 500 here
- * against kol-mono-14's own 400 on the page row. Not a second type class —
+ * The weight is the difference, and it stays INSIDE the one ramp: 700 here
+ * against the page row's 100. Not a second type class —
  * R1 exists to stop a second RAMP in the rails, and a weight within one ramp
  * is not one.
  *
@@ -228,7 +228,14 @@
  * borrow this class — that is how the right rail drifted; use
  * .shell-sidebar-toggle. */
 .shell-nav-group-header {
+  /* MEDIUM + SHOUT (user ruling 2026-08-01, the settled pair). 700 was tried
+   * for one turn and reverted: with the page rows at Thin 100 the weight gap
+   * already carries, so the CHAPTER buys its prominence from INK instead —
+   * `shout` (88) against the rows' `fg-64`. Weight and colour each doing half
+   * the work beats either doing all of it, and 500 keeps the chapter inside
+   * the ramp's normal range. */
   font-weight: 500;
+  color: var(--kol-fg-shout);
   padding: var(--kol-pad-rail-row-y) 0;
   cursor: pointer;
   display: flex;
@@ -239,6 +246,52 @@
 
 .shell-nav-group-header:hover {
   color: color-mix(in srgb, var(--kol-surface-on-primary) 90%, transparent);
+}
+
+/* THE RAIL STACK — the SECTION container, owned here for exactly the reason
+ * `.shell-nav-items` below owns the ROW gap (user ruling 2026-08-01, said in
+ * anger and said before): *"I HAVE TOLD YOU LEFT AND RIGHT = THE SAME LAYOUT
+ * MARGINPADDING"*.
+ *
+ * The row gap was fixed on 2026-08-01 and the stack above it was not, so one
+ * layout shipped as FOUR idioms:
+ *
+ *   left rail   `flex flex-col gap-6`     ShellChrome.jsx
+ *   right rail  `space-y-6`               DocumentationReader.jsx
+ *   sidebars    `space-y-4`               ShellSidebar / WorkshopSidebar
+ *   rows        `space-y-0`               (the one already fixed)
+ *
+ * `gap` and `space-y-*` are not the same mechanism either — `space-y` is a
+ * margin on every child but the first, so it fights any child that sets its own
+ * margin, and the eyebrow box DOES (see the box law above). Flex gap does not.
+ *
+ * Two rungs, two gaps, one definition each. A rail stack is never a utility. */
+.shell-rail-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-6);
+}
+
+/* Between GROUPS inside one category — tighter than between categories. The
+ * left rail said 16 and the right said 24 for the same relationship. */
+.shell-rail-stack-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-4);
+}
+
+/* THE TAG SHELF — chips indented to the ROW text edge (user ruling 2026-08-01:
+ * "indent the tags like it was a text"). They were flush to the rail's left
+ * edge while every row beside them started one indent in, so the one block that
+ * is not a row was the only thing setting the rail's left margin. The inset is
+ * `.shell-nav-item`'s own left padding, read from the same declaration rather
+ * than typed again. */
+.shell-rail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kol-spacing-2);
+  padding-left: var(--kol-pad-rail-row-x);
+  padding-top: var(--kol-spacing-2);
 }
 
 /* THE ROW CONTAINER — owns the gap so the two rails cannot disagree. They
@@ -258,15 +311,34 @@
  *
  * `.shell-nav-item` was the shared name and nothing else: every call site
  * hand-wrote its own utility stack around it, so ONE row idiom shipped as NINE
- * strings across five files — `block kol-mono-14 text-body transition-colors
+ * strings across five files — `block kol-mono-14 text-default transition-colors
  * focus-visible:ring-focus hover:text-emphasis` in one rail, bare
  * `kol-mono-14` in the other, `flex items-center gap-2 …` for actions. R1/R2
  * locked the TYPE class and nothing locked the stack: the eyebrow-box failure,
  * one rung down.
  *
  * Layout, colour, hover, transition and focus live HERE now. Markup comes from
- * `RailRow`; `validate:rails` R4 fails a hand-written `shell-nav-item`. */
+ * `RailRow`; `validate:rails` R4 fails a hand-written `shell-nav-item`.
+ *
+ * WEIGHT IS THIN (user ruling 2026-08-01, asked five times).
+ *
+ * The arithmetic, measured on the H stem at this size:
+ *
+ *   400 vs 500  1.26 → 1.39   the original pair. Invisible.
+ *   300 vs 500  1.11 → 1.39   +25%. Also invisible — applied, correct in the
+ *                             cascade, and unseeable.
+ *   200 vs 500  0.92 → 1.39   +51%. Still not enough for him.
+ *   100 vs 700  0.70 → 1.75   +150%. THE PAIR. Both ends of the usable axis.
+ *
+ * I argued against 100 on the grounds that it falls under one device pixel and
+ * antialiases to a wash. He ruled it anyway, and against 700 rather than 500
+ * the contrast carries the hierarchy the stroke alone could not.
+ *
+ * Renderable only because the family went VARIABLE the same day
+ * (kol-typography-mono.css, `wght 100 800`). Under the old static set the
+ * lightest cut was 300 and this line would have rounded back to 400. */
 .shell-nav-item {
+  font-weight: 100;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -280,6 +352,11 @@
   color: var(--kol-fg-64);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
+  /* THE TEXT INDENT, named (2026-08-01). It was the last value of the padding
+   * shorthand above and nothing else could read it, so the tag shelf beside
+   * these rows had to guess and guessed flush-left. Declared after the
+   * shorthand deliberately — it overrides that slot and nothing else. */
+  padding-left: var(--kol-pad-rail-row-x);
 }
 
 .shell-nav-item:hover {
@@ -291,9 +368,36 @@
   outline-offset: -1px;
 }
 
-/* The active row — one definition, not `text-emphasis` typed at each site. */
+/* THE ACTIVE ROW — `emphasis`, the role, not a raw token (user ruling
+ * 2026-08-01). One definition for both rails: the left tree's current PAGE and
+ * the right rail's current SECTION are the same state, and where-you-are is the
+ * one thing in a rail that earns max ink. It read `var(--kol-surface-on-primary)`
+ * — the same value, reached without going through the ladder, which is how a
+ * role set ends up with call sites that do not know it exists. */
 .shell-nav-item.is-active {
-  color: var(--kol-surface-on-primary);
+  color: var(--kol-fg-emphasis);
+}
+
+/* THIS PAGE'S OWN ROW — brighter than the rest of the list (user ruling
+ * 2026-08-01, twice). The first attempt put `text-emphasis` on the row from the
+ * JSX and nothing happened: `.text-emphasis` and `.shell-nav-item` are both
+ * single-class selectors in the same cascade layer, and this file loads AFTER
+ * kol-opacity.css, so the rail's resting `--kol-fg-64` won every time. A colour
+ * utility cannot brighten a row whose own rule sets colour — the modifier has
+ * to live beside that rule. Same file, same specificity, declared later. */
+.shell-nav-item--own {
+  color: var(--kol-fg-emphasis);
+  font-weight: 500;
+}
+
+/* …AND THE REST STEP DOWN (user ruling 2026-08-01: *"no needs more"*). Raising
+ * the page's own tags to full ink was not enough on its own, because the rows
+ * beneath them sat at the rail's resting `fg-64` — close enough that the two
+ * ranks read as one list with a slightly brighter top. Contrast is a GAP, not a
+ * value: the other rank drops to `meta`, so the distance is 100 against 48
+ * rather than 100 against 64, and the weight moves too. */
+.shell-nav-item--muted {
+  color: var(--kol-fg-meta);
 }
 
 /* The trailing slot: counts, doc numbers, anything pushed right. */
@@ -401,7 +505,7 @@
   gap: 8px;
 }
 
-/* Doc meta row — layout only; type/color in JSX (kol-helper-10 text-body). */
+/* Doc meta row — layout only; type/color in JSX (kol-helper-10 text-default). */
 .docs-meta {
   display: flex;
   flex-wrap: wrap;
@@ -449,7 +553,35 @@
   min-width: 120px;
 }
 
-.docs-frontmatter-row:has(.tag) {
+/* THE VALUE COLUMN — it had no rule at all, so it was an auto-width flex item
+ * next to a fixed-width key: a long `description` or a `sources` path list had
+ * nothing telling it to shrink, and ran straight off the right edge of the
+ * panel (user screenshot 2026-08-01). `min-width: 0` is the half of the flex
+ * contract that was missing; `overflow-wrap: anywhere` handles the paths,
+ * which have no spaces to break at. */
+.docs-frontmatter-value {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A MULTI-VALUE FIELD IS A LIST WITH A CEILING (2026-08-01). Stacked one per
+ * line, and capped at roughly eight rows before it scrolls in place — a doc
+ * with fifteen `sources` would otherwise push its own article fifteen lines
+ * down and turn the metadata panel into the page. */
+.docs-frontmatter-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-1);
+  max-height: 11rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* `.tag` was the Tag component's base class until it was rebuilt on Pill's
+ * model (2026-08-01) and the scheme became `kol-tag`. The selector has matched
+ * nothing since. */
+.docs-frontmatter-row:has(.kol-tag) {
   align-items: center;
 }
 

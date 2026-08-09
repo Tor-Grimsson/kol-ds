@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import Button from '../atoms/Button.jsx'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
 /* taxonomy-ok: nests kol-icons's Icon (a package import the relative-import
@@ -150,14 +150,21 @@ export default function ShellDrawer({
       >
         <div className="mb-6 flex items-center gap-4">
           {header != null && <div className="min-w-0 flex-1">{header}</div>}
-          <button
-            type="button"
+          {/* The box has an owner (2026-08-01). This hand-wrote the icon-button
+            * square and its hover wash; `Button variant="nav"` IS that string.
+            * `iconSize` holds the glyph where it was — the ladder's md rung is
+            * heavier than a drawer close wants, and Button documents iconSize
+            * for exactly the cases the ladder cannot serve. The SQUARE is what
+            * needed an owner, and it now has one. */}
+          <Button
+            variant="nav"
+            size="md"
+            iconOnly="x"
+            iconSize={14}
             onClick={onClose}
             aria-label="Close"
-            className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center rounded-md border-0 bg-transparent cursor-pointer text-fg-64 transition-colors hover:bg-fg-08 hover:text-emphasis"
-          >
-            <Icon name="x" size={14} />
-          </button>
+            className="ml-auto shrink-0"
+          />
         </div>
         <div className="flex-1 overflow-y-auto pr-1" style={{ overflowAnchor: 'none' }}>
           {children}

@@ -1,11 +1,12 @@
 ---
-title: Component taxonomy — audit & consolidation plan
+title: Taxonomy audit
 type: plan
 status: superseded
 superseded_by:
   - "[[00-taxonomy|component taxonomy]]"
-updated: 2026-07-09
-description: Audit of how KOL categorizes and lists components (two axes, the atomic definitions, doc↔sidebar drift, over-fragmented families) and a phased plan to lock the convention, de-fragment the presentation, and collapse true variant families.
+created: 2026-07-09
+updated: 2026-08-01
+description: How the taxonomy drifted, and the plan back
 aliases:
   - taxonomy-audit
   - taxonomy-plan
@@ -16,8 +17,8 @@ sources:
   - scripts/validate-taxonomy.mjs
   - docs/documentation/03-components/02-placement.md
 tags:
-  - domain/design-system
-  - domain/conventions
+  - domain/components
+  - audience/consumer
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[02-placement|component placement]]"

@@ -1,5 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
-import { SearchInput, Tooltip } from '@kolkrabbi/kol-component'
+import { IconFrame, SearchInput, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle.jsx'
 
 /**
@@ -45,12 +45,32 @@ import ThemeToggle from './ThemeToggle.jsx'
 /* ONE header-action glyph size (user 2026-08-01: "icon in navbar is small and
  * wrong"). The row mixed sizes: the ThemeToggle draws its solo glyph at 24 on
  * the `lg` rung while search, GitHub and the hamburger sat at 18 — four
- * controls, two scales, in a row eight inches wide. Named once here so a new
- * control cannot pick its own. */
+ * controls, two scales, in a row eight inches wide.
+ *
+ * It is NOT an independent number. Every header control is a `lg` rung, and
+ * `SOLO.lg` (hooks/glyphLadders.js) is 24 — this constant is that ladder rung
+ * under a name the chrome can import. Naming it once was not enough on its own:
+ * it shipped exported and the two rail toggles still hardcoded 18 three rows
+ * below it, which is the whole reason the row looked wrong after the fix. The
+ * durable answer is that no header control writes a glyph size at all — it
+ * writes `size="lg"` and the ladder resolves it.
+ *
+ * @deprecated 2026-08-01 — **zero consumers as of this change.** Every header
+ * control now names its rung and takes the glyph from `SOLO`. Kept exported
+ * because it is public API of a published package (breaking an export needs a
+ * changeset + major bump); a consumer still importing it gets the right number,
+ * it is just no longer how the chrome decides. Passing it as `iconSize` is the
+ * anti-pattern this whole change removes: it pins the glyph while leaving the
+ * SQUARE on whatever rung the call site forgot to set, which is precisely how
+ * the search trigger ended up drawing an lg glyph in an md box. */
 export const HEADER_ICON = 24
 
-const iconBtnCls =
-  'flex h-9 w-9 items-center justify-center rounded p-0 bg-transparent border-0 cursor-pointer transition-colors hover:bg-fg-08 hover:text-emphasis'
+/* `iconBtnCls` lived here — a private class string re-implementing the icon
+ * button box (h-9 w-9, rounded, transparent, hover wash) on three call sites,
+ * with a near-duplicate of it hand-written in the showcase's GitHub link. Four
+ * containers, one job. Deleted 2026-08-01: the box has an owner, and it is
+ * `Button variant="ghost" quiet iconOnly` — the shape the search trigger in
+ * ShellLayout had been calling correctly the entire time. */
 
 export default function ShellHeader({
   brand,
@@ -93,19 +113,24 @@ export default function ShellHeader({
                     * quiet square = button geometry + fill none + no label
                     * (was the old `icon` variant default). */}
                   <span className="hidden lg:inline-flex"><ThemeToggle fill="none" label={false} size="lg" /></span>
-                  <span className="lg:hidden"><ThemeToggle fill="none" label={false} /></span>
+                  <span className="lg:hidden"><ThemeToggle fill="none" label={false} size="lg" /></span>
                 </Tooltip>
               )}
               {onMenuClick && (
                 <Tooltip label="Open navigation menu">
-                  <button
-                    type="button"
-                    className={`${iconBtnCls} text-fg-64`}
+                  {/* IconFrame, not Button (user ruling 2026-08-01). Header
+                    * chrome takes a click but must not light up; the frame has
+                    * no state rules at all, which is the property Button can
+                    * only approximate by dropping its own. `nav` rests at
+                    * oq-64 — the `text-fg-64` this control hand-wrote for
+                    * months. */}
+                  <IconFrame
+                    name="hamburger"
+                    variant="nav"
+                    size="lg"
                     onClick={onMenuClick}
                     aria-label="Open navigation menu"
-                  >
-                    <Icon name="hamburger" size={HEADER_ICON} />
-                  </button>
+                  />
                 </Tooltip>
               )}
             </div>
@@ -129,7 +154,12 @@ export default function ShellHeader({
                       aria-current={active ? 'page' : undefined}
                       onClick={onNavigate ? (event) => onNavigate(event, item) : undefined}
                     >
-                      {item.icon && <Icon name={item.icon} size={14} />}
+                      {/* The ladder, not a literal (2026-08-01). This hardcoded
+                        * 14 — the same value ADJACENT.sm carries, but written
+                        * out, so the tab could not follow the rule it was
+                        * meant to. The tab's own type is 14/18, which is that
+                        * rung. */}
+                      {item.icon && <Icon name={item.icon} size={glyphSize('sm')} />}
                       {item.label}
                     </a>
                   )
@@ -146,28 +176,32 @@ export default function ShellHeader({
                 <div className="hidden lg:flex items-center gap-1 pb-2">
                   {onNavToggle && (
                     <Tooltip label="Toggle navigation sidebar">
-                      <button
-                        type="button"
-                        className={`${iconBtnCls} ${navCollapsed ? 'text-fg-32' : 'text-fg-64'}`}
+                      {/* The collapsed tint is a VARIANT SWAP, not a state:
+                        * `ghost` rests at oq-48, `nav` at oq-64, and both are
+                        * static classes with no rules to fire. That is the only
+                        * honest way to express it on a frame — Button's `quiet`
+                        * is an opacity transition, i.e. exactly the kind of
+                        * behaviour this control was ruled out of. */}
+                      <IconFrame
+                        name="panel-left"
+                        variant={navCollapsed ? 'ghost' : 'nav'}
+                        size="sm"
                         onClick={onNavToggle}
                         aria-label="Toggle navigation sidebar"
                         aria-pressed={!navCollapsed}
-                      >
-                        <Icon name="panel-left" size={18} />
-                      </button>
+                      />
                     </Tooltip>
                   )}
                   {onTocToggle && (
                     <Tooltip label="Toggle table of contents sidebar">
-                      <button
-                        type="button"
-                        className={`${iconBtnCls} ${tocCollapsed ? 'text-fg-32' : 'text-fg-64'}`}
+                      <IconFrame
+                        name="panel-right"
+                        variant={tocCollapsed ? 'ghost' : 'nav'}
+                        size="sm"
                         onClick={onTocToggle}
                         aria-label="Toggle table of contents sidebar"
                         aria-pressed={!tocCollapsed}
-                      >
-                        <Icon name="panel-right" size={18} />
-                      </button>
+                      />
                     </Tooltip>
                   )}
                 </div>

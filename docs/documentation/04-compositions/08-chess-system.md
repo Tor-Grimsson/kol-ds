@@ -1,10 +1,11 @@
 ---
-title: Chess system — the analysis/play package
+title: Chess system
 type: reference
 status: canonical
-updated: 2026-07-15
+created: 2026-07-31
+updated: 2026-08-01
 verified: 2026-07-09
-description: Component index and consumer guide for @kolkrabbi/kol-chess — the board + variants, pieces (3 SVG sets), the play/analysis apparatus (notation, playback, variation tree, game-archive table), a PGN engine, and a bundled ./data adapter (demo set + B2 CDN fetch for the 27k-game archive), lifted out of kol-component on 2026-07-09. Presentation takes an injected chessData adapter; a ready one ships at ./data.
+description: Board, pieces, and the play/analysis apparatus
 aliases:
   - chess
   - kol-chess
@@ -15,8 +16,8 @@ sources:
   - packages/chess/README.md
   - showcase/src/sets/chess-apparatus.jsx
 tags:
-  - domain/design-system
-  - domain/chess
+  - domain/compositions
+  - audience/consumer
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[09-dashboards-system|dashboards system]]"

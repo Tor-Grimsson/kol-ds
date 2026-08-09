@@ -97,6 +97,14 @@
   border: 1px solid var(--kol-border-default);
 }
 
+/* Pill takes the TRACKING but NOT the transform (user rulings 2026-08-01).
+ * Pill has no single base class, so its size classes carry it. The uppercase
+ * exception is Tag's alone: a Pill's label IS authored at the call site, so the
+ * no-`text-transform` law applies to it unchanged. */
+.pill-sm,
+.pill-md,
+.pill-lg { letter-spacing: 0.04em; }
+
 /* PADDING ONLY — type is kol-helper-*, applied in Pill.jsx. Same ruling as
  * .kol-tag--* above (2026-08-01). */
 .pill-sm { padding: 2px 10px; }
@@ -126,6 +134,22 @@
   border-radius: var(--kol-radius-full);
   border: 1px solid transparent;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  /* THE CHIP'S OWN TYPE (user rulings 2026-08-01, in two passes).
+   *
+   * First pass: the chip was moved onto the `kol-helper-*` ramp for its
+   * `line-height: 1` and inherited `letter-spacing: 0.10em` with it — the
+   * ramp's eyebrow tracking, and far too wide on a tag string. Set to `normal`.
+   *
+   * Second pass: `normal` is zero, which is too tight for caps. The chip is
+   * uppercase at **0.04em** — between the two, and the value the user named.
+   *
+   * UPPERCASE IS AN EXPLICIT EXCEPTION to the no-`text-transform` law, and the
+   * only one in the component tier. That law says casing is authored at the
+   * CALL SITE — which works because a call site exists. A tag has none: the
+   * string is `#domain/design-system`, generated from frontmatter data, so
+   * there is nowhere to author it. The transform lives here or nowhere. */
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* PADDING ONLY. Type is the kol-helper-* ramp, applied at the call site
@@ -413,6 +437,12 @@
   margin-block: 1.5rem;
 }
 
+/* THE BLOCK. Everything here is the SURFACE — fill, frame, font, wrapping.
+ * The two dimensional values (pad and type size) moved OUT to the size classes
+ * below (user ruling 2026-08-01: *"it has sizes, ok but its not set, so its
+ * just whatever its defaulting to? is that good? instead of saying sm or md?"*).
+ * They were unnamed constants sitting in this rule, so nothing could ask for a
+ * smaller block and nothing recorded that a choice had been made. */
 .kol-codeblock {
   /* verbatim from the reference build's rule (user DevTools, 2026-07-28) */
   background: var(--kol-surface-tertiary);
@@ -420,12 +450,26 @@
   font-family: var(--kol-font-family-mono);
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  border-radius: 4px;
-  padding: 1rem;
-  font-size: 14px;
+  border-radius: var(--kol-radius-sm);
   line-height: 1.6;
   position: relative;
   overflow-x: auto;
+}
+
+/* THE SIZE AXIS — declared, not defaulted. `md` carries exactly the values the
+ * base rule used to hide, so nothing changes appearance until a call site asks
+ * for `sm`. Padding is the box, type is the ramp; both step together, because a
+ * tight box around 14px type is a different defect from small type in a roomy
+ * box. Size is INDEPENDENT of `bare`: bare removes the FRAME, size sets the
+ * BOX. A bare block still has a size. */
+.kol-codeblock--md {
+  padding: var(--kol-spacing-4);
+  font-size: var(--kol-text-body-02);
+}
+
+.kol-codeblock--sm {
+  padding: var(--kol-spacing-3);
+  font-size: var(--kol-text-body-03);
 }
 
 /* the ONE chip — filename if present, else the language. In-flow above the

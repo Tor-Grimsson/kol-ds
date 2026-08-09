@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ShellLayout, ShellSidebar, RailSection, RailRow, buildTagCounts, useTagMode, TagPath } from '@kolkrabbi/kol-workshop'
+import { ShellLayout, ShellSidebar, RightRail, buildTagCounts, useTagMode, TagPath } from '@kolkrabbi/kol-workshop'
 import { Asset } from '@kolkrabbi/kol-brand/svg'
-import { HEADER_ICON } from '@kolkrabbi/kol-framework'
-import { SegmentedToggle, useScrollSpy } from '@kolkrabbi/kol-component'
+import { IconFrame, SegmentedToggle, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping } from './grouping.jsx'
 import { SHELL_ROUTES, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import { TAG_INVENTORY } from '../nav/vault.js'
 import { anyComponentsAdmitted } from '../nav/admitted.js'
+import { labelFromSlug } from '../nav/labels.js'
 import useEmbed from './useEmbed.js'
 
 /**
@@ -70,120 +70,44 @@ function useHeadings() {
   return items
 }
 
+/* AutoToc — the showcase's adapter onto THE right rail (2026-08-01).
+ *
+ * It used to BE a right rail: its own sections, its own collapse state, its own
+ * JSX. DocumentationReader had a second one that disagreed with it, so sections
+ * appeared and vanished by route. Both are now `RightRail` from kol-workshop,
+ * and this function does nothing but hand it data.
+ *
+ * It no longer returns null on an empty heading list — the rail is standardised
+ * and its shape does not depend on what a page happens to contain. */
 function AutoToc() {
   const headings = useHeadings()
   const navigate = useNavigate()
   const { openTagMode } = useTagMode()
-  const [collapsed, setCollapsed] = useState(false)
-  const [actionsCollapsed, setActionsCollapsed] = useState(false)
-  const [tagsCollapsed, setTagsCollapsed] = useState(false)
-  /* The rail had NO tags at all (user 2026-08-01). DocumentationReader carries
-   * a Tags section on vault routes and this rail — every OTHER page — carried
-   * none: the same two-right-rails fault as Quick actions, one section over.
-   * Top by count, so the rail is an entry point into the tag system rather
-   * than a dump of all 35. */
   const topTags = useMemo(() => buildTagCounts(TAG_INVENTORY).slice(0, 12), [])
-  /* The spy `DocsToc` already uses (kol-component). Reused rather than a second
-   * observer: the two rails must agree on which heading is current. */
+  /* The spy `DocsToc` already uses (kol-component). One observer, and the rail
+   * is handed the answer rather than computing a second one. */
   const activeId = useScrollSpy(headings.map((h) => h.id), { root: '#main' })
-  /* ONE rail system (user 2026-07-30): the right rail IS the left rail —
-   * identical row idiom (shell-nav-item + kol-mono-14), identical section
-   * label (kol-doc-eyebrow), identical HEADER. That header now uses the left
-   * rail's own eyebrow class rather than borrowing `.shell-nav-group-header`
-   * (the nav row) + `.shell-sidebar-label` — the composition that made this
-   * eyebrow's box disagree with the left rail's. No chevron drawn (user ruling
-   * 2026-08-01); the whole row is still the toggle. */
-  if (headings.length === 0) return null
+
+  const actions = [
+    { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
+    { id: 'docs', label: 'All documentation', icon: <Icon name="book-open" size={14} />, to: '/documentation' },
+    { id: 'components', label: 'View components', icon: <Icon name="grid" size={14} />, to: '/components' },
+    { id: 'copy', label: 'Copy path', icon: <Icon name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(window.location.href) },
+    { id: 'graph', label: 'Graph view', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+  ]
+
   return (
-    <div className="flex flex-col gap-6 pr-2">
-      {/* L1, the same rung the left rail's DOCUMENTATION/TOOLS sits on, from
-        * the same component — so the label and the box are identical in both
-        * rails. This header used to be hand-written here and hand-written
-        * differently over there, which is how the two rails drifted. No count:
-        * an eyebrow names its material, it does not tally it (user ruling
-        * 2026-08-01). */}
-      <RailSection level={1} label="This page">
-        {/* The MIDDLE RUNG, which this rail never had (user ruling 2026-08-01).
-          * The left rail runs eyebrow → group → rows; this one ran eyebrow →
-          * rows, so it had nowhere to put a chevron or a count — the two rails
-          * were a rung apart, which is what made them read as different
-          * systems. `Contents` is the group; the headings are its rows. */}
-        <RailSection
-          level={2}
-          label="Contents"
-          count={headings.length}
-          collapsed={collapsed}
-          onToggle={() => setCollapsed((c) => !c)}
-          icon={Icon}
-        >
-          {/* ACTIVE ON BOTH RAILS (user ruling 2026-08-01). The left tree
-            * highlighted the current page and this rail highlighted nothing —
-            * same rung, one state. A hash link is invisible to react-router,
-            * so the scroll spy supplies it. */}
-          <nav className="shell-nav-items">
-            {headings.map((h) => (
-              <RailRow key={h.id} href={`#${h.id}`} active={h.id === activeId} sub={h.sub}>
-                {h.label}
-              </RailRow>
-            ))}
-          </nav>
-        </RailSection>
-
-        {/* THE SAME FOUR SECTIONS THE VAULT READER HAS (user 2026-08-01:
-          * "everything we had in right sidebar is now gone"). It was never
-          * deleted — DocReaderSidebar carries Related/Quick actions/Tags/Graph
-          * on vault routes, and this rail, which serves every OTHER page, only
-          * ever had Contents. Two right rails with different sections is the
-          * same two-systems fault one surface over. */}
-        <RailSection
-          level={2}
-          label="Quick actions"
-          collapsed={actionsCollapsed}
-          onToggle={() => setActionsCollapsed((c) => !c)}
-          icon={Icon}
-        >
-          <nav className="shell-nav-items">
-            <RailRow onClick={() => navigate(-1)} icon={<Icon name="arrow-left" size={14} />}>Back</RailRow>
-            <RailRow to="/documentation" icon={<Icon name="book-open" size={14} />}>All documentation</RailRow>
-            <RailRow to="/components" icon={<Icon name="grid" size={14} />}>View components</RailRow>
-            <RailRow
-              onClick={() => navigator.clipboard.writeText(window.location.href)}
-              icon={<Icon name="copy" size={14} />}
-            >
-              Copy path
-            </RailRow>
-            <RailRow
-              onClick={() => openTagMode(null, { view: 'graph' })}
-              icon={<Icon name="polygon" size={14} />}
-            >
-              Graph view
-            </RailRow>
-          </nav>
-        </RailSection>
-
-        <RailSection
-          level={2}
-          label="Tags"
-          count={topTags.length}
-          collapsed={tagsCollapsed}
-          onToggle={() => setTagsCollapsed((c) => !c)}
-          icon={Icon}
-        >
-          <nav className="shell-nav-items">
-            {topTags.map(({ tag, count }) => (
-              <RailRow
-                key={tag}
-                onClick={() => openTagMode(tag)}
-                icon={<Icon name="hash-02" size={14} />}
-                trailing={count}
-              >
-                <TagPath tag={tag} />
-              </RailRow>
-            ))}
-          </nav>
-        </RailSection>
-      </RailSection>
-    </div>
+    <RightRail
+      toc={headings}
+      activeId={activeId}
+      related={[]}
+      actions={actions}
+      topTags={topTags}
+      tags={[]}
+      renderTag={(tag) => <TagPath tag={tag} />}
+      onTagClick={(tag) => openTagMode(tag)}
+      icon={Icon}
+    />
   )
 }
 
@@ -220,13 +144,29 @@ function ShowcaseSidebar({ onNavigate }) {
    * category. The label said SHOWCASE — the app's name, not a body of
    * material — over a tree of chapters; see
    * docs/operations/04-content-pipeline/02-taxonomy.md. */
-  const vaultTree = useMemo(() => admittedVaultTree(), [])
-  const showVault = vaultTree.length > 0
+  /* ONE EYEBROW PER CATEGORY (user ruling 2026-08-01: *"OPERATIONS is a
+   * seperate category EYEBROW"*). The vault tree was rendered as a single
+   * `Documentation` sidebar holding every admitted chapter — so admitting
+   * Operations would have hung repo machinery under a label that says
+   * Documentation, collapsing the two top-level categories the vault actually
+   * has. Each group already carries its `category`; grouping by it is what the
+   * data was always shaped for.
+   *
+   * Order is the folder order — documentation before operations — so the rail
+   * matches `docs/` on disk rather than an accident of Map insertion. */
+  const vaultCategories = useMemo(() => {
+    const byCategory = new Map()
+    for (const g of admittedVaultTree()) {
+      if (!byCategory.has(g.category)) byCategory.set(g.category, [])
+      byCategory.get(g.category).push(g)
+    }
+    return [...byCategory.entries()].sort(([a], [b]) => String(a).localeCompare(String(b)))
+  }, [])
   /* TOOLS is not a category — it is the routes the app serves (Blocks, Sets,
    * References, Quarantine). Rendered only when it holds something. */
   const showTools = SHELL_ROUTES.length > 0
   return (
-    <div className="flex flex-col gap-6">
+    <div className="shell-rail-stack">
       {/* ORDER IS THE LAW, not an accident of JSX (2026-08-01).
         * `docs/documentation/04-compositions/02-shells.md:165` has said
         * "Documentation · Components · Tools" since 2026-07-31 and this file
@@ -236,9 +176,15 @@ function ShowcaseSidebar({ onNavigate }) {
         *
         * THE VAULT — the repo's docs/ library as CATEGORY → chapter → page,
         * filtered to admitted chapters. */}
-      {showVault && (
-        <ShellSidebar routes={vaultTree} basePath="/" label="Documentation" onNavigate={onNavigate} />
-      )}
+      {vaultCategories.map(([category, groups]) => (
+        <ShellSidebar
+          key={category}
+          routes={groups}
+          basePath="/"
+          label={labelFromSlug(category)}
+          onNavigate={onNavigate}
+        />
+      ))}
       {showComponents && (
         <>
           <div>
@@ -311,13 +257,17 @@ export default function ShellChrome() {
       defaultTocContent={<AutoToc />}
       searchItems={searchItems}
       actions={
-        <a
+        /* Was a hand-rolled <a> carrying its own copy of the icon-button box —
+         * a near-duplicate of the framework's private `iconBtnCls`, so the two
+         * drifted independently. Button renders an <a> when given `href`, and
+         * `size="lg"` takes the glyph off the ladder instead of a constant. */
+        <IconFrame
+          name="social-github"
+          variant="nav"
+          size="lg"
           href={REPO}
-          className="inline-flex h-9 w-9 items-center justify-center rounded text-fg-64 transition-colors hover:bg-fg-08 hover:text-emphasis"
           aria-label="GitHub"
-        >
-          <Icon name="social-github" size={HEADER_ICON} />
-        </a>
+        />
       }
     />
   )

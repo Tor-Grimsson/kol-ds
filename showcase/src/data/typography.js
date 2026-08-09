@@ -136,16 +136,20 @@ const cutsRows = [
  *
  * Aliases over the numeric --kol-fg-NN primitives (those live under
  * UI Colors / Opacity primitives). Descriptor names stay here because they're
- * a typography concern: subtle/mute/meta de-emphasize, body anchors running
- * copy, strong/emphasis amplify.
+ * a typography concern: subtle/meta de-emphasize, body anchors running copy,
+ * lede/strong/shout/scream/emphasis amplify. Eight roles since 2026-08-01;
+ * the naming shifts from document roles to volume at 88.
  * ============================================================================ */
 
 const opacityDescriptorRows = [
   { name: 'subtle',   pct: 24,  token: '--kol-fg-subtle',   role: 'Dividers, disabled hints, faintest visible' },
-  { name: 'meta',     pct: 48,  token: '--kol-fg-meta',     role: 'Labels, eyebrows, captions' },
-  { name: 'body',     pct: 64,  token: '--kol-fg-body',     role: 'Running copy, links' },
-  { name: 'strong',   pct: 80,  token: '--kol-fg-strong',   role: 'Emphasized body, <strong>' },
-  { name: 'emphasis', pct: 100, token: '--kol-fg-emphasis', role: 'Headings, max ink' },
+  { name: 'meta',     pct: 48,  token: '--kol-fg-meta',     role: 'Labels, captions' },
+  { name: 'body',     pct: 64,  token: '--kol-fg-body',     role: 'The resting ink — running copy, links' },
+  { name: 'lede',     pct: 72,  token: '--kol-fg-lede',     role: 'Between resting ink and strong' },
+  { name: 'strong',   pct: 80,  token: '--kol-fg-strong',   role: 'Emphasized body, <strong>, section eyebrows' },
+  { name: 'shout',    pct: 88,  token: '--kol-fg-shout',    role: 'Chrome that has to cut through' },
+  { name: 'scream',   pct: 96,  token: '--kol-fg-scream',   role: 'The loudest thing that is not full ink' },
+  { name: 'emphasis', pct: 100, token: '--kol-fg-emphasis', role: 'Headings, max ink, the active row' },
 ]
 
 /* Descriptors are text-only as of 2026-04-30. The bg-* / border-* / ring-*
@@ -255,7 +259,7 @@ export const TYPOGRAPHY_SECTIONS = [
     label: '14 — type · reading hierarchy',
     title: 'Reading hierarchy (descriptors)',
     intro:
-      "Five-stop ink hierarchy: subtle / meta / body / strong / emphasis. " +
+      "Eight-stop ink hierarchy: subtle / meta / body / lede / strong / shout / scream / emphasis. " +
       "Aliases over the numeric --kol-fg-NN ramp (UI Colors / Opacity " +
       "primitives). Pick descriptors when intent matters; pick numeric stops " +
       "when exact percentage matters. Text-only — bg / border / ring " +

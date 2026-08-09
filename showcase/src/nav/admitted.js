@@ -25,6 +25,15 @@
  * ShellLayout cap and cannot be quarantined; it IS the frame. */
 export const ADMITTED = new Set([
   'foundations',
+  /* DOCUMENTATION admitted 2026-08-01 on the user's instruction — *"import the
+   * remaining documentation chapters"*. Its `chapters: ['*']` wildcard opens
+   * every vault chapter not claimed by another key: 00-overview, 03-components,
+   * 04-compositions, 05-brand, 06-research, 08-breakpoints. Icons keeps its own
+   * gate and stays held; Operations keeps its own key and stays held. */
+  'documentation',
+  /* OPERATIONS admitted 2026-08-01 on the user's instruction. Its own key, its
+   * own eyebrow, its five enumerated chapters. */
+  'operations',
 ])
 
 /* ── THE CATEGORIES ────────────────────────────────────────────────────────
@@ -148,7 +157,13 @@ export const CATEGORIES = [
     key: 'operations',
     label: 'Operations',
     surfaces: [],
-    chapters: ['01-release', '02-workbench', '03-showcase', '04-content-pipeline'],
+    /* 05-reference-graph WAS MISSING from this list (found 2026-08-01). Every
+     * chapter not claimed by a key falls through the `*` wildcard onto
+     * Documentation's gate — which is precisely the leak the comment above
+     * warns about, live in the file that warns about it. Admitting Documentation
+     * would have opened the reference-graph chapter under it. Enumerated now,
+     * and the same check is the thing to run whenever a chapter folder is added. */
+    chapters: ['01-release', '02-workbench', '03-showcase', '04-content-pipeline', '05-reference-graph'],
     categories: [],
     rule: 'docs/operations/04-content-pipeline/INDEX.md',
     awaits: 'nothing structural — repo machinery, and the content pipeline that documents this gate lives in it',
@@ -171,6 +186,19 @@ for (const c of CATEGORIES) {
  * to prevent, pointed the other way. */
 const WILDCARD = CATEGORIES.find((c) => (c.chapters ?? []).includes('*'))?.key ?? null
 export const gateOfChapter = (folder) => BY_CHAPTER.get(folder) ?? WILDCARD
+
+/* A LOOSE FILE IS GATED BY ITS CATEGORY, NOT THE WILDCARD (2026-08-01).
+ * `docs/operations/SHIPPED-PACKAGES.md` has no chapter, so `gateOfChapter(null)`
+ * fell straight through to the wildcard — Documentation's key — and rendered an
+ * OPERATIONS eyebrow holding one file while all five of its chapters stayed
+ * held. One category's admission was opening another category's content: the
+ * exact leak this gate exists to stop, one rung below where it was last found.
+ *
+ * A category key IS its folder name, so the lookup needs no second map. */
+export const gateOfCategory = (category) =>
+  CATEGORIES.find((c) => c.key === category)?.key ?? WILDCARD
+
+export const isCategoryAdmitted = (category) => ADMITTED.has(gateOfCategory(category))
 
 /* A surface tab or a component category with no category key is HELD, never
  * silently shown — a new tab has to be classified to appear, which is the

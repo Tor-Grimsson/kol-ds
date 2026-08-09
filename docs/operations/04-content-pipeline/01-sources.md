@@ -1,15 +1,16 @@
 ---
-title: The seven content roots
+title: Content roots
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
-description: Every place showcase content is authored or generated — who writes it, what reads it, whether it is hand-authored or machine-written, and the rule that keeps generated output out of the human vault.
+description: Every place showcase content is authored or generated
 aliases:
   - content-roots
   - source-paths
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
   - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"

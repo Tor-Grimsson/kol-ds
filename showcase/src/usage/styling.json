@@ -300,7 +300,7 @@
       "--kol-fg-16",
       "--kol-fg-32",
       "--kol-fg-48",
-      "--kol-fg-body",
+      "--kol-fg-default",
       "--kol-fg-emphasis",
       "--kol-fg-meta",
       "--kol-fg-strong",

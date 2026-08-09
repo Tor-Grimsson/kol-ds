@@ -1,21 +1,22 @@
 ---
-title: Breakpoints — the lookup
+title: Breakpoints
 type: reference
 status: active
-updated: 2026-07-31
-description: Front door for the breakpoint system — the Tailwind-only scale, the five content-width tokens, the padding ramp, and where the laws, practices, and testing methods live.
+created: 2026-07-31
+updated: 2026-08-01
+description: Front door to the breakpoint system
 aliases:
   - breakpoints
   - responsive
 sources:
   - packages/theme/kol-theme.css
 tags:
-  - domain/design-system
   - domain/layout
+  - audience/consumer
 related:
-  - "[[01-breakpoints|breakpoint values]]"
+  - "[[01-values|breakpoint values]]"
   - "[[02-best-practices|best practices]]"
-  - "[[03-methods|testing methods]]"
+  - "[[../../operations/06-workflows/07-device-testing|testing methods]]"
   - "[[04-kol-ds-rules|KOL-DS rules]]"
   - "[[../01-foundations/04-layout-breakpoints|layout law (foundations)]]"
 ---
@@ -46,7 +47,7 @@ Defined in `packages/theme/kol-theme.css:79-81`. Tailwind's scale ONLY, min-widt
 
 | Doc | What |
 |---|---|
-| [[01-breakpoints\|01 — Breakpoint values]] | every number: scale, width tokens, padding ramp, rails, grid collapses |
+| [[01-values\|01 — Breakpoint values]] | every number: scale, width tokens, padding ramp, rails, grid collapses |
 | [[02-best-practices\|02 — Best practices]] | how to write responsive KOL code without inventing numbers |
-| [[03-methods\|03 — Testing methods]] | desktop device-testing rig: Chrome device mode, WebKit, Playwright sweeps |
+| [[../../operations/06-workflows/07-device-testing\|Device testing]] | desktop device-testing rig: Chrome device mode, WebKit, Playwright sweeps |
 | [[04-kol-ds-rules\|04 — KOL-DS rules]] | the laws with teeth + the exemption list |

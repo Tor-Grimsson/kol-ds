@@ -69,7 +69,11 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
    * on the groups inside it (user ruling 2026-08-01). RailSection refuses one
    * at this rung, so there is nothing to compute here. */
   return (
-    <div className="space-y-4">
+    /* One rail layout, one class (2026-08-01). This was `space-y-4` against the
+     * right rail's `space-y-6` against the outer `flex flex-col gap-6` — three
+     * spellings of the same stack, and `space-y` fights any child that owns a
+     * margin, which the eyebrow box does. */
+    <div className="shell-rail-stack-inner">
       <RailSection
         level={1}
         label={label}
@@ -78,7 +82,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
         onToggle={handleToggle}
         onNavigate={onNavigate}
       >
-        <div className="space-y-4">
+        <div className="shell-rail-stack-inner">
           {routes.map((route) => {
             /* A group with no children is not a group — it is a link. It used
              * to render as a header anyway: a chevron that rotated over an
@@ -93,14 +97,20 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
                   level={2}
                   label={route.label}
                   count={hasChildren ? route.children.length : undefined}
-                  to={hasChildren ? undefined : getSectionRootPath(route, basePath)}
+                  /* THE HEADER ALWAYS LINKS (2026-08-02). It used to link only
+                   * when the group had NO children, so a chapter with pages had
+                   * a dead header and its index had to ride as a row inside
+                   * itself. RailSection already separates the two gestures —
+                   * the label navigates, the rest of the row toggles — so a
+                   * group can open its landing page and still collapse. */
+                  to={route.path ?? getSectionRootPath(route, basePath)}
                   collapsible={hasChildren}
                   collapsed={!!collapsedSections[route.id]}
                   onToggle={() => handleSectionClick(route)}
                   onNavigate={onNavigate}
                   icon={Icon}
                 >
-                  <div className="shell-nav-items">
+                  <nav className="shell-nav-items">
                     {(route.children ?? []).map((child) => (
                       <RailRow
                         key={child.id}
@@ -110,7 +120,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
                         {child.label}
                       </RailRow>
                     ))}
-                  </div>
+                  </nav>
                 </RailSection>
               </div>
             )

@@ -2,15 +2,16 @@
 title: Categories, chapters, pages
 type: reference
 status: active
-updated: 2026-07-31
-description: The three-level naming law for everything the sidebar shows — what a category is, what a chapter is, what a page is, why a surface is none of them, and the 2026-07-30 failure that made the distinction load-bearing.
+created: 2026-07-31
+updated: 2026-08-01
+description: The three-level naming law behind the sidebar
 aliases:
   - taxonomy
   - categories-sections
 tags:
-  - domain/workflow
-  - domain/design-system
-  - pattern/information-architecture
+  - domain/content-pipeline
+  - audience/agency-internal
+  - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"
   - "[[03-manifest|the nav manifest]]"
@@ -31,6 +32,39 @@ Three levels. Every row in the left rail is exactly one of them, and the level d
 
 > **A category is a body of material. A chapter is a division of it. A page is a leaf.**
 > Anything that is not one of those three is a **surface** — a route the app happens to serve — and a surface is not a rung in this ladder.
+
+## The minimum
+
+**A chapter needs THREE pages beside its `INDEX.md`** (user ruling 2026-08-01: *"every folder should minimum have 3 documents, thats the minimum requirement for a folder ownership"*, and asked whether the index counts, *"no index does not"*).
+
+Gate: **`pnpm validate:chapters`**.
+
+Seven of thirteen chapters were short when the rule was written, and three of them — `01-release`, `02-workbench`, `05-brand` — held nothing at all except their own index. A folder with one file in it is not a chapter; it is a document that grew a directory, and the rail renders it as a group of one whose label repeats its parent's.
+
+The rule cuts both ways, and the second direction is the useful one: **a folder that cannot reach three pages is telling you its subject belongs inside a sibling.** Fold it rather than padding it. Every chapter that fell short here turned out to be the first case — three subjects already written under three headings in a single file — but that is a finding, not the expected answer.
+
+**And every folder HAS one** (same day): *"multiple folders are without INDEX.md, its a rule, there needs to be one, and its always the first page, obviously its a toc"*. Five chapters had none — including `01-foundations`, `03-components` and `04-compositions`, three of the largest — so a reader arriving at a folder of ten files got no door and no ordering. An index is the chapter's first page and its contents, and it links its pages by wikilink so the vault is walkable without the app.
+
+`INDEX.md` is excluded from the count because it is the chapter's front door, not its content.
+
+**It renders as `About`, first in the list, and the chapter header opens it** (2026-08-02). `About`, not `Overview` — `00-overview` is a chapter, so an index row called Overview printed `Overview › Overview`. **No row may repeat its chapter's name**, gated by `validate:chapters`; that check also caught `08-breakpoints/01-breakpoints`, renamed to `01-values`. It used to sort alphabetically into the middle of its own siblings under the label `INDEX` — a chapter listing its own front door among its contents. The **filename stays `INDEX.md`**: that is the framework's contract, it is how Obsidian resolves a folder note, and `00-overview` is already a chapter, so renaming every index would print `Overview › Overview`. The label is a render decision; the filename is a contract. Same reason `docs/INDEX.md` and a category's own `INDEX.md` are not pages: an index names what is inside it and cannot be one of the things it names.
+
+## The split
+
+**`documentation/` is the design system; `operations/` is the repo.** The line is *what the page is about*, not what vocabulary it uses — a keyword count called the brand index "repo" for saying the word *pipeline* once.
+
+Four things sat on the wrong side and moved 2026-08-02:
+
+| Moved | To | Because |
+|---|---|---|
+| `06-research/workflows/` | `operations/06-workflows/` | Ladle vs Storybook, Changesets, CI, distribution — how a repo is run, never a KOL component |
+| `08-breakpoints/03-methods` | `operations/06-workflows/07-device-testing` | a Chrome/Xcode/Playwright rig is machinery |
+| `03-showcase/02-doc-card-sets` | `01-foundations/07-doc-card-sets` | it scopes the `kol-doc-*` / `kol-card-*` type roles |
+| `operations/SHIPPED-PACKAGES` | `01-release/02-shipped-packages` | a DS fact, but the release ritual owns updating it — the chapter that owns the update owns the page |
+
+**`05-reference-graph` stays in operations, and that is a decision, not an oversight.** It is repo machinery measuring a design-system subject — the only chapter where both homes are genuinely defensible. It sits with the tooling because what it *is* is a generator; what it is *about* is downstream of that.
+
+The split is now readable off a tag rather than re-judged per file: **`audience/agency-internal`** on machinery, **`audience/consumer`** on design-system content.
 
 ## Page slots
 
@@ -56,7 +90,7 @@ The corollaries follow from "slot":
 
 On 2026-07-30 the quarantine port admitted "Foundations" as a **category**, so the sidebar read:
 
-```
+```text
 SHOWCASE
   Foundations (3)
     Tokens
@@ -79,7 +113,7 @@ The port was deliberately one category at a time so that exactly this kind of mi
 
 `showcase/src/lib/shell-nav.js` declares `ALL_ROUTES` as a flat list of peers:
 
-```
+```text
 foundations · icons · components · blocks · sets · docs · references · documentation · quarantine
 ```
 
@@ -87,7 +121,7 @@ foundations · icons · components · blocks · sets · docs · references · do
 
 ## Target shape
 
-```
+```text
 DOCUMENTATION            ← category (docs/documentation/)
   00 Overview            ← chapter
   01 Foundations         ← chapter

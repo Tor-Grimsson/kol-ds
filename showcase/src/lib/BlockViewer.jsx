@@ -43,19 +43,14 @@ const DOT_GRID = {
 }
 
 function IconBtn({ icon, label, active, onClick, href }) {
-  const cls = `inline-flex h-7 w-7 items-center justify-center rounded-[var(--kol-radius-sm)] transition-colors ${active ? 'bg-fg-08 text-emphasis' : 'text-meta hover:text-emphasis hover:bg-fg-04'}`
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noreferrer" className={cls} aria-label={label} title={label}>
-        <Icon name={icon} size={15} />
-      </a>
-    )
-  }
-  return (
-    <button type="button" onClick={onClick} className={cls} aria-label={label} title={label} aria-pressed={active}>
-      <Icon name={icon} size={15} />
-    </button>
-  )
+  /* The box has an owner (2026-08-01): `Button variant="nav" size="sm"` is this
+   * square and this hover wash, and `pressed` is the active fill. iconSize holds
+   * the glyph exactly where it was. */
+  const btn = { variant: 'nav', size: 'sm', iconOnly: icon, iconSize: 15, pressed: Boolean(active), 'aria-label': label, title: label }
+  /* Button renders an <a> for href and a <button> for onClick, so the fork that
+   * used to duplicate the whole element is now one prop. */
+  if (href) return <Button {...btn} href={href} target="_blank" rel="noreferrer" />
+  return <Button {...btn} onClick={onClick} aria-pressed={active} />
 }
 
 export default function BlockViewer({ entry, previewBase = '/blocks/preview', srcDir = 'blocks' }) {

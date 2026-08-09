@@ -1,4 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
  * Input — single-input atom built on the .kol-control shell.
@@ -31,7 +32,6 @@ import { Icon } from '@kolkrabbi/kol-icons'
  */
 
 const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
-const ICON_SIZE = { sm: 14, md: 14, lg: 18 }
 
 export default function Input({
   type = 'text',
@@ -53,7 +53,12 @@ export default function Input({
 }) {
   const isNumber = type === 'number'
   const fixedChars = typeof chars === 'number'
-  const resolvedIconSize = iconSize ?? ICON_SIZE[size] ?? 14
+  // The text-adjacent ladder — an Input's icon sits in the rung's line box
+  // beside the value, exactly like a labelled Button's. `.kol-control-*` and
+  // `.kol-btn-*` carry identical padding + type per rung, so the glyph is the
+  // same too. This was a local ICON_SIZE with `md: 14` until 0.20.1, the last
+  // of the four transcriptions (sm and lg had always agreed).
+  const resolvedIconSize = iconSize ?? glyphSize(size)
 
   // ghost folds into outline (2026-07-08 chrome law): one secondary treatment.
   const resolvedVariant = variant === 'ghost' ? 'outline' : variant

@@ -81,6 +81,11 @@
    * and needs no alias of its own. */
   --kol-pad-rail-row-y: 0.375rem;
 
+  /* The row's TEXT INDENT — `.shell-nav-item`'s left padding, named 2026-08-01
+   * so anything else that has to line up with a row (the tag shelf) reads the
+   * indent instead of retyping it. */
+  --kol-pad-rail-row-x: 1.25rem;
+
   /* Content widths (2026-07-28; panel added 2026-07-30) — ONE frame, three
    * inner caps (chess law). Every page: mx-auto max-w-shell + the one padding
    * rhythm, content LEFT-ANCHORED inside. Width is a content decision, never a

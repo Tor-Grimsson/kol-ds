@@ -1,16 +1,18 @@
 ---
-title: Control chrome — the button law
+title: Control chrome
 type: reference
 status: active
+created: 2026-08-01
 updated: 2026-08-01
 verified: 2026-07-08
-description: Every interactive control references the Button — two structural variants (primary / outline) plus the role variants (ghost / secondary / accent / danger / grey), one size scale (26/32/40), and interactive fills built on the opaque (oq) tier so nothing goes see-through over content.
+description: The button law every interactive control references
 aliases:
   - control-chrome
   - chrome-law
   - button-law
 tags:
-  - domain/design-system
+  - domain/components
+  - audience/consumer
 sources:
   - packages/theme/kol-components-atoms.css
   - packages/component/src/atoms/Button.jsx
@@ -33,6 +35,7 @@ Two **structural** variants carry the hierarchy; the rest are **role** variants 
 | **primary** | filled `surface-secondary` | The default. Daily chrome. |
 | **outline** | transparent + `border-oq-16` | Always secondary to primary. Bordered, no fill. |
 | **ghost** | transparent, text `oq-48` | Quiet chrome — icon toolbars, clickable plies, text actions. Pairs with `quiet`/`pressed`. |
+| **nav** | transparent, text `oq-64` | The chrome rung, one step brighter than ghost. Added to Button's map 2026-08-01 — `.kol-btn-nav` had existed in the theme with **no component able to emit it**, so every call site wanting this weight hand-wrote `text-fg-64` instead. That orphan is the direct cause of the four-container header. |
 | **secondary** | inverted ink | High-emphasis inversion (rare). |
 | **accent** | `accent-primary` fill | Brand-accented CTA. |
 | **danger** | `--ui-error` fill | Destructive actions — never fake it with a red `className`. |
@@ -49,6 +52,29 @@ Padding-driven, not fixed-height — the control hugs its content and the paddin
 | **sm** | `4px 12px` | `kol-mono-12` | 26px |
 | **md** | `6px 16px` | `kol-mono-14` | 32px |
 | **lg** | `8px 20px` | `kol-mono-16` | 40px |
+
+## Glyph ladders
+
+**Two ladders, and the split is whether a label sits beside the glyph.** Not which component you are in.
+
+| Ladder | sm · md · lg | For | Source |
+|---|---|---|---|
+| **`SOLO`** | 16 · 20 · 24 | an icon alone in a pinned square (28 · 32 · 36) | `packages/component/src/hooks/glyphLadders.js` |
+| **`ADJACENT`** | 14 · 16 · 18 | an icon inside a rung's line box, beside a label or a value | same file |
+
+`Button iconOnly`, `IconFrame` and `ThemeToggle` (label off) take **SOLO**. `Button` with a label, `ThemeToggle` with one, and `Input` take **ADJACENT**. `iconSize` overrides either at any call site.
+
+**Why one file.** The ladders were transcribed independently in four components and drifted. `Button` resolved one inline ternary regardless of `iconOnly`, so an icon-only button put a **14px glyph in a 28px square** at `sm` — the text-adjacent ladder in a solo square. framework **0.10.3** had already fixed the mirror of this (`hop-bare` took SOLO while carrying a label) and nothing connected the two, because `(size === 'sm' ? 14 : …)` does not look like a ladder. Fixed in component **0.20.0**: `Button` and `IconFrame` both read `glyphLadders.js`.
+
+`Input` joined in **0.20.1** — it had carried a local `ICON_SIZE` whose `md` was 14 where ADJACENT says 16, while its own `sm` and `lg` already agreed. Ruled drift, not a rung: `.kol-control-*` and `.kol-btn-*` carry **identical padding and type per rung**, so an Input's icon sits in the same line box as a labelled Button's and takes the same glyph.
+
+> **`Tag` keeps its own** (`ICON_SIZES` 10/12/14) and that is deliberate — chip scale is a smaller family than the control rungs, not a third opinion about them.
+
+## Radius
+
+Two values, nothing between — `sm` (the system radius token, default, carries no class) or `full` (a full round). Available on **`IconFrame`** and, from component **0.20.0**, on **`Button`**.
+
+A round control is its own chrome idiom (edge-straddling controls, avatars, status dots) rather than a radius tweak, and it is the only sanctioned exception to the hard radius invariant. `.kol-icon-frame-radius-full` and `.kol-btn-radius-full` are **one CSS rule with two selectors** — no `--kol-*` token holds a full round today (checked, zero hits), and a token for a single value used by one rule would add a name without adding a source of truth.
 
 ## State model
 
@@ -77,6 +103,31 @@ Plus: a `:focus-visible` ring everywhere (2px `--kol-focus-ring`, offset 2); `:d
 | **ToggleSwitch** | Bare by default; optional primary/outline shells at button geometry; track scales; on = inverted ink. |
 | **SegmentedToggle** | Cells padding-matched to the button size scale — heights pixel-identical (26/32/40). |
 | **Slider** | Exempt — a bare range row, not a pressable surface. One look, no variants (see [[01-inventory\|inventory]]). |
+
+## Icon box
+
+**Any icon-only control in chrome is `IconFrame variant="nav" size="…"` — nothing hand-writes the square (user ruling 2026-08-01).**
+
+> *"you dont use a button… you use the ICON COMPONENT… it has no interactive states."*
+
+**`IconFrame` now takes a click.** Its docstring used to forbid `onClick`/`href` and call that refusal "the entire point" — one sentence too strong. Two things had been welded together, **is it clickable** and **does it light up**, and only the second was ever the point. `onClick` renders a `<button>`, `href` renders an `<a>`, the class is identical in all three branches, and the UA's own button chrome is reset in `button.kol-icon-frame, a.kol-icon-frame` so *no states* is a property of the **class** rather than of the tag. Still absent, and staying absent: `disabled` and `aria-pressed` — both describe a control that changes appearance with state, which is where `Button` begins.
+
+A dimmed rest state is therefore a **variant swap**, not a state: `ghost` rests at `oq-48`, `nav` at `oq-64`, both static. The rail toggles use exactly that for collapsed/expanded.
+
+The shell header ran **six** icon controls on **four** containers: `Button`, `kol-theme-toggle`, a private `iconBtnCls` const in `ShellHeader.jsx` with three call sites, and a near-copy of that string hand-written on the showcase's GitHub link. Nobody owned the box, so the strings drifted — and so did the glyphs inside them: two rail toggles hardcoded `18` directly beneath an exported `HEADER_ICON = 24` that had been added *for this exact complaint* a few hours earlier.
+
+| Write | Not |
+|---|---|
+| `variant="nav"` — rests at `--kol-oq-64`, which **is** the `text-fg-64` these strings hand-wrote | `variant="ghost"` (rests at `oq-48` — one step darker, silently) |
+| `size="lg"` and let `SOLO` resolve the glyph | `iconSize={SOME_CONSTANT}` — it pins the glyph and leaves the **square** on whatever rung the call site forgot |
+| `variant={collapsed ? 'ghost' : 'nav'}` for a dimmed rest state | an opacity transition — that is a state, and a frame has none |
+| `Button` when the control genuinely **should** light up | `Button` as the default for anything icon-shaped |
+
+**Naming a constant did not fix it and could not.** `HEADER_ICON` was exported, documented, and then ignored by two call sites three rows below its own definition. A number is advice; a component is the only thing that makes the box unwritable by hand. `HEADER_ICON` is now `@deprecated` with zero consumers, kept only because deleting a published export needs a major bump.
+
+**The one exception, and it is a rule not a list:** a box carrying its **own background plate** is a different idiom. An overlay affordance on a photo (`MediaCard`'s download) needs an opaque plate plus a backdrop blur to stay legible over arbitrary pixels; `Button` has no variant for that. The plate is the discriminator — `validate:chrome` C4 tests for it rather than keeping an exception list.
+
+**Gated.** `pnpm validate:chrome` **C4** fails any `.jsx` under `packages/*/src` or `showcase/src/lib` whose class string pairs a square (`h-N w-N`) with a hover wash (`hover:bg-*`). `showcase/src/lib` is included deliberately, unlike C3 which lets the showcase prototype: `lib/` is the showcase's own chrome layer, and excluding it would gate everywhere except where the worst instance actually lived.
 
 ## Chip law
 

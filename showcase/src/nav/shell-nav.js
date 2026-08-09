@@ -3,15 +3,11 @@ import { BLOCKS } from '../lib/blocks-registry.js'
 import { SETS } from '../lib/sets-registry.js'
 import { VAULT, VAULT_SEARCH_ITEMS, VAULT_TREE, vaultDocHref } from './vault.js'
 import { CHAPTER_PAGES } from './chapter-pages.js'
-import { isSurfaceAdmitted, isComponentAdmitted, anyComponentsAdmitted, isChapterAdmitted } from './admitted.js'
+import { isSurfaceAdmitted, isComponentAdmitted, anyComponentsAdmitted, isChapterAdmitted, isCategoryAdmitted } from './admitted.js'
 
-/* Chapter folder → display label. Same rule as vault.js: drop the numeric
- * prefix, Title-Case the rest, authored at the data layer with no CSS
- * transform (the no-auto-text-transform law). */
-const label = (seg) => {
-  const words = seg.replace(/^\d+-/, '').replace(/-/g, ' ')
-  return words.charAt(0).toUpperCase() + words.slice(1)
-}
+/* Chapter folder → display label. THE rule, imported — it was written here and
+ * in vault.js byte-identically until 2026-08-01. See nav/labels.js. */
+import { labelFromSlug as label } from './labels.js'
 
 /**
  * shell-nav — the adapter from the showcase's own data into the shapes
@@ -66,14 +62,17 @@ export const ALL_ROUTES = [
       { id: 'docs-type-roles', label: 'Type roles', path: '/docs/type-roles' },
     ],
   },
-  /* Documentation is a SYSTEM (user ruling 2026-07-30) — its own top-level
-   * area with its own URL space, like kolkrabbi.io/workshop's Documentation.
-   * Never a child page under Docs. */
   /* The reference graph — generated, so it sits beside Documentation rather
    * than under Docs: it is not a written page, it is what the repo measures
    * about itself. */
   { id: 'references', label: 'References', icon: 'library', path: '/references' },
   { id: 'search', label: 'Search', icon: 'search', path: '/search' },
+  /* Documentation is a CATEGORY, and a category is not a tool (user ruling
+   * 2026-08-01). It stays in ALL_ROUTES so ⌘K can still find it by name — that
+   * is what this list is for — but it is filtered out of the rendered Tools
+   * group below. It was a surface back when the vault had no eyebrow of its
+   * own and this row was the only door to `/documentation`; now the eyebrow IS
+   * the door, and the row pointed at whichever doc happened to sort first. */
   {
     id: 'documentation',
     label: 'Documentation',
@@ -88,10 +87,17 @@ export const ALL_ROUTES = [
 /* THE ADMISSION GATE (quarantine plan, phase 1). The shell renders admitted
  * surfaces plus Quarantine. Readmitting a category is one line in admitted.js,
  * and so is sending it back. */
+/* A CATEGORY IS NEVER A TOOLS ROW. `documentation` is admitted as a category
+ * and renders as its own eyebrow with its chapters under it; admitting the
+ * category was also admitting the surface of the same name, so it appeared
+ * twice — once as the eyebrow, once as a row that led into the middle of it. */
+const CATEGORY_SURFACES = new Set(['documentation'])
+
 export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
-  r.id === 'quarantine' ||
-  isSurfaceAdmitted(r.id) ||
-  (r.id === 'components' && anyComponentsAdmitted()))
+  !CATEGORY_SURFACES.has(r.id) && (
+    r.id === 'quarantine' ||
+    isSurfaceAdmitted(r.id) ||
+    (r.id === 'components' && anyComponentsAdmitted())))
 
 /* Which tab lights up for a path. The shell's built-in predicate is
  * prefix-only, which can't express "the Docs tab targets a child page but
@@ -182,8 +188,12 @@ export const ADMITTED_COMPONENTS = TOP_LEVEL.filter((c) => isComponentAdmitted(c
  * A group with no `chapter` is a category ROOT (its INDEX and any loose docs).
  * It rides with the category's own gate — `gateOfChapter(null)` falls through
  * to the wildcard holder, which is Documentation. */
+/* A group with a CHAPTER is gated by that chapter; a loose category-root file
+ * has none and is gated by its CATEGORY. Reading `null` through the chapter
+ * gate sent it to the wildcard and opened it under the wrong category
+ * (2026-08-01) — see `gateOfCategory` in admitted.js. */
 export const admittedVaultTree = () =>
-  VAULT_TREE.filter((g) => isChapterAdmitted(g.chapter))
+  VAULT_TREE.filter((g) => (g.chapter ? isChapterAdmitted(g.chapter) : isCategoryAdmitted(g.category)))
 
 export const componentTreeRoutes = (mode) =>
   groupComponents(mode, ADMITTED_COMPONENTS).map(([key, label, items]) => ({

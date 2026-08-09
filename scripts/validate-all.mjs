@@ -31,6 +31,10 @@ const GATES = [
   ['vault-links', 'validate-vault-links.mjs'],
   ['headings', 'validate-headings.mjs'],
   ['chrome', 'validate-chrome.mjs'],
+  ['metadata', 'validate-metadata.mjs'],
+  ['fences', 'validate-fences.mjs'],
+  ['chapters', 'validate-chapters.mjs'],
+  ['tags', 'validate-tags.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

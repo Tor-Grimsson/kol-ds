@@ -60,7 +60,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
   }
 
   return (
-    <div className="space-y-4">
+    <div className="shell-rail-stack-inner">
       {/* L1 from RailSection — the same rung and the same box as every other
         * rail header. No count: the eyebrow names the material, the groups
         * inside carry the tally (user ruling 2026-08-01). */}
@@ -72,7 +72,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
         onToggle={onToggle}
         onNavigate={onNavigate}
       >
-        <div className="space-y-4">
+        <div className="shell-rail-stack-inner">
         {Object.entries(groupedDocs)
           .sort(([a], [b]) => a.localeCompare(b))
           .map(([major, docs]) => {
@@ -87,7 +87,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
                   onToggle={() => toggleGroup(major)}
                   icon={Icon}
                 >
-                  <div className="shell-nav-items">
+                  <nav className="shell-nav-items">
                     {docs.map((d) => (
                       <RailRow
                         key={d.id}
@@ -99,7 +99,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
                         {cleanTitle(d.title, d.id)}
                       </RailRow>
                     ))}
-                  </div>
+                  </nav>
                 </RailSection>
               </div>
             )
@@ -134,7 +134,7 @@ const WorkshopSidebar = ({
   )
 
   return (
-    <div className="space-y-6">
+    <div className="shell-rail-stack">
       <ShellSidebar
         routes={workshopRoutes}
         basePath={basePath}

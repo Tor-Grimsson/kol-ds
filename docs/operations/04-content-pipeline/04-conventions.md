@@ -2,14 +2,15 @@
 title: Conventions and gates
 type: reference
 status: active
-updated: 2026-07-31
-description: The format rules for every content root — filenames, frontmatter, generated folders, wikilinks — paired with the validator that enforces each one, and the ones that are still folklore.
+created: 2026-08-01
+updated: 2026-08-01
+description: The format rules, paired with what enforces them
 aliases:
   - formats-lint
   - pipeline-conventions
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
   - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"
@@ -36,12 +37,31 @@ The governing principle of this repo, learned the hard way across 2026-07-30: **
 
 | Root | Contract | Gate |
 |---|---|---|
-| `docs/**/*.md` | framework schema — `title` · `type` · `status` · `updated` · `description` · `tags` · `related` | none — folklore |
+| `docs/**/*.md` | framework schema — `title` · `type` · `status` · `created` · `updated` · `description` · `tags` · `related` | **`pnpm validate:metadata`** (shape), `validate:vault-links` (links) |
 | `showcase/src/docs/*.mdx` | same contract, generated | **`pnpm validate:frontmatter`** (`sync-mdx-frontmatter.mjs --check`) |
 
 The nine `type:` values and the closed tag taxonomy are defined in `.kol/docs-framework/`. `type` picks the body shape; `tags` must come from the closed namespace list (`domain/` · `pattern/` · `provider/` · `audience/` · …). A tag outside it is not a new idea, it is a typo.
 
-**The asymmetry is deliberate but incomplete:** the MDX dialect is gated and the vault dialect is not, so a hand-authored doc can ship with a broken `related:` link or a tag outside the taxonomy. `validate:references` catches dead wikilinks; nothing checks the tag namespace.
+### The shape
+
+Frontmatter **renders** — every field is a row in the reader's metadata panel, in a fixed two-column box. Three rules, gated by `validate:metadata` (user ruling 2026-08-01):
+
+| | Rule | What it was |
+|---|---|---|
+| **M1** | A title is a NAME. No ` — ` clause | 36 of 56 titles carried one — `Foundations — the token system` printed one fact as two, and the clause **is** the description |
+| **M2** | A description is **≤ 8 words** | 56 of 56 ran over; the worst was 82 words, and it ran off the right edge of the panel. *"meta data is not for babling wihtout limits"* |
+| **M3** | Sentence case | a title and a description start with a capital, with an allowlist for names that spell themselves lowercase (`shadcn`, `pnpm`, `kol-*`) |
+| **M4** | `created` is present | the panel showed only `updated`, so a doc had no age. Backfilled across all 56 from **file birth time** — a real timestamp from this machine, not a guessed one, and the only honest source available |
+
+**Values are sentence case too.** `type` and `status` carry closed enums and rendered as `reference` / `active` under capitalised labels; the reader authors their case against the key. Every other value is content and prints exactly as written.
+
+**`aliases` no longer renders.** It is an Obsidian field — Quick Switcher and search autocomplete, per `.kol/docs-framework/01-conventions.md:65`, and explicitly not part of wikilink resolution. Nothing in the app reads it, so it stays in the file and stops taking a row in a panel that shows facts.
+
+The check is on the **source**, not the renderer — same reason as `validate:headings`. `cleanTitle` had been stripping the dash clause at render time, which hid the babble and kept it; the clause is gone from the data now and the stripper is a no-op on conforming docs.
+
+**Counted, not enforced:** 24 of 66 component MDX descriptions still exceed the limit. They are mined from package JSDoc by `extract-descriptions.mjs`, so a hand-rewrite is overwritten on the next regen — the fix is in the package source. The gate prints the count rather than skipping it silently.
+
+**The remaining asymmetry:** nothing checks the tag namespace on either surface.
 
 ## Wikilinks
 
@@ -55,11 +75,13 @@ Gate: **`pnpm validate:vault-links`**. Written 2026-07-31, when this section was
 
 Strings are authored in the case they render. No `text-transform`, no `charAt(0).toUpperCase()`, no `::first-letter`. Casing is a content decision made at the call site — a component that enforces it makes every consumer fight it, and it breaks under translation.
 
-Gate: none. Enforced by review.
+**A DERIVED label is still authored — at the data layer (user ruling 2026-08-01).** A slug, a filename or a frontmatter key that becomes a visible label is cased where the string is *made*, never by CSS. `showcase/src/nav/labels.js` is the one rule: it drops a file extension and a numeric prefix, splits PascalCase on the case boundary (`CreateButton.jsx` → `Create Button`, `KOLButton` → `KOL Button`, runs of capitals kept whole) and sentence-cases the rest. It was written **byte-identically in two files** — `shell-nav.js` and `vault.js` — until they were collapsed onto it. `DocsFrontmatter` carries the same rule for an unlisted frontmatter key, which used to print raw and snake_cased.
+
+Gate: none for the case itself. Enforced by there being **one** derivation.
 
 ## Gate set
 
-`pnpm validate` runs all twelve and prints one scoreboard. Ordered by what they protect:
+`pnpm validate` runs all fifteen and prints one scoreboard. Ordered by what they protect:
 
 | Gate | Protects |
 |---|---|
@@ -71,6 +93,9 @@ Gate: none. Enforced by review.
 | `validate:width` | the one-frame law — main column caps at canvas, no hardcoded pixel max-widths, panel-bound content capped |
 | `validate:rails` | one row idiom and one label voice across every rail |
 | `validate:frontmatter` | the MDX frontmatter contract |
+| `validate:metadata` | the vault frontmatter SHAPE — a title is a name, a description is ≤ 8 words, both sentence case |
+| `validate:headings` | an H2 is a nav label, not a sentence — it renders as a rail row |
+| `validate:chrome` | a declared variant carries a state; no arbitrary `rounded-[…]`/`shadow-[…]` |
 | `validate:references` | a load-bearing component isn't deleted out from under its dependents — the **canon deletion guard**, nothing to do with markdown |
 | `validate:vault-links` | every `[[target\|display]]` in `docs/` resolves **by path**, the way the app reads it |
 | `validate:drift` | generated artifacts match their sources |

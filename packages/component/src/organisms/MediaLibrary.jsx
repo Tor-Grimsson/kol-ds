@@ -216,10 +216,36 @@ function useCopy() {
   return [copied, copy]
 }
 
+/* A video paints nothing until a frame decodes, so its resting state is a blank
+ * box — no name, no type marker. This gives it the <img alt> equivalent: a play
+ * glyph and the filename behind the video, revealed only while it has nothing
+ * to show. `onLoadedData` is the earliest event that guarantees a frame.
+ *
+ * The loading strategy is deliberately unchanged (lobby/MediaLibraryVideoFallback:
+ * both candidate strategies failed the same way headless, so that measurement
+ * discriminates nothing). This layer needs no decoder to be correct. */
 function Thumb({ row, mediaUrl }) {
-  return isVideo(row.contentType)
-    ? <video src={posterSrc(mediaUrl(row.key))} muted preload="metadata" className="w-full h-full object-cover" />
-    : <img src={mediaUrl(row.key)} alt="" loading="lazy" className="w-full h-full object-cover" />
+  const [painted, setPainted] = useState(false)
+
+  if (!isVideo(row.contentType)) {
+    return <img src={mediaUrl(row.key)} alt="" loading="lazy" className="w-full h-full object-cover" />
+  }
+
+  return (
+    <div className="kol-media-thumb">
+      <span className="kol-media-thumb-fallback" data-painted={painted}>
+        <Icon name="play" size={20} />
+        <span className="kol-mono-12">{fileName(row.key)}</span>
+      </span>
+      <video
+        src={posterSrc(mediaUrl(row.key))}
+        muted
+        preload="metadata"
+        onLoadedData={() => setPainted(true)}
+        className="relative w-full h-full object-cover"
+      />
+    </div>
+  )
 }
 
 /* Folders, then the tiles or rows. Shared by both views — the modal shell and

@@ -162,6 +162,53 @@ for (const pkgDir of ['packages/component/src', 'packages/framework/src', 'packa
   }
 }
 
+/* ── C4 · hand-rolled icon-button box ──────────────────────────────────────
+ * Added 2026-08-01. The shell header ran SIX icon controls on FOUR different
+ * containers: `Button`, `kol-theme-toggle`, a private `iconBtnCls` const in
+ * ShellHeader.jsx with three call sites, and a near-copy of that string
+ * hand-written on the showcase's GitHub link. Nobody owned the box, so the two
+ * strings drifted apart and the glyphs inside them drifted too (18 against 24
+ * under an exported constant that said 24).
+ *
+ * The signature of the re-implementation is stable: a SQUARE sizing pair plus a
+ * hover wash on the same class string — that is `.kol-btn-icon` + a variant,
+ * spelled by hand. `Button variant="nav" size="lg" iconOnly` is the owner.
+ *
+ * Scoped to package source PLUS `showcase/src/lib` — unlike C3, which lets the
+ * showcase prototype freely. `lib/` is the showcase's own chrome layer, not a
+ * page: the worst instance of this defect lived there, and excluding it would
+ * gate everywhere except where it actually happened. */
+const ICON_BOX_SQUARE = /\b(?:h-(\d+)\s+w-\1|w-(\d+)\s+h-\2)\b/
+const ICON_BOX_HOVER = /\bhover:bg-/
+/* A box carrying its OWN background plate is not this idiom. An overlay
+ * affordance sitting on a photo (MediaCard's download) needs an opaque plate
+ * plus a backdrop blur to stay legible over arbitrary pixels — that is a scrim
+ * control, and Button has no variant for it. The transparent chrome box is what
+ * Button owns, so the plate is the discriminator, not an exception list. */
+const ICON_BOX_PLATE = /\bbg-fg-absolute|background:|backdropFilter/
+
+for (const srcDir of [
+  'packages/component/src',
+  'packages/framework/src',
+  'packages/workshop/src',
+  'showcase/src/lib',
+]) {
+  for (const file of walk(join(REPO, srcDir))) {
+    const rel = relative(REPO, file)
+    const lines = readFileSync(file, 'utf8').split('\n')
+    for (const [i, line] of lines.entries()) {
+      const t = line.trim()
+      if (t.startsWith('*') || t.startsWith('//') || t.startsWith('/*') || t.startsWith('{/*')) continue
+      if (!ICON_BOX_SQUARE.test(line) || !ICON_BOX_HOVER.test(line)) continue
+      if (ICON_BOX_PLATE.test(line) || ICON_BOX_PLATE.test(lines[i + 1] ?? '')) continue
+      errors.push(
+        `${rel}:${i + 1}  hand-rolled icon-button box (square + hover wash) — ` +
+          'use <Button variant="nav" size="lg" iconOnly="…" />; the box has an owner'
+      )
+    }
+  }
+}
+
 if (skipped.length) {
   console.log(`chrome: ${skipped.length} component(s) skipped (variant map not a literal):`)
   for (const s of skipped) console.log('    ' + s)
@@ -172,4 +219,4 @@ if (errors.length) {
   for (const e of errors) console.error('  ' + e)
   process.exit(1)
 }
-console.log(`chrome: clean (${checkedClasses} variant classes across ${checkedComponents} components; interactive ones all carry :hover; no arbitrary chrome values)`)
+console.log(`chrome: clean (${checkedClasses} variant classes across ${checkedComponents} components; interactive ones all carry :hover; no arbitrary chrome values; no hand-rolled icon boxes)`)

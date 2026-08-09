@@ -1,139 +1,52 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { CodeBlock, Divider, DocsToc, Icon, Table, Tag } from '@kolkrabbi/kol-component'
-import { ShellTocContext, RailSection, RailRow } from '../shell'
+import { CodeBlock, Divider, Icon, Table, useScrollSpy } from '@kolkrabbi/kol-component'
+import { ShellTocContext, RightRail } from '../shell'
 import { useTagMode } from '../tags'
+import TagPath from '../tags/TagPath.jsx'
 import { parseDocsMarkdown, isIndexFile } from '../engine'
+import { buildTagCounts } from '../engine/tags.js'
+import { fileLabel } from '../engine/doc-helpers.js'
 import DocsHeader from './DocsHeader.jsx'
 import DocsArticle from './DocsArticle.jsx'
 import DocsFrontmatter from './DocsFrontmatter.jsx'
 import { DocSection } from './DocKit.jsx'
 import { renderInlineTokens } from './render-tokens.jsx'
 
-/**
- * A rail section header. Same anatomy as the LEFT tree's group header — a
- * rotating chevron, the label, and the item count pushed right — because the
- * two rails are one system and a reader shouldn't have to learn each side
- * separately.
- *
- * These were bare text with no count and no hover. They carry both now, and
- * the whole row is the toggle — with no chevron drawn at L1 (user ruling
- * 2026-08-01): the section collapses and expands, the affordance just isn't an
- * icon.
- *
- * It is a thin wrapper over RailSection, which owns the rung: the class, the
- * box, and WHERE THE COUNT SITS. This header used to hand-write all three and
- * borrowed `.shell-nav-group-header` + `.shell-sidebar-label` to do it, which
- * is how the two rails ended up printing their counts on different rows.
- */
-const SidebarSection = ({ sectionKey, label, count, collapsedSections, toggleSection, children }) => (
-  <RailSection
-    level={2}
-    label={label}
-    count={count > 0 ? count : undefined}
-    collapsed={!!collapsedSections[sectionKey]}
-    onToggle={() => toggleSection(sectionKey)}
-    icon={Icon}
-  >
-    {children}
-  </RailSection>
-)
-
-const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, componentsHref, docFilePath }) => {
+/* THE RIGHT RAIL IS ONE COMPONENT (user ruling 2026-08-01). This file used to
+ * carry its own — `DocReaderSidebar`, with its own section set, its own collapse
+ * state and its own JSX — while the showcase's ShellChrome carried a second one.
+ * They disagreed about which sections exist, so sections appeared and vanished,
+ * and `SidebarSection` here was a third spelling of a rung `RailSection` already
+ * owned. All of it is `RightRail` now; this is an adapter that hands it data. */
+const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, componentsHref, docFilePath, topTags = [] }) => {
   const navigate = useNavigate()
   const { openTagMode } = useTagMode()
-  const [collapsedSections, setCollapsedSections] = useState({})
-  const toggleSection = (key) => setCollapsedSections(prev => ({ ...prev, [key]: !prev[key] }))
+  /* `#main` is the scroll container — the shell is `fixed inset-0` with its own
+   * scroll regions, so a viewport-rooted observer never fires. Same call the
+   * other rail makes; the rail is handed the answer, never a second observer. */
+  const activeId = useScrollSpy((toc ?? []).map((h) => h.id), { root: '#main' })
+
+  const actions = [
+    { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
+    { id: 'docs', label: 'All documentation', icon: <Icon name="book-open" size={14} />, to: docsIndexHref },
+    { id: 'components', label: 'View components', icon: <Icon name="grid" size={14} />, to: componentsHref },
+    { id: 'copy', label: 'Copy path', icon: <Icon name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(docFilePath(docId)) },
+    { id: 'graph', label: 'Graph view', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+  ]
 
   return (
-    /* THE SAME LADDER AS THE LEFT RAIL (user ruling 2026-08-01). One L1 eyebrow
-     * naming the body, then L2 groups that collapse and carry a chevron + a
-     * count. These four sections used to be four bare L1 eyebrows stacked with
-     * no parent and no chevron — the left rail's shape stated differently on
-     * the other side of the page. */
-    <RailSection level={1} label="This page">
-      <div className="space-y-6">
-      <SidebarSection
-        sectionKey="toc"
-        label="Contents"
-        count={toc?.length}
-        collapsedSections={collapsedSections}
-        toggleSection={toggleSection}
-      >
-        <DocsToc toc={toc} root="#main" />
-      </SidebarSection>
-
-      {related.length > 0 && (
-        <SidebarSection
-          sectionKey="related"
-          label="Related"
-          count={related.length}
-          collapsedSections={collapsedSections}
-          toggleSection={toggleSection}
-        >
-          {/* ONE rail voice (user law): rows = the shell-nav-item idiom. */}
-          <nav className="flex flex-col">
-            {related.map((r) => (
-              <RailRow key={r.id} to={r.href}>{r.label}</RailRow>
-            ))}
-          </nav>
-        </SidebarSection>
-      )}
-
-      <SidebarSection
-        sectionKey="actions"
-        label="Quick actions"
-        collapsedSections={collapsedSections}
-        toggleSection={toggleSection}
-      >
-        {/* Quick actions wear the SAME row as On-this-page and Related. They
-          * were `.shell-sidebar-action`, a third geometry with no left indent,
-          * so this rail carried three different row idioms — under the
-          * "ONE rail voice" comment above. */}
-        <div>
-          <RailRow onClick={() => navigate(-1)} icon={<Icon name="arrow-left" size={14} />}>Back</RailRow>
-          <RailRow to={docsIndexHref} icon={<Icon name="book-open" size={14} />}>All documentation</RailRow>
-          <RailRow to={componentsHref} icon={<Icon name="grid" size={14} />}>View components</RailRow>
-          <RailRow onClick={() => navigator.clipboard.writeText(docFilePath(docId))} icon={<Icon name="copy" size={14} />}>Copy path</RailRow>
-          <RailRow onClick={() => openTagMode(null, { view: 'graph' })} icon={<Icon name="polygon" size={14} />}>Graph view</RailRow>
-        </div>
-      </SidebarSection>
-
-      {/* TAGS IS A CATEGORY (user ruling 2026-08-01) — not a bare tag dump.
-        * It holds the two ENTRY POINTS into the tag system plus this page's
-        * own tags. The graph view was reachable only through an unlabelled hex
-        * glyph floating at the corner of the overlay: a feature nobody could
-        * find unless they already knew it existed. Both entries are rail rows
-        * now, in the one row idiom. */}
-      <SidebarSection
-        sectionKey="tags"
-        count={allTags?.length}
-        label="Tags"
-        collapsedSections={collapsedSections}
-        toggleSection={toggleSection}
-      >
-        {/* NO Search row (user ruling 2026-08-01) — the nav search icon already
-          * opens the one modal, and a second door to it is the duplication we
-          * just spent an arc deleting. Graph view moved to Quick actions: it
-          * is an ACTION on the tag system, not one of this page's tags. */}
-        {allTags.length > 0 && (
-          /* No `color`, no `size` — see DocsFrontmatter. `sm` is the default
-           * and the only size; a colour would cost the hover state. */
-          <div className="flex flex-wrap gap-1.5 items-start min-w-0 w-full mt-2">
-            {allTags.map((tag) => (
-              <Tag
-                key={tag}
-                onClick={() => openTagMode(tag)}
-                className="max-w-full overflow-hidden text-ellipsis"
-              >
-                {tag}
-              </Tag>
-            ))}
-          </div>
-        )}
-      </SidebarSection>
-      </div>
-    </RailSection>
+    <RightRail
+      toc={toc}
+      activeId={activeId}
+      related={related}
+      actions={actions}
+      topTags={topTags}
+      tags={allTags}
+      renderTag={(tag) => <TagPath tag={tag} />}
+      onTagClick={(tag) => openTagMode(tag)}
+      icon={Icon}
+    />
   )
 }
 
@@ -331,6 +244,11 @@ const DocumentationReader = ({
   }, [rawMarkdown])
 
   // Combine frontmatter tags with inline hashtags
+  /* THE SAME Top tags THE OTHER RAIL SHOWS (user ruling 2026-08-01). The rail
+   * is standardised, so this section cannot exist on one route and not another;
+   * the inventory is already a prop here, so there is nothing to fetch. */
+  const topTags = useMemo(() => buildTagCounts(inventory).slice(0, 12), [inventory])
+
   const allTags = useMemo(() => {
     const frontmatterTags = doc?.metadata?.tags || []
     return [...new Set([...frontmatterTags, ...inlineTags])]
@@ -366,7 +284,15 @@ const DocumentationReader = ({
           inventory.find((d) => d.file.replace(/\.md$/, '') === full) ??
           inventory.find((d) => d.file.replace(/\.md$/, '').toLowerCase() === `${full}/index`.toLowerCase()) ??
           inventory.find((d) => d.id === basename)
-        return hit ? { id: hit.id, href: docHref(hit.id), label: display } : null
+        /* `fileLabel`, THE rail-label rule — the same one the left tree uses
+         * (user rulings 2026-08-01). Three spellings have been tried on this
+         * row: the wikilink's display text (`[[02-color|color]]` → lowercase
+         * `color`), then the doc's frontmatter title (which carried a subtitle
+         * after an em dash, so the row read `Color — anchors and ramps` and
+         * truncated). A rail row is a NAME: one or two words, from the
+         * filename, identical to how the same doc appears in the left tree.
+         * The display text stays the fallback for an unresolvable target. */
+        return hit ? { id: hit.id, href: docHref(hit.id), label: fileLabel(hit.file) || display } : null
       })
       .filter(Boolean)
   }, [doc, inventory, docHref])
@@ -381,6 +307,7 @@ const DocumentationReader = ({
         key={docId}
         toc={toc}
         allTags={allTags}
+        topTags={topTags}
         related={related}
         docId={docId}
         docsIndexHref={docsIndex}
@@ -389,7 +316,7 @@ const DocumentationReader = ({
       />
     )
     return () => setTocContent(null)
-  }, [setTocContent, docId, toc, allTags, related, docsIndex, components, docFilePath])
+  }, [setTocContent, docId, toc, allTags, topTags, related, docsIndex, components, docFilePath])
 
   if (!doc) {
     return (

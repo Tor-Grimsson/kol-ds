@@ -5,6 +5,8 @@
  * scattered across kol-color-simple.css and framework/app.css.
  *
  * Scale: 01, 02, 04, 08, 12, 16, 24, 32, 40, 48, 64, 80, 88, 96 (14 stops)
+ *        + 72 in the STANDARD tier only (2026-08-01) — 15 stops there, 14
+ *        everywhere else. The exception is stated at the token itself.
  *
  * Tier pairs:
  * - Standard (foreground on primary surface — var(--kol-surface-on-primary))
@@ -18,9 +20,9 @@
  * Every color-mix expression uses `var(<token>, currentColor)` — fallback is
  * load-bearing for SVG theming where the element's `color:` is the active paint.
  *
- * Semantic text role classes (.text-emphasis/lede/body/meta/subtle) live here
- * too — they map directly to the fg-* primitives below, no intermediate alias
- * tokens. Single source of truth per opacity stop.
+ * Semantic text roles live here too — EIGHT of them since 2026-08-01
+ * (subtle · meta · body · lede · strong · shout · scream · emphasis), each an
+ * alias over one fg-* stop. `default` is a deprecated alias of `body`.
  */
 
 :root {
@@ -39,6 +41,15 @@
   --kol-fg-40: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent);
   --kol-fg-48: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent);
   --kol-fg-64: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent);
+  /* 72 — THE ONE OFF-RAMP STOP (user ruling 2026-08-01). The scale is a
+   * 14-stop signature and this makes it 15, deliberately and in ONE tier only:
+   * the eight TEXT roles below needed a step between body (64) and strong (80)
+   * for `lede`, and text chains exclusively through --kol-fg-*. The absolute
+   * and inverse tiers below, and the whole --kol-oq-* family, do NOT get a 72:
+   * they exist for fills and for theme-independent chrome, and neither has a
+   * role asking for this step. If a FILL ever needs 72, that is the signal to
+   * add it across all five families rather than widen this exception. */
+  --kol-fg-72: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent);
   --kol-fg-80: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent);
   --kol-fg-88: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent);
   --kol-fg-96: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent);
@@ -113,6 +124,7 @@
 .bg-fg-40 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .bg-fg-48 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .bg-fg-64 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.bg-fg-72 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .bg-fg-80 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .bg-fg-88 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .bg-fg-96 { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -170,6 +182,7 @@
 .hover\:bg-fg-40:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .hover\:bg-fg-48:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .hover\:bg-fg-64:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.hover\:bg-fg-72:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .hover\:bg-fg-80:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .hover\:bg-fg-88:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .hover\:bg-fg-96:hover { background-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -204,6 +217,7 @@
 .text-fg-40 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .text-fg-48 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .text-fg-64 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.text-fg-72 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .text-fg-80 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .text-fg-88 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .text-fg-96 { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -238,6 +252,7 @@
 .hover\:text-fg-40:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .hover\:text-fg-48:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .hover\:text-fg-64:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.hover\:text-fg-72:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .hover\:text-fg-80:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .hover\:text-fg-88:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .hover\:text-fg-96:hover { color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -272,6 +287,7 @@
 .border-fg-40 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .border-fg-48 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .border-fg-64 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.border-fg-72 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .border-fg-80 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .border-fg-88 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .border-fg-96 { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -306,6 +322,7 @@
 .hover\:border-fg-40:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 40%, transparent); }
 .hover\:border-fg-48:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 48%, transparent); }
 .hover\:border-fg-64:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 64%, transparent); }
+.hover\:border-fg-72:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 72%, transparent); }
 .hover\:border-fg-80:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 80%, transparent); }
 .hover\:border-fg-88:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 88%, transparent); }
 .hover\:border-fg-96:hover { border-color: color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 96%, transparent); }
@@ -326,30 +343,51 @@
 .hover\:border-fg-inverse-96:hover { border-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) 96%, transparent); }
 
 /* ==============================================================================
- * SEMANTIC OPACITY DESCRIPTORS
+ * SEMANTIC OPACITY DESCRIPTORS — EIGHT ROLES (user ruling 2026-08-01)
  *
- * Six-stop hierarchy: subtle / mute / meta / body / strong / emphasis. Each
- * stop is a token (--kol-fg-*) and a class family (text-*, bg-*, border-*,
- * ring-*) so the same descriptor names work across every property.
+ * Each role is a token (--kol-fg-*) and a text class, so the same name works
+ * wherever ink is set.
  *
- * Stops:
  *   subtle    24% — dividers, disabled hints, faintest visible
- *   mute      32% — dim labels, quiet UI hints
- *   meta      48% — labels, eyebrows, captions  (current text-meta workhorse)
- *   body      64% — running copy, links         (current text-body default)
- *   strong    80% — emphasized body, <strong>   (renamed from text-lede)
- *   emphasis 100% — headings, max ink            (current text-emphasis)
+ *   meta      48% — labels, captions
+ *   body      64% — running copy, links (the resting ink)
+ *   lede      72% — the step that did not exist; see --kol-fg-72 above
+ *   strong    80% — emphasized body, <strong>, eyebrows
+ *   shout     88% — chrome that has to cut through
+ *   scream    96% — the loudest thing that is not full ink
+ *   emphasis 100% — headings, max ink
  *
- * Tokens chain through the existing fg-opacity ramp — single source of truth
- * (the 14-stop --kol-fg-{01..96} family) is preserved; descriptors are aliases.
+ * WHAT CHANGED, AND WHAT DELIBERATELY DID NOT. `default` became `body` —
+ * the name 25 files spelled as the resting ink while four others already wrote
+ * `text-body` into a class that did not exist. `emphasis` STAYS at 100%: 83
+ * files reach for it as max ink, and moving it would have dimmed every heading
+ * in the estate silently, with nothing failing. Three roles are new over stops
+ * that already existed; only `lede` needed a new stop.
+ *
+ * The naming shifts register at 88 — subtle…strong are document roles, shout
+ * and scream are volume. That is deliberate: the top two are for chrome, not
+ * for text.
+ *
+ * `mute` (32%) was retired 2026-04-30 with zero consumers and does not return.
+ *
+ * Tokens chain through the fg ramp — single source of truth is preserved;
+ * descriptors are aliases, never their own colour values.
  * ============================================================================== */
 
 :root {
   --kol-fg-subtle:    var(--kol-fg-24);
   --kol-fg-meta:      var(--kol-fg-48);
   --kol-fg-body:      var(--kol-fg-64);
+  --kol-fg-lede:      var(--kol-fg-72);
   --kol-fg-strong:    var(--kol-fg-80);
+  --kol-fg-shout:     var(--kol-fg-88);
+  --kol-fg-scream:    var(--kol-fg-96);
   --kol-fg-emphasis:  var(--kol-surface-on-primary);
+
+  /* DEPRECATED ALIAS — `default` is the old name for `body`, kept pointing at
+   * the same stop so a consumer mid-sweep cannot render colourless. Remove once
+   * no source references it. */
+  --kol-fg-default:   var(--kol-fg-body);
 }
 
 /* ─── Text descriptors (5 stops — `mute` retired 2026-04-30, 0 consumers).
@@ -359,11 +397,21 @@
 .text-subtle    { color: var(--kol-fg-subtle); }
 .text-meta      { color: var(--kol-fg-meta); }
 .text-body      { color: var(--kol-fg-body); }
+.text-lede      { color: var(--kol-fg-lede); }
 .text-strong    { color: var(--kol-fg-strong); }
+.text-shout     { color: var(--kol-fg-shout); }
+.text-scream    { color: var(--kol-fg-scream); }
 .text-emphasis  { color: var(--kol-fg-emphasis); }
+
+/* Deprecated alias — see the token block. */
+.text-default   { color: var(--kol-fg-body); }
 
 .hover\:text-subtle:hover    { color: var(--kol-fg-subtle); }
 .hover\:text-meta:hover      { color: var(--kol-fg-meta); }
 .hover\:text-body:hover      { color: var(--kol-fg-body); }
+.hover\:text-lede:hover      { color: var(--kol-fg-lede); }
 .hover\:text-strong:hover    { color: var(--kol-fg-strong); }
+.hover\:text-shout:hover     { color: var(--kol-fg-shout); }
+.hover\:text-scream:hover    { color: var(--kol-fg-scream); }
 .hover\:text-emphasis:hover  { color: var(--kol-fg-emphasis); }
+.hover\:text-default:hover   { color: var(--kol-fg-body); }

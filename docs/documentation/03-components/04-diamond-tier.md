@@ -1,15 +1,17 @@
 ---
-title: Diamond Tier — the battle-tested components
+title: Diamond tier
 type: reference
 status: active
-updated: 2026-07-08
+created: 2026-07-08
+updated: 2026-08-01
 verified: 2026-07-08
-description: Components with 4+ hours of real build/debug investment — the proven exemplars whose patterns carry the most truth when authoring a new component.
+description: The battle-tested components worth copying from
 aliases:
   - diamond-tier
   - diamond
 tags:
-  - domain/design-system
+  - domain/components
+  - audience/consumer
 sources:
   - .kol/llm-context/session-log
   - .kol/llm-context/backlog/2026-07-08-button-chrome-audit.md
