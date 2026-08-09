@@ -20,9 +20,9 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 2 | `kol-apps/kol-mirror/src/components/styleguide/preview/molecules/ComponentPreview.jsx` |
 | 3 | 2 | `kol-apps/kol-modulator/src/components/styleguide/preview/molecules/ComponentPreview.jsx` |
 | 3 | 2 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/preview/molecules/ComponentPreview.jsx` |
+| 3 | 2 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx` |
 | 3 | 2 | `kol-website/_tmp/workshop-museum-elder/components/workshop/molecules/ComponentPreview.jsx` |
 | 3 | 2 | `kol-website/apps/brand/src/pages/Components.jsx` |
-| 3 | 2 | `kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx` |
 | 3 | 1 | `kol-apps/kol-client/src/components/framework/chrome/TopNav.jsx` |
 | … | | _26 more_ |
 

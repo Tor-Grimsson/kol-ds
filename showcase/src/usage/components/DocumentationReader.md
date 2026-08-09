@@ -27,14 +27,12 @@ From `kol-website/apps/web/src/routes/workshop/DocumentationReader.jsx`:
 
 ```jsx
 <DocumentationReader
-    inventory={documentationInventory}
-    modules={documentationModules}
-    docHref={(id) => `/workshop/docs/${id}`}
+    inventory={VAULT}
+    modules={VAULT_MODULES}
+    docHref={vaultDocHref}
     routes={{
       docsIndex: '/workshop/docs',
-      components: '/workshop/components',
-      tagHref: (tag) => `/workshop/docs?tag=${encodeURIComponent(tag)}`,
-      docFilePath: (id) => `docs/documentation/${id}.md`,
+      components: '/workshop/design-system/components',
     }}
   />
 ```

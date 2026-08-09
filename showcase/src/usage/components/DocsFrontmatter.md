@@ -12,7 +12,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 3 | 1 | `kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx` |
 
 ## Import
 
@@ -22,7 +22,7 @@ import { DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 
 ## Real usage
 
-From `kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx`:
 
 ```jsx
 <DocsFrontmatter metadata={doc.metadata} docId={docId} />

@@ -1,7 +1,7 @@
 # AsciiCursor
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** organisms
+- **Category:** atoms
 - **Real-world usages found:** 2 across 2 files in 2 apps
 - **Weighted inbound:** 6★ across 2 edges — 2×3★
 - **Used in:** kol-client-kolkrabbi, kol-website

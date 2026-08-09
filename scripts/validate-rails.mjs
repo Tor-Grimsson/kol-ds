@@ -63,7 +63,7 @@ const RAIL_FILES = [
   'packages/workshop/src/docs/DocumentationReader.jsx',
   'packages/workshop/src/compositions/WorkshopSidebar.jsx',
   'packages/workshop/src/compositions/WorkshopDefaultSidebar.jsx',
-  'packages/component/src/atoms/DocsToc.jsx',
+  'packages/component/src/molecules/DocsToc.jsx',
   'showcase/src/lib/ShellChrome.jsx',
 ]
 
@@ -113,7 +113,7 @@ const ROW_OWNERS = [
    * rule stops is a hand-written row at a CALL SITE, not a second component
    * that owns the idiom in a lower package. Named here rather than passed
    * silently. */
-  'packages/component/src/atoms/DocsToc.jsx',
+  'packages/component/src/molecules/DocsToc.jsx',
 ]
 const ROW_CLASS_RE = /\bshell-nav-item\b/
 const RUNG_CLASSES = /\b(shell-sidebar-toggle|shell-nav-group-header)\b/

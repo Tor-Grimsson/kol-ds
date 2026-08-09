@@ -1,9 +1,5 @@
 import useScrollSpy from '../hooks/useScrollSpy.js'
 
-/* taxonomy-ok: atoms despite being interactive — it composes only the
- * useScrollSpy hook, and hooks don't count as nesting; no KOL component
- * is rendered (nav + anchors only). */
-
 /**
  * DocsToc — on-page table of contents for long docs pages: a flat list of
  * anchor links that highlights the heading currently in view. The scroll

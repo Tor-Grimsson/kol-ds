@@ -1,7 +1,7 @@
 # FullscreenOverlay
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 14 across 14 files in 7 apps
 - **Weighted inbound:** 42★ across 14 edges — 14×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-website

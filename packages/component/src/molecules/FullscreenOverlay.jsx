@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import Button from './Button.jsx'
+import Button from '../atoms/Button.jsx'
 
 /**
  * FullscreenOverlay — the scrim + centred sheet every overlay in the repo

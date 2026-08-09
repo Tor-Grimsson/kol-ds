@@ -1,5 +1,3 @@
-/* taxonomy-ok: composes consumer-passed Buttons via children — nesting happens at the call site */
-
 /**
  * ButtonGroup — responsive layout wrapper for a group of Buttons: stacked
  * full-width on mobile, horizontal row from `sm` up, aligned left / center /

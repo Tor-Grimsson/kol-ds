@@ -1,7 +1,7 @@
 # Section
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 585 across 105 files in 9 apps
 - **Weighted inbound:** 388★ across 105 edges — 73×4★ · 32×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website

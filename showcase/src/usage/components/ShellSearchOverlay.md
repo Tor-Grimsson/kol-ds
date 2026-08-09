@@ -1,7 +1,7 @@
 # ShellSearchOverlay
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** organisms
 - **Real-world usages found:** 2 across 2 files in 2 apps
 - **Weighted inbound:** 6★ across 2 edges — 2×3★
 - **Used in:** kol-client-kolkrabbi, kol-website
@@ -13,7 +13,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx` |
 
 ## Import
 

@@ -1,7 +1,7 @@
 # ColorSwatch
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 59 across 39 files in 11 apps
 - **Weighted inbound:** 119★ across 39 edges — 2×4★ · 37×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-website

@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-workshop`
 - **Category:** shell
-- **Real-world usages found:** 6 across 4 files in 2 apps
-- **Weighted inbound:** 12★ across 4 edges — 4×3★
+- **Real-world usages found:** 8 across 5 files in 2 apps
+- **Weighted inbound:** 15★ across 5 edges — 5×3★
 - **Used in:** kol-client-kolkrabbi, kol-website
 
 ## Who depends on this
@@ -13,9 +13,10 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx` |
-| 3 | 2 | `kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx` |
+| 3 | 2 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx` |
+| 3 | 2 | `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/WorkshopSidebar.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopSidebar.jsx` |
 
 ## Import
 
@@ -39,7 +40,7 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/
       />
 ```
 
-From `kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopSidebar.jsx`:
 
 ```jsx
 <ShellSidebar
@@ -53,14 +54,32 @@ From `kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx`
       />
 ```
 
-From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx`:
+From `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx`:
 
 ```jsx
-<ShellSidebar routes={routes} basePath={basePath} />
+<ShellSidebar
+        routes={surfaceRoutes}
+        basePath="/workshop"
+        label="Workshop"
+        labelTo="/workshop"
+        onNavigate={onNavigate}
+      />
+```
+
+From `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx`:
+
+```jsx
+<ShellSidebar
+          key={category}
+          routes={groups}
+          basePath="/"
+          label={labelFromSlug(category)}
+          onNavigate={onNavigate}
+        />
 ```
 
 From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx`:
 
 ```jsx
-<ShellSidebar routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />
+<ShellSidebar routes={routes} basePath={basePath} />
 ```

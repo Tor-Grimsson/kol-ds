@@ -3,7 +3,7 @@ title: Component taxonomy
 type: reference
 status: canonical
 created: 2026-07-15
-updated: 2026-08-01
+updated: 2026-08-09
 verified: 2026-07-04
 description: The tier axis and the function axis
 aliases:
@@ -40,30 +40,32 @@ A component has exactly one Tier **and** exactly one Function. `Slider` is a *mo
 
 ## Tier
 
-Which `packages/component/src/<folder>/` (or package) a component lives in. Decided by a **mechanical nesting test**, enforced by `scripts/validate-taxonomy.mjs`.
+Which `packages/component/src/<folder>/` (or package) a component lives in. Decided by **judgment on what the component IS** — its anatomy and role, never its imports (2026-08-09 ruling, repealing the mechanical nesting test).
 
-| Tier | Test | Home |
+| Tier | Definition | Home |
 |---|---|---|
-| **Atom** | Nests **no** KOL component. Hand-rolled internals (buttons, chips, floating panels) don't disqualify it. | `packages/component/src/atoms/` |
-| **Molecule** | Nests **at least one** KOL component. | `packages/component/src/molecules/` |
-| **Organism** | A self-contained composed UI **region** — a full bar, table, or gallery — regardless of what it nests. A judgment tier. | `packages/component/src/organisms/` |
+| **Atom** | An **irreducible interface element** — one control, indicator, or content primitive. Its visible parts cannot be named as other KOL components. | `packages/component/src/atoms/` |
+| **Molecule** | A **small assembly** — two or more nameable parts working as one unit: label + control, input + buttons, trigger + panel, a card, a row. | `packages/component/src/molecules/` |
+| **Organism** | A **self-contained interface region** — a full bar, table, gallery, band, overlay surface, or manager. | `packages/component/src/organisms/` |
 | **Framework** | App chrome and page structure — shells, navs, heroes, render-null behaviors. | `packages/framework/src/` |
 | **Loader** | Name→asset resolvers (`Icon`, `Graphic`). **Not visual UI** — never listed as components; documented on `/docs/loaders`, galleries live on the Icons pages. | `kol-icons`, `graphics/` |
 | **Hook** | Reusable behavior, no markup of its own (`usePrefersReducedMotion`, `useScrollSpy`). | `packages/component/src/hooks/` |
 
-### KOL Tier is *not* Brad Frost atomic — on purpose
+### KOL Tier IS real atomic — the import test is repealed (2026-08-09)
 
-Brad Frost's atomic design ranks by **visual/conceptual complexity** (atoms = smallest UI bits, molecules = small functional groups, organisms = complex sections). That ranking is a judgment call, and judgment calls breed "is this an atom or a molecule" debates.
+From 2026-07-04 to 2026-08-09 the tiers were derived from a **mechanical import test** ("does this file import another KOL component?"). That test filed by build accident, not by anatomy: a hand-rolled filter dropdown sat in Atoms because it imported nothing, while a one-line `Image` wrapper sat in Molecules because it imported a fallback. **User ruling, 2026-08-09: the categories were wrong.** The tiers now follow atomic design as it is actually meant:
 
-KOL replaces the judgment with **one mechanical, lint-enforceable question: does this file import another KOL component?** The consequences are deliberate and occasionally counter-intuitive:
+- **The judgment test: could you rebuild it from other KOL components?** If its parts are nameable as KOL components — whether imported or hand-rolled — it is a molecule (or an organism, if it is a whole region). If not, it is an atom, however complex its internals.
+- `DropdownTagFilter` hand-rolls a trigger, panel, and tag list — those parts ARE a Button, a Popover, and Tags, so it is a **molecule** regardless of importing none of them.
+- `RotaryDial` and `CurveOverlay` decompose into nothing nameable — **atoms**, however hard they were to build.
 
-- A visually trivial wrapper that reuses one component is a **molecule** — `Slider` nests `Input`, `ColorSwatch` nests `TransparentX`.
-- A hand-built, genuinely complex control that reuses nothing is an **atom** — `RotaryDial`, `CurveOverlay`.
+Deliberate boundary calls, so they aren't relitigated:
 
-**The Tier tells you about build/import structure, not complexity or importance.** If that feels wrong while browsing, you're reaching for the Function axis — use it. Two rules keep the test honest:
-
-1. **`Icon`/`Graphic` don't count as nesting.** They're loader infrastructure, so nesting one leaves an atom an atom (`Button`, `Tag`, `Stepper` stay atoms).
-2. **Imports go downward only.** Atoms never import molecules/organisms; molecules may import atoms and sibling molecules. The validator enforces this.
+1. **Single-value selection controls are atoms** — `SegmentedToggle`, `ViewToggle`, `ToggleBracket`. Their cells are options of ONE control (role=radiogroup), not Buttons.
+2. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`: an Input visibly composed with adjuncts.
+3. **One element with elaborate behavior is still an atom** — `AsciiCursor`, `InteractiveImage`, `TiltCard`: a single canvas/image, however much it does.
+4. **`Icon`/`Graphic` never affect tier** — loader infrastructure, invisible to the judgment.
+5. **Imports still go downward only** — atoms never import molecules/organisms; molecules never import organisms; sideways is legal at every rung. This is the part that stays lint-enforced (`scripts/validate-taxonomy.mjs`); placement itself is authored, and the authored map lives in [[02-placement|component placement]].
 
 ### How the Tier axis shows in the sidebar
 

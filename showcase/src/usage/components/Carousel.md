@@ -1,7 +1,7 @@
 # Carousel
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** organisms
+- **Category:** molecules
 - **Real-world usages found:** 20 across 20 files in 11 apps
 - **Weighted inbound:** 60★ across 20 edges — 20×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-docs-noter, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-website

@@ -23,7 +23,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-docs/src/pages/WikiDatabasePage.jsx` |
 | 3 | 1 | `kol-apps/kol-docs-md/src/data/wikiPages.js` |
 | 3 | 1 | `kol-apps/kol-docs-md/src/pages/WikiDatabasePage.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/routes/workshop/Documentations.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx` |
 | … | | _1 more_ |
 
 ## Import
@@ -66,7 +66,7 @@ From `kol-apps/kol-docs-md/src/pages/WikiDatabasePage.jsx`:
         <WikiBlockRenderer blocks={page.blocks} />
 ```
 
-From `kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx`:
 
 ```jsx
 <DocsArticle>

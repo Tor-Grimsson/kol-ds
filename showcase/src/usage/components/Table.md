@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 130 across 41 files in 12 apps
-- **Weighted inbound:** 133★ across 41 edges — 10×4★ · 31×3★
+- **Real-world usages found:** 131 across 42 files in 12 apps
+- **Weighted inbound:** 136★ across 42 edges — 10×4★ · 32×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Who depends on this
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 5 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/Typography.jsx` |
 | 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/molecules/TablePreview.jsx` |
 | 3 | 2 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules/TablePreview.jsx` |
-| … | | _29 more_ |
+| … | | _30 more_ |
 
 ## Import
 

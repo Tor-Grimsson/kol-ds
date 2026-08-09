@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import ColorSwatch from './ColorSwatch.jsx'
+import ColorSwatch from '../atoms/ColorSwatch.jsx'
 import { resolveCssVar, isLight } from '../hooks/cssVar.js'
 
 /**

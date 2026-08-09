@@ -13,7 +13,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/docs/TagModeGate.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/workshop-system/tags/TagModeGate.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeGate.jsx` |
 
 ## Import
 

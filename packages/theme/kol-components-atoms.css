@@ -777,32 +777,28 @@ a:hover .icon-hover,
 
 /* ─────────────────────────────────────────────────────────────────────
  * CopyButton — atoms/CopyButton.jsx
- *   Copy-to-clipboard chip: clipboard icon + Copy/Copied label.
- *   Look extracted from CodeBlock's inline copy button; CodeBlock's
- *   .kol-codeblock-copy (kol-framework) now only positions it.
+ *   THE copy-to-clipboard control (2026-08-09 user ruling): the 32×32
+ *   icon button CodeBlock carried privately since the 2026-07-28 elder
+ *   replication — 16px icon + 0.5rem padding. The old Copy/Copied label
+ *   chip (one-off SVGs, auto-uppercase) is retired; CodeBlock composes
+ *   this atom and .kol-codeblock-copy only positions it in-frame.
  * ───────────────────────────────────────────────────────────────────── */
 .kol-copy-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  background: color-mix(in srgb, var(--kol-surface-primary) 80%, transparent);
-  border: 1px solid var(--kol-fg-16);
-  border-radius: 3px;
-  color: var(--kol-fg-64);
+  justify-content: center;
+  padding: 0.5rem;
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 2%, transparent);
+  border: none;
+  border-radius: var(--kol-radius-sm);
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
   cursor: pointer;
-  font-family: var(--kol-font-family-mono, monospace);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
-  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  transition: background-color var(--kol-transition-base), color var(--kol-transition-base);
 }
 
 .kol-copy-btn:hover {
+  background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
   color: var(--kol-surface-on-primary);
-  border-color: var(--kol-fg-48);
 }
 
 /* ─────────────────────────────────────────────────────────────────────

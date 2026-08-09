@@ -1,7 +1,7 @@
 # HueStrip
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** organisms
 - **Real-world usages found:** 12 across 12 files in 6 apps
 - **Weighted inbound:** 36★ across 12 edges — 12×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-labs-monorepo, kol-labs-single, kol-website

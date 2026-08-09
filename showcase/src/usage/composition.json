@@ -22,6 +22,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons",
         "usePrefersReducedMotion",
         "useTilt"
@@ -46,6 +47,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -67,6 +69,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -78,10 +81,12 @@
         "Button",
         "Icon",
         "SearchInput",
-        "ShellSearchOverlay"
+        "ShellSearchOverlay",
+        "Tag"
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -103,6 +108,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -121,6 +127,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -139,6 +146,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -162,6 +170,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -190,6 +199,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -224,6 +234,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -242,6 +253,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -250,6 +262,7 @@
       "kol": [
         "Button",
         "Icon",
+        "IconFrame",
         "SearchInput",
         "ShellHeader",
         "ThemeToggle",
@@ -257,6 +270,8 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
+        "glyphSize",
         "registerIcons",
         "theme"
       ],
@@ -271,6 +286,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": []
@@ -327,6 +343,7 @@
       "local": {},
       "support": [
         "registerIcons",
+        "useCoarsePointer",
         "usePrefersReducedMotion",
         "useTilt"
       ],
@@ -371,6 +388,7 @@
       "local": {},
       "support": [
         "chessFen",
+        "glyphLadders",
         "labels",
         "parsePgnTree",
         "registerIcons",
@@ -402,6 +420,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -431,12 +450,40 @@
       "local": {},
       "support": [
         "glyphData",
+        "glyphLadders",
         "registerIcons",
         "useAxisAnimation",
         "usePrefersReducedMotion"
       ],
       "external": [
         "@floating-ui/react"
+      ]
+    },
+    "media-library": {
+      "kol": [
+        "Button",
+        "ContentFilters",
+        "Divider",
+        "FullscreenOverlay",
+        "Icon",
+        "IconFrame",
+        "MediaBrowser",
+        "MediaCard",
+        "MediaPicker",
+        "MediaRow",
+        "MediaViewer",
+        "SegmentedToggle",
+        "Tag",
+        "ViewToggle"
+      ],
+      "local": {},
+      "support": [
+        "createMediaClient",
+        "glyphLadders",
+        "registerIcons"
+      ],
+      "external": [
+        "embla-carousel-react"
       ]
     },
     "metrics-dashboard": {
@@ -472,6 +519,7 @@
         "demo-data",
         "formatB2Size",
         "formatMetric",
+        "glyphLadders",
         "metrics-constants",
         "registerIcons",
         "timeAgo",
@@ -499,6 +547,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons",
         "usePrefersReducedMotion"
       ],
@@ -516,6 +565,7 @@
         "Avatar",
         "Button",
         "CodeBlock",
+        "CopyButton",
         "Divider",
         "Figure",
         "FullBleedHero",
@@ -533,6 +583,7 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons"
       ],
       "external": [
@@ -573,6 +624,7 @@
         "comboLayouts",
         "comboMath",
         "cssVar",
+        "glyphLadders",
         "registerIcons",
         "typographyCuts"
       ],
@@ -583,6 +635,7 @@
     "work-portfolio": {
       "kol": [
         "AssetPlaceholder",
+        "Button",
         "Carousel",
         "FullscreenOverlay",
         "GalleryCarousel",
@@ -599,7 +652,9 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons",
+        "useCoarsePointer",
         "usePrefersReducedMotion",
         "useTilt"
       ],

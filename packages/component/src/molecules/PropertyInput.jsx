@@ -7,7 +7,7 @@
  */
 import Label from '../atoms/Label'
 import Input from '../atoms/Input.jsx'
-import Stepper from '../atoms/Stepper'
+import Stepper from './Stepper'
 
 export default function PropertyInput({
   label,

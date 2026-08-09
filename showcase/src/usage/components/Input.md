@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 263 across 161 files in 17 apps
-- **Weighted inbound:** 514★ across 161 edges — 4×5★ · 23×4★ · 134×3★
+- **Real-world usages found:** 262 across 160 files in 17 apps
+- **Weighted inbound:** 511★ across 160 edges — 4×5★ · 23×4★ · 133×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-docs-noter, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-website
 
 ## Who depends on this
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 5 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/compose/inspectors/LayerInspector.jsx` |
 | 4 | 5 | `kol-apps/kol-client-kolkrabbi/src/editor/compose/inspectors/LayerInspector.jsx` |
 | 4 | 5 | `kol-apps/kol-editor/src/pages/AtomsPage.jsx` |
-| … | | _149 more_ |
+| … | | _148 more_ |
 
 ## Import
 

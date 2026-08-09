@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-09
 verified: 2026-07-04
 description: Every exported component, by tier, with its job
 aliases:
@@ -35,44 +35,41 @@ Every public export of `@kolkrabbi/kol-component` and `@kolkrabbi/kol-framework`
 
 > **⬦ Diamond Tier & the chrome law.** [[04-diamond-tier|Diamond Tier]] lists the components with 4+ hours of build/debug behind them — the battle-tested exemplars to copy when authoring a new one. Their shared styling contract is the [[05-control-chrome|control chrome law]].
 
-One row per source file — a component's compositional sub-parts are members of one component ([[00-taxonomy|taxonomy]] → "one page per component"), noted under each tier, not listed separately. Tier rules (what makes an atom an atom) live in [[02-placement|component placement]] and are machine-enforced by `pnpm validate:taxonomy`.
+One row per source file — a component's compositional sub-parts are members of one component ([[00-taxonomy|taxonomy]] → "one page per component"), noted under each tier, not listed separately. Tier rules (what makes an atom an atom) live in [[02-placement|component placement]]; placement is **authored judgment** (2026-08-09 re-rule), with the closed folder set and downward-only imports machine-enforced by `pnpm validate:taxonomy`.
 
 ## Atoms
 
 | Component | Job |
 |---|---|
 | `AnimatedTitle` | A scroll-triggered heading that reveals its words one by one as it enters the viewport (GSAP + ScrollTrigger). |
+| `AsciiCursor` | A decorative ASCII cursor-follow overlay; vanishes on coarse pointers and prefers-reduced-motion. |
 | `AssetGrid` | A thin responsive N-column grid for tiling asset figures. |
 | `AssetPlaceholder` | A missing-asset fallback that preserves aspect ratio. |
 | `Avatar` | A circular initial/identity chip in four sizes. |
 | `Badge` | A status pill — success, warning, critical, info, outline. |
 | `Button` | Trigger an action or event — primary, secondary, outline, ghost, or icon-only. |
+| `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
 | `Divider` | A thin rule separating content, horizontal or vertical. |
-| `DocsToc` | An on-page table of contents that highlights the heading in view via useScrollSpy. |
-| `DropdownTagFilter` | A multi-select tag filter (all selected by default). |
 | `EmptyState` | A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors. |
 | `ExitPreview` | A router-aware link out of preview mode. |
 | `Figure` | A caption’d, aspect-locked media frame for long-form prose. |
-| `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `HlsVideo` | A non-interactive background HLS video — hls.js with Safari-native fallback. |
+| `Image` | A raster image with graceful missing-asset fallback. |
 | `Input` | Single-line text field with prefix/suffix, icons, and size variants. |
 | `Label` | A form-field label. |
 | `InteractiveImage` | An image seen through a blob mask that re-centres on the cursor, over a blurred copy of itself; the stage tilts on `useTilt`. Static on touch and under reduced motion. |
-| `LabeledControl` | A label-and-hint wrapper around any control. |
 | `OverlayGlassPanel` | A frosted-glass content card floating over hero or carousel media. |
+| `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change. |
 | `Pill` | A compact rounded label — outline, subtle, inverse. |
 | `Popover` | The floating-primitive module — usePopover, PopoverPanel, and Tooltip on Floating UI. |
 | `PriceDisplay` | A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note. |
 | `ProsePreview` | A full rich-text specimen exercising the whole kol-prose stylesheet in one view. |
-| `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
 | `RotaryDial` | A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping. |
-| `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |
-| `Section` | A small-caps label above a stack of controls, for inspectors. |
 | `SectionLabel` | A label with an icon affordance for collapsible sections. |
 | `SegmentedToggle` | A joined N-way segmented control. |
-| `Stepper` | Increment or decrement a number with +/− controls (editable field). |
+| `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
 | `Tag` | A removable, optionally hashed keyword chip. |
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
@@ -92,57 +89,58 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `AlignmentGrid` | An align-to-artboard control — DS Button cells firing an onAlign seam. |
 | `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
 | `ArticleCard` | A blog/editorial card family — one component with default / hero / mini sizes. |
+| `BentoCard` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
+| `Carousel` | A draggable, loopable slider built on Embla. |
 | `CodeBlock` | A syntax-highlighted code block with copy-to-clipboard. |
 | `ColorInputRow` | A swatch chip + # hex input row — the merged ColorField/SwatchRow with optional palette-ref popover, lock toggle, and token-name column. |
 | `ColorRamp` | One specimen row of color chips — label + note above captioned ColorSwatch chips, from live CSS vars or static colors. |
-| `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
+| `DocsToc` | An on-page table of contents that highlights the heading in view via useScrollSpy. |
 | `Dropdown` | A single-select menu with size and minimal/subtle variants. |
-| `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
-| `Image` | A raster image with graceful missing-asset fallback. |
+| `DropdownTagFilter` | A multi-select tag filter (all selected by default). |
+| `ErrorBoundary` | Catches render errors in its subtree and shows a recovery fallback with retry and go-home. |
+| `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
+| `LabeledControl` | A label-and-hint wrapper around any control. |
+| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
 | `MediaCard` | A grid tile for one media object — thumbnail, name, meta, actions, with a select mode. |
 | `MediaRow` | A list row for one media object — thumbnail, name, date/size columns, actions, with a select mode. |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
-| `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change (a SpectrumControls sibling; nests no KOL component but lives here by the color-picker family exception). |
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
-| `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
+| `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
+| `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |
+| `Section` | A small-caps label above a stack of controls, for inspectors. |
 | `ShapeDropdown` | A split icon-button + variant-menu — act on the current variant or pick another. |
 | `ShellDrawer` | An edge-anchored slide-in drawer with focus trap, scroll-lock, and Esc/backdrop close. |
-| `ShellSearchOverlay` | The ⌘K command palette — dim, bare search field, keyboard-roved result rows. |
 | `Slider` | Select a numeric value from a range with a draggable track. |
 | `SpecList` | A compact label/value definition list with Divider-separated rows. |
-| `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, and the composed square picker. |
 | `SplitToolButton` | A single-trigger split tool button — one click arms the last-picked variant and opens the variant menu. |
+| `Stepper` | Increment or decrement a number with +/− controls (editable field). |
 | `SwatchControls` | A paint-chip stack + eyedropper — swatch slots on ColorSwatch with an EyeDropper-API pick affordance. |
 | `TabsRow` | A labeled underline tab strip — active tab gets a 2px underline. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
 | `WorkListItem` | The list-row twin of WorkCard — thumbnail, title, tags, on one shared project shape. |
 
-Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SpectrumControls`/`SwatchControls` ship their own sub-part exports.
+Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
 ## Organisms
 
 | Component | Job |
 |---|---|
 | `ArticleHeader` | An article masthead — flat-prop title, meta, and an Avatar byline. |
-| `AsciiCursor` | A decorative ASCII cursor-follow overlay; vanishes on coarse pointers and prefers-reduced-motion. |
-| `BentoCard` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. |
 | `Canvas` | A pan/zoom artboard stage owning the 1080-virtual-pixel coordinate contract. |
-| `Carousel` | A draggable, loopable slider built on Embla. |
 | `ContentFilters` | A full filter bar — search, tag groups, view modes — for content grids. |
 | `CtaGlobal` | An editorial two-column contact/CTA band — a display wordmark beside stacked label-over-value rows. |
 | `DiagonalMarqueeRiver` | A gsap diagonal marquee grid with a renderItem slot (reduced-motion static). |
 | `EditorShell` | A two-rail editor frame — left/right panel slots around a canvas region. |
-| `ErrorBoundary` | Catches render errors in its subtree and shows a recovery fallback with retry and go-home. |
 | `FeatureSplit` | An editorial media-and-text split section — kicker, display pull, lede, stats or CTAs. |
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
+| `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
-| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
 | `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
 | `MediaLibrary` | A browser over an object bucket — **ONE component, two variants**: `page` fills its box, `modal` opens over the app. Variant is container geometry only (the ThemeToggle precedent); everything else is a prop. Folders disclose in place, Finder's list model. Composes `ContentFilters` + `MediaCard`/`MediaRow` + `MediaViewer` + `FullscreenOverlay`. **The client is injected, never imported** — ARCHITECTURE §3. A video tile carries a **fallback resting state** (play glyph + filename, `.kol-media-thumb-fallback`) behind the video, because a `<video>` paints nothing until a frame decodes — the `<img alt>` equivalent. |
 | `MediaBrowser` / `MediaPicker` | Thin **aliases** of `MediaLibrary` at `variant="page"` / `variant="modal"`, kept so existing call sites keep working. They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
@@ -153,6 +151,8 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
+| `ShellSearchOverlay` | The ⌘K command palette — dim, bare search field, keyboard-roved result rows. |
+| `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, and the composed square picker. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |
 | `Table` | THE data table. Columns opt into sorting with `sortable` (header is a real button, cycles asc→desc→none, sets `aria-sort`); `width="panel"` (default) \| `"column"` is the cap contract — see [[../01-foundations/05-layout-systems\|layout systems]]. Cells wear `.kol-table-pill` / `.kol-table-token`, never bare text. |

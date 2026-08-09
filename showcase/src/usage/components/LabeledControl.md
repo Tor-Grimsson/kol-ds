@@ -1,7 +1,7 @@
 # LabeledControl
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 371 across 87 files in 11 apps
 - **Weighted inbound:** 286★ across 87 edges — 25×4★ · 62×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-monitor, kol-website

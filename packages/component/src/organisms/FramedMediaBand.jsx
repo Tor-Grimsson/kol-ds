@@ -1,4 +1,4 @@
-import Image from './Image'
+import Image from '../atoms/Image'
 
 /**
  * FramedMediaBand — full-width media breather band: a centered, aspect-locked

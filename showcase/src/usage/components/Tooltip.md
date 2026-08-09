@@ -21,9 +21,9 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 4 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
 | 4 | 4 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
 | 4 | 4 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
+| 4 | 4 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx` |
 | 4 | 4 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess.jsx` |
 | 4 | 4 | `kol-website/apps/web/src/components/layout/Navbar.jsx` |
-| 4 | 4 | `kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx` |
 | … | | _30 more_ |
 
 ## Import

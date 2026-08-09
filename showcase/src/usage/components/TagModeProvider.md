@@ -12,8 +12,8 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
+| 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js` |
 | 3 | 1 | `kol-website/apps/web/src/App.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/workshop-system/tags/index.js` |
 
 ## Import
 
@@ -23,14 +23,14 @@ import { TagModeProvider } from '@kolkrabbi/kol-workshop'
 
 ## Real usage
 
-From `kol-website/apps/web/src/App.jsx`:
-
-```jsx
-<TagModeProvider inventory={documentationInventory} docHref={docHref} tagHref={tagHref}><ShellLayout routes={WORKSHOP_ROUTES} basePath="/workshop" renderSidebar={({ onNavigate }) => <WorkshopSidebar routes={WORKSHOP_ROUTES} inventory={documentationInventory} basePath="/workshop" onNavigate={onNavigate} />
-```
-
-From `kol-website/apps/web/src/workshop-system/tags/index.js`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js`:
 
 ```jsx
 <TagModeProvider inventory={...} docHref={...} tagHref={...}>
+```
+
+From `kol-website/apps/web/src/App.jsx`:
+
+```jsx
+<TagModeProvider inventory={VAULT} docHref={docHref}><WorkshopChrome />
 ```

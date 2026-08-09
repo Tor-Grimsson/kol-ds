@@ -49,7 +49,9 @@ Button of the same rung — the `.kol-dd-*` classes only add trigger layout and
 the open/panel fusion. `primary` (default) is the filled trigger whose open
 panel continues the same fill as one piece; `grey` is the opaque oq-12 fill;
 `outline` is the bordered pair. Dropdowns have **no hover and no clicked
-state** (2026-07-15 ruling) — rest and open are the only states. For menu
+state** (2026-07-15 ruling) — rest and open are the only states. **The value
+pins to the leading edge** (Input's model), caret trailing — never centered,
+whatever width the call site sets. For menu
 actions use [MenuItem](/components/menu-item); this is value-list selection.
 
 ## Props

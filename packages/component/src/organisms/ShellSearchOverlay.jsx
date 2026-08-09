@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import SearchInput from '../atoms/SearchInput.jsx'
+import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
 
 /**

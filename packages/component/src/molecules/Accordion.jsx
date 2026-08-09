@@ -1,9 +1,6 @@
 /**
  * Accordion — collapsible panel group.
  *
- * taxonomy-ok: molecule — Accordion nests AccordionPanel in this same file,
- * which the import-based validator can't see.
- *
  * Composition-based: <Accordion> wraps <AccordionPanel> children. Each panel
  * owns its open/closed state independently (additive — multiple can be open).
  * For single-open behavior, manage state from the parent and pass controlled

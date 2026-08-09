@@ -1,5 +1,5 @@
 import Figure from '../atoms/Figure.jsx'
-import Image from './Image.jsx'
+import Image from '../atoms/Image.jsx'
 
 /**
  * ImageBlock — a captioned prose image: the DS Figure shell (optional label,

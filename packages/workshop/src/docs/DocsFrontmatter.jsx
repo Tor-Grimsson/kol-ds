@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Icon, Tag } from '@kolkrabbi/kol-component'
 import { useTagMode } from '../tags'
 import TagPath from '../tags/TagPath.jsx'
@@ -157,15 +158,33 @@ const formatDate = (dateStr) => {
 
 const DocsFrontmatter = ({ metadata, docId }) => {
   const { openTagMode } = useTagMode()
-  if (!metadata || Object.keys(metadata).length === 0) return null
+  /* THE PANEL COLLAPSES, THE PAGE SCROLLS (user call 2026-08-09). A long
+   * frontmatter (Dropdown: classes + reuses + tokens) made the panel the
+   * page, and its per-field scrollboxes captured the wheel on the way down.
+   * The whole panel now caps behind a fade and expands in normal flow — the
+   * toggle renders only when the content actually overflows the cap. */
+  const bodyRef = useRef(null)
+  const [expanded, setExpanded] = useState(false)
+  const [overflowing, setOverflowing] = useState(false)
 
-  const fields = orderFields(metadata)
+  const fields = metadata ? orderFields(metadata) : []
+
+  useLayoutEffect(() => {
+    const el = bodyRef.current
+    if (el) setOverflowing(el.scrollHeight > el.clientHeight + 1)
+  }, [metadata, expanded])
 
   if (fields.length === 0) return null
+
+  const capped = !expanded
 
   return (
     <div className="docs-frontmatter">
       <p className="shell-sidebar-label kol-doc-eyebrow">Frontmatter</p>
+      <div
+        ref={bodyRef}
+        className={`docs-frontmatter-body${capped ? ' docs-frontmatter-body--capped' : ''}`}
+      >
       {fields.map((key) => {
         const value = metadata[key]
         const icon = FIELD_ICONS[key]
@@ -233,6 +252,18 @@ const DocsFrontmatter = ({ metadata, docId }) => {
           </div>
         )
       })}
+        {capped && overflowing && <div className="docs-frontmatter-fade" aria-hidden="true" />}
+      </div>
+      {(overflowing || expanded) && (
+        <button
+          type="button"
+          className="docs-frontmatter-toggle kol-helper-12 text-meta"
+          onClick={() => setExpanded((v) => !v)}
+        >
+          <Icon name={expanded ? 'chevron-up' : 'chevron-down'} size={14} />
+          {expanded ? 'Collapse' : 'Expand'}
+        </button>
+      )}
     </div>
   )
 }

@@ -243,6 +243,13 @@
       "stars": 3
     }
   ],
+  "packages/component/src/atoms/ColorSwatch.jsx": [
+    {
+      "target": "TransparentX",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/atoms/IconFrame.jsx": [
     {
       "target": "Icon",
@@ -250,21 +257,16 @@
       "stars": 3
     }
   ],
-  "packages/component/src/atoms/Input.jsx": [
+  "packages/component/src/atoms/Image.jsx": [
     {
-      "target": "Icon",
+      "target": "AssetPlaceholder",
       "uses": 1,
       "stars": 3
     }
   ],
-  "packages/component/src/atoms/LabeledControl.jsx": [
+  "packages/component/src/atoms/Input.jsx": [
     {
-      "target": "Input",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Slider",
+      "target": "Icon",
       "uses": 1,
       "stars": 3
     }
@@ -281,29 +283,10 @@
       "stars": 3
     }
   ],
-  "packages/component/src/atoms/SearchInput.jsx": [
-    {
-      "target": "Icon",
-      "uses": 3,
-      "stars": 5
-    }
-  ],
   "packages/component/src/atoms/SectionLabel.jsx": [
     {
       "target": "Icon",
       "uses": 2,
-      "stars": 3
-    }
-  ],
-  "packages/component/src/atoms/Stepper.jsx": [
-    {
-      "target": "Icon",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "Input",
-      "uses": 1,
       "stars": 3
     }
   ],
@@ -356,6 +339,28 @@
       "stars": 3
     }
   ],
+  "packages/component/src/molecules/BentoCard.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/molecules/CardFeatureItem.jsx": [
     {
       "target": "Icon",
@@ -394,13 +399,6 @@
       "stars": 3
     }
   ],
-  "packages/component/src/molecules/ColorSwatch.jsx": [
-    {
-      "target": "TransparentX",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/component/src/molecules/Dropdown.jsx": [
     {
       "target": "Icon",
@@ -413,16 +411,43 @@
       "stars": 3
     }
   ],
-  "packages/component/src/molecules/FramedMediaBand.jsx": [
+  "packages/component/src/molecules/ErrorBoundary.jsx": [
     {
-      "target": "Image",
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/FieldRow.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "StatusChip",
       "uses": 1,
       "stars": 3
     }
   ],
-  "packages/component/src/molecules/Image.jsx": [
+  "packages/component/src/molecules/FullscreenOverlay.jsx": [
     {
-      "target": "AssetPlaceholder",
+      "target": "Button",
       "uses": 1,
       "stars": 3
     }
@@ -435,6 +460,30 @@
     },
     {
       "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/LabeledControl.jsx": [
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/LoaderOverlay.jsx": [
+    {
+      "target": "FullscreenOverlay",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ColorLoader",
       "uses": 1,
       "stars": 3
     }
@@ -482,6 +531,13 @@
       "stars": 3
     }
   ],
+  "packages/component/src/molecules/SearchInput.jsx": [
+    {
+      "target": "Icon",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
   "packages/component/src/molecules/ShapeDropdown.jsx": [
     {
       "target": "Button",
@@ -501,14 +557,7 @@
   ],
   "packages/component/src/molecules/ShellDrawer.jsx": [
     {
-      "target": "Icon",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
-  "packages/component/src/molecules/ShellSearchOverlay.jsx": [
-    {
-      "target": "SearchInput",
+      "target": "Button",
       "uses": 1,
       "stars": 3
     }
@@ -527,27 +576,22 @@
       "stars": 5
     }
   ],
-  "packages/component/src/molecules/SpectrumControls.jsx": [
-    {
-      "target": "HueStrip",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "SBSquare",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "WheelTriangle",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/component/src/molecules/SplitToolButton.jsx": [
     {
       "target": "Icon",
       "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/Stepper.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
       "stars": 3
     }
   ],
@@ -587,28 +631,6 @@
       "stars": 3
     }
   ],
-  "packages/component/src/organisms/BentoCard.jsx": [
-    {
-      "target": "AssetPlaceholder",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "HlsVideo",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Image",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/component/src/organisms/Canvas.jsx": [
     {
       "target": "CanvasFrame",
@@ -623,17 +645,17 @@
   ],
   "packages/component/src/organisms/ContentFilters.jsx": [
     {
-      "target": "Icon",
-      "uses": 3,
-      "stars": 4
-    },
-    {
       "target": "Divider",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "Tag",
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "IconFrame",
       "uses": 1,
       "stars": 3
     },
@@ -648,13 +670,6 @@
       "target": "Divider",
       "uses": 5,
       "stars": 5
-    }
-  ],
-  "packages/component/src/organisms/ErrorBoundary.jsx": [
-    {
-      "target": "Button",
-      "uses": 2,
-      "stars": 3
     }
   ],
   "packages/component/src/organisms/FeaturedCarousel.jsx": [
@@ -683,6 +698,13 @@
       "stars": 3
     }
   ],
+  "packages/component/src/organisms/FramedMediaBand.jsx": [
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/organisms/FullBleedHero.jsx": [
     {
       "target": "HlsVideo",
@@ -707,14 +729,49 @@
       "stars": 3
     }
   ],
-  "packages/component/src/organisms/LoaderOverlay.jsx": [
+  "packages/component/src/organisms/MediaLibrary.jsx": [
+    {
+      "target": "Icon",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "MediaLibraryProvider",
+      "uses": 2,
+      "stars": 3
+    },
     {
       "target": "FullscreenOverlay",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "ColorLoader",
+      "target": "SegmentedToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentFilters",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaViewer",
       "uses": 1,
       "stars": 3
     }
@@ -750,9 +807,97 @@
       "stars": 3
     }
   ],
+  "packages/component/src/organisms/RecordManager.jsx": [
+    {
+      "target": "Button",
+      "uses": 6,
+      "stars": 4
+    },
+    {
+      "target": "ToggleCheckbox",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "FieldRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellDrawer",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaLibrary",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "StatusChip",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/ShellSearchOverlay.jsx": [
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SpectrumControls.jsx": [
+    {
+      "target": "HueStrip",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SBSquare",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "WheelTriangle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/organisms/SpectrumGrid.jsx": [
     {
       "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/Table.jsx": [
+    {
+      "target": "Icon",
       "uses": 1,
       "stars": 3
     }
@@ -1232,14 +1377,14 @@
   ],
   "packages/framework/src/ShellHeader.jsx": [
     {
-      "target": "Tooltip",
-      "uses": 4,
+      "target": "IconFrame",
+      "uses": 3,
       "stars": 4
     },
     {
-      "target": "Icon",
-      "uses": 4,
-      "stars": 4
+      "target": "Tooltip",
+      "uses": 2,
+      "stars": 3
     },
     {
       "target": "ThemeToggle",
@@ -1248,6 +1393,11 @@
     },
     {
       "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
       "uses": 1,
       "stars": 3
     }
@@ -1388,22 +1538,17 @@
   ],
   "packages/workshop/src/compositions/WorkshopDefaultSidebar.jsx": [
     {
+      "target": "RailRow",
+      "uses": 5,
+      "stars": 4
+    },
+    {
       "target": "Icon",
       "uses": 4,
-      "stars": 5
+      "stars": 4
     }
   ],
   "packages/workshop/src/compositions/WorkshopSidebar.jsx": [
-    {
-      "target": "Icon",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "Tooltip",
-      "uses": 1,
-      "stars": 3
-    },
     {
       "target": "ShellSidebar",
       "uses": 1,
@@ -1427,6 +1572,11 @@
       "target": "Icon",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "TagPath",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/workshop/src/docs/DocumentationReader.jsx": [
@@ -1441,17 +1591,17 @@
       "stars": 3
     },
     {
-      "target": "DocsToc",
-      "uses": 1,
-      "stars": 3
-    },
-    {
       "target": "CodeBlock",
       "uses": 1,
       "stars": 3
     },
     {
       "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "RightRail",
       "uses": 1,
       "stars": 3
     },
@@ -1474,17 +1624,34 @@
       "target": "DocSection",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "TagPath",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/shell/RightRail.jsx": [
+    {
+      "target": "RailRow",
+      "uses": 3,
+      "stars": 5
     }
   ],
   "packages/workshop/src/shell/ShellLayout.jsx": [
     {
-      "target": "Button",
+      "target": "ShellSidebar",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "ShellSidebar",
-      "uses": 2,
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "IconFrame",
+      "uses": 1,
       "stars": 3
     },
     {
@@ -1496,16 +1663,16 @@
       "target": "Tooltip",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "TagModeOverlay",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/workshop/src/shell/ShellSidebar.jsx": [
     {
-      "target": "Icon",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "Tooltip",
+      "target": "RailRow",
       "uses": 1,
       "stars": 3
     }
@@ -1519,27 +1686,22 @@
   ],
   "packages/workshop/src/tags/TagModeOverlay.jsx": [
     {
-      "target": "Button",
-      "uses": 3,
-      "stars": 4
-    },
-    {
-      "target": "Tooltip",
-      "uses": 3,
-      "stars": 4
-    },
-    {
-      "target": "Input",
-      "uses": 1,
+      "target": "RailRow",
+      "uses": 2,
       "stars": 3
     },
     {
-      "target": "Tag",
+      "target": "Button",
       "uses": 1,
       "stars": 3
     },
     {
       "target": "TagGraph",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagPath",
       "uses": 1,
       "stars": 3
     }
@@ -1559,11 +1721,6 @@
   "showcase/src/App.jsx": [
     {
       "target": "DocumentationReader",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "TagModeGate",
       "uses": 1,
       "stars": 3
     },
@@ -2037,6 +2194,11 @@
   ],
   "showcase/src/demos/EditorShell.jsx": [
     {
+      "target": "RailSection",
+      "uses": 2,
+      "stars": 3
+    },
+    {
       "target": "Button",
       "uses": 1,
       "stars": 3
@@ -2121,6 +2283,13 @@
     },
     {
       "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/MediaPicker.jsx": [
+    {
+      "target": "Button",
       "uses": 1,
       "stars": 3
     }
@@ -2293,25 +2462,20 @@
   ],
   "showcase/src/lib/BlockViewer.jsx": [
     {
-      "target": "Icon",
-      "uses": 2,
-      "stars": 3
-    },
-    {
       "target": "Button",
-      "uses": 1,
-      "stars": 3
+      "uses": 3,
+      "stars": 5
     }
   ],
   "showcase/src/lib/CollectionLanding.jsx": [
     {
-      "target": "Icon",
+      "target": "Button",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "Button",
-      "uses": 1,
+      "target": "Icon",
+      "uses": 2,
       "stars": 3
     },
     {
@@ -2358,6 +2522,11 @@
   ],
   "showcase/src/lib/PreviewCard.jsx": [
     {
+      "target": "SegmentedToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
       "target": "CodeBlock",
       "uses": 1,
       "stars": 3
@@ -2387,13 +2556,18 @@
   ],
   "showcase/src/lib/ShellChrome.jsx": [
     {
+      "target": "Icon",
+      "uses": 5,
+      "stars": 4
+    },
+    {
       "target": "ShellSidebar",
       "uses": 3,
       "stars": 4
     },
     {
-      "target": "Icon",
-      "uses": 2,
+      "target": "IconFrame",
+      "uses": 1,
       "stars": 3
     },
     {
@@ -2403,6 +2577,16 @@
     },
     {
       "target": "ShellLayout",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "RightRail",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TagPath",
       "uses": 1,
       "stars": 3
     }
@@ -2431,6 +2615,11 @@
       "target": "DocSection",
       "uses": 4,
       "stars": 4
+    },
+    {
+      "target": "DocsFrontmatter",
+      "uses": 1,
+      "stars": 3
     },
     {
       "target": "DocHeader",
@@ -2642,12 +2831,34 @@
   ],
   "showcase/src/pages/References.jsx": [
     {
-      "target": "DocHeader",
+      "target": "Table",
       "uses": 1,
       "stars": 3
     },
     {
+      "target": "DocHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/pages/SearchResults.jsx": [
+    {
       "target": "DocSection",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Table",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "DocHeader",
       "uses": 1,
       "stars": 3
     }
@@ -2741,6 +2952,23 @@
     },
     {
       "target": "FoundryCharacterSets",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/media-library.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaPicker",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "MediaBrowser",
       "uses": 1,
       "stars": 3
     }

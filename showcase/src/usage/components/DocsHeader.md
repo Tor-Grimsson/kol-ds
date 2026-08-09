@@ -61,7 +61,7 @@ From `kol-apps/kol-docs-md/src/pages/WikiDatabasePage.jsx`:
       />
 ```
 
-From `kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx`:
 
 ```jsx
 <DocsHeader title="Document Not Found" subtitle={`Could not find document: ${docId}`} />

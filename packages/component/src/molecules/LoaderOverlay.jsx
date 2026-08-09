@@ -1,4 +1,4 @@
-import FullscreenOverlay from '../atoms/FullscreenOverlay.jsx'
+import FullscreenOverlay from './FullscreenOverlay.jsx'
 
 /**
  * LoaderOverlay — mounts a loading curtain over everything, dead center. A thin

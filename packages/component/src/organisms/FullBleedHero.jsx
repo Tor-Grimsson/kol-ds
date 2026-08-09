@@ -1,6 +1,6 @@
 import { isValidElement } from 'react'
 import HlsVideo from '../atoms/HlsVideo.jsx'
-import Image from '../molecules/Image.jsx'
+import Image from '../atoms/Image.jsx'
 
 /** Height presets; anything else is passed through as a class string. */
 const HEIGHTS = {

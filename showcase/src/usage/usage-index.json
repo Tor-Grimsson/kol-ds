@@ -3,7 +3,7 @@
     "name": "Icon",
     "pkg": "@kolkrabbi/kol-icons",
     "category": "flat",
-    "count": 1345,
+    "count": 1355,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -31,11 +31,11 @@
       "kol-video-editor",
       "kol-website"
     ],
-    "files": 577,
-    "weighted": 1941,
-    "internal": 172,
+    "files": 582,
+    "weighted": 1957,
+    "internal": 168,
     "src": "./Icon.jsx",
-    "edgeCount": 577,
+    "edgeCount": 582,
     "edges": [
       {
         "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/atoms/ThemeToggleButton.jsx",
@@ -224,6 +224,12 @@
         "stars": 5
       },
       {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopDefaultSidebar.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 5
+      },
+      {
         "file": "kol-website/_tmp/packages-elder-flush/ui/src/atoms/SidebarMenuItem.jsx",
         "app": "kol-website",
         "uses": 4,
@@ -243,12 +249,6 @@
       },
       {
         "file": "kol-website/apps/brand/src/components/loaders/decks/DeckShell.jsx",
-        "app": "kol-website",
-        "uses": 4,
-        "stars": 5
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/compositions/WorkshopDefaultSidebar.jsx",
         "app": "kol-website",
         "uses": 4,
         "stars": 5
@@ -849,7 +849,7 @@
     "name": "Button",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 937,
+    "count": 944,
     "apps": [
       "kol-client-ac",
       "kol-client-acyr-website",
@@ -872,11 +872,11 @@
       "kol-video-editor",
       "kol-website"
     ],
-    "files": 319,
-    "weighted": 1089,
-    "internal": 192,
+    "files": 322,
+    "weighted": 1099,
+    "internal": 216,
     "src": "./atoms/Button.jsx",
-    "edgeCount": 319,
+    "edgeCount": 322,
     "edges": [
       {
         "file": "kol-apps/kol-docs-noter/src/components/overviews/OverviewSystem.tsx",
@@ -1270,7 +1270,7 @@
   {
     "name": "Section",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 585,
     "apps": [
       "kol-client-ac",
@@ -1286,7 +1286,7 @@
     "files": 105,
     "weighted": 388,
     "internal": 15,
-    "src": "./atoms/Section.jsx",
+    "src": "./molecules/Section.jsx",
     "edgeCount": 105,
     "edges": [
       {
@@ -1698,7 +1698,7 @@
     ],
     "files": 184,
     "weighted": 630,
-    "internal": 26,
+    "internal": 32,
     "src": "./molecules/Dropdown.jsx",
     "edgeCount": 184,
     "edges": [
@@ -2514,7 +2514,7 @@
   {
     "name": "LabeledControl",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 371,
     "apps": [
       "kol-client-ac",
@@ -2532,7 +2532,7 @@
     "files": 87,
     "weighted": 286,
     "internal": 6,
-    "src": "./atoms/LabeledControl.jsx",
+    "src": "./molecules/LabeledControl.jsx",
     "edgeCount": 87,
     "edges": [
       {
@@ -2928,7 +2928,7 @@
     "name": "PageSection",
     "pkg": "@kolkrabbi/kol-framework",
     "category": "framework",
-    "count": 293,
+    "count": 312,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -2941,11 +2941,11 @@
       "kol-labs-monorepo",
       "kol-website"
     ],
-    "files": 86,
-    "weighted": 284,
+    "files": 104,
+    "weighted": 337,
     "internal": 0,
     "src": "./PageSection.jsx",
-    "edgeCount": 86,
+    "edgeCount": 104,
     "edges": [
       {
         "file": "kol-apps/kol-client-ac/src/pages/Acyr.jsx",
@@ -2978,6 +2978,12 @@
         "stars": 4
       },
       {
+        "file": "kol-website/_tmp/brand-page-split-elder/Assets.jsx",
+        "app": "kol-website",
+        "uses": 11,
+        "stars": 4
+      },
+      {
         "file": "kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx",
         "app": "kol-client-kolkrabbi",
         "uses": 10,
@@ -2998,12 +3004,6 @@
       {
         "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
         "app": "kol-client-acyr-website",
-        "uses": 9,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Styleguide.jsx",
-        "app": "kol-website",
         "uses": 9,
         "stars": 4
       },
@@ -3080,12 +3080,6 @@
         "stars": 4
       },
       {
-        "file": "kol-website/apps/brand/src/pages/Assets.jsx",
-        "app": "kol-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
         "file": "kol-apps/kol-divs/src/pages/Figma.jsx",
         "app": "kol-divs",
         "uses": 3,
@@ -3158,6 +3152,12 @@
         "stars": 3
       },
       {
+        "file": "kol-website/_tmp/brand-page-split-elder/SlideDeckPage.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
         "file": "kol-website/_tmp/workshop-museum-elder/routes/workshop/Animations.jsx",
         "app": "kol-website",
         "uses": 2,
@@ -3219,6 +3219,12 @@
       },
       {
         "file": "kol-website/_tmp/workshop-museum-elder/routes/workshop/Typography.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Patterns.jsx",
         "app": "kol-website",
         "uses": 2,
         "stars": 3
@@ -3300,12 +3306,6 @@
         "app": "kol-client-ac",
         "uses": 1,
         "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/TypeScaleSection.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
       }
     ],
     "examples": [
@@ -3340,7 +3340,7 @@
     "name": "Input",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
-    "count": 263,
+    "count": 262,
     "apps": [
       "kol-client-ac",
       "kol-client-acyr-website",
@@ -3360,11 +3360,11 @@
       "kol-monitor",
       "kol-website"
     ],
-    "files": 161,
-    "weighted": 514,
+    "files": 160,
+    "weighted": 511,
     "internal": 45,
     "src": "./atoms/Input.jsx",
-    "edgeCount": 161,
+    "edgeCount": 160,
     "edges": [
       {
         "file": "kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/molecules/InputPreview.jsx",
@@ -5363,7 +5363,7 @@
     "name": "Table",
     "pkg": "@kolkrabbi/kol-component",
     "category": "organisms",
-    "count": 130,
+    "count": 131,
     "apps": [
       "kol-client",
       "kol-client-ac",
@@ -5378,11 +5378,11 @@
       "kol-monitor",
       "kol-website"
     ],
-    "files": 41,
-    "weighted": 133,
-    "internal": 33,
+    "files": 42,
+    "weighted": 136,
+    "internal": 42,
     "src": "./organisms/Table.jsx",
-    "edgeCount": 41,
+    "edgeCount": 42,
     "edges": [
       {
         "file": "kol-apps/kol-client-ac/src/pages/Acyr.jsx",
@@ -5607,6 +5607,12 @@
         "stars": 3
       },
       {
+        "file": "kol-website/_tmp/brand-page-split-elder/Assets.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
         "file": "kol-website/apps/brand/src/components/styleguide/AssetTable.jsx",
         "app": "kol-website",
         "uses": 1,
@@ -5619,7 +5625,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/brand/src/pages/Assets.jsx",
+        "file": "kol-website/apps/brand/src/pages/assets/Branded.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -5867,7 +5873,7 @@
     ],
     "files": 65,
     "weighted": 208,
-    "internal": 10,
+    "internal": 16,
     "src": "./atoms/SegmentedToggle.jsx",
     "edgeCount": 65,
     "edges": [
@@ -6384,6 +6390,214 @@
     ]
   },
   {
+    "name": "Graphic",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "graphics",
+    "count": 92,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-acyr-website",
+      "kol-client-hrafn",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-labs-monorepo",
+      "kol-labs-single",
+      "kol-lightroom",
+      "kol-website"
+    ],
+    "files": 26,
+    "weighted": 84,
+    "internal": 6,
+    "src": "./graphics/Graphic.jsx",
+    "edgeCount": 26,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "app": "kol-client-ac",
+        "uses": 29,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 29,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/_tmp/brand-page-split-elder/Assets.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/foundations/Logo.jsx",
+        "app": "kol-client",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Social.jsx",
+        "app": "kol-website",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client/src/components/client/graphics/Graphic.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/Landing.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/client-site/Home.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/components/loaders/graphics/Graphic.jsx",
+        "app": "kol-client-ac",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/components/styleguide/AssetTable.jsx",
+        "app": "kol-client-ac",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/loaders/graphics/Graphic.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/AssetTable.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx",
+        "app": "kol-client-hrafn",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/components/loaders/graphics/Graphic.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetTable.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-editor/_a-torg/_kol-packages-reference/kol-loader/src/graphics/Graphic.jsx",
+        "app": "kol-editor",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-editor/src/components/loaders/graphics/Graphic.jsx",
+        "app": "kol-editor",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-monorepo/apps/editor/src/components/loaders/graphics/Graphic.jsx",
+        "app": "kol-labs-monorepo",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-monorepo/packages/component/src/graphics/Graphic.jsx",
+        "app": "kol-labs-monorepo",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/components/graphics/Graphic.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-lightroom/src/components/graphics/Graphic.jsx",
+        "app": "kol-lightroom",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/packages-elder-flush/component/src/graphics/Graphic.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/components/sections/assets-bits.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/components/styleguide/AssetTable.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/pages/Landing.jsx",
+        "code": "<Graphic category=\"abstract\" name=\"abstract-03\" />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "code": "<Graphic category=\"stationery\" name=\"business-card-front\" />"
+      },
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "code": "<Graphic category=\"stationery\" name=\"business-card-back\" />"
+      },
+      {
+        "app": "kol-client-hrafn",
+        "file": "kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx",
+        "code": "<Graphic category=\"patterns\" name=\"pattern-05\" />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetTable.jsx",
+        "code": "<Graphic category={category} name={name} />"
+      }
+    ]
+  },
+  {
     "name": "Tooltip",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
@@ -6407,7 +6621,7 @@
     ],
     "files": 42,
     "weighted": 144,
-    "internal": 20,
+    "internal": 9,
     "src": "./atoms/Popover.jsx",
     "edgeCount": 42,
     "edges": [
@@ -6466,6 +6680,12 @@
         "stars": 4
       },
       {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
         "file": "kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess.jsx",
         "app": "kol-website",
         "uses": 4,
@@ -6478,19 +6698,13 @@
         "stars": 4
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx",
-        "app": "kol-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/web/src/components/work/ImageLightbox.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeOverlay.jsx",
         "app": "kol-website",
         "uses": 3,
         "stars": 4
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/tags/TagModeOverlay.jsx",
+        "file": "kol-website/apps/web/src/components/work/ImageLightbox.jsx",
         "app": "kol-website",
         "uses": 3,
         "stars": 4
@@ -6628,6 +6842,24 @@
         "stars": 3
       },
       {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopSidebar.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellSidebar.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
         "file": "kol-website/_tmp/packages-elder-flush/component/src/Popover.jsx",
         "app": "kol-website",
         "uses": 1,
@@ -6641,24 +6873,6 @@
       },
       {
         "file": "kol-website/apps/web/src/routes/prints/PrintDetailOverlay.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/shell/ShellSidebar.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -6689,202 +6903,6 @@
         "app": "kol-monitor",
         "file": "kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx",
         "code": "<Tooltip>\n                  <TooltipTrigger asChild>\n                    <button\n                      onClick={(e) => {\n                        e.stopPropagation();\n                        collapseAll();\n                      }}\n                      className=\"p-1.5 rounded hover:bg-sidebar-item transition-colors\"\n                      title=\"Collapse all\"\n                    >\n                      <FoldVertical className=\"w-4 h-4 text-muted-foreground\" />"
-      }
-    ]
-  },
-  {
-    "name": "Graphic",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "graphics",
-    "count": 88,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-acyr-website",
-      "kol-client-hrafn",
-      "kol-client-kolkrabbi",
-      "kol-editor",
-      "kol-labs-monorepo",
-      "kol-labs-single",
-      "kol-lightroom",
-      "kol-website"
-    ],
-    "files": 24,
-    "weighted": 77,
-    "internal": 6,
-    "src": "./graphics/Graphic.jsx",
-    "edgeCount": 24,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "app": "kol-client-ac",
-        "uses": 29,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 29,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Styleguide.jsx",
-        "app": "kol-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/foundations/Logo.jsx",
-        "app": "kol-client",
-        "uses": 3,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client/src/components/client/graphics/Graphic.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/Landing.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/client-site/Home.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/components/loaders/graphics/Graphic.jsx",
-        "app": "kol-client-ac",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/components/styleguide/AssetTable.jsx",
-        "app": "kol-client-ac",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/loaders/graphics/Graphic.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/AssetTable.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx",
-        "app": "kol-client-hrafn",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/components/loaders/graphics/Graphic.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetTable.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-editor/_a-torg/_kol-packages-reference/kol-loader/src/graphics/Graphic.jsx",
-        "app": "kol-editor",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-editor/src/components/loaders/graphics/Graphic.jsx",
-        "app": "kol-editor",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-labs-monorepo/apps/editor/src/components/loaders/graphics/Graphic.jsx",
-        "app": "kol-labs-monorepo",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-labs-monorepo/packages/component/src/graphics/Graphic.jsx",
-        "app": "kol-labs-monorepo",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-labs-single/src/components/graphics/Graphic.jsx",
-        "app": "kol-labs-single",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-lightroom/src/components/graphics/Graphic.jsx",
-        "app": "kol-lightroom",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/_tmp/packages-elder-flush/component/src/graphics/Graphic.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/brand/src/components/styleguide/AssetTable.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/pages/Landing.jsx",
-        "code": "<Graphic category=\"abstract\" name=\"abstract-03\" />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "code": "<Graphic category=\"stationery\" name=\"business-card-front\" />"
-      },
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "code": "<Graphic category=\"stationery\" name=\"business-card-back\" />"
-      },
-      {
-        "app": "kol-client-hrafn",
-        "file": "kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx",
-        "code": "<Graphic category=\"patterns\" name=\"pattern-05\" />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetTable.jsx",
-        "code": "<Graphic category={category} name={name} />"
       }
     ]
   },
@@ -7102,6 +7120,18 @@
         "stars": 3
       },
       {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocsFrontmatter.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeOverlay.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
         "file": "kol-website/_tmp/workshop-museum-elder/components/workshop/molecules/ComponentPreview.jsx",
         "app": "kol-website",
         "uses": 1,
@@ -7127,18 +7157,6 @@
       },
       {
         "file": "kol-website/apps/web/src/components/ui/OverviewCard.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocsFrontmatter.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/tags/TagModeOverlay.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -7191,7 +7209,7 @@
     ],
     "files": 19,
     "weighted": 62,
-    "internal": 0,
+    "internal": 3,
     "src": "./atoms/ToggleCheckbox.jsx",
     "edgeCount": 19,
     "edges": [
@@ -7341,7 +7359,7 @@
   {
     "name": "ColorSwatch",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 59,
     "apps": [
       "kol-client-ac",
@@ -7359,7 +7377,7 @@
     "files": 39,
     "weighted": 119,
     "internal": 21,
-    "src": "./molecules/ColorSwatch.jsx",
+    "src": "./atoms/ColorSwatch.jsx",
     "edgeCount": 39,
     "edges": [
       {
@@ -7802,6 +7820,12 @@
         "stars": 3
       },
       {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
         "file": "kol-website/_tmp/workshop-museum-elder/components/workshop/molecules/ComponentPreview.jsx",
         "app": "kol-website",
         "uses": 2,
@@ -7809,12 +7833,6 @@
       },
       {
         "file": "kol-website/apps/brand/src/pages/Components.jsx",
-        "app": "kol-website",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx",
         "app": "kol-website",
         "uses": 2,
         "stars": 3
@@ -8681,6 +8699,292 @@
     ]
   },
   {
+    "name": "LogoCard",
+    "pkg": "@kolkrabbi/kol-styleguide",
+    "category": "flat",
+    "count": 37,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-acyr-website",
+      "kol-client-canalix",
+      "kol-client-kolkrabbi",
+      "kol-editor",
+      "kol-website"
+    ],
+    "files": 13,
+    "weighted": 44,
+    "internal": 3,
+    "src": "./LogoCard.jsx",
+    "edgeCount": 13,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "app": "kol-client-ac",
+        "uses": 6,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 6,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 6,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/_tmp/brand-page-split-elder/Brand.jsx",
+        "app": "kol-website",
+        "uses": 6,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/brand/Lockups.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/brand/Logo.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client/src/components/framework/sections/LogoCarousel.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/components/styleguide/LogoCarousel.jsx",
+        "app": "kol-client-ac",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/LogoCarousel.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx",
+        "app": "kol-client-canalix",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/LogoCarousel.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/sections/LogoCarousel.jsx",
+        "app": "kol-editor",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/brand-orphan-elder/LogoCarousel.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/components/framework/sections/LogoCarousel.jsx",
+        "code": "<LogoCard\n          key={l.name}\n          name={l.name}\n          caption={l.caption}\n          backdrop={l.backdrop ?? backdrop}\n          light={light}\n        />"
+      },
+      {
+        "app": "kol-client-canalix",
+        "file": "kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx",
+        "code": "<LogoCard\n          key={l.name}\n          brand={brand}\n          name={l.name}\n          caption={l.caption}\n          backdrop={l.backdrop ?? backdrop}\n          light={light}\n        />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "code": "<LogoCard variant=\"wordmark\" clearspace={false} frame={false} />"
+      },
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "code": "<LogoCard variant=\"logomark\" clearspace={false} frame={false} />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
+        "code": "<LogoCard variant=\"logomark\"    caption=\"Logomark\" />"
+      }
+    ]
+  },
+  {
+    "name": "Avatar",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 36,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-acyr-website",
+      "kol-client-kolkrabbi",
+      "kol-docs-noter",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor",
+      "kol-website"
+    ],
+    "files": 18,
+    "weighted": 59,
+    "internal": 3,
+    "src": "./atoms/Avatar.jsx",
+    "edgeCount": 18,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "app": "kol-client-ac",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/_tmp/brand-page-split-elder/Assets.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Profile.jsx",
+        "app": "kol-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/client-site/BlogArticle.jsx",
+        "app": "kol-client",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/site/BlogArticle.jsx",
+        "app": "kol-client-ac",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalArticle.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/site/BlogAuthor.jsx",
+        "app": "kol-client-ac",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalAuthor.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx",
+        "app": "kol-docs-noter",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-docs-noter/src/components/ui-elements/atoms/Avatar.tsx",
+        "app": "kol-docs-noter",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
+        "app": "kol-mirror",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
+        "app": "kol-mirror",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
+        "app": "kol-modulator",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-modulator/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
+        "app": "kol-modulator",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
+        "app": "kol-monitor",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
+        "app": "kol-monitor",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalArticle.jsx",
+        "code": "<Avatar\n                  initial={author.avatarInitial}\n                  src={author.avatar ? urlFor(author.avatar).width(64).height(64).url() : null}\n                  alt={author.name}\n                  size=\"sm\"\n                />"
+      },
+      {
+        "app": "kol-docs-noter",
+        "file": "kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx",
+        "code": "<Avatar className=\"h-16 w-16\">\n              <AvatarImage src=\"\" alt=\"User\" />"
+      },
+      {
+        "app": "kol-mirror",
+        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
+        "code": "<Avatar className={cn(sizeStyles[size], className)}>\n      {imageUrl && <AvatarImage src={imageUrl} alt={name} />"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/pages/client-site/BlogArticle.jsx",
+        "code": "<Avatar initial={author.avatarInitial} size=\"lg\" />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-apps/kol-client-ac/src/pages/site/BlogArticle.jsx",
+        "code": "<Avatar initial={author.avatarInitial} size=\"sm\" />"
+      }
+    ]
+  },
+  {
     "name": "ButtonGroup",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
@@ -8882,274 +9186,6 @@
         "app": "kol-mirror",
         "file": "kol-apps/kol-mirror/src/components/styleguide/preview/molecules/ButtonsPreview.jsx",
         "code": "<ButtonGroup buttons={[{ label: \"Primary\", variant: \"primary\" }, { label: \"Secondary\", variant: \"outline\" }]} align=\"center\" />"
-      }
-    ]
-  },
-  {
-    "name": "Avatar",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 32,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-acyr-website",
-      "kol-client-kolkrabbi",
-      "kol-docs-noter",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-website"
-    ],
-    "files": 17,
-    "weighted": 55,
-    "internal": 3,
-    "src": "./atoms/Avatar.jsx",
-    "edgeCount": 17,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "app": "kol-client-ac",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Styleguide.jsx",
-        "app": "kol-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/client-site/BlogArticle.jsx",
-        "app": "kol-client",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/site/BlogArticle.jsx",
-        "app": "kol-client-ac",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalArticle.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/site/BlogAuthor.jsx",
-        "app": "kol-client-ac",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalAuthor.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx",
-        "app": "kol-docs-noter",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-docs-noter/src/components/ui-elements/atoms/Avatar.tsx",
-        "app": "kol-docs-noter",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
-        "app": "kol-mirror",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
-        "app": "kol-mirror",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
-        "app": "kol-modulator",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-modulator/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
-        "app": "kol-modulator",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/UserProfile.tsx",
-        "app": "kol-monitor",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
-        "app": "kol-monitor",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalArticle.jsx",
-        "code": "<Avatar\n                  initial={author.avatarInitial}\n                  src={author.avatar ? urlFor(author.avatar).width(64).height(64).url() : null}\n                  alt={author.name}\n                  size=\"sm\"\n                />"
-      },
-      {
-        "app": "kol-docs-noter",
-        "file": "kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx",
-        "code": "<Avatar className=\"h-16 w-16\">\n              <AvatarImage src=\"\" alt=\"User\" />"
-      },
-      {
-        "app": "kol-mirror",
-        "file": "kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx",
-        "code": "<Avatar className={cn(sizeStyles[size], className)}>\n      {imageUrl && <AvatarImage src={imageUrl} alt={name} />"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/pages/client-site/BlogArticle.jsx",
-        "code": "<Avatar initial={author.avatarInitial} size=\"lg\" />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-apps/kol-client-ac/src/pages/site/BlogArticle.jsx",
-        "code": "<Avatar initial={author.avatarInitial} size=\"sm\" />"
-      }
-    ]
-  },
-  {
-    "name": "LogoCard",
-    "pkg": "@kolkrabbi/kol-styleguide",
-    "category": "flat",
-    "count": 31,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-acyr-website",
-      "kol-client-canalix",
-      "kol-client-kolkrabbi",
-      "kol-editor",
-      "kol-website"
-    ],
-    "files": 11,
-    "weighted": 37,
-    "internal": 3,
-    "src": "./LogoCard.jsx",
-    "edgeCount": 11,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "app": "kol-client-ac",
-        "uses": 6,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 6,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 6,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Styleguide.jsx",
-        "app": "kol-website",
-        "uses": 6,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client/src/components/framework/sections/LogoCarousel.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/components/styleguide/LogoCarousel.jsx",
-        "app": "kol-client-ac",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/components/styleguide/LogoCarousel.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx",
-        "app": "kol-client-canalix",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/components/styleguide/LogoCarousel.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/sections/LogoCarousel.jsx",
-        "app": "kol-editor",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/_tmp/brand-orphan-elder/LogoCarousel.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/components/framework/sections/LogoCarousel.jsx",
-        "code": "<LogoCard\n          key={l.name}\n          name={l.name}\n          caption={l.caption}\n          backdrop={l.backdrop ?? backdrop}\n          light={light}\n        />"
-      },
-      {
-        "app": "kol-client-canalix",
-        "file": "kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx",
-        "code": "<LogoCard\n          key={l.name}\n          brand={brand}\n          name={l.name}\n          caption={l.caption}\n          backdrop={l.backdrop ?? backdrop}\n          light={light}\n        />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "code": "<LogoCard variant=\"wordmark\" clearspace={false} frame={false} />"
-      },
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "code": "<LogoCard variant=\"logomark\" clearspace={false} frame={false} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
-        "code": "<LogoCard variant=\"logomark\"    caption=\"Logomark\" />"
       }
     ]
   },
@@ -9743,7 +9779,7 @@
   {
     "name": "Stepper",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 29,
     "apps": [
       "kol-client-ac",
@@ -9761,7 +9797,7 @@
     "files": 21,
     "weighted": 65,
     "internal": 3,
-    "src": "./atoms/Stepper.jsx",
+    "src": "./molecules/Stepper.jsx",
     "edgeCount": 21,
     "edges": [
       {
@@ -10335,7 +10371,7 @@
   {
     "name": "QuantityInput",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 26,
     "apps": [
       "kol-client-kolkrabbi",
@@ -10349,7 +10385,7 @@
     "files": 11,
     "weighted": 38,
     "internal": 3,
-    "src": "./atoms/QuantityInput.jsx",
+    "src": "./molecules/QuantityInput.jsx",
     "edgeCount": 11,
     "edges": [
       {
@@ -11194,6 +11230,101 @@
     ]
   },
   {
+    "name": "AssetTable",
+    "pkg": "@kolkrabbi/kol-styleguide",
+    "category": "flat",
+    "count": 21,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-acyr-website",
+      "kol-client-kolkrabbi",
+      "kol-website"
+    ],
+    "files": 8,
+    "weighted": 29,
+    "internal": 3,
+    "src": "./AssetTable.jsx",
+    "edgeCount": 8,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
+        "app": "kol-client",
+        "uses": 6,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/Reference.jsx",
+        "app": "kol-client-ac",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/_tmp/brand-page-split-elder/Assets.jsx",
+        "app": "kol-website",
+        "uses": 3,
+        "stars": 4
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Graphics.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Logos.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/assets/Patterns.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
+        "code": "<AssetTable\n          caption=\"Marks\"\n          rows={markRows()}\n          previewWidthFor={markWidthFor}\n        />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-apps/kol-client-ac/src/pages/Reference.jsx",
+        "code": "<AssetTable caption=\"Logos\" rows={markRows()} previewWidthFor={markWidthFor} />"
+      },
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
+        "code": "<AssetTable caption=\"Graphics\" rows={graphicRows('abstract')} previewWidthFor={graphicWidthFor} />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx",
+        "code": "<AssetTable caption=\"Patterns\" rows={graphicRows('patterns')} previewWidthFor={graphicWidthFor} />"
+      },
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
+        "code": "<AssetTable\n          caption=\"Diagrams\"\n          rows={graphicRows('diagrams')}\n          previewWidthFor={graphicWidthFor}\n        />"
+      }
+    ]
+  },
+  {
     "name": "EditorShell",
     "pkg": "@kolkrabbi/kol-component",
     "category": "organisms",
@@ -11358,7 +11489,7 @@
   {
     "name": "Carousel",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
+    "category": "molecules",
     "count": 20,
     "apps": [
       "kol-client",
@@ -11376,7 +11507,7 @@
     "files": 20,
     "weighted": 60,
     "internal": 3,
-    "src": "./organisms/Carousel.jsx",
+    "src": "./molecules/Carousel.jsx",
     "edgeCount": 20,
     "edges": [
       {
@@ -11674,7 +11805,7 @@
   {
     "name": "Image",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 19,
     "apps": [
       "kol-client",
@@ -11688,7 +11819,7 @@
     "files": 11,
     "weighted": 34,
     "internal": 27,
-    "src": "./molecules/Image.jsx",
+    "src": "./atoms/Image.jsx",
     "edgeCount": 11,
     "edges": [
       {
@@ -11956,13 +12087,13 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/routes/workshop/Documentations.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/apps/web/src/routes/workshop/Documentations.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -11986,7 +12117,7 @@
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "code": "<DocsArticle>\n        <DocsFrontmatter metadata={doc.metadata} docId={docId} />"
       },
       {
@@ -12050,7 +12181,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "app": "kol-website",
         "uses": 2,
         "stars": 3
@@ -12098,90 +12229,13 @@
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/routes/workshop/Documentations.jsx",
-        "code": "<CodeBlock\n          key={blockKey}\n          code={block.lines.join('\\n')}\n          language={block.lang}\n        />"
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
+        "code": "<CodeBlock\n                  key={blockKey}\n                  code={block.lines.join('\\n')}\n                  language={block.lang}\n                />"
       },
       {
         "app": "kol-divs",
         "file": "kol-apps/kol-divs/src/pages/Flex.jsx",
         "code": "<CodeBlock language=\"tailwind\">{classes}</CodeBlock>\n          <CodeBlock language=\"css\">{cssString}</CodeBlock>\n        </div>\n      </div>\n\n      <div className=\"bg-fg-04 rounded-sm p-6 mt-6 flex flex-col gap-4\">\n        <ControlRow label=\"direction\"><ViewToggle viewMode={dir}   onViewChange={setDir}   options={DIRECTIONS} />"
-      }
-    ]
-  },
-  {
-    "name": "AssetTable",
-    "pkg": "@kolkrabbi/kol-styleguide",
-    "category": "flat",
-    "count": 18,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-acyr-website",
-      "kol-client-kolkrabbi",
-      "kol-website"
-    ],
-    "files": 5,
-    "weighted": 20,
-    "internal": 3,
-    "src": "./AssetTable.jsx",
-    "edgeCount": 5,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
-        "app": "kol-client",
-        "uses": 6,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/Reference.jsx",
-        "app": "kol-client-ac",
-        "uses": 3,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 3,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 3,
-        "stars": 4
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Assets.jsx",
-        "app": "kol-website",
-        "uses": 3,
-        "stars": 4
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
-        "code": "<AssetTable\n          caption=\"Marks\"\n          rows={markRows()}\n          previewWidthFor={markWidthFor}\n        />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-apps/kol-client-ac/src/pages/Reference.jsx",
-        "code": "<AssetTable caption=\"Logos\" rows={markRows()} previewWidthFor={markWidthFor} />"
-      },
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
-        "code": "<AssetTable caption=\"Graphics\" rows={graphicRows('abstract')} previewWidthFor={graphicWidthFor} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Reference.jsx",
-        "code": "<AssetTable caption=\"Patterns\" rows={graphicRows('patterns')} previewWidthFor={graphicWidthFor} />"
-      },
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx",
-        "code": "<AssetTable\n          caption=\"Diagrams\"\n          rows={graphicRows('diagrams')}\n          previewWidthFor={graphicWidthFor}\n        />"
       }
     ]
   },
@@ -12633,7 +12687,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -12652,7 +12706,7 @@
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "code": "<DocsHeader title=\"Document Not Found\" subtitle={`Could not find document: ${docId}`} />"
       },
       {
@@ -12670,7 +12724,7 @@
   {
     "name": "DropdownTagFilter",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 14,
     "apps": [
       "kol-client-kolkrabbi",
@@ -12683,7 +12737,7 @@
     "files": 10,
     "weighted": 30,
     "internal": 0,
-    "src": "./atoms/DropdownTagFilter.jsx",
+    "src": "./molecules/DropdownTagFilter.jsx",
     "edgeCount": 10,
     "edges": [
       {
@@ -12768,7 +12822,7 @@
   {
     "name": "FullscreenOverlay",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 14,
     "apps": [
       "kol-client",
@@ -12781,8 +12835,8 @@
     ],
     "files": 14,
     "weighted": 42,
-    "internal": 6,
-    "src": "./atoms/FullscreenOverlay.jsx",
+    "internal": 9,
+    "src": "./molecules/FullscreenOverlay.jsx",
     "edgeCount": 14,
     "edges": [
       {
@@ -13000,7 +13054,7 @@
   {
     "name": "BentoCard",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
+    "category": "molecules",
     "count": 14,
     "apps": [
       "kol-client-kolkrabbi",
@@ -13009,7 +13063,7 @@
     "files": 2,
     "weighted": 10,
     "internal": 5,
-    "src": "./organisms/BentoCard.jsx",
+    "src": "./molecules/BentoCard.jsx",
     "edgeCount": 2,
     "edges": [
       {
@@ -13133,6 +13187,120 @@
         "app": "kol-editor",
         "file": "kol-apps/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/generators/social/SocialLab.jsx",
         "code": "<CanvasFrame aspect={a}>\n                  <Composition image={imageUrl} imageOpacity={imageOpacity / 100} bgColor={colors.background} />"
+      }
+    ]
+  },
+  {
+    "name": "BrandHero",
+    "pkg": "@kolkrabbi/kol-framework",
+    "category": "framework",
+    "count": 14,
+    "apps": [
+      "kol-client",
+      "kol-client-ac",
+      "kol-client-acyr-website",
+      "kol-client-canalix",
+      "kol-client-kolkrabbi",
+      "kol-website"
+    ],
+    "files": 11,
+    "weighted": 34,
+    "internal": 0,
+    "src": "./BrandHero.jsx",
+    "edgeCount": 11,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 4,
+        "stars": 4
+      },
+      {
+        "file": "kol-apps/kol-client/src/pages/Brand.jsx",
+        "app": "kol-client",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "app": "kol-client-ac",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
+        "app": "kol-client-acyr-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-canalix/src/pages/Canalix.jsx",
+        "app": "kol-client-canalix",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-canalix/src/pages/Casedoc.jsx",
+        "app": "kol-client-canalix",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/brand-page-split-elder/Brand.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/brand/Overview.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client",
+        "file": "kol-apps/kol-client/src/pages/Brand.jsx",
+        "code": "<BrandHero\n        label=\"/ command\"\n        title={BRAND.name}\n        lede=\"Federation flag. Fleet commission. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of sovereign institutions.\"\n      />"
+      },
+      {
+        "app": "kol-client-ac",
+        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
+        "code": "<BrandHero\n        label=\"brand guidelines\"\n        title={BRAND.name}\n        lede=\"Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.\"\n      />"
+      },
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx",
+        "code": "<BrandHero\n        label=\"demo · unlisted\"\n        title=\"Button\"\n        lede=\"Four variants share the same padding scale as .ac-control (sm 4/12 · md 6/16 · lg 8/20). Heavier-background variants (secondary, accent) use font-weight 500 for ink punch; primary and outline stay at the ac-mono default 400.\"\n      />"
+      },
+      {
+        "app": "kol-client-canalix",
+        "file": "kol-apps/kol-client-canalix/src/pages/Canalix.jsx",
+        "code": "<BrandHero\n        label=\"/ canalix\"\n        title=\"Canalix\"\n        lede=\"Master brand. Branded house. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of governmental institutions.\"\n        mark={<BrandLogo brand=\"canalix\" name=\"logomark-light\" className=\"kol-hero-mark\" title=\"Canalix\" />"
+      },
+      {
+        "app": "kol-client-acyr-website",
+        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx",
+        "code": "<BrandHero\n        label=\"media library\"\n        title=\"Gallery\"\n        lede={`Unavailable: ${String(error)}. Is the dev server running and the photoIndexPlugin registered in vite.config.js?`}\n      />"
       }
     ]
   },
@@ -13450,114 +13618,6 @@
     ]
   },
   {
-    "name": "BrandHero",
-    "pkg": "@kolkrabbi/kol-framework",
-    "category": "framework",
-    "count": 13,
-    "apps": [
-      "kol-client",
-      "kol-client-ac",
-      "kol-client-acyr-website",
-      "kol-client-canalix",
-      "kol-client-kolkrabbi",
-      "kol-website"
-    ],
-    "files": 10,
-    "weighted": 31,
-    "internal": 0,
-    "src": "./BrandHero.jsx",
-    "edgeCount": 10,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 4,
-        "stars": 4
-      },
-      {
-        "file": "kol-apps/kol-client/src/pages/Brand.jsx",
-        "app": "kol-client",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "app": "kol-client-ac",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Reference.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx",
-        "app": "kol-client-acyr-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-canalix/src/pages/Canalix.jsx",
-        "app": "kol-client-canalix",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-canalix/src/pages/Casedoc.jsx",
-        "app": "kol-client-canalix",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/brand/src/pages/Styleguide.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client",
-        "file": "kol-apps/kol-client/src/pages/Brand.jsx",
-        "code": "<BrandHero\n        label=\"/ command\"\n        title={BRAND.name}\n        lede=\"Federation flag. Fleet commission. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of sovereign institutions.\"\n      />"
-      },
-      {
-        "app": "kol-client-ac",
-        "file": "kol-apps/kol-client-ac/src/pages/Styleguide.jsx",
-        "code": "<BrandHero\n        label=\"brand guidelines\"\n        title={BRAND.name}\n        lede=\"Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.\"\n      />"
-      },
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Demo.jsx",
-        "code": "<BrandHero\n        label=\"demo · unlisted\"\n        title=\"Button\"\n        lede=\"Four variants share the same padding scale as .ac-control (sm 4/12 · md 6/16 · lg 8/20). Heavier-background variants (secondary, accent) use font-weight 500 for ink punch; primary and outline stay at the ac-mono default 400.\"\n      />"
-      },
-      {
-        "app": "kol-client-canalix",
-        "file": "kol-apps/kol-client-canalix/src/pages/Canalix.jsx",
-        "code": "<BrandHero\n        label=\"/ canalix\"\n        title=\"Canalix\"\n        lede=\"Master brand. Branded house. Strong, trustworthy, and elegant — yet flexible enough to counter the rigid nature of governmental institutions.\"\n        mark={<BrandLogo brand=\"canalix\" name=\"logomark-light\" className=\"kol-hero-mark\" title=\"Canalix\" />"
-      },
-      {
-        "app": "kol-client-acyr-website",
-        "file": "kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Gallery.jsx",
-        "code": "<BrandHero\n        label=\"media library\"\n        title=\"Gallery\"\n        lede={`Unavailable: ${String(error)}. Is the dev server running and the photoIndexPlugin registered in vite.config.js?`}\n      />"
-      }
-    ]
-  },
-  {
     "name": "ContentFilters",
     "pkg": "@kolkrabbi/kol-component",
     "category": "organisms",
@@ -13570,7 +13630,7 @@
     ],
     "files": 12,
     "weighted": 36,
-    "internal": 9,
+    "internal": 12,
     "src": "./organisms/ContentFilters.jsx",
     "edgeCount": 12,
     "edges": [
@@ -13678,7 +13738,7 @@
   {
     "name": "HueStrip",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 12,
     "apps": [
       "kol-client-ac",
@@ -13691,7 +13751,7 @@
     "files": 12,
     "weighted": 36,
     "internal": 3,
-    "src": "./molecules/SpectrumControls.jsx",
+    "src": "./organisms/SpectrumControls.jsx",
     "edgeCount": 12,
     "edges": [
       {
@@ -13783,7 +13843,7 @@
   {
     "name": "SBSquare",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 12,
     "apps": [
       "kol-client-ac",
@@ -13796,7 +13856,7 @@
     "files": 12,
     "weighted": 36,
     "internal": 3,
-    "src": "./molecules/SpectrumControls.jsx",
+    "src": "./organisms/SpectrumControls.jsx",
     "edgeCount": 12,
     "edges": [
       {
@@ -14446,7 +14506,7 @@
   {
     "name": "WheelTriangle",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 10,
     "apps": [
       "kol-client-ac",
@@ -14458,7 +14518,7 @@
     "files": 10,
     "weighted": 30,
     "internal": 6,
-    "src": "./molecules/SpectrumControls.jsx",
+    "src": "./organisms/SpectrumControls.jsx",
     "edgeCount": 10,
     "edges": [
       {
@@ -15161,7 +15221,7 @@
   {
     "name": "SearchInput",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 8,
     "apps": [
       "kol-client-kolkrabbi",
@@ -15169,8 +15229,8 @@
     ],
     "files": 5,
     "weighted": 15,
-    "internal": 9,
-    "src": "./atoms/SearchInput.jsx",
+    "internal": 15,
+    "src": "./molecules/SearchInput.jsx",
     "edgeCount": 5,
     "edges": [
       {
@@ -15198,7 +15258,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -15212,8 +15272,8 @@
       },
       {
         "app": "kol-website",
-        "file": "kol-website/_tmp/workshop-museum-elder/components/workshop/molecules/InputPreview.jsx",
-        "code": "<SearchInput\n            value={searchQuery}\n            onChange={(e) => setSearchQuery(e.target.value)}\n            placeholder=\"Search…\"\n          />"
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx",
+        "code": "<SearchInput\n                  className=\"shrink-0 self-center\"\n                  aria-label=\"Search\"\n                  {...(search === true ? {} : search)}\n                />"
       },
       {
         "app": "kol-client-kolkrabbi",
@@ -15221,9 +15281,9 @@
         "code": "<SearchInput\n          bare\n          value={query}\n          onChange={(e) => setQuery(e.target.value)}\n          placeholder=\"Search…\"\n          onKeyDown={handleKeyDown}\n          autoFocus\n        />"
       },
       {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/shell/WorkshopHeader.jsx",
-        "code": "<SearchInput\n                  className=\"shrink-0 self-center\"\n                  aria-label=\"Search\"\n                  {...(search === true ? {} : search)}\n                />"
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/molecules/InputPreview.jsx",
+        "code": "<SearchInput\n            value={searchQuery}\n            onChange={(e) => setSearchQuery(e.target.value)}\n            placeholder=\"Search…\"\n          />"
       },
       {
         "app": "kol-client-kolkrabbi",
@@ -15562,6 +15622,80 @@
     ]
   },
   {
+    "name": "ShellSidebar",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "shell",
+    "count": 8,
+    "apps": [
+      "kol-client-kolkrabbi",
+      "kol-website"
+    ],
+    "files": 5,
+    "weighted": 15,
+    "internal": 10,
+    "src": "./shell/ShellSidebar.jsx",
+    "edgeCount": 5,
+    "edges": [
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "app": "kol-website",
+        "uses": 2,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/WorkshopSidebar.jsx",
+        "app": "kol-client-kolkrabbi",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopSidebar.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/WorkshopSidebar.jsx",
+        "code": "<ShellSidebar\n        routes={workshopRoutes}\n        basePath=\"/workshop\"\n        onNavigate={onNavigate}\n        label=\"Workshop\"\n        labelTo=\"/workshop\"\n        collapsed={workshopCollapsed}\n        onToggle={() => setWorkshopCollapsed(p => !p)}\n      />"
+      },
+      {
+        "app": "kol-website",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/compositions/WorkshopSidebar.jsx",
+        "code": "<ShellSidebar\n        routes={workshopRoutes}\n        basePath={basePath}\n        onNavigate={onNavigate}\n        label=\"Workshop\"\n        labelTo={basePath}\n        collapsed={workshopCollapsed}\n        onToggle={() => setWorkshopCollapsed(p => !p)}\n      />"
+      },
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "code": "<ShellSidebar\n        routes={surfaceRoutes}\n        basePath=\"/workshop\"\n        label=\"Workshop\"\n        labelTo=\"/workshop\"\n        onNavigate={onNavigate}\n      />"
+      },
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "code": "<ShellSidebar\n          key={category}\n          routes={groups}\n          basePath=\"/\"\n          label={labelFromSlug(category)}\n          onNavigate={onNavigate}\n        />"
+      },
+      {
+        "app": "kol-client-kolkrabbi",
+        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx",
+        "code": "<ShellSidebar routes={routes} basePath={basePath} />"
+      }
+    ]
+  },
+  {
     "name": "AssetGrid",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
@@ -15635,7 +15769,7 @@
   {
     "name": "DocsToc",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
+    "category": "molecules",
     "count": 7,
     "apps": [
       "kol-client-kolkrabbi",
@@ -15646,8 +15780,8 @@
     ],
     "files": 7,
     "weighted": 21,
-    "internal": 3,
-    "src": "./atoms/DocsToc.jsx",
+    "internal": 0,
+    "src": "./molecules/DocsToc.jsx",
     "edgeCount": 7,
     "edges": [
       {
@@ -15681,13 +15815,13 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/components/workshop/molecules/WorkshopSidebarContent.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/apps/web/src/components/workshop/molecules/WorkshopSidebarContent.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -15703,6 +15837,86 @@
         "app": "kol-docs",
         "file": "kol-apps/kol-docs/src/components/WikiLayout.jsx",
         "code": "<DocsToc toc={toc} />"
+      }
+    ]
+  },
+  {
+    "name": "MediaPicker",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 7,
+    "apps": [
+      "kol-labs-single"
+    ],
+    "files": 7,
+    "weighted": 21,
+    "internal": 3,
+    "src": "./organisms/MediaLibrary.jsx",
+    "edgeCount": 7,
+    "edges": [
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/glass/GlassPage.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/gradient/abstract/AbstractDitherPage.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/optic/halftone/HalftonePage.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/optic/moire/MoirePage.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/optic/reaction/ReactionPage.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/radar/components/LibrarySourceButton.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-single/src/pages/radar/components/SourcePlaceholder.jsx",
+        "app": "kol-labs-single",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apps/kol-labs-single/src/pages/radar/components/LibrarySourceButton.jsx",
+        "code": "<MediaPicker\n        open={open}\n        accept={accept}\n        onClose={() => setOpen(false)}\n        onPick={(url, o) => loadImageFromUrl(url, o?.contentType)}\n      />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apps/kol-labs-single/src/pages/radar/components/SourcePlaceholder.jsx",
+        "code": "<MediaPicker\n        open={open}\n        accept=\"all\"\n        onClose={() => setOpen(false)}\n        onPick={(url, o) => pick?.(url, o?.contentType)}\n      />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apps/kol-labs-single/src/pages/glass/GlassPage.jsx",
+        "code": "<MediaPicker open={pickerOpen} accept=\"all\" onClose={() => setPickerOpen(false)} onPick={(url, o) => { loadImageFromUrl(url, o?.contentType); setPickerOpen(false) }} />"
+      },
+      {
+        "app": "kol-labs-single",
+        "file": "kol-apps/kol-labs-single/src/pages/gradient/abstract/AbstractDitherPage.jsx",
+        "code": "<MediaPicker open={pickerOpen} accept=\"image\" onClose={() => setPickerOpen(false)} onPick={(url, o) => { loadImageFromUrl(url, o?.contentType); setPickerOpen(false) }} />"
       }
     ]
   },
@@ -16036,7 +16250,7 @@
   {
     "name": "SelectionOverlay",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 6,
     "apps": [
       "kol-client-ac",
@@ -16049,7 +16263,7 @@
     "files": 6,
     "weighted": 18,
     "internal": 3,
-    "src": "./molecules/SelectionOverlay.jsx",
+    "src": "./atoms/SelectionOverlay.jsx",
     "edgeCount": 6,
     "edges": [
       {
@@ -16157,138 +16371,6 @@
         "app": "kol-client-kolkrabbi",
         "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphMetricsGrid.jsx",
         "code": "<GlyphMetricsGrid\n *   fontUrl={dylgjurFont}\n *   fontFamily=\"TGDylgjur\"\n *   fontStyle=\"normal\"\n *   uppercaseGlyphs={glyphSets.uppercase}\n *   lowercaseGlyphs={glyphSets.lowercase}\n *   initialGlyph=\"A\"\n * />"
-      }
-    ]
-  },
-  {
-    "name": "ShellSidebar",
-    "pkg": "@kolkrabbi/kol-workshop",
-    "category": "shell",
-    "count": 6,
-    "apps": [
-      "kol-client-kolkrabbi",
-      "kol-website"
-    ],
-    "files": 4,
-    "weighted": 12,
-    "internal": 10,
-    "src": "./shell/ShellSidebar.jsx",
-    "edgeCount": 4,
-    "edges": [
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx",
-        "app": "kol-website",
-        "uses": 2,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/WorkshopSidebar.jsx",
-        "app": "kol-client-kolkrabbi",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/WorkshopSidebar.jsx",
-        "code": "<ShellSidebar\n        routes={workshopRoutes}\n        basePath=\"/workshop\"\n        onNavigate={onNavigate}\n        label=\"Workshop\"\n        labelTo=\"/workshop\"\n        collapsed={workshopCollapsed}\n        onToggle={() => setWorkshopCollapsed(p => !p)}\n      />"
-      },
-      {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/compositions/WorkshopSidebar.jsx",
-        "code": "<ShellSidebar\n        routes={workshopRoutes}\n        basePath={basePath}\n        onNavigate={onNavigate}\n        label=\"Workshop\"\n        labelTo={basePath}\n        collapsed={workshopCollapsed}\n        onToggle={() => setWorkshopCollapsed(p => !p)}\n      />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx",
-        "code": "<ShellSidebar routes={routes} basePath={basePath} />"
-      },
-      {
-        "app": "kol-client-kolkrabbi",
-        "file": "kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/layout/ShellLayout.jsx",
-        "code": "<ShellSidebar routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />"
-      }
-    ]
-  },
-  {
-    "name": "WorkshopSidebar",
-    "pkg": "@kolkrabbi/kol-workshop",
-    "category": "compositions",
-    "count": 6,
-    "apps": [
-      "kol-editor-radar",
-      "kol-labs-monorepo",
-      "kol-mirror",
-      "kol-modulator",
-      "kol-monitor",
-      "kol-website"
-    ],
-    "files": 6,
-    "weighted": 18,
-    "internal": 0,
-    "src": "./compositions/WorkshopSidebar.jsx",
-    "edgeCount": 6,
-    "edges": [
-      {
-        "file": "kol-apps/kol-editor-radar/src-grab/components/structure/layout/WorkshopLayout.jsx",
-        "app": "kol-editor-radar",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-labs-monorepo/apps/mirror/src/components/structure/layout/WorkshopLayout.jsx",
-        "app": "kol-labs-monorepo",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-mirror/src/components/structure/layout/WorkshopLayout.jsx",
-        "app": "kol-mirror",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-modulator/src/components/structure/layout/WorkshopLayout.jsx",
-        "app": "kol-modulator",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/structure/layout/WorkshopLayout.jsx",
-        "app": "kol-monitor",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/App.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/App.jsx",
-        "code": "<WorkshopSidebar routes={WORKSHOP_ROUTES} inventory={documentationInventory} basePath=\"/workshop\" onNavigate={onNavigate} />"
-      },
-      {
-        "app": "kol-editor-radar",
-        "file": "kol-apps/kol-editor-radar/src-grab/components/structure/layout/WorkshopLayout.jsx",
-        "code": "<WorkshopSidebar\n          isCollapsed={forceCollapsed ? true : isCollapsed}\n          setIsCollapsed={forceCollapsed ? () => {} : setIsCollapsed}\n          expandedItems={expandedItems}\n          setExpandedItems={setExpandedItems}\n          isSidebarLocked={isSidebarLocked}\n          setIsSidebarLocked={setIsSidebarLocked}\n          forceCollapsed={forceCollapsed}\n          collapsedWidth={collapsedWidth}\n          enableShelf={forceCollapsed || isCollapsed}\n          normalizedPath={normalizedPath}\n        />"
       }
     ]
   },
@@ -16557,6 +16639,63 @@
         "app": "kol-website",
         "file": "kol-website/apps/web/src/foundry-system/sections/GlyphMetricsSection.jsx",
         "code": "<SpecimenSectionHeader\n          selectedStyle={showDropdown ? selectedStyleVariant : showAxisDropdown ? selectedValue : undefined}\n          onStyleChange={showDropdown ? setSelectedStyleVariant : showAxisDropdown ? onValueChange : undefined}\n          showDropdown={showDropdown || (showAxisDropdown && valueOptions.length > 0)}\n          styleOptions={showDropdown ? italicOptions : valueOptions}\n          label=\"Glyph Viewer\"\n          icon=\"underline\"\n          size=\"md\"\n          showWeightDropdown={showAxisDropdown && valueOptions.length > 0}\n          weightOptions={valueOptions}\n          selectedWeight={selectedValue}\n          onWeightChange={onValueChange}\n        />"
+      }
+    ]
+  },
+  {
+    "name": "WorkshopSidebar",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "compositions",
+    "count": 5,
+    "apps": [
+      "kol-editor-radar",
+      "kol-labs-monorepo",
+      "kol-mirror",
+      "kol-modulator",
+      "kol-monitor"
+    ],
+    "files": 5,
+    "weighted": 15,
+    "internal": 0,
+    "src": "./compositions/WorkshopSidebar.jsx",
+    "edgeCount": 5,
+    "edges": [
+      {
+        "file": "kol-apps/kol-editor-radar/src-grab/components/structure/layout/WorkshopLayout.jsx",
+        "app": "kol-editor-radar",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-labs-monorepo/apps/mirror/src/components/structure/layout/WorkshopLayout.jsx",
+        "app": "kol-labs-monorepo",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-mirror/src/components/structure/layout/WorkshopLayout.jsx",
+        "app": "kol-mirror",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-modulator/src/components/structure/layout/WorkshopLayout.jsx",
+        "app": "kol-modulator",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/structure/layout/WorkshopLayout.jsx",
+        "app": "kol-monitor",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-editor-radar",
+        "file": "kol-apps/kol-editor-radar/src-grab/components/structure/layout/WorkshopLayout.jsx",
+        "code": "<WorkshopSidebar\n          isCollapsed={forceCollapsed ? true : isCollapsed}\n          setIsCollapsed={forceCollapsed ? () => {} : setIsCollapsed}\n          expandedItems={expandedItems}\n          setExpandedItems={setExpandedItems}\n          isSidebarLocked={isSidebarLocked}\n          setIsSidebarLocked={setIsSidebarLocked}\n          forceCollapsed={forceCollapsed}\n          collapsedWidth={collapsedWidth}\n          enableShelf={forceCollapsed || isCollapsed}\n          normalizedPath={normalizedPath}\n        />"
       }
     ]
   },
@@ -17190,7 +17329,7 @@
   {
     "name": "LoaderOverlay",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
+    "category": "molecules",
     "count": 3,
     "apps": [
       "kol-website"
@@ -17198,7 +17337,7 @@
     "files": 3,
     "weighted": 9,
     "internal": 0,
-    "src": "./organisms/LoaderOverlay.jsx",
+    "src": "./molecules/LoaderOverlay.jsx",
     "edgeCount": 3,
     "edges": [
       {
@@ -17574,7 +17713,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/App.jsx",
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -17583,8 +17722,8 @@
     "examples": [
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/App.jsx",
-        "code": "<ShellLayout routes={WORKSHOP_ROUTES} basePath=\"/workshop\" renderSidebar={({ onNavigate }) => <WorkshopSidebar routes={WORKSHOP_ROUTES} inventory={documentationInventory} basePath=\"/workshop\" onNavigate={onNavigate} />"
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "code": "<ShellLayout\n      routes={WORKSHOP_ROUTES}\n      basePath=\"/workshop\"\n      brand={<WorkshopBrand />"
       },
       {
         "app": "kol-labs-monorepo",
@@ -17702,7 +17841,7 @@
     ]
   },
   {
-    "name": "IconFrame",
+    "name": "Figure",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
     "count": 2,
@@ -17711,18 +17850,18 @@
     ],
     "files": 2,
     "weighted": 6,
-    "internal": 0,
-    "src": "./atoms/IconFrame.jsx",
+    "internal": 6,
+    "src": "./atoms/Figure.jsx",
     "edgeCount": 2,
     "edges": [
       {
-        "file": "kol-website/apps/brand/src/components/framework/SideNav.jsx",
+        "file": "kol-website/apps/web/src/components/prose/blocks/ImageBlock.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
+        "file": "kol-website/apps/web/src/components/prose/blocks/VideoBlock.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -17731,13 +17870,13 @@
     "examples": [
       {
         "app": "kol-website",
-        "file": "kol-website/apps/brand/src/components/framework/SideNav.jsx",
-        "code": "<IconFrame\n          name={collapsed ? 'chevron-right' : 'chevron-left'}\n          variant=\"secondary\"\n          size=\"lg\"\n          radius=\"full\"\n        />"
+        "file": "kol-website/apps/web/src/components/prose/blocks/ImageBlock.jsx",
+        "code": "<Figure label={label} caption={caption}>\n      <SanityImage\n        image={value}\n        alt={alt || ''}\n        className=\"w-full h-full object-cover\"\n      />"
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
-        "code": "<IconFrame name={icon} variant=\"secondary\" size=\"md\" />"
+        "file": "kol-website/apps/web/src/components/prose/blocks/VideoBlock.jsx",
+        "code": "<Figure label={value?.label} caption={value?.caption} aspect={embedSrc ? '16/9' : ''}>\n      {embedSrc ? (\n        <iframe\n          src={embedSrc}\n          title={value?.label || value?.caption || 'Embedded video'}\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowFullScreen\n          className=\"w-full h-full\"\n        />"
       }
     ]
   },
@@ -17752,7 +17891,7 @@
     ],
     "files": 2,
     "weighted": 6,
-    "internal": 0,
+    "internal": 3,
     "src": "./molecules/MediaCard.jsx",
     "edgeCount": 2,
     "edges": [
@@ -17783,6 +17922,47 @@
     ]
   },
   {
+    "name": "MediaRow",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 2,
+    "apps": [
+      "kol-media-admin",
+      "kol-website"
+    ],
+    "files": 2,
+    "weighted": 6,
+    "internal": 3,
+    "src": "./molecules/MediaRow.jsx",
+    "edgeCount": 2,
+    "edges": [
+      {
+        "file": "kol-apps/kol-media-admin/src/FileList.jsx",
+        "app": "kol-media-admin",
+        "uses": 1,
+        "stars": 3
+      },
+      {
+        "file": "kol-website/apps/brand/src/pages/SlideDeckManager.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/brand/src/pages/SlideDeckManager.jsx",
+        "code": "<MediaRow\n            key={deck.slug}\n            thumb={\n              <div className=\"w-full h-full bg-surface-inverse flex items-center justify-center\">\n                <Icon name=\"maximize\" size={16} className=\"text-fg-inverse-64\" />"
+      },
+      {
+        "app": "kol-media-admin",
+        "file": "kol-apps/kol-media-admin/src/FileList.jsx",
+        "code": "<MediaRow\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  date={formatDate(o.uploaded)}\n                  size={formatSize(o.size)}\n                  actions={renderActions(o)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
+      }
+    ]
+  },
+  {
     "name": "ShellDrawer",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
@@ -17793,7 +17973,7 @@
     ],
     "files": 2,
     "weighted": 6,
-    "internal": 3,
+    "internal": 6,
     "src": "./molecules/ShellDrawer.jsx",
     "edgeCount": 2,
     "edges": [
@@ -17804,7 +17984,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -17821,7 +18001,7 @@
   {
     "name": "ShellSearchOverlay",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 2,
     "apps": [
       "kol-client-kolkrabbi",
@@ -17830,7 +18010,7 @@
     "files": 2,
     "weighted": 6,
     "internal": 3,
-    "src": "./molecules/ShellSearchOverlay.jsx",
+    "src": "./organisms/ShellSearchOverlay.jsx",
     "edgeCount": 2,
     "edges": [
       {
@@ -17840,7 +18020,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/shell/ShellLayout.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -17857,7 +18037,7 @@
   {
     "name": "AsciiCursor",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
+    "category": "atoms",
     "count": 2,
     "apps": [
       "kol-client-kolkrabbi",
@@ -17866,7 +18046,7 @@
     "files": 2,
     "weighted": 6,
     "internal": 0,
-    "src": "./organisms/AsciiCursor.jsx",
+    "src": "./atoms/AsciiCursor.jsx",
     "edgeCount": 2,
     "edges": [
       {
@@ -17893,7 +18073,7 @@
   {
     "name": "ErrorBoundary",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
+    "category": "molecules",
     "count": 2,
     "apps": [
       "kol-video-editor",
@@ -17902,7 +18082,7 @@
     "files": 2,
     "weighted": 6,
     "internal": 9,
-    "src": "./organisms/ErrorBoundary.jsx",
+    "src": "./molecules/ErrorBoundary.jsx",
     "edgeCount": 2,
     "edges": [
       {
@@ -18243,52 +18423,12 @@
       {
         "app": "kol-website",
         "file": "kol-website/apps/web/src/routes/workshop/DocumentationReader.jsx",
-        "code": "<DocumentationReader\n    inventory={documentationInventory}\n    modules={documentationModules}\n    docHref={(id) => `/workshop/docs/${id}`}\n    routes={{\n      docsIndex: '/workshop/docs',\n      components: '/workshop/components',\n      tagHref: (tag) => `/workshop/docs?tag=${encodeURIComponent(tag)}`,\n      docFilePath: (id) => `docs/documentation/${id}.md`,\n    }}\n  />"
+        "code": "<DocumentationReader\n    inventory={VAULT}\n    modules={VAULT_MODULES}\n    docHref={vaultDocHref}\n    routes={{\n      docsIndex: '/workshop/docs',\n      components: '/workshop/design-system/components',\n    }}\n  />"
       },
       {
         "app": "kol-website",
         "file": "kol-website/apps/web/src/App.jsx",
         "code": "<DocumentationReader />"
-      }
-    ]
-  },
-  {
-    "name": "TagModeGate",
-    "pkg": "@kolkrabbi/kol-workshop",
-    "category": "tags",
-    "count": 2,
-    "apps": [
-      "kol-website"
-    ],
-    "files": 2,
-    "weighted": 6,
-    "internal": 6,
-    "src": "./tags/TagModeGate.jsx",
-    "edgeCount": 2,
-    "edges": [
-      {
-        "file": "kol-website/apps/web/src/App.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      },
-      {
-        "file": "kol-website/apps/web/src/workshop-system/tags/index.js",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/App.jsx",
-        "code": "<TagModeGate />"
-      },
-      {
-        "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/tags/index.js",
-        "code": "<TagModeGate>"
       }
     ]
   },
@@ -18303,7 +18443,7 @@
     ],
     "files": 2,
     "weighted": 6,
-    "internal": 3,
+    "internal": 6,
     "src": "./tags/TagModeOverlay.jsx",
     "edgeCount": 2,
     "edges": [
@@ -18314,7 +18454,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/tags/TagModeGate.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeGate.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -18350,7 +18490,7 @@
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/tags/TagModeOverlay.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeOverlay.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -18364,7 +18504,7 @@
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/tags/TagModeOverlay.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeOverlay.jsx",
         "code": "<TagGraph\n                  docs={filteredDocs}\n                  allDocs={inventory}\n                  activeTag={activeTag}\n                  onTagClick={(tag) => toggleTag(tag)}\n                  tagHref={tagHref}\n                />"
       }
     ]
@@ -18384,13 +18524,13 @@
     "edgeCount": 2,
     "edges": [
       {
-        "file": "kol-website/apps/web/src/App.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
       },
       {
-        "file": "kol-website/apps/web/src/workshop-system/tags/index.js",
+        "file": "kol-website/apps/web/src/App.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -18399,42 +18539,42 @@
     "examples": [
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/App.jsx",
-        "code": "<TagModeProvider inventory={documentationInventory} docHref={docHref} tagHref={tagHref}><ShellLayout routes={WORKSHOP_ROUTES} basePath=\"/workshop\" renderSidebar={({ onNavigate }) => <WorkshopSidebar routes={WORKSHOP_ROUTES} inventory={documentationInventory} basePath=\"/workshop\" onNavigate={onNavigate} />"
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js",
+        "code": "<TagModeProvider inventory={...} docHref={...} tagHref={...}>"
       },
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/tags/index.js",
-        "code": "<TagModeProvider inventory={...} docHref={...} tagHref={...}>"
+        "file": "kol-website/apps/web/src/App.jsx",
+        "code": "<TagModeProvider inventory={VAULT} docHref={docHref}><WorkshopChrome />"
       }
     ]
   },
   {
-    "name": "MediaRow",
+    "name": "IconFrame",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 1,
     "apps": [
-      "kol-media-admin"
+      "kol-website"
     ],
     "files": 1,
     "weighted": 3,
-    "internal": 0,
-    "src": "./molecules/MediaRow.jsx",
+    "internal": 13,
+    "src": "./atoms/IconFrame.jsx",
     "edgeCount": 1,
     "edges": [
       {
-        "file": "kol-apps/kol-media-admin/src/FileList.jsx",
-        "app": "kol-media-admin",
+        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
+        "app": "kol-website",
         "uses": 1,
         "stars": 3
       }
     ],
     "examples": [
       {
-        "app": "kol-media-admin",
-        "file": "kol-apps/kol-media-admin/src/FileList.jsx",
-        "code": "<MediaRow\n                  key={o.key}\n                  thumb={renderThumb(o, selectMode ? null : () => setLightboxIndex(idx))}\n                  name={selectMode ? <p className=\"kol-mono-12 text-fg-default truncate\">{o.displayKey}</p> : renderNameCell(o)}\n                  date={formatDate(o.uploaded)}\n                  size={formatSize(o.size)}\n                  actions={renderActions(o)}\n                  selectMode={selectMode}\n                  selected={selected.has(o.key)}\n                  onSelect={(e) => toggleSelect(idx, o.key, e.shiftKey)}\n                />"
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/ui/SectionTitle.jsx",
+        "code": "<IconFrame name={icon} variant=\"secondary\" size=\"md\" />"
       }
     ]
   },
@@ -18464,6 +18604,35 @@
         "app": "kol-website",
         "file": "kol-website/apps/web/src/routes/WorkDetail.jsx",
         "code": "<GalleryCarousel media={project.media} title={project.title} />"
+      }
+    ]
+  },
+  {
+    "name": "MediaLibrary",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 1,
+    "apps": [
+      "kol-website"
+    ],
+    "files": 1,
+    "weighted": 3,
+    "internal": 3,
+    "src": "./organisms/MediaLibrary.jsx",
+    "edgeCount": 1,
+    "edges": [
+      {
+        "file": "kol-website/apps/brand/src/pages/Library.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/brand/src/pages/Library.jsx",
+        "code": "<MediaLibrary variant=\"page\" client={mediaClient} />"
       }
     ]
   },
@@ -18845,6 +19014,35 @@
     ]
   },
   {
+    "name": "RightRail",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "shell",
+    "count": 1,
+    "apps": [
+      "kol-website"
+    ],
+    "files": 1,
+    "weighted": 3,
+    "internal": 6,
+    "src": "./shell/RightRail.jsx",
+    "edgeCount": 1,
+    "edges": [
+      {
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "code": "<RightRail\n      toc={headings}\n      activeId={activeId}\n      related={[]}\n      actions={actions}\n      topTags={topTags}\n      tags={[]}\n      renderTag={(tag) => <TagPath tag={tag} />"
+      }
+    ]
+  },
+  {
     "name": "DocsFrontmatter",
     "pkg": "@kolkrabbi/kol-workshop",
     "category": "docs",
@@ -18854,12 +19052,12 @@
     ],
     "files": 1,
     "weighted": 3,
-    "internal": 9,
+    "internal": 12,
     "src": "./docs/DocsFrontmatter.jsx",
     "edgeCount": 1,
     "edges": [
       {
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -18868,27 +19066,27 @@
     "examples": [
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/workshop-system/docs/DocumentationReader.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx",
         "code": "<DocsFrontmatter metadata={doc.metadata} docId={docId} />"
       }
     ]
   },
   {
-    "name": "WorkshopDefaultSidebar",
+    "name": "TagModeGate",
     "pkg": "@kolkrabbi/kol-workshop",
-    "category": "compositions",
+    "category": "tags",
     "count": 1,
     "apps": [
       "kol-website"
     ],
     "files": 1,
     "weighted": 3,
-    "internal": 0,
-    "src": "./compositions/WorkshopDefaultSidebar.jsx",
+    "internal": 3,
+    "src": "./tags/TagModeGate.jsx",
     "edgeCount": 1,
     "edges": [
       {
-        "file": "kol-website/apps/web/src/App.jsx",
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js",
         "app": "kol-website",
         "uses": 1,
         "stars": 3
@@ -18897,8 +19095,37 @@
     "examples": [
       {
         "app": "kol-website",
-        "file": "kol-website/apps/web/src/App.jsx",
-        "code": "<WorkshopDefaultSidebar routes={WORKSHOP_ROUTES} />"
+        "file": "kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/index.js",
+        "code": "<TagModeGate>"
+      }
+    ]
+  },
+  {
+    "name": "TagPath",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "tags",
+    "count": 1,
+    "apps": [
+      "kol-website"
+    ],
+    "files": 1,
+    "weighted": 3,
+    "internal": 12,
+    "src": "./tags/TagPath.jsx",
+    "edgeCount": 1,
+    "edges": [
+      {
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "app": "kol-website",
+        "uses": 1,
+        "stars": 3
+      }
+    ],
+    "examples": [
+      {
+        "app": "kol-website",
+        "file": "kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx",
+        "code": "<TagPath tag={tag} />"
       }
     ]
   },
@@ -19029,20 +19256,6 @@
     "examples": []
   },
   {
-    "name": "Figure",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "atoms",
-    "count": 0,
-    "apps": [],
-    "files": 0,
-    "weighted": 0,
-    "internal": 6,
-    "src": "./atoms/Figure.jsx",
-    "edgeCount": 0,
-    "edges": [],
-    "examples": []
-  },
-  {
     "name": "OverlayGlassPanel",
     "pkg": "@kolkrabbi/kol-component",
     "category": "atoms",
@@ -19085,6 +19298,20 @@
     "examples": []
   },
   {
+    "name": "InteractiveImage",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "atoms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 0,
+    "src": "./atoms/InteractiveImage.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
     "name": "VideoBlock",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
@@ -19113,15 +19340,29 @@
     "examples": []
   },
   {
-    "name": "FramedMediaBand",
+    "name": "FieldRow",
     "pkg": "@kolkrabbi/kol-component",
     "category": "molecules",
     "count": 0,
     "apps": [],
     "files": 0,
     "weighted": 0,
+    "internal": 3,
+    "src": "./molecules/FieldRow.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "FramedMediaBand",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
     "internal": 0,
-    "src": "./molecules/FramedMediaBand.jsx",
+    "src": "./organisms/FramedMediaBand.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []
@@ -19129,13 +19370,13 @@
   {
     "name": "PaletteHarmonyWheel",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "atoms",
     "count": 0,
     "apps": [],
     "files": 0,
     "weighted": 0,
     "internal": 0,
-    "src": "./molecules/PaletteHarmonyWheel.jsx",
+    "src": "./atoms/PaletteHarmonyWheel.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []
@@ -19157,13 +19398,13 @@
   {
     "name": "SpectrumControls",
     "pkg": "@kolkrabbi/kol-component",
-    "category": "molecules",
+    "category": "organisms",
     "count": 0,
     "apps": [],
     "files": 0,
     "weighted": 0,
     "internal": 6,
-    "src": "./molecules/SpectrumControls.jsx",
+    "src": "./organisms/SpectrumControls.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []
@@ -19232,7 +19473,7 @@
     "apps": [],
     "files": 0,
     "weighted": 0,
-    "internal": 6,
+    "internal": 9,
     "src": "./organisms/MediaViewer.jsx",
     "edgeCount": 0,
     "edges": [],
@@ -19248,6 +19489,34 @@
     "weighted": 0,
     "internal": 3,
     "src": "./organisms/NewsletterBand.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "RecordManager",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 0,
+    "src": "./organisms/RecordManager.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "StatusChip",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "molecules",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 6,
+    "src": "./molecules/FieldRow.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []
@@ -19276,6 +19545,34 @@
     "weighted": 0,
     "internal": 3,
     "src": "./organisms/Canvas.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "MediaLibraryProvider",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 3,
+    "src": "./organisms/MediaLibrary.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "MediaBrowser",
+    "pkg": "@kolkrabbi/kol-component",
+    "category": "organisms",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 3,
+    "src": "./organisms/MediaLibrary.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []
@@ -19519,6 +19816,34 @@
     "examples": []
   },
   {
+    "name": "RailSection",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "shell",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 3,
+    "src": "./shell/RailSection.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "RailRow",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "shell",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 15,
+    "src": "./shell/RailRow.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
     "name": "ShellFullHeightContext",
     "pkg": "@kolkrabbi/kol-workshop",
     "category": "shell",
@@ -19540,7 +19865,7 @@
     "apps": [],
     "files": 0,
     "weighted": 0,
-    "internal": 37,
+    "internal": 40,
     "src": "./docs/DocKit.jsx",
     "edgeCount": 0,
     "edges": [],
@@ -19554,7 +19879,7 @@
     "apps": [],
     "files": 0,
     "weighted": 0,
-    "internal": 27,
+    "internal": 28,
     "src": "./docs/DocKit.jsx",
     "edgeCount": 0,
     "edges": [],
@@ -19584,6 +19909,20 @@
     "weighted": 0,
     "internal": 0,
     "src": "./docs/DocKit.jsx",
+    "edgeCount": 0,
+    "edges": [],
+    "examples": []
+  },
+  {
+    "name": "WorkshopDefaultSidebar",
+    "pkg": "@kolkrabbi/kol-workshop",
+    "category": "compositions",
+    "count": 0,
+    "apps": [],
+    "files": 0,
+    "weighted": 0,
+    "internal": 0,
+    "src": "./compositions/WorkshopDefaultSidebar.jsx",
     "edgeCount": 0,
     "edges": [],
     "examples": []

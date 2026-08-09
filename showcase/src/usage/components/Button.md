@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 937 across 319 files in 20 apps
-- **Weighted inbound:** 1089★ across 319 edges — 24×5★ · 84×4★ · 211×3★
+- **Real-world usages found:** 944 across 322 files in 20 apps
+- **Weighted inbound:** 1099★ across 322 edges — 24×5★ · 85×4★ · 213×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-docs-noter, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radial, kol-svg-distress, kol-video-editor, kol-website
 
 ## Who depends on this
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 5 | 4 | `kol-apps/kol-video-editor/Clypra/src/components/editor/media-tabs/CaptionsTab.tsx` |
 | 5 | 3 | `kol-apps/kol-client-acyr-website/apps/website/src/pages/site/LoaderDev.jsx` |
 | 5 | 3 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/atoms/PrintBuyButton.jsx` |
-| … | | _307 more_ |
+| … | | _310 more_ |
 
 ## Import
 

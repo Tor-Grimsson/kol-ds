@@ -1,6 +1,6 @@
 import { isValidElement, useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import Image from '../molecules/Image.jsx'
+import Image from '../atoms/Image.jsx'
 import HlsVideo from '../atoms/HlsVideo.jsx'
 import OverlayGlassPanel from '../atoms/OverlayGlassPanel.jsx'
 

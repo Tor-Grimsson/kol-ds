@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import Carousel from './Carousel.jsx'
+import Carousel from '../molecules/Carousel.jsx'
 import MediaViewer from './MediaViewer.jsx'
 
 /* Drag-vs-click guard: DS Carousel owns Embla's drag physics but does NOT

@@ -1,7 +1,7 @@
 # Stepper
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 29 across 21 files in 11 apps
 - **Weighted inbound:** 65★ across 21 edges — 2×4★ · 19×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website

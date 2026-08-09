@@ -1,7 +1,7 @@
 # QuantityInput
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 26 across 11 files in 7 apps
 - **Weighted inbound:** 38★ across 11 edges — 5×4★ · 6×3★
 - **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-modulator, kol-monitor, kol-website

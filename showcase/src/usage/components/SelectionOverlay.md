@@ -1,7 +1,7 @@
 # SelectionOverlay
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** atoms
 - **Real-world usages found:** 6 across 6 files in 6 apps
 - **Weighted inbound:** 18★ across 6 edges — 6×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-website

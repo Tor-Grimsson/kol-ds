@@ -2,12 +2,15 @@
 /**
  * validate-taxonomy — enforces docs/documentation/03-components/02-placement.md.
  *
+ * Tier is AUTHORED (real atomic design — judged by what a component is, not
+ * what it imports; 2026-08-09 user ruling). The validator no longer derives
+ * or second-guesses tiers; it enforces the two things that stay mechanical:
+ *
  *   1. Closed folder set: every component source folder is one of
  *      atoms / molecules / organisms / graphics / hooks.
- *   2. Downward-only imports: atoms never import molecules/ or organisms/.
- *   3. Molecule test: every molecules/*.jsx nests at least one KOL component
- *      (a relative import of another component file), or carries a
- *      `taxonomy-ok:` comment naming why (e.g. same-file nesting).
+ *   2. Downward-only imports: atoms never import molecules/ or organisms/;
+ *      molecules never import organisms/. Sideways (same-tier) imports are
+ *      legal at every rung.
  *
  * Exit 1 with a list of violations; silent-ish green otherwise.
  */
@@ -36,22 +39,15 @@ const files = (dir) => {
   try { return readdirSync(join(SRC, dir)).filter((f) => f.endsWith('.jsx')) } catch { return [] }
 }
 
-// 2 — atoms import downward only
-for (const f of files('atoms')) {
-  const txt = readFileSync(join(SRC, 'atoms', f), 'utf8')
-  for (const imp of relImports(txt)) {
-    if (imp.includes('molecules/') || imp.includes('organisms/')) {
-      violations.push(`hierarchy: atoms/${f} imports ${imp} — atoms never import upward`)
+// 2 — downward-only imports
+const UPWARD = { atoms: ['molecules/', 'organisms/'], molecules: ['organisms/'] }
+for (const [tier, banned] of Object.entries(UPWARD)) {
+  for (const f of files(tier)) {
+    const txt = readFileSync(join(SRC, tier, f), 'utf8')
+    for (const imp of relImports(txt)) {
+      const hit = banned.find((b) => imp.includes(b))
+      if (hit) violations.push(`hierarchy: ${tier}/${f} imports ${imp} — ${tier} never import upward`)
     }
-  }
-}
-
-// 3 — molecules must nest a KOL component (or carry taxonomy-ok:)
-for (const f of files('molecules')) {
-  const txt = readFileSync(join(SRC, 'molecules', f), 'utf8')
-  const nests = relImports(txt).some((p) => /(^\.\.\/(atoms|molecules)\/)|(^\.\/)/.test(p))
-  if (!nests && !txt.includes('taxonomy-ok:')) {
-    violations.push(`molecule-test: molecules/${f} nests no KOL component and has no taxonomy-ok: exemption — likely an atom`)
   }
 }
 

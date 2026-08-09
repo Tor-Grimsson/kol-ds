@@ -13,7 +13,7 @@ export const meta = {
     "domain/typography",
     "pattern/display",
   ],
-  description: "REPLICATED from the elder reference (kol-website/packages/ui/src/molecules/CodeBlock.jsx, 2026-07-28 user mandate): react-syntax-highlighter (Prism) with the oneDark theme flattened onto KOL chrome — transparent bg, 14px/1.6 mono, no text-shadow — a single filename-or-language chip, and a 32×32 icon copy button (`copy` glyph → check on copied).",
+  description: "REPLICATED from the elder reference (kol-website/packages/ui/src/molecules/CodeBlock.jsx, 2026-07-28 user mandate): react-syntax-highlighter (Prism) with the oneDark theme flattened onto KOL chrome — transparent bg, 14px/1.6 mono, no text-shadow — a single filename-or-language chip, and the CopyButton atom positioned in-frame (.kol-codeblock-copy).",
   aliases: [
     "codeblock",
   ],
@@ -46,7 +46,8 @@ import { CodeBlock } from '@kolkrabbi/kol-component'
 **THE code surface** (one-code-idiom law, 2026-07-30): every code block on a
 doc page renders through this component — react-syntax-highlighter (Prism)
 with the oneDark theme flattened onto KOL chrome, a single
-filename-or-language chip, and a 32×32 icon copy button (`copy` → check).
+filename-or-language chip, and the [CopyButton](/components/copy-button)
+atom positioned in-frame.
 Three input shapes, first match wins: Portable Text
 (`value={{ code, language, filename }}`), direct props, or children. The
 `bare` prop drops the framed chrome for hosts that own the frame (e.g. a

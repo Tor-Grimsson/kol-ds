@@ -1,7 +1,7 @@
 # WheelTriangle
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** organisms
 - **Real-world usages found:** 10 across 10 files in 5 apps
 - **Weighted inbound:** 30★ across 10 edges — 10×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-labs-monorepo, kol-website

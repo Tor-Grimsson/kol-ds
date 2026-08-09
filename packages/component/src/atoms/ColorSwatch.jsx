@@ -34,7 +34,7 @@
  *   onClick         — if provided, renders as <button>; else <span>.
  *   title           — passes through.
  */
-import TransparentX from '../atoms/TransparentX'
+import TransparentX from './TransparentX'
 
 const SIZE_CLASSES = {
   fill:    'w-full aspect-square',

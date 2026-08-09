@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import ColorSwatch from './ColorSwatch.jsx'
-
-/* taxonomy-ok: the default composed control nests the same-file SwatchStack
- * and EyedropPick (KOL named exports the relative-import check can't see);
- * both collapse the source's internal FramedSwatch onto the sibling molecule
- * ColorSwatch (a same-tier relative import). */
+import ColorSwatch from '../atoms/ColorSwatch.jsx'
 
 /*
  * SwatchControls — the Photoshop-style top row of the colour panel, in two

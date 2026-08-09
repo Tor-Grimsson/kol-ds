@@ -483,6 +483,12 @@
       "desc": ""
     },
     {
+      "prop": "radius",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
       "prop": "animateIcon",
       "type": "—",
       "def": "false",
@@ -526,12 +532,6 @@
     }
   ],
   "CopyButton": [
-    {
-      "prop": "label",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
     {
       "prop": "className",
       "type": "—",
@@ -585,6 +585,12 @@
       "type": "—",
       "def": "'-80px 0px -80% 0px'",
       "desc": ""
+    },
+    {
+      "prop": "root",
+      "type": "—",
+      "def": "null",
+      "desc": ""
     }
   ],
   "DropdownTagFilter": [
@@ -610,6 +616,38 @@
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "IconFrame": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'secondary'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "radius",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -1017,19 +1055,13 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'primary'",
       "desc": ""
     },
     {
       "prop": "size",
       "type": "—",
       "def": "'sm'",
-      "desc": ""
-    },
-    {
-      "prop": "solid",
-      "type": "—",
-      "def": "false",
       "desc": ""
     },
     {
@@ -1291,6 +1323,50 @@
       "desc": ""
     }
   ],
+  "InteractiveImage": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "shape",
+      "type": "—",
+      "def": "'M.96.217L.855.834a.09.09 0 01-.07.072L.166.994A.09.09 0 01.06.9L.04.166A.09.09 0 01.15.073L.89.13a.09.09 0 01.07.087z'",
+      "desc": ""
+    },
+    {
+      "prop": "magnitude",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "perspective",
+      "type": "—",
+      "def": "500",
+      "desc": ""
+    },
+    {
+      "prop": "blur",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "backdropScale",
+      "type": "—",
+      "def": "1.1",
+      "desc": ""
+    }
+  ],
   "SelectionOverlay": [
     {
       "prop": "showHandles",
@@ -1386,6 +1462,12 @@
       "prop": "bare",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
       "desc": ""
     }
   ],
@@ -1514,6 +1596,40 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "StatusChip": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    }
+  ],
+  "FieldRow": [
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -1698,6 +1814,18 @@
   "ShellSearchOverlay": [
     {
       "prop": "results",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "expanded",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "chips",
       "type": "—",
       "def": "[]",
       "desc": ""
@@ -2053,6 +2181,12 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
     }
   ],
   "CtaGlobal": [
@@ -2235,6 +2369,62 @@
       "desc": ""
     }
   ],
+  "MediaLibraryProvider": [
+    {
+      "prop": "accept",
+      "type": "—",
+      "def": "'all'",
+      "desc": ""
+    }
+  ],
+  "MediaLibrary": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'page'",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "accept",
+      "type": "—",
+      "def": "'all'",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
+  "MediaPicker": [
+    {
+      "prop": "accept",
+      "type": "—",
+      "def": "'all'",
+      "desc": ""
+    }
+  ],
+  "MediaBrowser": [
+    {
+      "prop": "accept",
+      "type": "—",
+      "def": "'all'",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    }
+  ],
   "MediaTileGallery": [
     {
       "prop": "items",
@@ -2295,6 +2485,44 @@
       "desc": ""
     }
   ],
+  "RecordManager": [
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fields",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "publishLabel",
+      "type": "—",
+      "def": "'Publish'",
+      "desc": ""
+    },
+    {
+      "prop": "reorderLabel",
+      "type": "—",
+      "def": "(n) => `Reorder row ${n}`",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "SpectrumGrid": [
     {
       "prop": "stops",
@@ -2320,6 +2548,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "'panel'",
       "desc": ""
     }
   ],

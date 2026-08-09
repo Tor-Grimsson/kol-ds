@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-framework`
 - **Category:** framework
-- **Real-world usages found:** 13 across 10 files in 6 apps
-- **Weighted inbound:** 31★ across 10 edges — 1×4★ · 9×3★
+- **Real-world usages found:** 14 across 11 files in 6 apps
+- **Weighted inbound:** 34★ across 11 edges — 1×4★ · 10×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-website
 
 ## Who depends on this
@@ -21,7 +21,8 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Canalix.jsx` |
 | 3 | 1 | `kol-apps/kol-client-canalix/src/pages/Casedoc.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/Styleguide.jsx` |
-| 3 | 1 | `kol-website/apps/brand/src/pages/Styleguide.jsx` |
+| 3 | 1 | `kol-website/_tmp/brand-page-split-elder/Brand.jsx` |
+| 3 | 1 | `kol-website/apps/brand/src/pages/brand/Overview.jsx` |
 
 ## Import
 

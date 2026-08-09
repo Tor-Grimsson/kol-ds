@@ -1,7 +1,7 @@
 # BentoCard
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** organisms
+- **Category:** molecules
 - **Real-world usages found:** 14 across 2 files in 2 apps
 - **Weighted inbound:** 10★ across 2 edges — 2×5★
 - **Used in:** kol-client-kolkrabbi, kol-website

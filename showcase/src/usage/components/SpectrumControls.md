@@ -1,7 +1,7 @@
 # SpectrumControls
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** organisms
 - **Real-world usages found:** 0 across 0 files in 0 apps
 - **Weighted inbound:** 0★ across 0 edges
 - **Used in:** — (no consumer usage found)

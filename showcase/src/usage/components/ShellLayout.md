@@ -14,7 +14,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-labs-monorepo/apps/chess/src/App.jsx` |
 | 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/App.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/App.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx` |
 
 ## Import
 
@@ -24,10 +24,13 @@ import { ShellLayout } from '@kolkrabbi/kol-workshop'
 
 ## Real usage
 
-From `kol-website/apps/web/src/App.jsx`:
+From `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx`:
 
 ```jsx
-<ShellLayout routes={WORKSHOP_ROUTES} basePath="/workshop" renderSidebar={({ onNavigate }) => <WorkshopSidebar routes={WORKSHOP_ROUTES} inventory={documentationInventory} basePath="/workshop" onNavigate={onNavigate} />
+<ShellLayout
+      routes={WORKSHOP_ROUTES}
+      basePath="/workshop"
+      brand={<WorkshopBrand />
 ```
 
 From `kol-apps/kol-labs-monorepo/apps/chess/src/App.jsx`:

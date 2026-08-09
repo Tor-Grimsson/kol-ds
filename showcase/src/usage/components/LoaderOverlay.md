@@ -1,7 +1,7 @@
 # LoaderOverlay
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** organisms
+- **Category:** molecules
 - **Real-world usages found:** 3 across 3 files in 1 apps
 - **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-website

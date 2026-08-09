@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import ColorSwatch from './ColorSwatch'
+import ColorSwatch from '../atoms/ColorSwatch'
 import Input from '../atoms/Input'
 import { usePopover, PopoverPanel } from '../atoms/Popover'
 

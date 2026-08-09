@@ -565,18 +565,41 @@
   overflow-wrap: anywhere;
 }
 
-/* A MULTI-VALUE FIELD IS A LIST WITH A CEILING (2026-08-01). Stacked one per
- * line, and capped at roughly eight rows before it scrolls in place — a doc
- * with fifteen `sources` would otherwise push its own article fifteen lines
- * down and turn the metadata panel into the page. */
+/* A MULTI-VALUE FIELD IS A LIST, one per line. Its 2026-08-01 scroll ceiling
+ * (11rem + overscroll contain per field) is REPEALED 2026-08-09 — per-field
+ * scrollboxes captured the page wheel on the way down; the cap lives on the
+ * WHOLE panel now (.docs-frontmatter-body--capped below). */
 .docs-frontmatter-list {
   display: flex;
   flex-direction: column;
   gap: var(--kol-spacing-1);
-  max-height: 11rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
+
+/* THE PANEL COLLAPSES, THE PAGE SCROLLS (2026-08-09 user call). One cap on
+ * the whole panel behind a fade, expanded in normal flow via the toggle —
+ * zero scroll regions inside the panel. */
+.docs-frontmatter-body { position: relative; }
+.docs-frontmatter-body--capped {
+  max-height: 20rem;
+  overflow: hidden;
+}
+.docs-frontmatter-fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 4rem;
+  background: linear-gradient(to bottom, transparent, var(--kol-surface-primary));
+  pointer-events: none;
+}
+/* Toggle layout only — type/color ride kol-helper-12 text-meta in JSX. */
+.docs-frontmatter-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--kol-spacing-2);
+  margin-block-start: var(--kol-spacing-2);
+  cursor: pointer;
+}
+.docs-frontmatter-toggle:hover { color: var(--kol-surface-on-primary); }
 
 /* `.tag` was the Tag component's base class until it was rebuilt on Pill's
  * model (2026-08-01) and the scheme became `kol-tag`. The selector has matched

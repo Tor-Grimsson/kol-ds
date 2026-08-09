@@ -19,51 +19,51 @@ related:
 
 # Component placement — where a new component goes
 
-This is the **runbook** for placing a new component file into its Tier. The Tier *definitions* (atom/molecule/organism/framework/loader/hook, and why KOL's tiers deliberately aren't Brad Frost atomic) live in [[00-taxonomy|the taxonomy doc]] — read that first if the terms are new. This doc is the mechanical decision procedure and the enforcement.
+This is the **runbook** for placing a new component file into its Tier. The Tier *definitions* (atom/molecule/organism/framework/loader/hook, and the 2026-08-09 repeal of the import test) live in [[00-taxonomy|the taxonomy doc]] — read that first if the terms are new. This doc is the decision procedure, the authored map, and the enforcement.
 
-Every component gets exactly one location, decided by **structure, not vibes or complexity**. A new component slots into its tier and its alphabetical position — nothing else moves.
+Every component gets exactly one location, decided by **judgment on what it IS** — anatomy and role, never imports. A new component slots into its tier and its alphabetical position — nothing else moves.
 
 ## The test
 
-- **Atom** — nests no KOL component (`Icon`/`Graphic` don't count).
-- **Molecule** — nests at least one KOL component.
-- **Organism** — a self-contained composed region (bar, table, gallery), regardless of nesting.
+**Could you rebuild it from other KOL components?**
+
+- **Atom** — no: an irreducible element. One control, indicator, or content primitive; its parts are not nameable as KOL components.
+- **Molecule** — yes: a small assembly of nameable parts working as one unit — whether it actually imports them or hand-rolls them.
+- **Organism** — it is a whole region: a full bar, table, gallery, band, overlay surface, or manager.
 - **Framework / Loader / Hook** — see the checklist below.
 
 ## Rules
 
-1. **kol-icons `Icon`/`Graphic` are infrastructure, not components.** Nesting an Icon does NOT make an atom a molecule (Button, Stepper, Tag stay atoms).
-2. **Downward-only imports.** Atoms never import molecules or organisms. Molecules may import atoms and sibling molecules. Enforced by `scripts/validate-taxonomy.mjs`.
-3. **Structure beats complexity.** A hard-to-build component with no KOL nesting is still an atom (Popover/Tooltip); a trivial wrapper that nests one is a molecule (Image → AssetPlaceholder).
-4. **Same-file nesting counts** but is invisible to the validator — mark the file with a `taxonomy-ok:` comment naming the reason (see Accordion).
-5. **Organism is a judgment tier** for full regions. If you're debating atom vs molecule, structure decides; if you're debating molecule vs organism, ask "is this a self-contained section of an interface?"
+1. **Imports are irrelevant to placement.** A hand-rolled trigger + panel + tag list is a molecule (`DropdownTagFilter`); a single dial importing nothing is an atom (`RotaryDial`) — and so is a single Image wrapper importing its fallback (`Image`).
+2. **Downward-only imports.** Atoms never import molecules or organisms; molecules never import organisms; sideways is legal at every rung. Enforced by `scripts/validate-taxonomy.mjs` — the one mechanical residue.
+3. **Single-value selection controls are atoms** — `SegmentedToggle`, `ViewToggle`, `ToggleBracket`. Cells are options of one control, not Buttons.
+4. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`.
+5. **One element with elaborate behavior is still an atom** — `AsciiCursor`, `InteractiveImage`, `TiltCard`.
+6. **kol-icons `Icon`/`Graphic` are infrastructure, not components** — they never affect tier.
+7. **If you're debating molecule vs organism**, ask "is this a self-contained section of an interface?" — a card is a molecule; the gallery of cards is an organism.
 
 ## Decision checklist
 
 1. Is it app chrome / page structure? → **framework** (`fw-chrome` / `fw-structure` / `fw-behavior`).
 2. Does it resolve names to assets rather than render its own UI? → **loaders** (Docs page, not the components list).
 3. Is it reusable behavior with no markup of its own? → **hooks**.
-4. Is it a self-contained composed region (bar, table, gallery)? → **organism**.
-5. Does it nest a KOL component (imports one, or same-file)? → **molecule**.
+4. Is it a self-contained region (bar, table, gallery, band, manager)? → **organism**.
+5. Are its parts nameable as KOL components (imported OR hand-rolled)? → **molecule**.
 6. Otherwise → **atom**.
 
-## Worked calls
+## Re-sort map
 
-Moves the backlog named, decided by rule 1 + the molecule test:
+The repeal (2026-08-09) re-judged all 93 kol-component files. 20 moved; the judgment per row:
 
-- **Badge, Pill, Tag → atoms** — nest nothing KOL (Icon doesn't count).
-- **Section, SectionLabel, SegmentedToggle, ToggleBracket, ViewToggle, LabeledControl, DropdownTagFilter, QuantityInput, QuantityStepper, Popover (usePopover/PopoverPanel/Tooltip) → atoms** — same test, same result.
-- **Slider → molecules** — nests `Input`. The rule cuts both ways: the same test that demotes Badge promotes Slider.
-- **ColorSwatch → molecules** — nests `TransparentX`.
-- **ContentFilters → organisms** — a full filter bar (search + tag groups + view modes).
+| Move | Components | Why |
+|---|---|---|
+| atoms → molecules | `DocsToc` · `DropdownTagFilter` · `FullscreenOverlay` · `LabeledControl` · `QuantityInput` · `SearchInput` · `Section` · `Stepper` | Assemblies the import test couldn't see: nav-link cluster, trigger+panel+tags, scrim+sheet+close, label+control, input+buttons |
+| molecules → atoms | `ColorSwatch` · `Image` · `PaletteHarmonyWheel` · `SelectionOverlay` | Single elements the import test had promoted: a chip, an image, a wheel control, selection chrome |
+| molecules → organisms | `FramedMediaBand` · `ShellSearchOverlay` · `SpectrumControls` | Whole regions: a page band, the ⌘K search surface, the full color-picker apparatus |
+| organisms → molecules | `BentoCard` · `Carousel` · `ErrorBoundary` · `LoaderOverlay` | Not regions: a card, a scroll mechanism, a fallback panel, an overlay+curtain pair |
+| organisms → atoms | `AsciiCursor` | One canvas element, however elaborate its behavior |
 
-The 8 ex-primitives (`primitives` is dead — it was never part of the atomic system):
-
-- **AssetPlaceholder, ExitPreview, FullscreenOverlay → atoms** — nest nothing; overlay/link mechanics are hand-rolled internals.
-- **CodeBlock → molecules** — nests the `CopyButton` atom (extracted 2026-07-02).
-- **Image → molecules** — nests `AssetPlaceholder`.
-- **Accordion → molecules** — nests `AccordionPanel` same-file (`taxonomy-ok:` comment carries the call).
-- **Carousel → organisms** — a self-contained slider region (checklist step 4 beats "nests nothing").
+Unmoved judgment anchors: `Button`/`Input`/`Tag`/`Popover` atoms · `Slider`/`Dropdown`/`Modal`/`FieldRow`/`ShellDrawer` molecules · `Table`/`ContentFilters`/`MediaLibrary`/`RecordManager` + the heroes/bands organisms.
 
 Loaders verdict (C4): **Docs page**, not a components-list category — `Icon` + `Graphic` joined `DOCS_ONLY` in the showcase registry, documented on `/docs/loaders`, galleries unchanged on `/icons`.
 
@@ -130,10 +130,9 @@ Two real defects were fixed while there, both consequences of shipping app chrom
 
 ## Enforcement
 
-`node scripts/validate-taxonomy.mjs` fails loud when:
+Placement is **authored** — no script derives or second-guesses a tier. `node scripts/validate-taxonomy.mjs` fails loud on the two things that stay mechanical:
 
 - a component file sits outside the closed folder set (`atoms` / `molecules` / `organisms` / `graphics` / `hooks`),
-- an atom imports from `molecules/` or `organisms/`,
-- a molecule imports no KOL component and has no `taxonomy-ok:` exemption comment.
+- an upward import: an atom importing from `molecules/`/`organisms/`, or a molecule importing from `organisms/`.
 
 Run it after adding or moving any component. If it fights a genuinely correct placement, the rules get amended deliberately — [[00-taxonomy|the taxonomy doc]], this runbook, and the script move together.
