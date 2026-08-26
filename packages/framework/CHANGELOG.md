@@ -5,6 +5,26 @@
 > breaking or global-surface changes (token renames, default flips, new bare-element
 > rules) are flagged **BREAKING**.
 
+## 0.24.0 — 2026-08-26
+
+**`SideNav` renders nested route groups** (sidenav-nested-groups, from
+kol-studio). A `{ label, children }` node inside a category renders as a
+non-routing group header (`.kol-sidenav-group kol-helper-10 text-subtle`,
+`text-emphasis` when a leaf beneath it is the current route) with its rows
+indented one `--kol-spacing-3` step under it, recursively; the active dot
+keeps its 0.875rem lead at every depth. **The tree shape is the opt-in — there
+is no prop.** A tree with no group nodes renders byte-for-byte as 0.23.0
+(asserted: the showcase demo's flat tree, outerHTML identical before and
+after). `#anchor` leaves (`id` only) stay dropped — the scroll-spied section
+layer is not reopened.
+
+The header's 2026-08-01 "TWO LEVELS ONLY" line is re-scoped: it was the brand
+app's ruling about its anchors, inscribed in the package as a law for every
+consumer — kol-studio lost two groups and six routes from its rail on adopting
+0.23.0 and had to flatten them into `PDF · A4`-style leaves. The user's
+sentence is quoted in the header so the scoping has a source. The retired
+fork's `uppercase` on the group label does not return (type law).
+
 ## 0.23.0 — 2026-08-26
 
 ### Minor Changes

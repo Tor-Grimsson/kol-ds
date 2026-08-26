@@ -4,7 +4,7 @@ export const meta = {
   title: "SideNav",
   type: "reference",
   status: "active",
-  updated: "2026-08-09",
+  updated: "2026-08-26",
   tags: [
     "domain/components",
     "domain/design-system",
@@ -47,11 +47,19 @@ import { SideNav } from '@kolkrabbi/kol-framework'
 ## Behavior
 
 The app-site navigation rail, replicated from the elder reference
-(kol-website apps/brand, 2026-08-09 user mandate). **Two levels only**: a
-category is a disclosure button — icon, label, trailing caret — whose pages
-list opens in place; a category with `to` and no `pages` (Home) renders as a
-plain link row. Disclosure is independent per category and loads closed.
-The active category is derived from the route — no resolver prop.
+(kol-website apps/brand, 2026-08-09 user mandate). A category is a disclosure
+button — icon, label, trailing caret — whose pages list opens in place; a
+category with `to` and no `pages` (Home) renders as a plain link row.
+Disclosure is independent per category and loads closed. The active category
+is derived from the route — no resolver prop.
+
+**Nested route groups (0.24.0).** A page row may be a `{ label, children }`
+node: it renders as a non-routing group header over its own rows, indented one
+step, recursively, and lights up when a leaf beneath it is the current route.
+The tree shape is the opt-in — there is no prop — and a tree without group
+nodes renders exactly as before. The earlier "two levels only" line was the
+brand app's ruling about its scroll-spied `#anchor` sections (re-scoped
+2026-08-26, sidenav-nested-groups); anchors stay dead, route groups do not.
 
 **One control: the pill-marked grab edge** (2026-08-09 build order — the
 chip Button is gone in both states). Click toggles expand↔collapse (a 3px
@@ -68,7 +76,7 @@ Distinct from the workshop's ShellSidebar (grouped doc trees).
 ## Props
 
 <Api name="SideNav" rows={[
-  {"prop":"navTree","type":"array","def":"[]","desc":"Categories: { id, label, icon, pages: [{ label, to }] }, or { id, label, icon, to } for a link row."},
+  {"prop":"navTree","type":"array","def":"[]","desc":"Categories: { id, label, icon, pages: [{ label, to } | { label, children: [...] }] }, or { id, label, icon, to } for a link row. A { label, children } page row is a nested group — header + indented rows, recursive."},
   {"prop":"background","type":"boolean","def":"true","desc":"false renders the rail chromeless — no fill, no hairline — to float over consumer media (the brand-hero model)."},
   {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile drawer state (managed by AppShell)."},
   {"prop":"onCloseDrawer","type":"function","def":"—","desc":"Close callback for the mobile drawer."},

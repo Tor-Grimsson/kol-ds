@@ -25,7 +25,16 @@
  * alias over one fg-* stop. `default` is a deprecated alias of `body`.
  */
 
-:root {
+/* Declared on the THEME selectors, not `:root` alone (0.52.0, nested-theme-
+ * scope). A custom property resolves its var() where it is DECLARED and
+ * descendants inherit the frozen result — a ramp declared only on :root bakes
+ * the root's ink, so a subtree that flips --kol-surface-on-primary
+ * (data-theme / .light / .dark on a div) kept the root's --kol-fg-*.
+ * Re-declaring on the theme selectors re-resolves the ramp on the themed
+ * element itself — the mechanism .bg-surface-inverse already uses. */
+:root,
+:is([data-theme="light"], .light),
+:is([data-theme="dark"], .dark) {
   /* ============================================================================
    * TOKENS — Standard tier (foreground on primary surface)
    * ============================================================================ */
@@ -374,7 +383,11 @@
  * descriptors are aliases, never their own colour values.
  * ============================================================================== */
 
-:root {
+/* Theme selectors, same reason as the ramp above — the roles chain through
+ * fg-* and freeze the same way. */
+:root,
+:is([data-theme="light"], .light),
+:is([data-theme="dark"], .dark) {
   --kol-fg-subtle:    var(--kol-fg-24);
   --kol-fg-meta:      var(--kol-fg-48);
   --kol-fg-body:      var(--kol-fg-64);

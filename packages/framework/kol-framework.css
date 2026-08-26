@@ -150,6 +150,16 @@ body {
   gap: 0.125rem;
   margin-bottom: 0.5rem;
 }
+/* A nested route GROUP's header (sidenav-nested-groups, kol-studio
+ * 2026-08-26): a non-routing label sitting where a leaf sits, its rows one
+ * step further in. Type and colour ride the element as utilities
+ * (kol-helper-10; text-subtle, text-emphasis when a leaf beneath it is the
+ * route); the box lives here. No text-transform — the retired fork's
+ * `uppercase` does not return (type law: only the display voice carries one). */
+.kol-sidenav-group {
+  display: block;
+  padding: 0.25rem 1.5rem 0.25rem 3.5rem;
+}
 .kol-sidenav-footer { padding-inline: 1.5rem 1rem; }
 
 /* The aside's OWN box (SideNavMobilePosition, kol-website 2026-08-25) — the

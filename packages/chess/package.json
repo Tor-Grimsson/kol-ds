@@ -1,8 +1,8 @@
 {
   "name": "@kolkrabbi/kol-chess",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": false,
-  "description": "KOL chess system \u2014 board, pieces (3 SVG sets), playback/notation/variation-tree apparatus and PGN engine. Presentation only; the game-data adapter moved to the consuming app (kol-chess) in 0.6.0. Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "description": "KOL chess system — board, pieces (3 SVG sets), playback/notation/variation-tree apparatus and PGN engine. Presentation only; the game-data adapter moved to the consuming app (kol-chess) in 0.6.0. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -11,14 +11,19 @@
     ".": "./src/index.js"
   },
   "dependencies": {
-    "chess.js": "^1.4.0",
+    "chess.js": "^1.4.0"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.68.1",
+    "@kolkrabbi/kol-theme": ">=0.51.0",
+    "@kolkrabbi/kol-icons": ">=0.18.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "devDependencies": {
     "@kolkrabbi/kol-component": "workspace:^",
     "@kolkrabbi/kol-icons": "workspace:^",
     "@kolkrabbi/kol-theme": "workspace:^"
-  },
-  "peerDependencies": {
-    "react": "^18.3.0 || ^19.0.0",
-    "react-dom": "^18.3.0 || ^19.0.0"
   },
   "files": [
     "src",

@@ -34,15 +34,6 @@ importers:
 
   packages/chess:
     dependencies:
-      '@kolkrabbi/kol-component':
-        specifier: workspace:^
-        version: link:../component
-      '@kolkrabbi/kol-icons':
-        specifier: workspace:^
-        version: link:../icons
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:^
-        version: link:../theme
       chess.js:
         specifier: ^1.4.0
         version: 1.4.0
@@ -52,6 +43,16 @@ importers:
       react-dom:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
 
   packages/component:
     dependencies:
@@ -91,15 +92,6 @@ importers:
 
   packages/content:
     dependencies:
-      '@kolkrabbi/kol-component':
-        specifier: workspace:^
-        version: link:../component
-      '@kolkrabbi/kol-icons':
-        specifier: workspace:^
-        version: link:../icons
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:^
-        version: link:../theme
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.7)
@@ -112,6 +104,16 @@ importers:
       react-dom:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
 
   packages/dashboards:
     dependencies:
@@ -134,15 +136,6 @@ importers:
 
   packages/foundry:
     dependencies:
-      '@kolkrabbi/kol-component':
-        specifier: workspace:^
-        version: link:../component
-      '@kolkrabbi/kol-icons':
-        specifier: workspace:^
-        version: link:../icons
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:^
-        version: link:../theme
       framer-motion:
         specifier: ^12.0.0
         version: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -155,6 +148,16 @@ importers:
       react-dom:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
 
   packages/framework:
     dependencies:
@@ -211,12 +214,6 @@ importers:
 
   packages/store:
     dependencies:
-      '@kolkrabbi/kol-component':
-        specifier: workspace:^
-        version: link:../component
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:^
-        version: link:../theme
       gsap:
         specifier: ^3.13.0
         version: 3.15.0
@@ -226,6 +223,13 @@ importers:
       react-dom:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
 
   packages/styleguide:
     dependencies:
@@ -255,18 +259,6 @@ importers:
       '@kolkrabbi/kol-brand':
         specifier: workspace:^
         version: link:../brand
-      '@kolkrabbi/kol-component':
-        specifier: workspace:^
-        version: link:../component
-      '@kolkrabbi/kol-framework':
-        specifier: workspace:^
-        version: link:../framework
-      '@kolkrabbi/kol-icons':
-        specifier: workspace:^
-        version: link:../icons
-      '@kolkrabbi/kol-theme':
-        specifier: workspace:^
-        version: link:../theme
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -279,6 +271,19 @@ importers:
       react-router-dom:
         specifier: ^6.0.0 || ^7.0.0
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:^
+        version: link:../framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
 
   showcase:
     dependencies:

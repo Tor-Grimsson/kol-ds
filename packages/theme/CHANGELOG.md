@@ -1,6 +1,46 @@
 # @kolkrabbi/kol-theme
 
 
+## 0.52.1 — 2026-08-26
+
+- `.kol-sidenav-group { padding: 4px 0 }` **retired** from kol-components-atoms.css
+  (sidenav-nested-groups). The elder's group wrapper, dead since the 2026-08-09
+  SideNav port stopped rendering groups; kol-framework 0.24.0 renders them
+  again and owns the box in its own rule beside `.kol-sidenav-hop` /
+  `.kol-sidenav-list`. Two rules on one name in two packages is the §5 failure —
+  the showcase nests the framework import under the theme's `components` layer,
+  so this rule outranked the framework's and the group sat at 0 indent there.
+
+## 0.52.0 — 2026-08-26
+
+**`data-theme` works on a subtree** (nested-theme-scope, from kol-studio). Every
+token derived from a themed surface token is now declared on the theme
+selectors — `:root, :is([data-theme="light"], .light), :is([data-theme="dark"], .dark)` —
+not `:root` alone. A custom property resolves its `var()` where it is declared
+and descendants inherit the frozen result, so a `<div data-theme="light">` in a
+dark app flipped nothing at all (the light surfaces were `:root`-only) and a
+dark pane in a light app flipped the surface but kept the root's ink — every
+`--kol-fg-*` rung, every text role, the `oq` scale and `--kol-border-default`
+stayed at the root's colour. No token value changes; four files, selector lists
+only:
+
+- `kol-base-tokens.css` — the light surface block: `:root, :is([data-theme="light"], .light)`
+- `kol-opacity.css` — the fg ramp (all three tiers) and the eight roles
+- `kol-opaque.css` — the oq ramp (both tiers)
+- `kol-color.css` — `--kol-border-default`, `--kol-border-focus`,
+  `--kol-focus-ring-quiet` moved out of the `:root` block into a themed one.
+  **The accent family stays `:root`-only on purpose**: kol-brand-color.css
+  rebinds it at `:root`, and a themed re-declaration would hand a branded app's
+  nested pane the neutral ink accent instead of the brand.
+
+Measured headless against the raw theme: dark root → light pane renders
+`.text-emphasis` `#121215` on `#fafafa` (was `#fafafa` on `#121215`); light
+root → dark pane the reverse; `.light` as a class flips the same way. Root-level
+theming and the `prefers-color-scheme` mirror are untouched (`:root` still
+matches). Known and unchanged: `.bg-surface-inverse` re-declares fg-01…96 but
+not fg-72 or the roles, so `.text-body` inside an inverse panel is still root
+ink.
+
 ## 0.51.0 — 2026-08-26
 
 **The touch floor** (MobileTouchFloor, user ruling 2026-08-26): every pressable

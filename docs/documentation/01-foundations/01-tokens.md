@@ -3,7 +3,7 @@ title: Tokens
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-08-01
+updated: 2026-08-26
 description: The token foundation under every KOL component
 aliases:
   - foundations
@@ -27,7 +27,7 @@ KOL's foundation is **translucent ink over surfaces**, not flat fg/bg pairs. Eve
 
 ## Opacity scale
 
-A translucent foreground scale — `--kol-fg-01 … --kol-fg-96` — ink at increasing opacity over whatever surface it sits on. Both themes contrast-flip automatically because every consumer of `fg-*` derives from the surface ink.
+A translucent foreground scale — `--kol-fg-01 … --kol-fg-96` — ink at increasing opacity over whatever surface it sits on. Both themes contrast-flip automatically because every consumer of `fg-*` derives from the surface ink — and since theme 0.52.0 that holds on a **subtree** too: the ramp, the roles, the `oq` scale and the border tokens are declared on `:root, :is([data-theme="light"], .light), :is([data-theme="dark"], .dark)`, so a `data-theme` / `.light` / `.dark` stamped on any element re-resolves them on that element (nested-theme-scope, 2026-08-26). A var() resolves where the property is declared; a `:root`-only ramp bakes the root's ink for every descendant.
 
 ```text
 01 02 04 08 12 16 24 32 40 48 64 72 80 88 96
@@ -115,7 +115,7 @@ stop that did not exist before tonight, so no call site inherits the old meaning
 | `--kol-surface-tertiary` | `#0E0E11` | — |
 | `--kol-surface-inverse` | `#FCFBF8` | `#0E0E11` |
 
-Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` under the standing law **explicit choice > system/auto > light** (corrected 2026-07-28): a stamped `data-theme` or saved toggle choice wins; an un-stamped page follows `prefers-color-scheme` live via the `:root:not([data-theme])` mirror blocks in `kol-base-tokens.css`/`kol-theme.css`; light is the last-resort fallback. The showcase boots un-stamped (system-follow) unless a saved choice exists; ThemeToggle (framework ≥0.6.0) cycles light → dark → system.
+Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` under the standing law **explicit choice > system/auto > light** (corrected 2026-07-28): a stamped `data-theme` or saved toggle choice wins; an un-stamped page follows `prefers-color-scheme` live via the `:root:not([data-theme])` mirror blocks in `kol-base-tokens.css`/`kol-theme.css`; light is the last-resort fallback. The same stamp on any **element** themes that subtree (theme ≥0.52.0): surfaces, fg ramp, roles, `oq` and borders all re-resolve on the stamped element; the **accent family deliberately does not** — `kol-brand-color.css` rebinds it at `:root`, so a nested pane keeps the app's accent. The showcase boots un-stamped (system-follow) unless a saved choice exists; ThemeToggle (framework ≥0.6.0) cycles light → dark → system.
 
 ## Content widths
 

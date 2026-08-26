@@ -3,7 +3,7 @@ title: Package topology
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-08-01
+updated: 2026-08-26
 verified: 2026-07-09
 description: The eleven UI packages and the clients tier
 aliases:
@@ -76,7 +76,7 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 ## Dependencies
 
 - `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `framer-motion` (peer) → foundry (ColorLoader). `opentype.js` (optional peer) → specimen.
-- Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons). CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).
+- Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons) — **as `peerDependencies` with a `>=` floor, never `dependencies`** (ruled 2026-08-26, NestedDsDependencies: a 0.x caret in `dependencies` has pnpm nest a private stale copy of the tier under the package, so consumer bumps never reach the surfaces it renders). The consumer supplies ONE copy of the tier. CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).
 
 ## Cascade contract
 

@@ -89,8 +89,6 @@
    * BORDER
    * --------------------------------------------------------------------------- */
 
-  --kol-border-default: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
-  --kol-border-focus: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-on-primary));
   --kol-focus-ring: var(--kol-accent-primary);
   /* The QUIET ring — 1px, inset, for dense rows where the loud ring's 2px
    * offset would bloom over its neighbours (nav rail leaves today).
@@ -105,6 +103,21 @@
    * Default is --kol-fg-32, exactly what the rails already drew, so minting
    * this changes NOTHING visually. Both rings are white (--kol-accent-primary
    * resolves to --kol-surface-on-primary); the two differ in weight, not hue. */
+}
+
+/* SURFACE-DERIVED chrome tokens live on the THEME selectors, not `:root` alone
+ * (0.52.0, nested-theme-scope) — same reason as the fg ramp in kol-opacity.css:
+ * a var() resolves where the property is declared, so a themed SUBTREE that
+ * flips --kol-surface-on-primary kept the root's border colour (a white 8%
+ * hairline on white paper). The accent family stays in the :root block above
+ * on purpose: kol-brand-color.css rebinds it at :root only, and a themed
+ * re-declaration here would hand a branded app's nested pane the neutral
+ * ink accent instead of the brand. */
+:root,
+:is([data-theme="light"], .light),
+:is([data-theme="dark"], .dark) {
+  --kol-border-default: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  --kol-border-focus: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-on-primary));
   --kol-focus-ring-quiet: var(--kol-fg-32);
 }
 

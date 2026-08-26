@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-store",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": false,
   "description": "KOL commerce/storefront system — the product-detail layout, price display, and the gsap diagonal marquee river. Product data is consumer-injected. Sits above @kolkrabbi/kol-{theme,component}.",
   "license": "MIT",
@@ -11,14 +11,16 @@
     ".": "./src/index.js",
     "./data": "./src/data/prints.js"
   },
-  "dependencies": {
-    "@kolkrabbi/kol-component": "workspace:^",
-    "@kolkrabbi/kol-theme": "workspace:^"
-  },
   "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.68.1",
+    "@kolkrabbi/kol-theme": ">=0.51.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
     "gsap": "^3.13.0"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
   },
   "files": [
     "src",

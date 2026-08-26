@@ -17,7 +17,13 @@
  * Dark selector matches brand's mechanism: [data-theme="dark"], .dark.
  */
 
-:root {
+/* LIGHT is declared on the theme selectors too, not `:root` alone (0.52.0,
+ * nested-theme-scope): a `data-theme="light"` / `.light` SUBTREE inside a dark
+ * app must carry the light surfaces on its own element, or it inherits the
+ * root's dark values. `:root` still matches, so root-level theming and the
+ * system-follow mirror below are untouched. */
+:root,
+:is([data-theme="light"], .light) {
   /* Absolutes (theme-invariant) */
   --kol-color-absolute-white: #ffffff;
   --kol-color-absolute-black: #000000;

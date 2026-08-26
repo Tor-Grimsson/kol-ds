@@ -1,7 +1,10 @@
 import { SideNav } from '@kolkrabbi/kol-framework'
 
-/* Two-level tree (2026-08-09 elder port): a category with `pages` is a
- * disclosure button; a row with `to` and no pages is a plain link. */
+/* A category with `pages` is a disclosure button; a row with `to` and no
+ * pages is a plain link. A page row may be a `{ label, children }` GROUP — a
+ * non-routing header over its own indented rows (sidenav-nested-groups,
+ * 2026-08-26; the tree shape is the opt-in, there is no prop). The Chrome
+ * group names this page, so it renders lit with its leaf active. */
 const NAV_TREE = [
   { id: 'home', label: 'Home', to: '/', icon: 'home-01' },
   {
@@ -9,6 +12,13 @@ const NAV_TREE = [
     pages: [
       { to: '/components/button', label: 'Button' },
       { to: '/components/badge', label: 'Badge' },
+      {
+        label: 'Chrome',
+        children: [
+          { to: '/components/side-nav', label: 'SideNav' },
+          { to: '/components/theme-toggle', label: 'ThemeToggle' },
+        ],
+      },
     ],
   },
   { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid' },

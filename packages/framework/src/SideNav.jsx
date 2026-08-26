@@ -13,14 +13,26 @@ import useDragResize from './useDragResize'
  * better version in kol-website apps:brand") — the brand app's evolved fork
  * folded back into the package, generic seams kept.
  *
- * TWO LEVELS ONLY (elder ruling 2026-08-01). A category is a grouping LABEL —
- * a disclosure <button> with a trailing caret, no route. A page is a route.
- * The `#anchor` scroll-spied section layer is gone, and with it the
- * group/section tree walkers. The ONE exception: a category with `to` and no
- * `pages` (Home) renders as a plain link row — it has nothing to disclose.
+ * A category is a grouping LABEL — a disclosure <button> with a trailing
+ * caret, no route. A page is a route. The ONE exception: a category with `to`
+ * and no `pages` (Home) renders as a plain link row — it has nothing to
+ * disclose.
  *
- * navTree: [{ id, label, icon, to?, pages?: [{ label, to }] }]
- * (legacy `children` route leaves are read as `pages`; section anchors are not.)
+ * The 2026-08-01 "TWO LEVELS ONLY" ruling was the BRAND APP's, about its
+ * scroll-spied `#anchor` section layer — that layer stays dead (an `{ id }`
+ * leaf is dropped). It was inscribed here as a law for every consumer, and
+ * kol-studio lost two groups and six routes from its rail on adopting 0.23.0.
+ * User, 2026-08-26, verbatim: "ok that is such a problem, sometimes Im
+ * talking about a specific thing and it gets applied as a literal fit-all
+ * rule, which isnt the case. its very hard to work in such uncertainty."
+ * Re-scoped (sidenav-nested-groups, 0.24.0): nested ROUTE groups are
+ * supported. A `{ label, children }` node inside a category renders as a
+ * non-routing group header with its rows indented one step under it,
+ * recursively. The tree shape is the opt-in — there is no prop — and a tree
+ * with no group nodes renders byte-for-byte as before.
+ *
+ * navTree: [{ id, label, icon, to?, pages?: [{ label, to } | { label, children }] }]
+ * (legacy `children` on a category is read as `pages`; section anchors are not.)
  *
  * Collapse: the pill-marked grab edge is THE single control (user build
  * order 2026-08-09, completing SideNavGrabResize — the chip Button is gone
@@ -47,9 +59,17 @@ const pageStyle = { '--kol-sidenav-dot-left': '2.625rem' }
 const pageCls = `${pageBase} text-strong hover:text-emphasis`
 const pageActiveCls = `${pageBase} is-active`
 
-/* Legacy DS trees carried `children` (groups + `#anchor` leaves). Route
- * leaves survive as pages; anchor sections died with the two-level ruling. */
-const pagesOf = (cat) => cat.pages ?? cat.children?.filter((c) => c.to) ?? []
+/* A category's rows: route leaves (`to`) and route groups (`children`).
+ * `#anchor` leaves (`id` only) are dropped — that layer died with the brand
+ * app's 2026-08-01 ruling and is not reopened here. */
+const rowsOf = (nodes) => nodes.filter((c) => c.to || c.children)
+const pagesOf = (cat) => rowsOf(cat.pages ?? cat.children ?? [])
+/* Every route leaf under a set of rows, through any depth of groups. */
+const leavesOf = (rows) => rows.flatMap((r) => (r.children ? leavesOf(rowsOf(r.children)) : [r]))
+/* A nested row sits one --kol-spacing-3 step further in per depth. Inline,
+ * not a rule: `pl-14` rides the leaf as a utility and outranks anything in
+ * this layer. Depth 0 carries no indent so a flat tree renders unchanged. */
+const indentOf = (depth) => `calc(3.5rem + ${depth} * var(--kol-spacing-3))`
 
 export default function SideNav({
   drawerOpen = false,
@@ -61,7 +81,7 @@ export default function SideNav({
 }) {
   const { pathname } = useLocation()
   const isPageActive = (to) => (isActive ? isActive(to) : pathname === to)
-  const isActiveCat = (cat) => pagesOf(cat).some((p) => isPageActive(p.to))
+  const isActiveCat = (cat) => leavesOf(pagesOf(cat)).some((p) => isPageActive(p.to))
 
   /* Every navigation closes the mobile drawer — the prop sat accepted-but-
    * unread until the kol-website session flagged it (2026-08-09) — and, from
@@ -89,6 +109,40 @@ export default function SideNav({
    * drive it. */
   const asideRef = useRef(null)
   const { collapsed, toggleCollapsed, grabProps } = useDragResize(asideRef)
+
+  /* Rows under a category: a leaf is a NavLink; a group is a non-routing
+   * header over its own rows, one step further in (recursive). A group lights
+   * up the way a category does — when one of its leaves is the current route. */
+  const renderRows = (rows, depth) => rows.map((row, i) => {
+    if (row.children) {
+      const lit = leavesOf(rowsOf(row.children)).some((l) => isPageActive(l.to))
+      return (
+        <li key={row.id ?? `${row.label}-${i}`}>
+          <div
+            className={`kol-sidenav-group kol-helper-10${lit ? ' text-emphasis' : ' text-subtle'}`}
+            style={depth ? { paddingLeft: indentOf(depth) } : undefined}
+          >
+            {row.label}
+          </div>
+          <ul className="kol-sidenav-list">{renderRows(rowsOf(row.children), depth + 1)}</ul>
+        </li>
+      )
+    }
+    return (
+      <li key={row.to}>
+        <NavLink
+          to={row.to}
+          end
+          /* the dot keeps its 0.875rem lead on the text at every depth */
+          style={depth ? { paddingLeft: indentOf(depth), '--kol-sidenav-dot-left': `calc(2.625rem + ${depth} * var(--kol-spacing-3))` } : pageStyle}
+          className={({ isActive: navActive }) => ((isActive ? isActive(row.to) : navActive) ? pageActiveCls : pageCls)}
+          onClick={handleNavigate}
+        >
+          {row.label}
+        </NavLink>
+      </li>
+    )
+  })
 
   return (
     <aside
@@ -174,21 +228,7 @@ export default function SideNav({
                   ) : head}
 
                   {!isLink && isOpen && (
-                    <ul className="kol-sidenav-list">
-                      {pages.map((page) => (
-                        <li key={page.to}>
-                          <NavLink
-                            to={page.to}
-                            end
-                            style={pageStyle}
-                            className={({ isActive: navActive }) => ((isActive ? isActive(page.to) : navActive) ? pageActiveCls : pageCls)}
-                            onClick={handleNavigate}
-                          >
-                            {page.label}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
+                    <ul className="kol-sidenav-list">{renderRows(pages, 0)}</ul>
                   )}
                 </li>
               )

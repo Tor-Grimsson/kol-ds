@@ -693,7 +693,6 @@
  * .kol-sidenav-hop-label    label slot — collapses to display:none in
  *                           rail mode (responsive cascade in framework.css)
  * .kol-sidenav-link         nav link with active-dot indicator
- * .kol-sidenav-group        small vertical wrapper
  *
  * Layout/sizing/responsive collapse rules stay in kol-framework.css
  * (they're page-grid concerns, not component chrome).
@@ -727,9 +726,11 @@
   color: var(--kol-accent-primary);
 }
 
-.kol-sidenav-group {
-  padding: 4px 0 4px;
-}
+/* .kol-sidenav-group — RETIRED here 0.52.1 (sidenav-nested-groups): the
+ * elder's `padding: 4px 0` wrapper, dead since the 2026-08-09 port dropped
+ * group rendering. The group's box now lives in kol-framework.css beside the
+ * hop and list rules; a consumer that nests the framework import under the
+ * theme's layer (the showcase does) had this rule outranking that one. */
 
 /* The rail leaf had NO focus treatment at all (ThreeColumnEditorShell §3,
  * kol-fxr 2026-08-15) — only .is-active and its dot — so it fell through to

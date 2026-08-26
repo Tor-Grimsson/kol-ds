@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-workshop",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "private": false,
   "description": "KOL workshop/docs system — a handrolled markdown engine, search, tag system (incl. a d3 tag graph), docs viewer, and docs shell. Sits above @kolkrabbi/kol-{theme,icons,component,framework}; content is consumer-injected (the package never globs docs).",
   "license": "MIT",
@@ -13,16 +13,22 @@
   },
   "dependencies": {
     "d3": "^7.9.0",
-    "@kolkrabbi/kol-brand": "workspace:^",
+    "@kolkrabbi/kol-brand": "workspace:^"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.68.1",
+    "@kolkrabbi/kol-framework": ">=0.23.0",
+    "@kolkrabbi/kol-theme": ">=0.51.0",
+    "@kolkrabbi/kol-icons": ">=0.18.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "react-router-dom": "^6.0.0 || ^7.0.0"
+  },
+  "devDependencies": {
     "@kolkrabbi/kol-component": "workspace:^",
     "@kolkrabbi/kol-icons": "workspace:^",
     "@kolkrabbi/kol-framework": "workspace:^",
     "@kolkrabbi/kol-theme": "workspace:^"
-  },
-  "peerDependencies": {
-    "react": "^18.3.0 || ^19.0.0",
-    "react-dom": "^18.3.0 || ^19.0.0",
-    "react-router-dom": "^6.0.0 || ^7.0.0"
   },
   "files": [
     "src",

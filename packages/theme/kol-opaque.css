@@ -13,7 +13,9 @@
  * transparency, it is a baked grey.
  *
  * Auto-themes for free: --kol-surface-on-primary and --kol-surface-primary both
- * flip in dark mode, so color-mix recomputes. No hardcoded light/dark blocks.
+ * flip in dark mode, so color-mix recomputes. No hardcoded light/dark blocks —
+ * but the block is declared on the theme selectors, not `:root` alone (0.52.0,
+ * nested-theme-scope), so a themed SUBTREE recomputes too; see kol-opacity.css.
  *
  * Scale: 01, 02, 04, 08, 12, 16, 24, 32, 40, 48, 64, 80, 88, 96 (14 stops)
  *
@@ -26,7 +28,9 @@
  * - Classes (.bg-oq-*, .text-oq-*, .border-oq-* + inverse + hover) for JSX
  */
 
-:root {
+:root,
+:is([data-theme="light"], .light),
+:is([data-theme="dark"], .dark) {
   /* ============================================================================
    * TOKENS — Standard tier (ink-on-primary, flattened onto primary surface)
    * ============================================================================ */
