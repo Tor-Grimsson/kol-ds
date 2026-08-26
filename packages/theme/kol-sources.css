@@ -11,21 +11,49 @@
  *   @import "@kolkrabbi/kol-theme";
  *   @import "@kolkrabbi/kol-theme/kol-sources.css";
  *
- * `@source` resolves relative to THIS file (node_modules/@kolkrabbi/kol-theme/),
- * so sibling package paths work from inside node_modules. A path that doesn't
- * exist (package not installed) matches nothing — installing a subset is fine.
- * New raw-JSX packages get their line added here, DS-side, so consumers never
+ * EVERY PACKAGE GETS TWO LINES, because the two package-manager layouts put
+ * this file in different places (KolSourcesPnpmResolution, 2026-08-15 — under
+ * pnpm ALL the original paths resolved to nothing, silently, and kol-mirror
+ * shipped a shortcuts overlay with labels glued to keys):
+ *
+ *   ../kol-x/src                          npm / yarn — flat node_modules:
+ *                                         @kolkrabbi siblings are real siblings.
+ *   ../../../../../@kolkrabbi/kol-x/src   pnpm — Tailwind resolves this file to
+ *                                         its .pnpm store realpath
+ *                                         (.pnpm/<id>/node_modules/@kolkrabbi/kol-theme/),
+ *                                         where only kol-theme's own deps are
+ *                                         siblings. Five ups = the consumer's
+ *                                         node_modules; the @kolkrabbi symlinks
+ *                                         there glob through. Verified against
+ *                                         a live pnpm store 2026-08-15.
+ *
+ * A path that doesn't exist matches nothing — so on any given layout one line
+ * of each pair is inert, and installing a subset of packages is fine. New
+ * raw-JSX packages get BOTH lines added here, DS-side, so consumers never
  * chase the footgun again.
  */
 
 @source "../kol-brand/src";
+@source "../../../../../@kolkrabbi/kol-brand/src";
 @source "../kol-chess/src";
+@source "../../../../../@kolkrabbi/kol-chess/src";
 @source "../kol-component/src";
+@source "../../../../../@kolkrabbi/kol-component/src";
 @source "../kol-content/src";
+@source "../../../../../@kolkrabbi/kol-content/src";
 @source "../kol-dashboards/src";
+@source "../../../../../@kolkrabbi/kol-dashboards/src";
 @source "../kol-foundry/src";
+@source "../../../../../@kolkrabbi/kol-foundry/src";
 @source "../kol-framework/src";
+@source "../../../../../@kolkrabbi/kol-framework/src";
 @source "../kol-icons/src";
+@source "../../../../../@kolkrabbi/kol-icons/src";
+@source "../kol-shell/src";
+@source "../../../../../@kolkrabbi/kol-shell/src";
 @source "../kol-store/src";
+@source "../../../../../@kolkrabbi/kol-store/src";
 @source "../kol-styleguide/src";
+@source "../../../../../@kolkrabbi/kol-styleguide/src";
 @source "../kol-workshop/src";
+@source "../../../../../@kolkrabbi/kol-workshop/src";

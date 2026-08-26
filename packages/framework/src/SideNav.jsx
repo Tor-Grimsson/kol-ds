@@ -93,7 +93,12 @@ export default function SideNav({
   return (
     <aside
       ref={asideRef}
-      className={`kol-sidenav sticky top-0 self-start h-dvh flex flex-col z-20${background ? ' bg-surface-primary border-r border-fg-08' : ''}${collapsed ? ' is-collapsed' : ''}${drawerOpen ? ' is-drawer-open' : ''}`}
+      /* Box utilities deliberately absent (SideNavMobilePosition, 2026-08-25):
+       * the aside's position/height/stack live in .kol-sidenav
+       * (kol-framework.css). `sticky … h-dvh z-20` here outranked the 767px
+       * drawer rule's `position: fixed`, so every consumer page opened one
+       * viewport down on phones. Only colour utilities ride the element. */
+      className={`kol-sidenav${background ? ' bg-surface-primary border-r border-fg-08' : ''}${collapsed ? ' is-collapsed' : ''}${drawerOpen ? ' is-drawer-open' : ''}`}
     >
       {/* NO chip Button in either state (user build order 2026-08-09 — "MAKE
         * IT"; supersedes the elder A/B): the pill-marked grab edge below is

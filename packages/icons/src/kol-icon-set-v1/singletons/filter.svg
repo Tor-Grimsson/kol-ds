@@ -1,3 +1,6 @@
+<!-- keyline-corrected 2026-08-15: was drawn 17.0x15.5 at a 4.5 top inset
+     while the set keyline is ~3 (search is 17.8x17.8 at 3.3). Scaled 1.047
+     about its own centre and recentred, giving 17.8x16.2 symmetric. -->
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.5 4.5H20.5L14 13V20L10 18V13L3.5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.1 3.89H20.9L14.09 12.79V20.11L9.91 18.02V12.79L3.1 3.89Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

@@ -6,10 +6,9 @@ Board, pieces, the play/analysis apparatus, a PGN engine, and a game-data adapte
 
 ## What's in the box
 
-Two entry points:
+One entry point: **`@kolkrabbi/kol-chess`** — the React components + engine.
 
-- **`@kolkrabbi/kol-chess`** — the React components + engine.
-- **`@kolkrabbi/kol-chess/data`** — the game-data adapter (bundled demo set + CDN fetch for the full archive).
+**Presentation only.** This package ships no data and never fetches. Until 0.6.0 it also exported a `./data` adapter carrying a Backblaze CDN host; that belonged to the app, not the design system, and moved to `kol-chess`.
 
 ### Components (`.`)
 
@@ -22,18 +21,20 @@ Two entry points:
 | **State** | `ChessControlsProvider`, `useChessControls`, `createSnapshotsFromPgn` |
 | **PGN engine** | `buildMoveTree` |
 
-### Data adapter (`./data`)
+### The `chessData` adapter (yours, not ours)
 
-The apparatus takes a **`chessData` prop** — it never fetches on its own. This package ships a ready adapter you can pass straight in:
+The apparatus takes a **`chessData` prop** and never fetches on its own. You supply it:
 
 ```jsx
 import { ChessAnalysisLayout } from '@kolkrabbi/kol-chess'
-import * as chessData from '@kolkrabbi/kol-chess/data'
+import * as chessData from './data/sample-games.js'   // your app's module
 
 <ChessAnalysisLayout chessData={chessData} />
 ```
 
-The adapter provides `getSampleGames`, `getManifest`, `getMonthlySummary`, `getRandomMonth`, `loadMonthGames`, `getGamePgnByIdAsync`, and more. **Demo data** (`manifest` + `monthlySummary` + a sample set, ~136 KB) is bundled; the **full 27,200-game archive** is fetched on demand from the Backblaze-B2 CDN (`CDN_BASE` in `data/sample-games.js` — a single constant, swap it to repoint). Bring your own adapter of the same shape to serve different data.
+Required shape: `getSampleGames`, `getManifest`, `getMonthlySummary`, `getRandomMonth`, `loadMonthGames`, `getGamePgnByIdAsync`, `loadFullDataset`, `findGameById`.
+
+Reference implementation — `kol-chess/src/data/sample-games.js`: bundles a demo set (`manifest` + `monthlySummary` + samples, ~136 KB) and fetches the full 27,200-game archive on demand from `b2.kolkrabbi.io`. Copy it and repoint `CDN_BASE` to serve different data.
 
 ## Consumer requirements
 

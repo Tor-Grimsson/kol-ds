@@ -6,7 +6,7 @@ import { SearchInput } from '@kolkrabbi/kol-component'
  * from this component 2026-07-15); this file keeps the toggle + the sibling
  * space-trading choreography. */
 
-const CUBIC_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
+const CUBIC_EASE = 'var(--kol-ease-house)'
 /* The pill uses a springier overshoot ease, distinct from CUBIC_EASE. */
 const PILL_EASE = 'cubic-bezier(0.34, 1.2, 0.64, 1)'
 
@@ -141,8 +141,16 @@ export default function WorkViewToggle({
       </div>
 
       {/* Search — the DS SearchInput in its expanding body plan */}
+      {/* 36 SQUARE, 16 GLYPH — measured off the live kolkrabbi.io/work, not
+        * inferred. The square matches its `h-9` siblings; the glyph does NOT
+        * match the 20px option icons, and that is deliberate on the shipped
+        * page: the search is a quieter affordance than the view it sits beside.
+        * I first reproduced this as 36/20 by taking the glyph size from the
+        * option icons instead of from the search itself. */}
       <SearchInput
         expanding
+        size="lg"
+        iconSize={16}
         open={open}
         onOpenChange={handleOpenChange}
         value={query}

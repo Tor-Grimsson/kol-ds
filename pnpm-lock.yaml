@@ -187,6 +187,28 @@ importers:
 
   packages/scrape: {}
 
+  packages/shell:
+    dependencies:
+      react:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:^
+        version: link:../framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
+
   packages/store:
     dependencies:
       '@kolkrabbi/kol-component':
@@ -287,6 +309,9 @@ importers:
       '@kolkrabbi/kol-media-client':
         specifier: workspace:*
         version: link:../packages/media-client
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../packages/shell
       '@kolkrabbi/kol-store':
         specifier: workspace:*
         version: link:../packages/store

@@ -90,3 +90,55 @@
 .hide-number-spinners {
   -moz-appearance: textfield;
 }
+
+/* Link underline — the animated hover affordance: draws in left→right on
+ * hover/focus, retracts right→left on leave (transform-origin swap, not a
+ * fade). Line is currentColor so it rides the text at any scale. Minted from
+ * kol-website's animations.css (NavLinkUnderline, 2026-08-12); DS version
+ * adds :focus-visible parity and reduced-motion handling.
+ * Thickness knob: --kol-link-underline-size (2px default — fine at mono-14,
+ * a heading-01 link may want 3px). */
+.kol-link-underline {
+  position: relative;
+}
+.kol-link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: var(--kol-link-underline-size, 2px);
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transform: scaleX(0);
+  transition: transform 300ms cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+.kol-link-underline:hover::after,
+.kol-link-underline:focus-visible::after {
+  transform-origin: bottom left;
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-link-underline::after {
+    transition: none;
+  }
+}
+
+/* Placeholder prose — the ONE gate (GatedEmptyState, kol-fxr 2026-08-15).
+ *
+ * "Select a layer", "No effects yet", "This layer has no parameters" — prose
+ * that narrates a surface the user already understands. The ruling is that it
+ * is OFF unless asked for, so the suppression is the DEFAULT and the attribute
+ * is the opt-IN; a consumer that never wires the toggle simply never sees it.
+ *
+ * Written as :not() on the root rather than a display:none + revert pair, so
+ * the element keeps whatever display it had — flex, grid, inline — instead of
+ * being forced back to block on reveal.
+ *
+ * The attribute is stamped by usePlaceholders() in kol-component. The class is
+ * here, in utilities, because it is not EmptyState's chrome: a consumer puts
+ * it on its OWN prose and gets the same switch. That is the whole point — one
+ * concept, one gate, not a per-component prop each app re-invents. */
+:root:not([data-kol-placeholders]) .kol-placeholder {
+  display: none;
+}

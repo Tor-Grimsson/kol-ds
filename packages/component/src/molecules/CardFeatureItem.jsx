@@ -59,7 +59,10 @@ export default function CardFeatureItem({
         {icon && <Icon name={icon} size={16} className="shrink-0" />}
       </div>
 
-      <div className={`w-full flex-1 flex items-center justify-center overflow-hidden ${aspectClass}`.trim()}>
+      {/* kol-card-feature-visual: zooms 1.03 on card hover (chrome in
+        * kol-theme — CardFeatureHoverZoom 2026-08-12); all three visual
+        * forms ride the same wrapper, reduced-motion opts out. */}
+      <div className={`kol-card-feature-visual w-full flex-1 flex items-center justify-center overflow-hidden ${aspectClass}`.trim()}>
         {visual ? (
           typeof visual === 'string' ? (
             isSvgUrl ? (
@@ -97,7 +100,7 @@ export default function CardFeatureItem({
     </>
   )
 
-  const baseClasses = `w-full flex-1 h-[304px] md:h-72 p-4 md:p-6 gap-4 ${backgroundColor} rounded border border-fg-08 flex flex-col justify-between items-start overflow-hidden`
+  const baseClasses = `kol-card-feature w-full flex-1 h-[304px] md:h-72 p-4 md:p-6 gap-4 ${backgroundColor} rounded border border-fg-08 flex flex-col justify-between items-start overflow-hidden`
 
   if (href) {
     const isExternal = href.startsWith('http') || href.startsWith('mailto')

@@ -349,7 +349,8 @@
   text-align: left;
   border-radius: 0px;
   text-decoration: none;
-  color: var(--kol-fg-64);
+  /* fg-64 → fg-80 (ShellNavItemInk, user ruling 2026-08-12) */
+  color: var(--kol-fg-80);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
   /* THE TEXT INDENT, named (2026-08-01). It was the last value of the padding
@@ -363,8 +364,11 @@
   color: var(--kol-surface-on-primary);
 }
 
+/* Reads the quiet ring token, not --kol-fg-32 directly, so this rail is part
+ * of the system-wide focus off switch (FocusRingsInConsumers, 2026-08-15).
+ * Same value as before — this is a rewiring, not a restyle. */
 .shell-nav-item:focus-visible {
-  outline: 1px solid var(--kol-fg-32);
+  outline: 1px solid var(--kol-focus-ring-quiet);
   outline-offset: -1px;
 }
 
@@ -376,6 +380,9 @@
  * role set ends up with call sites that do not know it exists. */
 .shell-nav-item.is-active {
   color: var(--kol-fg-emphasis);
+  /* where-you-are steps 100 → 300 in weight beside its emphasis ink
+   * (ShellNavItemInk, user ruling 2026-08-12) */
+  font-weight: 300;
 }
 
 /* THIS PAGE'S OWN ROW — brighter than the rest of the list (user ruling
@@ -387,7 +394,11 @@
  * to live beside that rule. Same file, same specificity, declared later. */
 .shell-nav-item--own {
   color: var(--kol-fg-emphasis);
-  font-weight: 500;
+  /* 500 → 300 (ShellNavItemInk, 2026-08-12): the --own tags block at 500 WAS
+   * the "one side light, one side medium" inconsistency — verified by
+   * computed-style probe: every non---own row in both rails rests at 100.
+   * Emphasis weight is now ONE step (300), shared with .is-active. */
+  font-weight: 300;
 }
 
 /* …AND THE REST STEP DOWN (user ruling 2026-08-01: *"no needs more"*). Raising

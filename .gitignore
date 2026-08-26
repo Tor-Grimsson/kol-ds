@@ -12,3 +12,6 @@ build/
 phase*-*.png
 
 _tmp/
+
+# Ephemeral goal-loop state — one file per session (see /kol-goal).
+.kol/llm-context/.active-goal*.md

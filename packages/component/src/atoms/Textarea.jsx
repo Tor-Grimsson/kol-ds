@@ -15,7 +15,14 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * dominating the panel). Resize is real (2026-07-08): native resize is
  * OFF (Firefox's built-in grip cannot be hidden any other way) and the
  * kol-icon-set-v1 `resize-grip` icon IS the drag handle — corner drag,
- * both axes, min 120×40. One grip, every browser.
+ * min 120×40. One grip, every browser.
+ *
+ * The X-drag is container-clamped (2026-08-12, TextareaResizeClamp): the
+ * width write caps at the parent's content width, so a drag can never
+ * overflow the box the Textarea sits in. `axis` narrows the drag:
+ *   axis="both" (default) — corner drag, clamped
+ *   axis="y"              — height only; rail-mounted textareas have
+ *                           nowhere meaningful to grow on X
  *
  * Controlled OR uncontrolled:
  *   - pass `value` + `onChange` for controlled,
@@ -32,6 +39,7 @@ export default function Textarea({
   variant = 'filled',
   size = 'md',
   rows = 3,
+  axis = 'both',
   placeholder,
   disabled = false,
   className = '',
@@ -72,8 +80,11 @@ export default function Textarea({
         aria-hidden="true"
         className="kol-textarea-resize-icon"
         onPointerDown={(e) => {
-          // The grip IS the resize handle — corner drag, both axes
-          // (min 120×40). Width lands on the shell, height on the textarea.
+          // The grip IS the resize handle — corner drag (min 120×40).
+          // Width lands on the shell, height on the textarea. The width
+          // write is clamped to the parent's content width so an X-drag
+          // can never overflow the container; the 120 floor wins if the
+          // container is narrower than that.
           const shell = e.currentTarget.parentElement
           const ta = shell?.querySelector('textarea')
           if (!shell || !ta) return
@@ -82,8 +93,17 @@ export default function Textarea({
           const startY = e.clientY
           const startW = shell.offsetWidth
           const startH = ta.offsetHeight
+          const parent = shell.parentElement
+          let maxW = Infinity
+          if (parent) {
+            const pcs = getComputedStyle(parent)
+            maxW = parent.clientWidth
+              - parseFloat(pcs.paddingLeft) - parseFloat(pcs.paddingRight)
+          }
           const move = (ev) => {
-            shell.style.width = `${Math.max(startW + ev.clientX - startX, 120)}px`
+            if (axis !== 'y') {
+              shell.style.width = `${Math.max(Math.min(startW + ev.clientX - startX, maxW), 120)}px`
+            }
             ta.style.height = `${Math.max(startH + ev.clientY - startY, 40)}px`
           }
           const up = () => {

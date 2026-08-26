@@ -307,7 +307,7 @@
  * navigation is location, not a toggled tool. */
 .kol-btn-nav {
   background: transparent;
-  color: var(--kol-oq-64);
+  color: var(--kol-oq-80);
   border: 1px solid transparent;
 }
 @media (hover: hover) {
@@ -329,6 +329,8 @@
  * Button variant on the opaque tier: rest oq-12, hover/active one stop past
  * each, same state math as the rest of the family. */
 .kol-btn-grey {
+  /* Ladder (user ruling 2026-08-15): 12 rest → 04 hover (darker) → 32 press,
+   * then eased back down. */
   background: var(--kol-oq-12);
   color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
@@ -472,8 +474,26 @@
   background-color: transparent;
   color: var(--kol-surface-on-primary);
   cursor: pointer;
+  position: relative; /* the bare variant's hit extent below anchors here */
   transition: background-color var(--kol-transition-base),
               border-color var(--kol-transition-base);
+}
+
+/* THE TOUCH FLOOR (MobileTouchFloor, user ruling 2026-08-26): every pressable
+ * control clears a 24px hit box (WCAG 2.5.8 AA) and the DRAWN size never
+ * moves. No type floor — 10px chrome is the ruled helper/mono-10 voice. Two
+ * controls sat under 24: this bare switch (a 12px track in a 1px border, 14px
+ * tall) and the Slider's range input below (a 2px track was the whole target).
+ * The shells ride button geometry (26/32/40) and already clear it. The extent
+ * is a pseudo-element, so the layout box, the label and the track stay where
+ * they are; hit-testing on a pseudo lands on its originating button. */
+.toggle-switch--bare::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 24px;
+  translate: 0 -50%;
 }
 
 .toggle-switch:focus-visible {
@@ -624,7 +644,12 @@
   appearance: none;
   background: transparent;
   cursor: pointer;
-  height: 2px;
+  /* 24px, not 2px (the touch floor, user ruling 2026-08-26 — see ToggleSwitch
+   * above). The INPUT is the hit target and it was exactly the track's 2px;
+   * the drawing is unchanged: the 2px track centres inside the box by the UA's
+   * own `align-self: center` on the runnable track, and the thumb stays pinned
+   * to the track. The row (.control-slider) is already 24px, so nothing moves. */
+  height: 24px;
 }
 
 .slider-black::-webkit-slider-runnable-track {
@@ -704,6 +729,23 @@
 
 .kol-sidenav-group {
   padding: 4px 0 4px;
+}
+
+/* The rail leaf had NO focus treatment at all (ThreeColumnEditorShell §3,
+ * kol-fxr 2026-08-15) — only .is-active and its dot — so it fell through to
+ * the browser's default ring, which a user reported as "a weird highlight bug".
+ *
+ * INSET 1px, matching its sibling .shell-nav-item (kol-components-workshop.css)
+ * rather than .kol-btn's `2px / offset 2px`: an offset ring blooms OUTSIDE a
+ * dense nav row and collides with the rows above and below. Same element role,
+ * same treatment — this closes an inconsistency, it does not mint a policy.
+ *
+ * NB this is deliberately NOT an answer to FocusRingsInConsumers, which asks
+ * whether a consumer can switch the whole focus system off with one token.
+ * That is a live ruling; this rule only stops one leaf being the odd one out. */
+.kol-sidenav-link:focus-visible {
+  outline: 1px solid var(--kol-focus-ring-quiet);
+  outline-offset: -1px;
 }
 
 .kol-sidenav-link.is-active {
@@ -800,6 +842,104 @@ a:hover .icon-hover,
   background: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
   color: var(--kol-surface-on-primary);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * TWO SEPARATE CONTROLS (user ruling 2026-08-15). They shared .kol-copy-btn
+ * as a base and every edit to one moved the other; the split is the point.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* over MEDIA — boxed, opaque plate, full ink. Sits on a photograph, so it
+ * needs its own fill to stay legible and never dims at rest. */
+.kol-media-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--kol-radius-sm);
+  background: var(--kol-oq-12);
+  color: var(--kol-surface-on-primary);
+  cursor: pointer;
+  /* the house curve, not --kol-transition-base's generic material ease: it
+   * settles instead of stopping, which is what reads as smooth on the press. */
+  transition: background-color 1500ms var(--kol-ease-bounce), color 1500ms var(--kol-ease-bounce);
+}
+/* hover goes LIGHTER, not darker (user ruling 2026-08-15) — oq mixes ink into
+ * the surface, so up the scale is up in brightness. */
+/* the brand anchor, with the theme's own palette as the fallback — the yellow
+ * lives in kol-brand-color.css which the consumer supplies, so the theme must
+ * not hard-depend on it. NOT --kol-accent-primary, which resolves to white. */
+.kol-media-control:hover {
+  background: var(--kol-surface-tertiary);
+  color: var(--kol-color-yellow-300, var(--kol-palette-yellow));
+}
+/* The press RAMPS. The rule that is being entered owns the curve going in, so
+ * this one carries a slow ease-in-out; the base rule's bounce owns coming back
+ * out. One bezier cannot do both — the bounce covers most of its distance in
+ * the first quarter, which is exactly why the press read as instant. */
+/* the glyph GROWS on interaction: 18 at rest, 20 on hover and press, inside the
+ * unchanged 32px box. The SOLO md rung (20) stays the base and rest scales DOWN
+ * to it — 20 × 0.9 = 18 — so the ladder value is still what the component asks
+ * for. Scale, not a size swap: the box never moves (2026-07-28 law) and an SVG
+ * re-render would not tween. */
+.kol-media-control .kol-action-glyph {
+  transform: scale(0.9);
+  transition: transform 500ms var(--kol-ease-house);
+}
+.kol-media-control:hover .kol-action-glyph,
+.kol-media-control--pressed .kol-action-glyph {
+  transform: scale(1);
+}
+
+.kol-media-control:active,
+.kol-media-control--pressed {
+  background: var(--kol-oq-32);
+  transition: background-color 1500ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* in TEXT — bare, no box, no fill. Rests on the SAME ink as the copy beside it
+ * (--kol-fg-meta = fg-48): these sit on a solid plate, not on a photograph, so
+ * the transparent scale is safe here and matching the text is worth more than
+ * the opaque rung. `--on` is a toggle's held state, not a hover. */
+.kol-inline-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--kol-oq-64);
+  cursor: pointer;
+  transition: color var(--kol-transition-base);
+}
+/* ONE rest tone for every inline control (user ruling 2026-08-15): the star and
+ * the trash beside it sit at the same weight until you reach for one. They part
+ * on HOVER — a neutral control brightens, the accent control goes yellow. Yellow
+ * is the accent's alone, on hover and on its on-state; spending it on every
+ * hover left the on-state with nothing of its own to say. */
+.kol-inline-control:hover { color: var(--kol-oq-96); }
+
+.kol-inline-control--accent:hover,
+.kol-inline-control--on,
+.kol-inline-control--on:hover { color: var(--kol-color-yellow-300, var(--kol-palette-yellow)); }
+
+/* TWO GLYPHS, not one glyph and a fill (user ruling 2026-08-15: *"just create
+ * another star"*, *"leave the one alone in cards"*). `star` stays stroke-only
+ * and `star-solid` is the filled twin; a control that has an on-state names
+ * both and ActionButton crossfades them.
+ *
+ * The alternative — filling the shared `star.svg` and unfilling it here — was
+ * tried and reverted: a glyph that ships filled renders filled in every
+ * consumer that never asked for a state, and the DS cannot see those.
+ *
+ * The `--on` fill below is kept for a control that ships ONE glyph and carries
+ * its state in the class instead; it is a no-op on a stroke-only icon. */
+.kol-inline-control svg path { transition: fill var(--kol-transition-base); }
+.kol-inline-control--on svg path { fill: currentColor; }
 
 /* ─────────────────────────────────────────────────────────────────────
  * Figure — atoms/Figure.jsx
@@ -956,6 +1096,16 @@ a.kol-icon-frame {
   color: var(--kol-surface-on-primary);
   border: 1px solid transparent;
 }
+/* plate — the ONE exception in 05-control-chrome.md § Icon box: an affordance
+ * sitting on a PHOTO. It needs an opaque plate and a backdrop blur to stay
+ * legible over arbitrary pixels, and no Button variant covers it. Values are
+ * MediaCard's, which is the instance the doc names. */
+.kol-icon-frame-plate {
+  background: var(--kol-fg-absolute-12, rgba(0, 0, 0, 0.4));
+  backdrop-filter: blur(4px);
+  color: var(--kol-surface-on-primary);
+}
+
 .kol-icon-frame-grey {
   background: var(--kol-oq-12);
   color: var(--kol-surface-on-primary);
@@ -1011,4 +1161,27 @@ a.kol-icon-frame {
   border: 0;
   border-radius: 0;
   padding: 0;
+}
+
+/* The ROLL mechanics — .kol-roll (ComponentTailwindSourceTrap, 2026-08-12).
+ * These were Tailwind utilities emitted in ThemeToggle's JSX (overflow-hidden,
+ * transition-transform, duration-500, ease-in-out) — and Tailwind never scans
+ * node_modules, so any consumer without the @source lines got a SILENTLY
+ * static glyph: visible, clickable, no travel, no coin-roll, no error.
+ * A component's own moving parts live HERE, in the CSS it ships — the
+ * consumer's scanner owes it nothing. Widths/transforms stay inline in JSX
+ * (they are per-render geometry, not chrome). */
+.kol-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.kol-roll-strip {
+  display: flex;
+  transition: transform 500ms ease-in-out;
+}
+.kol-roll-slot {
+  display: inline-flex;
+  line-height: 0;
+  transition: transform 500ms ease-in-out;
 }

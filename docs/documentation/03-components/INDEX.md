@@ -24,3 +24,4 @@ What the library contains, how it is classified, and where a new component goes.
 | [[03-taxonomy-audit-and-plan\|Taxonomy audit]] | How the taxonomy drifted, and the plan back |
 | [[04-diamond-tier\|Diamond tier]] | The battle-tested components worth copying from |
 | [[05-control-chrome\|Control chrome]] | The button law every interactive control references |
+| [[06-content-card-system\|The ContentCard system]] | **Draft** — one card family: card and row as separate components, joined by a wrapper that owns the grid⇄list switch |

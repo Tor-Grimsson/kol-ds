@@ -333,6 +333,27 @@
   display: block;
 }
 
+/* Media hover zoom — opt-in via `mediaHover` (SectionSplit ruling, 2026-08-15).
+ * The brief named "media hover treatment owned by the component", and named the
+ * defect: kol-website's HomeFoundry hover had been silently broken for months
+ * because each hand-built section re-decided it. Same numbers and the same
+ * reduced-motion guard as the CardFeatureItem zoom (CardFeatureHoverZoom,
+ * 2026-08-12) — one motion vocabulary, not two. Motion chrome is DS CSS, never
+ * a JSX utility (the ComponentTailwindSourceTrap law). The frame's own
+ * overflow-hidden + radius clip the scale. */
+.kol-feature-split-visual.is-hoverable > :first-child {
+  transition: transform 300ms ease;
+}
+
+.kol-feature-split-visual.is-hoverable:hover > :first-child {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-feature-split-visual.is-hoverable > :first-child { transition: none; }
+  .kol-feature-split-visual.is-hoverable:hover > :first-child { transform: none; }
+}
+
 .kol-feature-split-visual-veil {
   position: absolute;
   inset: 0;
@@ -593,3 +614,16 @@
 .kol-table-sort svg { opacity: 0.25; transition: opacity var(--kol-transition-fast); }
 .kol-table-sort:hover svg { opacity: 0.6; }
 [aria-sort] .kol-table-sort svg { opacity: 1; }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentCollection — src/organisms/ContentCollection.jsx (2026-08-15)
+ * The enter stagger the collection owns; cards never animate themselves.
+ * Delay is set per item inline; the curve is the house token. */
+.kol-collection-item {
+  animation: kol-collection-in 300ms var(--kol-ease-house) both;
+}
+
+@keyframes kol-collection-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}

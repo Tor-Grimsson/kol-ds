@@ -1,5 +1,289 @@
 # @kolkrabbi/kol-theme
 
+
+## 0.51.0 — 2026-08-26
+
+**The touch floor** (MobileTouchFloor, user ruling 2026-08-26): every pressable
+control clears a **24px hit box** (WCAG 2.5.8 AA) and the drawn size never
+moves; there is **no type floor** — `kol-helper-10` / `kol-mono-10` stay the
+chrome voice at every width. Two controls sat under 24 and are lifted here,
+nothing else changes:
+
+- `ToggleSwitch` bare — a `::before` extent 24px tall, centred on the button
+  (the box itself is a 12px track in a 1px border, 14px). Shells were already
+  26/32/40.
+- `Slider` — the range input is 24px tall instead of 2px; the 2px track
+  centres inside it (UA `align-self: center` on the runnable track), the thumb
+  stays pinned to the track, and the row was already 24px.
+
+Law recorded in `03-components/05-control-chrome.md` § Touch floor.
+
+## 0.50.2 — 2026-08-26
+
+- **CodeBlock: the copy control gets a lane on chipless blocks**
+  (CodeBlockMobileOverflow, kol-website's mobile audit). A block with no
+  filename/language chip starts its code on the row the corner control
+  occupies, and under ~600px the first line ran underneath the button. The
+  first line now reserves the control's column
+  (`.kol-codeblock:not(:has(.kol-codeblock-filename)) .kol-codeblock-line:first-child`);
+  chipped blocks and every other line are untouched. Pairs with
+  kol-component 0.68.1, which stamps `.kol-codeblock-line` and restores the
+  wrap the code surface law already promised.
+
+## 0.50.1 — 2026-08-15
+
+- The segmented cell's hover moves ONE rung (`oq-48` → `oq-64`) instead of
+  jumping to full ink. A 48 → 100 step read as the cell selecting itself under
+  the cursor.
+
+## 0.50.0 — 2026-08-15
+
+**The segmented strip's two states are SWAPPED** (user ruling 2026-08-15 —
+"same exactly like before, just swapping stages"). Both treatments are
+unchanged; which state wears which is inverted.
+
+| | background | ink |
+|---|---|---|
+| rest | `surface-secondary` — the raised tile | `oq-48` |
+| selected | `transparent` — the bare ground | `fg-emphasis` |
+
+The selected cell is the bare ground because it is already where you are; the
+rest cells are the tiles you can press. This reverses the 2026-08-12 reading
+("selected = dark tile") on every strip in the estate.
+
+## 0.49.0 — 2026-08-15
+
+- **The segmented strip's SELECTED cell is the inverse tile** — `fg-96` fill
+  with `surface-primary` ink, the same pair `/work`'s sliding pill uses. It was
+  `surface-secondary`: in dark theme a tile only a shade off the strip it sits
+  in, so the selected cell was the QUIETEST thing in the control and the
+  unselected cells read as the raised ones.
+- **`.kol-row` thumbs fill the row's height**, width following the ratio.
+  `--kol-row-thumb` is a MIN-HEIGHT now, not a fixed width — a thumb sized off
+  its own width floated at the top-left of a tall row with the row empty beside
+  it, which is what `work` at 160 looked like.
+
+## 0.48.0 — 2026-08-15
+
+**The display rungs are 500 with 0.04em tracking** (user ruling 2026-08-15).
+`kol-sans-display-01/02/03` were all weight **600** — a full step above the
+`kol-sans-heading-*` family they open — and carried no tracking at all.
+
+- **600 → 500.** Right Grotesk Narrow at 600 is PP's *Dark* cut; at display
+  size its counters are the first thing to close and the line reads as a slab.
+  500 (*Medium*) is what every heading rung already uses, so the two families
+  now read as one voice at two volumes.
+- **`letter-spacing: 0.04em`.** A narrow face set large has almost no
+  sidebearing left and the letters run together into a texture. The tracking is
+  what lets a display line be read as words.
+
+**This changes every display-scale heading in the estate** — the work card's
+title, PageHeader's `md`/`lg` sizes, and any consumer on `kol-sans-display-*`.
+
+## 0.47.0 — 2026-08-15
+
+- **`--kol-gap-wall-grid` (24px) / `--kol-gap-wall-list` (8px)** — the wall
+  gaps get the same treatment `--kol-pad-card-*` got, for the same reason: the
+  two numbers were re-typed as a ternary at NINE call sites (kol-monitor
+  HomePage ×2 and LibraryPage ×2, MediaLibrary, kol-website Work, both foundry
+  grids, StackLatest), and a value repeated nine times has already drifted
+  somewhere.
+
+  Two rungs because a wall of CARDS and a stack of ROWS want different air:
+  cards are objects with their own edges and need separating; rows are lines in
+  a table and 24px between them reads as a broken list. PX, not rem — a gap is
+  a layout measure, not type.
+
+## 0.46.1 — 2026-08-15
+
+- **`.kol-row` / `.kol-card-plate` step on a CONTAINER query, not the viewport.**
+  Same reasoning the card-wall law already gives: the shell rails eat width that
+  viewport breakpoints cannot see, so a row inside a 700px panel on a 1600px
+  screen was taking the desktop step and overflowing. `768` is still the ruled
+  `md` rung — only what it measures changed. `.kol-collection-item` is the query
+  container.
+
+## 0.46.0 — 2026-08-15
+
+- **`.kol-media-zoom`** — the hover zoom, a state the house serves on
+  image-led cards: the artwork creeps to 1.06 inside its own frame over 600ms
+  while the frame holds still. Keyed off the CARD's hover, not the media's,
+  because the whole tile is the affordance. Transform only — the one property
+  that scales without relayout, so a wall of these cannot thrash the grid.
+  Reduced motion switches it off entirely.
+- **`.kol-row--divided`** and a `transparent` fallback on `--kol-row-border`.
+  A variant with no frame published no border variable, and
+  `border-color: var(--undefined)` is invalid at computed-value time: it
+  resolves to `unset`, which INHERITS, which is currentColor. That is how the
+  `default` row's hairline divider rendered as a solid white rule.
+
+## 0.45.0 — 2026-08-15
+
+- **`.kol-expand` / `.kol-expand-content`** — the house expand, as chrome. A
+  collapsed control opening to its field (the search glyph widening into an
+  input) was hand-written inline in TWO components with the same three
+  declarations, which is how the curve came to be hardcoded in seven places.
+  The staggered durations ARE the character of the move: the box travels
+  longest (600ms), its fill settles sooner (400ms), the content inside arrives
+  last and quickest (300ms) so it does not smear across the widening box. The
+  width VALUE stays inline — that is per-instance data, not chrome.
+
+## 0.44.0 — 2026-08-15
+
+**The house curve is no longer expo.** `--kol-ease-house` was
+`cubic-bezier(0.16, 1, 0.3, 1)` — easeOutExpo, which spends ~90% of its
+distance in the first fifth of the duration, so every motion in the system read
+as instant regardless of the duration it carried. It is now
+`cubic-bezier(0.4, 0, 0.2, 1)`, balanced. **This changes the feel of every
+animation reading the token.**
+
+- **`.kol-inline-control`** — ONE rest tone for every inline control
+  (`oq-64`). They part on HOVER: a neutral control lifts to `oq-96`, and yellow
+  belongs to the accent alone (`--accent`), on hover and on its on-state.
+  Spending the accent on every hover left the on-state nothing of its own.
+- **The star's two states are TWO GLYPHS**, not one glyph and a fill. `star`
+  stays stroke-only and `star-solid` is its filled twin; a control with an
+  on-state names both. Filling the shared `star.svg` and unfilling it in CSS was
+  tried and reverted — a glyph that ships filled renders filled in every
+  consumer that never asked for a state, and the DS cannot see those.
+- **`.kol-content-hover` / `.kol-content-hover-frame`** — the content family's
+  hover step, driven by per-variant custom properties. Border is its own class,
+  not a fallback off the background one: an undefined var in a `border-color`
+  declaration resolves to `unset`, which inherits and quietly repaints a border
+  nobody asked to move.
+- **`.kol-card-drawer`** — the work card's caption plate.
+- **`.kol-row` / `.kol-card-plate`** — box values as custom properties with one
+  `md` media query, so a per-variant responsive step exists at all (Tailwind
+  cannot generate an `md:` variant from package source).
+
+> **Gap:** 0.6.0 → 0.40.0 shipped without entries (that history lives in the repo's
+> session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
+> breaking or global-surface changes (token renames, default flips, new bare-element
+> rules) are flagged **BREAKING**.
+
+## 0.43.1 — 2026-08-15
+
+### Patch Changes
+
+- **`.kol-section--divided` pads in px, not rem.** It shipped reading
+  `var(--kol-spacing-5)`, and that scale is defined in rem. Spacing in the
+  component sheets is px — `.kol-tag--sm`, `.kol-sidenav-group` and every
+  `.kol-control-*` size set it directly — so the token was the outlier here.
+  Now `padding-top: 20px`. Same rendering at the default root size; no rem
+  scaling under a user font-size change.
+
+## 0.43.0 — 2026-08-15
+
+### Minor Changes
+
+- **Card padding tokens** — `--kol-pad-card-{sm,md,lg}` (12/16/24), flat,
+  stepped by the card's `size` prop, never by breakpoint (content-card ruling).
+- **The house curve is a token** — `--kol-ease-house:
+  cubic-bezier(0.16, 1, 0.3, 1)`; it was hardcoded in 5 files and is the curve
+  the cards actually use. Curve only, pairs with any duration.
+- **`.kol-sans-display-03` ships** — the deferred class found its consumer:
+  ContentText's `work` row title (the ruled size-only step from display-02).
+- **`.kol-collection-item`** + `kol-collection-in` keyframes — the enter
+  stagger owned by `ContentCollection` (organisms sheet).
+
+**Also in this version — the kol-fxr ticket batch** (separate work riding the
+same unpublished bump):
+
+- **`--kol-focus-ring-quiet`** — the focus system had a token that only half
+  the rules read. `.kol-btn` / `.toggle-switch` / `.focus-visible:ring-focus`
+  read `--kol-focus-ring`; the nav rails and the segmented cell hardcoded their
+  colours. So a consumer setting `--kol-focus-ring: transparent` lost button
+  rings and kept rail rings — a half-working off switch, which is why kol-fxr
+  wrote local CSS (`FocusRingsInConsumers`).
+
+  Now the pair is the switch: `--kol-focus-ring` is the loud 2px ring,
+  `--kol-focus-ring-quiet` the 1px inset one for dense rows. Set both to
+  transparent and the system is genuinely off, with no `outline: none` in
+  consumer CSS. **Every focus rule in the theme now reads one of the two — no
+  hardcoded focus colours remain.**
+
+  Defaults reproduce today's values exactly, so **nothing moves visually**.
+  Both rings are white: `--kol-accent-primary` resolves to
+  `--kol-surface-on-primary`, so the two differ in weight, not hue.
+
+- **`.kol-sidenav-link:focus-visible`** — the rail leaf had no focus treatment
+  at all, only `.is-active` and its dot, so it fell through to the browser's
+  default ring (reported as "a weird highlight bug"). Now 1px inset, matching
+  its sibling `.shell-nav-item` rather than `.kol-btn`'s offset ring, which
+  blooms outside a dense nav row.
+
+- **`.kol-section--divided`** — the between-siblings hairline for stacked
+  inspector sections; pairs with `Section`'s new `divided` prop. `+` cannot be
+  expressed as a utility class, which is precisely why every consumer had to
+  invent a hook class and retype the rule.
+
+- **`.kol-placeholder`** — the suppression half of the placeholder gate, in
+  utilities rather than a component sheet because a consumer puts it on its own
+  prose. Written as `:root:not([data-kol-placeholders])` so the element keeps
+  whatever display it had instead of being forced back to `block` on reveal.
+
+## 0.42.2 — 2026-08-15
+
+### Patch Changes
+
+- **`kol-sources.css` works under pnpm.** Every `@source` path in the manifest —
+  not just the missing kol-shell line 0.42.1 added — resolved to nothing under
+  pnpm, silently: Tailwind resolves the file to its `.pnpm` store realpath, where
+  only kol-theme's own dependencies are siblings, and kol-theme depends on none
+  of the packages it sources. The docstring's "sibling package paths work from
+  inside node_modules" claim was true only for npm/yarn's flat tree. Found by
+  kol-mirror's kol-shell adoption (ShortcutsOverlay labels glued to keys —
+  `contents` never emitted).
+
+  Every package now carries **two** lines: the flat-tree path (npm/yarn) and a
+  five-up store walk to the consumer's `node_modules/@kolkrabbi/*` (pnpm,
+  verified against a live store). A path that doesn't exist matches nothing, so
+  one of each pair is inert on any layout and npm/yarn consumers are unregressed.
+  kol-mirror can delete its local `@source` workaround on bump; other pnpm
+  consumers get the other eleven packages' utilities back without knowing they
+  were gone.
+
+## 0.42.1 — 2026-08-15
+
+### Patch Changes
+
+- **`kol-sources.css` gains `@source "../kol-shell/src"`.** kol-shell 0.1.0
+  shipped (2026-08-14) without its manifest line — the exact silent footgun the
+  manifest exists to prevent, and its header even says new raw-JSX packages get
+  their line added DS-side. Every kol-shell adopter hit unstyled chrome (Tailwind
+  silently skips the package's utilities); kol-monitor found it as a
+  shortcuts-overlay with labels glued to keys and worked around it with a local
+  `@source` line. Delete that consumer line on bump — the manifest carries it now.
+
+## 0.42.0 — 2026-08-15
+
+### Minor Changes
+
+- **`.kol-feature-split-visual.is-hoverable`** — the media zoom for FeatureSplit's
+  visual column, opt-in via the component's new `mediaHover` prop. Same 1.03 /
+  300ms / `prefers-reduced-motion` treatment as the CardFeatureItem zoom
+  (CardFeatureHoverZoom, 2026-08-12), so the estate has ONE motion vocabulary
+  rather than a per-section re-decision — which is how kol-website's HomeFoundry
+  hover stayed silently broken for months. Motion chrome is DS CSS, never a JSX
+  utility (the ComponentTailwindSourceTrap law).
+
+## 0.41.0 — 2026-08-14
+
+- **BREAKING:** `@font-face` URLs moved `/fonts/Right-Grotesk/` → `/fonts/right-grotesk/`
+  (all 98 static srcs in `kol-typography.css`). Consumers must rename their
+  `public/fonts/Right-Grotesk/` folder to `right-grotesk/` on this bump — one
+  coordinated wave, no fallback at the old path.
+- Dropped the two `"Right Grotesk Text"` `@font-face` declarations — no token, no rule,
+  nothing ever set the family, so browsers never downloaded the files. Re-add the day
+  something renders with it.
+- New `kol-components-shell.css` — chrome for `@kolkrabbi/kol-shell` (the app-shell set):
+  `--kol-shell-rail-width` / `--kol-shell-page-pad` tokens, `.kol-shell-rail` geometry
+  at the sticky z-tier, and the rail-scoped active-state ruling (2026-08-12): ink
+  `--kol-oq-96` every state, `aria-current="page"` = the `--kol-oq-04` hover wash held
+  on. Scoped to `.kol-shell-rail` — the global `.kol-btn-nav[aria-current]`
+  brightness-only rule (site navs, 0.11.7 ruling) is untouched. Plus
+  `.kol-shell-card-preview--{natural|compact|cover}` fits from monitor's local CSS.
+
 ## 0.6.0
 
 ### Minor Changes

@@ -2,6 +2,7 @@ import { isValidElement, useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from '../atoms/Image.jsx'
 import HlsVideo from '../atoms/HlsVideo.jsx'
+import EmblaNav from '../molecules/EmblaNav.jsx'
 import OverlayGlassPanel from '../utilities/OverlayGlassPanel.jsx'
 
 /**
@@ -85,17 +86,42 @@ function SlideMedia({ media, onEnded, onTimeUpdate }) {
  * CTA is a plain anchor styled with the DS button classes plus an `onNavigate`
  * seam (router-agnostic — call `preventDefault` inside it for SPA nav).
  *
- * @param {Array}    items            slides: `{ media: { src, kind: 'image'|'video', poster, srcSet, alt }, title, description, href, ctaLabel, titleClassName }`
+ * RECONCILED 2026-08-15 against kol-website's fork (231L vs 259L, 458 diff
+ * lines). They were never a fork — two different engines. The fork ran
+ * framer-motion `AnimatePresence` over an index, which means **no drag at all**;
+ * this one runs embla, so the canon call went to the engine here, and with it
+ * the `{ media }` descriptor, OverlayGlassPanel, and the progress ring. Five
+ * capabilities crossed the other way — `children`, `fullWidth`, `rounded`, the
+ * `show*` visibility toggles and `subtitle` — plus the header nav placement.
+ * Deliberately NOT carried: the foundry title coupling (a size ramp keyed on
+ * the literal strings 'Málrómur'/'Tröllatunga' and a per-typeface inline
+ * `fontFamily`), `kol-label-mono-xs` (a deleted legacy family), and the hidden
+ * block that eagerly preloaded every slide image — embla plus `loading="eager"`
+ * on the visible slide covers that without fetching a whole gallery up front.
+ *
+ * @param {Array}    items            slides: `{ media: { src, kind: 'image'|'video', poster, srcSet, alt }, title, subtitle, description, href, ctaLabel, titleClassName, descriptionClassName, showTitle, showDescription, showCta }`
  * @param {string}   sectionLabel     header label (default 'Featured')
  * @param {string}   ctaLabel         default CTA copy; per-item `ctaLabel` overrides (default 'Learn more')
  * @param {string}   height           slide-frame height class (default 'h-[440px] md:h-[640px]')
  * @param {Function} renderTitle      custom title renderer `(item) => ReactNode`; wins over the default
  * @param {string}   titleClassName   default title class; per-item `titleClassName` overrides
+ * @param {string}   descriptionClassName default description class; per-item overrides
  * @param {boolean}  showHeader       show the label + `n / total` counter bar (default true)
+ * @param {boolean}  showTitle        global title visibility; per-item `showTitle` overrides (default true)
+ * @param {boolean}  showDescription  global description visibility; per-item overrides (default true)
+ * @param {boolean}  showCta          global CTA visibility; per-item `showCta` overrides (default true)
+ * @param {boolean}  fullWidth        drop the section's own vertical padding — the
+ *                                    slide frame spans its container (default false)
+ * @param {boolean}  rounded          frame border + radius (default true)
+ * @param {'stack'|'header'} navPosition  prev/next under the viewport, or in the
+ *                                    header row beside the counter (default 'stack')
  * @param {boolean}  autoPlay         auto-advance: timer for image slides, `ended` for video slides (default false)
  * @param {number}   autoPlayInterval image-slide timer in ms (default 5000)
  * @param {Function} onNavigate       `(href, event) => void` CTA click seam for SPA routing
  * @param {Object}   options          embla options passthrough (default `{ align: 'center', loop: true }`)
+ * @param {node}     children         a STATIC overlay pinned over the stage — it does
+ *                                    not travel with the slides (pointer-events pass
+ *                                    through except on the child itself)
  * @param {string}   className        extra classes on the section
  */
 export default function FeaturedCarousel({
@@ -105,11 +131,19 @@ export default function FeaturedCarousel({
   height = 'h-[440px] md:h-[640px]',
   renderTitle,
   titleClassName = '',
+  descriptionClassName = '',
   showHeader = true,
+  showTitle = true,
+  showDescription = true,
+  showCta = true,
+  fullWidth = false,
+  rounded = true,
+  navPosition = 'stack',
   autoPlay = false,
   autoPlayInterval = 5000,
   onNavigate,
   options = { align: 'center', loop: true },
+  children,
   className = '',
 }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
@@ -175,17 +209,32 @@ export default function FeaturedCarousel({
 
   const showProgress = autoPlay && items.length > 1
 
+  const nav = (
+    <EmblaNav
+      onPrev={() => emblaApi?.scrollPrev()}
+      onNext={() => emblaApi?.scrollNext()}
+      canPrev={canPrev}
+      canNext={canNext}
+      placement={navPosition === 'header' ? 'inline' : 'stack'}
+      prevLabel="Previous slide"
+      nextLabel="Next slide"
+    />
+  )
+
   return (
     <section
-      className={`kol-featured-carousel w-full ${className}`.trim()}
+      className={`kol-featured-carousel w-full ${fullWidth ? '' : 'py-16'} ${className}`.trim()}
       onMouseEnter={autoPlay ? () => setPaused(true) : undefined}
       onMouseLeave={autoPlay ? () => setPaused(false) : undefined}
     >
       {showHeader && (
-        <div className="mb-6 flex items-center gap-4">
-          {/* migrated off the deleted legacy kol-label-* family — label renders as authored */}
-          <span className="kol-helper-12 text-auto">{sectionLabel}</span>
-          <span className="kol-mono-12 text-fg-64">{selectedIndex + 1} / {items.length}</span>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            {/* migrated off the deleted legacy kol-label-* family — label renders as authored */}
+            <span className="kol-helper-12 text-auto">{sectionLabel}</span>
+            <span className="kol-mono-12 text-fg-64">{selectedIndex + 1} / {items.length}</span>
+          </div>
+          {navPosition === 'header' && nav}
         </div>
       )}
 
@@ -206,7 +255,9 @@ export default function FeaturedCarousel({
                 const active = i === selectedIndex
                 return (
                   <div key={i} className="kol-embla-slide">
-                    <div className={`relative overflow-hidden rounded border border-fg-08 bg-surface-secondary ${height}`}>
+                    <div
+                      className={`relative overflow-hidden bg-surface-secondary ${rounded ? 'rounded border border-fg-08' : ''} ${height}`.replace(/\s+/g, ' ')}
+                    >
                       <SlideMedia
                         media={item.media}
                         onEnded={autoPlay && items.length > 1 && active ? advance : undefined}
@@ -214,11 +265,18 @@ export default function FeaturedCarousel({
                       />
                       <div className="relative z-10 flex h-full w-full items-center justify-center p-6">
                         <OverlayGlassPanel maxWidth="max-w-[600px]">
-                          {renderTitleNode(item)}
-                          {item.description && (
-                            <p className="kol-mono-12 text-auto max-w-[600px]">{item.description}</p>
+                          {(item.showTitle ?? showTitle) && renderTitleNode(item)}
+                          {item.subtitle && (
+                            <span className="kol-mono-10 text-fg-64">{item.subtitle}</span>
                           )}
-                          {item.href && (
+                          {(item.showDescription ?? showDescription) && item.description && (
+                            <p
+                              className={`kol-mono-12 text-auto max-w-[600px] ${item.descriptionClassName || descriptionClassName}`.trim()}
+                            >
+                              {item.description}
+                            </p>
+                          )}
+                          {(item.showCta ?? showCta) && item.href && (
                             <a
                               href={item.href}
                               onClick={onNavigate ? (e) => onNavigate(item.href, e) : undefined}
@@ -235,24 +293,18 @@ export default function FeaturedCarousel({
               })}
             </div>
           </div>
+
+          {/* Pinned over the stage, OUTSIDE the viewport — a caption or badge
+            * that must not travel with the slides. Clicks pass through except
+            * on the child itself. */}
+          {children && (
+            <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+              <div className="pointer-events-auto w-full">{children}</div>
+            </div>
+          )}
         </div>
 
-        <div className="kol-embla-controls">
-          <button
-            type="button"
-            className="kol-embla-btn border border-fg-16 hover:border-fg-32 text-auto"
-            aria-label="Previous"
-            onClick={() => emblaApi?.scrollPrev()}
-            disabled={!canPrev}
-          >‹</button>
-          <button
-            type="button"
-            className="kol-embla-btn border border-fg-16 hover:border-fg-32 text-auto"
-            aria-label="Next"
-            onClick={() => emblaApi?.scrollNext()}
-            disabled={!canNext}
-          >›</button>
-        </div>
+        {navPosition !== 'header' && nav}
       </div>
     </section>
   )

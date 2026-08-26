@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>kol-ds-ui — dashboard icon batch proposals</title>
+<style>
+  body { margin: 0; font: 13px/1.5 "JetBrains Mono", monospace; display: flex; min-height: 100vh; }
+  .pane { flex: 1; padding: 32px 40px; }
+  .pane.light { background: #fafafa; color: #111; }
+  .pane.dark  { background: #111; color: #fafafa; }
+  h1 { font-size: 14px; font-weight: 600; margin: 0 0 8px; }
+  h2 { font-size: 12px; font-weight: 600; margin: 32px 0 12px; opacity: .7; }
+  .sub { font-size: 10px; opacity: .45; margin: 0 0 24px; }
+  .row { margin-bottom: 36px; }
+  .name { font-size: 12px; opacity: .55; margin-bottom: 10px; }
+  .name .cat { opacity: .55; }
+  .name .path { font-size: 10px; opacity: .45; }
+  .cells { display: flex; align-items: flex-end; gap: 28px; }
+  .cell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 96px; }
+  .cell.wide { width: auto; }
+  .cell .tag { font-size: 10px; opacity: .45; }
+  .ramp { display: flex; align-items: flex-end; gap: 14px; }
+  .rstep { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .rstep .tag { font-size: 10px; opacity: .45; }
+  .refs { display: flex; gap: 14px; align-items: center; padding-left: 20px;
+          margin-left: 8px; border-left: 1px solid rgba(128,128,128,.3); }
+  .sep { height: 1px; background: rgba(128,128,128,.25); margin: 28px 0; }
+  .head { display: flex; gap: 28px; font-size: 10px; opacity: .45; margin: 0 0 18px; }
+  .head .c96 { width: 96px; text-align: left; }
+  .head .cramp { width: 196px; text-align: left; }
+  .head .crefs { padding-left: 20px; margin-left: 8px; }
+  .icel { position: relative; display: inline-block; line-height: 0; }
+  .cell svg { display: block; }
+  .maps { display: flex; gap: 40px; }
+  .map { display: flex; flex-direction: column; gap: 6px; }
+  .map .tag { font-size: 10px; opacity: .45; }
+  /* visibility, not display — .cell svg { display:block } out-specifies .guide */
+  .guide { position: absolute; inset: 0; width: 100%; height: 100%;
+           pointer-events: none; visibility: hidden; }
+  body.guides-on .guide { visibility: visible; }
+  .guides-btn { position: fixed; bottom: 16px; transform: translateX(-50%);
+    z-index: 10; font: 11px/1 "JetBrains Mono", monospace; letter-spacing: 1px;
+    padding: 8px 14px; border-radius: 4px; cursor: pointer;
+    border: 1px solid rgba(128,128,128,.4); }
+  #guides-btn-l { left: 25%; background: #1a1a1d; color: rgba(250,250,250,.92); }
+  #guides-btn-r { left: 75%; background: #fafafa; color: rgba(17,17,17,.92); }
+  body:not(.guides-on) #guides-btn-l { color: rgba(250,250,250,.45); }
+  body:not(.guides-on) #guides-btn-r { color: rgba(17,17,17,.45); }
+</style>
+</head>
+<body class="guides-on">
+<button id="guides-btn-l" class="guides-btn" type="button" aria-pressed="true">guides · on</button>
+<button id="guides-btn-r" class="guides-btn" type="button" aria-pressed="true">guides · on</button>
+<div class="pane light"><div id="mount-light"></div></div>
+<div class="pane dark"><div id="mount-dark"></div></div>
+<script>
+/* Proposed drawings — the .svg files at _tmp/2026-08-14-dashboard-icon-proposals/, inlined.
+ * crown + trophy promoted verbatim from the retired icons-v1-export shelf (already keyline);
+ * stopwatch + users redrawn to keyline from the filled legacy cuts. */
+const P = {
+  'crown': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 8.5 L7 13 L12 6 L17 13 L20.5 8.5 L19 18.5 H5 Z" /><circle cx="3.5" cy="8.5" r="1" /><circle cx="12" cy="6" r="1" /><circle cx="20.5" cy="8.5" r="1" /><path d="M5 16 H19" /></svg>`,
+  'trophy': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M7 4.5 H17 V10.5 a5 5 0 0 1 -10 0 Z" /><path d="M7 6 H4 a3 3 0 0 0 3 3" /><path d="M17 6 H20 a3 3 0 0 1 -3 3" /><path d="M11 15.5 V19" /><path d="M13 15.5 V19" /><path d="M7 19.5 H17" /></svg>`,
+  'stopwatch': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="13" r="7.5" /><path d="M10 2.5 H14" /><path d="M12 2.5 V5.5" /><path d="M17.9 7.1 L19.4 5.6" /><path d="M12 13 L15.2 9.8" /></svg>`,
+  'users': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8.5" r="3.5" /><path d="M2.5 20.5 a6.5 6 0 0 1 13 0" /><path d="M15.8 5.4 a3.1 3.1 0 0 1 0 6.2" /><path d="M17.4 15 a6.3 5.5 0 0 1 4.1 5.5" /></svg>`,
+};
+
+/* Retired cuts — what the requested names last rendered as (filled, _tmp/legacy-icons/svg-web/). */
+const OLD = {
+  'stat-crown': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.9993 20.25C18.4136 20.25 18.7493 20.5858 18.7493 21C18.7493 21.4142 18.4136 21.75 17.9993 21.75H5.99935C5.58525 21.7499 5.24935 21.4141 5.24935 21C5.24935 20.5859 5.58525 20.2501 5.99935 20.25H17.9993Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.0003 2.25C12.3108 2.25017 12.5894 2.4416 12.7005 2.73145L13.9271 5.9375C16.2164 6.41535 18.1665 7.7296 19.2728 9.53516L20.5023 8.44238C20.7565 8.21684 21.131 8.1903 21.4144 8.37793C21.6977 8.56573 21.8199 8.92104 21.7113 9.24316L18.3363 19.2402C18.2333 19.5449 17.9469 19.7498 17.6253 19.75H6.37532C6.05367 19.75 5.7674 19.5449 5.66439 19.2402L2.28939 9.24316C2.18065 8.9209 2.30267 8.5657 2.58626 8.37793C2.86974 8.19044 3.24425 8.21673 3.49837 8.44238L4.72591 9.53418C5.83253 7.72868 7.783 6.41407 10.0726 5.93652L11.3001 2.73145L11.349 2.62793C11.481 2.39684 11.7284 2.25 12.0003 2.25ZM8.70052 13.7178C8.6125 13.9476 8.41706 14.1193 8.17806 14.1777C7.93888 14.2361 7.68632 14.1733 7.50228 14.0098L4.61556 11.4424L6.91439 18.25H17.0863L19.3841 11.4424L16.4984 14.0098C16.3144 14.1733 16.0618 14.2359 15.8226 14.1777C15.5835 14.1194 15.3882 13.9476 15.3001 13.7178L12.0003 5.09766L8.70052 13.7178ZM9.40755 7.67285C7.82531 8.22981 6.56908 9.27522 5.87142 10.5527L7.68782 12.168L9.40755 7.67285ZM16.3118 12.168L18.1273 10.5527C17.4297 9.27524 16.1733 8.22984 14.5911 7.67285L16.3118 12.168Z" fill="currentColor"/></svg>`,
+  'stat-winner': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.39453 13.8819C7.80874 13.8819 8.14453 14.2177 8.14453 14.6319V22C8.14435 22.4141 7.80863 22.75 7.39453 22.75H2C1.58591 22.75 1.25018 22.4141 1.25 22V14.6319C1.25 14.2177 1.5858 13.8819 2 13.8819H7.39453ZM2.75 21.25H6.64453V15.3819H2.75V21.25Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14.6963 10.7237C15.1104 10.7237 15.4461 11.0596 15.4463 11.4737V22C15.4462 22.4142 15.1105 22.75 14.6963 22.75H9.30176C8.88772 22.7499 8.55183 22.4141 8.55176 22V11.4737C8.55194 11.0597 8.88779 10.7238 9.30176 10.7237H14.6963ZM10.0518 21.25H13.9463V12.2237H10.0518V21.25Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22 14.9346C22.4141 14.9347 22.7498 15.2706 22.75 15.6846V22C22.75 22.4142 22.4142 22.75 22 22.75H16.6055C16.1913 22.75 15.8555 22.4143 15.8555 22V15.6846C15.8556 15.2705 16.1914 14.9346 16.6055 14.9346H22ZM17.3555 21.25H21.25V16.4346H17.3555V21.25Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M11.2109 1.59379C11.6331 1.13537 12.3668 1.13544 12.7891 1.59379L12.875 1.69926L13.7988 2.99321L15.3271 3.46489C16.0307 3.68209 16.3172 4.53353 15.8682 5.1309L14.9131 6.39946L14.9336 7.98149C14.9428 8.72882 14.2095 9.24196 13.5176 9.00981L12 8.50004L10.4824 9.00981C9.79063 9.24164 9.05722 8.72868 9.06641 7.98149L9.08594 6.39848L8.13184 5.1309C7.6826 4.53349 7.97011 3.68207 8.67383 3.46489L10.2012 2.99321L11.126 1.69926L11.2109 1.59379ZM11.3389 3.98247C11.2018 4.17433 11.0051 4.31566 10.7812 4.38481L9.69824 4.71782L10.373 5.61528C10.5148 5.80376 10.5908 6.03479 10.5879 6.27153L10.5732 7.39653L11.6582 7.03325L11.8271 6.99125C11.9416 6.97264 12.0584 6.97267 12.1729 6.99125L12.3428 7.03325L13.4258 7.39653L13.4121 6.27153C13.4092 6.03486 13.4853 5.80372 13.627 5.61528L14.3018 4.71782L13.2197 4.38481C12.9957 4.31569 12.7992 4.1744 12.6621 3.98247L12 3.05571L11.3389 3.98247Z" fill="currentColor"/></svg>`,
+  'stopwatch': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.4697 9.46973C14.7626 9.17683 15.2374 9.17683 15.5303 9.46973C15.8232 9.76262 15.8232 10.2374 15.5303 10.5303L12.5303 13.5303C12.2374 13.8232 11.7626 13.8232 11.4697 13.5303C11.1768 13.2374 11.1768 12.7626 11.4697 12.4697L14.4697 9.46973Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4.25C14.0691 4.25 16.0618 4.98379 17.6328 6.30566L18.4697 5.46973C18.7626 5.17683 19.2374 5.17683 19.5303 5.46973C19.8232 5.76262 19.8232 6.23738 19.5303 6.53027L18.6934 7.36621C20.0158 8.93737 20.75 10.9305 20.75 13C20.75 14.1491 20.5237 15.287 20.084 16.3486C19.6443 17.4102 19 18.375 18.1875 19.1875C17.375 20 16.4102 20.6443 15.3486 21.084C14.287 21.5237 13.1491 21.75 12 21.75C10.8509 21.75 9.71297 21.5237 8.65137 21.084C7.58981 20.6443 6.62498 20 5.8125 19.1875C5.00002 18.375 4.35574 17.4102 3.91602 16.3486C3.47629 15.287 3.25 14.1491 3.25 13C3.25 10.6794 4.17156 8.45344 5.8125 6.8125C7.45344 5.17156 9.67936 4.25 12 4.25ZM12 5.75C10.0772 5.75 8.23269 6.51341 6.87305 7.87305C5.51341 9.23269 4.75 11.0772 4.75 13C4.75 13.9521 4.93743 14.8948 5.30176 15.7744C5.6661 16.654 6.19982 17.4537 6.87305 18.127C7.54627 18.8002 8.34598 19.3339 9.22559 19.6982C10.1052 20.0626 11.0479 20.25 12 20.25C12.9521 20.25 13.8948 20.0626 14.7744 19.6982C15.654 19.3339 16.4537 18.8002 17.127 18.127C17.8002 17.4537 18.3339 16.654 18.6982 15.7744C19.0626 14.8948 19.25 13.9521 19.25 13C19.25 11.0772 18.4866 9.23269 17.127 7.87305C15.7673 6.51341 13.9228 5.75 12 5.75Z" fill="currentColor"/><path d="M14 1.25C14.4142 1.25 14.75 1.58579 14.75 2C14.75 2.41421 14.4142 2.75 14 2.75H10C9.58579 2.75 9.25 2.41421 9.25 2C9.25 1.58579 9.58579 1.25 10 1.25H14Z" fill="currentColor"/></svg>`,
+  'dashboard-dual-opponent': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 13.25C12.7279 13.25 15.75 16.2721 15.75 20C15.75 20.4142 15.4142 20.75 15 20.75H3C2.58579 20.75 2.25 20.4142 2.25 20C2.25 16.2721 5.27208 13.25 9 13.25ZM9 14.75C6.35522 14.75 4.1687 16.7059 3.80469 19.25H14.1953C13.8313 16.7059 11.6448 14.75 9 14.75Z" fill="currentColor"/><path d="M15.2627 13.25C18.9906 13.25 22.0127 16.2721 22.0127 20C22.0127 20.4142 21.6769 20.75 21.2627 20.75H16.998C16.5841 20.7497 16.248 20.414 16.248 20C16.248 19.586 16.5841 19.2503 16.998 19.25H20.458C20.094 16.7059 17.9075 14.75 15.2627 14.75C14.921 14.75 14.587 14.7827 14.2646 14.8447C13.8582 14.9226 13.465 14.6564 13.3867 14.25C13.3086 13.8434 13.5749 13.4495 13.9814 13.3711C14.3967 13.2913 14.8254 13.25 15.2627 13.25Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9 3.25C11.6234 3.25 13.75 5.37665 13.75 8C13.75 10.6234 11.6234 12.75 9 12.75C6.37665 12.75 4.25 10.6234 4.25 8C4.25 5.37665 6.37665 3.25 9 3.25ZM9 4.75C7.20508 4.75 5.75 6.20507 5.75 8C5.75 9.79493 7.20508 11.25 9 11.25C10.7949 11.25 12.25 9.79492 12.25 8C12.25 6.20507 10.7949 4.75 9 4.75Z" fill="currentColor"/><path d="M15.2627 3.25C17.886 3.25 20.0127 5.37665 20.0127 8C20.0127 10.6234 17.886 12.75 15.2627 12.75C14.6343 12.75 14.0324 12.6273 13.4814 12.4043C13.0977 12.2488 12.9121 11.8116 13.0674 11.4277C13.2228 11.044 13.6601 10.8586 14.0439 11.0137C14.4192 11.1656 14.8304 11.25 15.2627 11.25C17.0576 11.25 18.5127 9.79492 18.5127 8C18.5127 6.20507 17.0576 4.75 15.2627 4.75C14.8304 4.75003 14.4192 4.83443 14.0439 4.98633C13.6601 5.14138 13.2228 4.95602 13.0674 4.57227C12.9121 4.18841 13.0977 3.75119 13.4814 3.5957C14.0324 3.37268 14.6343 3.25003 15.2627 3.25Z" fill="currentColor"/></svg>`,
+};
+
+/* Live set drawings — refs + the three mapped names, copied verbatim from
+ * packages/icons/src/kol-icon-set-v1/. */
+const SET = {
+  'chess-pawn': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 17.2941L13.75 9.05882C14.8 8.44941 15.5 6.83882 15.5 5.52941C15.5 4.59335 15.1313 3.69563 14.4749 3.03374C13.8185 2.37185 12.9283 2 12 2C11.0717 2 10.1815 2.37185 9.52513 3.03374C8.86875 3.69563 8.5 4.59335 8.5 5.52941C8.5 6.83882 9.2 8.44941 10.25 9.05882L8.5 17.2941M15.5 17.2941H8.5M15.5 17.2941L18.202 18.2024C18.4342 18.2803 18.6362 18.43 18.7794 18.6302C18.9227 18.8303 18.9998 19.0708 19 19.3176V20.8235C19 21.1355 18.8771 21.4348 18.6583 21.6554C18.4395 21.8761 18.1428 22 17.8333 22H6.16667C5.85725 22 5.5605 21.8761 5.34171 21.6554C5.12292 21.4348 5 21.1355 5 20.8235V19.3188C4.99994 19.0718 5.07699 18.831 5.22022 18.6306C5.36345 18.4303 5.56559 18.2804 5.798 18.2024L8.5 17.2941M7.33333 9.05882H16.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  'stat-chart-a': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4V19.5H20.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14L11 9L14 12L20 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  'trending-up': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 17 L9 11 L13 15 L20 8" /><path d="M14 7 H21 V14" /></svg>`,
+  'user': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="4" /><path d="M3.5 20.5 a9 7 0 0 1 17 0" /></svg>`,
+  'bookmark': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  'roadmap': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L4 4V19L10 21V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 3L10 6V21L15 18V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M21 4L15 3V18L21 19V4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  'target': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor"/><path d="M12 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+
+/* Per-row config: requested name → proposed name · group home · retired cut · set refs. */
+const ROWS = [
+  { name: 'crown',     was: 'stat-crown',              group: 'misc', old: 'stat-crown',              note: 'retired cut (filled)',            refs: ['chess-pawn', 'stat-chart-a'] },
+  { name: 'trophy',    was: 'stat-winner',             group: 'misc', old: 'stat-winner',             note: 'retired cut drew a podium+star — the later v1-export shelf redrew it as this cup', refs: ['chess-pawn', 'stat-chart-a'] },
+  { name: 'stopwatch', was: 'stopwatch',               group: 'misc', old: 'stopwatch',               note: 'retired cut (filled)',            refs: ['target', 'trending-up'] },
+  { name: 'users',     was: 'dashboard-dual-opponent', group: 'nav',  old: 'dashboard-dual-opponent', note: 'retired cut (filled)',            refs: ['user', 'chess-pawn'] },
+];
+
+/* Mapped, not minted — requested names already covered by shipped drawings. */
+const MAPS = [
+  { from: 'dashboard-bookmark', to: 'bookmark' },
+  { from: 'dashboard-roadmap',  to: 'roadmap' },
+  { from: 'trending',           to: 'trending-up' },
+];
+
+const GUIDE = (bgLight) => {
+  const diag = '#0A8DA4';
+  const key = bgLight ? '#CA3ABC' : '#F2D24B';   /* KeylineBg verbatim */
+  return `<svg class="guide" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="${diag}" stroke-width="0.1" stroke-dasharray="0.4 0.6" fill="none">
+      <path d="M0 0 L24 24"/><path d="M24 0 L0 24"/></g>
+    <g stroke="${key}" stroke-width="0.1" stroke-dasharray="0.4 0.6" fill="none">
+      <rect x="4" y="2" width="16" height="20" rx="1"/>
+      <rect x="3" y="3" width="18" height="18" rx="1"/>
+      <rect x="2" y="4" width="20" height="16" rx="1"/>
+      <circle cx="12" cy="12" r="4"/></g></svg>`;
+};
+const sz = (svg, n, bgLight) =>
+  `<span class="icel">${svg.replace('<svg ', `<svg width="${n}" height="${n}" `)}${GUIDE(bgLight)}</span>`;
+
+function render(mount, label) {
+  const bgLight = label === 'light';
+  let html = `<h1>dashboard icon batch proposals — ${label}</h1>`;
+  html += `<div class="sub">DashboardIconCoverage — 4 retired drawings promoted back into v1 under plain names (prefixes drop, per the set convention). stroke 1.5u on the 24 grid → 1px @16 · 1.25px @20 · 1.5px @24 · 2px @32 · 3px @48 · 6px @96 — proposed files: _tmp/2026-08-14-dashboard-icon-proposals/&lt;name&gt;.svg</div>`;
+  html += `<div class="head"><span class="c96">retired cut · 96px</span><span class="c96">proposed · 96px · stroke 6px</span><span class="cramp">proposed ramp 16–48px</span><span class="crefs">set refs · 24px</span></div>`;
+  for (const row of ROWS) {
+    html += `<div class="row"><div class="name">${row.was} → <strong>${row.name}</strong> <span class="cat">· ${row.group}</span> <span class="path">— packages/icons/src/kol-icon-set-v1/${row.group}/${row.name}.svg (proposed home)</span></div><div class="cells">`;
+    html += `<div class="cell">${sz(OLD[row.old], 96, bgLight)}<span class="tag">${row.note}</span></div>`;
+    html += `<div class="cell">${sz(P[row.name], 96, bgLight)}</div>`;
+    html += `<div class="cell wide"><div class="ramp">${[16, 20, 24, 32, 48].map((n) =>
+      `<div class="rstep">${sz(P[row.name], n, bgLight)}<span class="tag">${n}</span></div>`).join('')}</div></div>`;
+    html += `<div class="refs">${row.refs.map((r) => sz(SET[r], 24, bgLight)).join('')}</div>`;
+    html += `</div><div class="sep"></div></div>`;
+  }
+  html += `<h2>mapped, not minted — shipped drawings already cover these (consumer swaps the name)</h2><div class="maps">`;
+  for (const m of MAPS) {
+    html += `<div class="map">${sz(SET[m.to], 24, bgLight)}<span class="tag">${m.from} → ${m.to}</span></div>`;
+  }
+  html += `</div>`;
+  mount.innerHTML = html;
+}
+render(document.getElementById('mount-light'), 'light');
+render(document.getElementById('mount-dark'), 'dark');
+const btns = [document.getElementById('guides-btn-l'), document.getElementById('guides-btn-r')];
+btns.forEach((b) => b.addEventListener('click', () => {
+  const on = document.body.classList.toggle('guides-on');
+  btns.forEach((x) => {
+    x.textContent = `guides · ${on ? 'on' : 'off'}`;
+    x.setAttribute('aria-pressed', String(on));
+  });
+}));
+</script>
+</body>
+</html>

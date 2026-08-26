@@ -92,6 +92,20 @@
   --kol-border-default: color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
   --kol-border-focus: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-on-primary));
   --kol-focus-ring: var(--kol-accent-primary);
+  /* The QUIET ring — 1px, inset, for dense rows where the loud ring's 2px
+   * offset would bloom over its neighbours (nav rail leaves today).
+   *
+   * It exists so the pair is a real OFF SWITCH (FocusRingsInConsumers, kol-fxr
+   * 2026-08-15, user ruling): --kol-focus-ring alone was only ever half of one,
+   * because the rails hardcoded --kol-fg-32 and never read it, so a consumer
+   * setting it transparent lost button rings and kept rail rings. Set BOTH to
+   * transparent and the system is genuinely off — no `outline: none !important`
+   * in consumer CSS, which is the local override this replaces.
+   *
+   * Default is --kol-fg-32, exactly what the rails already drew, so minting
+   * this changes NOTHING visually. Both rings are white (--kol-accent-primary
+   * resolves to --kol-surface-on-primary); the two differ in weight, not hue. */
+  --kol-focus-ring-quiet: var(--kol-fg-32);
 }
 
 :root[data-theme="light"] {

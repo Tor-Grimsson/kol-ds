@@ -8,7 +8,13 @@
 // ── Stack (blog / editorial) ──────────────────────────────────────────────
 export { default as StackHero } from './StackHero.jsx'
 export { default as ArticleHeader } from './ArticleHeader.jsx'
-export { default as ArticleCard } from './ArticleCard.jsx'
+/* ListingCard — THE listing card for any content type (ListingCardSpec ruling,
+ * 2026-08-15: names the role, not the content). ArticleCard is its alias until
+ * the next major. WorkCard/WorkListItem keep their own anatomy for now — the
+ * spec converges the family on the neutral NAME; folding WorkCard's distinct
+ * prop contract (type/year/description) into this one is a separate design
+ * pass, and aliasing it today would break every /work consumer. */
+export { default as ListingCard, default as ArticleCard } from './ListingCard.jsx'
 export { default as PortableTextRenderer, slugify } from './PortableTextRenderer.jsx'
 export { default as AuthorLine } from './AuthorLine.jsx'
 export { default as ShareButtons } from './ShareButtons.jsx'

@@ -2,13 +2,12 @@
  * KOL Typography — Right Grotesk family
  *
  * Loaded cuts: Right Grotesk (display, regular width), Compact, Tall, Wide,
- * Narrow, Spatial, Tight, Text (text-optical grade), Text Compact,
- * Text Spatial, Text Wide, Mono.
+ * Narrow, Spatial, Tight. Mono loads in kol-typography-mono.css.
  *
  * PP weight convention: Fine 100 · Light 300 · Regular 400 · Medium 500 ·
  * Dark 600 · Bold 700 · Black 900.
  *
- * Files at /fonts/Right-Grotesk*\/*.woff2.
+ * Files at /fonts/right-grotesk/*.woff2.
  *
  * Type-scale tokens at :root below; consumed by display/heading/text/helper
  * classes. Retune sizes in one place.
@@ -26,98 +25,98 @@
 /* ── Right Grotesk ── */
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-FineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-FineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Fine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Fine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-LightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-LightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Light.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-RegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-RegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Regular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-MediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-MediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Medium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-DarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-DarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Dark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Dark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-BoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-BoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Bold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-BlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-BlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-Black.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-Black.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -126,98 +125,98 @@
 /* ── Right Grotesk Compact ── */
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Compact";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-CompactBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-CompactBlack.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -226,98 +225,98 @@
 /* ── Right Grotesk Narrow ── */
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Narrow";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-NarrowBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-NarrowBlack.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -326,98 +325,98 @@
 /* ── Right Grotesk Tall ── */
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tall";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TallBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TallBlack.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -426,98 +425,98 @@
 /* ── Right Grotesk Wide ── */
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Wide";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-WideBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-WideBlack.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -526,98 +525,98 @@
 /* ── Right Grotesk Spatial ── */
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Spatial";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-SpatialBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-SpatialBlack.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -626,115 +625,99 @@
 /* ── Right Grotesk Tight ── */
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightFineItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightFineItalic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightFine.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightFine.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightLightItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightLightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightLight.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightRegularItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightRegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightRegular.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightMediumItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightMediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightMedium.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightDarkItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightDarkItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightDark.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightDark.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightBoldItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightBoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightBold.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightBlackItalic.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightBlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Right Grotesk Tight";
-  src: url("/fonts/Right-Grotesk/PPRightGrotesk-TightBlack.woff2") format("woff2");
+  src: url("/fonts/right-grotesk/PPRightGrotesk-TightBlack.woff2") format("woff2");
   font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ── Right Grotesk Text ── */
-@font-face {
-  font-family: "Right Grotesk Text";
-  src: url("/fonts/Right-Grotesk-Text/PPRightGroteskText-RegularItalic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Right Grotesk Text";
-  src: url("/fonts/Right-Grotesk-Text/PPRightGroteskText-Regular.woff2") format("woff2");
-  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -822,18 +805,37 @@
   font-family: var(--kol-font-family-sans-narrow);
   font-size: var(--kol-text-display-01);
   line-height: 100%;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }
 
 .kol-sans-display-02 {
   font-family: var(--kol-font-family-sans-narrow);
   font-size: var(--kol-text-display-02);
   line-height: 100%;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }
 
-/* .kol-sans-display-03 deferred — orphan in current consumers. Token defined.
- * Add the class when a consumer needs it. */
+/* THE DISPLAY RUNGS ARE 500, NOT 600 (user ruling 2026-08-15). All three sat a
+ * weight above the heading family they open — the narrow grotesk at 600 clogs
+ * at display size, where the counters are already the first thing to close. 500
+ * is the weight every `kol-sans-heading-*` uses, so the two families now read as
+ * one voice at two volumes.
+ *
+ * And 0.04em of TRACKING on all three: a narrow face set large has almost no
+ * sidebearing left, so the letters run together into a wall. The tracking is
+ * what lets a display line be read as words rather than a texture. */
+
+/* display-03 shipped 2026-08-15 — its consumer arrived: ContentText's `work`
+ * row title (the ruled size-only step down from display-02). */
+.kol-sans-display-03 {
+  font-family: var(--kol-font-family-sans-narrow);
+  font-size: var(--kol-text-display-03);
+  line-height: 100%;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
 
 /* =============================================================================
  * DISPLAY TIGHT — the condensed-caps display voice: the Tight cut by NAME
@@ -883,9 +885,12 @@
 }
 
 /* =============================================================================
- * HEADINGS — H1 sans Narrow, H2-H5 sans Compact, weight 500.
- * 01 = H1 anchor (matches prose H1). 02-06 use Compact for visual rhythm
- * (matches prose H2-H4). 06 token defined; class deferred until consumer.
+ * HEADINGS — H1+H2 sans Narrow, H3-H5 sans Compact, weight 500.
+ * 01 = H1 anchor (matches prose H1). The narrow/compact boundary moved down
+ * one rung 2026-08-12 (HeadingTwoNarrow, user ruling: "make heading-02 narrow
+ * not compact"). 03-06 use Compact for visual rhythm. The PROSE ramp is
+ * untouched — it deliberately skips heading-02. 06 token defined; class
+ * deferred until consumer.
  * ============================================================================= */
 
 .kol-sans-heading-01 {
@@ -896,7 +901,7 @@
 }
 
 .kol-sans-heading-02 {
-  font-family: var(--kol-font-family-sans-compact);
+  font-family: var(--kol-font-family-sans-narrow);
   font-size: var(--kol-text-heading-02);
   line-height: 110%;
   font-weight: 500;
@@ -912,7 +917,9 @@
 .kol-sans-heading-04 {
   font-family: var(--kol-font-family-sans-compact);
   font-size: var(--kol-text-heading-04);
-  line-height: 100%;
+  /* 120% — was 100%, the one dip in the 110/110/120/x/125 ramp; 24px H4
+   * set solid, tighter than the 64px H1 (user ruling 2026-08-12). */
+  line-height: 120%;
   font-weight: 500;
 }
 

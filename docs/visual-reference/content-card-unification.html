@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>ContentCard system</title>
+<link rel="stylesheet" href="../../packages/theme/kol-theme.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  /* page-local stub of the deferred theme class — token exists, class not yet shipped */
+  .kol-sans-display-03 { font-family: var(--kol-font-family-sans-narrow);
+    font-size: var(--kol-text-display-03); line-height: 100%; font-weight: 600; }
+  button { border: 0; padding: 0; background: none; color: inherit; font: inherit; }
+  h2, h3, h4, p { margin: 0; }
+
+  body { margin: 0; font: 13px/1.5 "JetBrains Mono", monospace;
+         padding: 32px 48px 140px;
+         background: var(--kol-surface-primary); color: var(--kol-surface-on-primary); }
+  h1 { font-size: 15px; font-weight: 600; margin: 0 0 10px; }
+  .note { font-size: 11px; opacity: .6; margin: 0 0 6px; max-width: 108ch; }
+
+  .sect { font-size: 13px; font-weight: 600; margin: 56px 0 4px;
+          padding-top: 18px; border-top: 1px solid var(--kol-fg-16); }
+  .sect .num { opacity: .35; margin-right: 10px; }
+  .sectnote { font-size: 11px; opacity: .55; margin: 0 0 22px; max-width: 108ch; }
+  .sub { font-size: 11px; font-weight: 600; opacity: .6; margin: 26px 0 12px;
+         letter-spacing: .06em; text-transform: uppercase; }
+
+  .tag { font-size: 10px; opacity: .45; display: block; }
+  .path { font-size: 10px; opacity: .3; }
+  .bad { color: var(--ui-error, #c0392b); }
+  .ok  { color: var(--ui-success, #2d8a4e); }
+
+  .strip { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .item { display: flex; flex-direction: column; gap: 8px; }
+
+  table { border-collapse: collapse; font-size: 11px; width: 100%; }
+  th, td { text-align: left; padding: 7px 20px 7px 0; border-bottom: 1px solid var(--kol-fg-08);
+           vertical-align: top; }
+  th { font-weight: 600; opacity: .5; font-size: 10px; letter-spacing: .04em; }
+  code { font-size: 10.5px; background: var(--kol-fg-08); padding: 1px 5px;
+         border-radius: var(--kol-radius-sm); }
+  td code { white-space: nowrap; }
+  /* the variant table pins its own geometry: with table-layout auto, work's
+   * sans-display-02 title was setting the card column and the two forms could
+   * never be equal. */
+  table.tv { table-layout: fixed; }
+  table.tv td, table.tv th { overflow-wrap: anywhere; }
+
+  .anat { font-size: 11px; line-height: 1.9; opacity: .8; white-space: pre; }
+
+  /* ── tailwind shims — exact classes the shipped cards use ── */
+  .flex{display:flex} .flex-col{flex-direction:column} .flex-1{flex:1 1 0%}
+  .shrink-0{flex-shrink:0} .items-center{align-items:center} .items-start{align-items:flex-start}
+  .items-end{align-items:flex-end} .items-stretch{align-items:stretch}
+  .justify-between{justify-content:space-between} .justify-center{justify-content:center}
+  .min-w-0{min-width:0} .w-full{width:100%} .h-full{height:100%}
+  .relative{position:relative} .absolute{position:absolute}
+  .overflow-hidden{overflow:hidden} .text-right{text-align:right} .text-center{text-align:center}
+  .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rounded{border-radius:var(--kol-radius-sm)} .aspect-square{aspect-ratio:1/1}
+  .gap-1{gap:4px} .gap-2{gap:8px} .gap-3{gap:12px} .gap-4{gap:16px} .gap-6{gap:24px}
+  .p-2{padding:8px} .p-3{padding:12px} .p-4{padding:16px} .p-6{padding:24px}
+  .px-3{padding-left:12px;padding-right:12px} .py-2{padding-top:8px;padding-bottom:8px}
+  .w-12{width:48px} .h-12{height:48px} .w-16{width:64px} .h-16{height:64px}
+  .w-20{width:80px} .w-24{width:96px}
+  .border{border:1px solid var(--kol-fg-12)} .border-b{border-bottom:1px solid var(--kol-fg-08)}
+  .border-t{border-top:1px solid var(--kol-fg-04)} .border-dashed{border-style:dashed}
+  .border-fg-04{border-color:var(--kol-fg-04)} .border-fg-08{border-color:var(--kol-fg-08)}
+  .border-fg-24{border-color:var(--kol-fg-24)}
+  .bg-fg-02{background:var(--kol-fg-02)} .bg-fg-04{background:var(--kol-fg-04)}
+  .bg-fg-12{background:var(--kol-fg-12)}
+  .bg-surface-primary{background:var(--kol-surface-primary)}
+  .bg-surface-secondary{background:var(--kol-surface-secondary)}
+  .text-fg-32{color:var(--kol-fg-32)} .text-fg-40{color:var(--kol-fg-40)}
+  .text-fg-48{color:var(--kol-fg-48)} .text-fg-64{color:var(--kol-fg-64)}
+  .text-fg-80{color:var(--kol-fg-80)} .text-fg-96{color:var(--kol-fg-96)}
+  .text-emphasis{color:var(--kol-fg-96)}
+  .font-mono{font-family:var(--kol-font-family-mono,monospace)}
+
+  body.guides-on .gbox { outline: 1px dashed var(--guide-key); outline-offset: 0; }
+
+  .bar { position: fixed; bottom: 16px; left: 48px; z-index: 20; display: flex; gap: 8px; }
+  .chip { font: 11px/1 "JetBrains Mono", monospace; letter-spacing: 1px;
+    padding: 9px 14px; border-radius: var(--kol-radius-sm); cursor: pointer;
+    border: 1px solid var(--kol-fg-12);
+    background: var(--kol-surface-inverse); color: var(--kol-surface-on-inverse); }
+  body:not(.guides-on) #guides-chip { opacity: .5; }
+</style>
+</head>
+<body class="guides-on">
+<div class="bar">
+  <button id="theme-chip" class="chip" type="button">theme · light</button>
+  <button id="guides-chip" class="chip" type="button" aria-pressed="true">guides · on</button>
+</div>
+<div id="mount"></div>
+
+<script>
+/* AssetPlaceholder — VERBATIM class string from
+ * packages/component/src/utilities/AssetPlaceholder.jsx */
+const AP = (ratio, compact) => `
+<div class="kol-asset-placeholder gbox flex flex-col items-center justify-center gap-1 w-full
+     ${compact ? 'p-2' : 'p-6'} border border-dashed border-fg-24 rounded bg-fg-02 text-fg-48
+     font-mono text-center" style="aspect-ratio:${ratio}">
+  <span class="kol-helper-12 text-fg-48" style="letter-spacing:.12em">MISSING</span>
+  ${compact ? '' : '<span class="kol-mono-12 text-fg-40" style="letter-spacing:.04em">preview</span>'}
+</div>`;
+const THUMB = (px) => `
+<div class="kol-asset-placeholder gbox flex items-center justify-center shrink-0 border
+     border-dashed border-fg-24 rounded bg-fg-02 text-fg-48 font-mono"
+     style="width:${px}px;height:${px}px">
+  <span class="kol-helper-12 text-fg-48">·</span></div>`;
+
+/* ═══ §1 ContentMedia ═══ */
+/* ratio is the only knob. `fit` was cut 2026-08-15 — a card image covers, full stop. */
+const RATIO_USE = {
+  '1 / 1': 'default — file/asset',
+  '16 / 9': 'article',
+  '4 / 5': 'export-specs set',
+  '3 / 4': 'work',
+  '1 / 1.41421': 'A4 — catalog, print',
+};
+const MEDIA_RATIOS = ['1 / 1', '16 / 9', '4 / 5', '3 / 4', '1 / 1.41421'];
+
+
+/* resolved from packages/theme/kol-type-mono-classes.css + kol-typography.css */
+const TYPE = {
+  'kol-helper-8':        ['8',  '1',    '.10em', 'mono 500'],
+  'kol-helper-10':       ['10', '1',    '.10em', 'mono 500'],
+  'kol-helper-12':       ['12', '1',    '.06em', 'mono 500'],
+  'kol-helper-14':       ['14', '1',    '.06em', 'mono 500'],
+  'kol-helper-16':       ['16', '1',    '.06em', 'mono 500'],
+  'kol-mono-10':         ['10', '14px', '—',     'mono 400'],
+  'kol-mono-12':         ['12', '16px', '—',     'mono 400'],
+  'kol-mono-14':         ['14', '18px', '—',     'mono 400'],
+  'kol-mono-20':         ['20', '26px', '—',     'mono 400'],
+  'kol-sans-heading-03': ['32', '120%', '—',     'sans-compact 500'],
+  'kol-sans-heading-05': ['20', '120%', '—',     'sans-compact 500'],
+  'kol-sans-display-02': ['44', '100%', '—',     'sans-narrow 600'],
+  'kol-sans-display-03': ['36', '100%', '—',     'sans-narrow 600'],
+};
+const INKPC = { 'text-emphasis': '100', 'text-scream': '96', 'text-shout': '88',
+                'text-strong': '80', 'text-lede': '72', 'text-body': '64',
+                'text-meta': '48', 'text-subtle': '24',
+                'text-fg-96': '96', 'text-fg-64': '64', 'text-fg-48': '48', 'text-fg-32': '32' };
+
+/* layout per variant per form — read from source */
+
+/* Breakpoints per docs/documentation/08-breakpoints — Tailwind scale, min-width
+ * only: sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536. The framework padding
+ * ramp steps at base / 768 / 1024 (x 20/32/48 · y 48/64/80), which is the only
+ * three-step scale the system defines — mobile / tablet / desktop below map to it.
+ *
+ * gap · padding per step, read from each component's own `md:` classes.
+ * `=` means the source declares NO step: the base value holds at every width. */
+const BP_LABEL = { mobile: '< 768', tablet: '768 – 1023', desktop: '1024 +' };
+const BPS = {
+  default: {
+    card: { mobile: ['12px · group 16px', '12px'], tablet: ['=', '='], desktop: ['=', '='] },
+    row:  { mobile: ['12px', '8px 0'],            tablet: ['=', '='], desktop: ['=', '='] },
+  },
+  catalog: {
+    card: { mobile: ['8px', '12px 16px'], tablet: ['=', '='], desktop: ['=', '='] },
+    row:  { mobile: ['—', '0 12px'],      tablet: ['=', '='], desktop: ['=', '='] },
+  },
+  print: {
+    card: { mobile: ['—', '—'], tablet: ['=', '='], desktop: ['=', '='] },
+    row:  { mobile: ['—', '0 12px'], tablet: ['=', '='], desktop: ['=', '='] },
+  },
+  article: {
+    card: { mobile: ['12px', '0'],           tablet: ['=', '='], desktop: ['=', '='] },
+    row:  { mobile: ['24px / 10px', '0'],    tablet: ['=', '='], desktop: ['=', '='] },
+  },
+  work: {
+    card: { mobile: ['8px', '16px'], tablet: ['8px', '24px'], desktop: ['8px', '24px'] },
+    row:  { mobile: ['16px / 12px', '16px'], tablet: ['24px / 16px', '24px'], desktop: ['24px / 16px', '24px'] },
+  },
+  typeface: {
+    card: { mobile: ['8px', '24px'], tablet: ['=', '='], desktop: ['=', '='] },
+    row:  { mobile: ['24px', '24px'], tablet: ['=', '='], desktop: ['=', '='] },
+  },
+};
+let BP = 'desktop';
+let FORM = 'grid';
+const BP_ORDER = ['mobile', 'tablet', 'desktop'];
+
+/* verified against source, 2026-08-15. dir · gap · padding · radius · structure */
+const LAYOUT = {
+  default: {
+    card: ['column', '12px', '12px', '4px', 'div.rounded.border > [media] + div.p-3.flex-col > title + group[date+size]'],
+    row:  ['row · center', '12px', '8px 0', '—', 'li.flex > thumb + span.flex-1 + span.w-24 + span.w-20'],
+  },
+  catalog: {
+    card: ['column', '8px', '12px 16px', '4px literal', 'div > div.flex-1[preview] + div.plate.border-t'],
+    row:  ['row · between', '—', '0 12px', '4px', 'div.h-36.flex.justify-between > span + span'],
+  },
+  print: {
+    card: ['column', '—', '—', '4px', 'div.aspect-A4 > [img] + div.absolute[keyline]  — no text node'],
+    row:  ['row · between', '—', '0 12px', '4px', 'derived from catalog: div.flex.justify-between > title + detail'],
+  },
+  article: {
+    card: ['column', '12px (space-y-3)', '0', '4px on media', 'a > div[media].mb-4 + div.space-y-3 > kicker + h2 + p'],
+    row:  ['row → column', '24px outer / 10px inner', '0', '4px on thumb', 'a.flex.gap-6 > div.w-120 + div.flex-col.gap-2\\.5'],
+  },
+  work: {
+    card: ['column', '8px', '16px / 24px', '4px', 'a > TiltCard + div.absolute.bottom[drawer] > title + meta'],
+    row:  ['row → column', '16px / 24px outer, 12px / 16px inner', '16px / 24px', '4px', 'a.flex.items-stretch > thumb + div.flex-col > header.between + preview'],
+  },
+  typeface: {
+    card: ['column', '8px (space-y-2)', '24px', '4px', 'div.h-500.relative > div.p-6[details] + div.absolute[Ðð] + hover overlay'],
+    row:  ['column', '24px', '24px', '4px', 'div.min-h-40.flex-col.gap-6 > header.between + div[alphabet]'],
+  },
+};
+
+/* ═══ §2 ContentText — AS SHIPPED ═══
+ * Every line below carries the REAL class from source, printed beside it. This is
+ * evidence, not a proposal: no ramp has been ruled. An earlier cut normalised all
+ * six onto one invented ramp, which erased the hierarchy that actually exists and
+ * left nothing to judge. */
+/* A line is JUST the rendered line. The class names are collected separately and
+ * printed in a gutter OUTSIDE the box — an annotation inside the component takes
+ * the component's width and changes the layout being judged. */
+const G = (...parts) => ({
+  raws: parts.map(([cls, ink]) => [cls, ink]),
+  /* 16px = --kol-spacing-4, desktop. No responsive spacing scale exists — see §7. */
+  html: `<div style="display:flex;align-items:baseline;gap:16px">` +
+        parts.map(([cls, ink, txt]) => `<div class="${cls} ${ink}">${txt}</div>`).join('') +
+        `</div>`,
+});
+
+const L = (cls, ink, txt, extra = '') => ({
+  raw: [cls, ink],
+  html: `<div class="${cls} ${ink} ${extra}">${txt}</div>`,
+});
+/* GB = a between-header GROUP: first part left, last right, one line. */
+const GB = (...parts) => ({
+  raws: parts.map(([cls, ink]) => [cls, ink]),
+  html: `<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">` +
+        parts.map(([cls, ink, txt]) => `<div class="${cls} ${ink}">${txt}</div>`).join('') +
+        `</div>`,
+});
+/* The box renders CLEAN — nothing but the component. Classes live in their OWN
+ * table column, numbered in reading order. An annotation inside the box takes the
+ * component's width and changes the layout being judged; a side gutter drifts out
+ * of register because line heights run 12px to 60px. Order is the mapping. */
+/* The box renders the form's REAL direction and gap, read from LAYOUT — not a
+ * plain stack. A demo that documents `row` in a column and then renders a column
+ * is showing the wrong thing, which is exactly what shipped here first. */
+const BOX = (lines, variant, form) => {
+  const [dir, gap] = LAYOUT[variant][form];
+  const nums = (gap.match(/\d+/g) || []).map(Number);
+  const outer = Number.isFinite(nums[0]) ? nums[0] : 8;
+  const inner = Number.isFinite(nums[1]) ? nums[1] : outer;
+  const isRow = dir.startsWith('row');
+  const nested = dir.includes('→ column');
+  const between = dir.includes('between');
+
+  let body;
+  if (isRow && nested) {
+    /* the real row: a leading slot beside a text COLUMN. §2 carries no media, so
+       the thumb is drawn as an empty leading box — without it the row renders as
+       a plain stack and reads identical to the card, which is what shipped here. */
+    body = `<div class="gbox" style="width:56px;height:56px;flex-shrink:0;
+              border:1px dashed var(--kol-fg-24);border-radius:var(--kol-radius-sm);
+              opacity:.5"></div>
+            <div style="display:flex;flex-direction:column;gap:${inner}px;min-width:0">
+              ${lines.map(l => l.html).join('')}</div>`;
+  } else if (isRow) {
+    body = lines.map((l, i) =>
+      !between && i === 0 ? `<div style="flex:1;min-width:0">${l.html}</div>` : l.html
+    ).join('');
+  } else {
+    body = lines.map(l => l.html).join('');
+  }
+
+  const style = isRow
+    ? `display:flex;align-items:${nested ? 'flex-start' : 'center'};` +
+      `${between ? 'justify-content:space-between;' : ''}gap:${outer}px`
+    : `display:flex;flex-direction:column;gap:${outer}px`;
+  return `<div class="gbox" style="padding:10px 12px;width:100%;${style}">${body}</div>`;
+};
+
+const STRUCT = (variant, form) => {
+  const d = LAYOUT[variant][form];
+  const b = BPS[variant][form][BP];
+  const base = BPS[variant][form].mobile;
+  const val = (v, i) => v === '=' ? `${base[i]} <span style="opacity:.4">(no step)</span>` : v;
+  const kv = (k, v) => `<div><span style="opacity:.45">${k}:</span> ${v}</div>`;
+  return `<div style="line-height:1.5;opacity:.8;margin-bottom:14px;
+      padding-bottom:12px;border-bottom:1px solid var(--kol-fg-08)">
+    <div style="opacity:.45">box · ${BP} ${BP_LABEL[BP]}</div>
+    ${kv('direction', d[0])}${kv('gap', val(b[0], 0))}${kv('padding', val(b[1], 1))}${kv('radius', d[3])}
+    <div style="opacity:.45;margin-top:6px">structure</div>
+    <div style="opacity:.7;word-break:break-word">${d[4]}</div>
+  </div>`;
+};
+
+const CLASSES = (lines, variant, form) =>
+  `<div style="display:flex;flex-direction:column;gap:12px">` +
+  STRUCT(variant, form) +
+  lines.map((l, i) => {
+    const kv = (k, v) => `<div><span style="opacity:.45">${k}:</span> ${v}</div>`;
+    const one = ([cls, ink]) => {
+      const t = TYPE[cls] || ['—','—','—','—'];
+      return kv('type', cls.replace('kol-','')) + kv('size', t[0] + 'px') +
+             kv('line', t[1]) + kv('track', t[2]) + kv('family', t[3]) +
+             kv('ink', ink.replace('text-','')) + kv('opacity', (INKPC[ink] || '—') + '%');
+    };
+    if (l.raws) {
+      return `<div style="line-height:1.5;opacity:.8">
+        <div style="opacity:.45">line ${i + 1} · group of ${l.raws.length}</div>
+        ${l.raws.map((r, j) => `<div style="margin-top:${j ? 8 : 0}px">${one(r)}</div>`).join('')}
+      </div>`;
+    }
+    return `<div style="line-height:1.5;opacity:.8">
+      <div style="opacity:.45">line ${i + 1}</div>
+      ${one(l.raw)}
+    </div>`;
+  }).join('') + `</div>`;
+
+/* ONE string set per variant, identical in both forms. Differing copy between the
+ * card and the row made the pair impossible to diff — the only thing that should
+ * change across a row of this table is the styling. */
+/* ONE content set, every variant. Different copy per variant made the table
+ * impossible to read across — the only thing that should change from row to row
+ * is the styling. */
+const C = {
+  kicker: 'Field notes',
+  title:  'Kolkrabbi Identity',
+  body:   'Why two ways to say one thing diverge.',
+  meta:   '15 Aug 2026 • 4 min',
+  date:   '15 Aug 2026',
+  read:   '4 min',
+  a:      '2026-08-15',
+  b:      '2.4 MB',
+};
+
+/* INK — the DOCUMENTED text roles, not raw fg-* stops. 01-tokens.md defines
+ * subtle 24 · meta 48 · body 64 · lede 72 · strong 80 · shout 88 · scream 96 ·
+ * emphasis 100, and 03-typography.md rules that raw stops are only for cases
+ * where no role has business meaning. Three of the eight cover this system. */
+const HI = 'text-emphasis', MID = 'text-body', LO = 'text-meta';
+
+const TEXT_VARIANTS = [
+  { k: 'default', src: 'MediaCard.jsx · MediaRow.jsx',
+    card: [ L('kol-helper-12', HI, C.title, 'truncate'),
+            G(['kol-helper-12', LO, C.a], ['kol-helper-12', MID, C.b]) ],
+    row:  [ L('kol-helper-12', HI, C.title, 'truncate'),
+            L('kol-helper-12', LO, C.a),
+            L('kol-helper-12', MID, C.b) ],
+    note: 'ONE size for everything — title and meta identical. No hierarchy at all. Shipped as mono-12 (a wrapping class) on single-line chrome; corrected here to helper-12.' },
+
+  { k: 'catalog', src: 'GridCard.jsx',
+    /* MONO, not helper: both lines wrap (see the row title breaking to two lines).
+       kol-helper-* is line-height 1 — valid only for chrome guaranteed to stay on
+       one line by truncate or a fixed width. Wrapping text takes kol-mono-*, which
+       also drops helper's .06/.10em tracking. Title steps by form: 14 / 12. */
+    card: [ L('kol-mono-14', HI, C.title),
+            L('kol-mono-10', LO, C.body) ],
+    row:  [ L('kol-mono-12', HI, C.title),
+            L('kol-mono-10', LO, C.body) ],
+    note: 'title steps by form — card mono-14, row mono-12. Detail mono-10 in both. Was helper-*, which is line-height 1 and collided when the row title wrapped.' },
+
+  { k: 'print', src: 'PrintGridCard.jsx — DERIVED, not shipped',
+    card: [ L('kol-mono-14', MID, C.title),
+            L('kol-mono-10', LO, C.body) ],
+    row:  [ L('kol-mono-10', MID, C.title),
+            L('kol-mono-10', LO, C.body) ],
+    note: 'the only variant with NO text and NO row today — the card is image-only. Drawn on catalog\'s treatment because it shares the A4 frame and the same title+detail pair.' },
+
+  { k: 'article', src: 'ListingCard.jsx — three sizes',
+    /* line 3 (body) is ONE style in both forms: mono-14 · body. Was mono-14 meta
+       on the card, mono-14 body on the row. */
+    card: [ L('kol-helper-12', MID, C.kicker),
+            L('kol-sans-heading-03', HI, C.title),
+            L('kol-mono-14', MID, C.body),
+            G(['kol-helper-12', LO, C.a], ['kol-helper-12', MID, C.b]) ],
+    row:  [ L('kol-helper-12', MID, C.kicker),
+            L('kol-sans-heading-05', HI, C.title),
+            L('kol-mono-14', MID, C.body),
+            G(['kol-helper-12', LO, C.a], ['kol-helper-12', MID, C.b]) ],
+    note: 'line 3 unified — mono-14 · body in both. Title still steps: heading-03 card, heading-05 row.' },
+
+  { k: 'work', src: 'WorkCard.jsx · WorkListItem.jsx',
+    card: [ L('kol-sans-display-02', HI, C.title),
+            L('kol-mono-14', MID, C.body),
+            L('kol-mono-12', MID, C.meta) ],
+    row:  [ L('kol-mono-14', MID, C.body),
+            L('kol-sans-display-03', HI, C.title),
+            L('kol-mono-12', MID, C.meta) ],
+    note: 'structure unchanged — line 2 is the big line in the row. Fields uncrossed: the title sits on the big line, the body on mono-14. ONE title family both forms (display, narrow 600) — display-02 card, display-03 row (deferred class, stubbed on this page from its token). Title is the only slot that steps.' },
+
+  { k: 'typeface', src: 'TypefaceLibraryItem.jsx',
+    card: [ L('kol-mono-20', HI, C.title),
+            L('kol-mono-14', MID, C.body),
+            L('kol-mono-12', MID, C.date) ],
+    row:  [ GB(['kol-mono-14', HI, C.title], ['kol-mono-12', MID, C.date]),
+            L('kol-mono-14', MID, C.body) ],
+    note: 'unified — ONE family (mono 400; helper was illegal, the lines wrap). Body mono-14 and meta mono-12 identical both forms; title is the only slot that steps, mono-20 card / mono-14 row. Row keeps the shipped shape: header.between (title left, meta right) + body below.' },
+];
+
+/* ═══ §3 ContentItem — composed, both forms ═══ */
+const ITEMS = [
+  { k: 'default', src: 'MediaCard.jsx · MediaRow.jsx', pkg: 'kol-component',
+    consumers: 'MediaLibrary · kol-r2b2 · brand SlideDeckManager',
+    card: `<div class="gbox rounded overflow-hidden border bg-fg-02" style="width:190px">${AP('1 / 1', true)}
+      <div class="p-3 flex flex-col gap-3"><p class="kol-helper-12 text-emphasis truncate">poster-final.jpg</p>
+      <p class="flex items-baseline" style="gap:16px"><span class="kol-helper-12 text-meta">2026-08-15</span><span class="kol-helper-12 text-body">2.4 MB</span></p></div></div>`,
+    row: `<div class="gbox flex items-center gap-3 py-2 border-b" style="width:370px">${THUMB(48)}
+      <span class="flex-1 min-w-0 kol-helper-12 text-emphasis truncate">poster-final.jpg</span>
+      <span class="kol-helper-12 text-meta w-24 text-right">2026-08-15</span>
+      <span class="kol-helper-12 text-body w-20 text-right">2.4 MB</span></div>` },
+  { k: 'catalog', src: 'GridCard.jsx', pkg: 'kol-shell',
+    consumers: 'monitor ×4 pages',
+    card: `<div class="gbox bg-fg-04 border border-fg-04 overflow-hidden flex flex-col"
+      style="width:190px;aspect-ratio:1 / 1.41421;border-radius:4px">
+      <div class="flex-1 relative overflow-hidden">${AP('auto', true)}</div>
+      <div class="bg-surface-primary border-t" style="padding:12px 16px">
+      <div class="kol-mono-14 text-emphasis" style="margin-bottom:4px">Empty 7U</div>
+      <div class="kol-mono-10 text-meta">7U — power, perf, patch</div></div></div>`,
+    row: `<div class="gbox flex items-center justify-between px-3 rounded border border-fg-04 bg-surface-secondary"
+      style="width:370px;height:36px"><span class="kol-mono-12 text-emphasis">Empty 7U</span>
+      <span class="kol-mono-10 text-meta">power, perf</span></div>` },
+  { k: 'print', src: 'PrintGridCard.jsx · PrintGridCardGsap.jsx', pkg: 'kol-store',
+    consumers: 'kol-website prints (via its own fork)',
+    card: `<div class="gbox relative overflow-hidden rounded bg-surface-secondary"
+      style="width:190px;aspect-ratio:1 / 1.41421">${AP('auto', true)}
+      <div class="absolute border border-fg-08 rounded" style="inset:0;pointer-events:none"></div></div>`,
+    row: `<div class="gbox flex items-center justify-between rounded border border-fg-04 bg-surface-secondary"
+      style="width:370px;height:36px;padding:0 12px"><span class="kol-mono-10 text-body">Meridian Drift</span>
+      <span class="kol-mono-10 text-meta">A2 · edition of 30</span></div>` },
+  { k: 'article', src: 'ListingCard.jsx', pkg: 'kol-content',
+    consumers: 'kol-website Stack · StackLatest',
+    card: `<div class="gbox" style="width:190px">${AP('16 / 9', true)}
+      <div class="flex flex-col gap-2" style="margin-top:16px">
+      <div class="kol-helper-12 text-body">Field notes</div>
+      <h2 class="kol-sans-heading-03 text-emphasis">A note on token drift</h2>
+      <p class="kol-mono-14 text-body">Why two ways to say one thing diverge.</p>
+      <p class="flex items-baseline" style="gap:16px"><span class="kol-helper-12 text-meta">15 Aug 2026</span><span class="kol-helper-12 text-body">4 min</span></p></div></div>`,
+    row: `<div class="gbox flex gap-6 items-start" style="width:370px">${THUMB(120)}
+      <div class="flex flex-col min-w-0" style="gap:10px"><div class="kol-helper-12 text-body">Field notes</div>
+      <h4 class="kol-sans-heading-05 text-emphasis">A note on token drift</h4>
+      <p class="kol-mono-14 text-body">Why two ways to say one thing diverge.</p>
+      <p class="flex items-baseline" style="gap:16px"><span class="kol-helper-12 text-meta">15 Aug 2026</span><span class="kol-helper-12 text-body">4 min</span></p></div></div>` },
+  { k: 'work', src: 'WorkCard.jsx · WorkListItem.jsx', pkg: 'kol-content',
+    consumers: 'kol-website Work · WorkDetail',
+    card: `<div class="gbox rounded border border-fg-04 overflow-hidden relative" style="width:190px">
+      ${AP('3 / 4', true)}<div class="absolute p-3" style="inset:auto 0 0 0;background:var(--kol-surface-inverse)">
+      <div class="kol-sans-display-02" style="color:var(--kol-surface-on-inverse)">Kolkrabbi</div>
+      <div class="kol-mono-12" style="color:var(--kol-surface-on-inverse);opacity:.64">Client · 2026</div></div></div>`,
+    row: `<div class="gbox flex items-stretch gap-4 p-4 rounded bg-surface-secondary border border-fg-08 overflow-hidden"
+      style="width:370px;min-height:96px">${THUMB(64)}
+      <div class="flex flex-col gap-3 flex-1 min-w-0">
+      <div class="kol-mono-14 text-body">Brand system</div>
+      <div class="kol-sans-display-03 text-emphasis">Kolkrabbi Identity</div>
+      <div class="kol-mono-12 text-body">2026</div></div></div>` },
+  { k: 'typeface', src: 'TypefaceLibraryItem.jsx', pkg: 'kol-foundry',
+    consumers: 'showcase demo — kol-website runs a fork',
+    card: `<div class="gbox relative rounded border border-fg-08 bg-surface-primary overflow-hidden"
+      style="width:190px;height:260px"><div class="p-4 flex flex-col gap-2"><h3 class="kol-mono-20 text-emphasis">TG Rót</h3>
+      <div class="kol-mono-14 text-body">8 styles</div>
+      <div class="kol-mono-12 text-body">2024</div></div>
+      <div class="absolute flex items-end" style="inset:0;padding:16px">
+      <span style="font-size:76px;line-height:1">Ðð</span></div></div>`,
+    row: `<div class="gbox flex flex-col gap-4 p-6 rounded border border-fg-08 overflow-hidden" style="width:370px">
+      <div class="flex items-baseline justify-between"><span class="kol-mono-14 text-emphasis">TG RÓT</span>
+      <span class="kol-mono-12 text-body">2024</span></div>
+      <div class="kol-mono-14 text-body">8 styles</div>
+      <div class="truncate" style="font-size:30px;line-height:1.2">ABCDEFGHIJKLM</div></div>` },
+];
+
+const T = (rows, head) =>
+  `<table><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>` +
+  rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('') + `</table>`;
+
+function render() {
+  let h = `<h1>The ContentCard system</h1>
+    <p class="note">Plan: <b>docs/documentation/03-components/06-content-card-system.md</b></p>`;
+
+  /* ── anatomy ── */
+  h += `<div class="sect"><span class="num">§0</span>Anatomy</div>
+    <div class="anat">ContentCollection        layout · grid⇄list switch · container geometry · animation
+└─ ContentItem         form="card" | "row" · variant · ratio · size · interaction
+   ├─ ContentMedia     the preview box    — fit · ratio · falls back to AssetPlaceholder
+   └─ ContentText      the text block     — variant picks which slots render, and their order</div>`;
+
+  /* ── §1 ContentMedia ── */
+  h += `<div class="sect"><span class="num">§1</span>ContentMedia</div>`;
+
+  const PAYLOAD = `background:repeating-linear-gradient(45deg, var(--kol-fg-24) 0 7px, var(--kol-fg-12) 7px 14px)`;
+
+  h += `<div class="sub">ratio</div>
+    <div class="strip">`;
+  for (const r of MEDIA_RATIOS) {
+    h += `<div class="item" style="width:132px">
+      <div class="gbox rounded overflow-hidden border bg-fg-02" style="aspect-ratio:${r}">
+        <div style="width:100%;height:100%;${PAYLOAD}"></div></div>
+      <span class="tag"><code>${r}</code><br>${RATIO_USE[r] || ''}</span></div>`;
+  }
+  h += `<div class="item" style="width:132px">
+      <div class="gbox rounded overflow-hidden" style="aspect-ratio:1 / 1">${AP('1 / 1', true)}</div>
+      <span class="tag"><b>no payload</b><br>falls through to AssetPlaceholder</span></div>`;
+  h += `</div>`;
+
+  h += `<div class="sub">props</div>` + T([
+    ['<code>children</code>', 'node', '—', 'the payload. Absent → AssetPlaceholder'],
+    ['<code>ratio</code>', 'enum', '<code>1 / 1</code>', 'THE variant. <b class="bad">open:</b> restricted to a named set, or a free aspect-ratio string'],
+    ['<code>placeholder</code>', '{category, name}', '—', 'passed through to AssetPlaceholder for a real missing-asset label'],
+    ['<code>radius</code>', '—', '—', '<b class="bad">not a prop.</b> The card owns the corner; the token is the only answer'],
+  ], ['prop', 'type', 'default', 'notes']);
+
+  /* ── §2 ContentText ── */
+  h += `<div class="sect"><span class="num">§2</span>ContentText</div>`;
+
+  /* ── as-shipped evidence ── */
+  h += `<div class="sub" style="display:flex;align-items:center;gap:10px">
+      <span>breakpoint</span>
+      ${BP_ORDER.map(k => `<button type="button" data-bp="${k}"
+          style="font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;
+            padding:5px 10px;border-radius:var(--kol-radius-sm);
+            border:1px solid ${k === BP ? 'transparent' : 'var(--kol-fg-12)'};
+            background:${k === BP ? 'var(--kol-surface-inverse)' : 'transparent'};
+            color:${k === BP ? 'var(--kol-surface-on-inverse)' : 'inherit'};
+            opacity:${k === BP ? 1 : .5}">${k} ${BP_LABEL[k]}</button>`).join('')}
+    </div>
+    <table class="tv"><tr>
+      <th style="width:7%">variant</th>
+      <th style="width:27%">card</th><th style="width:12%">card type · ink</th>
+      <th style="width:27%">row</th><th style="width:12%">row type · ink</th>
+      <th style="width:15%">read across</th></tr>`;
+  for (const v of TEXT_VARIANTS) {
+    h += `<tr><td><b>${v.k}</b><br><span class="path" style="margin-top:4px">${v.src}</span></td>
+      <td>${BOX(v.card, v.k, 'card')}</td>
+      <td>${CLASSES(v.card, v.k, 'card')}</td>
+      <td>${BOX(v.row, v.k, 'row')}</td>
+      <td>${CLASSES(v.row, v.k, 'row')}</td>
+      <td><span class="tag">${v.note}</span></td></tr>`;
+  }
+  h += `</table>`;
+
+  /* ── ink ── */
+  h += `<div class="sub">ink — ruled: roles (emphasis · body · meta); raw fg-* only where no role fits</div>`;
+  h += T([
+    ['<code>text-emphasis</code>', '<code>--kol-fg-emphasis</code> → <code>--kol-surface-on-primary</code>', '<b>100%</b>', '37 files — MediaCard, MediaRow, MediaLibrary, WorkListItem'],
+    ['<code>text-fg-96</code>', '<code>color-mix(… 96%)</code>', '96%', '7 files — GridCard, ContentFilters'],
+    ['<code>text-body</code>', '<code>--kol-fg-body</code> → <code>--kol-fg-64</code>', '64%', 'the semantic alias'],
+    ['<code>text-fg-64</code>', '<code>color-mix(… 64%)</code>', '64%', 'the numeric spelling of the same thing'],
+    ['<code>text-meta</code>', '<code>--kol-fg-meta</code> → <code>--kol-fg-48</code>', '48%', 'the semantic alias'],
+    ['<code>text-fg-48</code>', '<code>color-mix(… 48%)</code>', '48%', 'the numeric spelling of the same thing'],
+  ], ['class', 'resolves to', 'strength', 'who uses it']);
+
+  /* ── §3 ContentItem ── */
+  h += `<div class="sect"><span class="num">§3</span>ContentItem</div>`;
+
+  h += `<div class="sub">both forms, all six variants — the ruled ramp</div>`;
+  for (const it of ITEMS) {
+    h += `<div style="margin-bottom:30px">
+      <div style="font-size:12px;margin-bottom:10px"><b>${it.k}</b>
+        <span style="opacity:.45">· ${it.pkg}</span><br>
+        <span class="path">packages/…/${it.src} — consumed by ${it.consumers}</span></div>
+      <div class="strip">
+        <div class="item">${it.card}<span class="tag">card</span></div>
+        <div class="item">${it.row ?? `<div class="tag bad" style="padding:20px 0;width:370px">row form does not exist — must be built</div>`}<span class="tag">row</span></div>
+      </div></div>`;
+  }
+
+  h += `<div class="sub">props — as built (0.46.0)</div>` + T([
+    ['<code>form</code>', 'enum', '<code>card</code>', '<code>card</code> · <code>row</code> — the one switch'],
+    ['<code>variant</code>', 'enum', '<code>default</code>', 'threads to ContentText — declared, never fallthrough'],
+    ['<code>size</code>', 'enum', '<code>md</code>', 'card only — steps <code>--kol-pad-card-{sm,md,lg}</code>'],
+    ['<code>media</code> <code>ratio</code>', 'node / string', 'ruled per variant', 'no media → AssetPlaceholder; ratio stays free while A4 is open'],
+    ['<code>thumb</code> <code>paddingY</code>', 'number', '<code>56</code> / <code>8</code>', 'row only — thumb edge px (0 hides), Y padding as a prop'],
+    ['<code>selected</code> <code>onClick</code>', 'bool / fn', '<code>false</code>', 'selection border / whole-item target'],
+    ['text slots', 'node', '—', '<code>title</code> · <code>body</code> · <code>kicker</code> · <code>detail</code> · <code>date</code> · <code>size</code> · <code>meta</code>'],
+    ['<code>*Class</code> seams', 'string', 'ruled table', 'every slot class is a prop — TG-font consumers swap the class'],
+  ], ['prop', 'type', 'default', 'notes']);
+
+  /* ── §4 ContentCollection ── */
+  h += `<div class="sect"><span class="num">§4</span>ContentCollection</div>`;
+
+  h += `<div class="sub">container geometry — documented in GridCard’s header, implemented in every consumer</div>` + T([
+    ['<code>grid</code>', '<code>repeat(6, 1fr)</code>', '<code>24px</code>', 'monitor’s catalog'],
+    ['<code>list</code>', '<code>repeat(4, 1fr)</code>', '<code>8px</code>', 'monitor’s catalog'],
+    ['<code>grid</code>', '<code>repeat(auto-fill, minmax(10rem, 1fr))</code>', '<code>16px</code>', 'MediaLibrary <code>.kol-media-grid</code>'],
+    ['<code>grid</code>', '<code>1 / md:2 / lg:4</code>', '<code>24px</code>', 'prints + both foundry grids'],
+    ['<code>grid</code>', '<code>1 / md:3</code>', '<code>24–32px</code>', 'kol-website Stack'],
+  ], ['layout', 'columns', 'gap', 'where']);
+  h += `<p class="tag" style="margin-top:10px">Five different answers. <b class="bad">Open:</b> one default with
+    a <code>columns</code> prop, or a named set (<code>catalog</code> · <code>library</code> · <code>editorial</code>).</p>`;
+
+  /* live flip — the built collection, real stagger on --kol-ease-house */
+  const DEMO_ROWS = [
+    ['poster-final.jpg', '2026-08-15', '2.4 MB'],
+    ['reel-cut-04.mp4', '2026-06-21', '48 MB'],
+    ['wordmark-final.svg', '2026-07-02', '18 KB'],
+    ['brand-deck.pdf', '2026-07-11', '6.1 MB'],
+  ];
+  const DEMO_CARD = ([n, d, z], i) => `<li class="kol-collection-item" style="animation-delay:${i * 40}ms">
+    <div class="gbox rounded overflow-hidden border bg-fg-02">${AP('1 / 1', true)}
+    <div class="p-3 flex flex-col gap-3"><p class="kol-helper-12 text-emphasis truncate">${n}</p>
+    <p class="flex items-baseline" style="gap:16px"><span class="kol-helper-12 text-meta">${d}</span><span class="kol-helper-12 text-body">${z}</span></p></div></div></li>`;
+  const DEMO_ROW = ([n, d, z], i) => `<li class="kol-collection-item flex items-center gap-3 py-2 border-b" style="animation-delay:${i * 40}ms">
+    ${THUMB(48)}<span class="flex-1 min-w-0 kol-helper-12 text-emphasis truncate">${n}</span>
+    <span class="kol-helper-12 text-meta w-24 text-right">${d}</span>
+    <span class="kol-helper-12 text-body w-20 text-right">${z}</span></li>`;
+  h += `<div class="sub" style="display:flex;align-items:center;gap:10px"><span>live — the switch</span>
+    ${['grid', 'list'].map(f => `<button type="button" data-form="${f}"
+        style="font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;
+          padding:5px 10px;border-radius:var(--kol-radius-sm);
+          border:1px solid ${f === FORM ? 'transparent' : 'var(--kol-fg-12)'};
+          background:${f === FORM ? 'var(--kol-surface-inverse)' : 'transparent'};
+          color:${f === FORM ? 'var(--kol-surface-on-inverse)' : 'inherit'};
+          opacity:${f === FORM ? 1 : .5}">${f}</button>`).join('')}
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;max-width:640px;${FORM === 'grid'
+      ? 'display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px'
+      : 'display:flex;flex-direction:column'}">
+    ${DEMO_ROWS.map(FORM === 'grid' ? DEMO_CARD : DEMO_ROW).join('')}</ul>`;
+
+  h += `<div class="sub">props — as built (0.46.0)</div>` + T([
+    ['<code>form</code>', 'enum', '<code>grid</code>', '<code>grid</code> · <code>list</code> — the ONE switch; flip re-runs the stagger'],
+    ['<code>min</code>', 'string', '<code>12rem</code>', 'grid track minimum — <code>repeat(auto-fill, minmax(min, 1fr))</code>'],
+    ['<code>gap</code>', 'number', '<code>16</code>', 'px, both forms'],
+    ['<code>stagger</code>', 'bool', '<code>true</code>', 'enter stagger on <code>--kol-ease-house</code>; off under reduced-motion. FLIP deferred'],
+    ['<code>children</code>', 'node', '—', 'ContentItems (or anything) — the collection wraps each in its own <code>li</code>'],
+  ], ['prop', 'type', 'default', 'notes']);
+
+  /* ── §5 dependencies ── */
+  h += `<div class="sect"><span class="num">§5</span>Dependencies</div>` + T([
+    ['<code>AssetPlaceholder</code>', '<span class="ok">exists</span>', 'component/utilities', 'the empty state for every media slot. <b class="bad">Needs a size step</b> — its <code>p-6</code> eats a card-scale tile (visible in §3)'],
+    ['<code>Image</code> · <code>HlsVideo</code>', '<span class="ok">exists</span>', 'component', 'media payloads'],
+    ['<code>Tag</code> · <code>Pill</code>', '<span class="ok">exists</span>', 'component/atoms', 'the <code>article</code> tag row'],
+    ['<code>SelectIndicator</code>', '<span class="ok">exists</span>', 'component/molecules', 'named export of MediaCard — selection marker'],
+    ['<code>TiltCard</code>', '<span class="ok">exists</span>', 'component/utilities', '<code>work</code> rides it through the media slot'],
+    ['<code>EmptyState</code>', '<span class="ok">exists</span>', 'component/molecules', 'the collection’s empty result'],
+    ['<code>usePrefersReducedMotion</code>', '<span class="ok">exists</span>', 'component/hooks', 'gates every animation'],
+    ['<code>Icon</code>', '<span class="ok">exists</span>', 'kol-icons', 'actions, kind glyphs'],
+    ['type ramp', '<span class="ok">shipped</span>', 'component/molecules', '<code>ContentText</code> 0.46.0 — the ruled ramp; every slot class a prop seam'],
+    ['motion tokens', '<span class="ok">token</span>', 'kol-theme 0.43.0', '<code>--kol-ease-house</code> — the card curve, tokenised'],
+    ['collection CSS', '<span class="ok">shipped</span>', 'kol-theme 0.43.0', '<code>.kol-collection-item</code> + keyframes, organisms sheet'],
+  ], ['dependency', 'state', 'where', 'notes']);
+
+  /* ── §6 motion ── */
+  h += `<div class="sect"><span class="num">§6</span>Motion</div>` + T([
+    ['<code>--kol-transition-fast/base/slow</code>', '<span class="ok">token</span>', '<code>cubic-bezier(0.4, 0, 0.2, 1)</code>', 'kol-theme.css:140–142'],
+    ['<code>--kol-transition-spring</code>', '<span class="ok">token</span>', '<code>cubic-bezier(0.34, 1.56, 0.64, 1)</code>', 'kol-theme.css:143'],
+    ['<code>--kol-ease-house</code>', '<span class="ok">token</span>', '<code>cubic-bezier(0.16, 1, 0.3, 1)</code>', 'kol-theme 0.43.0 — the 5 hardcoded call sites (GridCard · WorkCard · SearchInput · ContentFilters · WorkViewToggle) still to migrate'],
+  ], ['curve', 'state', 'value', 'where']);
+
+  /* ── §7 breakpoints ── */
+  h += `<div class="sect"><span class="num">§7</span>Breakpoints</div>` + T([
+    ['Tailwind media queries', '<span class="ok">the law</span>', '<code>p-4 md:p-6</code> · <code>w-16 md:w-28</code> · <code>grid-cols-1 md:grid-cols-2 lg:grid-cols-4</code>', 'WorkListItem · CardFeatureItem · prints + both foundry grids · Stack'],
+    ['container queries', '<span class="bad">a second system</span>', '<code>@container (min-width: 540px)</code>', 'kol-dashboards <code>.dash-grid</code> — arguably correct for a card that must react to its column, not the page'],
+    ['hardcoded px query', '<span class="bad">against the law</span>', '<code>data-cols</code> clamps 3/4 → span 2 under <b>539px</b>', 'kol-dashboards GridCard'],
+  ], ['mechanism', 'state', 'value', 'where']);
+
+  h += `<div class="sub">responsive form</div>` + T([
+    ['<code>form</code>', '<code>form={{ base: "row", lg: "card" }}</code>', 'kills StackLatest\'s duplicate render. <b class="bad">Open:</b> responsive object, or a <code>ContentCollection</code>-level rule'],
+    ['<code>columns</code>', '<code>columns={{ base: 1, md: 2, lg: 4 }}</code>', 'the four grid answers in §4 are all just this'],
+    ['<code>size</code>', '<code>size={{ base: "sm", md: "md" }}</code>', 'covers <code>p-4 md:p-6</code> and <code>w-16 md:w-28</code> without per-card queries'],
+  ], ['prop', 'responsive form', 'what it replaces']);
+
+  /* ── §8 standards ── */
+  h += `<div class="sect"><span class="num">§8</span>Open rulings</div>` + T([
+    ['radius', '<code>rounded</code> · <code class="bad">borderRadius: 4</code> · <code class="bad">rounded-[2px]</code>', 'the token, never a literal. Every token <code>sm</code> and up is already 4px'],
+    ['padding', '<code>p-3</code> · <code>12px 16px</code> · <code>p-4 md:p-6</code> · <code>p-6</code>', 'one scale, stepped by <code>size</code>'],
+    ['row Y pad', '<code>py-2</code> hardcoded', 'a prop'],
+    ['type', 'five different card/row pairs across six variants (§2)', '<span class="ok">ruled 2026-08-15</span> — the text table in 06-content-card-system.md; title steps, size only, one family'],
+    ['ink', '<code>text-emphasis</code> (100%) vs <code>text-fg-96</code> (96%) on the same slot', '<span class="ok">ruled</span> — roles (<code>emphasis</code> · <code>body</code> · <code>meta</code>); raw stops only where no role fits'],
+    ['ratio', '<code>1/1.41421</code> · <code>16/9</code> · <code>3/4</code> · <code>square</code> · <code>h-[500px]</code>', '<b class="bad">open</b> — export-specs is 9:16 · 3:5 · 4:5 · 1:1 · 5:4 · 5:3 · 16:9. A4 is in neither that nor the tokens'],
+    ['container grid', 'five different column/gap pairs (§4)', '<b class="bad">open</b> — one default + <code>columns</code>, or a named set'],
+    ['both forms', '<code>print</code> has no row and no text at all', 'every variant ships both; unused slots switch off by prop'],
+    ['breakpoints', 'Tailwind queries · container queries · one hardcoded 539px', '<b class="bad">open</b> — Tailwind scale is the law, but the dashboards container query may be the right answer for a card sizing to its column. §7'],
+    ['responsive form', 'StackLatest renders BOTH forms and hides one at <code>lg</code>', '<b class="bad">open</b> — <code>form</code>/<code>columns</code>/<code>size</code> take responsive objects, resolved in the collection'],
+    ['naming', '<code>ListingCard</code> was renamed from <code>ArticleCard</code> on 2026-08-15', '<b class="bad">open</b> — <code>ContentCard</code> is now the generic listing card, so that rename needs revisiting with kol-website'],
+  ], ['concern', 'answers in the wild', 'the rule']);
+
+  document.getElementById('mount').innerHTML = h;
+}
+render();
+
+const root = document.documentElement;
+const themeChip = document.getElementById('theme-chip');
+const guidesChip = document.getElementById('guides-chip');
+/* delegated — render() rebuilds the markup, so the button cannot hold a listener */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-bp]');
+  if (b) { BP = b.dataset.bp; render(); return; }
+  const f = e.target.closest('[data-form]');
+  if (f) { FORM = f.dataset.form; render(); }
+});
+const setGuideKey = () => document.body.style.setProperty('--guide-key',
+  root.getAttribute('data-theme') === 'light' ? '#CA3ABC' : '#F2D24B');
+setGuideKey();
+themeChip.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  themeChip.textContent = `theme · ${next}`;
+  setGuideKey();
+});
+guidesChip.addEventListener('click', () => {
+  const on = document.body.classList.toggle('guides-on');
+  guidesChip.textContent = `guides · ${on ? 'on' : 'off'}`;
+  guidesChip.setAttribute('aria-pressed', String(on));
+});
+</script>
+</body>
+</html>

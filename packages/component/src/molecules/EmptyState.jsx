@@ -5,14 +5,22 @@
  * the placeholder name). All lines render as authored — no auto casing
  * (the source's `uppercase` on the eyebrow was dropped per KOL rules).
  *
- * @param {string} eyebrow  kicker line above the title
- * @param {string} title    headline
- * @param {string} body     optional supporting line
- * @param {string} footer   optional note above a top hairline
+ * `gated` (GatedEmptyState, kol-fxr 2026-08-15) opts this instance into the
+ * app-wide placeholder switch — see usePlaceholders(). It is OPT-IN, not the
+ * default, on purpose: the ruling that placeholder prose defaults to hidden is
+ * the filing app's, and flipping it here would silently blank every surface
+ * already shipping an EmptyState. A consumer that wants the gate asks for it.
+ *
+ * @param {string}  eyebrow  kicker line above the title
+ * @param {string}  title    headline
+ * @param {string}  body     optional supporting line
+ * @param {string}  footer   optional note above a top hairline
+ * @param {boolean} gated    hide unless placeholders are switched on (default false)
+ * @param {string}  className extra classes on the wrapper
  */
-export default function EmptyState({ eyebrow, title, body, footer }) {
+export default function EmptyState({ eyebrow, title, body, footer, gated = false, className = '' }) {
   return (
-    <div>
+    <div className={`${gated ? 'kol-placeholder' : ''}${className ? ` ${className}` : ''}` || undefined}>
       {/* helper (line-height 1) is single-line chrome ONLY — title and footer
         * can wrap, so they ride the line-height-bearing kol-mono-* scale
         * (the type-conform fault line; user, 2026-08-09). Eyebrow stays

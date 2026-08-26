@@ -3,7 +3,7 @@ title: Shipped packages
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-09
+updated: 2026-08-26
 description: Every package this repo ships, with its version
 aliases:
   - shipped-packages
@@ -30,15 +30,16 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.34.0** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.14.0** | `<Icon>` + kol-icon-set-v1, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.34.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
-| `@kolkrabbi/kol-framework` | **0.18.0** | App shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
-| `@kolkrabbi/kol-workshop` | **0.21.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell |
-| `@kolkrabbi/kol-dashboards` | **0.2.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
-| `@kolkrabbi/kol-chess` | **0.5.3** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
-| `@kolkrabbi/kol-content` | **0.4.1** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
-| `@kolkrabbi/kol-foundry` | **0.5.4** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
+| `@kolkrabbi/kol-theme` | **0.51.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.18.0** | `<Icon>` + kol-icon-set-v1, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.68.1** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-framework` | **0.23.0** | Site shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, heroes, footer |
+| `@kolkrabbi/kol-shell` | **0.6.1** | Application shell — `NavRail` + `AppShell`, page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
+| `@kolkrabbi/kol-workshop` | **0.22.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell, exhibit sections |
+| `@kolkrabbi/kol-dashboards` | **0.2.3** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
+| `@kolkrabbi/kol-chess` | **0.6.0** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
+| `@kolkrabbi/kol-content` | **0.8.1** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
+| `@kolkrabbi/kol-foundry` | **0.5.6** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.1.1** | Commerce — product-detail layout, price display, marquee river |
 | `@kolkrabbi/kol-styleguide` | **0.1.1** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks |
 
@@ -46,7 +47,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-media-client` | **0.1.0** | Read-only client for the kol-media CDN |
+| `@kolkrabbi/kol-media-client` | **0.1.2** | Read-only client for the kol-media CDN |
 | `@kolkrabbi/kol-brand-template` | **0.2.0** | Brand-manifest schema + house defaults + CSS generator |
 | `@kolkrabbi/kol-brand` | **0.1.2** | Kolkrabbi's own brand manifest (ramps, type, logo SVGs) |
 | `@kolkrabbi/kol-scrape` | **0.1.0** | Presence/press scraper CLI |

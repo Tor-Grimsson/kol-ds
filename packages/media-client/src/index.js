@@ -6,7 +6,7 @@
  *
  *   import { listMedia, mediaUrl } from '@kolkrabbi/kol-media-client'
  *   const objs = await listMedia('photoshoot/')  // [{ key, contentType, size }]
- *   <img src={mediaUrl(obj.key)} />              // https://media.kolkrabbi.io/<key>
+ *   <img src={mediaUrl(obj.key)} />              // https://r2.kolkrabbi.io/<key>
  *
  * The contract (owned by kol-media-admin — bump this package when it changes):
  *   GET <adminBase>/api/list?prefix=<folder> → { objects: [{ key, contentType, size }] }
@@ -23,9 +23,14 @@
  * write auth in a browser-shipped package.
  */
 
+// adminBase stays admin. until media.kolkrabbi.io actually fronts the Pages app.
+// 0.1.1 shipped it as media. prematurely: that hostname is still the R2 bucket,
+// which serves no /api, so listMedia() 404s on it. admin. is also the safe
+// end-state default — it stays attached after the move, so this line never has
+// to change again. publicBase is the one that genuinely moved (R2 → r2.).
 const DEFAULTS = {
   adminBase: 'https://admin.kolkrabbi.io',
-  publicBase: 'https://media.kolkrabbi.io',
+  publicBase: 'https://r2.kolkrabbi.io',
   proxyPath: '/media/',
 }
 

@@ -20,12 +20,17 @@ export const TIERS = {
   /* kol-styleguide */
   MoodTile: 'atoms', TypeBlock: 'atoms', ClearspaceDiagram: 'atoms', LogoScaling: 'atoms',
   ColorAnatomy: 'molecules', AssetTable: 'molecules', LogoCard: 'molecules',
+  /* comboLayouts.jsx — the palette-combination slabs ComboLab arranges, also
+   * exported standalone for a guide that wants one. Surfaced 2026-08-15 when
+   * the barrel parser learned multi-line export blocks; ungated until then. */
+  RatioBar: 'molecules', Tower: 'molecules', QuadSplit: 'molecules',
+  CardRow: 'molecules', StripeRow: 'molecules', AppliedCard: 'molecules',
   ComboLab: 'organisms',
   /* kol-content */
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
   WorkViewToggle: 'molecules',
-  ArticleCard: 'molecules', PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
+  ListingCard: 'molecules', PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
   ShareButtons: 'molecules', WorkCard: 'molecules', WorkListItem: 'molecules',
   StackHero: 'organisms', ArticleHeader: 'organisms', ParallaxShelf: 'organisms',
   ScrollDriftGallery: 'organisms',
@@ -63,6 +68,14 @@ export const TIERS = {
   RightRail: 'molecules',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
   ShellLayout: 'organisms', DocumentationReader: 'organisms',
+  /* Exhibit sections — the scaffold a workshop section is declared against, so
+   * the next one is content only. ExhibitCard and ExhibitLinkCard are ATOMS by
+   * the placement test (each paints alone and composes no KOL component);
+   * ExhibitSidebar is a MOLECULE by the nesting test (RailSection + RailRow +
+   * DocsToc, the RightRail precedent); the two page scaffolds are ORGANISMS. */
+  ExhibitCard: 'atoms', ExhibitLinkCard: 'atoms',
+  ExhibitSidebar: 'molecules',
+  ExhibitOverview: 'organisms', ExhibitPage: 'organisms',
   /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
   DocHeader: 'molecules', DocSection: 'molecules', DocTable: 'molecules', DocFigure: 'molecules',
   /* kol-foundry */
@@ -95,6 +108,7 @@ export const FUNCTIONS_BY_NAME = {
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
+  EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
   MediaLibrary: 'media', MediaBrowser: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
@@ -117,7 +131,7 @@ export const FUNCTIONS_BY_NAME = {
   ColorLoader: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
-  ArticleCard: 'display', ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
+  ListingCard: 'display', ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
   PortableTextRenderer: 'display', StackHero: 'structure',
   SourcesReferences: 'display',
   WorkCard: 'display', WorkListItem: 'display',
@@ -133,19 +147,30 @@ export const FUNCTIONS_BY_NAME = {
   TagPath: 'display',
   useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
   usePrefersReducedMotion: 'utility', useTilt: 'utility',
-  useCoarsePointer: 'utility',
+  useCoarsePointer: 'utility', usePlaceholders: 'utility',
   useAxisAnimation: 'utility', useChartTooltip: 'utility', useCountUp: 'utility',
   useFontMetrics: 'utility',
+  /* Named-export hooks — ungated until 2026-08-15: the parser pushed
+   * `export { default as useX }` but dropped `export { useX }`, so the same
+   * hook was gated or invisible depending on its export shape. */
+  useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
+  useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
+  useNavHidden: 'utility', useTagMode: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
-  CopyButton: 'action', PopoverPanel: 'overlay', MediaCard: 'media', MediaRow: 'media',
+  ActionButton: 'action', CopyButton: 'action', PopoverPanel: 'overlay', MediaCard: 'media', MediaRow: 'media',
   PaletteHarmonyWheel: 'input',
+  /* content-card system (2026-08-15) */
+  ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
+  ContentRow: 'display', ContentItem: 'display', ContentCollection: 'structure',
   /* framework */
   AppShell: 'structure',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', TypeBlock: 'display', AssetTable: 'display',
   LogoCard: 'display', ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
+  RatioBar: 'display', Tower: 'display', QuadSplit: 'display',
+  CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
   /* content */
   AuthorLine: 'display', ShareButtons: 'action',
   /* store */
@@ -171,10 +196,18 @@ export const FUNCTIONS_BY_NAME = {
   RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
+  ExhibitCard: 'display', ExhibitLinkCard: 'navigation', ExhibitSidebar: 'navigation',
+  ExhibitOverview: 'structure', ExhibitPage: 'structure',
   /* foundry additions */
   GlyphMetricsSection: 'display', TypefaceLibraryGrid: 'wayfinding',
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceLibraryItem: 'display',
   TypefaceVariablePreview: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure',
+  /* shell — the app-shell set (2026-08-14) */
+  NavRail: 'navigation', TabStrip: 'navigation',
+  PageShell: 'structure', SettingsScaffold: 'structure',
+  PageHeader: 'wayfinding',
+  WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
+  Logomark: 'display',
 }
 
 /* ── Exempt: exports that are deliberately NOT roster rows ─────────────────
@@ -196,6 +229,17 @@ export const EXEMPT = {
   DocsArticle: 'member-of:DocumentationReader', DocsHeader: 'member-of:DocumentationReader',
   DocsFrontmatter: 'member-of:DocumentationReader',
   TagModeOverlay: 'member-of:TagModeGate', TagGraph: 'member-of:TagModeOverlay',
+  useExhibitToc: 'non-component',
+  ArticleCard: 'alias:ListingCard (until next major — ListingCardSpec 2026-08-15)',
+  /* shell — namesake twins (NOT re-exports: the app-tier component shares a
+   * name with a different site/dashboard-tier component; both stay on the
+   * roster under their own package) + contexts + single-parent sub-parts */
+  AppShell: 'namesake:framework-site-shell vs shell-app-shell',
+  ContentFilters: 'namesake:component-filters vs shell-catalog-organism',
+  GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
+  NavHiddenContext: 'non-component',
+  PageBleed: 'member-of:PageShell',
+  SettingsSection: 'member-of:SettingsScaffold', LabelRow: 'member-of:SettingsScaffold',
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
@@ -217,6 +261,42 @@ export const DOCS_ONLY = [
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = ['MenuPopover', 'QuantityStepper']
+
+/* Components that ship without a demo file ON PURPOSE (pnpm validate:demos).
+ * A reason is mandatory — the gate exists because "no demo yet" was never
+ * written down anywhere, so nobody could tell debt from a ruling. Anything not
+ * listed here needs showcase/src/demos/<Name>.jsx. */
+export const NO_DEMO = (() => {
+  /* THE 2026-08-15 SEED — debt, not rulings. These 46 shipped without a page
+   * because nothing failed the build when they didn't; they are listed so the
+   * gate can go live against NEW work while this backlog is worked down. A
+   * name leaves this map by getting showcase/src/demos/<Name>.jsx (the gate
+   * then fails on the stale exemption, so the list can't rot upward). */
+  const debt = (names, why) => Object.fromEntries(names.map((n) => [n, `no demo yet (2026-08-15 seed) — ${why}`]))
+  return {
+    ...debt(['SetupPanel', 'PiecePalette', 'GamePicker', 'MaterialSummary'],
+      'chess apparatus parts; the board demos cover the system, these never got their own'),
+    ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel', 'FoundryCTA'],
+      'kol-component organisms/overlays predating the demo convention'),
+    ...debt(['AudioPlayer', 'EmblaNav'],
+      'born 2026-08-15, shipped straight to consumers without a showcase surface'),
+    ...debt(['ListingCard'],
+      'renamed from ArticleCard in kol-content 0.7.0; the ArticleCard demo still rides the alias'),
+    ...debt(['GlyphItem', 'FontViewerComponent', 'FontViewerSection'],
+      'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
+    ...debt(['NavRail', 'PageShell', 'PageHeader', 'SettingsScaffold', 'TabStrip',
+      'WalkthroughPanel', 'ShortcutsOverlay', 'Logomark'],
+      'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
+    ...debt(['RatioBar', 'Tower', 'QuadSplit', 'CardRow', 'StripeRow', 'AppliedCard'].slice(1),
+      'styleguide combo slabs, ungated until the barrel parser was fixed 2026-08-15'),
+    ...debt(['ExhibitOverview', 'ExhibitPage', 'ExhibitSidebar', 'ExhibitCard', 'ExhibitLinkCard'],
+      'kol-workshop 0.22.0 exhibit system — ships unexercised (AGENT-CONTEXT ⚠️)'),
+    ...debt(['ShellLayout', 'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
+      'RightRail', 'RailSection', 'RailRow', 'TagModeGate', 'TagPath',
+      'DocumentationReader', 'DocHeader', 'DocSection', 'DocTable', 'DocFigure'],
+      'workshop shell + doc chrome; /workshop-preview renders the system, not the pieces'),
+  }
+})()
 
 /* R1 membership flags — the 2026-08-09 pass, ledger at
  * docs/documentation/03-components/02-placement.md § The pass. A flagged

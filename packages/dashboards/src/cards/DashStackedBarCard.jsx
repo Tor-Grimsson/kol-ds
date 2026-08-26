@@ -19,7 +19,7 @@ const DashStackedBarCard = ({
         <>
           <div className="flex justify-between items-center">
             <span className="dash-detail text-fg-88">{title}</span>
-            <Icon name={icon} size={24} className="text-fg-88" />
+            <Icon name={icon} size={24} className="text-oq-88" />
           </div>
           <div className="flex items-end gap-3">
             <span className="dash-subtitle">{value}</span>

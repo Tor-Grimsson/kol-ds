@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { IconFrame, SearchInput, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle.jsx'
@@ -89,6 +90,26 @@ export default function ShellHeader({
 }) {
   const hasTabRow = nav.length > 0 || Boolean(search) || Boolean(onNavToggle) || Boolean(onTocToggle)
 
+  /* The current tab must be ON SCREEN (WorkshopShellMobile, kol-website
+   * 2026-08-25). The strip scrolls (.kol-shell-header-tabs) — but on a phone
+   * the active tab measured x=347–445 in a 345px strip: "Dashboard" was the
+   * page you were on and the one tab you could not see. Scrolled to the
+   * strip's start edge (the snap position), and ONLY when it is out of view,
+   * so a wide viewport never moves. Keyed on the active href, not `nav` —
+   * consumers rebuild that array every render. Layout effect: before paint,
+   * so a route change never flashes the wrong tab. */
+  const tabsRef = useRef(null)
+  const activeHref = nav.find((item) => (isActive ? isActive(item.href) : false))?.href
+  useLayoutEffect(() => {
+    const strip = tabsRef.current
+    const tab = strip?.querySelector('[aria-current="page"]')
+    if (!strip || !tab) return
+    const s = strip.getBoundingClientRect()
+    const t = tab.getBoundingClientRect()
+    if (t.left >= s.left && t.right <= s.right) return
+    strip.scrollLeft += t.left - s.left
+  }, [activeHref])
+
   return (
     <header className={`kol-shell-header sticky top-0 z-50 shrink-0 bg-surface-primary ${className}`.trim()}>
       {/* Row 1: brand block + controls */}
@@ -139,7 +160,7 @@ export default function ShellHeader({
       {hasTabRow && (
         <div className="border-b border-fg-08">
           <div className="w-full" style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
-            <div className="kol-shell-header-tabs">
+            <div className="kol-shell-header-tabs" ref={tabsRef}>
               <nav className="flex flex-1 gap-6" aria-label="Sections">
                 {nav.map((item) => {
                   const active = isActive ? isActive(item.href) : false

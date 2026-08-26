@@ -1,12 +1,97 @@
 {
+  "CardFeatureHoverZoom": {
+    "repo": "kol-component",
+    "source": "kol-component/src/molecules/CardFeatureItem.jsx (+ FeaturesCardSection.jsx)",
+    "date": null
+  },
+  "ColorSwatch": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — inspector Fill/Stroke paint rows (Figma model)",
+    "date": null
+  },
+  "ThemeToggle (and every component emitting Tailwind utilities)": {
+    "repo": "kol-monitor",
+    "source": "kol-monitor — DS adoption, framework ThemeToggle integration",
+    "date": null
+  },
+  "Dropdown (viewport-aware panel)": {
+    "repo": "kol-ds-fxr",
+    "source": "kol-ds-fxr/src/editor/labs/LabsParams.jsx#L360-L370",
+    "date": null
+  },
+  "kol-icon-set-v1 (new glyphs)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Figma-model inspector (2026-08-12 pass)",
+    "date": null
+  },
+  "HeadingTwoNarrow": {
+    "repo": "kol-theme",
+    "source": "kol-theme/kol-typography.css (.kol-sans-heading-02)",
+    "date": null
+  },
+  "kol-component (package exports, not a component)": {
+    "repo": "kol-monitor",
+    "source": "kol-monitor — DS-adoption scoping, phase 4 (Button swap)",
+    "date": null
+  },
+  "LabsNavIcons (kol-icons set additions — batch)": {
+    "repo": "kol-labs-single",
+    "source": "kol-labs-single/src/sidebars.config.js#L49-L218",
+    "date": null
+  },
+  "MenuDropdownItem (label span)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — editor menubar, Settings → \"Show grid\" (any label with descenders)",
+    "date": null
+  },
+  "Modal (confirm/prompt dialogs)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — draft-restore confirm (compose state), discard confirms (MenuTop)",
+    "date": null
+  },
+  "NavLinkUnderline": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/styles/animations.css#L66-L88",
+    "date": null
+  },
+  "Input (property-field variant) — or a new atom": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — inspector prefixed inputs (X/Y, W/H, R°, opacity %, corner radius, weight)",
+    "date": null
+  },
   "RecordManager": {
     "repo": "reference",
     "source": "reference — Framer CMS (screenshots in `_assets/2026-08-06-recordmanager-*.png`); filed from kol-website",
     "date": null
   },
+  "SegmentedToggle (variant=\"filled\" — state styling correction)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — inspector strips; supersedes part of SegmentedFilledVariant (0.36.0)",
+    "date": null
+  },
+  "SegmentedToggle (filled variant + stateless mode)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — inspector alignment strips, transform cluster, resizing toggle",
+    "date": null
+  },
+  "ShellNavItemInk": {
+    "repo": "kol-theme",
+    "source": "kol-theme/kol-components-workshop.css#L340-L390 · kol-workshop/src/shell/RailRow.jsx",
+    "date": null
+  },
   "SideNavGrabResize": {
     "repo": "kol-apps",
     "source": "kol-apps/kol-mirror/src/pages/MirrorPlayground.jsx#L21-L76 (prior art); filed from kol-website",
+    "date": null
+  },
+  "Textarea (resize grip)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/editor/params/AutoControls.jsx#L247 (any rail-mounted Textarea)",
+    "date": null
+  },
+  "TransportIcons (kol-icons set additions)": {
+    "repo": "kol-ds-fxr",
+    "source": "kol-ds-fxr/src/editor/params/TransportBar.jsx#L75-L76",
     "date": null
   }
 }

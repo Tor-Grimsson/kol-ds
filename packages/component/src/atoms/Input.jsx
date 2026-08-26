@@ -9,6 +9,14 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *                                treatment (2026-07-08 chrome law: one
  *                                secondary, always subordinate to filled)
  *   variant="ghost"            — legacy alias, resolves to outline
+ *   variant="property"         — the Figma property field (PropertyField,
+ *                                2026-08-12): filled chrome, dim `affordance`
+ *                                (letter or icon node) at a 6px gap, the value
+ *                                HUGS its own length (mono ch-width — number-
+ *                                safe, no `size` attr), and `unit` renders
+ *                                IMMEDIATELY after the value (`0°`, `100%`).
+ *                                Shell fills its cell, content left-packed.
+ *                                Width tracks `value` — controlled usage only.
  *
  *   size="sm" / "md" (default) / "lg" — matched padding + type class
  *
@@ -26,6 +34,10 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *     the shell at text-meta. aria-hidden — affordances, not labels.
  *   iconLeft — name of a leading icon rendered inside the shell (e.g.
  *     "search-16"). iconSize overrides the size-derived default.
+ *   slotLeft — arbitrary leading node rendered inside the shell, before
+ *     iconLeft/prefix — the paint-bar anatomy ([swatch] FFFFFF is ONE
+ *     container, not two boxes; ColorSwatchFieldSizing 2026-08-12). The
+ *     consumer owns the node's sizing; the shell's padding frames it.
  *
  * Chrome (bg/border/padding/transition/disabled) comes from .kol-control;
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
@@ -42,6 +54,9 @@ export default function Input({
   chars,
   prefix,
   suffix,
+  slotLeft,
+  affordance,
+  unit,
   iconLeft,
   iconSize = null,
   placeholder,
@@ -61,7 +76,9 @@ export default function Input({
   const resolvedIconSize = iconSize ?? glyphSize(size)
 
   // ghost folds into outline (2026-07-08 chrome law): one secondary treatment.
-  const resolvedVariant = variant === 'ghost' ? 'outline' : variant
+  // property rides the filled chrome — it is a behaviour variant, not new paint.
+  const isProperty = variant === 'property'
+  const resolvedVariant = variant === 'ghost' ? 'outline' : isProperty ? 'filled' : variant
 
   const shellCls = [
     'kol-control',
@@ -69,8 +86,15 @@ export default function Input({
     `kol-control-${size}`,
     SIZE_TYPE[size],
     'cursor-text',
+    isProperty && 'w-full',
     className,
   ].filter(Boolean).join(' ')
+
+  /* Property width: the shell type is mono, so every glyph is exactly 1ch —
+   * `${len}ch` hugs the value with no probe element, and stays number-safe
+   * where the HTML `size` attr is ignored (<input type="number">). +2px keeps
+   * the caret from clipping at the end. Tracks `value` → controlled only. */
+  const propertyLen = Math.max(String(value ?? placeholder ?? '').length, 1)
 
   /* Pin inner input height to the typography token's line-height. Without
    * this the `<input>` renders ~0.5px taller than the equivalent <button>
@@ -83,7 +107,7 @@ export default function Input({
   const inputCls = [
     'min-w-0 bg-transparent border-none outline-none text-auto',
     heightCls,
-    !fixedChars && 'flex-1',
+    !fixedChars && !isProperty && 'flex-1',
     /* Balance the dim prefix/suffix visual weight with extra inner padding
      * on the opposite side. Without this the bright value sits closer to
      * the affordance than to the empty edge, reads off-balance. */
@@ -99,6 +123,9 @@ export default function Input({
       style={width ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
       aria-disabled={disabled || undefined}
     >
+      {slotLeft && (
+        <span className="flex items-center shrink-0 pr-2">{slotLeft}</span>
+      )}
       {iconLeft && (
         <span aria-hidden="true" className="flex items-center text-auto opacity-50 shrink-0 pr-2">
           <Icon name={iconLeft} size={resolvedIconSize} />
@@ -106,6 +133,9 @@ export default function Input({
       )}
       {prefix !== undefined && (
         <span aria-hidden="true" className="text-meta pr-1 shrink-0">{prefix}</span>
+      )}
+      {affordance !== undefined && (
+        <span aria-hidden="true" className="text-meta pr-1.5 shrink-0 inline-flex items-center">{affordance}</span>
       )}
       {/* Controlled only when a `value` prop is passed — otherwise stay
         * uncontrolled so prop-less usages (search stubs, quick demos) type
@@ -121,8 +151,12 @@ export default function Input({
         spellCheck={false}
         size={fixedChars ? chars : undefined}
         className={inputCls}
+        style={isProperty ? { width: `calc(${propertyLen}ch + 2px)` } : undefined}
         {...inputProps}
       />
+      {unit !== undefined && (
+        <span aria-hidden="true" className="text-meta shrink-0">{unit}</span>
+      )}
       {suffix !== undefined && (
         <span aria-hidden="true" className="text-meta pl-1 shrink-0">{suffix}</span>
       )}

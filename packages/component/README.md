@@ -30,3 +30,15 @@ import { Icon } from '@kolkrabbi/kol-icons'
 ```
 
 Atoms (Button, Input, Slider, Toggle\*, …), molecules (Dropdown, Tag, Badge, Modal, Popover, …), primitives (Accordion, Carousel, CodeBlock, Image, …), an organism (Table), graphics, and hooks (`useReveal`, `useScrollSpy`). See the [usage reference](https://github.com/Tor-Grimsson/kol-ds/tree/main/docs/usage) for real examples of each.
+
+### Deep imports — skip the barrel, skip the peers
+
+The barrel (`import { Button } from '@kolkrabbi/kol-component'`) statically imports the whole tree, so building against it requires every organism peer (`framer-motion`, `gsap`, `hls.js`) even if you render none of them — module resolution happens before tree-shaking. Consumers that want a slice import the file directly and only its own chain resolves:
+
+```jsx
+import Button from '@kolkrabbi/kol-component/atoms/Button'
+import Modal from '@kolkrabbi/kol-component/molecules/Modal'
+import useReveal from '@kolkrabbi/kol-component/hooks/useReveal'
+```
+
+Subpaths: `./atoms/*`, `./molecules/*`, `./organisms/*`, `./utilities/*` (`.jsx`) and `./hooks/*` (`.js`). Most files default-export their component; multi-part families (`Modal`, `MenuItem`, `Accordion`) export named — mirror whatever the barrel re-exports. The barrel stays for showcase-style consumers that want everything.

@@ -1,5 +1,5 @@
 import { ChessAnalysisLayout } from '@kolkrabbi/kol-chess'
-import * as chessData from '@kolkrabbi/kol-chess/data'
+import * as chessData from '../demo-data/chess.js'
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
 /**

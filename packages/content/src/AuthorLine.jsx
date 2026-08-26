@@ -9,14 +9,15 @@ import { Avatar } from '@kolkrabbi/kol-component'
  * @param {string} name     author name
  * @param {string} title    author role / title line (hidden when falsy)
  * @param {string} initial  avatar glyph; defaults to name's first char
+ * @param {string} [image]  resolved author-photo src; falls back to the initial
  * @param {'sm'|'md'|'lg'} size  Avatar size (default 'lg')
  * @param {string} className extra classes on the root
  */
-export default function AuthorLine({ name, title, initial, size = 'lg', className = '' }) {
+export default function AuthorLine({ name, title, initial, image, size = 'lg', className = '' }) {
   const glyph = initial ?? (name ? name.trim().charAt(0) : '')
   return (
     <div className={`flex items-center gap-4 ${className}`.trim()}>
-      <Avatar initial={glyph} size={size} />
+      <Avatar initial={glyph} src={image} alt={name ? `${name}` : ''} size={size} />
       <div className="flex flex-col">
         <span className="kol-helper-12 text-fg-48">{name}</span>
         {title && <span className="kol-mono-12 text-fg-64">{title}</span>}

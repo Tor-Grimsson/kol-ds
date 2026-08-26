@@ -11,10 +11,15 @@
  *   hex             — color string, e.g. '#FF6F00'. Ignored if showTransparent.
  *   selected        — adds active border + ring (border-fg-64 ring-1).
  *   size            — number (px) for fixed-size, 'fill' (w-full aspect-square,
- *                     for grid cells that should stay square), or 'stretch'
- *                     (w-full h-full, for grid cells that stretch to row height).
- *                     Default 24.
+ *                     for grid cells that should stay square), 'stretch'
+ *                     (w-full h-full, for grid cells that stretch to row height),
+ *                     or 'control-sm' (26px — the kol-control-sm row height, so
+ *                     a swatch sits flush beside sm input chrome in a paint bar;
+ *                     ColorSwatchFieldSizing 2026-08-12). Default 24.
  *   radius          — 'sm' (4px, default) | 'tight' (2px) | 'none' | 'full' (circle).
+ *                     Default was 'tight' until 2026-08-12 — flipped to 'sm' per
+ *                     the system radius law (containers are 4px everywhere);
+ *                     square-corner contexts opt out via 'tight'/'none'.
  *   frame           — boolean (default true). When false, no border drawn —
  *                     used by tightly-packed grid layouts.
  *   variant         — 'default' (border-based chrome) |
@@ -41,6 +46,12 @@ const SIZE_CLASSES = {
   stretch: 'w-full h-full',
 }
 
+/* Named px sizes that track the control ladder — inline style, not a
+ * utility class (package chrome never rides arbitrary utilities). */
+const NAMED_PX = {
+  'control-sm': 26, // kol-control-sm outer height — paint-bar swatch flush with sm input chrome
+}
+
 const RADIUS_CLASSES = {
   none:  'rounded-none',
   tight: 'rounded-[var(--kol-radius-xs)]',
@@ -54,7 +65,7 @@ export default function ColorSwatch({
   hex,
   selected = false,
   size = 24,
-  radius = 'tight',
+  radius = 'sm',
   frame = true,
   variant = 'default',
   hoverable = true,
@@ -66,9 +77,10 @@ export default function ColorSwatch({
   ...rest
 }) {
   const interactive = typeof onClick === 'function'
-  const isNamed = typeof size === 'string'
-  const sizeCls   = isNamed ? (SIZE_CLASSES[size] ?? '') : ''
-  const sizeStyle = isNamed ? null : { width: size, height: size }
+  const resolvedSize = NAMED_PX[size] ?? size
+  const isNamed = typeof resolvedSize === 'string'
+  const sizeCls   = isNamed ? (SIZE_CLASSES[resolvedSize] ?? '') : ''
+  const sizeStyle = isNamed ? null : { width: resolvedSize, height: resolvedSize }
 
   const isHalo  = variant === 'halo'
   const radiusCls = RADIUS_CLASSES[radius] ?? RADIUS_CLASSES.sm

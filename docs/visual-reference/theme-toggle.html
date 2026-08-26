@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>kol-ds-ui — ThemeToggle library · every shipped variation</title>
+<style>
+  body { margin: 0; display: flex; height: 100vh; }
+  iframe { flex: 1; border: 0; height: 100vh; }
+</style>
+</head>
+<body>
+<!-- Each pane is its own :root stamped data-theme, so the WHOLE token cascade
+     (surfaces → fg/oq derivations) computes honestly per theme — a .dark class
+     mid-tree cannot recompute :root-derived tokens. State syncs via the relay
+     below (one shared mode, like useTheme cross-instance sync). -->
+<iframe src="theme-toggle-pane.html?theme=light" title="light pane"></iframe>
+<iframe src="theme-toggle-pane.html?theme=dark" title="dark pane"></iframe>
+<script>
+  const frames = [...document.querySelectorAll('iframe')];
+  window.addEventListener('message', (e) => {
+    frames.forEach((f) => f.contentWindow.postMessage(e.data, '*'));
+  });
+</script>
+</body>
+</html>

@@ -1013,6 +1013,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "size",
       "type": "—",
       "def": "'md'",
@@ -1100,6 +1106,12 @@
       "prop": "rows",
       "type": "—",
       "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "axis",
+      "type": "—",
+      "def": "'both'",
       "desc": ""
     },
     {
@@ -1323,50 +1335,6 @@
       "desc": ""
     }
   ],
-  "InteractiveImage": [
-    {
-      "prop": "alt",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "shape",
-      "type": "—",
-      "def": "'M.96.217L.855.834a.09.09 0 01-.07.072L.166.994A.09.09 0 01.06.9L.04.166A.09.09 0 01.15.073L.89.13a.09.09 0 01.07.087z'",
-      "desc": ""
-    },
-    {
-      "prop": "magnitude",
-      "type": "—",
-      "def": "10",
-      "desc": ""
-    },
-    {
-      "prop": "perspective",
-      "type": "—",
-      "def": "500",
-      "desc": ""
-    },
-    {
-      "prop": "blur",
-      "type": "—",
-      "def": "10",
-      "desc": ""
-    },
-    {
-      "prop": "backdropScale",
-      "type": "—",
-      "def": "1.1",
-      "desc": ""
-    }
-  ],
   "SelectionOverlay": [
     {
       "prop": "showHandles",
@@ -1533,7 +1501,7 @@
     {
       "prop": "radius",
       "type": "—",
-      "def": "'tight'",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -1604,6 +1572,12 @@
       "prop": "options",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'neutral'",
       "desc": ""
     },
     {
@@ -2485,6 +2459,56 @@
       "desc": ""
     }
   ],
+  "RecordManager": [
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fields",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "publishLabel",
+      "type": "—",
+      "def": "'Publish'",
+      "desc": ""
+    },
+    {
+      "prop": "reorderLabel",
+      "type": "—",
+      "def": "(n) => `Reorder row ${n}`",
+      "desc": ""
+    },
+    {
+      "prop": "sortActive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "filterActive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "SpectrumGrid": [
     {
       "prop": "stops",
@@ -2516,6 +2540,12 @@
       "prop": "width",
       "type": "—",
       "def": "'panel'",
+      "desc": ""
+    },
+    {
+      "prop": "compact",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],

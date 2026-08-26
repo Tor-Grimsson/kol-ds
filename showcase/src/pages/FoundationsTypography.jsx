@@ -68,13 +68,18 @@ const TYPE_COLUMNS = {
     { accessor: 'role',  header: 'Role' },
     { accessor: 'cut',   header: 'Cut (live)', render: (r) => <span><LiveValue token={r.token} /></span> },
   ],
+  /* Full live spec (2026-08-12): size/weight/LH/LS all measured off the
+   * class probe, mirroring the mono columns. `Cut` names the Right Grotesk
+   * cut alone — repeating "sans-" per row was noise. */
   sans: [
     { accessor: 'cls',    header: 'Class',  render: (r) => <TokenName>{r.cls}</TokenName> },
     { accessor: 'sample', header: 'Sample',
       render: (r) => <span className={r.cls.replace(/^\./, '')}>Sample {r.cls.split('-').slice(-2).join('-')}</span> },
-    { accessor: 'size',   header: 'Size',   render: (r) => r.tokenName ? <LiveValue token={r.tokenName} /> : '—' },
-    { accessor: 'family', header: 'Family' },
+    { accessor: 'size',   header: 'Size (live)',   render: (r) => <LiveClassValue cls={r.cls} prop="font-size" /> },
     { accessor: 'weight', header: 'Weight (live)', render: (r) => <LiveClassValue cls={r.cls} prop="font-weight" /> },
+    { accessor: 'lh',     header: 'LH (live)',     render: (r) => <LiveClassValue cls={r.cls} prop="line-height" /> },
+    { accessor: 'ls',     header: 'LS (live)',     render: (r) => <LiveClassValue cls={r.cls} prop="letter-spacing" /> },
+    { accessor: 'cut',    header: 'Cut' },
   ],
   prose: [
     { accessor: 'role',   header: 'Role' },
@@ -89,7 +94,7 @@ const TYPE_COLUMNS = {
       render: (r) => SPECIMENS[r.class] ? <span data-toc-skip>{SPECIMENS[r.class].render()}</span> : '—' },
     { accessor: 'face',   header: 'Face (live)',
       render: (r) => SPECIMENS[r.class] ? <LiveNodeFace nodeRef={SPECIMENS[r.class].ref} /> : '—' },
-    { accessor: 'family', header: 'Family (spec)' },
+    { accessor: 'cut',    header: 'Cut (spec)' },
     { accessor: 'weight', header: 'Weight (live / spec)',
       render: (r) => SPECIMENS[r.class]
         ? <span><LiveNodeValue nodeRef={SPECIMENS[r.class].ref} prop="font-weight" /> / {r.weight}</span>

@@ -1,5 +1,39 @@
 # @kolkrabbi/kol-icons
 
+
+## 0.18.0 — 2026-08-15
+
+- **`filter.svg` corrected to the set keyline.** It was drawn 17.0 × 15.5 with
+  a 4.5 top inset while the set sits on ~3 (`search.svg` is 17.8 × 17.8 at 3.3)
+  — so at the same nominal size it rendered visibly smaller than the glyph
+  beside it. Scaled 1.047 about its own centre and recentred: 17.8 × 16.2,
+  symmetric insets. Same path, same 1.5 keyline, no shape change.
+
+## 0.17.0 — 2026-08-15
+
+### Minor Changes
+
+- **The kol-shell rail batch — `rack` minted, the other two names map.** kol-shell
+  adopters carried a local Icon component just to feed the rail, because three of
+  its glyph names didn't resolve. Taken from kol-monitor's local shelf (the source
+  of the report), prefixes dropped per the set convention:
+
+  - **`rack`** minted into `device/` — kol-monitor's drawing verbatim (bordered
+    box + two dividers; already currentColor, 1.5 stroke). Inventory **199 · 27**.
+  - **`nav-library` → `library`** — NOT minted: the shipped `files/library`
+    drawing is the same glyph (three spines + one leaning).
+  - **`nav-settings` → `settings-01`** — NOT minted: the set's settings glyph.
+    Consumers swap the names in their nav data and delete the local Icon shelf.
+
+## 0.16.0 — 2026-08-14
+
+- Four glyphs promoted from the retired shelves under plain names (DashboardIconCoverage,
+  approved frame-by-frame): `crown` · `trophy` · `stopwatch` (misc) + `users` (nav).
+  Inventory 198 icons · 27 groups.
+- Three dashboard names deliberately NOT minted — shipped drawings cover them; consumers
+  swap the name: `dashboard-bookmark`→`bookmark` · `dashboard-roadmap`→`roadmap` ·
+  `trending`→`trending-up`.
+
 ## 0.5.0
 
 ### Minor Changes

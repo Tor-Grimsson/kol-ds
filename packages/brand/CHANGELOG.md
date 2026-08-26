@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-brand
 
+> **Gap:** 0.1.0 → 0.1.2 shipped without entries (that history lives in the repo's
+> session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
+> breaking or global-surface changes (token renames, default flips, new bare-element
+> rules) are flagged **BREAKING**.
+
 ## 0.1.0
 
 ### Minor Changes

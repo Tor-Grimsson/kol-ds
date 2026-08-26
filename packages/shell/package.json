@@ -1,0 +1,49 @@
+{
+  "name": "@kolkrabbi/kol-shell",
+  "version": "0.6.1",
+  "private": false,
+  "description": "KOL application shell — fixed 48px NavRail + AppShell layout root, PageShell/PageHeader scaffolds, ContentFilters catalog organism, GridCard, SettingsScaffold, WalkthroughPanel, ShortcutsOverlay. App chrome (kol-framework owns site chrome). Nav items, content, shortcuts and settings are consumer-injected. Sits above @kolkrabbi/kol-{theme,component,framework}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./src/*": "./src/*"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.38.0",
+    "@kolkrabbi/kol-framework": ">=0.20.0",
+    "@kolkrabbi/kol-icons": ">=0.16.0",
+    "@kolkrabbi/kol-theme": ">=0.41.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-framework": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "shell",
+    "app-shell",
+    "nav-rail",
+    "layout"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/shell"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

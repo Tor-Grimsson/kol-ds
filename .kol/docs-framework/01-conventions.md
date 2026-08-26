@@ -139,29 +139,26 @@ At any folder level, you have:
 
 Reason: Finder and Obsidian both group folders before files. Mixing breaks the numeric sequence visually — `01-foo.md, 02-bar/, 03-baz.md` displays as `02-bar/, INDEX.md, 01-foo.md, 03-baz.md`.
 
-**Single-doc folders are fine.** `01-architecture/INDEX.md` IS the architecture doc, with `type: decisions` in frontmatter. The folder reserves the namespace for future growth.
+**An INDEX is never the content.** Even a folder holding exactly one doc keeps them separate: `01-architecture/INDEX.md` routes, `01-architecture/01-decisions.md` holds the decisions.
 
 ## INDEX's role
 
-INDEX.md is a **position**, not an archetype. It exists **when it adds signal** — not as a default at every folder level.
+**An `INDEX.md` explains the other files in its folder. That is its whole job.** It is always
+`type: index`, it always routes, and it **never** carries the folder's content — no exceptions, no
+"when it adds signal" test, no single-doc case.
 
-**Have an INDEX when:**
-- The folder has multiple subfolders that need framing (a pillar entry routing to sections)
-- The folder has a substantive "why this section exists" story worth telling
-- The folder contains one substantive doc that IS the folder's content (single-doc subfolder)
+| | |
+|---|---|
+| **Every folder gets one** | `INDEX.md` at every level: repo `docs/`, each shelf, each section folder |
+| **Type is fixed** | `type: index`. Reaching for `decisions`/`audit`/`reference` means writing content into a router |
+| **Content lives in siblings** | numbered files beside the INDEX (`01-decisions.md`), even when there is only one |
+| **Length is a symptom** | an INDEX past a screen is content wearing a router's name |
 
-**Skip an INDEX when:**
-- The folder is a leaf with a handful of related files and the parent's INDEX can list them directly
-- The folder content is self-evident from filenames (sequential playbook, simple reference catalog)
-- The INDEX would only duplicate what the parent INDEX already says
+A conditional rule is what let the content in, so the condition is gone. One doc in a folder →
+`INDEX.md` + `01-<thing>.md`. If that feels like ceremony, the folder was not needed — put the doc
+in the parent as a numbered file and skip the folder.
 
-**Types based on role:**
-
-- Single-doc folder → INDEX *is* that doc, with the relevant `type:` in frontmatter (`decisions`, `audit`, etc.)
-- Multi-doc folder with substantive framing → INDEX is `type: index` and routes to children
-- No INDEX → parent INDEX describes the folder's contents directly
-
-**Default is no INDEX.** Add one when a child listing alone isn't enough.
+*(Ruled 2026-08-15 in the canonical `kol-docs-md/02-doc-anatomy.md`; this copy follows.)*
 
 ## H1
 

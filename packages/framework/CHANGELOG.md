@@ -1,5 +1,112 @@
 # @kolkrabbi/kol-framework
 
+> **Gap:** 0.8.0 → 0.19.0 shipped without entries (that history lives in the repo's
+> session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
+> breaking or global-surface changes (token renames, default flips, new bare-element
+> rules) are flagged **BREAKING**.
+
+## 0.23.0 — 2026-08-26
+
+### Minor Changes
+
+- **SideNav's box lives in `.kol-sidenav`, not in utilities**
+  (SideNavMobilePosition, kol-website's mobile audit). The aside's className
+  carried `sticky top-0 self-start h-dvh flex flex-col z-20`, and a utility
+  outranks every rule in this layered sheet — so the 767px drawer block's
+  `position: fixed` never won, the aside stayed in flow, the one-column grid
+  handed it an 852px row and **every consumer page opened one viewport down
+  on phones**. Same law as 0.15.2's hop fix, one element up: the box is in
+  the rule, the JSX keeps only colour utilities. Consumers carrying a
+  `position: fixed` stopgap for `.kol-sidenav` below 768px can delete it.
+- **ShellHeader scrolls the active tab into view** (WorkshopShellMobile).
+  The tab strip already scrolled, but on a phone the current section's tab
+  sat past the strip's edge (measured "Dashboard" at x=347–445 in a 345px
+  strip). When the active tab is out of view it is scrolled to the strip's
+  start edge, before paint; a wide viewport never moves. The strip snaps to
+  tab starts on a flick (`scroll-snap-type: x proximity`). No edge fade — the
+  2026-07-28 ruling against scroll-edge paint stands.
+
+## 0.22.0 — 2026-08-15
+
+### Minor Changes
+
+- **`:root { scrollbar-gutter: stable }` ships here.** Promoted from kol-fxr's
+  `src/index.css`, where it was the only rule in a file that should hold
+  nothing but imports. It stops a full-bleed surface inducing a horizontal
+  scroll when a vertical scrollbar appears — chrome every app on this
+  framework wants, not one consumer's business.
+
+  **Global surface change:** it lands on `:root` inside the `components`
+  layer, so any consumer already reserving the gutter is unaffected and any
+  consumer wanting it off can override from the utilities layer. Inert on
+  overlay-scrollbar platforms.
+
+## 0.21.1 — 2026-08-15
+
+### Patch Changes
+
+- **The `--kol-rail-*` family is px.** It shipped mirroring the sidenav's
+  `16rem` / `12rem` / `var(--kol-spacing-4)`, which copied a rem convention
+  into a new token family instead of using the px this system actually sizes
+  chrome in. Now `--kol-rail-w: 256px`, `--kol-rail-snap: 192px`,
+  `--kol-rail-step: 16px` — the same resolved values, no rem.
+
+  `--kol-sidenav-*` is deliberately left alone: it is shipped, consumers
+  override it, and rewriting it is a separate call.
+
+## 0.21.0 — 2026-08-15
+
+### Minor Changes
+
+- **`useDragResize` is side-agnostic.** New second argument
+  `useDragResize(ref, { token, side })`. Every name the gesture touches — the
+  CSS custom properties, the `data-*` attributes and both `localStorage` keys —
+  is now derived from one `token` string instead of being hardcoded, and
+  `side: 'right'` inverts both the pointer sign and the arrow keys so a
+  right-hand rail's handle drags the way it faces.
+
+  **Nothing changes for existing callers.** The defaults (`'kol-sidenav'`,
+  `'left'`) reproduce the 0.17.0 names byte-for-byte — `SideNav` still calls it
+  with one argument. `scripts/check-dragresize-names.mjs` asserts exactly that
+  against a hand-transcribed copy of the old contract, because a drift there
+  would be silent: the rail would read variables nobody writes and persist
+  under keys nobody reads, with no error anywhere.
+
+  Filed as `ThreeColumnEditorShell` from kol-fxr, whose right-hand inspector
+  had no drag handle at all — the hook was sidenav-shaped by construction, so
+  pointing a second rail at it resized both off one `:root` variable.
+
+- **Inspector-rail grid track.** `--kol-rail-{w,w-collapsed,snap,step,snap-default}`
+  and `.kol-brand-layout[data-rail="true"]` — nav · content · inspector, with
+  each rail's track behind a private variable so the two collapse independently
+  off one rule each rather than a 2×2 of combined states. `--kol-toc-w` (160px,
+  a docs table-of-contents) was previously the only third column the shipped
+  grid knew, which is why every editor-shaped app restated the whole template
+  locally.
+
+  Deliberately **not** behind the TOC's `min-width: 1280px` gate: an editor's
+  inspector is the surface, not an enhancement that may drop away.
+
+## 0.20.1 — 2026-08-15
+
+### Patch Changes
+
+- **`.kol-embla-btn` centres its glyph.** The carousel nav buttons carried the
+  literal text characters `‹` and `›` and centred on line-height alone; they draw
+  real chevron icons now (kol-component 0.41.0 `EmblaNav`), so the rule gains
+  `inline-flex` + centring. Text-glyph callers are unaffected.
+- **`.kol-embla-controls.is-inline`** — the prev/next pair in a header row rather
+  than under the viewport: no top gap, start-aligned. kol-website's
+  FeaturedCarousel fork put its nav in the header, and that was the one thing
+  the position needed a name for.
+
+## 0.20.0 — 2026-08-14
+
+- Subpath exports: `./src/*` added to the exports map (same treatment kol-component got
+  in 0.35.0). `import ThemeToggle from '@kolkrabbi/kol-framework/src/ThemeToggle.jsx'`
+  is now legal without the pnpm patch kol-monitor and kol-mirror carry to reach past the
+  barrel — the patch dies on this bump.
+
 ## 0.8.0
 
 ### Minor Changes

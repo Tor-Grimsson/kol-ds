@@ -1,10 +1,14 @@
 // @kolkrabbi/kol-chess — the chess analysis apparatus.
 // Styling ships in @kolkrabbi/kol-theme (kol-components-chess.css, layer components).
 // Components take a `chessData` adapter (ChessAnalysisLayout / GameArchiveTable /
-// ChessHero / ChessControlsProvider). A ready adapter ships at @kolkrabbi/kol-chess/data
-// (bundled demo set + B2 CDN fetch for the full archive); or bring your own with:
+// ChessHero / ChessControlsProvider). This package is presentation only — it ships
+// NO adapter and never fetches. The consuming app owns its data source and passes
+// an object with:
 //   getSampleGames(), getManifest(), getMonthlySummary(),
 //   getRandomMonth(), loadMonthGames(month), getGamePgnByIdAsync(id, month)
+// Reference implementation: kol-chess/src/data/sample-games.js.
+// (Until 0.6.0 an adapter shipped here as ./data. A CDN host does not belong in a
+// design system — it moved to the app that owns the pipeline.)
 
 // Apparatus
 export { default as ChessAnalysisLayout } from './apparatus/ChessAnalysisLayout.jsx'

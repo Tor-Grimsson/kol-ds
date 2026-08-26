@@ -1,5 +1,5 @@
 import { ChessAnalysisLayout, useChessControls } from '@kolkrabbi/kol-chess'
-import * as chessData from '@kolkrabbi/kol-chess/data'
+import * as chessData from '../demo-data/chess.js'
 
 export const meta = {
   title: 'Chess apparatus',
@@ -16,7 +16,7 @@ export const stage = 'full'
 /* Renders the SHIPPED package (@kolkrabbi/kol-chess) — the same code the monorepo
  * installs — so the gallery can't drift from what's published. Styling comes from
  * @kolkrabbi/kol-theme (kol-components-chess.css). Game data comes from the package's
- * own adapter (@kolkrabbi/kol-chess/data — getSampleGames / getManifest /
+ * own adapter (the app supplies it — getSampleGames / getManifest /
  * getMonthlySummary / getRandomMonth / loadMonthGames / getGamePgnByIdAsync; demo set
  * bundled, full archive fetched from the B2 CDN). */
 /* The brief-2.0 `panel` seam, exercised: a compact strip INSIDE the provider

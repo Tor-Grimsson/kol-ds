@@ -71,7 +71,7 @@ Gate: **`pnpm validate:fences`**. `text` is a legal language — it says *this i
 
 | Class | File |
 |---|---|
-| `.kol-codeblock` + `--sm` `--md` `--bare` `-wrapper` `-filename` `-copy` | `kol-components-molecules.css` |
+| `.kol-codeblock` + `--sm` `--md` `--bare` `-wrapper` `-filename` `-copy` `-line` | `kol-components-molecules.css` — `-line` is stamped per line by `CodeBlock.jsx`; a chipless block's first line reserves the copy control's lane through it (2026-08-26) |
 | `.kol-doc-code` · `.kol-doc-code-inline` | `kol-type-roles.css` |
 | `.kol-doc-table-token` · `.kol-doc-table-copy` | `kol-type-roles.css` |
 | `.kol-doc-table-value` | `kol-type-roles.css` — **deprecated**, a slot name doing two jobs |

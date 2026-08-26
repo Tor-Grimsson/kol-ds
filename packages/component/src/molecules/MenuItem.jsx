@@ -101,7 +101,11 @@ export function MenuDropdownItem({ onClick, disabled, prefix, iconLeft, shortcut
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
-      <span className="flex-1 truncate">{children}</span>
+      {/* leading-normal: kol-helper-12 is line-height 1, and truncate's
+        * overflow clip cuts mono descenders on a 1-em line box ("Show grid"
+        * loses its g). The h-8 centered row absorbs the taller line box —
+        * zero layout shift (MenuItemDescenderClip, 2026-08-12). */}
+      <span className="flex-1 truncate leading-normal">{children}</span>
       {shortcut && <span className="kol-helper-10 text-emphasis shrink-0 inline-flex items-center">{shortcut}</span>}
     </button>
   )
@@ -133,7 +137,8 @@ export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
       >
         {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
         {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
-        <span className="flex-1 truncate">{label}</span>
+        {/* leading-normal — same descender fix as MenuDropdownItem above. */}
+        <span className="flex-1 truncate leading-normal">{label}</span>
         <Icon
           name="chevron-down"
           size={10}

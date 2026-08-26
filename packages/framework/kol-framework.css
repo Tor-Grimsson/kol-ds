@@ -19,6 +19,15 @@ body {
   color: var(--kol-surface-on-primary);
 }
 
+/* Reserve the scrollbar gutter so a full-bleed surface cannot induce a
+   horizontal scroll when a vertical scrollbar appears (2026-08-15, promoted
+   from kol-fxr's index.css — a consumer's entry stylesheet is for IMPORTS,
+   and this is chrome every app on this framework wants). Consumers on an
+   overlay-scrollbar platform pay nothing; the property is inert there. */
+:root {
+  scrollbar-gutter: stable;
+}
+
 /* The global user-select:none gate + allowlist was REMOVED 2026-07-29 (user
  * law, brand-app ruling): text is selectable everywhere — copyability beats
  * chrome purity. */
@@ -142,6 +151,25 @@ body {
   margin-bottom: 0.5rem;
 }
 .kol-sidenav-footer { padding-inline: 1.5rem 1rem; }
+
+/* The aside's OWN box (SideNavMobilePosition, kol-website 2026-08-25) — the
+ * hop's law above, one element up. `sticky top-0 self-start h-dvh flex
+ * flex-col z-20` rode the className, and a utility outranks every rule in
+ * this layer — so the 767px drawer block below (`position: fixed`) never won:
+ * the aside stayed IN FLOW, the one-column grid handed it an 852px row, and
+ * every consumer page opened one viewport down on phones (probe: aside
+ * `sticky`, content top=852 at 393; the consumer's stopgap was one media rule
+ * re-stating `fixed`). Declared here, the drawer rule beats it by source
+ * order — which is how it was written to work. */
+.kol-sidenav {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  z-index: var(--kol-z-sticky);
+}
 
 /* :root[data-sidenav="collapsed"] — the manual collapse, rebuilt DELIBERATELY
  * 2026-08-09 (lobby: SideNavGrabResize) after the 2026-07-29 removal of the
@@ -472,6 +500,15 @@ body {
   margin-top: 16px;
 }
 
+/* Inline — the pair sits in a header row beside the label/counter instead of
+ * under the viewport, so it owns neither the top gap nor the end-alignment.
+ * kol-website's FeaturedCarousel fork put its nav in the header; that is the
+ * one thing the fork did that the position needed a name for (2026-08-15). */
+.kol-embla-controls.is-inline {
+  margin-top: 0;
+  justify-content: flex-start;
+}
+
 .kol-embla-btn {
   width: 40px;
   height: 40px;
@@ -479,6 +516,11 @@ body {
   background: transparent;
   cursor: pointer;
   font-size: 16px;
+  /* Centres the chevron glyph. The buttons carried literal ‹ › text until
+   * 2026-08-15 and centred on line-height alone; EmblaNav draws real icons. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kol-embla-btn:disabled {
@@ -803,6 +845,44 @@ body {
   }
 }
 
+/* ───── Inspector rail — the OTHER third column (ThreeColumnEditorShell, kol-fxr 2026-08-15) ───── */
+
+/* --kol-toc-w is a 160px docs table-of-contents and was the only third column
+   the shipped grid knew, so every editor-shaped app restated the whole
+   template locally to get an inspector. This is that column, sized and named
+   as what it is. Deliberately NOT behind the TOC's min-width:1280px gate — an
+   editor's inspector is the surface, not an enhancement that may drop away.
+
+   NOTE ON THE ATTRIBUTE, because the word does double duty exactly as
+   `sidenav` already does: `data-rail="true"` on .kol-brand-layout is the
+   layout OPT-IN, while `data-rail="collapsed"` on :root is the GESTURE STATE
+   written by useDragResize({ token: 'kol-rail' }). Different elements, same
+   precedent as data-toc / data-sidenav above. */
+:root {
+  --kol-rail-w: 256px;                              /* the same standard --kol-sidenav-w resolves to */
+  --kol-rail-snap: 192px;                           /* drag under this snaps to -w-collapsed */
+  --kol-rail-step: 16px;                            /* keyboard resize increment */
+  --kol-rail-snap-default: var(--kol-rail-step);    /* release within this of the default clears the override */
+  --kol-rail-w-collapsed: 56px;
+}
+
+/* Each rail's track is its own private var, so the two collapse INDEPENDENTLY
+   off one rule each — not the four rules a 2×2 of collapsed states would cost. */
+.kol-brand-layout[data-rail="true"] {
+  --_kol-nav-track: var(--kol-sidenav-w);
+  --_kol-rail-track: var(--kol-rail-w);
+  grid-template-columns: var(--_kol-nav-track) minmax(0, 1fr) var(--_kol-rail-track);
+}
+:root[data-sidenav="collapsed"] .kol-brand-layout[data-rail="true"] {
+  --_kol-nav-track: var(--kol-sidenav-w-collapsed);
+}
+:root[data-rail="collapsed"] .kol-brand-layout[data-rail="true"] {
+  --_kol-rail-track: var(--kol-rail-w-collapsed);
+}
+
+/* Same reason as the sidenav's: the grid ease would trail the pointer. */
+:root[data-rail-dragging] .kol-brand-layout { transition: none; }
+
 /* SideNav collapsibleSections chrome — inert unless that mode renders.
    The forced rail (≤1024px) hides count/toggle with the labels; the open
    ≤767px drawer restores them, mirroring -hop-label. (Manual .is-collapsed
@@ -833,7 +913,15 @@ body {
   }
 }
 
-/* Tab strip — horizontally scrollable, scrollbar hidden. */
+/* Tab strip — horizontally scrollable, scrollbar hidden.
+ * Snaps to a tab's start on a flick (WorkshopShellMobile, kol-website
+ * 2026-08-25): the strip measured 613px of tabs in a 345px viewport and did
+ * scroll, but a swipe could settle on half a label. `proximity`, not
+ * `mandatory` — the last tabs can never reach a start position, and mandatory
+ * would refuse to show them. ShellHeader.jsx scrolls the active tab into view
+ * on load, to the same start edge, so the two never fight. NO edge fade: the
+ * 2026-07-28 ruling bans scroll-edge paint (the table wrapper's cover
+ * gradients died for it 2026-08-09). */
 .kol-shell-header-tabs {
   display: flex;
   flex-wrap: nowrap;
@@ -842,6 +930,7 @@ body {
   padding-top: 8px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
 }
 
 .kol-shell-header-tabs::-webkit-scrollbar {
@@ -870,6 +959,7 @@ body {
   border-bottom: 2px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
   text-decoration: none;
+  scroll-snap-align: start;
 }
 
 .kol-shell-header-tab:hover {

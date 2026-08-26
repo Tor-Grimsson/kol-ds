@@ -104,6 +104,14 @@ Plus: a `:focus-visible` ring everywhere (2px `--kol-focus-ring`, offset 2); `:d
 | **SegmentedToggle** | Cells padding-matched to the button size scale — heights pixel-identical (26/32/40). |
 | **Slider** | Exempt — a bare range row, not a pressable surface. One look, no variants (see [[01-inventory\|inventory]]). |
 
+## Touch floor
+
+**Every pressable control clears a 24×24 hit box; nothing gets a type floor (user ruling 2026-08-26 — `MobileTouchFloor`, filed off kol-website's mobile audit, which counted 100–430 sub-11px elements per brand page and 14–26px hit areas).**
+
+- **Type: no mobile step.** `kol-helper-10` / `kol-mono-10` and the 10.4px table header are the ruled chrome voice at every width. A floor would reflow every rail and table on phones for a class of text that is labels, not copy.
+- **Hit area: 24px** (WCAG 2.5.8 AA), reached **without moving the drawn size**. The size scale (26/32/40) already clears it, as does `.kol-seg-cell` (24). Two controls sat under it and were lifted in theme **0.51.0**: the bare `ToggleSwitch` (a 12px track in a 1px border — 14px) takes a `::before` extent, 24px tall, centred on the button; `Slider`'s range input (2px — the track was the whole target) is 24px tall with the 2px track centred inside it by the UA's `align-self: center` on the runnable track, thumb unchanged.
+- **Not the DS's:** a consumer's own 16px table buttons and 12px-tall links. The same rule applies there — extend the hit box, never the glyph.
+
 ## Icon box
 
 **Any icon-only control in chrome is `IconFrame variant="nav" size="…"` — nothing hand-writes the square (user ruling 2026-08-01).**

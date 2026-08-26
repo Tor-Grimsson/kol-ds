@@ -21,8 +21,19 @@ Cascade order is load-bearing — `kol-theme` must come after Tailwind so its co
 
 All KOL rule CSS lives in the `components` cascade layer, so your Tailwind utility classes always win over KOL chrome (`<Input className="hidden sm:block">` behaves as written). Your own unlayered CSS wins over everything KOL ships.
 
+## The `@source` contract — required for every KOL package that ships JSX
+
+Tailwind v4 **does not scan `node_modules`**, so layout utilities emitted inside KOL components never generate unless you point the scanner at each package's source. Without these lines components **silently degrade** — no error, no warning, just missing layout/motion (a frozen ThemeToggle roll, a collapsed AppShell grid). Paste one line per installed KOL package, next to the imports above:
+
+```css
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+```
+
+(Adjust the relative path to your CSS file's location. Component-load-bearing *chrome* lives in this package's CSS and needs no `@source` — the contract covers the remaining per-render utilities.)
+
 ## Fonts
 
-The typography CSS references the brand fonts at absolute paths (`/fonts/Right-Grotesk/…`, `/fonts/jetbrains-mono/…`). **The package does not ship the font files** — your app must serve them from `/fonts/` (e.g. drop them in your `public/` dir). The showcase in this repo does exactly that. Without them, type falls back to system fonts.
+The typography CSS references the brand fonts at absolute paths (`/fonts/right-grotesk/…`, `/fonts/jetbrains-mono/…`). **The package does not ship the font files** — your app must serve them from `/fonts/` (e.g. drop them in your `public/` dir). The showcase in this repo does exactly that. Without them, type falls back to system fonts.
 
 Pure CSS — no JS, no dependencies.

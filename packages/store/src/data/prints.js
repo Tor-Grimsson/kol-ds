@@ -2,8 +2,7 @@
  * @kolkrabbi/kol-store/data — demo print catalog + pricing fixture.
  *
  * A ready-to-drop DEMO adapter for the storefront components (PrintsGrid,
- * ScrollDriftGallery, ProductDetailLayout, PrintBuyButton), mirroring how
- * `@kolkrabbi/kol-chess/data` ships a bundled demo set. It is NOT production
+ * ScrollDriftGallery, ProductDetailLayout, PrintBuyButton), It is NOT production
  * data — every commerce specific has been severed to a placeholder:
  *
  *   - CDN_BASE is a placeholder host (`cdn.example.com`), not real infra.

@@ -1,5 +1,5 @@
 import { AlternativeControlsMock, ChessControlsProvider } from '@kolkrabbi/kol-chess'
-import * as chessData from '@kolkrabbi/kol-chess/data'
+import * as chessData from '../demo-data/chess.js'
 
 export const stage = 'md'
 

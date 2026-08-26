@@ -236,7 +236,8 @@ export default function FieldRow({
       <div className={`kol-mono-12 text-emphasis${type === 'media' ? ' self-start pt-1' : ''}`}>{label}</div>
       <div className="min-w-0">{control}</div>
       {hint != null && (
-        <div className="col-start-2 kol-helper-12 text-meta pt-2 truncate">{hint}</div>
+        /* leading-normal: descender fix (MenuItemDescenderClip sweep, 2026-08-12) */
+        <div className="col-start-2 kol-helper-12 text-meta pt-2 truncate leading-normal">{hint}</div>
       )}
     </div>
   )

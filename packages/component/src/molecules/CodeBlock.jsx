@@ -1,6 +1,6 @@
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import CopyButton from '../atoms/CopyButton.jsx'
+import CopyButton from './CopyButton.jsx'
 
 /**
  * CodeBlock — REPLICATED from the elder reference
@@ -51,6 +51,15 @@ const syntaxTheme = (foregroundToken = 80) => ({
     display: 'block',
     borderRadius: 0,
     border: 'none',
+    /* THE BLOCK WRAPS (06-code-surface.md: Block · pre-wrap + overflow-x auto)
+     * and this is the one place that decides it. oneDark's code style carries
+     * `whiteSpace: 'pre'`, and react-syntax-highlighter spreads the theme's
+     * code style AFTER its own `wrapLongLines` pre-wrap — so the prop, the
+     * .kol-codeblock rule and customStyle all said wrap while the <code>
+     * computed `pre`, and every long line scrolled instead (measured on
+     * /stack/vcap at 393: block 359 wide, content 465–759, CodeBlockMobile-
+     * Overflow, kol-website 2026-08-25). */
+    whiteSpace: 'pre-wrap',
     color: `color-mix(in srgb, var(--kol-surface-on-primary) ${foregroundToken}%, transparent)`
   },
   comment: {
@@ -95,7 +104,11 @@ export default function CodeBlock({ children, code: codeProp, language: language
           wrapLines={true}
           wrapLongLines={true}
           PreTag="div"
+          /* `kol-codeblock-line` names each wrapped line so the theme can
+           * reserve the copy control's lane on the FIRST one when no chip row
+           * exists (kol-components-molecules.css). */
           lineProps={{
+            className: 'kol-codeblock-line',
             style: {
               border: 'none',
               background: 'transparent',
@@ -105,7 +118,7 @@ export default function CodeBlock({ children, code: codeProp, language: language
         >
           {code}
         </SyntaxHighlighter>
-        <CopyButton text={code} className="kol-codeblock-copy" />
+        <CopyButton text={code} className="kol-frame-control" />
       </div>
     </div>
   )

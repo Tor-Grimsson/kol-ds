@@ -3,7 +3,7 @@ title: Release pipeline
 type: playbook
 status: active
 created: 2026-07-31
-updated: 2026-08-01
+updated: 2026-08-14
 audience: internal
 description: How to ship a new package version
 providers:
@@ -24,7 +24,29 @@ related:
 
 # The release pipeline
 
-How a change to the KOL packages becomes a new version on npm. Once the one-time setup (§0) is in place, **every release is the same three moves: add a changeset → push → merge the auto-opened PR.** CI does the actual publishing; you never run `npm publish` by hand.
+How a change to the KOL packages becomes a new version on npm.
+
+## 0. The live path — direct publish (the ritual since 2026-07, written down 2026-08-14)
+
+The changesets/CI flow below still works and remains the CI alternative, but the
+practiced path is a local direct publish. Every wave is the same five moves, **none
+skippable**:
+
+1. **Bump with the edit** — same-version/different-content vs npm is the recurring trap.
+2. **Write the `CHANGELOG.md` entry — this is part of the publish, not optional.**
+   One entry per package per wave, even one sentence. Flag breaking or global-surface
+   changes (**token renames, default-value flips, new bare-element rules, moved asset
+   paths**) as **BREAKING** — a flipped default is invisible at the call site and silent
+   at build time, and it is the class of change that has repeatedly bitten consumers
+   (ThemeToggle `icon`→`button`, Pill `size`→`sm`, component 0.28.0's broken publish).
+3. `pnpm publish --no-git-checks` from the package dir.
+4. **Verify on the registry** — `npm view @kolkrabbi/kol-<name> version`.
+5. **Update [[02-shipped-packages|SHIPPED-PACKAGES.md]]** in the same pass — and where
+   the wave answers a lobby ticket, close the ticket with the version cited.
+
+> The changelogs carry a dated **gap note** (0.6.0 → 0.40.0 era shipped without
+> entries — that history is in the session logs). The gap is closed as of 2026-08-14;
+> a publish without a changelog entry reopens it.
 
 ## The mental model
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 /* Grab-edge resize + collapse for SideNav — THE single control since 0.17.0
  * (user build order 2026-08-09, completing the SideNavGrabResize brief: the
@@ -23,15 +23,42 @@ import { useEffect, useRef, useState } from 'react'
  *  - Width + state survive reload ('kol-sidenav' keeps the consumers'
  *    existing 'collapsed'|'expanded' schema; width under its own key).
  *
- * Every value the gesture needs is a --kol-sidenav-* token in
- * kol-framework.css — no literals here except the click slop, which is a
- * gesture constant, not chrome. Missing tokens leave the gesture inert. */
+ * Every value the gesture needs is a --<token>-* custom property in the
+ * consumer's CSS — no literals here except the click slop, which is a
+ * gesture constant, not chrome. Missing tokens leave the gesture inert.
+ *
+ * SIDE-AGNOSTIC since ThreeColumnEditorShell (kol-fxr, 2026-08-15): the name
+ * family and the drag direction are both arguments now, so a right-hand
+ * inspector rail reuses this gesture — pointer, keyboard, snap, collapse and
+ * persistence — instead of reimplementing it. The bullets above describe the
+ * DEFAULT ('kol-sidenav', side 'left'), which is byte-identical to 0.17.0. */
 
-const STATE_KEY = 'kol-sidenav'
-const WIDTH_KEY = 'kol-sidenav-w'
 const CLICK_SLOP_PX = 3
 
 const root = () => document.documentElement
+
+/* Every name the gesture touches, derived from ONE token (ThreeColumnEditorShell,
+ * filed from kol-fxr 2026-08-15). The default token reproduces the hardcoded
+ * 0.17.0 names EXACTLY — 'kol-sidenav' → data-sidenav, --kol-sidenav-w,
+ * storage 'kol-sidenav'/'kol-sidenav-w' — so SideNav and every existing caller
+ * are untouched by this generalisation.
+ *
+ * The data-attribute drops the `kol-` prefix because that is what the shipped
+ * CSS already selects (`:root[data-sidenav="collapsed"]`), not a new scheme. */
+export function buildNames(token) {
+  const base = token.replace(/^kol-/, '')
+  return {
+    stateKey: token,
+    widthKey: `${token}-w`,
+    collapsedAttr: `data-${base}`,
+    draggingAttr: `data-${base}-dragging`,
+    wVar: `--${token}-w`,
+    collapsedVar: `--${token}-w-collapsed`,
+    snapVar: `--${token}-snap`,
+    stepVar: `--${token}-step`,
+    snapDefaultVar: `--${token}-snap-default`,
+  }
+}
 
 /* Resolve a length token to px, or null when it is absent/unparsable. */
 function readVarPx(name) {
@@ -43,23 +70,38 @@ function readVarPx(name) {
 
 /* Imperative DOM writes — pointermove must never re-render the nav tree.
  * React state syncs from the DOM at rest (release / key press / reset). */
-const stampCollapsed = (on) => {
-  if (on) root().setAttribute('data-sidenav', 'collapsed')
-  else root().removeAttribute('data-sidenav')
+const stampCollapsed = (n, on) => {
+  if (on) root().setAttribute(n.collapsedAttr, 'collapsed')
+  else root().removeAttribute(n.collapsedAttr)
 }
-const writeWidth = (px) => {
-  if (px == null) root().style.removeProperty('--kol-sidenav-w')
-  else root().style.setProperty('--kol-sidenav-w', `${px}px`)
+const writeWidth = (n, px) => {
+  if (px == null) root().style.removeProperty(n.wVar)
+  else root().style.setProperty(n.wVar, `${px}px`)
 }
-const readBack = () => {
-  const inline = parseFloat(root().style.getPropertyValue('--kol-sidenav-w'))
+const readBack = (n) => {
+  const inline = parseFloat(root().style.getPropertyValue(n.wVar))
   return {
-    collapsed: root().getAttribute('data-sidenav') === 'collapsed',
+    collapsed: root().getAttribute(n.collapsedAttr) === 'collapsed',
     widthPx: Number.isNaN(inline) ? null : inline,
   }
 }
 
-export default function useDragResize(asideRef) {
+/* @param ref      the panel being resized — its measured width seeds the drag
+ * @param options  { token, side }
+ *   token — the CSS/storage name family. Default 'kol-sidenav' (SideNav).
+ *           A right-hand inspector passes its own, e.g. 'kol-rail', so the two
+ *           rails never share one :root variable and drag together.
+ *   side  — which EDGE the grab handle sits on. 'left' (default) is a rail on
+ *           the left of the viewport whose handle is on its right edge, so
+ *           rightward drag = wider. 'right' inverts both the pointer sign and
+ *           the arrow keys. */
+export default function useDragResize(ref, options = {}) {
+  const { token = 'kol-sidenav', side = 'left' } = options
+  /* -1 on a right-hand rail: the same rightward pointer travel that widens a
+   * left rail must NARROW a right one, because its handle faces the canvas. */
+  const dir = side === 'right' ? -1 : 1
+  const names = useMemo(() => buildNames(token), [token])
+
   const drag = useRef(null) // { startX, startW, snapPx, maxPx, moved } during a drag
   const defaultPx = useRef(null)
   const collapsedPx = useRef(null)
@@ -67,36 +109,36 @@ export default function useDragResize(asideRef) {
   const [widthPx, setWidthPx] = useState(null) // null = stylesheet default
 
   const syncAndPersist = () => {
-    const { collapsed: c, widthPx: w } = readBack()
+    const { collapsed: c, widthPx: w } = readBack(names)
     setCollapsed(c)
     setWidthPx(w)
     try {
-      localStorage.setItem(STATE_KEY, c ? 'collapsed' : 'expanded')
-      if (w == null) localStorage.removeItem(WIDTH_KEY)
-      else localStorage.setItem(WIDTH_KEY, String(Math.round(w)))
+      localStorage.setItem(names.stateKey, c ? 'collapsed' : 'expanded')
+      if (w == null) localStorage.removeItem(names.widthKey)
+      else localStorage.setItem(names.widthKey, String(Math.round(w)))
     } catch { /* storage blocked */ }
   }
 
   const toggleCollapsed = () => {
-    const { collapsed: c } = readBack()
-    stampCollapsed(!c)
+    const { collapsed: c } = readBack(names)
+    stampCollapsed(names, !c)
     syncAndPersist()
   }
 
   /* Boot: capture the stylesheet defaults BEFORE any inline override lands,
    * then restore the persisted width/state. */
   useEffect(() => {
-    defaultPx.current = readVarPx('--kol-sidenav-w')
-    collapsedPx.current = readVarPx('--kol-sidenav-w-collapsed')
+    defaultPx.current = readVarPx(names.wVar)
+    collapsedPx.current = readVarPx(names.collapsedVar)
     let w = null
     let c = false
     try {
-      w = parseFloat(localStorage.getItem(WIDTH_KEY)) || null
-      c = localStorage.getItem(STATE_KEY) === 'collapsed'
+      w = parseFloat(localStorage.getItem(names.widthKey)) || null
+      c = localStorage.getItem(names.stateKey) === 'collapsed'
     } catch { /* storage blocked */ }
-    if (w) { writeWidth(w); setWidthPx(w) }
-    if (c) { stampCollapsed(true); setCollapsed(true) }
-  }, [])
+    if (w) { writeWidth(names, w); setWidthPx(w) }
+    if (c) { stampCollapsed(names, true); setCollapsed(true) }
+  }, [names])
 
   useEffect(() => {
     const onMove = (e) => {
@@ -109,28 +151,28 @@ export default function useDragResize(asideRef) {
         if (Math.abs(dx) < CLICK_SLOP_PX) return
         d.moved = true
       }
-      const next = d.startW + dx
+      const next = d.startW + dx * dir
       if (next < d.snapPx) {
-        stampCollapsed(true)
+        stampCollapsed(names, true)
       } else {
-        stampCollapsed(false)
-        writeWidth(Math.min(next, d.maxPx))
+        stampCollapsed(names, false)
+        writeWidth(names, Math.min(next, d.maxPx))
       }
     }
     const onUp = () => {
       if (!drag.current) return
       const { moved } = drag.current
       drag.current = null
-      root().removeAttribute('data-sidenav-dragging')
+      root().removeAttribute(names.draggingAttr)
       document.body.style.cursor = ''
       document.body.style.userSelect = ''
       if (!moved) { toggleCollapsed(); return } // a click, not a drag
       /* Snap-to-default: release near the stylesheet default clears the
        * override entirely. */
-      const { collapsed: c, widthPx: w } = readBack()
-      const band = readVarPx('--kol-sidenav-snap-default') ?? readVarPx('--kol-sidenav-step') ?? 16
+      const { collapsed: c, widthPx: w } = readBack(names)
+      const band = readVarPx(names.snapDefaultVar) ?? readVarPx(names.stepVar) ?? 16
       if (!c && w != null && defaultPx.current != null && Math.abs(w - defaultPx.current) <= band) {
-        writeWidth(null)
+        writeWidth(names, null)
       }
       syncAndPersist()
     }
@@ -140,15 +182,15 @@ export default function useDragResize(asideRef) {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
     }
-  }, [])
+  }, [names, dir])
 
   const onPointerDown = (e) => {
-    const snapPx = readVarPx('--kol-sidenav-snap')
+    const snapPx = readVarPx(names.snapVar)
     if (defaultPx.current == null || snapPx == null) return // tokens absent → inert
     e.preventDefault()
     drag.current = {
       startX: e.clientX,
-      startW: asideRef.current?.getBoundingClientRect().width ?? defaultPx.current,
+      startW: ref.current?.getBoundingClientRect().width ?? defaultPx.current,
       snapPx,
       /* mirror's ceiling (default × 3), resolved from the token not hardcoded */
       maxPx: defaultPx.current * 3,
@@ -156,34 +198,39 @@ export default function useDragResize(asideRef) {
     }
     /* the grid's grid-template-columns ease would trail the pointer —
      * kol-framework.css suspends it while this attribute is stamped */
-    root().setAttribute('data-sidenav-dragging', '')
+    root().setAttribute(names.draggingAttr, '')
     document.body.style.cursor = 'col-resize'
     document.body.style.userSelect = 'none'
   }
 
   const resetToDefault = () => {
-    stampCollapsed(false)
-    writeWidth(null)
+    stampCollapsed(names, false)
+    writeWidth(names, null)
     syncAndPersist()
   }
 
   const onKeyDown = (e) => {
-    const snapPx = readVarPx('--kol-sidenav-snap')
-    const stepPx = readVarPx('--kol-sidenav-step')
+    const snapPx = readVarPx(names.snapVar)
+    const stepPx = readVarPx(names.stepVar)
     if (defaultPx.current == null || snapPx == null || stepPx == null) return
-    const { collapsed: c, widthPx: w } = readBack()
+    const { collapsed: c, widthPx: w } = readBack(names)
     const current = w ?? defaultPx.current
-    if (e.key === 'ArrowRight') {
+    /* The arrow that GROWS is the one pointing away from the rail's own edge —
+     * ArrowRight on a left rail, ArrowLeft on a right one. Same inversion the
+     * pointer gets, so keyboard and drag never disagree. */
+    const growKey = dir === 1 ? 'ArrowRight' : 'ArrowLeft'
+    const shrinkKey = dir === 1 ? 'ArrowLeft' : 'ArrowRight'
+    if (e.key === growKey) {
       e.preventDefault()
-      if (c) stampCollapsed(false)
-      else writeWidth(Math.min(current + stepPx, defaultPx.current * 3))
+      if (c) stampCollapsed(names, false)
+      else writeWidth(names, Math.min(current + stepPx, defaultPx.current * 3))
       syncAndPersist()
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === shrinkKey) {
       e.preventDefault()
       if (c) return
       const next = current - stepPx
-      if (next < snapPx) stampCollapsed(true)
-      else writeWidth(next)
+      if (next < snapPx) stampCollapsed(names, true)
+      else writeWidth(names, next)
       syncAndPersist()
     } else if (e.key === 'Home') {
       e.preventDefault()

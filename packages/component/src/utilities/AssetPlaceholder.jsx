@@ -6,17 +6,22 @@
  * are visibly flagged rather than showing the browser's broken-image icon.
  */
 
+/* `radius` (2026-08-15 user ruling): a placeholder inside a host that already
+ * CLIPS its own corners rounds twice — the visible double-round on the card
+ * form. The host turns it off; it stays on everywhere else, so nothing that
+ * renders a bare placeholder changes. */
 export default function AssetPlaceholder({
   category,
   name,
   aspectRatio = '16 / 9',
   note = 'MISSING',
+  radius = true,
   className = '',
 }) {
   const label = [category, name].filter(Boolean).join(' · ')
   return (
     <div
-      className={`kol-asset-placeholder flex flex-col items-center justify-center gap-[6px] w-full p-6 border border-dashed border-[var(--kol-fg-24)] rounded-[var(--kol-radius-sm)] bg-[var(--kol-fg-02)] text-fg-48 font-mono text-center box-border ${className}`.trim()}
+      className={`kol-asset-placeholder flex flex-col items-center justify-center gap-[6px] w-full p-6 border border-dashed border-[var(--kol-fg-24)] ${radius ? 'rounded-[var(--kol-radius-sm)]' : ''} bg-[var(--kol-fg-02)] text-fg-48 font-mono text-center box-border ${className}`.trim()}
       style={{ aspectRatio }}
       role="img"
       aria-label={`${label || 'asset'} — ${note}`}

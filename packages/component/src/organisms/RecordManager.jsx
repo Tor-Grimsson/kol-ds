@@ -353,7 +353,7 @@ export default function RecordManager({
             {onPreview && (
               <ToolbarIcon name="play" label="Preview" onClick={() => onPreview(record)} />
             )}
-            {saveState != null && <span className="kol-helper-10 text-meta truncate">{saveState}</span>}
+            {saveState != null && <span className="kol-helper-10 text-meta truncate leading-normal">{saveState}</span>}
             {onPublish && (
               <Button variant="primary" size="sm" onClick={() => onPublish(record)}>
                 {publishLabel}

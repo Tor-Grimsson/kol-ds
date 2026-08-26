@@ -22,7 +22,8 @@ export { default as AssetPlaceholder } from './utilities/AssetPlaceholder.jsx'
 export { default as Avatar } from './atoms/Avatar.jsx'
 export { default as Badge } from './atoms/Badge.jsx'
 export { default as Button } from './atoms/Button.jsx'
-export { default as CopyButton } from './atoms/CopyButton.jsx'
+export { default as ActionButton } from './atoms/ActionButton.jsx'
+export { default as CopyButton } from './molecules/CopyButton.jsx'
 export { default as CurveOverlay } from './atoms/CurveOverlay.jsx'
 export { default as Divider } from './atoms/Divider.jsx'
 export { default as DocsToc } from './molecules/DocsToc.jsx'
@@ -33,6 +34,10 @@ export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
 export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
 export { default as HlsVideo } from './atoms/HlsVideo.jsx'
+/* AudioPlayer — HlsVideo's opposite number: same tier and shape, inverted
+ * intent (built to be operated, not decorative). See its header before editing
+ * either one. */
+export { default as AudioPlayer } from './atoms/AudioPlayer.jsx'
 export { default as Input } from './atoms/Input.jsx'
 export { default as Label } from './atoms/Label.jsx'
 export { default as LabeledControl } from './molecules/LabeledControl.jsx'
@@ -75,6 +80,15 @@ export { default as FramedMediaBand } from './organisms/FramedMediaBand.jsx'
 export { default as Image } from './atoms/Image.jsx'
 export { default as MediaCard } from './molecules/MediaCard.jsx'
 export { default as MediaRow } from './molecules/MediaRow.jsx'
+
+/* content-card system (2026-08-15) — the ruled card/row family:
+ * docs/documentation/03-components/06-content-card-system.md */
+export { default as ContentText } from './molecules/ContentText.jsx'
+export { default as ContentMedia } from './molecules/ContentMedia.jsx'
+export { default as ContentCard } from './molecules/ContentCard.jsx'
+export { default as ContentRow } from './molecules/ContentRow.jsx'
+export { default as ContentItem } from './molecules/ContentItem.jsx'
+export { default as ContentCollection } from './organisms/ContentCollection.jsx'
 export { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from './molecules/MenuItem.jsx'
 export { MenuPopover } from './molecules/MenuPopover.jsx'
 export { ModalProvider, useModal } from './molecules/Modal.jsx'
@@ -100,6 +114,10 @@ export { default as GalleryCarousel } from './organisms/GalleryCarousel.jsx'
 export { default as AsciiCursor } from './utilities/AsciiCursor.jsx'
 export { default as BentoCard } from './molecules/BentoCard.jsx'
 export { default as Carousel } from './molecules/Carousel.jsx'
+/* EmblaNav — THE prev/next pair. Exported so a consumer building its own embla
+ * stage reaches for it instead of re-typing the button markup, which is how the
+ * three in-package copies (and kol-website's CarouselNavigation) happened. */
+export { default as EmblaNav } from './molecules/EmblaNav.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as CtaGlobal } from './organisms/CtaGlobal.jsx'
 export { default as ErrorBoundary } from './utilities/ErrorBoundary.jsx'
@@ -140,6 +158,7 @@ export { default as useTilt } from './hooks/useTilt.js'
 export { default as useCoarsePointer } from './hooks/useCoarsePointer.js'
 export { default as useAxisAnimation } from './hooks/useAxisAnimation.js'
 export { useEyedropper, pickFromCanvasElement } from './hooks/useEyedropper.js'
+export { default as usePlaceholders } from './hooks/usePlaceholders.js'
 export { resolveCssVar, resolveCssColor, isLight } from './hooks/cssVar.js'
 
 // color math (support module — HSL/hex conversion + harmony generation)

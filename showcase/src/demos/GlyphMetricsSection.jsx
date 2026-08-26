@@ -10,8 +10,8 @@ export default function GlyphMetricsSectionDemo() {
   return (
     <GlyphMetricsSection
       fontFamily='"Right Grotesk", system-ui, sans-serif'
-      fontUrlRoman="/fonts/Right-Grotesk-ttf/PPRightGrotesk-Regular.ttf"
-      fontUrlItalic="/fonts/Right-Grotesk-ttf/PPRightGrotesk-RegularItalic.ttf"
+      fontUrlRoman="/fonts/right-grotesk-ttf/PPRightGrotesk-Regular.ttf"
+      fontUrlItalic="/fonts/right-grotesk-ttf/PPRightGrotesk-RegularItalic.ttf"
       fontStyle="normal"
       badgeText="Right Grotesk"
       showDropdown

@@ -65,8 +65,9 @@
   "EmptyState": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-12",
-      "kol-helper-16",
+      "kol-mono",
+      "kol-mono-12",
+      "kol-mono-16",
       "kol-sans-body-03"
     ],
     "composes": []
@@ -303,10 +304,6 @@
       "Image"
     ]
   },
-  "InteractiveImage": {
-    "typeClasses": [],
-    "composes": []
-  },
   "SelectionOverlay": {
     "typeClasses": [],
     "composes": []
@@ -334,6 +331,7 @@
   },
   "ColorInputRow": {
     "typeClasses": [
+      "kol-helper",
       "kol-helper-10",
       "kol-helper-12"
     ],
@@ -374,32 +372,24 @@
   },
   "FieldRow": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-12"
     ],
     "composes": [
       "Input",
-      "Tag",
-      "Button",
       "PopoverPanel",
-      "INDICATOR",
       "Dropdown",
       "Icon"
     ]
   },
   "StatusChip": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-12"
     ],
     "composes": [
       "Input",
-      "Tag",
-      "Button",
       "PopoverPanel",
-      "INDICATOR",
       "Dropdown",
       "Icon"
     ]
@@ -482,7 +472,7 @@
   },
   "ModalProvider": {
     "typeClasses": [
-      "kol-helper-12"
+      "kol-mono-12"
     ],
     "composes": [
       "Button",
@@ -517,7 +507,8 @@
   "ShellDrawer": {
     "typeClasses": [],
     "composes": [
-      "Button"
+      "Button",
+      "Icon"
     ]
   },
   "ShellSearchOverlay": {
@@ -840,8 +831,9 @@
       "Button",
       "SearchInput",
       "ToggleCheckbox",
+      "IconFrame",
       "ShellDrawer",
-      "Dropdown",
+      "Tooltip",
       "Table",
       "MediaLibrary",
       "Icon"

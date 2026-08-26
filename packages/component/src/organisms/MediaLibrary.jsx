@@ -57,10 +57,151 @@ function formatSize(bytes) {
 const fileName = (key) => key.slice(key.lastIndexOf('/') + 1)
 const folderOf = (key) => key.slice(0, key.lastIndexOf('/') + 1)
 
-/* A video element with no poster paints an empty box until played, and 222 of
- * the reference bucket's 433 objects are video — a time fragment makes the
- * browser seek and paint frame one instead. */
+/* A video with neither poster nor sibling still paints an empty box until
+ * played — a time fragment makes the browser seek and paint frame one. Only
+ * the fallback now: `pairPosters` finds a real poster where one exists. */
 const posterSrc = (url) => `${url}#t=0.1`
+
+/* ── Kind, and the four rules a real bucket forces ─────────────────────────
+ * Every rule below exists because the unfiltered list was unusable over the
+ * live 3443-object bucket, not because it read tidier. Measurements from
+ * lobby/media-library-non-av-blindness (kol-r2b2, 2026-08-15), which tested
+ * each one against that data. */
+
+/* B2 and R2 hand back `application/octet-stream` for .json, .pgn, .m3u8 and
+ * .woff2, so contentType cannot be the primary signal — extension wins, the
+ * header is the fallback. `.ts` is an HLS segment here, never TypeScript: this
+ * reads object buckets, not source trees. */
+const EXT_KIND = {
+  jpg: 'image', jpeg: 'image', png: 'image', gif: 'image', webp: 'image',
+  avif: 'image', svg: 'image', bmp: 'image', ico: 'image', tif: 'image',
+  tiff: 'image', heic: 'image',
+  mp4: 'video', mov: 'video', webm: 'video', m4v: 'video', avi: 'video',
+  mkv: 'video', ts: 'video',
+  mp3: 'audio', wav: 'audio', ogg: 'audio', flac: 'audio', aac: 'audio',
+  m4a: 'audio', aiff: 'audio',
+  m3u8: 'playlist',
+  json: 'text', yaml: 'text', yml: 'text', csv: 'text', txt: 'text',
+  md: 'text', pgn: 'text', xml: 'text', srt: 'text', vtt: 'text',
+  js: 'code', mjs: 'code', cjs: 'code', jsx: 'code', tsx: 'code',
+  css: 'code', html: 'code', py: 'code', sh: 'code',
+  woff: 'font', woff2: 'font', ttf: 'font', otf: 'font', eot: 'font',
+  zip: 'archive', tar: 'archive', gz: 'archive', rar: 'archive', '7z': 'archive',
+  pdf: 'text',
+}
+
+/* One per folder, in the way of everything — hidden, never silently dropped:
+ * the count is reported at the foot. */
+const SYSTEM_NAMES = new Set(['.DS_Store', '.bzEmpty', 'Thumbs.db', 'desktop.ini', '.gitkeep'])
+
+const extOf = (key) => {
+  const base = fileName(key)
+  const dot = base.lastIndexOf('.')
+  return dot > 0 ? base.slice(dot + 1).toLowerCase() : ''
+}
+
+function kindOf(o) {
+  if (SYSTEM_NAMES.has(fileName(o.key))) return 'system'
+  const byExt = EXT_KIND[extOf(o.key)]
+  if (byExt) return byExt
+  if (isImage(o.contentType)) return 'image'
+  if (isVideo(o.contentType)) return 'video'
+  if (o.contentType?.startsWith('audio/')) return 'audio'
+  if (o.contentType?.startsWith('text/')) return 'text'
+  return 'other'
+}
+
+/* `accept` WIDENS, it never gates. 'all' — the default, and what every browse
+ * consumer passes — means EVERYTHING. It used to mean "image or video", which
+ * discarded 332 objects of the reference bucket before anything downstream
+ * could see them; a brand book embedding this saw a library quietly missing
+ * every stream it held. A picker asks for what it can pick: `['image','video']`. */
+function acceptsKind(accept) {
+  if (!accept || accept === 'all') return () => true
+  const wanted = new Set(Array.isArray(accept) ? accept : [accept])
+  return (o) => wanted.has(o.kind)
+}
+
+/* 2012 `segment_NNN.ts` files are ONE stream. Counted raw they took the
+ * bucket's video tally to 2051 instead of 39, and filled the grid with 2.7 GB
+ * of unopenable fragments. Fold per folder onto the first segment — a real key,
+ * so the row still resolves and still sits in its own folder. */
+const SEGMENT = /segment[_-]?\d+\.ts$/i
+
+function foldHlsSegments(list) {
+  const streams = new Map()
+  const rest = []
+  for (const o of list) {
+    if (!SEGMENT.test(fileName(o.key))) { rest.push(o); continue }
+    const dir = folderOf(o.key)
+    const seen = streams.get(dir)
+    if (seen) { seen.count += 1; seen.size += o.size ?? 0 }
+    else streams.set(dir, { first: o, count: 1, size: o.size ?? 0 })
+  }
+  for (const [dir, s] of streams) {
+    rest.push({
+      ...s.first,
+      displayName: `${fileName(dir.slice(0, -1))} · ${s.count} segments`,
+      size: s.size,
+      segments: s.count,
+    })
+  }
+  return rest
+}
+
+/* Art prints ship as one picture in four widths (`name-566.jpg` … `-2840.jpg`).
+ * Left alone that is 604 rows for 197 pictures, and the grid pulls the 2840px
+ * file to paint a 200px tile — 718 KB where 27 KB does. Collapse each set to
+ * one row: `key` (what the thumb loads) is the SMALLEST, `fullKey` (what
+ * download hands over) the largest. Guards: images only, width ≥ 100 so
+ * `2017-03.json` is not read as a variant, and sets of ≥2 only. */
+const VARIANT = /^(.+)-(\d{2,5})$/
+
+function foldResolutionSets(list) {
+  const sets = new Map()
+  const rest = []
+
+  for (const o of list) {
+    const base = fileName(o.key)
+    const dot = base.lastIndexOf('.')
+    const stem = dot > 0 ? base.slice(0, dot) : base
+    const match = o.kind === 'image' ? VARIANT.exec(stem) : null
+    if (!match || Number(match[2]) < 100) { rest.push(o); continue }
+    const id = `${folderOf(o.key)}${match[1]}`
+    const set = sets.get(id)
+    if (set) set.push({ o, width: Number(match[2]) })
+    else sets.set(id, [{ o, width: Number(match[2]) }])
+  }
+
+  for (const [id, variants] of sets) {
+    if (variants.length < 2) { rest.push(variants[0].o); continue }
+    const byWidth = [...variants].sort((a, b) => a.width - b.width)
+    rest.push({
+      ...byWidth[0].o,
+      fullKey: byWidth[byWidth.length - 1].o.key,
+      displayName: `${fileName(id)} · ${byWidth.length} sizes`,
+      size: variants.reduce((n, v) => n + (v.o.size ?? 0), 0),
+      variants: byWidth.map((v) => v.o.key),
+    })
+  }
+  return rest
+}
+
+/* Every video in the vault ships a sibling `<name>.png`. Using it as the poster
+ * means `preload="none"` still paints a frame; without one the browser fetches
+ * the video itself just to show frame one, which over a 20.4 GB bucket is the
+ * single most expensive thing this component does. */
+const POSTER_EXT = ['png', 'jpg', 'jpeg', 'webp']
+
+function pairPosters(list) {
+  const images = new Set(list.filter((o) => o.kind === 'image').map((o) => o.key))
+  return list.map((o) => {
+    if (o.kind !== 'video') return o
+    const stem = o.key.slice(0, o.key.lastIndexOf('.'))
+    const poster = POSTER_EXT.map((e) => `${stem}.${e}`).find((k) => images.has(k))
+    return poster ? { ...o, poster } : o
+  })
+}
 
 /**
  * Flatten the bucket's flat key list into ONE ordered row list, folders and
@@ -104,7 +245,7 @@ function buildRows(objects, expanded, sort) {
       if (expanded.has(f)) walk(f, depth + 1)
     }
     for (const o of sorted(childrenOf.get(prefix) ?? [])) {
-      rows.push({ type: 'file', depth, ...o, displayKey: fileName(o.key) })
+      rows.push({ type: 'file', depth, ...o, displayKey: o.displayName ?? fileName(o.key) })
     }
   }
   walk('', 0)
@@ -116,7 +257,10 @@ function buildRows(objects, expanded, sort) {
  * derivation, the open-folder set and the sort key.
  *
  * @param {object} client   `{ listMedia, mediaUrl, proxied? }` — required
- * @param {string} accept   'image' | 'video' | 'all' — which types are listed
+ * @param {string|string[]} accept  'all' (default) = everything · one kind ·
+ *   or an allow-list, `['image','video']`, which is what a picker wants.
+ *   Kinds: image · video · audio · text · code · playlist · font · archive ·
+ *   other. Browsing never filters by default.
  */
 export function MediaLibraryProvider({ client, accept = 'all', children }) {
   const [objects, setObjects] = useState([])
@@ -148,16 +292,28 @@ export function MediaLibraryProvider({ client, accept = 'all', children }) {
     })
 
   const value = useMemo(() => {
-    const wanted = (o) =>
-      accept === 'video' ? isVideo(o.contentType)
-      : accept === 'image' ? isImage(o.contentType)
-      : isImage(o.contentType) || isVideo(o.contentType)
+    const annotated = objects.map((o) => ({ ...o, kind: kindOf(o) }))
+    const systemCount = annotated.reduce((n, o) => n + (o.kind === 'system' ? 1 : 0), 0)
 
-    const kept = objects.filter(wanted)
+    /* Fold before pairing: a poster must be matched against real image keys,
+     * and resolution sets must be collapsed after that or the poster's own
+     * width suffix would swallow it. */
+    const visible = foldResolutionSets(
+      pairPosters(foldHlsSegments(annotated.filter((o) => o.kind !== 'system'))),
+    )
+
+    const kept = visible.filter(acceptsKind(accept))
+    /* The lightbox pages images and videos; a .json in that list is a broken
+     * frame with a next-arrow. Its index space is this list, not `files`. */
+    const viewable = kept.filter((o) => o.kind === 'image' || o.kind === 'video')
+
     return {
       objects: kept,
       rows: buildRows(kept, expanded, sort),
       files: kept,
+      viewable,
+      kinds: [...new Set(kept.map((o) => o.kind))].sort(),
+      systemCount,
       expanded,
       toggleFolder,
       sort,
@@ -224,23 +380,48 @@ function useCopy() {
  * The loading strategy is deliberately unchanged (lobby/MediaLibraryVideoFallback:
  * both candidate strategies failed the same way headless, so that measurement
  * discriminates nothing). This layer needs no decoder to be correct. */
+const KIND_ICON = {
+  audio: 'frequency',
+  playlist: 'video',
+  text: 'file',
+  code: 'code',
+  font: 'type',
+  archive: 'layers',
+  other: 'file',
+}
+
 function Thumb({ row, mediaUrl }) {
   const [painted, setPainted] = useState(false)
 
-  if (!isVideo(row.contentType)) {
+  if (row.kind === 'image') {
     return <img src={mediaUrl(row.key)} alt="" loading="lazy" className="w-full h-full object-cover" />
+  }
+
+  /* Everything the browser cannot paint gets the same treatment a video's
+   * resting state gets — a kind glyph and the filename, rather than an <img>
+   * pointed at a .json and the broken-image chrome that follows. */
+  if (row.kind !== 'video') {
+    return (
+      <div className="kol-media-thumb">
+        <span className="kol-media-thumb-fallback" data-painted={false}>
+          <Icon name={KIND_ICON[row.kind] ?? 'file'} size={20} />
+          <span className="kol-mono-12">{fileName(row.key)}</span>
+        </span>
+      </div>
+    )
   }
 
   return (
     <div className="kol-media-thumb">
-      <span className="kol-media-thumb-fallback" data-painted={painted}>
+      <span className="kol-media-thumb-fallback" data-painted={painted || !!row.poster}>
         <Icon name="play" size={20} />
         <span className="kol-mono-12">{fileName(row.key)}</span>
       </span>
       <video
-        src={posterSrc(mediaUrl(row.key))}
+        src={row.poster ? mediaUrl(row.key) : posterSrc(mediaUrl(row.key))}
+        poster={row.poster ? mediaUrl(row.poster) : undefined}
         muted
-        preload="metadata"
+        preload={row.poster ? 'none' : 'metadata'}
         onLoadedData={() => setPainted(true)}
         className="relative w-full h-full object-cover"
       />
@@ -251,7 +432,7 @@ function Thumb({ row, mediaUrl }) {
 /* Folders, then the tiles or rows. Shared by both views — the modal shell and
  * the pick action are the ONLY differences between them. */
 function LibraryBody({ rows, viewMode, onOpen, onPick }) {
-  const { expanded, toggleFolder, mediaUrl, loading, error } = useMediaLibrary()
+  const { expanded, toggleFolder, mediaUrl, loading, error, viewable } = useMediaLibrary()
   const [copied, copy] = useCopy()
 
   if (error) return <p className="kol-helper-12 text-ui-error">Couldn’t load: {error}</p>
@@ -259,13 +440,21 @@ function LibraryBody({ rows, viewMode, onOpen, onPick }) {
   if (rows.length === 0) return <p className="kol-helper-12 text-meta">Nothing here.</p>
 
   const files = rows.filter((r) => r.type === 'file')
-  const indexOfFile = (row) => files.findIndex((f) => f.key === row.key)
+  /* Index into `viewable`, which is what the lightbox pages — indexing into the
+   * filtered rows meant a search narrowing the grid opened the wrong file. */
+  const openerFor = (row) => {
+    const i = viewable.findIndex((f) => f.key === row.key)
+    return i < 0 ? undefined : () => onOpen(i)
+  }
+
+  /* Copy hands over the full-size variant, not the thumbnail the tile loaded. */
+  const urlFor = (row) => mediaUrl(row.fullKey ?? row.key)
 
   const actionsFor = (row) => (
     <div className="flex items-center gap-2">
       {onPick && <Button size="sm" onClick={() => onPick(row)}>Use</Button>}
-      <Button variant="secondary" size="sm" onClick={() => copy(mediaUrl(row.key))}>
-        {copied === mediaUrl(row.key) ? 'Copied' : 'Copy URL'}
+      <Button variant="secondary" size="sm" onClick={() => copy(urlFor(row))}>
+        {copied === urlFor(row) ? 'Copied' : 'Copy URL'}
       </Button>
     </div>
   )
@@ -281,9 +470,13 @@ function LibraryBody({ rows, viewMode, onOpen, onPick }) {
               <MediaRow
                 thumb={<Thumb row={row} mediaUrl={mediaUrl} />}
                 name={
-                  <button type="button" className="kol-mono-12 text-emphasis" onClick={() => onOpen(indexOfFile(row))}>
-                    {row.displayKey}
-                  </button>
+                  openerFor(row) ? (
+                    <button type="button" className="kol-mono-12 text-emphasis" onClick={openerFor(row)}>
+                      {row.displayKey}
+                    </button>
+                  ) : (
+                    <span className="kol-mono-12 text-emphasis">{row.displayKey}</span>
+                  )
                 }
                 date={row.uploaded ? String(row.uploaded).slice(0, 10) : ''}
                 size={formatSize(row.size)}
@@ -304,17 +497,21 @@ function LibraryBody({ rows, viewMode, onOpen, onPick }) {
         ))}
       </ul>
       <ul className="kol-media-grid">
-        {files.map((row, i) => (
+        {files.map((row) => (
           <MediaCard
             key={row.key}
             thumb={
-              <div className="w-full h-full cursor-pointer" onClick={() => onOpen(i)}>
+              <div
+                className={openerFor(row) ? 'w-full h-full cursor-pointer' : 'w-full h-full'}
+                onClick={openerFor(row)}
+              >
                 <Thumb row={row} mediaUrl={mediaUrl} />
               </div>
             }
             name={<p className="kol-mono-12 text-emphasis truncate">{row.displayKey}</p>}
             meta={`${formatSize(row.size)}${row.uploaded ? ` · ${String(row.uploaded).slice(0, 10)}` : ''}`}
-            downloadHref={mediaUrl(row.key)}
+            /* The set's largest variant, not the thumbnail the tile painted. */
+            downloadHref={mediaUrl(row.fullKey ?? row.key)}
             actions={actionsFor(row)}
           />
         ))}
@@ -323,8 +520,10 @@ function LibraryBody({ rows, viewMode, onOpen, onPick }) {
   )
 }
 
-/* Finder puts the path at the window FOOT, not stacked above the content. */
-function PathBar({ rows }) {
+/* Finder puts the path at the window FOOT, not stacked above the content. The
+ * hidden-system count rides the same bar — hiding 118 `.DS_Store` files without
+ * saying so is the same silent drop this component was filed for. */
+function PathBar({ rows, systemCount }) {
   const open = rows.filter((r) => r.type === 'folder' && r.depth > 0)
   const trail = open.length ? open[open.length - 1].key.replace(/\/$/, '').split('/') : []
   return (
@@ -337,6 +536,11 @@ function PathBar({ rows }) {
           <span className="kol-helper-12 text-meta">{seg}</span>
         </span>
       ))}
+      {systemCount > 0 && (
+        <span className="kol-helper-12 text-meta ms-auto">
+          {systemCount} system file{systemCount === 1 ? '' : 's'} hidden
+        </span>
+      )}
     </div>
   )
 }
@@ -359,14 +563,14 @@ const SORTS = [
  * view toggle and the N-of-M count. It was hand-rolled as a static <Input> on
  * the first pass while this organism sat one import away. */
 function LibraryChrome({ onOpen, onPick }) {
-  const { rows, sort, setSort } = useMediaLibrary()
+  const { rows, sort, setSort, kinds, systemCount } = useMediaLibrary()
   const [viewMode, setViewMode] = useState('grid')
 
   const items = useMemo(
     () => rows.map((r) => ({
       ...r,
       name: r.type === 'folder' ? r.label : r.displayKey,
-      kind: r.type === 'folder' ? 'folder' : isVideo(r.contentType) ? 'video' : 'image',
+      kind: r.type === 'folder' ? 'folder' : r.kind,
     })),
     [rows],
   )
@@ -383,7 +587,9 @@ function LibraryChrome({ onOpen, onPick }) {
         onViewModeChange={setViewMode}
         viewModeOptions={VIEW_OPTIONS}
         mutuallyExclusiveFilters={['kind']}
-        filterGroups={[{ label: 'Kind', key: 'kind', values: ['image', 'video', 'folder'] }]}
+        /* Derived — a hard-coded image/video/folder list is how the filter bar
+         * denied the existence of the audio and data the provider now keeps. */
+        filterGroups={[{ label: 'Kind', key: 'kind', values: ['folder', ...kinds] }]}
         headerActions={
           <SegmentedToggle
             size="sm"
@@ -397,7 +603,7 @@ function LibraryChrome({ onOpen, onPick }) {
           <LibraryBody rows={filtered} viewMode={mode} onOpen={onOpen} onPick={onPick} />
         )}
       />
-      <PathBar rows={rows} />
+      <PathBar rows={rows} systemCount={systemCount} />
     </>
   )
 }
@@ -405,14 +611,15 @@ function LibraryChrome({ onOpen, onPick }) {
 /* The lightbox is MediaViewer — the DS already has ONE fullscreen paged viewer
  * and this is not a second one. Use / Copy URL ride its `actions` slot. */
 function LibraryViewer({ index, onIndexChange, onClose, onPick }) {
-  const { files, mediaUrl } = useMediaLibrary()
+  const { viewable, mediaUrl } = useMediaLibrary()
   const [copied, copy] = useCopy()
 
-  const media = files.map((o) => ({
-    url: mediaUrl(o.key),
+  /* Full-size in the lightbox — `key` is the thumbnail variant for folded sets. */
+  const media = viewable.map((o) => ({
+    url: mediaUrl(o.fullKey ?? o.key),
     alt: fileName(o.key),
-    kind: isVideo(o.contentType) ? 'video' : 'image',
-    caption: `${fileName(o.key)} · ${formatSize(o.size)}`,
+    kind: o.kind === 'video' ? 'video' : 'image',
+    caption: `${o.displayName ?? fileName(o.key)} · ${formatSize(o.size)}`,
   }))
 
   return (
@@ -424,7 +631,7 @@ function LibraryViewer({ index, onIndexChange, onClose, onPick }) {
       onClose={onClose}
       actions={(item, i) => (
         <>
-          {onPick && <Button size="sm" onClick={() => onPick(files[i])}>Use</Button>}
+          {onPick && <Button size="sm" onClick={() => onPick(viewable[i])}>Use</Button>}
           <Button variant="secondary" size="sm" onClick={() => copy(item.url)}>
             {copied === item.url ? 'Copied' : 'Copy URL'}
           </Button>
@@ -435,11 +642,11 @@ function LibraryViewer({ index, onIndexChange, onClose, onPick }) {
 }
 
 function PickerShell({ onClose, onPick }) {
-  const { files, mediaUrl } = useMediaLibrary()
+  const { viewable, mediaUrl } = useMediaLibrary()
   const [viewerIndex, setViewerIndex] = useState(null)
 
   const pick = (o) => {
-    onPick?.(mediaUrl(o.key), { contentType: o.contentType })
+    onPick?.(mediaUrl(o.fullKey ?? o.key), { contentType: o.contentType, kind: o.kind })
     onClose?.()
   }
 
@@ -454,7 +661,7 @@ function PickerShell({ onClose, onPick }) {
         </div>
       </FullscreenOverlay>
 
-      {viewerIndex !== null && files[viewerIndex] && (
+      {viewerIndex !== null && viewable[viewerIndex] && (
         <LibraryViewer
           index={viewerIndex}
           onIndexChange={setViewerIndex}
@@ -479,7 +686,8 @@ function PickerShell({ onClose, onPick }) {
  * @param {string}   variant  'page' (in-flow, fills its box) | 'modal' (overlay)
  * @param {boolean}  open     modal only — mounts the overlay
  * @param {object}   client   `{ listMedia, mediaUrl, proxied? }`; omit inside a provider
- * @param {string}   accept   'image' | 'video' | 'all'
+ * @param {string|string[]} accept  'all' (default) = everything · one kind · an
+ *   allow-list `['image','video']`
  * @param {Function} onClose  modal only — Esc, backdrop, close button
  * @param {Function} onSelect `(url, { contentType })`. In `modal` it also closes.
  */
@@ -514,16 +722,18 @@ export function MediaPicker({ open, client, accept = 'all', onClose, onPick }) {
 }
 
 function BrowserShell({ onSelect }) {
-  const { files, mediaUrl } = useMediaLibrary()
+  const { viewable, mediaUrl } = useMediaLibrary()
   const [viewerIndex, setViewerIndex] = useState(null)
 
-  const pick = onSelect ? (o) => onSelect(mediaUrl(o.key), { contentType: o.contentType }) : undefined
+  const pick = onSelect
+    ? (o) => onSelect(mediaUrl(o.fullKey ?? o.key), { contentType: o.contentType, kind: o.kind })
+    : undefined
 
   return (
     <div className="kol-media-browser">
       <LibraryChrome onOpen={setViewerIndex} onPick={pick} />
 
-      {viewerIndex !== null && files[viewerIndex] && (
+      {viewerIndex !== null && viewable[viewerIndex] && (
         <LibraryViewer
           index={viewerIndex}
           onIndexChange={setViewerIndex}

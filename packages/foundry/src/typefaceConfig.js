@@ -8,7 +8,7 @@
  * Font URLs are relative (`/fonts/…`); a consumer serves the actual files.
  */
 
-const cdnBase = 'https://f005.backblazeb2.com/file/kolkrabbi/website/asset-library/foundry'
+const cdnBase = 'https://b2.kolkrabbi.io/website/asset-library/foundry'
 
 export const typefaceConfig = {
   malromur: {

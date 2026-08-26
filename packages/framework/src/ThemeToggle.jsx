@@ -92,23 +92,28 @@ export default function ThemeToggle({
   /* The ROLL — wheel mechanics (2026-07-30, one-glyph ruling): two copies of
    * the split circle; rotation accumulates with the slot (−180° per
    * glyph-width) on the same 500ms/ease clock as the strip's translateX, so
-   * light→dark rolls one way and dark→light rolls back. */
+   * light→dark rolls one way and dark→light rolls back.
+   *
+   * Chrome classes are kol-roll* from kol-theme (ComponentTailwindSourceTrap,
+   * 2026-08-12) — these were Tailwind utilities, which a consumer's scanner
+   * never generates from node_modules, so the roll silently froze in any app
+   * without the @source lines. Only per-render geometry stays inline. */
   const slot = SLOT[shown]
   const iconSwap = (px) => (
     <span
-      className="relative inline-block overflow-hidden"
+      className="kol-roll"
       style={{ width: px, height: px }}
       aria-hidden="true"
     >
       <span
-        className="flex transition-transform duration-500 ease-in-out"
+        className="kol-roll-strip"
         style={{ width: px * 2, transform: `translateX(-${slot * px}px)` }}
       >
         {[0, 1].map((i) => (
           <span
             key={i}
-            className="inline-flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `rotate(${slot * -180}deg)`, lineHeight: 0 }}
+            className="kol-roll-slot"
+            style={{ transform: `rotate(${slot * -180}deg)` }}
           >
             <Icon name="mode-toggle-01" size={px} />
           </span>

@@ -88,8 +88,8 @@ JetBrains Mono ships as **two** `@font-face` rules — roman and italic, each `f
 | Class | Size (desktop base) | LH | Family / weight |
 |---|---|---|---|
 | `kol-sans-display-01/02` | 56 / 44px | 100% | sans-narrow 600 |
-| `kol-sans-heading-01` | 48px | 110% | sans-narrow 500 |
-| `kol-sans-heading-02/03/04/05` | 40 / 32 / 24 / 20px | 110/120/100/125% | sans-compact 500 |
+| `kol-sans-heading-01/02` | 48 / 40px | 110/110% | sans-narrow 500 |
+| `kol-sans-heading-03/04/05` | 32 / 24 / 20px | 120/120/125% | sans-compact 500 |
 | `kol-sans-body-01/02/03` | 16 / 14 / 12px | 160/160/150% | sans 400 |
 
 (`display-03`, `heading-06` tokens exist; classes deferred until a consumer needs them. Sizes step up at the responsive breakpoint — see `kol-typography.css`.)

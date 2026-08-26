@@ -6,7 +6,7 @@ Read-only client for the **kol-media CDN** (the bucket kol-media-admin manages).
 import { listMedia, mediaUrl, isImageType, formatSize } from '@kolkrabbi/kol-media-client'
 
 const objs = await listMedia('photoshoot/')   // [{ key, contentType, size }, …]
-const src = mediaUrl(objs[0].key)             // https://media.kolkrabbi.io/<key>
+const src = mediaUrl(objs[0].key)             // https://r2.kolkrabbi.io/<key>
 ```
 
 ## The contract

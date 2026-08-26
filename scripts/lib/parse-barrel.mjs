@@ -32,15 +32,20 @@ export function parseBarrelExports(files, entry = 'index.js', _seen = new Set())
   }
   const prefix = entry.includes('/') ? './' + entry.slice(0, entry.lastIndexOf('/') + 1) : './'
 
-  // default re-exports:  export { default as X } from './atoms/X.jsx'
-  for (const m of txt.matchAll(/export \{ default as (\w+)(?:, [^}]*)? \} from '(\.\/[^']+)'/g)) {
-    push(m[1], prefix === './' ? m[2] : prefix + m[2].replace(/^\.\//, ''))
-  }
-  // named re-exports:    export { A, B, C } from './molecules/Y.jsx'
-  for (const m of txt.matchAll(/export \{ ([^}]*) \} from '(\.\/[^']+)'/g)) {
+  /* Named + default re-exports, one loop:
+   *   export { default as X } from './atoms/X.jsx'
+   *   export { A, B, C } from './molecules/Y.jsx'
+   *   export {\n  A, B,\n} from './sub/Z.jsx'      ← multi-line blocks
+   * `\s` throughout, not a literal space: the old single-space regexes silently
+   * skipped every multi-line block (kol-styleguide's whole barrel), and the
+   * PascalCase-only filter dropped hooks that ship as named exports (useModal)
+   * while keeping ones that ship as `default as` — the same hook gated or not
+   * depending on its export shape. */
+  for (const m of txt.matchAll(/export\s*\{([^}]*)\}\s*from\s*'(\.\/[^']+)'/g)) {
     for (const raw of m[1].split(',')) {
-      const name = raw.replace(/default as /, '').trim()
-      if (/^[A-Z]\w+$/.test(name)) push(name, prefix === './' ? m[2] : prefix + m[2].replace(/^\.\//, ''))
+      const name = raw.replace(/^\s*default as\s+/, '').trim()
+      if (/^[A-Z]\w*$/.test(name) || /^use[A-Z]\w*$/.test(name))
+        push(name, prefix === './' ? m[2] : prefix + m[2].replace(/^\.\//, ''))
     }
   }
   // star re-exports:     export * from './shell/index.js'  → recurse

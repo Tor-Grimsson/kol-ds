@@ -9,6 +9,13 @@ import Input from '../atoms/Input.jsx'
  *   const { prompt, confirm } = useModal()
  *   const name    = await prompt('Name this frame:', 'Untitled')
  *   const proceed = await confirm('Discard unsaved changes?')
+ *   const restore = await confirm('Restore your last canvas?',
+ *                                 { okLabel: 'Restore', cancelLabel: 'New file' })
+ *
+ * Both take an options object — `{ okLabel, cancelLabel }` (prompt: third
+ * arg, after defaultValue) — so the buttons can SAY the outcome; defaults
+ * stay OK / Cancel, existing callers untouched (ModalConfirmLabels,
+ * 2026-08-12). Enter/Escape keep their meanings regardless of labels.
  *
  * Returned promise resolves to:
  *   - prompt  → string (value) on submit, `null` on cancel
@@ -30,12 +37,12 @@ export function ModalProvider({ children }) {
     })
   }, [])
 
-  const prompt = useCallback((title, defaultValue = '') =>
-    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, resolve })),
+  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel } = {}) =>
+    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, resolve })),
   [])
 
-  const confirm = useCallback((title) =>
-    new Promise((resolve) => setState({ kind: 'confirm', title, resolve })),
+  const confirm = useCallback((title, { okLabel, cancelLabel } = {}) =>
+    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, resolve })),
   [])
 
   return (
@@ -85,7 +92,9 @@ function ModalView({ state, closeWith }) {
           maxWidth: '90vw',
         }}
       >
-        <p className="kol-helper-12 text-emphasis">{state.title}</p>
+        {/* kol-mono-12, not helper: dialog copy WRAPS, and helper's
+          * line-height 1 is single-line chrome only (type protocol). */}
+        <p className="kol-mono-12 text-emphasis">{state.title}</p>
         {state.kind === 'prompt' && (
           <Input
             ref={inputRef}
@@ -97,19 +106,28 @@ function ModalView({ state, closeWith }) {
           />
         )}
         <div className="flex gap-2 justify-end">
-          <Button variant="secondary" size="sm" onClick={cancel}>Cancel</Button>
-          <Button variant="primary"   size="sm" onClick={submit}>OK</Button>
+          <Button variant="secondary" size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>
+          <Button variant="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
         </div>
       </div>
     </div>
   )
 }
 
+/* Warn once, not per call — the fallback swallowing a missing ModalProvider
+ * silently is how kol-fxr ran months on native window.confirm without
+ * noticing (ModalConfirmLabels, 2026-08-12). */
+let warnedNoProvider = false
+
 export function useModal() {
   const ctx = useContext(ModalCtx)
   if (ctx) return ctx
   /* No-context fallback — falls back to native prompt/confirm so callers
    * don't need to null-check. */
+  if (!warnedNoProvider && typeof console !== 'undefined') {
+    warnedNoProvider = true
+    console.warn('[kol] useModal(): no <ModalProvider> mounted — falling back to native window.prompt/confirm. Custom labels are ignored on the fallback.')
+  }
   return {
     prompt:  async (title, def = '') => {
       if (typeof window === 'undefined') return null

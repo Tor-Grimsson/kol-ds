@@ -129,6 +129,24 @@ export default function Foundations() {
       </DocSection>
 
       <DocSection
+        id="utilities"
+        title="Utilities"
+        lede="Standalone kol-theme utility classes — behaviour the tokens don't carry. Live specimens; hover or focus them."
+      >
+        <div className="flex flex-col gap-2">
+          <a href="#utilities" className="kol-link-underline w-fit kol-mono-14 text-emphasis">
+            .kol-link-underline
+          </a>
+          <p className="kol-mono-12 text-meta max-w-[var(--kol-content-measure)]">
+            The animated link affordance — draws in left→right on hover/focus-visible,
+            retracts right→left on leave, currentColor at any scale. Thickness knob:
+            <code className="kol-helper-12 text-emphasis"> --kol-link-underline-size</code> (2px default).
+            Reduced motion shows the line without the transition.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
         id="components"
         title="Components"
         lede="Tokens become components on their own pages — every one live, with a canonical snippet and real mined usage."

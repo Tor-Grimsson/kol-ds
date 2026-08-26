@@ -44,7 +44,7 @@ const TypefaceVariablePreview = ({
         <div className="space-y-4">
           {/* Header */}
           <div>
-            <h3 className="kol-heading-sm mb-1">{typeface.name} — {weight}</h3>
+            <h3 className="kol-sans-heading-04 mb-1">{typeface.name} — {weight}</h3>
             <p className="kol-mono-xs text-fg-64">{typeface.styles}</p>
           </div>
 

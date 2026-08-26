@@ -29,14 +29,14 @@ export const stage = 'full'
  * slider snaps between those discrete weights rather than morphing continuously
  * — swap in a variable .ttf to get a smooth axis. GlyphMetricsGrid parses REAL
  * metrics from the served static TTF at
- * /fonts/Right-Grotesk-ttf/PPRightGrotesk-Regular.ttf via opentype.js (a peer
+ * /fonts/right-grotesk-ttf/PPRightGrotesk-Regular.ttf via opentype.js (a peer
  * dep, dynamically imported): after a central `pnpm install` the baseline /
  * x-height / cap / ascender / descender overlay draws from the font's own OS/2 +
  * hhea tables; without opentype installed the grids still render, minus the
  * overlay lines. */
 
 const FAMILY = "'Right Grotesk', system-ui, sans-serif"
-const METRICS_FONT_URL = '/fonts/Right-Grotesk-ttf/PPRightGrotesk-Regular.ttf'
+const METRICS_FONT_URL = '/fonts/right-grotesk-ttf/PPRightGrotesk-Regular.ttf'
 
 const TYPEFACE = {
   id: 'Right Grotesk',

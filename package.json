@@ -8,6 +8,7 @@
     "dev": "pnpm --filter showcase dev",
     "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build",
     "validate:roster": "node scripts/validate-roster.mjs",
+    "validate:demos": "node scripts/validate-demos.mjs",
     "validate:imports": "node scripts/validate-imports.mjs",
     "validate:foundations": "node scripts/validate-foundations.mjs",
     "extract:descriptions": "node scripts/extract-descriptions.mjs",

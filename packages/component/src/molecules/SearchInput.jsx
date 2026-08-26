@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
  * SearchInput — controlled search field on the .kol-control shell. The
@@ -42,9 +43,29 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {string}   className    extra classes on the shell
  */
 
+/* ONE type system and ONE glyph system for the whole component.
+ *
+ * It had two of each. The chromed path typed on `kol-mono-*` while the
+ * expanding path typed on `kol-helper-*`; the chromed path drew a FLAT 14px
+ * glyph at every size (`{ sm: 14, md: 14 }` — a size table that does not size)
+ * while the expanding path read the SOLO ladder. So the same component
+ * rendered two different fields depending on which branch you hit, and neither
+ * matched the IconFrame sitting next to it.
+ *
+ * Type is the mono ramp — a search field holds a query that can wrap, and
+ * `kol-helper-*` is line-height-1 chrome.
+ *
+ * The GLYPH READS BOTH LADDERS, because this component has both cases and they
+ * are the exact split `glyphLadders.js` exists for:
+ *
+ *   SOLO      the collapsed `expanding` trigger — a glyph ALONE in a pinned
+ *             square, nothing beside it. 16 / 20 / 24.
+ *   ADJACENT  the leading glyph inside an open field, sitting in the input's
+ *             line box beside the query text. 14 / 16 / 18.
+ *
+ * The flat `{ sm: 14, md: 14 }` it used to carry was the ADJACENT sm rung
+ * frozen for both sizes — right ladder, no size. */
 const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14' }
-const ICON_SIZE = { sm: 14, md: 14 }
-const CUBIC_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 export default function SearchInput({
   value = '',
@@ -60,6 +81,8 @@ export default function SearchInput({
   open,
   onOpenChange,
   expandedWidth = 280,
+  iconSize,
+  fieldHeight,
   triggerLabel = 'Open search',
   className = '',
   ...inputProps
@@ -77,21 +100,82 @@ export default function SearchInput({
     if (expanding && isOpen) inputRef.current?.focus()
   }, [expanding, isOpen])
 
+  /* the pinned squares, 05-control-chrome.md — sm 28 · md 32 · lg 36 */
+  const square = { sm: 28, md: 32, lg: 36 }[size] ?? 32
+  /* THE OPEN FIELD'S HEIGHT IS ITS OWN KNOB, defaulting to the square.
+   *
+   * /work's pill is `h-9` open AND closed, sitting level with a 36px toggle —
+   * that is the shipped design and the default must reproduce it. But a field
+   * beside two BARE 32px glyphs (ContentFilters) read as chunky at the full
+   * square, so that surface asks for a shorter one. Deriving it (`square - 4`)
+   * served the second case and silently broke the first. */
+  const fieldH = fieldHeight ?? square
+
+  /* THE GLYPH WAITS FOR THE COLLAPSE. Mounting it the instant `isOpen` flips
+   * put a search icon inside a 200px pill that was still shrinking around it —
+   * the one frame of the animation that looks like a bug. It reappears at
+   * 520ms, just under the 600ms `.kol-expand` width transition, so it lands as
+   * the pill arrives rather than riding it down. Opening hides it immediately:
+   * the field should take the space at once. */
+  const [glyphIn, setGlyphIn] = useState(!open)
+  useEffect(() => {
+    if (!expanding) return undefined
+    if (isOpen) { setGlyphIn(false); return undefined }
+    const t = setTimeout(() => setGlyphIn(true), 520)
+    return () => clearTimeout(t)
+  }, [expanding, isOpen])
+
+  /* Escape closes, and so does clicking away — a field that can only be closed
+   * by emptying it and blurring is a trap, and this one had neither wired. The
+   * listener only exists while open. */
+  const shellRef = useRef(null)
+  useEffect(() => {
+    if (!expanding || !isOpen) return undefined
+    const away = (e) => { if (shellRef.current && !shellRef.current.contains(e.target)) setOpen(false) }
+    const esc = (e) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', esc)
+    return () => {
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', esc)
+    }
+  }, [expanding, isOpen])
+
   if (expanding) {
     return (
       <div
-        className={`flex items-center bg-fg-04 rounded-full h-9 ${className}`.trim()}
-        style={{ width: isOpen ? expandedWidth : 36, transition: `width 600ms ${CUBIC_EASE}` }}
+        ref={shellRef}
+        /* THE FILL BELONGS TO THE FIELD, NOT THE TRIGGER. At rest this is a
+           glyph you click, and it must read as one — bare, exactly like the
+           filter icon it sits beside. `bg-fg-04` was unconditional, so the
+           collapsed pill rendered as a filled circle next to a bare glyph and
+           the pair looked like two different kinds of control. */
+        /* THE SQUARE FOLLOWS THE LADDER, and it follows `size` like every other
+           control: sm 28 · md 32 · lg 36 (hooks/glyphLadders.js). This was a
+           hardcoded 36 — the LG square — so an expanding search sat beside a
+           `kol-btn-md` filter button at two different sizes. */
+        className={`kol-expand flex items-center rounded-full ${isOpen ? 'bg-fg-04' : ''} ${className}`.trim()}
+        style={{ height: isOpen ? fieldH : square, width: isOpen ? expandedWidth : square }}
       >
-        <button
-          type="button"
-          className={`flex items-center justify-center w-9 h-9 rounded-full text-auto flex-shrink-0 border border-transparent ${isOpen ? '' : 'transition-colors hover:border-fg-12'}`}
-          onClick={() => !isOpen && setOpen(true)}
-          aria-label={triggerLabel}
-          aria-expanded={isOpen}
-        >
-          <Icon name="search" size={16} className="text-fg-80" />
-        </button>
+        {/* THE GLYPH IS THE CLOSED STATE, and only that (user ruling
+            2026-08-15). Once the field is open the caret is the affordance;
+            keeping the magnifier there spends the widest part of the pill
+            restating what the blinking cursor already says. */}
+        {glyphIn && !isOpen && (
+          <button
+            type="button"
+            className="flex items-center justify-center rounded-full text-auto flex-shrink-0 border border-transparent transition-colors hover:border-oq-08"
+            style={{ width: square, height: square }}
+            onClick={() => setOpen(true)}
+            aria-label={triggerLabel}
+            aria-expanded={false}
+          >
+            {/* SOLO ladder, and NO ink class — it inherits from its chrome
+                exactly as IconFrame's glyph does, so it cannot drift from the
+                icon beside it. */}
+            <Icon name="search" size={iconSize ?? glyphSize(size, true)} />
+          </button>
+        )}
         {isOpen && (
           <input
             ref={inputRef}
@@ -101,7 +185,7 @@ export default function SearchInput({
             readOnly={!onChange || undefined}
             placeholder={placeholder}
             spellCheck={false}
-            className="bg-transparent outline-none kol-helper-14 flex-1 text-fg-80 caret-current pr-4 min-w-0 appearance-none [&::-webkit-search-cancel-button]:hidden"
+            className={`bg-transparent outline-none ${SIZE_TYPE[size] ?? SIZE_TYPE.md} flex-1 text-oq-80 caret-current px-4 min-w-0 appearance-none [&::-webkit-search-cancel-button]:hidden`}
             onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false) }}
             {...inputProps}
           />
@@ -135,7 +219,8 @@ export default function SearchInput({
         aria-hidden="true"
         className={`flex items-center shrink-0 ${bare ? 'text-fg-48' : 'text-auto opacity-50'}`}
       >
-        <Icon name="search" size={ICON_SIZE[size] ?? 14} />
+        {/* ADJACENT — this glyph sits in the field's line box beside the query */}
+        <Icon name="search" size={iconSize ?? glyphSize(size)} />
       </span>
       <input
         type="search"

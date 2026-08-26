@@ -472,11 +472,20 @@
   border: 1px solid var(--kol-fg-04);
   border-radius: var(--kol-radius-sm);
   overflow: hidden;
+  /* The button-height LAW (2026-08-12): the strip's OUTER height is PINNED
+   * to the .kol-btn ladder — 26 / 32 / 40 — regardless of what a cell holds
+   * (icon or text) and regardless of variant (the filled variant drops the
+   * group border, so padding-driven height ran 2px short — the bug that
+   * forced the pin). Same principle as .kol-btn-icon's pinned square:
+   * the box never moves. */
+  box-sizing: border-box;
+  height: 32px; /* md — .kol-btn-md */
 }
 
-/* Sizes mirror .kol-btn-{sm,md,lg} exactly: cell padding per size (below) +
- * mono type (12/14/16) applied on the cell in JSX. Height is padding-driven,
- * so a strip matches a Button of the same size. md is the base. */
+/* Sizes mirror .kol-btn-{sm,md,lg} exactly: pinned height above + cell
+ * padding per size (below) + mono type (12/14/16) applied in JSX. */
+.kol-seg--sm { height: 26px; }
+.kol-seg--lg { height: 40px; }
 .kol-seg--sm .kol-seg-cell { padding: 4px 12px; }
 .kol-seg--lg .kol-seg-cell { padding: 8px 20px; }
 
@@ -486,27 +495,97 @@
   align-items: center;
   justify-content: center;
   padding: 6px 16px;  /* md — .kol-btn-md */
-  background: transparent;
   border: none;
   cursor: pointer;
   white-space: nowrap;
-  color: var(--kol-fg-meta);
+  /* OPAQUE rest paint (estate opaque-icons law, 2026-08-12): cells host
+   * icon labels, and alpha ink (--kol-fg-meta) compounds where strokes
+   * overlap — oq-48 reads identical on the resting surface but stays
+   * opaque. Hover/active use fg-emphasis, which is full ink (no alpha). */
+  color: var(--kol-oq-48);
+  /* THE FILL IS THE UNSELECTED STATE (user ruling 2026-08-15 — "same exactly
+   * like before, just swapping stages"). The two treatments are unchanged;
+   * which state wears which is inverted. A rest cell is a raised tile you can
+   * press; the SELECTED one is the bare dark ground, because it is already
+   * where you are. */
+  background: var(--kol-surface-secondary);
   transition: color var(--kol-transition-base),
               background-color var(--kol-transition-base);
 }
 
 .kol-seg-cell + .kol-seg-cell { border-left: 1px solid var(--kol-fg-04); }
 
-.kol-seg-cell:hover { color: var(--kol-fg-emphasis); }
+/* ONE STEP, not a leap. Rest is `oq-48` and hover went straight to full ink —
+ * a 48 → 100 jump that read as the cell selecting itself under the cursor.
+ * `oq-64` is the same single rung every other rest→hover pair in the estate
+ * moves by. */
+.kol-seg-cell:hover { color: var(--kol-oq-64); }
 
 .kol-seg-cell.is-active {
+  background: transparent;
+  color: var(--kol-fg-emphasis);
+}
+
+/* Reads the quiet ring token so the segmented strip is part of the system-wide
+ * focus off switch (FocusRingsInConsumers, 2026-08-15). This is the LAST
+ * hardcoded focus colour in the theme — with it, `--kol-focus-ring` +
+ * `--kol-focus-ring-quiet` set to transparent turns every ring off, which is
+ * the whole point of the pair. Offset stays -2px: the cell's own inset, not
+ * the rails' -1px. */
+.kol-seg-cell:focus-visible {
+  outline: 1px solid var(--kol-focus-ring-quiet);
+  outline-offset: -2px;
+}
+
+/* Filled variant — the CORRECTED segmented state law (2026-08-12, second
+ * ruling — SegmentedFilledStateFix): the SELECTED cell is the DARK FILLED
+ * tile (input surface tone) + bright glyph — the dark state IS the selection
+ * marker. Unselected cells are QUIET: transparent, dim, hover brightens.
+ * NO outline ring, ever. (The 0.36.0 first reading — always-tiled cells +
+ * inset ring on selected — was the inversion this block repeals.) */
+.kol-seg--filled {
+  border: none;
+  gap: 1px;
+  background: transparent;
+}
+
+.kol-seg--filled .kol-seg-cell {
+  background: transparent;
+  /* the dark tile rounds itself (SegBar reference geometry) */
+  border-radius: var(--kol-radius-sm);
+}
+
+.kol-seg--filled .kol-seg-cell + .kol-seg-cell { border-left: none; }
+
+.kol-seg--filled .kol-seg-cell.is-active {
   background: var(--kol-surface-secondary);
   color: var(--kol-fg-emphasis);
 }
 
-.kol-seg-cell:focus-visible {
-  outline: 1px solid var(--kol-fg-emphasis);
-  outline-offset: -2px;
+/* Tonal variant (2026-08-12, user ask): same quiet-unselected law, but the
+ * clicked cell marks itself on the tertiary tone. */
+.kol-seg--tonal .kol-seg-cell.is-active {
+  background: var(--kol-surface-tertiary);
+  color: var(--kol-fg-emphasis);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * CardFeatureItem — hover zoom (CardFeatureHoverZoom, 2026-08-12)
+ *   The card's VISUAL zooms slightly on card hover — not the card box —
+ *   on the same 300ms clock as the existing border transition, so the two
+ *   read as one state. Lives here, not in JSX utilities: motion chrome is
+ *   DS CSS (the ComponentTailwindSourceTrap law, same day). The card's own
+ *   overflow-hidden + radius clip the scale.
+ * ──────────────────────────────────────────────────────────────────── */
+.kol-card-feature-visual {
+  transition: transform 300ms ease;
+}
+.kol-card-feature:hover .kol-card-feature-visual {
+  transform: scale(1.03);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-card-feature-visual { transition: none; }
+  .kol-card-feature:hover .kol-card-feature-visual { transform: none; }
 }
 
 /* =============================================================================
@@ -628,13 +707,65 @@
   margin-block-end: 0.75rem;
 }
 
-/* in-frame position only — the button IS the CopyButton atom (.kol-copy-btn
- * carries the 32×32 look, promoted there 2026-08-09); offset 0.75rem into
- * the 1rem pad. */
+/* THE CONTROL'S LANE (CodeBlockMobileOverflow, kol-website 2026-08-25). The
+ * copy button floats in the frame's top-right corner (.kol-frame-control), and
+ * the chip row is the lane it sits in — when there IS a chip. A block with no
+ * chip (a `text` fence, an unlabelled CMS block) starts its code on the row
+ * the control occupies, and once the block is narrower than ~600px the first
+ * line runs underneath it (measured: control y 3729–3761, line 1 y 3735–3756).
+ * The first line reserves the control's column in that case and only that
+ * case — 2rem is the control's box (.kol-copy-btn: 16px glyph + 0.5rem pad)
+ * plus its inset; every other line, and every chipped block, is untouched.
+ * `.kol-codeblock-line` is stamped per line by CodeBlock.jsx. */
+.kol-codeblock:not(:has(.kol-codeblock-filename)) .kol-codeblock-line:first-child {
+  padding-inline-end: calc(2rem + var(--kol-spacing-3));
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * FRAME CONTROL — a control that floats in a host frame's corner
+ * (user ruling 2026-08-15).
+ *
+ * Position only. The control IS an existing atom — CopyButton (.kol-copy-btn
+ * carries the 32×32 look, promoted 2026-08-09) or IconFrame — and this rule
+ * says nothing about how it looks, only where it sits.
+ *
+ * It exists because the same 12px corner was hand-written three times and
+ * shared zero times: `.kol-codeblock-copy` as `0.75rem`, and MediaCard twice
+ * inline as `absolute top-3 right-3` (download) and `absolute top-3 left-3`
+ * (select). Same value, two spellings, three copies — the 4px-five-ways
+ * problem one layer up.
+ *
+ * NOT `overlay`. That word is ruled below (:704) and means the ONE floating
+ * surface; this is in-frame chrome, which is a different thing.
+ *
+ * The inset spells --kol-spacing-3 (12px) rather than a literal, per the
+ * tokens law. Default corner is top-right; the modifiers move it.
+ *
+ * `.kol-codeblock-copy` is kept as a DEPRECATED ALIAS so existing callers do
+ * not break — it is the same rule, not a second one. New hosts use
+ * `.kol-frame-control`. */
+.kol-frame-control,
 .kol-codeblock-copy {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  top: var(--kol-spacing-3);
+  right: var(--kol-spacing-3);
+}
+
+.kol-frame-control--top-left {
+  right: auto;
+  left: var(--kol-spacing-3);
+}
+
+.kol-frame-control--bottom-right {
+  top: auto;
+  bottom: var(--kol-spacing-3);
+}
+
+.kol-frame-control--bottom-left {
+  top: auto;
+  right: auto;
+  bottom: var(--kol-spacing-3);
+  left: var(--kol-spacing-3);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -679,4 +810,242 @@
    * separate the panel; a drop-shadow on top is the floating-card idiom from
    * another product. --kol-shadow-overlay was added for this an hour earlier
    * and is deleted with it: it solved the wrong problem. */
+}
+
+/* ── Section — .kol-section-* ─────────────────────────────────────────────
+ * Between-siblings rhythm for stacked inspector sections (InspectorSectionRhythm,
+ * filed from kol-fxr 2026-08-15).
+ *
+ * Section's own anatomy — the label and the `gap-2` inner stack — stays as
+ * Tailwind utilities in Section.jsx. Only the BETWEEN-siblings rule lives here,
+ * because `+` cannot be expressed as a utility class: every consumer stacking
+ * sections in a rail was therefore forced to invent a hook class and retype
+ * this rule. kol-fxr's `.kol-params-section` block is the evidence, and it
+ * dies on adopt.
+ *
+ * The rule is on the ADJACENT PAIR, not on the element, so the first section
+ * in a stack never carries a stray top border and no consumer needs
+ * `:not(:first-child)`.
+ *
+ * DENSITY WAS NOT ADDED. The ticket asked for a `density` prop wanting "a
+ * tighter inner gap than gap-2" — but the consumer's own override is
+ * `gap: 0.5rem`, which IS `gap-2`. The rule it maintains locally is a no-op
+ * against Section's shipped default, so there is no second density to name
+ * until a consumer produces a value that actually differs. */
+.kol-section--divided + .kol-section--divided {
+  border-top: 1px solid var(--kol-fg-08);
+  /* 20px below the rule; the 20px above falls out of the rail body's own
+   * gap-5, so a symmetric space–divider–space lands without this file
+   * knowing anything about the rail.
+   * px, not --kol-spacing-5 — that token is rem, and spacing here is px
+   * (.kol-tag--sm, .kol-sidenav-group, .kol-control-* all set px directly). */
+  padding-top: 20px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Content family hover — molecules/ContentCard.jsx · ContentRow.jsx
+ *
+ * ONE rule, driven by a per-variant custom property the component sets
+ * (`--kol-content-hover-bg`). The alternative was a hover utility per
+ * variant in JSX, which Tailwind cannot generate from package source
+ * anyway (the SegmentedToggle lesson — component chrome belongs in
+ * kol-theme). A variant with no hover simply never sets the property,
+ * and the rule resolves to nothing.
+ *
+ * The fill is an oq-* step per 05-control-chrome.md's state model; the
+ * value itself is chosen in ContentCard/ContentRow's HOVER table.
+ * ───────────────────────────────────────────────────────────────────── */
+@media (hover: hover) {
+  .kol-content-hover:hover {
+    background-color: var(--kol-content-hover-bg);
+  }
+  /* border is its OWN class, not a fallback chain off the bg one: a variant
+   * that steps its fill but not its frame (catalog) and one that steps its
+   * frame but not its fill (work) are both real, and an undefined var in a
+   * border-color declaration resolves to `unset` — which inherits, and quietly
+   * repaints a border nobody asked to move. */
+  .kol-content-hover-frame:hover {
+    border-color: var(--kol-content-hover-border);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentRow — the responsive step
+ *
+ * The row publishes its box as custom properties and reads them here, so
+ * the md: step is ONE media query instead of per-variant Tailwind variants
+ * that Tailwind cannot generate from package source anyway. A variant that
+ * publishes no `-md` value falls back to its base and never steps.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-row {
+  gap: var(--kol-row-gap);
+  padding: var(--kol-row-pad);
+  min-height: var(--kol-row-min-h);
+  background: var(--kol-row-bg);
+  /* the FALLBACK is not optional. A variant with no frame publishes no
+   * `--kol-row-border`, and `border-color: var(--undefined)` is invalid at
+   * computed-value time — it resolves to `unset`, which INHERITS, which is
+   * currentColor, which is the text colour. That is how `default`'s hairline
+   * divider rendered as a solid white rule. */
+  border-color: var(--kol-row-border, transparent);
+  transition: background-color 300ms var(--kol-ease-house),
+              border-color     300ms var(--kol-ease-house);
+}
+
+/* the divider is its OWN longhand, declared after the shorthand above so it
+ * wins on order — `default`'s bottom rule is not the same thing as a framed
+ * variant's border, and one property cannot carry both. */
+.kol-row--divided {
+  border-bottom: 1px solid var(--kol-fg-08);
+}
+.kol-row > .kol-row-thumb {
+  width: var(--kol-row-thumb);
+}
+
+/* CONTAINER query, not a viewport one (2026-08-15). The row steps on the width
+ * of the WALL it sits in, for exactly the reason the card-wall law gives: the
+ * shell rails eat width that viewport breakpoints cannot see, so a row inside a
+ * 700px panel on a 1600px screen was taking the desktop step and overflowing.
+ * It also means the step is VISIBLE in a resizable panel instead of only when
+ * the whole browser is dragged.
+ *
+ * 768 is still the ruled `md` rung (08-breakpoints/01-values.md) — the number
+ * did not change, only what it measures. A row with no container ancestor falls
+ * back to its base values, which is the correct nothing-happens. */
+@container (min-width: 768px) {
+  .kol-row {
+    gap: var(--kol-row-gap-md, var(--kol-row-gap));
+    padding: var(--kol-row-pad-md, var(--kol-row-pad));
+    min-height: var(--kol-row-min-h-md, var(--kol-row-min-h));
+  }
+  .kol-row > .kol-row-thumb {
+    width: var(--kol-row-thumb-md, var(--kol-row-thumb));
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentCard — the work DRAWER
+ *
+ * A caption plate that rises over the bottom of the artwork on hover.
+ * The card is image-only at rest by design: a work shelf is a wall of
+ * images, and the caption is the reveal.
+ *
+ * Absolute, so it never adds height to the card and never reflows the
+ * shelf. Opacity only — a translucent wash over a photograph is exactly
+ * what the oq-* tier exists to avoid, but this plate is OPAQUE
+ * (surface-inverse) and it is the plate's PRESENCE that animates, not
+ * its transparency over the image.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-card-drawer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 300ms var(--kol-ease-house);
+}
+
+@media (hover: hover) {
+  .group:hover > .kol-card-drawer {
+    opacity: 1;
+  }
+}
+
+/* touch has no hover — the caption must not be unreachable there */
+@media (hover: none) {
+  .kol-card-drawer {
+    opacity: 1;
+  }
+}
+
+/* The card's text plate steps its padding at md where the variant declares
+ * one (work: 16 → 24, matching the shipped drawer's `p-4 md:p-6`). Same
+ * custom-property mechanism as .kol-row — Tailwind cannot generate an
+ * md: variant from package source, and these are per-variant data. */
+/* the ruled `md` rung, same as .kol-row above — and a container query for the
+ * same reason: a card in a narrow wall must not take the wide plate padding
+ * because the BROWSER happens to be wide. */
+@container (min-width: 768px) {
+  .kol-card-plate {
+    padding: var(--kol-plate-pad-md, var(--kol-plate-pad));
+  }
+}
+
+/* The card's rest colours, for the same reason as .kol-row — an inline
+ * background/borderColor outranks .kol-content-hover:hover, so the step
+ * silently never rendered. */
+.kol-card {
+  background: var(--kol-card-bg);
+  border-color: var(--kol-card-border);
+  transition: background-color 300ms var(--kol-ease-house),
+              border-color     300ms var(--kol-ease-house);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * The house expand — molecules/SearchInput.jsx · organisms/ContentFilters.jsx
+ *
+ * A collapsed control that opens to its field: the search glyph widening
+ * into an input. Two components hand-wrote the same three declarations
+ * inline (`width 600ms`, `background 400ms`, `opacity 300ms`, all on the
+ * house curve), which is how the curve came to be hardcoded in seven
+ * places to begin with.
+ *
+ * Durations are STAGGERED on purpose and that is the whole character of
+ * the move: the box travels longest (600), its fill settles sooner (400),
+ * and the content inside arrives last and quickest (300) so it does not
+ * smear across the widening box.
+ *
+ * The width VALUE stays inline — it is per-instance data (a consumer's
+ * expanded width), not chrome. Only the motion lives here.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-expand {
+  transition: width      600ms var(--kol-ease-house),
+              background 400ms var(--kol-ease-house),
+              border-color 400ms var(--kol-ease-house);
+}
+
+/* the content that rides inside an expanding box */
+.kol-expand-content {
+  transition: opacity 300ms var(--kol-ease-house);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentMedia — the hover zoom
+ *
+ * A state the house serves on image-led cards: the artwork creeps up
+ * inside its own frame while the frame holds still. ContentMedia already
+ * clips, so the scale has something to push against — without that
+ * overflow the image just grows out of the card.
+ *
+ * Keyed off the CARD's hover, not the media's, because the whole tile is
+ * the affordance; hovering the caption must zoom too. Transform only —
+ * it is the one property that scales without relayout, and a wall of
+ * these must not thrash the grid.
+ *
+ * 1.06 and 600ms, deliberately slow and small: a zoom you can SEE
+ * happening reads as a photograph breathing; a fast one reads as a
+ * glitch.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-media-zoom > img,
+.kol-media-zoom > video {
+  transition: transform 600ms var(--kol-ease-house);
+  transform-origin: center;
+}
+
+@media (hover: hover) {
+  .group:hover .kol-media-zoom > img,
+  .group:hover .kol-media-zoom > video {
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-media-zoom > img,
+  .kol-media-zoom > video {
+    transition: none;
+  }
+  .group:hover .kol-media-zoom > img,
+  .group:hover .kol-media-zoom > video {
+    transform: none;
+  }
 }

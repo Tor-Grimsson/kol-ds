@@ -47,6 +47,7 @@
 @import "./kol-components-workshop.css" layer(components);
 @import "./kol-components-foundry.css" layer(components);
 @import "./kol-components-styleguide.css" layer(components);
+@import "./kol-components-shell.css" layer(components);
 
 /* Theme-level design tokens */
 @layer components {
@@ -85,6 +86,43 @@
    * so anything else that has to line up with a row (the tag shelf) reads the
    * indent instead of retyping it. */
   --kol-pad-rail-row-x: 1.25rem;
+
+  /* CARD padding (2026-08-15, content-card ruling) — flat, stepped by the
+   * card's `size` prop, never by breakpoint. 12/16/24. */
+  --kol-pad-card-sm: 0.75rem;
+  --kol-pad-card-md: 1rem;
+  --kol-pad-card-lg: 1.5rem;
+
+  /* WALL gaps (2026-08-15) — the same treatment `--kol-pad-card-*` got, for
+   * the same reason: these two numbers were re-typed as a ternary at every
+   * call site (kol-monitor HomePage ×2, LibraryPage ×2, MediaLibrary,
+   * kol-website Work, both foundry grids, StackLatest) and a value repeated
+   * nine times is a value that has already drifted somewhere.
+   *
+   * PX, not rem — a gap is a layout measure, not type (user ruling
+   * 2026-08-15), so a reader bumping their browser text size must not re-space
+   * every wall in the estate.
+   *
+   * Two rungs because a wall of CARDS and a stack of ROWS want different air:
+   * cards are objects with their own edges and need separating; rows are lines
+   * in a table and 24px between them reads as a broken list. */
+  --kol-gap-wall-grid: 24px;
+  --kol-gap-wall-list: 8px;
+
+  /* The house curve (2026-08-15) — the easing the cards actually use; was
+   * hardcoded in 5 files before this token existed. Curve only, no duration:
+   * it pairs with whatever duration the motion needs.
+   *
+   * BALANCED, not expo (user ruling 2026-08-15). This was easeOutExpo
+   * `cubic-bezier(0.16, 1, 0.3, 1)`, which spends ~90% of its distance in the
+   * first fifth of the duration and the rest on a settle you cannot see — so
+   * every motion read as instant no matter what duration it was given, and a
+   * small hover affordance never showed its move at all. */
+  --kol-ease-house: cubic-bezier(0.4, 0, 0.2, 1);
+  /* the bounce — overshoots past its target and settles back (y > 1 is what
+   * makes it bounce; house only decelerates). For a press that should feel
+   * springy rather than merely smooth. */
+  --kol-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Content widths (2026-07-28; panel added 2026-07-30) — ONE frame, three
    * inner caps (chess law). Every page: mx-auto max-w-shell + the one padding

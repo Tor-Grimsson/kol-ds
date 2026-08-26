@@ -74,7 +74,7 @@ class FontLoader {
  * the fetch + FontFace injection succeed). The metric lines require opentype.js
  * (a peer dep, dynamically imported) — without it the grids still render, just
  * with no overlay. The showcase serves fonts under `/fonts/`; e.g.
- * `/fonts/Right-Grotesk-ttf/PPRightGrotesk-Regular.ttf`.
+ * `/fonts/right-grotesk-ttf/PPRightGrotesk-Regular.ttf`.
  *
  * Metric extraction uses fallback chains so incomplete fonts degrade instead of
  * throwing: unitsPerEm ← font.unitsPerEm ?? 1000; ascender ← os2.sTypoAscender

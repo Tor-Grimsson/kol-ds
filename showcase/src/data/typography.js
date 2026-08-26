@@ -47,48 +47,53 @@ const familyRows = [
  * Sans atomic — display / heading / body
  * ============================================================================ */
 
+/* `cut` names the Right Grotesk cut alone — every row is sans, saying so
+ * per-row was noise (2026-08-12 spec-table fix). Size/weight/LH/LS render
+ * live off the class (LiveClassValue probe) — no literals. */
 const sansDisplayRows = [
-  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', family: 'sans-narrow' },
-  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', family: 'sans-narrow' },
+  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', cut: 'Narrow' },
+  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', cut: 'Narrow' },
 ]
 
 const sansHeadingRows = [
-  { cls: '.kol-sans-heading-01', tokenName: '--kol-text-heading-01', family: 'sans-narrow' },
-  { cls: '.kol-sans-heading-02', tokenName: '--kol-text-heading-02', family: 'sans-compact' },
-  { cls: '.kol-sans-heading-03', tokenName: '--kol-text-heading-03', family: 'sans-compact' },
-  { cls: '.kol-sans-heading-04', tokenName: '--kol-text-heading-04', family: 'sans-compact' },
-  { cls: '.kol-sans-heading-05', tokenName: '--kol-text-heading-05', family: 'sans-compact' },
+  { cls: '.kol-sans-heading-01', tokenName: '--kol-text-heading-01', cut: 'Narrow' },
+  { cls: '.kol-sans-heading-02', tokenName: '--kol-text-heading-02', cut: 'Narrow' },
+  { cls: '.kol-sans-heading-03', tokenName: '--kol-text-heading-03', cut: 'Compact' },
+  { cls: '.kol-sans-heading-04', tokenName: '--kol-text-heading-04', cut: 'Compact' },
+  { cls: '.kol-sans-heading-05', tokenName: '--kol-text-heading-05', cut: 'Compact' },
 ]
 
 const sansBodyRows = [
-  { cls: '.kol-sans-body-01', tokenName: '--kol-text-body-01', family: 'sans (base)' },
-  { cls: '.kol-sans-body-02', tokenName: '--kol-text-body-02', family: 'sans (base)' },
-  { cls: '.kol-sans-body-03', tokenName: '--kol-text-body-03', family: 'sans (base)' },
+  { cls: '.kol-sans-body-01', tokenName: '--kol-text-body-01', cut: 'Base' },
+  { cls: '.kol-sans-body-02', tokenName: '--kol-text-body-02', cut: 'Base' },
+  { cls: '.kol-sans-body-03', tokenName: '--kol-text-body-03', cut: 'Base' },
 ]
 
 /* ============================================================================
  * Prose elements
  * ============================================================================ */
 
+/* `cut` — Narrow/Compact/Base name the Right Grotesk cut, Mono is JetBrains;
+ * the "sans-" prefix was per-row noise (2026-08-12 spec-table fix). */
 const proseRows = [
-  { role: 'Display',     class: '.kol-prose-display',        family: 'sans-narrow',  weight: 500 },
-  { role: 'Display (md)',class: '.kol-prose-display-md',     family: 'sans-narrow',  weight: 500 },
-  { role: 'Title',       class: '.kol-prose-title',          family: 'sans-narrow',  weight: 500 },
-  { role: 'H1',          class: '.kol-prose h1',             family: 'sans-narrow',  weight: 500, tokenName: '--kol-text-heading-01' },
-  { role: 'H2',          class: '.kol-prose h2',             family: 'sans-compact', weight: 400, tokenName: '--kol-text-heading-03' },
-  { role: 'H3',          class: '.kol-prose h3',             family: 'sans-compact', weight: 400, tokenName: '--kol-text-heading-04' },
-  { role: 'H4',          class: '.kol-prose h4',             family: 'sans-compact', weight: 400, tokenName: '--kol-text-heading-05' },
-  { role: 'H5',          class: '.kol-prose h5',             family: 'sans-compact', weight: 500, tokenName: '--kol-text-heading-06' },
-  { role: 'H6',          class: '.kol-prose h6',             family: 'sans-compact', weight: 500, tokenName: '--kol-text-heading-06' },
-  { role: 'Lede',        class: '.kol-prose-lede',           family: 'sans-compact', weight: 400 },
-  { role: 'Tagline',     class: '.kol-prose-tagline',        family: 'sans-narrow',  weight: 500 },
-  { role: 'Body',        class: '.kol-prose p',              family: 'sans (base)',  weight: 300 },
-  { role: 'Quote',       class: '.kol-prose blockquote p',   family: 'sans (base)',  weight: 600 },
-  { role: 'Cite',        class: '.kol-prose blockquote cite',family: 'sans (base)',  weight: 500 },
-  { role: 'Label',       class: '.kol-prose-label',          family: 'mono',         weight: 500 },
-  { role: 'Code (inline)',class: '.kol-prose code',          family: 'mono',         weight: 400 },
-  { role: 'Code (block)', class: '.kol-prose pre',           family: 'mono',         weight: 400 },
-  { role: 'List item',    class: '.kol-prose ul li',         family: 'sans (base)',  weight: 300 },
+  { role: 'Display',     class: '.kol-prose-display',        cut: 'Narrow',  weight: 500 },
+  { role: 'Display (md)',class: '.kol-prose-display-md',     cut: 'Narrow',  weight: 500 },
+  { role: 'Title',       class: '.kol-prose-title',          cut: 'Narrow',  weight: 500 },
+  { role: 'H1',          class: '.kol-prose h1',             cut: 'Narrow',  weight: 500, tokenName: '--kol-text-heading-01' },
+  { role: 'H2',          class: '.kol-prose h2',             cut: 'Compact', weight: 400, tokenName: '--kol-text-heading-03' },
+  { role: 'H3',          class: '.kol-prose h3',             cut: 'Compact', weight: 400, tokenName: '--kol-text-heading-04' },
+  { role: 'H4',          class: '.kol-prose h4',             cut: 'Compact', weight: 400, tokenName: '--kol-text-heading-05' },
+  { role: 'H5',          class: '.kol-prose h5',             cut: 'Compact', weight: 500, tokenName: '--kol-text-heading-06' },
+  { role: 'H6',          class: '.kol-prose h6',             cut: 'Compact', weight: 500, tokenName: '--kol-text-heading-06' },
+  { role: 'Lede',        class: '.kol-prose-lede',           cut: 'Compact', weight: 400 },
+  { role: 'Tagline',     class: '.kol-prose-tagline',        cut: 'Narrow',  weight: 500 },
+  { role: 'Body',        class: '.kol-prose p',              cut: 'Base',    weight: 300 },
+  { role: 'Quote',       class: '.kol-prose blockquote p',   cut: 'Base',    weight: 600 },
+  { role: 'Cite',        class: '.kol-prose blockquote cite',cut: 'Base',    weight: 500 },
+  { role: 'Label',       class: '.kol-prose-label',          cut: 'Mono',    weight: 500 },
+  { role: 'Code (inline)',class: '.kol-prose code',          cut: 'Mono',    weight: 400 },
+  { role: 'Code (block)', class: '.kol-prose pre',           cut: 'Mono',    weight: 400 },
+  { role: 'List item',    class: '.kol-prose ul li',         cut: 'Base',    weight: 300 },
 ]
 
 /* ============================================================================
@@ -193,8 +198,9 @@ export const TYPOGRAPHY_SECTIONS = [
       "carry no ordering, you have to remember which is bigger. 01 = largest " +
       "follows HTML's H1 = biggest convention. Class prefix is family-first " +
       "(.kol-sans-) to mirror mono naming and read naturally — \"the sans " +
-      "system, display role, stop 01\". H1 uses Narrow (condensed for impact); " +
-      "H2–H5 use Compact (slightly wider, mid-tier); body uses base. Atomic body " +
+      "system, display role, stop 01\". H1 and H2 use Narrow (condensed for " +
+      "impact — the boundary moved down one rung 2026-08-12); H3–H5 use Compact " +
+      "(slightly wider, mid-tier); body uses base. Atomic body " +
       "weight is 400 (regular) for chrome; prose body is 300 (light) for " +
       "editorial reading copy — different defaults per context.",
     tables: [

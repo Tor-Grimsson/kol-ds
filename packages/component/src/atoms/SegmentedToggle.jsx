@@ -23,9 +23,21 @@
  * the group on the active cell, ←/→ (or ↑/↓) move selection + focus.
  *
  * Props:
- *   value     — current option value
+ *   value     — current option value. `null`/`undefined` = STATELESS mode
+ *               (the segmented state law, 2026-08-12): role `group`, no
+ *               aria-checked, no selected styling — a pure one-shot ACTION
+ *               strip (canvas alignment, transform cluster); onChange is the
+ *               action dispatch.
  *   onChange  — handler (newValue) => void
  *   options   — [{ value, label, ariaLabel? }]
+ *   variant   — 'default' (shipped chrome: shared outer stroke + dividers,
+ *               filled active cell) | 'filled' (the state law's tiles: every
+ *               cell a surface-secondary tile with 1px transparent gaps, NO
+ *               outline shell; the inset ring marks ONLY the selected cell) |
+ *               'tonal' (filled tiles, but the clicked cell marks itself by
+ *               TONE — surface-tertiary fill, no ring; 2026-08-12).
+ *               Every variant renders at the SAME pinned button-ladder
+ *               height (26/32/40) — icon or text, the box never moves.
  *   size      — mirrors Button exactly: 'sm' (26px, mono-12, 4/12 pad) |
  *               'md' (default, 32px, mono-14, 6/16 pad) | 'lg' (40px,
  *               mono-16, 8/20 pad). Same cell padding + mono type as the
@@ -34,11 +46,13 @@
  *   ariaLabel — accessible name for the group
  *   className — additional classes on the outer shell
  */
-export default function SegmentedToggle({ value, onChange, options = [], size = 'md', ariaLabel, className = '' }) {
+export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', ariaLabel, className = '' }) {
   const cellType = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
+  const stateless = value == null
   const focusIdx = Math.max(0, options.findIndex((opt) => opt.value === value))
 
   const handleKeyDown = (e) => {
+    if (stateless) return // plain button row — Tab moves focus, arrows do nothing
     const dir = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key]
     if (!dir || !options.length) return
     e.preventDefault()
@@ -49,21 +63,27 @@ export default function SegmentedToggle({ value, onChange, options = [], size = 
 
   return (
     <div
-      role="radiogroup"
+      role={stateless ? 'group' : 'radiogroup'}
       aria-label={ariaLabel}
       onKeyDown={handleKeyDown}
-      className={['kol-seg', size !== 'md' && `kol-seg--${size}`, className].filter(Boolean).join(' ')}
+      className={[
+        'kol-seg',
+        (variant === 'filled' || variant === 'tonal') && 'kol-seg--filled',
+        variant === 'tonal' && 'kol-seg--tonal',
+        size !== 'md' && `kol-seg--${size}`,
+        className,
+      ].filter(Boolean).join(' ')}
     >
       {options.map((opt, i) => {
-        const isActive = opt.value === value
+        const isActive = !stateless && opt.value === value
         return (
           <button
             key={opt.value}
             type="button"
-            role="radio"
-            aria-checked={isActive}
+            role={stateless ? undefined : 'radio'}
+            aria-checked={stateless ? undefined : isActive}
             aria-label={opt.ariaLabel}
-            tabIndex={i === focusIdx ? 0 : -1}
+            tabIndex={stateless ? 0 : (i === focusIdx ? 0 : -1)}
             onClick={() => onChange?.(opt.value)}
             className={['kol-seg-cell', cellType, isActive && 'is-active'].filter(Boolean).join(' ')}
           >

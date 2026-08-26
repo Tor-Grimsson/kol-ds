@@ -127,7 +127,9 @@ export default function ColorInputRow({
     chip(24)
   )
 
-  const labelCls = `kol-helper-12 truncate ${unused ? 'text-meta' : 'text-emphasis'}`
+  /* leading-normal: truncate's overflow clip cuts mono descenders on
+   * kol-helper's 1-em line box (MenuItemDescenderClip sweep, 2026-08-12). */
+  const labelCls = `kol-helper-12 truncate leading-normal ${unused ? 'text-meta' : 'text-emphasis'}`
 
   const hexInput = (
     <Input
@@ -156,7 +158,7 @@ export default function ColorInputRow({
         >
           {swatchCell}
           <span className={labelCls}>{labelVisible ? label : ''}</span>
-          <span className={`kol-helper-10 truncate ${unused ? 'text-subtle' : 'text-meta'}`}>
+          <span className={`kol-helper-10 truncate leading-normal ${unused ? 'text-subtle' : 'text-meta'}`}>
             {tokenName}
           </span>
           {hexInput}

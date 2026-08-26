@@ -69,7 +69,7 @@ export default function MediaCard({
         {thumb}
         {selectMode ? (
           <span
-            className="absolute top-3 left-3 rounded p-1"
+            className="kol-frame-control kol-frame-control--top-left rounded p-1"
             style={{ background: 'var(--kol-fg-absolute-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
           >
             <SelectIndicator on={selected} />
@@ -79,7 +79,7 @@ export default function MediaCard({
             href={downloadHref}
             aria-label="Download"
             title="Download"
-            className="absolute top-3 right-3 inline-flex items-center justify-center w-8 h-8 rounded text-emphasis hover:bg-fg-absolute-24 transition-colors"
+            className="kol-frame-control inline-flex items-center justify-center w-8 h-8 rounded text-emphasis hover:bg-fg-absolute-24 transition-colors"
             style={{ background: 'var(--kol-fg-absolute-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
             onClick={(e) => e.stopPropagation()}
           >

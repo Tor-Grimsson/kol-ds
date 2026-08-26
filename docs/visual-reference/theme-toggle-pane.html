@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ThemeToggle library — pane</title>
+<script>
+  /* stamp the REAL theme mechanism before CSS loads — each iframe is its own
+   * :root, so the whole token cascade (surfaces → fg/oq derivations) computes
+   * honestly, exactly like a consumer app. */
+  document.documentElement.setAttribute(
+    'data-theme',
+    new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light'
+  );
+</script>
+<link rel="stylesheet" href="../../packages/theme/kol-theme.css">
+<style>
+  /* preflight shim — the consumer normally gets this from Tailwind */
+  button { border: 0; padding: 0; background: none; color: inherit; font: inherit; }
+
+  body { margin: 0; font: 13px/1.5 "JetBrains Mono", monospace;
+         padding: 32px 40px 96px;
+         background: var(--kol-surface-primary); color: var(--kol-surface-on-primary); }
+  h1 { font-size: 14px; font-weight: 600; margin: 0 0 8px; }
+  .note { font-size: 11px; opacity: .55; margin: 0 0 24px; max-width: 560px; }
+  h2 { font-size: 12px; font-weight: 600; margin: 36px 0 14px; opacity: .7; }
+  .tag { font-size: 10px; opacity: .45; }
+
+  /* tailwind-utility shims — the exact classes ThemeToggle.jsx (0.18.0) uses */
+  .relative { position: relative; } .inline-block { display: inline-block; }
+  .overflow-hidden { overflow: hidden; } .flex { display: flex; }
+  .inline-flex { display: inline-flex; } .items-center { align-items: center; }
+  .justify-center { justify-content: center; } .justify-start { justify-content: flex-start; }
+  .shrink-0 { flex-shrink: 0; } .flex-1 { flex: 1 1 0%; } .min-w-0 { min-width: 0; }
+  .text-left { text-align: left; } .w-full { width: 100%; } .gap-2 { gap: 8px; }
+  .py-1 { padding-top: 4px; padding-bottom: 4px; }
+  .py-1\.5 { padding-top: 6px; padding-bottom: 6px; }
+  .py-2 { padding-top: 8px; padding-bottom: 8px; }
+  .px-6 { padding-left: 24px; padding-right: 24px; }
+  .bg-transparent { background: transparent; }
+  .transition-transform { transition-property: transform; }
+  .duration-500 { transition-duration: 500ms; } .ease-in-out { transition-timing-function: ease-in-out; }
+
+  /* matrix */
+  .mrow { display: flex; align-items: flex-end; gap: 28px; margin-bottom: 26px; }
+  .mrow .vname { width: 132px; font-size: 10px; opacity: .45; padding-bottom: 8px; flex-shrink: 0; }
+  .mcell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .colhost { width: 240px; display: flex; flex-direction: column; gap: 8px; }
+  .mode-readout { font-size: 10px; opacity: .55; margin-bottom: 18px; }
+
+  /* keyline guides — outline every toggle's real box when on, so chrome
+   * geometry reads even where the fill is subtle on this surface. */
+  body.guides-on .demo-toggle { outline: 1px dashed var(--guide-key); outline-offset: 0; }
+  .guides-btn { position: fixed; bottom: 16px; left: 40px; z-index: 10;
+    font: 11px/1 "JetBrains Mono", monospace; letter-spacing: 1px; padding: 8px 14px;
+    border-radius: 4px; cursor: pointer; border: 1px solid transparent;
+    background: var(--kol-surface-inverse); color: var(--kol-surface-on-inverse); }
+  body:not(.guides-on) .guides-btn { opacity: .55; }
+</style>
+</head>
+<body class="guides-on">
+<button id="guides-btn" class="guides-btn" type="button" aria-pressed="true">guides · on</button>
+<div id="pane"></div>
+
+<script>
+const THEME = document.documentElement.getAttribute('data-theme');
+const BG_LIGHT = THEME === 'light';
+document.body.style.setProperty('--guide-key', BG_LIGHT ? '#CA3ABC' : '#F2D24B');
+
+/* ── the ONE glyph, verbatim from kol-icon-set-v1: tools/mode-toggle-01 ── */
+const MODE1 = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.00073H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 12.0007L3 12.0007" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16.0007H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const sz = (svg, n) => svg.replace('<svg ', `<svg width="${n}" height="${n}" `);
+
+/* ── state — the SHIPPED model (framework 0.9.0 ruling, unchanged through
+ * 0.18.0): the toggle cycles light ↔ dark and LABELS WHAT RENDERS; `system`
+ * is the absence of a choice — reachable only via alt/shift-click (the
+ * reset), never a labelled rung. When mode is system, each pane resolves to
+ * its OWN theme, exactly like a consumer page following the OS. ── */
+const MODE_LABEL = { light: 'Light mode', dark: 'Dark mode' };
+const SLOT = { dark: 0, light: 1 };
+let mode = 'system';
+const instances = [];
+const shown = () => (mode === 'system' ? THEME : mode);
+
+function applyAll() { instances.forEach((f) => f()); }
+function broadcast() { parent.postMessage({ kol: 'toggle-state', mode }, '*'); }
+window.addEventListener('message', (e) => {
+  if (!e.data || e.data.kol !== 'toggle-state') return;
+  mode = e.data.mode; applyAll();
+});
+/* alt/shift-click = the reset (the ruling's "separate affordance") */
+function onToggleClick(e) {
+  mode = (e.altKey || e.shiftKey) ? 'system' : (shown() === 'dark' ? 'light' : 'dark');
+  applyAll(); broadcast();
+}
+
+/* iconSwap — the ROLL, verbatim mechanics from ThemeToggle.jsx: two copies of
+ * the split circle; strip translateX −(slot·px), rotation accumulates
+ * −180°/slot, both on the 500ms/ease clock. */
+function iconSwap(px) {
+  const win = document.createElement('span');
+  win.className = 'relative inline-block overflow-hidden';
+  win.style.width = px + 'px'; win.style.height = px + 'px';
+  win.setAttribute('aria-hidden', 'true');
+  const strip = document.createElement('span');
+  strip.className = 'flex transition-transform duration-500 ease-in-out';
+  strip.style.width = (px * 2) + 'px';
+  const roll = [];
+  for (let i = 0; i < 2; i++) {
+    const g = document.createElement('span');
+    g.className = 'inline-flex transition-transform duration-500 ease-in-out';
+    g.style.lineHeight = '0';
+    g.innerHTML = sz(MODE1, px);
+    roll.push(g); strip.appendChild(g);
+  }
+  win.appendChild(strip);
+  instances.push(() => {
+    const slot = SLOT[shown()];
+    strip.style.transform = `translateX(-${slot * px}px)`;
+    roll.forEach((g) => { g.style.transform = `rotate(${slot * -180}deg)`; });
+  });
+  return win;
+}
+
+/* ── ladders, verbatim from ThemeToggle.jsx 0.18.0 ── */
+const MONO = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' };
+const GLYPH_TEXT = { sm: 14, md: 16, lg: 18 };  /* text-adjacent: inside the rung line box */
+const GLYPH_SOLO = { sm: 16, md: 20, lg: 24 };  /* solo: pinned-square pairing sizes */
+
+/* makeToggle — every class string verbatim from the shipped render */
+function makeToggle({ variant = 'button', fill = 'none', size = 'md', label = true, iconRight = false, fullWidth = false }) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.classList.add('demo-toggle');
+  btn.addEventListener('click', onToggleClick);
+  instances.push(() => {
+    const next = shown() === 'dark' ? 'light' : 'dark';
+    const hint = mode === 'system' ? ' · following your system' : ' · alt-click to follow your system';
+    btn.setAttribute('aria-label', `Switch to ${next} mode`);
+    btn.title = `Switch to ${next} mode${hint}`;
+  });
+  const addLabel = (cls) => {
+    const s = document.createElement('span');
+    if (cls) s.className = cls;
+    instances.push(() => { s.textContent = MODE_LABEL[shown()]; });
+    btn.appendChild(s);
+    return s;
+  };
+
+  /* deprecated alias — old chrome verbatim */
+  if (variant === 'icon') {
+    btn.className += ` kol-theme-toggle kol-theme-toggle-none kol-btn-${size} kol-btn-icon`;
+    btn.appendChild(iconSwap(GLYPH_SOLO[size]));
+    return btn;
+  }
+  /* deprecated aliases — sidenav rows */
+  if (variant === 'hop' || variant === 'hop-bare') {
+    const bare = variant === 'hop-bare';
+    const padY = { sm: 'py-1', md: 'py-1.5', lg: 'py-2' }[size];
+    btn.className += bare
+      ? ` w-full inline-flex items-center justify-start gap-2 ${padY} px-6 ${MONO[size]} bg-transparent text-emphasis`
+      : ' kol-theme-toggle kol-theme-toggle-subtle kol-btn-md kol-mono-14 w-full justify-start gap-2';
+    const iw = document.createElement('span');
+    iw.className = 'inline-flex items-center justify-center shrink-0';
+    iw.setAttribute('aria-hidden', 'true');
+    iw.appendChild(iconSwap(bare ? GLYPH_TEXT[size] : GLYPH_SOLO[size]));
+    btn.appendChild(iw);
+    addLabel('kol-sidenav-hop-label flex-1 min-w-0 text-left');
+    return btn;
+  }
+  /* THE SPEC — flush: no container at all */
+  if (variant === 'flush') {
+    const width = fullWidth ? 'w-full justify-start' : '';
+    btn.className += ` kol-theme-toggle kol-theme-toggle-flush gap-2 ${MONO[size]} ${width}`.replace(/\s+/g, ' ');
+    const glyph = label ? GLYPH_TEXT[size] : GLYPH_SOLO[size];
+    if (!iconRight) btn.appendChild(iconSwap(glyph));
+    if (label) addLabel(fullWidth ? 'flex-1 min-w-0 text-left' : '');
+    if (iconRight) btn.appendChild(iconSwap(glyph));
+    return btn;
+  }
+  /* THE SPEC — button: the padded rung; fill is the one bg element */
+  const fillCls = fill === 'none' ? 'kol-theme-toggle-none' : 'kol-theme-toggle-subtle';
+  const width = fullWidth ? 'w-full justify-start' : '';
+  if (!label) {
+    btn.className += ` kol-theme-toggle ${fillCls} kol-btn-${size} kol-btn-icon ${width}`.replace(/\s+/g, ' ');
+    btn.appendChild(iconSwap(GLYPH_SOLO[size]));
+    return btn;
+  }
+  btn.className += ` kol-theme-toggle ${fillCls} kol-btn-${size} ${MONO[size]} gap-2 ${width}`.replace(/\s+/g, ' ');
+  if (!iconRight) btn.appendChild(iconSwap(GLYPH_TEXT[size]));
+  addLabel(fullWidth ? 'flex-1 min-w-0 text-left' : '');
+  if (iconRight) btn.appendChild(iconSwap(GLYPH_TEXT[size]));
+  return btn;
+}
+
+/* ── render ── */
+const pane = document.getElementById('pane');
+const el = (tag, cls, html) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  pane.appendChild(n); return n;
+};
+
+el('h1', null, `ThemeToggle — framework 0.18.0 · ${THEME}`);
+const readout = el('div', 'mode-readout');
+instances.push(() => {
+  readout.textContent = `mode · ${mode}   resolved here · ${shown()}   (click: → ${shown() === 'dark' ? 'light' : 'dark'} · alt-click: → system)`;
+});
+
+function row(name, cells, desc) {
+  const r = el('div', 'mrow');
+  r.innerHTML = `<div class="vname">${name}</div>`;
+  cells.forEach(([props, tag]) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'mcell';
+    wrap.appendChild(makeToggle(props));
+    const t = document.createElement('div'); t.className = 'tag'; t.textContent = tag;
+    wrap.appendChild(t);
+    r.appendChild(wrap);
+  });
+  if (desc) { const d = document.createElement('div'); d.className = 'tag mdesc'; d.textContent = desc; r.appendChild(d); }
+  return r;
+}
+function colRow(name, propsList, desc) {
+  const r = el('div', 'mrow');
+  r.innerHTML = `<div class="vname">${name}</div>`;
+  const host = document.createElement('div'); host.className = 'colhost';
+  propsList.forEach(([props, tag]) => {
+    const wrap = document.createElement('div');
+    wrap.appendChild(makeToggle(props));
+    const t = document.createElement('div'); t.className = 'tag'; t.textContent = tag;
+    wrap.appendChild(t);
+    host.appendChild(wrap);
+  });
+  r.appendChild(host);
+  if (desc) { const d = document.createElement('div'); d.className = 'tag mdesc'; d.textContent = desc; r.appendChild(d); }
+  return r;
+}
+const S = ['sm', 'md', 'lg'];
+
+el('h2', null, 'button');
+row('fill none', S.map((s) => [{ size: s }, s]));
+row('fill subtle', S.map((s) => [{ fill: 'subtle', size: s }, s]));
+row('icon-only', [
+  ...S.map((s) => [{ label: false, size: s }, `none ${s}`]),
+  ...S.map((s) => [{ fill: 'subtle', label: false, size: s }, `subtle ${s}`]),
+]);
+row('iconRight', [
+  [{ iconRight: true }, 'none md'],
+  [{ fill: 'subtle', iconRight: true }, 'subtle md'],
+]);
+colRow('fullWidth', [
+  [{ fullWidth: true }, 'none md'],
+  [{ fill: 'subtle', fullWidth: true }, 'subtle md'],
+]);
+
+el('h2', null, 'flush');
+row('label', S.map((s) => [{ variant: 'flush', size: s }, s]));
+row('icon-only', S.map((s) => [{ variant: 'flush', label: false, size: s }, s]));
+row('iconRight', [[{ variant: 'flush', iconRight: true }, 'md']]);
+colRow('fullWidth', [[{ variant: 'flush', fullWidth: true }, 'md']]);
+
+applyAll();
+
+/* guides toggle (synced across panes) */
+const gbtn = document.getElementById('guides-btn');
+function setGuides(on) {
+  document.body.classList.toggle('guides-on', on);
+  gbtn.textContent = `guides · ${on ? 'on' : 'off'}`;
+  gbtn.setAttribute('aria-pressed', String(on));
+}
+gbtn.addEventListener('click', () => {
+  const on = !document.body.classList.contains('guides-on');
+  setGuides(on);
+  parent.postMessage({ kol: 'toggle-guides', on }, '*');
+});
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.kol === 'toggle-guides') setGuides(e.data.on);
+});
+</script>
+</body>
+</html>

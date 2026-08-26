@@ -5,7 +5,7 @@ import { AssetPlaceholder } from '@kolkrabbi/kol-component'
 /* Ragged-skyline heights, chosen by `index % 3` — a shelf of these reads as an
  * uneven horizon. Overridable via the `heights` prop. */
 const HEIGHTS = ['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']
-const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
+const EASE = 'var(--kol-ease-house)'
 const TYPE_LABELS = { client: 'Client', collection: 'Collection', typeface: 'Typeface', tool: 'Tool', system: 'System' }
 
 /**
