@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 213 across 57 files in 6 apps
-- **Weighted inbound:** 212★ across 57 edges — 12×5★ · 17×4★ · 28×3★
-- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-labs-monorepo, kol-mirror, kol-monitor, kol-website
+- **Real-world usages found:** 68 across 17 files in 4 apps
+- **Weighted inbound:** 59★ across 17 edges — 8×4★ · 9×3★
+- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-labs-monorepo, kol-website
 
 ## Who depends on this
 
@@ -12,19 +12,19 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 5 | 7 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/GeneratorModule.jsx` |
-| 5 | 5 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/DitherModule.jsx` |
-| 5 | 5 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/Geometry3DModule.jsx` |
-| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/EnvelopeModule.jsx` |
-| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/MathsModule.jsx` |
-| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RGBMixModule.jsx` |
-| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RandomSHModule.jsx` |
-| 5 | 4 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/VideoMixConsoleModule.jsx` |
-| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/ClockModule.jsx` |
-| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/GateModule.jsx` |
-| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/LFOModule.jsx` |
-| 5 | 3 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/RGBSplitModule.jsx` |
-| … | | _45 more_ |
+| 4 | 12 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/RoutingMatrix.jsx` |
+| 4 | 12 | `kol-apps/kol-labs-monorepo/apps/mirror/src/components/hall-of-mirrors/RoutingMatrix.jsx` |
+| 4 | 8 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/VisualGeneratorModule.jsx` |
+| 4 | 6 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/SymphonyMixer.jsx` |
+| 4 | 6 | `kol-apps/kol-labs-monorepo/apps/mirror/src/components/hall-of-mirrors/SymphonyMixer.jsx` |
+| 4 | 4 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/EnvelopeModule.jsx` |
+| 4 | 4 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/RandomSHModule.jsx` |
+| 4 | 3 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/LFOModule.jsx` |
+| 3 | 2 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/MasterModule.jsx` |
+| 3 | 2 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/LogicGateModule.jsx` |
+| 3 | 2 | `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/MultiplesModule.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/mirror/src/components/hall-of-mirrors/MasterModule.jsx` |
+| … | | _5 more_ |
 
 ## Import
 
@@ -70,19 +70,26 @@ From `kol-apps/kol-labs-monorepo/apps/mirror/src/components/mixer/ChannelMaster.
           />
 ```
 
-From `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/hall-of-mirrors/generators/ClockModule.jsx`:
+From `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/MultiplesModule.jsx`:
 
 ```jsx
 <RotaryDial
-          label="BPM"
-          value={Math.round((bpm - 20) / 280 * 100)}
-          onChange={(v) => update('bpm', Math.round(v / 100 * 280 + 20))}
-          size={48} defaultValue={36} busRef={busRef}
-        />
+                label="Offset"
+                value={Math.round((out.offset + 100) / 200 * 100)}
+                onChange={(v) => updateOutput(i, 'offset', Math.round(v / 100 * 200 - 100))}
+                size={36}
+                defaultValue={50}
+              />
 ```
 
-From `kol-apps/kol-mirror/src/components/hall-of-mirrors/MasterModule.jsx`:
+From `kol-apps/kol-editor-radar/src-grab/components/hall-of-mirrors/generators/SequencerModule.jsx`:
 
 ```jsx
-<RotaryDial label={SEND_LABELS[key]} value={sends[key] || 0} onChange={(v) => onChannelUpdate(ci, { sends: { ...sends, [key]: v } })} size={22} compact variant="dense" />
+<RotaryDial
+            label="Rate"
+            value={Math.round(rate / 20 * 100)}
+            onChange={(v) => update('rate', Math.round(v / 100 * 20 * 10) / 10)}
+            size={36}
+            defaultValue={10}
+          />
 ```

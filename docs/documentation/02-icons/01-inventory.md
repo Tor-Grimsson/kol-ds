@@ -30,7 +30,7 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | `arrow-diagonal` | 4 | `arrow-downleft` · `arrow-downright` · `arrow-upleft` · `arrow-upright` |
 | `atomic` | 10 | `atomic-atom` · `atomic-atomic-01` · `atomic-atomic-02` · `atomic-molecule-01` · `atomic-molecule-02` · `atomic-molecule-03` · `atomic-organism-01` · `atomic-organism-02` · `atomic-organism-03` · `atomic-organism-04` |
 | `caret` | 4 | `caret-down` · `caret-left` · `caret-right` · `caret-up` |
-| `chevron` | 4 | `chevron-down` · `chevron-left` · `chevron-right` · `chevron-up` |
+| `chevron` | 5 | `chevron-down` · `chevron-left` · `chevron-right` · `chevron-up` · `chevrons-right` |
 | `code` | 7 | `bug-beetle` · `code` · `code-simple` · `hash-01` · `hash-02` · `sum` · `terminal` |
 | `components` | 5 | `component-01` · `component-02` · `instance-01` · `instance-02` · `variant-01` |
 | `device` | 5 | `camera` · `desktop` · `mobile` · `rack` · `tablet` |
@@ -39,11 +39,11 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | `files` | 10 | `book-open` · `clipboard` · `database` · `file` · `folder` · `image` · `journal` · `library` · `roadmap` · `video` |
 | `kolkrabbi` | 2 | `kol-ds` · `kolkrabbi` |
 | `layout` | 16 | `constrain` · `corner-radius` · `grid` · `layers` · `layout` · `maximize` · `panel-left` · `panel-right` · `resize-auto-h` · `resize-auto-w` · `resize-fixed` · `row` · `rows` · `toggle-overlay` · `user-interface` · `view-list` |
-| `misc` | 10 | `chess-pawn` · `chess-rook` · `crown` · `foundation` · `resize-grip` · `stat-chart-a` · `stopwatch` · `trending-down` · `trending-up` · `trophy` |
+| `misc` | 11 | `chess-pawn` · `chess-rook` · `crown` · `foundation` · `music-note` · `resize-grip` · `stat-chart-a` · `stopwatch` · `trending-down` · `trending-up` · `trophy` |
 | `nav` | 8 | `globe` · `hamburger` · `home-01` · `home-02` · `more` · `settings-01` · `user` · `users` |
 | `notify` | 6 | `attach` · `bell` · `email-01` · `email-02` · `fingerprint` · `message` |
 | `pattern` | 5 | `dith-drift` · `dith-flow` · `grid-horizontal` · `ptrn-checker` · `ptrn-dot` |
-| `playback` | 8 | `pause` · `play` · `rewind` · `skip-back` · `skip-end` · `skip-forward` · `skip-start` · `stop` |
+| `playback` | 13 | `pause` · `play` · `rewind` · `skip-back` · `skip-back-15` · `skip-back-bold` · `skip-end` · `skip-forward` · `skip-forward-15` · `skip-forward-bold` · `skip-start` · `speaker` · `stop` |
 | `shape-forms` | 7 | `bolt` · `bookmark` · `bucket` · `cloud` · `drop` · `flag` · `heart` |
 | `shape-primitives` | 10 | `ball` · `circle` · `cone` · `diamond` · `polygon` · `rectangle` · `square` · `star` · `star-solid` · `triangle` |
 | `singletons` | 11 | `alert-triangle` · `copy` · `cut` · `edit` · `external-link` · `filter` · `filter-lines` · `info` · `save` · `search` · `trash` |
@@ -52,3 +52,31 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 | `traffic` | 4 | `direction-cross` · `direction-opposite` · `refresh` · `repeat` |
 | `transfer` | 2 | `download` · `upload` |
 | `typography` | 9 | `a-framed` · `aa` · `font-01` · `italic-a` · `letter-spacing` · `line-height` · `type` · `type-02` · `underline` |
+
+## Signal set
+
+`kol-icon-set-signal` (kol-icons ≥0.25.0) — **101 glyphs**, the signal-flow vocabulary for instrument surfaces: waveforms, filters, logic gates, dither patterns, shapers, ramps, transport, cables, colour harmony. A set beside v1 rather than inside it, so an app that renders no rack carries none of it. `<Icon>` resolves v1 first, then this — call sites are unchanged.
+
+| Group | n | Glyphs |
+|---|---|---|
+| `ascii` | 10 | `ascii-back` · `ascii-block` · `ascii-dash` · `ascii-dot` · `ascii-equal` · `ascii-hash` · `ascii-pipe` · `ascii-plus` · `ascii-slash` · `ascii-x` |
+| `cable` | 5 | `cable-lock` · `cable-off` · `cable-on` · `cable-trans` · `cable-unlock` |
+| `cap` | 3 | `cap-butt` · `cap-round` · `cap-square` |
+| `color` | 4 | `clr-anl` · `clr-comp` · `clr-mono` · `clr-tri` |
+| `curve` | 2 | `curve-exp` · `curve-log` |
+| `dither` | 12 | `dith-cross` · `dith-crt` · `dith-diamond` · `dith-flower` · `dith-gear` · `dith-glitch` · `dith-grid` · `dith-hex` · `dith-htone` · `dith-melt` · `dith-radial` · `dith-xhatch` |
+| `filter` | 4 | `filter-bp` · `filter-hp` · `filter-lp` · `filter-notch` |
+| `generator` | 4 | `gen-color` · `gen-gradient` · `gen-pattern` · `gen-wave` |
+| `gradient` | 3 | `grad-con` · `grad-lin` · `grad-rad` |
+| `line` | 5 | `line-circle` · `line-grid` · `line-line` · `line-lissa` · `line-spiral` |
+| `logic` | 6 | `logic-and` · `logic-nand` · `logic-nor` · `logic-not` · `logic-or` · `logic-xor` |
+| `pattern` | 1 | `ptrn-stripe` |
+| `radial` | 7 | `radial-circle` · `radial-default` · `radial-hex` · `radial-random` · `radial-rect` · `radial-star` · `radial-triangle` |
+| `ramp` | 3 | `ramp-down` · `ramp-tri` · `ramp-up` |
+| `sequence` | 4 | `seq-a` · `seq-b` · `seq-c` · `seq-d` |
+| `shape` | 7 | `shape-cube` · `shape-cyl` · `shape-ico` · `shape-octa` · `shape-sphere` · `shape-tetra` · `shape-torus` |
+| `shaper` | 8 | `shaper-clip` · `shaper-exp` · `shaper-fold` · `shaper-log` · `shaper-scurve` · `shaper-sine` · `shaper-step` · `shaper-wrap` |
+| `transport` | 8 | `tr-carets` · `tr-fwd` · `tr-inf` · `tr-left` · `tr-pause` · `tr-rew` · `tr-right` · `tr-skip` |
+| `wave` | 5 | `wave-rnd` · `wave-saw` · `wave-sin` · `wave-sqr` · `wave-tri` |
+
+Twelve rack drawings are **not** here: `chevron-down/left/right/up`, `nav-create/home/library/rack/settings`, `dith-flow`, `ptrn-checker`, `ptrn-dot`. v1 already ships those names with a different drawing, the name map is flat, and a second drawing under a shipped name can only win silently.

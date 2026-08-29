@@ -107,6 +107,7 @@ const DESCRIPTIONS = {
   CtaGlobal: 'An editorial two-column contact/CTA band — a display wordmark beside stacked label-over-value rows.',
   NewsletterBand: 'A centered subscribe band — heading + lede over an email Input and submit Button with an aria-live status line.',
   BentoCard: 'A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt.',
+  TiltBento: 'A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt.',
   FeaturedCarousel: 'A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay.',
 
   /* P4 — effects */

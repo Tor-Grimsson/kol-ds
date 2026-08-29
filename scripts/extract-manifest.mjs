@@ -205,13 +205,15 @@ out.push(`---
 title: The manifest tree
 type: reference
 status: active
+created: 2026-07-31
 updated: 2026-07-31
-description: The declared sidebar, generated from the real sources — every category, chapter and page with its source path and renderer. Regenerate with pnpm extract:manifest.
+description: The declared sidebar, generated from the real sources
 aliases:
   - manifest-tree
 tags:
-  - domain/workflow
-  - domain/design-system
+  - domain/content-pipeline
+  - audience/agency-internal
+  - pattern/docs-as-data
 related:
   - "[[INDEX|content pipeline]]"
   - "[[02-taxonomy|categories, chapters, pages]]"

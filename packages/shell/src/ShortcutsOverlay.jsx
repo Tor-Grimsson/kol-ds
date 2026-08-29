@@ -30,7 +30,7 @@ import { useEffect } from 'react'
  * keymap, it does not own one. Formatting a combo (⌘⇧Z) is the consumer's,
  * next to wherever the binding actually lives.
  *
- * @param {Array} props.shortcuts - `[{ label, keys }]` or `[{ section, items }]`
+ * @param {Array} props.shortcuts - `[{ label, combo }]` or `[{ section, items: [{ id, label, combo }] }]` — the same array `SettingsShortcuts` takes (ShellHomeSystemMonitorGaps, kol-monitor 2026-08-27: the overlay read `keys` while the settings block read `combo`; `combo` is the name, `keys` is tolerated for a release)
  * @param {Function} props.onClose
  */
 
@@ -38,10 +38,10 @@ const isSectioned = (list) => Array.isArray(list?.[0]?.items)
 
 /* One row of the shared grid. `contents` keeps the pair on the parent grid
  * rather than making the wrapper a cell of its own. */
-function Row({ label, keys }) {
+function Row({ label, combo, keys }) {
   return (
     <span className="contents">
-      <span>{label}</span><span className="text-fg-96">{keys}</span>
+      <span>{label}</span><span className="text-fg-96">{combo ?? keys}</span>
     </span>
   )
 }
@@ -71,13 +71,13 @@ export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
               >
                 {section}
               </span>
-              {items.map(({ label, keys }) => (
-                <Row key={`${section}:${label}`} label={label} keys={keys} />
+              {items.map(({ label, combo, keys }) => (
+                <Row key={`${section}:${label}`} label={label} combo={combo} keys={keys} />
               ))}
             </span>
           ))
-          : shortcuts.map(({ label, keys }) => (
-            <Row key={label} label={label} keys={keys} />
+          : shortcuts.map(({ label, combo, keys }) => (
+            <Row key={label} label={label} combo={combo} keys={keys} />
           ))}
       </div>
     </div>

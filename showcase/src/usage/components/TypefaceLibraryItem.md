@@ -2,17 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-foundry`
 - **Category:** flat
-- **Real-world usages found:** 2 across 1 files in 1 apps
-- **Weighted inbound:** 3★ across 1 edges — 1×3★
-- **Used in:** kol-website
-
-## Who depends on this
-
-Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is removed; a 3★ dependent loses one element.
-
-| ★ | uses | file |
-|---|---|---|
-| 3 | 2 | `kol-website/apps/web/src/foundry-system/sections/TypefaceLibraryGridWithVariables.jsx` |
+- **Real-world usages found:** 0 across 0 files in 0 apps
+- **Weighted inbound:** 0★ across 0 edges
+- **Used in:** — (no consumer usage found)
 
 ## Import
 
@@ -20,28 +12,4 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 import { TypefaceLibraryItem } from '@kolkrabbi/kol-foundry'
 ```
 
-## Real usage
-
-From `kol-website/apps/web/src/foundry-system/sections/TypefaceLibraryGridWithVariables.jsx`:
-
-```jsx
-<TypefaceLibraryItem
-                typeface={typeface}
-                variant="card"
-                isActive={activeIndex === index}
-                onMouseEnter={() => setActiveIndex(index)}
-              onMouseLeave={() => setActiveIndex(null)}
-              />
-```
-
-From `kol-website/apps/web/src/foundry-system/sections/TypefaceLibraryGridWithVariables.jsx`:
-
-```jsx
-<TypefaceLibraryItem
-              typeface={typeface}
-              variant="list"
-              isActive={activeIndex === index}
-              onMouseEnter={() => setActiveIndex(index)}
-              onMouseLeave={() => setActiveIndex(null)}
-            />
-```
+_No consumer usage mined yet — component is published but unused across the scanned apps._

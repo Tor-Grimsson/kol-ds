@@ -25,8 +25,8 @@
 :root,
 :is([data-theme="light"], .light) {
   /* Absolutes (theme-invariant) */
-  --kol-color-absolute-white: #ffffff;
-  --kol-color-absolute-black: #000000;
+  --kol-color-ab-white: #ffffff;
+  --kol-color-ab-black: #000000;
 
   /* Surface tiers (page-level) — Light Mode (default) */
   --kol-surface-primary: #fafafa;
@@ -49,8 +49,8 @@
   /* Surface split tokens */
   --kol-surface-support-split: #eeeeee;
   --kol-surface-support-split-inverse: #202026;
-  --kol-surface-absolute-split: #ffffff;
-  --kol-surface-absolute-split-inverse: #000000;
+  --kol-surface-ab-split: #ffffff;
+  --kol-surface-ab-split-inverse: #000000;
 }
 
 /* Dark Mode — surface overrides */
@@ -77,8 +77,8 @@
   /* Surface split tokens - Dark Mode */
   --kol-surface-support-split: #202026;
   --kol-surface-support-split-inverse: #eeeeee;
-  --kol-surface-absolute-split: #000000;
-  --kol-surface-absolute-split-inverse: #ffffff;
+  --kol-surface-ab-split: #000000;
+  --kol-surface-ab-split-inverse: #ffffff;
 }
 
 /* UI STATE — dark tier. The base ladder (kol-color.css) is authored for
@@ -122,8 +122,8 @@
     /* Surface split tokens - Dark Mode */
     --kol-surface-support-split: #202026;
     --kol-surface-support-split-inverse: #eeeeee;
-    --kol-surface-absolute-split: #000000;
-    --kol-surface-absolute-split-inverse: #ffffff;
+    --kol-surface-ab-split: #000000;
+    --kol-surface-ab-split-inverse: #ffffff;
 
     /* UI STATE — dark tier (mirror of the block above — edit both) */
     --ui-error:    #F87171;
@@ -131,4 +131,12 @@
     --ui-info:     #60A5FA;
     --ui-success:  #3DD68C;
   }
+}
+
+/* ALIASES — the old `absolute` spelling (renamed to `ab`, user ruling
+ * 2026-08-28: "change every absolute to ab"). Kept so no consumer breaks
+ * silently; new code writes `ab`. Drop once the estate has moved. */
+:root {
+  --kol-surface-absolute-split: var(--kol-surface-ab-split);
+  --kol-surface-absolute-split-inverse: var(--kol-surface-ab-split-inverse);
 }

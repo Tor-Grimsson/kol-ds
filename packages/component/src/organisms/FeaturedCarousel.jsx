@@ -1,4 +1,4 @@
-import { isValidElement, useCallback, useEffect, useState } from 'react'
+import { isValidElement, useCallback, useEffect, useRef, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from '../atoms/Image.jsx'
 import HlsVideo from '../atoms/HlsVideo.jsx'
@@ -14,7 +14,21 @@ import OverlayGlassPanel from '../utilities/OverlayGlassPanel.jsx'
  * `onTimeUpdate` attach to video elements only — they drive the active slide's
  * auto-advance and the progress bar; images ignore them.
  */
-function SlideMedia({ media, onEnded, onTimeUpdate }) {
+/* The plain (non-HLS) video plays only while its slide is on stage
+ * (FeaturedCarouselFullWidth, 2026-08-26): every slide's video used to
+ * autoplay, so the peeking neighbours ran beside the active one. */
+function InertVideo({ active, ...props }) {
+  const ref = useRef(null)
+  useEffect(() => {
+    const v = ref.current
+    if (!v) return
+    if (active) v.play?.()?.catch?.(() => {})
+    else v.pause()
+  }, [active])
+  return <video ref={ref} autoPlay={active} {...props} />
+}
+
+function SlideMedia({ media, active = true, onEnded, onTimeUpdate }) {
   if (!media) return null
   if (isValidElement(media)) return media
 
@@ -27,12 +41,12 @@ function SlideMedia({ media, onEnded, onTimeUpdate }) {
     // wired so the active slide plays once, then advances.
     if (src && !src.endsWith('.m3u8')) {
       return (
-        <video
+        <InertVideo
+          active={active}
           src={src}
           poster={poster}
           className="kol-featured-carousel-media"
           style={{ pointerEvents: 'none' }}
-          autoPlay
           loop={!onEnded}
           muted
           playsInline
@@ -46,6 +60,7 @@ function SlideMedia({ media, onEnded, onTimeUpdate }) {
       <HlsVideo
         src={src}
         poster={poster}
+        active={active}
         className="kol-featured-carousel-media"
         onEnded={onEnded}
         onTimeUpdate={onTimeUpdate}
@@ -66,6 +81,10 @@ function SlideMedia({ media, onEnded, onTimeUpdate }) {
 }
 
 /**
+ * @deprecated 2026-08-26 as a consumer import — `SectionHero media={[…]}` is
+ * the one hero (SectionHeroRound2); this stays as its engine and renders
+ * unchanged. Removed from the barrel at the next major.
+ *
  * FeaturedCarousel — a full-width carousel of featured media: each wide slide
  * is a fixed-height frame with an image or HLS-video background and a centered
  * OverlayGlassPanel (title / description / CTA), plus prev/next and optional
@@ -110,8 +129,10 @@ function SlideMedia({ media, onEnded, onTimeUpdate }) {
  * @param {boolean}  showTitle        global title visibility; per-item `showTitle` overrides (default true)
  * @param {boolean}  showDescription  global description visibility; per-item overrides (default true)
  * @param {boolean}  showCta          global CTA visibility; per-item `showCta` overrides (default true)
- * @param {boolean}  fullWidth        drop the section's own vertical padding — the
- *                                    slide frame spans its container (default false)
+ * @param {boolean}  fullWidth        the slide FILLS the container (`.is-full`,
+ *                                    kol-framework.css ≥0.25.0) and the section
+ *                                    drops its own vertical padding; default false
+ *                                    keeps the 72vw peek
  * @param {boolean}  rounded          frame border + radius (default true)
  * @param {'stack'|'header'} navPosition  prev/next under the viewport, or in the
  *                                    header row beside the counter (default 'stack')
@@ -223,7 +244,7 @@ export default function FeaturedCarousel({
 
   return (
     <section
-      className={`kol-featured-carousel w-full ${fullWidth ? '' : 'py-16'} ${className}`.trim()}
+      className={`kol-featured-carousel w-full ${fullWidth ? 'is-full' : 'py-16'} ${className}`.trim()}
       onMouseEnter={autoPlay ? () => setPaused(true) : undefined}
       onMouseLeave={autoPlay ? () => setPaused(false) : undefined}
     >
@@ -260,6 +281,7 @@ export default function FeaturedCarousel({
                     >
                       <SlideMedia
                         media={item.media}
+                        active={active}
                         onEnded={autoPlay && items.length > 1 && active ? advance : undefined}
                         onTimeUpdate={autoPlay && active ? handleVideoTime : undefined}
                       />

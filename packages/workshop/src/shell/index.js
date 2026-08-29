@@ -7,7 +7,7 @@
  * against.
  */
 export { default as ShellLayout } from './ShellLayout.jsx'
-export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext } from './ShellLayout.jsx'
+export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext, ShellContentWidthContext } from './ShellLayout.jsx'
 export { default as ShellSidebar } from './ShellSidebar.jsx'
 /* RailSection — THE rail ladder. Every rail header at every rung comes from
  * here, in both rails; see the file header for why a class alone was not

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ContentCard, ContentCollection, ContentFilters, ContentRow, MediaCard, MediaRow, SegmentedToggle } from '@kolkrabbi/kol-component'
-import { ActionButton, Pill, Tag } from '@kolkrabbi/kol-component'
+import { ActionButton, Pill, SizeOrDownload, Tag } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { GridCard, PageHeader, PageShell } from '@kolkrabbi/kol-shell'
 import { PrintGridCard } from '@kolkrabbi/kol-store'
@@ -53,77 +53,7 @@ const Shot = ({ src = IMG }) => <img src={src} alt="" />
 /* One actions node, passed to BOTH sides — MediaCard has had an `actions` slot
  * all along and ContentCard just gained one, so the comparison is like-for-like
  * instead of shipped-has-it / new-doesn't. */
-/* The size string IS the download affordance: "2.4 MB" at rest, a download
- * icon + "Download" on hover, no container of any kind.
- *
- * Both states sit in ONE grid cell so the meta row never reflows. The icon is
- * CLIPPED at zero width at rest and opens to its box on hover, sliding left to
- * right — so it reads as coming out from behind the word rather than fading in
- * beside it. ONE duration and curve for every part and both directions — 500ms
- * on the house curve `--kol-ease-house`, plus a 200ms delay on the icon so the
- * word starts before the glyph. That delay is on the `group-hover:` variant,
- * NOT the base — ENTRY only. With it on the base the exit inherited it too, so
- * the glyph finished retracting at t=700 while the fade ended at t=500: it went
- * invisible at full extension and never appeared to slide back.
- *
- * The glyph is NOT on `.kol-inline-control` — that chrome is for a control you
- * click, and this one is inside the link rather than being it.
- *
- * Both hover parts ink on the OPACITY scale (`text-oq-80`), not an `fg-*` role:
- * a stroke glyph on a flat fg colour reads wrong against the plate, and oq is
- * what the rest of the chrome uses.
- *
- * ONE type class throughout — kol-mono-12. helper-12 is line-height 1 against
- * mono's 16px, so swapping classes moved the line. Only the ink changes.
- */
-const SizeOrDownload = ({
-  children,
-  icon = 'download',
-  confirmIcon = 'check',
-  label = 'Download',
-  confirmLabel = 'Downloaded',
-}) => {
-  /* The confirm is LOCAL, not ActionButton's — this affordance is the link
-   * itself, not an icon control sitting inside one. */
-  const [done, setDone] = useState(false)
-  const timer = useRef(null)
-  useEffect(() => () => clearTimeout(timer.current), [])
-
-  const click = (event) => {
-    event.preventDefault()
-    clearTimeout(timer.current)
-    setDone(true)
-    timer.current = setTimeout(() => setDone(false), 2000)
-  }
-
-  return (
-    <a
-      href="#"
-      onClick={click}
-      aria-label={done ? confirmLabel : label}
-      className="group/size -mx-1 inline-grid items-end justify-items-start rounded-[var(--kol-radius-sm)] px-1 transition-colors duration-500 ease-[var(--kol-ease-house)] hover:bg-oq-04 active:bg-oq-08"
-    >
-      <span
-        className="kol-mono-12 text-oq-80 group-hover/size:opacity-0"
-        style={{ gridArea: '1 / 1', transition: 'opacity 500ms var(--kol-ease-house)' }}
-      >
-        {children}
-      </span>
-
-      <span
-        className="inline-flex items-center opacity-0 group-hover/size:opacity-100"
-        style={{ gridArea: '1 / 1', transition: 'opacity 500ms var(--kol-ease-house)' }}
-      >
-        <span className="inline-flex w-0 overflow-hidden transition-[width] duration-500 ease-[var(--kol-ease-house)] group-hover/size:w-[20px] group-hover/size:delay-200">
-          <span className="inline-flex h-4 w-4 -translate-x-2 items-center justify-center text-oq-80 transition-transform duration-500 ease-[var(--kol-ease-house)] group-hover/size:translate-x-0 group-hover/size:delay-200">
-            <Icon name={done ? confirmIcon : icon} size={16} />
-          </span>
-        </span>
-        <span className="kol-mono-12 text-oq-80">{label}</span>
-      </span>
-    </a>
-  )
-}
+/* SizeOrDownload was promoted into the package 2026-08-27 (ContentFiltersCollection) — imported above */
 
 /* Real DS Tag chips — the family's new `tags` slot takes a node, so what goes
  * in it is the consumer's; this is what both shipped cards put there. */
@@ -231,7 +161,7 @@ const DIFF = {
     ['Motion', 'Card frame', 'all 300ms var(--kol-ease-house) — tokenised 2026-08-15', '300ms var(--kol-ease-house) on bg + border', '✅ GridCard:42 reads the token; the new side now moves on it too'],
     ['Behaviour', 'Media', 'previewFit — natural / compact / cover', 'ContentMedia fit — cover | natural | compact', '✅ added as `fit`; cover stays the default'],
     ['State', 'Media, hover', 'none', 'ContentMedia `zoom` — the artwork creeps to 1.06 inside its own frame, 600ms', '✅ a state the house serves. ON for the image-led variants (print · article · work), off where the media is a diagram or a 48px chip'],
-    ['Behaviour', 'Whole card', 'expanded 2×2 + expandedContent + grid spans', 'none', 'Leave expand-2×2 in GridCard'],
+    ['Behaviour', 'Whole card', 'expanded 2×2 + expandedContent + grid spans', 'expanded + expandedContent — span 2×2, media right at 50%, content on pad-card-lg (0.72.0)', 'Kept — the swap loses nothing'],
     ['Composition', 'Row right slot', 'action slot — replaces detail when set', 'ContentRow actions, trailing edge', '✅ the row already had `actions`; catalog now uses it'],
   ],
   print: [
@@ -254,7 +184,7 @@ const DIFF = {
     ['Padding', 'Whole card', 'none — mb-4 under the media only', 'pad 0, media gap --kol-spacing-4 = 16px', ''],
     ['Ratio', 'Row thumb', '120 × 120 — SQUARE', '120 × 120 — SQUARE', '✅ back to 1/1'],
     ['Spacing', 'Whole row', 'gap-6 = 24px · inner gap-2.5 = 10px', '24px · 10px raw literal', 'Keep — no 10px rung on the scale'],
-    ['Border', 'Media', 'bg-fg-04 + border border-fg-08 + rounded', 'ContentMedia frame — bg-fg-04 + border-fg-08 UNDER the media', '✅ restored'],
+    ['Border', 'Media', 'bg-fg-04 + border border-fg-08 + rounded', 'ContentMedia frame — OFF by default since 0.88.0, `frame` opts it in', '⬜ off by ruling 2026-08-27 — "I hate border"; ListingCard got the same `frame` seam (content 0.10.0), default off'],
     ['Type', 'Title', 'card kol-sans-heading-03 (ListingCard.jsx:148) · row kol-mono-14 (:173)', 'card kol-sans-heading-03 · row kol-sans-heading-05', 'Card already MATCHES — only the row moves. Was logged as card mono-20; that value was wrong'],
     ['Type', 'Body', 'kol-mono-14', 'kol-mono-14', ''],
     ['Ink', 'Body', 'card text-fg-48 (:153) · row text-fg-64 (:176) — two opacities for one role', 'text-body', 'Keep text-body'],
@@ -830,7 +760,7 @@ export default function ContentCardComparisonSet() {
           <li>Clamps dropped — line-clamp-2/-3 on both ListingCard sizes, nowrap ellipsis on WorkListItem.</li>
           <li>Action / overlay slots dropped — MediaCard actions + download + select, GridCard action.</li>
           <li>Two fields collapsed into one meta slot in work row and typeface row.</li>
-          <li>Live behaviour dropped — the tilt, the flip, the font mapping, the alphabet clipping, the expand-to-2×2.</li>
+          <li>Live behaviour dropped — the tilt, the flip, the font mapping, the alphabet clipping. (The expand-to-2×2 came back on ContentCard in 0.72.0.)</li>
           <li>4px is written five ways on the shipped side — rounded, borderRadius: 4, rounded-[4px], rounded-[2px], and the token.</li>
           <li>Raw fg-* inks throughout the shipped side — fg-96, fg-80, fg-64, fg-48, fg-32, fg-24 — against the three roles.</li>
         </ol>

@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** organisms
-- **Real-world usages found:** 12 across 12 files in 4 apps
+- **Real-world usages found:** 12 across 12 files in 3 apps
 - **Weighted inbound:** 36★ across 12 edges — 12×3★
-- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-monitor, kol-website
+- **Used in:** kol-client-ac, kol-client-kolkrabbi, kol-website
 
 ## Who depends on this
 
@@ -16,11 +16,11 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CollectionFiltersPreview.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/Icons.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/pages/IconsVariants.jsx` |
-| 3 | 1 | `kol-apps/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/Stack.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/TypefaceLibraryGridWithVariables.jsx` |
 | 3 | 1 | `kol-website/_tmp/brand-triage-elder/pages/Icons.jsx` |
 | 3 | 1 | `kol-website/_tmp/brand-triage-elder/pages/IconsVariants.jsx` |
 | 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/organisms/CollectionFiltersPreview.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/TypefaceLibraryGridWithVariables.jsx` |
 | 3 | 1 | `kol-website/apps/web/src/routes/Stack.jsx` |
 | 3 | 1 | `kol-website/apps/web/src/routes/Work.jsx` |
 | 3 | 1 | `kol-website/apps/web/src/routes/prints/PrintsGrid.jsx` |
@@ -57,35 +57,17 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/
         />
 ```
 
-From `kol-apps/kol-monitor/a_torg/archive/jsx/PrintsGrid.jsx`:
+From `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/Stack.jsx`:
 
 ```jsx
 <ContentFilters
-            items={shuffledPrints}
-            title="All Prints"
-            totalCount={prints.length}
-            filterGroups={filterGroups}
-            renderItem={renderPrints}
-          />
-```
-
-From `kol-website/_tmp/brand-triage-elder/pages/Icons.jsx`:
-
-```jsx
-<ContentFilters
-        items={iconEntries}
-        title="Icons"
-        totalCount={iconEntries.length}
-        filterGroups={filterGroups}
-        renderItem={renderItems}
-        searchKeys={['name', 'folder']}
-        viewModeOptions={[
-          { value: 'grid', label: 'Grid' },
-          { value: 'list', label: 'List' },
-        ]}
-        defaultViewMode="grid"
-        showCountOnlyWhenFiltering
-      />
+                items={otherArticles}
+                title="Stack Articles"
+                totalCount={otherArticles.length}
+                filterGroups={filterGroups}
+                renderItem={renderArticles}
+                defaultViewMode="grid"
+              />
 ```
 
 From `kol-apps/kol-client-kolkrabbi/src/pages/Icons.jsx`:
@@ -103,6 +85,20 @@ From `kol-apps/kol-client-kolkrabbi/src/pages/Icons.jsx`:
           { value: 'list', label: 'List' },
         ]}
         defaultViewMode="grid"
+        showCountOnlyWhenFiltering
+      />
+```
+
+From `kol-apps/kol-client-kolkrabbi/src/pages/IconsVariants.jsx`:
+
+```jsx
+<ContentFilters
+        items={items}
+        title="Variants"
+        totalCount={items.length}
+        filterGroups={filterGroups}
+        renderItem={renderItems}
+        searchKeys={['name', 'folder']}
         showCountOnlyWhenFiltering
       />
 ```

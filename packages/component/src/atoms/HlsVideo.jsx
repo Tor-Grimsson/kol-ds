@@ -15,9 +15,19 @@ import Hls from 'hls.js'
  * @param {string}   poster    native poster frame shown before playback
  * @param {string}   className all layout/sizing/positioning (consumer-supplied)
  * @param {Function} onEnded   end-of-playback callback; its presence disables `loop`
+ * @param {boolean}  active    plays only while true (default true) — an
+ *   off-stage carousel slide pauses instead of autoplaying beside the
+ *   active one (FeaturedCarouselFullWidth, 2026-08-26)
  */
-export default function HlsVideo({ src, poster, className, onEnded, ...props }) {
+export default function HlsVideo({ src, poster, className, onEnded, active = true, ...props }) {
   const videoRef = useRef(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (active) video.play?.()?.catch?.(() => {})
+    else video.pause()
+  }, [active])
 
   useEffect(() => {
     const video = videoRef.current
@@ -40,7 +50,7 @@ export default function HlsVideo({ src, poster, className, onEnded, ...props }) 
       poster={poster}
       className={className}
       style={{ pointerEvents: 'none' }}
-      autoPlay
+      autoPlay={active}
       loop={!onEnded}
       muted
       onEnded={onEnded}

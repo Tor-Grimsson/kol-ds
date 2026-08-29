@@ -1,7 +1,7 @@
 # EditorShell
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** organisms
+- **Category:** utilities
 - **Real-world usages found:** 20 across 20 files in 5 apps
 - **Weighted inbound:** 60★ across 20 edges — 20×3★
 - **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-labs-monorepo, kol-website

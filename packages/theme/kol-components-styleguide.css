@@ -281,10 +281,6 @@
 .kol-page--fullbleed .kol-combo-lab { flex: 1; }
 .kol-page--fullbleed .kol-combo-stage-wrap { min-height: 520px; }
 
-@keyframes kol-combo-fade {
-  from { opacity: 0.2; transform: translateY(6px); }
-  to   { opacity: 1;   transform: none; }
-}
 
 .kol-combo-readout {
   display: grid;

@@ -9,3 +9,6 @@
 - [upig — install/publish mine, git his](upig-install-publish-mine-git-his.md) — run pnpm install/publish directly, never hand off; git is the only wall; ping when push is due
 - [tmpl- prefix for standardised outputs](tmpl-prefix-standardised-outputs.md) — skills that canonise an output format are named tmpl-*; first: tmpl-proposal; names are the user's ruling
 - [Never delete — quarantine to _tmp](never-delete-quarantine-to-tmp.md) — `rm` is not an available verb; removing anything means moving it to `_tmp/<date>-<what>/` and saying where
+- [No fit-all laws from one-off rulings](no-fit-all-laws-from-one-off-rulings.md) — a call about one page is scoped to that page; never a shell default, law sentence or gate without his say
+- [Content Set retirement wave tracked](content-set-retirement-wave-tracked.md) — multi-repo arc; ticket lobby/inbox/ContentSetRetirement.md; keep in view until the exports are dropped
+- [Carry-through means verbatim](carry-through-means-verbatim.md) — port the old rendering class-for-class; DS laws never apply to a port; diff old vs new strings before shipping

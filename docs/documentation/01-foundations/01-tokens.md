@@ -3,7 +3,7 @@ title: Tokens
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-08-26
+updated: 2026-08-27
 description: The token foundation under every KOL component
 aliases:
   - foundations
@@ -19,6 +19,7 @@ related:
   - "[[02-color|color]]"
   - "[[03-typography|typography]]"
   - "[[04-layout-breakpoints|layout & breakpoints]]"
+  - "[[08-motion|motion]]"
 ---
 
 # Foundations — the token system
@@ -138,3 +139,15 @@ inner caps, width is never a page identity. Detail: [[04-layout-breakpoints|layo
 ## Hyperlinks
 
 `--kol-link` / `--kol-link-hover` — a **per-repo hook, not a shipped color** (user law 2026-07-29; theme ≥0.12.0). Defaults to `currentColor`, so links render as surrounding ink everywhere until a consumer binds the token at its root — e.g. `:root { --kol-link: var(--kol-color-yellow-300) }` against the brand ramps. Consumers of the hook: `.kol-link` (call-site opt-in) and `.kol-table a` (underline always, color only when bound). History: the global `a {}` rule died in 0.11.3; the old blue-600/400 defaults (raw Tailwind, never brand-bound) died in 0.12.0 after a consumer's DS-Table flush exposed them.
+
+## Media focus
+
+`--kol-media-focus` — **a per-repo binding, not a shipped value** (user ruling 2026-08-27, ContentMediaFocusBinding from kol-monitor: *"make it so that the focus can be set per repo"*; theme ≥0.73.0 · component ≥0.111.0). The anchor of a card's image — where the `natural` / `compact` fit pins it and from where the hover zoom grows — is ONE `transform-origin` per image, and both readers take this token: `ContentMedia`'s fits default it to `top left`, `.kol-media-zoom` to `center`. Unset, everything renders as before. Bound once on a consumer's `:root` (`:root { --kol-media-focus: top left }` — monitor's), every card's image pins there and zooms from there. Per-card focus is not a prop today; if one catalog ever mixes anchors it becomes one, defaulting to this token.
+
+## Stacking
+
+`--kol-z-base 1 · --kol-z-dropdown 10 · --kol-z-sticky 20 · --kol-z-overlay 50 · --kol-z-modal 100 · --kol-z-toast 200 · --kol-z-tooltip 300 · --kol-z-nav 1000` (kol-theme.css). **The ladder is the z-contract** (user ruling 2026-08-27, EditorOverlaysOnFullscreenOverlay from kol-fxr — six hand-rolled editor overlays at `z-[1000]` / `z-[1100]` above every DS layer): DS chrome sits on it — `.kol-overlay` and `ShellSearchOverlay` at `modal`, a `ShellDrawer` sheet at 200 over its scrim at 100, `.kol-popover-float` at 210 (above the sheet), `.kol-popover` / `.kol-tooltip` at `tooltip` (they sat at 1000, the nav tier, until theme 0.76.0) — and a consumer's chrome never rises above `--kol-z-nav`, nor a consumer's overlay above `--kol-z-modal`. A hand-typed `z-[1000]` in an app is either a nav or a mistake.
+
+## Overlays
+
+**One mechanism: `FullscreenOverlay`** — Escape, backdrop dismiss (the backdrop only, so portalled dropdowns survive), the DS Button close, scroll lock, focus trap, stacking at `modal`. The lightbox is **`MediaViewer`** on it — full-bleed media, prev/next `fixed` at the viewport edges, slides inside 10rem gutters. There is no third archetype (user ruling 2026-08-27): a modal-shaped overlay is `FullscreenOverlay`, a paged media view is `MediaViewer`. **Two scrims, no token:** `.kol-overlay` is a flat `surface-primary` (the backdrop is the surface — ruled 2026-08-27); `.kol-overlay-scrim` is `#000 60 %` + blur(1px), worn by `ShellDrawer`, `ShellSearchOverlay` and the framework's mobile nav backdrop. A consumer's `rgba(0,0,0,.6)` is `.kol-overlay-scrim`; a heavier lightbox wash is not a rung — the lightbox takes `MediaViewer`'s flat scrim.

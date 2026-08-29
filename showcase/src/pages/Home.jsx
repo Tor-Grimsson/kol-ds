@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useContext, useLayoutEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { ShellContentWidthContext } from '@kolkrabbi/kol-workshop'
 import { Button, Pill } from '@kolkrabbi/kol-component'
 import { slugify } from '../nav/registry.js'
 import DemoStage from '../lib/DemoStage.jsx'
@@ -141,6 +142,15 @@ const stageNode = (Component, stage) => (
 
 export default function Home() {
   const navigate = useNavigate()
+  /* This page spans the main track (workshop 0.24.0): a centred hero and a
+   * bento wall want the room the rails leave, not the doc pages' canvas cap
+   * left against the nav — inside that cap the hero centred on the cap, so
+   * collapsing the TOC moved nothing and collapsing the nav moved everything. */
+  const setContentWidth = useContext(ShellContentWidthContext)
+  useLayoutEffect(() => {
+    setContentWidth?.('none')
+    return () => setContentWidth?.('canvas')
+  }, [setContentWidth])
 
   // Offline/mock metrics (useMetricsData short-circuits every fetch via MOCK).
   const { siteData, deploys, b2Data } = useMetricsData()

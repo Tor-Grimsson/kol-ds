@@ -28,9 +28,10 @@ From `kol-website/apps/web/src/routes/Work.jsx`:
 <ParallaxShelf
                       key={type.key}
                       type={type}
-                      items={typeProjects.map(toCardItem)}
+                      items={items}
                       fromLeft={typeIndex % 2 === 1}
                       plugins={[WheelGesturesPlugin()]}
                       onNavigate={(href, e) => { e.preventDefault(); navigate(href) }}
+                      titleClass={WORK_TITLE_FACE}
                     />
 ```

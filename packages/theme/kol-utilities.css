@@ -91,38 +91,6 @@
   -moz-appearance: textfield;
 }
 
-/* Link underline — the animated hover affordance: draws in left→right on
- * hover/focus, retracts right→left on leave (transform-origin swap, not a
- * fade). Line is currentColor so it rides the text at any scale. Minted from
- * kol-website's animations.css (NavLinkUnderline, 2026-08-12); DS version
- * adds :focus-visible parity and reduced-motion handling.
- * Thickness knob: --kol-link-underline-size (2px default — fine at mono-14,
- * a heading-01 link may want 3px). */
-.kol-link-underline {
-  position: relative;
-}
-.kol-link-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: var(--kol-link-underline-size, 2px);
-  background-color: currentColor;
-  transform-origin: bottom right;
-  transform: scaleX(0);
-  transition: transform 300ms cubic-bezier(0.65, 0.05, 0.36, 1);
-}
-.kol-link-underline:hover::after,
-.kol-link-underline:focus-visible::after {
-  transform-origin: bottom left;
-  transform: scaleX(1);
-}
-@media (prefers-reduced-motion: reduce) {
-  .kol-link-underline::after {
-    transition: none;
-  }
-}
 
 /* Placeholder prose — the ONE gate (GatedEmptyState, kol-fxr 2026-08-15).
  *

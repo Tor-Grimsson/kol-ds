@@ -1,0 +1,64 @@
+export const meta = {
+  id: "2.74.0",
+  slug: "content-card",
+  title: "ContentCard",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/components/molecules",
+    "domain/design-system",
+    "pattern/display",
+  ],
+  description: "The card form of the content-card system.",
+  aliases: [
+    "content-card",
+    "card",
+  ],
+  reuses: [
+    "ContentMedia 4★",
+    "ContentText 3★",
+  ],
+}
+
+<Preview name="ContentCard" />
+
+## Installation
+
+<Install name="ContentCard" />
+
+## Usage
+
+```jsx
+import { ContentCard } from '@kolkrabbi/kol-component'
+
+<ContentCard variant="catalog" title="Empty 7U" detail="7U — power, perf, patch" expanded={open} expandedContent={<>…<Button>Use preset</Button></>} onClick={toggle} />
+```
+
+## Behavior
+
+Six variants over one anatomy — `default · catalog · print · article · work · typeface` — differing in text composition, media ratio and the ruled box (see the [content card system](/docs/content-card-system)). Text slots (`title · body · kicker · detail · date · size · meta · tags`) render through [ContentText](/components/content-text); every type class is a seam (`titleClass` and friends). **`expanded`** (catalog · print): the card grows to a 2×2 grid cell and flips to a row — media right at 50%, `expandedContent` left on `pad-card-lg` — the GridCard behaviour. A card with `href` is an `<a>`; with `onClick` an operable `<article>`.
+
+## Props
+
+<Api name="ContentCard" rows={[
+  {"prop":"variant","type":"'default' | 'catalog' | 'print' | 'article' | 'work' | 'typeface'","def":"'default'","desc":"The variant — text composition, media ratio, box. default carries no border since 0.96.0 (the selected state reads from the checkbox). print: selected turns the card (PrintGridCard's flip), the media fades in lazily, onClick's event.currentTarget is the rect."},
+  {"prop":"hero · label · meta","type":"boolean · ReactNode · ReactNode[]","def":"false","desc":"article only: the FEATURED card riding a page's fold — a header row above the media (label left, meta chips right), the media on the 1.02 zoom rung, the title on display-03; tags become data-tags. Was ListingCard size='hero'."},
+  {"prop":"title · body · eyebrow (alias kicker) · detail · date · size · meta · tags","type":"ReactNode","def":"—","desc":"The text slots (per variant — see ContentText)."},
+  {"prop":"titleClass · bodyClass · eyebrowClass (alias kickerClass) · detailClass · dateClass · sizeClass · metaClass · tagsClass","type":"string","def":"—","desc":"Replace a slot's ruled type class whole."},
+  {"prop":"media","type":"ReactNode","def":"—","desc":"The media node; none → AssetPlaceholder."},
+  {"prop":"ratio","type":"string","def":"—","desc":"CSS aspect-ratio override (ruled per variant)."},
+  {"prop":"fit","type":"'cover' | 'natural' | 'compact'","def":"—","desc":"How the media sits in its box. cover crops to fill; natural / compact are GridCard's previewFit verbatim — the image at 50 % / 30 % of its own pixels, anchored top-left, clipped by the box (a rack preview reads its modules at the top-left)."},
+  {"prop":"frame · ring · zoom","type":"boolean","def":"—","desc":"Media edge treatment overrides. article's frame defaults OFF (user 2026-08-27) — frame opts the hairline in. zoom='hero' is the 1.02 rung for hero-size thumbs."},
+  {"prop":"pad","type":"'sm' | 'md' | 'lg'","def":"—","desc":"Plate padding token step."},
+  {"prop":"control","type":"ReactNode","def":"—","desc":"The in-frame control slot (corner of the media)."},
+  {"prop":"controlStart","type":"ReactNode","def":"—","desc":"A second frame-corner slot, TOP-LEFT (.kol-frame-control--top-left) — a select checkbox beside the download control."},
+  {"prop":"actions","type":"ReactNode","def":"—","desc":"Sits in the text plate, bottom-right."},
+  {"prop":"reveal","type":"ReactNode","def":"—","desc":"typeface only: on hover the plate and the media fade out and this node fades in (300ms, house curve) — the card owns the choreography, the consumer the node."},
+  {"prop":"expanded","type":"boolean","def":"false","desc":"catalog · print: grow to 2×2, media right, content left."},
+  {"prop":"expandedContent","type":"ReactNode","def":"—","desc":"What the expanded card shows beside the media."},
+  {"prop":"selected","type":"boolean","def":"false","desc":"Selected state (border steps up)."},
+  {"prop":"href · onClick · onNavigate","type":"string | function","def":"—","desc":"A card with href is an <a>; onClick makes an operable <article>; onNavigate is the SPA seam."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the card."}
+]} />

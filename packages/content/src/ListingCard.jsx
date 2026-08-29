@@ -2,6 +2,12 @@ import { Pill } from '@kolkrabbi/kol-component'
 import { Image } from '@kolkrabbi/kol-component'
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentCard variant="article"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * Optional link wrapper — the one place routing lives. `http*`/`mailto` hrefs
  * open in a new tab; any other href renders a plain same-tab anchor with an
  * `onNavigate(event)` seam an SPA consumer intercepts (preventDefault + its
@@ -85,6 +91,9 @@ function Thumb({ src, alt }) {
  * @param {string}   thumbnail   image src (omit → fg-token placeholder)
  * @param {'landscape'|'portrait'} aspect  default thumbnail ratio (default 'landscape')
  * @param {boolean}  showHeader  hero: show the label/meta header row (default true)
+ * @param {boolean}  frame       hairline around the thumb, hero + default (default FALSE —
+ *                               ListingCardThumbBorder, user 2026-08-27: "I hate border";
+ *                               the tint box stays). Same contract as ContentCard's `frame`
  * @param {string}   href        link target; `http*`/`mailto` → new tab, else same-tab seam
  * @param {Function} onNavigate  (event) => void — same-tab click seam (SPA intercept)
  * @param {string}   [titleClassName]   REPLACES the title's type class
@@ -106,6 +115,7 @@ export default function ListingCard({
   thumbnail,
   aspect = 'landscape',
   showHeader = true,
+  frame = false,
   href,
   onNavigate,
   titleClassName,
@@ -130,12 +140,17 @@ export default function ListingCard({
               )}
             </div>
           )}
-          <div className="aspect-[16/9] mb-4 overflow-hidden w-full bg-fg-04 border border-fg-08 hover:border-fg-16 rounded">
+          {/* `kol-media-zoom` = the content-card family's hover zoom (1.06 / 600ms
+            * house ease, reduced-motion opt-out, kol-theme) — was its own
+            * scale-105 (ListingCardHoverZoom, user 2026-08-27: "too much zoom …
+            * not relative to the others"); `is-hero` = the 1.02 hero rung
+            * (StackCardHover, same day: "that is TOO MUCH ZOOM") */}
+          <div className={`kol-media-zoom is-hero aspect-[16/9] mb-4 overflow-hidden w-full bg-fg-04 rounded ${frame ? 'border border-fg-08 hover:border-fg-16' : ''}`.trim()}>
             {thumbnail && (
               <Image
                 src={thumbnail}
                 alt={title}
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             )}
@@ -186,7 +201,7 @@ export default function ListingCard({
     <CardLink href={href} onNavigate={onNavigate} className={`block group cursor-pointer w-full max-w-full ${className}`.trim()}>
       <article className="w-full max-w-full" data-tags={dataTags}>
         <div
-          className="mb-4 overflow-hidden w-full rounded bg-fg-04 border border-fg-08"
+          className={`kol-media-zoom mb-4 overflow-hidden w-full rounded bg-fg-04 ${frame ? 'border border-fg-08' : ''}`.trim()}
           style={{ aspectRatio: aspect === 'portrait' ? '3/4' : '16/9' }}
         >
           <Thumb src={thumbnail} alt={title} />

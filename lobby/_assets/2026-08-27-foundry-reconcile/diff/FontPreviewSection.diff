@@ -1,0 +1,52 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/FontPreviewSection.jsx	2026-07-28 19:29:48.238002191 +0000
++++ src/components/sections/foundry/FontPreviewSection.jsx	2026-08-27 01:46:01.884310363 +0000
+@@ -2,7 +2,11 @@
+ import { Dropdown } from '@kolkrabbi/kol-component'
+ import { Slider } from '@kolkrabbi/kol-component'
+ import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+-import { SPECIMEN_SAMPLE_TEXT } from './glyphData.js'
++
++/** Web-owned specimen passage — the Icelandic sample the engine's neutral
++ * SPECIMEN_SAMPLE_TEXT replaced when the section went font-agnostic. */
++const SAMPLE_TEXT =
++  'Rennimjúkt eðal flauel, duft slæðist niður, silkislaufa & æðardúnn, fiður daðra dilur, friður. Sjáumst sjaldnar en sálagárur, samverustundir við skák að sötri, soðin sjálfsögðum samtölum. Spakir sötra á sætu seyði, sjónlistarspjall, síðfóníur, söngur sungin suður af Síberíu, setið að sálrænum stríðsglæpum, svaðil-pöttum og skyndimátum, svarthvítar svikamyllur, sökkvandi skálínur spegla sýnirnar – seinni tíðirnar.'
+ 
+ /* taxonomy-ok: organism — nests Dropdown, Slider, SpecimenSectionHeader
+  * (relative imports) plus a same-file FontPreviewItem. */
+@@ -28,7 +32,7 @@
+ function FontPreviewItem({
+   fontFamily,
+   fontStyle = 'normal',
+-  text = SPECIMEN_SAMPLE_TEXT,
++  text = SAMPLE_TEXT,
+   initialWeight = 'Regular',
+   initialSize = 64,
+   initialLeading = 10,
+@@ -52,7 +56,7 @@
+   const numericWeight = WEIGHT_VALUES[selectedWeight] || 400
+ 
+   return (
+-    <div className="self-stretch min-h-40 p-6 rounded border border-fg-16 flex flex-col justify-start items-start gap-6 bg-surface-primary">
++    <div className="self-stretch min-h-40 p-6 rounded border border-fg-08 hover:border-fg-24 transition-colors duration-300 flex flex-col justify-start items-start gap-6 bg-surface-primary">
+       <div className="self-stretch flex justify-start items-start gap-8">
+         <div className="flex-shrink-0">
+           <Dropdown
+@@ -151,14 +155,14 @@
+ 
+   return (
+     <section className="w-full py-12 lg:py-16">
+-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
++      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
+         <SpecimenSectionHeader
+           selectedStyle={selectedStyleVariant}
+           onStyleChange={setSelectedStyleVariant}
+           showDropdown={showDropdown}
+-          badgeText={badgeText}
+-          icon="type"
+-          size="sm"
++          label="Font Preview"
++          icon="type-02"
++          size="md"
+           selectedWeight={selectedWeight}
+           onWeightChange={setSelectedWeight}
+           showWeightDropdown={availableWeights.length > 0}

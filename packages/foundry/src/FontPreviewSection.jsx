@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { Dropdown } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
 import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
-import { SPECIMEN_SAMPLE_TEXT } from './glyphData.js'
+import { FOUNDRY_SAMPLE_TEXT } from './glyphData.js'
+
+/** Web-owned specimen passage — the Icelandic sample the engine's neutral
+ * SPECIMEN_SAMPLE_TEXT replaced when the section went font-agnostic. */
+/* the passage lives in glyphData as FOUNDRY_SAMPLE_TEXT (TypefaceCardRevealText, 2026-08-27) — one export, read here and by the library grid's reveal */
 
 /* taxonomy-ok: organism — nests Dropdown, Slider, SpecimenSectionHeader
  * (relative imports) plus a same-file FontPreviewItem. */
@@ -28,7 +32,7 @@ const WEIGHT_VALUES = {
 function FontPreviewItem({
   fontFamily,
   fontStyle = 'normal',
-  text = SPECIMEN_SAMPLE_TEXT,
+  text = FOUNDRY_SAMPLE_TEXT,
   initialWeight = 'Regular',
   initialSize = 64,
   initialLeading = 10,
@@ -52,7 +56,7 @@ function FontPreviewItem({
   const numericWeight = WEIGHT_VALUES[selectedWeight] || 400
 
   return (
-    <div className="self-stretch min-h-40 p-6 rounded border border-fg-16 flex flex-col justify-start items-start gap-6 bg-surface-primary">
+    <div className="self-stretch min-h-40 p-6 rounded border border-fg-08 hover:border-fg-24 transition-colors duration-300 flex flex-col justify-start items-start gap-6 bg-surface-primary">
       <div className="self-stretch flex justify-start items-start gap-8">
         <div className="flex-shrink-0">
           <Dropdown
@@ -76,7 +80,9 @@ function FontPreviewItem({
         </div>
       </div>
 
-      <div className="self-stretch rounded flex justify-start items-start overflow-hidden">
+      {/* no overflow clip on the wrapper — the clamped element clips itself, and a
+        * wrapper clip sliced italic / swash overhangs at the box edges */}
+      <div className="self-stretch rounded flex justify-start items-start">
         <div
           ref={editableRef}
           contentEditable
@@ -94,6 +100,11 @@ function FontPreviewItem({
             whiteSpace: 'normal',
             hyphens: 'none',
             maxWidth: '100%',
+            /* SIDE BEARINGS survive the clamp's own overflow: hidden — room for the
+             * overhang (the italic s, ð, f) that scales with the rung, without
+             * moving the text (FontPreviewClampAndBearings, 2026-08-27) */
+            paddingInline: '0.15em',
+            marginInline: '-0.15em',
             ...(lineClamp && {
               display: '-webkit-box',
               WebkitLineClamp: lineClamp,
@@ -110,6 +121,10 @@ function FontPreviewItem({
 const DEFAULT_WEIGHTS = [
   'Thin', 'Extralight', 'Light', 'Regular', 'Medium', 'Semibold', 'Bold', 'Extrabold', 'Black',
 ]
+/* The per-rung clamp is CORRECT and is production (FontPreviewClampAndBearings,
+ * 2026-08-27 — 0.7.2 dropped it on a misread of "the sample is cutting": what
+ * cut was the glyphs' side bearings, fixed below). 96 → 1 line · 64 → 3 · 48 →
+ * 4 · 24 → 5, with the ellipsis. */
 const SIZE_LADDER = [
   { size: 96, lines: 1 },
   { size: 64, lines: 3 },
@@ -134,7 +149,7 @@ const SIZE_LADDER = [
  * @param {boolean} props.showDropdown - Render the style dropdown; seeds italic (default true).
  * @param {string[]} props.availableWeights - Weight dropdown options (default 9-stop ramp).
  * @param {string} props.initialWeight - Initially selected weight (default 'Regular').
- * @param {Array<{size,lines,leading?}>} props.sizes - Size ladder (default 96/64/48/24).
+ * @param {Array<{size,lines,leading?}>} props.sizes - Size ladder (default 96/1 · 64/3 · 48/4 · 24/5).
  */
 const FontPreviewSection = ({
   fontFamily = 'system-ui, sans-serif',
@@ -151,14 +166,14 @@ const FontPreviewSection = ({
 
   return (
     <section className="w-full py-12 lg:py-16">
-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
         <SpecimenSectionHeader
           selectedStyle={selectedStyleVariant}
           onStyleChange={setSelectedStyleVariant}
           showDropdown={showDropdown}
-          badgeText={badgeText}
-          icon="type"
-          size="sm"
+          label="Font Preview"
+          icon="type-02"
+          size="md"
           selectedWeight={selectedWeight}
           onWeightChange={setSelectedWeight}
           showWeightDropdown={availableWeights.length > 0}

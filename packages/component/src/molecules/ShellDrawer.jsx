@@ -43,6 +43,9 @@ export default function ShellDrawer({
   backdrop = true,
   children,
   className = '',
+  /* SettingsPanelApproved (2026-08-27): the settings drawer has neither */
+  edge = true,
+  shadow = true,
 }) {
   const reduced = usePrefersReducedMotion()
   const panelRef = useRef(null)
@@ -149,9 +152,11 @@ export default function ShellDrawer({
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
-        className={`fixed inset-y-0 z-[200] flex max-w-full flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop ? 'shadow-2xl' : ''} ${
-          side === 'right' ? 'right-0 border-l' : 'left-0 border-r'
-        } border-fg-08 ${width == null ? 'w-full' : ''} ${motionPanel} ${className}`}
+        /* `edge` / `shadow` (SettingsPanelApproved, 2026-08-27): the approved settings
+         * drawer has neither — the sheet meets the page flat */
+        className={`fixed inset-y-0 z-[200] flex max-w-full flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop && shadow ? 'shadow-2xl' : ''} ${
+          side === 'right' ? `right-0 ${edge ? 'border-l' : ''}` : `left-0 ${edge ? 'border-r' : ''}`
+        } border-oq-08 ${width == null ? 'w-full' : ''} ${motionPanel} ${className}`}
         style={width != null ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
       >
         {/* closeSide="start": the reference sets the × glyph ~9px deeper than

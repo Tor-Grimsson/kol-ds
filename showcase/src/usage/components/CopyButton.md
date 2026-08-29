@@ -1,7 +1,7 @@
 # CopyButton
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 2 across 2 files in 2 apps
 - **Weighted inbound:** 6★ across 2 edges — 2×3★
 - **Used in:** kol-divs, kol-labs-monorepo

@@ -1,0 +1,49 @@
+export const meta = {
+  id: "2.79.0",
+  slug: "sort-controls",
+  title: "SortControls",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-27",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/input",
+  ],
+  description: "The sortable-header group (ContentFiltersCollection, kol-r2b2 2026-08-27): `flex items-center gap-4` of SortHeaders.",
+  aliases: [
+    "sort-controls",
+    "sort",
+  ],
+  reuses: [
+    "SortHeader 3★",
+  ],
+}
+
+<Preview name="SortControls" />
+
+## Installation
+
+<Install name="SortControls" />
+
+## Usage
+
+```jsx
+import { SortControls } from '@kolkrabbi/kol-component'
+
+<SortControls options={[{ value: 'name', label: 'Name' }, { value: 'date', label: 'Date' }]} sortBy={sortBy} sortDir={sortDir} onSort={handleSort} />
+```
+
+## Behavior
+
+A `flex items-center gap-4` row of [SortHeader](/components/sort-header)s. Click an inactive field → it becomes the sort, ascending; click the active field → the direction flips. `onSort(field)` fires once per click, so the consumer writes one state: `sortBy === field ? flip sortDir : { sortBy: field, sortDir: 'asc' }`. Rides `ContentFilters`' `belowActions` in kol-r2b2's file listing.
+
+## Props
+
+<Api name="SortControls" rows={[
+  {"prop":"options","type":"{ value, label }[]","def":"[]","desc":"The fields."},
+  {"prop":"sortBy","type":"string","def":"—","desc":"The active field's value."},
+  {"prop":"sortDir","type":"'asc' | 'desc'","def":"'asc'","desc":"The active direction."},
+  {"prop":"onSort","type":"(field) => void","def":"—","desc":"Once per click; the consumer decides flip vs switch."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the group."}
+]} />

@@ -185,7 +185,9 @@ const ICON_BOX_HOVER = /\bhover:bg-/
  * plus a backdrop blur to stay legible over arbitrary pixels — that is a scrim
  * control, and Button has no variant for it. The transparent chrome box is what
  * Button owns, so the plate is the discriminator, not an exception list. */
-const ICON_BOX_PLATE = /\bbg-fg-absolute|background:|backdropFilter/
+/* `bg-fg-ab-*` since the absolute→ab rename (2026-08-28); the old spelling
+ * still resolves as an alias, so both are accepted here. */
+const ICON_BOX_PLATE = /\bbg-fg-ab(?:solute)?-|background:|backdropFilter/
 
 for (const srcDir of [
   'packages/component/src',

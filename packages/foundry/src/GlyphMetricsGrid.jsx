@@ -1,221 +1,213 @@
 import { useEffect, useRef, useState } from 'react'
-import { Tag } from '@kolkrabbi/kol-component'
+import { FontLoader } from './engine/FontLoader.js'
 import { glyphSets } from './glyphData.js'
-
-/* taxonomy-ok: organism — nests DS Tag (relative import) and owns font I/O +
- * parsed-metric geometry. */
-
-/* ---------------------------------------------------------------------------
- * FontLoader (same-file) — fetch → FontFace inject → best-effort opentype parse.
- *
- * The font face is ALWAYS injected (under a unique family name) so the big
- * glyph + grid cells render the real file even when metric parsing is
- * unavailable. opentype.js is loaded via a DYNAMIC import so a consumer that
- * hasn't installed the peer dep simply gets no parsed metrics (the grid renders
- * without the baseline/x-height/cap/ascender/descender overlay) instead of a
- * hard crash. Folds in the fallback-chain metric extraction the monorepo's
- * inline overlay added (os2 ?? hhea ?? literal), so incomplete fonts don't throw.
- * ------------------------------------------------------------------------- */
-class FontLoader {
-  constructor(options = {}) {
-    this.callbacks = options
-    this.family = null
-  }
-
-  async loadFont(buffer, filename) {
-    // Inject the face first — this never needs opentype and guarantees the
-    // glyph renders in the real font.
-    const uniqueFontName = `KolFoundryFont_${Date.now()}`
-    try {
-      const fontFace = new FontFace(uniqueFontName, buffer)
-      await fontFace.load()
-      document.fonts.add(fontFace)
-      this.family = uniqueFontName
-    } catch (err) {
-      this.callbacks.onError?.(err)
-    }
-
-    // Best-effort metric parse. Dynamic import degrades gracefully when the
-    // opentype.js peer dep is absent.
-    let font = null
-    try {
-      const mod = await import('opentype.js')
-      const parse = mod.parse || mod.default?.parse || mod.default
-      font = parse(buffer)
-    } catch (err) {
-      // No metrics — the overlay just won't draw. Not fatal.
-      this.callbacks.onError?.(err)
-    }
-
-    this.callbacks.onFontLoaded?.({ font, fontFamily: this.family, filename })
-    return { font, fontFamily: this.family }
-  }
-
-  cleanup() {
-    if (typeof document === 'undefined') return
-    document.fonts.forEach((f) => {
-      if (f.family && f.family.startsWith('KolFoundryFont_')) document.fonts.delete(f)
-    })
-    this.family = null
-  }
-}
+import { Tag } from '@kolkrabbi/kol-component'
+const defaultFontUrl = '/fonts/tg-foundry/TGMalromurItalicVF.ttf'
 
 /**
- * GlyphMetricsGrid — table-style glyph inspector with real, parsed font metrics.
+ * GlyphMetricsGrid - Table-style glyph inspector with real font metrics
  *
- * One giant glyph carrying a live baseline / x-height / cap-height / ascender /
- * descender overlay drawn from the font's OWN OS/2 + hhea tables, beside two
- * clickable uppercase/lowercase glyph grids and a Unicode / decimal / hex
- * readout. Clicking a cell pins the big glyph; hovering previews it.
- * `variationSettings` feed straight into `font-variation-settings` so the
- * overlay stays correct under a live variable axis driven from the parent.
+ * A component matching the Figma spec with:
+ * - Left: 504px wide glyph viewer with live font metrics overlay
+ * - Right: 832px wide dual stacked character grids with table-like borders
  *
- * FONT-ASSET CONTRACT: pass a real `.ttf`/`.otf` at `fontUrl` (same-origin, so
- * the fetch + FontFace injection succeed). The metric lines require opentype.js
- * (a peer dep, dynamically imported) — without it the grids still render, just
- * with no overlay. The showcase serves fonts under `/fonts/`; e.g.
- * `/fonts/right-grotesk-ttf/PPRightGrotesk-Regular.ttf`.
+ * All metric values are extracted from the actual font file using FontLoader.
  *
- * Metric extraction uses fallback chains so incomplete fonts degrade instead of
- * throwing: unitsPerEm ← font.unitsPerEm ?? 1000; ascender ← os2.sTypoAscender
- * ?? hhea.ascender ?? 800; descender ← os2.sTypoDescender ?? hhea.descender ??
- * -200; capHeight ← os2.sCapHeight ?? 700; xHeight ← os2.sxHeight ?? 500.
- *
- * Text casing: metadata labels, grid titles and tab labels render verbatim.
- *
+ * @component
  * @param {Object} props
- * @param {string} props.fontUrl - URL of the font to fetch + parse (required for real metrics).
- * @param {string} props.fontFamily - CSS family fallback until the parsed face is injected.
- * @param {'normal'|'italic'} props.fontStyle - Inline font-style + the Roman/Italic metadata label.
- * @param {string} props.initialGlyph - Initially selected glyph (default 'f').
- * @param {string[]} props.uppercaseGlyphs - Top grid contents.
- * @param {string[]} props.lowercaseGlyphs - Bottom grid contents.
- * @param {Object} props.variationSettings - axis→value map serialized to font-variation-settings.
+ * @param {string} props.fontUrl - URL to the font file to load
+ * @param {string} props.fontFamily - CSS font-family name
+ * @param {string} props.fontStyle - Font style: 'normal' or 'italic'
+ * @param {string} props.initialGlyph - Initial glyph to display (default: 'f')
+ * @param {Array<string>} props.uppercaseGlyphs - Glyphs for top grid (default: uppercase + latin1)
+ * @param {Array<string>} props.lowercaseGlyphs - Glyphs for bottom grid (default: lowercase + latinExtended)
+ *
+ * @example
+ * ```jsx
+ * // Basic usage with defaults
+ * <GlyphMetricsGrid
+ *   fontUrl={malromurFont}
+ *   fontFamily="TGMalromur"
+ *   fontStyle="italic"
+ * />
+ *
+ * // Custom glyph sets
+ * <GlyphMetricsGrid
+ *   fontUrl={dylgjurFont}
+ *   fontFamily="TGDylgjur"
+ *   fontStyle="normal"
+ *   uppercaseGlyphs={glyphSets.uppercase}
+ *   lowercaseGlyphs={glyphSets.lowercase}
+ *   initialGlyph="A"
+ * />
+ * ```
  */
 const GlyphMetricsGrid = ({
-  fontUrl,
-  fontFamily = 'sans-serif',
+  fontUrl = defaultFontUrl,
+  fontFamily = 'TGMalromur',
   fontStyle = 'normal',
   initialGlyph = 'f',
   uppercaseGlyphs = [...glyphSets.uppercase, ...glyphSets.latin1],
-  lowercaseGlyphs = [...glyphSets.lowercase, ...glyphSets.latinExtended],
-  variationSettings = {},
+  lowercaseGlyphs = [...glyphSets.lowercase, ...(glyphSets.latinExtended || [])],
+  variationSettings = {}
 }) => {
   const [selectedGlyph, setSelectedGlyph] = useState(initialGlyph)
   const [hoveredGlyph, setHoveredGlyph] = useState(null)
   const [metrics, setMetrics] = useState(null)
   const [fontData, setFontData] = useState(null)
-  const [loadedFamily, setLoadedFamily] = useState(null)
   const [activeTab, setActiveTab] = useState('uppercase')
 
   const glyphRef = useRef(null)
   const overlayRef = useRef(null)
 
   const displayGlyph = hoveredGlyph || selectedGlyph
-  const renderFamily = loadedFamily || fontFamily
 
-  // Serialize the axis map once for the big glyph + every cell.
-  const fontVariationSettingsCSS =
-    Object.entries(variationSettings)
-      .map(([axis, value]) => `"${axis}" ${value}`)
-      .join(', ') || 'normal'
+  // Convert variationSettings object to CSS font-variation-settings string
+  const fontVariationSettingsCSS = Object.entries(variationSettings)
+    .map(([axis, value]) => `"${axis}" ${value}`)
+    .join(', ') || 'normal'
 
-  // Load font + extract metrics (keyed on fontUrl only).
+  // Load font and extract metrics
   useEffect(() => {
-    if (!fontUrl) return
     const glyphElement = glyphRef.current
     if (!glyphElement) return
 
     const loader = new FontLoader({
-      onFontLoaded: ({ font, fontFamily: injectedFamily }) => {
-        if (injectedFamily) setLoadedFamily(injectedFamily)
+      onFontLoaded: ({ font, fontInfo, fontFamily: loadedFontFamily }) => {
+        glyphElement.style.fontFamily = `"${loadedFontFamily}", sans-serif`
         glyphElement.textContent = displayGlyph
-        if (!font) return
+        setFontData({ font, fontInfo })
 
-        const os2 = font.tables?.os2
-        const hhea = font.tables?.hhea
-        setFontData({ font })
+        // Extract REAL metrics from the font
+        const unitsPerEm = font.unitsPerEm || fontInfo?.unitsPerEm || 1000
+        const ascender = font.tables?.os2?.sTypoAscender ?? font.tables?.hhea?.ascender ?? 800
+        const descender = font.tables?.os2?.sTypoDescender ?? font.tables?.hhea?.descender ?? -200
+        const capHeight = font.tables?.os2?.sCapHeight ?? 700
+        const xHeight = font.tables?.os2?.sxHeight ?? 500
+
         setMetrics({
-          unitsPerEm: font.unitsPerEm || 1000,
-          ascender: os2?.sTypoAscender ?? hhea?.ascender ?? 800,
-          descender: os2?.sTypoDescender ?? hhea?.descender ?? -200,
-          capHeight: os2?.sCapHeight ?? 700,
-          xHeight: os2?.sxHeight ?? 500,
+          unitsPerEm,
+          ascender,
+          descender,
+          capHeight,
+          xHeight
         })
       },
-      onError: (err) => console.warn('GlyphMetricsGrid: metrics unavailable', err),
+      onError: (err) => {
+        console.error('Font load failed', err)
+      }
     })
 
     let cancelled = false
-    ;(async () => {
+
+    const loadFont = async () => {
       try {
         const response = await fetch(fontUrl)
         const buffer = await response.arrayBuffer()
         const filename = fontUrl.split('/').pop() || 'font.ttf'
-        if (!cancelled) await loader.loadFont(buffer, filename)
+        if (!cancelled) {
+          await loader.loadFont(buffer, filename)
+        }
       } catch (err) {
-        if (!cancelled) console.warn('GlyphMetricsGrid: font fetch failed', err)
+        if (!cancelled) {
+          console.error('Font load failed', err)
+        }
       }
-    })()
+    }
+
+    loadFont()
 
     return () => {
       cancelled = true
       loader.cleanup()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fontUrl])
 
-  // Imperative glyph text on select/hover.
+  // Update glyph when selected/hovered changes
   useEffect(() => {
-    if (glyphRef.current) glyphRef.current.textContent = displayGlyph
+    if (glyphRef.current) {
+      glyphRef.current.textContent = displayGlyph
+    }
   }, [displayGlyph])
 
-  // Metric-line overlay — overlay-relative coords, KOL tokens, mono type var.
+  // Render metric lines
   useEffect(() => {
     if (!fontData || !metrics || !glyphRef.current || !overlayRef.current) return
+
     const glyph = glyphRef.current
     const overlay = overlayRef.current
+    const { font } = fontData
 
     const render = () => {
       const overlayRect = overlay.getBoundingClientRect()
       const glyphRect = glyph.getBoundingClientRect()
       const glyphTop = glyphRect.top - overlayRect.top
 
-      const fontSize = parseFloat(window.getComputedStyle(glyph).fontSize)
+      const computedStyle = window.getComputedStyle(glyph)
+      const fontSize = parseFloat(computedStyle.fontSize)
       if (!fontSize || Number.isNaN(fontSize)) return
 
       const scale = fontSize / metrics.unitsPerEm
-      const totalPixelHeight = (metrics.ascender - metrics.descender) * scale
-      const baseline =
-        glyphTop + glyphRect.height / 2 - totalPixelHeight / 2 + metrics.ascender * scale
+
+      const totalHeightUnits = metrics.ascender - metrics.descender
+      const totalPixelHeight = totalHeightUnits * scale
+      const baselineOffsetUnits = metrics.ascender
+      const baseline = glyphTop + glyphRect.height / 2 - totalPixelHeight / 2 + baselineOffsetUnits * scale
 
       const lines = [
         { y: baseline - metrics.capHeight * scale, label: 'Cap Height', value: metrics.capHeight },
         { y: baseline - metrics.ascender * scale, label: 'Ascender', value: metrics.ascender },
         { y: baseline - metrics.xHeight * scale, label: 'x-height', value: metrics.xHeight },
         { y: baseline, label: 'Baseline', value: 0 },
-        { y: baseline - metrics.descender * scale, label: 'Descender', value: metrics.descender },
+        { y: baseline - metrics.descender * scale, label: 'Descender', value: metrics.descender }
       ]
 
       overlay.innerHTML = ''
-      const labelCss = (side, y) => `
-        position: absolute; ${side}: 13px; top: ${y - 18}px;
-        opacity: 0.8; color: var(--kol-surface-on-primary);
-        font-size: 12px; font-family: var(--kol-font-family-mono, monospace);
-        line-height: 12px; user-select: none;`
       lines.forEach(({ y, label, value }) => {
         if (!Number.isFinite(y)) return
+
+        // Line
         const line = document.createElement('div')
-        line.style.cssText = `position: absolute; left: 0; right: 0; top: ${y}px; border-top: 1px solid var(--kol-border-default);`
+        line.style.cssText = `
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: ${y}px;
+          border-top: 1px solid var(--kol-border-default);
+        `
         overlay.appendChild(line)
-        const left = document.createElement('div')
-        left.style.cssText = labelCss('left', y)
-        left.textContent = label
-        overlay.appendChild(left)
-        const right = document.createElement('div')
-        right.style.cssText = labelCss('right', y)
-        right.textContent = value
-        overlay.appendChild(right)
+
+        // Left label
+        const leftLabel = document.createElement('div')
+        leftLabel.style.cssText = `
+          position: absolute;
+          left: 13px;
+          top: ${y - 18}px;
+          opacity: 0.8;
+          color: var(--kol-surface-on-primary);
+          font-size: 12px;
+          font-family: var(--kol-font-family-mono);
+          line-height: 12px;
+          user-select: none;
+        `
+        leftLabel.textContent = label
+        overlay.appendChild(leftLabel)
+
+        // Right value
+        const rightValue = document.createElement('div')
+        rightValue.style.cssText = `
+          position: absolute;
+          right: 13px;
+          top: ${y - 18}px;
+          opacity: 0.8;
+          color: var(--kol-surface-on-primary);
+          font-size: 12px;
+          font-family: var(--kol-font-family-mono);
+          line-height: 12px;
+          user-select: none;
+        `
+        rightValue.textContent = value
+        overlay.appendChild(rightValue)
       })
     }
 
@@ -223,38 +215,54 @@ const GlyphMetricsGrid = ({
     return () => cancelAnimationFrame(raf)
   }, [fontData, metrics, displayGlyph])
 
+  // Get Unicode info
   const charCode = displayGlyph.charCodeAt(0)
   const unicodeHex = charCode.toString(16).toUpperCase().padStart(4, '0')
 
-  const cellStyle = {
-    fontFamily: renderFamily,
-    fontStyle,
-    fontVariationSettings: fontVariationSettingsCSS,
-    outline: '1px solid var(--kol-border-default)',
-    outlineOffset: '-0.5px',
-  }
-
+  // Render table-like grid
   const renderGrid = (glyphs, title) => (
     <div className="w-full flex flex-col gap-4">
-      <div className="kol-helper-16 text-auto">{title}</div>
+      <div className="text-auto kol-mono-16">
+        {title}
+      </div>
       <div
         className="inline-flex justify-start items-start flex-wrap"
         onMouseLeave={() => setHoveredGlyph(null)}
       >
         {glyphs.map((glyph, index) => {
-          const isSelected = glyph === selectedGlyph
+          /* a glyph the font does not carry (FoundrySpecimenSections, 2026-08-27):
+           * the browser was drawing its fallback face for it — ask the parsed font;
+           * missing → dimmed, not clickable, no hover (user: "that way I see what's
+           * missing and people don't click characters that aren't part of the font") */
+          const present = !fontData?.font?.charToGlyphIndex || fontData.font.charToGlyphIndex(glyph) > 0
           return (
-            <div
-              key={index}
-              onClick={() => setSelectedGlyph(glyph)}
-              onMouseEnter={() => setHoveredGlyph(glyph)}
-              className={`w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 inline-flex flex-col justify-center items-center overflow-hidden cursor-pointer transition-colors duration-150 text-center text-lg md:text-xl lg:text-2xl leading-6 ${
-                isSelected ? 'bg-surface-inverse' : 'bg-transparent text-auto hover:bg-fg-08'
-              }`}
-              style={cellStyle}
-            >
-              {glyph}
-            </div>
+          <div
+            key={index}
+            onClick={present ? () => setSelectedGlyph(glyph) : undefined}
+            onMouseEnter={present ? () => setHoveredGlyph(glyph) : undefined}
+            aria-disabled={present ? undefined : true}
+            className={`
+              w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16
+              border border-fg-08 -mt-px -ml-px
+              inline-flex flex-col justify-center items-center
+              overflow-hidden
+              transition-colors duration-150
+              text-center text-lg md:text-xl lg:text-2xl leading-6
+              ${!present
+                ? 'text-fg-24 cursor-default'
+                : glyph === selectedGlyph
+                ? 'bg-surface-inverse text-auto cursor-pointer'
+                : 'bg-transparent text-auto hover:bg-auto/10 cursor-pointer'
+              }
+            `.trim()}
+            style={{
+              fontFamily: fontFamily,
+              fontStyle: fontStyle,
+              fontVariationSettings: fontVariationSettingsCSS
+            }}
+          >
+            {glyph}
+          </div>
           )
         })}
       </div>
@@ -263,14 +271,16 @@ const GlyphMetricsGrid = ({
 
   return (
     <div className="bg-surface-primary flex flex-col lg:flex-row justify-start items-start gap-6 md:gap-8 lg:gap-10">
-      {/* Left: glyph viewer + metrics overlay */}
+      {/* Left: Glyph Viewer */}
       <div className="w-full lg:flex-[504] flex flex-col justify-start items-start gap-4 md:gap-6">
-        {/* Single-line chrome titles → kol-helper-16 (retired kol-mono-text +
-          * freestyle text-base/lg dropped; 18px → tighter stop per protocol). */}
-        <div className="kol-helper-16 text-auto">Glyph Viewer</div>
+        <div className="text-auto kol-mono-16">
+          Glyph Viewer
+        </div>
 
         <div className="w-full flex flex-col justify-start items-start gap-4 md:gap-6 lg:gap-10">
+          {/* Glyph Display with Metrics */}
           <div className="self-stretch h-64 md:h-80 lg:h-96 relative rounded-md overflow-hidden">
+            {/* Glyph */}
             <div className="absolute inset-0 flex items-center justify-center">
               <span
                 ref={glyphRef}
@@ -278,56 +288,69 @@ const GlyphMetricsGrid = ({
                 style={{
                   fontSize: 'clamp(180px, 25vw, 316px)',
                   lineHeight: '1',
-                  fontFamily: renderFamily,
-                  fontStyle,
-                  fontVariationSettings: fontVariationSettingsCSS,
+                  fontFamily: fontFamily,
+                  fontStyle: fontStyle,
+                  fontVariationSettings: fontVariationSettingsCSS
                 }}
               >
-                {displayGlyph}
+                Loading…
               </span>
             </div>
-            <div ref={overlayRef} className="absolute inset-0 pointer-events-none" aria-hidden />
+
+            {/* Metrics Overlay */}
+            <div
+              ref={overlayRef}
+              className="absolute inset-0 pointer-events-none"
+              aria-hidden
+            />
           </div>
 
           {/* Metadata */}
-          {/* Multi-line (<br>-stacked) readout needs leading → kol-mono-16,
-            * not a line-height-1 helper (type protocol fault line). */}
           <div className="hidden md:inline-flex justify-start items-start gap-8">
-            <div className="opacity-80 text-auto kol-mono-16">
-              Font style<br />
-              Glyph name<br />
-              Unicode<br />
-              Decimal<br />
+            <div className="text-fg-64 kol-mono-14">
+              Font style<br/>
+              Glyph name<br/>
+              Unicode<br/>
+              Decimal<br/>
               Hex
             </div>
-            <div className="opacity-80 text-auto kol-mono-16">
-              {fontStyle === 'italic' ? 'Italic' : 'Roman'}<br />
-              {displayGlyph}<br />
-              U+{unicodeHex}<br />
-              {charCode}<br />
+            <div className="text-fg-64 kol-mono-14">
+              {fontStyle === 'italic' ? 'Italic' : 'Roman'}<br/>
+              {displayGlyph}<br/>
+              U+{unicodeHex}<br/>
+              {charCode}<br/>
               0x{unicodeHex}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right: dual grids */}
+      {/* Right: Dual Grids */}
       <div className="w-full lg:flex-[832] flex flex-col justify-start items-start gap-4 md:gap-6">
+        {/* Tab Controls - Mobile Only */}
         <div className="flex lg:hidden gap-3">
-          <Tag hash={false} active={activeTab === 'uppercase'} onClick={() => setActiveTab('uppercase')}>
-            Uppercase &amp; Latin
+          <Tag
+            onClick={() => setActiveTab('uppercase')}
+            className={activeTab === 'uppercase' ? 'is-active' : ''}
+          >
+            Uppercase & Latin
           </Tag>
-          <Tag hash={false} active={activeTab === 'lowercase'} onClick={() => setActiveTab('lowercase')}>
-            Lowercase &amp; Extended
+          <Tag
+            onClick={() => setActiveTab('lowercase')}
+            className={activeTab === 'lowercase' ? 'is-active' : ''}
+          >
+            Lowercase & Extended
           </Tag>
         </div>
 
+        {/* Mobile: Show only active tab */}
         <div className="lg:hidden w-full">
           {activeTab === 'uppercase' && renderGrid(uppercaseGlyphs, 'Uppercase & Latin')}
           {activeTab === 'lowercase' && renderGrid(lowercaseGlyphs, 'Lowercase & Extended')}
         </div>
 
-        <div className="hidden lg:flex lg:flex-col lg:gap-6 w-full">
+        {/* Desktop: Show both grids */}
+        <div className="hidden lg:flex lg:flex-col lg:gap-4 md:lg:gap-6 w-full">
           {renderGrid(uppercaseGlyphs, 'Uppercase & Latin')}
           {renderGrid(lowercaseGlyphs, 'Lowercase & Extended')}
         </div>

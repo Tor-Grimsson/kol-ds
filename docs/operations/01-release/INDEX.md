@@ -17,6 +17,7 @@ tags:
   - pattern/changesets-release
 related:
   - "[[02-shipped-packages|shipped packages]]"
+  - "[[04-retirements|retirements]]"
   - "[[../06-workflows/06-versioning-testing|versioning & testing]]"
   - "[[../06-workflows/05-distribution|distribution]]"
   - "[first publish log](../../../.kol/llm-context/session-log/2026-07-01-first-npm-publish.md)"

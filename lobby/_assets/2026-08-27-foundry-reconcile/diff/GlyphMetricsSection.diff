@@ -1,0 +1,22 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/GlyphMetricsSection.jsx	2026-07-28 19:29:48.241501849 +0000
++++ src/components/sections/foundry/GlyphMetricsSection.jsx	2026-08-27 01:46:01.882287704 +0000
+@@ -78,15 +78,15 @@
+ 
+   return (
+     <section className="w-full py-12 lg:py-16">
+-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
++      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
+         <SpecimenSectionHeader
+           selectedStyle={showDropdown ? selectedStyleVariant : showAxisDropdown ? selectedValue : undefined}
+           onStyleChange={showDropdown ? setSelectedStyleVariant : showAxisDropdown ? onValueChange : undefined}
+           showDropdown={showDropdown || (showAxisDropdown && valueOptions.length > 0)}
+           styleOptions={showDropdown ? italicOptions : valueOptions}
+-          badgeText={badgeText}
+-          icon="type"
+-          size="sm"
++          label="Glyph Viewer"
++          icon="underline"
++          size="md"
+           showWeightDropdown={showAxisDropdown && valueOptions.length > 0}
+           weightOptions={valueOptions}
+           selectedWeight={selectedValue}

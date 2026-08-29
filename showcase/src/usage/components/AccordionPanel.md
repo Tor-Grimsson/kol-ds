@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 24 across 14 files in 10 apps
-- **Weighted inbound:** 46★ across 14 edges — 1×5★ · 2×4★ · 11×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
+- **Real-world usages found:** 23 across 13 files in 9 apps
+- **Weighted inbound:** 43★ across 13 edges — 1×5★ · 2×4★ · 10×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -19,12 +19,12 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client/src/components/framework/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-client-ac/src/components/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/components/primitives/Accordion.jsx` |
-| 3 | 1 | `kol-apps/kol-client-hrafn/src/components/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-editor/_a-torg/_kol-packages-reference/kol-framework/src/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-labs-monorepo/packages/component/src/primitives/Accordion.jsx` |
 | 3 | 1 | `kol-apps/kol-labs-single/src/components/primitives/Accordion.jsx` |
-| … | | _2 more_ |
+| 3 | 1 | `kol-apps/kol-lightroom/src/components/primitives/Accordion.jsx` |
+| … | | _1 more_ |
 
 ## Import
 

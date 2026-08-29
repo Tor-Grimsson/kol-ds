@@ -1,4 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import { toneClass } from '../utilities/tone.js'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -8,6 +9,8 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *   variant="outline"          — bordered, transparent bg — THE secondary
  *                                treatment (2026-07-08 chrome law: one
  *                                secondary, always subordinate to filled)
+ *   tone="inverse"             — the dark chip (`fg-ab-24`) for a washed plane
+ *                                (ControlToneInverse, 2026-08-27); same prop on ViewToggle · Dropdown
  *   variant="ghost"            — legacy alias, resolves to outline
  *   variant="property"         — the Figma property field (PropertyField,
  *                                2026-08-12): filled chrome, dim `affordance`
@@ -50,6 +53,7 @@ export default function Input({
   value,
   onChange,
   variant = 'filled',
+  tone = 'default',
   size = 'md',
   chars,
   prefix,
@@ -86,6 +90,8 @@ export default function Input({
     `kol-control-${size}`,
     SIZE_TYPE[size],
     'cursor-text',
+    /* the dark chip on a washed plane (ControlToneInverse, kol-website 2026-08-27) */
+    toneClass(tone),
     isProperty && 'w-full',
     className,
   ].filter(Boolean).join(' ')

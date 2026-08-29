@@ -1,4 +1,5 @@
 import { isValidElement } from 'react'
+import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -17,6 +18,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {string} props.iconRight - Icon name to display on the right
  * @param {string} props.iconLeftHover - Icon to show on hover (left position)
  * @param {string} props.iconRightHover - Icon to show on hover (right position)
+ * @param {'default'|'sunken'} props.tone - `sunken` = the control set's dark well + fg-96 ink (ControlToneSunken); `inverse` aliased
  * @param {string} props.iconOnly - Icon name for icon-only button
  * @param {string} props.iconOnlyHover - Icon to show on hover (icon-only)
  * @param {boolean} props.animateIcon - Disable default hover states to focus on icon animation
@@ -58,6 +60,7 @@ const Button = ({
   selected = false,
   iconComponent,
   pressed,
+  tone = 'default',
   ...props
 }) => {
   // Two ladders, split on whether a label sits beside the glyph. An icon-only
@@ -117,7 +120,11 @@ const Button = ({
   // The rule for `full` is shared with .kol-icon-frame-radius-full, one
   // selector, so the two controls can never disagree on the value.
   const radiusClass   = radius === 'full' ? 'kol-btn-radius-full' : ''
-  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${radiusClass} ${className}`.trim().replace(/\s+/g, ' ')
+  /* `tone="sunken"` (ControlToneSunken, 2026-08-28): the dark well + fg-96 ink of the control set, so an
+   * icon-only button beside a sunken Dropdown is declared, not painted (kol-website hand-wrote the fill
+   * AND guessed the ink — the secondary's dark ink vanished on the forced dark fill). Theme rules. */
+  const toneCls       = toneClass(tone)
+  const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${radiusClass} ${toneCls} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
   const renderIcon = (iconName, iconHoverName) => {

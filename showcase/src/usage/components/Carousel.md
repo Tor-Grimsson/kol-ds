@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 20 across 20 files in 11 apps
-- **Weighted inbound:** 60★ across 20 edges — 20×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-docs-noter, kol-editor, kol-mirror, kol-modulator, kol-monitor, kol-website
+- **Real-world usages found:** 18 across 18 files in 9 apps
+- **Weighted inbound:** 54★ across 18 edges — 18×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-docs-noter, kol-editor, kol-modulator, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-canalix/src/components/cards/LogoCarousel.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetCarousel.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/styleguide/LogoCarousel.jsx` |
-| … | | _8 more_ |
+| … | | _6 more_ |
 
 ## Import
 

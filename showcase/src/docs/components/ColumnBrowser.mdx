@@ -1,0 +1,54 @@
+export const meta = {
+  id: "2.81.0",
+  slug: "column-browser",
+  title: "ColumnBrowser",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-27",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+  ],
+  description: "Finder-style Miller columns over a flat key space (kol-r2b2's `src/ColumnBrowser.jsx`, built and ruled there first — user 2026-08-27: \"make it locally first, then ship it\" — and shipped verbatim; ticket ColumnBrowser).",
+  aliases: [
+    "column-browser",
+    "miller-columns",
+    "finder",
+  ],
+  reuses: [
+    "Icon 3★",
+    "KindPreview 3★",
+  ],
+}
+
+<Preview name="ColumnBrowser" />
+
+## Installation
+
+<Install name="ColumnBrowser" />
+
+## Usage
+
+```jsx
+import { ColumnBrowser } from '@kolkrabbi/kol-component'
+
+<ColumnBrowser objects={objects} prefix={prefix} onPrefix={setPrefix} quickLook={quickLook} onQuickLook={setQuickLook} urlOf={(o) => publicUrl(o.key)} />
+```
+
+## Behavior
+
+One column per path segment of `prefix` (column 0 is the root). Picking a folder sets the prefix to it and truncates deeper columns; picking a file highlights it and opens a 320px **preview column** — the image (or the kind label), the name, and Kind · Type · Size · Dimensions (image + video, off the loaded media) · Length (audio + video, `m:ss`, off `loadedmetadata`) · Date — `…` until the metadata lands. Both are captured on the media frame, so a consumer `renderPreview` node's own `<img>` / `<video>` / `<audio>` feeds them too (ColumnBrowserMediaFacts, kol-r2b2 2026-08-27). Rows wear the Table's cell metrics; selected and cursor rows draw the hover fill (user ruling: "make hover state the selected state"). Height is fixed at 528px (12 × 44) so the browser never jumps; columns scroll. Keyboard is Finder's: ↑/↓ move in the column (a folder opens as you land on it, a file previews), → into the open folder, ← back to its parent; **space** is Quick Look — `onQuickLook({ files, index })` over the column's files; while open, ↑/↓ step the file and space closes. Built and ruled in kol-r2b2 first (2026-08-27), shipped verbatim; the app bits are seams with defaults.
+
+## Props
+
+<Api name="ColumnBrowser" rows={[
+  {"prop":"objects","type":"{ key, size?, uploaded?, contentType? }[]","def":"[]","desc":"The flat key space."},
+  {"prop":"prefix · onPrefix","type":"string · (prefix) => void","def":"''","desc":"The open folder path ('' root, 'a/b/' two deep) and its setter."},
+  {"prop":"quickLook · onQuickLook","type":"{ files, index } | null · fn","def":"null","desc":"The open Quick Look; space opens / closes it, ↑/↓ step while open."},
+  {"prop":"onPick","type":"(file | null) => void","def":"—","desc":"The picked file whenever it changes — a folder pick or an outside prefix change fires null; the seam for a Finder-style breadcrumb."},
+  {"prop":"renderPreview","type":"(file) => ReactNode","def":"—","desc":"Replaces the preview column's media frame (the facts stay — Dimensions and Length are read off whatever img / video / audio the node loads). Without it images render the organism's img and everything else the DS KindPreview — video and audio as square tiles with one play/pause control, code, text."},
+  {"prop":"urlOf","type":"(o) => string","def":"—","desc":"The object's public URL for the preview image; without it, no image."},
+  {"prop":"kindOf · kindLabel · formatSize · partition","type":"functions / map","def":"defaults","desc":"The app-owned classification, labels, size formatting and folder split — defaults work for contentType-typed keys."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the browser."}
+]} />

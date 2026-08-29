@@ -22,11 +22,16 @@ const NAV_TREE = [
     ],
   },
   { id: 'icons', label: 'Icons', to: '/icons', icon: 'grid' },
+  /* a LABEL over action rows — the workspace-rail shape (WorkspaceSidebarGeometry,
+   * 2026-08-27): no icon = a section, hidden on collapse; the rows dispatch */
+  { id: 'surface', label: 'Surface', pages: [] },
+  { id: 'grid-on', label: 'Grid', icon: 'grid-horizontal', onSelect: () => {}, active: true },
+  { id: 'rows-on', label: 'Rows', icon: 'rows', onSelect: () => {} },
 ]
 
 /* The background prop, as the picker: `framed` is the default rail surface;
  * `chromeless` floats the rail over the host's media (brand-hero model). */
-export const variants = ['framed', 'chromeless']
+export const variants = ['framed', 'hairline', 'chromeless']
 
 export default function SideNavDemo({ variant = 'framed' }) {
   const chromeless = variant === 'chromeless'
@@ -36,7 +41,7 @@ export default function SideNavDemo({ variant = 'framed' }) {
   // anchor to the viewport and poke past its edge.
   return (
     <div className={`relative h-80 w-60 overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 [&_.kol-sidenav]:static [&_.kol-sidenav]:h-full${chromeless ? ' bg-fg-08' : ''}`}>
-      <SideNav navTree={NAV_TREE} background={!chromeless} />
+      <SideNav navTree={NAV_TREE} background={!chromeless} hairline={variant === 'hairline'} />
     </div>
   )
 }

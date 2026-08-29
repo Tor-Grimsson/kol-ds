@@ -67,10 +67,11 @@ const FoundryCharacterSets = ({
 
   return (
     <section className="w-full py-12 lg:py-16">
-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
         <SpecimenSectionHeader
-          label="Character Set"
-          size="sm"
+          label="Character Sets"
+          icon="grid"
+          size="md"
           selectedStyle={selectedStyle}
           onStyleChange={setSelectedStyle}
           showDropdown={showDropdown}

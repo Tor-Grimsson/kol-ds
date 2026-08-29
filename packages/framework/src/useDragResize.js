@@ -96,7 +96,7 @@ const readBack = (n) => {
  *           rightward drag = wider. 'right' inverts both the pointer sign and
  *           the arrow keys. */
 export default function useDragResize(ref, options = {}) {
-  const { token = 'kol-sidenav', side = 'left' } = options
+  const { token = 'kol-sidenav', side = 'left', defaultCollapsed = false } = options
   /* -1 on a right-hand rail: the same rightward pointer travel that widens a
    * left rail must NARROW a right one, because its handle faces the canvas. */
   const dir = side === 'right' ? -1 : 1
@@ -131,14 +131,18 @@ export default function useDragResize(ref, options = {}) {
     defaultPx.current = readVarPx(names.wVar)
     collapsedPx.current = readVarPx(names.collapsedVar)
     let w = null
-    let c = false
+    let stored = null
     try {
       w = parseFloat(localStorage.getItem(names.widthKey)) || null
-      c = localStorage.getItem(names.stateKey) === 'collapsed'
+      stored = localStorage.getItem(names.stateKey)
     } catch { /* storage blocked */ }
+    /* nothing stored → the consumer's boot state (RailSideNavPixelParity,
+     * 2026-08-28): an app rail boots collapsed, the brand sidebar boots open;
+     * the first drag or click persists and the default never speaks again */
+    const c = stored ? stored === 'collapsed' : !!defaultCollapsed
     if (w) { writeWidth(names, w); setWidthPx(w) }
     if (c) { stampCollapsed(names, true); setCollapsed(true) }
-  }, [names])
+  }, [names, defaultCollapsed])
 
   useEffect(() => {
     const onMove = (e) => {

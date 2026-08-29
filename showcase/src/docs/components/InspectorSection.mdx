@@ -1,0 +1,49 @@
+export const meta = {
+  id: "2.76.0",
+  slug: "inspector-section",
+  title: "InspectorSection",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/components/molecules",
+    "domain/design-system",
+    "pattern/structure",
+  ],
+  description: "Labeled control group for inspector/editor panels.",
+  aliases: [
+    "inspector-section",
+    "section",
+  ],
+  reuses: [
+    "Section 3★",
+  ],
+}
+
+<Preview name="InspectorSection" />
+
+## Installation
+
+<Install name="InspectorSection" />
+
+## Usage
+
+```jsx
+import { InspectorSection } from '@kolkrabbi/kol-component'
+
+<InspectorSection label="Aspect" divided>…</InspectorSection>
+```
+
+## Behavior
+
+A small-caps label above a vertical content stack. `divided` adds the between-siblings hairline — set it on every section in a stack. Renamed from `Section` 2026-08-26 (the website-section family owns the `Section*` prefix); `Section` stays exported as a deprecated alias.
+
+## Props
+
+<Api name="InspectorSection" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Small-caps heading above the stack."},
+  {"prop":"divided","type":"boolean","def":"false","desc":"Between-siblings hairline (on the adjacent pair)."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Vertically stacked content."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes."}
+]} />

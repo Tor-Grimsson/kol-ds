@@ -13,9 +13,9 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 2 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphMetricsGrid.jsx` |
-| 3 | 2 | `kol-website/apps/web/src/components/fontviewer/GlyphMetricsGrid.jsx` |
+| 3 | 2 | `kol-website/_tmp/2026-08-27-foundry-reconcile/GlyphMetricsGrid.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/GlyphMetricsSection.jsx` |
 | 3 | 1 | `kol-website/_tmp/web-quarantine-elder/GlyphMetricsSection.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/GlyphMetricsSection.jsx` |
 
 ## Import
 
@@ -35,18 +35,7 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewe
  * />
 ```
 
-From `kol-website/_tmp/web-quarantine-elder/GlyphMetricsSection.jsx`:
-
-```jsx
-<GlyphMetricsGrid
-          fontUrl={currentFontUrl}
-          fontFamily={fontFamily}
-          fontStyle="normal"
-          variationSettings={variationSettings}
-        />
-```
-
-From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphMetricsGrid.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/GlyphMetricsGrid.jsx`:
 
 ```jsx
 <GlyphMetricsGrid
@@ -57,4 +46,15 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewe
  *   lowercaseGlyphs={glyphSets.lowercase}
  *   initialGlyph="A"
  * />
+```
+
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/GlyphMetricsSection.jsx`:
+
+```jsx
+<GlyphMetricsGrid
+          fontUrl={currentFontUrl}
+          fontFamily={fontFamily}
+          fontStyle="normal"
+          variationSettings={variationSettings}
+        />
 ```

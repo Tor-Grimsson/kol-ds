@@ -352,3 +352,17 @@
 .font-viewer-wrapper .monospaced {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
+
+/* PairingCard (FoundrySpecimenSections, 2026-08-27) — kol-website's .pairing-card
+ * frame + hover, verbatim: an 8% frame, on hover a 1% wash and a 24% frame. */
+.kol-pairing-card {
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+@media (hover: hover) {
+  .kol-pairing-card:hover {
+    background-color: color-mix(in srgb, var(--kol-surface-on-primary) 1%, transparent);
+    border-color: color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent);
+  }
+}

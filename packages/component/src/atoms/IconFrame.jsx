@@ -1,5 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { SOLO } from '../hooks/glyphLadders.js'
+import { toneClass } from '../utilities/tone.js'
 
 /**
  * IconFrame — a STATIC square frame holding one icon.
@@ -83,13 +84,15 @@ export default function IconFrame({
   iconSize = null,
   onClick,
   href,
+  tone = 'default',
   className = '',
   ...rest
 }) {
   if (!name) return null
   const radiusCls = radius === 'full' ? ' kol-icon-frame-radius-full' : ''
   const resolvedIconSize = iconSize ?? GLYPH[size] ?? GLYPH.md
-  const cls = `kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${className}`.trim()
+  /* `tone="sunken"` (ControlToneSunken, 2026-08-28) — the control set's dark well + fg-96 ink, no states, as ever */
+  const cls = `kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
   const glyph = <Icon name={name} size={resolvedIconSize} />
 
   /* The element follows the affordance, and the CLASS is identical in all three

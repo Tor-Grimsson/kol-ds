@@ -15,12 +15,18 @@ export { default as VariableFontSection } from './VariableFontSection.jsx'
 export { default as GlyphMetricsGrid } from './GlyphMetricsGrid.jsx'
 export { default as GlyphMetricsSection } from './GlyphMetricsSection.jsx'
 export { default as FoundryCharacterSets } from './FoundryCharacterSets.jsx'
+// the last three specimen sections (moved in from kol-website 2026-08-27 — FoundrySpecimenSections)
+export { default as FoundryOpentypeFeatures } from './FoundryOpentypeFeatures.jsx'
+export { default as FoundryTypefaceDetails } from './FoundryTypefaceDetails.jsx'
+export { default as FoundryTypefacePairing } from './FoundryTypefacePairing.jsx'
+export { default as PairingCard } from './PairingCard.jsx'
 
 // catalog — the specimen collection
 export { default as TypefaceLibraryGrid } from './TypefaceLibraryGrid.jsx'
 export { default as TypefaceLibraryGridWithVariables } from './TypefaceLibraryGridWithVariables.jsx'
 export { default as TypefaceLibraryItem } from './TypefaceLibraryItem.jsx'
 export { default as TypefaceVariablePreview } from './TypefaceVariablePreview.jsx'
+export { default as TypefaceAlphabet } from './TypefaceAlphabet.jsx'
 
 // type-specimen kit — prop-driven specimen blocks (moved from @kolkrabbi/kol-component 2026-07-09)
 export { default as TypeSample } from './TypeSample.jsx'
@@ -38,7 +44,7 @@ export { default as ColorLoader } from './ColorLoader.jsx'
 export { default as TypefaceSpecimenPage } from './TypefaceSpecimenPage.jsx'
 
 // data
-export { glyphSets, glyphCategories, SPECIMEN_SAMPLE_TEXT } from './glyphData.js'
+export { glyphSets, glyphCategories, SPECIMEN_SAMPLE_TEXT, FOUNDRY_SAMPLE_TEXT } from './glyphData.js'
 export { typefaceConfig, getTypefaceConfig, getAllTypefaceIds, getAllTypefaces } from './typefaceConfig.js'
 
 // fontviewer engine (lobbied from elder @kol/fontviewer 2026-07-16) — the

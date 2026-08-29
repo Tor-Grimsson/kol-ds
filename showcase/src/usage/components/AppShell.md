@@ -1,8 +1,8 @@
 # AppShell
 
-- **Package:** `@kolkrabbi/kol-framework`
-- **Category:** framework
-- **Real-world usages found:** 3 across 3 files in 2 apps
+- **Package:** `@kolkrabbi/kol-shell`
+- **Category:** flat
+- **Real-world usages found:** 6 across 3 files in 2 apps
 - **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-labs-monorepo, kol-labs-single
 
@@ -19,7 +19,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 ## Import
 
 ```jsx
-import { AppShell } from '@kolkrabbi/kol-framework'
+import { AppShell } from '@kolkrabbi/kol-shell'
 ```
 
 ## Real usage

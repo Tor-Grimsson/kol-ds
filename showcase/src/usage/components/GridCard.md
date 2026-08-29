@@ -1,10 +1,10 @@
 # GridCard
 
-- **Package:** `@kolkrabbi/kol-dashboards`
-- **Category:** layout
-- **Real-world usages found:** 93 across 13 files in 3 apps
-- **Weighted inbound:** 46★ across 13 edges — 7×4★ · 6×3★
-- **Used in:** kol-labs-monorepo, kol-monitor, kol-website
+- **Package:** `@kolkrabbi/kol-shell`
+- **Category:** flat
+- **Real-world usages found:** 170 across 10 files in 2 apps
+- **Weighted inbound:** 36★ across 10 edges — 6×4★ · 4×3★
+- **Used in:** kol-labs-monorepo, kol-website
 
 ## Who depends on this
 
@@ -18,18 +18,15 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 6 | `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardComponents.jsx` |
 | 4 | 6 | `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx` |
 | 4 | 4 | `kol-apps/kol-labs-monorepo/apps/monitor/src/pages/LibraryPage.jsx` |
-| 4 | 4 | `kol-apps/kol-monitor/src/pages/LibraryPage.jsx` |
 | 3 | 2 | `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx` |
 | 3 | 2 | `kol-apps/kol-labs-monorepo/apps/monitor/src/pages/CreatePage.jsx` |
 | 3 | 2 | `kol-apps/kol-labs-monorepo/apps/monitor/src/pages/HomePage.jsx` |
-| 3 | 2 | `kol-apps/kol-monitor/src/pages/CreatePage.jsx` |
-| 3 | 2 | `kol-apps/kol-monitor/src/pages/HomePage.jsx` |
-| … | | _1 more_ |
+| 3 | 2 | `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx` |
 
 ## Import
 
 ```jsx
-import { GridCard } from '@kolkrabbi/kol-dashboards'
+import { GridCard } from '@kolkrabbi/kol-shell'
 ```
 
 ## Real usage
@@ -50,15 +47,6 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/pages/ChessMetrics.jsx`:
         subtitle="Explore chess performance data with period-based filtering."
         meta="Metrics • Dashboard • Interactive data"
       />
-```
-
-From `kol-apps/kol-monitor/src/pages/CreatePage.jsx`:
-
-```jsx
-<GridCard
-                        title={m.label}
-                        detail={`${m.hp}HP ${m.u}U — ${m.category}`}
-                        preview={<img src={`/previews/modules/${m.type}.png`} alt={m.label} />
 ```
 
 From `kol-website/_tmp/workshop-museum-elder/routes/workshop/ChessMetrics.jsx`:
@@ -103,5 +91,19 @@ From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx`:
                 value={`${metrics.winRate.toFixed(1)}%`}
                 delta={`${metrics.wins.toLocaleString()} wins`}
                 borderColor="var(--kol-palette-green)"
+              />
+```
+
+From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardAnalysis.jsx`:
+
+```jsx
+<GridCard span="2x1">
+            <div className="grid grid-cols-2 gap-4 h-full">
+              <DashMetricCard
+                className="h-full"
+                label="Avg rating"
+                value={metrics.avgRating.toLocaleString()}
+                delta={`Peak ${metrics.peakRating.toLocaleString()}`}
+                borderColor="var(--kol-palette-purple)"
               />
 ```

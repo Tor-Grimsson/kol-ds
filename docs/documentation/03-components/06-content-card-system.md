@@ -3,7 +3,7 @@ title: The ContentCard system
 type: reference
 status: draft
 created: 2026-08-15
-updated: 2026-08-15
+updated: 2026-08-27
 description: One card family; wrapper owns the switch
 aliases:
   - content-card
@@ -70,6 +70,9 @@ the **switch**. `layout === 'list' ? rowJSX : cardJSX` plus two container grids 
 hand-written in monitor ×4, MediaLibrary, kol-website Work, both foundry grids and
 `StackLatest`. `ContentCollection` owns it once.
 
+
+**ContentFilters — the filter-group law (user ruling 2026-08-27, "for the 10th time"; its width re-ruled the same day — ContentFiltersFirstGroupFixedWidth, kol-monitor: "nope not hug, fix a size … if columns, maybe just use one?"):** the FIRST filter group is **ONE CATALOG COLUMN wide** — the `1fr` of `repeat(6, 1fr)` gap 24, `(row − 120px) / 6`, a fraction of the row (measured as a container, so the count/strip beside the groups never narrows it), never a px — so it sits over the first card; every group after it FLOWS across the rest of the row, starting over the second. By position, never by chip count. A page without a 6-column catalog (`/work`, a list) gets the same fraction of its own row. Not a hug (0.104.3 — 78px on one surface, 92 on the next), not equal columns (0.104.1, a misread), not "short groups stack" (0.101, one page's ruling). `group.stack` stays the explicit override; `group.className` still wins on width (the rule is `.kol-filters-first`, kol-theme ≥0.73.0, components layer). The category label is the eyebrow role (`kol-eyebrow text-fg-96`).
+
 **Why the slots are their own components.** Card and row differ in arrangement,
 not in contents. Putting the media and the text in shared components is what makes
 a new variant cheap — a variant is a `ContentText` composition plus a
@@ -89,6 +92,8 @@ Six, and `default` is declared.
 | `article` | kicker · title · summary · tags · date | `ListingCard` — **kol-website Stack** |
 | `work` | title · client · type · year | `WorkCard` / `WorkListItem` |
 | `typeface` | live specimen · name · styles · classification · year | `TypefaceLibraryItem` |
+
+**Catalog frame (user ruling 2026-08-28, CatalogCardFrameAndZoom):** no frame at rest, `fg-04` on hover — the old rest value is the hover; a 212-tile grid of `fg-04` frames read as a grid of boxes. `plateRule={false}` switches the plate's top hairline off without a consumer `!important`. The zoom (`.kol-media-zoom`) scales the wrapper's child whatever element it is, not only `img`/`video`.
 
 **`default` is declared explicitly — never "whichever is first".** Paid for on
 2026-08-15: `ContentFilters` was passed `variant="default"`, which was not a
@@ -201,11 +206,12 @@ body, `ContentMedia`'s `fit` / `frame` / `ring`, a per-variant hover step driven
 by `--kol-content-hover-bg`, and a responsive row step published as
 `--kol-row-*-md` custom properties. Per variant: catalog renders **at** 36 with
 no Y padding on `surface-tertiary`; print's overlay ring is restored with its
-radius; article's row thumb is square again, its media framed, its body clamped
-3/2; work steps 16→24 pad, 64→112 thumb, 96→160 height, thumb on `radius-xs`
+radius; **every row thumb is a fixed square box** (`--kol-row-thumb` wide, at the top of the row, the media object-covers into it; row height = max(thumb, text); rows never zoom — ContentRowsAndPrintCard, user 2026-08-27: *"the image should not control height"*), article's card media bare by default
+(`frame` opts the hairline in — user 2026-08-27: *"I hate border"*), its body
+clamped 3/2; work steps 16→24 pad, 64→112 thumb, 96→160 height, thumb on `radius-xs`
 with an `fg-08` frame, border transparent→`fg-16` on hover, meta split into two
 slots; typeface's row takes a media slot, a 160 floor, a transparent surface,
-the color-mix wash, and a **stacked** right column.
+the color-mix wash, and a **stacked** right column. **Ruled on screen 2026-08-27 (TypefaceCardAndRow):** the row's name and classification are full ink and the year steps to 64; the card's title is the row's title string (`kol-mono-14 uppercase`, full ink); and the card takes `reveal` — on hover the plate and the glyph fade out and the reveal node (the pangram in the face) fades in, 300ms on the house curve, the shipped `TypefaceLibraryItem` hover carried.
 
 That last one made `ContentText`'s renderer **recursive** — an entry inside a
 line may now itself be an entry, so `['stack', 'detail', 'date']` sits inside a
@@ -362,7 +368,7 @@ different spelling.
 | Title↔detail gap | `marginBottom: 4` | `--kol-spacing-2` = 8px |
 | Hover | `hover:bg-surface-tertiary` | **none** |
 | Transition | `all 300ms cubic-bezier(0.16,1,0.3,1)` — the untokenised house curve | none on the card |
-| **Dropped** | `expanded` 2×2 mode + `expandedContent` + grid spans; `previewFit` (`natural`/`compact`/`cover`) | no equivalent |
+| **Kept (2026-08-26)** | `expanded` 2×2 mode + `expandedContent` + grid spans; `previewFit` (`natural`/`compact`/`cover`) | `expanded` + `expandedContent` on the card — span 2×2, no ratio, media right at 50%, content left on `pad-card-lg`; `previewFit` = `fit` — and since component 0.108.0 `natural` / `compact` ARE GridCard's rules (50 % / 30 % top-left, clipped), not contain (CatalogPageMonitorParity) |
 | Media radius | preview fills, card clips — ONE radius | **double rounding**, as `default` |
 
 ### catalog · row — `GridCard variant="list"` → `ContentRow`
@@ -386,12 +392,16 @@ different spelling.
 | Background | `bg-surface-secondary` | identical |
 | Ratio | `aspect-[1/1.41421]` | identical |
 | Radius | `rounded` ×2 (box + ring) | token `=` |
-| **Dropped** | 3D flip (`isFlipped`, `rotateY`, perspective 1000px) | no equivalent |
-| **Dropped** | image fade-in 500ms + `loading="lazy"` | no equivalent |
-| **Dropped** | `onCardClick(rect, slug)` FLIP-transition seam | `onClick` gets nothing |
-| **A11y** | `role="button"`, `tabIndex={0}`, Enter/Space handler | `<article onClick>` — **no role, no keyboard** |
+| Flip | 3D flip (`isFlipped`, `rotateY`, perspective 1000px) | **carried 2026-08-27** — `selected` turns the card (0.4s ease-out, preserve-3d) |
+| Fade | image fade-in 500ms + `loading="lazy"` | **carried** — `ContentMedia fade` (print by default): the `<img>` child gets `loading="lazy"` and `.kol-media-fade` → `is-loaded` |
+| Rect seam | `onCardClick(rect, slug)` FLIP-transition seam | `onClick(event)` — `event.currentTarget.getBoundingClientRect()` is the rect |
+| **A11y** | `role="button"`, `tabIndex={0}`, Enter/Space handler | identical on an `onClick` card; an `href` card is a real `<a>` |
 | Dead class | fallback uses `kol-mono-sm` — a retired t-shirt stop | — |
 | Row | **none shipped** | new adds a framed between-header row |
+
+### article · hero — `ListingCard size="hero"` → `ContentCard variant="article" hero` (2026-08-27)
+
+The featured card riding a page's fold (Stack) — `ListingCard size="hero"` as Stack rendered it, carried through verbatim (user 2026-08-27). `hero` adds a header row above the media — `label` left (`kol-helper-14 text-fg-64`), `meta` chips right (`kol-helper-12 text-fg-48`) — puts the media on the zoom's hero rung (1.02, `is-hero`) and the text on ContentText's `hero` form: kicker `kol-card-kicker tracking-wide text-fg-64`, title **display-03 uppercase**, clamp 2, dim on hover; body `kol-mono-14 text-fg-48` clamp 2; date · size. Tags are `data-tags` on the root, not chips. Same `frame` (off by default). The row form has no hero.
 
 ### article · card — `ListingCard size="default"` → `ContentCard`
 
@@ -552,3 +562,7 @@ icon tiles and rack viewports. `renderItem` is a generic body slot, not a card s
 with a dark toggle (not two panes), `AssetPlaceholder` in every slot, both forms for
 all six variants, and a row exposing the padding / radius / type inconsistencies
 rather than describing them.
+
+## Retirement
+
+On the user's go, the eight absorbed components carry `@deprecated` in source and in each package's changelog, pointing at the variant that replaces them: `MediaCard` / `MediaRow` → `default` · kol-shell `GridCard` → `catalog` · `PrintGridCard` → `print` · `ListingCard` (+ `ArticleCard`) → `article` · `WorkCard` / `WorkListItem` → `work` · `TypefaceLibraryItem` → `typeface`. Nothing renders differently; every export stays until the next major. **Step 2 is each consumer's:** bump, swap, on its own cadence. Step 3 — dropping the exports — waits for every consumer to have moved. Not deprecated: kol-dashboards' `GridCard` (an unrelated grid-span wrapper) and `BentoCard` — no variant absorbs it; ruled 2026-08-27 into the Tilt family as `TiltBento` (`TiltCard` · `TiltBento` · `useTilt`), `BentoCard` its alias on the ledger.

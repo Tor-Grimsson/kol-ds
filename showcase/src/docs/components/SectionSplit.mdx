@@ -1,0 +1,63 @@
+export const meta = {
+  id: "2.69.0",
+  slug: "section-split",
+  title: "SectionSplit",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+    "pattern/media",
+  ],
+  description: "The media-and-text split section, on `SectionText` (the text column) beside the media frame.",
+  aliases: [
+    "section-split",
+    "feature-split",
+    "split",
+  ],
+}
+
+<Preview name="SectionSplit" />
+
+## Installation
+
+<Install name="SectionSplit" />
+
+## Usage
+
+```jsx
+import { SectionSplit } from '@kolkrabbi/kol-component'
+
+<SectionSplit label="THE FLEET" headline={<>Built to hold <em>course</em></>} body="…" actions={<Button>Explore</Button>} media={<img … />} align="left" />
+```
+
+## Behavior
+
+A [SectionText](/components/section-text) column beside the media frame; two columns at/above 901px, one stacked column below. **`align`** is the one prop: `right` (media on the right, default), `left` (media first), `center` (one column, text centred, media below). `meta` and `actions` are mutually exclusive by intent. `caption` gates a gradient veil + mono caption over the media. `FeatureSplit` is this component under its old name and prop names (`kicker` → `label`, `title` → `headline`, `titleSize` → `headlineSize`, `ctas` → `actions`, `mediaAspect` → `ratio`, `flip` → `align="left"`) — a deprecated alias.
+
+## Props
+
+<Api name="SectionSplit" rows={[
+  {"prop":"eyebrow","type":"ReactNode","def":"—","desc":"Mono eyebrow above the headline (accent); label is its alias. Uppercase by role."},
+  {"prop":"headline","type":"ReactNode","def":"—","desc":"Display pull; <em> renders as the italic accent."},
+  {"prop":"headlineSize","type":"role","def":"'pull'","desc":"Which type ROLE the heading wears."},
+  {"prop":"headlineAs","type":"string","def":"'h1'","desc":"Element for the headline."},
+  {"prop":"body","type":"ReactNode","def":"—","desc":"Lede paragraph."},
+  {"prop":"meta","type":"{ num, label }[]","def":"—","desc":"Stats strip — mutually exclusive with actions."},
+  {"prop":"actions","type":"ReactNode","def":"—","desc":"Button row."},
+  {"prop":"media","type":"ReactNode","def":"—","desc":"Image / video / interactive node for the visual column; omit for text-only."},
+  {"prop":"ratio","type":"string","def":"'4/5'","desc":"Aspect ratio of the media frame. The frame's height is the section's height rung minus the padding; its width follows the ratio, capped at the column — the media takes its size from the section."},
+  {"prop":"mediaHover","type":"boolean","def":"false","desc":"Zoom the media on frame hover (the CardFeatureItem numbers). Not for a self-animating node."},
+  {"prop":"mediaClip","type":"boolean","def":"true","desc":"The frame clips its media. false for a node that transforms in 3D (a tilt card) — the frame keeps ratio + radius, the node owns its own clipping."},
+  {"prop":"align","type":"'right' | 'left' | 'center'","def":"'right'","desc":"Media side, or one centred column."},
+  {"prop":"caption","type":"ReactNode","def":"—","desc":"Mono caption + gradient veil over the media."},
+  {"prop":"bgImage","type":"string","def":"—","desc":"Inline cover background on the section."},
+  {"prop":"fullBleed","type":"boolean","def":"false","desc":"Span the full viewport width."},
+  {"prop":"className · innerClassName · columnClassName","type":"string","def":"''","desc":"Layout seams: section · grid · text column."},
+  {"prop":"slotClass · slotStyle","type":"object","def":"—","desc":"Per-slot class / style on the text block (reveal seam)."},
+  {"prop":"theme","type":"'inverse' | 'light' | 'dark'","def":"—","desc":"The section's theme scope: inverse = the paired theme of the nearest live one (follows the toggle); light / dark pinned; omit to inherit. Every token inside flips — no inverse classes."},
+  {"prop":"height","type":"'full' | '80' | '60' | '40' | class","def":"'60'","desc":"Min-height on the family's ladder — full = 100dvh, 80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh. Content may grow; the columns stay centred."},
+  {"prop":"background","type":"'primary' | 'secondary' | 'tertiary' | 'inverse' | 'auto' | 'none' | string","def":"'none'","desc":"The section's surface — a named surface, none, or a raw utility / token string (bg-fg-absolute-16). theme keeps scoping ink; className is no longer the way to set a background."}
+]} />

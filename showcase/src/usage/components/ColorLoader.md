@@ -14,8 +14,8 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/layout/LoaderOverlay.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/animations/LoadersPreview.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-14-introloader-merge/LoaderOverlay.jsx` |
 | 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/animations/LoadersPreview.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/layout/LoaderOverlay.jsx` |
 
 ## Import
 
@@ -31,7 +31,7 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/
 <ColorLoader\n  message="Loading"\n  onEnter={() => {}}\n/>
 ```
 
-From `kol-website/apps/web/src/components/layout/LoaderOverlay.jsx`:
+From `kol-website/_tmp/2026-08-14-introloader-merge/LoaderOverlay.jsx`:
 
 ```jsx
 <ColorLoader onEnter={onEnter} />

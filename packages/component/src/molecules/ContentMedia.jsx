@@ -1,3 +1,4 @@
+import { cloneElement, isValidElement, useEffect, useRef, useState } from 'react'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 
 /**
@@ -18,10 +19,15 @@ import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
  *
  * `fit` (2026-08-15) — `cover` crops to fill, which is right for a photograph
  * and wrong for a diagram or a screenshot, where the crop eats the content.
- * `natural` and `compact` are GridCard's `previewFit` under the family's name;
- * the shipped values are kept so a catalog grid can move over without a
- * re-tune. `cover` stays the default — every card in the family today is a
- * photograph.
+ * `natural` and `compact` are GridCard's `previewFit` under the family's name
+ * — AS GRIDCARD DREW THEM (CatalogPageMonitorParity, kol-monitor 2026-08-27):
+ * the image at 50 % / 30 % of its own pixels, anchored top-left, clipped by the
+ * box (`.kol-shell-card-preview--natural/--compact` in kol-theme, verbatim). A
+ * rack preview reads its modules at the top-left and the rest runs off the
+ * card. Until 0.108.0 they were contain / contain-at-70 % — the whole rack
+ * small in the middle, rejected on sight against the original; no consumer was
+ * on that meaning. `cover` stays the default — every card in the family today
+ * is a photograph.
  *
  * THREE separate edge treatments, because the shipped components use three:
  *
@@ -53,7 +59,10 @@ import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
  * @param {string}    bg        tint only, no border — a raw token value
  * @param {string}    borderHover  border colour on hover (article's fg-16 step)
  * @param {boolean}   ring      hairline border OVER the media, inset
- * @param {boolean}   zoom      the artwork creeps up inside its frame on the
+ * @param {boolean|'hero'} zoom  the artwork creeps up inside its frame on the
+ *                            card's hover — 1.06; `'hero'` = the hero rung, 1.02
+ *                            (StackCardHover, 2026-08-27) — same pixel travel on a
+ *                            ~1500px thumb as 1.06 on a 500px one. Was:
  *                              CARD's hover — image-led variants only
  * @param {boolean}   fillHeight  size from the HEIGHT instead of the width: the
  *                              media fills its parent's height and its width
@@ -61,13 +70,39 @@ import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
  *                              thumb sized off the row's own height keeps the
  *                              row's rhythm, where a fixed width leaves it
  *                              floating in a tall row.
- * @param {ReactNode} children  the real media
+ * @param {boolean}   fade      an <img> child fades in on load (500ms, house curve) and
+ *                              takes loading="lazy" — PrintGridCard's move (2026-08-27)
+ * @param {ReactNode} children  the real media — ANY element: the zoom scales the wrapper's child
+ *                              whatever it is (CatalogCardFrameAndZoom, 2026-08-28 — a glyph on a
+ *                              specimen plate got the class and no motion while the rule named img/video)
  */
 const FIT = {
-  cover:   '[&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>video]:h-full [&>video]:w-full [&>video]:object-cover',
-  natural: '[&>img]:h-full [&>img]:w-full [&>img]:object-contain [&>video]:h-full [&>video]:w-full [&>video]:object-contain',
-  compact: 'grid place-items-center [&>img]:max-h-[70%] [&>img]:max-w-[70%] [&>img]:object-contain',
+  /* a consumer WRAPPER div fills the frame as an img/video does (ColumnBrowser round, 2026-08-27 — kol-r2b2's wrapped thumb fell back to the image's intrinsic size) */
+  cover:   '[&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>video]:h-full [&>video]:w-full [&>video]:object-cover [&>div]:h-full [&>div]:w-full',
+  /* GridCard's previewFit, verbatim: `img { max-width: none; transform: scale(.5 | .3); transform-origin: top left }` */
+  /* the ANCHOR is the consumer's (ContentMediaFocusBinding, kol-monitor 2026-08-27 — user: "make it
+   * so that the focus can be set per repo"): `--kol-media-focus`, bound once on a consumer's :root,
+   * pins the fit AND the hover zoom (kol-theme `.kol-media-zoom`, same token) — the two share
+   * `transform-origin`. Unset = today's values: top left here, center on the zoom. */
+  natural: '[&>img]:max-w-none [&>img]:scale-50 [&>img]:origin-[var(--kol-media-focus,top_left)]',
+  compact: '[&>img]:max-w-none [&>img]:scale-[.3] [&>img]:origin-[var(--kol-media-focus,top_left)]',
 }
+
+/* the fade: the child <img> is cloned with loading="lazy" and `kol-media-fade`,
+ * flips to `is-loaded` on load — or at once when the browser already has it
+ * (`complete`), since a cached image never fires onLoad after mount */
+function FadeImg({ img }) {
+  const ref = useRef(null)
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => { if (ref.current?.complete) setLoaded(true) }, [])
+  return cloneElement(img, {
+    ref,
+    loading: img.props.loading ?? 'lazy',
+    className: `${img.props.className ?? ''} kol-media-fade ${loaded ? 'is-loaded' : ''}`.replace(/\s+/g, ' ').trim(),
+    onLoad: (e) => { setLoaded(true); img.props.onLoad?.(e) },
+  })
+}
+const withFade = (children) => (isValidElement(children) && children.type === 'img' ? <FadeImg img={children} /> : children)
 
 export default function ContentMedia({
   ratio = '1 / 1',
@@ -80,6 +115,7 @@ export default function ContentMedia({
   ring = false,
   zoom = false,
   fillHeight = false,
+  fade = false,
   children,
   className = '',
 }) {
@@ -89,13 +125,13 @@ export default function ContentMedia({
   const round = radius ? 'rounded-[var(--kol-radius-sm)]' : ''
   return (
     <div
-      className={`relative ${fillHeight ? 'h-full w-auto' : 'w-full'} overflow-hidden ${round} ${FIT[fit] ?? FIT.cover} ${frame ? 'bg-fg-04 border border-fg-08' : ''} ${border ? 'border border-fg-08' : ''} ${zoom ? 'kol-media-zoom' : ''} ${borderHover ? 'transition-colors hover:border-fg-16' : ''} ${ratio == null ? 'h-full' : ''} ${className}`.trim()}
+      className={`relative ${fillHeight ? 'h-full w-auto' : 'w-full'} overflow-hidden ${round} ${FIT[fit] ?? FIT.cover} ${frame ? 'bg-fg-04 border border-fg-08' : ''} ${border ? 'border border-fg-08' : ''} ${zoom ? `kol-media-zoom${zoom === 'hero' ? ' is-hero' : ''}` : ''} ${borderHover ? 'transition-colors hover:border-fg-16' : ''} ${ratio == null ? 'h-full' : ''} ${className}`.trim()}
       style={{ ...(ratio != null ? { aspectRatio: ratio } : null), background: bg }}
     >
-      {children}
+      {fade ? withFade(children) : children}
       {/* OVER the artwork, and inert — a hairline that must not eat the click
         * the card above it is listening for. */}
-      {ring && <div className={`pointer-events-none absolute inset-0 border border-fg-08 ${round}`} />}
+      {ring && <div className={`kol-media-ring pointer-events-none absolute inset-0 border border-fg-08 ${round}`} />}
     </div>
   )
 }

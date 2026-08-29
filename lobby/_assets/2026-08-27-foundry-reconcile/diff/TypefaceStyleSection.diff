@@ -1,0 +1,61 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/TypefaceStyleSection.jsx	2026-07-28 19:49:29.361561089 +0000
++++ src/components/sections/foundry/TypefaceStyleSection.jsx	2026-08-27 01:46:01.884033636 +0000
+@@ -20,13 +20,13 @@
+  * depended on the consumer's Tailwind scan).
+  */
+ function StyleCard({ label, weight, width, italic, isActive, onHover, onClick, fontFamily }) {
+-  const textCls = `transition-opacity duration-200 ${isActive ? 'opacity-100' : 'opacity-50'}`
++  const textCls = `text-xl md:text-3xl leading-none transition-opacity duration-200 ${isActive ? 'opacity-100' : 'opacity-50'}`
+   return (
+     <div
+       onMouseEnter={onHover}
+       onClick={onClick}
+       className={`w-full flex justify-between p-4 rounded cursor-pointer border transition-colors duration-200 ${
+-        isActive ? 'border-fg-24' : 'border-fg-08 hover:border-fg-24'
++        isActive ? 'border-fg-24 bg-fg-02' : 'border-fg-08 hover:border-fg-24 hover:bg-fg-02'
+       }`}
+       style={{ height: 120, minHeight: 120 }}
+     >
+@@ -125,26 +125,26 @@
+ 
+   return (
+     <section className="w-full py-12 lg:py-16">
+-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
++      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
+         <SpecimenSectionHeader
+           selectedStyle={selectedStyleVariant}
+           onStyleChange={handleStyleVariantChange}
+           styleOptions={styleOptions || undefined}
+           showDropdown={showDropdown}
+-          badgeText={badgeText}
+-          icon="type"
+-          size="sm"
++          label="Styles"
++          icon="italic-a"
++          size="md"
+         />
+ 
+-        <div className="flex flex-row gap-4 md:gap-6 lg:gap-8 items-start w-full">
++        <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 items-start w-full">
+           {/* Left: sticky inverted preview panel */}
+-          <div className="w-1/2 aspect-[4/3] p-6 md:p-12 transition-colors duration-300 sticky top-24 bg-fg-80 rounded">
++          <div className="w-full md:w-[65%] aspect-[5/4] p-6 md:p-12 transition-colors duration-300 sticky top-24 bg-oq-96 text-auto-inverse rounded">
+             <div
+               className="text-center transition-colors duration-300 w-full h-full flex flex-col justify-center items-center gap-2"
+               style={previewStyle}
+             >
+               {sampleLines.map((line, i) => (
+-                <div key={i} className="text-3xl md:text-5xl lg:text-6xl leading-none">
++                <div key={i} className="text-6xl md:text-8xl lg:text-[128px] leading-none">
+                   {line}
+                 </div>
+               ))}
+@@ -152,7 +152,7 @@
+           </div>
+ 
+           {/* Right: styles list */}
+-          <div className="w-1/2 flex flex-col gap-3">
++          <div className="w-full md:w-[35%] flex flex-col gap-3">
+             {activeList.map((style, index) => (
+               <StyleCard
+                 key={`${style.label}-${index}`}

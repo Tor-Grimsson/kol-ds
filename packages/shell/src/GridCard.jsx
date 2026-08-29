@@ -1,4 +1,10 @@
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentCard variant="catalog" (row: ContentRow variant="catalog")` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * GridCard — A4-ratio card for catalog grids (monitor's full cut: expanded
  * 2×2 mode + previewFit). Preview clipped on top, label plate at bottom;
  * `variant="list"` renders the compact 36px row.

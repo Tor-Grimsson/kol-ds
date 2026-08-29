@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 371 across 87 files in 11 apps
-- **Weighted inbound:** 286★ across 87 edges — 25×4★ · 62×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-monitor, kol-website
+- **Real-world usages found:** 361 across 81 files in 8 apps
+- **Weighted inbound:** 268★ across 81 edges — 25×4★ · 56×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 7 | `kol-apps/kol-labs-single/src/pages/penrose/PenrosePage.jsx` |
 | 4 | 5 | `kol-apps/kol-labs-single/src/pages/math/fields/FieldsEditor.jsx` |
 | 4 | 4 | `kol-apps/kol-client-ac/src/editor/color/StrokePanel.jsx` |
-| … | | _75 more_ |
+| … | | _69 more_ |
 
 ## Import
 

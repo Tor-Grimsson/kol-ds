@@ -194,7 +194,7 @@ export default function PrintsStore() {
         <DiagonalMarqueeRiver items={PRINTS} renderItem={(print) => <PrintCard print={print} onClick={() => setSelected(print)} />} />
         <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-4 px-6 pt-24 text-center mix-blend-difference" style={{ color: '#ffffff' }}>
           <p className="kol-helper-uc-xs tracking-[6px]">Kolkrabbi</p>
-          <h1 className="kol-display-lg">Prints</h1>
+          <h1 className="kol-sans-display-01 uppercase">Prints</h1>
           <p className="kol-mono-xs opacity-60">Archival editions — click a print to open it below</p>
         </div>
       </div>

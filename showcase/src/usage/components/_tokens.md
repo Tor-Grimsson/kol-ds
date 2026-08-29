@@ -29,7 +29,7 @@ never edge to each other — the extractor reads only what a file *uses*.
 | 126 | 71 | `kol-control` | chrome | `packages/theme/kol-components-atoms.css` |
 | 118 | 95 | `--kol-fg-16` | color | `packages/theme/kol-color.css` |
 | 118 | 79 | `--kol-surface-inverse` | chrome | `packages/theme/kol-base-tokens.css` |
-| 117 | 78 | `--kol-color-absolute-black` | color | `packages/theme/kol-base-tokens.css` |
+| 117 | 78 | `--kol-color-ab-black` | color | `packages/theme/kol-base-tokens.css` |
 | 116 | 78 | `--kol-surface-tertiary` | chrome | `packages/theme/kol-base-tokens.css` |
 | 113 | 99 | `--kol-fg-04` | color | `packages/theme/kol-color.css` |
 | 112 | 95 | `--kol-fg-64` | color | `packages/theme/kol-color.css` |
@@ -38,7 +38,7 @@ never edge to each other — the extractor reads only what a file *uses*.
 | 100 | 62 | `--kol-surface-on-secondary` | chrome | `packages/theme/kol-base-tokens.css` |
 | 97 | 82 | `--kol-fg-80` | color | `packages/theme/kol-color.css` |
 | 85 | 75 | `--kol-accent-on-primary` | color | `packages/theme/kol-color.css` |
-| 84 | 59 | `--kol-color-absolute-white` | color | `packages/theme/kol-base-tokens.css` |
+| 84 | 59 | `--kol-color-ab-white` | color | `packages/theme/kol-base-tokens.css` |
 | 82 | 57 | `--kol-radius-full` | chrome | `packages/theme/kol-theme.css` |
 | 81 | 79 | `kol-mono-16` | type | `packages/theme/kol-type-mono-classes.css` |
 | 78 | 69 | `kol-btn-primary` | chrome | `packages/theme/kol-components-atoms.css` |

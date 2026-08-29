@@ -34,7 +34,7 @@
  *     [aria-disabled="true"] /
  *     :disabled                    auto opacity-50 + pointer-events-none
  *
- * Single visible-border tone (--kol-oq-16, opaque — chrome law). No hover/focus escalation,
+ * Single visible-border tone (--kol-oq-08, opaque — user ruling 2026-08-26; was oq-16). No hover/focus escalation,
  * no `--bordered` modifier. When you want a ghost field to render
  * persistently visible (e.g. "is-edited" indicator), switch the variant
  * to `--outline` — same visual, clearer semantic.
@@ -71,7 +71,7 @@
   /* DEPRECATED (2026-07-08 chrome law) — ghost folded into outline; Input
    * aliases variant="ghost" → outline. Rule kept only for stray direct
    * class consumers; do not use in new code. Opaque 4% black on surface. */
-  background-color: color-mix(in srgb, var(--kol-color-absolute-black) 4%, var(--kol-surface-primary));
+  background-color: color-mix(in srgb, var(--kol-color-ab-black) 4%, var(--kol-surface-primary));
   color: var(--kol-fg-meta);
 }
 .kol-control--ghost:hover,
@@ -83,7 +83,8 @@
 .kol-control--outline {
   background-color: transparent;
   color: var(--kol-surface-on-primary);
-  border-color: var(--kol-oq-16);
+  /* oq-08 — the one outline border (user ruling 2026-08-26); was oq-16 */
+  border-color: var(--kol-oq-08);
 }
 
 /* Textarea modifier — flips the inline-flex shell to block so a multi-line
@@ -147,11 +148,13 @@
  * Anatomy: fixed dim backdrop → full-bleed sheet → absolute corner close.
  * ═══════════════════════════════════════════════════════════════ */
 
+/* FLAT scrim (ColumnBrowser round, user 2026-08-27): the 55% black wash read as a
+ * halo around the image in the lightbox — the backdrop is the surface, no wash. */
 .kol-overlay {
   position: fixed;
   inset: 0;
-  z-index: 100;
-  background: color-mix(in srgb, var(--kol-color-absolute-black) 55%, transparent);
+  z-index: var(--kol-z-modal, 100); /* the modal tier — the overlay contract (EditorOverlaysOnFullscreenOverlay, 2026-08-27) */
+  background: var(--kol-surface-primary);
   display: grid;
   place-items: center;
   overflow-y: auto;
@@ -240,7 +243,7 @@
   border: 1px solid transparent;
 }
 @media (hover: hover) {
-  .kol-btn-primary:not(.kol-btn-animate):hover {
+  .kol-btn-primary:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-08);
     color: var(--kol-surface-on-primary);
   }
@@ -253,7 +256,7 @@
   font-weight: 500;
 }
 @media (hover: hover) {
-  .kol-btn-secondary:not(.kol-btn-animate):hover {
+  .kol-btn-secondary:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-inverse-40);
     color: var(--kol-surface-primary);
     border-color: transparent;
@@ -267,7 +270,7 @@
   font-weight: 500;
 }
 @media (hover: hover) {
-  .kol-btn-accent:not(.kol-btn-animate):hover {
+  .kol-btn-accent:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-accent-primary-strong);
     color: var(--kol-accent-on-primary);
   }
@@ -276,10 +279,14 @@
 .kol-btn-outline {
   background: transparent;
   color: var(--kol-surface-on-primary);
-  border: 1px solid var(--kol-oq-16);
+  /* ONE outline border across the controls (user ruling 2026-08-26): OPAQUE
+   * 8% — the system's hairline. oq-16 read heavy beside the segmented
+   * toggle's fg-04, and fg is out: a translucent border doubles where two
+   * controls touch. Button outline · .kol-control--outline · .kol-seg agree. */
+  border: 1px solid var(--kol-oq-08);
 }
 @media (hover: hover) {
-  .kol-btn-outline:not(.kol-btn-animate):hover {
+  .kol-btn-outline:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-02);
     border-color: color-mix(in srgb, var(--kol-surface-on-primary) 25%, var(--kol-surface-primary));
     color: var(--kol-surface-on-primary);
@@ -292,7 +299,7 @@
   border: 1px solid transparent;
 }
 @media (hover: hover) {
-  .kol-btn-ghost:not(.kol-btn-animate):hover {
+  .kol-btn-ghost:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-04);
     color: var(--kol-surface-on-primary);
   }
@@ -311,7 +318,7 @@
   border: 1px solid transparent;
 }
 @media (hover: hover) {
-  .kol-btn-nav:not(.kol-btn-animate):hover {
+  .kol-btn-nav:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-04);
     color: var(--kol-surface-on-primary);
   }
@@ -336,7 +343,7 @@
   border: 1px solid transparent;
 }
 @media (hover: hover) {
-  .kol-btn-grey:not(.kol-btn-animate):hover {
+  .kol-btn-grey:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: var(--kol-oq-16);
     color: var(--kol-surface-on-primary);
   }
@@ -348,14 +355,14 @@
  * (error red carries it in both themes). */
 .kol-btn-danger {
   background: var(--ui-error);
-  color: var(--kol-color-absolute-white);
+  color: var(--kol-color-ab-white);
   border: 1px solid transparent;
   font-weight: 500;
 }
 @media (hover: hover) {
-  .kol-btn-danger:not(.kol-btn-animate):hover {
+  .kol-btn-danger:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
     background-color: color-mix(in srgb, var(--ui-error) 80%, var(--kol-surface-primary));
-    color: var(--kol-color-absolute-white);
+    color: var(--kol-color-ab-white);
   }
 }
 
@@ -365,13 +372,19 @@
 
 /* Press feedback — one stop past hover (2026-07-08 button-states spec).
  * Outside the hover guard: :active fires on touch too. */
-.kol-btn-primary:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-16); }
-.kol-btn-secondary:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-inverse-48); color: var(--kol-surface-primary); }
-.kol-btn-accent:not(.kol-btn-animate):not(:disabled):active { background-color: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-primary)); }
-.kol-btn-outline:not(.kol-btn-animate):not(:disabled):active,
-.kol-btn-ghost:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-08); }
-.kol-btn-danger:not(.kol-btn-animate):not(:disabled):active { background-color: color-mix(in srgb, var(--ui-error) 70%, var(--kol-surface-primary)); }
-.kol-btn-grey:not(.kol-btn-animate):not(:disabled):active { background-color: var(--kol-oq-24); }
+/* NO HOVER, NO PRESS ON A DROPDOWN TRIGGER (user ruling 2026-08-28). Every
+ * variant excludes `.kol-dd-trigger` at the SOURCE. It used to be cancelled
+ * downstream — kol-components-molecules re-stated each variant's rest colours
+ * on :hover — and that restatement was specificity (0,4,0) against the sunken
+ * tone's (0,2,0), so hovering a SUNKEN trigger repainted it in the untoned
+ * fill: a light box beside two icon controls that stayed dark. */
+.kol-btn-primary:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-16); }
+.kol-btn-secondary:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-inverse-48); color: var(--kol-surface-primary); }
+.kol-btn-accent:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-primary)); }
+.kol-btn-outline:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active,
+.kol-btn-ghost:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-08); }
+.kol-btn-danger:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: color-mix(in srgb, var(--ui-error) 70%, var(--kol-surface-primary)); }
+.kol-btn-grey:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-24); }
 
 .kol-btn:disabled,
 .kol-btn[disabled] {
@@ -452,7 +465,7 @@
  *
  * Custom-shape control (not shell-based — slidey indicator geometry).
  * Default + plain variants. ON state inverts: pill bg
- * absolute-white, indicator absolute-black (theme-invariant).
+ * ab-white, indicator ab-black (theme-invariant).
  * ═══════════════════════════════════════════════════════════════ */
 
 /* Toggle Switch — atoms/ToggleSwitch.jsx (2026-07-08 chrome law rewrite).
@@ -502,7 +515,7 @@
 }
 
 .toggle-switch--primary { background-color: var(--kol-surface-secondary); }
-.toggle-switch--outline { border-color: var(--kol-oq-16); }
+.toggle-switch--outline { border-color: var(--kol-oq-08); }
 
 /* shells take button padding; bare stays padding 0 */
 .toggle-switch--primary.toggle-switch--sm, .toggle-switch--outline.toggle-switch--sm { padding: 4px 12px; }
@@ -533,6 +546,14 @@
 }
 
 /* track scales with size */
+/* disabled (SettingsPanel, 2026-08-26): the switch had no disabled treatment
+ * at all — a control that cannot act in this context read exactly like one
+ * that can. Same pair .kol-control:disabled wears. */
+.toggle-switch:disabled {
+  opacity: var(--kol-opacity-disabled);
+  cursor: not-allowed;
+}
+
 .toggle-switch--sm .toggle-switch-indicator { width: 16px; height: 10px; }
 .toggle-switch--sm .toggle-switch-indicator::after { width: 6px; height: 6px; }
 .toggle-switch--lg .toggle-switch-indicator { width: 24px; height: 14px; }
@@ -554,8 +575,8 @@
 /* ═══════════════════════════════════════════════════════════════
  * Toggle Checkbox — atoms/ToggleCheckbox.jsx
  *
- * Custom-shape control. Active state inverts: box bg absolute-white,
- * no border, check stroke absolute-black (theme-invariant).
+ * Custom-shape control. Active state inverts: box bg ab-white,
+ * no border, check stroke ab-black (theme-invariant).
  * ═══════════════════════════════════════════════════════════════ */
 
 .toggle-checkbox {
@@ -585,18 +606,30 @@
 .toggle-checkbox-indicator svg {
   width: 10px;
   height: 8px;
-  stroke: var(--kol-color-absolute-black);
+  stroke: var(--kol-color-ab-black);
   opacity: 0;
   transition: opacity var(--kol-transition-base);
 }
 
 .toggle-checkbox.is-active .toggle-checkbox-indicator {
-  background-color: var(--kol-color-absolute-white);
+  background-color: var(--kol-color-ab-white);
   border-color: transparent;
 }
 
 .toggle-checkbox.is-active .toggle-checkbox-indicator svg {
   opacity: 1;
+}
+
+/* ON MEDIA (ContentFiltersCollection, kol-r2b2 2026-08-27): a hairline box
+ * over a photo nearly vanishes unchecked — the same reason .kol-media-control
+ * carries its own fill. The unchecked box takes that plate; checked is
+ * unchanged (white plate, black check). */
+.toggle-checkbox--media .toggle-checkbox-indicator {
+  background-color: var(--kol-oq-12);
+  border-color: transparent;
+}
+.toggle-checkbox--media.is-active .toggle-checkbox-indicator {
+  background-color: var(--kol-color-ab-white);
 }
 
 
@@ -1083,7 +1116,7 @@ a.kol-icon-frame {
 .kol-icon-frame-outline {
   background: transparent;
   color: var(--kol-surface-on-primary);
-  border: 1px solid var(--kol-oq-16);
+  border: 1px solid var(--kol-oq-08);
 }
 .kol-icon-frame-ghost {
   background: transparent;
@@ -1102,7 +1135,7 @@ a.kol-icon-frame {
  * legible over arbitrary pixels, and no Button variant covers it. Values are
  * MediaCard's, which is the instance the doc names. */
 .kol-icon-frame-plate {
-  background: var(--kol-fg-absolute-12, rgba(0, 0, 0, 0.4));
+  background: var(--kol-fg-ab-12, rgba(0, 0, 0, 0.4));
   backdrop-filter: blur(4px);
   color: var(--kol-surface-on-primary);
 }
@@ -1114,9 +1147,29 @@ a.kol-icon-frame {
 }
 .kol-icon-frame-danger {
   background: var(--ui-error);
-  color: var(--kol-color-absolute-white);
+  color: var(--kol-color-ab-white);
   border: 1px solid transparent;
 }
+
+/* PlayDisc — the Finder play/pause disc on a media tile (PlayDiscAndVideoBar,
+ * kol-r2b2 2026-08-27): a round `IconFrame secondary lg radius="full"`, hidden
+ * at rest, shown on hover of the tile (`.kol-media-tile`) or on focus, over
+ * full-bleed artwork. Declared AFTER the variants so it wins in-layer — the
+ * consumer no longer restates bg-fg-inverse-64 / border-fg-96 beside the
+ * variant. Absolute colours: it sits on artwork, not on the theme. NO
+ * backdrop-filter — it flips the tile onto a composited layer on hover and the
+ * artwork's saturation jumps (Chrome). */
+.kol-play-disc {
+  background-color: color-mix(in srgb, var(--kol-surface-on-inverse) 64%, transparent);
+  color: var(--kol-color-ab-white);
+  border: 2px solid color-mix(in srgb, var(--kol-surface-on-primary) 96%, transparent);
+  box-shadow: 0 0 4px 3.5px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity var(--kol-transition-base);
+}
+.kol-play-disc svg { color: inherit; }
+.kol-media-tile:hover .kol-play-disc,
+.kol-play-disc:focus-visible { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════════════════
  * ThemeToggle — .kol-theme-toggle
@@ -1164,25 +1217,3 @@ a.kol-icon-frame {
   padding: 0;
 }
 
-/* The ROLL mechanics — .kol-roll (ComponentTailwindSourceTrap, 2026-08-12).
- * These were Tailwind utilities emitted in ThemeToggle's JSX (overflow-hidden,
- * transition-transform, duration-500, ease-in-out) — and Tailwind never scans
- * node_modules, so any consumer without the @source lines got a SILENTLY
- * static glyph: visible, clickable, no travel, no coin-roll, no error.
- * A component's own moving parts live HERE, in the CSS it ships — the
- * consumer's scanner owes it nothing. Widths/transforms stay inline in JSX
- * (they are per-render geometry, not chrome). */
-.kol-roll {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-}
-.kol-roll-strip {
-  display: flex;
-  transition: transform 500ms ease-in-out;
-}
-.kol-roll-slot {
-  display: inline-flex;
-  line-height: 0;
-  transition: transform 500ms ease-in-out;
-}

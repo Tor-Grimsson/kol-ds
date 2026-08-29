@@ -22,6 +22,16 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * @param {Function} props.renderItem — (filteredItems, viewMode, layout) => ReactNode
  * @param {Array} props.viewModeOptions — optional view mode options for the view strip
  * @param {string} props.defaultViewMode — default view mode (falls back to the FIRST option)
+ * @param {string} props.layout — controlled LIST/GRID value (kol-r2b2 2026-08-27: a consumer that persists
+ *   layout per bucket needs the strip's value back; `defaultLayout` alone kept it internal)
+ * @param {Function} props.onLayoutChange — (layout) => void, fires on every strip click
+ * @param {ReactNode} props.leadingActions — the LEFT half of the below-divider row, beside the
+ *   LIST/GRID strip (kol-r2b2 2026-08-27: the selection bar lives there, not on a row of its own)
+ * @param {ReactNode} props.belowActions — the RIGHT half of the below-divider row, beside the count
+ *   (kol-r2b2 2026-08-27: the sort group, once SELECT/FLAT moved up into the header strip)
+ * @param {ReactNode} props.trailingActions — the header's RIGHT slot, where the view strip sits
+ *   (kol-r2b2 2026-08-27: a consumer's own controls — sort, flat, select — belong there;
+ *   `headerActions` is the left group beside search and was never that)
  * @param {Function} props.onFilterChange — optional callback when filters change
  * @param {Array} props.mutuallyExclusiveFilters — filter keys that should be mutually exclusive
  * @param {Array} props.customFilterKeys — filter keys handled by renderItem, not by ContentFilters
@@ -30,8 +40,13 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * Look seams — all default to the shipped values, pass nothing and nothing changes:
  * @param {string}  props.titleClassName      — header title type/ink
  * @param {boolean} props.titleUppercase      — cases the title (default false)
- * @param {string}  props.labelClassName      — filter-group label type/ink
+ * @param {string}  props.labelClassName      — filter-group label type/ink (default `kol-eyebrow text-fg-96`)
  * @param {boolean} props.labelUppercase      — cases the group label (default true)
+ * groups: `{ label, key, values, stack?, className?, wrapClassName? }` — THE FIRST GROUP IS ONE CATALOG COLUMN
+ * WIDE (`(row − 120px) / 6`, the `1fr` of `repeat(6, 1fr)` gap 24 — a fraction, never a px; `.kol-filters-first`,
+ * kol-theme ≥0.73.0), EVERY GROUP AFTER IT FLOWS (user law 2026-08-27, by position, never by chip count —
+ * the hug's width overruled the same day: "nope not hug, fix a size"); `stack` is the explicit
+ * override; `className` / `wrapClassName` are per-group seams
  * @param {string}  props.tagVariant          — filter chip variant ('primary' grey fill)
  * @param {string}  props.tagSize             — filter chip size
  * @param {string}  props.tagActiveClassName  — chip ink, selected
@@ -41,8 +56,11 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * @param {string}  props.stripActiveClassName — strip ink, selected (both strips)
  * @param {string}  props.stripRestClassName  — strip ink, unselected (both strips)
  * @param {string}  props.countClassName      — the "N of N" type/ink
+ * @param {string}  props.tone                — 'default' | 'inverse' — forwarded to the search field (ControlToneInverse,
+ *                                              2026-08-27): a page on a wash sets its header row's tone in one place
  */
 const ContentFilters = ({
+  tone = 'default',
   items,
   title,
   totalCount,
@@ -60,6 +78,8 @@ const ContentFilters = ({
   defaultViewMode,
   layoutOptions,
   defaultLayout,
+  layout: layoutProp,
+  onLayoutChange,
   /* WHERE the LIST/GRID strip sits — the two arrangements kol-monitor and
    * kol-website each settled on, made interchangeable (user ruling 2026-08-15).
    *
@@ -75,6 +95,9 @@ const ContentFilters = ({
   customFilterKeys = [],
   searchKeys = ['label', 'name', 'title', 'type'],
   headerActions,
+  trailingActions,
+  leadingActions,
+  belowActions,
   showCountOnlyWhenFiltering = false,
   iconComponent,
   className = '',
@@ -87,7 +110,10 @@ const ContentFilters = ({
    * titles wrap can move to `kol-mono-14` without losing the casing. */
   titleClassName = 'kol-helper-14',
   titleUppercase = true,
-  labelClassName = 'kol-helper-12 text-fg-96',
+  /* the category label is the EYEBROW role (ContentFiltersEqualColumns, what stood —
+   * kol-fxr 2026-08-27: every section / category label in the app tier is
+   * kol-eyebrow; the role carries the uppercase) */
+  labelClassName = 'kol-eyebrow text-fg-96',
   labelUppercase = true,
   tagVariant = 'primary',
   tagSize = 'sm',
@@ -115,7 +141,13 @@ const ContentFilters = ({
   const [isExpanded, setIsExpanded] = useState(false)
   const [internalViewMode, setInternalViewMode] = useState(defaultViewMode ?? viewModeOptions?.[0]?.value)
   const viewMode = viewModeProp !== undefined ? viewModeProp : internalViewMode
-  const [layout, setLayout] = useState(defaultLayout ?? layoutOptions?.[0]?.value ?? 'grid')
+  /* Controlled when `layout` is passed, internal otherwise — the same pair viewMode uses. */
+  const [internalLayout, setInternalLayout] = useState(defaultLayout ?? layoutOptions?.[0]?.value ?? 'grid')
+  const layout = layoutProp !== undefined ? layoutProp : internalLayout
+  const setLayout = (next) => {
+    setInternalLayout(next)
+    onLayoutChange?.(next)
+  }
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
 
@@ -207,8 +239,10 @@ const ContentFilters = ({
       {layoutOptions.map((opt) => (
         <span
           key={opt.value}
-          onClick={() => setLayout(opt.value)}
-          className={`${layoutClassName} cursor-pointer select-none ${layout === opt.value ? stripActiveClassName : stripRestClassName}`}
+          onClick={opt.onClick ?? (() => setLayout(opt.value))}
+          aria-pressed={opt.active !== undefined ? !!opt.active : undefined}
+          title={opt.title}
+          className={`${layoutClassName} cursor-pointer select-none ${(opt.active ?? layout === opt.value) ? stripActiveClassName : stripRestClassName}`}
           style={{ letterSpacing: 1 }}
         >
           {opt.label}
@@ -217,8 +251,23 @@ const ContentFilters = ({
     </div>
   ) : null
 
-  const renderFilterGroup = (group) => (
-    <div key={group.key} className={`flex flex-col gap-3 ${group.stack ? 'shrink-0' : 'min-w-0 flex-1'}`}>
+  const renderFilterGroup = (group, index = 0) => {
+    /* THE LAW (user ruling 2026-08-27, said "for the 10th time" — ContentFiltersFirstGroupHugs,
+     * its WIDTH overruled the same day — ContentFiltersFirstGroupFixedWidth, kol-monitor: "nope
+     * not hug, fix a size … if columns, maybe just use one?"): THE FIRST FILTER GROUP IS ONE
+     * CATALOG COLUMN WIDE — `.kol-filters-first` (kol-theme): `(100cqw − 120px) / 6`, the `1fr`
+     * of the catalog's `repeat(6, 1fr)` gap 24, measured on the header row as a container so
+     * the count/strip beside the groups never narrows it. It sits over the first card; EVERY
+     * GROUP AFTER IT FLOWS across the rest of the row, starting over the second. By POSITION,
+     * never by chip count. A page without a 6-column catalog gets the same fraction of its row.
+     * Not a hug (0.104.3 — the column was 78px on one surface and 92 on the next), not equal
+     * columns (0.104.1), not "short groups stack" (0.101). `stack` stays the explicit override
+     * (`stack: false` on the first makes it flow); `group.className` still wins on width — the
+     * rule sits in the components layer. */
+    const stacked = group.stack ?? index === 0
+    const first = index === 0 && stacked
+    return (
+    <div key={group.key} className={`flex flex-col gap-3 ${first ? 'kol-filters-first' : stacked ? 'shrink-0' : 'min-w-0 flex-1'} ${group.className ?? ''}`.trim()}>
       {/* THE CATEGORY LABEL IS THE ACTIVE INK — `kol-helper-12` at `text-fg-96`,
         * the same full opacity a SELECTED layout item wears (user ruling
         * 2026-08-15: "TAGS and other categories are ACTIVE state full opacity").
@@ -229,10 +278,12 @@ const ContentFilters = ({
         * never what anyone looked at. No inline letter-spacing: the helper ramp
         * carries its own, and the override the fork added was not in the
         * rendered path either. */}
-      <h4 className={labelClassName} style={labelUppercase ? { textTransform: 'uppercase' } : undefined}>
+      <h4 className={labelClassName} style={labelUppercase && !/\bkol-eyebrow\b/.test(labelClassName) ? { textTransform: 'uppercase' } : undefined}>
         {group.label}
       </h4>
-      <div className={group.stack ? 'flex flex-col items-start gap-2' : 'flex flex-wrap gap-2'}>
+      {/* the fluid group keeps 48px of room on its right (it ran flush to the
+        * panel's edge); `group.wrapClassName` is the per-group seam */}
+      <div className={`${stacked ? 'flex flex-col items-start gap-2' : 'flex flex-wrap gap-2 pr-12'} ${group.wrapClassName ?? ''}`.trim()}>
         {group.values.map((value) => (
           <Tag
             key={value}
@@ -249,6 +300,7 @@ const ContentFilters = ({
       </div>
     </div>
   )
+  }
 
   return (
     /* minHeight 0 on both this root and the body below: without it a flex
@@ -272,9 +324,15 @@ const ContentFilters = ({
             * nothing, so it must not wear a button's chrome. The atom exists
             * for exactly this (lobby ruling 2026-07-30 — "icons only, NO
             * states"); the span here was the same defect that promoted it. */}
-          <h2 className="flex items-center gap-2">
+          {/* the icon gap matches the specimen header — 16 from md (FoundrySpecimenSections, 2026-08-27) */}
+          <h2 className="flex items-center gap-2 md:gap-4">
             {titleIcon && <IconFrame name={titleIcon} variant="secondary" size="md" />}
-            <span className={titleClassName} style={titleUppercase ? { textTransform: 'uppercase', letterSpacing: 1 } : undefined}>{title}</span>
+            {/* `pr-4` by rule (ContentFiltersTitleGap, kol-website 2026-08-27): the
+              * divider sat 24px from the title's text edge but 32 from the
+              * icon glyphs (the frames carry 8px of air a side) and read pushed
+              * toward the title; 16px on the title side balances it. The seam
+              * `titleClassName` stays what it was. */}
+            <span className={`${titleClassName} pr-4`} style={titleUppercase ? { textTransform: 'uppercase', letterSpacing: 1 } : undefined}>{title}</span>
           </h2>
           <Divider variant="vertical" />
           <div className="flex items-center gap-1">
@@ -316,6 +374,7 @@ const ContentFilters = ({
               * shows while searching); SearchInput takes it controlled. */}
             <SearchInput
               expanding
+              tone={tone}
               open={searchOpen}
               onOpenChange={(next) => { setSearchOpen(next); if (!next) setSearchText('') }}
               value={searchText}
@@ -348,7 +407,11 @@ const ContentFilters = ({
           )}
         </div>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
+          {trailingActions}
+          {/* The divider between a consumer's trailing controls and the strip is
+            * the organism's, as it is on the left between title and icons. */}
+          {trailingActions && layoutPlacement === 'header' && layoutStrip && <Divider variant="vertical" />}
           {layoutPlacement === 'header' && layoutStrip}
           {/* RECENT / SAVED is the SAME STRIP as LIST / GRID, not a ViewToggle.
             * Read off kol-monitor's original (_tmp/2026-08-15-shell-adoption/
@@ -393,10 +456,11 @@ const ContentFilters = ({
         * while the groups and the count appear only with the panel open. Gating
         * the whole row on `isExpanded` hid the strip until you opened filters,
         * which is not a state anyone would guess at. */}
-      {(isExpanded || (layoutPlacement === 'below' && layoutStrip)) && (
-        <div className="flex items-start justify-between gap-16">
+      {(isExpanded || (layoutPlacement === 'below' && layoutStrip) || leadingActions || belowActions) && (
+        <div className="kol-filters-row flex items-start justify-between gap-16">
           <div className="flex min-w-0 flex-1 items-start gap-16">
-            {isExpanded && filterGroups.map((group) => renderFilterGroup(group))}
+            {leadingActions}
+            {isExpanded && filterGroups.map((group, i) => renderFilterGroup(group, i))}
             {isExpanded && activeFilters.size > 0 && (
               <button
                 type="button"
@@ -426,12 +490,18 @@ const ContentFilters = ({
               </span>
             )}
             {layoutPlacement === 'below' && layoutStrip}
+            {belowActions}
           </div>
         </div>
       )}
 
       <div style={{ marginTop: 'var(--kol-spacing-6)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-        {renderItem(filteredItems, viewMode, layout)}
+        {/* the items panel is a CONTAINER (WorkListingRowsAndFilters, 2026-08-27) — rows step on its width.
+          * It is ALSO the next link in the fill chain (ContentFiltersFillChain, kol-monitor 2026-08-28):
+          * `container-type: inline-size` contains only the inline axis, but the wrapper sat `flex: 0 1 auto`
+          * in the flex body above, so a `PageShell mode="fixed"` fill died here — a consumer's `renderItem`
+          * root with `flex: 1; min-height: 0` had nothing to fill and monitor's rack clipped its bottom row. */}
+        <div style={{ containerType: 'inline-size', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>{renderItem(filteredItems, viewMode, layout)}</div>
       </div>
     </div>
   )

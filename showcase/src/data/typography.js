@@ -38,7 +38,8 @@ const familyCols = [
 
 const familyRows = [
   { token: '--kol-font-family-sans',         role: 'Sans body',                       cut: 'Right Grotesk (base)' },
-  { token: '--kol-font-family-sans-narrow',  role: 'Sans top-of-scale (display, H1)', cut: 'Right Grotesk Narrow' },
+  { token: '--kol-font-family-sans-tight',   role: 'Sans display (01–04)',            cut: 'Right Grotesk Tight' },
+  { token: '--kol-font-family-sans-narrow',  role: 'Sans top headings (H1–H2, prose)', cut: 'Right Grotesk Narrow' },
   { token: '--kol-font-family-sans-compact', role: 'Sans mid (H2–H6, prose lede)',    cut: 'Right Grotesk Compact' },
   { token: '--kol-font-family-mono',         role: 'Mono everything',                 cut: 'JetBrains Mono' },
 ]
@@ -51,8 +52,10 @@ const familyRows = [
  * per-row was noise (2026-08-12 spec-table fix). Size/weight/LH/LS render
  * live off the class (LiveClassValue probe) — no literals. */
 const sansDisplayRows = [
-  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', cut: 'Narrow' },
-  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', cut: 'Narrow' },
+  { cls: '.kol-sans-display-01', tokenName: '--kol-text-display-01', cut: 'Tight' },
+  { cls: '.kol-sans-display-02', tokenName: '--kol-text-display-02', cut: 'Tight' },
+  { cls: '.kol-sans-display-03', tokenName: '--kol-text-display-03', cut: 'Tight' },
+  { cls: '.kol-sans-display-04', tokenName: '--kol-text-display-04', cut: 'Tight' },
 ]
 
 const sansHeadingRows = [

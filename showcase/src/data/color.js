@@ -150,8 +150,8 @@ const stateRows = [
  * ============================================================================ */
 
 const absoluteRows = [
-  { token: '--kol-color-absolute-black', note: 'Strict black. Sunken role (e.g., marquee bg).' },
-  { token: '--kol-color-absolute-white', note: 'Strict white. On-imagery cream button text.' },
+  { token: '--kol-color-ab-black', note: 'Strict black. Sunken role (e.g., marquee bg).' },
+  { token: '--kol-color-ab-white', note: 'Strict white. On-imagery cream button text.' },
 ]
 
 /* ============================================================================
@@ -363,7 +363,7 @@ export const UI_COLORS_SECTIONS = [
       "under Typography alias these primitives for text-only — pick those " +
       "when intent matters more than exact percentage. Two tiers ship: " +
       "standard (fg-NN, on primary surface) and inverse (fg-inverse-NN, on " +
-      "inverse surface) plus an absolute tier (fg-absolute-NN, theme-" +
+      "inverse surface) plus an absolute tier (fg-ab-NN, theme-" +
       "invariant black) for one-off use.",
     tables: [
       { caption: 'Numeric primitives — 14 stops, standard tier', columns: 'fg-primitives', rows: fgPrimitiveRows },

@@ -1,6 +1,7 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Dropdown } from '@kolkrabbi/kol-component'
 import { Divider } from '@kolkrabbi/kol-component'
+import { IconFrame } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: nests DS Dropdown + Divider (relative imports) plus kol-icons's
  * Icon (a package import the relative-import check can't see). */
@@ -29,7 +30,7 @@ import { Divider } from '@kolkrabbi/kol-component'
  * @param {string} props.label - Title text (takes precedence over badgeText).
  * @param {string} props.badgeText - Fallback title when label is unset.
  * @param {string} props.icon - KOL Icon name shown after the title; omit to hide.
- * @param {'sm'|'lg'} props.size - Title type stop (default 'lg').
+ * @param {'sm'|'md'|'lg'} props.size - Title type stop (`lg` → helper-20, else helper-16) and the dropdowns' size (`sm` → sm, else md). Default 'lg'.
  * @param {string} props.selectedStyle - Controlled value of the style/axis dropdown.
  * @param {Function} props.onStyleChange - Style dropdown change handler.
  * @param {boolean} props.showDropdown - Render the style/axis dropdown (default true).
@@ -58,24 +59,28 @@ const SpecimenSectionHeader = ({
 }) => {
   const title = label || badgeText
   // Single-line label → helper (line-height 1), per the type fault line.
-  const titleClass = size === 'sm' ? 'kol-helper-16' : 'kol-helper-20'
+  // `lg` → 20, everything else (the sections pass `md`) → 16.
+  const titleClass = size === 'lg' ? 'kol-helper-20' : 'kol-helper-16'
 
   return (
     <div className="flex flex-col gap-[13px]">
-      <div className="w-full flex flex-row justify-between items-end gap-4">
+      <div className="w-full flex flex-row flex-wrap justify-between items-end gap-4">
         {/* Left: title + optional icon */}
         <div className="flex items-center gap-3 md:gap-4">
-          <span className={titleClass}>{title}</span>
-          {icon && <Icon name={icon} size={20} />}
+          {/* the site's SectionTitle opener, rendered here (FoundryComponentsReconcile,
+            * 2026-08-27): inverse icon square + text-button shell — a heading, not a
+            * control; the shell carries the size ladder (md → helper-16, lg → 20) */}
+          {icon && <IconFrame name={icon} variant="secondary" size="md" />}
+          <span className={`kol-btn kol-btn-md ${titleClass}`}>{title}</span>
         </div>
 
         {/* Right: controlled dropdowns */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           {showWeightDropdown && weightOptions.length > 0 && (
-            <Dropdown options={weightOptions} value={selectedWeight} onChange={onWeightChange} />
+            <Dropdown options={weightOptions} value={selectedWeight} onChange={onWeightChange} size={size === "sm" ? "sm" : "md"} />
           )}
           {showDropdown && (
-            <Dropdown options={styleOptions} value={selectedStyle} onChange={onStyleChange} />
+            <Dropdown options={styleOptions} value={selectedStyle} onChange={onStyleChange} size={size === "sm" ? "sm" : "md"} />
           )}
         </div>
       </div>

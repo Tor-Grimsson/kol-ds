@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { createMediaClient } from '@kolkrabbi/kol-media-client'
-import { MediaPicker, MediaBrowser, Button } from '@kolkrabbi/kol-component'
+import { MediaLibrary, MediaPicker, Button } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Media library',
@@ -49,7 +49,9 @@ export default function MediaLibrarySet() {
       </header>
 
       <div className="min-h-0 flex-1 px-5 py-4">
-        <MediaBrowser client={client} />
+        {/* the two pages r2b2's app was cut into (MediaLibraryPages, 2026-08-27) — a read client, so no writes */}
+        <MediaLibrary variant="browse" client={client} title="KOL-MEDIA" />
+        <MediaLibrary variant="library" client={client} title="KOL-MEDIA" header={false} />
       </div>
 
       <MediaPicker

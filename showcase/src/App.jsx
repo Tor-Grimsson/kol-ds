@@ -6,6 +6,7 @@ import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
 import Icons from './pages/Icons'
+import IconsBrand from './pages/IconsBrand'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
 import Blocks from './pages/Blocks'
@@ -71,6 +72,8 @@ export default function App() {
         <Route path="/foundations/color" element={<FoundationsColor />} />
         <Route path="/foundations/typography" element={<FoundationsTypography />} />
         <Route path="/icons" element={<Icons />} />
+        {/* brand's gallery beside the showcase's, for the comparison (user 2026-08-27) */}
+        <Route path="/icons/brand" element={<IconsBrand />} />
         <Route path="/components" element={<Components />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
         <Route path="/blocks" element={<Blocks />} />

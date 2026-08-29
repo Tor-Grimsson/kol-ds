@@ -20,14 +20,18 @@ import TabStrip from './TabStrip.jsx'
  *
  * @param {Array} props.tabs - `[{ value, label, title, subtitle }]` — title/subtitle feed the header
  * @param {Function} props.renderContent - `(tabValue) => node`
+ * @param {Object}   props.header - PageHeader props spread onto the scaffold's header (`voice`, `size`, `titleClass`, `eyebrow`)
  */
-export default function SettingsScaffold({ tabs = [], defaultTab, renderContent }) {
+export default function SettingsScaffold({ tabs = [], defaultTab, renderContent, header }) {
   const [tab, setTab] = useState(defaultTab ?? tabs[0]?.value)
   const active = tabs.find((t) => t.value === tab)
 
   return (
     <PageShell mode="fixed">
-      <PageHeader title={active?.title} subtitle={active?.subtitle} />
+      {/* `header` is spread onto the PageHeader (PageHeaderMonoTitle addendum,
+        * kol-fxr 2026-08-27): a consumer could not reach this title at all —
+        * `voice="mono"`, `size`, `titleClass`, `eyebrow` all pass through */}
+      <PageHeader title={active?.title} subtitle={active?.subtitle} {...header} />
       <TabStrip
         options={tabs}
         value={tab}
@@ -47,7 +51,9 @@ export default function SettingsScaffold({ tabs = [], defaultTab, renderContent 
 export function SettingsSection({ title, children }) {
   return (
     <div>
-      <h2 className="text-fg-80 kol-helper-16" style={{ marginBottom: 16 }}>{title}</h2>
+      {/* fg-96 on helper-14 — the tab strip's role (PageHeaderMonoTitle addendum 2,
+        * kol-fxr 2026-08-27; was fg-80 / helper-16 with no seam) */}
+      <h2 className="text-fg-96 kol-helper-14" style={{ marginBottom: 16 }}>{title}</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {children}
       </div>
@@ -62,7 +68,9 @@ export function SettingsSection({ title, children }) {
 export function LabelRow({ label, align = 'baseline', children }) {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: align }}>
-      <span className="text-fg-48 kol-helper-12" style={{ width: 160, flexShrink: 0 }}>{label}</span>
+      {/* 160 wide, but it yields and truncates when the row is squeezed — the label
+        * is the prose, the value is the datum (SettingsShortcutsComboWrap, 2026-08-27) */}
+      <span className="text-fg-48 kol-helper-12 truncate" style={{ flex: '0 1 160px', minWidth: 0 }}>{label}</span>
       {typeof children === 'string'
         ? <span className="text-fg-32 kol-helper-12">{children}</span>
         : children}

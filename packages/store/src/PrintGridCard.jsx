@@ -1,6 +1,12 @@
 import { useState, useRef, useMemo } from 'react'
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentCard variant="print"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * PrintGridCard — compact storefront card for a print grid: a single portrait
  * image (√2 aspect) with a soft border and a 3D flip when `isFlipped`. On mount
  * it randomly shows the artwork or the framed print mockup (`detailImages[0]`)

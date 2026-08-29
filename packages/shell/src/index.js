@@ -4,7 +4,8 @@
  * Lifted 2026-08-14 from the hand-copied twins in kol-monitor ("Monitor") and
  * kol-mirror ("Hall of Mirrors") — AppShellSet lobby brief. App chrome, not
  * site chrome: kol-framework's SideNav/footer/heroes are the site register;
- * this is the fixed 48px rail + page scaffolds an application is built from.
+ * this is the rail (a collapsed kol-framework SideNav since 0.13.0 —
+ * RailSideNavPixelParity) + the page scaffolds an application is built from.
  *
  * Router-agnostic: no react-router dependency — pass `currentPath` +
  * `onNavigate` and render your router's element as children.
@@ -23,3 +24,8 @@ export { default as SettingsScaffold, SettingsSection, LabelRow } from './Settin
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
 export { default as ShortcutsOverlay } from './ShortcutsOverlay.jsx'
 export { default as Logomark } from './Logomark.jsx'
+// the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)
+export { default as CatalogPage } from './CatalogPage.jsx'
+export { default as SettingsShortcuts } from './SettingsShortcuts.jsx'
+export { default as SettingsLinks, SettingsColophon } from './SettingsLinks.jsx'
+export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOverlay.jsx'

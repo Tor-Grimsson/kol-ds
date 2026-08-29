@@ -12,6 +12,13 @@ import ContentText from './ContentText.jsx'
  *   canvas     the card is the ratio frame; media fills it absolutely and the
  *              text plate floats on top — typeface (details over specimen)
  *
+ * EXPANDED (2026-08-26, the GridCard retirement): a fill-card variant with
+ * `expanded` grows to a 2×2 cell — `grid-column / grid-row: span 2`, no
+ * ratio — and flips to a ROW: media on the right at 50%, `expandedContent`
+ * (the info field + button the consumer authors) on the left in a lg-padded,
+ * space-between column. Verbatim the 2×2 GridCard shipped; without it the
+ * three GridCard repos could not swap. Neighbour-hiding stays consumer-side.
+ *
  * Padding spells the TOKENS (--kol-pad-card-{sm,md,lg} = 12/16/24), never a
  * literal. Passing `pad` overrides the plate padding with one token step
  * (named `pad`, not `size` — `size` is the ruled TEXT slot). Image-only cards
@@ -33,9 +40,17 @@ const RATIOS = {
 /* ruled box values per variant, verbatim from the §3 reference cards —
  * paddings in tokens: pad-card-sm 12 · pad-card-md 16 · pad-card-lg 24 */
 const BOX = {
-  default:  { layout: 'stack', border: 'var(--kol-fg-12)', bg: 'var(--kol-fg-02)', pad: 'var(--kol-pad-card-sm)' },
-  catalog:  { layout: 'fill-card', border: 'var(--kol-fg-04)', bg: 'var(--kol-fg-04)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true, plateBg: 'var(--kol-surface-primary)' },
-  print:    { layout: 'fill-card', border: null, bg: 'var(--kol-surface-secondary)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true },
+  /* no border (ColumnBrowser round, user 2026-08-27: "I don't like the border, I feel
+   * like I've said that before" — the ListingCardThumbBorder ruling): the selected
+   * state reads from the checked ToggleCheckbox, not a fg-64 border */
+  default:  { layout: 'stack', border: null, bg: 'var(--kol-fg-02)', pad: 'var(--kol-pad-card-sm)' },
+  /* THE FRAME READS BACKWARDS (CatalogCardFrameAndZoom, kol-website 2026-08-28 — user, on a 212-tile
+   * grid: no frame at rest; the old rest value is the hover): a wall of fg-04 frames is a grid of boxes,
+   * louder than what they hold. Rest `transparent` (the 1px stays, so the hover step never relayouts),
+   * hover fg-04. Was fg-04 → fg-16 (ShellHomeSystem, 2026-08-27). */
+  catalog:  { layout: 'fill-card', border: 'transparent', bg: 'var(--kol-fg-04)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true, plateBg: 'var(--kol-surface-primary)', frameHover: 'var(--kol-fg-04)' },
+  /* flip: PrintGridCard's 3D turn on `isFlipped` → `selected` (ContentRowsAndPrintCard, 2026-08-27) */
+  print:    { layout: 'fill-card', border: null, bg: 'var(--kol-surface-secondary)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true, flip: true },
   article:  { layout: 'stack', border: null, bg: null, pad: '0', mediaGap: 'var(--kol-spacing-4)' },
   /* work is a DRAWER: image-only at rest, and on hover a light plate rises
    * over the bottom of the artwork carrying the title + meta. This is the
@@ -58,8 +73,8 @@ const HOVER = {
   catalog:  'var(--kol-surface-tertiary)',
   print:    'var(--kol-oq-04)',
   /* article and work take NO surface hover, and that is a decision not a gap:
-   * article has no surface of its own (its media frame steps its border
-   * instead), and work's whole hover IS the drawer rising. A second wash under
+   * article has no surface of its own (its media frame, when on, steps its
+   * border instead), and work's whole hover IS the drawer rising. A second wash under
    * either would be two answers to one question. */
   article:  null,
   work:     null,
@@ -68,20 +83,25 @@ const HOVER = {
 
 /* per-variant media treatment. `ring` sits OVER the artwork, `frame` UNDER it —
  * see ContentMedia. print rings because an A4 print on a light page has no edge
- * of its own; article frames because its media is a 16/9 thumbnail that rarely
- * fills its box. */
+ * of its own; article CAN frame (opt-in since 0.88.0) because its media is a
+ * 16/9 thumbnail that rarely fills its box. */
 const MEDIA = {
   /* zoom is for IMAGE-LED cards — where the artwork is the content and the
    * card is a frame around it. A catalog tile whose preview is a diagram, or
    * a default file card whose thumb is a 48px chip, gets nothing from it. */
-  print:   { ring: true, zoom: true },
+  /* fade: PrintGridCard's image fade-in + loading="lazy", carried (2026-08-27) */
+  print:   { ring: true, zoom: true, fade: true },
   work:    { zoom: true },
-  /* ListingCard's card media steps its border on hover — fg-08 → fg-16 */
-  article: { frame: true, borderHover: true, zoom: true },
+  /* frame OFF by default (ListingCardThumbBorder, user 2026-08-27: "I hate
+   * border — remove border"): the article thumb's hairline is opt-in —
+   * `frame` turns it on, and with it the fg-08 → fg-16 hover step */
+  article: { frame: false, borderHover: true, zoom: true },
 }
 
 export default function ContentCard({
   variant = 'default',
+  hero = false,
+  label,
   pad,
   media,
   ratio,
@@ -89,8 +109,15 @@ export default function ContentCard({
   frame,
   ring,
   zoom,
+  /* plateRule (CatalogCardFrameAndZoom): the plate's top hairline — default the variant's (catalog and
+   * print draw it); `false` turns it off without an `!important` in a consumer sheet */
+  plateRule,
   control,
+  controlStart,
+  reveal,
   actions,
+  expanded = false,
+  expandedContent,
   selected = false,
   onClick,
   href,
@@ -99,10 +126,31 @@ export default function ContentCard({
   ...text
 }) {
   const box = BOX[variant] ?? BOX.default
+  /* HERO (2026-08-27 — the featured card riding a page's fold; ListingCard
+   * size="hero" had no ContentCard equivalent, which is why Stack still
+   * imported it): a header row above the media — `label` left, `meta` chips
+   * right — the media on the zoom's hero rung (1.02), the text on
+   * ContentText's `hero` form (display-03 title). article only; the row form
+   * has no hero. */
+  const isHero = hero && variant === 'article'
+  const { meta: heroMeta, ...textSlots } = text
+  if (!isHero) Object.assign(textSlots, { meta: text.meta })
+  if (isHero) delete textSlots.tags
+  const metaChips = isHero && heroMeta != null ? (Array.isArray(heroMeta) ? heroMeta : [heroMeta]) : null
+  const heroHeader = isHero && (label != null || metaChips?.length) ? (
+    <div className="kol-card-hero-header flex items-center justify-between" style={{ marginBottom: 'var(--kol-spacing-4)' }}>
+      {label != null && <div className="kol-helper-14 text-fg-64">{label}</div>}
+      {metaChips?.length > 0 && (
+        <div className="flex gap-3 kol-helper-12 text-fg-48">
+          {metaChips.map((item, i) => <span key={i}>{item}</span>)}
+        </div>
+      )}
+    </div>
+  ) : null
   const r = ratio ?? RATIOS[variant]
   const padding = pad ? `var(--kol-pad-card-${pad})` : box.pad
   /* image-only cards (print) pass no text slots — the empty plate must not render */
-  const hasText = ['title', 'body', 'kicker', 'detail', 'date', 'size', 'meta', 'tags'].some((k) => text[k] != null)
+  const hasText = ['title', 'body', 'kicker', 'detail', 'date', 'size', 'meta', 'tags'].some((k) => textSlots[k] != null)
   /* `actions` sit IN THE TEXT PLATE, bottom-right (user ruling 2026-08-15:
    * *"space in text bottom right"*). Not stacked under the copy in their own
    * row — that grew the card — and not on the media, which was my call to make
@@ -120,14 +168,14 @@ export default function ContentCard({
         '--kol-plate-pad-md': box.padMd,
         padding,
         marginTop: box.layout === 'stack' ? box.mediaGap : undefined,
-        borderTop: box.plateTop ? '1px solid var(--kol-fg-04)' : undefined,
+        borderTop: (plateRule ?? box.plateTop) ? '1px solid var(--kol-fg-04)' : undefined,
         background: box.layout === 'drawer' ? 'var(--kol-surface-inverse)' : box.plateBg,
         color: box.layout === 'drawer' ? 'var(--kol-fg-inverse)' : undefined,
         position: 'relative',
         zIndex: box.layout === 'canvas' ? 1 : undefined,
       }}
     >
-      {hasText && <ContentText variant={variant} form="card" {...text} />}
+      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} {...textSlots} />}
       {/* ABSOLUTE, not a flex sibling: the plate's height moves with the title
         * and the meta, so a laid-out stack would stretch or drift with it. The
         * inset reads the SAME pad token the plate uses, so the icons sit the
@@ -155,7 +203,9 @@ export default function ContentCard({
     frame: frame ?? MEDIA[variant]?.frame ?? false,
     ring: ring ?? MEDIA[variant]?.ring ?? false,
     borderHover: MEDIA[variant]?.borderHover ?? false,
-    zoom: zoom ?? MEDIA[variant]?.zoom ?? false,
+    /* a catalog card with REAL media is image-led: it zooms (ShellHomeSystem) */
+    zoom: zoom ?? (isHero ? 'hero' : variant === 'catalog' ? media != null : MEDIA[variant]?.zoom ?? false),
+    fade: MEDIA[variant]?.fade ?? false,
   }
 
   /* `control` — the in-frame control slot (user ruling 2026-08-15). One node,
@@ -165,43 +215,78 @@ export default function ContentCard({
    * what MediaCard hardcodes as a download link plus a select checkbox, and
    * the reason its media library could not migrate onto ContentCard. */
   const controlNode = control ? <div className="kol-frame-control">{control}</div> : null
+  /* The frame's OTHER corner — top-left — for a second control (kol-r2b2
+   * 2026-08-27: the select indicator beside the download chip). Port note:
+   * becomes `.kol-frame-control--start` in kol-theme; inline until then. */
+  const controlStartNode = controlStart
+    ? <div className="kol-frame-control kol-frame-control--top-left">{controlStart}</div>
+    : null
 
 
   const body =
     box.layout === 'stack' ? (
       <>
+        {heroHeader}
         <div className="relative">
           <ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia>
           {controlNode}
+          {controlStartNode}
         </div>
         {textNode}
       </>
     ) : box.layout === 'fill-card' ? (
       <>
-        <div className="flex-1 min-w-0 relative overflow-hidden">
-          <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
+        <div className="flex-1 min-w-0 min-h-0 relative overflow-hidden" style={{ ...(expanded ? { flex: '0 0 50%' } : null), ...(box.flip ? { perspective: '1000px' } : null) }}>
+          {/* the FLIP (print): PrintGridCard's turn, verbatim — preserve-3d,
+            * 0.4s ease-out, rotateY(180deg) while `selected`; the consumer's
+            * `onClick` reads the rect off `event.currentTarget` for its
+            * FLIP-transition (the seam was always reachable) */}
+          {box.flip ? (
+            <div className="h-full w-full" style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', transition: 'transform 0.4s ease-out', transform: selected ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+              <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
+            </div>
+          ) : (
+            <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
+          )}
           {controlNode}
+          {controlStartNode}
         </div>
-        {textNode}
+        {expanded ? (
+          <div
+            className="flex flex-1 flex-col justify-between overflow-auto"
+            style={{ padding: 'var(--kol-pad-card-lg)' }}
+          >
+            {expandedContent}
+          </div>
+        ) : textNode}
       </>
     ) : box.layout === 'drawer' ? (
       <>
         <div className="relative h-full">
           <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
           {controlNode}
+          {controlStartNode}
         </div>
         {/* the plate is INVERSE and hidden until hover — `kol-card-drawer` owns
           * the reveal so the transition sits with the rest of the chrome */}
         {textNode && <div className="kol-card-drawer">{textNode}</div>}
       </>
     ) : (
-      /* canvas — media fills the frame, plate floats on top */
+      /* canvas — media fills the frame, plate floats on top. `reveal`
+       * (TypefaceCardAndRow, 2026-08-27): on hover the plate and the media
+       * fade out and the reveal node fades in — the card owns the
+       * choreography (kol-theme `.kol-card.has-reveal`), the consumer owns the
+       * node (what it says and which face it wears are never the family's). */
       <>
-        <div className="absolute" style={{ inset: 0 }}>
+        <div className="kol-card-canvas-media absolute" style={{ inset: 0 }}>
           <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
           {controlNode}
+          {controlStartNode}
         </div>
         {textNode}
+        {reveal != null && (
+          <div className="kol-card-reveal absolute inset-0 flex items-center justify-center p-8 pointer-events-none" style={{ zIndex: 2 }}>{reveal}</div>
+        )}
       </>
     )
 
@@ -223,7 +308,8 @@ export default function ContentCard({
   const hoverBg = HOVER[variant]
 
   const common = {
-    className: `kol-card group flex flex-col ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${className}`.trim(),
+    'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,
+    className: `kol-card group flex ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
       /* same reason as ContentRow: rest colours are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step
@@ -231,8 +317,14 @@ export default function ContentCard({
       '--kol-card-bg': box.bg ?? undefined,
       '--kol-card-border': box.border ? (selected ? 'var(--kol-fg-64)' : box.border) : undefined,
       '--kol-content-hover-bg': hoverBg ?? undefined,
-      aspectRatio: box.height ? undefined : (box.layout !== 'stack' ? r : undefined),
+      '--kol-content-hover-border': box.frameHover ?? undefined,
+      aspectRatio: box.height || expanded ? undefined : (box.layout !== 'stack' ? r : undefined),
       height: box.height,
+      gridColumn: expanded ? 'span 2' : undefined,
+      gridRow: expanded ? 'span 2' : undefined,
+      /* the grow/shrink between the two states rides the house curve; only a
+       * card that CAN expand carries the transition */
+      transition: expandedContent != null ? 'all 300ms var(--kol-ease-house)' : undefined,
     },
   }
 

@@ -34,7 +34,7 @@ const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
  *
  * @param {ReactNode} children   label content
  * @param {string}    text       content fallback when no children (brand SwatchControls)
- * @param {string}    variant    'primary' | 'secondary' | 'inverse'
+ * @param {string}    variant    'primary' | 'secondary' | 'inverse' · `tertiary` = secondary's fill, no outline, mono at fg-80 (2026-08-27)
  * @param {string}    size       'sm' | 'md' | 'lg' — `sm` is the default and
  *                               should stay the answer; `lg` needs a reason
  * @param {boolean}   active     selected state (filter chips)
@@ -53,7 +53,8 @@ export default function Tag({
   icon,
   onRemove,
   onClick,
-  className = ''
+  className = '',
+  ...props
 }) {
   const isInteractive = !!(onClick || onRemove)
   const Element = isInteractive ? 'button' : 'span'
@@ -66,6 +67,8 @@ export default function Tag({
     primary: 'kol-tag--primary',
     secondary: 'kol-tag--secondary',
     inverse: 'kol-tag--inverse',
+    /* secondary's fill, no outline, the mono voice at fg-80 (TagTertiary, 2026-08-27) */
+    tertiary: 'kol-tag--tertiary',
   }
 
   /* TYPE COMES FROM THE HELPER RAMP (user ruling 2026-08-01). The size classes
@@ -74,13 +77,12 @@ export default function Tag({
    * SINGLE-LINE chrome — that is exactly the kol-helper-* ramp, whose defining
    * property is `line-height: 1`. The sizes match the scale 1:1 (10/12/14), so
    * this is adopting the existing system, not restating it. */
-  const TYPE = { sm: 'kol-helper-10', md: 'kol-helper-12', lg: 'kol-helper-14' }
+  /* the type rides `.kol-tag--{size}` in kol-theme since 0.69.0 (WorkListingRowsAndFilters) */
 
   const classes = [
     'kol-tag',
     VARIANTS[variant] ?? VARIANTS.primary,
     `kol-tag--${size}`,
-    TYPE[size] ?? TYPE.sm,
     active ? 'is-active' : '',
     className
   ].filter(Boolean).join(' ')
@@ -92,6 +94,7 @@ export default function Tag({
 
   return (
     <Element
+      {...props}
       type={isInteractive ? 'button' : undefined}
       className={classes}
       onClick={onClick}

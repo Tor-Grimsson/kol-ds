@@ -18,6 +18,19 @@ export const ShellTocContext = createContext(null)
 // useLayoutEffect(() => { setFullHeight(true) ; return () => setFullHeight(false) }, [setFullHeight])
 export const ShellFullHeightContext = createContext(null)
 
+// WIDTH IS THE PAGE'S DECISION (user, 2026-08-26 — "there isnt one size fits
+// all … what I want is consistency, sometimes that is done by left align …
+// sometimes its a different method"). Three settings:
+//   'canvas' (default) — capped at --kol-content-canvas, LEFT against the nav:
+//                        doc pages, where the constant gap to the rail is the
+//                        consistency that matters, especially for narrow content
+//   'shell'            — capped at --kol-content-shell and centred: the frame rung
+//   'none'             — spans the main track: a landing page with a centred
+//                        hero, a wall that should use the room it is given
+// Usage: const setContentWidth = useContext(ShellContentWidthContext)
+// useLayoutEffect(() => { setContentWidth('none') ; return () => setContentWidth('canvas') }, [setContentWidth])
+export const ShellContentWidthContext = createContext(null)
+
 // Pages can request the right sidebar to start collapsed.
 // Usage: const setTocCollapsed = useContext(ShellTocCollapsedContext)
 // useLayoutEffect(() => { setTocCollapsed(true) ; return () => setTocCollapsed(false) }, [setTocCollapsed])
@@ -33,42 +46,39 @@ const NavColumn = ({ children }) => (
   </aside>
 )
 
-const MainColumn = ({ children, fullHeight }) => (
+const MainColumn = ({ children, fullHeight, width = 'canvas' }) => {
+  /* the map lives INSIDE MainColumn on purpose — validate:width W1 reads the
+   * cap off this block and refuses a --kol-content-* cap anywhere else */
+  const cap = {
+    canvas: 'w-full max-w-[var(--kol-content-canvas)]',
+    shell: 'w-full mx-auto max-w-[var(--kol-content-shell)]',
+    none: 'w-full',
+  }[width] ?? 'w-full max-w-[var(--kol-content-canvas)]'
+  return (
   <main
     id="main"
     className={`w-full min-w-0 h-full min-h-0 ${fullHeight ? 'overflow-hidden flex flex-col' : 'overflow-y-auto overscroll-none'}`}
     style={fullHeight ? undefined : { scrollbarGutter: 'stable' }}
   >
-    {/* THE cap lives HERE (2026-07-31), on the CONTENT — not on the grid that
-      * holds the rails. The theme's law is written about a page ("content
-      * LEFT-ANCHORED inside"), and the rails are chrome, not page. Capping the
-      * grid centred all three columns and pulled both rails inward off the
-      * viewport edge; the rails now sit flush at the chrome inset and only the
-      * main column carries a cap.
-      *
-      * It caps at CANVAS, not shell (user ruling 2026-07-31). Shell is the
-      * frame token and the middle grid track can never reach it — after both
-      * rails, gutters and inset there is ~1516 of room at a 2200 window — so a
-      * shell cap here was real code that could never fire, and every page just
-      * inherited whatever the window gave it. Canvas is the rung that binds.
-      * One decision, made once: 14 pages needed no per-page cap.
-      * `fullHeight` stays uncapped on purpose — it IS the fill-the-viewport
-      * escape hatch (iframe embeds).
-      *
-      * LEFT-ANCHORED, not centred (user ruling 2026-08-01). The capped div
-      * below carried `mx-auto`, which centres the column inside the main
-      * track — so above the canvas width the content drifted away from the
-      * rail it is supposed to line up with. The one-frame law has said
-      * "content LEFT-ANCHORED inside" since 2026-07-28 (kol-theme.css content
-      * block; docs/documentation/01-foundations/05-layout-systems.md): the
-      * FRAME centres in the viewport, the CONTENT does not centre in the
-      * frame. `validate:width` W4 asserts it now. */}
+    {/* The cap lives HERE, on the CONTENT — not on the grid that holds the
+      * rails (2026-07-31: capping the grid centred all three columns and pulled
+      * both rails off the viewport edge). WHICH cap is the page's call — see
+      * ShellContentWidthContext. The default is canvas, left against the nav:
+      * that was a call made for doc pages (2026-07-31 / 2026-08-01, narrow
+      * content keeping a constant gap to the rail) and it was written here as
+      * a law for every page — the home page's centred hero then centred on the
+      * cap instead of the track, so closing the TOC moved nothing and closing
+      * the nav moved everything. It is a default now, not a rule. Canvas stays
+      * left-anchored (never mx-auto — W4); shell is the frame rung and centres;
+      * none spans the track. `fullHeight` stays uncapped — it IS the
+      * fill-the-viewport escape hatch (iframe embeds). */}
     {fullHeight
       ? children
-      : <div className="w-full max-w-[var(--kol-content-canvas)] pt-6 md:pt-6 lg:pt-8 pb-16">{children}</div>
+      : <div className={`${cap} pt-6 md:pt-6 lg:pt-8 pb-16`}>{children}</div>
     }
   </main>
-)
+  )
+}
 
 /* `xl`, not `lg` — the grid only declares a third column at xl (gridCols
  * below). Rendering this at lg put THREE children in a TWO-column grid between
@@ -109,6 +119,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     : setLocalOpen
   const [tocContent, setTocContent] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
+  const [contentWidth, setContentWidth] = useState('canvas')
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
@@ -250,6 +261,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   return (
     <ShellTocContext.Provider value={setTocContent}>
       <ShellFullHeightContext.Provider value={setIsFullHeight}>
+        <ShellContentWidthContext.Provider value={setContentWidth}>
         <ShellTocCollapsedContext.Provider value={setTocCollapsed}>
         <div className="fixed inset-0 flex flex-col bg-surface-primary text-auto">
           <ShellHeader
@@ -311,7 +323,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                     </NavColumn>
                   )}
 
-                  <MainColumn fullHeight={isFullHeight}>
+                  <MainColumn fullHeight={isFullHeight} width={contentWidth}>
                     <div className={isFullHeight ? 'flex flex-col flex-1 min-h-0 [&>*]:flex-1 [&>*]:flex [&>*]:flex-col [&>*]:min-h-0' : ''}>
                       <Suspense fallback={<div className="flex items-center justify-center p-12 text-fg-48">Loading…</div>}>
                         <Outlet />
@@ -426,6 +438,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           )}
         </div>
         </ShellTocCollapsedContext.Provider>
+        </ShellContentWidthContext.Provider>
       </ShellFullHeightContext.Provider>
     </ShellTocContext.Provider>
   )

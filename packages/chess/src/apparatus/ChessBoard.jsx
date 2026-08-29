@@ -96,8 +96,13 @@ const ChessBoard = ({ fen, size = 'desktop', orientation = 'white', showPieces =
   const boardPixelSize = getBoardSize(size)
   const piecePixelSize = getPieceSize(size)
   const squarePixelSize = isFluid ? '100%' : `${parseInt(boardPixelSize) / 8}px`
-  const coordinatePaddingClass = size === 'mobile' ? 'p-1' : size === 'tablet' ? '!p-1.5' : 'p-2'
-  const coordinateTypographyClass = size === 'mobile' ? 'kol-helper-8' : 'kol-helper-12'
+  /* FLUID sizes its coordinates from the SQUARE, not the prop
+   * (ChessBoardFluidCoordinates, kol-chess 2026-08-26): the board is a
+   * container and `.chess-coord--fluid` rides cqw (kol-theme ≥0.58.1) — at
+   * 390 a 45px square carried desktop's 8px padding + 12px labels over the
+   * rook. The prop-driven classes stay for the fixed sizes. */
+  const coordinatePaddingClass = isFluid ? 'chess-coord--fluid' : size === 'mobile' ? 'p-1' : size === 'tablet' ? '!p-1.5' : 'p-2'
+  const coordinateTypographyClass = isFluid ? '' : size === 'mobile' ? 'kol-helper-8' : 'kol-helper-12'
   const rankIndices =
     orientation === 'white'
       ? [...Array(boardState.length).keys()]

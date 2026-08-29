@@ -1,0 +1,64 @@
+export const meta = {
+  id: "2.73.0",
+  slug: "settings-panel",
+  title: "SettingsPanel",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/components/organisms",
+    "domain/design-system",
+    "pattern/overlay",
+  ],
+  description: "A settings surface for the thing you are looking at: you change how a list looks WHILE looking at it, so it is a slide-over (or an overlay), never a route (SettingsPanel, kol-r2b2 2026-08-26 — the per-bucket display settings: kinds allow-list, structure, loading, layout).",
+  aliases: [
+    "settings-panel",
+    "display settings",
+    "drawer",
+  ],
+  reuses: [
+    "Divider 3★",
+    "Dropdown 3★",
+    "IconFrame 3★",
+    "ShellDrawer 3★",
+    "ToggleSwitch 3★",
+  ],
+}
+
+<Preview name="SettingsPanel" />
+
+## Installation
+
+<Install name="SettingsPanel" />
+
+## Usage
+
+```jsx
+import { SettingsPanel, SettingsRow, SettingsSwitch, SettingsChoice, SettingsChipRow, SettingsFooter, Section } from '@kolkrabbi/kol-component'
+
+<SettingsPanel open variant="drawer" title="Display settings" subtitle="website" intro="…" onClose={close} footer={<SettingsFooter customised onReset={reset} />}>
+  <Section label="Structure" divided>
+    <SettingsRow label="Flat" hint="Ignore folders"><SettingsSwitch label="Flat" on={flat} onChange={setFlat} /></SettingsRow>
+  </Section>
+</SettingsPanel>
+```
+
+## Behavior
+
+One anatomy — header · intro · sections · footer — in two presentations: `drawer` rides [ShellDrawer](/components/shell-drawer) (right-anchored; scrim, Escape, focus trap, scroll lock, focus return, the × control), `overlay` rides FullscreenOverlay (centred; Escape, backdrop dismiss, focus trap). Sections are the DS `Section` with `divided`. The parts: `SettingsRow` (label + hint left, control right — a grid, so a long hint wraps in its own column), `SettingsSwitch` (ToggleSwitch sm; `disabled` + `disabledHint`), `SettingsChoice` (SegmentedToggle sm; options are values or `{ value, label }`), `SettingsChipRow` (toggle chips with counts: `options` as `[{ value, label, count }]`, `selected`, `onToggle`), `SettingsFooter` (`customised` word + `onReset` ghost button). Casing is authored at the call site.
+
+## Props
+
+<Api name="SettingsPanel" rows={[
+  {"prop":"open","type":"boolean","def":"true","desc":"Mounted and shown."},
+  {"prop":"variant","type":"'drawer' | 'overlay'","def":"'drawer'","desc":"The presentation."},
+  {"prop":"width","type":"number | string","def":"380","desc":"Panel width."},
+  {"prop":"title","type":"string","def":"—","desc":"Header line 1."},
+  {"prop":"subtitle","type":"string","def":"—","desc":"Header line 2 — the context."},
+  {"prop":"intro","type":"string","def":"—","desc":"The one-line note under the header."},
+  {"prop":"onClose","type":"() => void","def":"—","desc":"× · scrim · Escape."},
+  {"prop":"footer","type":"ReactNode","def":"—","desc":"The foot slot — SettingsFooter is the default shape."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The sections — the APPROVED drawer (kol-r2b2, 2026-08-27): LabeledControlSection (the kol-eyebrow at fg-80, rowGap 1 for switch rows / 2 for dropdown rows) → SettingsRow (a LabeledControl inline: uppercase helper-10 label at 160, hint on the control title; align end for switches, fill for dropdowns) → SettingsSwitch / SettingsChoice (a full-width Dropdown) / SettingsMulti (one Dropdown of toggling entries — N of M kinds) ; SettingsFooter = Divider + reset IconFrame. The drawer has no edge and no shadow."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the panel."}
+]} />

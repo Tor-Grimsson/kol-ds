@@ -24,3 +24,5 @@ The layer everything else cites — tokens, colour, type, layout. If a component
 | [[04-layout-breakpoints\|Layout & breakpoints]] | One shell frame, three inner caps, one rhythm |
 | [[05-layout-systems\|Layout systems registry]] | Which system owns which width, and where |
 | [[06-code-surface\|Code surface]] | Every surface that renders code, in one place |
+| [[07-doc-card-sets\|Doc & card sets]] | Two theme-level type-role sets, one system |
+| [[08-motion\|Motion]] | One sheet for every keyframe and motion class |

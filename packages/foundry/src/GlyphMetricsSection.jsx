@@ -78,15 +78,19 @@ const GlyphMetricsSection = ({
 
   return (
     <section className="w-full py-12 lg:py-16">
-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
+        {/* ONE axis, ONE dropdown (FoundrySpecimenSections, 2026-08-27): the style
+          * slot is roman / italic and renders only when the face has an italic;
+          * the axis rides the weight slot alone — feeding it into both drew
+          * "Light / Light" twice on a roman-only variable face */}
         <SpecimenSectionHeader
-          selectedStyle={showDropdown ? selectedStyleVariant : showAxisDropdown ? selectedValue : undefined}
-          onStyleChange={showDropdown ? setSelectedStyleVariant : showAxisDropdown ? onValueChange : undefined}
-          showDropdown={showDropdown || (showAxisDropdown && valueOptions.length > 0)}
-          styleOptions={showDropdown ? italicOptions : valueOptions}
-          badgeText={badgeText}
-          icon="type"
-          size="sm"
+          selectedStyle={showDropdown ? selectedStyleVariant : undefined}
+          onStyleChange={showDropdown ? setSelectedStyleVariant : undefined}
+          showDropdown={showDropdown}
+          styleOptions={italicOptions}
+          label="Glyph Viewer"
+          icon="underline"
+          size="md"
           showWeightDropdown={showAxisDropdown && valueOptions.length > 0}
           weightOptions={valueOptions}
           selectedWeight={selectedValue}

@@ -18,7 +18,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-labs-monorepo/apps/chess/src/workshop/WorkshopSidebarContent.jsx` |
 | 3 | 1 | `kol-apps/kol-labs-monorepo/apps/metrics/src/workshop/WorkshopSidebarContent.jsx` |
 | 3 | 1 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/docs/DocumentationReader.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/workshop/molecules/WorkshopSidebarContent.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-15-exhibit-adoption/WorkshopSidebarContent.jsx` |
 
 ## Import
 

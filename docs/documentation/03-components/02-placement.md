@@ -60,7 +60,7 @@ The repeal (2026-08-09) re-judged all 93 kol-component files. 20 moved; the judg
 | atoms → molecules | `DocsToc` · `DropdownTagFilter` · `FullscreenOverlay` · `LabeledControl` · `QuantityInput` · `SearchInput` · `Section` · `Stepper` | Assemblies the import test couldn't see: nav-link cluster, trigger+panel+tags, scrim+sheet+close, label+control, input+buttons |
 | molecules → atoms | `ColorSwatch` · `Image` · `PaletteHarmonyWheel` · `SelectionOverlay` | Single elements the import test had promoted: a chip, an image, a wheel control, selection chrome |
 | molecules → organisms | `FramedMediaBand` · `ShellSearchOverlay` · `SpectrumControls` | Whole regions: a page band, the ⌘K search surface, the full color-picker apparatus |
-| organisms → molecules | `BentoCard` · `Carousel` · `ErrorBoundary` · `LoaderOverlay` | Not regions: a card, a scroll mechanism, a fallback panel, an overlay+curtain pair |
+| organisms → molecules | `TiltBento` · `Carousel` · `ErrorBoundary` · `LoaderOverlay` | Not regions: a card, a scroll mechanism, a fallback panel, an overlay+curtain pair |
 | organisms → atoms | `AsciiCursor` | One canvas element, however elaborate its behavior |
 
 Unmoved judgment anchors: `Button`/`Input`/`Tag`/`Popover` atoms · `Slider`/`Dropdown`/`Modal`/`FieldRow`/`ShellDrawer` molecules · `Table`/`ContentFilters`/`MediaLibrary`/`RecordManager` + the heroes/bands organisms.

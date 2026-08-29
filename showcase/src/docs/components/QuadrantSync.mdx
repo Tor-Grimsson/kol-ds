@@ -1,0 +1,101 @@
+export const meta = {
+  id: "2.82.0",
+  slug: "quadrant-sync",
+  title: "QuadrantSync",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-29",
+  tags: [
+    "domain/components",
+    "domain/components/atoms",
+    "domain/design-system",
+    "pattern/overlay",
+  ],
+  description: "Dev chrome for agreeing on which element is being discussed before anyone edits it: name a node, grid it in fractional cells, and emit one sync line both sides restate.",
+  aliases: [
+    "quadrantsync",
+    "quadrant sync",
+  ],
+}
+
+<Preview name="QuadrantSync" />
+
+## Installation
+
+<Install name="QuadrantSync" />
+
+## Usage
+
+```jsx
+import { QuadrantSync } from '@kolkrabbi/kol-component'
+
+// mark nodes that already exist — never a wrapper added for the tool
+<div data-handle="StageModuleGroup" data-source="local">…</div>
+
+<QuadrantSync initialHandle="StageModuleGroup" onSyncLine={(line) => console.log(line)} />
+```
+
+## Behavior
+
+Born from a real failure: ten messages to move one button, none of them wrong
+about CSS, all of them about different elements. The overlay closes that gap by
+making both sides name the same node before any edit.
+
+Its output is one line — `StageModuleGroup @ 1440w · e8 → h7`. If the line is
+wrong, it is corrected once instead of six messages later.
+
+**The grid goes on what the user named.** Never redirected to a child or a
+parent. The owner is reported, never substituted — a grab-handle that moves a
+whole group lives at group level, and quietly re-pointing the grid at a child
+answers a question nobody asked.
+
+A cell is a **fraction of the named element**, so `e8` means the same relative
+place at 1440w and at 760w, which a pixel offset never does. Select an element
+and resize: its span changes as the layout reflows without anyone touching a
+value.
+
+### The four questions
+
+The report banner answers, in order: **what** are we looking at (the named node,
+at this window width, with the untreated breakpoints listed) · **where** does it
+live (its chain, and its span on the owner's grid) · **who** owns it (local, or
+shipped from `@kolkrabbi/*`) · **how** do we change it meaningfully (the owner's
+layout mode, and what that mode makes reachable).
+
+A cell says *where*, never *what CSS to change*. When a requested cell is
+unreachable in the owner's mode, the report says so rather than implying a diff
+that cannot work.
+
+### Divisions and squares
+
+Divisions are set **per axis** (`16 × 4`), because equal counts on an unequal box
+give rectangles and the premise is squares. **Square** derives the second axis
+from the box you are on, so the grid starts square. It is one-shot on purpose:
+recomputing on every reflow would silently change what a coordinate means. After
+a reflow the cells stretch — expected, and the coordinates still hold.
+
+Columns are letters `a…z`, rows are numbers `1…100`, and `a1` is **top-left**
+(screen convention, not chess's bottom-left).
+
+### Dev-only
+
+`enabled` defaults to `false` when `NODE_ENV === 'production'`, so a stray import
+cannot ship an inspector to users. The chrome is viewport-fixed and sits on the
+`--kol-z-tooltip` tier; the grid layer sits on `--kol-z-nav`. It measures and
+positions over nodes and never wraps them, so grid position tracks the rendered
+layout rather than the tree.
+
+## Props
+
+<Api name="QuadrantSync" rows={[
+  {"prop":"root","type":"HTMLElement","def":"document.body","desc":"Subtree to hunt handles in; also the box the page grid draws on."},
+  {"prop":"attr","type":"string","def":"'data-handle'","desc":"Attribute naming a node. Put it on divs that already exist."},
+  {"prop":"sourceAttr","type":"string","def":"'data-source'","desc":"Attribute naming a node's origin — 'local' or an @kolkrabbi/* package."},
+  {"prop":"bands","type":"Array","def":"DEFAULT_BANDS","desc":"Breakpoint bands. The live one is read from the window, never chosen."},
+  {"prop":"defaultDivisions","type":"{ cols, rows }","def":"{ cols: 8, rows: 8 }","desc":"Starting divisions, before square is applied to the first selection."},
+  {"prop":"initialHandle","type":"string","def":"—","desc":"Handle name to select on mount."},
+  {"prop":"onSyncLine","type":"(line, parts) => void","def":"—","desc":"Fires whenever the sync line changes."},
+  {"prop":"handleColor","type":"string","def":"var(--kol-accent-primary)","desc":"Grid and outline color for the named node."},
+  {"prop":"pageColor","type":"string","def":"var(--kol-fg-40)","desc":"Grid color for the faint page reference."},
+  {"prop":"enabled","type":"boolean","def":"NODE_ENV !== 'production'","desc":"Render at all. Dev-only by default."}
+]} />

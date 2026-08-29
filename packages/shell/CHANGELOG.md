@@ -1,6 +1,5 @@
 # @kolkrabbi/kol-shell
 
-
 ## 0.6.1 — 2026-08-15
 
 - `PageHeader`'s eyebrow is **uppercase on `kol-helper-12`** — an eyebrow is
@@ -103,8 +102,8 @@ uppercased filter values by hand should stop — `.kol-tag` does the casing.
 Three publishes in one day (0.1.1 → 0.1.3) went into re-deciding how a filter value
 and a group label should look: chips, then bare strip items, then outlined pills.
 None of those is a design-system question — it is what a given app's filter bar
-should look like, and the user's ruling ended it: *"this component should not have
-problems SHIPPING props… make the fucking content filters FLEXIBLE."*
+should look like, and the user's ruling ended it: _"this component should not have
+problems SHIPPING props… make the fucking content filters FLEXIBLE."_
 
 - `renderFilterValue?: (value, isActive, toggle) => node` — renders one filter
   value. Default is the 0.1.3 strip item. A consumer wanting small outlined pills
@@ -139,7 +138,7 @@ no `text-transform` here, same as the strip items.
 ## 0.1.2 — 2026-08-15
 
 `ShellHeaderFilterRefinements` reopened by kol-monitor on the user's verdict — 0.1.1
-read the ticket's "at the divider level" as the header row *above* the divider. It is
+read the ticket's "at the divider level" as the header row _above_ the divider. It is
 the row below it. The h1 gap fix from 0.1.1 stands.
 
 - `ContentFilters` — the LIST/GRID layout strip now renders in **one row below the
@@ -156,7 +155,7 @@ the row below it. The h1 gap fix from 0.1.1 stands.
   divergent shells this package was built to end.
 
 **No auto-casing was added.** The ruling asked for values styled like `LIST`/`GRID`;
-those render uppercase because the consumer *authors* them uppercase. `text-transform`
+those render uppercase because the consumer _authors_ them uppercase. `text-transform`
 stays off per the DS law — a consumer wanting uppercase tag values authors them so.
 
 ## 0.1.1 — 2026-08-15

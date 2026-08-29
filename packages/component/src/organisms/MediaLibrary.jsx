@@ -1,12 +1,19 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import ActionButton from '../atoms/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
+import Divider from '../atoms/Divider.jsx'
+import Input from '../atoms/Input.jsx'
 import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
+import ViewToggle from '../atoms/ViewToggle.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
-import MediaCard from '../molecules/MediaCard.jsx'
-import MediaRow from '../molecules/MediaRow.jsx'
+import ContentCard from '../molecules/ContentCard.jsx'
+import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
 import MediaViewer from './MediaViewer.jsx'
+import { MediaLibraryBrowse, MediaLibraryLibrary } from './MediaLibraryPages.jsx'
+import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
 
 /**
  * MediaLibrary — a browser over an object bucket, in two views over one
@@ -21,20 +28,28 @@ import MediaViewer from './MediaViewer.jsx'
  * Same contract as kol-dashboards / kol-chess / kol-content.
  *
  * COMPOSED, NOT BUILT. Every part is an existing DS member:
- *   ContentFilters — filter groups, animated search, view toggle, N-of-M count
- *   MediaCard      — the grid tile (thumb · download chip · name · meta · actions)
- *   MediaRow       — the list row (thumb · name · date · size · actions)
+ *   ContentCard    — the grid tile, `variant="default"` (thumb · download in the
+ *                    frame corner · title · date · size-or-download · inline actions)
+ *   ContentRow     — the list row, `variant="default"` (thumb · title · date · size · actions)
+ *                    MediaCard / MediaRow retired 2026-08-26 (ContentSetRetirement);
+ *                    this was the DS's own last composition of them, swapped 2026-08-27
+ *                    onto kol-r2b2 FileList's ContentCard / ContentRow shape.
  *   MediaViewer    — the lightbox, via its `actions` slot
+ *   ContentFilters — the PICKER's chrome (search, kind filter, view toggle, N-of-M)
  *   FullscreenOverlay — the picker's scrim, dismissal and close button
- * The first pass hand-rolled a tile grid and a folder row while MediaCard and
- * MediaRow — built from this same source in the 2026-07-03 sweep — sat unused.
  *
- * NAVIGATION IS FINDER'S LIST MODEL, not click-to-enter. Folders are rows in
- * the same list with a disclosure chevron and expand IN PLACE, so the parent
- * never leaves the screen and there is no breadcrumb stacked above a divider.
- * The path bar sits at the FOOT, where Finder puts it.
+ * NAVIGATION IS CLICK-TO-ENTER + BREADCRUMB (MediaLibraryReconcile, kol-r2b2
+ * 2026-08-26). The page variant is the read-only render of kol-r2b2's
+ * `FileList` — the one the user works in on media.kolkrabbi.io — so brand
+ * `/library` and media. are ONE picture: breadcrumb on top, a stats line
+ * (level · bucket · system files hidden), folder rows that ENTER a prefix,
+ * a bare toolbar (filter · search | Flat · view · sort with direction), a
+ * 260px tile grid, and `Show N more` paging. Finder's disclose-in-place tree
+ * (2026-08-01) is DROPPED, not kept as a variant — two navigation models in
+ * one organism is the fork this ticket exists to end. The picker keeps its
+ * ContentFilters chrome and its path bar at the foot; it navigates the same way.
  *
- * Read-only by design. Upload / rename / delete stay in kol-media-admin —
+ * Read-only by design. Upload / rename / delete / select stay in kol-r2b2 —
  * write auth does not belong in a browser-shipped package.
  */
 
@@ -203,71 +218,82 @@ function pairPosters(list) {
   })
 }
 
-/**
- * Flatten the bucket's flat key list into ONE ordered row list, folders and
- * files interleaved, honouring which folders are open. The list endpoint
- * returns keys with no `prefixes` key and `?delimiter=/` changes nothing
- * (probed 2026-08-01), so the tree is derived here — this function is the
- * whole navigation feature.
- */
-function buildRows(objects, expanded, sort) {
-  const childrenOf = new Map()
-  const folders = new Set()
-
-  for (const o of objects) {
-    const dir = folderOf(o.key)
-    if (dir) {
-      /* register every ancestor so a deep key materialises its whole chain */
-      const parts = dir.slice(0, -1).split('/')
-      for (let i = 0; i < parts.length; i += 1) folders.add(`${parts.slice(0, i + 1).join('/')}/`)
-    }
-    if (!childrenOf.has(dir)) childrenOf.set(dir, [])
-    childrenOf.get(dir).push(o)
+/* ── The prefix-scoped list ────────────────────────────────────────────────
+ * The list endpoint returns keys with no `prefixes` key and `?delimiter=/`
+ * changes nothing (probed 2026-08-01), so folders are derived here from the
+ * keys under the current prefix — this function is the whole navigation. */
+function foldersUnder(list, prefix) {
+  const names = new Set()
+  for (const o of list) {
+    const rest = o.key.slice(prefix.length)
+    const i = rest.indexOf('/')
+    if (i > 0) names.add(rest.slice(0, i))
   }
+  return [...names].sort().map((name) => ({ key: `${prefix}${name}/`, label: name }))
+}
 
-  const subFoldersOf = (prefix) =>
-    [...folders].filter((f) => folderOf(f.slice(0, -1)) === prefix).sort()
+const SORT_OPTIONS = [
+  { value: 'name', label: 'Name' },
+  { value: 'date', label: 'Date' },
+  { value: 'size', label: 'Size' },
+  { value: 'kind', label: 'Kind' },
+]
 
-  const sorted = (list) => {
-    const by = {
-      name: (a, b) => a.key.localeCompare(b.key),
-      date: (a, b) => String(b.uploaded ?? '').localeCompare(String(a.uploaded ?? '')),
-      size: (a, b) => (b.size ?? 0) - (a.size ?? 0),
-      kind: (a, b) => String(a.contentType ?? '').localeCompare(String(b.contentType ?? '')),
-    }
-    return [...list].sort(by[sort] ?? by.name)
-  }
+/* Chip labels — authored here, no text-transform (the kind key is the value). */
+const KIND_LABEL = {
+  image: 'Image', video: 'Video', audio: 'Audio', text: 'Text', code: 'Code',
+  playlist: 'Playlist', font: 'Font', archive: 'Archive', other: 'Other',
+}
 
-  const rows = []
-  const walk = (prefix, depth) => {
-    for (const f of subFoldersOf(prefix)) {
-      rows.push({ type: 'folder', key: f, label: fileName(f.slice(0, -1)) + '/', depth })
-      if (expanded.has(f)) walk(f, depth + 1)
-    }
-    for (const o of sorted(childrenOf.get(prefix) ?? [])) {
-      rows.push({ type: 'file', depth, ...o, displayKey: o.displayName ?? fileName(o.key) })
-    }
-  }
-  walk('', 0)
-  return rows
+/* Sortable-header semantics (FileList): arrow-down = ascending (A→Z, oldest
+ * first, smallest first); ties fall back to the name. */
+function sortFiles(files, { by, dir }) {
+  const d = dir === 'desc' ? -1 : 1
+  const name = (a, b) => a.displayKey.localeCompare(b.displayKey)
+  const cmp = {
+    name,
+    date: (a, b) => String(a.uploaded ?? '').localeCompare(String(b.uploaded ?? '')) || name(a, b),
+    size: (a, b) => (a.size ?? 0) - (b.size ?? 0) || name(a, b),
+    kind: (a, b) => a.kind.localeCompare(b.kind) || name(a, b),
+  }[by] ?? name
+  return [...files].sort((a, b) => d * cmp(a, b))
 }
 
 /**
- * MediaLibraryProvider — the headless core: one list call, client-side tree
- * derivation, the open-folder set and the sort key.
+ * MediaLibraryProvider — the headless core: one list call, then a
+ * PREFIX-SCOPED view over it: the folders directly under the prefix, the
+ * files at that level (or the whole subtree in `flat`), the kind allow-list,
+ * the search, the sort with direction, and paging.
  *
  * @param {object} client   `{ listMedia, mediaUrl, proxied? }` — required
  * @param {string|string[]} accept  'all' (default) = everything · one kind ·
  *   or an allow-list, `['image','video']`, which is what a picker wants.
  *   Kinds: image · video · audio · text · code · playlist · font · archive ·
  *   other. Browsing never filters by default.
+ * @param {number}  pageSize     rows mounted before `Show N more` (60; 0 = all)
+ * @param {object}  defaultSort  `{ by, dir }` — `{ by: 'date', dir: 'desc' }`
+ * @param {boolean} flat         start in flat mode (every object under the prefix)
  */
-export function MediaLibraryProvider({ client, accept = 'all', children }) {
+export function MediaLibraryProvider({
+  client,
+  accept = 'all',
+  pageSize = 60,
+  defaultSort = { by: 'date', dir: 'desc' },
+  flat: initialFlat = false,
+  children,
+}) {
   const [objects, setObjects] = useState([])
-  const [expanded, setExpanded] = useState(() => new Set())
-  const [sort, setSort] = useState('name')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [prefix, setPrefix] = useState('')
+  const [flat, setFlat] = useState(initialFlat)
+  const [sort, setSortState] = useState(defaultSort)
+  const [search, setSearch] = useState('')
+  const [kinds, setKinds] = useState(() => new Set())
+  /* Paging is keyed to WHAT is listed: prefix / flat / search / kinds change →
+   * back to one page, or walking into a folder would inherit the page count
+   * from the flat view you just left. Derived, not an effect. */
+  const [paging, setPaging] = useState({ id: null, visible: 0 })
 
   useEffect(() => {
     if (!client) return undefined
@@ -283,47 +309,97 @@ export function MediaLibraryProvider({ client, accept = 'all', children }) {
     return () => { cancelled = true; controller.abort() }
   }, [client])
 
-  const toggleFolder = (key) =>
-    setExpanded((prev) => {
+  /* click an inactive field → ascending; click the active one → flip */
+  const sortBy = (by) =>
+    setSortState((s) => (s.by === by ? { by, dir: s.dir === 'asc' ? 'desc' : 'asc' } : { by, dir: 'asc' }))
+  const toggleKind = (k) =>
+    setKinds((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
+      if (next.has(k)) next.delete(k)
+      else next.add(k)
       return next
     })
 
   const value = useMemo(() => {
     const annotated = objects.map((o) => ({ ...o, kind: kindOf(o) }))
-    const systemCount = annotated.reduce((n, o) => n + (o.kind === 'system' ? 1 : 0), 0)
-
+    const scoped = prefix ? annotated.filter((o) => o.key.startsWith(prefix)) : annotated
+    const folders = foldersUnder(scoped, prefix)
+    /* level = the direct children; flat = every object under the prefix */
+    const level = flat ? scoped : scoped.filter((o) => !o.key.slice(prefix.length).includes('/'))
+    /* .DS_Store × 116 in the website bucket — dropped from the list, counted
+     * and reported: hiding them silently would be the same lie as the
+     * level-only totals were. */
+    const systemCount = level.reduce((n, o) => n + (o.kind === 'system' ? 1 : 0), 0)
     /* Fold before pairing: a poster must be matched against real image keys,
      * and resolution sets must be collapsed after that or the poster's own
      * width suffix would swallow it. */
-    const visible = foldResolutionSets(
-      pairPosters(foldHlsSegments(annotated.filter((o) => o.kind !== 'system'))),
-    )
+    const folded = foldResolutionSets(pairPosters(foldHlsSegments(level.filter((o) => o.kind !== 'system'))))
+    const files = folded
+      .filter(acceptsKind(accept))
+      .map((o) => ({ ...o, displayKey: o.displayName ?? (flat ? o.key.slice(prefix.length) : fileName(o.key)) }))
 
-    const kept = visible.filter(acceptsKind(accept))
+    const kindCounts = files.reduce((acc, o) => { acc[o.kind] = (acc[o.kind] || 0) + 1; return acc }, {})
+    const kindsPresent = Object.keys(kindCounts).sort().map((k) => ({ value: k, label: KIND_LABEL[k] ?? k, count: kindCounts[k] }))
+
+    const q = search.trim().toLowerCase()
+    const filtered = files.filter(
+      (o) => (kinds.size === 0 || kinds.has(o.kind)) && (!q || o.displayKey.toLowerCase().includes(q)),
+    )
+    const sorted = sortFiles(filtered, sort)
+
+    const page = pageSize || Infinity
+    const listId = `${prefix}|${flat}|${q}|${[...kinds].sort().join(',')}|${pageSize}`
+    const visible = paging.id === listId ? paging.visible : page
+    const shown = sorted.slice(0, visible)
+    const more = sorted.length - shown.length
+
     /* The lightbox pages images and videos; a .json in that list is a broken
-     * frame with a next-arrow. Its index space is this list, not `files`. */
-    const viewable = kept.filter((o) => o.kind === 'image' || o.kind === 'video')
+     * frame with a next-arrow. Its index space is this list, not `sorted`. */
+    const viewable = sorted.filter((o) => o.kind === 'image' || o.kind === 'video')
+
+    const bucketFiles = annotated.reduce((n, o) => n + (o.kind === 'system' ? 0 : 1), 0)
+    const bucketBytes = annotated.reduce((n, o) => n + (o.size ?? 0), 0)
 
     return {
-      objects: kept,
-      rows: buildRows(kept, expanded, sort),
-      files: kept,
-      viewable,
-      kinds: [...new Set(kept.map((o) => o.kind))].sort(),
-      systemCount,
-      expanded,
-      toggleFolder,
+      objects: files,
+      files,
+      filtered,
+      sorted,
+      shown,
+      more,
+      pageSize: page,
+      showMore: () => setPaging({ id: listId, visible: visible + page }),
+      prefix,
+      setPrefix,
+      crumbs: prefix ? prefix.replace(/\/$/, '').split('/') : [],
+      folders,
+      flat,
+      setFlat,
+      kindsPresent,
+      kinds,
+      toggleKind,
+      search,
+      setSearch,
       sort,
-      setSort,
+      sortBy,
+      stats: {
+        folders: folders.length,
+        files: filtered.length,
+        rawFiles: files.length,
+        bytes: files.reduce((n, o) => n + (o.size ?? 0), 0),
+        bucketFiles,
+        bucketBytes,
+        atRoot: !prefix,
+        systemCount,
+        filtering: kinds.size > 0 || q.length > 0,
+      },
+      viewable,
       loading,
       error,
       mediaUrl: client?.mediaUrl ?? ((key) => key),
       proxied: client?.proxied ?? ((url) => url),
     }
-  }, [objects, expanded, sort, loading, error, accept, client])
+  }, [objects, prefix, flat, sort, search, kinds, paging, pageSize, loading, error, accept, client])
 
   return <MediaLibraryContext.Provider value={value}>{children}</MediaLibraryContext.Provider>
 }
@@ -336,27 +412,12 @@ export function useMediaLibrary() {
   return ctx
 }
 
-function withProvider(node, { client, accept }) {
+function withProvider(node, { client, accept, pageSize, defaultSort, flat }) {
   if (!client) return node
-  return <MediaLibraryProvider client={client} accept={accept}>{node}</MediaLibraryProvider>
-}
-
-/* Indentation per tree depth. A rem step rather than a magic pixel, and it
- * rides the spacing scale's 1rem rung. */
-const indent = (depth) => ({ paddingInlineStart: `calc(${depth} * var(--kol-spacing-4))` })
-
-function FolderRow({ row, open, onToggle }) {
   return (
-    <li
-      className="kol-media-folder"
-      style={indent(row.depth)}
-      onClick={onToggle}
-      aria-expanded={open}
-    >
-      <Icon name={open ? 'chevron-down' : 'chevron-right'} size={14} />
-      <Icon name="folder" size={16} />
-      <span className="kol-mono-12 text-emphasis flex-1">{row.label}</span>
-    </li>
+    <MediaLibraryProvider client={client} accept={accept} pageSize={pageSize} defaultSort={defaultSort} flat={flat}>
+      {node}
+    </MediaLibraryProvider>
   )
 }
 
@@ -429,181 +490,267 @@ function Thumb({ row, mediaUrl }) {
   )
 }
 
-/* Folders, then the tiles or rows. Shared by both views — the modal shell and
- * the pick action are the ONLY differences between them. */
-function LibraryBody({ rows, viewMode, onOpen, onPick }) {
-  const { expanded, toggleFolder, mediaUrl, loading, error, viewable } = useMediaLibrary()
-  const [copied, copy] = useCopy()
+/* One folder, click-to-enter. `struck` = flat mode: the folder is bypassed
+ * but still navigable, so it stays and reads de-emphasised. Box in
+ * .kol-media-folder (kol-components-organisms.css). */
+function FolderRow({ folder, struck = false, onEnter }) {
+  return (
+    <li className="kol-media-folder" onClick={onEnter}>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center text-meta">
+        <Icon name="folder" size={18} />
+      </span>
+      <span className={`kol-mono-12 flex-1 ${struck ? 'line-through text-meta' : 'text-body'}`}>{folder.label}</span>
+      <Icon name="chevron-right" size={14} className="text-subtle" />
+    </li>
+  )
+}
 
-  if (error) return <p className="kol-helper-12 text-ui-error">Couldn’t load: {error}</p>
-  if (loading) return <p className="kol-helper-12 text-meta">Loading…</p>
-  if (rows.length === 0) return <p className="kol-helper-12 text-meta">Nothing here.</p>
+function FolderRows() {
+  const { folders, flat, setPrefix } = useMediaLibrary()
+  if (!folders.length) return null
+  return (
+    <ul className="kol-media-list">
+      {folders.map((f) => (
+        <FolderRow key={f.key} folder={f} struck={flat} onEnter={() => setPrefix(f.key)} />
+      ))}
+    </ul>
+  )
+}
 
-  const files = rows.filter((r) => r.type === 'file')
+/* Breadcrumb — `root / seg / seg`, every crumb a step back. */
+function Breadcrumb({ className = '' }) {
+  const { crumbs, setPrefix } = useMediaLibrary()
+  return (
+    <div className={`flex items-center gap-1 kol-mono-12 text-meta ${className}`}>
+      <button type="button" className="hover:text-emphasis transition-colors" onClick={() => setPrefix('')}>root</button>
+      {crumbs.map((seg, i) => {
+        const to = `${crumbs.slice(0, i + 1).join('/')}/`
+        return (
+          <span key={to} className="flex items-center gap-1">
+            <span>/</span>
+            <button type="button" className="hover:text-emphasis transition-colors" onClick={() => setPrefix(to)}>{seg}</button>
+          </span>
+        )
+      })}
+    </div>
+  )
+}
+
+/* The stats line. Whole-bucket figures at root or in flat — the level-only
+ * line used to read "0 files · 0 B" at a B2 root: true of the level, a lie
+ * about the bucket. */
+function Stats() {
+  const { stats: s, flat } = useMediaLibrary()
+  return (
+    <p className="kol-mono-12 text-meta">
+      {s.folders > 0 && `${s.folders} folder${s.folders > 1 ? 's' : ''} · `}
+      {s.filtering && s.rawFiles !== s.files ? `${s.files} of ${s.rawFiles}` : s.rawFiles}
+      {' '}{s.rawFiles === 1 ? 'file' : 'files'} · {formatSize(s.bytes)}
+      {(s.atRoot || flat) && s.rawFiles !== s.bucketFiles && (
+        <span className="text-subtle">{'  ·  bucket: '}{s.bucketFiles} files · {formatSize(s.bucketBytes)}</span>
+      )}
+      {s.systemCount > 0 && (
+        <span className="text-subtle">{'  ·  '}{s.systemCount} system file{s.systemCount === 1 ? '' : 's'} hidden</span>
+      )}
+    </p>
+  )
+}
+
+/* Sort — label buttons; the active one carries the direction glyph. */
+function SortControls() {
+  const { sort, sortBy } = useMediaLibrary()
+  return (
+    <div className="flex items-center gap-4">
+      {SORT_OPTIONS.map((opt) => {
+        const active = sort.by === opt.value
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            aria-pressed={active}
+            onClick={() => sortBy(opt.value)}
+            className={`kol-mono-12 flex items-center gap-1 transition-colors ${active ? 'text-emphasis' : 'text-meta hover:text-body'}`}
+          >
+            {opt.label}
+            {active && <Icon name={sort.dir === 'asc' ? 'arrow-down' : 'arrow-up'} size={10} />}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+/* The bare toolbar — filter · search on the left; Flat · view · sort on the
+ * right. No title: that is the consumer's page header. The icon buttons are
+ * DS Buttons on the nav rung (the box has an owner), `pressed` when the
+ * filter is open or narrowing. */
+function Toolbar({ viewMode, onViewMode }) {
+  const { search, setSearch, kindsPresent, kinds, toggleKind, flat, setFlat } = useMediaLibrary()
+  const [filterOpen, setFilterOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  return (
+    <>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="nav"
+            size="sm"
+            iconOnly="filter"
+            iconSize={16}
+            quiet
+            pressed={filterOpen || kinds.size > 0}
+            aria-label="Toggle kind filter"
+            onClick={() => setFilterOpen((v) => !v)}
+          />
+          {searchOpen ? (
+            <Input
+              size="sm"
+              variant="outline"
+              width="200px"
+              value={search}
+              autoFocus
+              placeholder="search name…"
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Escape') { setSearch(''); setSearchOpen(false) } }}
+              onBlur={() => { if (!search) setSearchOpen(false) }}
+            />
+          ) : (
+            <Button
+              variant="nav"
+              size="sm"
+              iconOnly="search"
+              iconSize={16}
+              quiet
+              pressed={search.length > 0}
+              aria-label="Search"
+              onClick={() => setSearchOpen(true)}
+            />
+          )}
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-pressed={flat}
+            title="Show all files recursively"
+            onClick={() => setFlat(!flat)}
+            className={chipCls(flat)}
+          >
+            Flat
+          </button>
+          <ViewToggle viewMode={viewMode} onViewChange={onViewMode} variant="icon" />
+          <Divider variant="vertical" />
+          <SortControls />
+        </div>
+      </div>
+      {filterOpen && (
+        <div className="flex items-center gap-2">
+          <span className="kol-mono-12 text-subtle">Kind</span>
+          <SettingsChipRow options={kindsPresent} selected={kinds} onToggle={toggleKind} />
+        </div>
+      )}
+    </>
+  )
+}
+
+/* The tiles or the rows over ONE paged list — shared by the page and the
+ * picker; `onPick` is the only difference between them. */
+function FilesBody({ files, viewMode, onOpen, onPick }) {
+  const { mediaUrl, viewable, prefix, stats, more, pageSize, showMore } = useMediaLibrary()
+  const [, copy] = useCopy()
+
+  if (files.length === 0) {
+    return (
+      <p className="kol-mono-12 text-meta">
+        {stats.filtering ? 'No files match.' : `No files${prefix ? ` in "${prefix}"` : ''} yet.`}
+      </p>
+    )
+  }
+
   /* Index into `viewable`, which is what the lightbox pages — indexing into the
    * filtered rows meant a search narrowing the grid opened the wrong file. */
   const openerFor = (row) => {
     const i = viewable.findIndex((f) => f.key === row.key)
     return i < 0 ? undefined : () => onOpen(i)
   }
-
-  /* Copy hands over the full-size variant, not the thumbnail the tile loaded. */
+  /* Copy and download hand over the full-size variant, not the thumbnail. */
   const urlFor = (row) => mediaUrl(row.fullKey ?? row.key)
 
-  const actionsFor = (row) => (
-    <div className="flex items-center gap-2">
-      {onPick && <Button size="sm" onClick={() => onPick(row)}>Use</Button>}
-      <Button variant="secondary" size="sm" onClick={() => copy(urlFor(row))}>
-        {copied === urlFor(row) ? 'Copied' : 'Copy URL'}
-      </Button>
-    </div>
-  )
-
-  if (viewMode === 'list') {
+  const thumbFor = (row) => {
+    const open = openerFor(row)
     return (
-      <ul className="kol-media-scroll kol-media-list">
-        {rows.map((row) =>
-          row.type === 'folder' ? (
-            <FolderRow key={row.key} row={row} open={expanded.has(row.key)} onToggle={() => toggleFolder(row.key)} />
-          ) : (
-            <div key={row.key} style={indent(row.depth)}>
-              <MediaRow
-                thumb={<Thumb row={row} mediaUrl={mediaUrl} />}
-                name={
-                  openerFor(row) ? (
-                    <button type="button" className="kol-mono-12 text-emphasis" onClick={openerFor(row)}>
-                      {row.displayKey}
-                    </button>
-                  ) : (
-                    <span className="kol-mono-12 text-emphasis">{row.displayKey}</span>
-                  )
-                }
-                date={row.uploaded ? String(row.uploaded).slice(0, 10) : ''}
-                size={formatSize(row.size)}
-                actions={actionsFor(row)}
-              />
-            </div>
-          ),
-        )}
-      </ul>
+      <div
+        className={`w-full h-full flex items-center justify-center bg-fg-04 overflow-hidden${open ? ' cursor-zoom-in' : ''}`}
+        onClick={open}
+      >
+        <Thumb row={row} mediaUrl={mediaUrl} />
+      </div>
     )
   }
-
-  return (
-    <div className="kol-media-scroll">
-      <ul className="kol-media-list">
-        {rows.filter((r) => r.type === 'folder').map((row) => (
-          <FolderRow key={row.key} row={row} open={expanded.has(row.key)} onToggle={() => toggleFolder(row.key)} />
-        ))}
-      </ul>
-      <ul className="kol-media-grid">
-        {files.map((row) => (
-          <MediaCard
-            key={row.key}
-            thumb={
-              <div
-                className={openerFor(row) ? 'w-full h-full cursor-pointer' : 'w-full h-full'}
-                onClick={openerFor(row)}
-              >
-                <Thumb row={row} mediaUrl={mediaUrl} />
-              </div>
-            }
-            name={<p className="kol-mono-12 text-emphasis truncate">{row.displayKey}</p>}
-            meta={`${formatSize(row.size)}${row.uploaded ? ` · ${String(row.uploaded).slice(0, 10)}` : ''}`}
-            /* The set's largest variant, not the thumbnail the tile painted. */
-            downloadHref={mediaUrl(row.fullKey ?? row.key)}
-            actions={actionsFor(row)}
-          />
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-/* Finder puts the path at the window FOOT, not stacked above the content. The
- * hidden-system count rides the same bar — hiding 118 `.DS_Store` files without
- * saying so is the same silent drop this component was filed for. */
-function PathBar({ rows, systemCount }) {
-  const open = rows.filter((r) => r.type === 'folder' && r.depth > 0)
-  const trail = open.length ? open[open.length - 1].key.replace(/\/$/, '').split('/') : []
-  return (
-    <div className="kol-media-pathbar">
-      <Icon name="folder" size={12} />
-      <span className="kol-helper-12 text-meta">root</span>
-      {trail.map((seg) => (
-        <span key={seg} className="flex items-center gap-1">
-          <Icon name="chevron-right" size={10} />
-          <span className="kol-helper-12 text-meta">{seg}</span>
-        </span>
-      ))}
-      {systemCount > 0 && (
-        <span className="kol-helper-12 text-meta ms-auto">
-          {systemCount} system file{systemCount === 1 ? '' : 's'} hidden
-        </span>
+  /* INLINE controls, never labelled Buttons (ContentSetRetirement, 2026-08-27):
+   * the card's `actions` float in the plate's corner beside the title, so a
+   * labelled Button there sits on the copy — kol-r2b2's column of
+   * `.kol-inline-control`s is the shape that fits. The card's download is the
+   * frame-corner `control` + the size slot (SizeOrDownload); the row keeps its
+   * glyph beside Copy. `Use` (picker only) is the same control wearing `plus`. */
+  const actionsFor = (row, form) => (
+    <div className={form === 'row' ? 'flex items-center gap-2' : 'flex h-full flex-col items-center justify-between'}>
+      {onPick && <ActionButton chrome="inline" size="sm" icon="plus" confirmIcon="check" label="Use" confirmLabel="Used" onAction={() => onPick(row)} />}
+      <ActionButton chrome="inline" size="sm" icon="copy" confirmIcon="check" label="Copy URL" confirmLabel="Copied" onAction={() => copy(urlFor(row))} />
+      {form === 'row' && (
+        <ActionButton chrome="inline" size="sm" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" href={urlFor(row)} />
       )}
     </div>
   )
-}
-
-const VIEW_OPTIONS = [
-  { value: 'grid', icon: 'grid', label: 'Grid' },
-  { value: 'list', icon: 'view-list', label: 'List' },
-]
-
-/* Sort is a SegmentedToggle — the DS's joined N-way control. The first
- * pass hand-rolled four <button className="kol-helper-12"> instead. */
-const SORTS = [
-  { value: 'name', label: 'name' },
-  { value: 'date', label: 'date' },
-  { value: 'size', label: 'size' },
-  { value: 'kind', label: 'kind' },
-]
-
-/* The chrome — ContentFilters owns the animated search, the filter groups, the
- * view toggle and the N-of-M count. It was hand-rolled as a static <Input> on
- * the first pass while this organism sat one import away. */
-function LibraryChrome({ onOpen, onPick }) {
-  const { rows, sort, setSort, kinds, systemCount } = useMediaLibrary()
-  const [viewMode, setViewMode] = useState('grid')
-
-  const items = useMemo(
-    () => rows.map((r) => ({
-      ...r,
-      name: r.type === 'folder' ? r.label : r.displayKey,
-      kind: r.type === 'folder' ? 'folder' : r.kind,
-    })),
-    [rows],
-  )
+  /* the title voice is the family's ruled default (heading-04 card / heading-05
+   * row, truncated by ContentText); the full key rides as the tooltip, as before */
+  const nameFor = (row) => <span title={row.key}>{row.displayKey}</span>
+  const date = (row) => (row.uploaded ? String(row.uploaded).slice(0, 10) : undefined)
+  const size = (row) => formatSize(row.size) || undefined
 
   return (
     <>
-      <ContentFilters
-        items={items}
-        title="Media library"
-        titleIcon="folder"
-        totalCount={items.length}
-        searchKeys={['name']}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        viewModeOptions={VIEW_OPTIONS}
-        mutuallyExclusiveFilters={['kind']}
-        /* Derived — a hard-coded image/video/folder list is how the filter bar
-         * denied the existence of the audio and data the provider now keeps. */
-        filterGroups={[{ label: 'Kind', key: 'kind', values: ['folder', ...kinds] }]}
-        headerActions={
-          <SegmentedToggle
-            size="sm"
-            value={sort}
-            onChange={setSort}
-            options={SORTS}
-            ariaLabel="Sort by"
-          />
-        }
-        renderItem={(filtered, mode) => (
-          <LibraryBody rows={filtered} viewMode={mode} onOpen={onOpen} onPick={onPick} />
-        )}
-      />
-      <PathBar rows={rows} systemCount={systemCount} />
+      {viewMode === 'list' ? (
+        <div className="kol-media-list">
+          {files.map((row) => (
+            <ContentRow
+              key={row.key}
+              variant="default"
+              media={thumbFor(row)}
+              title={nameFor(row)}
+              date={date(row)}
+              size={size(row)}
+              actions={actionsFor(row, 'row')}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="kol-media-grid">
+          {files.map((row) => (
+            <ContentCard
+              key={row.key}
+              variant="default"
+              media={thumbFor(row)}
+              control={
+                <ActionButton chrome="media" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" href={urlFor(row)} />
+              }
+              title={nameFor(row)}
+              date={date(row)}
+              size={size(row) && <SizeOrDownload href={urlFor(row)}>{size(row)}</SizeOrDownload>}
+              actions={actionsFor(row, 'card')}
+            />
+          ))}
+        </div>
+      )}
+      {more > 0 && (
+        <button
+          type="button"
+          onClick={showMore}
+          className="kol-mono-12 text-meta hover:text-emphasis transition-colors self-start py-2"
+        >
+          Show {Math.min(more, pageSize)} more · {more} remaining
+        </button>
+      )}
     </>
   )
 }
@@ -641,6 +788,133 @@ function LibraryViewer({ index, onIndexChange, onClose, onPick }) {
   )
 }
 
+/* ── The old PAGE — the 08-26 reconcile; replaced by MediaLibraryPages (browse · library) 2026-08-27, kept only as the picker's parts' first host ── */
+// eslint-disable-next-line no-unused-vars
+function BrowserShell({ onSelect }) {
+  const lib = useMediaLibrary()
+  const [viewMode, setViewMode] = useState('grid')
+  const [viewerIndex, setViewerIndex] = useState(null)
+
+  const pick = onSelect
+    ? (o) => onSelect(lib.mediaUrl(o.fullKey ?? o.key), { contentType: o.contentType, kind: o.kind })
+    : undefined
+
+  return (
+    <div className="kol-media-browser gap-3">
+      <Breadcrumb />
+      <Stats />
+      {lib.error && <p className="kol-mono-12 text-ui-error">Couldn’t load: {lib.error}</p>}
+      {lib.loading && <p className="kol-mono-12 text-meta">Loading…</p>}
+      {!lib.loading && !lib.error && lib.stats.folders === 0 && lib.stats.rawFiles === 0 && (
+        <p className="kol-mono-12 text-meta">No files{lib.prefix ? ` in "${lib.prefix}"` : ''} yet.</p>
+      )}
+      <FolderRows />
+      {lib.stats.rawFiles > 0 && (
+        <div className="flex flex-col gap-3">
+          <Toolbar viewMode={viewMode} onViewMode={setViewMode} />
+          <Divider />
+          <FilesBody files={lib.shown} viewMode={viewMode} onOpen={setViewerIndex} onPick={pick} />
+        </div>
+      )}
+      {viewerIndex !== null && lib.viewable[viewerIndex] && (
+        <LibraryViewer
+          index={viewerIndex}
+          onIndexChange={setViewerIndex}
+          onClose={() => setViewerIndex(null)}
+          onPick={pick}
+        />
+      )}
+    </div>
+  )
+}
+
+/* ── The PICKER — ContentFilters chrome, path bar at the foot ───────────── */
+
+const VIEW_OPTIONS = [
+  { value: 'grid', icon: 'grid', label: 'Grid' },
+  { value: 'list', icon: 'view-list', label: 'List' },
+]
+
+/* The path at the FOOT of the picker card; the hidden-system count rides it —
+ * hiding 118 `.DS_Store` files without saying so is the same silent drop this
+ * component was filed for. */
+function PathBar() {
+  const { stats } = useMediaLibrary()
+  return (
+    <div className="kol-media-pathbar">
+      <Icon name="folder" size={12} />
+      <Breadcrumb />
+      {stats.systemCount > 0 && (
+        <span className="kol-helper-12 text-meta ms-auto">
+          {stats.systemCount} system file{stats.systemCount === 1 ? '' : 's'} hidden
+        </span>
+      )}
+    </div>
+  )
+}
+
+function PickerBody({ items, viewMode, onOpen, onPick }) {
+  const { folders, flat, setPrefix, loading, error, more, pageSize, showMore } = useMediaLibrary()
+  if (error) return <p className="kol-helper-12 text-ui-error">Couldn’t load: {error}</p>
+  if (loading) return <p className="kol-helper-12 text-meta">Loading…</p>
+  const files = items.filter((r) => r.type !== 'folder')
+  const shownFolders = items.filter((r) => r.type === 'folder')
+  if (items.length === 0) return <p className="kol-helper-12 text-meta">Nothing here.</p>
+  return (
+    <div className="kol-media-scroll flex flex-col gap-3">
+      {shownFolders.length > 0 && (
+        <ul className="kol-media-list">
+          {shownFolders.map((f) => (
+            <FolderRow key={f.key} folder={f} struck={flat} onEnter={() => setPrefix(f.key)} />
+          ))}
+        </ul>
+      )}
+      <FilesBody files={files.slice(0, files.length - Math.max(0, more))} viewMode={viewMode} onOpen={onOpen} onPick={onPick} />
+      {void folders}{void pageSize}{void showMore}
+    </div>
+  )
+}
+
+/* The picker's chrome — ContentFilters owns the animated search, the kind
+ * filter, the view toggle and the N-of-M count; sort rides its header slot. */
+function LibraryChrome({ onOpen, onPick }) {
+  const { folders, sorted, sort, sortBy } = useMediaLibrary()
+  const [viewMode, setViewMode] = useState('grid')
+
+  const items = useMemo(
+    () => [
+      ...folders.map((f) => ({ ...f, type: 'folder', name: f.label, kind: 'folder' })),
+      ...sorted.map((o) => ({ ...o, type: 'file', name: o.displayKey })),
+    ],
+    [folders, sorted],
+  )
+  const kinds = useMemo(() => [...new Set(sorted.map((o) => o.kind))].sort(), [sorted])
+
+  return (
+    <>
+      <ContentFilters
+        items={items}
+        title="Media library"
+        titleIcon="folder"
+        totalCount={items.length}
+        searchKeys={['name']}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        viewModeOptions={VIEW_OPTIONS}
+        mutuallyExclusiveFilters={['kind']}
+        filterGroups={[{ label: 'Kind', key: 'kind', values: ['folder', ...kinds] }]}
+        headerActions={
+          <SegmentedToggle size="sm" value={sort.by} onChange={sortBy} options={SORT_OPTIONS} ariaLabel="Sort by" />
+        }
+        renderItem={(filtered, mode) => (
+          <PickerBody items={filtered} viewMode={mode} onOpen={onOpen} onPick={onPick} />
+        )}
+      />
+      <PathBar />
+    </>
+  )
+}
+
 function PickerShell({ onClose, onPick }) {
   const { viewable, mediaUrl } = useMediaLibrary()
   const [viewerIndex, setViewerIndex] = useState(null)
@@ -674,40 +948,65 @@ function PickerShell({ onClose, onPick }) {
 }
 
 /**
- * MediaLibrary — ONE component, two variants. The user's ruling 2026-08-01:
+ * MediaLibrary — ONE component, its variants. The user's ruling 2026-08-01:
  * "arent different components, they are more like variants, same shit
- * different viewing." He is right — `page` and `modal` render the identical
- * body and differ only in the shell around it and whether picking closes.
+ * different viewing." Since 2026-08-27 (MediaLibraryPages — user: "one page for
+ * the content filters, one page for folder/files … bucket is a control, not a
+ * page") the in-flow page is kol-r2b2's, cut in two:
  *
- * Variant is CONTAINER GEOMETRY ONLY, the ThemeToggle precedent: everything
- * else is a prop. `MediaBrowser` and `MediaPicker` survive below as thin
- * aliases so no call site breaks.
+ *   `browse`   folder / files — the bucket Dropdown, the crumb line, ColumnBrowser
+ *              (or folder rows), the count line
+ *   `library`  the content-filters wall — FILES · kinds · search · SELECT / FLAT ·
+ *              grid | list | off · sort · the cards, paging, the inspector lightbox
+ *   `modal`    the picker, as before
+ *   `page`     DEPRECATED alias of `library` (one release) — the 08-26 reconcile
+ *              of r2b2's list; the two variants above replace it
  *
- * @param {string}   variant  'page' (in-flow, fills its box) | 'modal' (overlay)
+ * Both pages take the same injected client (`buckets()` for the dropdown,
+ * kol-media-client ≥0.2.0) and render read-only unless it carries the write
+ * seams (`deleteObject` · `renameObject` · `downloadUrl`). Props of the pages:
+ * `title` · `bucket` / `onBucketChange` · `prefix` / `onPrefix` (browse: controlled
+ * or internal) · `settings` / `onSettingsChange` (r2b2's per-bucket model,
+ * `defaults` to seed) · `folderTree` (browse: the baked tree) · `headerActions`
+ * (the app's own upload / write icons) · `refreshKey`.
+ *
+ * @param {string}   variant  'browse' | 'library' | 'modal' | 'page' (alias of library)
  * @param {boolean}  open     modal only — mounts the overlay
  * @param {object}   client   `{ listMedia, mediaUrl, proxied? }`; omit inside a provider
  * @param {string|string[]} accept  'all' (default) = everything · one kind · an
  *   allow-list `['image','video']`
+ * @param {number}   pageSize     rows mounted before `Show N more` (60; 0 = all)
+ * @param {object}   defaultSort  `{ by, dir }` (date desc)
+ * @param {boolean}  flat         start in flat mode
  * @param {Function} onClose  modal only — Esc, backdrop, close button
- * @param {Function} onSelect `(url, { contentType })`. In `modal` it also closes.
+ * @param {Function} onSelect `(url, { contentType, kind })`. In `modal` it also closes.
  */
 export default function MediaLibrary({
   variant = 'page',
   open = true,
   client,
   accept = 'all',
+  pageSize = 60,
+  defaultSort = { by: 'date', dir: 'desc' },
+  flat = false,
   onClose,
   onSelect = null,
+  ...pageProps
 }) {
+  const opts = { client, accept, pageSize, defaultSort, flat }
   if (variant === 'modal') {
     if (!open) return null
-    return withProvider(<PickerShell onClose={onClose} onPick={onSelect} />, { client, accept })
+    return withProvider(<PickerShell onClose={onClose} onPick={onSelect} />, opts)
   }
-  return withProvider(<BrowserShell onSelect={onSelect} />, { client, accept })
+  if (variant === 'browse') return <MediaLibraryBrowse client={client} {...pageProps} />
+  /* `page` = the library wall (alias, one release): its old knobs map onto the settings seed */
+  const seed = variant === 'page' ? { defaults: { pageSize, sortBy: defaultSort?.by, sortDir: defaultSort?.dir, flat, ...(pageProps.defaults ?? {}) } } : {}
+  return <MediaLibraryLibrary client={client} {...pageProps} {...seed} />
 }
 
-/** Alias — `MediaLibrary variant="modal"`. Kept so existing call sites and the
- *  fxr editor's `onPick` naming keep working. */
+/** @deprecated 2026-08-01 — alias of `MediaLibrary variant="modal"`. Kept so
+ *  existing call sites and the fxr editor's `onPick` naming keep working;
+ *  drops when nobody imports it (04-retirements.md). */
 export function MediaPicker({ open, client, accept = 'all', onClose, onPick }) {
   return (
     <MediaLibrary
@@ -721,32 +1020,8 @@ export function MediaPicker({ open, client, accept = 'all', onClose, onPick }) {
   )
 }
 
-function BrowserShell({ onSelect }) {
-  const { viewable, mediaUrl } = useMediaLibrary()
-  const [viewerIndex, setViewerIndex] = useState(null)
-
-  const pick = onSelect
-    ? (o) => onSelect(mediaUrl(o.fullKey ?? o.key), { contentType: o.contentType, kind: o.kind })
-    : undefined
-
-  return (
-    <div className="kol-media-browser">
-      <LibraryChrome onOpen={setViewerIndex} onPick={pick} />
-
-      {viewerIndex !== null && viewable[viewerIndex] && (
-        <LibraryViewer
-          index={viewerIndex}
-          onIndexChange={setViewerIndex}
-          onClose={() => setViewerIndex(null)}
-          onPick={pick}
-        />
-      )}
-    </div>
-  )
-}
-
-/** Alias — `MediaLibrary variant="page"`. Without `onSelect` the actions offer
- *  Copy URL only, which is the read-only page a brand book wants. */
-export function MediaBrowser({ client, accept = 'all', onSelect = null }) {
-  return <MediaLibrary variant="page" client={client} accept={accept} onSelect={onSelect} />
+/** @deprecated 2026-08-01 — alias of `MediaLibrary variant="page"`. Drops when
+ *  nobody imports it (04-retirements.md). */
+export function MediaBrowser({ client, accept = 'all', onSelect = null, ...rest }) {
+  return <MediaLibrary variant="page" client={client} accept={accept} onSelect={onSelect} {...rest} />
 }

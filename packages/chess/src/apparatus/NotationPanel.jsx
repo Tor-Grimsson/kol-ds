@@ -35,6 +35,10 @@ const SidelineRow = ({ line, activeSideline, onSelectSidelineMove }) => (
 
 /* Inline sidelines (brief 3.0): each sideline renders as an indented row
  * right under the move pair it branches from — the chess.com shape. */
+
+/* `decorate(entry)` (NotationPanelMoveDecorations, 2026-08-27): a per-move
+ * render seam, trailing inside the move cell after the SAN — a Badge, an
+ * eval delta, or nothing. Selection, keyboard and `onSelectPly` stay here. */
 const NotationPanel = ({
   notationPairs = [],
   activePly = 0,
@@ -42,7 +46,8 @@ const NotationPanel = ({
   isLoading = false,
   sidelines = [],
   activeSideline = null,
-  onSelectSidelineMove = () => {}
+  onSelectSidelineMove = () => {},
+  decorate = null
 }) => {
   if (isLoading) {
     return (
@@ -83,22 +88,24 @@ const NotationPanel = ({
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start"
+              className="w-full justify-start gap-1.5"
               disabled={!pair.white}
               selected={isWhiteActive}
               onClick={() => pair.white && onSelectPly(pair.white.ply)}
             >
               {pair.white?.san ?? '—'}
+              {pair.white && decorate?.(pair.white)}
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start"
+              className="w-full justify-start gap-1.5"
               disabled={!pair.black}
               selected={isBlackActive}
               onClick={() => pair.black && onSelectPly(pair.black.ply)}
             >
               {pair.black?.san ?? '—'}
+              {pair.black && decorate?.(pair.black)}
             </Button>
             {sidelinesForPair(pair.moveNumber).map((line) => (
               <SidelineRow

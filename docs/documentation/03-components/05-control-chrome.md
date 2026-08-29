@@ -3,7 +3,7 @@ title: Control chrome
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-27
 verified: 2026-07-08
 description: The button law every interactive control references
 aliases:
@@ -33,7 +33,7 @@ Two **structural** variants carry the hierarchy; the rest are **role** variants 
 | Variant | Rest | Role |
 |---|---|---|
 | **primary** | filled `surface-secondary` | The default. Daily chrome. |
-| **outline** | transparent + `border-oq-16` | Always secondary to primary. Bordered, no fill. |
+| **outline** | transparent + `border-oq-08` | Always secondary to primary. Bordered, no fill. **One outline border across every control** — Button, Input/ViewToggle (`kol-control--outline`), ToggleSwitch outline, IconFrame outline, the segmented toggle's shell and dividers — opaque 8%, the system's hairline (user ruling 2026-08-26; was oq-16, and the segmented strip ran fg-04). Opaque, never fg: a translucent border doubles where two controls touch. |
 | **ghost** | transparent, text `oq-48` | Quiet chrome — icon toolbars, clickable plies, text actions. Pairs with `quiet`/`pressed`. |
 | **nav** | transparent, text `oq-64` | The chrome rung, one step brighter than ghost. Added to Button's map 2026-08-01 — `.kol-btn-nav` had existed in the theme with **no component able to emit it**, so every call site wanting this weight hand-wrote `text-fg-64` instead. That orphan is the direct cause of the four-container header. |
 | **secondary** | inverted ink | High-emphasis inversion (rare). |
@@ -85,7 +85,7 @@ Interactive fills mix ink into the surface via the **opaque (`oq-*`) tier**, nev
 | primary | `surface-secondary` | `oq-08` | `oq-16` |
 | secondary | `surface-on-primary` | `oq-inverse-40` (label stays light, no ink swap) | `oq-inverse-48` |
 | accent | `accent-primary` | accent 80% into surface (opaque) | accent 70% mix |
-| outline | transparent · `border-oq-16` | `oq-02` | `oq-08` |
+| outline | transparent · `border-oq-08` | `oq-02` | `oq-08` |
 | ghost | text `oq-48` | `oq-04` | `oq-08` |
 | danger *(2026-07-15)* | `--ui-error` fill · absolute-white label | error 80% into surface (opaque) | error 70% mix |
 | grey *(2026-07-15)* | `oq-12` fill | `oq-16` | `oq-24` |
@@ -270,3 +270,7 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 | **Dropdown** | Text trigger, single-value list selection. Emits `kol-btn` chrome, fused open panel. |
 | **ShapeDropdown** | Two-button split: action half fires, chevron half opens the variant menu. |
 | **SplitToolButton** | Single 28×28 trigger: ONE click arms the variant and opens the menu (tool-palette idiom). |
+
+## Tone
+
+`tone="sunken"` on `ViewToggle` (icon) · `Dropdown` · `Input` · `SearchInput` · `Button` · `IconFrame` · `ThemeToggle` — the control set's ONE sunken tone (ControlToneSunken, kol-website 2026-08-28; shipped 2026-08-27 as `tone="inverse"`, ControlToneInverse, which stays an alias — no consumer moves a pixel). User, on brand's `/icons` over a `pageWash`: *"a flipped version of this color scheme, where the darker is background and grey is the active … it would fit better on the light grey"* — and on the name: the control does not invert anything, it sits **below** the plane it is on. (`inverse` already meant four things — `tone`, Tag/Pill's `variant`, Section's `theme`, Divider's boolean.) On a washed plane the default grey well reads as a second plate, so the set takes the dark well: **`fg-inverse-96`** (user ruling 2026-08-28, swapped from `fg-absolute-24` — measured on the dark theme, where the inverse tier is the one that darkens: on the `#121215` page it lands ~14.2 against absolute-24's 13.7. It follows the theme, so the light-theme well takes the near-white inverse anchor), the active chip the **`fg-08`** ink wash (user ruling 2026-08-28, down from the 0.78.1 `fg-16`), the inactive hover an absolute-white wash, the ink `fg-96`; a `Dropdown`'s panel is **opaque** — `surface-tertiary`, the flat twin of the trigger's fill (user 2026-08-28: *"transparent doesn't work for dropdown"*; the `oq-inverse-*` tier bakes onto the near-white `surface-inverse` and lands on the wrong side of a dark page), and the dropdown carries **no hover state at all** (user 2026-08-28, *"delete any hover state on dropdowns"*, component ≥0.123.0): the trigger is pinned back to rest in every variant — primary and outline in kol-theme, grey with no hover rule — and the option rows drop the ink brighten (`MenuDropdownItem hover={false}`), the check mark carrying the current value. A `MenuItem`'s own menu keeps its hover. **The trigger is on the icon ladder** (theme ≥0.90.0, DropdownHeightAndHover): 28 / 32 / 36, the rungs `.kol-btn-icon` pins — a text button sizes from padding (~24 at `sm`) and sat 4px short of the `IconFrame` and `ThemeToggle` beside it, and the trigger is the one text control that always sits in an icon row. **A dropdown fits its chrome** (component ≥0.124.0, DropdownGhostWidthAndListHeight): the ghost stack still reserves the widest option's width, but the trigger caps at its container and the label ellipsises rather than growing past it — the panel matches the real width; `maxRows` (default 10) is the rows-visible ceiling the viewport clamp cannot give, and `rowHeight` the row pitch for a shorter chrome. **`onOptionHover(value | null)`** (≥0.125.0, DropdownOptionHoverPreview) reports the hovered row and `null` on leave or close, so a picker over a *visual* setting — blend modes, easing curves, palettes, fonts — previews live and reverts; the DS owns the panel, the consumer owns the preview; a sunken `Button` layers its hover and pressed over the well. `ContentFilters` forwards `tone` to its search field so a page sets its header row in one place. Default `tone` is unchanged everywhere; the rules are the theme's (`.kol-tone-sunken`, ≥0.82.0) — a consumer never restates them (brand hand-wrote the fill and guessed the ink for two icon buttons; widening the set to Button · IconFrame · ThemeToggle ends that fork). The showcase's `ViewToggle` demo shows the set in both tones on an `fg-02` wash.

@@ -1,0 +1,175 @@
+/**
+ * kol-design-tokens.css — the theme-level design tokens (spacing, card pads,
+ * wall gaps, the house curve, content widths, radius, shadows, transitions, the
+ * z ladder, opacity values) + the dark-mode shadow mirror. Lifted OUT of
+ * kol-theme.css 2026-08-27 (FullConsumptionContract, kol-monitor) so the CORE
+ * entry (kol-core.css) carries them too; the umbrella imports this file at the
+ * same position it held inline, so its emitted CSS is unchanged. Layered at
+ * import — `@import "./kol-design-tokens.css" layer(components);`.
+ */
+:root {
+  /* Spacing scale (4px base) */
+  --kol-spacing-1: 0.25rem;    /* 4px */
+  --kol-spacing-2: 0.5rem;     /* 8px */
+  --kol-spacing-3: 0.75rem;    /* 12px */
+  --kol-spacing-4: 1rem;       /* 16px */
+  --kol-spacing-5: 1.25rem;    /* 20px */
+  --kol-spacing-6: 1.5rem;     /* 24px */
+  --kol-spacing-8: 2rem;       /* 32px */
+  --kol-spacing-10: 2.5rem;    /* 40px */
+  --kol-spacing-12: 3rem;      /* 48px */
+  --kol-spacing-16: 4rem;      /* 64px */
+  --kol-spacing-20: 5rem;      /* 80px */
+  --kol-spacing-24: 6rem;      /* 96px */
+
+  /* Semantic spacing aliases */
+  --kol-spacing-section: var(--kol-spacing-20);
+  --kol-spacing-container: var(--kol-spacing-10);
+  --kol-spacing-gap-sm: var(--kol-spacing-2);
+  --kol-spacing-gap-md: var(--kol-spacing-4);
+  --kol-spacing-gap-lg: var(--kol-spacing-6);
+
+  /* RAIL ROW rhythm (2026-08-01) — the y-padding every sidebar row shares:
+   * the eyebrow (.shell-sidebar-toggle) and the nav group header
+   * (.shell-nav-group-header). Deliberately OFF the spacing scale — a tighter
+   * chrome rhythm than --kol-spacing-1, and both rules already carried the
+   * same literal in two places. Named here so the left and right rails cannot
+   * disagree about it again; the row's bottom separation is --kol-spacing-2
+   * and needs no alias of its own. */
+  --kol-pad-rail-row-y: 0.375rem;
+
+  /* The row's TEXT INDENT — `.shell-nav-item`'s left padding, named 2026-08-01
+   * so anything else that has to line up with a row (the tag shelf) reads the
+   * indent instead of retyping it. */
+  --kol-pad-rail-row-x: 1.25rem;
+
+  /* CARD padding (2026-08-15, content-card ruling) — flat, stepped by the
+   * card's `size` prop, never by breakpoint. 12/16/24. */
+  --kol-pad-card-sm: 0.75rem;
+  --kol-pad-card-md: 1rem;
+  --kol-pad-card-lg: 1.5rem;
+
+  /* WALL gaps (2026-08-15) — the same treatment `--kol-pad-card-*` got, for
+   * the same reason: these two numbers were re-typed as a ternary at every
+   * call site (kol-monitor HomePage ×2, LibraryPage ×2, MediaLibrary,
+   * kol-website Work, both foundry grids, StackLatest) and a value repeated
+   * nine times is a value that has already drifted somewhere.
+   *
+   * PX, not rem — a gap is a layout measure, not type (user ruling
+   * 2026-08-15), so a reader bumping their browser text size must not re-space
+   * every wall in the estate.
+   *
+   * Two rungs because a wall of CARDS and a stack of ROWS want different air:
+   * cards are objects with their own edges and need separating; rows are lines
+   * in a table and 24px between them reads as a broken list. */
+  --kol-gap-wall-grid: 24px;
+  --kol-gap-wall-list: 8px;
+
+  /* The house curve (2026-08-15) — the easing the cards actually use; was
+   * hardcoded in 5 files before this token existed. Curve only, no duration:
+   * it pairs with whatever duration the motion needs.
+   *
+   * BALANCED, not expo (user ruling 2026-08-15). This was easeOutExpo
+   * `cubic-bezier(0.16, 1, 0.3, 1)`, which spends ~90% of its distance in the
+   * first fifth of the duration and the rest on a settle you cannot see — so
+   * every motion read as instant no matter what duration it was given, and a
+   * small hover affordance never showed its move at all. */
+  --kol-ease-house: cubic-bezier(0.4, 0, 0.2, 1);
+  /* the bounce — overshoots past its target and settles back (y > 1 is what
+   * makes it bounce; house only decelerates). For a press that should feel
+   * springy rather than merely smooth. */
+  --kol-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Content widths (2026-07-28; panel added 2026-07-30) — ONE frame, three
+   * inner caps (chess law). Every page: mx-auto max-w-shell + the one padding
+   * rhythm, content LEFT-ANCHORED inside. Width is a content decision, never a
+   * page identity: column caps reading blocks, panel caps tables / code /
+   * framed panels (the ~900–1200 band every consumer was improvising —
+   * kol-website audit, lobby/WidthSystemContradictions), measure caps running
+   * text. Nothing else — a hardcoded max-w-[Npx] at a call site means this
+   * scale failed; file it, don't improvise it.
+   * kol-framework's --kol-container-max is the responsive RESOLUTION of the
+   * shell (100% → 1400 → 1600 → shell), not a rival family.
+   *
+   * canvas (2026-07-31, user ruling) — the rung between shell and panel: the
+   * BODY of a page inside the shell's main column, i.e. item fields (swatch
+   * grids, the icon wall, card galleries) that panel would squeeze and the
+   * frame does not bind. Authored in rem because it is a max-width, not a
+   * device measure: 87.5rem = 1400 at the default root size. Flat at every
+   * breakpoint — a max-width only bites once there is room for it, and it
+   * nests: a table inside it still stops at panel, a paragraph at measure. */
+  --kol-content-canvas: 87.5rem;
+  --kol-content-shell: 1800px;
+  --kol-content-panel: 960px;
+  --kol-content-column: 768px;
+  --kol-content-measure: 65ch;
+
+  /* Border radius (4px increments) */
+  --kol-radius-none: 0;
+  /* xs (2026-08-01) — the hairline rung. Claimed out loud: 2px had SIX
+     hand-written `rounded-[2px]` call sites (swatches, colour rows, the
+     glass panel) and no token, so the scale's 4px floor was simply being
+     ignored rather than followed. A value used six times is a rung. */
+  --kol-radius-xs: 2px;
+  --kol-radius-sm: 4px;
+  /* CONTAINERS ARE 4px (user ruling 2026-08-09, "change 8px radius to 4px in
+     containers. everywhere."). The repo ships 4px or full, nothing between —
+     md/lg/xl/2xl stay resolvable so no consumer's var() breaks, but they all
+     collapse to the 4px value. Do not re-widen a rung without a ruling. */
+  --kol-radius-md: 4px;
+  --kol-radius-lg: 4px;
+  --kol-radius-xl: 4px;
+  --kol-radius-2xl: 4px;
+  --kol-radius-full: 9999px;
+
+  /* Shadows (subtle elevation) */
+  --kol-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --kol-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --kol-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --kol-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  --kol-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Transitions (consistent timing) */
+  --kol-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --kol-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --kol-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --kol-transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Z-index scale */
+  --kol-z-base: 1;
+  --kol-z-dropdown: 10;
+  --kol-z-sticky: 20;
+  --kol-z-overlay: 50;
+  --kol-z-modal: 100;
+  --kol-z-toast: 200;
+  --kol-z-tooltip: 300;
+  --kol-z-nav: 1000;
+
+  /* Opacity values */
+  --kol-opacity-hover: 0.8;
+  --kol-opacity-disabled: 0.5;
+  --kol-opacity-subtle: 0.6;
+  --kol-opacity-loading: 0.7;
+}
+
+/* Dark mode shadow adjustments */
+[data-theme="dark"],
+.dark {
+  --kol-shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.03);
+  --kol-shadow-md: 0 4px 6px rgba(255, 255, 255, 0.05);
+  --kol-shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.08);
+  --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
+  --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
+}
+
+/* System-follow dark (0.11.6) — only when no explicit theme is stamped.
+ * MIRROR of the block above — edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --kol-shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.03);
+    --kol-shadow-md: 0 4px 6px rgba(255, 255, 255, 0.05);
+    --kol-shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.08);
+    --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
+    --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
+  }
+}

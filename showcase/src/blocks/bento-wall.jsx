@@ -1,4 +1,4 @@
-import { BentoCard } from '@kolkrabbi/kol-component'
+import { TiltBento } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Bento wall',
@@ -30,7 +30,7 @@ export default function BentoWall() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[220px]">
       <div className="sm:col-span-2 lg:row-span-2">
-        <BentoCard
+        <TiltBento
           src={COVERS.aurora}
           title="Northern Field Recordings"
           subtitle="Sound archive"
@@ -41,7 +41,7 @@ export default function BentoWall() {
       </div>
 
       <div className="sm:col-span-2">
-        <BentoCard
+        <TiltBento
           src={COVERS.ember}
           title="Kiln Studies"
           subtitle="Ceramics series"
@@ -52,15 +52,15 @@ export default function BentoWall() {
       </div>
 
       <div>
-        <BentoCard src={COVERS.moss} title="Meadow Index" enableTilt overlayOpacity={40} />
+        <TiltBento src={COVERS.moss} title="Meadow Index" enableTilt overlayOpacity={40} />
       </div>
 
       <div>
-        <BentoCard src={COVERS.slate} title="Concrete Diaries" enableTilt overlayOpacity={40} />
+        <TiltBento src={COVERS.slate} title="Concrete Diaries" enableTilt overlayOpacity={40} />
       </div>
 
       <div className="sm:col-span-2">
-        <BentoCard
+        <TiltBento
           src={COVERS.dusk}
           title="Nightshift Playlist"
           subtitle="Curated mix"

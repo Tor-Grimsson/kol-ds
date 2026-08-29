@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -34,6 +35,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {Function} onFocus      (event) => void — input focus
  * @param {string}   size         'sm' | 'md' — kol-control size + matched mono type class
  * @param {string}   variant      'filled' | 'ghost' | 'outline' — kol-control variant, same chrome as Input (ignored when bare/expanding)
+ * @param {string}   tone         'default' | 'inverse' — the dark chip for a washed plane (ControlToneInverse, 2026-08-27); on the expanding pill it is the OPEN fill
  * @param {boolean}  bare         borderless inline field for overlay panels (full width, no shell chrome; keeps icon/clear/chip slots)
  * @param {boolean}  expanding    round icon-button pill that animates open into an inline field
  * @param {boolean}  open         (expanding) controlled open state; omit for internal state
@@ -76,6 +78,7 @@ export default function SearchInput({
   onFocus,
   size = 'md',
   variant = 'filled',
+  tone = 'default',
   bare = false,
   expanding = false,
   open,
@@ -154,7 +157,7 @@ export default function SearchInput({
            control: sm 28 · md 32 · lg 36 (hooks/glyphLadders.js). This was a
            hardcoded 36 — the LG square — so an expanding search sat beside a
            `kol-btn-md` filter button at two different sizes. */
-        className={`kol-expand flex items-center rounded-full ${isOpen ? 'bg-fg-04' : ''} ${className}`.trim()}
+        className={`kol-expand flex items-center rounded-full ${isOpen ? (toneClass(tone) ? 'kol-tone-sunken' : 'bg-fg-04') : ''} ${className}`.trim()}
         style={{ height: isOpen ? fieldH : square, width: isOpen ? expandedWidth : square }}
       >
         {/* THE GLYPH IS THE CLOSED STATE, and only that (user ruling
@@ -196,7 +199,7 @@ export default function SearchInput({
   const shellCls = [
     bare
       ? 'flex w-full gap-2.5 px-4 py-3'
-      : `kol-control kol-control--${variant} kol-control-${size} gap-2`,
+      : `kol-control kol-control--${variant} kol-control-${size} gap-2${toneClass(tone) ? ' kol-tone-sunken' : ''}`,
     'items-center cursor-text',
     SIZE_TYPE[size],
     className,

@@ -37,10 +37,13 @@ const GATES = [
   ['fences', 'validate-fences.mjs'],
   ['chapters', 'validate-chapters.mjs'],
   ['tags', 'validate-tags.mjs'],
+  ['retirements', 'validate-retirements.mjs'],
+  ['icon-cuts', 'extract-icon-cuts.mjs'],
+  ['motion', 'validate-motion.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */
-const ARGS = { 'sync-mdx-frontmatter.mjs': ['--check'] }
+const ARGS = { 'sync-mdx-frontmatter.mjs': ['--check'], 'validate-retirements.mjs': ['--check'], 'extract-icon-cuts.mjs': ['--check'] }
 
 const results = []
 for (const [name, file] of GATES) {

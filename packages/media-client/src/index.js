@@ -34,12 +34,48 @@ const DEFAULTS = {
   proxyPath: '/media/',
 }
 
+/**
+ * THE BUCKET TABLE (MediaClientBucketTable, kol-fxr + kol-mirror 2026-08-28).
+ * It shipped as a consumer's job and was immediately copied byte-for-byte into
+ * two of them — and the duplicated fact is not a label, it is **which store
+ * sends `Access-Control-Allow-Origin`**, i.e. which one taints a canvas when
+ * loaded directly. That is kol-r2b2's infrastructure state, it changes without
+ * this repo hearing, and it changed the day after the table existed twice.
+ *
+ * The failure is silent and asymmetric, which is why it belongs in one place:
+ *   stale `proxy: true`  → a pointless extra hop; everything still works
+ *   stale `proxy: false` → the canvas is tainted and `getImageData` THROWS on
+ *                          the first read — every photo filter, the whole
+ *                          effect chain and every export path in kol-fxr
+ *
+ * ⚠ `r2.proxy` STAYS `true` even though `r2.kolkrabbi.io` has sent
+ * `access-control-allow-origin: *` since 2026-08-27 (verified with curl). The
+ * header is on the RESPONSE, not the object: anything already in a user's cache
+ * from a pre-policy load stays non-CORS and still taints, however the URL
+ * behaves now. `crossOrigin="anonymous"` is the fix — it partitions the cache
+ * so the browser refetches instead of reusing the tainted entry — and it must
+ * be in place BEFORE the proxy comes off. kol-r2b2's sequence, which both
+ * consumers follow: attribute first behind the proxy → one surface direct →
+ * the rest → delete the rewrites. Flipping this flag is a deliberate release
+ * with this paragraph next to it, never a default that quietly lands.
+ */
+export const KOL_BUCKETS = {
+  r2:      { id: 'r2',      label: 'R2 · media',   publicBase: 'https://r2.kolkrabbi.io',  proxy: true  },
+  b2:      { id: 'b2',      label: 'B2 · website', publicBase: 'https://b2.kolkrabbi.io',  proxy: false },
+  b2vault: { id: 'b2vault', label: 'B2 · vault',   publicBase: 'https://b2v.kolkrabbi.io', proxy: false },
+}
+
 // ── Pure helpers (base-independent) ───────────────────────────────
 
 export const isImageType = (ct) => !!ct && ct.startsWith('image/')
 export const isVideoType = (ct) => !!ct && ct.startsWith('video/')
 
 export function formatSize(bytes) {
+  /* a sizeless object renders NOTHING, not "null B" (kol-fxr 2026-08-28): the
+   * first comparison is `null < 1024`, which is true, so the guard has to come
+   * before it. fxr's hand-rolled copy had this and lost it on adopting 0.2.0 —
+   * the guard belongs here so the next consumer cannot lose it the same way. */
+  if (bytes == null || !Number.isFinite(bytes)) return ''
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`
@@ -59,29 +95,71 @@ export function createMediaClient({
   adminBase = DEFAULTS.adminBase,
   publicBase = DEFAULTS.publicBase,
   proxyPath = DEFAULTS.proxyPath,
+  /* ONE CLIENT, N BUCKETS (MediaLibraryPages, kol-monitor/kol-r2b2 2026-08-27): a
+   * table `{ id: { id, label, publicBase, proxy, writable } }` so a consumer's
+   * bucket dropdown reaches `R2 · media`, `B2 · website`, `B2 · vault` through
+   * the one client. `listMedia` sends `bucket=<id>` (kol-r2b2's worker takes it
+   * on /api/list); `mediaUrl(key, id)` builds on that bucket's publicBase.
+   *
+   * THREE VALUES (MediaClientBucketTable, 2026-08-28 — the table is the
+   * package's now, see KOL_BUCKETS above):
+   *   `null` (default)  today's single bucket — nothing existing breaks
+   *   `true`            KOL_BUCKETS as shipped
+   *   an object         KOL_BUCKETS with these merged in, per id — a label, an
+   *                     extra bucket, a `writable` flag. A consumer overrides;
+   *                     it does not restate. Passing the canonical three
+   *                     verbatim (what both consumers do today) merges to
+   *                     exactly itself, so adoption is a deletion, not a swap. */
+  buckets = null,
 } = {}) {
   const cdnPrefix = new RegExp(`^${escapeRe(publicBase)}/`)
+  const merged = buckets === true ? KOL_BUCKETS
+    : buckets ? Object.fromEntries(
+        [...new Set([...Object.keys(KOL_BUCKETS), ...Object.keys(buckets)])]
+          .map((id) => [id, { ...KOL_BUCKETS[id], ...buckets[id] }])
+      )
+    : null
+  const table = merged ? Object.fromEntries(Object.entries(merged).map(([id, b]) => [id, { id, ...b }])) : {}
+  /* the proxy decision is the TABLE's, not the URL's: a bucket that sends CORS
+   * is passed through even though its host is a CDN we could rewrite. Longest
+   * prefix first, so a bucket on a sub-path of another still matches its own. */
+  const rewrites = Object.values(table)
+    .filter((b) => b.publicBase)
+    .map((b) => ({ re: new RegExp(`^${escapeRe(b.publicBase)}/`), proxy: b.proxy !== false }))
+    .sort((a, b) => b.re.source.length - a.re.source.length)
 
-  /** Public URL for a bucket key. */
-  const mediaUrl = (key) => `${publicBase}/${key}`
+  /** Public URL for a bucket key — on a named bucket's own host when the table names it. */
+  const mediaUrl = (key, bucket) => `${table[bucket]?.publicBase ?? publicBase}/${key}`
+
+  /** The buckets this client can list — `[]` without a table. */
+  const bucketList = () => Object.values(table)
 
   /* Rewrite a public CDN URL to the same-origin proxy path so canvas
    * consumers aren't CORS-tainted. Non-CDN URLs (data:, blob:, already
-   * proxied) pass through untouched. */
-  const proxied = (url) => url.replace(cdnPrefix, proxyPath)
+   * proxied) pass through untouched — and so does a bucket the table marks
+   * `proxy: false`, which is what makes that flag load-bearing here instead of
+   * a note the consumer has to read. Without a table this is the old
+   * single-prefix rewrite, unchanged. */
+  const proxied = (url) => {
+    if (!rewrites.length) return url.replace(cdnPrefix, proxyPath)
+    const hit = rewrites.find((r) => r.re.test(url))
+    if (!hit) return url
+    return hit.proxy ? url.replace(hit.re, proxyPath) : url
+  }
 
   /* List bucket objects, optionally under a folder prefix. Throws on a
    * non-OK response so callers can show an error. */
-  async function listMedia(prefix = '', { signal } = {}) {
+  async function listMedia(prefix = '', { signal, bucket } = {}) {
     const params = new URLSearchParams()
     if (prefix) params.set('prefix', prefix)
+    if (bucket) params.set('bucket', bucket)
     const res = await fetch(`${adminBase}/api/list?${params}`, { signal })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
     return data.objects || []
   }
 
-  return { adminBase, publicBase, mediaUrl, proxied, listMedia }
+  return { adminBase, publicBase, mediaUrl, proxied, listMedia, buckets: bucketList }
 }
 
 // Default instance on the production hosts — existing consumers migrate by

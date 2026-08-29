@@ -1,6 +1,43 @@
-import { ContentCard } from '@kolkrabbi/kol-component'
+import { useState } from 'react'
+import { Button, ContentCard } from '@kolkrabbi/kol-component'
+/* a flat 16/9 placeholder so the hero's media (and its zoom rung) has something to render */
+const bg = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><rect width="1600" height="900" fill="#6b7280"/></svg>')
 
 export const stage = 'lg'
+
+/* catalog's 2×2 expand — the GridCard behaviour the three catalog repos
+ * (monitor · mirror · fxr) run on: click toggles, the info field + button are
+ * the consumer's `expandedContent`. */
+function CatalogExpand() {
+  const [open, setOpen] = useState(true)
+  return (
+    <div className="grid w-full max-w-[48rem] grid-cols-4 gap-4">
+      <ContentCard
+        variant="catalog"
+        title="Empty 7U"
+        detail="7U — power, perf, patch"
+        expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        expandedContent={
+          <>
+            <div className="flex flex-col gap-2">
+              <p className="kol-mono-14 text-emphasis">Empty 7U</p>
+              <p className="kol-mono-12 text-body">Seven units, power, performance and patch panels left open — the rack you start from.</p>
+            </div>
+            <Button size="sm" onClick={(e) => e.stopPropagation()}>Use preset</Button>
+          </>
+        }
+      />
+      <ContentCard variant="catalog" title="Studio 12U" detail="12U — full desk" />
+      <ContentCard variant="catalog" title="Live 4U" detail="4U — stage" />
+    </div>
+  )
+}
+
+function PrintFlip() {
+  const [on, setOn] = useState(false)
+  return <ContentCard variant="print" title="Poster 04" detail="A2" selected={on} onClick={() => setOn((v) => !v)} media={<img src={bg} alt="" />} />
+}
 
 const S = {
   kicker: 'Field notes',
@@ -12,13 +49,25 @@ const S = {
 
 export default function ContentCardDemo() {
   return (
+    <div className="flex w-full flex-col gap-8">
+    {/* the HERO — the featured card riding a page's fold: header row (label ·
+      * meta chips), media on the 1.02 zoom rung, display-03 title */}
+    <div className="w-full max-w-[48rem]">
+      {/* print: `selected` turns the card (PrintGridCard's flip), the media fades in */}
+      <PrintFlip />
+      <ContentCard variant="article" hero label="Featured" meta={['15 Aug 2026', '5 min read']} kicker={S.kicker} title={S.title} body={S.body} tags={['design-system', 'type']} media={<img src={bg} alt="" />} href="#" onNavigate={(e) => e.preventDefault()} />
+    </div>
     <div className="grid w-full max-w-[48rem] grid-cols-3 items-start gap-4">
       <ContentCard variant="default" title={S.title} date={S.date} size={S.size} />
       <ContentCard variant="catalog" title={S.title} detail={S.body} />
-      <ContentCard variant="article" title={S.title} kicker={S.kicker} body={S.body} date={S.date} size={S.size} />
+      {/* a titleClass override keeps the hover dim — the hook is behaviour, not voice */}
+      <ContentCard variant="article" title={S.title} kicker={S.kicker} body={S.body} date={S.date} size={S.size} titleClass="kol-sans-display-03 uppercase truncate" href="#" onNavigate={(e) => e.preventDefault()} />
       <ContentCard variant="work" pad="sm" title={S.title} body={S.body} meta={S.date} />
-      <ContentCard variant="typeface" title={S.title} body={S.body} date={S.date} />
+      {/* typeface: `reveal` — on hover the plate + glyph fade out and the pangram fades in */}
+      <ContentCard variant="typeface" title="Right Grotesk" body="6 styles" date="2024" href="#" onNavigate={(e) => e.preventDefault()} media={<div className="flex h-full w-full items-center justify-center kol-sans-display-01">Ðð</div>} reveal={<p className="text-auto-inverse kol-sans-heading-03 text-center">The quick brown fox jumps over the lazy dog</p>} />
       <ContentCard variant="default" selected title={S.title} date={S.date} size={S.size} />
+    </div>
+    <CatalogExpand />
     </div>
   )
 }

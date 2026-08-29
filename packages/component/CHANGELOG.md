@@ -1,5 +1,22 @@
 # @kolkrabbi/kol-component
 
+## 0.130.0 — 2026-08-29
+
+- **`QuadrantSync` — dev chrome for agreeing on WHICH element is being
+  discussed before anyone edits it.** Born from a real failure: ten messages to
+  move one button, none of them wrong about CSS, all of them about different
+  elements. Name a node with `data-handle` on a div that already exists, grid it
+  in fractional cells, and read one sync line — `StageModuleGroup @ 1440w · e8 →
+  h7` — that both sides restate before any code changes. The grid lands on the
+  node the **user** named and is never redirected to a child or a parent; the
+  owner is reported, never substituted, because a grab-handle that moves a whole
+  group lives at group level. A cell is a fraction of the named element, so a
+  coordinate survives a reflow where a pixel offset does not; divisions are set
+  per axis and `square` is one-shot, since recomputing on every reflow would
+  silently change what a coordinate means. Reports the owner's layout mode and
+  what it makes reachable rather than implying a diff that cannot work, and
+  flags `@kolkrabbi/*` ownership at selection time. Dev-only by default
+  (`enabled` is false when `NODE_ENV === 'production'`).
 
 ## 0.68.1 — 2026-08-26
 
@@ -23,11 +40,11 @@ chipless block.
 
 The ladder — three roles, and exactly one `emphasis` per block:
 
-| role | what it is |
-|---|---|
+| role       | what it is                                        |
+| ---------- | ------------------------------------------------- |
 | `emphasis` | THE THING YOU CAME FOR — one per block, never two |
-| `body` | what identifies it — the title, the type |
-| `meta` | metadata — the year, the count, the file size |
+| `body`     | what identifies it — the title, the type          |
+| `meta`     | metadata — the year, the count, the file size     |
 
 Roles, never raw `fg-*` opacities or `oq-*` rungs: a role is the only thing
 that survives a theme flip and a consumer's own palette.
@@ -332,13 +349,13 @@ Cuts in use after this: navbar (`ShellHeader`) md chromed · toolbar
 
 - `list` is no longer a flex column. It is the SAME wall with wider tracks
   (`listMin`, 30rem default) — which is what every shipped consumer already
-  did (`repeat(4, 1fr)` list / `repeat(6, 1fr)` grid). User call: *"layout
-  always wraps the items in a grid, at least 99% of the time"*.
+  did (`repeat(4, 1fr)` list / `repeat(6, 1fr)` grid). User call: _"layout
+  always wraps the items in a grid, at least 99% of the time"_.
 - `min` defaults to **20rem**, the card-wall law's minimum
   (`01-foundations/05-layout-systems.md`), up from an invented 12rem.
 - The count still derives from the wall's own width via `auto-fill` +
-  `minmax()`, never a fixed track count: *"the shell rails eat width that
-  viewport breakpoints can't see, so a forced count compresses every card"*
+  `minmax()`, never a fixed track count: _"the shell rails eat width that
+  viewport breakpoints can't see, so a forced count compresses every card"_
   (user call 2026-08-09). The shipped `repeat(6, 1fr)` is that disease.
 
 ## 0.47.1 — 2026-08-15
@@ -510,14 +527,13 @@ duplicate. The rulings are real; the duplicate is retired (kol-shell 0.3.0).
 - **One row below the divider.** Filter groups are left-aligned columns, label
   above values, visible only while the filter toggle is open; the layout strip is
   right-aligned and ALWAYS visible. `items-start` pins the strip to the label row.
-  It previously rendered in its own row *after* the filter block, so expanding a
+  It previously rendered in its own row _after_ the filter block, so expanding a
   group pushed it down the page — the defect that started the whole ticket.
 - **`iconComponent`** — icon seam, the one genuine addition the fork had that this
   did not. Defaults to the DS `Icon`; needs `filter` + `search`.
 
 `layoutOptions`, `defaultLayout`, `headerActions`, `showCountOnlyWhenFiltering`
 and `searchKeys` were already here and did not need folding in.
-
 
 > **Gap:** 0.6.0 → 0.38.0 shipped without entries (that history lives in the repo's
 > session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
@@ -531,7 +547,7 @@ and `searchKeys` were already here and did not need folding in.
 - **`AudioPlayer`** — the interactive audio atom. Audio was the one media kind
   the design system had nothing for, so every consumer hand-rolled a bare
   `<audio controls>` and inherited whatever the browser painted. The MediaLibrary
-  widening (0.39.0) made audio objects *arrive* — 116 sound files in
+  widening (0.39.0) made audio objects _arrive_ — 116 sound files in
   `kol-vault-media` alone — and left minting the component as the open taxonomy
   call. It is an **atom**, beside `HlsVideo`.
 
@@ -590,7 +606,7 @@ and `searchKeys` were already here and did not need folding in.
   and with it the `{ media }` descriptor, `OverlayGlassPanel`, and the autoplay
   progress ring. Five capabilities crossed the other way:
 
-  - **`children`** — a static overlay pinned over the stage that does *not*
+  - **`children`** — a static overlay pinned over the stage that does _not_
     travel with the slides.
   - **`fullWidth`** — drop the section's own vertical padding.
   - **`rounded`** — turn the frame border and radius off.
@@ -604,7 +620,7 @@ and `searchKeys` were already here and did not need folding in.
   **Deliberately not carried:** the foundry title coupling (a size ramp keyed on
   the literal strings `'Málrómur'` / `'Tröllatunga'`, plus a per-typeface inline
   `fontFamily`), `kol-label-mono-xs` (a deleted legacy family), and the hidden
-  block that eagerly preloaded *every* slide image — embla plus `loading="eager"`
+  block that eagerly preloaded _every_ slide image — embla plus `loading="eager"`
   on the visible slide covers that without fetching a whole gallery up front.
 
 - **`EmblaNav`** — THE prev/next pair, exported. Three components hand-wrote the

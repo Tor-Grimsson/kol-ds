@@ -13,7 +13,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/FontViewerSuperSuite.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/fontviewer/FontViewerSuperSuite.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-14-dead-sweep/web/components/FontViewerSuperSuite.jsx` |
 
 ## Import
 

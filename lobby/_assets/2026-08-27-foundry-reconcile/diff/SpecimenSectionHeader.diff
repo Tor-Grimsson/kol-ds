@@ -1,0 +1,41 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/SpecimenSectionHeader.jsx	2026-07-28 19:51:29.200857232 +0000
++++ src/components/sections/foundry/SpecimenSectionHeader.jsx	2026-08-25 03:57:11.085791914 +0000
+@@ -1,6 +1,7 @@
+ import { Icon } from '@kolkrabbi/kol-icons'
+ import { Dropdown } from '@kolkrabbi/kol-component'
+ import { Divider } from '@kolkrabbi/kol-component'
++import SectionTitle from '../../ui/SectionTitle.jsx'
+ 
+ /* taxonomy-ok: nests DS Dropdown + Divider (relative imports) plus kol-icons's
+  * Icon (a package import the relative-import check can't see). */
+@@ -58,24 +59,23 @@
+ }) => {
+   const title = label || badgeText
+   // Single-line label → helper (line-height 1), per the type fault line.
+-  const titleClass = size === 'sm' ? 'kol-helper-16' : 'kol-helper-20'
++  const titleClass = size === 'lg' ? 'kol-helper-20' : 'kol-helper-16'
+ 
+   return (
+     <div className="flex flex-col gap-[13px]">
+-      <div className="w-full flex flex-row justify-between items-end gap-4">
++      <div className="w-full flex flex-row flex-wrap justify-between items-end gap-4">
+         {/* Left: title + optional icon */}
+         <div className="flex items-center gap-3 md:gap-4">
+-          <span className={titleClass}>{title}</span>
+-          {icon && <Icon name={icon} size={20} />}
++          <SectionTitle icon={icon}>{title}</SectionTitle>
+         </div>
+ 
+         {/* Right: controlled dropdowns */}
+-        <div className="flex items-center gap-4">
++        <div className="flex flex-wrap items-center gap-4">
+           {showWeightDropdown && weightOptions.length > 0 && (
+-            <Dropdown options={weightOptions} value={selectedWeight} onChange={onWeightChange} />
++            <Dropdown options={weightOptions} value={selectedWeight} onChange={onWeightChange} size={size === "sm" ? "sm" : "md"} />
+           )}
+           {showDropdown && (
+-            <Dropdown options={styleOptions} value={selectedStyle} onChange={onStyleChange} />
++            <Dropdown options={styleOptions} value={selectedStyle} onChange={onStyleChange} size={size === "sm" ? "sm" : "md"} />
+           )}
+         </div>
+       </div>

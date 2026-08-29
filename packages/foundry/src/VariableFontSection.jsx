@@ -122,20 +122,21 @@ const VariableFontSection = ({
 
   return (
     <section className="w-full py-12 lg:py-16">
-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+      <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
         <SpecimenSectionHeader
           selectedStyle={selectedStyle}
           onStyleChange={setSelectedStyle}
           showDropdown={showDropdown}
-          badgeText={badgeText}
-          icon="type"
-          size="sm"
+          label="Variable Font"
+          icon="slider-02"
+          size="md"
         />
 
         {/* VariableFontDisplay (inlined) — giant text behind, controls in front.
           * Height + specimen size are INLINE (live geometry; see docblock). */}
         <div
-          className="relative w-full rounded border border-fg-16 bg-surface-primary overflow-hidden p-6 md:p-10"
+          /* PLATE, not frame (FoundrySpecimenSections, 2026-08-27): no border, the opaque secondary surface — no seam through it */
+          className="relative w-full rounded bg-surface-secondary overflow-hidden p-6 md:p-10"
           style={{ height: isDesktop ? '60vh' : '30vh' }}
         >
           <p
@@ -158,7 +159,7 @@ const VariableFontSection = ({
                 <span className="kol-helper-12 text-auto">WEIGHT</span>
               </div>
               <div className="flex gap-2">
-                <Pill variant="subtle">wght {Math.round(weight)}</Pill>
+                <Pill>wght {Math.round(weight)}</Pill>
               </div>
             </div>
 

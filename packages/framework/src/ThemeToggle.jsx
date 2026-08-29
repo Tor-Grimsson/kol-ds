@@ -64,6 +64,11 @@ import { useTheme } from './theme.js'
  * sees) and one click commits it. The reset lives behind a modifier — alt- or
  * shift-click — which is the "separate affordance" the ruling allows, with no
  * new chrome and no third stop. */
+/* The VISIBLE label names the TARGET, not the state (ThemeToggleLabelTarget,
+ * user 2026-08-27: "should it not say dark mode in light mode and vice versa?
+ * as to what the button actually does when you click it?"). A button's label
+ * names its action — the aria-label / title always said "Switch to …"; the eye
+ * was told the opposite. Rendered as MODE_LABEL[next], never MODE_LABEL[shown]. */
 const MODE_LABEL = { light: 'Light mode', dark: 'Dark mode' }
 const SLOT = { dark: 0, light: 1 }
 
@@ -79,9 +84,13 @@ export default function ThemeToggle({
   label = true,
   iconRight = false,
   fullWidth = false,
+  /* `tone="sunken"` (ControlToneSunken, kol-website 2026-08-28): the control set's dark well + fg-96
+   * ink, so the toggle beside a sunken Dropdown matches it; `inverse` aliased. Rules in kol-theme. */
+  tone = 'default',
   className = '',
 }) {
   const { theme, mode, cycle, clear } = useTheme()
+  const extra = `${tone === 'sunken' || tone === 'inverse' ? 'kol-tone-sunken' : ''} ${className}`.trim()
 
   /* Label and slot follow the RESOLVED theme, not the stored choice: when the
    * page is unset, what the user is looking at is the OS's answer, and the
@@ -144,7 +153,7 @@ export default function ThemeToggle({
   /* ── DEPRECATED aliases — old chrome verbatim (0.6.x) ── */
   if (variant === 'icon') {
     return (
-      <button {...shared} className={`kol-theme-toggle kol-theme-toggle-none kol-btn-${size} kol-btn-icon ${className}`.trim()}>
+      <button {...shared} className={`kol-theme-toggle kol-theme-toggle-none kol-btn-${size} kol-btn-icon ${extra}`.trim()}>
         {iconSwap(glyphSolo)}
       </button>
     )
@@ -166,12 +175,12 @@ export default function ThemeToggle({
       ? `w-full inline-flex items-center justify-start gap-2 ${barePadY} px-6 ${mono} bg-transparent text-emphasis`
       : 'kol-theme-toggle kol-theme-toggle-subtle kol-btn-md kol-mono-14 w-full justify-start gap-2'
     return (
-      <button {...shared} className={`${chromeCls} ${className}`.trim()}>
+      <button {...shared} className={`${chromeCls} ${extra}`.trim()}>
         <span className="inline-flex items-center justify-center shrink-0" aria-hidden="true">
           {iconSwap(bare ? glyphWithText : glyphSolo)}
         </span>
         <span className="kol-sidenav-hop-label flex-1 min-w-0 text-left">
-          {MODE_LABEL[shown]}
+          {MODE_LABEL[next]}
         </span>
       </button>
     )
@@ -182,11 +191,11 @@ export default function ThemeToggle({
 
   if (variant === 'flush') {
     const glyph = label ? glyphWithText : glyphSolo
-    const cls = `kol-theme-toggle kol-theme-toggle-flush gap-2 ${mono} ${width} ${className}`
+    const cls = `kol-theme-toggle kol-theme-toggle-flush gap-2 ${mono} ${width} ${extra}`
     return (
       <button {...shared} className={cls.replace(/\s+/g, ' ').trim()}>
         {!iconRight && iconSwap(glyph)}
-        {label && <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[shown]}</span>}
+        {label && <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[next]}</span>}
         {iconRight && iconSwap(glyph)}
       </button>
     )
@@ -199,15 +208,15 @@ export default function ThemeToggle({
   if (!label) {
     // icon-only pins the square box per rung — geometry condition, not a variant
     return (
-      <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} kol-btn-icon ${width} ${className}`.replace(/\s+/g, ' ').trim()}>
+      <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} kol-btn-icon ${width} ${extra}`.replace(/\s+/g, ' ').trim()}>
         {iconSwap(glyphSolo)}
       </button>
     )
   }
   return (
-    <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} ${mono} gap-2 ${width} ${className}`.replace(/\s+/g, ' ').trim()}>
+    <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} ${mono} gap-2 ${width} ${extra}`.replace(/\s+/g, ' ').trim()}>
       {!iconRight && iconSwap(glyphWithText)}
-      <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[shown]}</span>
+      <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[next]}</span>
       {iconRight && iconSwap(glyphWithText)}
     </button>
   )

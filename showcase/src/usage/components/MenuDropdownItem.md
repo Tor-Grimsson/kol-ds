@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 116 across 23 files in 10 apps
-- **Weighted inbound:** 78★ across 23 edges — 9×4★ · 14×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website
+- **Real-world usages found:** 114 across 21 files in 8 apps
+- **Weighted inbound:** 72★ across 21 edges — 9×4★ · 12×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 2 | `kol-apps/kol-client-ac/src/editor/compose/LayerStack.jsx` |
 | 3 | 2 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/compose/LayerStack.jsx` |
 | 3 | 2 | `kol-apps/kol-client-kolkrabbi/src/editor/compose/LayerStack.jsx` |
-| … | | _11 more_ |
+| … | | _9 more_ |
 
 ## Import
 

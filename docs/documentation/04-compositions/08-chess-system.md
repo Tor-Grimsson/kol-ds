@@ -37,7 +37,7 @@ import * as chessData from '@kolkrabbi/kol-chess/data'
 | Group | Exports | What it is |
 |-------|---------|-----------|
 | **Board + variants** | `ChessBoard`, `ChessBoardWithControls`, `ChessBoardWithSidebar`, `ChessBoardFullscreen` | the board and its four framings (bare / +controls / +sidebar / fullscreen) |
-| **Apparatus** | `ChessAnalysisLayout`, `ChessSidebar`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `GameArchiveTable`, `AlternativeControlsMock` | the full analysis layout — move notation, playback transport, variation tree, and the archive table (the game picker is a DS `Dropdown` inside the controls since 0.2.0; the dead `GameSelector` export was deleted 2026-07-15) |
+| **Apparatus** | `ChessAnalysisLayout`, `ChessSidebar`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `GameArchiveTable`, `AlternativeControlsMock` | the full analysis layout — move notation, playback transport, variation tree, and the archive table (the game picker is a DS `Dropdown` inside the controls since 0.2.0; the dead `GameSelector` export was deleted 2026-07-15; since 0.8.0 `NotationPanel` takes `decorate(entry) => node`, rendered trailing each SAN, so a consumer hangs a review `Badge` or an eval delta without re-authoring the move list) |
 | **Pieces** | `ChessPiece` | piece renderer + 3 bundled SVG sets (`chess-vector-set`, `chess-extra-set/set-1,2,3`) |
 | **Hero** | `ChessHero` | landing / specimen hero |
 | **State** | `ChessControlsProvider`, `useChessControls`, `createSnapshotsFromPgn` | context that drives board ⇄ notation ⇄ playback sync |

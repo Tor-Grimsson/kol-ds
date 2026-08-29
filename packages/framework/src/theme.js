@@ -18,6 +18,22 @@ import { useEffect, useState } from 'react'
 
 export const THEME_STORAGE_KEY = 'kol-theme'
 
+/* THE NO-FLASH BOOT SNIPPET (ShellHomeSystem, 2026-08-27 — every app hand-wrote
+ * it against this file's key): inline it in index.html before the app script.
+ * USER law: explicit choice > system > light — a saved light/dark stamps
+ * `data-theme` before first paint; no saved choice leaves the page un-stamped
+ * so the theme CSS follows the OS live. The versioned cutover (v3, 2026-07-30)
+ * discards stamps written by the old two-state toggle, once. */
+export const THEME_BOOT_SCRIPT = `try {
+  if (localStorage.getItem('kol-theme-v') !== '3') {
+    localStorage.removeItem('kol-theme')
+    localStorage.removeItem('theme')
+    localStorage.setItem('kol-theme-v', '3')
+  }
+  var t = localStorage.getItem('kol-theme')
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+} catch (e) {}`
+
 function getExplicitTheme() {
   const attr = document.documentElement.dataset.theme
   if (attr === 'light' || attr === 'dark') return attr

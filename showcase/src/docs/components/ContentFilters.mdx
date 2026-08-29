@@ -56,9 +56,14 @@ typefaces-style indexes — reach for it before composing a bespoke filter bar.
 <Api name="ContentFilters" rows={[
   {"prop":"items","type":"array","def":"—","desc":"Full item set; filtered internally."},
   {"prop":"renderItem","type":"function","def":"—","desc":"(filteredItems, viewMode, layout) => ReactNode."},
-  {"prop":"filterGroups","type":"array","def":"[]","desc":"[{ label, key, values }] → toggleable tags."},
+  {"prop":"filterGroups","type":"array","def":"[]","desc":"[{ label, key, values, stack?, className?, wrapClassName? }] → toggleable tags. THE LAW (user, 2026-08-27, \"for the 10th time\"): the FIRST group hugs its chips — it is narrow — and every group after it FLOWS across the rest of the row, by position, never by chip count (the /prints shape: CATEGORY hugs, YEAR flows); stack is the explicit override. The category label is the kol-eyebrow role; the fluid group keeps 48px of room on its right; the panel and the groups are container-query roots."},
   {"prop":"title","type":"string","def":"—","desc":"Section heading."},
   {"prop":"totalCount","type":"number","def":"—","desc":"Total-before-filtering count."},
   {"prop":"searchKeys","type":"array","def":"—","desc":"Fields matched by the search input."},
-  {"prop":"viewModeOptions","type":"array","def":"—","desc":"Optional grid/list view toggles."}
+  {"prop":"viewModeOptions","type":"array","def":"—","desc":"Optional grid/list view toggles."},
+  {"prop":"layoutOptions","type":"{ value, label, onClick?, active?, title? }[]","def":"—","desc":"The layout strip. An item with onClick is its own toggle; active overrides layout === value for the lit state; title is the tooltip."},
+  {"prop":"layout · onLayoutChange","type":"string · (layout) => void","def":"—","desc":"Controlled LIST/GRID (mirrors viewMode / onViewModeChange)."},
+  {"prop":"trailingActions","type":"ReactNode","def":"—","desc":"The header's RIGHT group, before the strip; a vertical Divider sits between them when both exist."},
+  {"prop":"leadingActions","type":"ReactNode","def":"—","desc":"Below-divider row, LEFT half (before the filter groups)."},
+  {"prop":"belowActions","type":"ReactNode","def":"—","desc":"Below-divider row, RIGHT half (after the count / a below-placed strip). The row shows when expanded, or a below strip, leadingActions or belowActions is present."}
 ]} />

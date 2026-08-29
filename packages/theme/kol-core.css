@@ -1,0 +1,39 @@
+/**
+ * kol-core.css — THE APP TIER of the theme, without the domain packs
+ * (FullConsumptionContract, kol-monitor 2026-08-27 — user: "how are you fully
+ * consuming without stuff that's irrelevant to development (specific packages
+ * like chess and foundry)"). The umbrella `kol-theme.css` imports every pack —
+ * chess · workshop · foundry · dashboards · styleguide were 81,134 bytes, 23 % of
+ * the theme, in a rack app's bundle that renders none of them; plain CSS
+ * @imports do not tree-shake. A consumer could hand-assemble the tier file by
+ * file, but then owns the cascade order by hand — the one thing the umbrella
+ * exists to guarantee. This entry guarantees it for the core.
+ *
+ *   @import "tailwindcss";
+ *   @import "@kolkrabbi/kol-theme/core";
+ *   @import "@kolkrabbi/kol-theme/kol-components-dashboards.css" layer(components);   ← a domain pack, if you render it
+ *
+ * Same files, same order as the umbrella, minus the five domain packs; the
+ * design tokens last, as in the umbrella. Domain packs import AFTER this entry
+ * (they only ever add their own classes). The umbrella `"."` is unchanged — no
+ * consumer moves unless it chooses to.
+ */
+@import "./kol-base-tokens.css" layer(components);
+@import "./kol-color.css" layer(components);
+@import "./kol-opacity.css" layer(components);
+@import "./kol-opaque.css" layer(components);
+@import "./kol-typography.css" layer(components);
+@import "./kol-typography-mono.css" layer(components);
+@import "./kol-type-mono-classes.css" layer(components);
+@import "./kol-type-roles.css" layer(components);
+@import "./kol-utilities.css" layer(components);
+@import "./kol-components-atoms.css" layer(components);
+@import "./kol-components-molecules.css" layer(components);
+@import "./kol-components-organisms.css" layer(components);
+@import "./kol-components-shell.css" layer(components);
+@import "./kol-design-tokens.css" layer(components);
+
+/* MOTION — last, so a named motion class out-ranks the chrome it moves
+ * (kol-animation.css, 2026-08-28: every keyframe, every named motion class,
+ * every reduced-motion block, one file). */
+@import "./kol-animation.css" layer(components);

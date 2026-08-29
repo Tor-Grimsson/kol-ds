@@ -1,4 +1,4 @@
-import { motion, useSpring, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import useTilt from '../hooks/useTilt.js'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 import useCoarsePointer from '../hooks/useCoarsePointer.js'
@@ -65,36 +65,16 @@ export default function TiltCard({
 }
 
 function TiltCardInner({ src, alt, className, variant, magnitude, perspective, children }) {
-  const tilt = useTilt({ magnitude, perspective })
-  const grounded = variant === 'grounded'
-
-  /* Zone-based tilt: normalize the spring output back to -1..1, snap it to
-   * 3 zones, rescale to ±2.5°, and let a slower lazy spring catch up so the
-   * card lags and settles into quantized angles. rotateX is clamped to
-   * min(0, …) — grounded cards only ever tilt back. */
-  const zones = 3
-  const snap = (v) => Math.round(v * zones) / zones
-  const lazySpring = { stiffness: 250, damping: 25, mass: 0.6 }
-
-  const targetX = useTransform(tilt.motionValues.rotateX, (v) =>
-    grounded ? Math.min(0, snap(-v / magnitude) * 2.5) : v,
-  )
-  const targetY = useTransform(tilt.motionValues.rotateY, (v) =>
-    grounded ? snap(v / magnitude) * 2.5 : v,
-  )
-
-  const lazyRotateX = useSpring(targetX, lazySpring)
-  const lazyRotateY = useSpring(targetY, lazySpring)
-
-  const style = grounded
-    ? { ...tilt.style, rotateX: lazyRotateX, rotateY: lazyRotateY, transformOrigin: 'center bottom' }
-    : tilt.style
+  /* the grounded feel — zones, ±2.5°, the lazy spring, the bottom pivot — lives
+   * in useTilt now (ShelfCardTiltWrapsCard, 2026-08-27), so the shelf's card
+   * wrapper and this frame are one motion, not two copies of eight lines */
+  const tilt = useTilt({ magnitude, perspective, grounded: variant === 'grounded' })
 
   return (
     <motion.div
       ref={tilt.ref}
       className={`relative ${className}`}
-      style={style}
+      style={tilt.style}
       onMouseMove={tilt.onMouseMove}
       onMouseLeave={tilt.onMouseLeave}
     >

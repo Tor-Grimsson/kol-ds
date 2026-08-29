@@ -17,6 +17,11 @@ gsap.registerPlugin(ScrollTrigger)
  *
  * Typography and color are inherited from the consumer via
  * `containerClass` — the component owns only the split and the motion.
+ * The word's REST STATE (off-screen right, rotated in 3D) is
+ * `.kol-animated-word` in kol-theme's kol-animation.css — promoted there
+ * 2026-08-28 from kol-website, which had carried it since this component
+ * shipped: outside that one app the title rendered static and visible, with no
+ * error, because GSAP was animating from a state nothing declared.
  * When the user prefers reduced motion, no GSAP runs at all and the
  * title renders fully visible and static.
  *
@@ -46,7 +51,7 @@ export default function AnimatedTitle({
     if (reducedMotion) return undefined
 
     const ctx = gsap.context(() => {
-      const words = containerRef.current.querySelectorAll('.animatedWord')
+      const words = containerRef.current.querySelectorAll('.kol-animated-word')
 
       gsap.set(words, {
         opacity: 0,
@@ -97,7 +102,10 @@ export default function AnimatedTitle({
           {line.split(' ').map((word, i) => (
             <span
               key={i}
-              className="animatedWord"
+              /* both names: the prefixed one the DS styles (kol-animation.css,
+                * 2026-08-28) and the bare one kol-website's own sheet still selects
+                * until it deletes it */
+              className="kol-animated-word animatedWord"
               dangerouslySetInnerHTML={{ __html: word }}
             />
           ))}

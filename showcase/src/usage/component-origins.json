@@ -1,7 +1,42 @@
 {
+  "AppShellSet": {
+    "repo": "kol-monitor",
+    "source": "kol-monitor/src/components/AppLayout.jsx#L1-L21 + kol-mirror/src/components/AppLayout.jsx#L1-L23 (full inventory per piece below)",
+    "date": null
+  },
+  "ArticleCard": {
+    "repo": "kol-website",
+    "source": "kol-website — components/prose/cards/ArticleCardHero.jsx + ArticleCardMini.jsx + the Studystack band",
+    "date": null
+  },
+  "ArticleHeaderReconcile": {
+    "repo": "kol-website",
+    "source": "kol-website — components/prose/layouts/ArticleHeader.jsx (167L) vs kol-content ArticleHeader (87L)",
+    "date": null
+  },
+  "AudioPlayer": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/KindPreview.jsx#L78-L87",
+    "date": null
+  },
   "CardFeatureHoverZoom": {
     "repo": "kol-component",
     "source": "kol-component/src/molecules/CardFeatureItem.jsx (+ FeaturesCardSection.jsx)",
+    "date": null
+  },
+  "ChessBoardFluidCoordinates": {
+    "repo": "kol-chess",
+    "source": "kol-chess ChessBoard (apparatus) · coordinate labels",
+    "date": null
+  },
+  "CodeBlockMobileOverflow": {
+    "repo": "kol-component",
+    "source": "kol-component CodeBlock (organisms) · kol-theme .kol-copy-btn / .kol-frame-control",
+    "date": null
+  },
+  "CollectionItemMinWidth": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/ContentCollection.jsx#L107-L119 · seen on kol-website /work LIST after WorkListingRowsAndFilters (0.100.0)",
     "date": null
   },
   "ColorSwatch": {
@@ -9,9 +44,69 @@
     "source": "kol-fxr — inspector Fill/Stroke paint rows (Figma model)",
     "date": null
   },
+  "ColumnBrowser": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2 — the shipped organism (kol-component 0.97.1)",
+    "date": null
+  },
+  "ComponentSideEffectsField": {
+    "repo": "kol-monitor",
+    "source": "kol-monitor (kol-shell 0.1.0 adoption, 2026-08-15)",
+    "date": null
+  },
   "ThemeToggle (and every component emitting Tailwind utilities)": {
     "repo": "kol-monitor",
     "source": "kol-monitor — DS adoption, framework ThemeToggle integration",
+    "date": null
+  },
+  "ContentCollectionCols": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L78-L104",
+    "date": null
+  },
+  "ContentCollectionColsResponsive": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L78-L108",
+    "date": null
+  },
+  "ContentFiltersCollection": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/FileList.jsx (whole listing surface) + local DS edits in packages/component (linked working tree)",
+    "date": null
+  },
+  "ContentFiltersEqualColumns": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/pages/LibraryPage.jsx (filterGroups) · kol-component/src/organisms/ContentFilters.jsx renderFilterGroup",
+    "date": null
+  },
+  "ContentFiltersFirstGroupHugs": {
+    "repo": "kol-website",
+    "source": "kol-website /prints (the reference render) · kol-component/src/organisms/ContentFilters.jsx renderFilterGroup · kol-fxr/src/pages/LibraryPage.jsx",
+    "date": null
+  },
+  "ContentFiltersTitleGap": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L186-L200",
+    "date": null
+  },
+  "ContentRowsAndPrintCard": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/prints/PrintsGrid.jsx#L1-L70 + routes/Stack.jsx#L78-L110 + apps/web/src/styles/ui.css (tail)",
+    "date": null
+  },
+  "ControlToneInverse": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/brand/src/pages/IconsGallery.jsx (trailingActions) + the ContentFilters search field",
+    "date": null
+  },
+  "DashboardIconCoverage": {
+    "repo": "kol-website",
+    "source": "kol-website — apps/web/src/routes/Metrics.jsx + workshop/DashboardComponents.jsx",
+    "date": null
+  },
+  "DisplayTightRamp": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L150 + components/sections/home/HomeHero.jsx",
     "date": null
   },
   "Dropdown (viewport-aware panel)": {
@@ -24,9 +119,64 @@
     "source": "kol-fxr — Figma-model inspector (2026-08-12 pass)",
     "date": null
   },
+  "FullscreenOverlay": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — LabsShortcuts.jsx:80 · BatchExportModal.jsx:73 · PaletteModal.jsx:131 · MediaPicker.jsx:82,208 · EditorFooter.jsx:259",
+    "date": null
+  },
+  "FeaturedCarouselFullWidth": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L57-L79",
+    "date": null
+  },
+  "FeaturedCarouselReconcile": {
+    "repo": "kol-website",
+    "source": "kol-website — components/sections/shared/FeaturedCarousel.jsx (231L) vs kol-component organism (259L)",
+    "date": null
+  },
+  "FontFolderNaming": {
+    "repo": "kol-website",
+    "source": "kol-website — public/fonts restructure 2026-08-14",
+    "date": null
+  },
+  "FontPreviewClampAndBearings": {
+    "repo": "kol-foundry",
+    "source": "kol-foundry/src/FontPreviewSection.jsx#L83 (wrapper overflow-hidden) · #L101-L106 (clamp) · #L117-L122 (SIZE_LADDER)",
+    "date": null
+  },
+  "FontPreviewNoClamp": {
+    "repo": "kol-foundry",
+    "source": "kol-foundry/src/FontPreviewSection.jsx#L101-L106 (the clamp) · #L117-L122 (SIZE_LADDER)",
+    "date": null
+  },
+  "FoundryComponentsReconcile": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/foundry/ — nine files that fork `@kolkrabbi/kol-foundry` 0.6.2 (local copies + unified diffs in `_assets/2026-08-27-foundry-reconcile/`)",
+    "date": null
+  },
+  "FoundrySpecimenSections": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/foundry/{FoundryOpentypeFeatures,FoundryTypefaceDetails,FoundryTypefacePairing}.jsx + components/ui/{FeatureCard,FeatureGrid,PairingCard,PairingsList}.jsx + styles/ui.css (foundry rules) — copies + screenshots in `_assets/2026-08-27-foundry-specimen-sections/`",
+    "date": null
+  },
+  "FrameworkComponentPeer": {
+    "repo": "kol-website",
+    "source": "kol-website/pnpm-workspace.yaml#L8-L14",
+    "date": null
+  },
   "HeadingTwoNarrow": {
     "repo": "kol-theme",
     "source": "kol-theme/kol-typography.css (.kol-sans-heading-02)",
+    "date": null
+  },
+  "IconSetCut": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/brand/src/pages/IconsGallery.jsx (the `CUT` glob) + kol-icons/src/index.js (`KOL_ICON_SET_V1`)",
+    "date": null
+  },
+  "KindPreview": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2 on kol-component 0.100.1",
     "date": null
   },
   "kol-component (package exports, not a component)": {
@@ -34,14 +184,44 @@
     "source": "kol-monitor — DS-adoption scoping, phase 4 (Button swap)",
     "date": null
   },
+  "LabeledControlSection": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/SettingsPanel.jsx (SettingsSection) — consumers: kol-r2b2 src/SettingsPanel.jsx, kol-fxr src/editor/params/AutoControls.jsx",
+    "date": null
+  },
   "LabsNavIcons (kol-icons set additions — batch)": {
     "repo": "kol-labs-single",
     "source": "kol-labs-single/src/sidebars.config.js#L49-L218",
     "date": null
   },
+  "ListingCardHoverZoom": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L155-L175",
+    "date": null
+  },
+  "ListingCardThumbBorder": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L155-L175",
+    "date": null
+  },
+  "MediaLibraryPages": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/App.jsx#L1-L115 (header · bucket dropdown) + kol-r2b2/src/FileList.jsx (868 lines — the wall) + kol-component/src/organisms/MediaLibrary.jsx (the page variant it replaces)",
+    "date": null
+  },
+  "MediaLibraryReconcile": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/FileList.jsx#L1-L698",
+    "date": null
+  },
   "MenuDropdownItem (label span)": {
     "repo": "kol-fxr",
     "source": "kol-fxr — editor menubar, Settings → \"Show grid\" (any label with descenders)",
+    "date": null
+  },
+  "MobileTouchFloor": {
+    "repo": "kol-theme",
+    "source": "kol-theme type ramps (kol-helper-10 / kol-mono-10 / .kol-table-cell-title) · control heights (toggle-switch, kol-seg-cell, kol-btn-sm, Slider)",
     "date": null
   },
   "Modal (confirm/prompt dialogs)": {
@@ -54,14 +234,164 @@
     "source": "kol-website/apps/web/src/styles/animations.css#L66-L88",
     "date": null
   },
+  "NestedDsDependencies": {
+    "repo": "kol-workshop",
+    "source": "kol-workshop · kol-chess · kol-content · kol-foundry · kol-store package.json (dependencies on the tier below)",
+    "date": null
+  },
+  "NotationPanelMoveDecorations": {
+    "repo": "kol-chess",
+    "source": "kol-chess NotationPanel (apparatus) · move rows",
+    "date": null
+  },
+  "PageHeaderMonoTitle": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/pages/HomePage.jsx#L51 · kol-fxr/src/pages/LibraryPage.jsx#L84",
+    "date": null
+  },
+  "kol-icons/playback/pause": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/AudioTile.jsx (PlayDisc)",
+    "date": null
+  },
+  "PlayDisc · VideoSheet · kol-icons playback/tools variants": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2/src/AudioTile.jsx (PlayDisc, AudioTile, VideoTile, VideoSheet) · kol-r2b2/src/index.css (.r2b2-play)",
+    "date": null
+  },
   "Input (property-field variant) — or a new atom": {
     "repo": "kol-fxr",
     "source": "kol-fxr — inspector prefixed inputs (X/Y, W/H, R°, opacity %, corner radius, weight)",
     "date": null
   },
+  "PublishWaveChangelog": {
+    "repo": "kol-website",
+    "source": "kol-website — consumer-side scoring of every publish wave since 2026-07-15",
+    "date": null
+  },
+  "SideNav · NavRail": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr src/editor/labs/RailSettings.jsx + src/editor/labs/LabsNav.jsx (the working reference, measured)",
+    "date": null
+  },
+  "NavRail · SideNav": {
+    "repo": "kol-shell",
+    "source": "kol-shell src/NavRail.jsx (the AppShell rail) · kol-framework src/SideNav.jsx (collapsed) — measured in kol-fxr 2026-08-27",
+    "date": null
+  },
   "RecordManager": {
     "repo": "reference",
     "source": "reference — Framer CMS (screenshots in `_assets/2026-08-06-recordmanager-*.png`); filed from kol-website",
+    "date": null
+  },
+  "SectionBackgroundProp": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/{SectionHero,SectionSplit,SectionCards,SectionCta,SectionFaq,SectionNewsletter}.jsx — surfaces painted by class, no prop",
+    "date": null
+  },
+  "SectionCtaConnectVariant": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/shared/ConnectCta.jsx — the preset to absorb",
+    "date": null
+  },
+  "SectionCtaEditorial": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/shared/ConnectCta.jsx#L1-L16",
+    "date": null
+  },
+  "SectionHeightForty": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/shared/ConnectCta.jsx#L1-L16 + routes/Studio.jsx#L60-L75",
+    "date": null
+  },
+  "SectionHeightLadder": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L60-L75 + routes/foundry/FoundryLicensing.jsx + components/sections/shared/ConnectCta.jsx",
+    "date": null
+  },
+  "SectionHeroCarouselSeams": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/foundry/FoundryTypefaces.jsx#L150-L217",
+    "date": null
+  },
+  "SectionHeroFootClearance": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L175",
+    "date": null
+  },
+  "SectionHeroFootGap": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L160",
+    "date": null
+  },
+  "SectionHeroNoOverrides": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L24-L52 + components/sections/studio/StudioProcessCard.jsx#L1-L36",
+    "date": null
+  },
+  "SectionHeroRound2": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/stack/StackHero.jsx#L1-L60 + routes/foundry/FoundryTypefaces.jsx#L203-L217 + routes/foundry/FoundryLicensing.jsx#L48-L66",
+    "date": null
+  },
+  "SectionHeroSplitHeight": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L31-L60",
+    "date": null
+  },
+  "SectionNewsletter": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/home/HomeSignup.jsx#L1-L40",
+    "date": null
+  },
+  "SectionNewsletterForm": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/home/HomeSignup.jsx#L17-L30",
+    "date": null
+  },
+  "SectionRevealSeams": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/styles/animations.css#L8-L30 + _tmp/2026-08-12-chrome-fork-retirement/FeaturesCardSection-local-fork.jsx#L99-L116 + _tmp/2026-08-15-anatomy-adoption/ArticleHeader.jsx#L92-L157 + _tmp/2026-08-26-sectionhero-round2/StackHero.jsx#L51-L52",
+    "date": null
+  },
+  "SectionSet": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L1-L102",
+    "date": null
+  },
+  "SectionSplit": {
+    "repo": "kol-website",
+    "source": "kol-website — six hand-built heroes + five hand-built split-sections",
+    "date": null
+  },
+  "SectionSplitHeight": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/studio/StudioProcessCard.jsx#L1-L38",
+    "date": null
+  },
+  "SectionSplitMediaBounded": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/studio/StudioProcessCard.jsx#L1-L36 + components/ui/ProfileCard.jsx#L84-L120",
+    "date": null
+  },
+  "SectionSplitMediaClip": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/home/HomeFoundry.jsx#L17-L40",
+    "date": null
+  },
+  "SectionTextBodyMono": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/home/HomeSignup.jsx#L17-L30 + routes/Stack.jsx#L138-L150",
+    "date": null
+  },
+  "SectionTextLabelVoice": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/studio/StudioProcessCard.jsx#L1-L34 + components/sections/home/HomeFoundry.jsx#L17-L36",
+    "date": null
+  },
+  "SectionThemeInverse": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Studio.jsx#L31-L60",
     "date": null
   },
   "SegmentedToggle (variant=\"filled\" — state styling correction)": {
@@ -74,6 +404,31 @@
     "source": "kol-fxr — inspector alignment strips, transform cluster, resizing toggle",
     "date": null
   },
+  "SettingsPanel": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2 on kol-component 0.100.1",
+    "date": null
+  },
+  "SettingsPanel, ColumnBrowser": {
+    "repo": "kol-r2b2",
+    "source": "kol-r2b2 on kol-component 0.97.3 / kol-theme 0.65.0",
+    "date": null
+  },
+  "ShelfCardMotion": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Work.jsx#L64-L106 (`ShelfEnter` + `WorkContentCard tilt`) + #L262-L278 (the shelf `renderCard`) + styles/ui.css#L81",
+    "date": null
+  },
+  "ShelfCardTiltWrapsCard": {
+    "repo": "kol-content",
+    "source": "kol-content/src/ParallaxShelf.jsx#L164-L188 (the `card()` default branch)",
+    "date": null
+  },
+  "ShellHomeSystem": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/pages/HomePage.jsx · LibraryPage.jsx · SettingsPage.jsx · AppLayout.jsx (2026-08-27 state)",
+    "date": null
+  },
   "ShellNavItemInk": {
     "repo": "kol-theme",
     "source": "kol-theme/kol-components-workshop.css#L340-L390 · kol-workshop/src/shell/RailRow.jsx",
@@ -84,14 +439,84 @@
     "source": "kol-apps/kol-mirror/src/pages/MirrorPlayground.jsx#L21-L76 (prior art); filed from kol-website",
     "date": null
   },
+  "SideNavMobilePosition": {
+    "repo": "kol-framework",
+    "source": "kol-framework/src/SideNav.jsx#L96 · kol-framework/kol-framework.css#L238-L248",
+    "date": null
+  },
+  "SideNavWidthLadder": {
+    "repo": "kol-framework",
+    "source": "kol-framework/kol-framework.css#L46 (`--kol-sidenav-w: 16rem`) · kol-website/apps/brand/src/styles/sidenav-collapse.css (the local carry)",
+    "date": null
+  },
+  "StackCardHover": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Stack.jsx#L78-L110 + apps/web/src/styles/ui.css (tail)",
+    "date": null
+  },
+  "TableMobileScroll": {
+    "repo": "kol-theme",
+    "source": "kol-theme .kol-table (kol-components-*.css) · kol-component Table",
+    "date": null
+  },
+  "TagTertiary": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Work.jsx (row tags: `<Tag variant=\"secondary\" className=\"border-transparent work-tag\">`) + styles/ui.css `.kol-tag.work-tag`",
+    "date": null
+  },
   "Textarea (resize grip)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/params/AutoControls.jsx#L247 (any rail-mounted Textarea)",
     "date": null
   },
+  "ThemeToggleLabelTarget": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/layout/TakeoverMenu.jsx#L106-L110",
+    "date": null
+  },
+  "TiltBentoVoiceAndDefaults": {
+    "repo": "kol-component",
+    "source": "kol-component/src/molecules/TiltBento.jsx#L113-L166",
+    "date": null
+  },
   "TransportIcons (kol-icons set additions)": {
     "repo": "kol-ds-fxr",
     "source": "kol-ds-fxr/src/editor/params/TransportBar.jsx#L75-L76",
+    "date": null
+  },
+  "TypefaceCardAndRow": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/sections/foundry/TypefaceLibraryGridWithVariables.jsx#L132-L181 (the tuned DS card/row) · TypefaceLibraryItem.jsx#L76-L197 (the local reference)",
+    "date": null
+  },
+  "TypefaceCardRevealText": {
+    "repo": "kol-foundry",
+    "source": "kol-foundry/src/TypefaceLibraryGridWithVariables.jsx#L193 · kol-foundry/src/FontPreviewSection.jsx#L8",
+    "date": null
+  },
+  "WorkCardAndShelf": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Work.jsx (`WorkCard` function + the `ParallaxShelf renderCard`) + styles/ui.css `.work-shelf p.kol-helper-12`",
+    "date": null
+  },
+  "WorkListingRowsAndFilters": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/routes/Work.jsx#L86-L110 (the tuned DS row) + styles/ui.css (`.work-row*`, `.work-filters*` rules) — screenshots in `_assets/2026-08-27-work-listing/`",
+    "date": null
+  },
+  "WorkshopExhibitSystem": {
+    "repo": "kol-website",
+    "source": "kol-website — routes/workshop/Dashboard* + components/workshop/{DesCard,WorkshopSidebarContent}",
+    "date": null
+  },
+  "WorkshopShellMobile": {
+    "repo": "kol-workshop",
+    "source": "kol-workshop ShellHeader (nav.flex.flex-1.gap-6) · kol-dashboards two-up cards",
+    "date": null
+  },
+  "WorkspaceSidebar": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr src/editor/labs/LabsNav.jsx · kol-monitor src/rack/ModuloSidebar.jsx · kol-mirror src/components/mirror/MirrorSidebar.jsx",
     "date": null
   }
 }

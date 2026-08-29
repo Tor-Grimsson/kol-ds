@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 10 across 10 files in 6 apps
-- **Weighted inbound:** 30★ across 10 edges — 10×3★
-- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-mirror, kol-modulator, kol-monitor, kol-website
+- **Real-world usages found:** 7 across 7 files in 4 apps
+- **Weighted inbound:** 21★ across 7 edges — 7×3★
+- **Used in:** kol-client-kolkrabbi, kol-editor-radar, kol-modulator, kol-website
 
 ## Who depends on this
 
@@ -16,12 +16,9 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/shared/FeaturesCardSection.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/organisms/CardFeatures.jsx` |
 | 3 | 1 | `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/organisms/CardFeatures.jsx` |
-| 3 | 1 | `kol-apps/kol-mirror/src/components/styleguide/preview/organisms/CardFeatures.jsx` |
 | 3 | 1 | `kol-apps/kol-modulator/src/components/styleguide/preview/organisms/CardFeatures.jsx` |
-| 3 | 1 | `kol-apps/kol-monitor/a_torg/archive/2026-04-17-src-cleanup/src/components-mirrors/styleguide/preview/organisms/CardFeatures.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-12-chrome-fork-retirement/FeaturesCardSection-local-fork.jsx` |
 | 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/organisms/CardFeatures.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/sections/home/WorkshopFeatures.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/sections/shared/FeaturesCardSection.jsx` |
 
 ## Import
 
@@ -56,7 +53,7 @@ From `kol-apps/kol-editor-radar/src-grab/components/styleguide/preview/organisms
             />
 ```
 
-From `kol-website/apps/web/src/components/sections/shared/FeaturesCardSection.jsx`:
+From `kol-website/_tmp/2026-08-12-chrome-fork-retirement/FeaturesCardSection-local-fork.jsx`:
 
 ```jsx
 <CardFeatureItem

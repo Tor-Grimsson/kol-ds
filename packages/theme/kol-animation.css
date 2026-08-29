@@ -1,0 +1,434 @@
+/**
+ * kol-animation.css — THE MOTION SHEET (user ruling 2026-08-28: "shouldn't we
+ * localise animation to its own css?" — the rule he had given before and that
+ * every agent agreed to and none of us carried out).
+ *
+ * WHY ONE FILE. Motion is read as a SET: you tune the underline, the reveal and
+ * the zoom in one sitting. Until this file it was spread across four component
+ * sheets — and the five `prefers-reduced-motion` blocks were the tell, each one
+ * written by whoever happened to be in that file. Nobody could see the estate's
+ * motion whole, so nobody could keep it consistent.
+ *
+ * WHAT LIVES HERE
+ *   · every `@keyframes` in the system (the gate below enforces it)
+ *   · every NAMED motion class — a class whose whole job is to move something
+ *   · every `prefers-reduced-motion` block
+ *   · the JS mirror of these numbers is `@kolkrabbi/kol-component/utilities/motion.js`
+ *     (gsap tweens and framer springs read the same durations and curves)
+ *
+ * WHAT DOES NOT. A bare `transition:` inside a component's own rest rule —
+ * `.kol-btn`'s background-color, `.kol-card`'s border-color. Pulling those out
+ * means two rules for one selector, and two rules for one selector drift; the
+ * rest rule owns its own easing. Named animations move, per-property easing stays.
+ *
+ * THE GATE: `scripts/validate-motion.mjs` (the 23rd) fails any `@keyframes`
+ * declared outside this file, so the sheet cannot rot back into four.
+ *
+ * Imported LAST by both entries (kol-theme.css and kol-core.css), so a motion
+ * class out-ranks the component chrome it moves.
+ */
+
+/* ═════════════════════════════════════════════════════════════════════
+ * KEYFRAMES — all of them, wherever they are used
+ * ═════════════════════════════════════════════════════════════════════ */
+
+/* The chess pack's four. RENAMED on the way in (2026-08-28): they were `pulse`,
+ * `fadeIn`, `numberTick` and `lineDraw` — unprefixed globals, against the
+ * `kol-*` namespace law, and a keyframe name is global no matter which file
+ * declares it. In one pack's sheet that was a latent collision; in the shared
+ * motion sheet it would be a live one, since every app loads this file. Their
+ * users in kol-components-chess.css move with them. */
+@keyframes kol-chess-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes kol-chess-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kol-chess-number-tick {
+  from {
+    transform: translateY(-2px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes kol-chess-line-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes kol-combo-fade {
+  from { opacity: 0.2; transform: translateY(6px); }
+  to   { opacity: 1;   transform: none; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * NAMED MOTION — a class whose whole job is to move something
+ * ═════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentCollection — src/organisms/ContentCollection.jsx (2026-08-15)
+ * The enter stagger the collection owns; cards never animate themselves.
+ * Delay is set per item inline; the curve is the house token. */
+.kol-collection-item {
+  animation: kol-collection-in 300ms var(--kol-ease-house) both;
+}
+
+@keyframes kol-collection-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Link underline — the animated hover affordance: draws in left→right on
+ * hover/focus, retracts right→left on leave (transform-origin swap, not a
+ * fade). Line is currentColor so it rides the text at any scale. Minted from
+ * kol-website's animations.css (NavLinkUnderline, 2026-08-12); DS version
+ * adds :focus-visible parity and reduced-motion handling.
+ * Thickness knob: --kol-link-underline-size (2px default — fine at mono-14,
+ * a heading-01 link may want 3px). */
+.kol-link-underline {
+  position: relative;
+}
+.kol-link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: var(--kol-link-underline-size, 2px);
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transform: scaleX(0);
+  transition: transform 300ms cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+.kol-link-underline:hover::after,
+.kol-link-underline:focus-visible::after {
+  transform-origin: bottom left;
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-link-underline::after {
+    transition: none;
+  }
+}
+
+/* The ROLL mechanics — .kol-roll (ComponentTailwindSourceTrap, 2026-08-12).
+ * These were Tailwind utilities emitted in ThemeToggle's JSX (overflow-hidden,
+ * transition-transform, duration-500, ease-in-out) — and Tailwind never scans
+ * node_modules, so any consumer without the @source lines got a SILENTLY
+ * static glyph: visible, clickable, no travel, no coin-roll, no error.
+ * A component's own moving parts live HERE, in the CSS it ships — the
+ * consumer's scanner owes it nothing. Widths/transforms stay inline in JSX
+ * (they are per-render geometry, not chrome). */
+.kol-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.kol-roll-strip {
+  display: flex;
+  transition: transform 500ms ease-in-out;
+}
+.kol-roll-slot {
+  display: inline-flex;
+  line-height: 0;
+  transition: transform 500ms ease-in-out;
+}
+
+/* ContentCard `reveal` (TypefaceCardAndRow, kol-website 2026-08-27 — the
+ * shipped TypefaceLibraryItem's hover, verbatim): the plate and the media
+ * fade OUT, the reveal node fades IN, all 300ms on the house curve. Keyed
+ * on the card root, only when it carries a reveal (`has-reveal`). */
+.kol-card.has-reveal .kol-card-plate,
+.kol-card.has-reveal .kol-card-canvas-media,
+.kol-card.has-reveal .kol-card-reveal {
+  transition: opacity 300ms var(--kol-ease-house);
+}
+.kol-card.has-reveal .kol-card-reveal {
+  opacity: 0;
+}
+@media (hover: hover) {
+  .kol-card.has-reveal:hover .kol-card-plate,
+  .kol-card.has-reveal:hover .kol-card-canvas-media {
+    opacity: 0;
+  }
+  .kol-card.has-reveal:hover .kol-card-reveal {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-card.has-reveal .kol-card-plate,
+  .kol-card.has-reveal .kol-card-canvas-media,
+  .kol-card.has-reveal .kol-card-reveal { transition: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentMedia — the hover zoom
+ *
+ * A state the house serves on image-led cards: the artwork creeps up
+ * inside its own frame while the frame holds still. ContentMedia already
+ * clips, so the scale has something to push against — without that
+ * overflow the image just grows out of the card.
+ *
+ * Keyed off the CARD's hover, not the media's, because the whole tile is
+ * the affordance; hovering the caption must zoom too. Transform only —
+ * it is the one property that scales without relayout, and a wall of
+ * these must not thrash the grid.
+ *
+ * 1.06 and 600ms, deliberately slow and small: a zoom you can SEE
+ * happening reads as a photograph breathing; a fast one reads as a
+ * glitch.
+ * ───────────────────────────────────────────────────────────────────── */
+/* THE TARGET IS THE WRAPPER'S CHILD, WHATEVER IT IS (CatalogCardFrameAndZoom,
+ * kol-website 2026-08-28): a catalog card whose media is an SVG glyph on a
+ * specimen plate resolves `zoom` true and got the class, the transition and no
+ * motion while this named img/video. Everything but the ring hairline. */
+.kol-media-zoom > :not(.kol-media-ring) {
+  transition: transform 600ms var(--kol-ease-house);
+  /* THE ANCHOR IS THE CONSUMER'S (ContentMediaFocusBinding, kol-monitor
+   * 2026-08-27): `--kol-media-focus`, bound once on a repo's :root, is where
+   * the image pins for the fit (ContentMedia natural / compact read the same
+   * token, default top left) and from where the zoom grows. Unset = center,
+   * today's value. Monitor binds `top left`. */
+  transform-origin: var(--kol-media-focus, center);
+}
+
+@media (hover: hover) {
+  .group:hover .kol-media-zoom > :not(.kol-media-ring) {
+    transform: scale(1.06);
+  }
+  /* the HERO rung (StackCardHover, 2026-08-27 — user: "that is TOO MUCH
+   * ZOOM"): 1.06 on a ~1500px featured thumb is 90px of travel where the
+   * 500px list thumbs move 30. 1.02 on the hero is the same pixel travel.
+   * `ListingCard size="hero"` wears it; ContentMedia takes zoom="hero". */
+  .group:hover .kol-media-zoom.is-hero > :not(.kol-media-ring) {
+    transform: scale(1.02);
+  }
+}
+
+/* ContentMedia `fade` — the image fades in on load (PrintGridCard's 500ms,
+ * carried to ContentCard print 2026-08-27). Opacity only; no relayout. */
+.kol-media-fade {
+  opacity: 0;
+  transition: opacity 500ms var(--kol-ease-house);
+}
+.kol-media-fade.is-loaded {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * ContentText — the title dim (StackCardHover, 2026-08-27)
+ *
+ * The article card's title dims to 70% on card hover, the way ListingCard's
+ * always has (`group-hover:opacity-70`, 200ms) — so the featured hero and
+ * the filtered cards under it hover the same way (user: "shouldn't it also
+ * do it to the cards in the content filter?"). Keyed off the CARD / ROW
+ * root, not any `.group` ancestor. ContentText stamps the hook on the
+ * article title in both forms.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-content-title-dim {
+  transition: opacity 200ms var(--kol-ease-house);
+}
+@media (hover: hover) {
+  .kol-card:hover .kol-content-title-dim,
+  .kol-row:hover .kol-content-title-dim {
+    opacity: 0.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-content-title-dim { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-media-zoom > :not(.kol-media-ring) {
+    transition: none;
+  }
+  .group:hover .kol-media-zoom > :not(.kol-media-ring) {
+    transform: none;
+  }
+}
+
+.kol-card-feature-visual {
+  transition: transform 300ms ease;
+}
+.kol-card-feature:hover .kol-card-feature-visual {
+  transform: scale(1.03);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-card-feature-visual { transition: none; }
+  .kol-card-feature:hover .kol-card-feature-visual { transform: none; }
+}
+
+/* Media hover zoom — opt-in via `mediaHover` (SectionSplit ruling, 2026-08-15).
+ * The brief named "media hover treatment owned by the component", and named the
+ * defect: kol-website's HomeFoundry hover had been silently broken for months
+ * because each hand-built section re-decided it. Same numbers and the same
+ * reduced-motion guard as the CardFeatureItem zoom (CardFeatureHoverZoom,
+ * 2026-08-12) — one motion vocabulary, not two. Motion chrome is DS CSS, never
+ * a JSX utility (the ComponentTailwindSourceTrap law). The frame's own
+ * overflow-hidden + radius clip the scale. */
+.kol-feature-split-visual.is-hoverable > :first-child,
+.kol-section-split-visual.is-hoverable > :first-child {
+  transition: transform 300ms ease;
+}
+
+.kol-feature-split-visual.is-hoverable:hover > :first-child,
+.kol-section-split-visual.is-hoverable:hover > :first-child {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-feature-split-visual.is-hoverable > :first-child,
+  .kol-section-split-visual.is-hoverable > :first-child { transition: none; }
+  .kol-feature-split-visual.is-hoverable:hover > :first-child,
+  .kol-section-split-visual.is-hoverable:hover > :first-child { transform: none; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * THE GRAB PILL — the rail's resize edge (RailFlatGrabOpen, kol-mirror
+ * 2026-08-28; kol-r2b2's pill, brought over as it is there — user: "make it
+ * like it is in kol-r2b2, it has animation and gsap").
+ *
+ * The 8px strip straddles the rail's right border so the pill's centre IS the
+ * line: in a 48px border-box the 1px border sits at x 47–48, centre 47.5, so
+ * the strip is offset `right: -3.5px`. Along the line it follows
+ * `--kol-rail-grab-y`, tweened from JS (the marks and the tween live in
+ * kol-component's `utilities/motion.js`, GRAB); `clamp()` holds it half its own
+ * length from either end so it stops flush, never past.
+ *
+ * Longer and finer than the ColumnBrowser's 3 × 32 — on a rail it should read
+ * as a thickening of the line, not a tab stuck to it. The fade is long and
+ * unhurried at BOTH ends on a symmetric in-out: an ease-out popped the first
+ * 20 % and crawled the rest, which the user read as a jerk.
+ * ═════════════════════════════════════════════════════════════════════ */
+.kol-rail-grab {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -3.5px;
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none;
+}
+.kol-rail-grab::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: clamp(2.25rem, var(--kol-rail-grab-y, 50%), calc(100% - 2.25rem));
+  translate: -50% -50%;
+  width: 0.125rem;
+  height: 4.5rem;
+  border-radius: var(--kol-radius-full);
+  background: var(--kol-fg-64);
+  opacity: 0;
+  transition: opacity 1800ms cubic-bezier(0.45, 0, 0.55, 1) 400ms, background-color 500ms ease;
+}
+/* `is-near` = the pointer is within 20px of the line (JS, hysteresis at 40) */
+.kol-rail-grab.is-near::before,
+.kol-rail-grab.is-dragging::before { opacity: 1; transition-delay: 40ms; }
+.kol-rail-grab:hover::before,
+.kol-rail-grab.is-dragging::before { background: var(--kol-fg-96); }
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-rail-grab::before { transition: none; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * SCROLL ENTRANCE — the reveal family (promoted from kol-website's
+ * apps/web/src/styles/animations.css, 2026-08-28, on the user's "it's good to
+ * localise it"; that file's own header had marked it a DS candidate since
+ * 2026-07-28, and it was itself vendored from the elder @kol/ui).
+ *
+ * A consumer's IntersectionObserver adds `.is-visible`; the class is the whole
+ * API. `--kol-reveal-delay` staggers a group without a rule per child.
+ *
+ * The bare `.reveal*` names are kept as ALIASES beside the `kol-*` ones: they
+ * are live in dozens of kol-website call sites and renaming them would be a
+ * migration the promotion does not need. New code takes the prefixed name —
+ * `.reveal` is exactly the sort of word a consumer's own stylesheet also owns.
+ * ═════════════════════════════════════════════════════════════════════ */
+.kol-reveal, .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms var(--kol-ease-house), transform 600ms var(--kol-ease-house);
+  transition-delay: var(--kol-reveal-delay, var(--reveal-delay, 0s));
+}
+/* the group rung: a shorter travel and a default 1s beat, so a set of children
+ * arrives after the block that introduces them */
+.kol-reveal-group, .reveal-group {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--kol-ease-house), transform 600ms var(--kol-ease-house);
+  transition-delay: var(--kol-reveal-delay, var(--reveal-delay, 1s));
+}
+/* the diagonal assembly: 40px in from the side AND 32 up, so a row of blocks
+ * converges rather than sliding in parallel */
+.kol-reveal-from-left, .reveal-from-left {
+  opacity: 0;
+  transform: translate(-40px, 32px);
+  transition: opacity 700ms var(--kol-ease-house), transform 700ms var(--kol-ease-house);
+  transition-delay: var(--kol-reveal-delay, var(--reveal-delay, 0s));
+}
+.kol-reveal-from-right, .reveal-from-right {
+  opacity: 0;
+  transform: translate(40px, 32px);
+  transition: opacity 700ms var(--kol-ease-house), transform 700ms var(--kol-ease-house);
+  transition-delay: var(--kol-reveal-delay, var(--reveal-delay, 0s));
+}
+.kol-reveal.is-visible, .reveal.is-visible,
+.kol-reveal-group.is-visible, .reveal-group.is-visible,
+.kol-reveal-from-left.is-visible, .reveal-from-left.is-visible,
+.kol-reveal-from-right.is-visible, .reveal-from-right.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-reveal, .reveal,
+  .kol-reveal-group, .reveal-group,
+  .kol-reveal-from-left, .reveal-from-left,
+  .kol-reveal-from-right, .reveal-from-right {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * AnimatedTitle — the word's rest state (promoted 2026-08-28, same pass).
+ *
+ * The DS has shipped `atoms/AnimatedTitle.jsx` for months while the CSS its
+ * words start from lived in kol-website: the component queried `.animatedWord`
+ * and set `opacity: 0` on nothing, so outside that one app the title rendered
+ * static and visible with no error. A component whose motion is in a consumer
+ * is not shipped. GSAP animates FROM this state; reduced motion skips the
+ * tween entirely (the hook), which is why the fallback below is not optional.
+ * ═════════════════════════════════════════════════════════════════════ */
+.kol-animated-word, .animatedWord {
+  opacity: 0;
+  transform: translate3d(150vw, 3.125rem, 0) rotateY(-45deg) rotateX(15deg);
+  color: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kol-animated-word, .animatedWord { opacity: 1; transform: none; }
+}

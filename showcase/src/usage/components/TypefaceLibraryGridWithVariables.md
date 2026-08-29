@@ -14,8 +14,8 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/foundry/FoundryOrganismsPreview.jsx` |
 | 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/foundry/FoundryOrganismsPreview.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/sections/foundry/FoundryOtherTypefaces.jsx` |
 | 3 | 1 | `kol-website/apps/web/src/routes/foundry/FoundryTypefaces.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/routes/foundry/components/FoundryOtherTypefaces.jsx` |
 
 ## Import
 
@@ -35,6 +35,18 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/
       />
 ```
 
+From `kol-website/apps/web/src/components/sections/foundry/FoundryOtherTypefaces.jsx`:
+
+```jsx
+<TypefaceLibraryGridWithVariables
+      titleIcon="book-open"
+      typefaces={typefaces}
+      typefaceWeights={typefaceWeights}
+      totalCount={typefaces.length}
+      onNavigate={(href, e) => { e.preventDefault(); navigate(href) }}
+    />
+```
+
 From `kol-website/apps/web/src/routes/foundry/FoundryTypefaces.jsx`:
 
 ```jsx
@@ -42,17 +54,6 @@ From `kol-website/apps/web/src/routes/foundry/FoundryTypefaces.jsx`:
         typefaces={typefaces}
         typefaceWeights={typefaceWeights}
         totalCount={typefaces.length}
-        linkComponent={Link}
+        onNavigate={(href, e) => { e.preventDefault(); navigate(href) }}
       />
-```
-
-From `kol-website/apps/web/src/routes/foundry/components/FoundryOtherTypefaces.jsx`:
-
-```jsx
-<TypefaceLibraryGridWithVariables
-      typefaces={typefaces}
-      typefaceWeights={typefaceWeights}
-      totalCount={typefaces.length}
-      linkComponent={Link}
-    />
 ```

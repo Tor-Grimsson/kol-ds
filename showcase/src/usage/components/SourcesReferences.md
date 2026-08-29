@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-content`
 - **Category:** flat
-- **Real-world usages found:** 3 across 2 files in 1 apps
-- **Weighted inbound:** 6★ across 2 edges — 2×3★
+- **Real-world usages found:** 5 across 3 files in 1 apps
+- **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-website
 
 ## Who depends on this
@@ -12,6 +12,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
+| 3 | 2 | `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/StackArticle.jsx` |
 | 3 | 2 | `kol-website/apps/web/src/routes/StackArticle.jsx` |
 | 3 | 1 | `kol-website/apps/web/src/routes/WorkDetail.jsx` |
 
@@ -23,7 +24,7 @@ import { SourcesReferences } from '@kolkrabbi/kol-content'
 
 ## Real usage
 
-From `kol-website/apps/web/src/routes/StackArticle.jsx`:
+From `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/StackArticle.jsx`:
 
 ```jsx
 <SourcesReferences

@@ -22,6 +22,8 @@
  * Tier pairs:
  * - Standard (ink-on-primary flattened onto --kol-surface-primary)
  * - Inverse  (ink-on-inverse flattened onto --kol-surface-inverse)
+ * - Absolute (ab / ab-inverse — black and white against each other, so the
+ *   grey is opaque AND theme-invariant; 2026-08-28)
  *
  * Layers:
  * - Tokens (--kol-oq-*, --kol-oq-inverse-*) for use in CSS rules
@@ -46,6 +48,7 @@
   --kol-oq-40: color-mix(in srgb, var(--kol-surface-on-primary) 40%, var(--kol-surface-primary));
   --kol-oq-48: color-mix(in srgb, var(--kol-surface-on-primary) 48%, var(--kol-surface-primary));
   --kol-oq-64: color-mix(in srgb, var(--kol-surface-on-primary) 64%, var(--kol-surface-primary));
+  --kol-oq-72: color-mix(in srgb, var(--kol-surface-on-primary) 72%, var(--kol-surface-primary));
   --kol-oq-80: color-mix(in srgb, var(--kol-surface-on-primary) 80%, var(--kol-surface-primary));
   --kol-oq-88: color-mix(in srgb, var(--kol-surface-on-primary) 88%, var(--kol-surface-primary));
   --kol-oq-96: color-mix(in srgb, var(--kol-surface-on-primary) 96%, var(--kol-surface-primary));
@@ -65,6 +68,7 @@
   --kol-oq-inverse-40: color-mix(in srgb, var(--kol-surface-on-inverse) 40%, var(--kol-surface-inverse));
   --kol-oq-inverse-48: color-mix(in srgb, var(--kol-surface-on-inverse) 48%, var(--kol-surface-inverse));
   --kol-oq-inverse-64: color-mix(in srgb, var(--kol-surface-on-inverse) 64%, var(--kol-surface-inverse));
+  --kol-oq-inverse-72: color-mix(in srgb, var(--kol-surface-on-inverse) 72%, var(--kol-surface-inverse));
   --kol-oq-inverse-80: color-mix(in srgb, var(--kol-surface-on-inverse) 80%, var(--kol-surface-inverse));
   --kol-oq-inverse-88: color-mix(in srgb, var(--kol-surface-on-inverse) 88%, var(--kol-surface-inverse));
   --kol-oq-inverse-96: color-mix(in srgb, var(--kol-surface-on-inverse) 96%, var(--kol-surface-inverse));
@@ -85,6 +89,7 @@
 .bg-oq-40 { background-color: var(--kol-oq-40); }
 .bg-oq-48 { background-color: var(--kol-oq-48); }
 .bg-oq-64 { background-color: var(--kol-oq-64); }
+.bg-oq-72 { background-color: var(--kol-oq-72); }
 .bg-oq-80 { background-color: var(--kol-oq-80); }
 .bg-oq-88 { background-color: var(--kol-oq-88); }
 .bg-oq-96 { background-color: var(--kol-oq-96); }
@@ -100,6 +105,7 @@
 .bg-oq-inverse-40 { background-color: var(--kol-oq-inverse-40); }
 .bg-oq-inverse-48 { background-color: var(--kol-oq-inverse-48); }
 .bg-oq-inverse-64 { background-color: var(--kol-oq-inverse-64); }
+.bg-oq-inverse-72 { background-color: var(--kol-oq-inverse-72); }
 .bg-oq-inverse-80 { background-color: var(--kol-oq-inverse-80); }
 .bg-oq-inverse-88 { background-color: var(--kol-oq-inverse-88); }
 .bg-oq-inverse-96 { background-color: var(--kol-oq-inverse-96); }
@@ -119,6 +125,7 @@
 .hover\:bg-oq-40:hover { background-color: var(--kol-oq-40); }
 .hover\:bg-oq-48:hover { background-color: var(--kol-oq-48); }
 .hover\:bg-oq-64:hover { background-color: var(--kol-oq-64); }
+.hover\:bg-oq-72:hover { background-color: var(--kol-oq-72); }
 .hover\:bg-oq-80:hover { background-color: var(--kol-oq-80); }
 .hover\:bg-oq-88:hover { background-color: var(--kol-oq-88); }
 .hover\:bg-oq-96:hover { background-color: var(--kol-oq-96); }
@@ -134,6 +141,7 @@
 .hover\:bg-oq-inverse-40:hover { background-color: var(--kol-oq-inverse-40); }
 .hover\:bg-oq-inverse-48:hover { background-color: var(--kol-oq-inverse-48); }
 .hover\:bg-oq-inverse-64:hover { background-color: var(--kol-oq-inverse-64); }
+.hover\:bg-oq-inverse-72:hover { background-color: var(--kol-oq-inverse-72); }
 .hover\:bg-oq-inverse-80:hover { background-color: var(--kol-oq-inverse-80); }
 .hover\:bg-oq-inverse-88:hover { background-color: var(--kol-oq-inverse-88); }
 .hover\:bg-oq-inverse-96:hover { background-color: var(--kol-oq-inverse-96); }
@@ -153,6 +161,7 @@
 .text-oq-40 { color: var(--kol-oq-40); }
 .text-oq-48 { color: var(--kol-oq-48); }
 .text-oq-64 { color: var(--kol-oq-64); }
+.text-oq-72 { color: var(--kol-oq-72); }
 .text-oq-80 { color: var(--kol-oq-80); }
 .text-oq-88 { color: var(--kol-oq-88); }
 .text-oq-96 { color: var(--kol-oq-96); }
@@ -168,6 +177,7 @@
 .text-oq-inverse-40 { color: var(--kol-oq-inverse-40); }
 .text-oq-inverse-48 { color: var(--kol-oq-inverse-48); }
 .text-oq-inverse-64 { color: var(--kol-oq-inverse-64); }
+.text-oq-inverse-72 { color: var(--kol-oq-inverse-72); }
 .text-oq-inverse-80 { color: var(--kol-oq-inverse-80); }
 .text-oq-inverse-88 { color: var(--kol-oq-inverse-88); }
 .text-oq-inverse-96 { color: var(--kol-oq-inverse-96); }
@@ -187,6 +197,7 @@
 .border-oq-40 { border-color: var(--kol-oq-40); }
 .border-oq-48 { border-color: var(--kol-oq-48); }
 .border-oq-64 { border-color: var(--kol-oq-64); }
+.border-oq-72 { border-color: var(--kol-oq-72); }
 .border-oq-80 { border-color: var(--kol-oq-80); }
 .border-oq-88 { border-color: var(--kol-oq-88); }
 .border-oq-96 { border-color: var(--kol-oq-96); }
@@ -202,6 +213,186 @@
 .border-oq-inverse-40 { border-color: var(--kol-oq-inverse-40); }
 .border-oq-inverse-48 { border-color: var(--kol-oq-inverse-48); }
 .border-oq-inverse-64 { border-color: var(--kol-oq-inverse-64); }
+.border-oq-inverse-72 { border-color: var(--kol-oq-inverse-72); }
 .border-oq-inverse-80 { border-color: var(--kol-oq-inverse-80); }
 .border-oq-inverse-88 { border-color: var(--kol-oq-inverse-88); }
 .border-oq-inverse-96 { border-color: var(--kol-oq-inverse-96); }
+
+/* ============================================================================
+ * TOKENS — ABSOLUTE tiers (user ruling 2026-08-28: "you can make bg-oq-ab-*
+ * and bg-oq-ab-inverse-*")
+ *
+ * The gap they close: the estate had opaque greys that FOLLOW the theme
+ * (`oq-*`, `oq-inverse-*` — baked onto a surface token) and absolute inks that
+ * are theme-invariant but TRANSLUCENT (`fg-ab-*`). "Opaque and theme-invariant"
+ * was not expressible, which is exactly what a sunken control wants: a plate
+ * that is darker than its plane, on both themes, that nothing bleeds through.
+ *
+ * Same construction as the tiers above, with the absolutes standing in for the
+ * surface pair — so these are flat greys that never move:
+ *   oq-ab-NN          black NN% into WHITE — a light ground darkening
+ *   oq-ab-inverse-NN  white NN% into BLACK — a dark ground lightening
+ * ============================================================================ */
+
+:root {
+  --kol-oq-ab-01: color-mix(in srgb, var(--kol-color-ab-black) 1%, var(--kol-color-ab-white));
+  --kol-oq-ab-02: color-mix(in srgb, var(--kol-color-ab-black) 2%, var(--kol-color-ab-white));
+  --kol-oq-ab-04: color-mix(in srgb, var(--kol-color-ab-black) 4%, var(--kol-color-ab-white));
+  --kol-oq-ab-08: color-mix(in srgb, var(--kol-color-ab-black) 8%, var(--kol-color-ab-white));
+  --kol-oq-ab-12: color-mix(in srgb, var(--kol-color-ab-black) 12%, var(--kol-color-ab-white));
+  --kol-oq-ab-16: color-mix(in srgb, var(--kol-color-ab-black) 16%, var(--kol-color-ab-white));
+  --kol-oq-ab-24: color-mix(in srgb, var(--kol-color-ab-black) 24%, var(--kol-color-ab-white));
+  --kol-oq-ab-32: color-mix(in srgb, var(--kol-color-ab-black) 32%, var(--kol-color-ab-white));
+  --kol-oq-ab-40: color-mix(in srgb, var(--kol-color-ab-black) 40%, var(--kol-color-ab-white));
+  --kol-oq-ab-48: color-mix(in srgb, var(--kol-color-ab-black) 48%, var(--kol-color-ab-white));
+  --kol-oq-ab-64: color-mix(in srgb, var(--kol-color-ab-black) 64%, var(--kol-color-ab-white));
+  --kol-oq-ab-72: color-mix(in srgb, var(--kol-color-ab-black) 72%, var(--kol-color-ab-white));
+  --kol-oq-ab-80: color-mix(in srgb, var(--kol-color-ab-black) 80%, var(--kol-color-ab-white));
+  --kol-oq-ab-88: color-mix(in srgb, var(--kol-color-ab-black) 88%, var(--kol-color-ab-white));
+  --kol-oq-ab-96: color-mix(in srgb, var(--kol-color-ab-black) 96%, var(--kol-color-ab-white));
+
+  --kol-oq-ab-inverse-01: color-mix(in srgb, var(--kol-color-ab-white) 1%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-02: color-mix(in srgb, var(--kol-color-ab-white) 2%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-04: color-mix(in srgb, var(--kol-color-ab-white) 4%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-08: color-mix(in srgb, var(--kol-color-ab-white) 8%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-12: color-mix(in srgb, var(--kol-color-ab-white) 12%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-16: color-mix(in srgb, var(--kol-color-ab-white) 16%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-24: color-mix(in srgb, var(--kol-color-ab-white) 24%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-32: color-mix(in srgb, var(--kol-color-ab-white) 32%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-40: color-mix(in srgb, var(--kol-color-ab-white) 40%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-48: color-mix(in srgb, var(--kol-color-ab-white) 48%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-64: color-mix(in srgb, var(--kol-color-ab-white) 64%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-72: color-mix(in srgb, var(--kol-color-ab-white) 72%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-80: color-mix(in srgb, var(--kol-color-ab-white) 80%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-88: color-mix(in srgb, var(--kol-color-ab-white) 88%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-96: color-mix(in srgb, var(--kol-color-ab-white) 96%, var(--kol-color-ab-black));
+}
+
+/* CLASSES — absolute tiers */
+.bg-oq-ab-01 { background-color: var(--kol-oq-ab-01); }
+.bg-oq-ab-02 { background-color: var(--kol-oq-ab-02); }
+.bg-oq-ab-04 { background-color: var(--kol-oq-ab-04); }
+.bg-oq-ab-08 { background-color: var(--kol-oq-ab-08); }
+.bg-oq-ab-12 { background-color: var(--kol-oq-ab-12); }
+.bg-oq-ab-16 { background-color: var(--kol-oq-ab-16); }
+.bg-oq-ab-24 { background-color: var(--kol-oq-ab-24); }
+.bg-oq-ab-32 { background-color: var(--kol-oq-ab-32); }
+.bg-oq-ab-40 { background-color: var(--kol-oq-ab-40); }
+.bg-oq-ab-48 { background-color: var(--kol-oq-ab-48); }
+.bg-oq-ab-64 { background-color: var(--kol-oq-ab-64); }
+.bg-oq-ab-72 { background-color: var(--kol-oq-ab-72); }
+.bg-oq-ab-80 { background-color: var(--kol-oq-ab-80); }
+.bg-oq-ab-88 { background-color: var(--kol-oq-ab-88); }
+.bg-oq-ab-96 { background-color: var(--kol-oq-ab-96); }
+
+.bg-oq-ab-inverse-01 { background-color: var(--kol-oq-ab-inverse-01); }
+.bg-oq-ab-inverse-02 { background-color: var(--kol-oq-ab-inverse-02); }
+.bg-oq-ab-inverse-04 { background-color: var(--kol-oq-ab-inverse-04); }
+.bg-oq-ab-inverse-08 { background-color: var(--kol-oq-ab-inverse-08); }
+.bg-oq-ab-inverse-12 { background-color: var(--kol-oq-ab-inverse-12); }
+.bg-oq-ab-inverse-16 { background-color: var(--kol-oq-ab-inverse-16); }
+.bg-oq-ab-inverse-24 { background-color: var(--kol-oq-ab-inverse-24); }
+.bg-oq-ab-inverse-32 { background-color: var(--kol-oq-ab-inverse-32); }
+.bg-oq-ab-inverse-40 { background-color: var(--kol-oq-ab-inverse-40); }
+.bg-oq-ab-inverse-48 { background-color: var(--kol-oq-ab-inverse-48); }
+.bg-oq-ab-inverse-64 { background-color: var(--kol-oq-ab-inverse-64); }
+.bg-oq-ab-inverse-72 { background-color: var(--kol-oq-ab-inverse-72); }
+.bg-oq-ab-inverse-80 { background-color: var(--kol-oq-ab-inverse-80); }
+.bg-oq-ab-inverse-88 { background-color: var(--kol-oq-ab-inverse-88); }
+.bg-oq-ab-inverse-96 { background-color: var(--kol-oq-ab-inverse-96); }
+
+.hover\:bg-oq-ab-01:hover { background-color: var(--kol-oq-ab-01); }
+.hover\:bg-oq-ab-02:hover { background-color: var(--kol-oq-ab-02); }
+.hover\:bg-oq-ab-04:hover { background-color: var(--kol-oq-ab-04); }
+.hover\:bg-oq-ab-08:hover { background-color: var(--kol-oq-ab-08); }
+.hover\:bg-oq-ab-12:hover { background-color: var(--kol-oq-ab-12); }
+.hover\:bg-oq-ab-16:hover { background-color: var(--kol-oq-ab-16); }
+.hover\:bg-oq-ab-24:hover { background-color: var(--kol-oq-ab-24); }
+.hover\:bg-oq-ab-32:hover { background-color: var(--kol-oq-ab-32); }
+.hover\:bg-oq-ab-40:hover { background-color: var(--kol-oq-ab-40); }
+.hover\:bg-oq-ab-48:hover { background-color: var(--kol-oq-ab-48); }
+.hover\:bg-oq-ab-64:hover { background-color: var(--kol-oq-ab-64); }
+.hover\:bg-oq-ab-72:hover { background-color: var(--kol-oq-ab-72); }
+.hover\:bg-oq-ab-80:hover { background-color: var(--kol-oq-ab-80); }
+.hover\:bg-oq-ab-88:hover { background-color: var(--kol-oq-ab-88); }
+.hover\:bg-oq-ab-96:hover { background-color: var(--kol-oq-ab-96); }
+
+.hover\:bg-oq-ab-inverse-01:hover { background-color: var(--kol-oq-ab-inverse-01); }
+.hover\:bg-oq-ab-inverse-02:hover { background-color: var(--kol-oq-ab-inverse-02); }
+.hover\:bg-oq-ab-inverse-04:hover { background-color: var(--kol-oq-ab-inverse-04); }
+.hover\:bg-oq-ab-inverse-08:hover { background-color: var(--kol-oq-ab-inverse-08); }
+.hover\:bg-oq-ab-inverse-12:hover { background-color: var(--kol-oq-ab-inverse-12); }
+.hover\:bg-oq-ab-inverse-16:hover { background-color: var(--kol-oq-ab-inverse-16); }
+.hover\:bg-oq-ab-inverse-24:hover { background-color: var(--kol-oq-ab-inverse-24); }
+.hover\:bg-oq-ab-inverse-32:hover { background-color: var(--kol-oq-ab-inverse-32); }
+.hover\:bg-oq-ab-inverse-40:hover { background-color: var(--kol-oq-ab-inverse-40); }
+.hover\:bg-oq-ab-inverse-48:hover { background-color: var(--kol-oq-ab-inverse-48); }
+.hover\:bg-oq-ab-inverse-64:hover { background-color: var(--kol-oq-ab-inverse-64); }
+.hover\:bg-oq-ab-inverse-72:hover { background-color: var(--kol-oq-ab-inverse-72); }
+.hover\:bg-oq-ab-inverse-80:hover { background-color: var(--kol-oq-ab-inverse-80); }
+.hover\:bg-oq-ab-inverse-88:hover { background-color: var(--kol-oq-ab-inverse-88); }
+.hover\:bg-oq-ab-inverse-96:hover { background-color: var(--kol-oq-ab-inverse-96); }
+
+.text-oq-ab-01 { color: var(--kol-oq-ab-01); }
+.text-oq-ab-02 { color: var(--kol-oq-ab-02); }
+.text-oq-ab-04 { color: var(--kol-oq-ab-04); }
+.text-oq-ab-08 { color: var(--kol-oq-ab-08); }
+.text-oq-ab-12 { color: var(--kol-oq-ab-12); }
+.text-oq-ab-16 { color: var(--kol-oq-ab-16); }
+.text-oq-ab-24 { color: var(--kol-oq-ab-24); }
+.text-oq-ab-32 { color: var(--kol-oq-ab-32); }
+.text-oq-ab-40 { color: var(--kol-oq-ab-40); }
+.text-oq-ab-48 { color: var(--kol-oq-ab-48); }
+.text-oq-ab-64 { color: var(--kol-oq-ab-64); }
+.text-oq-ab-72 { color: var(--kol-oq-ab-72); }
+.text-oq-ab-80 { color: var(--kol-oq-ab-80); }
+.text-oq-ab-88 { color: var(--kol-oq-ab-88); }
+.text-oq-ab-96 { color: var(--kol-oq-ab-96); }
+
+.text-oq-ab-inverse-01 { color: var(--kol-oq-ab-inverse-01); }
+.text-oq-ab-inverse-02 { color: var(--kol-oq-ab-inverse-02); }
+.text-oq-ab-inverse-04 { color: var(--kol-oq-ab-inverse-04); }
+.text-oq-ab-inverse-08 { color: var(--kol-oq-ab-inverse-08); }
+.text-oq-ab-inverse-12 { color: var(--kol-oq-ab-inverse-12); }
+.text-oq-ab-inverse-16 { color: var(--kol-oq-ab-inverse-16); }
+.text-oq-ab-inverse-24 { color: var(--kol-oq-ab-inverse-24); }
+.text-oq-ab-inverse-32 { color: var(--kol-oq-ab-inverse-32); }
+.text-oq-ab-inverse-40 { color: var(--kol-oq-ab-inverse-40); }
+.text-oq-ab-inverse-48 { color: var(--kol-oq-ab-inverse-48); }
+.text-oq-ab-inverse-64 { color: var(--kol-oq-ab-inverse-64); }
+.text-oq-ab-inverse-72 { color: var(--kol-oq-ab-inverse-72); }
+.text-oq-ab-inverse-80 { color: var(--kol-oq-ab-inverse-80); }
+.text-oq-ab-inverse-88 { color: var(--kol-oq-ab-inverse-88); }
+.text-oq-ab-inverse-96 { color: var(--kol-oq-ab-inverse-96); }
+
+.border-oq-ab-01 { border-color: var(--kol-oq-ab-01); }
+.border-oq-ab-02 { border-color: var(--kol-oq-ab-02); }
+.border-oq-ab-04 { border-color: var(--kol-oq-ab-04); }
+.border-oq-ab-08 { border-color: var(--kol-oq-ab-08); }
+.border-oq-ab-12 { border-color: var(--kol-oq-ab-12); }
+.border-oq-ab-16 { border-color: var(--kol-oq-ab-16); }
+.border-oq-ab-24 { border-color: var(--kol-oq-ab-24); }
+.border-oq-ab-32 { border-color: var(--kol-oq-ab-32); }
+.border-oq-ab-40 { border-color: var(--kol-oq-ab-40); }
+.border-oq-ab-48 { border-color: var(--kol-oq-ab-48); }
+.border-oq-ab-64 { border-color: var(--kol-oq-ab-64); }
+.border-oq-ab-72 { border-color: var(--kol-oq-ab-72); }
+.border-oq-ab-80 { border-color: var(--kol-oq-ab-80); }
+.border-oq-ab-88 { border-color: var(--kol-oq-ab-88); }
+.border-oq-ab-96 { border-color: var(--kol-oq-ab-96); }
+
+.border-oq-ab-inverse-01 { border-color: var(--kol-oq-ab-inverse-01); }
+.border-oq-ab-inverse-02 { border-color: var(--kol-oq-ab-inverse-02); }
+.border-oq-ab-inverse-04 { border-color: var(--kol-oq-ab-inverse-04); }
+.border-oq-ab-inverse-08 { border-color: var(--kol-oq-ab-inverse-08); }
+.border-oq-ab-inverse-12 { border-color: var(--kol-oq-ab-inverse-12); }
+.border-oq-ab-inverse-16 { border-color: var(--kol-oq-ab-inverse-16); }
+.border-oq-ab-inverse-24 { border-color: var(--kol-oq-ab-inverse-24); }
+.border-oq-ab-inverse-32 { border-color: var(--kol-oq-ab-inverse-32); }
+.border-oq-ab-inverse-40 { border-color: var(--kol-oq-ab-inverse-40); }
+.border-oq-ab-inverse-48 { border-color: var(--kol-oq-ab-inverse-48); }
+.border-oq-ab-inverse-64 { border-color: var(--kol-oq-ab-inverse-64); }
+.border-oq-ab-inverse-72 { border-color: var(--kol-oq-ab-inverse-72); }
+.border-oq-ab-inverse-80 { border-color: var(--kol-oq-ab-inverse-80); }
+.border-oq-ab-inverse-88 { border-color: var(--kol-oq-ab-inverse-88); }
+.border-oq-ab-inverse-96 { border-color: var(--kol-oq-ab-inverse-96); }

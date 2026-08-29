@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NotationPanel } from '@kolkrabbi/kol-chess'
+import { Badge } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
@@ -14,6 +15,12 @@ const NOTATION_PAIRS = [
   { moveNumber: 6, white: { san: 'Bxc6', ply: 11 }, black: { san: 'dxc6', ply: 12 } },
 ]
 
+/* `decorate(entry)` hangs anything trailing the SAN — here a review badge
+ * on two moves; every other move returns nothing. */
+const REVIEW = { 7: ['best', 'success'], 8: ['inaccuracy', 'info'] }
+const decorate = ({ ply }) =>
+  REVIEW[ply] ? <Badge variant={REVIEW[ply][1]} size="sm">{REVIEW[ply][0]}</Badge> : null
+
 export default function NotationPanelDemo() {
   const [activePly, setActivePly] = useState(5)
   return (
@@ -21,6 +28,7 @@ export default function NotationPanelDemo() {
       notationPairs={NOTATION_PAIRS}
       activePly={activePly}
       onSelectPly={setActivePly}
+      decorate={decorate}
     />
   )
 }

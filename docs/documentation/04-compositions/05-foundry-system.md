@@ -3,7 +3,7 @@ title: Foundry system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-08-01
+updated: 2026-08-27
 verified: 2026-07-09
 description: The type-specimen apparatus in kol-foundry
 aliases:
@@ -68,7 +68,7 @@ The typeface-catalog family and the assembled specimen page. Each ships a bundle
 | `TypefaceLibraryGrid` / `TypefaceLibraryGridWithVariables` | filtered typeface-catalog grids (wrap `ContentFilters`); the second adds a "By Typeface" weight-variant mode |
 | `TypefaceLibraryItem` / `TypefaceVariablePreview` | catalog card/list item (renders the live font) + interactive per-weight preview (size / leading / spacing) |
 
-> **Cut on 2026-07-09** — failed the membership test (they describe or market type, never act on the font): `FoundryOtherTypefaces` (redundant vs the grid); `FoundryTypefacePairing` / `PairingsList` / `PairingCard` (editorial pairing cards); `FoundryOpentypeFeatures` / `FoundryTypefaceDetails` / `FeatureGrid` / `FeatureCard` (descriptor cards); `FoundryCTA` / `FoundryFeatureSection` / `FoundryLicenseQuestions` / `InDevelopmentSection` (marketing chrome); and the vendored `ButtonGroup`. See `packages/foundry/COMPONENTS.md`.
+> **Cut on 2026-07-09** — failed the membership test (they describe or market type, never act on the font): `FoundryOtherTypefaces` (redundant vs the grid); `FoundryTypefacePairing` / `PairingsList` / `PairingCard` (editorial pairing cards); `FoundryOpentypeFeatures` / `FoundryTypefaceDetails` / `FeatureGrid` / `FeatureCard` (descriptor cards); `FoundryCTA` / `FoundryFeatureSection` / `FoundryLicenseQuestions` / `InDevelopmentSection` (marketing chrome); and the vendored `ButtonGroup`. See `packages/foundry/COMPONENTS.md`. **Reversed 2026-08-27** (FoundrySpecimenSections, user ruling on the Málrómur slug page): `FoundryOpentypeFeatures` · `FoundryTypefaceDetails` · `FoundryTypefacePairing` (+ `PairingCard`) are in the package — the specimen header over text-only `SectionCardItem` tiles / `PairingCard`s, the last of the site's fork.
 
 ### Live-measurement engine (added 2026-07-10)
 
@@ -94,7 +94,7 @@ The bucket-B engine upgrades — the specimen tools gain a self-measuring row an
 
 - **Data is injected** — typeface metrics / font files are consumer-supplied flat props (or the bundled `typefaceConfig` fixture).
 - **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation`, `usePrefersReducedMotion` (+ `Icon` from `kol-icons`). This package depends on them.
-- **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take an injected `linkComponent` (receives `to`), falling back to a plain `<a href>`. The severed page's `FullBleedHero` is an injectable `HeroComponent` slot with a minimal built-in default.
+- **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take `onNavigate(href, event)` — every item is a real `<a href>`, the callback is the SPA seam (`linkComponent` retired 2026-08-27, FoundryComponentsReconcile; the library grid is on the content set: `ContentFilters` → `ContentCollection` → `ContentCard` / `ContentRow typeface`, with `TypefaceAlphabet` in the row's footer)
 - **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back. **`framer-motion` is a peer** — `ColorLoader`'s curtain motion (2026-07-09).
 - **CSS lives in `kol-theme`** — `kol-components-foundry.css` (recreated 2026-07-09 for the moved kit: type-sample/spec rules + the TextPressure stroke ghost); everything else styles with `@kolkrabbi/kol-theme` utility classes. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.

@@ -1,7 +1,7 @@
 # AssetGrid
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** utilities
 - **Real-world usages found:** 7 across 7 files in 7 apps
 - **Weighted inbound:** 21★ across 7 edges — 7×3★
 - **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-canalix, kol-client-kolkrabbi, kol-editor, kol-website

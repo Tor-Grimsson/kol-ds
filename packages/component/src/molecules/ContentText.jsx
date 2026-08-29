@@ -17,13 +17,14 @@
  * @param {string} form      card | row
  * @param {ReactNode} title
  * @param {ReactNode} body       article · work · typeface
- * @param {ReactNode} kicker     article only
+ * @param {ReactNode} eyebrow    article only — THE EYEBROW HAS ONE NAME (2026-08-27); `kicker` is its alias
  * @param {ReactNode} detail     catalog · print
  * @param {ReactNode} date       default · article · typeface
+ * @param {'card'|'row'|'hero'} form  the block's form; `hero` is article's featured text (ContentCard `hero`)
  * @param {ReactNode} size       default · article (file size / read length)
  * @param {ReactNode} meta       work only
  * @param {number}    gap        inner line gap in px (defaults per variant/form)
- * @param {string}    titleClass … kickerClass, bodyClass, detailClass,
+ * @param {string}    titleClass … eyebrowClass (alias `kickerClass`), bodyClass, detailClass,
  *                    dateClass, sizeClass, metaClass — full class overrides
  */
 
@@ -51,7 +52,9 @@ const RAMP = {
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
   },
   catalog: {
-    card: { title: 'kol-mono-14 text-emphasis', detail: 'kol-mono-10 text-meta' },
+    /* detail truncates (ShellHomeSystem, 2026-08-27): a wrapping blurb set three
+     * cards' plates at three heights and misaligned the media */
+    card: { title: 'kol-mono-14 text-emphasis', detail: 'kol-mono-10 text-meta truncate' },
     row:  { title: 'kol-mono-12 text-emphasis', detail: 'kol-mono-10 text-meta' },
   },
   print: {
@@ -61,8 +64,16 @@ const RAMP = {
     row:  { title: 'kol-mono-12 text-emphasis', detail: 'kol-mono-10 text-meta' },
   },
   article: {
-    card: { kicker: 'kol-mono-12 text-meta', title: 'kol-sans-heading-03 text-emphasis', body: 'kol-mono-14 text-body', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
-    row:  { kicker: 'kol-mono-12 text-meta', title: 'kol-sans-heading-04 text-emphasis', body: 'kol-mono-12 text-body', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
+    /* kol-content-title-dim: the title dims to 70% on card hover (StackCardHover, 2026-08-27 — ListingCard's move, kol-theme) */
+    card: { eyebrow: 'kol-mono-12 text-meta', title: 'kol-sans-heading-03 text-emphasis kol-content-title-dim', body: 'kol-mono-14 text-body', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
+    row:  { eyebrow: 'kol-mono-12 text-meta', title: 'kol-sans-heading-04 text-emphasis kol-content-title-dim', body: 'kol-mono-12 text-body', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
+    /* HERO — the featured card riding a page's fold (ContentCard `hero`,
+    /* THE OLD FEATURED CARD, VERBATIM — ListingCard size="hero" as Stack
+     * rendered it (user 2026-08-27: "everything was correct in the old featured
+     * card … the only thing you had to do was carry it through"): kicker
+     * `kol-card-kicker tracking-wide text-fg-64`, title display-section-sm →
+     * display-03 uppercase, clamp 2, dim on hover; body mono-14 fg-48 clamp 2. */
+    hero: { eyebrow: 'kol-card-kicker tracking-wide text-fg-64', title: 'kol-sans-display-03 uppercase line-clamp-2 kol-content-title-dim', body: 'kol-mono-14 text-fg-48 line-clamp-2', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
   },
   work: {
     /* INVERSE ink — the card's plate is the drawer, `surface-inverse`. Leaving
@@ -70,22 +81,31 @@ const RAMP = {
      * caption disappeared. */
     /* the drawer is an INVERSE surface, so the roles do not apply — but the
      * ladder does: one full ink, the rest stepped. */
-    card: { title: 'kol-sans-display-03 text-fg-inverse', meta: 'kol-mono-12 text-fg-inverse-64', body: 'kol-mono-14 text-fg-inverse-64', date: 'kol-mono-12 text-fg-inverse-48', tags: 'flex flex-wrap gap-2' },
+    /* RULED ON /work GRID + shelf (WorkCardAndShelf, 2026-08-27): the title is one
+     * line (the site passes its face as titleClass; the truncation is the card's),
+     * the meta is the helper voice, uppercase, at inverse 80 */
+    card: { title: 'kol-sans-display-03 text-fg-inverse truncate', meta: 'kol-helper-12 uppercase text-fg-inverse-80', body: 'kol-mono-14 text-fg-inverse-64', date: 'kol-mono-12 text-fg-inverse-48', tags: 'flex flex-wrap gap-2' },
     /* verbatim from WorkListItem: title `kol-mono-14` truncated · type
      * `kol-mono-12 md:kol-mono-14` at FULL ink, no opacity step · year
      * `kol-mono-12 text-fg-64` · description `kol-sans-heading-03 text-auto`.
      * Title and type are the pair — same rung, same full ink; only the year
      * steps down. */
-    row:  { title: 'kol-mono-12 text-body uppercase truncate', body: 'kol-sans-heading-03 leading-tight text-emphasis truncate', meta: 'kol-mono-12 text-body', date: 'kol-mono-12 text-meta', tags: 'flex flex-wrap items-center gap-1.5' },
+    /* RULED ON /work beside the local WorkListItem (WorkListingRowsAndFilters,
+     * 2026-08-27): the typeface row's voices — title + type kol-mono-14 full
+     * ink, the year kol-mono-12 fg-64. Body unchanged (the site passes its face). */
+    row:  { title: 'kol-mono-14 uppercase text-emphasis truncate', body: 'kol-sans-heading-03 leading-tight text-emphasis truncate', meta: 'kol-mono-14 text-emphasis', date: 'kol-mono-12 text-fg-64', tags: 'flex flex-wrap items-center gap-1.5' },
   },
   typeface: {
+    /* RULED ON SCREEN (TypefaceCardAndRow, kol-website 2026-08-27): name and
+     * classification are FULL ink, the year steps to 64; the card's title is the
+     * row's title string — one title voice for the typeface family. Ink only. */
     /* same as the row: the SPECIMEN carries the emphasis on a typeface card,
      * so the name steps down. The glyph is what you came to look at. */
-    card: { title: 'kol-mono-16 text-body', body: 'kol-mono-12 text-meta', date: 'kol-mono-12 text-meta' },
+    card: { title: 'kol-mono-14 uppercase text-emphasis', body: 'kol-mono-12 text-meta', date: 'kol-mono-12 text-meta' },
     /* the name steps DOWN to `body`: on a typeface row the SPECIMEN is the
      * thing you came for and it carries the one emphasis. Two full inks in one
      * block is the ladder broken, and the measurement caught it. */
-    row:  { title: 'kol-mono-14 uppercase text-body', body: 'kol-mono-12 text-meta', detail: 'kol-mono-14 text-body', date: 'kol-mono-12 text-meta' },
+    row:  { title: 'kol-mono-14 uppercase text-emphasis', body: 'kol-mono-12 text-meta', detail: 'kol-mono-14 text-emphasis', date: 'kol-mono-12 text-fg-64' },
   },
 }
 
@@ -109,7 +129,9 @@ const ORDER = {
    * tight 4px internal gap while tags, kicker and the meta group keep the
    * form's own outer gap. A flat column gave every line the same gap, which
    * read as unrelated lines rather than a heading with its standfirst. */
-  article:  { card: ['tags', 'kicker', ['stack', 'title', 'body'], ['group', 'date', 'size']], row: ['kicker', ['stack', 'title', 'body'], ['group', 'date', 'size']] },
+  article:  { card: ['tags', 'eyebrow', ['stack', 'title', 'body'], ['group', 'date', 'size']], row: ['eyebrow', ['stack', 'title', 'body'], ['group', 'date', 'size']] },
+  /* the hero carries its tags as data (ListingCard hero: `data-tags` only) and its meta in the header row above the media — neither is a text line here */
+  articleHero: ['eyebrow', ['stack', 'title', 'body'], ['group', 'date', 'size']],
   /* work CARD = the drawer's two lines: title, then one meta line.
    *
    * work ROW = WorkListItem, read off the live /work listing: a LEFT column of
@@ -154,7 +176,7 @@ const GAPS = {
   default: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-2)' },
   catalog: { card: 'var(--kol-spacing-1)', row: 'var(--kol-spacing-2)' },
   print: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-2)' },
-  article: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-3)' },
+  article: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-3)', hero: 'var(--kol-spacing-3)' },
   work: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-4)' },
   typeface: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-6)' },
 }
@@ -162,15 +184,18 @@ const GAPS = {
 export default function ContentText({
   variant = 'default',
   form = 'card',
-  title, body, kicker, detail, date, size, meta, tags,
+  title, body, eyebrow, kicker, detail, date, size, meta, tags,
   gap, clamp,
-  titleClass, bodyClass, kickerClass, detailClass, dateClass, sizeClass, metaClass, tagsClass,
+  titleClass, bodyClass, eyebrowClass, kickerClass, detailClass, dateClass, sizeClass, metaClass, tagsClass,
   className = '',
 }) {
+  /* `kicker` / `kickerClass` = aliases of `eyebrow` / `eyebrowClass` (2026-08-27) */
+  eyebrow = eyebrow ?? kicker
+  eyebrowClass = eyebrowClass ?? kickerClass
   const ramp = RAMP[variant]?.[form] ?? RAMP.default[form] ?? RAMP.default.card
-  const order = ORDER[variant]?.[form] ?? ORDER.default.card
-  const values = { title, body, kicker, detail, date, size, meta, tags }
-  const overrides = { title: titleClass, body: bodyClass, kicker: kickerClass, detail: detailClass, date: dateClass, size: sizeClass, meta: metaClass, tags: tagsClass }
+  const order = (form === 'hero' && ORDER[`${variant}Hero`]) || ORDER[variant]?.[form] || ORDER.default.card
+  const values = { title, body, eyebrow, detail, date, size, meta, tags }
+  const overrides = { title: titleClass, body: bodyClass, eyebrow: eyebrowClass, detail: detailClass, date: dateClass, size: sizeClass, meta: metaClass, tags: tagsClass }
 
   /* the clamp rides the BODY only — it is the one slot that carries prose long
    * enough to need cutting, and clamping a title is what `truncate` in the ramp
@@ -178,9 +203,15 @@ export default function ContentText({
    * so a card that wants the whole excerpt simply does not pass it. */
   const extra = (slot) => (slot === 'body' && clamp ? ` line-clamp-${clamp}` : '')
 
+  /* the title dim is BEHAVIOUR, not voice: a `titleClass` override replaces the
+   * ramp string whole (that is the seam's contract), and the hook was riding in
+   * that string — so Stack's uppercase display title lost its hover the moment
+   * it overrode the class (user 2026-08-27: "I had put A HOVER OPACITY drop,
+   * WHERE IS IT"). The hook is re-attached after the override. */
+  const hook = (slot) => (overrides[slot] && /\bkol-content-title-dim\b/.test(ramp[slot] ?? '') ? ' kol-content-title-dim' : '')
   const line = (slot) =>
     values[slot] == null ? null : (
-      <div key={slot} className={`${overrides[slot] ?? ramp[slot] ?? ''}${extra(slot)}`.trim()}>{values[slot]}</div>
+      <div key={slot} className={`${overrides[slot] ?? ramp[slot] ?? ''}${extra(slot)}${hook(slot)}`.trim()}>{values[slot]}</div>
     )
 
   /* RECURSIVE (2026-08-15) — an entry inside a line/between/group may itself be
@@ -227,7 +258,11 @@ export default function ContentText({
     )
   }
 
-  const nodes = order.map(render)
+  /* NOT `order.map(render)`: map passes (entry, index, ARRAY) and the array
+   * landed in `trailing`, so every top-level stack right-aligned — the article
+   * card's title and body sat flush right under left-aligned tags for eleven
+   * days (found on the comparison page, 2026-08-26). */
+  const nodes = order.map((entry, i) => render(entry, i))
 
   return (
     <div

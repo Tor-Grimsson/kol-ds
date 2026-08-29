@@ -29,8 +29,12 @@ import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 
 /* Inverse-tier chip tokens: the overlay scrim is surface-inverse, and .kol-overlay
  * carries no surface-context class, so the standard fg ramp doesn't flip there. */
+/* FIXED at the viewport edges, never inside the sheet (DocPageAndKindShowcase,
+ * kol-r2b2 2026-08-27 — absolute to the stage they sat inside the plate and
+ * centred on stage + caption, "too low"); the body stops 10rem short of the
+ * edges so nothing runs under them. */
 const CHIP =
-  'kol-embla-btn absolute top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center border border-fg-inverse-16 text-inverse hover:border-fg-inverse-32 md:flex'
+  'kol-embla-btn fixed top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center border border-fg-inverse-16 text-inverse hover:border-fg-inverse-32 md:flex'
 
 /* Mounted only while the overlay is open, so embla initializes fresh each open
  * with `startIndex` frozen at mount — no reInit games on later index changes. */
@@ -67,7 +71,7 @@ function ViewerStage({ media, index, onIndexChange }) {
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex items-center">
           {media.map((item, i) => (
-            <figure key={i} className="flex min-w-0 flex-[0_0_100%] flex-col items-center justify-center gap-3">
+            <figure key={i} className="flex min-w-0 flex-[0_0_100%] flex-col items-center justify-center gap-3 [&>*]:max-w-[calc(100vw-10rem)]">
               {item.kind === 'video' ? (
                 <video
                   src={item.url}
@@ -92,7 +96,7 @@ function ViewerStage({ media, index, onIndexChange }) {
         <>
           <button
             type="button"
-            className={`${CHIP} left-4`}
+            className={`${CHIP} left-6`}
             aria-label="Previous"
             onClick={(e) => { e.stopPropagation(); emblaApi?.scrollPrev() }}
           >
@@ -100,7 +104,7 @@ function ViewerStage({ media, index, onIndexChange }) {
           </button>
           <button
             type="button"
-            className={`${CHIP} right-4`}
+            className={`${CHIP} right-6`}
             aria-label="Next"
             onClick={(e) => { e.stopPropagation(); emblaApi?.scrollNext() }}
           >

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
@@ -16,6 +17,9 @@ import { indicatorSize } from '../hooks/glyphLadders.js'
  *     same fill (one piece: no border, no gap, hairline divider inside)
  *   variant="grey"              — oq-12 filled trigger (opaque per the fill
  *                                 law); panel continues it
+ *   tone="inverse"              — the dark chip (`fg-ab-24`) for a washed
+ *                                 plane, the panel continuing it (ControlToneInverse,
+ *                                 kol-website 2026-08-27); same prop on ViewToggle · Input
  *   variant="outline"           — bordered trigger; open panel carries the
  *     same border, trigger's bottom edge acts as the divider
  *
@@ -42,6 +46,34 @@ const Dropdown = ({
   onChange,
   size,
   variant = 'primary',
+  tone = 'default',
+  /* DropdownGhostWidthAndListHeight (kol-mirror 2026-08-28 — user, on the
+   * studio's 30-option Source picker in a ~300px shelf: "1 it's way too tall,
+   * 2 it's not fitting"):
+   *   `maxRows`   how many rows the panel shows before the list scrolls
+   *               (default 10). Popover's size middleware clamps the panel to
+   *               the VIEWPORT, which does nothing for a 30-row slab opened at
+   *               the top of a tall page — and its inline maxHeight cannot be
+   *               overridden from a consumer stylesheet, so the ceiling is ours.
+   *   `rowHeight` the row pitch (number = px, or any CSS length) for a chrome
+   *               whose own rows are shorter than the h-8 rung. Inline on the
+   *               row, because `h-8` is a utility and a rule cannot out-rank it.
+   * Both write variables on the panel that `.kol-dd-list` reads. */
+  maxRows = 10,
+  rowHeight,
+  /* `onOptionHover(value | null)` (DropdownOptionHoverPreview, kol-mirror
+   * 2026-08-28): the pointer entering a row reports its value, leaving reports
+   * `null` — so a picker over a VISUAL setting can preview the hovered option
+   * live and revert on leave. mirror's blend-mode picker applies the hovered
+   * mode to the composite: you scrub 16 modes against the actual image instead
+   * of committing to each one to look at it. The same case is every picker over
+   * easing curves, palettes, filters, fonts — the DS owns the panel, only the
+   * consumer knows what to preview, so this reports and nothing else.
+   *
+   * `null` fires ON CLOSE too, and that half is load-bearing: a panel dismissed
+   * while a row is hovered would otherwise leave the consumer previewing
+   * forever. It never fires while closed — a closed dropdown has no rows. */
+  onOptionHover,
   defaultOpen = false,
   className = ''
 }) => {
@@ -77,6 +109,21 @@ const Dropdown = ({
     setIsOpen(false)
   }
 
+  /* the hover report, and the close that ends it. `hovered` is a ref, not
+   * state — the preview is the consumer's business and re-rendering the panel
+   * on every row crossed would be a render per pointermove for nothing. */
+  const hovered = useRef(null)
+  const reportHover = (v) => {
+    if (hovered.current === v) return
+    hovered.current = v
+    onOptionHover?.(v)
+  }
+  useEffect(() => {
+    if (isOpen || hovered.current == null) return
+    hovered.current = null
+    onOptionHover?.(null)
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const currentOption = options.find((opt) => opt.value === value) || options[0]
 
   /* A clamped list (Popover caps the panel to the viewport) can open with the
@@ -98,10 +145,12 @@ const Dropdown = ({
     SIZE_TYPE[resolvedSize],
     'kol-dd-trigger',
     isOpen && 'kol-dd-trigger--open',
+    /* the dark chip on a washed plane; the panel continues it (ControlToneInverse, 2026-08-27) */
+    toneClass(tone),
   ].filter(Boolean).join(' ')
 
   return (
-    <div className={`relative inline-block align-middle ${className}`}>
+    <div className={`kol-dd-root relative inline-block align-middle ${className}`}>
       <button
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
@@ -131,7 +180,11 @@ const Dropdown = ({
         popover={popover}
         panel={false}
         focus={false}
-        className={`kol-dd-panel kol-dd-panel--${resolvedVariant}`}
+        className={`kol-dd-panel kol-dd-panel--${resolvedVariant} ${toneClass(tone)}`.trim()}
+        style={{
+          '--kol-dd-max-rows': maxRows ?? 10,
+          ...(rowHeight != null ? { '--kol-dd-row-h': typeof rowHeight === 'number' ? `${rowHeight}px` : rowHeight } : null),
+        }}
       >
         {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
 
@@ -141,6 +194,16 @@ const Dropdown = ({
             return (
               <MenuDropdownItem
                 key={option.value}
+                /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28,
+                 * "delete any hover state on dropdowns"): the trigger was
+                 * already pinned in all three variants — primary and outline
+                 * back to rest in kol-theme, grey carrying no hover rule at
+                 * all — and this was the last one left, the option row's ink
+                 * brighten. The check mark is what marks the current value. */
+                hover={false}
+                height={rowHeight}
+                onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
+                onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}
                 onClick={() => handleSelect(option)}
                 shortcut={isActive ? <Icon name="check" size={11} /> : undefined}
               >

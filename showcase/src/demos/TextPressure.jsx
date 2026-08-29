@@ -6,7 +6,7 @@ export const stage = 'lg'
  * live — move the pointer across a line: glyphs nearest the cursor deform
  * (width / weight / italic) and coast back to rest when you leave.
  * Casing is authored in the strings — no text-transform. */
-const VF = { fontFamily: 'TG Rot VF', fontUrl: '/fonts/TGRotVF.ttf' }
+const VF = { fontFamily: 'TG Rot VF', fontUrl: '/fonts/tg-typefaces/TGRotVF.ttf' }
 
 export default function TextPressureDemo() {
   return (

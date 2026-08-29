@@ -78,6 +78,16 @@ export function MenuItem({
 
 /**
  * MenuDropdownItem — action row inside a MenuItem's dropdown panel.
+ *
+ * `height` (default none — the `h-8` rung) — an inline row height, for a panel
+ * in a chrome whose own rows are shorter (DropdownGhostWidthAndListHeight,
+ * kol-mirror 2026-08-28: its controls sit in 24px rows and the DS row was a
+ * third taller). Inline because `h-8` is a utility and a rule cannot out-rank it.
+ *
+ * `hover` (default true) — `false` drops the ink brighten, for a panel ruled
+ * to carry NO hover state at all (user 2026-08-28, on `Dropdown`: "delete any
+ * hover state on dropdowns"). Scoped to the caller: a MenuItem's own menu keeps
+ * its hover, because that ruling was about the select, not every panel.
  * Renders as a button so it picks up disabled, focus, and keyboard
  * activation. The parent MenuItem closes automatically on click via a
  * delegated handler that matches the `data-menu-item` attr.
@@ -89,15 +99,18 @@ export function MenuItem({
  *   - children  — main label, flex-1.
  *   - shortcut  — trailing content (text shortcut hint, ✓ marker, or icon).
  */
-export function MenuDropdownItem({ onClick, disabled, prefix, iconLeft, shortcut, children }) {
+export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, children }) {
   return (
     <button
       type="button"
       data-menu-item
       onClick={onClick}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       disabled={disabled}
       role="menuitem"
-      className="w-full kol-helper-12 px-3 h-8 shrink-0 inline-flex items-center gap-2 text-body hover:text-emphasis disabled:opacity-40 disabled:cursor-not-allowed text-left"
+      style={height != null ? { height } : undefined}
+      className={`w-full kol-helper-12 px-3 h-8 shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}

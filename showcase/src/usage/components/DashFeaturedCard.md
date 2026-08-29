@@ -48,7 +48,7 @@ From `kol-website/apps/web/src/routes/Metrics.jsx`:
           className="h-full"
           badge={`Last ${rangeLabel}`}
           title="Site Traffic"
-          icon="trending"
+          icon="trending-up"
           description="New visitors, returning visitors, and bounces."
           metricLabel="Total visits"
           metricValue={totalVisitsMonth}
@@ -84,19 +84,16 @@ From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/DashboardMetrics.jsx`:
                   ? <LineChart series={dailyToSeries(dailyVisits)} height={200} showArea />
 ```
 
-From `kol-website/apps/web/src/routes/workshop/DashboardComponents.jsx`:
+From `kol-apps/kol-labs-monorepo/apps/metrics/src/pages/MetricsLive.jsx`:
 
 ```jsx
 <DashFeaturedCard
-            badge="TOP OPENING"
-            title="King's Gambit"
-            icon="book-open"
-            description="Your most successful opening with 58% win rate across 234 games."
-            metricLabel="Games tracked"
-            metricValue="234"
-            legends={[
-              { label: 'Win rate', color: 'var(--kol-palette-green)' },
-              { label: 'Usage volume', color: 'var(--kol-palette-orange)' },
-            ]}
-          />
+          className="h-full"
+          badge={`Last ${rangeLabel}`}
+          title="Site Traffic"
+          icon="trending"
+          description="New visitors, returning visitors, and bounces."
+          metricLabel="Total visits"
+          metricValue={totalVisitsMonth}
+          chart={dailyVisits.length > 0 ? <LineChart series={dailyToSeries(dailyVisits)} height={200} showArea />
 ```

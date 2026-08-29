@@ -1,10 +1,10 @@
 # AssetPlaceholder
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
-- **Real-world usages found:** 26 across 26 files in 10 apps
-- **Weighted inbound:** 78★ across 26 edges — 26×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
+- **Category:** utilities
+- **Real-world usages found:** 25 across 25 files in 9 apps
+- **Weighted inbound:** 75★ across 25 edges — 25×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -22,9 +22,9 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/components/loaders/images/Image.jsx` |
 | 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/components/loaders/images/Image.jsx` |
 | 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/components/primitives/Image.jsx` |
-| 3 | 1 | `kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx` |
-| 3 | 1 | `kol-apps/kol-client-hrafn/src/components/primitives/Image.jsx` |
-| … | | _14 more_ |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/loaders/graphics/Graphic.jsx` |
+| 3 | 1 | `kol-apps/kol-client-kolkrabbi/src/components/primitives/Image.jsx` |
+| … | | _13 more_ |
 
 ## Import
 
@@ -50,6 +50,12 @@ From `kol-apps/kol-client-acyr-website/apps/website/src/components/primitives/Im
 
 ```jsx
 <AssetPlaceholder category={category} name={name} aspectRatio={aspectRatio} note="missing" className={className} />
+```
+
+From `kol-website/apps/web/src/components/sections/foundry/InDevelopmentSection.jsx`:
+
+```jsx
+<AssetPlaceholder />
 ```
 
 From `kol-apps/kol-client/src/components/client/icons/Icon.jsx`:

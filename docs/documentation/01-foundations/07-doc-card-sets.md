@@ -73,7 +73,7 @@ Home = kol-workshop (already owns the docs apparatus). ❓ Exact absorb details 
 | Role | Class |
 |---|---|
 | title | `.kol-card-title` |
-| kicker | `.kol-card-kicker` |
+| eyebrow | `.kol-eyebrow` (alias `.kol-card-kicker`, retiring — the eyebrow has one name, 2026-08-27) |
 | meta | `.kol-card-meta` |
 | excerpt | `.kol-card-excerpt` (line-clamp built in) |
 | value/price | `.kol-card-value` |

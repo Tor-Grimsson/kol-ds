@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 36 across 18 files in 9 apps
-- **Weighted inbound:** 59★ across 18 edges — 5×4★ · 13×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs-noter, kol-mirror, kol-modulator, kol-monitor, kol-website
+- **Real-world usages found:** 32 across 14 files in 7 apps
+- **Weighted inbound:** 47★ across 14 edges — 5×4★ · 9×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs-noter, kol-modulator, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-acyr-website/apps/website/src/pages/site/JournalAuthor.jsx` |
 | 3 | 1 | `kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx` |
 | 3 | 1 | `kol-apps/kol-docs-noter/src/components/ui-elements/atoms/Avatar.tsx` |
-| … | | _6 more_ |
+| … | | _2 more_ |
 
 ## Import
 
@@ -52,7 +52,7 @@ From `kol-apps/kol-docs-noter/src/components/app-shell/UserProfile.tsx`:
               <AvatarImage src="" alt="User" />
 ```
 
-From `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx`:
+From `kol-apps/kol-modulator/design-system/components/00-dont-touch/ui-elements/atoms/Avatar.tsx`:
 
 ```jsx
 <Avatar className={cn(sizeStyles[size], className)}>

@@ -1,0 +1,62 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/TypefaceVariablePreview.jsx	2026-08-24 19:07:48.623351631 +0000
++++ src/components/sections/foundry/TypefaceVariablePreview.jsx	2026-07-29 00:38:15.846975724 +0000
+@@ -44,34 +44,34 @@
+         <div className="space-y-4">
+           {/* Header */}
+           <div>
+-            <h3 className="kol-sans-heading-04 mb-1">{typeface.name} — {weight}</h3>
+-            <p className="kol-mono-xs text-fg-64">{typeface.styles}</p>
++            <h3 className="kol-sans-heading-05 uppercase mb-1">{typeface.name} — {weight}</h3>
++            <p className="kol-mono-12 text-fg-64">{typeface.styles}</p>
+           </div>
+ 
+           {/* Metrics Grid */}
+           <div className="grid grid-cols-2 gap-3 pt-4">
+             <div>
+-              <span className="kol-mono-xs text-fg-64">Classification</span>
+-              <p className="kol-mono-sm text-auto">{typeface.classification}</p>
++              <span className="kol-mono-12 text-fg-64">Classification</span>
++              <p className="kol-mono-14 text-auto">{typeface.classification}</p>
+             </div>
+             <div>
+-              <span className="kol-mono-xs text-fg-64">Weight</span>
+-              <p className="kol-mono-sm text-auto">{weight} ({weightValue})</p>
++              <span className="kol-mono-12 text-fg-64">Weight</span>
++              <p className="kol-mono-14 text-auto">{weight} ({weightValue})</p>
+             </div>
+             <div>
+-              <span className="kol-mono-xs text-fg-64">Status</span>
+-              <p className="kol-mono-sm text-auto">{typeface.status}</p>
++              <span className="kol-mono-12 text-fg-64">Status</span>
++              <p className="kol-mono-14 text-auto">{typeface.status}</p>
+             </div>
+             <div>
+-              <span className="kol-mono-xs text-fg-64">Year</span>
+-              <p className="kol-mono-sm text-auto">{typeface.year}</p>
++              <span className="kol-mono-12 text-fg-64">Year</span>
++              <p className="kol-mono-14 text-auto">{typeface.year}</p>
+             </div>
+           </div>
+ 
+           {/* Typography Metrics - Placeholder for future implementation */}
+           <div className="pt-4 border-t border-fg-08">
+-            <h4 className="kol-mono-xs text-fg-64 mb-2">Typography Metrics</h4>
+-            <div className="grid grid-cols-2 gap-2 kol-mono-xs text-fg-64">
++            <h4 className="kol-mono-12 text-fg-64 mb-2">Typography Metrics</h4>
++            <div className="grid grid-cols-2 gap-2 kol-mono-12 text-fg-64">
+               <div>Baseline: —</div>
+               <div>x-height: —</div>
+               <div>Cap height: —</div>
+@@ -93,10 +93,10 @@
+         <div className="w-64 flex justify-start items-start gap-6">
+           <div className="flex-1 flex flex-col justify-start items-start gap-3">
+             <div className="self-stretch flex flex-col justify-start items-start gap-2">
+-              <div className="self-stretch kol-mono-sm uppercase">
++              <div className="self-stretch kol-mono-14 uppercase">
+                 {typeface.name} — {weight}
+               </div>
+-              <div className="self-stretch kol-mono-xs text-fg-64">
++              <div className="self-stretch kol-mono-12 text-fg-64">
+                 {typeface.styles}
+               </div>
+             </div>

@@ -57,7 +57,7 @@ export const typefaceConfig = {
     name: 'Rót',
     displayName: 'Rót',
     fontFamily: 'TGRoot',
-    fontUrl: '/fonts/TGRotVF.ttf',
+    fontUrl: '/fonts/tg-typefaces/TGRotVF.ttf',
     fontStyle: 'normal',
     category: 'Variable Font',
     description: 'A precise geometric sans serif with variable weight and width axes',

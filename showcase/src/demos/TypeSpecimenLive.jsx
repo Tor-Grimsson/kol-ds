@@ -10,7 +10,7 @@ const SPECS = [
   { className: 'kol-sans-heading-01', sample: 'Kolkrabbi foundry' },
   { className: 'kol-sans-heading-03', sample: 'Eight arms, one system' },
   { className: 'kol-sans-body-02', sample: 'The quick brown fox jumps over the lazy dog, then reads its own computed style.' },
-  { className: 'kol-mono-12', sample: 'fontUrl: /fonts/TGRotVF.ttf · wght 100–900' },
+  { className: 'kol-mono-12', sample: 'fontUrl: /fonts/tg-typefaces/TGRotVF.ttf · wght 100–900' },
 ]
 
 export default function TypeSpecimenLiveDemo() {

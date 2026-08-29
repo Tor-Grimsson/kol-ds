@@ -16,11 +16,11 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphInspector.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/MetricsViewerCard.jsx` |
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/workshop/foundry/FoundryAtomsPreview.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-14-dead-sweep/web/components/MetricsViewerCard.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-dev-demo-retired/GlyphInspector.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/FoundryCharacterSets.jsx` |
 | 3 | 1 | `kol-website/_tmp/packages-elder-flush/ui/src/molecules/foundry/GlyphGrid.jsx` |
 | 3 | 1 | `kol-website/_tmp/workshop-museum-elder/components/workshop/foundry/FoundryAtomsPreview.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/fontviewer/GlyphInspector.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/fontviewer/MetricsViewerCard.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/FoundryCharacterSets.jsx` |
 
 ## Import
 
@@ -41,21 +41,7 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/mol
         />
 ```
 
-From `kol-website/apps/web/src/components/fontviewer/GlyphInspector.jsx`:
-
-```jsx
-<GlyphItem
-                  key={index}
-                  glyph={glyph}
-                  fontStyle={fontStyle}
-                  fontFamily={fontFamily}
-                  isSelected={glyph === selectedGlyph}
-                  onClick={setSelectedGlyph}
-                  onMouseEnter={setHoveredGlyph}
-                />
-```
-
-From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/MetricsViewerCard.jsx`:
+From `kol-website/_tmp/2026-08-14-dead-sweep/web/components/MetricsViewerCard.jsx`:
 
 ```jsx
 <GlyphItem
@@ -69,7 +55,21 @@ From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewe
                   />
 ```
 
-From `kol-website/apps/web/src/foundry-system/sections/FoundryCharacterSets.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/fontviewer/GlyphInspector.jsx`:
+
+```jsx
+<GlyphItem
+                  key={index}
+                  glyph={glyph}
+                  fontStyle={fontStyle}
+                  fontFamily={fontFamily}
+                  isSelected={glyph === selectedGlyph}
+                  onClick={setSelectedGlyph}
+                  onMouseEnter={setHoveredGlyph}
+                />
+```
+
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/FoundryCharacterSets.jsx`:
 
 ```jsx
 <GlyphItem key={i} glyph={glyph} fontFamily={fontFamily} fontStyle={fontStyle} />

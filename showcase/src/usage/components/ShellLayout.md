@@ -28,9 +28,9 @@ From `kol-website/apps/web/src/components/workshop/WorkshopChrome.jsx`:
 
 ```jsx
 <ShellLayout
-      routes={WORKSHOP_ROUTES}
-      basePath="/workshop"
-      brand={<WorkshopBrand />
+        routes={WORKSHOP_ROUTES}
+        basePath="/workshop"
+        brand={<WorkshopBrand />
 ```
 
 From `kol-apps/kol-labs-monorepo/apps/chess/src/App.jsx`:

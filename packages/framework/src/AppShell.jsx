@@ -18,7 +18,10 @@ export const ShellTocCollapsedContext = createContext(null)
 /* `getActivePage` — ACCEPTED-but-inert since the 2026-08-09 SideNav port (the
  * two-level elder model derives the active category from the route); kept so
  * no call site breaks. */
-export default function AppShell({ navTree = [], getActivePage: _getActivePage, header, footer, defaultTocContent }) {
+/* `sideNav` — every SideNav prop AppShell does not own, spread onto the rail
+ * (sidenav-rail-hairline, 2026-08-26): `background`, `hairline`, `isActive`,
+ * `onNavigate` … the next rail option needs no AppShell release. */
+export default function AppShell({ navTree = [], getActivePage: _getActivePage, header, footer, defaultTocContent, sideNav }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [tocContent, setTocContent] = useState(null)
   const [tocCollapsed, setTocCollapsed] = useState(false)
@@ -41,7 +44,12 @@ export default function AppShell({ navTree = [], getActivePage: _getActivePage, 
       <ShellTocContext.Provider value={setTocContent}>
         <ShellTocCollapsedContext.Provider value={setTocCollapsed}>
           <div
-            className="kol-brand-layout"
+            /* the PAGE is surface-tertiary, the rail surface-primary — the brand
+             * split (appshell-content-surface, kol-studio 2026-08-26, user:
+             * "sidenav primary, site tertiary, like brand"). BrandLayout's own
+             * line, verbatim; the fork dropped it on 2026-08-09 and every
+             * AppShell app rendered one flat colour. */
+            className="kol-brand-layout bg-surface-tertiary min-h-dvh"
             data-drawer-open={drawerOpen ? 'true' : undefined}
             data-toc={showToc ? 'true' : undefined}
           >
@@ -61,7 +69,7 @@ export default function AppShell({ navTree = [], getActivePage: _getActivePage, 
               aria-hidden="true"
             />
 
-            <SideNav navTree={navTree} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} />
+            <SideNav navTree={navTree} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} {...sideNav} />
             <div className="min-w-0">
               {header}
               <Outlet />

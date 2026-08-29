@@ -1,7 +1,7 @@
 # ErrorBoundary
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** molecules
+- **Category:** utilities
 - **Real-world usages found:** 2 across 2 files in 2 apps
 - **Weighted inbound:** 6★ across 2 edges — 2×3★
 - **Used in:** kol-video-editor, kol-website
@@ -37,7 +37,6 @@ From `kol-website/apps/web/src/App.jsx`:
 ```jsx
 <ErrorBoundary>
       <HelmetProvider>
-        <LanguageProvider>
-          <BrowserRouter>
-            <AppRoutes />
+        <BrowserRouter>
+          <AppRoutes />
 ```

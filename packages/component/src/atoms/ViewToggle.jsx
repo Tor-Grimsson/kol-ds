@@ -1,4 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import { toneClass } from '../utilities/tone.js'
 
 /**
  * ViewToggle — control for switching between view modes.
@@ -6,7 +7,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *   variant="text"   — segmented bare buttons; active uses kol-control--filled,
  *                      inactive is bare text-meta with text-emphasis on hover.
  *   variant="icon"   — bordered chip-row container holding square icon
- *                      buttons. Active uses bg-fg-absolute-24.
+ *                      buttons. Active uses bg-fg-ab-24.
  *   variant="single" — single button binary toggle. Click flips between the
  *                      two `options` values. The button shows the *current*
  *                      option's label; active = on (kol-control--filled),
@@ -18,6 +19,18 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * icon cut for variant="icon" ('stroke' default; 'solid' reads better at
  * 14px). For `variant="single"`, the FIRST option in `options` is the "off"
  * value; the SECOND is "on".
+ *
+ * `tone="sunken"` — `inverse` is its alias since 0.120.0 (ControlToneSunken,
+ * 2026-08-28: the control does not invert, it sits BELOW its plane; the
+ * active chip is `fg-08` now, down from `fg-16`). As first ruled:
+ * (ControlToneInverse, kol-website 2026-08-27 — user: "a
+ * flipped version of this color scheme, where the darker is background and grey
+ * is the active … it would fit better on the light grey"): on a washed plane
+ * (`pageWash`, `fg-04`) the default grey well reads as a second plate, so the
+ * icon variant's two values swap — the well takes the dark chip
+ * (`fg-ab-24`), the active chip the `fg-16` ink wash (user, on the live
+ * page: "just use bg-fg-16"), the inactive hover a lighter wash. Theme rules on `.kol-tone-inverse`
+ * (kol-theme ≥0.78.0); the same prop on `Dropdown` and `Input`.
  */
 const ViewToggle = ({
   size = 'sm',
@@ -25,6 +38,7 @@ const ViewToggle = ({
   onViewChange,
   variant = 'text',
   iconVariant = 'stroke',
+  tone = 'default',
   options = [
     { value: 'grid', label: 'Grid view', icon: 'grid' },
     { value: 'list', label: 'List view', icon: 'view-list' }
@@ -59,17 +73,21 @@ const ViewToggle = ({
     )
   }
 
+  /* THE WELL IS INSET (ViewToggleWellGap, kol-website 2026-08-28): `p-1` put the box 4px past the
+   * last chip on every side, so a row's `gap-4` read 20 on this side and 16 on the other, and every
+   * consumer subtracted it with a `-ml-1` on the neighbour. `-mx-1` draws the padding inward from the
+   * declared box — the chips sit where the box says, the well bleeds 4px into the gap. */
   const containerClasses = isIconVariant
-    ? `inline-flex items-center gap-1 p-1 bg-surface-secondary rounded ${className}`
+    ? `kol-view-toggle inline-flex items-center gap-1 p-1 -mx-1 bg-surface-secondary rounded ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
     : `flex gap-2 ${className}`
 
   const buttonClasses = (isActive) => {
     if (isIconVariant) {
       // Inset "well" pattern — container is bg-fg-04 (slight lift from page),
-      // active button uses bg-fg-absolute-24 (theme-invariant black, always
+      // active button uses bg-fg-ab-24 (theme-invariant black, always
       // darkens regardless of theme) so it reads as recessed/pressed.
       return `inline-flex items-center justify-center p-1.5 rounded transition-colors text-emphasis cursor-pointer ${
-        isActive ? 'bg-fg-absolute-24' : 'hover:bg-fg-absolute-08'
+        isActive ? 'bg-fg-ab-24' : 'hover:bg-fg-ab-08'
       }`
     }
     /* Active = filled chip. Inactive = bare-text on the shell base — no

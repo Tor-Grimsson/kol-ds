@@ -3,7 +3,7 @@ title: Type classes
 type: reference
 status: active
 created: 2026-07-31
-updated: 2026-08-01
+updated: 2026-08-27
 description: The two families, and when to use which
 aliases:
   - type-classes
@@ -82,28 +82,39 @@ JetBrains Mono ships as **two** `@font-face` rules — roman and italic, each `f
 | `kol-mono-14` | 14 / 18px |
 | `kol-mono-16` | 16 / 22px |
 | `kol-mono-20` | 20 / 26px |
+| `kol-mono-heading-03` · `kol-mono-display-03` · `kol-mono-display-02` | 32 / 110% · display-03 · display-02 tokens / 100% — **weight 500**, the app tier's masthead voice (`PageHeader voice="mono"`, 2026-08-27) |
 
 ### Sans sets — tokens, with leading
 
 | Class | Size (desktop base) | LH | Family / weight |
 |---|---|---|---|
-| `kol-sans-display-01/02` | 56 / 44px | 100% | sans-narrow 600 |
+| `kol-sans-display-01/02/03/04` | 56 / 44 / 36 / 32px | 100% | sans-tight 500 |
 | `kol-sans-heading-01/02` | 48 / 40px | 110/110% | sans-narrow 500 |
 | `kol-sans-heading-03/04/05` | 32 / 24 / 20px | 120/120/125% | sans-compact 500 |
 | `kol-sans-body-01/02/03` | 16 / 14 / 12px | 160/160/150% | sans 400 |
 
-(`display-03`, `heading-06` tokens exist; classes deferred until a consumer needs them. Sizes step up at the responsive breakpoint — see `kol-typography.css`.)
+(`heading-06` token exists; class deferred until a consumer needs it. Sizes step up at the responsive breakpoints — see `kol-typography.css`.)
 
-### Display Tight — the condensed-caps display voice (lobbied 2026-07-16)
+### Display — one face, since theme 0.59.0
 
-| Class | Ladder (base → 768 → 1024) | Family / weight |
-|---|---|---|
-| `kol-display-lg` | 48 → 64 → 96px | sans + `font-stretch: extra-condensed`, 470 |
-| `kol-display-section` | 40 → 48 → 64px | same |
-| `kol-display-section-sm` | 32 → 40 → 48px | same |
-| `kol-display-subsection` | 32 → 40 → 48px | sans-narrow, 470 |
+The display ramp is **Right Grotesk Tight, weight 500, no tracking**, 01 → 04 (DisplayTightRamp, user ruling 2026-08-27: *"the lg is correct, MORE correct than the numbered ramp … make 01 and 02 tight 500, replace the lg and retire lg … so we only have one system"*). Before 0.59.0 the ramp was Narrow and the Tight cut lived in a second, size-named system lobbied from the website's elder type. Case is a role — `uppercase` at the call site, `headlineCase="upper"` on `SectionText` — not a transform on the class.
 
-All four are `text-transform: uppercase` **by contract** — the display voice is caps by design language, the one type family that carries a transform. Own token ladder (`--kol-text-display-tight-01/02/03`) with a 1024px top step, deliberately not the sans-display ladder. Lobbied verbatim from the website's elder type system; elder `kol-heading-display` was a byte-identical duplicate of `kol-display-lg` and maps to it.
+**Retired — the elder display voice.** Four aliases, each on the retirement clock ([[../../operations/01-release/04-retirements|retirements]]); they keep the uppercase their contract baked in, the swap adds `uppercase`:
+
+| Elder class | Swap to |
+|---|---|
+| `kol-display-lg` | `kol-sans-display-01 uppercase` |
+| `kol-display-section` | `kol-sans-display-02 uppercase` |
+| `kol-display-section-sm` | `kol-sans-display-03 uppercase` |
+| `kol-display-subsection` | `kol-sans-display-03 uppercase` |
+
+`--kol-text-display-tight-01/02/03` and `--kol-font-family-sans-tight` stay as tokens. No `-xs/-sm/-md/-lg/-xl` type class is left in the theme.
+
+## Casing
+
+**Casing is a property of the ROLE, not a law about strings (user ruling 2026-08-26 — the fourth time it was said).** Eyebrows, kickers and section labels are **uppercase by contract**: `SectionText` stamps `.kol-section-text-eyebrow` (`text-transform: uppercase`, theme ≥0.55.0) on every label it renders, whatever voice class rides beside it. Body copy, headlines, buttons, tags and chips render **as authored** — no transform, the call site writes the string in the case it should read.
+
+The earlier line — "no `text-transform`, ever" — was one call about button and tag strings written up as a law for every string, then quoted back at every eyebrow that should have been caps. It is retired. The older component comments that still cite it are true of body strings and nothing else.
 
 ## Worked examples
 

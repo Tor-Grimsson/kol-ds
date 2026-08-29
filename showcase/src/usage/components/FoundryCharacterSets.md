@@ -12,7 +12,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 3 | 1 | `kol-website/apps/web/src/routes/Demo.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-dev-demo-retired/Demo.jsx` |
 
 ## Import
 
@@ -22,7 +22,7 @@ import { FoundryCharacterSets } from '@kolkrabbi/kol-foundry'
 
 ## Real usage
 
-From `kol-website/apps/web/src/routes/Demo.jsx`:
+From `kol-website/_tmp/2026-08-27-dev-demo-retired/Demo.jsx`:
 
 ```jsx
 <FoundryCharacterSets />

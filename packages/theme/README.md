@@ -14,7 +14,11 @@ In a Vite + Tailwind v4 app, import the barrel after Tailwind:
 
 ```css
 @import "tailwindcss";
-@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-theme";            /* everything, domain packs included */
+/* or the app tier only — chess · workshop · foundry · dashboards · styleguide
+ * are 23 % of the theme, and an app that renders none of them need not ship them:
+ * @import "@kolkrabbi/kol-theme/core";
+ * @import "@kolkrabbi/kol-theme/kol-components-dashboards.css" layer(components);  ← a pack you do render, after it */
 ```
 
 Cascade order is load-bearing — `kol-theme` must come after Tailwind so its component classes and tokens resolve correctly. Individual files are also reachable (`@kolkrabbi/kol-theme/kol-color.css`, etc.) if you need finer control.

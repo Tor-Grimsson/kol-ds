@@ -43,7 +43,16 @@ body {
   /* 16rem — the rail width, one number (2026-07-31). It read 260 while every
      grid track that had to line up with it read 256, so the shell header's
      brand block sat 4 off the sidebar column it exists to align to. */
-  --kol-sidenav-w: 16rem;
+  --kol-sidenav-w: 264px;
+  /* A LADDER, not one number (SideNavWidthLadder, kol-website 2026-08-28 —
+     user ruling on the brand book: 320 desktop · 264 laptop · collapsed
+     tablet · hamburger mobile; the footer wordmark truncated at 16rem on a
+     desktop). 264 here, 320 from 1536 (Tailwind's `2xl`, the site's desktop
+     rung — the framework carries no named desktop breakpoint) in the media
+     rule below the grid; ≤1024 and <768 were already the collapse and the
+     drawer. useDragResize snaps to whichever rung the window is on; a stored
+     drag still wins on load. Anything that must line up with the rail reads
+     this token — a literal 256 is now wrong at every width. */
   /* Grab-edge gesture (lobby: SideNavGrabResize, 2026-08-09). Minted HERE —
      no --kol-* token carried these before (checked: only -w, -w-collapsed,
      -dot-left shipped). kol-mirror carried them as bare literals, the
@@ -137,6 +146,21 @@ body {
   position: relative;
   padding: 0.5rem 2.5rem 0.5rem 1.5rem;
 }
+/* THE HEADER SLOT (RailLogomarkAtTop, kol-fxr 2026-08-28 — user, on the
+ * raven in the footer: "why did you move the logo from top to bottom?"): the
+ * `header` node sits ABOVE the tree, outside the scroll region, in the hop's
+ * own horizontal geometry — its `.kol-sidenav-hop-icon` centres on the icon
+ * column collapsed and left-aligns to it expanded, its `.kol-sidenav-hop-label`
+ * hides with the labels. 1rem above it; the scroll region's own top pad is the
+ * gap to the first row, so the first tree glyph's y is one number in every
+ * consumer that passes the same header. */
+.kol-sidenav-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem 2.5rem 0 1.5rem;
+}
 /* the caret rides a PLAIN span (Icon stamps inline-flex on its own element,
  * which would outrank the collapsed display:none) */
 .kol-sidenav-hop-caret {
@@ -159,6 +183,16 @@ body {
 .kol-sidenav-group {
   display: block;
   padding: 0.25rem 1.5rem 0.25rem 3.5rem;
+}
+/* THE COLLAPSE RULE (WorkspaceSidebarGeometry, kol-fxr 2026-08-27 — user: "I
+ * would rather all use the same geometry layout"): a row that can survive
+ * collapse has an icon; one that cannot is not a row, it is a LABEL. A
+ * top-level node with no icon renders this — the eyebrow over its rows — and
+ * it is hidden with the labels when the rail narrows, so the rail reads as one
+ * thing narrowing (the brand sidebar's model) instead of rows vanishing. */
+.kol-sidenav-section {
+  display: block;
+  padding: 0.5rem 1.5rem 0.25rem 1.5rem;
 }
 .kol-sidenav-footer { padding-inline: 1.5rem 1rem; }
 
@@ -189,6 +223,7 @@ body {
 :root[data-sidenav="collapsed"] .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
 :root[data-sidenav="collapsed"] .kol-sidenav-hops { padding: 0 0 var(--kol-spacing-4); margin-bottom: var(--kol-spacing-4); }
 :root[data-sidenav="collapsed"] .kol-sidenav-hop { padding: var(--kol-spacing-2) 0; justify-content: center; gap: 0; }
+:root[data-sidenav="collapsed"] .kol-sidenav-header { padding: 1rem 0 0; justify-content: center; gap: 0; }
 :root[data-sidenav="collapsed"] .kol-sidenav-hop-label { display: none; }
 :root[data-sidenav="collapsed"] .kol-sidenav-body { display: none; }
 :root[data-sidenav="collapsed"] .kol-sidenav-hop-count,
@@ -198,6 +233,7 @@ body {
  * no labels; the theme slot and footer centre; the footer wordmark swaps for
  * its initial — both spans live in one <a>, so the link survives either state. */
 :root[data-sidenav="collapsed"] .kol-sidenav-hop-caret,
+:root[data-sidenav="collapsed"] .kol-sidenav-section,
 :root[data-sidenav="collapsed"] .kol-sidenav-list { display: none; }
 :root[data-sidenav="collapsed"] .kol-sidenav-theme-slot { padding-inline: 0; justify-content: center; }
 :root[data-sidenav="collapsed"] .kol-sidenav-footer { padding-inline: 0; justify-content: center; }
@@ -242,6 +278,9 @@ body {
  * (useDragResize stamps the attribute for the drag's duration). */
 :root[data-sidenav-dragging] .kol-brand-layout { transition: none; }
 
+/* the desktop rung of the ladder (SideNavWidthLadder) */
+@media (min-width: 1536px) { :root { --kol-sidenav-w: 320px; } }
+
 /* ───── Brand doc layout (sidebar + content) ─────
    The grid lives in CSS for its dynamic --kol-sidenav-w + transition. */
 
@@ -258,7 +297,9 @@ body {
   .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
   .kol-sidenav-hops { padding: 0 0 var(--kol-spacing-4); margin-bottom: var(--kol-spacing-4); }
   .kol-sidenav-hop { padding: var(--kol-spacing-2) 0; justify-content: center; gap: 0; }
+  .kol-sidenav-header { padding: 1rem 0 0; justify-content: center; gap: 0; }
   .kol-sidenav-hop-label { display: none; }
+  .kol-sidenav-section { display: none; }
   .kol-sidenav-body { display: none; }
   /* forced narrow / drawer modes own the rail below lg — no resize here */
   .kol-sidenav-grab { display: none; }
@@ -279,7 +320,9 @@ body {
   .kol-sidenav.is-drawer-open { transform: translateX(0); }
   /* Restore expanded labels + body inside the open drawer (override the rail rules above). */
   .kol-sidenav.is-drawer-open .kol-sidenav-hop { padding: 8px 0; justify-content: flex-start; gap: 12px; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-header { padding: 1rem 2.5rem 0 1.5rem; justify-content: flex-start; gap: 12px; }
   .kol-sidenav.is-drawer-open .kol-sidenav-hop-label { display: inline; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-section { display: block; }
   .kol-sidenav.is-drawer-open .kol-sidenav-body { display: block; }
   .kol-brand-layout[data-drawer-open="true"] .kol-sidenav-backdrop {
     opacity: 1;
@@ -437,54 +480,15 @@ body {
    Owners: kol-type-roles.css (pre/code) · kol-components-atoms.css
    (-indented / -pullout). Do not re-add them here. */
 
-/* ───── Fullscreen overlay ───── */
-
-.kol-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: var(--kol-z-modal, 100);
-  background: color-mix(in srgb, var(--kol-surface-inverse) 88%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
-}
-
-.kol-overlay-sheet {
-  position: relative;
-  max-width: var(--kol-container-max);
-  max-height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.kol-overlay-sheet img {
-  max-width: 100%;
-  max-height: 90vh;
-  object-fit: contain;
-  display: block;
-}
-
-.kol-overlay-close {
-  position: absolute;
-  top: -48px;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  background: transparent;
-  border: 1px solid color-mix(in srgb, var(--kol-surface-on-inverse) 32%, transparent);
-  color: var(--kol-surface-on-inverse);
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-}
-
-.kol-overlay-close:hover {
-  background: color-mix(in srgb, var(--kol-surface-on-inverse) 8%, transparent);
-}
+/* ───── Fullscreen overlay — RETIRED 2026-08-27 (DocPageAndKindShowcase, kol-r2b2)
+ * The framework shipped its own `.kol-overlay` / `.kol-overlay-sheet` /
+ * `.kol-overlay-close` (an inverse 88 % scrim, a 100 %-wide sheet, a hand-drawn
+ * close) that beat the theme's FullscreenOverlay rules whenever a consumer
+ * imported the framework after the theme — a light wash in dark mode and a sheet
+ * that swallowed every click, so click-away died; kol-r2b2 overrode both. No
+ * framework component renders these classes. The theme's rules
+ * (kol-components-atoms.css: flat `surface-primary` scrim, a sheet that hugs its
+ * panel, the DS Button close) are the one definition. */
 
 /* ───── Carousel (embla) ───── */
 
@@ -501,6 +505,15 @@ body {
 
 .kol-embla.is-slides .kol-embla-slide {
   width: clamp(320px, 72vw, 900px);
+}
+
+/* fullWidth (FeaturedCarouselFullWidth, kol-website 2026-08-26): the slide
+ * fills its container. The prop only ever dropped the section's own padding —
+ * the slide stayed the 72vw peek width, so a 1440 viewport showed 270px of
+ * the neighbours on both sides and every neighbour's video autoplayed. Peek
+ * is still the default; nothing existing moves. */
+.kol-featured-carousel.is-full .kol-embla-slide {
+  width: 100%;
 }
 
 .kol-embla-controls {

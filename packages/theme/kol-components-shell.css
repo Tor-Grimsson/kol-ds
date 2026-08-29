@@ -4,12 +4,18 @@
  * Chrome for @kolkrabbi/kol-shell — the app shell set (NavRail + AppShell +
  * page scaffolds) lifted from kol-monitor/kol-mirror 2026-08-14. App chrome,
  * not site chrome: kol-framework owns the site shell (SideNav, footer,
- * heroes); this file owns the fixed 48px rail and its page offset.
+ * heroes); this file owns the rail's live width token and the page gutter.
  */
 
 :root {
-  /* Rail width — read by both the rail and AppShell's content offset, so the
-   * two can never disagree (each repo had the 48 hardcoded in two places). */
+  /* THE RAIL OWNS THIS VARIABLE (RailFlatGrabOpen, kol-mirror 2026-08-28). It
+   * is the rail's LIVE width: `NavRail` sets 48 on mount, writes it per
+   * pointermove while the grab is dragged and gsap-tweens it on release, and
+   * AppShell's content is offset by the same value — so the page is pushed
+   * through the drag. The 48 here is the closed default and the value a
+   * consumer's own fixed chrome (`--monitor-rail`, `--fxr-rail`) reads before
+   * the rail mounts. 0.80.0–0.87.x had it derive from the sidenav tokens,
+   * while the rail WAS a collapsed SideNav; that is reversed. */
   --kol-shell-rail-width: 48px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin. */
   --kol-shell-page-pad: 48px;
@@ -17,34 +23,23 @@
 
 /* ── NavRail ────────────────────────────────────────────────────────────── */
 
-/* Geometry + stacking. Surface/border ride the theme utility classes on the
- * element (bg-surface-tertiary border-r border-fg-04). z-index joins the DS
- * ladder at the sticky tier: above page content, BELOW overlay (50) and modal
- * (100) — monitor's raw z-70 rail sat above its own z-50 overlays, a live
- * stacking bug. (--kol-z-nav is the SITE nav tier at 1000; an app rail that
- * outranks modals would be the same bug in the other direction.) */
+/* The flat rail's own stacking. Geometry (the fixed box, the padding, the gap)
+ * rides the element as utilities — it is one div and every child is a direct
+ * child of it, which is the shape the ruling asked for; only the z-tier needs a
+ * rule, because it must join the DS ladder rather than a consumer's raw number
+ * (monitor's z-70 rail sat above its own z-50 overlays, a live stacking bug).
+ * Above page content, BELOW overlay (50) and modal (100). */
 .kol-shell-rail {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: var(--kol-shell-rail-width);
   z-index: var(--kol-z-sticky);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 16px;
-  gap: 8px;
 }
 
-/* Rail nav items — the active-state ruling (user, 2026-08-12, monitor
- * session), carried natively so consumers delete their overrides: ink
- * full-strength in EVERY state (the nav variant's oq-64 rest is site-nav
- * quiet, wrong on a 48px icon rail); hover = the oq-04 wash (from the
- * variant); active route = that wash HELD ON. Never `selected`/`pressed` —
- * navigation is location, not a toggled tool. Scoped to the rail: the global
- * .kol-btn-nav[aria-current="page"] brightness-only rule (0.11.7 ruling)
- * stays the site-nav law. */
+/* The 2026-08-12 active-state ruling, carried natively so consumers delete
+ * their overrides: ink full-strength in EVERY state (the nav variant's oq-64
+ * rest is site-nav quiet, wrong on an icon rail — the rail also sets oq-96
+ * inline per rung); hover = the oq-04 wash from the variant; active route =
+ * that wash HELD ON. Never `selected`/`pressed` — navigation is location, not
+ * a toggled tool. Scoped to the rail: the global
+ * `.kol-btn-nav[aria-current="page"]` brightness-only rule stays the site-nav law. */
 .kol-shell-rail .kol-btn-nav {
   color: var(--kol-oq-96);
 }
@@ -74,4 +69,12 @@
   max-width: none;
   transform: scale(0.3);
   transform-origin: top left;
+}
+
+/* THE APP TIER'S SELECTION IS NEUTRAL (ShellHomeSystem, 2026-08-27): kol-framework
+ * paints ::selection brand-yellow, which is a SITE's; an app is not a site.
+ * AppShell wraps its tree in `.kol-app-shell`. */
+.kol-app-shell ::selection {
+  background-color: var(--kol-fg-24);
+  color: inherit;
 }

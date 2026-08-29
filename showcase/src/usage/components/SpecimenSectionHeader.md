@@ -2,8 +2,8 @@
 
 - **Package:** `@kolkrabbi/kol-foundry`
 - **Category:** flat
-- **Real-world usages found:** 5 across 5 files in 1 apps
-- **Weighted inbound:** 15★ across 5 edges — 5×3★
+- **Real-world usages found:** 8 across 8 files in 1 apps
+- **Weighted inbound:** 24★ across 8 edges — 8×3★
 - **Used in:** kol-website
 
 ## Who depends on this
@@ -12,11 +12,14 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/FontPreviewSection.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/FoundryCharacterSets.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/GlyphMetricsSection.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/TypefaceStyleSection.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/foundry-system/sections/VariableFontSection.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/FontPreviewSection.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/FoundryCharacterSets.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/GlyphMetricsSection.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/TypefaceStyleSection.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-reconcile/VariableFontSection.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-specimen-sections/FoundryOpentypeFeatures.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-specimen-sections/FoundryTypefaceDetails.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-27-foundry-specimen-sections/FoundryTypefacePairing.jsx` |
 
 ## Import
 
@@ -26,7 +29,7 @@ import { SpecimenSectionHeader } from '@kolkrabbi/kol-foundry'
 
 ## Real usage
 
-From `kol-website/apps/web/src/foundry-system/sections/FontPreviewSection.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/FontPreviewSection.jsx`:
 
 ```jsx
 <SpecimenSectionHeader
@@ -43,7 +46,7 @@ From `kol-website/apps/web/src/foundry-system/sections/FontPreviewSection.jsx`:
         />
 ```
 
-From `kol-website/apps/web/src/foundry-system/sections/FoundryCharacterSets.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/FoundryCharacterSets.jsx`:
 
 ```jsx
 <SpecimenSectionHeader
@@ -56,7 +59,7 @@ From `kol-website/apps/web/src/foundry-system/sections/FoundryCharacterSets.jsx`
         />
 ```
 
-From `kol-website/apps/web/src/foundry-system/sections/TypefaceStyleSection.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/TypefaceStyleSection.jsx`:
 
 ```jsx
 <SpecimenSectionHeader
@@ -70,7 +73,7 @@ From `kol-website/apps/web/src/foundry-system/sections/TypefaceStyleSection.jsx`
         />
 ```
 
-From `kol-website/apps/web/src/foundry-system/sections/VariableFontSection.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-reconcile/VariableFontSection.jsx`:
 
 ```jsx
 <SpecimenSectionHeader
@@ -83,20 +86,13 @@ From `kol-website/apps/web/src/foundry-system/sections/VariableFontSection.jsx`:
         />
 ```
 
-From `kol-website/apps/web/src/foundry-system/sections/GlyphMetricsSection.jsx`:
+From `kol-website/_tmp/2026-08-27-foundry-specimen-sections/FoundryOpentypeFeatures.jsx`:
 
 ```jsx
 <SpecimenSectionHeader
-          selectedStyle={showDropdown ? selectedStyleVariant : showAxisDropdown ? selectedValue : undefined}
-          onStyleChange={showDropdown ? setSelectedStyleVariant : showAxisDropdown ? onValueChange : undefined}
-          showDropdown={showDropdown || (showAxisDropdown && valueOptions.length > 0)}
-          styleOptions={showDropdown ? italicOptions : valueOptions}
-          label="Glyph Viewer"
-          icon="underline"
+          label="OpenType Features"
+          icon="variant-01"
           size="md"
-          showWeightDropdown={showAxisDropdown && valueOptions.length > 0}
-          weightOptions={valueOptions}
-          selectedWeight={selectedValue}
-          onWeightChange={onValueChange}
+          showDropdown={false}
         />
 ```

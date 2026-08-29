@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-09
+updated: 2026-08-27
 verified: 2026-07-04
 description: Every exported component, by tier, with its job
 aliases:
@@ -50,6 +50,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Button` | Trigger an action or event — primary, secondary, outline, ghost, or icon-only. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
+| `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
 | `Divider` | A thin rule separating content, horizontal or vertical. |
 | `EmptyState` | A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors. |
@@ -74,7 +75,9 @@ One row per source file — a component's compositional sub-parts are members of
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
 | `ToggleBracket` | A `Label [STATE]` text toggle. |
-| `ToggleCheckbox` | A labeled checkbox for a binary opt-in. |
+| `ToggleCheckbox` | A labeled checkbox for a binary opt-in; `variant="media"` carries a solid plate for use inside a media frame. |
+| `SortHeader` | One sortable field — label + direction arrow, in the strip voice. |
+| `SizeOrDownload` | The card's size slot — the size at rest, a download link on hover. |
 | `ToggleSwitch` | A labeled on/off switch. |
 | `TransparentX` | A checkerboard fill marking transparency. |
 | `ViewToggle` | Switch between view modes — grid/list, icon, or binary. |
@@ -89,7 +92,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `AlignmentGrid` | An align-to-artboard control — DS Button cells firing an onAlign seam. |
 | `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
 | `ArticleCard` | A blog/editorial card family — one component with default / hero / mini sizes. |
-| `BentoCard` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. |
+| `TiltBento` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. The Tilt family's composed tile (`TiltCard` is the bare frame, `useTilt` the hook); was `BentoCard` until 2026-08-27 — the old name is an alias on the retirement ledger. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
 | `Carousel` | A draggable, loopable slider built on Embla. |
 | `CodeBlock` | A syntax-highlighted code block with copy-to-clipboard. |
@@ -111,7 +114,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
 | `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
 | `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |
-| `Section` | A small-caps label above a stack of controls, for inspectors. |
+| `InspectorSection` (alias `Section`) | A small-caps label above a stack of controls, for inspectors. |
 | `ShapeDropdown` | A split icon-button + variant-menu — act on the current variant or pick another. |
 | `ShellDrawer` | An edge-anchored slide-in drawer with focus trap, scroll-lock, and Esc/backdrop close. |
 | `Slider` | Select a numeric value from a range with a draggable track. |
@@ -139,14 +142,31 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
+| `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. Molecule. |
+| `SectionHero` (alias `FullBleedHero`) | Cover media + scrim; text props render as `SectionText` in its own glass panel, or `panel` renders the caller's node verbatim. |
+| `SectionSplit` (alias `FeatureSplit`) | `SectionText` beside the media frame; `align: 'right' \| 'left' \| 'center'` — media side, or one centred column. |
+| `SectionCards` (alias `FeaturesCardSection`) | `SectionText` header over `CardFeatureItem` cards + a centred action row. |
+| `SectionCta` (alias `CtaGlobal`) | Display wordmark beside stacked label-over-value rows, each a `SectionText`. |
+| `KindPreview` | A preview for any kind of file — text / code as a CodeBlock, audio, HLS, the rest as a placeholder; the DS media kinds (`kindOf`, `extOf`, `KIND_LABEL`) ship beside it. |
+| `PlaybackBar` | The QuickTime bar as its own molecule (kol-r2b2, 2026-08-27, ruled against the reference): frosted `fg-absolute-48` + blur-xl, **radius 12**, white glyphs, `mm:ss` elapsed / total, a native scrubber with the 4 × 28 pill knob, volume behind `speaker`, `>>` speed. Presentational — `usePlayback` owns the element. |
+| `VideoSheet` | The overlay for video: the frame with `PlaybackBar` floating over its bottom edge (inset 16, radius 12); click toggles; `onMeta({ w, h, len })`. |
+| `AudioSheet` | Audio in the overlay, two variants — `cover` (the ID3 artwork is the frame, the bar floats) · `sheet` (the QuickTime audio window: dark plate, cover square, `Time: mm:ss`, the bar flush). No cover → the `music-note` square. |
+| `DocPage` | ONE plate for every document (markdown · text · code · JSON · YAML — kol-r2b2, 2026-08-27): the base plate; in the overlay an A-series page (85vh, 1:√2, inside the 10rem arrow gutters); in the column zoomed 0.5. `KindPreview` reaches for it; `DocFrontmatter` (a member) renders markdown's frontmatter above the prose. |
+| `CatalogPage` | The app tier's Home / Library page shipped once — PageHeader → ContentFilters → the catalog grid of `ContentCard` / `ContentRow catalog` → the action row; `toCard` is the contract. |
+| `SettingsShortcuts` / `SettingsLinks` / `SettingsColophon` | The keyboard-shortcuts block (six columns, column-first), the About / Repo link list, and the foot line — the settings furniture three apps hand-wrote. |
+| `TouchDeviceOverlay` | "Desktop recommended", once, on a touch-primary device — `AppShell touch="overlay"` mounts it; `useTouchPrimary` beside it. |
+| `ColumnBrowser` | Finder-style Miller columns over a flat key space — the listing surface's folder view, with a preview column, Finder's keyboard and Quick Look. |
+| `SectionNewsletter` (alias `NewsletterBand`) | The newsletter card of the section family — `SectionText` over an email Input + submit Button with an aria-live status line, on the ladder and the cap. |
+| `SectionFaq` | `SectionText` header over `Accordion` `{ q, a }` items; `singleOpen` optional. New 2026-08-26. |
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
 | `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
-| `MediaLibrary` | A browser over an object bucket — **ONE component, two variants**: `page` fills its box, `modal` opens over the app. Variant is container geometry only (the ThemeToggle precedent); everything else is a prop. Folders disclose in place, Finder's list model. Composes `ContentFilters` + `MediaCard`/`MediaRow` + `MediaViewer` + `FullscreenOverlay`. **The client is injected, never imported** — ARCHITECTURE §3. A video tile carries a **fallback resting state** (play glyph + filename, `.kol-media-thumb-fallback`) behind the video, because a `<video>` paints nothing until a frame decodes — the `<img alt>` equivalent. |
+| `MediaLibrary` | A browser over an object bucket — **ONE component, its variants**: `browse` (folder / files: the bucket dropdown, the crumb line, `ColumnBrowser`, the count) and `library` (the content-filters wall: kinds · search · SELECT / FLAT · grid | list | off · sort · the cards · paging · the inspector · the settings drawer) are kol-r2b2's app cut in two (MediaLibraryPages, 2026-08-27 — "bucket is a control, not a page"); `modal` is the picker; `page` a deprecated alias of `library`. The client is injected; the pages render read-only unless it carries the write seams. |
 | `MediaBrowser` / `MediaPicker` | Thin **aliases** of `MediaLibrary` at `variant="page"` / `variant="modal"`, kept so existing call sites keep working. They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
-| `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, client-side TREE derivation (folders disclose in place), the open-folder set and the sort key. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
+| `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, then a **prefix-scoped** view: the folders directly under the prefix, the files at that level (or the whole subtree in `flat`), the kind allow-list, the search, the sort with direction, and paging keyed to what is listed. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
 | `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |
-| `NewsletterBand` | A centered subscribe band — heading + lede over an email Input and submit Button with an aria-live status line. |
+| `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `ShellDrawer` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
+| `NewsletterBand` | **Deprecated 2026-08-27** — `SectionNewsletter` under its old name (`title` → `headline`, `description` → `body`). |
 | `ParallaxShelf` | A scroll-parallax horizontal shelf of WorkCards. |
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
@@ -170,7 +190,8 @@ Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` packa
 | `useReveal` / `useScrollSpy` | In-view reveal animation / active-section tracking. |
 | `TagPath` | A tag rendered as a **path**, not a string — the namespace dims, the leaf carries. Shared by the tag overlay and the frontmatter panel so a tag cannot be spelled two ways. (`@kolkrabbi/kol-workshop`) |
 | `usePrefersReducedMotion` / `useCoarsePointer` | The two DS-wide motion gates — reduced-motion preference / touch device. Pointer-driven effects check both and render static when either is true. |
-| `useTilt` | The ONE pointer-tilt spring — TiltCard, BentoCard and InteractiveImage compose it rather than forking a second feel. |
+| `useTilt` | The ONE pointer-tilt spring — TiltCard and TiltBento compose it rather than forking a second feel. |
+| `usePlayback` | One media element's playback for a `PlaybackBar` — `{ ref, handlers, bar }`; the sheet spreads the handlers on its `<audio>` / `<video>`, the bar gets `bar`, and never touches the element. |
 | `useEyedropper` / `pickFromCanvasElement` | Cross-browser color sampling — the native `EyeDropper` API (Chromium) with an injected fallback; `pickFromCanvasElement` is the reusable fallback that reads a pixel from a consumer's `<canvas>` (Firefox/Safari). |
 | `colorMath` | Pure HSL/hex + harmony helpers for the color pickers — `hexToHsl` / `hslToHex`, deterministic `generateHarmony` / `harmonyColors` (+ the `HARMONIES` table), and jittered `seedHarmony`. |
 

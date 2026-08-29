@@ -1,7 +1,8 @@
 /**
  * Icon Component
  *
- * Dynamically loads and renders SVG icons from kol-icon-set-v1 (or consumer-registered sets)
+ * Dynamically loads and renders SVG icons from kol-icon-set-v1 and
+ * kol-icon-set-signal (or consumer-registered sets)
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (matches SVG filename without extension)
@@ -74,12 +75,18 @@ export const registerIcons = (globMap) => {
   }
 }
 
-/* Resolution order: consumer-registered → kol-icon-set-v1. That's the whole
- * chain — a miss is a real miss. */
+/* Resolution order: consumer-registered → kol-icon-set-v1 → kol-icon-set-signal.
+ * That's the whole chain — a miss is a real miss.
+ *
+ * v1 BEFORE signal, and it decides the twelve names both sets drew (2026-08-28):
+ * `chevron-*`, `nav-*`, `dith-flow`, `ptrn-checker`, `ptrn-dot`. The name map is
+ * flat — one name, one glyph — so a second drawing under a shipped name cannot
+ * be expressed, only silently win. Those twelve were left out of the signal set
+ * rather than shipped to collide; v1's are what render. */
 const resolveIcon = (name) => {
   if (CUSTOM[name]) return CUSTOM[name]
   if (!ICONS) return undefined
-  return ICONS.V1[name]
+  return ICONS.V1[name] ?? ICONS.SIGNAL[name]
 }
 
 const normalizeSize = (value) => {

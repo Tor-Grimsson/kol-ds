@@ -26,5 +26,12 @@ export const glyphCategories = [
 ]
 
 /** Default preview pangram — neutral English, authored in intended case. */
+/* the foundry's own passage (Icelandic — the site's typeface sample, moved here
+ * from FontPreviewSection 2026-08-27, TypefaceCardRevealText; user: "we have
+ * custom text samples in typefaces — Rennimjúkt eðal flauel etc."). The library
+ * grid's card reveal shows its first sentence. */
+export const FOUNDRY_SAMPLE_TEXT =
+  'Rennimjúkt eðal flauel, duft slæðist niður, silkislaufa & æðardúnn, fiður daðra dilur, friður. Sjáumst sjaldnar en sálagárur, samverustundir við skák að sötri, soðin sjálfsögðum samtölum. Spakir sötra á sætu seyði, sjónlistarspjall, síðfóníur, söngur sungin suður af Síberíu, setið að sálrænum stríðsglæpum, svaðil-pöttum og skyndimátum, svarthvítar svikamyllur, sökkvandi skálínur spegla sýnirnar – seinni tíðirnar.'
+
 export const SPECIMEN_SAMPLE_TEXT =
   'The quick brown fox jumps over the lazy dog while five wizards vex the gnomic judge.'

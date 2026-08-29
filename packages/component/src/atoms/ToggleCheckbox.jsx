@@ -1,9 +1,14 @@
 import React from 'react'
 
+/* `variant="media"` (ContentFiltersCollection, kol-r2b2 2026-08-27): inside a
+ * media frame the unchecked hairline vanished over a photo; this variant's
+ * UNCHECKED box carries the media control's solid plate (`--kol-oq-12`) so it
+ * reads over any image. Checked stays the white plate + black check. */
 const ToggleCheckbox = ({
   label,
   checked = false,
   onChange,
+  variant = 'default',
   className = '',
   hint,
   ...props
@@ -15,7 +20,7 @@ const ToggleCheckbox = ({
 
   return (
     <label
-      className={`toggle-checkbox ${checked ? 'is-active' : ''} ${className}`.trim()}
+      className={`toggle-checkbox ${variant === 'media' ? 'toggle-checkbox--media' : ''} ${checked ? 'is-active' : ''} ${className}`.replace(/\s+/g, ' ').trim()}
       {...props}
     >
       <input

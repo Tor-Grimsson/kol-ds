@@ -9,6 +9,12 @@ const EASE = 'var(--kol-ease-house)'
 const TYPE_LABELS = { client: 'Client', collection: 'Collection', typeface: 'Typeface', tool: 'Tool', system: 'System' }
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentCard variant="work"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * WorkCard — the grid/shelf project tile for a `/work` listing: a fixed-size
  * media card (the DS **TiltCard** in its `grounded` variant) with a
  * hover-revealed bottom drawer carrying the project title + a meta line
@@ -91,7 +97,10 @@ export default function WorkCard({
     <a
       href={href}
       onClick={onNavigate ? (e) => onNavigate(href, e) : undefined}
-      className={`flex-none w-[280px] md:w-[400px] ${height} group`}
+      /* `block` — an <a> is inline, and inline ignores height: the card only held
+       * its 408/560 where a flex parent blockified it (the /work shelf); anywhere
+       * else it collapsed to a 2px line (comparison page, 2026-08-26). */
+      className={`block flex-none w-[280px] md:w-[400px] ${height} group`}
       style={isMobile ? undefined : { perspective }}
     >
       <div

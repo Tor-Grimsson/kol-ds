@@ -1,0 +1,49 @@
+export const meta = {
+  id: "2.78.0",
+  slug: "sort-header",
+  title: "SortHeader",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-27",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/input",
+  ],
+  description: "One sortable field: label + direction arrow.",
+  aliases: [
+    "sort-header",
+    "sortable-header",
+  ],
+  reuses: [
+    "Icon 3★",
+  ],
+}
+
+<Preview name="SortHeader" />
+
+## Installation
+
+<Install name="SortHeader" />
+
+## Usage
+
+```jsx
+import { SortHeader } from '@kolkrabbi/kol-component'
+
+<SortHeader label="Date" active dir="desc" onClick={flip} />
+```
+
+## Behavior
+
+The strip chrome: `kol-helper-12`, uppercase label, 1px tracking, `select-none`; active `text-oq-96`, rest `text-oq-48 hover:text-oq-64`. The arrow renders only on the active field — arrow-down is ascending (A→Z, oldest→newest), arrow-up descending. Promoted from kol-r2b2's FileList (ContentFiltersCollection, 2026-08-27). [SortControls](/components/sort-controls) is the group.
+
+## Props
+
+<Api name="SortHeader" rows={[
+  {"prop":"label","type":"ReactNode","def":"—","desc":"The field label; a string renders uppercase."},
+  {"prop":"active","type":"boolean","def":"false","desc":"This field is the current sort — lit, with the arrow."},
+  {"prop":"dir","type":"'asc' | 'desc'","def":"'asc'","desc":"Direction, read only when active."},
+  {"prop":"onClick","type":"() => void","def":"—","desc":"The click."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the button."}
+]} />

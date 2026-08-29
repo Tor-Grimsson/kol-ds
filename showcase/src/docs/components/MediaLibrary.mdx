@@ -1,0 +1,74 @@
+export const meta = {
+  id: "2.75.0",
+  slug: "media-library",
+  title: "MediaLibrary",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/components/organisms",
+    "domain/design-system",
+    "pattern/media",
+  ],
+  description: "A browser over an object bucket, in two views over one headless core.",
+  aliases: [
+    "media-library",
+    "media-browser",
+    "media-picker",
+  ],
+  reuses: [
+    "ActionButton 4★",
+    "Button 4★",
+    "Icon 4★",
+    "ContentCard 3★",
+    "ContentFilters 3★",
+    "ContentRow 3★",
+    "Divider 3★",
+    "FullscreenOverlay 3★",
+    "Input 3★",
+    "MediaViewer 3★",
+    "SegmentedToggle 3★",
+    "SettingsChipRow 3★",
+  ],
+}
+
+<Preview name="MediaLibrary" />
+
+## Installation
+
+<Install name="MediaLibrary" />
+
+## Usage
+
+```jsx
+import { MediaLibrary } from '@kolkrabbi/kol-component'
+
+<MediaLibrary variant="browse" client={mediaClient} title="KOL-MEDIA" folderTree={tree} />
+<MediaLibrary variant="library" client={mediaClient} title="KOL-MEDIA" settings={settings} onSettingsChange={save} />
+<MediaLibrary variant="modal" open={open} client={mediaClient} accept={['image', 'video']} onSelect={pick} onClose={close} />
+```
+
+## Behavior
+
+kol-r2b2's app, cut in two (MediaLibraryPages, 2026-08-27): **browse** is folder / files — the bucket dropdown (from `client.buckets()`), the crumb line with the ROW | COLUMN toggle, `ColumnBrowser` on the flat key space, the count line; **library** is the content-filters wall — FILES · kind chips · search · SELECT / FLAT · grid | list | off · sort, the cards with the frame-corner download, paging, the inspector lightbox, the settings drawer. Both render read-only unless the client carries the write seams. The modal variant is the picker, as before. **The client is injected**, never imported. `page` is a deprecated alias of `library`; `MediaBrowser` / `MediaPicker` are thin aliases.
+
+## Props
+
+<Api name="MediaLibrary" rows={[
+  {"prop":"variant","type":"'browse' | 'library' | 'modal' | 'page'","def":"'page'","desc":"browse = folder / files; library = the content-filters wall; modal = the picker; page = a deprecated alias of library."},
+  {"prop":"client","type":"{ listMedia, mediaUrl, proxied?, buckets?, deleteObject?, renameObject?, downloadUrl? }","def":"—","desc":"The media client instance (kol-media-client ≥0.2.0 for buckets); the write seams are optional — without them the pages are read-only."},
+  {"prop":"title","type":"string","def":"'MEDIA'","desc":"browse / library: the header's name and the browser's root row."},
+  {"prop":"bucket · onBucketChange","type":"string · (id) => void","def":"the first bucket","desc":"browse / library: the active bucket (controlled or internal)."},
+  {"prop":"prefix · onPrefix","type":"string · (prefix) => void","def":"''","desc":"browse: the open folder (controlled — e.g. the URL hash — or internal)."},
+  {"prop":"settings · onSettingsChange · defaults","type":"object","def":"SETTINGS_BASE","desc":"browse / library: r2b2's per-bucket display model — kinds, flat, groupVariants, foldSegments, pageSize, videoPreview, layout, folderView, sort, columnHeight, columnWidths."},
+  {"prop":"folderTree","type":"{ [bucketId]: { folders, files, bytes } }","def":"—","desc":"browse: a baked folder tree so the columns draw before the list lands."},
+  {"prop":"headerActions","type":"ReactNode","def":"—","desc":"browse / library: the app's own header controls (upload, etc.) beside the bucket dropdown."},
+  {"prop":"open","type":"boolean","def":"true","desc":"modal: mounts the overlay."},
+  {"prop":"accept","type":"'all' | kind | kind[]","def":"'all'","desc":"Kinds shown — a picker passes what it can pick."},
+  {"prop":"pageSize","type":"number","def":"60","desc":"Rows mounted before Show N more (0 = all)."},
+  {"prop":"defaultSort","type":"{ by, dir }","def":"{ by: 'date', dir: 'desc' }","desc":"Initial sort."},
+  {"prop":"flat","type":"boolean","def":"false","desc":"Start in flat mode (every object under the prefix)."},
+  {"prop":"onClose","type":"() => void","def":"—","desc":"modal: Escape, backdrop, close button."},
+  {"prop":"onSelect","type":"(url, { contentType, kind }) => void","def":"null","desc":"The pick; in modal it also closes."}
+]} />

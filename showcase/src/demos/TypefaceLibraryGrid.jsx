@@ -8,7 +8,7 @@ export const stage = 'full'
  * every library row renders a live, visually distinct face (the same runtime
  * @font-face injection TextPressure does for its fontUrl). */
 const FONT_FACES = `
-@font-face { font-family: 'TGRoot'; src: url('/fonts/TGRotVF.ttf') format('truetype'); font-weight: 100 900; }
+@font-face { font-family: 'TGRoot'; src: url('/fonts/tg-typefaces/TGRotVF.ttf') format('truetype'); font-weight: 100 900; }
 @font-face { font-family: 'TGMalromur'; src: url('/fonts/right-grotesk/PPRightGrotesk-RegularItalic.woff2') format('woff2'); font-style: italic; }
 @font-face { font-family: 'TGGullhamrar'; src: url('/fonts/right-grotesk/PPRightGrotesk-Light.woff2') format('woff2'); }
 @font-face { font-family: 'TGTrollatunga'; src: url('/fonts/right-grotesk/PPRightGrotesk-Black.woff2') format('woff2'); }

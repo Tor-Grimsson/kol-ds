@@ -12,7 +12,8 @@ import ContentText from './ContentText.jsx'
  *
  * @param {string}    variant   default | catalog | print | article | work | typeface
  * @param {ReactNode} media     thumb content (omit → placeholder)
- * @param {number}    thumb     thumb edge px — overrides the ruled default; 0 hides
+ * @param {number|'fill'} thumb  thumb edge px — overrides the ruled default; 0 hides; `'fill'` = a square
+ *                             the height of the row's content, whatever the rung (WorkListingRowsAndFilters)
  * @param {string}    ratio     thumb aspect-ratio — overrides the ruled default
  * @param {number}    paddingY  vertical padding px — overrides the ruled default
  * @param {boolean}   selected
@@ -35,10 +36,15 @@ const BOX = {
    * point at and get nothing back. It has no surface of its own, so it takes
    * the lightest step there is. Its thumb zooms: on an article row the image
    * IS the subject. */
-  article:  { thumb: 120, ratio: '1 / 1',  pad: '0',           gap: S6, align: 'items-start', thumbBg: 'var(--kol-fg-12)', hover: 'var(--kol-oq-02)', thumbZoom: true },
+  article:  { thumb: 120, ratio: '1 / 1',  pad: '0',           gap: S6, align: 'items-start', thumbBg: 'var(--kol-fg-12)', hover: 'var(--kol-oq-02)' },
   /* work and typeface step UP at md — the shipped rows both do, and a work row
    * at a fixed 96 cannot hold the display-03 line it was ruled to carry. */
-  work:     { thumb: 64,  thumbMd: 112, ratio: '1 / 1', pad: S4, padMd: S6, gap: S4, gapMd: S6, frame: 'transparent', frameHover: 'var(--kol-fg-16)', bg: 'var(--kol-surface-secondary)', minH: 96, minHMd: 160, align: 'items-stretch', thumbRadius: 'var(--kol-radius-xs)', thumbBorder: true, thumbZoom: true },
+  /* RULED ON /work (WorkListingRowsAndFilters, 2026-08-27): min-height 168 ("div
+   * 8"), 16 padding at every width ("16px padding, that's fine"), the thumb FILLS
+   * the content height (136 in a 168 row) with no hairline, the frame steps
+   * transparent → fg-08 on hover ("0 → 16 is a big jump"). No md step: the rows
+   * were approved at their base values. */
+  work:     { thumb: 'fill', ratio: '1 / 1', pad: S4, gap: S4, frame: 'transparent', frameHover: 'var(--kol-fg-08)', bg: 'var(--kol-surface-secondary)', minH: 168, align: 'items-stretch', thumbRadius: 'var(--kol-radius-xs)', thumbBorder: false },
   /* typeface's row is a COLUMN, not a line: a header (name/styles left,
    * classification/year right) with a full-width specimen band under it. The
    * shipped item is `flex-col gap-6`, and forcing it into the horizontal
@@ -63,6 +69,7 @@ export default function ContentRow({
 }) {
   const box = BOX[variant] ?? BOX.default
   const thumbPx = thumb ?? box.thumb
+  const padY = (paddingY != null ? `${paddingY}px` : String(box.pad)).trim().split(/\s+/)[0]
 
   /* The md: STEP is a custom property, not a Tailwind variant. Tailwind cannot
    * generate `md:min-h-40` from package source (the SegmentedToggle rule), and
@@ -76,7 +83,10 @@ export default function ContentRow({
     '--kol-row-gap-md': box.gapMd,
     '--kol-row-min-h': box.minH != null ? `${box.minH}px` : undefined,
     '--kol-row-min-h-md': box.minHMd != null ? `${box.minHMd}px` : undefined,
-    '--kol-row-thumb': `${thumbPx}px`,
+    /* `fill` = the rung minus the vertical padding — a definite number, not a
+     * stretch (a min-height row has no definite cross size, so a stretched
+     * aspect-ratio square resolved to the image's intrinsic width) */
+    '--kol-row-thumb': thumbPx === 'fill' ? `calc(${box.minH ?? 96}px - 2 * ${padY})` : `${thumbPx}px`,
     '--kol-row-thumb-md': box.thumbMd != null ? `${box.thumbMd}px` : undefined,
     '--kol-content-hover-bg': box.hover,
     '--kol-content-hover-border': box.frameHover,
@@ -103,23 +113,19 @@ export default function ContentRow({
     </>
   ) : (
     <>
-      {thumbPx > 0 && (
-        /* THE THUMB FILLS THE ROW'S HEIGHT (user ruling 2026-08-15).
-         *
-         * WIDTH stays pinned to `--kol-row-thumb` — that is what stops it
-         * running away. Only the height stretches, and `ratio={null}` puts
-         * ContentMedia on `h-full` so the image object-covers into whatever
-         * height the row is. An earlier cut freed the width instead and let
-         * `aspect-ratio` fall back to the image's intrinsic size, which is how
-         * one card ate the page. */
-        <div className="kol-row-thumb shrink-0 self-stretch">
+      {(thumbPx === 'fill' || thumbPx > 0) && (
+        /* THE THUMB IS A FIXED SQUARE BOX (ContentRowsAndPrintCard, user
+         * 2026-08-27: "the image should not control height, image should fit
+         * the row image placeholder") — `--kol-row-thumb` wide, square, at the
+         * top of the row (`.kol-row > .kol-row-thumb` in kol-theme ≥0.63.0), the
+         * media object-covers into it; row height = max(thumb, text). This
+         * retires the 2026-08-15 fill-the-height ruling and the `thumbSquare`
+         * exception it needed. Rows never zoom their thumb — cards keep theirs. */
+        <div className={`kol-row-thumb shrink-0 self-start ${thumbPx === 'fill' ? 'is-fill' : ''}`.trim()}>
           <ContentMedia
             ratio={null}
             border={box.thumbBorder ?? false}
             bg={box.thumbBg}
-            /* zoom where the thumb IS the subject (article · work), never on a
-             * 48px file chip or a between-header with no media at all */
-            zoom={box.thumbZoom ?? false}
             className={box.thumbRadius ? 'rounded-[var(--kol-radius-xs)]' : ''}
           >
             {media}

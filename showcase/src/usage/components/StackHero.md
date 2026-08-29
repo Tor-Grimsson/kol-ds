@@ -13,7 +13,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | ★ | uses | file |
 |---|---|---|
 | 3 | 1 | `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-web-src/sections/stack-detail/StackHeroTall.jsx` |
-| 3 | 1 | `kol-website/apps/web/src/components/sections/stack-detail/StackHeroTall.jsx` |
+| 3 | 1 | `kol-website/_tmp/2026-08-15-content-audit-dead/StackHeroTall.jsx` |
 
 ## Import
 

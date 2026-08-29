@@ -14,16 +14,17 @@
     "bento-wall": {
       "kol": [
         "AssetPlaceholder",
-        "BentoCard",
         "Button",
         "HlsVideo",
         "Icon",
-        "Image"
+        "Image",
+        "TiltBento"
       ],
       "local": {},
       "support": [
         "glyphLadders",
         "registerIcons",
+        "tone",
         "usePrefersReducedMotion",
         "useTilt"
       ],
@@ -48,7 +49,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -69,7 +71,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -86,29 +89,45 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": []
     },
     "cta-band": {
       "kol": [
-        "CtaGlobal"
+        "Button",
+        "CtaGlobal",
+        "Icon",
+        "SectionText"
       ],
       "local": {},
-      "support": [],
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionHeights",
+        "sectionSurface",
+        "tone"
+      ],
       "external": []
     },
     "feature-showcase": {
       "kol": [
         "Button",
-        "CardFeatureItem",
         "FeaturesCardSection",
-        "Icon"
+        "Icon",
+        "SectionCardItem",
+        "SectionCards",
+        "SectionText"
       ],
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
       ],
       "external": []
     },
@@ -127,7 +146,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -137,18 +157,26 @@
       "kol": [
         "AssetPlaceholder",
         "Button",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
         "FullBleedHero",
         "HlsVideo",
         "Icon",
         "Image",
-        "OverlayGlassPanel"
+        "OverlayGlassPanel",
+        "SectionText"
       ],
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
       ],
       "external": [
+        "embla-carousel-react",
         "hls.js"
       ]
     },
@@ -170,20 +198,25 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": []
     },
     "media-carousel": {
       "kol": [
         "AssetPlaceholder",
+        "EmblaNav",
         "FeaturedCarousel",
         "HlsVideo",
+        "Icon",
         "Image",
         "OverlayGlassPanel"
       ],
       "local": {},
-      "support": [],
+      "support": [
+        "registerIcons"
+      ],
       "external": [
         "embla-carousel-react",
         "hls.js"
@@ -194,12 +227,18 @@
         "Button",
         "Icon",
         "Input",
-        "NewsletterBand"
+        "NewsletterBand",
+        "SectionNewsletter",
+        "SectionText"
       ],
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
       ],
       "external": []
     },
@@ -234,7 +273,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -253,7 +293,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": []
     },
@@ -272,7 +313,8 @@
         "glyphLadders",
         "glyphSize",
         "registerIcons",
-        "theme"
+        "theme",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -286,7 +328,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": []
     },
@@ -341,7 +384,9 @@
       ],
       "local": {},
       "support": [
+        "glyphLadders",
         "registerIcons",
+        "tone",
         "useCoarsePointer",
         "usePrefersReducedMotion",
         "useTilt"
@@ -391,6 +436,7 @@
         "labels",
         "parsePgnTree",
         "registerIcons",
+        "tone",
         "useChessControls",
         "useChessKeyboardShortcuts",
         "usePopover"
@@ -399,6 +445,78 @@
         "@floating-ui/react",
         "chess.js"
       ]
+    },
+    "content-card-comparison": {
+      "kol": [
+        "ActionButton",
+        "AssetPlaceholder",
+        "Button",
+        "ContentCard",
+        "ContentCollection",
+        "ContentFilters",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "Divider",
+        "GridCard",
+        "Icon",
+        "IconFrame",
+        "Image",
+        "ListingCard",
+        "MediaCard",
+        "MediaRow",
+        "PageHeader",
+        "PageShell",
+        "Pill",
+        "PrintGridCard",
+        "SearchInput",
+        "SegmentedToggle",
+        "SizeOrDownload",
+        "Tag",
+        "TiltCard",
+        "TypefaceLibraryItem",
+        "WorkCard",
+        "WorkListItem"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "tone",
+        "useCoarsePointer",
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "framer-motion",
+        "gsap"
+      ]
+    },
+    "content-filters": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "ContentCard",
+        "ContentCollection",
+        "ContentFilters",
+        "ContentItem",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "Divider",
+        "Icon",
+        "IconFrame",
+        "SearchInput",
+        "Tag"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "tone",
+        "usePrefersReducedMotion"
+      ],
+      "external": []
     },
     "design-editor": {
       "kol": [
@@ -420,7 +538,8 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "tone"
       ],
       "external": [
         "@floating-ui/react"
@@ -435,6 +554,7 @@
         "FoundryCharacterSets",
         "GlyphMetricsGrid",
         "Icon",
+        "IconFrame",
         "Input",
         "MenuItem",
         "Pill",
@@ -448,9 +568,13 @@
       ],
       "local": {},
       "support": [
+        "FontInfo",
+        "FontLoader",
+        "Types",
         "glyphData",
         "glyphLadders",
         "registerIcons",
+        "tone",
         "useAxisAnimation",
         "usePrefersReducedMotion"
       ],
@@ -458,31 +582,115 @@
         "@floating-ui/react"
       ]
     },
-    "media-library": {
+    "kind-preview": {
       "kol": [
+        "ActionButton",
+        "AssetPlaceholder",
+        "AudioPreview",
+        "AudioSheet",
         "Button",
-        "ContentFilters",
-        "Divider",
+        "CodeBlock",
+        "CopyButton",
+        "DocFrontmatter",
+        "DocPage",
         "FullscreenOverlay",
+        "HlsVideo",
         "Icon",
         "IconFrame",
-        "MediaBrowser",
-        "MediaCard",
+        "Input",
+        "KindPreview",
+        "PlaybackBar",
+        "Popover",
+        "Slider",
+        "Tag"
+      ],
+      "local": {},
+      "support": [
+        "frontmatter",
+        "glyphLadders",
+        "id3",
+        "markdownToHtml",
+        "mediaKinds",
+        "registerIcons",
+        "tone",
+        "usePlayback"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap",
+        "hls.js",
+        "react-syntax-highlighter",
+        "react-syntax-highlighter/dist/esm/styles/prism"
+      ]
+    },
+    "media-library": {
+      "kol": [
+        "ActionButton",
+        "AssetPlaceholder",
+        "AudioPreview",
+        "AudioSheet",
+        "Button",
+        "CodeBlock",
+        "ColumnBrowser",
+        "ContentCard",
+        "ContentFilters",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "CopyButton",
+        "Divider",
+        "DocFrontmatter",
+        "DocPage",
+        "Dropdown",
+        "FullscreenOverlay",
+        "HlsVideo",
+        "Icon",
+        "IconFrame",
+        "Input",
+        "KindPreview",
+        "LabeledControl",
+        "MediaLibrary",
+        "MediaLibraryPages",
         "MediaPicker",
-        "MediaRow",
         "MediaViewer",
+        "MenuItem",
+        "PlaybackBar",
+        "Popover",
+        "SearchInput",
         "SegmentedToggle",
+        "SettingsPanel",
+        "ShellDrawer",
+        "SizeOrDownload",
+        "Slider",
+        "SortControls",
+        "SortHeader",
         "Tag",
+        "ToggleCheckbox",
+        "ToggleSwitch",
+        "VideoSheet",
         "ViewToggle"
       ],
       "local": {},
       "support": [
         "createMediaClient",
+        "frontmatter",
         "glyphLadders",
-        "registerIcons"
+        "id3",
+        "markdownToHtml",
+        "mediaKinds",
+        "ratios",
+        "registerIcons",
+        "tone",
+        "usePlayback",
+        "usePrefersReducedMotion"
       ],
       "external": [
-        "embla-carousel-react"
+        "@floating-ui/react",
+        "embla-carousel-react",
+        "gsap",
+        "hls.js",
+        "react-syntax-highlighter",
+        "react-syntax-highlighter/dist/esm/styles/prism"
       ]
     },
     "metrics-dashboard": {
@@ -548,6 +756,7 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "tone",
         "usePrefersReducedMotion"
       ],
       "external": [
@@ -557,43 +766,114 @@
     },
     "record-manager-cms": {
       "kol": [
+        "ActionButton",
+        "AssetPlaceholder",
+        "AudioPreview",
+        "AudioSheet",
         "Button",
+        "CodeBlock",
+        "ColumnBrowser",
+        "ContentCard",
         "ContentFilters",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "CopyButton",
         "Divider",
+        "DocFrontmatter",
+        "DocPage",
         "Dropdown",
         "FieldRow",
         "FullscreenOverlay",
+        "HlsVideo",
         "Icon",
         "IconFrame",
         "Input",
-        "MediaCard",
+        "KindPreview",
+        "LabeledControl",
         "MediaLibrary",
-        "MediaRow",
+        "MediaLibraryPages",
         "MediaViewer",
         "MenuItem",
+        "PlaybackBar",
         "Popover",
         "RecordManager",
         "SearchInput",
         "SegmentedToggle",
+        "SettingsPanel",
         "ShellDrawer",
+        "SizeOrDownload",
+        "Slider",
+        "SortControls",
+        "SortHeader",
         "Table",
         "Tag",
         "ToggleCheckbox",
+        "ToggleSwitch",
+        "VideoSheet",
         "ViewToggle"
+      ],
+      "local": {},
+      "support": [
+        "frontmatter",
+        "glyphLadders",
+        "id3",
+        "markdownToHtml",
+        "mediaKinds",
+        "ratios",
+        "registerIcons",
+        "tone",
+        "usePlayback",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "embla-carousel-react",
+        "gsap",
+        "hls.js",
+        "react-syntax-highlighter",
+        "react-syntax-highlighter/dist/esm/styles/prism"
+      ]
+    },
+    "section-set": {
+      "kol": [
+        "Accordion",
+        "AssetPlaceholder",
+        "Button",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "Input",
+        "OverlayGlassPanel",
+        "SectionCardItem",
+        "SectionCards",
+        "SectionCta",
+        "SectionFaq",
+        "SectionHero",
+        "SectionNewsletter",
+        "SectionSplit",
+        "SectionText"
       ],
       "local": {},
       "support": [
         "glyphLadders",
         "registerIcons",
-        "usePrefersReducedMotion"
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
       ],
       "external": [
-        "@floating-ui/react",
-        "embla-carousel-react"
+        "embla-carousel-react",
+        "hls.js"
       ]
     },
     "stack-blog": {
       "kol": [
+        "ActionButton",
         "ArticleCard",
         "ArticleHeader",
         "AssetPlaceholder",
@@ -601,16 +881,21 @@
         "Avatar",
         "Button",
         "CodeBlock",
+        "ContentMedia",
         "CopyButton",
         "Divider",
+        "EmblaNav",
+        "FeaturedCarousel",
         "Figure",
         "FullBleedHero",
         "HlsVideo",
         "Icon",
         "Image",
         "ImageBlock",
+        "OverlayGlassPanel",
         "Pill",
         "PortableTextRenderer",
+        "SectionText",
         "ShareButtons",
         "SourcesReferences",
         "StackHero",
@@ -620,9 +905,14 @@
       "local": {},
       "support": [
         "glyphLadders",
-        "registerIcons"
+        "registerIcons",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
       ],
       "external": [
+        "embla-carousel-react",
+        "gsap",
         "hls.js",
         "react-syntax-highlighter",
         "react-syntax-highlighter/dist/esm/styles/prism"
@@ -646,6 +936,8 @@
         "MoodTile",
         "Popover",
         "ProsePreview",
+        "SectionSplit",
+        "SectionText",
         "SpectrumGrid",
         "Table",
         "ToggleSwitch",
@@ -662,7 +954,11 @@
         "cssVar",
         "glyphLadders",
         "registerIcons",
-        "typographyCuts"
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "typographyCuts",
+        "useSectionTheme"
       ],
       "external": [
         "@floating-ui/react"
@@ -673,6 +969,10 @@
         "AssetPlaceholder",
         "Button",
         "Carousel",
+        "ContentCard",
+        "ContentMedia",
+        "ContentText",
+        "EmblaNav",
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
@@ -690,6 +990,7 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "tone",
         "useCoarsePointer",
         "usePrefersReducedMotion",
         "useTilt"

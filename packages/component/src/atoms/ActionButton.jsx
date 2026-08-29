@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import { DURATION } from '../utilities/motion.js'
 import gsap from 'gsap'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
@@ -73,7 +74,7 @@ const HOUSE_EASE = [0.4, 0, 0.2, 1]
  * not a mode. The release then plays the full bounce out. */
 const PRESS_HOLD = 1600
 
-const SWAP_MS = 500
+const SWAP_MS = DURATION.spring  /* the house 500 (utilities/motion.js) */
 
 const CHROME = {
   copy: 'kol-copy-btn',

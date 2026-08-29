@@ -1,6 +1,12 @@
 import { SelectIndicator } from './MediaCard.jsx'
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentRow variant="default"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * MediaRow — list row for one media object: optional select checkbox, small
  * thumbnail, name (flex), fixed-width date + size columns, then actions.
  * The list-view counterpart to MediaCard (same slot contract).

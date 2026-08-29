@@ -6,7 +6,7 @@ export const stage = 'full'
  * 'TGRoot'; alias it to the in-repo variable font so every weightValue lands
  * on the real wght axis (100–900). */
 const FONT_FACES = `
-@font-face { font-family: 'TGRoot'; src: url('/fonts/TGRotVF.ttf') format('truetype'); font-weight: 100 900; }
+@font-face { font-family: 'TGRoot'; src: url('/fonts/tg-typefaces/TGRotVF.ttf') format('truetype'); font-weight: 100 900; }
 `
 
 const TYPEFACE = {

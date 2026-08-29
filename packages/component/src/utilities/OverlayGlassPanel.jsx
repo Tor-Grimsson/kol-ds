@@ -11,6 +11,8 @@
  * @param {string} align           'center' | 'start' | 'end' (cross-axis + text)
  * @param {string} gap             vertical rhythm class between children
  * @param {string} maxWidth        optional max-w-* class (adds mx-auto)
+ * @param {string} padding         padding classes (default 'px-6 py-8') — 2026-08-26,
+ *                                 the one knob the panel had no seam for
  */
 export default function OverlayGlassPanel({
   children,
@@ -19,6 +21,7 @@ export default function OverlayGlassPanel({
   align = 'center',
   gap = 'gap-6',
   maxWidth = '',
+  padding = 'px-6 py-8',
   className = '',
 }) {
   const alignCls =
@@ -28,7 +31,7 @@ export default function OverlayGlassPanel({
 
   return (
     <div
-      className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-xs)] px-6 py-8 ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
+      className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-xs)] ${padding} ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
       style={{
         backgroundColor: `color-mix(in srgb, var(--kol-surface-primary) ${surfaceOpacity}%, transparent)`,
         backdropFilter: `blur(${blur})`,

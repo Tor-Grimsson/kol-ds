@@ -1,0 +1,56 @@
+export const meta = {
+  id: "2.72.0",
+  slug: "section-faq",
+  title: "SectionFaq",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+  ],
+  description: "A `SectionText` header over an `Accordion` of question / answer items.",
+  aliases: [
+    "section-faq",
+    "faq",
+  ],
+  reuses: [
+    "Accordion 3★",
+    "AccordionPanel 3★",
+    "SectionText 3★",
+  ],
+}
+
+<Preview name="SectionFaq" />
+
+## Installation
+
+<Install name="SectionFaq" />
+
+## Usage
+
+```jsx
+import { SectionFaq } from '@kolkrabbi/kol-component'
+
+<SectionFaq label="FAQ" headline="Questions, answered" items={[{ q, a }]} singleOpen defaultOpen={0} />
+```
+
+## Behavior
+
+The one new surface in the section family — the behaviour already shipped in [Accordion](/components/accordion); this is the section around it: a [SectionText](/components/section-text) header over `{ q, a }` panels. `singleOpen` closes the others when one opens.
+
+## Props
+
+<Api name="SectionFaq" rows={[
+  {"prop":"label · headline · body · actions","type":"ReactNode","def":"—","desc":"The header (SectionText)."},
+  {"prop":"headlineSize","type":"role","def":"'heading-02'","desc":"Headline role."},
+  {"prop":"items","type":"{ q, a, meta? }[]","def":"[]","desc":"The panels — question, answer, optional meta."},
+  {"prop":"singleOpen","type":"boolean","def":"false","desc":"Opening one panel closes the others."},
+  {"prop":"defaultOpen","type":"number","def":"—","desc":"Index open on mount; omit for all closed."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the section."},
+  {"prop":"innerClassName","type":"string","def":"'max-w-[var(--kol-content-column)] flex flex-col gap-8'","desc":"The inner column."},
+  {"prop":"slotClass · slotStyle","type":"object","def":"—","desc":"Per-slot class / style on the header (reveal seam)."},
+  {"prop":"height","type":"'full' | '80' | '60' | '40' | class","def":"'60'","desc":"Min-height on the family's ladder — full = 100dvh, 80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh. Content may grow; it stays vertically centred."},
+  {"prop":"background","type":"'primary' | 'secondary' | 'tertiary' | 'inverse' | 'auto' | 'none' | string","def":"'none'","desc":"The section's surface — a named surface, none, or a raw utility / token string (bg-fg-absolute-16). theme keeps scoping ink; className is no longer the way to set a background."}
+]} />

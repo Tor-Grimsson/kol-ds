@@ -1,6 +1,5 @@
 # @kolkrabbi/kol-content
 
-
 ## 0.9.0 — 2026-08-26
 
 - **BREAKING — the DS tier is a peer, not a dependency.** kol-component · kol-icons · kol-theme move from
@@ -51,11 +50,11 @@
     (articles, projects, prints, typefaces, tools); the name follows the role,
     not the content. `ArticleCard` remains as an alias **until the next major**.
     `WorkCard`/`WorkListItem` keep their own implementations for now — the spec
-    converges the family on the neutral *name*, but folding WorkCard's distinct
+    converges the family on the neutral _name_, but folding WorkCard's distinct
     prop contract (type/year/description) into this one is a separate design
     pass, and aliasing it today would break every `/work` consumer.
   - **`size="readmore"` removed** (**BREAKING**, one day after it shipped) — the
-    spec's ruling: it never rendered anywhere, and "read more" is a *context*,
+    spec's ruling: it never rendered anywhere, and "read more" is a _context_,
     not a size. An end-of-article band renders `mini` cards with a `label`
     lead-in. Three presets remain: `hero` / `default` / `mini`.
   - **Geometry conformed to the spec's table** — hero excerpt clamp 3 → **2**;

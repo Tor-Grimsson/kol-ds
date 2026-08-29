@@ -12,18 +12,41 @@ import Button from '../atoms/Button.jsx'
  * typographic multiplication sign standing in for a glyph the icon set has
  * always shipped.
  */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 export default function FullscreenOverlay({ open, onClose, closeButton = true, children }) {
   const sheetRef = useRef(null)
 
+  /* Escape closes; Tab is TRAPPED in the sheet (SettingsPanel, 2026-08-26 —
+   * the same trap ShellDrawer carries; before this a Tab from the overlay
+   * walked into the page underneath). Focus moves into the sheet on open and
+   * back to the opener on close. */
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => { if (e.key === 'Escape') onClose?.() }
+    const onKey = (e) => {
+      if (e.key === 'Escape') { onClose?.(); return }
+      if (e.key !== 'Tab') return
+      const sheet = sheetRef.current
+      if (!sheet) return
+      const nodes = sheet.querySelectorAll(FOCUSABLE)
+      if (!nodes.length) { e.preventDefault(); sheet.focus(); return }
+      const first = nodes[0]
+      const last = nodes[nodes.length - 1]
+      const active = document.activeElement
+      if (!sheet.contains(active)) { e.preventDefault(); first.focus() }
+      else if (e.shiftKey && (active === first || active === sheet)) { e.preventDefault(); last.focus() }
+      else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus() }
+    }
     document.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    const prevFocus = document.activeElement
+    sheetRef.current?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
+      if (prevFocus instanceof HTMLElement) prevFocus.focus()
     }
   }, [open, onClose])
 
@@ -40,7 +63,7 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
 
   return (
     <div className="kol-overlay" role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
-      <div ref={sheetRef} className="kol-overlay-sheet">
+      <div ref={sheetRef} tabIndex={-1} className="kol-overlay-sheet outline-none">
         {closeButton && (
           <Button
             variant="outline"

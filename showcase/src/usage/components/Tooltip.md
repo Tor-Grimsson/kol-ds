@@ -1,10 +1,10 @@
 # Tooltip
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
-- **Real-world usages found:** 89 across 42 files in 15 apps
-- **Weighted inbound:** 144★ across 42 edges — 4×5★ · 10×4★ · 28×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-docs-noter, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-video-editor, kol-website
+- **Category:** utilities
+- **Real-world usages found:** 76 across 37 files in 11 apps
+- **Weighted inbound:** 126★ across 37 edges — 4×5★ · 7×4★ · 26×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-docs-noter, kol-draw-3d, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-modulator, kol-video-editor, kol-website
 
 ## Who depends on this
 
@@ -18,13 +18,13 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 5 | 4 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess-experimental.jsx` |
 | 4 | 4 | `kol-apps/kol-docs-noter/src/components/app-shell/ExplorerSidebar.tsx` |
 | 4 | 4 | `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess.jsx` |
-| 4 | 4 | `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
 | 4 | 4 | `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
-| 4 | 4 | `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx` |
 | 4 | 4 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/WorkshopHeader.jsx` |
 | 4 | 4 | `kol-website/_tmp/packages-elder-flush/ui/assets/chess/dashboard/dashboard -chess.jsx` |
-| 4 | 4 | `kol-website/apps/web/src/components/layout/Navbar.jsx` |
-| … | | _30 more_ |
+| 4 | 3 | `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/tags/TagModeOverlay.jsx` |
+| 4 | 3 | `kol-website/apps/web/src/components/ui/ImageLightbox.jsx` |
+| 3 | 2 | `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard -chess-sankey.jsx` |
+| … | | _25 more_ |
 
 ## Import
 
@@ -52,7 +52,7 @@ From `kol-apps/kol-labs-monorepo/apps/chess/src/assets/chess/dashboard/dashboard
                 />
 ```
 
-From `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
 
 ```jsx
 <Tooltip>
@@ -61,27 +61,18 @@ From `kol-apps/kol-mirror/a_torg/design-system/components/00-dont-touch/app-shel
                   <Folder className="w-4 h-4" />
 ```
 
-From `kol-apps/kol-modulator/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-apps/kol-video-editor/Clypra/src/components/editor/media-tabs/AudioTab.tsx`:
 
 ```jsx
 <Tooltip>
-              <TooltipTrigger asChild>
-                <Button size="icon" variant="ghost" className="w-10 h-10">
-                  <FileText className="w-4 h-4" />
+          <TooltipTrigger asChild>
+            <button onClick={handleAddToTimeline} disabled={isDownloading} className="w-9 h-9 flex items-center justify-center hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              {isDownloading ? <Download className="w-4 h-4 text-accent animate-pulse" />
 ```
 
-From `kol-apps/kol-monitor/a_torg/design-system/components/00-dont-touch/app-shell/ExplorerSidebar.tsx`:
+From `kol-website/_tmp/2026-08-08-workshop-system-elder/workshop-system/shell/ShellLayout.jsx`:
 
 ```jsx
-<Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        collapseAll();
-                      }}
-                      className="p-1.5 rounded hover:bg-sidebar-item transition-colors"
-                      title="Collapse all"
-                    >
-                      <FoldVertical className="w-4 h-4 text-muted-foreground" />
+<Tooltip label="Search">
+      <Button variant="ghost" quiet iconOnly="search" iconSize={18} onClick={() => setIsSearchOpen(true)} aria-label="Search" />
 ```

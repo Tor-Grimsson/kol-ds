@@ -131,7 +131,7 @@ export default function ShellSearchOverlay({
   }
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-start justify-center pt-[20vh]">
+    <div className="fixed inset-0 flex items-start justify-center pt-[20vh]" style={{ zIndex: 'var(--kol-z-modal, 100)' }}>
       <div
         className="absolute inset-0 kol-overlay-scrim"
         onClick={onClose}

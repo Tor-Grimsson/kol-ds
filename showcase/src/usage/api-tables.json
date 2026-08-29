@@ -275,6 +275,12 @@
       "type": "—",
       "def": "() => {}",
       "desc": ""
+    },
+    {
+      "prop": "decorate",
+      "type": "—",
+      "def": "null",
+      "desc": ""
     }
   ],
   "SetupPanel": [
@@ -429,6 +435,12 @@
       "desc": ""
     },
     {
+      "prop": "radius",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -436,6 +448,12 @@
     }
   ],
   "Avatar": [
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
     {
       "prop": "size",
       "type": "—",
@@ -529,6 +547,116 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    }
+  ],
+  "ActionButton": [
+    {
+      "prop": "hold",
+      "type": "—",
+      "def": "2000",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "chrome",
+      "type": "—",
+      "def": "'copy'",
+      "desc": ""
+    },
+    {
+      "prop": "toggle",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SizeOrDownload": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'download'",
+      "desc": ""
+    },
+    {
+      "prop": "confirmIcon",
+      "type": "—",
+      "def": "'check'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Download'",
+      "desc": ""
+    },
+    {
+      "prop": "confirmLabel",
+      "type": "—",
+      "def": "'Downloaded'",
+      "desc": ""
+    }
+  ],
+  "SortHeader": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "dir",
+      "type": "—",
+      "def": "'asc'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SortControls": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sortDir",
+      "type": "—",
+      "def": "'asc'",
+      "desc": ""
+    },
+    {
+      "prop": "onSort",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
     }
   ],
   "CopyButton": [
@@ -577,6 +705,12 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "16",
+      "desc": ""
     }
   ],
   "DocsToc": [
@@ -619,6 +753,20 @@
       "desc": ""
     }
   ],
+  "EmptyState": [
+    {
+      "prop": "gated",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "IconFrame": [
     {
       "prop": "variant",
@@ -642,6 +790,12 @@
       "prop": "iconSize",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
       "desc": ""
     },
     {
@@ -673,6 +827,28 @@
       "desc": ""
     }
   ],
+  "HlsVideo": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "AudioPlayer": [
+    {
+      "prop": "preload",
+      "type": "—",
+      "def": "'metadata'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "Input": [
     {
       "prop": "type",
@@ -684,6 +860,12 @@
       "prop": "variant",
       "type": "—",
       "def": "'filled'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
       "desc": ""
     },
     {
@@ -774,6 +956,12 @@
       "prop": "maxWidth",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "padding",
+      "type": "—",
+      "def": "'px-6 py-8'",
       "desc": ""
     },
     {
@@ -953,6 +1141,12 @@
       "desc": ""
     },
     {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "bare",
       "type": "—",
       "def": "false",
@@ -983,7 +1177,75 @@
       "desc": ""
     }
   ],
-  "Section": [
+  "InspectorSection": [
+    {
+      "prop": "divided",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SectionText": [
+    {
+      "prop": "headlineSize",
+      "type": "—",
+      "def": "'heading-02'",
+      "desc": ""
+    },
+    {
+      "prop": "headlineAs",
+      "type": "—",
+      "def": "'h2'",
+      "desc": ""
+    },
+    {
+      "prop": "headlineCase",
+      "type": "—",
+      "def": "'auto'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'start'",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "'gap-4'",
+      "desc": ""
+    },
+    {
+      "prop": "bodyClass",
+      "type": "—",
+      "def": "'kol-section-text-body'",
+      "desc": ""
+    },
+    {
+      "prop": "actionsClass",
+      "type": "—",
+      "def": "'flex flex-wrap gap-4'",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
     {
       "prop": "className",
       "type": "—",
@@ -1167,6 +1429,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -1262,6 +1530,12 @@
       "prop": "iconVariant",
       "type": "—",
       "def": "'stroke'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
       "desc": ""
     },
     {
@@ -1405,13 +1679,7 @@
       "desc": ""
     }
   ],
-  "CardFeatureItem": [
-    {
-      "prop": "backgroundColor",
-      "type": "—",
-      "def": "'bg-surface-primary'",
-      "desc": ""
-    },
+  "SectionCardItem": [
     {
       "prop": "imageAspectRatio",
       "type": "—",
@@ -1422,6 +1690,12 @@
       "prop": "imagePosition",
       "type": "—",
       "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -1552,6 +1826,12 @@
       "prop": "variant",
       "type": "—",
       "def": "'primary'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
       "desc": ""
     },
     {
@@ -1696,6 +1976,174 @@
       "prop": "selected",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "ContentText": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "form",
+      "type": "—",
+      "def": "'card'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ContentMedia": [
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "'1 / 1'",
+      "desc": ""
+    },
+    {
+      "prop": "radius",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "'cover'",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "border",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "ring",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "zoom",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fillHeight",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fade",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ContentCard": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "hero",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "expanded",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ContentRow": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ContentItem": [
+    {
+      "prop": "form",
+      "type": "—",
+      "def": "'card'",
+      "desc": ""
+    }
+  ],
+  "ContentCollection": [
+    {
+      "prop": "form",
+      "type": "—",
+      "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "'320px'",
+      "desc": ""
+    },
+    {
+      "prop": "stagger",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -2043,7 +2491,7 @@
       "desc": ""
     }
   ],
-  "BentoCard": [
+  "TiltBento": [
     {
       "prop": "bodyContent",
       "type": "—",
@@ -2113,7 +2561,57 @@
       "desc": ""
     }
   ],
+  "EmblaNav": [
+    {
+      "prop": "canPrev",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "canNext",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "16",
+      "desc": ""
+    },
+    {
+      "prop": "placement",
+      "type": "—",
+      "def": "'stack'",
+      "desc": ""
+    },
+    {
+      "prop": "prevLabel",
+      "type": "—",
+      "def": "'Previous'",
+      "desc": ""
+    },
+    {
+      "prop": "nextLabel",
+      "type": "—",
+      "def": "'Next'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "ContentFilters": [
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
     {
       "prop": "filterGroups",
       "type": "—",
@@ -2121,15 +2619,9 @@
       "desc": ""
     },
     {
-      "prop": "defaultViewMode",
+      "prop": "layoutPlacement",
       "type": "—",
-      "def": "'list'",
-      "desc": ""
-    },
-    {
-      "prop": "defaultLayout",
-      "type": "—",
-      "def": "'grid'",
+      "def": "'below'",
       "desc": ""
     },
     {
@@ -2161,45 +2653,91 @@
       "type": "—",
       "def": "''",
       "desc": ""
-    }
-  ],
-  "CtaGlobal": [
+    },
     {
-      "prop": "secondaryRows",
+      "prop": "titleClassName",
       "type": "—",
-      "def": "[]",
+      "def": "'kol-helper-14'",
       "desc": ""
     },
     {
-      "prop": "className",
+      "prop": "titleUppercase",
       "type": "—",
-      "def": "''",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "labelClassName",
+      "type": "—",
+      "def": "'kol-eyebrow text-fg-96'",
+      "desc": ""
+    },
+    {
+      "prop": "labelUppercase",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "tagVariant",
+      "type": "—",
+      "def": "'primary'",
+      "desc": ""
+    },
+    {
+      "prop": "tagSize",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "tagActiveClassName",
+      "type": "—",
+      "def": "'text-fg-96'",
+      "desc": ""
+    },
+    {
+      "prop": "tagRestClassName",
+      "type": "—",
+      "def": "'text-fg-48'",
+      "desc": ""
+    },
+    {
+      "prop": "viewClassName",
+      "type": "—",
+      "def": "'kol-helper-14'",
+      "desc": ""
+    },
+    {
+      "prop": "layoutClassName",
+      "type": "—",
+      "def": "'kol-helper-12'",
+      "desc": ""
+    },
+    {
+      "prop": "stripActiveClassName",
+      "type": "—",
+      "def": "'text-oq-96'",
+      "desc": ""
+    },
+    {
+      "prop": "stripRestClassName",
+      "type": "—",
+      "def": "'text-oq-48 hover:text-oq-64'",
+      "desc": ""
+    },
+    {
+      "prop": "countClassName",
+      "type": "—",
+      "def": "'kol-helper-12 text-oq-48'",
       "desc": ""
     }
   ],
   "FeatureSplit": [
     {
-      "prop": "fullBleed",
+      "prop": "flip",
       "type": "—",
       "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "innerClassName",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "columnClassName",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -2235,9 +2773,51 @@
       "desc": ""
     },
     {
+      "prop": "descriptionClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
       "prop": "showHeader",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showTitle",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showDescription",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showCta",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "fullWidth",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "rounded",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "navPosition",
+      "type": "—",
+      "def": "'stack'",
       "desc": ""
     },
     {
@@ -2265,11 +2845,185 @@
       "desc": ""
     }
   ],
-  "FeaturesCardSection": [
+  "FoundryCTA": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SectionHero": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'media'",
+      "desc": ""
+    },
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "overlayOpacity",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "veil",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "justify",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "overlap",
+      "type": "—",
+      "def": "250",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlay",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlayInterval",
+      "type": "—",
+      "def": "5000",
+      "desc": ""
+    },
+    {
+      "prop": "navPosition",
+      "type": "—",
+      "def": "'stack'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'lg'",
+      "desc": ""
+    },
+    {
+      "prop": "panelMaxWidth",
+      "type": "—",
+      "def": "'max-w-[440px]'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SectionSplit": [
+    {
+      "prop": "headlineSize",
+      "type": "—",
+      "def": "'pull'",
+      "desc": ""
+    },
+    {
+      "prop": "headlineAs",
+      "type": "—",
+      "def": "'h1'",
+      "desc": ""
+    },
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "'4/5'",
+      "desc": ""
+    },
+    {
+      "prop": "mediaHover",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "mediaClip",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'right'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'60'",
+      "desc": ""
+    },
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "innerClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "columnClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SectionCards": [
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'60'",
+      "desc": ""
+    },
     {
       "prop": "features",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "headlineSize",
+      "type": "—",
+      "def": "'heading-03'",
+      "desc": ""
+    },
+    {
+      "prop": "itemClassName",
+      "type": "—",
+      "def": "''",
       "desc": ""
     },
     {
@@ -2281,7 +3035,7 @@
     {
       "prop": "wrapperClassName",
       "type": "—",
-      "def": "'w-full flex flex-col gap-8 md:gap-10 max-w-[1400px] mx-auto'",
+      "def": "'w-full flex flex-col gap-8 md:gap-10 max-w-[var(--kol-container-max,var(--kol-content-shell,1800px))] mx-auto'",
       "desc": ""
     },
     {
@@ -2291,7 +3045,7 @@
       "desc": ""
     },
     {
-      "prop": "ctasClassName",
+      "prop": "actionsClassName",
       "type": "—",
       "def": "'pt-10 pb-24'",
       "desc": ""
@@ -2309,7 +3063,25 @@
       "desc": ""
     }
   ],
-  "FoundryCTA": [
+  "SectionCta": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'editorial'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'60'",
+      "desc": ""
+    },
+    {
+      "prop": "secondaryRows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
     {
       "prop": "className",
       "type": "—",
@@ -2317,29 +3089,41 @@
       "desc": ""
     }
   ],
-  "FullBleedHero": [
+  "SectionFaq": [
     {
-      "prop": "overlayOpacity",
+      "prop": "headlineSize",
       "type": "—",
-      "def": "0",
+      "def": "'heading-02'",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "singleOpen",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
       "prop": "height",
       "type": "—",
-      "def": "'lg'",
-      "desc": ""
-    },
-    {
-      "prop": "align",
-      "type": "—",
-      "def": "'center'",
+      "def": "'60'",
       "desc": ""
     },
     {
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "innerClassName",
+      "type": "—",
+      "def": "'max-w-[var(--kol-content-column)] flex flex-col gap-8'",
       "desc": ""
     }
   ],
@@ -2348,6 +3132,38 @@
       "prop": "accept",
       "type": "—",
       "def": "'all'",
+      "desc": ""
+    },
+    {
+      "prop": "pageSize",
+      "type": "—",
+      "def": "60",
+      "desc": ""
+    },
+    {
+      "prop": "defaultSort",
+      "type": "—",
+      "def": "{ by: 'date', dir: 'desc' }",
+      "desc": ""
+    },
+    {
+      "prop": "flat",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "MediaBrowser": [
+    {
+      "prop": "accept",
+      "type": "—",
+      "def": "'all'",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "null",
       "desc": ""
     }
   ],
@@ -2371,6 +3187,24 @@
       "desc": ""
     },
     {
+      "prop": "pageSize",
+      "type": "—",
+      "def": "60",
+      "desc": ""
+    },
+    {
+      "prop": "defaultSort",
+      "type": "—",
+      "def": "{ by: 'date', dir: 'desc' }",
+      "desc": ""
+    },
+    {
+      "prop": "flat",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "onSelect",
       "type": "—",
       "def": "null",
@@ -2382,20 +3216,6 @@
       "prop": "accept",
       "type": "—",
       "def": "'all'",
-      "desc": ""
-    }
-  ],
-  "MediaBrowser": [
-    {
-      "prop": "accept",
-      "type": "—",
-      "def": "'all'",
-      "desc": ""
-    },
-    {
-      "prop": "onSelect",
-      "type": "—",
-      "def": "null",
       "desc": ""
     }
   ],
@@ -2439,7 +3259,161 @@
       "desc": ""
     }
   ],
-  "NewsletterBand": [
+  "SettingsPanel": [
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'drawer'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "380",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsRow": [
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "labelWidth",
+      "type": "—",
+      "def": "160",
+      "desc": ""
+    }
+  ],
+  "SettingsSwitch": [
+    {
+      "prop": "on",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "LabeledControlSection": [
+    {
+      "prop": "divided",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "rowGap",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsChoice": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsMulti": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "noun",
+      "type": "—",
+      "def": "'kinds'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsChipRow": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "allChip",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "SettingsFooter": [
+    {
+      "prop": "resetLabel",
+      "type": "—",
+      "def": "'Reset to defaults'",
+      "desc": ""
+    }
+  ],
+  "SectionNewsletter": [
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'60'",
+      "desc": ""
+    },
+    {
+      "prop": "headlineSize",
+      "type": "—",
+      "def": "'display-01'",
+      "desc": ""
+    },
     {
       "prop": "successCopy",
       "type": "—",
@@ -2452,6 +3426,150 @@
       "def": "'Please enter a valid email address.'",
       "desc": ""
     },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ColumnBrowser": [
+    {
+      "prop": "objects",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onPrefix",
+      "type": "—",
+      "def": "() => {}",
+      "desc": ""
+    },
+    {
+      "prop": "quickLook",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "kindOf",
+      "type": "—",
+      "def": "function kindOf(o) {\n  if (o.forcedKind) return o.forcedKind\n  if (isSystemFile(o.key)) return 'system'\n  const ct = o.contentType || ''\n  if (ct.startsWith('image/')) return 'image'\n  if (ct.startsWith('video/')) return 'video'\n  if (ct.startsWith('audio/')) return 'audio'\n  const ext = extOf(o.key)\n  if (EXT_KINDS[ext]) return EXT_KINDS[ext]\n  if (ct === 'text/markdown') return 'markdown'\n  if (ct === 'application/json') return 'json'\n  if (ct.startsWith('text/')) return 'text'\n  if (ct.startsWith('font/')) return 'font'\n  return 'other'\n}",
+      "desc": ""
+    },
+    {
+      "prop": "kindLabel",
+      "type": "—",
+      "def": "{\n  image: 'image', video: 'video', audio: 'audio', markdown: 'markdown', json: 'JSON', yaml: 'YAML', text: 'text', code: 'code',\n  playlist: 'HLS', font: 'font', archive: 'archive', segments: 'HLS segments',\n  system: 'system', other: 'file',\n}",
+      "desc": ""
+    },
+    {
+      "prop": "formatSize",
+      "type": "—",
+      "def": "(bytes) => {\n  if (bytes == null) return '—'\n  if (bytes < 1024) return `${bytes} B`\n  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`\n  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`\n  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`\n}",
+      "desc": ""
+    },
+    {
+      "prop": "partition",
+      "type": "—",
+      "def": "(objects, prefix) => {\n  const folderSet = new Set()\n  const files = []\n  for (const o of objects) {\n    const rel = prefix ? o.key.slice(prefix.length) : o.key\n    const slash = rel.indexOf('/')\n    if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))\n    else files.push({ ...o, displayKey: o.displayKey ?? rel })\n  }\n  return { folders: [...folderSet].sort(), files }\n}",
+      "desc": ""
+    },
+    {
+      "prop": "defaultHeight",
+      "type": "—",
+      "def": "528",
+      "desc": ""
+    },
+    {
+      "prop": "columnWidth",
+      "type": "—",
+      "def": "260",
+      "desc": ""
+    },
+    {
+      "prop": "autoFocus",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "KindPreview": [
+    {
+      "prop": "urlOf",
+      "type": "—",
+      "def": "(x) => x.url",
+      "desc": ""
+    },
+    {
+      "prop": "kindOf",
+      "type": "—",
+      "def": "function kindOf(o) {\n  if (o.forcedKind) return o.forcedKind\n  if (isSystemFile(o.key)) return 'system'\n  const ct = o.contentType || ''\n  if (ct.startsWith('image/')) return 'image'\n  if (ct.startsWith('video/')) return 'video'\n  if (ct.startsWith('audio/')) return 'audio'\n  const ext = extOf(o.key)\n  if (EXT_KINDS[ext]) return EXT_KINDS[ext]\n  if (ct === 'text/markdown') return 'markdown'\n  if (ct === 'application/json') return 'json'\n  if (ct.startsWith('text/')) return 'text'\n  if (ct.startsWith('font/')) return 'font'\n  return 'other'\n}",
+      "desc": ""
+    },
+    {
+      "prop": "extOf",
+      "type": "—",
+      "def": "function extOf(key = '') {\n  const base = key.slice(key.lastIndexOf('/') + 1)\n  const dot = base.lastIndexOf('.')\n  return dot === -1 ? '' : base.slice(dot + 1).toLowerCase()\n}",
+      "desc": ""
+    },
+    {
+      "prop": "kindLabel",
+      "type": "—",
+      "def": "{\n  image: 'image', video: 'video', audio: 'audio', markdown: 'markdown', json: 'JSON', yaml: 'YAML', text: 'text', code: 'code',\n  playlist: 'HLS', font: 'font', archive: 'archive', segments: 'HLS segments',\n  system: 'system', other: 'file',\n}",
+      "desc": ""
+    },
+    {
+      "prop": "textLimit",
+      "type": "—",
+      "def": "200 * 1024",
+      "desc": ""
+    }
+  ],
+  "AudioPreview": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PlaybackBar": [
+    {
+      "prop": "rate",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "place",
+      "type": "—",
+      "def": "'left-4 right-4 bottom-4 rounded-xl'",
+      "desc": ""
+    }
+  ],
+  "AudioSheet": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'cover'",
+      "desc": ""
+    }
+  ],
+  "DocPage": [
     {
       "prop": "className",
       "type": "—",
@@ -2609,13 +3727,31 @@
       "desc": ""
     },
     {
+      "prop": "tagSize",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "partClassName",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "partStyle",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
       "desc": ""
     }
   ],
-  "ArticleCard": [
+  "ListingCard": [
     {
       "prop": "size",
       "type": "—",
@@ -2638,6 +3774,12 @@
       "prop": "showHeader",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -2843,6 +3985,24 @@
       "desc": ""
     },
     {
+      "prop": "heights",
+      "type": "—",
+      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
+      "desc": ""
+    },
+    {
+      "prop": "enter",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "tilt",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -3013,9 +4173,15 @@
   ],
   "GlyphMetricsGrid": [
     {
+      "prop": "fontUrl",
+      "type": "—",
+      "def": "'/fonts/tg-foundry/TGMalromurItalicVF.ttf'",
+      "desc": ""
+    },
+    {
       "prop": "fontFamily",
       "type": "—",
-      "def": "'sans-serif'",
+      "def": "'TGMalromur'",
       "desc": ""
     },
     {
@@ -3039,7 +4205,7 @@
     {
       "prop": "lowercaseGlyphs",
       "type": "—",
-      "def": "[...glyphSets.lowercase, ...glyphSets.latinExtended]",
+      "def": "[...glyphSets.lowercase, ...(glyphSets.latinExtended || [])]",
       "desc": ""
     },
     {
@@ -3119,6 +4285,92 @@
       "desc": ""
     }
   ],
+  "FoundryOpentypeFeatures": [
+    {
+      "prop": "features",
+      "type": "—",
+      "def": "[\n  { title: 'Stylistic Alternates', description: 'Alternative character forms for enhanced typographic expression' },\n  { title: 'Ligatures', description: 'Contextual and discretionary ligatures for improved readability' },\n  { title: 'Kerning Pairs', description: 'Optimized spacing between character pairs' },\n  { title: 'Extended Language Support', description: 'Support for Latin, Cyrillic, and Greek character sets' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'OpenType Features'",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'variant-01'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FoundryTypefaceDetails": [
+    {
+      "prop": "details",
+      "type": "—",
+      "def": "[\n  { title: 'Designer', description: 'Tor Grimsson', icon: 'foundation' },\n  { title: 'Categories', description: 'Serif, Italic, Display', icon: 'foundation' },\n  { title: 'Styles', description: '4 Weights', icon: 'foundation' },\n  { title: 'Format', description: 'OTF, WOFF2', icon: 'foundation' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Font Details'",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'info'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FoundryTypefacePairing": [
+    {
+      "prop": "pairings",
+      "type": "—",
+      "def": "[\n  { leftTitle: 'Málrómur', leftTag: 'Body Text', leftDescription: 'Variable weight for nuanced discourse and extended reading', leftFontFamily: 'TGMalromur', rightTitle: 'Gullhamrar', rightTag: 'Headings', rightDescription: 'Warm, graceful forms for elegant hierarchy', rightFontFamily: 'TGGullhamrar' },\n  { leftTitle: 'Rót', leftTag: 'Precision', leftDescription: 'Variable tuning system for technical documentation', leftFontFamily: 'TGRoot', rightTitle: 'Dylgjur', rightTag: 'Critique', rightDescription: 'Sharp angles for critical annotations and emphasis', rightFontFamily: 'TGDylgjur' },\n  { leftTitle: 'Tröllatunga', leftTag: 'Mythological', leftDescription: 'Bold character for legendary narratives', leftFontFamily: 'TGTrollatunga', rightTitle: 'Málrómur', rightTag: 'Versatile', rightDescription: 'Balanced forms for diverse applications', rightFontFamily: 'TGMalromur' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Font Pairings'",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'overlap'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PairingCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "TypefaceLibraryGridWithVariables": [
     {
       "prop": "typefaceWeights",
@@ -3158,6 +4410,26 @@
       "prop": "variant",
       "type": "—",
       "def": "'list'",
+      "desc": ""
+    }
+  ],
+  "TypefaceAlphabet": [
+    {
+      "prop": "fontStyle",
+      "type": "—",
+      "def": "'normal'",
+      "desc": ""
+    },
+    {
+      "prop": "inset",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -3443,9 +4715,15 @@
   ],
   "AppShell": [
     {
-      "prop": "navTree",
+      "prop": "touch",
       "type": "—",
-      "def": "[]",
+      "def": "'shell'",
+      "desc": ""
+    },
+    {
+      "prop": "navKeys",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -3466,6 +4744,36 @@
       "prop": "background",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "hairline",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "bottomItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "expandOnSelect",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "defaultCollapsed",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -3527,6 +4835,12 @@
       "desc": ""
     },
     {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -3578,6 +4892,252 @@
       "prop": "style",
       "type": "—",
       "def": "{}",
+      "desc": ""
+    }
+  ],
+  "NavRail": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "bottomItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "!settings",
+      "desc": ""
+    },
+    {
+      "prop": "hidden",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "PageShell": [
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'scroll'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "PageHeader": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "voice",
+      "type": "—",
+      "def": "'sans'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TabStrip": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "14",
+      "desc": ""
+    },
+    {
+      "prop": "tracked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'gap-6'",
+      "desc": ""
+    }
+  ],
+  "GridCard": [
+    {
+      "prop": "previewFit",
+      "type": "—",
+      "def": "'natural'",
+      "desc": ""
+    }
+  ],
+  "SettingsScaffold": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "LabelRow": [
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'baseline'",
+      "desc": ""
+    }
+  ],
+  "WalkthroughPanel": [
+    {
+      "prop": "steps",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "ShortcutsOverlay": [
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
+  "Logomark": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "20",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "CatalogPage": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "searchKeys",
+      "type": "—",
+      "def": "['title', 'name']",
+      "desc": ""
+    },
+    {
+      "prop": "layouts",
+      "type": "—",
+      "def": "[\n  { value: 'list', label: 'LIST' },\n  { value: 'grid', label: 'GRID' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "defaultLayout",
+      "type": "—",
+      "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "showCountOnlyWhenFiltering",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsShortcuts": [
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "comboLabel",
+      "type": "—",
+      "def": "(c) => c",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsLinks": [
+    {
+      "prop": "links",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SettingsColophon": [
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "'Kolkrabbi Vinnustofa'",
+      "desc": ""
+    },
+    {
+      "prop": "year",
+      "type": "—",
+      "def": "new Date().getFullYear()",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TouchDeviceOverlay": [
+    {
+      "prop": "appName",
+      "type": "—",
+      "def": "'This app'",
       "desc": ""
     }
   ],

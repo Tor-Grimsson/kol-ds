@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** graphics
-- **Real-world usages found:** 92 across 26 files in 10 apps
-- **Weighted inbound:** 84★ across 26 edges — 6×4★ · 20×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
+- **Real-world usages found:** 91 across 25 files in 9 apps
+- **Weighted inbound:** 81★ across 25 edges — 6×4★ · 19×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 1 | `kol-apps/kol-client/src/pages/foundations/GraphicsAssets.jsx` |
 | 3 | 1 | `kol-apps/kol-client-ac/src/components/loaders/graphics/Graphic.jsx` |
 | 3 | 1 | `kol-apps/kol-client-ac/src/components/styleguide/AssetTable.jsx` |
-| … | | _14 more_ |
+| … | | _13 more_ |
 
 ## Import
 
@@ -52,13 +52,13 @@ From `kol-apps/kol-client-acyr-website/apps/styleguide/src/pages/Styleguide.jsx`
 <Graphic category="stationery" name="business-card-back" />
 ```
 
-From `kol-apps/kol-client-hrafn/src/components/graphics/Graphic.jsx`:
+From `kol-apps/kol-client-kolkrabbi/src/components/loaders/graphics/Graphic.jsx`:
 
 ```jsx
 <Graphic category="patterns" name="pattern-05" />
 ```
 
-From `kol-apps/kol-client-kolkrabbi/src/components/styleguide/AssetTable.jsx`:
+From `kol-website/_tmp/brand-page-split-elder/Assets.jsx`:
 
 ```jsx
 <Graphic category={category} name={name} />

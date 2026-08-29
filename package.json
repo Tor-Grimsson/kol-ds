@@ -32,6 +32,7 @@
     "validate:fences": "node scripts/validate-fences.mjs",
     "validate:chapters": "node scripts/validate-chapters.mjs",
     "validate:tags": "node scripts/validate-tags.mjs",
+    "validate:motion": "node scripts/validate-motion.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
@@ -40,7 +41,10 @@
     "extract:manifest": "node scripts/extract-manifest.mjs",
     "extract:styling": "node scripts/extract-styling.mjs",
     "extract:graph": "node scripts/extract-usage.mjs && node scripts/extract-tokens.mjs && node scripts/extract-styling.mjs && node scripts/sync-mdx-frontmatter.mjs",
-    "validate:references": "node scripts/validate-references.mjs"
+    "validate:references": "node scripts/validate-references.mjs",
+    "validate:retirements": "node scripts/validate-retirements.mjs --check",
+    "retirements": "node scripts/validate-retirements.mjs",
+    "extract:icons": "node scripts/extract-icon-cuts.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",

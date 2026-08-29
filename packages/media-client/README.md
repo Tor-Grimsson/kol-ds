@@ -27,7 +27,7 @@ public bytes:  <publicBase>/<key>
 | `proxied(url)` | rewrite a CDN URL to the same-origin `/media/` proxy path (canvas safety, see below) |
 | `isImageType(ct)` / `isVideoType(ct)` | content-type guards |
 | `formatSize(bytes)` | bytes → human string |
-| `createMediaClient({ adminBase, publicBase, proxyPath })` | factory bound to other hosts; the bare exports above come from the default (production) instance |
+| `createMediaClient({ adminBase, publicBase, proxyPath, buckets })` | factory bound to other hosts; `buckets` = an optional `{ id: { label, publicBase, writable } }` table — then `listMedia(prefix, { bucket })`, `mediaUrl(key, bucket)` and `buckets()` work per bucket (0.2.0). The bare exports above come from the default (production) instance |
 | `uploadToLibrary(blob, key, { proxyPath })` | optional write helper — requires a consumer-side proxy, see below |
 
 ## Canvas consumers

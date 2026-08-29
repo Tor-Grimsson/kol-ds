@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 59 across 39 files in 11 apps
-- **Weighted inbound:** 119★ across 39 edges — 2×4★ · 37×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-mirror, kol-modulator, kol-monitor, kol-website
+- **Real-world usages found:** 57 across 37 files in 9 apps
+- **Weighted inbound:** 113★ across 37 edges — 2×4★ · 35×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-modulator, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 3 | 2 | `kol-apps/kol-labs-monorepo/apps/generator/src/editor/modes/type/TypeControls.jsx` |
 | 3 | 2 | `kol-website/_tmp/brand-triage-elder/editor/compose/inspectors/LayerInspector.jsx` |
 | 3 | 2 | `kol-website/_tmp/brand-triage-elder/editor/modes/type/TypeControls.jsx` |
-| … | | _27 more_ |
+| … | | _25 more_ |
 
 ## Import
 

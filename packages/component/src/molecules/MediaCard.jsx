@@ -4,6 +4,12 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * check can't see) plus the same-file SelectIndicator. */
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentCard variant="default"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * SelectIndicator — passive square check indicator for multi-select rows and
  * cards. `on` = checked. Deliberately NOT ToggleCheckbox: that is a labeled
  * form control with a real <input>, which double-fires inside a click-target
@@ -21,7 +27,7 @@ export function SelectIndicator({ on = false }) {
       style={
         on
           ? { background: 'var(--kol-surface-on-primary)', borderColor: 'var(--kol-surface-on-primary)' }
-          : { background: 'var(--kol-fg-absolute-16, rgba(0,0,0,0.15))', borderColor: 'var(--kol-fg-absolute-48, rgba(0,0,0,0.4))' }
+          : { background: 'var(--kol-fg-ab-16, rgba(0,0,0,0.15))', borderColor: 'var(--kol-fg-ab-48, rgba(0,0,0,0.4))' }
       }
       aria-hidden="true"
     >
@@ -70,7 +76,7 @@ export default function MediaCard({
         {selectMode ? (
           <span
             className="kol-frame-control kol-frame-control--top-left rounded p-1"
-            style={{ background: 'var(--kol-fg-absolute-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
+            style={{ background: 'var(--kol-fg-ab-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
           >
             <SelectIndicator on={selected} />
           </span>
@@ -79,8 +85,8 @@ export default function MediaCard({
             href={downloadHref}
             aria-label="Download"
             title="Download"
-            className="kol-frame-control inline-flex items-center justify-center w-8 h-8 rounded text-emphasis hover:bg-fg-absolute-24 transition-colors"
-            style={{ background: 'var(--kol-fg-absolute-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
+            className="kol-frame-control inline-flex items-center justify-center w-8 h-8 rounded text-emphasis hover:bg-fg-ab-24 transition-colors"
+            style={{ background: 'var(--kol-fg-ab-12, rgba(0,0,0,0.4))', backdropFilter: 'blur(4px)' }}
             onClick={(e) => e.stopPropagation()}
           >
             <Icon name="download" size={16} />

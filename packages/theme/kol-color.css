@@ -310,20 +310,20 @@
  * Absolute Colors
  * --------------------------------------------------------------------------- */
 
-.bg-absolute-white {
-  background-color: var(--kol-color-absolute-white);
+.bg-ab-white {
+  background-color: var(--kol-color-ab-white);
 }
 
-.bg-absolute-black {
-  background-color: var(--kol-color-absolute-black);
+.bg-ab-black {
+  background-color: var(--kol-color-ab-black);
 }
 
-.text-absolute-white {
-  color: var(--kol-color-absolute-white);
+.text-ab-white {
+  color: var(--kol-color-ab-white);
 }
 
-.text-absolute-black {
-  color: var(--kol-color-absolute-black);
+.text-ab-black {
+  color: var(--kol-color-ab-black);
 }
 
 /* =============================================================================

@@ -52,6 +52,22 @@
   height: auto;
   aspect-ratio: 1;
   min-width: 280px;
+  /* the board is a CONTAINER so its coordinate chrome can size off the
+   * square (ChessBoardFluidCoordinates, kol-chess 2026-08-26) */
+  container-type: inline-size;
+}
+
+/* Fluid coordinates — the helper voice, sized by the square: a square is
+ * 12.5cqw, so the label runs clamp(7px, 2.2cqw, 12px) and its inset
+ * max(2px, 0.8cqw). At 390 (45px squares) that is 7px / 2px instead of the
+ * desktop 12px / 8px that sat on the rook. */
+.chess-board--fluid .chess-coord--fluid {
+  padding: max(2px, 0.8cqw);
+  font-family: var(--kol-font-family-mono);
+  font-size: clamp(7px, 2.2cqw, 12px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.06em;
 }
 
 @media (max-width: 1023px) {
@@ -1005,55 +1021,16 @@
   height: 6px;
   border-radius: 50%;
   background: #5dd27f;
-  animation: pulse 2s ease-in-out infinite;
+  animation: kol-chess-pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes numberTick {
-  from {
-    transform: translateY(-2px);
-    opacity: 0.8;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes lineDraw {
-  from {
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: kol-chess-fade-in 0.6s ease-out forwards;
 }
 
 .animate-number-tick {
-  animation: numberTick 0.3s ease-out;
+  animation: kol-chess-number-tick 0.3s ease-out;
 }
 
 .chess-hero__side-link {

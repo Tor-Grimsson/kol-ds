@@ -1,7 +1,7 @@
 # EmptyState
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** molecules
 - **Real-world usages found:** 4 across 3 files in 2 apps
 - **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-docs-noter, kol-video-editor

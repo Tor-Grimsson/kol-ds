@@ -60,6 +60,35 @@
 }
 
 /* =============================================================================
+ * MONO HEADING ROLES — the app tier's masthead voice (PageHeaderMonoTitle,
+ * kol-fxr 2026-08-27; user ruling: kol-monitor's deployed masthead — JetBrains
+ * Mono 32 / 500 — is the look for the app tier). Three rungs mirroring the
+ * sans roles PageHeader's sizes ride: heading-03 (32), display-03, display-02,
+ * mono at weight 500. `PageHeader voice="mono"` wears them.
+ * ============================================================================= */
+
+.kol-mono-heading-03 {
+  font-family: var(--kol-font-family-mono);
+  font-size: var(--kol-text-heading-03);
+  line-height: 110%;
+  font-weight: 500;
+}
+
+.kol-mono-display-03 {
+  font-family: var(--kol-font-family-mono);
+  font-size: var(--kol-text-display-03);
+  line-height: 100%;
+  font-weight: 500;
+}
+
+.kol-mono-display-02 {
+  font-family: var(--kol-font-family-mono);
+  font-size: var(--kol-text-display-02);
+  line-height: 100%;
+  font-weight: 500;
+}
+
+/* =============================================================================
  * LABEL SCALE — single-line labels. Weight 500 (medium), no leading,
  * letter-spaced. For label/value pairs at the same size where the label needs
  * visual prominence (heavier weight) without size-jumping. Wider letter-spacing

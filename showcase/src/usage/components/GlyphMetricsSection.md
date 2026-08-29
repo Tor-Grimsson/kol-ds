@@ -12,7 +12,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 3 | 1 | `kol-website/apps/web/src/routes/foundry/components/TypefacePage.jsx` |
+| 3 | 1 | `kol-website/apps/web/src/components/sections/foundry/TypefacePage.jsx` |
 
 ## Import
 
@@ -22,7 +22,7 @@ import { GlyphMetricsSection } from '@kolkrabbi/kol-foundry'
 
 ## Real usage
 
-From `kol-website/apps/web/src/routes/foundry/components/TypefacePage.jsx`:
+From `kol-website/apps/web/src/components/sections/foundry/TypefacePage.jsx`:
 
 ```jsx
 <GlyphMetricsSection

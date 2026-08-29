@@ -270,6 +270,24 @@
   color: var(--kol-fg-emphasis);
 }
 
+/* THE EYEBROW HAS ONE NAME (ContentRowsAndPrintCard, user 2026-08-27: "you have
+ * a class for eyebrow that's not called eyebrow but kicker? you think that's
+ * good practice?"). `kol-eyebrow` is the role — mono 12 · 500 · 0.06em ·
+ * uppercase · fg-64; the slot is `eyebrow` on ContentText and SectionText.
+ * `kol-card-kicker` is the alias below, on the retirement ledger. */
+/* NO ink on the role (ShellHomeSystem, 2026-08-27): type roles set type, not
+ * colour — a baked fg-64 outranked every ink utility beside it. Consumers that
+ * relied on the 64 pass `text-body`; the `kol-card-kicker` alias keeps it. */
+.kol-eyebrow {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* @deprecated 2026-08-27 → kol-eyebrow */
 .kol-card-kicker {
   font-family: var(--kol-font-family-mono);
   font-size: 12px;

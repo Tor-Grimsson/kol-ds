@@ -1,7 +1,7 @@
 # ProsePreview
 
 - **Package:** `@kolkrabbi/kol-component`
-- **Category:** atoms
+- **Category:** utilities
 - **Real-world usages found:** 3 across 3 files in 2 apps
 - **Weighted inbound:** 9★ across 3 edges — 3×3★
 - **Used in:** kol-client, kol-client-canalix

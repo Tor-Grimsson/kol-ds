@@ -1,0 +1,48 @@
+export const meta = {
+  id: "2.80.0",
+  slug: "size-or-download",
+  title: "SizeOrDownload",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-27",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/input",
+  ],
+  description: "The card's size slot — the size at rest, a download link on hover.",
+  aliases: [
+    "size-or-download",
+    "download-link",
+  ],
+  reuses: [
+    "Icon 3★",
+  ],
+}
+
+<Preview name="SizeOrDownload" />
+
+## Installation
+
+<Install name="SizeOrDownload" />
+
+## Usage
+
+```jsx
+import { SizeOrDownload } from '@kolkrabbi/kol-component'
+
+<SizeOrDownload href={downloadUrl}>2.4 MB</SizeOrDownload>
+```
+
+## Behavior
+
+A link that reads as the file size at rest and, on hover, swaps to the download glyph sliding out from behind the word plus the label — 500ms on the house curve, the glyph delayed 200ms on entry only. Clicking confirms as "Downloaded" for 2s (the confirm is local, not ActionButton's); with `href` the browser downloads, without one the click is the confirm alone. One type class throughout (`kol-mono-12`), ink on the opacity scale. Promoted verbatim from the content-card comparison set (ContentFiltersCollection, 2026-08-27).
+
+## Props
+
+<Api name="SizeOrDownload" rows={[
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The size string shown at rest."},
+  {"prop":"href","type":"string","def":"—","desc":"The download URL; omitted = the click only confirms."},
+  {"prop":"icon · confirmIcon","type":"string","def":"'download' · 'check'","desc":"The glyphs."},
+  {"prop":"label · confirmLabel","type":"ReactNode","def":"'Download' · 'Downloaded'","desc":"The hover label and the 2s confirm."}
+]} />

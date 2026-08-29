@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** atoms
-- **Real-world usages found:** 105 across 65 files in 9 apps
-- **Weighted inbound:** 208★ across 65 edges — 13×4★ · 52×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-website
+- **Real-world usages found:** 103 across 63 files in 7 apps
+- **Weighted inbound:** 202★ across 63 edges — 13×4★ · 50×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 3 | `kol-apps/kol-labs-single/src/pages/math/waveforms/WaveformsEditor.jsx` |
 | 4 | 3 | `kol-apps/kol-labs-single/src/pages/optic/halftone/HalftonePage.jsx` |
 | 4 | 3 | `kol-apps/kol-labs-single/src/pages/para-type/ParaTypePage.jsx` |
-| … | | _53 more_ |
+| … | | _51 more_ |
 
 ## Import
 

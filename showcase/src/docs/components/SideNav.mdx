@@ -76,10 +76,12 @@ Distinct from the workshop's ShellSidebar (grouped doc trees).
 ## Props
 
 <Api name="SideNav" rows={[
-  {"prop":"navTree","type":"array","def":"[]","desc":"Categories: { id, label, icon, pages: [{ label, to } | { label, children: [...] }] }, or { id, label, icon, to } for a link row. A { label, children } page row is a nested group — header + indented rows, recursive."},
-  {"prop":"background","type":"boolean","def":"true","desc":"false renders the rail chromeless — no fill, no hairline — to float over consumer media (the brand-hero model)."},
+  {"prop":"navTree","type":"array","def":"[]","desc":"Categories: { id, label, icon, pages: [{ label, to } | { label, onSelect, active? } | { label, children: [...] }] }, { id, label, icon, to } for a link row, { id, label, icon, onSelect, active? } for an ACTION row, and a top-level node with no icon for a LABEL over its pages (hidden on collapse — the collapse rule). A { label, children } page row is a nested group — header + indented rows, recursive."},
+  {"prop":"currentPath","type":"string","def":"—","desc":"Router-agnostic seam: with it the rail never calls react-router — route leaves render <a href> and call onNavigate(event, to); a router-free app can mount it."},
+  {"prop":"background","type":"boolean","def":"true","desc":"false renders the rail chromeless — no fill — to float over consumer media (the brand-hero model)."},
+  {"prop":"hairline","type":"boolean","def":"false","desc":"Paints the right-edge border-r border-fg-08. Off by default (2026-08-26); the footer's border-t is unaffected."},
   {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile drawer state (managed by AppShell)."},
   {"prop":"onCloseDrawer","type":"function","def":"—","desc":"Close callback for the mobile drawer."},
-  {"prop":"onNavigate","type":"(event) => void","def":"—","desc":"Fired when any nav link is clicked (drawer close, analytics)."},
+  {"prop":"onNavigate","type":"(event, to) => void","def":"—","desc":"Fired when any nav link is clicked (drawer close, analytics); with currentPath it is the navigation itself."},
   {"prop":"isActive","type":"(path) => boolean","def":"—","desc":"Overrides router active detection for pages and link rows."}
 ]} />

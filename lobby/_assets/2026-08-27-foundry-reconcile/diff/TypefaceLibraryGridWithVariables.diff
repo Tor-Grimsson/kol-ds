@@ -1,0 +1,230 @@
+--- node_modules/@kolkrabbi/kol-foundry/src/TypefaceLibraryGridWithVariables.jsx	2026-07-16 00:19:42.291135148 +0000
++++ src/components/sections/foundry/TypefaceLibraryGridWithVariables.jsx	2026-08-27 06:31:19.244238312 +0000
+@@ -1,7 +1,19 @@
+-import { useState, useMemo, useEffect, useRef } from 'react'
+-import { ContentFilters } from '@kolkrabbi/kol-component'
+-import TypefaceLibraryItem from './TypefaceLibraryItem.jsx'
++import { useState, useMemo } from 'react'
++import { useNavigate } from 'react-router-dom'
++import { ContentFilters, ContentCollection, ContentCard, ContentRow } from '@kolkrabbi/kol-component'
+ import TypefaceVariablePreview from './TypefaceVariablePreview.jsx'
++import TypefaceAlphabet from './TypefaceAlphabet.jsx'
++
++// typeface name → the loaded family (the mapping the retired TypefaceLibraryItem carried)
++const faceFor = (typeface) => ({
++  fontFamily: typeface.name === 'TG Rót' ? 'TGRoot' :
++              typeface.name === 'TG Tröllatunga' ? 'TGTrollatunga' :
++              typeface.name === 'TG Dylgjur' ? 'TGDylgjur' :
++              typeface.name === 'TG Gullhamrar' ? 'TGGullhamrar' :
++              'TGMalromur',
++  fontStyle: typeface.name === 'TG Málrómur' ? 'italic' : 'normal',
++  fontWeight: 400,
++})
+ 
+ /**
+  * TypefaceLibraryGridWithVariables — the library grid with a "By Typeface"
+@@ -23,20 +35,13 @@
+   typefaces,
+   typefaceWeights = {},
+   totalCount,
+-  linkComponent
++  linkComponent,
++  titleIcon
+ }) => {
+   const [activeFilters, setActiveFilters] = useState(new Set())
+   const [viewMode, setViewMode] = useState('list')
+-  const [activeIndex, setActiveIndex] = useState(null)
+-  const prevModeRef = useRef(null)
+-
+-  const LinkEl = linkComponent || 'a'
+-  const linkPropsFor = (dest) => (linkComponent ? { to: dest } : { href: dest })
+-
+-  // Reset active index when filters change
+-  useEffect(() => {
+-    setActiveIndex(null)
+-  }, [activeFilters])
++  const navigate = useNavigate()
++  const go = (href) => (event) => { event.preventDefault(); navigate(href) }
+ 
+   // Handle filter changes with mutual exclusivity for typeface selection
+   const handleFilterChange = (newFilters) => {
+@@ -77,7 +82,7 @@
+   // Filter groups - dynamically add Axes filter if multi-axis typeface selected
+   const filterGroups = useMemo(() => {
+     const baseGroups = [
+-      { label: 'Classification', key: 'classification', values: classifications },
++      { label: 'Kind', key: 'classification', values: classifications, stack: true },
+       { label: 'Styles', key: 'styles', values: styles },
+       { label: 'Typefaces', key: 'name', values: typefaceNames }
+     ]
+@@ -116,19 +121,15 @@
+     })
+   }, [typefaces, activeFilters])
+ 
+-  // View mode options
+-  const viewModeOptions = [
+-    { value: 'card', label: 'Card view' },
+-    { value: 'list', label: 'List view' }
++  // Layout strip (LIST / GRID) — the bar's layout spot, not the view spot
++  const layoutOptions = [
++    { value: 'list', label: 'LIST' },
++    { value: 'grid', label: 'GRID' }
+   ]
+ 
+   // Render items based on filter mode
+-  const renderItems = (items, mode) => {
+-    // Reset active index when view mode changes
+-    if (prevModeRef.current !== null && prevModeRef.current !== mode) {
+-      setActiveIndex(null)
+-    }
+-    prevModeRef.current = mode
++  const renderItems = (items, _viewMode, layout) => {
++    const mode = layout === 'list' ? 'list' : 'card'
+ 
+     // If a specific typeface is selected, show weight variants
+     if (selectedTypeface && typefaceWeights[selectedTypeface]) {
+@@ -146,86 +147,94 @@
+         weights = weights.filter(w => selectedAxes.includes(w.axis))
+       }
+ 
+-      if (mode === 'card') {
+-        return (
+-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+-            {weights.map((w) => (
+-              <TypefaceVariablePreview
+-                key={`${typeface.name}-${w.weight}`}
+-                typeface={typeface}
+-                weight={w.weight}
+-                weightValue={w.value}
+-                variant="card"
+-              />
+-            ))}
+-          </div>
+-        )
+-      }
+-
+-      // List view
+       return (
+-        <div className="space-y-6">
++        <ContentCollection form={mode === 'card' ? 'grid' : 'list'} cols={{ md: 2, lg: 4 }} gap={24}>
+           {weights.map((w) => (
+             <TypefaceVariablePreview
+               key={`${typeface.name}-${w.weight}`}
+               typeface={typeface}
+               weight={w.weight}
+               weightValue={w.value}
+-              variant="list"
++              variant={mode}
+             />
+           ))}
+-        </div>
++        </ContentCollection>
+       )
+     }
+ 
+-    // Default mode: show standard typeface cards
++    // Default mode — the DS typeface pair (TypefaceCardAndRow, component
++    // 0.95.0): the card's hover choreography is the DS's (`reveal`), the
++    // specimens are ours. The local TypefaceLibraryItem retired to
++    // _tmp/2026-08-27-typeface-library-ds-swap/.
+     if (mode === 'card') {
+       return (
+-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+-          {items.map((typeface, index) => (
+-            <LinkEl key={typeface.link} {...linkPropsFor(typeface.link)}>
+-              <TypefaceLibraryItem
+-                typeface={typeface}
+-                variant="card"
+-                isActive={activeIndex === index}
+-                onMouseEnter={() => setActiveIndex(index)}
++        <ContentCollection form="grid" cols={{ md: 2, lg: 4 }}>
++          {items.map((typeface) => {
++            const face = faceFor(typeface)
++            return (
++              <ContentCard
++                key={typeface.link}
++                variant="typeface"
++                title={typeface.name}
++                body={typeface.styles}
++                href={typeface.link}
++                onNavigate={go(typeface.link)}
++                media={
++                  <div className="w-full h-full flex items-end justify-start p-8">
++                    <span className="text-[140px] lg:text-[160px] leading-none" style={face}>Ðð</span>
++                  </div>
++                }
++                reveal={
++                  <p className="text-auto-inverse text-4xl lg:text-5xl leading-tight text-center" style={face}>
++                    The quick brown fox jumps over the lazy dog
++                  </p>
++                }
+               />
+-            </LinkEl>
+-          ))}
+-        </div>
++            )
++          })}
++        </ContentCollection>
+       )
+     }
+ 
+     // List view
+     return (
+-      <div className="space-y-6">
+-        {items.map((typeface, index) => (
+-          <LinkEl key={typeface.link} {...linkPropsFor(typeface.link)}>
+-            <TypefaceLibraryItem
+-              typeface={typeface}
+-              variant="list"
+-              isActive={activeIndex === index}
+-              onMouseEnter={() => setActiveIndex(index)}
++      <ContentCollection form="list" gap={24}>
++        {items.map((typeface) => {
++          const face = faceFor(typeface)
++          return (
++            <ContentRow
++              key={typeface.link}
++              variant="typeface"
++              title={typeface.name}
++              body={typeface.styles}
++              detail={typeface.classification}
++              date={typeface.year}
++              href={typeface.link}
++              onNavigate={go(typeface.link)}
++              footer={<TypefaceAlphabet fontFamily={face.fontFamily} fontStyle={face.fontStyle} />}
+             />
+-          </LinkEl>
+-        ))}
+-      </div>
++          )
++        })}
++      </ContentCollection>
+     )
+   }
+ 
+   return (
+     <section className="w-full py-16">
+-      <div className="max-w-[1400px] mx-auto">
+-        <ContentFilters
++      <div className="max-w-[var(--kol-container-max)] mx-auto">
++        <ContentFilters showCountOnlyWhenFiltering
+           items={typefaces}
+-          title="All Typefaces (With Variable Preview)"
++          title="All Typefaces"
++          titleIcon={titleIcon}
+           totalCount={totalCount}
+           filterGroups={filterGroups}
+-          renderItem={(items, mode) => renderItems(items, mode)}
+-          viewModeOptions={viewModeOptions}
+-          defaultViewMode="list"
+-          onFilterChange={handleFilterChange}
++          renderItem={renderItems}
++          layoutPlacement="header"
++          layoutOptions={layoutOptions}
++          layoutClassName="kol-helper-14"
++          defaultLayout="list"
+           mutuallyExclusiveFilters={['name']}
++          onFilterChange={handleFilterChange}
+           customFilterKeys={['axis']}
+         />
+       </div>

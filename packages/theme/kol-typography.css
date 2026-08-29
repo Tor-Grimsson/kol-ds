@@ -729,7 +729,7 @@
 :root {
   /* Sans family tokens — four cuts loaded. Editor convention used in prose:
    * Narrow for top-of-scale (display, large headings), Compact for mid (smaller
-   * headings, lede), base for body, Tight for the display-tight voice.
+   * headings, lede), base for body, Tight for display 01–04 (since 0.59.0).
    * Atomic classes follow the same convention. */
   --kol-font-family-sans:         'Right Grotesk', sans-serif;
   --kol-font-family-sans-narrow:  'Right Grotesk Narrow', 'Right Grotesk', sans-serif;
@@ -744,6 +744,7 @@
   --kol-text-display-01: 56px;
   --kol-text-display-02: 44px;
   --kol-text-display-03: 36px;
+  --kol-text-display-04: 32px;
 
   /* Heading — H1 → H6 (6 stops) */
   --kol-text-heading-01: 48px;
@@ -758,10 +759,9 @@
   --kol-text-body-02: 14px;
   --kol-text-body-03: 12px;
 
-  /* Display Tight — the condensed-caps display voice (lobbied from the
-   * website's elder type system 2026-07-16). Own ladder with a 1024px step —
-   * deliberately NOT the sans-display ladder: values preserve the lobbied
-   * rendering exactly. */
+  /* Display Tight — the ELDER display ladder (lobbied 2026-07-16, 1024px
+   * step). Retired as classes 2026-08-27 (DisplayTightRamp); the tokens stay,
+   * nothing in the theme reads them since 0.59.0. */
   --kol-text-display-tight-01: 48px;
   --kol-text-display-tight-02: 40px;
   --kol-text-display-tight-03: 32px;
@@ -772,6 +772,7 @@
     --kol-text-display-01: 80px;
     --kol-text-display-02: 56px;
     --kol-text-display-03: 42px;
+    --kol-text-display-04: 36px;
     --kol-text-heading-01: 56px;
     --kol-text-display-tight-01: 64px;
     --kol-text-display-tight-02: 48px;
@@ -793,94 +794,110 @@
     --kol-text-display-01: 96px;
     --kol-text-display-02: 64px;
     --kol-text-display-03: 48px;
+    --kol-text-display-04: 40px;
     --kol-text-heading-01: 64px;
   }
 }
 
 /* =============================================================================
- * DISPLAY — sans Narrow, weight 600. Numbered 01 (largest) → 03 (smallest).
+ * DISPLAY — Right Grotesk TIGHT, weight 500. Numbered 01 (largest) → 04.
+ * ONE face for the whole ramp (DisplayTightRamp, user ruling 2026-08-27: "the
+ * lg is correct, MORE correct than the numbered ramp … make 01 and 02 tight
+ * 500, replace the lg and retire lg … so we only have one system"). Until
+ * 0.59.0 this ramp was Narrow and the Tight cut lived in a second, size-named
+ * system lobbied from the website's elder type (`kol-display-lg` + section /
+ * section-sm / subsection) — those four are aliases below, on the retirement
+ * clock.
+ *
+ * The Tight cut by NAME (--kol-font-family-sans-tight): the loaded faces are
+ * static and carry no stretch descriptors, so font-stretch selection silently
+ * renders the wide base cut (bug found 2026-07-28).
+ *
+ * 500, NOT 600 (user ruling 2026-08-15): 600 clogs at display size, and 500 is
+ * every `kol-sans-heading-*` weight, so the two families read as one voice at
+ * two volumes. NO tracking: the 0.04em added 2026-08-15 was the Narrow cut's
+ * sidebearing fix; the Tight cut is the elder `kol-display-lg` rendering the
+ * user called correct, and that carried none.
+ *
+ * Case is a ROLE, not a transform on the class — `uppercase` at the call site,
+ * `headlineCase="upper"` on SectionText.
+ *
+ * display-04 shipped 2026-08-27: SectionHero's media headline has defaulted to
+ * the role since component 0.80.0 with NO rule behind it (browser default h2).
+ * 32 → 36 → 40 lands at desktop where the pre-0.80 remap to heading-02 sat.
  * ============================================================================= */
 
 .kol-sans-display-01 {
-  font-family: var(--kol-font-family-sans-narrow);
+  font-family: var(--kol-font-family-sans-tight);
   font-size: var(--kol-text-display-01);
   line-height: 100%;
   font-weight: 500;
-  letter-spacing: 0.04em;
 }
 
 .kol-sans-display-02 {
-  font-family: var(--kol-font-family-sans-narrow);
+  font-family: var(--kol-font-family-sans-tight);
   font-size: var(--kol-text-display-02);
   line-height: 100%;
   font-weight: 500;
-  letter-spacing: 0.04em;
 }
 
-/* THE DISPLAY RUNGS ARE 500, NOT 600 (user ruling 2026-08-15). All three sat a
- * weight above the heading family they open — the narrow grotesk at 600 clogs
- * at display size, where the counters are already the first thing to close. 500
- * is the weight every `kol-sans-heading-*` uses, so the two families now read as
- * one voice at two volumes.
- *
- * And 0.04em of TRACKING on all three: a narrow face set large has almost no
- * sidebearing left, so the letters run together into a wall. The tracking is
- * what lets a display line be read as words rather than a texture. */
-
-/* display-03 shipped 2026-08-15 — its consumer arrived: ContentText's `work`
- * row title (the ruled size-only step down from display-02). */
 .kol-sans-display-03 {
-  font-family: var(--kol-font-family-sans-narrow);
+  font-family: var(--kol-font-family-sans-tight);
   font-size: var(--kol-text-display-03);
   line-height: 100%;
   font-weight: 500;
-  letter-spacing: 0.04em;
+}
+
+.kol-sans-display-04 {
+  font-family: var(--kol-font-family-sans-tight);
+  font-size: var(--kol-text-display-04);
+  line-height: 100%;
+  font-weight: 500;
 }
 
 /* =============================================================================
- * DISPLAY TIGHT — the condensed-caps display voice: the Tight cut by NAME
- * (--kol-font-family-sans-tight), weight 500 (TightMedium). Never select the
- * cut via font-stretch: the loaded faces are static, carry no stretch
- * descriptors, so stretch-based selection silently renders the wide base cut
- * (bug found 2026-07-28). Uppercase BY CONTRACT — display classes are the one
- * type family that carries text-transform; the display voice is caps by
- * design language.
- * Lobbied verbatim from the website's elder type system (2026-07-16) so call
- * sites migrate without renames. `kol-heading-display` was a byte-identical
- * duplicate of `kol-display-lg` and was not carried — map it to display-lg.
+ * RETIRED — the elder display voice (DisplayTightRamp, 2026-08-27). Four
+ * aliases onto the ramp above, each keeping the uppercase its contract baked
+ * in so nothing un-caps on the bump; the swap adds `uppercase` at the call
+ * site. Tracked in docs/operations/01-release/04-retirements.md — dropped when
+ * no repo uses them (`pnpm retirements`), the gate fails at 30 days unimported.
+ * Elder `kol-heading-display` (never carried) → kol-sans-display-01 likewise.
  * ============================================================================= */
 
+/* @deprecated 2026-08-27 → kol-sans-display-01 */
 .kol-display-lg {
   font-family: var(--kol-font-family-sans-tight);
-  font-weight: 500;
-  font-size: var(--kol-text-display-tight-01);
+  font-size: var(--kol-text-display-01);
   line-height: 100%;
+  font-weight: 500;
   text-transform: uppercase;
   color: var(--kol-fg-emphasis);
 }
 
+/* @deprecated 2026-08-27 → kol-sans-display-02 */
 .kol-display-section {
   font-family: var(--kol-font-family-sans-tight);
-  font-weight: 500;
-  font-size: var(--kol-text-display-tight-02);
+  font-size: var(--kol-text-display-02);
   line-height: 100%;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
+/* @deprecated 2026-08-27 → kol-sans-display-03 */
 .kol-display-section-sm {
   font-family: var(--kol-font-family-sans-tight);
-  font-weight: 500;
-  font-size: var(--kol-text-display-tight-03);
+  font-size: var(--kol-text-display-03);
   line-height: 100%;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
-/* subsection — the Narrow face, one voice quieter than section-sm */
+/* @deprecated 2026-08-27 → kol-sans-display-03 */
 .kol-display-subsection {
-  font-family: var(--kol-font-family-sans-narrow);
-  font-weight: 470;
-  font-size: var(--kol-text-display-tight-03);
+  font-family: var(--kol-font-family-sans-tight);
+  font-size: var(--kol-text-display-03);
   line-height: 100%;
+  font-weight: 500;
   text-transform: uppercase;
 }
 

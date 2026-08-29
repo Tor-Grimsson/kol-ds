@@ -24,7 +24,7 @@
 ### Minor Changes
 
 - **Exhibit sections — the scaffold moves into the package.** The workshop shell
-  was already shared, but the sections *above* it were not: every consumer
+  was already shared, but the sections _above_ it were not: every consumer
   rebuilt the same landing page, the same specimen-grid page, the same prose
   companion and the same rail block by hand, so adding the next exhibit meant
   rebuilding all of it. Six new exports, all content-injected:
@@ -38,16 +38,16 @@
     `prose: true` adds the reading measure.
   - **`ExhibitSidebar`** + **`useExhibitToc`** — the rail block (on-this-page ·
     doc links · quick actions) and the hook that registers it into the shell's
-    TOC slot. The hook keys its effect on the *content* of its props, not their
+    TOC slot. The hook keys its effect on the _content_ of its props, not their
     identity, so a page can pass an inline array literal without setting shell
     state in a loop — which is the trap the copied six-line `useLayoutEffect`
     block left open at every call site.
   - **`ExhibitCard`** — the specimen header (name · description · details ·
     code) inside a section.
   - **`ExhibitLinkCard`** — the child-page card on a landing grid. It arrives
-    carrying its own request: the consumer's copy was annotated *"vendored
+    carrying its own request: the consumer's copy was annotated _"vendored
     verbatim from elder @kol/ui (no DS twin); lobby to the DS if a second
-    consumer appears."*
+    consumer appears."_
 
   **Drift fixed on recreation**, in the same pass rather than reproduced: the
   source's rail block hand-rolled a collapsible section with

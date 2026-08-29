@@ -1,0 +1,57 @@
+export const meta = {
+  id: "2.71.0",
+  slug: "section-cta",
+  title: "SectionCta",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+  ],
+  description: "The editorial two-column contact/CTA band: a large display wordmark on the left (e.g.",
+  aliases: [
+    "section-cta",
+    "cta-global",
+    "connect",
+  ],
+  reuses: [
+    "SectionText 3★",
+  ],
+}
+
+<Preview name="SectionCta" />
+
+## Installation
+
+<Install name="SectionCta" />
+
+## Usage
+
+```jsx
+import { SectionCta } from '@kolkrabbi/kol-component'
+
+<SectionCta eyebrow="/ CONNECT" promptLabel="WORKING ON A PROJECT?" heading="SEND A MESSAGE" contactLabel="CONTACT" email="hello@kolkrabbi.io" />
+```
+
+## Behavior
+
+A large display wordmark on the left and a right column of stacked rows, each a [SectionText](/components/section-text) — the label in the helper voice (uppercase by role), the value as a heading-01; a row with `href` renders its value as a link. Columns sit side by side from `md` up and stack below, inside a 1600px centred cap; the section's surface stays full width. Row labels wear the set's eyebrow voice. `CtaGlobal` is the deprecated alias — identical props. `variant="centered"` is the quiet mid-page tier — a short rule, a heading, a mono line and Buttons, centred — that was `FoundryCTA` (now a deprecated alias of it).
+
+## Props
+
+<Api name="SectionCta" rows={[
+  {"prop":"variant","type":"'editorial' | 'centered' | 'connect'","def":"'editorial'","desc":"The two-column band; the quiet centred mid-page tier (rule · heading · mono line · Buttons) that was FoundryCTA; or connect — editorial with the contact copy as defaults (/ CONNECT · WORKING ON A PROJECT? · SEND A MESSAGE · CONTACT · hello@kolkrabbi.io), every prop still overridable."},
+  {"prop":"headline · body · actions","type":"ReactNode","def":"—","desc":"centered: the SectionText slots."},
+  {"prop":"eyebrow","type":"ReactNode","def":"—","desc":"Left-column display wordmark (kol-sans-display-01)."},
+  {"prop":"promptLabel","type":"ReactNode","def":"—","desc":"Prompt-row label."},
+  {"prop":"heading","type":"ReactNode","def":"—","desc":"Prompt-row value."},
+  {"prop":"contactLabel","type":"ReactNode","def":"—","desc":"Contact-row label."},
+  {"prop":"email","type":"string","def":"—","desc":"Contact-row value + mailto: target; omit to drop the row."},
+  {"prop":"secondaryRows","type":"{ label, value, href? }[]","def":"[]","desc":"Extra rows between prompt and contact."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the section."},
+  {"prop":"slotClass · slotStyle","type":"object","def":"—","desc":"Per-slot class / style on every row / the centred block (reveal seam)."},
+  {"prop":"height","type":"'full' | '80' | '60' | '40' | class","def":"'60'","desc":"Min-height on the family's ladder — full = 100dvh, 80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh. Content may grow; it stays vertically centred."},
+  {"prop":"background","type":"'primary' | 'secondary' | 'tertiary' | 'inverse' | 'auto' | 'none' | string","def":"'auto'","desc":"The section's surface — a named surface, none, or a raw utility / token string (bg-fg-absolute-16). theme keeps scoping ink; className is no longer the way to set a background."}
+]} />

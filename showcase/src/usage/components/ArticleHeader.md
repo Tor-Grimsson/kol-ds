@@ -12,7 +12,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 
 | ★ | uses | file |
 |---|---|---|
-| 3 | 2 | `kol-website/apps/web/src/routes/StackArticle.jsx` |
+| 3 | 2 | `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/StackArticle.jsx` |
 
 ## Import
 
@@ -22,7 +22,7 @@ import { ArticleHeader } from '@kolkrabbi/kol-content'
 
 ## Real usage
 
-From `kol-website/apps/web/src/routes/StackArticle.jsx`:
+From `kol-website/_tmp/2026-08-14-prose-export/consumers-reference/StackArticle.jsx`:
 
 ```jsx
 <ArticleHeader

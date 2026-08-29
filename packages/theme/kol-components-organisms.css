@@ -262,14 +262,37 @@
  */
 
 /* =============================================================================
- * FeatureSplit
+ * SectionSplit + SectionText (the section family, SectionSet 2026-08-26)
+ *
+ * `.kol-section-text-{label,pull,body}` are the text block's classes and
+ * `.kol-section-split-*` the split's; every `.kol-feature-split-*` selector
+ * below is the same rule under the old name, kept ONE release for a consumer's
+ * own CSS still pointing at it — dropped at the next major.
  * ============================================================================= */
 
-.kol-feature-split {
+.kol-feature-split,
+.kol-section-split {
   background: var(--kol-surface-primary);
   color: var(--kol-surface-on-primary);
 }
 
+/* THE EYEBROW IS UPPERCASE BY ROLE (user ruling 2026-08-26, the fourth time).
+ * Casing is a property of the ROLE, not a law about strings: an eyebrow /
+ * kicker / section label is caps by design language — the display voice
+ * already carries its transform "by contract" — while body copy, buttons and
+ * tags render as authored. SectionText stamps this on every label it renders,
+ * whatever voice class rides beside it. The old "no text-transform, ever" was
+ * one call about button strings written up as a law for every string. */
+.kol-section-text-eyebrow,
+/* the caps role for a HEADLINE — the split hero's title card (2026-08-26) */
+.kol-section-text-caps {
+  text-transform: uppercase;
+}
+
+/* .kol-section-text-label — RETIRED 0.57.1 (SectionTextLabelVoice): the
+ * family's label wears the hero's helper-12 / meta voice now, as utilities on
+ * the element; this mono-18 accent kicker paints only a consumer's own
+ * `.kol-feature-split-kicker` until the next major. */
 .kol-feature-split-kicker {
   font-family: var(--kol-font-family-mono, monospace);
   font-size: 18px;
@@ -278,7 +301,14 @@
   color: var(--kol-accent-primary);
 }
 
-.kol-feature-split-pull {
+.kol-feature-split-pull,
+/* headlines BALANCE (WorkListingRowsAndFilters, 2026-08-27 — user: "don't leave
+ * one word, it's tacky"): no orphaned last word on any SectionText headline. */
+.kol-section-text-headline {
+  text-wrap: balance;
+}
+
+.kol-section-text-pull {
   margin: 0;
   font-family: var(--kol-font-family-sans);
   font-weight: 700;
@@ -288,7 +318,8 @@
   color: var(--kol-surface-on-primary);
 }
 
-.kol-feature-split-pull em {
+.kol-feature-split-pull em,
+.kol-section-text-pull em {
   font-family: var(--kol-font-family-sans);
   font-feature-settings: "liga", "dlig";
   font-weight: 700;
@@ -296,20 +327,29 @@
   color: var(--kol-accent-primary);
 }
 
-.kol-feature-split-body {
+/* the section family's body voice is MONO (SectionTextBodyMono, kol-website
+ * 2026-08-27 — user: "I don't want the sans anywhere, I want the text on the
+ * cards to default mono, with props to change it if I feel like it"). Was
+ * sans 16 / 1.6; now the mono-16 rung (16 / 22) — the section scale, where the
+ * Stack hero's lede already sat. Sans is opt-in through `bodyClass` /
+ * `slotClass`. The 72% ink is unchanged. */
+.kol-feature-split-body,
+.kol-section-text-body {
   margin: 0;
-  font-family: var(--kol-font-family-sans);
+  font-family: var(--kol-font-family-mono);
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 22px;
   color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
 }
 
-.kol-feature-split-meta {
+.kol-feature-split-meta,
+.kol-section-split-meta {
   border-top: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 8%, transparent);
 }
 
-.kol-feature-split-meta-num {
+.kol-feature-split-meta-num,
+.kol-section-split-meta-num {
   font-family: var(--kol-font-family-sans);
   font-weight: 900;
   font-size: 32px;
@@ -318,7 +358,8 @@
   color: var(--kol-surface-on-primary);
 }
 
-.kol-feature-split-meta-label {
+.kol-feature-split-meta-label,
+.kol-section-split-meta-label {
   font-family: var(--kol-font-family-mono, monospace);
   font-size: 10px;
   font-weight: 600;
@@ -326,35 +367,17 @@
   color: color-mix(in srgb, var(--kol-surface-on-primary) 48%, transparent);
 }
 
-.kol-feature-split-visual img {
+.kol-feature-split-visual img,
+.kol-section-split-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Media hover zoom — opt-in via `mediaHover` (SectionSplit ruling, 2026-08-15).
- * The brief named "media hover treatment owned by the component", and named the
- * defect: kol-website's HomeFoundry hover had been silently broken for months
- * because each hand-built section re-decided it. Same numbers and the same
- * reduced-motion guard as the CardFeatureItem zoom (CardFeatureHoverZoom,
- * 2026-08-12) — one motion vocabulary, not two. Motion chrome is DS CSS, never
- * a JSX utility (the ComponentTailwindSourceTrap law). The frame's own
- * overflow-hidden + radius clip the scale. */
-.kol-feature-split-visual.is-hoverable > :first-child {
-  transition: transform 300ms ease;
-}
 
-.kol-feature-split-visual.is-hoverable:hover > :first-child {
-  transform: scale(1.03);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .kol-feature-split-visual.is-hoverable > :first-child { transition: none; }
-  .kol-feature-split-visual.is-hoverable:hover > :first-child { transform: none; }
-}
-
-.kol-feature-split-visual-veil {
+.kol-feature-split-visual-veil,
+.kol-section-split-visual-veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -366,7 +389,8 @@
   pointer-events: none;
 }
 
-.kol-feature-split-visual-caption {
+.kol-feature-split-visual-caption,
+.kol-section-split-visual-caption {
   position: absolute;
   left: 24px;
   bottom: 24px;
@@ -412,6 +436,19 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+/* The hero's veil (SectionHeroRound2, 2026-08-26) — the bottom-heavy
+ * gradient StackHero drew over its media, the same device as the split's
+ * caption veil, so text pinned to the foot sits on a graded ground. */
+.kol-section-hero-veil {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 40%,
+    color-mix(in srgb, var(--kol-surface-primary) 72%, transparent) 100%
+  );
+  pointer-events: none;
 }
 
 /* =============================================================================
@@ -480,19 +517,20 @@
   background: var(--kol-surface-primary);
 }
 
-/* The browser is the same body with no card around it — it fills whatever
- * box the consumer gives it, so a page can host it full-bleed. */
+/* The browser is the same body with no card around it — in flow, it takes the
+ * width the consumer gives it. Tiles at 260 (MediaLibraryReconcile, kol-r2b2
+ * 2026-08-26 — FileList's `minmax(260px, 1fr)`; the picker keeps 10rem
+ * because its card is 64rem wide). */
 .kol-media-browser {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  --kol-media-tile-min: 10rem;
+  --kol-media-tile-min: 16.25rem;
 }
 
 .kol-media-grid {
   display: grid;
-  gap: var(--kol-spacing-4);
+  gap: var(--kol-spacing-3);
   grid-template-columns: repeat(auto-fill, minmax(var(--kol-media-tile-min), 1fr));
   list-style: none;
   margin: 0;
@@ -507,25 +545,26 @@
   padding: 0;
 }
 
-/* One folder row in the tree. Finder's list model: the chevron discloses in
- * place, so the parent never leaves the screen and there is no breadcrumb
- * stacked above a divider. Same row idiom as the rails — a drill-down and a
- * nav row are the same gesture. */
+/* One folder row — CLICK-TO-ENTER (MediaLibraryReconcile, 2026-08-26): the
+ * row is FileList's — icon box · name · trailing chevron-right over a
+ * hairline — and clicking it enters the prefix; the breadcrumb steps back.
+ * Finder's disclose-in-place chevron (2026-08-01) is gone, not a variant. */
 .kol-media-folder {
   display: flex;
   align-items: center;
-  gap: var(--kol-spacing-2);
-  padding-block: var(--kol-pad-rail-row-y);
+  gap: var(--kol-spacing-3);
+  padding: var(--kol-spacing-2) var(--kol-spacing-1);
+  border-bottom: 1px solid var(--kol-fg-08);
   border-radius: var(--kol-radius-sm);
   cursor: pointer;
   transition: background-color var(--kol-transition-fast);
 }
 
 .kol-media-folder:hover {
-  background: var(--kol-oq-04);
+  background: var(--kol-fg-04);
 }
 
-/* The path bar rides the FOOT, where Finder puts it. */
+/* The picker's path bar rides the FOOT of its card. */
 .kol-media-pathbar {
   display: flex;
   align-items: center;
@@ -616,14 +655,23 @@
 [aria-sort] .kol-table-sort svg { opacity: 1; }
 
 /* ─────────────────────────────────────────────────────────────────────
- * ContentCollection — src/organisms/ContentCollection.jsx (2026-08-15)
- * The enter stagger the collection owns; cards never animate themselves.
- * Delay is set per item inline; the curve is the house token. */
-.kol-collection-item {
-  animation: kol-collection-in 300ms var(--kol-ease-house) both;
+ * ContentFilters — the FIRST group's column (ContentFiltersFirstGroupFixedWidth,
+ * kol-monitor 2026-08-27 — user ruling: "nope not hug, fix a size … if columns,
+ * maybe just use one?"). ONE CATALOG COLUMN: the `1fr` of `repeat(6, 1fr)` gap
+ * 24 — `(width − 5 × 24px) / 6`, a fraction, never a px — so the first group
+ * sits over the first card and the flowing groups start over the second. The
+ * header row is the CONTAINER (`100cqw`): the count + LIST/GRID strip beside
+ * the groups narrows the groups' box, and a `%` measured inside it came out
+ * short by the strip + gap. A page without a 6-column catalog (/work, a list)
+ * gets the same fraction of its own row, so the number is one everywhere.
+ * Components layer — a consumer's `group.className` width utility still wins
+ * on the odd page. Overrules the WIDTH of the 0.104.3 hug; by-position stands.
+ * ───────────────────────────────────────────────────────────────────── */
+.kol-filters-row {
+  container-type: inline-size;
+}
+.kol-filters-first {
+  flex: none;
+  width: calc((100cqw - 120px) / 6);
 }
 
-@keyframes kol-collection-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: none; }
-}

@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-icons`
 - **Category:** flat
-- **Real-world usages found:** 1355 across 582 files in 25 apps
-- **Weighted inbound:** 1957★ across 582 edges — 74×5★ · 63×4★ · 445×3★
-- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-aftra, kol-client-canalix, kol-client-hrafn, kol-client-kolkrabbi, kol-divs, kol-docs, kol-docs-md, kol-docs-noter, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-media-admin, kol-mirror, kol-modulator, kol-monitor, kol-radial, kol-svg-distress, kol-video-editor, kol-website
+- **Real-world usages found:** 1072 across 468 files in 21 apps
+- **Weighted inbound:** 1574★ across 468 edges — 61×5★ · 48×4★ · 359×3★
+- **Used in:** kol-client, kol-client-ac, kol-client-acyr-website, kol-client-aftra, kol-client-canalix, kol-client-kolkrabbi, kol-divs, kol-docs, kol-docs-md, kol-docs-noter, kol-draw-3d, kol-editor, kol-editor-radar, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-modulator, kol-radial, kol-svg-distress, kol-video-editor, kol-website
 
 ## Who depends on this
 
@@ -16,7 +16,6 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 5 | 8 | `kol-apps/kol-client-kolkrabbi/_tmp/icons/app.jsx` |
 | 5 | 8 | `kol-apps/kol-editor/src/components/atoms/ThemeToggleButton.jsx` |
 | 5 | 8 | `kol-apps/kol-labs-monorepo/apps/editor/src/components/atoms/ThemeToggleButton.jsx` |
-| 5 | 8 | `kol-apps/kol-monitor/a_torg/archive/jsx/ThemeToggleButton.jsx` |
 | 5 | 8 | `kol-apps/kol-radial/src/components/atoms/ThemeToggleButton.jsx` |
 | 5 | 8 | `kol-apps/kol-svg-distress/a-ref/kolkrabbi-radial/src/components/atoms/ThemeToggleButton.jsx` |
 | 5 | 8 | `kol-apps/kol-svg-distress/src/components/atoms/ThemeToggleButton.jsx` |
@@ -24,7 +23,8 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 5 | 6 | `kol-apps/kol-labs-single/src/pages/library/LibraryPage.jsx` |
 | 5 | 5 | `kol-apps/kol-editor/docs/editor-port/from-kol-ac/color-review-refs/compose/ComposeTopbar.jsx` |
 | 5 | 5 | `kol-apps/kol-editor/src/components/molecules/ToolButton.jsx` |
-| … | | _570 more_ |
+| 5 | 5 | `kol-apps/kol-labs-monorepo/apps/editor/src/components/molecules/ToolButton.jsx` |
+| … | | _456 more_ |
 
 ## Import
 
@@ -78,13 +78,13 @@ From `kol-apps/kol-client-canalix/src/components/ui/SectionLabel.jsx`:
         />
 ```
 
-From `kol-apps/kol-client-hrafn/src/components/atoms/Button.jsx`:
+From `kol-apps/kol-client-kolkrabbi/_tmp/_import-dump/monorepo-packageui-src/atoms/Button.jsx`:
 
 ```jsx
 <Icon
           name={iconName}
           size={resolvedIconSize}
-          className="kol-icon-default"
+          className="icon-default"
           style={{ position: 'absolute' }}
         />
 ```

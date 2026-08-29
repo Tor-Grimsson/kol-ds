@@ -1,0 +1,58 @@
+export const meta = {
+  id: "2.77.0",
+  slug: "section-newsletter",
+  title: "SectionNewsletter",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-27",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+  ],
+  description: "The newsletter card of the section family (SectionNewsletter, kol-website 2026-08-27 — user: the newsletter as a card in the family, same ladder, same cap, content centred on y, not its own thing).",
+  aliases: [
+    "section-newsletter",
+    "newsletter-band",
+    "signup",
+  ],
+  reuses: [
+    "Button 3★",
+    "Input 3★",
+  ],
+}
+
+<Preview name="SectionNewsletter" />
+
+## Installation
+
+<Install name="SectionNewsletter" />
+
+## Usage
+
+```jsx
+import { SectionNewsletter } from '@kolkrabbi/kol-component'
+
+<SectionNewsletter headline="Subscribe to the newsletter" body="Get updates on new typefaces." placeholder="Your mail address" submitLabel="Subscribe" onSubmit={subscribe} />
+```
+
+## Behavior
+
+[SectionText](/components/section-text) (label · headline · body, centred) with the email form in its children slot — an email `Input` and a submit `Button`, then an inline success / error status line. The section sits on the family's height ladder (`height`, default `60`, content vertically centred), inside the shared container cap, and takes `theme` like the other sections. The component owns only the form state: `onSubmit(email)` resolving is success (the field clears), rejecting is error; an empty submit errors without calling the handler; the Button disables while pending. `NewsletterBand` is the deprecated alias — `title` → `headline`, `description` → `body`.
+
+## Props
+
+<Api name="SectionNewsletter" rows={[
+  {"prop":"label · headline · body","type":"ReactNode","def":"—","desc":"The SectionText slots — label uppercase by role, headline display-01 by default."},
+  {"prop":"headlineSize","type":"role","def":"'display-01'","desc":"The headline's SectionText role."},
+  {"prop":"placeholder","type":"string","def":"—","desc":"Email Input placeholder."},
+  {"prop":"submitLabel","type":"ReactNode","def":"—","desc":"Submit Button label (also its accessible name)."},
+  {"prop":"onSubmit","type":"(email) => Promise | void","def":"—","desc":"Resolve = success, reject = error."},
+  {"prop":"successCopy · errorCopy","type":"ReactNode","def":"house strings","desc":"The status lines."},
+  {"prop":"id · inputId","type":"string","def":"—","desc":"Anchor id on the section; id override for the email input."},
+  {"prop":"height","type":"'full' | '80' | '60' | '40' | class","def":"'60'","desc":"Min-height on the family's ladder — full = 100dvh, 80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh. Content stays vertically centred."},
+  {"prop":"background","type":"'primary' | 'secondary' | 'tertiary' | 'inverse' | 'auto' | 'none' | string","def":"'none' ('primary' under theme)","desc":"The section's surface — a named surface, none, or a raw utility / token string (bg-fg-absolute-16). theme keeps scoping ink; className is no longer the way to set a background."},
+  {"prop":"theme","type":"'inverse' | 'light' | 'dark'","def":"—","desc":"The paired theme of whatever is live, or a pinned one — stamped on the section, every token inside flips."},
+  {"prop":"slotClass · slotStyle","type":"object","def":"—","desc":"Per-slot class / style on the SectionText (reveal seam)."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the section."}
+]} />

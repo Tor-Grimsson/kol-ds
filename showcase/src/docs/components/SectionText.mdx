@@ -1,0 +1,58 @@
+export const meta = {
+  id: "2.67.0",
+  slug: "section-text",
+  title: "SectionText",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/components/molecules",
+    "domain/design-system",
+    "pattern/display",
+  ],
+  description: "The ruled text block of the SECTION family (SectionSet, kol-website 2026-08-26): label · headline · body · actions, every slot opt-in — an omitted slot renders nothing.",
+  aliases: [
+    "section-text",
+    "section text",
+  ],
+}
+
+<Preview name="SectionText" />
+
+## Installation
+
+<Install name="SectionText" />
+
+## Usage
+
+```jsx
+import { SectionText } from '@kolkrabbi/kol-component'
+
+<SectionText label="THE STUDIO" headline="One text block, every section" body="…" actions={<Button>Read more</Button>} />
+```
+
+## Behavior
+
+Every slot is opt-in — pass only what the section needs and nothing else renders. Headlines balance (`text-wrap: balance`, theme ≥0.69.0) — no orphaned last word. Type is picked by **role** (`headlineSize`), never a threaded class. The **label is uppercase by role** (`.kol-section-text-eyebrow`); headline, body and actions render as authored. Every default class is a seam: `labelClass` / `bodyClass` / `actionsClass` replace the string whole, which is how the hero's eyebrow and the CTA's rows wear their own voices on the same anatomy. `children` render between body and actions (the split's stats strip). Sibling of [ContentText](/components/content-text) — that one is ruled to the card type ramp and has no actions slot.
+
+## Props
+
+<Api name="SectionText" rows={[
+  {"prop":"eyebrow","type":"ReactNode","def":"—","desc":"The eyebrow — one name (2026-08-27); label is its alias. Uppercase by role."},
+  {"prop":"headline","type":"ReactNode","def":"—","desc":"The heading."},
+  {"prop":"headlineSize","type":"'pull' | 'display-01…04' | 'heading-01…05'","def":"'heading-02'","desc":"Which type ROLE the headline wears — one class, never stacked."},
+  {"prop":"headlineAs","type":"string","def":"'h2'","desc":"Element for the headline."},
+  {"prop":"headlineCase","type":"'auto' | 'upper'","def":"'auto'","desc":"upper = the caps role (.kol-section-text-caps) — a title card. The split hero sets it."},
+  {"prop":"headlineClass","type":"string","def":"—","desc":"Replaces the headline class whole (role + extras)."},
+  {"prop":"body","type":"ReactNode","def":"—","desc":"Lede / paragraph(s). A string renders as <p>, a node as <div>."},
+  {"prop":"actions","type":"ReactNode","def":"—","desc":"Row of Buttons / links / Tags."},
+  {"prop":"align","type":"'start' | 'center'","def":"'start'","desc":"Text-align + item alignment."},
+  {"prop":"gap","type":"string","def":"'gap-4'","desc":"Inner rhythm — a Tailwind gap step."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Extra slots rendered between body and actions."},
+  {"prop":"eyebrowClass","type":"string","def":"'kol-helper-12 text-meta'","desc":"Replaces the eyebrow voice (it stays uppercase); labelClass is its alias."},
+  {"prop":"bodyClass","type":"string","def":"'kol-section-text-body'","desc":"Replaces the body class whole. The default is the family's MONO body voice (mono 16 / 22, theme ≥0.60.0) — sans is opt-in here."},
+  {"prop":"actionsClass","type":"string","def":"'flex flex-wrap gap-4'","desc":"Replaces the actions row class whole."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the block."},
+  {"prop":"slotClass · slotStyle","type":"{ label, headline, body, actions }","def":"{}","desc":"Extra class / inline style per slot — a consumer's reveal seam (e.g. --reveal-delay). Nothing animates in the DS."}
+]} />

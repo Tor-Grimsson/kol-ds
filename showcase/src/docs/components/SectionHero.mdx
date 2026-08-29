@@ -1,0 +1,74 @@
+export const meta = {
+  id: "2.68.0",
+  slug: "section-hero",
+  title: "SectionHero",
+  type: "reference",
+  status: "active",
+  updated: "2026-08-26",
+  tags: [
+    "domain/components",
+    "domain/design-system",
+    "pattern/structure",
+    "pattern/media",
+  ],
+  description: "The full-bleed media hero: cover-fit background media (image or video) filling a fixed-height section, an optional surface scrim, and the text in a glass panel over it.",
+  aliases: [
+    "section-hero",
+    "full-bleed-hero",
+    "hero",
+  ],
+  reuses: [
+    "AssetPlaceholder 3★",
+    "ContentMedia 3★",
+    "HlsVideo 3★",
+    "Image 3★",
+    "SectionText 3★",
+  ],
+}
+
+<Preview name="SectionHero" />
+
+## Installation
+
+<Install name="SectionHero" />
+
+## Usage
+
+```jsx
+import { SectionHero } from '@kolkrabbi/kol-component'
+
+<SectionHero media={{ src, kind: 'image' }} label="KOLKRABBI" headline="Full-bleed media hero" actions={<Button>View work</Button>} />
+<SectionHero variant="split" headline="A title card in two halves" />
+```
+
+## Behavior
+
+**One hero for every page.** `media` (default): cover-fit background media filling a fixed-height section, an optional surface scrim, and the text in the hero's own `OverlayGlassPanel` as a [SectionText](/components/section-text) — or pass `panel` and your node renders verbatim (what every `FullBleedHero` call site does; that name is a deprecated alias of this component). `panelProps` reaches every knob on the glass: `padding`, `maxWidth`, `surfaceOpacity`, `blur`, `gap`, `className`. `split`: the viewport in two halves — media fills one edge to edge (no media → `AssetPlaceholder`), the headline centred and **uppercase by role** in the other, no glass panel; `align` picks the media side; below `md` the halves stack, media first. Only what you pass renders. `media` as an **array** is the carousel (autoplay, one glass panel per slide — FeaturedCarousel is the engine); **no media** is the text-only hero, the composed text on the surface. `justify="end"` pins the content to the foot, `veil` grades the media under it, and `foot` + `overlap` render a node across the fold.
+
+## Props
+
+<Api name="SectionHero" rows={[
+  {"prop":"variant","type":"'media' | 'split'","def":"'media'","desc":"The presentation."},
+  {"prop":"media","type":"{ src, kind, poster, srcSet, alt } | ReactNode | Array","def":"—","desc":"Background (media) / the half (split). A descriptor becomes a cover-fit Image / HlsVideo; a node renders as-is; an ARRAY of slides turns the hero into the carousel; none is the text-only hero."},
+  {"prop":"height","type":"'full' | '80' | '60' | '40' | 'lg' | 'md' | 'screen' | class","def":"'lg'","desc":"Viewport tiers: full = 100dvh (under a fixed navbar), 80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh. lg / md / screen are aliases."},
+  {"prop":"background","type":"'primary' | 'secondary' | 'tertiary' | 'inverse' | 'auto' | 'none' | string","def":"'none' ('primary' under theme)","desc":"The section's surface — a named surface, none, or a raw utility / token string (bg-fg-absolute-16). theme keeps scoping ink; className is no longer the way to set a background."},
+  {"prop":"label · headline · body · actions","type":"ReactNode","def":"—","desc":"The composed text (SectionText)."},
+  {"prop":"headlineSize","type":"role","def":"—","desc":"Headline role — defaults per variant: media 'display-04', split 'heading-02'. The hero forces nothing else on the text: body, gap, actions are SectionText's own voice."},
+  {"prop":"gap","type":"string","def":"—","desc":"SectionText's inner rhythm, forwarded as given."},
+  {"prop":"justify","type":"'center' | 'end'","def":"'center'","desc":"Content vertically centred, or pinned to the foot (pb-32 … xl:pb-56); with a foot the inset is overlap + 32px (48 from md) so the text sits just above the card."},
+  {"prop":"align","type":"'center' | 'start' | 'end' / 'left' | 'right'","def":"'center'","desc":"media: placement of the content · split: the media side."},
+  {"prop":"overlayOpacity","type":"number","def":"0","desc":"0–100 surface-primary scrim over the media."},
+  {"prop":"veil","type":"boolean","def":"false","desc":"Bottom-heavy gradient over the media."},
+  {"prop":"foot","type":"ReactNode","def":"—","desc":"A node rendered across the hero's bottom edge."},
+  {"prop":"overlap","type":"number","def":"250","desc":"How far foot rises into the hero, px — published on the section as --kol-section-foot-overlap."},
+  {"prop":"autoPlay · autoPlayInterval · navPosition","type":"boolean · number · 'stack' | 'header'","def":"false · 5000 · 'stack'","desc":"Carousel only (media as an array)."},
+  {"prop":"renderTitle · ctaLabel · onNavigate · showTitle · showDescription · showCta · titleClassName · descriptionClassName · options","type":"FeaturedCarousel's seams","def":"—","desc":"Carousel only — forwarded whole: per-slide title renderer, CTA copy, SPA navigation seam, visibility toggles, type classes, embla options."},
+  {"prop":"panelMaxWidth","type":"string","def":"'max-w-[440px]'","desc":"The glass panel's cap (with media) / the text block's cap (text-only)."},
+  {"prop":"panelProps","type":"object","def":"—","desc":"padding · maxWidth · surfaceOpacity · blur · gap · className, forwarded to OverlayGlassPanel."},
+  {"prop":"panel","type":"ReactNode","def":"—","desc":"A caller-authored content node; wins over the text props."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"Fallback content slot (media) / the static overlay (carousel)."},
+  {"prop":"fullBleed","type":"boolean","def":"false","desc":"Break out to 100vw."},
+  {"prop":"className","type":"string","def":"''","desc":"Extra classes on the section."},
+  {"prop":"slotClass · slotStyle","type":"object","def":"—","desc":"Per-slot class / style forwarded to SectionText (reveal seam)."},
+  {"prop":"theme","type":"'inverse' | 'light' | 'dark'","def":"—","desc":"The section's theme scope: inverse = the paired theme of the nearest live one (follows the toggle); light / dark pinned; omit to inherit. Every token inside flips — no inverse classes."}
+]} />

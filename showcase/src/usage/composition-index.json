@@ -236,6 +236,13 @@
       "stars": 3
     }
   ],
+  "packages/component/src/atoms/ActionButton.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
   "packages/component/src/atoms/Badge.jsx": [
     {
       "target": "Icon",
@@ -271,22 +278,24 @@
       "stars": 3
     }
   ],
-  "packages/component/src/atoms/Popover.jsx": [
-    {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Tooltip",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/component/src/atoms/SectionLabel.jsx": [
     {
       "target": "Icon",
       "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/SizeOrDownload.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/atoms/SortHeader.jsx": [
+    {
+      "target": "Icon",
+      "uses": 1,
       "stars": 3
     }
   ],
@@ -325,6 +334,13 @@
       "stars": 3
     }
   ],
+  "packages/component/src/hooks/usePlaceholders.js": [
+    {
+      "target": "EmptyState",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/molecules/Accordion.jsx": [
     {
       "target": "AccordionPanel",
@@ -335,6 +351,18 @@
   "packages/component/src/molecules/AlignmentGrid.jsx": [
     {
       "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/AudioPreview.jsx": [
+    {
+      "target": "IconFrame",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Slider",
       "uses": 1,
       "stars": 3
     }
@@ -361,16 +389,16 @@
       "stars": 3
     }
   ],
-  "packages/component/src/molecules/CardFeatureItem.jsx": [
+  "packages/component/src/molecules/Carousel.jsx": [
     {
-      "target": "Icon",
-      "uses": 2,
+      "target": "EmblaNav",
+      "uses": 1,
       "stars": 3
     }
   ],
   "packages/component/src/molecules/CodeBlock.jsx": [
     {
-      "target": "Icon",
+      "target": "CopyButton",
       "uses": 1,
       "stars": 3
     }
@@ -399,6 +427,56 @@
       "stars": 3
     }
   ],
+  "packages/component/src/molecules/ContentCard.jsx": [
+    {
+      "target": "ContentMedia",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "ContentText",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ContentItem.jsx": [
+    {
+      "target": "ContentCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentRow",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ContentMedia.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/ContentRow.jsx": [
+    {
+      "target": "ContentText",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ContentMedia",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/CopyButton.jsx": [
+    {
+      "target": "ActionButton",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/molecules/Dropdown.jsx": [
     {
       "target": "Icon",
@@ -411,26 +489,21 @@
       "stars": 3
     }
   ],
-  "packages/component/src/molecules/ErrorBoundary.jsx": [
+  "packages/component/src/molecules/EmblaNav.jsx": [
     {
-      "target": "Button",
+      "target": "Icon",
       "uses": 2,
       "stars": 3
     }
   ],
   "packages/component/src/molecules/FieldRow.jsx": [
     {
-      "target": "Button",
-      "uses": 2,
-      "stars": 3
+      "target": "Icon",
+      "uses": 5,
+      "stars": 4
     },
     {
       "target": "Input",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Tag",
       "uses": 1,
       "stars": 3
     },
@@ -441,13 +514,6 @@
     },
     {
       "target": "StatusChip",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
-  "packages/component/src/molecules/FullscreenOverlay.jsx": [
-    {
-      "target": "Button",
       "uses": 1,
       "stars": 3
     }
@@ -464,6 +530,40 @@
       "stars": 3
     }
   ],
+  "packages/component/src/molecules/InspectorSection.jsx": [
+    {
+      "target": "Section",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/KindPreview.jsx": [
+    {
+      "target": "AssetPlaceholder",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AudioTile",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "VideoTile",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/molecules/LabeledControl.jsx": [
     {
       "target": "Input",
@@ -472,18 +572,6 @@
     },
     {
       "target": "Slider",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
-  "packages/component/src/molecules/LoaderOverlay.jsx": [
-    {
-      "target": "FullscreenOverlay",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "ColorLoader",
       "uses": 1,
       "stars": 3
     }
@@ -538,6 +626,13 @@
       "stars": 5
     }
   ],
+  "packages/component/src/molecules/SectionCardItem.jsx": [
+    {
+      "target": "Icon",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
   "packages/component/src/molecules/ShapeDropdown.jsx": [
     {
       "target": "Button",
@@ -560,11 +655,23 @@
       "target": "Button",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/component/src/molecules/Slider.jsx": [
     {
       "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/molecules/SortControls.jsx": [
+    {
+      "target": "SortHeader",
       "uses": 1,
       "stars": 3
     }
@@ -631,6 +738,18 @@
       "stars": 3
     }
   ],
+  "packages/component/src/molecules/VideoSheet.jsx": [
+    {
+      "target": "IconFrame",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Slider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/component/src/organisms/Canvas.jsx": [
     {
       "target": "CanvasFrame",
@@ -643,33 +762,35 @@
       "stars": 3
     }
   ],
-  "packages/component/src/organisms/ContentFilters.jsx": [
-    {
-      "target": "Divider",
-      "uses": 2,
-      "stars": 3
-    },
+  "packages/component/src/organisms/ColumnBrowser.jsx": [
     {
       "target": "Icon",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "IconFrame",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "ViewToggle",
+      "target": "KindPreview",
       "uses": 1,
       "stars": 3
     }
   ],
-  "packages/component/src/organisms/EditorShell.jsx": [
+  "packages/component/src/organisms/ContentFilters.jsx": [
     {
       "target": "Divider",
-      "uses": 5,
-      "stars": 5
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "IconFrame",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/FeatureSplit.jsx": [
+    {
+      "target": "SectionSplit",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/component/src/organisms/FeaturedCarousel.jsx": [
@@ -682,11 +803,16 @@
       "target": "Image",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "EmblaNav",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/component/src/organisms/FeaturesCardSection.jsx": [
     {
-      "target": "CardFeatureItem",
+      "target": "SectionCards",
       "uses": 1,
       "stars": 3
     }
@@ -696,21 +822,14 @@
       "target": "Button",
       "uses": 1,
       "stars": 3
+    },
+    {
+      "target": "SectionCta",
+      "uses": 1,
+      "stars": 3
     }
   ],
   "packages/component/src/organisms/FramedMediaBand.jsx": [
-    {
-      "target": "Image",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
-  "packages/component/src/organisms/FullBleedHero.jsx": [
-    {
-      "target": "HlsVideo",
-      "uses": 1,
-      "stars": 3
-    },
     {
       "target": "Image",
       "uses": 1,
@@ -732,7 +851,7 @@
   "packages/component/src/organisms/MediaLibrary.jsx": [
     {
       "target": "Icon",
-      "uses": 5,
+      "uses": 6,
       "stars": 4
     },
     {
@@ -741,12 +860,32 @@
       "stars": 4
     },
     {
-      "target": "MediaLibraryProvider",
+      "target": "ActionButton",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Divider",
       "uses": 2,
       "stars": 3
     },
     {
+      "target": "SizeOrDownload",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SortControls",
+      "uses": 1,
+      "stars": 3
+    },
+    {
       "target": "FullscreenOverlay",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Input",
       "uses": 1,
       "stars": 3
     },
@@ -756,12 +895,17 @@
       "stars": 3
     },
     {
-      "target": "MediaCard",
+      "target": "ViewToggle",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "MediaRow",
+      "target": "ContentCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentRow",
       "uses": 1,
       "stars": 3
     },
@@ -772,6 +916,11 @@
     },
     {
       "target": "MediaViewer",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SettingsChipRow",
       "uses": 1,
       "stars": 3
     }
@@ -797,34 +946,34 @@
   ],
   "packages/component/src/organisms/NewsletterBand.jsx": [
     {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Input",
+      "target": "SectionNewsletter",
       "uses": 1,
       "stars": 3
     }
   ],
   "packages/component/src/organisms/RecordManager.jsx": [
     {
-      "target": "Button",
-      "uses": 6,
-      "stars": 4
-    },
-    {
       "target": "ToggleCheckbox",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "SearchInput",
+      "target": "StatusChip",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "IconFrame",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "Dropdown",
+      "target": "SearchInput",
       "uses": 1,
       "stars": 3
     },
@@ -847,14 +996,106 @@
       "target": "Table",
       "uses": 1,
       "stars": 3
-    },
+    }
+  ],
+  "packages/component/src/organisms/SectionCards.jsx": [
     {
-      "target": "StatusChip",
+      "target": "SectionText",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "Icon",
+      "target": "SectionCardItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SectionCta.jsx": [
+    {
+      "target": "SectionText",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SectionFaq.jsx": [
+    {
+      "target": "SectionText",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Accordion",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "AccordionPanel",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SectionHero.jsx": [
+    {
+      "target": "SectionText",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "AssetPlaceholder",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "HlsVideo",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentMedia",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SectionNewsletter.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Input",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/SettingsPanel.jsx": [
+    {
+      "target": "Divider",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "IconFrame",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ToggleSwitch",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ShellDrawer",
       "uses": 1,
       "stars": 3
     }
@@ -902,15 +1143,48 @@
       "stars": 3
     }
   ],
-  "packages/content/src/ArticleCard.jsx": [
+  "packages/component/src/utilities/EditorShell.jsx": [
     {
-      "target": "Pill",
+      "target": "Divider",
+      "uses": 5,
+      "stars": 5
+    }
+  ],
+  "packages/component/src/utilities/ErrorBoundary.jsx": [
+    {
+      "target": "Button",
       "uses": 2,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/utilities/FullscreenOverlay.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/utilities/LoaderOverlay.jsx": [
+    {
+      "target": "FullscreenOverlay",
+      "uses": 1,
       "stars": 3
     },
     {
-      "target": "Image",
-      "uses": 2,
+      "target": "ColorLoader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/utilities/Popover.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
       "stars": 3
     }
   ],
@@ -938,9 +1212,26 @@
       "stars": 3
     }
   ],
+  "packages/content/src/ListingCard.jsx": [
+    {
+      "target": "Pill",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Image",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
   "packages/content/src/ParallaxShelf.jsx": [
     {
-      "target": "WorkCard",
+      "target": "TiltCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentCard",
       "uses": 1,
       "stars": 3
     }
@@ -1214,6 +1505,52 @@
       "stars": 3
     }
   ],
+  "packages/foundry/src/FoundryOpentypeFeatures.jsx": [
+    {
+      "target": "SectionCardItem",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/FoundryTypefaceDetails.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "ButtonGroup",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionCardItem",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/foundry/src/FoundryTypefacePairing.jsx": [
+    {
+      "target": "SpecimenSectionHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PairingCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/foundry/src/GlyphMetricsGrid.jsx": [
     {
       "target": "Tag",
@@ -1233,6 +1570,13 @@
       "stars": 3
     }
   ],
+  "packages/foundry/src/PairingCard.jsx": [
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/foundry/src/SpecimenSectionHeader.jsx": [
     {
       "target": "Dropdown",
@@ -1245,7 +1589,7 @@
       "stars": 3
     },
     {
-      "target": "Icon",
+      "target": "IconFrame",
       "uses": 1,
       "stars": 3
     }
@@ -1271,17 +1615,27 @@
   ],
   "packages/foundry/src/TypefaceLibraryGridWithVariables.jsx": [
     {
-      "target": "TypefaceLibraryItem",
+      "target": "ContentCollection",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "TypefaceVariablePreview",
-      "uses": 2,
+      "target": "ContentRow",
+      "uses": 1,
       "stars": 3
     },
     {
       "target": "ContentFilters",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TypefaceVariablePreview",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TypefaceAlphabet",
       "uses": 1,
       "stars": 3
     }
@@ -1383,16 +1737,16 @@
     },
     {
       "target": "Tooltip",
-      "uses": 2,
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
       "stars": 3
     },
     {
       "target": "ThemeToggle",
-      "uses": 2,
-      "stars": 3
-    },
-    {
-      "target": "SearchInput",
       "uses": 1,
       "stars": 3
     },
@@ -1406,6 +1760,11 @@
     {
       "target": "Icon",
       "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tooltip",
+      "uses": 1,
       "stars": 3
     },
     {
@@ -1432,6 +1791,103 @@
     {
       "target": "Icon",
       "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/AppShell.jsx": [
+    {
+      "target": "NavHiddenContext",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "NavRail",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TouchDeviceOverlay",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/CatalogPage.jsx": [
+    {
+      "target": "ContentCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentRow",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageShell",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "WalkthroughPanel",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/NavRail.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ThemeToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Logomark",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/SettingsScaffold.jsx": [
+    {
+      "target": "Divider",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageShell",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageHeader",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "TabStrip",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/SettingsShortcuts.jsx": [
+    {
+      "target": "LabelRow",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/shell/src/WalkthroughPanel.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
       "stars": 3
     }
   ],
@@ -1564,12 +2020,12 @@
   ],
   "packages/workshop/src/docs/DocsFrontmatter.jsx": [
     {
-      "target": "Tag",
-      "uses": 1,
+      "target": "Icon",
+      "uses": 2,
       "stars": 3
     },
     {
-      "target": "Icon",
+      "target": "Tag",
       "uses": 1,
       "stars": 3
     },
@@ -1631,6 +2087,74 @@
       "stars": 3
     }
   ],
+  "packages/workshop/src/exhibit/ExhibitLinkCard.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/exhibit/ExhibitOverview.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ExhibitLinkCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/exhibit/ExhibitPage.jsx": [
+    {
+      "target": "DashMetricCard",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageSection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ExhibitCard",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/workshop/src/exhibit/ExhibitSidebar.jsx": [
+    {
+      "target": "Icon",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "RailSection",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "DocsToc",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "RailRow",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "packages/workshop/src/shell/RightRail.jsx": [
     {
       "target": "RailRow",
@@ -1655,12 +2179,12 @@
       "stars": 3
     },
     {
-      "target": "ShellDrawer",
+      "target": "Tooltip",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "Tooltip",
+      "target": "ShellDrawer",
       "uses": 1,
       "stars": 3
     },
@@ -1708,12 +2232,12 @@
   ],
   "packages/workshop/src/tags/index.js": [
     {
-      "target": "TagModeGate",
+      "target": "TagModeProvider",
       "uses": 1,
       "stars": 3
     },
     {
-      "target": "TagModeProvider",
+      "target": "TagModeGate",
       "uses": 1,
       "stars": 3
     }
@@ -1779,11 +2303,6 @@
     },
     {
       "target": "ShapeDropdown",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "TabsRow",
       "uses": 1,
       "stars": 3
     }
@@ -2076,6 +2595,18 @@
       "stars": 3
     }
   ],
+  "showcase/src/demos/AudioPreview.jsx": [
+    {
+      "target": "AudioTile",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "VideoTile",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "showcase/src/demos/BadgeSizes.jsx": [
     {
       "target": "Badge",
@@ -2104,6 +2635,13 @@
       "stars": 5
     }
   ],
+  "showcase/src/demos/CatalogPage.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
   "showcase/src/demos/ChessBoardFullscreen.jsx": [
     {
       "target": "ChessControlsProvider",
@@ -2128,6 +2666,39 @@
   "showcase/src/demos/ColorLoader.jsx": [
     {
       "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ColumnBrowser.jsx": [
+    {
+      "target": "ViewToggle",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ContentCard.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ContentCollection.jsx": [
+    {
+      "target": "SegmentedToggle",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentItem",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/ContentItem.jsx": [
+    {
+      "target": "SegmentedToggle",
       "uses": 1,
       "stars": 3
     }
@@ -2251,6 +2822,20 @@
       "stars": 3
     }
   ],
+  "showcase/src/demos/Input.jsx": [
+    {
+      "target": "ColorSwatch",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/InspectorSection.jsx": [
+    {
+      "target": "Section",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "showcase/src/demos/LabeledControl.jsx": [
     {
       "target": "Input",
@@ -2321,7 +2906,7 @@
     },
     {
       "target": "MenuItem",
-      "uses": 1,
+      "uses": 2,
       "stars": 3
     }
   ],
@@ -2333,7 +2918,7 @@
     },
     {
       "target": "MenuItem",
-      "uses": 1,
+      "uses": 2,
       "stars": 3
     }
   ],
@@ -2344,13 +2929,13 @@
       "stars": 4
     },
     {
-      "target": "Icon",
+      "target": "MenuItem",
       "uses": 2,
       "stars": 3
     },
     {
-      "target": "MenuItem",
-      "uses": 1,
+      "target": "Icon",
+      "uses": 2,
       "stars": 3
     }
   ],
@@ -2367,6 +2952,13 @@
     },
     {
       "target": "MenuDropdownDivider",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/NotationPanel.jsx": [
+    {
+      "target": "Badge",
       "uses": 1,
       "stars": 3
     }
@@ -2388,6 +2980,90 @@
   "showcase/src/demos/ProductDetailLayout.jsx": [
     {
       "target": "Button",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SectionCards.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SectionCta.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SectionHero.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SectionSplit.jsx": [
+    {
+      "target": "Button",
+      "uses": 2,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SectionText.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SettingsLinks.jsx": [
+    {
+      "target": "SettingsColophon",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/demos/SettingsPanel.jsx": [
+    {
+      "target": "SettingsRow",
+      "uses": 10,
+      "stars": 4
+    },
+    {
+      "target": "SettingsChoice",
+      "uses": 5,
+      "stars": 4
+    },
+    {
+      "target": "SettingsSwitch",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "SettingsSection",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SettingsMulti",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SettingsFooter",
       "uses": 1,
       "stars": 3
     }
@@ -2460,6 +3136,13 @@
       "stars": 3
     }
   ],
+  "showcase/src/demos/useModal.jsx": [
+    {
+      "target": "Button",
+      "uses": 3,
+      "stars": 5
+    }
+  ],
   "showcase/src/lib/BlockViewer.jsx": [
     {
       "target": "Button",
@@ -2528,6 +3211,11 @@
     },
     {
       "target": "CodeBlock",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Dropdown",
       "uses": 1,
       "stars": 3
     }
@@ -2887,6 +3575,110 @@
       "stars": 3
     }
   ],
+  "showcase/src/sets/content-card-comparison.jsx": [
+    {
+      "target": "ContentCard",
+      "uses": 12,
+      "stars": 4
+    },
+    {
+      "target": "ContentRow",
+      "uses": 11,
+      "stars": 4
+    },
+    {
+      "target": "SizeOrDownload",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "Pill",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "ListingCard",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "ActionButton",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "GridCard",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "TypefaceLibraryItem",
+      "uses": 3,
+      "stars": 4
+    },
+    {
+      "target": "SegmentedToggle",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "MediaCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "MediaRow",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "WorkCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "WorkListItem",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "PageHeader",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "PrintGridCard",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "Tag",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentCollection",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "PageShell",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/content-filters.jsx": [
+    {
+      "target": "ContentItem",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "ContentCollection",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
   "showcase/src/sets/design-editor.jsx": [
     {
       "target": "Button",
@@ -2988,6 +3780,55 @@
     },
     {
       "target": "DiagonalMarqueeRiver",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/record-manager-cms.jsx": [
+    {
+      "target": "Icon",
+      "uses": 2,
+      "stars": 3
+    },
+    {
+      "target": "SearchInput",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "showcase/src/sets/section-set.jsx": [
+    {
+      "target": "Button",
+      "uses": 4,
+      "stars": 4
+    },
+    {
+      "target": "SectionHero",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionSplit",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionCards",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionCta",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionFaq",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "SectionNewsletter",
       "uses": 1,
       "stars": 3
     }

@@ -81,7 +81,8 @@ export const TIERS = {
   /* kol-foundry */
   TypefaceLibraryItem: 'atoms', TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
-  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', ColorLoader: 'molecules',
+  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', ColorLoader: 'molecules', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
+  FoundryOpentypeFeatures: 'organisms', FoundryTypefaceDetails: 'organisms', FoundryTypefacePairing: 'organisms',
   TypefaceHero: 'organisms', TypefaceStyleSection: 'organisms', FontPreviewSection: 'organisms',
   VariableFontSection: 'organisms', GlyphMetricsGrid: 'organisms', GlyphMetricsSection: 'organisms',
   FoundryCharacterSets: 'organisms', TypefaceLibraryGrid: 'organisms',
@@ -92,6 +93,8 @@ export const TIERS = {
 /* ── Function: closed set — action, input, display, feedback, navigation,
  *    wayfinding, overlay, media, structure, utility ───────────────────────── */
 export const FUNCTIONS_BY_NAME = {
+  /* the app tier, shipped once (ShellHomeSystem, 2026-08-27) */
+  SettingsMulti: 'input', CatalogPage: 'structure', SettingsShortcuts: 'display', SettingsLinks: 'wayfinding', SettingsColophon: 'display', TouchDeviceOverlay: 'overlay', useTouchPrimary: 'utility',
   /* component + framework (migrated verbatim from registry.js FUNCTION_MAP) */
   Button: 'action', ThemeToggle: 'action',
   Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
@@ -107,6 +110,7 @@ export const FUNCTIONS_BY_NAME = {
   Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
+  QuadrantSync: 'overlay',
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
   EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
@@ -123,9 +127,10 @@ export const FUNCTIONS_BY_NAME = {
   TypeSpecCard: 'display', SpecList: 'display',
   ShapeDropdown: 'action', SplitToolButton: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
-  FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure',
-  FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input',
-  BentoCard: 'display', FeaturedCarousel: 'media',
+  FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
+  SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
+  FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
+  BentoCard: 'display', TiltBento: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   ColorLoader: 'display', LoaderOverlay: 'overlay',
@@ -146,7 +151,7 @@ export const FUNCTIONS_BY_NAME = {
   SubPageHero: 'structure',
   TagPath: 'display',
   useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
-  usePrefersReducedMotion: 'utility', useTilt: 'utility',
+  usePrefersReducedMotion: 'utility', useTilt: 'utility', usePlayback: 'utility', parseFrontmatter: 'utility', readCover: 'utility',
   useCoarsePointer: 'utility', usePlaceholders: 'utility',
   useAxisAnimation: 'utility', useChartTooltip: 'utility', useCountUp: 'utility',
   useFontMetrics: 'utility',
@@ -159,7 +164,8 @@ export const FUNCTIONS_BY_NAME = {
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
-  ActionButton: 'action', CopyButton: 'action', PopoverPanel: 'overlay', MediaCard: 'media', MediaRow: 'media',
+  ActionButton: 'action', SizeOrDownload: 'action', SortHeader: 'input', SortControls: 'input', CopyButton: 'action', ColumnBrowser: 'wayfinding', KindPreview: 'media', AudioPreview: 'media', VideoSheet: 'media', PlaybackBar: 'media', AudioSheet: 'media', DocPage: 'display', PopoverPanel: 'overlay', MediaCard: 'media', MediaRow: 'media',
+  SettingsPanel: 'overlay',
   PaletteHarmonyWheel: 'input',
   /* content-card system (2026-08-15) */
   ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
@@ -201,7 +207,7 @@ export const FUNCTIONS_BY_NAME = {
   /* foundry additions */
   GlyphMetricsSection: 'display', TypefaceLibraryGrid: 'wayfinding',
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceLibraryItem: 'display',
-  TypefaceVariablePreview: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure',
+  TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
   PageShell: 'structure', SettingsScaffold: 'structure',
@@ -224,7 +230,7 @@ export const EXEMPT = {
   /* chess */
   ChessControlsProvider: 'non-component',
   /* workshop — contexts, providers, single-parent doc/tag sub-parts */
-  ShellTocContext: 'non-component', ShellFullHeightContext: 'non-component',
+  ShellTocContext: 'non-component', ShellFullHeightContext: 'non-component', ShellContentWidthContext: 'non-component',
   ShellTocCollapsedContext: 'non-component', TagModeProvider: 'non-component',
   DocsArticle: 'member-of:DocumentationReader', DocsHeader: 'member-of:DocumentationReader',
   DocsFrontmatter: 'member-of:DocumentationReader',
@@ -239,7 +245,10 @@ export const EXEMPT = {
   GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
   NavHiddenContext: 'non-component',
   PageBleed: 'member-of:PageShell',
-  SettingsSection: 'member-of:SettingsScaffold', LabelRow: 'member-of:SettingsScaffold',
+  SettingsSection: 'member-of:SettingsScaffold', LabeledControlSection: 'member-of:SettingsPanel', LabelRow: 'member-of:SettingsScaffold',
+  SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
+  SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
+  AudioTile: 'member-of:AudioPreview', VideoTile: 'member-of:AudioPreview', DocFrontmatter: 'member-of:DocPage',
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
@@ -256,11 +265,29 @@ export const EXEMPT = {
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
   'Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
-  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext',
+  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellContentWidthContext',
 ]
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
-export const DEPRECATED = ['MenuPopover', 'QuantityStepper']
+export const DEPRECATED = [
+  'MenuPopover', 'QuantityStepper',
+  /* Content Set retirement wave, step 1 (2026-08-26): absorbed by ContentCard /
+   * ContentRow variants; exports stay until the next major. */
+  'MediaCard', 'MediaRow', 'GridCard', 'PrintGridCard', 'ListingCard', 'ArticleCard', 'WorkCard', 'WorkListItem', 'TypefaceLibraryItem',
+  /* SectionSet (2026-08-26): the section family took the Section* prefix; the
+   * old names are aliases of SectionHero / SectionSplit / SectionCards /
+   * SectionCta / InspectorSection until the next major. */
+  'FullBleedHero', 'FeatureSplit', 'FeaturesCardSection', 'CtaGlobal', 'Section',
+  /* SectionNewsletter (2026-08-27): NewsletterBand = SectionNewsletter (title → headline, description → body) */
+  'NewsletterBand',
+  /* SectionHeroRound2 (2026-08-26): FoundryCTA = SectionCta variant="centered";
+   * FeaturedCarousel = SectionHero media=[…] (kept as the engine). */
+  'FoundryCTA', 'FeaturedCarousel',
+  /* CardFeatureItem = SectionCardItem (2026-08-26) */
+  'CardFeatureItem',
+  /* BentoCard = TiltBento (2026-08-27, the Tilt family) */
+  'BentoCard',
+]
 
 /* Components that ship without a demo file ON PURPOSE (pnpm validate:demos).
  * A reason is mandatory — the gate exists because "no demo yet" was never
@@ -278,13 +305,15 @@ export const NO_DEMO = (() => {
       'chess apparatus parts; the board demos cover the system, these never got their own'),
     ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel', 'FoundryCTA'],
       'kol-component organisms/overlays predating the demo convention'),
+    ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
     ...debt(['AudioPlayer', 'EmblaNav'],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
     ...debt(['ListingCard'],
       'renamed from ArticleCard in kol-content 0.7.0; the ArticleCard demo still rides the alias'),
     ...debt(['GlyphItem', 'FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
-    ...debt(['NavRail', 'PageShell', 'PageHeader', 'SettingsScaffold', 'TabStrip',
+    ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),
+    ...debt(['NavRail', 'PageShell', 'SettingsScaffold', 'TabStrip',
       'WalkthroughPanel', 'ShortcutsOverlay', 'Logomark'],
       'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
     ...debt(['RatioBar', 'Tower', 'QuadSplit', 'CardRow', 'StripeRow', 'AppliedCard'].slice(1),

@@ -30,5 +30,6 @@ related:
 | [[01-package-topology\|Package topology]] | Every package, what it owns, what stays shared |
 | [[02-tiers\|Package tiers]] | The layers and the dependency direction |
 | [[03-install\|Installing KOL]] | The four-point consumer contract |
+| [[04-full-consumption\|Full consumption]] | The six greps that say a repo is fully on KOL |
 
 **Three pages beside the index** (2026-08-01) — the chapter minimum. These were headings in one file.

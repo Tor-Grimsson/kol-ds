@@ -2,6 +2,12 @@ import { Image } from '@kolkrabbi/kol-component'
 import { Tag } from '@kolkrabbi/kol-component'
 
 /**
+ * @deprecated 2026-08-26 — absorbed by `ContentRow variant="work"` in @kolkrabbi/kol-component
+ * (the Content Set, 2026-08-15). Step 1 of the retirement wave: this export
+ * stays and renders unchanged until the next major, then it is removed.
+ * Consumers: swap on your next bump. Map + row-by-row diff:
+ * docs/documentation/03-components/06-content-card-system.md.
+ *
  * WorkListItem — the list/row view of a `/work` project: the row twin of
  * WorkCard. A horizontal card — a small square thumbnail on the left, then a
  * content column split into a header row (title + tag chips on the left, type +

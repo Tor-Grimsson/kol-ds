@@ -2,9 +2,9 @@
 
 - **Package:** `@kolkrabbi/kol-component`
 - **Category:** molecules
-- **Real-world usages found:** 585 across 105 files in 9 apps
-- **Weighted inbound:** 388★ across 105 edges — 73×4★ · 32×3★
-- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-hrafn, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
+- **Real-world usages found:** 584 across 104 files in 8 apps
+- **Weighted inbound:** 385★ across 104 edges — 73×4★ · 31×3★
+- **Used in:** kol-client-ac, kol-client-acyr-website, kol-client-kolkrabbi, kol-editor, kol-labs-monorepo, kol-labs-single, kol-lightroom, kol-website
 
 ## Who depends on this
 
@@ -24,7 +24,7 @@ Weighted, not counted: a 5★ dependent is a near-copy and breaks if this is rem
 | 4 | 13 | `kol-apps/kol-labs-single/src/pages/radar/refract/LensShell.jsx` |
 | 4 | 11 | `kol-apps/kol-client-ac/src/editor/modes/pattern/PatternControls.jsx` |
 | 4 | 11 | `kol-apps/kol-client-acyr-website/apps/styleguide/src/editor/modes/pattern/PatternControls.jsx` |
-| … | | _93 more_ |
+| … | | _92 more_ |
 
 ## Import
 

@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
-import { Icon, KOL_ICON_SET_V1 } from '@kolkrabbi/kol-icons'
+import { Icon, KOL_ICON_SET_V1, KOL_ICON_SET_SIGNAL } from '@kolkrabbi/kol-icons'
 import { SegGroup, KeylineBg } from '../lib/icon-controls.jsx'
 
 /**
- * Icons — the kol-icon-set-v1 gallery (THE icons page since the legacy gallery died, 2026-07-28), DOGFOODING the package: groups come from
- * the package's `KOL_ICON_SET_V1` inventory and each icon renders via the package
+ * Icons — the gallery for BOTH shipped sets (v1 · signal, kol-icons ≥0.25.0),
+ * switched with SET; THE icons page since the legacy gallery died 2026-07-28.
+ * DOGFOODS the package: groups come from
+ * the package's own inventories and each icon renders via the package
  * `<Icon>`, which resolves the set from `packages/icons/src/kol-icon-set-v1/`.
  * Proves the set ships + resolves from the package (not a showcase-local glob).
  */
@@ -16,11 +19,19 @@ const ORDER = ['chevron', 'arrow', 'arrow-diagonal', 'caret', 'add-remove', 'tra
 const LABELS = { 'add-remove': 'Add / remove', 'eye-lock': 'Eye · lock', 'shape-primitives': 'Shape primitives', 'shape-forms': 'Shape forms' }
 const label = (f) => LABELS[f] ?? f.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
 
-const orderedFolders = Object.keys(KOL_ICON_SET_V1).sort((a, b) => {
+const ordered = (index) => Object.keys(index).sort((a, b) => {
   const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)
   return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib) || a.localeCompare(b)
 })
-const TOTAL = Object.values(KOL_ICON_SET_V1).reduce((n, l) => n + l.length, 0)
+const total = (index) => Object.values(index).reduce((n, l) => n + l.length, 0)
+
+/* TWO SETS (kol-icons ≥0.25.0): v1 is app chrome, signal is the instrument
+ * vocabulary. One gallery with a switch rather than two pages — the sets share
+ * every control, and seeing them apart is the point of the switch. */
+const SETS = {
+  v1:     { index: KOL_ICON_SET_V1,     label: 'V1', name: 'kol-icon-set-v1' },
+  signal: { index: KOL_ICON_SET_SIGNAL, label: 'SIGNAL', name: 'kol-icon-set-signal' },
+}
 
 const SIZES = [16, 20, 24, 32, 48, 64, 128]
 
@@ -83,6 +94,9 @@ export default function Icons() {
     setTimeout(() => setCopied((c) => (c === name ? null : c)), 1200)
   }
 
+  const [setKey, setSetKey] = useState('v1')
+  const set = SETS[setKey]
+  const folders = useMemo(() => ordered(set.index), [set])
   const rowProps = useMemo(() => ({ size, bgLight, gridOverlay, copied, onCopy: copy }), [size, bgLight, gridOverlay, copied])
 
   return (
@@ -90,17 +104,21 @@ export default function Icons() {
       <DocHeader
         eyebrow="KOL · Icons"
         title="Icons"
-        lede={`${TOTAL} icons across ${orderedFolders.length} groups (kol-icon-set-v1), resolved straight from the package (@kolkrabbi/kol-icons). Single stroke cut, currentColor. Click any icon to copy its name.`}
+        lede={`${total(set.index)} icons across ${folders.length} groups (${set.name}), resolved straight from the package (@kolkrabbi/kol-icons). Single stroke cut, currentColor. Click any icon to copy its name.`}
       />
 
+      <p className="kol-mono-12 text-meta mt-4">
+        Compare with <Link className="kol-link underline" to="/icons/brand">brand's gallery</Link> — the app-tier catalog page, ported verbatim.
+      </p>
       <div className="flex items-center flex-wrap gap-6 mt-8 mb-10">
+        <SegGroup label="SET" options={Object.entries(SETS).map(([k, v]) => ({ value: k, label: v.label }))} value={setKey} onChange={setSetKey} />
         <SegGroup label="BG" options={[{ value: false, label: 'DARK' }, { value: true, label: 'LIGHT' }]} value={bgLight} onChange={setBgLight} />
         <SegGroup label="SIZE" options={SIZES.map((v) => ({ value: v, label: String(v) }))} value={size} onChange={setSize} />
         <SegGroup label="GRID" options={[{ value: false, label: 'OFF' }, { value: true, label: 'ON' }]} value={gridOverlay} onChange={setGridOverlay} />
       </div>
 
-      {orderedFolders.map((folder) => (
-        <GroupList key={folder} folder={folder} items={KOL_ICON_SET_V1[folder]} {...rowProps} />
+      {folders.map((folder) => (
+        <GroupList key={`${setKey}-${folder}`} folder={folder} items={set.index[folder]} {...rowProps} />
       ))}
     </>
   )
