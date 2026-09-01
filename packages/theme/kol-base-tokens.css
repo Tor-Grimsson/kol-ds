@@ -25,8 +25,23 @@
 :root,
 :is([data-theme="light"], .light) {
   /* Absolutes (theme-invariant) */
+  /* TWO PAIRS OF POLES, AND THEY ARE NOT THE SAME PAIR (user ruling 2026-08-30).
+   *
+   *   ab        PURE polarity — #000000 / #ffffff. The absolute ends of the
+   *             range. Use when a step has to go past the theme's own ink:
+   *             "applying a percentage of primary on top of primary won't make
+   *             it darker, but applying a percentage of 000000 will."
+   *   absolute  THE THEME'S OWN near-black / near-white, FROZEN. Same colour in
+   *             light and dark — the original meaning of the word here, before
+   *             the 2026-08-28 rename collapsed it into an alias of `ab`.
+   *
+   * Both families are theme-INVARIANT. What separates them is which poles they
+   * mix between, not whether they flip. `fg-*` / `oq-*` and their `-inverse`
+   * twins are the families that flip. */
   --kol-color-ab-white: #ffffff;
   --kol-color-ab-black: #000000;
+  --kol-color-white: #fcfbf8;
+  --kol-color-black: #0e0e11;
 
   /* Surface tiers (page-level) — Light Mode (default) */
   --kol-surface-primary: #fafafa;
@@ -37,6 +52,41 @@
 
   --kol-surface-tertiary: #ffffff;
   --kol-surface-on-tertiary: #0e0e11;
+
+  /* THE SUNKEN WELL — a step DOWN from the page, in BOTH themes (measured on
+   * kol-fxr's /settings, 2026-08-30). The `sunken` tone had no token of its own
+   * and borrowed `--kol-oq-inverse-96`, which is a step down in light (242 on a
+   * 250 page) and a step UP in dark (24 on an 18 page). Swapping it to
+   * `surface-tertiary` only mirrors the fault: 14 on 18 in dark, but 255 on 250
+   * in light. The two are exact opposites, so no existing token is sunken on
+   * both sides — which is why "everything should be sunken" kept coming back
+   * looking wrong on one theme however it was patched.
+   * BUILT ON THE `ab` LADDER, not on literals (user, 2026-08-30: *"oq-inverse-96
+   * is the wrong sunken token … its pair should have been oq-ab-inverse-96 …
+   * that's based on primary or some dark that's not 000000"*). The `ab` tier is
+   * ABSOLUTE — pure #000/#fff — so `oq-ab-96` is 10 and `oq-ab-inverse-96` is
+   * 245 in BOTH themes and neither can be the well on its own. What flips is
+   * which one the well points at, and that is this token's entire job.
+   * Light: `oq-ab-inverse-96` (245, under the 250 page)
+   * Dark:  `oq-ab-96` (10, under the 18 page) */
+  /* ONE LINE, BOTH THEMES (user, 2026-08-30: *"isnt ab what we want to use for
+   * sunken? how can we use ab- and ab-inverse if they dont flip"*). Once `ab`
+   * flips toward the ground, `oq-ab-96` IS the well everywhere — 245 under a
+   * 250 page in light, 10 under an 18 page in dark. The per-theme alias this
+   * replaced was the tell that the ladder underneath was wrong. */
+  /* ASYMMETRIC BY RULING (user 2026-08-30: pure white in light, the 96 rung in
+   * dark — *"I really only wanted that extreme for light"*).
+   *
+   * LIGHT takes the pole, `oq-ab-100` = #ffffff. A page wash moves 250 → 245,
+   * and at the old 96 rung the well was ALSO 245 — the collision this closes.
+   * At the pole the gap is 10 and no wash rung can reach it.
+   * DARK stays at `oq-ab-96` = 10 under an 18 page. Pure #000 was a 23-level
+   * step and too deep; dark never had the collision anyway, because its wash is
+   * a white film that moves the page AWAY from the well.
+   *
+   * Two declarations, not one. The single-token version was my elegance, not a
+   * requirement — the two themes want different depths and that is allowed. */
+  --kol-surface-sunken: var(--kol-oq-ab-100);
 
   --kol-surface-inverse: #0e0e11;
   --kol-surface-on-inverse: #fcfbf8;
@@ -64,7 +114,10 @@
   --kol-surface-on-secondary: #f8f8f8;
 
   --kol-surface-tertiary: #0e0e11;
+  /* the well is the 96 rung in dark, not the pole — see the light block */
+  --kol-surface-sunken: var(--kol-oq-ab-96);
   --kol-surface-on-tertiary: #ffffff;
+
 
   --kol-surface-inverse: #fcfbf8;
   --kol-surface-on-inverse: #0e0e11;
@@ -109,7 +162,10 @@
     --kol-surface-on-secondary: #f8f8f8;
 
     --kol-surface-tertiary: #0e0e11;
+    /* the well is the 96 rung in dark, not the pole — see the light block */
+    --kol-surface-sunken: var(--kol-oq-ab-96);
     --kol-surface-on-tertiary: #ffffff;
+
 
     --kol-surface-inverse: #fcfbf8;
     --kol-surface-on-inverse: #0e0e11;

@@ -1,5 +1,137 @@
 # @kolkrabbi/kol-component
 
+## 0.149.0 — 2026-09-01
+
+- **A content grid can no longer demand a column wider than its container.**
+  `min` and `listMin` emit `minmax(min(<value>, 100%), 1fr)`; a bare fixed track
+  demanded its width whatever the container was, so a 352px minimum in a 302px
+  column made the nearest `overflow-x` ancestor scroll sideways while the page
+  itself never overflowed — which is why it was reported as a broken gutter.
+  Identical above the breakpoint, collapses to the container below it.
+  (ContentGridMinColumnWidth, kol-website)
+- **`fullBleed` belongs to the section family now.** One literal in
+  `sectionBleed.js`, used by `SectionHero` · `SectionSplit` · `SectionNewsletter`
+  and added to `SectionCards` · `SectionCta` · `SectionFaq`. Any of them can be a
+  filled surface, and a filled surface inside `.kol-page` has its colour clipped
+  by the gutter on mobile — a filled-section problem, reported once per organism
+  until the prop was shared. Viewport-relative, so unlike `.kol-full-bleed` it
+  does not over-bleed in a parent with no gutter. Default `false` everywhere:
+  nothing renders differently until it is passed. (SectionFamilyFullBleed,
+  kol-website)
+- **`useInViewAttention` — the card set's in-view attention state, shared.**
+  Every card expressed attention as `:hover`, and a touch device cannot hold
+  hover on an anchor that navigates on tap, so the whole hover vocabulary was
+  dead on a phone. `TiltBento` solved it for one component in 0.145.0; the
+  second could not have it, so a consumer was carrying the same observer to do
+  the same job. Now exported, TiltBento uses it, and `SectionCardItem` stamps
+  `data-attention` — added to the SAME theme rule the hover uses, so the two
+  resolve to one treatment rather than parallel sets that drift.
+  `coarseReveal="static"` opts out on both. Fine pointers never change.
+  (CardSetInViewAttention, kol-website)
+
+## 0.148.0 — 2026-08-31
+
+- **`ContentCollection cols` is a CEILING now, not a command**, and takes a floor.
+  It emitted `grid-cols-N` and took N columns whatever they measured, which is how
+  a WIDER screen came to clip MORE text: a roster ran 1 column at 350 on a phone
+  and 2 columns at 324 at 768. The rungs publish `--kol-wall-cols` and one static
+  template turns it into "at most N, and never narrower than the floor" —
+  `repeat(auto-fill, minmax(min(100%, max(floor, (100% - (N-1)·gap)/N)), 1fr))`.
+  All CSS: no measurement, no observer, and it works inside the container query
+  the wall already establishes.
+- **`minCol` defaults to `min` (320px)** so the count path and the fluid path share
+  one ruled minimum, and raising `min` raises both. NOT the 360 the filer's
+  measurements argue for: that number is about a ROW two truncated lines tall and
+  this floor governs every kind, so 360 would be a new estate-wide law made from
+  one page's evidence. 320 is the width this DS already ruled and lived with. A
+  wall whose content needs more says so — `minCol="360px"`.
+- ⚠️ **This does change existing renders** — but only walls that were drawing
+  tracks under 320px, which the DS's own `min` default already calls too narrow.
+  (ContentCollectionMinColumnWidth, kol-chess)
+
+## 0.147.0 — 2026-08-31
+
+- **`ButtonGroup`'s gap is responsive**: `gap-2` stacked, `sm:gap-4` as a row. One
+  fixed 16 was doing two different jobs — horizontal separation between two
+  side-by-side buttons and vertical separation between two full-width stacked
+  ones — and those do not want the same number. Nothing moves at `sm` and up.
+  (ButtonGroupResponsiveGap, kol-website)
+- **`SectionCardItem zoom`** (and `feature.zoom` through `SectionCards`) publishes
+  `--kol-card-feature-zoom`. The hover amount belongs to the ARTWORK, not the
+  component: 1.03 reads correctly on a dense photographic visual and is invisible
+  on sparse line-art, and one set can hold both. 1.03 stays the default.
+  (CardFeatureZoomScale, kol-website)
+- **`SectionNewsletter fullBleed`** — the FILL breaks the page gutter while the
+  content keeps it. The card is a filled surface inside `.kol-page`, so the gutter
+  clipped its background and left strips of page down both sides of the colour;
+  fill and content padding are the same box, so a consumer could not bleed one
+  without dragging the other out. The breakout literal is `SectionHero`'s,
+  character for character — two organisms in one family must not invent two ways
+  to leave a gutter. (SectionNewsletterFullBleed, kol-website)
+
+## 0.146.0 — 2026-08-31
+
+- **`ContentRow variant="roster"`** — the pickable row: a filled tile
+  (`surface-secondary`, hover `fg-04`), no border and no divider, 8px padding, a
+  40px square `fg-04` thumb, 8px gap, and two truncated lines
+  (`kol-mono-14`/`fg-96` over `kol-mono-12`/`fg-48`).
+- **The row height is FIXED at 56 and the content fills it.** Every other row in
+  the family follows its content, which on a grid of pick-targets reads as
+  broken — the filer measured 34 → 40 → 50 → 58 across four passes, and one long
+  meta line was enough to push a tile out of line with its neighbours. New
+  `kol-row--fixed` + `--kol-row-h`; `minHeight` still overrides the number, what
+  it cannot do is let the copy move it.
+- `file` was the nearest part and a different object — a bare ruled line with a
+  48px thumb, a divider and no hover by the 2026-08-29 ruling. Right for a file
+  listing, wrong for things you choose between.
+- Written as literals in every name-keyed map (BOX · STYLES · ORDER · FILL ·
+  GAPS) rather than derived from `showcase`: a spread cannot reach those maps,
+  and a derive that misses one is the trap `showcaseCanvas` fell into twice.
+- Row only. No `ContentCard` counterpart — kol-chess did not want one, and a
+  variant nobody asked for is a shape to keep in step for nothing.
+  (ContentRowRosterVariant, kol-chess)
+
+## 0.145.0 — 2026-08-31
+
+- **`SectionCardItem`'s media box can no longer resolve to zero height.** It was
+  `flex-1` — `flex: 1 1 0%`, basis ZERO — so with no ratio its height was donated
+  entirely by the parent, and where no ancestor supplied one the card silently
+  dropped to title + subtitle: no broken image, no failed request. Now
+  `flex-auto` plus a `3/2` default, which is the geometry those cards already
+  rendered at. (CardFeatureVisualCollapses, kol-website)
+- **`SectionSplit`'s media fills its column.** `w-auto` derived the width from
+  the image's aspect against whatever height the box got, so on a SHORT viewport
+  it resolved narrower than the column and centred — media visibly inset while
+  the copy stayed at the gutter. It is viewport HEIGHT that decides, which is why
+  844-tall tests passed and real phones at 660–720 failed.
+  (SectionSplitVisualWidth, kol-website)
+- **`SectionNewsletter` gains `controlSize`**, forwarded to both the email Input
+  and the submit Button, default `md` — the pair was hardcoded with no seam, so
+  a page setting `size="lg"` everywhere else could not match it.
+  (SectionNewsletterControlSize, kol-website)
+- **`SectionNewsletter` gets an inset floor and a shorter default rung.** Desktop's
+  80px inset is the leftover of the inner measure, so it scaled to ZERO rather
+  than down and the field ran edge to edge at 390; `px-5` is a floor the band
+  owns and desktop does not move. `height` defaults 60 → **40**: at rung 60 the
+  band reserved 422px around 308px of content on an 844-tall phone. The family
+  ladder is untouched — pass `height="60"` to keep the old air.
+  (SectionNewsletterMobileMeasure, kol-website)
+- **`TiltBento` reveals the CENTRED card on a coarse pointer** instead of opening
+  every card at once. An IntersectionObserver on the viewport's middle band means
+  one card open at a time — what hover gives a mouse — with the rest at
+  title-only. `coarseReveal="static"` restores the old behaviour for a wall of
+  small tiles. The fine-pointer path does not move.
+  (TiltBentoCoarseRevealInView, kol-website)
+
+## 0.144.0 — 2026-08-31
+
+- **BREAKING — `MediaBrowser` is gone.** It was a deprecated alias of
+  `MediaLibrary variant="page"`, kept since 2026-08-01 so consumers could
+  switch on their own time. Thirty days passed, the retirements gate found
+  nobody importing it anywhere in the estate, and the row is now deleted from
+  `04-retirements.md`. Swap the import for `MediaLibrary variant="page"`;
+  `MediaPicker` is untouched.
+
 ## 0.130.0 — 2026-08-29
 
 - **`QuadrantSync` — dev chrome for agreeing on WHICH element is being

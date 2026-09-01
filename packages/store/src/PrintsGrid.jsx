@@ -1,11 +1,24 @@
 import { useMemo, useState } from 'react'
-import { ContentFilters } from '@kolkrabbi/kol-component'
-import PrintGridCard from './PrintGridCard.jsx'
+import { ContentCard, ContentFilters } from '@kolkrabbi/kol-component'
+
+/* PrintGridCard was DROPPED 2026-08-30 (ContentSetRetirement step 3) and this
+ * grid moved onto the content-card system. `variant="catalog"` carries the same
+ * A4 frame; the two behaviours that were the print variant's — the 3D turn on
+ * select and the image fade-in — are now the `flip` and `fade` PROPS, because a
+ * turn and a fade are things a card does, not a kind of content it holds.
+ * No text slot is passed, so no plate renders: the wall stays image-only.
+ * `isFlipped` was already `selected` in everything but name.
+ * The random artwork-or-mockup roll was the old card's own state; it lives here
+ * now, keyed by slug so it holds across re-renders rather than re-rolling. */
+const cardImage = (print, rolls) => {
+  const shot = rolls[print.slug] ?? 'artwork'
+  return (shot === 'mockup' ? print.detailImages?.[0] : print.image) ?? print.image
+}
 
 /**
  * PrintsGrid — the filterable storefront grid organism: a ContentFilters shell
  * (category / year facets + search + view toggle) wrapping a responsive grid of
- * {@link PrintGridCard}. Cards shuffle once on mount so the wall reorders on
+ * `ContentCard variant="catalog"` (image-only, flip on select). Cards shuffle once on mount so the wall reorders on
  * each load. Clicking a card reports its rect + slug via `onCardClick` for a
  * FLIP-into-detail transition; `activeSlug` flips the matching card face.
  *
@@ -37,6 +50,10 @@ export default function PrintsGrid({
 }) {
   // Shuffle once on mount so order is random on each page load/reload.
   const [items] = useState(() => (shuffle ? [...prints].sort(() => Math.random() - 0.5) : prints))
+  /* rolled ONCE, keyed by slug — a re-render must not re-deal the wall */
+  const [rolls] = useState(() =>
+    Object.fromEntries(prints.map((p) => [p.slug, Math.random() < 0.5 && p.detailImages?.[0] ? 'mockup' : 'artwork'])),
+  )
 
   // Derive filter groups from the injected catalog when none are supplied.
   const resolvedGroups = useMemo(() => {
@@ -57,7 +74,15 @@ export default function PrintsGrid({
           className="reveal"
           style={{ '--reveal-delay': `${Math.min(index * 0.08, 0.5)}s` }}
         >
-          <PrintGridCard print={print} onCardClick={onCardClick} isFlipped={print.slug === activeSlug} />
+          <ContentCard
+            variant="catalog"
+            flip
+            fade
+            ratio="1 / 1.41421"
+            media={<img src={cardImage(print, rolls)} alt={print.name} loading="lazy" className="h-full w-full object-cover" />}
+            selected={print.slug === activeSlug}
+            onClick={(e) => onCardClick?.(e.currentTarget.getBoundingClientRect(), print.slug)}
+          />
         </div>
       ))}
     </div>

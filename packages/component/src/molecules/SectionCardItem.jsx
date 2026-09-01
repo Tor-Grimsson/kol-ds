@@ -1,4 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import useCoarsePointer from '../hooks/useCoarsePointer.js'
+import useInViewAttention from '../hooks/useInViewAttention.js'
 
 /* taxonomy-ok: nests only kol-icons's Icon (a package import the
  * relative-import check can't see). */
@@ -32,6 +34,17 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {string}    href             link target; `http*`/`mailto` → new tab, else plain same-tab anchor
  * @param {Function}  onNavigate       (event) => void — click seam on the same-tab anchor (SPA intercept)
  * @param {'auto'|'9/6'|'10/6'|'16/9'|'1/1'} imageAspectRatio  aspect class on the visual middle
+ * @param {'in-view'|'static'} [coarseReveal='in-view']  what counts as attention on a device with no
+ *   hover (CardSetInViewAttention, kol-website 2026-08-31). A touch device cannot hold hover and the
+ *   card is an anchor, so a tap navigates — the whole hover vocabulary was dead on a phone and the
+ *   zoom never fired at all. `in-view` stamps `data-attention` on the card crossing the viewport's
+ *   centre band, which the theme's hover rules ALSO key on, so hover and in-view resolve to ONE
+ *   treatment rather than two parallel sets that drift. `static` opts out — a wall of small tiles
+ *   does not want a tile lighting up as it passes the centre. Fine pointers never change.
+ * @param {number}    zoom  hover zoom scale for THIS card's visual (default 1.03, the shipped value).
+ *   Per-feature because the right amount belongs to the artwork, not the component: 3% is correct on
+ *   a dense photographic visual and invisible on sparse line-art, and one set can hold both
+ *   (CardFeatureZoomScale, kol-website 2026-08-31).
  * @param {string}    imagePosition    `<img>` object-position
  */
 export default function SectionCardItem({
@@ -43,10 +56,15 @@ export default function SectionCardItem({
   href,
   onNavigate,
   imageAspectRatio = 'auto',
+  zoom,
+  coarseReveal = 'in-view',
   imagePosition = 'center',
   className = '',
   style,
 }) {
+  const coarse = useCoarsePointer()
+  const [viewRef, attention] = useInViewAttention(coarse && coarseReveal === 'in-view')
+
   const isSvgUrl = typeof visual === 'string' && visual.endsWith('.svg')
   /* TEXT-ONLY (FoundrySpecimenSections, 2026-08-27): no `visual` = a title +
    * description tile — the frame and hover of kol-website's .feature-card, no
@@ -61,7 +79,18 @@ export default function SectionCardItem({
     '16/9': 'aspect-video',
     '1/1': 'aspect-square',
   }
-  const aspectClass = aspectClasses[imageAspectRatio] || ''
+  /* A MEDIA BOX MAY NOT RESOLVE TO ZERO HEIGHT (CardFeatureVisualCollapses,
+   * kol-website 2026-08-31). With no ratio the box was `flex-1` and nothing
+   * else — `flex: 1 1 0%`, basis ZERO, so its own content contributed nothing
+   * and its height was donated entirely by the parent. Where no ancestor
+   * supplies a definite height it resolves to 0 and the card silently drops to
+   * title + subtitle: no broken image, no failed request, just a short card and
+   * a reader who never learns a visual was meant to be there. Reported from a
+   * real iPhone; not reproducible on this machine in any of the three engines,
+   * which is exactly what a donated-height collapse looks like.
+   * 3/2 is the geometry those cards already render at (316 wide → 211 tall at
+   * 390), so nothing moves where it currently works. */
+  const aspectClass = aspectClasses[imageAspectRatio] || 'aspect-[3/2]'
 
   const content = textOnly ? (
     <>
@@ -78,10 +107,11 @@ export default function SectionCardItem({
         {icon && <Icon name={icon} size={16} className="shrink-0" />}
       </div>
 
-      {/* kol-card-feature-visual: zooms 1.03 on card hover (chrome in
-        * kol-theme — CardFeatureHoverZoom 2026-08-12); all three visual
-        * forms ride the same wrapper, reduced-motion opts out. */}
-      <div className={`kol-card-feature-visual w-full flex-1 flex items-center justify-center overflow-hidden ${aspectClass}`.trim()}>
+      {/* kol-card-feature-visual: zooms on card hover (chrome in kol-theme —
+        * CardFeatureHoverZoom 2026-08-12); all three visual forms ride the same
+        * wrapper, reduced-motion opts out. The AMOUNT is `zoom`, published as
+        * `--kol-card-feature-zoom` and defaulting to the shipped 1.03. */}
+      <div className={`kol-card-feature-visual w-full flex-auto flex items-center justify-center overflow-hidden ${aspectClass}`.trim()}>
         {visual ? (
           typeof visual === 'string' ? (
             isSvgUrl ? (
@@ -119,6 +149,10 @@ export default function SectionCardItem({
     </>
   )
 
+  /* the card publishes the amount; the theme rule reads it with 1.03 as the
+   * fallback, so a card that sets nothing renders exactly as it always did */
+  const rootStyle = zoom != null ? { ...style, '--kol-card-feature-zoom': zoom } : style
+
   const baseClasses = textOnly
     ? `kol-card-feature kol-card-feature--text w-full flex-1 min-h-[180px] p-4 md:p-5 lg:p-6 gap-2 ${bg} rounded border border-fg-08 flex flex-col justify-between items-start overflow-hidden ${className}`
     : `kol-card-feature w-full flex-1 h-[304px] md:h-72 p-4 md:p-6 gap-4 ${bg} rounded border border-fg-08 flex flex-col justify-between items-start overflow-hidden ${className}`.trim()
@@ -129,9 +163,11 @@ export default function SectionCardItem({
     if (isExternal) {
       return (
         <a
+          ref={viewRef}
+          data-attention={attention || undefined}
           href={href}
           className={`${baseClasses} hover:border-fg-32 transition-colors duration-300`}
-          style={style}
+          style={rootStyle}
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -142,15 +178,17 @@ export default function SectionCardItem({
 
     return (
       <a
+        ref={viewRef}
+        data-attention={attention || undefined}
         href={href}
         onClick={onNavigate}
         className={`${baseClasses} hover:border-fg-24 transition-colors duration-300`}
-        style={style}
+        style={rootStyle}
       >
         {content}
       </a>
     )
   }
 
-  return <div className={baseClasses} style={style}>{content}</div>
+  return <div ref={viewRef} data-attention={attention || undefined} className={baseClasses} style={rootStyle}>{content}</div>
 }

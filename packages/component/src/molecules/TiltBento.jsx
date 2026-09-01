@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useInViewAttention from '../hooks/useInViewAttention.js'
 import { motion } from 'framer-motion'
 import HlsVideo from '../atoms/HlsVideo.jsx'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
@@ -30,6 +31,9 @@ function useCoarsePointer() {
 
   return coarse
 }
+
+/* the shared card-set behaviour (CardSetInViewAttention, 2026-08-31) — this
+ * component's observer was the precedent and is now the hook itself. */
 
 /**
  * Media — internal, NOT exported. Sniffs `src` by extension and renders the
@@ -86,6 +90,10 @@ function Media({ src, poster, className }) {
  * @param {string}    src            media source; type auto-detected by extension
  * @param {string}    poster         poster frame for HLS/video
  * @param {ReactNode} title          always-visible heading
+ * @param {'in-view'|'static'} [coarseReveal='in-view']  what counts as attention on a device
+ *   with no hover. `in-view` reveals only the card crossing the viewport's centre line and leaves
+ *   the others at title-only; `static` is the pre-2026-08-31 behaviour — every card fully open —
+ *   which a wall of small bento tiles may still want. The fine-pointer hover path never changes.
  * @param {ReactNode} subtitle       hover-revealed line
  * @param {ReactNode} description    hover-revealed paragraph
  * @param {string}    href           CTA target; `http*`/`mailto` → new-tab anchor, else same-tab (onNavigate seam)
@@ -118,6 +126,7 @@ export default function TiltBento({
   overlayOpacity = 60,
   alignRight = false,
   enableTilt = true,
+  coarseReveal = 'in-view',
   titleClassName = 'kol-sans-heading-01 text-ab-white',
   contentClassName = 'max-w-[384px]',
   imageClassName = 'object-cover object-center',
@@ -128,6 +137,10 @@ export default function TiltBento({
   const reduced = usePrefersReducedMotion()
   const coarse = useCoarsePointer()
   const tilt = useTilt()
+  const [viewRef, centred] = useInViewAttention(coarse && coarseReveal === 'in-view')
+  /* On a coarse pointer the card is "open" when it holds the centre; under
+   * `static` it is always open, which is what shipped before. */
+  const coarseOpen = coarseReveal === 'static' || centred
 
   const tiltOff = !enableTilt || reduced || coarse
   const Component = tiltOff ? 'div' : motion.div
@@ -140,11 +153,15 @@ export default function TiltBento({
     ? {}
     : { ref: tilt.ref, onMouseMove: tilt.onMouseMove, onMouseLeave: tilt.onMouseLeave }
 
-  // Reveal choreography. Coarse (no-hover) devices show everything statically;
-  // fine pointers reveal on group-hover. The opacity transition is motion, so
-  // reduced-motion drops it (content still reveals, just without the fade).
+  // Reveal choreography. Fine pointers reveal on group-hover; coarse pointers
+  // reveal the centred card (or every card under `coarseReveal="static"`). The
+  // opacity transition is motion, so reduced-motion drops it (content still
+  // reveals, just without the fade).
   const fade = reduced ? '' : 'transition-opacity duration-300'
-  const revealClass = `${coarse ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${fade}`.trim()
+  const openClass = coarse
+    ? (coarseOpen ? 'opacity-100' : 'opacity-0')
+    : 'opacity-0 group-hover:opacity-100'
+  const revealClass = `${openClass} ${fade}`.trim()
 
   const mediaClass =
     `absolute left-0 top-0 size-full rounded overflow-hidden ${imageClassName} ${coarse ? 'pointer-events-none' : ''}`.trim()
@@ -154,7 +171,7 @@ export default function TiltBento({
   return (
     <Component
       className={`relative group ${alignRight ? 'ms-auto' : 'size-full'} ${className}`.trim()}
-      {...tiltHandlers}
+      {...(coarse ? { ref: viewRef } : tiltHandlers)}
       {...rest}
       style={{ ...rootStyle, ...rest.style }}
     >
@@ -164,7 +181,7 @@ export default function TiltBento({
         <div className={`relative z-10 ${contentClassName} w-full h-full self-stretch`}>
           {overlayOpacity > 0 && (
             <div
-              className={`absolute -inset-1 rounded ${coarse ? 'opacity-60' : 'opacity-0 group-hover:opacity-100'} ${fade} pointer-events-none`.trim()}
+              className={`absolute -inset-1 rounded ${coarse ? (coarseOpen ? 'opacity-60' : 'opacity-0') : 'opacity-0 group-hover:opacity-100'} ${fade} pointer-events-none`.trim()}
               style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }}
             />
           )}

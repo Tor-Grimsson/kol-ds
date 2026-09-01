@@ -30,12 +30,11 @@ export const TIERS = {
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
   WorkViewToggle: 'molecules',
-  ListingCard: 'molecules', PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
-  ShareButtons: 'molecules', WorkCard: 'molecules', WorkListItem: 'molecules',
-  StackHero: 'organisms', ArticleHeader: 'organisms', ParallaxShelf: 'organisms',
+  PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
+  ShareButtons: 'molecules', StackHero: 'organisms', ArticleHeader: 'organisms', ParallaxShelf: 'organisms',
   ScrollDriftGallery: 'organisms',
   /* kol-store */
-  PriceDisplay: 'atoms', PrintGridCard: 'atoms', PrintGridCardGsap: 'atoms',
+  PriceDisplay: 'atoms', PrintGridCardGsap: 'atoms',
   PrintBuyButton: 'molecules',
   ProductDetailLayout: 'organisms', DiagonalMarqueeRiver: 'organisms', PrintsGrid: 'organisms',
   /* kol-chess */
@@ -79,7 +78,7 @@ export const TIERS = {
   /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
   DocHeader: 'molecules', DocSection: 'molecules', DocTable: 'molecules', DocFigure: 'molecules',
   /* kol-foundry */
-  TypefaceLibraryItem: 'atoms', TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
+  TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
   SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', ColorLoader: 'molecules', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
   FoundryOpentypeFeatures: 'organisms', FoundryTypefaceDetails: 'organisms', FoundryTypefacePairing: 'organisms',
@@ -114,7 +113,7 @@ export const FUNCTIONS_BY_NAME = {
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
   EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
-  MediaLibrary: 'media', MediaBrowser: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
+  MediaLibrary: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
   HlsVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
   CurveOverlay: 'input', RotaryDial: 'input',
@@ -136,10 +135,9 @@ export const FUNCTIONS_BY_NAME = {
   ColorLoader: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
-  ListingCard: 'display', ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
+  ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
   PortableTextRenderer: 'display', StackHero: 'structure',
   SourcesReferences: 'display',
-  WorkCard: 'display', WorkListItem: 'display',
   GalleryCarousel: 'media', ParallaxShelf: 'media',
   ProductDetailLayout: 'structure', DiagonalMarqueeRiver: 'media', ScrollDriftGallery: 'media',
   Canvas: 'structure', SelectionOverlay: 'overlay', EditorShell: 'structure', AlignmentGrid: 'input',
@@ -152,7 +150,7 @@ export const FUNCTIONS_BY_NAME = {
   TagPath: 'display',
   useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
   usePrefersReducedMotion: 'utility', useTilt: 'utility', usePlayback: 'utility', parseFrontmatter: 'utility', readCover: 'utility',
-  useCoarsePointer: 'utility', usePlaceholders: 'utility',
+  useCoarsePointer: 'utility', useInViewAttention: 'utility', usePlaceholders: 'utility',
   useAxisAnimation: 'utility', useChartTooltip: 'utility', useCountUp: 'utility',
   useFontMetrics: 'utility',
   /* Named-export hooks — ungated until 2026-08-15: the parser pushed
@@ -160,12 +158,11 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useTagMode: 'utility',
+  useNavHidden: 'utility', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
-  ActionButton: 'action', SizeOrDownload: 'action', SortHeader: 'input', SortControls: 'input', CopyButton: 'action', ColumnBrowser: 'wayfinding', KindPreview: 'media', AudioPreview: 'media', VideoSheet: 'media', PlaybackBar: 'media', AudioSheet: 'media', DocPage: 'display', PopoverPanel: 'overlay', MediaCard: 'media', MediaRow: 'media',
-  SettingsPanel: 'overlay',
+  ActionButton: 'action', SizeOrDownload: 'action', SortHeader: 'input', SortControls: 'input', CopyButton: 'action', ColumnBrowser: 'wayfinding', KindPreview: 'media', AudioPreview: 'media', VideoSheet: 'media', PlaybackBar: 'media', AudioSheet: 'media', DocPage: 'display', PopoverPanel: 'overlay', SettingsPanel: 'overlay',
   PaletteHarmonyWheel: 'input',
   /* content-card system (2026-08-15) */
   ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
@@ -180,7 +177,7 @@ export const FUNCTIONS_BY_NAME = {
   /* content */
   AuthorLine: 'display', ShareButtons: 'action',
   /* store */
-  PrintsGrid: 'structure', PrintGridCard: 'media', PrintGridCardGsap: 'media', PrintBuyButton: 'action',
+  PrintsGrid: 'structure', PrintGridCardGsap: 'media', PrintBuyButton: 'action',
   /* chess */
   ChessAnalysisLayout: 'structure', ChessBoard: 'display', ChessBoardWithControls: 'display',
   ChessBoardWithSidebar: 'display', ChessBoardFullscreen: 'display', ChessSidebar: 'action',
@@ -206,8 +203,7 @@ export const FUNCTIONS_BY_NAME = {
   ExhibitOverview: 'structure', ExhibitPage: 'structure',
   /* foundry additions */
   GlyphMetricsSection: 'display', TypefaceLibraryGrid: 'wayfinding',
-  TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceLibraryItem: 'display',
-  TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
+  TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
   PageShell: 'structure', SettingsScaffold: 'structure',
@@ -236,7 +232,6 @@ export const EXEMPT = {
   DocsFrontmatter: 'member-of:DocumentationReader',
   TagModeOverlay: 'member-of:TagModeGate', TagGraph: 'member-of:TagModeOverlay',
   useExhibitToc: 'non-component',
-  ArticleCard: 'alias:ListingCard (until next major — ListingCardSpec 2026-08-15)',
   /* shell — namesake twins (NOT re-exports: the app-tier component shares a
    * name with a different site/dashboard-tier component; both stay on the
    * roster under their own package) + contexts + single-parent sub-parts */
@@ -244,9 +239,9 @@ export const EXEMPT = {
   ContentFilters: 'namesake:component-filters vs shell-catalog-organism',
   GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
   NavHiddenContext: 'non-component',
+  SettingsToggleContext: 'non-component',
   PageBleed: 'member-of:PageShell',
-  SettingsSection: 'member-of:SettingsScaffold', LabeledControlSection: 'member-of:SettingsPanel', LabelRow: 'member-of:SettingsScaffold',
-  SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
+  LabeledControlSection: 'member-of:SettingsPanel', SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
   SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
   AudioTile: 'member-of:AudioPreview', VideoTile: 'member-of:AudioPreview', DocFrontmatter: 'member-of:DocPage',
   /* component — headless system parts + single-parent sub-parts */
@@ -271,9 +266,10 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
-  /* Content Set retirement wave, step 1 (2026-08-26): absorbed by ContentCard /
-   * ContentRow variants; exports stay until the next major. */
-  'MediaCard', 'MediaRow', 'GridCard', 'PrintGridCard', 'ListingCard', 'ArticleCard', 'WorkCard', 'WorkListItem', 'TypefaceLibraryItem',
+  /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
+   * cards are GONE from the barrels, not deprecated. Sources quarantined to
+   * `_tmp/2026-08-30-content-set-exports/`. kol-dashboards' `GridCard` is a
+   * different component and was ruled KEEP (2026-08-27). */
   /* SectionSet (2026-08-26): the section family took the Section* prefix; the
    * old names are aliases of SectionHero / SectionSplit / SectionCards /
    * SectionCta / InspectorSection until the next major. */
@@ -308,8 +304,6 @@ export const NO_DEMO = (() => {
     ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
     ...debt(['AudioPlayer', 'EmblaNav'],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
-    ...debt(['ListingCard'],
-      'renamed from ArticleCard in kol-content 0.7.0; the ArticleCard demo still rides the alias'),
     ...debt(['GlyphItem', 'FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
     ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),

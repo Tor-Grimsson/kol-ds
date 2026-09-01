@@ -956,21 +956,72 @@
               border-color     300ms var(--kol-ease-house);
 }
 
+/* A FIXED RUNG, not a floor (ContentRowRosterVariant, kol-chess 2026-08-31).
+ * Every other row in the family follows its content; `roster` is a grid of
+ * pick-targets, and a target whose height drifts with its own copy reads as
+ * broken — measured at 34 · 40 · 50 · 58 across four passes of one component,
+ * where a single long meta line pushed a tile out of line with its neighbours.
+ * Both properties: `height` alone loses to the `min-height` above it whenever
+ * the content is taller, which is the case this exists to stop. */
+.kol-row--fixed {
+  height: var(--kol-row-h);
+  min-height: var(--kol-row-h);
+}
+
 /* the divider is its OWN longhand, declared after the shorthand above so it
  * wins on order — `default`'s bottom rule is not the same thing as a framed
  * variant's border, and one property cannot carry both. */
 .kol-row--divided {
   border-bottom: 1px solid var(--kol-fg-08);
 }
-/* THE THUMB IS A FIXED SQUARE BOX (ContentRowsAndPrintCard, kol-website
- * 2026-08-27 — user: "the image should not control height, image should fit
- * the row image placeholder"). Verbatim from the /stack + /prints tune: the
- * box is `--kol-row-thumb` wide and square, sits at the top of the row, and
- * whatever is inside fills it (ContentMedia object-covers). Row height =
- * max(thumb, text) — an image's intrinsic height never sizes a row again. */
+/* `specs` — the row's trailing label/value column (RowVariantNamesAndSpecs,
+ * 2026-08-29). It rides every horizontal variant because year · material ·
+ * edition is a CONTENT difference, not a geometry one; a seventh page-named
+ * variant for it would repeat the mistake that ticket opens with.
+ * Type is declared HERE, not as `kol-mono-12` on the element — ARCHITECTURE §5:
+ * a utility class on the markup ties at specificity and loses to whichever
+ * sheet loads last. Values match the family's meta voice (kol-mono-12). */
+.kol-row-specs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-1);
+  margin: 0;
+}
+.kol-row-specs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--kol-spacing-3);
+}
+.kol-row-specs dt,
+.kol-row-specs dd {
+  margin: 0;
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+.kol-row-specs dt {
+  color: var(--kol-fg-meta);
+}
+.kol-row-specs dd {
+  color: var(--kol-fg-emphasis);
+  text-align: right;
+}
+/* THE THUMB IS A FIXED BOX (ContentRowsAndPrintCard, kol-website 2026-08-27 —
+ * user: "the image should not control height, image should fit the row image
+ * placeholder"). The box is `--kol-row-thumb` wide, sits at the top of the row,
+ * and whatever is inside fills it (ContentMedia object-covers). Row height =
+ * max(thumb, text) — an image's intrinsic height never sizes a row again.
+ *
+ * SQUARE IS THE DEFAULT, NOT THE LAW (RowThumbRatioDead, kol-website
+ * 2026-08-30). `aspect-ratio: 1 / 1` was hard-coded here, and ContentRow passed
+ * `ratio={null}` to ContentMedia, so the component's own documented `ratio`
+ * prop reached nothing — /prints set `1 / 1.41421` for its A-series posters and
+ * the render did not move. Now a variable with `1 / 1` as the fallback: every
+ * existing consumer is pixel-identical, and the prop works. */
 .kol-row > .kol-row-thumb {
   width: var(--kol-row-thumb);
-  aspect-ratio: 1 / 1;
+  aspect-ratio: var(--kol-row-thumb-ratio, 1 / 1);
   align-self: flex-start;
 }
 .kol-row > .kol-row-thumb > * {
@@ -978,8 +1029,31 @@
   width: 100%;
 }
 /* `thumb="fill"` (WorkListingRowsAndFilters, 2026-08-27): the row publishes
- * `--kol-row-thumb` as the rung minus its vertical padding, so the square above
- * IS the content height — `/work`: 136 in a 168 row at 16 padding. */
+ * `--kol-row-thumb` as the rung minus its vertical padding — `/work`: 136 in a
+ * 168 row at 16 padding.
+ *
+ * RULED 2026-08-30 (the ask's third box): under `fill`, that number is the
+ * HEIGHT, not the width. "Fill" means fill the row's content height — that is
+ * the whole promise of the value — so a non-square ratio has to widen the
+ * thumb, never grow the row past its rung. Keeping it as the width would make
+ * an A-series fill thumb 1.41× taller than the row it is filling, which is the
+ * one thing the 08-27 ruling exists to prevent. Square is unaffected: at
+ * `1 / 1` width and height are the same number either way. */
+.kol-row > .kol-row-thumb.is-fill {
+  width: auto;
+  height: var(--kol-row-thumb);
+}
+/* WHICH AXIS PAYS for a non-square ratio (RowRungAndFillThumb, kol-website
+ * 2026-08-30). The 08-30 ruling above made the rung the HEIGHT unconditionally,
+ * so an A-series thumb on a 168 row went 136×136 → 96×136: the ratio came out
+ * of the width, and the width is what sets a listing's rhythm against the rest
+ * of the page. That was a ruling where a choice belonged — `ratioAxis="height"`
+ * holds the width at the rung and lets the thumb grow taller instead
+ * (136×192). Default is unchanged, so nothing that exists moves. */
+.kol-row > .kol-row-thumb.is-fill.pays-height {
+  width: var(--kol-row-thumb);
+  height: auto;
+}
 
 /* CONTAINER query, not a viewport one (2026-08-15). The row steps on the width
  * of the WALL it sits in, for exactly the reason the card-wall law gives: the
@@ -1262,13 +1336,39 @@
  * ink `fg-96`. `.kol-tone-inverse` stays selected for any class
  * hand-stamped on the old name.
  * ───────────────────────────────────────────────────────────────────── */
-.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse { background-color: var(--kol-oq-inverse-96); }
+/* ⚠️ `SunkenWellEatenByPageWash` IS NOT SOLVED HERE — see the ticket.
+ * On 2026-08-30 these rules briefly painted `--kol-shell-page-wash` as a
+ * background layer so the well would track a washed page. That was the wrong
+ * layer (user: *"we are talking about components, wash affects background"*):
+ * a control has no business reproducing a page-level film, and portalling
+ * proved it — `.kol-dd-panel` renders at document.body, could not inherit the
+ * property, and drew a different colour from its own trigger. Reverted.
+ * The collision is a PAGE/token question and belongs there.
+ *
+ * THE SUNKEN TONE IS `surface-tertiary`, NOT `oq-inverse-96` (measured on
+ * kol-fxr's /settings, 2026-08-30). The whole set read `--kol-oq-inverse-96`,
+ * which is `color-mix(#0e0e11 96%, #fcfbf8)` — four percent of near-WHITE mixed
+ * in. On the dark theme that lands at luminance **23.7 against an 18.2 page**:
+ * a tone named "sunken" was rendering RAISED, and every control wearing it
+ * (dropdown trigger, view toggle, icon frames, theme toggle) sat as its own
+ * pale box on the page. That is the "multiple backgrounds" the user has
+ * reported repeatedly and I have not fixed.
+ *
+ * The diagnosis was already written into this file, twenty lines down, in the
+ * comment above `.kol-dd-panel` — it works out the 23.5-vs-18 arithmetic and
+ * names `surface-tertiary` as the answer. It was never applied to the rules
+ * beneath it. Written down is not fixed.
+ *
+ * `surface-tertiary` is `#0e0e11` in dark (14.2, genuinely below the page) and
+ * `#ffffff` in light, so it is theme-correct on both sides where a mix toward
+ * a fixed near-white could only ever be right on one. */
+.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
 .kol-view-toggle.kol-tone-sunken > button[aria-pressed="true"], .kol-view-toggle.kol-tone-inverse > button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
-.kol-view-toggle.kol-tone-sunken > button:not([aria-pressed="true"]):hover, .kol-view-toggle.kol-tone-inverse > button:not([aria-pressed="true"]):hover { background-color: color-mix(in srgb, var(--kol-color-ab-white) 8%, transparent); }
-.kol-control.kol-tone-sunken, .kol-control.kol-tone-inverse { background-color: var(--kol-oq-inverse-96); }
-.kol-expand.kol-tone-sunken, .kol-expand.kol-tone-inverse { background-color: var(--kol-oq-inverse-96); }
+.kol-view-toggle.kol-tone-sunken > button:not([aria-pressed="true"]):hover, .kol-view-toggle.kol-tone-inverse > button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
+.kol-control.kol-tone-sunken, .kol-control.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
+.kol-expand.kol-tone-sunken, .kol-expand.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
 /* the tone's fill, one selector — nothing left to cancel (2026-08-28) */
-.kol-dd-trigger.kol-tone-sunken, .kol-dd-trigger.kol-tone-inverse { background-color: var(--kol-oq-inverse-96); }
+.kol-dd-trigger.kol-tone-sunken, .kol-dd-trigger.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
 /* THE PANEL IS OPAQUE (user 2026-08-28: "transparent doesn't work for
  * dropdown") — it floats over page content, and every `fg-*` stop is an alpha
  * wash that the content reads through. `oq-inverse-*`, the opaque tier, bakes
@@ -1276,28 +1376,52 @@
  * lands ~23.5 against the #121215 page's 18: lighter than the page, the wrong
  * side of it. `surface-tertiary` is the flat twin of what the trigger renders:
  * #0e0e11 (14.0) in dark against the trigger's 14.2, #ffffff in light. */
-.kol-dd-panel.kol-tone-sunken, .kol-dd-panel.kol-tone-inverse { background-color: var(--kol-oq-inverse-96); }
+.kol-dd-panel.kol-tone-sunken, .kol-dd-panel.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
 /* the rest of the set — Button (icon-only especially), IconFrame, ThemeToggle:
- * the well, transparent edge, fg-96 ink; hover the white wash, pressed the
+ * the well, transparent edge, fg-96 ink; hover the CONTRAST wash, pressed the
  * fg-08 chip — both LAYERED over the well (a gradient image over the fill),
- * since one background cannot stack two translucent colours */
+ * since one background cannot stack two translucent colours.
+ *
+ * REST / HOVER / SELECTED ARE ONE LADDER, THREE RUNGS (2026-08-30):
+ *
+ *   rest      the well          10.2 dark · 244.8 light
+ *   hover     + fg-04           19.8      · 235.7
+ *   selected  + fg-08           29.4      · 226.7
+ *
+ * `fg-*` already flips toward the ink, so it darkens a light well and lightens
+ * a dark one with no help. Two things were wrong before: the wash was a
+ * hardcoded WHITE, invisible over the light well (white on a 245 ground), and
+ * when that was first fixed it went to an 8% wash — the same strength as
+ * `selected`, which put hover 0.4 from selected in dark and 1.5 in light. A
+ * hovered unselected control was indistinguishable from the selected one.
+ * 04 and 08 are ~10 apart on both themes; the ladder reads.
+ *
+ * ⛔ THE TRIGGER IS EXCLUDED. `.kol-dd-trigger` carries `.kol-btn`, so every
+ * `.kol-btn.kol-tone-sunken` state rule matches it unless it says otherwise —
+ * and "REST AND OPEN ARE THE ONLY STATES" for a Dropdown trigger is a law
+ * written TWICE at the top of this file (2026-07-15, re-called 2026-08-09 and
+ * 2026-08-28). The atoms sheet excludes the trigger from all eight variant
+ * hovers; these tone rules did not, so the law held everywhere except the one
+ * tone the settings page uses. Repeatedly reported and repeatedly missed,
+ * because the exclusion was checked in `kol-components-atoms.css` and the
+ * offending rule lives here. */
 .kol-btn.kol-tone-sunken,
 .kol-icon-frame.kol-tone-sunken,
 .kol-theme-toggle.kol-tone-sunken {
-  background-color: var(--kol-oq-inverse-96);
+  background-color: var(--kol-surface-sunken);
   border-color: transparent;
   color: var(--kol-fg-96);
 }
 @media (hover: hover) {
-  .kol-btn.kol-tone-sunken:not(.kol-btn-animate):not(:disabled):hover {
-    background-color: var(--kol-oq-inverse-96);
-    background-image: linear-gradient(color-mix(in srgb, var(--kol-color-ab-white) 8%, transparent), color-mix(in srgb, var(--kol-color-ab-white) 8%, transparent));
+  .kol-btn.kol-tone-sunken:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):hover {
+    background-color: var(--kol-surface-sunken);
+    background-image: linear-gradient(var(--kol-fg-04), var(--kol-fg-04));
     color: var(--kol-fg-96);
   }
 }
-.kol-btn.kol-tone-sunken.kol-btn-pressed,
-.kol-btn.kol-tone-sunken:not(:disabled):active {
-  background-color: var(--kol-oq-inverse-96);
+.kol-btn.kol-tone-sunken.kol-btn-pressed:not(.kol-dd-trigger),
+.kol-btn.kol-tone-sunken:not(:disabled):not(.kol-dd-trigger):active {
+  background-color: var(--kol-surface-sunken);
   background-image: linear-gradient(var(--kol-fg-08), var(--kol-fg-08));
   color: var(--kol-fg-96);
 }

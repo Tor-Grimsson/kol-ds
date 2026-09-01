@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { WorkViewToggle, WorkCard, WorkListItem } from '@kolkrabbi/kol-content'
+import { ContentCard, ContentRow, Tag } from '@kolkrabbi/kol-component'
+import { WorkViewToggle } from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Work grid',
@@ -11,6 +12,17 @@ export const meta = {
   tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
+
+/* MIGRATED 2026-08-30 (ContentSetRetirement step 3): `WorkCard` / `WorkListItem`
+ * were dropped — both absorbed into `variant="showcase"` (renamed from `work`
+ * the same day, because /work is a location and a work is a piece being shown).
+ * Slot remap: `type` → `meta`, `year` → `date`, `description` → `body`,
+ * `thumbnail` → `media`. `WorkViewToggle` is untouched; it was never a card. */
+const Img = ({ src }) => <img src={src} alt="" className="h-full w-full object-cover" />
+const Tags = ({ list = [] }) =>
+  list.map((t) => (
+    <Tag key={t} variant="primary" hash={false} size="sm" className="kol-tag--data">{t}</Tag>
+  ))
 
 /* Real project imagery (served at /kol-images), cycled through the grid. */
 const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
@@ -83,7 +95,6 @@ const PROJECTS = [
 export default function WorkGrid() {
   const [view, setView] = useState('shelf')
   const [query, setQuery] = useState('')
-  const [active, setActive] = useState(null)
 
   const q = query.trim().toLowerCase()
   const visible = q
@@ -109,18 +120,31 @@ export default function WorkGrid() {
         <p className="kol-mono-14 text-fg-64 py-12 text-center">No projects match “{query}”.</p>
       ) : view === 'shelf' ? (
         <div className="flex gap-6 overflow-x-auto pb-4 items-end">
-          {visible.map((p, i) => (
-            <WorkCard key={p.href} index={i} {...p} />
+          {visible.map((p) => (
+            <div key={p.href} className="w-[280px] shrink-0 md:w-[400px]">
+              <ContentCard
+                variant="showcase"
+                media={<Img src={p.thumbnail} />}
+                title={p.title}
+                meta={p.type}
+                href={p.href}
+              />
+            </div>
           ))}
         </div>
       ) : (
         <div className="flex flex-col">
           {visible.map((p) => (
-            <WorkListItem
+            <ContentRow
               key={p.href}
-              {...p}
-              active={active === p.href}
-              onMouseEnter={() => setActive(p.href)}
+              variant="showcase"
+              media={<Img src={p.thumbnail} />}
+              title={p.title}
+              tags={<Tags list={p.tags} />}
+              meta={p.type}
+              date={p.year}
+              body={p.description}
+              href={p.href}
             />
           ))}
         </div>

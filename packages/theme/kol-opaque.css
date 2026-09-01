@@ -219,22 +219,68 @@
 .border-oq-inverse-96 { border-color: var(--kol-oq-inverse-96); }
 
 /* ============================================================================
- * TOKENS — ABSOLUTE tiers (user ruling 2026-08-28: "you can make bg-oq-ab-*
- * and bg-oq-ab-inverse-*")
+ * TOKENS — the `ab` tiers: PURE poles, and they FLIP (user ruling 2026-08-30)
  *
- * The gap they close: the estate had opaque greys that FOLLOW the theme
- * (`oq-*`, `oq-inverse-*` — baked onto a surface token) and absolute inks that
- * are theme-invariant but TRANSLUCENT (`fg-ab-*`). "Opaque and theme-invariant"
- * was not expressible, which is exactly what a sunken control wants: a plate
- * that is darker than its plane, on both themes, that nothing bleeds through.
+ * `ab` mixes the absolute ends of the range — #000000 / #ffffff — and which end
+ * it starts from follows the THEME'S OWN SIDE, not the ink's:
  *
- * Same construction as the tiers above, with the absolutes standing in for the
- * surface pair — so these are flat greys that never move:
- *   oq-ab-NN          black NN% into WHITE — a light ground darkening
- *   oq-ab-inverse-NN  white NN% into BLACK — a dark ground lightening
+ *   light theme   ab-NN = white NN% into black  → ab-96 is 245, under a 250 page
+ *   dark theme    ab-NN = black NN% into white  → ab-96 is  10, under an 18 page
+ *
+ * So `oq-ab-96` IS the well, in both themes, with no per-theme alias. That is
+ * the whole reason this family exists: a percentage of the page mixed into the
+ * page cannot darken it, so a well needs a pole outside the theme's range.
+ *
+ * NOTE THE DIRECTION. `fg-*` / `oq-*` flip toward the INK (light ink on dark).
+ * `ab-*` flips toward the GROUND. `ab-inverse-*` is the opposite pole in each
+ * theme, so it is the one that contrasts.
+ *
+ * These were frozen from 2026-08-28 until now — both ladders read the same
+ * number in either theme, which is why `sunken` could not be expressed with
+ * them and got patched with `oq-inverse-96` instead. `absolute-*` stays frozen;
+ * that is its job, and it is a different family.
  * ============================================================================ */
 
-:root {
+/* LIGHT — the ground is white, so `ab` starts from white */
+:root,
+:is([data-theme="light"], .light) {
+  --kol-oq-ab-01: color-mix(in srgb, var(--kol-color-ab-white) 1%, var(--kol-color-ab-black));
+  --kol-oq-ab-02: color-mix(in srgb, var(--kol-color-ab-white) 2%, var(--kol-color-ab-black));
+  --kol-oq-ab-04: color-mix(in srgb, var(--kol-color-ab-white) 4%, var(--kol-color-ab-black));
+  --kol-oq-ab-08: color-mix(in srgb, var(--kol-color-ab-white) 8%, var(--kol-color-ab-black));
+  --kol-oq-ab-12: color-mix(in srgb, var(--kol-color-ab-white) 12%, var(--kol-color-ab-black));
+  --kol-oq-ab-16: color-mix(in srgb, var(--kol-color-ab-white) 16%, var(--kol-color-ab-black));
+  --kol-oq-ab-24: color-mix(in srgb, var(--kol-color-ab-white) 24%, var(--kol-color-ab-black));
+  --kol-oq-ab-32: color-mix(in srgb, var(--kol-color-ab-white) 32%, var(--kol-color-ab-black));
+  --kol-oq-ab-40: color-mix(in srgb, var(--kol-color-ab-white) 40%, var(--kol-color-ab-black));
+  --kol-oq-ab-48: color-mix(in srgb, var(--kol-color-ab-white) 48%, var(--kol-color-ab-black));
+  --kol-oq-ab-64: color-mix(in srgb, var(--kol-color-ab-white) 64%, var(--kol-color-ab-black));
+  --kol-oq-ab-72: color-mix(in srgb, var(--kol-color-ab-white) 72%, var(--kol-color-ab-black));
+  --kol-oq-ab-80: color-mix(in srgb, var(--kol-color-ab-white) 80%, var(--kol-color-ab-black));
+  --kol-oq-ab-88: color-mix(in srgb, var(--kol-color-ab-white) 88%, var(--kol-color-ab-black));
+  --kol-oq-ab-96: color-mix(in srgb, var(--kol-color-ab-white) 96%, var(--kol-color-ab-black));
+  --kol-oq-ab-100: var(--kol-color-ab-white);
+
+  --kol-oq-ab-inverse-01: color-mix(in srgb, var(--kol-color-ab-black) 1%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-02: color-mix(in srgb, var(--kol-color-ab-black) 2%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-04: color-mix(in srgb, var(--kol-color-ab-black) 4%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-08: color-mix(in srgb, var(--kol-color-ab-black) 8%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-12: color-mix(in srgb, var(--kol-color-ab-black) 12%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-16: color-mix(in srgb, var(--kol-color-ab-black) 16%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-24: color-mix(in srgb, var(--kol-color-ab-black) 24%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-32: color-mix(in srgb, var(--kol-color-ab-black) 32%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-40: color-mix(in srgb, var(--kol-color-ab-black) 40%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-48: color-mix(in srgb, var(--kol-color-ab-black) 48%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-64: color-mix(in srgb, var(--kol-color-ab-black) 64%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-72: color-mix(in srgb, var(--kol-color-ab-black) 72%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-80: color-mix(in srgb, var(--kol-color-ab-black) 80%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-88: color-mix(in srgb, var(--kol-color-ab-black) 88%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-96: color-mix(in srgb, var(--kol-color-ab-black) 96%, var(--kol-color-ab-white));
+  --kol-oq-ab-inverse-100: var(--kol-color-ab-black);
+}
+
+/* DARK — the ground is black, so `ab` starts from black */
+:is([data-theme="dark"], .dark) {
   --kol-oq-ab-01: color-mix(in srgb, var(--kol-color-ab-black) 1%, var(--kol-color-ab-white));
   --kol-oq-ab-02: color-mix(in srgb, var(--kol-color-ab-black) 2%, var(--kol-color-ab-white));
   --kol-oq-ab-04: color-mix(in srgb, var(--kol-color-ab-black) 4%, var(--kol-color-ab-white));
@@ -250,6 +296,7 @@
   --kol-oq-ab-80: color-mix(in srgb, var(--kol-color-ab-black) 80%, var(--kol-color-ab-white));
   --kol-oq-ab-88: color-mix(in srgb, var(--kol-color-ab-black) 88%, var(--kol-color-ab-white));
   --kol-oq-ab-96: color-mix(in srgb, var(--kol-color-ab-black) 96%, var(--kol-color-ab-white));
+  --kol-oq-ab-100: var(--kol-color-ab-black);
 
   --kol-oq-ab-inverse-01: color-mix(in srgb, var(--kol-color-ab-white) 1%, var(--kol-color-ab-black));
   --kol-oq-ab-inverse-02: color-mix(in srgb, var(--kol-color-ab-white) 2%, var(--kol-color-ab-black));
@@ -266,8 +313,47 @@
   --kol-oq-ab-inverse-80: color-mix(in srgb, var(--kol-color-ab-white) 80%, var(--kol-color-ab-black));
   --kol-oq-ab-inverse-88: color-mix(in srgb, var(--kol-color-ab-white) 88%, var(--kol-color-ab-black));
   --kol-oq-ab-inverse-96: color-mix(in srgb, var(--kol-color-ab-white) 96%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-100: var(--kol-color-ab-white);
 }
 
+/* system-follow: the block a user who never touched the toggle gets */
+@media (prefers-color-scheme: dark) {
+:root:not([data-theme="light"]):not(.light) {
+      --kol-oq-ab-01: color-mix(in srgb, var(--kol-color-ab-black) 1%, var(--kol-color-ab-white));
+      --kol-oq-ab-02: color-mix(in srgb, var(--kol-color-ab-black) 2%, var(--kol-color-ab-white));
+      --kol-oq-ab-04: color-mix(in srgb, var(--kol-color-ab-black) 4%, var(--kol-color-ab-white));
+      --kol-oq-ab-08: color-mix(in srgb, var(--kol-color-ab-black) 8%, var(--kol-color-ab-white));
+      --kol-oq-ab-12: color-mix(in srgb, var(--kol-color-ab-black) 12%, var(--kol-color-ab-white));
+      --kol-oq-ab-16: color-mix(in srgb, var(--kol-color-ab-black) 16%, var(--kol-color-ab-white));
+      --kol-oq-ab-24: color-mix(in srgb, var(--kol-color-ab-black) 24%, var(--kol-color-ab-white));
+      --kol-oq-ab-32: color-mix(in srgb, var(--kol-color-ab-black) 32%, var(--kol-color-ab-white));
+      --kol-oq-ab-40: color-mix(in srgb, var(--kol-color-ab-black) 40%, var(--kol-color-ab-white));
+      --kol-oq-ab-48: color-mix(in srgb, var(--kol-color-ab-black) 48%, var(--kol-color-ab-white));
+      --kol-oq-ab-64: color-mix(in srgb, var(--kol-color-ab-black) 64%, var(--kol-color-ab-white));
+      --kol-oq-ab-72: color-mix(in srgb, var(--kol-color-ab-black) 72%, var(--kol-color-ab-white));
+      --kol-oq-ab-80: color-mix(in srgb, var(--kol-color-ab-black) 80%, var(--kol-color-ab-white));
+      --kol-oq-ab-88: color-mix(in srgb, var(--kol-color-ab-black) 88%, var(--kol-color-ab-white));
+      --kol-oq-ab-96: color-mix(in srgb, var(--kol-color-ab-black) 96%, var(--kol-color-ab-white));
+  --kol-oq-ab-100: var(--kol-color-ab-black);
+  
+      --kol-oq-ab-inverse-01: color-mix(in srgb, var(--kol-color-ab-white) 1%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-02: color-mix(in srgb, var(--kol-color-ab-white) 2%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-04: color-mix(in srgb, var(--kol-color-ab-white) 4%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-08: color-mix(in srgb, var(--kol-color-ab-white) 8%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-12: color-mix(in srgb, var(--kol-color-ab-white) 12%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-16: color-mix(in srgb, var(--kol-color-ab-white) 16%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-24: color-mix(in srgb, var(--kol-color-ab-white) 24%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-32: color-mix(in srgb, var(--kol-color-ab-white) 32%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-40: color-mix(in srgb, var(--kol-color-ab-white) 40%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-48: color-mix(in srgb, var(--kol-color-ab-white) 48%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-64: color-mix(in srgb, var(--kol-color-ab-white) 64%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-72: color-mix(in srgb, var(--kol-color-ab-white) 72%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-80: color-mix(in srgb, var(--kol-color-ab-white) 80%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-88: color-mix(in srgb, var(--kol-color-ab-white) 88%, var(--kol-color-ab-black));
+      --kol-oq-ab-inverse-96: color-mix(in srgb, var(--kol-color-ab-white) 96%, var(--kol-color-ab-black));
+  --kol-oq-ab-inverse-100: var(--kol-color-ab-white);
+  }
+}
 /* CLASSES — absolute tiers */
 .bg-oq-ab-01 { background-color: var(--kol-oq-ab-01); }
 .bg-oq-ab-02 { background-color: var(--kol-oq-ab-02); }
@@ -284,6 +370,7 @@
 .bg-oq-ab-80 { background-color: var(--kol-oq-ab-80); }
 .bg-oq-ab-88 { background-color: var(--kol-oq-ab-88); }
 .bg-oq-ab-96 { background-color: var(--kol-oq-ab-96); }
+.bg-oq-ab-100 { background-color: var(--kol-oq-ab-100); }
 
 .bg-oq-ab-inverse-01 { background-color: var(--kol-oq-ab-inverse-01); }
 .bg-oq-ab-inverse-02 { background-color: var(--kol-oq-ab-inverse-02); }
@@ -396,3 +483,144 @@
 .border-oq-ab-inverse-80 { border-color: var(--kol-oq-ab-inverse-80); }
 .border-oq-ab-inverse-88 { border-color: var(--kol-oq-ab-inverse-88); }
 .border-oq-ab-inverse-96 { border-color: var(--kol-oq-ab-inverse-96); }
+
+/* ============================================================================
+ * TOKENS — `absolute` opaque tiers (user ruling 2026-08-30)
+ *
+ * The `oq` half of the same split. `oq-ab-*` mixes the PURE poles (#000/#fff);
+ * these mix the THEME'S OWN poles (#0e0e11 / #fcfbf8), frozen in both themes.
+ *
+ *   oq-absolute-NN          near-black NN% into near-white — a light ground darkening
+ *   oq-absolute-inverse-NN  near-white NN% into near-black — a dark ground lightening
+ *
+ * Why both families exist: `ab` can step PAST the theme's ink, which is what a
+ * well needs; `absolute` sits exactly on the theme's own two ends, which is
+ * what chrome that must match a surface without following the theme needs.
+ * Neither flips — the flipping pairs are `oq-*` / `oq-inverse-*`.
+ * ============================================================================ */
+
+:root {
+  --kol-oq-absolute-01: color-mix(in srgb, var(--kol-color-black) 1%, var(--kol-color-white));
+  --kol-oq-absolute-02: color-mix(in srgb, var(--kol-color-black) 2%, var(--kol-color-white));
+  --kol-oq-absolute-04: color-mix(in srgb, var(--kol-color-black) 4%, var(--kol-color-white));
+  --kol-oq-absolute-08: color-mix(in srgb, var(--kol-color-black) 8%, var(--kol-color-white));
+  --kol-oq-absolute-12: color-mix(in srgb, var(--kol-color-black) 12%, var(--kol-color-white));
+  --kol-oq-absolute-16: color-mix(in srgb, var(--kol-color-black) 16%, var(--kol-color-white));
+  --kol-oq-absolute-24: color-mix(in srgb, var(--kol-color-black) 24%, var(--kol-color-white));
+  --kol-oq-absolute-32: color-mix(in srgb, var(--kol-color-black) 32%, var(--kol-color-white));
+  --kol-oq-absolute-40: color-mix(in srgb, var(--kol-color-black) 40%, var(--kol-color-white));
+  --kol-oq-absolute-48: color-mix(in srgb, var(--kol-color-black) 48%, var(--kol-color-white));
+  --kol-oq-absolute-64: color-mix(in srgb, var(--kol-color-black) 64%, var(--kol-color-white));
+  --kol-oq-absolute-72: color-mix(in srgb, var(--kol-color-black) 72%, var(--kol-color-white));
+  --kol-oq-absolute-80: color-mix(in srgb, var(--kol-color-black) 80%, var(--kol-color-white));
+  --kol-oq-absolute-88: color-mix(in srgb, var(--kol-color-black) 88%, var(--kol-color-white));
+  --kol-oq-absolute-96: color-mix(in srgb, var(--kol-color-black) 96%, var(--kol-color-white));
+
+  --kol-oq-absolute-inverse-01: color-mix(in srgb, var(--kol-color-white) 1%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-02: color-mix(in srgb, var(--kol-color-white) 2%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-04: color-mix(in srgb, var(--kol-color-white) 4%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-08: color-mix(in srgb, var(--kol-color-white) 8%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-12: color-mix(in srgb, var(--kol-color-white) 12%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-16: color-mix(in srgb, var(--kol-color-white) 16%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-24: color-mix(in srgb, var(--kol-color-white) 24%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-32: color-mix(in srgb, var(--kol-color-white) 32%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-40: color-mix(in srgb, var(--kol-color-white) 40%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-48: color-mix(in srgb, var(--kol-color-white) 48%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-64: color-mix(in srgb, var(--kol-color-white) 64%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-72: color-mix(in srgb, var(--kol-color-white) 72%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-80: color-mix(in srgb, var(--kol-color-white) 80%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-88: color-mix(in srgb, var(--kol-color-white) 88%, var(--kol-color-black));
+  --kol-oq-absolute-inverse-96: color-mix(in srgb, var(--kol-color-white) 96%, var(--kol-color-black));
+}
+
+/* CLASSES — absolute opaque tiers */
+.bg-oq-absolute-01 { background-color: var(--kol-oq-absolute-01); }
+.bg-oq-absolute-02 { background-color: var(--kol-oq-absolute-02); }
+.bg-oq-absolute-04 { background-color: var(--kol-oq-absolute-04); }
+.bg-oq-absolute-08 { background-color: var(--kol-oq-absolute-08); }
+.bg-oq-absolute-12 { background-color: var(--kol-oq-absolute-12); }
+.bg-oq-absolute-16 { background-color: var(--kol-oq-absolute-16); }
+.bg-oq-absolute-24 { background-color: var(--kol-oq-absolute-24); }
+.bg-oq-absolute-32 { background-color: var(--kol-oq-absolute-32); }
+.bg-oq-absolute-40 { background-color: var(--kol-oq-absolute-40); }
+.bg-oq-absolute-48 { background-color: var(--kol-oq-absolute-48); }
+.bg-oq-absolute-64 { background-color: var(--kol-oq-absolute-64); }
+.bg-oq-absolute-72 { background-color: var(--kol-oq-absolute-72); }
+.bg-oq-absolute-80 { background-color: var(--kol-oq-absolute-80); }
+.bg-oq-absolute-88 { background-color: var(--kol-oq-absolute-88); }
+.bg-oq-absolute-96 { background-color: var(--kol-oq-absolute-96); }
+.text-oq-absolute-01 { color: var(--kol-oq-absolute-01); }
+.text-oq-absolute-02 { color: var(--kol-oq-absolute-02); }
+.text-oq-absolute-04 { color: var(--kol-oq-absolute-04); }
+.text-oq-absolute-08 { color: var(--kol-oq-absolute-08); }
+.text-oq-absolute-12 { color: var(--kol-oq-absolute-12); }
+.text-oq-absolute-16 { color: var(--kol-oq-absolute-16); }
+.text-oq-absolute-24 { color: var(--kol-oq-absolute-24); }
+.text-oq-absolute-32 { color: var(--kol-oq-absolute-32); }
+.text-oq-absolute-40 { color: var(--kol-oq-absolute-40); }
+.text-oq-absolute-48 { color: var(--kol-oq-absolute-48); }
+.text-oq-absolute-64 { color: var(--kol-oq-absolute-64); }
+.text-oq-absolute-72 { color: var(--kol-oq-absolute-72); }
+.text-oq-absolute-80 { color: var(--kol-oq-absolute-80); }
+.text-oq-absolute-88 { color: var(--kol-oq-absolute-88); }
+.text-oq-absolute-96 { color: var(--kol-oq-absolute-96); }
+.border-oq-absolute-01 { border-color: var(--kol-oq-absolute-01); }
+.border-oq-absolute-02 { border-color: var(--kol-oq-absolute-02); }
+.border-oq-absolute-04 { border-color: var(--kol-oq-absolute-04); }
+.border-oq-absolute-08 { border-color: var(--kol-oq-absolute-08); }
+.border-oq-absolute-12 { border-color: var(--kol-oq-absolute-12); }
+.border-oq-absolute-16 { border-color: var(--kol-oq-absolute-16); }
+.border-oq-absolute-24 { border-color: var(--kol-oq-absolute-24); }
+.border-oq-absolute-32 { border-color: var(--kol-oq-absolute-32); }
+.border-oq-absolute-40 { border-color: var(--kol-oq-absolute-40); }
+.border-oq-absolute-48 { border-color: var(--kol-oq-absolute-48); }
+.border-oq-absolute-64 { border-color: var(--kol-oq-absolute-64); }
+.border-oq-absolute-72 { border-color: var(--kol-oq-absolute-72); }
+.border-oq-absolute-80 { border-color: var(--kol-oq-absolute-80); }
+.border-oq-absolute-88 { border-color: var(--kol-oq-absolute-88); }
+.border-oq-absolute-96 { border-color: var(--kol-oq-absolute-96); }
+.bg-oq-absolute-inverse-01 { background-color: var(--kol-oq-absolute-inverse-01); }
+.bg-oq-absolute-inverse-02 { background-color: var(--kol-oq-absolute-inverse-02); }
+.bg-oq-absolute-inverse-04 { background-color: var(--kol-oq-absolute-inverse-04); }
+.bg-oq-absolute-inverse-08 { background-color: var(--kol-oq-absolute-inverse-08); }
+.bg-oq-absolute-inverse-12 { background-color: var(--kol-oq-absolute-inverse-12); }
+.bg-oq-absolute-inverse-16 { background-color: var(--kol-oq-absolute-inverse-16); }
+.bg-oq-absolute-inverse-24 { background-color: var(--kol-oq-absolute-inverse-24); }
+.bg-oq-absolute-inverse-32 { background-color: var(--kol-oq-absolute-inverse-32); }
+.bg-oq-absolute-inverse-40 { background-color: var(--kol-oq-absolute-inverse-40); }
+.bg-oq-absolute-inverse-48 { background-color: var(--kol-oq-absolute-inverse-48); }
+.bg-oq-absolute-inverse-64 { background-color: var(--kol-oq-absolute-inverse-64); }
+.bg-oq-absolute-inverse-72 { background-color: var(--kol-oq-absolute-inverse-72); }
+.bg-oq-absolute-inverse-80 { background-color: var(--kol-oq-absolute-inverse-80); }
+.bg-oq-absolute-inverse-88 { background-color: var(--kol-oq-absolute-inverse-88); }
+.bg-oq-absolute-inverse-96 { background-color: var(--kol-oq-absolute-inverse-96); }
+.text-oq-absolute-inverse-01 { color: var(--kol-oq-absolute-inverse-01); }
+.text-oq-absolute-inverse-02 { color: var(--kol-oq-absolute-inverse-02); }
+.text-oq-absolute-inverse-04 { color: var(--kol-oq-absolute-inverse-04); }
+.text-oq-absolute-inverse-08 { color: var(--kol-oq-absolute-inverse-08); }
+.text-oq-absolute-inverse-12 { color: var(--kol-oq-absolute-inverse-12); }
+.text-oq-absolute-inverse-16 { color: var(--kol-oq-absolute-inverse-16); }
+.text-oq-absolute-inverse-24 { color: var(--kol-oq-absolute-inverse-24); }
+.text-oq-absolute-inverse-32 { color: var(--kol-oq-absolute-inverse-32); }
+.text-oq-absolute-inverse-40 { color: var(--kol-oq-absolute-inverse-40); }
+.text-oq-absolute-inverse-48 { color: var(--kol-oq-absolute-inverse-48); }
+.text-oq-absolute-inverse-64 { color: var(--kol-oq-absolute-inverse-64); }
+.text-oq-absolute-inverse-72 { color: var(--kol-oq-absolute-inverse-72); }
+.text-oq-absolute-inverse-80 { color: var(--kol-oq-absolute-inverse-80); }
+.text-oq-absolute-inverse-88 { color: var(--kol-oq-absolute-inverse-88); }
+.text-oq-absolute-inverse-96 { color: var(--kol-oq-absolute-inverse-96); }
+.border-oq-absolute-inverse-01 { border-color: var(--kol-oq-absolute-inverse-01); }
+.border-oq-absolute-inverse-02 { border-color: var(--kol-oq-absolute-inverse-02); }
+.border-oq-absolute-inverse-04 { border-color: var(--kol-oq-absolute-inverse-04); }
+.border-oq-absolute-inverse-08 { border-color: var(--kol-oq-absolute-inverse-08); }
+.border-oq-absolute-inverse-12 { border-color: var(--kol-oq-absolute-inverse-12); }
+.border-oq-absolute-inverse-16 { border-color: var(--kol-oq-absolute-inverse-16); }
+.border-oq-absolute-inverse-24 { border-color: var(--kol-oq-absolute-inverse-24); }
+.border-oq-absolute-inverse-32 { border-color: var(--kol-oq-absolute-inverse-32); }
+.border-oq-absolute-inverse-40 { border-color: var(--kol-oq-absolute-inverse-40); }
+.border-oq-absolute-inverse-48 { border-color: var(--kol-oq-absolute-inverse-48); }
+.border-oq-absolute-inverse-64 { border-color: var(--kol-oq-absolute-inverse-64); }
+.border-oq-absolute-inverse-72 { border-color: var(--kol-oq-absolute-inverse-72); }
+.border-oq-absolute-inverse-80 { border-color: var(--kol-oq-absolute-inverse-80); }
+.border-oq-absolute-inverse-88 { border-color: var(--kol-oq-absolute-inverse-88); }
+.border-oq-absolute-inverse-96 { border-color: var(--kol-oq-absolute-inverse-96); }

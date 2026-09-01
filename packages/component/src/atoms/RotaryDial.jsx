@@ -30,6 +30,7 @@ const snapTo = (v, min, max, step) => {
  * @param {number}   size        dial px size (default 80); derives ring + disc radii
  * @param {boolean}  disabled    blocks drag + keyboard and dims the control (default false)
  * @param {Function} formatValue optional readout formatter (value: number) => string; default `${value}%`
+ * @param {number}   defaultValue alt-click the dial resets to this (falls back to `min`) — Slider carries the same gesture
  */
 export default function RotaryDial({
   label,
@@ -41,6 +42,7 @@ export default function RotaryDial({
   size = 80,
   disabled = false,
   formatValue,
+  defaultValue,
 }) {
   const [isDragging, setIsDragging] = useState(false)
   const [localValue, setLocalValue] = useState(value) // visual buffer — updates every move
@@ -102,6 +104,21 @@ export default function RotaryDial({
     onChange?.(next)
   }
 
+  /* alt-click resets — the same gesture Slider carries (SliderDualThumbAndPlayhead,
+   * 2026-08-30). The two components share one value-control contract, and a
+   * reset that worked on the fader but not the knob would split it. Handled on
+   * pointer-down BEFORE the drag starts, so an alt-click never also nudges. */
+  const handlePointerDownOrReset = (e) => {
+    if (e.altKey) {
+      e.preventDefault()
+      const next = defaultValue ?? min
+      setLocalValue(next)
+      onChange?.(next)
+      return
+    }
+    handlePointerDown(e)
+  }
+
   const outerRadius = size / 2
   const innerRadius = (size * 0.7) / 2
   const strokeWidth = 2
@@ -124,7 +141,7 @@ export default function RotaryDial({
           transform: `rotate(${angle}deg)`,
           willChange: isDragging ? 'transform' : 'auto',
         }}
-        onPointerDown={disabled ? undefined : handlePointerDown}
+        onPointerDown={disabled ? undefined : handlePointerDownOrReset}
         onKeyDown={disabled ? undefined : handleKeyDown}
       >
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ overflow: 'visible' }}>

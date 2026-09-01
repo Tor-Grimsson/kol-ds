@@ -10,7 +10,9 @@
  *
  * @param {'left'|'center'|'right'} align horizontal alignment + container layout mode (default 'center')
  * @param {string}    title     optional heading rendered above the group, authored at the call site
- * @param {string}    className extra container classes (appended)
+ * @param {string}    className extra container classes (appended) — note this lands on the OUTER
+ *   container, not the flex row that carries the gap; the gap is responsive by default (8 stacked,
+ *   16 as a row) rather than reachable, so there is nothing to reach for.
  * @param {ReactNode} children  the Buttons
  */
 
@@ -32,7 +34,16 @@ export default function ButtonGroup({ align = 'center', title, className = '', c
       {title && <h3 className="kol-sans-heading-05 text-emphasis mb-6">{title}</h3>}
       <div
         className={[
-          'flex flex-col gap-4 sm:flex-row sm:items-center',
+          /* THE GAP IS TWO JOBS, NOT ONE (ButtonGroupResponsiveGap, kol-website
+           * 2026-08-31). The group changes axis at `sm`, so a single `gap-4` was
+           * doing horizontal separation between two side-by-side buttons AND
+           * vertical separation between two full-width stacked ones. Those do not
+           * want the same number: 16 reads too open stacked (user: "16 is way too
+           * big, at least lets see 8 or 12"), and 8 is what looks right on device.
+           * A responsive default rather than a prop — the stacked case IS the
+           * narrow viewport, so the value is pickable once instead of per
+           * consumer. The row keeps today's 16 and nothing moves at `sm` and up. */
+          'flex flex-col gap-2 sm:flex-row sm:gap-4 sm:items-center',
           JUSTIFY[align] || JUSTIFY.center,
         ].join(' ')}
       >

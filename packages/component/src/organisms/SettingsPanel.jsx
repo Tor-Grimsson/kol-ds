@@ -16,6 +16,13 @@ import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
  * TWO PRESENTATIONS, ONE ANATOMY (the user's ask): `variant="drawer"` is a
  * right-anchored sheet over a scrim, `variant="overlay"` the same panel
  * centred. Only the shell differs; header · intro · sections · footer are the
+ * NO SCRIM ON THE SETTINGS DRAWER (user 2026-08-30: "remove the background
+ * overlay and blur when settings sidebar is opened"). `backdrop={false}` — the
+ * panel alone, no 60% black wash and no `blur(1px)`. You change how a surface
+ * looks WHILE looking at it, and a scrim hides the thing you are tuning. Escape
+ * and the × still close it; only the dimming is gone. Scoped to this panel —
+ * every other ShellDrawer consumer keeps its backdrop.
+ *
  * same nodes in both. Neither shell is built here — the drawer IS ShellDrawer
  * (scrim, Escape, focus trap, scroll lock, focus return, the × control) and
  * the overlay IS FullscreenOverlay (scrim, Escape, backdrop dismiss, scroll
@@ -94,7 +101,7 @@ export default function SettingsPanel({
   return (
     /* THE APPROVED DRAWER (SettingsPanelApproved, kol-r2b2 2026-08-27 — user: "LOCK
        THIS"): no edge, no shadow, a Divider under the header, the sections. */
-    <ShellDrawer open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false}>
+    <ShellDrawer open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false} backdrop={false}>
       <div className="flex flex-col gap-4"><Divider />{body}</div>
     </ShellDrawer>
   )

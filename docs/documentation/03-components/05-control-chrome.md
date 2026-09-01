@@ -274,3 +274,41 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 ## Tone
 
 `tone="sunken"` on `ViewToggle` (icon) · `Dropdown` · `Input` · `SearchInput` · `Button` · `IconFrame` · `ThemeToggle` — the control set's ONE sunken tone (ControlToneSunken, kol-website 2026-08-28; shipped 2026-08-27 as `tone="inverse"`, ControlToneInverse, which stays an alias — no consumer moves a pixel). User, on brand's `/icons` over a `pageWash`: *"a flipped version of this color scheme, where the darker is background and grey is the active … it would fit better on the light grey"* — and on the name: the control does not invert anything, it sits **below** the plane it is on. (`inverse` already meant four things — `tone`, Tag/Pill's `variant`, Section's `theme`, Divider's boolean.) On a washed plane the default grey well reads as a second plate, so the set takes the dark well: **`fg-inverse-96`** (user ruling 2026-08-28, swapped from `fg-absolute-24` — measured on the dark theme, where the inverse tier is the one that darkens: on the `#121215` page it lands ~14.2 against absolute-24's 13.7. It follows the theme, so the light-theme well takes the near-white inverse anchor), the active chip the **`fg-08`** ink wash (user ruling 2026-08-28, down from the 0.78.1 `fg-16`), the inactive hover an absolute-white wash, the ink `fg-96`; a `Dropdown`'s panel is **opaque** — `surface-tertiary`, the flat twin of the trigger's fill (user 2026-08-28: *"transparent doesn't work for dropdown"*; the `oq-inverse-*` tier bakes onto the near-white `surface-inverse` and lands on the wrong side of a dark page), and the dropdown carries **no hover state at all** (user 2026-08-28, *"delete any hover state on dropdowns"*, component ≥0.123.0): the trigger is pinned back to rest in every variant — primary and outline in kol-theme, grey with no hover rule — and the option rows drop the ink brighten (`MenuDropdownItem hover={false}`), the check mark carrying the current value. A `MenuItem`'s own menu keeps its hover. **The trigger is on the icon ladder** (theme ≥0.90.0, DropdownHeightAndHover): 28 / 32 / 36, the rungs `.kol-btn-icon` pins — a text button sizes from padding (~24 at `sm`) and sat 4px short of the `IconFrame` and `ThemeToggle` beside it, and the trigger is the one text control that always sits in an icon row. **A dropdown fits its chrome** (component ≥0.124.0, DropdownGhostWidthAndListHeight): the ghost stack still reserves the widest option's width, but the trigger caps at its container and the label ellipsises rather than growing past it — the panel matches the real width; `maxRows` (default 10) is the rows-visible ceiling the viewport clamp cannot give, and `rowHeight` the row pitch for a shorter chrome. **`onOptionHover(value | null)`** (≥0.125.0, DropdownOptionHoverPreview) reports the hovered row and `null` on leave or close, so a picker over a *visual* setting — blend modes, easing curves, palettes, fonts — previews live and reverts; the DS owns the panel, the consumer owns the preview; a sunken `Button` layers its hover and pressed over the well. `ContentFilters` forwards `tone` to its search field so a page sets its header row in one place. Default `tone` is unchanged everywhere; the rules are the theme's (`.kol-tone-sunken`, ≥0.82.0) — a consumer never restates them (brand hand-wrote the fill and guessed the ink for two icon buttons; widening the set to Button · IconFrame · ThemeToggle ends that fork). The showcase's `ViewToggle` demo shows the set in both tones on an `fg-02` wash.
+
+## Sunken tone
+
+`tone="sunken"` is a well — a plate **below** its plane. It resolves through
+`--kol-surface-sunken`, which points at `oq-ab-inverse-96` in light and
+`oq-ab-96` in dark, so it is darker than the page on **both** themes.
+
+Carried by `Dropdown` (trigger and panel), `ViewToggle`, `IconFrame`,
+`ThemeToggle`, `Button`, `.kol-control` and `.kol-expand` — one value across the
+whole row, which is the point of the tone.
+
+### Three rungs, one ladder
+
+| state | token | dark | light |
+|---|---|---|---|
+| rest | the well | 10.2 | 244.8 |
+| hover | `+ fg-04` | 19.8 | 235.7 |
+| selected | `+ fg-08` | 29.4 | 226.7 |
+
+~9.5 apart on both themes. `fg-*` flips toward the ink, so one pair of rungs
+darkens a light well and lightens a dark one with no per-theme rule.
+
+Two ways this was wrong before 2026-08-30. The hover wash was a hardcoded
+**white**, which lightens the dark well and is invisible over the light one
+(white on a 245 ground). Fixing that to a contrast wash at **08** then made
+hover identical to `selected` — 0.4 apart in dark, 1.5 in light — so a hovered
+unselected control looked selected. A state ladder needs its rungs checked
+against **each other**, not just against rest.
+
+**It was raised, not sunken, until 2026-08-30.** The tone had no token and
+borrowed `--kol-oq-inverse-96`, which is built from the theme's near-white and
+lands at luminance 23.7 against an 18.2 dark page — every control wearing it
+read as its own pale box. Measured on kol-fxr's `/settings`. The reason it
+survived repeated fixes: `oq-inverse-96` and `surface-tertiary` are exact
+mirrors — one is correct in light, the other in dark — so each patch moved the
+fault to the other theme rather than removing it. The well needs a pole
+**outside** the theme's range, which is `ab`. See
+[[../01-foundations/01-tokens|tokens → the six ladder families]].

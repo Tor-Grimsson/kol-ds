@@ -44,7 +44,7 @@ to; rulings live here rather than in a conversation.
 **How it was found.** Two exhaustive sweeps on 2026-08-15 — every card-like
 component in the fifteen packages, and every call site across this repo and the
 consumer repos — gathered into
-[[../../../lobby/inbox/ListGridCards|the ListGridCards collection]].
+[[../../../lobby/done/ListGridCards|the ListGridCards collection]].
 
 ## The components
 

@@ -34,11 +34,38 @@ A translucent foreground scale — `--kol-fg-01 … --kol-fg-96` — ink at incr
 01 02 04 08 12 16 24 32 40 48 64 72 80 88 96
 ```
 
-**15 stops in the standard tier, 14 everywhere else** (2026-08-01). `72` exists only on `--kol-fg-*` — it was added for the `lede` text role, and text chains exclusively through that tier. The `fg-absolute-*`, `fg-inverse-*`, `oq-*` and `oq-inverse-*` families stay at 14: they carry fills and theme-independent chrome, and no role asks them for this step. A fill that ever needs 72 is the signal to add it across all five families rather than widen the exception.
+**15 stops, every family** — `01 02 04 08 12 16 24 32 40 48 64 72 80 88 96`. The `72` step began as a `--kol-fg-*` exception for the `lede` role and was widened to all ladders 2026-08-29.
 
-Used everywhere: borders (`border-fg-08`), dividers, washes, dimmed text. Utilities: `text-fg-*`, `bg-fg-*`, `border-fg-*`. The `fg-absolute-*` variants are theme-invariant black — for overlays that must read on any thumbnail.
+### The six ladder families — cheat sheet
 
-**Opaque neutrals (`--kol-oq-*`)** are the married solid mirror of the same 14 stops (`kol-opaque.css`) — ink mixed into the surface instead of into transparent, plus an `oq-inverse-*` twin. Since 2026-07-08 the rule is: **interactive fills (button/tag/switch states, anything that can sit over media) use `oq`; decoration that always sits on a panel (dividers, table washes) keeps `fg`.** `--kol-accent-primary-strong` is likewise an opaque accent mix now, not a transparency.
+Two questions decide which one you want: **does it flip with the theme**, and **which poles does it mix between**.
+
+| Family | Flips? | Mixes between | 96 stop · dark → light | Reach for it when |
+|---|---|---|---|---|
+| `fg-*` | **yes** → ink | surface ink → transparent | `250 a.96` → `18 a.96` | ink, borders, dividers, washes on a panel |
+| `fg-inverse-*` | **yes** → ink | the other side's ink → transparent | `14 a.96` → `252 a.96` | ink on an inverted plate |
+| `oq-*` | **yes** → ink | surface ink → surface | `241` → `27` | interactive fills — anything over media |
+| `oq-inverse-*` | **yes** → ground | inverted ink → inverted surface | `24` → `242` | fills on an inverted plate |
+| `ab-*` | **yes** → **ground** | **pure** `#000` / `#fff` | `10` → `245` | a step **past** the theme's own ink — wells, scrims |
+| `ab-inverse-*` | **yes** → ink | the opposite pure pole | `245` → `10` | the contrasting pure pole |
+| `absolute-*` | **no, frozen** | **the theme's** `#0e0e11` / `#fcfbf8` | `24` both | chrome that must match a surface without following the theme |
+| `absolute-inverse-*` | **no, frozen** | the theme's opposite pole | `242` both | its inverted twin |
+
+`ab` and `absolute` each exist in an `fg-` (translucent) and an `oq-` (opaque) form: `fg-ab-16`, `oq-ab-16`, `fg-absolute-16`, `oq-absolute-16`, and every `-inverse` twin.
+
+**Two flip directions, and that is the thing to hold on to.** `fg-*` and `oq-*` flip toward the **ink** — light ink on a dark page. `ab-*` flips toward the **ground** — in dark it is black, in light it is white. That is what makes `oq-ab-96` a well in both themes without a per-theme alias: 10 under an 18 page, 245 under a 250 page. A well needs a pole **outside** the theme's range, because a percentage of the page mixed into the page cannot darken it (user, 2026-08-30: *"applying any percentage of primary on top of primary won't make it darker, but applying a percentage of 000000 will"*).
+
+**`absolute` is the frozen family, and that is its whole job** — the theme's own two ends, identical in both themes. From 2026-08-28 to 2026-08-30 one name covered both jobs and the `sunken` tone picked the wrong one.
+
+**`-inverse` means two things.** On an ink-flipping family it is *the other theme's side*. On `ab-*` it is *the opposite pole*. Check the Flips column before reading a name.
+
+Utilities exist for every family and stop: `text-*`, `bg-*`, `border-*` (e.g. `border-fg-08`, `bg-oq-ab-96`, `text-fg-absolute-inverse-64`).
+
+### Semantic surfaces sit on top
+
+`--kol-surface-*` names *where* a colour is used; the ladders name *what it is mixed from*. `--kol-surface-sunken` is the well, and it is **one line** — `var(--kol-oq-ab-96)` — because `ab` flips toward the ground. It resolves 10 in dark and 245 in light, below the page on both sides. The per-theme alias it briefly carried was the tell that the ladder underneath was still frozen. Reach for the surface token in a component rule; reach for a ladder when defining a new surface.
+
+**Opaque neutrals (`--kol-oq-*`)** are the married solid mirror of the same 15 stops (`kol-opaque.css`) — ink mixed into the surface instead of into transparent, plus an `oq-inverse-*` twin. Since 2026-07-08 the rule is: **interactive fills (button/tag/switch states, anything that can sit over media) use `oq`; decoration that always sits on a panel (dividers, table washes) keeps `fg`.** `--kol-accent-primary-strong` is likewise an opaque accent mix now, not a transparency.
 
 ## Semantic foregrounds
 

@@ -69,11 +69,8 @@ const DESCRIPTIONS = {
   CodeBlock: 'A syntax-highlighted code block with copy-to-clipboard.',
 
   MediaLibrary: 'A browser over an object bucket — ONE component, two variants: `page` fills its box, `modal` opens over the app. Folders disclose in place; the client is injected, never imported.',
-  MediaBrowser: 'The full-page view of an object bucket — folders disclose in place, grid/list toggle, animated search, sort. Read-only unless given onSelect.',
   MediaPicker: 'The modal view of an object bucket — the same body as MediaBrowser inside FullscreenOverlay, plus a pick contract.',
   MediaLibraryProvider: 'The headless core behind both media views — one list call, client-side folder derivation, open-folder set and sort key. The client is injected, never imported.',
-  MediaCard: 'A grid tile for one media object — thumbnail, name, meta, actions, with a select mode.',
-  MediaRow: 'A list row for one media object — thumbnail, name, date/size columns, actions, with a select mode.',
   EmptyState: 'A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors.',
   OverlayGlassPanel: 'A frosted-glass content card floating over hero or carousel media.',
   Figure: 'A caption’d, aspect-locked media frame for long-form prose.',
@@ -126,15 +123,12 @@ const DESCRIPTIONS = {
   SpectrumGrid: 'A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile.',
 
   /* P6–P10 set members */
-  ArticleCard: 'A blog/editorial card family — one component with default / hero / mini sizes.',
   SourcesReferences: 'An end-of-article sources & references list — numbered boxes with title, optional note, and link.',
   ArticleHeader: 'An article masthead — flat-prop title, meta, and an Avatar byline (de-Sanitized).',
   ImageBlock: 'A prose image block on the Figure shell — aspect-locked frame, label, caption.',
   VideoBlock: 'A prose video block on the Figure shell — embed or poster with a caption.',
   PortableTextRenderer: 'A block-array renderer — maps a plain {type,…} block list to KOL components.',
   StackHero: 'A blog hero on FullBleedHero — cover media + title/lede, with a tall variant.',
-  WorkCard: 'A portfolio grid tile composing TiltCard, with a hover content drawer.',
-  WorkListItem: 'The list-row twin of WorkCard — thumbnail, title, tags, on one shared project shape.',
   WorkViewToggle: 'A sliding-pill grid/list toggle with inline search (controlled).',
   GalleryCarousel: 'A project media gallery — DS Carousel opening into MediaViewer at the clicked index.',
   ParallaxShelf: 'A scroll-parallax horizontal shelf of WorkCards.',

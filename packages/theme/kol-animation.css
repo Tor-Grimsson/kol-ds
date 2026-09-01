@@ -272,12 +272,28 @@
 .kol-card-feature-visual {
   transition: transform 300ms ease;
 }
-.kol-card-feature:hover .kol-card-feature-visual {
-  transform: scale(1.03);
+/* THE AMOUNT IS THE ARTWORK'S, NOT THE CARD'S (CardFeatureZoomScale,
+ * kol-website 2026-08-31). `1.03` was hardcoded here with no prop and no token:
+ * a good number on a dense photographic visual and INVISIBLE on a sparse one.
+ * Same component, same set, same page — line-art specimens on a white ground
+ * showed nothing at 3% while dark UI screenshots beside them read correctly.
+ * The card publishes `--kol-card-feature-zoom` from its `zoom` prop; 1.03 is
+ * the fallback, so nothing moves for anyone who does not set it. */
+/* ONE TREATMENT, TWO WAYS IN (CardSetInViewAttention, kol-website 2026-08-31).
+ * `data-attention` is stamped by the card when it holds the viewport's centre on
+ * a coarse pointer, and it is added to the SAME rule the hover uses rather than
+ * given rules of its own — two parallel sets would drift, and the whole reason
+ * this state exists is that variance was already costing more than the
+ * behaviour. On a phone a card is an anchor: a tap navigates, so hover was never
+ * reachable and the zoom simply never fired. */
+.kol-card-feature:hover .kol-card-feature-visual,
+.kol-card-feature[data-attention] .kol-card-feature-visual {
+  transform: scale(var(--kol-card-feature-zoom, 1.03));
 }
 @media (prefers-reduced-motion: reduce) {
   .kol-card-feature-visual { transition: none; }
-  .kol-card-feature:hover .kol-card-feature-visual { transform: none; }
+  .kol-card-feature:hover .kol-card-feature-visual,
+  .kol-card-feature[data-attention] .kol-card-feature-visual { transform: none; }
 }
 
 /* Media hover zoom — opt-in via `mediaHover` (SectionSplit ruling, 2026-08-15).

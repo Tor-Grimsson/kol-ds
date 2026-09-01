@@ -113,11 +113,25 @@ function walk(dir, out = []) {
   return out
 }
 const roots = []
+const addRepo = (repo, dir) => {
+  let found = false
+  for (const sub of ['src', 'app/src', 'apps']) {
+    const p = join(dir, sub)
+    if (existsSync(p)) { roots.push({ repo, path: p }); found = true }
+  }
+  return found
+}
 for (const repo of readdirSync(DEV)) {
   if (!repo.startsWith('kol-') || repo === 'kol-ds-ui') continue
-  for (const sub of ['src', 'app/src', 'apps']) {
-    const p = join(DEV, repo, sub)
-    if (existsSync(p)) roots.push({ repo, path: p })
+  /* kol-apps/ and kol-client/ are CONTAINERS — they hold repos one level down
+   * and carry no src of their own. Before 2026-08-29 the walk stopped at them,
+   * so every repo inside was invisible to R2 (kol-client-hrafn runs component
+   * 0.109.0). An alias could read "imports: nobody" and drop out from under a
+   * live consumer. */
+  if (!addRepo(repo, join(DEV, repo))) {
+    let nested = []
+    try { nested = readdirSync(join(DEV, repo)) } catch { nested = [] }
+    for (const sub of nested) addRepo(`${repo}/${sub}`, join(DEV, repo, sub))
   }
 }
 roots.push({ repo: 'kol-ds-ui (showcase · workbench)', path: join(ROOT, 'showcase/src') }, { repo: 'kol-ds-ui (showcase · workbench)', path: join(ROOT, 'workbench/src') })

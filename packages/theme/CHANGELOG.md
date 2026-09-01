@@ -1,6 +1,53 @@
 # @kolkrabbi/kol-theme
 
 
+## 0.116.0 — 2026-09-01
+
+- The feature card's zoom fires on `[data-attention]` as well as `:hover` — one
+  rule, not two parallel sets. On a phone the card is an anchor, so hover was
+  never reachable and the zoom simply never fired. Reduced-motion opts out of
+  both. (CardSetInViewAttention, kol-website)
+
+## 0.115.0 — 2026-08-31
+
+- **The drawer trigger rides the drawer's trailing edge when open.** Fixed at
+  12/12 it sat INSIDE the drawer it opens — the drawer spans 0–240 from the same
+  edge, so the close × was drawn on top of the rail's own logomark, both in the
+  same 32px. Found on a physical iPhone by kol-chess (user: "menu is on the wrong
+  side it overlaps close button when open"); it stayed clickable and the scrim and
+  Escape both closed, so it read as "the close button is gone" rather than as a
+  trap. One transform, no new markup, and the control stays where the thumb last
+  touched it. (ShellRailNoDrawerOnMobile follow-up, kol-chess)
+
+## 0.114.0 — 2026-08-31
+
+- **The feature card's hover zoom reads `--kol-card-feature-zoom`**, falling back
+  to the shipped `1.03`. It was hardcoded in `kol-animation.css` with no prop and
+  no token, which made it unreachable for artwork that needs more.
+  (CardFeatureZoomScale, kol-website)
+
+## 0.113.0 — 2026-08-31
+
+- **`.kol-row--fixed`** — `height` AND `min-height` from `--kol-row-h`, for
+  `ContentRow variant="roster"`. Both properties on purpose: `height` alone loses
+  to `.kol-row`'s `min-height` whenever the content is taller, which is exactly
+  the case a fixed rung exists to stop. (ContentRowRosterVariant, kol-chess)
+
+## 0.112.0 — 2026-08-31
+
+- **Coarse pointers get a 16px text floor.** iOS Safari zooms the page whenever
+  a focused text field computes under 16px and does not zoom back out on blur;
+  the DS's `sm` (12) and `md` (14) rungs both trip it and `md` is the default,
+  so every consumer with an input had it on every iPhone. `.kol-control input` /
+  `textarea` and `.kol-expand input` take 16px under `(pointer: coarse)` only —
+  pointer devices do not move. NOT a re-litigation of MobileTouchFloor: that
+  ruling is about legibility, this is a platform behaviour keyed on the computed
+  size of the focused field. (InputTypeScaleZoomsIOS, kol-website)
+- **`AppShell touch="drawer"` chrome** — the off-canvas transform, the trigger
+  and the scrim, keyed on `data-rail-drawer` rather than a media query: the fold
+  width is a prop, so a query here would be a second source of truth for it.
+  (ShellRailNoDrawerOnMobile, kol-chess)
+
 ## 0.52.1 — 2026-08-26
 
 - `.kol-sidenav-group { padding: 4px 0 }` **retired** from kol-components-atoms.css

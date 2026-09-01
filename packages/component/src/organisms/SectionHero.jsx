@@ -1,4 +1,5 @@
 import { isValidElement } from 'react'
+import { FULL_BLEED, bleedClass } from './sectionBleed.js'
 import { surfaceClass } from './sectionSurface.js'
 import HlsVideo from '../atoms/HlsVideo.jsx'
 import Image from '../atoms/Image.jsx'
@@ -197,7 +198,7 @@ export default function SectionHero({
 
   if (variant === 'split') {
     const mediaFirst = align !== 'right'
-    const bleed = fullBleed ? 'w-screen ml-[calc(50%-50vw)]' : 'w-full'
+    const bleed = bleedClass(fullBleed)
     const mediaNode = media == null
       ? <AssetPlaceholder radius={false} className="h-full w-full" />
       : isValidElement(media) || typeof media !== 'object'
@@ -264,7 +265,7 @@ export default function SectionHero({
             autoPlayInterval={autoPlayInterval}
             navPosition={navPosition}
             {...Object.fromEntries(Object.entries({ renderTitle, ctaLabel, onNavigate, showTitle, showDescription, showCta, titleClassName, descriptionClassName, options }).filter(([, v]) => v !== undefined))}
-            className={`kol-section-hero-carousel ${fullBleed ? 'w-screen ml-[calc(50%-50vw)]' : ''} ${className}`.replace(/\s+/g, ' ').trim()}
+            className={`kol-section-hero-carousel ${fullBleed ? FULL_BLEED : ''} ${className}`.replace(/\s+/g, ' ').trim()}
           >
             {children}
           </FeaturedCarousel>
@@ -280,7 +281,7 @@ export default function SectionHero({
         autoPlayInterval={autoPlayInterval}
         navPosition={navPosition}
         {...Object.fromEntries(Object.entries({ renderTitle, ctaLabel, onNavigate, showTitle, showDescription, showCta, titleClassName, descriptionClassName, options }).filter(([, v]) => v !== undefined))}
-        className={`kol-section-hero-carousel ${fullBleed ? 'w-screen ml-[calc(50%-50vw)]' : ''} ${className}`.replace(/\s+/g, ' ').trim()}
+        className={`kol-section-hero-carousel ${fullBleed ? FULL_BLEED : ''} ${className}`.replace(/\s+/g, ' ').trim()}
       >
         {children}
       </FeaturedCarousel>
@@ -340,7 +341,7 @@ export default function SectionHero({
   const footVar = foot ? { '--kol-section-foot-overlap': `${overlap}px` } : undefined
 
   return withFoot(
-    <section ref={themeRef} data-theme={themeStamp} className={`kol-full-bleed-hero relative isolate w-full overflow-hidden ${themed} ${heightCls} ${fullBleed ? 'w-screen ml-[calc(50%-50vw)]' : ''} ${className}`.replace(/\s+/g, ' ').trim()} style={footVar}>
+    <section ref={themeRef} data-theme={themeStamp} className={`kol-full-bleed-hero relative isolate w-full overflow-hidden ${themed} ${heightCls} ${fullBleed ? FULL_BLEED : ''} ${className}`.replace(/\s+/g, ' ').trim()} style={footVar}>
       <MediaLayer media={media} />
       {overlayOpacity > 0 && (
         <div

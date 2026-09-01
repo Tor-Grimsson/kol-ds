@@ -5,11 +5,12 @@ import TagPath from './TagPath.jsx'
 import { useTagMode } from './TagModeContext.jsx'
 import TagGraph from './TagGraph.jsx'
 import RailRow from '../shell/RailRow.jsx'
-import { extractDocNumber, cleanTitle } from '../engine/index.js'
+import { extractDocNumber, cleanTitle, matchSearchItems } from '../engine/index.js'
 import { buildTagCounts } from '../engine/tags.js'
 
 /**
- * TagModeOverlay - the tag BROWSER: the list and the graph. It does not search.
+ * TagModeOverlay - the committed RESULTS view: documents that match, with tags
+ * as a facet over them. It was a tag browser that forgot the query.
  *
  * ONE SEARCH (user ruling 2026-08-01: "search SHOULD be ONE system not 2").
  * This component owned a second one - a raw `Input` plus
@@ -21,26 +22,61 @@ import { buildTagCounts } from '../engine/tags.js'
  *
  * `view` comes from the CONTEXT, not local state - the rail's "Graph view" row
  * has to say which mode it wants before this component exists.
+ *
+ * IT NOW READS `text` (TagModeOverlayIgnoresQuery, kol-website 2026-08-31).
+ * Pressing return set `expanded`, ShellLayout swapped its body for this
+ * component, and this component consulted `activeTags` and nothing else — so a
+ * typed query was replaced by the COMPLETE UNFILTERED TAG CENSUS and zero
+ * document rows, by construction. Searching `rf` listed
+ * `project/kol-monorepo 85`, `domain/design-system 13` … not one of which
+ * contains `rf`. The engine was never the problem: `matchSearchItems` already
+ * spans label / tags / headings / keywords, and ShellLayout was computing
+ * exactly that. The expanded view simply threw it away.
+ *
+ * ONE MATCHER (the 2026-08-01 ruling, still): this reuses `matchSearchItems`
+ * rather than adding a second predicate, so committed and uncommitted results
+ * rank identically. `text` and `activeTags` are two facets of one query.
  */
 const TagModeOverlay = () => {
-  const { activeTags, activeTag, toggleTag, clearTags, closeTagMode, inventory, docHref, tagHref, view, setView } = useTagMode()
+  const { activeTags, activeTag, toggleTag, clearTags, closeTagMode, inventory, docHref, tagHref, view, setView, text } = useTagMode()
 
-  const allTagsWithCount = useMemo(() => buildTagCounts(inventory), [inventory])
+  const query = (text || '').trim()
+
+  /* THE TWO FACETS, IN ORDER: chips narrow first, then the query matches over
+   * what is left. Either alone is a filter; neither is required. */
+  const filteredDocs = useMemo(() => {
+    const tagged = activeTags.length === 0
+      ? inventory
+      : inventory.filter((d) => Array.isArray(d.metadata?.tags) && activeTags.every((t) => d.metadata.tags.includes(t)))
+    if (!query) return activeTags.length === 0 ? [] : tagged
+    /* the engine's shape, not a second matcher */
+    const matched = matchSearchItems(
+      tagged.map((d) => ({
+        ...d,
+        label: cleanTitle(d.title, d.id),
+        tags: d.metadata?.tags ?? [],
+        headings: d.headings ?? d.metadata?.headings ?? [],
+        keywords: d.keywords ?? d.metadata?.keywords ?? [],
+      })),
+      query,
+    )
+    return matched
+  }, [inventory, activeTags, query])
+
+  const hasFilters = activeTags.length > 0 || query.length > 0
+
+  /* THE CLOUD NARROWS TO THE RESULT SET, with counts recomputed over it. An
+   * empty query keeps the full census — that is a good browse state, and it is
+   * only wrong once a query exists. */
+  const allTagsWithCount = useMemo(
+    () => buildTagCounts(hasFilters ? filteredDocs : inventory),
+    [inventory, filteredDocs, hasFilters],
+  )
 
   const visibleTags = useMemo(
     () => allTagsWithCount.filter(({ tag }) => !activeTags.includes(tag)),
     [allTagsWithCount, activeTags]
   )
-
-  const filteredDocs = useMemo(() => {
-    if (activeTags.length === 0) return []
-    return inventory.filter((d) => {
-      if (!Array.isArray(d.metadata?.tags)) return false
-      return activeTags.every((t) => d.metadata.tags.includes(t))
-    })
-  }, [inventory, activeTags])
-
-  const hasFilters = activeTags.length > 0
 
   return (
     /* NOT AN OVERLAY ANY MORE (user ruling 2026-08-01). This is the EXPANDED
@@ -115,6 +151,13 @@ const TagModeOverlay = () => {
                   )}
                 </div>
 
+                {/* A QUERY THAT MATCHES NOTHING SAYS SO rather than falling
+                  * back to the census — the census was the bug. */}
+                {hasFilters && filteredDocs.length === 0 && (
+                  <p className="text-fg-48 kol-mono-12 py-4 border-t border-fg-08">
+                    No documents match{query ? ` “${query}”` : ''}
+                  </p>
+                )}
                 {hasFilters && filteredDocs.length > 0 && (
                   <div className="shell-nav-items pt-4 border-t border-fg-08">
                     {filteredDocs.map((d) => (

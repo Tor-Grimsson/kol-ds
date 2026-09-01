@@ -8,7 +8,6 @@ export { default as ProductDetailLayout } from './ProductDetailLayout.jsx'
 export { default as DiagonalMarqueeRiver } from './DiagonalMarqueeRiver.jsx'
 export { default as PriceDisplay } from './PriceDisplay.jsx'
 export { default as PrintsGrid } from './PrintsGrid.jsx'
-export { default as PrintGridCard } from './PrintGridCard.jsx'
 export { default as PrintGridCardGsap } from './PrintGridCardGsap.jsx'
 export { default as PrintBuyButton } from './PrintBuyButton.jsx'
 // The "Drift" scroll gallery is NOT re-implemented here — reuse the generic

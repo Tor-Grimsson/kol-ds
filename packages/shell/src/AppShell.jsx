@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Button } from '@kolkrabbi/kol-component'
 import NavRail from './NavRail.jsx'
 import { NavHiddenContext } from './navHidden.js'
+import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
 
 /**
@@ -40,7 +42,17 @@ import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  * toggle lives on the settings page, not in the rail (user, 2026-08-28).
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
- * @param {'shell'|'bare'|'overlay'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
+ * @param {'shell'|'bare'|'overlay'|'drawer'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
+ *                                        'drawer' takes the rail OFF-CANVAS below `drawerBelow`, hands its width
+ *                                        back to the content, and renders a trigger that brings it in over a scrim.
+ *                                        Tapping a destination closes it. (ShellRailNoDrawerOnMobile, kol-chess
+ *                                        2026-08-31: at 390 the 48px rail is 12.3% of the viewport, and
+ *                                        `railToggleKey` is a KEY — a phone has no keyboard, so on the device where
+ *                                        the rail costs most it could not be dismissed at all. `bare` was the only
+ *                                        other way to reclaim the width and it throws navigation away entirely.)
+ * @param {number} [props.drawerBelow=768]  viewport width under which `touch="drawer"` folds. A width, not a
+ *                                        pointer test: an iPad is coarse and has room, a narrow desktop window is
+ *                                        fine-pointered and does not.
  *                                        `bare` renders the children with NO shell on a coarse-pointer device unless
  *                                        localStorage `kol-desktop` is '1' (fxr's gate); `overlay` keeps the shell and
  *                                        mounts TouchDeviceOverlay once (monitor's)
@@ -62,7 +74,23 @@ import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  *                                        content wrapper, so a page root that is not `PageShell` reads it too.
  *                                        Default none — unset renders exactly as before. A prop, not a token
  *                                        an app binds, because fxr's stylesheet is imports-only by rule.
+ * @param {string}  props.settingsPath  a destination the shell TOGGLES rather than navigates to
+ *                                        (SettingsToggleGesture, user 2026-08-30): pressing the key or
+ *                                        picking its rail row again returns you where you were, instead of
+ *                                        stranding you on the page. Three repos had built this each for
+ *                                        themselves. Unset = every destination behaves exactly as before.
+ * @param {string}  props.settingsKey   the key that toggles `settingsPath` — `','` in the apps that asked.
+ *                                        Bare and with ⌥, ignored while typing in a field. Needs
+ *                                        `settingsPath`; alone it does nothing.
  */
+/* the physical-key name for a bound character. Only the keys people actually
+ * bind — a full layout table would be a lie about coverage. */
+const CODE_FOR_KEY = {
+  ',': 'Comma', '.': 'Period', '/': 'Slash', ';': 'Semicolon', "'": 'Quote',
+  '[': 'BracketLeft', ']': 'BracketRight', '\\': 'Backslash', '`': 'Backquote',
+  '-': 'Minus', '=': 'Equal',
+}
+
 export default function AppShell({
   items,
   bottomItems,
@@ -76,13 +104,113 @@ export default function AppShell({
   appName,
   pageWash,
   navKeys = false,
+  settingsPath,
+  settingsKey,
+  drawerBelow = 768,
   children,
 }) {
   const [navHidden, setNavHidden] = useState(false)
   const coarse = useTouchPrimary()
 
-  /* the rail comes back on every route change */
-  useEffect(() => { setNavHidden(false) }, [currentPath])
+  /* DRAWER MODE. A width query, not a pointer one — see `drawerBelow`. */
+  const [narrow, setNarrow] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(`(max-width: ${drawerBelow - 1}px)`).matches,
+  )
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+    const mq = window.matchMedia(`(max-width: ${drawerBelow - 1}px)`)
+    const on = (e) => setNarrow(e.matches)
+    setNarrow(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [drawerBelow])
+  const drawer = touch === 'drawer' && narrow
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  useEffect(() => { if (!drawer) setDrawerOpen(false) }, [drawer])
+  useEffect(() => {
+    if (!drawer || !drawerOpen) return undefined
+    const onKey = (e) => { if (e.key === 'Escape') setDrawerOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [drawer, drawerOpen])
+
+  /* TOGGLING A DESTINATION (user 2026-08-30: "comma opens and closes the
+   * settings page, and clicking the icon in sidebar opens and clicking again
+   * closes"). The shell already owned two keyboard behaviours; this is a third
+   * of the same kind, and it was about to be written three times — fxr, mirror
+   * and monitor all render this page.
+   *
+   * The only new state is WHERE YOU CAME FROM. Navigation stays the consumer's
+   * (`onNavigate`); the shell just decides which path to hand back. `useRef`,
+   * not state: the return path must not re-render anything when it changes. */
+  const returnPath = useRef(null)
+  const toggleSettings = useCallback(() => {
+    if (!settingsPath) return
+    if (currentPath === settingsPath) {
+      /* nothing remembered (deep link straight onto /settings) → the mark, which
+       * is where the rail's first row goes anyway. Never a dead key. */
+      onNavigate?.(returnPath.current ?? '/')
+      returnPath.current = null
+    } else {
+      returnPath.current = currentPath
+      onNavigate?.(settingsPath)
+    }
+  }, [settingsPath, currentPath, onNavigate])
+
+  useEffect(() => {
+    if (!settingsKey || !settingsPath) return undefined
+    const onKey = (e) => {
+      /* MATCH THE PHYSICAL KEY (SettingsToggleGestureConsumerSeam, kol-fxr
+       * 2026-08-30). Option rewrites `e.key` on macOS — **the chord for `,` is
+       * `≤`** — so an `e.key` comparison silently drops it while the bare key
+       * works, which is the worst way to fail. `e.code` is the same physical key
+       * either way; it is why the Option-digit handler above reads `Digit1…`
+       * rather than `¡ ™ £`. `e.key` still matches too, so a character with no
+       * entry in the table below is unaffected. */
+      const wanted = CODE_FOR_KEY[settingsKey]
+      if (!(e.key === settingsKey || (wanted && e.code === wanted)) || e.metaKey || e.ctrlKey) return
+      const t = e.target
+      if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName)) return
+      e.preventDefault()
+      toggleSettings()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [settingsKey, settingsPath, toggleSettings])
+
+  /* the rail row for that path toggles too — one gesture, two ways to reach it */
+  const navigate = useCallback(
+    (path, ...rest) => {
+      if (settingsPath && path === settingsPath) return toggleSettings()
+      return onNavigate?.(path, ...rest)
+    },
+    [settingsPath, toggleSettings, onNavigate],
+  )
+
+  /* THE ROUTE CHANGE MEANS THE OPPOSITE IN EACH MODE. For `railToggleKey` the
+   * rail comes back on every navigation (ShellHomeSystem, 2026-08-27); for a
+   * drawer, tapping a destination must CLOSE it. The old unconditional
+   * `setNavHidden(false)` also made `navHidden` unusable as a consumer seam —
+   * child effects run before parent effects, so a consumer hiding the rail on a
+   * path change was overwritten in the same commit. */
+  useEffect(() => {
+    if (drawer) setDrawerOpen(false)
+    else setNavHidden(false)
+  }, [currentPath, drawer])
+
+  /* THE WASH ALSO GOES ON THE ROOT (2026-08-30). It is set on the content
+   * wrapper below, which every page inherits — but a PORTALLED surface does
+   * not: `.kol-dd-panel` renders at document.body, so it read the fallback
+   * `transparent` while its own trigger, inside the shell, took the wash. The
+   * two halves of one connected control rendered at different values, which is
+   * exactly what the user saw. Anything floating over the page is still ON the
+   * page as far as this film is concerned. */
+  useEffect(() => {
+    const root = document.documentElement
+    if (pageWash == null) { root.style.removeProperty('--kol-shell-page-wash'); return undefined }
+    root.style.setProperty('--kol-shell-page-wash', pageWash)
+    return () => root.style.removeProperty('--kol-shell-page-wash')
+  }, [pageWash])
   /* one key toggles the rail — never while typing in a field */
   useEffect(() => {
     if (!railToggleKey) return undefined
@@ -122,11 +250,11 @@ export default function AppShell({
       const path = navPaths[Number(m[1]) - 1]
       if (!path) return
       e.preventDefault()
-      onNavigate?.(path)
+      navigate(path)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [navKeys, navPaths.join('\u0000'), onNavigate]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [navKeys, navPaths.join('\u0000'), navigate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   let wantsDesktop = false
   try { wantsDesktop = typeof localStorage !== 'undefined' && localStorage.getItem('kol-desktop') === '1' } catch { /* storage blocked */ }
@@ -136,22 +264,51 @@ export default function AppShell({
 
   return (
     <NavHiddenContext.Provider value={{ navHidden, setNavHidden }}>
+      <SettingsToggleContext.Provider value={toggleSettings}>
       {/* `kol-app-shell` = the app tier: neutral ::selection (kol-theme).
         * A hidden rail zeroes the live width token, so the content's own
         * margin closes with it — one variable, both sides. */}
       <div
         className="kol-app-shell min-h-dvh bg-surface-primary"
-        style={navHidden ? { '--kol-shell-rail-width': '0px' } : undefined}
+        /* A DRAWER ZEROES THE TOKEN TOO. Off-canvas means the content owns the
+         * whole viewport, so the same one variable that closes the content's
+         * margin for `navHidden` closes it here — the rail then takes its own
+         * `--kol-shell-drawer-width` rather than this token. */
+        data-rail-drawer={drawer ? (drawerOpen ? 'open' : 'closed') : undefined}
+        style={navHidden || drawer ? { '--kol-shell-rail-width': '0px' } : undefined}
       >
       {touch === 'overlay' && <TouchDeviceOverlay appName={appName} />}
+      {/* THE TRIGGER SHIPS HERE, not in every consumer's page header — the rail
+        * is the shell's, so the only way to reach it is too. Hamburger closed,
+        * × open; 32px square clears the 24px touch floor. */}
+      {drawer && (
+        <Button
+          variant="nav"
+          iconOnly={drawerOpen ? 'x' : 'hamburger'}
+          iconComponent={iconComponent}
+          aria-label={drawerOpen ? 'Close navigation' : 'Open navigation'}
+          aria-expanded={drawerOpen}
+          className="kol-shell-drawer-trigger"
+          onClick={() => setDrawerOpen((o) => !o)}
+        />
+      )}
+      {drawer && drawerOpen && (
+        <div
+          className="kol-shell-drawer-scrim"
+          onClick={() => setDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
       {!navHidden && (
         <Rail
           items={items}
           bottomItems={bottomItems}
           logomark={logomark}
           currentPath={currentPath}
-          onNavigate={onNavigate}
+          /* the rail routes through `navigate`, so its settings row toggles like the key */
+          onNavigate={navigate}
           iconComponent={iconComponent}
+          drawer={drawer}
         />
       )}
       {/* THE BACK OF THE BACK — surface-primary, always, in every app; the
@@ -162,6 +319,7 @@ export default function AppShell({
         {children}
       </div>
       </div>
+      </SettingsToggleContext.Provider>
     </NavHiddenContext.Provider>
   )
 }

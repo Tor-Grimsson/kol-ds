@@ -1,4 +1,5 @@
 import Button from '../atoms/Button.jsx'
+import { FULL_BLEED } from './sectionBleed.js'
 import { surfaceClass } from './sectionSurface.js'
 import SectionText from '../molecules/SectionText.jsx'
 import { minHeightClass } from './sectionHeights.js'
@@ -26,11 +27,18 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {ReactNode} contactLabel  contact-row label
  * @param {string}    email         contact-row value + `mailto:` target; omit to drop the row
  * @param {{label: ReactNode, value: ReactNode, href?: string}[]} secondaryRows  extra rows between prompt and contact
+ * @param {boolean}  [fullBleed=false]  the FILL breaks the page gutter while the content keeps it —
+ *   the family's shared breakout (`sectionBleed.js`, SectionFamilyFullBleed, kol-website 2026-08-31).
+ *   Any member of this family can be a filled surface, and a filled surface inside `.kol-page` has its
+ *   colour clipped by the gutter on mobile. Viewport-relative, so unlike `.kol-full-bleed` it does not
+ *   over-bleed in a parent with no gutter of its own. The section's horizontal padding re-insets the
+ *   CONTENT, so only the fill moves. Default false — nothing renders differently until it is passed.
  * @param {string}    className     extra classes on the section
  * @param {'primary'|'secondary'|'tertiary'|'inverse'|'auto'|'none'|string} background  the section's surface
  *   (SectionBackgroundProp, 2026-08-27) — a named surface, `none`, or a raw utility / token string; default = what it painted before
  */
 export default function SectionCta({
+  fullBleed = false,
   variant = 'editorial',
   background,
   height = '60',
@@ -60,7 +68,7 @@ export default function SectionCta({
   }
   if (variant === 'centered') {
     return (
-      <section className={`w-full flex flex-col justify-center py-24 ${surfaceClass(background, 'auto')} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}>
+      <section className={`${fullBleed ? FULL_BLEED : 'w-full'} flex flex-col justify-center py-24 ${surfaceClass(background, 'auto')} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}>
         <div className="w-full max-w-[var(--kol-container-max,var(--kol-content-shell,1800px))] mx-auto">
           <div className="w-32 h-px bg-fg-24 mx-auto mb-8" />
           <SectionText
@@ -87,7 +95,7 @@ export default function SectionCta({
     ...(email ? [{ label: contactLabel, value: email, href: `mailto:${email}` }] : []),
   ]
   return (
-    <section className={`w-full ${surfaceClass(background, 'auto')} flex flex-col justify-center ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}>
+    <section className={`${fullBleed ? FULL_BLEED : 'w-full'} ${surfaceClass(background, 'auto')} flex flex-col justify-center ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}>
       {/* the family's ONE cap — the shell's --kol-container-max ladder (user
         * ruling 2026-08-26; the 1600 SectionCtaEditorial asked for was a third
         * number beside split's 1200 and cards' 1400) — the surface stays full

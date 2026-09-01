@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { Button } from '@kolkrabbi/kol-component'
 import { GRAB } from '@kolkrabbi/kol-component/utilities/motion'
+/* the grab pill's proximity wake, travel and dwell — ONE implementation, shared
+ * with kol-framework's useDragResize (OneGrabGestureBothRails, kol-fxr
+ * 2026-08-30: two rails on one screen felt different because each package had
+ * built the gesture itself). It lived here until then. */
+import { useGrabEdge } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Logomark from './Logomark.jsx'
 
@@ -62,6 +67,9 @@ import Logomark from './Logomark.jsx'
  * @param {Object} logomark     `{ svgUrl, title }` — the mark, and the app name beside it when open
  * @param {string} currentPath  active match: '/' exact, else prefix → aria-current="page"
  * @param {Function} onNavigate `(path) => void` — every click, the mark included
+ * @param {boolean} drawer  off-canvas mode: no grab, no drag, no token writes, rows always
+ *   labelled, and the rail sizes itself from `--kol-shell-drawer-width` (default 240px).
+ *   AppShell sets this from `touch="drawer"` — see ShellRailNoDrawerOnMobile, 2026-08-31.
  */
 const RAIL_W = '--kol-shell-rail-width'
 const CLOSED = 48
@@ -83,45 +91,21 @@ const openWidth = () => {
  * lands on you, holds while you move inside the radius, then travels to where you
  * are now — inside `GRAB.range`, the middle band of the edge, so it never rides
  * up beside the logomark. One window listener, rAF-throttled. */
-function useGrabEdge(ref) {
-  useEffect(() => {
-    let raf = 0
-    const onMove = ({ clientX, clientY }) => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        const h = ref.current
-        if (!h) return
-        const r = h.getBoundingClientRect()
-        const dist = Math.abs(clientX - (r.left + r.width / 2))
-        const near = dist <= GRAB.near || (h.classList.contains('is-near') && dist <= GRAB.sleep)
-        h.classList.toggle('is-near', near)
-        if (!near) return
-        /* the travel band: bipolar from the middle, GRAB.range of the height */
-        const edge = (r.height * (1 - GRAB.range)) / 2
-        const along = Math.min(Math.max(clientY - r.top, edge), r.height - edge)
-        if (h.dataset.grabSeeded && Math.abs(along - Number(h.dataset.grabTarget)) < GRAB.stick) return
-        h.dataset.grabTarget = String(along)
-        const vars = { '--kol-rail-grab-y': `${along}px` }
-        /* the CSS fallback is 50%, a percentage — nothing to tween from, so the
-         * first sighting sets and every move after tweens */
-        if (h.dataset.grabSeeded) gsap.to(h, { ...vars, ...GRAB.travel, overwrite: 'auto' })
-        else { gsap.set(h, vars); h.dataset.grabSeeded = '1' }
-      })
-    }
-    window.addEventListener('pointermove', onMove)
-    return () => { window.removeEventListener('pointermove', onMove); cancelAnimationFrame(raf) }
-  }, [ref])
-}
 
 /* THE DRAG — hold the pill and the width follows the pointer between closed and
  * open; release snaps to the nearer state, a click (no travel past GRAB.slop)
  * toggles. `onSnap` reports the resting state once — the sub rows render only
  * while open, because closed they would still take their height and push the
  * rungs below them. */
-function useRailDrag(railRef, grabRef, onSnap) {
+function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
   useEffect(() => {
     const strip = grabRef.current, rail = railRef.current, root = document.documentElement
+    /* A DRAWER IS NOT A DRAGGABLE RAIL (ShellRailNoDrawerOnMobile, kol-chess
+     * 2026-08-31). In drawer mode the rail is off-canvas at a fixed width and
+     * the content owns the whole viewport, so the drag must not run at all —
+     * it writes `--kol-shell-rail-width` on `:root` per pointermove, which is
+     * exactly the inline token a consumer could not reach without `!important`. */
+    if (!enabled) return undefined
     if (!strip || !rail) return undefined
     gsap.set(root, { [RAIL_W]: `${CLOSED}px` })
     let drag = null
@@ -129,6 +113,13 @@ function useRailDrag(railRef, grabRef, onSnap) {
       gsap.to(root, { [RAIL_W]: `${w}px`, ...GRAB.snap, overwrite: 'auto' })
       onSnap(w !== CLOSED)
     }
+    /* the ONLY way out of this effect (RailSectionPressOpensRail, kol-fxr
+     * 2026-08-30). `snapTo` closes over the animation and the CLOSED/open
+     * ladder, so a section press has to reach it rather than reimplement it —
+     * a consumer setting `--kol-shell-rail-width` from outside widens the rail
+     * but leaves `railOpen` false, and the L2 rows render behind it: a wide,
+     * EMPTY rail, worse than the dead press this fixes. */
+    if (snapRef) snapRef.current = () => snapTo(openWidth())
     const onDown = (e) => {
       strip.setPointerCapture(e.pointerId)
       gsap.killTweensOf(root)
@@ -159,7 +150,7 @@ function useRailDrag(railRef, grabRef, onSnap) {
       strip.removeEventListener('pointerup', onUp)
       strip.removeEventListener('pointercancel', onUp)
     }
-  }, [railRef, grabRef, onSnap])
+  }, [railRef, grabRef, onSnap, snapRef])
 }
 
 /* one row: the rung exactly where the closed rail had it, then the label and
@@ -170,8 +161,26 @@ function IconAt({ name, size, component }) {
   return <Cmp name={name} size={size} />
 }
 
-function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconComponent, railOpen }) {
+function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail }) {
   const [open, setOpen] = useState(false)
+  /* A SECTION ROW IS NOT A DESTINATION (RailSectionPressOpensRail, kol-fxr
+   * 2026-08-30 — user: *"if I press effects from collapsed nav it should maybe
+   * open? currently pressing it does nothing"*).
+   *
+   * Closed, the row clips to 48px and the disclosure caret sits OUTSIDE that
+   * clip, so the only reachable control was the icon — which called
+   * `onNavigate` with a path no consumer dispatches, because a section has no
+   * action. A guaranteed dead press, in the rail's default state.
+   *
+   * Pressing it now opens the rail and expands that section. This is the
+   * behaviour `SideNav` had before the flat-rail reversal. It does not fight
+   * "nothing auto-expands" — that rule is about ARRIVING on a route; this is an
+   * explicit press. */
+  const isSection = sub?.length > 0
+  const press = () => {
+    if (isSection && !railOpen) { onOpenRail?.(); setOpen(true); return }
+    onNavigate?.(path)
+  }
   const active = path === '/' ? currentPath === '/' : currentPath.startsWith(path)
   return (
     <>
@@ -190,13 +199,13 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
            * and too dim on an icon rail (user: "make the color .96 on every icon
            * in the rail") */
           style={{ color: 'var(--kol-oq-96)' }}
-          onClick={() => onNavigate?.(path)}
+          onClick={press}
           title={label}
           aria-label={label}
         />
         <span
           className="kol-helper-12 uppercase text-oq-96 flex-1 min-w-0 truncate cursor-pointer"
-          onClick={() => onNavigate?.(path)}
+          onClick={press}
         >
           {label}
         </span>
@@ -259,23 +268,29 @@ export default function NavRail({
   onNavigate,
   iconComponent,
   hidden = false,
+  drawer = false,
 }) {
   const railRef = useRef(null)
   const grabRef = useRef(null)
   const [railOpen, setRailOpen] = useState(false)
+  const snapOpenRef = useRef(null)
+  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null
+   * and it no-ops on its own — no second argument needed */
   useGrabEdge(grabRef)
-  useRailDrag(railRef, grabRef, setRailOpen)
+  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)
   if (hidden) return null
   const row = (item) => (
-    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={railOpen} />
+    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />
   )
   return (
     <div
       ref={railRef}
       className="kol-shell-rail bg-surface-primary border-r border-fg-08 fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2"
-      style={{ width: `var(${RAIL_W})` }}
+      /* A drawer takes its own width, NOT the live rail token — that token is
+        * zeroed in drawer mode so the content gets the whole viewport back. */
+      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}
     >
-      <div ref={grabRef} className="kol-rail-grab" />
+      {!drawer && <div ref={grabRef} className="kol-rail-grab" />}
       {logomark && (
         /* the mark, and the app name beside it when open — uppercase like the
          * rows (user 2026-08-28: "uppercase CONSISTENCY"). The `w-8` centring box

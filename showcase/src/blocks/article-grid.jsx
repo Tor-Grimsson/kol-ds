@@ -1,4 +1,4 @@
-import { ArticleCard } from '@kolkrabbi/kol-content'
+import { ContentCard, ContentRow, Tag } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Article grid',
@@ -10,6 +10,18 @@ export const meta = {
   tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
+
+/* MIGRATED 2026-08-30 (ContentSetRetirement step 3): `ArticleCard` was dropped
+ * along with the other seven absorbed cards. Its three sizes map onto the
+ * content-card system as `variant="article"` — hero and default are the CARD,
+ * `mini` was always a row and is now `ContentRow`. The prop remap is not
+ * cosmetic: ArticleCard's `size` chose a shape, while ContentCard's `size` is a
+ * TEXT slot (read length / file size), so the two could not simply be renamed. */
+const Img = ({ src }) => <img src={src} alt="" className="h-full w-full object-cover" />
+const Tags = ({ list = [] }) =>
+  list.map((t) => (
+    <Tag key={t} variant="inverse" hash={false} size="sm" className="kol-tag--data">{t}</Tag>
+  ))
 
 /* Real editorial imagery (served at /kol-images), cycled through the grid. */
 const KOL_IMAGES = Array.from({ length: 7 }, (_, i) => `/kol-images/tt-0${i + 1}.jpg`)
@@ -84,18 +96,47 @@ const MINI = [
 export default function ArticleGrid() {
   return (
     <div className="flex flex-col gap-12 px-6 py-12 md:px-10">
-      <ArticleCard size="hero" {...HERO} />
+      <ContentCard
+        variant="article"
+        hero
+        media={<Img src={HERO.thumbnail} />}
+        label={HERO.label}
+        eyebrow={HERO.kicker}
+        title={HERO.title}
+        body={HERO.summary}
+        meta={HERO.meta}
+        href={HERO.href}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {ROW.map((a) => (
-          <ArticleCard key={a.href} size="default" {...a} />
+          <ContentCard
+            key={a.href}
+            variant="article"
+            media={<Img src={a.thumbnail} />}
+            title={a.title}
+            body={a.excerpt}
+            tags={<Tags list={a.tags} />}
+            date={a.date}
+            size={a.readingTime}
+            href={a.href}
+          />
         ))}
       </div>
 
       <div className="flex flex-col gap-6 border-t border-fg-08 pt-8">
         <div className="kol-helper-12 text-fg-64">MORE TO READ</div>
         {MINI.map((a) => (
-          <ArticleCard key={a.href} size="mini" {...a} />
+          <ContentRow
+            key={a.href}
+            variant="article"
+            media={<Img src={a.thumbnail} />}
+            title={a.title}
+            body={a.summary}
+            date={a.meta?.[0]}
+            size={a.meta?.[1]}
+            href={a.href}
+          />
         ))}
       </div>
     </div>

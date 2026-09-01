@@ -1,12 +1,21 @@
 import { useState } from 'react'
 import { GalleryCarousel } from '@kolkrabbi/kol-component'
-import {
-  WorkCard, WorkListItem, WorkViewToggle, ParallaxShelf,
-} from '@kolkrabbi/kol-content'
+import { ContentCard, ContentRow, Tag } from '@kolkrabbi/kol-component'
+import { WorkViewToggle, ParallaxShelf } from '@kolkrabbi/kol-content'
+
+/* MIGRATED 2026-08-30 (ContentSetRetirement step 3): `WorkCard`/`WorkListItem`
+ * were dropped — both absorbed into `variant="showcase"`. Slot remap:
+ * `type` → `meta`, `year` → `date`, `description` → `body`, `thumbnail` →
+ * `media`. WorkViewToggle and ParallaxShelf are untouched; neither is a card. */
+const Img = ({ src }) => <img src={src} alt="" className="h-full w-full object-cover" />
+const Tags = ({ list = [] }) =>
+  list.map((t) => (
+    <Tag key={t} variant="primary" hash={false} size="sm" className="kol-tag--data">{t}</Tag>
+  ))
 
 export const meta = {
   title: 'Work / portfolio',
-  description: 'A studio work index — a WorkCard shelf/grid toggling to a WorkListItem list, a scroll-parallax "more work" shelf, and a project-detail GalleryCarousel',
+  description: 'A studio work index — a showcase-card shelf/grid toggling to a showcase-row list, a scroll-parallax "more work" shelf, and a project-detail GalleryCarousel',
   category: 'portfolio',
   featured: true,
   type: 'reference',
@@ -26,8 +35,8 @@ function cover() {
   return img
 }
 
-/* Flat project bag (no Sanity) — the identical shape drives both the WorkCard
- * grid and the WorkListItem list, so the toggle is a render swap. `href` is
+/* Flat project bag (no Sanity) — the identical shape drives both the showcase
+ * card grid and the showcase row list, so the toggle is a render swap. `href` is
  * baked in below so grid, list, and the parallax shelf all link the same way. */
 const RAW_PROJECTS = [
   { id: 'bindery', title: 'Bindery Identity', client: 'Vellum & Vane', type: 'client', year: 2024, tags: ['Branding', 'Editorial'], description: 'A quiet identity for a bookbinding atelier.', thumbnail: cover(800, 1000, 'Bindery Identity', '#1b2a4a', '#0e1730') },
@@ -91,17 +100,32 @@ export default function WorkPortfolioSet() {
       {view === 'shelf' ? (
         <div className="flex flex-wrap gap-6 md:gap-8 items-end">
           {filtered.map((p, i) => (
-            <WorkCard key={p.id} {...p} index={i} onNavigate={stay} />
+            <div key={p.id} className="w-[280px] shrink-0 md:w-[400px]">
+              <ContentCard
+                variant="showcase"
+                media={<Img src={p.thumbnail} />}
+                title={p.title}
+                meta={p.type}
+                href={p.href}
+                onNavigate={stay}
+              />
+            </div>
           ))}
         </div>
       ) : (
         <div>
           {filtered.map((p, i) => (
-            <WorkListItem
+            <ContentRow
               key={p.id}
-              {...p}
-              active={activeRow === i}
-              onMouseEnter={() => setActiveRow(i)}
+              variant="showcase"
+              media={<Img src={p.thumbnail} />}
+              title={p.title}
+              tags={<Tags list={p.tags} />}
+              meta={p.type}
+              date={p.year}
+              body={p.description}
+              selected={activeRow === i}
+              href={p.href}
               onNavigate={stay}
             />
           ))}

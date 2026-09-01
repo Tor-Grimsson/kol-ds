@@ -433,12 +433,15 @@
 }
 
 @media (hover: hover) {
-  .kol-btn:hover .kol-icon-default {
+  /* the trigger is excluded here too — it IS a Button, so a consumer giving it
+   * a hover-icon would animate on hover, and the law is rest and open only
+   * (validate-dd-trigger.mjs T1) */
+  .kol-btn:not(.kol-dd-trigger):hover .kol-icon-default {
     opacity: 0;
     transform: translateY(-4px);
   }
 
-  .kol-btn:hover .kol-icon-hover {
+  .kol-btn:not(.kol-dd-trigger):hover .kol-icon-hover {
     opacity: 1;
     transform: translateY(0);
   }
@@ -672,7 +675,13 @@
 }
 
 .slider-black {
-  --kol-slider-track: var(--kol-fg-64);
+  /* A FALLBACK, NOT A DECLARATION (SliderTrackVariableNotForwarded, kol-mirror
+   * 2026-08-30). This was `--kol-slider-track: var(--kol-fg-64)` set ON the
+   * element, and an element's own declaration beats anything it would inherit —
+   * so the override the component's docstring promised was unreachable from any
+   * ancestor. Consumers were reaching into `.slider-black` by specificity from
+   * their own stylesheets to get a track colour. `.kol-slider-dual-playhead`
+   * below had it right from the start; this now matches it. */
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
@@ -686,13 +695,13 @@
 }
 
 .slider-black::-webkit-slider-runnable-track {
-  background: var(--kol-slider-track);
+  background: var(--kol-slider-track, var(--kol-fg-64));
   height: 2px;
   border-radius: 0;
 }
 
 .slider-black::-moz-range-track {
-  background: var(--kol-slider-track);
+  background: var(--kol-slider-track, var(--kol-fg-64));
   height: 2px;
   border-radius: 0;
 }
@@ -714,6 +723,97 @@
   height: 12px;
   width: 12px;
   border-radius: 50%;
+  border: none;
+}
+
+/* ── Dual-thumb range (SliderDualThumbAndPlayhead, kol-mirror 2026-08-30) ────
+ * Two native ranges stacked on ONE track — the only way two thumbs share a
+ * rail. The INPUT takes `pointer-events: none` so the dead space between the
+ * thumbs does not swallow a track click, and each THUMB takes it back; without
+ * that pair the upper input covers the lower one entirely.
+ *
+ * The two must be tellable apart at a glance — you have to know which end you
+ * grabbed. In-mark is hollow (surface fill, ink ring), out-mark is solid, which
+ * is the treatment mirror's local copy proved over months.
+ *
+ * The playhead colour is a TOKEN. Mirror hardcoded `#2dd4bf`, which is the
+ * defect this move exists to end: a literal cannot follow a theme or a
+ * consumer's brand. `--kol-slider-playhead` defaults to the accent and is
+ * overridable per instance. */
+.kol-slider-dual {
+  position: relative;
+  width: 100%;
+  height: 20px;
+}
+
+.kol-slider-dual-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9px;
+  height: 2px;
+  background: var(--kol-slider-track, var(--kol-surface-on-primary));
+}
+
+.kol-slider-dual-playhead {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 20px;
+  margin-left: -1.5px;
+  border-radius: 1px;
+  background: var(--kol-slider-playhead, var(--kol-accent-primary));
+  z-index: 4;
+  cursor: grab;
+}
+.kol-slider-dual-playhead:active { cursor: grabbing; }
+
+.kol-slider-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+.kol-slider-range::-webkit-slider-runnable-track { background: transparent; height: 2px; }
+.kol-slider-range::-moz-range-track { background: transparent; height: 2px; }
+
+.kol-slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  margin-top: -5px;
+  cursor: pointer;
+}
+.kol-slider-range::-moz-range-thumb {
+  appearance: none;
+  pointer-events: auto;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* in = hollow, out = solid */
+.kol-slider-range--in::-webkit-slider-thumb {
+  background: var(--kol-surface-primary);
+  border: 1.5px solid var(--kol-surface-on-primary);
+}
+.kol-slider-range--in::-moz-range-thumb {
+  background: var(--kol-surface-primary);
+  border: 1.5px solid var(--kol-surface-on-primary);
+}
+.kol-slider-range--out::-webkit-slider-thumb {
+  background: var(--kol-surface-on-primary);
+  border: none;
+}
+.kol-slider-range--out::-moz-range-thumb {
+  background: var(--kol-surface-on-primary);
   border: none;
 }
 
@@ -1217,3 +1317,40 @@ a.kol-icon-frame {
   padding: 0;
 }
 
+
+/* ── COARSE-POINTER TEXT FLOOR ──────────────────────────────────────────────
+ * iOS Safari zooms the page whenever a focused text field computes under 16px,
+ * and it does NOT zoom back out on blur (InputTypeScaleZoomsIOS, kol-website
+ * 2026-08-31). The DS's `sm` (12px) and `md` (14px) rungs both trip it, and md
+ * is the default — so every consumer with an input has it, on every iPhone.
+ *
+ * The cost is that it does not look like a font-size bug: the page stays zoomed
+ * and every subsequent screenshot reads as a catastrophic gutter failure. A
+ * mobile audit chased a non-existent overflow across a dozen routes because of
+ * this one rule.
+ *
+ * NOT a re-litigation of MobileTouchFloor (2026-08-26, "no type floor, 24px hit
+ * floor"). That ruling is about legibility — how big text is DRAWN for a human.
+ * This is a hard platform behaviour keyed on the computed `font-size` of the
+ * focused field, regardless of how legible it is. Pointer devices do not move.
+ *
+ * `maximum-scale=1` would also stop it and is the wrong fix — it kills
+ * pinch-zoom for everyone and fails WCAG 1.4.4.
+ *
+ * The type class (`kol-mono-*`) sits on the SHELL and the field INHERITS it, so
+ * an element+class rule here beats it cleanly rather than tying on specificity
+ * (ARCHITECTURE §5). The height pin travels with the size: Input pins its inner
+ * field to the token's line-height (h-4 / h-[18px] / h-[22px]), so a 16px face
+ * in an unlifted 16px box would clip. */
+@media (pointer: coarse) {
+  .kol-control input,
+  .kol-expand input {
+    font-size: 16px;
+    line-height: 22px;
+    height: 22px;
+  }
+  .kol-control textarea {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

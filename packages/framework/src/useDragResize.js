@@ -1,4 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+/* THE SAME GRAB AS THE SHELL RAIL (OneGrabGestureBothRails, kol-fxr 2026-08-30 —
+ * user: *"why dont we use the grab animation and other sidenav settings to be
+ * consistent?"*). fxr's /labs shows both rails at once and only the left one
+ * woke as the cursor neared it, because each package had built the gesture
+ * itself. The hook lives in kol-component, the one package both can reach —
+ * kol-shell dropped its framework peer in 0.16.0, so neither could import the
+ * other's. */
+import { useGrabEdge } from '@kolkrabbi/kol-component'
 
 /* Grab-edge resize + collapse for SideNav — THE single control since 0.17.0
  * (user build order 2026-08-09, completing the SideNavGrabResize brief: the
@@ -102,6 +110,11 @@ export default function useDragResize(ref, options = {}) {
   const dir = side === 'right' ? -1 : 1
   const names = useMemo(() => buildNames(token), [token])
 
+  /* the handle's own ref, so the shared gesture can find it. Returned in
+   * `grabProps`, so a consumer already spreading those gets the wake, the
+   * travel and the dwell with no change. */
+  const grabRef = useRef(null)
+  useGrabEdge(grabRef)
   const drag = useRef(null) // { startX, startW, snapPx, maxPx, moved } during a drag
   const defaultPx = useRef(null)
   const collapsedPx = useRef(null)
@@ -249,6 +262,11 @@ export default function useDragResize(ref, options = {}) {
     collapsed,
     toggleCollapsed,
     grabProps: {
+      ref: grabRef,
+      /* the pill is drawn by `.kol-rail-grab` (kol-animation.css) — the hook
+       * only supplies `is-near` and `--kol-rail-grab-y`. A consumer's own
+       * className, spread after this, still wins. */
+      className: 'kol-rail-grab',
       role: 'separator',
       'aria-orientation': 'vertical',
       'aria-label': 'Resize navigation',

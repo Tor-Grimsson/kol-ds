@@ -1,5 +1,26 @@
 # @kolkrabbi/kol-shell
 
+## 0.31.0 — 2026-08-31
+
+- **`AppShell touch="drawer"`** — below `drawerBelow` (default 768) the rail goes
+  off-canvas, hands its width back to the content, and a trigger brings it in
+  over a scrim. Tapping a destination closes it. At 390 the 48px rail is 12.3% of
+  the viewport, and `railToggleKey` could not help because it is a KEY: a phone
+  has no keyboard, so on the device where the rail costs most it could not be
+  dismissed at all. `bare` was the only other way to reclaim the width and it
+  throws navigation away entirely.
+- The breakpoint is a WIDTH, not a pointer test — an iPad is coarse and has room,
+  a narrow desktop window is fine-pointered and does not.
+- **The route-change effect is now mode-aware.** `setNavHidden(false)` on every
+  navigation is right for `railToggleKey` and backwards for a drawer; it also made
+  `navHidden` unusable as a consumer seam, since child effects run before parent
+  effects and a consumer's hide was overwritten in the same commit.
+- **`NavRail drawer`** — no grab strip, no drag, no `--kol-shell-rail-width`
+  writes on `:root`, rows always labelled, and the rail sizes from
+  `--kol-shell-drawer-width` (default 240px). That inline token was the reason a
+  consumer needed two `!important`s to fold the rail themselves.
+  (ShellRailNoDrawerOnMobile, kol-chess)
+
 ## 0.6.1 — 2026-08-15
 
 - `PageHeader`'s eyebrow is **uppercase on `kol-helper-12`** — an eyebrow is

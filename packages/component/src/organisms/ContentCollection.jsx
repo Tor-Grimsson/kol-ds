@@ -40,7 +40,23 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
  * a class built at runtime is never emitted.
  *
  * @param {string}  form     'grid' | 'list'
- * @param {string}  min      grid track minimum, card form (default 320px)
+ * @param {string}  min      grid track minimum, card form (default 320px) — the FLUID wall's floor.
+ *                           Emitted as `min(<value>, 100%)`, so it can never demand a column wider
+ *                           than its container (ContentGridMinColumnWidth, 2026-08-31)
+ * @param {string}  minCol   the floor a `cols` track may not go under. DEFAULTS TO `min` (320px), so
+ *                           the count path and the fluid path share one ruled minimum and raising
+ *                           `min` raises both (ContentCollectionMinColumnWidth, kol-chess
+ *                           2026-08-31). `cols` is a CEILING now, not a command: the wall takes up
+ *                           to N columns and drops one rather than let a track go under this.
+ *
+ *                           WHY NOT A HIGHER DEFAULT. The filer measured a roster row clipping on
+ *                           7 of 10 rows at 324 and 3 of 10 at 373, which argues for ~360 — but that
+ *                           is a number about a ROW two truncated lines tall, and this floor governs
+ *                           every kind. 320 is the width this DS has already ruled as the narrowest
+ *                           acceptable track and lived with; applying it to the `cols` path is
+ *                           carrying an existing ruling across, where 360 would be a new estate-wide
+ *                           law made from one page's evidence. A wall whose content needs more says
+ *                           so: `minCol="360px"`.
  * @param {number|object} cols  OPT-IN column count, grid form. A number: 1 below
  *                           md, N from md (1–6). A map per breakpoint
  *                           (`{ md: 3, xl: 4 }` — sm · md · lg · xl · 2xl): 1
@@ -59,23 +75,34 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
  * @param {boolean} stagger  enter animation on/off (reduced motion wins)
  */
 /* literal per rung × count — a class built at runtime is never emitted */
+/* THE COUNT IS A CEILING NOW, NOT A COMMAND (ContentCollectionMinColumnWidth,
+ * kol-chess 2026-08-31). `cols` used to emit `grid-cols-N` and take N columns
+ * whatever they measured, which is how a WIDER screen came to clip MORE text:
+ * kol-chess's roster ran 1 column at 350 on a phone and 2 columns at 324 at
+ * 768 — narrower tracks on a bigger viewport, 7 rows of 10 clipping at both.
+ *
+ * So the rungs publish a VARIABLE instead of a track list, and one static
+ * template below turns it into "at most N, and never narrower than the floor".
+ * Literal class strings, as before — a class built at runtime is never emitted
+ * by Tailwind's scanner, and arbitrary-property utilities are no exception. */
 const COLS_AT = {
-  sm:  { 1: 'sm:grid-cols-1',  2: 'sm:grid-cols-2',  3: 'sm:grid-cols-3',  4: 'sm:grid-cols-4',  5: 'sm:grid-cols-5',  6: 'sm:grid-cols-6' },
-  md:  { 1: 'md:grid-cols-1',  2: 'md:grid-cols-2',  3: 'md:grid-cols-3',  4: 'md:grid-cols-4',  5: 'md:grid-cols-5',  6: 'md:grid-cols-6' },
-  lg:  { 1: 'lg:grid-cols-1',  2: 'lg:grid-cols-2',  3: 'lg:grid-cols-3',  4: 'lg:grid-cols-4',  5: 'lg:grid-cols-5',  6: 'lg:grid-cols-6' },
-  xl:  { 1: 'xl:grid-cols-1',  2: 'xl:grid-cols-2',  3: 'xl:grid-cols-3',  4: 'xl:grid-cols-4',  5: 'xl:grid-cols-5',  6: 'xl:grid-cols-6' },
-  '2xl': { 1: '2xl:grid-cols-1', 2: '2xl:grid-cols-2', 3: '2xl:grid-cols-3', 4: '2xl:grid-cols-4', 5: '2xl:grid-cols-5', 6: '2xl:grid-cols-6' },
+  sm:  { 1: 'sm:[--kol-wall-cols:1]',  2: 'sm:[--kol-wall-cols:2]',  3: 'sm:[--kol-wall-cols:3]',  4: 'sm:[--kol-wall-cols:4]',  5: 'sm:[--kol-wall-cols:5]',  6: 'sm:[--kol-wall-cols:6]' },
+  md:  { 1: 'md:[--kol-wall-cols:1]',  2: 'md:[--kol-wall-cols:2]',  3: 'md:[--kol-wall-cols:3]',  4: 'md:[--kol-wall-cols:4]',  5: 'md:[--kol-wall-cols:5]',  6: 'md:[--kol-wall-cols:6]' },
+  lg:  { 1: 'lg:[--kol-wall-cols:1]',  2: 'lg:[--kol-wall-cols:2]',  3: 'lg:[--kol-wall-cols:3]',  4: 'lg:[--kol-wall-cols:4]',  5: 'lg:[--kol-wall-cols:5]',  6: 'lg:[--kol-wall-cols:6]' },
+  xl:  { 1: 'xl:[--kol-wall-cols:1]',  2: 'xl:[--kol-wall-cols:2]',  3: 'xl:[--kol-wall-cols:3]',  4: 'xl:[--kol-wall-cols:4]',  5: 'xl:[--kol-wall-cols:5]',  6: 'xl:[--kol-wall-cols:6]' },
+  '2xl': { 1: '2xl:[--kol-wall-cols:1]', 2: '2xl:[--kol-wall-cols:2]', 3: '2xl:[--kol-wall-cols:3]', 4: '2xl:[--kol-wall-cols:4]', 5: '2xl:[--kol-wall-cols:5]', 6: '2xl:[--kol-wall-cols:6]' },
 }
 const colsClasses = (cols) => {
   const map = typeof cols === 'number' ? { md: cols } : cols
   if (!map || typeof map !== 'object') return ''
   const rungs = Object.keys(COLS_AT).map((bp) => COLS_AT[bp][map[bp]]).filter(Boolean)
-  return rungs.length ? ['grid-cols-1', ...rungs].join(' ') : ''
+  return rungs.length ? ['[--kol-wall-cols:1]', ...rungs].join(' ') : ''
 }
 
 export default function ContentCollection({
   form = 'grid',
   min = '320px',
+  minCol,
   cols,
   listMin,
   gap,
@@ -103,15 +130,32 @@ export default function ContentCollection({
          * wall is one, so a row inside it steps on the wall's own width */
         containerType: 'inline-size',
         display: 'grid',
-        /* with `cols` the classes carry the tracks — an inline template would outrank them */
+        /* the classes no longer carry tracks — they set `--kol-wall-cols` and this
+         * ONE static template reads it, so the count and the floor cannot disagree */
         gridTemplateColumns: colsCls
-          ? undefined
+          /* AT MOST N, AND NEVER NARROWER THAN THE FLOOR. `auto-fill` counts the
+           * tracks; the track size is the LARGER of the floor and an even 1/N
+           * share, so the wall takes N columns while they fit and drops one the
+           * moment a share would go under the floor. `min(100%, …)` is the guard
+           * that keeps a single narrow container from overflowing — without it a
+           * 350px phone gets one 360px track and a horizontal scrollbar.
+           * All of it is CSS: no measurement, no observer, and it works inside
+           * the container query this wall already establishes. */
+          ? `repeat(auto-fill, minmax(min(100%, max(${minCol ?? min}, calc((100% - (var(--kol-wall-cols, 1) - 1) * ${g}) / var(--kol-wall-cols, 1)))), 1fr))`
           : form === 'list'
             /* minmax(0, 1fr), never a bare 1fr (= minmax(auto, 1fr)): a truncated
            * nowrap line handed its min-content width to the track and a /work row
            * measured 3586px in a 1232px wall (CollectionItemMinWidth, 2026-08-27) */
-          ? (listMin ? `repeat(auto-fill, minmax(${listMin}, 1fr))` : 'minmax(0, 1fr)')
-            : `repeat(auto-fill, minmax(${min}, 1fr))`,
+          /* `min(<fixed>, 100%)`, never a bare fixed track (ContentGridMinColumnWidth,
+             * kol-website 2026-08-31). `minmax(352px, 1fr)` DEMANDS 352 whatever the
+             * container is, so in a 302px column the track wins and the nearest
+             * overflow-x ancestor starts scrolling sideways — `main` scrolled 342 to
+             * 372 on /workshop while the page itself never overflowed, which is why it
+             * was reported as a broken gutter. Identical above the breakpoint,
+             * collapses to the container below it. A content grid may never demand a
+             * column wider than what it is in. */
+          ? (listMin ? `repeat(auto-fill, minmax(min(${listMin}, 100%), 1fr))` : 'minmax(0, 1fr)')
+            : `repeat(auto-fill, minmax(min(${min}, 100%), 1fr))`,
         gap: g,
       }}
     >

@@ -29,12 +29,11 @@ import ContentText from './ContentText.jsx'
 /* ruled defaults — defaults, not hardcodes; `ratio` stays overridable while
  * the A4 question is open (06-content-card-system.md §4). */
 const RATIOS = {
-  default: '1 / 1',
+  file: '1 / 1',
   catalog: '1 / 1.41421',
-  print: '1 / 1.41421',
   article: '16 / 9',
-  work: '3 / 4',
-  typeface: '1 / 1.41421',
+  showcase: '3 / 4',
+  showcaseCanvas: '1 / 1.41421',
 }
 
 /* ruled box values per variant, verbatim from the §3 reference cards —
@@ -43,24 +42,43 @@ const BOX = {
   /* no border (ColumnBrowser round, user 2026-08-27: "I don't like the border, I feel
    * like I've said that before" — the ListingCardThumbBorder ruling): the selected
    * state reads from the checked ToggleCheckbox, not a fg-64 border */
-  default:  { layout: 'stack', border: null, bg: 'var(--kol-fg-02)', pad: 'var(--kol-pad-card-sm)' },
+  file:  { layout: 'stack', border: null, bg: 'var(--kol-fg-02)', pad: 'var(--kol-pad-card-sm)' },
   /* THE FRAME READS BACKWARDS (CatalogCardFrameAndZoom, kol-website 2026-08-28 — user, on a 212-tile
    * grid: no frame at rest; the old rest value is the hover): a wall of fg-04 frames is a grid of boxes,
    * louder than what they hold. Rest `transparent` (the 1px stays, so the hover step never relayouts),
    * hover fg-04. Was fg-04 → fg-16 (ShellHomeSystem, 2026-08-27). */
   catalog:  { layout: 'fill-card', border: 'transparent', bg: 'var(--kol-fg-04)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true, plateBg: 'var(--kol-surface-primary)', frameHover: 'var(--kol-fg-04)' },
   /* flip: PrintGridCard's 3D turn on `isFlipped` → `selected` (ContentRowsAndPrintCard, 2026-08-27) */
-  print:    { layout: 'fill-card', border: null, bg: 'var(--kol-surface-secondary)', pad: 'var(--kol-pad-card-sm) var(--kol-pad-card-md)', plateTop: true, flip: true },
   article:  { layout: 'stack', border: null, bg: null, pad: '0', mediaGap: 'var(--kol-spacing-4)' },
   /* work is a DRAWER: image-only at rest, and on hover a light plate rises
    * over the bottom of the artwork carrying the title + meta. This is the
    * shipped WorkCard and it was wrong to reject it as "hiding the title" — a
    * work shelf is a wall of images by design, and the caption is the reveal. */
-  work:     { layout: 'drawer', border: 'var(--kol-fg-04)', bg: null, pad: 'var(--kol-pad-card-md)', padMd: 'var(--kol-pad-card-lg)' },
+  showcase: { layout: 'drawer', border: 'var(--kol-fg-04)', bg: null, pad: 'var(--kol-pad-card-md)', padMd: 'var(--kol-pad-card-lg)' },
   /* typeface's card is a FIXED 500px tall specimen board, not a ratio — the
    * shipped item is `h-[500px]`, and a ratio re-crops the glyph at every
    * column width, which is the one thing a specimen must not do. */
-  typeface: { layout: 'canvas', border: 'var(--kol-fg-08)', bg: 'var(--kol-surface-primary)', pad: 'var(--kol-pad-card-lg)', height: 500 },
+  /* REST COLOURS ONLY, TAKEN FROM THE ROW (TypefaceCardRestSkinFix, kol-website
+   * 2026-08-30). Filled surface, no outline — `ContentRow`'s showcase pair.
+   *
+   * 0.140.0 copied `BOX.showcase` from THIS map instead, because it is the
+   * entry sitting next to this one. That was wrong: `showcase`'s CARD is a
+   * `drawer` — outlined and unfilled — and the ask was to match the ROW, which
+   * is filled with no outline. Every /foundry grid card shipped as an outlined
+   * empty box, the opposite of the rows beside it.
+   *
+   * "Make the card look like the row" means READ THE ROW'S BOX. The two maps
+   * share variant names and not treatments.
+   *
+   * `layout`, `pad`, `height`, the RATIO, REVEAL_BG, MEDIA and every
+   * hover treatment are untouched and deliberately different.
+   *
+   * NOT derived with a spread. The row's version of this ask was resolved that
+   * way and it carried pad and rung along uninvited, then missed `FILL` because
+   * it is keyed by variant NAME — a second ticket to undo. `RATIO`, `REVEAL_BG`
+   * and `MEDIA` here are separate name-keyed maps too; a spread cannot reach
+   * them either. Two values, set by hand. */
+  showcaseCanvas: { layout: 'canvas', border: 'transparent', bg: 'var(--kol-surface-secondary)', pad: 'var(--kol-pad-card-lg)', height: 500 },
 }
 
 /* HOVER is a bg STEP on the opaque tier, per 05-control-chrome.md's state model
@@ -69,16 +87,15 @@ const BOX = {
  * control vanishing. article is the exception the shipped card already set: it
  * has no surface of its own to step, so it dims its title instead. */
 const HOVER = {
-  default:  'var(--kol-oq-04)',
+  file:  'var(--kol-oq-04)',
   catalog:  'var(--kol-surface-tertiary)',
-  print:    'var(--kol-oq-04)',
   /* article and work take NO surface hover, and that is a decision not a gap:
    * article has no surface of its own (its media frame, when on, steps its
    * border instead), and work's whole hover IS the drawer rising. A second wash under
    * either would be two answers to one question. */
   article:  null,
-  work:     null,
-  typeface: 'var(--kol-surface-inverse)',
+  showcase: null,
+  showcaseCanvas: 'var(--kol-surface-inverse)',
 }
 
 /* per-variant media treatment. `ring` sits OVER the artwork, `frame` UNDER it —
@@ -89,17 +106,39 @@ const MEDIA = {
   /* zoom is for IMAGE-LED cards — where the artwork is the content and the
    * card is a frame around it. A catalog tile whose preview is a diagram, or
    * a default file card whose thumb is a 48px chip, gets nothing from it. */
-  /* fade: PrintGridCard's image fade-in + loading="lazy", carried (2026-08-27) */
-  print:   { ring: true, zoom: true, fade: true },
-  work:    { zoom: true },
+  /* `print` FOLDED INTO `catalog` 2026-08-29 (user: "print doesnt need to exist
+   * all together, it can just use catalog"). Its two behaviours became PROPS,
+   * because a 3D turn and an image fade-in are things a card DOES, not kinds of
+   * content it holds: `flip` and `fade`. Its zoom is catalog's already (below).
+   * `ring` was removed the same day — it stays an opt-in on ContentMedia. */
+  showcase: { zoom: true },
   /* frame OFF by default (ListingCardThumbBorder, user 2026-08-27: "I hate
    * border — remove border"): the article thumb's hairline is opt-in —
    * `frame` turns it on, and with it the fg-08 → fg-16 hover step */
   article: { frame: false, borderHover: true, zoom: true },
 }
 
+/* VARIANTS ARE CONTENT KINDS, NEVER PAGE NAMES (user ruling 2026-08-29:
+ * "naming the variants by their use location doesnt make sense, because print
+ * doesnt use print variant"). Six page-named variants became four kinds —
+ * file · catalog · article · showcase — and the old names alias onto them:
+ *
+ *   default  → file            the fallback's name described its position
+ *   print    → catalog         /prints renders `work` rows and a plateless
+ *                              catalog card; `flip` + `fade` became props
+ *   work     → showcase        /work is a location; a work is a shown piece
+ *   typeface → showcase +      same card, full overlay instead of a drawer
+ *              layout="canvas"
+ *
+ * `layout` is the discriminator inside `showcase` because `reveal` was already
+ * taken by the consumer's overlay NODE. Its values are the box vocabulary the
+ * component already spoke: drawer (default) · canvas. */
+const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
+const LAYOUT_KEY = { canvas: 'showcaseCanvas', drawer: 'showcase' }
+
 export default function ContentCard({
-  variant = 'default',
+  variant: variantProp = 'file',
+  layout,
   hero = false,
   label,
   pad,
@@ -109,6 +148,9 @@ export default function ContentCard({
   frame,
   ring,
   zoom,
+  /* `flip` + `fade` — behaviours, not variants (the print fold, 2026-08-29) */
+  flip,
+  fade,
   /* plateRule (CatalogCardFrameAndZoom): the plate's top hairline — default the variant's (catalog and
    * print draw it); `false` turns it off without an `!important` in a consumer sheet */
   plateRule,
@@ -125,7 +167,12 @@ export default function ContentCard({
   className = '',
   ...text
 }) {
-  const box = BOX[variant] ?? BOX.default
+  const aliased = ALIAS[variantProp] ?? variantProp
+  /* `layout` only re-keys inside the showcase family — it is not a general
+   * escape hatch that would let any variant borrow another's box. */
+  const variant = aliased.startsWith('showcase') && layout ? LAYOUT_KEY[layout] ?? aliased : aliased
+  const box = BOX[variant] ?? BOX.file
+  const doFlip = flip ?? box.flip
   /* HERO (2026-08-27 — the featured card riding a page's fold; ListingCard
    * size="hero" had no ContentCard equivalent, which is why Stack still
    * imported it): a header row above the media — `label` left, `meta` chips
@@ -205,7 +252,7 @@ export default function ContentCard({
     borderHover: MEDIA[variant]?.borderHover ?? false,
     /* a catalog card with REAL media is image-led: it zooms (ShellHomeSystem) */
     zoom: zoom ?? (isHero ? 'hero' : variant === 'catalog' ? media != null : MEDIA[variant]?.zoom ?? false),
-    fade: MEDIA[variant]?.fade ?? false,
+    fade: fade ?? MEDIA[variant]?.fade ?? false,
   }
 
   /* `control` — the in-frame control slot (user ruling 2026-08-15). One node,
@@ -236,12 +283,12 @@ export default function ContentCard({
       </>
     ) : box.layout === 'fill-card' ? (
       <>
-        <div className="flex-1 min-w-0 min-h-0 relative overflow-hidden" style={{ ...(expanded ? { flex: '0 0 50%' } : null), ...(box.flip ? { perspective: '1000px' } : null) }}>
+        <div className="flex-1 min-w-0 min-h-0 relative overflow-hidden" style={{ ...(expanded ? { flex: '0 0 50%' } : null), ...(doFlip ? { perspective: '1000px' } : null) }}>
           {/* the FLIP (print): PrintGridCard's turn, verbatim — preserve-3d,
             * 0.4s ease-out, rotateY(180deg) while `selected`; the consumer's
             * `onClick` reads the rect off `event.currentTarget` for its
             * FLIP-transition (the seam was always reachable) */}
-          {box.flip ? (
+          {doFlip ? (
             <div className="h-full w-full" style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', transition: 'transform 0.4s ease-out', transform: selected ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
               <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
             </div>

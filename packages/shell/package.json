@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-shell",
-  "version": "0.19.1",
+  "version": "0.31.0",
   "private": false,
   "description": "KOL application shell — fixed 48px NavRail + AppShell layout root, PageShell/PageHeader scaffolds, ContentFilters catalog organism, GridCard, SettingsScaffold, WalkthroughPanel, ShortcutsOverlay. App chrome (kol-framework owns site chrome). Nav items, content, shortcuts and settings are consumer-injected. Sits above @kolkrabbi/kol-{theme,component,framework}.",
   "license": "MIT",

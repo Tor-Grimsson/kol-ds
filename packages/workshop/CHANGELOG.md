@@ -5,6 +5,21 @@
 > breaking or global-surface changes (token renames, default flips, new bare-element
 > rules) are flagged **BREAKING**.
 
+## 0.25.0 — 2026-08-31
+
+- **`TagModeOverlay` reads the query.** Pressing return set `expanded`,
+  `ShellLayout` swapped its body for this component, and the component consulted
+  `activeTags` and nothing else — so a typed query was replaced by the complete
+  unfiltered tag census and ZERO document rows, by construction. Searching `rf`
+  listed `project/kol-monorepo 85`, `domain/design-system 13` … not one of which
+  contains `rf`.
+- Document rows now render on a query OR a chip, matched with the engine's own
+  `matchSearchItems` rather than a second predicate, so committed and
+  uncommitted results rank identically. The tag cloud narrows to the tags present
+  in the result set with counts recomputed over it; an empty query keeps the full
+  census, which is a good browse state. A query that matches nothing says so.
+  (TagModeOverlayIgnoresQuery, kol-website)
+
 ## 0.23.0
 
 ### Minor Changes

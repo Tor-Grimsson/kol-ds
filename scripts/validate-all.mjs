@@ -40,6 +40,8 @@ const GATES = [
   ['retirements', 'validate-retirements.mjs'],
   ['icon-cuts', 'extract-icon-cuts.mjs'],
   ['motion', 'validate-motion.mjs'],
+  ['props', 'validate-props.mjs'],
+  ['dd-trigger', 'validate-dd-trigger.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

@@ -2,10 +2,19 @@ import {
   StackHero,
   ArticleHeader,
   PortableTextRenderer,
-  ArticleCard,
   ShareButtons,
   SourcesReferences,
 } from '@kolkrabbi/kol-content'
+import { ContentCard, ContentRow, Tag } from '@kolkrabbi/kol-component'
+
+/* MIGRATED 2026-08-30 (ContentSetRetirement step 3): `ArticleCard` was dropped.
+ * Its three sizes are `variant="article"` — hero/default on the CARD, `mini` on
+ * the ROW, which is the shape it always was. */
+const Img = ({ src }) => <img src={src} alt="" className="h-full w-full object-cover" />
+const Tags = ({ list = [] }) =>
+  list.map((t) => (
+    <Tag key={t} variant="inverse" hash={false} size="sm" className="kol-tag--data">{t}</Tag>
+  ))
 
 export const meta = {
   title: 'Blog / editorial',
@@ -250,19 +259,48 @@ export default function StackBlogSet() {
         <h2 className="kol-sans-heading-04 pb-8">More from the Stack</h2>
 
         <div className="pb-16">
-          <ArticleCard size="hero" {...featured} />
+          <ContentCard
+            variant="article"
+            hero
+            media={<Img src={featured.thumbnail} />}
+            label={featured.label}
+            eyebrow={featured.kicker}
+            title={featured.title}
+            body={featured.excerpt}
+            meta={featured.meta}
+            href={featured.href}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 pb-20">
           {grid.map((card) => (
-            <ArticleCard key={card.href} size="default" {...card} />
+            <ContentCard
+              key={card.href}
+              variant="article"
+              media={<Img src={card.thumbnail} />}
+              title={card.title}
+              body={card.excerpt}
+              tags={<Tags list={card.tags} />}
+              date={card.date}
+              size={card.readingTime}
+              href={card.href}
+            />
           ))}
         </div>
 
         <div className="max-w-[var(--kol-content-column)] flex flex-col gap-8">
           <h3 className="kol-sans-heading-05 pb-2">Also worth your time</h3>
           {more.map((card) => (
-            <ArticleCard key={card.href} size="mini" {...card} />
+            <ContentRow
+              key={card.href}
+              variant="article"
+              media={<Img src={card.thumbnail} />}
+              title={card.title}
+              body={card.summary}
+              date={card.meta?.[0]}
+              size={card.meta?.[1]}
+              href={card.href}
+            />
           ))}
         </div>
       </section>

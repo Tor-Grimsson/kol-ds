@@ -12,3 +12,4 @@
 - [No fit-all laws from one-off rulings](no-fit-all-laws-from-one-off-rulings.md) — a call about one page is scoped to that page; never a shell default, law sentence or gate without his say
 - [Content Set retirement wave tracked](content-set-retirement-wave-tracked.md) — multi-repo arc; ticket lobby/inbox/ContentSetRetirement.md; keep in view until the exports are dropped
 - [Carry-through means verbatim](carry-through-means-verbatim.md) — port the old rendering class-for-class; DS laws never apply to a port; diff old vs new strings before shipping
+- [Replies are too long](replies-are-too-long.md) — ticket closes get a few plain lines, not a report; detail lives in the ticket

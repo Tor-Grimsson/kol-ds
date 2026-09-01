@@ -1,5 +1,5 @@
 import CardHeader from './_shared/CardHeader'
-import { Table } from '@kolkrabbi/kol-component'
+import { Badge, Table } from '@kolkrabbi/kol-component'
 
 const DashTableCard = ({
   title,
@@ -13,7 +13,10 @@ const DashTableCard = ({
 }) => {
   return (
     <div className={`dash-card ${className}`.trim()}>
-      <CardHeader icon={icon} title={title} subtitle={subtitle} />
+      <div className="flex justify-between items-start">
+        <CardHeader icon={icon} title={title} subtitle={subtitle} />
+        {badge && <Badge>{badge}</Badge>}
+      </div>
 
       <div className="flex-1 min-h-0">
         <Table columns={columns} rows={rows} />

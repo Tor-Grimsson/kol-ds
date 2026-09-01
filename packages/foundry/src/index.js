@@ -24,7 +24,6 @@ export { default as PairingCard } from './PairingCard.jsx'
 // catalog — the specimen collection
 export { default as TypefaceLibraryGrid } from './TypefaceLibraryGrid.jsx'
 export { default as TypefaceLibraryGridWithVariables } from './TypefaceLibraryGridWithVariables.jsx'
-export { default as TypefaceLibraryItem } from './TypefaceLibraryItem.jsx'
 export { default as TypefaceVariablePreview } from './TypefaceVariablePreview.jsx'
 export { default as TypefaceAlphabet } from './TypefaceAlphabet.jsx'
 

@@ -47,7 +47,7 @@
 
 /* [variant][form][slot] → 'type-class ink-role', verbatim from the ruled table */
 const RAMP = {
-  default: {
+  file: {
     card: { title: 'kol-sans-heading-04 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
   },
@@ -57,12 +57,8 @@ const RAMP = {
     card: { title: 'kol-mono-14 text-emphasis', detail: 'kol-mono-10 text-meta truncate' },
     row:  { title: 'kol-mono-12 text-emphasis', detail: 'kol-mono-10 text-meta' },
   },
-  print: {
-    card: { title: 'kol-mono-14 text-emphasis', detail: 'kol-mono-10 text-meta' },
-    /* mono-12 + emphasis, matching catalog — print's row IS catalog's row, so
-     * the two must not disagree about their own type. */
-    row:  { title: 'kol-mono-12 text-emphasis', detail: 'kol-mono-10 text-meta' },
-  },
+  /* `print` folded into `catalog` 2026-08-29 — its row was already catalog's,
+   * and its card differed only by `detail` not truncating. It aliases now. */
   article: {
     /* kol-content-title-dim: the title dims to 70% on card hover (StackCardHover, 2026-08-27 — ListingCard's move, kol-theme) */
     card: { eyebrow: 'kol-mono-12 text-meta', title: 'kol-sans-heading-03 text-emphasis kol-content-title-dim', body: 'kol-mono-14 text-body', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
@@ -75,7 +71,7 @@ const RAMP = {
      * display-03 uppercase, clamp 2, dim on hover; body mono-14 fg-48 clamp 2. */
     hero: { eyebrow: 'kol-card-kicker tracking-wide text-fg-64', title: 'kol-sans-display-03 uppercase line-clamp-2 kol-content-title-dim', body: 'kol-mono-14 text-fg-48 line-clamp-2', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', tags: 'flex flex-wrap gap-2' },
   },
-  work: {
+  showcase: {
     /* INVERSE ink — the card's plate is the drawer, `surface-inverse`. Leaving
      * these on `text-emphasis` painted light type on a light plate and the
      * caption disappeared. */
@@ -95,7 +91,16 @@ const RAMP = {
      * ink, the year kol-mono-12 fg-64. Body unchanged (the site passes its face). */
     row:  { title: 'kol-mono-14 uppercase text-emphasis truncate', body: 'kol-sans-heading-03 leading-tight text-emphasis truncate', meta: 'kol-mono-14 text-emphasis', date: 'kol-mono-12 text-fg-64', tags: 'flex flex-wrap items-center gap-1.5' },
   },
-  typeface: {
+  /* ROSTER — a pickable row's two lines, both TRUNCATED (ContentRowRosterVariant,
+   * kol-chess 2026-08-31). Written out rather than derived from `showcase`: the
+   * name-keyed maps below (FILL, GAPS) cannot be reached by a spread, and a
+   * derive that misses one of them is the exact trap `showcaseCanvas` fell into
+   * twice. Two literals beat a derive. Row form only — kol-chess wants no card,
+   * and a card nobody asked for is a variant to keep in step for nothing. */
+  roster: {
+    row: { title: 'kol-mono-14 text-fg-96 truncate', meta: 'kol-mono-12 text-fg-48 truncate' },
+  },
+  showcaseCanvas: {
     /* RULED ON SCREEN (TypefaceCardAndRow, kol-website 2026-08-27): name and
      * classification are FULL ink, the year steps to 64; the card's title is the
      * row's title string — one title voice for the typeface family. Ink only. */
@@ -122,9 +127,8 @@ const RAMP = {
  * Directions are the RULED structures (06-content-card-system.md §2 boxes),
  * read off the shipped components and the live pages they render on. */
 const ORDER = {
-  default:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
+  file:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
   catalog:  { card: ['title', 'detail'], row: [['between', 'title', 'detail']] },
-  print:    { card: ['title', 'detail'], row: [['between', 'title', 'detail']] },
   /* title + body are ONE block in BOTH forms — a `stack`, so they sit on the
    * tight 4px internal gap while tags, kicker and the meta group keep the
    * form's own outer gap. A flat column gave every line the same gap, which
@@ -142,12 +146,14 @@ const ORDER = {
   /* WorkListItem's inner column is `justify-between` with the header row on
    * top and the description BELOW IT, spanning the full width — not tucked
    * inside the left column, which is what squeezed the big line. */
-  work:     { card: ['title', 'meta'], row: [['between', ['stack', 'title', 'tags'], ['stack', 'meta', 'date']], 'body'] },
+  showcase: { card: ['title', 'meta'], row: [['between', ['stack', 'title', 'tags'], ['stack', 'meta', 'date']], 'body'] },
   /* typeface row = ONE header line, both sides stacked: name over styles on the
    * left, classification over year on the right. Verbatim from the shipped
    * item, which had been flattened into title-left / date-right and lost the
    * styles line into a body slot below. */
-  typeface: { card: ['title', 'body'], row: [['between', ['stack', 'title', 'body'], ['stack', 'detail', 'date']]] },
+  showcaseCanvas: { card: ['title', 'body'], row: [['between', ['stack', 'title', 'body'], ['stack', 'detail', 'date']]] },
+  /* two lines, pushed apart by the column's own justify-between (FILL) */
+  roster: { row: ['title', 'meta'] },
 }
 
 /* inner line gap per variant/form, read from the shipped boxes and spelled in
@@ -163,26 +169,32 @@ const ORDER = {
  * `self-stretch`, NOT `h-full` — the row carries `min-height`, never `height`,
  * so `height: 100%` resolves against an indefinite parent, computes to auto,
  * and shrink-wraps the column. Which is exactly what it did. */
-const FILL = { work: true }
+const FILL = { showcase: true, roster: true }
 
 /* gap INSIDE a ['stack', …] block. Defaults to the tight 4px pair article
  * wants; work's header stack is the shipped gap-1 md:gap-2. */
 const STACK = {
-  work: 'var(--kol-spacing-2)',
-  typeface: 'var(--kol-spacing-2)',
+  showcase: 'var(--kol-spacing-2)',
+  showcaseCanvas: 'var(--kol-spacing-2)',
 }
 
 const GAPS = {
-  default: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-2)' },
+  file: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-2)' },
   catalog: { card: 'var(--kol-spacing-1)', row: 'var(--kol-spacing-2)' },
-  print: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-2)' },
   article: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-3)', hero: 'var(--kol-spacing-3)' },
-  work: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-4)' },
-  typeface: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-6)' },
+  showcase: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-4)' },
+  showcaseCanvas: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-6)' },
+  /* roster's lines are pushed apart by justify-between, so this is only a
+   * floor for the case where the row is given more height than 56. */
+  roster: { row: 'var(--kol-spacing-1)' },
 }
 
+/* `default` → `file` (user 2026-08-29) — kept working as an alias here too,
+ * because ContentText is exported and a consumer can drive it directly. */
+const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
+
 export default function ContentText({
-  variant = 'default',
+  variant: variantProp = 'file',
   form = 'card',
   title, body, eyebrow, kicker, detail, date, size, meta, tags,
   gap, clamp,
@@ -192,8 +204,9 @@ export default function ContentText({
   /* `kicker` / `kickerClass` = aliases of `eyebrow` / `eyebrowClass` (2026-08-27) */
   eyebrow = eyebrow ?? kicker
   eyebrowClass = eyebrowClass ?? kickerClass
-  const ramp = RAMP[variant]?.[form] ?? RAMP.default[form] ?? RAMP.default.card
-  const order = (form === 'hero' && ORDER[`${variant}Hero`]) || ORDER[variant]?.[form] || ORDER.default.card
+  const variant = ALIAS[variantProp] ?? variantProp
+  const ramp = RAMP[variant]?.[form] ?? RAMP.file[form] ?? RAMP.file.card
+  const order = (form === 'hero' && ORDER[`${variant}Hero`]) || ORDER[variant]?.[form] || ORDER.file.card
   const values = { title, body, eyebrow, detail, date, size, meta, tags }
   const overrides = { title: titleClass, body: bodyClass, eyebrow: eyebrowClass, detail: detailClass, date: dateClass, size: sizeClass, meta: metaClass, tags: tagsClass }
 

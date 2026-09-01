@@ -12,6 +12,7 @@
  */
 export { default as AppShell } from './AppShell.jsx'
 export { NavHiddenContext, useNavHidden } from './navHidden.js'
+export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { default as NavRail } from './NavRail.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
 export { default as PageHeader } from './PageHeader.jsx'
@@ -19,8 +20,7 @@ export { default as PageHeader } from './PageHeader.jsx'
  * where it always did. This package shipped a recreated duplicate 0.1.0–0.2.0;
  * retired 2026-08-15, quarantined in _tmp/. Import it from kol-component. */
 export { default as TabStrip } from './TabStrip.jsx'
-export { default as GridCard } from './GridCard.jsx'
-export { default as SettingsScaffold, SettingsSection, LabelRow } from './SettingsScaffold.jsx'
+export { default as SettingsScaffold } from './SettingsScaffold.jsx'
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
 export { default as ShortcutsOverlay } from './ShortcutsOverlay.jsx'
 export { default as Logomark } from './Logomark.jsx'

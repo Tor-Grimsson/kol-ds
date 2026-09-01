@@ -4,6 +4,16 @@
 > lives in the repo's session logs). From here every publish adds an entry, and
 > breaking or global-surface changes are flagged **BREAKING**.
 
+## 0.3.0 — 2026-08-31
+
+- `DashTableCard` renders the `badge` it accepts. It had destructured the prop
+  and called `CardHeader` with three arguments, so `<DashTableCard badge={…} />`
+  rendered nothing and warned about nothing. It now wears `DashListCard`'s
+  shape — header and badge in a `justify-between` row — so the four cards that
+  take a badge place it the same way. `badge` is CONTENT, not a node: the card
+  wraps it in `<Badge>`, matching `DashListCard`/`DashChartCard`/`DashFeaturedCard`.
+- Call sites that pass no `badge` are unchanged — the wrapper is inert.
+
 ## 0.2.3 — 2026-08-15
 
 - `CardHeader` and `DashStackedBarCard` ink their icons on the opaque tier

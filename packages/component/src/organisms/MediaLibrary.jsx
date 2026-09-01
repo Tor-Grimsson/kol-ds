@@ -1019,9 +1019,3 @@ export function MediaPicker({ open, client, accept = 'all', onClose, onPick }) {
     />
   )
 }
-
-/** @deprecated 2026-08-01 — alias of `MediaLibrary variant="page"`. Drops when
- *  nobody imports it (04-retirements.md). */
-export function MediaBrowser({ client, accept = 'all', onSelect = null, ...rest }) {
-  return <MediaLibrary variant="page" client={client} accept={accept} onSelect={onSelect} {...rest} />
-}

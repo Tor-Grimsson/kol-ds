@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { bleedClass } from './sectionBleed.js'
 import { surfaceClass } from './sectionSurface.js'
 import Input from '../atoms/Input.jsx'
 import Button from '../atoms/Button.jsx'
@@ -29,8 +30,11 @@ import { minHeightClass } from './sectionHeights.js'
  * error ids are useId-generated (or `inputId`) so multiple sections mount
  * without collisions.
  *
- * @param {'full'|'80'|'60'|'40'|string} [height='60']  min-height on the family's ladder — full = 100dvh,
- *   80 = 70svh / 80vh, 60 = 50svh / 60vh (default), 40 = 35svh / 40vh; content stays vertically centred inside it
+ * @param {'full'|'80'|'60'|'40'|string} [height='40']  min-height on the family's ladder — full = 100dvh,
+ *   80 = 70svh / 80vh, 60 = 50svh / 60vh, 40 = 35svh / 40vh (default); content stays vertically centred inside it.
+ *   DEFAULT DROPPED 60 → 40 (SectionNewsletterMobileMeasure, kol-website 2026-08-31): at rung 60 the band
+ *   reserved 422px around 308px of content on an 844-tall phone — ~114px of empty grey to scroll past. The
+ *   LADDER is untouched; every other section still wants its rung. Pass `height="60"` to keep the old air.
  * @param {'inverse'|'light'|'dark'} theme  the paired theme of whatever is live, or a pinned one — stamped on the section
  * @param {ReactNode} eyebrow      eyebrow above the headline (uppercase by role); `label` is its alias
  * @param {ReactNode} headline     heading (display-01 by default; `headlineSize` picks another role)
@@ -44,12 +48,25 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {string}    id           anchor id on the section (e.g. "signup")
  * @param {string}    inputId      id override for the email input (default useId-generated)
  * @param {object}    slotClass · slotStyle   per-slot class / style on the SectionText (reveal seam)
+ * @param {'sm'|'md'|'lg'} [controlSize='md']  size rung for BOTH the email Input and the submit
+ *   Button (SectionNewsletterControlSize, kol-website 2026-08-31). The pair was hardcoded md with no
+ *   seam, so a page that sets `size="lg"` on every other call-site button could not match it here and
+ *   the newsletter read visibly smaller directly beneath them. Default is today's md — nothing moves.
+ * @param {boolean}   [fullBleed=false]  the FILL breaks the page gutter while the content keeps it
+ *   (SectionNewsletterFullBleed, kol-website 2026-08-31). This card is a filled surface inside
+ *   `.kol-page`, so the gutter clipped its background and left strips of page down both sides of the
+ *   colour. Fill and content padding are the same box, so a consumer could not bleed one without
+ *   dragging the other out with it. The breakout literal is SectionHero's, character for character —
+ *   two organisms in one family must not invent two ways to leave a gutter. The section's own
+ *   `px-5 sm:px-8` then re-insets the content, so only the fill moves.
  * @param {string}    className    extra classes on the section
  * @param {'primary'|'secondary'|'tertiary'|'inverse'|'auto'|'none'|string} background  the section's surface
  *   (SectionBackgroundProp, 2026-08-27) — a named surface, `none`, or a raw utility / token string; default = what it painted before
  */
 export default function SectionNewsletter({
-  height = '60',
+  height = '40',
+  controlSize = 'md',
+  fullBleed = false,
   theme,
   background,
   eyebrow,
@@ -103,7 +120,14 @@ export default function SectionNewsletter({
       id={id}
       ref={themeRef}
       data-theme={themeStamp}
-      className={`kol-section-newsletter w-full flex flex-col justify-center py-24 ${surfaceClass(background, theme ? 'primary' : 'none')} ${theme ? 'text-auto' : ''} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}
+      /* THE FORM NEEDS AN INSET FLOOR (SectionNewsletterMobileMeasure, 2026-08-31).
+        * Desktop's 80px is not padding — it is the leftover of the inner measure
+        * (1184 band − 1024 max-w, halved), so it SCALES TO ZERO rather than down:
+        * at 390 the field and submit ran edge to edge against the band's own
+        * boundary and read as breaking out of it. `px-5` is a floor the band owns.
+        * Desktop does not move — the measure caps below the padded width, so the
+        * inner block still centres at 80px from the band edge. */
+        className={`kol-section-newsletter ${bleedClass(fullBleed)} flex flex-col justify-center px-5 sm:px-8 py-24 ${surfaceClass(background, theme ? 'primary' : 'none')} ${theme ? 'text-auto' : ''} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}
     >
       {/* the family's ONE cap — the shell's --kol-container-max ladder — and
         * inside it the lede's MEASURE on a wrapper (SectionNewsletterForm,
@@ -134,7 +158,7 @@ export default function SectionNewsletter({
               placeholder={placeholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              size="md"
+              size={controlSize}
               aria-required="true"
               aria-describedby={status === 'error' ? errorId : undefined}
               className="w-full sm:max-w-[400px] md:max-w-[520px]"
@@ -142,6 +166,7 @@ export default function SectionNewsletter({
             <Button
               type="submit"
               variant="primary"
+              size={controlSize}
               disabled={status === 'submitting'}
               className="w-full sm:w-auto"
             >

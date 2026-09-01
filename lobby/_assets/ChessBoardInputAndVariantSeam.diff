@@ -1,0 +1,96 @@
+--- _tmp/ChessBoard.jsx.before	2026-08-31 00:49:51.577707301 +0000
++++ /Users/biskup/dev/projects/kol-ds-ui/packages/chess/src/apparatus/ChessBoard.jsx	2026-08-31 00:50:05.413871815 +0000
+@@ -92,6 +92,58 @@
+     setSelectedSquare(squarePiece && squarePiece.color === turn ? coordinate : null)
+   }
+ 
++  /* ── DRAG-AND-DROP (prototype, kol-chess 2026-08-31) ──
++   *
++   * Click-to-move was the only input, which is workable on a desktop and wrong
++   * on a phone: dragging a piece is the primary gesture on both lichess and
++   * chess.com, and its absence is the first thing a player notices.
++   *
++   * POINTER events, not HTML5 drag-and-drop: `dragstart`/`drop` do not fire on
++   * touch at all, so an HTML5 implementation would have added drag for exactly
++   * the devices that already worked. Pointer events are one code path for
++   * mouse, touch and pen.
++   *
++   * The drag REUSES the click machinery rather than duplicating it: pointerdown
++   * selects the square (so legal targets light up exactly as they do on a tap),
++   * and pointerup over another square runs the same move commit. A press that
++   * never leaves its square falls through to the click handler, so tap-to-move
++   * is untouched. */
++  const [dragFrom, setDragFrom] = useState(null)
++
++  const commitMove = (from, to) => {
++    if (!interactive || !onMove || from === to) return false
++    let moves = []
++    try { moves = chess.moves({ square: from, verbose: true }) } catch { return false }
++    const move = moves.find((m) => m.to === to)
++    if (!move) return false
++    setSelectedSquare(null)
++    onMove({ from: move.from, to: move.to, promotion: 'q' })
++    return true
++  }
++
++  const handlePointerDown = (coordinate, squarePiece) => (event) => {
++    if (!interactive || !onMove || onSquareClick) return
++    let turn = 'w'
++    try { turn = chess.turn() } catch { /* keep default */ }
++    if (!squarePiece || squarePiece.color !== turn) return
++    /* capture so pointerup still reaches us when the finger leaves the square */
++    event.currentTarget.setPointerCapture?.(event.pointerId)
++    setDragFrom(coordinate)
++    setSelectedSquare(coordinate)
++  }
++
++  const handlePointerUp = (event) => {
++    if (!dragFrom) return
++    const from = dragFrom
++    setDragFrom(null)
++    /* what is under the finger, which is not the element that captured it */
++    const el = document.elementFromPoint(event.clientX, event.clientY)
++    const to = el?.closest?.('[data-square]')?.getAttribute('data-square')
++    if (!to || to === from) return
++    /* a completed drag consumes the click that would follow it */
++    if (commitMove(from, to)) event.preventDefault()
++  }
++
+   const isFluid = size === 'fluid'
+   const boardPixelSize = getBoardSize(size)
+   const piecePixelSize = getPieceSize(size)
+@@ -167,8 +219,33 @@
+                   key={coordinate}
+                   className={`${squareClass} ${highlightClass} ${inputClasses}`}
+                   data-square={coordinate}
+-                  style={{ backgroundColor: squareColor }}
++                  style={{ backgroundColor: squareColor, touchAction: hasInput ? 'none' : undefined }}
+                   onClick={hasInput ? () => handleSquareClick(coordinate, square) : undefined}
++                  onPointerDown={hasInput ? handlePointerDown(coordinate, square) : undefined}
++                  onPointerUp={hasInput ? handlePointerUp : undefined}
++                  /* A SQUARE IS A CONTROL, so it is announced and reachable as
++                   * one. It was a bare div with an onClick: invisible to a
++                   * screen reader and unreachable by keyboard, which made the
++                   * whole board unusable without a pointer. `aria-label` reads
++                   * the square and its occupant; `aria-pressed` carries the
++                   * selection the class already showed visually. */
++                  role={hasInput ? 'button' : undefined}
++                  tabIndex={hasInput ? 0 : undefined}
++                  aria-label={
++                    hasInput
++                      ? `${coordinate}${pieceName ? `, ${pieceColor} ${pieceName}` : ', empty'}${targetMove ? ', legal move' : ''}`
++                      : undefined
++                  }
++                  aria-pressed={hasInput ? coordinate === selectedSquare : undefined}
++                  onKeyDown={
++                    hasInput
++                      ? (e) => {
++                          if (e.key !== 'Enter' && e.key !== ' ') return
++                          e.preventDefault()
++                          handleSquareClick(coordinate, square)
++                        }
++                      : undefined
++                  }
+                 >
+                   {showPieces && pieceName ? (
+                     <div className="relative z-10 flex items-center justify-center" style={{ width: squarePixelSize, height: squarePixelSize }}>

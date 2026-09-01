@@ -78,3 +78,64 @@
   background-color: var(--kol-fg-24);
   color: inherit;
 }
+
+/* ── THE RAIL AS A DRAWER ────────────────────────────────────────────────────
+ * `AppShell touch="drawer"` below `drawerBelow` (ShellRailNoDrawerOnMobile,
+ * kol-chess 2026-08-31). At 390 the 48px rail is 12.3% of the viewport spent on
+ * chrome in the one place there is none to spare — a chess board went from
+ * 302px to 350px the moment it folded. `railToggleKey` could not help: it is a
+ * KEY, and a phone has no keyboard.
+ *
+ * JS owns the breakpoint and stamps `data-rail-drawer` on the shell root; CSS
+ * only paints. No media query here — the fold width is a prop, so a query would
+ * be a second source of truth for it. And no `!important`: the rail reads its
+ * own `--kol-shell-drawer-width` in drawer mode instead of the live rail token,
+ * so nothing here is fighting an inline style. */
+[data-rail-drawer] .kol-shell-rail {
+  transform: translateX(-100%);
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-rail-drawer="open"] .kol-shell-rail {
+  transform: translateX(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-rail-drawer] .kol-shell-rail { transition: none; }
+}
+
+/* Above the rail, so it stays tappable with the drawer open. */
+.kol-shell-drawer-trigger {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: calc(var(--kol-z-sticky) + 2);
+  width: 32px;
+  height: 32px;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* THE TRIGGER RIDES THE DRAWER'S TRAILING EDGE WHEN OPEN (device report from
+ * kol-chess, 2026-08-31 — user: "menu is on the wrong side it overlaps close
+ * button when open"). Fixed at 12/12 it sat INSIDE the drawer it opens: the
+ * drawer spans 0–240 from the same edge, so the close × was drawn on top of the
+ * rail's own logomark row, both in the same 32px. It stayed clickable — z-order
+ * was right, and the scrim and Escape both closed — so it read as "the close
+ * button is gone" rather than as a trap. Unreadable, not unusable.
+ *
+ * One transform, no new markup: the control stays where the thumb last touched
+ * it and does not need NavRail to grow a close row of its own. Not moved to the
+ * right permanently — a trigger that changes corner between states is worse than
+ * one that travels. */
+[data-rail-drawer="open"] .kol-shell-drawer-trigger {
+  transform: translateX(var(--kol-shell-drawer-width, 240px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-shell-drawer-trigger { transition: none; }
+}
+
+.kol-shell-drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--kol-z-sticky) - 1);
+  background: color-mix(in srgb, var(--kol-color-ab-black) 48%, transparent);
+}

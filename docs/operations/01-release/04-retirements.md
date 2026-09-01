@@ -35,16 +35,6 @@ What counts as an alias is detected from source — a barrel line exporting one 
 |---|---|---|---|
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
-| `MediaBrowser` | component | `MediaLibrary variant="page"` | 2026-08-01 |
-| `ArticleCard` | content | `ListingCard` (itself retiring → `ContentCard variant="article"`) | 2026-08-15 |
-| `MediaCard` | component | `ContentCard variant="default"` | 2026-08-26 |
-| `MediaRow` | component | `ContentRow variant="default"` | 2026-08-26 |
-| `GridCard` | shell | `ContentCard variant="catalog"` (row: `ContentRow variant="catalog"`) | 2026-08-26 |
-| `PrintGridCard` | store | `ContentCard variant="print"` | 2026-08-26 |
-| `ListingCard` | content | `ContentCard variant="article"` (hero size: `hero`, since component 0.91.0) | 2026-08-26 |
-| `WorkCard` | content | `ContentCard variant="work"` | 2026-08-26 |
-| `WorkListItem` | content | `ContentRow variant="work"` | 2026-08-26 |
-| `TypefaceLibraryItem` | foundry | `ContentCard variant="typeface"` (list: `ContentRow variant="typeface"`) | 2026-08-26 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |
 | `FeaturesCardSection` | component | `SectionCards` | 2026-08-26 |
@@ -69,6 +59,10 @@ Type and chrome classes retire the same way — the marker line above the rule i
 | `kol-card-kicker` | theme | `kol-eyebrow` — the eyebrow has one name; the props `kicker` (ContentText) and `label` (SectionText + the sections) are aliases too, documented on the components (the gate cannot see props) | 2026-08-27 |
 
 ## History
+
+- 2026-08-30 — **ContentSetRetirement step 3: the nine Content Set rows are gone, dropped not aged out.** `ArticleCard` · `ListingCard` · `MediaCard` · `MediaRow` · `GridCard` (shell) · `PrintGridCard` · `WorkCard` · `WorkListItem` · `TypefaceLibraryItem` removed from five barrels; sources quarantined to `_tmp/2026-08-30-content-set-exports/`, never deleted. R3 never fired on them — the estate sweep showed no consumer outside this repo, so the user ruled the drop early rather than waiting 30 days. The showcase's four live compositions (article-grid, work-grid, stack-blog, work-portfolio), the typeface demo and kol-store's own `PrintsGrid` were migrated onto ContentCard/ContentRow in the same pass; the dead `content-card-comparison` set was quarantined whole. kol-dashboards' `GridCard` is a different component and stays (ruled 2026-08-27).
+
+  ⚠️ The same day, four VARIANT names were renamed with prop-value aliases (`default`→`file`, `print`→`catalog`, `work`→`showcase`, `typeface`→`showcase layout="canvas"`). **This gate cannot see those** — it reads barrel exports, and a prop value is not one. Nothing will age them out; they come off when a human decides.
 
 - 2026-08-27 — R4 written after the ListingCard incident: an alias may not gain behaviour. Same day: CSS classes join the system (DisplayTightRamp): the elder display voice's four classes are the first rows, the display ramp itself moved to the Tight cut.
 

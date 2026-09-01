@@ -1,4 +1,5 @@
 import SectionText from '../molecules/SectionText.jsx'
+import { FULL_BLEED } from './sectionBleed.js'
 import { surfaceClass } from './sectionSurface.js'
 import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'
@@ -87,7 +88,7 @@ export default function SectionSplit({
   const sectionStyle = bgImage
     ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }
     : undefined
-  const bleed = fullBleed ? 'w-screen ml-[calc(50%-50vw)]' : ''
+  const bleed = fullBleed ? FULL_BLEED : ''
   const centred = align === 'center'
   const mediaFirst = align === 'left'
   const grid = centred
@@ -135,7 +136,18 @@ export default function SectionSplit({
            * caps at the column — the media takes its size from the section,
            * never gives it */
           <div
-            className={`kol-section-split-visual relative w-auto max-w-full justify-self-center rounded-[var(--kol-radius-sm)] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
+            /* THE MEDIA FILLS ITS COLUMN (SectionSplitVisualWidth, kol-website
+             * 2026-08-31). It was `w-auto`, so the width was derived from the
+             * image's aspect against whatever height the box was given — tall
+             * enough and it clamped to max-w-full and filled; short and it
+             * resolved NARROWER than the column and `justify-self-center` then
+             * centred it, so the media sat visibly inset while the copy beneath
+             * stayed at the page gutter. It is VIEWPORT HEIGHT that decides:
+             * 390×844 passes, 390×700 renders at left 56 · width 278. A real
+             * phone with browser chrome sits in the 660–720 band, which is why
+             * this was reported from a device four times and never reproduced
+             * against a nominal 844-tall test. `max-w-full` alone only caps. */
+            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
             style={{ aspectRatio: ratio, height: 'calc(var(--kol-section-h, 60vh) - 2 * var(--kol-section-py, 4rem))' }}
           >
             {media}
