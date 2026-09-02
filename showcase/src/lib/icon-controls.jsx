@@ -34,9 +34,8 @@ const SegBtn = ({ active, onClick, children }) => (
   <button
     type="button"
     onClick={onClick}
-    className={`kol-helper-12 px-2 py-1 rounded-sm ${active ? 'text-fg-96' : 'text-fg-48 hover:text-fg-80'}`}
+    className={`kol-helper-12 px-2 py-1 rounded-sm ${active ? 'bg-fg-04 text-fg-96' : 'text-fg-48 hover:text-fg-80'}`}
     style={{
-      background: active ? 'var(--kol-fg-04, rgba(255,255,255,0.04))' : 'transparent',
       border: 'none',
       cursor: 'pointer',
     }}

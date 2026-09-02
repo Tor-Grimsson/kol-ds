@@ -27,4 +27,5 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[07-content-system\|Content system]] | The two Sanity CMS streams, stack and work |
 | [[08-chess-system\|Chess system]] | Board, pieces, and the play/analysis apparatus |
 | [[09-dashboards-system\|Dashboards system]] | Hand-rolled SVG charts and the dashboard grid |
+| [[13-controls-system\|Controls system]] | Hardware panel controls for instruments |
 | [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for colour, logo and type |

@@ -7,15 +7,16 @@ import React from 'react'
  *   variant="primary"        — filled shell (surface-secondary), button geometry
  *   variant="outline"        — bordered shell (border-oq-16), button geometry
  *
- *   size="sm" / "md" (default) / "lg" — shells match button heights
- *     (26/32/40); the track scales with size in all variants.
+ *   size="xs" / "sm" / "md" (default) / "lg" — shells match button heights
+ *     (22/26/32/40); the track scales with size in all variants. xs is the
+ *     panel rung (2026-09-01).
  *
  * Legacy aliases: 'plain' → bare · 'default' (the old boxed look) → outline.
  * Type via kol-mono-{12,14,16}; no auto-uppercase — casing is authored at
  * the call site (KOL no-auto-casing rule).
  */
 
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 const LEGACY_VARIANTS = { plain: 'bare', default: 'outline' }
 
 const ToggleSwitch = ({

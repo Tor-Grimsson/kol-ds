@@ -1,7 +1,7 @@
-import { useContext, useLayoutEffect, useMemo } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { ShellContentWidthContext } from '@kolkrabbi/kol-workshop'
-import { Button, Pill } from '@kolkrabbi/kol-component'
+import { ShellContentWidthContext, ShellNavCollapsedContext, ShellTocCollapsedContext } from '@kolkrabbi/kol-workshop'
+import { Button, Pill, SectionHero } from '@kolkrabbi/kol-component'
 import { slugify } from '../nav/registry.js'
 import DemoStage from '../lib/DemoStage.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
@@ -28,7 +28,9 @@ import {
 /**
  * Home — the KOL design-system front door.
  *
- * shadcn-style landing: top nav (no sidebar), centered hero, then a dense
+ * shadcn-style landing: top nav (no sidebar — BOTH rails shed through the
+ * shell's collapse seams, so this is the one page that arrives without the
+ * docs furniture), a full-height text hero, then a dense
  * columns-masonry "bento wall" of RICH composed cards — real metrics
  * dashboards (offline mock data), copy-pasteable blocks, and a few atomic
  * component demos for rhythm. Every tile is a live @kolkrabbi render,
@@ -117,9 +119,9 @@ function GhostFlank({ side }) {
 // ── Tile frame — uniform labeled specimen, error-boundaried ───────────────────
 // The label is the way IN (user ask 2026-08-09, "make the section header link
 // to it") — every tile with a destination renders its header as a Link.
-function Tile({ label, to, children }) {
+function Tile({ label, to, className = '', style, children }) {
   return (
-    <div className="mb-5 break-inside-avoid overflow-hidden rounded border border-fg-08 bg-surface-primary p-4">
+    <div className={`mb-5 break-inside-avoid overflow-hidden rounded border border-fg-08 bg-surface-primary p-4 ${className}`.trim()} style={style}>
       {to ? (
         <Link to={to} className="kol-helper-10 text-meta uppercase mb-3 block hover:text-emphasis hover:underline">
           {label}
@@ -147,10 +149,41 @@ export default function Home() {
    * left against the nav — inside that cap the hero centred on the cap, so
    * collapsing the TOC moved nothing and collapsing the nav moved everything. */
   const setContentWidth = useContext(ShellContentWidthContext)
+  const setNavCollapsed = useContext(ShellNavCollapsedContext)
+  const setTocCollapsed = useContext(ShellTocCollapsedContext)
   useLayoutEffect(() => {
     setContentWidth?.('none')
-    return () => setContentWidth?.('canvas')
-  }, [setContentWidth])
+    /* THE FRONT DOOR HAS NO RAILS (user, 2026-09-01: "it just jumps straight
+     * into the sidebars"). Both collapse on mount and come back on unmount, so
+     * every other route lands with the furniture it had. The header's own
+     * toggles still work here — a reader who wants the tree can pull it in. */
+    setNavCollapsed?.(true)
+    setTocCollapsed?.(true)
+    return () => {
+      setContentWidth?.('canvas')
+      setNavCollapsed?.(false)
+      setTocCollapsed?.(false)
+    }
+  }, [setContentWidth, setNavCollapsed, setTocCollapsed])
+
+  /* FIRST ARRIVAL ONLY. The wall's tiles wear the theme's `.kol-reveal-group`
+   * and stagger in as they enter the viewport — the motion sheet's own
+   * scroll-entrance family, `.is-visible` stamped by the observer below, which
+   * is the whole API. Once per session: on the way back from a component page
+   * the wall is already known, so it renders plain. */
+  const [revealed] = useState(() => {
+    try { return sessionStorage.getItem('kol-home-revealed') === '1' } catch { return false }
+  })
+  const wallRef = useRef(null)
+  useEffect(() => {
+    if (revealed || !wallRef.current) return
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target) }
+    }, { rootMargin: '0px 0px -10% 0px' })
+    wallRef.current.querySelectorAll('.kol-reveal-group').forEach((el) => io.observe(el))
+    try { sessionStorage.setItem('kol-home-revealed', '1') } catch { /* private mode — plays every time, fine */ }
+    return () => io.disconnect()
+  }, [revealed])
 
   // Offline/mock metrics (useMetricsData short-circuits every fetch via MOCK).
   const { siteData, deploys, b2Data } = useMetricsData()
@@ -345,24 +378,23 @@ export default function Home() {
   return (
     <>
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="text-center px-5 pt-20 md:pt-28 pb-16">
-        <div className="mb-6 flex justify-center">
-          <Pill variant="subtle">{`Source-available · v${componentPkg.version}`}</Pill>
-        </div>
-        {/* Headline: full-width centred block → one line on desktop, wraps
-            only when the viewport is narrower than the text. */}
-        <h1 className="kol-prose-display">The design system for KOL tools.</h1>
-        {/* Lede: max-w on the element (so `ch` is measured in its 24px font);
-            centre via flex since the kol-prose-* `margin` clobbers mx-auto. */}
-        <div className="flex justify-center">
-          <p className="kol-prose-lede max-w-[var(--kol-content-measure)]">
-            A set of source-available React components — inspectors, colour and
-            transparency controls, an icon loader, and an opacity token scale.
-            Installed from npm, rendered live on this page.
-          </p>
-        </div>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+      {/* ── Hero — the arrival: one screen, nothing else above the fold ──
+        * SectionHero's text-only route (no media → composed text on the
+        * surface, no glass). `80` is the tallest rung that fits under the
+        * header without arithmetic; `full` is 100dvh and would push the wall
+        * a header-height below the fold. Copy verbatim from the old block. */}
+      <SectionHero
+        height="80"
+        background="primary"
+        panelMaxWidth="max-w-none"
+        eyebrow={<Pill variant="subtle">{`Source-available · v${componentPkg.version}`}</Pill>}
+        headline="The design system for KOL tools."
+        /* the old block was `.kol-prose-display` (80px); `display-01` is that
+         * size on the role ladder (80 desktop · 56 below), sentence case kept */
+        headlineSize="display-01"
+        body="A set of source-available React components — inspectors, colour and transparency controls, an icon loader, and an opacity token scale. Installed from npm, rendered live on this page."
+        slotClass={{ body: 'max-w-[var(--kol-content-measure)]' }}
+        actions={<>
           <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
             Browse components
           </Button>
@@ -375,11 +407,12 @@ export default function Home() {
           <Button variant="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
             Source
           </Button>
-        </div>
-        <p className="kol-mono-12 text-meta mt-8">
-          <span className="opacity-50">$</span> npm i @kolkrabbi/kol-component
-        </p>
-      </section>
+        </>}
+        className="text-center"
+      />
+      <p className="kol-mono-12 text-meta -mt-10 pb-16 text-center">
+        <span className="opacity-50">$</span> npm i @kolkrabbi/kol-component
+      </p>
 
       {/* ── Bento wall — full-bleed: capped live content, skeleton edges (shadcn model) ── */}
       <section className="relative overflow-hidden pb-24">
@@ -390,9 +423,18 @@ export default function Home() {
         <GhostFlank side="right" />
         {/* Column count derives from the wall's OWN width (min card 20rem, cap 4)
           * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
-        <div className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+        <div ref={wallRef} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+          {/* the stagger is a delay per tile, not a rule per tile — the
+            * family's `--kol-reveal-delay` seam; 4 beats then repeat, so a
+            * row arrives together and the next row follows */}
           {tiles.map((t, i) => (
-            <Tile key={`${t.label}-${i}`} label={t.label} to={t.to}>
+            <Tile
+              key={`${t.label}-${i}`}
+              label={t.label}
+              to={t.to}
+              className={revealed ? '' : 'kol-reveal-group'}
+              style={revealed ? undefined : { '--kol-reveal-delay': `${(i % 4) * 90}ms` }}
+            >
               {t.node}
             </Tile>
           ))}

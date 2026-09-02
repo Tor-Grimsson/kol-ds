@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { GRAB } from './motion.js'
+import { GRAB } from '../utilities/motion.js'
 import gsap from 'gsap'
 
 /**

@@ -1013,13 +1013,25 @@
   margin: 0 0 16px;
 }
 
-/* Display scale — D1 (hero), D2 (sub-hero), D3 (chapter title / .kol-prose-title alias). */
+/* Display scale — D1 (hero), D2 (sub-hero), D3 (chapter title / .kol-prose-title alias).
+ *
+ * ON THE LADDER, NOT FIXED (ProseTitleFixedSize, kol-website 2026-09-01): these
+ * three were the only display steps with no responsive rung — `.kol-prose-title`
+ * set a real article title to four lines of 56px at 390 and spent the fold
+ * before the first word of body. Each now reads the display token whose DESKTOP
+ * value it already was (80 → display-01, 64 → display-tight-01, 56 → display-02),
+ * CAPPED at that value with `min()`: below 768 they take the ladder's mobile step
+ * (56 · 48 · 44), and from 768 up they are pixel-identical to before — the
+ * ladder's third rung (96 · 72 · 64 at 1280) is deliberately not taken, a prose
+ * title at 64 was never the design. Line-heights became the same ratios
+ * (1 · 1.0625 · 1.07) so the leading follows the size. The ramp lives in the
+ * token, as the ticket asked; the ceiling stays where the design was. */
 
 .kol-prose-display {
   font-family: var(--kol-font-family-sans-narrow);
-  font-size: 80px;
+  font-size: min(var(--kol-text-display-01), 80px);
   font-weight: 500;
-  line-height: 80px;
+  line-height: 1;
   letter-spacing: -0.01em;
   color: var(--kol-surface-on-primary);
   margin: 0 0 24px;
@@ -1027,9 +1039,9 @@
 
 .kol-prose-display-md {
   font-family: var(--kol-font-family-sans-narrow);
-  font-size: 64px;
+  font-size: min(var(--kol-text-display-tight-01), 64px);
   font-weight: 500;
-  line-height: 68px;
+  line-height: 1.0625;
   letter-spacing: -0.01em;
   color: var(--kol-surface-on-primary);
   margin: 0 0 24px;
@@ -1037,9 +1049,9 @@
 
 .kol-prose-title {
   font-family: var(--kol-font-family-sans-narrow);
-  font-size: 56px;
+  font-size: min(var(--kol-text-display-02), 56px);
   font-weight: 500;
-  line-height: 60px;
+  line-height: 1.07;
   letter-spacing: -0.01em;
   color: var(--kol-surface-on-primary);
   margin: 0 0 24px;

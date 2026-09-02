@@ -111,8 +111,20 @@ export default function CatalogPage({
             if (open) return null
             const cards = rows.map((item) => toCard ? toCard(item, { view: viewMode, layout }) : { title: item.title ?? item.name, detail: item.detail })
             const hidden = layout === 'list' ? new Set() : computeHiddenSet(rows, cards.findIndex((c) => c.expanded))
+            /* COLS IS A CEILING, NOT A COMMAND (CatalogPageMobileColumns,
+              * kol-monitor 2026-09-01) — the third home of the defect
+              * ContentCollectionMinColumnWidth and ContentGridMinColumnWidth
+              * closed, unreachable by either because this grid is drawn inline.
+              * `repeat(6, 1fr)` computed six 29px slivers at 390. Same idiom as
+              * ContentCollection:144 — up to 6 (grid) / 4 (list) columns, and a
+              * track may not go under the floor (160 grid / 240 list) nor demand
+              * more than the container. At monitor's desktop widths the sixth-
+              * share clears the floor, so nothing moves there. NB the 2×2
+              * expanded-card neighbour math (computeHiddenSet) stays a
+              * six-column ruling — below the ceiling the hide-set is
+              * desktop-only geometry. */
             return (
-            <div style={{ display: 'grid', gridTemplateColumns: layout === 'list' ? 'repeat(4, 1fr)' : 'repeat(6, 1fr)', gap: layout === 'list' ? 8 : 24 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: layout === 'list' ? 'repeat(auto-fill, minmax(min(100%, max(240px, calc((100% - 3 * 8px) / 4))), 1fr))' : 'repeat(auto-fill, minmax(min(100%, max(160px, calc((100% - 5 * 24px) / 6))), 1fr))', gap: layout === 'list' ? 8 : 24 }}>
               {rows.map((item, i) => {
                 if (hidden.has(i)) return null
                 const c = cards[i]

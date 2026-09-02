@@ -13,7 +13,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
  * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'nav'|'danger'|'grey'|'control'} props.variant - Visual variant. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
- * @param {'sm'|'md'|'lg'} props.size - Button size (default: 'md')
+ * @param {'xs'|'sm'|'md'|'lg'} props.size - Button size (default: 'md'); xs is the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 22px shell (20 icon-only), opt-in by prop
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
  * @param {string} props.iconLeftHover - Icon to show on hover (left position)
@@ -98,6 +98,8 @@ const Button = ({
   // Add size class — pairs the padding rule with its mono type class.
   const sizeClass = size === 'sm'
     ? 'kol-btn-sm kol-mono-12'
+    : size === 'xs'
+    ? 'kol-btn-xs kol-mono-8'
     : size === 'lg'
     ? 'kol-btn-lg kol-mono-16'
     : 'kol-btn-md kol-mono-14'

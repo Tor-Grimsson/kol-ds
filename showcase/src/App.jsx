@@ -5,8 +5,7 @@ import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
-import Icons from './pages/Icons'
-import IconsBrand from './pages/IconsBrand'
+import IconsGallery from './pages/IconsGallery'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
 import Blocks from './pages/Blocks'
@@ -71,9 +70,11 @@ export default function App() {
         <Route path="/foundations" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
         <Route path="/foundations/typography" element={<FoundationsTypography />} />
-        <Route path="/icons" element={<Icons />} />
-        {/* brand's gallery beside the showcase's, for the comparison (user 2026-08-27) */}
-        <Route path="/icons/brand" element={<IconsBrand />} />
+        {/* THE icons page is brand's gallery (IconsGallery, 2026-09-02) — `/icons`
+          * takes the default set, `/icons/:set` names one; the old comparison
+          * URL keeps working */}
+        <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
+        <Route path="/icons/:set?" element={<IconsGallery />} />
         <Route path="/components" element={<Components />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
         <Route path="/blocks" element={<Blocks />} />

@@ -34,3 +34,5 @@ Six checks (FullConsumptionContract, kol-monitor 2026-08-27 — user: *"then DS 
 Local CSS is the tell for 4 and 5 together: `wc -l src/**/*.css` — a consumer on KOL has imports and `:root` bindings, little else (kol-fxr's `index.css` is imports-only by its own rule; kol-monitor's rack tier carried 996 lines and 175 `var()` reads, and that is the list it works).
 
 **Where a repo records it:** one line in its own `lobby/INDEX.md` history — *"full-consumption greps clean, YYYY-MM-DD"* — or the numbered leftovers as a ticket to itself. The DS keeps no roster.
+
+**This repo runs it as a gate.** The showcase is a consumer too, and until 2026-09-02 it failed its own checks (a hand-rolled filter row on the Components catalog, a local SegGroup, inline `var(--kol-oq-08)`, a raw `z-[1]`, Tailwind's `font-mono`). `pnpm validate:consumption` (gate 26) runs checks 2 · 5 · 6 over `showcase/src/{pages,lib,nav}` on every `pnpm validate`; `demos/`, `sets/`, `blocks/` and `usage/` are exempt because showing raw code is their job. The clean run is recorded in `lobby/INDEX.md` history, 2026-09-02.

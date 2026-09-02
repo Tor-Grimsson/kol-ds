@@ -33,6 +33,8 @@ import ContentText from './ContentText.jsx'
  *                             and takes a band through `footer` instead.
  * @param {boolean}   selected
  * @param {Function}  onClick
+ * @param {string}    tagVariant  the tag chip (CardTagsNoVisibleFill, 2026-09-01): default follows the BOX — a solid
+ *   surface fill keeps `tertiary` (the /work row it was minted for), a plain or washed box takes `primary`
  * text slots + *Class seams forwarded to ContentText.
  */
 
@@ -62,7 +64,16 @@ const BOX = {
    * the content height (136 in a 168 row) with no hairline, the frame steps
    * transparent → fg-08 on hover ("0 → 16 is a big jump"). No md step: the rows
    * were approved at their base values. */
-  showcase: { thumb: 'fill', ratio: '1 / 1', pad: S4, gap: S4, frame: 'transparent', frameHover: 'var(--kol-fg-08)', bg: 'var(--kol-surface-secondary)', minH: 168, align: 'items-stretch', thumbRadius: 'var(--kol-radius-xs)', thumbBorder: false },
+  /* `heightSm` — a FIXED rung below the md container, the floor above it
+   * (ContentRowShowcaseImageDrivenHeight, kol-website 2026-09-01, user ruling:
+   * the row's height is a function of the image, content fits inside it). On a
+   * 390 phone the narrow text column wrapped five tags to four rows and grew
+   * the row 62px past its floor, stranding the 136px thumb in dead space —
+   * 60px of ragged heights down one list. 168 is the floor's own number
+   * (136 thumb + 2×16 pad), so this is a change of KIND, not of value; the
+   * text has 136 to live in and the tags line goes single-row below md
+   * (ContentText's showcase ramp) so the cut lands on the chips, not mid-row. */
+  showcase: { thumb: 'fill', ratio: '1 / 1', pad: S4, gap: S4, frame: 'transparent', frameHover: 'var(--kol-fg-08)', bg: 'var(--kol-surface-secondary)', minH: 168, heightSm: 168, align: 'items-stretch', thumbRadius: 'var(--kol-radius-xs)', thumbBorder: false },
   /* ROSTER — a PICKABLE row (ContentRowRosterVariant, kol-chess 2026-08-31):
    * filled tile, no border, no divider, fixed height, square thumb, two
    * truncated lines that FILL the row rather than setting it.
@@ -142,6 +153,7 @@ export default function ContentRow({
   onClick,
   href,
   onNavigate,
+  tagVariant,
   className = '',
   ...text
 }) {
@@ -171,6 +183,9 @@ export default function ContentRow({
      * so a consumer that wants a taller pick row gets one; what it cannot get is
      * a row whose height drifts with its own copy. */
     '--kol-row-h': box.height != null ? `${minHeight ?? box.height}px` : undefined,
+    /* the stacked case's fixed rung — `heightSm` variants only; `minHeight`
+     * still overrides, same contract as `height` above */
+    '--kol-row-h-sm': box.heightSm != null ? `${minHeight ?? box.heightSm}px` : undefined,
     /* `fill` = the rung minus the vertical padding — a definite number, not a
      * stretch (a min-height row has no definite cross size, so a stretched
      * aspect-ratio square resolved to the image's intrinsic width).
@@ -210,7 +225,7 @@ export default function ContentRow({
    * (a rendered alphabet, a waveform, a sparkline) is never the family's. */
   const inner = box.column ? (
     <>
-      <ContentText variant={variant} form="row" className="w-full" {...text} />
+      <ContentText variant={variant} form="row" className="w-full" tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
       {footer}
     </>
   ) : (
@@ -238,7 +253,7 @@ export default function ContentRow({
         * ruled it on screen): the two lines stack to 34 inside a 40 content box,
         * and pushing them fully apart puts the ascenders hard against the thumb's
         * top and bottom edges. It is the ROW's ruling, so the row passes it. */}
-      <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} {...text} />
+      <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
       {/* `specs` rides the trailing edge on EVERY variant — year · material ·
        * edition is a content difference, not a geometry one, and minting a
        * seventh page-named box for it is the exact mistake §1 of the ticket is
@@ -261,7 +276,7 @@ export default function ContentRow({
   )
 
   const common = {
-    className: `kol-row group flex ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && box.hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-row group flex ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && box.hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: vars,
   }
 

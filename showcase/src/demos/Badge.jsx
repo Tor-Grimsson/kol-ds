@@ -1,7 +1,7 @@
 import { Badge } from '@kolkrabbi/kol-component'
 
 /* Variants ramp inline; size rides the toolbar picker. */
-export const sizes = ['sm', 'md', 'lg']
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function BadgeDemo({ size = 'md' }) {
   return (

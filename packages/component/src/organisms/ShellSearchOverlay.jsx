@@ -132,10 +132,16 @@ export default function ShellSearchOverlay({
 
   return (
     <div className="fixed inset-0 flex items-start justify-center pt-[20vh]" style={{ zIndex: 'var(--kol-z-modal, 100)' }}>
-      <div
+      {/* A BUTTON, not a div (OverlayScrimTapDismiss, 2026-09-01): iOS Safari
+        * does not bubble tap-clicks from non-interactive elements, so the div's
+        * onClick never fired on a phone and the only way out was the close
+        * control. A button always fires — and it ends the other half of the
+        * defect, an interactive target carrying `aria-hidden`. */}
+      <button
+        type="button"
+        aria-label="Close search"
         className="absolute inset-0 kol-overlay-scrim"
         onClick={onClose}
-        aria-hidden="true"
       />
       <div
         ref={panelRef}

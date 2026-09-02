@@ -1,5 +1,29 @@
 # @kolkrabbi/kol-workshop
 
+## 0.27.0 — 2026-09-01
+
+- **`ShellNavCollapsedContext` — a page can shed the left rail.** The TOC has
+  had `ShellTocCollapsedContext` since the rails were made collapsible; the
+  nav never got the matching seam, so a page could hide one rail and not the
+  other. A landing page wants neither: the showcase home's docstring claimed
+  "top nav (no sidebar)" and rendered under both. Same contract as the TOC
+  seam — set on mount, restore on unmount, the header's own toggles keep
+  working on top of it. Nothing moves for a page that does not call it.
+
+## 0.26.0 — 2026-09-01
+
+- **Closing the search palette survives its own query reset.** Close-and-clear
+  was two calls — `closeTagMode()` then `setSearchQuery('')` — and on the
+  provided path the second is `TagModeContext.setText`, which force-opens, so
+  both landed in one React batch and the final state was OPEN. Scrim tap AND
+  desktop scrim click were undone in their own event (Escape only worked
+  because the context's window listener runs after and wins); `onSelect`'s
+  destination branch carried the same pair and navigated with the palette
+  still up. One `closeSearch` helper now: the provided path is
+  `closeTagMode()` alone (it already resets `text`), the local path closes and
+  clears. `setText` keeps its open-on-type behaviour — its call sites are all
+  palette-open paths. (WorkshopSearchCloseUndoneBySetText, kol-website)
+
 > **Gap:** 0.3.4 → 0.21.0 shipped without entries (that history lives in the repo's
 > session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
 > breaking or global-surface changes (token renames, default flips, new bare-element

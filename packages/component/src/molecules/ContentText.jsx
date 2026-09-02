@@ -24,9 +24,15 @@
  * @param {ReactNode} size       default · article (file size / read length)
  * @param {ReactNode} meta       work only
  * @param {number}    gap        inner line gap in px (defaults per variant/form)
+ * @param {string}    tagVariant the Tag variant the `tags` slot draws (default `primary` — a soft ink wash that reads as a chip
+ *   on a plain surface; CardTagsNoVisibleFill, kol-website 2026-09-01: `tertiary` is surface-primary with no border and was
+ *   INVISIBLE on every card that sits on surface-primary). ContentCard / ContentRow pass `tertiary` for a box with a
+ *   solid surface fill — the /work row the variant was minted for — and `primary` otherwise
  * @param {string}    titleClass … eyebrowClass (alias `kickerClass`), bodyClass, detailClass,
  *                    dateClass, sizeClass, metaClass — full class overrides
  */
+
+import Tag from '../atoms/Tag'
 
 /* THE ROW INK LADDER — three rungs, and only three (2026-08-15).
  *
@@ -89,7 +95,11 @@ const RAMP = {
     /* RULED ON /work beside the local WorkListItem (WorkListingRowsAndFilters,
      * 2026-08-27): the typeface row's voices — title + type kol-mono-14 full
      * ink, the year kol-mono-12 fg-64. Body unchanged (the site passes its face). */
-    row:  { title: 'kol-mono-14 uppercase text-emphasis truncate', body: 'kol-sans-heading-03 leading-tight text-emphasis truncate', meta: 'kol-mono-14 text-emphasis', date: 'kol-mono-12 text-fg-64', tags: 'flex flex-wrap items-center gap-1.5' },
+    /* tags go SINGLE-ROW below md (ContentRowShowcaseImageDrivenHeight,
+     * 2026-09-01): the row wears a fixed rung there, and a wrapping tag block
+     * was what grew it past the floor — the cut lands on the chips' right
+     * edge, not mid-row. */
+    row:  { title: 'kol-mono-14 uppercase text-emphasis truncate', body: 'kol-sans-heading-03 leading-tight text-emphasis truncate', meta: 'kol-mono-14 text-emphasis', date: 'kol-mono-12 text-fg-64', tags: 'flex flex-wrap items-center gap-1.5 max-md:flex-nowrap max-md:overflow-hidden' },
   },
   /* ROSTER — a pickable row's two lines, both TRUNCATED (ContentRowRosterVariant,
    * kol-chess 2026-08-31). Written out rather than derived from `showcase`: the
@@ -197,7 +207,7 @@ export default function ContentText({
   variant: variantProp = 'file',
   form = 'card',
   title, body, eyebrow, kicker, detail, date, size, meta, tags,
-  gap, clamp,
+  gap, clamp, tagVariant = 'primary',
   titleClass, bodyClass, eyebrowClass, kickerClass, detailClass, dateClass, sizeClass, metaClass, tagsClass,
   className = '',
 }) {
@@ -222,9 +232,31 @@ export default function ContentText({
    * it overrode the class (user 2026-08-27: "I had put A HOVER OPACITY drop,
    * WHERE IS IT"). The hook is re-attached after the override. */
   const hook = (slot) => (overrides[slot] && /\bkol-content-title-dim\b/.test(ramp[slot] ?? '') ? ' kol-content-title-dim' : '')
+
+  /* An ARRAY-valued slot never renders as concatenated text
+   * (ContentTextTagsSlotRendersRawArray, 2026-09-01). React writes an array of
+   * strings as adjacent text nodes, and CSS folds contiguous text into ONE
+   * anonymous flex item — so the tags ramp's `gap-2` spaced nothing and the
+   * run-on string inherited the section's font. Strings in `tags` become the
+   * chip the estate's correct tag rows already wear (the tertiary Tag);
+   * elements a consumer pre-built pass through untouched. Any other slot's
+   * array (kol-website passes `meta={[date, readingTime]}`) gets one span per
+   * item plus the same flex seam, so the values separate instead of running on. */
+  const content = (slot) => {
+    const v = values[slot]
+    if (!Array.isArray(v)) return v
+    if (slot === 'tags')
+      return v.map((t, i) =>
+        typeof t === 'string' || typeof t === 'number' ? (
+          <Tag key={i} variant={tagVariant} size="sm">{t}</Tag>
+        ) : t
+      )
+    return v.map((item, i) => <span key={i}>{item}</span>)
+  }
+  const spread = (slot) => (Array.isArray(values[slot]) && slot !== 'tags' ? ' flex flex-wrap gap-2' : '')
   const line = (slot) =>
     values[slot] == null ? null : (
-      <div key={slot} className={`${overrides[slot] ?? ramp[slot] ?? ''}${extra(slot)}${hook(slot)}`.trim()}>{values[slot]}</div>
+      <div key={slot} className={`${overrides[slot] ?? ramp[slot] ?? ''}${extra(slot)}${hook(slot)}${spread(slot)}`.trim()}>{content(slot)}</div>
     )
 
   /* RECURSIVE (2026-08-15) — an entry inside a line/between/group may itself be

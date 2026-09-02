@@ -127,6 +127,16 @@
 }
 /* ─── Sizes (padding only — type class applied via JSX) ─── */
 
+/* THE XS RUNG (ControlsXsRung, kol-monitor 2026-09-01; user: "DS should ship xs
+ * size — I actually often find situations where xs would be helpful"). An
+ * instrument panel runs 8px mono in a 16–20px shell and the ladder stopped at
+ * sm (12px in 26–28), which is the one reason the rack's TextInput / Dropdown /
+ * Selector could not collapse onto Input / Dropdown / Stepper. xs = kol-mono-8
+ * (line-height 12) + 4px vertical + the shell's 1px ring = 22px, 8px sides,
+ * the xs radius; the icon-only square is 20.
+ * Opt-in by prop only — the 2026-07-28 "dropdowns are sm at every viewport"
+ * law is untouched; nothing ramps to xs by viewport. */
+.kol-control-xs { padding: 4px 8px; border-radius: var(--kol-radius-xs); }
 .kol-control-sm { padding: 4px 12px; }
 .kol-control-md { padding: 6px 16px; }
 .kol-control-lg { padding: 8px 20px; }
@@ -173,12 +183,16 @@
  * 2026-08-01 — it brings its own box, border, colour set and states, so this
  * class stopped painting one. It used to hand-draw a bordered square around a
  * literal `×` CHARACTER, which is why the button had no hover, no focus ring
- * and no glyph. The inset is --kol-spacing-3, the rung that already carried
- * this value. */
+ * and no glyph.
+ * `right: 0` (FullscreenOverlayCloseIdiom, kol-chess 2026-09-01): the sheet
+ * hugs the consumer's panel, so a --kol-spacing-3 inset floated the X 12px
+ * inside the content column's right edge — lined up with nothing the fields
+ * below it establish. On the edge, the button's box sits on the same vertical
+ * as the controls under it. */
 .kol-overlay-close {
   position: absolute;
   top: var(--kol-spacing-3);
-  right: var(--kol-spacing-3);
+  right: 0;
   z-index: 10;
 }
 
@@ -227,12 +241,20 @@
  * Chrome belongs here, layered, so utilities stay sovereign. The flex
  * centering comes from .kol-btn; the icon-only extra is only line-height. */
 .kol-btn-icon {
+  /* A FIXED SQUARE ON EVERY RUNG (IconButtonNoFlexShrink, kol-monitor
+   * 2026-09-02): in a shrink-to-fit flex row WebKit measured the icon-only
+   * button's contribution as its GLYPH (20 + 2 border = 22), not the 32px
+   * rule, so the row came out short and squeezed the square to 22×32 — the
+   * gear a sliver beside a 32px Dropdown. `flex: none` fixes the measurement
+   * AND the shrink; `flex-shrink: 0` alone fixed only the shrink. */
+  flex: none;
   line-height: 0;
 }
 /* Icon-only is a GEOMETRY condition, not a variant (2026-07-28, user-ordered):
  * a lone glyph gets a PINNED SQUARE per rung — sm 28 / md 32 / lg 36 — equal to
  * the rung's button height and independent of glyph size (padding-derived
  * squares drifted with icon size; user law: the box never moves). */
+.kol-btn-icon.kol-btn-xs { width: 20px; height: 20px; padding: 0; }
 .kol-btn-icon.kol-btn-sm { width: 28px; height: 28px; padding: 0; }
 .kol-btn-icon.kol-btn-md { width: 32px; height: 32px; padding: 0; }
 .kol-btn-icon.kol-btn-lg { width: 36px; height: 36px; padding: 0; }
@@ -366,6 +388,8 @@
   }
 }
 
+/* xs — the panel rung (ControlsXsRung, 2026-09-01): 22px shell (20 + ring), xs radius */
+.kol-btn-xs { padding: 4px 8px; border-radius: var(--kol-radius-xs); }
 .kol-btn-sm { padding: 4px 12px; }
 .kol-btn-md { padding: 6px 16px; }
 .kol-btn-lg { padding: 8px 20px; }
@@ -521,6 +545,7 @@
 .toggle-switch--outline { border-color: var(--kol-oq-08); }
 
 /* shells take button padding; bare stays padding 0 */
+.toggle-switch--primary.toggle-switch--xs, .toggle-switch--outline.toggle-switch--xs { padding: 4px 8px; }
 .toggle-switch--primary.toggle-switch--sm, .toggle-switch--outline.toggle-switch--sm { padding: 4px 12px; }
 .toggle-switch--primary.toggle-switch--md, .toggle-switch--outline.toggle-switch--md { padding: 6px 16px; }
 .toggle-switch--primary.toggle-switch--lg, .toggle-switch--outline.toggle-switch--lg { padding: 8px 20px; }
@@ -557,6 +582,8 @@
   cursor: not-allowed;
 }
 
+.toggle-switch--xs .toggle-switch-indicator { width: 12px; height: 8px; }
+.toggle-switch--xs .toggle-switch-indicator::after { width: 4px; height: 4px; }
 .toggle-switch--sm .toggle-switch-indicator { width: 16px; height: 10px; }
 .toggle-switch--sm .toggle-switch-indicator::after { width: 6px; height: 6px; }
 .toggle-switch--lg .toggle-switch-indicator { width: 24px; height: 14px; }
@@ -571,6 +598,7 @@
   background-color: var(--kol-surface-primary);
 }
 
+.toggle-switch--xs[data-state='on'] .toggle-switch-indicator::after { transform: translateX(4px); }
 .toggle-switch--sm[data-state='on'] .toggle-switch-indicator::after { transform: translateX(6px); }
 .toggle-switch--lg[data-state='on'] .toggle-switch-indicator::after { transform: translateX(10px); }
 
@@ -692,6 +720,13 @@
    * own `align-self: center` on the runnable track, and the thumb stays pinned
    * to the track. The row (.control-slider) is already 24px, so nothing moves. */
   height: 24px;
+  /* pan-y, not none (SliderCoarsePointerHeight, kol-mirror 2026-09-01): inside
+   * a scrolling sheet `auto` let the scroller claim any drag a few degrees off
+   * horizontal, so the thumb never moved and the sheet scrolled instead. The
+   * vertical gesture must still reach the scroller, or the sheet stops
+   * scrolling wherever a fader sits under the thumb. Does not inherit — it has
+   * to be on the input, and no prop reaches the input. */
+  touch-action: pan-y;
 }
 
 .slider-black::-webkit-slider-runnable-track {
@@ -1194,6 +1229,8 @@ a.kol-icon-frame {
 .kol-btn-radius-full { border-radius: 9999px; }
 
 /* pinned squares — the box never moves with glyph size (user law 2026-07-28) */
+/* xs — the panel rung; the ladder is one ladder (user ruling 2026-09-01: "obviously we apply xs as an option") */
+.kol-icon-frame-xs { width: 20px; height: 20px; }
 .kol-icon-frame-sm { width: 28px; height: 28px; }
 .kol-icon-frame-md { width: 32px; height: 32px; }
 .kol-icon-frame-lg { width: 36px; height: 36px; }
@@ -1342,8 +1379,15 @@ a.kol-icon-frame {
  * (ARCHITECTURE §5). The height pin travels with the size: Input pins its inner
  * field to the token's line-height (h-4 / h-[18px] / h-[22px]), so a 16px face
  * in an unlifted 16px box would clip. */
+/* `.kol-control--bare` is a MARKER, not chrome (OverlaySearchFieldZoomsIOS,
+ * 2026-09-01): SearchInput's `bare` body plan — the overlay palette's field —
+ * sits in a plain <label>, outside both shells, and was the field that put a
+ * whole mobile review in a zoomed page. The marker carries no rules of its
+ * own; it exists so the floor below keys on every body plan the DS ships,
+ * including the chrome-less one. */
 @media (pointer: coarse) {
   .kol-control input,
+  .kol-control--bare input,
   .kol-expand input {
     font-size: 16px;
     line-height: 22px;
@@ -1352,5 +1396,15 @@ a.kol-icon-frame {
   .kol-control textarea {
     font-size: 16px;
     line-height: 22px;
+  }
+  /* THE FADER (SliderCoarsePointerHeight, kol-mirror 2026-09-01). The jump that
+   * took the input 2 → 24 on the desk takes it 24 → 44 on a phone, by its own
+   * argument: the track is a 2px pseudo the UA centres in the box and the
+   * thumb stays pinned to it, so the drawing does not change. The ROW lifts
+   * with it — `.control-slider` is a fixed 24px and a 44px input inside it
+   * would overflow; a consumer's `rowHeight` inline style still wins. */
+  .control-slider,
+  .slider-black {
+    height: 44px;
   }
 }

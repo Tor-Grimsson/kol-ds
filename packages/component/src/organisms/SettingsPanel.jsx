@@ -112,7 +112,10 @@ export default function SettingsPanel({
  * uppercase label (`kol-helper-10` tracked, meta ink) in a 160px column, the
  * control fills the rest. A switch sits at the far right (`align="end"`, the
  * default); a dropdown fills the row (`align="fill"`). No hint sentences on the
- * page — `hint` rides the control's `title`.
+ * page — `hint` rides the control's `title`. `labelWidth="auto"` passes through
+ * to LabeledControl: the label flexes and truncates, the control hugs — for a
+ * row living in a column narrower than the 160px label default
+ * (SettingsShortcutsComboOverflow, kol-monitor 2026-09-01).
  */
 export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, children }) {
   return (

@@ -24,10 +24,10 @@
  */
 
 /** Icon alone in a pinned square. Pairs with squares 28 · 32 · 36. */
-export const SOLO = { sm: 16, md: 20, lg: 24 }
+export const SOLO = { xs: 12, sm: 16, md: 20, lg: 24 }
 
 /** Icon beside a label, inside the rung's line box. */
-export const ADJACENT = { sm: 14, md: 16, lg: 18 }
+export const ADJACENT = { xs: 10, sm: 14, md: 16, lg: 18 }
 
 /**
  * Indicator glyph — a caret/chevron that DECORATES a control rather than
@@ -37,7 +37,7 @@ export const ADJACENT = { sm: 14, md: 16, lg: 18 }
  * Dropdown's caret each hand-typed their number (Dropdown took the ADJACENT
  * rung, the oversize the user called): two transcriptions, the folklore
  * threshold. */
-export const INDICATOR = { sm: 12, md: 14, lg: 16 }
+export const INDICATOR = { xs: 8, sm: 12, md: 14, lg: 16 }
 
 /**
  * Resolve a glyph size. `solo` picks the ladder; `size` indexes it.

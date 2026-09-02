@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { toneClass } from '../utilities/tone.js'
 import { glyphSize } from '../hooks/glyphLadders.js'
@@ -11,6 +12,13 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *                                secondary, always subordinate to filled)
  *   tone="inverse"             — the dark chip (`fg-ab-24`) for a washed plane
  *                                (ControlToneInverse, 2026-08-27); same prop on ViewToggle · Dropdown
+ *   size="xs"                  — the panel rung (ControlsXsRung, 2026-09-01):
+ *                                kol-mono-8 in a 22px shell; opt-in by prop
+ *   onCommit                   — `(trimmed) => void` on blur / Enter (Escape
+ *                                restores): the rack commits a module name or a
+ *                                scope expression, not every keystroke. With it
+ *                                the field keeps a local draft seeded from
+ *                                `value`; `onChange` still fires live if given.
  *   variant="ghost"            — legacy alias, resolves to outline
  *   variant="property"         — the Figma property field (PropertyField,
  *                                2026-08-12): filled chrome, dim `affordance`
@@ -46,12 +54,13 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
  */
 
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 
 export default function Input({
   type = 'text',
   value,
   onChange,
+  onCommit,
   variant = 'filled',
   tone = 'default',
   size = 'md',
@@ -100,6 +109,26 @@ export default function Input({
    * `${len}ch` hugs the value with no probe element, and stays number-safe
    * where the HTML `size` attr is ignored (<input type="number">). +2px keeps
    * the caret from clipping at the end. Tracks `value` → controlled only. */
+  /* commit-on-blur/Enter (ControlsXsRung, 2026-09-01 — kol-monitor's panel
+   * TextInput collapsing onto this atom): a local draft, seeded from `value`,
+   * committed trimmed; Escape restores. Only when `onCommit` is given. */
+  const [draft, setDraft] = useState(value ?? '')
+  /* the ref mirrors the draft so a blur that lands in the same tick as the
+   * last keystroke commits what was typed, not the last RENDER's draft */
+  const draftRef = useRef(value ?? '')
+  useEffect(() => { if (onCommit) { setDraft(value ?? ''); draftRef.current = value ?? '' } }, [value, onCommit])
+  const commitProps = onCommit
+    ? {
+        value: draft,
+        onChange: (e) => { draftRef.current = e.target.value; setDraft(e.target.value); onChange?.(e) },
+        onBlur: () => onCommit(String(draftRef.current).trim()),
+        onKeyDown: (e) => {
+          if (e.key === 'Enter') e.currentTarget.blur()
+          if (e.key === 'Escape') { draftRef.current = value ?? ''; setDraft(value ?? ''); e.currentTarget.blur() }
+        },
+      }
+    : null
+
   const propertyLen = Math.max(String(value ?? placeholder ?? '').length, 1)
 
   /* Pin inner input height to the typography token's line-height. Without
@@ -108,7 +137,7 @@ export default function Input({
    * from the font's ascender+descender (font-metric), not strictly from
    * CSS line-height. Result: kol-control-sm ends up 26.5px instead of 26.
    * h-4 / h-[18px] / h-[22px] match the kol-mono-12 / -14 / -16 line-heights. */
-  const heightCls = size === 'sm' ? 'h-4' : size === 'md' ? 'h-[18px]' : 'h-[22px]'
+  const heightCls = size === 'xs' ? 'h-3' : size === 'sm' ? 'h-4' : size === 'md' ? 'h-[18px]' : 'h-[22px]'
 
   const inputCls = [
     'min-w-0 bg-transparent border-none outline-none text-auto',
@@ -149,9 +178,11 @@ export default function Input({
         * Controlled + no onChange = deliberate display-only → readOnly. */}
       <input
         type={type}
-        {...(value !== undefined
-          ? { value: value ?? '', onChange, readOnly: !onChange || undefined }
-          : { onChange })}
+        {...(commitProps
+          ? commitProps
+          : value !== undefined
+            ? { value: value ?? '', onChange, readOnly: !onChange || undefined }
+            : { onChange })}
         placeholder={placeholder}
         disabled={disabled}
         spellCheck={false}
@@ -159,6 +190,8 @@ export default function Input({
         className={inputCls}
         style={isProperty ? { width: `calc(${propertyLen}ch + 2px)` } : undefined}
         {...inputProps}
+        /* the commit pair LAST, so nothing spread above it can shadow onBlur / onKeyDown */
+        {...(commitProps || {})}
       />
       {unit !== undefined && (
         <span aria-hidden="true" className="text-meta shrink-0">{unit}</span>

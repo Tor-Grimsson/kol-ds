@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FULL_BLEED } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import { Accordion, AccordionPanel } from '../molecules/Accordion.jsx'
 import SectionText from '../molecules/SectionText.jsx'
 import { minHeightClass } from './sectionHeights.js'

@@ -42,6 +42,7 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | | `@kolkrabbi/kol-framework` | app shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop` |
 | **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — markdown engine, docs viewer, tag graph, shell |
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
+| | `@kolkrabbi/kol-controls` | hardware panel controls — knob, fader, LED, toggles, jack, rocker, `ParamSheet` |
 | | `@kolkrabbi/kol-chess` | chess apparatus + pieces + `./data` adapter |
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |

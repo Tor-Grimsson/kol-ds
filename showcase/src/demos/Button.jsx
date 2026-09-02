@@ -8,6 +8,9 @@ export const variants = ['primary', 'secondary', 'accent', 'outline', 'ghost', '
 export default function ButtonDemo({ variant = 'primary' }) {
   return (
     <>
+      {/* xs: the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 20px shell */}
+      <Button variant={variant} size="xs">Extra small</Button>
+      <Button variant={variant} size="xs" iconOnly="settings-01" />
       <Button variant={variant} size="sm">Small</Button>
       <Button variant={variant}>Medium</Button>
       <Button variant={variant} size="lg">Large</Button>

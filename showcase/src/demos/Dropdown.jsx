@@ -9,7 +9,8 @@ const OPTIONS = [
 ]
 
 /* Variants ramp inline; size rides the toolbar picker. */
-export const sizes = ['sm', 'md', 'lg']
+/* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function DropdownDemo({ size = 'sm' }) {
   const [value, setValue] = useState('newest')

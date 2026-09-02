@@ -1,6 +1,180 @@
 # @kolkrabbi/kol-theme
 
 
+## 0.129.0 — 2026-09-02
+
+- **An icon-only button is a fixed square — `.kol-btn-icon { flex: none }`**
+  (IconButtonNoFlexShrink, kol-monitor 2026-09-02; user: *"the buttons are a
+  mess, not the same size"*). In a shrink-to-fit flex row WebKit measured the
+  icon-only button's contribution as its glyph (22px), not the 32px rule, so
+  the row came out short and squeezed the square to 22×32 beside a 32px
+  Dropdown. `flex: none` fixes the measurement and the shrink together;
+  `flex-shrink: 0` alone fixed only the shrink. Chrome never showed it; the
+  phone did.
+
+## 0.128.0 — 2026-09-02
+
+- **The rail's touch opener is the line, thicker** (RailGrabTapIsALine,
+  kol-monitor 2026-09-02; pairs with kol-shell 0.39.0). `.kol-rail-grab-tap`
+  and its disc are gone. Under `(pointer: coarse)` the strip widens to a 24px
+  hit and its pill sits at rest at `0.25rem` — twice the fine-pointer pill,
+  no proximity fade — the same affordance a fine pointer drags. Off a coarse
+  pointer nothing changes.
+
+## 0.127.0 — 2026-09-01
+
+- **`xs` on every family that steps the ladder** (user ruling 2026-09-01:
+  *"what kind of half ass DS ships partial sizes haphazardly throughout its
+  system? obviously we apply xs as an option"*). 0.126.0 gave xs to the control
+  and button shells only; the rest of the ladder now has the rung at the same
+  density (8px mono, line 12): `.kol-icon-frame-xs` 20px square ·
+  `.kol-tag--xs` 1×8 pad, 8px · `.kol-seg--xs` 22px, cells 4×8 ·
+  `.kol-badge-xs` 16px, 0×4 pad, 8px · `.toggle-switch--xs` 4×8 pad with a
+  12×8 track and a 4px thumb. Opt-in by prop everywhere; no default moves.
+
+## 0.126.0 — 2026-09-01
+
+- **The `xs` rung on the shell ladder** (ControlsXsRung, kol-monitor 2026-09-01;
+  user: *"DS should ship xs size — I actually often find situations where xs
+  would be helpful"*). `.kol-control-xs` and `.kol-btn-xs`: `kol-mono-8` (line
+  12) + 4px vertical + the 1px ring = a 22px shell, 8px sides, `--kol-radius-xs`;
+  the icon-only square is 20. The rung an instrument panel runs at, and the one reason the
+  rack's field / select / stepper could not collapse onto the app atoms.
+  Opt-in by prop only — the 2026-07-28 "dropdowns are sm at every viewport" law
+  is untouched, nothing ramps to xs by viewport.
+
+## 0.125.0 — 2026-09-01
+
+- **The prose display steps ride the display ladder** (ProseTitleFixedSize,
+  kol-website 2026-09-01). `.kol-prose-title` was a fixed 56px at every
+  viewport — a real article title set to four lines at 390 and spent the fold
+  before the first word of body — and its two siblings, `.kol-prose-display`
+  (80) and `.kol-prose-display-md` (64), were fixed the same way: the only
+  display steps in the theme with no rung. Each now reads the display token
+  whose desktop value it already was — display-01, display-tight-01,
+  display-02 — capped at that value with `min()`: below 768 they take the
+  ladder's mobile step (56 · 48 · 44), from 768 up they are pixel-identical to
+  before (the ladder's 1280 rung — 96 · 72 · 64 — is deliberately not taken; a
+  prose title at 64 was never the design). Line-heights became ratios (1 ·
+  1.0625 · 1.07) so the leading follows. `.kol-prose-lede` (24/28) is unchanged — it is
+  not a display step and 24 is a phone lede; say the word if it should rung.
+
+## 0.124.0 — 2026-09-01
+
+- **`kol-components-controls.css` — the token layer for `@kolkrabbi/kol-controls`**
+  (KolControlsPackage, kol-monitor 2026-09-01). In the umbrella after the shell
+  pack; a `core` consumer imports it as a domain pack. kol-monitor's
+  `monitor-overrides.css` values renamed `--monitor-*` → `--kol-ctl-*`, values as
+  ruled: theme-invariant hardware caps derived from `--kol-color-ab-black` /
+  `-white` (the `oq-ab` tiers flip and cannot carry them), the set's own LED
+  emitters (deliberately not `--kol-palette-*`), the two jack roles as HEX
+  (`JackSocket` appends a hex alpha). Nothing else in the theme moves.
+
+## 0.123.0 — 2026-09-01
+
+- **`.kol-rail-grab-tap` — the rail's tap opener on a coarse pointer**
+  (ShellRailCollapsedWithTapOpen, kol-mirror 2026-09-01; pairs with kol-shell
+  0.38.0). Under `(pointer: coarse)` the grab strip widens to 24px and shows a
+  24px disc on the line (`surface-secondary`, `fg-16` ring, `oq-96` glyph); the
+  proximity pill is hidden there, since nothing hovers. Off a coarse pointer
+  the rule is `display: none` and the ruled grab is untouched. Also resets the
+  strip's button chrome (it is a `<button>` from 0.38.0). Geometry here, the
+  pill's motion stays in `kol-animation.css`.
+
+## 0.122.0 — 2026-09-01
+
+- **The fader works inside a scrolling sheet, and is a 44px target on a phone**
+  (SliderCoarsePointerHeight, kol-mirror 2026-09-01). `.slider-black` gets
+  `touch-action: pan-y` — `auto` let a scrolling container claim any drag a
+  few degrees off horizontal, so the thumb never moved and the sheet scrolled;
+  `pan-y` not `none`, so the vertical gesture still reaches the scroller. And
+  under `(pointer: coarse)` the input AND its row lift 24 → 44 by the 24px
+  rule's own argument: the 2px track is a pseudo the UA centres in the box, the
+  thumb stays pinned to it, the drawing does not change. The row lifts with
+  the input because `.control-slider` is a fixed 24px and a 44px input inside
+  it would overflow; a consumer's `rowHeight` inline style still wins. Desk
+  untouched. Not touched: `RotaryDial`, the dual-thumb rail (their own
+  hit-testing stories — say the word).
+
+## 0.121.0 — 2026-09-01
+
+- **The rail drawer opens from the LEFT again** — off-canvas is `-100%`,
+  reverting 0.120.0's `+100%`. The trigger stays fixed top-right in both states:
+  the panel's side was never the complaint, the trigger travelling to mid-screen
+  was, and a far-corner trigger has nothing to collide with on either side.
+  (ShellDrawerSideCorrection, kol-chess; pairs with kol-shell 0.35.0)
+
+## 0.120.1 — 2026-09-01
+
+- **Fixes 0.120.0: the wrapping card lede is `.dash-lede`, not `.dash-subtitle`.**
+  0.120.0 minted its new class over a name that already existed — the 16 → 22
+  medium sub-heading — and the later duplicate downgraded three live call
+  sites (stacked-bar values, alert titles) to 10px. The original
+  `.dash-subtitle` is untouched again; the new voice is `.dash-lede`, same
+  values as intended (dash-detail's 10 → 12 ramp, weight 400, line-height
+  1.5). 0.120.0 is deprecated. Caught by kol-chess verifying the receipt
+  against the shipped CSS. (DashDetailWrapsWithoutLeading follow-up)
+
+## 0.120.0 — 2026-09-01
+
+- **`.dash-subtitle` — the dashboards' WRAPPING secondary line.** `.dash-detail`
+  is line-height 1, single-line chrome by the type protocol's fault line, and
+  CardHeader was handing it full sentences that wrapped to three leading-less
+  lines at 390. Same ramp and container step, `line-height: 1.5`; footers and
+  labels keep `.dash-detail`. (DashDetailWrapsWithoutLeading, kol-chess;
+  pairs with kol-dashboards 0.4.0)
+- **`.kol-overlay-close` sits on the sheet's content edge** (`right: 0`) — the
+  sheet hugs the consumer's panel, so the old spacing-3 inset floated the X
+  12px inside the column's right edge, aligned with nothing the fields below
+  establish. (FullscreenOverlayCloseIdiom, kol-chess)
+- **The rail drawer opens from the RIGHT** — off-canvas +100%, trigger fixed
+  top-right in both states, and the 2026-08-31 travel rule is gone: it was the
+  cure for the left side, where the open X landed 65% of the way across the
+  screen. (ShellDrawerOnRight, kol-chess; pairs with kol-shell 0.34.0)
+
+## 0.119.0 — 2026-09-01
+
+- **The chess pack stops referencing `--kol-font-family-heading`** — all 10
+  heading rules speak `--kol-font-family-sans-narrow` by name. `heading` is a
+  framework-tier brand seam (`kol-brand-color.css`) the theme never ships, so
+  an app-shell consumer resolved it to nothing and every hero metric,
+  board-playback title, analysis result and chart heading fell to the
+  inherited body font. sans-narrow is the face the brand seam bound it to —
+  same face where it worked, fixed where it did not. The framework seam itself
+  is untouched. (ChessHeadingFontVarUndefined, kol-chess)
+
+
+## 0.118.0 — 2026-09-01
+
+- **`--kol-shell-page-pad` is responsive: `clamp(20px, 5vw, 48px)`.** Fixed 48
+  put 96px of gutter on a 390 phone — 24.6% of the viewport — and set the
+  Settings h1 ~35pt from the edge while every `.kol-page` sibling sat ~15pt.
+  The floor is 20, the estate's `px-5` mobile floor; desktop does not move (5vw
+  reaches 48 at 960). PageBleed's negative margin reads the same token, so the
+  pair cannot drift. (ShellPagePadFixedOnMobile, kol-chess)
+
+
+## 0.117.0 — 2026-09-01
+
+- **The overlay scrim drops its 1px backdrop blur** — user ruling, and the class's
+  own comment already argued the 60% tint is the separation; the blur bought a
+  compositing layer on every overlay open, on a phone, for almost nothing on
+  screen. All three scrim call sites wear the one class, so all three lose it
+  together. (OverlayScrimBlur, kol-website)
+- **The coarse-pointer 16px floor covers the chrome-less field.** `.kol-control--bare`
+  is a MARKER class, no chrome of its own: SearchInput's `bare` body plan — the
+  overlay palette's field — sat in a plain label outside both shells, computed
+  14px on a phone, and iOS Safari zoomed the page on focus and never zoomed back;
+  the first tap of a mobile review poisoned every width read after it. The floor
+  now keys on every body plan the DS ships. (OverlaySearchFieldZoomsIOS, kol-website)
+- **`.kol-row--fixed-sm` — a rung that is FIXED below the md container and the
+  floor above it.** The showcase row's height is a function of the image (user
+  ruling): thumb + padding, content fits inside. `overflow: hidden` here is the
+  design, not silent loss — text truncates by ramp and the tags line goes
+  single-row below md so the cut lands on the chips.
+  (ContentRowShowcaseImageDrivenHeight, kol-website; pairs with kol-component 0.150.0)
+
+
 ## 0.116.0 — 2026-09-01
 
 - The feature card's zoom fires on `[data-attention]` as well as `:hover` — one

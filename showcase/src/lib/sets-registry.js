@@ -41,6 +41,7 @@ export const SET_CATEGORY_LABELS = {
   store: 'Store',
   foundry: 'Foundry',
   editor: 'Editors',
+  app: 'App shell',
   other: 'Other',
 }
 

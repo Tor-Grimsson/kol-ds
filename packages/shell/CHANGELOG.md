@@ -1,5 +1,139 @@
 # @kolkrabbi/kol-shell
 
+## 0.40.0 — 2026-09-02
+
+- **A rung's tap decides the drawer, not only the route change**
+  (ShellDrawerCloseOnSamePath, kol-monitor 2026-09-02). A rung whose path is
+  the one already shown — Create tapped on `/create`, "new case" — changes no
+  pathname, so the route effect never fired and the drawer stayed open over
+  the page. The rail's `onNavigate` wrapper now sets the drawer to the tapped
+  path's rule before delegating: `drawerOpenOn` rungs keep it open, every
+  other rung closes it, same path or not. The route effect stays for deep
+  links and the fold.
+
+## 0.39.0 — 2026-09-02
+
+- **The touch opener is the grab strip itself — no disc, no chevron**
+  (RailGrabTapIsALine, kol-monitor 2026-09-02; user: *"it was a thicker line"*
+  · *"who decided it should be a chevron?"*). 0.38.0's `.kol-rail-grab-tap`
+  disc was the DS agent's shape, not the ruling; it is gone. The strip stays a
+  `<button>` (`aria-expanded`, Enter/Space) and under a coarse pointer the
+  theme (kol-theme 0.128.0) widens it and shows its pill thick at rest — the
+  same line a fine pointer drags. A press with no travel toggles, as it always
+  did. Fine pointers see nothing new.
+
+## 0.38.0 — 2026-09-01
+
+- **`touch="shell"` can be opened by a thumb** (ShellRailCollapsedWithTapOpen,
+  kol-mirror 2026-09-01; the user's ruling read right this time — *"i means
+  collapsed variant not expanded"*). `shell` is the only mode that keeps the
+  48px rail visible, and its only opener was the grab strip: 8px on the line,
+  visible on pointer proximity. A thumb never hovers, so on a phone the rail
+  could not be opened at all. The strip is a `<button>` now — `aria-label`,
+  `aria-expanded`, Enter/Space toggle — carrying `.kol-rail-grab-tap`, a 24px
+  disc the theme shows ONLY under `(pointer: coarse)` (kol-theme 0.123.0); a
+  press with no travel already toggled, it just had no target. Fine pointers
+  see nothing new: the ruled grab stays. The snap seam takes a target now
+  (`snapOpenRef.current(false)` closes). Per-route policy is the consumer's:
+  `touch={isHome ? 'shell' : 'drawer'}`, as the showcase set now does.
+
+## 0.37.1 — 2026-09-01
+
+- **Fixes 0.37.0: the drawer trigger did nothing.** `drawerOpenOn = []` was a
+  fresh array every render sitting in the route effect's deps, so the effect
+  re-ran on every render and closed the drawer straight after every tap —
+  every consumer taking the default lost its mobile navigation
+  (ShellDrawerOpenOnUnstableDep, kol-mirror 2026-09-01; found by the user on
+  his phone). The default is a module-level constant now, and the effect is
+  keyed on the resolved boolean rather than the array, so a consumer's inline
+  `['/']` is safe too. 0.37.0 deprecated. Swept the file: no other
+  array/object default sits in a dep array (`navKeys` already keys on a joined
+  string).
+
+## 0.37.0 — 2026-09-01
+
+- **`AppShell drawerOpenOn` — the drawer opens on entering a listed route**
+  (ShellDrawerOpenOnRoute, kol-mirror 2026-09-01; user: *"the rail should load
+  open on home, not everywhere"*). `drawerOpen` was internal state with no way
+  in, so a consumer could not say that a home which IS navigation should arrive
+  with the rail out. `drawerOpenOn={['/']}` — paths matched like the rail's
+  active row (`'/'` exact, else prefix) — and the existing route effect opens
+  on entry to one of them instead of closing; every other path keeps
+  close-on-navigate. One effect, mount + fold + navigation alike. Above
+  `drawerBelow` the list is inert. Default `[]` — nothing moves for a consumer
+  that does not pass it.
+
+## 0.36.0 — 2026-09-01
+
+- **`SettingsShortcuts`' six columns are a ceiling, not a command.** The fourth
+  home of the cols-as-command defect (SettingsShortcutsGridColumns, kol-mirror
+  2026-09-01) — `grid-cols-6` computed six 18px tracks in a 350px row at 390,
+  every group a column of single characters. The 0.33.0 idiom, applied once
+  more: `repeat(auto-fill, minmax(min(100%, max(150px, sixth-share)), 1fr))` —
+  no track under 150 (the widest label and combo in the estate), none wider
+  than the container, so the count falls out of the width: two at 390, six on
+  the desk, where nothing moves. Below `md` the grid flows by row — the
+  column-first two-row shape stays a desk ruling, because with a fixed row
+  count the extra groups would spill into implicit columns off the right
+  edge. Gap `gap-x-6 md:gap-x-12` (the ContentFiltersMobileGaps rung; 48px was
+  17% of the row). No consumer change.
+
+## 0.35.0 — 2026-09-01
+
+- **`touch="drawer"` opens from the LEFT again — 0.34.0 mirrored the panel to
+  reposition a button.** The ruling behind `ShellDrawerOnRight` said *"hamburger
+  menu location"*; its subject was the trigger, and the whole of drawer mode was
+  mirrored to move it. NavRail pins `left-0 border-r` in both modes now (one
+  className, no conditional), and the theme's off-canvas transform is `-100%`
+  again. The trigger keeps 0.34.0's `top-right, both states` — that is the part
+  that fixes the reported defect: it used to translate by the drawer width and
+  ride the panel's trailing edge, landing the open X at x 252–284 on a 390
+  screen. Pinned to the far corner it never meets a left-hand panel, so the
+  2026-08-31 travel rule stays retired. Also kept from 0.34.0: the scrim is a
+  button. No consumer change — `touch="drawer"` is the only prop involved.
+  (ShellDrawerSideCorrection, kol-chess; pairs with kol-theme 0.121.0)
+
+## 0.34.0 — 2026-09-01
+
+- **`touch="drawer"` opens from the RIGHT** (user ruling: the close must not
+  land mid-screen). NavRail pins right-0 with a left border in drawer mode,
+  the trigger is fixed top-right in both states, and the trigger-travel rule
+  is retired — it was the left side's cure. Desktop rail untouched. Needs
+  kol-theme 0.120.0. (ShellDrawerOnRight, kol-chess)
+- **The drawer scrim is a `<button>`, not a div** — the OverlayScrimTapDismiss
+  line, third instance: iOS Safari does not bubble tap-clicks from
+  non-interactive elements, and this scrim exists only on touch devices.
+
+## 0.33.0 — 2026-09-01
+
+- **CatalogPage's cols is a ceiling, not a command** — the third home of the
+  defect ContentCollectionMinColumnWidth and ContentGridMinColumnWidth closed,
+  unreachable by either because the grid was drawn inline: `repeat(6, 1fr)`
+  computed six 29px slivers at 390. Same idiom as ContentCollection now — up
+  to 6 (grid) / 4 (list) columns, no track under the floor (160 grid / 240
+  list) and none wider than the container. Desktop's sixth-share clears the
+  floor, so nothing moves there; the 2×2 expanded-card neighbour math stays a
+  six-column ruling. (CatalogPageMobileColumns, kol-monitor)
+- **SettingsShortcuts' label yields for real** — `labelWidth="auto"` (needs
+  kol-component 0.151.0): the row's fixed 160px label in the grid's ~176px
+  columns left the combo cell 4px, so EVERY combo painted into the 48px column
+  gap and the first one longer than the gap (`⌥ then 1–5`) reached the
+  neighbour's labels. The label truncates, the combo hugs, an over-long combo
+  clips at its own column edge. (SettingsShortcutsComboOverflow, kol-monitor)
+
+## 0.32.0 — 2026-09-01
+
+- **Logomark sanitizes fetched SVG before inlining** — `<style>` and `<script>`
+  stripped, `on*` attributes dropped (DOMParser, regex fallback for
+  unparseable markup), at cache time. An SVG document may legitimately carry
+  its own `<style>` — a theme-aware favicon does — but inlined, that `<style>`
+  is DOCUMENT-GLOBAL: a consumer pointing `svgUrl` at its favicon put OS-keyed
+  ink on every `<svg>` in the app and the symptom surfaced two packages away
+  as "the theme toggle is broken". A mark that needs its own styling inlines
+  it as attributes. Logomark is the estate's only fetched-SVG inliner (swept);
+  the fetch → innerHTML boundary also earns the script/handler strip.
+  (LogomarkInlineStyleLeak, kol-chess)
+
 ## 0.31.0 — 2026-08-31
 
 - **`AppShell touch="drawer"`** — below `drawerBelow` (default 768) the rail goes

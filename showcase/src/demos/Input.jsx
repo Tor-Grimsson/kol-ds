@@ -4,10 +4,11 @@ import { Input, ColorSwatch } from '@kolkrabbi/kol-component'
 export const stage = 'md'
 
 /* Variants ramp inline; size rides the toolbar picker. */
-export const sizes = ['sm', 'md', 'lg']
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function InputDemo({ size = 'md' }) {
   const [v, setV] = useState('')
+  const [name, setName] = useState('scope-04')
   const [hex, setHex] = useState('FFCF33')
   const [x, setX] = useState('240')
   const [pct, setPct] = useState('100')
@@ -16,6 +17,11 @@ export default function InputDemo({ size = 'md' }) {
     <>
       <Input variant="filled" size={size} placeholder="filled" value={v} onChange={onChange} />
       <Input variant="outline" size={size} placeholder="outline" value={v} onChange={onChange} />
+      {/* xs + onCommit (ControlsXsRung, 2026-09-01): the panel rung, committing on blur / Enter — the value beside it is what was committed */}
+      <div className="flex items-center gap-2">
+        <Input variant="outline" size="xs" value={name} onCommit={setName} placeholder="module name" chars={12} />
+        <span className="kol-helper-8 text-meta" data-committed={name}>{name}</span>
+      </div>
       {/* paint bar — slotLeft puts the swatch INSIDE the shell: one container */}
       <Input
         variant="filled"

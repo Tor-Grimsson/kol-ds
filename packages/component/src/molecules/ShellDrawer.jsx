@@ -12,7 +12,7 @@ const FOCUSABLE =
 
 /**
  * ShellDrawer — THE edge drawer: a portalled panel that slides in from the
- * left or right viewport edge over a dimming backdrop. Distinct from Modal
+ * left, right or BOTTOM viewport edge over a dimming backdrop. Distinct from Modal
  * (centered prompt/confirm) and FullscreenOverlay (fills the whole viewport,
  * not an edge sheet). Escape, backdrop click and the built-in close button
  * all call `onClose`; body scroll locks while open; focus moves into the
@@ -26,8 +26,16 @@ const FOCUSABLE =
  *
  * @param {boolean}       open      drawer visible (drives slide in/out)
  * @param {Function}      onClose   close request (Esc / backdrop / close button)
- * @param {string}        side      'left' | 'right' — edge the panel slides from
- * @param {number|string} width     panel width (px number or CSS length); omit for full-width sheet
+ * @param {string}        side      'left' | 'right' | 'bottom' — edge the panel slides from.
+ *                                  `bottom` (ShellDrawerBottomSide, kol-mirror 2026-09-01) is the
+ *                                  phone's sheet: full viewport width, slides up from +100% on Y,
+ *                                  takes `height` where the sides take `width`, and pads its foot by
+ *                                  `env(safe-area-inset-bottom)` so the last row clears the home bar.
+ *                                  ONE DETENT — open or closed. A collapsed bar that grows on tap is
+ *                                  a second height the consumer owns (mirror's 56px → 68dvh); this
+ *                                  sheet does not carry it, and says so rather than half-build it.
+ * @param {number|string} width     panel width (px number or CSS length); omit for full-width sheet — sides only
+ * @param {number|string} height    panel height (px number or CSS length); omit for a content-sized sheet — `bottom` only
  * @param {ReactNode}     header    header-row content beside the close button (replaces the source's baked-in wordmark)
  * @param {boolean}       backdrop  render the dimming scrim (default true); false = panel alone, no darken/blur, close via × / Esc
  * @param {ReactNode}     children  scrollable panel body
@@ -38,6 +46,7 @@ export default function ShellDrawer({
   onClose,
   side = 'left',
   width,
+  height,
   header,
   closeSide = 'end',
   backdrop = true,
@@ -130,10 +139,18 @@ export default function ShellDrawer({
 
   if (!present || typeof document === 'undefined') return null
 
-  const slideOut = side === 'right' ? 'translate-x-full' : '-translate-x-full'
+  const bottom = side === 'bottom'
+  const slideOut = bottom ? 'translate-y-full' : side === 'right' ? 'translate-x-full' : '-translate-x-full'
   const motionPanel = reduced
     ? ''
-    : `transition-transform duration-200 ease-out ${shown ? 'translate-x-0' : slideOut}`
+    : `transition-transform duration-200 ease-out ${shown ? (bottom ? 'translate-y-0' : 'translate-x-0') : slideOut}`
+  /* the sheet's edge is the top; the sides' is the inner vertical */
+  const place = bottom
+    ? `inset-x-0 bottom-0 w-full max-h-full ${edge ? 'border-t' : ''}`
+    : `inset-y-0 max-w-full ${side === 'right' ? `right-0 ${edge ? 'border-l' : ''}` : `left-0 ${edge ? 'border-r' : ''}`} ${width == null ? 'w-full' : ''}`
+  const size = bottom
+    ? { ...(height != null ? { height: typeof height === 'number' ? `${height}px` : height } : {}), paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }
+    : width != null ? { width: typeof width === 'number' ? `${width}px` : width } : undefined
   const motionBackdrop = reduced
     ? ''
     : `transition-opacity duration-200 ease-out ${shown ? 'opacity-100' : 'opacity-0'}`
@@ -141,10 +158,15 @@ export default function ShellDrawer({
   return createPortal(
     <>
       {backdrop && (
-        <div
+        /* A BUTTON, not a div (OverlayScrimTapDismiss, 2026-09-01): iOS Safari
+         * does not bubble tap-clicks from non-interactive elements, so a div
+         * scrim's onClick never fires on a phone — the same line that broke
+         * the search overlay's dismiss. */
+        <button
+          type="button"
+          aria-label="Close"
           className={`fixed inset-0 z-[100] kol-overlay-scrim ${motionBackdrop}`}
           onClick={onClose}
-          aria-hidden="true"
         />
       )}
       <div
@@ -154,10 +176,8 @@ export default function ShellDrawer({
         tabIndex={-1}
         /* `edge` / `shadow` (SettingsPanelApproved, 2026-08-27): the approved settings
          * drawer has neither — the sheet meets the page flat */
-        className={`fixed inset-y-0 z-[200] flex max-w-full flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop && shadow ? 'shadow-2xl' : ''} ${
-          side === 'right' ? `right-0 ${edge ? 'border-l' : ''}` : `left-0 ${edge ? 'border-r' : ''}`
-        } border-oq-08 ${width == null ? 'w-full' : ''} ${motionPanel} ${className}`}
-        style={width != null ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
+        className={`fixed z-[200] flex flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop && shadow ? 'shadow-2xl' : ''} ${place} border-oq-08 ${motionPanel} ${className}`}
+        style={size}
       >
         {/* closeSide="start": the reference sets the × glyph ~9px deeper than
           * the label column's edge, with extra top air (both reference frames

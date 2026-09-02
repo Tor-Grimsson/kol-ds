@@ -36,6 +36,15 @@ export const ShellContentWidthContext = createContext(null)
 // useLayoutEffect(() => { setTocCollapsed(true) ; return () => setTocCollapsed(false) }, [setTocCollapsed])
 export const ShellTocCollapsedContext = createContext(null)
 
+// THE LEFT RAIL IS THE PAGE'S CALL TOO (2026-09-01). The TOC had this seam and
+// the nav did not, so a landing page could shed one rail and not the other —
+// the showcase home claimed "top nav (no sidebar)" in its docstring and rendered
+// under both. Same shape as the TOC seam: set on mount, restore on unmount, and
+// the header's own toggles keep working on top of it.
+// Usage: const setNavCollapsed = useContext(ShellNavCollapsedContext)
+// useLayoutEffect(() => { setNavCollapsed(true) ; return () => setNavCollapsed(false) }, [setNavCollapsed])
+export const ShellNavCollapsedContext = createContext(null)
+
 /* overflow-x-hidden (2026-07-30): long tree rows (component names + counters)
  * overflowed the 256px rail into an internal horizontal scroll — with the
  * scrollbar hidden it read as content silently walking off, and the pan
@@ -117,6 +126,22 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const setIsSearchOpen = tagMode.isProvided
     ? (v) => (v ? tagMode.openTagMode() : tagMode.closeTagMode())
     : setLocalOpen
+  /* CLOSE IS ONE CALL (WorkshopSearchCloseUndoneBySetText, kol-website
+   * 2026-09-01). Close-and-clear was two: `setIsSearchOpen(false)` then
+   * `setSearchQuery('')` — and on the provided path the second is
+   * `tagMode.setText`, which force-opens, so both landed in one React batch
+   * and the final state was OPEN. The scrim tap (and desktop click) was
+   * undone in its own event; Escape only worked because the context's window
+   * listener runs after and wins. `closeTagMode()` already resets `text`; the
+   * trailing clear is only the local path's job. */
+  const closeSearch = () => {
+    if (tagMode.isProvided) {
+      tagMode.closeTagMode()
+    } else {
+      setLocalOpen(false)
+      setLocalQuery('')
+    }
+  }
   const [tocContent, setTocContent] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
   const [contentWidth, setContentWidth] = useState('canvas')
@@ -263,6 +288,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       <ShellFullHeightContext.Provider value={setIsFullHeight}>
         <ShellContentWidthContext.Provider value={setContentWidth}>
         <ShellTocCollapsedContext.Provider value={setTocCollapsed}>
+        <ShellNavCollapsedContext.Provider value={setNavCollapsed}>
         <div className="fixed inset-0 flex flex-col bg-surface-primary text-auto">
           <ShellHeader
             brand={brand}
@@ -362,7 +388,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             * Selecting routes to item.href; matchSearchItems is the engine's. */}
           <ShellSearchOverlay
             open={isSearchOpen}
-            onClose={() => { setIsSearchOpen(false); setSearchQuery('') }}
+            onClose={closeSearch}
             query={searchQuery}
             onQueryChange={setSearchQuery}
             results={searchResults}
@@ -385,8 +411,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                 setSearchQuery('')
                 return
               }
-              setIsSearchOpen(false)
-              setSearchQuery('')
+              closeSearch()
               if (item?.href) navigate(item.href)
             }}
           >
@@ -437,6 +462,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             </div>
           )}
         </div>
+        </ShellNavCollapsedContext.Provider>
         </ShellTocCollapsedContext.Provider>
         </ShellContentWidthContext.Provider>
       </ShellFullHeightContext.Provider>

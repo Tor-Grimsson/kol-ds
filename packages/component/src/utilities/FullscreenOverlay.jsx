@@ -65,10 +65,14 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
     <div className="kol-overlay" role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
       <div ref={sheetRef} tabIndex={-1} className="kol-overlay-sheet outline-none">
         {closeButton && (
+          /* ONE close idiom (FullscreenOverlayCloseIdiom, kol-chess 2026-09-01,
+           * user ruling): the estate's close X is the drawer trigger's bare
+           * `nav` glyph — the boxed outline treatment was a second design one
+           * tap away from the first, and had he kept a box it would have worn
+           * `primary`, never `outline`. Same variant, same default square as
+           * the trigger. */
           <Button
-            variant="outline"
-            quiet
-            size="sm"
+            variant="nav"
             iconOnly="x"
             className="kol-overlay-close"
             onClick={onClose}

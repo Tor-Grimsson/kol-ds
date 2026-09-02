@@ -1,6 +1,6 @@
 import { isValidElement } from 'react'
 import { FULL_BLEED, bleedClass } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import HlsVideo from '../atoms/HlsVideo.jsx'
 import Image from '../atoms/Image.jsx'
 import OverlayGlassPanel from '../utilities/OverlayGlassPanel.jsx'

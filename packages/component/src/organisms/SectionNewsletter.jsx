@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { bleedClass } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import Input from '../atoms/Input.jsx'
 import Button from '../atoms/Button.jsx'
 import SectionText from '../molecules/SectionText.jsx'
@@ -49,6 +49,11 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {string}    inputId      id override for the email input (default useId-generated)
  * @param {object}    slotClass · slotStyle   per-slot class / style on the SectionText (reveal seam)
  * @param {'sm'|'md'|'lg'} [controlSize='md']  size rung for BOTH the email Input and the submit
+ * @param {string} [submitVariant='primary']  the submit Button's variant (SectionNewsletterSubmitVariant,
+ *   kol-website 2026-09-01): `primary` is the page's second surface, which on an inverse band is
+ *   dark-on-dark and reads as disabled — a consumer on a dark band passes `secondary`, the
+ *   ink-on-page inversion. A prop, not a background read: the organism does not know which
+ *   backgrounds are dark, and this lands the way `controlSize` did. Default moves nothing.
  *   Button (SectionNewsletterControlSize, kol-website 2026-08-31). The pair was hardcoded md with no
  *   seam, so a page that sets `size="lg"` on every other call-site button could not match it here and
  *   the newsletter read visibly smaller directly beneath them. Default is today's md — nothing moves.
@@ -66,6 +71,7 @@ import { minHeightClass } from './sectionHeights.js'
 export default function SectionNewsletter({
   height = '40',
   controlSize = 'md',
+  submitVariant = 'primary',
   fullBleed = false,
   theme,
   background,
@@ -126,8 +132,14 @@ export default function SectionNewsletter({
         * at 390 the field and submit ran edge to edge against the band's own
         * boundary and read as breaking out of it. `px-5` is a floor the band owns.
         * Desktop does not move — the measure caps below the padded width, so the
-        * inner block still centres at 80px from the band edge. */
-        className={`kol-section-newsletter ${bleedClass(fullBleed)} flex flex-col justify-center px-5 sm:px-8 py-24 ${surfaceClass(background, theme ? 'primary' : 'none')} ${theme ? 'text-auto' : ''} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}
+        * inner block still centres at 80px from the band edge.
+        *
+        * `py-16 md:py-24` (SectionNewsletterMobileFoot, 2026-09-01): the flat
+        * `py-24` left 96px of empty band under the Subscribe button at 390 — a
+        * fifth of the card. 16/24 is the FAMILY's own mobile rung (SectionFaq,
+        * SectionSplit carry it already); this band was the outlier holding the
+        * desktop constant. Desktop unmoved. */
+        className={`kol-section-newsletter ${bleedClass(fullBleed)} flex flex-col justify-center px-5 sm:px-8 py-16 md:py-24 ${surfaceClass(background, theme ? 'primary' : 'none')} ${theme ? 'text-auto' : ''} ${minHeightClass(height)} ${className}`.replace(/\s+/g, ' ').trim()}
     >
       {/* the family's ONE cap — the shell's --kol-container-max ladder — and
         * inside it the lede's MEASURE on a wrapper (SectionNewsletterForm,
@@ -148,9 +160,17 @@ export default function SectionNewsletter({
           {/* `w-full`: SectionText centres its children as flex items, so
             * without it the form shrink-wraps and the Input's `w-full` has
             * nothing to fill — it rendered at its intrinsic ~190px */}
+          {/* ON BUTTONGROUP'S LADDER (NewsletterFormGapOffLadder, kol-website
+            * 2026-09-01; user: "the gap between input and button in newsletter
+            * should be the same as button group"): `gap-2 sm:gap-4` — 8 stacked,
+            * 16 in the row — the pair ButtonGroup ruled on 08-31. This form was
+            * `gap-4 sm:gap-3`, inverted against it. The `pt-6` went too: the
+            * SectionText above already spaces its children by `gap-6`, so the
+            * form sat 48 under the body where every other section's actions sit
+            * 24. */}
           <form
             onSubmit={handleSubmit}
-            className="flex w-full flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-center sm:gap-3"
+            className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-center sm:gap-4"
           >
             <Input
               id={emailId}
@@ -165,7 +185,7 @@ export default function SectionNewsletter({
             />
             <Button
               type="submit"
-              variant="primary"
+              variant={submitVariant}
               size={controlSize}
               disabled={status === 'submitting'}
               className="w-full sm:w-auto"

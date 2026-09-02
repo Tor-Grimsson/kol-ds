@@ -119,6 +119,25 @@ importers:
         specifier: workspace:^
         version: link:../theme
 
+  packages/controls:
+    dependencies:
+      react:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^18.3.0 || ^19.0.0
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@kolkrabbi/kol-component':
+        specifier: workspace:^
+        version: link:../component
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:^
+        version: link:../theme
+
   packages/dashboards:
     dependencies:
       react:
@@ -308,6 +327,9 @@ importers:
       '@kolkrabbi/kol-content':
         specifier: workspace:*
         version: link:../packages/content
+      '@kolkrabbi/kol-controls':
+        specifier: workspace:*
+        version: link:../packages/controls
       '@kolkrabbi/kol-dashboards':
         specifier: workspace:*
         version: link:../packages/dashboards

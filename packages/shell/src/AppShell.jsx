@@ -56,6 +56,14 @@ import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  *                                        `bare` renders the children with NO shell on a coarse-pointer device unless
  *                                        localStorage `kol-desktop` is '1' (fxr's gate); `overlay` keeps the shell and
  *                                        mounts TouchDeviceOverlay once (monitor's)
+ * @param {string[]} [props.drawerOpenOn=[]]  paths whose ENTRY opens the drawer (ShellDrawerOpenOnRoute,
+ *                                        kol-mirror 2026-09-01 — user: "the rail should load open on home, not
+ *                                        everywhere"): a home that is a catalog IS navigation, and arriving there
+ *                                        with the nav folded hides the one thing the page is for. Matched like the
+ *                                        rail's active row — `'/'` exact, anything else by prefix. Every other path
+ *                                        keeps the close-on-navigate rule; above `drawerBelow` there is no drawer
+ *                                        and the list is inert. A list, not a boolean: the policy is per-route and
+ *                                        the shell already owns the route.
  * @param {string}  props.appName       TouchDeviceOverlay's subject
  * @param {boolean} props.navKeys       Option+1…9 navigates to the rail's nth ROW through `onNavigate` — with a
  *                                        `logomark` that is the mark ('/') then the items, which is the order on
@@ -91,6 +99,13 @@ const CODE_FOR_KEY = {
   '-': 'Minus', '=': 'Equal',
 }
 
+/* A STABLE DEFAULT (ShellDrawerOpenOnUnstableDep, kol-mirror 2026-09-01 —
+ * found by the user on his phone): `drawerOpenOn = []` in the signature was a
+ * fresh array every render, and it sat in an effect's deps, so the route effect
+ * re-ran on every render and closed the drawer straight after every tap. The
+ * trigger did nothing on every consumer taking the default. */
+const NO_PATHS = []
+
 export default function AppShell({
   items,
   bottomItems,
@@ -107,6 +122,7 @@ export default function AppShell({
   settingsPath,
   settingsKey,
   drawerBelow = 768,
+  drawerOpenOn = NO_PATHS,
   children,
 }) {
   const [navHidden, setNavHidden] = useState(false)
@@ -178,13 +194,23 @@ export default function AppShell({
     return () => window.removeEventListener('keydown', onKey)
   }, [settingsKey, settingsPath, toggleSettings])
 
-  /* the rail row for that path toggles too — one gesture, two ways to reach it */
+  /* the drawer's rule for a path — matched like the rail's active row */
+  const opensOn = (p) => drawerOpenOn.some((x) => (x === '/' ? p === '/' : p.startsWith(x)))
+
+  /* the rail row for that path toggles too — one gesture, two ways to reach it.
+   * THE TAP DECIDES THE DRAWER, not only the route change
+   * (ShellDrawerCloseOnSamePath, kol-monitor 2026-09-02): a rung whose path is
+   * the one already shown — Create tapped on /create, "new case" — changes no
+   * pathname, so the route effect below never fires and the drawer stayed open
+   * over the page. The tap itself now sets the drawer to that path's rule;
+   * `drawerOpenOn` rungs stay open, every other rung closes it, same path or not. */
   const navigate = useCallback(
     (path, ...rest) => {
+      if (drawer) setDrawerOpen(opensOn(path))
       if (settingsPath && path === settingsPath) return toggleSettings()
       return onNavigate?.(path, ...rest)
     },
-    [settingsPath, toggleSettings, onNavigate],
+    [settingsPath, toggleSettings, onNavigate, drawer, drawerOpenOn], // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   /* THE ROUTE CHANGE MEANS THE OPPOSITE IN EACH MODE. For `railToggleKey` the
@@ -193,10 +219,17 @@ export default function AppShell({
    * `setNavHidden(false)` also made `navHidden` unusable as a consumer seam —
    * child effects run before parent effects, so a consumer hiding the rail on a
    * path change was overwritten in the same commit. */
+  /* …unless the destination is one where nav IS the page (`drawerOpenOn`):
+   * there the entry OPENS it. Runs on mount, on the fold and on navigation
+   * alike — `drawer` is a dep — so a phone arriving on home gets the rail. */
+  /* Keyed on the BOOLEAN, not the array: a consumer's inline `['/']` is a new
+   * identity every render too (the showcase set passes one), and the effect
+   * must fire on route entry only — never on a re-render, or it undoes the tap. */
+  const opensHere = opensOn(currentPath)
   useEffect(() => {
-    if (drawer) setDrawerOpen(false)
+    if (drawer) setDrawerOpen(opensHere)
     else setNavHidden(false)
-  }, [currentPath, drawer])
+  }, [currentPath, drawer, opensHere])
 
   /* THE WASH ALSO GOES ON THE ROOT (2026-08-30). It is set on the content
    * wrapper below, which every page inherits — but a PORTALLED surface does
@@ -293,10 +326,14 @@ export default function AppShell({
         />
       )}
       {drawer && drawerOpen && (
-        <div
+        /* A BUTTON, not a div (the OverlayScrimTapDismiss line, 2026-09-01):
+         * iOS Safari does not bubble tap-clicks from non-interactive elements,
+         * and this scrim exists ONLY on touch devices. */
+        <button
+          type="button"
+          aria-label="Close navigation"
           className="kol-shell-drawer-scrim"
           onClick={() => setDrawerOpen(false)}
-          aria-hidden="true"
         />
       )}
       {!navHidden && (

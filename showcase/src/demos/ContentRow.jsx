@@ -16,7 +16,8 @@ export default function ContentRowDemo() {
       <ContentRow variant="default" title={S.title} date={S.date} size={S.size} />
       <ContentRow variant="catalog" title={S.title} detail={S.body} />
       <ContentRow variant="article" thumb={120} ratio="16 / 9" title={S.title} kicker={S.kicker} body={S.body} date={S.date} size={S.size} />
-      <ContentRow variant="work" title={S.title} body={S.body} meta={S.date} />
+      {/* the filled /work row keeps the `tertiary` chip it was minted for (CardTagsNoVisibleFill) */}
+      <ContentRow variant="work" title={S.title} body={S.body} meta={S.date} tags={['branding', 'editorial']} />
       <ContentRow variant="typeface" thumb={0} title={S.title} body={S.body} date={S.date} />
     </div>
   )

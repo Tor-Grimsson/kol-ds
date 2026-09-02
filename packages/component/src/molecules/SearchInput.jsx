@@ -33,7 +33,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {Function} onClear      () => void — trailing × click; × renders only when set and value is non-empty
  * @param {string}   shortcutHint caller-authored kbd chip (e.g. "⌘K"); shown while the value is empty
  * @param {Function} onFocus      (event) => void — input focus
- * @param {string}   size         'sm' | 'md' — kol-control size + matched mono type class
+ * @param {string}   size         'xs' | 'sm' | 'md' — kol-control size + matched mono type class (xs = the panel rung, 2026-09-01)
  * @param {string}   variant      'filled' | 'ghost' | 'outline' — kol-control variant, same chrome as Input (ignored when bare/expanding)
  * @param {string}   tone         'default' | 'inverse' — the dark chip for a washed plane (ControlToneInverse, 2026-08-27); on the expanding pill it is the OPEN fill
  * @param {boolean}  bare         borderless inline field for overlay panels (full width, no shell chrome; keeps icon/clear/chip slots)
@@ -67,7 +67,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *
  * The flat `{ sm: 14, md: 14 }` it used to carry was the ADJACENT sm rung
  * frozen for both sizes — right ladder, no size. */
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14' }
+const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14' }
 
 export default function SearchInput({
   value = '',
@@ -198,7 +198,9 @@ export default function SearchInput({
   }
   const shellCls = [
     bare
-      ? 'flex w-full gap-2.5 px-4 py-3'
+      /* kol-control--bare: zero-chrome marker so the theme's coarse-pointer
+       * 16px floor covers this body plan too (OverlaySearchFieldZoomsIOS) */
+      ? 'kol-control--bare flex w-full gap-2.5 px-4 py-3'
       : `kol-control kol-control--${variant} kol-control-${size} gap-2${toneClass(tone) ? ' kol-tone-sunken' : ''}`,
     'items-center cursor-text',
     SIZE_TYPE[size],

@@ -41,7 +41,7 @@ const CAPS = {
 
 /** Vertical hairline between toolbar groups. */
 export const ToolbarDivider = () => (
-  <span className="mx-1 h-4 w-px shrink-0" style={{ backgroundColor: 'var(--kol-oq-08)' }} aria-hidden="true" />
+  <span className="mx-1 h-4 w-px shrink-0 bg-oq-08" aria-hidden="true" />
 )
 
 /* One axis, one control: a SegmentedToggle while the options fit at a glance,
@@ -104,7 +104,7 @@ export default function PreviewCard({
       {/* py-2.5, not py-2: at py-2 the rule sat flush under the Preview chip —
         * the chip's own block padding ate the whole gap, so the toolbar read
         * as a bug rather than a row. */}
-      <div className="flex items-center gap-2 border-b px-3 py-2.5" style={{ borderBottomColor: 'var(--kol-oq-08)' }}>
+      <div className="flex items-center gap-2 border-b border-oq-08 px-3 py-2.5">
         <DocTabs tabs={tabs} value={tab} onChange={setTab} variant="chip" ariaLabel={tabsLabel} />
         {description && (
           <>

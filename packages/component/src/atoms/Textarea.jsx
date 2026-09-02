@@ -31,7 +31,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * Pairs with `<Input>` for single-line.
  */
 
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 
 export default function Textarea({
   value,

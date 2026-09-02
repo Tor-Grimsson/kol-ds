@@ -42,6 +42,7 @@ const GATES = [
   ['motion', 'validate-motion.mjs'],
   ['props', 'validate-props.mjs'],
   ['dd-trigger', 'validate-dd-trigger.mjs'],
+  ['consumption', 'validate-consumption.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

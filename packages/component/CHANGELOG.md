@@ -1,5 +1,270 @@
 # @kolkrabbi/kol-component
 
+## 0.164.0 — 2026-09-02
+
+- **`ContentFilters trailingActions` have the narrow rung too** (found holding
+  the showcase to the full-consumption law: brand's icons gallery, now THE
+  showcase icons page, puts its ground + guide cluster in this slot, and at 390
+  the 223px cluster scrolled `main` sideways). `trailingPlacement` — `auto`
+  (default) rides the header from `md` and takes its own line under the
+  divider below it — full width, wrapping; `header` / `below` pin it. The same rung
+  `viewPlacement` (0.163.0) and LIST / GRID have. Desktop unchanged.
+- **The open search takes the row below `md`.** `SearchInput expanding`'s
+  200px pill beside the title at 390 scrolled `main` sideways; while searching
+  the title and its divider step aside and the glyph group grows to the row,
+  so the pill fits and the title returns on close. Desktop unchanged.
+
+## 0.163.0 — 2026-09-02
+
+- **`ContentFilters`' view strip has a narrow rung** (ContentFiltersViewStripOverflow,
+  kol-mirror 2026-09-02). RECENT / SAVED — and mirror's five Library views — sat
+  in the header row at every width with nothing that wrapped, scrolled or
+  re-placed it: five views at 390 were 440px in a 390px page, two off-screen
+  and unreachable. `viewPlacement` — `auto` (default) rides the header from
+  `md` and takes its OWN line under the divider below it, full width and
+  wrapping; `header` always the header; `below` always its own line. The same
+  family and rung LIST / GRID already had. Two views at desktop render exactly
+  as before.
+
+## 0.162.0 — 2026-09-02
+
+- **`ContentCard actions` sit bottom-right on the catalog card again**
+  (ContentCardActionsInsetShorthand, kol-monitor 2026-09-02; user: *"very bad
+  placement"*). The inset read the plate's pad as one value for `top` /
+  `bottom` / `right`, and `catalog`'s pad is the two-value shorthand `sm md` —
+  invalid for a single side, so all three dropped and the slot landed at its
+  static position, under the copy at the left. The inset now splits the pad:
+  block from the first value, inline from the second (or the same one). Every
+  single-value variant renders exactly as before.
+
+## 0.161.0 — 2026-09-02
+
+- **`Stepper layout="inline"` — `‹ value ›` on one line** (StepperInlineVariant,
+  kol-monitor 2026-09-02; the other half of the rack Selector's collapse onto
+  Stepper — user on the A/B: *"wasn't it laid out horizontal? ‹ 00 ›"*). The
+  chevrons flank the value as left/right hit targets, the value is centred in
+  a 3ch floor so the row does not jitter as it steps, and there is no
+  `.kol-control` field chrome — inline text on the panel. Value `fg-64`,
+  chevrons `fg-40`, type from the size ladder, casing the caller's. Works for
+  `options` and the number range alike; `onChange` unchanged. Default
+  `stacked` renders exactly as before.
+
+## 0.160.0 — 2026-09-01
+
+- **`size="xs"` on the rest of the ladder** (user ruling 2026-09-01 — one
+  ladder, every family): `Textarea`, `SearchInput`, `SegmentedToggle`,
+  `ToggleSwitch`, `Badge`, `Tag`, `IconFrame` (glyph 12 through the SOLO
+  ladder). Pairs with kol-theme 0.127.0. Defaults unchanged.
+- **The dropdown list follows the trigger's rung** (DropdownXsList,
+  kol-monitor 2026-09-01). At `xs` the open list kept `sm` rows —
+  `kol-helper-12` in a 32px pitch — inside a panel fused to an 8px-type
+  trigger, so the options truncated. `MenuDropdownItem` takes `size` and
+  `Dropdown` passes its own: at xs the rows are `kol-helper-8` in a 20px pitch
+  with the `INDICATOR.xs` check, and the panel's max-height reads the 20px
+  row. The panel stays the trigger's exact width — the 2026-08-09 one-piece
+  ruling — because with rows on the rung there is nothing left to truncate.
+
+## 0.159.0 — 2026-09-01
+
+- **`size="xs"` on `Input`, `Dropdown`, `Stepper`, `Button`** (ControlsXsRung,
+  kol-monitor 2026-09-01) — `kol-mono-8` in the theme's 22px xs shell; the
+  glyph ladders gain xs (SOLO 12 · ADJACENT 10 · INDICATOR 8), Stepper's chevron
+  6, Input's height pin `h-3`. Defaults unchanged; Dropdown stays sm.
+- **`Input onCommit`** — `(trimmed) => void` on blur / Enter, Escape restores:
+  the field keeps a local draft seeded from `value`; `onChange` still fires
+  live if given. The rack commits a module name or a scope expression, not
+  every keystroke.
+- **`Stepper options`** — step through a list instead of a number range: the
+  field is read-only, the chevrons wrap at both ends, and `onChange` reports
+  the option in the number path's event shape, `{ target: { value } }`. The
+  rack's ‹ value › Selector as a variant of Stepper on the ladder (user:
+  *"selector could be a variant of ours if we make it follow the size
+  ladder"*).
+
+## 0.158.0 — 2026-09-01
+
+- **Card tags read as chips again** (CardTagsNoVisibleFill, kol-website
+  2026-09-01; user, twice: *"but the tags are without background? why?"*).
+  `ContentText` drew every tag as `tertiary` — surface-primary fill, no border
+  — which is invisible on every card that sits on surface-primary, i.e. all of
+  them; the variant was minted for the filled `/work` row and the fill was
+  never the point there. `ContentText` takes `tagVariant` (default `primary`,
+  the soft ink wash), and `ContentCard` / `ContentRow` derive it from the BOX:
+  a solid surface fill (`--kol-surface-*`) keeps `tertiary` — the row it was
+  ruled for — and everything else takes `primary`. Both expose `tagVariant` to
+  override.
+- **The newsletter form is on `ButtonGroup`'s gap ladder**
+  (NewsletterFormGapOffLadder, kol-website 2026-09-01; user: *"the gap between
+  input and button in newsletter should be the same as button group"*). Was
+  `gap-4 sm:gap-3` — inverted against the group's `gap-2 sm:gap-4` in both
+  directions; now the same pair. The form's `pt-6` went too: the section text
+  already spaces its children by `gap-6`, so the form sat 48 under the body
+  where every other section's actions sit 24.
+
+## 0.157.0 — 2026-09-01
+
+- **`SectionNewsletter submitVariant`** (SectionNewsletterSubmitVariant,
+  kol-website 2026-09-01; user: *"subscribe below input should be white
+  there"*). The submit was a hardcoded `primary` — the page's second surface —
+  so on an inverse band (`/stack`'s `bg-fg-absolute-16`, dark in both themes)
+  it was a dark block on a dark band and read as disabled. A prop, default
+  `primary` so nothing moves; the consumer on the dark band passes
+  `secondary`, the ink-on-page inversion that already exists. Landed the way
+  `controlSize` did, not as a background read — the organism does not know
+  which backgrounds are dark.
+
+## 0.156.0 — 2026-09-01
+
+- **The expanded `ContentCard`'s 50/50 split stacks below `md`**
+  (ContentCardExpandedSplitStacks, kol-mirror 2026-09-01). Side by side at 390
+  a 350px expanded card gave each half 174px and the prose 126, and one
+  module's specs ran 1177px tall. Below `md` the halves stack — media on top at
+  its own ratio (the variant's, `3/2` if it has none), `expandedContent` full
+  width under it; from `md` the row is exactly as before. The 50% basis is a
+  `md:flex-[0_0_50%]` class now, not an inline style — an inline flex-basis
+  has no breakpoint. The unexpanded card, the `MISSING` placeholder and
+  `AssetPlaceholder` are untouched. No `media={false}` — the stack is the fix
+  that helps every consumer; the placeholder policy for an absent image stays
+  the catalog's.
+
+## 0.155.0 — 2026-09-01
+
+- **`ProfileCard`'s shelf gets its seams** (user ruling 2026-09-01 — *"is it
+  dark in light mode? are there light/dark or color variants on the shelf?
+  variant on toggle? variant on logo? padding?"*), each on a mechanism the DS
+  already has. `shelfTheme` (`inverse` · `light` · `dark`) is the section
+  family's `theme` stamp on the shelf — every token inside follows, the logo's
+  ink through `currentColor`, and `inverse` tracks the toggle. `shelfBackground`
+  is the section `background` prop — a named surface or a raw token; with a
+  theme stamped the default paint is that theme's `primary`, without one it
+  stays `inverse` with inverse ink, exactly as 0.154 shipped. `controlVariant`
+  passes straight to the disclosure's `IconFrame`. `pad` (`sm` · `md` · `lg`)
+  is `ContentCard`'s — one step on `--kol-pad-card-*`, overriding the size
+  ramp's padding. The logo stays a slot. Nothing moves for a call that passes
+  none of them.
+
+## 0.154.1 — 2026-09-01
+
+- **`ProfileCard`'s `logo` slot sizes a wrapped svg.** The slot sized `[&>svg]`
+  only, so a brand `Asset` (which wraps its svg) rendered unsized and the site
+  had to re-add `[&>svg]:h-full [&>svg]:w-auto` on the node it passed. The slot
+  now sizes whatever it is handed — `[&>*]:h-full [&_svg]:h-full [&_svg]:w-auto`
+  — so `logo={<Asset name="kol-lockup-vert" />}` is the whole call.
+
+## 0.154.0 — 2026-09-01
+
+- **`ProfileCard` — the digital namecard, promoted from kol-website's `/studio`**
+  (ProfileCard, kol-website 2026-09-01; carried class-for-class). A square photo
+  with a disclosure on it and a `bg-surface-inverse` shelf — logo slot, name,
+  mailto, a rack of socials — under it (vertical, the card grows) or beside it
+  (horizontal, the card holds its square and the photo crops — the 2026-08-27
+  ruling). **The shelf sizes to its content**: the source's fixed `h-*` box
+  clipped every vertical size's rack on a phone (lg needed 204 inside 176, sm
+  140 inside 96); the open state now animates `grid-template-rows: 0fr → 1fr`
+  and the browser measures. Horizontal is `grid-template-columns: 0 → 224px`,
+  one number where the source carried three. **Scale and width are separate**
+  — `size` (xl · lg · md · sm) drives the ramp and caps the width, the card is
+  `w-full` inside it, so a caller's `w-full` no longer fights a second width
+  utility. **The disclosure is a button, not `ToggleSwitch`** — ruling applied,
+  not minted: `aria-expanded` + `aria-controls`, `plus` closed / `minus` open;
+  over media it is `IconFrame secondary radius="full"` (the bare `nav` glyph
+  was measured invisible on the photo — page ink on a dark picture), on a
+  surface the bare `nav` idiom is the same ruling with no frame. `variant="lg-h"` aliases `size="lg"
+  orientation="horizontal"`; `open` / `defaultOpen` / `onOpenChange` is the
+  controlled seam the source lacked. Brand content is the consumer's — `logo`
+  is a slot, `name` / `email` / `socials` are props with no defaults.
+
+## 0.153.0 — 2026-09-01
+
+- **`ShellDrawer side="bottom"` — the phone's sheet** (ShellDrawerBottomSide,
+  kol-mirror 2026-09-01; kol-monitor's mobile plan asked the same question).
+  Full viewport width, slides up from `+100%` on Y, takes `height` where the
+  sides take `width`, and pads its foot by `env(safe-area-inset-bottom)` so the
+  last row clears the home bar. Everything the sides already do comes with it —
+  portal, scrim-as-button, Escape, body-scroll lock, focus trap and return, the
+  reduced-motion gate. **One detent**: open or closed. A collapsed bar that
+  grows on tap is a second height the consumer owns (mirror's 56px → 68dvh) —
+  the sheet does not carry it, and says so in its docstring rather than
+  half-build it. No drag-to-dismiss (not asked; a tap is the proven gesture).
+  Sides unchanged.
+
+## 0.152.0 — 2026-09-01
+
+- **FullscreenOverlay's close X is the bare `nav` glyph** — one close idiom for
+  the estate (user ruling): the boxed `outline` treatment was a second design
+  one tap away from the drawer trigger's bare glyph. Positioned on the sheet's
+  content edge by kol-theme 0.120.0. (FullscreenOverlayCloseIdiom, kol-chess)
+
+## 0.151.0 — 2026-09-01
+
+- **`LabeledControl inline` takes `labelWidth="auto"`** — flips which cell
+  yields: the label flexes and truncates, the control hugs its content (and
+  clips at the column edge rather than painting over a neighbour). The fixed
+  default serves a settings page's aligned label column; `auto` is for a row
+  living in a column narrower than the label default. `SettingsRow` forwards
+  it. (SettingsShortcutsComboOverflow, kol-monitor)
+
+## 0.150.1 — 2026-09-01
+
+- **Fixes 0.150.0, which did not build for ANY barrel consumer.** The
+  `useGrabEdge` move to `src/hooks/` kept its relative `./motion.js` import
+  while `motion.js` stayed in `utilities/` — the barrel re-exports the broken
+  file, so every app on the barrel failed resolution at build. One line:
+  `../utilities/motion.js`. 0.150.0 is deprecated on the registry. Caught by
+  kol-monitor before any other consumer bumped. (ComponentUseGrabEdgeSubpath
+  follow-up)
+
+## 0.150.0 — 2026-09-01
+
+- **An array-valued ContentText slot never renders as concatenated text.** React
+  writes an array of strings as adjacent text nodes and CSS folds contiguous text
+  into ONE anonymous flex item — so `tags={['vcap','plugin',…]}` rendered as
+  `vcappluginchrome…` in system sans, first thing under the thumbnail. Strings in
+  the `tags` slot now render as the tertiary `Tag` chip (pre-built elements pass
+  through untouched); any other slot's array (`meta={[date, readingTime]}`) gets
+  one span per item on a flex seam. (ContentTextTagsSlotRendersRawArray, kol-website)
+- **The overlay scrim is a `<button>`, not a div** — in ShellSearchOverlay AND
+  ShellDrawer, the same line in both. iOS Safari does not bubble tap-clicks from
+  non-interactive elements, so the div's `onClick` never fired on a phone and the
+  only way out of search was the close control the user did not find. The button
+  also ends the other half: an interactive target carrying `aria-hidden`.
+  (OverlayScrimTapDismiss, kol-website)
+- **SearchInput's `bare` plan wears the `kol-control--bare` marker**, so the
+  theme's coarse-pointer 16px floor reaches the overlay palette's field. Sweep of
+  text-entry inputs outside both shells found one more site — QuadrantSync's two
+  number inputs (desktop inspector, left as is, noted). (OverlaySearchFieldZoomsIOS,
+  kol-website; needs kol-theme 0.117.0)
+- **ContentFilters' two desktop-constant gaps get mobile rungs.** Title seam:
+  `gap-3 md:gap-6` + `pr-2 md:pr-4` — same frame-air balance the
+  ContentFiltersTitleGap ruling wanted (12+8 both sides), half the spend; it was
+  40px of a 390px viewport on one divider. Facet columns: `gap-8 md:gap-16` on
+  both rows — 64px between CATEGORY and YEAR left two columns ~160px each.
+  (ContentFiltersMobileGaps, kol-website)
+- **The showcase row is a FIXED 168 rung below the md container** (`heightSm`,
+  `.kol-row--fixed-sm`) — the floor above it, unchanged. Content grew the row
+  62px past its floor on a phone and the 136px thumb stranded at the top; the
+  user's ruling is the constraint: the row's height is a function of the image,
+  content fits inside it. 168 is the floor's own number, so this is a change of
+  KIND, not value; tags go single-row below md so the cut lands on the chips.
+  `minHeight` still overrides. (ContentRowShowcaseImageDrivenHeight, kol-website;
+  needs kol-theme 0.117.0)
+- **SectionNewsletter joins the family's `py-16 md:py-24` rung** — the flat
+  `py-24` left 96px of empty band under the Subscribe button at 390, a fifth of
+  the card; SectionFaq and SectionSplit already carried 16/24. Desktop unmoved.
+  (SectionNewsletterMobileFoot, kol-website)
+- **The split's bounded-frame height stops at the stack.** `rung − 2×py` is a
+  two-column ruling; below 901px the text sits ABOVE the media and the same calc
+  handed the frame the rung's arithmetic leftover — 117px at a 700-tall phone —
+  and `overflow-hidden` clipped a 350px card to a letterbox strip, reported as a
+  ProfileCard crop. Stacked: `w-full` + ratio, width decides, media never clips.
+  ≥901px nothing moves. (SectionSplitVisualHeightRemainder, kol-website)
+- **`useGrabEdge` moved to `src/hooks/`**, where a hook lives and where the
+  `./hooks/*` wildcard already resolves `.js` — the deep path is
+  `@kolkrabbi/kol-component/hooks/useGrabEdge` now. It sat in `utilities/` where
+  the wildcard resolves `.jsx` only, so the documented deep import threw
+  ERR_MODULE_NOT_FOUND. Barrel import unchanged; no consumer imported the old
+  deep path (it never worked). (ComponentUseGrabEdgeSubpath, kol-monitor)
+
 ## 0.149.0 — 2026-09-01
 
 - **A content grid can no longer demand a column wider than its container.**

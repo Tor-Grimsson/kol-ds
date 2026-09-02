@@ -99,7 +99,14 @@ export function MenuItem({
  *   - children  — main label, flex-1.
  *   - shortcut  — trailing content (text shortcut hint, ✓ marker, or icon).
  */
-export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, children }) {
+/* the row follows the trigger's rung (DropdownXsList, kol-monitor 2026-09-01):
+ * at xs the list kept sm rows — kol-helper-12 in a 32px pitch — inside a panel
+ * fused to an 8px-type trigger, so the options truncated. One map, both ends. */
+/* xs wears the TRIGGER's face (kol-mono-8), not the helper: the trigger's ghost
+ * stack reserves the widest label in its own face, and a row set in a different
+ * one measured 3px wider and clipped the selected row beside its check. */
+const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-3 h-8', md: 'kol-helper-12 px-3 h-8', lg: 'kol-helper-12 px-3 h-8' }
+export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', children }) {
   return (
     <button
       type="button"
@@ -110,7 +117,7 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
       disabled={disabled}
       role="menuitem"
       style={height != null ? { height } : undefined}
-      className={`w-full kol-helper-12 px-3 h-8 shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
+      className={`w-full ${ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}

@@ -9,7 +9,7 @@ const OPTIONS = [
 
 /* One instance per variant; size rides the toolbar picker (2026-08-09
  * consistency ruling — no inline size ramps in previews). */
-export const sizes = ['sm', 'md', 'lg']
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function SegmentedToggleDemo({ size = 'sm' }) {
   const [v, setV] = useState('grid')

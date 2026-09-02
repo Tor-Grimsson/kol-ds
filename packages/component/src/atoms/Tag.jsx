@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 
-const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
+const ICON_SIZES = { xs: 8, sm: 10, md: 12, lg: 14 }
 
 /**
  * Tag — the INTERACTIVE chip: filterable, selectable, removable.
@@ -35,7 +35,7 @@ const ICON_SIZES = { sm: 10, md: 12, lg: 14 }
  * @param {ReactNode} children   label content
  * @param {string}    text       content fallback when no children (brand SwatchControls)
  * @param {string}    variant    'primary' | 'secondary' | 'inverse' · `tertiary` = secondary's fill, no outline, mono at fg-80 (2026-08-27)
- * @param {string}    size       'sm' | 'md' | 'lg' — `sm` is the default and
+ * @param {string}    size       'xs' | 'sm' | 'md' | 'lg' — `sm` is the default and
  *                               should stay the answer; `lg` needs a reason
  * @param {boolean}   active     selected state (filter chips)
  * @param {boolean}   hash       prepend `#` (default true); false for plain labels

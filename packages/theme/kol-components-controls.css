@@ -1,0 +1,36 @@
+/* ---------------------------------------------------------------------------
+ * KOL CONTROLS — the token layer for @kolkrabbi/kol-controls (KolControlsPackage,
+ * kol-monitor 2026-09-01). Hardware panel controls for instruments: the values
+ * are kol-monitor's `monitor-overrides.css`, renamed `--monitor-*` → `--kol-ctl-*`
+ * on the way in — the values are the ruling, the prefix is the package's.
+ *
+ * HARDWARE IS THEME-INVARIANT: a knob cap is black on a white panel too, so the
+ * caps derive from `--kol-color-ab-black` / `-white` — the `oq-ab` / `fg-ab`
+ * tiers flip with `[data-theme]` and could not carry them.
+ *
+ * LEDs are the set's own emitters, deliberately NOT `--kol-palette-*` (user
+ * ruling: "leds and the colors should stay, they are unique to this set").
+ *
+ * `JackSocket` appends a hex alpha to its role colour for the glow, so the two
+ * jack roles must resolve to HEX on :root — a consumer overriding them binds a
+ * hex, never a var().
+ * --------------------------------------------------------------------------- */
+:root {
+  /* hardware */
+  --kol-ctl-hw-cap:      color-mix(in srgb, var(--kol-color-ab-black) 90%, transparent);
+  --kol-ctl-hw-well:     color-mix(in srgb, var(--kol-color-ab-black) 95%, transparent);
+  --kol-ctl-hw-shade:    color-mix(in srgb, var(--kol-color-ab-black) 40%, transparent);
+  --kol-ctl-hw-cap-edge: color-mix(in srgb, var(--kol-color-ab-white) 16%, transparent);
+  --kol-ctl-hw-on-cap:   color-mix(in srgb, var(--kol-color-ab-white) 72%, transparent);
+  --kol-ctl-hw-rail:     linear-gradient(180deg, #8a8680 0%, #7a7670 50%, #6a6660 100%);
+  --kol-ctl-hw-case:     #141414;
+  --kol-ctl-cable:       #f59e0b;
+  /* LEDs */
+  --kol-ctl-led-red:    #e74c3c;
+  --kol-ctl-led-green:  #2ecc71;
+  --kol-ctl-led-yellow: #f1c40f;
+  --kol-ctl-led-blue:   #3b82f6;
+  /* jack roles — HEX, see above */
+  --kol-ctl-signal-input: #4ade80;
+  --kol-ctl-cv-attenuate: #497DA2;
+}

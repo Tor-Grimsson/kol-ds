@@ -3,7 +3,7 @@ import { Textarea } from '@kolkrabbi/kol-component'
 export const stage = 'md'
 
 /* Variants ramp inline; size rides the toolbar picker. */
-export const sizes = ['sm', 'md', 'lg']
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function TextareaDemo({ size = 'sm' }) {
   return (

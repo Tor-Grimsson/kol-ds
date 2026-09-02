@@ -48,6 +48,7 @@
 @import "./kol-components-foundry.css" layer(components);
 @import "./kol-components-styleguide.css" layer(components);
 @import "./kol-components-shell.css" layer(components);
+@import "./kol-components-controls.css" layer(components);
 
 /* Theme-level design tokens — LAST, as they always were (lifted into their own
  * file 2026-08-27 so kol-core.css shares them; emitted CSS unchanged). */

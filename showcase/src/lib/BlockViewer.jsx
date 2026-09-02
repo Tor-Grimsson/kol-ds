@@ -159,9 +159,8 @@ export default function BlockViewer({ entry, previewBase = '/blocks/preview', sr
       style={isDesktop ? undefined : DOT_GRID}
     >
       <div
-        className={`overflow-hidden bg-surface-primary ${isDesktop ? '' : 'rounded-r-[var(--kol-radius-sm)] border-r'} ${dragging ? '' : 'transition-[width] duration-200 ease-out'}`}
+        className={`overflow-hidden bg-surface-primary ${isDesktop ? '' : 'rounded-r-[var(--kol-radius-sm)] border-r border-oq-08'} ${dragging ? '' : 'transition-[width] duration-200 ease-out'}`}
         style={{
-          ...(isDesktop ? undefined : { borderRightColor: 'var(--kol-oq-08)' }),
           ...(bodyW
             ? { width: Math.round(frameW * scale), height: Math.round(FRAME_H * scale) }
             : { width: '100%', height: FRAME_H }),

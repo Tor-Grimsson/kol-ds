@@ -32,7 +32,8 @@ import { indicatorSize } from '../hooks/glyphLadders.js'
  * (lg ≥1024 / md ≥768 / sm below) is gone.
  */
 
-const SIZE_TYPE = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+/* xs (ControlsXsRung, 2026-09-01): the panel rung, opt-in by prop — the default stays sm (2026-07-28 law) */
+const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 /* Caret size comes from the INDICATOR ladder (glyphLadders.js) — the private
  * map that lived here was a transcription of ADJACENT, which is the wrong
  * ladder for a decoration: it put a caret one rung HEAVIER than the label
@@ -183,6 +184,8 @@ const Dropdown = ({
         className={`kol-dd-panel kol-dd-panel--${resolvedVariant} ${toneClass(tone)}`.trim()}
         style={{
           '--kol-dd-max-rows': maxRows ?? 10,
+          /* xs rows are 20px; the panel's max-height reads the row height */
+          ...(resolvedSize === 'xs' && rowHeight == null ? { '--kol-dd-row-h': '20px' } : null),
           ...(rowHeight != null ? { '--kol-dd-row-h': typeof rowHeight === 'number' ? `${rowHeight}px` : rowHeight } : null),
         }}
       >
@@ -201,11 +204,12 @@ const Dropdown = ({
                  * all — and this was the last one left, the option row's ink
                  * brighten. The check mark is what marks the current value. */
                 hover={false}
+                size={resolvedSize}
                 height={rowHeight}
                 onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
                 onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}
                 onClick={() => handleSelect(option)}
-                shortcut={isActive ? <Icon name="check" size={11} /> : undefined}
+                shortcut={isActive ? <Icon name="check" size={resolvedSize === 'xs' ? indicatorSize('xs') : 11} /> : undefined}
               >
                 {option.label}
               </MenuDropdownItem>

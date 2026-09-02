@@ -4,7 +4,7 @@ import { IconFrame } from '@kolkrabbi/kol-component'
  * consistency ruling — no inline size ramps in previews). The variant picker
  * re-renders the single frame in each colour set. */
 export const variants = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'grey', 'danger']
-export const sizes = ['sm', 'md', 'lg']
+export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function IconFrameDemo({ variant = 'primary', size = 'md' }) {
   return <IconFrame name="settings-01" variant={variant} size={size} />

@@ -23,12 +23,13 @@ const VARIANT_MAP = {
 }
 
 const SIZE_MAP = {
+  xs: 'kol-badge-xs',
   sm: 'kol-badge-sm',
   md: 'kol-badge-md',
   lg: 'kol-badge-lg'
 }
 
-const ICON_SIZES = { sm: 12, md: 14, lg: 16 }
+const ICON_SIZES = { xs: 10, sm: 12, md: 14, lg: 16 }
 
 const Badge = ({
   children,

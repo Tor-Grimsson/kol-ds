@@ -47,7 +47,7 @@
  *   className — additional classes on the outer shell
  */
 export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', ariaLabel, className = '' }) {
-  const cellType = { sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
+  const cellType = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
   const stateless = value == null
   const focusIdx = Math.max(0, options.findIndex((opt) => opt.value === value))
 

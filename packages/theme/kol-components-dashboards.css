@@ -158,6 +158,29 @@
   }
 }
 
+/* Card LEDES — the WRAPPING secondary line under a card title
+ * (DashDetailWrapsWithoutLeading, kol-chess 2026-09-01). `.dash-detail` is
+ * line-height 1 — single-line chrome by the type protocol's fault line — and
+ * CardHeader was handing it full sentences that wrapped to three leading-less
+ * lines at 390. dash-detail's ramp and step, real leading; footers and labels
+ * keep `.dash-detail`.
+ * NOT `.dash-subtitle` — that name was already the 16 → 22 medium sub-heading
+ * above (0.120.0 shipped a same-named duplicate here for a few minutes and
+ * downgraded three live call sites; 0.120.1 is the rename). */
+.dash-lede {
+  font-family: var(--kol-font-family-mono);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--kol-surface-on-primary);
+}
+
+@container (min-width: 768px) {
+  .dash-lede {
+    font-size: 12px;
+  }
+}
+
 /* Chart axes, compact items, legends — 8px → 11px, regular weight */
 .dash-caption {
   font-family: var(--kol-font-family-mono);

@@ -59,9 +59,11 @@ export default function ContentCardDemo() {
     </div>
     <div className="grid w-full max-w-[48rem] grid-cols-3 items-start gap-4">
       <ContentCard variant="default" title={S.title} date={S.date} size={S.size} />
-      <ContentCard variant="catalog" title={S.title} detail={S.body} />
+      {/* catalog + actions: the slot sits bottom-right of the plate on the two-value pad (ContentCardActionsInsetShorthand) */}
+      <ContentCard variant="catalog" title={S.title} detail={S.body} actions={<span className="kol-helper-10 text-meta" data-card-action>INSERT ●</span>} />
       {/* a titleClass override keeps the hover dim — the hook is behaviour, not voice */}
-      <ContentCard variant="article" title={S.title} kicker={S.kicker} body={S.body} date={S.date} size={S.size} titleClass="kol-sans-display-03 uppercase truncate" href="#" onNavigate={(e) => e.preventDefault()} />
+      {/* tags on a plain-surface card draw the `primary` chip (CardTagsNoVisibleFill) */}
+      <ContentCard variant="article" title={S.title} kicker={S.kicker} body={S.body} date={S.date} size={S.size} tags={['design-system', 'type']} titleClass="kol-sans-display-03 uppercase truncate" href="#" onNavigate={(e) => e.preventDefault()} />
       <ContentCard variant="work" pad="sm" title={S.title} body={S.body} meta={S.date} />
       {/* typeface: `reveal` — on hover the plate + glyph fade out and the pangram fades in */}
       <ContentCard variant="typeface" title="Right Grotesk" body="6 styles" date="2024" href="#" onNavigate={(e) => e.preventDefault()} media={<div className="flex h-full w-full items-center justify-center kol-sans-display-01">Ðð</div>} reveal={<p className="text-auto-inverse kol-sans-heading-03 text-center">The quick brown fox jumps over the lazy dog</p>} />

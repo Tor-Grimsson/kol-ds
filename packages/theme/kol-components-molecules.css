@@ -279,6 +279,8 @@
  * paying for; the class owns the type, the rule owns the box. */
 /* the SIZE carries its type (WorkListingRowsAndFilters, 2026-08-27): the helper
  * rung that rode beside it in the atom (sm → 10 · md → 12 · lg → 14) lives here. */
+/* xs — the panel rung (2026-09-01): one ladder, every family */
+.kol-tag--xs { padding: 1px 8px; font-family: var(--kol-font-family-mono); font-size: 8px; line-height: 1; font-weight: 500; letter-spacing: 0.10em; }
 .kol-tag--sm { padding: 2px 10px; font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 1; font-weight: 500; letter-spacing: 0.10em; }
 .kol-tag--md { padding: 4px 16px; font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 1; font-weight: 500; letter-spacing: 0.06em; }
 .kol-tag--lg { padding: 6px 20px; font-family: var(--kol-font-family-mono); font-size: 14px; line-height: 1; font-weight: 500; letter-spacing: 0.06em; }
@@ -497,6 +499,11 @@
   border: 1px solid transparent;
 }
 
+.kol-badge-xs {
+  height: 16px;
+  padding: 0 4px;
+  font-size: 8px;
+}
 .kol-badge-sm {
   height: 20px;
   padding: 0 6px;
@@ -545,8 +552,10 @@
 
 /* Sizes mirror .kol-btn-{sm,md,lg} exactly: pinned height above + cell
  * padding per size (below) + mono type (12/14/16) applied in JSX. */
+.kol-seg--xs { height: 22px; }
 .kol-seg--sm { height: 26px; }
 .kol-seg--lg { height: 40px; }
+.kol-seg--xs .kol-seg-cell { padding: 4px 8px; }
 .kol-seg--sm .kol-seg-cell { padding: 4px 12px; }
 .kol-seg--lg .kol-seg-cell { padding: 8px 20px; }
 
@@ -852,10 +861,12 @@
 /* LOOK ONLY — the call site owns the box. Three scrims exist and two are
  * `fixed inset-0` while one is `absolute inset-0`; baking position in would
  * have forced a wrong one on two of them. The class owns what was drifting:
- * the tint (60 / 50 / 50 across three files) and the blur. */
+ * the tint (60 / 50 / 50 across three files).
+ * NO BLUR (user ruling 2026-09-01, OverlayScrimBlur): the 1px blur bought a
+ * compositing layer on every overlay open, on a phone, for a separation the
+ * 60% tint already carries. */
 .kol-overlay-scrim {
   background-color: color-mix(in srgb, #000 60%, transparent);
-  backdrop-filter: blur(1px);
 }
 
 .kol-overlay-panel {
@@ -866,8 +877,8 @@
   /* NO BORDER, NO SHADOW (user 2026-08-01). Both were tried and both were
    * wrong: the shadow was another product's floating-card idiom, and the
    * hairline left an empty palette reading as a bordered empty box. The SCRIM
-   * is the separation — a 60% tint plus blur is already a stronger edge than
-   * an 8%-opacity line. */
+   * is the separation — a 60% tint is already a stronger edge than an
+   * 8%-opacity line. */
   /* `sm` — the radius this repo's chrome actually uses. */
   border-radius: var(--kol-radius-sm);
   /* NO SHADOW (user ruling 2026-08-01). The border and the scrim already
@@ -966,6 +977,26 @@
 .kol-row--fixed {
   height: var(--kol-row-h);
   min-height: var(--kol-row-h);
+}
+
+/* fixed BELOW the md container only, the floor above it
+ * (ContentRowShowcaseImageDrivenHeight, 2026-09-01): the showcase row's height
+ * is a function of the image — thumb + padding — and content fits inside it.
+ * `overflow: hidden` is deliberate here, not the silent-loss case: the rung is
+ * the design, the text truncates by ramp, and the tags line goes single-row
+ * below md so the cut lands on the chips. Released at md, where the floor in
+ * the container query below resumes. */
+.kol-row--fixed-sm {
+  height: var(--kol-row-h-sm);
+  min-height: var(--kol-row-h-sm);
+  overflow: hidden;
+}
+@container (min-width: 768px) {
+  .kol-row--fixed-sm {
+    height: auto;
+    min-height: var(--kol-row-min-h-md, var(--kol-row-min-h));
+    overflow: visible;
+  }
 }
 
 /* the divider is its OWN longhand, declared after the shorthand above so it

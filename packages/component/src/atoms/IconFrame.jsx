@@ -61,7 +61,7 @@ import { toneClass } from '../utilities/tone.js'
  *
  * @param {string} name       icon name (kol-icons)
  * @param {string} variant    primary|secondary|accent|outline|ghost|nav|grey|danger
- * @param {string} size       sm|md|lg — square + glyph together
+ * @param {string} size       xs|sm|md|lg — square + glyph together (xs = 20px square, 12 glyph; the panel rung, 2026-09-01)
  * @param {string} radius     sm (default, the system's 4px) | full (9999px).
  *                            Two values, nothing between: a round frame is its
  *                            own chrome idiom (edge-straddling controls, avatars),

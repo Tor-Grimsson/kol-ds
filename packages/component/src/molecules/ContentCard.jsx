@@ -142,6 +142,9 @@ export default function ContentCard({
   hero = false,
   label,
   pad,
+  /* the tag chip follows the BOX (CardTagsNoVisibleFill, 2026-09-01): a solid
+   * surface fill keeps `tertiary`, a plain or washed box takes `primary` */
+  tagVariant,
   media,
   ratio,
   fit,
@@ -196,6 +199,13 @@ export default function ContentCard({
   ) : null
   const r = ratio ?? RATIOS[variant]
   const padding = pad ? `var(--kol-pad-card-${pad})` : box.pad
+  /* the inset takes SINGLE values (ContentCardActionsInsetShorthand, kol-monitor
+   * 2026-09-02): `catalog`'s pad is the two-value shorthand `sm md`, and a
+   * two-value string is invalid for top / right / bottom — all three dropped
+   * and the actions landed at their static position, under the copy at the
+   * left, instead of bottom-right (the 2026-08-15 ruling). Block from the
+   * first value, inline from the second (or the same one). */
+  const [padBlock, padInline = padBlock] = String(padding ?? '0').trim().split(/\s+/)
   /* image-only cards (print) pass no text slots — the empty plate must not render */
   const hasText = ['title', 'body', 'kicker', 'detail', 'date', 'size', 'meta', 'tags'].some((k) => textSlots[k] != null)
   /* `actions` sit IN THE TEXT PLATE, bottom-right (user ruling 2026-08-15:
@@ -222,7 +232,7 @@ export default function ContentCard({
         zIndex: box.layout === 'canvas' ? 1 : undefined,
       }}
     >
-      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} {...textSlots} />}
+      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...textSlots} />}
       {/* ABSOLUTE, not a flex sibling: the plate's height moves with the title
         * and the meta, so a laid-out stack would stretch or drift with it. The
         * inset reads the SAME pad token the plate uses, so the icons sit the
@@ -230,7 +240,7 @@ export default function ContentCard({
       {actions && (
         <div
           className="absolute flex"
-          style={{ top: padding, bottom: padding, right: padding }}
+          style={{ top: padBlock, bottom: padBlock, right: padInline }}
         >
           {actions}
         </div>
@@ -283,7 +293,16 @@ export default function ContentCard({
       </>
     ) : box.layout === 'fill-card' ? (
       <>
-        <div className="flex-1 min-w-0 min-h-0 relative overflow-hidden" style={{ ...(expanded ? { flex: '0 0 50%' } : null), ...(doFlip ? { perspective: '1000px' } : null) }}>
+        {/* THE SPLIT HAS A NARROW RUNG (ContentCardExpandedSplitStacks, kol-mirror
+          * 2026-09-01): below `md` the expanded halves STACK — media on top at
+          * its own ratio, content full width under it. Side by side, a 350px
+          * card gave each half 174 and the prose 126, and one module's specs
+          * ran 1177px tall. The 50% half is a `md:` class now, not an inline
+          * style — an inline flex-basis has no breakpoint. */}
+        <div
+          className={`flex-1 min-w-0 min-h-0 relative overflow-hidden ${expanded ? 'max-md:flex-none max-md:aspect-[var(--kol-card-ratio)] md:flex-[0_0_50%]' : ''}`}
+          style={{ ...(expanded ? { '--kol-card-ratio': r ?? '3 / 2' } : null), ...(doFlip ? { perspective: '1000px' } : null) }}
+        >
           {/* the FLIP (print): PrintGridCard's turn, verbatim — preserve-3d,
             * 0.4s ease-out, rotateY(180deg) while `selected`; the consumer's
             * `onClick` reads the rect off `event.currentTarget` for its
@@ -356,7 +375,7 @@ export default function ContentCard({
 
   const common = {
     'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,
-    className: `kol-card group flex ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-card group flex ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
       /* same reason as ContentRow: rest colours are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step

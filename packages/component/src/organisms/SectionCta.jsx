@@ -1,6 +1,6 @@
 import Button from '../atoms/Button.jsx'
 import { FULL_BLEED } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import SectionText from '../molecules/SectionText.jsx'
 import { minHeightClass } from './sectionHeights.js'
 

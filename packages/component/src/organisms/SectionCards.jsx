@@ -1,6 +1,6 @@
 import SectionCardItem from '../molecules/SectionCardItem.jsx'
 import { FULL_BLEED } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import SectionText, { HEADLINE_ROLE } from '../molecules/SectionText.jsx'
 import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'

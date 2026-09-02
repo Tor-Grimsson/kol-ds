@@ -93,6 +93,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
 | `ArticleCard` | A blog/editorial card family — one component with default / hero / mini sizes. |
 | `TiltBento` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. The Tilt family's composed tile (`TiltCard` is the bare frame, `useTilt` the hook); was `BentoCard` until 2026-08-27 — the old name is an alias on the retirement ledger. |
+| `ProfileCard` | The digital namecard — a square photo with a `plus`/`minus` disclosure on it and a content-sized inverse shelf (logo slot, name, mailto, a rack of socials) that opens under it or beside it; four size ramps, two orientations, a controlled `open` seam. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
 | `Carousel` | A draggable, loopable slider built on Embla. |
 | `CodeBlock` | A syntax-highlighted code block with copy-to-clipboard. |

@@ -119,7 +119,9 @@ function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
      * a consumer setting `--kol-shell-rail-width` from outside widens the rail
      * but leaves `railOpen` false, and the L2 rows render behind it: a wide,
      * EMPTY rail, worse than the dead press this fixes. */
-    if (snapRef) snapRef.current = () => snapTo(openWidth())
+    /* `(false)` closes, anything else opens — the same seam the L2 rows use
+     * to open, now also the tap opener's toggle */
+    if (snapRef) snapRef.current = (open = true) => snapTo(open === false ? CLOSED : openWidth())
     const onDown = (e) => {
       strip.setPointerCapture(e.pointerId)
       gsap.killTweensOf(root)
@@ -285,12 +287,39 @@ export default function NavRail({
   return (
     <div
       ref={railRef}
-      className="kol-shell-rail bg-surface-primary border-r border-fg-08 fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2"
+      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).
+        * 0.34.0 mirrored the panel to fix a button: the complaint was the
+        * trigger travelling to mid-screen, never the navigation's side. The
+        * trigger is now pinned top-right in both states, so a left panel has
+        * nothing to collide with and the drawer opens where the rail lives. */
+      className="kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08"
       /* A drawer takes its own width, NOT the live rail token — that token is
         * zeroed in drawer mode so the content gets the whole viewport back. */
       style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}
     >
-      {!drawer && <div ref={grabRef} className="kol-rail-grab" />}
+      {!drawer && (
+        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,
+         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor
+         * 2026-09-02 — user: "it was a thicker line" · "who decided it should be
+         * a chevron?"): `touch="shell"` keeps the 48px rail visible and its
+         * only opener was this 8px strip, whose pill wakes on pointer
+         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a
+         * chevron; that was the DS agent's shape, not the user's ruling. The
+         * opener is the strip ITSELF: under `(pointer: coarse)` the theme
+         * widens it to a thumb-sized hit and shows the pill thick at rest — the
+         * same affordance a fine pointer drags, no glyph. A press with no travel
+         * already toggled; it just had no hit area on touch. The drag hook binds
+         * pointer events, so a button works exactly as the div did, and it says
+         * what it is. Enter/Space toggle for the keyboard. */
+        <button
+          type="button"
+          ref={grabRef}
+          className="kol-rail-grab"
+          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}
+          aria-expanded={railOpen}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}
+        />
+      )}
       {logomark && (
         /* the mark, and the app name beside it when open — uppercase like the
          * rows (user 2026-08-28: "uppercase CONSISTENCY"). The `w-8` centring box

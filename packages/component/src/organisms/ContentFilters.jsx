@@ -21,6 +21,10 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * @param {Array} props.filterGroups — [{label, key, values}, ...]
  * @param {Function} props.renderItem — (filteredItems, viewMode, layout) => ReactNode
  * @param {Array} props.viewModeOptions — optional view mode options for the view strip
+ * @param {'auto'|'header'|'below'} props.viewPlacement — WHERE the RECENT/SAVED strip sits (ContentFiltersViewStripOverflow,
+ *   kol-mirror 2026-09-02): `auto` (default) rides the header row from `md` and takes its OWN line under the divider
+ *   below it, full width and wrapping — five views at 390 were 440px in a 390px page, two cut off and unreachable;
+ *   `header` always the header row; `below` always its own line. Same family, same rung as LIST/GRID's drop.
  * @param {string} props.defaultViewMode — default view mode (falls back to the FIRST option)
  * @param {string} props.layout — controlled LIST/GRID value (kol-r2b2 2026-08-27: a consumer that persists
  *   layout per bucket needs the strip's value back; `defaultLayout` alone kept it internal)
@@ -30,6 +34,10 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * @param {ReactNode} props.belowActions — the RIGHT half of the below-divider row, beside the count
  *   (kol-r2b2 2026-08-27: the sort group, once SELECT/FLAT moved up into the header strip)
  * @param {ReactNode} props.trailingActions — the header's RIGHT slot, where the view strip sits
+ * @param {'auto'|'header'|'below'} props.trailingPlacement — WHERE `trailingActions` sit (the showcase's icons page,
+ *   2026-09-02: brand's ground + guide cluster in this slot measured 223px and scrolled `main` sideways at 390):
+ *   `auto` (default) the header from `md`, their OWN line under the divider below it — full width, wrapping; `header` / `below` pin it.
+ *   The same rung `viewPlacement` and LIST/GRID have.
  *   (kol-r2b2 2026-08-27: a consumer's own controls — sort, flat, select — belong there;
  *   `headerActions` is the left group beside search and was never that)
  * @param {Function} props.onFilterChange — optional callback when filters change
@@ -90,12 +98,14 @@ const ContentFilters = ({
    * "N of N" is below the divider in BOTH — it is a count of what the filters
    * did, so it belongs with them, and it only renders while they are open. */
   layoutPlacement = 'below',
+  viewPlacement = 'auto',
   onFilterChange,
   mutuallyExclusiveFilters = [],
   customFilterKeys = [],
   searchKeys = ['label', 'name', 'title', 'type'],
   headerActions,
   trailingActions,
+  trailingPlacement = 'auto',
   leadingActions,
   belowActions,
   showCountOnlyWhenFiltering = false,
@@ -302,6 +312,22 @@ const ContentFilters = ({
   )
   }
 
+  /* RECENT / SAVED — one node, two homes (header from md, its own line below) */
+  const viewStrip = (wrapCls) => (
+    <div className={`${wrapCls} items-center gap-4`}>
+      {viewModeOptions.map((opt) => (
+        <span
+          key={opt.value}
+          onClick={() => handleViewModeChange(opt.value)}
+          className={`${viewClassName} cursor-pointer select-none ${viewMode === opt.value ? stripActiveClassName : stripRestClassName}`}
+          style={{ textTransform: 'uppercase', letterSpacing: 1 }}
+        >
+          {opt.label}
+        </span>
+      ))}
+    </div>
+  )
+
   return (
     /* minHeight 0 on both this root and the body below: without it a flex
      * child refuses to shrink past its content, so a scrollable body pushed
@@ -319,23 +345,32 @@ const ContentFilters = ({
         * divider equally from both sides, so it read as a free-floating line
         * rather than the header's own baseline. */}
       <div className="flex items-center justify-between" style={{ marginBottom: 'var(--kol-spacing-3)' }}>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           {/* IconFrame, NOT a kol-btn span: this is decoration and clicks
             * nothing, so it must not wear a button's chrome. The atom exists
             * for exactly this (lobby ruling 2026-07-30 — "icons only, NO
             * states"); the span here was the same defect that promoted it. */}
           {/* the icon gap matches the specimen header — 16 from md (FoundrySpecimenSections, 2026-08-27) */}
-          <h2 className="flex items-center gap-2 md:gap-4">
+          <h2 className={`flex items-center gap-2 md:gap-4 ${searchOpen ? 'max-md:hidden' : ''}`}>
             {titleIcon && <IconFrame name={titleIcon} variant="secondary" size="md" />}
             {/* `pr-4` by rule (ContentFiltersTitleGap, kol-website 2026-08-27): the
               * divider sat 24px from the title's text edge but 32 from the
               * icon glyphs (the frames carry 8px of air a side) and read pushed
               * toward the title; 16px on the title side balances it. The seam
-              * `titleClassName` stays what it was. */}
-            <span className={`${titleClassName} pr-4`} style={titleUppercase ? { textTransform: 'uppercase', letterSpacing: 1 } : undefined}>{title}</span>
+              * `titleClassName` stays what it was.
+              * MOBILE RUNG (ContentFiltersMobileGaps, 2026-09-01): the seam and
+              * the pad both halve below md — gap-3 + pr-2 keeps the same
+              * frame-air balance (12+8 glyph side · 12+8 title side) without
+              * spending 40px of a 390px viewport on one divider. */}
+            <span className={`${titleClassName} pr-2 md:pr-4`} style={titleUppercase ? { textTransform: 'uppercase', letterSpacing: 1 } : undefined}>{title}</span>
           </h2>
-          <Divider variant="vertical" />
-          <div className="flex items-center gap-1">
+          <Divider variant="vertical" className={searchOpen ? 'max-md:hidden' : ''} />
+          {/* THE OPEN SEARCH TAKES THE ROW BELOW `md` (2026-09-02, the showcase
+            * held to its own law): the pill is a fixed 200px, and beside the
+            * title at 390 it scrolled `main` sideways. Title and divider step
+            * aside while searching and return on close; the group grows to the
+            * row so the pill fits. */}
+          <div className="flex items-center gap-1 min-w-0 max-md:flex-1">
             {/* IconFrame, not a kol-btn with its chrome cancelled inline.
               * 05-control-chrome.md:109 — "any icon-only control in chrome is
               * IconFrame; nothing hand-writes the square". This wore
@@ -380,6 +415,7 @@ const ContentFilters = ({
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               expandedWidth={200}
+              className="max-w-full"
               triggerLabel="Search"
               /* NO placeholder. The field opens from a glyph you just clicked —
                * the caret is the affordance, and a greyed "Search…" sitting in
@@ -408,10 +444,17 @@ const ContentFilters = ({
         </div>
 
         <div className="flex items-center gap-6">
-          {trailingActions}
-          {/* The divider between a consumer's trailing controls and the strip is
-            * the organism's, as it is on the left between title and icons. */}
-          {trailingActions && layoutPlacement === 'header' && layoutStrip && <Divider variant="vertical" />}
+          {/* the consumer's trailing controls ride the header from `md` under
+            * `auto`; below it they move to the below-divider row (same rung as
+            * the view strip and LIST/GRID) so the header row never scrolls */}
+          {trailingActions && trailingPlacement !== 'below' && (
+            <div className={`${trailingPlacement === 'auto' ? 'hidden md:flex' : 'flex'} items-center gap-6`}>
+              {trailingActions}
+              {/* The divider between a consumer's trailing controls and the strip is
+                * the organism's, as it is on the left between title and icons. */}
+              {layoutPlacement === 'header' && layoutStrip && <Divider variant="vertical" />}
+            </div>
+          )}
           {layoutPlacement === 'header' && layoutStrip}
           {/* RECENT / SAVED is the SAME STRIP as LIST / GRID, not a ViewToggle.
             * Read off kol-monitor's original (_tmp/2026-08-15-shell-adoption/
@@ -422,26 +465,33 @@ const ContentFilters = ({
             * This REPLACES the filled-chip reading of the 2026-07-28 ruling on
             * this surface — user ruling 2026-08-15: the fork's look, everywhere.
             * One family across the whole row. */}
-          {viewModeOptions && (
-            <div className="flex items-center gap-4">
-              {viewModeOptions.map((opt) => (
-                <span
-                  key={opt.value}
-                  onClick={() => handleViewModeChange(opt.value)}
-                  className={`${viewClassName} cursor-pointer select-none ${viewMode === opt.value ? stripActiveClassName : stripRestClassName}`}
-                  style={{ textTransform: 'uppercase', letterSpacing: 1 }}
-                >
-                  {opt.label}
-                </span>
-              ))}
-            </div>
-          )}
+          {/* THE STRIP HAS A NARROW RUNG (ContentFiltersViewStripOverflow,
+            * kol-mirror 2026-09-02): in the header it is `hidden md:flex` under
+            * `auto`, and the same options render on their own line under the
+            * divider below `md` — full width, wrapping. */}
+          {viewModeOptions && viewPlacement !== 'below' && viewStrip(viewPlacement === 'auto' ? 'hidden md:flex' : 'flex')}
         </div>
       </div>
 
       {/* Divider takes className, NOT style — a style prop here is silently
         * dropped, which is how this margin nearly went missing. */}
       <Divider className="mb-3" />
+
+      {/* the view family's own line below md (`auto`) or always (`below`) —
+        * full width, wrapping, so no view is ever off the page */}
+      {viewModeOptions && viewPlacement !== 'header' && (
+        <div className={`${viewPlacement === 'auto' ? 'md:hidden ' : ''}mb-3`}>
+          {viewStrip('flex flex-wrap gap-y-2')}
+        </div>
+      )}
+      {/* the consumer's trailing controls: their OWN line below md (`auto`) or
+        * always (`below`) — full width, wrapping. In the below row's right
+        * group they measured 223px beside LIST/GRID in a 342px track. */}
+      {trailingActions && trailingPlacement !== 'header' && (
+        <div className={`${trailingPlacement === 'auto' ? 'md:hidden ' : ''}mb-3 flex flex-wrap items-center gap-6 gap-y-2`}>
+          {trailingActions}
+        </div>
+      )}
 
       {/* BELOW the divider: the filter GROUPS only. Left-aligned columns —
         * label above values — visible only while the filter toggle is open.
@@ -457,8 +507,8 @@ const ContentFilters = ({
         * the whole row on `isExpanded` hid the strip until you opened filters,
         * which is not a state anyone would guess at. */}
       {(isExpanded || (layoutPlacement === 'below' && layoutStrip) || leadingActions || belowActions) && (
-        <div className="kol-filters-row flex items-start justify-between gap-16">
-          <div className="flex min-w-0 flex-1 items-start gap-16">
+        <div className="kol-filters-row flex items-start justify-between gap-8 md:gap-16">
+          <div className="flex min-w-0 flex-1 items-start gap-8 md:gap-16">
             {leadingActions}
             {isExpanded && filterGroups.map((group, i) => renderFilterGroup(group, i))}
             {isExpanded && activeFilters.size > 0 && (

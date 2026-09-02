@@ -1,6 +1,6 @@
 import SectionText from '../molecules/SectionText.jsx'
 import { FULL_BLEED } from './sectionBleed.js'
-import { surfaceClass } from './sectionSurface.js'
+import { surfaceClass } from '../utilities/sectionSurface.js'
 import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'
 
@@ -147,8 +147,18 @@ export default function SectionSplit({
              * phone with browser chrome sits in the 660–720 band, which is why
              * this was reported from a device four times and never reproduced
              * against a nominal 844-tall test. `max-w-full` alone only caps. */
-            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
-            style={{ aspectRatio: ratio, height: 'calc(var(--kol-section-h, 60vh) - 2 * var(--kol-section-py, 4rem))' }}
+            /* THE RUNG STOPS AT THE STACK (SectionSplitVisualHeightRemainder,
+             * kol-website 2026-09-01). The bounded-frame height (rung − 2×py,
+             * SectionSplitMediaBounded) is a two-column ruling: it holds where
+             * the text sits BESIDE the media. Stacked below 901px the text sits
+             * ABOVE it, the same calc handed the frame whatever the rung's
+             * arithmetic left (rung 40 at a 700-tall phone = 117px), and
+             * `overflow-hidden` clipped a 350px card to a letterbox strip —
+             * silently, which is why it was reported as a ProfileCard crop.
+             * Below 901 the frame is `w-full` + ratio: width decides, height
+             * follows, media never clips. ≥901 nothing moves. */
+            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
+            style={{ aspectRatio: ratio }}
           >
             {media}
             {caption && <div className="kol-section-split-visual-veil" aria-hidden="true" />}

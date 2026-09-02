@@ -116,7 +116,9 @@ const TYPE_COLUMNS = {
     { accessor: 'name',   header: 'Name',   render: (r) => <TokenName>.text-{r.name}</TokenName> },
     { accessor: 'pct',    header: '%',      render: (r) => `${r.pct}%` },
     { accessor: 'sample', header: 'Sample',
-      render: (r) => <span className={`text-${r.name} font-mono`}>The quick brown fox</span> },
+      /* the size token in the mono FACE — the family token, not Tailwind's
+       * `font-mono` (full-consumption check 6); no bare family class exists */
+      render: (r) => <span className={`text-${r.name}`} style={{ fontFamily: 'var(--kol-font-family-mono)' }}>The quick brown fox</span> },
     { accessor: 'token',  header: 'Token',  render: (r) => <TokenName>{r.token}</TokenName> },
     { accessor: 'role',   header: 'Use' },
   ],

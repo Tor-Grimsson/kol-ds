@@ -129,7 +129,7 @@ export const FUNCTIONS_BY_NAME = {
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
   SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
-  BentoCard: 'display', TiltBento: 'display', FeaturedCarousel: 'media',
+  BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   ColorLoader: 'display', LoaderOverlay: 'overlay',
@@ -186,6 +186,11 @@ export const FUNCTIONS_BY_NAME = {
   ChessPiece: 'media', ChessHero: 'display',
   SetupPanel: 'action', PiecePalette: 'input', GamePicker: 'input',
   MaterialSummary: 'display', useChessKeyboardShortcuts: 'utility',
+  /* kol-controls — hardware panel controls (KolControlsPackage, 2026-09-01) */
+  Knob: 'input', Fader: 'input', Toggle: 'input', FlipToggle: 'input', LED: 'feedback',
+  IconButton: 'action',
+  PanelLabel: 'structure', ModuleHeader: 'structure', JackSocket: 'input', LabeledJack: 'input',
+  RockerSwitch: 'input', ParamSheet: 'overlay',
   /* dashboards */
   DashMetricCard: 'display', DashStackedBarCard: 'display', DashChartCard: 'display',
   DashListCard: 'display', DashFeaturedCard: 'display', DashAlertCard: 'feedback',
@@ -227,7 +232,7 @@ export const EXEMPT = {
   ChessControlsProvider: 'non-component',
   /* workshop — contexts, providers, single-parent doc/tag sub-parts */
   ShellTocContext: 'non-component', ShellFullHeightContext: 'non-component', ShellContentWidthContext: 'non-component',
-  ShellTocCollapsedContext: 'non-component', TagModeProvider: 'non-component',
+  ShellTocCollapsedContext: 'non-component', ShellNavCollapsedContext: 'non-component', TagModeProvider: 'non-component',
   DocsArticle: 'member-of:DocumentationReader', DocsHeader: 'member-of:DocumentationReader',
   DocsFrontmatter: 'member-of:DocumentationReader',
   TagModeOverlay: 'member-of:TagModeGate', TagGraph: 'member-of:TagModeOverlay',
@@ -260,7 +265,7 @@ export const EXEMPT = {
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
   'Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
-  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellContentWidthContext',
+  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext',
 ]
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
