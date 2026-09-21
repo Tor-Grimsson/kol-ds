@@ -23,8 +23,10 @@
  * the next question would have meant another one.
  *
  * The axis removes the question. `wght 100 800` means any weight is a NUMBER,
- * not a new file — and the payload went DOWN: two variable faces at ~230 kb
+ * not a new file — and the payload went DOWN: two variable faces at ~148 kb
  * against 1024 kb of statics, with four weights the statics never had.
+ * (This read ~230 kb until 2026-09-03; measured on disk, roman 72K + italic
+ * 76K. 03-typography.md's 151 kb was the correct figure all along.)
  *
  * The tradeoff, stated: a variable file is one download, so the page fetches
  * the whole axis or none of it. At this size that is still less than the two

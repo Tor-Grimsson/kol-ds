@@ -53,7 +53,12 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--kol-radius-sm);
-  border: 1px solid transparent;
+  /* paint from the TONE properties (kol-components-molecules.css, TONE):
+   * `--filled` / `--outline` are aliases of the primary / outline tones, the
+   * fallback is filled, and a toned wrapper reaches a shell with no modifier */
+  background-color: var(--kol-tone-bg, var(--kol-surface-secondary));
+  color: var(--kol-tone-fg, var(--kol-surface-on-primary));
+  border: 1px solid var(--kol-tone-border, transparent);
   transition: background-color 150ms ease,
               border-color     150ms ease,
               color            150ms ease;
@@ -62,10 +67,9 @@
 
 /* ─── Variants ─── */
 
-.kol-control--filled {
-  background-color: var(--kol-surface-secondary);
-  color: var(--kol-surface-on-primary);
-}
+/* `.kol-control--filled` / `.kol-control--outline` — tone aliases, see TONE.
+ * `.kol-control--plain` is the bare shell (ViewToggle's inactive text chip):
+ * no fill, no border, the meta ink. */
 
 .kol-control--ghost {
   /* DEPRECATED (2026-07-08 chrome law) — ghost folded into outline; Input
@@ -78,13 +82,6 @@
 .kol-control--ghost:focus-within {
   border-color: var(--kol-fg-16);
   color: var(--kol-surface-on-primary);
-}
-
-.kol-control--outline {
-  background-color: transparent;
-  color: var(--kol-surface-on-primary);
-  /* oq-08 — the one outline border (user ruling 2026-08-26); was oq-16 */
-  border-color: var(--kol-oq-08);
 }
 
 /* Textarea modifier — flips the inline-flex shell to block so a multi-line
@@ -133,7 +130,7 @@
  * sm (12px in 26–28), which is the one reason the rack's TextInput / Dropdown /
  * Selector could not collapse onto Input / Dropdown / Stepper. xs = kol-mono-8
  * (line-height 12) + 4px vertical + the shell's 1px ring = 22px, 8px sides,
- * the xs radius; the icon-only square is 20.
+ * the xs radius; the icon-only square is 22, the same height (2026-09-02).
  * Opt-in by prop only — the 2026-07-28 "dropdowns are sm at every viewport"
  * law is untouched; nothing ramps to xs by viewport. */
 .kol-control-xs { padding: 4px 8px; border-radius: var(--kol-radius-xs); }
@@ -189,11 +186,21 @@
  * inside the content column's right edge — lined up with nothing the fields
  * below it establish. On the edge, the button's box sits on the same vertical
  * as the controls under it. */
+/* THE CLOSE MUST OUT-STACK THE SHEET'S OWN CONTENT (BrowsePageRulingsAndSeams,
+ * kol-r2b2 2026-09-02; user 2026-08-28: "doesnt work clicking close"). It sat
+ * at a bare `10` — the dropdown rung — and it is the FIRST child of the sheet,
+ * so any consumer content after it at 10 or above covered the corner and the
+ * click landed on the panel behind. Reproduces in the DS with any tall sheet.
+ * `--kol-z-overlay` (50), not the reported 60: the ladder IS the z-contract
+ * (01-foundations/01-tokens § Stacking) and a hand-typed number here is the
+ * thing that law exists to stop. 50 clears dropdown (10) and sticky (20) inside
+ * the sheet, and a Dropdown opened from the sheet still covers it — that one
+ * portals to <body> at 210, outside this stacking context, which is correct. */
 .kol-overlay-close {
   position: absolute;
   top: var(--kol-spacing-3);
   right: 0;
-  z-index: 10;
+  z-index: var(--kol-z-overlay);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -229,7 +236,20 @@
               color var(--kol-transition-base),
               border-color var(--kol-transition-base);
   cursor: pointer;
+  /* THE TONE AXIS (tone-is-the-ground-axis, 2026-09-03): the paint is read
+   * from `--kol-tone-*` — set on the element by its own variant / tone class,
+   * or inherited from a toned wrapper — and the fallbacks are `primary`, so a
+   * bare button with no tone anywhere renders exactly what it always did.
+   * The bundles live in kol-components-molecules.css (TONE). */
+  background-color: var(--kol-tone-bg, var(--kol-surface-secondary));
+  background-image: var(--kol-tone-image, none);
+  color: var(--kol-tone-fg, var(--kol-surface-on-primary));
+  border: 1px solid var(--kol-tone-border, transparent);
 }
+/* WEIGHT IS THE VARIANT'S, not the tone's: a tone is a ground, and a ground
+ * must not re-weigh a label — a sunken secondary keeps its 500 (matrix-verified
+ * 2026-09-03, the one regression the first cut had). */
+.kol-btn-secondary, .kol-btn-accent, .kol-btn-danger, .kol-btn.kol-tone-inverted { font-weight: 500; }
 
 .kol-btn:focus-visible {
   outline: 2px solid var(--kol-focus-ring);
@@ -251,141 +271,43 @@
   line-height: 0;
 }
 /* Icon-only is a GEOMETRY condition, not a variant (2026-07-28, user-ordered):
- * a lone glyph gets a PINNED SQUARE per rung — sm 28 / md 32 / lg 36 — equal to
- * the rung's button height and independent of glyph size (padding-derived
- * squares drifted with icon size; user law: the box never moves). */
-.kol-btn-icon.kol-btn-xs { width: 20px; height: 20px; padding: 0; }
-.kol-btn-icon.kol-btn-sm { width: 28px; height: 28px; padding: 0; }
+ * a lone glyph gets a PINNED SQUARE per size, equal to that size's button height
+ * and independent of glyph size (padding-derived squares drifted with icon size;
+ * user law: the box never moves).
+ *
+ * EVERY FAMILY HITS THE SAME HEIGHT AT THE SAME SIZE (user ruling 2026-09-02:
+ * *"xs sm md and lg all have height in pixels that has to match"* · *"so button
+ * and dropdown can align and input and whatever else"*). These squares read
+ * 20/28/32/36 while the text control on the same row — padding + that size's
+ * mono line-height + the 1px ring — measures 22/26/32/40. Only `md` lined up: at
+ * `sm` an icon button stood 2px TALLER than the Input beside it, at `lg` 4px
+ * shorter, at `xs` 2px shorter. Three families (control shell, text button,
+ * segmented) already agreed on 22/26/32/40, so the squares conform to them, not
+ * the other way round. Glyphs are untouched — SOLO still resolves 16/20/24. */
+.kol-btn-icon.kol-btn-xs { width: 22px; height: 22px; padding: 0; }
+.kol-btn-icon.kol-btn-sm { width: 26px; height: 26px; padding: 0; }
 .kol-btn-icon.kol-btn-md { width: 32px; height: 32px; padding: 0; }
-.kol-btn-icon.kol-btn-lg { width: 36px; height: 36px; padding: 0; }
+.kol-btn-icon.kol-btn-lg { width: 40px; height: 40px; padding: 0; }
 
-.kol-btn-primary {
-  background: var(--kol-surface-secondary);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
+/* ─── Variants — the ground ones are TONES now (2026-09-03) ───
+ * `.kol-btn-primary` · `-secondary` · `-outline` · `-ghost` · `-grey` are
+ * aliases of `.kol-tone-*`, and `-nav` · `-danger` · `-accent` carry their own
+ * bundles — all in kol-components-molecules.css (TONE). What used to be eight
+ * hover rules is one, reading each tone's own rungs. */
 @media (hover: hover) {
-  .kol-btn-primary:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-08);
-    color: var(--kol-surface-on-primary);
+  .kol-btn:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
+    background-color: var(--kol-tone-hover-bg, var(--kol-oq-08));
+    background-image: var(--kol-tone-hover-image, none);
+    color: var(--kol-tone-hover-fg, var(--kol-surface-on-primary));
+    border-color: var(--kol-tone-hover-border, transparent);
   }
 }
-
-.kol-btn-secondary {
-  background: var(--kol-surface-on-primary);
-  color: var(--kol-surface-primary);
-  border: 1px solid transparent;
-  font-weight: 500;
-}
-@media (hover: hover) {
-  .kol-btn-secondary:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-inverse-40);
-    color: var(--kol-surface-primary);
-    border-color: transparent;
-  }
-}
-
-.kol-btn-accent {
-  background: var(--kol-accent-primary);
-  color: var(--kol-accent-on-primary);
-  border: 1px solid transparent;
-  font-weight: 500;
-}
-@media (hover: hover) {
-  .kol-btn-accent:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-accent-primary-strong);
-    color: var(--kol-accent-on-primary);
-  }
-}
-
-.kol-btn-outline {
-  background: transparent;
-  color: var(--kol-surface-on-primary);
-  /* ONE outline border across the controls (user ruling 2026-08-26): OPAQUE
-   * 8% — the system's hairline. oq-16 read heavy beside the segmented
-   * toggle's fg-04, and fg is out: a translucent border doubles where two
-   * controls touch. Button outline · .kol-control--outline · .kol-seg agree. */
-  border: 1px solid var(--kol-oq-08);
-}
-@media (hover: hover) {
-  .kol-btn-outline:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-02);
-    border-color: color-mix(in srgb, var(--kol-surface-on-primary) 25%, var(--kol-surface-primary));
-    color: var(--kol-surface-on-primary);
-  }
-}
-
-.kol-btn-ghost {
-  background: transparent;
-  color: var(--kol-oq-48);
-  border: 1px solid transparent;
-}
-@media (hover: hover) {
-  .kol-btn-ghost:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-04);
-    color: var(--kol-surface-on-primary);
-  }
-}
-
-/* Navigation (2026-07-28, user-ordered) — chrome for links that move between
- * pages, not tool actions. SQUARE container: padding = the rung's vertical pad
- * on all four sides (sm 24 / md 30 / lg 36 outer — the text-button height of
- * the same rung, so mixed bars line up). Quiet states: rest dimmed, hover the
- * ghost wash, and ACTIVE keys off aria-current="page" (NavLink sets it
- * natively) — brighter glyph on a faint wash, never the pressed fill;
- * navigation is location, not a toggled tool. */
-.kol-btn-nav {
-  background: transparent;
-  color: var(--kol-oq-80);
-  border: 1px solid transparent;
-}
-@media (hover: hover) {
-  .kol-btn-nav:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-04);
-    color: var(--kol-surface-on-primary);
-  }
-}
-/* active = brightness only (0.11.7, user-ordered): quiet chrome states ride
- * the opacity ladder — a background block is pressed-tool language, not
- * location. Hover keeps its transient wash (feedback, not state). */
+/* nav's ACTIVE keys off aria-current="page" (NavLink sets it natively) —
+ * brightness only (0.11.7, user-ordered): quiet chrome states ride the
+ * opacity ladder; a background block is pressed-tool language, not location.
+ * Hover keeps its transient wash (feedback, not state). */
 .kol-btn-nav[aria-current="page"] {
   color: var(--kol-oq-88);
-}
-/* square box comes from .kol-btn-icon (geometry, all variants) — no
- * nav-specific padding rules needed */
-
-/* Grey (2026-07-15, user-ordered) — pill-subtle's visual weight as a real
- * Button variant on the opaque tier: rest oq-12, hover/active one stop past
- * each, same state math as the rest of the family. */
-.kol-btn-grey {
-  /* Ladder (user ruling 2026-08-15): 12 rest → 04 hover (darker) → 32 press,
-   * then eased back down. */
-  background: var(--kol-oq-12);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
-@media (hover: hover) {
-  .kol-btn-grey:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-oq-16);
-    color: var(--kol-surface-on-primary);
-  }
-}
-
-/* Destructive actions (2026-07-15, chess consumer audit finding 1: red was
- * being hacked onto normal buttons via className). Accent's shape on the
- * --ui-error state token — filled, opaque interaction stops, white label
- * (error red carries it in both themes). */
-.kol-btn-danger {
-  background: var(--ui-error);
-  color: var(--kol-color-ab-white);
-  border: 1px solid transparent;
-  font-weight: 500;
-}
-@media (hover: hover) {
-  .kol-btn-danger:not(.kol-btn-animate):not(.kol-dd-trigger):hover {
-    background-color: color-mix(in srgb, var(--ui-error) 80%, var(--kol-surface-primary));
-    color: var(--kol-color-ab-white);
-  }
 }
 
 /* xs — the panel rung (ControlsXsRung, 2026-09-01): 22px shell (20 + ring), xs radius */
@@ -402,13 +324,10 @@
  * on :hover — and that restatement was specificity (0,4,0) against the sunken
  * tone's (0,2,0), so hovering a SUNKEN trigger repainted it in the untoned
  * fill: a light box beside two icon controls that stayed dark. */
-.kol-btn-primary:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-16); }
-.kol-btn-secondary:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-inverse-48); color: var(--kol-surface-primary); }
-.kol-btn-accent:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-primary)); }
-.kol-btn-outline:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active,
-.kol-btn-ghost:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-08); }
-.kol-btn-danger:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: color-mix(in srgb, var(--ui-error) 70%, var(--kol-surface-primary)); }
-.kol-btn-grey:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active { background-color: var(--kol-oq-24); }
+.kol-btn:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):active {
+  background-color: var(--kol-tone-active-bg, var(--kol-oq-16));
+  background-image: var(--kol-tone-active-image, none);
+}
 
 .kol-btn:disabled,
 .kol-btn[disabled] {
@@ -1135,8 +1054,9 @@ a:hover .icon-hover,
  * lit-when-active idiom. Always composes with a variant class — the
  * variant supplies the border that suppresses UA button chrome. */
 .kol-btn-pressed {
-  background-color: var(--kol-surface-on-primary);
-  color: var(--kol-surface-primary);
+  background-color: var(--kol-tone-pressed-bg, var(--kol-surface-on-primary));
+  background-image: var(--kol-tone-pressed-image, none);
+  color: var(--kol-tone-pressed-fg, var(--kol-surface-primary));
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -1191,6 +1111,13 @@ a:hover .icon-hover,
   line-height: 0;
   border-radius: var(--kol-radius-sm);
   padding: 0;
+  /* paint from the TONE properties (kol-components-molecules.css, TONE); the
+   * variant classes are aliases of the tones, the fallback is the `secondary`
+   * VARIANT's paint (the `inverted` tone) — the frame's default since it was promoted — and a toned wrapper reaches a
+   * frame with no variant of its own. No states, as ever. */
+  background-color: var(--kol-tone-bg, var(--kol-surface-on-primary));
+  color: var(--kol-tone-fg, var(--kol-surface-primary));
+  border: 1px solid var(--kol-tone-border, transparent);
 }
 
 /* An ACTIONABLE frame — `onClick`/`href` (user ruling 2026-08-01: *"you dont
@@ -1228,53 +1155,20 @@ a.kol-icon-frame {
 .kol-icon-frame-radius-full,
 .kol-btn-radius-full { border-radius: 9999px; }
 
-/* pinned squares — the box never moves with glyph size (user law 2026-07-28) */
-/* xs — the panel rung; the ladder is one ladder (user ruling 2026-09-01: "obviously we apply xs as an option") */
-.kol-icon-frame-xs { width: 20px; height: 20px; }
-.kol-icon-frame-sm { width: 28px; height: 28px; }
+/* pinned squares — the box never moves with glyph size (user law 2026-07-28),
+ * on the size's HEIGHT so a frame lines up with the Button, Input and Dropdown
+ * beside it (user ruling 2026-09-02 — see .kol-btn-icon above). 22/26/32/40. */
+.kol-icon-frame-xs { width: 22px; height: 22px; }
+.kol-icon-frame-sm { width: 26px; height: 26px; }
 .kol-icon-frame-md { width: 32px; height: 32px; }
-.kol-icon-frame-lg { width: 36px; height: 36px; }
+.kol-icon-frame-lg { width: 40px; height: 40px; }
 
-.kol-icon-frame-primary {
-  background: var(--kol-surface-secondary);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
-.kol-icon-frame-secondary {
-  background: var(--kol-surface-on-primary);
-  color: var(--kol-surface-primary);
-  border: 1px solid transparent;
-}
-.kol-icon-frame-accent {
-  background: var(--kol-accent-primary);
-  color: var(--kol-accent-on-primary);
-  border: 1px solid transparent;
-}
-.kol-icon-frame-outline {
-  background: transparent;
-  color: var(--kol-surface-on-primary);
-  border: 1px solid var(--kol-oq-08);
-}
-.kol-icon-frame-ghost {
-  background: transparent;
-  color: var(--kol-oq-48);
-  border: 1px solid transparent;
-}
-.kol-icon-frame-nav {
-  background: transparent;
-  /* full ink, not oq-64 (user re-rule 2026-08-09: header glyphs at 100%
-   * opacity — the dimmed row read as disabled beside the ThemeToggle). */
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
-/* plate — the ONE exception in 05-control-chrome.md § Icon box: an affordance
- * sitting on a PHOTO. It needs an opaque plate and a backdrop blur to stay
- * legible over arbitrary pixels, and no Button variant covers it. Values are
- * MediaCard's, which is the instance the doc names. */
+/* `.kol-icon-frame-{primary,secondary,accent,outline,ghost,nav,grey,danger}` — tone aliases, see TONE */
 .kol-icon-frame-plate {
   background: var(--kol-fg-ab-12, rgba(0, 0, 0, 0.4));
   backdrop-filter: blur(4px);
   color: var(--kol-surface-on-primary);
+  border: 0; /* not a tone — its own glass, no ring (as before the tone axis) */
 }
 
 .kol-icon-frame-grey {
@@ -1332,23 +1226,25 @@ a.kol-icon-frame {
 /* fill="none" — invisible container. FULL-STRENGTH INK (user ruling): the text
  * and icon drop NO opacity. `.kol-btn-nav` rested at oq-64 only so its hover
  * could brighten to full; with no states that dim was just a faded label. */
+/* geometry variants read the TONE (kol-components-molecules.css) and fall
+ * back to what each painted before the tone axis (2026-09-03) */
 .kol-theme-toggle-none {
-  background: transparent;
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
+  background-color: var(--kol-tone-bg, transparent);
+  color: var(--kol-tone-fg, var(--kol-surface-on-primary));
+  border: 1px solid var(--kol-tone-border, transparent);
 }
 
 /* fill="subtle" — the filled rung */
 .kol-theme-toggle-subtle {
-  background: var(--kol-surface-secondary);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
+  background-color: var(--kol-tone-bg, var(--kol-surface-secondary));
+  color: var(--kol-tone-fg, var(--kol-surface-on-primary));
+  border: 1px solid var(--kol-tone-border, transparent);
 }
 
 /* flush — no pad, no radius, no fill, ever */
 .kol-theme-toggle-flush {
-  background: transparent;
-  color: var(--kol-surface-on-primary);
+  background-color: var(--kol-tone-bg, transparent);
+  color: var(--kol-tone-fg, var(--kol-surface-on-primary));
   border: 0;
   border-radius: 0;
   padding: 0;
@@ -1407,4 +1303,17 @@ a.kol-icon-frame {
   .slider-black {
     height: 44px;
   }
+}
+
+/* THE MOMENTARY PRESS (editor-chrome-review, kol-fxr 2026-09-03 — the user's
+ * ruling on `AlignmentGrid`: two three-way strips, momentary, no selection
+ * state). A STATELESS strip (`value={null}`) never lights a cell, because its
+ * cells are actions and not a state the object is in — so the press itself has
+ * to be the feedback, and it is `:active` rather than a new prop. `tone` was
+ * the candidate and is wrong: tone is the GROUND axis and says nothing about a
+ * momentary press. Excluded on an active cell — a selected cell's ink is the
+ * selection, and a press must not out-shout it. */
+.kol-seg-cell:active:not(.is-active) {
+  background: var(--kol-oq-08);
+  color: var(--kol-fg-emphasis);
 }

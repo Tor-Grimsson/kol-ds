@@ -6,7 +6,8 @@ import { glyphSize } from '../hooks/glyphLadders.js'
 /**
  * Input — single-input atom built on the .kol-control shell.
  *
- *   variant="filled" (default) — persistent solid bg (= button primary chrome)
+ *   variant unset (default)    — the nearest `kol-tone-*` wrapper's tone, else filled
+ *   variant="filled"           — persistent solid bg (= button primary chrome)
  *   variant="outline"          — bordered, transparent bg — THE secondary
  *                                treatment (2026-07-08 chrome law: one
  *                                secondary, always subordinate to filled)
@@ -19,6 +20,12 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *                                scope expression, not every keystroke. With it
  *                                the field keeps a local draft seeded from
  *                                `value`; `onChange` still fires live if given.
+ *                                After the commit the draft RE-SNAPS to `value`,
+ *                                so a rejected commit falls back to the last
+ *                                good value rather than lingering — which makes
+ *                                `type="number"` + `onCommit` the draft/commit
+ *                                number idiom outright (parse and clamp at the
+ *                                call site; fxr's NumberField, retired 2026-09-03).
  *   variant="ghost"            — legacy alias, resolves to outline
  *   variant="property"         — the Figma property field (PropertyField,
  *                                2026-08-12): filled chrome, dim `affordance`
@@ -61,7 +68,7 @@ export default function Input({
   value,
   onChange,
   onCommit,
-  variant = 'filled',
+  variant,
   tone = 'default',
   size = 'md',
   chars,
@@ -95,7 +102,8 @@ export default function Input({
 
   const shellCls = [
     'kol-control',
-    `kol-control--${resolvedVariant}`,
+    /* no variant → no modifier: the shell inherits a wrapper's tone, else filled (2026-09-03) */
+    resolvedVariant && `kol-control--${resolvedVariant}`,
     `kol-control-${size}`,
     SIZE_TYPE[size],
     'cursor-text',
@@ -121,7 +129,17 @@ export default function Input({
     ? {
         value: draft,
         onChange: (e) => { draftRef.current = e.target.value; setDraft(e.target.value); onChange?.(e) },
-        onBlur: () => onCommit(String(draftRef.current).trim()),
+        /* RE-SNAP AFTER EVERY COMMIT, not only when `value` changes. The
+         * effect above re-syncs the draft on a value change — so a commit the
+         * caller REJECTED (invalid input, value kept) left the bad draft on
+         * screen, and `1` → `19` → `19x` showed `19x` after blur. kol-fxr's
+         * `NumberField` existed for exactly this line (34 lines wrapping this
+         * atom: commit, then `setDraft(String(value))`); with the re-snap here
+         * it is `<Input type="number" onCommit>` and no component
+         * (editor-panels-the-held-specs A8, 2026-09-03). The order matters —
+         * commit first, so a caller that DOES accept the value re-renders
+         * with the new prop and the effect wins over this fallback. */
+        onBlur: () => { onCommit(String(draftRef.current).trim()); draftRef.current = value ?? ''; setDraft(value ?? '') },
         onKeyDown: (e) => {
           if (e.key === 'Enter') e.currentTarget.blur()
           if (e.key === 'Escape') { draftRef.current = value ?? ''; setDraft(value ?? ''); e.currentTarget.blur() }

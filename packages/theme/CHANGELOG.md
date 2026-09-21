@@ -1,5 +1,244 @@
 # @kolkrabbi/kol-theme
 
+## 0.146.0 — 2026-09-21
+
+- **`.kol-tooltip`** — padding `4px 4px 4px 8px` → `4px 8px`. The asymmetry left room for a
+  shortcut chip; most tooltips have none, so the label sat 4px off the centre of a centred box.
+  Border added at `oq-04`, matching `.kol-popover`.
+- **Column preview document** — the forced `aspect-ratio: 3 / 5` is gone; bounded by
+  `max-height: 100%` instead. A preview is the file at its own shape, bounded by the pane. The
+  overlay keeps 3:5; that one is a sheet you read.
+- **`.kol-media-thumb`** — a document page scaled to tile size for the file wall.
+- **Drop targets** — `.kol-column-browser-row[data-drop-over]` (fill, outranks selection),
+  `.kol-column-browser-column[data-drop-over]` and `.kol-row-browser[data-drop-over]` (inset ring).
+
+## 0.139.0 — 2026-09-03
+
+- **The segmented strip takes the sunken tone** (segmented-toggle-sunken-tone,
+  kol-client-olina; user, on kol-fxr's labs rail: *"is this a variant? its
+  not what you have"*). It was fxr's local CSS, and olina's inspector carried
+  the same three lines. Promoted verbatim: `.kol-seg` under `kol-tone-sunken`
+  — on the element or inherited — drops its ring and the selected cell takes
+  `--kol-surface-sunken` / `fg-96`; rest cells as the default paints them;
+  `filled` / `tonal` untouched.
+
+## 0.138.0 — 2026-09-03
+
+- **⚠️ 0.137.0 is deprecated — one column in Firefox.** It computed the
+  catalog track count in CSS with `round(down, (100cqw + 24px) / (min + 24px), 1)`;
+  Chromium resolves a length ÷ length to a number, Firefox does not, the
+  declaration went invalid and `repeat(var(--n))` fell to `none` — every
+  catalog rendered a single ~1500px card (kol-client-olina, the moment it
+  pinned). The count is `--kol-catalog-n` now, MEASURED by `CatalogPage`
+  (shell 0.48.0) and published on the page; `.kol-catalog-grid` and
+  `.kol-filters-first` read it with a fallback of 6 — one division by a
+  number, Level 3, everywhere. Pair with shell ≥0.48.0.
+- **`secondary` paints the page surface; `inverted` is the fill it used to mean**
+  (tone-secondary-is-inverse, kol-client-olina; user, on `kol-tone-secondary`
+  rendering `#fafafa`-on-dark: *"this is not secondary this is inverted … I
+  told you I wanted primary surface as a tone … that tone should be called
+  secondary"*). 0.134.0 lifted the name from Button's `secondary` VARIANT,
+  which was already an inverse, and the page's own colour had no tone. Now
+  `.kol-tone-secondary` = `surface-primary` / `surface-on-primary` with
+  primary's rungs, and `.kol-tone-inverted` = `surface-on-primary` /
+  `surface-primary` — Button's, IconFrame's and the panel's `secondary`
+  variant classes alias `inverted`, so their pixels do not move. Seven tones.
+  `inverse` is NOT `inverted`: it stays sunken's alias while one kol-website
+  call passes it.
+
+## 0.137.0 — 2026-09-03
+
+- **The filter row's first group is one track of the grid the page actually
+  renders** (CatalogFilterFirstGroupTrackCount, kol-client-olina). It was
+  `(100cqw − 120px) / 6` while the catalog grid asks how many tracks fit
+  (ceiling 6, floor 160): on a capped page at 1280 the grid renders five at
+  165 and the group measured 133, its right edge mid-card. One count now —
+  `--_kol-catalog-n = min(cols, floor((W + 24) / (min + 24)))`, computed on
+  `.kol-filters-first` and the new `.kol-catalog-grid` (`repeat(n, minmax(0, 1fr))`,
+  gap 24; `--kol-catalog-min` / `--kol-catalog-cols` are its floor and
+  ceiling). Six-track pages are pixel-identical; narrower ones agree at last.
+  Needs `round()` — Firefox 118 · Chrome 125 · Safari 15.4.
+
+## 0.136.0 — 2026-09-03
+
+- `.kol-shell-page--capped` pads `64px` block — `.kol-page`'s vertical rung —
+  so a capped catalog page sits level with the `PageSection` pages beside it
+  (it sat 16px higher on the 48 gutter; kol-client-olina, on the link). The
+  app tier (`bleed`) keeps its 48.
+
+## 0.135.0 — 2026-09-03
+
+- **One page gutter, and PageShell's geometry is a class** (two-page-scaffolds-one-job,
+  kol-client-olina). `--kol-shell-page-pad` is `var(--kol-pad-section-x, …)` now —
+  the page-content ladder every `.kol-page` wears (20 · 32 · 48) — with the old
+  clamp as the fallback for a theme-only consumer; the two ladders had agreed
+  only at 48. `.kol-shell-page` (+ `--fixed`, `--capped`) and `.kol-shell-page-bleed`
+  carry what PageShell's inline style object carried, so a consumer has a
+  selector to reach. **`--kol-shell-page-wash` means what is LEFT to paint**: a
+  frame that already painted the wash hands down `transparent` (framework
+  0.41.0's PageLayout does), so a nested PageShell paints nothing over it —
+  the double paint that made olina's /slide-deck darker than its siblings.
+
+## 0.134.0 — 2026-09-03
+
+- **The tone axis — six tones, one mechanism, and the ground variants are
+  aliases of them** (tone-is-the-ground-axis, kol-client-olina; user, on fxr's
+  /settings: *"it would be best to not have to set every component but rather
+  get a set with it already set"* — and on Button's variants, *"that is 6 tones
+  right?"*). `toneClass` returned a class for `sunken` and nothing for anything
+  else, so `tone` had one value; the real ground vocabulary was five of
+  Button's eight variants, on Button alone, re-invented by `.kol-control`
+  (`--filled` / `--outline`) and `.kol-dd-panel` (`--primary` / `--grey` /
+  `--outline`) with paints that had drifted.
+  - **`.kol-tone-{primary,secondary,outline,ghost,grey,sunken}`** — each a
+    bundle of `--kol-tone-*` custom properties: rest, hover, press, pressed,
+    and what a floating surface of that tone paints. Every control reads its
+    paint from those properties with its own old literal as the fallback —
+    `.kol-btn` / the dropdown trigger / `.kol-control` / `.kol-dd-panel` fall
+    back to primary, `.kol-icon-frame` to secondary, the theme-toggle
+    variants, the view-toggle well and the open search shell to their own.
+    Values are the variants' verbatim; nothing moves without a tone.
+  - **Descendant scoping for free (ask 3):** custom properties inherit, so one
+    `kol-tone-grey` on a wrapper tones every control inside that carries no
+    tone of its own. A control handed a variant or tone sets the properties on
+    itself and wins. The ground variant classes are the SAME bundles under
+    `:where()` (specificity 0), so an explicit `tone` beats a variant on one
+    element regardless of order. `danger` and `accent` carry their own bundles
+    and stay variants. **`nav` stays** — the ticket read it as ghost, but it is
+    `oq-80` ink against ghost's `oq-48`; folding it would have dimmed every
+    close button and rail row in the estate. It is ghost's chrome rung.
+  - **The floating surface paints the ground (ask 2):** `--kol-tone-panel-bg`.
+    Outline and ghost panels paint `--kol-tone-ground` — `surface-primary`
+    unless a page sets it at its root — instead of hardcoding
+    `surface-primary`, so opening a dropdown over another ground changes
+    nothing under it. (The panel is portalled; kol-component copies the
+    trigger's resolved properties onto it — component 0.176.0.)
+  - **Eight Button hover rules and seven `:active` rules became one each**,
+    reading the tone's rungs. The dropdown trigger stays excluded at the
+    source (rest and open). Sunken's pressed-over-hover precedence is kept by
+    one explicit rule.
+  - `.kol-control--plain` — the bare shell (ViewToggle's inactive text chip),
+    named so the base can carry the filled fallback.
+  - Correction to the ticket: `grey` already had its `oq-12` rest fill; nothing
+    changed there.
+  - Verified: a computed-style matrix of 63 class combinations × rest / hover /
+    active, before and after, on the showcase build — no regressions, and three
+    sunken states the old element-scoped rules got wrong now follow the ladder:
+    a sunken button's PRESS shows `+fg-08` (its hover rule used to out-rank it),
+    a sunken outline no longer grows a border on hover, and the control shell
+    takes sunken's `fg-96` ink like the rest of the set.
+
+## 0.133.0 — 2026-09-03
+
+- **The content widths and the z ladder are Tailwind classes now**
+  (kol-client-olina, off the brand app's full-consumption pass). Two of the six
+  consumption checks say reach these by class — check 2 flags `var(--kol-*)` in
+  JSX, check 5 flags a raw `z-[…]` — and neither namespace was registered, so the
+  only way to use a content width or a z rung from JSX was
+  `max-w-[var(--kol-content-measure)]` / `z-[var(--kol-z-modal)]`: exactly the
+  forms those checks fail. Consumers were hand-binding the same nine lines in
+  their own `@theme` to escape it. Worse, the failure is SILENT — a `z-modal`
+  against an unregistered namespace emits nothing, which is how a consumer's
+  skip link shipped with no stacking for a month.
+  `--container-{canvas,shell,panel,column,measure}` → `max-w-*`, and
+  `--z-index-{base…nav}` → `z-*`. They ALIAS the `--kol-*` tokens, so there is
+  one value with two spellings. Verified emitting: `max-w-measure` 578.4px,
+  `max-w-panel` 960px, `z-modal` 100, `z-nav` 1000.
+
+## 0.132.1 — 2026-09-03
+
+- **`--kol-fg-body` was resolving to 72, not 64.** The role block set it twice —
+  `var(--kol-fg-64)` and then `var(--kol-fg-72)` on the very next line, same
+  rule, so the second won. `body` and `lede` have therefore been the SAME stop
+  since 72 was added, and every `text-body` / `--kol-fg-body` in the estate has
+  rendered one step brighter than the ladder documents. The stray line is gone;
+  `body` is 64 again and `lede` keeps 72. Found by generating the ink-role table
+  out of the CSS instead of reading the prose that described it.
+## 0.132.0 — 2026-09-03
+
+- **One height per size, across every family** (user ruling: *"xs sm md and lg
+  all have height in pixels that has to match"* · *"so button and dropdown can
+  align and input and whatever else"*). Only `md` had lined up. Icon squares
+  (`.kol-btn-icon`, `.kol-icon-frame-*`) read 20/28/32/36 and the Dropdown
+  trigger 28/32/36, while every padding-driven family — `.kol-control`, the text
+  Button, `SegmentedToggle`, the ToggleSwitch shells — measured **22/26/32/40**
+  from padding + the size's mono line-height + the 1px ring. So an icon button
+  stood 2px TALLER than the Input beside it at `sm`, 4px SHORTER at `lg`, 2px
+  shorter at `xs`. The pinned boxes are conformed to the derived heights, three
+  families against two. The trigger also gains the `xs` pin it never had (it was
+  falling through to the button padding, which landed on 22 by accident). Glyphs
+  do not move — `SOLO` still resolves 16/20/24. Measured in a real render: all
+  five families now return the same number at all four sizes.
+
+- **One scrim tint** (user: *"makes sense to me they are the same no?"*).
+  `.kol-overlay-scrim` was a raw `#000` at 60 % — a literal in a token system,
+  and 60 is not a ladder stop — while `.kol-shell-drawer-scrim` was already
+  `var(--kol-color-ab-black)` at 48. The same gesture dimmed to 60 in the site
+  shell and 48 in the app shell. Both are 48 % of the token now.
+
+- **The ColumnBrowser grab pill follows the pointer, on kol-r2b2's own feel**
+  (BrowsePageRulingsAndSeams). Corrected from 0.131.0, which took the rail's
+  fade curve and dwell: these handles are not the sidenav's, so the curve is
+  r2b2's ease-out `cubic-bezier(0.22, 1, 0.36, 1)` and the travel is
+  `GRAB_COLUMN` — a 2.8s chase on a 30px retarget, the pill tracking the pointer
+  rather than landing and holding on the rail's 90px dwell.
+## 0.131.0 — 2026-09-02
+
+- **The ColumnBrowser's grab pill follows the pointer** (BrowsePageRulingsAndSeams,
+  kol-r2b2 2026-09-02, user ruling). This file carried *"pointer-following was
+  built and rejected"* since 2026-08-28 — and the DS contradicted itself the
+  same day: the rail's grab (`kol-animation.css` § THE GRAB PILL,
+  RailFlatGrabOpen) shipped the pointer-follow, the `0.125rem × 4.5rem`
+  geometry and the slow proximity fade, from the user's *"make it like it is in
+  kol-r2b2"*. One gesture now, two shapes; `useGrabEdge` drives both.
+  **These handles are not the rail's**, and the differences are deliberate: the
+  rail's strip straddles its line, so a strip-centred pill IS the line, while
+  these strips sit INSIDE the border they grab — the far edge plus half the 1px
+  border is the line, `calc(100% + 0.5px)`. Two axes, so the x handle reads
+  `--kol-rail-grab-y` and the y handle the new `--kol-rail-grab-x`. Hidden at
+  rest rather than dim, because N handles standing at rest is noise where the
+  rail has one. Shared with the rail: the geometry, the 1800ms fade with its
+  400ms rest / 40ms engaged delays, the symmetric in-out curve and the `GRAB`
+  travel — **not** kol-r2b2's filed ease-out and 2.8s/30px deadband, which are
+  the tuning the rail was ruled OFF the same week (the ease-out *"popped the
+  first 20 % and crawled the rest"*; the deadband became dwell). One gesture
+  cannot carry two feels. Reduced-motion cut lives in the motion sheet.
+
+## 0.130.0 — 2026-09-02
+
+- **The ColumnBrowser row is a pill, and only ONE fill means selected**
+  (BrowsePageRulingsAndSeams, kol-r2b2 2026-09-02; user rulings 2026-08-27
+  *"dont make selected state move the layout"* and 2026-08-28). Three parts,
+  one shape. Row dividers are gone (ColumnBrowser stops emitting `border-b`);
+  every row carries a constant `margin-inline: 4px` and the column pads
+  `4px` block to match, so the fill appears inside a gutter that was already
+  there instead of the row changing size; the fill takes `--kol-radius-sm`.
+  And hover / the bare keyboard cursor now paint **nothing** — with
+  `autoFocus` on there is always a cursor row, so the 08-28 `fg-04` sat on the
+  list permanently, moved with every click, and drowned the selection at
+  `fg-02`. A selected row that is also the cursor keeps its fill on source
+  order alone (`:hover` and `.is-cursor` are (0,2,0), `.is-selected` is (0,2,0)
+  and comes later) — do not reorder those three rules. The VALUES did not
+  move: the trail is still `fg-02`, the deepest column's selection still
+  `fg-04`. A precedence fix, not a palette one.
+
+- **3:5 is the tallest a document page may be** (same ticket; user 2026-08-28:
+  *"this is not an approved ratio"*). `.kol-doc-page` was A-series (1:√2) in
+  the overlay and had **no bound at all** in the column preview, so the file
+  decided the height — a 7 KB JSON drew a pane taller than the browser. Both
+  presentations now take `aspect-ratio: 3 / 5`, the portrait rung on the
+  export-specs ladder below 4:5: content scrolls inside the box, the box never
+  grows to the file. Measured with 400 paragraphs appended — the box does not
+  move and scrolls.
+
+- **The overlay close out-stacks the sheet's own content** (same ticket; user
+  2026-08-28: *"doesnt work clicking close"*). `.kol-overlay-close` sat at a
+  bare `10` — the dropdown rung — and it is the FIRST child of the sheet, so
+  any consumer content after it at 10 or above covered the corner and the
+  click landed on the panel behind. Now `var(--kol-z-overlay)` (50), on the
+  ladder, **not** the reported 60: a hand-typed number here is the thing the
+  z-contract exists to stop. A Dropdown opened from the sheet still covers it
+  — that portals to `<body>` at 210, outside this stacking context, correctly.
 
 ## 0.129.0 — 2026-09-02
 

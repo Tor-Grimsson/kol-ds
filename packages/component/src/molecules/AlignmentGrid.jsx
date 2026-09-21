@@ -1,27 +1,28 @@
-import Button from '../atoms/Button.jsx'
+import { Icon } from '@kolkrabbi/kol-icons'
+import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
- * AlignmentGrid — a six-cell alignment row: horizontal start/center/end then
- * vertical start/center/end, each a quiet icon Button that emits an
- * `(axis, mode)` alignment intent. Driven off a static config array (the
- * default 6, overridable via `items`). Presentation only — the consumer wires
- * `onAlign` to whatever "align these" means in its context (align a box to the
- * canvas bounds, align a multi-selection's common bbox, …).
+ * AlignmentGrid — the align control: TWO three-way strips, X and Y.
  *
- * Ported from the brand editor's AlignmentPanel with the store coupling
- * dropped (per lobby spec): `useComposeState().alignSelected` → an `onAlign`
- * prop; the hand-rolled `kol-btn-quiet` buttons → DS `Button` (quiet +
- * iconOnly) so the DS owns the button atom; `EditorIcon` → the DS Icon
- * (through Button).
+ * Rebuilt on `SegmentedToggle` 2026-09-03 (`editor-chrome-review`, the user's
+ * own pass over the running editor: *"alignment isnt using segmentedtoggle?"*).
+ * It was six bare quiet icon Buttons in one `grid-cols-6` — six loose controls
+ * where the thing itself is two three-way choices, which is what a segmented
+ * strip is for. The shape had been ruled on `editor-set-is-behind-its-source`
+ * and the PRESS TREATMENT was the open question; his reaction answered it.
  *
- * [icon-gap] The source's `align-h-{start,center,end}` / `align-v-{start,
- * center,end}` glyph names are NOT in the loader. Remapped to the closest
- * existing loader glyphs (stroke/layout): `align-horizontal-{left,center,
- * right}` and `align-vertical-{top,center,bottom}`. Same six align marks,
- * different names — no visual gap.
+ * MOMENTARY, NOT A SELECTION. `value={null}` puts the strip in its stateless
+ * mode: no cell is ever lit, because "align left" is an action you fire, not a
+ * state the object is in — the object's alignment is not a property this reads
+ * back. The press is the cell's own `:active`, drawn in the theme
+ * (`.kol-seg-cell:active`), which is why no `tone` or `pressed` prop was minted
+ * for it: `tone` is the GROUND axis and says nothing about a momentary press.
  *
- * @param {(axis:'h'|'v', mode:'start'|'center'|'end') => void} onAlign  fired on cell click
- * @param {Array} items  [{ axis, mode, icon, title }] cells (default the standard 6)
+ * @param {(axis:'h'|'v', mode:'start'|'center'|'end') => void} onAlign - Fired on press
+ * @param {Array} items - `[{ axis, mode, icon, title }]` cells (default the standard 6, three per axis)
+ * @param {'xs'|'sm'|'md'|'lg'} size - The strips' rung (default 'sm')
+ * @param {string} className - Extra classes on the wrapper
  */
 const ALIGN_BUTTONS = [
   { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },
@@ -32,22 +33,37 @@ const ALIGN_BUTTONS = [
   { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },
 ]
 
-export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS }) {
+export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = 'sm', className = '' }) {
+  const strip = (axis) => items.filter((b) => b.axis === axis)
+
   return (
-    <div className="grid grid-cols-6 gap-1">
-      {items.map((b) => (
-        <Button
-          key={`${b.axis}-${b.mode}`}
-          quiet
-          iconOnly={b.icon}
-          iconSize={16}
-          onClick={() => onAlign?.(b.axis, b.mode)}
-          title={b.title}
-          aria-label={b.title}
-          className="w-full"
-          style={{ height: 28, padding: 6 }}
-        />
-      ))}
+    <div className={`kol-alignment-grid flex flex-col gap-1 ${className}`.trim()}>
+      {['h', 'v'].map((axis) => {
+        const cells = strip(axis)
+        if (!cells.length) return null
+        return (
+          <SegmentedToggle
+            key={axis}
+            variant="filled"
+            size={size}
+            /* stateless: never lit, the press IS the feedback */
+            value={null}
+            ariaLabel={axis === 'h' ? 'Align horizontally' : 'Align vertically'}
+            /* the cell's `label` takes a NODE, so the glyph needs no new prop
+             * on SegmentedToggle — and the glyph size comes from the ADJACENT
+             * ladder, never a number typed here */
+            options={cells.map((b) => ({
+              value: `${b.axis}-${b.mode}`,
+              label: <Icon name={b.icon} size={glyphSize(size)} />,
+              ariaLabel: b.title,
+            }))}
+            onChange={(v) => {
+              const cell = cells.find((b) => `${b.axis}-${b.mode}` === v)
+              if (cell) onAlign?.(cell.axis, cell.mode)
+            }}
+          />
+        )
+      })}
     </div>
   )
 }

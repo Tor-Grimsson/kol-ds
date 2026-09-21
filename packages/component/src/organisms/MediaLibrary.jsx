@@ -8,11 +8,13 @@ import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 import ContentCard from '../molecules/ContentCard.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
 import MediaViewer from './MediaViewer.jsx'
 import { MediaLibraryBrowse, MediaLibraryLibrary } from './MediaLibraryPages.jsx'
+import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
 import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
 
 /**
@@ -629,15 +631,17 @@ function Toolbar({ viewMode, onViewMode }) {
           )}
         </div>
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            aria-pressed={flat}
-            title="Show all files recursively"
-            onClick={() => setFlat(!flat)}
-            className={chipCls(flat)}
-          >
-            Flat
-          </button>
+          {/* The DS's own Tooltip, not a `title` attribute — see LibraryHeader. */}
+          <Tooltip label="Show all files recursively">
+            <button
+              type="button"
+              aria-pressed={flat}
+              onClick={() => setFlat(!flat)}
+              className={chipCls(flat)}
+            >
+              Flat
+            </button>
+          </Tooltip>
           <ViewToggle viewMode={viewMode} onViewChange={onViewMode} variant="icon" />
           <Divider variant="vertical" />
           <SortControls />
@@ -970,7 +974,10 @@ function PickerShell({ onClose, onPick }) {
  * `defaults` to seed) · `folderTree` (browse: the baked tree) · `headerActions`
  * (the app's own upload / write icons) · `refreshKey`.
  *
- * @param {string}   variant  'browse' | 'library' | 'modal' | 'page' (alias of library)
+ * @param {string}   variant  'explorer' | 'browse' | 'library' | 'modal' | 'page' (alias of library)
+ *   `explorer` is browse + library as two views of ONE surface — one header, one
+ *   count, one listing, a switch beside the bucket dropdown. Prefer it for a new
+ *   consumer; the other two remain for the ones that stack them by hand.
  * @param {boolean}  open     modal only — mounts the overlay
  * @param {object}   client   `{ listMedia, mediaUrl, proxied? }`; omit inside a provider
  * @param {string|string[]} accept  'all' (default) = everything · one kind · an
@@ -999,6 +1006,12 @@ export default function MediaLibrary({
     return withProvider(<PickerShell onClose={onClose} onPick={onSelect} />, opts)
   }
   if (variant === 'browse') return <MediaLibraryBrowse client={client} {...pageProps} />
+  /* `explorer` = the two above as TWO VIEWS OF ONE SURFACE, one mounted at a
+   * time behind a switch in the header — one wordmark, one count, one listing,
+   * and the upload target reachable without scrolling past a full-height
+   * browser. Added 2026-09-21; `browse` and `library` are unchanged, so no
+   * consumer moves until it chooses to. */
+  if (variant === 'explorer') return <MediaLibraryExplorer client={client} {...pageProps} />
   /* `page` = the library wall (alias, one release): its old knobs map onto the settings seed */
   const seed = variant === 'page' ? { defaults: { pageSize, sortBy: defaultSort?.by, sortDir: defaultSort?.dir, flat, ...(pageProps.defaults ?? {}) } } : {}
   return <MediaLibraryLibrary client={client} {...pageProps} {...seed} />

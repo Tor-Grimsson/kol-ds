@@ -3,7 +3,7 @@ title: The ContentCard system
 type: reference
 status: draft
 created: 2026-08-15
-updated: 2026-08-27
+updated: 2026-09-03
 description: One card family; wrapper owns the switch
 aliases:
   - content-card
@@ -25,6 +25,7 @@ related:
   - "[[02-placement|placement rules]]"
   - "[[../01-foundations/01-tokens|tokens]]"
   - "[[../../visual-reference/INDEX|visual reference]]"
+  - "[[../04-compositions/12-section-system|section system]]"
 ---
 
 # The ContentCard system
@@ -40,6 +41,8 @@ its own copy of the grid-versus-list switch.
 
 This page is the plan to make it one family. It is the reference the work is held
 to; rulings live here rather than in a conversation.
+
+**`ContentText` is the listing tier's text and `SectionText` the page tier's — two primitives, by ruling** (page-family-is-not-a-set, 2026-09-03): data lines beside a title → `ContentText`; a head that introduces what follows → `SectionText`. Neither absorbs the other; the test and the page kit that composes the other base are in [[../04-compositions/12-section-system|section system]].
 
 **How it was found.** Two exhaustive sweeps on 2026-08-15 — every card-like
 component in the fifteen packages, and every call site across this repo and the
@@ -79,6 +82,8 @@ a new variant cheap — a variant is a `ContentText` composition plus a
 `ContentMedia` ratio, not a new card.
 
 ## The variants
+
+**A fifth kind, `slide`** (2026-09-03, user-ruled — *"they are genuinely different with 16:9 layout and those exposed properties"*): a deck is a 1920×1080 stage. Card: file's stack at `16 / 9`, plate `surface-primary` rest and hover. Row: the thumb fills the rung's height and takes its width from the ratio (48 × 85). Text: `title · date · size · meta` (the slide count). Every value read off kol-client-olina's /slide-deck; `CatalogPage preset="shelf"` composes it.
 
 Six, and `default` is declared.
 

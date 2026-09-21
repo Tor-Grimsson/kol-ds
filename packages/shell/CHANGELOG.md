@@ -1,5 +1,133 @@
 # @kolkrabbi/kol-shell
 
+## 0.51.0 — 2026-09-03
+
+- **`ShortcutsOverlay` and `TouchDeviceOverlay` wear `.kol-overlay-scrim`**
+  (overlay-scrim-outliers, kol-client-olina; user, opening the shortcuts
+  sheet: *"wow where does this scrim come from? local?"*). Both drew their own
+  — an 8 % inverse wash plus a 2px blur — after the 2026-09-01 no-blur ruling
+  and the one-tint-48 class. `TouchDeviceOverlay`'s literal `zIndex: 100` is
+  `var(--kol-z-modal)`.
+
+## 0.50.0 — 2026-09-03
+
+- **`CatalogPage preset="shelf"`** (slide-variant-and-shelf-preset,
+  kol-client-olina; user, after building /slide-deck by hand: *"this is a
+  look I DO NOT want to do this again… this is a layout SET"* · *"freeze this
+  so I can use AS IS again"*). The whole page as one word: `capped`, 3 tracks
+  on a 280 floor, `slide` card and row (component 0.178.0), stacked list,
+  `kol-tone-secondary` on the root, the All / Recent view strip. `toCard`
+  returns the deck's fields and handlers — `title date bytes count cover href
+  onNavigate onDownload onFavourite onDelete favourited` — and the page
+  renders the slots (the media admin's idiom: download on the image, star and
+  trash on the plate, `SizeOrDownload` on the size); the consumer writes no
+  JSX for actions. `catalog` is today's defaults, byte-identical. Explicit
+  props win over the preset. Peer: component ≥0.178.0.
+
+## 0.49.0 — 2026-09-03
+
+- **`CatalogPage maxColumns`** (default 6, the ruling) — the grid's ceiling as
+  a prop, read by the observer in place of the literal (kol-client-olina
+  2026-09-03; user, on a three-deck shelf at five tracks: *"why are the cards
+  so small? they could use 2 columns each"*). Olina had raised `minColumn` to
+  force three, which is backwards — the floor is a minimum, never a count.
+
+## 0.48.0 — 2026-09-03
+
+- **`CatalogPage` measures its track count and publishes it as
+  `--kol-catalog-n`** (with theme 0.138.0). 0.46.0 + theme 0.137.0 had the
+  theme compute it with `round()` over a length ÷ length, which Firefox
+  rejects: every catalog rendered ONE full-width column (user: *"is this
+  supposed to be a joke? huge card"*). A ResizeObserver on the grid now
+  computes `min(6, floor((W + 24) / (minColumn + 24)))` — the same number the
+  old `auto-fill` resolved to — and the theme's grid and filter-row rules
+  read it with a fallback of 6. Peer: theme ≥0.138.0; pair the two.
+
+## 0.47.0 — 2026-09-03
+
+- **`CatalogPage` forwards the whole contract of what it composes** (user
+  2026-09-03: *"why wouldn't we as standard practice ALLOW VARIANT CHANGE EVERY
+  TIME WE USE THOSE CONTENT CARDS?"*). Five tickets on this file in one day
+  were one defect — a key missing from `toCard` because no earlier consumer
+  had needed it (`ratio`, `trailingActions`, `rowVariant`, `date` / `size`,
+  the list container). `toCard`'s return is now SPREAD onto `ContentCard` /
+  `ContentRow`: every prop either takes is reachable per card, including the
+  ones not written yet; `variant` per card beats the page's **`cardVariant`**
+  (new, default `catalog`) / `rowVariant`; `fit` keeps `cover`. The `file`
+  row's `date` · `size` · `meta` · `selected` arrive this way (user, on a deck
+  row beside the media admin's: *"this is NOT file row"* — two of its slots
+  never reached it). **`listLayout`**: `grid` (default — monitor's four-across)
+  | `stack` (one row per line, the media library's shape). Default-preserving
+  throughout.
+
+## 0.46.0 — 2026-09-03
+
+- **`CatalogPage` draws its grid with `.kol-catalog-grid`** (theme 0.137.0)
+  instead of an inline `auto-fill`, and sets `--kol-catalog-min` from
+  `minColumn` on the page — so `ContentFilters`' first group reads the same
+  track count the grid renders (CatalogFilterFirstGroupTrackCount,
+  kol-client-olina): on a capped page the group sits over the first card
+  again. Same tracks at every width as before. Peer: theme ≥0.137.0.
+
+## 0.45.0 — 2026-09-03
+
+- **`CatalogPage rowVariant`** (kol-client-olina 2026-09-03). The list branch
+  rendered `ContentRow variant="catalog"` — the 36px GridCard row, `thumb: 0` —
+  so the `media` and `ratio` 0.44.0 forwarded reached a row that cannot draw
+  them (user, on the bare row: *"ugly ugly ugly"*). `rowVariant` picks the row:
+  `catalog` (default — every app-tier list stays exactly where
+  CatalogPageMonitorParity ruled it) | `file` (the 48px thumb row), so a
+  catalog whose grid shows a cover shows the same cover small in its list.
+  A prop, not the literal: three apps' lists were ruled on the bare row and
+  did not ask to move.
+
+## 0.44.0 — 2026-09-03
+
+- **`CatalogPage trailingActions` · `minColumn` · list rows with media**
+  (kol-client-olina 2026-09-03, on /slide-deck — reviewed from a kol-link edit,
+  shipped through the gates here). `trailingActions` fills the header's right
+  slot — the one `MediaLibrary` uses for SELECT / FLAT; the page had no way to
+  reach it, so every catalog rendered an empty slot beside the divider (user:
+  *"that field SHOULD NEVER BE EMPTY"*). `minColumn` (default 160, today's
+  number) is the grid track's floor — a shelf of three decks at 160 was three
+  slivers and a void; olina passes 280; the six-track ceiling still applies.
+  The list branch passes `media` and `ratio` to `ContentRow`, which already
+  took both — a deck row rendered as title and detail with no thumbnail.
+  Peer: theme ≥0.136.0 (the capped tier's vertical rung).
+
+## 0.43.0 — 2026-09-03
+
+- **`PageShell width`** (two-page-scaffolds-one-job, kol-client-olina) — `bleed`
+  (default, the app tier: fills the window) | `capped` (the site tier:
+  `--kol-container-max`, centred). The one real difference between a shell
+  page and a `.kol-page`, and a prop now so a site adopting `CatalogPage` does
+  not silently get app geometry; `CatalogPage` forwards it. The geometry is
+  `.kol-shell-page` (theme 0.135.0) instead of an inline style object —
+  inline is the `style` prop only — and `PageBleed` is `.kol-shell-page-bleed`.
+  Gutter: `--kol-shell-page-pad` now aliases the estate's one page ladder.
+  Peer: theme ≥0.135.0.
+
+## 0.42.0 — 2026-09-03
+
+- **`CatalogPage` forwards `ratio`** (catalogpage-card-ratio, kol-client-olina).
+  `toCard` carried `fit` but not `ratio`, so every catalog in the estate was
+  locked to `catalog`'s A4 with no seam at any level — a consumer with a 16:9
+  deck had to leave the page and hand-roll the grid it was shipped to end.
+  `ratio={c.ratio}` beside the `fit` that was already there; unset falls
+  through to the variant's default, so nothing existing moves. Per card, not
+  per page — `fit`'s own argument: one catalog mixes shapes.
+
+## 0.41.0 — 2026-09-03
+
+- **`PageHeader` is no longer exported — import it from `@kolkrabbi/kol-component`**
+  (page-header-one-masthead). Same component, same props, plus the new
+  `register`. Not re-exported and not aliased: `kol-shell` declares
+  `@kolkrabbi/kol-component` as a peer at `>=0.127.0`, so every consumer already
+  has it and the migration is one import path. `SettingsScaffold` and
+  `CatalogPage` compose it across the seam and are unchanged for callers.
+  Recorded in `docs/operations/01-release/04-retirements.md`.
+  **Requires `@kolkrabbi/kol-component@>=0.174.0`.**
+
 ## 0.40.0 — 2026-09-02
 
 - **A rung's tap decides the drawer, not only the route change**

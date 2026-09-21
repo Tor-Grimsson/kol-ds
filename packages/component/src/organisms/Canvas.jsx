@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { CanvasZoomContext } from '../hooks/canvasZoom.js'
 
 /**
  * Canvas — the editor's aspect-ratio stage.
@@ -13,16 +14,31 @@ import { useEffect, useRef, useState } from 'react'
  * shares it, so a consumer's drag math converts screen deltas to virtual by
  * dividing by the live scale (frameWidth / 1080).
  *
- * Three parts ship from this file: `CanvasFrame` (the bare scale layer),
- * `Canvas` (the letterbox, default export), and `PanViewport` (Space+drag pan).
- * Export all three so a consumer can place a bare frame or compose their own
- * viewport.
+ * Ships from this file: `CanvasZoomContext`, `CanvasFrame` (the bare scale
+ * layer), `Canvas` (the letterbox, default export), `PanZoomViewport` (pan +
+ * zoom + rulers + guides), `PanViewport` (pan only) and `useFps`.
  *
- * Ported from the brand editor with three app-couplings dropped (per lobby
+ * Ported from kol-fxr's editor with three app-couplings dropped (per lobby
  * spec): the static `ASPECTS` table → an `aspects` prop (+ DEFAULT_ASPECTS);
  * the `#0E0E11` dark bg default → `transparent` (let the theme own the stage);
  * and the hardwired `kol-grid-bg` grid → a `backdrop` slot the consumer fills.
+ *
+ * ZOOM CAME BACK 2026-09-03 (`editor-set-is-behind-its-source`, kol-fxr). The
+ * first port took Space-and-drag pan only and left behind wheel zoom, the zoom
+ * clamps, `zoomAt`, the rulers, the guides and — load-bearing —
+ * `CanvasZoomContext`, which every piece of editing chrome reads to stay
+ * screen-constant. fxr bumped to current, ran the adoption and reverted:
+ * without the context its `SelectionOverlay` drew 30px handles at 3×. A
+ * pan-only viewport is not this component, it is a third of it.
  */
+
+/* The viewport's live zoom factor — editing chrome divides its virtual-px
+ * dimensions by it to stay screen-constant. Defined in `hooks/canvasZoom.js`
+ * because the atoms consume it and an atom may not import an organism (the
+ * taxonomy gate, correctly); re-exported here under the name it has always
+ * had, so `import { CanvasZoomContext } from '@kolkrabbi/kol-component'` and
+ * every existing deep import keep working. */
+export { CanvasZoomContext }
 
 /* Fixed virtual canvas width — children render in this pixel space and the
  * outer rect scales to fit the viewport via CSS transform. Height is derived
@@ -95,6 +111,11 @@ export function CanvasFrame({
   return (
     <div
       ref={rectRef}
+      /* The rulers and the guides locate the frame by this attribute and read
+       * its on-screen rect, which already folds in the letterbox, the fit
+       * scale and the pan/zoom transform — so `screen = left + virtual*pxPer`
+       * holds at any zoom with no second coordinate system. */
+      data-canvas-frame
       className="relative w-full"
       style={{
         aspectRatio: ratio,
@@ -159,8 +180,15 @@ export function CanvasFrame({
  * @param {string}    bgColor     frame background fill
  * @param {string}    guideColor  guide border + label color
  * @param {'center'|'start'} align vertical placement in the letterbox
- * @param {boolean}   panEnabled  wrap in a Space+drag PanViewport
+ * @param {boolean}   panEnabled  wrap in a PanZoomViewport — Space+drag pan, wheel/pinch zoom, rulers, guides
  * @param {ReactNode} backdrop    node placed behind the frame in the pan viewport (e.g. a grid)
+ * @param {number}    gutter      px breathing room the letterbox leaves around the frame (default 48)
+ * @param {'contain'|'cover'} fit  `cover` overflows the viewport instead of letterboxing — a display-side crop; the composition is untouched
+ * @param {boolean}   rulers      draw the virtual-px rulers (default true, `panEnabled` only)
+ * @param {{h: number[], v: number[]}} guides ruler-guide positions in VIRTUAL px; with `setGuides`, the guides layer renders and is draggable
+ * @param {Function}  setGuides   updater for `guides` — the viewport owns no guide state, the consumer does
+ * @param {boolean}   guidesInteractive  let guides be grabbed and created (default true)
+ * @param {Function}  onSpaceTap  fires when Space was pressed and released WITHOUT panning — a tap, not a drag. fxr binds its transport play/pause here; unset, a tap does nothing
  * @param {ReactNode} children    rendered in the 1080-virtual scale layer
  */
 export default function Canvas({
@@ -172,18 +200,30 @@ export default function Canvas({
   align = 'center',
   panEnabled = false,
   backdrop,
+  gutter = 48,
+  fit = 'contain',
+  rulers = true,
+  guides,
+  setGuides,
+  guidesInteractive = true,
+  onSpaceTap,
   children,
 }) {
   const { ratio } = resolveAspect(aspect, customRatio, aspects)
 
+  /* fit='cover': the frame overflows the viewport instead of letterboxing —
+   * a display-side crop (the composition itself is untouched). */
   const letterbox = (
     <div
-      className={`flex ${align === 'start' ? 'items-start' : 'items-center'} justify-center w-full h-full`}
+      className={`flex ${align === 'start' ? 'items-start' : 'items-center'} justify-center w-full h-full ${fit === 'cover' ? 'overflow-hidden' : ''}`}
       style={{ containerType: 'size' }}
     >
       <div
+        className="shrink-0"
         style={{
-          width: `min(calc(100cqw - 48px), calc((100cqh - 48px) * ${ratio}))`,
+          width: fit === 'cover'
+            ? `max(100cqw, calc(100cqh * ${ratio}))`
+            : `min(calc(100cqw - ${gutter}px), calc((100cqh - ${gutter}px) * ${ratio}))`,
         }}
       >
         <CanvasFrame
@@ -200,11 +240,27 @@ export default function Canvas({
   )
 
   if (!panEnabled) return letterbox
-  return <PanViewport backdrop={backdrop}>{letterbox}</PanViewport>
+  return (
+    <PanZoomViewport
+      backdrop={backdrop}
+      showRulers={rulers}
+      guides={guides}
+      setGuides={setGuides}
+      guidesInteractive={guidesInteractive}
+      onSpaceTap={onSpaceTap}
+    >
+      {letterbox}
+    </PanZoomViewport>
+  )
 }
 
 /**
- * PanViewport — Space + drag pan wrapper.
+ * PanViewport — Space + drag pan wrapper. **Pan only, no zoom.**
+ *
+ * Kept for a consumer composing its own viewport, and because it is what
+ * shipped. An editor wants `PanZoomViewport` (below): this one publishes no
+ * `CanvasZoomContext`, so editing chrome inside it cannot stay
+ * screen-constant, which is the defect kol-fxr measured on 2026-09-03.
  *
  * Hold Space → cursor `grab`. Mousedown while held → drag-pan, cursor
  * `grabbing`. The pan transform applies to the child div that holds the frame;
@@ -294,6 +350,687 @@ export function PanViewport({ backdrop, children }) {
         {backdrop}
         <div className="relative w-full h-full">{children}</div>
       </div>
+    </div>
+  )
+}
+
+/* ── Pan + zoom ────────────────────────────────────────────────────────────
+ * Ported verbatim from kol-fxr `src/editor/shell/Canvas.jsx` (2026-09-03,
+ * `editor-set-is-behind-its-source`). Two app couplings became seams: the
+ * Space-tap `transport.toggle()` is now `onSpaceTap`, and the hardwired
+ * `.kol-grid-bg` div is the `backdrop` node this package already took. The
+ * clamps, the anchor math, the wheel handling and the chip layout are the
+ * source's — fxr is the reference for this set. */
+
+const ZOOM_MIN = 0.1
+const ZOOM_MAX = 8
+
+/* Anchor a zoom change at a screen point (sx, sy relative to the viewport
+ * top-left) so the content under the cursor stays put. Transform is
+ * `translate(x,y) scale(zoom)` with origin 0,0, so screen = p*zoom + pan;
+ * inverting for a fixed p gives the new pan below. */
+function zoomAt(v, factor, sx, sy) {
+  const z2 = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, v.zoom * factor))
+  return {
+    zoom: z2,
+    x: sx - (sx - v.x) * (z2 / v.zoom),
+    y: sy - (sy - v.y) * (z2 / v.zoom),
+  }
+}
+
+/* useFps(enabled) — live framerate, measured only while `enabled` (the RAF
+ * idles when off); returns frames per second, updated twice a second.
+ * Exported because a consumer's own stage corner renders the same chip.
+ *
+ * A plain block comment on purpose: `@param` belongs to a destructured props
+ * signature, and the props gate pairs a `/** … *\/` block with the next such
+ * export — a JSDoc'd positional hook hands its `@param` to the component
+ * below it, which is exactly the false positive it reported on this file. */
+export function useFps(enabled) {
+  const [fps, setFps] = useState(0)
+  useEffect(() => {
+    if (!enabled) return
+    let raf, frames = 0, last = performance.now()
+    const loop = (now) => {
+      frames++
+      if (now - last >= 500) {
+        setFps(Math.round((frames * 1000) / (now - last)))
+        frames = 0
+        last = now
+      }
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
+  }, [enabled])
+  return fps
+}
+
+function isTypingTarget(el) {
+  if (!el) return false
+  const tag = el.tagName
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
+}
+
+/**
+ * PanZoomViewport — infinite-canvas viewport (pan + zoom), and the one that
+ * publishes `CanvasZoomContext`.
+ *
+ * Pan: hold Space + drag (cursor grab/grabbing), or two-finger trackpad
+ * scroll. Zoom: Cmd/Ctrl + wheel or trackpad pinch, anchored at the pointer;
+ * Cmd+0 resets, Cmd+= / Cmd+- step-zoom at the viewport center. A single
+ * `translate() scale()` on the transform layer carries both, so a consumer's
+ * screen→virtual math needs no zoom awareness. Pointer events on the
+ * transform layer disable while Space is held so layer mousedowns don't fire
+ * mid-pan. `f` toggles an fps chip beside the zoom readout.
+ *
+ * @param {ReactNode} backdrop   placed behind the frame (grid / dark bg); the consumer owns its sizing — oversize it so panning never reveals an edge
+ * @param {boolean}   showRulers draw the virtual-px rulers (default true)
+ * @param {{h: number[], v: number[]}} guides guide positions in VIRTUAL px
+ * @param {Function}  setGuides  updater for `guides`; without both, no guides layer renders
+ * @param {boolean}   guidesInteractive  allow grab + create (default true)
+ * @param {Function}  onSpaceTap fires on a Space press released without panning
+ * @param {ReactNode} children   the letterboxed frame
+ */
+export function PanZoomViewport({
+  children,
+  backdrop,
+  showRulers = true,
+  guides,
+  setGuides,
+  guidesInteractive = true,
+  onSpaceTap,
+}) {
+  const containerRef              = useRef(null)
+  const [spaceHeld, setSpaceHeld] = useState(false)
+  /* Space tap vs Space+drag: the ref records whether a pan drag consumed this
+   * Space press (set on pan mousedown), so keyup can tell them apart. */
+  const spacePannedRef = useRef(false)
+  const [dragging, setDragging]   = useState(false)
+  const [view, setView]           = useState({ zoom: 1, x: 0, y: 0 })
+  const dragStart                 = useRef(null)
+  const [showFps, setShowFps]     = useState(false)
+  const fps                       = useFps(showFps)
+  /* Ref mirror so the keyup listener calls the latest callback without
+   * rebinding the window listeners on every consumer re-render. */
+  const spaceTapRef = useRef(onSpaceTap)
+  spaceTapRef.current = onSpaceTap
+
+  /* Space toggles pan mode; Cmd+0 / Cmd+= / Cmd+- drive zoom from the
+   * keyboard (centered on the viewport). Skipped while typing in a field. */
+  useEffect(() => {
+    const isInputTarget = (el) =>
+      el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
+    const onKeyDown = (e) => {
+      if (isInputTarget(e.target)) return
+      if (e.code === 'Space') {
+        e.preventDefault()
+        if (!e.repeat) spacePannedRef.current = false
+        setSpaceHeld(true)
+        return
+      }
+      if (e.metaKey || e.ctrlKey) {
+        if (e.key === '0') {
+          e.preventDefault()
+          setView({ zoom: 1, x: 0, y: 0 })
+        } else if (e.key === '=' || e.key === '+') {
+          e.preventDefault()
+          const r = containerRef.current?.getBoundingClientRect()
+          setView((v) => zoomAt(v, 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2))
+        } else if (e.key === '-') {
+          e.preventDefault()
+          const r = containerRef.current?.getBoundingClientRect()
+          setView((v) => zoomAt(v, 1 / 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2))
+        }
+      }
+    }
+    const onKeyUp = (e) => {
+      if (e.code === 'Space') {
+        setSpaceHeld(false)
+        setDragging(false)
+        dragStart.current = null
+        /* No pan happened → this was a tap. fxr binds play/pause here; the
+         * same input guard as keydown so typing a space in a field is not a
+         * tap. Unset, a tap does nothing. */
+        if (!spacePannedRef.current && !isInputTarget(e.target)) spaceTapRef.current?.()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!dragging) return
+    const onMove = (e) => {
+      if (!dragStart.current) return
+      const { x: sx, y: sy } = dragStart.current
+      setView((v) => ({ ...v, x: e.clientX - sx, y: e.clientY - sy }))
+    }
+    const onUp = () => {
+      setDragging(false)
+      dragStart.current = null
+    }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+    }
+  }, [dragging])
+
+  /* Wheel: Cmd/Ctrl+wheel or trackpad pinch (ctrlKey) → zoom at pointer;
+   * plain two-finger scroll → pan. Native non-passive listener so we can
+   * preventDefault the browser's page-zoom / scroll. */
+  useEffect(() => {
+    const node = containerRef.current
+    if (!node) return
+    const onWheel = (e) => {
+      e.preventDefault()
+      const rect = node.getBoundingClientRect()
+      const sx = e.clientX - rect.left
+      const sy = e.clientY - rect.top
+      if (e.ctrlKey || e.metaKey) {
+        setView((v) => zoomAt(v, Math.exp(-e.deltaY * 0.0015), sx, sy))
+      } else {
+        setView((v) => ({ ...v, x: v.x - e.deltaX, y: v.y - e.deltaY }))
+      }
+    }
+    node.addEventListener('wheel', onWheel, { passive: false })
+    return () => node.removeEventListener('wheel', onWheel)
+  }, [])
+
+  /* A consumer's zoom TOOL announces clicks as `kol:zoom-at` (client coords +
+   * factor) rather than reaching into this state — anchored zoom at the
+   * pointer. Same idiom as `kol:guide-drag-start` below. */
+  useEffect(() => {
+    const onZoomEvt = (e) => {
+      const node = containerRef.current
+      if (!node) return
+      const { clientX, clientY, factor } = e.detail
+      const rect = node.getBoundingClientRect()
+      setView((v) => zoomAt(v, factor, clientX - rect.left, clientY - rect.top))
+    }
+    window.addEventListener('kol:zoom-at', onZoomEvt)
+    return () => window.removeEventListener('kol:zoom-at', onZoomEvt)
+  }, [])
+
+  /* `f` toggles the fps chip (measured only while shown). Guarded against
+   * typing targets so text fields don't flip it. */
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'f' && e.key !== 'F') return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (isTypingTarget(e.target)) return
+      setShowFps((v) => !v)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const onMouseDown = (e) => {
+    if (!spaceHeld) return
+    e.preventDefault()
+    spacePannedRef.current = true
+    dragStart.current = { x: e.clientX - view.x, y: e.clientY - view.y }
+    setDragging(true)
+  }
+
+  /* Only override the cursor while actively panning (Space-held / dragging).
+   * At rest, leave it unset so consumers above can apply their own cursor
+   * (a tool-driven cursor) and have it visible across the backdrop AND the
+   * canvas frame, not just the frame area. */
+  const cursor = dragging ? 'grabbing' : spaceHeld ? 'grab' : undefined
+  const atRest = view.zoom === 1 && view.x === 0 && view.y === 0
+
+  return (
+    <CanvasZoomContext.Provider value={view.zoom}>
+      <div
+        ref={containerRef}
+        className="relative w-full h-full overflow-hidden select-none"
+        style={cursor ? { cursor } : undefined}
+        onMouseDown={onMouseDown}
+      >
+        {/* No transition on the transform: editing chrome (selection
+            wireframe, path nodes) sizes itself by 1/zoom from React state,
+            which updates instantly — an eased CSS transform lags behind and
+            makes the chrome visibly pop. Instant zoom keeps chrome, rulers and
+            stage in the same frame. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})`,
+            transformOrigin: '0 0',
+            pointerEvents: spaceHeld ? 'none' : 'auto',
+          }}
+        >
+          {backdrop}
+          <div className="relative w-full h-full">{children}</div>
+        </div>
+
+        {/* Ruler guides — viewport-level so each line spans the whole visible
+            canvas area (readable against the rulers), under the rulers, above
+            the canvas content. */}
+        {guides && setGuides && (
+          <CanvasGuides
+            containerRef={containerRef}
+            guides={guides}
+            setGuides={setGuides}
+            interactive={guidesInteractive && !spaceHeld}
+          />
+        )}
+
+        {showRulers && <CanvasRuler containerRef={containerRef} disabled={spaceHeld} />}
+
+        {/* Zoom % + fps — matching chips. Zoom (click resets to 100% /
+            centered) first, fps to its right, shown while `f` toggles it. */}
+        <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setView({ zoom: 1, x: 0, y: 0 })}
+            className="px-2 py-1 rounded border border-fg-08 bg-surface-secondary kol-mono-12 text-emphasis tabular-nums"
+            style={{ opacity: atRest && !showFps ? 0.55 : 1 }}
+            title="Reset zoom (⌘0)"
+          >
+            {Math.round(view.zoom * 100)}%
+          </button>
+          {showFps && (
+            <span
+              className="px-2 py-1 rounded border border-fg-08 bg-surface-secondary kol-mono-12 text-emphasis tabular-nums"
+              title="Framerate — press F to hide"
+            >
+              {fps} fps
+            </span>
+          )}
+        </div>
+      </div>
+    </CanvasZoomContext.Provider>
+  )
+}
+
+/* ── Rulers + guides ─────────────────────────────────────────────────────── */
+
+const RULER = 18  /* px thickness of each ruler bar */
+const RULER_STEPS = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000]
+
+/* Smallest 1-2-5 virtual step whose on-screen spacing clears `target` px, so
+ * labels never crowd regardless of zoom. */
+export function niceStep(pxPer, target = 80) {
+  for (const s of RULER_STEPS) if (s * pxPer >= target) return s
+  return RULER_STEPS[RULER_STEPS.length - 1]
+}
+
+/* Virtual ticks visible across [0, spanScreen], given where virtual-0 sits on
+ * screen (originScreen) and the screen-px-per-virtual-px scale. */
+export function ticksFor(originScreen, pxPer, spanScreen, step) {
+  const vMin = (0 - originScreen) / pxPer
+  const vMax = (spanScreen - originScreen) / pxPer
+  const first = Math.ceil(vMin / step) * step
+  const out = []
+  for (let v = first; v <= vMax; v += step) out.push({ v: Math.round(v), s: originScreen + v * pxPer })
+  return out
+}
+
+/**
+ * useFrameGeom — the geometry the rulers and the guides both read.
+ *
+ * PUBLIC SINCE 2026-09-03 (`rulers-and-guides-are-private`, kol-fxr), with
+ * `CanvasRuler`, `CanvasGuides`, `niceStep` and `ticksFor`. They were module
+ * -private inside `PanZoomViewport` and **they were never tied to it**: this
+ * hook locates `[data-canvas-frame]` and reads its `getBoundingClientRect()`
+ * against the container, so it measures the RENDERED RESULT and every
+ * transform is already folded in. The filer measured it rather than asserting
+ * it — CSS `zoom: 0.5` and `transform: scale(0.5)` on a 1920 element both
+ * report a 960 rect, so `pxPer` is identical and no branch is needed. A
+ * consumer with a CSS-zoomed stage and no pan-zoom viewport at all (a 1920×1080
+ * slide editor, its second consumer on day one) gets rulers by rendering these
+ * two layers over a container that holds a `[data-canvas-frame]`.
+ *
+ * `view` is GONE rather than generalised: it never entered the math, and the
+ * effect it keyed on already runs a rAF settle-loop that re-measures until the
+ * rect is stable for two frames, plus a `ResizeObserver` on the container. Any
+ * change is caught by the rect comparison whatever caused it.
+ *
+ * THE RULER IS A SIBLING OF THE FRAME, NOT ITS CHILD — and the container needs
+ * a gutter for the bars to live in. Satisfying `position: relative` and
+ * `[data-canvas-frame]` with the SAME element reads as the obvious move in a
+ * single-canvas app and is wrong: the ruler then positions against the very box
+ * it is measuring and paints its ticks over the artwork. kol-client-olina lost a
+ * cycle to exactly that on 2026-09-04, which is why this paragraph exists:
+ *
+ *   <div ref={containerRef} style={{ position: 'relative', padding: 18 }}>
+ *     <CanvasRuler containerRef={containerRef} virtualWidth={1920} />
+ *     <div data-canvas-frame>…the artwork…</div>
+ *   </div>
+ *
+ * @param {React.RefObject<HTMLElement>} containerRef - The POSITIONED box the layers are drawn in; it must CONTAIN a `[data-canvas-frame]` sibling and leave a gutter (18px) for the bars
+ * @param {number} [virtualWidth=CANVAS_VIRTUAL_W] - The frame's width in VIRTUAL px — what `pxPer` divides by, and the vertical guide clamp
+ * @returns {{left, top, pxPer, vh, cw, ch}|null} frame offsets, screen-px per virtual px, the frame's virtual height, the container's size
+ */
+/* Frame geometry inside the viewport — locates the tagged
+ * `[data-canvas-frame]` and reads its on-screen rect (which already folds in
+ * the letterbox, fit-scale, and the pan/zoom transform) relative to the
+ * container, so `screen = left/top + virtual * pxPer` holds at any zoom with
+ * no separate math. `vh` is the frame's height in virtual px (for clamping
+ * horizontal guides). Re-measures on every `view` change and on container
+ * resize. Shared by CanvasRuler and CanvasGuides so ruler labels and guide
+ * lines can never disagree. */
+export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
+  const [geom, setGeom] = useState(null)
+
+  const measure = useCallback(() => {
+    const el = containerRef.current
+    if (!el) return
+    const frame = el.querySelector('[data-canvas-frame]')
+    const crect = el.getBoundingClientRect()
+    if (!frame || crect.width === 0) { setGeom(null); return }
+    const frect = frame.getBoundingClientRect()
+    const pxPer = frect.width / virtualWidth
+    setGeom({
+      left:  frect.left - crect.left,
+      top:   frect.top  - crect.top,
+      pxPer,
+      vh:    pxPer > 0 ? frect.height / pxPer : 0,
+      cw:    crect.width,
+      ch:    crect.height,
+    })
+  }, [containerRef, virtualWidth])
+
+  /* A zoom that ANIMATES its transform (a consumer's eased step-zoom) would
+   * have a single measure read the pre-animation rect, and the labels would
+   * lag the whole tween. Re-measure per animation frame until the frame rect
+   * stops moving (2 stable frames); an instant zoom settles immediately,
+   * costing a couple of no-op frames. */
+  useLayoutEffect(() => {
+    measure()
+    let raf
+    let prevKey
+    let stable = 0
+    const tick = () => {
+      const frame = containerRef.current?.querySelector('[data-canvas-frame]')
+      if (!frame) return
+      const r = frame.getBoundingClientRect()
+      const key = `${r.left}|${r.top}|${r.width}`
+      if (key !== prevKey) {
+        prevKey = key
+        stable = 0
+        measure()
+      } else if (++stable >= 2) {
+        return
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [measure, containerRef])
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [measure, containerRef])
+
+  return geom
+}
+
+/**
+ * CanvasRuler — top + left rulers in virtual-canvas px, mapped through the
+ * measured frame geometry (see useFrameGeom).
+ *
+ * Dragging off a ruler starts a new guide: the ruler only ANNOUNCES the
+ * gesture via a `kol:guide-drag-start` CustomEvent (same idiom as
+ * `kol:zoom-at`) — CanvasGuides owns the guide drag, and the positions live in
+ * the consumer's state. Canvases without a guides layer no-op. `disabled`
+ * (Space-held pan) lets the pointerdown bubble to the pan handler instead.
+ *
+ * The two layers do not import each other — that event is the whole seam, so a
+ * consumer may render either alone.
+ *
+ * @param {React.RefObject<HTMLElement>} containerRef - The positioned box the bars sit in
+ * @param {number} [virtualWidth=CANVAS_VIRTUAL_W] - The frame's virtual width, forwarded to `useFrameGeom`
+ * @param {boolean} [disabled=false] - Let a pointerdown bubble instead of starting a guide (a pan gesture is holding the surface)
+ */
+export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, disabled = false }) {
+  const geom = useFrameGeom(containerRef, virtualWidth)
+
+  const startGuideDrag = (axis) => (e) => {
+    if (disabled || e.button !== 0) return
+    e.preventDefault()
+    window.dispatchEvent(new CustomEvent('kol:guide-drag-start', {
+      detail: { axis, clientX: e.clientX, clientY: e.clientY },
+    }))
+  }
+
+  if (!geom || geom.pxPer <= 0) return null
+  const step   = niceStep(geom.pxPer)
+  const hTicks = ticksFor(geom.left, geom.pxPer, geom.cw, step)
+  const vTicks = ticksFor(geom.top,  geom.pxPer, geom.ch, step)
+
+  /* Ruler chrome rides the themed fg ramp so it flips with light/dark: an 8%
+   * bar with fg ticks/labels, all naturally contrast-correct in both themes —
+   * no hardcoded greys. */
+  const tickColor   = 'var(--kol-fg-48)'
+  const textColor   = 'var(--kol-fg-64)'
+  const barBg       = 'var(--kol-fg-08)'
+  const borderColor = 'var(--kol-fg-16)'
+  const labelStyle  = { fontFamily: 'var(--kol-font-family-mono)', fontSize: 9 }
+
+  return (
+    <>
+      <svg width="100%" height={RULER}
+        onPointerDown={startGuideDrag('h')}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 4, cursor: 'row-resize' }}>
+        <rect x={0} y={0} width="100%" height={RULER} fill={barBg} />
+        {hTicks.map(({ v, s }) => (
+          <g key={v}>
+            <line x1={s} y1={RULER - 5} x2={s} y2={RULER} stroke={tickColor} strokeWidth={1} />
+            <text x={s + 2} y={9} fill={textColor} style={labelStyle}>{v}</text>
+          </g>
+        ))}
+        <line x1={0} y1={RULER - 0.5} x2="100%" y2={RULER - 0.5} stroke={borderColor} strokeWidth={1} />
+      </svg>
+      <svg width={RULER} height="100%"
+        onPointerDown={startGuideDrag('v')}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 4, cursor: 'col-resize' }}>
+        <rect x={0} y={0} width={RULER} height="100%" fill={barBg} />
+        {vTicks.map(({ v, s }) => (
+          <g key={v}>
+            <line x1={RULER - 5} y1={s} x2={RULER} y2={s} stroke={tickColor} strokeWidth={1} />
+            <text x={9} y={s - 2} fill={textColor} style={labelStyle}
+              transform={`rotate(-90 9 ${s - 2})`}>{v}</text>
+          </g>
+        ))}
+        <line x1={RULER - 0.5} y1={0} x2={RULER - 0.5} y2="100%" stroke={borderColor} strokeWidth={1} />
+      </svg>
+      <div style={{ position: 'absolute', top: 0, left: 0, width: RULER, height: RULER, background: barBg, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, zIndex: 4, pointerEvents: 'none' }} />
+    </>
+  )
+}
+
+/* A ruler guide — 1px accent line spanning the full viewport (guides read
+ * against the rulers, not just the frame). Pointer events live on a slop
+ * wrapper around the line so the grab zone stays ~5px; everything is screen px
+ * at the viewport level, so no zoom compensation is needed here. */
+function GuideLine({ axis, screenPos, interactive, onGrab }) {
+  const slop = 5
+  const h = axis === 'h'
+  return (
+    <div
+      onPointerDown={interactive ? onGrab : undefined}
+      /* Stop the compat mousedown from reaching handlers underneath (pan /
+       * click-away) in browsers that fire it despite the canceled
+       * pointerdown. */
+      onMouseDown={interactive ? (e) => e.stopPropagation() : undefined}
+      style={{
+        position: 'absolute',
+        ...(h
+          ? { left: 0, top: screenPos - slop, width: '100%', height: slop * 2 + 1, cursor: 'row-resize' }
+          : { left: screenPos - slop, top: 0, width: slop * 2 + 1, height: '100%', cursor: 'col-resize' }),
+        pointerEvents: interactive ? 'auto' : 'none',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          ...(h
+            ? { left: 0, top: slop, width: '100%', height: 1 }
+            : { left: slop, top: 0, width: 1, height: '100%' }),
+          /* GUIDES ARE NOT THE ACCENT (editor-chrome-review, kol-fxr
+             2026-09-03 — ruled magenta, deliberately separated so a guide and
+             a selection never read as the same thing). Falls back to the
+             accent, so a consumer that binds nothing is unchanged. */
+          background: 'var(--kol-canvas-guide, var(--kol-accent-primary))',
+        }}
+      />
+    </div>
+  )
+}
+
+/**
+ * CanvasGuides — ruler guides rendered at the viewport level so each line
+ * spans the entire visible canvas area instead of clipping to the letterbox
+ * frame. Positions are stored in virtual canvas px and threaded down as props
+ * — the viewport is chrome and owns no guide state; the screen mapping is the
+ * same frame-rect geometry the rulers use: screen = frameLeft/Top + virtual *
+ * pxPer.
+ *
+ * Interaction:
+ *   • grab a line (±5px slop) to move it — row/col-resize cursors
+ *   • drag off a ruler to create (CanvasRuler announces the gesture via the
+ *     `kol:guide-drag-start` CustomEvent; this layer owns the drag)
+ *   • release at virtual pos < 0 (back over the source ruler, or past the
+ *     frame edge toward it) deletes instead of committing
+ *
+ * Drags use window-level POINTER events — the ruler cancels its pointerdown,
+ * which suppresses the whole compatibility mouse-event stream for the
+ * interaction, so mousemove/mouseup would never fire.
+ *
+ * @param {React.RefObject<HTMLElement>} containerRef - The positioned box the lines span
+ * @param {number} [virtualWidth=CANVAS_VIRTUAL_W] - The frame's virtual width — also the vertical guides' clamp
+ * @param {{h: number[], v: number[]}} guides - Positions in VIRTUAL px; the consumer's state
+ * @param {Function} setGuides - Updater, called with the next `{h, v}`
+ * @param {boolean} interactive - Allow grab and create; false renders the lines inert
+ */
+export function CanvasGuides({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, guides, setGuides, interactive }) {
+  const geom = useFrameGeom(containerRef, virtualWidth)
+  /* Ref mirror so the drag listeners read fresh geometry without rebinding. */
+  const geomRef = useRef(null)
+  geomRef.current = geom
+  const [guideDrag, setGuideDrag] = useState(null) /* { axis:'h'|'v', index:number|null, pos:number } | null */
+
+  /* client coords → virtual canvas px, via the measured frame geometry. */
+  const toVirtual = useCallback((clientX, clientY) => {
+    const el = containerRef.current
+    const g = geomRef.current
+    if (!el || !g || g.pxPer <= 0) return { vx: 0, vy: 0 }
+    const crect = el.getBoundingClientRect()
+    return {
+      vx: (clientX - crect.left - g.left) / g.pxPer,
+      vy: (clientY - crect.top  - g.top)  / g.pxPer,
+    }
+  }, [containerRef])
+
+  /* A pointerdown on a ruler dispatches kol:guide-drag-start (see
+   * CanvasRuler); this opens a new-guide drag at the pointer. */
+  useEffect(() => {
+    const onStart = (e) => {
+      const { axis, clientX, clientY } = e.detail
+      const { vx, vy } = toVirtual(clientX, clientY)
+      setGuideDrag({ axis, index: null, pos: Math.round(axis === 'h' ? vy : vx) })
+    }
+    window.addEventListener('kol:guide-drag-start', onStart)
+    return () => window.removeEventListener('kol:guide-drag-start', onStart)
+  }, [toVirtual])
+
+  /* Window-level listeners while a guide drag is live. Commit on pointerup:
+   * append (new) or move (existing); pos < 0 deletes / discards. Positions
+   * clamp to the far canvas edge and round to whole virtual px. */
+  useEffect(() => {
+    if (!guideDrag) return
+    const posFrom = (e) => {
+      const { vx, vy } = toVirtual(e.clientX, e.clientY)
+      return Math.round(guideDrag.axis === 'h' ? vy : vx)
+    }
+    const onMove = (e) => setGuideDrag((d) => d && { ...d, pos: posFrom(e) })
+    const onUp = (e) => {
+      const pos = posFrom(e)
+      const { axis, index } = guideDrag
+      const max = axis === 'h' ? Math.round(geomRef.current?.vh ?? 0) : virtualWidth
+      setGuides((g) => {
+        const arr = [...g[axis]]
+        if (pos < 0) {
+          if (index != null) arr.splice(index, 1)   /* dropped on the ruler → delete */
+        } else if (index == null) {
+          arr.push(Math.min(pos, max))
+        } else {
+          arr[index] = Math.min(pos, max)
+        }
+        return { ...g, [axis]: arr }
+      })
+      setGuideDrag(null)
+    }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+    }
+  }, [guideDrag, toVirtual, setGuides, virtualWidth])
+
+  if (!geom || geom.pxPer <= 0) return null
+  const screenFor = (axis, pos) =>
+    axis === 'h' ? geom.top + pos * geom.pxPer : geom.left + pos * geom.pxPer
+  const canGrab = interactive && !guideDrag
+  const grab = (axis, index, pos) => (e) => {
+    if (e.button !== 0) return
+    e.stopPropagation()
+    e.preventDefault()
+    setGuideDrag({ axis, index, pos })
+  }
+
+  return (
+    /* z-[3]: under the rulers (zIndex 4), above the transform layer (canvas
+       content). pointer-events-none wrapper — only the slop zones re-enable. */
+    <div className="absolute inset-0 pointer-events-none z-[3]">
+      {guides.h.map((y, i) => (
+        guideDrag?.axis === 'h' && guideDrag.index === i ? null : (
+          <GuideLine
+            key={`gh-${i}`} axis="h" screenPos={screenFor('h', y)}
+            interactive={canGrab} onGrab={grab('h', i, y)}
+          />
+        )
+      ))}
+      {guides.v.map((x, i) => (
+        guideDrag?.axis === 'v' && guideDrag.index === i ? null : (
+          <GuideLine
+            key={`gv-${i}`} axis="v" screenPos={screenFor('v', x)}
+            interactive={canGrab} onGrab={grab('v', i, x)}
+          />
+        )
+      ))}
+      {guideDrag && (
+        <>
+          <GuideLine
+            axis={guideDrag.axis}
+            screenPos={screenFor(guideDrag.axis, guideDrag.pos)}
+            interactive={false}
+          />
+          {/* Full-viewport cursor shield — keeps the row/col-resize cursor
+              while the pointer roams outside the dragged line's slop zone. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              cursor: guideDrag.axis === 'h' ? 'row-resize' : 'col-resize',
+              pointerEvents: 'auto',
+            }}
+          />
+        </>
+      )}
     </div>
   )
 }

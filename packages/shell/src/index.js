@@ -15,7 +15,9 @@ export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { default as NavRail } from './NavRail.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
-export { default as PageHeader } from './PageHeader.jsx'
+/* PageHeader MOVED to @kolkrabbi/kol-component 2026-09-03 (page-header-one-masthead).
+ * Not re-exported: every kol-shell consumer already has kol-component as a peer,
+ * so the import path changes and nothing else. See docs retirements. */
 /* ContentFilters is NOT exported here — it lives in @kolkrabbi/kol-component,
  * where it always did. This package shipped a recreated duplicate 0.1.0–0.2.0;
  * retired 2026-08-15, quarantined in _tmp/. Import it from kol-component. */

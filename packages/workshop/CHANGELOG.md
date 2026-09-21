@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-workshop
 
+## 0.28.0 — 2026-09-03
+
+- **The `?` shortcuts sheet wears `.kol-overlay-scrim`** (overlay-scrim-outliers
+  sweep) — it drew `bg-fg-48`, the ink wash, not the class's ab-black 48.
+
 ## 0.27.0 — 2026-09-01
 
 - **`ShellNavCollapsedContext` — a page can shed the left rail.** The TOC has

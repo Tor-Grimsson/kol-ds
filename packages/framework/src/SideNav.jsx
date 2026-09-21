@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Tooltip } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle'
-import useDragResize from './useDragResize'
+import { useDragResize } from '@kolkrabbi/kol-component'
 
 /**
  * SideNav — the grouped navigation rail.

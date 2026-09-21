@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react'
-import Button from '../atoms/Button.jsx'
+import CloseButton from './CloseButton.jsx'
 
 /**
  * FullscreenOverlay — the scrim + centred sheet every overlay in the repo
  * wears. Owns dismissal (Escape, backdrop, close button), scroll lock and
  * stacking; the consumer supplies the panel.
  *
- * The close control is the DS `Button` (quiet, icon-only, the `x` glyph) —
- * the same idiom as ShellLayout's. It was a hand-rolled <button> printing a
+ * The close control is the DS `Button` (icon-only, the `x` glyph) — the estate's
+ * ONE close idiom, and therefore ONE SIZE: `sm` (26), matching `ShellDrawer`'s
+ * (2026-09-03). It took Button's `md` default while the drawer's went to `sm`,
+ * which is two sizes for one idiom — the thing the single-idiom ruling exists to
+ * stop. It was a hand-rolled <button> printing a
  * literal `×` TEXT CHARACTER until 2026-08-01: no icon, no states, and a
  * typographic multiplication sign standing in for a glyph the icon set has
  * always shipped.
@@ -15,7 +18,26 @@ import Button from '../atoms/Button.jsx'
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-export default function FullscreenOverlay({ open, onClose, closeButton = true, children }) {
+export default function FullscreenOverlay({
+  open, onClose, closeButton = true,
+  /* WHERE FOCUS LANDS ON OPEN. The sheet takes it by default, which is right
+   * for a browser and wrong for a sheet opened to be TYPED IN: a child's
+   * `autoFocus` cannot win, because child effects run BEFORE the parent's and
+   * this one moves focus afterwards — so the field focuses and is immediately
+   * robbed, with nothing in either file looking wrong (kol-fxr measured it on
+   * design-editor 0.10.0: Save As routed into the dialog correctly and focus
+   * sat on `.kol-overlay-sheet`). Pass a ref to the node that should hold it.
+   * A ref that is empty on mount falls back to the sheet, so a conditional
+   * field cannot leave the overlay unfocused.
+   *
+   * The ref may point at the control ITSELF or at a WRAPPER around it — the
+   * first focusable descendant is taken. That is deliberate: a DS input is a
+   * component, not a DOM node, and whether it forwards a ref is a detail no
+   * caller should have to know to put focus in it. A plain `<div ref>` always
+   * works. */
+  initialFocus,
+  children,
+}) {
   const sheetRef = useRef(null)
 
   /* Escape closes; Tab is TRAPPED in the sheet (SettingsPanel, 2026-08-26 —
@@ -42,13 +64,19 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     const prevFocus = document.activeElement
-    sheetRef.current?.focus()
+    const wanted = initialFocus?.current
+    const target = wanted
+      ? (typeof wanted.focus === 'function' && wanted.matches?.(FOCUSABLE)
+          ? wanted
+          : wanted.querySelector?.(FOCUSABLE) ?? wanted)
+      : sheetRef.current
+    target?.focus?.()
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
       if (prevFocus instanceof HTMLElement) prevFocus.focus()
     }
-  }, [open, onClose])
+  }, [open, onClose, initialFocus])
 
   if (!open) return null
 
@@ -69,15 +97,9 @@ export default function FullscreenOverlay({ open, onClose, closeButton = true, c
            * user ruling): the estate's close X is the drawer trigger's bare
            * `nav` glyph — the boxed outline treatment was a second design one
            * tap away from the first, and had he kept a box it would have worn
-           * `primary`, never `outline`. Same variant, same default square as
-           * the trigger. */
-          <Button
-            variant="nav"
-            iconOnly="x"
-            className="kol-overlay-close"
-            onClick={onClose}
-            aria-label="Close"
-          />
+           * `primary`, never `outline`. Same variant as the trigger; the SQUARE
+           * is `sm` since 2026-09-03, one size for the one idiom. */
+          <CloseButton className="kol-overlay-close" onClick={onClose} />
         )}
         {children}
       </div>

@@ -6,19 +6,21 @@ import {
   SelectionOverlay,
   AlignmentGrid,
   TabsRow,
-  EmptyState,
   ColorInputRow,
   Button,
+  LayerStack,
+  InspectorRail,
+  XYPad,
 } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Design editor',
-  description: 'A working mini design editor — draggable, resizable, recolourable boxes on a 1080-virtual canvas with a live selection overlay, tool rail, and inspector',
+  description: 'A working mini design editor — draggable, resizable, recolourable boxes on a 1080-virtual canvas, with the real LayerStack, InspectorRail, XYPad and selection overlay',
   category: 'editor',
   featured: true,
   type: 'reference',
   status: 'active',
-  updated: '2026-07-30',
+  updated: '2026-09-03',
   tags: ['domain/design-system', 'pattern/blocks'],
 }
 export const stage = 'full'
@@ -250,16 +252,10 @@ export default function DesignEditorSet() {
     <TabsRow tabs={TABS} value={tab} onChange={setTab} />
   )
 
-  const inspector = !selectedBox ? (
-    <div className="p-4">
-      <EmptyState
-        eyebrow="Inspector"
-        title="Nothing selected"
-        body="Select a box on the canvas to edit its fill and alignment."
-        footer="Tip: drag a handle to resize, arrow keys to nudge."
-      />
-    </div>
-  ) : tab === 'design' ? (
+  /* `InspectorRail` routes by selection — nothing / canvas / one / many, with
+     canvas winning over multi-select. The panels are this page's, handed in as
+     renderers, which is the component's whole contract (2026-09-03). */
+  const designBody = (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex flex-col gap-2">
         <p className="kol-helper-10 text-meta">Fill</p>
@@ -271,28 +267,56 @@ export default function DesignEditorSet() {
         <AlignmentGrid onAlign={alignSelected} />
       </div>
 
+      <div className="flex flex-col gap-2">
+        <p className="kol-helper-10 text-meta">Position</p>
+        {/* two axes, one puck — the pad drives x and y in one gesture */}
+        <XYPad
+          xValue={selectedBox?.x ?? 0}
+          yValue={selectedBox?.y ?? 0}
+          xMin={0} xMax={CANVAS_VIRTUAL_W - (selectedBox?.w ?? 0)}
+          yMin={0} yMax={CANVAS_VIRTUAL_W - (selectedBox?.h ?? 0)}
+          xLabel="X" yLabel="Y"
+          onChange={(x, y) => selectedBox && patchBox(selectedBox.id, { x: Math.round(x), y: Math.round(y) })}
+        />
+      </div>
+
       <div className="flex flex-col gap-1 pt-1">
         <p className="kol-helper-10 text-meta">Dimensions</p>
-        <p className="kol-mono-12 text-body">{Math.round(selectedBox.w)} × {Math.round(selectedBox.h)}</p>
-        <p className="kol-mono-12 text-meta">X {Math.round(selectedBox.x)} · Y {Math.round(selectedBox.y)}</p>
+        <p className="kol-mono-12 text-body">{Math.round(selectedBox?.w ?? 0)} × {Math.round(selectedBox?.h ?? 0)}</p>
+        <p className="kol-mono-12 text-meta">X {Math.round(selectedBox?.x ?? 0)} · Y {Math.round(selectedBox?.y ?? 0)}</p>
       </div>
     </div>
+  )
+
+  const inspector = tab === 'design' ? (
+    <InspectorRail
+      selectedIds={selectedId ? [selectedId] : []}
+      renderers={{
+        single: () => designBody,
+      }}
+      className="[&:empty]:hidden"
+    />
   ) : (
-    <ul className="flex flex-col p-2 gap-1">
-      {boxes.map((b) => (
-        <li key={b.id}>
-          <button
-            type="button"
-            onClick={() => setSelectedId(b.id)}
-            className={`flex items-center gap-3 w-full px-2 py-2 rounded text-left transition-colors ${b.id === selectedId ? 'bg-fg-08' : 'hover:bg-fg-04'}`}
-          >
-            <span className="w-4 h-4 shrink-0 rounded-sm" style={{ background: b.color }} />
-            <span className="kol-mono-12 text-emphasis">{b.label}</span>
-            <span className="kol-mono-12 text-meta ml-auto">{Math.round(b.w)}×{Math.round(b.h)}</span>
-          </button>
-        </li>
-      ))}
-    </ul>
+    /* THE REAL `LayerStack` (2026-09-03). This tab was a hand-rolled <ul> of
+       buttons — the exact component the DS now ships, rebuilt at a call site,
+       which is what the full-consumption contract exists to catch. Drag a row
+       onto another to reorder, double-click to rename, hover for the eye. */
+    <LayerStack
+      layers={boxes.map((b) => ({ ...b, type: 'shape', visible: b.visible !== false }))}
+      selectedIds={selectedId ? [selectedId] : []}
+      labelFor={(l) => l.name ?? l.label}
+      onSelect={setSelectedId}
+      onSelectCanvas={() => setSelectedId(null)}
+      onToggleVisible={(id) => setBoxes((bs) => bs.map((b) => (b.id === id ? { ...b, visible: b.visible === false } : b)))}
+      onRename={(id, name) => setBoxes((bs) => bs.map((b) => (b.id === id ? { ...b, name } : b)))}
+      onReorder={(id, _parentId, index) => setBoxes((bs) => {
+        const from = bs.findIndex((b) => b.id === id)
+        if (from < 0) return bs
+        const rest = bs.filter((b) => b.id !== id)
+        rest.splice(index, 0, bs[from])
+        return rest
+      })}
+    />
   )
 
   return (

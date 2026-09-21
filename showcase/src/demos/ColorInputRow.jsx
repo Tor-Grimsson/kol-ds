@@ -15,8 +15,31 @@ const KOL_RAMP = [
   { value: '#F5EBD8', label: 'Cream 300', hex: '#F5EBD8' },
 ]
 
+/* Palette REFS — the values a consumer's own store holds. They carry no `hex`
+ * on purpose: this is the shape the resolver seam exists for. */
+const PALETTE_REFS = [
+  { value: 'palette:primary',   label: 'Primary' },
+  { value: 'palette:secondary', label: 'Secondary' },
+  { value: 'palette:light',     label: 'Light' },
+  { value: 'palette:dark',      label: 'Dark' },
+  { value: 'palette:accent',    label: 'Accent' },
+  { value: 'palette:bg',        label: 'Background' },
+]
+
+/* The app's own resolution — a lookup here, a store read in a real editor. */
+const PALETTE = {
+  'palette:primary':   '#222D3D',
+  'palette:secondary': '#49A0A2',
+  'palette:light':     '#F5EBD8',
+  'palette:dark':      '#131316',
+  'palette:accent':    '#FFCF33',
+  'palette:bg':        '#FCFBFB',
+}
+const resolveRef = (value) => PALETTE[value] ?? null
+
 export default function ColorInputRowDemo() {
   const [fill, setFill] = useState('#49A0A2')
+  const [ref, setRef] = useState('palette:accent')
   const [accent, setAccent] = useState('#FFCF33')
   const [slot, setSlot] = useState('#AD5038')
   const [locked, setLocked] = useState(true)
@@ -28,6 +51,23 @@ export default function ColorInputRowDemo() {
 
       {/* Palette-refs mode: swatch opens a grid of pre-resolved KOL ramp entries */}
       <ColorInputRow label="Accent" value={accent} onChange={setAccent} refs={KOL_RAMP} />
+
+      {/* THE RESOLVER SEAM + the quick states (editor-set-is-behind-its-source,
+        * 2026-09-03). The value here is a `palette:` REF, not a hex — the row
+        * never sees a colour, it asks `resolveRef` for one, so an app keeps its
+        * own palette and this stays a composition. The popover's Theme button
+        * sets `autoValue`, a `var(--kol-*)` token that flips with light/dark:
+        * the swatch paints it LIVE and the field shows `auto` rather than a
+        * frozen literal. None clears to null. */}
+      <ColorInputRow
+        label="Stroke"
+        value={ref}
+        onChange={setRef}
+        refs={PALETTE_REFS}
+        resolveRef={resolveRef}
+        autoValue="var(--kol-fg-96)"
+        transparentTone="error"
+      />
 
       {/* Lock + token mode: 4-column grid, swatch is the lock toggle */}
       <ColorInputRow

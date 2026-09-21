@@ -333,8 +333,9 @@
  * kol-component's `utilities/motion.js`, GRAB); `clamp()` holds it half its own
  * length from either end so it stops flush, never past.
  *
- * Longer and finer than the ColumnBrowser's 3 × 32 — on a rail it should read
- * as a thickening of the line, not a tab stuck to it. The fade is long and
+ * Fine and long — it should read as a thickening of the line, not a tab stuck
+ * to it. (This said "longer and finer than the ColumnBrowser's 3 × 32" until
+ * 2026-09-02; that handle takes the same 0.125 × 4.5rem now.) The fade is long and
  * unhurried at BOTH ends on a symmetric in-out: an ease-out popped the first
  * 20 % and crawled the rest, which the user read as a jerk.
  * ═════════════════════════════════════════════════════════════════════ */
@@ -368,6 +369,18 @@
 
 @media (prefers-reduced-motion: reduce) {
   .kol-rail-grab::before { transition: none; }
+}
+
+/* The ColumnBrowser's two handles wear the SAME pill (BrowsePageRulingsAndSeams,
+ * kol-r2b2 2026-09-02, user ruling) — `useGrabEdge` drives both. Their geometry
+ * and placement differ and stay with the component in
+ * kol-components-molecules.css (the strips sit INSIDE the border they grab, and
+ * there are two axes); only the reduced-motion cut belongs here, with every
+ * other one. The 08-28 note on the rail's pill — "Longer and finer than the
+ * ColumnBrowser's 3 × 32" — is stale: they are the same 0.125 × 4.5rem now. */
+@media (prefers-reduced-motion: reduce) {
+  .kol-column-browser-resize-x::before,
+  .kol-column-browser-resize-y::before { transition: none; }
 }
 
 /* ═════════════════════════════════════════════════════════════════════

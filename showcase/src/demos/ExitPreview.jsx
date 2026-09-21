@@ -3,10 +3,14 @@ import { ExitPreview } from '@kolkrabbi/kol-component'
 export const stage = 'hug'
 
 /**
- * ExitPreview is a router-aware escape hatch (react-router Link to "/") worn as
- * CMS draft-mode chrome. It takes no props — the `.kol-exit-preview` classes
- * carry the whole look, including `position: fixed; bottom: 24px; left: 24px;
- * z-index: 9999`, because in its real home it floats over a client site.
+ * ExitPreview is the escape hatch out of a preview surface, worn as CMS
+ * draft-mode chrome. It is ROUTER-AGNOSTIC: the default renders a plain
+ * `<a href="/">`, and a consumer inside a router passes its link component
+ * (`linkComponent={Link}`) for client-side nav — react-router-dom used to be a
+ * module-level import here, which made kol-component unbuildable without it.
+ * The `.kol-exit-preview` classes carry the whole look, including
+ * `position: fixed; bottom: 24px; left: 24px; z-index: 9999`, because in its
+ * real home it floats over a client site.
  *
  * That is exactly why this demo used to show an EMPTY card with a stray black ×
  * parked in the corner of the viewport: `position: fixed` escapes every ancestor
@@ -29,7 +33,7 @@ export default function ExitPreviewDemo() {
         <ExitPreview />
       </div>
       <span className="kol-helper-12 text-fg-48">
-        Propless · floats bottom-left of its containing block · clicking navigates to the site root
+        Router-agnostic · floats bottom-left of its containing block · clicking navigates to the site root
       </span>
     </div>
   )

@@ -35,6 +35,21 @@ import {
   TypeBlock,
   AssetTable,
   ColorAnatomy,
+  AssetCard,
+  Swatch,
+  PostPhoto,
+  PostType,
+  PostProduct,
+  PostEditorial,
+  StoryPhoto,
+  StoryType,
+  ProfileAvatar,
+  BusinessCardFront,
+  BusinessCardBack,
+  Envelope,
+  Letterhead,
+  LetterheadCorrespondence,
+  EmailSignature,
 } from '@kolkrabbi/kol-styleguide'
 
 export const meta = {
@@ -107,6 +122,23 @@ const LOGOMARK = (
     </text>
   </svg>
 )
+
+/* ONE object for the whole brand-book wall below — the mark as a node, KOL's
+ * own details as `info`, KOL's ink/paper as the palette. Spread into each mock:
+ * that is the intended call shape, and it is what makes the set asset-agnostic
+ * (brand-book-mocks-two-consumers, 2026-09-03 — the forks imported a specific
+ * KolLogo and a specific BRAND_INFO at module level). */
+const BRAND_BOOK = {
+  mark: LOGOMARK,
+  palette: { paper: '#FCFBFB', ink: '#222D3D', accent: '#FFCF33', photo: '#363639' },
+  info: {
+    identity: { name: 'Kolkrabbi', role: 'Design system', founder: 'Kolkrabbi Studio' },
+    contact: { email: 'hello@kolkrabbi.io', phone: '+354 000 0000', web: 'kolkrabbi.io' },
+    studio: { street: 'Studio 1', postcode: '101 Reykjavík', city: 'Reykjavík', country: 'Iceland', locShort: '101 Reykjavík' },
+    legal: { entity: 'Kolkrabbi ehf.', kt: '000000-0000' },
+    labels: { madeIn: 'Made in Iceland' },
+  },
+}
 
 const GRID = (
   <svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -340,7 +372,107 @@ export default function StyleguideSet() {
 
       {/* 10 — ASSET MANIFEST */}
       <Section title="Asset manifest">
-        <AssetTable rows={ASSET_ROWS} caption="KOL brand asset manifest" />
+        <AssetTable
+          rows={ASSET_ROWS}
+          caption="KOL brand asset manifest"
+          inkTokens={{ ink: '--kol-surface-on-primary', surface: '--kol-surface-primary' }}
+          onPreviewZoom={(row, resolvedInk) => console.log('zoom', row.name, resolvedInk)}
+        />
+      </Section>
+
+      {/* 11 — SWATCHES. The documented form: chip + name + value, over
+          kol-component's ColorSwatch (brand-book-mocks-two-consumers). */}
+      <Section title="Swatches">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-6">
+          {BRAND_CHIPS.map((c, i) => (
+            <Swatch key={c.hex} hex={c.hex} name={c.name} anchor={i === 0} />
+          ))}
+        </div>
+      </Section>
+
+      {/* 12 — SOCIAL. Every mock takes the mark as a node and the palette as a
+          prop, so ONE object drives the whole wall. */}
+      <Section title="Social">
+        <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <AssetCard caption="Avatar">
+            <ProfileAvatar {...BRAND_BOOK} />
+          </AssetCard>
+          <AssetCard caption="Post — photo">
+            <PostPhoto {...BRAND_BOOK} />
+          </AssetCard>
+          <AssetCard caption="Post — type">
+            <PostType {...BRAND_BOOK} quote={<>Made by hand,<br />made to last.</>} />
+          </AssetCard>
+          <AssetCard caption="Post — product">
+            <PostProduct {...BRAND_BOOK} name="Edda Coat" />
+          </AssetCard>
+          <AssetCard caption="Post — editorial">
+            <PostEditorial {...BRAND_BOOK} eyebrow="AW 2026" title={<>The Edda<br />Coat</>} />
+          </AssetCard>
+          <AssetCard caption="Story — photo">
+            <StoryPhoto {...BRAND_BOOK} />
+          </AssetCard>
+          <AssetCard caption="Story — type">
+            <StoryType {...BRAND_BOOK} quote={<>Quiet,<br />considered.</>} />
+          </AssetCard>
+        </div>
+      </Section>
+
+      {/* 13 — STATIONERY. Each mock fills its wrapper, so the wrapper carries
+          the real proportion: 85×55 for a card, DL for the envelope, A4 for a
+          sheet. That contract is the forks' and is why nothing scales. */}
+      <Section title="Stationery">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <AssetCard caption="Business card — front">
+            <div style={{ aspectRatio: '85 / 55' }}>
+              <BusinessCardFront {...BRAND_BOOK} />
+            </div>
+          </AssetCard>
+          <AssetCard caption="Business card — back">
+            <div style={{ aspectRatio: '85 / 55' }}>
+              <BusinessCardBack {...BRAND_BOOK} />
+            </div>
+          </AssetCard>
+          <AssetCard caption="Envelope (DL)">
+            <div style={{ aspectRatio: '220 / 110' }}>
+              <Envelope {...BRAND_BOOK} />
+            </div>
+          </AssetCard>
+          <AssetCard caption="Email signature">
+            <EmailSignature {...BRAND_BOOK} />
+          </AssetCard>
+          <AssetCard caption="Letterhead (A4)">
+            <div style={{ aspectRatio: '210 / 297' }}>
+              <Letterhead {...BRAND_BOOK}>
+                <p style={{ marginBottom: 12 }}>Dear collaborator,</p>
+                <p style={{ marginBottom: 12 }}>
+                  This is a letterhead — a quiet surface for considered correspondence. The mark sits
+                  at the top, the body holds the message, and the footer carries the contact line.
+                  Nothing more.
+                </p>
+              </Letterhead>
+            </div>
+          </AssetCard>
+          <AssetCard caption="Letterhead — correspondence">
+            <div style={{ aspectRatio: '210 / 297' }}>
+              <LetterheadCorrespondence
+                {...BRAND_BOOK}
+                signature={LOGOMARK}
+                fields={[
+                  { label: 'Date', value: '27 March 2026' },
+                  { label: 'Ref', value: 'KOL–26–014' },
+                  { label: 'To', value: 'A collaborator · Somewhere' },
+                ]}
+              >
+                <p style={{ marginBottom: 9 }}>Dear collaborator,</p>
+                <p style={{ margin: '0 0 7px 0' }}>
+                  The correspondence sheet carries a date / ref / to grid above the body and a legal
+                  footer below it. Both are props; this page authors the sample.
+                </p>
+              </LetterheadCorrespondence>
+            </div>
+          </AssetCard>
+        </div>
       </Section>
     </div>
   )

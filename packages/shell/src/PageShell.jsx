@@ -6,8 +6,19 @@
  * `mode="fixed"`: height 100vh, overflow hidden — pair with a `flex:1
  * overflow:auto` body (the settings idiom; SettingsScaffold does this).
  *
- * Gutter is `--kol-shell-page-pad` (kol-theme). `PageBleed` breaks it for
- * full-width embeds (monitor's rack bleed).
+ * Gutter is `--kol-shell-page-pad` (kol-theme) — since theme 0.135.0 an alias
+ * of `--kol-pad-section-x`, the ONE page-content ladder every `.kol-page`
+ * wears (two-page-scaffolds-one-job, kol-client-olina 2026-09-03: two ladders
+ * for one job agreed only at 48). `PageBleed` breaks it for full-width embeds
+ * (monitor's rack bleed).
+ *
+ * THE GEOMETRY IS A CLASS — `.kol-shell-page` (+ `--fixed`, `--capped`), in
+ * kol-components-shell.css — so a consumer has a selector to reach; inline is
+ * the `style` prop only. `width` is the TIER: `bleed` (default) fills the
+ * window, the app tier; `capped` takes the framework container ladder and
+ * centres, the site tier — the one real difference between this and a
+ * `.kol-page`, and a prop so a site adopting the shipped catalog page does
+ * not silently get app geometry.
  *
  * `scrollbar-gutter: stable` on both modes (PageShellScrollbarGutter,
  * kol-monitor 2026-08-28 — user: "Create is the odd one out"). A page's content
@@ -39,40 +50,31 @@
  * `AppShell pageWash`, a transparent wash over the shell's primary back —
  * the lightness steps up and the structure stays visible, which an opaque
  * surface swap would hide. The ink stays `text-auto` (surface-on-primary).
+ * ONE OWNER PER PIXEL (2026-09-03): the variable means what is LEFT to paint.
+ * kol-shell's `AppShell` hands the wash down for this to paint; kol-framework's
+ * `PageLayout` paints it on its own plane and hands down `transparent`, so a
+ * PageShell inside it does not paint it again (it used to — two 0.02 layers).
+ *
+ * @param {'scroll'|'fixed'} mode   scroll (default) | fixed — see above
+ * @param {'bleed'|'capped'} width  bleed (default, the app tier) | capped (the site tier — `--kol-container-max`, centred)
+ * @param {string}  className
+ * @param {object}  style           inline — the one thing that stays inline
  */
-export default function PageShell({ mode = 'scroll', className = '', style, children }) {
-  const modeStyle =
-    mode === 'fixed'
-      ? { height: '100vh', overflow: 'hidden' }
-      : { minHeight: '100vh' }
+export default function PageShell({ mode = 'scroll', width = 'bleed', className = '', style, children }) {
   return (
     <div
-      className={`text-auto ${className}`.trim()}
-      style={{
-        background: 'var(--kol-shell-page-wash, var(--kol-surface-primary))',
-        padding: 'var(--kol-shell-page-pad)',
-        scrollbarGutter: 'stable',
-        display: 'flex',
-        flexDirection: 'column',
-        ...modeStyle,
-        ...style,
-      }}
+      className={`kol-shell-page${mode === 'fixed' ? ' kol-shell-page--fixed' : ''}${width === 'capped' ? ' kol-shell-page--capped' : ''} text-auto ${className}`.trim()}
+      style={style}
     >
       {children}
     </div>
   )
 }
 
-/** Full-bleed slot — cancels PageShell's horizontal gutter. */
+/** Full-bleed slot — cancels PageShell's horizontal gutter (`.kol-shell-page-bleed`). */
 export function PageBleed({ style, children }) {
   return (
-    <div
-      style={{
-        marginLeft: 'calc(var(--kol-shell-page-pad) * -1)',
-        marginRight: 'calc(var(--kol-shell-page-pad) * -1)',
-        ...style,
-      }}
-    >
+    <div className="kol-shell-page-bleed" style={style}>
       {children}
     </div>
   )

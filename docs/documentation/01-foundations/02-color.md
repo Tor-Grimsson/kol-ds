@@ -16,12 +16,13 @@ tags:
   - audience/consumer
 related:
   - "[[01-tokens|foundations]]"
+  - "[[10-opacity|opacity]]"
   - "[[../05-brand/INDEX|brand kit]]"
 ---
 
 # Color — anchors and ramps
 
-Two layers: **brand identity** (the anchors + hue ramps below) and **UI chrome** (surfaces, fg-opacity, state colors — see [[01-tokens|foundations]]). The CSS (`kol-brand-color.css`) is the runtime source of truth; `@kolkrabbi/kol-brand` carries the same values as portable data. The showcase renders all of this live at `/foundations/color`.
+Two layers: **brand identity** (the anchors + hue ramps below) and **UI chrome** — surfaces and state colours in [[01-tokens|tokens]], ink weight in [[10-opacity|opacity]]. This page is hue; that one is neutral ink at a strength. The CSS (`kol-brand-color.css`) is the runtime source of truth; `@kolkrabbi/kol-brand` carries the same values as portable data. The showcase renders all of this live at `/foundations/color`.
 
 ## Anchors
 

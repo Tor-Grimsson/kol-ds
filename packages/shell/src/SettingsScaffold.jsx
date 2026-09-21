@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ContentFilters, IconFrame } from '@kolkrabbi/kol-component'
 import PageShell from './PageShell.jsx'
-import PageHeader from './PageHeader.jsx'
+import { PageHeader } from '@kolkrabbi/kol-component'
 
 /**
  * SettingsScaffold — the settings-page idiom both shells re-implemented inline:

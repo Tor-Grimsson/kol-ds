@@ -7,12 +7,12 @@
  *
  * The ladders split on ONE question: is there a label beside the glyph?
  *
- *   SOLO      an icon alone in a pinned square (28/32/36) — takes the room
+ *   SOLO      an icon alone in a pinned square (22/26/32/40) — takes the room
  *   ADJACENT  an icon inside a rung's line box, beside a label
  *
  * Stated in the DS before this file existed — ThemeToggle.jsx:40 ("solo
  * 16/20/24, the pinned-square pairing") and IconFrame.jsx ("the solo-glyph
- * ladder against the pinned squares 28/32/36"). This file is where they stop
+ * ladder against the pinned squares"). This file is where they stop
  * being transcribed.
  *
  * Why it exists: the same two ladders were re-typed in four places
@@ -23,7 +23,7 @@
  * carrying a label) and nothing connected the two.
  */
 
-/** Icon alone in a pinned square. Pairs with squares 28 · 32 · 36. */
+/** Icon alone in a pinned square. Pairs with squares 22 · 26 · 32 · 40. */
 export const SOLO = { xs: 12, sm: 16, md: 20, lg: 24 }
 
 /** Icon beside a label, inside the rung's line box. */

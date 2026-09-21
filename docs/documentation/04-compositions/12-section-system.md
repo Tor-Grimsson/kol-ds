@@ -3,7 +3,7 @@ title: Section system
 type: reference
 status: canonical
 created: 2026-08-26
-updated: 2026-08-27
+updated: 2026-09-03
 description: One text block, five website sections
 aliases:
   - sections
@@ -11,6 +11,7 @@ aliases:
   - SectionText
 sources:
   - packages/component/src/molecules/SectionText.jsx
+  - packages/component/src/molecules/PageHeader.jsx
   - packages/component/src/organisms/SectionSplit.jsx
   - packages/component/src/organisms/SectionHero.jsx
 tags:
@@ -19,6 +20,7 @@ tags:
 related:
   - "[[../03-components/06-content-card-system|content card system]]"
   - "[[01-blocks-and-sets|blocks and sets]]"
+  - "[[11-shell-system|shell system]]"
   - "[[../00-overview/01-package-topology|package topology]]"
 ---
 
@@ -31,6 +33,12 @@ The website sections — hero · split · cards band · CTA · FAQ — composed 
 Every section takes **`background`** — a named surface (`primary` · `secondary` · `tertiary` · `inverse` · `auto` · `none`) or a raw utility / token string; each default is what it painted before (SectionBackgroundProp, 2026-08-27). `theme` scopes ink, `background` paints.
 
 `SectionText` — eyebrow (`label` is its alias) · headline · body · actions, every slot opt-in; an omitted slot renders nothing. Type by **role** (`headlineSize`: `pull` · `display-01…04` · `heading-01…05`), never a threaded class. Every default class is a seam (`labelClass` / `bodyClass` / `actionsClass`), which is how the hero's eyebrow and the CTA's rows wear their own voices on one anatomy. `children` render between body and actions (the split's stats strip). No casing transforms. **The body voice is mono** (`.kol-section-text-body` = mono 16 / 22, theme ≥0.60.0 — user 2026-08-27: *"I don't want the sans anywhere"*); sans is opt-in through `bodyClass` / `slotClass`.
+
+**Two seams added 2026-09-03 (component 0.175.0)** for compositions that own their rhythm. `actionsPlacement="inline"` puts the actions cluster in one flex row with the body, on the body's first baseline — the headline's when there is no body — and the cluster contributes **no height** (`h-0 self-center`), so a block with a control cluster measures the same as one without, at any rung. `style` reaches the root, which `slotStyle` could not.
+
+**The block is a base.** `PageHeader` (kol-component ≥0.174.0, from kol-shell — page-header-one-masthead) is a composition of it: eyebrow · title as `h1` · sub-line · `actions` inline. `size` (sm · md · lg) picks the title role, `voice` (sans · mono) its family, `register` (app · site) the sub-line's voice — `kol-mono-14` on an app page, `kol-sans-body-01` on a site page, the one thing the two registers disagree about. `subtitleMaxWidth` is the lede's measure; the bottom rhythm is `--kol-page-header-mb` (40px). The same relation `ContentText` has to the card family: the base is the anatomy, the composition is what a page renders.
+
+**Two primitives, by tier — ruled, not open** (page-family-is-not-a-set, kol-client-olina 2026-09-03). `ContentText` is a listing item's text: a variant × form ramp, data slots (`date` · `size` · `meta` · `tags` · `detail`), betweens and stacks, truncation. `SectionText` is a region's head: eyebrow · headline · body · actions. They share three slots, which is anatomy, not a system, and neither absorbs the other. The test: **data lines beside a title → `ContentText`; a head that introduces what follows → `SectionText`.** The brand-book page kit — `PageHero` · `PageSection` (kol-framework ≥0.39.0) — composes `SectionText` with the `kol-prose-*` voices passed as seams, the same move `PageHeader` made; `PageLayout` (was `AppShell`) is the kit's frame.
 
 ## The family
 

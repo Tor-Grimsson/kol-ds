@@ -77,7 +77,7 @@ export default function SearchInput({
   shortcutHint,
   onFocus,
   size = 'md',
-  variant = 'filled',
+  variant,
   tone = 'default',
   bare = false,
   expanding = false,
@@ -103,7 +103,7 @@ export default function SearchInput({
     if (expanding && isOpen) inputRef.current?.focus()
   }, [expanding, isOpen])
 
-  /* the pinned squares, 05-control-chrome.md — sm 28 · md 32 · lg 36 */
+  /* the pinned squares, 01-foundations/09-sizes.md — 22 · 26 · 32 · 40 */
   const square = { sm: 28, md: 32, lg: 36 }[size] ?? 32
   /* THE OPEN FIELD'S HEIGHT IS ITS OWN KNOB, defaulting to the square.
    *
@@ -154,10 +154,10 @@ export default function SearchInput({
            collapsed pill rendered as a filled circle next to a bare glyph and
            the pair looked like two different kinds of control. */
         /* THE SQUARE FOLLOWS THE LADDER, and it follows `size` like every other
-           control: sm 28 · md 32 · lg 36 (hooks/glyphLadders.js). This was a
+           control: 22 · 26 · 32 · 40 (01-foundations/09-sizes.md). This was a
            hardcoded 36 — the LG square — so an expanding search sat beside a
            `kol-btn-md` filter button at two different sizes. */
-        className={`kol-expand flex items-center rounded-full ${isOpen ? (toneClass(tone) ? 'kol-tone-sunken' : 'bg-fg-04') : ''} ${className}`.trim()}
+        className={`kol-expand flex items-center rounded-full ${isOpen ? `kol-expand--open ${toneClass(tone)}` : ''} ${className}`.replace(/\s+/g, ' ').trim()}
         style={{ height: isOpen ? fieldH : square, width: isOpen ? expandedWidth : square }}
       >
         {/* THE GLYPH IS THE CLOSED STATE, and only that (user ruling
@@ -201,7 +201,7 @@ export default function SearchInput({
       /* kol-control--bare: zero-chrome marker so the theme's coarse-pointer
        * 16px floor covers this body plan too (OverlaySearchFieldZoomsIOS) */
       ? 'kol-control--bare flex w-full gap-2.5 px-4 py-3'
-      : `kol-control kol-control--${variant} kol-control-${size} gap-2${toneClass(tone) ? ' kol-tone-sunken' : ''}`,
+      : `kol-control${variant ? ` kol-control--${variant}` : ''} kol-control-${size} gap-2${toneClass(tone) ? ` ${toneClass(tone)}` : ''}`,
     'items-center cursor-text',
     SIZE_TYPE[size],
     className,

@@ -3,7 +3,7 @@ title: Workshop system
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 description: The handrolled docs subsystem in kol-workshop
 aliases:
   - workshop system
@@ -45,7 +45,7 @@ The package is **not** self-contained. Much of the shell chrome **already existe
 
 | Reused FROM the DS (do NOT duplicate) | Package |
 |---|---|
-| `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle` | `@kolkrabbi/kol-framework` |
+| `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` | `@kolkrabbi/kol-framework` |
 | `ShellDrawer`, `ShellSearchOverlay`, `SearchInput`, `DocsToc`, `Icon`/`Button`/`Input`/`Tag`/`CodeBlock`/`Divider` | `@kolkrabbi/kol-component` |
 | chrome CSS (`.shell-*`, `.docs-*`) | `@kolkrabbi/kol-theme` → `kol-components-workshop.css` |
 

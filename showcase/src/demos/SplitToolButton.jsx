@@ -9,8 +9,13 @@ const SHAPES = [
   { id: 'triangle', label: 'Triangle', icon: 'triangle' },
 ]
 
-/* Tool-palette row: the base 28×28 quiet/pressed toggles are plain DS
- * Buttons — only the split variant-menu trigger needs the molecule. */
+/* Tool-palette row: the base quiet/pressed toggles are plain DS Buttons —
+ * only the split variant-menu trigger needs the molecule. Every box in the row
+ * is `size="md"` (32), and no call site names a glyph size: the pinned-square
+ * ladder and the SOLO ladder decide both. This demo used to inline
+ * `style={{ width: 28, height: 28, padding: 6 }}` + `iconSize={14}` on the
+ * Buttons and let SplitToolButton default to its own 28 — three transcriptions
+ * of an off-ladder box, in the reference a consumer copies. */
 export default function SplitToolButtonDemo() {
   const [tool, setTool] = useState('select')
   const [shape, setShape] = useState('rectangle')
@@ -20,26 +25,25 @@ export default function SplitToolButtonDemo() {
         <Button
           variant="ghost"
           quiet
+          size="md"
           iconOnly="pointer"
-          iconSize={14}
           pressed={tool === 'select'}
           onClick={() => setTool('select')}
           aria-label="Select"
           title="Select (V)"
-          style={{ width: 28, height: 28, padding: 6 }}
         />
         <Button
           variant="ghost"
           quiet
+          size="md"
           iconOnly="type"
-          iconSize={14}
           pressed={tool === 'text'}
           onClick={() => setTool('text')}
           aria-label="Text"
           title="Text (T)"
-          style={{ width: 28, height: 28, padding: 6 }}
         />
         <SplitToolButton
+          size="md"
           variants={SHAPES}
           value={shape}
           lastPicked={shape}

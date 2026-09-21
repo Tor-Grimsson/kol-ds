@@ -1,4 +1,4 @@
-import { PageHeader } from '@kolkrabbi/kol-shell'
+import { PageHeader } from '@kolkrabbi/kol-component'
 
 export const variants = ['sans', 'mono']
 export const stage = 'full'

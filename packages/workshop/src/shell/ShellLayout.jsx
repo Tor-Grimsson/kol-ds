@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
-import { Button, IconFrame, ShellDrawer, ShellSearchOverlay, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, IconFrame, ShellDrawer, ShellSearchOverlay, Tooltip, CloseButton } from '@kolkrabbi/kol-component'
 import { matchSearchItems } from '../engine/search.js'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -424,7 +424,9 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             * for months. */}
           {isShortcutsOpen && (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-fg-48"
+              /* THE scrim (overlay-scrim-outliers sweep, 2026-09-03): was a hand
+                 `bg-fg-48` — the ink wash, not the class's ab-black 48 */
+              className="fixed inset-0 z-50 flex items-center justify-center kol-overlay-scrim"
               onClick={() => setIsShortcutsOpen(false)}
               role="presentation"
             >
@@ -440,8 +442,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                   style={{ borderBottomColor: 'var(--kol-oq-08)' }}
                 >
                   <span className="kol-doc-eyebrow text-meta">Keyboard shortcuts</span>
-                  <Button variant="outline" quiet size="sm" iconOnly="x"
-                    aria-label="Close" onClick={() => setIsShortcutsOpen(false)} />
+                  {/* was `Button variant="outline" quiet` — the boxed treatment the
+                    * 2026-09-01 one-idiom ruling retired, still shipping here because
+                    * the idiom was a comment rather than a component (2026-09-03) */}
+                  <CloseButton onClick={() => setIsShortcutsOpen(false)} />
                 </div>
                 <ul className="flex flex-col px-4 py-3">
                   {SHORTCUTS.map((s) => (

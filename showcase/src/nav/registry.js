@@ -65,7 +65,7 @@ const DESCRIPTIONS = {
   Carousel: 'A draggable, loopable slider built on Embla.',
   Image: 'A raster image with graceful missing-asset fallback.',
   FullscreenOverlay: 'A fullscreen modal overlay dismissed on Esc or backdrop.',
-  ExitPreview: 'A router-aware link out of preview mode.',
+  ExitPreview: 'A link out of preview mode; router-agnostic via `linkComponent`.',
   CodeBlock: 'A syntax-highlighted code block with copy-to-clipboard.',
 
   MediaLibrary: 'A browser over an object bucket — ONE component, two variants: `page` fills its box, `modal` opens over the app. Folders disclose in place; the client is injected, never imported.',
@@ -167,7 +167,9 @@ const DESCRIPTIONS = {
   ScrollToTop: 'Resets scroll position on route change.',
   Layout: 'The outer page layout wrapper.',
   BrandHero: 'A large hero band for brand/landing pages.',
+  PageHero: 'The page kit\'s opening band — label · title · lede on SectionText, with an optional mark and back link.',
   AppShell: 'The top-level app frame — sidenav, drawer, modal provider, outlet.',
+  PageLayout: 'The brand-book page layout — the .kol-brand-layout grid: sidenav, drawer, modal provider, outlet, optional TOC rail; pageWash on the plane, bare for an embed.',
   PortalFooter: 'The portal footer.',
   SubPageHero: 'A compact hero for subpages.',
 
@@ -217,6 +219,7 @@ export const CATEGORY_LABELS = {
  * atomic 'organisms' instead of the framework tier? */
 const FRAMEWORK_GROUPS = {
   AppShell: 'fw-chrome',
+  PageLayout: 'fw-chrome',
   Layout: 'fw-chrome',
   SideNav: 'fw-chrome',
   PortalFooter: 'fw-chrome',
@@ -224,6 +227,7 @@ const FRAMEWORK_GROUPS = {
   ThemeToggle: 'fw-chrome',
   BrandHero: 'fw-structure',
   SubPageHero: 'fw-structure',
+  PageHero: 'fw-structure',
   PageSection: 'fw-structure',
   ScrollToTop: 'fw-behavior',
 }

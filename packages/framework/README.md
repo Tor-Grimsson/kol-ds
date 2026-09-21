@@ -26,17 +26,17 @@ chrome above the theme's type layer and the same package renders differently
 per consumer.
 
 ```jsx
-import { AppShell } from '@kolkrabbi/kol-framework'
-import { NAV_TREE, getActivePage } from './sidebars.config'
+import { PageLayout } from '@kolkrabbi/kol-framework'
+import { NAV_TREE } from './sidebars.config'
 
-<AppShell navTree={NAV_TREE} getActivePage={getActivePage} />
+<PageLayout navTree={NAV_TREE} pageWash="var(--kol-fg-02)" />
 ```
 
-Exports: `AppShell`, `SideNav`, `ThemeToggle`, `Layout`, `PageSection`, `PortalFooter`, `ScrollToTop`, `BrandHero`, `SubPageHero`.
+Exports: `PageLayout` (alias `AppShell`), `SideNav`, `ThemeToggle`, `Layout`, `PageHero` (aliases `BrandHero`, `SubPageHero`), `PageSection`, `PortalFooter`, `ScrollToTop`.
 
 ## Tailwind v4 consumers
 
-Tailwind skips `node_modules` when scanning, so add this next to the imports above — otherwise the shell's layout utilities never generate and the AppShell grid collapses:
+Tailwind skips `node_modules` when scanning, so add this next to the imports above — otherwise the shell's layout utilities never generate and the PageLayout grid collapses:
 
 ```css
 @source "../node_modules/@kolkrabbi/kol-framework/src";

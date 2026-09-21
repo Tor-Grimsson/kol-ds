@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-08-27
+updated: 2026-09-03
 description: The application shell set — rail plus scaffolds
 aliases:
   - shell
@@ -20,6 +20,7 @@ related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[02-shells|reference shells]]"
   - "[[09-dashboards-system|dashboards system]]"
+  - "[[12-section-system|section system]]"
 ---
 
 # Shell system — `@kolkrabbi/kol-shell`
@@ -55,7 +56,7 @@ caret — and its rows are L2, a 12px glyph in a 20px box indented so the glyph
 column sits one step right of L1's (x 14 → 30), `oq-64` at rest and `oq-96` on
 the route. **Nothing auto-expands**: an L2 row is behind both the clipped width
 and its section's own disclosure, and `open` starts false with no prop to get it
-wrong. L2 is not a `Button` — the icon-button ladder is sm 28 / md 32 / lg 36 and
+wrong. L2 is not a `Button` — the icon-button ladder is 22/26/32/40 (2026-09-03) and
 this rung is 20; adding an `xs` rung is a change to that ladder's law. A sub row
 with no `icon` renders label-only. `AppShell railComponent` renders a different
 rail, so proving a rail change no longer means forking `AppShell` too. The chrome is `.kol-rail-grab` (kol-theme's `kol-animation.css`), the
@@ -68,7 +69,7 @@ theme toggle lives on the settings page.
 ```js
 import {
   AppShell, NavRail, useNavHidden,
-  PageShell, PageBleed, PageHeader,
+  PageShell, PageBleed,
   ContentFilters, TabStrip, GridCard,
   SettingsScaffold, LabeledControlSection, LabelRow,
   WalkthroughPanel, ShortcutsOverlay, Logomark,
@@ -90,8 +91,43 @@ import {
   collapse and active rules are the sidenav's (kol-framework.css, the
   `.kol-sidenav-hop` atoms). `.kol-shell-rail` and the 2026-08-12 rail
   active-state rules retired with it.
-- **Grid geometry (documented default):** catalog grid = `repeat(6, 1fr)`
-  gap 24 · list = `repeat(4, 1fr)` gap 8.
+- **`CatalogPage preset`** (shell ≥0.50.0, slide-variant-and-shelf-preset — user:
+  *"this is a layout SET, I do NOT want to do this again"*): the whole page as
+  one word. `catalog` is the defaults; `shelf` is a shelf of slide decks —
+  capped, 3 tracks on a 280 floor, the `slide` card and row (component ≥0.178.0),
+  stacked list, `kol-tone-secondary` on the root, the All / Recent view strip —
+  and `toCard` returns fields and handlers (`bytes count cover onDownload
+  onFavourite onDelete favourited`) while the page renders the slots. Explicit
+  props win over a preset.
+- **Grid geometry (documented default):** catalog grid = **up to** six tracks,
+  gap 24 · list = up to four, gap 8 — a CEILING WITH A FLOOR, the same law
+  `ContentCollection` carries (2026-09-01): the floor is `CatalogPage
+  minColumn` (default 160) and the ceiling `maxColumns` (default 6, shell
+  ≥0.49.0 — a three-deck shelf passes 3; the floor is a minimum, never a count — a 26-tile catalog's number; a shelf of three decks
+  ), and no grid may take a track narrower than the floor. Six holds from
+  1080px of container (160 × 6 + 24 × 5); a `width="capped"` page at 1280 is a
+  920 container and renders FIVE at ~165 (measured, kol-client-olina
+  2026-09-03). That is the law working, not the page failing — the six was
+  ruled on monitor's full-bleed desktop, the floor is what keeps a narrower
+  grid from slivers. The grid is `.kol-catalog-grid` (theme ≥0.138.0), the count is
+  MEASURED by `CatalogPage` and published as `--kol-catalog-n` (a CSS-only
+  count shipped in 0.137.0 and rendered one column in Firefox), and
+  `ContentFilters`' first group reads the SAME number, so it sits over the first
+  card at every width, not only at six. Corrected 2026-09-03: this line used to read
+  `repeat(6, 1fr)` as if the count were fixed. `trailingActions`
+  fills the header's right slot (`MediaLibrary`'s SELECT / FLAT slot) — never
+  empty beside the divider (user, 2026-09-03). **A composition forwards the whole
+  contract of what it composes** (user ruling 2026-09-03): `toCard`'s return is
+  spread onto `ContentCard` / `ContentRow`, so every prop either takes is
+  reachable per card — `media`, `ratio`, `date`, `size`, `meta`, `tags`,
+  `selected`, `variant`, and the ones not written yet; `cardVariant` /
+  `rowVariant` set the variant per page, `variant` per card beats them;
+  `listLayout` is `grid` (four across, the ruling) or `stack` (one per line);
+  `rowVariant` picks the row — `catalog` (default,
+  the 36px no-thumb row the app tier was ruled on) or `file` (the 48px thumb
+  row) for a catalog whose grid shows a cover. `width="capped"` also takes `.kol-page`'s 64px
+  vertical rung (theme ≥0.136.0), so a capped catalog sits level with the
+  `PageSection` pages beside it.
 - **Shortcuts single-source:** one consumer array feeds both
   `ShortcutsOverlay` and the settings page's `LabelRow` map.
 - **`AppShell navKeys`** (shell ≥0.12.0, user ruling 2026-08-28): Option+1…9
@@ -100,13 +136,27 @@ import {
   `logomark` that is the mark (`/`) then the items, the order on screen; without
   one, `items[n-1]` (shell ≥0.19.0 — until then it counted `items` only, so ⌥1
   landed on the second rung). Off by default; monitor · mirror · fxr pass it.
-- **`PageHeader actions`** (shell ≥0.15.0, PageHeaderTrailingSlot): a control
-  cluster on the subtitle's first baseline — the title's without one;
-  `subtitleMaxWidth` gives the lede its measure; the bottom rhythm is
-  `--kol-page-header-mb` (40px). The cluster contributes **no height** (≥0.19.1)
-  — a zero-height box centred on the row, so the masthead measures the same on a
-  page with actions as one without, at any control rung. kol-r2b2's header is the reference: wordmark
-  left, controls right, on the line.
+- **`PageHeader` left for `kol-component`** (component 0.174.0, 2026-09-03,
+  page-header-one-masthead): the app-shell tier is rails, drawers and the
+  portal frame, and a site with no shell could not take the masthead without
+  the whole package. Same props plus `register`; kol-shell does not re-export
+  it — the import path is the whole migration. Its contract (`actions` on the
+  sub-line's baseline at no height, `subtitleMaxWidth`, `--kol-page-header-mb`)
+  lives in [[12-section-system|section system]].
+- **`PageShell` is a class, one gutter, one tier prop** (shell ≥0.43.0, theme
+  ≥0.135.0 — two-page-scaffolds-one-job, kol-client-olina 2026-09-03): the
+  geometry is `.kol-shell-page` (+ `--fixed`, `--capped`) in
+  `kol-components-shell.css`, inline only for the `style` prop, so a consumer
+  has a selector to reach. `--kol-shell-page-pad` aliases `--kol-pad-section-x`
+  — the estate's ONE page-content ladder (20 · 32 · 48), which `.kol-page`
+  already wore; the shell's own clamp had agreed with it only at 48 and stays
+  as the fallback for a theme-only consumer. **`width`** is the tier: `bleed`
+  (default) fills the window — the app tier; `capped` takes
+  `--kol-container-max` and centres — the site tier. That is the one real
+  difference between a shell page and a `.kol-page`, and `CatalogPage`
+  forwards it so a site adopting the shipped catalog page does not silently
+  get app geometry. Whether the two scaffolds stay two components after this
+  is recorded as an open question, not ruled.
 - **`PageShell` reserves the scrollbar gutter** (shell ≥0.18.0,
   PageShellScrollbarGutter): a page's content width used to depend on whether it
   scrolled — `scroll` mode gives the viewport scrollbar's width up, `fixed`
@@ -127,6 +177,13 @@ import {
   an opaque `oq-*` is the same pixel but hides the structure — the wash steps
   the lightness up and keeps it. Unset renders exactly as before. A prop rather
   than a token each app binds, because fxr's stylesheet is imports-only by rule.
+  **One owner per pixel (2026-09-03):** the variable means what is LEFT to
+  paint. `AppShell` hands the wash down and `PageShell` paints it; kol-framework's
+  `PageLayout` paints it on its own plane and hands down `transparent`, so a
+  `PageShell` inside that frame paints nothing over it — both painting made
+  `fg-02` render as two 0.02 layers on olina's /slide-deck. It is not
+  `--kol-tone-ground`: the wash is a translucent film, the ground is the opaque
+  colour a floating surface paints, and CSS cannot flatten one into the other.
 
 ## Stays per-app
 

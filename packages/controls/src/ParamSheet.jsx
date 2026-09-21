@@ -25,6 +25,9 @@ export default function ParamSheet({ label, value, min, max, step = 1, defaultVa
   }, [onClose])
 
   return createPortal(
+    /* NO SCRIM, deliberately (overlay-scrim-outliers sweep, 2026-09-03): lifted
+       verbatim from monitor's rack, where the tap-away backdrop is untinted so
+       the rack stays readable while a value is dragged on the sheet. */
     <div className="fixed inset-0" style={{ zIndex: 'var(--kol-z-modal)' }} onClick={onClose}>
       <div
         className="absolute inset-x-0 bottom-0 bg-surface-primary border-t border-fg-08 p-4 pb-8 text-auto"

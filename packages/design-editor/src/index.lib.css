@@ -1,0 +1,174 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Lib entry CSS — @kolkrabbi/design-editor (builds to dist/design-editor.css).
+
+   The APP entry (main.jsx → index.css) ships full Tailwind; this sheet is the
+   embeddable build's and must NOT restyle the host page:
+
+     - Tailwind WITHOUT preflight — theme + utilities layers only, so no bare
+       html/body/* resets leak into the host.
+     - The same DS layers index.css pulls, MINUS kol-framework.css (page
+       chrome: html/body background + user-select, ::selection, site layout
+       classes — none used by the editor, which carries its own shell rules
+       in kol-editor.css). kol-brand-color.css stays: its hue-ramp tokens are
+       load-bearing (palette pools resolve them at runtime).
+     - A scoped preflight substitute under .kol-design-editor (the root class
+       index.jsx stamps; PaletteModal's body-portal root carries it too),
+       declared in layer(base) so it sits exactly where preflight would:
+       below the utilities layer and below every unlayered DS rule.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Design-system tokens + base CSS — the published brand-neutral theme. */
+@import "@kolkrabbi/kol-theme";
+
+/* THE @source MANIFEST — required here for the SAME reason as the app entry
+   (added 2026-08-15; the app's had been missing entirely). KOL packages ship
+   raw JSX and Tailwind does not scan node_modules, so any utility class used
+   INSIDE a DS component goes ungenerated without this. The lib renders the
+   whole editor, which is built from DS components, so it has exactly the same
+   exposure the app did.
+
+   Cost, measured rather than guessed: it scans every kol package's src, so
+   utilities land here for components this bundle may never mount. Weighed
+   against a control that renders unstyled in someone else's page, and against
+   a JS bundle already north of 2 MB, the CSS delta is noise. Correctness wins.
+
+   This does NOT leak host-page chrome — that is what excluding
+   kol-framework.css below is for. A manifest only tells Tailwind where to
+   LOOK; it emits no rules of its own. */
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+
+/* Brand layer — Kolkrabbi identity (hue ramps, brand-primary/secondary roles,
+ * accent rebind). Binds the neutral DS theme above to the Kolkrabbi brand. */
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+
+/* ───── Scoped preflight substitute ─────────────────────────────────────
+   The slices of Tailwind preflight the editor chrome actually leans on,
+   scoped to the lib root. Kept in layer(base) so utilities and DS classes
+   override it exactly as they override real preflight in the app build. */
+@layer base {
+  .kol-design-editor,
+  .kol-design-editor *,
+  .kol-design-editor *::before,
+  .kol-design-editor *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+
+  .kol-design-editor {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+    color: var(--kol-surface-on-primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .kol-design-editor h1,
+  .kol-design-editor h2,
+  .kol-design-editor h3,
+  .kol-design-editor h4,
+  .kol-design-editor h5,
+  .kol-design-editor h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  .kol-design-editor a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  .kol-design-editor code,
+  .kol-design-editor kbd,
+  .kol-design-editor samp,
+  .kol-design-editor pre {
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+    font-size: 1em;
+  }
+
+  .kol-design-editor ol,
+  .kol-design-editor ul,
+  .kol-design-editor menu {
+    list-style: none;
+  }
+
+  .kol-design-editor img,
+  .kol-design-editor svg,
+  .kol-design-editor video,
+  .kol-design-editor canvas,
+  .kol-design-editor audio,
+  .kol-design-editor iframe {
+    display: block;
+    vertical-align: middle;
+  }
+  .kol-design-editor img,
+  .kol-design-editor video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .kol-design-editor button,
+  .kol-design-editor input,
+  .kol-design-editor select,
+  .kol-design-editor optgroup,
+  .kol-design-editor textarea {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  .kol-design-editor button,
+  .kol-design-editor input:where([type="button"], [type="reset"], [type="submit"]) {
+    appearance: button;
+  }
+  .kol-design-editor textarea {
+    resize: vertical;
+  }
+  .kol-design-editor ::placeholder {
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THE EDITOR'S OWN ACCENT (editor-chrome-review, 2026-09-03 — user ruling,
+   relayed through kol-fxr: accent → teal, guides → magenta).
+
+   SCOPED HERE, NOT REBOUND IN THE THEME, and that is the whole point. The DS
+   accent is `--kol-accent-primary`, bound to `--kol-color-yellow-300` in
+   kol-framework's brand sheet and labelled there as the *dominant identity
+   colour* — it is KOLKRABBI'S BRAND. Rebinding it would turn every KOL surface
+   in the estate teal, which is a brand decision and not one this ticket asked
+   for. The user was explicit: *"you dont have any brand control you only
+   control the tickets to ds and assembly of the editor"*. So the editor paints
+   its own accent on its own root and the brand is untouched.
+
+   WHY TEAL, and why the yellow was wrong HERE: the editor runs against his
+   terminal, whose orange/amber band already carries active tabs and warnings —
+   the accent was colliding with meaning that already existed on screen.
+   `#458488` is the Gruvbox aqua already doing work there; `#83A598` is 21 %
+   saturation, which is a foreground and not an accent.
+
+   WHY THE GUIDES ARE A SEPARATE HUE: a guide and a selection must never read
+   as the same thing. Magenta was chosen because it carries no existing meaning
+   on that screen — magenta and purple together account for a few hundred
+   pixels of a 2.46M-pixel sample, all syntax highlighting. The sampled
+   `#BA7799` is anti-aliased text and too dim for a 1px line; canonical
+   `#D3869B` is the brightness a guide wants.
+   ═══════════════════════════════════════════════════════════════════════ */
+.kol-design-editor {
+  --kol-accent-primary: #458488;
+  --kol-accent-primary-strong: #5A9DA1;
+  /* read by kol-component's guide line, which falls back to the accent when a
+     consumer binds nothing */
+  --kol-canvas-guide: #D3869B;
+}

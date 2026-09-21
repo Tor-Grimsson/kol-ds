@@ -34,8 +34,10 @@ export default function TouchDeviceOverlay({ appName = 'This app', message }) {
     try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* storage blocked */ }
     setDismissed(true)
   }
+  /* THE scrim, on the z ladder (overlay-scrim-outliers, 2026-09-03): was an 8 %
+     inverse wash + a 2px blur on a literal 100 */
   return (
-    <div className="fixed inset-0 select-none bg-fg-inverse-08" style={{ display: 'grid', placeItems: 'center', backdropFilter: 'blur(2px)', zIndex: 100 }}>
+    <div className="fixed inset-0 select-none kol-overlay-scrim" style={{ display: 'grid', placeItems: 'center', zIndex: 'var(--kol-z-modal)' }}>
       <div className="bg-surface-primary border border-oq-08" style={{ width: 360, borderRadius: 4, padding: '20px 20px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div className="kol-helper-14 text-fg-96">Desktop recommended</div>
         <div className="kol-mono-12 text-fg-64">

@@ -46,7 +46,11 @@ const GATES = [
 ]
 
 /* the frontmatter gate is the sync script in --check mode */
-const ARGS = { 'sync-mdx-frontmatter.mjs': ['--check'], 'validate-retirements.mjs': ['--check'], 'extract-icon-cuts.mjs': ['--check'] }
+/* `--check` is what makes a sweep script EXIT non-zero; without it props and
+ * dd-trigger reported their violations to stdout and this runner read a green
+ * status (found 2026-09-03: the props gate had carried one P2 since the day it
+ * was written and `pnpm validate` never showed it — `pnpm validate:props` did). */
+const ARGS = { 'sync-mdx-frontmatter.mjs': ['--check'], 'validate-retirements.mjs': ['--check'], 'extract-icon-cuts.mjs': ['--check'], 'validate-props.mjs': ['--check'], 'validate-dd-trigger.mjs': ['--check'] }
 
 const results = []
 for (const [name, file] of GATES) {

@@ -78,7 +78,7 @@ const ViewToggle = ({
    * consumer subtracted it with a `-ml-1` on the neighbour. `-mx-1` draws the padding inward from the
    * declared box — the chips sit where the box says, the well bleeds 4px into the gap. */
   const containerClasses = isIconVariant
-    ? `kol-view-toggle inline-flex items-center gap-1 p-1 -mx-1 bg-surface-secondary rounded ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
+    ? `kol-view-toggle inline-flex items-center gap-1 p-1 -mx-1 rounded ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
     : `flex gap-2 ${className}`
 
   const buttonClasses = (isActive) => {
@@ -95,7 +95,7 @@ const ViewToggle = ({
      * hover; that's deliberately gone.) */
     return isActive
       ? `kol-control kol-control--filled kol-control-${size} kol-mono-${size === 'md' ? '14' : '12'}`
-      : `kol-control kol-control-${size} kol-mono-${size === 'md' ? '14' : '12'} text-meta hover:text-emphasis`
+      : `kol-control kol-control--plain kol-control-${size} kol-mono-${size === 'md' ? '14' : '12'} text-meta hover:text-emphasis`
   }
 
   return (

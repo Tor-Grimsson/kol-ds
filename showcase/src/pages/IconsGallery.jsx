@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
-import { PageHeader } from '@kolkrabbi/kol-shell'
+import { PageHeader } from '@kolkrabbi/kol-component'
 import { useTheme, ThemeToggle } from '@kolkrabbi/kol-framework'
 import { Icon, KOL_ICON_SET_V1, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
 import { KeylineBg } from '../lib/icon-controls.jsx'

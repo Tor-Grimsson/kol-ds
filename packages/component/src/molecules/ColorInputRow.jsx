@@ -41,8 +41,22 @@ import { usePopover, PopoverPanel } from '../utilities/Popover'
  *                     entry.value on a palette pick
  *   label           — row label (kol-helper-12); also prefixes aria-labels
  *   hideLabel       — suppress the visible label (aria keeps it)
- *   refs            — [{ value, label, hex }] pre-resolved palette entries →
- *                     popover mode
+ *   refs            — [{ value, label, hex? }] palette entries → popover mode.
+ *                     `hex` may be omitted when `resolveRef` is supplied
+ *   resolveRef      — (value) => hex — the RESOLVER SEAM. Without it, every
+ *                     entry must arrive pre-resolved and a `palette:accent`
+ *                     value cannot be shown at all: the swatch has no hex and
+ *                     the subtitle prints the raw ref. With it, a consumer
+ *                     keeps its own palette and this row renders live against
+ *                     it (editor-set-is-behind-its-source, kol-fxr 2026-09-03 —
+ *                     its ColorField takes `palette` and calls `resolveColor`)
+ *   autoValue       — the THEME state's value, typically a `var(--kol-*)`
+ *                     token that flips with light/dark. Set, the popover
+ *                     offers a Theme button; unset, it does not — a field with
+ *                     no auto value has no theme to fall back to
+ *   size            — control rung for the hex input, 'xs'|'sm'|'md'|'lg'
+ *                     (default 'sm'). A rail renders a dozen of these and the
+ *                     rung is the rail's decision, not each row's
  *   locked          — lock overlay pinned visible, aria-pressed on the swatch
  *   onToggleLock    — () => void — swatch click toggles the lock
  *   tokenName       — resolved token readout (kol-helper-10) → grid mode
@@ -58,6 +72,9 @@ export default function ColorInputRow({
   label,
   hideLabel = false,
   refs,
+  resolveRef,
+  autoValue,
+  size = 'sm',
   locked = false,
   onToggleLock,
   tokenName,
@@ -67,25 +84,52 @@ export default function ColorInputRow({
   className = '',
 }) {
   const hasRefs = Array.isArray(refs) && refs.length > 0
-  const isLockToggle = !hasRefs && typeof onToggleLock === 'function'
+  /* The popover carries the ref grid AND the quick states, so a field with no
+   * palette but an `autoValue` still gets one — that is the whole Theme/None
+   * affordance and it has nowhere else to live. */
+  const hasPopover = hasRefs || autoValue != null
+  const isLockToggle = !hasPopover && typeof onToggleLock === 'function'
   const isGrid = tokenName != null
   const labelVisible = label != null && !hideLabel
 
-  /* Display resolution: when the current value is a refs entry, the swatch and
-   * input show the entry's pre-resolved hex; otherwise value IS the hex. */
+  /* A value is one of FOUR kinds, and the row has to tell them apart before it
+   * can render anything: a literal hex, a palette REF the consumer resolves, a
+   * themed `var(--kol-*)` token that flips with light/dark, or null — None.
+   * The first port only understood the first and the last. */
+  const isVar = typeof value === 'string' && value.startsWith('var(')
+  const isNone = value == null
+
+  /* Display resolution: a refs entry shows its own hex, `resolveRef` resolves
+   * anything else the consumer owns (a `palette:` ref, a token), and a bare
+   * hex IS the value. `hex` on the entry still wins, so a pre-resolved list
+   * needs no resolver and nothing existing moves. */
+  const resolve = (v) => {
+    if (v == null) return null
+    const entry = hasRefs ? refs.find((r) => r.value === v) : undefined
+    return entry?.hex ?? resolveRef?.(v) ?? (typeof v === 'string' && v.startsWith('#') ? v : null)
+  }
   const activeRef = hasRefs ? refs.find((r) => r.value === value) : undefined
-  const displayHex = activeRef?.hex ?? value ?? null
-  const digits = (displayHex ?? '').replace(/^#/, '').toUpperCase()
-  const showTransparent = unused || displayHex == null
-  const subtitle = displayHex == null ? 'None' : (activeRef?.label ?? '#' + digits)
+  const displayHex = resolve(value)
+  /* A themed token renders LIVE in the swatch but has no meaningful hex to
+   * print, so the field shows its placeholder rather than a resolved literal
+   * the user cannot have typed. */
+  const digits = isVar || isNone ? '' : (displayHex ?? '').replace(/^#/, '').toUpperCase()
+  const showTransparent = unused || (isNone && !isVar)
+  const subtitle = isNone
+    ? 'None'
+    : isVar
+      ? 'Theme'
+      : (activeRef?.label ?? (displayHex ? '#' + digits : String(value)))
 
   const [open, setOpen] = useState(false)
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-start', offset: 4 })
 
-  const chip = (size) => (
+  const chip = (swatchSize) => (
     <ColorSwatch
-      hex={showTransparent ? null : displayHex}
-      size={size}
+      /* a themed token goes STRAIGHT to the swatch — `var(--kol-x)` is a live
+       * paint, and resolving it to a literal would freeze it out of the theme */
+      hex={showTransparent ? null : (isVar ? value : displayHex)}
+      size={swatchSize}
       showTransparent={showTransparent}
       transparentTone={transparentTone}
       hoverable={false}
@@ -95,7 +139,7 @@ export default function ColorInputRow({
   /* Swatch cell — popover trigger (refs), lock toggle (onToggleLock), or a
    * plain preview chip. The lock overlay is a SIBLING of the swatch: inside
    * it, ColorSwatch's overflow-hidden radius clip would cut the glyph off. */
-  const swatchCell = hasRefs ? (
+  const swatchCell = hasPopover ? (
     <button
       type="button"
       ref={popover.refs.setReference}
@@ -134,10 +178,11 @@ export default function ColorInputRow({
   const hexInput = (
     <Input
       variant="filled"
-      size="sm"
+      size={size}
       prefix="#"
       chars={6}
       maxLength={6}
+      placeholder={isVar ? 'auto' : '–'}
       value={digits}
       onChange={(e) => onChange?.('#' + e.target.value.replace(/^#/, '').toUpperCase())}
       disabled={disabled}
@@ -170,28 +215,63 @@ export default function ColorInputRow({
           {hexInput}
         </div>
       )}
-      {hasRefs && (
+      {hasPopover && (
         <PopoverPanel
           popover={popover}
           panel={false}
           focus={false}
-          className="bg-surface-secondary border border-fg-08 rounded p-2 shadow-lg"
+          className="bg-surface-secondary border border-fg-08 rounded p-2 flex flex-col gap-2 shadow-lg"
           style={{ minWidth: 200 }}
         >
-          <div className="grid grid-cols-6 gap-1">
-            {refs.map((entry) => (
+          {hasRefs && (
+            <div className="grid grid-cols-6 gap-1">
+              {refs.map((entry) => (
+                <ColorSwatch
+                  key={entry.value}
+                  hex={entry.hex ?? resolveRef?.(entry.value) ?? null}
+                  size="fill"
+                  selected={entry.value === value}
+                  title={entry.label}
+                  onClick={() => {
+                    onChange?.(entry.value)
+                    setOpen(false)
+                  }}
+                />
+              ))}
+            </div>
+          )}
+          {/* QUICK STATES. Theme (the auto value — a token that flips with
+              light/dark) is offered only where the field HAS one; None is
+              always available, because clearing a colour is not a palette
+              decision. Both were dropped in the first port, which is what left
+              `value == null` renderable but unreachable. */}
+          <div className="flex items-center gap-2">
+            {autoValue != null && (
+              <button
+                type="button"
+                onClick={() => { onChange?.(autoValue); setOpen(false) }}
+                aria-pressed={isVar}
+                className="flex items-center gap-1.5 kol-helper-12 text-fg-64 rounded px-1.5 h-6 border border-fg-08"
+              >
+                <ColorSwatch hex={resolve(autoValue) ?? autoValue} size={14} hoverable={false} />
+                Theme
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => { onChange?.(null); setOpen(false) }}
+              aria-pressed={isNone}
+              className="flex items-center gap-1.5 kol-helper-12 text-fg-64 rounded px-1.5 h-6 border border-fg-08"
+            >
               <ColorSwatch
-                key={entry.value}
-                hex={entry.hex}
-                size="fill"
-                selected={entry.value === value}
-                title={entry.label}
-                onClick={() => {
-                  onChange?.(entry.value)
-                  setOpen(false)
-                }}
+                hex="#FFFFFF"
+                size={14}
+                showTransparent
+                transparentTone={transparentTone}
+                hoverable={false}
               />
-            ))}
+              None
+            </button>
           </div>
         </PopoverPanel>
       )}

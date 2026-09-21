@@ -105,6 +105,37 @@ export function harmonyColors(hue, harmony, { saturation = 100, lightness = 50 }
 }
 
 /**
+ * Re-hue an EXISTING palette to a harmony, preserving each slot's own
+ * saturation and lightness.
+ *
+ * `harmonyColors` builds every role at ONE flat S/L, which is right when a
+ * caller has no palette yet and wrong the moment it does: a Light slot and a
+ * Dark slot both come back at 50% lightness, so the palette flattens on the
+ * first drag of the wheel (kol-fxr, `editor-set-is-behind-its-source`
+ * 2026-09-03 — its own wheel emits a hue and re-hues slot by slot, so the
+ * package's `colors` payload was half-ignorable).
+ *
+ * A slot that is `locked`, empty, or has no hex is passed through untouched —
+ * locking a colour is the one instruction a re-hue must not overrule.
+ *
+ * @param {number} hue base hue, 0–360
+ * @param {string|object} harmony harmony id or object
+ * @param {Array<{hex?: string, locked?: boolean}|string|null>} slots the current palette, in role order
+ * @returns {Array} the same shape back, re-hued — strings stay strings, objects keep every other key
+ */
+export function reHueSlots(hue, harmony, slots = []) {
+  const { roleOffsets } = harmonyById(harmony)
+  return slots.map((slot, i) => {
+    const off = roleOffsets[i % roleOffsets.length]
+    const hex = typeof slot === 'string' ? slot : slot?.hex
+    if (!hex || (typeof slot === 'object' && slot?.locked)) return slot
+    const { s, l } = hexToHsl(hex)
+    const next = hslToHex(normHue(hue + off), s, l)
+    return typeof slot === 'string' ? next : { ...slot, hex: next }
+  })
+}
+
+/**
  * Deterministic role colors derived from a base hex (S/L taken from the hex).
  * Convenience wrapper over `harmonyColors` for callers holding a color, not
  * a hue.

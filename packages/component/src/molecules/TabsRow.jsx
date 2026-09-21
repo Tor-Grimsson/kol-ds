@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import CloseButton from '../utilities/CloseButton.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: nests kol-icons's Icon */
@@ -36,15 +37,9 @@ export default function TabsRow({ tabs = [], value, onChange, onClose, onMinimis
   return (
     <div className="flex items-stretch gap-4 h-10">
       {onClose && (
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="text-meta hover:text-emphasis self-center"
-          style={{ lineHeight: 0 }}
-        >
-          <Icon name="x" size={12} />
-        </button>
+        /* the one close, at the rung whose glyph is the 12 this hand-rolled
+         * (2026-09-03) — xs SOLO is 12, so the drawing does not move */
+        <CloseButton onClick={onClose} size="xs" className="self-center" />
       )}
 
       <div ref={listRef} role="tablist" onKeyDown={onKeyDown} className="flex items-stretch gap-4">

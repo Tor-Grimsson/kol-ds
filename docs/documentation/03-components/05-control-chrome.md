@@ -3,7 +3,7 @@ title: Control chrome
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-27
+updated: 2026-09-03
 verified: 2026-07-08
 description: The button law every interactive control references
 aliases:
@@ -20,6 +20,7 @@ related:
   - "[[04-diamond-tier|diamond tier]]"
   - "[[01-inventory|component inventory]]"
   - "[[../01-foundations/01-tokens|tokens]]"
+  - "[[../01-foundations/09-sizes|sizes]]"
 ---
 
 # Control chrome — the button law
@@ -43,15 +44,44 @@ Two **structural** variants carry the hierarchy; the rest are **role** variants 
 
 `default`, `subtle`, `minimal`, `plain`, `control` are **legacy aliases**, not variants (see *Legacy aliases* below).
 
+**The five ground variants are tones** (tone-is-the-ground-axis, kol-client-olina 2026-09-03 — theme ≥0.134.0, component ≥0.176.0): `primary` · `secondary` · `outline` · `ghost` · `grey` on Button are aliases of `tone="…"`, and so are the control shell's `filled` / `outline`, the icon-frame variants and the dropdown panel's `--primary` / `--grey` / `--outline`. `danger` and `accent` are semantic intent, not a ground — they stay variants. `nav` stays too: the ticket read it as ghost, but it is `oq-80` ink against ghost's `oq-48` (and the `aria-current` rule); it is ghost's chrome rung. See *Tone* below.
+
 ## Size scale
 
 Padding-driven, not fixed-height — the control hugs its content and the padding + mono type set the height.
 
 | Size | Padding | Type | Height |
 |---|---|---|---|
+| **xs** | `4px 8px` | `kol-mono-8` | 22px |
 | **sm** | `4px 12px` | `kol-mono-12` | 26px |
 | **md** | `6px 16px` | `kol-mono-14` | 32px |
 | **lg** | `8px 20px` | `kol-mono-16` | 40px |
+
+### One height per size, across every family
+
+**A size is a HEIGHT, and every control family must hit it (user ruling
+2026-09-02: *"xs sm md and lg all have height in pixels that has to match"* ·
+*"so button and dropdown can align and input and whatever else"*).** That is the
+whole point of the scale — a Button, a Dropdown and an Input on one row are one
+box.
+
+Until 2026-09-02 only `md` lined up. Text controls take their height from
+padding + the size's mono line-height + the 1px ring (22/26/32/40), and three
+families already agreed there — `.kol-control`, the text `Button`, and
+`SegmentedToggle`'s pinned strip. The **icon squares** (`Button iconOnly`,
+`IconFrame`) read 20/28/32/36 and the **Dropdown trigger** 28/32/36, so an icon
+button stood **2px taller** than the Input beside it at `sm`, **4px shorter** at
+`lg`, and 2px shorter at `xs`.
+
+The squares and the trigger were conformed to 22/26/32/40, not the reverse —
+three families against two, and the text height is the one derived from the type
+scale rather than chosen. Glyphs did not move: `SOLO` still resolves 16/20/24 and
+the box never sizes to the glyph.
+
+> The trigger had been put on the icon ladder (28/32/36) in theme 0.90.0 for
+> this same reason — it sat 4px short of the `IconFrame` beside it. That fixed
+> the row it was looked at on and moved the disagreement to `sm` and `lg`
+> everywhere else. One number per size is the version that closes it.
 
 ## Glyph ladders
 
@@ -59,7 +89,7 @@ Padding-driven, not fixed-height — the control hugs its content and the paddin
 
 | Ladder | sm · md · lg | For | Source |
 |---|---|---|---|
-| **`SOLO`** | 16 · 20 · 24 | an icon alone in a pinned square (28 · 32 · 36) | `packages/component/src/hooks/glyphLadders.js` |
+| **`SOLO`** | 16 · 20 · 24 | an icon alone in a pinned square (**22 · 26 · 32 · 40** — the size's height, see below) | `packages/component/src/hooks/glyphLadders.js` |
 | **`ADJACENT`** | 14 · 16 · 18 | an icon inside a rung's line box, beside a label or a value | same file |
 
 `Button iconOnly`, `IconFrame` and `ThemeToggle` (label off) take **SOLO**. `Button` with a label, `ThemeToggle` with one, and `Input` take **ADJACENT**. `iconSize` overrides either at any call site.
@@ -101,7 +131,7 @@ Plus: a `:focus-visible` ring everywhere (2px `--kol-focus-ring`, offset 2); `:d
 | **Dropdown** | Trigger emits the `kol-btn` classes (inline-style chrome gone); open state fuses with the panel. Aliases: default/subtle→primary, minimal→outline. |
 | **Input / Textarea** | `.kol-control` chrome; `ghost`→`outline` alias. |
 | **ToggleSwitch** | Bare by default; optional primary/outline shells at button geometry; track scales; on = inverted ink. |
-| **SegmentedToggle** | Cells padding-matched to the button size scale — heights pixel-identical (26/32/40). |
+| **SegmentedToggle** | Cells padding-matched to the button size scale — heights pixel-identical (22/26/32/40). |
 | **Slider** | Exempt — a bare range row, not a pressable surface. One look, no variants (see [[01-inventory\|inventory]]). |
 
 ## Touch floor
@@ -109,7 +139,7 @@ Plus: a `:focus-visible` ring everywhere (2px `--kol-focus-ring`, offset 2); `:d
 **Every pressable control clears a 24×24 hit box; nothing gets a type floor (user ruling 2026-08-26 — `MobileTouchFloor`, filed off kol-website's mobile audit, which counted 100–430 sub-11px elements per brand page and 14–26px hit areas).**
 
 - **Type: no mobile step.** `kol-helper-10` / `kol-mono-10` and the 10.4px table header are the ruled chrome voice at every width. A floor would reflow every rail and table on phones for a class of text that is labels, not copy.
-- **Hit area: 24px** (WCAG 2.5.8 AA), reached **without moving the drawn size**. The size scale (26/32/40) already clears it, as does `.kol-seg-cell` (24). Two controls sat under it and were lifted in theme **0.51.0**: the bare `ToggleSwitch` (a 12px track in a 1px border — 14px) takes a `::before` extent, 24px tall, centred on the button; `Slider`'s range input (2px — the track was the whole target) is 24px tall with the 2px track centred inside it by the UA's `align-self: center` on the runnable track, thumb unchanged.
+- **Hit area: 24px** (WCAG 2.5.8 AA), reached **without moving the drawn size**. `sm`/`md`/`lg` (26/32/40) clear it on their drawn size, as does `.kol-seg-cell` (24). **`xs` (22) does not** — it was minted for instrument panels after this ruling was written and is a fine-pointer size; see [[../01-foundations/09-sizes|sizes]]. Two controls sat under it and were lifted in theme **0.51.0**: the bare `ToggleSwitch` (a 12px track in a 1px border — 14px) takes a `::before` extent, 24px tall, centred on the button; `Slider`'s range input (2px — the track was the whole target) is 24px tall with the 2px track centred inside it by the UA's `align-self: center` on the runnable track, thumb unchanged.
 - **Not the DS's:** a consumer's own 16px table buttons and 12px-tall links. The same rule applies there — extend the hit box, never the glyph.
 
 ## Icon box
@@ -178,8 +208,7 @@ two overlays, nothing in common.
 | `bg-black/60` · `/50` · `/50` across three files | `.kol-overlay-scrim` — one tint |
 | tag overlay: no overlay chrome | the same `.kol-overlay-panel` |
 
-`.kol-overlay-scrim` is **look only** — three scrims exist, two `fixed` and one
-`absolute`, so baking position in would force a wrong box on two of them.
+`.kol-overlay-scrim` is **look only** — the call site owns the box (`fixed` or `absolute` by its own contract). **Nine scrims wear it** after the 2026-09-03 sweep (overlay-scrim-outliers, kol-client-olina — user: *"we removed the blur and put just color on the background … tell them we missed this, and tell them to search for other outliers"*): `Modal` · `FullscreenOverlay` · `ShellDrawer` · `ShellSearchOverlay` · `PageLayout`'s sidenav backdrop · `FieldRow` · `ShortcutsOverlay` · `TouchDeviceOverlay` · the workshop's shortcuts sheet. The sweep caught four drawing their own — the two shell overlays with an 8 % inverse wash plus a 2px blur, `Modal` with a raw `rgba(0,0,0,0.5)` the docs had already called the class, the workshop sheet on `bg-fg-48`. Three overlays are **not** scrims on purpose and say so in source: `ParamSheet` (untinted, so the rack stays readable while a value is dragged), `OverlayGlassPanel` and `PlaybackBar` (surfaces that blur because blur is their point).
 
 Two tokens were added rather than improvised: **`--kol-radius-xs: 2px`** (six
 hand-written `rounded-[2px]` call sites and no rung) and
@@ -273,7 +302,27 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 
 ## Tone
 
-`tone="sunken"` on `ViewToggle` (icon) · `Dropdown` · `Input` · `SearchInput` · `Button` · `IconFrame` · `ThemeToggle` — the control set's ONE sunken tone (ControlToneSunken, kol-website 2026-08-28; shipped 2026-08-27 as `tone="inverse"`, ControlToneInverse, which stays an alias — no consumer moves a pixel). User, on brand's `/icons` over a `pageWash`: *"a flipped version of this color scheme, where the darker is background and grey is the active … it would fit better on the light grey"* — and on the name: the control does not invert anything, it sits **below** the plane it is on. (`inverse` already meant four things — `tone`, Tag/Pill's `variant`, Section's `theme`, Divider's boolean.) On a washed plane the default grey well reads as a second plate, so the set takes the dark well: **`fg-inverse-96`** (user ruling 2026-08-28, swapped from `fg-absolute-24` — measured on the dark theme, where the inverse tier is the one that darkens: on the `#121215` page it lands ~14.2 against absolute-24's 13.7. It follows the theme, so the light-theme well takes the near-white inverse anchor), the active chip the **`fg-08`** ink wash (user ruling 2026-08-28, down from the 0.78.1 `fg-16`), the inactive hover an absolute-white wash, the ink `fg-96`; a `Dropdown`'s panel is **opaque** — `surface-tertiary`, the flat twin of the trigger's fill (user 2026-08-28: *"transparent doesn't work for dropdown"*; the `oq-inverse-*` tier bakes onto the near-white `surface-inverse` and lands on the wrong side of a dark page), and the dropdown carries **no hover state at all** (user 2026-08-28, *"delete any hover state on dropdowns"*, component ≥0.123.0): the trigger is pinned back to rest in every variant — primary and outline in kol-theme, grey with no hover rule — and the option rows drop the ink brighten (`MenuDropdownItem hover={false}`), the check mark carrying the current value. A `MenuItem`'s own menu keeps its hover. **The trigger is on the icon ladder** (theme ≥0.90.0, DropdownHeightAndHover): 28 / 32 / 36, the rungs `.kol-btn-icon` pins — a text button sizes from padding (~24 at `sm`) and sat 4px short of the `IconFrame` and `ThemeToggle` beside it, and the trigger is the one text control that always sits in an icon row. **A dropdown fits its chrome** (component ≥0.124.0, DropdownGhostWidthAndListHeight): the ghost stack still reserves the widest option's width, but the trigger caps at its container and the label ellipsises rather than growing past it — the panel matches the real width; `maxRows` (default 10) is the rows-visible ceiling the viewport clamp cannot give, and `rowHeight` the row pitch for a shorter chrome. **`onOptionHover(value | null)`** (≥0.125.0, DropdownOptionHoverPreview) reports the hovered row and `null` on leave or close, so a picker over a *visual* setting — blend modes, easing curves, palettes, fonts — previews live and reverts; the DS owns the panel, the consumer owns the preview; a sunken `Button` layers its hover and pressed over the well. `ContentFilters` forwards `tone` to its search field so a page sets its header row in one place. Default `tone` is unchanged everywhere; the rules are the theme's (`.kol-tone-sunken`, ≥0.82.0) — a consumer never restates them (brand hand-wrote the fill and guessed the ink for two icon buttons; widening the set to Button · IconFrame · ThemeToggle ends that fork). The showcase's `ViewToggle` demo shows the set in both tones on an `fg-02` wash.
+**Seven tones, one mechanism** (tone-is-the-ground-axis, kol-client-olina 2026-09-03; the list is the user's — *"that is 6 tones right?"* — plus the line the first ticket dropped: *"I would like a tone for the primary surface, that could actually be called secondary"* (tone-secondary-is-inverse, theme 0.138.0: `secondary` paints the page surface, `inverted` is the text-colour fill Button's `secondary` variant always was; the variant's pixels did not move). `inverse` is not `inverted` — it is sunken's alias from 0.117.0, kept while one kol-website call passes it. Until theme 0.134.0 `toneClass` returned a class for `sunken` and nothing else, so `tone` had one value and the real ground vocabulary lived on Button's `variant` alone, re-invented by the control shell and the dropdown panel with paints that drifted.
+
+| tone | background | ink | hover · press |
+|---|---|---|---|
+| `primary` | `surface-secondary` | `surface-on-primary` | `oq-08` · `oq-16` |
+| `secondary` | **`surface-primary`** — the page's own colour | `surface-on-primary` | `oq-08` · `oq-16` |
+| `inverted` | `surface-on-primary` — the text colour as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48` |
+| `outline` | transparent, + 1px `oq-08` | `surface-on-primary` | `oq-02` (border to 25 % ink) · `oq-08` |
+| `ghost` | transparent | `oq-48` | `oq-04` · `oq-08` |
+| `grey` | `oq-12` | `surface-on-primary` | `oq-16` · `oq-24` |
+| `sunken` | `surface-sunken` | `fg-96` | + `fg-04` · + `fg-08` (layered over the well) |
+
+A tone is a bundle of **`--kol-tone-*` custom properties** — rest, hover, press, pressed, and what a *floating* surface of that tone paints — and every control reads its paint from them with its own old literal as the fallback: `.kol-btn`, the dropdown trigger, `.kol-control` and `.kol-dd-panel` fall back to primary, `.kol-icon-frame` to secondary, the theme-toggle variants, the view-toggle well and the open search shell to their own. Nothing moves without a tone.
+
+**A set gets its tone already set.** Custom properties inherit, so one `kol-tone-grey` on a wrapper tones every control inside it that carries no tone of its own — Buttons, Dropdowns (trigger *and* panel), Inputs, SearchInput, IconFrames, ThemeToggle, the ViewToggle well. A control handed a `variant` or `tone` sets the properties on itself and wins; the per-component prop is the exception. The ground variant classes are the same bundles under `:where()` — specificity 0 — so `tone` beats `variant` on one element regardless of order. **`default` is not a tone: it is the absence of one** — inherit the wrapper's, else the family's fallback. Nothing stamps `primary` on an element by default, because that would block the inheritance.
+
+**A tone reaches controls, not card plates** (user ruling 2026-09-03: *"no just controls"*): a wrapper tone repaints Buttons, Dropdowns, Inputs, SearchInput, IconFrames, ThemeToggle and the ViewToggle well inside it; a `ContentCard` / `ContentRow` plate stays the content-card system's box per variant.
+
+**The floating surface paints the ground.** `--kol-tone-panel-bg` is what a dropdown panel of that tone paints: primary, grey and sunken continue their fill; **outline and ghost paint `--kol-tone-ground`** — the page's own background, `surface-primary` unless the page sets the variable at its root — so opening a dropdown over another ground changes nothing under it (it used to hardcode `surface-primary`). The panel is portalled to `body`, outside any wrapper's cascade, so `Dropdown` copies the trigger's resolved properties onto it on open.
+
+`tone="sunken"` on `ViewToggle` (icon) · `Dropdown` · `Input` · `SearchInput` · `Button` · `IconFrame` · `ThemeToggle` · `SegmentedToggle` (the one the set skipped until theme 0.139.0 — segmented-toggle-sunken-tone: kol-fxr and olina carried the same three CSS lines to fake it) — the control set's ONE sunken tone (ControlToneSunken, kol-website 2026-08-28; shipped 2026-08-27 as `tone="inverse"`, ControlToneInverse, which stays an alias — no consumer moves a pixel). User, on brand's `/icons` over a `pageWash`: *"a flipped version of this color scheme, where the darker is background and grey is the active … it would fit better on the light grey"* — and on the name: the control does not invert anything, it sits **below** the plane it is on. (`inverse` already meant four things — `tone`, Tag/Pill's `variant`, Section's `theme`, Divider's boolean.) On a washed plane the default grey well reads as a second plate, so the set takes the dark well: **`fg-inverse-96`** (user ruling 2026-08-28, swapped from `fg-absolute-24` — measured on the dark theme, where the inverse tier is the one that darkens: on the `#121215` page it lands ~14.2 against absolute-24's 13.7. It follows the theme, so the light-theme well takes the near-white inverse anchor), the active chip the **`fg-08`** ink wash (user ruling 2026-08-28, down from the 0.78.1 `fg-16`), the inactive hover an absolute-white wash, the ink `fg-96`; a `Dropdown`'s panel is **opaque** — `surface-tertiary`, the flat twin of the trigger's fill (user 2026-08-28: *"transparent doesn't work for dropdown"*; the `oq-inverse-*` tier bakes onto the near-white `surface-inverse` and lands on the wrong side of a dark page), and the dropdown carries **no hover state at all** (user 2026-08-28, *"delete any hover state on dropdowns"*, component ≥0.123.0): the trigger is pinned back to rest in every variant — primary and outline in kol-theme, grey with no hover rule — and the option rows drop the ink brighten (`MenuDropdownItem hover={false}`), the check mark carrying the current value. A `MenuItem`'s own menu keeps its hover. **The trigger is on the icon ladder** (theme ≥0.90.0, DropdownHeightAndHover): 28 / 32 / 36, the rungs `.kol-btn-icon` pins — a text button sizes from padding (~24 at `sm`) and sat 4px short of the `IconFrame` and `ThemeToggle` beside it, and the trigger is the one text control that always sits in an icon row. **A dropdown fits its chrome** (component ≥0.124.0, DropdownGhostWidthAndListHeight): the ghost stack still reserves the widest option's width, but the trigger caps at its container and the label ellipsises rather than growing past it — the panel matches the real width; `maxRows` (default 10) is the rows-visible ceiling the viewport clamp cannot give, and `rowHeight` the row pitch for a shorter chrome. **`onOptionHover(value | null)`** (≥0.125.0, DropdownOptionHoverPreview) reports the hovered row and `null` on leave or close, so a picker over a *visual* setting — blend modes, easing curves, palettes, fonts — previews live and reverts; the DS owns the panel, the consumer owns the preview; a sunken `Button` layers its hover and pressed over the well. `ContentFilters` forwards `tone` to its search field so a page sets its header row in one place. Default `tone` is unchanged everywhere; the rules are the theme's (`.kol-tone-sunken`, ≥0.82.0) — a consumer never restates them (brand hand-wrote the fill and guessed the ink for two icon buttons; widening the set to Button · IconFrame · ThemeToggle ends that fork). The showcase's `ViewToggle` demo shows the set in both tones on an `fg-02` wash.
 
 ## Sunken tone
 

@@ -182,6 +182,7 @@ export default function TiltBento({
           {overlayOpacity > 0 && (
             <div
               className={`absolute -inset-1 rounded ${coarse ? (coarseOpen ? 'opacity-60' : 'opacity-0') : 'opacity-0 group-hover:opacity-100'} ${fade} pointer-events-none`.trim()}
+              /* a tile's hover veil at the consumer's opacity — not a scrim (sweep 2026-09-03) */
               style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }}
             />
           )}

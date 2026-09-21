@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toneClass } from './tone.js'
 import {
   useFloating,
   autoUpdate,
@@ -189,6 +190,14 @@ export function PopoverPanel({
   panel = true,
   modal = false,
   focus = true,
+  /* THE FLOATING SURFACE'S GROUND (editor-chrome-review, kol-fxr 2026-09-03 —
+   * the user on the Editor / Labs / Randomiser list: *"can we change it border
+   * oq-04 and background as tone prop?"*). The panel painted
+   * `surface-secondary` unconditionally, which in dark is LIGHTER than the bar
+   * it drops from, so the layering read inverted. Unset it still does exactly
+   * that, so nothing existing moves; a tone paints that tone's ground instead,
+   * through the same `toneClass` every other control uses. */
+  tone,
   className = '',
   style: extraStyle,
 }) {
@@ -199,7 +208,7 @@ export function PopoverPanel({
    * carries the stacking guarantee — floats must top overlay chrome
    * (.kol-overlay z-100), or a dropdown inside a FullscreenOverlay renders
    * under the sheet and its options can't be clicked. */
-  const cls = ['kol-popover-float', panel && 'kol-popover', className].filter(Boolean).join(' ')
+  const cls = ['kol-popover-float', panel && 'kol-popover', tone && toneClass(tone), className].filter(Boolean).join(' ')
 
   /* `data-editor-keep-selection` mirrors the marker on the EditorShell
    * root. Popovers render via FloatingPortal (mounted on <body>, outside

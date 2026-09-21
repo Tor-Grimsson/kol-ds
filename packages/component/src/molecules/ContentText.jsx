@@ -30,6 +30,7 @@
  *   solid surface fill — the /work row the variant was minted for — and `primary` otherwise
  * @param {string}    titleClass … eyebrowClass (alias `kickerClass`), bodyClass, detailClass,
  *                    dateClass, sizeClass, metaClass — full class overrides
+ * @param {'subtle'|'meta'|'body'|'lede'|'strong'|'shout'|'scream'|'emphasis'} text - ONE ink role for every slot, replacing the ink each ramp hardcodes (`text-emphasis` on a title, `text-meta` on a date). It also re-inks a `<slot>Class` override, which is the point: an override replaces the ramp string WHOLE, so `kickerClass="kol-sans-body-01"` silently drops the `text-meta` the ramp carried and the kicker jumps to inherited ink (kol-client-hrafn, `contentcard-bg-and-text-props` 2026-09-03). `text` sets the level once instead of re-specifying eight ramps. It FLATTENS the hierarchy by design — every slot lands on the same role — so a card that wants its own relative steps still passes per-slot classes
  */
 
 import Tag from '../atoms/Tag'
@@ -56,6 +57,13 @@ const RAMP = {
   file: {
     card: { title: 'kol-sans-heading-04 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+  },
+  /* SLIDE — a deck (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03;
+   * user: "they are genuinely different with 16:9 layout and those exposed
+   * properties"). file's voices plus a `meta` line — the slide count. */
+  slide: {
+    card: { title: 'kol-sans-heading-04 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', meta: 'kol-mono-12 text-meta' },
+    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta', meta: 'kol-mono-12 text-meta' },
   },
   catalog: {
     /* detail truncates (ShellHomeSystem, 2026-08-27): a wrapping blurb set three
@@ -138,6 +146,8 @@ const RAMP = {
  * read off the shipped components and the live pages they render on. */
 const ORDER = {
   file:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
+  /* slide: title, then date · size · slide count on one baseline (read off olina's /slide-deck) */
+  slide: { card: ['title', ['group', 'date', 'size', 'meta']], row: ['title', ['group', 'date', 'size', 'meta']] },
   catalog:  { card: ['title', 'detail'], row: [['between', 'title', 'detail']] },
   /* title + body are ONE block in BOTH forms — a `stack`, so they sit on the
    * tight 4px internal gap while tags, kicker and the meta group keep the
@@ -190,6 +200,7 @@ const STACK = {
 
 const GAPS = {
   file: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-2)' },
+  slide: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-2)' },
   catalog: { card: 'var(--kol-spacing-1)', row: 'var(--kol-spacing-2)' },
   article: { card: 'var(--kol-spacing-3)', row: 'var(--kol-spacing-3)', hero: 'var(--kol-spacing-3)' },
   showcase: { card: 'var(--kol-spacing-2)', row: 'var(--kol-spacing-4)' },
@@ -203,14 +214,39 @@ const GAPS = {
  * because ContentText is exported and a consumer can drive it directly. */
 const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
 
+/* dev-only, and warns ONCE per offending prop — a card family renders these by
+ * the hundred in a list and a per-render warning would bury the first one. */
+const warned = new Set()
+function warnUnknownSlots(unknown) {
+  for (const key of Object.keys(unknown)) {
+    if (warned.has(key)) continue
+    warned.add(key)
+    console.warn(
+      `ContentText: "${key}" is not a text slot and was ignored. `
+      + 'Slots: title · body · eyebrow (kicker) · detail · date · size · meta · tags, '
+      + 'each with a matching *Class. This warning is dev-only.',
+    )
+  }
+}
+
 export default function ContentText({
   variant: variantProp = 'file',
   form = 'card',
   title, body, eyebrow, kicker, detail, date, size, meta, tags,
   gap, clamp, tagVariant = 'primary',
   titleClass, bodyClass, eyebrowClass, kickerClass, detailClass, dateClass, sizeClass, metaClass, tagsClass,
+  text,
   className = '',
+  ...unknown
 }) {
+  /* AN UNKNOWN SLOT SAYS SO (content-card-needs-no-cover aside, kol-client-olina
+   * 2026-09-04). They passed `summary`, every card rendered EMPTY, and nothing
+   * — build, lint or console — said a word; it cost an hour. A card's text
+   * slots are a closed vocabulary and a typo in one is indistinguishable from
+   * missing data, which is the worst kind of silent failure: the page looks
+   * built and is blank. Dev only, and it names the vocabulary rather than just
+   * the mistake, because "summary is not a slot" does not tell you `body` is. */
+  if (import.meta.env.DEV) warnUnknownSlots(unknown)
   /* `kicker` / `kickerClass` = aliases of `eyebrow` / `eyebrowClass` (2026-08-27) */
   eyebrow = eyebrow ?? kicker
   eyebrowClass = eyebrowClass ?? kickerClass
@@ -254,9 +290,24 @@ export default function ContentText({
     return v.map((item, i) => <span key={i}>{item}</span>)
   }
   const spread = (slot) => (Array.isArray(values[slot]) && slot !== 'tags' ? ' flex flex-wrap gap-2' : '')
+
+  /* `text` — one ink role across the slots. The ramps HARDCODE their ink, so
+   * neither inheritance nor a wrapper class can reach them; the only way in is
+   * to take the ink class out of the resolved string and put the role back.
+   * Applied after the override for the reason the prop exists: an override
+   * replaces the ramp whole and takes its ink with it.
+   *
+   * The alternation is closed on purpose — `text-right` / `text-center` are
+   * alignment, not ink, and must survive. `text-fg-NN` goes too: the hero ramps
+   * reach for stops (`text-fg-64`, `text-fg-48`) rather than roles, and leaving
+   * those behind would let two inks sit in one class string. */
+  const INK = /\btext-(?:subtle|meta|body|lede|strong|shout|scream|emphasis|fg-\d+)\b/g
+  const ink = (cls) =>
+    text ? `${cls.replace(INK, '').replace(/\s+/g, ' ').trim()} text-${text}` : cls
+
   const line = (slot) =>
     values[slot] == null ? null : (
-      <div key={slot} className={`${overrides[slot] ?? ramp[slot] ?? ''}${extra(slot)}${hook(slot)}${spread(slot)}`.trim()}>{content(slot)}</div>
+      <div key={slot} className={`${ink(overrides[slot] ?? ramp[slot] ?? '')}${extra(slot)}${hook(slot)}${spread(slot)}`.trim()}>{content(slot)}</div>
     )
 
   /* RECURSIVE (2026-08-15) — an entry inside a line/between/group may itself be

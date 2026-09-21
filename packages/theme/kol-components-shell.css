@@ -18,13 +18,80 @@
    * while the rail WAS a collapsed SideNav; that is reversed. */
   --kol-shell-rail-width: 48px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin.
-   * RESPONSIVE (ShellPagePadFixedOnMobile, kol-chess 2026-09-01): fixed 48 put
-   * 96px of gutter on a 390 phone — 24.6% of the viewport — and set Settings
-   * ~35pt from the edge while every .kol-page sibling sat ~15pt. The floor is
-   * 20, the estate's px-5 mobile floor; 5vw reaches 48 at 960 and desktop does
-   * not move. PageBleed's negative margin reads the same token, so the pair
-   * cannot drift. */
-  --kol-shell-page-pad: clamp(20px, 5vw, 48px);
+   * ONE LADDER FOR THE ESTATE (two-page-scaffolds-one-job, kol-client-olina
+   * 2026-09-03): this is `--kol-pad-section-x`, the page-content ladder every
+   * `.kol-page` already wears (20 · 32 from 768 · 48 from 1024,
+   * kol-framework.css). It had been a second ladder — a fixed 48 until
+   * 2026-09-01 (ShellPagePadFixedOnMobile, kol-chess: 96px of gutter on a 390
+   * phone, Settings ~35pt from the edge while every .kol-page sibling sat
+   * ~15pt), then a clamp that reproduced .kol-page's outcome with the technique
+   * the framework's own comment rejects; the two agreed only at 48. The clamp
+   * stays as the FALLBACK for a consumer that loads kol-theme without
+   * kol-framework. PageBleed's negative margin reads the same token, so the
+   * pair cannot drift. */
+  --kol-shell-page-pad: var(--kol-pad-section-x, clamp(20px, 5vw, 48px));
+}
+
+/* ── PageShell ──────────────────────────────────────────────────────────── */
+
+/* THE GEOMETRY IS A CLASS (two-page-scaffolds-one-job, 2026-09-03). It was an
+ * inline style object with no class of its own, so a consumer that needed to
+ * correct any of it had no selector — only the `style` prop, which is how olina
+ * had to hide a double-painted wash. Inline stays for `style` alone. */
+.kol-shell-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: var(--kol-shell-page-pad);
+  /* PageShellScrollbarGutter (kol-monitor 2026-08-28): in `fixed` mode this
+   * element IS the scroll container and reserves the gutter; in `scroll` mode
+   * the property is inert and the viewport keeps doing what it did. */
+  scrollbar-gutter: stable;
+  /* THE PAGE'S GROUND, ONE OWNER PER PIXEL. `--kol-shell-page-wash` means WHAT
+   * IS LEFT TO PAINT: kol-shell's AppShell paints the primary back and hands
+   * the wash down for this to paint (ShellPageWash, 2026-08-27); kol-framework's
+   * PageLayout paints the wash on its plane itself and hands down
+   * `transparent`, so a PageShell inside it paints nothing over it — before,
+   * both painted and `fg-02` rendered as two 0.02 layers (measured on olina's
+   * /slide-deck). Outside any frame: primary. */
+  background: var(--kol-shell-page-wash, var(--kol-surface-primary));
+}
+/* `mode="fixed"` — the element is the scroll container; pair with a
+ * `flex:1 overflow:auto` body (the settings idiom) */
+.kol-shell-page--fixed { min-height: 0; height: 100vh; overflow: hidden; }
+/* `width="capped"` — the SITE tier: the framework container ladder, centred.
+ * `bleed` (the default, unclassed) fills the window — the app tier. The one
+ * real difference between a shell page and a `.kol-page`, and it is a prop
+ * now so a site adopting the shipped catalog page does not silently get app
+ * geometry. */
+.kol-shell-page--capped {
+  max-width: var(--kol-container-max, none);
+  margin-inline: auto;
+  width: 100%;
+  /* the site tier's VERTICAL rung too: `.kol-page` pads `64px` block, and a
+   * capped page beside twenty `.kol-page` siblings sat 16px higher on the 48
+   * gutter (kol-client-olina 2026-09-03, on the link). Verbatim to `.kol-page`;
+   * the app tier (bleed) keeps its 48 — every monitor / mirror / fxr page. */
+  padding-block: 64px;
+}
+/* PageBleed — cancels the gutter for a full-width embed (monitor's rack) */
+.kol-shell-page-bleed { margin-inline: calc(var(--kol-shell-page-pad) * -1); }
+
+/* ── CatalogPage ────────────────────────────────────────────────────────── */
+
+/* THE CATALOG GRID — a ceiling with a floor: up to 6 tracks, none narrower
+ * than `CatalogPage minColumn` (160), gap 24. The count is `--kol-catalog-n`,
+ * MEASURED by CatalogPage (a ResizeObserver on this element) and published on
+ * the page, where `.kol-filters-first` reads the same number — so the filter
+ * row's first group is one track of THIS grid at every width. The grid used to
+ * be an inline `auto-fill` that resolved to the same tracks but told nobody
+ * how many (CatalogFilterFirstGroupTrackCount, 2026-09-03). 0.137.0 computed
+ * the count in CSS with a length ÷ length inside `round()`, which Firefox
+ * rejects — one column, huge card — see kol-components-organisms.css. */
+.kol-catalog-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(var(--kol-catalog-n, 6), minmax(0, 1fr));
 }
 
 /* ── NavRail ────────────────────────────────────────────────────────────── */

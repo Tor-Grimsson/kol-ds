@@ -22,7 +22,23 @@ export {
 } from './comboLayouts.jsx'
 export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './comboMath.js'
 
-// Re-exported styleguide primitives — live in the core packages, surfaced here
-// so a brand guide imports from one place. Not duplicated: same modules.
-export { AssetGrid, FeatureSplit, ProsePreview, SpectrumGrid } from '@kolkrabbi/kol-component'
-export { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
+// The brand-book set the two brand apps were both maintaining locally
+// (brand-book-mocks-two-consumers, 2026-09-03).
+export { default as AssetCard } from './AssetCard.jsx'
+export { default as Swatch } from './Swatch.jsx'
+export {
+  PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, ProfileAvatar,
+  DEFAULT_MOCK_PALETTE, DEFAULT_MOCK_FONTS,
+} from './SocialMocks.jsx'
+export {
+  BusinessCardFront, BusinessCardBack, Envelope, Letterhead,
+  LetterheadCorrespondence, LetterheadB, EmailSignature,
+  DEFAULT_BRAND_INFO, DEFAULT_STATIONERY_PALETTE, DEFAULT_STATIONERY_FONTS,
+} from './StationeryMocks.jsx'
+
+// This barrel exports THIS package only. The convenience re-exports were
+// dropped in 0.3.0: `export … from '@kolkrabbi/kol-foundry'` made every import
+// of this package pull foundry + opentype.js + framer-motion, so a consumer
+// that wanted one logo card could not build. Import them from their own homes:
+//   AssetGrid, FeatureSplit, ProsePreview, SpectrumGrid → @kolkrabbi/kol-component
+//   TypeSample, TypeSpecCard                            → @kolkrabbi/kol-foundry

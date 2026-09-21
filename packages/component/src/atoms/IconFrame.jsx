@@ -28,7 +28,7 @@ import { toneClass } from '../utilities/tone.js'
  * no per-theme props.
  *
  * `size` moves the square and the glyph together on the solo-glyph ladder
- * (16/20/24 against the pinned squares 28/32/36) — that pairing is the DEFAULT,
+ * (16/20/24 against the pinned squares 22/26/32/40) — that pairing is the DEFAULT,
  * and it is what every call site should take. `iconSize` unbinds the glyph for
  * the cases the ladder cannot serve, exactly as it does on `Button` and `Input`:
  * a `radius="full"` frame reads heavier than the square it was tuned against (a
@@ -60,7 +60,7 @@ import { toneClass } from '../utilities/tone.js'
  * Want the wash, the pressed fill or the disabled dim? That is `Button`.
  *
  * @param {string} name       icon name (kol-icons)
- * @param {string} variant    primary|secondary|accent|outline|ghost|nav|grey|danger
+ * @param {string} variant    primary|secondary|accent|outline|ghost|nav|grey|danger — unset inherits the nearest `kol-tone-*` wrapper's tone, else secondary
  * @param {string} size       xs|sm|md|lg — square + glyph together (xs = 20px square, 12 glyph; the panel rung, 2026-09-01)
  * @param {string} radius     sm (default, the system's 4px) | full (9999px).
  *                            Two values, nothing between: a round frame is its
@@ -78,7 +78,7 @@ const GLYPH = SOLO
 
 export default function IconFrame({
   name,
-  variant = 'secondary',
+  variant,
   size = 'md',
   radius = 'sm',
   iconSize = null,
@@ -92,7 +92,8 @@ export default function IconFrame({
   const radiusCls = radius === 'full' ? ' kol-icon-frame-radius-full' : ''
   const resolvedIconSize = iconSize ?? GLYPH[size] ?? GLYPH.md
   /* `tone="sunken"` (ControlToneSunken, 2026-08-28) — the control set's dark well + fg-96 ink, no states, as ever */
-  const cls = `kol-icon-frame kol-icon-frame-${variant} kol-icon-frame-${size}${radiusCls} ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
+  /* no variant → no class: the frame inherits a wrapper's tone, else secondary (2026-09-03) */
+  const cls = `kol-icon-frame${variant ? ` kol-icon-frame-${variant}` : ''} kol-icon-frame-${size}${radiusCls} ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
   const glyph = <Icon name={name} size={resolvedIconSize} />
 
   /* The element follows the affordance, and the CLASS is identical in all three

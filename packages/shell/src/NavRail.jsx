@@ -50,7 +50,7 @@ import Logomark from './Logomark.jsx'
  * method sections; on one level they flatten into an icon column built for five
  * destinations and the section names have nowhere to render at all.
  *
- * L2 is NOT a `Button`: the icon-button ladder is sm 28 / md 32 / lg 36 and this
+ * L2 is NOT a `Button`: the icon-button ladder is 22/26/32/40 (2026-09-03) and this
  * rung is 20 — there is nothing below sm, and adding one is a change to that
  * ladder's law, which is the user's call and not this ticket's. The row is
  * written directly and keys `aria-current`, so kol-theme's

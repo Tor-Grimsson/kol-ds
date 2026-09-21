@@ -74,6 +74,27 @@ const LABEL_CLASS = 'kol-doc-eyebrow'
  * they land on a rail row or a rail label. */
 const FOREIGN_TYPE = /\b(kol-mono-(?!14\b)\d+|kol-helper-\d+|kol-sans-[\w-]+)\b/
 
+/* R1 JUDGES A RAIL ROW, NOT EVERY STRING IN A RAIL FILE (2026-09-03,
+ * `docstoc-rail-tracking-and-snap-prop`, kol-client-olina).
+ *
+ * This rule read the class PREFIX and called every `kol-helper-*` in a rail
+ * file a second row ramp. That is right for a nav row — the drift it was
+ * written for — and wrong for a RULER. `DocsToc variant="rail"` draws
+ * graduations: its label is `white-space: nowrap`, which the type law puts on
+ * the helper side outright (*"can this string ever wrap? No → helper"*), and
+ * the rail MEASURES its row boxes to place detents, so a line-height-bearing
+ * class inflates every box and moves a label's centre off its own tick.
+ *
+ * The gate forced `kol-mono-14` there in kol-component 0.188.0, overriding a
+ * rung its designer had specified. That is the failure mode this file's own
+ * header warns about — *"a gate that cries wolf gets muted"* — one level up: a
+ * gate that is confidently wrong is worse, because it gets obeyed.
+ *
+ * So the exemption is by CLASS, not by file: an element wearing `kol-toc-label`
+ * is a ruler graduation and answers to the type law's fault line. Any other
+ * string in this or any rail file still answers to R1. */
+const RULER_MARK = /\bkol-toc-label\b/
+
 /* Row/label idioms that compete with the sanctioned pair. `shell-sidebar-link`
  * and `shell-sidebar-action` are alternate row geometries — the law says the
  * rails have one. */
@@ -156,7 +177,7 @@ for (const relPath of RAIL_FILES) {
     /* only lines that actually carry classes */
     if (!/class(Name)?\s*=|`[^`]*\b(kol-|shell-)/.test(line)) continue
 
-    const type = line.match(FOREIGN_TYPE)
+    const type = RULER_MARK.test(line) ? null : line.match(FOREIGN_TYPE)
     if (type) {
       errors.push(
         `${relPath}:${i + 1}  '${type[0]}' in rail chrome — rows are ` +

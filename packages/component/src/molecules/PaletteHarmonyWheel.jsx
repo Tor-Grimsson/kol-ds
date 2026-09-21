@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { HARMONIES, harmonyById, harmonyColors, normHue } from '../hooks/colorMath.js'
+import { HARMONIES, harmonyById, harmonyColors, normHue, reHueSlots } from '../hooks/colorMath.js'
 
 /* taxonomy-ok: a pure-canvas hue + harmony picker in the SpectrumControls
  * color-picker family. It nests no KOL component — its only import is the
@@ -20,6 +20,16 @@ import { HARMONIES, harmonyById, harmonyColors, normHue } from '../hooks/colorMa
  * arrow keys. `colors` is one hex per role offset of the active harmony
  * (see colorMath.harmonyColors), matching the satellite markers 1:1.
  *
+ * PASS `slots` IF YOU ALREADY HAVE A PALETTE (2026-09-03,
+ * `editor-set-is-behind-its-source`). Without it, `colors` is built at ONE
+ * flat `saturation`/`lightness`, so a Light role and a Dark role both come
+ * back at 50% — the palette flattens on the first drag, and kol-fxr's editor
+ * had to ignore half the payload because its own wheel re-hues slot by slot.
+ * With `slots`, every entry keeps its own S/L and only its hue moves, and a
+ * `locked` or empty slot is passed through untouched. `onHueChange(hue)` is
+ * the same seam with no payload at all, for a caller that owns the derivation
+ * outright — which is what fxr's wheel emits.
+ *
  * The ring hues, marker outlines and handle halo are literal color math
  * (hsl / #FFFFFF / rgba) on purpose — a spectrum is not themeable, and the
  * markers sit on fully-saturated ring hues, not on the surface (same
@@ -31,7 +41,9 @@ import { HARMONIES, harmonyById, harmonyColors, normHue } from '../hooks/colorMa
  * @param {number}        saturation  base saturation for emitted colors, 0–100 (default 100)
  * @param {number}        lightness   base lightness for emitted colors, 0–100 (default 50)
  * @param {Array}         harmonies   injectable scheme table (default HARMONIES)
+ * @param {Array}         slots       the CURRENT palette in role order (`{hex, locked}` objects or plain hex strings). Given, `colors` re-hues these — each slot keeps its own S/L, locked and empty entries pass through — instead of generating flat ones
  * @param {Function}      onChange    ({ hue, colors }) => void
+ * @param {Function}      onHueChange (hue) => void — the payload-free seam, for a caller that derives its own colours
  */
 
 /* Marker outline — white for contrast against the fully-saturated ring hues
@@ -44,8 +56,10 @@ export default function PaletteHarmonyWheel({
   harmony = 'analogous',
   saturation = 100,
   lightness = 50,
+  slots,
   harmonies = HARMONIES,
   onChange,
+  onHueChange,
 }) {
   const canvasRef   = useRef(null)
   const draggingRef = useRef(false)
@@ -58,10 +72,18 @@ export default function PaletteHarmonyWheel({
   )
 
   /* Emit next hue + its harmony colors. Held in a ref so the pointer/key
-   * handlers stay stable while always seeing the latest props. */
+   * handlers stay stable while always seeing the latest props.
+   *
+   * With `slots`, the colours are the CALLER'S palette re-hued — each slot
+   * keeping its own saturation and lightness — rather than a fresh flat set.
+   * Both fire, so a caller can take the hue and ignore the colours. */
   emitRef.current = (nextHue) => {
     const h = normHue(nextHue)
-    onChange?.({ hue: h, colors: harmonyColors(h, active, { saturation, lightness }) })
+    const colors = slots?.length
+      ? reHueSlots(h, active, slots)
+      : harmonyColors(h, active, { saturation, lightness })
+    onChange?.({ hue: h, colors })
+    onHueChange?.(h)
   }
 
   const outerR = size / 2 - 8

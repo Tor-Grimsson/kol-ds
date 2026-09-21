@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-27
+updated: 2026-09-03
 verified: 2026-07-04
 description: Every exported component, by tier, with its job
 aliases:
@@ -48,6 +48,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Avatar` | A circular initial/identity chip in four sizes. |
 | `Badge` | A status pill — success, warning, critical, info, outline. |
 | `Button` | Trigger an action or event — primary, secondary, outline, ghost, or icon-only. |
+| `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `ShellDrawer` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
 | `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
@@ -81,6 +82,9 @@ One row per source file — a component's compositional sub-parts are members of
 | `ToggleSwitch` | A labeled on/off switch. |
 | `TransparentX` | A checkerboard fill marking transparency. |
 | `ViewToggle` | Switch between view modes — grid/list, icon, or binary. |
+| `CropOverlay` | Crop chrome for an image with an explicit crop window — drag inside to pan the image, drag a handle to move the frame; divides by the canvas zoom. `SelectionOverlay`'s sibling. |
+| `PathNodeOverlay` | Bezier node editing over a path layer — anchors, handles on a leash, mirror-unless-Alt, close/split/smooth gestures; divides by the canvas zoom. |
+| `XYPad` | A two-axis pad: drag one puck to vary two values at once. Square via aspect-ratio, puck in %, so any rail width takes it. |
 
 Support exports on the atoms tier: the `Popover` module ships `usePopover` / `PopoverPanel` / `Tooltip`. The type-specimen kit (`TypeSample`, `TypeSpecCard`) and `TextPressure` moved to `@kolkrabbi/kol-foundry` on 2026-07-09 — they render/manipulate a live font, the foundry membership test.
 
@@ -112,6 +116,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
+| `PageHeader` | The page's masthead — eyebrow · title (`h1`) · sub-line · `actions` on the sub-line's first baseline — a **composition of `SectionText`** (0.175.0). From `kol-shell` since 0.174.0 (page-header-one-masthead, 2026-09-03): one import serves a site page and an app page. `size` sm · md · lg picks the title role, `voice` sans · mono its family, `register` app (mono sub-line) · site (sans lede) the sub-line's voice — the one thing the registers disagree about. Bottom rhythm `--kol-page-header-mb` (40px). |
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
 | `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
 | `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |
@@ -126,6 +131,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `TabsRow` | A labeled underline tab strip — active tab gets a 2px underline. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
 | `WorkListItem` | The list-row twin of WorkCard — thumbnail, title, tags, on one shared project shape. |
+| `InspectorRail` | The selection-routing shell of an inspector panel — nothing / canvas / one / many, with canvas winning over multi-select. The panels are the consumer's, passed as renderers. |
 
 Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
@@ -143,7 +149,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
-| `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. Molecule. |
+| `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. **A base** (2026-09-03): `PageHeader` is a composition of it. `actionsPlacement="inline"` (0.175.0) puts the cluster on the body's first baseline at no height; `style` reaches the root. Molecule. |
 | `SectionHero` (alias `FullBleedHero`) | Cover media + scrim; text props render as `SectionText` in its own glass panel, or `panel` renders the caller's node verbatim. |
 | `SectionSplit` (alias `FeatureSplit`) | `SectionText` beside the media frame; `align: 'right' \| 'left' \| 'center'` — media side, or one centred column. |
 | `SectionCards` (alias `FeaturesCardSection`) | `SectionText` header over `CardFeatureItem` cards + a centred action row. |
@@ -179,6 +185,10 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `Table` | THE data table. Columns opt into sorting with `sortable` (header is a real button, cycles asc→desc→none, sets `aria-sort`); `width="panel"` (default) \| `"column"` is the cap contract — see [[../01-foundations/05-layout-systems\|layout systems]]. Cells wear `.kol-table-pill` / `.kol-table-token`, never bare text. |
 | `WorkCard` | A portfolio grid tile composing TiltCard, with a hover content drawer. |
 | `WorkViewToggle` | A sliding-pill grid/list toggle with inline search (controlled). |
+| `CurveEditor` | Curve authoring — kind picker, per-kind ranges and expression fields, the epicycle term list. Fork-on-edit: the first commit forks a stock clip, the shared table is never mutated. |
+| `KeyframeEditor` | A keyframe list over a pose track (`t`, rot in radians, pos, scale, ease), sorted by `t`; rotations edit in degrees. Selecting a key pauses the clock and seeks it. |
+| `LayerStack` | The layers panel — a z-stacked tree with drag to reorder AND reparent in one gesture, inline rename, hover-revealed eye + lock, collapsible containers, a Canvas root row. |
+| `TimelineDock` | The keyframe timeline — scrub ruler + playhead over one lane per track, diamonds at each key; drags commit on pointer-up, one undo entry per gesture. Collapses to nothing with no tracks. |
 
 Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `ColorLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
 
@@ -195,6 +205,10 @@ Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` packa
 | `usePlayback` | One media element's playback for a `PlaybackBar` — `{ ref, handlers, bar }`; the sheet spreads the handlers on its `<audio>` / `<video>`, the bar gets `bar`, and never touches the element. |
 | `useEyedropper` / `pickFromCanvasElement` | Cross-browser color sampling — the native `EyeDropper` API (Chromium) with an injected fallback; `pickFromCanvasElement` is the reusable fallback that reads a pixel from a consumer's `<canvas>` (Firefox/Safari). |
 | `colorMath` | Pure HSL/hex + harmony helpers for the color pickers — `hexToHsl` / `hslToHex`, deterministic `generateHarmony` / `harmonyColors` (+ the `HARMONIES` table), and jittered `seedHarmony`. |
+| `useMediaQuery` | Subscribe to a media query, SSR-safe — the general form of `useCoarsePointer` / `usePrefersReducedMotion`, for a STRUCTURAL responsive fork the stylesheet cannot express. |
+| `useDragResize` | Grab-edge resize + collapse for a rail. Moved here from kol-framework 2026-09-03 so `EditorShell` could reach it; framework re-exports it. |
+| `pathMath` | Bezier path geometry — the `d` string, bounds, normalise, scale/rotate, nearest-point, split, smooth. One implementation, shared by `PathNodeOverlay` and the editor engine. |
+| `layerTree` | Layer labels and the tree walk — `TYPE_LABELS`, `labelForLayer`, `rowLabelForLayer`, `findLayerDeep`. `LayerStack`'s defaults. |
 
 Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy|taxonomy]]). Documented on `/docs/loaders`; galleries live on `/icons`.
 
@@ -202,15 +216,14 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 
 | Component | Tier | Job |
 |---|---|---|
-| `AppShell` | chrome | The top-level app frame — sidenav, drawer, modal provider, outlet. |
+| `PageLayout` (alias `AppShell`) | chrome | The brand-book page layout — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile drawer + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
 | `SideNav` | chrome | The grouped, scroll-spied navigation rail. |
 | `PortalFooter` | chrome | The portal footer. |
 | `ShellHeader` | chrome | The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions. |
 | `ThemeToggle` | chrome | A light/dark switcher persisted to localStorage. |
 | `Layout` | chrome | The outer page layout wrapper. |
-| `BrandHero` | structure | A large hero band for brand/landing pages. |
-| `SubPageHero` | structure | A compact hero for subpages. |
-| `PageSection` | structure | A titled, labeled content section with anchor support. |
+| `PageHero` (aliases `BrandHero` · `SubPageHero`) | structure | The page kit's opening band — label · title · lede, `mark` beside the text, `backTo` / `backLabel` above it — a composition of `SectionText` in the `kol-prose-*` voices (0.39.0, page-family-is-not-a-set). One hero: the two old names were one core with one optional slot each. |
+| `PageSection` | structure | A titled, labeled content section with anchor support; its head composes `SectionText` since 0.39.0 (internals only — the `kol-prose-*` voices are the base's seams). |
 | `ScrollToTop` | behavior | Resets scroll position on route change. |
 | `useTheme` | behavior | Theme-state hook — live light/dark state synced across consumers; ships with `applyTheme`, `getInitialTheme`, `THEME_STORAGE_KEY`. ThemeToggle is its UI. |
 

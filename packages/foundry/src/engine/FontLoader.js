@@ -3,10 +3,22 @@
 // =============================================================================
 
 import { getFontInformation } from './FontInfo.js';
-// Namespace import for ESM/CJS interop: opentype.js ships a CJS-wrapped .mjs
-// whose default export rollup (Vite 5) can't statically see. `parse` is a named
-// export, so the namespace form resolves cleanly across bundlers.
-import * as opentype from 'opentype.js';
+
+/* ── opentype loader — cached dynamic import; null once we know it's absent ──
+ * opentype.js is an OPTIONAL peer, so this MUST NOT be a static import: a
+ * module-level `import 'opentype.js'` makes the whole graph unresolvable when
+ * the peer is absent, and Vite emits a bundle whose top level throws — a green
+ * build that white-screens (kol-client-olina, 2026-09-03). Mirrors
+ * useFontMetrics' loader so the two agree on how the peer is resolved
+ * (mod.parse ?? mod.default.parse ?? mod.default). */
+let opentypePromise = null;
+function loadOpentype() {
+  if (opentypePromise) return opentypePromise;
+  opentypePromise = import('opentype.js')
+    .then((mod) => ({ parse: mod.parse || mod.default?.parse || mod.default }))
+    .catch(() => null);
+  return opentypePromise;
+}
 
 export class FontLoader {
   /**
@@ -28,7 +40,13 @@ export class FontLoader {
    */
   async loadFont(buffer, filename) {
     try {
-      // Parse the font using OpenType.js
+      // Parse the font using OpenType.js (optional peer — resolved on demand)
+      const opentype = await loadOpentype();
+      if (!opentype) {
+        throw new Error(
+          'FontLoader needs the optional peer "opentype.js". Install it to parse font metrics.'
+        );
+      }
       const font = opentype.parse(buffer);
       console.log('OpenType parsed font:', {
         tables: Object.keys(font.tables),

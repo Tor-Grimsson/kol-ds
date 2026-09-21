@@ -1,9 +1,6 @@
-import { MemoryRouter } from 'react-router-dom'
 import { ExitPreview } from '@kolkrabbi/kol-component'
 
-// ExitPreview renders a react-router <Link>, so it must sit inside a Router.
-export const Default = () => (
-  <MemoryRouter>
-    <ExitPreview />
-  </MemoryRouter>
-)
+// Router-agnostic since kol-component 0.181.0 — the default renders a plain
+// <a href>, so the story no longer needs a Router around it. Inside one, a
+// consumer passes `linkComponent={Link}`.
+export const Default = () => <ExitPreview />

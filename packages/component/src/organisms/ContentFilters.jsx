@@ -42,6 +42,8 @@ import IconFrame from '../atoms/IconFrame.jsx'
  *   `headerActions` is the left group beside search and was never that)
  * @param {Function} props.onFilterChange — optional callback when filters change
  * @param {Array} props.mutuallyExclusiveFilters — filter keys that should be mutually exclusive
+ * @param {string[]} props.initialFilters — chips active on FIRST paint, as `"<groupKey>:<value>"`
+ *                  (e.g. `['kind:preset']`). Initial only: the component owns the set after that
  * @param {Array} props.customFilterKeys — filter keys handled by renderItem, not by ContentFilters
  * @param {ElementType} props.iconComponent — icon seam (defaults to DS Icon; needs `filter` + `search`)
  *
@@ -74,6 +76,7 @@ const ContentFilters = ({
   totalCount,
   titleIcon,
   filterGroups = [],
+  initialFilters,
   renderItem,
   viewModeOptions,
   viewMode: viewModeProp,
@@ -147,7 +150,14 @@ const ContentFilters = ({
   /* Icon seam — consumers on a local icon shelf pass their own component
    * rather than being forced onto the DS set. Needs `filter` + `search`. */
   const IconSeam = iconComponent || Icon
-  const [activeFilters, setActiveFilters] = useState(new Set())
+  /* SEEDED, not controlled (FilesDialog, kol-fxr 2026-09-04). A consumer that
+   * opens onto one chip — the files dialog opens on `preset` — had no way to
+   * say so: the set started empty and the first paint showed everything. An
+   * INITIAL value, not a controlled prop, because the filters are this
+   * component's own state everywhere else and a half-controlled set is two
+   * sources of truth. Entries are `"<groupKey>:<value>"`, the same strings the
+   * chips toggle. */
+  const [activeFilters, setActiveFilters] = useState(() => new Set(initialFilters))
   const [isExpanded, setIsExpanded] = useState(false)
   const [internalViewMode, setInternalViewMode] = useState(defaultViewMode ?? viewModeOptions?.[0]?.value)
   const viewMode = viewModeProp !== undefined ? viewModeProp : internalViewMode
@@ -265,7 +275,8 @@ const ContentFilters = ({
     /* THE LAW (user ruling 2026-08-27, said "for the 10th time" — ContentFiltersFirstGroupHugs,
      * its WIDTH overruled the same day — ContentFiltersFirstGroupFixedWidth, kol-monitor: "nope
      * not hug, fix a size … if columns, maybe just use one?"): THE FIRST FILTER GROUP IS ONE
-     * CATALOG COLUMN WIDE — `.kol-filters-first` (kol-theme): `(100cqw − 120px) / 6`, the `1fr`
+     * CATALOG COLUMN WIDE — `.kol-filters-first` (kol-theme): one track of the catalog grid AT THE
+     * COUNT IT RENDERS (theme ≥0.137.0 — was `(100cqw − 120px) / 6`, true only at six tracks), the `1fr`
      * of the catalog's `repeat(6, 1fr)` gap 24, measured on the header row as a container so
      * the count/strip beside the groups never narrows it. It sits over the first card; EVERY
      * GROUP AFTER IT FLOWS across the rest of the row, starting over the second. By POSITION,

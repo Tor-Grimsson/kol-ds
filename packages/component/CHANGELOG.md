@@ -1,5 +1,442 @@
 # @kolkrabbi/kol-component
 
+## 0.216.0 — 2026-09-21
+
+The media product, proved by use in `apps/media` before publishing (the apps tier).
+
+- **`ContextMenu` + `useContextMenu` — NEW.** A right-click menu anchored at the pointer.
+  `onContextMenu` appeared nowhere in this package before, which is why no file verb had a
+  surface to be invoked from. Built on `usePopover` via `refs.setPositionReference` — a
+  virtual element passed to `elements.reference` is rejected by floating-ui, because that slot
+  also feeds the interaction hooks and they call `getAttribute` on it.
+- **`MediaLibraryExplorer` / `variant="explorer"` — NEW.** Browse and the file wall as two
+  views of ONE surface, one mounted at a time behind a switch in the header: one wordmark, one
+  count, one listing. `browse` / `library` / `modal` / `page` are untouched.
+- **`fileActions` on `MediaLibraryBrowse`** — `{ createFolder, createFile, rename, move, remove }`,
+  each optional. Whatever is supplied becomes a context-menu entry; a read-only bucket gets no
+  menu. Right-click on rows, columns and blank space; drag a row onto a folder, or into a
+  whole column, to move it; ⌘/⇧-click multi-select, with the menu acting on the set.
+- **Row view shows the same tree as the columns.** It rendered folders derived from file keys
+  and dropped files entirely, so an empty folder was invisible and no file was ever listed.
+  Both views share one level function now; rows expand inline and take the column height.
+- **`ColumnBrowser`** takes `onRowContextMenu` and `dragFor`. Paths coming out of a
+  multi-bucket browser are virtual (`<title>/<bucket>/…`) and are un-rooted before any verb.
+  The literal "empty" label on an empty column is gone.
+- **One previewer.** The wall's `renderThumb` falls through to `KindPreview`, the same call the
+  column preview makes — markdown, code, json, yaml, audio and video preview in grid and list.
+- **Slots:** `banner` (under the header — the upload drop zone), `headerTrailing` (after the
+  icons), `onHome` (the wordmark becomes a home button).
+- Header gear, read-only lock and the Flat chip use the DS `Tooltip`, not a `title` attribute.
+
+## 0.215.0 — 2026-09-04
+
+- **`formatDate` reaches `MediaLibraryLibrary` too** (`FormatDateSkipsTheLibraryPage`,
+  kol-r2b2). It landed on `MediaLibraryBrowse` only, so a consumer passing ONE
+  props object to both got `19.6.2026` on the Browse tab and `2026-06-19` on the
+  Files tab — two formats for one field, one tap apart. The desktop stack always
+  had the mismatch; the new tab pill just moved the halves close enough to see
+  it. Both pages default it, so an unpassed prop cannot diverge either.
+- **The sweep rule, widened.** This is the FOURTH defect of one shape:
+  `settingsFooter` documented on `SettingsPanel` and hardcoded past by the page ·
+  `thumbnailFor`/`folderMeta` shipped on `ColumnBrowser` and never forwarded ·
+  now a seam on one page and not its sibling. The rule written at the signature
+  covered component→page and not **page→sibling page**. These two pages are ONE
+  SURFACE SPLIT IN TWO and a consumer hands the same object to both, so a prop
+  naming how a SHARED FIELD renders is added to both in the same edit. Props
+  about a concept only one page has stay put — `thumbnailFor`, `folderMeta` and
+  `stackView` are folder and stack concepts and are correctly absent from the
+  wall. A check now diffs the two signatures and names every legitimate
+  one-page-only prop, so the next divergence is a decision rather than a
+  surprise.
+
+## 0.214.0 — 2026-09-04
+
+- **The tab bar's spacer goes AFTER the list** (`TabBarSpacerAboveTheList`,
+  kol-r2b2, measured at 390). `MobileTabBar` is `fixed`, so where it sits in the
+  tree is irrelevant — but the SPACER is in normal flow, so its position is
+  everything. Rendered before the list in `MediaLibraryBrowse` it failed twice
+  at once: a 56px hole punched into the gap under the pinned search, and the
+  last row still running 99px under the bar. The comment above the block named
+  the exact failure it was meant to prevent and the block sat in the wrong place
+  anyway. `MediaLibraryLibrary`'s copy was already correctly placed after its
+  `ContentFilters`. The check asserts the ORDER, since presence passes on the
+  broken version.
+- **`FullscreenOverlay initialFocus`** — a ref naming where focus lands on open.
+  The sheet takes it by default, which is right for a browser and wrong for a
+  sheet opened to be TYPED IN: a child's `autoFocus` cannot win, because child
+  effects run before the parent's and this one moves focus afterwards, so the
+  field focuses and is immediately robbed with nothing in either file looking
+  wrong (kol-fxr measured it — Save As routed into the files dialog correctly
+  and focus sat on `.kol-overlay-sheet`). The ref may point at the control or at
+  a WRAPPER around it; the first focusable descendant is taken, so a caller does
+  not have to know whether a DS atom forwards a ref. An empty ref falls back to
+  the sheet.
+
+## 0.213.0 — 2026-09-04
+
+`ColumnBrowserMobileViews` items 15 + 16 — the last two, unblocked by kol-r2b2's
+390 measurement of 0.211.0. User-ruled off the wireframe 2026-09-03.
+
+- **`MobileTabBar` — the floating bottom tab pill** (item 16). Both references
+  end the same way: neither iOS Files nor Dropbox stacks two full-height
+  surfaces on a phone, each floats a pill and gives every surface a tab. It is
+  what answers the question `ColumnBrowserStackMode` left open — the library
+  wall does NOT stay stacked under the browser. **What a tab MEANS is the
+  consumer's**: the component ships the shape, the float, the states and the
+  breakpoint, and takes a list. Deciding that a media library has exactly three
+  surfaces called Browse, Files and Kinds is the guess that makes an organism
+  un-reusable. `TABBAR_H` is published so a list does not hardcode the room it
+  owes. `MediaLibraryBrowse` and `MediaLibraryLibrary` both take
+  `tabs`/`activeTab`/`onTabChange`; no tabs, no bar, and both pages are exactly
+  what they were. Above `md` nothing renders — the 2026-08-26 one-view ruling
+  stands.
+- **Pinned search and a `···` below `md`** (item 15) on `MediaLibraryBrowse`.
+  Item 7 of the previous ticket hid the desktop control cluster and put nothing
+  in its place, so SORT was unreachable on a phone. Search sits above the list
+  rather than inside the `ContentFilters` wall, because the wall is a different
+  SURFACE — a tab away — so a control living in it cannot be reached from the
+  thing you are searching. It filters the KEY SPACE, so the tree still
+  navigates and no flat results view had to be minted. The `···` carries the
+  stack view (List / Icons) and the sort keys, and tapping the active key flips
+  the direction, as both references do.
+- **`sortObjects` — name is the tiebreak in every mode.** Equal sizes, or a
+  bucket whose objects carry no `uploaded`, otherwise reshuffle between renders
+  for no reason the user caused. The tiebreak is deliberately not reversed by
+  `sortDir`: descending by size still reads A before B inside a tie.
+- **`MenuItem caret`** — the trigger drew `label ▾` unconditionally, which is
+  right for a named menu and wrong for an ICON trigger: a caret beside `···`
+  reads as a second glyph, and neither reference draws one.
+
+## 0.212.0 — 2026-09-04
+
+- **`ContentFilters initialFilters`** — chips active on the first paint, as
+  `["<groupKey>:<value>"]`. A consumer that opens onto one chip (the editor's new
+  files dialog opens on `preset`) had no way to say so: the set started empty and
+  the first paint showed everything. INITIAL, not controlled — the filters are
+  the component's own state everywhere else, and a half-controlled set would be
+  two sources of truth.
+
+## 0.211.0 — 2026-09-04
+
+`StackModeChromeAndAncestors` (kol-r2b2, measured at 390 × 844 on the deployed
+build). All four items.
+
+- **The stack list renders the CURRENT LEVEL only.** It walked from the root
+  down the open path, so every ancestor rendered as a row — at a bucket root,
+  two rows and 120px of an 844px viewport restating the breadcrumb sitting
+  directly above them, with rows indented to 56px because depth counted from the
+  root. The spec held two rules that fight ("ancestors are reached by back" and
+  "capped at three levels of indent") and kol-r2b2 corrected it against their own
+  wireframe. The fix is that NAVIGATING and EXPANDING had been fused into
+  `prefix` and come apart: the ROW opens a folder and re-bases the list, the
+  CHEVRON expands it where it stands from local state — which is what item 11
+  always said the two tap targets were for. Depth now restarts at the current
+  level, so rows sit at 16px.
+- **No frame below `md`.** On desktop the browser is a PANE with edges sitting in
+  a page; in stack mode it IS the page's content. Border and radius dropped;
+  the 358 width is the consumer's page padding and is untouched.
+- **The zone-2 glyph fills its box.** It sat at 20 in a 44 box while a file's
+  thumbnail filled its 44, so the icon column read ragged. One `ZONE_BOX`
+  constant sizes both now. Not a glyph-ladder break: SOLO pairs 12/16/20/24 with
+  the CONTROL squares 22/26/32/40, and this is a media slot a glyph stands in
+  for, not a control square. (The ticket reported the glyph at 12px — that
+  measurement caught the disclosure chevron, which is 12. The rail was still
+  ragged at 20.)
+- **`LibraryHeader` gives at 390.** The title was `white-space: normal` in a box
+  the fixed `w-48` dropdown had squeezed to 48px, so `KOL-R2B2` wrapped
+  MID-TOKEN into two 36px lines. The dropdown's 192px was the real cost — it
+  keeps that width from `md` up and shrinks below it, and the title truncates
+  rather than wrapping. `headerActions` is documented as holding about ONE
+  consumer icon at this width, with the swap-below-`md` pattern named.
+
+## 0.210.0 — 2026-09-04
+
+- **`media={false}` — no cover, as against a missing one**
+  (content-card-needs-no-cover, kol-client-olina). `ContentMedia` turns absent
+  children into a dashed MISSING placeholder on purpose: a card whose image
+  failed must not collapse into a text blob. That is the wrong answer for a
+  markdown note in a database row, which has no picture and never will — their
+  `/notes` page drew a wall of dashed frames with nothing misconfigured. Only
+  the consumer knows whether a cover is owed, so it is declared. `false` rather
+  than a new prop: it is React's own idiom for "render nothing", and
+  `media={false}` until now rendered an EMPTY framed box, a state nobody wants.
+  `media={null}` and an omitted `media` keep the placeholder, so no existing
+  consumer moves. On `ContentRow` it means no thumb — `thumb={0}` already did
+  that, but a SIZE was answering a question about MEANING, and a consumer
+  should not say the same thing two ways on the card and the row.
+- **`KindPreview` takes `text` + `kind`** — content in hand, no fetch. A D1 row
+  has no file behind it, so `urlOf` has nothing to pull, but the render path is
+  the one this component already owns and a second previewer in the estate is
+  what the lobby exists to prevent. **Shape ruled by kol-r2b2**, whose component
+  this is: `text` sits BESIDE `o` (that object's shape is what `kindOf`,
+  `posterFor` and the variant grouping read — prose inside it would make it mean
+  two things), and `kind` ships WITH it rather than after, because
+  classification reads the extension off the key and a keyless row lands on
+  `other` — the right content rendered as the wrong thing, worse than the
+  placeholder it replaces. A URL caller is untouched.
+- **`ContentText` warns on an unknown slot** (dev only, once per prop). A typo
+  in a slot name rendered an empty card silently — no build, lint or console
+  signal — and cost a consumer an hour. The warning names the whole vocabulary,
+  since "summary is not a slot" does not tell you `body` is.
+- **`ColumnBrowser`: `thumbnailFor` / `folderMeta` receive the path VERBATIM**
+  (doc only, kol-r2b2). A consumer mounting a virtual root above real storage
+  gets its own prefix back and must strip it before looking anything up.
+
+## 0.209.0 — 2026-09-04
+
+- **`ColumnBrowser` stack mode: the children go under the PARENT** (D1,
+  ColumnBrowserStackMode, kol-r2b2). Inline expand was ruled and the row list
+  was built by a flat loop over the open path, which appends each level after
+  the whole level above it — so an open folder's children surfaced below its
+  last sibling and, in the reported tree, below an unrelated root FILE. Every
+  row was present and every `depth` indent was right, so it read as an indent
+  bug; the walk is now recursive and the subtree is contiguous. Lifted to
+  `stackRows(objects, openPath, partition)` so the order is checkable — a
+  structural assertion passes on the broken version, an adjacency one does not.
+- **`formatDate` — a new seam** (D2, same ticket). Stack rows printed
+  `2026-06-19T02:00:14.629Z`, the raw `uploaded` string. Defaults to ISO
+  date-only and is a prop for the same reason `formatSize` is one. The preview
+  column's inline date formatting now routes through it too.
+- **`MediaLibraryBrowse` forwards `thumbnailFor`, `folderMeta`, `stackView` and
+  `formatDate`** (ColumnBrowserMobileViews items 10 + 13). Both mobile seams
+  shipped in 0.207.0 and were unreachable: the page's signature ended before
+  them, so folders showed no meta and files no thumbnail on the deployed build
+  while the props gate stayed green. Second time this shape bit — `SettingsPanel`
+  documented a `footer` slot this file hardcoded past — so the rule is written
+  at the signature: a prop added to `ColumnBrowser` is added here in the same
+  edit unless the page holds a real opinion about it.
+
+## 0.180.0 — 2026-09-03
+
+- **`SegmentedToggle tone`** (theme 0.139.0) — the one control ControlToneSunken
+  skipped. Through `toneClass` like the rest, so a `kol-tone-sunken` wrapper
+  reaches it; unset inherits.
+
+## 0.179.0 — 2026-09-03
+
+- **`Modal` wears `.kol-overlay-scrim`** (overlay-scrim-outliers sweep). The
+  docs had called it a wearer since 2026-08-01; the source drew a raw
+  `rgba(0,0,0,0.5)`. Same sweep, one line each so they are not found again:
+  `OverlayGlassPanel` blurs on purpose (a panel, not a scrim), `SelectionOverlay`'s
+  `rgba` is a label chip on a canvas, `TiltBento`'s is a tile's hover veil.
+
+## 0.178.0 — 2026-09-03
+
+- **`slide` — a fifth content kind** (slide-variant-and-shelf-preset,
+  kol-client-olina; user-ruled: *"why don't we make a new variant for slides,
+  they are genuinely different with 16:9 layout and those exposed
+  properties?"*). A deck is a 1920×1080 stage. `ContentCard variant="slide"`:
+  file's stack, `16 / 9`, the plate on `surface-primary` at rest AND hover.
+  `ContentRow variant="slide"`: file's row with the thumb filling the rung's
+  height and taking its width from the ratio — 48 × 85, the whole frame, not
+  the 48 square that cropped a deck to a sliver. Text is `title · date · size
+  · meta` (the slide count). Every value read off olina's /slide-deck.
+- **`formatSize` is exported** — it lived inside `MediaLibraryPages` and two
+  consumers had restated it byte for byte.
+
+## 0.177.0 — 2026-09-03
+
+- `tone` takes `inverted` (theme 0.138.0); `secondary` now means the page
+  surface. `inverse` still maps to `sunken`.
+
+## 0.176.0 — 2026-09-03
+
+- **`tone` has six values and `default` means inherit** (tone-is-the-ground-axis,
+  kol-client-olina; theme 0.134.0 carries the bundles). `toneClass` maps
+  `primary` · `secondary` · `outline` · `ghost` · `grey` · `sunken` (`inverse`
+  aliased) to `kol-tone-*`; `default` stamps nothing, so a control inherits the
+  nearest `kol-tone-*` wrapper's tone — a `default` that aliased `primary` on
+  the element would have blocked the inheritance ask 3 exists for. **Button,
+  Dropdown, Input, SearchInput and IconFrame no longer stamp a variant class
+  when none is passed**: the theme's fallback renders exactly the old default
+  (primary; IconFrame's secondary), and a toned wrapper now reaches them.
+  `ViewToggle`'s well reads the tone instead of carrying `bg-surface-secondary`,
+  and its inactive text chip is `.kol-control--plain`.
+- **Dropdown copies the trigger's tone onto its portalled panel** — the panel
+  renders at `body`, outside any wrapper's cascade, so on open the trigger's
+  resolved `--kol-tone-*` are written to the panel as inline style. This is
+  what makes an ambient outline dropdown paint the page's ground and not
+  `surface-primary`.
+
+## 0.175.0 — 2026-09-03
+
+- **`SectionText` is a BASE, and `PageHeader` is built from it** (user ruling
+  2026-09-03: *"sectionText could be seen as THE BASE and we could use it in many
+  different ways, such as pageheader … much like ContentText is used in
+  ContentCards, but not directly"*). 0.174.0 put the two components in one
+  package; this makes them one implementation. `PageHeader` hand-rolled its own
+  eyebrow / title / sub-line — the same block `SectionText` already drew for
+  seven section organisms — so the duplication the move was filed against
+  survived one level down. It is now a thin composition.
+  **`SectionText` gains two seams** for it: `actionsPlacement="inline"` puts the
+  cluster on the BODY's first baseline in one flex row (the only way to reach
+  that baseline rather than the headline's), contributing no height via a
+  zero-height centred box; and `style` reaches the root, which `slotStyle` could
+  not, for a composition that owns its own rhythm.
+  Verified in a render: the block measures **102px with and without an actions
+  cluster** — the no-height ruling that made this risky is intact — with the
+  margin, the title role, the eyebrow voice and both registers unchanged.
+
+## 0.174.0 — 2026-09-03
+
+- **`PageHeader` moves here from `kol-shell`, and gains `register`**
+  (page-header-one-masthead, kol-client-olina; user: *"these are serving the same
+  purpose, why aren't they the same component different variants?"*). The page
+  masthead was built two ways — `PageHeader` on app pages, a hand-assembled
+  `SectionText` on kolkrabbi.io's `/prints` and `/work`, the latter carrying a
+  comment about reproducing the former "in its wrapper verbatim". The cause was
+  the package: `kol-shell` is the app-shell tier, so a SITE with no shell could
+  not take the masthead without installing the whole package for one header. The
+  rest of that page's stack — `ContentFilters`, `ContentCollection`,
+  `ContentCard`, `SectionText` — was already here, so this reunites it.
+  **`register`** is the one prop, and the registers differ in the sub-line only:
+  `app` (default, `kol-mono-14` — no existing page moves) and `site`
+  (`kol-sans-body-01`, what `/prints` builds by hand). Title roles, sizes and the
+  actions baseline are shared, which is what made this one component and not two.
+  **Breaks ARCHITECTURE §3 deliberately, on the user's ruling** — §3 is corrected
+  in place, and it also wrongly claimed `ContentFilters` for kol-shell, which has
+  never been true.
+
+## 0.173.0 — 2026-09-03
+
+- **`SectionSplit textAlign`** (section-split-fill-text-align, kol-client-olina;
+  user: *"same placement but just aligned to left … can the text align left and
+  everything else kinda stays as is?"*). `align` places the block, `textAlign`
+  rags the type inside it. `fill` hardcoded `align="center"` on its `SectionText`
+  plus `justify-center` on the actions and meta rows, so a consumer reached in
+  with `innerClassName="[&_.kol-section-text]:items-start …"`.
+  **Forwarded in BOTH forms, not just `fill`** — a prop that silently does
+  nothing in the default form is a seam wired to nothing. Unset, each form keeps
+  exactly what it did: `fill` centres, bounded follows `align`. Verified in a
+  render: `fill` with `textAlign="start"` leaves the block at 365×160 @ x138,
+  byte-identical to the default, and moves only the headline (233 → 138).
+
+## 0.172.0 — 2026-09-03
+
+- **`SectionSplit fill` — the media fills its half** (section-split-fill-variant,
+  kol-client-olina). `SectionSplitMediaBounded` (2026-08-27) binds the media
+  frame to the height rung minus the padding and caps its width at the ratio —
+  the right rule for a card with media, the wrong one for a half. `fill` releases
+  it: the media column drops the ratio, the bounded height, the radius and the
+  section padding and covers its half edge to edge, with the text centred beside
+  it; below 901px the media stacks on top at `min-h-[50vh]`. `align` still picks
+  the side. This is the layout `SectionHero variant="split"` draws, without the
+  hero's overlay / glass panel / carousel machinery or its name — a consumer had
+  hand-authored a second copy of it because putting a hero under an About section
+  was not acceptable. Verified in a render: at 1200 the media is exactly half
+  (600×750, flush at x=0, no ratio, no radius); at 390 it is full width, on top,
+  and at least half the viewport tall. The bounded form is byte-identical.
+
+## 0.171.0 — 2026-09-03
+
+- **`CloseButton` — the X is a component now** (user: *"why are you making
+  individual changes, this is a button component yes or no"*). It was: yes, and
+  that was the fault. "Close" was four props retyped at five call sites, so they
+  drifted into three sizes and two variants — `ShellDrawer` at `md` plus a
+  hand-rolled `<button>` with an 18px icon for its start-side close, `TabsRow` a
+  hand-rolled `<button>` with a 12px icon and its own hover, and workshop's
+  `ShellLayout` still shipping `variant="outline" quiet`, the boxed treatment the
+  2026-09-01 one-idiom ruling retired. The ruling was written down and then
+  re-typed wrong three times. All five now render `CloseButton`.
+  **`states={false}`** swaps the Button base for `IconFrame` (user: *"sometimes
+  you dont want states"*) — identical drawing, no hover, no press, no focus wash,
+  which is the distinction IconFrame exists for. Verified in a render: both bases
+  give 22/26/32/40 boxes with 12/16/20/24 glyphs, transparent at rest.
+  Lives in `utilities/` — an X alone on a canvas means nothing, and it is the one
+  folder a utility, a molecule and a package shell can all import.
+
+## 0.170.0 — 2026-09-03
+
+- **The close X sits on the row's rung — one idiom, one size** (user, on the
+  settings drawer: *"does this button follow the size ladder?"*). It did not.
+  `ShellDrawer`'s close was pinned `md` (32) while every control in the panel
+  under it — switches, dropdowns, the reset frame — is `sm` (26), so the one
+  control that is not a setting was the largest thing on the surface.
+  `ShellDrawer` takes **`closeSize`**, defaulting to `sm`; `FullscreenOverlay`'s
+  close (the media lightbox X) takes `sm` too, because it took Button's `md`
+  default and two sizes for one idiom is what the single-close-idiom ruling
+  exists to stop. Pairs with 0.168.0, which removed the `iconSize={14}` that had
+  the glyph floating in an oversized box.
+
+## 0.169.0 — 2026-09-03
+
+- **One bucket gets no bucket level** (one-bucket-consumer, kol-client-olina).
+  `MediaLibraryBrowse`'s virtual root was unconditional: column 0 the app title,
+  column 1 one row per bucket, column 2 the folders — so a single-bucket
+  consumer crossed two levels that each named the only thing they could name.
+  With `buckets.length <= 1` the virtual root collapses to the empty string,
+  which makes every `slice(VROOT.length)` a no-op and leaves column 0 as the
+  bucket's own folders; `onPrefix` skips the segment split. Verified in a real
+  render: one bucket draws 1 column (`brand` · `projects`), three still draw 3.
+  Multi-bucket browse is byte-identical.
+
+## 0.168.0 — 2026-09-03
+
+- **The settings drawer gets its scrim back** (settings-drawer-has-no-surface,
+  kol-client-olina). `SettingsPanel` passed `backdrop={false}`, so the settings
+  drawer was the one drawer in the system with no dimming. The panel paints
+  `bg-surface-primary` — the same token as the page — so the scrim was the only
+  thing separating them: with it off the drawer was invisible on a dark page and
+  the controls floated in the right third of the screen. One prop removed; it now
+  takes the same 48 % scrim every other drawer takes. No surface token changed.
+
+## 0.167.0 — 2026-09-03
+
+- **`useGrabEdge` takes an axis and its own tuning.** `axis: 'x'|'y'` says which
+  way the pill travels (the proximity test is always the other one), and
+  `near`/`sleep`/`travel`/`stick`/`range` are all options so a whole constant set
+  spreads in with nothing silently dropped. `NavRail` is unchanged — every
+  default is `GRAB`.
+
+- **`GRAB_COLUMN`** (`utilities/motion.js`) — the ColumnBrowser handles' own
+  feel, ruled in kol-r2b2 and not the rail's: a 2.8s chase on a 30px retarget
+  and no bipolar band, so the pill tracks the pointer down the edge instead of
+  landing and holding. `near`/`sleep` stay shared.
+
+- **`ShellDrawer`'s close is a normal icon button** (user: *"it should just be
+  like a normal button with a close icon, its not new?"*). It carried
+  `iconSize={14}` — kept in 2026-08-01 to preserve the glyph size the hand-rolled
+  button before it happened to have — so a 32px box sat around a glyph six under
+  its size's own. No override: the size sets both.
+
+## 0.166.0 — 2026-09-02
+
+- **`useGrabEdge` takes an `axis`** (BrowsePageRulingsAndSeams, kol-r2b2
+  2026-09-02; pairs with kol-theme 0.131.0). A rail has one vertical edge;
+  `ColumnBrowser` has a vertical handle per column and a horizontal one along
+  its foot, and the user ruled they wear the same gesture — so the hook grew an
+  axis rather than the estate growing a second implementation. `axis` is which
+  way the pill TRAVELS and the proximity test is always the other one:
+  `'y'` (default, unchanged for `NavRail`) wakes on x and writes
+  `--kol-rail-grab-y`; `'x'` wakes on y and writes the new `--kol-rail-grab-x`.
+  `ColumnBrowser`'s `ResizeHandle` is the second consumer — note its handles are
+  named for what they RESIZE, so the `x` handle passes `axis: 'y'`.
+
+## 0.165.0 — 2026-09-02
+
+- **`settingsFooter` — the seam that ends a MutationObserver**
+  (BrowsePageRulingsAndSeams, kol-r2b2 2026-09-02). `SettingsPanel` takes a
+  `footer` slot and documents it, but `MediaLibraryPages` hardcoded
+  `footer={<SettingsFooter onReset />}`, so a consumer wanting one more control
+  in that footer had no way in. kol-r2b2's workaround was a `MutationObserver`
+  on `document.body` watching for `[aria-label="Reset to defaults"]` and a
+  `createPortal` into that element's parent — a copy string in a
+  `querySelector`, watching the whole document, to place one button.
+  `MediaLibraryBrowse` and `MediaLibraryLibrary` now take `settingsFooter`,
+  forwarded through `MediaSettings` to `SettingsFooter`'s new **`children`**
+  slot: the node rides the SAME row, before reset, and reset survives. The row
+  gained `gap-2` (user 2026-08-28) — `flex justify-end` with no gap is right
+  for one control and wrong for two; the chip and the reset icon touched.
+
+- **The ColumnBrowser row stops drawing its own divider** (same ticket; pairs
+  with kol-theme 0.130.0). `Row` no longer emits `border-b last:border-b-0
+  only:border-b` or its inline `borderColor` — the row is a rounded pill on a
+  4px inset now, and a hairline under a rounded fill draws the box the pill is
+  not. The shape lives in the theme with the fill rather than as utilities
+  racing it (ARCHITECTURE §5). This supersedes the `only:` hairline half of
+  ColumnBrowserChromeCorrections (2026-08-28), by the same repo's later ruling;
+  every column still keeps its right edge, which is the half that stands.
+
 ## 0.164.0 — 2026-09-02
 
 - **`ContentFilters trailingActions` have the narrow rung too** (found holding

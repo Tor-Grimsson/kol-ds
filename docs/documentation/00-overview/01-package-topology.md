@@ -3,7 +3,7 @@ title: Package topology
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-08-26
+updated: 2026-09-03
 verified: 2026-07-09
 description: The eleven UI packages and the clients tier
 aliases:
@@ -39,7 +39,7 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | **Foundation** | `@kolkrabbi/kol-theme` | all CSS — tokens, `.kol-prose`, per-component sheets (chess/dashboards/workshop/etc.) |
 | | `@kolkrabbi/kol-icons` | `Icon` loader + `kol-icon-set-v1` |
 | **Core** | `@kolkrabbi/kol-component` | general atoms → organisms + hooks (see below) |
-| | `@kolkrabbi/kol-framework` | app shell — `AppShell`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop` |
+| | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
 | **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — markdown engine, docs viewer, tag graph, shell |
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
 | | `@kolkrabbi/kol-controls` | hardware panel controls — knob, fader, LED, toggles, jack, rocker, `ParamSheet` |

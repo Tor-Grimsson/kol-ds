@@ -427,7 +427,7 @@ export function WheelTriangle({ hue, sat, val, onChangeHue, onChangeSV }) {
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             width: '100%', height: '100%',
-            background: `conic-gradient(from 0deg,
+            background: `conic-gradient(from 90deg,
               hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%),
               hsl(180,100%,50%), hsl(240,100%,50%), hsl(300,100%,50%),
               hsl(360,100%,50%))`,

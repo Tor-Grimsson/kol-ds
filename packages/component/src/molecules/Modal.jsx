@@ -76,9 +76,12 @@ function ModalView({ state, closeWith }) {
   return (
     <div
       onMouseDown={cancel}
+      /* THE scrim (overlay-scrim-outliers sweep, 2026-09-03): the docs said Modal
+         wore `.kol-overlay-scrim`; the source drew a raw `rgba(0,0,0,0.5)`. The
+         z stays above the drawers it can open from. */
+      className="kol-overlay-scrim"
       style={{
         position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(0,0,0,0.5)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >

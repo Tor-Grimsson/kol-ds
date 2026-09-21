@@ -27,6 +27,12 @@ export function MenuItem({
   panelStyle,
   buttonClassName = '',
   defaultOpen = false,
+  /* THE CARET IS NOT ALWAYS RIGHT. The trigger draws `label ▾`, which is the
+   * shape of a named menu — File, Sort. An ICON trigger (`···`, a gear) is
+   * already complete and a caret beside it reads as a second glyph rather than
+   * an affordance; neither reference draws one (ColumnBrowserMobileViews item
+   * 15, kol-r2b2 2026-09-04). Default keeps every existing call-site. */
+  caret = true,
 }) {
   const [open, setOpen] = useState(defaultOpen)
   const popover = usePopover({
@@ -48,11 +54,13 @@ export function MenuItem({
         className={`kol-helper-12 px-3 h-8 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
       >
         <span>{label}</span>
-        <Icon
-          name="chevron-down"
-          size={10}
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
-        />
+        {caret && (
+          <Icon
+            name="chevron-down"
+            size={10}
+            style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
+          />
+        )}
       </button>
       {/* w-max: floats size to CONTENT, never to the containing block —
         * same family law as ShapeDropdown's panel (2026-08-09 review). */}

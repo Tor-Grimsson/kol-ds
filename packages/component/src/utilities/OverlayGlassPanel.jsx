@@ -34,6 +34,9 @@ export default function OverlayGlassPanel({
       className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-xs)] ${padding} ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
       style={{
         backgroundColor: `color-mix(in srgb, var(--kol-surface-primary) ${surfaceOpacity}%, transparent)`,
+        /* a PANEL, not a scrim: the blur is this surface's whole point and the
+           no-blur ruling (OverlayScrimBlur, 2026-09-01) is about scrims — kept on
+           purpose (overlay-scrim-outliers sweep, 2026-09-03) */
         backdropFilter: `blur(${blur})`,
       }}
     >

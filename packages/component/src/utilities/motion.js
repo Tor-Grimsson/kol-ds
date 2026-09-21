@@ -86,3 +86,29 @@ export const GRAB = {
   snap: { duration: 0.5, ease: EASE.outGsap },
   slop: 3,
 }
+
+/* THE COLUMN BROWSER'S HANDLES ARE NOT THE RAIL'S (BrowsePageRulingsAndSeams,
+ * kol-r2b2 2026-09-02 — user: *"its a bit different, its not like the sidenav.
+ * the handles are different from the sidenav"*). Same gesture, its own feel,
+ * ruled in kol-r2b2 and running there since 2026-08-28:
+ *
+ *   travel   2.8s, not 1.1 — a long, unhurried chase
+ *   stick    30px, not 90 — a much smaller retarget threshold, so the pill
+ *            TRACKS the pointer down the edge instead of landing and holding.
+ *            The dwell that fixed the rail's four-mark grid is not what these
+ *            want; the deadband exists only so a slow drag does not nudge the
+ *            target every frame — and it is measured against the last TARGET,
+ *            not the animated value, because mid-flight the live value is still
+ *            travelling.
+ *   range    1 — no bipolar band. The rail chokes its travel so the pill never
+ *            rides up beside the logomark; there is nothing at these edges to
+ *            avoid, and the CSS `clamp()` at 2.25rem already stops it flush.
+ *
+ * `near` / `sleep` are shared — proximity is proximity. The FADE curve differs
+ * too and lives with the rule (kol-theme's kol-components-molecules.css). */
+export const GRAB_COLUMN = {
+  ...GRAB,
+  stick: 30,
+  range: 1,
+  travel: { duration: 2.8, ease: EASE.outGsap },
+}

@@ -167,6 +167,24 @@ Four rungs, four names, used in code comments, gate messages and here:
 
 Chapter and Page were **indistinguishable**: both `kol-mono-14`, and the only difference was `.text-body` — a **colour** utility, not type (that class was renamed `.text-default` on 2026-08-01; the point stands). A parent that reads identically to its children is not a hierarchy. The weight is the difference and it stays **inside one ramp**: R1 exists to stop a second *ramp* in the rails, and a weight within one is not one.
 
+**A RULER IS NOT A RAIL ROW (2026-09-03, `docstoc-rail-tracking-and-snap-prop`).**
+R1's ramp law governs rail **rows** — the nav idiom above. `DocsToc
+variant="rail"` is a different object: a fisheye ruler whose labels are
+graduations, `white-space: nowrap`, and its label wears **`kol-helper-12`**, not
+the row rung. That is the type law's own fault line deciding it
+([[../01-foundations/03-typography|type classes]]: *"can this string ever wrap?
+No (structurally single-line) → helper"*), and it is **functional here, not
+aesthetic** — the rail measures each row's box with `getBoundingClientRect()` to
+place its detents, so a line-height-bearing class adds leading the string never
+uses, inflates every box and moves a label's centre off its own tick.
+
+It shipped wrong once, in kol-component 0.188.0: `validate:rails` R1 tested the
+class prefix rather than the rung's purpose, forced the label to `kol-mono-14`,
+and overrode a rung the consumer's designer had specified. The gate now exempts
+`kol-toc-label` **by class, with this reason** — everything else in a rail file
+still answers to R1. A gate that cries wolf gets muted; a gate that is
+confidently wrong gets obeyed, which is worse.
+
 **Both rails are `--kol-sidenav-w` wide.** The right read 14rem against the left's 16rem; two rails framing the same content at different widths is a frame nobody drew on purpose. **The left is a ladder since framework 0.32.0** (SideNavWidthLadder, user ruling 2026-08-27 on the brand book: *320 on desktop, 264 on laptop, collapsed on tablet, hamburger on mobile*): `--kol-sidenav-w` is 264px and 320px from 1536 (`2xl`); the drag snaps to the window's rung. `--kol-shell-toc-w` is still 16rem — whether the right rail climbs the same ladder is held for the user.
 
 ### ONE GEOMETRY FOR THE WORKSPACE RAILS (user ruling 2026-08-27)

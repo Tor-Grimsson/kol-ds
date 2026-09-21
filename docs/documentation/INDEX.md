@@ -3,7 +3,7 @@ title: KOL documentation
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 description: The design system, documented in numbered sections
 aliases:
   - documentation
@@ -30,6 +30,8 @@ proposal came from grepping code for something already written down.
 | a breakpoint or a rail width | [[08-breakpoints/04-kol-ds-rules\|KOL-DS rules]] | the values, and which of them are closed |
 | a sidebar, a TOC rail, the shell | [[04-compositions/02-shells\|reference shells]] | one rail system · the three-rung ladder · the eyebrow box · section order |
 | type, a font, a text class | [[01-foundations/03-typography\|type classes]] | the roles; casing is a **role** — eyebrows and the display voice uppercase by contract, body and buttons as authored |
+| an ink weight, a wash, a scrim, a `fg-*`/`oq-*` stop | [[01-foundations/10-opacity\|opacity]] | twelve ladders; `fg`/`oq` flip toward the ink, `ab` toward the ground, `absolute` is frozen — and one scrim tint at 48 % |
+| a control's height, or a size that must line up | [[01-foundations/09-sizes\|sizes]] | one height per size — 22 · 26 · 32 · 40 — and every family hits it; glyphs are their own ladder and never follow the box |
 | where a component belongs | [[03-components/02-placement\|placement rules]] | the placement **and** membership tests |
 
 **Precedence.** These docs **define**. Code is the current *state*, and current
@@ -44,11 +46,11 @@ loud — that is a claim, and it belongs in the doc before it reaches the code.
 
 | Section | Docs | Live counterpart |
 |---|---|---|
-| [[00-overview/INDEX\|00 — Overview]] | What KOL is — tiers, the 15 packages ([[../operations/01-release/02-shipped-packages\|full list + versions]]), install, the consumer contract | `/` |
-| **01 — Foundations** | [[01-foundations/01-tokens\|tokens]] · [[01-foundations/02-color\|color]] · [[01-foundations/03-typography\|typography]] · [[01-foundations/04-layout-breakpoints\|layout & breakpoints]] · [[01-foundations/05-layout-systems\|layout systems registry]] | `/foundations`, `/foundations/color`, `/foundations/typography` |
+| [[00-overview/INDEX\|00 — Overview]] | What KOL is — tiers, the 18 packages ([[../operations/01-release/02-shipped-packages\|full list + versions]]), install, the consumer contract | `/` |
+| **01 — Foundations** | [[01-foundations/01-tokens\|tokens]] · [[01-foundations/02-color\|color]] · [[01-foundations/10-opacity\|opacity]] · [[01-foundations/03-typography\|typography]] · [[01-foundations/09-sizes\|sizes]] · [[01-foundations/04-layout-breakpoints\|layout & breakpoints]] · [[01-foundations/05-layout-systems\|layout systems registry]] | `/foundations`, `/foundations/color`, `/foundations/typography` |
 | **02 — Icons** | [[02-icons/INDEX\|loader, set & BYO]] · [[02-icons/01-inventory\|names by category]] | `/icons`, `/icons/v1` |
 | **03 — Components** | [[03-components/00-taxonomy\|taxonomy]] · [[03-components/01-inventory\|inventory]] · [[03-components/04-diamond-tier\|diamond tier]] · [[03-components/05-control-chrome\|control chrome]] · [[03-components/02-placement\|placement rules]] · [[03-components/03-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components` |
-| **04 — Compositions** | [[04-compositions/01-blocks-and-sets\|blocks & sets]] · [[04-compositions/02-shells\|shells]] · [[04-compositions/03-slug-composition-gallery\|composition gallery]] · [[04-compositions/04-workshop-system\|workshop system]] · [[04-compositions/05-foundry-system\|foundry system]] · [[04-compositions/06-store-system\|store system]] · [[04-compositions/07-content-system\|content system]] · [[04-compositions/08-chess-system\|chess system]] · [[04-compositions/09-dashboards-system\|dashboards system]] · [[04-compositions/10-styleguide-system\|styleguide system]] · [[04-compositions/11-shell-system\|shell system]] · [[04-compositions/12-section-system\|section system]] | `/blocks`, `/sets`, `/docs/shell-and-layout` |
+| **04 — Compositions** | [[04-compositions/01-blocks-and-sets\|blocks & sets]] · [[04-compositions/02-shells\|shells]] · [[04-compositions/03-slug-composition-gallery\|composition gallery]] · [[04-compositions/04-workshop-system\|workshop system]] · [[04-compositions/05-foundry-system\|foundry system]] · [[04-compositions/06-store-system\|store system]] · [[04-compositions/07-content-system\|content system]] · [[04-compositions/08-chess-system\|chess system]] · [[04-compositions/09-dashboards-system\|dashboards system]] · [[04-compositions/10-styleguide-system\|styleguide system]] · [[04-compositions/11-shell-system\|shell system]] · [[04-compositions/12-section-system\|section system]] · [[04-compositions/13-controls-system\|controls system]] · [[04-compositions/14-design-editor-system\|design-editor system]] | `/blocks`, `/sets`, `/docs/shell-and-layout` |
 | [[05-brand/INDEX\|05 — Brand kit]] | The manifest schema, kol-brand, template, scrape + adapter | — |
 | **06 — Research** | [[06-research/01-comparison\|shadcn ⇄ KOL benchmark]] · [[../operations/06-workflows/INDEX\|how other teams work]] | — |
 | *07 — Usage* | **Moved out 2026-07-31.** The mined per-component references are app content, not a chapter — they live at `showcase/src/usage/components/`, and the app renders them from `usage-index.json`. See [[../operations/04-content-pipeline/01-sources\|content pipeline → sources]]. | `/components/:slug` |

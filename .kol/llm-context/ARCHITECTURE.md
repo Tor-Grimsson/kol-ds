@@ -19,7 +19,7 @@ This repo **maintains**, **hosts**, and **showcases** the KOL design system. The
 
 The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-monorepo` are downstream and migrate onto the published versions. When package code changes, it changes **here** first.
 
-## §3 — Ten UI packages + a clients tier
+## §3 — Twelve UI packages + an app tier + a clients tier
 
 `theme` (CSS only) ← `loader` (Icon) ← `component` (atoms→organisms) ← `framework` (app shell). Cross-package imports use the `@kolkrabbi/*` specifier; **within** a package, imports stay relative file-to-file. The split was derived from the recent single-app source (`_kol-labs-single-init-state`), re-packaged into the monorepo's published topology.
 
@@ -35,11 +35,33 @@ The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-mon
 
 **Tenth UI package — `kol-store` (added 2026-07-09):** the commerce / storefront system — `ProductDetailLayout`, `PriceDisplay`, and the gsap `DiagonalMarqueeRiver` — lifted out of `component`; the prints store is its consumer. Form primitives (`QuantityInput`/`SpecList`/`TabsRow`/`Pill`/`Divider`/`Dropdown`) stay in `component`; `gsap` is a peer. **Do not** fold either back into `component`.
 
-**Eleventh UI package — `kol-shell` (added 2026-08-14):** the **application** shell — fixed 48px NavRail + AppShell layout root, PageShell/PageHeader scaffolds, ContentFilters catalog organism, GridCard, SettingsScaffold, WalkthroughPanel, ShortcutsOverlay — lifted from the hand-copied twins in kol-monitor and kol-mirror (AppShellSet lobby brief; the copies had already drifted: shared dead import, shared light-theme bug, two implementations of the same active-state ruling). **Sibling of kol-framework, NOT a variant of it** — framework's SideNav/footer/heroes are *site* chrome with a two-level navTree; this rail is deliberately flat `{icon,path,label}` app chrome. Router-agnostic (`currentPath` + `onNavigate`, children for the outlet); icons via Button's `iconComponent` seam; nav/content/shortcuts consumer-injected. CSS stays in `kol-theme` (`kol-components-shell.css` — rail tokens + the rail-scoped 2026-08-12 active-wash ruling). Consumes `component` + `framework` (ThemeToggle). **Do not** fold shell into framework or component.
+**Eleventh UI package — `kol-shell` (added 2026-08-14):** the **application** shell — fixed 48px NavRail + AppShell layout root, PageShell scaffolds, GridCard, SettingsScaffold, WalkthroughPanel, ShortcutsOverlay — lifted from the hand-copied twins in kol-monitor and kol-mirror (AppShellSet lobby brief; the copies had already drifted: shared dead import, shared light-theme bug, two implementations of the same active-state ruling). **Sibling of kol-framework, NOT a variant of it** — framework's SideNav/footer/heroes are *site* chrome with a two-level navTree; this rail is deliberately flat `{icon,path,label}` app chrome. Router-agnostic (`currentPath` + `onNavigate`, children for the outlet); icons via Button's `iconComponent` seam; nav/content/shortcuts consumer-injected. CSS stays in `kol-theme` (`kol-components-shell.css` — rail tokens + the rail-scoped 2026-08-12 active-wash ruling). Consumes `component` + `framework` (ThemeToggle). **Do not** fold shell into framework or component.
+
+**Two names left this list 2026-09-03** (page-header-one-masthead, kol-client-olina).
+`ContentFilters` was never in kol-shell — it has always shipped from `kol-component`, and
+this sentence was wrong from the day it was written. `PageHeader` WAS shell's and moved to
+`kol-component`, deliberately and against this section, on the user's ruling: the app-shell
+tier is rails, drawers and the portal frame, and a SITE with no shell could not take the
+masthead without installing the whole package for one header — so kolkrabbi.io hand-built it
+from `SectionText` on two pages. The rest of that page's stack (`ContentFilters`,
+`ContentCollection`, `ContentCard`, `SectionText`) was already in `kol-component`, so the move
+reunites one page's components in one package. Nothing circular: shell peers on component.
+`kol-shell` does not re-export it — the import path changes, which is the whole migration.
 
 **Twelfth UI package — `kol-controls` (added 2026-09-01):** hardware panel controls for instruments — knob, fader, LED, toggles, rocker, jack socket, panel selector/dropdown/input, module header, the touch `ParamSheet` — lifted from kol-monitor's rack (`KolControlsPackage`; user: *"make a controls package in the ds … it's mainly about mixer strips, knobs and stuff specific to modules, mixers and synth hardware"*). A different TIER from `component`'s app atoms — a rack fader is a 2px track on a 24px panel, not app chrome — so `Fader`/`PanelDropdown`/`PanelLabel` coexist with `Slider`/`Dropdown`/`LabeledControl` by design. Consumers: kol-monitor (rack), kol-mirror (CRT bezel, transport deck), kol-fxr (editor controls). **Modules, rack composition, routing and render loops stay in the consumers**; the package is presentational with seams (`ModuleHeader powered`, `JackSocket`'s routing props, `iconComponent`). Tokens in `kol-theme` (`kol-components-controls.css`, `--kol-ctl-*` — theme-invariant hardware caps, the set's own LED emitters, hex jack roles). **Do not** fold controls into `component`, and do not swap a consumer's rack controls for app atoms.
 
 **Clients tier** (added 2026-07-03): headless service SDKs — **one package per service contract** (`@kolkrabbi/kol-*-client`), plain ESM, no React, no deps on or from the UI packages; the package version tracks its API contract. First: `kol-media-client`. **Do not** merge clients into a grab-bag package — unrelated contracts must not version in lock-step.
+
+**APP TIER — `@kolkrabbi/design-editor` (added 2026-09-03, user ruling).** The
+editor as one embeddable `<DesignEditor />`, moved in from kol-fxr — which had
+been publishing it from its own `package.json`, so no gate, roster or taxonomy
+check ever touched it. NOT a UI package and not counted as one: it is an
+application that CONSUMES the UI packages as peers, it is the one package here
+that ships a build (§4's exception), and it carries pixi / three / d3 which no
+`kol-*` package takes. The component-tier parts of that editor still belong in
+`kol-component` — the parts in `component`, the assembled app in
+`design-editor`. kol-fxr is now its first consumer, and the repo that demos and
+drives it.
 
 **Do not** collapse packages back into one app, and do not add reverse dependencies (e.g. component importing framework).
 
@@ -48,6 +70,27 @@ The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-mon
 No build step. Packages publish raw `.jsx` / `.css`. The loader uses `import.meta.glob` (Vite-only). Theme is Tailwind-v4-oriented CSS. This is deliberate (source-available, zero build infra) and constrains the consumer toolchain — documented in every package README.
 
 **Do not** add a dist/transpile step without a reason that outweighs losing source-availability and simplicity.
+
+**ONE EXCEPTION — `@kolkrabbi/design-editor` (user ruling 2026-09-03).** It ships
+a BUILT bundle (`dist/`, rolldown) and is the only package here that does. The
+reason that outweighs the rule is that it is not a component set: it is an
+embeddable APPLICATION, one export (`<DesignEditor />`) that owns its own
+router and state, and it carries pixi / three / d3 — renderers no `kol-*`
+package takes, and which every consumer of a Button would otherwise pay for.
+Raw-source publishing exists so a consumer can read and patch a component; that
+argument does not reach a 4.4MB compositor.
+
+It arrived here by ruling, not by design: it was published from
+`kol-fxr/package.json` — the app publishing itself under the `@kolkrabbi` scope
+— so no gate, roster or taxonomy check ever touched it, and it sat at 0.1.0 for
+two months pinning `^0.1.1` peers and `@kolkrabbi/kol-loader`, a package that no
+longer exists. The lesson is the boundary, not the build: **a package in this
+scope is versioned HERE or it is not versioned at all.**
+
+The exception is the build step and nothing else. It takes the DS as peers like
+any consumer, it publishes from `packages/` under the same gates, and the
+component-tier parts of that editor still belong in `kol-component` — the parts
+in `component`, the assembled app in `design-editor`.
 
 ## §5 — CSS cascade order is load-bearing
 
@@ -71,7 +114,7 @@ Static assets (fonts, images, favicons) live in **one** `public/` at the repo ro
 
 ## §N — Non-goals (do not reopen without an explicit ask)
 
-- No build/transpile pipeline for packages (§4).
+- No build/transpile pipeline for packages (§4) — one ruled exception, `design-editor`, an embeddable app rather than a component set; the exception is the build step and nothing else.
 - No collapsing the five packages, no reverse deps (§3).
 - No consumer-facing linking/symlinks (§1).
 - No second maintenance home — changes land here, not in kol-monorepo (§2).

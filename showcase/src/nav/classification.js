@@ -26,6 +26,15 @@ export const TIERS = {
   RatioBar: 'molecules', Tower: 'molecules', QuadSplit: 'molecules',
   CardRow: 'molecules', StripeRow: 'molecules', AppliedCard: 'molecules',
   ComboLab: 'organisms',
+  /* the brand-book set both brand apps were maintaining locally
+   * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
+   * frame plus a mark plus a text block, nesting nothing. */
+  AssetCard: 'atoms', Swatch: 'molecules',
+  PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
+  PostEditorial: 'molecules', StoryPhoto: 'molecules', StoryType: 'molecules',
+  ProfileAvatar: 'atoms',
+  BusinessCardFront: 'molecules', BusinessCardBack: 'molecules', Envelope: 'molecules',
+  Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
   /* kol-content */
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
@@ -92,6 +101,7 @@ export const TIERS = {
 /* ── Function: closed set — action, input, display, feedback, navigation,
  *    wayfinding, overlay, media, structure, utility ───────────────────────── */
 export const FUNCTIONS_BY_NAME = {
+  CloseButton: 'action',
   /* the app tier, shipped once (ShellHomeSystem, 2026-08-27) */
   SettingsMulti: 'input', CatalogPage: 'structure', SettingsShortcuts: 'display', SettingsLinks: 'wayfinding', SettingsColophon: 'display', TouchDeviceOverlay: 'overlay', useTouchPrimary: 'utility',
   /* component + framework (migrated verbatim from registry.js FUNCTION_MAP) */
@@ -114,10 +124,13 @@ export const FUNCTIONS_BY_NAME = {
   EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
   MediaLibrary: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
+  MediaLibraryExplorer: 'media',
+  ContextMenu: 'overlay', useContextMenu: 'utility',
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
   HlsVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
   CurveOverlay: 'input', RotaryDial: 'input',
   TabsRow: 'navigation',
+  MobileTabBar: 'navigation',
   ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
   ShellSearchOverlay: 'wayfinding', ShellDrawer: 'wayfinding',
   DocsToc: 'wayfinding', AsciiCursor: 'wayfinding',
@@ -146,7 +159,7 @@ export const FUNCTIONS_BY_NAME = {
   FoundryCharacterSets: 'display',
   Divider: 'structure', Section: 'structure', Accordion: 'structure', ButtonGroup: 'structure',
   AccordionPanel: 'structure', PageSection: 'structure', BrandHero: 'structure',
-  SubPageHero: 'structure',
+  SubPageHero: 'structure', PageHero: 'structure',
   TagPath: 'display',
   useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
   usePrefersReducedMotion: 'utility', useTilt: 'utility', usePlayback: 'utility', parseFrontmatter: 'utility', readCover: 'utility',
@@ -167,13 +180,38 @@ export const FUNCTIONS_BY_NAME = {
   /* content-card system (2026-08-15) */
   ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
   ContentRow: 'display', ContentItem: 'display', ContentCollection: 'structure',
+  /* the canvas viewport's zoom seam (editor-set-is-behind-its-source, 2026-09-03) */
+  PanZoomViewport: 'structure', CanvasZoomContext: 'utility', useFps: 'utility',
+  CanvasRuler: 'display', CanvasGuides: 'display', useFrameGeom: 'utility', niceStep: 'utility', ticksFor: 'utility',
+  /* editor-panels-the-held-specs A6 (2026-09-03) */
+  XYPad: 'input', InspectorRail: 'structure',
+  PathNodeOverlay: 'overlay', CropOverlay: 'overlay',
+  LayerStack: 'structure', AddLayerButton: 'action', BLEND_MODES: 'utility',
+  TimelineDock: 'input', sampleTrack: 'utility', TIMELINE_EASINGS: 'utility',
+  SettingsSections: 'structure',
+  MediaInspector: 'overlay',
+  svgToPngBlob: 'utility', inlineFontFaces: 'utility', embedFontFace: 'utility', downloadBlob: 'utility', useHistory: 'utility',
+  CurveEditor: 'input', CURVE_KINDS: 'utility', defaultCurveFor: 'utility',
+  KeyframeEditor: 'input', KEYFRAME_EASES: 'utility', DEFAULT_KEYFRAMES: 'utility',
+  TYPE_LABELS: 'utility', BOOL_OP_LABELS: 'utility', SHAPE_KIND_LABELS: 'utility', labelForLayer: 'utility', rowLabelForLayer: 'utility', findLayerDeep: 'utility',
+  pathD: 'utility', pathBounds: 'utility', shiftNode: 'utility', normalizePath: 'utility', scalePathNodes: 'utility', normalizePathRings: 'utility', rotatePathNodes: 'utility', dist: 'utility', nearestSegmentT: 'utility', splitSegment: 'utility', smoothNode: 'utility',
+  /* the structural-fork hook (ColumnBrowserStackMode, 2026-09-03) */
+  useMediaQuery: 'utility',
   /* framework */
-  AppShell: 'structure',
+  AppShell: 'structure', PageLayout: 'structure',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', TypeBlock: 'display', AssetTable: 'display',
   LogoCard: 'display', ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
   RatioBar: 'display', Tower: 'display', QuadSplit: 'display',
   CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
+  /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
+   * in situ, a colour with its value, an asset in a frame. */
+  AssetCard: 'display', Swatch: 'display',
+  PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
+  PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
+  ProfileAvatar: 'media',
+  BusinessCardFront: 'display', BusinessCardBack: 'display', Envelope: 'display',
+  Letterhead: 'display', LetterheadCorrespondence: 'display', EmailSignature: 'display',
   /* content */
   AuthorLine: 'display', ShareButtons: 'action',
   /* store */
@@ -264,7 +302,7 @@ export const EXEMPT = {
  * Providers/contexts render nothing themselves — a card would always be a
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
-  'Layout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
+  'Layout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
   'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext',
 ]
 
@@ -286,8 +324,16 @@ export const DEPRECATED = [
   'FoundryCTA', 'FeaturedCarousel',
   /* CardFeatureItem = SectionCardItem (2026-08-26) */
   'CardFeatureItem',
+  /* page-family-is-not-a-set (2026-09-03): BrandHero + SubPageHero = PageHero;
+   * kol-framework's AppShell = PageLayout (kol-shell's AppShell is a different
+   * component and stays live under its own name). */
+  'BrandHero', 'SubPageHero',
   /* BentoCard = TiltBento (2026-08-27, the Tilt family) */
   'BentoCard',
+  /* brand-book-mocks-two-consumers (2026-09-03): the forks' LetterheadB =
+   * LetterheadCorrespondence — a B suffix says nothing about which sheet to
+   * reach for. Kept so a fork migrates without touching its call sites. */
+  'LetterheadB',
 ]
 
 /* Components that ship without a demo file ON PURPOSE (pnpm validate:demos).
@@ -306,6 +352,13 @@ export const NO_DEMO = (() => {
       'chess apparatus parts; the board demos cover the system, these never got their own'),
     ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel', 'FoundryCTA'],
       'kol-component organisms/overlays predating the demo convention'),
+    ContextMenu: 'no demo yet (2026-09-21) — a right-click menu needs a surface to right-click on, '
+      + 'and a demo stage of one component has none that means anything. It is exercised in '
+      + 'apps/media on folder and file rows; a demo lands with the blocks page that has a list.',
+    MediaLibraryExplorer: 'no demo yet (2026-09-21) — it is a variant dispatch over the two page '
+      + 'components, and `MediaLibrary` itself is still on this list; it gets a demo when that one '
+      + 'does, since a demo for either needs an injected client the showcase does not carry. The '
+      + 'live surface is apps/media.',
     ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
     ...debt(['AudioPlayer', 'EmblaNav'],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
@@ -319,6 +372,51 @@ export const NO_DEMO = (() => {
       'styleguide combo slabs, ungated until the barrel parser was fixed 2026-08-15'),
     ...debt(['ExhibitOverview', 'ExhibitPage', 'ExhibitSidebar', 'ExhibitCard', 'ExhibitLinkCard'],
       'kol-workshop 0.22.0 exhibit system — ships unexercised (AGENT-CONTEXT ⚠️)'),
+    /* editor-panels-the-held-specs A1 (2026-09-03): AddLayerButton is the `+`
+     * in the layers panel's tab row and renders INSIDE the LayerStack demo,
+     * where it adds real rows to the tree — a page of its own would show one
+     * button and a menu that adds to nothing. */
+    AddLayerButton: 'rendered in the LayerStack demo, where it adds rows to the live tree (2026-09-03)',
+    /* the full-screen viewer needs a real media set and a URL resolver to show
+     * anything; the MediaLibrary demo opens it on real files (2026-09-04). */
+    MediaInspector: 'opened from the MediaLibrary demo, over real files (2026-09-04 ruling)',
+    /* rulers-and-guides-are-private (2026-09-03): both layers render INSIDE the
+     * Canvas demo, over its `panEnabled` viewport, where a drag off a ruler
+     * makes a real guide. A page of their own would have to build a canvas to
+     * show one tick. */
+    CanvasRuler: 'rendered in the Canvas demo, over its live viewport (2026-09-03 ruling)',
+    CanvasGuides: 'rendered in the Canvas demo — drag off a ruler to create one (2026-09-03 ruling)',
+    /* editor-panels-the-held-specs B2 (2026-09-03) — a RULING: these two are
+     * editing chrome whose every prop is a consumer's geometry and write path
+     * (a path layer with nodes, a photo with a crop rect, screen→virtual,
+     * an undo transaction). A demo would have to build a small editor to show
+     * one drag. `packages/design-editor` in THIS repo runs both on real layers
+     * and is built under the same gates — that is the exercise. */
+    ...Object.fromEntries([
+      ['PathNodeOverlay', 'editing chrome over a consumer path layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
+      ['CropOverlay', 'editing chrome over a consumer photo layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
+    ]),
+    /* editor-set-is-behind-its-source (2026-09-03) — a RULING. `Canvas`'s demo
+     * renders `panEnabled`, which IS a PanZoomViewport, so a second page would
+     * show the same pan/zoom/rulers twice; and a context object renders
+     * nothing at all — its contract is that `SelectionOverlay` divides by it,
+     * which the Canvas demo shows by zooming. */
+    ...Object.fromEntries([
+      ['PanZoomViewport', "the Canvas demo IS this — `panEnabled` wraps in it (2026-09-03 ruling)"],
+      ['CanvasZoomContext', 'a context object — nothing to render; the Canvas demo exercises it by zooming (2026-09-03 ruling)'],
+    ]),
+    /* brand-book-mocks-two-consumers (2026-09-03) — a RULING, not debt: these
+     * thirteen are one SET, and a mock of a mark in situ says nothing without a
+     * brand behind it (a mark node, a palette, an info block). The styleguide
+     * set page renders all thirteen off one authored `BRAND_BOOK` object, which
+     * is both the exercise and the reference call shape; thirteen per-component
+     * pages would each have to invent a brand to show anything. AssetCard and
+     * Swatch DO have demos — they carry no brand. */
+    ...Object.fromEntries([
+      'PostPhoto', 'PostType', 'PostProduct', 'PostEditorial', 'StoryPhoto', 'StoryType',
+      'ProfileAvatar', 'BusinessCardFront', 'BusinessCardBack', 'Envelope', 'Letterhead',
+      'LetterheadCorrespondence', 'EmailSignature',
+    ].map((n) => [n, 'brand-book mock — the styleguide set page renders the whole set off one authored brand object (2026-09-03 ruling)'])),
     ...debt(['ShellLayout', 'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
       'RightRail', 'RailSection', 'RailRow', 'TagModeGate', 'TagPath',
       'DocumentationReader', 'DocHeader', 'DocSection', 'DocTable', 'DocFigure'],
@@ -332,7 +430,7 @@ export const NO_DEMO = (() => {
  * and its page says so." Removal is the owner's call, never this file's. */
 export const MEMBERSHIP_FLAGS = {
   ExitPreview:
-    "fails membership tests 1 + 2 — a router-aware CMS escape hatch worn as DS chrome; flagged for removal, kept pending the owner's decision",
+    "fails membership tests 1 + 2 — a CMS escape hatch worn as DS chrome; flagged for removal, kept pending the owner's decision",
   TagModeGate:
     'orphaned export — its only mount was deleted by the ONE-search ruling (2026-08-01); the package still ships it',
   AlternativeControlsMock:

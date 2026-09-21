@@ -22,6 +22,7 @@ export { default as AssetPlaceholder } from './utilities/AssetPlaceholder.jsx'
 export { default as Avatar } from './atoms/Avatar.jsx'
 export { default as Badge } from './atoms/Badge.jsx'
 export { default as Button } from './atoms/Button.jsx'
+export { default as CloseButton } from './utilities/CloseButton.jsx'
 export { default as ActionButton } from './atoms/ActionButton.jsx'
 export { default as SizeOrDownload } from './atoms/SizeOrDownload.jsx'
 export { default as SortHeader } from './atoms/SortHeader.jsx'
@@ -47,6 +48,7 @@ export { default as LabeledControl } from './molecules/LabeledControl.jsx'
 export { default as OverlayGlassPanel } from './utilities/OverlayGlassPanel.jsx'
 export { default as Pill } from './atoms/Pill.jsx'
 export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
+export { default as ContextMenu, useContextMenu } from './utilities/ContextMenu.jsx'
 export { default as ProsePreview } from './utilities/ProsePreview.jsx'
 export { default as QuantityInput } from './molecules/QuantityInput.jsx'
 export { default as RotaryDial } from './atoms/RotaryDial.jsx'
@@ -64,6 +66,20 @@ export { default as ToggleSwitch } from './atoms/ToggleSwitch.jsx'
 export { default as TiltCard } from './utilities/TiltCard.jsx'
 export { default as TransparentX } from './utilities/TransparentX.jsx'
 export { default as ViewToggle } from './atoms/ViewToggle.jsx'
+/* the design-editor parts, taken per row from editor-panels-the-held-specs (2026-09-03) */
+export { default as XYPad } from './atoms/XYPad.jsx'
+export { default as InspectorRail } from './molecules/InspectorRail.jsx'
+/* SelectionOverlay's two siblings — same 1080-virtual contract, same zoom
+ * division (editor-panels-the-held-specs B2). `pathMath` is their geometry,
+ * exported because the editor engine re-exports it rather than keep a copy. */
+export { default as PathNodeOverlay } from './atoms/PathNodeOverlay.jsx'
+export { default as CropOverlay } from './atoms/CropOverlay.jsx'
+export { default as LayerStack, AddLayerButton, BLEND_MODES } from './organisms/LayerStack.jsx'
+export { TYPE_LABELS, BOOL_OP_LABELS, SHAPE_KIND_LABELS, labelForLayer, rowLabelForLayer, findLayerDeep } from './hooks/layerTree.js'
+export { default as TimelineDock, sampleTrack, TIMELINE_EASINGS } from './organisms/TimelineDock.jsx'
+export { default as CurveEditor, CURVE_KINDS, defaultCurveFor } from './organisms/CurveEditor.jsx'
+export { default as KeyframeEditor, KEYFRAME_EASES, DEFAULT_KEYFRAMES } from './organisms/KeyframeEditor.jsx'
+export { pathD, pathBounds, shiftNode, normalizePath, scalePathNodes, normalizePathRings, rotatePathNodes, dist, nearestSegmentT, splitSegment, smoothNode } from './hooks/pathMath.js'
 
 // molecules
 export { Accordion, AccordionPanel } from './molecules/Accordion.jsx'
@@ -110,7 +126,15 @@ export { default as TabsRow } from './molecules/TabsRow.jsx'
 /* monorepo sets (P6–P10) — organism members. Foundry members live in the
    standalone @kolkrabbi/kol-foundry package (with the type-specimen kit +
    live-font effects moved there 2026-07-09) — never re-exported here. */
-export { default as Canvas, CanvasFrame, PanViewport, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
+/* `CanvasZoomContext` and `PanZoomViewport` are the load-bearing pair for an
+ * editor: the viewport publishes the zoom, every piece of editing chrome reads
+ * it. Absent from this barrel until 0.185.0, which is why the first port of
+ * this set could not keep its chrome screen-constant. */
+export { default as Canvas, CanvasFrame, PanViewport, PanZoomViewport, CanvasZoomContext, useFps, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
+/* The rulers and the guides, public since 2026-09-03 (rulers-and-guides-are-private):
+ * they measure the RENDERED rect, so they work over a CSS-zoomed stage with no
+ * PanZoomViewport anywhere — which is their second consumer on day one. */
+export { CanvasRuler, CanvasGuides, useFrameGeom, niceStep, ticksFor } from './organisms/Canvas.jsx'
 export { default as EditorShell } from './utilities/EditorShell.jsx'
 export { default as GalleryCarousel } from './organisms/GalleryCarousel.jsx'
 export { default as AsciiCursor } from './utilities/AsciiCursor.jsx'
@@ -120,7 +144,9 @@ export { default as Carousel } from './molecules/Carousel.jsx'
  * stage reaches for it instead of re-typing the button markup, which is how the
  * three in-package copies (and kol-website's CarouselNavigation) happened. */
 export { default as EmblaNav } from './molecules/EmblaNav.jsx'
+export { default as MobileTabBar, TABBAR_H } from './molecules/MobileTabBar.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
+export { default as PageHeader } from './molecules/PageHeader.jsx'
 export { default as ErrorBoundary } from './utilities/ErrorBoundary.jsx'
 export { default as FeatureSplit } from './organisms/FeatureSplit.jsx'
 export { default as FeaturedCarousel } from './organisms/FeaturedCarousel.jsx'
@@ -135,9 +161,17 @@ export { default as LoaderOverlay } from './utilities/LoaderOverlay.jsx'
 /* dev chrome: name an element, agree on a cell, emit one sync line */
 export { default as QuadrantSync } from './utilities/QuadrantSync.jsx'
 export { default as MediaLibrary, MediaLibraryProvider, useMediaLibrary, MediaPicker } from './organisms/MediaLibrary.jsx'
+/* the full-screen file viewer — public 2026-09-04 (user ruling): it already
+ * rendered both mobile viewer views and was module-private, so every consumer
+ * needing a phone viewer hand-rolled one. */
+export { MediaInspector } from './organisms/MediaLibraryPages.jsx'
+export { default as MediaLibraryExplorer } from './organisms/MediaLibraryExplorer.jsx'
 export { default as MediaTileGallery } from './organisms/MediaTileGallery.jsx'
 export { default as MediaViewer } from './organisms/MediaViewer.jsx'
 export { default as SettingsPanel, LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsChipRow, SettingsFooter } from './organisms/SettingsPanel.jsx'
+/* the settings BODY as data — one call for the page, the drawer and a sheet
+ * (user 2026-09-03: "lets normalise a component they can grab") */
+export { default as SettingsSections } from './organisms/SettingsSections.jsx'
 export { default as SectionNewsletter } from './organisms/SectionNewsletter.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'
 export { default as ColumnBrowser } from './organisms/ColumnBrowser.jsx'
@@ -157,6 +191,7 @@ export { nearestRatio, RATIOS } from './utilities/ratios.js'
  * useDragResize wear ONE implementation (OneGrabGestureBothRails, 2026-08-30) */
 export { default as useGrabEdge } from './hooks/useGrabEdge.js'
 export { default as markdownToHtml, inlineToHtml } from './utilities/markdownToHtml.js'
+export { default as formatSize } from './utilities/formatSize.js'
 export { default as RecordManager } from './organisms/RecordManager.jsx'
 export { default as SpectrumGrid } from './organisms/SpectrumGrid.jsx'
 export { default as Table } from './organisms/Table.jsx'
@@ -186,6 +221,20 @@ export { default as useCoarsePointer } from './hooks/useCoarsePointer.js'
 export { default as useInViewAttention } from './hooks/useInViewAttention.js'
 export { default as useAxisAnimation } from './hooks/useAxisAnimation.js'
 export { useEyedropper, pickFromCanvasElement } from './hooks/useEyedropper.js'
+/* The general form of `useCoarsePointer` / `usePrefersReducedMotion` — for a
+ * STRUCTURAL responsive fork, where the markup itself changes and a stylesheet
+ * cannot express it (ColumnBrowserStackMode, 2026-09-03). Sizes stay Tailwind's. */
+export { default as useMediaQuery } from './hooks/useMediaQuery.js'
+/* The two seams kol-client-olina asked for by name after copying both
+ * (export-and-history-want-packaging, 2026-09-04). The SVG BUILDER is
+ * deliberately absent — it welds to an app's own layer schema. */
+export { svgToPngBlob, inlineFontFaces, embedFontFace, downloadBlob } from './hooks/svgExport.js'
+export { default as useHistory } from './hooks/useHistory.js'
+/* The rail gesture's other half. It lived in kol-framework until 2026-09-03 and
+ * moved here for the same reason `useGrabEdge` did: kol-component's own
+ * `EditorShell` needs resizable rails and cannot import framework. framework
+ * re-exports it, so no consumer specifier changed. */
+export { default as useDragResize } from './hooks/useDragResize.js'
 export { default as usePlaceholders } from './hooks/usePlaceholders.js'
 export { resolveCssVar, resolveCssColor, isLight } from './hooks/cssVar.js'
 

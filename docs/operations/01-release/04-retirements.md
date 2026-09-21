@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-08-27
+updated: 2026-09-03
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -33,6 +33,10 @@ What counts as an alias is detected from source — a barrel line exporting one 
 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
+| `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
+| `BrandHero` | framework | `PageHero` | 2026-09-03 |
+| `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
+| `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
@@ -63,6 +67,8 @@ Type and chrome classes retire the same way — the marker line above the rule i
 - 2026-08-30 — **ContentSetRetirement step 3: the nine Content Set rows are gone, dropped not aged out.** `ArticleCard` · `ListingCard` · `MediaCard` · `MediaRow` · `GridCard` (shell) · `PrintGridCard` · `WorkCard` · `WorkListItem` · `TypefaceLibraryItem` removed from five barrels; sources quarantined to `_tmp/2026-08-30-content-set-exports/`, never deleted. R3 never fired on them — the estate sweep showed no consumer outside this repo, so the user ruled the drop early rather than waiting 30 days. The showcase's four live compositions (article-grid, work-grid, stack-blog, work-portfolio), the typeface demo and kol-store's own `PrintsGrid` were migrated onto ContentCard/ContentRow in the same pass; the dead `content-card-comparison` set was quarantined whole. kol-dashboards' `GridCard` is a different component and stays (ruled 2026-08-27).
 
   ⚠️ The same day, four VARIANT names were renamed with prop-value aliases (`default`→`file`, `print`→`catalog`, `work`→`showcase`, `typeface`→`showcase layout="canvas"`). **This gate cannot see those** — it reads barrel exports, and a prop value is not one. Nothing will age them out; they come off when a human decides.
+
+- 2026-09-03 — the tone axis (tone-is-the-ground-axis): Button's `primary` · `secondary` · `outline` · `ghost` · `grey` are PROP-VALUE aliases of `tone="…"` now, and the CSS classes `.kol-btn-{those}`, `.kol-control--filled` / `--outline`, `.kol-icon-frame-{primary,secondary,accent,outline,ghost,nav,grey,danger}`, `.kol-dd-trigger--grey` and `.kol-dd-panel--{primary,grey,outline}` are CLASS aliases of `.kol-tone-*` (the same bundle under `:where()`). Neither kind is visible to this gate — a prop value is not an export, and the class aliases are selector lists, not `@deprecated` rules — so they are recorded here and come off when a human decides; the estate hand-stamps `kol-btn-*` in eight files, so the classes stay until those are swept. `tone="default"` is not an alias of `primary`: it means inherit. Same day, later: `tone="secondary"` changed MEANING (the page surface; theme 0.138.0) and `inverted` took the fill it used to mean — Button's `secondary` variant now aliases `inverted`, pixels unchanged. `tone="inverse"` stays sunken's prop-value alias (one kol-website call, `LibraryLocal.jsx`); it drops when that moves, and does not become `inverted`.
 
 - 2026-08-27 — R4 written after the ListingCard incident: an alias may not gain behaviour. Same day: CSS classes join the system (DisplayTightRamp): the elder display voice's four classes are the first rows, the display ramp itself moved to the Tight cut.
 

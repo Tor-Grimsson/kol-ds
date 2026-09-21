@@ -59,7 +59,14 @@ const RADIUS_CLASSES = {
   full:  'rounded-full',
 }
 
-const HALO_SHADOW = '0 0 0 1px #000, 0 0 0 2px #505050'
+/* The halo ring is THEME-AWARE. It was the literal `0 0 0 1px #000, 0 0 0 2px
+ * #505050` carried in from the macOS port, which put a pure-black ring on a
+ * rgb(250,250,250) page in light theme — measured by kol-fxr on the swatch
+ * chips (`editor-set-is-behind-its-source`, 2026-09-03). These are the two
+ * tokens its own SwatchControls draws, and in dark they resolve to ≈ the
+ * port's original values, so the look the variant was named for is unchanged
+ * where it was correct. */
+const HALO_SHADOW = '0 0 0 1px var(--kol-surface-primary), 0 0 0 2px var(--kol-fg-32)'
 
 export default function ColorSwatch({
   hex,

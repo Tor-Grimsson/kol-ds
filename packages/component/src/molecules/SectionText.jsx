@@ -71,24 +71,59 @@ export default function SectionText({
   labelClass,
   bodyClass = 'kol-section-text-body',
   actionsClass = 'flex flex-wrap gap-4',
+  /* ACTIONS ON THE BODY'S BASELINE (page-header-one-masthead, 2026-09-03).
+   * Default `below` is the section stack every organism renders. `inline` puts
+   * the cluster in ONE flex row with the body, which is the only way to land it
+   * on the body's first baseline rather than the headline's — flexbox exposes a
+   * flex item's first baseline, so they have to share a row.
+   *
+   * The cluster contributes NO HEIGHT there: a flex row takes its tallest
+   * child, so `sm` controls (26px) against a one-line `kol-mono-14` (18px) made
+   * the block 10px taller — measured across two apps, and the masthead is the
+   * one block every page shares, so a page with a control cluster sat lower
+   * than one without. `h-0 self-center` makes the children overflow a
+   * zero-height box symmetrically; the row's height is the TEXT's, at any rung.
+   * Horizontal layout is untouched, so a long body cannot run under the
+   * controls (PageHeaderTrailingSlot / PageHeaderActionsGrowsBlock, carried in
+   * from `PageHeader` when it became a composition of this base). */
+  actionsPlacement = 'below',
   slotClass = {},
   slotStyle = {},
   className = '',
+  /* the ROOT's own style — a composition that owns its rhythm needs it
+     (PageHeader's `--kol-page-header-mb`). `slotStyle` reaches the slots; this
+     was the one box it could not reach. */
+  style,
 }) {
   /* `label` / `labelClass` / slot key `label` = aliases of `eyebrow` (2026-08-27) */
   const eb = eyebrow ?? label
   const ebClass = eyebrowClass ?? labelClass ?? 'kol-helper-12 text-meta'
   const cls = (base, slot) => `${base} ${slotClass[slot] ?? (slot === 'eyebrow' ? slotClass.label : undefined) ?? ''}`.trim()
   const alignCls = align === 'center' ? 'items-center text-center' : 'items-start text-left'
+  const inlineActions = actionsPlacement === 'inline' && !!actions && !!body
+  const bodyNode = body && (typeof body === 'string'
+    ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p>
+    : <div className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</div>)
+  const cluster = actions && (
+    <div className={cls(`${actionsClass} shrink-0 h-0 self-center`, 'actions')} style={slotStyle.actions}>{actions}</div>
+  )
   return (
-    <div className={`kol-section-text flex flex-col ${gap} ${alignCls} ${className}`.replace(/\s+/g, ' ').trim()}>
+    <div className={`kol-section-text flex flex-col ${gap} ${alignCls} ${className}`.replace(/\s+/g, ' ').trim()} style={style}>
       {/* `kol-section-text-eyebrow` = uppercase by ROLE (kol-theme ≥0.55.0);
         * `labelClass` is the voice riding beside it */}
       {eb && <span className={cls(`kol-section-text-eyebrow ${ebClass}`, 'eyebrow')} style={slotStyle.eyebrow ?? slotStyle.label}>{eb}</span>}
       {headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>}
-      {body && (typeof body === 'string' ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p> : <div className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</div>)}
+      {bodyNode && (inlineActions
+        ? (
+          <div className="flex items-baseline justify-between gap-6">
+            {bodyNode}
+            {cluster}
+          </div>
+        )
+        : bodyNode)}
       {children}
-      {actions && <div className={cls(actionsClass, 'actions')} style={slotStyle.actions}>{actions}</div>}
+      {/* inline with no body → the cluster shares the HEADLINE's row instead */}
+      {actions && !inlineActions && <div className={cls(actionsClass, 'actions')} style={slotStyle.actions}>{actions}</div>}
     </div>
   )
 }

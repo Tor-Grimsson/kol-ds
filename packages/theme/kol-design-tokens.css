@@ -173,3 +173,82 @@
     --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
   }
 }
+
+/* =============================================================================
+ * TAILWIND CONTRACT — the widths and the z ladder as CLASSES
+ *
+ * THE LAW REQUIRED A CLASS THAT DID NOT EXIST (kol-client-olina 2026-09-03, off
+ * the brand app's full-consumption pass). Two of the six consumption checks say
+ * reach these tokens by class — check 2 flags `var(--kol-*)` in JSX, check 5
+ * flags a raw `z-[…]` — and the theme registered neither namespace, so the only
+ * way to use a content width or a z rung from JSX was
+ * `max-w-[var(--kol-content-measure)]` / `z-[var(--kol-z-modal)]`, which trip
+ * those very checks. Every consumer was hand-binding the same nine lines in its
+ * own `@theme` to get out of it; the brand app had done exactly that.
+ *
+ * Worse than verbose: SILENT. A `z-modal` written against an unregistered
+ * namespace emits nothing at all, which is how that app's skip link shipped
+ * with no fill and no stacking for a month (layout-skip-link, same pass).
+ *
+ * Tailwind v4 namespaces: `--container-*` generates `max-w-*` / `w-*` /
+ * `min-w-*`; `--z-index-*` generates `z-*`. The `--kol-*` tokens stay the source
+ * — these alias them, so there is one value and two ways to spell it, not two
+ * values. ============================================================== */
+@theme {
+  --container-canvas:  var(--kol-content-canvas);
+  --container-shell:   var(--kol-content-shell);
+  --container-panel:   var(--kol-content-panel);
+  --container-column:  var(--kol-content-column);
+  --container-measure: var(--kol-content-measure);
+
+  --z-index-base:     var(--kol-z-base);
+  --z-index-dropdown: var(--kol-z-dropdown);
+  --z-index-sticky:   var(--kol-z-sticky);
+  --z-index-overlay:  var(--kol-z-overlay);
+  --z-index-modal:    var(--kol-z-modal);
+  --z-index-toast:    var(--kol-z-toast);
+  --z-index-tooltip:  var(--kol-z-tooltip);
+  --z-index-nav:      var(--kol-z-nav);
+
+  /* SPACING (theme-does-not-register-spacing, kol-client-hrafn 2026-09-03).
+   * `--kol-spacing-*` was a real scale Tailwind could not see, so a consumer
+   * chose between `gap-[var(--kol-spacing-6)]` — 28 characters, and a
+   * `var(--kol-*)` read in JSX, which check 2 of the full-consumption contract
+   * flags — and `gap-6`, which is TAILWIND's number: identical today because
+   * both ladders are index × 4, and silently divergent the day KOL moves a
+   * step. hrafn swept 57 call sites twice in one session over exactly that.
+   *
+   * The indices already agree, so this is a no-op visually and a real change
+   * semantically: `p-4` now resolves THROUGH the KOL token, and a step that
+   * moves here moves everywhere.
+   *
+   * THE OFF-LADDER STEPS STILL GENERATE, deliberately. Tailwind v4's `--spacing`
+   * multiplier produces any numeric step on demand (`p-7`, `gap-1.5`), and the
+   * ticket asks for the gaps in the ladder (no 7, 9, 11…) to stop emitting.
+   * Measured before deciding: 130+ off-ladder utilities across this repo's own
+   * packages, kol-website, the clients, fxr, monitor and mirror — `gap-1.5` ×30,
+   * `py-1.5` ×24, `gap-0.5` ×18 alone. Killing the multiplier drops every one of
+   * them to NOTHING EMITTED, no error — the same silent failure this block was
+   * written to end for `z-modal`. Closing the ladder is a real ruling and it
+   * needs its own sweep, not a side effect of registering the scale. */
+  --spacing-1:  var(--kol-spacing-1);
+  --spacing-2:  var(--kol-spacing-2);
+  --spacing-3:  var(--kol-spacing-3);
+  --spacing-4:  var(--kol-spacing-4);
+  --spacing-5:  var(--kol-spacing-5);
+  --spacing-6:  var(--kol-spacing-6);
+  --spacing-8:  var(--kol-spacing-8);
+  --spacing-10: var(--kol-spacing-10);
+  --spacing-12: var(--kol-spacing-12);
+  --spacing-16: var(--kol-spacing-16);
+  --spacing-20: var(--kol-spacing-20);
+  --spacing-24: var(--kol-spacing-24);
+
+  /* The two semantic steps a PAGE RAMP names, registered because they read as
+   * utilities (`py-section`, `px-container`). The three `--kol-spacing-gap-*`
+   * aliases stay CSS-only on purpose: `gap-gap-md` stutters, and `gap-md` would
+   * have to burn `--spacing-md`, a name too generic to spend on three values
+   * that are already `2` / `4` / `6`. */
+  --spacing-section:   var(--kol-spacing-section);
+  --spacing-container: var(--kol-spacing-container);
+}

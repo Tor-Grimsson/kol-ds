@@ -69,6 +69,23 @@ export default function ContentCardDemo() {
       <ContentCard variant="typeface" title="Right Grotesk" body="6 styles" date="2024" href="#" onNavigate={(e) => e.preventDefault()} media={<div className="flex h-full w-full items-center justify-center kol-sans-display-01">Ðð</div>} reveal={<p className="text-auto-inverse kol-sans-heading-03 text-center">The quick brown fox jumps over the lazy dog</p>} />
       <ContentCard variant="default" selected title={S.title} date={S.date} size={S.size} />
     </div>
+    {/* `bg` + `text` (contentcard-bg-and-text-props, 2026-09-03): the shipped
+      * card at a consumer's own ground and ink level. `bg` writes
+      * `--kol-card-bg`, NOT a background — a `bg-*` utility loses to the
+      * property the hover step needs — and `text` re-inks every slot, INCLUDING
+      * a `<slot>Class` override, which is the half that was impossible before:
+      * an override replaces the ramp string whole and took its ink with it. The
+      * third card proves it — the kicker keeps the override's face and still
+      * lands on the role. */}
+    <div className="grid w-full max-w-[48rem] grid-cols-3 items-start gap-4">
+      <ContentCard variant="default" bg="var(--kol-oq-48)" title={S.title} date={S.date} size={S.size} />
+      {/* article + bg + media: the case that broke in 0.183.0 — a grounded
+        * card must CLIP, so the still squares off with the plate instead of
+        * floating rounded inside a square ground (fixed 0.183.1) */}
+      <ContentCard variant="article" bg="var(--kol-fg-04)" title={S.title} kicker={S.kicker} media={<img src={bg} alt="" />} />
+      <ContentCard variant="article" text="meta" title={S.title} kicker={S.kicker} body={S.body} date={S.date} />
+      <ContentCard variant="article" text="meta" kickerClass="kol-sans-body-01" title={S.title} kicker={S.kicker} body={S.body} date={S.date} />
+    </div>
     <CatalogExpand />
     </div>
   )

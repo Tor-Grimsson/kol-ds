@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
-import Button from '../atoms/Button.jsx'
+import CloseButton from '../utilities/CloseButton.jsx'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
 /* taxonomy-ok: nests kol-icons's Icon (a package import the relative-import
@@ -38,6 +38,7 @@ const FOCUSABLE =
  * @param {number|string} height    panel height (px number or CSS length); omit for a content-sized sheet — `bottom` only
  * @param {ReactNode}     header    header-row content beside the close button (replaces the source's baked-in wordmark)
  * @param {boolean}       backdrop  render the dimming scrim (default true); false = panel alone, no darken/blur, close via × / Esc
+ * @param {'xs'|'sm'|'md'|'lg'} closeSize  the close control's rung (default 'sm' — match the controls in the panel)
  * @param {ReactNode}     children  scrollable panel body
  * @param {string}        className extra classes on the panel
  */
@@ -50,6 +51,14 @@ export default function ShellDrawer({
   header,
   closeSide = 'end',
   backdrop = true,
+  /* THE CLOSE SITS ON THE ROW'S RUNG (user 2026-09-03, on the settings drawer:
+   * *"does this button follow the size ladder?"*). It was pinned `md` (32) while
+   * every control in the panel below it — the switches, the dropdowns, the reset
+   * frame — is `sm` (26), so the one control that is not a setting was the
+   * largest thing on the surface. A size is a height and a row is one height;
+   * `sm` is the default because a drawer header sits over its own controls.
+   * Named `closeSize`, not `size` — `size` is already the panel's own box. */
+  closeSize = 'sm',
   children,
   className = '',
   /* SettingsPanelApproved (2026-08-27): the settings drawer has neither */
@@ -188,32 +197,17 @@ export default function ShellDrawer({
           {closeSide === 'start' && (
             /* bare glyph, no container (user 2026-08-09: "the X close icon
              * does not need a container") — body ink at rest, emphasis on hover */
-            <button
-              type="button"
-              aria-label="Close"
-              onClick={onClose}
-              className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-body transition-colors duration-150 hover:text-emphasis"
-            >
-              <Icon name="x" size={18} />
-            </button>
+            <CloseButton onClick={onClose} size={closeSize} className="shrink-0" />
           )}
           {header != null && <div className="min-w-0 flex-1">{header}</div>}
-          {/* The box has an owner (2026-08-01). This hand-wrote the icon-button
-            * square and its hover wash; `Button variant="nav"` IS that string.
-            * `iconSize` holds the glyph where it was — the ladder's md rung is
-            * heavier than a drawer close wants, and Button documents iconSize
-            * for exactly the cases the ladder cannot serve. The SQUARE is what
-            * needed an owner, and it now has one. */}
+          {/* A NORMAL ICON BUTTON (user 2026-09-02: *"it should just be like a
+            * normal button with a close icon, its not new?"*). It carried
+            * `iconSize={14}` — kept in 2026-08-01 to preserve the glyph size the
+            * hand-rolled button before it happened to have — so the box sat at
+            * the md rung's 32px around a glyph six under it, and it read as an
+            * oversized empty square. No override: the rung sets both. */}
           {closeSide !== 'start' && (
-            <Button
-              variant="nav"
-              size="md"
-              iconOnly="x"
-              iconSize={14}
-              onClick={onClose}
-              aria-label="Close"
-              className="ml-auto shrink-0"
-            />
+            <CloseButton onClick={onClose} size={closeSize} className="ml-auto shrink-0" />
           )}
         </div>
         <div className="flex-1 overflow-y-auto pr-1" style={{ overflowAnchor: 'none' }}>

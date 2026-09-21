@@ -12,13 +12,13 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'nav'|'danger'|'grey'|'control'} props.variant - Visual variant. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'nav'|'danger'|'grey'|'control'} props.variant - Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Button size (default: 'md'); xs is the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 22px shell (20 icon-only), opt-in by prop
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
  * @param {string} props.iconLeftHover - Icon to show on hover (left position)
  * @param {string} props.iconRightHover - Icon to show on hover (right position)
- * @param {'default'|'sunken'} props.tone - `sunken` = the control set's dark well + fg-96 ink (ControlToneSunken); `inverse` aliased
+ * @param {'primary'|'secondary'|'inverted'|'outline'|'ghost'|'grey'|'sunken'} props.tone - the ground (`secondary` = the page surface, `inverted` = the text colour as fill — what `variant="secondary"` paints) (tone-is-the-ground-axis, 2026-09-03) — wins over `variant` on the same element; unset = inherit the wrapper's. `sunken` = the control set's dark well + fg-96 ink (ControlToneSunken); `inverse` aliased
  * @param {string} props.iconOnly - Icon name for icon-only button
  * @param {string} props.iconOnlyHover - Icon to show on hover (icon-only)
  * @param {boolean} props.animateIcon - Disable default hover states to focus on icon animation
@@ -38,7 +38,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  */
 const Button = ({
   children,
-  variant = 'primary',
+  variant,
   size = 'md',
   iconLeft,
   iconRight,
@@ -73,27 +73,16 @@ const Button = ({
   // variant="control" keep working post-migration).
   const resolvedVariant = variant === 'control' ? 'ghost' : variant
 
-  const variantClass = resolvedVariant === 'primary'
-    ? 'kol-btn-primary'
-    : resolvedVariant === 'accent'
-    ? 'kol-btn-accent'
-    : resolvedVariant === 'outline'
-    ? 'kol-btn-outline'
-    : resolvedVariant === 'ghost'
-    ? 'kol-btn-ghost'
-    : resolvedVariant === 'danger'
-    ? 'kol-btn-danger'
-    : resolvedVariant === 'grey'
-    ? 'kol-btn-grey'
-    /* `nav` — transparent box, oq-64 ink (2026-08-01). The class had lived in
-     * the theme since the shell landed with NO component able to emit it, so
-     * every consumer that wanted this exact weight hand-wrote the box instead:
-     * that orphan is the direct cause of the four-container header. It is the
-     * chrome rung — one step brighter than `ghost` at oq-48 — and it is what
-     * `text-fg-64` meant every time a call site typed it. */
-    : resolvedVariant === 'nav'
-    ? 'kol-btn-nav'
-    : 'kol-btn-secondary'
+  /* THE GROUND IS A TONE (tone-is-the-ground-axis, 2026-09-03). No variant →
+   * NO class: the button paints from the `--kol-tone-*` properties it inherits
+   * from a toned wrapper, else the theme's primary fallback — that is how a
+   * set gets its tone "already set". An explicit variant stamps its class,
+   * which is an alias of the tone (primary · secondary · outline · ghost ·
+   * grey) or its own bundle (nav · danger · accent); `nav` is ghost's chrome
+   * rung, oq-80 ink + aria-current — it had lived in the theme with no
+   * component able to emit it, the direct cause of the four-container header. */
+  const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'danger', 'grey']
+  const variantClass = !resolvedVariant ? '' : KNOWN.includes(resolvedVariant) ? `kol-btn-${resolvedVariant}` : 'kol-btn-secondary'
 
   // Add size class — pairs the padding rule with its mono type class.
   const sizeClass = size === 'sm'

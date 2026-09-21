@@ -47,7 +47,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *                                confirm only fires once it resolves
  * @param {string}   href         renders an <a> instead of a <button>
  * @param {number}   hold         ms to hold the confirm state (default 2000)
- * @param {string}   size         sm | md | lg — the pinned square (28/32/36)
+ * @param {string}   size         xs | sm | md | lg — the pinned square (22/26/32/40)
  *                                and its SOLO glyph (16/20/24) move together,
  *                                resolved from hooks/glyphLadders.js. This was
  *                                a raw px number and defaulted to 16 in a 32px

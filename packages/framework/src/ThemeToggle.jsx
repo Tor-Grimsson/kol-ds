@@ -27,7 +27,7 @@ import { useTheme } from './theme.js'
  *                                    that — a sidebar row is not a button.
  *     iconRight  bool                glyph right of the text (left default)
  *     label      bool                text on/off — off pins the square box
- *                                    per rung (28/32/36; icon-only is a
+ *                                    per size (22/26/32/40; icon-only is a
  *                                    geometry condition, not a variant)
  *     fullWidth  bool                stretches to a sidenav row
  *     size       'sm' | 'md' | 'lg'  moves pad + text + glyph together
@@ -90,7 +90,9 @@ export default function ThemeToggle({
   className = '',
 }) {
   const { theme, mode, cycle, clear } = useTheme()
-  const extra = `${tone === 'sunken' || tone === 'inverse' ? 'kol-tone-sunken' : ''} ${className}`.trim()
+  /* six tones (tone-is-the-ground-axis, 2026-09-03); unset inherits the wrapper's */
+  const TONE_CLASS = { primary: 'kol-tone-primary', secondary: 'kol-tone-secondary', inverted: 'kol-tone-inverted', outline: 'kol-tone-outline', ghost: 'kol-tone-ghost', grey: 'kol-tone-grey', sunken: 'kol-tone-sunken', inverse: 'kol-tone-sunken' }
+  const extra = `${TONE_CLASS[tone] ?? ''} ${className}`.trim()
 
   /* Label and slot follow the RESOLVED theme, not the stored choice: when the
    * page is unset, what the user is looking at is the OS's answer, and the

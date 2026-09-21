@@ -1,0 +1,44 @@
+/* The fixture wearing kol-media-client's shape. This is what replaces
+ * kol-r2b2's `src/lib/client.js` — same seams, same call signatures, no fetch
+ * behind any of them, so the DS pages cannot tell the difference.
+ *
+ * It also carries the verbs a real bucket cannot offer (`createFolder`,
+ * `uploadFile`, `reset`, `folderTree`). Those are the point of the app: the
+ * operations get designed against something that can actually perform them. */
+
+import * as store from './store.js'
+import { contentUrl } from './content.js'
+
+export const fixtureClient = {
+  // ── kol-media-client's read surface ──────────────────────────────
+  buckets: () => store.buckets(),
+
+  async listMedia(prefix = '', { bucket } = {}) {
+    return store.list(bucket ?? 'r2', prefix)
+  },
+
+  /* Real bytes where a kind has a cheap honest fake — images, audio, and every
+   * text kind (markdown, json, yaml, code, plain). Video and PDF return the
+   * fixture URL and fall through to the DS's kind glyph. */
+  mediaUrl: (key) => contentUrl(key) ?? `fixture:///${key}`,
+  downloadUrl: (key) => contentUrl(key) ?? `fixture:///${key}`,
+  proxied: (url) => url,
+
+  // ── the write seams that make the pages writable ─────────────────
+  async deleteObject(key, bucket) { return store.remove(bucket ?? 'r2', key) },
+  async renameObject(from, to, bucket) { return store.rename(bucket ?? 'r2', from, to) },
+
+  // ── what a key-prefix bucket cannot do, and this app exists to design ──
+  async createFolder(path, bucket) { return store.createFolder(bucket ?? 'r2', path) },
+  /* A NEW, EMPTY FILE. The store already had `put`; nothing called it with no bytes. A file
+   * manager that can make a folder but not a text file is half a file manager. */
+  async createFile(key, bucket) { return store.put(bucket ?? 'r2', key, { size: 0, contentType: 'text/plain' }) },
+  async uploadFile(file, key, bucket) {
+    return store.put(bucket ?? 'r2', key, { size: file?.size, contentType: file?.type })
+  },
+
+  folderTree: () => store.folderTree(),
+  reset: () => store.reset(),
+}
+
+export default fixtureClient

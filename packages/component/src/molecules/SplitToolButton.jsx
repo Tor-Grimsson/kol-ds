@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
  * SplitToolButton — single-trigger split tool button + variant menu (the
- * tool-palette idiom: Select · Text · [Shape ◢] · Pattern). A 28×28
+ * tool-palette idiom: Select · Text · [Shape ◢] · Pattern). A pinned-square
  * quiet/pressed trigger shows the current variant while the group is `active`
  * (else the `lastPicked` variant) plus a corner fold indicator; ONE click both
  * arms that variant (`onChange`) and opens the variant menu (floating-ui's own
@@ -14,12 +15,36 @@ import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
  * The trigger is a plain `kol-btn` element, not DS Button: Button doesn't
  * forward refs (the popover must anchor on the real button), can't host the
  * corner fold inside its own box, and `blurOnClick` must blur the button
- * itself. The class output — kol-btn kol-btn-ghost + kol-btn-quiet /
- * kol-btn-pressed — is exactly what `<Button variant="ghost" quiet pressed>`
- * emits, so the visual contract stays Button's.
+ * itself. The class output — kol-btn kol-btn-ghost kol-btn-icon kol-btn-{size}
+ * + kol-btn-quiet / kol-btn-pressed — is exactly what
+ * `<Button variant="ghost" quiet pressed iconOnly>` emits, so the box and the
+ * visual contract stay Button's.
+ *
+ * `size` was a raw px number (28) with a transcribed 14px glyph until 0.182.0:
+ * off the 22 · 26 · 32 · 40 ladder in a set whose whole point is that one row
+ * is one box, and the glyph pinned where the SOLO ladder should have decided
+ * it. kol-fxr's tool rail hand-rolls this trigger at 36/22 rather than
+ * importing it (design-editor-set-is-a-half-port, 2026-09-03) — 36 is not a
+ * rung either, and the DS answer to a bespoke 36 is `size="lg"`.
  *
  * For a text-trigger single-select use `Dropdown`; for the two-button
  * action-half + chevron-half split use `ShapeDropdown`.
+ *
+ * WHY THIS IS STILL ITS OWN COMPONENT, after `Dropdown` grew the icon-only
+ * square trigger it was asked to (2026-09-03, `editor-set-is-behind-its-
+ * source`). The ticket's premise — *"it hand-rolls a `<button>` re-emitting
+ * Button's classes"* — is gone: since 0.182.0 this wears
+ * `kol-btn-icon kol-btn-{size}`, the same class output at the same rungs, so
+ * there is no second implementation of the box left to collapse. What remains
+ * is ONE behaviour Dropdown does not have and should not grow for one caller:
+ * a click on the trigger both ARMS the last-picked variant and opens the menu,
+ * so a tool is selected and re-pickable in one gesture. Dropdown is a
+ * controlled select — its trigger opens, it does not choose — and giving it an
+ * `onTriggerClick` seam to serve this would be a seam for exactly one consumer.
+ * Two components, one class output, one popover utility, one glyph ladder: the
+ * duplication the ticket named is closed, and the difference that is left is
+ * real. What DID move to Dropdown is the part that generalises — per-option
+ * `icon` and `shortcut` rows, which any menu wants.
  *
  * @param {Object} props
  * @param {{id: string, label: string, icon: string, shortcut?: string}[]} props.variants - Variants: menu rows + trigger glyph
@@ -27,25 +52,21 @@ import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
  * @param {Function} props.onChange - Fires with a variant id — on menu pick, and on trigger click while inactive (arming)
  * @param {string} props.lastPicked - Variant id the trigger shows while the group is inactive (default: variants[0])
  * @param {boolean} props.active - Whether this tool group is the active tool — lit trigger, `aria-pressed`
- * @param {number} props.size - Trigger box in px (default: 28)
+ * @param {'xs'|'sm'|'md'|'lg'} props.size - Trigger box on the pinned-square ladder — 22 · 26 · 32 · 40 (default: 'md'). The glyph follows the SOLO ladder; it is never set at the call site
  * @param {boolean} props.blurOnClick - Blur the trigger after click so a canvas can reclaim focus and refresh its cursor (default: false)
  * @param {string} props.aria-label - Trigger label fallback when no variant resolves
  * @param {string} props.className - Additional classes on the trigger
  */
 
-/* Corner fold marker. `tool-fold-indicator` doesn't exist in kol-icons yet —
- * icon-set candidate; inline until promoted. Lives inside the button so it
- * dims with kol-btn-quiet and inverts with kol-btn-pressed (currentColor). */
+/* Corner fold marker — `fold-indicator`, promoted into kol-icon-set-v1
+ * 2026-09-03 from kol-fxr's own drawing (editor-set-is-behind-its-source); the
+ * comment that stood here said it did not exist yet and should be promoted, so
+ * this is that. Lives inside the button so it dims with kol-btn-quiet and
+ * inverts with kol-btn-pressed (currentColor). */
 const FoldIndicator = () => (
-  <svg
-    aria-hidden="true"
-    width={4}
-    height={4}
-    viewBox="0 0 4 4"
-    className="pointer-events-none absolute right-0.5 bottom-0.5 opacity-70"
-  >
-    <path d="M4 0v4H0z" fill="currentColor" />
-  </svg>
+  <span aria-hidden="true" className="pointer-events-none absolute right-0.5 bottom-0.5 opacity-70 inline-flex">
+    <Icon name="fold-indicator" size={4} />
+  </span>
 )
 
 const SplitToolButton = ({
@@ -54,7 +75,7 @@ const SplitToolButton = ({
   onChange,
   lastPicked,
   active = false,
-  size = 28,
+  size = 'md',
   blurOnClick = false,
   className = '',
   'aria-label': ariaLabel,
@@ -91,13 +112,12 @@ const SplitToolButton = ({
         ref={popover.refs.setReference}
         {...popover.getReferenceProps({ onClick: handleTriggerClick })}
         type="button"
-        className={`relative kol-btn kol-btn-ghost ${active ? 'kol-btn-pressed' : 'kol-btn-quiet'} ${className}`.trim()}
-        style={{ width: size, height: size, padding: 6 }}
+        className={`relative kol-btn kol-btn-ghost kol-btn-icon kol-btn-${size} ${active ? 'kol-btn-pressed' : 'kol-btn-quiet'} ${className}`.trim()}
         aria-pressed={active}
         aria-label={label}
         title={title}
       >
-        {triggerVariant && <Icon name={triggerVariant.icon} size={14} />}
+        {triggerVariant && <Icon name={triggerVariant.icon} size={glyphSize(size, true)} />}
         <FoldIndicator />
       </button>
       {/* w-max — floats size to content, the menu-family law (2026-08-09). */}

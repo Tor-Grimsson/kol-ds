@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build",
+    "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:demos": "node scripts/validate-demos.mjs",
     "validate:imports": "node scripts/validate-imports.mjs",
@@ -14,6 +15,7 @@
     "extract:descriptions": "node scripts/extract-descriptions.mjs",
     "preview": "pnpm --filter showcase preview",
     "workbench": "pnpm --filter workbench ladle",
+    "media": "pnpm --filter media dev",
     "extract:usage": "node scripts/extract-usage.mjs",
     "extract:docs": "node scripts/extract-docs-meta.mjs && node scripts/extract-api.mjs && node scripts/extract-composition.mjs && node scripts/extract-origins.mjs",
     "validate:taxonomy": "node scripts/validate-taxonomy.mjs",

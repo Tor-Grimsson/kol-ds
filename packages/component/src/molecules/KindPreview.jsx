@@ -28,6 +28,11 @@ import DocPage from './DocPage.jsx'
  * `<img>` so it can read the dimensions). Text fetches cap at `textLimit`.
  *
  * @param {object}   o          the object — `{ key, contentType?, displayKey?, segmentCount? }`
+ * @param {string}   text       content ALREADY IN HAND — skips the fetch and joins the same render
+ *                              path. For a source with no file behind it (a database row). Pass
+ *                              `kind` with it: there is no extension to classify by
+ * @param {string}   kind       classification override — `markdown` · `json` · `yaml` · `code` ·
+ *                              `text` · `image` · `video` · `audio`. Wins over `kindOf(o)`
  * @param {Function} urlOf      (o) => string — the object's public URL (default: `o.url`)
  * @param {string}   poster     a poster URL for HLS (the sibling image)
  * @param {Function} kindOf · extOf   classification seams (defaults: the DS mediaKinds)
@@ -63,13 +68,38 @@ function useTextContent(url, enabled, limit) {
   return { ...result, loading: enabled && result.url !== url }
 }
 
-export default function KindPreview({ o, urlOf = (x) => x.url, poster, kindOf = defaultKindOf, extOf = defaultExtOf, kindLabel = KIND_LABEL, textLimit = TEXT_LIMIT }) {
-  const kind = kindOf(o)
+export default function KindPreview({ o, text: textProp, kind: kindProp, urlOf = (x) => x.url, poster, kindOf = defaultKindOf, extOf = defaultExtOf, kindLabel = KIND_LABEL, textLimit = TEXT_LIMIT }) {
+  /* CONTENT IN HAND, OR A URL TO FETCH (content-card-needs-no-cover,
+   * kol-client-olina 2026-09-04; shape ruled by kol-r2b2, whose component this
+   * is). A markdown note in a D1 row has no file and no URL behind it, so the
+   * fetch has nothing to pull — but the RENDER path is the one this component
+   * already owns, and a second previewer in the estate is what the lobby exists
+   * to prevent.
+   *
+   * `text` sits BESIDE `o`, not inside it: `o` is the media object — key, size,
+   * contentType, uploaded — and that shape is what `kindOf`, `posterFor` and
+   * the resolution-set grouping all read. Prose inside it would make the object
+   * mean two things.
+   *
+   * `kind` is not optional sugar. Classification reads the EXTENSION off the
+   * key, and a database row has no filename, so `text` alone lands on `other`
+   * and renders the right content as the wrong thing — worse than the
+   * placeholder it replaces. The two ship together or the seam half-works for
+   * the only caller that asked. Precedent: `urlOf`, `kindOf`, `kindLabel` and
+   * `partition` are already caller-supplied for the same reason — the DS does
+   * not decide what a consumer's object IS. */
+  const kind = kindProp ?? kindOf(o)
   const url = urlOf(o)
   const ext = extOf(o.key)
   const name = o.displayKey ?? o.key
   const isText = kind === 'text' || kind === 'code' || kind === 'markdown' || kind === 'json' || kind === 'yaml'
-  const { loading, text, error, truncated } = useTextContent(url, isText, textLimit)
+  const fetched = useTextContent(url, isText && textProp == null, textLimit)
+  /* content in hand is never loading and never errors — there is nothing to
+   * wait for. It still honours `textLimit`, so one long note cannot outgrow a
+   * tile the way a fetched one cannot. */
+  const { loading, text, error, truncated } = textProp != null
+    ? { loading: false, error: null, text: String(textProp).slice(0, textLimit), truncated: String(textProp).length > textLimit }
+    : fetched
 
   if (kind === 'playlist') {
     return (

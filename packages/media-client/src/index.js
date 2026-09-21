@@ -101,19 +101,33 @@ export function createMediaClient({
    * the one client. `listMedia` sends `bucket=<id>` (kol-r2b2's worker takes it
    * on /api/list); `mediaUrl(key, id)` builds on that bucket's publicBase.
    *
-   * THREE VALUES (MediaClientBucketTable, 2026-08-28 — the table is the
-   * package's now, see KOL_BUCKETS above):
+   * FOUR VALUES (MediaClientBucketTable, 2026-08-28; the ARRAY added 2026-09-03,
+   * one-bucket-consumer from kol-client-olina — the table is the package's, see
+   * KOL_BUCKETS above):
    *   `null` (default)  today's single bucket — nothing existing breaks
    *   `true`            KOL_BUCKETS as shipped
    *   an object         KOL_BUCKETS with these merged in, per id — a label, an
    *                     extra bucket, a `writable` flag. A consumer overrides;
    *                     it does not restate. Passing the canonical three
    *                     verbatim (what both consumers do today) merges to
-   *                     exactly itself, so adoption is a deletion, not a swap. */
+   *                     exactly itself, so adoption is a deletion, not a swap.
+   *   an ARRAY          EXACTLY these, nothing merged. The object form has no
+   *                     value meaning "mine and no others", so a client that is
+   *                     not Kolkrabbi could not describe itself: olina passed
+   *                     one bucket and its admin rendered three, `B2 · website`
+   *                     and `B2 · vault` among them — Kolkrabbi's buckets on a
+   *                     client's domain. The array reads as THE LIST, which is
+   *                     what a one-bucket consumer means. Entries carry their
+   *                     own `id`; a missing one falls back to the array index.
+   *                     Merge behaviour for the object form is untouched. */
   buckets = null,
 } = {}) {
   const cdnPrefix = new RegExp(`^${escapeRe(publicBase)}/`)
   const merged = buckets === true ? KOL_BUCKETS
+    /* the array is EXACT — KOL_BUCKETS is never consulted */
+    : Array.isArray(buckets) ? Object.fromEntries(
+        buckets.map((b, i) => [b.id ?? String(i), b])
+      )
     : buckets ? Object.fromEntries(
         [...new Set([...Object.keys(KOL_BUCKETS), ...Object.keys(buckets)])]
           .map((id) => [id, { ...KOL_BUCKETS[id], ...buckets[id] }])

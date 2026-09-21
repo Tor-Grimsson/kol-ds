@@ -670,8 +670,233 @@
 .kol-filters-row {
   container-type: inline-size;
 }
+/* THE TRACK COUNT, MEASURED ONCE AND READ TWICE (CatalogFilterFirstGroupTrackCount,
+ * kol-client-olina 2026-09-03). The first group was `(100cqw − 120px) / 6` — one
+ * column of a six-track grid — while the catalog grid asks how many tracks FIT
+ * (ceiling 6, floor `minColumn`): on a capped page at 1280 the grid renders five
+ * at 165 and the group measured 133, its right edge mid-card. The 2026-08-27
+ * "sits over the first card" law was only true at six.
+ *
+ * Both read `--kol-catalog-n`, the count the grid actually renders. CatalogPage
+ * MEASURES it (a ResizeObserver on the grid — `min(cols, floor((W + gap) /
+ * (min + gap)))`, exactly what `repeat(auto-fill, minmax(…))` resolved to) and
+ * publishes it on the page, so six-track pages are pixel-identical and narrower
+ * ones agree. Unset — a ContentFilters outside CatalogPage — falls back to 6,
+ * the pre-0.137.0 formula.
+ *
+ * ⚠️ 0.137.0 computed the count HERE with `round(down, (100cqw + 24px) / (min +
+ * 24px), 1)`. Chromium resolves a `<length> / <length>` division to a number;
+ * Firefox does not, so the declaration was invalid at computed-value time,
+ * `repeat(var(--n))` fell to `none`, and every catalog rendered ONE column — a
+ * ~1500px card (user: "is this supposed to be a joke? huge card"). Pulled the
+ * same hour; the count is measured in JS now, and CSS does one division by a
+ * NUMBER, which is Level 3 and everywhere. */
 .kol-filters-first {
   flex: none;
-  width: calc((100cqw - 120px) / 6);
+  width: calc((100cqw - (var(--kol-catalog-n, 6) - 1) * 24px) / var(--kol-catalog-n, 6));
 }
 
+
+/* ─────────────────────────── LayerStack ───────────────────────────────
+ * The layers panel (editor-panels-the-held-specs A1, kol-fxr 2026-09-03).
+ * Values are the engine's `.kol-compose-layer-*` rules verbatim, renamed:
+ * the DS owns this chrome now, and two owners of one class name is the drift
+ * this estate keeps paying for. CSS rather than utilities because the states,
+ * the drop indicators (pseudo-elements) and the hover-reveal (a descendant
+ * rule off `[data-layer-stack]:hover`) are not expressible as classes on the
+ * element.
+ * ───────────────────────────────────────────────────────────────────── */
+
+.kol-layer-stack-line {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.kol-layer-stack-collapse {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--kol-fg-64);
+  padding: 0;
+}
+.kol-layer-stack-collapse:hover { color: var(--kol-surface-on-primary); }
+/* Chevrons are focus chrome, not resting chrome (Figma model): hidden until
+   the pointer is inside the stack, then every container row shows its own. */
+.kol-layer-stack-collapse { opacity: 0; transition: opacity 120ms; }
+[data-layer-stack]:hover .kol-layer-stack-collapse { opacity: 1; }
+/* Indent nested rows one chevron slot per level — a child's type icon aligns
+   under its parent's icon, not its name. Top-level rows sit flush. */
+.kol-layer-stack-nest { padding-left: 16px; }
+
+.kol-layer-stack-row {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 4px 60px 4px 8px;  /* right padding reserves the two absolutely-
+                                 positioned toggle buttons */
+  color: var(--kol-fg-64);
+  border-radius: 4px;
+  cursor: grab;
+  position: relative;
+}
+.kol-layer-stack-row:hover {
+  background: var(--kol-fg-04);
+  color: var(--kol-surface-on-primary);
+}
+/* Selected = accent highlight; a selected container also tints its expanded
+   children block one shade lighter (Figma model). Hover stays grey. */
+.kol-layer-stack-row.is-active {
+  background: color-mix(in srgb, var(--kol-accent-primary) 26%, transparent);
+  color: var(--kol-fg-emphasis);
+}
+.kol-layer-stack-row.is-tinted {
+  background: color-mix(in srgb, var(--kol-accent-primary) 11%, transparent);
+}
+/* Hidden layer — dim the icon + name only; the slashed eye stays legible. */
+.kol-layer-stack-row.is-hidden .kol-layer-stack-main { opacity: 0.4; }
+.kol-layer-stack-row.is-dragging { opacity: 0.4; cursor: grabbing; }
+.kol-layer-stack-row[draggable]:active { cursor: grabbing; }
+
+/* Drop indicator — 2px accent line at the top or bottom of the target row. */
+.kol-layer-stack-row.is-drop-above::before,
+.kol-layer-stack-row.is-drop-below::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: 2px;
+  background: var(--kol-accent-primary);
+  pointer-events: none;
+  z-index: 1;
+}
+.kol-layer-stack-row.is-drop-above::before { top: -1px; }
+.kol-layer-stack-row.is-drop-below::after  { bottom: -1px; }
+
+.kol-layer-stack-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+}
+.kol-layer-stack-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* The eye and the lock: absolute in the row's reserved right padding, hidden
+   until the row is hovered, PINNED visible when the layer is hidden / locked
+   or the row is active (`.is-pinned`), so a toggled state is never a secret. */
+.kol-layer-stack-toggle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  padding: 0;
+  cursor: pointer;
+  color: var(--kol-oq-48);
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.kol-layer-stack-toggle--eye  { right: 28px; }
+.kol-layer-stack-toggle--lock { right: 0; }
+.kol-layer-stack-row:hover .kol-layer-stack-toggle,
+.kol-layer-stack-toggle.is-pinned { opacity: 1; }
+.kol-layer-stack-toggle:hover { color: var(--kol-fg-emphasis); background: var(--kol-fg-08); }
+.kol-layer-stack-toggle.is-on { color: var(--kol-accent-primary); }
+
+/* ── ColumnBrowser · the mobile four-zone row ──────────────────────────
+ * ColumnBrowserMobileViews §1 (kol-r2b2, 2026-09-03). Height follows zone 2,
+ * the 44px thumbnail: 60px, not the DS Table's `12px 16px`, which is right for
+ * a 14px glyph and three times too airy for a thumbnail. The divider starts at
+ * ZONE 3's left edge — 14 disclosure + 8 gap + 44 icon + 8 gap = 74 — which is
+ * what both references draw and what a utility cannot express, since it is a
+ * pseudo-element inset on a sibling boundary.
+ * ─────────────────────────────────────────────────────────────────────── */
+.kol-column-browser-row--zones {
+  min-height: 60px;
+  position: relative;
+}
+.kol-column-browser-row--zones + .kol-column-browser-row--zones::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 74px;   /* zone 3's left edge */
+  right: 0;
+  height: 1px;
+  background: var(--kol-oq-08);
+  pointer-events: none;
+}
+/* the thumbnail fills its box and crops — a media tile is the image, not a
+   letterboxed one */
+.kol-column-browser-thumb img,
+.kol-column-browser-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── ColumnBrowser · the mobile grid (item 14) ─────────────────────────
+ * 3-up below `md`. For a media bucket the thumbnail IS the tile, so the box is
+ * square and the name sits under it; counts, not dates (§2). */
+.kol-column-browser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--kol-spacing-3);
+  padding: var(--kol-spacing-3);
+}
+.kol-column-browser-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-1);
+  min-width: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+}
+.kol-column-browser-tile-box {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--kol-oq-04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.kol-column-browser-tile-box img,
+.kol-column-browser-tile-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.kol-column-browser-tile.is-selected .kol-column-browser-tile-box {
+  outline: 2px solid var(--kol-accent-primary);
+  outline-offset: 1px;
+}

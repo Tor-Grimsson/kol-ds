@@ -16,13 +16,6 @@ import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
  * TWO PRESENTATIONS, ONE ANATOMY (the user's ask): `variant="drawer"` is a
  * right-anchored sheet over a scrim, `variant="overlay"` the same panel
  * centred. Only the shell differs; header · intro · sections · footer are the
- * NO SCRIM ON THE SETTINGS DRAWER (user 2026-08-30: "remove the background
- * overlay and blur when settings sidebar is opened"). `backdrop={false}` — the
- * panel alone, no 60% black wash and no `blur(1px)`. You change how a surface
- * looks WHILE looking at it, and a scrim hides the thing you are tuning. Escape
- * and the × still close it; only the dimming is gone. Scoped to this panel —
- * every other ShellDrawer consumer keeps its backdrop.
- *
  * same nodes in both. Neither shell is built here — the drawer IS ShellDrawer
  * (scrim, Escape, focus trap, scroll lock, focus return, the × control) and
  * the overlay IS FullscreenOverlay (scrim, Escape, backdrop dismiss, scroll
@@ -100,8 +93,13 @@ export default function SettingsPanel({
 
   return (
     /* THE APPROVED DRAWER (SettingsPanelApproved, kol-r2b2 2026-08-27 — user: "LOCK
-       THIS"): no edge, no shadow, a Divider under the header, the sections. */
-    <ShellDrawer open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false} backdrop={false}>
+       THIS"): no edge, no shadow, a Divider under the header, the sections.
+       THE SCRIM IS BACK (settings-drawer-has-no-surface, kol-client-olina
+       2026-09-03). `backdrop={false}` stood here from 2026-08-30; the drawer
+       paints `bg-surface-primary`, the same token as the page, so the scrim was
+       the only thing separating them — with it off the panel was invisible and
+       the controls floated in the right third of the screen. */
+    <ShellDrawer open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false}>
       <div className="flex flex-col gap-4"><Divider />{body}</div>
     </ShellDrawer>
   )
@@ -238,12 +236,23 @@ export function SettingsChipRow({ options = [], selected = [], onToggle, allChip
 
 /** SettingsFooter — a Divider, then one `IconFrame refresh` (primary · sm) at the
  *  right = reset to defaults (SettingsPanelApproved, 2026-08-27). No status word,
- *  no text button. `customised` is accepted for compatibility and unused. */
-export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults' }) {
+ *  no text button. `customised` is accepted for compatibility and unused.
+ *
+ *  `children` ride the SAME row, before reset (BrowsePageRulingsAndSeams,
+ *  kol-r2b2 2026-09-02): a consumer wanting one more control in that footer had
+ *  no way in, so kol-r2b2 ran a `MutationObserver` on `document.body` watching
+ *  for `[aria-label="Reset to defaults"]` and portalled a theme chip into its
+ *  parent — a copy string in a `querySelector`, watching the whole document, to
+ *  place one button. The slot is the seam that ends it.
+ *
+ *  `gap-2` on the row (user 2026-08-28): `flex justify-end` with no gap is right
+ *  for one control and wrong for two — the chip and the reset icon touched. */
+export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', children }) {
   return (
     <div className="flex flex-col gap-4">
       <Divider />
-      <div className="flex justify-end">
+      <div className="flex justify-end items-center gap-2">
+        {children}
         {onReset && <IconFrame name="refresh" variant="primary" size="sm" onClick={onReset} title={resetLabel} aria-label={resetLabel} />}
       </div>
     </div>

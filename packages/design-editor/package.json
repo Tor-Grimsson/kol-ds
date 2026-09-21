@@ -1,0 +1,76 @@
+{
+  "name": "@kolkrabbi/design-editor",
+  "version": "0.13.0",
+  "private": false,
+  "description": "The Kolkrabbi design editor as one embeddable React component \u2014 a DOM/SVG vector + generative compositor (canvas, layers, palette/pattern/type generators, kinetic type, boolean geometry, image export). Consumes the @kolkrabbi/kol-* design system as peers. The one BUILT package in this repo (ARCHITECTURE \u00a74 exception, 2026-09-03).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/design-editor.js",
+  "module": "./dist/design-editor.js",
+  "exports": {
+    ".": {
+      "import": "./dist/design-editor.js"
+    },
+    "./style.css": "./dist/design-editor.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build --config vite.lib.config.js",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.214.0 <1",
+    "@kolkrabbi/kol-framework": ">=0.44.0 <1",
+    "@kolkrabbi/kol-icons": ">=0.26.0 <1",
+    "@kolkrabbi/kol-media-client": ">=0.4.0 <1",
+    "@kolkrabbi/kol-shell": ">=0.51.0 <1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@kolkrabbi/kol-theme": ">=0.145.0 <1"
+  },
+  "dependencies": {
+    "colord": "^2.9.3",
+    "d3-delaunay": "^6.0.4",
+    "d3-force": "^3.0.0",
+    "mediabunny": "^1.54.0",
+    "opentype.js": "^2.0.0",
+    "paper": "^0.12.18",
+    "pixi-filters": "^6.1.5",
+    "pixi.js": "^8.19.0",
+    "simplex-noise": "^4.0.3",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "@vitejs/plugin-react": "^6.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10",
+    "vite-plugin-svgr": "^5.2.0"
+  },
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-editor",
+    "compositor",
+    "generative"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/design-editor"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

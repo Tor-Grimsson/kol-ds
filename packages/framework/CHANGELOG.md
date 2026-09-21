@@ -1,5 +1,104 @@
 # @kolkrabbi/kol-framework
 
+## 0.42.0 — 2026-09-03
+
+- `ThemeToggle tone` takes `inverted` (theme 0.138.0, component 0.177.0).
+
+## 0.41.0 — 2026-09-03
+
+- **`PageLayout` owns the wash** (two-page-scaffolds-one-job, kol-client-olina).
+  The plane paints `pageWash` and hands `--kol-shell-page-wash: transparent`
+  down — the variable means what is LEFT to paint — so a `PageShell` (or any
+  page root reading it) inside the frame no longer paints the wash a second
+  time. BrandLayout's line had set the variable on the plane AND painted it:
+  `fg-02` rendered as two 0.02 layers, measured on olina's /slide-deck. Outside
+  a `PageLayout`, and under kol-shell's `AppShell`, PageShell paints exactly as
+  before. Olina's `style={{ background: 'transparent' }}` stopgap retires.
+
+## 0.40.1 — 2026-09-03
+
+- `PageLayout` no longer destructures the inert `getActivePage` (props gate P2:
+  a prop that is destructured and never read). Passing it still breaks nothing —
+  an unknown prop is ignored.
+
+## 0.40.0 — 2026-09-03
+
+- **`ThemeToggle tone` takes the six tones** (tone-is-the-ground-axis; theme
+  0.134.0, component 0.176.0) — `primary` · `secondary` · `outline` · `ghost`
+  · `grey` · `sunken` (`inverse` aliased); unset inherits the wrapper's. The
+  geometry variants (`none` · `subtle` · `flush`) read the tone and fall back
+  to what they painted. Peers: theme ≥0.134.0, component ≥0.176.0.
+
+## 0.39.0 — 2026-09-03
+
+- **The page kit is one set — `PageHero` · `PageSection` · `PageLayout`**
+  (page-family-is-not-a-set, kol-client-olina; user, on the brand book: *"why
+  do 3 of 4 prefix PAGE if they are a set?"*). Four components under three
+  prefixes, none composing a text primitive, and a layout that shipped fifteen
+  `.kol-brand-layout` rules and no component.
+  - **`PageHero`** = `BrandHero` + `SubPageHero`. Same core, one optional slot
+    each (`mark` · `backTo`/`backLabel`); both now on one component, both old
+    names aliased (retirements ledger). Voices are `BrandHero`'s verbatim —
+    `.kol-prose-label` · `.kol-prose-display` · `.kol-prose-lede`; `SubPageHero`
+    had no package consumer, so its private voices go, its back link stays
+    class-for-class. With a `mark`, the label now sits in the text column
+    beside it rather than above the row — no package consumer passes `mark`.
+  - **`PageSection` and `PageHero` compose `SectionText`**, the page tier's
+    base, the way `PageHeader` does (component 0.175.0) — the `kol-prose-*`
+    classes passed as the base's seams, `gap` 0 because each class carries its
+    own margin. Internals only; the 81 consumer files are untouched. One
+    inherited delta: the base stamps `text-wrap: balance` on the headline.
+  - **`PageLayout`** = `AppShell`, renamed. The ticket asked for a layout to
+    ship beside the CSS; it already did — every consumer `BrandLayout.jsx` in
+    the estate is a copy of this file's markup — under a name that did not say
+    so and collided with kol-shell's `AppShell`. `AppShell` aliased. Folded in
+    from the forks: **`pageWash`** (the plane's wash over the primary back, the
+    same prop and `--kol-shell-page-wash` variable as kol-shell's) and
+    **`bare`** (plane + outlet only, the `?embed=1` branch).
+  - ⚠️ **The back is `surface-primary` now, not `surface-tertiary`** — one
+    component, one model, and the brand rulings (2026-08-24 → 08-27) are the
+    later ones. kol-studio, the one `AppShell` importer, goes from a tertiary
+    page to primary until it passes `pageWash`.
+  - **The ruling underneath (ticket ask 1):** `ContentText` and `SectionText`
+    stay two primitives by tier — a listing item's text with its data slots and
+    variant × form ramp, and a region's head — and neither absorbs the other.
+    Written into the section-system and content-card docs as a membership test.
+
+## 0.38.0 — 2026-09-03
+
+- **`Layout` has a skip link and an `id="main"`** (layout-skip-link,
+  kol-client-olina). Without them a keyboard user tabs the entire sidenav on
+  every page before reaching content. It was the one `kol-framework` fork a
+  consumer could not retire in its full-consumption pass, because retiring it
+  would have dropped an a11y basic. The link sits in `Layout` and not a nested
+  layout because it must PRECEDE the landmark it targets.
+  Every class on it emits, which was not a given: the consumer's copy shipped
+  `bg-accent-primary text-surface-primary` for a month and neither is a utility
+  that exists, so the link rendered with no fill at all. `bg-surface-inverse`
+  carries its own ink, and `focus:z-modal` is a real class only as of
+  **kol-theme 0.133.0**, which registered the z ladder with Tailwind the same
+  day — before that it emitted nothing either.
+  **Requires `@kolkrabbi/kol-theme@>=0.133.0`.**
+
+## 0.37.0 — 2026-09-03
+
+- **A dragged rail width is no longer remembered by default**
+  (sidenav-drag-width-outranks-breakpoints, kol-client-olina; user: *"why would
+  you want that in persistent memory? and even if you did, shouldnt it be an opt
+  in via prop? off by default"*). `useDragResize` persisted any drag to
+  `localStorage` and replayed it on boot as an **inline** custom property on
+  `:root` — which outranks every stylesheet rule, so one drag on a laptop killed
+  both shipped rungs (`--kol-sidenav-w: 264px` and the 320px `min-width:1536px`
+  rule) permanently, on every machine, with nothing in the UI saying so and no
+  selector a consumer could beat. Measured at 1600×900: a stored 210 rendered
+  210 and the 1536 rung did nothing.
+  **`persistWidth` (default `false`)** on the options object turns it back on for
+  an app that wants it. Off, a drag still works and lasts the session, and the
+  hook also REMOVES a width key an earlier version wrote — so a consumer that
+  merely bumps stops replaying a width it never opted into. Verified: with 210
+  stored, off resolves 264 at 1280 and **320 at 1600** with no inline property;
+  on resolves 210. Collapsed/expanded state is untouched and still persists.
+
 > **Gap:** 0.8.0 → 0.19.0 shipped without entries (that history lives in the repo's
 > session logs). Resumed 2026-08-14 — from here every publish adds an entry, and
 > breaking or global-surface changes (token renames, default flips, new bare-element

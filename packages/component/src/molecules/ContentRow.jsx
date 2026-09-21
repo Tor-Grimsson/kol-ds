@@ -14,7 +14,8 @@ import ContentText from './ContentText.jsx'
  *                             (`default` is an alias of `file`). `roster` is the pickable
  *                             row: filled tile, no border or divider, a FIXED 56px height the
  *                             content fills, a 40px square thumb and two truncated lines.
- * @param {ReactNode} media     thumb content (omit → placeholder)
+ * @param {ReactNode|false} media  thumb content (omit → placeholder; `false` → no thumb at all — the
+ *                             content HAS no cover, as against one that failed to load)
  * @param {number|'fill'} thumb  thumb edge px — overrides the ruled default; 0 hides; `'fill'` = a square
  *                             the height of the row's content, whatever the rung (WorkListingRowsAndFilters)
  * @param {string}    ratio     thumb aspect-ratio — overrides the ruled default.
@@ -47,6 +48,12 @@ const BOX = {
    * full-width grey band under it is heavier than the line itself. Scoped to
    * `default`: catalog and print still carry the same `oq-04`, unruled. */
   file:  { thumb: 48,  ratio: '1 / 1',  pad: `${S2} 0`,     gap: S3, align: 'items-center', divider: true },
+  /* SLIDE (slide-variant-and-shelf-preset, 2026-09-03): file's row with the thumb FILLING the
+   * rung's height and taking its width from 16:9 — 48 tall, 85 wide, the whole frame — not
+   * the 48 square, which cropped a deck to a sliver (read off olina's /slide-deck). `minH` 64
+   * = the 48 thumb plus the row's 8px pads; a fill thumb reads its height off the row's
+   * rung, and without one it fell to the 96 fallback (80 × 142, measured on the showcase). */
+  slide: { thumb: 'fill', ratio: '16 / 9', pad: `${S2} 0`, gap: S3, align: 'items-center', divider: true, minH: 64 },
   /* catalog/print rows render AT 36px — the shipped GridCard list row is a
    * fixed 36 and the Y padding was what pushed it past that. X padding stays;
    * `minH` is now the whole height budget and the row centres inside it. */
@@ -154,13 +161,28 @@ export default function ContentRow({
   href,
   onNavigate,
   tagVariant,
+  /* `bg` — the row's REST fill, the twin of ContentCard's (filed against the
+   * card, `contentcard-bg-and-text-props` 2026-09-03; the pair ships together
+   * and a consumer that re-grounds one hits the same wall on the other in the
+   * same grid). It sets `--kol-row-bg`, not a background, because the rest
+   * colours are custom properties so the hover class can win — which is why
+   * `className="bg-oq-48"` does nothing here either. `selected` still wins:
+   * a selected row is the list's state, not the consumer's ground. For the
+   * row's INK, pass `text` — it falls through to ContentText. */
+  bg,
   className = '',
   ...text
 }) {
   const aliased = ALIAS[variantProp] ?? variantProp
   const variant = aliased.startsWith('showcase') && layout ? LAYOUT_KEY[layout] ?? aliased : aliased
   const box = BOX[variant] ?? BOX.file
-  const thumbPx = thumb ?? box.thumb
+  /* `media={false}` — NO COVER, not a missing one (content-card-needs-no-cover,
+   * kol-client-olina 2026-09-04). The row could already hide its thumb with
+   * `thumb={0}`, but that is a SIZE answering a question about MEANING, and a
+   * consumer listing coverless documents should not have to say it two
+   * different ways on the card and the row. `media={false}` reads the same in
+   * both; `thumb` still wins when it is passed explicitly. */
+  const thumbPx = thumb ?? (media === false ? 0 : box.thumb)
   const padY = (paddingY != null ? `${paddingY}px` : String(box.pad)).trim().split(/\s+/)[0]
 
   /* The md: STEP is a custom property, not a Tailwind variant. Tailwind cannot
@@ -210,7 +232,7 @@ export default function ContentRow({
     /* rest values are PROPERTIES, not inline declarations — an inline
      * `background`/`borderColor` outranks every class, so the hover rules in
      * kol-theme could never win and no row hover fired at all. */
-    '--kol-row-bg': selected ? 'var(--kol-fg-04)' : box.bg,
+    '--kol-row-bg': selected ? 'var(--kol-fg-04)' : bg ?? box.bg,
     '--kol-row-border': box.frame || undefined,
   }
 
@@ -225,7 +247,7 @@ export default function ContentRow({
    * (a rendered alphabet, a waveform, a sparkline) is never the family's. */
   const inner = box.column ? (
     <>
-      <ContentText variant={variant} form="row" className="w-full" tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+      <ContentText variant={variant} form="row" className="w-full" tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
       {footer}
     </>
   ) : (
@@ -253,7 +275,7 @@ export default function ContentRow({
         * ruled it on screen): the two lines stack to 34 inside a 40 content box,
         * and pushing them fully apart puts the ascenders hard against the thumb's
         * top and bottom edges. It is the ROW's ruling, so the row passes it. */}
-      <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+      <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
       {/* `specs` rides the trailing edge on EVERY variant — year · material ·
        * edition is a content difference, not a geometry one, and minting a
        * seventh page-named box for it is the exact mistake §1 of the ticket is

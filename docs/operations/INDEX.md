@@ -3,7 +3,7 @@ title: Operations
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-21
 description: Repo machinery for the KOL packages
 tags:
   - domain/workflow
@@ -25,6 +25,7 @@ Repo machinery — how the KOL packages get versioned, published, eyeballed, and
 | [[03-showcase/01-recovery-roadmap\|03 — Showcase]] | The 2026-07-30 review traced to source, and the [[../documentation/01-foundations/07-doc-card-sets|doc + card sets plan]]. |
 | [[04-content-pipeline/INDEX\|04 — Content pipeline]] | **How docs/ and code become the showcase** — the seven content roots, the nav manifest, the category/chapter/page taxonomy, and the conventions that keep the vault human. |
 | [[05-reference-graph/INDEX\|05 — Reference graph]] | **What depends on what, with a weight.** Rated edges mined from the repo's own source; the canon bar is 3× the median, and the deletion guard names who breaks. |
+| [[07-apps-tier/INDEX\|07 — Apps tier]] | **The third tier** — `apps/*` beside `packages/*`, each product a real clickable app over fake mutable data, proved before it is published. Media first, one at a time. Concept lives once in dotfiles and is linked, never copied. |
 
 ## Folder shape
 

@@ -30,6 +30,7 @@ import ContentText from './ContentText.jsx'
  * the A4 question is open (06-content-card-system.md §4). */
 const RATIOS = {
   file: '1 / 1',
+  slide: '16 / 9', /* a deck is a 1920×1080 stage (slide-variant-and-shelf-preset, 2026-09-03) */
   catalog: '1 / 1.41421',
   article: '16 / 9',
   showcase: '3 / 4',
@@ -43,6 +44,11 @@ const BOX = {
    * like I've said that before" — the ListingCardThumbBorder ruling): the selected
    * state reads from the checked ToggleCheckbox, not a fg-64 border */
   file:  { layout: 'stack', border: null, bg: 'var(--kol-fg-02)', pad: 'var(--kol-pad-card-sm)' },
+  /* SLIDE (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03; user: "they are genuinely
+   * different with 16:9 layout and those exposed properties"): file's stack — cover on top, the
+   * plate below — on the PAGE'S surface, rest and hover (olina's /slide-deck, read off the render).
+   * The plate is not a tone (user: "no just controls"); it is this kind's colour. */
+  slide: { layout: 'stack', border: null, bg: 'var(--kol-surface-primary)', pad: 'var(--kol-pad-card-sm)' },
   /* THE FRAME READS BACKWARDS (CatalogCardFrameAndZoom, kol-website 2026-08-28 — user, on a 212-tile
    * grid: no frame at rest; the old rest value is the hover): a wall of fg-04 frames is a grid of boxes,
    * louder than what they hold. Rest `transparent` (the 1px stays, so the hover step never relayouts),
@@ -88,6 +94,7 @@ const BOX = {
  * has no surface of its own to step, so it dims its title instead. */
 const HOVER = {
   file:  'var(--kol-oq-04)',
+  slide: 'var(--kol-surface-primary)', /* the plate holds its colour on hover; the drawer control is the affordance */
   catalog:  'var(--kol-surface-tertiary)',
   /* article and work take NO surface hover, and that is a decision not a gap:
    * article has no surface of its own (its media frame, when on, steps its
@@ -132,7 +139,10 @@ const MEDIA = {
  *
  * `layout` is the discriminator inside `showcase` because `reveal` was already
  * taken by the consumer's overlay NODE. Its values are the box vocabulary the
- * component already spoke: drawer (default) · canvas. */
+ * component already spoke: drawer (default) · canvas.
+ *
+ * A FIFTH KIND, `slide` (2026-09-03, user-ruled: a deck is genuinely a different
+ * thing from a file — a 16:9 stage carrying a date, a size and a slide count). */
 const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
 const LAYOUT_KEY = { canvas: 'showcaseCanvas', drawer: 'showcase' }
 
@@ -157,6 +167,16 @@ export default function ContentCard({
   /* plateRule (CatalogCardFrameAndZoom): the plate's top hairline — default the variant's (catalog and
    * print draw it); `false` turns it off without an `!important` in a consumer sheet */
   plateRule,
+  /* `bg` — the card's REST fill, overriding the variant's. It sets
+   * `--kol-card-bg`, not a background, because the rest colours are custom
+   * properties so the hover class can win; that is also why
+   * `className="bg-oq-48"` does nothing here and a consumer reaching around the
+   * component had to write `className="[--kol-card-bg:var(--kol-oq-48)]"`
+   * (kol-client-hrafn, `contentcard-bg-and-text-props` 2026-09-03). The hover
+   * step is `--kol-content-hover-bg` and is set separately, so the two do not
+   * move together. For the card's INK, pass `text` — it falls through to
+   * ContentText with the rest of the slots. */
+  bg,
   control,
   controlStart,
   reveal,
@@ -215,7 +235,31 @@ export default function ContentCard({
    * the trailing edge, both bottom-aligned so the buttons sit on the last line
    * of copy rather than floating beside the title. */
   const hasPlate = hasText || actions != null
-  const framed = box.border != null || box.bg != null
+  /* FRAMED follows the EFFECTIVE fill, not the variant's. `bg` (0.183.0) let a
+   * consumer ground an unframed variant, and this line still read the table —
+   * so `article` + `bg` painted the ground but kept `framed` false, which
+   * dropped the card's own `overflow-hidden rounded-*` AND left `mediaRadius`
+   * true: a rounded still floating inside a square grey card, plate corners
+   * square (kol-client-hrafn, screenshot-confirmed on 0.183.0, fixed 0.183.1).
+   * One prop is not done until every derivation reads it. */
+  const framed = box.border != null || (bg ?? box.bg) != null
+
+  /* NO COVER IS NOT A MISSING COVER (content-card-needs-no-cover,
+   * kol-client-olina 2026-09-04). `ContentMedia` turns absent children into an
+   * `AssetPlaceholder` on purpose — a card whose image failed must not collapse
+   * into a text blob, and that dashed MISSING plate is the honest answer for a
+   * media library. It is the wrong answer for a markdown note in a database
+   * row, which has no picture and never will: their `/notes` page drew a wall
+   * of dashed frames with nothing misconfigured.
+   *
+   * The card cannot tell the two apart — only the consumer knows whether a
+   * cover is owed — so it is declared, and `media={false}` declares it: no
+   * media slot at all, text takes the full width. `false` rather than a new
+   * prop because it is React's own idiom for "render nothing", and because
+   * `media={false}` today renders an EMPTY framed box, a state nobody can want.
+   * `media={null}` and an omitted `media` keep the placeholder, so every
+   * existing consumer is untouched. */
+  const noMedia = media === false
 
   const textNode = hasPlate ? (
     <div
@@ -224,7 +268,7 @@ export default function ContentCard({
         '--kol-plate-pad': padding,
         '--kol-plate-pad-md': box.padMd,
         padding,
-        marginTop: box.layout === 'stack' ? box.mediaGap : undefined,
+        marginTop: box.layout === 'stack' && !noMedia ? box.mediaGap : undefined,
         borderTop: (plateRule ?? box.plateTop) ? '1px solid var(--kol-fg-04)' : undefined,
         background: box.layout === 'drawer' ? 'var(--kol-surface-inverse)' : box.plateBg,
         color: box.layout === 'drawer' ? 'var(--kol-fg-inverse)' : undefined,
@@ -232,7 +276,7 @@ export default function ContentCard({
         zIndex: box.layout === 'canvas' ? 1 : undefined,
       }}
     >
-      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} tagVariant={tagVariant ?? (/surface-/.test(box.bg ?? '') ? 'tertiary' : 'primary')} {...textSlots} />}
+      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...textSlots} />}
       {/* ABSOLUTE, not a flex sibling: the plate's height moves with the title
         * and the meta, so a laid-out stack would stretch or drift with it. The
         * inset reads the SAME pad token the plate uses, so the icons sit the
@@ -284,11 +328,15 @@ export default function ContentCard({
     box.layout === 'stack' ? (
       <>
         {heroHeader}
-        <div className="relative">
-          <ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia>
-          {controlNode}
-          {controlStartNode}
-        </div>
+        {/* the frame-corner controls go with the frame — `.kol-frame-control`
+          * positions against the media box, and there is none */}
+        {!noMedia && (
+          <div className="relative">
+            <ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia>
+            {controlNode}
+            {controlStartNode}
+          </div>
+        )}
         {textNode}
       </>
     ) : box.layout === 'fill-card' ? (
@@ -299,6 +347,7 @@ export default function ContentCard({
           * card gave each half 174 and the prose 126, and one module's specs
           * ran 1177px tall. The 50% half is a `md:` class now, not an inline
           * style — an inline flex-basis has no breakpoint. */}
+        {!noMedia && (
         <div
           className={`flex-1 min-w-0 min-h-0 relative overflow-hidden ${expanded ? 'max-md:flex-none max-md:aspect-[var(--kol-card-ratio)] md:flex-[0_0_50%]' : ''}`}
           style={{ ...(expanded ? { '--kol-card-ratio': r ?? '3 / 2' } : null), ...(doFlip ? { perspective: '1000px' } : null) }}
@@ -317,6 +366,7 @@ export default function ContentCard({
           {controlNode}
           {controlStartNode}
         </div>
+        )}
         {expanded ? (
           <div
             className="flex flex-1 flex-col justify-between overflow-auto"
@@ -328,11 +378,13 @@ export default function ContentCard({
       </>
     ) : box.layout === 'drawer' ? (
       <>
-        <div className="relative h-full">
-          <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
-          {controlNode}
-          {controlStartNode}
-        </div>
+        {!noMedia && (
+          <div className="relative h-full">
+            <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
+            {controlNode}
+            {controlStartNode}
+          </div>
+        )}
         {/* the plate is INVERSE and hidden until hover — `kol-card-drawer` owns
           * the reveal so the transition sits with the rest of the chrome */}
         {textNode && <div className="kol-card-drawer">{textNode}</div>}
@@ -344,11 +396,13 @@ export default function ContentCard({
        * choreography (kol-theme `.kol-card.has-reveal`), the consumer owns the
        * node (what it says and which face it wears are never the family's). */
       <>
-        <div className="kol-card-canvas-media absolute" style={{ inset: 0 }}>
-          <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
-          {controlNode}
-          {controlStartNode}
-        </div>
+        {!noMedia && (
+          <div className="kol-card-canvas-media absolute" style={{ inset: 0 }}>
+            <ContentMedia ratio={null} {...mediaProps}>{media}</ContentMedia>
+            {controlNode}
+            {controlStartNode}
+          </div>
+        )}
         {textNode}
         {reveal != null && (
           <div className="kol-card-reveal absolute inset-0 flex items-center justify-center p-8 pointer-events-none" style={{ zIndex: 2 }}>{reveal}</div>
@@ -380,7 +434,7 @@ export default function ContentCard({
       /* same reason as ContentRow: rest colours are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step
        * would never render. */
-      '--kol-card-bg': box.bg ?? undefined,
+      '--kol-card-bg': bg ?? box.bg ?? undefined,
       '--kol-card-border': box.border ? (selected ? 'var(--kol-fg-64)' : box.border) : undefined,
       '--kol-content-hover-bg': hoverBg ?? undefined,
       '--kol-content-hover-border': box.frameHover ?? undefined,

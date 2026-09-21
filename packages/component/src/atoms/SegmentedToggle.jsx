@@ -37,16 +37,24 @@
  *               'tonal' (filled tiles, but the clicked cell marks itself by
  *               TONE — surface-tertiary fill, no ring; 2026-08-12).
  *               Every variant renders at the SAME pinned button-ladder
- *               height (26/32/40) — icon or text, the box never moves.
+ *               height (22/26/32/40) — icon or text, the box never moves.
  *   size      — mirrors Button exactly: 'sm' (26px, mono-12, 4/12 pad) |
  *               'md' (default, 32px, mono-14, 6/16 pad) | 'lg' (40px,
  *               mono-16, 8/20 pad). Same cell padding + mono type as the
  *               matching `.kol-btn-{sm,md,lg}`, so a segmented strip lines
  *               up with a Button of the same size.
+ *   tone      — the ground (segmented-toggle-sunken-tone, kol-client-olina 2026-09-03: the one
+ *               control ControlToneSunken skipped; kol-fxr and olina carried the same three CSS
+ *               lines to fake it). `sunken` (alias `inverse`): shell border transparent, the
+ *               selected cell on `--kol-surface-sunken` / `fg-96`, rest cells as the default paints
+ *               them; `filled` and `tonal` keep their own selected law. Through `toneClass`, so a
+ *               `kol-tone-sunken` wrapper reaches it too. Unset = inherit.
  *   ariaLabel — accessible name for the group
  *   className — additional classes on the outer shell
  */
-export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', ariaLabel, className = '' }) {
+import { toneClass } from '../utilities/tone.js'
+
+export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', tone = 'default', ariaLabel, className = '' }) {
   const cellType = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
   const stateless = value == null
   const focusIdx = Math.max(0, options.findIndex((opt) => opt.value === value))
@@ -71,6 +79,7 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
         (variant === 'filled' || variant === 'tonal') && 'kol-seg--filled',
         variant === 'tonal' && 'kol-seg--tonal',
         size !== 'md' && `kol-seg--${size}`,
+        toneClass(tone),
         className,
       ].filter(Boolean).join(' ')}
     >

@@ -45,9 +45,24 @@
  * the estate is copying. The trigger is the one text control that always sits in
  * an icon row, so it takes the icon rungs: 28 / 32 / 36. Horizontal padding is
  * untouched; the vertical goes, because the flex box centres the label. */
-.kol-dd-trigger.kol-btn-sm { height: 28px; padding-block: 0; }
+/* 22/26/32/40 since 2026-09-02 — one height per size, so the trigger, the
+ * IconFrame and the Input on a row are the same box (see .kol-btn-icon). */
+/* ICON-ONLY TRIGGER (editor-set-is-behind-its-source, kol-fxr 2026-09-03). The
+ * square comes from `.kol-btn-icon` (22/26/32/40, padding 0) and this only has
+ * to undo the text trigger's own layout: `width: 100%` would stretch the square
+ * across its column, and `space-between` would push a lone glyph to one edge.
+ * A tool-rail dropdown is then the same box as the icon button beside it —
+ * which is the whole reason fxr's ToolPalette hand-rolled a trigger instead. */
+.kol-dd-trigger--icon {
+  width: auto;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+}
+.kol-dd-trigger.kol-btn-xs { height: 22px; padding-block: 0; }
+.kol-dd-trigger.kol-btn-sm { height: 26px; padding-block: 0; }
 .kol-dd-trigger.kol-btn-md { height: 32px; padding-block: 0; }
-.kol-dd-trigger.kol-btn-lg { height: 36px; padding-block: 0; }
+.kol-dd-trigger.kol-btn-lg { height: 40px; padding-block: 0; }
 /* REST AND OPEN ARE THE ONLY STATES (2026-07-15, re-called 2026-08-09 and
  * 2026-08-28). No :hover or :active rules for the trigger live here any more —
  * kol-components-atoms.css excludes `.kol-dd-trigger` from every variant's
@@ -95,12 +110,8 @@
   transition: rotate var(--kol-transition-base);
 }
 .kol-dd-trigger[data-state="open"] .kol-dd-caret { rotate: 180deg; }
-/* grey — the opaque oq-12 fill, dropdown-only (never a kol-btn-* variant) */
-.kol-dd-trigger--grey {
-  background: var(--kol-oq-12);
-  color: var(--kol-surface-on-primary);
-  border: 1px solid transparent;
-}
+/* grey — `.kol-dd-trigger--grey` is an alias of the grey TONE now (see TONE,
+ * below); the trigger is `.kol-btn` and paints from the tone properties */
 /* open/panel fusion — the open trigger and its panel read as ONE piece:
  * trigger squares its bottom corners, panel squares its top, and the fill
  * continues (panel offset is -1 in Dropdown.jsx for the same reason). */
@@ -114,13 +125,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-.kol-dd-panel--primary { background: var(--kol-surface-secondary); }
-.kol-dd-panel--grey    { background: var(--kol-oq-12); }
-.kol-dd-panel--outline {
-  background: var(--kol-surface-primary);
-  border: 1px solid var(--kol-oq-08); /* matches the trigger's rest border */
-  border-top: none; /* the trigger's bottom edge is the divider (docs page) */
+  /* the FLOATING surface of the trigger's tone (TONE, below): primary / grey /
+   * sunken continue their fill, outline and ghost paint the page's ground —
+   * `--kol-tone-ground` — so opening changes nothing under the panel. The
+   * `--primary` / `--grey` / `--outline` classes are aliases of the tones. */
+  background-color: var(--kol-tone-panel-bg, var(--kol-tone-bg, var(--kol-surface-secondary)));
+  border: var(--kol-tone-panel-border-w, 0) solid var(--kol-tone-panel-border, transparent); /* outline: matches the trigger's rest border */
+  border-top: 0; /* the trigger's bottom edge is the divider (docs page) */
 }
 .kol-dd-div  { border-top: 1px solid var(--kol-fg-08); }
 /* A ROWS CEILING THE CONSUMER CAN REACH (same ticket): Popover's size
@@ -139,8 +150,14 @@
 /* Popover — default chrome for floating-ui-positioned panels.
  * Used by molecules/Popover.jsx PopoverPanel. */
 .kol-popover {
-  background: var(--kol-surface-secondary);
-  border: 1px solid var(--kol-fg-08);
+  /* A TONED panel paints that tone's ground; unset it keeps surface-secondary,
+   * so nothing existing moves (editor-chrome-review, kol-fxr 2026-09-03 — in
+   * dark, surface-secondary is LIGHTER than the bar a menu drops from, so the
+   * layering read inverted). The border is the OPAQUE ramp, not the alpha one:
+   * a floating panel overlaps whatever is under it, and an alpha hairline
+   * composites twice at every overlap — the same law the icons follow. */
+  background: var(--kol-tone-bg, var(--kol-surface-secondary));
+  border: 1px solid var(--kol-oq-04);
   border-radius: var(--kol-radius-sm);
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4),
               0 2px 6px -2px rgba(0, 0, 0, 0.3);
@@ -149,15 +166,26 @@
 }
 
 /* Tooltip — hover-triggered text label with optional kbd-style shortcut chip.
- * Used by molecules/Popover.jsx Tooltip. No border (intentionally distinct
- * from native browser tooltips); shortcut renders as a fg-tinted chip. */
+ * Used by utilities/Popover.jsx Tooltip; shortcut renders as a fg-tinted chip.
+ *
+ * SYMMETRIC PADDING (2026-09-21). It was `4px 4px 4px 8px` — 8 left, 4 right —
+ * so a shortcut chip could sit tight to the right edge. Most tooltips carry no
+ * shortcut, so the common case rendered its label 4px off the centre of a
+ * perfectly centred box, which reads as a positioning bug and is not one. The
+ * chip now sits 8px in like the text does.
+ *
+ * It also had no border, deliberately, to stay distinct from a native browser
+ * tooltip. The editor's own `[data-kol-tip]` rule has carried one since it was
+ * written, so the border is the DS's now — at `.kol-popover`'s own `oq-04`,
+ * the opaque ramp, for the reason stated on that rule. */
 .kol-tooltip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: var(--kol-surface-secondary);
+  border: 1px solid var(--kol-oq-04);
   border-radius: var(--kol-radius-sm);
-  padding: 4px 4px 4px 8px;
+  padding: 4px 8px;
   font-family: var(--kol-font-family-mono);
   font-size: 11px;
   line-height: 1;
@@ -858,15 +886,26 @@
  * rounded-[…] / shadow-[…] / bg-black/NN / backdrop-blur-[…] in package chrome.
  * ───────────────────────────────────────────────────────────────────── */
 
-/* LOOK ONLY — the call site owns the box. Three scrims exist and two are
- * `fixed inset-0` while one is `absolute inset-0`; baking position in would
- * have forced a wrong one on two of them. The class owns what was drifting:
- * the tint (60 / 50 / 50 across three files).
+/* LOOK ONLY — the call site owns the box. Nine scrims wear it after the
+ * 2026-09-03 sweep (overlay-scrim-outliers: Modal · FullscreenOverlay ·
+ * ShellDrawer · ShellSearchOverlay · PageLayout's sidenav backdrop · FieldRow ·
+ * ShortcutsOverlay · TouchDeviceOverlay · the workshop's shortcuts sheet), and
+ * they are `fixed` or `absolute` by their own contract; baking position in
+ * would force a wrong one on some. The class owns what was drifting: the tint
+ * (60 / 50 / 50 across the first three files; an 8 % inverse wash + blur on
+ * the two shell overlays the sweep caught). ParamSheet is untinted on purpose;
+ * OverlayGlassPanel and PlaybackBar blur because they are surfaces, not scrims.
  * NO BLUR (user ruling 2026-09-01, OverlayScrimBlur): the 1px blur bought a
  * compositing layer on every overlay open, on a phone, for a separation the
  * 60% tint already carries. */
 .kol-overlay-scrim {
-  background-color: color-mix(in srgb, #000 60%, transparent);
+  /* ONE SCRIM, ONE TINT (user ruling 2026-09-03: *"makes sense to me they are
+   * the same no?"*). Was a raw `#000` at 60 % — a literal in a token system, and
+   * 60 is not a ladder stop (…40 · 48 · 64 · 72…). `.kol-shell-drawer-scrim`
+   * already spelled it correctly at 48, so the same gesture dimmed to 60 in the
+   * site shell and 48 in the app shell. 48 for both: on the ladder, already
+   * shipping, and the class was minted to BE one tint. */
+  background-color: color-mix(in srgb, var(--kol-color-ab-black) 48%, transparent);
 }
 
 .kol-overlay-panel {
@@ -1165,6 +1204,9 @@
  * the clip path and the border path separately, and a hairline of the
  * lighter fill bleeds through on the arc, bright only on the curve. */
 .kol-card {
+  /* NOT toned. A wrapper tone reaches the CONTROLS on a page and stops at the
+   * card plate (user ruling 2026-09-03: "no just controls") — the plate is the
+   * content-card system's box per variant. */
   background: var(--kol-card-bg);
   background-clip: padding-box;
   border-color: var(--kol-card-border);
@@ -1231,15 +1273,60 @@
 .kol-doc-page .kol-prose td,
 .kol-doc-page .kol-prose th { overflow-wrap: anywhere; word-break: break-word; }
 .kol-doc-page .kol-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* 3:5 IS THE TALLEST A DOCUMENT PAGE MAY BE (BrowsePageRulingsAndSeams,
+ * kol-r2b2 2026-09-02; user 2026-08-28: "this is not an approved ratio"). The
+ * overlay page was A-series (1:√2) and the column preview had NO bound at all,
+ * so the FILE decided the height — a 7 KB JSON drew a pane taller than the
+ * browser. 3:5 is the portrait rung on the export-specs ladder below 4:5, and
+ * the floor before a page reads as a 9:16 strip. Content scrolls inside the
+ * box; the box never grows to the file.
+ *
+ * OPEN 2026-09-21 (user, on the column preview: "3:5 is so close to 9:16 and
+ * its too tall here"). The plate measures a true 3:5; the complaint is the dead
+ * space a short document leaves below its content. A one-off rung change was
+ * tried and reverted — the value belongs to the preview spec being written
+ * against Finder / Dropbox / Drive, not to a guess. */
 .kol-overlay .kol-doc-page {
+  aspect-ratio: 3 / 5;
   height: 85vh;
-  width: calc(85vh / 1.41421);
+  width: auto;
   max-width: calc(100vw - 10rem);
   overflow-y: auto;
   overflow-x: hidden;
   margin-inline: auto;
 }
+/* THE WALL'S THUMB — the same document, at tile scale. `KindPreview` renders a
+ * real page; in a 44px row or a 230px card that is a wall of unreadable glyphs,
+ * so the page is zoomed down and clipped and you read its SHAPE (a JSON tree, a
+ * frontmatter block, a table) rather than its words. Same treatment the column
+ * preview uses, one rung smaller. The children reset `zoom: 1` so it never
+ * compounds. No forced ratio here either — the tile is the bound. */
+.kol-media-thumb .kol-doc-page {
+  zoom: 0.25;
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  overflow: hidden;
+  background: transparent;
+  border-radius: 0;
+}
+.kol-media-thumb .kol-doc-page :is(.kol-prose, .kol-codeblock-wrapper, .kol-doc-frontmatter) { zoom: 1; }
+.kol-media-thumb .kol-prose,
+.kol-media-thumb .kol-codeblock-wrapper { max-width: none; }
+.kol-media-thumb > * { max-width: 100%; max-height: 100%; }
+
 .kol-column-browser-preview .kol-doc-page {
+  /* NO FORCED RATIO (user 2026-09-21: "it just fucking takes the aspect ratio of
+   * the file and displays that"). A preview is the file at its own shape,
+   * bounded by the pane — which is what every reference file manager does. The
+   * 3:5 above exists because the column preview once had no bound AT ALL and a
+   * 7 KB JSON drew a pane taller than the browser; the bound was the fix, the
+   * ratio was the overreach. A max-height bounds it without deciding a shape,
+   * so a short document ends where its content ends instead of leaving half a
+   * plate of dead grey. The overlay keeps 3:5 — that one IS a sheet. */
+  max-height: 100%;
+  height: auto;
+  overflow: auto;
   zoom: 0.5;
   background: transparent;
   border-radius: 0;
@@ -1277,10 +1364,50 @@
  * deepest one holding a selection — then it is the selection, full strength.
  * `:has(~ …)` says what a positional selector cannot: "no later column has a
  * selected row". */
+/* ONE FILL ON SCREEN, AND IT MEANS SELECTED (BrowsePageRulingsAndSeams, kol-r2b2
+ * 2026-09-02, user ruling 2026-08-28). Hover and the bare keyboard cursor now
+ * paint NOTHING. With `autoFocus` on there is always a cursor row, so the
+ * 08-28 fill sat on the list permanently and moved with every click — the hover
+ * fill the user removed the day before, back under another name, and at fg-04 it
+ * drowned the selection at fg-02.
+ *
+ * A selected row that is ALSO the cursor keeps its fill, and needs no rule of
+ * its own: `:hover` and `.is-cursor` are (0,2,0), `.is-selected` is (0,2,0) and
+ * comes LATER, so source order hands the tie to the selection. The consumer
+ * needed explicit `.is-selected.is-cursor` selectors only because its override
+ * sat in a later sheet; in one file the order is the mechanism. Do not reorder.
+ *
+ * The VALUES are unchanged and were never wrong — the trail at fg-02, the
+ * deepest column's selection at fg-04. This is a precedence fix, not a palette
+ * one; `autoFocus` and the three-state fill shipped together and have not been
+ * correct together since. */
 .kol-column-browser-row:hover,
-.kol-column-browser-row.is-cursor { background-color: var(--kol-fg-04); }
+.kol-column-browser-row.is-cursor { background-color: transparent; }
 .kol-column-browser-row.is-selected { background-color: var(--kol-fg-02); }
 .kol-column-browser-column:not(:has(~ .kol-column-browser-column .is-selected)) > .is-selected { background-color: var(--kol-fg-04); }
+/* A DROP TARGET OUTRANKS SELECTION while something is over it (2026-09-21). It is transient and it
+ * is the one thing you must see mid-drag — which folder is about to receive this. It sits AFTER the
+ * two fills above and matches their specificity through the child combinator, so it wins the tie
+ * rather than merely claiming to; written above them it lost to the deepest-column rule. */
+.kol-column-browser-column > .kol-column-browser-row[data-drop-over] { background-color: var(--kol-fg-08); }
+/* THE COLUMN ITSELF AS A TARGET — dropping anywhere in a column files the item into the folder
+ * that column is showing. An inset ring rather than a fill: a fill over a list of rows reads as
+ * every row being selected, which is the opposite of what is being said. */
+.kol-column-browser-column[data-drop-over] { box-shadow: inset 0 0 0 2px var(--kol-fg-16); }
+
+/* THE ROW IS A PILL (same ticket, user ruling 2026-08-27: "dont make selected
+ * state move the layout"). A constant 4px inset on EVERY row, selected or not,
+ * so the fill appears inside a gutter that was already there instead of the row
+ * changing size; the column pads to match, so the first and last rows sit off
+ * the frame by the same 4. Dividers are gone from the JSX — ColumnBrowser's Row
+ * no longer emits `border-b`, because a hairline under a rounded fill draws the
+ * box the pill is not. `.kol-column-browser-preview` is deliberately NOT in the
+ * padding rule: it has no rows, and its own `p-4` is a Tailwind utility that
+ * would out-rank this layer anyway. */
+.kol-column-browser-row { margin-inline: 4px; }
+.kol-column-browser-column { padding-block: 4px; }
+.kol-column-browser-row.is-selected,
+.kol-column-browser-row.is-cursor { border-radius: var(--kol-radius-sm); }
 
 /* ColumnBrowser resize handles (ColumnBrowserResize, kol-r2b2 2026-08-27 —
  * Finder's edge handles, user ruling "that should be a set in ds"; native CSS
@@ -1309,33 +1436,76 @@
   cursor: row-resize;
   touch-action: none;
 }
-/* THE GRAB IS A PILL, NOT A WASH (ColumnBrowserChromeCorrections, kol-r2b2
- * 2026-08-28 — user: "dont show me this way to grab" · "like in the sidenav" ·
- * "MIDDLE smack middle" · "more smooth animation longer in and out"): the same
- * affordance as the framework's `.kol-sidenav-grab::before` — 0.1875rem × 2rem,
- * radius-full, fg-64, dead centre (pointer-following was built and rejected).
- * Two deliberate differences: hidden at rest rather than dim (N handles standing
- * at rest is noise where the SideNav has one) and 420ms rather than 150ms. */
+/* THE GRAB PILL — ON THE LINE, FOLLOWING THE POINTER (BrowsePageRulingsAndSeams,
+ * kol-r2b2 2026-09-02, user ruling; supersedes the "pointer-following was built
+ * and rejected" note that stood here from ColumnBrowserChromeCorrections
+ * 2026-08-28).
+ *
+ * The rejection was already contradicted by the DS itself: the rail's grab
+ * (`kol-animation.css` § THE GRAB PILL, RailFlatGrabOpen, kol-mirror 2026-08-28
+ * — *"make it like it is in kol-r2b2, it has animation and gsap"*) shipped the
+ * pointer-follow, the 0.125 × 4.5rem geometry and the slow proximity fade the
+ * SAME DAY, and its own comment noted the two handles were knowingly different.
+ * One gesture, two shapes, is the ruling now. `useGrabEdge` drives both.
+ *
+ * THESE HANDLES ARE NOT THE SIDENAV'S, and that is the part to keep straight:
+ *
+ *   ACROSS  the rail's strip STRADDLES its line, so a strip-centred pill IS the
+ *           line. These strips lie INSIDE the border they grab — the x strip is
+ *           pulled back over the column's right edge (`margin-left: -8px`), the
+ *           y strip sits on the root's inner bottom edge — so a strip-centred
+ *           pill is always ~4px short of it. The FAR edge plus half the 1px
+ *           border is the line: `calc(100% + 0.5px)`.
+ *   AXES    the rail has one vertical edge; there are two here, and the pill on
+ *           each travels the other way from what it resizes. The x handle reads
+ *           `--kol-rail-grab-y`, the y handle `--kol-rail-grab-x`.
+ *   REST    hidden, not dim — N handles standing at rest is noise where the
+ *           SideNav has one. The rail's pill rests visible; these do not.
+ *
+ * Shared with the rail: the fine/long geometry and the 1800ms fade with its
+ * 400ms rest delay and 40ms engaged delay. NOT shared, on the user's ruling
+ * 2026-09-02 (*"its a bit different, its not like the sidenav"*): the CURVE is
+ * kol-r2b2's ease-out, and the travel is `GRAB_COLUMN` in kol-component's
+ * motion.js — a 2.8s chase on a 30px retarget, so the pill tracks the pointer
+ * down the edge rather than landing and holding on the rail's 90px dwell. The
+ * rail's own symmetric in-out was ruled for the rail, on a pill that rests
+ * VISIBLE and only brightens; these are hidden at rest and the whole fade is
+ * the reveal. `clamp()` holds the pill half its own length from each end. */
 .kol-column-browser-resize-x::before,
 .kol-column-browser-resize-y::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
   translate: -50% -50%;
   border-radius: var(--kol-radius-full);
   background: var(--kol-fg-64);
   opacity: 0;
-  transition: opacity 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 1800ms cubic-bezier(0.22, 1, 0.36, 1) 400ms, background-color 500ms ease;
 }
-.kol-column-browser-resize-x::before { width: 0.1875rem; height: 2rem; }
-.kol-column-browser-resize-y::before { width: 2rem; height: 0.1875rem; }
-.kol-column-browser-resize-x:hover::before,
+.kol-column-browser-resize-x::before {
+  width: 0.125rem;
+  height: 4.5rem;
+  left: calc(100% + 0.5px);
+  top: clamp(2.25rem, var(--kol-rail-grab-y, 50%), calc(100% - 2.25rem));
+}
+.kol-column-browser-resize-y::before {
+  width: 4.5rem;
+  height: 0.125rem;
+  top: calc(100% + 0.5px);
+  left: clamp(2.25rem, var(--kol-rail-grab-x, 50%), calc(100% - 2.25rem));
+}
+/* `is-near` = the pointer is within GRAB.near of THIS handle's line (JS,
+ * hysteresis at GRAB.sleep). The pill shows before you are on the 8px strip, so
+ * the grab is discoverable instead of hidden. */
+.kol-column-browser-resize-x.is-near::before,
 .kol-column-browser-resize-x.is-dragging::before,
-.kol-column-browser-resize-y:hover::before,
+.kol-column-browser-resize-y.is-near::before,
 .kol-column-browser-resize-y.is-dragging::before {
   opacity: 1;
+  transition-delay: 40ms;
 }
+.kol-column-browser-resize-x.is-dragging::before,
+.kol-column-browser-resize-y.is-dragging::before { background: var(--kol-fg-96); }
+
 .kol-overlay .kol-prose {
   max-width: var(--kol-content-measure);
   margin-inline: auto;
@@ -1393,66 +1563,465 @@
  * `surface-tertiary` is `#0e0e11` in dark (14.2, genuinely below the page) and
  * `#ffffff` in light, so it is theme-correct on both sides where a mix toward
  * a fixed near-white could only ever be right on one. */
-.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
-.kol-view-toggle.kol-tone-sunken > button[aria-pressed="true"], .kol-view-toggle.kol-tone-inverse > button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
-.kol-view-toggle.kol-tone-sunken > button:not([aria-pressed="true"]):hover, .kol-view-toggle.kol-tone-inverse > button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
-.kol-control.kol-tone-sunken, .kol-control.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
-.kol-expand.kol-tone-sunken, .kol-expand.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
-/* the tone's fill, one selector — nothing left to cancel (2026-08-28) */
-.kol-dd-trigger.kol-tone-sunken, .kol-dd-trigger.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
-/* THE PANEL IS OPAQUE (user 2026-08-28: "transparent doesn't work for
- * dropdown") — it floats over page content, and every `fg-*` stop is an alpha
- * wash that the content reads through. `oq-inverse-*`, the opaque tier, bakes
- * onto `surface-inverse` — the near-WHITE in dark theme — so even `oq-inverse-96`
- * lands ~23.5 against the #121215 page's 18: lighter than the page, the wrong
- * side of it. `surface-tertiary` is the flat twin of what the trigger renders:
- * #0e0e11 (14.0) in dark against the trigger's 14.2, #ffffff in light. */
-.kol-dd-panel.kol-tone-sunken, .kol-dd-panel.kol-tone-inverse { background-color: var(--kol-surface-sunken); }
-/* the rest of the set — Button (icon-only especially), IconFrame, ThemeToggle:
- * the well, transparent edge, fg-96 ink; hover the CONTRAST wash, pressed the
- * fg-08 chip — both LAYERED over the well (a gradient image over the fill),
- * since one background cannot stack two translucent colours.
+/* ═══════════════════════════════════════════════════════════════════════
+ * TONE — the ground axis (tone-is-the-ground-axis, kol-client-olina 2026-09-03).
  *
- * REST / HOVER / SELECTED ARE ONE LADDER, THREE RUNGS (2026-08-30):
+ * User, on fxr's /settings: "it would be best to not have to set every
+ * component but rather get a set with it already set" — and, reading Button's
+ * variants: "I thought you would set these colors as variants … that is 6
+ * tones right?". Until 0.134.0 `toneClass` returned a class for `sunken` and
+ * '' for everything else: `tone` had ONE value, and the real ground vocabulary
+ * — five of Button's eight variants — lived on Button alone, so Dropdown,
+ * `.kol-control` and `.kol-dd-panel` each re-invented it with paints that
+ * drifted (`primary` painting `surface-secondary`; the panel's outline
+ * hardcoding `surface-primary`, so a dropdown opened over any other ground
+ * changed the colour under it).
  *
- *   rest      the well          10.2 dark · 244.8 light
- *   hover     + fg-04           19.8      · 235.7
- *   selected  + fg-08           29.4      · 226.7
+ * SIX TONES, ONE MECHANISM. A tone is a bundle of `--kol-tone-*` custom
+ * properties — rest, hover, press, pressed, and what a FLOATING surface of
+ * that tone paints — and every control reads its paint from those properties
+ * with its own old literal as the fallback:
  *
- * `fg-*` already flips toward the ink, so it darkens a light well and lightens
- * a dark one with no help. Two things were wrong before: the wash was a
- * hardcoded WHITE, invisible over the light well (white on a 245 ground), and
- * when that was first fixed it went to an 8% wash — the same strength as
- * `selected`, which put hover 0.4 from selected in dark and 1.5 in light. A
- * hovered unselected control was indistinguishable from the selected one.
- * 04 and 08 are ~10 apart on both themes; the ladder reads.
+ *   .kol-btn / .kol-dd-trigger   fallback primary
+ *   .kol-control                 fallback filled (= primary)
+ *   .kol-icon-frame              fallback secondary
+ *   .kol-dd-panel                fallback primary
+ *   .kol-view-toggle well · .kol-expand--open · .kol-theme-toggle-*   their own
  *
- * ⛔ THE TRIGGER IS EXCLUDED. `.kol-dd-trigger` carries `.kol-btn`, so every
- * `.kol-btn.kol-tone-sunken` state rule matches it unless it says otherwise —
- * and "REST AND OPEN ARE THE ONLY STATES" for a Dropdown trigger is a law
- * written TWICE at the top of this file (2026-07-15, re-called 2026-08-09 and
- * 2026-08-28). The atoms sheet excludes the trigger from all eight variant
- * hovers; these tone rules did not, so the law held everywhere except the one
- * tone the settings page uses. Repeatedly reported and repeatedly missed,
- * because the exclusion was checked in `kol-components-atoms.css` and the
- * offending rule lives here. */
-.kol-btn.kol-tone-sunken,
-.kol-icon-frame.kol-tone-sunken,
-.kol-theme-toggle.kol-tone-sunken {
-  background-color: var(--kol-surface-sunken);
-  border-color: transparent;
+ * Custom properties INHERIT, which is the whole point (ticket ask 3): one
+ * `.kol-tone-grey` on a wrapper tones every control inside it, because a
+ * control with no tone of its own reads the inherited values. A control that
+ * IS handed a variant or tone sets the properties on itself, and an element's
+ * own declaration beats inheritance — so the per-component prop stays the
+ * exception, exactly as asked. The ground variants (`primary` · `secondary` ·
+ * `outline` · `ghost` · `grey` on Button, `filled` / `outline` on the control
+ * shell, the panel and icon-frame variants) are ALIASES of the tones — the
+ * same bundle under `:where()`, specificity 0, so an explicit `tone` on the
+ * same element wins regardless of source order. `danger` and `accent` are
+ * semantic, not grounds: they stay variants and carry their own bundle. `nav`
+ * is ghost's chrome rung — the ink one step brighter, plus aria-current — and
+ * stays a variant (the ticket read it as ghost; the CSS says oq-80 against
+ * ghost's oq-48, so folding it would have dimmed every close button and rail
+ * row in the estate).
+ *
+ * THE FLOATING SURFACE PAINTS THE GROUND (ask 2). `--kol-tone-panel-bg` is
+ * what a dropdown panel of that tone paints: primary/grey/sunken continue
+ * their fill; outline and ghost paint `--kol-tone-ground` — the page's own
+ * background, `surface-primary` unless the page says otherwise — so opening
+ * a dropdown changes nothing under it. A page on another ground sets
+ * `--kol-tone-ground` once at its root. (The panel is PORTALLED, so Dropdown
+ * copies the trigger's resolved properties onto it on open — see Dropdown.jsx.)
+ *
+ * A bundle sets EVERY property, including the ones it leaves at default, so a
+ * control with its own tone inside a differently-toned wrapper inherits
+ * nothing from it — not even a hover gradient. (Weight is the variant's own,
+ * never the tone's: a ground does not re-weigh a label.)
+ *
+ * `default` is not a tone: it is the ABSENCE of one — inherit the wrapper's,
+ * else the family's fallback. (An alias of `primary` set on the element would
+ * block the inheritance that ask 3 exists for.) `inverse` stays sunken's alias.
+ * SEVEN since 0.138.0: `secondary` paints the page surface and `inverted` is
+ * the text-colour fill the word `secondary` used to mean (tone-secondary-is-
+ * inverse, the line of the user's ruling the first ticket did not carry).
+ *
+ * The rules live HERE, after every default they out-rank. Sunken's own
+ * history — the well, its three-rung ladder, why it was raised until
+ * 2026-08-30 — is the comment above; nothing about its values changed.
+ * ═══════════════════════════════════════════════════════════════════════ */
+.kol-tone-primary,
+:where(.kol-btn-primary, .kol-control--filled, .kol-icon-frame-primary, .kol-dd-panel--primary) {
+  --kol-tone-bg: var(--kol-surface-secondary);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-on-primary);
+  --kol-tone-border: transparent;
+  /* HOVER GOES DEEPER, NOT GREYER (editor-chrome-review 15, kol-fxr 2026-09-03
+   * — user: *"this button tone primary, has werid hover state … should not grey
+   * - should go deeper"*). It was `oq-08`, and `oq-*` flips toward the INK, so
+   * in dark it LIGHTENED toward grey. The `ab` family is the one that flips
+   * toward the GROUND in both themes — `oq-ab-96` is the well, 245 under a 250
+   * page and 10 under an 18 page — so the step is measured DOWN from the page.
+   *
+   * ⚠ The rungs are read from the ground: 96 is four off it, 88 twelve. A
+   * literal `oq-ab-04` is the FAR pole — near-black in light, near-WHITE in
+   * dark — so the low numbers are the opposite of deeper and must not be used
+   * for this.
+   *
+   * ONE STEP IS A TWO-STATE BUDGET (his ruling, and it generalises past this
+   * button): *"whatever it is cut it in half, so if 8 then 4 … bc there are
+   * hover and selected state"*. Hover takes the shallow rung and active the
+   * next, so the two step instead of colliding. There is no 92 on this ladder,
+   * so it is 96 → 88 rather than an exact halving. */
+  --kol-tone-hover-bg: var(--kol-oq-ab-96);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-ab-88);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-surface-secondary);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+/* `secondary` PAINTS THE PAGE SURFACE (tone-secondary-is-inverse, kol-client-olina
+ * 2026-09-03; user: "I told you I wanted primary surface as a tone … that tone
+ * should be called secondary. What is currently secondary should be called
+ * inverted."). 0.134.0 lifted the name from Button's `secondary` VARIANT, which
+ * was already an inverse, and the page's own colour had no tone at all. The
+ * variant keeps its pixels — it aliases `inverted` below — only the tone word
+ * moved. Hover / press are primary's rungs over the page colour. */
+.kol-tone-secondary {
+  --kol-tone-bg: var(--kol-surface-primary);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-on-primary);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-16);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-surface-primary);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+/* `inverted` — the text colour as fill: Button's / IconFrame's `secondary`
+ * variant and the panel's `--secondary`, under the name the user gave it.
+ * (`inverse` is NOT this: it is sunken's alias from 0.117.0, still on one
+ * kol-website call, and stays that until it is dropped — the two words were
+ * one letter apart and a live alias, so the new tone took the user's word.) */
+.kol-tone-inverted,
+:where(.kol-btn-secondary, .kol-icon-frame-secondary, .kol-dd-panel--secondary) {
+  --kol-tone-bg: var(--kol-surface-on-primary);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-primary);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-inverse-40);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-inverse-48);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-surface-on-primary);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+.kol-tone-outline,
+:where(.kol-btn-outline, .kol-control--outline, .kol-icon-frame-outline, .kol-dd-panel--outline) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-on-primary);
+  --kol-tone-border: var(--kol-oq-08);
+  --kol-tone-hover-bg: var(--kol-oq-02);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: color-mix(in srgb, var(--kol-surface-on-primary) 25%, var(--kol-surface-primary));
+  --kol-tone-active-bg: var(--kol-oq-08);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
+  --kol-tone-panel-border-w: 1px;
+  --kol-tone-panel-border: var(--kol-oq-08);
+}
+.kol-tone-ghost,
+:where(.kol-btn-ghost, .kol-icon-frame-ghost, .kol-dd-panel--ghost) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-oq-48);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-04);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-08);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+.kol-tone-grey,
+:where(.kol-btn-grey, .kol-dd-trigger--grey, .kol-dd-panel--grey, .kol-icon-frame-grey) {
+  --kol-tone-bg: var(--kol-oq-12);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-on-primary);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-16);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-24);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-oq-12);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+.kol-tone-sunken,
+.kol-tone-inverse {
+  --kol-tone-bg: var(--kol-surface-sunken);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-fg-96);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-surface-sunken);
+  --kol-tone-hover-image: linear-gradient(var(--kol-fg-04), var(--kol-fg-04));
+  --kol-tone-hover-fg: var(--kol-fg-96);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-surface-sunken);
+  --kol-tone-active-image: linear-gradient(var(--kol-fg-08), var(--kol-fg-08));
+  --kol-tone-pressed-bg: var(--kol-surface-sunken);
+  --kol-tone-pressed-image: linear-gradient(var(--kol-fg-08), var(--kol-fg-08));
+  --kol-tone-pressed-fg: var(--kol-fg-96);
+  --kol-tone-panel-bg: var(--kol-surface-sunken);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+:where(.kol-btn-nav) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-oq-80);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-04);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-04);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+:where(.kol-icon-frame-nav) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-surface-on-primary);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: transparent;
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: transparent;
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+:where(.kol-control--plain) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-fg-meta);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: transparent;
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-fg-meta);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: transparent;
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+:where(.kol-btn-danger, .kol-icon-frame-danger) {
+  --kol-tone-bg: var(--ui-error);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-color-ab-white);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: color-mix(in srgb, var(--ui-error) 80%, var(--kol-surface-primary));
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-color-ab-white);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: color-mix(in srgb, var(--ui-error) 70%, var(--kol-surface-primary));
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--ui-error);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+:where(.kol-btn-accent, .kol-icon-frame-accent) {
+  --kol-tone-bg: var(--kol-accent-primary);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-accent-on-primary);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-accent-primary-strong);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-accent-on-primary);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: color-mix(in srgb, var(--kol-accent-primary) 70%, var(--kol-surface-primary));
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-bg: var(--kol-accent-primary);
+  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border: transparent;
+}
+
+/* ─── the families that keep their own plates ─── */
+.kol-view-toggle { background-color: var(--kol-tone-bg, var(--kol-surface-secondary)); }
+/* the sunken well's chip ladder (rest · +fg-04 hover · +fg-08 selected) — on the
+ * element, or inherited from a sunken wrapper */
+:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) > button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
+:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) > button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
+/* the open search shell — was `bg-fg-04` on the element, sunken by class */
+.kol-expand--open { background-color: var(--kol-tone-bg, var(--kol-fg-04)); }
+/* THE SEGMENTED STRIP, SUNKEN (segmented-toggle-sunken-tone, kol-client-olina
+ * 2026-09-03; user, on kol-fxr's labs rail: "is this a variant? its not what you
+ * have"). It was not — it was fxr's kol-labs.css:220-226, and olina's inspector
+ * carried the same three lines. Promoted verbatim: the shell's ring goes, the
+ * selected cell takes the well and the fg-96 ink; rest cells stay as the
+ * default paints them. `filled` / `tonal` keep their own selected law. On the
+ * element, or inherited from a sunken wrapper. */
+:is(.kol-seg.kol-tone-sunken, .kol-seg.kol-tone-inverse, .kol-tone-sunken .kol-seg):not(.kol-seg--filled) { border-color: transparent; }
+:is(.kol-seg.kol-tone-sunken, .kol-seg.kol-tone-inverse, .kol-tone-sunken .kol-seg):not(.kol-seg--filled) .kol-seg-cell.is-active {
+  background: var(--kol-surface-sunken);
   color: var(--kol-fg-96);
 }
-@media (hover: hover) {
-  .kol-btn.kol-tone-sunken:not(.kol-btn-animate):not(:disabled):not(.kol-dd-trigger):hover {
-    background-color: var(--kol-surface-sunken);
-    background-image: linear-gradient(var(--kol-fg-04), var(--kol-fg-04));
-    color: var(--kol-fg-96);
-  }
-}
+/* ⛔ THE TRIGGER IS EXCLUDED — rest and open are its only states (law, twice
+ * at the top of this file). Pressed on a sunken button out-ranks its hover, as
+ * it always did: this is the one rule the generic `.kol-btn-pressed` cannot
+ * express, because hover carries three `:not()`s of specificity. */
 .kol-btn.kol-tone-sunken.kol-btn-pressed:not(.kol-dd-trigger),
-.kol-btn.kol-tone-sunken:not(:disabled):not(.kol-dd-trigger):active {
-  background-color: var(--kol-surface-sunken);
-  background-image: linear-gradient(var(--kol-fg-08), var(--kol-fg-08));
+.kol-tone-sunken .kol-btn.kol-btn-pressed:not(.kol-dd-trigger) {
+  background-color: var(--kol-tone-pressed-bg);
+  background-image: var(--kol-tone-pressed-image);
+  color: var(--kol-tone-pressed-fg);
+}
+
+
+/* ─────────────────────────── DocsToc · rail ───────────────────────────
+ * The fisheye rail render of `DocsToc` (`variant="rail"`, docstoc-rail-variant,
+ * kol-client-olina 2026-09-03 — built and run there before filing).
+ *
+ * `--m` is the gaussian magnitude (0..1) the component writes per row on
+ * pointer move; EVERY visual here derives from it, so the JS sets one number
+ * per row and the cascade does the rest. This is CSS rather than utilities
+ * because each rule reads a custom property through `calc()` and sets a
+ * child's resting state from the row's variable — neither is expressible as a
+ * Tailwind class, which is the §5 test for when a rule belongs in the theme.
+ * ────────────────────────────────────────────────────────────────────── */
+
+.kol-toc {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--kol-z-sticky);
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--kol-spacing-8);
+}
+/* The lens scales about the edge the rail is pinned to, so the column's outer
+ * edge stays a straight line while the type breathes. The wide inner padding is
+ * the lens's room to grow into without the labels colliding with the page. */
+.kol-toc--right {
+  right: 0;
+  align-items: flex-end;
+  padding-right: var(--kol-spacing-6);
+  padding-left: var(--kol-spacing-16);
+}
+.kol-toc--left {
+  left: 0;
+  align-items: flex-start;
+  padding-left: var(--kol-spacing-6);
+  padding-right: var(--kol-spacing-16);
+}
+
+.kol-toc-row {
+  --m: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--kol-spacing-3);
+  padding-block: 2px;
+  text-decoration: none;
+}
+.kol-toc--right .kol-toc-row { justify-content: flex-end; }
+.kol-toc--left  .kol-toc-row { flex-direction: row-reverse; justify-content: flex-end; }
+
+/* Away from the pointer the row is small and quiet; under it, large and lit.
+ * BOTH directions matter — grow-only reads as a bump, not a scrub. */
+.kol-toc-label {
+  /* `transform` is ignored on a non-replaced INLINE element, and this label is
+   * a bare <span>: the scale below did nothing at all until this line. It cost
+   * the filer a round trip with the user — opacity and width worked and only
+   * the scale did not. */
+  display: inline-block;
+  white-space: nowrap;
+  opacity: calc(0.26 + 0.74 * var(--m));
+  transform: scale(calc(0.78 + 0.42 * var(--m)));
+  will-change: transform, opacity;
+}
+.kol-toc--right .kol-toc-label { transform-origin: right center; }
+.kol-toc--left  .kol-toc-label { transform-origin: left center; }
+
+.kol-toc-rule {
+  height: 1px;
+  background: var(--kol-fg-24);
+  width: calc(8px + 26px * var(--m));
+}
+
+/* The section you are actually IN reads at rest — full ink and a size step — so
+ * the column says where you are before the pointer arrives. It rests where an
+ * inactive row lands only under the lens. */
+.kol-toc-row[data-active] .kol-toc-label {
+  opacity: calc(0.92 + 0.08 * var(--m));
+  transform: scale(calc(1 + 0.2 * var(--m)));
   color: var(--kol-fg-96);
 }
+.kol-toc-row[data-active] .kol-toc-rule {
+  width: calc(22px + 26px * var(--m));
+  background: var(--kol-fg-64);
+}
+
+/* Settle on leave — NEVER while the pointer is driving. A transition on a
+ * continuous input lags behind the cursor and reads as sluggish; the component
+ * stamps `data-live` on pointer-enter, which is what this selector reads. */
+.kol-toc:not([data-live]) .kol-toc-label,
+.kol-toc:not([data-live]) .kol-toc-rule {
+  transition: opacity 260ms ease-out, transform 260ms ease-out, width 260ms ease-out;
+}
+
+/* Graduations — the ruler between the labels. Shorter and fainter than a
+ * heading's stroke at every point of the curve, so the labelled marks stay the
+ * ones you read; they exist to give the lens something continuous to cross.
+ * 3px pitch: ten between labels puts a section at ~52px, so a thirteen-section
+ * page still stands inside a laptop viewport. */
+.kol-toc-tick { height: 3px; padding-block: 0; }
+.kol-toc-tick .kol-toc-rule {
+  width: calc(5px + 11px * var(--m));
+  background: var(--kol-fg-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-toc-label { opacity: 1; transform: none; }
+  .kol-toc-rule  { width: 12px; }
+  .kol-toc-row[data-active] .kol-toc-rule { width: 24px; }
+  .kol-toc-tick .kol-toc-rule { width: 5px; }
+  .kol-toc-label, .kol-toc-rule { transition: none; }
+}
+
+/* THE ROW BROWSER — the folder list view. Same drop affordance as a column, for the same reason:
+ * the list IS the folder you are in, so dropping anywhere on it files the item here. */
+.kol-row-browser[data-drop-over] { box-shadow: inset 0 0 0 2px var(--kol-fg-16); }
