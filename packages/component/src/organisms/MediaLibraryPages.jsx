@@ -844,6 +844,9 @@ export function MediaLibraryBrowse({
    * the consumer's — a repo whose surfaces are routes wires its router here.
    * No tabs, no pill, and the page is exactly what it was. */
   tabs, activeTab, onTabChange,
+  /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
+   * Absent, a one-bucket consumer collapses the level as ruled 2026-09-03. */
+  bucketLevel = false,
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
@@ -1395,7 +1398,7 @@ export function MediaLibraryBrowse({
    * to reach a folder. The virtual root collapses to the empty string, which
    * makes every `slice(VROOT.length)` below a no-op and leaves column 0 as the
    * bucket's own folders. Multi-bucket browse is untouched. */
-  const single = buckets.length <= 1
+  const single = !bucketLevel && buckets.length <= 1
   const ROOT = title
   const label = bucketMeta.label || 'bucket'
   const VROOT = single ? '' : `${ROOT}/${label}/`
@@ -1921,7 +1924,11 @@ export function MediaLibraryBrowse({
           <p className="kol-mono-12 text-fg-48">
             {folders.length > 0 && `${folders.length} folder${folders.length > 1 ? 's' : ''} · `}
             {rawFiles.length} {rawFiles.length === 1 ? 'file' : 'files'} · {formatSize(totalBytes)}
+            {/* THE GREY TAIL TOTALS WHERE YOU STAND (kol-client-olina 2026-09-23): the bucket at the
+              * root, the current folder recursively below it. Hidden when it would repeat the
+              * bright part — a leaf has nothing beneath it to add. */}
             {!prefix && rawFiles.length !== bucketFiles && <span className="text-fg-32">{'  ·  bucket: '}{bucketFiles} files · {formatSize(bucketBytes)}</span>}
+            {prefix && scoped.length !== levelFiles.length && <span className="text-fg-32">{`  ·  in ${crumbs.at(-1)}: `}{scoped.length} files · {formatSize(scoped.reduce((n, o) => n + (o.size || 0), 0))}</span>}
             {systemCount > 0 && <span className="text-fg-32">{'  ·  '}{systemCount} system files hidden</span>}
           </p>
         )}
