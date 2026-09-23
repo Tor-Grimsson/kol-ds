@@ -158,6 +158,12 @@ export default function ContentRow({
   ratioAxis = 'width',
   selected = false,
   onClick,
+  /* RIGHT-CLICK AND DOUBLE-CLICK RIDE ALONG (user 2026-09-23: *"where are the right click options
+   * in grid view … CONSISTENCY"*). A card that takes a click takes the other two gestures the same
+   * surface offers on its rows — the file wall's tiles are the same objects its rows are, and a
+   * menu that exists on one and not the other is the inconsistency, not a missing feature. */
+  onContextMenu,
+  onDoubleClick,
   href,
   onNavigate,
   tagVariant,
@@ -308,6 +314,9 @@ export default function ContentRow({
     return (
       <div
         onClick={onClick}
+        onContextMenu={onContextMenu}
+        onDoubleClick={onDoubleClick}
+        data-selected={selected || undefined}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {

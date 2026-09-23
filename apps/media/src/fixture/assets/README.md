@@ -1,0 +1,104 @@
+# KOL Design System
+
+[![Live — ui.kolkrabbi.io](https://img.shields.io/badge/live-ui.kolkrabbi.io-000?style=flat-square&logo=vercel)](https://ui.kolkrabbi.io)
+
+The single maintenance home for the **KOL (Kolkrabbi)** design system — one pnpm workspace that **maintains** the `@kolkrabbi/kol-*` packages, **publishes** them to npm, and **showcases** them live.
+
+This repo is the source of truth. The older copies in `kol-monorepo` are downstream and migrate onto these published versions.
+
+## Packages
+
+All published under `@kolkrabbi/*`. The UI tier is a four-layer stack — `theme ← icons ← component ← framework` — with six standalone **domain** packages above it and a clients tier alongside. See [`docs/documentation/00-overview/01-package-topology.md`](docs/documentation/00-overview/01-package-topology.md) for the full map.
+
+| Package | Tier | What it is |
+| --- | --- | --- |
+| `kol-theme` | UI | Brand-neutral tokens + base CSS. The cascade everything builds on. |
+| `kol-icons` | UI | `<Icon/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
+| `kol-component` | UI | Atoms → organisms, emitting canonical `kol-*` classes. |
+| `kol-framework` | UI | App shell — sidenav, layout, theme toggle, heroes, brand color layer. |
+| `kol-workshop` | Domain | Docs system — hand-rolled markdown engine, docs viewer, tag graph, shell. |
+| `kol-dashboards` | Domain | Analytics — card family, hand-rolled SVG charts (no d3), `MetricsDashboard`. |
+| `kol-chess` | Domain | Chess board + apparatus + pieces + a bundled `./data` adapter. |
+| `kol-content` | Domain | CMS — the `/stack` (blog) + `/work` (portfolio) Sanity streams. |
+| `kol-foundry` | Domain | Type-specimen apparatus + the font-facing set (TextPressure, TypeSample, …). |
+| `kol-store` | Domain | Commerce — `ProductDetailLayout`, `PriceDisplay`, marquee. |
+| `kol-media-client` | Client | Read-only client for the kol-media CDN. Plain ESM, no React. |
+| `kol-brand-template` | Brand | The brand-manifest schema — the blank slate copied per client. |
+| `kol-brand` | Brand | Kolkrabbi's own manifest + logo SVGs. Public-safe. |
+| `kol-scrape` | Tool | Zero-dep presence/press scraper CLI. |
+
+## Consuming
+
+```sh
+npm i @kolkrabbi/kol-theme @kolkrabbi/kol-component @kolkrabbi/kol-icons
+```
+
+Needs a **Vite + Tailwind v4** app — packages ship raw JSX/CSS, your bundler compiles them. `react`, `react-dom` (and `react-router-dom` for some components) are peers.
+
+CSS cascade order is load-bearing — import in exactly this order:
+
+```css
+@import "tailwindcss";
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";   /* if using the framework */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+```
+
+**`layer(components)` on the framework import is part of the contract.** Unlayered rules outrank every layered rule regardless of specificity, so importing it bare promotes framework chrome above the theme's type layer — the same package then renders differently in two apps with no version difference.
+
+**`@source` every KOL package you install — this is not optional.** The packages ship raw JSX full of Tailwind utility classes, and Tailwind v4 skips `node_modules` when scanning — so without these lines the class attributes land in the DOM but the utilities never generate, and layouts silently collapse. Add them next to the imports above (trim to the packages you actually install):
+
+```css
+@source "../node_modules/@kolkrabbi/kol-chess/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-content/src";
+@source "../node_modules/@kolkrabbi/kol-dashboards/src";
+@source "../node_modules/@kolkrabbi/kol-foundry/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-store/src";
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
+```
+
+Only `kol-theme` (CSS-only) and the non-UI packages (`kol-media-client`, `kol-brand*`, `kol-scrape`) need no line. Newly added `@source` paths need a dev-server restart — HMR won't pick them up.
+
+```jsx
+import { Button, Tag } from '@kolkrabbi/kol-component'
+import { Icon } from '@kolkrabbi/kol-icons'
+
+<Button variant="primary" iconLeft="plus">New</Button>
+```
+
+## Developing
+
+```sh
+pnpm install      # links the workspace
+pnpm dev          # showcase at localhost
+pnpm build        # build the showcase → showcase/dist
+pnpm workbench    # isolated component dev (Ladle)
+```
+
+Linking is fine inside the workspace — it never leaks to consumers, who only ever see published versions.
+
+## Showcase
+
+`showcase/` is a shadcn-style docs site: **Components**, **Blocks** (UI compositions), **Sets** (full apparatus), **Foundations**, **Docs**, and **Icons** — plus a usage reference mined verbatim from ~25 real KOL apps. Read them in [`docs/documentation/07-usage/`](docs/documentation/07-usage); regenerate with `node scripts/extract-usage.mjs`.
+
+## Deploy (Vercel)
+
+Root Directory **= repo root** (not `showcase/` — the app pulls packages via `workspace:*`, which only resolve from the workspace root). Framework preset **Vite**, build command `pnpm build`, output directory `showcase/dist`.
+
+## Publishing
+
+Releases run on [changesets](https://github.com/changesets/changesets) via CI:
+
+1. `pnpm changeset` — describe the change, pick the bump per package.
+2. Push. CI opens (or updates) a **"Version Packages"** PR.
+3. Merge that PR — **merging it is the publish button.** CI applies versions and publishes to npm. `git pull` afterward, since the merge adds commits to `main`.
+
+## Layout
+
+- `packages/` — the published `@kolkrabbi/*` packages (source of truth).
+- `showcase/` — the live docs app · `workbench/` — Ladle component sandbox.
+- `docs/documentation/` — the docs vault (numbered sections).
+- `.kol/` — agent context + doc framework. This repo is the reference implementation of the `.kol/` convention.

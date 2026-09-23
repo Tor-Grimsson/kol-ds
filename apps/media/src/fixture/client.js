@@ -7,7 +7,10 @@
  * operations get designed against something that can actually perform them. */
 
 import * as store from './store.js'
-import { contentUrl } from './content.js'
+import { fileUrl } from './assets-urls.js'
+
+const urlFor = (key, bucket = 'r2') =>
+  store.urlOf(bucket, key) ?? fileUrl(store.fileOf(bucket, key)) ?? `fixture:///${key}`
 
 export const fixtureClient = {
   // ── kol-media-client's read surface ──────────────────────────────
@@ -17,11 +20,10 @@ export const fixtureClient = {
     return store.list(bucket ?? 'r2', prefix)
   },
 
-  /* Real bytes where a kind has a cheap honest fake — images, audio, and every
-   * text kind (markdown, json, yaml, code, plain). Video and PDF return the
-   * fixture URL and fall through to the DS's kind glyph. */
-  mediaUrl: (key) => contentUrl(key) ?? `fixture:///${key}`,
-  downloadUrl: (key) => contentUrl(key) ?? `fixture:///${key}`,
+  /* An uploaded file's own bytes, else the real file the seed carries. Nothing is generated: a
+   * key with neither gets the fixture scheme and renders as the generic file icon. */
+  mediaUrl: (key, bucket) => urlFor(key, bucket),
+  downloadUrl: (key, bucket) => urlFor(key, bucket),
   proxied: (url) => url,
 
   // ── the write seams that make the pages writable ─────────────────
@@ -32,10 +34,20 @@ export const fixtureClient = {
   async createFolder(path, bucket) { return store.createFolder(bucket ?? 'r2', path) },
   /* A NEW, EMPTY FILE. The store already had `put`; nothing called it with no bytes. A file
    * manager that can make a folder but not a text file is half a file manager. */
-  async createFile(key, bucket) { return store.put(bucket ?? 'r2', key, { size: 0, contentType: 'text/plain' }) },
+  /* Typed by its EXTENSION (`notes.md` is markdown, `a.json` JSON) and truly empty — `data:,` is
+   * zero bytes. */
+  async createFile(key, bucket) { return store.put(bucket ?? 'r2', key, { size: 0, url: 'data:,' }) },
   async uploadFile(file, key, bucket) {
-    return store.put(bucket ?? 'r2', key, { size: file?.size, contentType: file?.type })
+    const url = typeof Blob !== 'undefined' && file instanceof Blob ? URL.createObjectURL(file) : undefined
+    return store.put(bucket ?? 'r2', key, { size: file?.size, contentType: file?.type, url })
   },
+  async copyObject(from, to, bucket) { return store.copy(bucket ?? 'r2', from, to) },
+
+  // ── the trash ──
+  trashList: (bucket) => store.trashList(bucket),
+  async restore(id) { return store.restore(id) },
+  async purge(id) { return store.purge(id) },
+  async emptyTrash(bucket) { return store.emptyTrash(bucket) },
 
   folderTree: () => store.folderTree(),
   reset: () => store.reset(),

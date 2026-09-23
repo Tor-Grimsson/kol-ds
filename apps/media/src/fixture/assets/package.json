@@ -1,0 +1,31 @@
+{
+  "name": "media",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The media product, run as a real app over a fake mutable tree. Never published — apps/* proves function before anything consumes it.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "gsap": "^3.15.0",
+    "hls.js": "^1.7.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

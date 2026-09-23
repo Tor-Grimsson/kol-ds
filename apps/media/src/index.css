@@ -39,7 +39,6 @@ body {
 
 /* ── carried from kol-r2b2's index.css, verbatim but for the prefix ───────── */
 
-.media-library { padding-top: 2.5rem; }
 
 /* The count line: the split is the point — what you are LOOKING AT reads bright, the whole-bucket
    tail after it stays quiet (user 2026-08-28). Lifting both flattened them into one grey. Scoped to
@@ -62,3 +61,12 @@ body {
 .media-kind-tile > div:has(.kol-doc-page) { align-items: flex-start; justify-content: flex-start; width: 100%; height: 100%; }
 /* The DS caps prose and code blocks at a reading measure; in a tile the tile is the measure. */
 .media-kind-tile .kol-prose, .media-kind-tile .kol-codeblock-wrapper { max-width: none; }
+
+/* NO RUBBER BAND (user 2026-09-23: *"in view modes can we disable the behaviour when … 'force
+ * scrolling' slight up and down vertically … so its just 100vh always"*). The views are sized to the
+ * viewport and scroll inside themselves; the elastic bounce moved the whole app instead, and a
+ * wheel flick at the end of a column chained out to the page. `none` on the root stops both. */
+html,
+body {
+  overscroll-behavior: none;
+}

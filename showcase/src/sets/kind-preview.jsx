@@ -112,10 +112,8 @@ export default function KindPreviewSet() {
       </section>
 
       <section className="flex flex-col gap-6 border-t pt-8" style={{ borderColor: 'var(--kol-oq-08)' }}>
-        <h2 className="kol-sans-heading-04 text-emphasis">AudioSheet · cover</h2>
-        <AudioSheet src={wav} variant="cover" />
         <h2 className="kol-sans-heading-04 text-emphasis">AudioSheet · sheet</h2>
-        <AudioSheet src={wav} variant="sheet" />
+        <AudioSheet src={wav} ext="wav" />
       </section>
 
       {open && (

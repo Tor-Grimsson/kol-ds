@@ -1,10 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { ModalProvider } from '@kolkrabbi/kol-component/molecules/Modal'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    {/* the DS dialogs for every prompt/confirm the media pages ask — without it they fall back to native */}
+    <ModalProvider>
+      <App />
+    </ModalProvider>
   </StrictMode>,
 )

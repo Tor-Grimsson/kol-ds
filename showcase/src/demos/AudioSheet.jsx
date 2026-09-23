@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { AudioSheet, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { useMemo } from 'react'
+import { AudioSheet } from '@kolkrabbi/kol-component'
 
 export const stage = 'full'
 
@@ -20,16 +20,9 @@ function silentWav(seconds = 2, rate = 8000) {
   return 'data:audio/wav;base64,' + btoa(bin)
 }
 
-/* Audio in the overlay, both variants — `cover` (the artwork is the frame, the bar
- * floats) and `sheet` (the QuickTime audio window). A WAV carries no ID3 cover,
- * so the light square with the `music-note` glyph is what renders. */
+/* Audio in the Quick Look window — the artwork square, the length beside it, the bar docked in
+ * the footer. A WAV carries no ID3 cover, so the file icon is what renders. */
 export default function AudioSheetDemo() {
   const src = useMemo(() => silentWav(), [])
-  const [variant, setVariant] = useState('sheet')
-  return (
-    <div className="flex w-full flex-col items-start gap-6">
-      <SegmentedToggle size="sm" value={variant} onChange={setVariant} options={[{ value: 'cover', label: 'Cover' }, { value: 'sheet', label: 'Sheet' }]} ariaLabel="Variant" />
-      <AudioSheet key={variant} src={src} variant={variant} />
-    </div>
-  )
+  return <AudioSheet src={src} ext="wav" frame={{ title: 'silence.wav', meta: '16 KB' }} />
 }

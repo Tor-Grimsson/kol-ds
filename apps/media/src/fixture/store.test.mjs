@@ -13,6 +13,14 @@ store.reset()
 const seedKeys = keys()
 const seedFolders = folders()
 
+// A fresh load carries real files in the trash, and a trashed folder restores whole.
+const seeded = store.trashList('r2')
+assert.equal(seeded.length, 3, 'seed trash missing')
+const drafts = seeded.find((t) => t.path === 'drafts/')
+store.restore(drafts.id)
+assert.ok(keys().includes('drafts/notes.md') && folders().includes('drafts/'), 'trashed folder did not restore')
+store.reset()
+
 // An EMPTY folder is a real node — the whole reason the tree is not derived.
 assert.ok(seedFolders.includes('img/03-scratch/'), 'empty seed folder missing')
 assert.ok(!seedKeys.some((k) => k.startsWith('img/03-scratch/')), 'scratch should hold no files')
@@ -43,12 +51,35 @@ const { deleted } = store.remove('r2', 'img/04-archive/')
 assert.equal(keys().length, before - deleted)
 assert.ok(!folders().includes('img/04-archive/reykjavik/'), 'child folder outlived its parent')
 
+// Delete goes to the trash, and restore puts every file back where it was.
+const beforeTrash = keys().length
+store.remove('r2', 'audio/')
+assert.ok(!keys().some((k) => k.startsWith('audio/')), 'delete left files behind')
+const [entry] = store.trashList('r2')
+assert.equal(entry.path, 'audio/')
+assert.ok(entry.count > 0 && entry.isFolder)
+store.restore(entry.id)
+assert.equal(keys().length, beforeTrash, 'restore lost files')
+assert.ok(folders().includes('audio/'), 'restore lost the folder')
+assert.ok(!store.trashList('r2').some((t) => t.id === entry.id), 'restored entry still in the trash')
+
 // Create, then upload into it — an uploaded file's ancestors must exist.
 store.createFolder('r2', 'img/05-new/')
 assert.ok(folders().includes('img/05-new/'))
 store.put('r2', 'img/05-new/deep/one.png', { size: 10 })
 assert.ok(folders().includes('img/05-new/deep/'), 'upload did not create its parent')
 assert.throws(() => store.createFolder('r2', 'img/05-new/'), /already exists/)
+
+// Copy makes a second file and leaves the first; a taken key is refused.
+const src = keys().find((k) => !k.endsWith('/'))
+store.copy('r2', src, `${src}.copy`)
+assert.ok(keys().includes(src) && keys().includes(`${src}.copy`), 'copy lost a file')
+assert.throws(() => store.copy('r2', src, `${src}.copy`), /already exists/)
+
+// An uploaded file's own bytes ride its record through a move.
+store.put('r2', 'drop/a.jpg', { size: 1, contentType: 'image/jpeg', url: 'blob:x' })
+store.rename('r2', 'drop/a.jpg', 'drop/b.jpg')
+assert.equal(store.urlOf('r2', 'drop/b.jpg'), 'blob:x')
 
 // The read-only bucket refuses every write.
 assert.throws(() => store.remove('b2', 'website/favicon.svg'), /read-only/)

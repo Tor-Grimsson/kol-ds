@@ -38,6 +38,7 @@
     "validate:props": "node scripts/validate-props.mjs --check",
     "validate:dd-trigger": "node scripts/validate-dd-trigger.mjs --check",
     "validate:consumption": "node scripts/validate-consumption.mjs",
+    "validate:icon-ink": "node scripts/validate-icon-ink.mjs",
     "props": "node scripts/validate-props.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",

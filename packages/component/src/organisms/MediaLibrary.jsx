@@ -498,11 +498,11 @@ function Thumb({ row, mediaUrl }) {
 function FolderRow({ folder, struck = false, onEnter }) {
   return (
     <li className="kol-media-folder" onClick={onEnter}>
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center text-meta">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center text-oq-48">
         <Icon name="folder" size={18} />
       </span>
       <span className={`kol-mono-12 flex-1 ${struck ? 'line-through text-meta' : 'text-body'}`}>{folder.label}</span>
-      <Icon name="chevron-right" size={14} className="text-subtle" />
+      <Icon name="chevron-right" size={14} className="text-oq-24" />
     </li>
   )
 }

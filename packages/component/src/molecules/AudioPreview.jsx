@@ -27,6 +27,8 @@ import { readCover } from '../utilities/id3.js';
  * @param {string}   poster      VideoTile — the poster URL
  * @param {Function} onDuration  AudioPreview — (seconds) => void once metadata lands
  * @param {string}   className   AudioPreview — wrapper classes (the width is the consumer's)
+ * @param {ReactNode} fallback   AudioTile — shown when the file carries no cover art (2026-09-23:
+ *                               it was an empty square, so a WAV read as a missing file)
  */
 export const formatLength = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 const fmt = formatLength;
@@ -49,14 +51,14 @@ function PlayDisc({ playing, onClick }) {
   );
 }
 
-export function AudioTile({ src }) {
+export function AudioTile({ src, fallback = null }) {
   const ref = useRef(null);
   const [playing, setPlaying] = useState(false);
   const cover = useCover(src);
   return (
     <div className="kol-media-tile relative w-full aspect-square rounded overflow-hidden flex items-center justify-center">
       <audio ref={ref} src={src} preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} />
-      {cover && <img src={cover} alt="" className="absolute inset-0 w-full h-full object-cover" />}
+      {cover ? <img src={cover} alt="" className="absolute inset-0 w-full h-full object-cover" /> : fallback && <div className="absolute inset-0 flex items-center justify-center">{fallback}</div>}
       <PlayDisc playing={playing} onClick={() => (playing ? ref.current.pause() : ref.current.play())} />
     </div>
   );

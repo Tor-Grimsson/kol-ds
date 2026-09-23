@@ -4,13 +4,14 @@ import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
 
 /**
- * Modal — promise-based prompt + confirm dialogs.
+ * Modal — promise-based prompt + confirm + alert dialogs.
  *
- *   const { prompt, confirm } = useModal()
+ *   const { prompt, confirm, alert } = useModal()
  *   const name    = await prompt('Name this frame:', 'Untitled')
  *   const proceed = await confirm('Discard unsaved changes?')
  *   const restore = await confirm('Restore your last canvas?',
  *                                 { okLabel: 'Restore', cancelLabel: 'New file' })
+ *   await alert('Upload failed: quota exceeded')
  *
  * Both take an options object — `{ okLabel, cancelLabel }` (prompt: third
  * arg, after defaultValue) — so the buttons can SAY the outcome; defaults
@@ -20,6 +21,9 @@ import Input from '../atoms/Input.jsx'
  * Returned promise resolves to:
  *   - prompt  → string (value) on submit, `null` on cancel
  *   - confirm → boolean: `true` on confirm, `false` on cancel
+ *   - alert   → undefined, once dismissed. One button; `okLabel` names it.
+ *     Added 2026-09-22 (media-pages-route-dialogs-through-usemodal) so an
+ *     error report needs no native `alert()` beside DS prompts.
  *
  * Mounted once at the app root (BrandLayout). Renders into `document.body`
  * via portal, so it floats above any rail / scroll-context.
@@ -45,8 +49,12 @@ export function ModalProvider({ children }) {
     new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, resolve })),
   [])
 
+  const alert = useCallback((title, { okLabel } = {}) =>
+    new Promise((resolve) => setState({ kind: 'alert', title, okLabel, resolve })),
+  [])
+
   return (
-    <ModalCtx.Provider value={{ prompt, confirm }}>
+    <ModalCtx.Provider value={{ prompt, confirm, alert }}>
       {children}
       {state && typeof document !== 'undefined' && createPortal(
         <ModalView state={state} closeWith={closeWith} />,
@@ -60,18 +68,19 @@ function ModalView({ state, closeWith }) {
   const [val, setVal] = useState(state.defaultValue ?? '')
   const inputRef = useRef(null)
 
+  /* alert resolves `undefined` whichever way it is dismissed */
+  const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'alert' ? undefined : true)
+  const cancel = () => closeWith(state.kind === 'prompt' ? null : state.kind === 'alert' ? undefined : false)
+
   useEffect(() => {
     if (state.kind === 'prompt') inputRef.current?.focus()
     const onKey = (e) => {
-      if (e.key === 'Escape') closeWith(state.kind === 'prompt' ? null : false)
-      if (e.key === 'Enter')  closeWith(state.kind === 'prompt' ? val : true)
+      if (e.key === 'Escape') cancel()
+      if (e.key === 'Enter')  submit()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [state.kind, val, closeWith])
-
-  const submit = () => closeWith(state.kind === 'prompt' ? val : true)
-  const cancel = () => closeWith(state.kind === 'prompt' ? null : false)
+  }, [state.kind, val, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
@@ -97,7 +106,8 @@ function ModalView({ state, closeWith }) {
       >
         {/* kol-mono-12, not helper: dialog copy WRAPS, and helper's
           * line-height 1 is single-line chrome only (type protocol). */}
-        <p className="kol-mono-12 text-emphasis">{state.title}</p>
+        {/* pre-line: an alert can carry a failure list, one per line */}
+        <p className="kol-mono-12 text-emphasis whitespace-pre-line">{state.title}</p>
         {state.kind === 'prompt' && (
           <Input
             ref={inputRef}
@@ -109,7 +119,7 @@ function ModalView({ state, closeWith }) {
           />
         )}
         <div className="flex gap-2 justify-end">
-          <Button variant="secondary" size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>
+          {state.kind !== 'alert' && <Button variant="secondary" size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
           <Button variant="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
         </div>
       </div>
@@ -129,7 +139,7 @@ export function useModal() {
    * don't need to null-check. */
   if (!warnedNoProvider && typeof console !== 'undefined') {
     warnedNoProvider = true
-    console.warn('[kol] useModal(): no <ModalProvider> mounted — falling back to native window.prompt/confirm. Custom labels are ignored on the fallback.')
+    console.warn('[kol] useModal(): no <ModalProvider> mounted — falling back to native window.prompt/confirm/alert. Custom labels are ignored on the fallback.')
   }
   return {
     prompt:  async (title, def = '') => {
@@ -140,6 +150,9 @@ export function useModal() {
     confirm: async (title) => {
       if (typeof window === 'undefined') return false
       return window.confirm(title)
+    },
+    alert: async (title) => {
+      if (typeof window !== 'undefined') window.alert(title)
     },
   }
 }

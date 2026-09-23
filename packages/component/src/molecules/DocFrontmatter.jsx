@@ -68,7 +68,7 @@ export default function DocFrontmatter({ metadata }) {
         return (
           <div key={key} className="flex items-baseline gap-4 py-1">
             <span className="flex items-center gap-2 min-w-[120px] kol-helper-12 text-meta">
-              {icon && <Icon name={icon} size={14} />}
+              {icon && <Icon name={icon} size={14} className="text-oq-48" />}
               {FIELD_LABELS[key] ?? humanise(key)}
             </span>
             <span className="flex-1 min-w-0 [overflow-wrap:anywhere] kol-mono-12 text-strong">

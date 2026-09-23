@@ -1,5 +1,7 @@
+import { Fragment } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { toneClass } from '../utilities/tone.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * ViewToggle — control for switching between view modes.
@@ -63,7 +65,6 @@ const ViewToggle = ({
         onClick={() => onViewChange(next)}
         className={cls}
         aria-pressed={isOn}
-        title={isOn ? onOpt.label : offOpt.label}
       >
         <span className="grid">
           <span className={`col-start-1 row-start-1 ${isOn ? '' : 'invisible'}`}>{onOpt.label}</span>
@@ -100,22 +101,39 @@ const ViewToggle = ({
 
   return (
     <div className={containerClasses}>
-      {options.map((option) => (
-        <button
-          key={option.value}
-          onClick={() => onViewChange(option.value)}
-          className={buttonClasses(viewMode === option.value)}
-          aria-label={option.label}
-          aria-pressed={viewMode === option.value}
-          title={option.label}
-        >
-          {isIconVariant && option.icon ? (
-            <Icon name={option.icon} size={14} variant={iconVariant} />
-          ) : (
-            option.label
-          )}
-        </button>
-      ))}
+      {options.map((option) => {
+        /* AN OPTION CAN BE ITS OWN BUTTON (2026-09-23): `onClick` (+ optional `pressed`) makes it an
+         * independent action in the same well — the media pages' filter and search, which sit beside
+         * the view switch and must be the same height and chip, not a second hand-built strip. */
+        const active = option.onClick ? !!option.pressed : viewMode === option.value
+        const button = (
+          <button
+            key={option.value}
+            onClick={option.onClick ?? (() => onViewChange(option.value))}
+            className={buttonClasses(active)}
+            aria-label={option.label}
+            aria-pressed={option.onClick && option.pressed == null ? undefined : active}
+          >
+            {isIconVariant && option.icon ? (
+              <Icon name={option.icon} size={14} variant={iconVariant} />
+            ) : (
+              option.label
+            )}
+          </button>
+        )
+        /* THE DS TOOLTIP, NOT `title` (native-title-tooltips-in-ds-components, kol-client-olina
+         * 2026-09-22). Only an ICON option gets one — a text option already shows its label, and
+         * a tooltip repeating it is noise; the native `title` did exactly that. */
+        const item = isIconVariant && option.icon
+          ? <Tooltip key={option.value} label={option.label}>{button}</Tooltip>
+          : button
+        /* `dividerBefore` (2026-09-23): a hairline in the well between two options that are not the
+         * same kind of thing — filter and search are two independent actions, and two bare chips
+         * side by side read as one control. A light hairline (oq-16, opaque, flips with the theme) — the dark one vanished. */
+        return isIconVariant && option.dividerBefore
+          ? <Fragment key={option.value}><span aria-hidden="true" className="w-px h-4 shrink-0 bg-oq-16" />{item}</Fragment>
+          : item
+      })}
     </div>
   )
 }

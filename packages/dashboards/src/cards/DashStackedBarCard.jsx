@@ -28,7 +28,7 @@ const DashStackedBarCard = ({
               <Icon
                 name={trend === 'up' ? 'trending-up' : 'trending-down'}
                 size={16}
-                className="text-fg-64 mb-1"
+                className="text-oq-64 mb-1"
               />
             )}
           </div>

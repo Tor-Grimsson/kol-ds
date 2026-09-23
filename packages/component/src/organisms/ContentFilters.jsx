@@ -6,6 +6,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import SearchInput from '../molecules/SearchInput.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * ContentFilters — universal filter component for content grids.
@@ -76,6 +77,13 @@ const ContentFilters = ({
   totalCount,
   titleIcon,
   filterGroups = [],
+  /* THE PANEL, CONTROLLABLE (media merge, 2026-09-22). The bar's own funnel is the only way to
+   * reach the chips, so a consumer that already spends a control on "show me the filters" makes
+   * the user press two funnels to see one panel. Passing `filtersOpen` hands that state over —
+   * the funnel still renders and still fires, it just reports through `onFiltersOpenChange`
+   * instead of toggling in private. Absent, this is exactly what it was. */
+  filtersOpen,
+  onFiltersOpenChange,
   initialFilters,
   renderItem,
   viewModeOptions,
@@ -158,7 +166,12 @@ const ContentFilters = ({
    * sources of truth. Entries are `"<groupKey>:<value>"`, the same strings the
    * chips toggle. */
   const [activeFilters, setActiveFilters] = useState(() => new Set(initialFilters))
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [internalExpanded, setInternalExpanded] = useState(false)
+  const isExpanded = filtersOpen !== undefined ? filtersOpen : internalExpanded
+  const setIsExpanded = (next) => {
+    setInternalExpanded(next)
+    onFiltersOpenChange?.(next)
+  }
   const [internalViewMode, setInternalViewMode] = useState(defaultViewMode ?? viewModeOptions?.[0]?.value)
   const viewMode = viewModeProp !== undefined ? viewModeProp : internalViewMode
   /* Controlled when `layout` is passed, internal otherwise — the same pair viewMode uses. */
@@ -256,18 +269,21 @@ const ContentFilters = ({
    * short group ate a full row it did not need. */
   const layoutStrip = layoutOptions ? (
     <div className="flex items-center gap-4">
-      {layoutOptions.map((opt) => (
-        <span
-          key={opt.value}
-          onClick={opt.onClick ?? (() => setLayout(opt.value))}
-          aria-pressed={opt.active !== undefined ? !!opt.active : undefined}
-          title={opt.title}
-          className={`${layoutClassName} cursor-pointer select-none ${(opt.active ?? layout === opt.value) ? stripActiveClassName : stripRestClassName}`}
-          style={{ letterSpacing: 1 }}
-        >
-          {opt.label}
-        </span>
-      ))}
+      {layoutOptions.map((opt) => {
+        const chip = (
+          <span
+            key={opt.value}
+            onClick={opt.onClick ?? (() => setLayout(opt.value))}
+            aria-pressed={opt.active !== undefined ? !!opt.active : undefined}
+            className={`${layoutClassName} cursor-pointer select-none ${(opt.active ?? layout === opt.value) ? stripActiveClassName : stripRestClassName}`}
+            style={{ letterSpacing: 1 }}
+          >
+            {opt.label}
+          </span>
+        )
+        /* `opt.title` is a hint — the DS Tooltip, not a native `title` (kol-client-olina 2026-09-22) */
+        return opt.title ? <Tooltip key={opt.value} label={opt.title}>{chip}</Tooltip> : chip
+      })}
     </div>
   ) : null
 

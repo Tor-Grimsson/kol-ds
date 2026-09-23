@@ -79,11 +79,11 @@ export default function Stepper({
     const chev = CHEVRON_SIZE[size]
     return (
       <div className={`inline-flex items-center justify-center gap-0.5 select-none ${SIZE_TYPE[size]} ${className}`.trim()} style={style}>
-        <button type="button" onClick={handleDecrement} className="inline-flex items-center justify-center px-0.5 text-fg-40 hover:text-emphasis transition-colors" aria-label="Previous">
+        <button type="button" onClick={handleDecrement} className="inline-flex items-center justify-center px-0.5 text-oq-40 hover:text-emphasis transition-colors" aria-label="Previous">
           <Icon name="chevron-left" size={chev} />
         </button>
         <span className="min-w-[3ch] text-center text-fg-64" {...props}>{value ?? ''}</span>
-        <button type="button" onClick={handleIncrement} className="inline-flex items-center justify-center px-0.5 text-fg-40 hover:text-emphasis transition-colors" aria-label="Next">
+        <button type="button" onClick={handleIncrement} className="inline-flex items-center justify-center px-0.5 text-oq-40 hover:text-emphasis transition-colors" aria-label="Next">
           <Icon name="chevron-right" size={chev} />
         </button>
       </div>

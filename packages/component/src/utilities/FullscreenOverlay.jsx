@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { pushLayer, popLayer, isTopLayer } from './layerStack.js'
 import CloseButton from './CloseButton.jsx'
 
 /**
@@ -36,6 +37,11 @@ export default function FullscreenOverlay({
    * caller should have to know to put focus in it. A plain `<div ref>` always
    * works. */
   initialFocus,
+  /* A DIM BACKDROP INSTEAD OF THE SURFACE (user 2026-09-23, on Quick Look: *"its overlay, not a
+   * black background … just dim the background slightly"*). The flat surface is still the default
+   * — that is the 2026-08-27 ruling, made because a wash read as a halo around a lightboxed image
+   * — so this is opt-in per overlay rather than a reversal for every consumer of the component. */
+  scrim = false,
   children,
 }) {
   const sheetRef = useRef(null)
@@ -44,10 +50,17 @@ export default function FullscreenOverlay({
    * the same trap ShellDrawer carries; before this a Tab from the overlay
    * walked into the page underneath). Focus moves into the sheet on open and
    * back to the opener on close. */
+  /* `onClose` through a ref: an inline handler is a new function every render, and with it in the
+   * deps the effect re-ran on every render — re-pushing this layer to the TOP of the stack and
+   * re-stealing focus while a sheet above it was open. */
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
   useEffect(() => {
     if (!open) return
+    const layer = pushLayer()
     const onKey = (e) => {
-      if (e.key === 'Escape') { onClose?.(); return }
+      if (!isTopLayer(layer)) return
+      if (e.key === 'Escape') { onCloseRef.current?.(); return }
       if (e.key !== 'Tab') return
       const sheet = sheetRef.current
       if (!sheet) return
@@ -72,11 +85,12 @@ export default function FullscreenOverlay({
       : sheetRef.current
     target?.focus?.()
     return () => {
+      popLayer(layer)
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
       if (prevFocus instanceof HTMLElement) prevFocus.focus()
     }
-  }, [open, onClose, initialFocus])
+  }, [open, initialFocus])
 
   if (!open) return null
 
@@ -90,7 +104,7 @@ export default function FullscreenOverlay({
   }
 
   return (
-    <div className="kol-overlay" role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
+    <div className={`kol-overlay${scrim ? ' kol-overlay-scrim' : ''}`} role="dialog" aria-modal="true" onMouseDown={onBackdropClick}>
       <div ref={sheetRef} tabIndex={-1} className="kol-overlay-sheet outline-none">
         {closeButton && (
           /* ONE close idiom (FullscreenOverlayCloseIdiom, kol-chess 2026-09-01,

@@ -13,8 +13,37 @@ export const SHORTCUTS = [
       { id: 'files', label: 'Files view', combo: 'F', key: 'f' },
       { id: 'rows', label: 'Folder rows', combo: 'R', key: 'r' },
       { id: 'columns', label: 'Folder columns', combo: 'C', key: 'c' },
-      { id: 'kinds', label: 'What is in this bucket', combo: 'K', key: 'k' },
+      { id: 'grid', label: 'File grid', combo: 'G', key: 'g' },
+      { id: 'search', label: 'Search this bucket', combo: '/ or ⌘K' },
+      { id: 'filters', label: 'Filter bar', combo: 'Funnel in the crumb row' },
+      { id: 'kinds', label: 'File formats', combo: 'K', key: 'k' },
       { id: 'shortcuts', label: 'This sheet', combo: 'S', key: 's' },
+    ],
+  },
+  {
+    /* THE HOW-TO (user 2026-09-23: *"every shortcut and these kind of function need to constantly be
+     * added to s"*). Documentation rows — the keys are bound in the DS pages, not here. */
+    section: 'Navigate',
+    items: [
+      { id: 'arrows', label: 'Move the selection', combo: '↑ ↓ ← → — in every view' },
+      { id: 'expand', label: 'Rows: expand / collapse a folder', combo: '→ / ←' },
+      { id: 'parent', label: 'Enclosing folder', combo: '⌘↑' },
+      { id: 'open', label: 'Open — a folder, or Quick Look on a file', combo: '⌘↓ or double-click' },
+      { id: 'crumb', label: 'Copy the path', combo: 'Click the current crumb' },
+    ],
+  },
+  {
+    section: 'Select',
+    items: [
+      { id: 'click', label: 'Select one', combo: 'Click' },
+      { id: 'add', label: 'Add to / remove from the selection', combo: '⌘-click' },
+      { id: 'range', label: 'Select a run', combo: '⇧-click' },
+      { id: 'extend', label: 'Extend the selection', combo: '⇧ + arrows — ↑↓ in rows and columns, all four in the grid' },
+      { id: 'band', label: 'Drag-select', combo: 'Drag from empty space (rows: beside the name)' },
+      { id: 'clear', label: 'Clear the selection', combo: 'Click empty space' },
+      { id: 'quicklook', label: 'Quick Look', combo: 'Space — pages the selection when there is one' },
+      { id: 'ql-step', label: 'Quick Look: next / previous', combo: '← → or ‹ › in the window' },
+      { id: 'ql-size', label: 'Quick Look: resize the window', combo: 'Drag its bottom-right corner' },
     ],
   },
   {
@@ -25,7 +54,10 @@ export const SHORTCUTS = [
       { id: 'rename', label: 'Rename', combo: 'Right-click → Rename' },
       { id: 'move', label: 'Move to another folder', combo: 'Right-click → Move to…, or drag onto a folder' },
       { id: 'delete', label: 'Delete (a folder takes its contents)', combo: 'Right-click → Delete' },
-      { id: 'upload', label: 'Open the drop zone', combo: 'U', key: 'u' },
+      { id: 'upload', label: 'Upload into a folder', combo: 'Right-click → Upload…, or drag files onto a folder' },
+      { id: 'copy', label: 'Copy URL · Download', combo: 'Right-click, or the Quick Look header' },
+      { id: 'trash', label: 'Trash — restore what you deleted', combo: 'Trash icon beside search' },
+      { id: 'tile-size', label: 'Grid: tile size', combo: 'Slider at the end of the count line' },
     ],
   },
   {

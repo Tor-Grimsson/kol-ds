@@ -77,7 +77,7 @@ const syntaxTheme = (foregroundToken = 80) => ({
  * for anything else. `md` is those exact values, named; `sm` is one step down
  * on both axes. Size is INDEPENDENT of `bare`: bare removes the frame, size
  * sets the box, and a bare block still has one. */
-export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value, bare = false, size = 'md' }) {
+export default function CodeBlock({ children, code: codeProp, language: languageProp, filename: filenameProp, value, bare = false, size = 'md', copy = true }) {
   const code = String(value?.code ?? codeProp ?? children ?? '')
   const language = value?.language ?? languageProp ?? 'text'
   const filename = value?.filename ?? filenameProp
@@ -118,7 +118,9 @@ export default function CodeBlock({ children, code: codeProp, language: language
         >
           {code}
         </SyntaxHighlighter>
-        <CopyButton text={code} className="kol-frame-control" />
+        {/* `copy={false}` (2026-09-23): a PREVIEW of a file is not a snippet to lift — the file's
+          * own copy action lives on its card (user: *"thats a feature in grid mode"*). */}
+        {copy && <CopyButton text={code} className="kol-frame-control" />}
       </div>
     </div>
   )

@@ -185,6 +185,12 @@ export default function ContentCard({
   expandedContent,
   selected = false,
   onClick,
+  /* RIGHT-CLICK AND DOUBLE-CLICK RIDE ALONG (user 2026-09-23: *"where are the right click options
+   * in grid view … CONSISTENCY"*). A card that takes a click takes the other two gestures the same
+   * surface offers on its rows — the file wall's tiles are the same objects its rows are, and a
+   * menu that exists on one and not the other is the inconsistency, not a missing feature. */
+  onContextMenu,
+  onDoubleClick,
   href,
   onNavigate,
   className = '',
@@ -455,6 +461,13 @@ export default function ContentCard({
     return (
       <article
         onClick={onClick}
+        onContextMenu={onContextMenu}
+        onDoubleClick={onDoubleClick}
+        /* SELECTED HAS TO SHOW (user 2026-09-23: a click in the grid "should select/highlight").
+         * `selected` only flipped a border colour on the variants that HAVE a border, and the file
+         * wall's cards have none — so the prop was true and the card looked untouched. The
+         * attribute is the hook; the theme paints it, once, for every variant. */
+        data-selected={selected || undefined}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {

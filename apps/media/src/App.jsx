@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import UploadZone from './UploadZone';
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary';
 import IconFrame from '@kolkrabbi/kol-component/atoms/IconFrame';
 import { Tooltip } from '@kolkrabbi/kol-component/utilities/Popover';
+import { useModal } from '@kolkrabbi/kol-component/molecules/Modal';
 import { useTheme } from '@kolkrabbi/kol-framework/src/theme.js';
 import { kindOf } from '@kolkrabbi/kol-component/utilities/mediaKinds';
 import useMediaQuery from '@kolkrabbi/kol-component/hooks/useMediaQuery';
 import fixtureClient from './fixture/client';
-import KindOverview from './KindOverview';
-import { loadSettings, saveSettings, resetSettings } from './lib/settings';
+import FileFormats from './FileFormats';
+import { loadSettings, saveSettings, resetSettings, DEFAULTS } from './lib/settings';
 import ShortcutsOverlay from '@kolkrabbi/kol-shell/src/ShortcutsOverlay.jsx';
 import { SHORTCUTS, BINDINGS } from './lib/shortcuts';
 
@@ -106,9 +106,9 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
   const [refreshKey, setRefreshKey] = useState(0);
+  const modal = useModal();
   const [bucketId, setBucketId] = useState(initialBucket);
   const [settings, setSettings] = useState(() => loadSettings(bucketId));
-  const [uploadOpen, setUploadOpen] = useState(() => loadSettings(bucketId).uploadOpen);
 
   const bucket = BUCKETS[bucketId];
   const [overviewOpen, setOverviewOpen] = useState(false);
@@ -130,26 +130,27 @@ export default function App() {
    * pill driving a `tab` the desktop stack ignored. `kinds` is an overlay, not a view: selecting
    * it opens the overlay and leaves the surface on whatever it was, because a tab with nothing
    * behind it is a dead end. */
-  const [view, setView] = useState('browse');
+  /* ONE SURFACE, FOUR VIEWS (component 0.217.0, the merge). The phone pill still names three
+   * things, because a tab is a place and `kinds` is an overlay: Browse is the tree, Files is the
+   * wall, and which FLAVOUR of each (columns/rows, grid/list) is the view switch's business. */
+  const [view, setView] = useState('columns');
   const [tab, setTab] = useState('browse');
   const onTabChange = (v) => {
     setTab(v);
     setOverviewOpen(v === 'kinds');
-    if (v !== 'kinds') setView(v);
+    if (v === 'browse') setView('columns');
+    if (v === 'files') setView('list');
   };
   const tabProps = stack ? { tabs: TABS, activeTab: tab, onTabChange } : {};
 
   // Persist on every change. `null` is the panel's reset signal.
   const applySettings = (next) => {
     if (next === null) {
-      const back = resetSettings(bucketId);
-      setSettings(back);
-      setUploadOpen(back.uploadOpen);
+      setSettings(resetSettings(bucketId));
       return;
     }
     setSettings(next);
     saveSettings(bucketId, next);
-    setUploadOpen(next.uploadOpen);
   };
 
   const switchBucket = (id) => {
@@ -158,8 +159,6 @@ export default function App() {
     setBucketId(id);
     try { localStorage.setItem(BUCKET_KEY, id); } catch { /* private mode */ }
     setSettings(next);
-    // A bucket you never upload to should never arrive with a drop pool open.
-    setUploadOpen(next.uploadOpen);
     setPrefix('');
     setRefreshKey((k) => k + 1);
   };
@@ -183,16 +182,17 @@ export default function App() {
       if (!BINDINGS.some((b) => b.key === e.key)) return;
       e.preventDefault();
       switch (e.key) {
-        case 'b': setView('browse'); setTab('browse'); break;
-        case 'f': setView('files'); setTab('files'); break;
-        case 'r': setSettings((s) => { const n = { ...s, folderView: 'rows' }; saveSettings(bucketId, n); return n }); break;
-        case 'c': setSettings((s) => { const n = { ...s, folderView: 'columns' }; saveSettings(bucketId, n); return n }); break;
+        case 'b': setView('columns'); setTab('browse'); break;
+        case 'f': setView('list'); setTab('files'); break;
+        case 'r': setView('rows'); setTab('browse'); break;
+        case 'c': setView('columns'); setTab('browse'); break;
+        case 'g': setView('grid'); setTab('files'); break;
         case 'k': setOverviewOpen((v) => !v); break;
         case 's': setShortcutsOpen((v) => !v); break;
-        case 'u': if (bucket.writable) setUploadOpen((v) => !v); break;
         case 'n': if (bucket.writable) {
-          const name = prompt(`New folder in ${prefix || 'the bucket root'}:`);
-          if (name?.trim()) fileActions.createFolder(`${prefix}${name.trim().replace(/^\/+|\/+$/g, '')}/`);
+          modal.prompt(`New folder in ${prefix || 'the bucket root'}:`, '', { okLabel: 'Create' }).then((name) => {
+            if (name?.trim()) fileActions.createFolder(`${prefix}${name.trim().replace(/^\/+|\/+$/g, '')}/`);
+          });
         } break;
         case 'R': clearChanges(); break;
         default: break;
@@ -202,27 +202,23 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey);
   });
 
-  /* The app's own controls, slotted into the DS header beside its bucket dropdown, lock and gear.
-   * The grid opens the kind overview — what this bucket actually holds, one tile per kind. */
-  /* These three use the DS `Tooltip` (utilities/Popover → `.kol-tooltip`) rather than a `title`
-   * attribute, so the shipped tooltip is visible next to the gear's native browser one — the gear
-   * is drawn by MediaLibraryPages, which hardcodes `title`. Side by side on purpose, pending the
-   * ruling on which the DS should use. */
-  const headerActions = (
+
+  /* THE SETTINGS FOOTER, kol-olina's arrangement (2026-09-21): the kind overview is a reference,
+   * not a daily control, so it sits in the drawer beside theme and reset instead of the header. */
+  /* TWO RESETS, TWO JOBS, ONE PLACE (user 2026-09-23: *"clear changes should live in settings …
+   * one clears the file changes and the other sets the preferences defaults"*). Clear changes puts
+   * the FIXTURE back — files, folders, trash — and wears a folder; the DS's own reset beside it
+   * (refresh glyph) puts the PREFERENCES back to today's defaults. It left the header, where it
+   * sat as a second refresh icon beside the reload. */
+  const settingsFooter = (
     <>
-      <span className="max-md:hidden contents">
-        <Tooltip label="What is in this bucket">
-          <IconFrame name="grid" variant="primary" size="sm" onClick={() => setOverviewOpen(true)} aria-label="What is in this bucket" />
-        </Tooltip>
-      </span>
-      <Tooltip label="Clear changes">
-        <IconFrame name="refresh" variant="primary" size="sm" onClick={clearChanges} aria-label="Clear changes" />
+      <ThemeChip />
+      <Tooltip label="Clear changes — the fixture's files back to the seed">
+        <IconFrame name="folder" variant="primary" size="sm" onClick={clearChanges} aria-label="Clear changes" />
       </Tooltip>
-      {bucket.writable && (
-        <Tooltip label="Upload">
-          <IconFrame name="upload" variant="primary" size="sm" onClick={() => setUploadOpen((v) => !v)} aria-label={uploadOpen ? 'Close upload' : 'Upload'} aria-expanded={uploadOpen} />
-        </Tooltip>
-      )}
+      <Tooltip label="File formats">
+        <IconFrame name="grid" variant="primary" size="sm" onClick={() => setOverviewOpen(true)} aria-label="File formats" />
+      </Tooltip>
     </>
   );
 
@@ -277,16 +273,57 @@ export default function App() {
       touched()
     },
     remove: async (path) => { await fixtureClient.deleteObject(path, bucketId); touched() },
+    /* A CONSUMER VERB (`fileActions.items`, component 0.217.0) — the Duplicate kol-client-olina
+     * asked for, proved against the fixture. Files only; on a multi-selection it copies every file
+     * in the set. `photo.jpg` → `photo copy.jpg`, then `photo copy 2.jpg`, as Finder names them. */
+    items: [
+      {
+        label: 'Duplicate',
+        icon: 'copy',
+        when: (t) => t.type === 'file',
+        run: async (t) => {
+          const taken = new Set((await fixtureClient.listMedia('', { bucket: bucketId })).map((o) => o.key))
+          for (const key of (t.targets ?? [t.path]).filter((k) => !k.endsWith('/'))) {
+            const dot = key.lastIndexOf('.')
+            const [base, ext] = dot > key.lastIndexOf('/') + 1 ? [key.slice(0, dot), key.slice(dot)] : [key, '']
+            let next = `${base} copy${ext}`
+            for (let n = 2; taken.has(next); n++) next = `${base} copy ${n}${ext}`
+            taken.add(next)
+            await fixtureClient.copyObject(key, next, bucketId)
+          }
+          touched()
+        },
+      },
+    ],
+  }
+
+  /* DESKTOP FILES DROPPED ON A FOLDER (`onDropFiles`, component 0.217.0). The DS hands over the
+   * files and the folder and never uploads — this is the fixture's upload, the same one the drop
+   * zone uses, so a dropped photo lands with its own bytes and previews as itself. */
+  const onDropFiles = async (files, folder) => {
+    for (const f of Array.from(files)) await fixtureClient.uploadFile(f, `${folder}${f.name}`, bucketId)
+    touched()
   }
 
   const shared = {
     client: fixtureClient,
     title: TITLE,
     fileActions: bucket.writable ? fileActions : undefined,
+    onDropFiles,
+    /* THE TRASH (component 0.218.0) — delete moves into it; the DS draws the list and the verbs. */
+    trash: bucket.writable ? {
+      items: fixtureClient.trashList(bucketId),
+      restore: async (id) => { await fixtureClient.restore(id); touched() },
+      purge: async (id) => { await fixtureClient.purge(id); touched() },
+      empty: async () => { await fixtureClient.emptyTrash(bucketId); touched() },
+    } : undefined,
     bucket: bucketId,
     onBucketChange: switchBucket,
     settings,
     onSettingsChange: applySettings,
+    /* the page resolves "reset" from these — without them it fell back to its own base, from before
+     * the fill height, and saved a fixed 528px column over the current default */
+    defaults: DEFAULTS,
     refreshKey,
     stackView: settings.stackView ?? 'list',
     folderMeta,
@@ -314,17 +351,9 @@ export default function App() {
         prefix={prefix}
         onPrefix={setPrefix}
         folderTree={folderTree}
-        headerActions={headerActions}
         autoFocus
-        settingsFooter={<ThemeChip />}
+        settingsFooter={settingsFooter}
         className="gap-10 media-browse"
-        /* THE DROP ZONE RIDES THE `banner` SLOT, directly under the header. Rendered after the
-           surface — which is where it used to sit — it landed below an 800px column browser, so
-           pressing Upload scrolled you past the whole browser to reach the target you had just
-           asked for. Measured at 968px on a 900px viewport before the slot existed. */
-        banner={bucket.writable && uploadOpen
-          ? <UploadZone pathPrefix={prefix} bucket={bucketId} onUploaded={touched} />
-          : null}
       />
 
       {/* A tile opens that kind's file large, inside the same dialog — the grid is a step, not a filter. */}
@@ -333,7 +362,7 @@ export default function App() {
           kol-monitor each kept their own and both drifted from their settings page. */}
       {shortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setShortcutsOpen(false)} />}
 
-      <KindOverview
+      <FileFormats
         open={overviewOpen}
         onClose={() => { setOverviewOpen(false); if (stack) setTab('browse'); }}
         client={fixtureClient}

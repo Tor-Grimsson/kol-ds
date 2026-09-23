@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { pushLayer, popLayer, isTopLayer } from '../utilities/layerStack.js'
 import { createPortal } from 'react-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import CloseButton from '../utilities/CloseButton.jsx'
@@ -97,12 +98,17 @@ export default function ShellDrawer({
     return () => clearTimeout(t)
   }, [open, reduced])
 
-  // Escape closes; Tab is trapped inside the panel while open
+  // Escape closes; Tab is trapped inside the panel while open — while this is the TOP layer
+  // (`layerStack`: a sheet opened over the drawer owns the keyboard until it closes)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
   useEffect(() => {
     if (!open) return undefined
+    const layer = pushLayer()
     const onKey = (e) => {
+      if (!isTopLayer(layer)) return
       if (e.key === 'Escape') {
-        onClose?.()
+        onCloseRef.current?.()
         return
       }
       if (e.key !== 'Tab') return
@@ -129,8 +135,8 @@ export default function ShellDrawer({
       }
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+    return () => { popLayer(layer); document.removeEventListener('keydown', onKey) }
+  }, [open])
 
   /* Body scroll-lock + focus in/out. Gated on `present` too so the panel
    * exists before we focus it (it mounts one commit after `open` flips). */

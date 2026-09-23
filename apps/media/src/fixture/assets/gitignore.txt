@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+.vite/
+*.log
+.DS_Store
+.env*
+.npmrc
+.playwright-mcp/
+
+# spike/scratch artifacts
+phase*-*.png
+
+_tmp/
+
+# Ephemeral goal-loop state — one file per session (see /kol-goal).
+.kol/llm-context/.active-goal*.md

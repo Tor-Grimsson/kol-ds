@@ -109,7 +109,7 @@
   bottom: 4px;
   right: 4px;
   display: inline-flex;
-  color: var(--kol-fg-48);
+  color: var(--kol-oq-48);
   cursor: nwse-resize;
   touch-action: none;
 }
@@ -162,6 +162,8 @@
   inset: 0;
   z-index: var(--kol-z-modal, 100); /* the modal tier — the overlay contract (EditorOverlaysOnFullscreenOverlay, 2026-08-27) */
   background: var(--kol-surface-primary);
+  /* `scrim` (2026-09-23) swaps the surface for the estate's one tint — the class it adds is
+     `.kol-overlay-scrim`, which paints 48 % black and out-declares this line by source order. */
   display: grid;
   place-items: center;
   overflow-y: auto;
@@ -801,7 +803,7 @@
 }
 
 .kol-sidenav-hop-icon {
-  color: var(--kol-fg-80);
+  color: var(--kol-oq-80);
   transition: color 150ms ease;
 }
 
@@ -1201,6 +1203,22 @@ a.kol-icon-frame {
 .kol-play-disc svg { color: inherit; }
 .kol-media-tile:hover .kol-play-disc,
 .kol-play-disc:focus-visible { opacity: 1; }
+
+/* FileIcon — the generic document (user 2026-09-23, Finder's): a page in the oq ladder so it
+ * reads on either ground, the fold one step heavier, the extension in the mono voice. Drawn in
+ * one SVG, so the label scales with the page and the host box sets the size. */
+.kol-file-icon { display: block; aspect-ratio: 100 / 128; height: auto; overflow: visible; }
+.kol-file-icon-page { fill: var(--kol-oq-08); stroke: var(--kol-oq-16); stroke-width: 1.5; }
+.kol-file-icon-fold { fill: var(--kol-oq-16); }
+/* OQ, NEVER FG (user ruling, 2026-09-23 and before): a translucent stroke stacks where it crosses
+ * itself, so the glyph's joints showed brighter than its lines. */
+.kol-file-icon-glyph { color: var(--kol-oq-48); }
+.kol-file-icon-ext {
+  fill: var(--kol-oq-48);
+  font-family: var(--kol-font-family-mono);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
 
 /* ═══════════════════════════════════════════════════════════════
  * ThemeToggle — .kol-theme-toggle

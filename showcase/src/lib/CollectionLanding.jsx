@@ -91,7 +91,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
               className="group inline-flex items-center gap-2 kol-sans-heading-03 text-emphasis underline decoration-fg-24 underline-offset-4 hover:decoration-current"
             >
               {b.title}
-              <Icon name="arrow-upright" size={16} className="text-meta transition-colors group-hover:text-emphasis" />
+              <Icon name="arrow-upright" size={16} className="text-oq-48 transition-colors group-hover:text-emphasis" />
             </Link>
             <span className="kol-doc-eyebrow">
               {labels[b.category] ?? b.category}

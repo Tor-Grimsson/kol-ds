@@ -18,7 +18,16 @@ export const ALL_KINDS = [...KINDS, 'segments', 'system']
  * height always on reload"). Deliberately NOT a setting: it was stored per bucket, so each bucket
  * came back at whatever it was last dragged to and switching buckets made the pane jump. The drag
  * still works — App holds the dragged value for the session and throws it away on reload. */
-export const COLUMN_HEIGHT = 800 // on the 8px grid
+/* A CSS LENGTH, not px (column-browser-height-takes-css-length, component 0.217.0): the browser
+ * takes what is left of the window under the header and crumbs and above the count line and
+ * page padding (210px, measured: 24 + header 48 + gap 40 + crumb row 34 + 12 + 12 + count 16 + 24;
+ * the crumb row grew when the filter and search icons joined it, and the row view's own column
+ * header comes out of this budget rather than on top of it), and follows a resize. 800 ran past the fold at
+ * 900 tall and left a dead band at 1440. */
+/* +2px OF SLACK (user 2026-09-23): the budget above is exact to the pixel, and fractional line
+ * heights round the page a pixel or two past the viewport — a trackpad found that as a scroll bar.
+ * Hiding overflow instead was tried and reverted: it also killed panning when zoomed in. */
+export const COLUMN_HEIGHT = 'calc(100dvh - 212px)'
 
 // Shared floor. Per-bucket blocks below override only what genuinely differs.
 const BASE = {
@@ -40,7 +49,6 @@ const BASE = {
   stackView: 'list', // 'list' | 'grid'
   sortBy: 'name',
   sortDir: 'asc',
-  uploadOpen: false, // the drop pool is not a permanent banner
   // The column browser's drags (ColumnBrowserResize, component 0.113.0), persisted per bucket.
   columnHeight: COLUMN_HEIGHT,
   columnWidths: {},
@@ -49,10 +57,11 @@ const BASE = {
 export const DEFAULTS = {
   r2: {
     ...BASE,
-    // No variant sets and no segments in this store — grouping would be a no-op
-    // toggle pretending to do something.
+    // No variant sets in this store — grouping would be a no-op toggle pretending
+    // to do something. Segments ARE here now (video/softforms-stream), and a chunk
+    // that cannot play alone is hidden behind its stream by default.
     groupVariants: false,
-    foldSegments: false,
+    foldSegments: true,
     pageSize: 500,
     // It's the bucket you upload to, so newest-first is the useful order.
     sortBy: 'date',

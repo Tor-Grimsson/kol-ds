@@ -1,0 +1,22 @@
+apps/media fixture: where every file comes from
+================================================
+
+Every file in this fixture is a real file. Nothing is generated.
+
+img/        stills from this repo's public/kol-images (tt-01 … tt-07, radar-ascii.png)
+            and its own logo and favicons from public/svg and public/favicon
+video/      renders from kol-labs-single (softforms, softforms-3d, optic-reaction)
+            softforms-stream/ is softforms.mp4 cut to HLS with ffmpeg: 2 s segments,
+            forced keyframes, poster.jpg taken from its first second
+audio/      15-second cuts of the user's own tracks
+            casino.mp3 keeps its embedded cover art; andvaka.mp3 is stripped;
+            dobani.wav and invaders.flac are transcodes of the same kind of cut
+docs/       kol-kerner.pdf and kol-kerner-2.pdf are kol-proofer's kerning specimens;
+            01-tier-rules.md, package.json and pnpm-workspace.yaml are this repo's own;
+            readme.zip is this repo's README.md, zipped
+code/       kol-core.css and client.js are this repo's own source
+fonts/      TGRotVF.ttf and PPRightGrotesk-Fine.woff2 from public/fonts
+misc/       .gitignore is this repo's own — a real file whose extension no renderer knows
+
+Kinds with no file here are the ones no real file can stand for:
+system files (.DS_Store and friends) are hidden by design.

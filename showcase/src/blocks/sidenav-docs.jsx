@@ -44,7 +44,7 @@ export default function SidebarDocs() {
             <p className="kol-sans-body-02 truncate text-emphasis">Documentation</p>
             <p className="kol-helper-10 text-meta">v1.0.1</p>
           </div>
-          <Icon name="chevron-up" size={14} className="text-meta" />
+          <Icon name="chevron-up" size={14} className="text-oq-48" />
         </div>
         <div className="px-3 pb-2">
           <Input variant="filled" size="sm" iconLeft="search" placeholder="Search the docs…" />
@@ -71,9 +71,9 @@ export default function SidebarDocs() {
       {/* ── Content ─────────────────────────────────────────── */}
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-14 items-center gap-3 border-b border-fg-08 px-5">
-          <Icon name="panel-left" size={16} className="text-meta" />
+          <Icon name="panel-left" size={16} className="text-oq-48" />
           <span className="kol-helper-12 text-meta">Build Your Application</span>
-          <Icon name="chevron-right" size={12} className="text-subtle" />
+          <Icon name="chevron-right" size={12} className="text-oq-24" />
           <span className="kol-helper-12 text-emphasis">{active}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">

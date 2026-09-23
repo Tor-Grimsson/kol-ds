@@ -11,6 +11,9 @@ const EXT_KINDS = {
   js: 'code', mjs: 'code', cjs: 'code', ts: 'code', jsx: 'code', tsx: 'code',
   css: 'code', html: 'code', sh: 'code', py: 'code',
   m3u8: 'playlist',
+  /* A PDF IS ITS OWN KIND (user 2026-09-23: *"File I guess is pdf? weird name"*). It fell through
+   * to `other`, so the one document type with a real page-one preview was labelled "File". */
+  pdf: 'pdf',
   woff: 'font', woff2: 'font', ttf: 'font', otf: 'font',
   zip: 'archive', gz: 'archive', tar: 'archive', rar: 'archive', '7z': 'archive',
 }
@@ -42,12 +45,15 @@ export function kindOf(o) {
   return 'other'
 }
 
-export const KINDS = ['audio', 'video', 'image', 'markdown', 'json', 'yaml', 'text', 'code', 'playlist', 'font', 'archive', 'other']
+export const KINDS = ['audio', 'video', 'image', 'pdf', 'markdown', 'json', 'yaml', 'text', 'code', 'playlist', 'font', 'archive', 'other']
 
+/* A LABEL IS CAPITALISED, AN ACRONYM IS AN ACRONYM (user 2026-09-22). These read as values in a
+ * facts table ("Kind · Markdown") and beside them sit the MIME type and the filename, which are
+ * DATA and stay exactly as stored. The filter chips are unaffected — `.kol-tag` uppercases. */
 export const KIND_LABEL = {
-  image: 'image', video: 'video', audio: 'audio', markdown: 'markdown', json: 'JSON', yaml: 'YAML', text: 'text', code: 'code',
-  playlist: 'HLS', font: 'font', archive: 'archive', segments: 'HLS segments',
-  system: 'system', other: 'file',
+  image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF', markdown: 'Markdown', json: 'JSON', yaml: 'YAML', text: 'Text', code: 'Code',
+  playlist: 'HLS', font: 'Font', archive: 'Archive', segments: 'HLS segments',
+  system: 'System', other: 'File',
 }
 
 /* The chips a bucket always shows (user ruling 2026-08-27): media, then the text

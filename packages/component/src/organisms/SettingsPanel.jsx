@@ -6,6 +6,7 @@ import LabeledControl from '../molecules/LabeledControl.jsx'
 import ToggleSwitch from '../atoms/ToggleSwitch.jsx'
 import ShellDrawer from '../molecules/ShellDrawer.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * SettingsPanel — a settings surface for the thing you are looking at: you
@@ -110,7 +111,8 @@ export default function SettingsPanel({
  * uppercase label (`kol-helper-10` tracked, meta ink) in a 160px column, the
  * control fills the rest. A switch sits at the far right (`align="end"`, the
  * default); a dropdown fills the row (`align="fill"`). No hint sentences on the
- * page — `hint` rides the control's `title`. `labelWidth="auto"` passes through
+ * page — `hint` rides the control's DS `Tooltip` (a native `title` until
+ * 2026-09-22, kol-client-olina). `labelWidth="auto"` passes through
  * to LabeledControl: the label flexes and truncates, the control hugs — for a
  * row living in a column narrower than the 160px label default
  * (SettingsShortcutsComboOverflow, kol-monitor 2026-09-01).
@@ -118,24 +120,28 @@ export default function SettingsPanel({
 export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, children }) {
   return (
     <LabeledControl inline label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
-      <span title={hint} className={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</span>
+      {hint
+        ? <Tooltip label={hint} triggerClassName={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</Tooltip>
+        : <span className={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</span>}
     </LabeledControl>
   )
 }
 
 /** SettingsSwitch — the row's on/off control: the DS ToggleSwitch, bare, sm.
- *  `disabledHint` rides `title` so a switch that cannot act says why. */
+ *  `disabledHint` rides a DS `Tooltip` so a switch that cannot act says why;
+ *  inside a row's `hint` it wins while hovered, as the native `title` did. */
 export function SettingsSwitch({ on = false, onChange, disabled = false, disabledHint, label, title }) {
-  return (
+  const tip = title ?? (disabled ? disabledHint : undefined)
+  const toggle = (
     <ToggleSwitch
       size="sm"
       checked={on}
       onChange={onChange}
       disabled={disabled}
-      title={title ?? (disabled ? disabledHint : undefined)}
       aria-label={label}
     />
   )
+  return tip ? <Tooltip label={tip}>{toggle}</Tooltip> : toggle
 }
 
 /** LabeledControlSection — a section of LabeledControls: the EYEBROW
@@ -253,7 +259,11 @@ export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', chil
       <Divider />
       <div className="flex justify-end items-center gap-2">
         {children}
-        {onReset && <IconFrame name="refresh" variant="primary" size="sm" onClick={onReset} title={resetLabel} aria-label={resetLabel} />}
+        {onReset && (
+          <Tooltip label={resetLabel}>
+            <IconFrame name="refresh" variant="primary" size="sm" onClick={onReset} aria-label={resetLabel} />
+          </Tooltip>
+        )}
       </div>
     </div>
   )

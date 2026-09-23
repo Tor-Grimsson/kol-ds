@@ -109,7 +109,7 @@ export default function SidebarNav() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-14 items-center gap-3 border-b border-fg-08 px-5">
           <span className="kol-helper-12 text-meta">Library</span>
-          <Icon name="chevron-right" size={12} className="text-subtle" />
+          <Icon name="chevron-right" size={12} className="text-oq-24" />
           <span className="kol-helper-12 text-emphasis">{activeLeaf}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">

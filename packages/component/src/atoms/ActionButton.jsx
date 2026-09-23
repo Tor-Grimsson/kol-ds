@@ -3,6 +3,7 @@ import { DURATION } from '../utilities/motion.js'
 import gsap from 'gsap'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * ActionButton — an icon control that CONFIRMS what it did (2026-08-15 user
@@ -179,16 +180,16 @@ export default function ActionButton({
 
   /* The element follows the affordance — IconFrame's contract, same reasoning:
    * a link must be a real <a> for middle-click, focus order and screen readers. */
-  if (href) {
-    return (
-      <a className={cls} href={href} onClick={handle} aria-label={aria} title={aria} {...rest}>
-        {glyph}
-      </a>
-    )
-  }
-  return (
-    <button type="button" className={cls} onClick={handle} aria-label={aria} title={aria} {...rest}>
+  const control = href ? (
+    <a className={cls} href={href} onClick={handle} aria-label={aria} {...rest}>
+      {glyph}
+    </a>
+  ) : (
+    <button type="button" className={cls} onClick={handle} aria-label={aria} {...rest}>
       {glyph}
     </button>
   )
+  /* The label shows as the DS Tooltip, not a native `title` (kol-client-olina 2026-09-22) — and
+   * it follows the swap, so a Copy URL reads "Copied" while the check is up. */
+  return aria ? <Tooltip label={aria}>{control}</Tooltip> : control
 }

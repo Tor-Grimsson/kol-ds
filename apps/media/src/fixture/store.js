@@ -10,7 +10,8 @@
  * Every mutation is synchronous against this object. The client wrapper is what
  * makes the verbs async, because the pages await them. */
 
-import { BUCKETS, SEED, contentTypeOf, sizeOf, uploadedOf } from './seed.js'
+import { BUCKETS, SEED, contentTypeOf, uploadedOf } from './seed.js'
+import { assetFile, assetSize, SEED_TRASH } from './assets.js'
 
 const dir = (p) => (p.endsWith('/') || p === '' ? p : `${p}/`)
 const parentOf = (path) => {
@@ -26,7 +27,9 @@ function build() {
     const folders = new Set(seed.folders)
     const files = new Map()
     for (const key of seed.files) {
-      files.set(key, { key, contentType: contentTypeOf(key), size: sizeOf(key), uploaded: uploadedOf(key) })
+      /* `file` names the real bytes and rides the record through rename/copy, so a moved file
+       * still previews as itself. */
+      files.set(key, { key, contentType: contentTypeOf(key), size: assetSize(id, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(id, key) })
       // Every ancestor of a seeded file exists as a folder even if the seed
       // forgot to list it — otherwise the tree and the keys could disagree.
       let p = parentOf(key)
@@ -38,9 +41,29 @@ function build() {
 }
 
 let tree = build()
+/* THE TRASH (user 2026-09-23: *"a temporary trash location … a failsafe"*). Delete moves the
+ * records here instead of dropping them; restore puts them back under their old path. Entries
+ * older than TRASH_DAYS are purged whenever the trash is read. In a real bucket this is a
+ * `.trash/` prefix with a lifecycle rule — the shape is the same: path, bytes, when. */
+const TRASH_DAYS = 30
+let trash = []
+let trashSeq = 0
 
 /** Back to seed. The reset control calls this; nothing else should. */
-export function reset() { tree = build() }
+function seedTrash() {
+  return Object.entries(SEED_TRASH).flatMap(([bucket, entries]) => entries.map((e) => {
+    const keys = e.files ?? [e.path]
+    return {
+      id: `t${++trashSeq}`, bucket, path: e.path,
+      deletedAt: new Date(Date.now() - e.daysAgo * 86_400_000).toISOString(),
+      files: keys.map((key) => ({ key, contentType: contentTypeOf(key), size: assetSize(bucket, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(bucket, key) })),
+      folders: e.path.endsWith('/') ? [e.path] : [],
+    }
+  }))
+}
+trash = seedTrash()
+
+export function reset() { tree = build(); trash = seedTrash() }
 
 const bucketOf = (id) => tree[id] ?? tree[BUCKETS[0].id]
 
@@ -98,18 +121,56 @@ export function createFolder(bucketId, path) {
   return { ok: true, path: p }
 }
 
-/** Delete a file, or a folder and everything under it. */
+/** Delete a file, or a folder and everything under it — into the trash, not out of existence. */
 export function remove(bucketId, path) {
   assertWritable(bucketId)
   const { folders, files } = bucketOf(bucketId)
-  if (files.has(path)) { files.delete(path); return { ok: true, deleted: 1 } }
-  const p = dir(path)
-  if (!folders.has(p)) throw new Error(`${path} not found`)
-  let deleted = 0
-  for (const key of [...files.keys()]) if (key.startsWith(p)) { files.delete(key); deleted += 1 }
-  for (const f of [...folders]) if (f === p || f.startsWith(p)) folders.delete(f)
-  return { ok: true, deleted }
+  const entry = { id: `t${++trashSeq}`, bucket: bucketId, path, deletedAt: new Date().toISOString(), files: [], folders: [] }
+  if (files.has(path)) {
+    entry.files.push(files.get(path))
+    files.delete(path)
+  } else {
+    const p = dir(path)
+    if (!folders.has(p)) throw new Error(`${path} not found`)
+    for (const key of [...files.keys()]) if (key.startsWith(p)) { entry.files.push(files.get(key)); files.delete(key) }
+    for (const f of [...folders]) if (f === p || f.startsWith(p)) { entry.folders.push(f); folders.delete(f) }
+  }
+  trash.push(entry)
+  return { ok: true, deleted: entry.files.length, trashId: entry.id }
 }
+
+/** What is in the trash for a bucket, newest first; expired entries are purged on the way. */
+export function trashList(bucketId) {
+  const cutoff = Date.now() - TRASH_DAYS * 86_400_000
+  trash = trash.filter((t) => Date.parse(t.deletedAt) >= cutoff)
+  return trash
+    .filter((t) => !bucketId || t.bucket === bucketId)
+    .map((t) => ({
+      id: t.id, bucket: t.bucket, path: t.path, deletedAt: t.deletedAt,
+      isFolder: t.folders.length > 0, count: t.files.length,
+      size: t.files.reduce((n, f) => n + (f.size || 0), 0),
+      expiresAt: new Date(Date.parse(t.deletedAt) + TRASH_DAYS * 86_400_000).toISOString(),
+    }))
+    .reverse()
+}
+
+/** Put a trashed entry back where it was. Refuses if something has taken its place since. */
+export function restore(id) {
+  const t = trash.find((x) => x.id === id)
+  if (!t) throw new Error('not in the trash')
+  const { folders, files } = bucketOf(t.bucket)
+  const clash = t.files.find((f) => files.has(f.key)) || t.folders.find((f) => folders.has(f))
+  if (clash) throw new Error(`${clash.key ?? clash} already exists — rename it first`)
+  for (const f of t.files) files.set(f.key, f)
+  for (const f of t.folders) folders.add(f)
+  for (const f of t.files) { let up = parentOf(f.key); while (up) { folders.add(up); up = parentOf(up) } }
+  trash = trash.filter((x) => x !== t)
+  return { ok: true, path: t.path }
+}
+
+/** Gone for good: one entry, or everything in a bucket's trash. */
+export function purge(id) { trash = trash.filter((x) => x.id !== id); return { ok: true } }
+export function emptyTrash(bucketId) { trash = trash.filter((x) => x.bucket !== bucketId); return { ok: true } }
 
 /** Rename or move — one verb, because both are "this path becomes that path".
  *  On a folder it rewrites every descendant, which is the move a key-prefix
@@ -151,19 +212,39 @@ export function rename(bucketId, from, to) {
   return { ok: true, from: src, to: dst }
 }
 
-/** Upload — the surface that exists twice in the estate and nowhere in a package. */
-export function put(bucketId, key, { size, contentType } = {}) {
+/** Upload — the surface that exists twice in the estate and nowhere in a package.
+ *  `url` is the uploaded file's own bytes (an object URL), so a dropped photo
+ *  previews as itself; it rides the record, so a rename or move keeps it. */
+export function put(bucketId, key, { size, contentType, url } = {}) {
   assertWritable(bucketId)
   const { folders, files } = bucketOf(bucketId)
   files.set(key, {
     key,
     contentType: contentType || contentTypeOf(key),
-    size: size ?? sizeOf(key),
+    size: size ?? 0,
     uploaded: new Date().toISOString(),
+    ...(url && { url }),
   })
   let up = parentOf(key)
   while (up) { folders.add(up); up = parentOf(up) }
   return { ok: true, key }
 }
+
+/** Copy one file to a new key — the fixture half of the consumer Duplicate verb. */
+export function copy(bucketId, from, to) {
+  assertWritable(bucketId)
+  const { folders, files } = bucketOf(bucketId)
+  const f = files.get(from)
+  if (!f) throw new Error(`${from} not found`)
+  if (files.has(to)) throw new Error(`${to} already exists`)
+  files.set(to, { ...f, key: to, uploaded: new Date().toISOString() })
+  let up = parentOf(to)
+  while (up) { folders.add(up); up = parentOf(up) }
+  return { ok: true, from, to }
+}
+
+/** The uploaded bytes behind `key`, if it was uploaded this session. */
+export const urlOf = (bucketId, key) => bucketOf(bucketId).files.get(key)?.url ?? null
+export const fileOf = (bucketId, key) => bucketOf(bucketId).files.get(key)?.file ?? null
 
 export { parentOf, dir }

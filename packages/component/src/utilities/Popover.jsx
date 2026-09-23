@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { toneClass } from './tone.js'
 import {
   useFloating,
@@ -131,6 +131,11 @@ export function usePopover({
  *     <Button iconOnly="ptrn-checker" ... />
  *   </Tooltip>
  */
+/* A tooltip inside a tooltip's trigger (a disabled switch's reason inside its
+ * row's hint) hides the outer one while it is open, and hands it back on leave
+ * — the innermost wins, as the native `title` it replaced behaved. */
+const TooltipNest = createContext(null)
+
 export function Tooltip({
   label,
   shortcut,
@@ -140,9 +145,11 @@ export function Tooltip({
   triggerClassName = 'inline-flex',
 }) {
   const [open, setOpen] = useState(false)
+  const [covered, setCovered] = useState(false)
+  const parent = useContext(TooltipNest)
   const popover = usePopover({
-    open,
-    onOpenChange: setOpen,
+    open: open && !covered,
+    onOpenChange: (v) => { setOpen(v); parent?.(v) },
     placement,
     offset,
     role: 'tooltip',
@@ -158,7 +165,7 @@ export function Tooltip({
         {...popover.getReferenceProps()}
         className={triggerClassName}
       >
-        {children}
+        <TooltipNest.Provider value={setCovered}>{children}</TooltipNest.Provider>
       </span>
       <PopoverPanel
         popover={popover}

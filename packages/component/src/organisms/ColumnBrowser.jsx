@@ -1,10 +1,12 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import KindPreview from '../molecules/KindPreview.jsx'
+import KindPreview, { KIND_GLYPH } from '../molecules/KindPreview.jsx'
+import FileIcon from '../atoms/FileIcon.jsx'
 import { formatLength } from '../molecules/AudioPreview.jsx'
 import { kindOf as dsKindOf, KIND_LABEL as DS_KIND_LABEL } from '../utilities/mediaKinds.js'
 import useGrabEdge from '../hooks/useGrabEdge.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
+import useMarquee from '../hooks/useMarquee.js'
 import { GRAB_COLUMN } from '../utilities/motion.js'
 
 /**
@@ -60,9 +62,12 @@ import { GRAB_COLUMN } from '../utilities/motion.js'
  * @param {Function} formatDate   (isoString) => string — the row/preview date, ISO date-only by default
  * @param {Function} partition    (objects, level) => { folders: string[], files: object[] }
  * @param {Function} renderPreview  (file) => ReactNode — replaces the preview column's media frame (the facts stay — Dimensions and Length are read off whatever <img> / <video> / <audio> the node loads); without it images render the organism's <img>, everything else the DS KindPreview
- * @param {number}   height         controlled height in px (omit for uncontrolled)
+ * @param {number|string} height    controlled height — px as a number, or ANY CSS length (`'100%'`, `'60vh'`,
+ *                                  `'calc(100dvh - 240px)'`) so the browser can fill the space it is given
+ *                                  (kol-client-olina 2026-09-22); a CSS length draws no height grabber;
+ *                                  omit for uncontrolled
  * @param {number}   defaultHeight  uncontrolled start height (528); min 240
- * @param {Function} onHeightChange (px) => void — on every drag step; the consumer persists it
+ * @param {Function} onHeightChange (px) => void — on every drag step, always px; the consumer persists it
  * @param {number}   columnWidth    every column's start width (260); the preview column starts at 320; min 160
  * @param {Object}   columnWidths   the CONTROLLED counterpart to `onColumnResize` (ColumnBrowserWidthsPersist,
  *                                  kol-r2b2 2026-08-27): a map keyed by column index plus `'preview'` —
@@ -70,6 +75,7 @@ import { GRAB_COLUMN } from '../utilities/motion.js'
  *                                  so a consumer hands back what it stored. A key with no column is ignored;
  *                                  any column it does not name falls back to the drag state, then `columnWidth`
  * @param {Function} onColumnResize (index, px) => void — the column's index, or `'preview'`
+ * @param {Function} onDropFiles   (files, folderPath) => void — OS files dropped on a folder row or column; the consumer uploads
  * @param {string}   className    extra classes on the browser
  *
  * @param {Function} thumbnailFor  (o) => node — the 44px tile's content below the breakpoint; null falls back to the kind glyph. WHERE a thumbnail comes from is the consumer's: R2 and B2 serve originals, so a 44px tile can mean a 2 MB download
@@ -183,6 +189,8 @@ const defaultPartition = (objects, prefix) => {
   return { folders: [...folderSet].sort(), files }
 }
 const isImage = (o) => (o.contentType || '').startsWith('image/')
+/* a drag carrying files from the OS, as opposed to one of our own rows */
+export const isFileDrag = (e) => [...(e.dataTransfer?.types ?? [])].includes('Files')
 
 /* kol-icons has no `audio` glyph yet — audio rows wear `file` until it does */
 const COL_ICON = { image: 'image', video: 'video', audio: 'file', playlist: 'video' }
@@ -239,22 +247,29 @@ const ZONE_BOX = 44
  * to what it was. */
 function Row({
   icon, label, active, cursor = false, trailing, onClick, muted = false,
-  indent = 0, meta, zones = false, thumb, onDisclose, disclosed, onContextMenu, drop,
+  indent = 0, meta, zones = false, thumb, onDisclose, disclosed, onContextMenu, drop, dropFiles, markKey,
 }) {
   const [over, setOver] = useState(false)
   /* A COLUMN ROW IS THE SAME ROW as the list view's, so it takes the same two seams: right-click
-   * and, for a folder, a drop target. Without them every handler is undefined and nothing moves. */
-  const dropProps = drop ? {
-    draggable: true,
-    onDragStart: (e) => { e.stopPropagation(); drop.onDragStart(e, drop.path) },
-    onDragOver: (e) => { if (drop.canDrop(drop.path)) { e.preventDefault(); setOver(true) } },
+   * and, for a folder, a drop target. Without them every handler is undefined and nothing moves.
+   * `dropFiles(files)` is the OS half — files dragged in from the desktop, same highlight. */
+  const takesFiles = (e) => dropFiles && isFileDrag(e)
+  const dropProps = drop || dropFiles ? {
+    draggable: !!drop,
+    onDragStart: drop ? (e) => { e.stopPropagation(); drop.onDragStart(e, drop.path) } : undefined,
+    onDragOver: (e) => { if (takesFiles(e) || (drop && !isFileDrag(e) && drop.canDrop(drop.path))) { e.preventDefault(); setOver(true) } },
     onDragLeave: () => setOver(false),
-    onDrop: (e) => { e.preventDefault(); e.stopPropagation(); setOver(false); drop.onDrop(drop.path) },
+    onDrop: (e) => {
+      e.preventDefault(); e.stopPropagation(); setOver(false)
+      if (takesFiles(e)) dropFiles(e.dataTransfer.files)
+      else if (drop && !isFileDrag(e)) drop.onDrop(drop.path)
+    },
   } : {}
   return (
     <li
       onContextMenu={onContextMenu}
       {...dropProps}
+      data-marquee-key={markKey}
       data-drop-over={over || undefined}
       /* Row metrics are the DS Table's (kol-components-organisms.css .kol-table-cell-*):
        * 12px 16px padding, mono 12, an oq-08 hairline between rows, none after the last.
@@ -305,11 +320,13 @@ function Row({
           className="kol-column-browser-thumb shrink-0 inline-flex items-center justify-center overflow-hidden"
           style={{ width: ZONE_BOX, height: ZONE_BOX, borderRadius: 5, background: thumb ? 'var(--kol-oq-04)' : 'transparent' }}
         >
-          {thumb ?? <Icon name={icon} size={ZONE_BOX} className="text-fg-48" />}
+          {thumb ?? <Icon name={icon} size={ZONE_BOX} className="text-oq-48" />}
         </span>
       ) : (
-        <span className="w-5 shrink-0 flex items-center justify-center text-fg-48">
-          <Icon name={icon} size={14} />
+        <span className="w-5 shrink-0 flex items-center justify-center text-oq-48">
+          {/* a folder's mark is the only glyph a row carries now, so it is drawn at the box's
+              size rather than floating in it (user 2026-09-23) */}
+          <Icon name={icon} size={icon === 'folder' ? 18 : 14} />
         </span>
       )}
 
@@ -367,7 +384,7 @@ function Preview({ o, urlOf, kindOf, kindLabel, formatSize, formatDate, renderPr
         </div>
       ) : (
         <div
-          className="kol-column-browser-media w-full min-h-[160px] max-h-[60vh] overflow-auto rounded bg-fg-04 flex items-center justify-center"
+          className="kol-column-browser-media w-full min-h-[160px] max-h-[60vh] overflow-auto rounded bg-oq-04 flex items-center justify-center"
           onLoadCapture={(e) => { if (e.target?.tagName === 'IMG') setDims({ w: e.target.naturalWidth, h: e.target.naturalHeight }) }}
           onLoadedMetadataCapture={(e) => {
             const t = e.target
@@ -459,6 +476,24 @@ export default function ColumnBrowser({
    * row can have done to it. Absent, the columns behave exactly as they did. */
   onRowContextMenu,
   dragFor,
+  /* `onDropFiles(files, folderPath)` — files dragged in FROM THE OS onto a folder row or a column
+   * (kol-client-olina 2026-09-22). The browser hands over the `FileList` and the target path and
+   * never uploads: each consumer's pipeline differs, so the upload is theirs, and they re-list.
+   * Absent, an OS drag shows nothing and does nothing. */
+  onDropFiles,
+  /* MULTI-SELECT BY DRAG (user 2026-09-22). `selectedKeys` is the set the caller owns — paths for
+   * folders, keys for files, exactly as this component hands them out — and `onSelectKeys(keys,
+   * additive)` reports what a band touched. Without the pair, a drag on the background does
+   * nothing, as before. */
+  selectedKeys,
+  onSelectKeys,
+  /* `onSelectClick(key, event, columnKeys)` — every row click, modifiers included, handed to the
+   * caller's selection model first (user 2026-09-23: ⇧-click *"should add to selection"*). Return
+   * true when the click was a selection gesture and the browser must not navigate. */
+  onSelectClick,
+  /* `folderIcon(path)` — the glyph a folder row wears (default `folder`). The media pages mark a
+   * bucket — a SOURCE, not a prefix — with `database` (user 2026-09-23). */
+  folderIcon,
   /* THE TWO SEAMS THE MOBILE TICKET'S RULINGS POINT AT (ColumnBrowserMobileViews,
    * kol-r2b2 2026-09-03). Both are questions the DS must not answer for a
    * consumer, so neither is computed here:
@@ -497,7 +532,9 @@ export default function ColumnBrowser({
     onColumnResize?.(i, w)
   }
   const resizeH = (dy) => {
-    if (dragBase.current == null) dragBase.current = h
+    /* a string height (`'100%'`, `calc()`) has no arithmetic — the drag starts from what it
+     * RENDERED at, so there is no jump, and reports px from then on */
+    if (dragBase.current == null) dragBase.current = typeof h === 'number' ? h : (rootRef.current?.getBoundingClientRect().height ?? MIN_H)
     const next = Math.max(MIN_H, Math.round(dragBase.current + dy))
     if (height == null) setOwnH(next)
     onHeightChange?.(next)
@@ -573,13 +610,28 @@ export default function ColumnBrowser({
    * on `prefix`, so a bucket switch from the header (which takes focus) hands the keyboard back. */
   useEffect(() => { if (autoFocus) rootRef.current?.focus() }, [autoFocus, prefix])
 
+  /* THE KEYBOARD SELECTS TOO (user 2026-09-23: *"the highlight focus is on the correct item, this
+   * has been a problem for awhile"*). Clicks reported through `onSelectClick`; the arrows moved
+   * the cursor and the pick and told the caller nothing, so its selection kept the last CLICKED
+   * row lit beside the one the arrows had reached. Every keyboard move now replaces it. */
+  const selectOnly = (key) => onSelectKeys?.(key ? [key] : [], false)
   const land = (level, item) => {
     if (!item) return
-    if (item.type === 'folder') { pick(null); onPrefix(level + item.name) }
-    else pickFile(level, item.o)
+    if (item.type === 'folder') { pick(null); selectOnly(level + item.name); onPrefix(level + item.name) }
+    else { selectOnly(item.o.key); pickFile(level, item.o) }
   }
 
+  const shiftAnchor = useRef(null)
   const onKeyDown = (e) => {
+    /* ⌘↑ / ⌘↓ (user 2026-09-23: *"all modes should 'command up down' to move up and down parent
+     * child"*) — Finder's: ⌘↑ is ←, back to the enclosing folder; ⌘↓ opens what the cursor is on,
+     * → for a folder and Quick Look for a file. */
+    if (e.metaKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault()
+      if (e.key === 'ArrowUp') return onKeyDown({ key: 'ArrowLeft', preventDefault() {} })
+      if (picked) return onKeyDown({ key: ' ', preventDefault() {} })
+      return onKeyDown({ key: 'ArrowRight', preventDefault() {} })
+    }
     // Space = Quick Look over the picked column's files, starting at the picked one.
     if (e.key === ' ' && picked) {
       e.preventDefault()
@@ -595,6 +647,20 @@ export default function ColumnBrowser({
     const items = itemsAt(lv[col])
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       const idx = Math.max(0, Math.min(items.length - 1, cursor.idx + (e.key === 'ArrowDown' ? 1 : -1)))
+      /* ⇧ + ↑↓ EXTENDS within the column (user 2026-09-23): the run from where it began to the
+       * cursor becomes the selection; nothing opens, nothing is previewed but the stack */
+      if (e.shiftKey && onSelectKeys) {
+        /* a new run starts wherever the cursor is unless it is still where the last ⇧ step left it */
+        const sa = shiftAnchor.current
+        if (!sa || sa.col !== col || sa.last !== cursor.idx) shiftAnchor.current = { col, idx: cursor.idx }
+        shiftAnchor.current.last = idx
+        const a = shiftAnchor.current.idx
+        const keyOf = (it) => (it.type === 'folder' ? lv[col] + it.name : it.o.key)
+        setCursor({ col, idx })
+        onSelectKeys(items.slice(Math.min(a, idx), Math.max(a, idx) + 1).map(keyOf), false)
+        return
+      }
+      shiftAnchor.current = null
       /* an arrow that did not move the cursor does nothing — re-landing on an
        * open folder re-fired onPrefix (ColumnBrowserCursorSeed) */
       if (idx === cursor.idx && col === cursor.col) return
@@ -614,6 +680,7 @@ export default function ColumnBrowser({
       const idx = Math.max(0, parentItems.findIndex((it) => it.type === 'folder' && it.name === opened))
       setCursor({ col: col - 1, idx })
       pick(null)
+      selectOnly(lv[col])
       onPrefix(lv[col])
     }
   }
@@ -636,6 +703,7 @@ export default function ColumnBrowser({
       if (!items[idx]) return
       setCursor({ col, idx })
       pick(items[idx].o)
+      selectOnly(items[idx].o.key)
       const siblings = items.filter((it) => it.type === 'file').map((it) => it.o)
       onQuickLook?.({ files: siblings, index: siblings.findIndex((o) => o.key === items[idx].o.key) })
     }
@@ -673,6 +741,20 @@ export default function ColumnBrowser({
    * `md` (768) — the one `ContentFilters` already uses, so a page has one
    * responsive story and not two. */
   const stack = useMediaQuery('(max-width: 767px)')
+  /* one band for the whole browser rather than one per column: a drag that starts in a column and
+   * runs into the next is a drag the user meant */
+  const marquee = useMarquee({
+    enabled: !!onSelectKeys,
+    onSelect: (keys, additive) => onSelectKeys?.(keys, additive),
+  })
+  const isPicked = (key) => selectedKeys?.has(key)
+  /* THE DEEPEST COLUMN STAYS IN VIEW (user 2026-09-23: arrowing onto a file left the preview
+   * clipped under the frame's right edge). Whenever the trail or the pick changes, the strip scrolls
+   * to its end — the newest column, or the preview, is always the one you just reached. */
+  useEffect(() => {
+    const box = marquee.ref.current
+    if (box && box.scrollWidth > box.clientWidth) box.scrollTo({ left: box.scrollWidth, behavior: 'smooth' })
+  }, [prefix, picked?.key, selectedKeys?.size]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (stack) {
     /* THE CURRENT LEVEL IS THE LIST (StackModeChromeAndAncestors, kol-r2b2
@@ -710,7 +792,7 @@ export default function ColumnBrowser({
             className="kol-column-browser-back flex items-center gap-2 px-4 py-3 border-b text-fg-default"
             style={{ borderColor: 'var(--kol-oq-08)' }}
           >
-            <Icon name="chevron-left" size={14} className="text-fg-48" />
+            <Icon name="chevron-left" size={14} className="text-oq-48" />
             {/* NAMES THE PARENT (item 2) — the folder it returns to, not '‹' */}
             <span className="kol-mono-12 truncate">
               {parent === '' ? 'All files' : parent.replace(/\/$/, '').split('/').pop()}
@@ -739,8 +821,8 @@ export default function ColumnBrowser({
                 >
                   <span className="kol-column-browser-tile-box">
                     {isFolder
-                      ? <Icon name="folder" size={28} className="text-fg-48" />
-                      : (thumbnailFor?.(o) ?? <Icon name={COL_ICON[kindOf(o)] || 'file'} size={28} className="text-fg-48" />)}
+                      ? <Icon name="folder" size={28} className="text-oq-48" />
+                      : (thumbnailFor?.(o) ?? <Icon name={COL_ICON[kindOf(o)] || 'file'} size={28} className="text-oq-48" />)}
                   </span>
                   <span className="kol-mono-12 truncate">{isFolder ? r.name.replace(/\/$/, '') : (o.displayKey ?? o.key)}</span>
                   {/* counts for a folder, size for a file — never dates (§2) */}
@@ -763,7 +845,7 @@ export default function ColumnBrowser({
               <Row
                 key={r.key}
                 zones
-                icon="folder"
+                icon={folderIcon?.(r.level + r.name) ?? 'folder'}
                 label={r.name.replace(/\/$/, '')}
                 indent={r.depth}
                 active={r.open}
@@ -816,12 +898,17 @@ export default function ColumnBrowser({
       className={`kol-column-browser relative border rounded outline-none ${className}`.trim()}
       style={{ borderColor: 'var(--kol-oq-08)', height: h }}
     >
-      <div className="flex h-full overflow-x-auto">
+      {/* A CLICK ON THE BACKGROUND DESELECTS (user 2026-09-22) — the band's own closing click is
+          swallowed by the hook, so this only ever fires on a real click into empty space. */}
+      <div ref={marquee.ref} {...marquee.props} className="relative flex h-full overflow-x-auto"
+        onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { pick(null); onSelectKeys?.([], false) } }}>
+        {marquee.rect && <div className="kol-marquee" style={marquee.rect} />}
       {levels.map((level, k) => {
         const { folders, files } = partition(objects.filter((o) => o.key.startsWith(level)), level)
         const next = levels[k + 1]
         const activeFolder = next ? next.slice(level.length) : null
         const last = k === levels.length - 1 && !shown
+        const colKeys = [...folders.map((f) => level + f), ...files.map((o) => o.key)]
         return (
           <Fragment key={level || '/'}>
           <ul
@@ -840,31 +927,40 @@ export default function ColumnBrowser({
              * re-render per dragover across every column buys nothing. */
             onContextMenu={(e) => onRowContextMenu?.(e, { type: 'level', path: level })}
             onDragOver={(e) => {
-              const d = dragFor?.(level)
-              if (!d?.canDrop(level)) return
+              const files = onDropFiles && isFileDrag(e)
+              /* `d.path`, never `level`: the caller may re-root the path it was handed (the media
+               * pages prefix every level with `<title>/<bucket>/`), and moving to the raw level
+               * renamed files under a prefix nothing lists — they vanished (user 2026-09-23). */
+              const d = !isFileDrag(e) && dragFor?.(level)
+              if (!files && !d?.canDrop(d.path)) return
               e.preventDefault()
               e.currentTarget.dataset.dropOver = '1'
             }}
-            onDragLeave={(e) => { if (e.currentTarget === e.target) delete e.currentTarget.dataset.dropOver }}
+            /* cleared however the drag ends: a drop on a row stops propagation, so capture runs
+             * first; and leaving through a child fires on the child, not on the column */
+            onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) delete e.currentTarget.dataset.dropOver }}
+            onDropCapture={(e) => { delete e.currentTarget.dataset.dropOver }}
             onDrop={(e) => {
-              delete e.currentTarget.dataset.dropOver
-              const d = dragFor?.(level)
-              if (!d?.canDrop(level)) return
+              if (onDropFiles && isFileDrag(e)) { e.preventDefault(); onDropFiles(e.dataTransfer.files, level); return }
+              const d = !isFileDrag(e) && dragFor?.(level)
+              if (!d?.canDrop(d.path)) return
               e.preventDefault()
-              d.onDrop(level)
+              d.onDrop(d.path)
             }}
           >
             {folders.map((f, i) => (
               <Row
                 key={f}
-                icon="folder"
+                icon={folderIcon?.(level + f) ?? 'folder'}
                 label={f.replace(/\/$/, '')}
-                active={f === activeFolder}
+                markKey={level + f}
+                active={f === activeFolder || isPicked(level + f)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === i}
-                trailing={<Icon name="chevron-right" size={12} className="text-fg-32" />}
+                trailing={<Icon name="chevron-right" size={12} className="text-oq-32" />}
                 onContextMenu={(e) => onRowContextMenu?.(e, { type: 'folder', path: level + f })}
                 drop={dragFor?.(level + f)}
-                onClick={() => { setCursor({ col: k, idx: i }); setCursorActive(true); rootRef.current?.focus(); pick(null); onPrefix(level + f) }}
+                dropFiles={onDropFiles ? (list) => onDropFiles(list, level + f) : undefined}
+                onClick={(e) => { if (onSelectClick?.(level + f, e, colKeys)) return; setCursor({ col: k, idx: i }); setCursorActive(true); rootRef.current?.focus(); pick(null); onPrefix(level + f) }}
               />
             ))}
             {files.map((o, i) => (
@@ -872,11 +968,12 @@ export default function ColumnBrowser({
                 key={o.key}
                 icon={COL_ICON[kindOf(o)] || 'file'}
                 label={o.displayKey ?? o.key}
-                active={shown?.key === o.key}
+                markKey={o.key}
+                active={shown?.key === o.key || isPicked(o.key)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === folders.length + i}
                 onContextMenu={(e) => onRowContextMenu?.(e, { type: 'file', path: o.key, o })}
                 drop={dragFor?.(o.key)}
-                onClick={() => { setCursor({ col: k, idx: folders.length + i }); setCursorActive(true); rootRef.current?.focus(); pickFile(level, o) }}
+                onClick={(e) => { if (onSelectClick?.(o.key, e, colKeys)) return; setCursor({ col: k, idx: folders.length + i }); setCursorActive(true); rootRef.current?.focus(); pickFile(level, o) }}
               />
             ))}
             {/* AN EMPTY COLUMN IS VISIBLY EMPTY (user 2026-09-21). It used to print the word
@@ -891,14 +988,71 @@ export default function ColumnBrowser({
           </Fragment>
         )
       })}
-      {shown && (
+      {selectedKeys?.size > 1 ? (
+        <>
+          <SelectionPreview keys={[...selectedKeys]} objects={objects} urlOf={urlOf} kindOf={kindOf} formatSize={formatSize} formatDate={formatDate} width={widthOf('preview')} />
+          <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
+        </>
+      ) : shown && (
         <>
           <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} width={widthOf('preview')} />
           <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
         </>
       )}
       </div>
-      <ResizeHandle axis="y" onDrag={resizeH} onEnd={endDrag} />
+      {/* A FILL HEIGHT HAS NO GRABBER (user 2026-09-22). A CSS length says "take the room you
+        * are given"; dragging would fight it. A px height keeps its handle. */}
+      {typeof h !== 'string' && <ResizeHandle axis="y" onDrag={resizeH} onEnd={endDrag} />}
+    </div>
+  )
+}
+
+/* The preview column, for the media page's ROW view (user 2026-09-22 — Finder's "Show preview"):
+ * one preview, the same pane beside rows as beside columns. Not in the barrel. */
+export { Preview, SelectionPreview }
+
+/* SelectionPreview — the preview pane for MORE THAN ONE selected item (user 2026-09-23, Finder's:
+ * *"preview of 3 overlapping files, 2 and 3 slightly rotated behind 1 … the info fields should say
+ * how many files and calculated size"*). The pane kept describing one file while four were lit.
+ * The stack says "several"; the facts do the counting. Shared by the column and row panes.
+ *
+ * `keys` — the selected keys (folders end in `/`); `objects` — every object the view knows, for
+ * sizes, kinds and dates; `urlOf(o)` — an image's own picture. */
+function SelectionPreview({ keys, objects, urlOf, kindOf = dsKindOf, formatSize = (n) => `${n} B`, formatDate = (d) => d, width }) {
+  const byKey = new Map(objects.map((o) => [o.key, o]))
+  const folders = keys.filter((k) => k.endsWith('/'))
+  const files = keys.filter((k) => !k.endsWith('/')).map((k) => byKey.get(k)).filter(Boolean)
+  const inFolders = objects.filter((o) => folders.some((f) => o.key.startsWith(f)))
+  const all = [...files, ...inFolders]
+  const bytes = all.reduce((n, o) => n + (o.size || 0), 0)
+  const dates = all.map((o) => o.uploaded).filter(Boolean).sort()
+  const range = dates.length ? (dates[0] === dates[dates.length - 1] ? formatDate(dates[0]) : `${formatDate(dates[0])} – ${formatDate(dates[dates.length - 1])}`) : '—'
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`
+  const kinds = [files.length && plural(files.length, 'document'), folders.length && plural(folders.length, 'folder')].filter(Boolean).join(', ')
+  const face = (k) => {
+    if (k.endsWith('/')) return <FileIcon glyph="folder" className="w-[46%]" />
+    const o = byKey.get(k)
+    if (o && isImage(o) && urlOf) return <img src={urlOf(o)} alt="" className="w-full h-full object-cover" />
+    const ext = k.split('.').pop()
+    return <FileIcon ext={ext} glyph={o ? KIND_GLYPH[kindOf(o)] : undefined} className="w-[46%]" />
+  }
+  const stack = keys.slice(0, 3)
+  return (
+    <div className="kol-column-browser-preview shrink-0 overflow-y-auto p-4 flex flex-col gap-4" style={{ width }}>
+      <div className="kol-selection-stack">
+        {stack.map((k, i) => (
+          <div key={k} className="kol-selection-stack-card" data-depth={i}>{face(k)}</div>
+        ))}
+      </div>
+      <p className="kol-mono-12 text-fg-default">{plural(keys.length, 'item')}</p>
+      <dl className="flex flex-col gap-1">
+        {[['Kind', kinds], ['Size', formatSize(bytes)], ['Date', range]].map(([k, v]) => (
+          <div key={k} className="flex justify-between gap-4 kol-mono-12">
+            <dt className="text-fg-48">{k}</dt>
+            <dd className="text-fg-default text-right break-all">{v}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   )
 }

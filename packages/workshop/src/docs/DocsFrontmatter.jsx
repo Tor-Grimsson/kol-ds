@@ -192,7 +192,7 @@ const DocsFrontmatter = ({ metadata, docId }) => {
         return (
           <div key={key} className="docs-frontmatter-row">
             <span className="docs-frontmatter-key kol-helper-12 text-meta">
-              {icon && <Icon name={icon} size={14} />}
+              {icon && <Icon name={icon} size={14} className="text-oq-48" />}
               {FIELD_LABELS[key] ?? humanise(key)}
             </span>
             <span className="docs-frontmatter-value kol-mono-12 text-strong">

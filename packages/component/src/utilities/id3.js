@@ -43,6 +43,9 @@ function apic(tag, version) {
 }
 
 export function readCover(url) {
+  /* only a URL a browser can fetch — a placeholder scheme (a fixture, an unresolved key) is "no
+   * cover", not a console error */
+  if (!/^(https?:|data:|blob:|\/)/.test(String(url ?? ''))) return Promise.resolve(null)
   if (!covers.has(url)) {
     covers.set(url, (async () => {
       try {

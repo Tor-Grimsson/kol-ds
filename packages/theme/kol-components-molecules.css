@@ -1260,41 +1260,255 @@
  * as a second, darker plate. Prose is bounded by the page, not by its own
  * measure; tables and pre wrap inside it. */
 .kol-doc-page {
-  background: var(--kol-fg-04);
+  /* OPAQUE (user 2026-09-23: *"this is not correct bg, its transparent should be opaque so not
+   * fg-* but oq-*"*) — a page is paper, and the list behind it read through it in Quick Look. */
+  background: var(--kol-oq-04);
   border-radius: var(--kol-radius-sm);
   padding: 24px;
   min-width: 0;
   overflow-wrap: anywhere;
 }
 .kol-doc-page .kol-codeblock-wrapper { margin: 0; }
-.kol-doc-page .kol-codeblock { background: transparent; border: 0; width: 100%; }
+.kol-doc-page .kol-codeblock { background: transparent; border: 0; width: 100%; padding: 0; }
+/* ONE INSET FOR EVERY DOCUMENT (user 2026-09-23: *"why are they not aligning from top left with
+ * the same padding?"*). The code block brought its own padding and a filename chip on top of the
+ * page's, so JSON and YAML started lower and further in than markdown. The page's padding is the
+ * only inset, and the file's name is already beside every preview. */
+.kol-doc-page .kol-codeblock-filename { display: none; }
 .kol-doc-page .kol-prose { max-width: none; margin: 0; padding: 0; }
 .kol-doc-page .kol-prose table { max-width: 100%; }
 .kol-doc-page .kol-prose td,
 .kol-doc-page .kol-prose th { overflow-wrap: anywhere; word-break: break-word; }
 .kol-doc-page .kol-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; }
-/* 3:5 IS THE TALLEST A DOCUMENT PAGE MAY BE (BrowsePageRulingsAndSeams,
- * kol-r2b2 2026-09-02; user 2026-08-28: "this is not an approved ratio"). The
- * overlay page was A-series (1:√2) and the column preview had NO bound at all,
- * so the FILE decided the height — a 7 KB JSON drew a pane taller than the
- * browser. 3:5 is the portrait rung on the export-specs ladder below 4:5, and
- * the floor before a page reads as a 9:16 strip. Content scrolls inside the
- * box; the box never grows to the file.
- *
- * OPEN 2026-09-21 (user, on the column preview: "3:5 is so close to 9:16 and
- * its too tall here"). The plate measures a true 3:5; the complaint is the dead
- * space a short document leaves below its content. A one-off rung change was
- * tried and reverted — the value belongs to the preview spec being written
- * against Finder / Dropbox / Drive, not to a guess. */
-.kol-overlay .kol-doc-page {
-  aspect-ratio: 3 / 5;
-  height: 85vh;
-  width: auto;
-  max-width: calc(100vw - 10rem);
+/* NO RATIO ON A DOCUMENT (user 2026-09-23: *"its weird we have these ratios 3:5 linked to the
+ * preview … lets be flexible and logical"*). Text and code are the only two document kinds, and
+ * neither has a shape of its own: the SURFACE picks the box and the content scrolls inside it.
+ * Pane: a fixed square-ish box (Finder's). Quick Look: a wide window. Tile: the tile. The 3:5
+ * that stood here since 2026-09-02 was a bound mistaken for a shape. */
+/* QUICK LOOK — one window for every kind (`QuickLookFrame`, user 2026-09-23: *"put them in a
+ * container LIKE FINDER"*). An opaque raised surface that HUGS its body: the media sets the width
+ * at its own aspect ratio and the window follows. `--kol-ql-media-h` is the height the body is
+ * left once the header (and the footer, when a transport docks there) are paid for; every body
+ * caps against it, so a tall video makes a tall window and never a scrolling one. The side caps
+ * leave the prev / next gutters (10rem). */
+.kol-quicklook {
+  --kol-ql-header-h: 44px;
+  --kol-ql-footer-h: 0px;
+  --kol-ql-frame-h: 88vh;
+  --kol-ql-max-w: calc(100vw - 4rem);
+  --kol-ql-media-h: calc(var(--kol-ql-frame-h) - var(--kol-ql-header-h) - var(--kol-ql-footer-h) - 2px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  min-width: min(360px, var(--kol-ql-max-w));
+  max-width: var(--kol-ql-max-w);
+  background: var(--kol-oq-04);
+  border: 1px solid var(--kol-oq-12);
+  border-radius: var(--kol-radius-md);
+  overflow: hidden;
+}
+/* a sized window (the corner was dragged): the body takes all of it, media centred inside */
+.kol-quicklook--sized { max-width: none; }
+/* THE HEADER'S CONTROLS WEAR THE CLOSE IDIOM (`Button variant="nav"`), whose hover wash is oq-04 —
+ * the window's own surface, so on this header it vanished. One stop up keeps the same 4-point lift
+ * the X shows on the page (user 2026-09-23). `.kol-btn-nav`'s tokens sit in `:where()`, so this wins. */
+.kol-quicklook-header .kol-btn-nav {
+  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-active-bg: var(--kol-oq-08);
+}
+.kol-quicklook--sized .kol-quicklook-body { flex: 1 1 auto; }
+.kol-quicklook--sized .kol-doc-page,
+.kol-quicklook--sized .kol-pdf-document { width: 100%; }
+.kol-quicklook--sized .kol-pdf-document-main { flex: 1 1 auto; width: auto; max-width: none; }
+/* the corner grip — Finder's: invisible until you reach for it */
+.kol-quicklook-grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+}
+.kol-quicklook--footer { --kol-ql-footer-h: 64px; }
+.kol-quicklook-header {
+  height: var(--kol-ql-header-h);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+.kol-quicklook-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  background: var(--kol-oq-02);
+}
+.kol-quicklook-footer { padding: 8px; flex-shrink: 0; } /* one inset around a 48px bar — Finder's transport is not double-padded (user 2026-09-23) */
+.kol-quicklook-media {
+  display: block;
+  max-width: var(--kol-ql-max-w);
+  max-height: var(--kol-ql-media-h);
+  object-fit: contain;
+}
+/* audio — Finder's: the artwork square left, the length beside it */
+.kol-quicklook-audio {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 32px 48px;
+  width: min(var(--kol-ql-max-w), 760px);
+}
+.kol-quicklook-art {
+  width: min(40vh, 340px);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kol-oq-08);
+}
+/* a document is the page itself — the window is the plate, so no second plate inside it */
+.kol-quicklook .kol-doc-page {
+  height: var(--kol-ql-media-h);
+  width: min(1040px, var(--kol-ql-max-w));
+  border-radius: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-inline: auto;
 }
+/* a PDF — every page in a scroller, the thumbnail rail on the right (Finder's) */
+.kol-pdf-document { display: flex; height: var(--kol-ql-media-h); }
+.kol-pdf-document-main {
+  width: calc(var(--kol-ql-media-h) * 0.74);
+  max-width: calc(var(--kol-ql-max-w) - 160px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+.kol-pdf-document-main .kol-pdf-page { width: 100%; height: auto; display: block; }
+.kol-pdf-document-rail {
+  width: 140px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 16px 16px 0;
+}
+.kol-pdf-document-rail button {
+  display: block;
+  padding: 4px;
+  border-radius: var(--kol-radius-sm);
+  background: transparent;
+}
+.kol-pdf-document-rail button[aria-current] { background: var(--kol-oq-16); }
+.kol-pdf-document-rail .kol-pdf-page { width: 100%; height: auto; display: block; }
+
+/* MEDIA TILE — the grid's item, Finder's icon view (user 2026-09-23). Preview over name, no card.
+ * Selected: a rounded opaque wash behind the preview and the name on an inverse pill. The type is
+ * the tile's own rule (§5 — a component's type never rides a utility class on the element). */
+.kol-media-tile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  outline: none;
+  user-select: none;
+  cursor: default;
+}
+.kol-media-tile-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--kol-radius-md);
+  overflow: hidden;
+}
+.kol-media-tile-thumb > img,
+.kol-media-tile-thumb > video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--kol-radius-sm); }
+.kol-media-tile-thumb > .kol-media-thumb { border-radius: var(--kol-radius-sm); }
+.kol-media-tile-name {
+  max-width: 100%;
+  padding: 1px 6px;
+  border-radius: var(--kol-radius-sm);
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--kol-fg-strong);
+}
+.kol-media-tile-item[data-selected] .kol-media-tile-thumb { background: var(--kol-oq-08); }
+.kol-media-tile-item[data-selected] .kol-media-tile-name { background: var(--kol-surface-on-primary); color: var(--kol-surface-primary); }
+.kol-media-tile-item:focus-visible .kol-media-tile-thumb { box-shadow: inset 0 0 0 2px var(--kol-oq-24); }
+
+/* the list view's hit: only the icon and name take the pointer (user 2026-09-23) */
+.kol-row-hit { cursor: pointer; }
+
+/* THE FONT SPECIMEN (`KindPreview`, kind `font`, 2026-09-23) — `Aa` large, the set beneath it,
+ * in the file's own face. The face is the preview's inline `font-family`; sizes scale with the fit. */
+.kol-font-specimen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  overflow: hidden;
+  text-align: center;
+  color: var(--kol-fg-strong);
+}
+.kol-font-specimen-aa { font-size: 56px; line-height: 1; }
+.kol-font-specimen-set { font-size: 13px; line-height: 1.35; color: var(--kol-fg-body); overflow-wrap: anywhere; }
+.kol-font-specimen--sheet { width: min(900px, var(--kol-ql-max-w, 90vw)); min-height: 60vh; padding: 48px; gap: 24px; }
+.kol-font-specimen--sheet .kol-font-specimen-aa { font-size: 180px; }
+.kol-font-specimen--sheet .kol-font-specimen-set { font-size: 32px; }
+
+/* THE SELECTION STACK (user 2026-09-23, Finder's) — up to three cards, the first on top, the
+ * other two turned a few degrees behind it. It says "several"; the facts under it do the count. */
+.kol-selection-stack {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+}
+.kol-selection-stack-card {
+  grid-area: 1 / 1;
+  width: 62%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--kol-oq-08);
+  border: 1px solid var(--kol-oq-16);
+  border-radius: var(--kol-radius-sm);
+}
+/* the straight card is the first item and sits ON TOP; the turned ones sit behind it — stated in
+ * z-index, not left to DOM order (user 2026-09-23: *"you had it reversed"*) */
+.kol-selection-stack-card[data-depth="0"] { z-index: 3; }
+.kol-selection-stack-card[data-depth="1"] { z-index: 2; transform: rotate(-7deg) translate(-6%, 2%); }
+.kol-selection-stack-card[data-depth="2"] { z-index: 1; transform: rotate(6deg) translate(7%, 3%); }
+
 /* THE WALL'S THUMB — the same document, at tile scale. `KindPreview` renders a
  * real page; in a 44px row or a 230px card that is a wall of unreadable glyphs,
  * so the page is zoomed down and clipped and you read its SHAPE (a JSON tree, a
@@ -1302,7 +1516,10 @@
  * preview uses, one rung smaller. The children reset `zoom: 1` so it never
  * compounds. No forced ratio here either — the tile is the bound. */
 .kol-media-thumb .kol-doc-page {
-  zoom: 0.25;
+  /* THE TILE SETS IT (user 2026-09-23). `--kol-thumb-zoom` is box-width ÷ page-width, measured by
+   * the tile itself, so a document reads the same size in a 260px card and a 400px one. The 0.34
+   * fallback is the kind-overview's step, for a tile that never measured (SSR, no ResizeObserver). */
+  zoom: var(--kol-thumb-zoom, 0.34);
   height: 100%;
   width: 100%;
   padding: 12px;
@@ -1310,30 +1527,30 @@
   background: transparent;
   border-radius: 0;
 }
-.kol-media-thumb .kol-doc-page :is(.kol-prose, .kol-codeblock-wrapper, .kol-doc-frontmatter) { zoom: 1; }
+/* NO RESET HERE — this is what made a markdown tile render at READING size while its code
+ * siblings sat at a quarter: the child undid the page's zoom. The column preview keeps its reset
+ * (it zooms 0.5 and wants the prose legible); a tile wants the SHAPE, uniformly. */
 .kol-media-thumb .kol-prose,
 .kol-media-thumb .kol-codeblock-wrapper { max-width: none; }
 .kol-media-thumb > * { max-width: 100%; max-height: 100%; }
 
 .kol-column-browser-preview .kol-doc-page {
-  /* NO FORCED RATIO (user 2026-09-21: "it just fucking takes the aspect ratio of
-   * the file and displays that"). A preview is the file at its own shape,
-   * bounded by the pane — which is what every reference file manager does. The
-   * 3:5 above exists because the column preview once had no bound AT ALL and a
-   * 7 KB JSON drew a pane taller than the browser; the bound was the fix, the
-   * ratio was the overreach. A max-height bounds it without deciding a shape,
-   * so a short document ends where its content ends instead of leaving half a
-   * plate of dead grey. The overlay keeps 3:5 — that one IS a sheet. */
-  max-height: 100%;
-  height: auto;
-  overflow: auto;
-  zoom: 0.5;
-  background: transparent;
-  border-radius: 0;
+  /* THE PANE'S DOCUMENT BOX (user 2026-09-23, Finder's preview column: *"rtf .md .txt all have the
+   * same height … it looks square-ish … just add a vertical scroll"*). One box for text and code
+   * alike, the pane's width and as tall as it is wide, capped to the viewport; content from the
+   * top-left at the page's one inset, scrolling inside. Type steps down a notch (0.8) so a pane
+   * reads like Finder's rather than a page at full size. */
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  border-radius: var(--kol-radius-sm);
 }
-.kol-column-browser-preview .kol-doc-page :is(.kol-prose, .kol-codeblock-wrapper, .kol-doc-frontmatter) { zoom: 1; }
-/* documents start at the top of the column frame with a small inset, and scroll */
-.kol-column-browser-preview > div:first-child:has(.kol-doc-page) { align-items: flex-start; justify-content: flex-start; overflow: auto; }
+.kol-column-browser-preview .kol-doc-page > * { zoom: 0.8; }
+/* documents start at the top of the column frame, and scroll */
+.kol-column-browser-preview > div:first-child:has(.kol-doc-page) { align-items: flex-start; justify-content: flex-start; overflow: visible; max-height: none; }
 
 /* THE QUICKTIME BAR (PlaybackBarAndAudioSheet, kol-r2b2 2026-08-27 — ruled
  * against the reference). White glyphs on the frosted strip whatever the theme:
@@ -1355,6 +1572,14 @@
 .kol-playback-scrub::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 28px; margin-top: -13px; border-radius: 2px; background: var(--kol-color-ab-white); }
 .kol-playback-scrub::-moz-range-track { height: 2px; border-radius: 1px; background: color-mix(in srgb, var(--kol-color-ab-white) 40%, transparent); }
 .kol-playback-scrub::-moz-range-thumb { width: 4px; height: 28px; border: 0; border-radius: 2px; background: var(--kol-color-ab-white); }
+/* DOCKED (2026-09-23) — the bar in the Quick Look window's footer. It sits on the window, not on
+ * media, so it takes the theme's ink on an opaque plate instead of white on a dark wash. */
+.kol-playback-bar--docked { background: var(--kol-oq-08); color: var(--kol-oq-80); }
+.kol-playback-bar--docked .kol-icon-frame { color: var(--kol-oq-80); }
+.kol-playback-bar--docked .kol-playback-scrub::-webkit-slider-runnable-track { background: var(--kol-oq-24); }
+.kol-playback-bar--docked .kol-playback-scrub::-webkit-slider-thumb { background: var(--kol-oq-80); }
+.kol-playback-bar--docked .kol-playback-scrub::-moz-range-track { background: var(--kol-oq-24); }
+.kol-playback-bar--docked .kol-playback-scrub::-moz-range-thumb { background: var(--kol-oq-80); }
 
 /* ColumnBrowser rows — ONE SELECTED STATE (ColumnBrowserSeams, kol-r2b2
  * 2026-08-28; user: "ONLY one selected state can exist, not TWO"). The row's
@@ -1383,13 +1608,20 @@
  * correct together since. */
 .kol-column-browser-row:hover,
 .kol-column-browser-row.is-cursor { background-color: transparent; }
-.kol-column-browser-row.is-selected { background-color: var(--kol-fg-02); }
-.kol-column-browser-column:not(:has(~ .kol-column-browser-column .is-selected)) > .is-selected { background-color: var(--kol-fg-04); }
+/* ONE STEP BRIGHTER, AND OPAQUE (user 2026-09-23: *"maybe our higlight bg needs to be one step
+ * brihgter? just so its more clear whats higlighted"*). fg-02 / fg-04 were translucent and
+ * barely there; the trail is oq-04 and the current selection oq-08 — in the columns, the rows
+ * and the grid alike. */
+.kol-column-browser-row.is-selected { background-color: var(--kol-oq-04); }
+.kol-column-browser-column:not(:has(~ .kol-column-browser-column .is-selected)) > .is-selected,
+.kol-row-browser li.is-selected { background-color: var(--kol-oq-08); }
+/* the folder you are IN (rows): the trail tone, never the selected fill (user 2026-09-23) */
+.kol-row-browser li.is-current:not(.is-selected) { background-color: var(--kol-oq-04); }
 /* A DROP TARGET OUTRANKS SELECTION while something is over it (2026-09-21). It is transient and it
  * is the one thing you must see mid-drag — which folder is about to receive this. It sits AFTER the
  * two fills above and matches their specificity through the child combinator, so it wins the tie
  * rather than merely claiming to; written above them it lost to the deepest-column rule. */
-.kol-column-browser-column > .kol-column-browser-row[data-drop-over] { background-color: var(--kol-fg-08); }
+.kol-column-browser-column > .kol-column-browser-row[data-drop-over] { background-color: var(--kol-oq-16); }
 /* THE COLUMN ITSELF AS A TARGET — dropping anywhere in a column files the item into the folder
  * that column is showing. An inset ring rather than a fill: a fill over a list of rows reads as
  * every row being selected, which is the opposite of what is being said. */
@@ -1404,7 +1636,20 @@
  * box the pill is not. `.kol-column-browser-preview` is deliberately NOT in the
  * padding rule: it has no rows, and its own `p-4` is a Tailwind utility that
  * would out-rank this layer anyway. */
-.kol-column-browser-row { margin-inline: 4px; }
+/* ROWS ARE CONTROLS, NOT COPY (user 2026-09-22) — a drag across the list draws the marquee band,
+ * and a browser text-selection dragging out of it is the thing that looked broken. The NAME is
+ * still readable by the preview pane and the crumb line, both of which stay selectable. */
+.kol-column-browser-row { margin-inline: 4px; user-select: none; }
+
+/* A SELECTED RUN IS STILL ROWS (user 2026-09-22: "should there not be a little gap between
+ * selected items?"). Two adjacent fills merged into one slab, which reads as one thing. The 1px
+ * transparent bands are on EVERY row, not just the selected one, so selecting never moves the
+ * list; `padding-box` keeps the fill off them. */
+.kol-column-browser-row {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  background-clip: padding-box;
+}
 .kol-column-browser-column { padding-block: 4px; }
 .kol-column-browser-row.is-selected,
 .kol-column-browser-row.is-cursor { border-radius: var(--kol-radius-sm); }
@@ -1511,6 +1756,10 @@
   margin-inline: auto;
   padding: 24px;
 }
+/* …except a document: it is the page's content and starts at the page's own inset, top-left, like
+ * a code file beside it (user 2026-09-23). Without this the measure above centred markdown in
+ * Quick Look while JSON and YAML filled the window. */
+.kol-overlay .kol-doc-page .kol-prose { max-width: none; margin-inline: 0; padding: 0; }
 
 /* ─────────────────────────────────────────────────────────────────────
  * TONE — sunken (ControlToneSunken, kol-website 2026-08-28; was "inverse",
@@ -1882,10 +2131,13 @@
 
 /* ─── the families that keep their own plates ─── */
 .kol-view-toggle { background-color: var(--kol-tone-bg, var(--kol-surface-secondary)); }
+/* keyboard focus in the well wears the DS ring, not the browser's blue (a button regains focus when
+ * the search palette it opened closes, 2026-09-23) */
+.kol-view-toggle button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--kol-oq-24); }
 /* the sunken well's chip ladder (rest · +fg-04 hover · +fg-08 selected) — on the
  * element, or inherited from a sunken wrapper */
-:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) > button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
-:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) > button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
+:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
+:is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
 /* the open search shell — was `bg-fg-04` on the element, sunken by class */
 .kol-expand--open { background-color: var(--kol-tone-bg, var(--kol-fg-04)); }
 /* THE SEGMENTED STRIP, SUNKEN (segmented-toggle-sunken-tone, kol-client-olina
@@ -2025,3 +2277,44 @@
 /* THE ROW BROWSER — the folder list view. Same drop affordance as a column, for the same reason:
  * the list IS the folder you are in, so dropping anywhere on it files the item here. */
 .kol-row-browser[data-drop-over] { box-shadow: inset 0 0 0 2px var(--kol-fg-16); }
+
+/* SELECTED — one mark for a card and a row, whatever the variant (user 2026-09-23). `selected`
+ * used to tint a border, so on the variants that carry none — the file wall's — a selected tile
+ * was indistinguishable from the rest. A 2px inset ring in the same ink the list rows select with,
+ * drawn inside the radius so nothing reflows. Scoped to the CARD (2026-09-23): the bare
+ * `[role="button"][data-selected]` also matched the grid's MediaTile and boxed every selected tile
+ * in a square on top of its wash and pill. */
+.kol-card[data-selected],
+article[role="button"][data-selected] {
+  box-shadow: inset 0 0 0 2px var(--kol-fg-32);
+}
+/* FOCUS WEARS THE SAME RING (user 2026-09-23: the blue double border after Quick Look). Closing
+ * the overlay hands focus back to the card, and the browser drew its own outline around the
+ * selected ring. Keyboard focus keeps a visible mark — it is just the DS one. */
+.kol-card:focus-visible,
+article[role="button"]:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--kol-fg-32);
+}
+
+/* THE MARQUEE BAND (user 2026-09-22) — drawn by `useMarquee` inside a relative list. Ink only,
+ * never pointer-reactive: it is a picture of the drag, and the rows under it own the hit-testing. */
+.kol-marquee {
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--kol-fg-32);
+  background-color: var(--kol-fg-08);
+  border-radius: var(--kol-radius-sm);
+  z-index: 2;
+}
+
+/* ALTERNATING BANDS (user 2026-09-22, against Finder's list view). The row dividers went with the
+ * pill shape, and a long list needs SOMETHING to track a line across to its date and size. Finder
+ * bands every other row; so does this. `fg-02` is the faintest ink stop — it must read as texture,
+ * never as a state — and both real states outrank it: `is-selected` and a drop are excluded
+ * outright rather than left to specificity. Columns are NOT banded: a column is one folder, read
+ * top to bottom with nothing to the right of a name. */
+.kol-row-browser > li:nth-child(even):not(.is-selected):not([data-drop-over]) {
+  background-color: var(--kol-fg-02);
+  border-radius: var(--kol-radius-sm);
+}

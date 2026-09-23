@@ -68,11 +68,11 @@ export default function ExhibitSidebar({
               Back
             </button>
             <Link to={docHref()} className="shell-sidebar-action kol-mono-14 text-body">
-              <Icon name="book-open" size={14} />
+              <Icon name="book-open" size={14} className="text-oq-64" />
               All documentation
             </Link>
             <Link to={basePath} className="shell-sidebar-action kol-mono-14 text-body">
-              <Icon name="layout" size={14} />
+              <Icon name="layout" size={14} className="text-oq-64" />
               Workshop home
             </Link>
             <button

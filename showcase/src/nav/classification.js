@@ -120,7 +120,7 @@ export const FUNCTIONS_BY_NAME = {
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
   QuadrantSync: 'overlay',
-  Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media',
+  Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media', FileIcon: 'media', QuickLookFrame: 'media', MediaTile: 'media',
   EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
   MediaLibrary: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
