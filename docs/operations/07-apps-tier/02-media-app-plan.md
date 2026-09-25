@@ -89,11 +89,15 @@ Nothing here requires a published version, and nothing requires a change in kol-
 
 The file-management feature list in the ticket — tags, smart folders, drag to move, multi-select, context menus — is direction, not scope. It arrives iteratively, after the thing runs.
 
+## Touch next
+
+Split out of D1 on 2026-09-23 — a UI pass on the existing surface, no store behind it, so it goes first.
+
+Nothing this round was measured below 1400 wide. Long-press opens the context menu; on `pointer: coarse`, rows and tiles get a `···` button that opens the same menu; then a pass over all three views and Quick Look at 390 and 768.
+
 ## D1 next
 
 Carried from 2026-09-23, when the media surface (merge, previews, trash, keyboard) was finished. Personalisation on D1, and text editing, are next; these ride along.
 
-- **Page scroll — a preference, not a hardcode.** Today: `overscroll-behavior: none` on `html`/`body` (no rubber band), and the fill height carries 2px of slack (`COLUMN_HEIGHT = calc(100dvh - 212px)`) because the budget is exact to the pixel and fractional line heights pushed the page 1–2px past the viewport, which a trackpad found as a scroll bar. **`overflow: hidden` on the root was tried and reverted** — it stops panning when zoomed in. In the D1 session, expose it as a stored preference (lock page scroll on/off, per user) instead of a fixed CSS choice.
 - **Tags** — need a store R2/B2 objects do not have; D1 is that store. Not before it.
-- **Touch and breakpoints** — nothing this round was measured below 1400 wide. Long-press opens the context menu; on `pointer: coarse`, rows and tiles get a `···` button that opens the same menu; then a pass over all three views and Quick Look at 390 and 768.
 - **Editing files** — text editing over the fixture, with D1 holding the drafts.

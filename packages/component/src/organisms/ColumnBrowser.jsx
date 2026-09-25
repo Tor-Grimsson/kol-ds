@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import KindPreview, { KIND_GLYPH } from '../molecules/KindPreview.jsx'
 import FileIcon from '../atoms/FileIcon.jsx'
+import RowMenuButton from '../molecules/RowMenuButton.jsx'
 import { formatLength } from '../molecules/AudioPreview.jsx'
 import { kindOf as dsKindOf, KIND_LABEL as DS_KIND_LABEL } from '../utilities/mediaKinds.js'
 import useGrabEdge from '../hooks/useGrabEdge.js'
@@ -324,9 +325,9 @@ function Row({
         </span>
       ) : (
         <span className="w-5 shrink-0 flex items-center justify-center text-oq-48">
-          {/* a folder's mark is the only glyph a row carries now, so it is drawn at the box's
-              size rather than floating in it (user 2026-09-23) */}
-          <Icon name={icon} size={icon === 'folder' ? 18 : 14} />
+          {/* one glyph size for every row — a folder and a file side by side draw at the same size
+              (user 2026-09-25; the file glyph was 14 against the folder's 18) */}
+          <Icon name={icon} size={18} />
         </span>
       )}
 
@@ -342,6 +343,9 @@ function Row({
 
       {/* ZONE 4 */}
       {zones ? <span className="shrink-0 inline-flex justify-end" style={{ width: 20 }}>{trailing}</span> : trailing}
+      {/* on touch the row's menu has a face — see RowMenuButton; the negative margins keep the row's
+          height and inset what they were without it */}
+      <RowMenuButton onOpen={onContextMenu} className="-my-2 -mr-2" />
     </li>
   )
 }
@@ -807,11 +811,14 @@ export default function ColumnBrowser({
             {rows.filter((r) => r.kind !== 'empty').map((r) => {
               const isFolder = r.kind === 'folder'
               const o = r.o
+              const menu = onRowContextMenu && ((e) => onRowContextMenu(e, isFolder ? { type: 'folder', path: r.level + r.name } : { type: 'file', path: o.key, o }))
               return (
+                /* the wrapper exists so the `···` is a SIBLING of the tile, not a button inside one */
+                <div key={r.key} className="relative min-w-0">
                 <button
-                  key={r.key}
                   type="button"
-                  className={`kol-column-browser-tile${!isFolder && shown?.key === o.key ? ' is-selected' : ''}`}
+                  className={`kol-column-browser-tile w-full${!isFolder && shown?.key === o.key ? ' is-selected' : ''}`}
+                  onContextMenu={menu}
                   onClick={() => {
                     if (isFolder) { onPrefix(r.level + r.name); return }
                     const files = itemsAt(r.level ?? '').filter((it) => it.type === 'file').map((it) => it.o)
@@ -830,6 +837,8 @@ export default function ColumnBrowser({
                     {isFolder ? folderMeta?.(r.level + r.name, 'grid') : (o.size != null ? formatSize(o.size) : '')}
                   </span>
                 </button>
+                <RowMenuButton variant="grey" onOpen={menu} className="absolute top-1 right-1" />
+                </div>
               )
             })}
           </div>
@@ -858,6 +867,9 @@ export default function ColumnBrowser({
                  * level; past the indent cap it has nothing left to offer, so
                  * the row is the only way down */
                 onDisclose={r.depth < INDENT_CAP ? () => toggleExpanded(r.key) : undefined}
+                /* THE ROW'S OWN MENU. Only the <ul> carried one, so a menu opened on a phone row
+                 * targeted the LEVEL — the rename and delete the row was asking for were not there. */
+                onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'folder', path: r.level + r.name }))}
                 onClick={() => onPrefix(r.level + r.name)}
               />
             ) : (
@@ -870,6 +882,7 @@ export default function ColumnBrowser({
                 indent={r.depth}
                 meta={metaOf(r.o)}
                 active={shown?.key === r.o.key}
+                onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'file', path: r.o.key, o: r.o }))}
                 /* A FILE IS A PUSH, NOT A PREVIEW PANE (item 6): there is no
                  * column for the preview to sit beside at this width, so the
                  * tap opens the full-screen inspector the consumer already
@@ -957,7 +970,7 @@ export default function ColumnBrowser({
                 active={f === activeFolder || isPicked(level + f)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === i}
                 trailing={<Icon name="chevron-right" size={12} className="text-oq-32" />}
-                onContextMenu={(e) => onRowContextMenu?.(e, { type: 'folder', path: level + f })}
+                onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'folder', path: level + f }))}
                 drop={dragFor?.(level + f)}
                 dropFiles={onDropFiles ? (list) => onDropFiles(list, level + f) : undefined}
                 onClick={(e) => { if (onSelectClick?.(level + f, e, colKeys)) return; setCursor({ col: k, idx: i }); setCursorActive(true); rootRef.current?.focus(); pick(null); onPrefix(level + f) }}
@@ -971,7 +984,7 @@ export default function ColumnBrowser({
                 markKey={o.key}
                 active={shown?.key === o.key || isPicked(o.key)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === folders.length + i}
-                onContextMenu={(e) => onRowContextMenu?.(e, { type: 'file', path: o.key, o })}
+                onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'file', path: o.key, o }))}
                 drop={dragFor?.(o.key)}
                 onClick={(e) => { if (onSelectClick?.(o.key, e, colKeys)) return; setCursor({ col: k, idx: folders.length + i }); setCursorActive(true); rootRef.current?.focus(); pickFile(level, o) }}
               />

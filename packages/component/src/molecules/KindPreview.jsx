@@ -182,11 +182,16 @@ export default function KindPreview({
   if (kind === 'video') return <VideoTile src={url} poster={poster} />
   if (kind === 'audio') return <AudioTile src={url} fallback={icon} />
   if (isText) {
+    /* A THUMBNAIL IS A PICTURE of the document, not the document: a README's links stayed live
+     * inside a grid tile, and tapping the tile navigated the app away. `inert` takes the whole page
+     * out of hit-testing and the tab order, so the tap lands on the tile. The pane and the sheet
+     * are for reading, and keep their links. */
+    const picture = (node) => (fit === 'tile' || fit === 'thumb' ? <div inert className="contents">{node}</div> : node)
     if (loading) return <span className="kol-mono-12 text-meta">Loading…</span>
     if (error) return <span className="kol-mono-12 text-ui-error">Couldn’t load: {error}</span>
     if (kind === 'markdown') {
       const meta = parseFrontmatter(text)
-      return (
+      return picture(
         <DocPage frontmatter={Object.keys(meta).length ? meta : null}>
           <div className="kol-prose" dangerouslySetInnerHTML={{ __html: markdownToHtml(text) }} />
           {truncated && <p className="kol-mono-12 text-meta">truncated at {textLimit / 1024} KB</p>}
@@ -194,7 +199,7 @@ export default function KindPreview({
       )
     }
     const language = kind === 'json' ? 'json' : kind === 'yaml' ? 'yaml' : LANG[ext] || 'text'
-    return (
+    return picture(
       <DocPage>
         <CodeBlock code={text} language={language} filename={name} copy={false} />
         {truncated && <p className="kol-mono-12 text-meta">truncated at {textLimit / 1024} KB</p>}

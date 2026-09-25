@@ -72,7 +72,10 @@ export default function ContextMenu({ menu, children, className = '' }) {
       {/* Any click inside closes — a menu item that leaves the menu open after
         * acting is the one interaction people report as broken. Items keep their
         * own onClick; this runs after it on the way up. */}
-      <div onClick={menu.close} role="none">
+      {/* A COLUMN, not a block: the items are `inline-flex`, so in a block they are one line of
+        * inline boxes to the float's shrink-to-fit, and the menu took the width of every label
+        * side by side — 510px for seven short verbs, past the edge of a phone. */}
+      <div onClick={menu.close} role="none" className="flex flex-col">
         {typeof children === 'function' ? children(menu.payload) : children}
       </div>
     </PopoverPanel>

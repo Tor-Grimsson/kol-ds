@@ -1435,8 +1435,11 @@
   border-radius: var(--kol-radius-md);
   overflow: hidden;
 }
+/* A PREVIEW FITS THE BOX, it is not merely capped by it (user 2026-09-24: a 24px favicon.svg drew
+ * at 24px in a 190px tile). `max-*` only ever shrank; Finder fits every preview to the tile, large
+ * or small, keeping its proportions. */
 .kol-media-tile-thumb > img,
-.kol-media-tile-thumb > video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--kol-radius-sm); }
+.kol-media-tile-thumb > video { width: 100%; height: 100%; object-fit: contain; border-radius: var(--kol-radius-sm); }
 .kol-media-tile-thumb > .kol-media-thumb { border-radius: var(--kol-radius-sm); }
 .kol-media-tile-name {
   max-width: 100%;
@@ -1522,7 +1525,10 @@
   zoom: var(--kol-thumb-zoom, 0.34);
   height: 100%;
   width: 100%;
-  padding: 12px;
+  /* THE PAGE KEEPS ITS MARGIN AT TILE SCALE (user 2026-09-24: text ran to the tile's edge while the
+   * pane's preview has margins). This padding is in PAGE space and the page is zoomed to ~0.2, so
+   * 12px drew as 2px; 40px lands at ~5.5% of the tile — the pane's 16px, proportionally. */
+  padding: 40px;
   overflow: hidden;
   background: transparent;
   border-radius: 0;

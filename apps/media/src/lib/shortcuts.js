@@ -27,8 +27,8 @@ export const SHORTCUTS = [
     items: [
       { id: 'arrows', label: 'Move the selection', combo: '↑ ↓ ← → — in every view' },
       { id: 'expand', label: 'Rows: expand / collapse a folder', combo: '→ / ←' },
-      { id: 'parent', label: 'Enclosing folder', combo: '⌘↑' },
-      { id: 'open', label: 'Open — a folder, or Quick Look on a file', combo: '⌘↓ or double-click' },
+      { id: 'parent', label: 'Enclosing folder', combo: '⌘↑ or ⇧Enter' },
+      { id: 'open', label: 'Open — a folder, or Quick Look on a file', combo: '⌘↓ or double-click · Enter opens a folder' },
       { id: 'crumb', label: 'Copy the path', combo: 'Click the current crumb' },
     ],
   },

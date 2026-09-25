@@ -1,4 +1,5 @@
-/* taxonomy-ok: molecule — lays out a caller's preview node and a name; no DS parts of its own. */
+/* taxonomy-ok: molecule — lays out a caller's preview node and a name; its one DS part is the touch `···`. */
+import RowMenuButton from './RowMenuButton.jsx'
 
 /**
  * MediaTile — one file in the grid view, Finder's icon view (user 2026-09-23: *"skip the container
@@ -18,12 +19,17 @@
  */
 export default function MediaTile({ preview, name, selected = false, markKey, onClick, onDoubleClick, onContextMenu, className = '' }) {
   return (
-    <div className={`kol-media-tile-item ${className}`.trim()} data-selected={selected || undefined} data-marquee-key={markKey}
+    <div className={`kol-media-tile-item relative ${className}`.trim()} data-selected={selected || undefined} data-marquee-key={markKey}
       role="button" tabIndex={0} aria-pressed={selected}
-      onClick={onClick} onDoubleClick={onDoubleClick} onContextMenu={onContextMenu}
+      /* THE SECOND CLICK OPENS (kol-client-olina 2026-09-23: double-click on a folder tile did nothing).
+       * The browser counted the double click (`detail: 2`) and never fired `dblclick` on a folder tile,
+       * so the open hung off an event that did not arrive. The click's own count is the signal. */
+      onClick={(e) => { if (e.detail === 2 && onDoubleClick) { onDoubleClick(e); return } onClick?.(e) }}
+      onContextMenu={onContextMenu}
       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onDoubleClick?.(e) } }}>
       <div className="kol-media-tile-thumb">{preview}</div>
       <span className="kol-media-tile-name">{name}</span>
+      <RowMenuButton variant="grey" onOpen={onContextMenu} className="absolute top-1 right-1" />
     </div>
   )
 }

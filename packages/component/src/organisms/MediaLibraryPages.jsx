@@ -12,6 +12,7 @@ import ViewToggle from '../atoms/ViewToggle.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import ContentCard from '../molecules/ContentCard.jsx'
 import MediaTile from '../molecules/MediaTile.jsx'
+import RowMenuButton from '../molecules/RowMenuButton.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import SortControls from '../molecules/SortControls.jsx'
 import SearchInput from '../molecules/SearchInput.jsx'
@@ -20,6 +21,8 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/Me
 import { Tooltip } from '../utilities/Popover.jsx'
 import ContextMenu, { useContextMenu } from '../utilities/ContextMenu.jsx'
 import useMarquee from '../hooks/useMarquee.js'
+import useLongPress from '../hooks/useLongPress.js'
+import useMediaQuery from '../hooks/useMediaQuery.js'
 import KindPreview from '../molecules/KindPreview.jsx'
 import AudioSheet from '../molecules/AudioSheet.jsx'
 import VideoSheet from '../molecules/VideoSheet.jsx'
@@ -206,7 +209,7 @@ function ImageFrame({ src }) {
 /* `depth` indents a row under the folder it was expanded from; `expanded`/`onToggle` draw the
  * disclosure twisty. A folder row without `onToggle` keeps the old behaviour exactly — one chevron
  * that navigates — so nothing that already renders these moves. */
-function FolderRow({ name, onClick, onDoubleClick, depth = 0, expanded, onToggle, meta, cols, onContextMenu, drag, dropFiles, selected, current, markKey }) {
+function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, expanded, onToggle, meta, cols, onContextMenu, drag, dropFiles, selected, current, markKey }) {
   const [over, setOver] = useState(false)
   /* A FOLDER IS A DROP TARGET. `drag` carries the page's move verb and the path this row is; the
    * row highlights only while something is actually over it, so an accidental hover reads as
@@ -243,7 +246,7 @@ function FolderRow({ name, onClick, onDoubleClick, depth = 0, expanded, onToggle
       {/* THE FOLDER GLYPH IS THE ONE ICON LEFT, so it fills its box (user 2026-09-23: *"only folder
           should use icon, and it should be bigger"*). Every other kind now renders its own bytes. */}
       <span data-hit {...hitDrag} className="kol-row-hit flex items-center gap-3 min-w-0">
-        <span className="w-8 h-8 shrink-0 flex items-center justify-center text-oq-48"><Icon name="folder" size={26} /></span>
+        <span className="w-8 h-8 shrink-0 flex items-center justify-center text-oq-48"><Icon name={icon} size={26} /></span>
         {/* NO TRAILING SLASH (user 2026-09-22). `partition` hands folders back as `audio/` because a
             slash is what marks one in a flat key space; that is storage's spelling, not a label, and
             `ColumnBrowser` has always stripped it. The glyph says "folder". */}
@@ -257,6 +260,7 @@ function FolderRow({ name, onClick, onDoubleClick, depth = 0, expanded, onToggle
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{meta}</span>
         <span className="kol-mono-12 text-fg-24 shrink-0 truncate" style={{ width: cols.size }}>—</span>
       </>}
+      <RowMenuButton onOpen={onContextMenu} className="-my-1 -mr-1" />
     </li>
   )
 }
@@ -322,7 +326,8 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
       {/* the hit — icon and name, as in the folder row above */}
       <span data-hit {...dragProps} className="kol-row-hit flex items-center gap-3 min-w-0">
         <span className="w-8 h-8 shrink-0 flex items-center justify-center text-oq-48 overflow-hidden rounded">
-          {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={18} />}
+          {/* a file with no thumbnail draws its glyph at the FOLDER's size — one icon column (user 2026-09-25) */}
+          {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={26} />}
         </span>
         <span className="kol-mono-12 min-w-0 truncate text-fg-default">{o.displayKey ?? o.key.split('/').pop()}</span>
       </span>
@@ -331,6 +336,7 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{formatDate?.(o.uploaded)}</span>
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.size }}>{formatSize(o.size)}</span>
       </>}
+      <RowMenuButton onOpen={onContextMenu} className="-my-1 -mr-1" />
     </li>
   )
 }
@@ -349,12 +355,21 @@ function FolderPreview({ path, objects, width, formatDate }) {
     ['Size', formatSize(bytes)],
     ...(last ? [['Newest', formatDate(last) || '—']] : []),
   ]
+  return <ContainerPreview name={path.replace(/\/$/, '').split('/').pop()} icon="folder" facts={facts} width={width} />
+}
+
+/* ONE PREVIEW FOR EVERYTHING THAT HOLDS THINGS — a folder, a bucket, the title (user 2026-09-25:
+ * selecting a bucket or MEDIA left the pane empty). The glyph, the name, the facts; only the
+ * glyph and the facts differ. */
+function ContainerPreview({ name, icon, facts, width }) {
   return (
     <div className="kol-column-browser-preview shrink-0 overflow-y-auto p-4 flex flex-col gap-4" style={{ width }}>
-      <div className="w-full aspect-square bg-oq-04 rounded flex items-center justify-center">
-        <Icon name="folder" size={64} className="text-oq-48" />
+      {/* the folder fills its box with the tile's inset (user 2026-09-24: a 64px glyph floated in
+          a 300px square while the grid's folder tile fills its own) */}
+      <div className="w-full aspect-square bg-oq-04 rounded flex items-center justify-center p-[5%]">
+        <Icon name={icon} size="100%" className="text-oq-48" />
       </div>
-      <p className="kol-mono-12 text-fg-default break-all">{path.replace(/\/$/, '').split('/').pop()}</p>
+      <p className="kol-mono-12 text-fg-default break-all">{name}</p>
       <dl className="flex flex-col gap-1">
         {facts.map(([k, v]) => (
           <div key={k} className="flex justify-between gap-4 kol-mono-12">
@@ -469,7 +484,7 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
   const [size, setSize] = useState(null)
   const shownDims = dims && dims.key === o?.key ? dims : null
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'ArrowLeft') onPrev(); if (e.key === 'ArrowRight') onNext() }
+    const onKey = (e) => { if (e.shiftKey) return; if (e.key === 'ArrowLeft') onPrev(); if (e.key === 'ArrowRight') onNext() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onPrev, onNext])
@@ -512,7 +527,12 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
     <FullscreenOverlay open onClose={onClose} closeButton={false} scrim>
       {isImage(o.contentType) ? (
         <QuickLookFrame {...frame}>
-          <img src={mediaUrl(o.key)} alt={o.displayKey} className="kol-quicklook-media" onLoad={(e) => setDims({ key: o.key, w: e.target.naturalWidth, h: e.target.naturalHeight })} />
+          {/* A VECTOR HAS NO PIXEL SIZE (user 2026-09-24: a 32px logo.svg opened as a 32px window). It
+            * is drawn in a 640 box — the window's max if that is smaller — and contained in it. */}
+          <img src={mediaUrl(o.key)} alt={o.displayKey}
+            className="kol-quicklook-media"
+            style={extOf(o.key) === 'svg' || o.contentType === 'image/svg+xml' ? { width: 'min(var(--kol-ql-max-w), 640px)', height: 'min(var(--kol-ql-media-h), 640px)' } : undefined}
+            onLoad={(e) => setDims({ key: o.key, w: e.target.naturalWidth, h: e.target.naturalHeight })} />
         </QuickLookFrame>
       ) : isVideo(o.contentType) ? (
         <VideoSheet key={o.key} src={mediaUrl(o.key)} poster={poster ? mediaUrl(poster) : undefined} onMeta={(m) => setDims({ key: o.key, ...m })} frame={frame} />
@@ -850,7 +870,7 @@ export function MediaLibraryBrowse({
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
-  const setPrefix = (v) => { if (prefixProp == null) setOwnPrefix(v); onPrefix?.(v) }
+  const setPrefix = (v) => { if (v) setAppRoot(false); if (prefixProp == null) setOwnPrefix(v); onPrefix?.(v) }
   const [appRoot, setAppRoot] = useState(false)
   const [ownBucket, setOwnBucket] = useState(bucket)
   const bucketId = bucket ?? ownBucket
@@ -864,8 +884,22 @@ export function MediaLibraryBrowse({
    * opens (user 2026-09-22, Finder's behaviour — "clicking shouldnt automatically open it"). The
    * chevron still expands in place, which is the third thing and always was. */
   const [pickedFolder, setPickedFolder] = useState(null)
-  const pickFile = (o) => { setPickedFolder(null); setPickedFile(o) }
-  const pickFolder = (path) => { setPickedFile(null); setPickedFolder(path) }
+  const pickFile = (o) => { setAppRoot(false); setPickedFolder(null); setPickedFile(o) }
+  const pickFolder = (path) => { setAppRoot(false); setPickedFile(null); setPickedFolder(path) }
+  /* AT THE TITLE ROOT IS DERIVED, NOT STORED (kol-client-olina 2026-09-23: rows and grid picked a
+   * file under `brand/logos/` and the crumb still read the title alone). `appRoot` was a second
+   * source of truth for the location, and only the columns ever cleared it. A path or a pick lives
+   * inside a bucket, so either one means you are not at the title — a stale flag can no longer
+   * hide where you are. Everything below reads this, never `appRoot`. */
+  const atTitleRoot = appRoot && !prefix && !pickedFile && !pickedFolder
+  /* ABOVE THE TITLE (user 2026-09-24: *"this is not the top root folder … in column view I can see
+   * the root MEDIA"*). Column 0 is a level whose one item is the title; rows and grid had no such
+   * level, so the bucket list was their top and the title never appeared as a thing. `appRoot` is
+   * `'top'` there — the same state, one level higher, derived the same way. */
+  const atTop = atTitleRoot && appRoot === 'top'
+  /* a BUCKET is a folder with another icon: a click highlights it, a double-click opens it */
+  const [pickedBucket, setPickedBucket] = useState(null)
+  const ROOT_KEY = '\u0000title'
   /* IN THE ROWS, WHAT YOU PICK SETS WHERE YOU ARE (user 2026-09-23: *"that files folder becomes the
    * default NOT the previous folder"*). The list is rooted at the top, so a pick can sit in any open
    * folder; the current folder follows it to the pick's parent. Whatever the old path had open
@@ -931,6 +965,8 @@ export function MediaLibraryBrowse({
    * that does not gets the native ones, exactly as before (kol-client-olina 2026-09-22: the
    * browser's own grey prompt box was the last non-DS surface on media.olina-productions.com). */
   const menu = useContextMenu()
+  /* touch has no right button: a held press on a row or tile opens the same menu (useLongPress) */
+  const press = useLongPress()
   const modal = useModal()
   const canWrite = !!fileActions && writable
   const [busyAction, setBusyAction] = useState(false)
@@ -1119,7 +1155,33 @@ export function MediaLibraryBrowse({
   }
   /* stepping into a folder drops the pick — the preview would otherwise describe something no
    * longer in the list */
-  const goFolder = (path) => { setPickedFile(null); setPickedFolder(null); setPrefix(path) }
+  /* GOING UP SELECTS THE FOLDER YOU CAME FROM (user 2026-09-24: back from `01-shoots` landed on
+   * `img/` with nothing selected and an empty preview — every file manager lights the child you
+   * left). One rule for every way up — ⌘↑ and the crumbs both come through here. */
+  const goFolder = (path) => {
+    const child = path !== prefix && prefix.startsWith(path) ? `${path}${prefix.slice(path.length).split('/')[0]}/` : null
+    setPickedFile(null); setPickedFolder(null); setPrefix(path)
+    if (child) { setRowSelection(new Set([child])); setPickedFolder(child); selectAnchorRef.current = child; selectCursorRef.current = null }
+  }
+  /* ONE "GO UP" FOR ALL THREE VIEWS (kol-client-olina 2026-09-23: *"3 different stops for 3
+   * modes … they should all go all the way to the shared root folder"*): parent folder → … → the
+   * bucket's top → the title root, which is what `onHome` does. With one bucket and no
+   * `bucketLevel` there is no level above the bucket's top, so that is where it ends. Columns walk
+   * the same path with ArrowLeft. */
+  const goUp = () => {
+    if (prefix) { goFolder(dirOf(prefix)); return }
+    if (!single && !atTitleRoot) goTitleRoot()
+    else if (!single && !atTop) goTop()
+  }
+  /* THE TITLE ROOT CLEARS EVERYTHING that would say you are somewhere else — a pick, a selection —
+   * or the derivation above reads you as still inside the bucket */
+  const goTop = () => { setAppRoot('top'); setPickedFile(null); setPickedFolder(null); setRowSelection(new Set()); setPickedBucket(ROOT_KEY); setPrefix('') }
+  const goTitleRoot = () => { setAppRoot(true); setPickedFile(null); setPickedFolder(null); setPickedBucket(atTitleRoot ? null : (bucketMeta.id ?? bucketMeta.label)); setRowSelection(new Set()); setPrefix('') }
+  /* opening a bucket from the title root, the step the columns' column 1 is */
+  const openBucket = (b) => {
+    setAppRoot(false); setPickedFile(null); setPickedFolder(null); setPickedBucket(null); setRowSelection(new Set())
+    if (b.id != null && b.id !== bucketMeta.id) switchBucket(b.id, ''); else setPrefix('')
+  }
   /* SPACE IS QUICK LOOK IN EVERY VIEW (user 2026-09-23: *"spacebar preview only works in column,
    * fix that. CONSISTENCY"*). `ColumnBrowser` has owned that key since it shipped, so the columns
    * had it and the two views built later did not. The target is whatever is picked — the previewed
@@ -1169,6 +1231,8 @@ export function MediaLibraryBrowse({
   }
   const spaceQuickLook = () => {
     const key = pickedFile?.key ?? pickedFolder ?? (rowSelection.size === 1 ? [...rowSelection][0] : null)
+    /* a picked bucket or the title Quick-Looks like any folder (user 2026-09-25) */
+    if (!key && previewRoot) { setQuickLookFolder(ROOT_KEY); return }
     if (!key) return
     /* A FOLDER QUICK-LOOKS TOO (user 2026-09-23: *"anything can be quick viewed, also folders"*) —
      * the same pane the preview column draws, at overlay size. */
@@ -1196,7 +1260,14 @@ export function MediaLibraryBrowse({
   const gridOrderRef = useRef([])
   const arrowNav = (e) => {
     if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return false
-    if (view === 'columns' || quickLook || quickLookFolder || searchOpen) return false
+    /* ⇧+ARROWS KEEP SELECTING UNDER QUICK LOOK (user 2026-09-24), Finder's: the selection grows
+     * underneath and the window pages through it */
+    if (view === 'columns' || (quickLook && !e.shiftKey) || quickLookFolder || searchOpen) return false
+    if (atTitleRoot && !single) {
+      if (e.metaKey && e.key === 'ArrowUp') goUp()
+      else if (e.metaKey && e.key === 'ArrowDown') { if (atTop) goTitleRoot(); else openBucket(bucketList.find((b) => (b.id ?? b.label) === pickedBucket) ?? bucketMeta) }
+      return true
+    }
     const cur = selectCursorRef.current ?? selectAnchorRef.current ?? [...rowSelection].pop() ?? null
     /* ⇧ + ARROW EXTENDS (user 2026-09-23: *"shift up down or left right … should also make
      * selection"*): the anchor stays where the run began, the cursor moves, and the selection is
@@ -1220,19 +1291,32 @@ export function MediaLibraryBrowse({
       if (el?.tabIndex >= 0) el.focus({ preventScroll: true })
     }
     if (view === 'grid') {
-      const list = gridOrderRef.current
-      if (!list.length) return true
-      if (e.metaKey && e.key === 'ArrowUp') { if (prefix) goFolder(dirOf(prefix)); return true }
-      const i = list.findIndex((f) => f.key === cur)
-      if (e.metaKey && e.key === 'ArrowDown') { if (i !== -1) openQuickLook({ files: list, index: i }); return true }
+      /* BEFORE the empty-list bail-out: a folder that holds only subfolders has an empty wall, and
+       * ⌘↑ was swallowed there */
+      if (e.metaKey && e.key === 'ArrowUp') { goUp(); return true }
+      /* THE ARROWS WALK WHAT IS DRAWN (user 2026-09-24: they skipped every folder tile) — the
+       * folders, then the files, in the order on screen. The list was the files alone, from before
+       * the grid drew folders. */
+      const files = gridOrderRef.current
+      const items = [...(settings.flat ? [] : folders.map((f) => ({ key: prefix + f, folder: true }))), ...files.map((o) => ({ key: o.key, o }))]
+      if (!items.length) return true
+      const i = items.findIndex((it) => it.key === cur)
+      if (e.metaKey && e.key === 'ArrowDown') {
+        const it = items[i]
+        if (it?.folder) goFolder(it.key)
+        else if (it) openQuickLook({ files, index: Math.max(0, files.findIndex((f) => f.key === it.key)) })
+        return true
+      }
       const box = gridMarquee.ref.current
-      const cols = box ? getComputedStyle(box).gridTemplateColumns.split(' ').filter(Boolean).length : 1
+      /* the band lives on the pane now; the column count is the tile grid's, inside it */
+      const tiles = box?.querySelector('.grid')
+      const cols = tiles ? getComputedStyle(tiles).gridTemplateColumns.split(' ').filter(Boolean).length : 1
       const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -cols, ArrowDown: cols }[e.key]
-      const o = list[i === -1 ? 0 : Math.max(0, Math.min(list.length - 1, i + step))]
-      if (e.shiftKey && extend(list.map((f) => f.key), o.key)) { reveal(box, o.key); return true }
-      setRowSelection(new Set([o.key])); selectAnchorRef.current = o.key; selectCursorRef.current = null
-      setPickedFolder(null); setPickedFile(o)
-      reveal(box, o.key)
+      const it = items[i === -1 ? 0 : Math.max(0, Math.min(items.length - 1, i + step))]
+      if (e.shiftKey && extend(items.map((x) => x.key), it.key)) { reveal(box, it.key); return true }
+      setRowSelection(new Set([it.key])); selectAnchorRef.current = it.key; selectCursorRef.current = null
+      if (it.folder) { setPickedFile(null); setPickedFolder(it.key) } else { setPickedFolder(null); setPickedFile(it.o) }
+      reveal(box, it.key)
       return true
     }
     if (view === 'rows') {
@@ -1246,7 +1330,7 @@ export function MediaLibraryBrowse({
       }
       const isFolder = cur?.endsWith('/')
       const open = isFolder && rowsExpanded.has(cur)
-      if (e.metaKey && e.key === 'ArrowUp') { const up = cur ? dirOf(cur) : dirOf(prefix); if (up) select(up); return true }
+      if (e.metaKey && e.key === 'ArrowUp') { const up = cur ? dirOf(cur) : dirOf(prefix); if (up) select(up); else goUp(); return true }
       if (e.metaKey && e.key === 'ArrowDown') {
         if (!cur) return true
         if (isFolder) goFolder(cur)
@@ -1280,6 +1364,18 @@ export function MediaLibraryBrowse({
       if (e.key === '/' && !e.metaKey && !e.ctrlKey) { e.preventDefault(); setSearchOpen(true) }
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); setSearchOpen(true) }
       if (arrowNav(e)) { e.preventDefault(); return }
+      /* ENTER OPENS THE SELECTED FOLDER, ⇧ENTER GOES TO THE PARENT (user 2026-09-24). The same
+       * two moves as a double-click and ⌘↑, so the child you leave is still the one selected.
+       * A focused tile has already opened itself on Enter (it calls preventDefault). */
+      if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.defaultPrevented && !quickLook && !quickLookFolder && !searchOpen) {
+        if (e.shiftKey) { e.preventDefault(); goUp(); return }
+        if (view !== 'columns') {
+          const root = rootItems.find((it) => it.key === pickedBucket)
+          const sel = rowSelection.size === 1 ? [...rowSelection][0] : pickedFolder
+          if (root) { e.preventDefault(); root.open(); return }
+          if (sel?.endsWith('/')) { e.preventDefault(); goFolder(sel); return }
+        }
+      }
       /* the columns keep their own space handler — theirs knows the column's cursor */
       if (e.key === ' ' && view !== 'columns' && !searchOpen) {
         e.preventDefault()
@@ -1294,6 +1390,16 @@ export function MediaLibraryBrowse({
 
   const [quickLook, setQuickLook] = useState(null)
   const [quickLookFolder, setQuickLookFolder] = useState(null)
+  /* …and the open window takes the new selection as its set, on the file the cursor reached */
+  useEffect(() => {
+    if (!quickLook || rowSelection.size < 2) return
+    const order = view === 'grid' ? gridOrderRef.current : sortedObjects
+    const files = order.filter((o) => rowSelection.has(o.key) && !o.key.endsWith('/'))
+    if (files.length < 2) return
+    if (files.length === quickLook.files.length && files.every((f, i) => f.key === quickLook.files[i].key)) return
+    const at = files.findIndex((f) => f.key === selectCursorRef.current)
+    setQuickLook({ files, index: at === -1 ? 0 : at })
+  }, [rowSelection]) // eslint-disable-line react-hooks/exhaustive-deps
   const columnsRef = useRef(null)
   /* `flat` IS THE WALL'S, NOT THIS PAGE'S (user 2026-09-22: "there is no option to switch to flat
    * mode, bc its not in files view. this is row mode.. this makes no sense"). It reached here from
@@ -1306,6 +1412,10 @@ export function MediaLibraryBrowse({
   const view = stored === 'list' ? 'rows' : stored
   const isWall = view === 'grid'
   const folderView = view === 'rows' ? 'rows' : 'columns'
+  /* BELOW `md` BOTH TREE VIEWS ARE THE PHONE LIST. `ColumnBrowser` already forks to its one-level
+   * stack there; the row view had no phone form and drew the desktop list and its preview pane
+   * squeezed into 390 — 35px of rows with no names. Same query, same breakpoint as the columns. */
+  const phone = useMediaQuery('(max-width: 767px)')
   const setView = (v) => {
     onViewChange?.(v)
     setSettings({
@@ -1324,6 +1434,14 @@ export function MediaLibraryBrowse({
   const previewWidth = settings.columnWidths?.preview ?? 320
   const previewFile = pickedFile && pickedFile.key.startsWith(prefix) ? pickedFile : null
   const previewFolder = pickedFolder && pickedFolder.startsWith(prefix) ? pickedFolder : null
+  /* a bucket's totals come from `folderTree` when the consumer passes one; the open bucket can
+   * always count its own listing */
+  const bucketTotals = (id) => {
+    const t = folderTree?.[id]
+    if (t && t.files != null) return { files: t.files, bytes: t.bytes ?? 0 }
+    if (id === bucketMeta.id) return { files: objects.length, bytes: objects.reduce((n, o) => n + (o.size || 0), 0) }
+    return null
+  }
   /* THE PREVIEW PANE, ONE FUNCTION FOR THE ROWS AND THE GRID (user 2026-09-23: *"why did you not
    * treat this like column and row, with container padding + preview pane? CONSISTENCY"*). Several
    * selected → the stack; a file → its preview; a folder → its summary; nothing → the reserved
@@ -1341,6 +1459,8 @@ export function MediaLibraryBrowse({
         }} />
     ) : previewFolder ? (
       <FolderPreview key={previewFolder} path={previewFolder} objects={objects} width={previewWidth} formatDate={formatDate} />
+    ) : previewRoot ? (
+      <ContainerPreview key={previewRoot.key} name={previewRoot.name} icon={previewRoot.icon} facts={previewRoot.facts} width={previewWidth} />
     ) : (
       <div className="kol-column-browser-preview shrink-0" style={{ width: previewWidth }} />
     )
@@ -1427,14 +1547,14 @@ export function MediaLibraryBrowse({
     if (!root) return undefined
     const id = requestAnimationFrame(() => root.scrollTo({ left: root.scrollWidth, behavior: 'smooth' }))
     return () => cancelAnimationFrame(id)
-  }, [folderView, prefix, appRoot, pickedFile, bucketMeta.id])
+  }, [folderView, prefix, atTitleRoot, pickedFile, bucketMeta.id])
 
   if (error) return <p className="kol-mono-12 text-ui-error">Error: {error}</p>
   /* NOT SELECTABLE (user 2026-09-23, superseding 2026-09-22's selectable crumbs: *"instead of this
    * highlight, could we make a hover click to copy path?"*). A drag across the line painted the
    * browser's selection block over it; the path is one click on the current crumb now. */
   const crumbCls = (active) => `cursor-pointer select-none transition-colors ${active ? 'text-oq-96' : 'text-oq-48 hover:text-oq-64'}`
-  const fullPath = (tail = '') => [ROOT, ...(appRoot ? [] : [label, ...crumbs]), ...(tail ? [tail] : [])].join('/')
+  const fullPath = (tail = '') => [ROOT, ...(atTitleRoot ? [] : [label, ...crumbs]), ...(tail ? [tail] : [])].join('/')
 
   /* ── THE WALL'S LIST, on the same surface (2026-09-22) ──────────────────────────────────────
    * `flat` belongs to the FILE views and not to the tree (that ruling stands): a wall shows the
@@ -1459,20 +1579,48 @@ export function MediaLibraryBrowse({
    * key space, or the subset the filter bar left standing. `wallPane` is the same two file views
    * the Files page rendered, in a pane of the browser's own height so the page does not jump
    * between views. */
+  /* AT THE TITLE ROOT, ROWS AND GRID LIST THE BUCKETS (same ticket: they listed the bucket's
+   * folders under a crumb that named the title). One row / tile per bucket; a click opens it. */
+  const bucketList = buckets.length ? buckets : [bucketMeta]
+  const titleLevel = atTitleRoot && !single
+  /* what the root levels hold: above the title, the title as one folder; inside it, the buckets.
+   * Each is a folder with its own icon — a click highlights it, a double-click opens it. */
+  const previewRoot = (() => {
+    if (!titleLevel || pickedBucket == null) return null
+    if (atTop && pickedBucket === ROOT_KEY) {
+      const all = bucketList.map((b) => bucketTotals(b.id)).filter(Boolean)
+      return { key: ROOT_KEY, name: ROOT, icon: 'folder', facts: [
+        ['Kind', 'folder'],
+        ['Buckets', `${bucketList.length}`],
+        ...(all.length === bucketList.length ? [['Items', `${all.reduce((n, x) => n + x.files, 0)}`], ['Size', formatSize(all.reduce((n, x) => n + x.bytes, 0))]] : []),
+      ] }
+    }
+    const b = bucketList.find((x) => (x.id ?? x.label) === pickedBucket)
+    if (!b) return null
+    const tot = bucketTotals(b.id)
+    return { key: pickedBucket, name: b.label || 'bucket', icon: 'database', facts: [
+      ['Kind', 'bucket'],
+      ...(tot ? [['Items', `${tot.files}`], ['Size', formatSize(tot.bytes)]] : []),
+      ...(b.writable != null ? [['Access', b.writable ? 'read · write' : 'read-only']] : []),
+    ] }
+  })()
+  const rootItems = !titleLevel ? [] : atTop
+    ? [{ key: ROOT_KEY, name: ROOT, icon: 'folder', open: goTitleRoot }]
+    : bucketList.map((b) => ({ key: b.id ?? b.label, name: b.label || 'bucket', icon: 'database', open: () => openBucket(b) }))
   const treeBody = (keep) => {
     const treeObjects = keep ? sortedObjects.filter((o) => keep.has(o.key)) : sortedObjects
     return (
-  folderView === 'columns' ? (
+  folderView === 'columns' || phone ? (
             <div ref={columnsRef} className="relative">
               <ColumnBrowser
                 autoFocus={autoFocus}
-                className={appRoot ? 'is-root' : ''}
+                className={atTitleRoot ? 'is-root' : ''}
                 height={settings.columnHeight}
                 onHeightChange={(px) => setSettings({ ...settings, columnHeight: px })}
                 columnWidths={settings.columnWidths}
                 onColumnResize={(i, px) => setSettings({ ...settings, columnWidths: { ...(settings.columnWidths ?? {}), [i]: px } })}
                 objects={treeObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, key: `${VROOT}${o.key}` }))}
-                prefix={single ? prefix : (appRoot ? `${ROOT}/` : `${VROOT}${prefix}`)}
+                prefix={single ? prefix : (atTitleRoot ? `${ROOT}/` : `${VROOT}${prefix}`)}
                 onPrefix={(v) => {
                   /* single: the browser's path IS the bucket path, no segment to strip */
                   if (single) { setAppRoot(false); setPrefix(v); return }
@@ -1563,9 +1711,9 @@ export function MediaLibraryBrowse({
             <div className={`flex-1 min-w-0 flex flex-col${showRowPreview ? ' border-r' : ''}`} style={{ borderColor: 'var(--kol-oq-08)' }}>
             <ul ref={rowsMarquee.ref} {...rowsMarquee.props}
             /* the background deselects, here as in the columns */
-            onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null) } }}
+            onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null); setPickedBucket(null) } }}
             className="relative kol-column-browser-column kol-row-browser flex-1 min-w-0 flex flex-col overflow-y-auto"
-              onContextMenu={(e) => menu.openAt(e, { type: 'level', path: prefix })}
+              onContextMenu={titleLevel ? undefined : (e) => menu.openAt(e, { type: 'level', path: prefix })}
               onDragOver={(e) => {
                 const files = dropFilesTo && isFileDrag(e)
                 const d = !isFileDrag(e) && dragFor?.(prefix)
@@ -1587,6 +1735,11 @@ export function MediaLibraryBrowse({
                 d.onDrop(prefix)
               }}>
               {rowsMarquee.rect && <div className="kol-marquee" style={rowsMarquee.rect} />}
+            {titleLevel ? rootItems.map((it) => (
+                <FolderRow key={it.key} name={it.name} icon={it.icon} cols={rowCols}
+                  selected={pickedBucket === it.key}
+                  onClick={(e) => { e.stopPropagation(); setPickedBucket(it.key) }} onDoubleClick={it.open} />
+              )) : <>
             {rowLevel('', treeObjects).folders.map((f) => {
                 const path = f
                 const open = rowsExpanded.has(path)
@@ -1632,6 +1785,7 @@ export function MediaLibraryBrowse({
                     if (!selectRow(o.key, e, visibleRowOrder(treeObjects))) rowPickFile(o)
                   }} />
               ))}
+              </>}
             </ul>
             </div>
             {showRowPreview && previewPane()}
@@ -1647,13 +1801,42 @@ export function MediaLibraryBrowse({
    * inside it, the same preview pane beside them, the same count line under it — with the size
    * slider at its right end, Finder's. */
   const tileSize = settings.tileSize ?? 180
+  /* the tile size is the GRID's, not a level's (user 2026-09-24: the slider vanished at the root
+   * levels) — one control, drawn wherever the grid is */
+  const sizeSlider = (
+    <input type="range" className="slider-black w-32 cursor-pointer" min={100} max={360} step={20} value={tileSize}
+      onChange={(e) => setSettings({ ...settings, tileSize: Number(e.target.value) })} aria-label="Tile size" />
+  )
   const wallPane = (files) => (
     <div className="flex flex-col gap-2" style={{ height: settings.columnHeight ?? SETTINGS_BASE.columnHeight }}>
     <div className="relative border rounded flex overflow-hidden flex-1 min-h-0" style={{ borderColor: 'var(--kol-oq-08)' }}>
-    <div className={`flex-1 min-w-0 overflow-y-auto p-4${showGridPreview ? ' border-r' : ''}`} style={{ borderColor: 'var(--kol-oq-08)' }}
-      onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null) } }}>
-    <WallBody files={files} layout="grid" tiles="media" cardMin={tileSize} marquee={gridMarquee} onSorted={(list) => { gridOrderRef.current = list }}
-      onBackgroundClick={() => { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null) }}
+    {/* THE MARQUEE IS THE PANE'S, not the tile grid's (user 2026-09-23: a drag only started where
+      * there were tiles — the grid is as tall as its tiles, the pane is the whole frame). The rows'
+      * band has always been on their full-height list; this is the grid catching up. */}
+    <div ref={gridMarquee.ref} {...gridMarquee.props}
+      className={`relative flex-1 min-w-0 overflow-y-auto p-4${showGridPreview ? ' border-r' : ''}`} style={{ borderColor: 'var(--kol-oq-08)' }}
+      /* THE CONTAINER IS A LEVEL, like a column (kol-client-olina 2026-09-23: *"context menu anywhere
+       * by right click"*). A tile's own menu stops the event first, so it still wins. */
+      onContextMenu={titleLevel ? undefined : (e) => menu.openAt(e, { type: 'level', path: prefix })}
+      onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null); setPickedBucket(null) } }}>
+    {gridMarquee.rect && <div className="kol-marquee" style={gridMarquee.rect} />}
+    {titleLevel ? (
+      <div className="grid gap-x-3 gap-y-5" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${tileSize}px, 1fr))` }}>
+        {rootItems.map((it) => (
+          <MediaTile key={it.key} preview={<Icon name={it.icon} size="100%" className="text-oq-48" />} name={it.name}
+            selected={pickedBucket === it.key}
+            onClick={(e) => { e.stopPropagation(); setPickedBucket(it.key) }} onDoubleClick={it.open} />
+        ))}
+      </div>
+    ) : <WallBody files={files} layout="grid" tiles="media" cardMin={tileSize} onSorted={(list) => { gridOrderRef.current = list }}
+      /* THE GRID DRAWS THE LEVEL'S SUBFOLDERS, ahead of the files (same source: kol-client-olina
+       * 2026-09-23 — `projects/` read `0 files` over a blank pane). `flat` is the subtree's files
+       * and no folders, as it was. */
+      folders={settings.flat ? [] : folders.map((f) => prefix + f)}
+      onOpenFolder={goFolder}
+      onPickFolder={(path, e) => { if (selectRow(path, e, [...folders.map((f) => prefix + f), ...files.map((f) => f.key)])) return; rowPickFolder(path) }}
+      onFolderContextMenu={(e, path) => menu.openAt(e, { type: 'folder', path, targets: targetsFor(path) })}
+      onBackgroundClick={() => { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null); setPickedBucket(null) }}
       sortBy={settings.sortBy} sortDir={settings.sortDir}
       pageSize={settings.pageSize} listId={`${prefix}|${view}|${settings.flat}|${refreshKey}|${bucketMeta.id}`}
       mediaUrl={mediaUrl} downloadUrl={downloadUrl} keySet={keySet} videoPreview={settings.videoPreview} formatDate={formatDate}
@@ -1666,7 +1849,7 @@ export function MediaLibraryBrowse({
       onOpen={(o, files) => openQuickLook({ files, index: Math.max(0, files.findIndex((f) => f.key === o.key)) })}
       /* COPY AND DOWNLOAD LIVE IN THE MENU AND QUICK LOOK (user 2026-09-23) — as in the rows and the
        * columns. The tile carries no buttons. */
-      onContextMenu={(e, o) => menu.openAt(e, { type: 'file', path: o.key, o, targets: targetsFor(o.key) })} />
+      onContextMenu={(e, o) => menu.openAt(e, { type: 'file', path: o.key, o, targets: targetsFor(o.key) })} />}
     </div>
     {showGridPreview && previewPane()}
     </div>
@@ -1699,10 +1882,10 @@ export function MediaLibraryBrowse({
     : treeBody(filtered ? new Set(filtered.map((f) => f.key)) : null))
 
   return (
-    <div className={`flex flex-col gap-6 ${className}`.trim()}>
-      <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={appRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
-        onHome={() => { setAppRoot(true); setPickedFile(null); setPrefix('') }}
-        onBucket={(v) => { if (v === 'all') { setAppRoot(true); setPrefix('') } else { setAppRoot(false); switchBucket(v) } }}
+    <div {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
+      <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
+        onHome={goTitleRoot}
+        onBucket={(v) => { if (v === 'all') goTitleRoot(); else { setAppRoot(false); switchBucket(v) } }}
         onSettings={() => setSettingsOpen(true)} />
 
       {/* THE BANNER SLOT — anything that must sit directly under the header and above the body.
@@ -1728,16 +1911,16 @@ export function MediaLibraryBrowse({
           {/* the elided line — first segment, an ellipsis for anything between,
             * and the current one. Below `md` only. */}
           <div className="flex md:hidden items-center gap-2 kol-mono-12 min-w-0">
-            <button className={crumbCls(appRoot)} onClick={() => { setAppRoot(true); setPickedFile(null); setPrefix('') }}>{ROOT}</button>
-            {!appRoot && bucketMeta.id && crumbs.length > 1 && (
+            <button className={crumbCls(atTitleRoot && !atTop)} onClick={single ? goTitleRoot : goTop}>{ROOT}</button>
+            {!atTitleRoot && bucketMeta.id && crumbs.length > 1 && (
               <><span className="text-oq-32">/</span><span className="text-oq-32">…</span></>
             )}
-            {!appRoot && bucketMeta.id && (
+            {!atTitleRoot && bucketMeta.id && (
               <span className="flex items-center gap-2 min-w-0">
                 <span className="text-oq-32">/</span>
                 <button
                   className={`${crumbCls(true)} truncate`}
-                  onClick={() => setPrefix(crumbs.length ? crumbs.join('/') + '/' : '')}
+                  onClick={() => goFolder(crumbs.length ? crumbs.join('/') + '/' : '')}
                 >
                   {(crumbs[crumbs.length - 1] ?? label).toUpperCase()}
                 </button>
@@ -1745,31 +1928,46 @@ export function MediaLibraryBrowse({
             )}
           </div>
           <div className="hidden md:flex items-center gap-2 kol-mono-12">
-            <button className={crumbCls(appRoot)} onClick={() => { setAppRoot(true); setPickedFile(null); setPrefix('') }}>{ROOT}</button>
-            {!appRoot && bucketMeta.id && (
-              <span className="flex items-center gap-2">
-                <span className="text-oq-32 select-none">/</span>
-                {crumbs.length === 0 && !(folderView === 'columns' && pickedFile)
-                  ? <CopyCrumb className={crumbCls(true)} label={label.toUpperCase()} path={fullPath()} />
-                  : <button className={crumbCls(false)} onClick={() => setPrefix('')}>{label.toUpperCase()}</button>}
+            <button className={crumbCls(atTitleRoot && (!atTop || pickedBucket === ROOT_KEY))} onClick={single ? goTitleRoot : goTop}>{ROOT}</button>
+            {/* A PICKED BUCKET ENDS THE CRUMB at the title level (user 2026-09-24: a selected folder
+              * must show in the crumb, as a selected file does — a bucket is a folder) */}
+            {titleLevel && !atTop && pickedBucket && rootItems.some((it) => it.key === pickedBucket) && (
+              <span className="flex items-center gap-2"><span className="text-oq-32 select-none">/</span>
+                <span className={crumbCls(true)}>{rootItems.find((it) => it.key === pickedBucket).name.toUpperCase()}</span>
               </span>
             )}
-            {!appRoot && crumbs.map((seg, i) => {
+            {!atTitleRoot && bucketMeta.id && (
+              <span className="flex items-center gap-2">
+                <span className="text-oq-32 select-none">/</span>
+                {crumbs.length === 0 && !pickedFile && !pickedFolder
+                  ? <CopyCrumb className={crumbCls(true)} label={label.toUpperCase()} path={fullPath()} />
+                  : <button className={crumbCls(false)} onClick={() => goFolder('')}>{label.toUpperCase()}</button>}
+              </span>
+            )}
+            {!atTitleRoot && crumbs.map((seg, i) => {
               const to = crumbs.slice(0, i + 1).join('/') + '/'
               const last = i === crumbs.length - 1
-              const current = last && !(folderView === 'columns' && pickedFile)
+              const current = last && !pickedFile && !pickedFolder
               return (
                 <span key={to} className="flex items-center gap-2">
                   <span className="text-oq-32 select-none">/</span>
                   {current
                     ? <CopyCrumb className={crumbCls(true)} label={seg.toUpperCase()} path={fullPath()} />
-                    : <button className={crumbCls(false)} onClick={() => setPrefix(to)}>{seg.toUpperCase()}</button>}
+                    : <button className={crumbCls(false)} onClick={() => goFolder(to)}>{seg.toUpperCase()}</button>}
                 </span>
               )
             })}
-            {folderView === 'columns' && pickedFile && pickedFile.key.startsWith(prefix) && (
+            {/* THE PICKED FILE ENDS THE CRUMB IN EVERY VIEW (kol-client-olina 2026-09-23 — it was the
+              * columns' alone, so a file picked in rows showed its folder and never itself) */}
+            {pickedFile && pickedFile.key.startsWith(prefix) && (
               <span className="flex items-center gap-2"><span className="text-oq-32 select-none">/</span>
                 <CopyCrumb className={crumbCls(true)} label={pickedFile.key.slice(prefix.length).toUpperCase()} path={fullPath(pickedFile.key.slice(prefix.length))} />
+              </span>
+            )}
+            {/* …and so does a picked folder */}
+            {!pickedFile && pickedFolder && pickedFolder !== prefix && pickedFolder.startsWith(prefix) && (
+              <span className="flex items-center gap-2"><span className="text-oq-32 select-none">/</span>
+                <CopyCrumb className={crumbCls(true)} label={pickedFolder.slice(prefix.length).replace(/\/$/, '').toUpperCase()} path={fullPath(pickedFolder.slice(prefix.length).replace(/\/$/, ''))} />
               </span>
             )}
           </div>
@@ -1866,7 +2064,9 @@ export function MediaLibraryBrowse({
         )}
         {quickLookFolder && (
           <FullscreenOverlay open onClose={() => setQuickLookFolder(null)} scrim>
-            <FolderPreview path={quickLookFolder} objects={objects} width={420} formatDate={formatDate} />
+            {quickLookFolder === ROOT_KEY
+              ? previewRoot && <ContainerPreview name={previewRoot.name} icon={previewRoot.icon} facts={previewRoot.facts} width={420} />
+              : <FolderPreview path={quickLookFolder} objects={objects} width={420} formatDate={formatDate} />}
           </FullscreenOverlay>
         )}
         {quickLook && (
@@ -1906,20 +2106,23 @@ export function MediaLibraryBrowse({
           * height again, and one shared `gap-3` puts both gaps level on its own. */}
         {/* THE COUNT LINE IS EVERY VIEW'S (user 2026-09-23) — and in the grid it carries the tile-size
           * slider at its right end, bare: no glyph, no readout (Finder's). */}
-        {isWall ? (
+        {atTitleRoot && !single ? (
+          <div className="flex items-center justify-between gap-4 h-4">
+          <p className="kol-mono-12 text-fg-48">
+            {atTop ? '1 folder' : `${bucketList.length} ${bucketList.length === 1 ? 'bucket' : 'buckets'}`}
+            {folderTree && ` · ${Object.values(folderTree).reduce((n, t) => n + (t.files ?? 0), 0)} files · ${formatSize(Object.values(folderTree).reduce((n, t) => n + (t.bytes ?? 0), 0))}`}
+          </p>
+          {isWall && sizeSlider}
+          </div>
+        ) : isWall ? (
           /* ONE LINE'S HEIGHT, like the other views' count line — the slider is 24px tall and made
            * this row 8px taller than the fill budget, so the page scrolled by that much */
           <div className="flex items-center justify-between gap-4 h-4">
             <p className="kol-mono-12 text-fg-48">
-              {wallFiles.length} {wallFiles.length === 1 ? 'file' : 'files'} · {formatSize(wallFiles.reduce((n, o) => n + (o.size ?? 0), 0))}
+              {!settings.flat && folders.length > 0 && `${folders.length} folder${folders.length > 1 ? 's' : ''} · `}{wallFiles.length} {wallFiles.length === 1 ? 'file' : 'files'} · {formatSize(wallFiles.reduce((n, o) => n + (o.size ?? 0), 0))}
             </p>
-            <input type="range" className="slider-black w-32 cursor-pointer" min={100} max={360} step={20} value={tileSize}
-              onChange={(e) => setSettings({ ...settings, tileSize: Number(e.target.value) })} aria-label="Tile size" />
+            {sizeSlider}
           </div>
-        ) : appRoot && folderView === 'columns' && folderTree ? (
-          <p className="kol-mono-12 text-fg-48">
-            {buckets.length} buckets · {Object.values(folderTree).reduce((n, t) => n + (t.files ?? 0), 0)} files · {formatSize(Object.values(folderTree).reduce((n, t) => n + (t.bytes ?? 0), 0))}
-          </p>
         ) : (
           <p className="kol-mono-12 text-fg-48">
             {folders.length > 0 && `${folders.length} folder${folders.length > 1 ? 's' : ''} · `}
@@ -2106,6 +2309,8 @@ export function WallBody({
   files, layout = 'list', sortBy = 'name', sortDir = 'asc', pageSize = 200, listId = '', cardMin = 260,
   mediaUrl, downloadUrl, keySet, videoPreview, formatDate = defaultFormatDate,
   selected, selectMode = false, onToggleSelect, onSorted, onContextMenu, onPick,
+  /* the media grid's folder tiles — see the page's `wallPane` */
+  folders = [], onOpenFolder, onPickFolder, onFolderContextMenu,
   /* ONE INSPECTOR (user 2026-09-23). Given `onOpen`, the wall hands the open UP and keeps no
    * lightbox of its own — otherwise a page that also opens one (space, a row double-click) ends up
    * with two stacked overlays of the same file. The standalone wall passes nothing and keeps its
@@ -2161,7 +2366,7 @@ export function WallBody({
   const openAt = (o, idx) => (onOpen ? onOpen(o, sorted) : setLightboxIndex(idx))
   return (
     <div className="flex flex-col gap-3">
-      {sorted.length === 0 ? null : layout !== 'grid' ? (
+      {sorted.length === 0 && !(layout === 'grid' && tiles === 'media' && folders.length) ? null : layout !== 'grid' ? (
         <div className="flex flex-col">
           {shown.map((o, idx) => (
             <ContentRow key={o.key} variant="default" media={renderThumb(o, null)} title={renderName(o)} date={formatDate(o.uploaded)} size={formatSize(o.size)}
@@ -2176,6 +2381,13 @@ export function WallBody({
           style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${cardMin}px, 1fr))` }}
           onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) onBackgroundClick?.() }}>
           {marquee?.rect && <div className="kol-marquee" style={marquee.rect} />}
+          {folders.map((path) => (
+            <MediaTile key={path} markKey={path} preview={<Icon name="folder" size="100%" className="text-oq-48" />}
+              name={path.replace(/\/$/, '').split('/').pop()} selected={isSelected(path)}
+              onContextMenu={onFolderContextMenu ? (e) => onFolderContextMenu(e, path) : undefined}
+              onDoubleClick={() => onOpenFolder?.(path)}
+              onClick={onPickFolder ? (e) => onPickFolder(path, e) : undefined} />
+          ))}
           {shown.map((o, idx) => (
             <MediaTile key={o.key} markKey={o.key} preview={renderThumb(o, null)} name={renderName(o)} selected={isSelected(o.key)}
               onContextMenu={onContextMenu ? (e) => onContextMenu(e, o) : undefined}

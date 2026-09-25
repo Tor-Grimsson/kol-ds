@@ -121,6 +121,7 @@ export const FUNCTIONS_BY_NAME = {
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
   QuadrantSync: 'overlay',
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media', FileIcon: 'media', QuickLookFrame: 'media', MediaTile: 'media',
+  RowMenuButton: 'action',
   EmblaNav: 'navigation', AudioPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
   MediaLibrary: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
@@ -163,7 +164,7 @@ export const FUNCTIONS_BY_NAME = {
   TagPath: 'display',
   useReveal: 'utility', useScrollSpy: 'utility', useDragResize: 'utility',
   usePrefersReducedMotion: 'utility', useTilt: 'utility', usePlayback: 'utility', parseFrontmatter: 'utility', readCover: 'utility',
-  useCoarsePointer: 'utility', useInViewAttention: 'utility', usePlaceholders: 'utility',
+  useCoarsePointer: 'utility', useLongPress: 'utility', useInViewAttention: 'utility', usePlaceholders: 'utility',
   useAxisAnimation: 'utility', useChartTooltip: 'utility', useCountUp: 'utility',
   useFontMetrics: 'utility',
   /* Named-export hooks — ungated until 2026-08-15: the parser pushed
@@ -355,6 +356,8 @@ export const NO_DEMO = (() => {
     ContextMenu: 'no demo yet (2026-09-21) — a right-click menu needs a surface to right-click on, '
       + 'and a demo stage of one component has none that means anything. It is exercised in '
       + 'apps/media on folder and file rows; a demo lands with the blocks page that has a list.',
+    RowMenuButton: 'renders only on a coarse-pointer device, inside a row or tile that has a context '
+      + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop demo (2026-09-23)',
     MediaLibraryExplorer: 'no demo yet (2026-09-21) — it is a variant dispatch over the two page '
       + 'components, and `MediaLibrary` itself is still on this list; it gets a demo when that one '
       + 'does, since a demo for either needs an injected client the showcase does not carry. The '

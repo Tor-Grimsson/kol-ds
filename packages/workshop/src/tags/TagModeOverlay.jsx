@@ -99,7 +99,9 @@ const TagModeOverlay = () => {
         <div className="flex flex-col gap-4">
             {hasFilters && (
               <>
-                <div className="flex items-center justify-between">
+                {/* INSET TO THE ROWS (user 2026-09-25: the button sat flush on the panel edge while the
+                  * rows below start at `.shell-nav-item`'s 20px, 24px from 1600) */}
+                <div className="flex items-center justify-between pl-5 min-[1600px]:pl-6">
                   {/* PRIMARY (user 2026-08-01). `outline quiet` is the
                     * recessive rung — this is the one action in the body. */}
                   <Button variant="primary" size="sm" onClick={clearTags}>
