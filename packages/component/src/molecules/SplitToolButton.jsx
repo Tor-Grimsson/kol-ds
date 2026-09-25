@@ -54,7 +54,14 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {boolean} props.active - Whether this tool group is the active tool — lit trigger, `aria-pressed`
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Trigger box on the pinned-square ladder — 22 · 26 · 32 · 40 (default: 'md'). The glyph follows the SOLO ladder; it is never set at the call site
  * @param {boolean} props.blurOnClick - Blur the trigger after click so a canvas can reclaim focus and refresh its cursor (default: false)
+ * @param {Function} props.onTrigger - Replaces the trigger's arm: fires with the trigger variant's id on every click. For a fold of one-shot ACTIONS (Boolean: the trigger re-runs the last-picked op) — no pressed state is implied (default: arm via `onChange`)
+ * @param {boolean} props.disabled - Disables the trigger — `.kol-btn:disabled` dims it (default: false)
+ * @param {ElementType} props.iconComponent - Glyph renderer receiving `{ name, size, className, style }` — Button's seam (default: DS `Icon`)
  * @param {string} props.aria-label - Trigger label fallback when no variant resolves
+ *
+ * A variant may carry its own `onSelect()` — that row does its own thing instead of `onChange`
+ * (Text: "Text" arms the tool, "Kinetic type" inserts a layer). Without `lastPicked` the trigger
+ * remembers the last row picked from the menu (kol-fxr ToolPalette, editor-panels-the-held-specs A3).
  * @param {string} props.className - Additional classes on the trigger
  */
 
@@ -77,6 +84,9 @@ const SplitToolButton = ({
   active = false,
   size = 'md',
   blurOnClick = false,
+  onTrigger,
+  disabled = false,
+  iconComponent: IconC = Icon,
   className = '',
   'aria-label': ariaLabel,
 }) => {
@@ -89,20 +99,23 @@ const SplitToolButton = ({
     role: 'menu',
   })
 
+  const [ownLast, setOwnLast] = useState(null)
   const byId = (id) => variants.find((v) => v.id === id)
-  const triggerVariant = (active && byId(value)) || byId(lastPicked) || variants[0]
+  const triggerVariant = (active && byId(value)) || byId(lastPicked ?? ownLast) || variants[0]
   const label = triggerVariant?.label ?? ariaLabel
   const title = triggerVariant?.shortcut ? `${label} (${triggerVariant.shortcut})` : label
 
   /* Arm the last-picked variant on the same click that toggles the menu —
    * floating-ui's useClick (on the reference) handles the open/close half. */
   const handleTriggerClick = (event) => {
-    if (!active && triggerVariant) onChange?.(triggerVariant.id)
+    if (onTrigger) { if (triggerVariant) onTrigger(triggerVariant.id) }
+    else if (!active && triggerVariant) onChange?.(triggerVariant.id)
     if (blurOnClick) event.currentTarget.blur()
   }
 
   const handleSelect = (variant) => {
-    onChange?.(variant.id)
+    if (variant.onSelect) variant.onSelect()
+    else { onChange?.(variant.id); setOwnLast(variant.id) }
     setOpen(false)
   }
 
@@ -113,11 +126,12 @@ const SplitToolButton = ({
         {...popover.getReferenceProps({ onClick: handleTriggerClick })}
         type="button"
         className={`relative kol-btn kol-btn-ghost kol-btn-icon kol-btn-${size} ${active ? 'kol-btn-pressed' : 'kol-btn-quiet'} ${className}`.trim()}
-        aria-pressed={active}
+        disabled={disabled}
+        aria-pressed={onTrigger ? undefined : active}
         aria-label={label}
         title={title}
       >
-        {triggerVariant && <Icon name={triggerVariant.icon} size={glyphSize(size, true)} />}
+        {triggerVariant && <IconC name={triggerVariant.icon} size={glyphSize(size, true)} />}
         <FoldIndicator />
       </button>
       {/* w-max — floats size to content, the menu-family law (2026-08-09). */}
@@ -137,7 +151,7 @@ const SplitToolButton = ({
               className="w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
             >
               <span className="shrink-0 w-4 inline-flex items-center justify-center">
-                <Icon name={variant.icon} size={14} />
+                <IconC name={variant.icon} size={14} />
               </span>
               <span className="flex-1 truncate">{variant.label}</span>
               <span className="kol-helper-10 text-emphasis shrink-0">

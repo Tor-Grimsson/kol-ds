@@ -48,7 +48,7 @@ Every section takes **`background`** — a named surface (`primary` · `secondar
 | `SectionSplit` | `FeatureSplit` | text column (`SectionText`) beside the media frame; **`align: 'right' \| 'left' \| 'center'`** — media side, or one centred column. `flip` → `align="left"` |
 | `SectionCards` | `FeaturesCardSection` | `SectionText` header over a row of `SectionCardItem`s + a centred action row |
 | `SectionCardItem` | `CardFeatureItem` | the card `SectionCards` is made of — title + icon, visual, description (the composition is the card; its parts are card items) |
-| `SectionCta` | `CtaGlobal` · `FoundryCTA` | `editorial`: display wordmark beside stacked label-over-value rows, each a `SectionText` · `centered`: rule · heading · mono line · Buttons (was FoundryCTA) |
+| `SectionCta` | `CtaGlobal` | `editorial`: display wordmark beside stacked label-over-value rows, each a `SectionText` · `centered`: rule · heading · mono line · Buttons (was FoundryCTA) |
 | `SectionFaq` | new | `SectionText` header over `Accordion` `{ q, a }` items; `singleOpen` optional |
 | `SectionNewsletter` | `NewsletterBand` | `SectionText` (centred) over the email form — Input + Button + aria-live status line — in its children slot; `title` → `headline`, `description` → `body` (2026-08-27) |
 | `InspectorSection` | `Section` | the inspector's label + stack (+ `divided`); renamed so it stops sitting inside this family's rail |

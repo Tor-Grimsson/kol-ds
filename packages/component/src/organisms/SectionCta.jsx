@@ -15,7 +15,7 @@ import { minHeightClass } from './sectionHeights.js'
  * TWO VARIANTS. `editorial` (default): the two-column band above. `centered`
  * (SectionHeroRound2, 2026-08-26): the quiet mid-page tier — a short rule, a
  * heading, a mono line and Buttons, centred — which was `FoundryCTA`, a second
- * way to render SectionText. FoundryCTA is its deprecated alias.
+ * way to render SectionText. FoundryCTA was its alias until 2026-09-25, when it dropped.
  *
  * @param {'full'|'80'|'60'|string} [height='60']  min-height on the family's ladder — full = 100dvh,
  *   80 = 70svh / 80vh, 60 = 50svh / 60vh (default), 40 = 35svh / 40vh; content stays vertically centred inside it

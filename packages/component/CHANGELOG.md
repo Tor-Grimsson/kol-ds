@@ -1,5 +1,31 @@
 # @kolkrabbi/kol-component
 
+## 0.222.0 — 2026-09-25
+
+- **`ToolPalette` — NEW** (organism; kol-fxr `editor-panels-the-held-specs` A3). The editor's tool
+  bar as one row of `items`: `tool` (arms, lit while `activeId`), `action` (one-shot), `split` (a
+  `SplitToolButton` fold) and `divider`. A fold with `action: true` runs its variants, the trigger
+  re-running the last-picked one (Boolean); an `action: true` variant inside a tool fold is a
+  one-shot row (Text → Kinetic type). Armed tool, actions and disabled rules are the consumer's.
+- **`SplitToolButton`** gains `onTrigger(id)` (replaces the arm: a fold of actions), `disabled`,
+  `iconComponent` (Button's seam) and a per-variant `onSelect()`. Without `lastPicked` the trigger
+  now remembers the last row picked from its menu (it showed `variants[0]` again). An action fold
+  sets no `aria-pressed`.
+
+## 0.221.0 — 2026-09-25
+
+- **`ColumnBrowser` takes a controlled `picked`** (a key or an object; absent = internal, as
+  before). Given, the browser opens on that file's level with its row selected, previewed and the
+  keyboard cursor on it. `MediaLibraryPages` feeds it `pickedFile`, so a file picked in rows or grid
+  survives the switch to columns (kol-client-olina `column-view-drops-the-picked-file`).
+- **The media preview pane shows wide and tall images whole.** `ImageFrame` keeps its preset-ratio
+  snap, but an SVG, or an image past the ladder's ends (wider than 16:9, taller than 9:16), is drawn
+  `object-contain` instead of cropped by `object-cover`. Photos near a preset render as before
+  (kol-client-olina `column-preview-crops-wide-images`).
+- **BREAKING — `FoundryCTA` is gone.** It was a deprecated alias of `SectionCta variant="centered"`
+  since 2026-08-26; 30 days on, nothing in the estate imports it (retirements R3). Use
+  `<SectionCta variant="centered" … />`. Source quarantined to `_tmp/2026-09-25-foundry-cta/`.
+
 ## 0.216.0 — 2026-09-21
 
 The media product, proved by use in `apps/media` before publishing (the apps tier).

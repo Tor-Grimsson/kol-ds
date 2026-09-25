@@ -29,3 +29,4 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[09-dashboards-system\|Dashboards system]] | Hand-rolled SVG charts and the dashboard grid |
 | [[13-controls-system\|Controls system]] | Hardware panel controls for instruments |
 | [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for colour, logo and type |
+| [[15-media-uploads\|Media uploads]] | Converting files on upload, and keeping originals |

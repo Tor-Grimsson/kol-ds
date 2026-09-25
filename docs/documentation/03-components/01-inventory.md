@@ -189,6 +189,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `KeyframeEditor` | A keyframe list over a pose track (`t`, rot in radians, pos, scale, ease), sorted by `t`; rotations edit in degrees. Selecting a key pauses the clock and seeks it. |
 | `LayerStack` | The layers panel — a z-stacked tree with drag to reorder AND reparent in one gesture, inline rename, hover-revealed eye + lock, collapsible containers, a Canvas root row. |
 | `TimelineDock` | The keyframe timeline — scrub ruler + playhead over one lane per track, diamonds at each key; drags commit on pointer-up, one undo entry per gesture. Collapses to nothing with no tracks. |
+| `ToolPalette` | The editor's tool bar as one row — tools arm, actions run, folds (`SplitToolButton`) either arm a variant or run one; dividers between groups. Armed tool, actions and every disabled rule are the consumer's `items`. Scrolls in its own box when narrow. |
 
 Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `ColorLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
 

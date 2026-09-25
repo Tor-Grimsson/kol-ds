@@ -154,3 +154,15 @@ browser to reach the drop zone.
 - No published version is required to close this. Nothing in this ticket needs to reach a consumer.
 - No change to kol-r2b2. The consumer adopts later, once the product is proved.
 - No decision about hosting, providers or persistence.
+
+## ADDRESSED — 2026-09-25 · no publish (the ticket's own bar)
+
+Built across 2026-09-21 → 09-25 (session logs of those dates). Against the definition of done:
+
+- `pnpm-workspace.yaml` carries `apps/*` · **`showcase` and `workbench` are NOT moved** — ruled deferred 2026-09-21 (`session-log/2026-09-21-apps-tier-media-file-manager.md`); both still run where they are. `packages/*` unmoved.
+- `apps/media` runs on its own dev script (`pnpm media`), imports `@kolkrabbi/kol-*` by name, `private: true`.
+- In-memory fixture (`apps/media/src/fixture/`), no network, provider or credentials.
+- Create · rename · move · delete for files and folders, plus Trash with restore, execute against it; `node apps/media/src/fixture/store.test.mjs` → `fixture store: ok (35 files, 15 folders)`.
+- **Clear changes** resets the tree to its seed (`App.jsx`).
+- `docs/operations/07-apps-tier/` links `~/.dotfiles/docs/operations/systems/apps-tier/INDEX.md`, not a restatement.
+- No second app started.

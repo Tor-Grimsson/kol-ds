@@ -41,7 +41,7 @@ different products and the estate ships both:
 | | where | why |
 |---|---|---|
 | `<DesignEditor />` — the whole editor, its own router and state | `@kolkrabbi/design-editor` | you embed it; you do not compose it |
-| `LayerStack` · `TimelineDock` · `CurveEditor` · `KeyframeEditor` · `InspectorRail` · `XYPad` · `Canvas` · `SelectionOverlay` · `PathNodeOverlay` · `CropOverlay` · `EditorShell` · `SplitToolButton` · the colour set | `@kolkrabbi/kol-component` | anyone building an editor-shaped surface composes these; they carry no store |
+| `LayerStack` · `TimelineDock` · `CurveEditor` · `KeyframeEditor` · `InspectorRail` · `XYPad` · `Canvas` · `SelectionOverlay` · `PathNodeOverlay` · `CropOverlay` · `EditorShell` · `SplitToolButton` · `ToolPalette` · the colour set | `@kolkrabbi/kol-component` | anyone building an editor-shaped surface composes these; they carry no store |
 
 A part that lands in `kol-component` has had its store coupling turned into
 props — that is the whole membership test here. `LayerStack` emits

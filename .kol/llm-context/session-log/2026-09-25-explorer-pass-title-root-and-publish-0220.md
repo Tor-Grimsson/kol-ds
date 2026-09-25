@@ -36,7 +36,7 @@
 - Registry: publishes reported `+`; `npm view` lagged at 0.219.0 right after.
 
 ### Known Issues
-- `retirements` gate red until FoundryCTA is dropped (user: let it be).
+- ~~`retirements` gate red~~ — resolved in the addendum: FoundryCTA dropped, all 27 gates green.
 - Touch work still untried on a real iPhone.
 - Title / bucket keys in rows use a sentinel (`ROOT_KEY`) in `pickedBucket`; one-bucket consumers without `bucketLevel` could not be exercised (fixture has two buckets).
 - Lessons the user paid for this session: an "addressed" ticket was checked only on the path it named; a JSX comment shipped as visible text; a TDZ blanked the page. Check the whole gesture set in each view before calling a ticket done.
@@ -45,3 +45,10 @@
 1. **Showcase coverage audit** (queued in AGENT-CONTEXT) — what the site shows vs not, with each exemption's reason.
 2. Close olina's 🟠 tickets as they verify running.
 3. D1 — tags and file editing.
+
+## Addendum — after the publish (2026-09-25)
+
+- **Preview gaps closed** (in 0.220.0): `ContainerPreview` — one body for folder, bucket and title; bucket totals from `folderTree`, access only when the bucket states it; Space Quick-Looks a picked bucket or the title. Sweep found nothing else blank that should not be.
+- **Upload conversion documented as an option** — `docs/documentation/04-compositions/15-media-uploads.md` (+ both indexes, back-linked from the media app plan). The DS never converts; olina's recipe (from its current `apps/media/src/lib/upload.js`), the originals-folder choice, the `~/.dotfiles/bin` shell twins, a new-consumer checklist.
+- **FoundryCTA dropped** (user's call, after first saying leave it): export out of `kol-component`, source → `_tmp/2026-09-25-foundry-cta/`, `CHANGELOG.md` Unreleased BREAKING, ledger row deleted + history line in `docs/operations/01-release/04-retirements.md`, removed from `showcase/src/nav/classification.js` (three lists) and the section-system doc. **Unpublished** — ships BREAKING with the next component release. Generated usage JSON and `06-manifest-tree.md` still name it until regenerated.
+- All 27 gates green.

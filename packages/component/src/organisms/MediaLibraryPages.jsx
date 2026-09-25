@@ -195,12 +195,19 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
 
 /* ── shared pieces, kol-r2b2's ─────────────────────────────────────────────── */
 
-/* The frame is square until the file reports its size, then snaps to its nearest preset. */
-function ImageFrame({ src }) {
-  const [ratio, setRatio] = useState('1 / 1')
+/* The frame is square until the file reports its size, then snaps to its nearest preset. A photo
+ * near a preset fills it (`cover`, a few percent cropped); a vector or anything past the ladder's
+ * ends — a 2.8:1 wordmark, an 11:1 nav logo — shows whole (`contain`, kol-client-olina 2026-09-25). */
+function ImageFrame({ src, vector }) {
+  const [frame, setFrame] = useState({ ratio: '1 / 1', contain: !!vector })
+  const onLoad = (e) => {
+    const { naturalWidth: w, naturalHeight: h } = e.target
+    const r = w && h ? w / h : 1
+    setFrame({ ratio: nearestRatio(w, h), contain: vector || r > 16 / 9 || r < 9 / 16 })
+  }
   return (
-    <div className="w-full rounded overflow-hidden flex items-center justify-center" style={{ aspectRatio: ratio }}>
-      <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" onLoad={(e) => setRatio(nearestRatio(e.target.naturalWidth, e.target.naturalHeight))} />
+    <div className="w-full rounded overflow-hidden flex items-center justify-center" style={{ aspectRatio: frame.ratio }}>
+      <img src={src} alt="" className={`w-full h-full ${frame.contain ? 'object-contain' : 'object-cover'}`} loading="lazy" onLoad={onLoad} />
     </div>
   )
 }
@@ -1453,7 +1460,7 @@ export function MediaLibraryBrowse({
       <ColumnPreview key={previewFile.key} o={previewFile} urlOf={(o) => mediaUrl(o.key)} kindOf={kindOf} kindLabel={KIND_LABEL}
         formatSize={formatSize} formatDate={formatDate} width={previewWidth}
         renderPreview={(o) => {
-          if (isImage(o.contentType)) return <ImageFrame src={mediaUrl(o.key)} />
+          if (isImage(o.contentType)) return <ImageFrame src={mediaUrl(o.key)} vector={o.contentType === 'image/svg+xml'} />
           const poster = posterFor(o.key, keySet)
           return <KindPreview o={o} urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} kindOf={kindOf} kindLabel={KIND_LABEL} />
         }} />
@@ -1631,6 +1638,7 @@ export function MediaLibraryBrowse({
                   const real = rest.join('/')
                   if (target && target.id !== bucketMeta.id) switchBucket(target.id, real); else setPrefix(real)
                 }}
+                picked={pickedFile ? { ...pickedFile, key: `${VROOT}${pickedFile.key}` } : null}
                 onPick={(o) => setPickedFile(o ? { ...o, key: o.key.slice(VROOT.length) } : null)}
                 quickLook={quickLook && { ...quickLook, files: quickLook.files.map((o) => ({ ...o, key: `${VROOT}${o.key}` })) }}
                 onQuickLook={(q) => openQuickLook(q && { ...q, files: q.files.map((o) => ({ ...o, key: o.key.slice(VROOT.length) })) })}
@@ -1646,7 +1654,7 @@ export function MediaLibraryBrowse({
                 stackView={stackView ?? settings.stackView ?? 'list'}
                 renderPreview={(o) => {
                   const real = { ...o, key: o.key.slice(VROOT.length) }
-                  if (isImage(real.contentType)) return <ImageFrame src={mediaUrl(real.key)} />
+                  if (isImage(real.contentType)) return <ImageFrame src={mediaUrl(real.key)} vector={real.contentType === 'image/svg+xml'} />
                   const poster = posterFor(real.key, keySet)
                   return <KindPreview o={real} urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} kindOf={kindOf} kindLabel={KIND_LABEL} />
                 }}

@@ -138,11 +138,11 @@ export const FUNCTIONS_BY_NAME = {
   WorkViewToggle: 'wayfinding', ShellHeader: 'wayfinding', PortalFooter: 'wayfinding',
   PriceDisplay: 'display', ProsePreview: 'display', TypeSample: 'display',
   TypeSpecCard: 'display', SpecList: 'display',
-  ShapeDropdown: 'action', SplitToolButton: 'action', ErrorBoundary: 'feedback',
+  ShapeDropdown: 'action', SplitToolButton: 'action', ToolPalette: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
   SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
-  FeaturesCardSection: 'structure', CtaGlobal: 'structure', FoundryCTA: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
+  FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
   BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
@@ -320,9 +320,9 @@ export const DEPRECATED = [
   'FullBleedHero', 'FeatureSplit', 'FeaturesCardSection', 'CtaGlobal', 'Section',
   /* SectionNewsletter (2026-08-27): NewsletterBand = SectionNewsletter (title → headline, description → body) */
   'NewsletterBand',
-  /* SectionHeroRound2 (2026-08-26): FoundryCTA = SectionCta variant="centered";
-   * FeaturedCarousel = SectionHero media=[…] (kept as the engine). */
-  'FoundryCTA', 'FeaturedCarousel',
+  /* SectionHeroRound2 (2026-08-26): FeaturedCarousel = SectionHero media=[…] (kept as the engine).
+   * FoundryCTA dropped 2026-09-25. */
+  'FeaturedCarousel',
   /* CardFeatureItem = SectionCardItem (2026-08-26) */
   'CardFeatureItem',
   /* page-family-is-not-a-set (2026-09-03): BrandHero + SubPageHero = PageHero;
@@ -351,7 +351,7 @@ export const NO_DEMO = (() => {
   return {
     ...debt(['SetupPanel', 'PiecePalette', 'GamePicker', 'MaterialSummary'],
       'chess apparatus parts; the board demos cover the system, these never got their own'),
-    ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel', 'FoundryCTA'],
+    ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel'],
       'kol-component organisms/overlays predating the demo convention'),
     ContextMenu: 'no demo yet (2026-09-21) — a right-click menu needs a surface to right-click on, '
       + 'and a demo stage of one component has none that means anything. It is exercised in '

@@ -282,3 +282,15 @@ Remaining by your order: **A2 · A4 · A5**, then **B1** — whose real question
 | **A2 · TextPanel + ParatypeTools** | **HELD — on B1** | Read in full before deciding. `TextSurface` imports `BindDot`, `isBinding`, `TEXT_SCHEMA` and the type mode's `cuts` / `curveMath` — it is built ON the param-schema format and the modulate affordance, which is exactly B1. Porting it without them is a different component, and porting them is B1's question: *does kol-component want to own a param-schema format at all* — yours, and you said last. `ParatypeTools` self-gates on a loop id and its reusable half, the XY explore pad, shipped as `XYPad` (A6). Both wait on the B1 ruling, not on effort |
 
 **A8 via Input** answered · **A6 · A7 · B2 · A1 · B3 · A4 · A5** shipped · **A2** held on B1 · **A3** blocked on the fold ruling · **B1** the user's. Kol-component 0.200.0 when the gates pass.
+
+## PROGRESS 6 — 2026-09-25 · A3 shipped, B1 + A2 ruled · kol-component 0.222.0
+
+| row | state | what shipped / the ruling |
+|---|---|---|
+| **A3 · ToolPalette** | **shipped** | `organisms/ToolPalette.jsx` — one row of `items`: `tool` · `action` · `split` · `divider`, with `activeId`, `onSelect(id)`, `onAction(id)`, `size`, `iconComponent`. Every disabled rule arrives in `items`, never inferred. **The fold question, answered:** `SplitToolButton` takes `onTrigger(id)` — a fold of ACTIONS whose trigger re-runs the last-picked op (Boolean) — and a per-variant `onSelect()`, so a tool fold can hold a one-shot row (Text → Kinetic type). It also takes `disabled` and `iconComponent`, and remembers the last menu pick when `lastPicked` is not passed. The image-insert file input and `kol:enter-crop` stay the consumer's actions |
+| **B1 · the parameter rail** | **ruled — stays with the engine** | The user, 2026-09-25: kol-component does NOT own a param-schema format. `AutoControls` · `rolls` · `BindDot` · `ModulationEditor` stay in `@kolkrabbi/design-editor`. One consumer does not make a contract |
+| **A2 · TextPanel + ParatypeTools** | **ruled — stays with the engine** | Built on B1, so it follows B1. The reusable half — the XY pad — already shipped as `XYPad` (A6) |
+
+**All seventeen rows answered:** A8 via `Input` · A6 · A7 · B2 · A1 · B3 · A4 · A5 · A3 shipped · B1 + A2 stay in the engine by ruling.
+
+**Remainder at kol-fxr:** adopt `ToolPalette` (pass `EditorIcon` as `iconComponent`) on the next bump, and re-measure in a browser.

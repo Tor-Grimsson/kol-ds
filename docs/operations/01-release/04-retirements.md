@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-09-03
+updated: 2026-09-25
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -43,7 +43,6 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |
 | `FeaturesCardSection` | component | `SectionCards` | 2026-08-26 |
 | `CtaGlobal` | component | `SectionCta` | 2026-08-26 |
-| `FoundryCTA` | component | `SectionCta variant="centered"` | 2026-08-26 |
 | `FeaturedCarousel` | component | `SectionHero media={[…]}` | 2026-08-26 |
 | `Section` | component | `InspectorSection` | 2026-08-26 |
 | `CardFeatureItem` | component | `SectionCardItem` | 2026-08-26 |
@@ -63,6 +62,8 @@ Type and chrome classes retire the same way — the marker line above the rule i
 | `kol-card-kicker` | theme | `kol-eyebrow` — the eyebrow has one name; the props `kicker` (ContentText) and `label` (SectionText + the sections) are aliases too, documented on the components (the gate cannot see props) | 2026-08-27 |
 
 ## History
+
+- 2026-09-25 — **`FoundryCTA` dropped** (R3: 30 days, no importer in the estate). Export removed from `kol-component`, source quarantined to `_tmp/2026-09-25-foundry-cta/`, BREAKING in the changelog. It never had a showcase page — an alias does not get one — which is how the user found it: searching the site for a component the gate was talking about.
 
 - 2026-08-30 — **ContentSetRetirement step 3: the nine Content Set rows are gone, dropped not aged out.** `ArticleCard` · `ListingCard` · `MediaCard` · `MediaRow` · `GridCard` (shell) · `PrintGridCard` · `WorkCard` · `WorkListItem` · `TypefaceLibraryItem` removed from five barrels; sources quarantined to `_tmp/2026-08-30-content-set-exports/`, never deleted. R3 never fired on them — the estate sweep showed no consumer outside this repo, so the user ruled the drop early rather than waiting 30 days. The showcase's four live compositions (article-grid, work-grid, stack-blog, work-portfolio), the typeface demo and kol-store's own `PrintsGrid` were migrated onto ContentCard/ContentRow in the same pass; the dead `content-card-comparison` set was quarantined whole. kol-dashboards' `GridCard` is a different component and stays (ruled 2026-08-27).
 

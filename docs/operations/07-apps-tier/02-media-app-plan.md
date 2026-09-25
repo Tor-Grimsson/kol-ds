@@ -21,6 +21,7 @@ related:
   - "[[01-tier-rules|Tier rules]]"
   - "[[03-candidate-apps|Candidate apps]]"
   - "[[../01-release/02-shipped-packages|Shipped packages]]"
+  - "[[../../documentation/04-compositions/15-media-uploads|Media uploads]]"
 ---
 
 # Media app plan

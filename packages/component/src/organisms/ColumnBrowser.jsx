@@ -462,6 +462,11 @@ export default function ColumnBrowser({
   quickLook = null,
   onQuickLook,
   onPick,
+  /* `picked` — the file the CALLER holds picked (a key or an object; kol-client-olina 2026-09-25:
+   * a pick made in rows or grid was lost on the switch to columns, because this browser kept its
+   * own). Given, the browser opens on that file's level with its row selected and previewed, and
+   * follows it when it changes; absent (`undefined`), the pick is internal exactly as before. */
+  picked: pickedIn,
   urlOf,
   kindOf = defaultKindOf,
   kindLabel = DEFAULT_KIND_LABEL,
@@ -559,6 +564,16 @@ export default function ColumnBrowser({
     if (prefix !== level) { keepCursor.current = true; pickedByCollapse.current = true; onPrefix(level) }
   }
   const pickedByCollapse = useRef(false)
+  const pickedInKey = typeof pickedIn === 'string' ? pickedIn : pickedIn?.key ?? null
+  useEffect(() => {
+    if (pickedIn === undefined || (picked?.key ?? null) === pickedInKey) return
+    const o = typeof pickedIn === 'string' ? objects.find((x) => x.key === pickedIn) : pickedIn
+    if (!o) { setPicked(null); return }
+    const level = o.key.slice(0, o.key.lastIndexOf('/') + 1)
+    setPicked(o)
+    setCursor(seedCursor(level))
+    if (prefix !== level) { keepCursor.current = true; pickedByCollapse.current = true; onPrefix(level) }
+  }, [pickedInKey]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (pickedByCollapse.current) { pickedByCollapse.current = false; return } if (picked) pick(null) }, [prefix]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { setExpanded((prev) => (prev.size ? new Set() : prev)) }, [prefix])
   const levelsOf = (pfx) => {
@@ -580,6 +595,12 @@ export default function ColumnBrowser({
    * internal moves land on the same spot, so nothing jumps. */
   const seedCursor = (pfx) => {
     const lv = levelsOf(pfx)
+    /* a caller's `picked` file at this level is where the keyboard starts — on the file, not on
+     * the folder that opened its column */
+    if (pickedInKey?.startsWith(pfx) && !pickedInKey.slice(pfx.length).includes('/')) {
+      const idx = itemsAt(pfx).findIndex((it) => it.type === 'file' && it.o.key === pickedInKey)
+      if (idx >= 0) return { col: lv.length - 1, idx }
+    }
     if (lv.length < 2) return { col: 0, idx: 0 }
     const col = lv.length - 2
     const opened = lv[col + 1].slice(lv[col].length)
