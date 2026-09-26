@@ -8,7 +8,7 @@ import { kindOf } from '@kolkrabbi/kol-component/utilities/mediaKinds';
 import useMediaQuery from '@kolkrabbi/kol-component/hooks/useMediaQuery';
 import fixtureClient from './fixture/client';
 import FileFormats from './FileFormats';
-import { loadSettings, saveSettings, resetSettings, DEFAULTS } from './lib/settings';
+import { DEFAULTS } from './lib/settings';
 import ShortcutsOverlay from '@kolkrabbi/kol-shell/src/ShortcutsOverlay.jsx';
 import { SHORTCUTS, BINDINGS } from './lib/shortcuts';
 
@@ -108,7 +108,6 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const modal = useModal();
   const [bucketId, setBucketId] = useState(initialBucket);
-  const [settings, setSettings] = useState(() => loadSettings(bucketId));
 
   const bucket = BUCKETS[bucketId];
   const [overviewOpen, setOverviewOpen] = useState(false);
@@ -143,22 +142,15 @@ export default function App() {
   };
   const tabProps = stack ? { tabs: TABS, activeTab: tab, onTabChange } : {};
 
-  // Persist on every change. `null` is the panel's reset signal.
-  const applySettings = (next) => {
-    if (next === null) {
-      setSettings(resetSettings(bucketId));
-      return;
-    }
-    setSettings(next);
-    saveSettings(bucketId, next);
-  };
+  /* SETTINGS ARE THE CLIENT'S (the media D1 pass, 2026-09-25). The app used to hold them and write
+   * localStorage itself; the page now loads and saves them through `client.loadSettings` /
+   * `saveSettings`, which is where kol-olina keeps them per person (D1). The fixture's pair wraps
+   * the same lib/settings.js, so nothing a person saved before is lost. */
 
   const switchBucket = (id) => {
     if (!BUCKETS[id]) return;
-    const next = loadSettings(id);
     setBucketId(id);
     try { localStorage.setItem(BUCKET_KEY, id); } catch { /* private mode */ }
-    setSettings(next);
     setPrefix('');
     setRefreshKey((k) => k + 1);
   };
@@ -319,13 +311,10 @@ export default function App() {
     } : undefined,
     bucket: bucketId,
     onBucketChange: switchBucket,
-    settings,
-    onSettingsChange: applySettings,
     /* the page resolves "reset" from these — without them it fell back to its own base, from before
      * the fill height, and saved a fixed 528px column over the current default */
     defaults: DEFAULTS,
     refreshKey,
-    stackView: settings.stackView ?? 'list',
     folderMeta,
     thumbnailFor,
     formatDate,

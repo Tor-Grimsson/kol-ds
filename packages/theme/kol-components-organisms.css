@@ -850,6 +850,18 @@
   background: var(--kol-oq-08);
   pointer-events: none;
 }
+/* THE DISCLOSURE'S TAP TARGET IS WIDER THAN ITS DRAWING (touch pass 2026-09-23: a 14px-wide
+   target). The chevron column stays 14 so zone 3 keeps its 74; the hit area reaches into the
+   row's 16px left padding and the 8px gap — 38 × the row's 60 — and stops at the icon, which
+   is the row's own tap (open). */
+.kol-column-browser-disclose { position: relative; }
+.kol-column-browser-disclose::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: -16px;
+  right: -8px;
+}
 /* the thumbnail fills its box and crops — a media tile is the image, not a
    letterboxed one */
 .kol-column-browser-thumb img,

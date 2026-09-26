@@ -29919,7 +29919,7 @@
       "kol-obsidian-theme",
       "kol-website"
     ],
-    "edgeCount": 33,
+    "edgeCount": 32,
     "edges": [
       {
         "file": "kol-website/apps/web/src/components/sections/home/HomeHighlights.jsx",
@@ -29936,12 +29936,6 @@
       {
         "file": "kol-website/apps/web/src/routes/prints/PrintsGridGsap.jsx",
         "app": "kol-website",
-        "uses": 2,
-        "stars": 1
-      },
-      {
-        "file": "kol-ds-ui/packages/component/src/organisms/FoundryCTA.jsx",
-        "app": "kol-ds-ui",
         "uses": 2,
         "stars": 1
       },

@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-controls
 
+## 0.3.1 — 2026-09-25
+
+- **Source matches npm again.** A comment on `ParamSheet`'s untinted backdrop (the 2026-09-03
+  overlay-scrim sweep) sat in the tree unpublished; no behaviour change.
+
 ## 0.3.0 — 2026-09-01
 
 - **`TextInput` · `PanelDropdown` · `Selector` retired** (ControlsXsRung,

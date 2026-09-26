@@ -40,6 +40,7 @@ the design system, documented. Source root: `docs/documentation`
 | Package topology | `/documentation/01-package-topology` | `docs/documentation/00-overview/01-package-topology.md` | `vault` |
 | Package tiers | `/documentation/02-tiers` | `docs/documentation/00-overview/02-tiers.md` | `vault` |
 | Installing KOL | `/documentation/03-install` | `docs/documentation/00-overview/03-install.md` | `vault` |
+| Full consumption | `/documentation/04-full-consumption` | `docs/documentation/00-overview/04-full-consumption.md` | `vault` |
 | Overview | `/documentation/00-overview-INDEX` | `docs/documentation/00-overview/INDEX.md` | `vault` |
 
 ### Foundations · `01-foundations`
@@ -53,6 +54,13 @@ the design system, documented. Source root: `docs/documentation`
 | Layout systems registry | `/documentation/05-layout-systems` | `docs/documentation/01-foundations/05-layout-systems.md` | `vault` |
 | Code surface | `/documentation/06-code-surface` | `docs/documentation/01-foundations/06-code-surface.md` | `vault` |
 | Doc & card sets | `/documentation/07-doc-card-sets` | `docs/documentation/01-foundations/07-doc-card-sets.md` | `vault` |
+| Motion | `/documentation/08-motion` | `docs/documentation/01-foundations/08-motion.md` | `vault` |
+| Size lookup | `/documentation/09-size-lookup` | `docs/documentation/01-foundations/09-size-lookup.md` | `vault` |
+| Sizes | `/documentation/09-sizes` | `docs/documentation/01-foundations/09-sizes.md` | `vault` |
+| Opacity lookup | `/documentation/10-opacity-lookup` | `docs/documentation/01-foundations/10-opacity-lookup.md` | `vault` |
+| Opacity | `/documentation/10-opacity` | `docs/documentation/01-foundations/10-opacity.md` | `vault` |
+| Color lookup | `/documentation/11-color-lookup` | `docs/documentation/01-foundations/11-color-lookup.md` | `vault` |
+| Typography lookup | `/documentation/12-typography-lookup` | `docs/documentation/01-foundations/12-typography-lookup.md` | `vault` |
 | Foundations | `/documentation/01-foundations-INDEX` | `docs/documentation/01-foundations/INDEX.md` | `vault` |
 
 ### Icons · `02-icons`
@@ -94,6 +102,9 @@ the design system, documented. Source root: `docs/documentation`
 | Style-guide system | `/documentation/10-styleguide-system` | `docs/documentation/04-compositions/10-styleguide-system.md` | `vault` |
 | Shell system | `/documentation/11-shell-system` | `docs/documentation/04-compositions/11-shell-system.md` | `vault` |
 | Section system | `/documentation/12-section-system` | `docs/documentation/04-compositions/12-section-system.md` | `vault` |
+| Controls system | `/documentation/13-controls-system` | `docs/documentation/04-compositions/13-controls-system.md` | `vault` |
+| Design-editor system | `/documentation/14-design-editor-system` | `docs/documentation/04-compositions/14-design-editor-system.md` | `vault` |
+| Media uploads | `/documentation/15-media-uploads` | `docs/documentation/04-compositions/15-media-uploads.md` | `vault` |
 | Compositions | `/documentation/04-compositions-INDEX` | `docs/documentation/04-compositions/INDEX.md` | `vault` |
 
 ### Brand · `05-brand`
@@ -127,7 +138,7 @@ the design system, documented. Source root: `docs/documentation`
 
 derived from the package barrels — chapters are tiers. Source root: `packages/*/src/**/index.js`
 
-### Atoms · 28
+### Atoms · 32
 
 | Page | Path | Source | Render |
 |---|---|---|---|
@@ -138,14 +149,17 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | Badge | `/components/badge` | `showcase/src/docs/components/Badge.mdx` | `mdx` |
 | Button | `/components/button` | `showcase/src/docs/components/Button.mdx` | `mdx` |
 | ColorSwatch | `/components/color-swatch` | `showcase/src/docs/components/ColorSwatch.mdx` | `mdx` |
+| CropOverlay | `/components/crop-overlay` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | CurveOverlay | `/components/curve-overlay` | `showcase/src/docs/components/CurveOverlay.mdx` | `mdx` |
 | Divider | `/components/divider` | `showcase/src/docs/components/Divider.mdx` | `mdx` |
 | Figure | `/components/figure` | `showcase/src/docs/components/Figure.mdx` | `mdx` |
+| FileIcon | `/components/file-icon` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | HlsVideo | `/components/hls-video` | `showcase/src/docs/components/HlsVideo.mdx` | `mdx` |
 | IconFrame | `/components/icon-frame` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Image | `/components/image` | `showcase/src/docs/components/Image.mdx` | `mdx` |
 | Input | `/components/input` | `showcase/src/docs/components/Input.mdx` | `mdx` |
 | Label | `/components/label` | `showcase/src/docs/components/Label.mdx` | `mdx` |
+| PathNodeOverlay | `/components/path-node-overlay` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Pill | `/components/pill` | `showcase/src/docs/components/Pill.mdx` | `mdx` |
 | RotaryDial | `/components/rotary-dial` | `showcase/src/docs/components/RotaryDial.mdx` | `mdx` |
 | SectionLabel | `/components/section-label` | `showcase/src/docs/components/SectionLabel.mdx` | `mdx` |
@@ -159,8 +173,9 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | ToggleCheckbox | `/components/toggle-checkbox` | `showcase/src/docs/components/ToggleCheckbox.mdx` | `mdx` |
 | ToggleSwitch | `/components/toggle-switch` | `showcase/src/docs/components/ToggleSwitch.mdx` | `mdx` |
 | ViewToggle | `/components/view-toggle` | `showcase/src/docs/components/ViewToggle.mdx` | `mdx` |
+| XYPad | `/components/xypad` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Molecules · 62
+### Molecules · 67
 
 | Page | Path | Source | Render |
 |---|---|---|---|
@@ -192,21 +207,26 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | EyedropPick | `/components/eyedrop-pick` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FieldRow | `/components/field-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ImageBlock | `/components/image-block` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| InspectorRail | `/components/inspector-rail` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | InspectorSection | `/components/inspector-section` | `showcase/src/docs/components/InspectorSection.mdx` | `mdx` |
 | KindPreview | `/components/kind-preview` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | LabeledControl | `/components/labeled-control` | `showcase/src/docs/components/LabeledControl.mdx` | `mdx` |
-| MediaCard | `/components/media-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| MediaRow | `/components/media-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| MediaTile | `/components/media-tile` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MenuDropdownDivider | `/components/menu-dropdown-divider` | `showcase/src/docs/components/MenuDropdownDivider.mdx` | `mdx` |
 | MenuDropdownItem | `/components/menu-dropdown-item` | `showcase/src/docs/components/MenuDropdownItem.mdx` | `mdx` |
 | MenuDropdownNest | `/components/menu-dropdown-nest` | `showcase/src/docs/components/MenuDropdownNest.mdx` | `mdx` |
 | MenuItem | `/components/menu-item` | `showcase/src/docs/components/MenuItem.mdx` | `mdx` |
 | MenuPopover | `/components/menu-popover` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| MobileTabBar | `/components/mobile-tab-bar` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ModalProvider | `/components/modal-provider` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PageHeader | `/components/page-header` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PaletteHarmonyWheel | `/components/palette-harmony-wheel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PlaybackBar | `/components/playback-bar` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ProfileCard | `/components/profile-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PropertyInput | `/components/property-input` | `showcase/src/docs/components/PropertyInput.mdx` | `mdx` |
 | QuantityInput | `/components/quantity-input` | `showcase/src/docs/components/QuantityInput.mdx` | `mdx` |
+| QuickLookFrame | `/components/quick-look-frame` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| RowMenuButton | `/components/row-menu-button` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SearchInput | `/components/search-input` | `showcase/src/docs/components/SearchInput.mdx` | `mdx` |
 | Section | `/components/section` | `showcase/src/docs/components/Section.mdx` | `mdx` |
 | SectionCardItem | `/components/section-card-item` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
@@ -227,33 +247,41 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | VideoSheet | `/components/video-sheet` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | VideoTile | `/components/video-tile` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Organisms · 43
+### Organisms · 54
 
 | Page | Path | Source | Render |
 |---|---|---|---|
+| AddLayerButton | `/components/add-layer-button` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Canvas | `/components/canvas` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | CanvasFrame | `/components/canvas-frame` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| CanvasGuides | `/components/canvas-guides` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| CanvasRuler | `/components/canvas-ruler` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| CanvasZoomContext | `/components/canvas-zoom-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ColumnBrowser | `/components/column-browser` | `showcase/src/docs/components/ColumnBrowser.mdx` | `mdx` |
 | ContentCollection | `/components/content-collection` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ContentFilters | `/components/content-filters` | `showcase/src/docs/components/ContentFilters.mdx` | `mdx` |
 | CtaGlobal | `/components/cta-global` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| CurveEditor | `/components/curve-editor` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FeaturedCarousel | `/components/featured-carousel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FeaturesCardSection | `/components/features-card-section` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FeatureSplit | `/components/feature-split` | `showcase/src/docs/components/FeatureSplit.mdx` | `mdx` |
-| FoundryCTA | `/components/foundry-cta` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FramedMediaBand | `/components/framed-media-band` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | FullBleedHero | `/components/full-bleed-hero` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | GalleryCarousel | `/components/gallery-carousel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | HueStrip | `/components/hue-strip` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| KeyframeEditor | `/components/keyframe-editor` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | LabeledControlSection | `/components/labeled-control-section` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| MediaBrowser | `/components/media-browser` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| LayerStack | `/components/layer-stack` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| MediaInspector | `/components/media-inspector` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MediaLibrary | `/components/media-library` | `showcase/src/docs/components/MediaLibrary.mdx` | `mdx` |
+| MediaLibraryExplorer | `/components/media-library-explorer` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MediaLibraryProvider | `/components/media-library-provider` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MediaPicker | `/components/media-picker` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MediaTileGallery | `/components/media-tile-gallery` | `showcase/src/docs/components/MediaTileGallery.mdx` | `mdx` |
 | MediaViewer | `/components/media-viewer` | `showcase/src/docs/components/MediaViewer.mdx` | `mdx` |
 | NewsletterBand | `/components/newsletter-band` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PanViewport | `/components/pan-viewport` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PanZoomViewport | `/components/pan-zoom-viewport` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | RecordManager | `/components/record-manager` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SBSquare | `/components/sbsquare` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SectionCards | `/components/section-cards` | `showcase/src/docs/components/SectionCards.mdx` | `mdx` |
@@ -268,11 +296,14 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | SettingsMulti | `/components/settings-multi` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsPanel | `/components/settings-panel` | `showcase/src/docs/components/SettingsPanel.mdx` | `mdx` |
 | SettingsRow | `/components/settings-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| SettingsSections | `/components/settings-sections` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsSwitch | `/components/settings-switch` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellSearchOverlay | `/components/shell-search-overlay` | `showcase/src/docs/components/ShellSearchOverlay.mdx` | `mdx` |
 | SpectrumControls | `/components/spectrum-controls` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SpectrumGrid | `/components/spectrum-grid` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Table | `/components/table` | `showcase/src/docs/components/Table.mdx` | `mdx` |
+| TimelineDock | `/components/timeline-dock` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ToolPalette | `/components/tool-palette` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | WheelTriangle | `/components/wheel-triangle` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
 ### Chess · 18
@@ -298,7 +329,7 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | SetupPanel | `/components/setup-panel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | VariationTree | `/components/variation-tree` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Component · 16
+### Component · 19
 
 | Page | Path | Source | Render |
 |---|---|---|---|
@@ -306,6 +337,8 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | AssetGrid | `/components/asset-grid` | `showcase/src/docs/components/AssetGrid.mdx` | `mdx` |
 | AssetPlaceholder | `/components/asset-placeholder` | `showcase/src/docs/components/AssetPlaceholder.mdx` | `mdx` |
 | ButtonGroup | `/components/button-group` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| CloseButton | `/components/close-button` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ContextMenu | `/components/context-menu` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | EditorShell | `/components/editor-shell` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ErrorBoundary | `/components/error-boundary` | `showcase/src/docs/components/ErrorBoundary.mdx` | `mdx` |
 | ExitPreview | `/components/exit-preview` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
@@ -315,27 +348,40 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | OverlayGlassPanel | `/components/overlay-glass-panel` | `showcase/src/docs/components/OverlayGlassPanel.mdx` | `mdx` |
 | PopoverPanel | `/components/popover-panel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ProsePreview | `/components/prose-preview` | `showcase/src/docs/components/ProsePreview.mdx` | `mdx` |
+| QuadrantSync | `/components/quadrant-sync` | `showcase/src/docs/components/QuadrantSync.mdx` | `mdx` |
 | TiltCard | `/components/tilt-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Tooltip | `/components/tooltip` | `showcase/src/docs/components/Tooltip.mdx` | `mdx` |
 | TransparentX | `/components/transparent-x` | `showcase/src/docs/components/TransparentX.mdx` | `mdx` |
 
-### Content · 13
+### Content · 9
 
 | Page | Path | Source | Render |
 |---|---|---|---|
-| ArticleCard | `/components/article-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ArticleHeader | `/components/article-header` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | AuthorLine | `/components/author-line` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| ListingCard | `/components/listing-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ParallaxShelf | `/components/parallax-shelf` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PortableTextRenderer | `/components/portable-text-renderer` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ScrollDriftGallery | `/components/scroll-drift-gallery` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShareButtons | `/components/share-buttons` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SourcesReferences | `/components/sources-references` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | StackHero | `/components/stack-hero` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| WorkCard | `/components/work-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| WorkListItem | `/components/work-list-item` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | WorkViewToggle | `/components/work-view-toggle` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+
+### Controls · 11
+
+| Page | Path | Source | Render |
+|---|---|---|---|
+| Fader | `/components/fader` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| FlipToggle | `/components/flip-toggle` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| IconButton | `/components/icon-button` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| JackSocket | `/components/jack-socket` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| Knob | `/components/knob` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| LabeledJack | `/components/labeled-jack` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ModuleHeader | `/components/module-header` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PanelLabel | `/components/panel-label` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ParamSheet | `/components/param-sheet` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| RockerSwitch | `/components/rocker-switch` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| Toggle | `/components/toggle` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
 ### Dashboards · 19
 
@@ -361,7 +407,7 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | ScatterPlot | `/components/scatter-plot` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Sparkline | `/components/sparkline` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Foundry · 26
+### Foundry · 25
 
 | Page | Path | Source | Render |
 |---|---|---|---|
@@ -383,7 +429,6 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | TypefaceHero | `/components/typeface-hero` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypefaceLibraryGrid | `/components/typeface-library-grid` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypefaceLibraryGridWithVariables | `/components/typeface-library-grid-with-variables` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| TypefaceLibraryItem | `/components/typeface-library-item` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypefaceSpecimenPage | `/components/typeface-specimen-page` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypefaceStyleSection | `/components/typeface-style-section` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypefaceVariablePreview | `/components/typeface-variable-preview` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
@@ -392,13 +437,15 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | TypeSpecimenLive | `/components/type-specimen-live` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | VariableFontSection | `/components/variable-font-section` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Framework · 12
+### Framework · 14
 
 | Page | Path | Source | Render |
 |---|---|---|---|
 | AppShell | `/components/app-shell` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | BrandHero | `/components/brand-hero` | `showcase/src/docs/components/BrandHero.mdx` | `mdx` |
 | Layout | `/components/layout` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PageHero | `/components/page-hero` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PageLayout | `/components/page-layout` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PageSection | `/components/page-section` | `showcase/src/docs/components/PageSection.mdx` | `mdx` |
 | PortalFooter | `/components/portal-footer` | `showcase/src/docs/components/PortalFooter.mdx` | `mdx` |
 | ScrollToTop | `/components/scroll-to-top` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
@@ -415,62 +462,74 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 |---|---|---|---|
 | Icon | `/components/icon` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Shell · 19
+### Shell · 16
 
 | Page | Path | Source | Render |
 |---|---|---|---|
 | AppShell | `/components/app-shell` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | CatalogPage | `/components/catalog-page` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| GridCard | `/components/grid-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| LabelRow | `/components/label-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Logomark | `/components/logomark` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | NavHiddenContext | `/components/nav-hidden-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | NavRail | `/components/nav-rail` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PageBleed | `/components/page-bleed` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| PageHeader | `/components/page-header` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PageShell | `/components/page-shell` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsColophon | `/components/settings-colophon` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsLinks | `/components/settings-links` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsScaffold | `/components/settings-scaffold` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| SettingsSection | `/components/settings-section` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | SettingsShortcuts | `/components/settings-shortcuts` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| SettingsToggleContext | `/components/settings-toggle-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShortcutsOverlay | `/components/shortcuts-overlay` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TabStrip | `/components/tab-strip` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TouchDeviceOverlay | `/components/touch-device-overlay` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | WalkthroughPanel | `/components/walkthrough-panel` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Store · 7
+### Store · 6
 
 | Page | Path | Source | Render |
 |---|---|---|---|
 | DiagonalMarqueeRiver | `/components/diagonal-marquee-river` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PriceDisplay | `/components/price-display` | `showcase/src/docs/components/PriceDisplay.mdx` | `mdx` |
 | PrintBuyButton | `/components/print-buy-button` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
-| PrintGridCard | `/components/print-grid-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PrintGridCardGsap | `/components/print-grid-card-gsap` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | PrintsGrid | `/components/prints-grid` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ProductDetailLayout | `/components/product-detail-layout` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Styleguide · 14
+### Styleguide · 30
 
 | Page | Path | Source | Render |
 |---|---|---|---|
 | AppliedCard | `/components/applied-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| AssetCard | `/components/asset-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | AssetTable | `/components/asset-table` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| BusinessCardBack | `/components/business-card-back` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| BusinessCardFront | `/components/business-card-front` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | CardRow | `/components/card-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ClearspaceDiagram | `/components/clearspace-diagram` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ColorAnatomy | `/components/color-anatomy` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ComboLab | `/components/combo-lab` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| EmailSignature | `/components/email-signature` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| Envelope | `/components/envelope` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| Letterhead | `/components/letterhead` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| LetterheadB | `/components/letterhead-b` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| LetterheadCorrespondence | `/components/letterhead-correspondence` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | LogoCard | `/components/logo-card` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | LogoScaling | `/components/logo-scaling` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | MoodTile | `/components/mood-tile` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PostEditorial | `/components/post-editorial` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PostPhoto | `/components/post-photo` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PostProduct | `/components/post-product` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| PostType | `/components/post-type` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ProfileAvatar | `/components/profile-avatar` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | QuadSplit | `/components/quad-split` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | RatioBar | `/components/ratio-bar` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| StoryPhoto | `/components/story-photo` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| StoryType | `/components/story-type` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | StripeRow | `/components/stripe-row` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| Swatch | `/components/swatch` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | Tower | `/components/tower` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | TypeBlock | `/components/type-block` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 
-### Workshop · 29
+### Workshop · 30
 
 | Page | Path | Source | Render |
 |---|---|---|---|
@@ -493,6 +552,7 @@ derived from the package barrels — chapters are tiers. Source root: `packages/
 | ShellContentWidthContext | `/components/shell-content-width-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellFullHeightContext | `/components/shell-full-height-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellLayout | `/components/shell-layout` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
+| ShellNavCollapsedContext | `/components/shell-nav-collapsed-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellSidebar | `/components/shell-sidebar` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellTocCollapsedContext | `/components/shell-toc-collapsed-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
 | ShellTocContext | `/components/shell-toc-context` | `showcase/src/pages/ComponentPage.jsx (generated)` | `page` |
@@ -577,6 +637,15 @@ repo machinery. Source root: `docs/operations`
 | Breakpoint testing | `/documentation/07-device-testing` | `docs/operations/06-workflows/07-device-testing.md` | `vault` |
 | Design-system workflows | `/documentation/06-workflows-INDEX` | `docs/operations/06-workflows/INDEX.md` | `vault` |
 
+### Apps tier · `07-apps-tier`
+
+| Page | Path | Source | Render |
+|---|---|---|---|
+| Tier rules | `/documentation/01-tier-rules` | `docs/operations/07-apps-tier/01-tier-rules.md` | `vault` |
+| Media app plan | `/documentation/02-media-app-plan` | `docs/operations/07-apps-tier/02-media-app-plan.md` | `vault` |
+| Candidate apps | `/documentation/03-candidate-apps` | `docs/operations/07-apps-tier/03-candidate-apps.md` | `vault` |
+| Apps tier | `/documentation/07-apps-tier-INDEX` | `docs/operations/07-apps-tier/INDEX.md` | `vault` |
+
 ## TOOLS
 
 routes the app serves — not a body of material, so not a category in the strict sense; listed because they occupy rail space. Source root: `—`
@@ -597,4 +666,4 @@ routes the app serves — not a body of material, so not a category in the stric
 | | |
 |---|---|
 | Categories | 4 |
-| Pages | 400 |
+| Pages | 459 |

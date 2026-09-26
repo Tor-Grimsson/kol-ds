@@ -2,13 +2,18 @@
   "blocks": {
     "article-grid": {
       "kol": [
-        "ArticleCard",
         "AssetPlaceholder",
-        "Image",
-        "Pill"
+        "ContentCard",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "Icon",
+        "Tag"
       ],
       "local": {},
-      "support": [],
+      "support": [
+        "registerIcons"
+      ],
       "external": []
     },
     "bento-wall": {
@@ -23,8 +28,10 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "motion",
         "registerIcons",
         "tone",
+        "useInViewAttention",
         "usePrefersReducedMotion",
         "useTilt"
       ],
@@ -105,6 +112,7 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone"
@@ -124,9 +132,12 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone",
+        "useCoarsePointer",
+        "useInViewAttention",
         "useSectionTheme"
       ],
       "external": []
@@ -171,6 +182,7 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionSurface",
         "tone",
         "useSectionTheme"
@@ -235,6 +247,7 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone",
@@ -258,9 +271,11 @@
     "product-panel": {
       "kol": [
         "Button",
+        "CloseButton",
         "Divider",
         "Dropdown",
         "Icon",
+        "IconFrame",
         "MenuItem",
         "Pill",
         "Popover",
@@ -373,30 +388,88 @@
     "work-grid": {
       "kol": [
         "AssetPlaceholder",
+        "ContentCard",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
         "Icon",
-        "Image",
         "SearchInput",
         "Tag",
-        "TiltCard",
-        "WorkCard",
-        "WorkListItem",
         "WorkViewToggle"
       ],
       "local": {},
       "support": [
         "glyphLadders",
         "registerIcons",
-        "tone",
-        "useCoarsePointer",
-        "usePrefersReducedMotion",
-        "useTilt"
+        "tone"
       ],
-      "external": [
-        "framer-motion"
-      ]
+      "external": []
     }
   },
   "sets": {
+    "app-shell": {
+      "kol": [
+        "ActionButton",
+        "AppShell",
+        "AssetPlaceholder",
+        "Button",
+        "CatalogPage",
+        "CloseButton",
+        "ContentCard",
+        "ContentFilters",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "Divider",
+        "Dropdown",
+        "FullscreenOverlay",
+        "Icon",
+        "IconFrame",
+        "Input",
+        "LabeledControl",
+        "MenuItem",
+        "ModalProvider",
+        "PageHeader",
+        "PageShell",
+        "Popover",
+        "SearchInput",
+        "SectionText",
+        "SettingsColophon",
+        "SettingsLinks",
+        "SettingsPanel",
+        "SettingsRow",
+        "SettingsScaffold",
+        "SettingsSections",
+        "SettingsShortcuts",
+        "ShellDrawer",
+        "ShortcutsOverlay",
+        "SideNav",
+        "SizeOrDownload",
+        "Tag",
+        "ThemeToggle",
+        "ToggleSwitch",
+        "Tooltip",
+        "WalkthroughPanel"
+      ],
+      "local": {},
+      "support": [
+        "formatSize",
+        "glyphLadders",
+        "layerStack",
+        "motion",
+        "registerIcons",
+        "theme",
+        "tone",
+        "useDragResize",
+        "useGrabEdge",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap",
+        "react-router-dom"
+      ]
+    },
     "chess-apparatus": {
       "kol": [
         "AlternativeControlsMock",
@@ -410,12 +483,14 @@
         "ChessHero",
         "ChessPiece",
         "ChessSidebar",
+        "CloseButton",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
         "GameArchiveTable",
         "GamePicker",
         "Icon",
+        "IconFrame",
         "Input",
         "MaterialSummary",
         "MenuItem",
@@ -434,6 +509,7 @@
         "chessFen",
         "glyphLadders",
         "labels",
+        "layerStack",
         "parsePgnTree",
         "registerIcons",
         "tone",
@@ -444,52 +520,6 @@
       "external": [
         "@floating-ui/react",
         "chess.js"
-      ]
-    },
-    "content-card-comparison": {
-      "kol": [
-        "ActionButton",
-        "AssetPlaceholder",
-        "Button",
-        "ContentCard",
-        "ContentCollection",
-        "ContentFilters",
-        "ContentMedia",
-        "ContentRow",
-        "ContentText",
-        "Divider",
-        "GridCard",
-        "Icon",
-        "IconFrame",
-        "Image",
-        "ListingCard",
-        "MediaCard",
-        "MediaRow",
-        "PageHeader",
-        "PageShell",
-        "Pill",
-        "PrintGridCard",
-        "SearchInput",
-        "SegmentedToggle",
-        "SizeOrDownload",
-        "Tag",
-        "TiltCard",
-        "TypefaceLibraryItem",
-        "WorkCard",
-        "WorkListItem"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "registerIcons",
-        "tone",
-        "useCoarsePointer",
-        "usePrefersReducedMotion",
-        "useTilt"
-      ],
-      "external": [
-        "framer-motion",
-        "gsap"
       ]
     },
     "content-filters": {
@@ -506,6 +536,7 @@
         "Divider",
         "Icon",
         "IconFrame",
+        "Popover",
         "SearchInput",
         "Tag"
       ],
@@ -516,33 +547,73 @@
         "tone",
         "usePrefersReducedMotion"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
+    },
+    "content-set-reference": {
+      "kol": [
+        "ActionButton",
+        "AssetPlaceholder",
+        "ContentCard",
+        "ContentMedia",
+        "ContentRow",
+        "ContentText",
+        "Icon",
+        "Popover",
+        "SizeOrDownload",
+        "Tag"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "motion",
+        "registerIcons",
+        "tone"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
     },
     "design-editor": {
       "kol": [
         "AlignmentGrid",
         "Button",
         "Canvas",
+        "CanvasZoomContext",
+        "CloseButton",
         "ColorInputRow",
         "ColorSwatch",
         "Divider",
         "EditorShell",
-        "EmptyState",
         "Icon",
+        "IconFrame",
         "Input",
+        "InspectorRail",
+        "LayerStack",
+        "MenuItem",
         "Popover",
+        "SegmentedToggle",
         "SelectionOverlay",
         "TabsRow",
-        "TransparentX"
+        "TransparentX",
+        "XYPad"
       ],
       "local": {},
       "support": [
+        "canvasZoom",
         "glyphLadders",
+        "layerTree",
+        "motion",
         "registerIcons",
-        "tone"
+        "tone",
+        "useDragResize",
+        "useGrabEdge"
       ],
       "external": [
-        "@floating-ui/react"
+        "@floating-ui/react",
+        "gsap"
       ]
     },
     "foundry-specimen": {
@@ -579,7 +650,8 @@
         "usePrefersReducedMotion"
       ],
       "external": [
-        "@floating-ui/react"
+        "@floating-ui/react",
+        "opentype.js"
       ]
     },
     "kind-preview": {
@@ -589,18 +661,22 @@
         "AudioPreview",
         "AudioSheet",
         "Button",
+        "CloseButton",
         "CodeBlock",
         "CopyButton",
         "DocFrontmatter",
         "DocPage",
+        "FileIcon",
         "FullscreenOverlay",
         "HlsVideo",
         "Icon",
         "IconFrame",
         "Input",
         "KindPreview",
+        "PdfPage",
         "PlaybackBar",
         "Popover",
+        "QuickLookFrame",
         "Slider",
         "Tag"
       ],
@@ -609,8 +685,10 @@
         "frontmatter",
         "glyphLadders",
         "id3",
+        "layerStack",
         "markdownToHtml",
         "mediaKinds",
+        "motion",
         "registerIcons",
         "tone",
         "usePlayback"
@@ -630,6 +708,7 @@
         "AudioPreview",
         "AudioSheet",
         "Button",
+        "CloseButton",
         "CodeBlock",
         "ColumnBrowser",
         "ContentCard",
@@ -637,11 +716,13 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "CopyButton",
         "Divider",
         "DocFrontmatter",
         "DocPage",
         "Dropdown",
+        "FileIcon",
         "FullscreenOverlay",
         "HlsVideo",
         "Icon",
@@ -650,16 +731,24 @@
         "KindPreview",
         "LabeledControl",
         "MediaLibrary",
+        "MediaLibraryExplorer",
         "MediaLibraryPages",
         "MediaPicker",
+        "MediaTile",
         "MediaViewer",
         "MenuItem",
+        "MobileTabBar",
+        "Modal",
+        "PdfPage",
         "PlaybackBar",
         "Popover",
+        "QuickLookFrame",
+        "RowMenuButton",
         "SearchInput",
         "SegmentedToggle",
         "SettingsPanel",
         "ShellDrawer",
+        "ShellSearchOverlay",
         "SizeOrDownload",
         "Slider",
         "SortControls",
@@ -673,14 +762,22 @@
       "local": {},
       "support": [
         "createMediaClient",
+        "formatSize",
         "frontmatter",
         "glyphLadders",
         "id3",
+        "layerStack",
         "markdownToHtml",
         "mediaKinds",
+        "motion",
         "ratios",
         "registerIcons",
         "tone",
+        "useCoarsePointer",
+        "useGrabEdge",
+        "useLongPress",
+        "useMarquee",
+        "useMediaQuery",
         "usePlayback",
         "usePrefersReducedMotion"
       ],
@@ -730,6 +827,7 @@
         "metrics-constants",
         "registerIcons",
         "timeAgo",
+        "tone",
         "useChartTooltip",
         "useCountUp",
         "useMetricsData"
@@ -739,10 +837,12 @@
     "prints-store": {
       "kol": [
         "Button",
+        "CloseButton",
         "DiagonalMarqueeRiver",
         "Divider",
         "Dropdown",
         "Icon",
+        "IconFrame",
         "MenuItem",
         "Pill",
         "Popover",
@@ -771,6 +871,7 @@
         "AudioPreview",
         "AudioSheet",
         "Button",
+        "CloseButton",
         "CodeBlock",
         "ColumnBrowser",
         "ContentCard",
@@ -778,12 +879,14 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "CopyButton",
         "Divider",
         "DocFrontmatter",
         "DocPage",
         "Dropdown",
         "FieldRow",
+        "FileIcon",
         "FullscreenOverlay",
         "HlsVideo",
         "Icon",
@@ -792,16 +895,24 @@
         "KindPreview",
         "LabeledControl",
         "MediaLibrary",
+        "MediaLibraryExplorer",
         "MediaLibraryPages",
+        "MediaTile",
         "MediaViewer",
         "MenuItem",
+        "MobileTabBar",
+        "Modal",
+        "PdfPage",
         "PlaybackBar",
         "Popover",
+        "QuickLookFrame",
         "RecordManager",
+        "RowMenuButton",
         "SearchInput",
         "SegmentedToggle",
         "SettingsPanel",
         "ShellDrawer",
+        "ShellSearchOverlay",
         "SizeOrDownload",
         "Slider",
         "SortControls",
@@ -815,14 +926,22 @@
       ],
       "local": {},
       "support": [
+        "formatSize",
         "frontmatter",
         "glyphLadders",
         "id3",
+        "layerStack",
         "markdownToHtml",
         "mediaKinds",
+        "motion",
         "ratios",
         "registerIcons",
         "tone",
+        "useCoarsePointer",
+        "useGrabEdge",
+        "useLongPress",
+        "useMarquee",
+        "useMediaQuery",
         "usePlayback",
         "usePrefersReducedMotion"
       ],
@@ -861,9 +980,12 @@
       "support": [
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone",
+        "useCoarsePointer",
+        "useInViewAttention",
         "useSectionTheme"
       ],
       "external": [
@@ -874,14 +996,16 @@
     "stack-blog": {
       "kol": [
         "ActionButton",
-        "ArticleCard",
         "ArticleHeader",
         "AssetPlaceholder",
         "AuthorLine",
         "Avatar",
         "Button",
         "CodeBlock",
+        "ContentCard",
         "ContentMedia",
+        "ContentRow",
+        "ContentText",
         "CopyButton",
         "Divider",
         "EmblaNav",
@@ -894,23 +1018,28 @@
         "ImageBlock",
         "OverlayGlassPanel",
         "Pill",
+        "Popover",
         "PortableTextRenderer",
         "SectionText",
         "ShareButtons",
         "SourcesReferences",
         "StackHero",
         "Table",
+        "Tag",
         "VideoBlock"
       ],
       "local": {},
       "support": [
         "glyphLadders",
+        "motion",
         "registerIcons",
+        "sectionBleed",
         "sectionSurface",
         "tone",
         "useSectionTheme"
       ],
       "external": [
+        "@floating-ui/react",
         "embla-carousel-react",
         "gsap",
         "hls.js",
@@ -920,25 +1049,41 @@
     },
     "styleguide": {
       "kol": [
+        "AssetCard",
         "AssetGrid",
+        "AssetPlaceholder",
         "AssetTable",
+        "BusinessCardBack",
+        "BusinessCardFront",
         "ClearspaceDiagram",
         "ColorAnatomy",
         "ColorInputRow",
         "ColorRamp",
         "ColorSwatch",
         "ComboLab",
+        "EmailSignature",
+        "Envelope",
         "FeatureSplit",
         "Icon",
         "Input",
+        "Letterhead",
+        "LetterheadCorrespondence",
         "LogoCard",
         "LogoScaling",
         "MoodTile",
         "Popover",
+        "PostEditorial",
+        "PostPhoto",
+        "PostProduct",
+        "PostType",
+        "ProfileAvatar",
         "ProsePreview",
         "SectionSplit",
         "SectionText",
         "SpectrumGrid",
+        "StoryPhoto",
+        "StoryType",
+        "Swatch",
         "Table",
         "ToggleSwitch",
         "TransparentX",
@@ -954,6 +1099,7 @@
         "cssVar",
         "glyphLadders",
         "registerIcons",
+        "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone",
@@ -969,26 +1115,27 @@
         "AssetPlaceholder",
         "Button",
         "Carousel",
+        "CloseButton",
         "ContentCard",
         "ContentMedia",
+        "ContentRow",
         "ContentText",
         "EmblaNav",
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
-        "Image",
+        "IconFrame",
         "MediaViewer",
         "ParallaxShelf",
         "SearchInput",
         "Tag",
-        "TiltCard",
-        "WorkCard",
-        "WorkListItem",
         "WorkViewToggle"
       ],
       "local": {},
       "support": [
         "glyphLadders",
+        "layerStack",
+        "motion",
         "registerIcons",
         "tone",
         "useCoarsePointer",

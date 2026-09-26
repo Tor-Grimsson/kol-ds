@@ -18566,35 +18566,6 @@
     ]
   },
   {
-    "name": "FoundryCTA",
-    "pkg": "@kolkrabbi/kol-component",
-    "category": "organisms",
-    "count": 1,
-    "apps": [
-      "kol-website"
-    ],
-    "files": 1,
-    "weighted": 3,
-    "internal": 0,
-    "src": "./organisms/FoundryCTA.jsx",
-    "edgeCount": 1,
-    "edges": [
-      {
-        "file": "kol-website/_tmp/web-quarantine-elder/PrintDetail.jsx",
-        "app": "kol-website",
-        "uses": 1,
-        "stars": 3
-      }
-    ],
-    "examples": [
-      {
-        "app": "kol-website",
-        "file": "kol-website/_tmp/web-quarantine-elder/PrintDetail.jsx",
-        "code": "<FoundryCTA\n          heading=\"Custom Commissions\"\n          description=\"Interested in a custom piece or collaboration? Get in touch to discuss your project.\"\n          action={{\n            to: 'mailto:hello@kolkrabbi.io',\n            label: 'Get in Touch'\n          }}\n        />"
-      }
-    ]
-  },
-  {
     "name": "CtaGlobal",
     "pkg": "@kolkrabbi/kol-component",
     "category": "organisms",

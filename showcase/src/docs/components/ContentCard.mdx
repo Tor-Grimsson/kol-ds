@@ -43,7 +43,7 @@ Six variants over one anatomy — `default · catalog · print · article · wor
 ## Props
 
 <Api name="ContentCard" rows={[
-  {"prop":"variant","type":"'default' | 'catalog' | 'print' | 'article' | 'work' | 'typeface'","def":"'default'","desc":"The variant — text composition, media ratio, box. default carries no border since 0.96.0 (the selected state reads from the checkbox). print: selected turns the card (PrintGridCard's flip), the media fades in lazily, onClick's event.currentTarget is the rect."},
+  {"prop":"variant","type":"'default' | 'catalog' | 'print' | 'article' | 'work' | 'typeface'","desc":"The variant — text composition, media ratio, box. default carries no border since 0.96.0 (the selected state reads from the checkbox). print: selected turns the card (PrintGridCard's flip), the media fades in lazily, onClick's event.currentTarget is the rect."},
   {"prop":"hero · label · meta","type":"boolean · ReactNode · ReactNode[]","def":"false","desc":"article only: the FEATURED card riding a page's fold — a header row above the media (label left, meta chips right), the media on the 1.02 zoom rung, the title on display-03; tags become data-tags. Was ListingCard size='hero'."},
   {"prop":"title · body · eyebrow (alias kicker) · detail · date · size · meta · tags","type":"ReactNode","def":"—","desc":"The text slots (per variant — see ContentText)."},
   {"prop":"titleClass · bodyClass · eyebrowClass (alias kickerClass) · detailClass · dateClass · sizeClass · metaClass · tagsClass","type":"string","def":"—","desc":"Replace a slot's ruled type class whole."},

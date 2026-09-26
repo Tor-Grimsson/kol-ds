@@ -4,6 +4,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'
+import Tag from '../atoms/Tag.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
 import ActionButton from '../atoms/ActionButton.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
@@ -66,6 +67,18 @@ import { nearestRatio } from '../utilities/ratios.js'
  * `client.buckets()` (kol-media-client ≥0.2.0); a client with none is one bucket
  * and no dropdown. Settings are kol-r2b2's per-bucket model (`SETTINGS_BASE`),
  * controlled through `settings` / `onSettingsChange` so a consumer persists them.
+ *
+ * WHAT A DATABASE BESIDE THE BUCKET ADDS (the media D1 pass, 2026-09-25 — kol-olina keeps these
+ * in Cloudflare D1). Every verb is optional; a client without one hides that feature and nothing
+ * else changes. Keys are the page's own (bucket keys), `bucket` is the bucket id.
+ *   tags          listed objects carry `tags: string[]`; `setTags(key, tags, bucket)` writes them —
+ *                 preview-pane chips, "Tags…" / "Add tags to N…" in the menu, a Tags filter
+ *                 group, a Tags column under Fields
+ *   text editing  `readText(key, bucket) → { text, draft }` · `writeText(key, text, bucket)` ·
+ *                 `saveDraft(key, text | null, bucket)`; listed objects carry `hasDraft` — Edit in
+ *                 the pane and in Quick Look for markdown · json · yaml · text · code
+ *   settings      `loadSettings(bucket)` · `saveSettings(bucket, settings | null)` (null = reset) —
+ *                 used when the page is UNCONTROLLED; a `settings` prop still wins
  */
 
 /* THE ROW VIEW'S COLUMNS (user 2026-09-22). OFF by default and `rowColumns` turns them on: with
@@ -165,11 +178,32 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
   const buckets = useMemo(() => client?.buckets?.() ?? [], [client])
   const bucketMeta = buckets.find((b) => b.id === bucket) ?? buckets[0] ?? { id: null, label: '', writable: false }
   const bucketId = bucketMeta.id
-  const [own, setOwn] = useState(() => ({ ...SETTINGS_BASE, ...(defaults?.[bucketId] ?? defaults ?? {}) }))
+  const base = () => ({ ...SETTINGS_BASE, ...(defaults?.[bucketId] ?? defaults ?? {}) })
+  const [own, setOwn] = useState(base)
+  /* PERSONALISATION (the media D1 pass, 2026-09-25): an uncontrolled page whose client offers
+   * `loadSettings(bucket)` / `saveSettings(bucket, settings | null)` keeps each person's view
+   * settings THERE — kol-olina's D1 — instead of for this tab only. `null` is reset. A `settings`
+   * prop still wins: a consumer that owns them is left alone, exactly as before. */
+  const remote = !controlled && typeof client?.loadSettings === 'function'
+  useEffect(() => {
+    if (!remote) return undefined
+    let live = true
+    Promise.resolve(client.loadSettings(bucketId ?? undefined))
+      .then((got) => { if (live) setOwn({ ...base(), ...(got ?? {}) }) })
+      .catch(() => {})
+    return () => { live = false }
+  }, [remote, client, bucketId]) // eslint-disable-line react-hooks/exhaustive-deps
   const settings = controlled ?? own
   const setSettings = (next) => {
-    if (next === null) { const back = { ...SETTINGS_BASE, ...(defaults?.[bucketId] ?? defaults ?? {}) }; if (!controlled) setOwn(back); onSettingsChange?.(back); return }
+    if (next === null) {
+      const back = base()
+      if (!controlled) setOwn(back)
+      if (remote) Promise.resolve(client.saveSettings?.(bucketId ?? undefined, null)).then((got) => got && setOwn({ ...back, ...got })).catch(() => {})
+      onSettingsChange?.(back)
+      return
+    }
     if (!controlled) setOwn(next)
+    if (remote) Promise.resolve(client.saveSettings?.(bucketId ?? undefined, next)).catch(() => {})
     onSettingsChange?.(next)
   }
   const [loaded, setLoaded] = useState({ key: null, bucket: null, objects: [], error: null })
@@ -213,6 +247,30 @@ function ImageFrame({ src, vector }) {
 }
 
 
+/* TAGS IN THE PREVIEW PANE (the media D1 pass, 2026-09-25). The file's tags as removable chips and
+ * one field that adds on Enter — comma-separated adds several. Tags are the CLIENT's (`setTags`);
+ * without it, or on a read-only bucket, the chips show and nothing edits them. */
+function TagEditor({ tags = [], onChange }) {
+  const add = (raw) => {
+    const next = raw.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
+    if (next.length) onChange([...new Set([...tags, ...next])])
+  }
+  if (!onChange && !tags.length) return null
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="kol-mono-12 text-fg-48">Tags</span>
+      {tags.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {tags.map((t) => (
+            <Tag key={t} variant="secondary" size="sm" onRemove={onChange ? () => onChange(tags.filter((x) => x !== t)) : undefined}>{t}</Tag>
+          ))}
+        </div>
+      )}
+      {onChange && <Input size="xs" value="" placeholder="Add a tag" aria-label="Add a tag" onCommit={add} />}
+    </div>
+  )
+}
+
 /* `depth` indents a row under the folder it was expanded from; `expanded`/`onToggle` draw the
  * disclosure twisty. A folder row without `onToggle` keeps the old behaviour exactly — one chevron
  * that navigates — so nothing that already renders these moves. */
@@ -232,10 +290,16 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
   const dropProps = drag || dropFiles ? {
     onDragOver: (e) => { if (takesFiles(e) || (drag && !isFileDrag(e) && drag.canDrop(drag.path))) { e.preventDefault(); setOver(true) } },
     onDragLeave: () => setOver(false),
+    /* A ROW THAT CANNOT TAKE THE DROP LETS IT BUBBLE (the file-onto-file bug, 2026-09-25): the
+     * enclosing column / list allows the drag, so the drop still fires HERE, and moving into a
+     * FILE's key renamed the dragged file. Unguarded, it skipped `canDrop`; now the container
+     * takes it — dropped on a file, it lands in that file's folder, as Finder does. */
     onDrop: (e) => {
-      e.preventDefault(); e.stopPropagation(); setOver(false)
-      if (takesFiles(e)) dropFiles(e.dataTransfer.files)
-      else if (drag && !isFileDrag(e)) drag.onDrop(drag.path)
+      setOver(false)
+      if (takesFiles(e)) { e.preventDefault(); e.stopPropagation(); dropFiles(e.dataTransfer.files); return }
+      if (!drag || isFileDrag(e) || !drag.canDrop(drag.path)) return
+      e.preventDefault(); e.stopPropagation()
+      drag.onDrop(drag.path)
     },
   } : {}
   return (
@@ -264,6 +328,7 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
           line up or the header above them is a lie. The trailing chevron went with them: it
           promised a click that opens, and a click now SELECTS (opening is a double-click). */}
       {cols && <>
+        {cols.tags != null && <span className="shrink-0" style={{ width: cols.tags }} />}
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{meta}</span>
         <span className="kol-mono-12 text-fg-24 shrink-0 truncate" style={{ width: cols.size }}>—</span>
       </>}
@@ -340,6 +405,7 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
       </span>
       <span className="flex-1" />
       {cols && <>
+        {cols.tags != null && <span className="kol-mono-12 text-fg-48 shrink-0 truncate" style={{ width: cols.tags }}>{(o.tags ?? []).map((t) => `#${t}`).join(' ')}</span>}
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{formatDate?.(o.uploaded)}</span>
         <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.size }}>{formatSize(o.size)}</span>
       </>}
@@ -451,9 +517,109 @@ function RowHeader({ sortBy = 'name', sortDir = 'asc', onSort, width, cols, onRe
       <span className="w-4 shrink-0" aria-hidden="true" />
       <span className="w-8 shrink-0" aria-hidden="true" />
       <span className="flex-1 min-w-0">{label('name', 'Name')}</span>
+      {/* Tags does not sort — a file has several — so its header is a plain label */}
+      {cols.tags != null && (
+        <div className="relative shrink-0 border-l" style={{ width: cols.tags, borderColor: 'var(--kol-oq-08)' }}>
+          {handle('tags')}
+          <span className="kol-helper-12 text-fg-48">Tags</span>
+        </div>
+      )}
       {column('date', 'Date')}
       {column('size', 'Size')}
     </div>
+  )
+}
+
+/* THE KINDS THAT OPEN AS TEXT — what `FileEditor` takes (the media D1 pass, 2026-09-25) */
+const TEXT_KINDS = new Set(['markdown', 'json', 'yaml', 'text', 'code'])
+
+/* FILE EDITING (the media D1 pass, 2026-09-25) — Quick Look's window with the text in it. Every
+ * pause writes a DRAFT through `client.saveDraft` (kol-olina keeps it in D1, beside the file), so
+ * closing the window or the tab loses nothing; ⌘S or Save writes the FILE (`client.writeText`) and
+ * clears the draft; Revert drops the draft and goes back to the file. The file itself changes only
+ * on Save — a draft is never what anyone else sees. */
+const DRAFT_PAUSE = 800
+function FileEditor({ o, client, bucket, onClose, onSaved, onDraft }) {
+  const [base, setBase] = useState(null) // the saved file's text; null while loading
+  const [text, setText] = useState('')
+  const [status, setStatus] = useState('loading') // loading · saved · draft · editing · saving · error
+  const timer = useRef(null)
+  const latest = useRef('')
+  const baseRef = useRef(null) // `base` for the unmount flush, which would otherwise see the first render's
+  const keep = (b) => { baseRef.current = b; setBase(b) }
+  useEffect(() => {
+    let live = true
+    client.readText(o.key, bucket).then(({ text: file, draft }) => {
+      if (!live) return
+      keep(file ?? '')
+      setText(draft ?? file ?? '')
+      latest.current = draft ?? file ?? ''
+      setStatus(draft != null ? 'draft' : 'saved')
+    }).catch((e) => live && setStatus(`error: ${e.message}`))
+    return () => { live = false }
+  }, [o.key]) // eslint-disable-line react-hooks/exhaustive-deps
+  const flushDraft = () => {
+    if (timer.current == null) return undefined
+    clearTimeout(timer.current); timer.current = null
+    const t = latest.current
+    const clean = t === baseRef.current
+    return Promise.resolve(client.saveDraft?.(o.key, clean ? null : t, bucket))
+      .then(() => { setStatus(clean ? 'saved' : 'draft'); onDraft?.(o.key, !clean) })
+      .catch(() => {})
+  }
+  useEffect(() => () => { flushDraft() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const edit = (t) => {
+    setText(t); latest.current = t; setStatus('editing')
+    clearTimeout(timer.current)
+    timer.current = setTimeout(flushDraft, DRAFT_PAUSE)
+  }
+  const save = async () => {
+    clearTimeout(timer.current); timer.current = null
+    setStatus('saving')
+    try {
+      const res = await client.writeText(o.key, latest.current, bucket)
+      keep(latest.current); setStatus('saved')
+      onSaved?.(o.key, res)
+    } catch (e) { setStatus(`error: ${e.message}`) }
+  }
+  const revert = async () => {
+    clearTimeout(timer.current); timer.current = null
+    await client.saveDraft?.(o.key, null, bucket)
+    setText(baseRef.current ?? ''); latest.current = baseRef.current ?? ''; setStatus('saved')
+    onSaved?.(o.key, null)
+  }
+  const dirty = base != null && text !== base
+  /* ⌘S anywhere while the editor is open — not only with the caret in the text */
+  const saveRef = useRef(null)
+  saveRef.current = () => { if (baseRef.current != null && latest.current !== baseRef.current) save() }
+  useEffect(() => {
+    const onKey = (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') { e.preventDefault(); saveRef.current() } }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+  const label = { loading: 'Loading…', saved: 'Saved', draft: 'Draft — not saved to the file', editing: 'Editing…', saving: 'Saving…' }[status] ?? status
+  return (
+    <FullscreenOverlay open onClose={() => { flushDraft(); onClose() }} closeButton={false} scrim>
+      <QuickLookFrame title={o.displayKey ?? o.key.split('/').pop()} meta={label} onClose={() => { flushDraft(); onClose() }}
+        actions={(
+          <span className="flex items-center gap-2">
+            {dirty && <Button variant="nav" size="sm" onClick={revert}>Revert</Button>}
+            <Button variant="secondary" size="sm" onClick={save} disabled={!dirty || status === 'saving'}>Save</Button>
+          </span>
+        )}>
+        <textarea
+          value={text}
+          onChange={(e) => edit(e.target.value)}
+          disabled={base == null}
+          spellCheck={false}
+          aria-label={`Edit ${o.key.split('/').pop()}`}
+          className="kol-mono-12 block bg-transparent text-fg-default p-4 resize-none outline-none"
+          /* inline: Tailwind does not generate arbitrary values from package source (see the SVG box
+             in MediaInspector) — the window's own caps */
+          style={{ width: 'min(900px, var(--kol-ql-max-w))', height: 'min(640px, var(--kol-ql-media-h))' }}
+        />
+      </QuickLookFrame>
+    </FullscreenOverlay>
   )
 }
 
@@ -482,8 +648,9 @@ function RowHeader({ sortBy = 'name', sortDir = 'asc', onSort, width, cols, onRe
  * @param {Function} downloadUrl - `(key) => url` for the download control
  * @param {Set|Object} keySet - The bucket's key set, used to find a video's poster
  * @param {boolean} showNav - ‹ › and n / N in the header (default on); off when not paging a selection
+ * @param {Function} onEdit - `(file) => void` — an Edit action in the header for a text file (markdown · json · yaml · text · code); absent, no Edit
  */
-export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl, downloadUrl, keySet, showNav = true }) {
+export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl, downloadUrl, keySet, showNav = true, onEdit }) {
   const o = files[index]
   const [dims, setDims] = useState(null)
   /* the window's size survives paging — Finder keeps it — so it lives here, not in the frame,
@@ -522,6 +689,11 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
      * the header; bare at rest with a wash on hover, `sm` so the glyphs sit with the 12px text. */
     actions: (
       <span className="flex items-center gap-1">
+        {onEdit && TEXT_KINDS.has(kind) && (
+          <Tooltip label="Edit">
+            <Button variant="nav" size="sm" iconOnly="edit" onClick={() => onEdit(o)} aria-label="Edit" />
+          </Tooltip>
+        )}
         <CopyAction label="Copy URL" text={mediaUrl(o.key)} />
         <Tooltip label="Download">
           <Button variant="nav" size="sm" iconOnly="download" href={downloadUrl(o.key)} download={o.key.split('/').pop()} aria-label="Download" />
@@ -976,6 +1148,49 @@ export function MediaLibraryBrowse({
   const press = useLongPress()
   const modal = useModal()
   const canWrite = !!fileActions && writable
+  /* TAGS ARE THE CLIENT'S (the media D1 pass, 2026-09-25) — `client.setTags(key, tags, bucket)`
+   * writes them, the listing carries them back as `o.tags`. The list is patched in place so a chip
+   * lands at once; the next listing confirms it. */
+  const canTag = writable && typeof client?.setTags === 'function'
+  const saveTags = (key, tags) => runAction(async () => {
+    await client.setTags(key, tags, bucketMeta.id ?? undefined)
+    lib.setObjects((list) => list.map((o) => (o.key === key ? { ...o, tags } : o)))
+    setPickedFile((f) => (f?.key === key ? { ...f, tags } : f))
+  })
+  const tagsOf = (key) => objects.find((o) => o.key === key)?.tags ?? []
+  /* EDITING IS THE CLIENT'S TOO — `readText` / `writeText`, with `saveDraft` for the pauses */
+  const canEdit = writable && typeof client?.readText === 'function' && typeof client?.writeText === 'function'
+  const [editing, setEditing] = useState(null)
+  const afterEdit = (key, res) => {
+    lib.setObjects((list) => list.map((o) => (o.key === key ? { ...o, hasDraft: false, ...(res?.size != null && { size: res.size, uploaded: new Date().toISOString() }) } : o)))
+  }
+  const hasTags = canTag || objects.some((o) => o.tags?.length)
+  /* what the preview pane adds under a file's facts, in every view */
+  const detailsFor = (o) => {
+    const tags = tagsOf(o.key)
+    const editable = canEdit && TEXT_KINDS.has(kindOf(o))
+    const hasDraft = objects.find((x) => x.key === o.key)?.hasDraft
+    if (!editable && !canTag && !tags.length) return null
+    return (
+      <div className="flex flex-col gap-4">
+        {editable && (
+          <div className="flex items-center gap-3">
+            <Button variant="secondary" size="sm" iconLeft="edit" onClick={() => setEditing(o)}>Edit</Button>
+            {hasDraft && <span className="kol-mono-12 text-fg-48">Unsaved draft</span>}
+          </div>
+        )}
+        {(canTag || tags.length > 0) && <TagEditor tags={tags} onChange={canTag ? (next) => saveTags(o.key, next) : undefined} />}
+      </div>
+    )
+  }
+  const doTags = async (keys) => {
+    const one = keys.length === 1
+    const current = one ? tagsOf(keys[0]).join(', ') : ''
+    const answer = await modal.prompt(one ? 'Tags, separated by commas:' : `Add tags to ${keys.length} files, separated by commas:`, current, { okLabel: 'Save' })
+    if (answer == null) return
+    const typed = answer.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
+    for (const key of keys) await saveTags(key, one ? typed : [...new Set([...tagsOf(key), ...typed])])
+  }
   const [busyAction, setBusyAction] = useState(false)
 
   const runAction = async (fn) => {
@@ -1437,7 +1652,7 @@ export function MediaLibraryBrowse({
   const showRowPreview = folderView === 'rows' && (settings.rowPreview ?? true)
   const showGridPreview = view === 'grid' && (settings.rowPreview ?? true)
   /* OFF by default: a row is a name, and the facts live in the preview (user 2026-09-22) */
-  const rowCols = settings.rowColumns ? rowColWidths(settings) : null
+  const rowCols = settings.rowColumns ? { ...rowColWidths(settings), ...(hasTags && { tags: settings.rowColumnWidths?.tags ?? 140 }) } : null
   const previewWidth = settings.columnWidths?.preview ?? 320
   const previewFile = pickedFile && pickedFile.key.startsWith(prefix) ? pickedFile : null
   const previewFolder = pickedFolder && pickedFolder.startsWith(prefix) ? pickedFolder : null
@@ -1459,6 +1674,7 @@ export function MediaLibraryBrowse({
     ) : previewFile ? (
       <ColumnPreview key={previewFile.key} o={previewFile} urlOf={(o) => mediaUrl(o.key)} kindOf={kindOf} kindLabel={KIND_LABEL}
         formatSize={formatSize} formatDate={formatDate} width={previewWidth}
+        renderDetails={detailsFor}
         renderPreview={(o) => {
           if (isImage(o.contentType)) return <ImageFrame src={mediaUrl(o.key)} vector={o.contentType === 'image/svg+xml'} />
           const poster = posterFor(o.key, keySet)
@@ -1580,6 +1796,7 @@ export function MediaLibraryBrowse({
    * serves both: the wall renders it, the tree is scoped to the keys in it */
   const filterItems = isWall ? wallFiles : scoped.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), displayKey: prefix ? o.key.slice(prefix.length) : o.key }))
   const filterKinds = [...new Set(filterItems.map((o) => o.kind))].sort()
+  const filterTags = [...new Set(filterItems.flatMap((o) => o.tags ?? []))].sort()
 
   /* ── THE BODY, one of four (2026-09-22) ────────────────────────────────────────────────────
    * `treeBody` draws the columns or the rows over whatever object list it is handed — the whole
@@ -1652,6 +1869,7 @@ export function MediaLibraryBrowse({
                 /* the PROP wins when a consumer passes one; otherwise the `···`
                    owns it through settings (item 15) */
                 stackView={stackView ?? settings.stackView ?? 'list'}
+                renderDetails={(o) => detailsFor({ ...o, key: o.key.slice(VROOT.length) })}
                 renderPreview={(o) => {
                   const real = { ...o, key: o.key.slice(VROOT.length) }
                   if (isImage(real.contentType)) return <ImageFrame src={mediaUrl(real.key)} vector={real.contentType === 'image/svg+xml'} />
@@ -2079,7 +2297,12 @@ export function MediaLibraryBrowse({
         )}
         {quickLook && (
           <MediaInspector files={quickLook.files} index={quickLook.index} onClose={closeQuickLook} mediaUrl={mediaUrl} downloadUrl={downloadUrl} keySet={keySet} showNav={rowSelection.size > 1}
+            onEdit={canEdit ? (f) => { closeQuickLook(); setEditing(f) } : undefined}
             onPrev={() => stepQuickLook(-1)} onNext={() => stepQuickLook(1)} />
+        )}
+        {editing && (
+          <FileEditor o={editing} client={client} bucket={bucketMeta.id ?? undefined} onClose={() => setEditing(null)} onSaved={afterEdit}
+            onDraft={(key, has) => lib.setObjects((list) => list.map((x) => (x.key === key ? { ...x, hasDraft: has } : x)))} />
         )}
         {settingsOpen && (
           <MediaSettings bucketMeta={bucketMeta} settings={settings} profile={profile} onChange={setSettings} onReset={() => setSettings(null)} onClose={() => setSettingsOpen(false)} settingsFooter={settingsFooter} />
@@ -2097,7 +2320,7 @@ export function MediaLibraryBrowse({
             title="Files"
             totalCount={filterItems.length}
             searchKeys={['displayKey']}
-            filterGroups={[{ label: 'Kind', key: 'kind', values: filterKinds }]}
+            filterGroups={[{ label: 'Kind', key: 'kind', values: filterKinds }, ...(filterTags.length ? [{ label: 'Tags', key: 'tags', values: filterTags }] : [])]}
             mutuallyExclusiveFilters={['kind']}
             /* ONE FUNNEL, NOT TWO (2026-09-22): the crumb row's funnel mounts this bar AND opens
              * its panel, and the bar's own funnel closes the bar — the same switch from either
@@ -2179,6 +2402,7 @@ export function MediaLibraryBrowse({
                       <>
                         <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuDropdownItem>
                         <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuDropdownItem>
+                        {canTag && <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuDropdownItem>}
                       </>
                     )}
                     {fileActions.remove && (
@@ -2221,6 +2445,9 @@ export function MediaLibraryBrowse({
                   )}
                   {target.type === 'file' && (
                     <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuDropdownItem>
+                  )}
+                  {target.type === 'file' && canTag && (
+                    <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuDropdownItem>
                   )}
                   {!isLevel && fileActions.remove && (
                     <>

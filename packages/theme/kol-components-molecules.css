@@ -1295,7 +1295,10 @@
   --kol-ql-header-h: 44px;
   --kol-ql-footer-h: 0px;
   --kol-ql-frame-h: 88vh;
-  --kol-ql-max-w: calc(100vw - 4rem);
+  /* On a phone the window meets `.kol-overlay`'s own 24px padding and no more (touch pass
+     2026-09-23: 32px gutters left a 326px reading column at 390 — now 342). The old 32 from md
+     up. Min-width only — breakpoints law #3 */
+  --kol-ql-max-w: calc(100vw - 3rem);
   --kol-ql-media-h: calc(var(--kol-ql-frame-h) - var(--kol-ql-header-h) - var(--kol-ql-footer-h) - 2px);
   position: relative;
   display: flex;
@@ -1308,6 +1311,7 @@
   border-radius: var(--kol-radius-md);
   overflow: hidden;
 }
+@media (min-width: 768px) { .kol-quicklook { --kol-ql-max-w: calc(100vw - 4rem); } }
 /* a sized window (the corner was dragged): the body takes all of it, media centred inside */
 .kol-quicklook--sized { max-width: none; }
 /* THE HEADER'S CONTROLS WEAR THE CLOSE IDIOM (`Button variant="nav"`), whose hover wash is oq-04 —

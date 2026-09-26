@@ -817,18 +817,6 @@
       "stars": 3
     }
   ],
-  "packages/component/src/organisms/FoundryCTA.jsx": [
-    {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "SectionCta",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/component/src/organisms/FramedMediaBand.jsx": [
     {
       "target": "Image",

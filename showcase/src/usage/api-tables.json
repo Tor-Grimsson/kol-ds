@@ -73,6 +73,12 @@
       "type": "—",
       "def": "null",
       "desc": ""
+    },
+    {
+      "prop": "dests",
+      "type": "—",
+      "def": "null",
+      "desc": ""
     }
   ],
   "ChessBoardWithControls": [
@@ -489,12 +495,6 @@
   ],
   "Button": [
     {
-      "prop": "variant",
-      "type": "—",
-      "def": "'primary'",
-      "desc": ""
-    },
-    {
       "prop": "size",
       "type": "—",
       "def": "'md'",
@@ -555,6 +555,32 @@
       "desc": ""
     }
   ],
+  "CloseButton": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Close'",
+      "desc": ""
+    },
+    {
+      "prop": "states",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "ActionButton": [
     {
       "prop": "hold",
@@ -580,6 +606,14 @@
       "def": "false",
       "desc": ""
     },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FileIcon": [
     {
       "prop": "className",
       "type": "—",
@@ -715,6 +749,12 @@
   ],
   "DocsToc": [
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'list'",
+      "desc": ""
+    },
+    {
       "prop": "rootMargin",
       "type": "—",
       "def": "'-80px 0px -80% 0px'",
@@ -724,6 +764,48 @@
       "prop": "root",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "minors",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "falloff",
+      "type": "—",
+      "def": "14",
+      "desc": ""
+    },
+    {
+      "prop": "snap",
+      "type": "—",
+      "def": "'tick'",
+      "desc": ""
+    },
+    {
+      "prop": "position",
+      "type": "—",
+      "def": "'right'",
+      "desc": ""
+    },
+    {
+      "prop": "minSections",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'On this page'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -769,12 +851,6 @@
   ],
   "IconFrame": [
     {
-      "prop": "variant",
-      "type": "—",
-      "def": "'secondary'",
-      "desc": ""
-    },
-    {
       "prop": "size",
       "type": "—",
       "def": "'md'",
@@ -805,6 +881,20 @@
       "desc": ""
     }
   ],
+  "ExitPreview": [
+    {
+      "prop": "to",
+      "type": "—",
+      "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "linkComponent",
+      "type": "—",
+      "def": "'a'",
+      "desc": ""
+    }
+  ],
   "Figure": [
     {
       "prop": "aspect",
@@ -824,6 +914,12 @@
       "prop": "closeButton",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "scrim",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -854,12 +950,6 @@
       "prop": "type",
       "type": "—",
       "def": "'text'",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'filled'",
       "desc": ""
     },
     {
@@ -1037,6 +1127,14 @@
       "desc": ""
     }
   ],
+  "ContextMenu": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "ProsePreview": [
     {
       "prop": "quote",
@@ -1135,12 +1233,6 @@
       "desc": ""
     },
     {
-      "prop": "variant",
-      "type": "—",
-      "def": "'filled'",
-      "desc": ""
-    },
-    {
       "prop": "tone",
       "type": "—",
       "def": "'default'",
@@ -1235,6 +1327,12 @@
       "desc": ""
     },
     {
+      "prop": "actionsPlacement",
+      "type": "—",
+      "def": "'below'",
+      "desc": ""
+    },
+    {
       "prop": "slotClass",
       "type": "—",
       "def": "{}",
@@ -1287,6 +1385,12 @@
       "desc": ""
     },
     {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -1298,6 +1402,12 @@
       "prop": "step",
       "type": "—",
       "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'stacked'",
       "desc": ""
     },
     {
@@ -1551,6 +1661,212 @@
       "desc": ""
     }
   ],
+  "XYPad": [
+    {
+      "prop": "xMin",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "xMax",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "yMin",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "yMax",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "InspectorRail": [
+    {
+      "prop": "selectedIds",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "canvasId",
+      "type": "—",
+      "def": "'canvas'",
+      "desc": ""
+    },
+    {
+      "prop": "renderers",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AddLayerButton": [
+    {
+      "prop": "types",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "iconFor",
+      "type": "—",
+      "def": "(type) => DEFAULT_TYPE_ICONS[type] ?? 'rectangle'",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "menuWidth",
+      "type": "—",
+      "def": "180",
+      "desc": ""
+    }
+  ],
+  "LayerStack": [
+    {
+      "prop": "layers",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "selectedIds",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "canvasId",
+      "type": "—",
+      "def": "'canvas'",
+      "desc": ""
+    },
+    {
+      "prop": "labelFor",
+      "type": "—",
+      "def": "function rowLabelForLayer(layer) {\n  if (layer.name) return layer.name\n  if (layer.type === 'text') return layer.text || TYPE_LABELS.text\n  if (layer.type === 'shape') {\n    return SHAPE_KIND_LABELS[layer.kind ?? 'logo'] ?? TYPE_LABELS.shape\n  }\n  if (layer.type === 'bool') return BOOL_OP_LABELS[layer.op] ?? TYPE_LABELS.bool\n  if (layer.type === 'loop' || layer.type === 'misc') return layer.presetLabel || TYPE_LABELS[layer.type]\n  if (layer.type === 'kinetic') return layer.presetLabel || TYPE_LABELS.kinetic\n  return TYPE_LABELS[layer.type] ?? layer.type\n}",
+      "desc": ""
+    },
+    {
+      "prop": "iconFor",
+      "type": "—",
+      "def": "(type) => DEFAULT_TYPE_ICONS[type] ?? 'rectangle'",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "containerTypes",
+      "type": "—",
+      "def": "['group', 'bool']",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TimelineDock": [
+    {
+      "prop": "tracks",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "t",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "easingOptions",
+      "type": "—",
+      "def": "[\n  { value: 'linear', label: 'Linear' },\n  { value: 'ease',   label: 'Ease' },\n  { value: 'in',     label: 'Ease in' },\n  { value: 'out',    label: 'Ease out' },\n  { value: 'in-out', label: 'Ease in-out' },\n  { value: 'hold',   label: 'Hold' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "CurveEditor": [
+    {
+      "prop": "stock",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "kinds",
+      "type": "—",
+      "def": "[\n  { value: 'epicycle', label: 'Epicycle' },\n  { value: 'polar',    label: 'Polar' },\n  { value: 'param2d',  label: 'Parametric 2D' },\n  { value: 'param3d',  label: 'Parametric 3D' },\n  { value: 'points',   label: 'Points' },\n  { value: 'maurer',   label: 'Maurer rose' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "defaultFor",
+      "type": "—",
+      "def": "function defaultCurveFor(kind) {\n  switch (kind) {\n    case 'epicycle': return { kind, turns: 2, terms: [{ amp: 1, freq: 1, phase: 0 }] }\n    case 'param2d':  return { kind, range: [0, TAU], x: 'sin(3*t)', y: 'sin(2*t + 0.6)' }\n    case 'param3d':  return { kind, range: [0, 6 * TAU], x: 'cos(t)', y: 'sin(t)', z: '0.3*t' }\n    case 'points':   return { kind, count: 1400, a: 'k*TAU/(PHI*PHI)', r: 'sqrt(k)' }\n    case 'maurer':   return { kind, n: 6, d: 71 }\n    default:         return { kind: 'polar', range: [0, 6 * TAU], r: '3*sin(6*th)' }\n  }\n}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "KeyframeEditor": [
+    {
+      "prop": "t",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "easeOptions",
+      "type": "—",
+      "def": "[\n  { value: 'linear', label: 'Linear' },\n  { value: 'in',     label: 'Ease in' },\n  { value: 'out',    label: 'Ease out' },\n  { value: 'inout',  label: 'Ease in-out' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "defaultKeyframes",
+      "type": "—",
+      "def": "[\n  { t: 0, rot: [0, 0, 0], pos: [0, 0, 0], scale: 1, ease: 'inout' },\n  { t: 1, rot: [0, Math.PI * 2, 0], pos: [0, 0, 0], scale: 1, ease: 'inout' },\n]",
+      "desc": ""
+    }
+  ],
   "Accordion": [
     {
       "prop": "className",
@@ -1586,6 +1902,18 @@
       "prop": "items",
       "type": "—",
       "def": "[\n  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },\n  { axis: 'h', mode: 'center', icon: 'align-horizontal-center', title: 'Align horizontal center' },\n  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right',  title: 'Align right' },\n  { axis: 'v', mode: 'start',  icon: 'align-vertical-top',      title: 'Align top' },\n  { axis: 'v', mode: 'center', icon: 'align-vertical-center',   title: 'Align vertical center' },\n  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -1639,6 +1967,12 @@
       "type": "—",
       "def": "(b) => `${Math.round(b.w)} × ${Math.round(b.h)}`",
       "desc": ""
+    },
+    {
+      "prop": "rotateTitle",
+      "type": "—",
+      "def": "'Rotate'",
+      "desc": ""
     }
   ],
   "VideoBlock": [
@@ -1687,6 +2021,12 @@
       "desc": ""
     },
     {
+      "prop": "coarseReveal",
+      "type": "—",
+      "def": "'in-view'",
+      "desc": ""
+    },
+    {
       "prop": "imagePosition",
       "type": "—",
       "def": "'center'",
@@ -1711,6 +2051,12 @@
       "type": "—",
       "def": "'md'",
       "desc": ""
+    },
+    {
+      "prop": "copy",
+      "type": "—",
+      "def": "true",
+      "desc": ""
     }
   ],
   "ColorInputRow": [
@@ -1718,6 +2064,12 @@
       "prop": "hideLabel",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -1823,15 +2175,15 @@
       "desc": ""
     },
     {
-      "prop": "variant",
-      "type": "—",
-      "def": "'primary'",
-      "desc": ""
-    },
-    {
       "prop": "tone",
       "type": "—",
       "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "maxRows",
+      "type": "—",
+      "def": "10",
       "desc": ""
     },
     {
@@ -1939,57 +2291,23 @@
       "desc": ""
     }
   ],
-  "MediaCard": [
-    {
-      "prop": "selectMode",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "selected",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    }
-  ],
-  "MediaRow": [
-    {
-      "prop": "dateWidth",
-      "type": "—",
-      "def": "'w-24'",
-      "desc": ""
-    },
-    {
-      "prop": "sizeWidth",
-      "type": "—",
-      "def": "'w-20'",
-      "desc": ""
-    },
-    {
-      "prop": "selectMode",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "selected",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    }
-  ],
   "ContentText": [
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'file'",
       "desc": ""
     },
     {
       "prop": "form",
       "type": "—",
       "def": "'card'",
+      "desc": ""
+    },
+    {
+      "prop": "tagVariant",
+      "type": "—",
+      "def": "'primary'",
       "desc": ""
     },
     {
@@ -2065,7 +2383,7 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'file'",
       "desc": ""
     },
     {
@@ -2097,7 +2415,13 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'default'",
+      "def": "'file'",
+      "desc": ""
+    },
+    {
+      "prop": "ratioAxis",
+      "type": "—",
+      "def": "'width'",
       "desc": ""
     },
     {
@@ -2170,6 +2494,26 @@
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "caret",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "MenuDropdownItem": [
+    {
+      "prop": "hover",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
       "desc": ""
     }
   ],
@@ -2307,6 +2651,24 @@
       "type": "—",
       "def": "6",
       "desc": ""
+    },
+    {
+      "prop": "readout",
+      "type": "—",
+      "def": "'input'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'minimal'",
+      "desc": ""
+    },
+    {
+      "prop": "playhead",
+      "type": "—",
+      "def": "null",
+      "desc": ""
     }
   ],
   "SpecList": [
@@ -2339,13 +2701,51 @@
     {
       "prop": "size",
       "type": "—",
-      "def": "28",
+      "def": "'md'",
       "desc": ""
     },
     {
       "prop": "blurOnClick",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ToolPalette": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -2437,6 +2837,66 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "gutter",
+      "type": "—",
+      "def": "48",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "'contain'",
+      "desc": ""
+    },
+    {
+      "prop": "rulers",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "guidesInteractive",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "PanZoomViewport": [
+    {
+      "prop": "showRulers",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "guidesInteractive",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "CanvasRuler": [
+    {
+      "prop": "virtualWidth",
+      "type": "—",
+      "def": "1080",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "CanvasGuides": [
+    {
+      "prop": "virtualWidth",
+      "type": "—",
+      "def": "1080",
+      "desc": ""
     }
   ],
   "EditorShell": [
@@ -2444,6 +2904,12 @@
       "prop": "railWidth",
       "type": "—",
       "def": "320",
+      "desc": ""
+    },
+    {
+      "prop": "resizable",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -2517,9 +2983,15 @@
       "desc": ""
     },
     {
+      "prop": "coarseReveal",
+      "type": "—",
+      "def": "'in-view'",
+      "desc": ""
+    },
+    {
       "prop": "titleClassName",
       "type": "—",
-      "def": "'kol-sans-heading-01 text-absolute-white'",
+      "def": "'kol-sans-heading-01 text-ab-white'",
       "desc": ""
     },
     {
@@ -2605,6 +3077,20 @@
       "desc": ""
     }
   ],
+  "MobileTabBar": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "ContentFilters": [
     {
       "prop": "tone",
@@ -2625,6 +3111,12 @@
       "desc": ""
     },
     {
+      "prop": "viewPlacement",
+      "type": "—",
+      "def": "'auto'",
+      "desc": ""
+    },
+    {
       "prop": "mutuallyExclusiveFilters",
       "type": "—",
       "def": "[]",
@@ -2640,6 +3132,12 @@
       "prop": "searchKeys",
       "type": "—",
       "def": "['label', 'name', 'title', 'type']",
+      "desc": ""
+    },
+    {
+      "prop": "trailingPlacement",
+      "type": "—",
+      "def": "'auto'",
       "desc": ""
     },
     {
@@ -2730,6 +3228,32 @@
       "prop": "countClassName",
       "type": "—",
       "def": "'kol-helper-12 text-oq-48'",
+      "desc": ""
+    }
+  ],
+  "PageHeader": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "voice",
+      "type": "—",
+      "def": "'sans'",
+      "desc": ""
+    },
+    {
+      "prop": "register",
+      "type": "—",
+      "def": "'app'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -2838,14 +3362,6 @@
       "def": "{ align: 'center', loop: true }",
       "desc": ""
     },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
-  "FoundryCTA": [
     {
       "prop": "className",
       "type": "—",
@@ -2971,6 +3487,18 @@
       "desc": ""
     },
     {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fill",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "height",
       "type": "—",
       "def": "'60'",
@@ -3002,6 +3530,18 @@
     }
   ],
   "SectionCards": [
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "coarseReveal",
+      "type": "—",
+      "def": "'in-view'",
+      "desc": ""
+    },
     {
       "prop": "height",
       "type": "—",
@@ -3065,6 +3605,12 @@
   ],
   "SectionCta": [
     {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "variant",
       "type": "—",
       "def": "'editorial'",
@@ -3090,6 +3636,12 @@
     }
   ],
   "SectionFaq": [
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
     {
       "prop": "headlineSize",
       "type": "—",
@@ -3127,6 +3679,62 @@
       "desc": ""
     }
   ],
+  "QuadrantSync": [
+    {
+      "prop": "root",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "attr",
+      "type": "—",
+      "def": "'data-handle'",
+      "desc": ""
+    },
+    {
+      "prop": "sourceAttr",
+      "type": "—",
+      "def": "'data-source'",
+      "desc": ""
+    },
+    {
+      "prop": "bands",
+      "type": "—",
+      "def": "[\n  { name: 'Mobile', min: 0, max: 559 },\n  { name: 'Tablet', min: 560, max: 859 },\n  { name: 'Laptop', min: 860, max: 1279 },\n  { name: 'Desktop', min: 1280, max: Infinity }\n]",
+      "desc": ""
+    },
+    {
+      "prop": "defaultDivisions",
+      "type": "—",
+      "def": "{ cols: 8, rows: 8 }",
+      "desc": ""
+    },
+    {
+      "prop": "initialHandle",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "handleColor",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "pageColor",
+      "type": "—",
+      "def": "'var(--kol-fg-40, color-mix(in srgb, var(--kol-surface-on-primary) 40%, transparent))'",
+      "desc": ""
+    },
+    {
+      "prop": "enabled",
+      "type": "—",
+      "def": "!IS_PROD",
+      "desc": ""
+    }
+  ],
   "MediaLibraryProvider": [
     {
       "prop": "accept",
@@ -3150,20 +3758,6 @@
       "prop": "flat",
       "type": "—",
       "def": "false",
-      "desc": ""
-    }
-  ],
-  "MediaBrowser": [
-    {
-      "prop": "accept",
-      "type": "—",
-      "def": "'all'",
-      "desc": ""
-    },
-    {
-      "prop": "onSelect",
-      "type": "—",
-      "def": "null",
       "desc": ""
     }
   ],
@@ -3216,6 +3810,44 @@
       "prop": "accept",
       "type": "—",
       "def": "'all'",
+      "desc": ""
+    }
+  ],
+  "MediaInspector": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'MEDIA'",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "stats",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "formatDate",
+      "type": "—",
+      "def": "(iso) => (iso ? new Date(iso).toISOString().slice(0, 10) : '')",
       "desc": ""
     }
   ],
@@ -3341,6 +3973,24 @@
       "desc": ""
     },
     {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'primary'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -3364,6 +4014,18 @@
       "prop": "noun",
       "type": "—",
       "def": "'kinds'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -3401,11 +4063,49 @@
       "desc": ""
     }
   ],
+  "SettingsSections": [
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "divided",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "SectionNewsletter": [
     {
       "prop": "height",
       "type": "—",
-      "def": "'60'",
+      "def": "'40'",
+      "desc": ""
+    },
+    {
+      "prop": "controlSize",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "submitVariant",
+      "type": "—",
+      "def": "'primary'",
+      "desc": ""
+    },
+    {
+      "prop": "fullBleed",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -3435,75 +4135,21 @@
   ],
   "ColumnBrowser": [
     {
-      "prop": "objects",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "prefix",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "onPrefix",
-      "type": "—",
-      "def": "() => {}",
-      "desc": ""
-    },
-    {
-      "prop": "quickLook",
-      "type": "—",
-      "def": "null",
-      "desc": ""
-    },
-    {
       "prop": "kindOf",
       "type": "—",
       "def": "function kindOf(o) {\n  if (o.forcedKind) return o.forcedKind\n  if (isSystemFile(o.key)) return 'system'\n  const ct = o.contentType || ''\n  if (ct.startsWith('image/')) return 'image'\n  if (ct.startsWith('video/')) return 'video'\n  if (ct.startsWith('audio/')) return 'audio'\n  const ext = extOf(o.key)\n  if (EXT_KINDS[ext]) return EXT_KINDS[ext]\n  if (ct === 'text/markdown') return 'markdown'\n  if (ct === 'application/json') return 'json'\n  if (ct.startsWith('text/')) return 'text'\n  if (ct.startsWith('font/')) return 'font'\n  return 'other'\n}",
       "desc": ""
     },
     {
-      "prop": "kindLabel",
-      "type": "—",
-      "def": "{\n  image: 'image', video: 'video', audio: 'audio', markdown: 'markdown', json: 'JSON', yaml: 'YAML', text: 'text', code: 'code',\n  playlist: 'HLS', font: 'font', archive: 'archive', segments: 'HLS segments',\n  system: 'system', other: 'file',\n}",
-      "desc": ""
-    },
-    {
       "prop": "formatSize",
       "type": "—",
-      "def": "(bytes) => {\n  if (bytes == null) return '—'\n  if (bytes < 1024) return `${bytes} B`\n  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`\n  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`\n  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`\n}",
+      "def": "(n) => `${n} B`",
       "desc": ""
     },
     {
-      "prop": "partition",
+      "prop": "formatDate",
       "type": "—",
-      "def": "(objects, prefix) => {\n  const folderSet = new Set()\n  const files = []\n  for (const o of objects) {\n    const rel = prefix ? o.key.slice(prefix.length) : o.key\n    const slash = rel.indexOf('/')\n    if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))\n    else files.push({ ...o, displayKey: o.displayKey ?? rel })\n  }\n  return { folders: [...folderSet].sort(), files }\n}",
-      "desc": ""
-    },
-    {
-      "prop": "defaultHeight",
-      "type": "—",
-      "def": "528",
-      "desc": ""
-    },
-    {
-      "prop": "columnWidth",
-      "type": "—",
-      "def": "260",
-      "desc": ""
-    },
-    {
-      "prop": "autoFocus",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
+      "def": "(d) => d",
       "desc": ""
     }
   ],
@@ -3529,13 +4175,33 @@
     {
       "prop": "kindLabel",
       "type": "—",
-      "def": "{\n  image: 'image', video: 'video', audio: 'audio', markdown: 'markdown', json: 'JSON', yaml: 'YAML', text: 'text', code: 'code',\n  playlist: 'HLS', font: 'font', archive: 'archive', segments: 'HLS segments',\n  system: 'system', other: 'file',\n}",
+      "def": "{\n  image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF', markdown: 'Markdown', json: 'JSON', yaml: 'YAML', text: 'Text', code: 'Code',\n  playlist: 'HLS', font: 'Font', archive: 'Archive', segments: 'HLS segments',\n  system: 'System', other: 'File',\n}",
       "desc": ""
     },
     {
       "prop": "textLimit",
       "type": "—",
       "def": "200 * 1024",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "'pane'",
+      "desc": ""
+    },
+    {
+      "prop": "pdfLimit",
+      "type": "—",
+      "def": "8 * 1024 * 1024",
+      "desc": ""
+    }
+  ],
+  "AudioTile": [
+    {
+      "prop": "fallback",
+      "type": "—",
+      "def": "null",
       "desc": ""
     }
   ],
@@ -3559,17 +4225,89 @@
       "type": "—",
       "def": "'left-4 right-4 bottom-4 rounded-xl'",
       "desc": ""
+    },
+    {
+      "prop": "docked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
     }
   ],
-  "AudioSheet": [
+  "QuickLookFrame": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "MediaTile": [
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "RowMenuButton": [
     {
       "prop": "variant",
       "type": "—",
-      "def": "'cover'",
+      "def": "'ghost'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
   "DocPage": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ProfileCard": [
+    {
+      "prop": "socials",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'xl'",
+      "desc": ""
+    },
+    {
+      "prop": "orientation",
+      "type": "—",
+      "def": "'vertical'",
+      "desc": ""
+    },
+    {
+      "prop": "controlVariant",
+      "type": "—",
+      "def": "'secondary'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
     {
       "prop": "className",
       "type": "—",
@@ -3751,44 +4489,6 @@
       "desc": ""
     }
   ],
-  "ListingCard": [
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'default'",
-      "desc": ""
-    },
-    {
-      "prop": "tags",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "aspect",
-      "type": "—",
-      "def": "'landscape'",
-      "desc": ""
-    },
-    {
-      "prop": "showHeader",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "frame",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
   "PortableTextRenderer": [
     {
       "prop": "blocks",
@@ -3866,58 +4566,6 @@
       "prop": "className",
       "type": "—",
       "def": "''",
-      "desc": ""
-    }
-  ],
-  "WorkCard": [
-    {
-      "prop": "index",
-      "type": "—",
-      "def": "0",
-      "desc": ""
-    },
-    {
-      "prop": "perspective",
-      "type": "—",
-      "def": "800",
-      "desc": ""
-    },
-    {
-      "prop": "heights",
-      "type": "—",
-      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
-      "desc": ""
-    },
-    {
-      "prop": "titleClassName",
-      "type": "—",
-      "def": "'kol-sans-display-02'",
-      "desc": ""
-    },
-    {
-      "prop": "metaClassName",
-      "type": "—",
-      "def": "'kol-mono-12'",
-      "desc": ""
-    }
-  ],
-  "WorkListItem": [
-    {
-      "prop": "active",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "previewClassName",
-      "type": "—",
-      "def": "'kol-sans-heading-03'",
-      "desc": ""
-    },
-    {
-      "prop": "titleClassName",
-      "type": "—",
-      "def": "'kol-mono-14'",
       "desc": ""
     }
   ],
@@ -4026,6 +4674,260 @@
       "prop": "cardSpacing",
       "type": "—",
       "def": "520",
+      "desc": ""
+    }
+  ],
+  "Knob": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'column'",
+      "desc": ""
+    },
+    {
+      "prop": "bipolar",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    }
+  ],
+  "Fader": [
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "direction",
+      "type": "—",
+      "def": "'horizontal'",
+      "desc": ""
+    }
+  ],
+  "Toggle": [
+    {
+      "prop": "horizontal",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "padding",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "momentary",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-ctl-led-red)'",
+      "desc": ""
+    },
+    {
+      "prop": "blink",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "blinkPeriodMs",
+      "type": "—",
+      "def": "500",
+      "desc": ""
+    },
+    {
+      "prop": "forceLit",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "FlipToggle": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'vertical'",
+      "desc": ""
+    },
+    {
+      "prop": "positions",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    }
+  ],
+  "LED": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'red'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    }
+  ],
+  "IconButton": [
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    }
+  ],
+  "PanelLabel": [
+    {
+      "prop": "horizontal",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "labelPosition",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "labelClass",
+      "type": "—",
+      "def": "'kol-helper-8'",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    }
+  ],
+  "ModuleHeader": [
+    {
+      "prop": "powered",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "JackSocket": [
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'out'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "labelSize",
+      "type": "—",
+      "def": "'xxs'",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "pending",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "dimPending",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "cablesHidden",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "LabeledJack": [
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "8",
+      "desc": ""
+    },
+    {
+      "prop": "labelPosition",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "dim",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "jackComponent",
+      "type": "—",
+      "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 'xxs',\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n      title={title ?? label}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${labelSize} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n  )\n}",
       "desc": ""
     }
   ],
@@ -4379,20 +5281,6 @@
       "desc": ""
     }
   ],
-  "TypefaceLibraryItem": [
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'card'",
-      "desc": ""
-    },
-    {
-      "prop": "isActive",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    }
-  ],
   "TypefaceVariablePreview": [
     {
       "prop": "weight",
@@ -4713,15 +5601,15 @@
       "desc": ""
     }
   ],
-  "AppShell": [
+  "PageLayout": [
     {
-      "prop": "touch",
+      "prop": "navTree",
       "type": "—",
-      "def": "'shell'",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "navKeys",
+      "prop": "bare",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -4867,11 +5755,17 @@
       "desc": ""
     }
   ],
-  "BrandHero": [
+  "PageHero": [
     {
       "prop": "id",
       "type": "—",
       "def": "'hero'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -4895,6 +5789,38 @@
       "desc": ""
     }
   ],
+  "AppShell": [
+    {
+      "prop": "railComponent",
+      "type": "—",
+      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n          title={logomark.title}\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n      )}\n      {items.map(row)}\n      {/* the spacer IS the layout */}\n      <div className=\"flex-1\" />\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "touch",
+      "type": "—",
+      "def": "'shell'",
+      "desc": ""
+    },
+    {
+      "prop": "navKeys",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "drawerBelow",
+      "type": "—",
+      "def": "768",
+      "desc": ""
+    },
+    {
+      "prop": "drawerOpenOn",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
   "NavRail": [
     {
       "prop": "items",
@@ -4915,13 +5841,13 @@
       "desc": ""
     },
     {
-      "prop": "themeToggle",
+      "prop": "hidden",
       "type": "—",
-      "def": "!settings",
+      "def": "false",
       "desc": ""
     },
     {
-      "prop": "hidden",
+      "prop": "drawer",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -4935,23 +5861,9 @@
       "desc": ""
     },
     {
-      "prop": "className",
+      "prop": "width",
       "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
-  "PageHeader": [
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'md'",
-      "desc": ""
-    },
-    {
-      "prop": "voice",
-      "type": "—",
-      "def": "'sans'",
+      "def": "'bleed'",
       "desc": ""
     },
     {
@@ -4987,27 +5899,23 @@
       "desc": ""
     }
   ],
-  "GridCard": [
-    {
-      "prop": "previewFit",
-      "type": "—",
-      "def": "'natural'",
-      "desc": ""
-    }
-  ],
   "SettingsScaffold": [
     {
       "prop": "tabs",
       "type": "—",
       "def": "[]",
       "desc": ""
-    }
-  ],
-  "LabelRow": [
+    },
     {
-      "prop": "align",
+      "prop": "title",
       "type": "—",
-      "def": "'baseline'",
+      "def": "'Preferences'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'sunken'",
       "desc": ""
     }
   ],
@@ -5043,6 +5951,18 @@
   ],
   "CatalogPage": [
     {
+      "prop": "preset",
+      "type": "—",
+      "def": "'catalog'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "PRESETS[preset]?.width ?? 'bleed'",
+      "desc": ""
+    },
+    {
       "prop": "items",
       "type": "—",
       "def": "[]",
@@ -5055,6 +5975,18 @@
       "desc": ""
     },
     {
+      "prop": "views",
+      "type": "—",
+      "def": "PRESETS[preset]?.views",
+      "desc": ""
+    },
+    {
+      "prop": "defaultView",
+      "type": "—",
+      "def": "PRESETS[preset]?.defaultView",
+      "desc": ""
+    },
+    {
       "prop": "layouts",
       "type": "—",
       "def": "[\n  { value: 'list', label: 'LIST' },\n  { value: 'grid', label: 'GRID' },\n]",
@@ -5064,6 +5996,36 @@
       "prop": "defaultLayout",
       "type": "—",
       "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "minColumn",
+      "type": "—",
+      "def": "PRESETS[preset]?.minColumn ?? 160",
+      "desc": ""
+    },
+    {
+      "prop": "maxColumns",
+      "type": "—",
+      "def": "PRESETS[preset]?.maxColumns ?? 6",
+      "desc": ""
+    },
+    {
+      "prop": "rowVariant",
+      "type": "—",
+      "def": "PRESETS[preset]?.rowVariant ?? 'catalog'",
+      "desc": ""
+    },
+    {
+      "prop": "cardVariant",
+      "type": "—",
+      "def": "PRESETS[preset]?.cardVariant ?? 'catalog'",
+      "desc": ""
+    },
+    {
+      "prop": "listLayout",
+      "type": "—",
+      "def": "PRESETS[preset]?.listLayout ?? 'grid'",
       "desc": ""
     },
     {
@@ -5293,20 +6255,6 @@
       "desc": ""
     }
   ],
-  "PrintGridCard": [
-    {
-      "prop": "isFlipped",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
   "PrintGridCardGsap": [
     {
       "prop": "className",
@@ -5471,6 +6419,12 @@
       "type": "—",
       "def": "'No assets.'",
       "desc": ""
+    },
+    {
+      "prop": "inkTokens",
+      "type": "—",
+      "def": "null",
+      "desc": ""
     }
   ],
   "LogoCard": [
@@ -5592,6 +6546,34 @@
       "prop": "mode",
       "type": "—",
       "def": "'random'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AssetCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Swatch": [
+    {
+      "prop": "anchor",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "96",
       "desc": ""
     },
     {

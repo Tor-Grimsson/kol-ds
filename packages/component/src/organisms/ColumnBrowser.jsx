@@ -63,6 +63,7 @@ import { GRAB_COLUMN } from '../utilities/motion.js'
  * @param {Function} formatDate   (isoString) => string — the row/preview date, ISO date-only by default
  * @param {Function} partition    (objects, level) => { folders: string[], files: object[] }
  * @param {Function} renderPreview  (file) => ReactNode — replaces the preview column's media frame (the facts stay — Dimensions and Length are read off whatever <img> / <video> / <audio> the node loads); without it images render the organism's <img>, everything else the DS KindPreview
+ * @param {Function} renderDetails  (file) => ReactNode — rows under the preview column's facts (tags, an Edit action); absent, nothing is added
  * @param {number|string} height    controlled height — px as a number, or ANY CSS length (`'100%'`, `'60vh'`,
  *                                  `'calc(100dvh - 240px)'`) so the browser can fill the space it is given
  *                                  (kol-client-olina 2026-09-22); a CSS length draws no height grabber;
@@ -260,10 +261,16 @@ function Row({
     onDragStart: drop ? (e) => { e.stopPropagation(); drop.onDragStart(e, drop.path) } : undefined,
     onDragOver: (e) => { if (takesFiles(e) || (drop && !isFileDrag(e) && drop.canDrop(drop.path))) { e.preventDefault(); setOver(true) } },
     onDragLeave: () => setOver(false),
+    /* A ROW THAT CANNOT TAKE THE DROP LETS IT BUBBLE (the file-onto-file bug, 2026-09-25): the
+     * enclosing column / list allows the drag, so the drop still fires HERE, and moving into a
+     * FILE's key renamed the dragged file. Unguarded, it skipped `canDrop`; now the container
+     * takes it — dropped on a file, it lands in that file's folder, as Finder does. */
     onDrop: (e) => {
-      e.preventDefault(); e.stopPropagation(); setOver(false)
-      if (takesFiles(e)) dropFiles(e.dataTransfer.files)
-      else if (drop && !isFileDrag(e)) drop.onDrop(drop.path)
+      setOver(false)
+      if (takesFiles(e)) { e.preventDefault(); e.stopPropagation(); dropFiles(e.dataTransfer.files); return }
+      if (!drop || isFileDrag(e) || !drop.canDrop(drop.path)) return
+      e.preventDefault(); e.stopPropagation()
+      drop.onDrop(drop.path)
     },
   } : {}
   return (
@@ -350,7 +357,7 @@ function Row({
   )
 }
 
-function Preview({ o, urlOf, kindOf, kindLabel, formatSize, formatDate, renderPreview, width }) {
+function Preview({ o, urlOf, kindOf, kindLabel, formatSize, formatDate, renderPreview, renderDetails, width }) {
   // Pixel size and length come from the loaded media itself — the bucket stores
   // none. `{ w, h }` off an <img> load, `{ w, h, len }` off a <video>'s and
   // `{ len }` off an <audio>'s loadedmetadata (ColumnBrowserMediaFacts, kol-r2b2
@@ -408,6 +415,14 @@ function Preview({ o, urlOf, kindOf, kindLabel, formatSize, formatDate, renderPr
           </div>
         ))}
       </dl>
+      {/* `renderDetails(o)` — the consumer's rows under the facts (the media D1 pass: tags, Edit) */}
+      {/* its own island: a click or a drag in here is not a click on the browser's background,
+          which deselects (a tag field would unpick the file it edits) */}
+      {renderDetails && (
+        <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+          {renderDetails(o)}
+        </div>
+      )}
     </div>
   )
 }
@@ -474,6 +489,9 @@ export default function ColumnBrowser({
   formatDate = defaultFormatDate,
   partition = defaultPartition,
   renderPreview,
+  /* `renderDetails(file)` — extra rows under the preview column's facts (tags, an Edit action);
+   * absent, the column is exactly what it was */
+  renderDetails,
   height,
   defaultHeight = 528,
   onHeightChange,
@@ -648,6 +666,9 @@ export default function ColumnBrowser({
 
   const shiftAnchor = useRef(null)
   const onKeyDown = (e) => {
+    /* typing in a field inside the browser (the preview's tag field) is not navigation */
+    const el = e.target
+    if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')) return
     /* ⌘↑ / ⌘↓ (user 2026-09-23: *"all modes should 'command up down' to move up and down parent
      * child"*) — Finder's: ⌘↑ is ←, back to the enclosing folder; ⌘↓ opens what the cursor is on,
      * → for a folder and Quick Look for a file. */
@@ -1029,7 +1050,7 @@ export default function ColumnBrowser({
         </>
       ) : shown && (
         <>
-          <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} width={widthOf('preview')} />
+          <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} renderDetails={renderDetails} width={widthOf('preview')} />
           <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
         </>
       )}

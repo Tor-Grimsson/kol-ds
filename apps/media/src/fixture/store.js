@@ -10,7 +10,7 @@
  * Every mutation is synchronous against this object. The client wrapper is what
  * makes the verbs async, because the pages await them. */
 
-import { BUCKETS, SEED, contentTypeOf, uploadedOf } from './seed.js'
+import { BUCKETS, SEED, SEED_TAGS, contentTypeOf, uploadedOf } from './seed.js'
 import { assetFile, assetSize, SEED_TRASH } from './assets.js'
 
 const dir = (p) => (p.endsWith('/') || p === '' ? p : `${p}/`)
@@ -29,7 +29,7 @@ function build() {
     for (const key of seed.files) {
       /* `file` names the real bytes and rides the record through rename/copy, so a moved file
        * still previews as itself. */
-      files.set(key, { key, contentType: contentTypeOf(key), size: assetSize(id, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(id, key) })
+      files.set(key, { key, contentType: contentTypeOf(key), size: assetSize(id, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(id, key), tags: [...(SEED_TAGS[id]?.[key] ?? [])] })
       // Every ancestor of a seeded file exists as a folder even if the seed
       // forgot to list it — otherwise the tree and the keys could disagree.
       let p = parentOf(key)
@@ -73,7 +73,13 @@ export const buckets = () => BUCKETS.map((b) => ({ ...b }))
 export function list(bucketId, prefix = '') {
   const { files } = bucketOf(bucketId)
   const out = []
-  for (const f of files.values()) if (!prefix || f.key.startsWith(prefix)) out.push({ ...f })
+  /* `draft` is text and stays here; the list says only that one exists (`hasDraft`), as a D1 row
+   * joined into the listing would — the editor reads the text through `readText`. */
+  for (const f of files.values()) {
+    if (prefix && !f.key.startsWith(prefix)) continue
+    const { draft, text, ...rest } = f
+    out.push({ ...rest, tags: [...(f.tags ?? [])], ...(draft != null && { hasDraft: true }) })
+  }
   return out
 }
 
@@ -237,10 +243,61 @@ export function copy(bucketId, from, to) {
   const f = files.get(from)
   if (!f) throw new Error(`${from} not found`)
   if (files.has(to)) throw new Error(`${to} already exists`)
-  files.set(to, { ...f, key: to, uploaded: new Date().toISOString() })
+  /* a copy keeps the tags (Finder's Duplicate does) but not a pending draft — that edit was on the original */
+  const { draft, ...rest } = f
+  files.set(to, { ...rest, key: to, tags: [...(f.tags ?? [])], uploaded: new Date().toISOString() })
   let up = parentOf(to)
   while (up) { folders.add(up); up = parentOf(up) }
   return { ok: true, from, to }
+}
+
+/* ── WHAT D1 HOLDS (the media D1 pass, 2026-09-25). A bucket has bytes and keys; tags, drafts
+ * and per-person settings need a table beside it — kol-olina's is D1. Here each is a field on
+ * the file record, so a rename, move or copy carries them the way a row keyed by file id would.
+ * Reset drops all of it with the tree. ── */
+
+const fileRecord = (bucketId, key) => {
+  const f = bucketOf(bucketId).files.get(key)
+  if (!f) throw new Error(`${key} not found`)
+  return f
+}
+
+/** Replace a file's tags. Trimmed, lower-cased, de-duplicated, in the order given. */
+export function setTags(bucketId, key, tags) {
+  assertWritable(bucketId)
+  const f = fileRecord(bucketId, key)
+  f.tags = [...new Set((tags ?? []).map((t) => String(t).trim().toLowerCase()).filter(Boolean))]
+  return { ok: true, key, tags: [...f.tags] }
+}
+
+/** The text an edit has written, and the draft if one is pending. `text` is undefined until the
+ *  file has been saved here once — the caller reads the original bytes from its URL. */
+export function textOf(bucketId, key) {
+  const f = fileRecord(bucketId, key)
+  return { text: f.text, draft: f.draft ?? null }
+}
+
+/** A pending edit, kept apart from the file until it is saved. `null` discards it. */
+export function saveDraft(bucketId, key, draft) {
+  assertWritable(bucketId)
+  const f = fileRecord(bucketId, key)
+  if (draft == null) delete f.draft
+  else f.draft = String(draft)
+  return { ok: true, key }
+}
+
+/** Write the file: its bytes become `text`, the draft is cleared. The URL is rebuilt as a data URL
+ *  so every preview — pane, tile, Quick Look — shows the saved text, as a re-upload would. */
+export function writeText(bucketId, key, text) {
+  assertWritable(bucketId)
+  const f = fileRecord(bucketId, key)
+  const body = String(text)
+  f.text = body
+  f.size = new TextEncoder().encode(body).length
+  f.url = `data:${f.contentType || 'text/plain'};charset=utf-8,${encodeURIComponent(body)}`
+  f.uploaded = new Date().toISOString()
+  delete f.draft
+  return { ok: true, key, size: f.size }
 }
 
 /** The uploaded bytes behind `key`, if it was uploaded this session. */

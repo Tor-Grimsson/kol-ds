@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-theme
 
+## 0.149.0 — 2026-09-25
+
+- **The stack disclosure's tap target is 38 × 60, not 14 wide.** `.kol-column-browser-disclose::after`
+  reaches into the row's left padding and the gap; the chevron column stays 14, so zone 3 keeps
+  its 74px edge and the icon keeps opening the folder.
+- **Quick Look on a phone** — the window's side cap is `100vw - 3rem` below `md` (it meets
+  `.kol-overlay`'s own 24px padding and stays centred), `100vw - 4rem` from `md` up as before.
+
 ## 0.146.0 — 2026-09-21
 
 - **`.kol-tooltip`** — padding `4px 4px 4px 8px` → `4px 8px`. The asymmetry left room for a

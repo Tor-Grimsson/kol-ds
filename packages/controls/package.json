@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-controls",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "description": "KOL controls \u2014 hardware panel controls for instruments (mixers, synths, racks, decks): knob, fader, LED, toggles, rocker, jack socket, panel selector/dropdown/input, module header, and the touch ParamSheet. Lifted from kol-monitor's rack; modules, composition and routing stay in the consumer. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",

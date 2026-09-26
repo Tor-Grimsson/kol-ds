@@ -88,14 +88,14 @@ layout rather than the tree.
 ## Props
 
 <Api name="QuadrantSync" rows={[
-  {"prop":"root","type":"HTMLElement","def":"document.body","desc":"Subtree to hunt handles in; also the box the page grid draws on."},
+  {"prop":"root","type":"HTMLElement","desc":"Subtree to hunt handles in; also the box the page grid draws on."},
   {"prop":"attr","type":"string","def":"'data-handle'","desc":"Attribute naming a node. Put it on divs that already exist."},
   {"prop":"sourceAttr","type":"string","def":"'data-source'","desc":"Attribute naming a node's origin — 'local' or an @kolkrabbi/* package."},
-  {"prop":"bands","type":"Array","def":"DEFAULT_BANDS","desc":"Breakpoint bands. The live one is read from the window, never chosen."},
+  {"prop":"bands","type":"Array","desc":"Breakpoint bands. The live one is read from the window, never chosen."},
   {"prop":"defaultDivisions","type":"{ cols, rows }","def":"{ cols: 8, rows: 8 }","desc":"Starting divisions, before square is applied to the first selection."},
   {"prop":"initialHandle","type":"string","def":"—","desc":"Handle name to select on mount."},
   {"prop":"onSyncLine","type":"(line, parts) => void","def":"—","desc":"Fires whenever the sync line changes."},
   {"prop":"handleColor","type":"string","def":"var(--kol-accent-primary)","desc":"Grid and outline color for the named node."},
-  {"prop":"pageColor","type":"string","def":"var(--kol-fg-40)","desc":"Grid color for the faint page reference."},
-  {"prop":"enabled","type":"boolean","def":"NODE_ENV !== 'production'","desc":"Render at all. Dev-only by default."}
+  {"prop":"pageColor","type":"string","desc":"Grid color for the faint page reference."},
+  {"prop":"enabled","type":"boolean","desc":"Render at all. Dev-only by default."}
 ]} />

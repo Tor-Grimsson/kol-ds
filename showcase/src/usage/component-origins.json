@@ -109,6 +109,16 @@
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L150 + components/sections/home/HomeHero.jsx",
     "date": null
   },
+  "Dropdown · MenuDropdownItem · Popover (matchReferenceWidth)": {
+    "repo": "kol-component",
+    "source": "kol-component/src/molecules/Dropdown.jsx#L120-L150 · src/molecules/MenuItem.jsx#L48,L100 · src/utilities/Popover.jsx#L67-L95 — hit in kol-mirror/src/components/hall-of-mirrors/LoadUnit.jsx#L104",
+    "date": null
+  },
+  "Dropdown · MenuDropdownItem": {
+    "repo": "kol-mirror",
+    "source": "kol-mirror/src/components/hall-of-mirrors/FxUnit.jsx#L152-L170 (the consumer that needs it) · the retired local dropdown at kol-mirror/_tmp/2026-08-28-dropdown-ds/Dropdown-local.jsx#L300-L312",
+    "date": null
+  },
   "Dropdown (viewport-aware panel)": {
     "repo": "kol-ds-fxr",
     "source": "kol-ds-fxr/src/editor/labs/LabsParams.jsx#L360-L370",
@@ -132,6 +142,11 @@
   "FeaturedCarouselReconcile": {
     "repo": "kol-website",
     "source": "kol-website — components/sections/shared/FeaturedCarousel.jsx (231L) vs kol-component organism (259L)",
+    "date": null
+  },
+  "FilesDialog": {
+    "repo": "kol-ds-ui",
+    "source": "kol-ds-ui/packages/design-editor/src/editor/compose/useComposeFile.js + editor/library/LibraryProvider.jsx",
     "date": null
   },
   "FontFolderNaming": {
@@ -204,6 +219,11 @@
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L155-L175",
     "date": null
   },
+  "kol-media-client (packages/media-client)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/editor/library/mediaLibrary.js#L55-L62 · kol-mirror/src/hooks/useMediaLibrary.js#L24-L28",
+    "date": null
+  },
   "MediaLibraryPages": {
     "repo": "kol-r2b2",
     "source": "kol-r2b2/src/App.jsx#L1-L115 (header · bucket dropdown) + kol-r2b2/src/FileList.jsx (868 lines — the wall) + kol-component/src/organisms/MediaLibrary.jsx (the page variant it replaces)",
@@ -269,6 +289,16 @@
     "source": "kol-website — consumer-side scoring of every publish wave since 2026-07-15",
     "date": null
   },
+  "QuadrantSync": {
+    "repo": "kol-ds-ui",
+    "source": "kol-ds-ui/packages/component/src/utilities/QuadrantSync.jsx",
+    "date": null
+  },
+  "NavRail (kol-shell) · AppShell": {
+    "repo": "kol-mirror",
+    "source": "kol-mirror/src/components/NavRail.jsx#L1-L220 · kol-mirror/src/styles/components.css#L198-L233 · kol-mirror/src/App.jsx (Shell)",
+    "date": null
+  },
   "SideNav · NavRail": {
     "repo": "kol-fxr",
     "source": "kol-fxr src/editor/labs/RailSettings.jsx + src/editor/labs/LabsNav.jsx (the working reference, measured)",
@@ -277,6 +307,11 @@
   "NavRail · SideNav": {
     "repo": "kol-shell",
     "source": "kol-shell src/NavRail.jsx (the AppShell rail) · kol-framework src/SideNav.jsx (collapsed) — measured in kol-fxr 2026-08-27",
+    "date": null
+  },
+  "NavRail (kol-shell) · AppShell · GRAB (kol-component/utilities/motion)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/shell/AppRail.jsx#L1-L240 · kol-fxr/src/shell/AppShellLocal.jsx · kol-fxr/src/editor/labs/LabsNav.jsx (the publish effect)",
     "date": null
   },
   "RecordManager": {
@@ -360,8 +395,8 @@
     "date": null
   },
   "SectionSplit": {
-    "repo": "kol-website",
-    "source": "kol-website — six hand-built heroes + five hand-built split-sections",
+    "repo": "kol-client-hrafn",
+    "source": "kol-client-hrafn/apps/web/src/pages/Options.jsx#L1-L30",
     "date": null
   },
   "SectionSplitHeight": {
@@ -449,6 +484,16 @@
     "source": "kol-framework/kol-framework.css#L46 (`--kol-sidenav-w: 16rem`) · kol-website/apps/brand/src/styles/sidenav-collapse.css (the local carry)",
     "date": null
   },
+  "Slider · RotaryDial": {
+    "repo": "kol-mirror",
+    "source": "kol-mirror/src/components/atoms/Slider.jsx (the whole local component) · kol-mirror/src/styles/components.css#L36-L181 (its skin) · consumers at kol-mirror/src/components/hall-of-mirrors/RecorderUnit.jsx + SymphonyMixer.jsx",
+    "date": null
+  },
+  "Slider": {
+    "repo": "packages",
+    "source": "packages/component/src/molecules/Slider.jsx (the docstring and the signature disagree) · packages/theme/kol-components-atoms.css#L674 (`.slider-black`)",
+    "date": null
+  },
   "StackCardHover": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L78-L110 + apps/web/src/styles/ui.css (tail)",
@@ -517,6 +562,16 @@
   "WorkspaceSidebar": {
     "repo": "kol-fxr",
     "source": "kol-fxr src/editor/labs/LabsNav.jsx · kol-monitor src/rack/ModuloSidebar.jsx · kol-mirror src/components/mirror/MirrorSidebar.jsx",
+    "date": null
+  },
+  "ContentCard": {
+    "repo": "kol-client-hrafn",
+    "source": "kol-client-hrafn/apps/web/src/components/site/ProjectCard.jsx#L38-L52",
+    "date": null
+  },
+  "kol-theme": {
+    "repo": "kol-client-hrafn",
+    "source": "kol-client-hrafn/apps/web/src — 57 call sites, swept twice",
     "date": null
   }
 }

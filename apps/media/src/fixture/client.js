@@ -8,6 +8,7 @@
 
 import * as store from './store.js'
 import { fileUrl } from './assets-urls.js'
+import { loadSettings as loadLocal, saveSettings as saveLocal, resetSettings } from '../lib/settings.js'
 
 const urlFor = (key, bucket = 'r2') =>
   store.urlOf(bucket, key) ?? fileUrl(store.fileOf(bucket, key)) ?? `fixture:///${key}`
@@ -48,6 +49,27 @@ export const fixtureClient = {
   async restore(id) { return store.restore(id) },
   async purge(id) { return store.purge(id) },
   async emptyTrash(bucket) { return store.emptyTrash(bucket) },
+
+  // ── what D1 holds beside the bucket (the media D1 pass, 2026-09-25) ──
+  /* Tags ride the listed objects (`o.tags`); this is the one write. */
+  async setTags(key, tags, bucket) { return store.setTags(bucket ?? 'r2', key, tags) },
+  /* `{ text, draft }` — the file's text (saved here, else its bytes) and the pending draft, or null.
+   * Reading the bytes is a fetch of the file's own URL (a data: URL or a bundled asset), not a
+   * provider: nothing leaves the page. */
+  async readText(key, bucket) {
+    const b = bucket ?? 'r2'
+    const { text, draft } = store.textOf(b, key)
+    if (text != null) return { text, draft }
+    const url = urlFor(key, b)
+    const bytes = url.startsWith('fixture:') ? '' : await fetch(url).then((r) => r.text()).catch(() => '')
+    return { text: bytes, draft }
+  },
+  async saveDraft(key, draft, bucket) { return store.saveDraft(bucket ?? 'r2', key, draft) },
+  async writeText(key, text, bucket) { return store.writeText(bucket ?? 'r2', key, text) },
+  /* Per-person view settings. In kol-olina a row per person in D1; here the browser's own storage
+   * (lib/settings.js), which is what the app already used — it just moved behind the client. */
+  async loadSettings(bucket) { return loadLocal(bucket ?? 'r2') },
+  async saveSettings(bucket, settings) { if (settings === null) return resetSettings(bucket ?? 'r2'); saveLocal(bucket ?? 'r2', settings); return settings },
 
   folderTree: () => store.folderTree(),
   reset: () => store.reset(),

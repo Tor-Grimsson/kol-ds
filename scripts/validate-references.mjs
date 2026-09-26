@@ -22,9 +22,10 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { homedir } from 'node:os'
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
-const DEV = '/Users/biskup/dev/projects'
+const DEV = join(homedir(), 'dev/projects')   // was hard-coded to the iMac's home; the MBP is a different user
 const argv = process.argv.slice(2)
 const traceIdx = argv.indexOf('--trace')
 const TRACE = traceIdx >= 0 ? argv[traceIdx + 1] : null

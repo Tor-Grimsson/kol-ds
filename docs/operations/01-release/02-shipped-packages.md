@@ -31,14 +31,14 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.148.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-theme` | **0.149.0** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.27.1** | `<Icon>` + kol-icon-set-v1 + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.222.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-component` | **0.223.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.44.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
 | `@kolkrabbi/kol-shell` | **0.51.0** | Application shell — `NavRail` + `AppShell`, page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.29.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell, exhibit sections |
-| `@kolkrabbi/kol-dashboards` | **0.4.1** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
-| `@kolkrabbi/kol-controls` | **0.3.0** | Hardware panel controls — knob, fader, LED, toggles, jack socket, rocker, `ParamSheet` |
+| `@kolkrabbi/kol-dashboards` | **0.4.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
+| `@kolkrabbi/kol-controls` | **0.3.1** | Hardware panel controls — knob, fader, LED, toggles, jack socket, rocker, `ParamSheet` |
 | `@kolkrabbi/kol-chess` | **0.10.0** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.10.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |

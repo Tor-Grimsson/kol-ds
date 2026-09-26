@@ -1,5 +1,29 @@
 # @kolkrabbi/kol-component
 
+## 0.223.0 — 2026-09-25
+
+**What a database beside the bucket adds** (the media D1 pass). Optional client verbs; a client
+without one hides that feature. The contract is written at the head of `MediaLibraryPages.jsx`.
+
+- **Tags.** Listed objects carry `tags`; `client.setTags(key, tags, bucket)` writes them. Chips with
+  remove and an add field in the preview pane (every view), "Tags…" and "Add tags to N…" in the
+  right-click menu, a Tags group in the filter bar, a Tags column under Fields.
+- **Editing text files.** `readText` · `writeText` · `saveDraft`. Edit in the preview pane and in
+  Quick Look's header (`MediaInspector` `onEdit`) for markdown · json · yaml · text · code. A pause
+  writes a draft, ⌘S or Save writes the file, Revert drops the draft; the pane marks a file with
+  an unsaved draft.
+- **Personalisation.** An uncontrolled page whose client has `loadSettings(bucket)` /
+  `saveSettings(bucket, settings | null)` loads and saves its view settings there. A `settings`
+  prop still wins.
+- **`ColumnBrowser`** takes `renderDetails(file)` — rows under the preview column's facts. The root
+  key handler now ignores keys typed in a field inside it.
+
+- **A file dropped onto a file no longer renames it.** `ColumnBrowser`'s rows and the media rows
+  view's folder rows called `onDrop` without `canDrop`, and the enclosing column allowed the drag,
+  so a drop on a file row moved the dragged file INTO the file's key. A row that cannot take a drop
+  now lets it bubble: dropped on a file, it lands in that file's folder (Finder's behaviour);
+  dropped on a file in its own folder, nothing happens.
+
 ## 0.222.0 — 2026-09-25
 
 - **`ToolPalette` — NEW** (organism; kol-fxr `editor-panels-the-held-specs` A3). The editor's tool

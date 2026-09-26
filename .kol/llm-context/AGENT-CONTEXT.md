@@ -8,7 +8,7 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Queued for next session (user, 2026-09-25)
 
-- **Showcase coverage audit — a report, not a fix.** The user found FoundryCTA has no page on ui.kolkrabbi.io and asked: which components does the website show, and which does it not? Deliver a report listing every exported component/hook per package against its showcase page (`showcase/src/demos/<Name>.jsx`), the ones exempted by `NO_DEMO` / `DOCS_ONLY` / `DEPRECATED` in `showcase/src/nav/classification.js` with their stated reason, and retired aliases. Start of next session, before other work.
+- ~~**Showcase coverage audit**~~ — **done 2026-09-25**, published as an artifact (https://claude.ai/artifact/4zxYSGi1yfqXSr6P3Ef6Dq): 238 of 351 components have a page, none missing without a written reason, 47 unruled debt (workshop 0/30, shell 4/16, styleguide 11/30, framework 6/14). Six stale inventory rows removed the same day.
 
 ## Current state (2026-09-25, explorer pass + publish 0.220.0)
 

@@ -31,10 +31,11 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, basename, relative, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { homedir } from 'node:os'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO = join(HERE, '..')
-const DEV = '/Users/biskup/dev/projects'
+const DEV = join(homedir(), 'dev/projects')   // was hard-coded to the iMac's home; the MBP is a different user
 
 const ROOT_DEFS = [
   { path: 'kol-apps', kind: 'group' },

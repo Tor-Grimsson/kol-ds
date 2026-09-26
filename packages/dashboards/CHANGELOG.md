@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.4.2 — 2026-09-25
+
+- **`DashStackedBarCard` legend ink takes `oq-64`, not `fg-64`** — the icon-ink law
+  (icons and glyph plates take `oq-*`; translucent `fg` shows overlaps). Sat in the tree
+  unpublished since 2026-09-23.
+
 ## 0.4.1 — 2026-09-01
 
 - **CardHeader's subtitle wears `.dash-lede`** — 0.4.0 pointed it at

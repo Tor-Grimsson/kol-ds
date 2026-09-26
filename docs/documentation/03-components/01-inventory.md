@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-03
+updated: 2026-09-25
 verified: 2026-07-04
 description: Every exported component, by tier, with its job
 aliases:
@@ -61,7 +61,6 @@ One row per source file — a component's compositional sub-parts are members of
 | `Image` | A raster image with graceful missing-asset fallback. |
 | `Input` | Single-line text field with prefix/suffix, icons, and size variants. |
 | `Label` | A form-field label. |
-| `InteractiveImage` | An image seen through a blob mask that re-centres on the cursor, over a blurred copy of itself; the stage tilts on `useTilt`. Static on touch and under reduced motion. |
 | `OverlayGlassPanel` | A frosted-glass content card floating over hero or carousel media. |
 | `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change. |
 | `Pill` | A compact rounded label — outline, subtle, inverse. |
@@ -85,6 +84,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `CropOverlay` | Crop chrome for an image with an explicit crop window — drag inside to pan the image, drag a handle to move the frame; divides by the canvas zoom. `SelectionOverlay`'s sibling. |
 | `PathNodeOverlay` | Bezier node editing over a path layer — anchors, handles on a leash, mirror-unless-Alt, close/split/smooth gestures; divides by the canvas zoom. |
 | `XYPad` | A two-axis pad: drag one puck to vary two values at once. Square via aspect-ratio, puck in %, so any rail width takes it. |
+| `FileIcon` | The file as a page — folded corner, the kind's glyph, the extension under it (Finder's generic document). What a file shows when it has nothing of its own to draw; one SVG, so the label scales with the box. |
 
 Support exports on the atoms tier: the `Popover` module ships `usePopover` / `PopoverPanel` / `Tooltip`. The type-specimen kit (`TypeSample`, `TypeSpecCard`) and `TextPressure` moved to `@kolkrabbi/kol-foundry` on 2026-07-09 — they render/manipulate a live font, the foundry membership test.
 
@@ -95,7 +95,6 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `Accordion` | A stack of independently collapsible panels. |
 | `AlignmentGrid` | An align-to-artboard control — DS Button cells firing an onAlign seam. |
 | `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
-| `ArticleCard` | A blog/editorial card family — one component with default / hero / mini sizes. |
 | `TiltBento` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. The Tilt family's composed tile (`TiltCard` is the bare frame, `useTilt` the hook); was `BentoCard` until 2026-08-27 — the old name is an alias on the retirement ledger. |
 | `ProfileCard` | The digital namecard — a square photo with a `plus`/`minus` disclosure on it and a content-sized inverse shelf (logo slot, name, mailto, a rack of socials) that opens under it or beside it; four size ramps, two orientations, a controlled `open` seam. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
@@ -111,8 +110,6 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
 | `LabeledControl` | A label-and-hint wrapper around any control. |
 | `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
-| `MediaCard` | A grid tile for one media object — thumbnail, name, meta, actions, with a select mode. |
-| `MediaRow` | A list row for one media object — thumbnail, name, date/size columns, actions, with a select mode. |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
@@ -130,8 +127,11 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `SwatchControls` | A paint-chip stack + eyedropper — swatch slots on ColorSwatch with an EyeDropper-API pick affordance. |
 | `TabsRow` | A labeled underline tab strip — active tab gets a 2px underline. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
-| `WorkListItem` | The list-row twin of WorkCard — thumbnail, title, tags, on one shared project shape. |
 | `InspectorRail` | The selection-routing shell of an inspector panel — nothing / canvas / one / many, with canvas winning over multi-select. The panels are the consumer's, passed as renderers. |
+| `QuickLookFrame` | Quick Look's window — one opaque raised surface for every kind that HUGS its body: header (close · pager · name · meta · actions), body, optional footer, a corner grip to resize. The body sets the width at its own ratio. |
+| `MediaTile` | One tile of the media grid — the caller's preview node over a name, selected / drop-over states, double-click opens; on a coarse pointer it carries the `···` menu. |
+| `RowMenuButton` | The `···` that opens a row's or tile's own context menu on a touch device — renders only under a coarse pointer; the menu is the caller's. |
+| `ContextMenu` / `useContextMenu` | A right-click menu anchored at the pointer — a popover whose anchor is a point, so it inherits flip, shift, portal and dismissal; `useContextMenu().openAt(e, payload)` opens it from any `onContextMenu`. |
 
 Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
@@ -169,8 +169,9 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
 | `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
 | `MediaLibrary` | A browser over an object bucket — **ONE component, its variants**: `browse` (folder / files: the bucket dropdown, the crumb line, `ColumnBrowser`, the count) and `library` (the content-filters wall: kinds · search · SELECT / FLAT · grid | list | off · sort · the cards · paging · the inspector · the settings drawer) are kol-r2b2's app cut in two (MediaLibraryPages, 2026-08-27 — "bucket is a control, not a page"); `modal` is the picker; `page` a deprecated alias of `library`. The client is injected; the pages render read-only unless it carries the write seams. |
-| `MediaBrowser` / `MediaPicker` | Thin **aliases** of `MediaLibrary` at `variant="page"` / `variant="modal"`, kept so existing call sites keep working. They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
+| `MediaPicker` | A thin **alias** of `MediaLibrary` at `variant="modal"`, kept so existing call sites keep working (its `MediaBrowser` twin is gone). They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
 | `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, then a **prefix-scoped** view: the folders directly under the prefix, the files at that level (or the whole subtree in `flat`), the kind allow-list, the search, the sort with direction, and paging keyed to what is listed. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
+| `MediaLibraryExplorer` | A thin name for the media surface: ONE page, three views (columns · rows · grid), one listing, header and count line. It only carries the view state for a consumer that wants to own it; `MediaLibraryBrowse` IS the surface. |
 | `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |
 | `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `ShellDrawer` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
 | `NewsletterBand` | **Deprecated 2026-08-27** — `SectionNewsletter` under its old name (`title` → `headline`, `description` → `body`). |
@@ -183,7 +184,6 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |
 | `Table` | THE data table. Columns opt into sorting with `sortable` (header is a real button, cycles asc→desc→none, sets `aria-sort`); `width="panel"` (default) \| `"column"` is the cap contract — see [[../01-foundations/05-layout-systems\|layout systems]]. Cells wear `.kol-table-pill` / `.kol-table-token`, never bare text. |
-| `WorkCard` | A portfolio grid tile composing TiltCard, with a hover content drawer. |
 | `WorkViewToggle` | A sliding-pill grid/list toggle with inline search (controlled). |
 | `CurveEditor` | Curve authoring — kind picker, per-kind ranges and expression fields, the epicycle term list. Fork-on-edit: the first commit forks a stock clip, the shared table is never mutated. |
 | `KeyframeEditor` | A keyframe list over a pose track (`t`, rot in radians, pos, scale, ease), sorted by `t`; rotations edit in degrees. Selecting a key pauses the clock and seeks it. |
@@ -207,6 +207,7 @@ Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` packa
 | `useEyedropper` / `pickFromCanvasElement` | Cross-browser color sampling — the native `EyeDropper` API (Chromium) with an injected fallback; `pickFromCanvasElement` is the reusable fallback that reads a pixel from a consumer's `<canvas>` (Firefox/Safari). |
 | `colorMath` | Pure HSL/hex + harmony helpers for the color pickers — `hexToHsl` / `hslToHex`, deterministic `generateHarmony` / `harmonyColors` (+ the `HARMONIES` table), and jittered `seedHarmony`. |
 | `useMediaQuery` | Subscribe to a media query, SSR-safe — the general form of `useCoarsePointer` / `usePrefersReducedMotion`, for a STRUCTURAL responsive fork the stylesheet cannot express. |
+| `useLongPress` | The touch half of right-click — spread on a container, a held touch dispatches `contextmenu` at the finger, so every `onContextMenu` inside works unchanged. Moving past `slop` cancels; the click after a handled hold is swallowed. |
 | `useDragResize` | Grab-edge resize + collapse for a rail. Moved here from kol-framework 2026-09-03 so `EditorShell` could reach it; framework re-exports it. |
 | `pathMath` | Bezier path geometry — the `d` string, bounds, normalise, scale/rotate, nearest-point, split, smooth. One implementation, shared by `PathNodeOverlay` and the editor engine. |
 | `layerTree` | Layer labels and the tree walk — `TYPE_LABELS`, `labelForLayer`, `rowLabelForLayer`, `findLayerDeep`. `LayerStack`'s defaults. |

@@ -64,3 +64,17 @@ export function uploadedOf(key) {
   const days = hash(`${key}:date`) % 540
   return new Date(Date.UTC(2026, 8, 20) - days * 86_400_000).toISOString()
 }
+
+/* Tags at rest (the media D1 pass, 2026-09-25) — enough that the tag filter and the chips have
+ * something to show on first load. In kol-olina these would be rows in D1 beside `files`. */
+export const SEED_TAGS = {
+  r2: {
+    'img/01-shoots/reykjavik/tt-01.jpg': ['reykjavik', 'shoot'],
+    'img/01-shoots/reykjavik/tt-02.jpg': ['reykjavik', 'shoot'],
+    'img/01-shoots/hafnarfjordur/tt-05.jpg': ['shoot'],
+    'img/02-products/tt-07.jpg': ['product', 'hero'],
+    'img/02-products/logo.svg': ['brand'],
+    'video/reels/softforms.mp4': ['reel', 'hero'],
+    'docs/01-tier-rules.md': ['draft'],
+  },
+}

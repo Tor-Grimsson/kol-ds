@@ -3,7 +3,7 @@ title: Media app plan
 type: plan
 status: active
 created: 2026-09-21
-updated: 2026-09-23
+updated: 2026-09-25
 description: Build apps/media over a fake mutable tree
 tags:
   - domain/workflow
@@ -96,9 +96,12 @@ Split out of D1 on 2026-09-23 — a UI pass on the existing surface, no store be
 
 Nothing this round was measured below 1400 wide. Long-press opens the context menu; on `pointer: coarse`, rows and tiles get a `···` button that opens the same menu; then a pass over all three views and Quick Look at 390 and 768.
 
-## D1 next
+## D1
 
-Carried from 2026-09-23, when the media surface (merge, previews, trash, keyboard) was finished. Personalisation on D1, and text editing, are next; these ride along.
+Done 2026-09-25. What a database beside the bucket adds — kol-olina's is Cloudflare D1 — as optional client verbs the fixture fakes in memory (`apps/media/src/fixture/`). The contract is written at the head of `MediaLibraryPages.jsx`; a client without a verb hides that feature.
 
-- **Tags** — need a store R2/B2 objects do not have; D1 is that store. Not before it.
-- **Editing files** — text editing over the fixture, with D1 holding the drafts.
+- **Tags** — listed objects carry `tags`; `setTags` writes them. Chips in the preview pane, "Tags…" and "Add tags to N…" in the menu, a Tags filter group, a Tags column under Fields.
+- **Editing files** — `readText` / `writeText` / `saveDraft`. Edit in the preview pane and Quick Look for markdown · json · yaml · text · code; a pause writes a draft, ⌘S writes the file, Revert drops the draft.
+- **Personalisation** — `loadSettings` / `saveSettings` carry the view settings when the page is uncontrolled. The app no longer holds settings itself; the fixture's pair wraps `lib/settings.js`.
+
+kol-olina adopts by adding the verbs to its client over its D1 tables (a `tags` column or table, a `drafts` table, a settings row per person).
