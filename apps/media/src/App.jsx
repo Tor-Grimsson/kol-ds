@@ -4,11 +4,18 @@ import IconFrame from '@kolkrabbi/kol-component/atoms/IconFrame';
 import { Tooltip } from '@kolkrabbi/kol-component/utilities/Popover';
 import { useModal } from '@kolkrabbi/kol-component/molecules/Modal';
 import { useTheme } from '@kolkrabbi/kol-framework/src/theme.js';
-import { kindOf } from '@kolkrabbi/kol-component/utilities/mediaKinds';
 import useMediaQuery from '@kolkrabbi/kol-component/hooks/useMediaQuery';
-import fixtureClient from './fixture/client';
+import { createFixtureClient } from 'media-fixture';
+import { useFixtureMedia } from 'media-fixture/wiring';
 import FileFormats from './FileFormats';
-import { DEFAULTS } from './lib/settings';
+import { DEFAULTS, loadSettings, saveSettings, resetSettings } from './lib/settings';
+
+/* The imagined olina setup (apps/media-fixture): a fake bucket + a fake D1. This app keeps its own
+ * settings module (the forced column height lives there), so it hands the client that pair; the
+ * shell app takes the fake D1's. */
+const fixtureClient = createFixtureClient({
+  settings: { load: loadSettings, save: (b, s) => (s === null ? resetSettings(b) : (saveSettings(b, s), s)) },
+});
 import ShortcutsOverlay from '@kolkrabbi/kol-shell/src/ShortcutsOverlay.jsx';
 import { SHORTCUTS, BINDINGS } from './lib/shortcuts';
 
@@ -30,13 +37,6 @@ import { SHORTCUTS, BINDINGS } from './lib/shortcuts';
  * live bucket a video thumb pulls the whole object for a 44px tile, and some of those are 400 MB.
  * The fixture's videos are local assets of a few hundred KB, so the cost that ruling avoided does
  * not exist here and a video gets a real frame. */
-const THUMBABLE = new Set(['image', 'video']);
-
-/* THE THREE SURFACES (ColumnBrowserMobileViews §5, user-ruled 2026-09-03). Neither reference
- * stacks two full-height surfaces on a phone; each floats a pill and gives every surface a tab.
- * The DS ships the pill and takes a list — what a tab MEANS is ours, and ours are the three this
- * app already had: the folder tree, the ContentFilters wall, and the kind overview. Above `md`
- * nothing here renders and the 2026-08-26 one-view ruling stands: both pages, stacked. */
 const TABS = [
   { value: 'browse', label: 'Browse', icon: 'folder' },
   { value: 'files', label: 'Files', icon: 'view-list' },
@@ -46,18 +46,10 @@ const TABS = [
 /* How a date READS is ours, not the DS's — that is why `formatDate` is a seam beside
  * `formatSize` (component 0.209.0). Short local date, the form both references use
  * (`28.8.2026`), because the meta line cannot wrap and an ISO stamp fills it alone. */
-const formatDate = (iso) => {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return Number.isNaN(+d) ? iso : `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
-};
-
 /* The wordmark, and the virtual root the browser builds from it. This is the PRODUCT's name, not
  * the consumer repo's — kol-r2b2 is one consumer of the media product, and `apps/media` is the
  * product itself (user 2026-09-21: "this logo should just say MEDIA not r2b2"). */
 const TITLE = 'MEDIA';
-
-const BUCKETS = Object.fromEntries(fixtureClient.buckets().map((b) => [b.id, b]));
 
 /* ONE VIEW still (the 2026-08-26 ruling — no tabs): the DS split the surface into two
  * pages, so they are STACKED here exactly as FileList had them — `browse` renders the
@@ -84,13 +76,6 @@ function ThemeChip() {
   );
 }
 
-// The last-used bucket survives a reload (localStorage; falls back to r2).
-const BUCKET_KEY = 'kol-media:bucket';
-const initialBucket = () => {
-  try { const v = localStorage.getItem(BUCKET_KEY); if (v && BUCKETS[v]) return v; } catch { /* private mode */ }
-  return 'r2';
-};
-
 export default function App() {
   // The folder path lives in the URL hash (#img/04-collections/) so browser
   // Back/Forward walk folders and a reload lands where you were.
@@ -105,19 +90,13 @@ export default function App() {
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
-  const [refreshKey, setRefreshKey] = useState(0);
   const modal = useModal();
-  const [bucketId, setBucketId] = useState(initialBucket);
-
-  const bucket = BUCKETS[bucketId];
+  /* THE WIRING (media-fixture/wiring, shared with apps/media-shell): the bucket, the verbs, the
+   * trash, uploads and the three seams — this app keeps only its chrome and its hash routing. */
+  const media = useFixtureMedia({ client: fixtureClient, title: TITLE, setPrefix, defaults: DEFAULTS });
+  const { bucket, fileActions, clearChanges } = media;
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-
-  /* The tree is read fresh after every mutation. kol-r2b2 bakes this to JSON (scripts/folder-tree.mjs)
-   * because a live bucket cannot be walked cheaply; here the store IS the tree, so a folder created,
-   * moved or emptied shows in the columns at once. */
-  const [folderTree, setFolderTree] = useState(() => fixtureClient.folderTree());
-  const touched = () => { setFolderTree(fixtureClient.folderTree()); setRefreshKey((k) => k + 1); };
 
   /* Below `md` the three surfaces are TABS, one at a time; above it they stay stacked. A
    * structural fork, so it is a JS query and not a Tailwind class — the markup differs, it is not
@@ -141,27 +120,6 @@ export default function App() {
     if (v === 'files') setView('list');
   };
   const tabProps = stack ? { tabs: TABS, activeTab: tab, onTabChange } : {};
-
-  /* SETTINGS ARE THE CLIENT'S (the media D1 pass, 2026-09-25). The app used to hold them and write
-   * localStorage itself; the page now loads and saves them through `client.loadSettings` /
-   * `saveSettings`, which is where kol-olina keeps them per person (D1). The fixture's pair wraps
-   * the same lib/settings.js, so nothing a person saved before is lost. */
-
-  const switchBucket = (id) => {
-    if (!BUCKETS[id]) return;
-    setBucketId(id);
-    try { localStorage.setItem(BUCKET_KEY, id); } catch { /* private mode */ }
-    setPrefix('');
-    setRefreshKey((k) => k + 1);
-  };
-
-  /* CLEAR CHANGES — the one control this app has that the live one cannot. The tier rules require
-   * a reset so destructive verbs can be exercised repeatedly against the fixture. */
-  const clearChanges = () => {
-    fixtureClient.reset();
-    setPrefix('');
-    touched();
-  };
 
   /* THE BINDINGS, read off the same array the overlay renders (`lib/shortcuts.js`), so a key can
    * never be listed and not work. Ignored while typing — a search field owns its own letters, and
@@ -214,112 +172,6 @@ export default function App() {
     </>
   );
 
-  /* ── THE THREE SEAMS (ColumnBrowserMobileViews, component 0.209.0) ─────────────────────────
-   * The DS deliberately does not count, does not fetch and does not decide how a date reads.
-   * All three are answered here because this app already holds what they need. */
-
-  /* Multi-bucket browse prefixes every key with a virtual root (`<title>/<bucket label>/`) so the
-   * stores share one tree. Both seams are handed those prefixed paths, and both need the
-   * bucket-relative key back — the counts are keyed that way and `mediaUrl` builds from it.
-   * The root IS the title, so the two cannot be written separately. */
-  const unroot = (p) => {
-    const vroot = `${TITLE}/${bucket.label}/`;
-    return p.startsWith(vroot) ? p.slice(vroot.length) : p;
-  };
-
-  const folderMeta = (path) => {
-    const c = folderTree[bucketId]?.counts?.[unroot(path)];
-    // The count alone, as both references show it. Files carry `date · size`; a folder has
-    // neither of its own, and the tally is the one fact about it worth a line.
-    return c ? `${c.files} item${c.files === 1 ? '' : 's'}` : '';
-  };
-
-  /* The tile. Anything outside THUMBABLE falls through to the DS's kind glyph. A video draws its
-   * own first frame — `preload="metadata"` plus `#t=0.1`, which is what makes a browser paint a
-   * frame rather than a black rectangle; muted + playsInline so nothing autoplays or goes
-   * fullscreen on a tap. */
-  const thumbnailFor = (o) => {
-    const kind = kindOf(o);
-    if (!THUMBABLE.has(kind)) return null;
-    const url = fixtureClient.mediaUrl(unroot(o.key), bucketId);
-    return kind === 'video'
-      ? <video src={`${url}#t=0.1`} preload="metadata" muted playsInline
-               className="w-full h-full object-cover" />
-      : <img src={url} alt="" loading="lazy" decoding="async"
-             className="w-full h-full object-cover" />;
-  };
-
-  /* THE FILE VERBS, wired to the fixture. Every one of these has existed in `fixture/store.js`
-   * since phase 2 with a passing self-check, and nothing in the UI could reach them — the store
-   * could create a folder and the product could not. `move` is `rename` with a new parent, which
-   * is what it is in a key-prefix bucket too; the difference here is that a folder is a real node,
-   * so moving one actually moves its children instead of rewriting keys one at a time. */
-  const fileActions = {
-    createFolder: async (path) => { await fixtureClient.createFolder(path, bucketId); touched() },
-    createFile: async (key) => { await fixtureClient.createFile(key, bucketId); touched() },
-    rename: async (from, to) => { await fixtureClient.renameObject(from, to, bucketId); touched() },
-    move: async (path, destFolder) => {
-      const name = path.replace(/\/$/, '').split('/').pop()
-      const isFolder = path.endsWith('/')
-      await fixtureClient.renameObject(path, `${destFolder}${name}${isFolder ? '/' : ''}`, bucketId)
-      touched()
-    },
-    remove: async (path) => { await fixtureClient.deleteObject(path, bucketId); touched() },
-    /* A CONSUMER VERB (`fileActions.items`, component 0.217.0) — the Duplicate kol-client-olina
-     * asked for, proved against the fixture. Files only; on a multi-selection it copies every file
-     * in the set. `photo.jpg` → `photo copy.jpg`, then `photo copy 2.jpg`, as Finder names them. */
-    items: [
-      {
-        label: 'Duplicate',
-        icon: 'copy',
-        when: (t) => t.type === 'file',
-        run: async (t) => {
-          const taken = new Set((await fixtureClient.listMedia('', { bucket: bucketId })).map((o) => o.key))
-          for (const key of (t.targets ?? [t.path]).filter((k) => !k.endsWith('/'))) {
-            const dot = key.lastIndexOf('.')
-            const [base, ext] = dot > key.lastIndexOf('/') + 1 ? [key.slice(0, dot), key.slice(dot)] : [key, '']
-            let next = `${base} copy${ext}`
-            for (let n = 2; taken.has(next); n++) next = `${base} copy ${n}${ext}`
-            taken.add(next)
-            await fixtureClient.copyObject(key, next, bucketId)
-          }
-          touched()
-        },
-      },
-    ],
-  }
-
-  /* DESKTOP FILES DROPPED ON A FOLDER (`onDropFiles`, component 0.217.0). The DS hands over the
-   * files and the folder and never uploads — this is the fixture's upload, the same one the drop
-   * zone uses, so a dropped photo lands with its own bytes and previews as itself. */
-  const onDropFiles = async (files, folder) => {
-    for (const f of Array.from(files)) await fixtureClient.uploadFile(f, `${folder}${f.name}`, bucketId)
-    touched()
-  }
-
-  const shared = {
-    client: fixtureClient,
-    title: TITLE,
-    fileActions: bucket.writable ? fileActions : undefined,
-    onDropFiles,
-    /* THE TRASH (component 0.218.0) — delete moves into it; the DS draws the list and the verbs. */
-    trash: bucket.writable ? {
-      items: fixtureClient.trashList(bucketId),
-      restore: async (id) => { await fixtureClient.restore(id); touched() },
-      purge: async (id) => { await fixtureClient.purge(id); touched() },
-      empty: async () => { await fixtureClient.emptyTrash(bucketId); touched() },
-    } : undefined,
-    bucket: bucketId,
-    onBucketChange: switchBucket,
-    /* the page resolves "reset" from these — without them it fell back to its own base, from before
-     * the fill height, and saved a fixed 528px column over the current default */
-    defaults: DEFAULTS,
-    refreshKey,
-    folderMeta,
-    thumbnailFor,
-    formatDate,
-  };
-
   return (
     <div className="min-h-screen py-6 max-w-[var(--kol-container-max)] mx-auto breakpoint-padding flex flex-col gap-10">
       {/* ONE SURFACE, TWO VIEWS (`variant="explorer"`, component 2026-09-21). This used to be two
@@ -333,13 +185,12 @@ export default function App() {
           we don't. */}
       <MediaLibrary
         variant="explorer"
-        {...shared}
+        {...media.props}
         {...tabProps}
         view={view}
         onViewChange={setView}
         prefix={prefix}
         onPrefix={setPrefix}
-        folderTree={folderTree}
         autoFocus
         settingsFooter={settingsFooter}
         className="gap-10 media-browse"
@@ -355,7 +206,7 @@ export default function App() {
         open={overviewOpen}
         onClose={() => { setOverviewOpen(false); if (stack) setTab('browse'); }}
         client={fixtureClient}
-        buckets={Object.values(BUCKETS)}
+        buckets={media.buckets}
       />
     </div>
   );

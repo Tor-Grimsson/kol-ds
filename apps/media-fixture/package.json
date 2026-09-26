@@ -1,0 +1,20 @@
+{
+  "name": "media-fixture",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The imagined olina setup for the apps tier \u2014 a fake bucket and a fake D1 in session memory, shared by apps/media and apps/media-shell. Never published.",
+  "exports": {
+    ".": "./src/client.js",
+    "./bucket": "./src/bucket.js",
+    "./d1": "./src/d1.js",
+    "./wiring": "./src/wiring.jsx"
+  },
+  "scripts": {
+    "test": "node src/fixture.test.mjs"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "@kolkrabbi/kol-component": "*"
+  }
+}

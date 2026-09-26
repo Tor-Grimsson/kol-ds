@@ -55,13 +55,11 @@ Type and chrome classes retire the same way — the marker line above the rule i
 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
-| `kol-display-lg` | theme | `kol-sans-display-01` (+ `uppercase`) | 2026-08-27 |
-| `kol-display-section` | theme | `kol-sans-display-02` (+ `uppercase`) | 2026-08-27 |
-| `kol-display-section-sm` | theme | `kol-sans-display-03` (+ `uppercase`) | 2026-08-27 |
-| `kol-display-subsection` | theme | `kol-sans-display-03` (+ `uppercase`) | 2026-08-27 |
 | `kol-card-kicker` | theme | `kol-eyebrow` — the eyebrow has one name; the props `kicker` (ContentText) and `label` (SectionText + the sections) are aliases too, documented on the components (the gate cannot see props) | 2026-08-27 |
 
 ## History
+
+- 2026-09-26 — **The four elder display classes dropped** (R3: 30 days, nobody imports them): `kol-display-lg` · `kol-display-section` · `kol-display-section-sm` · `kol-display-subsection`. Rules removed from `kol-theme/kol-typography.css`, the block quarantined to `_tmp/2026-09-26-elder-display-classes/`, BREAKING in the theme changelog. Use `kol-sans-display-01` / `-02` / `-03` + `uppercase`.
 
 - 2026-09-25 — **`FoundryCTA` dropped** (R3: 30 days, no importer in the estate). Export removed from `kol-component`, source quarantined to `_tmp/2026-09-25-foundry-cta/`, BREAKING in the changelog. It never had a showcase page — an alias does not get one — which is how the user found it: searching the site for a component the gate was talking about.
 

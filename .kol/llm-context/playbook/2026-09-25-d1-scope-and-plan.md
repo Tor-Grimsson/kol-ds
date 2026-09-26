@@ -102,3 +102,51 @@ Order rule: server contract → client package → adoption → identity → fea
   note → finding: identity (one shared password) blocks every per-person feature — P5 unlocks P6
   note → finding: the server half (P1) and the client package (P2) do not exist yet; the DS half is ahead of both
   next → P0 decisions from the user
+
+[00:40 GMT · 2026-09-26] · replan · user rulings supersede P0–P6 above
+  ruling → olina is out of the plan; apps/media's fixture IS the imagined olina setup (bucket + D1)
+  ruling → one user, ever — no identity, no conflicts, no AccountChip (P5 and the ifMatch item dropped)
+  ruling → drafts live in browser memory; D1 holds only what must outlive a device (tags · favourites · recents · smart folders · settings)
+  ruling → media + kol-shell is its own app and URL (apps/media-shell); apps/media stays the tool alone; apps/shell alone later
+  ruling → no review until the whole plan is implemented; blocking calls are mine
+  gap → document authoring (olina brand NoteEdit concept: title · markdown body · Write/Preview · attachments · new-doc page) was not in the plan — added as P4
+  decision → a media feature must render in apps/media too; media-shell adds only shell composition (home · settings · rail)
+  decision → fixture moves to a private workspace package apps/media-fixture: fake bucket + fake D1 as separate modules
+
+## Plan v2 — phases in order (supersedes "Plan — phases in order")
+  P1 · shared fixture → apps/media-fixture (bucket.js · d1.js · client.js) · apps/media unchanged in behaviour
+  P2 · drafts to the browser → saveDraft out of the contract · DS keeps drafts in localStorage per bucket+key · hasDraft derived
+  P3 · apps/media-shell → AppShell + NavRail (Home · Browse · Settings) · own dev script + port · /apps/media-shell slug
+  P4 · document authoring → DS DocumentEditor replaces the textarea: New document (name + type) · .md frontmatter form (title · tags · date · description · custom keys) · Write / Preview / Split · attachments from the bucket · 1 MB cap · SVG edits as text with a live preview
+  P5 · favourites + recents → star in pane + menu · Favourites filter · recents from a fake-D1 event log
+  P6 · Home (media-shell) → CatalogPage shelf: Recent · Favourites · Tags · Unsaved drafts
+  P7 · Settings page (media-shell) → SettingsScaffold: Preferences (default view · default bucket · theme) · Shortcuts · About
+  P8 · smart folders + folder tags + tag autocomplete + tag rename/merge
+  P9 · walkthrough → WalkthroughPanel first run
+  P10 · ship → docs · changelogs · gates · publish · both apps verified end to end
+
+[01:03 GMT · 2026-09-26] · P1–P10 · plan v2 implemented whole ✓
+  P1 → apps/media-fixture: bucket.js (bytes · keys · folders · trash · permanent file ids) + d1.js (tags · favourites · folder rows · events · smart folders · settings) + client + useFixtureMedia wiring shared by both apps · self-check ✓
+  P2 → drafts are browser memory: DS utilities/localDrafts; saveDraft out of the contract (BREAKING for 0.223 clients); a newer draft restores, follows rename/move
+  P3 → apps/media-shell: AppShell + NavRail (Home · Browse · Settings), hash routes, pnpm media-shell (5175), /apps/media-shell slug + vercel rewrite + root build
+  P4 → DS DocumentEditor: new doc (name + type) · md fields form · Write/Split/Preview · Attach (in-editor list) · SVG · 1 MB cap · name carries the title
+  P5 → favourites (files + folders, star in pane + menu, filter group) · event log (opened · edited · created · uploaded)
+  P6 → Home: Recent · Favourites · Smart folders · Unsaved drafts (opens the editor) · Tags · New document
+  P7 → Settings: SettingsScaffold · Preferences (default view · default bucket · theme · drafts · clear changes) · Tags (rename = merge) · Shortcuts · About
+  P8 → smart folders (chips, flat matches) · folder tags · tag suggestions · rename/merge · frontmatter tags merge into D1 tags on save
+  P9 → first-run WalkthroughPanel, replay from About
+  P10 → docs (apps-tier index · media plan § D1 · inventory) · changelogs · 27 gates ✓ · published kol-theme 0.150.0 · kol-component 0.224.0 · both apps build ✓
+  note → rescues: tag field unpicked its file (details island); walkthrough collapsed in the overlay's hugging sheet (sized box); Home doc tiles rendered full-size text (FileIcon); a smart folder drew the level's folders (hidden); a stale Vite export cache on the old media server
+  note → decision: retirements R3 fired today — the four elder kol-display-* classes dropped (BREAKING, theme 0.150.0), block quarantined to _tmp/2026-09-26-elder-display-classes/
+  note → decision: Attach uses an in-editor list, not MediaLibrary's picker (the picker imports the page — a cycle)
+
+──────────── MILESTONE: media D1 plan v2 ──────────── [01:03 GMT · 2026-09-26]
+  changed: component (DocumentEditor · localDrafts · frontmatter pair · MediaLibraryPages) · theme · apps/media · apps/media-fixture (new) · apps/media-shell (new) · docs · build ✓
+  review → pnpm media (5174) · pnpm media-shell (5175)
+
+[14:25 GMT · 2026-09-26] · review + ruling · the app anatomy ✓
+  ruling → four layers, named: Shell (frame) · Catalog (the ContentFilters PAGE, whole layout) · Hub (Home-as-Catalog · Settings · shortcuts · walkthrough) · Tool (the work area)
+  ruling → an app = Shell + Hub + Tool, the Hub nests a Catalog; apps tier = apps/shell · apps/<tool> · apps/<tool>-shell; brand is a tool, not a second shell
+  review → media-shell: walkthrough opt-in + X inside the card · smart folders out · Recent/Favourites as the view toggle · Home must BE a Catalog
+  doc → docs/documentation/04-compositions/16-app-anatomy.md (draft; table refined against the real code)
+  next → user clones monitor · mirror · fxr · kol-website; session restarts; read the overlap → define the Hub → apps/shell → review → media-shell rebuilt

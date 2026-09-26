@@ -190,6 +190,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `LayerStack` | The layers panel — a z-stacked tree with drag to reorder AND reparent in one gesture, inline rename, hover-revealed eye + lock, collapsible containers, a Canvas root row. |
 | `TimelineDock` | The keyframe timeline — scrub ruler + playhead over one lane per track, diamonds at each key; drags commit on pointer-up, one undo entry per gesture. Collapses to nothing with no tracks. |
 | `ToolPalette` | The editor's tool bar as one row — tools arm, actions run, folds (`SplitToolButton`) either arm a variant or run one; dividers between groups. Armed tool, actions and every disabled rule are the consumer's `items`. Scrolls in its own box when narrow. |
+| `DocumentEditor` | Write a text file — open one or make a new one (name + type): a fields form over a markdown file's frontmatter, Write / Split / Preview through `KindPreview`, Attach from a list of files, SVG with its picture. Drafts live in browser memory and restore when newer than the file; ⌘S saves, Revert drops the draft. |
 
 Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `ColorLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
 
@@ -208,6 +209,8 @@ Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` packa
 | `colorMath` | Pure HSL/hex + harmony helpers for the color pickers — `hexToHsl` / `hslToHex`, deterministic `generateHarmony` / `harmonyColors` (+ the `HARMONIES` table), and jittered `seedHarmony`. |
 | `useMediaQuery` | Subscribe to a media query, SSR-safe — the general form of `useCoarsePointer` / `usePrefersReducedMotion`, for a STRUCTURAL responsive fork the stylesheet cannot express. |
 | `useLongPress` | The touch half of right-click — spread on a container, a held touch dispatches `contextmenu` at the finger, so every `onContextMenu` inside works unchanged. Moving past `slop` cancels; the click after a handled hold is swallowed. |
+| `localDrafts` | `readDraft` · `writeDraft` · `clearDraft` · `listDrafts` · `moveDrafts` · `DRAFTS_EVENT` — a text file's unsaved edit in browser memory, keyed by bucket + key; every write announces itself on `window`. |
+| `splitFrontmatter` / `joinFrontmatter` | The editor's frontmatter pair — keys keep case and order, lists stay lists, the body untouched, so opening and saving changes only what was edited. `parseFrontmatter` stays the display reader. |
 | `useDragResize` | Grab-edge resize + collapse for a rail. Moved here from kol-framework 2026-09-03 so `EditorShell` could reach it; framework re-exports it. |
 | `pathMath` | Bezier path geometry — the `d` string, bounds, normalise, scale/rotate, nearest-point, split, smooth. One implementation, shared by `PathNodeOverlay` and the editor engine. |
 | `layerTree` | Layer labels and the tree walk — `TYPE_LABELS`, `labelForLayer`, `rowLabelForLayer`, `findLayerDeep`. `LayerStack`'s defaults. |

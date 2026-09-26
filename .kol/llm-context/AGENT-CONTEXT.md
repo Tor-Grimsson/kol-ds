@@ -6,9 +6,15 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
-## Queued for next session (user, 2026-09-25)
+## Queued for next session (user, 2026-09-26)
 
-- ~~**Showcase coverage audit**~~ — **done 2026-09-25**, published as an artifact (https://claude.ai/artifact/4zxYSGi1yfqXSr6P3Ef6Dq): 238 of 351 components have a page, none missing without a written reason, 47 unruled debt (workshop 0/30, shell 4/16, styleguide 11/30, framework 6/14). Six stale inventory rows removed the same day.
+- **The app anatomy is current truth** — `docs/documentation/04-compositions/16-app-anatomy.md`: **Shell** (frame: rail, layout root, keys) · **Catalog** (the ContentFilters PAGE — title row, filter/search, RECENT · SAVED, LIST · GRID, cards, action row; `CatalogPage`) · **Hub** (Home as a Catalog, Settings, shortcuts, walkthrough — NOT BUILT; monitor, mirror, fxr each assemble it) · **Tool** (the work area). An app = Shell + Hub + Tool; apps tier = `apps/shell` · `apps/<tool>` · `apps/<tool>-shell`.
+- **Start:** the user clones monitor, mirror, fxr, kol-website into `~/dev/projects/`. Read their code, find the overlap, refine the anatomy table, then define the Hub in `kol-shell` and build `apps/shell` (Shell + Hub + placeholder tool) for review. THEN rebuild `apps/media-shell` on it with the review items: walkthrough opt-in + its X inside the card (`WalkthroughPanel onClose`); smart folders removed; Recent / Favourites as the Catalog's view toggle; Home IS a Catalog.
+- Tool roster to sort: media · brand (styleguide/about/references — a Home variant) · presentation editor · note editor · the fxr editor · labs + generator (editor chrome alts) · rack · mirror.
+
+## Current state (2026-09-26, media D1 · apps/media-shell · the app anatomy)
+
+- **🧭 D1 built against an imagined olina setup, and the app vocabulary ruled (2026-09-26, newest): component 0.224.0 · theme 0.150.0 · controls 0.3.1 · dashboards 0.4.2, published.** `apps/media-fixture` (fake bucket + fake D1, shared wiring) and `apps/media-shell` (Home · Browse · Settings) are new; the DS gained `DocumentEditor`, browser-memory drafts (`saveDraft` out of the contract — BREAKING for 0.223), tags + favourites on files and folders, the event log, settings through the client. Four lobby tickets 🟠; coverage audit delivered; theme 0.150.0 dropped the `kol-display-*` aliases on the MBP's partial estate (let stand — consumer scans are the iMac's from now on). Log: `session-log/2026-09-26-media-d1-shell-hub-anatomy.md`.
 
 ## Current state (2026-09-25, explorer pass + publish 0.220.0)
 
@@ -25,10 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-23, media rounds 2–4 — one selection, Quick Look window, File formats, Trash)
 
 - **🗂️ The media surface became one thing (2026-09-23, newest): component 0.217.0 · theme 0.147.0 · icons 0.27.1, published 2026-09-23.** ONE page-owned selection drawn by columns/rows/grid; `QuickLookFrame` (one opaque window for every kind, resizable, ‹ › only for a multi-selection); `MediaTile` grid in the same bordered shell + preview pane; keyboard everywhere (arrows, ⇧ extends, ⌘↑/⌘↓, all in the `S` sheet); Trash (delete moves, restore/purge from a context menu); **File formats** page with a real file per preview type; a real-files-only fixture; pdf.js page one (new `pdfjs-dist` dep). ⚠️ **`validate:icon-ink` is the 27th gate** — icons take `oq-*`, never `fg-*` (memory: `icons-use-oq-never-fg`). ⚠️ **Only the top overlay answers Escape** (`utilities/layerStack.js`). ⚠️ Nothing below 1400 wide or on touch was checked; D1 next (plan: `docs/operations/07-apps-tier/02-media-app-plan.md` § D1 next) carries personalisation, text editing, tags, touch. Log: `session-log/2026-09-23-media-round-2-to-4-file-formats-trash-keyboard-icon-gate.md`.
-
-## Current state (2026-09-23, the media surface merged + one preview ladder)
-
-- **🧩 Browse and Files became ONE surface with three views, and the five ways a file was previewed became one (2026-09-23, newest): component 0.217.0 + theme 0.147.0, published 2026-09-23.** `view` (columns · rows · grid) replaces `folderView` + `layout`; one listing, one header, one crumb row, one count line, `BROWSE · FILES` retired and `MediaLibraryExplorer` reduced to a view holder (`MediaLibraryLibrary` stays as the standalone wall). `list` was **cut as a duplicate of rows**. One gesture set everywhere: click selects, double-click opens, right-click is the menu, space is Quick Look — folders included, over a 48 % scrim (`FullscreenOverlay scrim`, opt-in; the 2026-08-27 flat-backdrop ruling stands elsewhere). New: `useMarquee` (drag-select in columns + rows), filter bar off by default, `ShellSearchOverlay` on `/` and ⌘K, row list based at the ROOT with `prefix` seeding the expansion, sortable row header behind the `Fields` setting. **`KindPreview` takes `fit="pane|tile|thumb"`** — PDFs render page one (`embed`, size-gated), audio renders the DS tile, documents zoom to a MEASURED ratio of their tile, and a glyph is a FOLDER's alone. ⚠️ **`ContentCard`/`ContentRow` ignored `onContextMenu`/`onDoubleClick` entirely** and `selected` painted nothing on borderless variants — both fixed, and both are why "the grid has no menu" and "the click does nothing" were real. ⚠️ Published 2026-09-23 — kol-olina gets it on their bump. ⚠️ Still unfiled: column-view file-onto-file drop renames the dragged file. Log: `session-log/2026-09-23-media-surface-merge-and-preview-ladder.md`.
 
 ## Repo standup (2026-06-15)
 

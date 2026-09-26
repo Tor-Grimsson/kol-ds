@@ -78,3 +78,25 @@ export const SEED_TAGS = {
     'docs/01-tier-rules.md': ['draft'],
   },
 }
+
+/* The rest of the fake D1 at rest (plan v2, 2026-09-26) — favourites, folder tags, a short event
+ * log for Recents, one smart folder — so Home and the filters show something on first load. */
+export const SEED_D1 = {
+  favourites: {
+    r2: ['img/02-products/tt-07.jpg', 'docs/01-tier-rules.md', 'img/01-shoots/'],
+  },
+  folderTags: {
+    r2: { 'img/01-shoots/': ['shoot'], 'video/reels/': ['reel'] },
+  },
+  events: [
+    { bucket: 'r2', kind: 'uploaded', key: 'img/02-products/radar-ascii.png', minutesAgo: 2880 },
+    { bucket: 'r2', kind: 'opened', key: 'video/reels/softforms.mp4', minutesAgo: 600 },
+    { bucket: 'r2', kind: 'edited', key: 'docs/01-tier-rules.md', minutesAgo: 240 },
+    { bucket: 'r2', kind: 'opened', key: 'img/02-products/tt-07.jpg', minutesAgo: 90 },
+    { bucket: 'r2', kind: 'opened', key: 'README.md', minutesAgo: 30 },
+  ],
+  smartFolders: [
+    { bucket: 'r2', name: 'Hero', query: { tags: ['hero'], kinds: [], text: '' } },
+    { bucket: 'r2', name: 'Documents', query: { tags: [], kinds: ['markdown', 'text'], text: '' } },
+  ],
+}

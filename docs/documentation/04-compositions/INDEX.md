@@ -30,3 +30,4 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[13-controls-system\|Controls system]] | Hardware panel controls for instruments |
 | [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for colour, logo and type |
 | [[15-media-uploads\|Media uploads]] | Converting files on upload, and keeping originals |
+| [[16-app-anatomy\|App anatomy]] | Shell · Catalog · Hub · Tool — the four layers every KOL app is built from |

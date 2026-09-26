@@ -31,9 +31,9 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.149.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-theme` | **0.150.0** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.27.1** | `<Icon>` + kol-icon-set-v1 + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.223.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-component` | **0.224.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.44.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
 | `@kolkrabbi/kol-shell` | **0.51.0** | Application shell — `NavRail` + `AppShell`, page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.29.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell, exhibit sections |

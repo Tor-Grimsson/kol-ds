@@ -1,9 +1,9 @@
 {
-  "name": "media",
+  "name": "media-shell",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The media product, run as a real app over a fake mutable tree. Never published \u2014 apps/* proves function before anything consumes it.",
+  "description": "The media product inside kol-shell \u2014 Home, Browse and Settings on one rail, over the same fixture as apps/media. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

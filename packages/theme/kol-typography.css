@@ -856,52 +856,6 @@
 }
 
 /* =============================================================================
- * RETIRED — the elder display voice (DisplayTightRamp, 2026-08-27). Four
- * aliases onto the ramp above, each keeping the uppercase its contract baked
- * in so nothing un-caps on the bump; the swap adds `uppercase` at the call
- * site. Tracked in docs/operations/01-release/04-retirements.md — dropped when
- * no repo uses them (`pnpm retirements`), the gate fails at 30 days unimported.
- * Elder `kol-heading-display` (never carried) → kol-sans-display-01 likewise.
- * ============================================================================= */
-
-/* @deprecated 2026-08-27 → kol-sans-display-01 */
-.kol-display-lg {
-  font-family: var(--kol-font-family-sans-tight);
-  font-size: var(--kol-text-display-01);
-  line-height: 100%;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: var(--kol-fg-emphasis);
-}
-
-/* @deprecated 2026-08-27 → kol-sans-display-02 */
-.kol-display-section {
-  font-family: var(--kol-font-family-sans-tight);
-  font-size: var(--kol-text-display-02);
-  line-height: 100%;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-/* @deprecated 2026-08-27 → kol-sans-display-03 */
-.kol-display-section-sm {
-  font-family: var(--kol-font-family-sans-tight);
-  font-size: var(--kol-text-display-03);
-  line-height: 100%;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-/* @deprecated 2026-08-27 → kol-sans-display-03 */
-.kol-display-subsection {
-  font-family: var(--kol-font-family-sans-tight);
-  font-size: var(--kol-text-display-03);
-  line-height: 100%;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-/* =============================================================================
  * HEADINGS — H1+H2 sans Narrow, H3-H5 sans Compact, weight 500.
  * 01 = H1 anchor (matches prose H1). The narrow/compact boundary moved down
  * one rung 2026-08-12 (HeadingTwoNarrow, user ruling: "make heading-02 narrow

@@ -21,6 +21,7 @@ related:
   - "[[02-shells|reference shells]]"
   - "[[09-dashboards-system|dashboards system]]"
   - "[[12-section-system|section system]]"
+  - "[[16-app-anatomy|app anatomy]]"
 ---
 
 # Shell system — `@kolkrabbi/kol-shell`

@@ -1,10 +1,11 @@
-/* ponytail: one runnable check, no framework. `node src/fixture/store.test.mjs`.
+/* ponytail: one runnable check, no framework. `node src/fixture.test.mjs` (or `pnpm test` here).
  * It covers the logic that is easy to get quietly wrong — recursive folder
  * rename, delete-through, the empty folder surviving as a node, and reset
  * actually restoring. */
 
 import assert from 'node:assert/strict'
-import * as store from './store.js'
+import * as store from './bucket.js'
+import * as d1 from './d1.js'
 
 const keys = (b = 'r2') => store.list(b).map((f) => f.key).sort()
 const folders = (b = 'r2') => store.folderTree()[b].folders
@@ -92,25 +93,37 @@ assert.deepEqual(folders(), seedFolders, 'reset did not restore folders')
 
 console.log(`fixture store: ok (${seedKeys.length} files, ${seedFolders.length} folders)`)
 
-// ── D1 fields (2026-09-25): tags, drafts, text writes ride the record and reset with the tree ──
-store.reset()
-assert.deepEqual(store.list('r2').find((f) => f.key === 'img/02-products/tt-07.jpg').tags, ['product', 'hero'], 'seed tags missing')
-store.setTags('r2', 'README.md', [' Intro ', 'intro', 'docs'])
-assert.deepEqual(store.list('r2').find((f) => f.key === 'README.md').tags, ['intro', 'docs'], 'tags not normalised')
+// ── the fake D1 (plan v2, 2026-09-26): rows keyed by file id survive moves; folder rows follow paths ──
+store.reset(); d1.reset({ idOf: store.idOf })
+const id = (k) => store.idOf('r2', k)
+assert.deepEqual(d1.tagsOfFile(id('img/02-products/tt-07.jpg')), ['product', 'hero'], 'seed tags missing')
+assert.ok(d1.isFavourite(id('docs/01-tier-rules.md')), 'seed favourite missing')
+assert.deepEqual(d1.setFileTags(id('README.md'), [' Intro ', 'intro', 'docs']), ['intro', 'docs'], 'tags not normalised')
+const readmeId = id('README.md')
 store.rename('r2', 'README.md', 'docs/README.md')
-assert.deepEqual(store.list('r2').find((f) => f.key === 'docs/README.md').tags, ['intro', 'docs'], 'tags lost on move')
-assert.throws(() => store.setTags('b2', 'x', ['a']), /read-only/)
-store.saveDraft('r2', 'docs/README.md', '# draft')
-const listed = store.list('r2').find((f) => f.key === 'docs/README.md')
-assert.ok(listed.hasDraft && !('draft' in listed), 'the list must flag a draft, never carry it')
-assert.equal(store.textOf('r2', 'docs/README.md').draft, '# draft')
+assert.equal(id('docs/README.md'), readmeId, 'a move must keep the file id')
+assert.deepEqual(d1.tagsOfFile(readmeId), ['intro', 'docs'], 'tags lost on move')
 store.copy('r2', 'docs/README.md', 'docs/README-copy.md')
-assert.ok(!store.list('r2').find((f) => f.key === 'docs/README-copy.md').hasDraft, 'a copy must not carry the draft')
+assert.notEqual(id('docs/README-copy.md'), readmeId, 'a copy is a new file')
+d1.setFolderTags('r2', 'img/01-shoots/', ['shoot', 'archive'])
+store.rename('r2', 'img/01-shoots/', 'img/04-archive/')
+d1.movePath('r2', 'img/01-shoots/', 'img/04-archive/')
+assert.deepEqual(d1.folderInfo('r2')['img/04-archive/'].tags, ['shoot', 'archive'], 'folder tags did not follow the move')
+assert.ok(d1.folderInfo('r2')['img/04-archive/'].favourite, 'folder favourite did not follow the move')
+d1.logEvent('r2', 'opened', { fileId: readmeId })
+assert.equal(d1.recent('r2')[0].fileId, readmeId, 'recent is newest first')
+assert.equal(new Set(d1.recent('r2').map((e) => e.fileId ?? e.path)).size, d1.recent('r2').length, 'recent repeats a file')
+const sf = d1.saveSmartFolder('r2', { name: 'Intro', query: { tags: ['Intro'], kinds: [], text: ' ' } })
+assert.deepEqual(d1.smartFolders('r2').find((x) => x.id === sf.id).query, { tags: ['intro'], kinds: [], text: '' })
 store.writeText('r2', 'docs/README.md', 'héllo')
-const written = store.list('r2').find((f) => f.key === 'docs/README.md')
-assert.equal(written.size, 6, 'size is the UTF-8 byte length')
-assert.ok(!written.hasDraft && written.url.startsWith('data:'), 'save clears the draft and rebuilds the URL')
-assert.equal(store.textOf('r2', 'docs/README.md').text, 'héllo')
-store.reset()
-assert.ok(!store.list('r2').some((f) => f.hasDraft) && store.list('r2').find((f) => f.key === 'README.md').tags.length === 0, 'reset did not clear D1 fields')
-console.log('fixture D1 fields: ok')
+assert.equal(store.list('r2').find((f) => f.key === 'docs/README.md').size, 6, 'size is the UTF-8 byte length')
+assert.equal(store.textOf('r2', 'docs/README.md'), 'héllo')
+const t = store.remove('r2', 'docs/README.md')
+const purged = store.purge(t.trashId)
+d1.dropFiles(purged.fileIds)
+assert.deepEqual(d1.tagsOfFile(readmeId), [], 'a purge must drop the D1 rows')
+d1.saveSettings('r2', { view: 'rows' })
+assert.deepEqual(d1.loadSettings('r2'), { view: 'rows' })
+d1.saveSettings('r2', null)
+assert.equal(d1.loadSettings('r2'), null, 'null resets settings')
+console.log('fake D1: ok')

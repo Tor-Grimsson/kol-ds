@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-theme
 
+## 0.150.0 — 2026-09-26
+
+- **BREAKING — the four elder display classes are gone** (retirements R3: 30 days, nobody imports
+  them): `kol-display-lg` · `kol-display-section` · `kol-display-section-sm` ·
+  `kol-display-subsection`. Use `kol-sans-display-01` / `-02` / `-03` + `uppercase`. The block is
+  quarantined to `_tmp/2026-09-26-elder-display-classes/`.
+
 ## 0.149.0 — 2026-09-25
 
 - **The stack disclosure's tap target is 38 × 60, not 14 wide.** `.kol-column-browser-disclose::after`

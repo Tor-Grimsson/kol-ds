@@ -193,6 +193,7 @@ export const FUNCTIONS_BY_NAME = {
   MediaInspector: 'overlay',
   svgToPngBlob: 'utility', inlineFontFaces: 'utility', embedFontFace: 'utility', downloadBlob: 'utility', useHistory: 'utility',
   CurveEditor: 'input', CURVE_KINDS: 'utility', defaultCurveFor: 'utility',
+  DocumentEditor: 'input',
   KeyframeEditor: 'input', KEYFRAME_EASES: 'utility', DEFAULT_KEYFRAMES: 'utility',
   TYPE_LABELS: 'utility', BOOL_OP_LABELS: 'utility', SHAPE_KIND_LABELS: 'utility', labelForLayer: 'utility', rowLabelForLayer: 'utility', findLayerDeep: 'utility',
   pathD: 'utility', pathBounds: 'utility', shiftNode: 'utility', normalizePath: 'utility', scalePathNodes: 'utility', normalizePathRings: 'utility', rotatePathNodes: 'utility', dist: 'utility', nearestSegmentT: 'utility', splitSegment: 'utility', smoothNode: 'utility',

@@ -1,5 +1,31 @@
 # @kolkrabbi/kol-component
 
+## 0.224.0 — 2026-09-26
+
+**The media D1 plan, v2** — one user, drafts in the browser, the database for what must outlive a
+device. The contract is at the head of `MediaLibraryPages.jsx`; every verb optional.
+
+- **`DocumentEditor` — NEW** (organism). Write a text file: open one or make a NEW one (name + type:
+  md · txt · json · yaml · csv). A markdown file's frontmatter becomes a fields form (title ·
+  description · date · tags suggested, any key allowed; the name carries the title until it is
+  edited), the body a `Textarea`; Write / Split / Preview through `KindPreview`; Attach inserts a
+  file from an `assets` list at the caret; an SVG edits as text beside its picture. ⌘S saves,
+  Revert drops the draft. The concept is kol-olina's brand notes page.
+- **Drafts are browser memory** — `utilities/localDrafts` (`readDraft` · `writeDraft` ·
+  `clearDraft` · `listDrafts` · `moveDrafts` · `DRAFTS_EVENT`). **BREAKING for a client that
+  implemented `saveDraft` (0.223.0)**: it is no longer called, and listings no longer need
+  `hasDraft` — the page reads drafts itself, restores one newer than the file, and moves it with a
+  rename or move.
+- **`splitFrontmatter` / `joinFrontmatter`** — the round-trip pair the fields form edits through.
+- **The media page** — the editor replaces 0.223.0's textarea (Edit in the pane, the menu and Quick
+  Look; New document… in the menu; 1 MB cap); **favourites** (`setFavourite`) with a star in the
+  pane and the menu and a Favourites filter; **folder tags and favourites** (`folderInfo`, loaded
+  beside the listing; `setTags` takes a folder path); **tag suggestions** from the bucket's own
+  tags; a markdown file's frontmatter tags merge into its tags on save; **smart folders**
+  (`smartFolders` · `saveSmartFolder` · `deleteSmartFolder`) as chips above the body, a chip showing
+  its matches flat; an **event log** (`logEvent`: opened · edited · created) for a consumer's
+  Recents; `smartFolder` prop to open on one; the bucket hook's `reload()`.
+
 ## 0.223.0 — 2026-09-25
 
 **What a database beside the bucket adds** (the media D1 pass). Optional client verbs; a client

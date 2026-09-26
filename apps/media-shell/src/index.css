@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM. `kol-sources.css` below ships two @source lines per
+   package, and BOTH assume a consumer's `node_modules/@kolkrabbi/kol-x/src` —
+   so inside this repo, where the packages sit at `packages/component`, every
+   one of them resolves to nothing, silently. Tailwind then generates no utility
+   that a DS component uses: the column browser loses its dividers and row
+   padding, `max-md:hidden` stops hiding, and the focus ring falls back to the
+   browser default. These point at this app's own node_modules symlinks, which
+   is what the showcase does for the same reason. */
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";
+@source "../node_modules/media-fixture/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-theme/kol-type-roles.css";
+/* Imported BARE, exactly as kol-r2b2 does. ARCHITECTURE §5 asks for
+   `layer(components)`; that is a real rule and this app deliberately does not
+   follow it yet, because this port is held to being 1:1 with the live app and
+   the layer changes which chrome rules win. Revisit as its own change, after
+   the port is approved. */
+@import "@kolkrabbi/kol-framework/kol-framework.css";
+
+/* KOL packages publish raw .jsx and Tailwind v4 skips node_modules, so utilities
+   used INSIDE a DS component are never generated unless the package is declared
+   as a source. This manifest is the DS's own — every raw-JSX package, both the
+   npm-flat and pnpm path forms. */
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+
+body {
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+  /* SAFE AREA — resolves to 0 in a normal tab; only bites in standalone. */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ── carried from kol-r2b2's index.css, verbatim but for the prefix ───────── */
+
+
+/* The count line: the split is the point — what you are LOOKING AT reads bright, the whole-bucket
+   tail after it stays quiet (user 2026-08-28). Lifting both flattened them into one grey. Scoped to
+   the browse page's own <p> so the crumb row above is untouched. The DS declined this one, by
+   kol-r2b2's own filing — a consumer ruling on a DS-rendered <p>. */
+.media-browse p.kol-mono-12 { color: var(--kol-fg-80); }
+.media-browse p.kol-mono-12 .text-fg-32 { color: var(--kol-fg-32); }
+
+/* A DOCUMENT IN A 230px TILE. `KindPreview` renders prose and code at reading size, which in an
+   overview tile is a wall of unreadable glyphs — the column solves the same problem by zooming the
+   page, so the tile does too. Scaled to a third, anchored top-left, clipped. */
+.media-kind-tile .kol-doc-page {
+  zoom: 0.34;
+  aspect-ratio: auto;
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  overflow: hidden;
+}
+.media-kind-tile > div:has(.kol-doc-page) { align-items: flex-start; justify-content: flex-start; width: 100%; height: 100%; }
+/* The DS caps prose and code blocks at a reading measure; in a tile the tile is the measure. */
+.media-kind-tile .kol-prose, .media-kind-tile .kol-codeblock-wrapper { max-width: none; }
+
+/* NO RUBBER BAND (user 2026-09-23: *"in view modes can we disable the behaviour when … 'force
+ * scrolling' slight up and down vertically … so its just 100vh always"*). The views are sized to the
+ * viewport and scroll inside themselves; the elastic bounce moved the whole app instead, and a
+ * wheel flick at the end of a column chained out to the page. `none` on the root stops both. */
+html,
+body {
+  overscroll-behavior: none;
+}

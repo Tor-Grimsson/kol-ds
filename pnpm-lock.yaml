@@ -50,6 +50,70 @@ importers:
       hls.js:
         specifier: ^1.7.0
         version: 1.7.3
+      media-fixture:
+        specifier: workspace:*
+        version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/media-fixture:
+    dependencies:
+      '@kolkrabbi/kol-component':
+        specifier: '*'
+        version: 0.223.0(@kolkrabbi/kol-icons@0.27.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(framer-motion@12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(gsap@3.15.0)(hls.js@1.7.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
+
+  apps/media-shell:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      hls.js:
+        specifier: ^1.7.0
+        version: 1.7.3
+      media-fixture:
+        specifier: workspace:*
+        version: link:../media-fixture
       react:
         specifier: ^19.2.0
         version: 19.2.7
@@ -964,6 +1028,23 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@kolkrabbi/kol-component@0.223.0':
+    resolution: {integrity: sha512-DsLuuPEbnih/I602my+Izj9SOMuy8njmCXyD7aaxmW+/PnzCYstVJ+LGG6qpDdIWdO/p13z5dTA7CZXO5s+eOw==}
+    peerDependencies:
+      '@kolkrabbi/kol-icons': '>=0.22.0'
+      framer-motion: ^12.0.0
+      gsap: ^3.13.0
+      hls.js: ^1.6.0
+      react: ^18.3.0 || ^19.0.0
+      react-dom: ^18.3.0 || ^19.0.0
+
+  '@kolkrabbi/kol-icons@0.27.1':
+    resolution: {integrity: sha512-SfMVUTpTSZ3IEe+xWAKgdXwsImNOXqp13TYj6jdQfW5DWue1hbbeKSqZjQ5v38vzJNbma5M1tRxsTZYRFdGFrQ==}
+    hasBin: true
+    peerDependencies:
+      react: ^18.3.0 || ^19.0.0
+      react-dom: ^18.3.0 || ^19.0.0
 
   '@kolkrabbi/kol-theme@0.142.0':
     resolution: {integrity: sha512-q5yT7y/b2aDgVwI8RqVP0fIe7jc+7J8QnjjtUnuAC1SUZpOxJBsh7ra0Mq2OZzTo6ztGyo/l2kMAJ9SxwK3Glw==}
@@ -4117,6 +4198,24 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@kolkrabbi/kol-component@0.223.0(@kolkrabbi/kol-icons@0.27.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(framer-motion@12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(gsap@3.15.0)(hls.js@1.7.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      '@floating-ui/react': 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-icons': 0.27.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      embla-carousel-react: 8.6.0(react@19.2.7)
+      framer-motion: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      gsap: 3.15.0
+      hls.js: 1.7.3
+      pdfjs-dist: 6.3.289
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+      react-syntax-highlighter: 16.1.1(react@19.2.7)
+
+  '@kolkrabbi/kol-icons@0.27.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
 
   '@kolkrabbi/kol-theme@0.142.0': {}
 

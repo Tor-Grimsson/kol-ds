@@ -4,6 +4,7 @@
   "outputDirectory": "showcase/dist",
   "rewrites": [
     { "source": "/apps/media/(.*)", "destination": "/apps/media/index.html" },
+    { "source": "/apps/media-shell/(.*)", "destination": "/apps/media-shell/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

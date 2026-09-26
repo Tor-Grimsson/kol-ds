@@ -98,10 +98,13 @@ Nothing this round was measured below 1400 wide. Long-press opens the context me
 
 ## D1
 
-Done 2026-09-25. What a database beside the bucket adds — kol-olina's is Cloudflare D1 — as optional client verbs the fixture fakes in memory (`apps/media/src/fixture/`). The contract is written at the head of `MediaLibraryPages.jsx`; a client without a verb hides that feature.
+Done 2026-09-25 → 2026-09-26 (plan v2 in `.kol/llm-context/playbook/2026-09-25-d1-scope-and-plan.md`). What a database beside the bucket adds — olina's is Cloudflare D1 — as optional client verbs; the contract is written at the head of `MediaLibraryPages.jsx`, and a client without a verb hides that feature. One user, ever: no identity, no edit conflicts.
 
-- **Tags** — listed objects carry `tags`; `setTags` writes them. Chips in the preview pane, "Tags…" and "Add tags to N…" in the menu, a Tags filter group, a Tags column under Fields.
-- **Editing files** — `readText` / `writeText` / `saveDraft`. Edit in the preview pane and Quick Look for markdown · json · yaml · text · code; a pause writes a draft, ⌘S writes the file, Revert drops the draft.
-- **Personalisation** — `loadSettings` / `saveSettings` carry the view settings when the page is uncontrolled. The app no longer holds settings itself; the fixture's pair wraps `lib/settings.js`.
-
-kol-olina adopts by adding the verbs to its client over its D1 tables (a `tags` column or table, a `drafts` table, a settings row per person).
+- **The imagined setup** — `apps/media-fixture`: a fake bucket and a fake D1 (tags, favourites, folder rows, an event log, smart folders, settings), rows keyed by a permanent file id so a move keeps them. Settings persist in browser storage the way a D1 row survives a reload; everything else resets with **Clear changes**.
+- **Tags** — on files and folders: chips in the preview pane with suggestions from the bucket's own tags, Tags… / Add tags to N… in the menu, a Tags filter group, a Tags column under Fields. A markdown file's frontmatter tags merge into its tags on save. Settings → Tags renames a tag everywhere; renaming onto an existing one merges them.
+- **Favourites** — a star in the pane and the menu, on files and folders; a Favourites filter group.
+- **Recents** — the event log (opened · edited · created · uploaded), shown on Home.
+- **Smart folders** — saved queries (tags · kinds · text) as chips above the body; a chip shows its matches flat.
+- **Documents** — `DocumentEditor`: New document (name + type), a fields form over a markdown file's frontmatter, Write / Split / Preview, Attach from the bucket, SVG as text with its picture, a 1 MB cap. **Drafts are browser memory** (`utilities/localDrafts`), never the database's; a draft newer than the file is restored, and it follows a rename or move.
+- **Personalisation** — view settings load and save through the client when the page is uncontrolled.
+- **apps/media-shell** — Home (Recent · Favourites · Smart folders · Unsaved drafts · Tags), Browse, Settings (Preferences · Tags · Shortcuts · About), the first-run tour.

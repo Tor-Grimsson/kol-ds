@@ -1,4 +1,9 @@
-/* The fake tree, mutable, in session memory. No network, no provider, no
+/* THE FAKE BUCKET — olina's R2 bucket, imagined (plan v2, 2026-09-26). Bytes, keys, folders and
+ * the trash. Everything ABOUT a file that a bucket cannot hold — tags, favourites, the event log,
+ * smart folders, settings — is the fake D1 beside it (`d1.js`), keyed by the file's permanent `id`
+ * exactly as olina's `files.id` is, so a rename or move keeps every row.
+ *
+ * The fake tree, mutable, in session memory. No network, no provider, no
  * credentials — see docs/operations/07-apps-tier/01-tier-rules.md.
  *
  * A folder is a NODE here, not a prefix inferred from keys. That is the single
@@ -10,7 +15,7 @@
  * Every mutation is synchronous against this object. The client wrapper is what
  * makes the verbs async, because the pages await them. */
 
-import { BUCKETS, SEED, SEED_TAGS, contentTypeOf, uploadedOf } from './seed.js'
+import { BUCKETS, SEED, contentTypeOf, uploadedOf } from './seed.js'
 import { assetFile, assetSize, SEED_TRASH } from './assets.js'
 
 const dir = (p) => (p.endsWith('/') || p === '' ? p : `${p}/`)
@@ -19,6 +24,10 @@ const parentOf = (path) => {
   const i = trimmed.lastIndexOf('/')
   return i === -1 ? '' : trimmed.slice(0, i + 1)
 }
+
+/* a permanent id per file, minted once — olina's `files.id` (10 chars there, a counter here) */
+let idSeq = 0
+const mintId = () => `f${++idSeq}`
 
 function build() {
   const out = {}
@@ -29,7 +38,7 @@ function build() {
     for (const key of seed.files) {
       /* `file` names the real bytes and rides the record through rename/copy, so a moved file
        * still previews as itself. */
-      files.set(key, { key, contentType: contentTypeOf(key), size: assetSize(id, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(id, key), tags: [...(SEED_TAGS[id]?.[key] ?? [])] })
+      files.set(key, { id: mintId(), key, contentType: contentTypeOf(key), size: assetSize(id, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(id, key) })
       // Every ancestor of a seeded file exists as a folder even if the seed
       // forgot to list it — otherwise the tree and the keys could disagree.
       let p = parentOf(key)
@@ -56,14 +65,14 @@ function seedTrash() {
     return {
       id: `t${++trashSeq}`, bucket, path: e.path,
       deletedAt: new Date(Date.now() - e.daysAgo * 86_400_000).toISOString(),
-      files: keys.map((key) => ({ key, contentType: contentTypeOf(key), size: assetSize(bucket, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(bucket, key) })),
+      files: keys.map((key) => ({ id: mintId(), key, contentType: contentTypeOf(key), size: assetSize(bucket, key) ?? 0, uploaded: uploadedOf(key), file: assetFile(bucket, key) })),
       folders: e.path.endsWith('/') ? [e.path] : [],
     }
   }))
 }
 trash = seedTrash()
 
-export function reset() { tree = build(); trash = seedTrash() }
+export function reset() { idSeq = 0; tree = build(); trash = seedTrash() }
 
 const bucketOf = (id) => tree[id] ?? tree[BUCKETS[0].id]
 
@@ -73,12 +82,11 @@ export const buckets = () => BUCKETS.map((b) => ({ ...b }))
 export function list(bucketId, prefix = '') {
   const { files } = bucketOf(bucketId)
   const out = []
-  /* `draft` is text and stays here; the list says only that one exists (`hasDraft`), as a D1 row
-   * joined into the listing would — the editor reads the text through `readText`. */
+  /* the listing never carries a file's text — the editor reads it through `textOf` */
   for (const f of files.values()) {
     if (prefix && !f.key.startsWith(prefix)) continue
-    const { draft, text, ...rest } = f
-    out.push({ ...rest, tags: [...(f.tags ?? [])], ...(draft != null && { hasDraft: true }) })
+    const { text, ...rest } = f
+    out.push({ ...rest })
   }
   return out
 }
@@ -175,8 +183,17 @@ export function restore(id) {
 }
 
 /** Gone for good: one entry, or everything in a bucket's trash. */
-export function purge(id) { trash = trash.filter((x) => x.id !== id); return { ok: true } }
-export function emptyTrash(bucketId) { trash = trash.filter((x) => x.bucket !== bucketId); return { ok: true } }
+/* both report the file ids that are now gone for good, so the D1 rows about them can go too */
+export function purge(id) {
+  const gone = trash.filter((x) => x.id === id)
+  trash = trash.filter((x) => x.id !== id)
+  return { ok: true, fileIds: gone.flatMap((t) => t.files.map((f) => f.id)) }
+}
+export function emptyTrash(bucketId) {
+  const gone = trash.filter((x) => x.bucket === bucketId)
+  trash = trash.filter((x) => x.bucket !== bucketId)
+  return { ok: true, fileIds: gone.flatMap((t) => t.files.map((f) => f.id)) }
+}
 
 /** Rename or move — one verb, because both are "this path becomes that path".
  *  On a folder it rewrites every descendant, which is the move a key-prefix
@@ -224,7 +241,9 @@ export function rename(bucketId, from, to) {
 export function put(bucketId, key, { size, contentType, url } = {}) {
   assertWritable(bucketId)
   const { folders, files } = bucketOf(bucketId)
+  const prior = files.get(key)
   files.set(key, {
+    id: prior?.id ?? mintId(), // an overwrite is the same file; a new key is a new one
     key,
     contentType: contentType || contentTypeOf(key),
     size: size ?? 0,
@@ -243,18 +262,11 @@ export function copy(bucketId, from, to) {
   const f = files.get(from)
   if (!f) throw new Error(`${from} not found`)
   if (files.has(to)) throw new Error(`${to} already exists`)
-  /* a copy keeps the tags (Finder's Duplicate does) but not a pending draft — that edit was on the original */
-  const { draft, ...rest } = f
-  files.set(to, { ...rest, key: to, tags: [...(f.tags ?? [])], uploaded: new Date().toISOString() })
+  files.set(to, { ...f, id: mintId(), key: to, uploaded: new Date().toISOString() })
   let up = parentOf(to)
   while (up) { folders.add(up); up = parentOf(up) }
   return { ok: true, from, to }
 }
-
-/* ── WHAT D1 HOLDS (the media D1 pass, 2026-09-25). A bucket has bytes and keys; tags, drafts
- * and per-person settings need a table beside it — kol-olina's is D1. Here each is a field on
- * the file record, so a rename, move or copy carries them the way a row keyed by file id would.
- * Reset drops all of it with the tree. ── */
 
 const fileRecord = (bucketId, key) => {
   const f = bucketOf(bucketId).files.get(key)
@@ -262,31 +274,10 @@ const fileRecord = (bucketId, key) => {
   return f
 }
 
-/** Replace a file's tags. Trimmed, lower-cased, de-duplicated, in the order given. */
-export function setTags(bucketId, key, tags) {
-  assertWritable(bucketId)
-  const f = fileRecord(bucketId, key)
-  f.tags = [...new Set((tags ?? []).map((t) => String(t).trim().toLowerCase()).filter(Boolean))]
-  return { ok: true, key, tags: [...f.tags] }
-}
+/** The text a save has written here, or undefined — the caller then reads the bytes at the URL. */
+export const textOf = (bucketId, key) => fileRecord(bucketId, key).text
 
-/** The text an edit has written, and the draft if one is pending. `text` is undefined until the
- *  file has been saved here once — the caller reads the original bytes from its URL. */
-export function textOf(bucketId, key) {
-  const f = fileRecord(bucketId, key)
-  return { text: f.text, draft: f.draft ?? null }
-}
-
-/** A pending edit, kept apart from the file until it is saved. `null` discards it. */
-export function saveDraft(bucketId, key, draft) {
-  assertWritable(bucketId)
-  const f = fileRecord(bucketId, key)
-  if (draft == null) delete f.draft
-  else f.draft = String(draft)
-  return { ok: true, key }
-}
-
-/** Write the file: its bytes become `text`, the draft is cleared. The URL is rebuilt as a data URL
+/** Write the file: its bytes become `text`. The URL is rebuilt as a data URL
  *  so every preview — pane, tile, Quick Look — shows the saved text, as a re-upload would. */
 export function writeText(bucketId, key, text) {
   assertWritable(bucketId)
@@ -296,12 +287,14 @@ export function writeText(bucketId, key, text) {
   f.size = new TextEncoder().encode(body).length
   f.url = `data:${f.contentType || 'text/plain'};charset=utf-8,${encodeURIComponent(body)}`
   f.uploaded = new Date().toISOString()
-  delete f.draft
   return { ok: true, key, size: f.size }
 }
 
 /** The uploaded bytes behind `key`, if it was uploaded this session. */
 export const urlOf = (bucketId, key) => bucketOf(bucketId).files.get(key)?.url ?? null
 export const fileOf = (bucketId, key) => bucketOf(bucketId).files.get(key)?.file ?? null
+/** key → permanent id, and back — how the client joins the D1 rows onto a listing */
+export const idOf = (bucketId, key) => bucketOf(bucketId).files.get(key)?.id ?? null
+export const keyOfId = (bucketId, id) => { for (const f of bucketOf(bucketId).files.values()) if (f.id === id) return f.key; return null }
 
 export { parentOf, dir }

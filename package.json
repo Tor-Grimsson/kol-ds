@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-shell build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:demos": "node scripts/validate-demos.mjs",
@@ -51,7 +51,8 @@
     "validate:references": "node scripts/validate-references.mjs",
     "validate:retirements": "node scripts/validate-retirements.mjs --check",
     "retirements": "node scripts/validate-retirements.mjs",
-    "extract:icons": "node scripts/extract-icon-cuts.mjs"
+    "extract:icons": "node scripts/extract-icon-cuts.mjs",
+    "media-shell": "pnpm --filter media-shell dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",

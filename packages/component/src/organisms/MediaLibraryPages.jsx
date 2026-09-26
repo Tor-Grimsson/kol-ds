@@ -32,6 +32,9 @@ import { formatLength } from '../molecules/AudioPreview.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { useModal } from '../molecules/Modal.jsx'
 import ContentFilters from './ContentFilters.jsx'
+import DocumentEditor from './DocumentEditor.jsx'
+import { listDrafts, moveDrafts, DRAFTS_EVENT } from '../utilities/localDrafts.js'
+import { parseFrontmatter } from '../utilities/frontmatter.js'
 import ShellSearchOverlay from './ShellSearchOverlay.jsx'
 import ColumnBrowser, { isFileDrag, Preview as ColumnPreview, SelectionPreview } from './ColumnBrowser.jsx'
 import SettingsPanel, { LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter } from './SettingsPanel.jsx'
@@ -74,9 +77,11 @@ import { nearestRatio } from '../utilities/ratios.js'
  *   tags          listed objects carry `tags: string[]`; `setTags(key, tags, bucket)` writes them —
  *                 preview-pane chips, "Tags…" / "Add tags to N…" in the menu, a Tags filter
  *                 group, a Tags column under Fields
- *   text editing  `readText(key, bucket) → { text, draft }` · `writeText(key, text, bucket)` ·
- *                 `saveDraft(key, text | null, bucket)`; listed objects carry `hasDraft` — Edit in
- *                 the pane and in Quick Look for markdown · json · yaml · text · code
+ *   documents     `readText(key, bucket) → { text }` · `writeText(key, text, bucket)` ·
+ *                 `createFile(key, bucket, text?)` — Edit in the pane and in Quick Look, New document
+ *                 in the menu (markdown gets a fields form over its frontmatter; svg a live picture).
+ *                 DRAFTS ARE NOT THE CLIENT'S: browser memory (`utilities/localDrafts`), user ruling
+ *                 2026-09-26 — only what must outlive a device goes to the database
  *   settings      `loadSettings(bucket)` · `saveSettings(bucket, settings | null)` (null = reset) —
  *                 used when the page is UNCONTROLLED; a `settings` prop still wins
  */
@@ -206,25 +211,37 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
     if (remote) Promise.resolve(client.saveSettings?.(bucketId ?? undefined, next)).catch(() => {})
     onSettingsChange?.(next)
   }
-  const [loaded, setLoaded] = useState({ key: null, bucket: null, objects: [], error: null })
+  const [loaded, setLoaded] = useState({ key: null, bucket: null, objects: [], folders: {}, error: null })
   const [cache, setCache] = useState({})
+  /* `reload()` — a write the PAGE made itself (a new document, a tag on a folder) re-lists without
+   * waiting for the consumer to bump `refreshKey` */
+  const [nonce, setNonce] = useState(0)
+  const loadKey = `${refreshKey}.${nonce}`
   useEffect(() => {
     if (!client) return undefined
     let cancelled = false
     const controller = new AbortController()
-    client.listMedia('', { signal: controller.signal, bucket: bucketId ?? undefined })
-      .then((objs) => { if (cancelled) return; setLoaded({ key: refreshKey, bucket: bucketId, objects: objs, error: null }); setCache((c) => ({ ...c, [bucketId]: objs })) })
-      .catch((e) => { if (!cancelled && e.name !== 'AbortError') setLoaded({ key: refreshKey, bucket: bucketId, objects: [], error: e.message }) })
+    /* the folder rows (`folderInfo`, a D1 read) come beside the listing: tags and favourites a
+     * folder carries, which a key-prefix bucket has nowhere to keep */
+    Promise.all([
+      client.listMedia('', { signal: controller.signal, bucket: bucketId ?? undefined }),
+      Promise.resolve(client.folderInfo?.(bucketId ?? undefined)).catch(() => ({})),
+    ])
+      .then(([objs, folders]) => { if (cancelled) return; setLoaded({ key: loadKey, bucket: bucketId, objects: objs, folders: folders ?? {}, error: null }); setCache((c) => ({ ...c, [bucketId]: objs })) })
+      .catch((e) => { if (!cancelled && e.name !== 'AbortError') setLoaded({ key: loadKey, bucket: bucketId, objects: [], folders: {}, error: e.message }) })
     return () => { cancelled = true; controller.abort() }
-  }, [client, refreshKey, bucketId])
-  const ready = loaded.key === refreshKey && loaded.bucket === bucketId
+  }, [client, loadKey, bucketId]) // eslint-disable-line react-hooks/exhaustive-deps
+  const reload = () => setNonce((n) => n + 1)
+  const ready = loaded.key === loadKey && loaded.bucket === bucketId
   const objects = ready ? loaded.objects : (cache[bucketId] ?? [])
   const setObjects = (fn) => setLoaded((prev) => ({ ...prev, objects: fn(prev.objects) }))
+  const folderInfo = loaded.folders ?? {}
+  const setFolderInfo = (fn) => setLoaded((prev) => ({ ...prev, folders: fn(prev.folders ?? {}) }))
   const error = ready ? loaded.error : null
   const mediaUrl = (key) => client?.mediaUrl?.(key, bucketId ?? undefined) ?? key
   const downloadUrl = (key) => client?.downloadUrl?.(key, bucketId ?? undefined) ?? mediaUrl(key)
   const writable = !!bucketMeta.writable && !!(client?.deleteObject || client?.renameObject)
-  return { buckets, bucketMeta, bucketId, settings, setSettings, objects, setObjects, error, ready, mediaUrl, downloadUrl, writable }
+  return { buckets, bucketMeta, bucketId, settings, setSettings, objects, setObjects, folderInfo, setFolderInfo, reload, error, ready, mediaUrl, downloadUrl, writable }
 }
 
 /* ── shared pieces, kol-r2b2's ─────────────────────────────────────────────── */
@@ -250,7 +267,8 @@ function ImageFrame({ src, vector }) {
 /* TAGS IN THE PREVIEW PANE (the media D1 pass, 2026-09-25). The file's tags as removable chips and
  * one field that adds on Enter — comma-separated adds several. Tags are the CLIENT's (`setTags`);
  * without it, or on a read-only bucket, the chips show and nothing edits them. */
-function TagEditor({ tags = [], onChange }) {
+function TagEditor({ tags = [], onChange, suggestions = [] }) {
+  const listId = useMemo(() => `kol-tags-${Math.random().toString(36).slice(2, 8)}`, [])
   const add = (raw) => {
     const next = raw.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
     if (next.length) onChange([...new Set([...tags, ...next])])
@@ -266,7 +284,13 @@ function TagEditor({ tags = [], onChange }) {
           ))}
         </div>
       )}
-      {onChange && <Input size="xs" value="" placeholder="Add a tag" aria-label="Add a tag" onCommit={add} />}
+      {/* the bucket's own tags as suggestions — native autocomplete, so a typo does not fork the vocabulary */}
+      {onChange && <Input size="xs" value="" placeholder="Add a tag" aria-label="Add a tag" onCommit={add} list={listId} />}
+      {onChange && (
+        <datalist id={listId}>
+          {suggestions.filter((t) => !tags.includes(t)).map((t) => <option key={t} value={t} />)}
+        </datalist>
+      )}
     </div>
   )
 }
@@ -418,7 +442,7 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
  * The columns never needed one — stepping into a folder IS its preview there — so this is the row
  * view's, and it is the page's rather than ColumnBrowser's because the counts come off the same
  * `objects` the page already holds. Same shell as the file preview, so the pane never shifts. */
-function FolderPreview({ path, objects, width, formatDate }) {
+function FolderPreview({ path, objects, width, formatDate, details }) {
   const inside = objects.filter((o) => o.key.startsWith(path))
   const bytes = inside.reduce((n, o) => n + (o.size ?? 0), 0)
   const last = inside.reduce((t, o) => (o.uploaded && o.uploaded > t ? o.uploaded : t), '')
@@ -428,13 +452,13 @@ function FolderPreview({ path, objects, width, formatDate }) {
     ['Size', formatSize(bytes)],
     ...(last ? [['Newest', formatDate(last) || '—']] : []),
   ]
-  return <ContainerPreview name={path.replace(/\/$/, '').split('/').pop()} icon="folder" facts={facts} width={width} />
+  return <ContainerPreview name={path.replace(/\/$/, '').split('/').pop()} icon="folder" facts={facts} width={width} details={details} />
 }
 
 /* ONE PREVIEW FOR EVERYTHING THAT HOLDS THINGS — a folder, a bucket, the title (user 2026-09-25:
  * selecting a bucket or MEDIA left the pane empty). The glyph, the name, the facts; only the
  * glyph and the facts differ. */
-function ContainerPreview({ name, icon, facts, width }) {
+function ContainerPreview({ name, icon, facts, width, details }) {
   return (
     <div className="kol-column-browser-preview shrink-0 overflow-y-auto p-4 flex flex-col gap-4" style={{ width }}>
       {/* the folder fills its box with the tile's inset (user 2026-09-24: a 64px glyph floated in
@@ -451,6 +475,8 @@ function ContainerPreview({ name, icon, facts, width }) {
           </div>
         ))}
       </dl>
+      {/* a folder's own rows — favourite, tags (media D1 plan v2) — an island, like the file pane's */}
+      {details && <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>{details}</div>}
     </div>
   )
 }
@@ -530,96 +556,27 @@ function RowHeader({ sortBy = 'name', sortDir = 'asc', onSort, width, cols, onRe
   )
 }
 
-/* THE KINDS THAT OPEN AS TEXT — what `FileEditor` takes (the media D1 pass, 2026-09-25) */
+/* THE KINDS THAT OPEN AS TEXT — what the document editor takes (media D1 plan v2, 2026-09-26).
+ * An SVG is text too: it opens with its picture beside it. Above EDIT_CAP a file is not loaded into
+ * an editor at all — a textarea holding megabytes is a frozen tab, not an edit. */
 const TEXT_KINDS = new Set(['markdown', 'json', 'yaml', 'text', 'code'])
+const EDIT_CAP = 1_048_576
+const editKindOf = (o) => (o.contentType === 'image/svg+xml' || extOf(o.key) === 'svg' ? 'svg' : TEXT_KINDS.has(kindOf(o)) ? kindOf(o) : null)
 
-/* FILE EDITING (the media D1 pass, 2026-09-25) — Quick Look's window with the text in it. Every
- * pause writes a DRAFT through `client.saveDraft` (kol-olina keeps it in D1, beside the file), so
- * closing the window or the tab loses nothing; ⌘S or Save writes the FILE (`client.writeText`) and
- * clears the draft; Revert drops the draft and goes back to the file. The file itself changes only
- * on Save — a draft is never what anyone else sees. */
-const DRAFT_PAUSE = 800
-function FileEditor({ o, client, bucket, onClose, onSaved, onDraft }) {
-  const [base, setBase] = useState(null) // the saved file's text; null while loading
-  const [text, setText] = useState('')
-  const [status, setStatus] = useState('loading') // loading · saved · draft · editing · saving · error
-  const timer = useRef(null)
-  const latest = useRef('')
-  const baseRef = useRef(null) // `base` for the unmount flush, which would otherwise see the first render's
-  const keep = (b) => { baseRef.current = b; setBase(b) }
+/* The editor for a file that exists: reads its text through the client, saves through it. Drafts
+ * are the DocumentEditor's (browser memory), keyed by bucket + key. */
+function FileEditorHost({ o, client, bucket, onClose, onSaved, assets }) {
+  const [text, setText] = useState(null)
   useEffect(() => {
     let live = true
-    client.readText(o.key, bucket).then(({ text: file, draft }) => {
-      if (!live) return
-      keep(file ?? '')
-      setText(draft ?? file ?? '')
-      latest.current = draft ?? file ?? ''
-      setStatus(draft != null ? 'draft' : 'saved')
-    }).catch((e) => live && setStatus(`error: ${e.message}`))
+    client.readText(o.key, bucket).then((r) => live && setText(r?.text ?? '')).catch(() => live && setText(''))
     return () => { live = false }
   }, [o.key]) // eslint-disable-line react-hooks/exhaustive-deps
-  const flushDraft = () => {
-    if (timer.current == null) return undefined
-    clearTimeout(timer.current); timer.current = null
-    const t = latest.current
-    const clean = t === baseRef.current
-    return Promise.resolve(client.saveDraft?.(o.key, clean ? null : t, bucket))
-      .then(() => { setStatus(clean ? 'saved' : 'draft'); onDraft?.(o.key, !clean) })
-      .catch(() => {})
-  }
-  useEffect(() => () => { flushDraft() }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const edit = (t) => {
-    setText(t); latest.current = t; setStatus('editing')
-    clearTimeout(timer.current)
-    timer.current = setTimeout(flushDraft, DRAFT_PAUSE)
-  }
-  const save = async () => {
-    clearTimeout(timer.current); timer.current = null
-    setStatus('saving')
-    try {
-      const res = await client.writeText(o.key, latest.current, bucket)
-      keep(latest.current); setStatus('saved')
-      onSaved?.(o.key, res)
-    } catch (e) { setStatus(`error: ${e.message}`) }
-  }
-  const revert = async () => {
-    clearTimeout(timer.current); timer.current = null
-    await client.saveDraft?.(o.key, null, bucket)
-    setText(baseRef.current ?? ''); latest.current = baseRef.current ?? ''; setStatus('saved')
-    onSaved?.(o.key, null)
-  }
-  const dirty = base != null && text !== base
-  /* ⌘S anywhere while the editor is open — not only with the caret in the text */
-  const saveRef = useRef(null)
-  saveRef.current = () => { if (baseRef.current != null && latest.current !== baseRef.current) save() }
-  useEffect(() => {
-    const onKey = (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') { e.preventDefault(); saveRef.current() } }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-  const label = { loading: 'Loading…', saved: 'Saved', draft: 'Draft — not saved to the file', editing: 'Editing…', saving: 'Saving…' }[status] ?? status
   return (
-    <FullscreenOverlay open onClose={() => { flushDraft(); onClose() }} closeButton={false} scrim>
-      <QuickLookFrame title={o.displayKey ?? o.key.split('/').pop()} meta={label} onClose={() => { flushDraft(); onClose() }}
-        actions={(
-          <span className="flex items-center gap-2">
-            {dirty && <Button variant="nav" size="sm" onClick={revert}>Revert</Button>}
-            <Button variant="secondary" size="sm" onClick={save} disabled={!dirty || status === 'saving'}>Save</Button>
-          </span>
-        )}>
-        <textarea
-          value={text}
-          onChange={(e) => edit(e.target.value)}
-          disabled={base == null}
-          spellCheck={false}
-          aria-label={`Edit ${o.key.split('/').pop()}`}
-          className="kol-mono-12 block bg-transparent text-fg-default p-4 resize-none outline-none"
-          /* inline: Tailwind does not generate arbitrary values from package source (see the SVG box
-             in MediaInspector) — the window's own caps */
-          style={{ width: 'min(900px, var(--kol-ql-max-w))', height: 'min(640px, var(--kol-ql-media-h))' }}
-        />
-      </QuickLookFrame>
-    </FullscreenOverlay>
+    <DocumentEditor name={o.displayKey ?? o.key.split('/').pop()} kind={editKindOf(o)} text={text}
+      savedAt={o.uploaded ? Date.parse(o.uploaded) : 0} draft={{ bucket, key: o.key }} assets={assets}
+      onSave={async (next) => { const r = await client.writeText(o.key, next, bucket); onSaved?.(o.key, r, next) }}
+      onClose={onClose} />
   )
 }
 
@@ -689,7 +646,7 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
      * the header; bare at rest with a wash on hover, `sm` so the glyphs sit with the 12px text. */
     actions: (
       <span className="flex items-center gap-1">
-        {onEdit && TEXT_KINDS.has(kind) && (
+        {onEdit && editKindOf(o) && (o.size ?? 0) <= EDIT_CAP && (
           <Tooltip label="Edit">
             <Button variant="nav" size="sm" iconOnly="edit" onClick={() => onEdit(o)} aria-label="Edit" />
           </Tooltip>
@@ -1001,6 +958,9 @@ export function MediaLibraryBrowse({
    * rendering what it rendered. */
   view: viewProp, onViewChange,
   folderTree, headerActions, headerTrailing, refreshKey, onOpen, autoFocus = false, settingsFooter, className = '', banner,
+  /* `smartFolder` — a smart folder's id to open ON (a Home tile linking straight to one); the chips
+   * take over from there (media D1 plan v2) */
+  smartFolder,
   /* THE FILE VERBS, as ONE seam (2026-09-21). `{ createFolder, rename, move, remove }`, each
    * optional and each async; whatever is supplied becomes a right-click menu entry and
    * anything absent simply is not offered. One object rather than four props because they
@@ -1148,48 +1108,150 @@ export function MediaLibraryBrowse({
   const press = useLongPress()
   const modal = useModal()
   const canWrite = !!fileActions && writable
-  /* TAGS ARE THE CLIENT'S (the media D1 pass, 2026-09-25) — `client.setTags(key, tags, bucket)`
-   * writes them, the listing carries them back as `o.tags`. The list is patched in place so a chip
-   * lands at once; the next listing confirms it. */
-  const canTag = writable && typeof client?.setTags === 'function'
-  const saveTags = (key, tags) => runAction(async () => {
-    await client.setTags(key, tags, bucketMeta.id ?? undefined)
-    lib.setObjects((list) => list.map((o) => (o.key === key ? { ...o, tags } : o)))
-    setPickedFile((f) => (f?.key === key ? { ...f, tags } : f))
-  })
-  const tagsOf = (key) => objects.find((o) => o.key === key)?.tags ?? []
-  /* EDITING IS THE CLIENT'S TOO — `readText` / `writeText`, with `saveDraft` for the pauses */
-  const canEdit = writable && typeof client?.readText === 'function' && typeof client?.writeText === 'function'
-  const [editing, setEditing] = useState(null)
-  const afterEdit = (key, res) => {
-    lib.setObjects((list) => list.map((o) => (o.key === key ? { ...o, hasDraft: false, ...(res?.size != null && { size: res.size, uploaded: new Date().toISOString() }) } : o)))
+  /* ── WHAT THE DATABASE BESIDE THE BUCKET ADDS (media D1 plan v2, 2026-09-26) ──────────────────
+   * Every verb optional; each feature below is off when its verb is missing. Writes patch the list
+   * in place so the change lands at once; the next listing confirms it. A path ending in `/` is a
+   * folder — its rows come from `folderInfo`, a file's ride the listing. */
+  const bucketKey = bucketMeta.id ?? undefined
+  const folderRows = lib.folderInfo
+  const patchPath = (path, patch) => {
+    if (path.endsWith('/')) lib.setFolderInfo((f) => ({ ...f, [path]: { tags: [], favourite: false, ...(f[path] ?? {}), ...patch } }))
+    else {
+      lib.setObjects((list) => list.map((o) => (o.key === path ? { ...o, ...patch } : o)))
+      setPickedFile((f) => (f?.key === path ? { ...f, ...patch } : f))
+    }
   }
+  /* TAGS — `setTags(path, tags, bucket)` */
+  const canTag = writable && typeof client?.setTags === 'function'
+  const tagsOf = (path) => (path.endsWith('/') ? folderRows[path]?.tags : objects.find((o) => o.key === path)?.tags) ?? []
+  /* every tag in the bucket, for the add field's suggestions — a typo forks the vocabulary */
+  /* the rows view grows a Tags column when there is anything to show or set */
   const hasTags = canTag || objects.some((o) => o.tags?.length)
-  /* what the preview pane adds under a file's facts, in every view */
+  const allTags = useMemo(() => [...new Set([...objects.flatMap((o) => o.tags ?? []), ...Object.values(folderRows).flatMap((f) => f.tags ?? [])])].sort(), [objects, folderRows])
+  const saveTags = (path, tags) => runAction(async () => {
+    const r = await client.setTags(path, tags, bucketKey)
+    patchPath(path, { tags: r?.tags ?? tags })
+  })
+  /* FAVOURITES — `setFavourite(path, on, bucket)` */
+  const canFavourite = writable && typeof client?.setFavourite === 'function'
+  const isFavourite = (path) => !!(path.endsWith('/') ? folderRows[path]?.favourite : objects.find((o) => o.key === path)?.favourite)
+  const toggleFavourite = (path) => runAction(async () => {
+    const on = !isFavourite(path)
+    await client.setFavourite(path, on, bucketKey)
+    patchPath(path, { favourite: on })
+  })
+  /* THE EVENT LOG recents are read from — intentions only (opened, edited, created) */
+  const logEvent = (kind, path) => { Promise.resolve(client?.logEvent?.(kind, path, bucketKey)).catch(() => {}) }
+  /* DRAFTS are browser memory (the user's ruling) — read here only to mark a file that has one */
+  const [draftKeys, setDraftKeys] = useState(() => new Set(listDrafts(bucketKey).map((d) => d.key)))
+  useEffect(() => {
+    const read = () => setDraftKeys(new Set(listDrafts(bucketKey).map((d) => d.key)))
+    read()
+    window.addEventListener(DRAFTS_EVENT, read)
+    return () => window.removeEventListener(DRAFTS_EVENT, read)
+  }, [bucketKey])
+  /* DOCUMENTS — `readText` / `writeText` edit; a new one is the consumer's `createFile` + `writeText` */
+  const canEdit = writable && typeof client?.readText === 'function' && typeof client?.writeText === 'function'
+  const canNewDoc = canEdit && canWrite && !!fileActions.createFile
+  const [editing, setEditing] = useState(null) // { mode: 'edit', o } | { mode: 'new', folder }
+  const openEditor = (o) => { setEditing({ mode: 'edit', o }); logEvent('opened', o.key) }
+  const newDocument = (folder) => setEditing({ mode: 'new', folder })
+  /* A MARKDOWN FILE'S FRONTMATTER TAGS ARE ITS TAGS — merged into the database's on every save, so
+   * a tag written in the document is a tag you can filter by. Merged, never replaced: a tag set in
+   * the pane and not in the document stays. */
+  const syncFrontmatterTags = async (key, text) => {
+    if (!canTag || !/\.(md|markdown)$/i.test(key)) return
+    const fm = parseFrontmatter(text ?? '').tags
+    const typed = (Array.isArray(fm) ? fm : typeof fm === 'string' && fm ? fm.split(',') : []).map((t) => String(t).trim().toLowerCase()).filter(Boolean)
+    const current = objects.find((o) => o.key === key)?.tags ?? []
+    const next = [...new Set([...current, ...typed])]
+    if (next.length !== current.length) { await client.setTags(key, next, bucketKey); patchPath(key, { tags: next }) }
+  }
+  const afterEdit = (key, res, text) => {
+    if (res?.size != null) lib.setObjects((list) => list.map((o) => (o.key === key ? { ...o, size: res.size, uploaded: new Date().toISOString() } : o)))
+    syncFrontmatterTags(key, text).catch(() => {})
+  }
+  const createDocument = async ({ name, text }) => {
+    const key = `${editing.folder}${name}`
+    if (objects.some((o) => o.key === key)) throw new Error(`${name} already exists here`)
+    await fileActions.createFile(key)
+    await client.writeText(key, text, bucketKey)
+    const fm = /\.(md|markdown)$/i.test(key) ? parseFrontmatter(text).tags : null
+    const typed = (Array.isArray(fm) ? fm : []).map((t) => String(t).trim().toLowerCase()).filter(Boolean)
+    if (canTag && typed.length) await client.setTags(key, typed, bucketKey)
+    lib.reload()
+    setEditing(null)
+  }
+  /* what a markdown document can attach: the bucket's own files, linked by their public URL */
+  const attachables = editing ? objects.filter((o) => !isSystemFile(o.key)).map((o) => ({ key: o.key, name: o.key.split('/').pop(), url: mediaUrl(o.key), contentType: o.contentType })) : []
+  const editBlock = (o) => {
+    const kind = editKindOf(o)
+    if (!canEdit || !kind) return null
+    const tooBig = (o.size ?? 0) > EDIT_CAP
+    return (
+      <div className="flex items-center gap-3">
+        <Button variant="secondary" size="sm" iconLeft="edit" disabled={tooBig} onClick={() => openEditor(o)}>Edit</Button>
+        {tooBig && <span className="kol-mono-12 text-fg-48">Over 1 MB — too large to edit here</span>}
+        {!tooBig && draftKeys.has(o.key) && <span className="kol-mono-12 text-fg-48">Unsaved draft</span>}
+      </div>
+    )
+  }
+  /* what the preview pane adds under a file's or a folder's facts, in every view */
   const detailsFor = (o) => {
-    const tags = tagsOf(o.key)
-    const editable = canEdit && TEXT_KINDS.has(kindOf(o))
-    const hasDraft = objects.find((x) => x.key === o.key)?.hasDraft
-    if (!editable && !canTag && !tags.length) return null
+    const path = o.key ?? o
+    const tags = tagsOf(path)
+    const edit = typeof o === 'object' ? editBlock(o) : null
+    if (!edit && !canTag && !canFavourite && !tags.length) return null
     return (
       <div className="flex flex-col gap-4">
-        {editable && (
+        {(edit || canFavourite) && (
           <div className="flex items-center gap-3">
-            <Button variant="secondary" size="sm" iconLeft="edit" onClick={() => setEditing(o)}>Edit</Button>
-            {hasDraft && <span className="kol-mono-12 text-fg-48">Unsaved draft</span>}
+            {canFavourite && (
+              <Tooltip label={isFavourite(path) ? 'Remove from favourites' : 'Add to favourites'}>
+                <Button variant="nav" size="sm" iconOnly={isFavourite(path) ? 'star-solid' : 'star'} onClick={() => toggleFavourite(path)}
+                  aria-label={isFavourite(path) ? 'Remove from favourites' : 'Add to favourites'} aria-pressed={isFavourite(path)} />
+              </Tooltip>
+            )}
+            {edit}
           </div>
         )}
-        {(canTag || tags.length > 0) && <TagEditor tags={tags} onChange={canTag ? (next) => saveTags(o.key, next) : undefined} />}
+        {(canTag || tags.length > 0) && <TagEditor tags={tags} suggestions={allTags} onChange={canTag ? (next) => saveTags(path, next) : undefined} />}
       </div>
     )
   }
   const doTags = async (keys) => {
     const one = keys.length === 1
     const current = one ? tagsOf(keys[0]).join(', ') : ''
-    const answer = await modal.prompt(one ? 'Tags, separated by commas:' : `Add tags to ${keys.length} files, separated by commas:`, current, { okLabel: 'Save' })
+    const answer = await modal.prompt(one ? 'Tags, separated by commas:' : `Add tags to ${keys.length} items, separated by commas:`, current, { okLabel: 'Save' })
     if (answer == null) return
     const typed = answer.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
     for (const key of keys) await saveTags(key, one ? typed : [...new Set([...tagsOf(key), ...typed])])
+  }
+  /* SMART FOLDERS — `smartFolders(bucket)` · `saveSmartFolder(sf, bucket)` · `deleteSmartFolder(id)` */
+  const canSmart = typeof client?.smartFolders === 'function'
+  const [smartFolders, setSmartFolders] = useState([])
+  const [activeSmart, setActiveSmart] = useState(null)
+  const loadSmart = () => { if (canSmart) Promise.resolve(client.smartFolders(bucketKey)).then((l) => setSmartFolders(l ?? [])).catch(() => {}) }
+  useEffect(() => { setActiveSmart(null); loadSmart() }, [bucketKey]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (smartFolder && smartFolders.some((f) => f.id === smartFolder)) setActiveSmart(smartFolder) }, [smartFolder, smartFolders])
+  const activeSmartFolder = smartFolders.find((f) => f.id === activeSmart) ?? null
+  const saveSmart = async () => {
+    const name = await modal.prompt('Smart folder name:', '', { okLabel: 'Next' })
+    if (!name?.trim()) return
+    const tags = await modal.prompt('Tags every file must carry, separated by commas (blank for any):', '', { okLabel: 'Next' })
+    if (tags == null) return
+    const kinds = await modal.prompt('Kinds, separated by commas — image, video, audio, markdown, text, json, pdf… (blank for all):', '', { okLabel: 'Save' })
+    if (kinds == null) return
+    const split = (v) => v.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
+    runAction(async () => {
+      const row = await client.saveSmartFolder({ name: name.trim(), query: { tags: split(tags), kinds: split(kinds), text: '' } }, bucketKey)
+      loadSmart()
+      if (row?.id) setActiveSmart(row.id)
+    })
+  }
+  const deleteSmart = async (sf) => {
+    if (!(await modal.confirm(`Delete the smart folder "${sf.name}"? The files stay where they are.`, { okLabel: 'Delete' }))) return
+    runAction(async () => { await client.deleteSmartFolder(sf.id, bucketKey); if (activeSmart === sf.id) setActiveSmart(null); loadSmart() })
   }
   const [busyAction, setBusyAction] = useState(false)
 
@@ -1214,7 +1276,9 @@ export function MediaLibraryBrowse({
     const name = await modal.prompt(`Rename ${isFolder ? 'folder' : 'file'}:`, current, { okLabel: 'Rename' })
     if (!name?.trim() || name === current) return
     const parent = path.replace(/\/$/, '').slice(0, path.replace(/\/$/, '').length - current.length)
-    runAction(() => fileActions.rename(path, `${parent}${name.trim()}${isFolder ? '/' : ''}`))
+    const to = `${parent}${name.trim()}${isFolder ? '/' : ''}`
+    /* a draft is keyed by path — it follows the file (or everything under the folder) */
+    runAction(async () => { await fileActions.rename(path, to); moveDrafts(bucketKey, path, to) })
   }
   const doMove = async (path) => {
     const dest = await modal.prompt(`Move into which folder? (blank = bucket root)`, prefix, { okLabel: 'Move' })
@@ -1227,6 +1291,7 @@ export function MediaLibraryBrowse({
    * view: expanded in place in the rows, navigated into in the columns and the grid. */
   const afterMove = (paths, dest) => {
     const moved = paths.map((p) => `${dest}${p.replace(/\/$/, '').split('/').pop()}${p.endsWith('/') ? '/' : ''}`)
+    paths.forEach((p, i) => moveDrafts(bucketKey, p, moved[i]))
     setPickedFile(null); setPickedFolder(null)
     setRowSelection(new Set(moved))
     selectAnchorRef.current = moved[0] ?? null
@@ -1419,6 +1484,7 @@ export function MediaLibraryBrowse({
     const inView = q.files.filter((o) => rowSelection.has(o.key))
     const sel = inView.length === rowSelection.size ? inView : objects.filter((o) => rowSelection.has(o.key))
     const current = q.files[q.index]
+    if (current?.key) logEvent('opened', current.key)
     if (sel.length > 1) {
       const index = Math.max(0, sel.findIndex((o) => o.key === current?.key))
       setQuickLook({ files: sel, index })
@@ -1681,7 +1747,7 @@ export function MediaLibraryBrowse({
           return <KindPreview o={o} urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} kindOf={kindOf} kindLabel={KIND_LABEL} />
         }} />
     ) : previewFolder ? (
-      <FolderPreview key={previewFolder} path={previewFolder} objects={objects} width={previewWidth} formatDate={formatDate} />
+      <FolderPreview key={previewFolder} path={previewFolder} objects={objects} width={previewWidth} formatDate={formatDate} details={detailsFor(previewFolder)} />
     ) : previewRoot ? (
       <ContainerPreview key={previewRoot.key} name={previewRoot.name} icon={previewRoot.icon} facts={previewRoot.facts} width={previewWidth} />
     ) : (
@@ -1797,6 +1863,9 @@ export function MediaLibraryBrowse({
   const filterItems = isWall ? wallFiles : scoped.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), displayKey: prefix ? o.key.slice(prefix.length) : o.key }))
   const filterKinds = [...new Set(filterItems.map((o) => o.kind))].sort()
   const filterTags = [...new Set(filterItems.flatMap((o) => o.tags ?? []))].sort()
+  /* favourites as a one-chip group: ContentFilters matches a value, so a starred file carries one */
+  const filterItemsFav = filterItems.map((o) => ({ ...o, starred: o.favourite ? 'favourite' : '' }))
+  const anyStarred = filterItemsFav.some((o) => o.starred)
 
   /* ── THE BODY, one of four (2026-09-22) ────────────────────────────────────────────────────
    * `treeBody` draws the columns or the rows over whatever object list it is handed — the whole
@@ -2058,7 +2127,7 @@ export function MediaLibraryBrowse({
       /* THE GRID DRAWS THE LEVEL'S SUBFOLDERS, ahead of the files (same source: kol-client-olina
        * 2026-09-23 — `projects/` read `0 files` over a blank pane). `flat` is the subtree's files
        * and no folders, as it was. */
-      folders={settings.flat ? [] : folders.map((f) => prefix + f)}
+      folders={settings.flat || smartMatches ? [] : folders.map((f) => prefix + f)}
       onOpenFolder={goFolder}
       onPickFolder={(path, e) => { if (selectRow(path, e, [...folders.map((f) => prefix + f), ...files.map((f) => f.key)])) return; rowPickFolder(path) }}
       onFolderContextMenu={(e, path) => menu.openAt(e, { type: 'folder', path, targets: targetsFor(path) })}
@@ -2103,9 +2172,21 @@ export function MediaLibraryBrowse({
     pickFile(o)
   }
 
-  const body = (filtered) => (isWall
-    ? wallPane(filtered ?? wallFiles)
-    : treeBody(filtered ? new Set(filtered.map((f) => f.key)) : null))
+  /* A SMART FOLDER IS A SAVED QUERY (media D1 plan v2) — tags it must carry, kinds it may be, text
+   * in its path — shown flat, every match wherever it lives, as Finder's smart folders are. */
+  const smartMatches = activeSmartFolder ? objects.filter((o) => {
+    const q = activeSmartFolder.query ?? {}
+    if (isSystemFile(o.key)) return false
+    if ((q.tags ?? []).some((t) => !(o.tags ?? []).includes(t))) return false
+    if ((q.kinds ?? []).length && !q.kinds.includes(kindOf(o))) return false
+    if (q.text && !o.key.toLowerCase().includes(q.text.toLowerCase())) return false
+    return true
+  }).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key })) : null
+  const body = (filtered) => (smartMatches
+    ? wallPane(filtered ?? smartMatches)
+    : isWall
+      ? wallPane(filtered ?? wallFiles)
+      : treeBody(filtered ? new Set(filtered.map((f) => f.key)) : null))
 
   return (
     <div {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
@@ -2297,12 +2378,15 @@ export function MediaLibraryBrowse({
         )}
         {quickLook && (
           <MediaInspector files={quickLook.files} index={quickLook.index} onClose={closeQuickLook} mediaUrl={mediaUrl} downloadUrl={downloadUrl} keySet={keySet} showNav={rowSelection.size > 1}
-            onEdit={canEdit ? (f) => { closeQuickLook(); setEditing(f) } : undefined}
+            onEdit={canEdit ? (f) => { closeQuickLook(); openEditor(f) } : undefined}
             onPrev={() => stepQuickLook(-1)} onNext={() => stepQuickLook(1)} />
         )}
-        {editing && (
-          <FileEditor o={editing} client={client} bucket={bucketMeta.id ?? undefined} onClose={() => setEditing(null)} onSaved={afterEdit}
-            onDraft={(key, has) => lib.setObjects((list) => list.map((x) => (x.key === key ? { ...x, hasDraft: has } : x)))} />
+        {editing?.mode === 'edit' && (
+          <FileEditorHost o={editing.o} client={client} bucket={bucketKey} onClose={() => setEditing(null)} onSaved={afterEdit} assets={attachables} />
+        )}
+        {editing?.mode === 'new' && (
+          <DocumentEditor mode="new" folder={editing.folder} draft={{ bucket: bucketKey, key: `${editing.folder}.new-document` }} assets={attachables}
+            onCreate={createDocument} onClose={() => setEditing(null)} />
         )}
         {settingsOpen && (
           <MediaSettings bucketMeta={bucketMeta} settings={settings} profile={profile} onChange={setSettings} onReset={() => setSettings(null)} onClose={() => setSettingsOpen(false)} settingsFooter={settingsFooter} />
@@ -2311,16 +2395,28 @@ export function MediaLibraryBrowse({
           <TrashPanel trash={trash} onClose={() => setTrashOpen(false)} run={runAction} confirm={modal.confirm} />
         )}
 
+        {/* SMART FOLDERS — one chip each; a chip shows its matches flat in place of the body */}
+        {canSmart && (smartFolders.length > 0 || canWrite) && !atTitleRoot && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="kol-mono-12 text-fg-48">Smart folders</span>
+            {smartFolders.map((sf) => (
+              <Tag key={sf.id} variant="secondary" size="sm" hash={false} active={activeSmart === sf.id}
+                onClick={() => setActiveSmart((a) => (a === sf.id ? null : sf.id))}
+                onRemove={canWrite ? () => deleteSmart(sf) : undefined}>{sf.name}</Tag>
+            ))}
+            {canWrite && <Button variant="nav" size="xs" iconLeft="plus" onClick={saveSmart}>New smart folder</Button>}
+          </div>
+        )}
         {/* THE FILTER BAR, above whichever body is mounted (2026-09-22). It filters FILES, so the
           * tree is scoped to the keys it leaves and the wall renders them directly. Off by default
           * — the funnel in the crumb row turns it on. */}
         {filtersOn ? (
           <ContentFilters
-            items={filterItems}
+            items={filterItemsFav}
             title="Files"
             totalCount={filterItems.length}
             searchKeys={['displayKey']}
-            filterGroups={[{ label: 'Kind', key: 'kind', values: filterKinds }, ...(filterTags.length ? [{ label: 'Tags', key: 'tags', values: filterTags }] : [])]}
+            filterGroups={[{ label: 'Kind', key: 'kind', values: filterKinds }, ...(filterTags.length ? [{ label: 'Tags', key: 'tags', values: filterTags }] : []), ...(anyStarred ? [{ label: 'Favourites', key: 'starred', values: ['favourite'] }] : [])]}
             mutuallyExclusiveFilters={['kind']}
             /* ONE FUNNEL, NOT TWO (2026-09-22): the crumb row's funnel mounts this bar AND opens
              * its panel, and the bar's own funnel closes the bar — the same switch from either
@@ -2419,7 +2515,13 @@ export function MediaLibraryBrowse({
                       New folder{isFolder ? ` in ${target.path.replace(/\/$/, '').split('/').pop()}` : ''}
                     </MenuDropdownItem>
                   )}
-                  {fileActions.createFile && (
+                  {/* NEW DOCUMENT is the writing page (a name, a type, fields for markdown); New file stays for
+                      a client that cannot write text — it makes the empty file and nothing else */}
+                  {canNewDoc ? (
+                    <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                      New document…
+                    </MenuDropdownItem>
+                  ) : fileActions.createFile && (
                     <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New file
                     </MenuDropdownItem>
@@ -2446,8 +2548,16 @@ export function MediaLibraryBrowse({
                   {target.type === 'file' && (
                     <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuDropdownItem>
                   )}
-                  {target.type === 'file' && canTag && (
+                  {!isLevel && canTag && (
                     <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuDropdownItem>
+                  )}
+                  {!isLevel && canFavourite && (
+                    <MenuDropdownItem iconLeft={<Icon name={isFavourite(target.path) ? 'star-solid' : 'star'} size={14} />} onClick={() => toggleFavourite(target.path)}>
+                      {isFavourite(target.path) ? 'Remove from favourites' : 'Add to favourites'}
+                    </MenuDropdownItem>
+                  )}
+                  {target.type === 'file' && canEdit && editKindOf(target.o ?? { key: target.path }) && (
+                    <MenuDropdownItem iconLeft={<Icon name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuDropdownItem>
                   )}
                   {!isLevel && fileActions.remove && (
                     <>
