@@ -3,7 +3,7 @@ title: Shipped packages
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-25
+updated: 2026-09-27
 description: Every package this repo ships, with its version
 aliases:
   - shipped-packages
@@ -43,7 +43,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.10.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.0** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.4.1** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks |
+| `@kolkrabbi/kol-styleguide` | **0.5.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
 
 ## Other tiers
 
@@ -51,7 +51,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 |---|---|---|
 | `@kolkrabbi/design-editor` | **0.4.2** | **App tier — the one BUILT package** (ARCHITECTURE §4 exception, 2026-09-03). The whole editor as `<DesignEditor />`; moved in from kol-fxr, which had published it unversioned by any gate |
 | `@kolkrabbi/kol-media-client` | **0.4.0** | Read-only client for the kol-media CDN |
-| `@kolkrabbi/kol-brand-template` | **0.2.0** | Brand-manifest schema + house defaults + CSS generator |
+| `@kolkrabbi/kol-brand-template` | **0.3.0** | Brand-manifest schema + house defaults + CSS generator |
 | `@kolkrabbi/kol-brand` | **0.1.3** | Kolkrabbi's own brand manifest (ramps, type, logo SVGs) |
 | `@kolkrabbi/kol-scrape` | **0.1.0** | Presence/press scraper CLI |
 

@@ -10,6 +10,8 @@
  * present; it never demands presence.
  *
  * @typedef {Object} BrandLocation
+ * @property {string} [street]
+ * @property {string} [postcode]
  * @property {string} [city]
  * @property {string} [country]
  * @property {string} [locShort]   e.g. "Reykjavík · IS"
@@ -25,6 +27,7 @@
  * @property {BrandLocation} [location]
  * @property {string} [url]         canonical site, e.g. "https://kolkrabbi.io"
  * @property {string} [email]       public contact address
+ * @property {string} [phone]       public contact number
  * @property {Object<string, string>} [socials]  platform → handle
  *
  * @typedef {Object} BrandColorAnchor
@@ -77,6 +80,35 @@
  * @property {string} [name]
  * @property {string} [file]       package-relative path to the SVG asset
  * @property {string} [use]        when to use this mark
+ * @property {number} [previewWidth]  px width of the mark in an asset table — a wordmark is not a logomark
+ *
+ * @typedef {string | { h: string } | { lead: string, text: string }} BrandBookBlock
+ *   One block of book copy: a string is a paragraph, `{ h }` a sub-heading,
+ *   `{ lead, text }` a paragraph opening on a bold lead ("TBD — palette.").
+ *
+ * @typedef {Object} BrandBookSection  copy for one section of the brand book.
+ *   Every key overrides the renderer's default for that section.
+ * @property {string} [label]      eyebrow, e.g. "01 — about"
+ * @property {string} [title]
+ * @property {string} [lede]       the standfirst under the title
+ * @property {BrandBookBlock[]} [blocks]  prose before the section's specimen
+ * @property {BrandBookBlock[]} [after]   prose after it
+ * @property {string[]} [marks]    logo ids the section shows (logo, lockups)
+ *
+ * @typedef {Object<string, BrandBookSection>} BrandBook
+ *   Keyed by section: hero · overview · about · tone · look · logo · lockups ·
+ *   color · typography, and on the assets page assetsOverview · logos ·
+ *   branded · stationery · social · profile. A copy-only section (about, tone,
+ *   look) with no copy is not rendered.
+ *
+ * @typedef {Object} BrandSocialTemplate
+ * @property {string} [caption]    e.g. "Post · 1:1 square"
+ * @property {string} [ratio]      CSS aspect-ratio, e.g. "4 / 5"
+ * @property {string} [src]        image URL
+ *
+ * @typedef {Object} BrandAvatar
+ * @property {string} [bg]         avatar ground
+ * @property {'dark'|'light'} [polarity]  ink on it
  *
  * @typedef {Object} BrandPressItem
  * @property {string} [date]       ISO-ish date or year
@@ -101,10 +133,14 @@
  * @property {BrandIdentity} [identity]  role → ramp bindings (the rebrand surface; emitter input)
  * @property {{ anchors?: BrandColorAnchor[] }} [colors]  legacy declared-anchor doc surface — superseded by `identity` for emission
  * @property {BrandRamp[]} [ramps]
- * @property {{ families?: BrandTypeFamily[], cuts?: BrandTypeCut[], scale?: BrandTypeStyle[] }} [type]
+ * @property {{ families?: BrandTypeFamily[], cuts?: BrandTypeCut[], scale?: BrandTypeStyle[], note?: string }} [type]
+ *   `note` — why the families are what they are; the brand book prints it under the family specimens
  * @property {BrandLogo[]} [logos]
  * @property {{ rule?: string }} [clearspace]
- * @property {{ assets?: Array<{ id?: string, name?: string, file?: string }> }} [stationery]
+ * @property {{ assets?: Array<{ id?: string, name?: string, file?: string }>, marks?: Object<string, string> }} [stationery]
+ *   `marks` — which logo id each stationery mock carries: card · envelope · letter · signature · avatar
+ * @property {{ templates?: BrandSocialTemplate[], mark?: string, avatars?: BrandAvatar[] }} [social]
+ * @property {BrandBook} [book]  the brand book's copy, section by section
  * @property {BrandPresence} [presence]
  * @property {BrandPressItem[]} [press]
  * @property {BrandTimelineItem[]} [timeline]
@@ -149,6 +185,19 @@ export function validateBrand(m) {
   if (m.logos !== undefined) check(isArr(m.logos), 'logos must be an array')
   if (m.clearspace !== undefined) check(isObj(m.clearspace), 'clearspace must be an object')
   if (m.stationery !== undefined) check(isObj(m.stationery), 'stationery must be an object')
+  if (m.stationery?.marks !== undefined) check(isObj(m.stationery.marks), 'stationery.marks must be an object of mock → logo id')
+  if (m.social !== undefined) check(isObj(m.social), 'social must be an object')
+  if (m.social?.templates !== undefined) check(isArr(m.social.templates), 'social.templates must be an array')
+  if (m.social?.avatars !== undefined) check(isArr(m.social.avatars), 'social.avatars must be an array')
+  if (m.book !== undefined) {
+    check(isObj(m.book), 'book must be an object of section → copy')
+    for (const [key, s] of Object.entries(isObj(m.book) ? m.book : {})) {
+      check(isObj(s), `book.${key} must be an object`)
+      if (s?.blocks !== undefined) check(isArr(s.blocks), `book.${key}.blocks must be an array`)
+      if (s?.after !== undefined) check(isArr(s.after), `book.${key}.after must be an array`)
+      if (s?.marks !== undefined) check(isArr(s.marks), `book.${key}.marks must be an array`)
+    }
+  }
   if (m.presence !== undefined) check(isObj(m.presence), 'presence must be an object')
   if (m.press !== undefined) check(isArr(m.press), 'press must be an array')
   if (m.timeline !== undefined) check(isArr(m.timeline), 'timeline must be an array')

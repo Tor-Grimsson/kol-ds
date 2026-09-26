@@ -3,7 +3,7 @@ title: App anatomy
 type: reference
 status: draft
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 description: Shell, Catalog, Hub, Tool — an app's layers
 aliases:
   - app anatomy
@@ -69,7 +69,7 @@ Read off monitor, mirror and fxr (2026-09-26) — each assembled the same Hub by
 Known tools that ride this anatomy — the roster to be sorted next session:
 
 - **media** — the media browser (`apps/media`)
-- **brand** — styleguide, about, references (in kol-olina today); a Hub whose Home is likely a section index rather than a catalog of work — a Home variant, decided when brand arrives
+- **brand** — the brand book (kol-styleguide `Brand`, 2026-09-27): BRAND and ASSETS over one manifest; `apps/brand` alone, media-shell's Brand tab. Its Home inside a Hub of its own is still open — likely a section index rather than a catalog of work
 - **presentation editor** — the deck editor
 - **note editor** — notes (kol-olina's brand notes page; `DocumentEditor` is its file-shaped sibling)
 - **the fxr editor** — `@kolkrabbi/design-editor`

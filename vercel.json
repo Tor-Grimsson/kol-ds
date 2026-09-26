@@ -24,6 +24,10 @@
       "destination": "/apps/presentation/index.html"
     },
     {
+      "source": "/apps/brand/(.*)",
+      "destination": "/apps/brand/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

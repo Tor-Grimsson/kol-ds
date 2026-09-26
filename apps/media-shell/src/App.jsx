@@ -5,10 +5,11 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
 import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
 import { createFixtureClient } from 'media-fixture'
-import { useFixtureMedia, useMediaTool, useNotesTool, useDecksTool, DEFAULTS } from 'media-fixture/wiring'
+import { useFixtureMedia, useMediaTool, useNotesTool, useDecksTool, useBrandTool, DEFAULTS } from 'media-fixture/wiring'
 import { useLibrary } from './Library.jsx'
 import { Notes } from '@kolkrabbi/kol-notes'
 import { Decks } from '@kolkrabbi/kol-deck'
+import { Brand } from '@kolkrabbi/kol-styleguide'
 import { useSettings } from './Settings.jsx'
 import { SHORTCUTS } from './lib/shortcuts.js'
 
@@ -20,11 +21,12 @@ import { SHORTCUTS } from './lib/shortcuts.js'
  *   Library  /library                    the Hub's Home — RECENT · FAVOURITES · DRAFTS
  *   Notes    /notes  (and /notes/<slug>)  kol-notes — the same tool as apps/notes (2026-09-27)
  *   Decks    /decks  (and /decks/<slug>)  kol-deck — the same tool as apps/presentation (2026-09-27)
+ *   Brand    /brand  (and /brand/assets)  kol-styleguide's Brand — the same tool as apps/brand (2026-09-27)
  *   Settings /settings                   the Hub's, with media's rows; the drawer carries the theme
  *
- * THREE TOOLS, ONE SHELL. Notes and Decks are the packages' components over media-fixture's shared
- * wiring (`useNotesTool`, `useDecksTool`), exactly as the tool-alone apps render them — nothing is
- * copied here, so work on either tool lands in this app on its next reload.
+ * FOUR TOOLS, ONE SHELL. Notes, Decks and Brand are the packages' components over media-fixture's
+ * shared wiring (`useNotesTool`, `useDecksTool`, `useBrandTool`), exactly as the tool-alone apps
+ * render them — nothing is copied here, so work on any of them lands in this app on its next reload.
  *
  * ONE SETTINGS OBJECT per bucket, held here and saved through the client (the fake D1; olina's D1
  * live): the browse page's gear, the settings page and its drawer all edit it. Routing is the hash. */
@@ -40,6 +42,7 @@ const ITEMS = [
   { icon: 'layers', path: '/library', label: 'Library' },
   { icon: 'edit', path: '/notes', label: 'Notes' },
   { icon: 'rectangle', path: '/decks', label: 'Decks' },
+  { icon: 'book-open', path: '/brand', label: 'Brand' },
 ]
 
 /* the walkthrough — opt-in from the Library's button, its X inside the card (the Hub's) */
@@ -50,6 +53,7 @@ const WALKTHROUGH = [
   { title: 'Tags and favourites', text: ['Tag and star files and folders in the preview pane or from the menu. Filter by them in Browse.'], illustration: art('hash-01') },
   { title: 'Notes', text: ['Your notes, and New note. A note opens in the page: its fields, the markdown, and the preview rendering as you type. Attach puts a bucket file in it.', 'Unsaved edits stay in this browser until you save — nothing half-written leaves the device.'], illustration: art('edit') },
   { title: 'Decks', text: ['Presentations. Open one to edit its slides, press Present to play it, and export PDF, PNG or PPTX from File.'], illustration: art('rectangle') },
+  { title: 'Brand', text: ['The brand book: the identity on one page, the files and specs to reproduce it on the other. Switch between them at the top.'], illustration: art('book-open') },
   { title: 'Get started', actions: (close) => <Button variant="grey" size="md" onClick={close}>Get started</Button> },
 ]
 
@@ -84,11 +88,13 @@ export default function App() {
   const tool = useMediaTool({ client, media })
   const notes = useNotesTool({ client, refreshKey: media.refreshKey })
   const decks = useDecksTool({ client })
+  const brand = useBrandTool()
 
   /* `/` IS Browse — the rail lights Browse there, and the mark goes there */
   const currentPath = path === '/' ? '/browse' : path
-  /* an open note / deck is the section's tail: /notes/<slug>, /decks/<slug> — the rail lights the section */
-  const section = currentPath.match(/^\/(notes|decks)(?:\/(.+))?$/)
+  /* an open note / deck is the section's tail: /notes/<slug>, /decks/<slug> — the rail lights the section;
+   * the brand book's second page is /brand/assets the same way */
+  const section = currentPath.match(/^\/(notes|decks|brand)(?:\/(.+))?$/)
   const railPath = section ? `/${section[1]}` : currentPath
   const openIn = (name) => (section?.[1] === name ? section[2] ?? null : null)
   const openChange = (name) => (slug) => navigate(slug ? `/${name}/${slug}` : `/${name}`)
@@ -122,6 +128,7 @@ export default function App() {
       shell={{ pageWash: currentPath.startsWith('/browse') ? null : 'var(--kol-fg-02)' }}
     >
       {section?.[1] === 'notes' ? <Notes {...notes.props} open={openIn('notes')} onOpenChange={openChange('notes')} />
+        : section?.[1] === 'brand' ? <Brand {...brand.props} view={openIn('brand') === 'assets' ? 'assets' : 'brand'} onViewChange={(v) => navigate(v === 'assets' ? '/brand/assets' : '/brand')} />
         : section?.[1] === 'decks' ? <Decks {...decks.props} open={openIn('decks')} onOpenChange={openChange('decks')} railLeft="var(--kol-shell-rail-width, 48px)" />
         : (
         /* the tool sits in the Hub's page padding like every other page (user: "why different padding?") */

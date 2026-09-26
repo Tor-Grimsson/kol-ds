@@ -42,3 +42,10 @@ export {
 // that wanted one logo card could not build. Import them from their own homes:
 //   AssetGrid, FeatureSplit, ProsePreview, SpectrumGrid → @kolkrabbi/kol-component
 //   TypeSample, TypeSpecCard                            → @kolkrabbi/kol-foundry
+
+// The brand tool (brand-as-a-tool, 2026-09-27): the brand book's two pages over one manifest —
+// kol-olina's apps/brand, carried in. `Brand` is the tool; the pages render alone too.
+export { default as Brand } from './Brand.jsx'
+export { default as BrandBook } from './BrandBook.jsx'
+export { default as BrandAssets } from './BrandAssets.jsx'
+export { brandSections, brandToc, brandInfo, BRAND_VIEWS, BOOK_SECTIONS, ASSET_SECTIONS } from './brandBook.js'

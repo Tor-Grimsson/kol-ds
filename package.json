@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-shell build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-shell build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter brand build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:demos": "node scripts/validate-demos.mjs",
@@ -56,7 +56,8 @@
     "media-shell": "pnpm --filter media-shell dev",
     "shell": "pnpm --filter shell dev",
     "notes": "pnpm --filter notes dev",
-    "presentation": "pnpm --filter presentation dev"
+    "presentation": "pnpm --filter presentation dev",
+    "brand": "pnpm --filter brand dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",

@@ -35,6 +35,8 @@ export const TIERS = {
   ProfileAvatar: 'atoms',
   BusinessCardFront: 'molecules', BusinessCardBack: 'molecules', Envelope: 'molecules',
   Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
+  /* the brand tool (2026-09-27): the two brand-book pages are page regions, the tool is both of them */
+  Brand: 'organisms', BrandBook: 'organisms', BrandAssets: 'organisms',
   /* kol-content */
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
@@ -257,6 +259,8 @@ export const FUNCTIONS_BY_NAME = {
   Logomark: 'display',
   /* notes — kol-notes (2026-09-27): notes as a tool */
   Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
+  /* styleguide — the brand tool (2026-09-27) */
+  Brand: 'structure', BrandBook: 'structure', BrandAssets: 'structure',
   /* deck — kol-deck (2026-09-27): presentations as a tool */
   Decks: 'structure', DecksCatalog: 'wayfinding', DeckEditor: 'structure', DeckFile: 'overlay', DeckSettings: 'overlay',
   SlideRenderer: 'display', SlideThumb: 'display', SlideStage: 'input', SlideInspector: 'input', useDeckHistory: 'utility',
@@ -379,6 +383,9 @@ export const NO_DEMO = (() => {
     ...Object.fromEntries(['Notes', 'NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'kol-notes 0.1.0 (2026-09-27) — '
       + 'every part reads a notes client (list · load · save · delete) the showcase does not carry; the '
       + 'live surface is apps/notes on the fixture. Demos land with a showcase fixture client.'])),
+    ...Object.fromEntries(['Brand', 'BrandBook', 'BrandAssets'].map((n) => [n, 'kol-styleguide 0.5.0 (2026-09-27) — '
+      + 'the brand tool and its two pages render a whole brand manifest, marks included; the live surface is '
+      + 'apps/brand on the fixture brand. A demo lands with a showcase fixture brand.'])),
     ...Object.fromEntries(['Decks', 'DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
       'SlideStage', 'SlideInspector'].map((n) => [n, 'kol-deck 0.1.0 (2026-09-27) — the tool, its editor and '
       + 'its parts run against a decks client and a deck document; the live surface is apps/presentation '

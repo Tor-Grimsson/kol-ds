@@ -9,6 +9,7 @@ export const SHORTCUTS = [
     { id: 'library', label: 'Library', combo: '⌥3' },
     { id: 'notes', label: 'Notes', combo: '⌥4' },
     { id: 'decks', label: 'Decks', combo: '⌥5' },
+    { id: 'brand', label: 'Brand', combo: '⌥6' },
     { id: 'settings', label: 'Settings', combo: ',' },
     { id: 'rail', label: 'Show / hide the rail', combo: '\\' },
   ] },

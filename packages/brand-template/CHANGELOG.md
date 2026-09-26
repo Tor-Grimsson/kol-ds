@@ -5,7 +5,13 @@
 > breaking or global-surface changes (token renames, default flips, new bare-element
 > rules) are flagged **BREAKING**.
 
-## Unreleased
+## 0.3.0
+
+### Minor Changes
+
+- The manifest carries a brand BOOK (brand as a tool, 2026-09-27 — kol-styleguide's `Brand` renders it). New optional fields, all validated for type only: `book` (copy per section — `label` · `title` · `lede` · `blocks` · `after` · `marks`; a block is a paragraph string, `{ h }` or `{ lead, text }`), `social` (`templates` · `mark` · `avatars`), `stationery.marks` (which logo each mock carries), `logos[].previewWidth`, `type.note`, `meta.phone`, `meta.location.street` / `postcode`. Nothing existing changed.
+
+## 0.2.0
 
 ### Minor Changes
 

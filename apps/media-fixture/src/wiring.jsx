@@ -18,6 +18,7 @@ export { DEFAULTS }
 export { useMediaTool, TOOL_SHORTCUTS } from './tool.jsx'
 /* the notes and decks tools' wiring (apps/notes, apps/presentation, media-shell's tabs) — same subpath */
 export { useNotesTool, useDecksTool } from './libraryTools.jsx'
+export { useBrandTool } from './brandTool.jsx'
 
 const THUMBABLE = new Set(['image', 'video'])
 
