@@ -11,6 +11,13 @@
  */
 import { useState } from 'react'
 import { kindOf } from '@kolkrabbi/kol-component/utilities/mediaKinds'
+import { DEFAULTS } from './defaults.js'
+/* re-exported so an app reads the defaults through the subpath it already imports */
+export { DEFAULTS }
+/* the tool's extras (footer, file formats, ⇧R) and its keymap — same subpath, same reason */
+export { useMediaTool, TOOL_SHORTCUTS } from './tool.jsx'
+/* the notes and decks tools' wiring (apps/notes, apps/presentation, media-shell's tabs) — same subpath */
+export { useNotesTool, useDecksTool } from './libraryTools.jsx'
 
 const THUMBABLE = new Set(['image', 'video'])
 
@@ -23,7 +30,8 @@ export const formatDate = (iso) => {
 // The last-used bucket survives a reload (browser storage; falls back to r2).
 const BUCKET_KEY = 'kol-media:bucket'
 
-export function useFixtureMedia({ client, title = 'MEDIA', setPrefix = () => {}, defaults }) {
+/* `defaults` = the fixture's per-bucket display defaults unless an app passes its own */
+export function useFixtureMedia({ client, title = 'MEDIA', setPrefix = () => {}, defaults = DEFAULTS }) {
   const BUCKETS = Object.fromEntries(client.buckets().map((b) => [b.id, b]))
   const [bucketId, setBucketId] = useState(() => {
     try { const v = localStorage.getItem(BUCKET_KEY); if (v && BUCKETS[v]) return v } catch { /* private mode */ }

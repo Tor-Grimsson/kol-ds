@@ -171,7 +171,11 @@ export function LabeledControlSection({ label, divided = false, rowGap = 2, chil
  *  rebuilt this same Dropdown in a local `ChoiceRow`, which is the exact
  *  duplication this component exists to prevent. A component that wraps another
  *  has to forward the wrapped one's seams or it becomes a wall. */
-export function SettingsChoice({ options = [], value, onChange, ariaLabel, tone = 'default', size = 'sm', variant = 'primary', className = '' }) {
+/* `variant` UNSET by default (the Hub review, 2026-09-26): a forced `primary` blocked the
+ * tone of a `kol-tone-*` wrapper, so a sunken settings page drew a light well in every row
+ * unless the row said `tone="sunken"` itself. Unset, Dropdown takes the wrapper's tone and
+ * falls back to primary — the same render wherever there is no wrapper. */
+export function SettingsChoice({ options = [], value, onChange, ariaLabel, tone = 'default', size = 'sm', variant, className = '' }) {
   const opts = options.map((o) => (o != null && typeof o === 'object' ? o : { value: o, label: String(o) }))
   return <Dropdown size={size} variant={variant} tone={tone} value={value} onChange={onChange} options={opts} className={`w-full ${className}`.trim()} aria-label={ariaLabel} />
 }

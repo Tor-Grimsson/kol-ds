@@ -3,7 +3,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
 import { MenuDropdownItem, MenuDropdownNest } from '../molecules/MenuItem.jsx'
-import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
+import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
 import { rowLabelForLayer, findLayerDeep } from '../hooks/layerTree.js'
 
 /* DS icon names for the engine's types — every one a shipped v1 glyph. A
@@ -51,11 +51,11 @@ function useShiftClickHandlers(onSelect, onShiftSelect) {
 
 function Chevron({ IconC, collapsed, onToggle, title }) {
   return (
+    <Tooltip label={title} asChild>
     <button
       type="button"
       onClick={onToggle}
       aria-expanded={!collapsed}
-      title={title}
       className="kol-layer-stack-collapse"
     >
       <IconC
@@ -64,6 +64,7 @@ function Chevron({ IconC, collapsed, onToggle, title }) {
         style={{ transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)', transition: 'transform 150ms' }}
       />
     </button>
+    </Tooltip>
   )
 }
 
@@ -160,24 +161,26 @@ function LayerRow({
             </span>
           </button>
         )}
+        <Tooltip label={layer.visible ? 'Hide' : 'Show'} asChild>
         <button
           type="button"
           onClick={onToggleVisibility}
-          title={layer.visible ? 'Hide' : 'Show'}
           aria-pressed={!layer.visible}
           className={`kol-layer-stack-toggle kol-layer-stack-toggle--eye${active || !layer.visible ? ' is-pinned' : ''}`}
         >
           <IconC name={layer.visible ? 'eye-on' : 'eye-off'} size={12} />
         </button>
+        </Tooltip>
+        <Tooltip label={layer.locked ? 'Unlock' : 'Lock'} asChild>
         <button
           type="button"
           onClick={onToggleLock}
-          title={layer.locked ? 'Unlock' : 'Lock'}
           aria-pressed={!!layer.locked}
           className={`kol-layer-stack-toggle kol-layer-stack-toggle--lock${active || layer.locked ? ' is-pinned' : ''}${layer.locked ? ' is-on' : ''}`}
         >
           <IconC name={layer.locked ? 'lock' : 'unlock'} size={12} />
         </button>
+        </Tooltip>
       </div>
     </div>
   )
@@ -419,16 +422,17 @@ export default function LayerStack({
         * consumer's keymap. */}
       {onGroup && layerSelectionCount >= 2 && (
         <div className="mt-auto flex items-center gap-2 px-3 h-10 border-t border-fg-08">
+          <Tooltip label={`Group ${layerSelectionCount} selected layers`}>
           <Button
             iconComponent={IconC}
             variant="primary"
             size="sm"
             iconLeft="layers"
             onClick={() => onGroup(layerSelectedIds)}
-            title={`Group ${layerSelectionCount} selected layers`}
           >
             Group {layerSelectionCount}
           </Button>
+          </Tooltip>
         </div>
       )}
     </div>
@@ -469,6 +473,7 @@ export function AddLayerButton({
   return (
     <>
       <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
+        <Tooltip label="Add layer">
         <Button
           iconComponent={IconC}
           variant="primary"
@@ -476,8 +481,8 @@ export function AddLayerButton({
           quiet
           iconOnly="plus"
           aria-label="Add layer"
-          title="Add layer"
         />
+        </Tooltip>
       </span>
       <PopoverPanel popover={popover} className="py-1" style={{ width: menuWidth }}>
         {types.map((t) => {

@@ -40,6 +40,7 @@
  *   title           — passes through.
  */
 import TransparentX from '../utilities/TransparentX'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 const SIZE_CLASSES = {
   fill:    'w-full aspect-square',
@@ -122,11 +123,11 @@ export default function ColorSwatch({
 
   if (interactive) {
     return (
+      <Tooltip label={title} asChild>
       <button
         {...rest}
         type="button"
         onClick={onClick}
-        title={title}
         aria-label={rest['aria-label'] ?? hex ?? 'transparent'}
         aria-pressed={selected}
         className={cls}
@@ -134,12 +135,15 @@ export default function ColorSwatch({
       >
         {inner}
       </button>
+      </Tooltip>
     )
   }
 
   return (
-    <span {...rest} aria-hidden="true" title={title} className={cls} style={style}>
+    <Tooltip label={title} asChild>
+    <span {...rest} aria-hidden="true" className={cls} style={style}>
       {inner}
     </span>
+    </Tooltip>
   )
 }

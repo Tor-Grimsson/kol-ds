@@ -2,11 +2,11 @@
   "name": "kol-design-system",
   "private": true,
   "version": "0.0.0",
-  "description": "KOL (Kolkrabbi) design system \u2014 the single maintenance home for the published @kolkrabbi/kol-* packages, plus the showcase app. Source of truth; consumers install published versions (no linking).",
+  "description": "KOL (Kolkrabbi) design system — the single maintenance home for the published @kolkrabbi/kol-* packages, plus the showcase app. Source of truth; consumers install published versions (no linking).",
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-shell build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-shell build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:demos": "node scripts/validate-demos.mjs",
@@ -39,6 +39,7 @@
     "validate:dd-trigger": "node scripts/validate-dd-trigger.mjs --check",
     "validate:consumption": "node scripts/validate-consumption.mjs",
     "validate:icon-ink": "node scripts/validate-icon-ink.mjs",
+    "validate:native-title": "node scripts/validate-native-title.mjs",
     "props": "node scripts/validate-props.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",
@@ -52,7 +53,10 @@
     "validate:retirements": "node scripts/validate-retirements.mjs --check",
     "retirements": "node scripts/validate-retirements.mjs",
     "extract:icons": "node scripts/extract-icon-cuts.mjs",
-    "media-shell": "pnpm --filter media-shell dev"
+    "media-shell": "pnpm --filter media-shell dev",
+    "shell": "pnpm --filter shell dev",
+    "notes": "pnpm --filter notes dev",
+    "presentation": "pnpm --filter presentation dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",

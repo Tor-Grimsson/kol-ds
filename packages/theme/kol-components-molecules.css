@@ -182,8 +182,15 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--kol-surface-secondary);
-  border: 1px solid var(--kol-oq-04);
+  /* the ambient tone's FLOATING surface and ink when the trigger sits in one (Tooltip copies the
+   * resolved `--kol-tone-*` onto the portalled panel, as Dropdown does) — `panel-bg`, not `bg`: it is
+   * what a floating thing of that tone paints (outline / ghost paint the ground, never transparent);
+   * its own surface otherwise */
+  background: var(--kol-tone-panel-bg, var(--kol-surface-secondary));
+  color: var(--kol-tone-fg, var(--kol-fg-emphasis));
+  /* the hairline IS the edge (user, 2026-09-26): a same-toned surface over the page reads only by
+   * its border — oq-04 did not, and the drop shadow is gone (black on a dark page showed nothing) */
+  border: 1px solid var(--kol-oq-08);
   border-radius: var(--kol-radius-sm);
   padding: 4px 8px;
   font-family: var(--kol-font-family-mono);
@@ -192,7 +199,6 @@
   white-space: nowrap;
   pointer-events: none;
   z-index: var(--kol-z-tooltip, 300); /* the ladder's float tier, not nav's 1000 (EditorOverlaysOnFullscreenOverlay, user ruling 2026-08-27) */
-  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.5);
 }
 
 .kol-tooltip-key {
@@ -1314,6 +1320,10 @@
 @media (min-width: 768px) { .kol-quicklook { --kol-ql-max-w: calc(100vw - 4rem); } }
 /* a sized window (the corner was dragged): the body takes all of it, media centred inside */
 .kol-quicklook--sized { max-width: none; }
+/* IN THE PAGE (DocumentEditor `inline`, 2026-09-26): the frame fills its container instead of sizing to
+ * its content inside an overlay — the notes page's editor is the page, not a window over it */
+.kol-quicklook--inline { width: 100%; height: 100%; max-width: none; }
+.kol-quicklook--inline .kol-quicklook-body { flex: 1 1 auto; min-height: 0; }
 /* THE HEADER'S CONTROLS WEAR THE CLOSE IDIOM (`Button variant="nav"`), whose hover wash is oq-04 —
  * the window's own surface, so on this header it vanished. One stop up keeps the same 4-point lift
  * the X shows on the page (user 2026-09-23). `.kol-btn-nav`'s tokens sit in `:where()`, so this wins. */
@@ -2148,6 +2158,21 @@
  * element, or inherited from a sunken wrapper */
 :is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) button[aria-pressed="true"] { background-color: var(--kol-fg-08); }
 :is(.kol-view-toggle.kol-tone-sunken, .kol-view-toggle.kol-tone-inverse, .kol-tone-sunken .kol-view-toggle) button:not([aria-pressed="true"]):hover { background-color: var(--kol-fg-04); }
+/* EVERY OTHER TONE'S SELECTED SEGMENT (FoundationsTones, 2026-09-26 — user: "icon toggle in secondary
+ * doesnt have a visible selected state"). The chip was a fixed `bg-fg-ab-24` — black at 24% — which
+ * vanishes on secondary's near-black well. It takes SUNKEN'S RUNG, `fg-08` (the 2026-08-28 ruling, down
+ * from fg-16): the tones' own `--kol-tone-active-bg` was tried first and secondary's `oq-16` read
+ * "too bright" (user, same day) — that rung is a button's press, not a chip in a well. `inverted` is
+ * the exception: its well is the ink colour, where an ink wash disappears, so it keeps its own active
+ * paint. No tone = the fixed chip, as before. */
+:is(.kol-tone-primary, .kol-tone-secondary, .kol-tone-outline, .kol-tone-ghost, .kol-tone-grey) .kol-view-toggle button[aria-pressed="true"],
+.kol-view-toggle:is(.kol-tone-primary, .kol-tone-secondary, .kol-tone-outline, .kol-tone-ghost, .kol-tone-grey) button[aria-pressed="true"] {
+  background-color: var(--kol-fg-08);
+}
+:is(.kol-tone-inverted) .kol-view-toggle button[aria-pressed="true"],
+.kol-view-toggle.kol-tone-inverted button[aria-pressed="true"] {
+  background-color: var(--kol-tone-active-bg);
+}
 /* the open search shell — was `bg-fg-04` on the element, sunken by class */
 .kol-expand--open { background-color: var(--kol-tone-bg, var(--kol-fg-04)); }
 /* THE SEGMENTED STRIP, SUNKEN (segmented-toggle-sunken-tone, kol-client-olina

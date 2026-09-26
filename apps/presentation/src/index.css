@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM — the packages sit at `packages/*` here, so kol-sources.css's
+   consumer paths resolve to nothing; point at this app's own node_modules symlinks
+   (same reason as apps/media-shell and the showcase). */
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";
+@source "../node_modules/@kolkrabbi/kol-deck/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-theme/kol-type-roles.css";
+/* ARCHITECTURE §5 — framework chrome in the components layer */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+
+body {
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}

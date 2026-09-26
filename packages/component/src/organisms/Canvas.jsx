@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CanvasZoomContext } from '../hooks/canvasZoom.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * Canvas — the editor's aspect-ratio stage.
@@ -628,22 +629,24 @@ export function PanZoomViewport({
         {/* Zoom % + fps — matching chips. Zoom (click resets to 100% /
             centered) first, fps to its right, shown while `f` toggles it. */}
         <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
+          <Tooltip label="Reset zoom (⌘0)" asChild>
           <button
             type="button"
             onClick={() => setView({ zoom: 1, x: 0, y: 0 })}
             className="px-2 py-1 rounded border border-fg-08 bg-surface-secondary kol-mono-12 text-emphasis tabular-nums"
             style={{ opacity: atRest && !showFps ? 0.55 : 1 }}
-            title="Reset zoom (⌘0)"
           >
             {Math.round(view.zoom * 100)}%
           </button>
+          </Tooltip>
           {showFps && (
+            <Tooltip label="Framerate — press F to hide" asChild>
             <span
               className="px-2 py-1 rounded border border-fg-08 bg-surface-secondary kol-mono-12 text-emphasis tabular-nums"
-              title="Framerate — press F to hide"
             >
               {fps} fps
             </span>
+            </Tooltip>
           )}
         </div>
       </div>

@@ -1,25 +1,20 @@
-/* ONE ARRAY for the overlay and the settings page (kol-shell's single-source rule). The media
- * surface's own gestures are the DS's; the rail's are AppShell `navKeys`. */
+import { TOOL_SHORTCUTS } from 'media-fixture/wiring'
+
+/* ONE ARRAY for the S sheet and the settings page (kol-shell's single-source rule): the shell's own
+ * keys, then THE TOOL'S KEYMAP — the same array apps/media's sheet shows (media-fixture), because it
+ * is the same tool answering to the same keys. */
 export const SHORTCUTS = [
   { section: 'Go to', items: [
-    { id: 'home', label: 'Home', combo: '⌥1' },
-    { id: 'browse', label: 'Browse', combo: '⌥2' },
+    { id: 'browse', label: 'Browse', combo: '⌥1' },
+    { id: 'library', label: 'Library', combo: '⌥3' },
+    { id: 'notes', label: 'Notes', combo: '⌥4' },
+    { id: 'decks', label: 'Decks', combo: '⌥5' },
     { id: 'settings', label: 'Settings', combo: ',' },
     { id: 'rail', label: 'Show / hide the rail', combo: '\\' },
   ] },
-  { section: 'Browse', items: [
-    { id: 'search', label: 'Search', combo: '/' },
-    { id: 'palette', label: 'Search anywhere', combo: '⌘K' },
-    { id: 'look', label: 'Quick Look', combo: 'Space' },
-    { id: 'open', label: 'Open folder', combo: 'Enter' },
-    { id: 'up', label: 'Enclosing folder', combo: '⌘↑' },
-    { id: 'extend', label: 'Extend selection', combo: '⇧ + arrows' },
-  ] },
+  ...TOOL_SHORTCUTS,
   { section: 'Documents', items: [
     { id: 'save', label: 'Save the document', combo: '⌘S' },
     { id: 'close', label: 'Close the editor', combo: 'Esc' },
-  ] },
-  { section: 'This page', items: [
-    { id: 'keys', label: 'These shortcuts', combo: '?' },
   ] },
 ]

@@ -708,7 +708,7 @@ function FilesBody({ files, viewMode, onOpen, onPick }) {
   )
   /* the title voice is the family's ruled default (heading-04 card / heading-05
    * row, truncated by ContentText); the full key rides as the tooltip, as before */
-  const nameFor = (row) => <span title={row.key}>{row.displayKey}</span>
+  const nameFor = (row) => <Tooltip label={row.key} asChild><span>{row.displayKey}</span></Tooltip>
   const date = (row) => (row.uploaded ? String(row.uploaded).slice(0, 10) : undefined)
   const size = (row) => formatSize(row.size) || undefined
 

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { toneClass, TONE_VARS } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { MenuDropdownItem } from './MenuItem.jsx'
+import { MenuDropdownItem, MenuDropdownDivider } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
@@ -160,7 +160,11 @@ const Dropdown = ({
     onOptionHover?.(null)
   }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const currentOption = options.find((opt) => opt.value === value) || options[0]
+  /* `{ divider: true }` in `options` draws a hairline between groups (FoundationsTones, 2026-09-26 —
+   * user: none on top, the filled tones in order, outline and ghost apart). It is never a choice:
+   * the lookup, the fallback and the trigger's width all read the choices only. */
+  const choices = options.filter((opt) => !opt?.divider)
+  const currentOption = choices.find((opt) => opt.value === value) || choices[0]
 
   /* A clamped list (Popover caps the panel to the viewport) can open with the
    * checked row past the fold — scroll it into reach. Keyboard focus after
@@ -168,7 +172,7 @@ const Dropdown = ({
   const listRef = useRef(null)
   useEffect(() => {
     if (!isOpen) return
-    const idx = options.findIndex((opt) => opt.value === currentOption?.value)
+    const idx = options.findIndex((opt) => !opt?.divider && opt.value === currentOption?.value)
     listRef.current?.children[idx]?.scrollIntoView({ block: 'nearest' })
   }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -215,7 +219,7 @@ const Dropdown = ({
               * trigger and list stay one piece at every selection */}
             <span className="kol-dd-label">
               <span>{currentOption?.label}</span>
-              {options.map((option) => (
+              {choices.map((option) => (
                 <span key={option.value} className="kol-dd-ghost" aria-hidden="true">
                   {option.label}
                 </span>
@@ -247,7 +251,8 @@ const Dropdown = ({
         {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
 
         <div ref={listRef} className="kol-dd-list" role="listbox">
-          {options.map((option) => {
+          {options.map((option, i) => {
+            if (option?.divider) return <MenuDropdownDivider key={`divider-${i}`} />
             const isActive = option.value === currentOption?.value
             return (
               <MenuDropdownItem

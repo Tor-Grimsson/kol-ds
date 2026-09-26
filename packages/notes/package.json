@@ -1,0 +1,46 @@
+{
+  "name": "@kolkrabbi/kol-notes",
+  "version": "0.1.0",
+  "private": false,
+  "description": "KOL notes — a note is a database row with a markdown body. The notes catalog, the note editor (kol-component's DocumentEditor, in the page) and the whole tool over a consumer-injected client. Sits above @kolkrabbi/kol-{theme,component,shell}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.225.0",
+    "@kolkrabbi/kol-icons": ">=0.27.0",
+    "@kolkrabbi/kol-shell": ">=0.57.0",
+    "@kolkrabbi/kol-theme": ">=0.151.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^",
+    "@kolkrabbi/kol-shell": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "notes",
+    "markdown"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/notes"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

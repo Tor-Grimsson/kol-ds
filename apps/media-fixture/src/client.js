@@ -3,7 +3,7 @@
  * behind any of them, so the DS pages cannot tell the difference.
  *
  * Two stores, kept apart on purpose: `bucket.js` is what R2 holds (bytes, keys, folders, trash),
- * `d1.js` is what the database holds (tags, favourites, events, smart folders, settings). Each verb
+ * `d1.js` is what the database holds (tags, favourites, events, settings). Each verb
  * below says which one it touches, so the line olina's real client would draw is drawn here too.
  *
  * `createFixtureClient({ settings })` — an app may keep its own settings pair (`{ load(bucket),
@@ -11,6 +11,7 @@
 
 import * as bucket from './bucket.js'
 import * as d1 from './d1.js'
+import * as library from './library.js'
 import { fileUrl } from './assets-urls.js'
 
 d1.reset({ idOf: bucket.idOf })
@@ -19,6 +20,9 @@ const B = (b) => b ?? 'r2'
 const urlFor = (key, b = 'r2') =>
   bucket.urlOf(b, key) ?? fileUrl(bucket.fileOf(b, key)) ?? `fixture:///${key}`
 const isDir = (p) => p.endsWith('/')
+
+/* a stored settings object without its height (see loadSettings) — `null` stays `null` (reset) */
+const noHeight = (s) => { if (!s) return s; const { columnHeight: _h, ...rest } = s; return rest }
 
 export function createFixtureClient({ settings } = {}) {
   return {
@@ -79,7 +83,7 @@ export function createFixtureClient({ settings } = {}) {
       return r
     },
 
-    // ── D1: tags · favourites · folders · events · smart folders ─────────
+    // ── D1: tags · favourites · folders · events ─────────────────────────
     /* one verb for files and folders: a path ending in `/` is a folder */
     async setTags(path, tags, b) {
       if (isDir(path)) return { path, tags: d1.setFolderTags(B(b), path, tags) }
@@ -107,17 +111,27 @@ export function createFixtureClient({ settings } = {}) {
       if (ref.path || ref.fileId) d1.logEvent(B(b), kind, ref)
       return { ok: true }
     },
-    async smartFolders(b) { return d1.smartFolders(B(b)) },
-    async saveSmartFolder(sf, b) { return d1.saveSmartFolder(B(b), sf) },
-    async deleteSmartFolder(id) { return d1.deleteSmartFolder(id) },
 
     // ── D1: settings (or the app's own pair) ────────────────────────────
-    async loadSettings(b) { return settings ? settings.load(B(b)) : d1.loadSettings(B(b)) },
-    async saveSettings(b, s) { return settings ? settings.save(B(b), s) : d1.saveSettings(B(b), s) },
+    /* HEIGHT IS NOT A SETTING (apps/media's ruling, 2026-08-27: "JUST ONE HEIGHT … always on reload"):
+     * the browser opens at the defaults' height every time, so a stored `columnHeight` is dropped both
+     * ways — the one rule both apps share, which is why it sits here and not in either app */
+    async loadSettings(b) { return noHeight(await (settings ? settings.load(B(b)) : d1.loadSettings(B(b)))) },
+    async saveSettings(b, s) { return settings ? settings.save(B(b), noHeight(s)) : d1.saveSettings(B(b), noHeight(s)) },
 
-    /* Clear changes: the bucket and every D1 row pointing into it, back to seed. Settings stay — a
-     * person's preferences are not "changes to the data". */
-    reset: () => { bucket.reset(); d1.reset({ idOf: bucket.idOf }) },
+    // ── D1: notes · decks (library.js) — kol-notes' and kol-deck's client verbs ──
+    async listNotes() { return library.listNotes() },
+    async loadNote(slug) { return library.loadNote(slug) },
+    async saveNote(note) { return library.saveNote(note) },
+    async deleteNote(slug) { return library.deleteNote(slug) },
+    async listDecks() { return library.listDecks() },
+    async loadDeck(slug) { return library.loadDeck(slug) },
+    async saveDeck(deck) { return library.saveDeck(deck) },
+    async deleteDeck(slug) { return library.deleteDeck(slug) },
+
+    /* Clear changes: the bucket and every D1 row, back to seed. Settings stay — a person's preferences
+     * are not "changes to the data". */
+    reset: () => { bucket.reset(); d1.reset({ idOf: bucket.idOf }); library.reset() },
   }
 }
 

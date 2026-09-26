@@ -1,0 +1,53 @@
+{
+  "name": "@kolkrabbi/kol-deck",
+  "version": "0.1.0",
+  "private": false,
+  "description": "KOL presentations — slides as data (a 1920×1080 stage of text, image and rule layers), the renderer, the editor, present mode, and PNG · PDF · PPTX · deck-file export. Data and starting layouts are consumer-injected. Sits above @kolkrabbi/kol-{theme,component,shell}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./model": "./src/slideDoc.js"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "pptxgenjs": "^4.0.1"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.225.0",
+    "@kolkrabbi/kol-icons": ">=0.27.0",
+    "@kolkrabbi/kol-shell": ">=0.57.0",
+    "@kolkrabbi/kol-theme": ">=0.151.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^",
+    "@kolkrabbi/kol-shell": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "presentation",
+    "slides",
+    "deck",
+    "pptx"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/deck"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

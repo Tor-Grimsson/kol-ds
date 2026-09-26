@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, Tooltip } from '@kolkrabbi/kol-component'
 import { GRAB } from '@kolkrabbi/kol-component/utilities/motion'
 /* the grab pill's proximity wake, travel and dwell — ONE implementation, shared
  * with kol-framework's useDragResize (OneGrabGestureBothRails, kol-fxr
@@ -187,6 +187,9 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
   return (
     <>
       <div className="flex items-center gap-3 w-full overflow-hidden shrink-0">
+        {/* the DS tooltip, not the browser's (the native-title sweep, 2026-09-26) — to the RIGHT,
+          * out over the page, since the collapsed rail's glyph is all there is to read */}
+        <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0">
         <Button
           iconOnly={icon}
           iconSize={20}
@@ -202,9 +205,9 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
            * in the rail") */
           style={{ color: 'var(--kol-oq-96)' }}
           onClick={press}
-          title={label}
           aria-label={label}
         />
+        </Tooltip>
         <span
           className="kol-helper-12 uppercase text-oq-96 flex-1 min-w-0 truncate cursor-pointer"
           onClick={press}
@@ -212,6 +215,7 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
           {label}
         </span>
         {sub?.length > 0 && (
+          <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0">
           <Button
             iconOnly={open ? 'chevron-down' : 'chevron-right'}
             iconSize={16}
@@ -222,23 +226,22 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
             style={{ color: 'var(--kol-oq-96)' }}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            title={label}
             aria-label={`${label} sub categories`}
           />
+          </Tooltip>
         )}
       </div>
       {railOpen && open && sub.map((s) => {
         const on = s.path === '/' ? currentPath === '/' : currentPath.startsWith(s.path)
         return (
+          <Tooltip key={s.path} label={s.label} placement="right" asChild>
           <div
-            key={s.path}
             /* 18px of gutter puts the 20px box at x 26, so its 12px glyph starts
              * at 30 — one step right of L1's 20-in-32 at 14 (measured in fxr) */
             className="flex items-center gap-3 w-full overflow-hidden shrink-0 cursor-pointer"
             style={{ paddingLeft: 18 }}
             onClick={() => onNavigate?.(s.path)}
             aria-current={on ? 'page' : undefined}
-            title={s.label}
           >
             {s.icon && (
               <span
@@ -256,6 +259,7 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
               {s.label}
             </span>
           </div>
+          </Tooltip>
         )
       })}
     </>
@@ -324,14 +328,15 @@ export default function NavRail({
         /* the mark, and the app name beside it when open — uppercase like the
          * rows (user 2026-08-28: "uppercase CONSISTENCY"). The `w-8` centring box
          * puts the 20px mark on the same x as the 20px glyphs below it. */
+        <Tooltip label={logomark.title} placement="right" asChild>
         <div
           onClick={() => onNavigate?.('/')}
           className="text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4"
-          title={logomark.title}
         >
           <span className="w-8 flex justify-center shrink-0"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>
           <span className="kol-helper-12 uppercase flex-1 min-w-0 truncate">{logomark.title}</span>
         </div>
+        </Tooltip>
       )}
       {items.map(row)}
       {/* the spacer IS the layout */}

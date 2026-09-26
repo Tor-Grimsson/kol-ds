@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
-import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
+import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { MenuDropdownItem } from './MenuItem.jsx'
 
 /**
@@ -44,15 +44,16 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
   return (
     <div className={`inline-flex items-center ${className}`.trim()}>
       {current?.icon ? (
+        <Tooltip label={current.label}>
         <Button
           variant="ghost"
           size="sm"
           quiet
           iconOnly={current.icon}
           aria-label={current.label}
-          title={current.label}
           onClick={() => onAction?.(current.id)}
         />
+        </Tooltip>
       ) : (
         <Button variant="ghost" size="sm" quiet onClick={() => onAction?.(current?.id)}>
           {current?.label}

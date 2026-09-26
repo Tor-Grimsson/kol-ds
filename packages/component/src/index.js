@@ -166,7 +166,7 @@ export { default as MediaLibrary, MediaLibraryProvider, useMediaLibrary, MediaPi
 /* the full-screen file viewer — public 2026-09-04 (user ruling): it already
  * rendered both mobile viewer views and was module-private, so every consumer
  * needing a phone viewer hand-rolled one. */
-export { MediaInspector } from './organisms/MediaLibraryPages.jsx'
+export { MediaInspector, mediaSettingsSections, SETTINGS_BASE as MEDIA_SETTINGS_BASE } from './organisms/MediaLibraryPages.jsx'
 export { default as MediaLibraryExplorer } from './organisms/MediaLibraryExplorer.jsx'
 export { default as MediaTileGallery } from './organisms/MediaTileGallery.jsx'
 export { default as MediaViewer } from './organisms/MediaViewer.jsx'

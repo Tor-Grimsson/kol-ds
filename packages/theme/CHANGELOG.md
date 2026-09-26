@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-theme
 
+## 0.151.0 — 2026-09-27
+
+- ViewToggle's selected segment under a tone is `fg-08` (inverted keeps its own).
+- Tooltip chrome — ambient tone, oq-08 border, no shadow.
+
 ## 0.150.0 — 2026-09-26
 
 - **BREAKING — the four elder display classes are gone** (retirements R3: 30 days, nobody imports

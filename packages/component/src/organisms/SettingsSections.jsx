@@ -35,7 +35,7 @@ import { LabeledControlSection, SettingsRow } from './SettingsPanel.jsx'
  * first included: the rule is `.kol-section--divided + .kol-section--divided`,
  * so the first draws nothing and skipping it just costs the next its line.
  *
- * @param {Array<{label?: string, rows: Array<{label: ReactNode, render?: Function, value?: ReactNode, align?: string, labelWidth?: number|'auto', id?: string}>, rowGap?: number}>} sections - The settings body, in order
+ * @param {Array<{label?: string, rows: Array<{label: ReactNode, render?: Function, value?: ReactNode, hint?: string, align?: string, labelWidth?: number|'auto', id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint)
  * @param {boolean} [divided=false] - Hairline above each section
  * @param {number|'auto'} [labelWidth] - Default label column for every row — `'auto'` makes the label yield and the control hug, which is what a narrow column or a nowrap value needs
  * @param {string} [align] - Default row alignment passed to `SettingsRow`
@@ -50,6 +50,7 @@ export default function SettingsSections({ sections = [], divided = false, label
             <SettingsRow
               key={row.id ?? row.label ?? j}
               label={row.label}
+              hint={row.hint}
               align={row.align ?? align}
               labelWidth={row.labelWidth ?? labelWidth}
             >

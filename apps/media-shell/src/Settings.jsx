@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react'
-import { SettingsScaffold, SettingsShortcuts, SettingsLinks, SettingsColophon } from '@kolkrabbi/kol-shell'
-import {
-  Button, LabeledControlSection, SettingsRow, SettingsChoice, useModal, listDrafts, clearDraft,
-} from '@kolkrabbi/kol-component'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import { Button, SettingsRow, SettingsChoice, useModal, listDrafts, clearDraft, mediaSettingsSections } from '@kolkrabbi/kol-component'
 
-/* SETTINGS (plan v2, P7) — the person's preferences, on the page every shell app has
- * (`SettingsScaffold`). The per-bucket VIEW settings stay in the browse page's drawer
- * (`SettingsPanel`); this page holds what is about the person, not the listing:
- *
- *   Preferences  default view · default bucket · theme · the fixture's data controls
- *   Tags         the vocabulary — rename a tag everywhere; rename onto an existing one merges them
- *   Shortcuts    the same array the `?` sheet shows
- *   About        links + colophon
- *
- * The default view is written into the bucket's settings through the client — the fake D1 here,
- * olina's D1 in a real deploy — so the browse page opens on it. */
+/* SETTINGS ON THE HUB — ONE SETTINGS SYSTEM (user, 2026-09-26: "are we saying the shell has
+ * settings different from media?"). kol-shell's HubSettings draws the page and its drawer; the rows
+ * are this app's (Browse · Data) followed by the DS's own media display rows
+ * (`mediaSettingsSections`) — the same rows the browse page's gear opens, over the same per-bucket
+ * settings object the app holds and saves through the client (the fake D1 here, olina's D1 live).
+ * Whichever surface changes a row, the others read it. A hook: AppHub renders the page. */
 
 const VIEWS = [
   { value: 'columns', label: 'Columns' },
@@ -24,24 +15,19 @@ const VIEWS = [
 ]
 const viewPatch = (v) => ({ view: v, folderView: v === 'rows' ? 'rows' : 'columns', ...(v === 'grid' && { layout: 'grid' }) })
 
-export default function Settings({ client, media, shortcuts, onShowTour }) {
+export function useSettings({ client, media, view, setView, resetView }) {
   const modal = useModal()
   const bucket = media.bucketId
-  const [saved, setSaved] = useState(null)
   const [data, setData] = useState({ objects: [], folders: {} })
   const [nonce, setNonce] = useState(0)
   useEffect(() => {
     let live = true
-    Promise.all([client.loadSettings(bucket), client.listMedia('', { bucket }), client.folderInfo(bucket)])
-      .then(([s, objects, folders]) => live && (setSaved(s ?? {}), setData({ objects, folders })))
+    Promise.all([client.listMedia('', { bucket }), client.folderInfo(bucket)])
+      .then(([objects, folders]) => live && setData({ objects, folders }))
     return () => { live = false }
   }, [bucket, nonce, media.refreshKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const setDefaultView = async (v) => {
-    const next = { ...(saved ?? {}), ...viewPatch(v) }
-    await client.saveSettings(bucket, next)
-    setSaved(next)
-  }
+  const setDefaultView = (v) => setView({ ...view, ...viewPatch(v) })
 
   /* TAGS: counted across files and folders; a rename rewrites every row that carries it */
   const counts = {}
@@ -70,36 +56,25 @@ export default function Settings({ client, media, shortcuts, onShowTour }) {
     for (const d of all) clearDraft(bucket, d.key)
   }
 
-  const tabs = [
-    { value: 'preferences', label: 'Preferences', title: 'Settings', subtitle: 'How media opens for you' },
-    { value: 'tags', label: 'Tags', title: 'Tags', subtitle: `${tags.length} in ${media.bucket.label}` },
-    { value: 'shortcuts', label: 'Shortcuts', title: 'Shortcuts', subtitle: 'The same list as the ? sheet' },
-    { value: 'about', label: 'About', title: 'About', subtitle: 'Media, on the KOL design system', row: 'layout' },
+  const sections = [
+    { label: 'Browse', rows: [
+      { label: 'Default view', hint: 'where Browse opens, for this bucket',
+        render: () => <SettingsChoice options={VIEWS} value={view.view ?? 'columns'} onChange={setDefaultView} ariaLabel="Default view" /> },
+      { label: 'Default bucket', hint: 'which store Browse opens on',
+        render: () => <SettingsChoice options={media.buckets.map((b) => ({ value: b.id, label: b.label }))} value={bucket} onChange={(v) => media.switchBucket(v)} ariaLabel="Default bucket" /> },
+    ] },
+    { label: 'Data', rows: [
+      { label: 'Unsaved drafts', hint: 'kept in this browser only, never sent anywhere',
+        render: () => <Button size="sm" onClick={clearDrafts}>Throw away drafts</Button> },
+      { label: 'Clear changes', hint: "the fixture's files, tags and favourites back to the seed",
+        render: () => <Button size="sm" onClick={() => { media.clearChanges(); setNonce((n) => n + 1) }}>Clear changes</Button> },
+    ] },
+    ...mediaSettingsSections({ settings: view, onChange: setView }),
   ]
 
-  const content = (tab) => {
-    if (tab === 'preferences') return (
-      <div className="flex flex-col gap-10 max-w-[720px]">
-        <LabeledControlSection label="Browse">
-          <SettingsRow label="Default view" hint="where Browse opens, for this bucket">
-            <SettingsChoice options={VIEWS} value={saved?.view ?? 'columns'} onChange={setDefaultView} ariaLabel="Default view" />
-          </SettingsRow>
-          <SettingsRow label="Default bucket" hint="which store Browse opens on">
-            <SettingsChoice options={media.buckets.map((b) => ({ value: b.id, label: b.label }))} value={bucket}
-              onChange={(v) => media.switchBucket(v)} ariaLabel="Default bucket" />
-          </SettingsRow>
-        </LabeledControlSection>
-        <LabeledControlSection label="Data">
-          <SettingsRow label="Unsaved drafts" hint="kept in this browser only, never sent anywhere">
-            <Button size="sm" variant="secondary" onClick={clearDrafts}>Throw away drafts</Button>
-          </SettingsRow>
-          <SettingsRow label="Clear changes" hint="the fixture's files, tags and favourites back to the seed">
-            <Button size="sm" variant="secondary" onClick={() => { media.clearChanges(); setNonce((n) => n + 1) }}>Clear changes</Button>
-          </SettingsRow>
-        </LabeledControlSection>
-      </div>
-    )
-    if (tab === 'tags') return (
+  const tagsTab = {
+    value: 'tags', label: 'TAGS', title: 'Tags', subtitle: `${tags.length} in ${media.bucket.label}`,
+    content: (
       <div className="flex flex-col gap-2 max-w-[720px]">
         {tags.length === 0 && <p className="kol-mono-12 text-fg-48">No tags yet — add them in Browse, in a file's preview.</p>}
         {tags.map(([t, n]) => (
@@ -111,19 +86,8 @@ export default function Settings({ client, media, shortcuts, onShowTour }) {
           </SettingsRow>
         ))}
       </div>
-    )
-    if (tab === 'shortcuts') return <SettingsShortcuts shortcuts={shortcuts} />
-    return (
-      <div className="flex flex-col gap-10 max-w-[720px]">
-        <SettingsLinks links={[
-          { label: 'Design system', url: 'https://ui.kolkrabbi.io' },
-          { label: 'The media tool alone', url: 'https://ui.kolkrabbi.io/apps/media/', text: 'apps/media' },
-        ]} />
-        {onShowTour && <div><Button size="sm" variant="nav" iconLeft="info" onClick={onShowTour}>Show the walkthrough again</Button></div>}
-        <SettingsColophon />
-      </div>
-    )
+    ),
   }
 
-  return <SettingsScaffold tabs={tabs} renderContent={content} themeToggle={<ThemeToggle />} />
+  return { sections, tabs: [tagsTab], drawer: { onReset: resetView }, themeIn: 'drawer' }
 }

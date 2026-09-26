@@ -1,6 +1,6 @@
 /* THE FAKE D1 — olina's database beside the bucket, imagined (plan v2, 2026-09-26).
  *
- * What a bucket cannot hold: tags, favourites, the event log recents are read from, smart folders,
+ * What a bucket cannot hold: tags, favourites, the event log recents are read from,
  * and the person's view settings. One user, ever (user ruling) — so no person column, no
  * conflicts. Drafts are NOT here: they are browser memory, the DS keeps them (ruling, same day).
  *
@@ -9,7 +9,6 @@
  *   file_meta     (file_id, favourite)             → Set of favourite file ids
  *   folder_meta   (bucket, path, tags, favourite)  → Map `${bucket}:${path}` → { tags, favourite }
  *   events        (at, bucket, kind, file_id?, path?) → array, newest last
- *   smart_folders (id, bucket, name, query)        → array
  *   settings      (bucket, json)                   → browser storage, so it survives a reload the
  *                                                     way a D1 row does; everything else resets with
  *                                                     the bucket, since its rows point into it
@@ -24,14 +23,12 @@ let fileTags = new Map()
 let favourites = new Set()
 let folderMeta = new Map()
 let events = []
-let smart = []
-let smartSeq = 0
 
 const fk = (bucket, path) => `${bucket}:${path}`
 
 /** Back to seed. `idOf(bucket, key)` resolves the seed's keys to the bucket's fresh ids. */
 export function reset({ idOf }) {
-  fileTags = new Map(); favourites = new Set(); folderMeta = new Map(); events = []; smart = []; smartSeq = 0
+  fileTags = new Map(); favourites = new Set(); folderMeta = new Map(); events = []
   for (const [bucket, byKey] of Object.entries(SEED_TAGS)) {
     for (const [key, tags] of Object.entries(byKey)) { const id = idOf(bucket, key); if (id) fileTags.set(id, normalizeTags(tags)) }
   }
@@ -49,7 +46,6 @@ export function reset({ idOf }) {
     events.push({ at: new Date(now - e.minutesAgo * 60_000).toISOString(), bucket: e.bucket, kind: e.kind, ...(id ? { fileId: id } : { path: e.key }) })
   }
   events.sort((a, b) => a.at.localeCompare(b.at))
-  for (const sf of seed.smartFolders ?? []) smart.push({ id: `s${++smartSeq}`, ...sf })
 }
 
 // ── file_tags · file_meta ────────────────────────────────────────────────
@@ -109,16 +105,6 @@ export function recent(bucket, limit = 12) {
   return out
 }
 
-// ── smart_folders ────────────────────────────────────────────────────────
-export const smartFolders = (bucket) => smart.filter((s) => s.bucket === bucket).map((s) => ({ ...s, query: { ...s.query } }))
-export function saveSmartFolder(bucket, { id, name, query }) {
-  const clean = { tags: normalizeTags(query?.tags), kinds: [...(query?.kinds ?? [])], text: String(query?.text ?? '').trim() }
-  const at = id ? smart.findIndex((s) => s.id === id) : -1
-  const row = { id: at >= 0 ? id : `s${++smartSeq}`, bucket, name: String(name || 'Smart folder').trim(), query: clean }
-  if (at >= 0) smart[at] = row; else smart.push(row)
-  return { ...row }
-}
-export function deleteSmartFolder(id) { smart = smart.filter((s) => s.id !== id); return { ok: true } }
 
 // ── settings ─────────────────────────────────────────────────────────────
 const SETTINGS_KEY = 'media-fixture.d1.settings'

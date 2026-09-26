@@ -272,7 +272,10 @@ export default function AppShell({
    * With a `logomark`, the order is the order you see: the mark, then the items.
    * Without one, `items[n - 1]` exactly as before, so an app that renders no
    * mark is untouched. */
-  const navPaths = (logomark ? ['/'] : []).concat((items ?? []).map((i) => i?.path)).filter(Boolean)
+  /* …and the BOTTOM rows after them (the Hub, 2026-09-26): the rail read top to bottom,
+   * Settings included. kol-fxr kept a local ⌥-digit handler for exactly this — its ⌥6 is
+   * Settings — and monitor and mirror kept theirs; three copies of one key map. */
+  const navPaths = (logomark ? ['/'] : []).concat([...(items ?? []), ...(bottomItems ?? [])].map((i) => i?.path)).filter(Boolean)
   useEffect(() => {
     if (!navKeys) return undefined
     const onKey = (e) => {

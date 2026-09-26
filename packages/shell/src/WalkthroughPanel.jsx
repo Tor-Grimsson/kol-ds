@@ -9,8 +9,12 @@ import { Button } from '@kolkrabbi/kol-component'
  * `illustration` is a render slot (monitor globs SVGs, mirror uses a JPEG),
  * a step with `actions` renders that node centred instead of the text/image
  * split (the "Get started" step).
+ *
+ * `onClose` draws an X INSIDE the card, top-right (user, 2026-09-26, on media-shell:
+ * the panel had no close of its own, so every app put one outside the card or on a
+ * page button). Unset = no X, exactly as before.
  */
-export default function WalkthroughPanel({ steps = [], iconComponent }) {
+export default function WalkthroughPanel({ steps = [], iconComponent, onClose }) {
   const [step, setStep] = useState(0)
   const current = steps[step]
   if (!current) return null
@@ -34,8 +38,19 @@ export default function WalkthroughPanel({ steps = [], iconComponent }) {
 
       <div
         className="bg-surface-tertiary border border-fg-08"
-        style={{ flex: 1, display: 'flex', borderRadius: 4, minHeight: 480, overflow: 'hidden' }}
+        style={{ flex: 1, display: 'flex', borderRadius: 4, minHeight: 480, overflow: 'hidden', position: 'relative' }}
       >
+        {onClose && (
+          <Button
+            variant="nav"
+            size="sm"
+            iconOnly="x"
+            iconComponent={iconComponent}
+            aria-label="Close walkthrough"
+            onClick={onClose}
+            style={{ position: 'absolute', top: 8, right: 8 }}
+          />
+        )}
         {current.actions ? (
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
             {current.actions}

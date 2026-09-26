@@ -32,3 +32,4 @@ CSS (`pnpm lookups`) — never hand-edit one.
 | [[08-motion\|Motion]] | — | One sheet for every keyframe and motion class |
 | [[09-sizes\|Sizes]] | [[09-size-lookup\|Size lookup]] | One height per size, and every family hits it |
 | [[10-opacity\|Opacity]] | [[10-opacity-lookup\|Opacity lookup]] | Ink ladders, the eight roles, scrims |
+| [[../03-components/05-control-chrome\|Control chrome · Tone]] | [[13-tone-lookup\|Tone lookup]] | The seven control tones, ordered by depth |

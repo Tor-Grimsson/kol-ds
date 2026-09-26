@@ -64,13 +64,13 @@ const t = (rows) => rows.map((r) => `| ${r.join(' | ')} |`).join('\n')
 const head = (cols) => `| ${cols.join(' | ')} |\n|${cols.map(() => '---').join('|')}|`
 const table = (cols, rows) => `${head(cols)}\n${t(rows)}`
 
-const fm = (title, desc, aliases, related, sources) => `---
+const fm = (title, desc, aliases, related, sources, date = '2026-09-03') => `---
 title: ${title}
 type: reference
 status: canonical
-created: 2026-09-03
-updated: 2026-09-03
-verified: 2026-09-03
+created: ${date}
+updated: ${date}
+verified: ${date}
 description: ${desc}
 aliases:
 ${aliases.map((a) => `  - ${a}`).join('\n')}
@@ -397,4 +397,63 @@ either ladder and is almost always a mistake — change the size, not the glyph.
 ${table(['Ladder', ...SIZES], [glyph('SOLO'), glyph('ADJACENT'), glyph('INDICATOR')])}
 `)
 
-console.log('lookups: 09-size-lookup.md · 10-opacity-lookup.md')
+/* ── tones ────────────────────────────────────────────────────────────────── */
+
+const molecules = theme('kol-components-molecules.css')
+/* the RULE for `.kol-tone-<name>` — anchored at a line start and followed by `,` or `{`, so the
+ * comments that NAME the class never match */
+const toneVars = (name) => {
+  const m = new RegExp(`^\\.kol-tone-${name}\\s*[,{]`, 'm').exec(molecules)
+  if (!m) return {}
+  return blockVars(molecules.slice(m.index), `.kol-tone-${name}`)
+}
+/* ORDER IS DEPTH (user, 2026-09-26): how far the fill sits from the page — sunken below it,
+ * secondary the page itself, then up to the ink. Dark theme reads darkest → brightest, light the
+ * other way; the list is the same because sunken is below the page in both. Outline and ghost
+ * paint no fill and sit apart. */
+const FILLED = ['sunken', 'secondary', 'primary', 'grey', 'inverted']
+const UNFILLED = ['outline', 'ghost']
+const resolve = (v, map) => {
+  const tok = /^var\((--kol-surface-[\w-]+)\)$/.exec(v)?.[1]
+  return tok && map[tok] ? `\`${map[tok]}\`` : '—'
+}
+const toneRow = (name) => {
+  const v = toneVars(name)
+  if (!v['--kol-tone-bg']) throw new Error(`generate-lookups: no --kol-tone-bg for .kol-tone-${name}`)
+  const bg = v['--kol-tone-bg']
+  return [`\`kol-tone-${name}\``, `\`${bg}\``, resolve(bg, dark), resolve(bg, light), `\`${v['--kol-tone-fg'] ?? '—'}\``]
+}
+const TONE_COLS = ['Tone', 'Fill', 'Dark', 'Light', 'Ink']
+
+out('13-tone-lookup.md', fm(
+  'Tone lookup', 'The seven control tones, ordered by depth',
+  ['tone-lookup', 'tones-lookup', 'tone-values'],
+  ['[[../03-components/05-control-chrome|control chrome]]', '[[11-color-lookup|color lookup]]', '[[10-opacity-lookup|opacity lookup]]'],
+  ['packages/theme/kol-components-molecules.css', 'packages/theme/kol-base-tokens.css'],
+  '2026-09-26',
+) + `
+# Tone lookup
+
+A tone is the ground a control sits on — one \`kol-tone-*\` class on a wrapper tones
+every control inside it that passes no tone of its own. The rules are in
+[[../03-components/05-control-chrome|control chrome]] § Tone; the live visualiser is
+the showcase's \`/foundations/tones\`.
+
+## Filled
+
+Ordered by how far the fill sits from the page: **sunken** is below it,
+**secondary** is the page itself, then up to **inverted**, the text colour as fill.
+In the dark theme that reads darkest → brightest; in the light theme the same list
+runs the other way. **The names cross:** tone \`primary\` paints \`surface-secondary\`,
+tone \`secondary\` paints \`surface-primary\`.
+
+${table(TONE_COLS, FILLED.map(toneRow))}
+
+## Unfilled
+
+No fill of their own — the control shows the ground through it.
+
+${table(TONE_COLS, UNFILLED.map(toneRow))}
+`)
+
+console.log('lookups: 09-size-lookup.md · 10-opacity-lookup.md · 13-tone-lookup.md')

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ColorSwatch from '../atoms/ColorSwatch.jsx'
 import { resolveCssVar, resolveCssColor, isLight } from '../hooks/cssVar.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * SpectrumGrid — matrix view of the whole ramp system: rows = ramps, columns =
@@ -63,10 +64,9 @@ export default function SpectrumGrid({ ramps, stops = DEFAULT_STOPS, brandAnchor
             const textColor = isLight(color) ? '#000' : '#fff'
             const brand = isBrandAnchor(ramp, stop)
             return (
+              <Tooltip key={stop} label={`${ramp}-${stop}  ${hex}${brand ? '  · brand anchor' : ''}`} asChild>
               <div
-                key={stop}
                 className="relative aspect-[5/3] rounded overflow-hidden transition-transform hover:scale-[1.04]"
-                title={`${ramp}-${stop}  ${hex}${brand ? '  · brand anchor' : ''}`}
               >
                 <ColorSwatch hex={`var(--${ramp}-${stop})`} size="stretch" radius="none" frame={false} className="absolute inset-0" />
                 <div className="pointer-events-none absolute inset-0 px-2 py-1.5" style={{ color: textColor }}>
@@ -81,6 +81,7 @@ export default function SpectrumGrid({ ramps, stops = DEFAULT_STOPS, brandAnchor
                   )}
                 </div>
               </div>
+              </Tooltip>
             )
           })}
         </div>

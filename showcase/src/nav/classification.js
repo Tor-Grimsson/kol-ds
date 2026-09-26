@@ -251,10 +251,15 @@ export const FUNCTIONS_BY_NAME = {
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
-  PageShell: 'structure', SettingsScaffold: 'structure',
+  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', HubHome: 'structure', HubSettings: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
   Logomark: 'display',
+  /* notes — kol-notes (2026-09-27): notes as a tool */
+  Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
+  /* deck — kol-deck (2026-09-27): presentations as a tool */
+  Decks: 'structure', DecksCatalog: 'wayfinding', DeckEditor: 'structure', DeckFile: 'overlay', DeckSettings: 'overlay',
+  SlideRenderer: 'display', SlideThumb: 'display', SlideStage: 'input', SlideInspector: 'input', useDeckHistory: 'utility',
 }
 
 /* ── Exempt: exports that are deliberately NOT roster rows ─────────────────
@@ -368,6 +373,16 @@ export const NO_DEMO = (() => {
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
     ...debt(['GlyphItem', 'FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
+    AppHub: 'the Hub in one call (2026-09-26) — its rail is position: fixed to the window and its keys '
+      + '(, S \\ ⌥1–9) listen on the window, so on a demo stage it would sit over the showcase and take '
+      + 'its keys. Its parts have demos (HubHome, HubSettings); the whole thing lives at apps/shell.',
+    ...Object.fromEntries(['Notes', 'NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'kol-notes 0.1.0 (2026-09-27) — '
+      + 'every part reads a notes client (list · load · save · delete) the showcase does not carry; the '
+      + 'live surface is apps/notes on the fixture. Demos land with a showcase fixture client.'])),
+    ...Object.fromEntries(['Decks', 'DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
+      'SlideStage', 'SlideInspector'].map((n) => [n, 'kol-deck 0.1.0 (2026-09-27) — the tool, its editor and '
+      + 'its parts run against a decks client and a deck document; the live surface is apps/presentation '
+      + 'on the fixture. Demos land with a showcase fixture client.'])),
     ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),
     ...debt(['NavRail', 'PageShell', 'SettingsScaffold', 'TabStrip',
       'WalkthroughPanel', 'ShortcutsOverlay', 'Logomark'],

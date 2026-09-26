@@ -1,6 +1,6 @@
 /* THE FAKE BUCKET — olina's R2 bucket, imagined (plan v2, 2026-09-26). Bytes, keys, folders and
  * the trash. Everything ABOUT a file that a bucket cannot hold — tags, favourites, the event log,
- * smart folders, settings — is the fake D1 beside it (`d1.js`), keyed by the file's permanent `id`
+ * settings — is the fake D1 beside it (`d1.js`), keyed by the file's permanent `id`
  * exactly as olina's `files.id` is, so a rename or move keeps every row.
  *
  * The fake tree, mutable, in session memory. No network, no provider, no

@@ -44,6 +44,7 @@ const GATES = [
   ['dd-trigger', 'validate-dd-trigger.mjs'],
   ['consumption', 'validate-consumption.mjs'],
   ['icon-ink', 'validate-icon-ink.mjs'],
+  ['native-title', 'validate-native-title.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

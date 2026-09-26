@@ -31,3 +31,7 @@ export { default as CatalogPage } from './CatalogPage.jsx'
 export { default as SettingsShortcuts } from './SettingsShortcuts.jsx'
 export { default as SettingsLinks, SettingsColophon } from './SettingsLinks.jsx'
 export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOverlay.jsx'
+// the Hub — Shell + Home + Settings + keys, made once (the app anatomy, 2026-09-26)
+export { default as AppHub } from './AppHub.jsx'
+export { default as HubHome } from './HubHome.jsx'
+export { default as HubSettings } from './HubSettings.jsx'

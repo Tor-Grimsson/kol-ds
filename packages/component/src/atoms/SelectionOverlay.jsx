@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { CanvasZoomContext } from '../hooks/canvasZoom.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /* taxonomy-ok: presentational transform-chrome overlay. It nests no KOL
  * component (pure inline-styled squares + label), so by the letter of the
@@ -110,9 +111,9 @@ export default function SelectionOverlay({
         * the box about its centre. Independent of the resize handles: a path
         * hides those (node-edit owns their geometry) and still rotates. */}
       {rotate && (
+        <Tooltip label={rotateTitle} asChild>
         <div
           data-handle="ROT"
-          title={rotateTitle}
           style={{
             position: 'absolute',
             left: `calc(50% - ${size / 2}px)`,
@@ -126,6 +127,7 @@ export default function SelectionOverlay({
             pointerEvents: 'auto',
           }}
         />
+        </Tooltip>
       )}
       {showHandles && HANDLE_DIRS.map(({ dir, cursor, x: hx, y: hy }) => (
         <div

@@ -41,6 +41,9 @@ import { readDraft, writeDraft, clearDraft } from '../utilities/localDrafts.js'
  *                                   searchable list inside the editor inserts the pick at the caret
  * @param {Function} onPickAsset     `() => Promise<{ name, url, contentType } | null>` — a consumer's own picker instead
  * @param {Function} onClose
+ * @param {boolean}  inline          render IN the page, filling its container, instead of over it (the notes
+ *                                   page, media-shell 2026-09-26: the editor is the page's content there,
+ *                                   not a window over a list). No scrim, no Escape-to-close; the X still closes
  */
 const TYPES = [
   { value: 'md', label: 'MD', kind: 'markdown' },
@@ -64,6 +67,7 @@ const DRAFT_PAUSE = 400 // browser memory is free — a short pause, not D1's wr
 export default function DocumentEditor({
   mode = 'edit', name: nameProp = '', kind: kindProp, text, savedAt = 0, draft,
   onSave, onCreate, folder = '', assets, onPickAsset, onClose,
+  inline = false,
 }) {
   const [picking, setPicking] = useState(false)
   const [pickQuery, setPickQuery] = useState('')
@@ -186,9 +190,8 @@ export default function DocumentEditor({
     ? <img src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(value)}`} alt="" className="max-w-full max-h-full object-contain m-auto" />
     : <KindPreview o={{ key: name || 'document' }} text={value} kind={kind} />
 
-  return (
-    <FullscreenOverlay open onClose={close} closeButton={false} scrim>
-      <QuickLookFrame title={isNew ? `New document${folder ? ` in ${folder}` : ''}` : name} meta={status} onClose={close}
+  const frame = (
+      <QuickLookFrame className={inline ? 'kol-quicklook--inline' : ''} title={isNew ? `New document${folder ? ` in ${folder}` : ''}` : name} meta={status} onClose={close}
         actions={(
           <span className="flex items-center gap-2">
             <ViewToggle variant="text" viewMode={view} onViewChange={setView} options={views} />
@@ -198,7 +201,7 @@ export default function DocumentEditor({
           </span>
         )}>
         {/* the window's own caps, inline — Tailwind does not generate arbitrary values from package source */}
-        <div className="kol-doc-editor flex flex-col" style={{ width: 'min(1200px, var(--kol-ql-max-w))', height: 'min(760px, var(--kol-ql-media-h))' }}>
+        <div className="kol-doc-editor flex flex-col" style={inline ? { width: '100%', height: '100%' } : { width: 'min(1200px, var(--kol-ql-max-w))', height: 'min(760px, var(--kol-ql-media-h))' }}>
           {isNew && (
             <div className="flex flex-wrap items-center gap-3 p-4 border-b" style={{ borderColor: 'var(--kol-oq-08)' }}>
               <Input variant="filled" size="sm" value={name} aria-label="File name" placeholder="File name"
@@ -240,8 +243,8 @@ export default function DocumentEditor({
           </div>
         </div>
       </QuickLookFrame>
-    </FullscreenOverlay>
   )
+  return inline ? frame : <FullscreenOverlay open onClose={close} closeButton={false} scrim>{frame}</FullscreenOverlay>
 }
 
 /* THE FRONTMATTER AS FIELDS. One row per key; a list value (tags) is typed comma-separated. The

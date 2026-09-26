@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-shell
 
+## 0.57.0 — 2026-09-27
+
+- **`AppHub` — NEW**, with `HubHome` and `HubSettings`: Shell + Hub in one call — Home, Settings (sections as data, a drawer, a picker, split shortcuts, tabs, `tone`), the tool as children; keys `,` · `S` · `\` · ⌥1–9. `HubHome` takes `title` / `subtitle`. Anatomy: `docs/documentation/04-compositions/16-app-anatomy.md`.
+- `AppShell` — `navKeys` walks the bottom rows too.
+- `WalkthroughPanel` · `CatalogPage` — `onClose` draws the X inside the card.
+- `SettingsScaffold` — the masthead cluster carries the page's tone class.
+
 ## 0.51.0 — 2026-09-03
 
 - **`ShortcutsOverlay` and `TouchDeviceOverlay` wear `.kol-overlay-scrim`**

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon-kol-ds.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>KOL notes</title>
+    <script>
+      // kol-framework THEME_BOOT_SCRIPT — stamps the saved theme before paint (no flash).
+      // Apps share an origin with the showcase, so they share its `kol-theme` key;
+      // an app without this script ignores a choice made on the other surface.
+      try {
+        if (localStorage.getItem('kol-theme-v') !== '3') {
+          localStorage.removeItem('kol-theme')
+          localStorage.removeItem('theme')
+          localStorage.setItem('kol-theme-v', '3')
+        }
+        var t = localStorage.getItem('kol-theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

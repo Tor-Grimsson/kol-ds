@@ -6,11 +6,18 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
-## Queued for next session (user, 2026-09-26)
+## Queued for next session (user, 2026-09-27)
 
-- **The app anatomy is current truth** — `docs/documentation/04-compositions/16-app-anatomy.md`: **Shell** (frame: rail, layout root, keys) · **Catalog** (the ContentFilters PAGE — title row, filter/search, RECENT · SAVED, LIST · GRID, cards, action row; `CatalogPage`) · **Hub** (Home as a Catalog, Settings, shortcuts, walkthrough — NOT BUILT; monitor, mirror, fxr each assemble it) · **Tool** (the work area). An app = Shell + Hub + Tool; apps tier = `apps/shell` · `apps/<tool>` · `apps/<tool>-shell`.
-- **Start:** the user clones monitor, mirror, fxr, kol-website into `~/dev/projects/`. Read their code, find the overlap, refine the anatomy table, then define the Hub in `kol-shell` and build `apps/shell` (Shell + Hub + placeholder tool) for review. THEN rebuild `apps/media-shell` on it with the review items: walkthrough opt-in + its X inside the card (`WalkthroughPanel onClose`); smart folders removed; Recent / Favourites as the Catalog's view toggle; Home IS a Catalog.
-- Tool roster to sort: media · brand (styleguide/about/references — a Home variant) · presentation editor · note editor · the fxr editor · labs + generator (editor chrome alts) · rack · mirror.
+- **User reviews the five apps** — media · media-shell · shell · notes · presentation (`pnpm <name>`). Then: kol-noter's patterns into kol-notes on their go; olina cutover to kol-notes / kol-deck, filed from the iMac.
+- monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
+
+## Current state (2026-09-27, notes and decks as tools)
+
+- **📝 kol-notes 0.1.0 · kol-deck 0.1.0 NEW, published with theme 0.151.0 · component 0.225.0 · shell 0.57.0 (2026-09-27, newest).** olina's notes and decks ported as packages; `apps/notes` (:5177) and `apps/presentation` (:5178) run them alone on the fixture (new fake D1 `notes`/`decks` tables); media-shell mounts both as tabs through `media-fixture/wiring`'s `useNotesTool` / `useDecksTool` — one source, nothing to upstream. Deck exports PNG · PDF · PPTX · `.deck.json`. 28 gates clean. Log: `session-log/2026-09-27-notes-and-decks-as-tools.md`.
+
+## Current state (2026-09-26, the Hub — AppHub · apps/shell · tones)
+
+- **🧩 The Hub is one call (2026-09-26, newest): unpublished.** `AppHub` / `HubHome` / `HubSettings` in kol-shell (fxr's settings features as options, `tone` default sunken, file-row list), `apps/shell` reference app, PageHeader cluster on the right edge, `/foundations/tones` visualiser + generated `13-tone-lookup.md`, tones ordered by depth, ViewToggle selected chip `fg-08` under any tone. 27 gates clean. Log: `session-log/2026-09-26-the-hub-apphub-apps-shell-and-tones.md`.
 
 ## Current state (2026-09-26, media D1 · apps/media-shell · the app anatomy)
 
@@ -23,14 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-23, touch pass + olina's three media tickets)
 
 - **👆 The media surface works by touch, and three more olina tickets shipped (2026-09-23, newest): component 0.218.0 → 0.219.0, published.** `useLongPress` (a held touch opens the row's menu) and `RowMenuButton` (`···` on rows and tiles on a coarse pointer) — stack rows finally have their own menu. The right-click menu was 510px wide everywhere (`inline-flex` items summing in a shrink-to-fit float) and clipped off a phone: fixed in `ContextMenu`. Below `md` the rows view draws the phone list; README/code thumbnails are `inert`. Olina's tickets: count line's grey tail totals the folder, opt-in `bucketLevel`, and grid draws folders + container right-click + one ⌘↑ to the title root. Eight olina tickets are 🟠 until they verify. ⚠️ Not tried on a real iPhone; long-press is on the Browse root only. ⚠️ Touch findings left open: 14px disclosure tap target, Quick Look's 32px gutters at 390. Next: D1 (tags, text editing). Log: `session-log/2026-09-23-touch-pass-and-olina-media-views.md`.
-
-## Current state (2026-09-23, publish + return to kol-olina)
-
-- **📦 component 0.217.0 · theme 0.147.0 · icons 0.27.1 published (2026-09-23, newest).** The media arc (merge, Quick Look, Trash, keyboard, icon-ink gate) and kol-olina's five tickets went out together; the version bumps had never landed with the source — found by diffing every package against its tarball. The five tickets are 🟠 `addressed` with receipts (bump notes included) in kol-olina's outbox; they close on olina verifying them running. ⚠️ npm bypass-2FA tokens lose direct publishing **Jan 2027** (then staged publishes + passkey approval; memory `npm-bypass-2fa-cutoff-jan-2027`); the iMac's `~/.npmrc` token is dead. ⚠️ `controls` / `dashboards` / `workshop` carry unpublished icon-ink source at unchanged versions. ⚠️ Inventory, showcase demos and workbench are behind on the new media components — list in the log. Next: D1 session. Log: `session-log/2026-09-23-publish-media-0217-and-return-to-olina.md`.
-
-## Current state (2026-09-23, media rounds 2–4 — one selection, Quick Look window, File formats, Trash)
-
-- **🗂️ The media surface became one thing (2026-09-23, newest): component 0.217.0 · theme 0.147.0 · icons 0.27.1, published 2026-09-23.** ONE page-owned selection drawn by columns/rows/grid; `QuickLookFrame` (one opaque window for every kind, resizable, ‹ › only for a multi-selection); `MediaTile` grid in the same bordered shell + preview pane; keyboard everywhere (arrows, ⇧ extends, ⌘↑/⌘↓, all in the `S` sheet); Trash (delete moves, restore/purge from a context menu); **File formats** page with a real file per preview type; a real-files-only fixture; pdf.js page one (new `pdfjs-dist` dep). ⚠️ **`validate:icon-ink` is the 27th gate** — icons take `oq-*`, never `fg-*` (memory: `icons-use-oq-never-fg`). ⚠️ **Only the top overlay answers Escape** (`utilities/layerStack.js`). ⚠️ Nothing below 1400 wide or on touch was checked; D1 next (plan: `docs/operations/07-apps-tier/02-media-app-plan.md` § D1 next) carries personalisation, text editing, tags, touch. Log: `session-log/2026-09-23-media-round-2-to-4-file-formats-trash-keyboard-icon-gate.md`.
 
 ## Repo standup (2026-06-15)
 

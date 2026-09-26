@@ -3,6 +3,7 @@ import Button from '../atoms/Button.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import LabeledControl from '../molecules/LabeledControl.jsx'
 import Slider from '../molecules/Slider.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 const deg = (r) => Math.round(((r || 0) * 180) / Math.PI)
 const rad = (d) => (d * Math.PI) / 180
@@ -117,7 +118,7 @@ export default function KeyframeEditor({
       </div>
       <div className="flex gap-2">
         <Button variant="primary" size="sm" className="flex-1" onClick={onAdd}>Add @ playhead</Button>
-        <Button variant="ghost" size="sm" title="Delete keyframe" onClick={onDelete} disabled={kfs.length <= 1}>Delete</Button>
+        <Tooltip label="Delete keyframe"><Button variant="ghost" size="sm" onClick={onDelete} disabled={kfs.length <= 1}>Delete</Button></Tooltip>
       </div>
 
       <span className="kol-helper-10 text-meta">Pose</span>

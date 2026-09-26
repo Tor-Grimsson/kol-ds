@@ -6,6 +6,7 @@
 import assert from 'node:assert/strict'
 import * as store from './bucket.js'
 import * as d1 from './d1.js'
+import * as library from './library.js'
 
 const keys = (b = 'r2') => store.list(b).map((f) => f.key).sort()
 const folders = (b = 'r2') => store.folderTree()[b].folders
@@ -113,8 +114,7 @@ assert.ok(d1.folderInfo('r2')['img/04-archive/'].favourite, 'folder favourite di
 d1.logEvent('r2', 'opened', { fileId: readmeId })
 assert.equal(d1.recent('r2')[0].fileId, readmeId, 'recent is newest first')
 assert.equal(new Set(d1.recent('r2').map((e) => e.fileId ?? e.path)).size, d1.recent('r2').length, 'recent repeats a file')
-const sf = d1.saveSmartFolder('r2', { name: 'Intro', query: { tags: ['Intro'], kinds: [], text: ' ' } })
-assert.deepEqual(d1.smartFolders('r2').find((x) => x.id === sf.id).query, { tags: ['intro'], kinds: [], text: '' })
+assert.equal(typeof d1.smartFolders, 'undefined', 'smart folders are gone (user, 2026-09-26)')
 store.writeText('r2', 'docs/README.md', 'héllo')
 assert.equal(store.list('r2').find((f) => f.key === 'docs/README.md').size, 6, 'size is the UTF-8 byte length')
 assert.equal(store.textOf('r2', 'docs/README.md'), 'héllo')
@@ -127,3 +127,18 @@ assert.deepEqual(d1.loadSettings('r2'), { view: 'rows' })
 d1.saveSettings('r2', null)
 assert.equal(d1.loadSettings('r2'), null, 'null resets settings')
 console.log('fake D1: ok')
+
+// NOTES + DECKS (library.js): an upsert that leaves a field out keeps it, rows go out as copies, reset restores.
+library.saveNote({ slug: 'x', title: 'X', body: '# X' })
+library.saveNote({ slug: 'x', favourite: true })
+assert.ok(library.loadNote('x').body === '# X' && library.loadNote('x').favourite, 'a favourite toggle lost the body')
+assert.ok(!('body' in library.listNotes()[0]), 'the list ships bodies')
+const deck = library.loadDeck('pitch-draft')
+deck.slides[0].doc.layers = []
+assert.ok(library.loadDeck('pitch-draft').slides[0].doc.layers.length, 'a loaded deck mutated the table')
+library.saveDeck({ slug: 'pitch-draft', favourite: true })
+assert.equal(library.loadDeck('pitch-draft').slides.length, 3, 'a favourite toggle dropped the slides')
+assert.throws(() => library.saveDeck({ slug: 'bad', slides: [{}] }), /malformed/)
+library.reset()
+assert.ok(!library.listNotes().some((n) => n.slug === 'x') && !library.loadDeck('pitch-draft').favourite, 'reset did not restore')
+console.log('notes + decks: ok')

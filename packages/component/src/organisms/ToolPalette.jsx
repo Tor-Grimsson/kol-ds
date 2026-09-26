@@ -2,6 +2,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
 import SplitToolButton from '../molecules/SplitToolButton.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * ToolPalette — the editor's tool bar as one row (kol-fxr `shell/panels/ToolPalette.jsx`,
@@ -45,7 +46,6 @@ const ToolPalette = ({
   <div className={`flex items-center gap-1 min-w-0 overflow-x-auto ${className}`.trim()}>
     {items.map((it, i) => {
       if (it.kind === 'divider') return <Divider key={`d${i}`} variant="vertical" height={20} className="mx-1.5 shrink-0" />
-      const tip = it.shortcut ? `${it.label} (${it.shortcut})` : it.label
       if (it.kind === 'split') {
         const variants = (it.variants ?? []).map((v) => (v.action && !it.action ? { ...v, onSelect: () => onAction?.(v.id) } : v))
         const run = (id) => (it.action ? onAction : onSelect)?.(id)
@@ -58,10 +58,13 @@ const ToolPalette = ({
       }
       const isTool = it.kind === 'tool'
       return (
-        <Button key={it.id} variant="ghost" size={size} quiet iconOnly={it.icon} iconComponent={iconComponent}
+        /* the DS tooltip carries the key as its own chip (the native-title sweep, 2026-09-26) */
+        <Tooltip key={it.id} label={it.label} shortcut={it.shortcut}>
+        <Button variant="ghost" size={size} quiet iconOnly={it.icon} iconComponent={iconComponent}
           pressed={isTool ? activeId === it.id : undefined} disabled={it.disabled}
-          aria-label={it.label} title={tip}
+          aria-label={it.label}
           onClick={(e) => { (isTool ? onSelect : onAction)?.(it.id); blur(e) }} />
+        </Tooltip>
       )
     })}
   </div>

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The media product inside kol-shell \u2014 Home, Browse and Settings on one rail, over the same fixture as apps/media. Never published.",
+  "description": "The media product inside kol-shell — Home, Browse and Settings on one rail, over the same fixture as apps/media. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-deck": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-media-client": "workspace:*",
+    "@kolkrabbi/kol-notes": "workspace:*",
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",

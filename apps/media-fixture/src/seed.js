@@ -80,7 +80,8 @@ export const SEED_TAGS = {
 }
 
 /* The rest of the fake D1 at rest (plan v2, 2026-09-26) — favourites, folder tags, a short event
- * log for Recents, one smart folder — so Home and the filters show something on first load. */
+ * log for Recents — so Home and the filters show something on first load. Smart folders are gone
+ * (user, 2026-09-26: not wanted). */
 export const SEED_D1 = {
   favourites: {
     r2: ['img/02-products/tt-07.jpg', 'docs/01-tier-rules.md', 'img/01-shoots/'],
@@ -95,8 +96,71 @@ export const SEED_D1 = {
     { bucket: 'r2', kind: 'opened', key: 'img/02-products/tt-07.jpg', minutesAgo: 90 },
     { bucket: 'r2', kind: 'opened', key: 'README.md', minutesAgo: 30 },
   ],
-  smartFolders: [
-    { bucket: 'r2', name: 'Hero', query: { tags: ['hero'], kinds: [], text: '' } },
-    { bucket: 'r2', name: 'Documents', query: { tags: [], kinds: ['markdown', 'text'], text: '' } },
-  ],
 }
+
+/* Notes at rest (notes as a tool, 2026-09-27) — rows in the fake D1's `notes` table, markdown with a
+ * frontmatter block, as kol-olina's brand notes store them. Enough for a list, a favourite and a
+ * search to have something to find. */
+export const SEED_NOTES = [
+  {
+    slug: 'shoot-reykjavik-call-sheet', favourite: true, minutesAgo: 45,
+    title: 'Reykjavík shoot — call sheet',
+    body: `---
+title: Reykjavík shoot — call sheet
+date: 2026-09-20
+tags: [shoot, reykjavik]
+---
+
+# Reykjavík shoot — call sheet
+
+**Call** 06:30 at the harbour, first light at 07:12.
+
+- Crew: director, DP, 1st AC, gaffer, producer
+- Kit: two bodies, the 35 and the 85, one light kit
+- Weather call at 05:30 — if the wind is above 12 m/s we move to the studio
+
+## Shot list
+
+1. Wide on the pier, fog if we get it
+2. Product on the wet stone, low angle
+3. Portrait series against the corrugated wall
+`,
+  },
+  {
+    slug: 'brand-voice-notes', favourite: false, minutesAgo: 60 * 20,
+    title: 'Brand voice notes',
+    body: `---
+title: Brand voice notes
+date: 2026-09-12
+tags: [brand]
+---
+
+# Brand voice notes
+
+Calm is a method, not a mood. Say the thing once, plainly, and stop.
+
+| Say | Not |
+|---|---|
+| We handle it | We are passionate about handling it |
+| On time | Timely delivery solutions |
+
+> Great production feels effortless, even when it isn't.
+`,
+  },
+  {
+    slug: 'deck-to-do', favourite: false, minutesAgo: 60 * 72,
+    title: 'Deck to-do',
+    body: `---
+title: Deck to-do
+date: 2026-09-08
+tags: [deck, todo]
+---
+
+# Deck to-do
+
+- [x] Cover and the wide stamp
+- [ ] Replace the index rows with this year's work
+- [ ] Export a PDF for the agency and a PPTX for the client
+`,
+  },
+]

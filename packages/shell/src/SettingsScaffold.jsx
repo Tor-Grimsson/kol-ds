@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ContentFilters, IconFrame } from '@kolkrabbi/kol-component'
+import { ContentFilters, IconFrame, Tooltip } from '@kolkrabbi/kol-component'
 import PageShell from './PageShell.jsx'
 import { PageHeader } from '@kolkrabbi/kol-component'
 
@@ -110,19 +110,22 @@ export default function SettingsScaffold({
    * Pass none of the three and no cluster renders — mirror and monitor are
    * untouched until they opt in. An explicit `header.actions` still wins. */
   const cluster = picker || themeToggle || onOpenSettings ? (
-    <div className="flex items-center gap-2">
+    /* the cluster carries the page's tone as a wrapper (the Hub review, 2026-09-26), so a picker
+     * or toggle passed with no tone of its own matches the gear and the filter row */
+    <div className={`flex items-center gap-2 kol-tone-${tone}`}>
       {picker}
       {themeToggle}
       {onOpenSettings && (
+        <Tooltip label="Display settings">
         <IconFrame
           name="settings-01"
           variant="primary"
           tone={tone}
           size="sm"
           onClick={onOpenSettings}
-          title="Display settings"
           aria-label="Display settings"
         />
+        </Tooltip>
       )}
     </div>
   ) : null

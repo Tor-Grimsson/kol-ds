@@ -115,7 +115,11 @@ export default function SectionText({
       {headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>}
       {bodyNode && (inlineActions
         ? (
-          <div className="flex items-baseline justify-between gap-6">
+          /* SELF-STRETCH (the Hub review, 2026-09-26 — user, on fxr's /settings: "there should
+           * have been space between … on the right edge"). The column is `items-start`, so this
+           * row shrank to its content and `justify-between` had no room to act: the cluster sat
+           * against the subtitle on every PageHeader with actions. */
+          <div className="flex self-stretch items-baseline justify-between gap-6">
             {bodyNode}
             {cluster}
           </div>

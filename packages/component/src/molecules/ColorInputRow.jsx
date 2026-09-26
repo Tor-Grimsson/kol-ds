@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ColorSwatch from '../atoms/ColorSwatch'
 import Input from '../atoms/Input'
-import { usePopover, PopoverPanel } from '../utilities/Popover'
+import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover'
 
 /**
  * ColorInputRow — swatch chip + `#` hex input row. The single merged form of
@@ -150,11 +150,11 @@ export default function ColorInputRow({
       {chip(24)}
     </button>
   ) : isLockToggle ? (
+    <Tooltip label={locked ? 'Unlock' : 'Lock'} asChild>
     <button
       type="button"
       onClick={onToggleLock}
       aria-pressed={locked}
-      title={locked ? 'Unlock' : 'Lock'}
       className="group relative inline-flex h-6 w-6 shrink-0"
     >
       {chip('stretch')}
@@ -167,6 +167,7 @@ export default function ColorInputRow({
         <Icon name={locked ? 'lock' : 'unlock'} size={12} />
       </span>
     </button>
+    </Tooltip>
   ) : (
     chip(24)
   )

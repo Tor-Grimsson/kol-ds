@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ColorSwatch from '../atoms/ColorSwatch.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /*
  * SwatchControls — the Photoshop-style top row of the colour panel, in two
@@ -107,16 +108,17 @@ export function EyedropPick({ sampleColor, onPick, disabled = false }) {
   return (
     <div className="flex items-start gap-1 shrink-0">
       {supported && (
+        <Tooltip label="Pick a color from the canvas" asChild>
         <button
           type="button"
           onClick={onPick}
           disabled={disabled}
           aria-label="Eyedropper"
-          title="Pick a color from the canvas"
           className="inline-flex cursor-pointer text-fg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Icon name="eyedrop" size={24} />
         </button>
+        </Tooltip>
       )}
       <ColorSwatch
         hex={sampleColor}

@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
+import FoundationsTones from './pages/FoundationsTones'
 import IconsGallery from './pages/IconsGallery'
 import ComponentPage from './pages/ComponentPage'
 import Components from './pages/Components'
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/foundations" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
         <Route path="/foundations/typography" element={<FoundationsTypography />} />
+        <Route path="/foundations/tones" element={<FoundationsTones />} />
         {/* THE icons page is brand's gallery (IconsGallery, 2026-09-02) — `/icons`
           * takes the default set, `/icons/:set` names one; the old comparison
           * URL keeps working */}

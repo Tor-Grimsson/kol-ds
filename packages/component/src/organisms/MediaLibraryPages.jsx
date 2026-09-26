@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import formatSize from '../utilities/formatSize.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
@@ -37,7 +37,8 @@ import { listDrafts, moveDrafts, DRAFTS_EVENT } from '../utilities/localDrafts.j
 import { parseFrontmatter } from '../utilities/frontmatter.js'
 import ShellSearchOverlay from './ShellSearchOverlay.jsx'
 import ColumnBrowser, { isFileDrag, Preview as ColumnPreview, SelectionPreview } from './ColumnBrowser.jsx'
-import SettingsPanel, { LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter } from './SettingsPanel.jsx'
+import SettingsPanel, { SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter } from './SettingsPanel.jsx'
+import SettingsSections from './SettingsSections.jsx'
 import { kindOf, extOf, KIND_LABEL, KINDS, DEFAULT_KINDS, isSystemFile, isSegment, groupSegments, groupVariants, posterFor, partition } from '../utilities/mediaKinds.js'
 import { nearestRatio } from '../utilities/ratios.js'
 
@@ -108,7 +109,7 @@ export const SETTINGS_BASE = {
   folderView: 'columns', // 'rows' | 'columns'
   sortBy: 'name',
   sortDir: 'asc',
-  columnHeight: 528, // px, or any CSS length — forwarded to ColumnBrowser `height` untouched
+  columnHeight: 528, // px, any CSS length (forwarded to ColumnBrowser `height` untouched), or 'fill' — what is left of the window
   columnWidths: {},
   rowPreview: true, // row view's preview pane beside the list (Finder's "Show preview")
   view: 'columns', // 'columns' | 'rows' | 'grid' | 'list' — the ONE view state (2026-09-22)
@@ -683,61 +684,62 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
   )
 }
 
-/* Display settings for the ACTIVE bucket — kol-r2b2's drawer wiring on the DS
- * organism (the composition the user locked 2026-08-27). Every control sets a
- * default, never a gate. */
-function MediaSettings({ bucketMeta, settings, onChange, onReset, onClose, profile, settingsFooter }) {
+/* THE DISPLAY SETTINGS AS DATA (media-shell, user 2026-09-26: "missing settings sidebar? … or are
+ * we saying the shell has settings different from media?"). The rows were hard-wired JSX inside this
+ * drawer, so an app page could not show them and a second settings system grew beside it. Now ONE
+ * builder: this drawer renders it, and an app renders the same rows on its settings page and its own
+ * drawer (kol-shell `HubSettings sections`). `settings` is the page's per-bucket settings object,
+ * `onChange(next)` sets it, `profile` (what the bucket holds) drives the "nothing to fold" states —
+ * omit it where the listing is not at hand and those two switches stay enabled with plain hints.
+ * Every control sets a default, never a gate. */
+export function mediaSettingsSections({ settings, onChange, profile }) {
   const set = (patch) => onChange({ ...settings, ...patch })
-  const toggleKind = (k) => set({ kinds: settings.kinds.includes(k) ? settings.kinds.filter((x) => x !== k) : [...settings.kinds, k] })
-  const noVariants = profile.variantSets === 0
-  const noSegments = profile.segments === 0
+  const kinds = settings.kinds ?? []
+  const toggleKind = (k) => set({ kinds: kinds.includes(k) ? kinds.filter((x) => x !== k) : [...kinds, k] })
+  const noVariants = profile?.variantSets === 0
+  const noSegments = profile?.segments === 0
+  return [
+    { label: 'Structure', rowGap: 1, rows: [
+      { label: 'Columns', hint: 'Finder-style columns instead of folder rows',
+        render: () => <SettingsSwitch label="Columns" on={(settings.folderView ?? 'rows') === 'columns'} onChange={(v) => set({ folderView: v ? 'columns' : 'rows' })} /> },
+      { label: 'Preview', hint: 'the picked file beside the rows',
+        render: () => <SettingsSwitch label="Preview" on={settings.rowPreview ?? true} onChange={(v) => set({ rowPreview: v })} /> },
+      /* NOT "Columns" — that switch above means Finder's column browser. These are the row view's
+       * date/size FIELDS, which is what the user calls them. */
+      { label: 'Fields', hint: 'date and size beside each row, with a sort header',
+        render: () => <SettingsSwitch label="Fields" on={!!settings.rowColumns} onChange={(v) => set({ rowColumns: v })} /> },
+      { label: 'Flat', hint: 'ignore folders, show the whole subtree',
+        render: () => <SettingsSwitch label="Flat" on={settings.flat} onChange={(v) => set({ flat: v })} /> },
+      { label: 'Group resolutions', hint: noVariants ? 'no resolution sets in this bucket' : profile ? `${profile.variantSets} sets — previews the smallest file` : 'previews the smallest file of a set',
+        render: () => <SettingsSwitch label="Group resolutions" on={settings.groupVariants} onChange={(v) => set({ groupVariants: v })} disabled={noVariants} disabledHint="nothing to group here" /> },
+      { label: 'Fold HLS segments', hint: noSegments ? 'no segments in this bucket' : profile ? `${profile.segments} segments into stream rows` : 'segments into stream rows',
+        render: () => <SettingsSwitch label="Fold HLS segments" on={settings.foldSegments} onChange={(v) => set({ foldSegments: v })} disabled={noSegments} disabledHint="nothing to fold here" /> },
+    ] },
+    { label: 'Loading', rows: [
+      { label: 'Kinds', align: 'fill',
+        render: () => <SettingsMulti options={ALL_KINDS.map((k) => ({ value: k, label: KIND_LABEL[k] || k }))} selected={kinds} onToggle={toggleKind} noun="kinds" /> },
+      { label: 'Page size', hint: 'entries mounted at once', align: 'fill',
+        render: () => <SettingsChoice options={[{ value: 100, label: '100' }, { value: 200, label: '200' }, { value: 500, label: '500' }, { value: 0, label: 'All' }]} value={settings.pageSize} onChange={(v) => set({ pageSize: v })} /> },
+      { label: 'Video preview', hint: 'poster uses the sibling image; autoload fetches the file', align: 'fill',
+        render: () => <SettingsChoice options={[{ value: 'poster', label: 'Poster' }, { value: 'none', label: 'None' }, { value: 'autoload', label: 'Autoload' }]} value={settings.videoPreview} onChange={(v) => set({ videoPreview: v })} /> },
+    ] },
+    { label: 'Layout', rows: [
+      { label: 'View', align: 'fill',
+        render: () => <SettingsChoice options={[{ value: 'off', label: 'Off' }, { value: 'grid', label: 'Grid' }, { value: 'list', label: 'List' }]} value={settings.layout} onChange={(v) => set({ layout: v })} /> },
+      { label: 'Sort', align: 'fill',
+        render: () => <SettingsChoice options={SORT_OPTIONS} value={settings.sortBy} onChange={(v) => set({ sortBy: v })} /> },
+      { label: 'Direction', align: 'fill',
+        render: () => <SettingsChoice options={[{ value: 'asc', label: '↓ Asc' }, { value: 'desc', label: '↑ Desc' }]} value={settings.sortDir} onChange={(v) => set({ sortDir: v })} /> },
+    ] },
+  ]
+}
+
+/* Display settings for the ACTIVE bucket — kol-r2b2's drawer wiring on the DS organism (the
+ * composition the user locked 2026-08-27), drawn from `mediaSettingsSections`. */
+function MediaSettings({ settings, onChange, onReset, onClose, profile, settingsFooter }) {
   return (
     <SettingsPanel variant="drawer" title="Display settings" onClose={onClose} footer={<SettingsFooter onReset={onReset} resetLabel="Reset preferences">{settingsFooter}</SettingsFooter>}>
-      <LabeledControlSection label="Structure" rowGap={1} divided>
-        <SettingsRow label="Columns" hint="Finder-style columns instead of folder rows">
-          <SettingsSwitch label="Columns" on={(settings.folderView ?? 'rows') === 'columns'} onChange={(v) => set({ folderView: v ? 'columns' : 'rows' })} />
-        </SettingsRow>
-        <SettingsRow label="Preview" hint="the picked file beside the rows">
-          <SettingsSwitch label="Preview" on={settings.rowPreview ?? true} onChange={(v) => set({ rowPreview: v })} />
-        </SettingsRow>
-        {/* NOT "Columns" — that switch three rows up means Finder's column browser. These are the
-            row view's date/size FIELDS, which is what the user calls them. */}
-        <SettingsRow label="Fields" hint="date and size beside each row, with a sort header">
-          <SettingsSwitch label="Fields" on={!!settings.rowColumns} onChange={(v) => set({ rowColumns: v })} />
-        </SettingsRow>
-        <SettingsRow label="Flat" hint="ignore folders, show the whole subtree">
-          <SettingsSwitch label="Flat" on={settings.flat} onChange={(v) => set({ flat: v })} />
-        </SettingsRow>
-        <SettingsRow label="Group resolutions" hint={noVariants ? 'no resolution sets in this bucket' : `${profile.variantSets} sets — previews the smallest file`}>
-          <SettingsSwitch label="Group resolutions" on={settings.groupVariants} onChange={(v) => set({ groupVariants: v })} disabled={noVariants} disabledHint="nothing to group here" />
-        </SettingsRow>
-        <SettingsRow label="Fold HLS segments" hint={noSegments ? 'no segments in this bucket' : `${profile.segments} segments into stream rows`}>
-          <SettingsSwitch label="Fold HLS segments" on={settings.foldSegments} onChange={(v) => set({ foldSegments: v })} disabled={noSegments} disabledHint="nothing to fold here" />
-        </SettingsRow>
-      </LabeledControlSection>
-      <LabeledControlSection label="Loading" divided>
-        <SettingsRow label="Kinds" align="fill">
-          <SettingsMulti options={ALL_KINDS.map((k) => ({ value: k, label: KIND_LABEL[k] || k }))} selected={settings.kinds} onToggle={toggleKind} noun="kinds" />
-        </SettingsRow>
-        <SettingsRow label="Page size" hint="entries mounted at once" align="fill">
-          <SettingsChoice options={[{ value: 100, label: '100' }, { value: 200, label: '200' }, { value: 500, label: '500' }, { value: 0, label: 'All' }]} value={settings.pageSize} onChange={(v) => set({ pageSize: v })} />
-        </SettingsRow>
-        <SettingsRow label="Video preview" hint="poster uses the sibling image; autoload fetches the file" align="fill">
-          <SettingsChoice options={[{ value: 'poster', label: 'Poster' }, { value: 'none', label: 'None' }, { value: 'autoload', label: 'Autoload' }]} value={settings.videoPreview} onChange={(v) => set({ videoPreview: v })} />
-        </SettingsRow>
-      </LabeledControlSection>
-      <LabeledControlSection label="Layout" divided>
-        <SettingsRow label="View" align="fill">
-          <SettingsChoice options={[{ value: 'off', label: 'Off' }, { value: 'grid', label: 'Grid' }, { value: 'list', label: 'List' }]} value={settings.layout} onChange={(v) => set({ layout: v })} />
-        </SettingsRow>
-        <SettingsRow label="Sort" align="fill">
-          <SettingsChoice options={SORT_OPTIONS} value={settings.sortBy} onChange={(v) => set({ sortBy: v })} />
-        </SettingsRow>
-        <SettingsRow label="Direction" align="fill">
-          <SettingsChoice options={[{ value: 'asc', label: '↓ Asc' }, { value: 'desc', label: '↑ Desc' }]} value={settings.sortDir} onChange={(v) => set({ sortDir: v })} />
-        </SettingsRow>
-      </LabeledControlSection>
-      {void bucketMeta}
+      <SettingsSections sections={mediaSettingsSections({ settings, onChange, profile })} divided />
     </SettingsPanel>
   )
 }
@@ -914,6 +916,44 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
       </div>
     </header>
   )
+}
+
+/* `columnHeight: 'fill'` — THE BROWSER TAKES WHAT IS LEFT OF THE WINDOW (media-shell, user 2026-09-26:
+ * "why isnt the browser in media shell using available height like media does?"). apps/media had it
+ * as a hand-measured `calc(100dvh - 212px)` — its header, gaps and padding, counted once — so the same
+ * tool one shell over got the 528 base. Measured instead: the window, less the view's own top, less
+ * what the page draws under it (the count line), less the bottom padding / border / margin of every
+ * box around it. Follows a resize and any change above it. Floor 240 so a short window still browses. */
+/* `view` is the ELEMENT (state, via a callback ref), not a ref object: the view mounts after the data
+ * loads, and in a fixed-height page (kol-shell PageShell) nothing else resizes to wake the observer —
+ * a ref read once at mount stayed null and the browser sat at the 528 base. */
+function useFillHeight(on, view, pageEl) {
+  const [h, setH] = useState(null)
+  useLayoutEffect(() => {
+    if (!on || !view) return undefined
+    const measure = () => {
+      const page = pageEl.current
+      if (!page) return
+      const r = view.getBoundingClientRect()
+      /* what the page DRAWS under the view — its content's bottom, not its box's: a page stretched to
+       * fill its container (flex-1) would count its own empty space as "below" and freeze the height */
+      const contentBottom = Math.max(r.bottom, ...[...page.children].map((c) => c.getBoundingClientRect().bottom))
+      let below = contentBottom - r.bottom
+      for (let el = page; el && el !== document.body; el = el.parentElement) {
+        const cs = getComputedStyle(el)
+        below += parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth) + (el === page ? 0 : parseFloat(cs.marginBottom))
+      }
+      const next = Math.max(240, Math.floor(window.innerHeight - r.top - below))
+      setH((p) => (p === next ? p : next))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(document.body)
+    if (pageEl.current) ro.observe(pageEl.current)
+    window.addEventListener('resize', measure)
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure) }
+  }, [on, view]) // eslint-disable-line react-hooks/exhaustive-deps
+  return h
 }
 
 /* the profile — what the bucket holds; drives the chips and the settings' "nothing to fold" states */
@@ -1689,6 +1729,17 @@ export function MediaLibraryBrowse({
     setQuickLook({ files, index: at === -1 ? 0 : at })
   }, [rowSelection]) // eslint-disable-line react-hooks/exhaustive-deps
   const columnsRef = useRef(null)
+  /* the view box (whichever view is mounted) and the page root — what `fill` measures */
+  const [viewEl, viewRef] = useState(null)
+  /* stable, so the columns box is not re-attached (null, then itself) on every render */
+  const columnsBox = useCallback((el) => { columnsRef.current = el; viewRef(el) }, [])
+  const pageRef = useRef(null)
+  const fill = settings.columnHeight === 'fill'
+  const fillH = useFillHeight(fill, viewEl, pageRef)
+  /* a drag in fill mode is the SESSION's, never saved — one height on every reload (apps/media's ruling) */
+  const [dragH, setDragH] = useState(null)
+  const colH = fill ? (dragH ?? fillH ?? SETTINGS_BASE.columnHeight) : (settings.columnHeight ?? SETTINGS_BASE.columnHeight)
+  const onColH = (px) => (fill ? setDragH(px) : setSettings({ ...settings, columnHeight: px }))
   /* `flat` IS THE WALL'S, NOT THIS PAGE'S (user 2026-09-22: "there is no option to switch to flat
    * mode, bc its not in files view. this is row mode.. this makes no sense"). It reached here from
    * kol-r2b2's single surface and did two things that cannot be defended in a TREE: it struck every
@@ -1904,12 +1955,12 @@ export function MediaLibraryBrowse({
     const treeObjects = keep ? sortedObjects.filter((o) => keep.has(o.key)) : sortedObjects
     return (
   folderView === 'columns' || phone ? (
-            <div ref={columnsRef} className="relative">
+            <div ref={columnsBox} className="relative">
               <ColumnBrowser
                 autoFocus={autoFocus}
                 className={atTitleRoot ? 'is-root' : ''}
-                height={settings.columnHeight}
-                onHeightChange={(px) => setSettings({ ...settings, columnHeight: px })}
+                height={colH}
+                onHeightChange={onColH}
                 columnWidths={settings.columnWidths}
                 onColumnResize={(i, px) => setSettings({ ...settings, columnWidths: { ...(settings.columnWidths ?? {}), [i]: px } })}
                 objects={treeObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, key: `${VROOT}${o.key}` }))}
@@ -1993,7 +2044,7 @@ export function MediaLibraryBrowse({
              * the same line — the count line under them jumps otherwise, and a consumer's fill height
              * is ONE value for both — so the header comes out of this view's budget rather than being
              * added to it. The pane takes what is left. */
-            <div className="flex flex-col gap-2" style={{ height: settings.columnHeight ?? SETTINGS_BASE.columnHeight }}>
+            <div ref={viewRef} className="flex flex-col gap-2" style={{ height: colH }}>
             {/* the header labels the LIST, so it spans the list and stops where the preview starts */}
             {rowCols && (
               <RowHeader sortBy={settings.sortBy} sortDir={settings.sortDir} width={showRowPreview ? `calc(100% - ${previewWidth}px)` : '100%'}
@@ -2103,7 +2154,7 @@ export function MediaLibraryBrowse({
       onChange={(e) => setSettings({ ...settings, tileSize: Number(e.target.value) })} aria-label="Tile size" />
   )
   const wallPane = (files) => (
-    <div className="flex flex-col gap-2" style={{ height: settings.columnHeight ?? SETTINGS_BASE.columnHeight }}>
+    <div ref={viewRef} className="flex flex-col gap-2" style={{ height: colH }}>
     <div className="relative border rounded flex overflow-hidden flex-1 min-h-0" style={{ borderColor: 'var(--kol-oq-08)' }}>
     {/* THE MARQUEE IS THE PANE'S, not the tile grid's (user 2026-09-23: a drag only started where
       * there were tiles — the grid is as tall as its tiles, the pane is the whole frame). The rows'
@@ -2189,7 +2240,7 @@ export function MediaLibraryBrowse({
       : treeBody(filtered ? new Set(filtered.map((f) => f.key)) : null))
 
   return (
-    <div {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
+    <div ref={pageRef} {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
       <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
         onHome={goTitleRoot}
         onBucket={(v) => { if (v === 'all') goTitleRoot(); else { setAppRoot(false); switchBucket(v) } }}

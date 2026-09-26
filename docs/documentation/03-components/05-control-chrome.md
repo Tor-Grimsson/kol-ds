@@ -3,7 +3,7 @@ title: Control chrome
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-03
+updated: 2026-09-26
 verified: 2026-07-08
 description: The button law every interactive control references
 aliases:
@@ -21,6 +21,7 @@ related:
   - "[[01-inventory|component inventory]]"
   - "[[../01-foundations/01-tokens|tokens]]"
   - "[[../01-foundations/09-sizes|sizes]]"
+  - "[[../01-foundations/13-tone-lookup|tone lookup]]"
 ---
 
 # Control chrome — the button law
@@ -304,15 +305,17 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 
 **Seven tones, one mechanism** (tone-is-the-ground-axis, kol-client-olina 2026-09-03; the list is the user's — *"that is 6 tones right?"* — plus the line the first ticket dropped: *"I would like a tone for the primary surface, that could actually be called secondary"* (tone-secondary-is-inverse, theme 0.138.0: `secondary` paints the page surface, `inverted` is the text-colour fill Button's `secondary` variant always was; the variant's pixels did not move). `inverse` is not `inverted` — it is sunken's alias from 0.117.0, kept while one kol-website call passes it. Until theme 0.134.0 `toneClass` returned a class for `sunken` and nothing else, so `tone` had one value and the real ground vocabulary lived on Button's `variant` alone, re-invented by the control shell and the dropdown panel with paints that drifted.
 
+**Listed by depth** (user, 2026-09-26) — how far the fill sits from the page: `sunken` below it, `secondary` the page itself, then up to `inverted`. Dark theme reads darkest → brightest, light the same list the other way; `outline` and `ghost` paint no fill and sit apart. The names cross: tone `primary` paints `surface-secondary`, tone `secondary` paints `surface-primary`. Values: [[../01-foundations/13-tone-lookup|tone lookup]]; live: the showcase's `/foundations/tones` (surface × wash × tone).
+
 | tone | background | ink | hover · press |
 |---|---|---|---|
-| `primary` | `surface-secondary` | `surface-on-primary` | `oq-08` · `oq-16` |
+| `sunken` | `surface-sunken` — below the page | `fg-96` | + `fg-04` · + `fg-08` (layered over the well) |
 | `secondary` | **`surface-primary`** — the page's own colour | `surface-on-primary` | `oq-08` · `oq-16` |
+| `primary` | `surface-secondary` | `surface-on-primary` | `oq-08` · `oq-16` |
+| `grey` | `oq-12` | `surface-on-primary` | `oq-16` · `oq-24` |
 | `inverted` | `surface-on-primary` — the text colour as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48` |
 | `outline` | transparent, + 1px `oq-08` | `surface-on-primary` | `oq-02` (border to 25 % ink) · `oq-08` |
 | `ghost` | transparent | `oq-48` | `oq-04` · `oq-08` |
-| `grey` | `oq-12` | `surface-on-primary` | `oq-16` · `oq-24` |
-| `sunken` | `surface-sunken` | `fg-96` | + `fg-04` · + `fg-08` (layered over the well) |
 
 A tone is a bundle of **`--kol-tone-*` custom properties** — rest, hover, press, pressed, and what a *floating* surface of that tone paints — and every control reads its paint from them with its own old literal as the fallback: `.kol-btn`, the dropdown trigger, `.kol-control` and `.kol-dd-panel` fall back to primary, `.kol-icon-frame` to secondary, the theme-toggle variants, the view-toggle well and the open search shell to their own. Nothing moves without a tone.
 

@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react'
-import { toneClass } from './tone.js'
+import { cloneElement, createContext, isValidElement, useContext, useLayoutEffect, useState, version as reactVersion } from 'react'
+import { toneClass, TONE_VARS } from './tone.js'
 import {
   useFloating,
   autoUpdate,
@@ -136,13 +136,29 @@ export function usePopover({
  * — the innermost wins, as the native `title` it replaced behaved. */
 const TooltipNest = createContext(null)
 
-export function Tooltip({
+/* `asChild` (the native-title sweep, 2026-09-26): the tooltip attaches to its one child element
+ * instead of wrapping it in a span — for a trigger whose box IS the layout (a grid cell, a rail row,
+ * an absolutely placed handle), where an inline-flex wrapper would move it. The child must be an
+ * element that takes a ref: an intrinsic tag always does; a component only if it forwards one
+ * (React 18 needs forwardRef), so Button / IconFrame keep the wrapper. Its own ref and handlers are
+ * kept — the reference props merge over the child's. */
+const childRefOf = (el) => ('ref' in (el.props ?? {}) ? el.props.ref : reactVersion.startsWith('18') ? el.ref : undefined)
+
+export function Tooltip(props) {
+  /* no label → no tooltip: several call sites pass an optional hint, and an empty panel is worse
+   * than none. A separate component so the hooks below never run conditionally. */
+  if (props.label == null || props.label === '') return props.children
+  return <TooltipOn {...props} />
+}
+
+function TooltipOn({
   label,
   shortcut,
   placement = 'bottom',
   offset = 6,
   children,
   triggerClassName = 'inline-flex',
+  asChild = false,
 }) {
   const [open, setOpen] = useState(false)
   const [covered, setCovered] = useState(false)
@@ -158,22 +174,56 @@ export function Tooltip({
     focus: true,
   })
 
+  /* THE TONE OF WHERE IT IS (user, 2026-09-26: "tooltip should probably use same tone as dropdowns
+   * and buttons"). The panel is portalled to body, outside the `kol-tone-*` wrapper that tones the
+   * controls around the trigger — Dropdown's problem, solved the same way: on open, copy the
+   * trigger's RESOLVED `--kol-tone-*` onto the panel. No tone in effect = nothing copied, and the
+   * tooltip keeps its own surface. */
+  const [ambient, setAmbient] = useState(null)
+  const shown = open && !covered
+  useLayoutEffect(() => {
+    const ref = popover.refs.reference.current
+    /* the SURROUNDINGS' tone, not the trigger's own: an `asChild` trigger can be a variant button
+     * (`kol-btn-ghost` carries its own `--kol-tone-*`), so read its parent; the wrapper span has no
+     * variant and inherits the ambient values as it is */
+    const el = asChild ? ref?.parentElement : ref
+    if (!shown || !(el instanceof Element)) return
+    const cs = getComputedStyle(el)
+    const vars = {}
+    for (const v of TONE_VARS) { const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val }
+    setAmbient(vars)
+  }, [shown]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const child = asChild && isValidElement(children) ? children : null
+  const childRef = child ? childRefOf(child) : undefined
+  const setRef = (node) => {
+    popover.refs.setReference(node)
+    if (typeof childRef === 'function') childRef(node)
+    else if (childRef) childRef.current = node
+  }
   return (
     <>
-      <span
-        ref={popover.refs.setReference}
-        {...popover.getReferenceProps()}
-        className={triggerClassName}
-      >
-        <TooltipNest.Provider value={setCovered}>{children}</TooltipNest.Provider>
-      </span>
+      {child ? (
+        <TooltipNest.Provider value={setCovered}>
+          {cloneElement(child, { ...popover.getReferenceProps(child.props), ref: setRef })}
+        </TooltipNest.Provider>
+      ) : (
+        <span
+          ref={popover.refs.setReference}
+          {...popover.getReferenceProps()}
+          className={triggerClassName}
+        >
+          <TooltipNest.Provider value={setCovered}>{children}</TooltipNest.Provider>
+        </span>
+      )}
       <PopoverPanel
         popover={popover}
         focus={false}
         panel={false}
         className="kol-tooltip"
+        style={ambient ?? undefined}
       >
-        <span className="text-emphasis">{label}</span>
+        <span>{label}</span>
         {shortcut && <span className="kol-tooltip-key">{shortcut}</span>}
       </PopoverPanel>
     </>

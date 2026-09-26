@@ -1,4 +1,5 @@
-/* THE KEYMAP, once. `ShortcutsOverlay` takes this array and the bindings are read from the same
+/* THE MEDIA TOOL'S KEYMAP, once — moved here from apps/media (2026-09-26) so apps/media-shell's sheet
+ * lists the same keys the same tool answers to. `ShortcutsOverlay` takes this array and the bindings are read from the same
  * one, so a shortcut cannot be shown and not work — both kol-mirror and kol-monitor maintained the
  * list twice and both pairs drifted, which is why the overlay takes a prop at all.
  *

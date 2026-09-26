@@ -30,9 +30,9 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | Workspace | Runs on | What it is |
 |---|---|---|
 | `apps/media` | `pnpm media` · `/apps/media` | the media tool alone |
-| `apps/media-shell` | `pnpm media-shell` (5175) · `/apps/media-shell` | the same tool inside kol-shell — Home · Browse · Settings on the rail, the first-run tour |
+| `apps/media-shell` | `pnpm media-shell` (5175) · `/apps/media-shell` | the same tool on kol-shell's `AppHub` — Browse loads at `/`; Library (`/library`, RECENT · FAVOURITES · DRAFTS) · Notes (`/notes`, the editor in the page) · Settings (the Hub's, with media's display rows and drawer) |
 | `apps/media-fixture` | — (private package) | the imagined olina setup both apps run on: a fake bucket (`bucket.js`) and a fake D1 (`d1.js`), the client over them, and `useFixtureMedia` — the wiring both apps share so neither grows a copy |
 
-A media feature ships in the DS and shows in `apps/media`; `apps/media-shell` adds only the shell around it. `apps/shell` alone (the shell with no tool in it) is the next of this kind.
+A media feature ships in the DS and shows in `apps/media`; `apps/media-shell` adds only the shell around it. `apps/shell` (`pnpm shell`, 5176) is the Hub alone, around a placeholder tool — the reference both are judged against.
 
 Build order came in as a ticket: `lobby/inbox/apps-tier-media-first.md`.

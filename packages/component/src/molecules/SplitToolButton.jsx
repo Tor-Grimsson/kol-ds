@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
+import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -121,6 +121,7 @@ const SplitToolButton = ({
 
   return (
     <>
+      <Tooltip label={title} asChild>
       <button
         ref={popover.refs.setReference}
         {...popover.getReferenceProps({ onClick: handleTriggerClick })}
@@ -129,11 +130,11 @@ const SplitToolButton = ({
         disabled={disabled}
         aria-pressed={onTrigger ? undefined : active}
         aria-label={label}
-        title={title}
       >
         {triggerVariant && <IconC name={triggerVariant.icon} size={glyphSize(size, true)} />}
         <FoldIndicator />
       </button>
+      </Tooltip>
       {/* w-max — floats size to content, the menu-family law (2026-08-09). */}
       <PopoverPanel
         popover={popover}

@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-component
 
+## 0.225.0 — 2026-09-27
+
+**The Hub and the media tool, one tool in two frames.**
+
+- `MediaLibraryExplorer` — `keys` (B F R C G N, K → `onKinds`) and `phoneTabs`, so every app showing the tool answers to the same keys; `columnHeight: 'fill'` (measured); `mediaSettingsSections` exported — one settings system for the browse drawer, a Hub page and a Hub drawer.
+- `Tooltip` — `asChild`, an empty label passes through, ambient tone (panel ground), border oq-08, no shadow; the native-`title` sweep (gate `validate-native-title`).
+- `Dropdown` — `{ divider: true }` options.
+- `SectionText` — the inline actions row stretches, so every PageHeader cluster sits on the right edge.
+- `SettingsChoice` — variant unset, inherits a tone wrapper.
+
 ## 0.224.0 — 2026-09-26
 
 **The media D1 plan, v2** — one user, drafts in the browser, the database for what must outlive a

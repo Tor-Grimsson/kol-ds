@@ -52,7 +52,7 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  * @param {string}   view · onViewChange   controlled view; or `defaultView`
  * @param {Array}    layouts       LIST / GRID (default both)
  * @param {string}   defaultLayout 'grid' (default) | 'list'
- * @param {{steps: Array, open: boolean, iconComponent?: ElementType}} walkthrough  the panel over the catalog
+ * @param {{steps: Array, open: boolean, onClose?: Function, iconComponent?: ElementType}} walkthrough  the panel over the catalog; `onClose` draws its X inside the card
  * @param {ReactNode} actions      the bottom row's buttons
  * @param {'bleed'|'capped'} width   the page's TIER, forwarded to PageShell (two-page-scaffolds-one-job, 2026-09-03):
  *                                 `bleed` (default) fills the window — the app tier; `capped` centres on the
@@ -209,7 +209,7 @@ export default function CatalogPage({
     <PageShell width={width} className={`${PRESETS[preset]?.className ?? ''} ${className}`.trim()} style={{ overflow: 'hidden', '--kol-catalog-n': cols ?? undefined, ...style }}>
       {header && <PageHeader {...header} />}
       <div style={{ flex: 1, position: 'relative' }}>
-        {open && <WalkthroughPanel steps={walkthrough.steps} iconComponent={walkthrough.iconComponent} />}
+        {open && <WalkthroughPanel steps={walkthrough.steps} iconComponent={walkthrough.iconComponent} onClose={walkthrough.onClose} />}
         <ContentFilters
           items={items}
           title={filtersTitle}

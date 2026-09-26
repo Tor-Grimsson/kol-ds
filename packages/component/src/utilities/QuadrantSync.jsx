@@ -38,6 +38,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Tooltip } from './Popover.jsx'
 
 /* ── coordinates ─────────────────────────────────────────────────────────
  * Pure. No DOM writes. The invariant everything rests on: a cell is a
@@ -442,14 +443,15 @@ export default function QuadrantSync ({
                   className="kol-mono-12 text-fg-96 bg-fg-04 border border-fg-16"
                   style={{ width: 52, padding: '5px 6px', textAlign: 'center', borderRadius: 4 }}
                 />
+                <Tooltip label="Set divisions so cells come out square at the current size" asChild>
                 <button
                   type="button" onClick={applySquare}
-                  title="Set divisions so cells come out square at the current size"
                   className="kol-helper-10 text-fg-96 border border-fg-16"
                   style={{ marginLeft: 'auto', padding: '5px 9px', borderRadius: 4, background: 'transparent', cursor: 'pointer' }}
                 >
                   square
                 </button>
+                </Tooltip>
               </div>
               {aspect && (
                 <div className="kol-mono-10 text-fg-48" style={{ marginTop: 6 }}>

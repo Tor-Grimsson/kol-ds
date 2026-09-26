@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import Input from '../atoms/Input.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 /* The six easings the key editor offers. The CURVES stay the consumer's
  * (its interpolator resolves the name); this is the menu, not the math. */
@@ -123,9 +124,11 @@ function TrackRow({ track, t, selected, setSelected, writeKeys }) {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="kol-helper-10 text-meta truncate shrink-0 text-right" style={{ width: 120 }} title={track.label}>
+      <Tooltip label={track.label} asChild>
+      <span className="kol-helper-10 text-meta truncate shrink-0 text-right" style={{ width: 120 }}>
         {track.label}
       </span>
+      </Tooltip>
       <div
         ref={laneRef}
         className="relative flex-1 h-5 rounded cursor-copy"
@@ -136,13 +139,12 @@ function TrackRow({ track, t, selected, setSelected, writeKeys }) {
         {track.keys.map((k, i) => {
           const kt = drag.current?.index === i ? drag.current.t : k.t
           return (
+            <Tooltip key={i} label={`t=${kt.toFixed(2)} v=${typeof k.v === 'number' ? Math.round(k.v * 100) / 100 : k.v} (alt-click deletes)`} asChild>
             <span
-              key={i}
               data-diamond=""
               onPointerDown={onDiamondPointerDown(i)}
               onPointerMove={onDiamondPointerMove(i)}
               onPointerUp={onDiamondPointerUp(i)}
-              title={`t=${kt.toFixed(2)} v=${typeof k.v === 'number' ? Math.round(k.v * 100) / 100 : k.v} (alt-click deletes)`}
               className="absolute top-1/2 cursor-grab"
               style={{
                 left: `${kt * 100}%`,
@@ -152,6 +154,7 @@ function TrackRow({ track, t, selected, setSelected, writeKeys }) {
                 borderRadius: 1.5,
               }}
             />
+            </Tooltip>
           )
         })}
       </div>
