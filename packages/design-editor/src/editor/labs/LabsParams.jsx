@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useState } from 'react'
 import { Button, SegmentedToggle, ToggleSwitch, Divider, Dropdown, LabeledControlSection } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { useComposeState } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import AutoControls from '../params/AutoControls'
@@ -347,7 +347,7 @@ function StackCards({ chain, from = 0, layer, hostView, toggleFilter, removeFilt
             className="ml-auto inline-flex items-center justify-center w-5 h-5 shrink-0 text-oq-64 hover:text-emphasis cursor-pointer"
             style={{ border: 'none', background: 'transparent' }}
           >
-            <EditorIcon name="close" size={12} />
+            <Icon name="x" size={12} />
           </button>
         </div>
         {enabled && s.def && (

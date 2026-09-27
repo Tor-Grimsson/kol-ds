@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { LabeledControlSection, FullscreenOverlay } from '@kolkrabbi/kol-component'
 import { comboLabel, shortcutsBySection } from '../state/keymap'
-import EditorIcon from '../icons/EditorIcon'
 
 /**
  * LabsShortcuts — labs' "Animate any value" card (the reference overlay on

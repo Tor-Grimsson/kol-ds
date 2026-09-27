@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import EditorIcon from '../../icons/EditorIcon'
 import { Button, Dropdown, LabeledControl, Slider } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { useLayerEdit } from '../useLayerEdit'
@@ -213,26 +212,26 @@ export default function SoftformsLayers({ layer }) {
             >
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
               <span className="truncate flex-1 min-w-0">{labelOf(typeOpts, f.t)}</span>
-              <Button iconComponent={EditorIcon}
+              <Button
                 variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
                 aria-label="Move form up" title="Move form up"
                 disabled={i >= forms.length - 1}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i + 1) }}
                 style={{ transform: 'rotate(180deg)' }}
               />
-              <Button iconComponent={EditorIcon}
+              <Button
                 variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
                 aria-label="Move form down" title="Move form down"
                 disabled={i <= 0}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i - 1) }}
               />
-              <Button iconComponent={EditorIcon}
-                variant="ghost" size="sm" quiet iconOnly="duplicate" iconSize={12}
+              <Button
+                variant="ghost" size="sm" quiet iconOnly="copy" iconSize={12}
                 aria-label="Duplicate form" title="Duplicate form"
                 disabled={forms.length >= MAX_FORMS}
                 onClick={(e) => { e.stopPropagation(); dupForm(i) }}
               />
-              <Button iconComponent={EditorIcon}
+              <Button
                 variant="ghost" size="sm" quiet iconOnly="trash" iconSize={12}
                 aria-label="Delete form" title="Delete form"
                 disabled={forms.length <= minForms}
@@ -243,7 +242,7 @@ export default function SoftformsLayers({ layer }) {
         })}
       </div>
 
-      <Button iconComponent={EditorIcon}
+      <Button
         variant="primary" size="sm" className="w-full" iconLeft="plus" iconSize={12}
         disabled={forms.length >= MAX_FORMS} onClick={addForm}
       >

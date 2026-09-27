@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button, Dropdown, LabeledControl, ViewToggle, FullscreenOverlay, CloseButton } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { useComposeState } from '../compose/state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
 import { POOLS, MODES, tokenNameFor } from '../modes/palette/pools'

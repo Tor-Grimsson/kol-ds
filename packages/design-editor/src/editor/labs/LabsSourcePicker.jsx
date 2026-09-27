@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useRef, useState } from 'react'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import MediaPicker from '../library/MediaPicker'
 import { proxied, isVideoType } from '../library/mediaLibrary'
 import { useLayerEdit } from '../compose/useLayerEdit'
@@ -138,17 +138,17 @@ export default function LabsSourcePicker({ layer }) {
   return (
     <div className="w-full h-full flex items-stretch p-6 gap-px">
       <button type="button" className={pane} onClick={src.openLibrary}>
-        <EditorIcon name="image" size={28} />
+        <Icon name="image" size={28} />
         <span className="kol-mono-12">From library</span>
       </button>
       <div className="w-px" style={{ background: 'var(--kol-fg-08)' }} />
       <button type="button" className={pane} onClick={src.openUpload}>
-        <EditorIcon name="upload" size={28} />
+        <Icon name="upload" size={28} />
         <span className="kol-mono-12">Upload</span>
       </button>
       <div className="w-px" style={{ background: 'var(--kol-fg-08)' }} />
       <button type="button" className={pane} onClick={src.openCamera}>
-        <EditorIcon name="camera" size={28} />
+        <Icon name="camera" size={28} />
         <span className="kol-mono-12">Camera</span>
       </button>
       {src.nodes}

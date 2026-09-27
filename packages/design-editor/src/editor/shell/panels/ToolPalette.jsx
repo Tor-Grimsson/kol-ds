@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { ToolPalette as DsToolPalette } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import { TOOL_META, useTool } from '../../state/tools'
 import { useComposeState, COVER_TYPES, CANVAS_W, CANVAS_H } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
@@ -18,10 +17,10 @@ const tool = (id) => ({ kind: 'tool', id, label: TOOL_META[id].label, icon: TOOL
 const variant = (id) => ({ id, label: TOOL_META[id].label, icon: TOOL_META[id].icon, shortcut: TOOL_META[id].shortcut || undefined })
 const SHAPES = ['rect', 'ellipse', 'triangle', 'line', 'polygon', 'star'].map(variant)
 const BOOLEANS = [
-  { id: 'unite', icon: 'bool-unite', label: 'Unite' },
-  { id: 'subtract', icon: 'bool-subtract', label: 'Subtract front' },
-  { id: 'intersect', icon: 'bool-intersect', label: 'Intersect' },
-  { id: 'exclude', icon: 'bool-exclude', label: 'Exclude' },
+  { id: 'unite', icon: 'boolean-unite', label: 'Unite' },
+  { id: 'subtract', icon: 'boolean-subtract', label: 'Subtract front' },
+  { id: 'intersect', icon: 'boolean-intersect', label: 'Intersect' },
+  { id: 'exclude', icon: 'boolean-exclude', label: 'Exclude' },
 ]
 const DIVIDER = { kind: 'divider' }
 
@@ -68,7 +67,7 @@ export default function ToolPalette() {
     { kind: 'split', id: 'text-fold', label: 'Text', variants: [
       variant('text'),
       /* kinetic type is the motion pack's (editor/packs.js) — a one-shot row in the tool fold */
-      ...(pack('motion') ? [{ id: 'kinetic', label: 'Kinetic type', icon: 'layer-kinetic', action: true }] : []),
+      ...(pack('motion') ? [{ id: 'kinetic', label: 'Kinetic type', icon: 'type', action: true }] : []),
     ] },
     tool('pen'),
     { kind: 'split', id: 'shape-fold', label: 'Shape', variants: SHAPES },
@@ -76,8 +75,8 @@ export default function ToolPalette() {
     tool('zoom'),
     tool('orbit'),
     DIVIDER,
-    { kind: 'action', id: 'flip-h', icon: 'flip-h', label: 'Flip horizontal', shortcut: '⇧H', disabled: !hasSel },
-    { kind: 'action', id: 'flip-v', icon: 'flip-v', label: 'Flip vertical', shortcut: '⇧V', disabled: !hasSel },
+    { kind: 'action', id: 'flip-horizontal', icon: 'flip-horizontal', label: 'Flip horizontal', shortcut: '⇧H', disabled: !hasSel },
+    { kind: 'action', id: 'flip-vertical', icon: 'flip-vertical', label: 'Flip vertical', shortcut: '⇧V', disabled: !hasSel },
     { kind: 'action', id: 'rotate-left', icon: 'rotate-left', label: 'Rotate 90° left', disabled: !canXform },
     { kind: 'action', id: 'rotate-right', icon: 'rotate-right', label: 'Rotate 90° right', disabled: !canXform },
     DIVIDER,
@@ -85,13 +84,13 @@ export default function ToolPalette() {
     DIVIDER,
     { kind: 'action', id: 'image', icon: 'image', label: 'Insert image' },
     { kind: 'action', id: 'crop', icon: 'crop', label: 'Crop image', disabled: selectedLayer?.type !== 'photo' || selectedLayer?.locked },
-    { kind: 'action', id: 'duplicate', icon: 'duplicate', label: 'Duplicate', shortcut: '⌘D', disabled: !selectedLayer },
+    { kind: 'action', id: 'duplicate', icon: 'copy', label: 'Duplicate', shortcut: '⌘D', disabled: !selectedLayer },
   ]
 
   const onAction = (id) => {
     if (id === 'kinetic') addLayer('kinetic')
-    else if (id === 'flip-h') flipSelected('h')
-    else if (id === 'flip-v') flipSelected('v')
+    else if (id === 'flip-horizontal') flipSelected('h')
+    else if (id === 'flip-vertical') flipSelected('v')
     else if (id === 'rotate-left') rotateBy(-90)
     else if (id === 'rotate-right') rotateBy(90)
     else if (BOOLEANS.some((b) => b.id === id)) booleanSelected(id)
@@ -103,7 +102,7 @@ export default function ToolPalette() {
   return (
     <>
       <DsToolPalette items={items} activeId={active} onSelect={setTool} onAction={onAction}
-        size="md" iconComponent={EditorIcon} className="px-3 h-12" />
+        size="md" className="px-3 h-12" />
       <input ref={fileRef} type="file" accept="image/*" onChange={onPickImage} className="hidden" />
     </>
   )

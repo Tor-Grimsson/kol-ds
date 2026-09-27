@@ -1,5 +1,5 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { Fragment, useEffect, useRef, useState } from 'react'
-import EditorIcon from '../../icons/EditorIcon'
 import { Button,
   Dropdown, LabeledControl, Slider, Textarea, SegmentedToggle, ViewToggle,
   ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem,
@@ -413,13 +413,13 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
               <span className="truncate flex-1 min-w-0">{ins.text || '—'}</span>
               {tag && <span className="shrink-0 kol-helper-10 text-meta">grp {tag}</span>}
-              <Button iconComponent={EditorIcon}
-                variant="ghost" size={cs} quiet iconOnly="duplicate" iconSize={12}
+              <Button
+                variant="ghost" size={cs} quiet iconOnly="copy" iconSize={12}
                 aria-label="Duplicate element" title="Duplicate element"
                 onClick={(e) => { e.stopPropagation(); duplicate(i) }}
               />
-              <Button iconComponent={EditorIcon}
-                variant="ghost" size={cs} quiet iconOnly="close" iconSize={10}
+              <Button
+                variant="ghost" size={cs} quiet iconOnly="x" iconSize={10}
                 aria-label="Remove element" title="Remove element"
                 disabled={insts.length <= 1}
                 onClick={(e) => { e.stopPropagation(); remove(i) }}
@@ -437,7 +437,7 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
         </Button>
       </div>
       <div className="flex items-center gap-1">
-        <Button iconComponent={EditorIcon} variant="primary" size={cs} className="flex-1" iconLeft="plus" iconSize={12} onClick={add}>
+        <Button variant="primary" size={cs} className="flex-1" iconLeft="plus" iconSize={12} onClick={add}>
           Add element
         </Button>
         <Button
@@ -445,14 +445,14 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
           aria-label="Move element up" title="Move element up"
           disabled={idx <= 0} onClick={() => move(-1)}
         >
-          <EditorIcon name="chevron-down" size={12} style={{ transform: 'rotate(180deg)' }} />
+          <Icon name="chevron-down" size={12} style={{ transform: 'rotate(180deg)' }} />
         </Button>
         <Button
           variant="ghost" size={cs} quiet style={iconBtnStyle}
           aria-label="Move element down" title="Move element down"
           disabled={idx >= insts.length - 1} onClick={() => move(1)}
         >
-          <EditorIcon name="chevron-down" size={12} />
+          <Icon name="chevron-down" size={12} />
         </Button>
       </div>
     </>
@@ -503,12 +503,12 @@ function MotionStack({ motions, mIdx, onSelect, onAdd, onRemove }) {
         <div className="flex-1 min-w-0">
           <SegmentedToggle value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
         </div>
-        <Button iconComponent={EditorIcon}
+        <Button
           variant="ghost" size={cs} quiet iconOnly="plus" iconSize={12}
           aria-label="Add motion layer" title="Add motion layer" onClick={onAdd}
         />
-        <Button iconComponent={EditorIcon}
-          variant="ghost" size={cs} quiet iconOnly="close" iconSize={10}
+        <Button
+          variant="ghost" size={cs} quiet iconOnly="x" iconSize={10}
           aria-label="Remove motion layer" title="Remove motion layer (the primary can only be set to None)"
           disabled={mIdx === 0} onClick={onRemove}
         />
@@ -548,7 +548,7 @@ function OpenTypeMenu({ value = {}, onToggle }) {
         aria-expanded={open}
       >
         <span>{count ? `${count} feature${count > 1 ? 's' : ''}` : 'None'}</span>
-        <EditorIcon
+        <Icon
           name="chevron-down" size={10} className="ml-auto"
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 300ms' }}
         />
@@ -564,7 +564,7 @@ function OpenTypeMenu({ value = {}, onToggle }) {
             <MenuDropdownItem
               key={f.tag}
               onClick={() => onToggle(f.tag, !value[f.tag])}
-              shortcut={value[f.tag] ? <EditorIcon name="check" size={11} /> : undefined}
+              shortcut={value[f.tag] ? <Icon name="check" size={11} /> : undefined}
             >
               {f.label}
             </MenuDropdownItem>

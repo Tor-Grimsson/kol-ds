@@ -1,5 +1,4 @@
 import { Button, LabeledControl } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import ColorPicker from '../../modes/pattern/ColorPicker'
 import RuleRow, { newRule, randomRule } from '../../modes/pattern/RuleRow'
 import AutoControls from '../../params/AutoControls'
@@ -161,7 +160,7 @@ function PatternSurface({ layer }) {
             />
           ))}
           <div className="grid grid-cols-2 gap-2">
-            <Button iconComponent={EditorIcon} variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
+            <Button variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
               Add rule
             </Button>
             <Button variant="primary" size="sm" onClick={randomizeRules}>

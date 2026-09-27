@@ -1,5 +1,4 @@
 import { Button, LabeledControl } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import RuleRow from '../../modes/pattern/RuleRow'
 import { newRule, randomRule } from '../../../loops/pattern/rules.js'
 import { mulberry32 } from '../../lib/rng'
@@ -54,7 +53,7 @@ export default function RulesEditor({ layer, patch, seed }) {
           />
         ))}
         <div className="grid grid-cols-2 gap-2">
-          <Button iconComponent={EditorIcon} variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
+          <Button variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
             Add rule
           </Button>
           <Button variant="primary" size="sm" onClick={randomizeRules}>

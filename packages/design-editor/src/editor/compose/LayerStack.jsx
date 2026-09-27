@@ -1,5 +1,4 @@
 import { LayerStack as DsLayerStack, AddLayerButton as DsAddLayerButton, BLEND_MODES } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { useComposeState, layerTypes } from './state'
 import { rowLabelForLayer } from './labels'
 
@@ -14,28 +13,28 @@ import { rowLabelForLayer } from './labels'
 export { BLEND_MODES }
 
 const TYPE_ICONS = {
-  background: 'layer-background',
-  pattern:    'layer-pattern',
-  photo:      'layer-photo',
-  shape:      'layer-shape',
-  text:       'layer-text',
-  group:      'layer-group',
-  bool:       'layer-group',
-  loop:       'layer-loop',
-  misc:       'layer-loop',
-  kinetic:    'layer-kinetic',
+  background: 'square',
+  pattern:    'ptrn-dot',
+  photo:      'image',
+  shape:      'rectangle',
+  text:       'type',
+  group:      'layers',
+  bool:       'layers',
+  loop:       'refresh',
+  misc:       'refresh',
+  kinetic:    'type',
 }
-const iconFor = (type) => TYPE_ICONS[type] ?? 'layer-shape'
+const iconFor = (type) => TYPE_ICONS[type] ?? 'rectangle'
 
 /* Line is not here on purpose — a line is drawn with the pen (its endpoints carry direction a
  * default box can't). */
 const SHAPE_KINDS = [
-  { id: 'logo',     label: 'Logo',      icon: 'layer-shape',   extras: {} },
-  { id: 'rect',     label: 'Rectangle', icon: 'tool-rect',     extras: { kind: 'rect' } },
-  { id: 'ellipse',  label: 'Ellipse',   icon: 'tool-ellipse',  extras: { kind: 'ellipse' } },
-  { id: 'triangle', label: 'Triangle',  icon: 'tool-triangle', extras: { kind: 'triangle' } },
-  { id: 'polygon',  label: 'Polygon',   icon: 'tool-polygon',  extras: { kind: 'polygon', sides: 5 } },
-  { id: 'star',     label: 'Star',      icon: 'tool-star',     extras: { kind: 'star', points: 5, innerRatio: 0.5 } },
+  { id: 'logo',     label: 'Logo',      icon: 'rectangle',   extras: {} },
+  { id: 'rect',     label: 'Rectangle', icon: 'rectangle',     extras: { kind: 'rect' } },
+  { id: 'ellipse',  label: 'Ellipse',   icon: 'circle',  extras: { kind: 'ellipse' } },
+  { id: 'triangle', label: 'Triangle',  icon: 'triangle', extras: { kind: 'triangle' } },
+  { id: 'polygon',  label: 'Polygon',   icon: 'polygon',  extras: { kind: 'polygon', sides: 5 } },
+  { id: 'star',     label: 'Star',      icon: 'star',     extras: { kind: 'star', points: 5, innerRatio: 0.5 } },
 ]
 
 /** The add menu — lives in the Layers / Assets tab row (LayersAssetsPanel). */
@@ -47,7 +46,6 @@ export function AddLayerButton() {
       nested={{ typeId: 'shape', kinds: SHAPE_KINDS }}
       onAdd={(typeId, extras) => addLayer(typeId, extras)}
       iconFor={iconFor}
-      iconComponent={EditorIcon}
     />
   )
 }
@@ -72,7 +70,6 @@ export function LayerStackBody() {
       onGroup={groupLayers}
       labelFor={rowLabelForLayer}
       iconFor={iconFor}
-      iconComponent={EditorIcon}
     />
   )
 }

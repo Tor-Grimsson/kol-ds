@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useState } from 'react'
 import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import TransportBar from '../params/TransportBar'
 import { useComposeState } from '../compose/state'
 import { useComposeFile } from '../compose/useComposeFile'
@@ -195,7 +195,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
         <Button variant="primary" size="lg" onClick={() => setOpen(true)}>
           <span className="flex items-center gap-2">
             {isLoop ? layer.presetLabel : 'Media'}
-            <EditorIcon name="chevron-down" size={16} className="rotate-180" />
+            <Icon name="chevron-down" size={16} className="rotate-180" />
           </span>
         </Button>
         {/* Media has no generator schema, but an effect chain is still
@@ -254,7 +254,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
             <span>{title}</span>
             {/* Real icon, opaque ink (the icons law — the header's text-meta
                 alpha stays on the TEXT only). */}
-            <EditorIcon name="chevron-down" size={16} className="text-oq-48" />
+            <Icon name="chevron-down" size={16} className="text-oq-48" />
           </button>
           <button className="kol-helper-12 text-meta py-2.5" onClick={onRestart}>Start over</button>
         </div>
@@ -280,7 +280,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
           {activeTab === 'generate' && isLoop && (
             <div className="flex flex-col gap-2 pt-3">
               <div className="grid grid-cols-2 gap-2">
-                <Button iconComponent={EditorIcon} variant="primary" size="lg" iconRight="refresh" onClick={shufflePreset}>Preset</Button>
+                <Button variant="primary" size="lg" iconRight="refresh" onClick={shufflePreset}>Preset</Button>
                 <Button variant="primary" size="lg" onClick={() => setShowCats(true)}>Generator</Button>
               </div>
               <Button variant="primary" size="lg" className="w-full" onClick={rollAll}>

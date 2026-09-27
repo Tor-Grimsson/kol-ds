@@ -1,6 +1,5 @@
 import { Button, Section } from '@kolkrabbi/kol-component'
 import { Dropdown } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import { Input } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
 import { Stepper } from '@kolkrabbi/kol-component'
@@ -122,7 +121,7 @@ export default function RuleRow({ rule, onChange, onRemove, onReroll }) {
             onChange={(v) => set({ selectKind: v })}
           />
         </div>
-        <Button iconComponent={EditorIcon}
+        <Button
           variant="ghost"
           size="sm"
           iconOnly="refresh"
@@ -133,10 +132,10 @@ export default function RuleRow({ rule, onChange, onRemove, onReroll }) {
           className="shrink-0"
           style={{ padding: 6 }}
         />
-        <Button iconComponent={EditorIcon}
+        <Button
           variant="ghost"
           size="sm"
-          iconOnly="close"
+          iconOnly="x"
           iconSize={12}
           onClick={onRemove}
           aria-label="Remove rule"

@@ -5,7 +5,6 @@ import { useComposeState } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
 import { labelForLayer } from '../../compose/labels'
 import { isBooleanable } from '../../compose/boolean-ops'
-import EditorIcon from '../../icons/EditorIcon'
 import InspectorRail from '../../compose/InspectorRail'
 import ParametersPanel from '../../compose/inspectors/ParametersPanel'
 import { pack } from '../../packs'
@@ -98,7 +97,7 @@ export default function SelectionPalettePanel() {
           />
         )}
         {canDelete && (
-          <Button iconComponent={EditorIcon}
+          <Button
             variant="primary"
             size="sm"
             animateIcon

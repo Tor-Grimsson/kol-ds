@@ -1,5 +1,4 @@
 import { Button, InspectorRail as DsInspectorRail } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { useComposeState } from './state'
 import { findLayerDeep } from './helpers'
 import LayerInspector   from './inspectors/LayerInspector'
@@ -32,11 +31,11 @@ export default function InspectorRail() {
           <div className="flex flex-col gap-3">
             <p className="kol-helper-12 text-meta">{ids.length} layers selected.</p>
             <AlignmentPanel />
-            <Button iconComponent={EditorIcon}
+            <Button
               variant="primary"
               size="sm"
               className="w-full"
-              iconLeft="component"
+              iconLeft="component-01"
               onClick={() => groupLayers(ids)}
             >
               Group selection

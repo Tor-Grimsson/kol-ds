@@ -1,7 +1,7 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useState } from 'react'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from '@kolkrabbi/kol-component'
 import { IconFrame, Input, useModal } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { ASPECTS } from './aspects'
 import { useComposeState } from '../compose/state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
@@ -227,7 +227,7 @@ export default function MenuTop() {
             <MenuDropdownItem
               key={m.id}
               onClick={() => goMode(m.id)}
-              shortcut={m.id === 'editor' ? <EditorIcon name="check" size={11} /> : undefined}
+              shortcut={m.id === 'editor' ? <Icon name="check" size={11} /> : undefined}
             >
               {m.label}
             </MenuDropdownItem>
@@ -275,7 +275,7 @@ export default function MenuTop() {
                       <MenuDropdownItem
                         key={f.id}
                         onClick={() => applyEffect(f)}
-                        shortcut={fxInChain(f.id) ? <EditorIcon name="check" size={11} /> : undefined}
+                        shortcut={fxInChain(f.id) ? <Icon name="check" size={11} /> : undefined}
                       >
                         {f.label}
                       </MenuDropdownItem>
@@ -293,7 +293,7 @@ export default function MenuTop() {
                 <MenuDropdownItem
                   key={f.id}
                   onClick={() => applyEffect(f)}
-                  shortcut={fxInChain(f.id) ? <EditorIcon name="check" size={11} /> : undefined}
+                  shortcut={fxInChain(f.id) ? <Icon name="check" size={11} /> : undefined}
                 >
                   {f.label}
                 </MenuDropdownItem>
@@ -352,7 +352,7 @@ export default function MenuTop() {
             <MenuDropdownDivider />
             <MenuDropdownItem
               onClick={toggleSnap}
-              shortcut={snapEnabled ? <EditorIcon name="check" size={11} /> : undefined}
+              shortcut={snapEnabled ? <Icon name="check" size={11} /> : undefined}
             >
               Snap to guides
             </MenuDropdownItem>
@@ -376,7 +376,7 @@ export default function MenuTop() {
                 <MenuDropdownItem
                   key={opt.value}
                   onClick={() => setAspect(opt.value)}
-                  shortcut={aspect === opt.value ? <EditorIcon name="check" size={11} /> : undefined}
+                  shortcut={aspect === opt.value ? <Icon name="check" size={11} /> : undefined}
                 >
                   {opt.label}
                 </MenuDropdownItem>
@@ -385,13 +385,13 @@ export default function MenuTop() {
             <MenuDropdownNest label="View">
               <MenuDropdownItem
                 onClick={() => setView('single')}
-                shortcut={view === 'single' ? <EditorIcon name="check" size={11} /> : undefined}
+                shortcut={view === 'single' ? <Icon name="check" size={11} /> : undefined}
               >
                 Single
               </MenuDropdownItem>
               <MenuDropdownItem
                 onClick={() => setView('social')}
-                shortcut={view === 'social' ? <EditorIcon name="check" size={11} /> : undefined}
+                shortcut={view === 'social' ? <Icon name="check" size={11} /> : undefined}
               >
                 Social
               </MenuDropdownItem>

@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Dropdown, FullscreenOverlay, MediaViewer } from '@kolkrabbi/kol-component'
-import EditorIcon from '../icons/EditorIcon'
 import { listMedia, mediaUrl, mediaSrc, isImageType, isVideoType, formatSize, bucketOptions, DEFAULT_BUCKET } from './mediaLibrary'
 
 /* SVG is an image/* type, so 'image' still matches it — 'svg' narrows to
@@ -196,9 +196,9 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
               placeholder="Filter by name"
               className="flex-1"
             />
-            <Button iconComponent={EditorIcon}
+            <Button
               variant="primary" size="sm" quiet
-              iconOnly="close" iconSize={14}
+              iconOnly="x" iconSize={14}
               aria-label="Close"
               onClick={onClose}
             />
@@ -271,7 +271,7 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
                             className="absolute top-1 right-1 w-7 h-7 inline-flex items-center justify-center rounded bg-oq-08 text-oq-64 hover:text-emphasis opacity-0 group-hover:opacity-100 transition-opacity"
                             onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx) }}
                           >
-                            <EditorIcon name="maximize" size={12} />
+                            <Icon name="maximize" size={12} />
                           </button>
                         </div>
                         <p className="kol-helper-10 text-meta truncate mt-1">{o.displayKey}</p>

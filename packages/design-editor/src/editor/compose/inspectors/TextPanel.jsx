@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Dropdown, LabeledControl, PopoverPanel, SegmentedToggle, Slider, usePopover, ViewToggle } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import EditorIcon from '../../icons/EditorIcon'
 
 import BindDot from '../../params/BindDot'
 import { isBinding } from '../../params/resolve'
@@ -183,9 +182,9 @@ export function TextSurface({ layer }) {
             ariaLabel="Text alignment"
             value={layer.textAlign ?? 'center'}
             options={[
-              { value: 'left',   ariaLabel: 'Align left',   label: <EditorIcon name="align-h-start" size={16} /> },
-              { value: 'center', ariaLabel: 'Align center', label: <EditorIcon name="align-h-center" size={16} /> },
-              { value: 'right',  ariaLabel: 'Align right',  label: <EditorIcon name="align-h-end" size={16} /> },
+              { value: 'left',   ariaLabel: 'Align left',   label: <Icon name="align-horizontal-left" size={16} /> },
+              { value: 'center', ariaLabel: 'Align center', label: <Icon name="align-horizontal-center" size={16} /> },
+              { value: 'right',  ariaLabel: 'Align right',  label: <Icon name="align-horizontal-right" size={16} /> },
             ]}
             onChange={(v) => setProp('textAlign', v)}
           />
@@ -194,9 +193,9 @@ export function TextSurface({ layer }) {
             ariaLabel="Vertical alignment"
             value={layer.verticalAlign ?? 'middle'}
             options={[
-              { value: 'top',    ariaLabel: 'Align top',    label: <EditorIcon name="align-v-start" size={16} /> },
-              { value: 'middle', ariaLabel: 'Align middle', label: <EditorIcon name="align-v-center" size={16} /> },
-              { value: 'bottom', ariaLabel: 'Align bottom', label: <EditorIcon name="align-v-end" size={16} /> },
+              { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="align-vertical-top" size={16} /> },
+              { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="align-vertical-center" size={16} /> },
+              { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="align-vertical-bottom" size={16} /> },
             ]}
             onChange={(v) => setProp('verticalAlign', v)}
           />

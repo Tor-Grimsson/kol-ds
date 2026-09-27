@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useRef, useState } from 'react'
 import { Button, LabeledControl, SegmentedToggle, ToggleSwitch, ViewToggle, Slider, Input } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import { PickerRow, PickerDropdown } from './TreePicker'
 import { useComposeState } from '../state'
 import { findLayerDeep } from '../helpers'
@@ -375,16 +375,16 @@ function StageRow({ stage, selected, onSelect, onToggle, onRemove, onUp, onDown,
       className={`flex items-center gap-1 px-2 h-8 rounded cursor-pointer ${selected ? 'bg-fg-08' : 'hover:bg-fg-04'}`}
     >
       {iconBtn(enabled ? 'Disable effect' : 'Enable effect', onToggle, false,
-        <EditorIcon name={enabled ? 'eye-on' : 'eye-off'} size={12} />)}
+        <Icon name={enabled ? 'eye-on' : 'eye-off'} size={12} />)}
       <span className={`kol-helper-12 flex-1 truncate ${enabled ? 'text-emphasis' : 'text-meta'}`}>
         {stage.def?.label ?? stage.id}
       </span>
       {iconBtn('Move up', onUp, !canUp,
-        <EditorIcon name="chevron-down" size={11} style={{ transform: 'rotate(180deg)' }} />)}
+        <Icon name="chevron-down" size={11} style={{ transform: 'rotate(180deg)' }} />)}
       {iconBtn('Move down', onDown, !canDown,
-        <EditorIcon name="chevron-down" size={11} />)}
+        <Icon name="chevron-down" size={11} />)}
       {iconBtn('Remove effect', onRemove, false,
-        <EditorIcon name="close" size={11} />)}
+        <Icon name="x" size={11} />)}
     </div>
   )
 }
@@ -449,7 +449,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
                     className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0 text-oq-64 hover:text-emphasis"
                     style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
                   >
-                    <EditorIcon name={enabled ? 'eye-on' : 'eye-off'} size={12} />
+                    <Icon name={enabled ? 'eye-on' : 'eye-off'} size={12} />
                   </button>
                   <span className={`kol-helper-12 flex-1 truncate ${enabled ? 'text-emphasis' : 'text-meta'}`}>
                     {shapeLabel(sw.shape ?? 'linear')}
@@ -464,7 +464,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
                 className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0 text-oq-64 hover:text-emphasis"
                 style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
               >
-                <EditorIcon name="close" size={11} />
+                <Icon name="x" size={11} />
               </button>
             </div>
             {enabled && (
@@ -484,7 +484,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
           </div>
         )
       })}
-      <Button iconComponent={EditorIcon} variant="primary" size={cs} className="w-full" iconLeft="plus" iconSize={12} onClick={() => add()}>
+      <Button variant="primary" size={cs} className="w-full" iconLeft="plus" iconSize={12} onClick={() => add()}>
         Add custom sweep
       </Button>
     </div>

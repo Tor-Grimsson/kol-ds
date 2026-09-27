@@ -1,6 +1,6 @@
+import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useState } from 'react'
 import { Button, FullscreenOverlay } from '@kolkrabbi/kol-component'
-import EditorIcon from '../../icons/EditorIcon'
 import { ASPECTS, PRESET_SIZES } from '../aspects'
 
 /**
@@ -114,7 +114,7 @@ export default function BatchExportModal({ open, onClose, runBatchExport, baseAs
               ? `Exporting ${progress.done}/${progress.total}…`
               : `${jobs.length} file${jobs.length === 1 ? '' : 's'}`}
           </span>
-          <Button iconComponent={EditorIcon}
+          <Button
             variant="primary"
             size="sm"
             iconLeft="download"
@@ -141,7 +141,7 @@ function CheckRow({ checked, disabled, onToggle, label, meta }) {
       className={`flex items-center gap-2 px-2 py-1.5 rounded border text-left ${checked ? 'border-oq-16 bg-fg-04' : 'border-oq-08'} ${disabled ? 'opacity-50' : ''}`}
     >
       <span className={`inline-flex items-center justify-center w-4 h-4 rounded-sm border ${checked ? 'border-oq-16' : 'border-oq-08'}`}>
-        {checked && <EditorIcon name="check" size={12} />}
+        {checked && <Icon name="check" size={12} />}
       </span>
       <span className="kol-helper-12 text-emphasis flex-1 whitespace-nowrap">{label}</span>
       {meta && <span className="kol-helper-10 text-meta">{meta}</span>}

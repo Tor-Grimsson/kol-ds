@@ -11,7 +11,6 @@ import StrokePanel from '../../color/StrokePanel'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useComposeState, COVER_TYPES } from '../state'
 import { scalePathNodes } from '../path-math'
-import EditorIcon from '../../icons/EditorIcon'
 import { useLayerEdit } from '../useLayerEdit'
 import { useColorTarget } from '../../color/useColorTarget'
 import { ColorField } from './ColorField'
@@ -87,10 +86,10 @@ export default function LayerInspector({ layer }) {
                 variant="filled" size="sm" value={null}
                 ariaLabel="Transform"
                 options={[
-                  { value: 'rot', ariaLabel: 'Rotate 90° left', label: <EditorIcon name="rotate-left" size={16} /> },
-                  { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><EditorIcon name="flip-h" size={16} /></span> },
-                  { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><EditorIcon name="flip-v" size={16} /></span> },
-                  ...(layer.type === 'photo' ? [{ value: 'crop', ariaLabel: 'Crop image', label: <EditorIcon name="crop" size={16} /> }] : []),
+                  { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={16} /> },
+                  { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-horizontal" size={16} /></span> },
+                  { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-vertical" size={16} /></span> },
+                  ...(layer.type === 'photo' ? [{ value: 'crop', ariaLabel: 'Crop image', label: <Icon name="crop" size={16} /> }] : []),
                 ]}
                 onChange={(op) => {
                   if (op === 'rot') setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
@@ -176,7 +175,7 @@ export default function LayerInspector({ layer }) {
           label="Fill"
           actions={layer.color == null && (
             <SectionIconBtn label="Add fill" onClick={() => target.setFill('palette:dark')}>
-              <EditorIcon name="plus" size={12} />
+              <Icon name="plus" size={12} />
             </SectionIconBtn>
           )}
         >
@@ -203,7 +202,7 @@ export default function LayerInspector({ layer }) {
               label="Add stroke"
               onClick={() => { target.setStroke('palette:dark'); setProp('strokeWidth', 2) }}
             >
-              <EditorIcon name="plus" size={12} />
+              <Icon name="plus" size={12} />
             </SectionIconBtn>
           )}
         >
@@ -271,7 +270,7 @@ function PaintRow({ value, onColor, palette, label, opacity, hidden, onOpacity, 
         />
       </div>
       <SectionIconBtn label={hidden ? `Show ${label.toLowerCase()}` : `Hide ${label.toLowerCase()}`} active={hidden} onClick={onToggleHidden}>
-        <EditorIcon name={hidden ? 'eye-off' : 'eye-on'} size={13} />
+        <Icon name={hidden ? 'eye-off' : 'eye-on'} size={13} />
       </SectionIconBtn>
       <SectionIconBtn label={`Remove ${label.toLowerCase()}`} onClick={onRemove}>
         <Icon name="minus" size={12} />
@@ -356,7 +355,7 @@ function AppearanceSection({ layer, setProp, first }) {
       actions={
         <>
           <SectionIconBtn label={visible ? 'Hide layer' : 'Show layer'} active={!visible} onClick={() => toggleLayer(layer.id)}>
-            <EditorIcon name={visible ? 'eye-on' : 'eye-off'} size={13} />
+            <Icon name={visible ? 'eye-on' : 'eye-off'} size={13} />
           </SectionIconBtn>
           <SectionIconBtn
             label={`Blend: ${BLEND_MODES.find((b) => b.value === blend)?.label ?? blend}`}
@@ -374,7 +373,7 @@ function AppearanceSection({ layer, setProp, first }) {
                 className="w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-oq-64 hover:text-emphasis text-left"
               >
                 <span className="flex-1 truncate leading-normal">{b.label}</span>
-                {blend === b.value && <EditorIcon name="check" size={11} />}
+                {blend === b.value && <Icon name="check" size={11} />}
               </button>
             ))}
           </PopoverPanel>
@@ -519,7 +518,7 @@ function ImageSource({ layer, patch }) {
         )
       )}
       <div className="flex items-center gap-2">
-        <Button iconComponent={EditorIcon}
+        <Button
           variant="primary" size="sm" iconLeft="upload" iconSize={12}
           className="flex-1"
           onClick={() => fileRef.current?.click()}
@@ -534,7 +533,7 @@ function ImageSource({ layer, patch }) {
           Library
         </Button>
         {layer.src && (
-          <Button iconComponent={EditorIcon}
+          <Button
             variant="primary" size="sm" iconOnly="trash" iconSize={12}
             aria-label="Clear image"
             onClick={onClear}
@@ -567,7 +566,7 @@ function FlipButton({ axis, layer, flipLayer, segmented = false }) {
         ...(segmented ? { height: 26, padding: 5 } : {}),
       }}
     >
-      <EditorIcon name={axis === 'h' ? 'flip-h' : 'flip-v'} size={segmented ? 13 : 14} />
+      <Icon name={axis === 'h' ? 'flip-horizontal' : 'flip-vertical'} size={segmented ? 13 : 14} />
     </button>
   )
 }
