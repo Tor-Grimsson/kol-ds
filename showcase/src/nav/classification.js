@@ -234,6 +234,7 @@ export const FUNCTIONS_BY_NAME = {
   PanelLabel: 'structure', ModuleHeader: 'structure', JackSocket: 'input', LabeledJack: 'input',
   RockerSwitch: 'input', ParamSheet: 'overlay',
   EnvelopeGenerator: 'input', SignalScope: 'display', SignalReference: 'display',
+  EnvelopeModeToggle: 'input', useEnvelopeGenerator: 'utility',
   ModuleFrame: 'structure', ChannelStrip: 'structure', FlipCard: 'structure',
   /* dashboards */
   DashMetricCard: 'display', DashStackedBarCard: 'display', DashChartCard: 'display',
@@ -408,6 +409,7 @@ export const NO_DEMO = (() => {
     /* the full-screen viewer needs a real media set and a URL resolver to show
      * anything; the MediaLibrary demo opens it on real files (2026-09-04). */
     MediaInspector: 'opened from the MediaLibrary demo, over real files (2026-09-04 ruling)',
+    EnvelopeModeToggle: 'rendered in the EnvelopeGenerator demo — the generator draws it when it keeps its own state (2026-09-27)',
     /* rulers-and-guides-are-private (2026-09-03): both layers render INSIDE the
      * Canvas demo, over its `panEnabled` viewport, where a drag off a ruler
      * makes a real guide. A page of their own would have to build a canvas to

@@ -7,7 +7,7 @@ import { useFixtureMedia, useMediaTool, TOOL_SHORTCUTS } from 'media-fixture/wir
  * per-bucket defaults are the fixture's, shared with apps/media-shell (2026-09-26 — this app kept
  * its own module and the same tool opened differently one shell over; retired to _tmp/). */
 const fixtureClient = createFixtureClient();
-import ShortcutsOverlay from '@kolkrabbi/kol-shell/src/ShortcutsOverlay.jsx';
+import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell';
 
 /* kol-r2b2's App.jsx, PORTED 1:1. Every ruling, comment, class and behaviour is
  * that file's. Four wiring changes and one addition, and nothing else:
@@ -80,7 +80,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen py-6 max-w-[var(--kol-container-max)] mx-auto breakpoint-padding flex flex-col gap-10">
+    /* THE TOOL FRAME (app anatomy § Tool frame, 2026-09-27): PageShell fixed · bleed — the page the
+       tool gets inside apps/media-shell, so alone and in the shell are one geometry. It was the
+       site tier's `--kol-container-max` cap and `breakpoint-padding`, which no other app wears. */
+    <PageShell mode="fixed" className="gap-10">
       {/* ONE SURFACE, TWO VIEWS (`variant="explorer"`, component 2026-09-21). This used to be two
           `<MediaLibrary>` calls stacked — browse at a fixed 800px with the wall and the drop zone
           below the fold, `header={false}` and `stats={false}` suppressing the second copy of each.
@@ -107,6 +110,6 @@ export default function App() {
       {shortcutsOpen && <ShortcutsOverlay shortcuts={TOOL_SHORTCUTS} onClose={() => setShortcutsOpen(false)} />}
 
       {tool.overlay}
-    </div>
+    </PageShell>
   );
 }

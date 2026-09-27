@@ -15,6 +15,12 @@ import { SEED_LAYOUTS } from './deckSeed.js'
 const BUCKET = 'r2'
 const nameOf = (key) => key.split('/').pop() || key
 
+/* THE MASTHEAD IS THE TOOL'S TITLE ONLY (app anatomy § Tool frame, rules 3 and 5, 2026-09-27). The
+ * packages' default headers carry olina's explanatory subtitles; the product's apps pass the title
+ * alone, so apps/notes · apps/presentation and media-shell's tabs read the same. */
+const NOTES_HEADER = { title: 'NOTES' }
+const DECKS_HEADER = { title: 'DECKS' }
+
 /** kol-notes' `Notes` props: the client, and every bucket file as something Attach can insert. */
 export function useNotesTool({ client, bucket = BUCKET, refreshKey }) {
   const [objects, setObjects] = useState([])
@@ -24,13 +30,14 @@ export function useNotesTool({ client, bucket = BUCKET, refreshKey }) {
     return () => { live = false }
   }, [client, bucket, refreshKey])
   const assets = useMemo(() => objects.map((o) => ({ key: o.key, name: nameOf(o.key), url: client.mediaUrl(o.key, bucket), contentType: o.contentType })), [client, bucket, objects])
-  return { props: { client, assets } }
+  return { props: { client, assets, header: NOTES_HEADER } }
 }
 
 /** kol-deck's `Decks` props: the client, olina's layouts, the bucket as picker and upload target. */
 export function useDecksTool({ client, bucket = BUCKET }) {
   const props = useMemo(() => ({
     client,
+    header: DECKS_HEADER,
     layouts: SEED_LAYOUTS,
     mediaClient: client,
     /* a picture from disk goes where the product keeps media, and the slide holds its URL */

@@ -113,7 +113,7 @@ export default function Parametric() {
           'kol-mirror — the /expressions oscilloscope and its reference (hall-of-mirrors/ExpressionReference.jsx)',
           'design-editor — the Math · Expression loop (loops/math/expression.js) and the modulation DSL (params/expr.js)',
         ]}>
-        <div className="w-full"><EnvelopeGenerator reference={false} /></div>
+        <div className="h-[560px] w-full"><EnvelopeGenerator reference={false} /></div>
       </Specimen>
     </div>
   )

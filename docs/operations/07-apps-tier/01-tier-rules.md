@@ -3,7 +3,7 @@ title: Tier rules
 type: reference
 status: active
 created: 2026-09-21
-updated: 2026-09-21
+updated: 2026-09-27
 description: How an app is wired in this repo
 tags:
   - domain/workflow
@@ -24,6 +24,8 @@ The mechanics, for this repo. The **why** is in `~/.dotfiles/docs/operations/sys
 ## Shape
 
 An app is a Vite workspace under `apps/`, with its own dev script, depending on the packages by name — `@kolkrabbi/kol-component`, not a relative path. It is the same import a consumer writes, which is the point: if it resolves here it resolves there.
+
+**The page is the tool frame** — `PageShell mode="fixed"`, the title-only masthead, nothing below the fold: [[../../documentation/04-compositions/16-app-anatomy|App anatomy § Tool frame]].
 
 `packages/*` does not move under `apps/`. Published and runnable are different things and the folder split is what keeps them distinguishable.
 

@@ -6,9 +6,13 @@
  * Params are the knob values, 0…100:
  *   attack · decay · release   → seconds via `stageSeconds` (0 → 5 ms, 100 → 2 s, linear — monitor's)
  *   sustain                    → the held level, 0…100
+ *
+ * `hold` is SECONDS, not a knob (app frame and curves, 2026-09-27): how long the gate stays open
+ * once the envelope has reached sustain. Default 1 — the gate the engine always assumed
+ * (`a + d + 1`), so an envelope without it draws exactly as before.
  */
 
-export const ADSR_DEFAULTS = Object.freeze({ attack: 10, decay: 30, sustain: 70, release: 50 })
+export const ADSR_DEFAULTS = Object.freeze({ attack: 10, decay: 30, sustain: 70, release: 50, hold: 1 })
 
 /** knob 0…100 → seconds, 5 ms … 2 s */
 export const stageSeconds = (v) => 0.005 + (Math.max(0, Math.min(100, v)) / 100) * 1.995
@@ -16,10 +20,16 @@ export const stageSeconds = (v) => 0.005 + (Math.max(0, Math.min(100, v)) / 100)
 /** a 0…100 level → [min, max] */
 export const toRange = (level, min = 0, max = 100) => min + (level / 100) * (max - min)
 
+/** Seconds the gate stays open: attack + decay + the sustain hold. */
+export const gateSeconds = (params = ADSR_DEFAULTS) => {
+  const p = { ...ADSR_DEFAULTS, ...params }
+  return stageSeconds(p.attack) + stageSeconds(p.decay) + Math.max(0, p.hold)
+}
+
 /**
- * envelopeAt(t, params, { hold, cycle }) — the level at `t` seconds after a gate that stays
- * open for `hold` seconds (default: until sustain is reached, plus 1 s). Pure, so a scope can
- * draw it and a timeline can scrub it. `cycle` repeats the whole envelope.
+ * envelopeAt(t, params, { hold, cycle }) — the level at `t` seconds after the gate opens. The
+ * gate stays open for `gateSeconds(params)`; the `hold` option (total gate seconds) overrides it.
+ * Pure, so a scope can draw it and a timeline can scrub it. `cycle` repeats the whole envelope.
  */
 export function envelopeAt(t, params = ADSR_DEFAULTS, { hold, cycle = false } = {}) {
   const { attack, decay, sustain, release } = { ...ADSR_DEFAULTS, ...params }
@@ -27,7 +37,7 @@ export function envelopeAt(t, params = ADSR_DEFAULTS, { hold, cycle = false } = 
   const d = stageSeconds(decay)
   const r = stageSeconds(release)
   const s = Math.max(0, Math.min(100, sustain))
-  const gate = hold ?? a + d + 1
+  const gate = hold ?? gateSeconds(params)
   const length = gate + r
   let u = t
   if (cycle) u = ((t % length) + length) % length
@@ -42,7 +52,7 @@ export function envelopeAt(t, params = ADSR_DEFAULTS, { hold, cycle = false } = 
 /** Total seconds of one envelope pass — for sizing a scope window. */
 export const envelopeLength = (params = ADSR_DEFAULTS, { hold } = {}) => {
   const p = { ...ADSR_DEFAULTS, ...params }
-  return (hold ?? stageSeconds(p.attack) + stageSeconds(p.decay) + 1) + stageSeconds(p.release)
+  return (hold ?? gateSeconds(p)) + stageSeconds(p.release)
 }
 
 /**

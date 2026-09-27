@@ -12,9 +12,10 @@
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
     "@kolkrabbi/kol-component": "workspace:*",
-    "@kolkrabbi/kol-hardware": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-hardware": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "react": "^19.2.0",

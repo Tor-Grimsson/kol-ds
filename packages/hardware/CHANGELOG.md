@@ -1,5 +1,34 @@
 # @kolkrabbi/kol-hardware
 
+## 0.3.0 — 2026-09-27
+
+**Curves done properly** (plan-2026-09-27-app-frame-and-curves) — mirror's /expressions page, class
+for class, and an ADSR that behaves.
+
+- **`EnvelopeGenerator` fills its parent** — the OSCILLOSCOPE box takes every pixel the 320px
+  REFERENCE panel leaves, the scope every pixel its controls leave. Give it a height. Boxes are
+  mirror's (eyebrow over `bg-surface-secondary border-oq-08 rounded-4`); the scope box is
+  `kol-tone-sunken`. **Collapse** narrows the scope to 320px and spreads the reference as the desk.
+- **The parts are exposed** — `useEnvelopeGenerator()` holds the state, `EnvelopeModeToggle` is the
+  Equation | ADSR switch, `generator.reference` spreads into `SignalReference` in any shape, and
+  `<EnvelopeGenerator generator={g}>` draws the rest. Without `generator` it keeps its own, as before.
+- **Zoom** — X · Y · Scale sliders (dropped last time) and drag-to-pan on the trace.
+- **Time** — a transport row: play / pause and **BPM** (60 = one unit a second, so every expression
+  reads as before).
+- **ADSR** — four handles: A, D, **S at the end of the hold** (sideways = hold, up/down = level), R.
+  One pass, never wraps; the window holds while dragging and refits on release. **Cycle off = one
+  shot** — the playhead runs once and stops, **Trigger** fires it again. The reference follows the
+  mode in every shape. One control height (`sm`) across the toggle, the expression and the fields.
+- **`SignalScope`** — `zoomX` · `zoomY` · `panY` · `onPan`, a clock (`rate`, `playing`), `loop`
+  and `trigger` (one-shot), `height="fill"`.
+- **`SignalReference`** — `variant="panel"`, mirror's box; the popover buttons are DS Buttons at
+  `size` (default sm); the sheet lays out in 280px columns; grid rows keep the code and truncate
+  the label.
+- **Signal engine** — ADSR `hold` (seconds at sustain, default 1 — the gate the engine always
+  assumed) and `gateSeconds()`; an envelope's code carries it (`a10 d30 s70 r50 h1`, old codes
+  still load).
+- `reference={false}` still means no panel; the prop's values are now `'panel' | 'none'`.
+
 ## 0.2.0 — 2026-09-27
 
 - **Retired type classes gone.** `JackSocket`'s default label size named `kol-helper-xxs` and

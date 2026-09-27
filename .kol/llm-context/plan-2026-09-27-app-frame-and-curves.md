@@ -1,8 +1,8 @@
 # Plan — the app frame, and curves done properly
 
 **Raised:** 2026-09-27 (user review of apps/curves against apps/media and mirror /expressions)
-**Status:** authored. Waves A and B are approved ("sure … lets also document it so I dont have to
-say again"); wave C waits on the user's go per app.
+**Status:** done 2026-09-27 — A, B and C run as one ("can you do all of the plan?"). Unpublished:
+kol-hardware 0.3.0 · kol-component 0.226.0 · kol-deck 0.1.1 (the user publishes).
 **Related:** `plan-2026-09-27-deconstruction-roadmap.md` (track 3), `backlog/2026-09-27-editor-review-findings.md` (the same complaints about the editor)
 
 ---
@@ -123,9 +123,22 @@ the rule, from what already exists:
 
 ## 5. Verification
 
-- [ ] The anatomy doc carries the Tool frame table; tier rules point to it
-- [ ] curves: no page scroll at 1440 × 900 and 390 × 844; masthead = CURVES + toggle + Reference
-- [ ] curves: no eyebrow or subtitle, and no explanatory copy on the page; Usage lives in `S`
-- [ ] curves: the four ADSR handles; one-shot vs cycle; Trigger; BPM changes the speed
-- [ ] curves: the reference follows the mode in all three shapes
-- [ ] 28 gates · the signal test · the deploy build · kol-hardware published
+- [x] The anatomy doc carries the Tool frame table; tier rules point to it
+- [x] curves: no page scroll at 1440 × 900 and 390 × 844; masthead = CURVES + toggle + Reference
+- [x] curves: no eyebrow or subtitle, and no explanatory copy on the page; Usage lives in `S`
+- [x] curves: the four ADSR handles; one-shot vs cycle; Trigger; BPM changes the speed
+- [x] curves: the reference follows the mode in all three shapes
+- [ ] 28 gates · the signal test · the deploy build · kol-hardware published — all but the publish
+
+## 6. Done notes (2026-09-27)
+
+- **The masthead needed a DS fix.** `PageHeader`'s actions with no subtitle stacked UNDER the title,
+  against its own docstring; `SectionText` now puts them on the title's row and wraps on a phone.
+- **Rulings taken, not asked:** controls is a reference page, so it keeps the frame but scrolls;
+  brand (a book) and editor (its own full-window chrome) stay as they are; the Notes / Decks lists
+  go title-only through `media-fixture/wiring`, leaving the packages' olina defaults alone; below
+  lg the curves Panel falls back to the EX / REF popovers.
+- **Timing:** BPM scales the scope's clock (60 = one unit a second); the expression engine is
+  unchanged. Hold is seconds at sustain, default 1, so old envelopes draw the same.
+- **Known, not this plan's:** the deck editor's toolbar overlaps itself at 390 (it did before —
+  the responsive pass over the non-brand apps is still open).

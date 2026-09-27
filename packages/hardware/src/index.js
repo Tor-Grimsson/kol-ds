@@ -35,4 +35,4 @@ export { default as FlipCard } from './frames/FlipCard.jsx'
 // signal — the components over the signal engine (the engine itself, React-free, is `./signal`)
 export { default as SignalScope } from './indicators/SignalScope.jsx'
 export { default as SignalReference } from './panel/SignalReference.jsx'
-export { default as EnvelopeGenerator } from './value/EnvelopeGenerator.jsx'
+export { default as EnvelopeGenerator, useEnvelopeGenerator, EnvelopeModeToggle, adsrCode } from './value/EnvelopeGenerator.jsx'

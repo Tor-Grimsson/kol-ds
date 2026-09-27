@@ -11,17 +11,17 @@ A different TIER from `kol-component`'s app atoms: a `kol-component` Slider is a
 | value | `Knob` | SVG rotary — sizes sm 24 · md 32 · lg 40 · xl 64, 270° sweep, drag ns (200px = range), ⌥-click resets, touch long-press → `ParamSheet` |
 | | `Fader` | the rack slider — 2px track + 8px thumb, horizontal (flex-1 + readout) or vertical; long-press → `ParamSheet` |
 | | `ParamSheet`, `armLongPress` | touch: hold a control 500ms → a full-width bottom sheet with the DS `Slider` |
-| | `EnvelopeGenerator` | a value over time — an equation or an ADSR envelope — with the scope, window controls and reference |
+| | `EnvelopeGenerator` | a value over time — an equation or an ADSR envelope — filling its parent: the scope box, its controls and transport (BPM), and the reference panel. `useEnvelopeGenerator()` + `EnvelopeModeToggle` let a host arrange the parts |
 | switches | `Toggle` | LED-dot toggle, sm 8 · md 12 — momentary, blink, long-press, `forceLit` |
 | | `FlipToggle` | 2/3-position rocker, horizontal or vertical |
 | | `RockerSwitch` | I/O rocker, backlit paddle |
 | | `IconButton` | 1px-bordered icon key, momentary pulse |
 | indicators | `LED` | 6 / 8px lamp — red · yellow · green · white · blue, optional hit pad |
 | | `JackSocket`, `LabeledJack` | the 3.5mm jack, presentational: ring, hole, label, a rim that glows with `signalRef`. **Routing stays in the consumer** |
-| | `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead |
+| | `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead; zoom X/Y, drag to pan, a clock `rate`, `loop` or one-shot on `trigger`, `height="fill"` |
 | panel | `PanelLabel` | label wrapper, four positions |
 | | `ModuleHeader` | Toggle + module name + edit-mode remove dot / bypass dot |
-| | `SignalReference` | an expression / envelope reference — `variant` `tabs` · `popover` (EX / REF) · `sheet` |
+| | `SignalReference` | an expression / envelope reference — `variant` `panel` (mirror's box) · `tabs` · `popover` (EX / REF) · `sheet` |
 | frames | `ModuleFrame` | a module's front panel — header pinned, body below |
 | | `ChannelStrip` | a mixer channel's face — power · control grid · action column · faders · footer, as slots |
 | | `FlipCard` | a face that turns over in place to its back |

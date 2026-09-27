@@ -203,8 +203,11 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
   const allLayouts = [...layouts, BLANK_LAYOUT]
 
   return (
-    <PageShell width="capped">
-      <div className="pt-6 flex items-center justify-between gap-3">
+    /* THE TOOL FRAME (app anatomy § Tool frame, 2026-09-27): fixed · bleed, the page every tool
+       gets. It was `capped` — the site tier's container and 64px block padding — so the editor sat
+       narrower and lower than the list it opens from, and scrolled past the fold under the rail. */
+    <PageShell mode="fixed">
+      <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
           {onClose && <Button size="sm" variant="ghost" iconLeft="chevron-left" onClick={onClose}>Decks</Button>}
           <ViewToggle variant="icon" tone="sunken" viewMode={locked ? 'lock' : 'edit'} onViewChange={(v) => setLocked(v === 'lock')}

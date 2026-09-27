@@ -1,6 +1,6 @@
 // The signal engine's check: `node src/signal/signal.test.mjs`
 import assert from 'node:assert/strict'
-import { compileExpression, isExpression, fitRange, envelopeAt, createEnvelope, stageSeconds, EXPRESSION_SECTIONS } from './index.js'
+import { compileExpression, isExpression, fitRange, envelopeAt, envelopeLength, gateSeconds, createEnvelope, stageSeconds, EXPRESSION_SECTIONS } from './index.js'
 
 // helpers span [min, max] — monitor's semantics; min 0 is mirror's / the editor's
 const w = compileExpression('wave(t)')
@@ -34,6 +34,12 @@ const a = stageSeconds(50)
 assert.equal(Math.round(envelopeAt(a, p)), 100)                       // top of attack
 assert.equal(Math.round(envelopeAt(a * 2 + 0.5, p)), 40)              // holding sustain
 assert.equal(envelopeAt(100, p), 0)                                   // long after release
+// hold — seconds at sustain; 1 by default, so the old gate (a + d + 1) is unchanged
+assert.equal(gateSeconds(p), a * 2 + 1)
+const held = { ...p, hold: 3 }
+assert.equal(Math.round(envelopeAt(a * 2 + 2.5, held)), 40)           // still holding at 2.5 s in
+assert.ok(envelopeAt(a * 2 + 3 + a / 2, held) < 40)                   // released after 3 s
+assert.equal(envelopeLength(held), a * 2 + 3 + a)
 const env = createEnvelope()
 let lvl = 0
 for (let i = 0; i < 600; i++) lvl = env.step(1 / 60, { gate: true }, p)

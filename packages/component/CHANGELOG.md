@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-component
 
+## 0.226.0 — 2026-09-27
+
+- `SectionText` / `PageHeader` — **inline actions with no subtitle sit on the title's row**, on the
+  right edge, wrapping under the title on a narrow screen. The docstring always promised this; the
+  code stacked the cluster under the headline. This is the tool frame's masthead (the title, its
+  controls on the right).
+
 ## 0.225.0 — 2026-09-27
 
 **The Hub and the media tool, one tool in two frames.**

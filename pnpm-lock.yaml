@@ -81,6 +81,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -121,6 +124,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../../packages/theme

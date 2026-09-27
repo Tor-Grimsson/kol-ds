@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { PageHeader } from '@kolkrabbi/kol-component'
-import { EnvelopeGenerator, SignalReference } from '@kolkrabbi/kol-hardware'
-import { EXPRESSION_SECTIONS, EXPRESSION_TABS, EXPRESSION_HELPERS } from '@kolkrabbi/kol-hardware/signal'
+import { Button, Dropdown, PageHeader, ShellDrawer, Tooltip } from '@kolkrabbi/kol-component'
+import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell'
+import { EnvelopeGenerator, EnvelopeModeToggle, SignalReference, useEnvelopeGenerator } from '@kolkrabbi/kol-hardware'
+import { EXPRESSION_HELPERS } from '@kolkrabbi/kol-hardware/signal'
 import { fixtureClient } from 'media-fixture'
 
 /* Saved curves — the fake D1's `tool_settings` row for `curves` (the editor's pattern), so a real
@@ -25,42 +26,95 @@ function useSaved() {
   return { saved, save }
 }
 
-/* THE ENVELOPE GENERATOR, ALONE (deconstruction roadmap track 3, 2026-09-27) — kol-hardware's
- * EnvelopeGenerator over the one signal engine: a value over time, typed as an equation or shaped
- * as ADSR. Below it, the same reference in the other two shapes consumers mount it in — monitor's
- * EX / REF popovers on a module face, and labs' sheet — so all three can be judged side by side. */
+/* The reference's three shapes — the ones the estate mounts it in: mirror's panel beside the
+ * scope, monitor's EX / REF popovers, labs' sheet. Picked from the masthead; none stacks down
+ * the page. Below lg there is no room for the panel, so it falls back to the popovers. */
+const SHAPES = [
+  { value: 'panel', label: 'Panel' },
+  { value: 'popover', label: 'Popover' },
+  { value: 'sheet', label: 'Sheet' },
+]
 
+/* The S sheet — how the tool is used, instead of copy on the page (the tool frame, rule 5) */
+const SHORTCUTS = [
+  {
+    section: 'Scope',
+    items: [
+      { id: 'pan', label: 'Pan the view', combo: 'drag' },
+      { id: 'handles', label: 'Shape the envelope (ADSR)', combo: 'drag A · D · S · R' },
+      { id: 'knob', label: 'Reset a knob or slider', combo: '⌥ click' },
+    ],
+  },
+  {
+    section: 'Reference',
+    items: [
+      { id: 'load', label: 'Load a code', combo: 'click' },
+      { id: 'append', label: 'Append to the expression', combo: '⌘ click' },
+    ],
+  },
+  {
+    section: 'Timing',
+    items: [
+      { id: 'bpm', label: 't counts beats — 60 BPM is one a second', combo: 'BPM' },
+      { id: 'cycle', label: 'Cycle off runs the envelope once', combo: 'Trigger' },
+    ],
+  },
+  {
+    section: 'Help',
+    items: [{ id: 'sheet', label: 'This sheet', combo: 'S' }],
+  },
+]
+
+/* THE ENVELOPE GENERATOR, ALONE, IN THE TOOL FRAME (plan-2026-09-27-app-frame-and-curves) — the
+ * page is kol-shell's PageShell fixed: the CURVES masthead with the mode and the reference shape on
+ * the right, and the generator filling the rest of the window. Every part is kol-hardware's; this
+ * file arranges them and holds the saved rows. */
 export default function App() {
-  const [picked, setPicked] = useState(null)
   const { saved, save } = useSaved()
+  const g = useEnvelopeGenerator({ saved: saved.equation, savedAdsr: saved.adsr, onSave: save })
+  const [shape, setShape] = useState('panel')
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+
+  /* S — the sheet. Ignored while typing: an expression field owns its own letters. */
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 's' || e.metaKey || e.ctrlKey || e.altKey) return
+      const el = e.target
+      if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')) return
+      e.preventDefault()
+      setShortcutsOpen((v) => !v)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const popovers = <SignalReference key={g.mode} {...g.reference} variant="popover" />
+  const actions = (
+    <>
+      <EnvelopeModeToggle generator={g} />
+      <span className="hidden lg:inline-flex">
+        <Tooltip label="Reference">
+          <Dropdown value={shape} onChange={setShape} options={SHAPES} />
+        </Tooltip>
+      </span>
+      {shape === 'popover' && popovers}
+      {shape === 'panel' && <span className="inline-flex lg:hidden">{popovers}</span>}
+      {shape === 'sheet' && <Button variant="grey" size="sm" pressed={sheetOpen} onClick={() => setSheetOpen(true)}>REF</Button>}
+    </>
+  )
+
   return (
-    <div className="mx-auto flex w-full max-w-[var(--kol-content-shell)] flex-col gap-10 px-4 py-8 md:px-8">
-      <PageHeader
-        eyebrow="Apps tier"
-        title="Curves"
-        subtitle="A value over time — an equation or an ADSR envelope — on one engine, with the reference beside it."
-      />
-      <EnvelopeGenerator saved={saved.equation} savedAdsr={saved.adsr} onSave={save} />
+    <PageShell mode="fixed" className="gap-10 [--kol-page-header-mb:0]">
+      <PageHeader title="CURVES" actions={actions} />
+      <div className="min-h-0 flex-1">
+        <EnvelopeGenerator generator={g} reference={shape === 'panel' ? 'panel' : 'none'} />
+      </div>
 
-      <section className="flex flex-col gap-4 border-t border-oq-08 pt-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 className="kol-doc-section-title">Reference · popover</h2>
-          <code className="kol-doc-code-inline">SignalReference variant="popover" — kol-monitor's Scope+ face</code>
-        </div>
-        <div className="flex items-center gap-4 rounded-[4px] bg-surface-secondary p-4">
-          <SignalReference variant="popover" sections={EXPRESSION_SECTIONS} tabs={EXPRESSION_TABS} onPick={setPicked} />
-          <span className="kol-helper-10 text-fg-48">{picked ? `picked ${picked}` : 'pick a code'}</span>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4 border-t border-oq-08 pt-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 className="kol-doc-section-title">Reference · sheet</h2>
-          <code className="kol-doc-code-inline">SignalReference variant="sheet" — the editor's labs shortcuts sheet</code>
-        </div>
-        <SignalReference variant="sheet" sections={EXPRESSION_SECTIONS} tabs={EXPRESSION_TABS} onPick={setPicked}
-          className="rounded-[4px] bg-surface-secondary p-4" />
-      </section>
-    </div>
+      <ShellDrawer open={sheetOpen} onClose={() => setSheetOpen(false)} side="bottom" height="60vh">
+        <SignalReference key={g.mode} {...g.reference} variant="sheet" className="kol-helper-12 p-6" />
+      </ShellDrawer>
+      {shortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setShortcutsOpen(false)} />}
+    </PageShell>
   )
 }

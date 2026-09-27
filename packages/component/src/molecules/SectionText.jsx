@@ -101,6 +101,8 @@ export default function SectionText({
   const cls = (base, slot) => `${base} ${slotClass[slot] ?? (slot === 'eyebrow' ? slotClass.label : undefined) ?? ''}`.trim()
   const alignCls = align === 'center' ? 'items-center text-center' : 'items-start text-left'
   const inlineActions = actionsPlacement === 'inline' && !!actions && !!body
+  const inlineHead = actionsPlacement === 'inline' && !!actions && !body && !!headline
+  const headlineNode = headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>
   const bodyNode = body && (typeof body === 'string'
     ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p>
     : <div className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</div>)
@@ -112,7 +114,19 @@ export default function SectionText({
       {/* `kol-section-text-eyebrow` = uppercase by ROLE (kol-theme ≥0.55.0);
         * `labelClass` is the voice riding beside it */}
       {eb && <span className={cls(`kol-section-text-eyebrow ${ebClass}`, 'eyebrow')} style={slotStyle.eyebrow ?? slotStyle.label}>{eb}</span>}
-      {headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>}
+      {headlineNode && (inlineHead
+        ? (
+          /* INLINE WITH NO BODY → the cluster shares the HEADLINE's row (the tool frame, 2026-09-27 —
+           * a tool's masthead is its title with its controls on the right, apps/media's). This
+           * comment used to sit on the fallthrough below, which stacked the cluster under the
+           * headline instead: the docstring promised a row the code never drew. It WRAPS: on a
+           * phone a wide cluster drops under the title rather than pushing the page sideways. */
+          <div className="flex flex-wrap self-stretch items-baseline justify-between gap-x-6 gap-y-3">
+            {headlineNode}
+            <div className={cls(`${actionsClass} shrink-0`, 'actions')} style={slotStyle.actions}>{actions}</div>
+          </div>
+        )
+        : headlineNode)}
       {bodyNode && (inlineActions
         ? (
           /* SELF-STRETCH (the Hub review, 2026-09-26 — user, on fxr's /settings: "there should
@@ -126,8 +140,7 @@ export default function SectionText({
         )
         : bodyNode)}
       {children}
-      {/* inline with no body → the cluster shares the HEADLINE's row instead */}
-      {actions && !inlineActions && <div className={cls(actionsClass, 'actions')} style={slotStyle.actions}>{actions}</div>}
+      {actions && !inlineActions && !inlineHead && <div className={cls(actionsClass, 'actions')} style={slotStyle.actions}>{actions}</div>}
     </div>
   )
 }

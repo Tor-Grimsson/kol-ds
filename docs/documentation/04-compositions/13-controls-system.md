@@ -53,17 +53,17 @@ The package is grouped (user ruling 2026-09-27), one folder per group under `src
 | `Knob` | SVG rotary — sm 24 · md 32 · lg 40 · xl 64, 270° sweep, drag ns, ⌥-click resets, touch long-press → `ParamSheet` |
 | `Fader` | 2px track + 8px thumb, horizontal with readout or vertical |
 | `ParamSheet` · `armLongPress` | touch: hold 500ms → a full-width bottom sheet with the DS `Slider` |
-| `EnvelopeGenerator` | a value over time — an equation or an ADSR envelope — with the scope, the window controls and the reference |
+| `EnvelopeGenerator` | a value over time — an equation or an ADSR envelope — filling its parent, mirror's /expressions layout: the scope box (zoom, BPM transport; ADSR with four handles, hold, one-shot + Trigger) and the reference panel. `useEnvelopeGenerator()` + `EnvelopeModeToggle` for a host that arranges the parts (apps/curves) |
 | `Toggle` | LED-dot toggle — momentary, blink, long-press, `forceLit` |
 | `FlipToggle` | 2/3-position flip switch, either axis |
 | `RockerSwitch` | I/O rocker, backlit paddle |
 | `IconButton` | 1px-bordered icon key, momentary pulse |
 | `LED` | 6 / 8px lamp — red · yellow · green · white · blue |
 | `JackSocket` · `LabeledJack` | the 3.5mm jack — presentational, glows with `signalRef` |
-| `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead |
+| `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead; zoom · pan · clock `rate` · `loop` / one-shot `trigger` · `height="fill"` |
 | `PanelLabel` | label wrapper, four positions |
 | `ModuleHeader` | enable dot + name + remove / bypass dot |
-| `SignalReference` | the reference for an expression or envelope tool — `variant` tabs (mirror's panel) · popover (monitor's EX / REF) · sheet (labs' shortcuts) |
+| `SignalReference` | the reference for an expression or envelope tool — `variant` panel (mirror's box) · tabs · popover (monitor's EX / REF) · sheet (labs' shortcuts) |
 | `ModuleFrame` | a module's front panel — header pinned, body below (kol-monitor's `Module.jsx`) |
 | `ChannelStrip` | a mixer channel's face — power, control grid, action column, faders, footer, as slots (kol-mirror's strip) |
 | `FlipCard` | a face that turns over in place to its back (kol-mirror's channel flip) |
