@@ -82,8 +82,11 @@ export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
           ground rather than a surface from the page's own ladder — so the
           panel separates from the scrimmed canvas without a stroke. */}
       <div
-        className="kol-shortcuts-panel text-fg-64 kol-helper-12 bg-oq-04 flex flex-col gap-6"
-        style={{ padding: 24, borderRadius: 4 }}
+        /* THE SHEET FITS THE WINDOW (editor review #4, 2026-09-27): a long keymap — the design
+         * editor's is six sections — ran past both edges of the viewport with no way to reach the
+         * rest. Capped to the window less a margin, scrolling inside. */
+        className="kol-shortcuts-panel text-fg-64 kol-helper-12 bg-oq-04 flex flex-col gap-6 overflow-y-auto"
+        style={{ padding: 24, borderRadius: 4, maxHeight: 'calc(100dvh - 48px)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <SettingsSections

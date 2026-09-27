@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Input, Dropdown, FullscreenOverlay, MediaViewer } from '@kolkrabbi/kol-component'
+import { Button, Input, Dropdown, FullscreenOverlay, MediaViewer, Tooltip } from '@kolkrabbi/kol-component'
 import { listMedia, mediaUrl, mediaSrc, isImageType, isVideoType, formatSize, bucketOptions, DEFAULT_BUCKET } from './mediaLibrary'
 
 /* SVG is an image/* type, so 'image' still matches it — 'svg' narrows to
@@ -245,10 +245,8 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
                 ) : (
                   <ul className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(160px,1fr))] list-none m-0 p-0">
                     {visibleFiles.map((o, idx) => (
-                      <li
-                        key={o.key}
+                      <Tooltip key={o.key} label={o.key}><li
                         className="cursor-pointer"
-                        title={o.key}
                         /* CLICK LOADS. It used to open the lightbox and make
                            you press Use in there — two steps and a full-screen
                            detour to pick a thumbnail you could already see
@@ -264,18 +262,17 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
                           )}
                           {/* Preview — the old click target, demoted to an
                               opt-in so the tile itself can just load. */}
-                          <button
+                          <Tooltip label="Preview"><button
                             type="button"
                             aria-label={`Preview ${o.displayKey}`}
-                            title="Preview"
                             className="absolute top-1 right-1 w-7 h-7 inline-flex items-center justify-center rounded bg-oq-08 text-oq-64 hover:text-emphasis opacity-0 group-hover:opacity-100 transition-opacity"
                             onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx) }}
                           >
                             <Icon name="maximize" size={12} />
-                          </button>
+                          </button></Tooltip>
                         </div>
                         <p className="kol-helper-10 text-meta truncate mt-1">{o.displayKey}</p>
-                      </li>
+                      </li></Tooltip>
                     ))}
                   </ul>
                 )}

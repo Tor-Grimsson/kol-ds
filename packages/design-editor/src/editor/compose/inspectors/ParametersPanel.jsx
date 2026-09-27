@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Dropdown } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, Tooltip } from '@kolkrabbi/kol-component'
 import { LabeledControl } from '@kolkrabbi/kol-component'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
@@ -81,7 +81,7 @@ function LayerParameters({ layer }) {
   }, [])
   const renderAnimate = (p) => <BindDot layer={layer} param={p} setProp={setProp} />
   const shared = { layer, setProp, patch: edit.patch, updateLayer, palette, renderAnimate, tab }
-  const tabStrip = <SegmentedToggle value={tab} onChange={setTab} options={SUBTAB_OPTIONS} />
+  const tabStrip = <SegmentedToggle variant="filled" value={tab} onChange={setTab} options={SUBTAB_OPTIONS} />
 
   let body = null
   /* Loop places the strip itself — Category/Preset stay above it. */
@@ -90,13 +90,12 @@ function LayerParameters({ layer }) {
     body = (
       <>
         {tab === 'generate' && ['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line'].includes(layer.kind) && (
-          <Button
+          <Tooltip label="Convert the shape to an editable bezier path (one-way)"><Button aria-label="Convert the shape to an editable bezier path (one-way)"
             variant="primary" size="sm" className="w-full"
             onClick={() => convertShapeToPath(layer.id)}
-            title="Convert the shape to an editable bezier path (one-way)"
           >
             Convert to path
-          </Button>
+          </Button></Tooltip>
         )}
         {tab === 'style' && <AutoControls schema={SHAPE_SCHEMA} layer={layer} setProp={setProp} palette={palette} renderAnimate={renderAnimate} tab="style" />}
         {tab === 'anim' && (
@@ -212,10 +211,10 @@ function PatternFields({ layer, setProp, updateLayer, palette, renderAnimate, ta
           )}
 
           <div className="pt-2 border-t border-oq-08">
-            <Button variant="primary" size="sm" className="w-full" onClick={onFlatten}
-              title="Flatten the pattern to static SVG shapes (one-way)">
+            <Tooltip label="Flatten the pattern to static SVG shapes (one-way)"><Button aria-label="Flatten the pattern to static SVG shapes (one-way)" variant="primary" size="sm" className="w-full" onClick={onFlatten}
+             >
               Flatten
-            </Button>
+            </Button></Tooltip>
           </div>
         </>
       )}
@@ -287,13 +286,15 @@ function TextFields({ layer, setProp, updateLayer, palette, renderAnimate, tab }
             </LabeledControl>
           )}
 
-          <Button variant="primary" size="sm" className="w-full" onClick={onFlatten}
-            disabled={!isOutlineFamily(layerFamily(layer))}
-            title={isOutlineFamily(layerFamily(layer))
+          <Tooltip label={isOutlineFamily(layerFamily(layer))
               ? 'Flatten the text to glyph-outline shapes (one-way)'
-              : 'Flatten needs an outline font — switch the Family to Right Grotesk'}>
+              : 'Flatten needs an outline font — switch the Family to Right Grotesk'}><Button aria-label={isOutlineFamily(layerFamily(layer))
+              ? 'Flatten the text to glyph-outline shapes (one-way)'
+              : 'Flatten needs an outline font — switch the Family to Right Grotesk'} variant="primary" size="sm" className="w-full" onClick={onFlatten}
+            disabled={!isOutlineFamily(layerFamily(layer))}
+           >
             Flatten
-          </Button>
+          </Button></Tooltip>
         </>
       )}
 

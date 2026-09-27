@@ -1,4 +1,4 @@
-import { Button, LabeledControl } from '@kolkrabbi/kol-component'
+import { Button, LabeledControl, Tooltip } from '@kolkrabbi/kol-component'
 import ColorPicker from '../../modes/pattern/ColorPicker'
 import RuleRow, { newRule, randomRule } from '../../modes/pattern/RuleRow'
 import AutoControls from '../../params/AutoControls'
@@ -179,13 +179,12 @@ function PatternSurface({ layer }) {
         />
       </LabeledControl>
 
-      <Button
+      <Tooltip label="Save current pattern params to the shared library"><Button aria-label="Save current pattern params to the shared library"
         variant="primary" size="sm" className="w-full"
         onClick={onSave}
-        title="Save current pattern params to the shared library"
       >
         Save pattern to library
-      </Button>
+      </Button></Tooltip>
     </div>
   )
 }

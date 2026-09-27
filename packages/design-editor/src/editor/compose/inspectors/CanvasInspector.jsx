@@ -1,3 +1,4 @@
+import { useColorTarget } from '../../color/useColorTarget'
 import { Dropdown, LabeledControl, ToggleSwitch, InspectorSection } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { ASPECTS } from '../../shell/aspects'
@@ -16,6 +17,9 @@ import { NumberField } from './NumberField'
 const PRESET_OPTIONS = ASPECTS.map((a) => ({ value: a.id, label: a.label }))
 
 export default function CanvasInspector() {
+  /* writes through the colour target (editor review #12, 2026-09-27): setCanvasFill alone left the
+   * shared paint pair stale, so the colour window showed white over a red canvas */
+  const target = useColorTarget()
   const {
     aspect, setAspect,
     canvasW, canvasH, setCanvasSize,
@@ -37,7 +41,7 @@ export default function CanvasInspector() {
   return (
     <div className="flex flex-col">
       <InspectorSection divided label="Frame">
-        <LabeledControl label="Size">
+        <div className="flex flex-col gap-1">
           <Dropdown
             variant="subtle"
             size="sm"
@@ -46,14 +50,14 @@ export default function CanvasInspector() {
             value={aspect}
             onChange={setAspect}
           />
-        </LabeledControl>
+        </div>
 
-        <LabeledControl label="Dimensions">
+        <div className="flex flex-col gap-1">
           <div className="grid grid-cols-2 gap-2">
             <SizeField label="W" value={canvasW} onCommit={(w) => setCanvasSize(w, canvasH)} num={num} />
             <SizeField label="H" value={canvasH} onCommit={(h) => setCanvasSize(canvasW, h)} num={num} />
           </div>
-        </LabeledControl>
+        </div>
 
         <ToggleSwitch variant="plain" label="Grid" checked={showGrid} onChange={toggleGrid} />
       </InspectorSection>
@@ -63,7 +67,7 @@ export default function CanvasInspector() {
           label="Background"
           hideLabel
           value={canvasFill}
-          onChange={setCanvasFill}
+          onChange={target.setFill}
           palette={palette}
           autoValue="var(--kol-surface-ab-split)"
         />

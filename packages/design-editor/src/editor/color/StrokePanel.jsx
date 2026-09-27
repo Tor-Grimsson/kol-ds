@@ -108,9 +108,9 @@ export function StrokeBody() {
           onCommit={onWeight}
         />
       </LabeledControl>
-      <LabeledControl inline label="Style"><SegmentedToggle size="sm" value={style} onChange={onStyle} options={STYLE_OPTIONS} /></LabeledControl>
-      <LabeledControl inline label="Cap"  ><SegmentedToggle value={cap}   onChange={(v) => setProp('strokeLinecap',  v)} options={CAP_OPTIONS}   /></LabeledControl>
-      <LabeledControl inline label="Join" ><SegmentedToggle value={join}  onChange={(v) => setProp('strokeLinejoin', v)} options={JOIN_OPTIONS}  /></LabeledControl>
+      <LabeledControl inline label="Style"><SegmentedToggle variant="filled" size="sm" value={style} onChange={onStyle} options={STYLE_OPTIONS} /></LabeledControl>
+      <LabeledControl inline label="Cap"  ><SegmentedToggle variant="filled" value={cap}   onChange={(v) => setProp('strokeLinecap',  v)} options={CAP_OPTIONS}   /></LabeledControl>
+      <LabeledControl inline label="Join" ><SegmentedToggle variant="filled" value={join}  onChange={(v) => setProp('strokeLinejoin', v)} options={JOIN_OPTIONS}  /></LabeledControl>
     </div>
   )
 }

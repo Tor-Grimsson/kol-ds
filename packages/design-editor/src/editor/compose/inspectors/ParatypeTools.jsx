@@ -1,4 +1,4 @@
-import { Button, Dropdown, LabeledControl, XYPad } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, XYPad, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { visibleParams } from '../../params/schema'
 import { loopById } from '../../../loops/registry'
@@ -29,13 +29,12 @@ function FlattenAction({ layer }) {
   const { flattenParatype } = useComposeState()
   if (!flattenParatype) return null
   return (
-    <Button
+    <Tooltip label="Flatten the glyph(s) to vector shape layers (one-way)"><Button aria-label="Flatten the glyph(s) to vector shape layers (one-way)"
       variant="primary" size="sm" className="w-full"
       onClick={() => flattenParatype(layer.id)}
-      title="Flatten the glyph(s) to vector shape layers (one-way)"
     >
       Flatten to vector
-    </Button>
+    </Button></Tooltip>
   )
 }
 

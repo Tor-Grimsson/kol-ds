@@ -1,8 +1,8 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useState } from 'react'
 import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
-import TransportBar from '../params/TransportBar'
 import { useComposeState } from '../compose/state'
+import { pack } from '../packs'
 import { useComposeFile } from '../compose/useComposeFile'
 import { transport, useTransport } from '../params/transport'
 import { groupById, loopById } from '../../loops/registry'
@@ -93,7 +93,7 @@ function packRows(cells) {
 
 function ScopeStrips({ cells }) {
   return packRows(cells).map((row, i) => (
-    <SegmentedToggle
+    <SegmentedToggle variant="filled"
       key={i}
       value={null}
       onChange={(v) => row.find((c) => c.value === v)?.run()}
@@ -111,7 +111,7 @@ const LOOP_CHIP_OPTS = [2, 4, 8, 16].map((s) => ({ value: String(s), label: `${s
 function LoopChips() {
   const { loopSeconds, setLoopSeconds } = useTransport()
   return (
-    <SegmentedToggle
+    <SegmentedToggle variant="filled"
       value={String(loopSeconds)}
       onChange={(v) => setLoopSeconds(Number(v))}
       options={LOOP_CHIP_OPTS}
@@ -211,7 +211,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
     )
   }
 
-  const tabs = (isLoop ? TABS_LOOP : TABS_MEDIA).filter((t) => t.value !== 'effects' || effectable)
+  const tabs = (isLoop ? TABS_LOOP : TABS_MEDIA).filter((t) => (t.value !== 'effects' || effectable) && (t.value !== 'transport' || pack('motion')))
   const activeTab = tabs.some((t) => t.value === tab) ? tab : tabs[0].value
 
   return (
@@ -269,7 +269,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
               phone width. Descendant selectors into DS internals are the
               sanctioned escape — a consumer cannot reach `.kol-seg-cell`
               otherwise, and the size ladder stays `lg`. */}
-          <SegmentedToggle
+          <SegmentedToggle variant="filled"
             value={activeTab}
             onChange={setTab}
             options={tabs}
@@ -352,9 +352,9 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
             </div>
           )}
 
-          {activeTab === 'transport' && (
+          {activeTab === 'transport' && pack('motion') && (
             <div className="flex flex-col gap-2 pt-3">
-              <TransportBar size="lg" />
+              {(() => { const TransportBar = pack('motion').TransportBar; return <TransportBar size="lg" /> })()}
               {/* Loop-length quick chips — typing in the bar's field is desk
                   work; touch picks. Fills the tab's dead width (2026-08-12). */}
               <LoopChips />
@@ -363,8 +363,8 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
 
           {activeTab === 'output' && (
             <div className="flex flex-col gap-2 pt-3">
-              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size="lg" ariaLabel="Aspect" />
-              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size="lg" ariaLabel="Aspect (landscape) and fill" />
+              <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size="lg" ariaLabel="Aspect" />
+              <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size="lg" ariaLabel="Aspect (landscape) and fill" />
               <div className="grid grid-cols-3 gap-2">
                 <Button variant="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
                 <Button variant="primary" size="lg" onClick={() => setUiHidden(true)}>Hide UI</Button>

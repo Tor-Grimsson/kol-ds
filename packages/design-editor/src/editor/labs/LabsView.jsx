@@ -1,6 +1,6 @@
 import '../styles/kol-labs.css'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, Tooltip } from '@kolkrabbi/kol-component'
 import { EditorProviders } from '../Editor'
 import EditorShell from '../EditorShell'
 import { useFps } from '../shell/Canvas'
@@ -124,13 +124,13 @@ function LabsStage() {
       )}
 
       <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
-        <button type="button" className={chipCls} title="Zoom out" onClick={() => step(-1)}>−</button>
-        <button type="button" className={chipCls} title="Reset zoom (0)" onClick={() => setZoom(1)}>
+        <Tooltip label="Zoom out"><button aria-label="Zoom out" type="button" className={chipCls} onClick={() => step(-1)}>−</button></Tooltip>
+        <Tooltip label="Reset zoom (0)"><button aria-label="Reset zoom (0)" type="button" className={chipCls} onClick={() => setZoom(1)}>
           {Math.round(zoom * 100)}%
-        </button>
-        <button type="button" className={chipCls} title="Zoom in" onClick={() => step(1)}>+</button>
+        </button></Tooltip>
+        <Tooltip label="Zoom in"><button aria-label="Zoom in" type="button" className={chipCls} onClick={() => step(1)}>+</button></Tooltip>
         {showFps && (
-          <span className={chipCls} title="Framerate — press F to hide">{fps} fps</span>
+          <Tooltip label="Framerate — press F to hide"><span className={chipCls}>{fps} fps</span></Tooltip>
         )}
       </div>
     </div>

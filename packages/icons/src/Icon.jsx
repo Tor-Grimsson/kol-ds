@@ -169,6 +169,12 @@ const Icon = ({
 
   const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)
 
+  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings
+   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree
+   * re-renders between press and release the <path> the press landed on is replaced, and the
+   * browser drops the click — it needs the SAME node under both. With pointer events off, the press
+   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is
+   * how it hid. */
   return (
     <span
       className={`inline-flex items-center justify-center ${className}`}
@@ -176,6 +182,7 @@ const Icon = ({
         width: dimension,
         height: dimension,
         lineHeight: 0,
+        pointerEvents: 'none',
         ...style
       }}
       dangerouslySetInnerHTML={{ __html: sizedMarkup }}

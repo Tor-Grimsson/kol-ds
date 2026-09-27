@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Dropdown, LabeledControl, Slider } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, Slider, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { useLayerEdit } from '../useLayerEdit'
 import { mulberry32, randomSeed } from '../../lib/rng'
@@ -212,31 +212,31 @@ export default function SoftformsLayers({ layer }) {
             >
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
               <span className="truncate flex-1 min-w-0">{labelOf(typeOpts, f.t)}</span>
-              <Button
+              <Tooltip label="Move form up"><Button
                 variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
-                aria-label="Move form up" title="Move form up"
+                aria-label="Move form up"
                 disabled={i >= forms.length - 1}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i + 1) }}
                 style={{ transform: 'rotate(180deg)' }}
-              />
-              <Button
+              /></Tooltip>
+              <Tooltip label="Move form down"><Button
                 variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
-                aria-label="Move form down" title="Move form down"
+                aria-label="Move form down"
                 disabled={i <= 0}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i - 1) }}
-              />
-              <Button
+              /></Tooltip>
+              <Tooltip label="Duplicate form"><Button
                 variant="ghost" size="sm" quiet iconOnly="copy" iconSize={12}
-                aria-label="Duplicate form" title="Duplicate form"
+                aria-label="Duplicate form"
                 disabled={forms.length >= MAX_FORMS}
                 onClick={(e) => { e.stopPropagation(); dupForm(i) }}
-              />
-              <Button
+              /></Tooltip>
+              <Tooltip label="Delete form"><Button
                 variant="ghost" size="sm" quiet iconOnly="trash" iconSize={12}
-                aria-label="Delete form" title="Delete form"
+                aria-label="Delete form"
                 disabled={forms.length <= minForms}
                 onClick={(e) => { e.stopPropagation(); delForm(i) }}
-              />
+              /></Tooltip>
             </div>
           )
         })}
@@ -250,13 +250,12 @@ export default function SoftformsLayers({ layer }) {
       </Button>
 
       {!is3d && (
-        <Button
+        <Tooltip label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"><Button aria-label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"
           variant="primary" size="sm" className="w-full"
-          title="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"
           onClick={() => window.dispatchEvent(new CustomEvent('kol:softform-edit', { detail: { id: layer.id, index: Math.max(0, sel) } }))}
         >
           Edit forms on canvas
-        </Button>
+        </Button></Tooltip>
       )}
 
       {selForm && (

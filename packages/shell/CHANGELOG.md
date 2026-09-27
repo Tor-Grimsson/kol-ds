@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-shell
 
+## 0.57.1 — 2026-09-27
+
+- `ShortcutsOverlay` — the sheet is capped to the window and scrolls inside; a long keymap ran
+  past both edges of the viewport.
+
+
 ## 0.57.0 — 2026-09-27
 
 - **`AppHub` — NEW**, with `HubHome` and `HubSettings`: Shell + Hub in one call — Home, Settings (sections as data, a drawer, a picker, split shortcuts, tabs, `tone`), the tool as children; keys `,` · `S` · `\` · ⌥1–9. `HubHome` takes `title` / `subtitle`. Anatomy: `docs/documentation/04-compositions/16-app-anatomy.md`.

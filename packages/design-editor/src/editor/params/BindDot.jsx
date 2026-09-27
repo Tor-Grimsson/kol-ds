@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
+import { PopoverPanel, usePopover, Tooltip } from '@kolkrabbi/kol-component'
 import { getSources, getSource } from './sources'
 import { isGamepadSource } from './gamepad'
 import { isBinding, resolveValue } from './resolve'
@@ -72,12 +72,11 @@ export default function BindDot({ layer, param, setProp }) {
 
   return (
     <>
-      <button
+      <Tooltip label={bound ? `Modulated (${mode}) — shape it in the Animation tab` : 'Modulate'}><button
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         type="button"
         aria-label={`Modulate ${param.label ?? param.key}`}
-        title={bound ? `Modulated (${mode}) — shape it in the Animation tab` : 'Modulate'}
         className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0"
         style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
       >
@@ -90,7 +89,7 @@ export default function BindDot({ layer, param, setProp }) {
             border: `1.5px solid ${bound ? 'var(--kol-accent-primary)' : 'var(--kol-fg-48)'}`,
           }}
         />
-      </button>
+      </button></Tooltip>
       {/* Cap + scroll on the FLOATING element itself (what floating-ui
           positions) — the DS popover has no height-clamp, so the cap must
           live here, not on an inner child, or flip/shift can't keep a tall

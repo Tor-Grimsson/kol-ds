@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip } from '@kolkrabbi/kol-component'
 import MediaPicker from '../../library/MediaPicker'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
-import TransportBar from '../../params/TransportBar'
 import { useTransport } from '../../params/transport'
+import { pack } from '../../packs'
 import AudioInputRow from '../../params/AudioInputRow'
 import { useComposeFile } from '../../compose/useComposeFile'
 import { openFiles } from '../../library/filesDialogStore'
@@ -200,8 +199,13 @@ export default function EditorFooter() {
   const cs = useControlSize()
   /* every rung above the desktop's 'sm' is the touch rail */
   const touch = cs !== 'sm'
-  const tabs = touch ? TABS_TOUCH : TABS
-  const [tab, setTab] = useState(touch ? 'output' : 'transport')
+  /* THE TRANSPORT IS THE MOTION PACK'S (editor review #1, 2026-09-27 — user: "transport obviously is
+   * motion … why would they be in core?"). The clock stays in the engine; its controls — the
+   * Transport tab, the touch ▶ sheet, the collapsed dock's ▶ — only exist when the motion pack is
+   * loaded. `/core` has no motion and shows no time controls. */
+  const TransportBar = pack('motion')?.TransportBar ?? null
+  const tabs = (touch || !TransportBar) ? TABS_TOUCH : TABS
+  const [tab, setTab] = useState(touch || !TransportBar ? 'output' : 'transport')
   const [transportOpen, setTransportOpen] = useState(false)
   const [pngScale, setPngScale] = useState(1)
   const [batchOpen, setBatchOpen] = useState(false)
@@ -258,17 +262,12 @@ export default function EditorFooter() {
     return (
       <div className="flex flex-col px-2 pb-4">
         <div className="self-stretch -mx-2 border-t border-oq-08 mb-2" />
-        <button
-          type="button"
-          onClick={playing ? pause : play}
-          title={playing ? 'Pause' : 'Play'}
-          aria-label={playing ? 'Pause' : 'Play'}
-          className="w-8 h-8 flex items-center justify-center self-center text-oq-96"
-        >
-          {/* the KOL registry, as TransportBar uses — `play`/`pause` live in
-              kol-icons' playback set, not the editor's local svg folder */}
-          <Icon name={playing ? 'pause' : 'play'} size={20} />
-        </button>
+        {TransportBar && (
+          <Tooltip label={playing ? 'Pause' : 'Play'} shortcut="Space">
+            <Button variant="ghost" size="md" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'}
+              onClick={playing ? pause : play} className="self-center" />
+          </Tooltip>
+        )}
       </div>
     )
   }
@@ -276,18 +275,20 @@ export default function EditorFooter() {
   return (
     <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 20px 24px 20px' }}>
       <div className="flex items-center gap-2">
-        {touch && (
+        {touch && TransportBar && (
           <Button variant="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} />
         )}
         {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
-        <SegmentedToggle value={tab} onChange={setTab} options={tabs} size={cs} className={`${touch ? 'flex-1 min-w-0 ' : ''}${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
+        <SegmentedToggle variant="filled" value={tab} onChange={setTab} options={tabs} size={cs} className={`${touch ? 'flex-1 min-w-0 ' : ''}${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
       </div>
       {/* stays mounted hidden on desktop so playback chrome never re-inits on a
           tab switch; on touch the bar lives in the sheet below */}
-      <div className={tab === 'transport' ? undefined : 'hidden'}>
-        <TransportBar size={cs} />
-      </div>
-      {touch && transportOpen && (
+      {TransportBar && (
+        <div className={tab === 'transport' ? undefined : 'hidden'}>
+          <TransportBar size={cs} />
+        </div>
+      )}
+      {touch && TransportBar && transportOpen && (
         <div
           className="fixed inset-x-0 bottom-0 flex items-center gap-3 border-t border-oq-08 bg-surface-primary px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           style={{ zIndex: 'var(--kol-z-modal)' }}

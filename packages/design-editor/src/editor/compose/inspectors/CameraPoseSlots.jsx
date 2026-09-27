@@ -1,4 +1,4 @@
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, Tooltip } from '@kolkrabbi/kol-component'
 
 /**
  * CameraPoseSlots — labs CameraPanel's save/recall pose slots + Reset
@@ -44,15 +44,13 @@ export default function CameraPoseSlots({ layer, patch, camParams, isEngine, sho
       {showHeader && <span className="kol-helper-10 text-meta">Camera</span>}
       <div className="flex items-center gap-1">
         {camParams.length > 0 && slots.map((s, i) => (
-          <Button
-            key={i}
+          <Tooltip key={i} label={s ? 'Recall pose (shift-click = overwrite)' : 'Save pose'}><Button aria-label={s ? 'Recall pose (shift-click = overwrite)' : 'Save pose'}
             variant={s ? 'secondary' : 'ghost'}
             size="sm"
-            title={s ? 'Recall pose (shift-click = overwrite)' : 'Save pose'}
             onClick={(e) => ((e.shiftKey || !s) ? save(i) : recall(i))}
           >
             {i + 1}
-          </Button>
+          </Button></Tooltip>
         ))}
         <Button variant="primary" size="sm" className="ml-auto" onClick={reset}>
           Reset

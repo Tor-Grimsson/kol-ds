@@ -1,5 +1,16 @@
 # @kolkrabbi/kol-icons
 
+## 0.28.0 — 2026-09-27
+
+- **`Icon` is never the click target** (`pointer-events: none` on the glyph). The markup is injected
+  as HTML; when an icon re-rendered between press and release, the `<path>` under the press was
+  replaced and the browser dropped the click — the design editor's settings drawer would not close
+  on its X. Presses now land on the button around the glyph.
+- **New in v1** (the design editor's own set, folded in): `tools/crop` · `tools/flip-horizontal` ·
+  `tools/flip-vertical` (the mirror line's dots now land on both ends) · `tools/rotate-left` ·
+  `tools/rotate-right` · `shape-primitives/line` · `typography/text-align-left|center|right`.
+
+
 
 ## 0.18.0 — 2026-08-15
 

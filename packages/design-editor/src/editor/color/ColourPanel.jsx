@@ -191,7 +191,7 @@ const MODEL_OPTIONS = [
 function ModelToggle({ model, setModel }) {
   return (
     <div className="flex items-center">
-      <SegmentedToggle value={model} onChange={setModel} options={MODEL_OPTIONS} />
+      <SegmentedToggle variant="filled" value={model} onChange={setModel} options={MODEL_OPTIONS} />
     </div>
   )
 }

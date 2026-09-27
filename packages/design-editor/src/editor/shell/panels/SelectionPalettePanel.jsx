@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover, TabsRow } from '@kolkrabbi/kol-component'
+import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover, TabsRow, Tooltip } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useComposeState } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
@@ -97,7 +97,7 @@ export default function SelectionPalettePanel() {
           />
         )}
         {canDelete && (
-          <Button
+          <Tooltip label="Delete selected"><Button
             variant="primary"
             size="sm"
             animateIcon
@@ -105,10 +105,9 @@ export default function SelectionPalettePanel() {
             iconOnly="trash"
             iconSize={12}
             aria-label="Delete selected"
-            title="Delete selected"
             onClick={deleteSelected}
             style={{ padding: 6 }}
-          />
+          /></Tooltip>
         )}
       </div>
       <div className="flex-1 min-h-0 overflow-y-auto [scrollbar-gutter:stable]">

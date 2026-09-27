@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useRef, useState } from 'react'
-import { Button, LabeledControl, SegmentedToggle, ToggleSwitch, ViewToggle, Slider, Input } from '@kolkrabbi/kol-component'
+import { Button, LabeledControl, SegmentedToggle, ToggleSwitch, ViewToggle, Slider, Input, Tooltip } from '@kolkrabbi/kol-component'
 import { PickerRow, PickerDropdown } from './TreePicker'
 import { useComposeState } from '../state'
 import { findLayerDeep } from '../helpers'
@@ -212,14 +212,13 @@ function LayerEffects({ layer }) {
         </div>
       )}
       {chain.length > 0 && selIdx != null && (
-        <Button
+        <Tooltip label={chain.length >= MAX_FILTERS ? `Chain is full (${MAX_FILTERS} effects)` : 'Add another effect'}><Button aria-label={chain.length >= MAX_FILTERS ? `Chain is full (${MAX_FILTERS} effects)` : 'Add another effect'}
           variant="primary" size="sm" className="w-full"
           onClick={() => setSelIdx(null)}
           disabled={chain.length >= MAX_FILTERS}
-          title={chain.length >= MAX_FILTERS ? `Chain is full (${MAX_FILTERS} effects)` : 'Add another effect'}
         >
           Add effect
-        </Button>
+        </Button></Tooltip>
       )}
 
       {/* ── empty chain: just the button (Figma's add-first flow) ── */}
@@ -261,7 +260,7 @@ function LayerEffects({ layer }) {
 
       {stage?.def && (
         <>
-          <SegmentedToggle value={tab} onChange={setTab} options={FX_TABS} />
+          <SegmentedToggle variant="filled" value={tab} onChange={setTab} options={FX_TABS} />
           {tab === 'effect' && (
             <>
               <AutoControls schema={effectParams} layer={paramsView} setProp={setStageProp} palette={palette} renderAnimate={renderAnimate} />
@@ -354,17 +353,16 @@ export function StageRolls({ def, view, tab, onPatch, inline = false }) {
 function StageRow({ stage, selected, onSelect, onToggle, onRemove, onUp, onDown, canUp, canDown }) {
   const enabled = stage.enabled !== false
   const iconBtn = (label, onClick, disabled, child) => (
-    <button
+    <Tooltip label={label}><button
       type="button"
       aria-label={label}
-      title={label}
       disabled={disabled}
       onClick={(e) => { e.stopPropagation(); onClick() }}
       className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0 text-oq-64 hover:text-emphasis disabled:opacity-30"
       style={{ border: 'none', background: 'transparent', cursor: disabled ? 'default' : 'pointer' }}
     >
       {child}
-    </button>
+    </button></Tooltip>
   )
   return (
     <div
@@ -441,31 +439,29 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
                 </>
               ) : (
                 <>
-                  <button
+                  <Tooltip label={enabled ? 'Disable sweep' : 'Enable sweep'}><button
                     type="button"
                     aria-label={enabled ? 'Disable sweep' : 'Enable sweep'}
-                    title={enabled ? 'Disable sweep' : 'Enable sweep'}
                     onClick={() => setField(i, 'enabled', !enabled)}
                     className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0 text-oq-64 hover:text-emphasis"
                     style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
                   >
                     <Icon name={enabled ? 'eye-on' : 'eye-off'} size={12} />
-                  </button>
+                  </button></Tooltip>
                   <span className={`kol-helper-12 flex-1 truncate ${enabled ? 'text-emphasis' : 'text-meta'}`}>
                     {shapeLabel(sw.shape ?? 'linear')}
                   </span>
                 </>
               )}
-              <button
+              <Tooltip label="Remove sweep"><button
                 type="button"
                 aria-label="Remove sweep"
-                title="Remove sweep"
                 onClick={() => removeAt(i)}
                 className="inline-flex items-center justify-center w-5 h-5 rounded shrink-0 text-oq-64 hover:text-emphasis"
                 style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
               >
                 <Icon name="x" size={11} />
-              </button>
+              </button></Tooltip>
             </div>
             {enabled && (
               <>

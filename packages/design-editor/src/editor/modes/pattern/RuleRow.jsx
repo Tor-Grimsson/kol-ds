@@ -1,4 +1,4 @@
-import { Button, Section } from '@kolkrabbi/kol-component'
+import { Button, Section, Tooltip } from '@kolkrabbi/kol-component'
 import { Dropdown } from '@kolkrabbi/kol-component'
 import { Input } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
@@ -90,15 +90,14 @@ function NumInput({ value, onChange, min = 0, max = 99 }) {
 
 function ToggleChip({ active, onClick, children, title }) {
   return (
-    <Button
+    <Tooltip label={title}><Button aria-label={title}
       variant={active ? 'primary' : 'outline'}
       size="sm"
       onClick={onClick}
-      title={title}
       aria-pressed={active}
     >
       {children}
-    </Button>
+    </Button></Tooltip>
   )
 }
 
@@ -121,17 +120,16 @@ export default function RuleRow({ rule, onChange, onRemove, onReroll }) {
             onChange={(v) => set({ selectKind: v })}
           />
         </div>
-        <Button
+        <Tooltip label="Re-randomize this rule"><Button
           variant="ghost"
           size="sm"
           iconOnly="refresh"
           iconSize={12}
           onClick={onReroll}
           aria-label="Re-randomize rule"
-          title="Re-randomize this rule"
           className="shrink-0"
           style={{ padding: 6 }}
-        />
+        /></Tooltip>
         <Button
           variant="ghost"
           size="sm"

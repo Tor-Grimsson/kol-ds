@@ -2,8 +2,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Button,
   Dropdown, LabeledControl, Slider, Textarea, SegmentedToggle, ViewToggle,
-  ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem,
-} from '@kolkrabbi/kol-component'
+  ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
 import { ColorField } from './ColorField'
 import { TreePicker } from './TreePicker'
 import { resolveColor } from '../state'
@@ -232,13 +231,12 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
           insts={insts} idx={idx} onSelect={selectElement} onWrite={writeInstances}
           marked={marked} onMark={toggleMark} onGroup={groupMarked} onUngroup={ungroupMarked}
         />
-        <Button
+        <Tooltip label="Edit elements on the canvas (click to select, drag to move, corners to scale)"><Button aria-label="Edit elements on the canvas (click to select, drag to move, corners to scale)"
           variant="primary" size={cs} className="w-full"
-          title="Edit elements on the canvas (click to select, drag to move, corners to scale)"
           onClick={() => window.dispatchEvent(new CustomEvent('kol:kinetic-edit', { detail: { id: layer.id, index: idx } }))}
         >
           Edit on canvas
-        </Button>
+        </Button></Tooltip>
       </div>
 
       {tabStrip}
@@ -413,17 +411,17 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
               <span className="truncate flex-1 min-w-0">{ins.text || '—'}</span>
               {tag && <span className="shrink-0 kol-helper-10 text-meta">grp {tag}</span>}
-              <Button
+              <Tooltip label="Duplicate element"><Button
                 variant="ghost" size={cs} quiet iconOnly="copy" iconSize={12}
-                aria-label="Duplicate element" title="Duplicate element"
+                aria-label="Duplicate element"
                 onClick={(e) => { e.stopPropagation(); duplicate(i) }}
-              />
-              <Button
+              /></Tooltip>
+              <Tooltip label="Remove element"><Button
                 variant="ghost" size={cs} quiet iconOnly="x" iconSize={10}
-                aria-label="Remove element" title="Remove element"
+                aria-label="Remove element"
                 disabled={insts.length <= 1}
                 onClick={(e) => { e.stopPropagation(); remove(i) }}
-              />
+              /></Tooltip>
             </div>
           )
         })}
@@ -440,20 +438,20 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
         <Button variant="primary" size={cs} className="flex-1" iconLeft="plus" iconSize={12} onClick={add}>
           Add element
         </Button>
-        <Button
+        <Tooltip label="Move element up"><Button
           variant="ghost" size={cs} quiet style={iconBtnStyle}
-          aria-label="Move element up" title="Move element up"
+          aria-label="Move element up"
           disabled={idx <= 0} onClick={() => move(-1)}
         >
           <Icon name="chevron-down" size={12} style={{ transform: 'rotate(180deg)' }} />
-        </Button>
-        <Button
+        </Button></Tooltip>
+        <Tooltip label="Move element down"><Button
           variant="ghost" size={cs} quiet style={iconBtnStyle}
-          aria-label="Move element down" title="Move element down"
+          aria-label="Move element down"
           disabled={idx >= insts.length - 1} onClick={() => move(1)}
         >
           <Icon name="chevron-down" size={12} />
-        </Button>
+        </Button></Tooltip>
       </div>
     </>
   )
@@ -501,17 +499,17 @@ function MotionStack({ motions, mIdx, onSelect, onAdd, onRemove }) {
       <span className="kol-helper-10 text-meta">Motion layers</span>
       <div className="flex items-center gap-1">
         <div className="flex-1 min-w-0">
-          <SegmentedToggle value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
+          <SegmentedToggle variant="filled" value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
         </div>
-        <Button
+        <Tooltip label="Add motion layer"><Button
           variant="ghost" size={cs} quiet iconOnly="plus" iconSize={12}
-          aria-label="Add motion layer" title="Add motion layer" onClick={onAdd}
-        />
-        <Button
+          aria-label="Add motion layer" onClick={onAdd}
+        /></Tooltip>
+        <Tooltip label="Remove motion layer (the primary can only be set to None)"><Button
           variant="ghost" size={cs} quiet iconOnly="x" iconSize={10}
-          aria-label="Remove motion layer" title="Remove motion layer (the primary can only be set to None)"
+          aria-label="Remove motion layer"
           disabled={mIdx === 0} onClick={onRemove}
-        />
+        /></Tooltip>
       </div>
     </div>
   )

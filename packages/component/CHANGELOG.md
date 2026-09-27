@@ -2,6 +2,18 @@
 
 ## 0.226.0 — 2026-09-27
 
+**Editor DS sync (the design editor back on KOL, same day):**
+
+- `MenuItem` / `MenuDropdownItem` / `MenuDropdownNest` — the KOL focus ring (`.kol-menu-btn`), not the
+  browser's blue one; dividers on `oq-08`.
+- `KeyframeEditor` — `t` may be a function read at the click (a clock that runs without re-rendering).
+- `InspectorSection` — `actions`, controls on the label's row.
+- `CanvasFrame` / `Canvas` — no `guideColor` → theme ink (`oq-24` border, `fg-64` label) instead of a
+  hard-coded light border that vanished on a light page; ruler stroke `oq-16`.
+- `XYPad`, `TimelineDock` — strokes on `oq` (the stroke law).
+- Icon-only wrappers inked `fg` → `oq` (FieldRow, SearchInput, Stepper, TabsRow, MediaLibraryPages,
+  RecordManager) — caught by the icon-ink gate's new I3.
+
 - `SectionText` / `PageHeader` — **inline actions with no subtitle sit on the title's row**, on the
   right edge, wrapping under the title on a narrow screen. The docstring always promised this; the
   code stacked the cluster under the headline. This is the tool frame's masthead (the title, its

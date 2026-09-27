@@ -1,5 +1,28 @@
 # @kolkrabbi/design-editor
 
+## 0.15.0 — 2026-09-27
+
+**Back on the design system** (plan-2026-09-27-editor-ds-sync; the editor review's 13 findings).
+
+- **Its copies are gone.** PathNodeOverlay · CropOverlay · XYPad · KeyframeEditor · CurveEditor ·
+  InspectorRail · ToolPalette · LayerStack (+ AddLayerButton) · TimelineDock · Canvas · the tab row ·
+  the inspector Section are kol-component's now; the editor keeps its store and wiring. The old
+  files are in `_tmp/2026-09-27-editor-copies/`.
+- **One icon system.** `EditorIcon` and its 59 SVGs are retired; everything is `kol-icons`, with the
+  editor-only glyphs folded into v1. Buttons that asked the old loader for names it didn't have
+  (`view-list`, `grid`, `arrow-left` …) render again.
+- **Transport is the motion pack's.** The Transport tab, the touch ▶ sheet, the collapsed dock's ▶ and
+  Space-to-play exist only with the motion pack; `/core` shows no time controls. `TransportBar` is
+  rebuilt from KOL parts (rewind · play/pause · stop · loop length).
+- **Inspector:** browser tooltips → KOL `Tooltip` (40); constrain proportions is a lock `Button`; the
+  line-height / tracking glyphs come off the ladder; text alignment has text-align glyphs and no
+  label; type settings moved to the font row; Fill and Stroke sections removed (the colour window
+  edits paint); labels that named the obvious (Size, Dimensions, Position, Alignment, Rotation)
+  dropped; every segmented toggle is `filled`.
+- **Fixed:** the canvas Background now writes through the colour target, so the colour window shows
+  the canvas colour (a red canvas read white); the settings drawer closes on its X (kol-icons).
+
+
 ## 0.14.0 — 2026-09-27
 
 The editor split into a core and three layer packs (deconstruction roadmap, kol-ds-ui

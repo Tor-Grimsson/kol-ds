@@ -216,7 +216,7 @@ function EffectSurface({ layer, showMod }) {
       })),
     ]
     return (
-      <Surface title="Effects" fx tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      <Surface title="Effects" fx tabStrip={<SegmentedToggle variant="filled" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
         {tab === 'effect' && (
           <>
             <LabeledControlSection label="Effect Stack" divided>
@@ -249,7 +249,7 @@ function EffectSurface({ layer, showMod }) {
   /* Bare photo (uploaded, no effect picked yet): fit params, nothing else. */
   if (!stage) {
     return (
-      <Surface chips={chips} active={null} onPick={onChip} spread={isTrio} fx tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      <Surface chips={chips} active={null} onPick={onChip} spread={isTrio} fx tabStrip={<SegmentedToggle variant="filled" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
         <AutoControls schema={PHOTO_SCHEMA} layer={layer} setProp={edit.setProp} palette={palette} renderAnimate={(p) => <BindDot layer={layer} param={p} setProp={edit.setProp} />} tab={tab === 'anim' ? 'anim' : 'style'} emptyHint="Pick an effect from the nav." />
       </Surface>
     )
@@ -279,7 +279,7 @@ function EffectSurface({ layer, showMod }) {
   return (
     <Surface chips={chips} active={stage.id} onPick={onChip} spread={isTrio} title={title} fx
       preStrip={<SourceStrip layer={layer} />}
-      tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      tabStrip={<SegmentedToggle variant="filled" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
       {tab === 'effect' && (
         <>
           {head.length > 0 && <AutoControls schema={head} {...auto} />}
@@ -424,7 +424,7 @@ function GenerativeSurface({ layer, showMod, tree }) {
     <Surface
       title={groupLabel} chips={chips} active={layer.presetId} onPick={onChip} pills
       preStrip={layer.loopGroup === 'distress' ? <SourceStrip layer={layer} /> : undefined}
-      tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}
+      tabStrip={<SegmentedToggle variant="filled" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}
     >
       <LoopFields
         layer={layer} setProp={edit.setProp} patch={edit.patch} updateLayer={updateLayer}
@@ -459,7 +459,7 @@ function KineticSurface({ layer, showMod }) {
   )
 
   return (
-    <Surface title={title} tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}>
+    <Surface title={title} tabStrip={<SegmentedToggle variant="filled" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}>
       <KineticPanel
         layer={layer} setProp={edit.setProp} updateLayer={updateLayer} palette={palette}
         /* noop, not undefined — MorphBlendKnob calls it unconditionally */

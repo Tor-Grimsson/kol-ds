@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useState } from 'react'
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, Tooltip } from '@kolkrabbi/kol-component'
 import { IconFrame, Input, useModal } from '@kolkrabbi/kol-component'
 import { ASPECTS } from './aspects'
 import { useComposeState } from '../compose/state'
@@ -457,14 +457,13 @@ export default function MenuTop() {
             at MediaLibraryPages.jsx:286). NOT `nav-settings`: that is the
             sliders glyph the rail's Settings row wears, and two identical icons
             meaning different things on one screen is how this got lost. */}
-        <IconFrame
+        <Tooltip label="Display settings"><IconFrame
           name="settings-01"
           variant="primary"
           size="sm"
           onClick={() => window.dispatchEvent(new CustomEvent('kol:open-settings'))}
-          title="Display settings"
           aria-label="Display settings"
-        />
+        /></Tooltip>
       </div>
     </div>
   )

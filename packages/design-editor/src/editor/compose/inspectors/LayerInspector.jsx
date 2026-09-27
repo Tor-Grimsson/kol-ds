@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import MediaPicker from '../../library/MediaPicker'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
-import { Button, Dropdown, InspectorSection } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, InspectorSection, Tooltip } from '@kolkrabbi/kol-component'
 import { LabeledControl } from '@kolkrabbi/kol-component'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import { ViewToggle } from '@kolkrabbi/kol-component'
@@ -12,7 +12,6 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { useComposeState, COVER_TYPES } from '../state'
 import { scalePathNodes } from '../path-math'
 import { useLayerEdit } from '../useLayerEdit'
-import { useColorTarget } from '../../color/useColorTarget'
 import { ColorField } from './ColorField'
 import BindDot from '../../params/BindDot'
 import { BLEND_MODES } from '../LayerStack'
@@ -37,7 +36,6 @@ export default function LayerInspector({ layer }) {
   /* Color writes route through useColorTarget so the inspector, the picker,
    * the keymap, and the swatch stack all share one writer. Photoshop model:
    * writes always succeed, app-level paint state is the canonical source. */
-  const target = useColorTarget()
 
   /* `coalesce` collapses slider drags + typed-input flurries into one undo
    * entry per quiet period. */
@@ -45,7 +43,6 @@ export default function LayerInspector({ layer }) {
   const setProp = edit.setProp
 
   const positioned = !COVER_TYPES.includes(layer.type)
-  const paintable  = ['background', 'pattern', 'shape', 'text', 'path'].includes(layer.type)
 
   /* Purpose-divided sections (2026-08-12 restructure, the Figma model):
    * Position · Layout · Appearance · type sections · Fill · Stroke ·
@@ -56,13 +53,13 @@ export default function LayerInspector({ layer }) {
         <InspectorSection divided label="Position">
           {/* Figma order: Alignment (to canvas for a single layer) ·
             * Position X/Y · Rotation + the transform cluster. */}
-          <LabeledControl label="Alignment">
+          <div className="flex flex-col gap-1">
             <AlignmentPanel />
-          </LabeledControl>
-          <LabeledControl label="Position">
+          </div>
+          <div className="flex flex-col gap-1">
             <PositionFields layer={layer} setProp={setProp} />
-          </LabeledControl>
-          <LabeledControl label="Rotation">
+          </div>
+          <div className="flex flex-col gap-1">
             <div className="grid grid-cols-2 gap-2">
               <div className="flex items-center gap-1 min-w-0">
                 <AxisField
@@ -99,7 +96,7 @@ export default function LayerInspector({ layer }) {
                 }}
               />
             </div>
-          </LabeledControl>
+          </div>
         </InspectorSection>
       )}
 
@@ -113,7 +110,7 @@ export default function LayerInspector({ layer }) {
                 * arrow-right / arrows-vertical) — swapped the moment the
                 * drawn resizing icons publish. Selected = the DARK tile. */}
               <SegmentedToggle
-                variant="tonal" size="sm"
+                variant="filled" size="sm"
                 ariaLabel="Resizing"
                 value={layer.resizing ?? 'fixed'}
                 onChange={(v) => setProp('resizing', v)}
@@ -125,9 +122,9 @@ export default function LayerInspector({ layer }) {
               />
             </LabeledControl>
           )}
-          <LabeledControl label="Dimensions">
+          <div className="flex flex-col gap-1">
             <LayoutFields layer={layer} setProp={setProp} patch={edit.patch} />
-          </LabeledControl>
+          </div>
         </InspectorSection>
       )}
 
@@ -166,64 +163,9 @@ export default function LayerInspector({ layer }) {
         </InspectorSection>
       )}
 
-      {/* Fill and Stroke — the Figma paint rows (T5/T6 2026-08-12):
-        * [swatch+hex][opacity %][eye][−], header + when absent. Per-paint
-        * opacity + the eye are REAL (fillOpacity/fillHidden through render
-        * and export). A paint exists only when it paints. */}
-      {paintable && (
-        <InspectorSection divided
-          label="Fill"
-          actions={layer.color == null && (
-            <SectionIconBtn label="Add fill" onClick={() => target.setFill('palette:dark')}>
-              <Icon name="plus" size={12} />
-            </SectionIconBtn>
-          )}
-        >
-          {layer.color != null && (
-            <PaintRow
-              value={layer.color}
-              onColor={target.setFill}
-              palette={palette}
-              label="Fill"
-              opacity={layer.fillOpacity}
-              hidden={!!layer.fillHidden}
-              onOpacity={(v) => setProp('fillOpacity', v)}
-              onToggleHidden={() => setProp('fillHidden', !layer.fillHidden)}
-              onRemove={() => { target.setFill(null); edit.patch({ fillHidden: false, fillOpacity: 1 }) }}
-            />
-          )}
-        </InspectorSection>
-      )}
-      {paintable && (
-        <InspectorSection divided
-          label="Stroke"
-          actions={!(layer.stroke != null && (layer.strokeWidth ?? 0) > 0) && (
-            <SectionIconBtn
-              label="Add stroke"
-              onClick={() => { target.setStroke('palette:dark'); setProp('strokeWidth', 2) }}
-            >
-              <Icon name="plus" size={12} />
-            </SectionIconBtn>
-          )}
-        >
-          {layer.stroke != null && (layer.strokeWidth ?? 0) > 0 && (
-            <>
-              <PaintRow
-                value={layer.stroke}
-                onColor={target.setStroke}
-                palette={palette}
-                label="Stroke"
-                opacity={layer.strokeOpacity}
-                hidden={!!layer.strokeHidden}
-                onOpacity={(v) => setProp('strokeOpacity', v)}
-                onToggleHidden={() => setProp('strokeHidden', !layer.strokeHidden)}
-                onRemove={() => { target.setStroke(null); edit.patch({ strokeWidth: 0, strokeHidden: false, strokeOpacity: 1 }) }}
-              />
-              <StrokeDepthRow layer={layer} setProp={setProp} />
-            </>
-          )}
-        </InspectorSection>
-      )}
+      {/* No Fill / Stroke sections (editor review #12, 2026-09-27 — user: "colour is changed in the
+        * colour window"): the left rail's Colour and Stroke panels edit the selected layer's paint.
+        * The removed sections are in _tmp/2026-09-27-editor-copies/. */}
 
       {layer.type === 'path' && (
         <InspectorSection divided label="Path">
@@ -244,72 +186,6 @@ export default function LayerInspector({ layer }) {
           <GroupFields layer={layer} ungroupLayer={ungroupLayer} />
         </InspectorSection>
       )}
-    </div>
-  )
-}
-
-/* PaintRow — the Figma paint bar: [swatch+hex][opacity%][eye][−]. The
- * swatch-in-one-container upgrade rides the ColorSwatch DS ticket; until
- * then swatch + hex sit adjacent. */
-function PaintRow({ value, onColor, palette, label, opacity, hidden, onOpacity, onToggleHidden, onRemove }) {
-  const pct = Math.round((opacity ?? 1) * 100)
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex-1 min-w-0">
-        <ColorField label={label} hideLabel inline value={value} onChange={onColor} palette={palette} />
-      </div>
-      {/* property self-applies w-full — cage it so the hex keeps its room */}
-      <div className="w-[72px] shrink-0">
-        <NumberField
-          variant="property" size="sm" unit="%"
-          value={pct}
-          onCommit={(raw) => {
-            const n = Number(raw)
-            if (Number.isFinite(n)) onOpacity(Math.min(1, Math.max(0, n / 100)))
-          }}
-        />
-      </div>
-      <SectionIconBtn label={hidden ? `Show ${label.toLowerCase()}` : `Hide ${label.toLowerCase()}`} active={hidden} onClick={onToggleHidden}>
-        <Icon name={hidden ? 'eye-off' : 'eye-on'} size={13} />
-      </SectionIconBtn>
-      <SectionIconBtn label={`Remove ${label.toLowerCase()}`} onClick={onRemove}>
-        <Icon name="minus" size={12} />
-      </SectionIconBtn>
-    </div>
-  )
-}
-
-/* StrokeDepthRow — Weight + the stroke-settings popover (the left rail's
- * StrokePanel mounted whole — moved, not duplicated; Figma's ⚙ pattern). */
-function StrokeDepthRow({ layer, setProp }) {
-  const [open, setOpen] = useState(false)
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-end', offset: 4 })
-  return (
-    <div className="flex items-center gap-2">
-      <LabeledControl label="Weight">
-        <NumberField
-          variant="property" size="sm" affordance="W"
-          value={Math.round(layer.strokeWidth ?? 2)}
-          onCommit={(raw) => {
-            const n = Number(raw)
-            setProp('strokeWidth', Number.isFinite(n) && n > 0 ? Math.round(n) : 0)
-          }}
-        />
-      </LabeledControl>
-      <button
-        type="button"
-        ref={popover.refs.setReference}
-        {...popover.getReferenceProps()}
-        aria-label="Stroke settings"
-        data-kol-tip="Stroke settings"
-        className={`ml-auto self-end inline-flex items-center justify-center rounded text-emphasis ${open ? '' : 'kol-btn-quiet'}`}
-        style={{ width: 26, height: 26, padding: 5 }}
-      >
-        <Icon name="slider-01" size={14} />
-      </button>
-      <PopoverPanel popover={popover} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg p-3" style={{ width: 280, maxHeight: '60vh', overflowY: 'auto' }}>
-        <StrokePanel />
-      </PopoverPanel>
     </div>
   )
 }
@@ -432,13 +308,12 @@ function ParamsLink({ layer }) {
   if (!labelFor) return null
   return (
     <InspectorSection divided label="Parameters">
-      <Button
+      <Tooltip label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}><Button aria-label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}
         variant="primary" size="sm" className="w-full"
         onClick={openParams}
-        title={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}
       >
         {labelFor(layer)}
-      </Button>
+      </Button></Tooltip>
     </InspectorSection>
   )
 }
@@ -551,10 +426,9 @@ function ImageSource({ layer, patch }) {
 function FlipButton({ axis, layer, flipLayer, segmented = false }) {
   const active = axis === 'h' ? !!layer.flipX : !!layer.flipY
   return (
-    <button
+    <Tooltip label={axis === 'h' ? 'Flip horizontal (⇧H)' : 'Flip vertical (⇧V)'}><button aria-label={axis === 'h' ? 'Flip horizontal (⇧H)' : 'Flip vertical (⇧V)'}
       type="button"
       onClick={() => flipLayer(layer.id, axis)}
-      title={axis === 'h' ? 'Flip horizontal (⇧H)' : 'Flip vertical (⇧V)'}
       className={segmented
         ? 'kol-btn-quiet flex-1 inline-flex items-center justify-center'
         : 'inline-flex items-center justify-center w-6 h-6 rounded shrink-0'}
@@ -567,7 +441,7 @@ function FlipButton({ axis, layer, flipLayer, segmented = false }) {
       }}
     >
       <Icon name={axis === 'h' ? 'flip-horizontal' : 'flip-vertical'} size={segmented ? 13 : 14} />
-    </button>
+    </button></Tooltip>
   )
 }
 
@@ -660,25 +534,13 @@ function LayoutFields({ layer, setProp, patch }) {
         <AxisField label="W" value={Math.round(layer.w)} onCommit={onChangeW} />
         <AxisField label="H" value={Math.round(layer.h)} onCommit={onChangeH} />
       </div>
-      {/* The constrain-proportions button — FILLED like the inputs, corner
-        * glyph, accent when constrained (user ruling 2026-08-12: no lock
-        * icon, no outline). Proper constrain glyph rides the icon ticket. */}
-      <button
-        type="button"
-        onClick={toggleLock}
-        aria-pressed={aspectLocked}
-        title={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}
-        className="inline-flex items-center justify-center rounded shrink-0"
-        style={{
-          width: 26, height: 26,
-          border: 'none',
-          background: 'var(--kol-surface-secondary)',
-          cursor: 'pointer',
-          color: aspectLocked ? 'var(--kol-accent-primary)' : 'var(--kol-oq-48)',
-        }}
-      >
-        <Icon name="constrain" size={16} />
-      </button>
+      {/* Constrain proportions (editor review #6, 2026-09-27 — user: "just use a lock or something
+        * more common"): a KOL Button on the inputs' rung, a lock that closes when constrained. It was
+        * a raw <button> inking a corner glyph `fg` from its wrapper. */}
+      <Tooltip label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}>
+        <Button variant="ghost" size="sm" iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
+          aria-label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'} onClick={toggleLock} />
+      </Tooltip>
     </div>
   )
 }

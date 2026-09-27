@@ -2,7 +2,19 @@
 
 **Raised:** 2026-09-27, from your editor review (`backlog/2026-09-27-editor-review-findings.md`)
 and the audit behind it (`backlog/2026-09-27-editor-ds-audit.md`).
-**Status:** proposed. Nothing started.
+**Status:** done 2026-09-27, phases 1–5 in one run. Unpublished: kol-component 0.226.0 ·
+kol-icons 0.28.0 · kol-shell 0.57.1 · kol-theme 0.153.0 · kol-styleguide 0.5.2 · design-editor 0.15.0.
+
+**Done notes:**
+- Phase 3's TransportBar → PlaybackBar was wrong in the audit: PlaybackBar is a media player bar,
+  the editor's is a loop clock. TransportBar was rebuilt from KOL parts instead.
+- The settings X (#7) was KOL's: `Icon` injects its SVG as HTML, a re-render between press and
+  release replaced the `<path>` under the press, and the browser dropped the click. Fixed in
+  kol-icons (the glyph is never the click target) — every icon-only button benefits.
+- #4: `S` works; the sheet ran off both edges of the window. Fixed in kol-shell's ShortcutsOverlay.
+- Not done: #11's GROUNDS (the `bg-fg-04` / `bg-fg-08` alpha grounds beside `surface-*`, 13 + 5
+  sites) — the toggles are one look, the grounds are untouched.
+- Keyboard-shortcut ids (`tool-rect`, `flip-h` …) kept their names — saved keymaps key on them.
 
 ---
 

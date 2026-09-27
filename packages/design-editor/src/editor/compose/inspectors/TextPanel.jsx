@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Dropdown, LabeledControl, PopoverPanel, SegmentedToggle, Slider, usePopover, ViewToggle } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, PopoverPanel, SegmentedToggle, Slider, usePopover, ViewToggle, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 import BindDot from '../../params/BindDot'
@@ -136,12 +136,21 @@ export function TextSurface({ layer }) {
       {/* NO Content textarea and NO Family/Style/Size labels — Figma has
         * neither (user ruling 2026-08-12). Text edits happen on canvas
         * (double-click) or via the header's Edit object. */}
-      <Dropdown
-        variant="subtle" size="sm" className="w-full"
-        options={FAMILY_OPTIONS}
-        value={family}
-        onChange={onFamily}
-      />
+      {/* Family + the type-settings trigger (case, italic …) — type settings sit with the font, not
+        * on the alignment row (editor review #11, 2026-09-27) */}
+      <div className="flex items-center gap-2">
+        <Dropdown
+          variant="subtle" size="sm" className="min-w-0 flex-1"
+          options={FAMILY_OPTIONS}
+          value={family}
+          onChange={onFamily}
+        />
+        <Tooltip label="Type settings">
+          <span ref={settings.refs.setReference} {...settings.getReferenceProps()} className="inline-flex">
+            <Button variant="ghost" size="sm" iconOnly="slider-01" aria-label="Type settings" pressed={settingsOpen} />
+          </span>
+        </Tooltip>
+      </div>
 
       {/* Style + Size row (Figma's "Narrow … | 12 ⌄"): size = input with a
         * chevron preset list. The bind dot rides gated (M). */}
@@ -158,60 +167,47 @@ export function TextSurface({ layer }) {
       {/* Line height + Letter spacing (Figma pair; proper glyphs ride the
         * icon ticket — rows/type are the closest shipped drawings). */}
       <div className="grid grid-cols-2 gap-2">
-        <LabeledControl label="Line height">
+        <Tooltip label="Line height">
           <div className="flex items-center gap-1 min-w-0">
             <MetricInput param={metric('lineHeight', 'Line height')} layer={layer} setProp={setProp} step={0.01} icon="line-height" />
             <BindDot layer={layer} param={metric('lineHeight', 'Line height')} setProp={setProp} />
           </div>
-        </LabeledControl>
-        <LabeledControl label="Letter spacing">
+        </Tooltip>
+        <Tooltip label="Letter spacing">
           <div className="flex items-center gap-1 min-w-0">
             <MetricInput param={metric('tracking', 'Tracking')} layer={layer} setProp={setProp} suffix="em" step={0.005} icon="letter-spacing" />
             <BindDot layer={layer} param={metric('tracking', 'Tracking')} setProp={setProp} />
           </div>
-        </LabeledControl>
+        </Tooltip>
       </div>
 
-      {/* Alignment — two 3-way segmented toggles + the DS settings glyph
-        * (Figma's row). */}
-      <LabeledControl label="Alignment">
-        <div className="flex items-center gap-2">
-          {/* STATEFUL strips — DS SegmentedToggle variant="filled". */}
-          <SegmentedToggle
-            variant="tonal" size="sm"
-            ariaLabel="Text alignment"
-            value={layer.textAlign ?? 'center'}
-            options={[
-              { value: 'left',   ariaLabel: 'Align left',   label: <Icon name="align-horizontal-left" size={16} /> },
-              { value: 'center', ariaLabel: 'Align center', label: <Icon name="align-horizontal-center" size={16} /> },
-              { value: 'right',  ariaLabel: 'Align right',  label: <Icon name="align-horizontal-right" size={16} /> },
-            ]}
-            onChange={(v) => setProp('textAlign', v)}
-          />
-          <SegmentedToggle
-            variant="tonal" size="sm"
-            ariaLabel="Vertical alignment"
-            value={layer.verticalAlign ?? 'middle'}
-            options={[
-              { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="align-vertical-top" size={16} /> },
-              { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="align-vertical-center" size={16} /> },
-              { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="align-vertical-bottom" size={16} /> },
-            ]}
-            onChange={(v) => setProp('verticalAlign', v)}
-          />
-          <button
-            type="button"
-            ref={settings.refs.setReference}
-            {...settings.getReferenceProps()}
-            aria-label="Type settings"
-            data-kol-tip="Type settings"
-            className={`ml-auto inline-flex items-center justify-center rounded text-emphasis ${settingsOpen ? '' : 'kol-btn-quiet'}`}
-            style={{ width: 26, height: 26, padding: 5 }}
-          >
-            <Icon name="slider-01" size={14} />
-          </button>
-        </div>
-      </LabeledControl>
+      {/* Text alignment (editor review #10, 2026-09-27): no label and TEXT-align glyphs — the object
+        * alignment row above uses the align-object glyphs, and two rows both called "Alignment" with
+        * the same icons read as one control twice. Affinity's paragraph row. */}
+      <div className="flex items-center gap-2">
+        <SegmentedToggle
+          variant="filled" size="sm"
+          ariaLabel="Text alignment"
+          value={layer.textAlign ?? 'center'}
+          options={[
+            { value: 'left',   ariaLabel: 'Align text left',   label: <Icon name="text-align-left" size={glyphSize('sm', true)} /> },
+            { value: 'center', ariaLabel: 'Center text',       label: <Icon name="text-align-center" size={glyphSize('sm', true)} /> },
+            { value: 'right',  ariaLabel: 'Align text right',  label: <Icon name="text-align-right" size={glyphSize('sm', true)} /> },
+          ]}
+          onChange={(v) => setProp('textAlign', v)}
+        />
+        <SegmentedToggle
+          variant="filled" size="sm"
+          ariaLabel="Vertical alignment"
+          value={layer.verticalAlign ?? 'middle'}
+          options={[
+            { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="align-vertical-top" size={glyphSize('sm', true)} /> },
+            { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="align-vertical-center" size={glyphSize('sm', true)} /> },
+            { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="align-vertical-bottom" size={glyphSize('sm', true)} /> },
+          ]}
+          onChange={(v) => setProp('verticalAlign', v)}
+        />
+      </div>
 
       <PopoverPanel popover={settings} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg p-3 flex flex-col gap-3" style={{ minWidth: 240 }}>
         <LabeledControl label="Case">
@@ -250,7 +246,9 @@ function MetricInput({ param: p, layer, setProp, suffix, step, round = false, ic
     <NumberField
       variant="property" size="sm" unit={suffix}
       className="w-full min-w-0"
-      affordance={icon ? <Icon name={icon} size={14} /> : undefined}
+      /* the glyph stands alone in the field's affordance slot — the SOLO rung for sm (16), off the
+       * ladder (editor review #9: at a hand-picked 14 the line-height / tracking art read ~12) */
+      affordance={icon ? <Icon name={icon} size={glyphSize('sm', true)} className="text-oq-64" /> : undefined}
       value={display}
       onCommit={(v) => {
         const n = Number(v)

@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## 0.153.0 — 2026-09-27
+
+- `.kol-menu-btn:focus-visible` — the menu buttons take the Button focus ring.
+- `.kol-section--divided` hairline on `oq-08` (the stroke law).
+
+
 ## 0.152.0 — 2026-09-27
 
 - `kol-sources.css` lists `@kolkrabbi/kol-hardware` (the renamed kol-controls). The manifest had

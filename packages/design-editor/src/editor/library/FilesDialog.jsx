@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button, ContentCard, ContentFilters, ContentRow,
-  EmptyState, FullscreenOverlay, Input, useModal,
-} from '@kolkrabbi/kol-component'
+  EmptyState, FullscreenOverlay, Input, useModal, Tooltip } from '@kolkrabbi/kol-component'
 import { useGeneratorLibrary } from './LibraryProvider'
 
 /**
@@ -169,11 +168,11 @@ export default function FilesDialog({
    * and Download. Rename opens a field and Delete opens the modal confirm, so
    * neither has anything to flip to. */
   const rowAction = (icon, label, run) => (
-    <Button
+    <Tooltip label={label}><Button
       variant="ghost" quiet size="sm" iconOnly={icon}
-      aria-label={label} title={label}
+      aria-label={label}
       onClick={(e) => { e.stopPropagation(); run() }}
-    />
+    /></Tooltip>
   )
   const rowActions = (it) => (
     <span className="flex items-center gap-1">

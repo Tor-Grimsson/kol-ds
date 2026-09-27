@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import KolLogo, { KOL_LOGO_VARIANTS, KOL_LOGO_NATURAL_DIMS } from '../../brand/logos/KolLogo'
-import { ViewToggle } from '@kolkrabbi/kol-component'
+import { ViewToggle, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from './state'
 import { CANVAS_W, CANVAS_H } from './state'
 
@@ -41,12 +41,10 @@ export default function AssetsBody() {
       {view === 'grid' ? (
         <div className="grid grid-cols-2 gap-2">
           {KOL_LOGO_VARIANTS.map((variant) => (
-            <button
-              key={variant}
+            <Tooltip key={variant} label={variant}><button aria-label={variant}
               type="button"
               onClick={() => insertLogo(variant)}
               className="bg-fg-04 hover:bg-fg-08 rounded p-3 flex flex-col items-center gap-2 cursor-pointer"
-              title={variant}
             >
               <span className="block w-full h-12 text-emphasis">
                 <KolLogo variant={variant} className="block w-full h-full" />
@@ -54,18 +52,17 @@ export default function AssetsBody() {
               <span className="kol-helper-10 text-meta normal-case tracking-normal truncate w-full text-center">
                 {variant}
               </span>
-            </button>
+            </button></Tooltip>
           ))}
         </div>
       ) : (
         <ul className="flex flex-col">
           {KOL_LOGO_VARIANTS.map((variant) => (
             <li key={variant}>
-              <button
+              <Tooltip label={variant}><button aria-label={variant}
                 type="button"
                 onClick={() => insertLogo(variant)}
                 className="w-full flex items-center gap-3 px-2 py-1.5 rounded hover:bg-fg-04 cursor-pointer text-left"
-                title={variant}
               >
                 <span className="block w-8 h-6 shrink-0 text-emphasis">
                   <KolLogo variant={variant} className="block w-full h-full" />
@@ -73,7 +70,7 @@ export default function AssetsBody() {
                 <span className="kol-helper-12 text-emphasis normal-case tracking-normal truncate flex-1">
                   {variant}
                 </span>
-              </button>
+              </button></Tooltip>
             </li>
           ))}
         </ul>
