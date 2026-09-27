@@ -8,9 +8,13 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Queued for next session (user, 2026-09-27)
 
-- **Push owed** — apps/brand + the showcase Apps tab go live on deploy.
-- **User reviews the six apps** — media · media-shell · shell · notes · presentation · brand (`pnpm <name>`). Then: kol-noter's patterns into kol-notes on their go; olina cutover to kol-notes / kol-deck / `Brand`, filed from the iMac. Responsive/touch pass over the non-brand apps not done.
+- **Merge + publish owed** — branch `claude/confident-keller-wdpjuv` → main; publish kol-component 0.226.0 · kol-icons 0.28.0 · kol-shell 0.57.1 · kol-theme 0.153.0 · kol-styleguide 0.5.2 · kol-hardware 0.3.0 · kol-deck 0.1.1 · design-editor 0.15.0.
+- **Editor, still open:** the missing popovers / tooltips (user's review of the sync), #11's grounds.
 - monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
+
+## Current state (2026-09-27, tool frame · curves · the editor back on KOL)
+
+- **🧱 Unpublished (2026-09-27, newest).** The tool frame is written (16-app-anatomy § Tool frame) and curves / media / controls / the lists / the deck editor wear it; curves rebuilt on kol-hardware 0.3.0. The editor sync ran phases 1–5: 12 editor copies → KOL, one icon system, transport in the motion pack, the inspector pass, the settings-X and `S`-sheet bugs fixed at the KOL root. 29 gates clean. Plans: `plan-2026-09-27-app-frame-and-curves.md`, `plan-2026-09-27-editor-ds-sync.md`. Log: `session-log/2026-09-27-tool-frame-curves-and-editor-ds-sync.md`.
 
 ## Current state (2026-09-27, kol-hardware · signal engine · apps/curves)
 
@@ -27,18 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-27, notes and decks as tools)
 
 - **📝 kol-notes 0.1.0 · kol-deck 0.1.0 NEW, published with theme 0.151.0 · component 0.225.0 · shell 0.57.0 (2026-09-27, newest).** olina's notes and decks ported as packages; `apps/notes` (:5177) and `apps/presentation` (:5178) run them alone on the fixture (new fake D1 `notes`/`decks` tables); media-shell mounts both as tabs through `media-fixture/wiring`'s `useNotesTool` / `useDecksTool` — one source, nothing to upstream. Deck exports PNG · PDF · PPTX · `.deck.json`. 28 gates clean. Log: `session-log/2026-09-27-notes-and-decks-as-tools.md`.
-
-## Current state (2026-09-26, the Hub — AppHub · apps/shell · tones)
-
-- **🧩 The Hub is one call (2026-09-26, newest): unpublished.** `AppHub` / `HubHome` / `HubSettings` in kol-shell (fxr's settings features as options, `tone` default sunken, file-row list), `apps/shell` reference app, PageHeader cluster on the right edge, `/foundations/tones` visualiser + generated `13-tone-lookup.md`, tones ordered by depth, ViewToggle selected chip `fg-08` under any tone. 27 gates clean. Log: `session-log/2026-09-26-the-hub-apphub-apps-shell-and-tones.md`.
-
-## Current state (2026-09-26, media D1 · apps/media-shell · the app anatomy)
-
-- **🧭 D1 built against an imagined olina setup, and the app vocabulary ruled (2026-09-26, newest): component 0.224.0 · theme 0.150.0 · controls 0.3.1 · dashboards 0.4.2, published.** `apps/media-fixture` (fake bucket + fake D1, shared wiring) and `apps/media-shell` (Home · Browse · Settings) are new; the DS gained `DocumentEditor`, browser-memory drafts (`saveDraft` out of the contract — BREAKING for 0.223), tags + favourites on files and folders, the event log, settings through the client. Four lobby tickets 🟠; coverage audit delivered; theme 0.150.0 dropped the `kol-display-*` aliases on the MBP's partial estate (let stand — consumer scans are the iMac's from now on). Log: `session-log/2026-09-26-media-d1-shell-hub-anatomy.md`.
-
-## Current state (2026-09-25, explorer pass + publish 0.220.0)
-
-- **🧭 Rows and grid now behave like the columns, and like Finder (2026-09-25, newest): theme 0.148.0 · component 0.220.0 · workshop 0.29.0, published.** The title root is derived from path + pick (a stored flag left the crumb at the title over a picked file); a level above the title holds it as one folder; buckets are folders (highlight, double-click / Enter, preview, Space); going up selects the child; Enter / ⇧Enter; grid arrows walk folders; grid drag-select spans the pane; ⇧+arrows work under Quick Look; picked folders end the crumb; SVGs and folder glyphs fill their tiles. olina's title-root ticket 🟠 with receipt. Later the same day: bucket/title previews, upload conversion documented as an option (`04-compositions/15-media-uploads.md`), and FoundryCTA dropped — ⚠️ unpublished, BREAKING on the next component release. 27 gates green. Log: `session-log/2026-09-25-explorer-pass-title-root-and-publish-0220.md`.
 
 ## Repo standup (2026-06-15)
 
