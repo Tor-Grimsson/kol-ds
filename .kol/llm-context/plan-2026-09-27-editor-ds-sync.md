@@ -20,15 +20,14 @@ store, its canvas logic, its generators. No second copy of anything.
 
 ---
 
-## Phase 1 — Fix three things in KOL itself
+## Phase 1 — Fix two things in KOL itself
 
 Small, and every app gets them, not just the editor.
 
 | Fix | Your finding |
 |---|---|
-| `MenuItem`'s button gets the KOL focus style instead of the browser's blue ring | #8 |
-| `XYPad` borders move from `fg` to `oq` (the editor's copy already did this) | stroke law |
-| `SegmentedToggle` warns in dev when it's given a variant that doesn't exist | #11 |
+| The Tools / File / Canvas menu buttons (`MenuItem`) get the KOL focus style instead of the browser's blue ring | #8 |
+| `XYPad` — the square pad you drag a dot in to set X and Y at once (the editor's Paratype tools use it) — its border and crosshair move from `fg` to `oq`. The editor's copy already did this; KOL's didn't | stroke law |
 
 **Done when:** gates clean, the Tools menu shows no blue ring.
 
@@ -38,6 +37,9 @@ Otherwise phases 3–5 drift back.
 
 - The native-tooltip gate checks design-editor (75 `title=` today).
 - The icon-ink gate checks `EditorIcon` too, and catches ink set on a wrapper (the constrain button).
+- A new check: a `SegmentedToggle` given a variant that doesn't exist fails. The editor passes
+  `ghost` and `primary`, which aren't variants, so those toggles silently fall back to the
+  outlined look you flagged (#11). Phase 5 fixes the four call sites; this stops it coming back.
 
 **Done when:** the gates run over the editor. They will fail at first — that list is phase 5's work.
 
@@ -56,7 +58,11 @@ Cheapest first. Each step: import KOL, move the old file to `_tmp/`, check the e
 
 ## Phase 4 — One icon system
 
-- Move the editor's 59 icons into kol-icons (dropping the ones kol-icons already has).
+- Move the editor's 59 icons into **`kol-icon-set-v1`**, into its existing folders (`tools`,
+  `editing`, `layout`, `shape-primitives` …), dropping the ones v1 already has (`check`, `close`,
+  `trash`, `lock`, `plus` …). Not a new "editor" set: these are ordinary app UI — align, flip,
+  boolean, tool and layer glyphs — the same register as v1. `kol-icon-set-signal` is the
+  instruments' set (monitor, mirror). A set per app is exactly how the editor's own set happened.
 - Fix the flip icons on the way — the missing end dot (#5).
 - Swap the constrain glyph for a lock (#6).
 - Retire `EditorIcon`.
@@ -65,7 +71,7 @@ Cheapest first. Each step: import KOL, move the old file to `_tmp/`, check the e
 
 ## Phase 5 — The inspector pass
 
-Now that it's all KOL parts, do your UI findings.
+Phases 1–4 are plumbing. This is the visible work: your findings that the swap alone doesn't fix.
 
 | Finding | What changes |
 |---|---|
@@ -73,7 +79,7 @@ Now that it's all KOL parts, do your UI findings.
 | #6 constrain | a proper `Button`, `oq` ink |
 | #9 type glyphs | sized off the ladder, not hand-picked |
 | #10 two alignments | text alignment loses its label and gets text-align glyphs (Affinity's row) |
-| #11 tones | one toggle look across the editor; grounds from the tone set |
+| #11 tones | the `ghost` / `primary` toggles get a real variant; one toggle look across the editor; grounds from the tone set |
 | #12 fill / stroke | out of the inspector; the colour-wheel bugs fixed |
 | #13 labels | labels only where a control is ambiguous; "Size" renamed or dropped |
 | #7 settings X | isolate and fix (reproduced: Esc and the backdrop close it, the X doesn't) |
@@ -82,10 +88,11 @@ Now that it's all KOL parts, do your UI findings.
 
 ---
 
-## Two decisions I need from you (any time before phase 5)
+## Settled (user, 2026-09-27)
 
-1. **#1 Transport in core** — move the transport controls into the motion pack, or keep them in core?
-2. **#4 The shortcuts key** — `S` is the sheet key everywhere else, but in an editor letters are tool keys. Keep `S`, or use another key here?
+- **#1 Transport goes to the motion pack.** Core has no motion, so it gets no transport. The
+  clock goes with it unless something in core still reads it (checked when the move is made).
+- **#4 `S` stays the shortcuts key.** Whatever #4 flagged gets checked live in phase 5.
 
 ## Publishing
 
