@@ -17,12 +17,23 @@
  * ponytail: a `SectionStack` parent could own this instead of each child
  * declaring it — that is the upgrade path if a consumer ever needs the stack
  * to vary the rule per-gap. One prop is a smaller API than a new component.
+ *
+ * @param {ReactNode} label    the group's name
+ * @param {ReactNode} actions  controls on the label's row, right-aligned
+ * @param {boolean}   divided  a hairline between divided siblings
+ * @param {string}    className
  */
-export default function InspectorSection({ label, children, divided = false, className = '' }) {
+export default function InspectorSection({ label, actions = null, children, divided = false, className = '' }) {
   return (
     <div className={`flex flex-col gap-2${divided ? ' kol-section--divided' : ''} ${className}`}>
-      {label && (
-        <p className="kol-helper-10 tracking-widest text-meta">{label}</p>
+      {/* `actions` — controls on the label's row, right-aligned (Figma's eye / plus on Fill and
+        * Stroke). From the design editor's own Section, retired into this (editor DS sync,
+        * 2026-09-27). */}
+      {(label || actions) && (
+        <div className="flex items-center gap-2 min-h-6">
+          {label && <p className="kol-helper-10 tracking-widest text-meta flex-1">{label}</p>}
+          {actions}
+        </div>
       )}
       {children}
     </div>

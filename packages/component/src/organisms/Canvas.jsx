@@ -87,10 +87,15 @@ export function CanvasFrame({
   customRatio,
   aspects,
   bgColor,
-  guideColor = CANVAS_DEFAULTS.guideColor,
+  guideColor,
   children,
 }) {
   const { ratio, label } = resolveAspect(aspect, customRatio, aspects)
+  /* NO guideColor → THEME INK (editor DS sync 2026-09-27, from the design editor's copy, which had
+   * it and this lift had not): the border and label follow the theme, so the frame reads on a light
+   * page and a dark one. A guideColor (a type frame's own colour) still tints both. */
+  const borderColor = guideColor ? `color-mix(in srgb, ${guideColor} 24%, transparent)` : 'var(--kol-oq-24)'
+  const labelColor = guideColor ? `color-mix(in srgb, ${guideColor} 70%, transparent)` : 'var(--kol-fg-64)'
   const virtualH = CANVAS_VIRTUAL_W / ratio
 
   const rectRef = useRef(null)
@@ -127,7 +132,7 @@ export function CanvasFrame({
         className="absolute inset-0 pointer-events-none z-[2]"
         style={{
           border:      '1px solid',
-          borderColor: `color-mix(in srgb, ${guideColor} 24%, transparent)`,
+          borderColor,
         }}
       />
       <span
@@ -139,7 +144,7 @@ export function CanvasFrame({
           fontSize:      10,
           fontFamily:    'var(--kol-font-family-mono)',
           letterSpacing: '0.1em',
-          color:         `color-mix(in srgb, ${guideColor} 70%, transparent)`,
+          color:         labelColor,
           pointerEvents: 'none',
         }}
       >
@@ -197,7 +202,7 @@ export default function Canvas({
   customRatio,
   aspects,
   bgColor,
-  guideColor = CANVAS_DEFAULTS.guideColor,
+  guideColor,
   align = 'center',
   panEnabled = false,
   backdrop,
@@ -820,7 +825,7 @@ export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, dis
   const tickColor   = 'var(--kol-fg-48)'
   const textColor   = 'var(--kol-fg-64)'
   const barBg       = 'var(--kol-fg-08)'
-  const borderColor = 'var(--kol-fg-16)'
+  const borderColor = 'var(--kol-oq-16)'
   const labelStyle  = { fontFamily: 'var(--kol-font-family-mono)', fontSize: 9 }
 
   return (

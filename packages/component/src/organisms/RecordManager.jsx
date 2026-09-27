@@ -27,7 +27,7 @@ const ToolbarIcon = ({ name, label, onClick, active = false, triggerClassName })
        * icon, and only when pressed". Rest is bare; hover is ink only. */
       /* 20px glyph, half-step pad — "TOO SMALL, TOO MUCH PADDING" (user
        * frames 2026-08-09): the reference icons nearly fill their box. */
-      className={`inline-flex cursor-pointer rounded-sm border-0 p-0.5 transition-colors duration-150 ${active ? 'bg-fg-08 text-emphasis' : 'bg-transparent text-body hover:text-emphasis'}`}
+      className={`inline-flex cursor-pointer rounded-sm border-0 p-0.5 transition-colors duration-150 ${active ? 'bg-fg-08 text-emphasis' : 'bg-transparent text-oq-64 hover:text-emphasis'}`}
     >
       <Icon name={name} size={20} />
     </button>
@@ -255,7 +255,7 @@ export default function RecordManager({
               <button
                 type="button"
                 aria-label={reorderLabel(i + 1)}
-                className="inline-flex w-4 cursor-grab touch-none justify-center border-0 bg-transparent p-0 text-meta hover:text-emphasis"
+                className="inline-flex w-4 cursor-grab touch-none justify-center border-0 bg-transparent p-0 text-oq-48 hover:text-emphasis"
                 onPointerDown={(e) => startDrag(e, i)}
               >
                 <Icon name="drag-handle" size={16} />

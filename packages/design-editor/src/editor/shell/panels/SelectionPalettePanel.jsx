@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover } from '@kolkrabbi/kol-component'
+import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover, TabsRow } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { TabsRow } from '../../color/PanelTabs'
 import { useComposeState } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
 import { labelForLayer } from '../../compose/labels'
@@ -80,7 +79,7 @@ export default function SelectionPalettePanel() {
   return (
     <div className="kol-compose-rail">
       <div className="border-b border-oq-08">
-        <TabsRow tabs={tabs} active={active} onChange={setTab} />
+        <div className="px-3"><TabsRow tabs={tabs.map((t) => ({ id: t, label: t }))} value={active} onChange={setTab} /></div>
       </div>
       {/* Shared header — identical across all tabs (title + ⋯ menu + delete,
         * the Figma header row). border-b = THE divider that separates TEXT

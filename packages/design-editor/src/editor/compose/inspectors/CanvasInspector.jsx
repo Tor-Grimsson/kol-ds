@@ -1,9 +1,8 @@
-import { Dropdown, LabeledControl, ToggleSwitch } from '@kolkrabbi/kol-component'
+import { Dropdown, LabeledControl, ToggleSwitch, InspectorSection } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { ASPECTS } from '../../shell/aspects'
 import { ColorField } from './LayerInspector'
 import { NumberField } from './NumberField'
-import { Section } from './Section'
 
 /**
  * CanvasInspector — properties for the canvas/frame "layer".
@@ -37,7 +36,7 @@ export default function CanvasInspector() {
    * infinite backdrop). */
   return (
     <div className="flex flex-col">
-      <Section label="Frame" first>
+      <InspectorSection divided label="Frame">
         <LabeledControl label="Size">
           <Dropdown
             variant="subtle"
@@ -57,9 +56,9 @@ export default function CanvasInspector() {
         </LabeledControl>
 
         <ToggleSwitch variant="plain" label="Grid" checked={showGrid} onChange={toggleGrid} />
-      </Section>
+      </InspectorSection>
 
-      <Section label="Background">
+      <InspectorSection divided label="Background">
         <ColorField
           label="Background"
           hideLabel
@@ -88,7 +87,7 @@ export default function CanvasInspector() {
           palette={palette}
           autoValue="var(--kol-surface-secondary)"
         />
-      </Section>
+      </InspectorSection>
     </div>
   )
 }

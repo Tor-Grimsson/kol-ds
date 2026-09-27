@@ -953,7 +953,7 @@
  * against Section's shipped default, so there is no second density to name
  * until a consumer produces a value that actually differs. */
 .kol-section--divided + .kol-section--divided {
-  border-top: 1px solid var(--kol-fg-08);
+  border-top: 1px solid var(--kol-oq-08);
   /* 20px below the rule; the 20px above falls out of the rail body's own
    * gap-5, so a symmetric space–divider–space lands without this file
    * knowing anything about the rail.

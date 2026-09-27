@@ -148,7 +148,7 @@ export default function FieldRow({
       onClick={onPick}
       /* reference empty tile: FILLED, no border — a plain grey slab with the
        * + centred (frame 2026-08-09) */
-      className="flex h-18 w-34 items-center justify-center rounded border-0 bg-fg-04 text-body transition-colors duration-150 enabled:cursor-pointer enabled:hover:text-emphasis disabled:opacity-60"
+      className="flex h-18 w-34 items-center justify-center rounded border-0 bg-fg-04 text-oq-64 transition-colors duration-150 enabled:cursor-pointer enabled:hover:text-emphasis disabled:opacity-60"
     >
       <Icon name="plus" size={16} />
     </button>
@@ -217,7 +217,7 @@ export default function FieldRow({
             type="button"
             aria-label={label}
             onClick={() => onChange(null)}
-            className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-body hover:text-emphasis"
+            className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-oq-64 hover:text-emphasis"
           >
             <Icon name="x" size={12} />
           </button>

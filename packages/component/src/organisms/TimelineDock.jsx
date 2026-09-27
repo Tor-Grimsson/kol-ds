@@ -250,7 +250,7 @@ export default function TimelineDock({ tracks = [], t = 0, onSeek, onChange, eas
   }
 
   return (
-    <div className={`kol-timeline-dock border-t border-fg-08 px-4 py-2 flex flex-col gap-1 select-none ${className}`.trim()} style={{ background: 'var(--kol-surface-primary)' }}>
+    <div className={`kol-timeline-dock border-t border-oq-08 px-4 py-2 flex flex-col gap-1 select-none ${className}`.trim()} style={{ background: 'var(--kol-surface-primary)' }}>
       <ScrubRuler t={t} onSeek={onSeek} />
       {tracks.map((track) => (
         <TrackRow key={track.id} track={track} t={t} selected={selected} setSelected={setSelected} writeKeys={writeKeys} />

@@ -75,7 +75,7 @@
  * carried the equivalent since 0.17.0 in `:root[data-sidenav="collapsed"]`,
  * which hides labels, lists and carets so the rail becomes a bare strip.
  * Collapsed, the right rail is its grab edge and nothing else. */
-:root[data-rail="collapsed"] .kol-editor-labs .kol-compose-inspector-body {
+:root[data-rail="collapsed"] .kol-editor-labs :is(.kol-compose-inspector-body, .kol-inspector-rail-body) {
   display: none;
 }
 /* THE RAIL CANNOT PUSH THE PAGE WIDER — the structural rule, not a per-element
@@ -136,7 +136,7 @@
   position: relative;
   overflow: visible;
 }
-.kol-editor-labs .kol-compose-inspector-body { overflow: auto; }
+.kol-editor-labs :is(.kol-compose-inspector-body, .kol-inspector-rail-body) { overflow: auto; }
 
 /* The rail's hairline is SideNav's own (`hairline`, as the shell rail wears
  * it). `.kol-editor-left`'s border-right doubled it AND ate the 1px that made
@@ -204,7 +204,7 @@
 /* Immune to a stale desktop `data-rail="collapsed"` on :root — the touch rail
  * mounts no drag hook, but the attribute can outlive a desktop mount in the
  * same session. `:root` matches the collapsed rule's specificity; later wins. */
-:root .kol-editor-labs[data-touch] .kol-compose-inspector-body {
+:root .kol-editor-labs[data-touch] :is(.kol-compose-inspector-body, .kol-inspector-rail-body) {
   display: block;
 }
 

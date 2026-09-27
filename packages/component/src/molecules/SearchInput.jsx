@@ -245,7 +245,7 @@ export default function SearchInput({
           /* preventDefault on mousedown keeps focus in the input across the clear */
           onMouseDown={(e) => e.preventDefault()}
           onClick={onClear}
-          className="inline-flex items-center justify-center shrink-0 cursor-pointer text-fg-48 hover:text-fg-96 transition-colors"
+          className="inline-flex items-center justify-center shrink-0 cursor-pointer text-oq-48 hover:text-oq-96 transition-colors"
         >
           <Icon name="x" size={12} />
         </button>

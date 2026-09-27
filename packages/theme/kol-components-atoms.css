@@ -258,6 +258,16 @@
   outline-offset: 2px;
 }
 
+/* THE MENU BUTTONS TAKE THE SAME RING (editor review #8, 2026-09-27 — user: "the browser focus
+ * highlighter … I hate it, can we not use our own? like we do in media?"). MenuItem's trigger and
+ * its rows are bare <button>s, not `.kol-btn`, so they had NO focus rule and the browser drew its
+ * own blue ring whenever the menu handed focus back. Same ring as every Button now. */
+.kol-menu-btn:focus { outline: none; }
+.kol-menu-btn:focus-visible {
+  outline: 2px solid var(--kol-focus-ring);
+  outline-offset: 2px;
+}
+
 /* Icon-only buttons — was an inline style in Button.jsx, which beat every
  * consumer display utility (`lg:hidden` could never hide an iconOnly button).
  * Chrome belongs here, layered, so utilities stay sovereign. The flex

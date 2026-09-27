@@ -1,8 +1,7 @@
-import { Button, Dropdown, LabeledControl } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, XYPad } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { visibleParams } from '../../params/schema'
 import { loopById } from '../../../loops/registry'
-import XYPad from './XYPad'
 
 /**
  * ParatypeTools — the paratype loop's extra control surface, mounted once in

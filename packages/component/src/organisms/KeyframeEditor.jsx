@@ -42,7 +42,7 @@ export const DEFAULT_KEYFRAMES = [
  *
  * @param {Array<Object>} keyframes - The track; empty falls back to `DEFAULT_KEYFRAMES`
  * @param {Function} onChange - `(keyframes) => void` — the whole track, sorted
- * @param {number} t - The clock's current LAYER-LOCAL phase, 0..1 — what "Add @ playhead" stamps
+ * @param {number} t - The clock's current LAYER-LOCAL phase, 0..1 — what "Add @ playhead" stamps; or a function returning it, read at the click — a clock that runs without re-rendering (the design editor's transport) would otherwise stamp the phase of the last render
  * @param {Function} onSeek - `(t) => void` — a key was selected; seek the clock to its local `t`
  * @param {Function} [onPause] - Called before the seek, so the render holds on the pose
  * @param {Array<{value: string, label: string}>} [easeOptions] - The Ease menu (default `KEYFRAME_EASES`)
@@ -72,7 +72,7 @@ export default function KeyframeEditor({
   const onAdd = () => {
     const base = kfs[sel] || { rot: [0, 0, 0], pos: [0, 0, 0], scale: 1, ease: 'inout' }
     const nk = {
-      t: Math.max(0, Math.min(1, t)),
+      t: Math.max(0, Math.min(1, typeof t === 'function' ? t() : t)),
       rot: [...(base.rot || [0, 0, 0])],
       pos: [...(base.pos || [0, 0, 0])],
       scale: base.scale ?? 1,

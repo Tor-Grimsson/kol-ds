@@ -1,5 +1,5 @@
+import { TabsRow } from '@kolkrabbi/kol-component'
 import { useState } from 'react'
-import { TabsRow } from '../../color/PanelTabs'
 import { LayerStackBody, AddLayerButton } from '../../compose/LayerStack'
 import AssetsBody from '../../compose/AssetsBody'
 
@@ -19,7 +19,7 @@ export default function LayersAssetsPanel() {
     <div className="kol-compose-rail border-b border-oq-08">
       <div className="border-b border-oq-08 flex items-center pr-2">
         <div className="flex-1 min-w-0">
-          <TabsRow tabs={TABS} active={tab} onChange={setTab} />
+          <div className="px-3"><TabsRow tabs={TABS.map((t) => ({ id: t, label: t }))} value={tab} onChange={setTab} /></div>
         </div>
         {tab === 'Layers' && <AddLayerButton />}
       </div>

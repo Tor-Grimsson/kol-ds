@@ -51,7 +51,7 @@ export function MenuItem({
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         type="button"
-        className={`kol-helper-12 px-3 h-8 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
+        className={`kol-menu-btn kol-helper-12 px-3 h-8 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
       >
         <span>{label}</span>
         {caret && (
@@ -125,7 +125,7 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
       disabled={disabled}
       role="menuitem"
       style={height != null ? { height } : undefined}
-      className={`w-full ${ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
+      className={`kol-menu-btn w-full ${ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
@@ -140,7 +140,7 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
 }
 
 export function MenuDropdownDivider() {
-  return <div className="border-t border-fg-08 my-1" />
+  return <div className="border-t border-oq-08 my-1" />
 }
 
 /**
@@ -161,7 +161,7 @@ export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
+        className="kol-menu-btn w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
       >
         {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
         {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
@@ -175,7 +175,7 @@ export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
         />
       </button>
       {open && (
-        <div className="ml-3 border-l border-fg-08">
+        <div className="ml-3 border-l border-oq-08">
           {children}
         </div>
       )}

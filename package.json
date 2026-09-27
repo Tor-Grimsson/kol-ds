@@ -40,6 +40,7 @@
     "validate:consumption": "node scripts/validate-consumption.mjs",
     "validate:icon-ink": "node scripts/validate-icon-ink.mjs",
     "validate:native-title": "node scripts/validate-native-title.mjs",
+    "validate:variants": "node scripts/validate-variants.mjs",
     "props": "node scripts/validate-props.mjs",
     "validate": "node scripts/validate-all.mjs",
     "changeset": "changeset",

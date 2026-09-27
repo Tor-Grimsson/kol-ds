@@ -33,9 +33,9 @@ Otherwise phases 3–5 drift back.
 
 - The native-tooltip gate checks design-editor (75 `title=` today).
 - The icon-ink gate checks `EditorIcon` too, and catches ink set on a wrapper (the constrain button).
-- A new check: a `SegmentedToggle` given a variant that doesn't exist fails. The editor passes
-  `ghost` and `primary`, which aren't variants, so those toggles silently fall back to the
-  outlined look you flagged (#11). Phase 5 fixes the four call sites; this stops it coming back.
+- A new check: a `SegmentedToggle` given a variant that doesn't exist fails (a guard — the
+  audit's `ghost` / `primary` count was wrong, those were Buttons; the editor's toggles are
+  three real looks mixed, which phase 5 settles).
 
 **Done when:** the gates run over the editor. They will fail at first — that list is phase 5's work.
 
@@ -75,7 +75,7 @@ Phases 1–4 are plumbing. This is the visible work: your findings that the swap
 | #6 constrain | a proper `Button`, `oq` ink |
 | #9 type glyphs | sized off the ladder, not hand-picked |
 | #10 two alignments | text alignment loses its label and gets text-align glyphs (Affinity's row) |
-| #11 tones | the `ghost` / `primary` toggles get a real variant; one toggle look across the editor; grounds from the tone set |
+| #11 tones | one toggle look across the editor (today: outlined default, `filled` and `tonal` side by side); grounds from the tone set |
 | #12 fill / stroke | out of the inspector; the colour-wheel bugs fixed |
 | #13 labels | labels only where a control is ambiguous; "Size" renamed or dropped |
 | #7 settings X | isolate and fix (reproduced: Esc and the backdrop close it, the X doesn't) |

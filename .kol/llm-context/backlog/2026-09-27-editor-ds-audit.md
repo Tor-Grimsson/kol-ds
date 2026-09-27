@@ -51,7 +51,7 @@ Already right: `shell/ShortcutsOverlay` wraps kol-shell's; `settings/AppSettings
 | 8 | Browser focus ring | **KOL, not the editor**: `MenuItem`'s trigger (`molecules/MenuItem.jsx:50`) is a bare `<button>` with no `:focus-visible` rule, so the browser draws its default. `.kol-btn` has one (`--kol-focus-ring`). `MenuDropdownItem` / `Nest` the same | fix in kol-component `MenuItem` — every consumer gets it |
 | 9 | Line-height / tracking glyphs small | `TextPanel.jsx:254` — `affordance={<Icon size={14} />}`, a hand-picked size (the sizes law: glyphs come off the ladder, never the call site) | size off `glyphSize` |
 | 10 | Two alignments | object alignment (`AlignmentPanel`, `filled`) and text alignment (`TextPanel`, `tonal`) — both labelled "Alignment", same `align-*` glyphs, different toggle variants | text row: no label, text-align glyphs (Affinity's row) |
-| 11 | Tones | 29 `SegmentedToggle`s in **five looks**: `filled` ×3, `tonal` ×3, default ×19, and `ghost` ×1 (KineticPanel) + `primary` ×3 (MobileOverlay) — those two are **not variants**, so they fall back to the outlined default (the outlined toggle you saw). Grounds: 8 `bg-*` classes + 5 inline `background:` vars, with alpha `fg-04` / `fg-08` grounds beside `surface-*`. `kol-editor.css` inks layer rows `fg-64` | one toggle variant for the editor; grounds from the tone set |
+| 11 | Tones | 29 `SegmentedToggle`s in **three looks mixed on the same panels**: the outlined default ×23, `filled` ×3, `tonal` ×3. (Corrected 2026-09-27: an earlier count read `ghost` / `primary` off neighbouring Buttons — no toggle uses a variant that doesn't exist.) Grounds: 8 `bg-*` classes + 5 inline `background:` vars, with alpha `fg-04` / `fg-08` grounds beside `surface-*`. `kol-editor.css` inks layer rows `fg-64` | one toggle look for the editor; grounds from the tone set |
 | 12 | Fill / stroke sections | `compose/inspectors/ColorField` (176, inline) · `color/StrokePanel` · `color/ColourPanel`; the red-shows-white wheel and the limited palette are behaviour — not traced in this pass | after the swap |
 | 13 | Over-labelled | **62** labelled sections / controls across the inspectors; the canvas ratio is `LabeledControl label="Size"` (`CanvasInspector.jsx:41`); "Dimensions" twice | cut labels to where a control is ambiguous (tool frame rule 5) |
 
@@ -62,7 +62,7 @@ Already right: `shell/ShortcutsOverlay` wraps kol-shell's; `settings/AppSettings
 | `validate-native-title` | scans `component` · `framework` · `shell` only — never design-editor (75 hits) |
 | `validate-icon-ink` | checks the className of `<Icon>` · `<IconFrame>` · `<FileIcon>` only — not `<EditorIcon>`, and not ink inherited from a wrapper (the constrain button, 6 sites) |
 | `validate-chrome` | component · framework · theme · workshop — not design-editor |
-| (none) | nothing flags a `SegmentedToggle` variant that does not exist |
+| (none) | nothing flags a `SegmentedToggle` variant that does not exist — added as `validate-variants` (clean today; a guard) |
 
 Raw `<button>`s in the editor: **65** (ToolPalette 9, LayerStack 8, LayerInspector 5, …).
 

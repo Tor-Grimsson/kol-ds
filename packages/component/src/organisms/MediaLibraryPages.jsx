@@ -334,7 +334,7 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
       {onToggle ? (
         <button type="button" aria-label={expanded ? `Collapse ${name}` : `Expand ${name}`} aria-expanded={!!expanded}
           onClick={(e) => { e.stopPropagation(); onToggle() }}
-          className="w-4 h-4 shrink-0 flex items-center justify-center text-fg-32 hover:text-fg-default transition-transform"
+          className="w-4 h-4 shrink-0 flex items-center justify-center text-oq-32 hover:text-fg-default transition-transform"
           style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}>
           <Icon name="chevron-right" size={12} />
         </button>

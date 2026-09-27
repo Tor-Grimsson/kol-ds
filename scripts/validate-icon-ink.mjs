@@ -21,8 +21,12 @@
  *   I2  No theme rule whose selector names an icon (`icon`, `svg`, `glyph`, `chevron`, `caret`) sets
  *       `color` from `--kol-fg-NN` or an fg role. Use `--kol-oq-NN`.
  *
- * A wrapper that holds ONLY an icon and carries the ink is the one shape this cannot see without a
- * parser; the sweep that minted this gate fixed the ones that existed. Put the ink on the icon.
+ *   I3  A wrapper that holds ONLY an icon may not carry the fg ink for it — in its className, or as
+ *       `color: 'var(--kol-fg-NN)'` in its style (editor audit 2026-09-27: the design editor's
+ *       constrain button inked its glyph `fg-48` from the wrapper, where I1 could not see it). Put
+ *       the ink on the icon, on the opaque ladder.
+ *
+ * `EditorIcon` (the design editor's own loader) counts as an icon for I1 and I3 while it exists.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
@@ -32,6 +36,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const FG_CLASS = /\btext-(fg-\d+|meta|subtle|body|default|strong|lede|shout|scream)\b/
 const FG_VAR = /(?<!background-)color:\s*var\(--kol-fg-(\d+|meta|subtle|body|default|strong|lede|shout|scream)\)/
 const ICON_SEL = /icon|svg|glyph|chevron|caret/i
+const FG_STYLE = /(?<![-\w])color:[^,}]*var\(--kol-fg-\d+\)/
+const ICON_TAG = '(?:Icon|IconFrame|FileIcon|EditorIcon)'
 
 function walk(dir, ext, out = []) {
   for (const e of readdirSync(dir)) {
@@ -53,12 +59,21 @@ const jsx = [
 let tags = 0
 for (const f of jsx) {
   const src = readFileSync(f, 'utf8')
-  for (const m of src.matchAll(/<(Icon|IconFrame|FileIcon)\b[^>]*?\/>/gs)) {
+  for (const m of src.matchAll(/<(Icon|IconFrame|FileIcon|EditorIcon)\b[^>]*?\/>/gs)) {
     tags++
     const hit = m[0].match(FG_CLASS)
     if (hit) {
       const line = src.slice(0, m.index).split('\n').length
       errors.push(`${relative(ROOT, f)}:${line}  <${m[1]}> inked \`${hit[0]}\` — use \`text-oq-*\` (I1)`)
+    }
+  }
+  /* I3 — `<tag …ink…> <Icon …/> </tag>`: the wrapper's only child is the icon */
+  const wrapped = new RegExp(`<([A-Za-z][\\w.]*)((?:[^>]|=>)*?)>\\s*<${ICON_TAG}\\b[^>]*?\\/>\\s*<\\/\\1>`, 'gs')
+  for (const m of src.matchAll(wrapped)) {
+    const hit = m[2].match(FG_CLASS) ?? m[2].match(FG_STYLE)
+    if (hit) {
+      const line = src.slice(0, m.index).split('\n').length
+      errors.push(`${relative(ROOT, f)}:${line}  <${m[1]}> inks the icon inside it \`${hit[0]}\` — put \`text-oq-*\` on the icon (I3)`)
     }
   }
 }

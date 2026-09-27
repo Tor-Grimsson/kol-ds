@@ -71,7 +71,7 @@ export default function TabsRow({ tabs = [], value, onChange, onClose, onMinimis
           type="button"
           onClick={onMinimise}
           aria-label="Minimise"
-          className="ml-auto text-meta hover:text-emphasis self-center"
+          className="ml-auto text-oq-48 hover:text-emphasis self-center"
           style={{ lineHeight: 0 }}
         >
           <Icon name="chevron-down" size={12} />

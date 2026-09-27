@@ -10,7 +10,7 @@
  *
  *   T1  No `title=` attribute on an intrinsic element (`<div>`, `<button>`, `<span>` …) or on a
  *       component that forwards it to the DOM (`Button`, `IconFrame`) inside packages/component,
- *       packages/framework or packages/shell. Wrap the control in `Tooltip label=…` and keep its
+ *       packages/framework, packages/shell or packages/design-editor (editor audit 2026-09-27). Wrap the control in `Tooltip label=…` and keep its
  *       `aria-label`.
  *
  * NOT a violation: a `title` PROP on a component that renders it as text (`PageHeader title`,
@@ -37,7 +37,7 @@ function walk(dir, out = []) {
 
 const errors = []
 let seen = 0
-for (const pkg of ['component', 'framework', 'shell']) {
+for (const pkg of ['component', 'framework', 'shell', 'design-editor']) {
   for (const f of walk(join(ROOT, 'packages', pkg, 'src'))) {
     const src = readFileSync(f, 'utf8')
     const lines = src.split('\n')

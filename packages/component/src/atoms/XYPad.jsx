@@ -76,14 +76,14 @@ export default function XYPad({
         ref={ref}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        className="relative w-full aspect-square border border-fg-16 bg-fg-04 rounded cursor-crosshair touch-none"
+        className="relative w-full aspect-square border border-oq-16 bg-fg-04 rounded cursor-crosshair touch-none"
       >
         {/* crosshair guides */}
-        <div className="absolute inset-x-0 top-1/2 border-t border-fg-08" />
-        <div className="absolute inset-y-0 left-1/2 border-l border-fg-08" />
+        <div className="absolute inset-x-0 top-1/2 border-t border-oq-08" />
+        <div className="absolute inset-y-0 left-1/2 border-l border-oq-08" />
         {/* puck */}
         <div
-          className="absolute w-3 h-3 -ml-1.5 -mt-1.5 rounded-full bg-fg-96 border border-fg-04 pointer-events-none"
+          className="absolute w-3 h-3 -ml-1.5 -mt-1.5 rounded-full bg-fg-96 border border-oq-04 pointer-events-none"
           style={{ left: `${puckX}%`, top: `${puckY}%` }}
         />
       </div>

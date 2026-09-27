@@ -188,7 +188,7 @@ function DownloadControl({ row, token, onToggleInk }) {
     <button
       type="button"
       onClick={() => row.onDownload(row, resolveToken(token))}
-      className="inline-flex items-center text-fg-64"
+      className="inline-flex items-center text-oq-64"
       aria-label={label}
       title="Download"
     >
@@ -198,7 +198,7 @@ function DownloadControl({ row, token, onToggleInk }) {
     <a
       href={row.href}
       download={row.filename ?? true}
-      className="inline-flex items-center text-fg-64"
+      className="inline-flex items-center text-oq-64"
       aria-label={label}
       title="Download"
     >

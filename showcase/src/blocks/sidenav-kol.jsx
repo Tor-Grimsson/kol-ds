@@ -45,7 +45,7 @@ export default function SidebarNav() {
       <aside className={`kol-sidenav relative flex h-full flex-col border-r border-fg-08 bg-surface-primary px-3${collapsed ? ' is-collapsed' : ''}`}>
         <button
           type="button"
-          className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer kol-helper-14 transition-colors duration-150 text-meta hover:text-emphasis hover:border-fg-24"
+          className="kol-sidenav-toggle absolute top-5 right-[-12px] z-[2] w-6 h-6 inline-flex items-center justify-center bg-[var(--kol-surface-primary)] border border-[var(--kol-border-default)] rounded-full p-0 cursor-pointer kol-helper-14 transition-colors duration-150 text-oq-48 hover:text-emphasis hover:border-fg-24"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           onClick={() => setCollapsed((v) => !v)}
         >

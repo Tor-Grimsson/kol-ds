@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import MediaPicker from '../../library/MediaPicker'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
-import { Button, Dropdown } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, InspectorSection } from '@kolkrabbi/kol-component'
 import { LabeledControl } from '@kolkrabbi/kol-component'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import { ViewToggle } from '@kolkrabbi/kol-component'
@@ -20,7 +20,6 @@ import { BLEND_MODES } from '../LayerStack'
 import { firstFilterDef } from '../filterChain'
 import { pack } from '../../packs'
 import { NumberField } from './NumberField'
-import { Section } from './Section'
 import { TextSurface } from './TextPanel'
 
 /**
@@ -55,7 +54,7 @@ export default function LayerInspector({ layer }) {
   return (
     <div className="flex flex-col">
       {positioned && (
-        <Section label="Position" first>
+        <InspectorSection divided label="Position">
           {/* Figma order: Alignment (to canvas for a single layer) ·
             * Position X/Y · Rotation + the transform cluster. */}
           <LabeledControl label="Alignment">
@@ -102,11 +101,11 @@ export default function LayerInspector({ layer }) {
               />
             </div>
           </LabeledControl>
-        </Section>
+        </InspectorSection>
       )}
 
       {positioned && (
-        <Section label="Layout">
+        <InspectorSection divided label="Layout">
           {layer.type === 'text' && (
             <LabeledControl label="Resizing">
               {/* Real behavior, not chrome: fixed keeps the box; auto modes
@@ -130,13 +129,13 @@ export default function LayerInspector({ layer }) {
           <LabeledControl label="Dimensions">
             <LayoutFields layer={layer} setProp={setProp} patch={edit.patch} />
           </LabeledControl>
-        </Section>
+        </InspectorSection>
       )}
 
       <AppearanceSection layer={layer} setProp={setProp} first={!positioned} />
 
       {(layer.type === 'loop' || layer.type === 'misc') && gen && (
-        <Section label="Preset">
+        <InspectorSection divided label="Preset">
           {/* Loop pickers + backdrop — bg toggle hidden for loops whose bg
             * feeds their color math. The generators pack's (editor/packs.js). */}
           <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
@@ -149,23 +148,23 @@ export default function LayerInspector({ layer }) {
               />
             </LabeledControl>
           )}
-        </Section>
+        </InspectorSection>
       )}
 
       {/* Text's whole surface = the Typography section (the 2026-08-12
         * inspector ruling; the Text tab retired). */}
       {layer.type === 'text' && (
-        <Section label="Typography">
+        <InspectorSection divided label="Typography">
           <TextSurface key={layer.id} layer={layer} />
-        </Section>
+        </InspectorSection>
       )}
 
       {layer.type === 'photo' && (
-        <Section label="Image">
+        <InspectorSection divided label="Image">
           {/* Content source — what the layer IS; fit + filters live in
             * Parameters. */}
           <ImageSource layer={layer} patch={edit.patch} />
-        </Section>
+        </InspectorSection>
       )}
 
       {/* Fill and Stroke — the Figma paint rows (T5/T6 2026-08-12):
@@ -173,7 +172,7 @@ export default function LayerInspector({ layer }) {
         * opacity + the eye are REAL (fillOpacity/fillHidden through render
         * and export). A paint exists only when it paints. */}
       {paintable && (
-        <Section
+        <InspectorSection divided
           label="Fill"
           actions={layer.color == null && (
             <SectionIconBtn label="Add fill" onClick={() => target.setFill('palette:dark')}>
@@ -194,10 +193,10 @@ export default function LayerInspector({ layer }) {
               onRemove={() => { target.setFill(null); edit.patch({ fillHidden: false, fillOpacity: 1 }) }}
             />
           )}
-        </Section>
+        </InspectorSection>
       )}
       {paintable && (
-        <Section
+        <InspectorSection divided
           label="Stroke"
           actions={!(layer.stroke != null && (layer.strokeWidth ?? 0) > 0) && (
             <SectionIconBtn
@@ -224,11 +223,11 @@ export default function LayerInspector({ layer }) {
               <StrokeDepthRow layer={layer} setProp={setProp} />
             </>
           )}
-        </Section>
+        </InspectorSection>
       )}
 
       {layer.type === 'path' && (
-        <Section label="Path">
+        <InspectorSection divided label="Path">
           {/* Open ↔ closed — renderer + export honor `closed` via pathD;
             * in node-edit, clicking the first anchor also closes. */}
           <ViewToggle
@@ -236,15 +235,15 @@ export default function LayerInspector({ layer }) {
             viewMode={layer.closed ? 'closed' : 'open'}
             onViewChange={(v) => setProp('closed', v === 'closed')}
           />
-        </Section>
+        </InspectorSection>
       )}
 
       <ParamsLink layer={layer} />
 
       {layer.type === 'group' && (
-        <Section label="Group">
+        <InspectorSection divided label="Group">
           <GroupFields layer={layer} ungroupLayer={ungroupLayer} />
-        </Section>
+        </InspectorSection>
       )}
     </div>
   )
@@ -352,9 +351,8 @@ function AppearanceSection({ layer, setProp, first }) {
     return Number.isFinite(n) ? Math.min(1, Math.max(0, n / 100)) : fallback
   }
   return (
-    <Section
+    <InspectorSection divided
       label="Appearance"
-      first={first}
       actions={
         <>
           <SectionIconBtn label={visible ? 'Hide layer' : 'Show layer'} active={!visible} onClick={() => toggleLayer(layer.id)}>
@@ -408,7 +406,7 @@ function AppearanceSection({ layer, setProp, first }) {
           </LabeledControl>
         )}
       </div>
-    </Section>
+    </InspectorSection>
   )
 }
 
@@ -434,7 +432,7 @@ function ParamsLink({ layer }) {
    * the Effects TAB owns effects; only the Parameters jump stays. */
   if (!labelFor) return null
   return (
-    <Section label="Parameters">
+    <InspectorSection divided label="Parameters">
       <Button
         variant="primary" size="sm" className="w-full"
         onClick={openParams}
@@ -442,7 +440,7 @@ function ParamsLink({ layer }) {
       >
         {labelFor(layer)}
       </Button>
-    </Section>
+    </InspectorSection>
   )
 }
 
@@ -565,7 +563,7 @@ function FlipButton({ axis, layer, flipLayer, segmented = false }) {
         border: 'none',
         background: 'transparent',
         cursor: 'pointer',
-        color: active ? 'var(--kol-accent-primary)' : 'var(--kol-fg-48)',
+        color: active ? 'var(--kol-accent-primary)' : 'var(--kol-oq-48)',
         ...(segmented ? { height: 26, padding: 5 } : {}),
       }}
     >
@@ -677,7 +675,7 @@ function LayoutFields({ layer, setProp, patch }) {
           border: 'none',
           background: 'var(--kol-surface-secondary)',
           cursor: 'pointer',
-          color: aspectLocked ? 'var(--kol-accent-primary)' : 'var(--kol-fg-48)',
+          color: aspectLocked ? 'var(--kol-accent-primary)' : 'var(--kol-oq-48)',
         }}
       >
         <Icon name="constrain" size={16} />

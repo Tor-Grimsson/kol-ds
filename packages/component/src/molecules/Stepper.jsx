@@ -123,7 +123,7 @@ export default function Stepper({
         <button
           type="button"
           onClick={handleIncrement}
-          className="flex items-center justify-center text-meta hover:text-emphasis transition-colors"
+          className="flex items-center justify-center text-oq-48 hover:text-emphasis transition-colors"
           aria-label="Increment"
         >
           <Icon name="chevron-up" size={chevronWidth} />
@@ -131,7 +131,7 @@ export default function Stepper({
         <button
           type="button"
           onClick={handleDecrement}
-          className="flex items-center justify-center text-meta hover:text-emphasis transition-colors"
+          className="flex items-center justify-center text-oq-48 hover:text-emphasis transition-colors"
           aria-label="Decrement"
         >
           <Icon name="chevron-down" size={chevronWidth} />
