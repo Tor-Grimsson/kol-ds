@@ -1,0 +1,56 @@
+{
+  "name": "@kolkrabbi/kol-hardware",
+  "version": "0.2.0",
+  "private": false,
+  "description": "KOL hardware — panel controls for instruments (mixers, synths, racks, decks), in five groups: value (knob, fader, the touch ParamSheet), switches (toggle, flip, rocker, icon button), indicators (LED, jacks), panel (label, module header), frames (module frame, channel strip, flip card). Plus the signal engine (./signal): one expression compiler and ADSR for every scope and envelope in the estate. Renamed from @kolkrabbi/kol-controls. Sits above @kolkrabbi/kol-{theme,icons,component}.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./signal": "./src/signal/index.js",
+    "./*": "./src/*"
+  },
+  "peerDependencies": {
+    "@kolkrabbi/kol-component": ">=0.156.0",
+    "@kolkrabbi/kol-icons": ">=0.25.0",
+    "@kolkrabbi/kol-theme": ">=0.124.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-icons": "workspace:^",
+    "@kolkrabbi/kol-theme": "workspace:^"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "hardware",
+    "knob",
+    "fader",
+    "eurorack",
+    "mixer",
+    "synth",
+    "envelope",
+    "adsr",
+    "oscilloscope"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/hardware"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node src/signal/signal.test.mjs"
+  }
+}

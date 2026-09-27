@@ -118,6 +118,9 @@ export function createFixtureClient({ settings } = {}) {
      * ways — the one rule both apps share, which is why it sits here and not in either app */
     async loadSettings(b) { return noHeight(await (settings ? settings.load(B(b)) : d1.loadSettings(B(b)))) },
     async saveSettings(b, s) { return settings ? settings.save(B(b), noHeight(s)) : d1.saveSettings(B(b), noHeight(s)) },
+    /* a tool's own preferences, keyed by tool (the editor's) — `null` resets */
+    async loadToolSettings(tool) { return d1.loadToolSettings(tool) },
+    async saveToolSettings(tool, s) { return d1.saveToolSettings(tool, s) },
 
     // ── D1: notes · decks (library.js) — kol-notes' and kol-deck's client verbs ──
     async listNotes() { return library.listNotes() },

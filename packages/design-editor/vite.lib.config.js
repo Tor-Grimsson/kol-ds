@@ -13,10 +13,20 @@ export default defineConfig({
   publicDir: false,
   resolve: { dedupe: ['react', 'react-dom'] },
   build: {
+    /* The cut (deconstruction T5, 2026-09-27): the full editor at the root, the core without
+     * packs at ./core, and one entry per pack. Modules shared between entries land in shared
+     * chunks — the seam (editor/packs.js) is ONE instance, which is what lets a pack imported
+     * from its own subpath register into the core the host mounted. */
     lib: {
-      entry: 'src/index.jsx',
+      entry: {
+        'design-editor': 'src/index.jsx',
+        core: 'src/core.jsx',
+        generators: 'src/packs/generators.js',
+        effects: 'src/packs/effects.js',
+        motion: 'src/packs/motion.js',
+      },
       formats: ['es'],
-      fileName: () => 'design-editor.js',
+      fileName: (_format, name) => `${name}.js`,
       cssFileName: 'design-editor',
     },
     // One stylesheet the consumer imports, not per-chunk fragments.

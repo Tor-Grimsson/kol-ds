@@ -12,6 +12,14 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **User reviews the six apps** — media · media-shell · shell · notes · presentation · brand (`pnpm <name>`). Then: kol-noter's patterns into kol-notes on their go; olina cutover to kol-notes / kol-deck / `Brand`, filed from the iMac. Responsive/touch pass over the non-brand apps not done.
 - monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
 
+## Current state (2026-09-27, kol-hardware · signal engine · apps/curves)
+
+- **🎛 kol-hardware 0.2.0 · kol-controls 0.4.0 (deprecated shim) · kol-theme 0.152.0, published (2026-09-27, newest).** kol-controls was renamed kol-hardware and grouped value · switches · indicators · panel · frames; ARCHITECTURE §3 is amended so frames are in. `./signal` is one expression compiler plus ADSR, replacing four drifted copies. `EnvelopeGenerator` / `SignalScope` / `SignalReference` sit over it. New `apps/curves` (:5182). Consumer moves are noted in the reference-clone findings backlog (for the iMac). 28 gates clean. Log: `session-log/2026-09-27-kol-hardware-signal-engine-curves.md`.
+
+## Current state (2026-09-27, deconstruction — editor seam, apps/editor, apps/controls)
+
+- **🧩 design-editor 0.14.0 published (2026-09-27, newest).** The editor is now a core plus three packs behind `editor/packs.js`. The root entry is unchanged; `/core` has no packs; `/generators` · `/effects` · `/motion` register one pack each. `pnpm check:core` proves the core's graph reaches no pack. Also new: `apps/editor` (:5180, `/core` mounts the core entry) and `apps/controls` (:5181, the controls reference). The fixture's D1 gained `tool_settings`. 28 gates clean. Plan: `plan-2026-09-27-deconstruction-roadmap.md`. Log: `session-log/2026-09-27-deconstruction-editor-seam-and-controls.md`.
+
 ## Current state (2026-09-27, brand as a tool)
 
 - **📘 kol-styleguide 0.5.1 · kol-brand-template 0.3.0, published (2026-09-27, newest).** olina's brand book is `Brand` (BrandBook ⇄ BrandAssets + rail) over a manifest whose new `book` field carries the copy; `apps/brand` (:5179) on media-fixture's `useBrandTool` (kol-brand + website copy); media-shell Brand tab (⌥6); showcase Apps tab at `/apps`. Checked at 1440 + 390. 28 gates clean. Log: `session-log/2026-09-27-brand-as-a-tool.md`.

@@ -1,4 +1,4 @@
-import { LabeledJack, JackSocket } from '@kolkrabbi/kol-controls'
+import { LabeledJack, JackSocket } from '@kolkrabbi/kol-hardware'
 
 /* a consumer's WIRED jack: routing props come from its own context; here the
  * context is a constant, which is enough to show `jackComponent` taking it */

@@ -1,4 +1,4 @@
-import Toggle from './Toggle.jsx'
+import Toggle from '../switches/Toggle.jsx'
 
 /**
  * ModuleHeader — the enable dot + module name, left-aligned (kol-monitor's rack,

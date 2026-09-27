@@ -57,6 +57,11 @@ import { createMediaClient, KOL_BUCKETS, isImageType, isVideoType, formatSize } 
 export const BUCKET_OPTIONS = Object.values(KOL_BUCKETS).map((b) => ({ value: b.id, label: b.label }))
 export const DEFAULT_BUCKET = 'r2'
 
+/* The store options, read from whichever client is live — a host that hands
+ * in its own client (`<DesignEditor mediaClient>`) brings its own buckets. */
+export const bucketOptions = () =>
+  custom && client.buckets ? client.buckets().map((b) => ({ value: b.id, label: b.label })) : BUCKET_OPTIONS
+
 /* The client is rebuilt rather than mutated, because `proxyPath` is fixed at
  * construction. `<DesignEditor mediaProxyBase>` sets it once at mount (see
  * ../../index.jsx), so "rebuild on set" IS per-mount for the single-editor
@@ -66,10 +71,19 @@ export const DEFAULT_BUCKET = 'r2'
  * slash or the href is silently malformed. */
 let PROXY_BASE = '/media/'
 let client = createMediaClient({ buckets: true, proxyPath: PROXY_BASE })
+let custom = false
 
 export const setMediaProxyBase = (base) => {
   PROXY_BASE = base
-  client = createMediaClient({ buckets: true, proxyPath: PROXY_BASE })
+  if (!custom) client = createMediaClient({ buckets: true, proxyPath: PROXY_BASE })
+}
+
+/* A host's own client in kol-media-client's shape (`listMedia` · `mediaUrl` ·
+ * `proxied` · `buckets`) — the apps tier hands in its fixture this way (2026-09-27).
+ * `null` goes back to the Kolkrabbi CDN. */
+export const setMediaClient = (c) => {
+  custom = !!c
+  client = c ?? createMediaClient({ buckets: true, proxyPath: PROXY_BASE })
 }
 
 export { isImageType, isVideoType, formatSize }

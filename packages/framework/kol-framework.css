@@ -736,7 +736,7 @@ body {
 .kol-portal-footer a { text-decoration: none; transition: opacity 150ms ease; }
 .kol-portal-footer a:hover { opacity: 0.8; }
 
-/* ───── Back link (structural only; use kol-helper-xs uppercase tracking-widest text-fg-64 on JSX) ───── */
+/* ───── Back link (structural only; PageHero sets its type: kol-helper-12 tracking-widest text-body) ───── */
 
 .kol-back-link {
   display: inline-flex;

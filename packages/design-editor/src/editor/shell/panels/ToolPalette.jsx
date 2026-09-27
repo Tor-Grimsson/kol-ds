@@ -5,6 +5,7 @@ import { TOOL_META, useTool } from '../../state/tools'
 import { useComposeState, COVER_TYPES, CANVAS_W, CANVAS_H } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
 import { isBooleanable } from '../../compose/boolean-ops'
+import { pack } from '../../packs'
 
 /* Toolbar metrics — ON THE LADDER (editor-chrome-review finding 8, the user's
  * own pass: *"does icon row follow size ladder? seems a bit big"*).
@@ -292,7 +293,8 @@ function TextDropdown({ tool, setTool, addLayer }) {
           <span className="flex-1 truncate leading-normal">Text</span>
           <span className="kol-helper-10 text-emphasis shrink-0">{active ? '✓' : 'T'}</span>
         </button>
-        <button
+        {/* kinetic type is the motion pack's (editor/packs.js) */}
+        {pack('motion') && <button
           type="button"
           onClick={(e) => {
             addLayer('kinetic')
@@ -305,7 +307,7 @@ function TextDropdown({ tool, setTool, addLayer }) {
             <EditorIcon name="layer-kinetic" size={14} />
           </span>
           <span className="flex-1 truncate leading-normal">Kinetic type</span>
-        </button>
+        </button>}
       </PopoverPanel>
     </>
   )

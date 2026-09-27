@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ParamSheet, Knob } from '@kolkrabbi/kol-controls'
+import { ParamSheet, Knob } from '@kolkrabbi/kol-hardware'
 import { Button } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'

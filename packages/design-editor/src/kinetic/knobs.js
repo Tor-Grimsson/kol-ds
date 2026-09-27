@@ -21,7 +21,7 @@
 
 import { FONT_OPTIONS, AXIS_LABELS, fontByKey } from './fonts.js'
 import { normalizeVf } from './presets.js'
-import { CURVE_OPTIONS, MORPH_MODE_OPTIONS } from './morph.js'
+import { CURVE_OPTIONS, MORPH_MODE_OPTIONS } from '../editor/modes/type/morph.js'
 
 const inst = (c, i = 0) => c?.instances?.[i] ?? null
 const patchInst = (c, partial, i = 0) =>

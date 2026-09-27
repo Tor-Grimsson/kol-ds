@@ -42,7 +42,7 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
 | **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — markdown engine, docs viewer, tag graph, shell |
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
-| | `@kolkrabbi/kol-controls` | hardware panel controls — knob, fader, LED, toggles, jack, rocker, `ParamSheet` |
+| | `@kolkrabbi/kol-hardware` | hardware panel controls in five groups — value · switches · indicators · panel · frames — and the signal engine (`./signal`); renamed from `kol-controls` 2026-09-27 |
 | | `@kolkrabbi/kol-chess` | chess apparatus + pieces + `./data` adapter |
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |

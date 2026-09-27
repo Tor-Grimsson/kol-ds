@@ -50,7 +50,23 @@ export function getAppSettings() { return state }
 export function setAppSetting(key, value) {
   state = { ...state, [key]: value }
   try { localStorage.setItem(KEY, JSON.stringify(state)) } catch { /* private mode — ignore */ }
+  store?.save(state)
   subs.forEach((fn) => fn(state))
+}
+
+/* A host's settings store — `{ load() → Promise<object|null>, save(object) }`,
+ * e.g. a D1 row keyed by tool (2026-09-27). localStorage stays the instant
+ * boot cache; the store's copy lands when it resolves and wins, and every
+ * later write goes through to it. `null` detaches. */
+let store = null
+export function setSettingsStore(next) {
+  store = next ?? null
+  store?.load().then((saved) => {
+    if (store !== next || !saved || saved.version !== VERSION) return
+    state = { ...DEFAULTS, ...saved }
+    try { localStorage.setItem(KEY, JSON.stringify(state)) } catch { /* private mode — ignore */ }
+    subs.forEach((fn) => fn(state))
+  }).catch(() => { /* store unreachable — the cache stands */ })
 }
 
 export function subscribeAppSettings(fn) { subs.add(fn); return () => subs.delete(fn) }

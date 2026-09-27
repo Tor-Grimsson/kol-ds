@@ -47,6 +47,8 @@
 @source "../../../../../@kolkrabbi/kol-foundry/src";
 @source "../kol-framework/src";
 @source "../../../../../@kolkrabbi/kol-framework/src";
+@source "../kol-hardware/src";
+@source "../../../../../@kolkrabbi/kol-hardware/src";
 @source "../kol-icons/src";
 @source "../../../../../@kolkrabbi/kol-icons/src";
 @source "../kol-shell/src";

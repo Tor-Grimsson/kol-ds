@@ -28,6 +28,18 @@
       "destination": "/apps/brand/index.html"
     },
     {
+      "source": "/apps/editor/(.*)",
+      "destination": "/apps/editor/index.html"
+    },
+    {
+      "source": "/apps/controls/(.*)",
+      "destination": "/apps/controls/index.html"
+    },
+    {
+      "source": "/apps/curves/(.*)",
+      "destination": "/apps/curves/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

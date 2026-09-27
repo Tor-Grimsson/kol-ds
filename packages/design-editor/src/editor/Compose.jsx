@@ -5,7 +5,7 @@ import LayersAssetsPanel from './shell/panels/LayersAssetsPanel'
 import SelectionPalettePanel from './shell/panels/SelectionPalettePanel'
 import ToolPalette from './shell/panels/ToolPalette'
 import EditorFooter from './shell/panels/EditorFooter'
-import TimelineDock from './params/TimelineDock'
+import { pack } from './packs'
 
 /**
  * Compose body — the editor surface. Lived at `src/pages/Compose.jsx` in
@@ -20,18 +20,21 @@ import TimelineDock from './params/TimelineDock'
  * per-layer color panel (Stroke/Colour/Swatches); the palette generator is
  * the separate PaletteModal mounted by Editor.
  */
-const COMPOSE_REGISTRY = {
+/* The timeline dock is the motion pack's slot (editor/packs.js), present only when it is
+ * registered. Built at first render, not at import — packs register as their modules load. */
+const composeRegistry = () => ({
   canvas: CanvasArea,
   panels: [
     { slot: 'canvas.header', order: 0,  Component: ToolPalette },
-    { slot: 'canvas.footer', order: 0,  Component: TimelineDock },
     { slot: 'left.body',     order: -1, Component: ColorModal },
     { slot: 'left.body',     order: 0,  Component: LayersAssetsPanel },
     { slot: 'left.footer',   order: 0,  Component: EditorFooter },
     { slot: 'right.body',    order: 0,  Component: SelectionPalettePanel },
+    ...(pack('motion') ? [{ slot: 'canvas.footer', order: 0, Component: pack('motion').TimelineDock }] : []),
   ],
-}
+})
+let registry = null
 
 export default function Compose() {
-  return <EditorShell registry={COMPOSE_REGISTRY} />
+  return <EditorShell registry={(registry ??= composeRegistry())} />
 }

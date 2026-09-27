@@ -13,7 +13,7 @@ import { pickCutFor, seedFromBlend } from './axisRandom'
 import { curveBlend } from './curveMath'
 /* Path-command serializers shared with the kinetic morph engine (identical
  * copies unified — morph.js is the export). */
-import { commandsToPath, commandsMatch, lerpCommands, commandsBbox } from '../../../kinetic/morph.js'
+import { commandsToPath, commandsMatch, lerpCommands, commandsBbox } from './morph.js'
 
 const ASPECT_MAP = { '1:1': 1, '4:5': 4 / 5, '9:16': 9 / 16 }
 const VIRTUAL_W  = 1080

@@ -15,6 +15,9 @@ const APPS = [
   { name: 'notes', what: 'The notes tool alone — kol-notes over the fixture’s notes table.' },
   { name: 'presentation', what: 'The deck tool alone — kol-deck: edit, present, export PDF · PNG · PPTX.' },
   { name: 'brand', what: 'The brand tool alone — kol-styleguide’s Brand: the brand book and its assets over one manifest.' },
+  { name: 'editor', what: 'The design editor alone — @kolkrabbi/design-editor from source, on the fixture bucket and the fake D1.' },
+  { name: 'controls', what: 'The controls reference — the parametric set, the app controls and the panels built from them, with where each is still hand-built.' },
+  { name: 'curves', what: 'The envelope generator alone — a value over time as an equation or an ADSR envelope, on one signal engine, with its reference.' },
 ]
 
 const columns = [

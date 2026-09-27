@@ -39,7 +39,8 @@ function stopJackLoop() {
  *
  * @param {'in'|'out'} type
  * @param {'sm'|'md'}  size         12 · 16 (default md)
- * @param {string}     label · {string} labelSize  (`kol-helper-${labelSize}`, default `xxs`)
+ * @param {string}     label · {string|number} labelSize  (`kol-helper-${labelSize}`: 8 · 10 · 12 …, default 8;
+ *                      a retired t-shirt name — `xxs` — still resolves, to 8)
  * @param {boolean}    active       a cable is connected here
  * @param {boolean}    pending      this output is the pending cable's source
  * @param {boolean}    dimPending   a cable is pending elsewhere (an input shows a dim ring)
@@ -57,7 +58,7 @@ export default function JackSocket({
   type = 'out',
   size = 'md',
   label,
-  labelSize = 'xxs',
+  labelSize = 8,
   active = false,
   pending = false,
   dimPending = false,
@@ -152,7 +153,7 @@ export default function JackSocket({
         </div>
       </div>
       {label && (
-        <span className={`kol-helper-${labelSize} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>
+        <span className={`kol-helper-${/^\d+$/.test(String(labelSize)) ? labelSize : 8} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>
           {label}
         </span>
       )}

@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## 0.152.0 — 2026-09-27
+
+- `kol-sources.css` lists `@kolkrabbi/kol-hardware` (the renamed kol-controls). The manifest had
+  never listed kol-controls, so a consumer only got the rack's utility classes when something else
+  happened to generate them.
+
 ## 0.151.0 — 2026-09-27
 
 - ViewToggle's selected segment under a tone is `fg-08` (inverted keeps its own).

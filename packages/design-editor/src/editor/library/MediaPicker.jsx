@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Dropdown, FullscreenOverlay, MediaViewer } from '@kolkrabbi/kol-component'
 import EditorIcon from '../icons/EditorIcon'
-import { listMedia, mediaUrl, mediaSrc, isImageType, isVideoType, formatSize, BUCKET_OPTIONS, DEFAULT_BUCKET } from './mediaLibrary'
+import { listMedia, mediaUrl, mediaSrc, isImageType, isVideoType, formatSize, bucketOptions, DEFAULT_BUCKET } from './mediaLibrary'
 
 /* SVG is an image/* type, so 'image' still matches it — 'svg' narrows to
  * vector-only for consumers that need real paths (the distress engine). */
@@ -183,7 +183,7 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
             <span className="kol-helper-12 text-emphasis whitespace-nowrap">Media library</span>
             <Dropdown
               variant="grey"
-              options={BUCKET_OPTIONS}
+              options={bucketOptions()}
               value={bucket}
               onChange={setBucket}
               aria-label="Store"

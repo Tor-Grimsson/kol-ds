@@ -8,7 +8,7 @@ import {
   SettingsFooter,
 } from '@kolkrabbi/kol-component'
 import { ASPECTS } from '../editor/shell/aspects'
-import { THEME_OPTIONS } from '../loops/lib/themes'
+import { pack } from '../editor/packs'
 import { useAppSettings, setAppSetting } from '../editor/lib/appSettings'
 import { transport } from '../editor/params/transport'
 
@@ -83,12 +83,13 @@ const sectionsFor = (s) => [
           />
         ),
       },
-      {
+      /* the loop palette themes are the generators pack's (editor/packs.js) */
+      ...(pack('generators') ? [{
         label: 'Loop theme',
         align: 'fill',
         render: () => (
           <SettingsChoice
-            options={THEME_OPTIONS}
+            options={pack('generators').THEME_OPTIONS}
             value={s.defaultTheme}
             onChange={(v) => setAppSetting('defaultTheme', v)}
             tone="sunken"
@@ -96,7 +97,7 @@ const sectionsFor = (s) => [
             ariaLabel="Loop theme"
           />
         ),
-      },
+      }] : []),
       {
         label: 'Clip to frame',
         render: () => (

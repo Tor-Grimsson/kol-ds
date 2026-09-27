@@ -228,11 +228,13 @@ export const FUNCTIONS_BY_NAME = {
   ChessPiece: 'media', ChessHero: 'display',
   SetupPanel: 'action', PiecePalette: 'input', GamePicker: 'input',
   MaterialSummary: 'display', useChessKeyboardShortcuts: 'utility',
-  /* kol-controls — hardware panel controls (KolControlsPackage, 2026-09-01) */
+  /* kol-hardware — hardware panel controls (KolControlsPackage 2026-09-01; renamed from kol-controls 2026-09-27) */
   Knob: 'input', Fader: 'input', Toggle: 'input', FlipToggle: 'input', LED: 'feedback',
   IconButton: 'action',
   PanelLabel: 'structure', ModuleHeader: 'structure', JackSocket: 'input', LabeledJack: 'input',
   RockerSwitch: 'input', ParamSheet: 'overlay',
+  EnvelopeGenerator: 'input', SignalScope: 'display', SignalReference: 'display',
+  ModuleFrame: 'structure', ChannelStrip: 'structure', FlipCard: 'structure',
   /* dashboards */
   DashMetricCard: 'display', DashStackedBarCard: 'display', DashChartCard: 'display',
   DashListCard: 'display', DashFeaturedCard: 'display', DashAlertCard: 'feedback',

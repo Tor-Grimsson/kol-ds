@@ -4,7 +4,7 @@ import { useComposeState } from './state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
 import { buildLayersSvg, downloadComposeSvg, downloadComposePng, svgToPngBlob } from './build'
 import { warmTextFonts } from '../modes/type/textOutline'
-import { warmFontCss } from '../../kinetic/fonts'
+import { pack } from '../packs'
 import { resolveLayersDeep, makeSmoothingState } from '../params/resolve'
 import { transport } from '../params/transport'
 import { downloadBlob } from '../lib/download'
@@ -123,7 +123,7 @@ export function useComposeFile() {
    * exports kinetic text in system faces. */
   const warmExportFonts = async (resolvedLayers) => {
     await warmTextFonts(resolvedLayers)
-    if (hasKineticLayer(resolvedLayers)) await warmFontCss()
+    if (hasKineticLayer(resolvedLayers)) await pack('motion')?.warmFontCss()
   }
   const onExportSvg = async () => {
     const args = buildArgs()

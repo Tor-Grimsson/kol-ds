@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { LabeledControl, SettingsRow } from '@kolkrabbi/kol-component'
 import { NumberField } from '../compose/inspectors/NumberField'
 import { mulberry32, randomSeed, randomizeSchema, mergeRoll } from '../lib/rng'
-import { presetsInGroup, presetLayerPatch, isToolPreset } from '../../loops/registry'
+import { pack } from '../packs'
 import { resolvedChain } from '../compose/filterChain'
 import { visibleParams } from './schema'
 import { useControlSize, RAIL_LABEL_W } from './controlSize'
@@ -134,14 +134,16 @@ export function computeFilterRoll(layer, seed) {
  * canonical one, never a hand-rolled subset.
  */
 export function presetRollPool(layer) {
-  return presetsInGroup(layer.loopGroup).filter((p) => p.id !== layer.presetId && !isToolPreset(p))
+  const g = pack('generators')   // the seam (editor/packs.js) — preset rolls exist only with it
+  if (!g) return []
+  return g.presetsInGroup(layer.loopGroup).filter((p) => p.id !== layer.presetId && !g.isToolPreset(p))
 }
 
 export function computePresetRoll(layer, seed) {
   const pool = presetRollPool(layer)
   if (!pool.length) return null
   const p = pool[Math.floor(mulberry32(seed >>> 0)() * pool.length)]
-  return { ...presetLayerPatch(p, layer.loopGroup), _rollSeed: seed }
+  return { ...pack('generators').presetLayerPatch(p, layer.loopGroup), _rollSeed: seed }
 }
 
 /**

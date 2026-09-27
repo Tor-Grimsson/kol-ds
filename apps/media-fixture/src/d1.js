@@ -12,6 +12,8 @@
  *   settings      (bucket, json)                   → browser storage, so it survives a reload the
  *                                                     way a D1 row does; everything else resets with
  *                                                     the bucket, since its rows point into it
+ *   tool_settings (tool, json)                     → a tool's own preferences (the editor's), keyed
+ *                                                     by tool, not bucket — browser storage, same reason
  *
  * Synchronous, like the bucket; the client makes it async. */
 
@@ -119,5 +121,21 @@ export function saveSettings(bucket, settings) {
   const all = globalThis.localStorage ? readSettings() : (memorySettings ??= {})
   if (settings === null) delete all[bucket]; else all[bucket] = settings
   if (globalThis.localStorage) writeSettings(all)
+  return settings
+}
+
+// ── tool settings (tool, json) — a tool's preferences, not a bucket's (2026-09-27) ──
+const TOOL_SETTINGS_KEY = 'media-fixture.d1.tool_settings'
+let memoryToolSettings = {}
+const readTools = () => {
+  if (!globalThis.localStorage) return memoryToolSettings
+  try { return JSON.parse(globalThis.localStorage.getItem(TOOL_SETTINGS_KEY) ?? '{}') || {} } catch { return {} }
+}
+export const loadToolSettings = (tool) => readTools()[tool] ?? null
+export function saveToolSettings(tool, settings) {
+  const all = readTools()
+  if (settings === null) delete all[tool]; else all[tool] = settings
+  if (globalThis.localStorage) { try { globalThis.localStorage.setItem(TOOL_SETTINGS_KEY, JSON.stringify(all)) } catch { /* private mode: this session only */ } }
+  else memoryToolSettings = all
   return settings
 }

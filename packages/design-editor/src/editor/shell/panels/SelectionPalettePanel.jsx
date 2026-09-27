@@ -9,10 +9,11 @@ import { isBooleanable } from '../../compose/boolean-ops'
 import EditorIcon from '../../icons/EditorIcon'
 import InspectorRail from '../../compose/InspectorRail'
 import ParametersPanel from '../../compose/inspectors/ParametersPanel'
-import EffectsPanel from '../../compose/inspectors/EffectsPanel'
+import { pack } from '../../packs'
 import PatternPanel from '../../compose/inspectors/PatternPanel'
 
-const BASE_TABS = ['Inspector', 'Parameters', 'Effects']
+/* Effects is the effects pack's tab (editor/packs.js) — offered only when it is registered. */
+const baseTabs = () => (pack('effects') ? ['Inspector', 'Parameters', 'Effects'] : ['Inspector', 'Parameters'])
 
 /**
  * SelectionPalettePanel — right.body. Three fixed tabs sharing one shell —
@@ -36,11 +37,12 @@ export default function SelectionPalettePanel() {
   } = useComposeState()
   const modal = useModal()
   const [tab, setTab]  = useState('Inspector')
+  const EffectsPanel = pack('effects')?.EffectsPanel
 
   /* Same layer resolution as ParametersPanel/EffectsPanel — in multi-select
    * the first selected layer drives the panels, so it gates the tab too. */
   const layer = selectedId && selectedId !== 'canvas' ? findLayerDeep(layers, selectedId) : null
-  const tabs = layer?.type === 'pattern' ? [...BASE_TABS, 'Pattern'] : BASE_TABS
+  const tabs = layer?.type === 'pattern' ? [...baseTabs(), 'Pattern'] : baseTabs()
 
   /* One shared header for every tab (title + delete) so switching tabs never
    * swaps the strip — the per-panel headers were removed. Title/trash logic
@@ -114,7 +116,7 @@ export default function SelectionPalettePanel() {
       <div className="flex-1 min-h-0 overflow-y-auto [scrollbar-gutter:stable]">
         {active === 'Inspector'  && <InspectorRail />}
         {active === 'Parameters' && <ParametersPanel />}
-        {active === 'Effects'    && <EffectsPanel />}
+        {active === 'Effects'    && EffectsPanel && <EffectsPanel />}
         {active === 'Pattern'    && <PatternPanel />}
       </div>
     </div>

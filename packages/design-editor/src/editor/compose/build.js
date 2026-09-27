@@ -28,13 +28,18 @@ import { getShapeSvg }     from '../modes/pattern/shapes'
 import { regularPolygonPoints, starPoints, trianglePoints } from './shape-math'
 import { pathD } from './path-math'
 import { computeBooleanCached } from './boolean-ops'
-import { loopById, loopDrawParams } from '../../loops/registry'
-import { drawLoopFrame } from '../../loops/lib/viewport'
 import { hasEnabledFilters } from './filterChain'
 import { svgToPngBlob } from '@kolkrabbi/kol-component'
 import { transport } from '../params/transport'
-import { kineticFontCss } from '../../kinetic/fonts'
+import { pack } from '../packs'
 import { downloadBlob } from '../lib/download'
+
+/* The seam (editor/packs.js) — loop and kinetic layers export through their packs; without the
+ * pack a loop layer exports nothing (loopById → null) and a kinetic one exports without fonts. */
+const loopById = (id) => pack('generators')?.loopById(id) ?? null
+const loopDrawParams = (loop, layer) => pack('generators').loopDrawParams(loop, layer)
+const drawLoopFrame = (...args) => pack('generators').drawLoopFrame(...args)
+const kineticFontCss = (comp) => pack('motion')?.kineticFontCss(comp) ?? ''
 
 const LOGO_RAW = {
   logomark:      logomarkRaw,

@@ -11,11 +11,20 @@ import { openFiles } from '../library/filesDialogStore'
 import { MODES, goMode } from '../mode'
 import { findLayerDeep } from '../compose/helpers'
 import { isBooleanable } from '../compose/boolean-ops'
-import { FILTERS, filterById } from '../../filters'
 import { bareChain } from '../compose/filterChain'
-import { loopById, groupById, presetsInGroup, presetsInSub, presetParams } from '../../loops/registry'
-import { GENERATIVE_TREE } from '../../loops/taxonomy'
-import { effectCategories } from '../compose/inspectors/effectCategories'
+import { pack } from '../packs'
+
+/* The seam (editor/packs.js) — the Generative menu is the generators pack's, the Effects menu the
+ * effects pack's; each shows only when its pack is registered. */
+const gen = () => pack('generators')
+const fx = () => pack('effects')
+const loopById = (id) => gen()?.loopById(id) ?? null
+const filterById = (id) => fx()?.filterById(id) ?? null
+const groupById = (id) => gen().groupById(id)
+const presetsInGroup = (group) => gen()?.presetsInGroup(group) ?? []
+const presetsInSub = (group, sub) => gen()?.presetsInSub(group, sub) ?? []
+const presetParams = (preset) => gen().presetParams(preset)
+const effectCategories = (filters) => fx()?.effectCategories(filters) ?? []
 
 /**
  * MenuTop — top bar above the editor grid.
@@ -92,7 +101,7 @@ export default function MenuTop() {
   const fxHasEngine = fxChain.some((s) => filterById(s.id)?.kind === 'engine')
   const fxEngineHost = fxTarget && (fxTarget.type === 'photo' || fxTarget.type === 'loop' || fxTarget.type === 'misc')
   const fxOptions = fxTarget
-    ? FILTERS.filter((f) => f.kind !== 'engine' || (fxEngineHost && !fxHasEngine))
+    ? (fx()?.FILTERS ?? []).filter((f) => f.kind !== 'engine' || (fxEngineHost && !fxHasEngine))
     : []
   const fxInChain = (id) => fxChain.some((s) => s.id === id)
   const applyEffect = (f) => {
@@ -231,9 +240,9 @@ export default function MenuTop() {
             paint over them. Tracks the .kol-popover TOKEN, which moved 1000 →
             --kol-z-tooltip when the DS pulled its own strays onto the ladder
             (EditorOverlaysOnFullscreenOverlay, ruled 2026-08-27). */}
-        <MenuItem label="Generative" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
+        {gen() && <MenuItem label="Generative" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
           <div className="py-1 w-[260px]">
-            {GENERATIVE_TREE.map((parent) => (
+            {gen().GENERATIVE_TREE.map((parent) => (
               <MenuDropdownNest key={parent.label} label={parent.label}>
                 {parent.groups.length === 1
                   ? generativeItems(parent.groups[0])
@@ -245,9 +254,9 @@ export default function MenuTop() {
               </MenuDropdownNest>
             ))}
           </div>
-        </MenuItem>
+        </MenuItem>}
 
-        <MenuItem label="Effects" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
+        {fx() && <MenuItem label="Effects" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
           <div className="py-1 w-[260px]">
             {/* TYPE nests (Halftone · Scanline · CRT · Refraction · FX rack ·
                 Pattern); categories inside apply a filter to the selected
@@ -289,7 +298,7 @@ export default function MenuTop() {
                   {f.label}
                 </MenuDropdownItem>
               ))}
-              {FX_PATTERN_CATEGORIES.map((c) => (
+              {gen() && FX_PATTERN_CATEGORIES.map((c) => (
                 <MenuDropdownNest key={c.label} label={c.label}>
                   {presetsInSub(c.group, c.sub).map((p) => (
                     <MenuDropdownItem key={p.id} onClick={() => addGenerative(p, c.group)}>
@@ -300,7 +309,7 @@ export default function MenuTop() {
               ))}
             </MenuDropdownNest>
           </div>
-        </MenuItem>
+        </MenuItem>}
 
         <MenuItem label="Tools" panelClassName="z-[var(--kol-z-tooltip)]">
           <div className="py-1 w-[220px]">

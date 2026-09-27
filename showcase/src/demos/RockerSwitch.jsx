@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { RockerSwitch } from '@kolkrabbi/kol-controls'
+import { RockerSwitch } from '@kolkrabbi/kol-hardware'
 
 export const stage = 'md'
 const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, borderRadius: 4, background: 'var(--kol-ctl-hw-case)' }

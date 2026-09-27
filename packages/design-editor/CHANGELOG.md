@@ -1,5 +1,31 @@
 # @kolkrabbi/design-editor
 
+## 0.14.0 — 2026-09-27
+
+The editor split into a core and three layer packs (deconstruction roadmap, kol-ds-ui
+`.kol/llm-context/plan-2026-09-27-deconstruction-roadmap.md`). **The root entry is unchanged** —
+`import { DesignEditor } from '@kolkrabbi/design-editor'` is still the whole editor, same exports.
+
+- **`@kolkrabbi/design-editor/core`** — the editor with no packs: canvas, document, the vector
+  layer types (shape · path · bool · text · group · photo · pattern), the clock, bindings,
+  export. About half the full editor's static weight (1.2 MB against 2.2 MB of JS).
+- **`/generators` · `/effects` · `/motion`** — each registers one pack through the seam
+  (`registerPack`, also exported from `/core`). Import the ones you want before rendering:
+  generators = the loop catalog and the `loop`/`misc` layer types; effects = the filter chain
+  and the Effects tab; motion = kinetic type and the timeline dock.
+- **An absent pack degrades, it does not throw.** Its layer types are not offered, its menu and
+  tab are hidden, and a document that already holds its layers renders and exports them as
+  nothing.
+- **Motion is authoring, not time.** The clock and the bindings stay in the core — every
+  generator is a function of time — so `/motion` is kinetic type and the timeline, not playback.
+- **`<DesignEditor mediaClient settingsStore>`** — browse a client in kol-media-client's shape
+  instead of the Kolkrabbi CDN, and persist the editor's preferences to a host store
+  (`{ load() → Promise, save(settings) }`, e.g. a database row keyed by tool). localStorage
+  stays the instant boot cache.
+- **Kinetic fonts contract, unchanged but now written down:** the host serves
+  `/fonts/TG/TGRotVF.ttf`, `TGMalromurRomanVF.ttf`, `TGGullhamrarVF.ttf`.
+- `pnpm check:core` walks the core's import graph and fails if it reaches a pack.
+
 ## 0.13.0 — 2026-09-04
 
 `editor-chrome-review` findings 8 + 9.

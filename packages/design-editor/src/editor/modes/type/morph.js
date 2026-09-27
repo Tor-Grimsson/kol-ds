@@ -1,4 +1,5 @@
-// Glyph-outline morphing for the kinetic engine — the "morph monster", ported
+// Glyph-outline morphing — kinetic type and the type mode's MorphedText share it (moved out of
+// kinetic/ into the core 2026-09-27, deconstruction T4: the core must not import a pack). Ported
 // from kol-labs-single src/pages/kinetic/engine/morph.js.
 //
 // Extract real glyph outlines via opentype.js and interpolate the bézier path
@@ -17,7 +18,7 @@
 // drag-a-bezier overlay; curveBlend honors them either way.
 
 import opentype from 'opentype.js'
-import { TAU } from '../loops/lib/util.js'
+const TAU = Math.PI * 2
 
 // generalized (lo, hi) clamp — deliberately not lib/util's fixed clamp01
 export const clamp = (v, lo = 0, hi = 1) => (v < lo ? lo : v > hi ? hi : v)

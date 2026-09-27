@@ -1,8 +1,8 @@
 {
   "name": "@kolkrabbi/design-editor",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": false,
-  "description": "The Kolkrabbi design editor as one embeddable React component \u2014 a DOM/SVG vector + generative compositor (canvas, layers, palette/pattern/type generators, kinetic type, boolean geometry, image export). Consumes the @kolkrabbi/kol-* design system as peers. The one BUILT package in this repo (ARCHITECTURE \u00a74 exception, 2026-09-03).",
+  "description": "The Kolkrabbi design editor as one embeddable React component — a DOM/SVG vector + generative compositor (canvas, layers, palette/pattern/type generators, kinetic type, boolean geometry, image export). Consumes the @kolkrabbi/kol-* design system as peers. The one BUILT package in this repo (ARCHITECTURE §4 exception, 2026-09-03).",
   "license": "MIT",
   "type": "module",
   "main": "./dist/design-editor.js",
@@ -10,6 +10,18 @@
   "exports": {
     ".": {
       "import": "./dist/design-editor.js"
+    },
+    "./core": {
+      "import": "./dist/core.js"
+    },
+    "./generators": {
+      "import": "./dist/generators.js"
+    },
+    "./effects": {
+      "import": "./dist/effects.js"
+    },
+    "./motion": {
+      "import": "./dist/motion.js"
     },
     "./style.css": "./dist/design-editor.css"
   },
@@ -19,7 +31,8 @@
   ],
   "scripts": {
     "build": "vite build --config vite.lib.config.js",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "check:core": "node scripts/check-core.mjs"
   },
   "peerDependencies": {
     "@kolkrabbi/kol-component": ">=0.214.0 <1",

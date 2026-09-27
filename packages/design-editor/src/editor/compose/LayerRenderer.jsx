@@ -10,19 +10,27 @@ import { pathD } from './path-math'
 import { computeBooleanCached } from './boolean-ops'
 import { hasBindings, resolveLayer } from '../params/resolve'
 import { useTransportCtx, useTransportPlaying, useTransportEpoch, transport } from '../params/transport'
-import { loopById, loopDrawParams, resolveCameraKeys } from '../../loops/registry'
-import { drawLoopFrame } from '../../loops/lib/viewport'
-import { runChain, invalidateSource } from '../../filters/fxCore'
+import { pack } from '../packs'
 import { enabledCanvasStages, enabledEngineStage, pixiStages } from './filterChain'
 import { rasterizeLayer, sourceKey } from './rasterizeLayer'
-import KineticType from '../../kinetic/KineticType'
-import { loadFonts as loadKineticFonts, warmFontCss as warmKineticFontCss } from '../../kinetic/fonts'
 import { ensureWebcam, getWebcamStream, stopWebcam } from '../lib/webcam'
 import MorphedText from '../modes/type/MorphedText'
 import { familyFor, applyCase } from '../modes/type/cuts'
 import { pickCutFor, seedFromBlend } from '../modes/type/axisRandom'
 import { layerFamily, familyCssFor, isOutlineFamily, ensureFamilyLoaded } from '../modes/type/families'
 import { paintAlpha } from './paint'
+
+/* The seam (editor/packs.js) — loop/misc layers render through the generators pack, kinetic
+ * through motion, filter chains through effects. A layer whose pack is absent renders nothing;
+ * a chain without effects has no resolvable stages, so it never reaches runChain. */
+const gen = () => pack('generators')
+const fx = () => pack('effects')
+const loopById = (id) => gen()?.loopById(id) ?? null
+const loopDrawParams = (loop, layer) => gen().loopDrawParams(loop, layer)
+const resolveCameraKeys = (def) => gen()?.resolveCameraKeys(def) ?? null
+const drawLoopFrame = (...args) => gen().drawLoopFrame(...args)
+const runChain = (...args) => fx()?.runChain(...args)
+const invalidateSource = (canvas) => fx()?.invalidateSource(canvas)
 
 /**
  * LayerRenderer — renders a single layer as a positioned DOM element inside
@@ -120,6 +128,7 @@ export default function LayerRenderer({ layer: rawLayer, palette }) {
     case 'group':      return <GroupLayer      layer={layer} palette={palette} layerStyle={layerStyle} />
     case 'misc':   /* misc rides the loop render vehicle */
     case 'loop': {
+      if (!gen()) return null
       const def = loopById(layer.loopId)
       if (def?.kind === 'engine') return <EngineLoopLayer layer={layer} def={def} layerStyle={layerStyle} />
       /* Engine filter on a 2d loop (labs relief-over-generated-pattern,
@@ -132,7 +141,7 @@ export default function LayerRenderer({ layer: rawLayer, palette }) {
       if (stages.length || px.length) return <EffectedLayer layer={layer} stages={stages} pxStages={px} palette={palette} layerStyle={layerStyle} />
       return <LoopLayer layer={layer} layerStyle={layerStyle} />
     }
-    case 'kinetic':    return <KineticLayer layer={layer} layerStyle={layerStyle} />
+    case 'kinetic':    return pack('motion') ? <KineticLayer layer={layer} layerStyle={layerStyle} /> : null
     default:           return null
   }
 }
@@ -165,8 +174,9 @@ function KineticLayer({ layer, layerStyle }) {
 
   useEffect(() => {
     if (!hostRef.current) return undefined
-    loadKineticFonts()              /* idempotent FontFace registration */
-    warmKineticFontCss()            /* pre-bake @font-face css for export */
+    const { loadFonts, warmFontCss, KineticType } = pack('motion')
+    loadFonts()                     /* idempotent FontFace registration */
+    warmFontCss()                   /* pre-bake @font-face css for export */
     const engine = new KineticType(hostRef.current)
     rig.current = { engine, w: 0, h: 0, comp: null }
     return () => {
@@ -253,7 +263,7 @@ function runPixiPass(cv, g, w, h, pxStages, key, ref, forceDraw) {
     snap.height = cv.height
     snap.getContext('2d').drawImage(cv, 0, 0)
     ref.current = { key: cur?.key ?? null, canvas: cur?.canvas ?? null, pending: key }
-    import('../../filters/pixi/pipeline.js')
+    fx().loadPixiPipeline()
       .then(({ applyPixiStack }) => applyPixiStack(snap, pxStages.map((s) => ({ id: s.id, params: s.params }))))
       .then((out) => {
         if (ref.current?.pending !== key || !out) return   /* superseded / no-op */
@@ -421,7 +431,7 @@ function EngineLoopLayer({ layer, def, layerStyle }) {
 
   useEffect(() => {
     let dead = false
-    import('../../loops/gl/host.js').then((host) => {
+    gen().loadGlHost().then((host) => {
       if (dead || !canvasRef.current) return
       const engine = host.createEngine(def, canvasRef.current)
       rig.current = { host, engine, w: 0, h: 0 }
@@ -1218,7 +1228,7 @@ function EngineFilterLayer({ layer, engine, preStages, pxStages = [], layerStyle
 
   useEffect(() => {
     let dead = false
-    import('../../filters/gl/host.js').then((host) => {
+    fx().loadGlHost().then((host) => {
       if (dead || !canvasRef.current) return
       rig.current = { host, engine: host.createEngine(filter, canvasRef.current), w: 0, h: 0, srcCanvas: null }
       forceDraw((n) => n + 1)
@@ -1322,7 +1332,7 @@ function EngineLoopFilterLayer({ layer, loop, engine, preStages, pxStages = [], 
 
   useEffect(() => {
     let dead = false
-    import('../../filters/gl/host.js').then((host) => {
+    fx().loadGlHost().then((host) => {
       if (dead || !canvasRef.current) return
       rig.current = { host, engine: host.createEngine(filter, canvasRef.current), w: 0, h: 0, srcCanvas: null }
       forceDraw((n) => n + 1)

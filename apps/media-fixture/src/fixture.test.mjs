@@ -126,6 +126,13 @@ d1.saveSettings('r2', { view: 'rows' })
 assert.deepEqual(d1.loadSettings('r2'), { view: 'rows' })
 d1.saveSettings('r2', null)
 assert.equal(d1.loadSettings('r2'), null, 'null resets settings')
+// tool settings are keyed by tool, apart from the bucket settings
+d1.saveToolSettings('editor', { version: 1, autoplay: true })
+assert.deepEqual(d1.loadToolSettings('editor'), { version: 1, autoplay: true })
+assert.equal(d1.loadToolSettings('other'), null)
+d1.saveToolSettings('editor', null)
+assert.equal(d1.loadToolSettings('editor'), null)
+
 console.log('fake D1: ok')
 
 // NOTES + DECKS (library.js): an upsert that leaves a field out keeps it, rows go out as copies, reset restores.

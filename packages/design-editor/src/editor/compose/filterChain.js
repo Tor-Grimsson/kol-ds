@@ -31,9 +31,13 @@
  * deleting them could eat layer-owned props that share a name (a pattern
  * layer's `bg` vs fx-ascii's `bg`).
  */
-import { filterById } from '../../filters'
+import { pack } from '../packs'
 import { schemaDefaults } from '../params/schema'
-import { makeSweep } from '../../filters/sweeps'
+
+/* The seam (editor/packs.js) — the chain resolves its stages through the effects pack; without it
+ * every stage is unknown (null) and the chain is a pass-through. */
+const filterById = (id) => pack('effects')?.filterById(id) ?? null
+const makeSweep = (...args) => pack('effects').makeSweep(...args)
 
 export const MAX_FILTERS = 8
 
@@ -49,7 +53,7 @@ export function makeStage(filterId) {
 
 /* Legacy sweep-rig flat keys (the old SWEEP_PARAMS fragment) → sweeps array. */
 function legacySweepList(layer) {
-  if (!layer.animate) return []
+  if (!layer.animate || !pack('effects')) return []
   return [makeSweep(layer.sweepShape ?? 'linear', {
     target: layer.sweepTarget ?? 'brightness',
     amount: layer.sweepAmount ?? 0.6,

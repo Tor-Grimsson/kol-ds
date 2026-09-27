@@ -7,19 +7,24 @@ import { DEFAULT_SHAPE_ID, getShapeSvg } from '../modes/pattern/shapes'
 import { PRESET_SIZES } from '../shell/aspects'
 import { buildPatternSvg } from '../modes/pattern/render'
 import { computeFrameGlyphs } from '../modes/type/buildTypeSvg'
-import { buildParatypeFlattenGroup } from '../../loops/paratype/flatten.js'
 import { getAppSettings } from '../lib/appSettings'
 import { findLayerDeep } from './helpers'
 import { deleteClip, gcClips } from '../lib/clipStore'
 import { scalePathNodes, shiftNode, rotatePathNodes, normalizePath, normalizePathRings } from './path-math'
 import { shapeToPathNodes } from './shape-math'
 import { booleanCombine, computeBoolean, hasBooleanGeometry, isBooleanable, refitBoolLayer } from './boolean-ops'
-import { presetById, presetParams } from '../../loops/registry'
-import { kineticPresetById, presetComp } from '../../kinetic/presets'
 import { transport } from '../params/transport'
-import { filterById } from '../../filters'
+import { pack } from '../packs'
 import { MAX_FILTERS, makeStage, bareChain, normalizeLayersDeep } from './filterChain'
 import { hydrateVideoClips } from '../lib/clipStore'
+
+/* The seam (editor/packs.js): the loop, kinetic and filter catalogs are reached through their
+ * packs. `loop`/`misc` and `kinetic` are only offered when their pack is registered, so the
+ * generator/motion calls below never run without one; a filter id with no effects pack resolves
+ * to null, which every chain path already treats as an unknown stage. */
+const gen = () => pack('generators')
+const mot = () => pack('motion')
+const filterById = (id) => pack('effects')?.filterById(id) ?? null
 
 /* Layer types that own a `color` (and may own a `stroke`). Single source
  * of truth — `useColorTarget` and the inspector both consult this set
@@ -409,7 +414,7 @@ const DEFAULT_LAYERS = []
  * its own fill now (see canvasFill state). Existing background-typed layers
  * in legacy presets are still rendered by LayerRenderer but can't be
  * created fresh. */
-export const LAYER_TYPES = [
+const ALL_LAYER_TYPES = [
   { id: 'pattern',    label: 'Pattern' },
   { id: 'photo',      label: 'Photo' },
   { id: 'shape',      label: 'Shape' },
@@ -421,6 +426,10 @@ export const LAYER_TYPES = [
    * the loop render vehicle (loopGroup/presetId/loopId + flat params). */
   { id: 'misc',       label: 'Misc' },
 ]
+
+/* The pack each non-core type needs (editor/packs.js) — a type whose pack is absent is not offered. */
+const PACK_OF_TYPE = { loop: 'generators', misc: 'generators', kinetic: 'motion' }
+export const layerTypes = () => ALL_LAYER_TYPES.filter((t) => !PACK_OF_TYPE[t.id] || pack(PACK_OF_TYPE[t.id]))
 
 const layerDefaults = (type, vh = CANVAS_H) => {
   const cover = (extra) => ({ ...extra })
@@ -437,7 +446,7 @@ const layerDefaults = (type, vh = CANVAS_H) => {
      * spread FLAT onto the layer so the binding/timeline machinery works on
      * them like any other prop. */
     case 'loop': {
-      const preset = presetById()   /* first preset (Circle morph) */
+      const preset = gen().presetById()   /* first preset (Circle morph) */
       /* Full-frame, matching labs — a generative loop fills the export frame
        * (labs pages render one generator per frame; there is no fixed box).
        * Resizable/movable afterward like any layer. */
@@ -446,19 +455,19 @@ const layerDefaults = (type, vh = CANVAS_H) => {
         presetId:    preset.id,
         presetLabel: preset.label,
         loopId:      preset.loop,
-        ...presetParams(preset),
+        ...gen().presetParams(preset),
         themeId:     getAppSettings().defaultTheme,
       })
     }
     /* Para Type — a generative composition; fills the frame like the loops. */
     case 'misc': {
-      const preset = presetById('paratype-o')
+      const preset = gen().presetById('paratype-o')
       return fullCanvas({
         loopGroup:   'paratype',
         presetId:    preset.id,
         presetLabel: preset.label,
         loopId:      preset.loop,
-        ...presetParams(preset),
+        ...gen().presetParams(preset),
         themeId:     getAppSettings().defaultTheme,
       })
     }
@@ -467,11 +476,11 @@ const layerDefaults = (type, vh = CANVAS_H) => {
      * loop `forms`) — no flat param spread, no bind dots on its internals.
      * Fills the frame like the labs Type Lab (a full-frame composition). */
     case 'kinetic': {
-      const preset = kineticPresetById()   /* first preset (Sunburst) */
+      const preset = mot().kineticPresetById()   /* first preset (Sunburst) */
       return fullCanvas({
         presetId:    preset.id,
         presetLabel: preset.label,
-        comp:        presetComp(preset),
+        comp:        mot().presetComp(preset),
       })
     }
     case 'text':       return placed(600, 120, { ...TEXT_DEFAULTS, text: 'New text', color: 'palette:dark' })
@@ -1499,7 +1508,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         fg: resolveColor(layer.fg, palette) ?? '#e8e4dc',
         bg: layer.bgOn === false ? null : (resolveColor(layer.bg, palette) ?? '#0b0b0e'),
       }
-      const group = buildParatypeFlattenGroup(layer, colors, newId)
+      const group = gen()?.buildParatypeFlattenGroup(layer, colors, newId)
       return group ? replaceLayerDeep(prev, layerId, group) : prev
     })
   }, [setLayersTracked, palette])

@@ -14,7 +14,7 @@
     "@kolkrabbi/kol-chess": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-content": "workspace:*",
-    "@kolkrabbi/kol-controls": "workspace:*",
+    "@kolkrabbi/kol-hardware": "workspace:*",
     "@kolkrabbi/kol-dashboards": "workspace:*",
     "@kolkrabbi/kol-foundry": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",

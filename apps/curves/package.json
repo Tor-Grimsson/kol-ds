@@ -1,0 +1,29 @@
+{
+  "name": "curves",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The envelope generator alone — kol-hardware's EnvelopeGenerator (equation | ADSR) over the one signal engine, with the reference in all three shapes. Saved curves live in the fixture's fake D1 (`tool_settings`, tool `curves`). Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-hardware": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.2.4",
+    "media-fixture": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

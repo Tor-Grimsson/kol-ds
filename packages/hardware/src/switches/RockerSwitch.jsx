@@ -46,8 +46,8 @@ export default function RockerSwitch({ on, onToggle }) {
       </div>
 
       {/* Static labels on housing */}
-      <span className="kol-helper-xxxxs" style={{ position: 'absolute', top: 3, left: 0, right: 0, textAlign: 'center', color: on ? 'transparent' : 'var(--kol-ctl-hw-cap-edge)', pointerEvents: 'none' }}>I</span>
-      <span className="kol-helper-xxxxs" style={{ position: 'absolute', bottom: 3, left: 0, right: 0, textAlign: 'center', color: on ? 'var(--kol-ctl-hw-cap-edge)' : 'transparent', pointerEvents: 'none' }}>O</span>
+      <span className="kol-helper-8" style={{ position: 'absolute', top: 3, left: 0, right: 0, textAlign: 'center', color: on ? 'transparent' : 'var(--kol-ctl-hw-cap-edge)', pointerEvents: 'none' }}>I</span>
+      <span className="kol-helper-8" style={{ position: 'absolute', bottom: 3, left: 0, right: 0, textAlign: 'center', color: on ? 'var(--kol-ctl-hw-cap-edge)' : 'transparent', pointerEvents: 'none' }}>O</span>
     </div>
   )
 }

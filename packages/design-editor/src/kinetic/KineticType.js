@@ -2,7 +2,7 @@ import { buildPath, isArray, isRadial, isRings } from './paths.js'
 import { glyphAnim } from './animations.js'
 import { featureString } from './features.js'
 import { fontByKey, vfString } from './fonts.js'
-import { buildMorphGlyphs, resolvedFont, ensureGlyphFont } from './morph.js'
+import { buildMorphGlyphs, resolvedFont, ensureGlyphFont } from '../editor/modes/type/morph.js'
 import { TAU, clamp01 } from '../loops/lib/util.js'
 
 /* KineticType — the SVG type composition engine, ported from kol-labs-single

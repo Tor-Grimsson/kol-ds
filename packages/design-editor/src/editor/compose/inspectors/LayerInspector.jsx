@@ -18,9 +18,7 @@ import { ColorField } from './ColorField'
 import BindDot from '../../params/BindDot'
 import { BLEND_MODES } from '../LayerStack'
 import { firstFilterDef } from '../filterChain'
-import { loopById, loopBgToggleable } from '../../../loops/registry'
-import { MISC_TREE } from '../../../loops/taxonomy'
-import { LoopPicker } from './LoopPicker'
+import { pack } from '../../packs'
 import { NumberField } from './NumberField'
 import { Section } from './Section'
 import { TextSurface } from './TextPanel'
@@ -37,6 +35,7 @@ import { TextSurface } from './TextPanel'
  */
 export default function LayerInspector({ layer }) {
   const { ungroupLayer, flipLayer, palette } = useComposeState()
+  const gen = pack('generators')
   /* Color writes route through useColorTarget so the inspector, the picker,
    * the keymap, and the swatch stack all share one writer. Photoshop model:
    * writes always succeed, app-level paint state is the canonical source. */
@@ -136,12 +135,12 @@ export default function LayerInspector({ layer }) {
 
       <AppearanceSection layer={layer} setProp={setProp} first={!positioned} />
 
-      {(layer.type === 'loop' || layer.type === 'misc') && (
+      {(layer.type === 'loop' || layer.type === 'misc') && gen && (
         <Section label="Preset">
           {/* Loop pickers + backdrop — bg toggle hidden for loops whose bg
-            * feeds their color math. */}
-          <LoopPicker layer={layer} tree={layer.type === 'misc' ? MISC_TREE : undefined} />
-          {loopBgToggleable(loopById(layer.loopId)) && (
+            * feeds their color math. The generators pack's (editor/packs.js). */}
+          <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
+          {gen.loopBgToggleable(gen.loopById(layer.loopId)) && (
             <LabeledControl label="Background">
               <ViewToggle
                 options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}

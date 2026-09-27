@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import EditorIcon from '../icons/EditorIcon'
 import { Button, Input } from '@kolkrabbi/kol-component'
 import { Dropdown, MenuDropdownItem, MenuDropdownNest, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
-import { useComposeState, LAYER_TYPES } from './state'
+import { useComposeState, layerTypes } from './state'
 import { rowLabelForLayer } from './labels'
 import { findLayerDeep } from './helpers'
 
@@ -246,7 +246,7 @@ export function AddLayerButton() {
         />
       </span>
       <PopoverPanel popover={popover} className="py-1" style={{ width: MENU_WIDTH }}>
-        {LAYER_TYPES.map((t) => {
+        {layerTypes().map((t) => {
           if (t.id === 'shape') {
             return (
               <MenuDropdownNest

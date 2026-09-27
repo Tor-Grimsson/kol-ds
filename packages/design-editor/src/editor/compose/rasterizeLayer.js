@@ -15,7 +15,10 @@
  * must NOT trigger a re-raster.
  */
 import { layerToSvg } from './build'
-import { filterById } from '../../filters'
+import { pack } from '../packs'
+
+/* the seam (editor/packs.js) — no effects pack, no filter */
+const filterById = (id) => pack('effects')?.filterById(id) ?? null
 import { warmTextFonts } from '../modes/type/textOutline'
 
 /* Layer stripped to pure content: no effect chain, no host-level transform. */

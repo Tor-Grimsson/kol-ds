@@ -1,4 +1,6 @@
-import { loopById } from '../../loops/registry'
+import { pack } from '../packs'
+
+const loopById = (id) => pack('generators')?.loopById(id) ?? null   // the seam (editor/packs.js)
 
 // Motion Frame/Form preset tables — the labs quick-select model (ScanlineEditor /
 // PatternControls / WaveformsEditor / SurfacesEditor / FieldsEditor), keyed by
