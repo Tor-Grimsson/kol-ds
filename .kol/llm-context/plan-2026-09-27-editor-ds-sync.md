@@ -20,14 +20,10 @@ store, its canvas logic, its generators. No second copy of anything.
 
 ---
 
-## Phase 1 — Fix two things in KOL itself
+## Phase 1 — Fix the blue focus ring in KOL itself
 
-Small, and every app gets them, not just the editor.
-
-| Fix | Your finding |
-|---|---|
-| The Tools / File / Canvas menu buttons (`MenuItem`) get the KOL focus style instead of the browser's blue ring | #8 |
-| `XYPad` — the square pad you drag a dot in to set X and Y at once (the editor's Paratype tools use it) — its border and crosshair move from `fg` to `oq`. The editor's copy already did this; KOL's didn't | stroke law |
+The Tools / File / Canvas menu buttons (`MenuItem`) get the KOL focus style instead of the
+browser's blue ring (#8). It's KOL's bug, so every app using those menus gets the fix.
 
 **Done when:** gates clean, the Tools menu shows no blue ring.
 
@@ -49,7 +45,7 @@ Cheapest first. Each step: import KOL, move the old file to `_tmp/`, check the e
 
 | Step | Components | Why this order |
 |---|---|---|
-| 3a | PathNodeOverlay · CropOverlay · XYPad | identical copies — a straight swap |
+| 3a | PathNodeOverlay · CropOverlay · XYPad | identical copies — a straight swap. (XYPad is the drag pad in the Paratype generator's Style tab — generators pack, not visible in `/core`. KOL's copy takes the editor's `oq` strokes first) |
 | 3b | KeyframeEditor · CurveEditor · InspectorRail · ToolPalette | KOL has the cleaned-up version; the editor hands it its data |
 | 3c | Canvas · LayerStack · TimelineDock | the two have drifted apart — compare, merge what the editor has into KOL, then swap |
 | 3d | PanelTabs → `TabsRow` · Section → `InspectorSection` · TransportBar → `PlaybackBar` | same job, different name |
