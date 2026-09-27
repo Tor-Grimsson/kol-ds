@@ -4,7 +4,8 @@
  * The brand book as it ran in kol-olina's apps/brand (itself kol-website's apps/brand, copied
  * 2026-09-02): two scrolling pages — BRAND documents the identity, ASSETS holds what you download
  * or reproduce — each a stack of sections. The section ids, eyebrows, titles and ledes below are
- * that app's, verbatim; anything that was the CLIENT's copy (About, Tone, Look, the logo concept,
+ * that app's, verbatim — except the Logos and Branded ledes, which named files in that repo and are
+ * left for its manifest to set; anything that was the CLIENT's copy (About, Tone, Look, the logo concept,
  * the colour concept) is not here — it comes from the manifest's `book` field, section by section
  * (`@kolkrabbi/kol-brand-template` schema). A manifest key overrides the default of the same name.
  */
@@ -25,8 +26,8 @@ export const BOOK_SECTIONS = [
 
 export const ASSET_SECTIONS = [
   { key: 'assetsOverview', id: 'assets-overview', label: 'Assets', title: 'Downloads and reproduction', lede: 'Everything you download or reproduce. Brand documents the identity; this holds the files and the specs for making them.' },
-  { key: 'logos', id: 'logos', nav: 'Logos', label: '01 — logos', title: 'Logos', lede: 'Every mark in src/brand/logos/svg/. Click a row to open the overlay; toggle the color dot to swap ink vs surface; download recolored on the fly.' },
-  { key: 'branded', id: 'branded-assets', nav: 'Branded', label: '04 — branded', title: 'Branded assets', lede: 'Stationery. Mocks live in src/components/styleguide/StationeryMocks.jsx and render in /styleguide chapter 6.' },
+  { key: 'logos', id: 'logos', nav: 'Logos', label: '01 — logos', title: 'Logos' },
+  { key: 'branded', id: 'branded-assets', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
   { key: 'stationery', id: 'assets-stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
   { key: 'social', id: 'social-sizes', nav: 'Social', label: '12 — social · sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
   { key: 'profile', id: 'social-profile', nav: 'Profile', label: '13 — social · profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },

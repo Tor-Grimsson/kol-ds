@@ -67,6 +67,9 @@ export const ALL_ROUTES = [
    * about itself. */
   { id: 'references', label: 'References', icon: 'library', path: '/references' },
   { id: 'search', label: 'Search', icon: 'search', path: '/search' },
+  /* The apps tier (2026-09-27) — the tools built on the system, each its own build under /apps/<name>/.
+   * This row is the index page; the apps themselves are full-page links from it. */
+  { id: 'apps', label: 'Apps', icon: 'grid', path: '/apps' },
   /* Documentation is a CATEGORY, and a category is not a tool (user ruling
    * 2026-08-01). It stays in ALL_ROUTES so ⌘K can still find it by name — that
    * is what this list is for — but it is filtered out of the rendered Tools
@@ -108,6 +111,7 @@ const TAB_PREFIX = {
   '/sets': '/sets',
   '/docs/shell-and-layout': '/docs',
   '/references': '/references',
+  '/apps': '/apps',
   '/quarantine': '/quarantine',
 }
 /* The Documentation tab's href is its first doc, but it lights across the

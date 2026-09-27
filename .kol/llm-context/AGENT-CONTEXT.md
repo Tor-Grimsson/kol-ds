@@ -8,8 +8,13 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Queued for next session (user, 2026-09-27)
 
-- **User reviews the five apps** — media · media-shell · shell · notes · presentation (`pnpm <name>`). Then: kol-noter's patterns into kol-notes on their go; olina cutover to kol-notes / kol-deck, filed from the iMac.
+- **Push owed** — apps/brand + the showcase Apps tab go live on deploy.
+- **User reviews the six apps** — media · media-shell · shell · notes · presentation · brand (`pnpm <name>`). Then: kol-noter's patterns into kol-notes on their go; olina cutover to kol-notes / kol-deck / `Brand`, filed from the iMac. Responsive/touch pass over the non-brand apps not done.
 - monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
+
+## Current state (2026-09-27, brand as a tool)
+
+- **📘 kol-styleguide 0.5.1 · kol-brand-template 0.3.0, published (2026-09-27, newest).** olina's brand book is `Brand` (BrandBook ⇄ BrandAssets + rail) over a manifest whose new `book` field carries the copy; `apps/brand` (:5179) on media-fixture's `useBrandTool` (kol-brand + website copy); media-shell Brand tab (⌥6); showcase Apps tab at `/apps`. Checked at 1440 + 390. 28 gates clean. Log: `session-log/2026-09-27-brand-as-a-tool.md`.
 
 ## Current state (2026-09-27, notes and decks as tools)
 
@@ -26,10 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-25, explorer pass + publish 0.220.0)
 
 - **🧭 Rows and grid now behave like the columns, and like Finder (2026-09-25, newest): theme 0.148.0 · component 0.220.0 · workshop 0.29.0, published.** The title root is derived from path + pick (a stored flag left the crumb at the title over a picked file); a level above the title holds it as one folder; buckets are folders (highlight, double-click / Enter, preview, Space); going up selects the child; Enter / ⇧Enter; grid arrows walk folders; grid drag-select spans the pane; ⇧+arrows work under Quick Look; picked folders end the crumb; SVGs and folder glyphs fill their tiles. olina's title-root ticket 🟠 with receipt. Later the same day: bucket/title previews, upload conversion documented as an option (`04-compositions/15-media-uploads.md`), and FoundryCTA dropped — ⚠️ unpublished, BREAKING on the next component release. 27 gates green. Log: `session-log/2026-09-25-explorer-pass-title-root-and-publish-0220.md`.
-
-## Current state (2026-09-23, touch pass + olina's three media tickets)
-
-- **👆 The media surface works by touch, and three more olina tickets shipped (2026-09-23, newest): component 0.218.0 → 0.219.0, published.** `useLongPress` (a held touch opens the row's menu) and `RowMenuButton` (`···` on rows and tiles on a coarse pointer) — stack rows finally have their own menu. The right-click menu was 510px wide everywhere (`inline-flex` items summing in a shrink-to-fit float) and clipped off a phone: fixed in `ContextMenu`. Below `md` the rows view draws the phone list; README/code thumbnails are `inert`. Olina's tickets: count line's grey tail totals the folder, opt-in `bucketLevel`, and grid draws folders + container right-click + one ⌘↑ to the title root. Eight olina tickets are 🟠 until they verify. ⚠️ Not tried on a real iPhone; long-press is on the Browse root only. ⚠️ Touch findings left open: 14px disclosure tap target, Quick Look's 32px gutters at 390. Next: D1 (tags, text editing). Log: `session-log/2026-09-23-touch-pass-and-olina-media-views.md`.
 
 ## Repo standup (2026-06-15)
 

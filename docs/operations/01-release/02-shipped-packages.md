@@ -43,7 +43,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.10.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.0** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.5.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
+| `@kolkrabbi/kol-styleguide` | **0.5.1** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
 
 ## Other tiers
 

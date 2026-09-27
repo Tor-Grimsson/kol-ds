@@ -45,6 +45,8 @@ export const ADMITTED = new Set([
   'docs',
   'search',
   'references',
+  /* APPS admitted 2026-09-27 on the user's instruction — the showcase had no door to the apps tier. */
+  'apps',
 ])
 
 /* ── THE CATEGORIES ────────────────────────────────────────────────────────
@@ -161,6 +163,15 @@ export const CATEGORIES = [
     rule: 'docs/operations/03-showcase/04-surface-rules.md',
     awaits: 'rule written 2026-08-09 — generated measurement, no hand-authored rows',
     why: 'Placed in the Tools group beside Search; built from usage-index + token-index, so it cannot rot.',
+  },
+  {
+    key: 'apps',
+    label: 'Apps',
+    surfaces: ['apps'],
+    categories: [],
+    rule: 'docs/operations/07-apps-tier/INDEX.md',
+    awaits: 'nothing structural — an index of the apps tier, one row per app',
+    why: 'The only door from the showcase to the apps; each row is a full-page link to /apps/<name>/.',
   },
   {
     /* OPERATIONS is its own category (2026-07-31). Its four chapters used to

@@ -22,6 +22,7 @@ import ReferenceNode from './pages/ReferenceNode'
 import SearchResults from './pages/SearchResults'
 import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
+import Apps from './pages/Apps'
 import ShellChrome from './lib/ShellChrome.jsx'
 import MdxDoc from './lib/MdxDoc.jsx'
 /* MDX docs — the page IS the document (shadcn model). One import per doc for
@@ -91,6 +92,7 @@ export default function App() {
         <Route path="/references" element={<References />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/apps" element={<Apps />} />
         <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
