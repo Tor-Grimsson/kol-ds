@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-shell
 
+## 0.58.0 — 2026-09-28
+
+- **`ShortcutsOverlay` moved to `@kolkrabbi/kol-component`** (0.228.0) so the workshop shell opens
+  the same sheet on `S` as every app. Re-exported here — every `@kolkrabbi/kol-shell` import keeps
+  resolving; the peer floor on kol-component is 0.228.0.
+
 ## 0.57.1 — 2026-09-27
 
 - `ShortcutsOverlay` — the sheet is capped to the window and scrolls inside; a long keymap ran

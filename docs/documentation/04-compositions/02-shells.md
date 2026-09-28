@@ -3,7 +3,7 @@ title: Reference shells
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-09
+updated: 2026-09-28
 description: The documented app shells, and their uses
 aliases:
   - reference-shells
@@ -29,6 +29,32 @@ A **shell** is the reusable page chrome an app hangs its content in: top bar, si
 It was the showcase's unified chrome, modelled on ui.shadcn.com: `TopBar` (wordmark · path-active section links · ⌘K search over the barrel-derived roster · GitHub · `ThemeToggle`), a `DocSidebar` and a `Toc` rail both defined inside `DocLayout.jsx`, used as `<DocLayout toc={TOC}>…</DocLayout>`.
 
 Why it went: the chrome was imported by each page rather than mounted once, so fourteen files carried the same decision and drifted; and every page hand-wrote its own `toc` array, which went stale against its own headings.
+
+### THE SPACE TABLE — rails per space (2026-09-28, the user's showcase review)
+
+**This section is current and outranks every older line below that it contradicts** — each such line
+carries a *Superseded 2026-09-28* note. Built and judged in `apps/workshop` (over `workshop-fixture`),
+then adopted by the showcase. Plan and decisions: `.kol/llm-context/plan-2026-09-28-showcase-refinement.md` § 3b.
+
+| Space | Root — an index page, rails on | Left rail | Right rail |
+|---|---|---|---|
+| — `/` | the landing, the **only** page without rails | — | — |
+| Components | `/components` | Group by · the component tree | this page · its tags · related · the space's top tags |
+| Blocks · Sets | `/blocks` · `/sets` — a doc header, not a hero | the blocks · the sets | this page · members as related |
+| Docs | `/docs` | **Guides · Specimens · Documentation · Operations** (one parent, as `docs/` on disk; the specimen pages — Foundations, Icons — are rail rows again) | the reader's rail |
+| Apps | `/apps` | the apps | this page |
+| Development | `/development` — References, Quarantine, audits, reports | Tools | this page |
+| Search — not a space | `/search?q=` | the spaces | this page |
+
+- **A space owns more than its root.** Docs lights for `/docs · /documentation · /foundations · /icons`, Development for `/development · /references · /quarantine`; no URL moved (`SPACE_PREFIXES`, `showcase/src/nav/shell-nav.js`).
+- **Each space draws its own rails.** `renderSidebar` and a function `defaultTocContent` receive `{ activeRoute }`. The **Tools group is gone** — the header lists the spaces; a second door to each was "one body of content, two doors".
+- **A page tells the right rail what it is about** — `usePageMeta({ tags, related })`, read by the rail with `usePageMetaValue()`. The rail had been handed empty lists on every route.
+- **The rail follows you.** Arriving in a group opens it and folds its siblings.
+- **A folded L1 says so** — a state glyph at the row's end, and while folded, how much it holds.
+- **Geometry.** One scroll region under the header, edge to edge (`#shell-scroll`, `SHELL_SCROLL_ROOT`); the rails are sticky inside it, **256px each** on their own tokens (`--kol-shell-nav-w` · `--kol-shell-toc-w`), each ending in an opaque 08 seam with the chrome inset inside it. Main pads the page ladder from a seam, only on a side that has a rail; **pages do not pad themselves on x**. Laws in [[../01-foundations/05-layout-systems|layout systems]].
+- **Search.** The palette runs `@kolkrabbi/kol-search` (ranked, every hit underlined, `atom` → the Atoms category). **Enter opens the search page** (`searchPath`), whose whole state is the query in the URL — Back returns to it. A tag clicked anywhere opens `/search?q=#tag`; the tag graph stays one click away in every right rail. `/` and ⌘K open the palette.
+- **Keys and settings.** `S` (and `?`) opens kol-component's `ShortcutsOverlay` — the sheet every app opens; `,` opens the settings drawer (the rails, quick search in this space only, the page's own rows, the keymap).
+- **The wordmark names the space** — `brandLabel`: typed Right Grotesk Tight, DESIGN SYSTEM on `/`, the space's name elsewhere, aligned with the page text.
 
 ### Embed mode — `?embed=1` (2026-07-30)
 
@@ -103,7 +129,7 @@ R3 fixed the eyebrow's box and the rails still disagreed, because the user then 
 
 | Rung | Class | Chrome | Owner |
 |---|---|---|---|
-| **L1** section | `.shell-sidebar-toggle` · `kol-doc-eyebrow` | collapse · **no count** · **no chevron** | `RailSection level={1}` |
+| **L1** section | `.shell-sidebar-toggle` · `kol-doc-eyebrow` | collapse · state glyph at the end · count **while folded** *(Superseded 2026-09-28: was no count, no chevron — a folded eyebrow read as an empty category)* | `RailSection level={1}` |
 | **L2** group | `.shell-nav-group-header` · `kol-mono-14` | collapse · **count** · **chevron** | `RailSection level={2}` |
 | **L3** row | `.shell-nav-item` · `kol-mono-14` | leaf link · **active** | **`RailRow`** (+ `DocsToc`) |
 
@@ -135,7 +161,7 @@ The proof was already in the repo: **L3 is the one rung a component already owne
 
 > **Known collision:** `Foundations — the token system` and `Foundations — layout & breakpoints` both shorten to **`Foundations`**, so chapter 01 shows two identically-named rows. Resolving it means retitling one of the docs — user-facing text, so it waits on a ruling.
 
-**Section order is the law, and now a gate.** `Components · Tools · Documentation · Operations` — **re-ruled by the user 2026-08-09** (*"components, sets, blocks etc. should be before Documentation"*): in the design system's own showcase, the showcase sections outrank the written record. This reverses the 2026-07-31 order (`Documentation · Components · Tools`), which had itself been rendered backwards by `ShellChrome` until the gate existed — the lesson both times is the same: nothing holds an order but the gate.
+*Superseded 2026-09-28 — rails are per space; the one ruled order is the Docs rail's, Guides · Specimens · Documentation · Operations (§ The space table, R4b).* **Section order is the law, and now a gate.** `Components · Tools · Documentation · Operations` — **re-ruled by the user 2026-08-09** (*"components, sets, blocks etc. should be before Documentation"*): in the design system's own showcase, the showcase sections outrank the written record. This reverses the 2026-07-31 order (`Documentation · Components · Tools`), which had itself been rendered backwards by `ShellChrome` until the gate existed — the lesson both times is the same: nothing holds an order but the gate.
 
 All of it is **R4**: a rung class written by hand fails, a `({n})` span placed by hand fails, section order out of sequence fails.
 
@@ -185,7 +211,7 @@ and overrode a rung the consumer's designer had specified. The gate now exempts
 still answers to R1. A gate that cries wolf gets muted; a gate that is
 confidently wrong gets obeyed, which is worse.
 
-**Both rails are `--kol-sidenav-w` wide.** The right read 14rem against the left's 16rem; two rails framing the same content at different widths is a frame nobody drew on purpose. **The left is a ladder since framework 0.32.0** (SideNavWidthLadder, user ruling 2026-08-27 on the brand book: *320 on desktop, 264 on laptop, collapsed on tablet, hamburger on mobile*): `--kol-sidenav-w` is 264px and 320px from 1536 (`2xl`); the drag snaps to the window's rung. `--kol-shell-toc-w` is still 16rem — whether the right rail climbs the same ladder is held for the user.
+*Superseded 2026-09-28 — both rails are 256px on the shell's own pair, `--kol-shell-nav-w` · `--kol-shell-toc-w`; the sidenav ladder stays the draggable app sidenav's.* **Both rails are `--kol-sidenav-w` wide.** The right read 14rem against the left's 16rem; two rails framing the same content at different widths is a frame nobody drew on purpose. **The left is a ladder since framework 0.32.0** (SideNavWidthLadder, user ruling 2026-08-27 on the brand book: *320 on desktop, 264 on laptop, collapsed on tablet, hamburger on mobile*): `--kol-sidenav-w` is 264px and 320px from 1536 (`2xl`); the drag snaps to the window's rung. `--kol-shell-toc-w` is still 16rem — whether the right rail climbs the same ladder is held for the user.
 
 ### ONE GEOMETRY FOR THE WORKSPACE RAILS (user ruling 2026-08-27)
 
@@ -216,6 +242,8 @@ Built by `buildShellSearchItems` (`showcase/src/nav/shell-nav.js`).
 **One header-icon size.** `HEADER_ICON` (`ShellHeader`) — the row mixed 18 against the ThemeToggle's 24: four controls, two scales, in one bar.
 
 ### ONE SURFACE — the palette IS the tag browser (user ruling 2026-08-01)
+
+*Superseded 2026-09-28 (user: "instead of another weird nested overlay") — Enter opens the search page; the tag browser opens only from the tag graph action. § The space table.*
 
 Matching their chrome was not unification: the app still had **two components, two mounts, two query states**. The correct shape is one surface that accepts **both tags and keywords**, because they are two facets of one query.
 
@@ -293,7 +321,7 @@ That seam had a bug worth recording: `ShellLayout` reshapes engine results into 
 
 **The node graph has an entry point.** It was reachable only by clicking a tag inside `/documentation/:docId`, and its only control was gated on `hasFilters` — the button did not exist in the DOM until a tag was already active, so the graph could only be discovered by accident. `TagModeGate` now wraps every shell route, and the graph toggle is always present; with no tags active it renders the whole map, which is the view worth opening cold. Verified from `/foundations`: ⌘K → tag row → graph, 39 nodes and 135 edges.
 
-**Shortcuts are one list.** There was no help UI anywhere: ⌘K was an unlabelled icon button and `Alt+B` was an undocumented duplicate. A `?` sheet now renders **from the same array that binds the keys**, so a shortcut cannot be documented-but-unbound or bound-but-undocumented. `Alt+B` is dropped. The handler ignores keystrokes aimed at inputs, textareas and contenteditable.
+*Superseded in part 2026-09-28 — the sheet is kol-component's `ShortcutsOverlay` on `S` (`?` kept), rendered from the same array.* **Shortcuts are one list.** There was no help UI anywhere: ⌘K was an unlabelled icon button and `Alt+B` was an undocumented duplicate. A `?` sheet now renders **from the same array that binds the keys**, so a shortcut cannot be documented-but-unbound or bound-but-undocumented. `Alt+B` is dropped. The handler ignores keystrokes aimed at inputs, textareas and contenteditable.
 
 **R3 · GENERATED WINS — the drift rule (2026-07-30 evening).** Every doc surface here has two layers: a generator that reads the source, and a hand-authored layer on top. Where they disagree about a **fact**, the generator wins.
 

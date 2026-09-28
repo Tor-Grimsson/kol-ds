@@ -1,5 +1,23 @@
 # @kolkrabbi/kol-theme
 
+## 0.155.0 — 2026-09-28
+
+**The workshop shell, refined** (plan-2026-09-28-showcase-refinement).
+
+- **One scroll region, edge to edge** — `.shell-scroll` (a size container) holds the whole area
+  under the header; `.shell-rail` makes each rail sticky and exactly one region tall
+  (`100cqh`), still scrolling its own overflow. The page scrollbar sits at the window edge — it
+  sat 24px inside the frame, beside the TOC.
+- **One space between a rail and the page** — `.shell-content-grid` has no gap (it was 32/48px,
+  and pages padded themselves too). `.shell-rail--nav` / `--toc` end in an opaque 08 seam with the
+  chrome inset inside it. **BREAKING for a page that padded itself on x inside the shell** — the
+  shell owns that space now.
+- **`.kol-overlay-panel` lifts off the page** — `oq-04` ground and `oq-96` ink (it painted the
+  page surface and read as a hole over a dark page); a bare query field inside it reads at full
+  ink, its placeholder at 48. Reaches `ShellSearchOverlay` and `SettingsPanel`.
+- **`.shell-wordmark-label`** — the shell's typed second wordmark in the Tight cut, caps as tall as
+  the drawn mark beside it.
+
 ## 0.154.0 — 2026-09-27
 
 **The editor inspector rebuild** (plan-2026-09-27-editor-inspector-rebuild — Affinity as the guide).

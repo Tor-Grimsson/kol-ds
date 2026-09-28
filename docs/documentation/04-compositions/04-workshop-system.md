@@ -3,7 +3,7 @@ title: Workshop system
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-03
+updated: 2026-09-28
 description: The handrolled docs subsystem in kol-workshop
 aliases:
   - workshop system
@@ -59,11 +59,31 @@ The package is **not** self-contained. Much of the shell chrome **already existe
 | `parseFrontmatter(raw)` | → object | YAML-subset: `key: value`, block lists, inline `[a, b]` arrays. Keys lowercased. |
 | `buildInventory(modules)` | `{path: raw}` → `[{id, file, title, metadata}]` | **The injection seam** (below). |
 | `buildInventoryCounts(inv)` | → `{total, statuses, categories, contentTypes}` | Tallies. |
-| `matchSearchItems(items, query)` | → filtered + annotated | Case-insensitive substring over label/tags/headings/keywords. |
+| `matchSearchItems(items, query)` | → filtered + annotated | Case-insensitive substring over label/tags/headings/keywords. **Moved to `@kolkrabbi/kol-search`** with the ranker the shell runs now (below). |
 | `buildTagCounts` / `buildTagCooccurrence` | inventory → tag data | Pure tag math (graph nodes/edges, counts). |
 | `getTagColor`, `extractDocNumber`, `cleanTitle`, `groupDocsByMajor`, `categoryLabels`, … | — | Doc/tag helpers. **Bake in the KOL numbered-doc taxonomy** — parameterize if a consumer's scheme differs. |
 
-Runnable self-check: `node packages/workshop/src/engine/__check.mjs`.
+**The engine left the package (2026-09-28, the engine tier — ARCHITECTURE §3).** Everything above
+lives in `@kolkrabbi/kol-markdown` now (`matchSearchItems` in `@kolkrabbi/kol-search`); the root
+barrel and `./engine` re-export the same names so nothing breaks. Self-checks: `pnpm --filter
+@kolkrabbi/kol-markdown test` · `pnpm --filter @kolkrabbi/kol-search test`. Proved in `apps/markdown`
+and `apps/search`.
+
+### Search, settings, keys (2026-09-28)
+
+- **The palette ranks** — `ShellLayout` indexes `searchItems` with kol-search (`createIndex` · `search`):
+  title › tag › heading › keyword › description › body, every hit underlined, and a word naming a
+  category/kind/space is read as that filter (`atom` → Atoms). Items in kol-search's shape
+  (`title · kind · space · category · tags · headings · keywords · description · date · href`) or the
+  older `label/sectionLabel` rows.
+- **`searchPath`** — Enter opens `${searchPath}?q=…`, the **`SearchPage`**: the query is the whole
+  state and lives in the URL; the scope row and the facets (kind · category · tags) write `in:` ·
+  `kind:` · `cat:` · `tag:` tokens back into it; "read as" chips remove a token. Without
+  `searchPath`, Enter keeps the older in-place tag browser.
+- **`settings`** — sections the consumer adds to the shell's settings drawer (gear, `,`), under the
+  shell's own: the rails, quick search in this space only, the keymap. Remembered per viewer.
+- **Keys** — ⌘K and `/` search; `S` (and `?`) the sheet, kol-component's `ShortcutsOverlay`; `,` settings.
+- **`brandLabel`**, **`usePageMeta`**, per-space rails, the one scroll region — [[02-shells|shells § The space table]].
 
 ## Injection seam
 

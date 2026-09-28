@@ -24,7 +24,7 @@ export { default as PageShell, PageBleed } from './PageShell.jsx'
 export { default as TabStrip } from './TabStrip.jsx'
 export { default as SettingsScaffold } from './SettingsScaffold.jsx'
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
-/* lives in kol-component since 0.229.0 — re-exported so every kol-shell import keeps resolving */
+/* lives in kol-component since 0.228.0 — re-exported so every kol-shell import keeps resolving */
 export { ShortcutsOverlay } from '@kolkrabbi/kol-component'
 export { default as Logomark } from './Logomark.jsx'
 // the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)

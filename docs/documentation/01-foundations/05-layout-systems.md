@@ -3,7 +3,7 @@ title: Layout systems registry
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-03
+updated: 2026-09-28
 description: Which system owns which width, and where
 aliases:
   - layout-systems
@@ -55,7 +55,8 @@ used for.
 | **Rail stack** (`.shell-rail-stack` · `-inner`) | the SECTION container in every rail — categories at 24, groups inside a category at 16. Added 2026-08-01 after the user found one layout shipping as **four** idioms: `flex flex-col gap-6` (left), `space-y-6` (right), `space-y-4` (sidebars), `space-y-0` (rows). `space-y-*` is a margin on every child but the first, so it fights the eyebrow box, which owns its own margin — flex `gap` does not | `--kol-spacing-6` outer · `--kol-spacing-4` inner | `kol-components-workshop.css` | a `space-y-*` or `gap-*` utility on a rail container — that is how the four started |
 | **Rail row indent** (`--kol-pad-rail-row-x`) | the row's TEXT edge, so anything that must line up with a row (the tag shelf) reads the indent instead of retyping it. It was the last value of `.shell-nav-item`'s padding shorthand and unreadable from anywhere else | `1.25rem` | `kol-theme.css` `:root` | page content |
 | **Rail row rhythm** (`--kol-pad-rail-row-y`) | the y-padding EVERY sidebar row shares — the eyebrow (`.shell-sidebar-toggle` / `.shell-sidebar-label`) and the nav group header (`.shell-nav-group-header`). Added 2026-08-01; see the eyebrow-box law in [[../04-compositions/02-shells\|shells]] | `0.375rem` — deliberately **off** the `--kol-spacing-*` scale (a tighter chrome rhythm than `--kol-spacing-1`) | `kol-theme.css` `:root` | page content — this is rail chrome only |
-| **Rail widths** (`--kol-sidenav-w` · `--kol-shell-toc-w`) | the workshop shell's two rail **grid tracks**. Both are fixed: the right rail holds its column even with nothing in it (user ruling 2026-08-01), because a rail that vanishes on a heading-less page re-flows main and the same shell renders at two widths | `16rem` both — equal since 2026-08-01 (this row still said `14rem` right until 2026-08-01 evening) | `kol-framework.css` `:root` | `--kol-toc-w` — that is the BRAND layout's rail, a different shell |
+| **Rail widths** (`--kol-shell-nav-w` · `--kol-shell-toc-w`) | the workshop shell's two rail **grid tracks** — its own pair since 2026-09-28 (the left read `--kol-sidenav-w`, the draggable app sidenav's 264/320 ladder, so the docs shell rendered 320 · main · 256). Both fixed and equal; the right rail holds its column even with nothing in it (user ruling 2026-08-01). Each rail ends in an opaque 08 **seam** with the chrome inset inside it | `256px` both | `kol-framework.css` `:root` | `--kol-sidenav-w` — the app sidenav's, draggable, a different shell; `--kol-toc-w` — the BRAND layout's rail |
+| **Shell scroll region** (`.shell-scroll` · `.shell-rail` · `#shell-scroll`) | the ONE region under the workshop header, scrolling edge to edge (2026-09-28 — each rail and `#main` scrolled themselves inside the chrome inset, so the scrollbar sat inside the frame). Rails are sticky inside it, one region tall. Between a rail and the page there is ONE space: the seam, then main's `--kol-pad-section-x` — never the page's own padding as well | a size container; rails `100cqh` | `kol-components-workshop.css` · `ShellLayout.jsx` | a page padding itself on x inside the shell; a scroll observer rooted on `#main` (use `SHELL_SCROLL_ROOT`) |
 
 ## Rule
 

@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-09-03
+updated: 2026-09-28
 description: The application shell set — rail plus scaffolds
 aliases:
   - shell
@@ -73,7 +73,7 @@ import {
   PageShell, PageBleed,
   ContentFilters, TabStrip, GridCard,
   SettingsScaffold, LabeledControlSection, LabelRow,
-  WalkthroughPanel, ShortcutsOverlay, Logomark,
+  WalkthroughPanel, ShortcutsOverlay (lives in kol-component since 0.228.0, re-exported), Logomark,
 } from '@kolkrabbi/kol-shell'
 ```
 

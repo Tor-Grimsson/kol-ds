@@ -2,6 +2,12 @@
 
 ## 0.228.0 — 2026-09-28
 
+- **`ShortcutsOverlay` lives here now** (moved from kol-shell, which re-exports it) — the keymap
+  sheet the workshop shell and every app open on `S`, one component instead of a second `?` sheet.
+- **`ShellSearchOverlay`: `enterLabel`** — when set, the panel's last line says what Enter does
+  (`↵ All results for “q”`), so Enter is never a surprise. Rows may carry `highlights`
+  (`[start, end]` ranges from an engine) and every hit is underlined, not just the first slice of
+  the raw query; resting rows read at 80 (were 64).
 - **Frontmatter comes from `@kolkrabbi/kol-markdown`** (new dependency). `parseFrontmatter`,
   `splitFrontmatter` and `joinFrontmatter` are still exported from here, same behaviour —
   `utilities/frontmatter.js` moved into the engine tier, where kol-workshop's byte-identical copy

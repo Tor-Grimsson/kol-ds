@@ -1,5 +1,18 @@
 # @kolkrabbi/kol-framework
 
+## 0.45.0 — 2026-09-28
+
+- **The workshop shell's rails are their own pair** — `--kol-shell-nav-w: 256px` (new) and
+  `--kol-shell-toc-w: 256px` (was `16rem`). The shell read `--kol-sidenav-w`, the draggable app
+  sidenav's 264/320 ladder, so the docs shell rendered 320 | main | 256. `--kol-sidenav-w` is
+  unchanged for NavRail, the labs rail and the deck editor.
+- **`ThemeToggle` carries ONE tooltip, the DS one** — it set a native `title` (spread from a props
+  object, which the native-title gate could not see) while `ShellHeader` wrapped it in a KOL
+  `Tooltip`, so hovering showed both. The toggle wraps itself now with the richer text
+  ("Switch to light mode · following your system"); `tooltip={false}` leaves it bare.
+  `ShellHeader` no longer wraps it.
+- `PageLayout`'s phone-only hamburger is marked `tip-ok` (a hover tip never shows on touch).
+
 ## 0.42.0 — 2026-09-03
 
 - `ThemeToggle tone` takes `inverted` (theme 0.138.0, component 0.177.0).

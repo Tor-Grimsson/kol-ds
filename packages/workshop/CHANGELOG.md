@@ -2,6 +2,35 @@
 
 ## 0.30.0 — 2026-09-28
 
+**The shell, refined** (plan-2026-09-28-showcase-refinement — the user's review of the showcase).
+Peers: kol-component ≥0.228.0 · kol-framework ≥0.45.0 · kol-theme ≥0.155.0.
+
+- **One scroll region, edge to edge** (`#shell-scroll`, exported as `SHELL_SCROLL_ROOT`). Each rail
+  and `#main` scrolled themselves inside the chrome inset, so the scrollbar sat inside the frame.
+  **BREAKING for a consumer that observed `#main`** — `useScrollSpy(ids, { root: SHELL_SCROLL_ROOT })`.
+  A new page starts at the top.
+- **256px rails on their own tokens, one space between a rail and the page** — seams on the
+  rails, main pads the page ladder only on a side that has a rail. Pages do not pad themselves.
+- **Rails per space.** `renderSidebar` and a function `defaultTocContent` receive `{ activeRoute }`
+  — the header route you are in — so a consumer draws each space's rails.
+- **`usePageMeta({ tags, related })` / `usePageMetaValue()`** — a page tells the right rail what it
+  is about; cleared on unmount. The rail had been handed empty lists on every route.
+- **Search on kol-search.** The palette ranks (title › tag › heading › …), underlines every hit,
+  reads `atom` as the Atoms category, and takes items in kol-search's shape or the older
+  `label/sectionLabel` rows. **`searchPath`**: Enter opens `${searchPath}?q=…`; without it Enter
+  keeps the in-place tag browser. **`/`** opens search (it fell through to the browser's find).
+- **`SearchPage`** (new) — the results page: the query in the URL, a scope row, facets (kind ·
+  category · tags) that write `kind:` · `cat:` · `tag:` tokens back into it, "read as" chips,
+  ranked results. Back returns to it; a search is a link.
+- **Settings** — a right drawer on the header's gear and `,`: the rails, "quick search in this
+  space only", the consumer's own `settings` sections, the keymap. Remembered per viewer.
+- **The sheet is kol-component's `ShortcutsOverlay` on `S`** (`?` still opens it).
+- **`brandLabel`** — the second wordmark as typed Right Grotesk Tight, a string or
+  `({ activeRoute }) => string` naming the space; aligned with the page text.
+- **The rail follows you** — arriving in a group opens it and folds its siblings. A collapsed L1
+  eyebrow shows a state glyph and how much it holds (it read as an empty category).
+- `ExhibitSidebar`'s copy button lost its native `title`.
+
 - **The engine left for the engine tier** (ARCHITECTURE §3). `src/engine/` is gone: the markdown
   half is `@kolkrabbi/kol-markdown`, the matcher `@kolkrabbi/kol-search` — both now dependencies.
   Nothing a consumer imports breaks: the root barrel and `./engine` re-export the same names (plus
