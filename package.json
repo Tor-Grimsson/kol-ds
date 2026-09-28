@@ -64,7 +64,7 @@
     "curves": "pnpm --filter curves dev",
     "workshop": "pnpm --filter workshop dev",
     "markdown": "pnpm --filter markdown dev",
-    "search": "pnpm --filter search dev"
+    "search-app": "pnpm --filter search dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",
