@@ -43,7 +43,7 @@ const ToolPalette = ({
   iconComponent = Icon,
   className = '',
 }) => (
-  <div className={`flex items-center gap-1 min-w-0 overflow-x-auto ${className}`.trim()}>
+  <div className={`kol-tool-palette flex items-center gap-1 min-w-0 overflow-x-auto ${className}`.trim()}>
     {items.map((it, i) => {
       if (it.kind === 'divider') return <Divider key={`d${i}`} variant="vertical" height={20} className="mx-1.5 shrink-0" />
       if (it.kind === 'split') {

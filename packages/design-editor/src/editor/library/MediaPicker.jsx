@@ -196,12 +196,12 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
               placeholder="Filter by name"
               className="flex-1"
             />
-            <Button
+            <Tooltip label="Close"><Button
               variant="primary" size="sm" quiet
               iconOnly="x" iconSize={14}
               aria-label="Close"
               onClick={onClose}
-            />
+            /></Tooltip>
           </div>
 
           {/* Breadcrumb */}
@@ -230,7 +230,7 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
                     {visibleFolders.map((f) => (
                       <li
                         key={f}
-                        className="flex items-center gap-3 py-2 px-1 border-b border-oq-08 cursor-pointer hover:bg-fg-04 transition-colors rounded"
+                        className="flex items-center gap-3 py-2 px-1 border-b border-oq-08 cursor-pointer hover:bg-oq-04 transition-colors rounded"
                         onClick={() => { setPrefix(prefix + f); setFilter('') }}
                       >
                         <span className="kol-mono-12 text-emphasis flex-1">{f}</span>
@@ -254,7 +254,7 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
                            for a proper look: it is the ⤢ on hover. */
                         onClick={() => pick(o)}
                       >
-                        <div className="group relative aspect-square bg-fg-04 rounded overflow-hidden border border-oq-08 hover:border-oq-24 transition-colors">
+                        <div className="group relative aspect-square bg-oq-04 rounded overflow-hidden border border-oq-08 hover:border-oq-24 transition-colors">
                           {isVideoType(o.contentType) ? (
                             <video src={mediaSrc(o.key, bucket)} muted preload="metadata" className="w-full h-full object-cover" />
                           ) : (

@@ -912,3 +912,26 @@
   outline: 2px solid var(--kol-accent-primary);
   outline-offset: 1px;
 }
+
+/* ── ToolPalette · the tool row's states (editor inspector rebuild, 2026-09-27) ──
+ * The generic pressed toggle is an inverted tile, and ghost + `quiet` dims oq-48 ink
+ * by the disabled opacity on top — a tool row read washed-out at rest and shouted
+ * when armed. Affinity's row: the ink does the dimming, the armed tool is a sunken
+ * tile with a lighter edge and bright ink, hover a faint tile, a press gives. */
+.kol-tool-palette .kol-btn {
+  --kol-tone-fg: var(--kol-oq-64);
+  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-hover-fg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-bg: var(--kol-surface-sunken);
+  --kol-tone-pressed-fg: var(--kol-surface-on-primary);
+  transition: color 120ms ease, background-color 120ms ease, transform 80ms ease;
+}
+/* armed = Affinity's selected cell: a SUNKEN tile under a 1px lighter edge, the glyph bright —
+ * and it stays so under the cursor (the hover rule outranks the pressed fill) */
+.kol-tool-palette .kol-btn-pressed {
+  --kol-tone-hover-bg: var(--kol-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--kol-oq-16);
+}
+.kol-tool-palette .kol-btn-quiet { opacity: 1; }
+.kol-tool-palette .kol-btn:disabled { opacity: var(--kol-opacity-disabled); }
+.kol-tool-palette .kol-btn:not(:disabled):not(.kol-dd-trigger):active { transform: scale(0.92); }

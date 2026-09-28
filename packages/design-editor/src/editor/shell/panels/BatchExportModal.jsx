@@ -138,7 +138,7 @@ function CheckRow({ checked, disabled, onToggle, label, meta }) {
       type="button"
       disabled={disabled}
       onClick={onToggle}
-      className={`flex items-center gap-2 px-2 py-1.5 rounded border text-left ${checked ? 'border-oq-16 bg-fg-04' : 'border-oq-08'} ${disabled ? 'opacity-50' : ''}`}
+      className={`flex items-center gap-2 px-2 py-1.5 rounded border text-left ${checked ? 'border-oq-16 bg-oq-04' : 'border-oq-08'} ${disabled ? 'opacity-50' : ''}`}
     >
       <span className={`inline-flex items-center justify-center w-4 h-4 rounded-sm border ${checked ? 'border-oq-16' : 'border-oq-08'}`}>
         {checked && <Icon name="check" size={12} />}

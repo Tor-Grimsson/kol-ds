@@ -1,5 +1,29 @@
 # @kolkrabbi/design-editor
 
+## 0.16.0 — 2026-09-27
+
+**The inspector, as panes** (plan-2026-09-27-editor-inspector-rebuild — the user's second review,
+Affinity as the guide).
+
+- **Three named panes.** Transform (alignment · X/Y · W/H + lock · rotation + rotate/flip ·
+  resizing — was Position + Layout with five sub-labels), Appearance, Typography; Canvas's Frame /
+  Background and the type panes (Image · Path · Preset · Parameters · Group) are panes too. Full-width
+  rules; no sub-labels — the glyphs and their tooltips name the fields.
+- **No "TEXT" row.** The header that repeated the selected layer's type is gone; its ⋯ and delete
+  moved onto the Inspector / Parameters / Effects row.
+- **Typography:** type settings ride the pane header; size is ONE field with its preset chevron
+  inside (`Input slotRight`); line height and letter spacing fill their cells; the text-box vertical
+  row has text glyphs (kol-icons 0.29.0); inspector glyphs on the ladder's 16.
+- **Transport back to fxr's shape:** play | pause and stop | rewind as two strips, the loop field
+  filling between; the Transport / Output / File strip is the default segmented look, full width
+  (the sync had set it `filled`, which read as bare tabs).
+- **Every icon-only control has a tooltip** — the native-title gate's new T2 enforces it here;
+  `data-kol-tip` (read by nothing) is gone.
+- **Grounds on the opaque ladder** (review #11): `bg-fg-04/08` and `--kol-fg-04/08` grounds, borders
+  and dividers are `oq`, step for step.
+- **Thin vectors select.** Path and line layers carry an invisible 12-screen-px hit band.
+- Peers: kol-component ≥0.227.0 · kol-icons ≥0.29.0 · kol-theme ≥0.154.0.
+
 ## 0.15.0 — 2026-09-27
 
 **Back on the design system** (plan-2026-09-27-editor-ds-sync; the editor review's 13 findings).

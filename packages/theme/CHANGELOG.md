@@ -1,5 +1,18 @@
 # @kolkrabbi/kol-theme
 
+## 0.154.0 — 2026-09-27
+
+**The editor inspector rebuild** (plan-2026-09-27-editor-inspector-rebuild — Affinity as the guide).
+
+- **`.kol-tool-palette` — the tool row's own states.** The armed tool was the generic pressed toggle
+  (an inverted white tile) and the rest ink was ghost's `oq-48` dimmed again by `quiet`'s opacity, so
+  the row read washed out and shouted when armed. Inside a `ToolPalette`: rest ink `oq-64`, hover
+  a faint `oq-08` tile with emphasis ink, armed = a sunken tile (`--kol-surface-sunken`, 1px `oq-16` edge) that stays under the cursor,
+  a press scales to 0.92.
+  Disabled keeps the dim. Scoped to the palette — the system-wide pressed law is unchanged.
+- **`.kol-inspector-pane*`** — `InspectorSection pane`'s chrome: a titled header strip (mono 14,
+  emphasis), a padded body, and full-width `oq-08` rules between panes.
+
 ## 0.153.0 — 2026-09-27
 
 - `.kol-menu-btn:focus-visible` — the menu buttons take the Button focus ring.

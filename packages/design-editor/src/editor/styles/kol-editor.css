@@ -59,14 +59,14 @@
 }
 .kol-editor-left {
   grid-area: left;
-  border-right: 1px solid var(--kol-fg-08);
+  border-right: 1px solid var(--kol-oq-08);
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 .kol-editor-right {
   grid-area: right;
-  border-left: 1px solid var(--kol-fg-08);
+  border-left: 1px solid var(--kol-oq-08);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -84,7 +84,7 @@
 }
 .kol-editor-canvas-header {
   flex: 0 0 auto;
-  border-bottom: 1px solid var(--kol-fg-08);
+  border-bottom: 1px solid var(--kol-oq-08);
   background-color: var(--kol-surface-primary);
 }
 .kol-editor-canvas-header:empty { display: none; }
@@ -124,7 +124,7 @@
   padding: 3px 8px;
   border-radius: 4px;
   background: var(--kol-surface-secondary);
-  border: 1px solid var(--kol-fg-08);
+  border: 1px solid var(--kol-oq-08);
   color: var(--kol-fg-emphasis);
   font-family: var(--kol-font-family-mono);
   font-size: 10px;
@@ -137,7 +137,7 @@
 
 .kol-editor-rail-header {
   flex: 0 0 auto;
-  border-bottom: 1px solid var(--kol-fg-08);
+  border-bottom: 1px solid var(--kol-oq-08);
 }
 /* Empty header (e.g. left.header has no panels) collapses entirely so its
    border-bottom doesn't stack on top of the panel header below. */
@@ -229,7 +229,7 @@
   position: relative;
 }
 .kol-compose-layer-row:hover {
-  background: var(--kol-fg-04);
+  background: var(--kol-oq-04);
   color: var(--kol-surface-on-primary);
 }
 /* Selected = accent highlight; a selected container also tints its expanded
@@ -278,7 +278,7 @@
   width: 18px;
   height: 18px;
   border-radius: 2px;
-  border: 1px solid var(--kol-fg-08);
+  border: 1px solid var(--kol-oq-08);
   flex-shrink: 0;
 }
 .kol-compose-layer-btn-icon {
@@ -305,7 +305,7 @@
 }
 .kol-compose-layer-mini:hover {
   color: var(--kol-surface-on-primary);
-  background: var(--kol-fg-08);
+  background: var(--kol-oq-08);
 }
 
 
@@ -321,6 +321,9 @@
      appears. */
   scrollbar-gutter: stable;
 }
+/* The Inspector holds PANES (inspector rebuild 2026-09-27): each pane pads itself so the rule
+   between two panes runs edge to edge — the body's own padding is what inset it. */
+.kol-inspector-rail-body { padding: 0; }
 
 
 /* ───── 5. Canvas patterns ──────────────────────────────────────────── */

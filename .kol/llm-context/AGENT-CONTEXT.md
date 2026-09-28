@@ -8,13 +8,21 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Queued for next session (user, 2026-09-27)
 
-- **Merge + publish owed** — branch `claude/confident-keller-wdpjuv` → main; publish kol-component 0.226.0 · kol-icons 0.28.0 · kol-shell 0.57.1 · kol-theme 0.153.0 · kol-styleguide 0.5.2 · kol-hardware 0.3.0 · kol-deck 0.1.1 · design-editor 0.15.0.
-- **Editor, still open:** the missing popovers / tooltips (user's review of the sync), #11's grounds.
+- **Editor:** awaiting the user's review of the rebuilt inspector and tool row; parked on his rulings — #14 glyph drawings, #15 `tone="primary"` hover stop, #12 asset thumbnails.
+- **Wave C leftovers:** brand's frame, the deck editor at phone width.
 - monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
+
+## Current state (2026-09-28, editor inspector rebuild)
+
+- **🧭 kol-theme 0.154.0 · kol-icons 0.29.0 · kol-component 0.227.0 · design-editor 0.16.0, published (2026-09-28, newest).** The editor inspector is three named panes (Transform · Appearance · Typography) with `InspectorSection pane`, no sub-labels, no TEXT row; the tool row is Affinity's (sunken armed tile, faint hover tile, press); the transport is fxr's two strips; `SegmentedToggle` names its glyph cells with tooltips; the native-title gate's T2 enforces a tooltip on every editor icon-only control. 29 gates clean. Plan: `plan-2026-09-27-editor-inspector-rebuild.md`. Log: `session-log/2026-09-28-editor-inspector-rebuild-published.md`.
+
+## Current state (2026-09-27, cloud session closed)
+
+- **📦 Eight published (2026-09-27).** kol-theme 0.153.0 · kol-icons 0.28.0 · kol-component 0.226.0 · kol-shell 0.57.1 · kol-hardware 0.3.0 · kol-styleguide 0.5.2 · kol-deck 0.1.1 · design-editor 0.15.0 — the cloud branch was merged, then deleted. Log: `session-log/2026-09-27-cloud-session-closed-eight-packages-published.md`.
 
 ## Current state (2026-09-27, tool frame · curves · the editor back on KOL)
 
-- **🧱 Unpublished (2026-09-27, newest).** The tool frame is written (16-app-anatomy § Tool frame) and curves / media / controls / the lists / the deck editor wear it; curves rebuilt on kol-hardware 0.3.0. The editor sync ran phases 1–5: 12 editor copies → KOL, one icon system, transport in the motion pack, the inspector pass, the settings-X and `S`-sheet bugs fixed at the KOL root. 29 gates clean. Plans: `plan-2026-09-27-app-frame-and-curves.md`, `plan-2026-09-27-editor-ds-sync.md`. Log: `session-log/2026-09-27-tool-frame-curves-and-editor-ds-sync.md`.
+- **🧱 Published 2026-09-27 (see above).** The tool frame is written (16-app-anatomy § Tool frame) and curves / media / controls / the lists / the deck editor wear it; curves rebuilt on kol-hardware 0.3.0. The editor sync ran phases 1–5: 12 editor copies → KOL, one icon system, transport in the motion pack, the inspector pass, the settings-X and `S`-sheet bugs fixed at the KOL root. 29 gates clean. Plans: `plan-2026-09-27-app-frame-and-curves.md`, `plan-2026-09-27-editor-ds-sync.md`. Log: `session-log/2026-09-27-tool-frame-curves-and-editor-ds-sync.md`.
 
 ## Current state (2026-09-27, kol-hardware · signal engine · apps/curves)
 
@@ -23,14 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-27, deconstruction — editor seam, apps/editor, apps/controls)
 
 - **🧩 design-editor 0.14.0 published (2026-09-27, newest).** The editor is now a core plus three packs behind `editor/packs.js`. The root entry is unchanged; `/core` has no packs; `/generators` · `/effects` · `/motion` register one pack each. `pnpm check:core` proves the core's graph reaches no pack. Also new: `apps/editor` (:5180, `/core` mounts the core entry) and `apps/controls` (:5181, the controls reference). The fixture's D1 gained `tool_settings`. 28 gates clean. Plan: `plan-2026-09-27-deconstruction-roadmap.md`. Log: `session-log/2026-09-27-deconstruction-editor-seam-and-controls.md`.
-
-## Current state (2026-09-27, brand as a tool)
-
-- **📘 kol-styleguide 0.5.1 · kol-brand-template 0.3.0, published (2026-09-27, newest).** olina's brand book is `Brand` (BrandBook ⇄ BrandAssets + rail) over a manifest whose new `book` field carries the copy; `apps/brand` (:5179) on media-fixture's `useBrandTool` (kol-brand + website copy); media-shell Brand tab (⌥6); showcase Apps tab at `/apps`. Checked at 1440 + 390. 28 gates clean. Log: `session-log/2026-09-27-brand-as-a-tool.md`.
-
-## Current state (2026-09-27, notes and decks as tools)
-
-- **📝 kol-notes 0.1.0 · kol-deck 0.1.0 NEW, published with theme 0.151.0 · component 0.225.0 · shell 0.57.0 (2026-09-27, newest).** olina's notes and decks ported as packages; `apps/notes` (:5177) and `apps/presentation` (:5178) run them alone on the fixture (new fake D1 `notes`/`decks` tables); media-shell mounts both as tabs through `media-fixture/wiring`'s `useNotesTool` / `useDecksTool` — one source, nothing to upstream. Deck exports PNG · PDF · PPTX · `.deck.json`. 28 gates clean. Log: `session-log/2026-09-27-notes-and-decks-as-tools.md`.
 
 ## Repo standup (2026-06-15)
 

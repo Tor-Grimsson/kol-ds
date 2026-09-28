@@ -1572,7 +1572,8 @@ function ShapeLayer({ layer, palette, layerStyle }) {
         width: layer.w, height: layer.h,
         color,
         cursor: 'move',
-        overflow: 'hidden',
+        /* a line's box can be ~0px tall; it lets its hit band (below) out */
+        overflow: kind === 'line' ? 'visible' : 'hidden',
         ...layerStyle,
       }}
     >
@@ -1678,8 +1679,14 @@ function ShapeLayer({ layer, palette, layerStyle }) {
             width="100%" height="100%"
             viewBox={`0 0 ${Math.max(1, w0)} ${Math.max(1, h0)}`}
             preserveAspectRatio="none"
-            style={{ display: 'block' }}
+            style={{ display: 'block', overflow: 'visible' }}
           >
+            {/* the hit band — as PathLayer's: 12 screen px, invisible */}
+            <line
+              x1={x1} y1={y1} x2={x2} y2={y2}
+              stroke="transparent" strokeWidth={12} vectorEffect="non-scaling-stroke"
+              strokeLinecap="round" pointerEvents="stroke"
+            />
             <line
               x1={x1} y1={y1} x2={x2} y2={y2}
               stroke={strokeColor ?? 'currentColor'}
@@ -1768,6 +1775,20 @@ function PathLayer({ layer, palette, layerStyle }) {
         ...layerStyle,
       }}
     >
+      {/* The hit band (inspector rebuild 2026-09-27 — user: "close to impossible to select it, the
+        * target area is so slim"): an invisible 12px stroke along the geometry, in SCREEN pixels
+        * (non-scaling), so a hairline path takes a click at any zoom. The painted path below still
+        * hits its fill. */}
+      <path
+        d={d}
+        fill="none"
+        stroke="transparent"
+        strokeWidth={Math.max(12, sw)}
+        vectorEffect="non-scaling-stroke"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pointerEvents="stroke"
+      />
       <path
         d={d}
         pointerEvents="visiblePainted"

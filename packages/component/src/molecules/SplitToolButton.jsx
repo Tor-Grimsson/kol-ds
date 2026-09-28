@@ -140,7 +140,7 @@ const SplitToolButton = ({
         popover={popover}
         panel={false}
         focus={false}
-        className="w-max bg-surface-secondary border border-fg-08 rounded shadow-lg"
+        className="w-max bg-surface-secondary border border-oq-08 rounded shadow-lg"
       >
         {variants.map((variant) => {
           const isActive = active && variant.id === value

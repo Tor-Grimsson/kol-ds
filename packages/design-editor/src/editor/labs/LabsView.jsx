@@ -259,7 +259,7 @@ function LabsTouchBar() {
   const { paramsOpen, toggleParams } = useContext(TouchRails)
   return (
     <div className="flex h-12 shrink-0 items-center border-b border-oq-08 bg-surface-primary px-2">
-      <Button variant="nav" size="lg" iconOnly="panel-right" aria-label="Parameters" pressed={paramsOpen} onClick={toggleParams} />
+      <Tooltip label="Parameters"><Button variant="nav" size="lg" iconOnly="panel-right" aria-label="Parameters" pressed={paramsOpen} onClick={toggleParams} /></Tooltip>
     </div>
   )
 }

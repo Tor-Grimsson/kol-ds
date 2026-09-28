@@ -141,12 +141,12 @@ export default function LabsSourcePicker({ layer }) {
         <Icon name="image" size={28} />
         <span className="kol-mono-12">From library</span>
       </button>
-      <div className="w-px" style={{ background: 'var(--kol-fg-08)' }} />
+      <div className="w-px" style={{ background: 'var(--kol-oq-08)' }} />
       <button type="button" className={pane} onClick={src.openUpload}>
         <Icon name="upload" size={28} />
         <span className="kol-mono-12">Upload</span>
       </button>
-      <div className="w-px" style={{ background: 'var(--kol-fg-08)' }} />
+      <div className="w-px" style={{ background: 'var(--kol-oq-08)' }} />
       <button type="button" className={pane} onClick={src.openCamera}>
         <Icon name="camera" size={28} />
         <span className="kol-mono-12">Camera</span>

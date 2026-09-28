@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-icons
 
+## 0.29.0 — 2026-09-27
+
+- **New in v1:** `typography/text-valign-top|middle|bottom` — a text box's vertical alignment (the
+  frame edge and two text lines). The design editor's text row borrowed the OBJECT-align glyphs.
+
 ## 0.28.0 — 2026-09-27
 
 - **`Icon` is never the click target** (`pointer-events: none` on the glyph). The markup is injected

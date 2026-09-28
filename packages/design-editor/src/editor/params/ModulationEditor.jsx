@@ -137,7 +137,7 @@ function ExprPlot({ expr }) {
     <canvas
       ref={ref}
       aria-label="Expression plot over one loop"
-      style={{ width: PLOT_W, height: PLOT_H, display: 'block', borderRadius: 3, background: 'var(--kol-fg-04, rgba(128,128,128,0.06))' }}
+      style={{ width: PLOT_W, height: PLOT_H, display: 'block', borderRadius: 3, background: 'var(--kol-oq-04)' }}
     />
   )
 }

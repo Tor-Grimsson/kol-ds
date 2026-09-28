@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Button, Input, Tooltip } from '@kolkrabbi/kol-component'
+import { Input, SegmentedToggle, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useTransport } from './transport'
 
 /**
  * TransportBar — the loop clock's controls: rewind · play / pause · stop, and the loop length.
  *
- * Editor DS sync (2026-09-27, review #2 "transport controls incorrectly laid out"): rebuilt from KOL
- * parts. It was two hand-built button strips — play and pause as separate cells, stop and rewind
- * in a second strip after the field — each with a browser tooltip. Now one row in transport order,
- * play / pause as ONE toggle, every control a `Button` with the KOL `Tooltip`, the length the DS
- * property field. (Not `PlaybackBar`: that is a media player's bar — time, scrubber, volume,
- * speed — and this is a loop clock.)
+ * fxr's two strips on KOL's SegmentedToggle — the 2026-09-27 sync's single row of ghost buttons
+ * lost the shape the user wanted. (Not `PlaybackBar`: that is a media player's bar, this is a loop
+ * clock.)
  *
  * Stop and rewind bump the transport's reset epoch — stateful loops (sims, trails, video) restart
  * fresh. Pause never does.
@@ -32,7 +29,7 @@ function LoopField({ seconds, onCommit, size }) {
     onCommit(n)
   }
   return (
-    <Tooltip label="Loop length">
+    <Tooltip label="Loop length" triggerClassName="flex w-full">
       <Input
         type="text"
         inputMode="decimal"
@@ -56,24 +53,34 @@ function LoopField({ seconds, onCommit, size }) {
   )
 }
 
-function Control({ icon, label, shortcut, onClick, size, pressed }) {
-  return (
-    <Tooltip label={label} shortcut={shortcut}>
-      <Button variant="ghost" size={size} iconOnly={icon} iconComponent={Icon} aria-label={label} pressed={pressed} onClick={onClick} />
-    </Tooltip>
-  )
-}
+const glyph = (name, size) => <Icon name={name} size={glyphSize(size, true)} />
 
 export default function TransportBar({ size = 'sm' }) {
   const { playing, loopSeconds, play, pause, stop, rewind, setLoopSeconds } = useTransport()
+  /* fxr's shape (inspector rebuild 2026-09-27 — user: "should look closer to this"): play | pause
+   * as one strip with the current state lit, the loop field filling the row, stop | rewind as a
+   * second strip. Glyph cells take their tooltips from `ariaLabel` (SegmentedToggle). */
   return (
-    <div className="flex items-center gap-1">
-      <Control icon="rewind" label="Rewind" onClick={rewind} size={size} />
-      <Control icon={playing ? 'pause' : 'play'} label={playing ? 'Pause' : 'Play'} shortcut="Space" onClick={playing ? pause : play} size={size} />
-      <Control icon="stop" label="Stop" onClick={stop} size={size} />
-      <div className="ml-auto">
+    <div className="flex items-center gap-2">
+      <SegmentedToggle
+        size={size} ariaLabel="Playback" value={playing ? 'play' : 'pause'}
+        onChange={(v) => (v === 'play' ? play() : pause())}
+        options={[
+          { value: 'play', ariaLabel: 'Play', tooltip: 'Play (Space)', label: glyph('play', size) },
+          { value: 'pause', ariaLabel: 'Pause', tooltip: 'Pause (Space)', label: glyph('pause', size) },
+        ]}
+      />
+      <div className="flex-1 min-w-0">
         <LoopField seconds={loopSeconds} onCommit={setLoopSeconds} size={size} />
       </div>
+      <SegmentedToggle
+        size={size} ariaLabel="Reset" value={null}
+        onChange={(v) => (v === 'stop' ? stop() : rewind())}
+        options={[
+          { value: 'stop', ariaLabel: 'Stop', label: glyph('stop', size) },
+          { value: 'rewind', ariaLabel: 'Rewind', label: glyph('rewind', size) },
+        ]}
+      />
     </div>
   )
 }

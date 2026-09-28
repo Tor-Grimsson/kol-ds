@@ -962,6 +962,34 @@
   padding-top: 20px;
 }
 
+/* InspectorSection `pane` — the Affinity panel shape (editor inspector rebuild, 2026-09-27).
+ * A named pane, not a labelled form group: the title in emphasis on its own strip, the body
+ * padded, and panes ruled edge to edge — each pane pads itself, so the rule is never inset. */
+.kol-inspector-pane + .kol-inspector-pane { border-top: 1px solid var(--kol-oq-08); }
+.kol-inspector-pane-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 4px 16px 0;
+}
+.kol-inspector-pane-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--kol-font-family-mono);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--kol-fg-emphasis);
+}
+.kol-inspector-pane-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 16px 20px;
+}
+
 /* ─────────────────────────────────────────────────────────────────────
  * Content family hover — molecules/ContentCard.jsx · ContentRow.jsx
  *

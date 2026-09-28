@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import MediaPicker from '../../library/MediaPicker'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
-import { Button, Dropdown, InspectorSection, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, InspectorSection, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { LabeledControl } from '@kolkrabbi/kol-component'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import { ViewToggle } from '@kolkrabbi/kol-component'
@@ -44,94 +44,75 @@ export default function LayerInspector({ layer }) {
 
   const positioned = !COVER_TYPES.includes(layer.type)
 
-  /* Purpose-divided sections (2026-08-12 restructure, the Figma model):
-   * Position · Layout · Appearance · type sections · Fill · Stroke ·
-   * Parameters · Effects — instead of the flat control pile. */
+  /* PANES (inspector rebuild 2026-09-27, Affinity as the guide — user: "too many section
+   * headers … why are we not sectioning off the panes?"): Transform · Appearance · Typography ·
+   * the type's own pane · Parameters. Named panes, full-width rules, no sub-labels — the
+   * controls' glyphs and tooltips name them. Position + Layout were two sections with five
+   * sub-labels; they are Affinity's one Transform panel. */
   return (
     <div className="flex flex-col">
       {positioned && (
-        <InspectorSection divided label="Position">
-          {/* Figma order: Alignment (to canvas for a single layer) ·
-            * Position X/Y · Rotation + the transform cluster. */}
-          <div className="flex flex-col gap-1">
-            <AlignmentPanel />
-          </div>
-          <div className="flex flex-col gap-1">
-            <PositionFields layer={layer} setProp={setProp} />
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex items-center gap-1 min-w-0">
-                <AxisField
-                  label={<Icon name="angle" size={14} />} suffix="°"
-                  value={typeof layer.rotation === 'number' ? Math.round(layer.rotation) : 0}
-                  onCommit={(raw) => {
-                    const n = Number(raw)
-                    setProp('rotation', Number.isFinite(n) ? ((Math.round(n) % 360) + 360) % 360 : 0)
-                  }}
-                />
-                <BindDot
-                  layer={layer}
-                  param={{ key: 'rotation', label: 'Rotation', type: 'range', min: 0, max: 360, default: 0 }}
-                  setProp={setProp}
-                />
-              </div>
-              {/* The transform cluster — filled tiles, STATELESS (the
-                * 2026-08-12 state law: no outline shell, no selected ring on
-                * action strips). Flipped axes tint their glyph accent. */}
-              <SegmentedToggle
-                variant="filled" size="sm" value={null}
-                ariaLabel="Transform"
-                options={[
-                  { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={16} /> },
-                  { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-horizontal" size={16} /></span> },
-                  { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-vertical" size={16} /></span> },
-                  ...(layer.type === 'photo' ? [{ value: 'crop', ariaLabel: 'Crop image', label: <Icon name="crop" size={16} /> }] : []),
-                ]}
-                onChange={(op) => {
-                  if (op === 'rot') setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
-                  else if (op === 'fh') flipLayer(layer.id, 'h')
-                  else if (op === 'fv') flipLayer(layer.id, 'v')
-                  else if (op === 'crop') window.dispatchEvent(new CustomEvent('kol:enter-crop', { detail: layer.id }))
+        <InspectorSection pane label="Transform">
+          <AlignmentPanel />
+          <PositionFields layer={layer} setProp={setProp} />
+          <LayoutFields layer={layer} setProp={setProp} patch={edit.patch} />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex items-center gap-1 min-w-0">
+              <AxisField
+                label={<Icon name="angle" size={glyphSize('sm')} />} suffix="°" tooltip="Rotation"
+                value={typeof layer.rotation === 'number' ? Math.round(layer.rotation) : 0}
+                onCommit={(raw) => {
+                  const n = Number(raw)
+                  setProp('rotation', Number.isFinite(n) ? ((Math.round(n) % 360) + 360) % 360 : 0)
                 }}
               />
-            </div>
-          </div>
-        </InspectorSection>
-      )}
-
-      {positioned && (
-        <InspectorSection divided label="Layout">
-          {layer.type === 'text' && (
-            <LabeledControl label="Resizing">
-              {/* Real behavior, not chrome: fixed keeps the box; auto modes
-                * measure the rendered text (TextLayer effect) and write it.
-                * PLACEHOLDER glyphs from the shipped set (square /
-                * arrow-right / arrows-vertical) — swapped the moment the
-                * drawn resizing icons publish. Selected = the DARK tile. */}
-              <SegmentedToggle
-                variant="filled" size="sm"
-                ariaLabel="Resizing"
-                value={layer.resizing ?? 'fixed'}
-                onChange={(v) => setProp('resizing', v)}
-                options={[
-                  { value: 'fixed',  ariaLabel: 'Fixed size',  label: <Icon name="resize-fixed" size={16} /> },
-                  { value: 'auto-w', ariaLabel: 'Auto width',  label: <Icon name="resize-auto-w" size={16} /> },
-                  { value: 'auto-h', ariaLabel: 'Auto height', label: <Icon name="resize-auto-h" size={16} /> },
-                ]}
+              <BindDot
+                layer={layer}
+                param={{ key: 'rotation', label: 'Rotation', type: 'range', min: 0, max: 360, default: 0 }}
+                setProp={setProp}
               />
-            </LabeledControl>
-          )}
-          <div className="flex flex-col gap-1">
-            <LayoutFields layer={layer} setProp={setProp} patch={edit.patch} />
+            </div>
+            {/* The transform cluster — STATELESS (the 2026-08-12 state law: no selected ring on
+              * action strips). Flipped axes tint their glyph accent. */}
+            <SegmentedToggle
+              variant="filled" size="sm" value={null}
+              ariaLabel="Transform"
+              options={[
+                { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={glyphSize('sm', true)} /> },
+                { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-horizontal" size={glyphSize('sm', true)} /></span> },
+                { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-vertical" size={glyphSize('sm', true)} /></span> },
+                ...(layer.type === 'photo' ? [{ value: 'crop', ariaLabel: 'Crop image', label: <Icon name="crop" size={glyphSize('sm', true)} /> }] : []),
+              ]}
+              onChange={(op) => {
+                if (op === 'rot') setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
+                else if (op === 'fh') flipLayer(layer.id, 'h')
+                else if (op === 'fv') flipLayer(layer.id, 'v')
+                else if (op === 'crop') window.dispatchEvent(new CustomEvent('kol:enter-crop', { detail: layer.id }))
+              }}
+            />
           </div>
+          {layer.type === 'text' && (
+            /* Real behavior, not chrome: fixed keeps the box; auto modes measure the rendered text
+             * (TextLayer effect) and write it. Selected = the dark tile. */
+            <SegmentedToggle
+              variant="filled" size="sm"
+              ariaLabel="Resizing"
+              value={layer.resizing ?? 'fixed'}
+              onChange={(v) => setProp('resizing', v)}
+              options={[
+                { value: 'fixed',  ariaLabel: 'Fixed size',  label: <Icon name="resize-fixed" size={glyphSize('sm', true)} /> },
+                { value: 'auto-w', ariaLabel: 'Auto width',  label: <Icon name="resize-auto-w" size={glyphSize('sm', true)} /> },
+                { value: 'auto-h', ariaLabel: 'Auto height', label: <Icon name="resize-auto-h" size={glyphSize('sm', true)} /> },
+              ]}
+            />
+          )}
         </InspectorSection>
       )}
 
       <AppearanceSection layer={layer} setProp={setProp} first={!positioned} />
 
       {(layer.type === 'loop' || layer.type === 'misc') && gen && (
-        <InspectorSection divided label="Preset">
+        <InspectorSection pane label="Preset">
           {/* Loop pickers + backdrop — bg toggle hidden for loops whose bg
             * feeds their color math. The generators pack's (editor/packs.js). */}
           <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
@@ -147,16 +128,13 @@ export default function LayerInspector({ layer }) {
         </InspectorSection>
       )}
 
-      {/* Text's whole surface = the Typography section (the 2026-08-12
-        * inspector ruling; the Text tab retired). */}
-      {layer.type === 'text' && (
-        <InspectorSection divided label="Typography">
-          <TextSurface key={layer.id} layer={layer} />
-        </InspectorSection>
-      )}
+      {/* Text's whole surface = the Typography pane, which TextSurface renders itself so its
+        * type-settings trigger can ride the pane header (the 2026-08-12 inspector ruling; the
+        * Text tab retired). */}
+      {layer.type === 'text' && <TextSurface key={layer.id} layer={layer} />}
 
       {layer.type === 'photo' && (
-        <InspectorSection divided label="Image">
+        <InspectorSection pane label="Image">
           {/* Content source — what the layer IS; fit + filters live in
             * Parameters. */}
           <ImageSource layer={layer} patch={edit.patch} />
@@ -168,7 +146,7 @@ export default function LayerInspector({ layer }) {
         * The removed sections are in _tmp/2026-09-27-editor-copies/. */}
 
       {layer.type === 'path' && (
-        <InspectorSection divided label="Path">
+        <InspectorSection pane label="Path">
           {/* Open ↔ closed — renderer + export honor `closed` via pathD;
             * in node-edit, clicking the first anchor also closes. */}
           <ViewToggle
@@ -182,7 +160,7 @@ export default function LayerInspector({ layer }) {
       <ParamsLink layer={layer} />
 
       {layer.type === 'group' && (
-        <InspectorSection divided label="Group">
+        <InspectorSection pane label="Group">
           <GroupFields layer={layer} ungroupLayer={ungroupLayer} />
         </InspectorSection>
       )}
@@ -193,18 +171,19 @@ export default function LayerInspector({ layer }) {
 /* Small right-aligned header-row icon button (Section `actions`). */
 function SectionIconBtn({ label, onClick, active = false, refProps = {}, children }) {
   return (
+    <Tooltip asChild label={label}>
     <button
       type="button"
       onClick={onClick}
       aria-label={label}
-      data-kol-tip={label}
       aria-pressed={active || undefined}
       className={`inline-flex items-center justify-center rounded text-emphasis ${active ? '' : 'kol-btn-quiet'}`}
-      style={{ width: 22, height: 22, padding: 4 }}
+      style={{ width: 26, height: 26, padding: 5 }}
       {...refProps}
     >
       {children}
     </button>
+    </Tooltip>
   )
 }
 
@@ -226,19 +205,19 @@ function AppearanceSection({ layer, setProp, first }) {
     return Number.isFinite(n) ? Math.min(1, Math.max(0, n / 100)) : fallback
   }
   return (
-    <InspectorSection divided
+    <InspectorSection pane
       label="Appearance"
       actions={
         <>
           <SectionIconBtn label={visible ? 'Hide layer' : 'Show layer'} active={!visible} onClick={() => toggleLayer(layer.id)}>
-            <Icon name={visible ? 'eye-on' : 'eye-off'} size={13} />
+            <Icon name={visible ? 'eye-on' : 'eye-off'} size={glyphSize('sm')} />
           </SectionIconBtn>
           <SectionIconBtn
             label={`Blend: ${BLEND_MODES.find((b) => b.value === blend)?.label ?? blend}`}
             active={blend !== 'normal' || blendOpen}
             refProps={{ ref: blendPop.refs.setReference, ...blendPop.getReferenceProps() }}
           >
-            <Icon name="paint-drop" size={13} />
+            <Icon name="paint-drop" size={glyphSize('sm')} />
           </SectionIconBtn>
           <PopoverPanel popover={blendPop} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 160 }}>
             {BLEND_MODES.map((b) => (
@@ -257,28 +236,27 @@ function AppearanceSection({ layer, setProp, first }) {
       }
     >
       <div className="grid grid-cols-2 gap-2">
-        <LabeledControl label="Opacity">
-          {/* Container = icon + value + unit (the user's spec); the opacity
-           * glyph is interim (ptrn-dot) until the icon ticket ships. */}
+        {/* no Opacity / Corner radius labels — the glyph + tooltip name the field (pane rule) */}
+        <Tooltip label="Opacity" triggerClassName="flex min-w-0">
           <NumberField
             variant="property" size="sm" unit="%" className="w-full min-w-0"
-            affordance={<Icon name="opacity" size={14} />}
+            affordance={<Icon name="opacity" size={glyphSize('sm')} />}
             value={Math.round((layer.opacity ?? 1) * 100)}
             onCommit={(raw) => setProp('opacity', clamp01(raw, layer.opacity ?? 1))}
           />
-        </LabeledControl>
+        </Tooltip>
         {hasRadius && (
-          <LabeledControl label="Corner radius">
+          <Tooltip label="Corner radius" triggerClassName="flex min-w-0">
             <NumberField
               variant="property" size="sm" className="w-full min-w-0"
-              affordance={<Icon name="corner-radius" size={14} />}
+              affordance={<Icon name="corner-radius" size={glyphSize('sm')} />}
               value={Math.round(layer.radius ?? 0)}
               onCommit={(raw) => {
                 const n = Number(raw)
                 setProp('radius', Number.isFinite(n) && n > 0 ? Math.round(n) : 0)
               }}
             />
-          </LabeledControl>
+          </Tooltip>
         )}
       </div>
     </InspectorSection>
@@ -307,7 +285,7 @@ function ParamsLink({ layer }) {
    * the Effects TAB owns effects; only the Parameters jump stays. */
   if (!labelFor) return null
   return (
-    <InspectorSection divided label="Parameters">
+    <InspectorSection pane label="Parameters">
       <Tooltip label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}><Button aria-label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}
         variant="primary" size="sm" className="w-full"
         onClick={openParams}
@@ -408,11 +386,11 @@ function ImageSource({ layer, patch }) {
           Library
         </Button>
         {layer.src && (
-          <Button
+          <Tooltip label="Clear image"><Button
             variant="primary" size="sm" iconOnly="trash" iconSize={12}
             aria-label="Clear image"
             onClick={onClear}
-          />
+          /></Tooltip>
         )}
       </div>
       <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onPick={onLibraryPick} />
@@ -450,8 +428,9 @@ function FlipButton({ axis, layer, flipLayer, segmented = false }) {
  * unit sits against it (`0°`). Draft/commit via NumberField so a bare '-'
  * never reshapes the layer. String affordances get 4px extra air — the
  * shipped 6px reads glued against mono digits (the "balanced" ref). */
-function AxisField({ label, value, onCommit, suffix }) {
+function AxisField({ label, value, onCommit, suffix, tooltip }) {
   return (
+    <Tooltip label={tooltip} triggerClassName="flex flex-1 min-w-0">
     <NumberField
       variant="property" size="sm"
       affordance={typeof label === 'string' ? <span className="pr-1">{label}</span> : label} unit={suffix}
@@ -459,6 +438,7 @@ function AxisField({ label, value, onCommit, suffix }) {
       value={value}
       onCommit={onCommit}
     />
+    </Tooltip>
   )
 }
 
@@ -472,8 +452,8 @@ const numOr0 = (v) => {
 function PositionFields({ layer, setProp }) {
   return (
     <div className="grid grid-cols-2 gap-2">
-      <AxisField label="X" value={Math.round(layer.x)} onCommit={(raw) => setProp('x', numOr0(raw))} />
-      <AxisField label="Y" value={Math.round(layer.y)} onCommit={(raw) => setProp('y', numOr0(raw))} />
+      <AxisField label="X" tooltip="X position" value={Math.round(layer.x)} onCommit={(raw) => setProp('x', numOr0(raw))} />
+      <AxisField label="Y" tooltip="Y position" value={Math.round(layer.y)} onCommit={(raw) => setProp('y', numOr0(raw))} />
     </div>
   )
 }
@@ -531,8 +511,8 @@ function LayoutFields({ layer, setProp, patch }) {
   return (
     <div className="flex items-center gap-2">
       <div className="grid grid-cols-2 gap-2 flex-1 min-w-0">
-        <AxisField label="W" value={Math.round(layer.w)} onCommit={onChangeW} />
-        <AxisField label="H" value={Math.round(layer.h)} onCommit={onChangeH} />
+        <AxisField label="W" tooltip="Width" value={Math.round(layer.w)} onCommit={onChangeW} />
+        <AxisField label="H" tooltip="Height" value={Math.round(layer.h)} onCommit={onChangeH} />
       </div>
       {/* Constrain proportions (editor review #6, 2026-09-27 — user: "just use a lock or something
         * more common"): a KOL Button on the inputs' rung, a lock that closes when constrained. It was

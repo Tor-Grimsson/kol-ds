@@ -56,6 +56,9 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *     iconLeft/prefix — the paint-bar anatomy ([swatch] FFFFFF is ONE
  *     container, not two boxes; ColorSwatchFieldSizing 2026-08-12). The
  *     consumer owns the node's sizing; the shell's padding frames it.
+ *   slotRight — its trailing mirror: an interactive node inside the shell, after the unit /
+ *     suffix — a combo field's chevron (the design editor's type size, 2026-09-27: the chevron
+ *     sat OUTSIDE the field as a second control). Not aria-hidden: it is a control.
  *
  * Chrome (bg/border/padding/transition/disabled) comes from .kol-control;
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
@@ -75,6 +78,7 @@ export default function Input({
   prefix,
   suffix,
   slotLeft,
+  slotRight,
   affordance,
   unit,
   iconLeft,
@@ -216,6 +220,9 @@ export default function Input({
       )}
       {suffix !== undefined && (
         <span aria-hidden="true" className="text-meta pl-1 shrink-0">{suffix}</span>
+      )}
+      {slotRight && (
+        <span className="flex items-center shrink-0 pl-1 ml-auto">{slotRight}</span>
       )}
     </label>
   )

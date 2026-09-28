@@ -44,7 +44,7 @@ export default function AssetsBody() {
             <Tooltip key={variant} label={variant}><button aria-label={variant}
               type="button"
               onClick={() => insertLogo(variant)}
-              className="bg-fg-04 hover:bg-fg-08 rounded p-3 flex flex-col items-center gap-2 cursor-pointer"
+              className="bg-oq-04 hover:bg-oq-08 rounded p-3 flex flex-col items-center gap-2 cursor-pointer"
             >
               <span className="block w-full h-12 text-emphasis">
                 <KolLogo variant={variant} className="block w-full h-full" />
@@ -62,7 +62,7 @@ export default function AssetsBody() {
               <Tooltip label={variant}><button aria-label={variant}
                 type="button"
                 onClick={() => insertLogo(variant)}
-                className="w-full flex items-center gap-3 px-2 py-1.5 rounded hover:bg-fg-04 cursor-pointer text-left"
+                className="w-full flex items-center gap-3 px-2 py-1.5 rounded hover:bg-oq-04 cursor-pointer text-left"
               >
                 <span className="block w-8 h-6 shrink-0 text-emphasis">
                   <KolLogo variant={variant} className="block w-full h-full" />

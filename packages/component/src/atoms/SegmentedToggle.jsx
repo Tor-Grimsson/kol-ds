@@ -29,7 +29,8 @@
  *               strip (canvas alignment, transform cluster); onChange is the
  *               action dispatch.
  *   onChange  — handler (newValue) => void
- *   options   — [{ value, label, ariaLabel? }]
+ *   options   — [{ value, label, ariaLabel?, tooltip? }] — a cell whose label is not a string
+ *               (a glyph) shows its `ariaLabel` as a KOL Tooltip; `tooltip` overrides it
  *   variant   — 'default' (shipped chrome: shared outer stroke + dividers,
  *               filled active cell) | 'filled' (the state law's tiles: every
  *               cell a surface-secondary tile with 1px transparent gaps, NO
@@ -53,6 +54,7 @@
  *   className — additional classes on the outer shell
  */
 import { toneClass } from '../utilities/tone.js'
+import { Tooltip } from '../utilities/Popover.jsx'
 
 export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', tone = 'default', ariaLabel, className = '' }) {
   const cellType = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
@@ -86,8 +88,8 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
       {options.map((opt, i) => {
         const isActive = !stateless && opt.value === value
         return (
+          <Tooltip key={opt.value} asChild label={opt.tooltip ?? (typeof opt.label === 'string' ? null : opt.ariaLabel)}>
           <button
-            key={opt.value}
             type="button"
             role={stateless ? undefined : 'radio'}
             aria-checked={stateless ? undefined : isActive}
@@ -98,6 +100,7 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
           >
             {opt.label}
           </button>
+          </Tooltip>
         )
       })}
     </div>

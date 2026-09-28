@@ -402,7 +402,7 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
               className={`flex items-center gap-2 pl-2 pr-1 py-1 rounded cursor-pointer kol-helper-12 ${
                 i === idx
                   ? 'bg-[color-mix(in_srgb,var(--kol-accent-primary)_26%,transparent)] text-emphasis'
-                  : 'text-body hover:bg-fg-04 hover:text-emphasis'
+                  : 'text-body hover:bg-oq-04 hover:text-emphasis'
               }`}
             >
               <span onClick={(e) => e.stopPropagation()} className="shrink-0" style={{ lineHeight: 0 }}>

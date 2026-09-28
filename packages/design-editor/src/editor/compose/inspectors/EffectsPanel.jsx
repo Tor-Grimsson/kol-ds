@@ -370,7 +370,7 @@ function StageRow({ stage, selected, onSelect, onToggle, onRemove, onUp, onDown,
       tabIndex={0}
       onClick={onSelect}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSelect() }}
-      className={`flex items-center gap-1 px-2 h-8 rounded cursor-pointer ${selected ? 'bg-fg-08' : 'hover:bg-fg-04'}`}
+      className={`flex items-center gap-1 px-2 h-8 rounded cursor-pointer ${selected ? 'bg-oq-08' : 'hover:bg-oq-04'}`}
     >
       {iconBtn(enabled ? 'Disable effect' : 'Enable effect', onToggle, false,
         <Icon name={enabled ? 'eye-on' : 'eye-off'} size={12} />)}
@@ -427,7 +427,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
         const isReveal = sw.target === 'reveal'
         const angled = ANGLED_SHAPES.has(sw.shape ?? 'linear')
         return (
-          <div key={i} className="flex flex-col gap-2 p-2 rounded bg-fg-04">
+          <div key={i} className="flex flex-col gap-2 p-2 rounded bg-oq-04">
             <div className="flex items-center gap-2">
               {inline ? (
                 <>

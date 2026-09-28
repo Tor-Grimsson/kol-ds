@@ -207,7 +207,7 @@ export default function SoftformsLayers({ layer }) {
               className={`flex items-center gap-2 pl-2 pr-1 py-1 rounded cursor-pointer kol-helper-12 ${
                 i === sel
                   ? 'bg-[color-mix(in_srgb,var(--kol-accent-primary)_26%,transparent)] text-emphasis'
-                  : 'text-body hover:bg-fg-04 hover:text-emphasis'
+                  : 'text-body hover:bg-oq-04 hover:text-emphasis'
               }`}
             >
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>

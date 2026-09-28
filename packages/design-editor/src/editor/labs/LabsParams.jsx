@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useState } from 'react'
-import { Button, SegmentedToggle, ToggleSwitch, Divider, Dropdown, LabeledControlSection } from '@kolkrabbi/kol-component'
+import { Button, SegmentedToggle, ToggleSwitch, Divider, Dropdown, LabeledControlSection, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import AutoControls from '../params/AutoControls'
@@ -321,7 +321,7 @@ function EffectSurface({ layer, showMod }) {
   )
 }
 
-/* labs' FX cards: p-2 rounded bg-fg-04, ToggleSwitch header (the fx name IS
+/* labs' FX cards: p-2 rounded bg-oq-04, ToggleSwitch header (the fx name IS
  * the enable label), ghost cross pushed right, params inline while enabled.
  * `from` slices the chain — 0 for the rack (the stack IS the page), 1 for a
  * page's Post-Processing block. */
@@ -333,13 +333,14 @@ function StackCards({ chain, from = 0, layer, hostView, toggleFilter, removeFilt
     const view = { ...hostView, ...s.params, id: layer.id }
     const setProp = setStagePropAt(idx)
     return (
-      <div key={s.key ?? idx} className="flex flex-col gap-2 p-2 rounded bg-fg-04">
+      <div key={s.key ?? idx} className="flex flex-col gap-2 p-2 rounded bg-oq-04">
         <div className="flex items-center gap-2">
           <ToggleSwitch
             size={cs} checked={enabled}
             onChange={() => toggleFilter(layer.id, idx)}
             label={s.def?.label ?? s.id}
           />
+          <Tooltip asChild label="Remove effect">
           <button
             type="button"
             aria-label="Remove effect"
@@ -349,6 +350,7 @@ function StackCards({ chain, from = 0, layer, hostView, toggleFilter, removeFilt
           >
             <Icon name="x" size={12} />
           </button>
+          </Tooltip>
         </div>
         {enabled && s.def && (
           <AutoControls

@@ -103,7 +103,7 @@ export default function LabsShortcuts() {
             <div className="flex flex-col gap-1">
               {EXAMPLES.map(([expr, what]) => (
                 <div key={expr} className="flex items-center gap-4">
-                  <code className="kol-mono-12 text-emphasis bg-fg-04 rounded px-2 py-0.5" style={{ minWidth: 132 }}>{expr}</code>
+                  <code className="kol-mono-12 text-emphasis bg-oq-04 rounded px-2 py-0.5" style={{ minWidth: 132 }}>{expr}</code>
                   <span className="kol-mono-12 text-body flex-1 min-w-0">{what}</span>
                 </div>
               ))}

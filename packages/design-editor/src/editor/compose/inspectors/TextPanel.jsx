@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Dropdown, LabeledControl, PopoverPanel, SegmentedToggle, Slider, usePopover, ViewToggle, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, InspectorSection, LabeledControl, PopoverPanel, SegmentedToggle, Slider, usePopover, ViewToggle, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 import BindDot from '../../params/BindDot'
@@ -131,29 +131,30 @@ export function TextSurface({ layer }) {
     return () => window.removeEventListener('kol:save-type', onSave)
   })
 
+  /* The Typography PANE (inspector rebuild 2026-09-27 — user: "why are type settings next to the
+   * type selector? should that not be in some type of pane header?"): the type-settings trigger
+   * (case, italic …) rides the pane's header; the rows carry no labels — tooltips name them. */
+  const settingsTrigger = (
+    <Tooltip label="Type settings">
+      <span ref={settings.refs.setReference} {...settings.getReferenceProps()} className="inline-flex">
+        <Button variant="ghost" size="sm" iconOnly="slider-01" aria-label="Type settings" pressed={settingsOpen} />
+      </span>
+    </Tooltip>
+  )
   return (
-    <div className="flex flex-col gap-3">
+    <InspectorSection pane label="Typography" actions={settingsTrigger}>
       {/* NO Content textarea and NO Family/Style/Size labels — Figma has
         * neither (user ruling 2026-08-12). Text edits happen on canvas
         * (double-click) or via the header's Edit object. */}
-      {/* Family + the type-settings trigger (case, italic …) — type settings sit with the font, not
-        * on the alignment row (editor review #11, 2026-09-27) */}
-      <div className="flex items-center gap-2">
-        <Dropdown
-          variant="subtle" size="sm" className="min-w-0 flex-1"
-          options={FAMILY_OPTIONS}
-          value={family}
-          onChange={onFamily}
-        />
-        <Tooltip label="Type settings">
-          <span ref={settings.refs.setReference} {...settings.getReferenceProps()} className="inline-flex">
-            <Button variant="ghost" size="sm" iconOnly="slider-01" aria-label="Type settings" pressed={settingsOpen} />
-          </span>
-        </Tooltip>
-      </div>
+      <Dropdown
+        variant="subtle" size="sm" className="w-full"
+        options={FAMILY_OPTIONS}
+        value={family}
+        onChange={onFamily}
+      />
 
-      {/* Style + Size row (Figma's "Narrow … | 12 ⌄"): size = input with a
-        * chevron preset list. The bind dot rides gated (M). */}
+      {/* Style + Size row (Figma's "Narrow … | 12 ⌄"): size = ONE field, its preset chevron inside
+        * (the inspector rebuild — it was an input and a detached trigger). The bind dot rides gated. */}
       <div className="grid grid-cols-[1fr_96px] gap-2">
         <Dropdown
           variant="subtle" size="sm" className="w-full"
@@ -166,15 +167,17 @@ export function TextSurface({ layer }) {
 
       {/* Line height + Letter spacing (Figma pair; proper glyphs ride the
         * icon ticket — rows/type are the closest shipped drawings). */}
+      {/* the Tooltip's trigger fills its grid cell — the default inline-flex span hugged the field,
+        * so the two sat at their content widths and out of line with the rows above */}
       <div className="grid grid-cols-2 gap-2">
-        <Tooltip label="Line height">
-          <div className="flex items-center gap-1 min-w-0">
+        <Tooltip label="Line height" triggerClassName="flex min-w-0">
+          <div className="flex flex-1 items-center gap-1 min-w-0">
             <MetricInput param={metric('lineHeight', 'Line height')} layer={layer} setProp={setProp} step={0.01} icon="line-height" />
             <BindDot layer={layer} param={metric('lineHeight', 'Line height')} setProp={setProp} />
           </div>
         </Tooltip>
-        <Tooltip label="Letter spacing">
-          <div className="flex items-center gap-1 min-w-0">
+        <Tooltip label="Letter spacing" triggerClassName="flex min-w-0">
+          <div className="flex flex-1 items-center gap-1 min-w-0">
             <MetricInput param={metric('tracking', 'Tracking')} layer={layer} setProp={setProp} suffix="em" step={0.005} icon="letter-spacing" />
             <BindDot layer={layer} param={metric('tracking', 'Tracking')} setProp={setProp} />
           </div>
@@ -201,9 +204,9 @@ export function TextSurface({ layer }) {
           ariaLabel="Vertical alignment"
           value={layer.verticalAlign ?? 'middle'}
           options={[
-            { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="align-vertical-top" size={glyphSize('sm', true)} /> },
-            { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="align-vertical-center" size={glyphSize('sm', true)} /> },
-            { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="align-vertical-bottom" size={glyphSize('sm', true)} /> },
+            { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="text-valign-top" size={glyphSize('sm', true)} /> },
+            { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="text-valign-middle" size={glyphSize('sm', true)} /> },
+            { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="text-valign-bottom" size={glyphSize('sm', true)} /> },
           ]}
           onChange={(v) => setProp('verticalAlign', v)}
         />
@@ -226,8 +229,7 @@ export function TextSurface({ layer }) {
           />
         </LabeledControl>
       </PopoverPanel>
-
-    </div>
+    </InspectorSection>
   )
 }
 
@@ -235,7 +237,7 @@ export function TextSurface({ layer }) {
  * gone). Draft/commit via NumberField; clamps to the schema range; shows the
  * read-only "animated" state when the prop is bound (the dot drives it).
  * `icon` = a DS glyph prefix; the input hugs the value so units sit tight. */
-function MetricInput({ param: p, layer, setProp, suffix, step, round = false, icon }) {
+function MetricInput({ param: p, layer, setProp, suffix, step, round = false, icon, slotRight }) {
   const raw = layer[p.key]
   if (isBinding(raw)) {
     return <span className="kol-helper-12 text-meta italic">animated</span>
@@ -249,6 +251,7 @@ function MetricInput({ param: p, layer, setProp, suffix, step, round = false, ic
       /* the glyph stands alone in the field's affordance slot — the SOLO rung for sm (16), off the
        * ladder (editor review #9: at a hand-picked 14 the line-height / tracking art read ~12) */
       affordance={icon ? <Icon name={icon} size={glyphSize('sm', true)} className="text-oq-64" /> : undefined}
+      slotRight={slotRight}
       value={display}
       onCommit={(v) => {
         const n = Number(v)
@@ -268,19 +271,22 @@ function SizeCombo({ layer, setProp }) {
   const [open, setOpen] = useState(false)
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-end', offset: 4, role: 'menu' })
   const p = metric('size', 'Size')
-  return (
-    <div className="flex items-center gap-1 min-w-0">
-      <MetricInput param={p} layer={layer} setProp={setProp} round />
+  const chevron = (
+    <Tooltip asChild label="Size presets">
       <button
         type="button"
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         aria-label="Size presets"
-        className={`inline-flex items-center justify-center rounded shrink-0 text-emphasis ${open ? '' : 'kol-btn-quiet'}`}
-        style={{ width: 20, height: 26, padding: 3 }}
+        className={`inline-flex items-center justify-center shrink-0 text-emphasis ${open ? '' : 'kol-btn-quiet'}`}
       >
-        <Icon name="chevron-down" size={12} />
+        <Icon name="chevron-down" size={glyphSize('sm')} />
       </button>
+    </Tooltip>
+  )
+  return (
+    <div className="flex items-center gap-1 min-w-0">
+      <MetricInput param={p} layer={layer} setProp={setProp} round slotRight={chevron} />
       <PopoverPanel popover={popover} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 72, maxHeight: '40vh', overflowY: 'auto' }}>
         {SIZE_PRESETS.map((s) => (
           <button

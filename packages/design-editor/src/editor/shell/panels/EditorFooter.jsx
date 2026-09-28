@@ -276,10 +276,12 @@ export default function EditorFooter() {
     <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 20px 24px 20px' }}>
       <div className="flex items-center gap-2">
         {touch && TransportBar && (
-          <Button variant="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} />
+          <Tooltip label="Transport"><Button variant="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} /></Tooltip>
         )}
         {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
-        <SegmentedToggle variant="filled" value={tab} onChange={setTab} options={tabs} size={cs} className={`${touch ? 'flex-1 min-w-0 ' : ''}${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
+        {/* the default strip — raised cells, dividers, the selected one on the ground — filling
+          * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs) */}
+        <SegmentedToggle value={tab} onChange={setTab} options={tabs} size={cs} className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
       </div>
       {/* stays mounted hidden on desktop so playback chrome never re-inits on a
           tab switch; on touch the bar lives in the sheet below */}
@@ -294,7 +296,7 @@ export default function EditorFooter() {
           style={{ zIndex: 'var(--kol-z-modal)' }}
         >
           <div className="flex-1 min-w-0"><TransportBar size={cs} /></div>
-          <Button variant="nav" size={cs} iconOnly="x" aria-label="Close transport" onClick={() => setTransportOpen(false)} />
+          <Tooltip label="Close transport"><Button variant="nav" size={cs} iconOnly="x" aria-label="Close transport" onClick={() => setTransportOpen(false)} /></Tooltip>
         </div>
       )}
       {tab === 'output' && (
@@ -364,7 +366,7 @@ export default function EditorFooter() {
               <span className="kol-helper-12 text-emphasis">Baking loop…</span>
               <span className="kol-helper-10 text-meta">{webmProgress.done} / {webmProgress.total}</span>
             </div>
-            <div className="rounded overflow-hidden" style={{ height: 6, background: 'var(--kol-fg-08)' }}>
+            <div className="rounded overflow-hidden" style={{ height: 6, background: 'var(--kol-oq-08)' }}>
               <div style={{ height: '100%', width: `${Math.round((webmProgress.done / Math.max(1, webmProgress.total)) * 100)}%`, background: 'var(--kol-accent-primary)', transition: 'width 80ms linear' }} />
             </div>
           </div>

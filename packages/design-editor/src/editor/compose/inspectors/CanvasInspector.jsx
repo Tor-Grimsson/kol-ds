@@ -40,7 +40,7 @@ export default function CanvasInspector() {
    * infinite backdrop). */
   return (
     <div className="flex flex-col">
-      <InspectorSection divided label="Frame">
+      <InspectorSection pane label="Frame">
         <div className="flex flex-col gap-1">
           <Dropdown
             variant="subtle"
@@ -62,7 +62,7 @@ export default function CanvasInspector() {
         <ToggleSwitch variant="plain" label="Grid" checked={showGrid} onChange={toggleGrid} />
       </InspectorSection>
 
-      <InspectorSection divided label="Background">
+      <InspectorSection pane label="Background">
         <ColorField
           label="Background"
           hideLabel

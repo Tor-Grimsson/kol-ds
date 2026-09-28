@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover, TabsRow, Tooltip } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
 import { useComposeState } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
-import { labelForLayer } from '../../compose/labels'
 import { isBooleanable } from '../../compose/boolean-ops'
 import InspectorRail from '../../compose/InspectorRail'
 import ParametersPanel from '../../compose/inspectors/ParametersPanel'
@@ -42,16 +40,9 @@ export default function SelectionPalettePanel() {
   const layer = selectedId && selectedId !== 'canvas' ? findLayerDeep(layers, selectedId) : null
   const tabs = layer?.type === 'pattern' ? [...baseTabs(), 'Pattern'] : baseTabs()
 
-  /* One shared header for every tab (title + delete) so switching tabs never
-   * swaps the strip — the per-panel headers were removed. Title/trash logic
-   * mirrors the old InspectorRail header (canvas / N-layers / layer name);
-   * trash is suppressed for the canvas selection (would nuke every layer). */
+  /* Trash is suppressed for the canvas selection (would nuke every layer). */
   const isCanvas     = selectedId === 'canvas'
   const layerOnlyIds = (selectedIds ?? []).filter((id) => id !== 'canvas')
-  const headerTitle  = isCanvas ? 'Canvas'
-    : layerOnlyIds.length >= 2 ? `${layerOnlyIds.length} layers`
-    : layer ? labelForLayer(layer)
-    : null /* nothing selected — the rail body says so; no phantom "Canvas" */
   const canDelete = !isCanvas && layerOnlyIds.length > 0
   /* Selection changes can strand the active tab (Pattern active, then a
    * shape selected / deselect-all) — fall back without writing state. */
@@ -77,17 +68,11 @@ export default function SelectionPalettePanel() {
 
   return (
     <div className="kol-compose-rail">
-      <div className="border-b border-oq-08">
-        <div className="px-3"><TabsRow tabs={tabs.map((t) => ({ id: t, label: t }))} value={active} onChange={setTab} /></div>
-      </div>
-      {/* Shared header — identical across all tabs (title + ⋯ menu + delete,
-        * the Figma header row). border-b = THE divider that separates TEXT
-        * from POSITION (user note 0 — Figma divides the header from the
-        * first section; full-bleed like every section divider). */}
-      <div className="flex items-center gap-1 px-4 min-h-[46px] border-b border-oq-08">
-        {/* Same eyebrow the rail's sections wear (user ruling 2026-08-27) — the
-            editor rail's surface title, labs' Surface title's twin. */}
-        {headerTitle && <p className="kol-eyebrow text-fg-96 flex-1 truncate">{headerTitle}</p>}
+      {/* The tab row carries the selection's actions (⋯ + delete). The header row that repeated the
+        * selected layer's type ("TEXT") is gone — the layers panel already says what is selected
+        * (inspector rebuild 2026-09-27, user: "there literally is no reason to say TEXT"). */}
+      <div className="flex items-center gap-1 pl-3 pr-2 border-b border-oq-08">
+        <div className="flex-1 min-w-0"><TabsRow tabs={tabs.map((t) => ({ id: t, label: t }))} value={active} onChange={setTab} /></div>
         {layer && (
           <HeaderMoreMenu
             layer={layer}
@@ -98,15 +83,12 @@ export default function SelectionPalettePanel() {
         )}
         {canDelete && (
           <Tooltip label="Delete selected"><Button
-            variant="primary"
+            variant="ghost"
             size="sm"
-            animateIcon
             quiet
             iconOnly="trash"
-            iconSize={12}
             aria-label="Delete selected"
             onClick={deleteSelected}
-            style={{ padding: 6 }}
           /></Tooltip>
         )}
       </div>
@@ -145,17 +127,11 @@ function HeaderMoreMenu({ layer, layerOnlyIds, layers, ops }) {
   }
   return (
     <>
-      <button
-        type="button"
-        ref={popover.refs.setReference}
-        {...popover.getReferenceProps()}
-        aria-label="More actions"
-        data-kol-tip="More actions"
-        className={`inline-flex items-center justify-center rounded text-emphasis ${open ? '' : 'kol-btn-quiet'}`}
-        style={{ width: 24, height: 24, padding: 5 }}
-      >
-        <Icon name="more" size={14} />
-      </button>
+      <Tooltip label="More actions">
+        <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
+          <Button variant="ghost" size="sm" quiet iconOnly="more" aria-label="More actions" pressed={open} />
+        </span>
+      </Tooltip>
       <PopoverPanel popover={popover} panel={false} focus={false} className="z-[var(--kol-z-tooltip)] bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 176 }}>
         {BOOL_OPS.map((b) => (
           <MenuDropdownItem key={b.id} disabled={!canBool} onClick={run(() => ops.booleanSelected(b.id))}>

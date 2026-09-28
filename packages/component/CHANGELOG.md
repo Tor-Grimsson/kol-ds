@@ -1,5 +1,20 @@
 # @kolkrabbi/kol-component
 
+## 0.227.0 — 2026-09-27
+
+**The editor inspector rebuild** (plan-2026-09-27-editor-inspector-rebuild).
+
+- **`InspectorSection pane`** — the Affinity panel shape: a titled header strip (`actions` on its row),
+  a padded body, full-width rules between panes. Mount panes in a container with no horizontal
+  padding. The default and `divided` shapes are unchanged.
+- **`SegmentedToggle` names its glyph cells.** A cell whose `label` is not a string shows its
+  `ariaLabel` as a KOL `Tooltip` (`asChild`, so no wrapper moves the strip); a new `tooltip` field
+  overrides the text. Icon-only strips stop being mute everywhere.
+- **`Input slotRight`** — an interactive trailing node inside the shell (a combo field's chevron),
+  the mirror of `slotLeft`. Not aria-hidden.
+- **`ToolPalette`** carries `kol-tool-palette` (kol-theme 0.154.0 draws its states); the
+  `SplitToolButton` fold menu's border is `oq-08` (was `fg-08`, the stroke law).
+
 ## 0.226.0 — 2026-09-27
 
 **Editor DS sync (the design editor back on KOL, same day):**

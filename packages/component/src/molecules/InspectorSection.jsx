@@ -18,12 +18,31 @@
  * declaring it — that is the upgrade path if a consumer ever needs the stack
  * to vary the rule per-gap. One prop is a smaller API than a new component.
  *
+ * `pane` (editor inspector rebuild, 2026-09-27 — user: "why are we not sectioning off the panes?
+ * saying 'this is type' 'this is transform'"): the Affinity panel shape instead of a labelled form
+ * group — a titled header strip, a padded body, and a FULL-WIDTH rule between panes. Mount panes
+ * in a container with no horizontal padding; each pane pads itself, so its rule runs edge to edge.
+ *
  * @param {ReactNode} label    the group's name
  * @param {ReactNode} actions  controls on the label's row, right-aligned
  * @param {boolean}   divided  a hairline between divided siblings
+ * @param {boolean}   pane     the panel shape: header strip + body, full-width rules between panes
  * @param {string}    className
  */
-export default function InspectorSection({ label, actions = null, children, divided = false, className = '' }) {
+export default function InspectorSection({ label, actions = null, children, divided = false, pane = false, className = '' }) {
+  if (pane) {
+    return (
+      <section className={`kol-inspector-pane ${className}`.trim()}>
+        {(label || actions) && (
+          <header className="kol-inspector-pane-head">
+            {label && <h3 className="kol-inspector-pane-title">{label}</h3>}
+            {actions}
+          </header>
+        )}
+        <div className="kol-inspector-pane-body">{children}</div>
+      </section>
+    )
+  }
   return (
     <div className={`flex flex-col gap-2${divided ? ' kol-section--divided' : ''} ${className}`}>
       {/* `actions` — controls on the label's row, right-aligned (Figma's eye / plus on Fill and

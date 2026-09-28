@@ -1,4 +1,4 @@
-import { Button, InspectorRail as DsInspectorRail } from '@kolkrabbi/kol-component'
+import { Button, InspectorSection, InspectorRail as DsInspectorRail } from '@kolkrabbi/kol-component'
 import { useComposeState } from './state'
 import { findLayerDeep } from './helpers'
 import LayerInspector   from './inspectors/LayerInspector'
@@ -28,7 +28,7 @@ export default function InspectorRail() {
           return layer ? <LayerInspector layer={layer} /> : null
         },
         multi: (ids) => (
-          <div className="flex flex-col gap-3">
+          <InspectorSection pane>
             <p className="kol-helper-12 text-meta">{ids.length} layers selected.</p>
             <AlignmentPanel />
             <Button
@@ -40,7 +40,7 @@ export default function InspectorRail() {
             >
               Group selection
             </Button>
-          </div>
+          </InspectorSection>
         ),
       }}
     />
