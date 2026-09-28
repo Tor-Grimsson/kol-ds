@@ -36,8 +36,12 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
   showcase's 197 components. Next port 5183.
 - Everything in A–D is built and checked here, published in kol-workshop / theme / framework, then adopted
   by the showcase (and kolkrabbi.io on its next bump).
-- **DECISION:** the name (`apps/workshop`?), and whether fixture content is enough or it should read the
-  real vault.
+- **DECISION:** the name, and whether fixture content is enough or it should read the real vault.
+  User: *"is workshop the right word … so we dont attribute it to the content of one of two consumers.
+  the 'app' is both layout, shell, navigation, search, tags, markdown parser"*. Precedent: an app is named
+  after its package (`apps/shell` ↔ kol-shell, `apps/editor` ↔ design-editor), so `apps/workshop` follows
+  `@kolkrabbi/kol-workshop`. A new name means renaming the **package** too — the kol-controls → kol-hardware
+  route (deprecated re-export shim, both consumers move). `kol-docs` is taken (the dotfiles doc framework).
 
 ### A — Site structure: which spaces exist
 
@@ -72,6 +76,10 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 |---|---|---|---|
 | 6 | The search page's result groups (Reference graph, Utilities, Documentation, Molecules…) were never designed; no scope | `SearchResults.jsx:52` groups by whatever `sectionLabel` each source emits — component categories, chapter names, `'Reference graph'`, `'Documentation'`, `'Surfaces'`. Groups are an accident of the sources | DEFECT · showcase |
 | 7 | Header overlay: faint input; Enter opens a second view (tags) inside the overlay; filters are tags only; a result click leaves with no way back | Enter flips the palette to the tag browser — *"this palette's second state"* (`ShellLayout.jsx:396`), a 2026-08-01 ruling (one surface, tag browser as the palette's expanded body) | DECISION (reverses a ruling) · workshop |
+| 7c | Screenshots (overlay, typing `atom`) | Rank: `AppHub` first — matched on description text, not name or category. Only one row highlights its match (`ColorAnatomy`). Group labels mix case (`shell` · `Atoms` · `Styleguide`). Typing `atom` does not mean the Atoms category | DEFECT · workshop |
+| 7d | Screenshots (after Enter) | The overlay **widens** (610 → full main width). `Clear filters` shows with no filter set. A tag list with counts and **no heading**, then a doc list with **no heading** showing raw ids (`component-avatar`, `06-manifest-tree`). Component rows open `/documentation/<id>`, not `/components/<slug>` | DEFECT · workshop |
+| 7e | `/` opens the browser's find; ⌘K opens search — `/` should too | ShellLayout binds ⌘K and `?` (its own shortcut list, `ShellLayout.jsx:152-171`); `/` is unbound | DEFECT · workshop |
+| 7f | No shortcut sheet on `S`, as in the other apps | Two shortcut systems: kol-shell's `ShortcutsOverlay` (AppHub, on `S`) and ShellLayout's own `?` list. Converge on kol-shell's sheet and key | DECISION (which key) · workshop |
 | 5·7 | Proposal: overlay = quick jump; **Enter → the shared search page**, with scope (space, category, type, tag, keyword, date) and smart terms (`atom`) | Needs one query model shared by both doors, and a filter set the sources can all answer | DECISION · workshop + showcase |
 
 ### E — Header wordmark
@@ -85,7 +93,7 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 | # | Point | Finding | Tag · where |
 |---|---|---|---|
 | 1a | A stray `$` on the landing | `Home.jsx:414` — the prompt glyph of `$ npm i @kolkrabbi/kol-component`; only the `$` renders in the screenshot, so the command text is invisible or clipped | DEFECT · showcase — verify live |
-| 12 | Quarantine table: inline, illegal table + text styles | Both tables are `kol-table` (`Quarantine.jsx:83,96`); the break is elsewhere | DEFECT · showcase — **needs screenshot** |
+| 12 | Quarantine table: inline, illegal table + text styles | A bare `<table className="kol-table">` (`Quarantine.jsx:83,96`) with no `.kol-table-wrapper`, so the wrapper-scoped seams never apply — it is not the `Table` component. Cells type themselves with `kol-mono-12/14` · `kol-helper-12` utilities (`HeldRow`, `Quarantine.jsx:40-63`), which ARCHITECTURE §5 forbids. Rule text carries literal backticks (`` `pnpm validate:width` ``) that nothing renders. And the page is stale: *"0 of 12 categories are out of the sidebar"* — it holds nothing | DEFECT · showcase — and feeds A-4 (retire or move under Development) |
 | 6b | Wrong gap between the query input and the divider | `SearchResults.jsx:102` (`DocSection title="Query"`) | DEFECT · showcase |
 | 7b | Overlay input and text very faint | the palette in `ShellLayout` | DEFECT · workshop — check against the opacity law |
 
@@ -102,8 +110,7 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 
 ## 4. Screenshots still wanted
 
-- the search overlay: typed · after Enter (tags view) · scrolled to the second list
-- the Quarantine table
+- ~~the search overlay~~ · ~~the Quarantine table~~ — received 2026-09-28, folded into D and F
 - the landing `$` line at full width (is the command text there at all?)
 - a collapsed parent category in the left rail
 
