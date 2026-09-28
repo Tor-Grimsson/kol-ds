@@ -63,6 +63,17 @@ registry and the render loop still stay out. It also carries **the signal engine
 
 **Clients tier** (added 2026-07-03): headless service SDKs — **one package per service contract** (`@kolkrabbi/kol-*-client`), plain ESM, no React, no deps on or from the UI packages; the package version tracks its API contract. First: `kol-media-client`. **Do not** merge clients into a grab-bag package — unrelated contracts must not version in lock-step.
 
+**Engine tier** (added 2026-09-28, user ruling): **plain-JS engines** that more than one package
+had written for itself — no React, no DOM, no deps on the UI packages; UI packages consume them,
+never the other way round. First two, both lifted out of `kol-workshop`'s `engine/`:
+`@kolkrabbi/kol-markdown` (parse, frontmatter read + write, tags, inventory — kol-notes and media
+carried their own frontmatter code) and `@kolkrabbi/kol-search` (the query model, scopes, filters,
+ranking, facet counts — `ContentFilters`, `MediaLibrary` and `MediaPicker` each hand-rolled a
+substring match). The trigger is the same as the UI packages': **a second consumer that exists
+today**, not one that might. Each engine gets its own app (`apps/markdown`, `apps/search`) where it
+is proved before a consumer switches. **Do not** put a React component in an engine package, and
+do not merge engines into one grab-bag — they version on their own contracts, like the clients.
+
 **APP TIER — `@kolkrabbi/design-editor` (added 2026-09-03, user ruling).** The
 editor as one embeddable `<DesignEditor />`, moved in from kol-fxr — which had
 been publishing it from its own `package.json`, so no gate, roster or taxonomy

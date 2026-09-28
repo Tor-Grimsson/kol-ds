@@ -1,7 +1,7 @@
 # Plan — showcase refinement (structure before fixes)
 
 **Raised:** 2026-09-28, the user's review of ui.kolkrabbi.io (13 points, 5 screenshots), in a cloud session.
-**Status:** open — findings mapped, **no code changed**. Waiting on the decisions in § 3.
+**Status:** sequenced 2026-09-28 (§ 2c) — the user took the proposed defaults as the working answer to § 3; each stays open to change. No code changed yet.
 **Ask:** *"categorise and log these issues so we can logically deal with them … meaningful code changes
 that are also structurally sound and logical going forward."* Not a fix list.
 
@@ -106,7 +106,46 @@ Order: **W0 → A → (B · D · E · G)**; **C** inside W0 in parallel; **F** r
 | 7e · 7f | `/` and the `S` sheet | see D | — |
 | 15 | A settings page or settings sidebar — search settings, sidenav settings, icon/button prefs | Precedent: kol-shell's `SettingsScaffold` / `HubSettings` / `SettingsShortcuts`, used by every app on the Hub. The workshop shell has no settings surface; its toggles (theme, rails, grouping) sit loose in the header and rail | DECISION · workshop |
 
+### A (addendum)
+
+| # | Point | Finding | Tag · where |
+|---|---|---|---|
+| 16 | Where is the icons page? | `/icons` exists (`IconsGallery.jsx`, `App.jsx:80`) but no header tab or rail row points at it — reachable by URL, ⌘K, and one link in `docs/loaders.mdx` | DEFECT · showcase — gets a row in the space table |
+
+## 2b. The package split (agreed 2026-09-28)
+
+Split by what is reused **today**. Earlier rulings are open throughout this plan — none is a status quo.
+
+| Package | Holds | Consumers | App |
+|---|---|---|---|
+| `@kolkrabbi/kol-markdown` (new, engine tier) | parse · frontmatter read + write · tags · inventory — today's `kol-workshop/src/engine/` | workshop reader · kol-notes (`notes.js` frontmatter) · media (tag merge) · docs scripts | `apps/markdown` |
+| `@kolkrabbi/kol-search` (new, engine tier) | query model (text · scope · tag · type · space · date · smart terms) · ranking · facet counts | workshop overlay + `/search` · `ContentFilters.jsx:223` · `MediaLibrary.jsx:348` · `MediaPicker` | `apps/search` |
+| `@kolkrabbi/kol-workshop` | the assembly: shell · rails · reader UI · tags UI (d3 graph) · exhibit | showcase · kolkrabbi.io/workshop | `apps/workshop` |
+| `apps/workshop-fixture` (private) | the shared fake corpus — docs with frontmatter, a component list, tags, spaces | all three apps | — |
+
+Search **UI** (overlay, chips) stays in the UI packages. ARCHITECTURE §3 carries the engine tier.
+
+## 2c. Sequence
+
+1. **Scaffold** `apps/workshop-fixture` + `apps/workshop` (the shell over the fixture, as it is today).
+2. **Space table** — one row per space: root page · left rail · right rail · search scope · header label. Proposed:
+   spaces Components · Blocks · Sets · Docs (documentation + operations + the MDX pages) · Apps ·
+   Development (references · quarantine or retired · audits · reports); Search is the header icon plus the
+   Enter page, not a space; each space owns both rails; Group by only in Components; no Tools group; every
+   root an index page in its space's layout, `/` the only landing; typed wordmark `KOLKRABBI` + space label;
+   icons placed.
+3. **kol-markdown** — move `engine/` out unchanged; `apps/markdown`; kol-workshop consumes it.
+4. **Geometry** (C) in `apps/workshop` — rails 16rem both on their own token; one space between rail and
+   content, not two; `oq-08` rail border; full-width scroll region; collapsed-category cue.
+5. **kol-search** + `apps/search` (D) — overlay jumps, Enter → `/search` with scope and filters; ⌘K and `/`.
+   Then ContentFilters · MediaLibrary · MediaPicker switch.
+6. **G** — settings sidebar on kol-shell's scaffold; the `S` sheet; tooltip sweep + the gate's spread-prop blind spot.
+7. **Showcase adopts**; F rides along; bump · changelogs; the user publishes; kolkrabbi.io on its next bump.
+
 ## 3. Decisions for the user
+
+**Settled 2026-09-28:** 1 (build `apps/workshop` first) · 9 (keep `workshop`) · the engine tier. The rest take the § 2c defaults unless the user redirects.
+
 
 1. **W0** — build `apps/workshop` first, and all shell work there? Name + fixture vs real content.
 2. **A-4** — a Development space holding References, Quarantine, audits, reports?
