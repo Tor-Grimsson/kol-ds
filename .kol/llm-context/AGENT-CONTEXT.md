@@ -6,11 +6,16 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
-## Queued for next session (user, 2026-09-27)
+## Queued for next session (2026-09-28)
 
-- **Editor:** awaiting the user's review of the rebuilt inspector and tool row; parked on his rulings — #14 glyph drawings, #15 `tone="primary"` hover stop, #12 asset thumbnails.
-- **Wave C leftovers:** brand's frame, the deck editor at phone width.
-- monitor · mirror · fxr · kol-website are cloned on the MBP **for reference only** — findings go to `backlog/2026-09-26-consumer-findings-from-reference-clones.md`, never filed.
+- **Review** the showcase refinement: `pnpm workshop` · `pnpm markdown` · `pnpm search-app` and the showcase; any call in `plan-2026-09-28-showcase-refinement.md` § 3b can be overturned.
+- **Publish** (unpublished, bumped + changelogs): kol-markdown 0.1.0 · kol-search 0.1.0 · kol-theme 0.155.0 · kol-framework 0.45.0 · kol-component 0.228.0 · kol-shell 0.58.0 · kol-workshop 0.30.0 — in that order.
+- Rerun `node scripts/extract-api.mjs` locally and check the diff (the cloud run dropped kol-hardware tables; not committed).
+- Editor: parked on the user's rulings — #14 glyph drawings, #15 `tone="primary"` hover stop, #12 asset thumbnails. Wave C leftovers: brand's frame, the deck editor at phone width.
+
+## Current state (2026-09-28, showcase refinement — space table + engine tier)
+
+- **🧭 Unpublished, ds-0086…0099 (cloud session).** Engine tier: `@kolkrabbi/kol-markdown` + `@kolkrabbi/kol-search` out of kol-workshop (ARCHITECTURE §3). Apps: `workshop-fixture` · `workshop` · `markdown` · `search`. The workshop shell rebuilt to the space table — Components · Blocks · Sets · Docs · Apps · Development, per-space rails, one edge-to-edge scroll region, 256px rails with seams, search page on Enter, settings drawer, `S` sheet, typed wordmark; the showcase moved onto it. **BREAKING**: pages don't pad x in the shell; scroll observers use `SHELL_SCROLL_ROOT`. Cloud-session rules: `docs/operations/08-cloud-sessions/`. Log: `session-log/2026-09-28-showcase-refinement-space-table-and-engine-tier.md`.
 
 ## Current state (2026-09-28, editor inspector rebuild)
 
@@ -27,10 +32,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-27, kol-hardware · signal engine · apps/curves)
 
 - **🎛 kol-hardware 0.2.0 · kol-controls 0.4.0 (deprecated shim) · kol-theme 0.152.0, published (2026-09-27, newest).** kol-controls was renamed kol-hardware and grouped value · switches · indicators · panel · frames; ARCHITECTURE §3 is amended so frames are in. `./signal` is one expression compiler plus ADSR, replacing four drifted copies. `EnvelopeGenerator` / `SignalScope` / `SignalReference` sit over it. New `apps/curves` (:5182). Consumer moves are noted in the reference-clone findings backlog (for the iMac). 28 gates clean. Log: `session-log/2026-09-27-kol-hardware-signal-engine-curves.md`.
-
-## Current state (2026-09-27, deconstruction — editor seam, apps/editor, apps/controls)
-
-- **🧩 design-editor 0.14.0 published (2026-09-27, newest).** The editor is now a core plus three packs behind `editor/packs.js`. The root entry is unchanged; `/core` has no packs; `/generators` · `/effects` · `/motion` register one pack each. `pnpm check:core` proves the core's graph reaches no pack. Also new: `apps/editor` (:5180, `/core` mounts the core entry) and `apps/controls` (:5181, the controls reference). The fixture's D1 gained `tool_settings`. 28 gates clean. Plan: `plan-2026-09-27-deconstruction-roadmap.md`. Log: `session-log/2026-09-27-deconstruction-editor-seam-and-controls.md`.
 
 ## Repo standup (2026-06-15)
 
