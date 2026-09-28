@@ -1,0 +1,19 @@
+{
+  "name": "workshop-fixture",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The invented corpus the workshop apps share — 19 markdown docs with frontmatter across documentation · operations · development, 24 components, 3 blocks, 2 sets, and the spaces as the showcase has them today. Built into the vault tree, the component tree and kol-search items. Never published.",
+  "exports": {
+    ".": "./src/index.js",
+    "./corpus": "./src/corpus.js",
+    "./components": "./src/components.js"
+  },
+  "scripts": {
+    "test": "node src/fixture.test.mjs"
+  },
+  "dependencies": {
+    "@kolkrabbi/kol-markdown": "workspace:*",
+    "@kolkrabbi/kol-search": "workspace:*"
+  }
+}

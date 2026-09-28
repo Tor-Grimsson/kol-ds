@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM — point at this app's own node_modules symlinks (same reason as apps/brand). */
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-theme/kol-type-roles.css";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+/* ARCHITECTURE §5 — framework chrome in the components layer */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+
+body {
+  font-family: var(--kol-font-family-sans);
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+}
+
+/* a docs shell is reading material — the framework's global user-select:none is opted back out, as the showcase does */
+html,
+body {
+  -webkit-user-select: text;
+  user-select: text;
+}
