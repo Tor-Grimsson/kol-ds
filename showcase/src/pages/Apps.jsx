@@ -18,12 +18,15 @@ const APPS = [
   { name: 'editor', what: 'The design editor alone — @kolkrabbi/design-editor from source, on the fixture bucket and the fake D1.' },
   { name: 'controls', what: 'The controls reference — the parametric set, the app controls and the panels built from them, with where each is still hand-built.' },
   { name: 'curves', what: 'The envelope generator alone — a value over time as an equation or an ADSR envelope, on one signal engine, with its reference.' },
+  { name: 'workshop', what: 'The workshop shell alone — header, rails, palette, tag browser and reader over an invented corpus.' },
+  { name: 'markdown', what: 'The markdown engine alone — a doc beside what kol-markdown reads from it: rendered, frontmatter, structure, tags, inventory.' },
+  { name: 'search', run: 'search-app', what: 'The search engine alone — the query, how it was read, ranked results with their reasons, and facets.' },
 ]
 
 const columns = [
   { accessor: 'name', header: 'App', render: (r) => <a href={`/apps/${r.name}/`} className="kol-link underline">{r.name}</a> },
   { accessor: 'what', header: 'What it is', className: 'kol-table-cell-meta-strong' },
-  { accessor: 'run', header: 'Local', render: (r) => <code>pnpm {r.name}</code> },
+  { accessor: 'run', header: 'Local', render: (r) => <code>pnpm {r.run ?? r.name}</code> },
 ]
 
 export default function Apps() {

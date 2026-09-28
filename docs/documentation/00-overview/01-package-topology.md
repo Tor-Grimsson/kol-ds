@@ -5,7 +5,7 @@ status: canonical
 created: 2026-07-31
 updated: 2026-09-03
 verified: 2026-07-09
-description: The eleven UI packages and the clients tier
+description: UI, engine and clients tiers
 aliases:
   - package map
   - topology
@@ -30,7 +30,7 @@ related:
 
 # Package topology
 
-Eleven UI packages plus a clients tier. Every content/domain system that was drifting, faked, or crammed into `kol-component` is now its own published package. The rule (ARCHITECTURE §3): a package earns standalone status when it's **reused across consumers** and **versions on its own cadence**; general primitives stay in `kol-component` and domain packages depend on them.
+UI packages, an engine tier and a clients tier. Every content/domain system that was drifting, faked, or crammed into `kol-component` is now its own published package. The rule (ARCHITECTURE §3): a package earns standalone status when it's **reused across consumers** and **versions on its own cadence**; general primitives stay in `kol-component` and domain packages depend on them.
 
 ## The map
 
@@ -40,7 +40,7 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | | `@kolkrabbi/kol-icons` | `Icon` loader + `kol-icon-set-v1` |
 | **Core** | `@kolkrabbi/kol-component` | general atoms → organisms + hooks (see below) |
 | | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
-| **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — markdown engine, docs viewer, tag graph, shell |
+| **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — docs viewer, tag graph, shell; runs on the two engines below |
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
 | | `@kolkrabbi/kol-hardware` | hardware panel controls in five groups — value · switches · indicators · panel · frames — and the signal engine (`./signal`); renamed from `kol-controls` 2026-09-27 |
 | | `@kolkrabbi/kol-chess` | chess apparatus + pieces + `./data` adapter |
@@ -48,6 +48,8 @@ Eleven UI packages plus a clients tier. Every content/domain system that was dri
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
 | | `@kolkrabbi/kol-styleguide` | brand guide — colour anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
+| **Engines** (plain JS) | `@kolkrabbi/kol-markdown` | markdown parser, frontmatter read + round-trip, inventory, tag counts — proved in `apps/markdown` |
+| | `@kolkrabbi/kol-search` | query language, ranking with reasons, disjunctive facets — proved in `apps/search` |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
 **Static assets (ARCHITECTURE §7, 2026-07-15):** ONE `public/` at the repo root (fonts, images, favicons) — every app points at it via Vite `publicDir: '../public'`; symlink only for tools that can't be configured. Never a second per-app `public/`.
@@ -76,6 +78,7 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 
 ## Dependencies
 
+- **Engines are `dependencies`, not peers** (2026-09-28): they are pure functions with no state, so a nested copy cannot split anything — the NestedDsDependencies ruling below is about the DS tier a consumer must hold ONE copy of.
 - `d3` → workshop (tag graph). `chess.js` → chess. `embla-carousel-react` → content. `gsap` (peer) → content + store. `framer-motion` (peer) → foundry (ColorLoader). `opentype.js` (optional peer) → specimen.
 - Every domain package depends on `kol-component` + `kol-theme` (+ `kol-icons` where it renders icons) — **as `peerDependencies` with a `>=` floor, never `dependencies`** (ruled 2026-08-26, NestedDsDependencies: a 0.x caret in `dependencies` has pnpm nest a private stale copy of the tier under the package, so consumer bumps never reach the surfaces it renders). The consumer supplies ONE copy of the tier. CSS always lives in `kol-theme`; packages ship JS (+ SVG assets for chess).
 

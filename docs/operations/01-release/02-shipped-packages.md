@@ -3,7 +3,7 @@ title: Shipped packages
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-27
+updated: 2026-09-28
 description: Every package this repo ships, with its version
 aliases:
   - shipped-packages
@@ -31,26 +31,35 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.150.0** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.27.1** | `<Icon>` + kol-icon-set-v1 + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.224.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-theme` | **0.154.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.29.0** | `<Icon>` + kol-icon-set-v1 + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.228.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.44.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
-| `@kolkrabbi/kol-shell` | **0.51.0** | Application shell — `NavRail` + `AppShell`, page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
-| `@kolkrabbi/kol-workshop` | **0.29.0** | Docs/workshop system — markdown engine, search, tag graph, docs shell, exhibit sections |
+| `@kolkrabbi/kol-shell` | **0.57.1** | Application shell — `NavRail` + `AppShell`, page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
+| `@kolkrabbi/kol-workshop` | **0.30.0** | Docs/workshop system — docs shell, reader, tag graph, exhibit sections; the markdown engine and the matcher moved to the engine tier (0.30.0), still re-exported |
 | `@kolkrabbi/kol-dashboards` | **0.4.2** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
-| `@kolkrabbi/kol-hardware` | **0.2.0** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |
+| `@kolkrabbi/kol-hardware` | **0.3.0** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |
 | `@kolkrabbi/kol-controls` | **0.4.0** | **Deprecated** — a re-export of `kol-hardware`, so existing imports resolve until consumers move |
 | `@kolkrabbi/kol-chess` | **0.10.0** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.10.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.0** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.5.1** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
+| `@kolkrabbi/kol-styleguide` | **0.5.2** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
+
+## Engine tier
+
+Plain JS — no React, no DOM, no dependencies (ARCHITECTURE §3, 2026-09-28).
+
+| Package | Version | Job |
+|---|---|---|
+| `@kolkrabbi/kol-markdown` | **0.1.0** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts and co-occurrence. One copy of what kol-workshop, kol-component and kol-notes each carried |
+| `@kolkrabbi/kol-search` | **0.1.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets |
 
 ## Other tiers
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/design-editor` | **0.14.0** | **App tier — the one BUILT package** (ARCHITECTURE §4 exception, 2026-09-03). The whole editor as `<DesignEditor />`; moved in from kol-fxr, which had published it unversioned by any gate. Since 0.14.0 also `/core` (no layer packs) and one subpath per pack — `/generators` · `/effects` · `/motion` |
+| `@kolkrabbi/design-editor` | **0.16.0** | **App tier — the one BUILT package** (ARCHITECTURE §4 exception, 2026-09-03). The whole editor as `<DesignEditor />`; moved in from kol-fxr, which had published it unversioned by any gate. Since 0.14.0 also `/core` (no layer packs) and one subpath per pack — `/generators` · `/effects` · `/motion` |
 | `@kolkrabbi/kol-media-client` | **0.4.0** | Read-only client for the kol-media CDN |
 | `@kolkrabbi/kol-brand-template` | **0.3.0** | Brand-manifest schema + house defaults + CSS generator |
 | `@kolkrabbi/kol-brand` | **0.1.3** | Kolkrabbi's own brand manifest (ramps, type, logo SVGs) |

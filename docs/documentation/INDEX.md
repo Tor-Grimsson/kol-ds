@@ -46,7 +46,7 @@ loud — that is a claim, and it belongs in the doc before it reaches the code.
 
 | Section | Docs | Live counterpart |
 |---|---|---|
-| [[00-overview/INDEX\|00 — Overview]] | What KOL is — tiers, the 18 packages ([[../operations/01-release/02-shipped-packages\|full list + versions]]), install, the consumer contract | `/` |
+| [[00-overview/INDEX\|00 — Overview]] | What KOL is — tiers, every package ([[../operations/01-release/02-shipped-packages\|full list + versions]]), install, the consumer contract | `/` |
 | **01 — Foundations** | [[01-foundations/01-tokens\|tokens]] · [[01-foundations/02-color\|color]] · [[01-foundations/10-opacity\|opacity]] · [[01-foundations/03-typography\|typography]] · [[01-foundations/09-sizes\|sizes]] · [[01-foundations/04-layout-breakpoints\|layout & breakpoints]] · [[01-foundations/05-layout-systems\|layout systems registry]] | `/foundations`, `/foundations/color`, `/foundations/typography` |
 | **02 — Icons** | [[02-icons/INDEX\|loader, set & BYO]] · [[02-icons/01-inventory\|names by category]] | `/icons`, `/icons/v1` |
 | **03 — Components** | [[03-components/00-taxonomy\|taxonomy]] · [[03-components/01-inventory\|inventory]] · [[03-components/04-diamond-tier\|diamond tier]] · [[03-components/05-control-chrome\|control chrome]] · [[03-components/02-placement\|placement rules]] · [[03-components/03-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components` |

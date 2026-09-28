@@ -1,7 +1,7 @@
 # Plan — showcase refinement (structure before fixes)
 
 **Raised:** 2026-09-28, the user's review of ui.kolkrabbi.io (13 points, 5 screenshots), in a cloud session.
-**Status:** sequenced 2026-09-28 (§ 2c) — the user took the proposed defaults as the working answer to § 3; each stays open to change. No code changed yet.
+**Status:** § 2c steps 1 and 3 done 2026-09-28, and step 5's engine + app (the consumers have not switched yet) — ds-0091…0095: kol-markdown 0.1.0 · kol-search 0.1.0 · kol-workshop 0.30.0 · kol-component 0.228.0, `apps/workshop-fixture` · `apps/workshop` · `apps/markdown` · `apps/search`. Next: the user reviews the three apps; then step 2 (the space table) and step 4 (geometry) in `apps/workshop`.
 **Ask:** *"categorise and log these issues so we can logically deal with them … meaningful code changes
 that are also structurally sound and logical going forward."* Not a fix list.
 
