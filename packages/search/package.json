@@ -1,0 +1,35 @@
+{
+  "name": "@kolkrabbi/kol-search",
+  "version": "0.1.0",
+  "description": "The KOL search engine — a query language (filters, aliases, negation, phrases, dates, smart terms), a ranker that says why, and disjunctive facet counts. Plain ESM, no React, no dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "scripts": {
+    "test": "node src/selftest.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "search",
+    "engine"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/search"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

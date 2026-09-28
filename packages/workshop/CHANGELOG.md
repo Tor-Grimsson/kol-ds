@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-workshop
 
+## 0.30.0 — 2026-09-28
+
+- **The engine left for the engine tier** (ARCHITECTURE §3). `src/engine/` is gone: the markdown
+  half is `@kolkrabbi/kol-markdown`, the matcher `@kolkrabbi/kol-search` — both now dependencies.
+  Nothing a consumer imports breaks: the root barrel and `./engine` re-export the same names (plus
+  kol-markdown's `splitFrontmatter` / `joinFrontmatter`). New code imports the engines directly.
+- *(0.29.0 was published without an entry here.)*
+
 ## 0.28.0 — 2026-09-03
 
 - **The `?` shortcuts sheet wears `.kol-overlay-scrim`** (overlay-scrim-outliers

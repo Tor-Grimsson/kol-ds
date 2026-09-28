@@ -1,0 +1,15 @@
+# @kolkrabbi/kol-search
+
+## 0.1.0 — 2026-09-28
+
+- **First release — the engine tier's second package** (ARCHITECTURE §3).
+- `parseQuery` — the query language: `tag:` · `#tag` · `kind:`/`is:` · `space:`/`in:` ·
+  `category:` · `-negation` · `"phrases"` · `after:`/`before:` dates, and **smart terms** — a bare
+  word that names a facet value in the index (`atom` → category Atoms) becomes that filter; quote
+  it to search the text. Every token is returned with how it was read.
+- `createIndex` + `search` — AND across terms, each term scored by the best field it hits
+  (title exact › prefix › word start › contains › tag › heading › keyword › description › body),
+  every hit returned as a **reason**; facet counts are disjunctive (a field is counted with every
+  other filter applied); `scope` is the UI's hard filter.
+- `matchSearchItems` — kol-workshop's substring predicate, moved here unchanged; the palette runs
+  on it until it moves to `search`.

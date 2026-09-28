@@ -1,0 +1,36 @@
+{
+  "name": "@kolkrabbi/kol-markdown",
+  "version": "0.1.0",
+  "description": "The KOL markdown engine — handrolled parser, frontmatter read + round-trip write, doc inventory, tag counts and co-occurrence. Plain ESM, no React, no dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "scripts": {
+    "test": "node src/selftest.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "markdown",
+    "frontmatter",
+    "engine"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/markdown"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,8 +1,8 @@
 /**
- * parseFrontmatter — the workshop engine's handrolled YAML-subset parser,
- * verbatim (`packages/workshop/src/engine/frontmatter.js`; DocPageAndKindShowcase,
- * kol-r2b2 2026-08-27): `key: value`, block lists (`  - item`), inline `[a, b]`
- * tags. Keys are lowercased. No gray-matter / js-yaml.
+ * parseFrontmatter — the handrolled YAML-subset reader: `key: value`, block lists (`  - item`),
+ * inline `[a, b]` tags. Keys are lowercased. No gray-matter / js-yaml. ONE copy since
+ * kol-markdown 0.1.0 — kol-workshop's engine and kol-component's utilities each carried it
+ * byte-for-byte.
  */
 export function parseFrontmatter(raw) {
   const metadata = {}

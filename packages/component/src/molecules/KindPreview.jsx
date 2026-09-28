@@ -7,7 +7,7 @@ import FileIcon from '../atoms/FileIcon.jsx'
 import PdfPage, { PdfDocument } from './PdfPage.jsx'
 import { kindOf as defaultKindOf, extOf as defaultExtOf, KIND_LABEL } from '../utilities/mediaKinds.js'
 import markdownToHtml from '../utilities/markdownToHtml.js'
-import { parseFrontmatter } from '../utilities/frontmatter.js'
+import { parseFrontmatter } from '@kolkrabbi/kol-markdown'
 import DocPage from './DocPage.jsx'
 
 /* taxonomy-ok: molecule — nests the DS media atoms + CodeBlock (relative). */

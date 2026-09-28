@@ -1,21 +1,8 @@
 /**
- * The pure docs engine — zero dependencies, no React, no Vite.
- * Everything here is a plain function over strings/data.
+ * `@kolkrabbi/kol-workshop/engine` — kept as a re-export since 0.30.0. The engine moved to the
+ * engine tier: the markdown half is `@kolkrabbi/kol-markdown`, the matcher `@kolkrabbi/kol-search`.
+ * Import from those; this subpath and the root barrel's engine names stay so kolkrabbi.io
+ * resolves until it moves.
  */
-export { parseDocsMarkdown, extractHashtags, processInlineMarkdown } from './parse-markdown.js'
-export { parseFrontmatter } from './frontmatter.js'
-export { buildInventory, buildInventoryCounts } from './build-inventory.js'
-export { matchSearchItems } from './search.js'
-export { buildTagCounts, buildTagCooccurrence } from './tags.js'
-export {
-  capitalise,
-  isIndexFile,
-  extractDocNumber,
-  kolkrabbiPages,
-  subsectionPrefixes,
-  categoryLabels,
-  cleanTitle,
-  fileLabel,
-  getTagColor,
-  groupDocsByMajor,
-} from './doc-helpers.js'
+export * from '@kolkrabbi/kol-markdown'
+export { matchSearchItems } from '@kolkrabbi/kol-search'

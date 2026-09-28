@@ -1,8 +1,8 @@
 import { useEffect, useRef, useMemo, useState } from 'react'
 import * as d3 from 'd3'
 import { useNavigate } from 'react-router-dom'
-import { getTagColor } from '../engine/index.js'
-import { buildTagCooccurrence } from '../engine/tags.js'
+import { getTagColor } from '@kolkrabbi/kol-markdown'
+import { buildTagCooccurrence } from '@kolkrabbi/kol-markdown'
 
 /**
  * TagGraph - Obsidian-style tag graph

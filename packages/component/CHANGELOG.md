@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-component
 
+## 0.228.0 — 2026-09-28
+
+- **Frontmatter comes from `@kolkrabbi/kol-markdown`** (new dependency). `parseFrontmatter`,
+  `splitFrontmatter` and `joinFrontmatter` are still exported from here, same behaviour —
+  `utilities/frontmatter.js` moved into the engine tier, where kol-workshop's byte-identical copy
+  of `parseFrontmatter` now lives too.
+
 ## 0.227.0 — 2026-09-27
 
 **The editor inspector rebuild** (plan-2026-09-27-editor-inspector-rebuild).

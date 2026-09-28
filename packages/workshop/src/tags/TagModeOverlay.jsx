@@ -5,8 +5,9 @@ import TagPath from './TagPath.jsx'
 import { useTagMode } from './TagModeContext.jsx'
 import TagGraph from './TagGraph.jsx'
 import RailRow from '../shell/RailRow.jsx'
-import { extractDocNumber, cleanTitle, matchSearchItems } from '../engine/index.js'
-import { buildTagCounts } from '../engine/tags.js'
+import { extractDocNumber, cleanTitle } from '@kolkrabbi/kol-markdown'
+import { matchSearchItems } from '@kolkrabbi/kol-search'
+import { buildTagCounts } from '@kolkrabbi/kol-markdown'
 
 /**
  * TagModeOverlay - the committed RESULTS view: documents that match, with tags

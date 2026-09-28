@@ -12,7 +12,7 @@
 
 import { Table } from '@kolkrabbi/kol-component'
 import { renderInlineTokens } from './render-tokens.jsx'
-import { processInlineMarkdown } from '../engine/parse-markdown.js'
+import { processInlineMarkdown } from '@kolkrabbi/kol-markdown'
 
 export function DocHeader({ eyebrow, title, lede, children }) {
   return (
