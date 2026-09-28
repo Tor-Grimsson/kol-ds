@@ -1150,9 +1150,15 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../packages/icons
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../packages/markdown
       '@kolkrabbi/kol-media-client':
         specifier: workspace:*
         version: link:../packages/media-client
+      '@kolkrabbi/kol-search':
+        specifier: workspace:*
+        version: link:../packages/search
       '@kolkrabbi/kol-shell':
         specifier: workspace:*
         version: link:../packages/shell

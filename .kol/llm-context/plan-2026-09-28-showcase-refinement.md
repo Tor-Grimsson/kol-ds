@@ -142,6 +142,28 @@ Search **UI** (overlay, chips) stays in the UI packages. ARCHITECTURE §3 carrie
 6. **G** — settings sidebar on kol-shell's scaffold; the `S` sheet; tooltip sweep + the gate's spread-prop blind spot.
 7. **Showcase adopts**; F rides along; bump · changelogs; the user publishes; kolkrabbi.io on its next bump.
 
+## 3b. The space table (decided 2026-09-28 — the user put the whole plan on one run: "you are go on the plan")
+
+Each call below was the agent's, on the defaults in § 2c, recorded so any can be overturned.
+
+| Space | Root (an index page, rails on) | Left rail | Right rail | Search scope (`in:`) | Header label |
+|---|---|---|---|---|---|
+| — (`/`) | the landing — the ONLY page without rails | none | none | — | DESIGN SYSTEM |
+| Components | `/components` — every component by tier | Group by + the component tree | this page · its tags · related (used in, siblings) · the space's top tags | `components` | COMPONENTS |
+| Blocks | `/blocks` — every block, listed | the blocks | this page · the block's components as related | `blocks` | BLOCKS |
+| Sets | `/sets` — every set, listed | the sets | this page · the set's members as related | `sets` | SETS |
+| Docs | `/docs` — Documentation and Operations, chapter by chapter | Guides (the MDX pages) · Documentation · Operations — one parent, as `docs/` is on disk; Foundations and Icons pages sit in their chapters | the reader's rail (contents · frontmatter tags · related) | `docs` | DOCS |
+| Apps | `/apps` | the apps | this page | `apps` | APPS |
+| Development | `/development` — tools, audits, reports | Tools (References, Quarantine) · Records (audits, reports) | this page | `development` | DEVELOPMENT |
+| Search (not a space) | `/search?q=` — Enter in the palette, or a tag clicked anywhere | the spaces | this page | the scope row on the page | DESIGN SYSTEM |
+
+Calls made with it:
+- **Quarantine stays**, under Development: it is the admission ledger (what the sidebar admits and why), empty today but the mechanism is live. Its table is the `Table` component now.
+- **Icons**: `/icons` is a page of Docs › Documentation › Icons (`CHAPTER_PAGES`), so the rail reaches it.
+- **Tags**: a tag clicked in a rail or on a page opens `/search?q=#tag`. The tag graph stays, one click from every right rail ("Tag graph").
+- **Settings**: a right drawer on the header's gear (and `,`): left rail · right rail · quick search in this space only · the page's own rows (Components: group by) · the keymap.
+- **Keys**: ⌘K and `/` open search; `S` (and `?`) the sheet — kol-component's `ShortcutsOverlay`, the one every app opens; `,` settings.
+
 ## 3. Decisions for the user
 
 **Settled 2026-09-28:** 1 (build `apps/workshop` first) · 9 (keep `workshop`) · the engine tier. The rest take the § 2c defaults unless the user redirects.

@@ -8,7 +8,7 @@ import { Table } from '@kolkrabbi/kol-component'
  * their own ports (`pnpm <name>`), and these links only resolve on the deployed site.
  */
 
-const APPS = [
+export const APPS = [
   { name: 'media', what: 'The media tool alone — the column browser, rows and grid over the fixture bucket.' },
   { name: 'media-shell', what: 'Media as it ships — the tool on kol-shell’s AppHub, with Library, Notes, Decks, Brand and Settings.' },
   { name: 'shell', what: 'The Hub alone, around a placeholder tool — the reference the -shell apps are judged against.' },
@@ -24,7 +24,7 @@ const APPS = [
 ]
 
 const columns = [
-  { accessor: 'name', header: 'App', render: (r) => <a href={`/apps/${r.name}/`} className="kol-link underline">{r.name}</a> },
+  { accessor: 'name', header: 'App', render: (r) => <a id={r.name} href={`/apps/${r.name}/`} className="kol-link underline scroll-mt-20">{r.name}</a> },
   { accessor: 'what', header: 'What it is', className: 'kol-table-cell-meta-strong' },
   { accessor: 'run', header: 'Local', render: (r) => <code>pnpm {r.run ?? r.name}</code> },
 ]

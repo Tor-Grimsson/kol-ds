@@ -19,11 +19,10 @@ export default function Blocks() {
       previewBase="/blocks/preview"
       srcDir="blocks"
       hero={{
-        pill: `${BLOCKS.length} building blocks`,
-        title: 'Building blocks for KOL tools.',
+        eyebrow: `Blocks · ${BLOCKS.length}`,
+        title: 'Blocks',
         lede: 'Composed sections built from the published packages — bigger than a component, smaller than a page. Copy the source, keep the wiring.',
         browseLabel: 'Browse all blocks',
-        secondary: { label: 'View sets', to: '/sets' },
       }}
     />
   )

@@ -1,8 +1,7 @@
 import { COMPONENTS_AZ, CATEGORY_LABELS, groupComponents, TOP_LEVEL } from './registry.js'
 import { BLOCKS } from '../lib/blocks-registry.js'
 import { SETS } from '../lib/sets-registry.js'
-import { VAULT, VAULT_SEARCH_ITEMS, VAULT_TREE, vaultDocHref } from './vault.js'
-import { CHAPTER_PAGES } from './chapter-pages.js'
+import { VAULT, VAULT_TREE, MDX_DOCS, vaultDocHref } from './vault.js'
 import { isSurfaceAdmitted, isComponentAdmitted, anyComponentsAdmitted, isChapterAdmitted, isCategoryAdmitted } from './admitted.js'
 
 /* Chapter folder → display label. THE rule, imported — it was written here and
@@ -24,17 +23,19 @@ import { labelFromSlug as label } from './labels.js'
  * Nothing here decides IA order — that is a user ruling. This file only maps.
  */
 
-/* Every surface this app has. `id` is required: ShellSidebar keys collapse
- * state by it. This list is COMPLETE and stays complete — search reads it, so
- * a quarantined surface is still findable by typing its name. What the shell
- * RENDERS is `SHELL_ROUTES` below, filtered through the admission gate. */
+/* THE SPACES — the space table (plan-2026-09-28-showcase-refinement § 3b). One header tab per
+ * space; each space owns its left rail, its right rail and an index page at its root.
+ *
+ *   Components · Blocks · Sets · Docs · Apps · Development
+ *
+ * Search is not a space: it is the header's palette, and the page Enter opens (/search). References
+ * and Quarantine left the header — they are what the repo measures about itself, not what a visitor
+ * came for — and live under Development with room for audits and reports. Docs holds Documentation
+ * AND Operations under one parent, as `docs/` does on disk, plus the guides (MDX) and the live
+ * specimen pages (Foundations, Icons), which had been reachable only by URL and ⌘K since 2026-08-01.
+ *
+ * `id` is required: ShellSidebar keys collapse state by it. */
 export const ALL_ROUTES = [
-  /* Foundations and Icons are NOT surfaces (2026-07-31). They are chapters of
-   * Documentation — `docs/documentation/01-foundations/` and `02-icons/` — and
-   * their live React pages are slot-pages inside those chapters
-   * (nav/chapter-pages.js). Listing them here made a chapter a peer of the
-   * category that contains it: one body of content, two doors, no parent.
-   * Search still reaches them: buildShellSearchItems reads CHAPTER_PAGES. */
   { id: 'components', label: 'Components', icon: 'component-01', path: '/components' },
   {
     id: 'blocks',
@@ -50,131 +51,108 @@ export const ALL_ROUTES = [
     path: '/sets',
     children: SETS.map((s) => ({ id: `set-${s.key}`, label: s.title, path: `/sets/${s.key}` })),
   },
-  {
-    id: 'docs',
-    label: 'Docs',
-    icon: 'book-open',
-    path: '/docs/shell-and-layout',
-    children: [
-      { id: 'docs-shell', label: 'Shell & Layout', path: '/docs/shell-and-layout' },
-      { id: 'docs-menus', label: 'Menus', path: '/docs/menus' },
-      { id: 'docs-loaders', label: 'Loaders', path: '/docs/loaders' },
-      { id: 'docs-type-roles', label: 'Type roles', path: '/docs/type-roles' },
-    ],
-  },
-  /* The reference graph — generated, so it sits beside Documentation rather
-   * than under Docs: it is not a written page, it is what the repo measures
-   * about itself. */
-  { id: 'references', label: 'References', icon: 'library', path: '/references' },
-  { id: 'search', label: 'Search', icon: 'search', path: '/search' },
-  /* The apps tier (2026-09-27) — the tools built on the system, each its own build under /apps/<name>/.
-   * This row is the index page; the apps themselves are full-page links from it. */
+  { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
+  /* The apps tier (2026-09-27) — each app its own build under /apps/<name>/; this is the index. */
   { id: 'apps', label: 'Apps', icon: 'grid', path: '/apps' },
-  /* Documentation is a CATEGORY, and a category is not a tool (user ruling
-   * 2026-08-01). It stays in ALL_ROUTES so ⌘K can still find it by name — that
-   * is what this list is for — but it is filtered out of the rendered Tools
-   * group below. It was a surface back when the vault had no eyebrow of its
-   * own and this row was the only door to `/documentation`; now the eyebrow IS
-   * the door, and the row pointed at whichever doc happened to sort first. */
-  {
-    id: 'documentation',
-    label: 'Documentation',
-    icon: 'journal',
-    path: VAULT.length ? vaultDocHref(VAULT[0].id) : '/documentation',
-  },
-  /* The holding page. A surface like any other — so search finds it — but it
-   * is not a category and is never held: it is what accounts for the holding. */
-  { id: 'quarantine', label: 'Quarantine', icon: 'lock', path: '/quarantine' },
+  { id: 'development', label: 'Development', icon: 'library', path: '/development' },
 ]
 
-/* THE ADMISSION GATE (quarantine plan, phase 1). The shell renders admitted
- * surfaces plus Quarantine. Readmitting a category is one line in admitted.js,
- * and so is sending it back. */
-/* A CATEGORY IS NEVER A TOOLS ROW. `documentation` is admitted as a category
- * and renders as its own eyebrow with its chapters under it; admitting the
- * category was also admitting the surface of the same name, so it appeared
- * twice — once as the eyebrow, once as a row that led into the middle of it. */
-const CATEGORY_SURFACES = new Set(['documentation'])
+/* Docs › Guides — the authored MDX pages */
+export const DOCS_GUIDES = [
+  { id: 'docs-shell', label: 'Shell & Layout', path: '/docs/shell-and-layout' },
+  { id: 'docs-menus', label: 'Menus', path: '/docs/menus' },
+  { id: 'docs-loaders', label: 'Loaders', path: '/docs/loaders' },
+  { id: 'docs-type-roles', label: 'Type roles', path: '/docs/type-roles' },
+]
 
+/* Docs › Specimens — live pages that read values straight off the installed packages. Their own
+ * rail section, so the vault tree still mirrors `docs/` on disk (the 2026-08-01 ruling that emptied
+ * CHAPTER_PAGES) and the pages are no longer orphans. */
+export const DOCS_SPECIMENS = [
+  { id: 'spec-foundations', label: 'Foundations', path: '/foundations' },
+  { id: 'spec-color', label: 'Color', path: '/foundations/color' },
+  { id: 'spec-typography', label: 'Typography', path: '/foundations/typography' },
+  { id: 'spec-tones', label: 'Tones', path: '/foundations/tones' },
+  { id: 'spec-icons', label: 'Icons', path: '/icons' },
+]
+
+/* Development › Tools — generated from the repo itself */
+export const DEV_TOOLS = [
+  { id: 'dev-references', label: 'References', path: '/references', description: 'The reference graph — what depends on what, with a weight.' },
+  { id: 'dev-quarantine', label: 'Quarantine', path: '/quarantine', description: 'What the sidebar admits, what it holds, and the rule each waits on.' },
+]
+
+/* The admission gate still decides which spaces render. Development always does — it is what
+ * accounts for the gate. */
 export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
-  !CATEGORY_SURFACES.has(r.id) && (
-    r.id === 'quarantine' ||
-    isSurfaceAdmitted(r.id) ||
-    (r.id === 'components' && anyComponentsAdmitted())))
+  r.id === 'development' ||
+  isSurfaceAdmitted(r.id) ||
+  (r.id === 'components' && anyComponentsAdmitted()))
 
-/* Which tab lights up for a path. The shell's built-in predicate is
- * prefix-only, which can't express "the Docs tab targets a child page but
- * highlights across all of /docs" — so the consumer supplies this. */
-const TAB_PREFIX = {
-  '/components': '/components',
-  '/blocks': '/blocks',
-  '/sets': '/sets',
-  '/docs/shell-and-layout': '/docs',
-  '/references': '/references',
-  '/apps': '/apps',
-  '/quarantine': '/quarantine',
-}
-/* The Documentation tab's href is its first doc, but it lights across the
- * whole /documentation space. */
-if (VAULT.length) TAB_PREFIX[vaultDocHref(VAULT[0].id)] = '/documentation'
-
-export const isShellTabActive = (pathname) => (href) => {
-  const prefix = TAB_PREFIX[href] ?? href
-  return pathname === prefix || pathname.startsWith(`${prefix}/`)
+/* Which space a path belongs to. A space owns more URL prefixes than its root: Docs owns the
+ * reader and the specimen pages, Development the reference graph and the quarantine page — so
+ * none of those URLs had to move. */
+export const SPACE_PREFIXES = {
+  '/components': ['/components'],
+  '/blocks': ['/blocks'],
+  '/sets': ['/sets'],
+  '/docs': ['/docs', '/documentation', '/foundations', '/icons'],
+  '/apps': ['/apps'],
+  '/development': ['/development', '/references', '/quarantine', '/lobby'],
 }
 
-/* Search: components (the roster) + every surface child. Shape per the
- * engine's matchSearchItems — { id, label, href, sectionLabel, keywords }. */
+export const isShellTabActive = (pathname) => (href) =>
+  (SPACE_PREFIXES[href] ?? [href]).some((p) => pathname === p || pathname.startsWith(`${p}/`))
+
+const titleCase = (s = '') => s.replace(/^./, (c) => c.toUpperCase())
+const vaultCategoryLabel = (file) => label(file.replace(/^.*?docs\//, '').split('/')[0])
+
+/* SEARCH ITEMS — kol-search's shape: title · kind · space · category · tags · headings ·
+ * keywords · description · date · href. One list feeds the palette and the /search page.
+ * `category` is always a display label — an unmapped key used to leak through raw, so a
+ * palette row read `shell` beside `Atoms`. */
 export const buildShellSearchItems = () => {
+  const componentTags = Object.fromEntries(MDX_DOCS.map((d) => [d.href, d.metadata?.tags ?? []]))
   const components = COMPONENTS_AZ.map((c) => ({
-    id: c.slug,
-    label: c.name,
+    id: `cmp-${c.slug}`,
+    title: c.name,
+    kind: 'component',
+    space: 'components',
+    category: CATEGORY_LABELS[c.category] ?? titleCase(c.category),
+    tags: componentTags[`/components/${c.slug}`] ?? [],
+    keywords: [c.pkg].filter(Boolean),
+    description: c.description,
     href: `/components/${c.slug}`,
-    sectionLabel: CATEGORY_LABELS[c.category] ?? c.category,
-    keywords: [c.description, c.pkg].filter(Boolean),
   }))
-  /* EVERY route is a row, parent as well as child (2026-07-30 reachability
-   * rule). This read `r.children` only, so a tab with no children contributed
-   * nothing and was unreachable by search entirely — `/icons`, `/references`
-   * and `/documentation` could not be found by typing their own names.
-   * `/components` only escaped because the roster branch above covers it.
-   *
-   * ALL_ROUTES, never SHELL_ROUTES: quarantine holds a surface out of the
-   * TREE, not out of the app. Searching the admitted list instead would make
-   * every held page unfindable by name — the exact defect this rule exists to
-   * stop, reintroduced by the gate meant to be reversible. */
+  /* every space AND its children — ALL_ROUTES, never the admitted SHELL_ROUTES: a held space is
+   * out of the tree, not out of search (validate:reachable E1) */
   const surfaces = ALL_ROUTES.flatMap((r) => [
-    { id: `tab-${r.id}`, label: r.label, href: r.path, sectionLabel: 'Surfaces' },
+    { id: `space-${r.id}`, title: r.label, kind: 'space', space: r.id, category: 'Spaces', href: r.path },
     ...(r.children ?? []).map((c) => ({
       id: c.id,
-      label: c.label,
+      title: c.label,
+      kind: r.id === 'blocks' ? 'block' : 'set',
+      space: r.id,
+      category: r.label,
       href: c.path,
-      sectionLabel: r.label,
     })),
   ])
-  /* Slot-pages — live React routes that live inside a vault chapter rather
-   * than in ALL_ROUTES. Without this they left the surface list in the same
-   * commit that made them chapter pages and became unfindable by name: the
-   * 2026-07-30 reachability rule, broken by the fix that honoured the taxonomy. */
-  const slotPages = Object.entries(CHAPTER_PAGES).flatMap(([chapter, pages]) =>
-    pages.map((p) => ({
-      id: p.id,
-      label: p.label,
-      href: p.path,
-      sectionLabel: label(chapter),
-    }))
-  )
-  const vaultDocs = VAULT_SEARCH_ITEMS.map((d) => ({
-    id: d.path,
-    label: d.label,
-    href: d.path,
-    sectionLabel: 'Documentation',
-    keywords: d.tags,
-    /* content search (wave-4 parity): section headings extracted by the
-     * engine — matchSearchItems surfaces the hit as the row's subtext. */
-    headings: d.headings,
+  const guides = DOCS_GUIDES.map((g) => ({ id: g.id, title: g.label, kind: 'guide', space: 'docs', category: 'Guides', href: g.path }))
+  const specimens = DOCS_SPECIMENS.map((g) => ({ id: g.id, title: g.label, kind: 'specimen', space: 'docs', category: 'Specimens', href: g.path }))
+  const tools = DEV_TOOLS.map((t) => ({ id: t.id, title: t.label, kind: 'tool', space: 'development', category: 'Tools', description: t.description, href: t.path }))
+  const vaultDocs = VAULT.map((d) => ({
+    id: `doc-${d.id}`,
+    title: d.title,
+    kind: d.metadata?.type === 'index' ? 'index' : 'doc',
+    space: 'docs',
+    category: vaultCategoryLabel(d.file),
+    tags: d.metadata?.tags || [],
+    headings: d.headings || [],
+    description: d.metadata?.description || '',
+    date: d.metadata?.updated,
+    href: vaultDocHref(d.id),
   }))
-  return [...components, ...surfaces, ...slotPages, ...vaultDocs]
+  return [...surfaces, ...components, ...guides, ...specimens, ...tools, ...vaultDocs]
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one

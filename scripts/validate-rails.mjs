@@ -143,14 +143,14 @@ const RUNG_CLASSES = /\b(shell-sidebar-toggle|shell-nav-group-header)\b/
  * is the only thing that renders as parens-around-an-expression between tags. */
 const HAND_COUNT = />\(\{[^}]*\}\)</
 
-/* The left rail's section order. Re-ruled by the user 2026-08-09
- * ("components, sets, blocks etc. should be before Documentation"):
- * `02-shells.md:138` now states Components · Tools · Documentation ·
- * Operations. The vault eyebrows render dynamically (labelFromSlug), so the
- * literal check covers the showcase sections and VAULT_MARKER anchors the
- * vault block's position after them. */
-const SECTION_ORDER = ['Components', 'Tools']
-const VAULT_MARKER = 'vaultCategories.map'
+/* The left rail's section order. It was ONE stack on every route, ruled
+ * Components · Tools · Documentation · Operations (2026-08-09). */
+/* Rails are PER SPACE since 2026-09-28 (the space table, plan-2026-09-28-showcase-refinement
+ * § 3b) — there is no longer one stack of Components · Tools · Documentation · Operations on
+ * every route. The one multi-section rail with a ruled order is Docs: the guides, the live
+ * specimens, then the vault's two categories in folder order (02-shells.md § Rails per space). */
+const SECTION_ORDER = ['Guides', 'Specimens', 'Documentation', 'Operations']
+const VAULT_MARKER = null
 const ORDER_FILE = 'showcase/src/lib/ShellChrome.jsx'
 
 const isComment = (l) => {
@@ -252,14 +252,13 @@ for (const relPath of RAIL_FILES) {
   const expected = SECTION_ORDER.filter((l) => actual.includes(l))
   if (actual.join(' > ') !== expected.join(' > ')) {
     errors.push(
-      `${ORDER_FILE}  rail sections render '${actual.join(' > ')}' but ` +
-      `02-shells.md:138 states '${expected.join(' > ')}' — the showcase ` +
-      `sections outrank the written record (user ruling 2026-08-09)`
+      `${ORDER_FILE}  the Docs rail renders '${actual.join(' > ')}' but ` +
+      `02-shells.md § Rails per space states '${expected.join(' > ')}'`
     )
   }
   /* The vault block (dynamic labels) must sit BELOW the last literal section —
    * the JSX return renders top-to-bottom, so file position is render position. */
-  const vaultAt = src.indexOf(VAULT_MARKER, src.indexOf('shell-rail-stack'))
+  const vaultAt = VAULT_MARKER ? src.indexOf(VAULT_MARKER, src.indexOf('shell-rail-stack')) : -1
   const lastLiteral = Math.max(...seen.map((s) => s.at))
   if (vaultAt !== -1 && seen.length && vaultAt < lastLiteral) {
     errors.push(

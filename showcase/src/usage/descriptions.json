@@ -86,6 +86,7 @@
   "ShapeDropdown": "Split icon-button + variant-menu molecule (the tool-palette idiom: Select · Text · [Shape ▾] · Pattern).",
   "ShellDrawer": "THE edge drawer: a portalled panel that slides in from the left, right or BOTTOM viewport edge over a dimming backdrop.",
   "ShellSearchOverlay": "The ⌘K command palette: fullscreen dim + centered panel, a bare SearchInput on top, result rows beneath (HighlightMatch label, dim hint line, right-aligned group label).",
+  "ShortcutsOverlay": "The keyboard-shortcut sheet: blurred scrim, centred panel, a 2-col grid (label · keys), Esc / backdrop-click close.",
   "Slider": "Range slider with label and a value readout.",
   "SpecList": "Compact definition list of [label | value] rows: label left and muted, value right-aligned one tone brighter, Divider-separated between rows (never after the last).",
   "SpectrumControls": "The composed classic square picker: HueStrip stacked over a fill-height SBSquare, per the source color panel's Hue mode layout (SBSquare wrapped in `rounded-[var(--kol-radius-xs)] overflow-hidden`, see its comment).",
@@ -224,7 +225,6 @@
   "TabStrip": "The flat text-tab idiom both shells use twice (ContentFilters view-mode/layout spans, Settings tabs): `kol-helper-14`, active `text-fg-96`, rest `text-fg-32 hover:text-fg-48`.",
   "SettingsScaffold": "The settings-page idiom both shells re-implemented inline: fixed PageShell, a PageHeader masthead, one header row, then a scrolling body.",
   "WalkthroughPanel": "The absolutely-centred stepped intro card (both repos' HomePage): chevron Buttons either side, text column + illustration pane.",
-  "ShortcutsOverlay": "The keyboard-shortcut sheet: blurred scrim, centred panel, a 2-col grid (label · keys), Esc / backdrop-click close.",
   "Logomark": "Fetches and INLINES an SVG so currentColor theming works: an <img> renders a currentColor mark black in dark mode (invisible).",
   "CatalogPage": "The app tier's Home / Library page, shipped once (ShellHomeSystem, kol-fxr 2026-08-27 — fxr's HomePage / LibraryPage and monitor's HomePage were the same page written three times): `PageHeader` → `ContentFilters` (title · filter · search, the view strip in the header, LIST / GRID below the divider) → the catalog grid — cards `repeat(6, 1fr)` gap 24, rows `repeat(4, 1fr)` gap 8, `ContentCard` / `ContentRow variant=\"catalog\"` — → the bottom action row (`marginTop: 48`, `alignSelf: flex-start`, gap 12).",
   "SettingsShortcuts": "The keyboard-shortcuts block of a settings page (ShellHomeSystem, kol-fxr 2026-08-27): the same `[{ section, items: [{ id, label, combo }] }]` array `ShortcutsOverlay` takes, laid out UP TO six columns × two sections per column, filled column-first (user, 2026-08-27) — each section an eyebrow (`kol-eyebrow`, strong ink) over SettingsRows.",
@@ -277,5 +277,6 @@
   "ExhibitCard": "The specimen header inside an exhibit section: what this variant is called, what it does, and (optionally) its technical line and its prop signature.",
   "ExhibitLinkCard": "The card an exhibit's landing page uses for each child page.",
   "WorkshopSidebar": "EXAMPLE composition.",
-  "WorkshopDefaultSidebar": "EXAMPLE composition."
+  "WorkshopDefaultSidebar": "EXAMPLE composition.",
+  "SearchPage": "THE results page (2026-09-28)."
 }

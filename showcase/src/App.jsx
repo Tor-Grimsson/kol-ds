@@ -19,7 +19,9 @@ import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import References from './pages/References'
 import ReferenceNode from './pages/ReferenceNode'
-import SearchResults from './pages/SearchResults'
+import Search from './pages/Search'
+import DocsIndex from './pages/DocsIndex'
+import Development from './pages/Development'
 import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
 import Apps from './pages/Apps'
@@ -91,15 +93,18 @@ export default function App() {
         {/* The reference graph — generated from usage-index + token-index. */}
         <Route path="/references" element={<References />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
-        <Route path="/search" element={<SearchResults />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/development" element={<Development />} />
         <Route path="/apps" element={<Apps />} />
+        <Route path="/docs" element={<DocsIndex />} />
         <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
         <Route path="/docs/type-roles" element={<MdxDoc module={TypeRolesDoc} />} />
         {/* THE VAULT — docs/ rendered by the packaged reader, frontmatter and
           * all. Documentation is a SYSTEM: its own top-level URL space. */}
-        <Route path="/documentation" element={<Navigate to={VAULT.length ? vaultDocHref(VAULT[0].id) : '/'} replace />} />
+        {/* the Docs space's root is its index; the old door stays a redirect */}
+        <Route path="/documentation" element={<Navigate to="/docs" replace />} />
         <Route
           path="/documentation/:docId"
           element={
@@ -107,7 +112,7 @@ export default function App() {
               inventory={VAULT}
               modules={VAULT_MODULES}
               docHref={vaultDocHref}
-              routes={{ docsIndex: '/documentation', components: '/components' }}
+              routes={{ docsIndex: '/docs', components: '/components' }}
             />
           }
         />

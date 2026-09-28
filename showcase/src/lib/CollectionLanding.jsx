@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { Button, Pill, ViewToggle } from '@kolkrabbi/kol-component'
+import { Link } from 'react-router-dom'
+import { Button, ViewToggle } from '@kolkrabbi/kol-component'
+import { DocHeader } from '@kolkrabbi/kol-workshop'
 import { Icon } from '@kolkrabbi/kol-icons'
 import BlockViewer from './BlockViewer.jsx'
 import DemoStage from './DemoStage.jsx'
@@ -113,9 +114,8 @@ export default function CollectionLanding({
   basePath,
   previewBase,
   srcDir,
-  hero, // { pill, title, lede, browseLabel, secondary: { label, to } }
+  hero, // { eyebrow, title, lede, browseLabel }
 }) {
-  const navigate = useNavigate()
   const [tab, setTab] = useState('featured')
   const [view, setView] = useState('list')
 
@@ -126,27 +126,15 @@ export default function CollectionLanding({
   return (
     <>
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="px-5 pt-20 pb-14 text-center md:pt-28">
-        <div className="mb-6 flex justify-center">
-          <Pill variant="subtle">{hero.pill}</Pill>
-        </div>
-        <h1 className="kol-prose-display">{hero.title}</h1>
-        <div className="flex justify-center">
-          <p className="kol-prose-lede max-w-[var(--kol-content-measure)]">{hero.lede}</p>
-        </div>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <Button variant="primary" iconRight="arrow-right" onClick={() => setTab('all')}>
-            {hero.browseLabel}
-          </Button>
-          <Button variant="primary" onClick={() => navigate(hero.secondary.to)}>
-            {hero.secondary.label}
-          </Button>
-        </div>
-      </section>
+      {/* An INDEX page in the space's own layout, not a landing (showcase
+        * refinement 2026-09-28, user: "sets and blocks behave like landing
+        * pages, but that looks weird if the sidebars are open"). The centred
+        * hero and its buttons went; the header is the doc header every other
+        * space root wears, and the shell owns the width and the x-padding. */}
+      <DocHeader eyebrow={hero.eyebrow} title={hero.title} lede={hero.lede} />
 
       {/* ── Category tab strip + Browse all ──────────────────── */}
-      <div className="mx-auto max-w-[var(--kol-content-shell)]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+      <div className="mt-10">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-fg-08 pb-4">
           {/* the THIRD copy of the tab construct — same control, sans look */}
           <DocTabs tabs={tabs} value={tab} onChange={setTab} variant="plain" ariaLabel="Category" />

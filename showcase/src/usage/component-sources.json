@@ -284,7 +284,7 @@
   "TabStrip": "packages/shell/src/TabStrip.jsx",
   "SettingsScaffold": "packages/shell/src/SettingsScaffold.jsx",
   "WalkthroughPanel": "packages/shell/src/WalkthroughPanel.jsx",
-  "ShortcutsOverlay": "packages/shell/src/ShortcutsOverlay.jsx",
+  "ShortcutsOverlay": "packages/component/src/organisms/ShortcutsOverlay.jsx",
   "Logomark": "packages/shell/src/Logomark.jsx",
   "CatalogPage": "packages/shell/src/CatalogPage.jsx",
   "SettingsShortcuts": "packages/shell/src/SettingsShortcuts.jsx",

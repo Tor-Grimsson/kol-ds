@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ShellLayout, ShellSidebar, RightRail, buildTagCounts, useTagMode, TagPath } from '@kolkrabbi/kol-workshop'
-import { Asset } from '@kolkrabbi/kol-brand/svg'
-import { IconFrame, SegmentedToggle, useScrollSpy } from '@kolkrabbi/kol-component'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { ShellLayout, ShellSidebar, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
+import { buildTagCounts } from '@kolkrabbi/kol-markdown'
+import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping } from './grouping.jsx'
-import { SHELL_ROUTES, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
-import { TAG_INVENTORY } from '../nav/vault.js'
-import { anyComponentsAdmitted } from '../nav/admitted.js'
-import { labelFromSlug } from '../nav/labels.js'
+import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
+import { APPS } from '../pages/Apps.jsx'
 import useEmbed from './useEmbed.js'
 
 /**
@@ -37,18 +35,8 @@ function useHeadings() {
     if (!main) return undefined
 
     const read = () => {
-      /* The anchor can sit on the heading OR on its wrapping section — DocKit's
-       * DocSection puts the id on <section> and the h2 inside it. Take either;
-       * skip headings with no anchor anywhere (nothing to link to).
-       *
-       * SPECIMENS ARE NOT THE PAGE (2026-07-30). A heading rendered INSIDE a
-       * demo or a type specimen is sample content — it describes the component
-       * being shown, not the document showing it. Two leaks came from counting
-       * them: the typography page's `<h2>Sample display-md</h2>` specimens sat
-       * inside `DocSection id="prose"`, so three TOC rows appeared all pointing
-       * at `#prose`; and the DocsToc demo renders its own `<section id>` + h3,
-       * injecting four rows named after another component's fake TOC. Anything
-       * inside a preview stage or a demo is excluded at the source. */
+      /* SPECIMENS ARE NOT THE PAGE (2026-07-30): a heading inside a demo or a
+       * type specimen is sample content, excluded at the source. */
       const found = [...main.querySelectorAll('h2, h3')]
         .filter((h) => !h.closest('[data-toc-skip], .kol-doc-figure, .kol-demo-stage'))
         .map((h) => {
@@ -70,149 +58,105 @@ function useHeadings() {
   return items
 }
 
-/* AutoToc — the showcase's adapter onto THE right rail (2026-08-01).
- *
- * It used to BE a right rail: its own sections, its own collapse state, its own
- * JSX. DocumentationReader had a second one that disagreed with it, so sections
- * appeared and vanished by route. Both are now `RightRail` from kol-workshop,
- * and this function does nothing but hand it data.
- *
- * It no longer returns null on an empty heading list — the rail is standardised
- * and its shape does not depend on what a page happens to contain. */
-function AutoToc() {
+const SEARCH_ITEMS = buildShellSearchItems()
+const searchHref = (q) => `/search?q=${encodeURIComponent(q)}`
+
+/* THE RIGHT RAIL, PER SPACE (showcase refinement 2026-09-28, user: "each space has its own
+ * content and the purpose of the right sidebar is to list that pages content and context"). It
+ * was handed `tags={[]}` and `related={[]}` on every route and the site's global top tags, so it
+ * read the same everywhere. Now: this page's headings, the tags and related links the PAGE
+ * publishes (`usePageMeta`), and the most-used tags of the SPACE you are in. A tag opens the
+ * search page filtered by it (`#tag`); the tag graph stays one click away. */
+function SpaceToc({ space }) {
   const headings = useHeadings()
   const navigate = useNavigate()
   const { openTagMode } = useTagMode()
-  const topTags = useMemo(() => buildTagCounts(TAG_INVENTORY).slice(0, 12), [])
-  /* The spy `DocsToc` already uses (kol-component). One observer, and the rail
-   * is handed the answer rather than computing a second one. */
-  const activeId = useScrollSpy(headings.map((h) => h.id), { root: '#main' })
+  const meta = usePageMetaValue()
+  const activeId = useScrollSpy(headings.map((h) => h.id), { root: SHELL_SCROLL_ROOT })
+  const topTags = useMemo(() => {
+    const inSpace = SEARCH_ITEMS.filter((i) => !space || i.space === space)
+    return buildTagCounts(inSpace.map((i) => ({ metadata: { tags: i.tags ?? [] } }))).slice(0, 10)
+  }, [space])
+  const label = SHELL_ROUTES.find((r) => r.id === space)?.label
 
   const actions = [
     { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
-    { id: 'docs', label: 'All documentation', icon: <Icon name="book-open" size={14} />, to: '/documentation' },
-    { id: 'components', label: 'View components', icon: <Icon name="grid" size={14} />, to: '/components' },
+    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <Icon name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
     { id: 'copy', label: 'Copy path', icon: <Icon name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(window.location.href) },
-    { id: 'graph', label: 'Graph view', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+    { id: 'graph', label: 'Tag graph', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
   ]
 
   return (
     <RightRail
       toc={headings}
       activeId={activeId}
-      related={[]}
+      related={(meta?.related ?? []).map((r) => ({ id: r.to, label: r.label, href: r.to }))}
       actions={actions}
       topTags={topTags}
-      tags={[]}
+      tags={meta?.tags ?? []}
       renderTag={(tag) => <TagPath tag={tag} />}
-      onTagClick={(tag) => openTagMode(tag)}
+      onTagClick={(tag) => navigate(searchHref(`#${tag}`))}
       icon={Icon}
     />
   )
 }
 
-/* The brand pair: KOLKRABBI wordmark in the logo slot (reserves the 256px rail
- * column, links home) + the WORKSHOP wordmark as the surface mark — the same
- * pair ShellLayout ships as its package default.
- *
- * This slot held a typed `KOL DS` span, on a comment claiming no drawn asset
- * existed. One did: `wordmark-workshop.svg`, in kol-brand the whole time,
- * auto-registered by AssetLoader's glob. The typed placeholder wrapped to two
- * lines in the header. Drawn asset over typed text, always. */
-function ShowcaseBrand() {
-  return (
-    <>
-      <Link to="/" className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
-        <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
-      </Link>
-      <Link to="/" className="shell-header-logo flex items-center text-emphasis">
-        <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
-      </Link>
-    </>
-  )
-}
+/* THE LEFT RAIL, PER SPACE (2026-09-28, user: the left sidebar "does not change between any of
+ * the spaces, it always just shows the same toggle atomic/function and atoms list expanded"). Each
+ * space draws its own; the Tools group is gone — the header already lists the spaces, and a
+ * second door to each was "one body of content, two doors". */
+const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path }))
 
-function ShowcaseSidebar({ onNavigate }) {
+function SpaceRail({ space, onNavigate }) {
   const { mode, setMode } = useGrouping()
   const cmpRoutes = useMemo(() => componentTreeRoutes(mode), [mode])
-  /* The admission gate reaches the two derived trees as well as the tabs — a
-   * grouping toggle over an empty tree, or a Documentation tree under a held
-   * Documentation tab, would be the same drift the gate exists to stop. */
-  const showComponents = anyComponentsAdmitted()
-  /* Per-CHAPTER now, not per-surface (2026-07-31): admitting Foundations opens
-   * chapter 01 inside Documentation rather than a top-level "Foundations"
-   * category. The label said SHOWCASE — the app's name, not a body of
-   * material — over a tree of chapters; see
-   * docs/operations/04-content-pipeline/02-taxonomy.md. */
-  /* ONE EYEBROW PER CATEGORY (user ruling 2026-08-01: *"OPERATIONS is a
-   * seperate category EYEBROW"*). The vault tree was rendered as a single
-   * `Documentation` sidebar holding every admitted chapter — so admitting
-   * Operations would have hung repo machinery under a label that says
-   * Documentation, collapsing the two top-level categories the vault actually
-   * has. Each group already carries its `category`; grouping by it is what the
-   * data was always shaped for.
-   *
-   * Order is the folder order — documentation before operations — so the rail
-   * matches `docs/` on disk rather than an accident of Map insertion. */
-  const vaultCategories = useMemo(() => {
-    const byCategory = new Map()
-    for (const g of admittedVaultTree()) {
-      if (!byCategory.has(g.category)) byCategory.set(g.category, [])
-      byCategory.get(g.category).push(g)
-    }
-    return [...byCategory.entries()].sort(([a], [b]) => String(a).localeCompare(String(b)))
-  }, [])
-  /* TOOLS is not a category — it is the routes the app serves (Blocks, Sets,
-   * References, Quarantine). Rendered only when it holds something. */
-  const showTools = SHELL_ROUTES.length > 0
-  return (
+  const vault = useMemo(() => admittedVaultTree(), [])
+  const one = (label, routes) => (
     <div className="shell-rail-stack">
-      {/* ORDER IS THE LAW, not an accident of JSX (2026-08-01; re-ruled
-        * 2026-08-09). `docs/documentation/04-compositions/02-shells.md:138`
-        * now states "Components · Tools · Documentation · Operations" — the
-        * user's 2026-08-09 ruling: in the design system's own showcase, the
-        * showcase sections outrank the written record. `validate:rails` R4b
-        * asserts the sequence, including the vault block's position. */}
-      {showComponents && (
-        <>
-          <div>
-            <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
-            <SegmentedToggle
-              options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]}
-              value={mode}
-              onChange={setMode}
-              size="sm"
-            />
-          </div>
-          <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" onNavigate={onNavigate} />
-        </>
-      )}
-      {showTools && (
-        <ShellSidebar
-          /* components stays out of Tools — its door is the header tab; a row
-           * here would be "one body of content, two doors" (the documented
-           * anti-pattern). Eyebrows carry no door at all since 2026-08-09 —
-           * the L1 row is a pure two-way toggle. */
-          routes={SHELL_ROUTES.filter((r) => r.id !== 'components')}
-          basePath="/"
-          label="Tools"
-          onNavigate={onNavigate}
-        />
-      )}
-      {/* THE VAULT — the repo's docs/ library as CATEGORY → chapter → page,
-        * filtered to admitted chapters. Below the showcase sections by the
-        * 2026-08-09 ruling. */}
-      {vaultCategories.map(([category, groups]) => (
-        <ShellSidebar
-          key={category}
-          routes={groups}
-          basePath="/"
-          label={labelFromSlug(category)}
-          onNavigate={onNavigate}
-        />
-      ))}
+      <ShellSidebar routes={routes} basePath="/" label={label} onNavigate={onNavigate} />
     </div>
   )
+
+  if (space === 'components') {
+    return (
+      <div className="shell-rail-stack">
+        <div>
+          <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
+          <SegmentedToggle
+            options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]}
+            value={mode}
+            onChange={setMode}
+            size="sm"
+          />
+        </div>
+        <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" onNavigate={onNavigate} />
+      </div>
+    )
+  }
+  if (space === 'blocks' || space === 'sets') {
+    const route = SHELL_ROUTES.find((r) => r.id === space)
+    return one(route.label, rowsOf(route.children ?? []))
+  }
+  if (space === 'docs') {
+    /* ONE PARENT, AS ON DISK (user: "documentation and operations are both documentations …
+     * in the repo its just called docs with documentation and operations sub folders"). The
+     * space is the parent; its sections are the guides, the live specimens, and the vault's two
+     * categories. */
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={rowsOf(DOCS_GUIDES)} basePath="/" label="Guides" onNavigate={onNavigate} />
+        <ShellSidebar routes={rowsOf(DOCS_SPECIMENS)} basePath="/" label="Specimens" onNavigate={onNavigate} />
+        <ShellSidebar routes={vault.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" onNavigate={onNavigate} />
+        <ShellSidebar routes={vault.filter((g) => g.category === 'operations')} basePath="/" label="Operations" onNavigate={onNavigate} />
+      </div>
+    )
+  }
+  if (space === 'apps') return one('Apps', APPS.map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/apps#${a.name}` })))
+  if (space === 'development') {
+    const tools = [...rowsOf(DEV_TOOLS), ...(import.meta.env.DEV ? [{ id: 'dev-lobby', label: 'Lobby (dev only)', path: '/lobby' }] : [])]
+    return one('Tools', tools)
+  }
+  return one('Spaces', rowsOf(SHELL_ROUTES))
 }
 
 const REPO = 'https://github.com/Tor-Grimsson/kol-ds'
@@ -220,25 +164,8 @@ const REPO = 'https://github.com/Tor-Grimsson/kol-ds'
 export default function ShellChrome() {
   const { pathname } = useLocation()
   const embedded = useEmbed()
-  const { openTagMode } = useTagMode()
-
-  /* ONE search (2026-07-30 reachability rule). Tags used to live in a second,
-   * separate search box inside the tag overlay — a global search NUMBER 2 that
-   * knew nothing about this one, and that you could only reach by first
-   * clicking a tag somewhere. Tags are rows here now, carrying an `action`
-   * instead of an `href` because selecting one toggles state rather than
-   * navigating. Built HERE rather than in shell-nav.js because the closure
-   * needs the tag context, and a plain module can't hold a hook. */
-  const searchItems = useMemo(() => {
-    const tags = buildTagCounts(TAG_INVENTORY).map(({ tag, count }) => ({
-      id: `tag-${tag}`,
-      label: tag,
-      sectionLabel: 'Tags',
-      keywords: [`${count} docs`],
-      action: () => openTagMode(tag),
-    }))
-    return [...buildShellSearchItems(), ...tags]
-  }, [openTagMode])
+  const { mode, setMode } = useGrouping()
+  const searchItems = SEARCH_ITEMS
 
   /* ?embed=1 — main content only, for iframing showcase pages into other
    * repos. The shell is fixed inset-0 with its own scroll regions, so embed
@@ -260,23 +187,24 @@ export default function ShellChrome() {
     <ShellLayout
       routes={SHELL_ROUTES}
       basePath="/"
-      brand={<ShowcaseBrand />}
       isActive={isShellTabActive(pathname)}
-      renderSidebar={({ onNavigate }) => <ShowcaseSidebar onNavigate={onNavigate} />}
-      defaultTocContent={<AutoToc />}
+      renderSidebar={({ activeRoute, onNavigate }) => <SpaceRail space={activeRoute?.id} onNavigate={onNavigate} />}
+      defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
+      searchPath="/search"
+      /* the second wordmark names the space you are in (user: "change the 'workshop' to say …
+       * 'design system' when you land … then it could change with the site's navigation") */
+      brandLabel={({ activeRoute }) => activeRoute?.label ?? 'Design system'}
+      settings={[{ label: 'Components', rows: [
+        { id: 'group', label: 'Group the rail by', render: () => (
+          <SettingsChoice value={mode} onChange={setMode} options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} />
+        ) },
+      ] }]}
       actions={
-        /* Was a hand-rolled <a> carrying its own copy of the icon-button box —
-         * a near-duplicate of the framework's private `iconBtnCls`, so the two
-         * drifted independently. Button renders an <a> when given `href`, and
-         * `size="lg"` takes the glyph off the ladder instead of a constant. */
-        <IconFrame
-          name="social-github"
-          variant="nav"
-          size="md"
-          href={REPO}
-          aria-label="GitHub"
-        />
+        /* Button renders an <a> when given `href`; `IconFrame` takes the glyph off the ladder. */
+        <Tooltip label="Source on GitHub">
+          <IconFrame name="social-github" variant="nav" size="md" href={REPO} aria-label="GitHub" />
+        </Tooltip>
       }
     />
   )

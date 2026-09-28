@@ -407,12 +407,17 @@ export default function Home() {
           <Button variant="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
             Source
           </Button>
+          {/* THE INSTALL LINE LIVES IN THE HERO (showcase refinement 2026-09-28 — user: "theres a
+            * rouge dollar sign $"). It sat after the hero with `-mt-10`, pulled up UNDER the
+            * hero's painted ground: the command text was covered, and only the `$` showed because
+            * its `opacity-50` gave it a stacking context of its own. Here it is part of the call
+            * to action, on its own line under the buttons. */}
+          <p className="w-full kol-mono-12 text-meta text-center">
+            <span className="text-subtle">$</span> npm i @kolkrabbi/kol-component
+          </p>
         </>}
         className="text-center"
       />
-      <p className="kol-mono-12 text-meta -mt-10 pb-16 text-center">
-        <span className="opacity-50">$</span> npm i @kolkrabbi/kol-component
-      </p>
 
       {/* ── Bento wall — full-bleed: capped live content, skeleton edges (shadcn model) ── */}
       <section className="relative overflow-hidden pb-24">

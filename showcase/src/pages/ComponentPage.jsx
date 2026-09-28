@@ -1,9 +1,10 @@
 import { useParams, Navigate } from 'react-router-dom'
-import { DocHeader, DocSection, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, DocsFrontmatter, usePageMeta } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
 import { DocTable } from '@kolkrabbi/kol-workshop'
 import { DEMOS } from '../lib/demos-registry.js'
-import { getComponentBySlug, CATEGORY_LABELS, slugify } from '../nav/registry.js'
+import { getComponentBySlug, CATEGORY_LABELS, slugify, TOP_LEVEL } from '../nav/registry.js'
+import { MDX_DOCS } from '../nav/vault.js'
 import { MEMBERSHIP_FLAGS } from '../nav/classification.js'
 import MdxDoc from '../lib/MdxDoc.jsx'
 import API_GEN from '../usage/api-tables.json'
@@ -21,6 +22,15 @@ const mdxFor = (name) => COMPONENT_DOCS[`../docs/components/${name}.mdx`] ?? nul
 export default function ComponentPage() {
   const { slug } = useParams()
   const c = getComponentBySlug(slug)
+  /* THE PAGE TELLS THE RIGHT RAIL WHAT IT IS ABOUT (2026-09-28): its tags, and its siblings in
+   * the same tier as related pages (members have no page of their own). The rail used to be
+   * handed empty lists. */
+  usePageMeta(c ? {
+    tags: MDX_DOCS.find((d) => d.href === `/components/${c.slug}`)?.metadata?.tags ?? [],
+    related: [
+      ...TOP_LEVEL.filter((x) => x.category === c.category && x.slug !== c.slug).slice(0, 6).map((x) => ({ to: `/components/${x.slug}`, label: x.name })),
+    ],
+  } : null)
   if (!c) return <Navigate to="/components" replace />
 
   /* R1 membership flag (classification.js MEMBERSHIP_FLAGS) — rendered above

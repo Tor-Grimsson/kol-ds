@@ -19,11 +19,10 @@ export default function Sets() {
       previewBase="/sets/preview"
       srcDir="sets"
       hero={{
-        pill: `${SETS.length} set${SETS.length === 1 ? '' : 's'}`,
-        title: 'Full-apparatus sets for KOL tools.',
+        eyebrow: `Sets · ${SETS.length}`,
+        title: 'Sets',
         lede: 'Whole compositions — a board, a dashboard — assembled from the published packages. Bigger than a block: copy the set, keep the wiring.',
         browseLabel: 'Browse all sets',
-        secondary: { label: 'View blocks', to: '/blocks' },
       }}
     />
   )

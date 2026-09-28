@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useState, useEffect, Suspense } fro
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
-import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsSections, SettingsSwitch, Tooltip, CloseButton } from '@kolkrabbi/kol-component'
+import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsSections, SettingsSwitch, Tooltip } from '@kolkrabbi/kol-component'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -527,11 +527,9 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             * settings, search settings, sidenav settings"). A right drawer over
             * the page, the same rows the apps' settings use (SettingsSections). */}
           <ShellDrawer open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} side="right" width={360}>
+            {/* the drawer draws its own close — no second one here */}
             <div className="flex flex-col gap-6 p-6">
-              <div className="flex items-center justify-between">
-                <span className="kol-doc-eyebrow">Settings</span>
-                <CloseButton onClick={() => setIsSettingsOpen(false)} />
-              </div>
+              <span className="kol-doc-eyebrow">Settings</span>
               <SettingsSections sections={settingsSections} labelWidth="auto" />
             </div>
           </ShellDrawer>

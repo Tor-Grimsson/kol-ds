@@ -109,7 +109,7 @@ export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_F
             <div className="flex flex-wrap gap-2">
               {values.map((f) => (
                 <Button key={f.value} variant="ghost" size="sm" pressed={f.selected} onClick={() => toggleToken(field, f.value)}>
-                  {f.value}<span className="ml-1.5 text-subtle">{f.count}</span>
+                  {f.value}<span className="ml-1.5 opacity-60">{f.count}</span>
                 </Button>
               ))}
             </div>

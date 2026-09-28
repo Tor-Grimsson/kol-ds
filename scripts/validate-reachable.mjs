@@ -19,7 +19,9 @@
  * page is verified in a browser per category instead of faked here.
  *
  *   E1  every ALL_ROUTES entry contributes a search row (parent, not just children)
- *   E2  tag rows reach the palette
+ *   E1b every rail page list (DOCS_GUIDES · DOCS_SPECIMENS · DEV_TOOLS) is searched, and every
+ *       path in it has a Route
+ *   E2  tags reach search — items carry them, and a tag in a rail opens the search page on it
  *   E3  the tag overlay's graph control is not gated behind having filters
  *   E4  every icon named in SHELL_ROUTES exists in the icon set
  */
@@ -49,40 +51,36 @@ if (!/ALL_ROUTES\.flatMap\(\(r\)\s*=>\s*\[/.test(buildFn)) {
   )
 }
 
-/* ── E1b · slot-pages are search rows too ──
- * Added 2026-07-31, in the same change that created the hole. Foundations and
- * Icons stopped being top-level surfaces and became chapter pages
- * (nav/chapter-pages.js), which is correct taxonomy — and it lifted them clean
- * out of ALL_ROUTES, the only list E1 knows about. A route that moves house
- * without telling search is the exact defect this file exists to stop, so the
- * gate has to know about the second house. */
-if (!/CHAPTER_PAGES/.test(buildFn)) {
-  errors.push(
-    'showcase/src/nav/shell-nav.js  buildShellSearchItems ignores CHAPTER_PAGES — ' +
-    'slot-pages live in a vault chapter, not in ALL_ROUTES, so without this ' +
-    'every live page inside a chapter is unfindable by name'
-  )
-}
-{
-  const pagesSrc = read('showcase/src/nav/chapter-pages.js')
-  const paths = [...pagesSrc.matchAll(/path:\s*'([^']+)'/g)].map((m) => m[1])
+/* ── E1b · the rail's page lists are search rows too ──
+ * Rewritten 2026-09-28. It guarded CHAPTER_PAGES — the live pages (Foundations, Icons) filed
+ * inside vault chapters — until that map was emptied on 2026-08-01 and the pages became orphans:
+ * a route, no rail row, findable by URL and ⌘K only. The Docs and Development spaces list them in
+ * their own rail sections now (DOCS_GUIDES · DOCS_SPECIMENS · DEV_TOOLS), so the gate guards those
+ * lists: each is searched, and each path has a Route — no row that leads nowhere. */
+for (const list of ['DOCS_GUIDES', 'DOCS_SPECIMENS', 'DEV_TOOLS']) {
+  if (!new RegExp(`${list}\\.map\\(`).test(buildFn)) {
+    errors.push(`showcase/src/nav/shell-nav.js  buildShellSearchItems ignores ${list} — a page in a rail must be findable by name`)
+  }
+  const block = navSrc.slice(navSrc.indexOf(`export const ${list} = [`), navSrc.indexOf(']', navSrc.indexOf(`export const ${list} = [`)))
   const appSrc = read('showcase/src/App.jsx')
-  for (const p of paths) {
-    if (!appSrc.includes(`path="${p}"`)) {
-      errors.push(
-        `showcase/src/nav/chapter-pages.js  slot-page ${p} has no matching Route in ` +
-        'App.jsx — the sidebar would offer a row that leads nowhere'
-      )
+  for (const [, p] of block.matchAll(/path:\s*'([^']+)'/g)) {
+    const route = p === '/icons' ? '/icons/:set?' : p
+    if (!appSrc.includes(`path="${route}"`)) {
+      errors.push(`showcase/src/nav/shell-nav.js  ${list} row ${p} has no matching Route in App.jsx — the rail would offer a row that leads nowhere`)
     }
   }
 }
 
-/* ── E2 · tags reach the palette ── */
+/* ── E2 · tags reach search ──
+ * Rewritten 2026-09-28. Tags were palette rows with an `action` that opened the in-place tag
+ * browser — the "weird nested overlay" the user asked to retire. A tag is a filter of THE search
+ * now: items carry their tags (a `#tag` token or the Tags facet finds them), and a tag clicked in
+ * a rail opens the search page on it. Either half missing and tags are unreachable again. */
 const chromeSrc = read('showcase/src/lib/ShellChrome.jsx')
-if (!/buildTagCounts\(/.test(chromeSrc) || !/action:\s*\(\)\s*=>\s*openTagMode\(/.test(chromeSrc)) {
+if (!/tags:/.test(buildFn) || !/searchHref\(`#\$\{tag\}`\)/.test(chromeSrc)) {
   errors.push(
-    'showcase/src/lib/ShellChrome.jsx  tag rows missing from searchItems — ' +
-    'tags need an `action` row in THE palette, not a second search box'
+    'showcase/src/lib/ShellChrome.jsx  tags do not reach search — items must carry `tags` and a ' +
+    'rail tag must open the search page on `#tag`'
   )
 }
 

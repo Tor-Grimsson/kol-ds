@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { Table } from '@kolkrabbi/kol-component'
 import { CATEGORIES, ADMITTED } from '../nav/admitted.js'
 import { ALL_ROUTES } from '../nav/shell-nav.js'
 import { TOP_LEVEL } from '../nav/registry.js'
@@ -30,42 +31,40 @@ const ruleDoc = (path) => {
 const surfaceRoutes = (ids) => ALL_ROUTES.filter((r) => ids.includes(r.id))
 const componentsIn = (keys) => TOP_LEVEL.filter((c) => keys.includes(c.category))
 
-function HeldRow({ category }) {
-  const surfaces = surfaceRoutes(category.surfaces)
-  const components = componentsIn(category.categories)
-  const doc = ruleDoc(category.rule)
+/* `code` in the ledger's prose renders as the inline chip, never as literal backticks */
+const withCode = (text = '') => text.split(/(`[^`]+`)/g).map((part, i) =>
+  part.startsWith('`') && part.endsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part)
 
-  return (
-    <tr>
-      <td className="align-top">
-        <span className="kol-mono-14 text-emphasis">{category.label}</span>
-        <span className="kol-helper-12 block text-subtle">{category.key}</span>
-      </td>
-      <td className="align-top">
-        <div className="flex flex-col gap-1">
-          {surfaces.map((r) => (
-            <Link key={r.id} to={r.path} className="kol-mono-12">{r.path}</Link>
-          ))}
-          {components.length > 0 && (
-            <span className="kol-helper-12 text-subtle">
-              {components.length} component{components.length === 1 ? '' : 's'}
-            </span>
-          )}
-        </div>
-      </td>
-      <td className="align-top">
-        <span className="kol-helper-12">{category.awaits}</span>
-        {doc && (
-          <Link to={doc.href} className="kol-mono-12 mt-1 block">{doc.title}</Link>
-        )}
-        {!doc && category.rule && <span className="kol-mono-12 mt-1 block text-subtle">{category.rule}</span>}
-      </td>
-      <td className="align-top kol-helper-12">{category.why}</td>
-    </tr>
-  )
-}
+/* THE LEDGER IS THE TABLE COMPONENT (showcase refinement 2026-09-28 — user: "someone just has
+ * to have inlined a illegal table, and text styles"). It was a bare <table class="kol-table">
+ * with no wrapper, so the seams never applied, and every cell typed itself with kol-mono / kol-helper
+ * utilities; the rule text printed its backticks. `Table` owns the chrome and the cell type now. */
+const columns = (openLabel, ruleLabel, whyLabel) => [
+  { accessor: 'label', header: 'Category', render: (c) => <>{c.label}<span className="block text-subtle">{c.key}</span></> },
+  { accessor: 'opens', header: openLabel, render: (c) => {
+    const surfaces = surfaceRoutes(c.surfaces)
+    const n = componentsIn(c.categories).length
+    return (
+      <span className="flex flex-col gap-1">
+        {surfaces.map((r) => <Link key={r.id} to={r.path}>{r.path}</Link>)}
+        {n > 0 && <span className="text-subtle">{n} component{n === 1 ? '' : 's'}</span>}
+      </span>
+    )
+  } },
+  { accessor: 'awaits', header: ruleLabel, className: 'kol-table-cell-meta-strong', render: (c) => {
+    const doc = ruleDoc(c.rule)
+    return (
+      <span className="flex flex-col gap-1">
+        <span>{withCode(c.awaits)}</span>
+        {doc ? <Link to={doc.href}>{doc.title}</Link> : c.rule ? <span className="text-subtle">{c.rule}</span> : null}
+      </span>
+    )
+  } },
+  { accessor: 'why', header: whyLabel, className: 'kol-table-cell-meta', render: (c) => withCode(c.why) },
+]
 
 export default function Quarantine() {
+  usePageMeta({ tags: [], related: [] })
   const held = CATEGORIES.filter((c) => !ADMITTED.has(c.key))
   const admitted = CATEGORIES.filter((c) => ADMITTED.has(c.key))
   const heldComponents = componentsIn(held.flatMap((c) => c.categories)).length
@@ -73,38 +72,22 @@ export default function Quarantine() {
   return (
     <>
       <DocHeader
-        eyebrow="Quarantine"
+        eyebrow="Development · Quarantine"
         title="Held until its rule is written."
         lede={`${held.length} of ${CATEGORIES.length} categories are out of the sidebar — ${heldComponents} components and ${held.flatMap((c) => c.surfaces).length} surfaces. Nothing here is deleted or broken: every route below still resolves and still answers ⌘K by name. It is held out of the tree until the rule it waits on is written, and then read against it.`}
       />
 
-      <DocSection title={`Admitted — ${admitted.length}`}>
-        <div className="overflow-x-auto">
-          <table className="kol-table w-full">
-            <thead>
-              <tr><th>category</th><th>opens</th><th>on the rule</th><th>why first</th></tr>
-            </thead>
-            <tbody>
-              {admitted.map((c) => <HeldRow key={c.key} category={c} />)}
-            </tbody>
-          </table>
-        </div>
+      <DocSection id="admitted" title={`Admitted — ${admitted.length}`}>
+        <Table width="column" columns={columns('Opens', 'On the rule', 'Why first')} rows={admitted.map((c) => ({ ...c, id: c.key }))} />
       </DocSection>
 
-      <DocSection title={`Held — ${held.length}`}>
-        <div className="overflow-x-auto">
-          <table className="kol-table w-full">
-            <thead>
-              <tr><th>category</th><th>holding</th><th>awaits</th><th>note</th></tr>
-            </thead>
-            <tbody>
-              {held.map((c) => <HeldRow key={c.key} category={c} />)}
-            </tbody>
-          </table>
-        </div>
-      </DocSection>
+      {held.length > 0 && (
+        <DocSection id="held" title={`Held — ${held.length}`}>
+          <Table width="column" columns={columns('Holding', 'Awaits', 'Note')} rows={held.map((c) => ({ ...c, id: c.key }))} />
+        </DocSection>
+      )}
 
-      <DocSection title="How a category comes back">
+      <DocSection id="how" title="How a category comes back">
         <p>
           One line in <code>showcase/src/nav/admitted.js</code> — its key into <code>ADMITTED</code>.
           Sending it back out is the same line, removed. Nothing else moves, because the sidebar is
