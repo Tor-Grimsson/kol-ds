@@ -1,0 +1,33 @@
+{
+  "name": "markdown",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "kol-markdown alone, in the tool frame, over workshop-fixture — pick or paste a doc and see what the engine reads: the rendered page, frontmatter (and its lossless round-trip), structure, tags, the inventory entry, and the corpus-wide counts. Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-brand": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-markdown": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-workshop": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "workshop-fixture": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}
