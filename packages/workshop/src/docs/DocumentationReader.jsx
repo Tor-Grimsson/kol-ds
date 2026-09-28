@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { CodeBlock, Divider, Icon, Table, useScrollSpy } from '@kolkrabbi/kol-component'
-import { ShellTocContext, RightRail } from '../shell'
+import { ShellTocContext, RightRail, SHELL_SCROLL_ROOT } from '../shell'
 import { useTagMode } from '../tags'
 import TagPath from '../tags/TagPath.jsx'
 import { parseDocsMarkdown, isIndexFile } from '@kolkrabbi/kol-markdown'
@@ -22,10 +22,10 @@ import { renderInlineTokens } from './render-tokens.jsx'
 const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, componentsHref, docFilePath, topTags = [] }) => {
   const navigate = useNavigate()
   const { openTagMode } = useTagMode()
-  /* `#main` is the scroll container — the shell is `fixed inset-0` with its own
-   * scroll regions, so a viewport-rooted observer never fires. Same call the
+  /* The shell's one scroll region is the observer root — the shell is `fixed inset-0` with its own
+   * scroll region, so a viewport-rooted observer never fires. Same call the
    * other rail makes; the rail is handed the answer, never a second observer. */
-  const activeId = useScrollSpy((toc ?? []).map((h) => h.id), { root: '#main' })
+  const activeId = useScrollSpy((toc ?? []).map((h) => h.id), { root: SHELL_SCROLL_ROOT })
 
   const actions = [
     { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   ShellLayout,
@@ -7,39 +7,55 @@ import {
   TagModeProvider,
   TagPath,
   useTagMode,
+  usePageMeta,
+  usePageMetaValue,
   DocumentationReader,
   DocHeader,
   DocSection,
-  buildTagCounts,
-  matchSearchItems,
+  SearchPage,
+  SHELL_SCROLL_ROOT,
+  ShellNavCollapsedContext,
+  ShellTocCollapsedContext,
+  ShellContentWidthContext,
 } from '@kolkrabbi/kol-workshop'
-import { Input, SegmentedToggle, Table, Tag, useScrollSpy } from '@kolkrabbi/kol-component'
+import { buildTagCounts } from '@kolkrabbi/kol-markdown'
+import { SegmentedToggle, SettingsChoice, Table, Tag, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { CORPUS, DOC_MODULES, SPACES, COMPONENTS, BLOCKS, SETS, docHref, componentHref } from 'workshop-fixture'
+import { CORPUS, DOC_MODULES, SPACES, DEV_PAGES, COMPONENTS, BLOCKS, SETS, componentHref, docSpace } from 'workshop-fixture'
 
-/* apps/workshop — kol-workshop's shell over workshop-fixture, wired the way the showcase wires it
- * TODAY (showcase/src/lib/ShellChrome.jsx): one header of spaces, a left rail stacked Group by ·
- * Components · Tools · Documentation · Operations · Development on every route, the auto-TOC right
- * rail, and the palette on ⌘K. It reproduces the current structure on purpose — the refinement
- * plan (plan-2026-09-28-showcase-refinement) changes it here first. */
+/* apps/workshop — kol-workshop's shell over workshop-fixture, built to the space table
+ * (plan-2026-09-28-showcase-refinement § 3b): each space owns its left rail and its right rail,
+ * every space root is an index page in the space's own layout, `/` is the only landing, search
+ * is the header's palette plus the page Enter opens, and the second wordmark names the space. */
 
-const { inventory, tree, componentTree, shellSearchItems } = CORPUS
+const { inventory, tree, componentTree, searchItems, hrefOf } = CORPUS
+const DOCS = inventory.filter((d) => docSpace(d.file) === 'docs')
+const DEV_DOCS = inventory.filter((d) => docSpace(d.file) === 'development')
+const titleCase = (s) => s.replace(/^./, (x) => x.toUpperCase())
 
-/* the tag browser reads docs AND component pages, as the showcase's TAG_INVENTORY does */
+const APPS = [
+  { key: 'workshop', port: 5183, what: 'This shell over the fixture.' },
+  { key: 'markdown', port: 5184, what: 'kol-markdown over the fixture.' },
+  { key: 'search', port: 5185, what: 'kol-search over the fixture.' },
+]
+const appHref = (a) => (import.meta.env.DEV ? `http://localhost:${a.port}/` : `/apps/${a.key}/`)
+
+/* the tag browser (graph view) reads docs and component pages */
 const TAG_INVENTORY = [
   ...inventory,
   ...COMPONENTS.map((c) => ({ id: `component-${c.slug}`, title: c.name, file: `components/${c.slug}`, metadata: { title: c.name, tags: c.tags }, headings: [] })),
 ]
-const tagDocHref = (id) => (id.startsWith('component-') ? componentHref(id.slice('component-'.length)) : docHref(id))
+const tagDocHref = (id) => (id.startsWith('component-') ? componentHref(id.slice('component-'.length)) : hrefOf(id))
+const searchHref = (q) => `/search?q=${encodeURIComponent(q)}`
 
 const FUNCTIONS = [...new Set(COMPONENTS.map((c) => c.fn))].sort()
 const functionTree = FUNCTIONS.map((fn) => ({
   id: `fn-${fn}`,
-  label: fn.replace(/^./, (x) => x.toUpperCase()),
+  label: titleCase(fn),
   children: COMPONENTS.filter((c) => c.fn === fn).map((c) => ({ id: `cmp-${c.slug}`, label: c.name, path: componentHref(c.slug) })),
 }))
 
-/* ── the right rail: headings read off the rendered page, as the showcase's AutoToc does ── */
+/* ── the right rail: this page's headings, the page's own context, and the space's tags ── */
 function useHeadings() {
   const { pathname } = useLocation()
   const [items, setItems] = useState([])
@@ -63,85 +79,91 @@ function useHeadings() {
   return items
 }
 
-function AutoToc() {
+function SpaceToc({ space }) {
   const headings = useHeadings()
   const navigate = useNavigate()
   const { openTagMode } = useTagMode()
-  const topTags = useMemo(() => buildTagCounts(TAG_INVENTORY).slice(0, 12), [])
-  const activeId = useScrollSpy(headings.map((h) => h.id), { root: '#main' })
+  const meta = usePageMetaValue()
+  const activeId = useScrollSpy(headings.map((h) => h.id), { root: SHELL_SCROLL_ROOT })
+  /* the space's own most-used tags, not the whole site's */
+  const topTags = useMemo(() => {
+    const inSpace = searchItems.filter((i) => !space || i.space === space)
+    return buildTagCounts(inSpace.map((i) => ({ metadata: { tags: i.tags ?? [] } }))).slice(0, 10)
+  }, [space])
+  const label = SPACES.find((s) => s.id === space)?.label
   const actions = [
     { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
-    { id: 'docs', label: 'All documentation', icon: <Icon name="book-open" size={14} />, to: '/documentation' },
-    { id: 'components', label: 'View components', icon: <Icon name="grid" size={14} />, to: '/components' },
-    { id: 'graph', label: 'Graph view', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <Icon name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
+    { id: 'graph', label: 'Tag graph', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
   ]
   return (
     <RightRail
       toc={headings}
       activeId={activeId}
-      related={[]}
+      related={(meta?.related ?? []).map((r) => ({ id: r.to, label: r.label, href: r.to }))}
       actions={actions}
       topTags={topTags}
-      tags={[]}
+      tags={meta?.tags ?? []}
       renderTag={(tag) => <TagPath tag={tag} />}
-      onTagClick={(tag) => openTagMode(tag)}
+      onTagClick={(tag) => navigate(searchHref(`#${tag}`))}
       icon={Icon}
     />
   )
 }
 
-/* ── the left rail: the same stack on every route ── */
-function Sidebar({ onNavigate }) {
-  const [mode, setMode] = useState('atomic')
-  const categories = ['documentation', 'operations', 'development']
-  return (
-    <div className="shell-rail-stack">
-      <div>
-        <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
-        <SegmentedToggle
-          options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]}
-          value={mode}
-          onChange={setMode}
-          size="sm"
-        />
+/* ── the left rail: one per space ── */
+const flat = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path }))
+
+function SpaceRail({ space, mode, setMode, onNavigate }) {
+  if (space === 'components') {
+    return (
+      <div className="shell-rail-stack">
+        <div>
+          <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
+          <SegmentedToggle options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} value={mode} onChange={setMode} size="sm" />
+        </div>
+        <ShellSidebar routes={mode === 'atomic' ? componentTree : functionTree} basePath="/" label="Components" onNavigate={onNavigate} />
       </div>
-      <ShellSidebar routes={mode === 'atomic' ? componentTree : functionTree} basePath="/" label="Components" onNavigate={onNavigate} />
-      <ShellSidebar routes={SPACES.filter((s) => s.id !== 'components')} basePath="/" label="Tools" onNavigate={onNavigate} />
-      {categories.map((cat) => (
-        <ShellSidebar
-          key={cat}
-          routes={tree.filter((g) => g.category === cat)}
-          basePath="/"
-          label={cat.replace(/^./, (x) => x.toUpperCase())}
-          onNavigate={onNavigate}
-        />
-      ))}
-    </div>
-  )
+    )
+  }
+  const one = (label, routes) => <div className="shell-rail-stack"><ShellSidebar routes={routes} basePath="/" label={label} onNavigate={onNavigate} /></div>
+  if (space === 'blocks') return one('Blocks', flat(BLOCKS.map((b) => ({ id: `b-${b.key}`, label: b.title, path: `/blocks/${b.key}` }))))
+  if (space === 'sets') return one('Sets', flat(SETS.map((s) => ({ id: `s-${s.key}`, label: s.title, path: `/sets/${s.key}` }))))
+  if (space === 'apps') return one('Apps', APPS.map((a) => ({ id: `a-${a.key}`, label: a.key, path: `/apps#${a.key}` })))
+  if (space === 'docs') {
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={tree.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" onNavigate={onNavigate} />
+        <ShellSidebar routes={tree.filter((g) => g.category === 'operations')} basePath="/" label="Operations" onNavigate={onNavigate} />
+      </div>
+    )
+  }
+  if (space === 'development') {
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={DEV_PAGES.map((p) => ({ id: p.id, label: p.title, path: p.href }))} basePath="/" label="Tools" onNavigate={onNavigate} />
+        <ShellSidebar routes={tree.filter((g) => g.category === 'development')} basePath="/" label="Records" onNavigate={onNavigate} />
+      </div>
+    )
+  }
+  return one('Spaces', SPACES.map((s) => ({ id: s.id, label: s.label, path: s.path })))
 }
 
 function Chrome() {
-  const { pathname } = useLocation()
-  const { openTagMode } = useTagMode()
-  const searchItems = useMemo(() => {
-    const tags = buildTagCounts(TAG_INVENTORY).map(({ tag, count }) => ({
-      id: `tag-${tag}`,
-      label: tag,
-      sectionLabel: 'Tags',
-      keywords: [`${count} docs`],
-      action: () => openTagMode(tag),
-    }))
-    return [...shellSearchItems, ...tags]
-  }, [openTagMode])
-
+  const [mode, setMode] = useState('atomic')
+  const settings = [{ label: 'Components', rows: [
+    { id: 'group', label: 'Group the rail by', render: () => <SettingsChoice value={mode} onChange={setMode} options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} /> },
+  ] }]
   return (
     <ShellLayout
       routes={SPACES}
       basePath="/"
-      isActive={(href) => pathname === href || pathname.startsWith(`${href}/`)}
-      renderSidebar={({ onNavigate }) => <Sidebar onNavigate={onNavigate} />}
-      defaultTocContent={<AutoToc />}
+      renderSidebar={({ activeRoute, onNavigate }) => <SpaceRail space={activeRoute?.id} mode={mode} setMode={setMode} onNavigate={onNavigate} />}
+      defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
+      searchPath="/search"
+      brandLabel={({ activeRoute }) => activeRoute?.label ?? 'Design system'}
+      settings={settings}
     />
   )
 }
@@ -149,31 +171,43 @@ function Chrome() {
 /* ── pages ── */
 const Page = ({ children }) => <div className="flex flex-col gap-10 pb-24">{children}</div>
 const linkCls = 'kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64'
+const LinkList = ({ items }) => (
+  <ul className="flex flex-col gap-2">
+    {items.map(([to, label, note]) => (
+      <li key={to} className="kol-doc-body"><Link className={linkCls} to={to}>{label}</Link>{note ? <span className="text-subtle"> — {note}</span> : null}</li>
+    ))}
+  </ul>
+)
 
+/* THE LANDING — the only page without rails, spanning the track */
 function Home() {
+  const setNav = useContext(ShellNavCollapsedContext)
+  const setToc = useContext(ShellTocCollapsedContext)
+  const setWidth = useContext(ShellContentWidthContext)
+  useLayoutEffect(() => {
+    setNav?.(true); setToc?.(true); setWidth?.('shell')
+    return () => { setNav?.(false); setToc?.(false); setWidth?.('canvas') }
+  }, [setNav, setToc, setWidth])
   return (
     <Page>
       <DocHeader
         eyebrow="Fixture"
         title="The workshop shell, alone."
-        lede="kol-workshop's header, rails, palette, tag browser and reader over an invented corpus — 19 docs, 24 components, 3 blocks, 2 sets. Nothing here is the real design system."
+        lede="kol-workshop's header, rails, palette, reader and search page over an invented corpus — 19 docs, 24 components, 3 blocks, 2 sets. Nothing here is the real design system."
       />
       <DocSection id="spaces" title="Spaces">
-        <ul className="flex flex-col gap-2">
-          {SPACES.map((s) => (
-            <li key={s.id}><Link className={linkCls} to={s.path}>{s.label}</Link></li>
-          ))}
-        </ul>
+        <LinkList items={SPACES.map((s) => [s.path, s.label])} />
       </DocSection>
     </Page>
   )
 }
 
 function Components() {
+  usePageMeta({ tags: [], related: [] })
   const tiers = ['Atoms', 'Molecules', 'Organisms', 'Utilities']
   return (
     <Page>
-      <DocHeader eyebrow="Fixture · Components" title="Components" lede={`${COMPONENTS.length} invented components across four tiers.`} />
+      <DocHeader eyebrow="Components" title="Components" lede={`${COMPONENTS.length} invented components across four tiers.`} />
       {tiers.map((tier) => (
         <DocSection key={tier} id={tier.toLowerCase()} title={tier}>
           <Table
@@ -194,6 +228,12 @@ function Components() {
 function ComponentPage() {
   const { slug } = useParams()
   const c = COMPONENTS.find((x) => x.slug === slug)
+  const usedIn = c ? [
+    ...BLOCKS.filter((b) => b.uses.includes(c.name)).map((b) => ({ to: `/blocks/${b.key}`, label: `Block · ${b.title}` })),
+    ...SETS.filter((s) => s.members.includes(c.name)).map((s) => ({ to: `/sets/${s.key}`, label: `Set · ${s.title}` })),
+  ] : []
+  const siblings = c ? COMPONENTS.filter((x) => x.category === c.category && x.slug !== c.slug).slice(0, 5).map((x) => ({ to: componentHref(x.slug), label: x.name })) : []
+  usePageMeta(c ? { tags: c.tags, related: [...usedIn, ...siblings] } : null)
   if (!c) return <Navigate to="/components" replace />
   return (
     <Page>
@@ -212,28 +252,26 @@ function ComponentPage() {
           />
         ) : <p className="kol-doc-body">No props in the fixture.</p>}
       </DocSection>
-      <DocSection id="used-in" title="Used in">
-        <ul className="flex flex-col gap-2">
-          {[...BLOCKS.filter((b) => b.uses.includes(c.name)).map((b) => [`/blocks/${b.key}`, `Block · ${b.title}`]),
-            ...SETS.filter((s) => s.members.includes(c.name)).map((s) => [`/sets/${s.key}`, `Set · ${s.title}`])]
-            .map(([to, label]) => <li key={to}><Link className={linkCls} to={to}>{label}</Link></li>)}
-        </ul>
-      </DocSection>
+      {usedIn.length > 0 && (
+        <DocSection id="used-in" title="Used in">
+          <LinkList items={usedIn.map((u) => [u.to, u.label])} />
+        </DocSection>
+      )}
     </Page>
   )
 }
 
+/* Blocks and Sets roots: index pages in the space's own layout, not landings */
 function Collection({ kind }) {
+  usePageMeta({ tags: [], related: [] })
   const list = kind === 'blocks' ? BLOCKS : SETS
-  const title = kind === 'blocks' ? 'Blocks' : 'Sets'
+  const title = titleCase(kind)
   return (
     <Page>
-      <DocHeader eyebrow={`Fixture · ${title}`} title={title} lede={`${list.length} invented ${kind}.`} />
-      {list.map((item) => (
-        <DocSection key={item.key} id={item.key} title={item.title} lede={item.description}>
-          <Link className={linkCls} to={`/${kind}/${item.key}`}>Open</Link>
-        </DocSection>
-      ))}
+      <DocHeader eyebrow={title} title={title} lede={`${list.length} invented ${kind}.`} />
+      <DocSection id="all" title={`All ${kind}`}>
+        <LinkList items={list.map((item) => [`/${kind}/${item.key}`, item.title, item.description])} />
+      </DocSection>
     </Page>
   )
 }
@@ -241,24 +279,48 @@ function Collection({ kind }) {
 function CollectionItem({ kind }) {
   const { key } = useParams()
   const item = (kind === 'blocks' ? BLOCKS : SETS).find((x) => x.key === key)
+  const names = item ? (item.uses ?? item.members) : []
+  const members = names.map((n) => COMPONENTS.find((x) => x.name === n)).filter(Boolean)
+  usePageMeta(item ? { tags: [...new Set(members.flatMap((m) => m.tags))], related: members.map((m) => ({ to: componentHref(m.slug), label: m.name })) } : null)
   if (!item) return <Navigate to={`/${kind}`} replace />
-  const names = item.uses ?? item.members
   return (
     <Page>
       <DocHeader eyebrow={kind === 'blocks' ? 'Block' : 'Set'} title={item.title} lede={item.description} />
       <DocSection id="members" title={kind === 'blocks' ? 'Built from' : 'Members'}>
-        <ul className="flex flex-col gap-2">
-          {names.map((n) => {
-            const c = COMPONENTS.find((x) => x.name === n)
-            return <li key={n}>{c ? <Link className={linkCls} to={componentHref(c.slug)}>{n}</Link> : n}</li>
-          })}
-        </ul>
+        <LinkList items={members.map((m) => [componentHref(m.slug), m.name, m.description])} />
       </DocSection>
     </Page>
   )
 }
 
+function chapterList(category) {
+  return tree.filter((g) => g.category === category).map((g) => [g.path ?? g.children[0]?.path, g.label, `${g.children.length} page${g.children.length === 1 ? '' : 's'}`])
+}
+
+function DocsIndex() {
+  usePageMeta({ tags: [], related: [] })
+  return (
+    <Page>
+      <DocHeader eyebrow="Docs" title="Docs" lede="The written record — how the system is built, and how the repo around it runs." />
+      <DocSection id="documentation" title="Documentation"><LinkList items={chapterList('documentation')} /></DocSection>
+      <DocSection id="operations" title="Operations"><LinkList items={chapterList('operations')} /></DocSection>
+    </Page>
+  )
+}
+
+function Development() {
+  usePageMeta({ tags: [], related: [] })
+  return (
+    <Page>
+      <DocHeader eyebrow="Development" title="Development" lede="What the repo measures about itself — generated tools, and dated audits and reports." />
+      <DocSection id="tools" title="Tools"><LinkList items={DEV_PAGES.map((p) => [p.href, p.title, p.description])} /></DocSection>
+      <DocSection id="records" title="Audits and reports"><LinkList items={chapterList('development')} /></DocSection>
+    </Page>
+  )
+}
+
 function References() {
+  usePageMeta({ tags: [], related: [] })
   const rows = COMPONENTS.map((c) => ({
     id: c.slug,
     name: c.name,
@@ -267,7 +329,7 @@ function References() {
   })).map((r) => ({ ...r, total: r.blocks + r.sets }))
   return (
     <Page>
-      <DocHeader eyebrow="Fixture · References" title="References" lede="Who uses what — counted from the fixture's blocks and sets." />
+      <DocHeader eyebrow="Development" title="References" lede="Who uses what — counted from the fixture's blocks and sets." />
       <DocSection id="edges" title="Components by use">
         <Table
           width="column"
@@ -284,42 +346,24 @@ function References() {
   )
 }
 
-/* the search page as the showcase has it today: one query, groups by whatever sectionLabel each row carries */
-function SearchPage() {
-  const [q, setQ] = useState('')
-  const hits = matchSearchItems(shellSearchItems, q)
-  const groups = [...hits.reduce((m, h) => m.set(h.sectionLabel, [...(m.get(h.sectionLabel) ?? []), h]), new Map())]
+function Quarantine() {
+  usePageMeta({ tags: [], related: [] })
   return (
     <Page>
-      <DocHeader eyebrow="Fixture · Search" title="Search" lede="Today's page — the substring matcher, grouped by section." />
-      <DocSection id="query" title="Query">
-        <Input value={q} placeholder="Search…" onChange={(e) => setQ(e.target.value)} aria-label="Search the fixture" />
-      </DocSection>
-      {groups.map(([section, rows]) => (
-        <DocSection key={section} id={`g-${section}`} title={`${section} (${rows.length})`}>
-          <ul className="flex flex-col gap-2">
-            {rows.map((r) => <li key={r.id}><Link className={linkCls} to={r.href}>{r.label}</Link></li>)}
-          </ul>
-        </DocSection>
-      ))}
+      <DocHeader eyebrow="Development" title="Quarantine" lede="Nothing is held in the fixture. The showcase's page records what its sidebar admits, and why." />
     </Page>
   )
 }
 
 function Apps() {
-  const apps = [
-    ['workshop', 5183, 'This shell over the fixture'],
-    ['markdown', 5184, 'kol-markdown over the fixture'],
-    ['search', 5185, 'kol-search over the fixture'],
-  ]
-  const href = (name, port) => (import.meta.env.DEV ? `http://localhost:${port}/` : `/apps/${name}/`)
+  usePageMeta({ tags: [], related: [] })
   return (
     <Page>
-      <DocHeader eyebrow="Fixture · Apps" title="Apps" lede="The three apps that share workshop-fixture." />
+      <DocHeader eyebrow="Apps" title="Apps" lede="The three apps that share workshop-fixture." />
       <DocSection id="apps" title="Apps">
         <ul className="flex flex-col gap-2">
-          {apps.map(([name, port, what]) => (
-            <li key={name} className="kol-doc-body"><a className={linkCls} href={href(name, port)}>apps/{name}</a> — {what}</li>
+          {APPS.map((a) => (
+            <li key={a.key} id={a.key} className="kol-doc-body"><a className={linkCls} href={appHref(a)}>apps/{a.key}</a> — {a.what}</li>
           ))}
         </ul>
       </DocSection>
@@ -327,13 +371,9 @@ function Apps() {
   )
 }
 
-function Quarantine() {
-  return (
-    <Page>
-      <DocHeader eyebrow="Fixture · Quarantine" title="Held until its rule is written." lede="Nothing is held in the fixture — the page exists because the showcase has it." />
-    </Page>
-  )
-}
+const reader = (docs) => (
+  <DocumentationReader inventory={docs} modules={DOC_MODULES} docHref={hrefOf} routes={{ docsIndex: '/docs', components: '/components' }} />
+)
 
 export default function App() {
   return (
@@ -346,18 +386,16 @@ export default function App() {
         <Route path="/blocks/:key" element={<CollectionItem kind="blocks" />} />
         <Route path="/sets" element={<Collection kind="sets" />} />
         <Route path="/sets/:key" element={<CollectionItem kind="sets" />} />
-        <Route path="/references" element={<References />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/docs" element={<DocsIndex />} />
+        <Route path="/docs/:docId" element={reader(DOCS)} />
+        <Route path="/development" element={<Development />} />
+        <Route path="/development/references" element={<References />} />
+        <Route path="/development/quarantine" element={<Quarantine />} />
+        <Route path="/development/:docId" element={reader(DEV_DOCS)} />
         <Route path="/apps" element={<Apps />} />
-        <Route path="/quarantine" element={<Quarantine />} />
-        <Route path="/documentation" element={<Navigate to={docHref(inventory[0].id)} replace />} />
-        <Route
-          path="/documentation/:docId"
-          element={<DocumentationReader inventory={inventory} modules={DOC_MODULES} docHref={docHref} routes={{ docsIndex: '/documentation', components: '/components' }} />}
-        />
+        <Route path="/search" element={<SearchPage items={searchItems} spaces={SPACES.map((s) => ({ value: s.id, label: s.label }))} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   )
 }
-

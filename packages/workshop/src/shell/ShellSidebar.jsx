@@ -24,13 +24,13 @@ const getChildPath = (child, basePath) => {
   return p.startsWith('/') ? p : `${basePath}/${p}`
 }
 
-const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle }) => {
+const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
   const location = useLocation()
   const normalizedPath = location.pathname.replace(/\/$/, '')
 
   // Controlled mode: collapsed + onToggle from parent
   // Uncontrolled mode: internal state
-  const [internalCollapsed, setInternalCollapsed] = useState(false)
+  const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed)
   const isControlled = collapsed !== undefined
   const navCollapsed = isControlled ? collapsed : internalCollapsed
   const handleToggle = isControlled ? onToggle : () => setInternalCollapsed(prev => !prev)
@@ -48,26 +48,34 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
     return initial
   })
 
-  useEffect(() => {
-    routes.forEach((route) => {
-      const sectionPath = getSectionRootPath(route, basePath)
-      const isActive =
-        sectionPath === basePath
-          ? normalizedPath === basePath
-          : normalizedPath === sectionPath || normalizedPath.startsWith(sectionPath + '/')
-      if (isActive) {
-        setCollapsedSections((prev) => ({ ...prev, [route.id]: false }))
-      }
+  /* THE RAIL FOLLOWS YOU (2026-09-28, user: "the sidebar doesnt highlight that
+   * part, which it probably should by closing/collapsing other categories").
+   * Arriving in a group opens it AND folds its siblings, so the open group is
+   * the one you are in. Opening another by hand still works until you move. */
+  const isRouteActive = (route) => {
+    const sectionPath = getSectionRootPath(route, basePath)
+    const own = sectionPath === basePath
+      ? normalizedPath === basePath
+      : normalizedPath === sectionPath || normalizedPath.startsWith(sectionPath + '/')
+    return own || (route.children ?? []).some((c) => {
+      const cp = getChildPath(c, basePath).replace(/\/$/, '')
+      return normalizedPath === cp || normalizedPath.startsWith(cp + '/')
     })
+  }
+  useEffect(() => {
+    const active = routes.filter(isRouteActive)
+    if (!active.length) return
+    setCollapsedSections(Object.fromEntries(routes.map((r) => [r.id, !active.includes(r)])))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [normalizedPath, routes, basePath])
 
   const handleSectionClick = (route) => {
     setCollapsedSections((prev) => ({ ...prev, [route.id]: !prev[route.id] }))
   }
 
-  /* No count at L1 — the eyebrow names a body of material and the tally lives
-   * on the groups inside it (user ruling 2026-08-01). RailSection refuses one
-   * at this rung, so there is nothing to compute here. */
+  /* The L1 count is every leaf row under it — RailSection shows it only while
+   * the section is folded (2026-09-28). */
+  const leafCount = routes.reduce((n, r) => n + (r.children?.length ? r.children.length : 1), 0)
   return (
     /* One rail layout, one class (2026-08-01). This was `space-y-4` against the
      * right rail's `space-y-6` against the outer `flex flex-col gap-6` — three
@@ -78,9 +86,11 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
         level={1}
         label={label}
         to={labelTo}
+        count={leafCount}
         collapsed={navCollapsed}
         onToggle={handleToggle}
         onNavigate={onNavigate}
+        icon={Icon}
       >
         <div className="shell-rail-stack-inner">
           {routes.map((route) => {

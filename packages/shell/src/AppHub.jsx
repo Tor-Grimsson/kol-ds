@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import AppShell from './AppShell.jsx'
 import HubHome from './HubHome.jsx'
 import HubSettings from './HubSettings.jsx'
-import ShortcutsOverlay from './ShortcutsOverlay.jsx'
+import { ShortcutsOverlay } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / ShortcutsOverlay (relative) */
 

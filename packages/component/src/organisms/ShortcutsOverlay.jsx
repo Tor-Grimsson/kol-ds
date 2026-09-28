@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { SettingsSections } from '@kolkrabbi/kol-component'
+import SettingsSections from './SettingsSections.jsx'
 
 /**
  * ShortcutsOverlay — the keyboard-shortcut sheet: blurred scrim, centred

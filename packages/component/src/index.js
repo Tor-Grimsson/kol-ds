@@ -116,6 +116,8 @@ export { default as PropertyInput } from './molecules/PropertyInput.jsx'
 export { default as ShapeDropdown } from './molecules/ShapeDropdown.jsx'
 export { default as ShellDrawer } from './molecules/ShellDrawer.jsx'
 export { default as ShellSearchOverlay } from './organisms/ShellSearchOverlay.jsx'
+/* the keymap sheet — moved in from kol-shell 2026-09-28 so the workshop shell and the apps open ONE sheet on S */
+export { default as ShortcutsOverlay } from './organisms/ShortcutsOverlay.jsx'
 export { default as Slider } from './molecules/Slider.jsx'
 export { default as SpecList } from './molecules/SpecList.jsx'
 export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle } from './organisms/SpectrumControls.jsx'

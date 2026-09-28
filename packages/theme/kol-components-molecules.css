@@ -918,7 +918,13 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background-color: var(--kol-surface-primary);
+  /* THE PANEL LIFTS OFF THE PAGE (2026-09-28, user: the search overlay "is very
+   * faint, and the input text is also very faint"). It painted the page's own
+   * surface, so over a dark page and a scrim it read as a hole rather than a
+   * panel. `oq-04` is the lift the shortcuts sheet already wears (2026-09-03):
+   * opaque, one step off the ground, in both themes. */
+  background-color: var(--kol-oq-04);
+  color: var(--kol-oq-96);
   /* NO BORDER, NO SHADOW (user 2026-08-01). Both were tried and both were
    * wrong: the shadow was another product's floating-card idiom, and the
    * hairline left an empty palette reading as a bordered empty box. The SCRIM
@@ -931,6 +937,10 @@
    * another product. --kol-shadow-overlay was added for this an hour earlier
    * and is deleted with it: it solved the wrong problem. */
 }
+
+/* the query field inside a panel reads at full ink; its placeholder at 48 */
+.kol-overlay-panel .kol-control--bare input { color: var(--kol-oq-96); }
+.kol-overlay-panel .kol-control--bare input::placeholder { color: var(--kol-oq-48); }
 
 /* ── Section — .kol-section-* ─────────────────────────────────────────────
  * Between-siblings rhythm for stacked inspector sections (InspectorSectionRhythm,

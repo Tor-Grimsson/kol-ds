@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "kol-workshop's shell alone, over workshop-fixture — header, rails, palette, tag browser and the documentation reader, laid out as the showcase is today so every shell change is built and judged here first. Never published.",
+  "description": "kol-workshop's shell alone, over workshop-fixture, built to the space table — per-space rails, index roots, the search page, settings, the S sheet. Every shell change is built and judged here first. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,6 +15,7 @@
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-markdown": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@kolkrabbi/kol-workshop": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",

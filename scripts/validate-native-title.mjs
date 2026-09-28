@@ -10,10 +10,16 @@
  *
  *   T1  No `title=` attribute on an intrinsic element (`<div>`, `<button>`, `<span>` …) or on a
  *       component that forwards it to the DOM (`Button`, `IconFrame`) inside packages/component,
- *       packages/framework, packages/shell or packages/design-editor (editor audit 2026-09-27). Wrap the control in `Tooltip label=…` and keep its
+ *       packages/framework, packages/shell, packages/workshop or packages/design-editor (editor audit 2026-09-27). Wrap the control in `Tooltip label=…` and keep its
  *       `aria-label`.
  *
- *   T2  In packages/design-editor, an icon-only control shows a `Tooltip` (editor inspector rebuild,
+ *   T1b The same `title`, SPREAD: an object carrying a `title:` key that is spread onto an intrinsic
+ *       element (`<button {...shared}>`). ThemeToggle shipped its native tip this way beside the DS
+ *       one for months — T1 read `title=` attributes only, so the gate passed a blind spot
+ *       (showcase refinement 2026-09-28).
+ *
+ *   T2  In packages/design-editor, packages/workshop and packages/framework (widened 2026-09-28), an
+ *       icon-only control shows a `Tooltip` — an `IconFrame` is icon-only by definition (editor inspector rebuild,
  *       2026-09-27 — user: "wrong icons … but i cant say what they are called because missing
  *       tooltips"). Flags a `Button iconOnly`, or a `<button>` whose only content is glyphs, that no
  *       `<Tooltip>` encloses — and `data-kol-tip`, an attribute nothing reads. A `SegmentedToggle`
@@ -43,7 +49,7 @@ function walk(dir, out = []) {
 
 const errors = []
 let seen = 0
-for (const pkg of ['component', 'framework', 'shell', 'design-editor']) {
+for (const pkg of ['component', 'framework', 'shell', 'workshop', 'design-editor']) {
   for (const f of walk(join(ROOT, 'packages', pkg, 'src'))) {
     const src = readFileSync(f, 'utf8')
     const lines = src.split('\n')
@@ -63,6 +69,34 @@ for (const pkg of ['component', 'framework', 'shell', 'design-editor']) {
   }
 }
 
+/* T1b — a `title:` key in an object spread onto an intrinsic element */
+function objectBody(src, open) {
+  let depth = 0
+  for (let i = open; i < src.length; i++) {
+    if (src[i] === '{') depth++
+    else if (src[i] === '}' && --depth === 0) return src.slice(open, i + 1)
+  }
+  return ''
+}
+for (const pkg of ['component', 'framework', 'shell', 'workshop', 'design-editor']) {
+  for (const f of walk(join(ROOT, 'packages', pkg, 'src'))) {
+    const src = readFileSync(f, 'utf8')
+    const lines = src.split('\n')
+    for (const m of src.matchAll(/\{\.\.\.(\w+)\}/g)) {
+      const before = src.slice(0, m.index)
+      const tag = [...before.matchAll(/<([A-Za-z][\w.]*)(?=[\s>/])/g)].at(-1)?.[1]
+      if (!tag || !/^[a-z]/.test(tag) || EXEMPT_TAGS.has(tag)) continue
+      const decl = new RegExp(`(?:const|let)\\s+${m[1]}\\s*=\\s*\\{`).exec(src)
+      if (!decl) continue
+      const body = objectBody(src, decl.index + decl[0].length - 1)
+      if (!/(^|[\s,{])['"]?title['"]?\s*:/.test(body)) continue
+      const line = before.split('\n').length
+      if (/title-ok:/.test(lines[line - 1]) || /title-ok:/.test(lines[line - 2] ?? '')) continue
+      errors.push(`${relative(ROOT, f)}:${line}  <${tag} {...${m[1]}}> spreads a \`title\` — the browser tooltip again (T1b)`)
+    }
+  }
+}
+
 /* T2 — the opening tag's end: the first `>` outside braces and quotes */
 function tagEnd(src, i) {
   let depth = 0, q = null
@@ -78,7 +112,7 @@ function tagEnd(src, i) {
 }
 const insideTooltip = (before) => before.lastIndexOf('<Tooltip') > before.lastIndexOf('</Tooltip>')
 const tipOk = (lines, line) => /tip-ok:/.test(lines[line - 1]) || /tip-ok:/.test(lines[line - 2] ?? '')
-for (const f of walk(join(ROOT, 'packages', 'design-editor', 'src'))) {
+for (const f of ['design-editor', 'workshop', 'framework'].flatMap((pkg) => walk(join(ROOT, 'packages', pkg, 'src')))) {
   const src = readFileSync(f, 'utf8')
   const lines = src.split('\n')
   const at = (i) => src.slice(0, i).split('\n').length
@@ -86,12 +120,13 @@ for (const f of walk(join(ROOT, 'packages', 'design-editor', 'src'))) {
     const line = at(m.index)
     if (!tipOk(lines, line)) errors.push(`${relative(ROOT, f)}:${line}  data-kol-tip draws nothing — wrap the control in \`Tooltip\` (T2)`)
   }
-  for (const m of src.matchAll(/<(Button|button)(?=[\s>])/g)) {
+  for (const m of src.matchAll(/<(Button|button|IconFrame)(?=[\s>])/g)) {
     const end = tagEnd(src, m.index + 1)
     if (end < 0) continue
     const open = src.slice(m.index, end + 1)
     let mute = false
-    if (m[1] === 'Button') mute = /\siconOnly[=\s]/.test(open)
+    if (m[1] === 'IconFrame') mute = /\sonClick=|\shref=/.test(open)
+    else if (m[1] === 'Button') mute = /\siconOnly[=\s]/.test(open)
     else if (!open.endsWith('/>') && /aria-label=/.test(open)) {
       const close = src.indexOf('</button>', end)
       const body = close < 0 ? '' : src.slice(end + 1, close)
@@ -111,4 +146,4 @@ if (errors.length) {
   for (const e of errors) console.error('  ' + e)
   process.exit(1)
 }
-console.log("native-title: clean (no native title on DS chrome; every editor icon-only control has a Tooltip)")
+console.log("native-title: clean (no native title on DS chrome, attribute or spread; every icon-only control in the editor, the workshop shell and the framework has a Tooltip)")

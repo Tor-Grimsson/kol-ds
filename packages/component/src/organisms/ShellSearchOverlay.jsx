@@ -10,7 +10,21 @@ import Tag from '../atoms/Tag.jsx'
  * @param {string} label full row label
  * @param {string} query current query (empty / no match → plain label)
  */
-export function HighlightMatch({ label, query }) {
+export function HighlightMatch({ label, query, ranges }) {
+  /* An engine that already knows where it matched (kol-search's `highlights`)
+   * passes `ranges` — every hit, not just the first slice of the raw query. */
+  if (Array.isArray(ranges)) {
+    if (!ranges.length) return <span>{label}</span>
+    const out = []
+    let at = 0
+    ranges.forEach(([s, e], i) => {
+      if (s > at) out.push(<span key={`t${i}`}>{label.slice(at, s)}</span>)
+      out.push(<span key={`m${i}`} className="text-fg underline decoration-2 underline-offset-[3px]">{label.slice(s, e)}</span>)
+      at = e
+    })
+    if (at < label.length) out.push(<span key="rest">{label.slice(at)}</span>)
+    return <>{out}</>
+  }
   const idx = query ? label.toLowerCase().indexOf(query.toLowerCase()) : -1
   if (idx === -1) return <span>{label}</span>
   return (
@@ -47,6 +61,10 @@ export function HighlightMatch({ label, query }) {
  * @param {Function} onQueryChange (string) => void — input change
  * @param {Function} onSelect      (item) => void — row click / Enter; consumer navigates
  * @param {string}   placeholder   input placeholder
+ * @param {string}   [enterLabel]  what Enter does when no row is picked — shown as
+ *                                 the panel's last line, so Enter is never a surprise
+ *                                 (e.g. `All results for “q”`). Rows may carry
+ *                                 `highlights` ([start, end] ranges) from the engine.
  */
 export default function ShellSearchOverlay({
   open,
@@ -65,6 +83,7 @@ export default function ShellSearchOverlay({
   onQueryChange,
   onSelect,
   placeholder = 'Search…',
+  enterLabel,
 }) {
   const panelRef = useRef(null)
   const listRef = useRef(null)
@@ -210,12 +229,12 @@ export default function ShellSearchOverlay({
                 onClick={() => select(item)}
                 onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
                 className={`flex items-center gap-2 px-4 py-1.5 cursor-pointer kol-mono-14 transition-colors ${
-                  i === active ? 'bg-fg-08 text-fg' : 'text-fg-64'
+                  i === active ? 'bg-fg-08 text-fg' : 'text-fg-80'
                 }`}
               >
                 <span className="flex flex-col min-w-0">
                   <span className="truncate">
-                    <HighlightMatch label={item.label} query={query} />
+                    <HighlightMatch label={item.label} query={query} ranges={item.highlights} />
                   </span>
                   {item.hint && (
                     <span className="kol-mono-12 text-fg-48 truncate">{item.hint}</span>
@@ -227,6 +246,12 @@ export default function ShellSearchOverlay({
               </li>
             ))}
           </ul>
+        )}
+        {!expanded && enterLabel && query && (
+          <p className="flex items-center gap-2 border-t border-fg-08 px-4 py-2 kol-helper-12 text-fg-64">
+            <kbd className="kol-helper-12 rounded-[var(--kol-radius-sm)] bg-fg-08 px-1.5 py-0.5 text-fg">↵</kbd>
+            {enterLabel}
+          </p>
         )}
       </div>
     </div>

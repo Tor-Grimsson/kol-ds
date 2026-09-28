@@ -63,16 +63,17 @@ body {
   --kol-sidenav-step: var(--kol-spacing-4);    /* keyboard resize increment */
   --kol-sidenav-snap-default: var(--kol-sidenav-step); /* release within this of the default clears the override */
   --kol-sidenav-w-collapsed: 56px;
-  /* The workshop shell's RIGHT rail. EQUAL TO THE LEFT (user ruling
-     2026-08-01) — the two rails frame the same content and a lopsided frame is
-     a frame nobody drew on purpose; it read 14rem against the left's 16rem.
-     Kept as its own token rather than aliased: the right rail can be ruled
-     different later without touching the sidenav.
-     The track is RESERVED whether or not the rail has anything in it — a rail
-     that vanishes on a heading-less page re-flows main, so the same shell
-     renders at two widths. Distinct from --kol-toc-w further down, which is
-     the BRAND layout's rail: same concept, two shells, two numbers. */
-  --kol-shell-toc-w: 16rem;
+  /* THE WORKSHOP SHELL'S RAILS — their own pair, 256px each (showcase
+     refinement 2026-09-28, user: "should they both be the same width? layout
+     feels asymmetrical"). The left rail used to read --kol-sidenav-w, which is
+     the DRAGGABLE app sidenav's ladder (264, 320 from 1536 — useDragResize,
+     NavRail, the labs rail, the deck editor), so the docs shell rendered
+     320 | main | 256: one token, two shells. The workshop rails are not
+     draggable and frame the same content, so they are equal and fixed, in px
+     like every other layout width. Distinct from --kol-toc-w further down,
+     which is the BRAND layout's rail. */
+  --kol-shell-nav-w: 256px;
+  --kol-shell-toc-w: 256px;
   --kol-container-max: 100%;
 
   /* Opacity tokens (--kol-fg-*) + text-role tokens (--kol-text-*) live in

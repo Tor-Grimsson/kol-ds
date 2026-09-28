@@ -1,9 +1,9 @@
-import { createContext, useState, useEffect, Suspense } from 'react'
+import { createContext, useContext, useMemo, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar from './ShellSidebar.jsx'
-import { Button, IconFrame, ShellDrawer, ShellSearchOverlay, Tooltip, CloseButton } from '@kolkrabbi/kol-component'
-import { matchSearchItems } from '@kolkrabbi/kol-search'
+import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsSections, SettingsSwitch, Tooltip, CloseButton } from '@kolkrabbi/kol-component'
+import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
 import { Asset } from '@kolkrabbi/kol-brand/svg'
@@ -45,17 +45,47 @@ export const ShellTocCollapsedContext = createContext(null)
 // useLayoutEffect(() => { setNavCollapsed(true) ; return () => setNavCollapsed(false) }, [setNavCollapsed])
 export const ShellNavCollapsedContext = createContext(null)
 
-/* overflow-x-hidden (2026-07-30): long tree rows (component names + counters)
- * overflowed the 256px rail into an internal horizontal scroll — with the
- * scrollbar hidden it read as content silently walking off, and the pan
- * gesture shoved the whole grid sideways exposing the outer padding. */
+/* THE PAGE TELLS THE RAIL WHAT IT IS ABOUT (2026-09-28, user: "the purpose of
+ * the right sidebar is to list that pages content and context"). The right
+ * rail was handed `tags={[]}` and `related={[]}` on every route, so it showed
+ * the same global block everywhere. A page now publishes its own context and
+ * the rail reads it:
+ *   usePageMeta({ tags, related: [{ label, to }] })   — in a page
+ *   const meta = usePageMetaValue()                  — in a rail
+ * Cleared on unmount, so a page that says nothing gets an empty context, never
+ * the previous page's. */
+const ShellPageMetaContext = createContext({ meta: null, setMeta: null })
+
+export function usePageMeta(meta) {
+  const { setMeta } = useContext(ShellPageMetaContext)
+  const key = JSON.stringify(meta ?? null)
+  useEffect(() => {
+    if (!setMeta) return undefined
+    setMeta(meta ?? null)
+    return () => setMeta(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setMeta, key])
+}
+
+export const usePageMetaValue = () => useContext(ShellPageMetaContext).meta
+
+/* THE SCROLL ROOT. The region below the header scrolls as ONE, edge to edge
+ * (2026-09-28) — it used to be #main, inset by the chrome padding, so its
+ * scrollbar sat inside the frame. Anything that observes or resets scroll
+ * inside the shell (useScrollSpy's `root`, a jump-to-top) reads this id. */
+export const SHELL_SCROLL_ROOT = '#shell-scroll'
+
+/* The rails are sticky inside the one scroll region and scroll their own
+ * overflow (`.shell-rail`, kol-components-workshop.css): exactly one region
+ * tall, a seam toward the page, the chrome inset inside the seam.
+ * overflow-x-hidden (2026-07-30): long tree rows must not scroll sideways. */
 const NavColumn = ({ children }) => (
-  <aside aria-label="Navigation" className="shell-sidebar-sticky hidden lg:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
   </aside>
 )
 
-const MainColumn = ({ children, fullHeight, width = 'canvas' }) => {
+const MainColumn = ({ children, fullHeight, width = 'canvas', padStart, padEnd }) => {
   /* the map lives INSIDE MainColumn on purpose — validate:width W1 reads the
    * cap off this block and refuses a --kol-content-* cap anywhere else */
   const cap = {
@@ -63,24 +93,20 @@ const MainColumn = ({ children, fullHeight, width = 'canvas' }) => {
     shell: 'w-full mx-auto max-w-[var(--kol-content-shell)]',
     none: 'w-full',
   }[width] ?? 'w-full max-w-[var(--kol-content-canvas)]'
+  /* ONE space between a rail and the page: main pads the page ladder from a
+   * rail's seam, only on a side that HAS a rail at this width. Pages never pad
+   * themselves on x. */
+  const pad = `${padStart ? 'lg:pl-[var(--kol-pad-section-x)]' : ''} ${padEnd ? 'xl:pr-[var(--kol-pad-section-x)]' : ''}`
   return (
   <main
     id="main"
-    className={`w-full min-w-0 h-full min-h-0 ${fullHeight ? 'overflow-hidden flex flex-col' : 'overflow-y-auto overscroll-none'}`}
-    style={fullHeight ? undefined : { scrollbarGutter: 'stable' }}
+    className={`shell-main w-full ${pad} ${fullHeight ? 'h-[100cqh] overflow-hidden flex flex-col' : ''}`}
   >
     {/* The cap lives HERE, on the CONTENT — not on the grid that holds the
-      * rails (2026-07-31: capping the grid centred all three columns and pulled
-      * both rails off the viewport edge). WHICH cap is the page's call — see
-      * ShellContentWidthContext. The default is canvas, left against the nav:
-      * that was a call made for doc pages (2026-07-31 / 2026-08-01, narrow
-      * content keeping a constant gap to the rail) and it was written here as
-      * a law for every page — the home page's centred hero then centred on the
-      * cap instead of the track, so closing the TOC moved nothing and closing
-      * the nav moved everything. It is a default now, not a rule. Canvas stays
-      * left-anchored (never mx-auto — W4); shell is the frame rung and centres;
-      * none spans the track. `fullHeight` stays uncapped — it IS the
-      * fill-the-viewport escape hatch (iframe embeds). */}
+      * rails. WHICH cap is the page's call — see ShellContentWidthContext.
+      * Canvas stays left-anchored (never mx-auto — W4); shell is the frame rung
+      * and centres; none spans the track. `fullHeight` stays uncapped — it IS
+      * the fill-the-viewport escape hatch (iframe embeds). */}
     {fullHeight
       ? children
       : <div className={`${cap} pt-6 md:pt-6 lg:pt-8 pb-16`}>{children}</div>
@@ -90,27 +116,54 @@ const MainColumn = ({ children, fullHeight, width = 'canvas' }) => {
 }
 
 /* `xl`, not `lg` — the grid only declares a third column at xl (gridCols
- * below). Rendering this at lg put THREE children in a TWO-column grid between
- * 1024 and 1279px: the rail wrapped to an implicit second row and `h-full`
- * split the height between them, so main got ~373px of a 900px window and the
- * page read as empty. The breakpoint here and the one in gridCols are one
- * decision and must not be stated twice differently. */
+ * below). The breakpoint here and the one in gridCols are one decision and
+ * must not be stated twice differently. */
 const TocColumn = ({ children }) => (
-  <aside aria-label="Table of contents" className="shell-sidebar-sticky hidden xl:block shrink-0 h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-none pt-6 md:pt-6 lg:pt-8 pb-8">
-    {/* The WIDTH IS THE GRID TRACK now (--kol-shell-toc-w, see gridCols), not
-      * an inner wrapper. It used to be `w-56 empty:hidden` here precisely so a
-      * rail whose content rendered null would measure zero and let the main
-      * column reclaim the space — REVERSED by user ruling 2026-08-01: an empty
-      * rail still holds its column, because a rail that disappears re-flows
-      * main and the same page ends up at two different widths. */}
+  <aside aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-8">
+    {/* The width is the grid track (--kol-shell-toc-w). An empty rail still
+      * holds its column (user ruling 2026-08-01): a rail that disappears
+      * re-flows main and the same page ends up at two widths. */}
     <div className="w-full">{children}</div>
   </aside>
 )
 
-const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, defaultTocContent, isActive: isActiveProp, actions }) => {
+/* THE SHELL'S OWN SETTINGS, remembered per viewer (a convenience — a blocked
+ * store just means the defaults). */
+const SETTINGS_KEY = 'kol-workshop-settings'
+const readSettings = () => {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') ?? {} } catch { return {} }
+}
+const writeSettings = (next) => {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(next)) } catch { /* private window */ }
+}
+
+/* A search item in either shape — the kol-search item (`title · kind · space ·
+ * category · tags · headings · keywords · description · href`) or the palette's
+ * older row (`label · sectionLabel · …`). Both keep working. */
+const toSearchItem = (item, i) => ({
+  ...item,
+  id: item.id ?? item.href ?? `${item.label ?? item.title}-${i}`,
+  title: item.title ?? item.label ?? '',
+  category: item.category ?? item.sectionLabel ?? item.group,
+})
+
+/**
+ * @param {string} [searchPath]  where Enter takes the query (`${searchPath}?q=…`) — the
+ *                               shared results page (kol-workshop `SearchPage`). Omitted,
+ *                               Enter keeps the older behaviour: the tag browser in place.
+ * @param {Array}  [settings]    extra settings sections (`SettingsSections` shape) the
+ *                               consumer adds to the shell's settings drawer
+ * @param {string|Function} [brandLabel]  a TYPED label in the second wordmark slot instead of
+ *                               the drawn WORKSHOP mark — a string, or `({ activeRoute }) => string`
+ *                               so it names the space you are in
+ */
+const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], brandLabel, defaultTocContent, isActive: isActiveProp, actions }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
-  const [navCollapsed, setNavCollapsed] = useState(false)
-  const [tocCollapsed, setTocCollapsed] = useState(false)
+  const [prefs, setPrefs] = useState(readSettings)
+  const setPref = (key, value) => setPrefs((p) => { const next = { ...p, [key]: value }; writeSettings(next); return next })
+  const [navCollapsed, setNavCollapsed] = useState(() => readSettings().navHidden === true)
+  const [tocCollapsed, setTocCollapsed] = useState(() => readSettings().tocHidden === true)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   /* ONE QUERY (user ruling 2026-08-01). The palette's text used to live here
    * while tags lived in TagModeContext — two states, and therefore two
    * surfaces. Both facets are the context's now. The local pair survives ONLY
@@ -143,21 +196,36 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     }
   }
   const [tocContent, setTocContent] = useState(null)
+  const [pageMeta, setPageMeta] = useState(null)
   const [isFullHeight, setIsFullHeight] = useState(false)
   const [contentWidth, setContentWidth] = useState('canvas')
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
-  /* THE shortcut map. One list, rendered by the `?` overlay AND bound by the
+  /* a new page starts at the top of the one scroll region; a hash is the
+   * browser's to resolve */
+  useEffect(() => {
+    if (location.hash) return
+    document.getElementById('shell-scroll')?.scrollTo(0, 0)
+  }, [location.pathname, location.hash])
+
+  /* THE shortcut map. One list, rendered by the `S` sheet AND bound by the
    * handler below — a shortcut that isn't in this array doesn't exist, so the
-   * help sheet can never drift from the bindings. Before this there was no
-   * help UI at all: ⌘K was an unlabelled icon button and Alt+B was a duplicate
-   * nobody had written down anywhere. */
+   * sheet can never drift from the bindings. The sheet is kol-component's
+   * ShortcutsOverlay (2026-09-28): the same sheet, on the same key, as every
+   * app — it was a `?` sheet of its own here. `?` still opens it. */
   const SHORTCUTS = [
-    { keys: ['⌘', 'K'], label: 'Search everything', match: (e) => (e.metaKey || e.ctrlKey) && e.key === 'k' },
-    { keys: ['?'], label: 'This list', match: (e) => e.key === '?' },
-    { keys: ['Esc'], label: 'Close what is open', match: () => false, note: 'handled per surface' },
+    { section: 'Search', items: [
+      { id: 'k', label: 'Search everything', combo: '⌘ K' },
+      { id: 'slash', label: 'Search everything', combo: '/' },
+      { id: 'enter', label: 'All results, on the search page', combo: '↵' },
+    ] },
+    { section: 'Shell', items: [
+      { id: 'sheet', label: 'This sheet', combo: 'S' },
+      { id: 'settings', label: 'Settings', combo: ',' },
+      { id: 'esc', label: 'Close what is open', combo: 'Esc' },
+    ] },
   ]
 
   useEffect(() => {
@@ -168,9 +236,19 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
         setIsSearchOpen(true)
-      } else if (e.key === '?') {
+        return
+      }
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      /* `/` opens search — it used to fall through to the browser's find */
+      if (e.key === '/') {
+        e.preventDefault()
+        setIsSearchOpen(true)
+      } else if (e.key === 's' || e.key === 'S' || e.key === '?') {
         e.preventDefault()
         setIsShortcutsOpen((v) => !v)
+      } else if (e.key === ',') {
+        e.preventDefault()
+        setIsSettingsOpen((v) => !v)
       } else if (e.key === 'Escape') {
         setIsShortcutsOpen(false)
       }
@@ -179,7 +257,14 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const effectiveTocContent = tocContent ?? defaultTocContent
+  const isActive = isActiveProp ?? ((href) => location.pathname === href || location.pathname.startsWith(`${href}/`))
+  const joinPath = (p) => `${basePath.replace(/\/$/, '')}/${String(p ?? '').replace(/^\//, '')}`
+  /* THE SPACE YOU ARE IN (2026-09-28). The rails are per space now — the left
+   * rail used to render one stack on every route. The consumer gets the active
+   * route and draws that space's rail; the same object reaches the default
+   * right rail when it is a function. */
+  const activeRoute = routes.find((r) => r.path && isActive(joinPath(r.path))) ?? null
+  const effectiveTocContent = tocContent ?? (typeof defaultTocContent === 'function' ? defaultTocContent({ activeRoute }) : defaultTocContent)
   /* THE RAIL HOLDS ITS COLUMN, EMPTY OR NOT (user ruling 2026-08-01).
    *
    * This used to hunt for a way to tell whether the rail had real content, so
@@ -201,22 +286,20 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
 
   const layoutType = showNav && showToc ? 'nav-toc' : showNav ? 'nav' : showToc ? 'toc' : 'none'
 
-  /* A FIXED track (--kol-shell-toc-w), not `auto`. `auto` sized the column to
-   * its content, which is exactly what let an empty rail measure zero. Both
-   * rail widths are tokens: the left is --kol-sidenav-w (the one number every
-   * grid track that lines up with it already reads), the right is
-   * --kol-shell-toc-w. */
+  /* FIXED tracks, not `auto` — `auto` let an empty rail measure zero. Both
+   * rails are the workshop shell's own pair (--kol-shell-nav-w ·
+   * --kol-shell-toc-w, 256px each since 2026-09-28): the left used to read
+   * --kol-sidenav-w, the draggable app sidenav's 264/320 ladder. */
   const gridCols = showNav
     ? showToc
-      ? 'lg:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)] xl:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)_var(--kol-shell-toc-w)]'
-      : 'lg:grid-cols-[var(--kol-sidenav-w)_minmax(0,1fr)]'
+      ? 'lg:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)] xl:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)_var(--kol-shell-toc-w)]'
+      : 'lg:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)]'
     : showToc
       ? 'xl:grid-cols-[minmax(0,1fr)_var(--kol-shell-toc-w)]'
       : ''
 
   // Adapt the old flat `routes` + callbacks to the DS ShellHeader API
   // (brand node · nav[{label,href,icon}] · isActive · onNavigate · actions slot).
-  const joinPath = (p) => `${basePath.replace(/\/$/, '')}/${String(p ?? '').replace(/^\//, '')}`
   const navItems = routes.map((r) => ({
     label: r.label,
     href: r.path ? joinPath(r.path) : basePath,
@@ -225,7 +308,6 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   /* Prefix matching is the default, but a consumer can override it: a tab whose
    * href targets a CHILD page (Docs → /docs/shell-and-layout) must still light
    * up across the whole /docs prefix, which self-matching can't express. */
-  const isActive = isActiveProp ?? ((href) => location.pathname === href || location.pathname.startsWith(`${href}/`))
   const handleNavigate = (event, item) => {
     if (item.href) {
       event.preventDefault()
@@ -240,15 +322,20 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       <img src={brandLogoSrc} alt={brandLogoAlt} className="h-6 w-auto" />
     </Link>
   ) : (
-    // Two separate wordmarks: KOLKRABBI holds the logo slot (reserves the 256px
-    // nav column at lg+) and links to the SITE home; WORKSHOP falls at the
-    // content-column edge and links to the shell root. Both h-6.
+    // Two wordmarks: KOLKRABBI holds the logo slot and links to the SITE home;
+    // the second falls where the PAGE TEXT starts (the nav track + the page's
+    // pad from the seam, less the header's 32px gap) and links to the shell root. The second is the drawn
+    // WORKSHOP mark, or — with `brandLabel` (2026-09-28, user: "we might as well
+    // just use right grotesk tight … when you land at ui.kolkrabbi.io … then it
+    // could change with the site's navigation") — typed, naming the space.
     <>
-      <Link to="/" className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-64">
+      <Link to="/" className="shell-header-logo hidden md:flex shrink-0 items-center text-emphasis lg:w-[calc(var(--kol-shell-nav-w)_+_var(--kol-pad-section-x)_-_32px)]">
         <Asset name="kol-wordmark" title="Kolkrabbi" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
       </Link>
       <Link to={basePath} className="shell-header-logo flex items-center text-emphasis">
-        <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />
+        {brandLabel
+          ? <span className="shell-wordmark-label">{typeof brandLabel === 'function' ? brandLabel({ activeRoute }) : brandLabel}</span>
+          : <Asset name="wordmark-workshop" title="Workshop" className="inline-flex [&>svg]:h-6 [&>svg]:w-auto" />}
       </Link>
     </>
   ))
@@ -257,33 +344,64 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const searchTrigger = (
     <>
       {actions}
-      <Tooltip label="Search">
+      <Tooltip label="Search · ⌘K or /">
         {/* `md` + full-ink nav (user re-rule 2026-08-09; repeals the 2026-08-01
           * lg ruling). The row law is unchanged: every header glyph on ONE
           * rung, one variant — the rung is just md now. */}
         <IconFrame name="search" variant="nav" size="md" onClick={() => setIsSearchOpen(true)} aria-label="Search" />
       </Tooltip>
+      <Tooltip label="Settings · ,">
+        <IconFrame name="settings-01" variant="nav" size="md" onClick={() => setIsSettingsOpen(true)} aria-label="Settings" />
+      </Tooltip>
     </>
   )
 
-  /* searchItems ({ id, label, href, sectionLabel?, tags?, headings?, keywords? })
-   * → the overlay's row shape ({ id, label, group?, hint? }), matched by the
-   * engine. hint surfaces WHY a row matched when the label didn't. */
-  const searchResults = matchSearchItems(searchItems ?? [], searchQuery).map((item, i) => ({
-    id: item.id ?? item.href ?? `${item.label}-${i}`,
-    label: item.label,
-    group: item.sectionLabel ?? item.group,
-    hint: item.matchedHeading ?? item.matchedKeyword ?? item.hint,
-    href: item.href,
-    /* `action` must survive this reshape. It didn't: the map rebuilt every row
-     * as a fixed five-field object, so a consumer's action closure was dropped
-     * between the engine and onSelect and the row silently did nothing. The
-     * engine spreads `...item` and the overlay passes rows through untouched —
-     * this projection was the only lossy step in the chain. */
-    action: item.action,
-  }))
+  /* THE ENGINE IS kol-search (2026-09-28) — the palette ran a first-substring
+   * match, so `atom` ranked AppHub first on a word in its description and only
+   * one row lit its match. Ranked now, every hit highlighted, and a word that
+   * names a category (`atom`) filters by it. `limitToSpace` (settings) scopes
+   * quick search to the space you are in. */
+  const searchIndex = useMemo(() => createIndex((searchItems ?? []).map(toSearchItem)), [searchItems])
+  const quickScope = prefs.limitToSpace && activeRoute ? { space: activeRoute.id } : {}
+  const searchResults = searchQuery
+    ? search(searchIndex, searchQuery, { scope: quickScope, limit: 12 }).results.map(({ item, reasons, highlights }) => {
+      const titleHit = reasons.some((r) => r.field === 'title')
+      const first = reasons.find((r) => r.hit)
+      return {
+        id: item.id,
+        label: item.title,
+        group: item.category,
+        hint: titleHit ? item.hint : (first?.hit ?? item.description ?? item.hint),
+        href: item.href,
+        highlights: highlights.title,
+        /* `action` survives the reshape — a row may run a closure instead of going somewhere */
+        action: item.action,
+      }
+    })
+    : []
+  const openResultsPage = () => {
+    const q = searchQuery.trim()
+    closeSearch()
+    navigate(q ? `${searchPath}?q=${encodeURIComponent(q)}` : searchPath)
+  }
+
+  const settingsSections = [
+    { label: 'Layout', rows: [
+      { id: 'nav', label: 'Left rail', render: () => <SettingsSwitch on={!navCollapsed} onChange={(on) => { setNavCollapsed(!on); setPref('navHidden', !on) }} /> },
+      { id: 'toc', label: 'Right rail', render: () => <SettingsSwitch on={!tocCollapsed} onChange={(on) => { setTocCollapsed(!on); setPref('tocHidden', !on) }} /> },
+    ] },
+    { label: 'Search', rows: [
+      { id: 'scope', label: 'Quick search in this space only', render: () => <SettingsSwitch on={!!prefs.limitToSpace} onChange={(on) => setPref('limitToSpace', on)} /> },
+    ] },
+    ...settings,
+    { label: 'Keys', rowGap: 1, rows: SHORTCUTS.flatMap((sec) => sec.items).map((k) => ({
+      id: `key-${k.id}`, label: k.label, labelWidth: 'auto', align: 'fill',
+      value: <span className="kol-helper-12 text-fg-48 whitespace-nowrap">{k.combo}</span>,
+    })) },
+  ]
 
   return (
+    <ShellPageMetaContext.Provider value={{ meta: pageMeta, setMeta: setPageMeta }}>
     <ShellTocContext.Provider value={setTocContent}>
       <ShellFullHeightContext.Provider value={setIsFullHeight}>
         <ShellContentWidthContext.Provider value={setContentWidth}>
@@ -314,42 +432,21 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             tocCollapsed={tocCollapsed}
           />
 
-          {/* Three independent scroll regions: each rail scrolls its own overflow,
-            * main scrolls unless a page locks it (ShellFullHeightContext — embeds).
-            * overscroll-none stops chaining between regions and the edge bounce. */}
-          <div className="flex-1 overflow-hidden">
-            {/* THE frame (kol-theme "Content widths"): ONE cap at the shell
-              * token, centred, on the framework padding ramp. This wrapper
-              * carried `w-full px-4 md:px-5 lg:px-6` — no cap at all, and
-              * Tailwind's 16/20/24 steps instead of the ramp's 20/32/48 — so
-              * every consumer page inherited the raw viewport (measured 2152px
-              * of frame at a 2200px window against an 1800px law). Every
-              * page-level width fix is downstream of this line.
-              *
-              * CORRECTED 2026-07-31: that fix capped THIS element, which holds
-              * all three columns — so the whole chrome centred and both rails
-              * were dragged inward off the viewport edge. The chrome frame
-              * takes the full available width and the rails justify to it; the
-              * cap moved one level down onto MainColumn's content, which is
-              * what the theme's law is written about. Same disease as
-              * --kol-container-max stopping at 1600 under an 1800 law: one
-              * element, two answers. */}
-            <div
-              className="h-full w-full"
-              style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}
-            >
-              {/* gap lives in .shell-content-grid (theme) — a gap-8 utility here
-                * outranks the layered theme rule at every width and killed the
-                * 48px wide step (ARCHITECTURE §5: component geometry in its own
-                * rule, never a utility racing it). */}
-              <div className={`shell-content-grid grid ${gridCols} h-full min-h-0`} data-layout={layoutType}>
+          {/* ONE scroll region, edge to edge (see SHELL_SCROLL_ROOT). The chrome
+            * inset pads the grid INSIDE it, so the scrollbar sits at the window
+            * edge. A full-height page (embeds) locks it and fills it instead. */}
+          <div
+            id="shell-scroll"
+            className={`shell-scroll flex-1 min-h-0 ${isFullHeight ? 'overflow-hidden' : 'overflow-y-auto'}`}
+          >
+              <div className={`shell-content-grid grid ${gridCols}`} data-layout={layoutType} style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
                   {showNav && (
                     <NavColumn>
-                      {renderSidebar ? renderSidebar({}) : <ShellSidebar routes={routes} basePath={basePath} />}
+                      {renderSidebar ? renderSidebar({ activeRoute }) : <ShellSidebar routes={routes} basePath={basePath} />}
                     </NavColumn>
                   )}
 
-                  <MainColumn fullHeight={isFullHeight} width={contentWidth}>
+                  <MainColumn fullHeight={isFullHeight} width={contentWidth} padStart={showNav} padEnd={showToc}>
                     <div className={isFullHeight ? 'flex flex-col flex-1 min-h-0 [&>*]:flex-1 [&>*]:flex [&>*]:flex-col [&>*]:min-h-0' : ''}>
                       <Suspense fallback={<div className="flex items-center justify-center p-12 text-fg-48">Loading…</div>}>
                         <Outlet />
@@ -366,9 +463,8 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                       {effectiveTocContent}
                     </TocColumn>
                   )}
-                </div>
               </div>
-            </div>
+          </div>
 
           {/* `open`, not `isOpen` — the old prop name silently kept the drawer
             * shut, so there was no navigation at all below lg. */}
@@ -377,7 +473,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             onClose={() => setIsNavDrawerOpen(false)}
           >
             {renderSidebar
-              ? renderSidebar({ onNavigate: () => setIsNavDrawerOpen(false) })
+              ? renderSidebar({ activeRoute, onNavigate: () => setIsNavDrawerOpen(false) })
               : <ShellSidebar routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />
             }
           </ShellDrawer>
@@ -397,7 +493,13 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
              * commits the query and swaps the result rows for the full body;
              * committed tags ride along as chips on the same query. */
             expanded={tagMode.isProvided && tagMode.expanded}
-            onExpand={() => tagMode.setExpanded?.(true)}
+            /* ENTER OPENS THE RESULTS PAGE (2026-09-28, user: "you would then have
+             * the option of pressing enter … which would take you to the shared
+             * index search results page … instead of another weird nested
+             * overlay"). The page keeps the query in its URL, so Back returns to
+             * it. Without a `searchPath` Enter keeps the older in-place browser. */
+            onExpand={searchPath ? openResultsPage : () => tagMode.setExpanded?.(true)}
+            enterLabel={searchPath ? `All results for “${searchQuery.trim()}”` : undefined}
             chips={tagMode.isProvided ? tagMode.activeTags : []}
             onRemoveChip={tagMode.removeTag}
             placeholder="Search…"
@@ -418,59 +520,28 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             {tagMode.isProvided && tagMode.expanded ? <TagModeOverlay /> : null}
           </ShellSearchOverlay>
 
-          {/* The `?` sheet. Rendered FROM the SHORTCUTS array above, so the help
-            * and the bindings are one source — a shortcut can't be documented
-            * and unbound, or bound and undocumented, which is how Alt+B lived
-            * for months. */}
-          {isShortcutsOpen && (
-            <div
-              /* THE scrim (overlay-scrim-outliers sweep, 2026-09-03): was a hand
-                 `bg-fg-48` — the ink wash, not the class's ab-black 48 */
-              className="fixed inset-0 z-50 flex items-center justify-center kol-overlay-scrim"
-              onClick={() => setIsShortcutsOpen(false)}
-              role="presentation"
-            >
-              <div
-                className="kol-doc-figure w-[min(28rem,90vw)] bg-surface-primary"
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-label="Keyboard shortcuts"
-              >
-                <div
-                  className="flex items-center justify-between border-b px-4 py-3"
-                  style={{ borderBottomColor: 'var(--kol-oq-08)' }}
-                >
-                  <span className="kol-doc-eyebrow text-meta">Keyboard shortcuts</span>
-                  {/* was `Button variant="outline" quiet` — the boxed treatment the
-                    * 2026-09-01 one-idiom ruling retired, still shipping here because
-                    * the idiom was a comment rather than a component (2026-09-03) */}
-                  <CloseButton onClick={() => setIsShortcutsOpen(false)} />
-                </div>
-                <ul className="flex flex-col px-4 py-3">
-                  {SHORTCUTS.map((s) => (
-                    <li key={s.label} className="flex items-center justify-between gap-6 py-1.5">
-                      <span className="kol-mono-14 text-body">
-                        {s.label}
-                        {s.note && <span className="kol-helper-12 text-subtle"> · {s.note}</span>}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        {s.keys.map((k) => (
-                          <kbd key={k} className="kol-helper-12 rounded-[var(--kol-radius-sm)] bg-fg-08 px-1.5 py-0.5 text-emphasis">{k}</kbd>
-                        ))}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+          {isShortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setIsShortcutsOpen(false)} />}
+
+          {/* THE SHELL'S SETTINGS (2026-09-28, user: "might we also want to utilize a
+            * settings page or settings sidebar … to offload some functional
+            * settings, search settings, sidenav settings"). A right drawer over
+            * the page, the same rows the apps' settings use (SettingsSections). */}
+          <ShellDrawer open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} side="right" width={360}>
+            <div className="flex flex-col gap-6 p-6">
+              <div className="flex items-center justify-between">
+                <span className="kol-doc-eyebrow">Settings</span>
+                <CloseButton onClick={() => setIsSettingsOpen(false)} />
               </div>
+              <SettingsSections sections={settingsSections} labelWidth="auto" />
             </div>
-          )}
+          </ShellDrawer>
         </div>
         </ShellNavCollapsedContext.Provider>
         </ShellTocCollapsedContext.Provider>
         </ShellContentWidthContext.Provider>
       </ShellFullHeightContext.Provider>
     </ShellTocContext.Provider>
+    </ShellPageMetaContext.Provider>
   )
 }
 

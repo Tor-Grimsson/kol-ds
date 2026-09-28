@@ -82,11 +82,65 @@
   scrollbar-width: none;
 }
 
-/* Shell content grid — the rail/main/toc gutter. The gap lives HERE, not as a
- * utility on the element: a gap-8 in the JSX outranked this layer at every
- * width and made the 48px wide step (below, ≥1600px) dead code. */
+/* THE SHELL'S ONE SCROLL REGION (showcase refinement 2026-09-28). It used to
+ * be three: each rail and #main scrolled themselves inside a grid wrapped in
+ * the chrome inset, so main's scrollbar sat 24px in from the window edge and
+ * ended at main's right edge, beside the TOC rather than at the window's.
+ * Now the region below the header scrolls as one, edge to edge; the rails are
+ * sticky inside it and still scroll their own overflow. `container-type: size`
+ * lets a rail be exactly one region tall (100cqh) without measuring anything.
+ *
+ * ONE SPACE BETWEEN A RAIL AND THE PAGE, NOT TWO. The grid had a 32/48px gap
+ * AND pages padded themselves with --kol-pad-section-x, so rail text sat up to
+ * ~100px from the page's. The gap is gone: a rail ends in an opaque 08 seam
+ * (the seam law) with the chrome inset inside it, and main pads the page
+ * ladder from the seam. Pages do not pad themselves on x. */
+.shell-scroll {
+  container-type: size;
+  scrollbar-gutter: stable;
+  overscroll-behavior: none;
+}
+
 .shell-content-grid {
-  gap: 32px;
+  gap: 0;
+  min-height: 100%;
+}
+
+.shell-rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100cqh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+.shell-rail--nav {
+  border-right: 1px solid var(--kol-oq-08);
+  padding-inline-end: var(--kol-pad-chrome-x);
+}
+
+.shell-rail--toc {
+  border-left: 1px solid var(--kol-oq-08);
+  padding-inline-start: var(--kol-pad-chrome-x);
+}
+
+.shell-main {
+  min-width: 0;
+}
+
+/* THE TYPED WORDMARK — the shell's second mark as live type in the Tight cut
+ * (2026-09-28), sized so its caps stand as tall as the drawn KOLKRABBI mark
+ * beside it (h-6). The display voice is uppercase by contract. */
+.shell-wordmark-label {
+  font-family: var(--kol-font-family-sans-tight);
+  font-size: 33px;
+  line-height: 24px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .shell-sidebar-sticky::-webkit-scrollbar {
@@ -463,10 +517,6 @@
     font-size: 13px;
   }
 
-  /* Wide grid gap */
-  .shell-content-grid {
-    gap: 48px;
-  }
 }
 
 /* =============================================================================

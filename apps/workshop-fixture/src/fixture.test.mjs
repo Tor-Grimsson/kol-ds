@@ -26,7 +26,8 @@ assert.equal(componentTree.reduce((n, t) => n + t.children.length, 0), 24)
 
 const index = createIndex(searchItems)
 assert.deepEqual(search(index, 'atom tag:pattern/action').results.map((r) => r.item.title), ['Button', 'IconButton'])
-assert.equal(search(index, 'in:development').total, 4)
+assert.equal(search(index, 'in:development').total, 6, 'four docs and two generated pages')
+assert.ok(searchItems.filter((i) => i.space === 'development' && i.kind !== 'page').every((i) => i.href.startsWith('/development/')))
 assert.equal(search(index, 'publish').results[0].item.title, 'Publish')
 
 console.log(`workshop-fixture: OK — ${inventory.length} docs, ${searchItems.length} search items`)

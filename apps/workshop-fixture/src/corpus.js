@@ -3,24 +3,31 @@
 import { buildInventory, fileLabel } from '@kolkrabbi/kol-markdown'
 import { COMPONENTS, BLOCKS, SETS } from './components.js'
 
-/* The shell's spaces as they are TODAY in the showcase (nav/shell-nav.js ALL_ROUTES), so
- * apps/workshop reproduces the current structure before the plan changes it. */
+/* The shell's spaces — the space table (plan-2026-09-28-showcase-refinement § 3b). Search is not
+ * a space: it is the header's palette and the page Enter opens. Development holds what the repo
+ * measures about itself; Docs holds documentation AND operations, one parent as on disk. */
 export const SPACES = [
   { id: 'components', label: 'Components', icon: 'component-01', path: '/components' },
   { id: 'blocks', label: 'Blocks', icon: 'layout', path: '/blocks' },
   { id: 'sets', label: 'Sets', icon: 'view-list', path: '/sets' },
-  { id: 'docs', label: 'Docs', icon: 'book-open', path: '/documentation' },
-  { id: 'references', label: 'References', icon: 'library', path: '/references' },
-  { id: 'search', label: 'Search', icon: 'search', path: '/search' },
+  { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
   { id: 'apps', label: 'Apps', icon: 'grid', path: '/apps' },
-  { id: 'quarantine', label: 'Quarantine', icon: 'lock', path: '/quarantine' },
+  { id: 'development', label: 'Development', icon: 'library', path: '/development' },
 ]
 
-export const docHref = (id) => `/documentation/${id}`
+/* a doc lives in the space of its category: development docs under /development */
+export const docSpace = (file) => (relPath(file).startsWith('development/') ? 'development' : 'docs')
+export const docHref = (id, file) => (file && docSpace(file) === 'development' ? `/development/${id}` : `/docs/${id}`)
 export const componentHref = (slug) => `/components/${slug}`
 
-const relPath = (file) => file.replace(/^.*?docs\//, '')
+function relPath(file) { return file.replace(/^.*?docs\//, '') }
 const labelFromSlug = (s = '') => s.replace(/^\d+-/, '').replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase())
+
+/* the Development space's generated pages — beside its docs */
+export const DEV_PAGES = [
+  { id: 'dev-references', title: 'References', description: 'Who uses what — counted from the blocks and sets.', href: '/development/references' },
+  { id: 'dev-quarantine', title: 'Quarantine', description: 'What is held out of the sidebar until its rule is written.', href: '/development/quarantine' },
+]
 
 export function buildCorpus(modules) {
   const inventory = buildInventory(modules)
@@ -42,13 +49,13 @@ export function buildCorpus(modules) {
           id: `vault-${category}-${chapter}`,
           category,
           label: labelFromSlug(chapter),
-          ...(index ? { path: docHref(index.id) } : {}),
+          ...(index ? { path: docHref(index.id, index.file) } : {}),
           children: [
-            ...(index ? [{ id: `vd-${index.id}`, label: 'About', path: docHref(index.id) }] : []),
+            ...(index ? [{ id: `vd-${index.id}`, label: 'About', path: docHref(index.id, index.file) }] : []),
             ...docs
               .filter((d) => d !== index)
               .sort((a, b) => a.file.localeCompare(b.file))
-              .map((d) => ({ id: `vd-${d.id}`, label: fileLabel(d.file), path: docHref(d.id) })),
+              .map((d) => ({ id: `vd-${d.id}`, label: fileLabel(d.file), path: docHref(d.id, d.file) })),
           ],
         }
       })
@@ -70,14 +77,14 @@ export function buildCorpus(modules) {
         id: `doc-${d.id}`,
         title: d.title,
         kind: d.metadata.type === 'index' ? 'index' : 'doc',
-        space: category === 'development' ? 'development' : 'docs',
+        space: docSpace(d.file),
         category: labelFromSlug(category),
         tags: d.metadata.tags || [],
         headings: d.headings,
         description: d.metadata.description || '',
         date: d.metadata.updated,
         status: d.metadata.status,
-        href: docHref(d.id),
+        href: docHref(d.id, d.file),
       }
     }),
     ...COMPONENTS.map((c) => ({
@@ -93,18 +100,12 @@ export function buildCorpus(modules) {
     })),
     ...BLOCKS.map((b) => ({ id: `block-${b.key}`, title: b.title, kind: 'block', space: 'blocks', category: 'Blocks', keywords: b.uses, description: b.description, href: `/blocks/${b.key}` })),
     ...SETS.map((s) => ({ id: `set-${s.key}`, title: s.title, kind: 'set', space: 'sets', category: 'Sets', keywords: s.members, description: s.description, href: `/sets/${s.key}` })),
+    ...DEV_PAGES.map((p) => ({ ...p, kind: 'page', space: 'development', category: 'Development' })),
   ]
 
-  /* the palette's CURRENT row shape (kol-workshop's matchSearchItems) — what the shell searches today */
-  const shellSearchItems = searchItems.map((i) => ({
-    id: i.id,
-    label: i.title,
-    href: i.href,
-    sectionLabel: i.category,
-    tags: i.tags ?? [],
-    headings: i.headings ?? [],
-    keywords: [i.description, ...(i.keywords ?? [])].filter(Boolean),
-  }))
+  /* id → the doc's own href, so a link between docs lands in the right space */
+  const byId = Object.fromEntries(inventory.map((d) => [d.id, docHref(d.id, d.file)]))
+  const hrefOf = (id) => byId[id] ?? docHref(id)
 
-  return { inventory, tree, componentTree, searchItems, shellSearchItems }
+  return { inventory, tree, componentTree, searchItems, hrefOf }
 }

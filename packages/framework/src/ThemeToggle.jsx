@@ -1,4 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
+import { Tooltip } from '@kolkrabbi/kol-component'
 import { useTheme } from './theme.js'
 
 /**
@@ -88,6 +89,12 @@ export default function ThemeToggle({
    * ink, so the toggle beside a sunken Dropdown matches it; `inverse` aliased. Rules in kol-theme. */
   tone = 'default',
   className = '',
+  /* THE TOGGLE CARRIES ITS OWN TOOLTIP (2026-09-28). It set a native `title`
+   * AND the header wrapped it in a KOL Tooltip, so hovering showed both — the
+   * browser's "Switch to light mode · following your system" under the DS's
+   * "Toggle theme". One tip now, the DS one, with the richer text; `false`
+   * leaves the button bare for a caller that wraps it itself. */
+  tooltip = true,
 }) {
   const { theme, mode, cycle, clear } = useTheme()
   /* six tones (tone-is-the-ground-axis, 2026-09-03); unset inherits the wrapper's */
@@ -149,12 +156,13 @@ export default function ThemeToggle({
     type: 'button',
     onClick,
     'aria-label': `Switch to ${next} mode`,
-    title: `Switch to ${next} mode${resetHint}`,
   }
+  const tip = `Switch to ${next} mode${resetHint}`
+  const wrap = (node) => (tooltip ? <Tooltip label={tip}>{node}</Tooltip> : node)
 
   /* ── DEPRECATED aliases — old chrome verbatim (0.6.x) ── */
   if (variant === 'icon') {
-    return (
+    return wrap(
       <button {...shared} className={`kol-theme-toggle kol-theme-toggle-none kol-btn-${size} kol-btn-icon ${extra}`.trim()}>
         {iconSwap(glyphSolo)}
       </button>
@@ -176,7 +184,7 @@ export default function ThemeToggle({
     const chromeCls = bare
       ? `w-full inline-flex items-center justify-start gap-2 ${barePadY} px-6 ${mono} bg-transparent text-emphasis`
       : 'kol-theme-toggle kol-theme-toggle-subtle kol-btn-md kol-mono-14 w-full justify-start gap-2'
-    return (
+    return wrap(
       <button {...shared} className={`${chromeCls} ${extra}`.trim()}>
         <span className="inline-flex items-center justify-center shrink-0" aria-hidden="true">
           {iconSwap(bare ? glyphWithText : glyphSolo)}
@@ -194,7 +202,7 @@ export default function ThemeToggle({
   if (variant === 'flush') {
     const glyph = label ? glyphWithText : glyphSolo
     const cls = `kol-theme-toggle kol-theme-toggle-flush gap-2 ${mono} ${width} ${extra}`
-    return (
+    return wrap(
       <button {...shared} className={cls.replace(/\s+/g, ' ').trim()}>
         {!iconRight && iconSwap(glyph)}
         {label && <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[next]}</span>}
@@ -209,13 +217,13 @@ export default function ThemeToggle({
   const fillCls = fill === 'none' ? 'kol-theme-toggle-none' : 'kol-theme-toggle-subtle'
   if (!label) {
     // icon-only pins the square box per rung — geometry condition, not a variant
-    return (
+    return wrap(
       <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} kol-btn-icon ${width} ${extra}`.replace(/\s+/g, ' ').trim()}>
         {iconSwap(glyphSolo)}
       </button>
     )
   }
-  return (
+  return wrap(
     <button {...shared} className={`kol-theme-toggle ${fillCls} kol-btn-${size} ${mono} gap-2 ${width} ${extra}`.replace(/\s+/g, ' ').trim()}>
       {!iconRight && iconSwap(glyphWithText)}
       <span className={fullWidth ? 'flex-1 min-w-0 text-left' : ''}>{MODE_LABEL[next]}</span>

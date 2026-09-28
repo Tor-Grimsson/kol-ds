@@ -117,6 +117,7 @@ export default function PageLayout({ navTree = [], header, footer, defaultTocCon
             data-drawer-open={drawerOpen ? 'true' : undefined}
             data-toc={showToc ? 'true' : undefined}
           >
+            {/* tip-ok: phone-only (md:hidden) — a hover tip never shows on touch; the aria-label names it */}
             <button
               type="button"
               className="kol-sidenav-hamburger md:hidden fixed top-3 left-3 z-30 w-10 h-10 inline-flex items-center justify-center rounded-full bg-surface-primary border border-fg-08 text-emphasis"

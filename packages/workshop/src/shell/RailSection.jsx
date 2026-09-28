@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
  *
  * THE LADDER
  *
- *   L1  section  `.shell-sidebar-toggle` + kol-doc-eyebrow    quiet, no chevron
+ *   L1  section  `.shell-sidebar-toggle` + kol-doc-eyebrow    quiet, state glyph at the end
  *   L2  group    `.shell-nav-group-header` + kol-mono-14      louder, chevron
  *
  * L2 carries NO colour class: `.shell-nav-group-header` owns weight 500 and
@@ -33,9 +33,12 @@ import { Link } from 'react-router-dom'
  *     either rail is literally the same string.
  *   - The COUNT is placed by the rung, not by the caller. You cannot put it in
  *     the wrong place because you never write the span.
- *   - No chevron at L1 (user ruling 2026-08-01) — the section still collapses
- *     and expands on click, the glyph is simply not drawn. L2 keeps its
- *     chevron: it is the rung where a caret means "there is a subtree here".
+ *   - L1 SAYS WHETHER IT IS FOLDED (2026-09-28, reversing the 2026-08-01 "no
+ *     chevron at L1"): a collapsed eyebrow read as an EMPTY category — "it just
+ *     has an interaction, but no states or indicator of folded content". The
+ *     state glyph sits at the row's END (the eyebrow's text keeps the rail's
+ *     left edge), and a collapsed L1 shows how much it is hiding. L2 keeps its
+ *     leading chevron: the rung where a caret means "there is a subtree here".
  *   - The box (padding + margin) belongs to the rung class alone. Nothing here
  *     sets y-spacing inline; see the eyebrow-box law in kol-components-workshop.css.
  *
@@ -97,14 +100,19 @@ export default function RailSection({
     />
   ) : null
 
-  /* THE COUNT IS AN L2 AFFORDANCE (user ruling 2026-08-01): "dont list counter
-   * next to eyebrow category, just inside". A category eyebrow names a body of
-   * material; the tally belongs to the groups inside it, not to the label over
-   * them. So L1 drops a `count` on the floor rather than rendering it — the
-   * rung refuses it, so no call site can put one back. */
-  const countNode = level === 2 && count !== undefined && count !== null
+  /* THE COUNT. L2 always carries its own. L1 carries one ONLY while folded
+   * (2026-09-28): open, the groups inside show their tallies and a second one
+   * on the eyebrow is noise (the 2026-08-01 ruling's point, kept); folded,
+   * there is nothing else on screen to say the category holds anything. */
+  const hasCount = count !== undefined && count !== null
+  const countNode = level === 2 && hasCount
     ? <span className="kol-mono-14 text-subtle">({count})</span>
-    : null
+    : level === 1 && collapsible && isCollapsed && hasCount
+      ? <span className="text-subtle">({count})</span>
+      : null
+  const l1State = level === 1 && collapsible && IconComponent ? (
+    <IconComponent name="chevron-right" size={12} className={`transition-transform text-subtle ${isCollapsed ? '' : 'rotate-90'}`} />
+  ) : null
 
   /* L1 EYEBROW IS ONE GESTURE (user ruling 2026-08-09, repealing the
    * 2026-08-01 label-door at L1): the whole row toggles BOTH ways — a label
@@ -138,7 +146,10 @@ export default function RailSection({
         {level === 2 && !chevron && <span aria-hidden="true" style={{ width: 12 }} />}
         {labelNode}
       </span>
-      {countNode}
+      <span className="flex items-center gap-2">
+        {countNode}
+        {l1State}
+      </span>
     </>
   )
 

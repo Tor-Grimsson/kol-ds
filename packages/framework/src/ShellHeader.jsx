@@ -128,12 +128,12 @@ export default function ShellHeader({
             <div className="flex shrink-0 items-center gap-1">
               {actions}
               {showThemeToggle && (
-                <Tooltip label="Toggle theme">
+                <>
                   {/* md at every width (user re-rule 2026-08-09: the whole
                     * header glyph row rides md, full ink — the earlier lg-at-lg+
                     * split is repealed, which also collapsed the two spans). */}
                   <ThemeToggle fill="none" label={false} size="md" />
-                </Tooltip>
+                </>
               )}
               {onMenuClick && (
                 <Tooltip label="Open navigation menu">

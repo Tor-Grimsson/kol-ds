@@ -8,5 +8,5 @@ export const DOC_MODULES = import.meta.glob('./docs/**/*.md', { eager: true, que
 
 export const CORPUS = buildCorpus(DOC_MODULES)
 
-export { SPACES, docHref, componentHref, buildCorpus } from './corpus.js'
+export { SPACES, DEV_PAGES, docHref, docSpace, componentHref, buildCorpus } from './corpus.js'
 export { COMPONENTS, BLOCKS, SETS } from './components.js'

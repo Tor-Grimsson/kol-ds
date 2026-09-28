@@ -79,7 +79,6 @@ export default function ExhibitSidebar({
               type="button"
               className="shell-sidebar-action kol-mono-14 text-body"
               onClick={() => navigator.clipboard?.writeText(window.location.pathname)}
-              title="Copy page path to clipboard"
             >
               <Icon name="copy" size={14} />
               Copy path

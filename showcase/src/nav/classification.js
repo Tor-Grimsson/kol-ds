@@ -77,7 +77,7 @@ export const TIERS = {
    * that disagreed about which sections exist (2026-08-01). */
   RightRail: 'molecules',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
-  ShellLayout: 'organisms', DocumentationReader: 'organisms',
+  ShellLayout: 'organisms', DocumentationReader: 'organisms', SearchPage: 'organisms',
   /* Exhibit sections — the scaffold a workshop section is declared against, so
    * the next one is content only. ExhibitCard and ExhibitLinkCard are ATOMS by
    * the placement test (each paints alone and composes no KOL component);
@@ -174,7 +174,7 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility',
+  useNavHidden: 'utility', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -245,7 +245,7 @@ export const FUNCTIONS_BY_NAME = {
   DashboardGrid: 'structure', GridCard: 'structure', DashTooltip: 'overlay',
   MetricsDashboard: 'display',
   /* workshop */
-  ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display',
+  ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation',
   RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
@@ -279,6 +279,8 @@ export const EXEMPT = {
    * registry-internal, not barrel-exported — nothing to exempt) */
   AssetGrid: 're-export:@kolkrabbi/kol-component', FeatureSplit: 're-export:@kolkrabbi/kol-component',
   ProsePreview: 're-export:@kolkrabbi/kol-component', SpectrumGrid: 're-export:@kolkrabbi/kol-component',
+  /* shell — the keymap sheet moved to kol-component 2026-09-28; kol-shell re-exports it */
+  ShortcutsOverlay: 're-export:@kolkrabbi/kol-component',
   TypeSample: 're-export:@kolkrabbi/kol-foundry', TypeSpecCard: 're-export:@kolkrabbi/kol-foundry',
   /* chess */
   ChessControlsProvider: 'non-component',
@@ -451,6 +453,7 @@ export const NO_DEMO = (() => {
       'RightRail', 'RailSection', 'RailRow', 'TagModeGate', 'TagPath',
       'DocumentationReader', 'DocHeader', 'DocSection', 'DocTable', 'DocFigure'],
       'workshop shell + doc chrome; /workshop-preview renders the system, not the pieces'),
+    ...debt(['SearchPage'], 'a whole page — it IS /search in the showcase and in apps/workshop'),
   }
 })()
 

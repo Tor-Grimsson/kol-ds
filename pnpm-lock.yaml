@@ -625,6 +625,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../../packages/markdown
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../../packages/theme
