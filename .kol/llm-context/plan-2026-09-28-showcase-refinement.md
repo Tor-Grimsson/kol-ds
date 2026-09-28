@@ -22,7 +22,7 @@ consumer. Build the reference first (W0), decide the site's spaces (A), and the 
 
 ## 2. Workstreams
 
-Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides whichever touches the file.
+Order: **W0 → A → (B · D · E · G)**; **C** inside W0 in parallel; **F** rides whichever touches the file.
 
 ### W0 — `apps/workshop`: the shell's reference app (user, mid-review)
 
@@ -58,7 +58,7 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 |---|---|---|---|
 | 8 | Right rail is the same everywhere except Docs and Components | `AutoToc` (`ShellChrome.jsx:82`) always passes `related=[]`, `tags=[]`, the **global** top-12 tags and the same five actions. Only the reader portals its own | DEFECT (rail shows no page context) + DECISION (what each space's rail holds) · showcase + workshop |
 | 9a | Left rail never changes — Group by + Atoms always, whatever space | `ShowcaseSidebar` (`ShellChrome.jsx:135`) renders one stack on every route: Group by · Components · Tools · Documentation · Operations | DECISION: per-space rail contract · showcase |
-| 10 | A collapsed parent has no state or indicator | L1 eyebrows are a "pure two-way toggle" and refuse a count by ruling (`02-shells.md` § rail ladder, `RailSection`) — nothing replaced the count as a collapsed cue | DECISION · workshop |
+| 10 | A collapsed parent has no state or indicator | L1 eyebrows are a "pure two-way toggle" and refuse a count by ruling (`02-shells.md` § rail ladder, `RailSection`) — nothing replaced the count as a collapsed cue. Screenshot: collapsed COMPONENTS · TOOLS · DOCUMENTATION read as **empty** eyebrows with a gap under each — no chevron, no count; a collapsed L2 group (`Release (5)`) does carry chevron + count | DECISION · workshop |
 | 11 | Tools mirrors the header tabs; the rail doesn't highlight or collapse to the current space | Groups auto-expand on active; categories never collapse others. Tools = the header tabs again — "one body, two doors", the anti-pattern the code itself cites for Components (`ShellChrome.jsx:192`) | DECISION · workshop + showcase |
 
 ### C — Geometry
@@ -92,10 +92,19 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 
 | # | Point | Finding | Tag · where |
 |---|---|---|---|
-| 1a | A stray `$` on the landing | `Home.jsx:414` — the prompt glyph of `$ npm i @kolkrabbi/kol-component`; only the `$` renders in the screenshot, so the command text is invisible or clipped | DEFECT · showcase — verify live |
+| 1a | A stray `$` on the landing | `Home.jsx:413-415` — `<p class="kol-mono-12 text-meta -mt-10 …"><span class="opacity-50">$</span> npm i @kolkrabbi/kol-component</p>`. Screenshot with a selection: only the `$` highlights, at the x where the centred command would start — the text node is there and not painted. The `$` also sits ~250px below the CTAs, detached from them. Also a type utility on the element (ARCHITECTURE §5) | DEFECT · showcase — reproduce locally first |
 | 12 | Quarantine table: inline, illegal table + text styles | A bare `<table className="kol-table">` (`Quarantine.jsx:83,96`) with no `.kol-table-wrapper`, so the wrapper-scoped seams never apply — it is not the `Table` component. Cells type themselves with `kol-mono-12/14` · `kol-helper-12` utilities (`HeldRow`, `Quarantine.jsx:40-63`), which ARCHITECTURE §5 forbids. Rule text carries literal backticks (`` `pnpm validate:width` ``) that nothing renders. And the page is stale: *"0 of 12 categories are out of the sidebar"* — it holds nothing | DEFECT · showcase — and feeds A-4 (retire or move under Development) |
 | 6b | Wrong gap between the query input and the divider | `SearchResults.jsx:102` (`DocSection title="Query"`) | DEFECT · showcase |
 | 7b | Overlay input and text very faint | the palette in `ShellLayout` | DEFECT · workshop — check against the opacity law |
+
+### G — Chrome controls: tooltips, shortcuts, settings
+
+| # | Point | Finding | Tag · where |
+|---|---|---|---|
+| 14 | Tooltips/popovers are all over the place; some show the browser's **and** the DS's (theme toggle) | `ThemeToggle` (`packages/framework/src/ThemeToggle.jsx:151-152`) builds `title` in a props object that is spread onto the button — so the native tip fires beside the KOL Tooltip. The `validate:native-title` gate (T1) reads JSX `title=` attributes and never sees a spread key: a **blind spot**, not a pass | DEFECT · framework + the gate |
+| 14b | Sweep the rest | T2 (every icon-only control has a Tooltip) covers `design-editor` only. The shell's header icons, rail dock buttons and palette are unchecked | DEFECT · workshop — widen T2 |
+| 7e · 7f | `/` and the `S` sheet | see D | — |
+| 15 | A settings page or settings sidebar — search settings, sidenav settings, icon/button prefs | Precedent: kol-shell's `SettingsScaffold` / `HubSettings` / `SettingsShortcuts`, used by every app on the Hub. The workshop shell has no settings surface; its toggles (theme, rails, grouping) sit loose in the header and rail | DECISION · workshop |
 
 ## 3. Decisions for the user
 
@@ -107,12 +116,13 @@ Order: **W0 → A → (B · D · E)**; **C** inside W0 in parallel; **F** rides 
 6. **C-3** — rails equal at 16rem (the law) or equal at another width; gap **or** main padding, not both; a left-rail border?
 7. **D** — overlay = quick jump, Enter → the search page with scope and filters (reverses 2026-08-01)?
 8. **E** — typed wordmark with a per-space label (reverses "drawn over typed")?
+9. **W0 name** — keep `workshop` (package name) or rename the package?
+10. **G** — a settings surface (page or sidebar) on kol-shell's scaffold, and one shortcut sheet on `S`?
 
 ## 4. Screenshots still wanted
 
-- ~~the search overlay~~ · ~~the Quarantine table~~ — received 2026-09-28, folded into D and F
-- the landing `$` line at full width (is the command text there at all?)
-- a collapsed parent category in the left rail
+- All received 2026-09-28 and folded in (overlay → D, Quarantine + `$` → F, collapsed category → B-10,
+  theme toggle → G).
 
 ## 5. Laws read for this pass
 
