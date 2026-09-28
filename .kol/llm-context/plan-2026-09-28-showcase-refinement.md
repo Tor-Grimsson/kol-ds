@@ -135,7 +135,7 @@ Search **UI** (overlay, chips) stays in the UI packages. ARCHITECTURE §3 carrie
    root an index page in its space's layout, `/` the only landing; typed wordmark `KOLKRABBI` + space label;
    icons placed.
 3. **kol-markdown** — move `engine/` out unchanged; `apps/markdown`; kol-workshop consumes it.
-4. **Geometry** (C) in `apps/workshop` — rails 16rem both on their own token; one space between rail and
+4. **Geometry** (C) in `apps/workshop` — rails 256px both (`w-64`) on their own tokens, written in px like the rest of the layout docs; one space between rail and
    content, not two; `oq-08` rail border; full-width scroll region; collapsed-category cue.
 5. **kol-search** + `apps/search` (D) — overlay jumps, Enter → `/search` with scope and filters; ⌘K and `/`.
    Then ContentFilters · MediaLibrary · MediaPicker switch.
@@ -152,7 +152,7 @@ Search **UI** (overlay, chips) stays in the UI packages. ARCHITECTURE §3 carrie
 3. **A-9b** — fold Operations under Documentation (reverses 2026-08-01)?
 4. **A-13** — every space root is an index page in its space's layout (no landing-style roots except `/`)?
 5. **B** — each space owns its left and right rail content; the Tools group goes (the header already lists the spaces)?
-6. **C-3** — rails equal at 16rem (the law) or equal at another width; gap **or** main padding, not both; a left-rail border?
+6. **C-3** — rails equal at 256px (`w-64`; the law says `16rem`, the same width in rem) or equal at another width; gap **or** main padding, not both; a left-rail border?
 7. **D** — overlay = quick jump, Enter → the search page with scope and filters (reverses 2026-08-01)?
 8. **E** — typed wordmark with a per-space label (reverses "drawn over typed")?
 9. **W0 name** — keep `workshop` (package name) or rename the package?
