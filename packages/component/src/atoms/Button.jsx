@@ -81,8 +81,14 @@ const Button = ({
    * grey) or its own bundle (nav · danger · accent); `nav` is ghost's chrome
    * rung, oq-80 ink + aria-current — it had lived in the theme with no
    * component able to emit it, the direct cause of the four-container header. */
+  /* An UNKNOWN variant is a typo, not a request for the inverted fill — it fell back to
+   * `kol-btn-secondary` (the text colour as fill) until 2026-09-29, so a misspelt variant
+   * shipped inverted. It now stamps nothing, like an unset variant: the wrapper's tone,
+   * else primary — and says so in dev. */
   const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'danger', 'grey']
-  const variantClass = !resolvedVariant ? '' : KNOWN.includes(resolvedVariant) ? `kol-btn-${resolvedVariant}` : 'kol-btn-secondary'
+  const known = !resolvedVariant || KNOWN.includes(resolvedVariant)
+  if (!known && import.meta.env.DEV) console.warn(`Button: unknown variant "${resolvedVariant}" — rendering the inherited tone (primary)`)
+  const variantClass = resolvedVariant && known ? `kol-btn-${resolvedVariant}` : ''
 
   // Add size class — pairs the padding rule with its mono type class.
   const sizeClass = size === 'sm'

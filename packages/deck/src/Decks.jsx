@@ -17,16 +17,22 @@ import { BLANK_LAYOUT, clone, newId } from './slideDoc.js'
  *   saveDeck({ slug, name, slides?, favourite? }) → { updated_at }   upsert; an absent field is kept
  *   deleteDeck(slug)
  *
- * New deck asks for a name (the DS modal — needs `ModalProvider` above) and starts on the first
- * layout the consumer offers.
+ * NEW IS A BLANK DECK (apps review 2026-09-29 — the user: *"you open it and start writing, then you
+ * decide what you want to do with it"*): `open={NEW_DECK}` is a deck not saved yet, in the editor, on
+ * the first layout the consumer offers — no name asked. The first Save creates the row ("Untitled
+ * deck", renamable) and opens it by its slug. New deck on the shelf opens the same thing; an app that
+ * should LAND in the editor (apps/presentation) passes `NEW_DECK` when nothing is open. Delete
+ * confirms through the DS modal — needs `ModalProvider` above.
  *
  * @param {Object}   client       the verbs above
  * @param {Array}    layouts      `[{ slug, name, doc }]` — what a deck is built from
  * @param {Object}   mediaClient  the DS picker's client, for image layers
  * @param {Function} onUpload     (file) => Promise<url>
- * @param {string}   open · onOpenChange   controlled open deck slug (`null` = the shelf); or internal
+ * @param {string}   open · onOpenChange   controlled open deck slug (`null` = the shelf, `NEW_DECK` = a
+ *                                          blank deck); or internal
  * @param {string}   railLeft     where the editor's filmstrip starts (DeckEditor) — an app with a rail passes its width
  */
+export const NEW_DECK = '+new'
 const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 export default function Decks({ client, layouts = [], mediaClient, onUpload, header, open: openProp, onOpenChange, railLeft }) {
@@ -39,7 +45,7 @@ export default function Decks({ client, layouts = [], mediaClient, onUpload, hea
   const [error, setError] = useState(null)
   const [reload, setReload] = useState(0)
   const refresh = () => setReload((n) => n + 1)
-  const { prompt, confirm } = useModal()
+  const { confirm } = useModal()
   const fail = (err) => setError(err.message || String(err))
 
   useEffect(() => {
@@ -48,26 +54,26 @@ export default function Decks({ client, layouts = [], mediaClient, onUpload, hea
     return () => { ignore = true }
   }, [client, reload]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const blankDeck = () => ({ slug: NEW_DECK, name: 'Untitled deck', slides: [{ id: newId('slide'), doc: clone((layouts[0] ?? BLANK_LAYOUT).doc) }], favourite: false })
   useEffect(() => {
     if (!open) { setDeck(null); return undefined }
+    if (open === NEW_DECK) { setDeck(blankDeck()); return undefined }
     let ignore = false
     setDeck(null)
     client.loadDeck(open).then((d) => { if (!ignore) setDeck(d) }, (err) => { if (!ignore) { fail(err); setOpen(null) } })
     return () => { ignore = true }
   }, [client, open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const create = async () => {
-    const name = await prompt('Name the new deck', 'Untitled deck', { okLabel: 'Create' })
-    if (!name) return
+  const create = () => setOpen(NEW_DECK)
+  /* the blank deck's first Save: the row is created and the deck opens by its slug */
+  const saveNew = async (slides) => {
+    const name = deck?.name || 'Untitled deck'
     const taken = new Set((decks ?? []).map((d) => d.slug))
     let slug = slugify(name) || `deck-${Date.now().toString(36)}`
     if (taken.has(slug)) slug = `${slug}-${Date.now().toString(36).slice(-4)}`
-    const start = layouts[0] ?? BLANK_LAYOUT
-    try {
-      await client.saveDeck({ slug, name, slides: [{ id: newId('slide'), doc: clone(start.doc) }], favourite: false })
-      refresh()
-      setOpen(slug)
-    } catch (err) { fail(err) }
+    await client.saveDeck({ slug, name, slides, favourite: false })
+    refresh()
+    setOpen(slug)
   }
   const toggleFavourite = async (d) => {
     try { await client.saveDeck({ slug: d.slug, name: d.name, favourite: !d.favourite }); refresh() } catch (err) { fail(err) }
@@ -87,7 +93,8 @@ export default function Decks({ client, layouts = [], mediaClient, onUpload, hea
         mediaClient={mediaClient}
         onUpload={onUpload}
         railLeft={railLeft}
-        onSave={async (slides) => { await client.saveDeck({ slug: deck.slug, name: deck.name, slides }) }}
+        unsaved={open === NEW_DECK}
+        onSave={open === NEW_DECK ? saveNew : async (slides) => { await client.saveDeck({ slug: deck.slug, name: deck.name, slides }) }}
         onClose={() => { setOpen(null); refresh() }}
       />
     )

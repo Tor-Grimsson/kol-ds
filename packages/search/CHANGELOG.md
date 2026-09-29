@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-search
 
+## 0.2.0 — 2026-09-29
+
+- **`tagGraph(items)`** — the index's tags as a network: `{ nodes: [{ id, count, type }], edges: [{ source, target, weight }] }` over engine items (`id` + `tags[]`), tags lower-cased. The node graph is a view of the search index (ruling D4); moved here from kol-markdown's `buildTagCooccurrence`. In the self-check.
+
 ## 0.1.0 — 2026-09-28
 
 - **First release — the engine tier's second package** (ARCHITECTURE §3).

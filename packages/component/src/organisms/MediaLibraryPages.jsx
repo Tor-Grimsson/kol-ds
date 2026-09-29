@@ -18,6 +18,8 @@ import ContentRow from '../molecules/ContentRow.jsx'
 import SortControls from '../molecules/SortControls.jsx'
 import SearchInput from '../molecules/SearchInput.jsx'
 import MobileTabBar, { TABBAR_H } from '../molecules/MobileTabBar.jsx'
+import { filterMedia, rankMedia } from '../utilities/mediaSearch.js'
+import { useMasthead, mastheadTitleClass } from '../utilities/masthead.js'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import ContextMenu, { useContextMenu } from '../utilities/ContextMenu.jsx'
@@ -116,6 +118,7 @@ export const SETTINGS_BASE = {
   filters: false, // the filter bar above the body; off until asked for
   rowColumns: false, // row view's Date/Size columns + their header; off, a row is just its name
   rowColumnWidths: { ...ROW_COL_DEFAULTS }, // px, dragged on the header's own dividers
+  countLine: 'auto', // 'auto' | 'on' | 'off' — the `N folders · N files · size` line under the body; auto = on at a desk, off on a phone or a touch device (apps review 2026-09-29)
 }
 
 /* THE FOUR VIEWS (the merge, user 2026-09-22: "they both just display files"). Columns and rows
@@ -684,7 +687,7 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
   )
 }
 
-/* THE DISPLAY SETTINGS AS DATA (media-shell, user 2026-09-26: "missing settings sidebar? … or are
+/* THE DISPLAY SETTINGS AS DATA (media-hub, user 2026-09-26: "missing settings sidebar? … or are
  * we saying the shell has settings different from media?"). The rows were hard-wired JSX inside this
  * drawer, so an app page could not show them and a second settings system grew beside it. Now ONE
  * builder: this drawer renders it, and an app renders the same rows on its settings page and its own
@@ -730,6 +733,8 @@ export function mediaSettingsSections({ settings, onChange, profile }) {
         render: () => <SettingsChoice options={SORT_OPTIONS} value={settings.sortBy} onChange={(v) => set({ sortBy: v })} /> },
       { label: 'Direction', align: 'fill',
         render: () => <SettingsChoice options={[{ value: 'asc', label: '↓ Asc' }, { value: 'desc', label: '↑ Desc' }]} value={settings.sortDir} onChange={(v) => set({ sortDir: v })} /> },
+      { label: 'Count line', align: 'fill',
+        render: () => <SettingsChoice options={[{ value: 'auto', label: 'Auto' }, { value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} value={settings.countLine ?? 'auto'} onChange={(v) => set({ countLine: v })} /> },
     ] },
   ]
 }
@@ -873,6 +878,8 @@ function TrashPanel({ trash, onClose, run, confirm }) {
 }
 
 function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta, writable, headerActions, onSettings, onTrash, onHome, headerTrailing }) {
+  /* the app's masthead voice when a Shell sets one (2026-09-29), else the display voice as before */
+  const titleCls = mastheadTitleClass(useMasthead(), 'kol-sans-display-03')
   /* ONE BUCKET, NO DROPDOWN (user 2026-09-22) — a picker with one thing in it chooses nothing. */
   const options = buckets.length > 1 ? [{ value: 'all', label: `${title} · all` }, ...buckets.map((b) => ({ value: b.id, label: b.label }))] : []
   /* THE WORDMARK IS THE HOME BUTTON when `onHome` is given (user 2026-09-21: "it should reload,
@@ -883,10 +890,10 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
     <header className="flex items-baseline justify-between gap-4">
       {onHome ? (
         <button type="button" onClick={onHome}
-          className="kol-sans-display-03 min-w-0 truncate text-left cursor-pointer transition-opacity hover:opacity-64"
+          className={`${titleCls} min-w-0 truncate text-left cursor-pointer transition-opacity hover:opacity-64`}
           aria-label={`${title} — back to the top`}>{title}</button>
       ) : (
-        <h1 className="kol-sans-display-03 min-w-0 truncate">{title}</h1>
+        <h1 className={`${titleCls} min-w-0 truncate`}>{title}</h1>
       )}
       <div className="flex items-center gap-2 min-w-0">
         {options.length > 0 && <Dropdown className="min-w-0 max-w-[45vw] md:w-48 md:max-w-none" value={appRoot ? 'all' : bucketId} onChange={onBucket} options={options} />}
@@ -918,7 +925,7 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
   )
 }
 
-/* `columnHeight: 'fill'` — THE BROWSER TAKES WHAT IS LEFT OF THE WINDOW (media-shell, user 2026-09-26:
+/* `columnHeight: 'fill'` — THE BROWSER TAKES WHAT IS LEFT OF THE WINDOW (media-hub, user 2026-09-26:
  * "why isnt the browser in media shell using available height like media does?"). apps/media had it
  * as a hand-measured `calc(100dvh - 212px)` — its header, gaps and padding, counted once — so the same
  * tool one shell over got the 528 base. Measured instead: the window, less the view's own top, less
@@ -1043,6 +1050,14 @@ export function MediaLibraryBrowse({
    * the consumer's — a repo whose surfaces are routes wires its router here.
    * No tabs, no pill, and the page is exactly what it was. */
   tabs, activeTab, onTabChange,
+  /* `onKinds` — opens the app's file-formats overview. Given, the phone's `···` menu carries it
+   * under view and sort (apps review 2026-09-29: the Files app keeps everything in its `…`, and
+   * the Kinds tab was the only reason the phone had a tab bar). */
+  onKinds,
+  /* `onOpenSettings` — the gear HANDS OVER to the host (apps review 2026-09-29: three settings in
+   * media-hub, "two too many"). Given, the gear calls it and this page opens no drawer of its own —
+   * inside a Hub the Hub's Settings is the one place. Absent, the gear opens the drawer as always. */
+  onOpenSettings,
   /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
    * Absent, a one-bucket consumer collapses the level as ruled 2026-09-03. */
   bucketLevel = false,
@@ -1230,7 +1245,7 @@ export function MediaLibraryBrowse({
     const tooBig = (o.size ?? 0) > EDIT_CAP
     return (
       <div className="flex items-center gap-3">
-        <Button variant="secondary" size="sm" iconLeft="edit" disabled={tooBig} onClick={() => openEditor(o)}>Edit</Button>
+        <Button size="sm" iconLeft="edit" disabled={tooBig} onClick={() => openEditor(o)}>Edit</Button>
         {tooBig && <span className="kol-mono-12 text-fg-48">Over 1 MB — too large to edit here</span>}
         {!tooBig && draftKeys.has(o.key) && <span className="kol-mono-12 text-fg-48">Unsaved draft</span>}
       </div>
@@ -1755,6 +1770,10 @@ export function MediaLibraryBrowse({
    * stack there; the row view had no phone form and drew the desktop list and its preview pane
    * squeezed into 390 — 35px of rows with no names. Same query, same breakpoint as the columns. */
   const phone = useMediaQuery('(max-width: 767px)')
+  /* THE COUNT LINE'S AUTO (apps review 2026-09-29): a desk reads it, a phone spends a line on it */
+  const coarse = useMediaQuery('(pointer: coarse)')
+  const countLine = settings.countLine ?? 'auto'
+  const showCount = countLine === 'on' || (countLine === 'auto' && !phone && !coarse)
   const setView = (v) => {
     onViewChange?.(v)
     setSettings({
@@ -1816,13 +1835,13 @@ export function MediaLibraryBrowse({
    * when a file under it matches and ColumnBrowser's own partition does the
    * rest. One view, rather than a flat results list nobody asked for. Sort
    * orders the files the way the wall already sorts its own. */
-  const q = query.trim().toLowerCase()
+  const q = query.trim()
   /* SEGMENTS HIDE WHEN FOLDED, in every view (user 2026-09-23: *"we can just by default hide the
    * segments, if they serve no practical purpose"*). A `.ts` chunk cannot play on its own — its
    * stream's `.m3u8` beside it is the thing you open. The fold used to reach only the grid, so the
    * columns and rows listed every chunk. */
   const listed = useMemo(() => (settings.foldSegments ? objects.filter((o) => !isSegment(o.key)) : objects), [objects, settings.foldSegments])
-  const searched = useMemo(() => (q ? listed.filter((o) => o.key.toLowerCase().includes(q)) : listed), [listed, q])
+  const searched = useMemo(() => filterMedia(listed, q), [listed, q])
   const sortedObjects = useMemo(
     () => sortObjects(searched, settings.sortBy, settings.sortDir),
     [searched, settings.sortBy, settings.sortDir],
@@ -2205,10 +2224,7 @@ export function MediaLibraryBrowse({
   /* The palette's own ruling (2026-08-01) is that Enter COMMITS the query rather than navigating
    * to whatever happened to be first — so `onExpand` is where a committed query lands, and here
    * that means the top hit. Arrow-then-Enter and a click go through `onSelect`, same jump. */
-  const searchResults = (searchQuery.trim()
-    ? objects.filter((o) => o.key.toLowerCase().includes(searchQuery.trim().toLowerCase()))
-    : objects
-  ).slice(0, 50).map((o) => ({
+  const searchResults = rankMedia(objects, searchQuery, { limit: 50 }).map((o) => ({
     id: o.key,
     label: o.key.split('/').pop(),
     hint: o.key.slice(0, o.key.lastIndexOf('/') + 1) || 'the bucket root',
@@ -2230,7 +2246,7 @@ export function MediaLibraryBrowse({
     if (isSystemFile(o.key)) return false
     if ((q.tags ?? []).some((t) => !(o.tags ?? []).includes(t))) return false
     if ((q.kinds ?? []).length && !q.kinds.includes(kindOf(o))) return false
-    if (q.text && !o.key.toLowerCase().includes(q.text.toLowerCase())) return false
+    if (q.text && !filterMedia([o], q.text).length) return false
     return true
   }).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key })) : null
   const body = (filtered) => (smartMatches
@@ -2244,7 +2260,7 @@ export function MediaLibraryBrowse({
       <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
         onHome={goTitleRoot}
         onBucket={(v) => { if (v === 'all') goTitleRoot(); else { setAppRoot(false); switchBucket(v) } }}
-        onSettings={() => setSettingsOpen(true)} />
+        onSettings={onOpenSettings ?? (() => setSettingsOpen(true))} />
 
       {/* THE BANNER SLOT — anything that must sit directly under the header and above the body.
         * The upload drop zone is why it exists: a consumer rendering it AFTER the page put it
@@ -2368,6 +2384,7 @@ export function MediaLibraryBrowse({
             label={<Icon name="more" size={16} />}
             caret={false}
             align="end"
+            size="sm"
             buttonClassName="shrink-0 px-2"
           >
             {({ close }) => (
@@ -2403,6 +2420,12 @@ export function MediaLibraryBrowse({
                     {opt.label}
                   </MenuDropdownItem>
                 ))}
+                {onKinds && (
+                  <>
+                    <MenuDropdownDivider />
+                    <MenuDropdownItem onClick={() => { onKinds(); close() }} shortcut="K">File formats</MenuDropdownItem>
+                  </>
+                )}
               </div>
             )}
           </MenuItem>
@@ -2486,7 +2509,7 @@ export function MediaLibraryBrowse({
           * slider at its right end, bare: no glyph, no readout (Finder's). */}
         {atTitleRoot && !single ? (
           <div className="flex items-center justify-between gap-4 h-4">
-          <p className="kol-mono-12 text-fg-48">
+          <p className="kol-mono-12 text-fg-48" hidden={!showCount}>
             {atTop ? '1 folder' : `${bucketList.length} ${bucketList.length === 1 ? 'bucket' : 'buckets'}`}
             {folderTree && ` · ${Object.values(folderTree).reduce((n, t) => n + (t.files ?? 0), 0)} files · ${formatSize(Object.values(folderTree).reduce((n, t) => n + (t.bytes ?? 0), 0))}`}
           </p>
@@ -2496,12 +2519,12 @@ export function MediaLibraryBrowse({
           /* ONE LINE'S HEIGHT, like the other views' count line — the slider is 24px tall and made
            * this row 8px taller than the fill budget, so the page scrolled by that much */
           <div className="flex items-center justify-between gap-4 h-4">
-            <p className="kol-mono-12 text-fg-48">
+            <p className="kol-mono-12 text-fg-48" hidden={!showCount}>
               {!settings.flat && folders.length > 0 && `${folders.length} folder${folders.length > 1 ? 's' : ''} · `}{wallFiles.length} {wallFiles.length === 1 ? 'file' : 'files'} · {formatSize(wallFiles.reduce((n, o) => n + (o.size ?? 0), 0))}
             </p>
             {sizeSlider}
           </div>
-        ) : (
+        ) : showCount && (
           <p className="kol-mono-12 text-fg-48">
             {folders.length > 0 && `${folders.length} folder${folders.length > 1 ? 's' : ''} · `}
             {rawFiles.length} {rawFiles.length === 1 ? 'file' : 'files'} · {formatSize(totalBytes)}

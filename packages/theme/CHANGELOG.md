@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## 0.156.0 — 2026-09-29
+
+- **The phone bar** (kol-shell `AppShell touch="bar"`): `.kol-phone-nav-more` (the More sheet above the bar) and `.kol-phone-nav-scrim`.
+- `.kol-shell-page` / `--fixed` subtract `--kol-shell-bar-h` from the window height — a full-height page ends above the phone bar, not under it.
+- **The touch rung** (ruling D5): the control ladder as tokens — `--kol-ctl-xs · sm · md · lg` (22 · 26 · 32 · 40), **32 · 32 · 36 · 40 under `pointer: coarse`** — read by every pinned height (icon squares, IconFrame, dropdown triggers, segmented strips); on touch every text control types 16 / 22, so a row stays one height and iOS never zooms into a field.
+
 ## 0.155.0 — 2026-09-28
 
 **The workshop shell, refined** (plan-2026-09-28-showcase-refinement).

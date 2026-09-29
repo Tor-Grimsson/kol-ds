@@ -61,7 +61,7 @@ export default class ErrorBoundary extends Component {
 
           <div className="flex gap-4 justify-center flex-wrap">
             <Button variant="primary" onClick={this.handleReset}>Try again</Button>
-            <Button variant="secondary" href={this.props.homeHref ?? '/'}>Go home</Button>
+            <Button href={this.props.homeHref ?? '/'}>Go home</Button>
           </div>
         </div>
       </div>

@@ -221,7 +221,9 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
             iconSize={16}
             iconComponent={iconComponent}
             variant="nav"
-            size="sm"
+            /* md, the row's rung — at sm it stood 26 beside the 32 glyph button (render gate R1,
+             * one row one size, found on apps/editor's labs rail 2026-09-29) */
+            size="md"
             className="shrink-0"
             style={{ color: 'var(--kol-oq-96)' }}
             aria-expanded={open}

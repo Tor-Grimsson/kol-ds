@@ -48,19 +48,22 @@ export default function LabeledControl({
     /* `'auto'`: the label is the yielding cell — flex-1, truncating — and the
      * control hugs. The control still carries min-w-0 + overflow-hidden so a
      * combo wider than the whole column CLIPS at the column edge rather than
-     * painting over the neighbour (the invariant: no cell outside its column). */
+     * painting over the neighbour (the invariant: no cell outside its column).
+     * BELOW `sm` IT STACKS (apps review, 2026-09-29): the yielding label yielded to
+     * nothing on a phone — a sentence-long combo took the whole row and the label
+     * showed as "C" or not at all. Label on its line, the value under it. */
     const labelAuto = labelWidth === 'auto'
     return (
-      <div className={`flex items-center gap-3 ${className}`}>
+      <div className={`flex ${labelAuto ? 'flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-3' : 'items-center gap-3'} ${className}`}>
         {showLabel && (
           <span
-            className={`kol-helper-10 tracking-widest text-meta ${labelAuto ? 'flex-1 min-w-0 truncate' : 'shrink-0'}`}
+            className={`kol-helper-10 tracking-widest text-meta ${labelAuto ? 'max-w-full min-w-0 truncate sm:flex-1' : 'shrink-0'}`}
             style={labelAuto ? undefined : { width: labelWidth }}
           >
             {labelInner}
           </span>
         )}
-        <div className={labelAuto ? 'min-w-0 overflow-hidden' : 'flex-1 min-w-0'}>{children}</div>
+        <div className={labelAuto ? 'min-w-0 max-w-full sm:overflow-hidden' : 'flex-1 min-w-0'}>{children}</div>
       </div>
     )
   }

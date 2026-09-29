@@ -2,18 +2,25 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm build",
   "outputDirectory": "showcase/dist",
+  "redirects": [
+    {
+      "source": "/apps/media-shell/:path*",
+      "destination": "/apps/media-hub/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/apps/media/(.*)",
       "destination": "/apps/media/index.html"
     },
     {
-      "source": "/apps/media-shell/(.*)",
-      "destination": "/apps/media-shell/index.html"
+      "source": "/apps/media-hub/(.*)",
+      "destination": "/apps/media-hub/index.html"
     },
     {
-      "source": "/apps/shell/(.*)",
-      "destination": "/apps/shell/index.html"
+      "source": "/apps/hub/(.*)",
+      "destination": "/apps/hub/index.html"
     },
     {
       "source": "/apps/notes/(.*)",
@@ -38,6 +45,38 @@
     {
       "source": "/apps/curves/(.*)",
       "destination": "/apps/curves/index.html"
+    },
+    {
+      "source": "/apps/shell/(.*)",
+      "destination": "/apps/shell/index.html"
+    },
+    {
+      "source": "/apps/notes-hub/(.*)",
+      "destination": "/apps/notes-hub/index.html"
+    },
+    {
+      "source": "/apps/presentation-hub/(.*)",
+      "destination": "/apps/presentation-hub/index.html"
+    },
+    {
+      "source": "/apps/catalog/(.*)",
+      "destination": "/apps/catalog/index.html"
+    },
+    {
+      "source": "/apps/studio/(.*)",
+      "destination": "/apps/studio/index.html"
+    },
+    {
+      "source": "/apps/panels/(.*)",
+      "destination": "/apps/panels/index.html"
+    },
+    {
+      "source": "/apps/fixtures/(.*)",
+      "destination": "/apps/fixtures/index.html"
+    },
+    {
+      "source": "/apps/brand-hub/(.*)",
+      "destination": "/apps/brand-hub/index.html"
     },
     {
       "source": "/(.*)",

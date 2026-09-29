@@ -107,4 +107,4 @@ Done 2026-09-25 → 2026-09-26 (plan v2 in `.kol/llm-context/playbook/2026-09-25
 - **Smart folders** — saved queries (tags · kinds · text) as chips above the body; a chip shows its matches flat.
 - **Documents** — `DocumentEditor`: New document (name + type), a fields form over a markdown file's frontmatter, Write / Split / Preview, Attach from the bucket, SVG as text with its picture, a 1 MB cap. **Drafts are browser memory** (`utilities/localDrafts`), never the database's; a draft newer than the file is restored, and it follows a rename or move.
 - **Personalisation** — view settings load and save through the client when the page is uncontrolled.
-- **apps/media-shell** — Home (Recent · Favourites · Smart folders · Unsaved drafts · Tags), Browse, Settings (Preferences · Tags · Shortcuts · About), the first-run tour.
+- **apps/media-hub** — Home (Recent · Favourites · Smart folders · Unsaved drafts · Tags), Browse, Settings (Preferences · Tags · Shortcuts · About), the first-run tour.

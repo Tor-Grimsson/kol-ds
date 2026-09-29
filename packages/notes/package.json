@@ -1,8 +1,8 @@
 {
   "name": "@kolkrabbi/kol-notes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
-  "description": "KOL notes — a note is a database row with a markdown body. The notes catalog, the note editor (kol-component's DocumentEditor, in the page) and the whole tool over a consumer-injected client. Sits above @kolkrabbi/kol-{theme,component,shell}.",
+  "description": "KOL notes — a note is a database row with a markdown body. The notes catalog, the note editor (kol-component's DocumentEditor, in the page) and the whole tool over a consumer-injected client. Sits above @kolkrabbi/kol-{theme,component,shell}; reads frontmatter from the @kolkrabbi/kol-markdown engine.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -10,8 +10,11 @@
   "exports": {
     ".": "./src/index.js"
   },
+  "dependencies": {
+    "@kolkrabbi/kol-markdown": "workspace:^"
+  },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.225.0",
+    "@kolkrabbi/kol-component": ">=0.229.0",
     "@kolkrabbi/kol-icons": ">=0.27.0",
     "@kolkrabbi/kol-shell": ">=0.57.0",
     "@kolkrabbi/kol-theme": ">=0.151.0",

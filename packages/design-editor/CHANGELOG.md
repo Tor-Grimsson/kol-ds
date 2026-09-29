@@ -1,5 +1,20 @@
 # @kolkrabbi/design-editor
 
+## 0.17.0 — 2026-09-29
+
+(0.16.1 was never published; its one line is folded in here.)
+
+- **The host's configuration is exported** — `setMediaClient` · `setMediaProxyBase` ·
+  `setSettingsStore`. They were `DesignEditor` props only, so a host mounting `LabsView` or
+  `MobileView` directly browsed the Kolkrabbi CDN through a `/media/` proxy it never stood up, and a
+  picked image rendered empty.
+- **The randomiser is two tools.** It opens on Generate · Effects on every device (the chrome doors
+  and the chooser heading stay touch-only). Effects picks the input media first, then opens the
+  effect sheet on its own; the media is kept while effects are browsed.
+- `currentView()` reads the last path segment, so a host that mounts the chromes under a base path
+  keeps the labs / randomiser keymaps.
+- The frame-name field is `md`, the menu bar's rung — at `sm` it stood 26 beside seven 32px menu triggers.
+
 ## 0.16.0 — 2026-09-27
 
 **The inspector, as panes** (plan-2026-09-27-editor-inspector-rebuild — the user's second review,

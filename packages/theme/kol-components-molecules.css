@@ -59,10 +59,10 @@
   gap: 0;
   position: relative;
 }
-.kol-dd-trigger.kol-btn-xs { height: 22px; padding-block: 0; }
-.kol-dd-trigger.kol-btn-sm { height: 26px; padding-block: 0; }
-.kol-dd-trigger.kol-btn-md { height: 32px; padding-block: 0; }
-.kol-dd-trigger.kol-btn-lg { height: 40px; padding-block: 0; }
+.kol-dd-trigger.kol-btn-xs { height: var(--kol-ctl-xs); padding-block: 0; }
+.kol-dd-trigger.kol-btn-sm { height: var(--kol-ctl-sm); padding-block: 0; }
+.kol-dd-trigger.kol-btn-md { height: var(--kol-ctl-md); padding-block: 0; }
+.kol-dd-trigger.kol-btn-lg { height: var(--kol-ctl-lg); padding-block: 0; }
 /* REST AND OPEN ARE THE ONLY STATES (2026-07-15, re-called 2026-08-09 and
  * 2026-08-28). No :hover or :active rules for the trigger live here any more —
  * kol-components-atoms.css excludes `.kol-dd-trigger` from every variant's
@@ -581,14 +581,14 @@
    * forced the pin). Same principle as .kol-btn-icon's pinned square:
    * the box never moves. */
   box-sizing: border-box;
-  height: 32px; /* md — .kol-btn-md */
+  height: var(--kol-ctl-md); /* md — .kol-btn-md */
 }
 
 /* Sizes mirror .kol-btn-{sm,md,lg} exactly: pinned height above + cell
  * padding per size (below) + mono type (12/14/16) applied in JSX. */
-.kol-seg--xs { height: 22px; }
-.kol-seg--sm { height: 26px; }
-.kol-seg--lg { height: 40px; }
+.kol-seg--xs { height: var(--kol-ctl-xs); }
+.kol-seg--sm { height: var(--kol-ctl-sm); }
+.kol-seg--lg { height: var(--kol-ctl-lg); }
 .kol-seg--xs .kol-seg-cell { padding: 4px 8px; }
 .kol-seg--sm .kol-seg-cell { padding: 4px 12px; }
 .kol-seg--lg .kol-seg-cell { padding: 8px 20px; }

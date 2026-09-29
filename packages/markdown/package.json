@@ -1,7 +1,7 @@
 {
   "name": "@kolkrabbi/kol-markdown",
-  "version": "0.1.0",
-  "description": "The KOL markdown engine — handrolled parser, frontmatter read + round-trip write, doc inventory, tag counts and co-occurrence. Plain ESM, no React, no dependencies.",
+  "version": "0.1.1",
+  "description": "The KOL markdown engine — handrolled parser, frontmatter read + round-trip write, doc inventory, tag counts. Plain ESM, no React. The tag graph is kol-search's (`tagGraph`); `buildTagCooccurrence` adapts onto it until the next minor.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -11,6 +11,9 @@
   },
   "exports": {
     ".": "./src/index.js"
+  },
+  "dependencies": {
+    "@kolkrabbi/kol-search": "workspace:^"
   },
   "files": [
     "src",

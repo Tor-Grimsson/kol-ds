@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-09-28
+updated: 2026-09-29
 description: The application shell set — rail plus scaffolds
 aliases:
   - shell
@@ -185,6 +185,47 @@ import {
   `fg-02` render as two 0.02 layers on olina's /slide-deck. It is not
   `--kol-tone-ground`: the wash is a translucent film, the ground is the opaque
   colour a floating surface paints, and CSS cannot flatten one into the other.
+
+## App tier
+
+Since 2026-09-29. Three decisions the apps review made once, in the Shell, so no app makes them again. The layers
+they sit in are [[16-app-anatomy|the app anatomy]]'s.
+
+**The phone.** `AppShell touch` is the touch policy, and under `drawerBelow` (768) two of its
+values take the rail off the screen:
+
+| `touch` | under 768 | for |
+|---|---|---|
+| `bar` | a **bottom bar** (`PhoneNav`, on kol-component's `MobileTabBar`): up to five destinations, else four + **More** — a sheet with the rest and Settings. The content pads by `--kol-shell-bar-h` | an app whose destinations are pages — the Hub's default |
+| `drawer` | the rail off-canvas behind a hamburger, in over a scrim | an app whose rail carries a tool's own rows — the editor's labs categories ride it |
+| `shell` (default) · `bare` · `overlay` | the rail regardless · no shell on a coarse pointer · the touch-device notice | older consumers, unchanged |
+
+No app fixes its own phone nav: the hamburger over a masthead's controls (media-hub) was the bug
+that made this the Shell's job. `barItems` overrides what the bar lists; `shell` lives in
+`apps/shell` with ten placeholder pages, so More is always exercised.
+
+**The masthead.** `AppShell masthead` — `display` (the display voice, no description: MEDIA,
+CURVES) or `mono` (the mono title with its description) — is the app's ONE header voice, read from
+context by every page inside: `PageHeader`, the Hub's Home and Settings, `CatalogPage`, a tool's
+own title. **No default** (the user, revising D3): unset, every page renders as its own props say,
+so a bump moves nobody's headers — fxr · mirror · monitor stay mono. A Catalog with no Shell takes
+`header.masthead` itself. A page that overrides the app's voice is the thing the render gate is
+for.
+
+**The Hub is opt-in, page by page.** `AppHub` = the Shell + the standard pages around a tool:
+
+| page | prop | without it |
+|---|---|---|
+| Home — a `CatalogPage` (the mark goes here) | `home` | no Home: `homePath` renders the tool and the mark goes there (media-hub: the column browser IS the app) |
+| Settings — `HubSettings`, pinned at the rail's foot | `settings` | no row, no route, no `,` key |
+| the shortcuts sheet | `shortcuts` + `shortcutsKey` (`s`; `null` = off) | an empty sheet |
+| the walkthrough | `walkthrough` (Home's button) | no button |
+
+When a tool sits in a Hub, its own settings gear hands over to the Hub's page (`onOpenSettings`) —
+one settings object, one place. Alone, a tool keeps its gear.
+
+Every exported view has to be mounted somewhere a person can open it — `pnpm validate:views`
+(V1). A Shell feature with no app to show it on is a feature nobody checks.
 
 ## Stays per-app
 

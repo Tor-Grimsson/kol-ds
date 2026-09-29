@@ -1,4 +1,5 @@
 import SectionText from './SectionText.jsx'
+import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
 /**
  * PageHeader — the page's masthead: an optional eyebrow, the title, and a
  * sub-line.
@@ -62,19 +63,25 @@ import SectionText from './SectionText.jsx'
  *                    with an `!important` on the margin — a DS text role re-implemented outside.
  * @param {string}    subtitleMaxWidth  the lede's measure (e.g. '800px' or '60ch'), a prop
  *                    instead of a consumer selector reaching inside
+ * @param {'display'|'mono'} masthead  the APP's masthead (utilities/masthead.js, 2026-09-29): inside
+ *                    a Shell it comes from `AppShell masthead` and WINS over `voice`/`size`, and
+ *                    `display` drops the subtitle — one app, one header. Outside a Shell, unset =
+ *                    the props as given, so no site page moves.
  * The bottom rhythm is `--kol-page-header-mb` (default 40px): inline, as before, but through a
  * variable a consumer can re-point where an inline literal could only be `!important`-ed.
  */
 /* the title role per size and voice — the one thing PageHeader knows that the
- * base does not, because the base's ladder is the SECTION scale */
-const TITLE = {
-  sans: { sm: 'kol-sans-heading-03', md: 'kol-sans-display-03', lg: 'kol-sans-display-02' },
-  mono: { sm: 'kol-mono-heading-03', md: 'kol-mono-display-03', lg: 'kol-mono-display-02' },
-}
+ * base does not, because the base's ladder is the SECTION scale. Lives in
+ * utilities/masthead.js since 2026-09-29 so a tool's own title reads the same table. */
+const TITLE = TITLE_ROLES
 /* the ONE thing the registers disagree about */
 const LEDE = { app: 'kol-mono-14', site: 'kol-sans-body-01' }
 
-export default function PageHeader({ eyebrow, title, subtitle, actions, subtitleMaxWidth, size = 'md', voice = 'sans', register = 'app', titleClass, className = '' }) {
+export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle, actions, subtitleMaxWidth, size: ownSize = 'md', voice: ownVoice = 'sans', register = 'app', titleClass, masthead, className = '' }) {
+  const m = useMasthead(masthead)
+  const voice = m ? m.voice : ownVoice
+  const size = m ? m.size : ownSize
+  const subtitle = m && !m.subtitle ? undefined : ownSubtitle
   const roles = TITLE[voice] ?? TITLE.sans
   return (
     /* the block owns its own rhythm — margins inline, never in a shared type
@@ -83,7 +90,7 @@ export default function PageHeader({ eyebrow, title, subtitle, actions, subtitle
       eyebrow={eyebrow}
       headline={title}
       headlineAs="h1"
-      headlineClass={`text-fg-96 ${titleClass ?? roles[size] ?? roles.md}`}
+      headlineClass={`text-fg-96 ${titleClass ?? roles[size] ?? roles.md}${m?.upper ? ' uppercase' : ''}`}
       body={subtitle}
       bodyClass={`text-oq-64 ${LEDE[register] ?? LEDE.app} min-w-0`}
       actions={actions}

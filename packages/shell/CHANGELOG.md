@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-shell
 
+## 0.59.0 — 2026-09-29
+
+- **`AppStudio`** (new, exported) — the workstation: the Hub plus a fixed page set, Home · Library · Create · Use · opt-in pages · Settings, in that order, mono by default. `library` is a CatalogPage, `create` a PageHeader over the editor, `use` the tool full-bleed with no wash; each slot renames with `{ path, label, icon }`. What fxr · mirror · monitor each hand-build. Reference app: `apps/studio`.
+- **`AppShell touch="bar"` — the phone bar** (new `PhoneNav`, exported): below `drawerBelow` the rail becomes kol-component's `MobileTabBar` — up to five destinations, else four + **More** (a sheet with the rest and Settings). `barItems` overrides the list. The content pads by `--kol-shell-bar-h`.
+- **`AppShell masthead`** (`display` · `mono`, **no default**) — the app's one header voice, read by every page inside (kol-component `MastheadContext`). Unset, every page renders as its own props say, so this bump moves no consumer's headers.
+- **BREAKING — `AppHub`: `home` and `settings` are opt-in.** No `home` → no Home page (the mark goes to the tool); no `settings` → no Settings row, route or `,` key (it was pinned whether the app had settings or not). Default `touch` is now **`bar`** (the drawer's hamburger sat over the masthead's controls). Home is the bar's first tab.
+- `CatalogPage` — `header.masthead` for a Catalog with no Shell.
+- `NavRail` — a section row's fold chevron is `md`, the row's rung (it was 26 beside the 32 glyph button).
+- Peer floors: kol-component >=0.229.0 · kol-theme >=0.156.0.
+
 ## 0.58.0 — 2026-09-28
 
 - **`ShortcutsOverlay` moved to `@kolkrabbi/kol-component`** (0.228.0) so the workshop shell opens

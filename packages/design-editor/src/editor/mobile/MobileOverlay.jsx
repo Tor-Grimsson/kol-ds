@@ -1,5 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { pack } from '../packs'
@@ -137,7 +137,7 @@ const ASPECT_ROW_2 = [
   { value: 'fill', label: 'Fill' },
 ]
 
-export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect }) {
+export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false }) {
   const { updateLayer, addFilter, removeFilter } = useComposeState()
   const { onExportPng } = useComposeFile()
   const [uiHidden, setUiHidden] = useState(false)
@@ -146,6 +146,8 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
   const [showFx, setShowFx] = useState(false)
   const [tab, setTab] = useState('generate')
   const seed = useRollSeed(layer)
+  /* the Effects tool opens its sheet as soon as its media has landed */
+  useEffect(() => { if (openEffects) { setOpen(true); setShowFx(true) } }, [openEffects])
 
   if (!layer) return null
 

@@ -25,6 +25,7 @@ import Development from './pages/Development'
 import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
 import Apps from './pages/Apps'
+import AppHome from './pages/AppHome'
 import ShellChrome from './lib/ShellChrome.jsx'
 import MdxDoc from './lib/MdxDoc.jsx'
 /* MDX docs — the page IS the document (shadcn model). One import per doc for
@@ -96,6 +97,8 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/development" element={<Development />} />
         <Route path="/apps" element={<Apps />} />
+        {/* an app's HOME — its spec. Singular: `/apps/<name>/` is the app itself (its own build) */}
+        <Route path="/app/:name" element={<AppHome />} />
         <Route path="/docs" element={<DocsIndex />} />
         <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />

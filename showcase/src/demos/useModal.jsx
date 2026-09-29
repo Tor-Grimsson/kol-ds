@@ -11,14 +11,12 @@ function Triggers() {
   return (
     <div className="flex gap-2">
       <Button
-        variant="secondary"
         size="sm"
         onClick={() => confirm('Discard unsaved changes?')}
       >
         Confirm
       </Button>
       <Button
-        variant="secondary"
         size="sm"
         onClick={() =>
           confirm('Restore your last canvas?', { okLabel: 'Restore', cancelLabel: 'New file' })
@@ -27,7 +25,6 @@ function Triggers() {
         Custom labels
       </Button>
       <Button
-        variant="secondary"
         size="sm"
         onClick={() => prompt('Name this frame:', 'Untitled')}
       >

@@ -1,12 +1,23 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { Button, Dropdown, Input, PageHeader, Pill, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
+import { MemoryRouter } from 'react-router-dom'
+import { Button, Dropdown, Input, PageHeader, Pill, SegmentedToggle, ShellSearchOverlay, Tag, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell'
 import { createIndex, search } from '@kolkrabbi/kol-search'
+import { TagGraph } from '@kolkrabbi/kol-workshop'
 import { CORPUS } from 'workshop-fixture'
 
-/* KOL-SEARCH, ALONE, IN THE TOOL FRAME — the query box, how the engine read it, the results with
- * the reasons each ranked where it did, and the facets to narrow by. The scope in the masthead is
- * the UI's hard filter (what a page passes as `scope`); the facet boxes are chips (`filters`). */
+/* KOL-SEARCH, ALONE, IN THE TOOL FRAME — every search surface in one app, so each is seen at every
+ * breakpoint before it ships (apps review 2026-09-29 — the user: *"having the results page, and the
+ * shortcuts, and overlay etc. in the same app is kinda the point"*):
+ *
+ *   ⌘K     the overlay palette (ShellSearchOverlay) on the same engine — Enter commits the query here
+ *   /      focuses the query on the results page
+ *   S      the syntax sheet
+ *   RESULTS · GRAPH   the page's two views: the ranked results, or the index's tags as a network
+ *                     (kol-search `tagGraph`, drawn by kol-workshop's TagGraph — ruling D4)
+ *
+ * The scope in the masthead is the UI's hard filter (what a page passes as `scope`); the facet boxes
+ * are chips (`filters`). */
 
 const INDEX = createIndex(CORPUS.searchItems)
 
@@ -18,6 +29,10 @@ const SCOPES = [
   { value: 'blocks', label: 'Blocks' },
   { value: 'sets', label: 'Sets' },
 ]
+
+const VIEWS = [{ value: 'results', label: 'RESULTS' }, { value: 'graph', label: 'GRAPH' }]
+/* the graph reads the corpus as TagGraph's docs shape */
+const GRAPH_DOCS = CORPUS.searchItems.map((i) => ({ id: i.id, metadata: { tags: i.tags ?? [] } }))
 
 const EXAMPLES = ['atom', '"atom"', 'atom tag:pattern/action', 'input -textarea', 'in:docs after:2026-09-15', '#domain/layout', 'is:doc release', 'overlay molecules']
 
@@ -43,6 +58,7 @@ const RUNG_LABEL = {
 
 const SHORTCUTS = [
   { section: 'Query', items: [
+    { id: 'palette', label: 'The search palette', combo: '⌘K' },
     { id: 'focus', label: 'Focus the query', combo: '/' },
     { id: 'tag', label: 'Tag filter', combo: 'tag:x · #x' },
     { id: 'kind', label: 'Kind filter', combo: 'is:x · kind:x' },
@@ -162,6 +178,13 @@ export default function App() {
   const [scope, setScope] = useState('')
   const [filters, setFilters] = useState({})
   const [sheet, setSheet] = useState(false)
+  const [view, setView] = useState('results')
+  const [palette, setPalette] = useState(false)
+  const [pq, setPq] = useState('')
+  const paletteRows = useMemo(
+    () => search(INDEX, pq, { limit: 30 }).results.map((r) => ({ id: r.item.id, label: r.item.title, group: r.item.kind, hint: r.item.space, highlights: r.highlights.title })),
+    [pq],
+  )
 
   const out = useMemo(
     () => search(INDEX, q, { scope: scope ? { space: scope } : {}, filters, limit: 50 }),
@@ -175,9 +198,10 @@ export default function App() {
       return { ...prev, [field]: next }
     })
 
-  /* `/` focuses the query (never the browser's find); S opens the sheet */
+  /* ⌘K opens the palette; `/` focuses the query (never the browser's find); S opens the sheet */
   useEffect(() => {
     const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPalette((v) => !v); return }
       if (e.metaKey || e.ctrlKey || e.altKey) return
       const el = e.target
       const typing = el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')
@@ -190,9 +214,12 @@ export default function App() {
   }, [])
 
   const actions = (
-    <Tooltip label="Scope">
-      <Dropdown value={scope} onChange={setScope} options={SCOPES} />
-    </Tooltip>
+    <span className="flex items-center gap-2">
+      <SegmentedToggle size="sm" value={view} onChange={setView} options={VIEWS} ariaLabel="View" />
+      <Tooltip label="Scope">
+        <Dropdown value={scope} onChange={setScope} options={SCOPES} />
+      </Tooltip>
+    </span>
   )
   const hasFilters = Object.values(filters).some((v) => v.length)
 
@@ -212,8 +239,10 @@ export default function App() {
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="kol-doc-eyebrow">Try</span>
+            {/* the suggestions are the DS Tag, not bare buttons (apps review 2026-09-29) — `kol-tag--data`: a
+                query is data and renders verbatim (tag:pattern/action is not TAG:PATTERN/ACTION) */}
             {EXAMPLES.map((ex) => (
-              <Button key={ex} variant="ghost" size="sm" onClick={() => setQ(ex)}>{ex}</Button>
+              <Tag key={ex} variant="tertiary" hash={false} size="md" className="kol-tag--data" active={q === ex} onClick={() => setQ(ex)}>{ex}</Tag>
             ))}
           </div>
           <div className="flex flex-col gap-2">
@@ -221,6 +250,17 @@ export default function App() {
             <Reading tokens={out.query.tokens} />
           </div>
         </div>
+        {view === 'graph' ? (
+          <div className="min-h-0 flex-1 overflow-hidden">
+            {/* the graph is the index's tags; a tag click searches for it. TagGraph draws a square
+                as wide as its box, so the box is capped to the height left — the tool fits the window */}
+            <div className="mx-auto w-full max-w-[calc(100dvh-340px)]">
+            <MemoryRouter>
+              <TagGraph allDocs={GRAPH_DOCS} activeTag={out.query.filters.tags?.[0]} onTagClick={(t) => { setQ(`tag:${t}`); setView('results') }} />
+            </MemoryRouter>
+            </div>
+          </div>
+        ) : (
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-8 lg:grid-cols-[16rem_minmax(0,1fr)]">
           <div className="flex min-h-0 flex-col gap-4 overflow-y-auto pb-12">
             {hasFilters && <span className="self-start"><Button variant="ghost" size="sm" onClick={() => setFilters({})}>Clear the boxes</Button></span>}
@@ -231,7 +271,19 @@ export default function App() {
             <Results results={out.results} total={out.total} />
           </div>
         </div>
+        )}
       </div>
+      <ShellSearchOverlay
+        open={palette}
+        onClose={() => { setPalette(false); setPq('') }}
+        query={pq}
+        onQueryChange={setPq}
+        results={paletteRows}
+        placeholder="Search the fixture"
+        enterLabel={pq ? `All results for “${pq}”` : undefined}
+        onExpand={() => { setQ(pq); setView('results'); setPalette(false); setPq('') }}
+        onSelect={(item) => { setQ(`"${item.label}"`); setView('results'); setPalette(false); setPq('') }}
+      />
       {sheet && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setSheet(false)} />}
     </PageShell>
   )

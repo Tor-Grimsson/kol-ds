@@ -11,6 +11,12 @@
  *       READ from the component (`variant === '…'` branches, plus its default), so a new variant
  *       needs no edit here.
  *
+ *   V2  `<Button variant="secondary">` — the inverted fill (the text colour as fill) — only where
+ *       ALLOWED_INVERTED names the file with a reason. User, 2026-09-29: *"the inverted tone
+ *       button, which I have said numerous times NOT to default, the default is fucking called
+ *       primary"*. An unset variant inherits the wrapper's tone, else primary — that is the default.
+ *
+ * Button's allowed set is read from its `KNOWN` list (it has no `variant === '…'` branches).
  * Only literal values are checked; an expression (`variant={v}`) is the caller's to get right.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
@@ -22,10 +28,22 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 /* component → its source; add a row to cover another component */
 const COMPONENTS = {
   SegmentedToggle: 'packages/component/src/atoms/SegmentedToggle.jsx',
+  Button: 'packages/component/src/atoms/Button.jsx',
+}
+
+/* file → why the inverted Button is right there. A site hero's second CTA is the one case. */
+const ALLOWED_INVERTED = {
+  'showcase/src/blocks/hero-full-bleed.jsx': 'site hero — the second CTA of a pair',
+  'showcase/src/blocks/feature-showcase.jsx': 'site hero — the second CTA of a pair',
+  'showcase/src/sets/section-set.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/demos/FeatureSplit.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/demos/SectionSplit.jsx': 'site section — the second CTA of a pair',
 }
 
 function allowed(file) {
   const src = readFileSync(join(ROOT, file), 'utf8')
+  const known = src.match(/const KNOWN = \[([^\]]*)\]/)
+  if (known) return new Set([...known[1].matchAll(/'([\w-]+)'/g)].map((m) => m[1]).concat('control'))
   const set = new Set([...src.matchAll(/variant === '([\w-]+)'/g)].map((m) => m[1]))
   const def = src.match(/variant = '([\w-]+)'/)
   if (def) set.add(def[1])
@@ -54,9 +72,11 @@ for (const [name, file] of Object.entries(COMPONENTS)) {
       const v = m[1].match(/\bvariant="([\w-]+)"/)
       if (!v) continue
       seen++
+      const line = src.slice(0, m.index).split('\n').length
       if (!ok.has(v[1])) {
-        const line = src.slice(0, m.index).split('\n').length
         errors.push(`${relative(ROOT, f)}:${line}  <${name} variant="${v[1]}"> — not a variant (has: ${[...ok].join(' · ')}) (V1)`)
+      } else if (name === 'Button' && v[1] === 'secondary' && !ALLOWED_INVERTED[relative(ROOT, f)]) {
+        errors.push(`${relative(ROOT, f)}:${line}  <Button variant="secondary"> — the inverted fill; drop the variant (inherits the tone, else primary) or allowlist the file with a reason (V2)`)
       }
     }
   }

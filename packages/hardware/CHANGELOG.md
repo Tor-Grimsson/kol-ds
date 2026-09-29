@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.3.1 — 2026-09-29
+
+- `EnvelopeGenerator` — the zoom rows no longer pin `h-6`, which held the coarse-pointer 44px slider row at 24 and overlapped the X and Y touch targets.
+
 ## 0.3.0 — 2026-09-27
 
 **Curves done properly** (plan-2026-09-27-app-frame-and-curves) — mirror's /expressions page, class

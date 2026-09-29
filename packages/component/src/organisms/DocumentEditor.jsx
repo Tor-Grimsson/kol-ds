@@ -32,7 +32,8 @@ import { readDraft, writeDraft, clearDraft } from '../utilities/localDrafts.js'
  * @param {string}   name            the file's name (edit) or a starting name (new)
  * @param {string}   kind            markdown · text · json · yaml · code · svg (edit); new picks it
  * @param {string}   text            the saved text; `null` while it loads
- * @param {number}   savedAt         epoch ms of the saved file — a draft older than this is ignored
+ * @param {number}   savedAt         epoch ms of the saved file — a draft older than this is ignored; `null` = never
+ *                                    saved (a blank note, 2026-09-29) and the status says so instead of "Saved"
  * @param {Object}   draft           `{ bucket, key }` — where the draft lives; omit for no drafts
  * @param {Function} onSave          `(text) => Promise` — edit mode
  * @param {Function} onCreate        `({ name, text }) => Promise` — new mode; the name carries the extension
@@ -42,7 +43,7 @@ import { readDraft, writeDraft, clearDraft } from '../utilities/localDrafts.js'
  * @param {Function} onPickAsset     `() => Promise<{ name, url, contentType } | null>` — a consumer's own picker instead
  * @param {Function} onClose
  * @param {boolean}  inline          render IN the page, filling its container, instead of over it (the notes
- *                                   page, media-shell 2026-09-26: the editor is the page's content there,
+ *                                   page, media-hub 2026-09-26: the editor is the page's content there,
  *                                   not a window over a list). No scrim, no Escape-to-close; the X still closes
  */
 const TYPES = [
@@ -94,10 +95,10 @@ export default function DocumentEditor({
     }
     if (text == null) return
     const d = draft ? readDraft(draft.bucket, draft.key) : null
-    const useDraft = d && d.at > savedAt && d.text !== text
+    const useDraft = d && d.at > (savedAt ?? 0) && d.text !== text
     setBase(text)
     setValue(useDraft ? d.text : text); latest.current = useDraft ? d.text : text
-    setStatus(useDraft ? 'Draft restored — not saved to the file' : 'Saved')
+    setStatus(useDraft ? 'Draft restored — not saved to the file' : savedAt === null ? 'Not saved yet' : 'Saved')
     if (d && !useDraft && draft) clearDraft(draft.bucket, draft.key)
   }, [text]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -110,7 +111,7 @@ export default function DocumentEditor({
   useEffect(() => () => flush(), []) // eslint-disable-line react-hooks/exhaustive-deps
   const change = (next) => {
     setValue(next); latest.current = next
-    setStatus(isNew ? 'Not created yet' : next === base ? 'Saved' : 'Edited — not saved')
+    setStatus(isNew ? 'Not created yet' : next === base ? (savedAt === null ? 'Not saved yet' : 'Saved') : 'Edited — not saved')
     clearTimeout(timer.current)
     timer.current = setTimeout(flush, DRAFT_PAUSE)
   }
@@ -197,7 +198,7 @@ export default function DocumentEditor({
             <ViewToggle variant="text" viewMode={view} onViewChange={setView} options={views} />
             {md && (onPickAsset || assets?.length > 0) && <Button variant="nav" size="sm" iconLeft="image" onClick={attach} aria-pressed={picking}>Attach</Button>}
             {!isNew && value !== base && value != null && <Button variant="nav" size="sm" onClick={revert}>Revert</Button>}
-            <Button variant="secondary" size="sm" onClick={save} disabled={!dirty}>{isNew ? 'Create' : 'Save'}</Button>
+            <Button size="sm" onClick={save} disabled={!dirty}>{isNew ? 'Create' : 'Save'}</Button>
           </span>
         )}>
         {/* the window's own caps, inline — Tailwind does not generate arbitrary values from package source */}
@@ -229,7 +230,7 @@ export default function DocumentEditor({
                 )}
                 {value == null
                   ? <p className="kol-mono-12 text-fg-48">Loading…</p>
-                  : <Textarea variant="filled" size="md" rows={18} axis="vertical" className="w-full flex-1 kol-mono-12"
+                  : <Textarea variant="filled" size="sm" rows={18} axis="vertical" className="w-full flex-1"
                       value={md ? parts.body : value} onChange={(e) => (md ? setBody(e.target.value) : change(e.target.value))}
                       spellCheck={kind === 'markdown' || kind === 'text'} aria-label="Document text"
                       placeholder={md ? 'Write in markdown — # heading, **bold**, - list' : ''} />}

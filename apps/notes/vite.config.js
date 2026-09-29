@@ -30,7 +30,7 @@ export default defineConfig(({ command }) => ({
   // crashes at runtime with a null dispatcher. Force one.
   resolve: { dedupe: ['react', 'react-dom'] },
 
-  // its own port beside media-shell (5175) and shell (5176), so they run at once
+  // its own port beside media-hub (5175) and shell (5176), so they run at once
   server: { port: 5177 },
 
   optimizeDeps: {

@@ -30,8 +30,8 @@ function ToneOnAWash() {
           <ViewToggle viewMode={view} onViewChange={setView} variant="icon" tone={tone} />
           <Dropdown value={sort} onChange={setSort} options={opts} tone={tone} />
           <Input size="sm" placeholder="search" value={q} onChange={(e) => setQ(e.target.value)} tone={tone} />
-          <Button iconOnly="copy" variant="secondary" size="sm" tone={tone} aria-label="Copy" />
-          <Button iconOnly="download" variant="secondary" size="sm" tone={tone} aria-label="Download" />
+          <Button iconOnly="copy" size="sm" tone={tone} aria-label="Copy" />
+          <Button iconOnly="download" size="sm" tone={tone} aria-label="Download" />
           <IconFrame name="grid" size="sm" tone={tone} />
           <ThemeToggle label={false} size="sm" fill="subtle" tone={tone} />
         </div>

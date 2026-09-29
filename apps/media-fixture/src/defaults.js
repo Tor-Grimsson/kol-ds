@@ -1,5 +1,5 @@
 /* THE IMAGINED OLINA SETUP'S DISPLAY DEFAULTS, per bucket (2026-09-26). Lived in apps/media's own
- * settings module, so the same tool in apps/media-shell opened on the DS base instead — a 528px
+ * settings module, so the same tool in apps/media-hub opened on the DS base instead — a 528px
  * browser, poster previews, no wall (user: "media in shell is just media in shell.. so there
  * shouldnt really be a reason to diff"). Both apps read these now, through `useFixtureMedia`.
  *

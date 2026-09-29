@@ -1,0 +1,14 @@
+{
+  "name": "KOL Presentation Hub",
+  "short_name": "Decks Hub",
+  "start_url": "/apps/presentation-hub/",
+  "scope": "/apps/presentation-hub/",
+  "display": "standalone",
+  "background_color": "#121215",
+  "theme_color": "#121215",
+  "icons": [
+    { "src": "/apps/app-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/apps/app-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apps/app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

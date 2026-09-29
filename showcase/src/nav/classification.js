@@ -174,7 +174,7 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
+  useNavHidden: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -256,7 +256,7 @@ export const FUNCTIONS_BY_NAME = {
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
-  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', HubHome: 'structure', HubSettings: 'structure',
+  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', HubHome: 'structure', HubSettings: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
   Logomark: 'display',
@@ -298,6 +298,7 @@ export const EXEMPT = {
   ContentFilters: 'namesake:component-filters vs shell-catalog-organism',
   GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
   NavHiddenContext: 'non-component',
+  MastheadContext: 'non-component',
   SettingsToggleContext: 'non-component',
   PageBleed: 'member-of:PageShell',
   LabeledControlSection: 'member-of:SettingsPanel', SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
@@ -384,7 +385,9 @@ export const NO_DEMO = (() => {
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
     AppHub: 'the Hub in one call (2026-09-26) — its rail is position: fixed to the window and its keys '
       + '(, S \\ ⌥1–9) listen on the window, so on a demo stage it would sit over the showcase and take '
-      + 'its keys. Its parts have demos (HubHome, HubSettings); the whole thing lives at apps/shell.',
+      + 'its keys. Its parts have demos (HubHome, HubSettings); the whole thing lives at apps/hub.',
+    AppStudio: 'the Studio in one call (2026-09-29) — AppHub plus the workstation pages, so the same fixed rail '
+      + 'and window keys; its parts have demos (HubHome, HubSettings, CatalogPage); the whole thing lives at apps/studio.',
     ...Object.fromEntries(['Notes', 'NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'kol-notes 0.1.0 (2026-09-27) — '
       + 'every part reads a notes client (list · load · save · delete) the showcase does not carry; the '
       + 'live surface is apps/notes on the fixture. Demos land with a showcase fixture client.'])),

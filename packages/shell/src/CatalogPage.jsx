@@ -42,7 +42,8 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  *                                 list · `kol-tone-secondary` on the root · the All / Recent view strip; `toCard` returns
  *                                 the deck's fields and handlers — `title date bytes count cover href onNavigate onDownload
  *                                 onFavourite onDelete favourited` — and the page renders the slots. Explicit props win.
- * @param {Object}   header        PageHeader props — `{ title, subtitle, size, voice, eyebrow }`
+ * @param {Object}   header        PageHeader props — `{ title, subtitle, size, voice, eyebrow, masthead }`; inside a
+ *                                 Shell the app's masthead wins, and a Catalog with NO Shell sets `masthead` here (2026-09-29)
  * @param {Array}    items         the objects `ContentFilters` filters and searches
  * @param {Function} toCard        (item, { view, layout }) => card props (see above)
  * @param {string}   filtersTitle  ContentFilters' title (e.g. "All Chromes")

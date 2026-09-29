@@ -6,7 +6,7 @@ import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } fro
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping } from './grouping.jsx'
 import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
-import { APPS } from '../pages/Apps.jsx'
+import { APPS, LAYERS } from '../pages/Apps.jsx'
 import useEmbed from './useEmbed.js'
 
 /**
@@ -151,7 +151,23 @@ function SpaceRail({ space, onNavigate }) {
       </div>
     )
   }
-  if (space === 'apps') return one('Apps', APPS.map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/apps#${a.name}` })))
+  /* the Apps rail is the index's layers, each app to its home (apps review 2026-09-29) */
+  if (space === 'apps') {
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={[{ id: 'apps-index', label: 'All apps', path: '/apps' }]} basePath="/" label="Apps" onNavigate={onNavigate} />
+        {LAYERS.map((l) => (
+          <ShellSidebar
+            key={l.id}
+            routes={APPS.filter((a) => a.layer === l.id).map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/app/${a.name}` }))}
+            basePath="/"
+            label={l.label}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </div>
+    )
+  }
   if (space === 'development') {
     const tools = [...rowsOf(DEV_TOOLS), ...(import.meta.env.DEV ? [{ id: 'dev-lobby', label: 'Lobby (dev only)', path: '/lobby' }] : [])]
     return one('Tools', tools)

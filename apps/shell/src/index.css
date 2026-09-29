@@ -2,7 +2,7 @@
 
 /* THE WORKSPACE FORM — the packages sit at `packages/*` here, so kol-sources.css's
    consumer paths resolve to nothing; point at this app's own node_modules symlinks
-   (same reason as apps/media-shell and the showcase). */
+   (same reason as apps/hub and the showcase). */
 @source "../node_modules/@kolkrabbi/kol-component/src";
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";

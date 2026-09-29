@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useModal } from '@kolkrabbi/kol-component'
+import { useModal, clearDraft } from '@kolkrabbi/kol-component'
 import NotesCatalog from './NotesCatalog.jsx'
 import NoteEditor from './NoteEditor.jsx'
-import { slugFor, starterBody, titleOf } from './notes.js'
+import { slugFor, blankBody, titleOf, NEW_NOTE } from './notes.js'
 
 /* taxonomy-ok: organism — the notes tool: NotesCatalog ⇄ NoteEditor over a consumer-injected client */
 
 /**
  * Notes — the whole tool: the list, and a note open in the page. ONE component so every app that
- * carries notes renders the same tool (apps/notes alone, media-shell's Notes tab).
+ * carries notes renders the same tool (apps/notes alone, media-hub's Notes tab).
  *
  * THE CLIENT is olina's notes API, as verbs (the fixture fakes them; the real one is a Pages Function
  * over D1):
@@ -17,13 +17,17 @@ import { slugFor, starterBody, titleOf } from './notes.js'
  *   saveNote({ slug, title, body?, favourite }) → { updated_at }   upsert; `body` undefined = keep it
  *   deleteNote(slug)
  *
- * New note asks for a name (the DS modal — the app mounts `ModalProvider`), creates the row with a
- * starter body and opens it. Needs `ModalProvider` above it.
+ * NEW IS A BLANK PAGE (apps review 2026-09-29): `open={NEW_NOTE}` is a note not saved yet — the
+ * editor, empty, no name asked. The first Save names it (frontmatter `title`, else the first heading,
+ * else "Untitled note"), creates the row and opens it by its slug. New note in the list opens the same
+ * page. An app that should LAND on a blank note (apps/notes) passes `NEW_NOTE` when nothing is open.
+ * Delete confirms through the DS modal — needs `ModalProvider` above it.
  *
  * @param {Object}  client   the verbs above
  * @param {Array}   assets   `[{ key, name, url, contentType }]` — what the editor's Attach offers
  * @param {Object}  header   PageHeader props for the list
- * @param {string}  open · onOpenChange   controlled open note slug (`null` = the list); or internal
+ * @param {string}  open · onOpenChange   controlled open note slug (`null` = the list, `NEW_NOTE` = a
+ *                                         blank note); or internal
  */
 export default function Notes({ client, assets, header, open: openProp, onOpenChange }) {
   const [openState, setOpenState] = useState(null)
@@ -36,7 +40,7 @@ export default function Notes({ client, assets, header, open: openProp, onOpenCh
   const [error, setError] = useState(null)
   const [reload, setReload] = useState(0)
   const refresh = () => setReload((n) => n + 1)
-  const { prompt, confirm } = useModal()
+  const { confirm } = useModal()
   const fail = (err) => setError(err.message || String(err))
 
   useEffect(() => {
@@ -47,21 +51,22 @@ export default function Notes({ client, assets, header, open: openProp, onOpenCh
 
   useEffect(() => {
     if (!open) { setNote(null); return undefined }
+    if (open === NEW_NOTE) { setNote({ slug: NEW_NOTE, title: '', body: blankBody(), favourite: false, updated_at: null }); return undefined }
     let ignore = false
     setNote(null)
     client.loadNote(open).then((n) => { if (!ignore) setNote(n) }, (err) => { if (!ignore) { fail(err); setOpen(null) } })
     return () => { ignore = true }
   }, [client, open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const create = async () => {
-    const title = await prompt('Name the new note', 'Untitled note', { okLabel: 'Create' })
-    if (!title) return
+  const create = () => setOpen(NEW_NOTE)
+  /* the blank note's first Save: the body names it, the row is created, the note opens by its slug */
+  const saveNew = async (body) => {
+    const title = titleOf(body, 'Untitled note')
     const slug = slugFor(title)
-    try {
-      await client.saveNote({ slug, title, body: starterBody(title), favourite: false })
-      refresh()
-      setOpen(slug)
-    } catch (err) { fail(err) }
+    await client.saveNote({ slug, title, body, favourite: false })
+    clearDraft('notes', NEW_NOTE)
+    refresh()
+    setOpen(slug)
   }
   const toggleFavourite = async (n) => {
     try { await client.saveNote({ slug: n.slug, title: n.title, body: undefined, favourite: !n.favourite }); refresh() } catch (err) { fail(err) }
@@ -75,7 +80,7 @@ export default function Notes({ client, assets, header, open: openProp, onOpenCh
     <NoteEditor
       note={note}
       assets={assets}
-      onSave={async (body) => {
+      onSave={open === NEW_NOTE ? saveNew : async (body) => {
         const res = await client.saveNote({ slug: note.slug, title: titleOf(body, note.title), body, favourite: note.favourite })
         setNote((n) => ({ ...n, body, title: titleOf(body, n.title), updated_at: res?.updated_at ?? n.updated_at }))
       }}

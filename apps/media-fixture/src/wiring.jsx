@@ -1,4 +1,4 @@
-/* THE MEDIA WIRING, shared by apps/media and apps/media-shell (plan v2, 2026-09-26).
+/* THE MEDIA WIRING, shared by apps/media and apps/media-hub (plan v2, 2026-09-26).
  *
  * Everything an app does to put the DS media surface on the fixture — the bucket, the verbs, the
  * trash, uploads, the three seams (counts, thumbnails, dates) — lifted out of apps/media's App.jsx
@@ -16,9 +16,10 @@ import { DEFAULTS } from './defaults.js'
 export { DEFAULTS }
 /* the tool's extras (footer, file formats, ⇧R) and its keymap — same subpath, same reason */
 export { useMediaTool, TOOL_SHORTCUTS } from './tool.jsx'
-/* the notes and decks tools' wiring (apps/notes, apps/presentation, media-shell's tabs) — same subpath */
+/* the notes and decks tools' wiring (apps/notes, apps/presentation, media-hub's tabs) — same subpath */
 export { useNotesTool, useDecksTool } from './libraryTools.jsx'
-export { useBrandTool } from './brandTool.jsx'
+/* useBrandTool (the Kolkrabbi brand for the brand apps) retired 2026-09-29 — apps/brand and
+ * apps/brand-hub render VOYAGER from voyager-fixture; the file is in _tmp/2026-09-29-media-fixture-brand-tool/ */
 
 const THUMBABLE = new Set(['image', 'video'])
 

@@ -1099,6 +1099,12 @@
       "type": "—",
       "def": "'inline-flex'",
       "desc": ""
+    },
+    {
+      "prop": "asChild",
+      "type": "—",
+      "def": "false",
+      "desc": ""
     }
   ],
   "PopoverPanel": [
@@ -1271,7 +1277,19 @@
   ],
   "InspectorSection": [
     {
+      "prop": "actions",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
       "prop": "divided",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "pane",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -1735,7 +1753,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -1779,7 +1797,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -2609,6 +2627,14 @@
       "desc": ""
     }
   ],
+  "ShortcutsOverlay": [
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    }
+  ],
   "Slider": [
     {
       "prop": "min",
@@ -2719,7 +2745,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -2745,13 +2771,45 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "DocumentEditor": [
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'edit'",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "savedAt",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "folder",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "inline",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -2811,21 +2869,7 @@
       "desc": ""
     }
   ],
-  "CanvasFrame": [
-    {
-      "prop": "guideColor",
-      "type": "—",
-      "def": "'#F5F3EF'",
-      "desc": ""
-    }
-  ],
   "Canvas": [
-    {
-      "prop": "guideColor",
-      "type": "—",
-      "def": "'#F5F3EF'",
-      "desc": ""
-    },
     {
       "prop": "align",
       "type": "—",
@@ -3851,6 +3895,20 @@
       "desc": ""
     }
   ],
+  "MediaLibraryExplorer": [
+    {
+      "prop": "keys",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "phoneTabs",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
   "MediaTileGallery": [
     {
       "prop": "items",
@@ -3982,12 +4040,6 @@
       "prop": "size",
       "type": "—",
       "def": "'sm'",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'primary'",
       "desc": ""
     },
     {
@@ -4677,257 +4729,87 @@
       "desc": ""
     }
   ],
-  "Knob": [
+  "Decks": [
     {
-      "prop": "variant",
+      "prop": "layouts",
       "type": "—",
-      "def": "'column'",
-      "desc": ""
-    },
-    {
-      "prop": "bipolar",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'sm'",
+      "def": "[]",
       "desc": ""
     }
   ],
-  "Fader": [
+  "DeckEditor": [
     {
-      "prop": "min",
+      "prop": "layouts",
       "type": "—",
-      "def": "0",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "max",
-      "type": "—",
-      "def": "100",
-      "desc": ""
-    },
-    {
-      "prop": "step",
-      "type": "—",
-      "def": "1",
-      "desc": ""
-    },
-    {
-      "prop": "direction",
-      "type": "—",
-      "def": "'horizontal'",
-      "desc": ""
-    }
-  ],
-  "Toggle": [
-    {
-      "prop": "horizontal",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'md'",
-      "desc": ""
-    },
-    {
-      "prop": "padding",
-      "type": "—",
-      "def": "4",
-      "desc": ""
-    },
-    {
-      "prop": "momentary",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "color",
-      "type": "—",
-      "def": "'var(--kol-ctl-led-red)'",
-      "desc": ""
-    },
-    {
-      "prop": "blink",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "blinkPeriodMs",
-      "type": "—",
-      "def": "500",
-      "desc": ""
-    },
-    {
-      "prop": "forceLit",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    }
-  ],
-  "FlipToggle": [
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'vertical'",
-      "desc": ""
-    },
-    {
-      "prop": "positions",
-      "type": "—",
-      "def": "2",
-      "desc": ""
-    }
-  ],
-  "LED": [
-    {
-      "prop": "active",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "color",
-      "type": "—",
-      "def": "'red'",
-      "desc": ""
-    },
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'sm'",
-      "desc": ""
-    }
-  ],
-  "IconButton": [
-    {
-      "prop": "iconSize",
-      "type": "—",
-      "def": "10",
-      "desc": ""
-    },
-    {
-      "prop": "iconComponent",
-      "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
-      "desc": ""
-    }
-  ],
-  "PanelLabel": [
-    {
-      "prop": "horizontal",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "labelPosition",
-      "type": "—",
-      "def": "'bottom'",
-      "desc": ""
-    },
-    {
-      "prop": "labelClass",
-      "type": "—",
-      "def": "'kol-helper-8'",
-      "desc": ""
-    },
-    {
-      "prop": "gap",
+      "prop": "railLeft",
       "type": "—",
       "def": "0",
       "desc": ""
     }
   ],
-  "ModuleHeader": [
+  "DeckFile": [
     {
-      "prop": "powered",
+      "prop": "slug",
       "type": "—",
-      "def": "true",
-      "desc": ""
-    }
-  ],
-  "JackSocket": [
-    {
-      "prop": "type",
-      "type": "—",
-      "def": "'out'",
+      "def": "'deck'",
       "desc": ""
     },
     {
-      "prop": "size",
+      "prop": "slides",
       "type": "—",
-      "def": "'md'",
-      "desc": ""
-    },
-    {
-      "prop": "labelSize",
-      "type": "—",
-      "def": "'xxs'",
+      "def": "[]",
       "desc": ""
     },
     {
       "prop": "active",
       "type": "—",
-      "def": "false",
+      "def": "0",
       "desc": ""
-    },
+    }
+  ],
+  "DeckSettings": [
     {
-      "prop": "pending",
+      "prop": "slides",
       "type": "—",
-      "def": "false",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "dimPending",
+      "prop": "greys",
       "type": "—",
-      "def": "false",
+      "def": "{}",
       "desc": ""
     },
     {
-      "prop": "cablesHidden",
+      "prop": "absoluteBlack",
+      "type": "—",
+      "def": "'#000000'",
+      "desc": ""
+    }
+  ],
+  "SlideStage": [
+    {
+      "prop": "selectedIds",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "showGrid",
       "type": "—",
       "def": "false",
       "desc": ""
     }
   ],
-  "LabeledJack": [
+  "SlideInspector": [
     {
-      "prop": "iconSize",
+      "prop": "selectedIds",
       "type": "—",
-      "def": "8",
-      "desc": ""
-    },
-    {
-      "prop": "labelPosition",
-      "type": "—",
-      "def": "'bottom'",
-      "desc": ""
-    },
-    {
-      "prop": "dim",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "iconComponent",
-      "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
-      "desc": ""
-    },
-    {
-      "prop": "jackComponent",
-      "type": "—",
-      "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 'xxs',\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n      title={title ?? label}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${labelSize} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n  )\n}",
+      "def": "[]",
       "desc": ""
     }
   ],
@@ -5733,6 +5615,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "tooltip",
+      "type": "—",
+      "def": "true",
+      "desc": ""
     }
   ],
   "PageSection": [
@@ -5769,6 +5657,460 @@
       "desc": ""
     }
   ],
+  "Knob": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'column'",
+      "desc": ""
+    },
+    {
+      "prop": "bipolar",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    }
+  ],
+  "Fader": [
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "direction",
+      "type": "—",
+      "def": "'horizontal'",
+      "desc": ""
+    }
+  ],
+  "Toggle": [
+    {
+      "prop": "horizontal",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "padding",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "momentary",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-ctl-led-red)'",
+      "desc": ""
+    },
+    {
+      "prop": "blink",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "blinkPeriodMs",
+      "type": "—",
+      "def": "500",
+      "desc": ""
+    },
+    {
+      "prop": "forceLit",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "FlipToggle": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'vertical'",
+      "desc": ""
+    },
+    {
+      "prop": "positions",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    }
+  ],
+  "IconButton": [
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    }
+  ],
+  "LED": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'red'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    }
+  ],
+  "JackSocket": [
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "'out'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "labelSize",
+      "type": "—",
+      "def": "8",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "pending",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "dimPending",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "cablesHidden",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "LabeledJack": [
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "8",
+      "desc": ""
+    },
+    {
+      "prop": "labelPosition",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "dim",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "jackComponent",
+      "type": "—",
+      "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 8,\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n      title={title ?? label}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${/^\\d+$/.test(String(labelSize)) ? labelSize : 8} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n  )\n}",
+      "desc": ""
+    }
+  ],
+  "PanelLabel": [
+    {
+      "prop": "horizontal",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "labelPosition",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "labelClass",
+      "type": "—",
+      "def": "'kol-helper-8'",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    }
+  ],
+  "ModuleHeader": [
+    {
+      "prop": "powered",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "ModuleFrame": [
+    {
+      "prop": "powered",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "u",
+      "type": "—",
+      "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'bg-surface-secondary'",
+      "desc": ""
+    }
+  ],
+  "ChannelStrip": [
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "320",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FlipCard": [
+    {
+      "prop": "flipped",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "duration",
+      "type": "—",
+      "def": "450",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SignalScope": [
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "sec",
+      "type": "—",
+      "def": "5",
+      "desc": ""
+    },
+    {
+      "prop": "ofs",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "zoomX",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "zoomY",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "panY",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "refLines",
+      "type": "—",
+      "def": "[0, 100]",
+      "desc": ""
+    },
+    {
+      "prop": "live",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "playing",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "rate",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "loop",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "trigger",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "320",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "SignalReference": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'tabs'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "EnvelopeModeToggle": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "bodyClass",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "bare",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "EnvelopeGenerator": [
+    {
+      "prop": "reference",
+      "type": "—",
+      "def": "'panel'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "Icon": [
     {
       "prop": "size",
@@ -5793,7 +6135,7 @@
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n          title={logomark.title}\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n      )}\n      {items.map(row)}\n      {/* the spacer IS the layout */}\n      <div className=\"flex-1\" />\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
+      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <Tooltip label={logomark.title} placement=\"right\" asChild>\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n        </Tooltip>\n      )}\n      {items.map(row)}\n      {/* the spacer IS the layout */}\n      <div className=\"flex-1\" />\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
       "desc": ""
     },
     {
@@ -5922,14 +6264,6 @@
   "WalkthroughPanel": [
     {
       "prop": "steps",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    }
-  ],
-  "ShortcutsOverlay": [
-    {
-      "prop": "shortcuts",
       "type": "—",
       "def": "[]",
       "desc": ""
@@ -6100,6 +6434,102 @@
       "prop": "appName",
       "type": "—",
       "def": "'This app'",
+      "desc": ""
+    }
+  ],
+  "AppHub": [
+    {
+      "prop": "app",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "settingsPath",
+      "type": "—",
+      "def": "'/settings'",
+      "desc": ""
+    },
+    {
+      "prop": "homePath",
+      "type": "—",
+      "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutsKey",
+      "type": "—",
+      "def": "'s'",
+      "desc": ""
+    }
+  ],
+  "HubHome": [
+    {
+      "prop": "app",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "views",
+      "type": "—",
+      "def": "[\n  { value: 'recent', label: 'RECENT' },\n  { value: 'saved', label: 'SAVED' },\n]",
+      "desc": ""
+    }
+  ],
+  "HubSettings": [
+    {
+      "prop": "app",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "splitShortcuts",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'sunken'",
+      "desc": ""
+    },
+    {
+      "prop": "themeIn",
+      "type": "—",
+      "def": "'masthead'",
       "desc": ""
     }
   ],
@@ -6580,6 +7010,22 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "Brand": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "BrandBook": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'mt-12'",
       "desc": ""
     }
   ]

@@ -34,6 +34,7 @@ import { duplicateLayers, pasteLayers, applyDeckSettings, duplicateSlide } from 
  * @param {Function} onUpload  (file) => Promise<url>, for image layers
  * @param {string}   railLeft  where the fixed filmstrip starts — `0` alone; a site with a sidenav passes
  *                             `var(--kol-sidenav-w)` (olina), so a dragged sidebar carries the rail
+ * @param {boolean}  unsaved   a deck with no row yet (Decks' NEW_DECK) — Save is live before the first edit
  */
 const TILE_W = 160
 const RAIL_H = Math.round((TILE_W * 9) / 16) + 32
@@ -72,7 +73,7 @@ function FloatingPanel({ title, children }) {
   )
 }
 
-export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaClient, onUpload, railLeft = 0 }) {
+export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaClient, onUpload, railLeft = 0, unsaved = false }) {
   const slug = deck.slug
   const savedAt = deck.updated_at ? Date.parse(deck.updated_at) : 0
   const [restored] = useState(() => { const d = readDraft(slug); return d && d.at > savedAt ? d.slides : null })
@@ -94,7 +95,8 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
   const [showGrid, setShowGrid] = useState(false)
   const [base, setBase] = useState(deck.slides ?? [])
   const [status, setStatus] = useState(restored ? 'Draft restored — not saved' : '')
-  const dirty = slides !== base
+  /* `unsaved`: a blank deck has no row yet, so Save is live before the first edit (2026-09-29) */
+  const dirty = unsaved || slides !== base
 
   const importSlides = (next) => history.set((v) => ({ ...v, slides: next, active: 0, selectedIds: [] }))
   const applySettings = (next) => history.set((v) => ({ ...v, slides: applyDeckSettings(v.slides, next) }))
@@ -207,7 +209,9 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
        gets. It was `capped` — the site tier's container and 64px block padding — so the editor sat
        narrower and lower than the list it opens from, and scrolled past the fold under the rail. */
     <PageShell mode="fixed">
-      <div className="flex items-center justify-between gap-3">
+      {/* WRAPS on a phone (validate:render R2, 2026-09-29): at 390 the right cluster rode over the
+          left — Deck settings on Edit, File on Lock. It drops to its own line instead. */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
           {onClose && <Button size="sm" variant="ghost" iconLeft="chevron-left" onClick={onClose}>Decks</Button>}
           <ViewToggle variant="icon" tone="sunken" viewMode={locked ? 'lock' : 'edit'} onViewChange={(v) => setLocked(v === 'lock')}
@@ -218,7 +222,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
           <Button size="sm" variant="ghost" iconOnly="settings-01" aria-label="Deck settings" onClick={() => setSettingsOpen(true)} />
           <Button size="sm" variant="ghost" iconLeft="file" onClick={() => setFileOpen(true)}>File</Button>
           <Button size="sm" variant="ghost" iconLeft="play" disabled={!slides.length} onClick={() => setPresent(active)}>Present</Button>
-          <Button size="sm" variant="secondary" disabled={!dirty} onClick={() => save().catch(() => {})}>Save</Button>
+          <Button size="sm" disabled={!dirty} onClick={() => save().catch(() => {})}>Save</Button>
         </div>
       </div>
 

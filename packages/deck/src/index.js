@@ -3,7 +3,7 @@
 // (PNG · PDF · PPTX · the deck file). The model is kol-olina's brand decks, itself kol-fxr's compose
 // editor cut down. Data is consumer-injected; the layouts a deck starts from are the consumer's.
 
-export { default as Decks } from './Decks.jsx'
+export { default as Decks, NEW_DECK } from './Decks.jsx'
 export { default as DecksCatalog } from './DecksCatalog.jsx'
 export { default as DeckEditor, DECK_SHORTCUTS } from './DeckEditor.jsx'
 export { default as DeckFile, DECK_FILE_KIND } from './DeckFile.jsx'

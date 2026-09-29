@@ -6,12 +6,15 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
-## Queued for next session (2026-09-28)
+## Queued for next session (2026-09-29)
 
-- **Review** the showcase refinement: `pnpm workshop` · `pnpm markdown` · `pnpm search-app` and the showcase; any call in `plan-2026-09-28-showcase-refinement.md` § 3b can be overturned.
-- **Publish** (unpublished, bumped + changelogs): kol-markdown 0.1.0 · kol-search 0.1.0 · kol-theme 0.155.0 · kol-framework 0.45.0 · kol-component 0.228.0 · kol-shell 0.58.0 · kol-workshop 0.30.0 — in that order.
-- Rerun `node scripts/extract-api.mjs` locally and check the diff (the cloud run dropped kol-hardware tables; not committed).
-- Editor: parked on the user's rulings — #14 glyph drawings, #15 `tone="primary"` hover stop, #12 asset thumbnails. Wave C leftovers: brand's frame, the deck editor at phone width.
+- **Published 2026-09-29:** kol-markdown 0.1.1 · kol-search 0.2.0 · kol-theme 0.156.0 · kol-component 0.229.0 · kol-shell 0.59.0 · kol-hardware 0.3.1 · kol-notes 0.2.0 · kol-deck 0.2.0 · kol-store 0.3.1 · kol-workshop 0.30.1 · design-editor 0.17.0. Push is the user's.
+- **Phase log** on the Development space — the handoff `handoff-2026-09-29-*-phase-log.md` carries the design (plans stay in `.kol/`).
+- Then the workshop + showcase review. Editor rulings still parked: #12 · #14 · #15.
+
+## Current state (2026-09-29, apps review §6c built)
+
+- **🧩 Published 2026-09-29.** Editor chromes on one rail (design-editor 0.17.0 exports the host config), `validate:views`, `AppStudio` + apps/studio, apps/panels, VOYAGER (`apps/voyager-fixture`) + apps/fixtures, apps/brand = the catalogue, apps/brand-hub = a client's home. 31 gates · render 20 apps clean · build ✓. Log: `session-log/2026-09-29-apps-review-6c-built.md`.
 
 ## Current state (2026-09-28, showcase refinement — space table + engine tier)
 
@@ -28,10 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-27, tool frame · curves · the editor back on KOL)
 
 - **🧱 Published 2026-09-27 (see above).** The tool frame is written (16-app-anatomy § Tool frame) and curves / media / controls / the lists / the deck editor wear it; curves rebuilt on kol-hardware 0.3.0. The editor sync ran phases 1–5: 12 editor copies → KOL, one icon system, transport in the motion pack, the inspector pass, the settings-X and `S`-sheet bugs fixed at the KOL root. 29 gates clean. Plans: `plan-2026-09-27-app-frame-and-curves.md`, `plan-2026-09-27-editor-ds-sync.md`. Log: `session-log/2026-09-27-tool-frame-curves-and-editor-ds-sync.md`.
-
-## Current state (2026-09-27, kol-hardware · signal engine · apps/curves)
-
-- **🎛 kol-hardware 0.2.0 · kol-controls 0.4.0 (deprecated shim) · kol-theme 0.152.0, published (2026-09-27, newest).** kol-controls was renamed kol-hardware and grouped value · switches · indicators · panel · frames; ARCHITECTURE §3 is amended so frames are in. `./signal` is one expression compiler plus ADSR, replacing four drifted copies. `EnvelopeGenerator` / `SignalScope` / `SignalReference` sit over it. New `apps/curves` (:5182). Consumer moves are noted in the reference-clone findings backlog (for the iMac). 28 gates clean. Log: `session-log/2026-09-27-kol-hardware-signal-engine-curves.md`.
 
 ## Repo standup (2026-06-15)
 

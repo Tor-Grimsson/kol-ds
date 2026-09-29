@@ -1,0 +1,16 @@
+/* VOYAGER's own face — Playfair, the two variable files client-theme.css loads (not the 86 statics
+ * the template carried). Right Grotesk is already the design system's, served from /fonts/. */
+@font-face {
+  font-family: "Playfair";
+  src: url("./assets/fonts/Playfair-VF.ttf") format("truetype-variations");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair";
+  src: url("./assets/fonts/Playfair-Italic-VF.ttf") format("truetype-variations");
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}

@@ -19,6 +19,9 @@ import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
  * `Dropdown` molecule instead — MenuItem is for action menus / popovers
  * that hold arbitrary children.
  */
+/* the ladder's tokens, so the touch rung (D5, 2026-09-29) grows the trigger with its row */
+const TRIGGER_H = { xs: 'var(--kol-ctl-xs)', sm: 'var(--kol-ctl-sm)', md: 'var(--kol-ctl-md)', lg: 'var(--kol-ctl-lg)' }
+
 export function MenuItem({
   label,
   children,
@@ -33,6 +36,10 @@ export function MenuItem({
    * an affordance; neither reference draws one (ColumnBrowserMobileViews item
    * 15, kol-r2b2 2026-09-04). Default keeps every existing call-site. */
   caret = true,
+  /* THE TRIGGER IS ON THE LADDER (apps review 2026-09-29). It was a fixed `h-8` — 32px whatever sat
+   * beside it, so media's phone `···` stood 32 next to a 26 `sm` search field. `size` pins it to the
+   * control heights (01-foundations/09-sizes: 22 · 26 · 32 · 40); `md` is the 32 it always was. */
+  size = 'md',
 }) {
   const [open, setOpen] = useState(defaultOpen)
   const popover = usePopover({
@@ -51,7 +58,8 @@ export function MenuItem({
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         type="button"
-        className={`kol-menu-btn kol-helper-12 px-3 h-8 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
+        className={`kol-menu-btn kol-helper-12 px-3 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
+        style={{ height: TRIGGER_H[size] ?? TRIGGER_H.md }}
       >
         <span>{label}</span>
         {caret && (

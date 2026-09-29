@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-workshop
 
+## 0.30.1 — 2026-09-29
+
+- `TagGraph` reads its graph from kol-search's `tagGraph` (kol-markdown's `buildTagCooccurrence` is deprecated). Same drawing.
+
 ## 0.30.0 — 2026-09-28
 
 **The shell, refined** (plan-2026-09-28-showcase-refinement — the user's review of the showcase).

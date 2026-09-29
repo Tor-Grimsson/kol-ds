@@ -207,9 +207,11 @@ export default function MenuTop() {
 
   return (
     <div className="kol-editor-topbar flex items-center gap-3 px-4 h-12 border-b border-oq-08">
+      {/* `md`, the menu bar's rung — at `sm` it stood 26 beside seven 32px menu triggers
+          (validate:render R1, 2026-09-29) */}
       <Input
         variant="ghost"
-        size="sm"
+        size="md"
         value={currentPresetName ?? ''}
         onCommit={commitTitle}
         placeholder="Untitled"

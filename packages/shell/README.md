@@ -36,6 +36,7 @@ Same consumer contract as every KOL package — raw `.jsx` source, so:
 | `WalkthroughPanel` | Centred stepped intro card; steps/illustrations/actions are content |
 | `ShortcutsOverlay` | Blurred scrim + flat 2-col shortcut sheet at `--kol-z-modal` |
 | `Logomark` | Fetch-and-inline SVG mark (currentColor-safe in dark mode) |
+| `AppStudio` | The workstation — the Hub plus Home · Library · Create · Use · opt-in pages · Settings, in that order, mono by default; each slot renames with `{ path, label, icon }` (reference app: `apps/studio`) |
 
 ## Wiring (react-router example)
 

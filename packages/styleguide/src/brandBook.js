@@ -100,7 +100,7 @@ export const BRANDED_ASSET_ROWS = [
 ]
 
 /** An in-page anchor click that scrolls instead of setting the hash — the host may route on the hash
- *  (media-shell does; apps/brand keeps its page there), so an anchor must not replace it. */
+ *  (media-hub does; apps/brand keeps its page there), so an anchor must not replace it. */
 export function scrollToAnchor(e) {
   e.preventDefault()
   const id = e.currentTarget.getAttribute('href')?.slice(1)

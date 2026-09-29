@@ -1,5 +1,18 @@
 # @kolkrabbi/kol-component
 
+## 0.229.0 — 2026-09-29
+
+- **Search is the KOL engine everywhere** (apps review). `MediaLibrary`'s four hand-rolled `.includes(q)` filters and `ContentFilters`' substring match now run on `@kolkrabbi/kol-search` (new dependency) through `utilities/mediaSearch.js` (`filterMedia` · `rankMedia`) and `utilities/searchItems.js` (`filterItems`): several words AND, `-word`, `"phrases"`, `tag:x` / `#x`, `kind:image`. A single word still finds everything the substring found.
+- **One app, one masthead** — `utilities/masthead.js`: `MastheadContext`, `useMasthead`, `MASTHEADS`, `mastheadTitleClass`. Inside a Shell (`AppShell masthead`) `PageHeader` takes the app's voice over its own `voice` / `size`; `display` is the display voice, uppercase as a role, no subtitle. `PageHeader masthead` for a page with no Shell. Outside a Shell nothing changes. Media's own title reads it too.
+- `Button` — an **unknown variant** stamps nothing (inherits the tone, else primary) and warns in dev; it rendered `kol-btn-secondary`, the inverted fill. `variant="secondary"` dropped at `Modal` (cancel), `ErrorBoundary`, `MediaLibrary` (Copy URL), `MediaLibraryPages` (Edit), `DocumentEditor` (Save).
+- `SettingsMulti` — passes `variant` through like `SettingsChoice` (was hard-coded `primary`: the one lighter dropdown on a sunken settings page).
+- `MenuItem` — `size` (xs · sm · md · lg → 22 · 26 · 32 · 40); `md` is the old fixed `h-8`.
+- `SearchInput` — the expanding square is on the ladder (`{ xs: 22, sm: 26, md: 32, lg: 40 }`, was `sm: 28 · lg: 36`).
+- `ShortcutsOverlay` — capped to the window's width; `LabeledControl labelWidth="auto"` stacks below `sm` (label, then the value) — a phone showed the sheet's middle third and labels as "C".
+- `MediaLibrary` (explorer) — `phoneTabs` off in the apps (kept, documented); `onKinds` puts **File formats** in the phone `···` menu; **Count line** display setting (`countLine`: auto · on · off — auto = off on a phone or touch device); `onOpenSettings` hands the gear to the host instead of opening the drawer; the phone `···` trigger is `sm`.
+- `DocumentEditor` — `savedAt={null}` = never saved: the status says "Not saved yet", not "Saved"; a `Textarea` of `md` + `kol-mono-12` → `sm`.
+- **The touch rung** (ruling D5, with kol-theme 0.156.0): `MenuItem`'s trigger and `SearchInput`'s square read `--kol-ctl-*`; `Input` and `SearchInput` pin their field `pointer-coarse:h-[22px]` — the Tailwind height out-ranked the theme's coarse rule, so a phone got 16px text in a 16px line in a 26px box.
+
 ## 0.228.0 — 2026-09-28
 
 - **`ShortcutsOverlay` lives here now** (moved from kol-shell, which re-exports it) — the keymap

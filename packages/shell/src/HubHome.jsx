@@ -11,13 +11,13 @@ import CatalogPage from './CatalogPage.jsx'
  * that button's Close label, a "Get started" last step — and the case of the view
  * labels had already drifted. They are made here once.
  *
- * THE WALKTHROUGH IS OPT-IN (user, 2026-09-26, on media-shell): it never opens by
+ * THE WALKTHROUGH IS OPT-IN (user, 2026-09-26, on media-hub): it never opens by
  * itself. The Walkthrough button at the end of the action row opens it; the X inside
  * the card and the same button close it.
  *
  * @param {Object}   app          `{ name, subtitle }` — the masthead, when Home is the app's front door
  * @param {string}   title · subtitle  Home's own masthead instead — for a Home that is not the front
- *                                door (media-shell's Library at `/library`, 2026-09-26: it said "Media")
+ *                                door (media-hub's Library at `/library`, 2026-09-26: it said "Media")
  * @param {Array|Function} items  the catalog's items, or `(view) => items` — RECENT
  *                                and SAVED are different sets in every app
  * @param {Array}    views        the view strip (default RECENT · SAVED); rename a set by
@@ -25,7 +25,7 @@ import CatalogPage from './CatalogPage.jsx'
  * @param {Array}    walkthrough  steps (WalkthroughPanel's); a step whose `actions` is a
  *                                FUNCTION gets `close` — the "Get started" step's buttons
  * @param {ReactNode} actions     the app's buttons; the Walkthrough button follows them
- * THE LIST IS THE FILE ROW, one per line (user, 2026-09-26, on apps/shell: CatalogPage's
+ * THE LIST IS THE FILE ROW, one per line (user, 2026-09-26, on apps/hub: CatalogPage's
  * 36px `catalog` row four across "both a bad hover state and using columns wrong"; brand's
  * library row is the reference) — `rowVariant="file"` + `listLayout="stack"`: the ruled
  * 48px thumb row, `date` · `size` · `actions` from `toCard`. Only the Hub's default —

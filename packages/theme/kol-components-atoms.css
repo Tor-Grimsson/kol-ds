@@ -296,10 +296,10 @@
  * shorter, at `xs` 2px shorter. Three families (control shell, text button,
  * segmented) already agreed on 22/26/32/40, so the squares conform to them, not
  * the other way round. Glyphs are untouched — SOLO still resolves 16/20/24. */
-.kol-btn-icon.kol-btn-xs { width: 22px; height: 22px; padding: 0; }
-.kol-btn-icon.kol-btn-sm { width: 26px; height: 26px; padding: 0; }
-.kol-btn-icon.kol-btn-md { width: 32px; height: 32px; padding: 0; }
-.kol-btn-icon.kol-btn-lg { width: 40px; height: 40px; padding: 0; }
+.kol-btn-icon.kol-btn-xs { width: var(--kol-ctl-xs); height: var(--kol-ctl-xs); padding: 0; }
+.kol-btn-icon.kol-btn-sm { width: var(--kol-ctl-sm); height: var(--kol-ctl-sm); padding: 0; }
+.kol-btn-icon.kol-btn-md { width: var(--kol-ctl-md); height: var(--kol-ctl-md); padding: 0; }
+.kol-btn-icon.kol-btn-lg { width: var(--kol-ctl-lg); height: var(--kol-ctl-lg); padding: 0; }
 
 /* ─── Variants — the ground ones are TONES now (2026-09-03) ───
  * `.kol-btn-primary` · `-secondary` · `-outline` · `-ghost` · `-grey` are
@@ -1170,10 +1170,10 @@ a.kol-icon-frame {
 /* pinned squares — the box never moves with glyph size (user law 2026-07-28),
  * on the size's HEIGHT so a frame lines up with the Button, Input and Dropdown
  * beside it (user ruling 2026-09-02 — see .kol-btn-icon above). 22/26/32/40. */
-.kol-icon-frame-xs { width: 22px; height: 22px; }
-.kol-icon-frame-sm { width: 26px; height: 26px; }
-.kol-icon-frame-md { width: 32px; height: 32px; }
-.kol-icon-frame-lg { width: 40px; height: 40px; }
+.kol-icon-frame-xs { width: var(--kol-ctl-xs); height: var(--kol-ctl-xs); }
+.kol-icon-frame-sm { width: var(--kol-ctl-sm); height: var(--kol-ctl-sm); }
+.kol-icon-frame-md { width: var(--kol-ctl-md); height: var(--kol-ctl-md); }
+.kol-icon-frame-lg { width: var(--kol-ctl-lg); height: var(--kol-ctl-lg); }
 
 /* `.kol-icon-frame-{primary,secondary,accent,outline,ghost,nav,grey,danger}` — tone aliases, see TONE */
 .kol-icon-frame-plate {
@@ -1310,6 +1310,15 @@ a.kol-icon-frame {
  * own; it exists so the floor below keys on every body plan the DS ships,
  * including the chrome-less one. */
 @media (pointer: coarse) {
+  /* THE TOUCH RUNG (D5, 2026-09-29 — see kol-base-tokens.css): every text control types 16 / 22 on
+   * touch, so a derived box grows exactly as the pinned tokens do — xs/sm 4+4+22+2 = 32, md
+   * 6+6+22+2 = 36, lg 40. Two classes, so it outranks the size's own kol-mono-* class. */
+  .kol-btn.kol-btn-xs, .kol-btn.kol-btn-sm, .kol-btn.kol-btn-md, .kol-btn.kol-btn-lg,
+  .kol-control.kol-control-xs, .kol-control.kol-control-sm, .kol-control.kol-control-md, .kol-control.kol-control-lg,
+  .kol-seg .kol-seg-cell, .kol-menu-btn.kol-menu-btn {
+    font-size: 16px;
+    line-height: 22px;
+  }
   .kol-control input,
   .kol-control--bare input,
   .kol-expand input {

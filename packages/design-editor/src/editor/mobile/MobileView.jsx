@@ -29,7 +29,7 @@ import MobileOverlay from './MobileOverlay'
  * clobbered. Reload = fresh start.
  */
 
-function EntryScreen({ onGenerate }) {
+function EntryScreen({ onGenerate, onEffects, chromes }) {
   /* A welcome CARD, not three floating buttons (user ruling 2026-08-12):
    * the chrome chooser — one line, then the doors. Media insert lives on
    * the category screen (it's a randomiser action, not a chrome).
@@ -47,20 +47,27 @@ function EntryScreen({ onGenerate }) {
         className="w-full max-w-sm rounded p-8 flex flex-col gap-6"
         style={{ background: 'var(--kol-surface-primary)' }}
       >
-        <div className="flex flex-col gap-2">
-          <span className="kol-eyebrow text-body">Select chrome</span>
-          <span className="kol-mono-16 text-emphasis">Effexor FXR</span>
-        </div>
+        {chromes ? (
+          <div className="flex flex-col gap-2">
+            <span className="kol-eyebrow text-body">Select chrome</span>
+            <span className="kol-mono-16 text-emphasis">Effexor FXR</span>
+          </div>
+        ) : (
+          <span className="kol-eyebrow text-body">{modeById('randomiser').label}</span>
+        )}
         <div className="flex flex-col gap-2">
           <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.randomiser} iconRight={MODE_ICONS.randomiser} onClick={onGenerate}>Generate</Button>
-          {isTabletSized() && (
+          <Button variant="primary" size="lg" className={SPREAD} iconLeft="filter" iconRight="filter" onClick={onEffects}>Effects</Button>
+          {chromes && isTabletSized() && (
             <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.editor} iconRight={MODE_ICONS.editor} onClick={goDesktop}>
               {modeById('editor').label}
             </Button>
           )}
-          <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.labs} iconRight={MODE_ICONS.labs} onClick={goLabs}>
-            {modeById('labs').label}
-          </Button>
+          {chromes && (
+            <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.labs} iconRight={MODE_ICONS.labs} onClick={goLabs}>
+              {modeById('labs').label}
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -70,11 +77,16 @@ function EntryScreen({ onGenerate }) {
 function MobileBody() {
   const { layers, addLayer, removeLayer, updateLayer, canvasW, canvasH, aspect, setAspect } = useComposeState()
   const { setTool } = useTool()
-  /* Under the shell rail the chrome chooser is redundant — the rail IS the
-     chooser — so the randomiser opens on the generator list; the entry card
-     is for touch-only devices, which have no rail (user, 2026-08-27). */
-  const start = () => (isMobileDevice() && !wantsDesktop() ? 'entry' : 'category')
+  /* THE RANDOMISER IS TWO TOOLS — Generator and Effects (apps review §6c-1,
+     2026-09-29) — so it opens on the card that offers both, everywhere. The
+     CHROME doors (Editor · Labs) and the chooser heading stay touch-only: under
+     the shell rail the rail IS the chooser (user, 2026-08-27). */
+  const chromes = isMobileDevice() && !wantsDesktop()
+  const start = () => 'entry'
   const [screen, setScreen] = useState(start)   /* entry | category | live */
+  /* Effects: the input media first, then the effect sheet — and the media is
+     KEPT while effects are browsed (the sheet's Back only closes the sheet) */
+  const [fxFlow, setFxFlow] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [stageFit, setStageFit] = useState('contain')  /* contain = 4:5 letterbox · cover = fill display */
 
@@ -211,6 +223,7 @@ function MobileBody() {
     for (const l of [...layers]) removeLayer(l.id)
     setActiveId(null)
     setStageScale(1)
+    setFxFlow(false)
     setScreen(start())
   }
 
@@ -236,10 +249,10 @@ function MobileBody() {
         <OutputStage fit={stageFit} />
       </div>
       {screen === 'entry' && (
-        <EntryScreen onGenerate={() => setScreen('category')} />
+        <EntryScreen chromes={chromes} onGenerate={() => setScreen('category')} onEffects={() => { setFxFlow(true); startInsert() }} />
       )}
       {screen === 'category' && (
-        <CategoryScreen onPick={startGenerative} onInsert={startInsert} onBack={start() === 'entry' ? () => setScreen('entry') : undefined} />
+        <CategoryScreen onPick={startGenerative} onInsert={startInsert} onBack={() => setScreen('entry')} />
       )}
       {screen === 'live' && (
         <MobileOverlay
@@ -248,6 +261,7 @@ function MobileBody() {
           onInsert={() => { restart(); startInsert() }}
           onRestart={restart}
           aspectValue={stageFit === 'cover' ? 'fill' : aspect}
+          openEffects={fxFlow && !pickerOpen}
           onAspect={setStageAspect}
         />
       )}

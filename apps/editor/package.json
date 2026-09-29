@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@kolkrabbi/design-editor": "workspace:*",
+    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",

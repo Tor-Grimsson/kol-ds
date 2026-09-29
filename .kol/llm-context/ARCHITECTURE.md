@@ -73,6 +73,9 @@ substring match). The trigger is the same as the UI packages': **a second consum
 today**, not one that might. Each engine gets its own app (`apps/markdown`, `apps/search`) where it
 is proved before a consumer switches. **Do not** put a React component in an engine package, and
 do not merge engines into one grab-bag — they version on their own contracts, like the clients.
+**An engine may depend on another engine, never on a UI package** (2026-09-29): the tag graph is
+the search index's, so `tagGraph` lives in kol-search and kol-markdown's `buildTagCooccurrence`
+adapts onto it (deprecated) — one implementation, not a copy per engine.
 
 **APP TIER — `@kolkrabbi/design-editor` (added 2026-09-03, user ruling).** The
 editor as one embeddable `<DesignEditor />`, moved in from kol-fxr — which had

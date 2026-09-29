@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The brand tool alone — kol-styleguide's Brand over the fixture brand (kol-brand plus the book's copy). Never published.",
+  "description": "The brand catalogue \u2014 every building block a brand is made of (colour, ramps, swatches, type, clearspace, logo displays, business card, stationery, downloads, business data), one route each, on VOYAGER, in kol-framework's PageLayout. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,10 +18,11 @@
     "@kolkrabbi/kol-styleguide": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
-    "media-fixture": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.2.4"
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "voyager-fixture": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

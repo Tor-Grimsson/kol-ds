@@ -4,6 +4,8 @@ import NavRail from './NavRail.jsx'
 import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
+import PhoneNav from './PhoneNav.jsx'
+import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
 
 /**
  * AppShell — layout root: the rail + the content column. No header, no
@@ -42,7 +44,7 @@ import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  * toggle lives on the settings page, not in the rail (user, 2026-08-28).
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
- * @param {'shell'|'bare'|'overlay'|'drawer'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
+ * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
  *                                        'drawer' takes the rail OFF-CANVAS below `drawerBelow`, hands its width
  *                                        back to the content, and renders a trigger that brings it in over a scrim.
  *                                        Tapping a destination closes it. (ShellRailNoDrawerOnMobile, kol-chess
@@ -50,6 +52,20 @@ import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  *                                        `railToggleKey` is a KEY — a phone has no keyboard, so on the device where
  *                                        the rail costs most it could not be dismissed at all. `bare` was the only
  *                                        other way to reclaim the width and it throws navigation away entirely.)
+ *                                        'bar' (apps review 2026-09-29) takes the rail off below `drawerBelow` too, and
+ *                                        puts it in a BOTTOM BAR (`PhoneNav`, on kol-component's MobileTabBar): up to five
+ *                                        destinations, else four + More, a sheet with the rest and Settings. No
+ *                                        hamburger over the page's own controls, and ten pages still fit. The content
+ *                                        gets the bar's height as bottom padding. `barItems` overrides what it lists.
+ * @param {'display'|'mono'} [props.masthead]  THE APP'S MASTHEAD, set once here and read by every
+ *                                        page inside (apps review 2026-09-29, ruling D3): `PageHeader`, the Hub's
+ *                                        pages, `CatalogPage` and a tool's own title. `display` = the display
+ *                                        voice, no description (MEDIA, CURVES); `mono` = the mono title with its
+ *                                        description. One app, one header — media-hub wore both. NO DEFAULT (user, 2026-09-29): unset,
+ *                                        every page renders as its own props say, so a consumer's bump moves nothing
+ *                                        (fxr · mirror · monitor are mono by ruling).
+ * @param {Array}  [props.barItems]        the bar's destinations under `touch="bar"` (default items + bottomItems) —
+ *                                        a Hub passes Home first, which the rail draws as the mark instead
  * @param {number} [props.drawerBelow=768]  viewport width under which `touch="drawer"` folds. A width, not a
  *                                        pointer test: an iPad is coarse and has room, a narrow desktop window is
  *                                        fine-pointered and does not.
@@ -123,6 +139,8 @@ export default function AppShell({
   settingsKey,
   drawerBelow = 768,
   drawerOpenOn = NO_PATHS,
+  barItems,
+  masthead,
   children,
 }) {
   const [navHidden, setNavHidden] = useState(false)
@@ -141,6 +159,7 @@ export default function AppShell({
     return () => mq.removeEventListener('change', on)
   }, [drawerBelow])
   const drawer = touch === 'drawer' && narrow
+  const bar = touch === 'bar' && narrow
   const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => { if (!drawer) setDrawerOpen(false) }, [drawer])
   useEffect(() => {
@@ -299,6 +318,7 @@ export default function AppShell({
   if (touch === 'bare' && coarse && !wantsDesktop) return <div className="kol-app-shell contents" style={{ '--kol-shell-page-wash': pageWash }}>{children}</div>
 
   return (
+    <MastheadContext.Provider value={masthead}>
     <NavHiddenContext.Provider value={{ navHidden, setNavHidden }}>
       <SettingsToggleContext.Provider value={toggleSettings}>
       {/* `kol-app-shell` = the app tier: neutral ::selection (kol-theme).
@@ -311,7 +331,7 @@ export default function AppShell({
          * margin for `navHidden` closes it here — the rail then takes its own
          * `--kol-shell-drawer-width` rather than this token. */
         data-rail-drawer={drawer ? (drawerOpen ? 'open' : 'closed') : undefined}
-        style={navHidden || drawer ? { '--kol-shell-rail-width': '0px' } : undefined}
+        style={navHidden || drawer || bar ? { '--kol-shell-rail-width': '0px' } : undefined}
       >
       {touch === 'overlay' && <TouchDeviceOverlay appName={appName} />}
       {/* THE TRIGGER SHIPS HERE, not in every consumer's page header — the rail
@@ -339,7 +359,8 @@ export default function AppShell({
           onClick={() => setDrawerOpen(false)}
         />
       )}
-      {!navHidden && (
+      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} currentPath={currentPath} onNavigate={navigate} />}
+      {!navHidden && !bar && (
         <Rail
           items={items}
           bottomItems={bottomItems}
@@ -355,11 +376,12 @@ export default function AppShell({
         * page paints its wash over it (ShellPageWash). */}
       {/* the margin IS the rail's live width, so the content is pushed
         * through the drag and the snap (RailFlatGrabOpen) */}
-      <div className="bg-surface-primary min-w-0" style={{ marginLeft: `var(--kol-shell-rail-width)`, '--kol-shell-page-wash': pageWash }}>
+      <div className="bg-surface-primary min-w-0" style={{ marginLeft: `var(--kol-shell-rail-width)`, '--kol-shell-page-wash': pageWash, ...(bar && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }) }}>
         {children}
       </div>
       </div>
       </SettingsToggleContext.Provider>
     </NavHiddenContext.Provider>
+    </MastheadContext.Provider>
   )
 }

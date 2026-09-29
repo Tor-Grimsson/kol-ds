@@ -4,7 +4,7 @@ import { createFixtureClient } from 'media-fixture';
 import { useFixtureMedia, useMediaTool, TOOL_SHORTCUTS } from 'media-fixture/wiring';
 
 /* The imagined olina setup (apps/media-fixture): a fake bucket + a fake D1. Settings AND their
- * per-bucket defaults are the fixture's, shared with apps/media-shell (2026-09-26 — this app kept
+ * per-bucket defaults are the fixture's, shared with apps/media-hub (2026-09-26 — this app kept
  * its own module and the same tool opened differently one shell over; retired to _tmp/). */
 const fixtureClient = createFixtureClient();
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell';
@@ -27,9 +27,9 @@ import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell';
  * live bucket a video thumb pulls the whole object for a 44px tile, and some of those are 400 MB.
  * The fixture's videos are local assets of a few hundred KB, so the cost that ruling avoided does
  * not exist here and a video gets a real frame. */
-/* THE TOOL'S EXTRAS ARE SHARED (2026-09-26): the phone tabs, the view keys and N live in the DS
- * explorer (`keys`, `phoneTabs`); the drawer footer, the file-formats overview and ⇧R in
- * media-fixture's `useMediaTool` — so apps/media-shell renders the same tool. This app keeps its
+/* THE TOOL'S EXTRAS ARE SHARED (2026-09-26): the view keys and N live in the DS explorer (`keys`;
+ * `phoneTabs` is off since 2026-09-29); the drawer footer, the file-formats overview and ⇧R in
+ * media-fixture's `useMediaTool` — so apps/media-hub renders the same tool. This app keeps its
  * frame, its hash routing and its own S sheet. */
 
 /* How a date READS is ours, not the DS's — that is why `formatDate` is a seam beside
@@ -59,7 +59,7 @@ export default function App() {
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
-  /* THE WIRING (media-fixture/wiring, shared with apps/media-shell): the bucket, the verbs, the
+  /* THE WIRING (media-fixture/wiring, shared with apps/media-hub): the bucket, the verbs, the
    * trash, uploads and the three seams — this app keeps only its chrome and its hash routing. */
   const media = useFixtureMedia({ client: fixtureClient, title: TITLE, setPrefix });
   const tool = useMediaTool({ client: fixtureClient, media });
@@ -81,7 +81,7 @@ export default function App() {
 
   return (
     /* THE TOOL FRAME (app anatomy § Tool frame, 2026-09-27): PageShell fixed · bleed — the page the
-       tool gets inside apps/media-shell, so alone and in the shell are one geometry. It was the
+       tool gets inside apps/media-hub, so alone and in the shell are one geometry. It was the
        site tier's `--kol-container-max` cap and `breakpoint-padding`, which no other app wears. */
     <PageShell mode="fixed" className="gap-10">
       {/* ONE SURFACE, TWO VIEWS (`variant="explorer"`, component 2026-09-21). This used to be two

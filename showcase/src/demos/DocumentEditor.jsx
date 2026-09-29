@@ -29,7 +29,7 @@ export default function DocumentEditorDemo() {
     <div className="flex flex-col items-start gap-3">
       <div className="flex gap-2">
         <Button size="sm" iconLeft="edit" onClick={() => setOpen('edit')}>Edit field-notes.md</Button>
-        <Button size="sm" variant="secondary" iconLeft="plus" onClick={() => setOpen('new')}>New document</Button>
+        <Button size="sm" iconLeft="plus" onClick={() => setOpen('new')}>New document</Button>
       </div>
       <span className="kol-helper-10 text-meta">last: {log}</span>
       {open === 'edit' && (

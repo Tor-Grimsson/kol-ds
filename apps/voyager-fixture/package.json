@@ -1,0 +1,17 @@
+{
+  "name": "voyager-fixture",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "VOYAGER, the fake client for the apps tier — its files (marks, stationery, deck, diagrams, graphics, mood, Playfair) carried from the client template, a brand manifest in kol-brand's shape, and invented business data in the client sites' shape. Shared by apps/brand, apps/brand-hub and apps/fixtures. Never published.",
+  "exports": {
+    ".": "./src/index.js",
+    "./brand": "./src/brand.js",
+    "./business": "./src/business.js",
+    "./assets": "./src/assets.js",
+    "./fonts.css": "./src/fonts.css"
+  },
+  "scripts": {
+    "test": "node src/fixture.test.mjs"
+  }
+}

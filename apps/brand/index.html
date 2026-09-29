@@ -5,6 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon-kol-ds.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>KOL brand</title>
+    <!-- save to home screen as an app (apps review 2026-09-29): manifest + Apple meta, icons in public/apps/ -->
+    <link rel="manifest" href="/apps/brand.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Brand" />
+    <link rel="apple-touch-icon" href="/apps/app-icon-180.png" />
+    <meta name="theme-color" content="#121215" />
     <script>
       // kol-framework THEME_BOOT_SCRIPT — stamps the saved theme before paint (no flash).
       // Apps share an origin with the showcase, so they share its `kol-theme` key;

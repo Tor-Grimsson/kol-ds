@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-markdown
 
+## 0.1.1 — 2026-09-29
+
+- `buildTagCooccurrence` is **deprecated** — an adapter onto kol-search's `tagGraph` (new dependency), same output; it goes at the next minor. Import `tagGraph` from `@kolkrabbi/kol-search`.
+
 ## 0.1.0 — 2026-09-28
 
 - **First release — the engine tier's first package** (ARCHITECTURE §3). Lifted out of

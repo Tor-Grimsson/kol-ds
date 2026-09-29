@@ -103,8 +103,9 @@ export default function SearchInput({
     if (expanding && isOpen) inputRef.current?.focus()
   }, [expanding, isOpen])
 
-  /* the pinned squares, 01-foundations/09-sizes.md — 22 · 26 · 32 · 40 */
-  const square = { sm: 28, md: 32, lg: 36 }[size] ?? 32
+  /* the pinned squares, 01-foundations/09-sizes.md — 22 · 26 · 32 · 40, read from the theme's
+   * `--kol-ctl-*` so the touch rung (D5, 2026-09-29) grows them with every other control */
+  const square = `var(--kol-ctl-${['xs', 'sm', 'md', 'lg'].includes(size) ? size : 'md'})`
   /* THE OPEN FIELD'S HEIGHT IS ITS OWN KNOB, defaulting to the square.
    *
    * /work's pill is `h-9` open AND closed, sitting level with a 36px toggle —
@@ -209,8 +210,10 @@ export default function SearchInput({
 
   /* Same height pin as Input: Chromium sizes an <input> from font metrics,
    * not CSS line-height, so without this the shell lands ~0.5px tall.
-   * h-4 / h-[18px] match the kol-mono-12 / -14 line-heights. */
-  const heightCls = size === 'sm' ? 'h-4' : 'h-[18px]'
+   * h-4 / h-[18px] match the kol-mono-12 / -14 line-heights. On TOUCH the input types 16 / 22 (the
+   * touch rung, D5 2026-09-29), and this utility out-ranked the theme's coarse rule — 16px text in a
+   * 16px line in a 26px box; `pointer-coarse:` carries the 22 so the box grows with its row. */
+  const heightCls = `${size === 'sm' ? 'h-4' : 'h-[18px]'} pointer-coarse:h-[22px]`
 
   const inputCls = [
     'min-w-0 flex-1 bg-transparent border-none outline-none text-auto',

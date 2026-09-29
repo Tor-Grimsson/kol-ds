@@ -3,7 +3,7 @@ title: Sizes
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-09-29
 verified: 2026-09-03
 description: One height per size, every family
 aliases:
@@ -84,6 +84,19 @@ contents — an icon-only control has no line box to size from, and a strip of
 cells must not grow with the tallest cell. A pinned number is only ever a copy
 of the derived one. **If you change a padding or a mono line-height, the pinned
 numbers move with it or the scale breaks.**
+
+## Touch rung
+
+**On a coarse pointer the ladder is 32 · 32 · 36 · 40** (ruling D5, 2026-09-29). Every text field on a
+touch device must type at 16px or iOS zooms the page into it, and 16px text in a 26px `sm` box beside
+12px buttons was the defect. So on touch **every** control types 16 / 22 and every box grows with it —
+the derived math becomes `4 + 4 + 22 + 2 = 32` (xs, sm), `6 + 6 + 22 + 2 = 36` (md), `40` (lg).
+
+The pinned numbers are tokens — `--kol-ctl-xs · -sm · -md · -lg` in `kol-base-tokens.css`, redefined
+under `@media (pointer: coarse)` — and every pinned family reads them (icon-only squares, IconFrame,
+dropdown triggers, segmented strips, `MenuItem`'s trigger, `SearchInput`'s square). **A new pinned
+height is a token read, never a pixel literal.** `pnpm validate:render` measures rows at 390 on a
+touch pointer, so a control left off the rung fails R1.
 
 ## Glyphs
 

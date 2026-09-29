@@ -14,6 +14,7 @@ export { default as AppShell } from './AppShell.jsx'
 export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { default as NavRail } from './NavRail.jsx'
+export { default as PhoneNav } from './PhoneNav.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
 /* PageHeader MOVED to @kolkrabbi/kol-component 2026-09-03 (page-header-one-masthead).
  * Not re-exported: every kol-shell consumer already has kol-component as a peer,
@@ -36,3 +37,5 @@ export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOve
 export { default as AppHub } from './AppHub.jsx'
 export { default as HubHome } from './HubHome.jsx'
 export { default as HubSettings } from './HubSettings.jsx'
+// the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
+export { default as AppStudio } from './AppStudio.jsx'

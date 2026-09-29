@@ -10,7 +10,7 @@ import { BRAND_VIEWS, brandToc, scrollToAnchor } from './brandBook.js'
  * Brand — the whole brand tool: the brand book's two pages over one manifest, BRAND (the identity)
  * and ASSETS (what you download or reproduce), a switch between them, and the page's sections on a
  * rail. ONE component so every app that carries a brand renders the same tool (apps/brand alone,
- * media-shell's Brand tab) — kol-notes' `Notes` shape.
+ * media-hub's Brand tab) — kol-notes' `Notes` shape.
  *
  * The manifest is `@kolkrabbi/kol-brand-template`'s schema; its `book` field carries the copy. The
  * marks come from `Logo` (a component taking `variant`) or `logoSources` (id → raw SVG, which the

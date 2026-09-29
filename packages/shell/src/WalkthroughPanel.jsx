@@ -10,7 +10,7 @@ import { Button } from '@kolkrabbi/kol-component'
  * a step with `actions` renders that node centred instead of the text/image
  * split (the "Get started" step).
  *
- * `onClose` draws an X INSIDE the card, top-right (user, 2026-09-26, on media-shell:
+ * `onClose` draws an X INSIDE the card, top-right (user, 2026-09-26, on media-hub:
  * the panel had no close of its own, so every app put one outside the card or on a
  * page button). Unset = no X, exactly as before.
  */

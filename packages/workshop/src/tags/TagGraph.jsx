@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo, useState } from 'react'
 import * as d3 from 'd3'
 import { useNavigate } from 'react-router-dom'
 import { getTagColor } from '@kolkrabbi/kol-markdown'
-import { buildTagCooccurrence } from '@kolkrabbi/kol-markdown'
+import { tagGraph } from '@kolkrabbi/kol-search'
 
 /**
  * TagGraph - Obsidian-style tag graph
@@ -26,7 +26,8 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
   const sourceDocs = allDocs || docs
 
   // Compute graph data: ALL tags with connections (pure — see engine/tags.js)
-  const graphData = useMemo(() => buildTagCooccurrence(sourceDocs), [sourceDocs])
+  /* the engine's graph (kol-search `tagGraph`, 2026-09-29) over the docs' tags */
+  const graphData = useMemo(() => tagGraph(sourceDocs.map((d) => ({ id: d.id, tags: d.metadata?.tags ?? [] }))), [sourceDocs])
 
   // Update dimensions on resize
   useEffect(() => {

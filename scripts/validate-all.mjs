@@ -46,6 +46,8 @@ const GATES = [
   ['icon-ink', 'validate-icon-ink.mjs'],
   ['native-title', 'validate-native-title.mjs'],
   ['variants', 'validate-variants.mjs'],
+  ['control-type', 'validate-control-type.mjs'],
+  ['views', 'validate-views.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

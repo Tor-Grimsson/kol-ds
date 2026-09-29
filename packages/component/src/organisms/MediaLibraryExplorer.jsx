@@ -29,7 +29,10 @@ import useMediaQuery from '../hooks/useMediaQuery.js'
  *                              Ignored while typing and with ⌘ / Ctrl / ⌥ held
  * @param {boolean}  phoneTabs  below 768 the surface is three tabs — Browse · Files · Kinds (Kinds only
  *                              with `onKinds`); a tab picks the view, Kinds opens the overview and leaves
- *                              the surface where it was
+ *                              the surface where it was. OFF in the apps since 2026-09-29 (the `···` menu
+ *                              carries view, sort and File formats, as the Files app does); KEPT for a
+ *                              phone-first consumer whose browse surfaces are destinations of their own —
+ *                              a repo that routes Browse and Files as pages wants them one tap apart
  * @param {Function} onKinds    opens the app's file-formats overview (K, the Kinds tab)
  */
 const TABS = [
@@ -88,6 +91,7 @@ export default function MediaLibraryExplorer({ view, onViewChange, defaultView, 
     <MediaLibraryBrowse
       {...pageProps}
       {...tabProps}
+      onKinds={onKinds}
       view={current}
       onViewChange={setView}
     />

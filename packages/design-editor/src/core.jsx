@@ -86,6 +86,16 @@ export { EditorProviders }
  */
 export { OutputView, OutputCanvas, OutputStage }
 
+/**
+ * THE HOST'S CONFIGURATION, for a chrome mounted WITHOUT `<DesignEditor />` (2026-09-29, found
+ * mounting LabsView and MobileView in the apps tier): the three props `DesignEditor` takes are
+ * module setters underneath, and only `DesignEditor` called them — so a host that routed straight
+ * to `LabsView` or `MobileView` got the Kolkrabbi CDN behind a `/media/` proxy it never stood up,
+ * and every picked image rendered empty. Call them once, before the chrome mounts; `DesignEditor`'s
+ * props call the same three.
+ */
+export { setMediaClient, setMediaProxyBase, setSettingsStore }
+
 /** The seam — a host's own pack registers through it exactly as the shipped ones do. */
 export { registerPack } from './editor/packs'
 

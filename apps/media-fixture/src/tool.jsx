@@ -5,16 +5,18 @@ import FileFormats from './FileFormats.jsx'
 
 /* THE MEDIA TOOL, ONCE (2026-09-26 — user: "media in shell is just media in shell.. so there
  * shouldnt really be a reason to diff"). apps/media's App.jsx carried the tool's extras — the drawer
- * footer, the file-formats overview, clear changes on ⇧R — so apps/media-shell rendered the same
+ * footer, the file-formats overview, clear changes on ⇧R — so apps/media-hub rendered the same
  * MediaLibrary without them. Both apps take them from here now:
  *
  *   const tool = useMediaTool({ client, media })
  *   <MediaLibrary variant="explorer" {...media.props} {...tool.props} … />
  *   {tool.overlay}
  *
- * `tool.props` switches on the DS explorer's own keys and phone tabs (B F R C G N, K → the
- * overview) and hands it the footer. Not a UI component — the parts are the DS's; this is the
- * fixture's arrangement of them, the way `useFixtureMedia` is its wiring. */
+ * `tool.props` switches on the DS explorer's own keys (B F R C G N, K → the overview) and hands
+ * it the footer. Phone tabs are OFF (apps review 2026-09-29) — File formats sits in the phone's
+ * `···` menu with view and sort; the prop stays in the DS for a phone-first consumer.
+ * Not a UI component — the parts are the DS's; this is the fixture's arrangement of them, the
+ * way `useFixtureMedia` is its wiring. */
 
 /* THE THEME TOGGLE — in the settings drawer's footer, beside the reset icon, in the SAME chip
  * (user 2026-08-28). `SettingsFooter` renders it in reset's own row, before the reset button. Same
@@ -64,7 +66,7 @@ export function useMediaTool({ client, media }) {
   )
 
   return {
-    props: { keys: true, phoneTabs: true, onKinds: () => setFormatsOpen((v) => !v), settingsFooter },
+    props: { keys: true, onKinds: () => setFormatsOpen((v) => !v), settingsFooter },
     overlay: <FileFormats open={formatsOpen} onClose={() => setFormatsOpen(false)} client={client} buckets={media.buckets} />,
     themeChip: <ThemeChip />,
   }

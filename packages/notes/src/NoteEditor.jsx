@@ -1,5 +1,6 @@
 import { PageShell } from '@kolkrabbi/kol-shell'
 import { DocumentEditor } from '@kolkrabbi/kol-component'
+import { NEW_NOTE } from './notes.js'
 
 /* taxonomy-ok: organism — kol-component's DocumentEditor, inline in a PageShell, bound to one note row */
 
@@ -30,7 +31,7 @@ export default function NoteEditor({ note, onSave, onClose, assets }) {
           name={note.title || 'Note'}
           kind="markdown"
           text={note.body ?? ''}
-          savedAt={note.updated_at ? Date.parse(note.updated_at) : 0}
+          savedAt={note.slug === NEW_NOTE ? null : note.updated_at ? Date.parse(note.updated_at) : 0}
           draft={{ bucket: 'notes', key: note.slug }}
           assets={assets}
           onSave={onSave}

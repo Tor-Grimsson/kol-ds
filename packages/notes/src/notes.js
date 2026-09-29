@@ -4,12 +4,19 @@
  * markdown with a frontmatter block. The body is what you typed, so a note stays readable in a
  * database dump years from now. The TITLE lives in the body's frontmatter (`title:`), so one editor
  * and one Save cover both — the row's `title` column is derived on save, never typed twice. */
-import { joinFrontmatter, parseFrontmatter } from '@kolkrabbi/kol-component'
+/* the engine, not kol-component's re-export of it — a note IS a markdown document (2026-09-29) */
+import { joinFrontmatter, parseFrontmatter } from '@kolkrabbi/kol-markdown'
 
 const today = () => new Date().toISOString().slice(0, 10)
 
 /** The body a new note starts from. */
 export const starterBody = (title) => joinFrontmatter([['title', title], ['date', today()], ['tags', []]], `\n# ${title}\n\n`)
+
+/** THE BLANK NOTE (apps review 2026-09-29 — the user: *"you open it and start writing, then you decide
+ * what you want to do with it"*). The `open` value that means "a new note, not saved yet", and the
+ * body it starts from: the frontmatter fields, empty, and nothing else. */
+export const NEW_NOTE = '+new'
+export const blankBody = () => joinFrontmatter([['title', ''], ['date', today()], ['tags', []]], '\n')
 
 /** The row's title, read off the body: frontmatter `title`, else the first heading, else the fallback. */
 export function titleOf(body, fallback = 'Untitled') {

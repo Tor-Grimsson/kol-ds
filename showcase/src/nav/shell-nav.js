@@ -97,7 +97,7 @@ export const SPACE_PREFIXES = {
   '/blocks': ['/blocks'],
   '/sets': ['/sets'],
   '/docs': ['/docs', '/documentation', '/foundations', '/icons'],
-  '/apps': ['/apps'],
+  '/apps': ['/apps', '/app'],
   '/development': ['/development', '/references', '/quarantine', '/lobby'],
 }
 

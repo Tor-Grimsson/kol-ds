@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// An apps/* member: runs locally on `pnpm shell` (Shell + Hub + a placeholder tool, the app anatomy 2026-09-26), and publishes into the
+// An apps/* member: runs locally on `pnpm shell` (the Shell alone around ten placeholder pages, apps review 2026-09-29), and publishes into the
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/shell.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
@@ -30,8 +30,8 @@ export default defineConfig(({ command }) => ({
   // crashes at runtime with a null dispatcher. Force one.
   resolve: { dedupe: ['react', 'react-dom'] },
 
-  // its own port beside apps/media-shell (5175), so they run at once
-  server: { port: 5176 },
+  // its own port (5186, after search 5185), so it runs beside the other apps
+  server: { port: 5186 },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

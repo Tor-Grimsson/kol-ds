@@ -46,13 +46,15 @@ import SettingsSections from './SettingsSections.jsx'
 const isSectioned = (list) => Array.isArray(list?.[0]?.items)
 
 /* A shortcut as a settings ROW: the label on the left, the combo as the row's
- * value. `labelWidth="auto"` makes the label yield and the combo hug — a combo
- * is one token by nature and must not wrap. */
+ * value. `labelWidth="auto"` makes the label yield and the combo hug. A combo
+ * holds on one line from `sm` up; below it, it wraps under its label (LabeledControl stacks) — media's
+ * combos are sentences ("Drag from empty space (rows: …"), and held on one line
+ * they pushed the sheet past both edges of a phone (apps review, 2026-09-29). */
 const toRow = ({ label, combo, keys }) => ({
   label,
   align: 'fill',
   labelWidth: 'auto',
-  value: <span className="text-fg-32 kol-helper-12 whitespace-nowrap">{combo ?? keys}</span>,
+  value: <span className="text-fg-32 kol-helper-12 sm:whitespace-nowrap">{combo ?? keys}</span>,
 })
 
 export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
@@ -86,7 +88,9 @@ export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
          * editor's is six sections — ran past both edges of the viewport with no way to reach the
          * rest. Capped to the window less a margin, scrolling inside. */
         className="kol-shortcuts-panel text-fg-64 kol-helper-12 bg-oq-04 flex flex-col gap-6 overflow-y-auto"
-        style={{ padding: 24, borderRadius: 4, maxHeight: 'calc(100dvh - 48px)' }}
+        /* and the window's WIDTH too (apps review, 2026-09-29): nothing capped it, so the widest
+         * row set the sheet's width and a phone showed its middle third */
+        style={{ padding: 24, borderRadius: 4, maxHeight: 'calc(100dvh - 48px)', maxWidth: 'calc(100vw - 32px)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <SettingsSections

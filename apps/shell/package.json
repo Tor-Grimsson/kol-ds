@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The Hub's reference app — kol-shell's AppHub (Shell + Home + Settings + keys) around a placeholder tool. Judged on its own; never published.",
+  "description": "The Shell's reference app \u2014 kol-shell's AppShell alone (rail, layout root, nav keys, the phone bar) around ten placeholder pages. No Hub. Judged on its own; never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

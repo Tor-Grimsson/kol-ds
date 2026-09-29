@@ -35,7 +35,7 @@ export default function CommandPalette() {
 
   return (
     <div className="flex h-full min-h-0 w-full flex-col items-center justify-center gap-4 bg-surface-primary p-8">
-      <Button variant="secondary" iconLeft="search" onClick={() => setOpen(true)}>
+      <Button iconLeft="search" onClick={() => setOpen(true)}>
         Search commands
       </Button>
       <p className="kol-mono-12 text-fg-48">

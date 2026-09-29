@@ -1,5 +1,5 @@
 /**
- * Pure tag aggregation over a docs inventory — zero dependencies, no React, no d3.
+ * Pure tag aggregation over a docs inventory — no React, no d3.
  *
  * Extracted from TagModeOverlay (`buildTagCounts`) and TagGraph
  * (`buildTagCooccurrence`) so the counting/co-occurrence math is testable in
@@ -12,6 +12,7 @@
  *   - buildTagCounts       keeps tags exact-case (the overlay's tag list)
  *   - buildTagCooccurrence lowercases tags (the graph's node ids)
  */
+import { tagGraph } from '@kolkrabbi/kol-search'
 
 /**
  * Count docs per tag, tags kept exact-case. Returns `[{ tag, count }]` sorted
@@ -32,44 +33,9 @@ export const buildTagCounts = (inventory = []) => {
 }
 
 /**
- * Build the tag co-occurrence graph. Tag ids are lowercased. Nodes are all
- * tags with their doc counts (sorted desc); edges connect any two tags that
- * share at least one doc, weighted by the number of shared docs.
- *
- * Returns `{ nodes: [{ id, count, type: 'tag' }], edges: [{ source, target, weight }] }`.
+ * DEPRECATED (2026-09-29, ruling D4) — the tag graph is the search index's, so it moved to
+ * `@kolkrabbi/kol-search`'s `tagGraph`. This adapts a docs inventory onto it and returns the same
+ * `{ nodes, edges }` as before; it goes at the next minor. Import `tagGraph` from kol-search.
  */
-export const buildTagCooccurrence = (inventory = []) => {
-  const tagCounts = {}
-  const tagToDocs = {} // tag -> Set of doc ids
-
-  inventory.forEach((doc) => {
-    const tags = doc.metadata?.tags || []
-    tags.forEach((tag) => {
-      const tagLower = tag.toLowerCase()
-      tagCounts[tagLower] = (tagCounts[tagLower] || 0) + 1
-      if (!tagToDocs[tagLower]) {
-        tagToDocs[tagLower] = new Set()
-      }
-      tagToDocs[tagLower].add(doc.id)
-    })
-  })
-
-  const nodes = Object.entries(tagCounts)
-    .map(([tag, count]) => ({ id: tag, count, type: 'tag' }))
-    .sort((a, b) => b.count - a.count)
-
-  const edges = []
-  const tagList = Object.keys(tagToDocs)
-  for (let i = 0; i < tagList.length; i++) {
-    for (let j = i + 1; j < tagList.length; j++) {
-      const tagA = tagList[i]
-      const tagB = tagList[j]
-      const commonDocs = [...tagToDocs[tagA]].filter((id) => tagToDocs[tagB].has(id))
-      if (commonDocs.length > 0) {
-        edges.push({ source: tagA, target: tagB, weight: commonDocs.length })
-      }
-    }
-  }
-
-  return { nodes, edges }
-}
+export const buildTagCooccurrence = (inventory = []) =>
+  tagGraph(inventory.map((d) => ({ id: d.id, tags: d.metadata?.tags ?? [] })))

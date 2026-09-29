@@ -3,8 +3,8 @@ title: Design-editor system
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-03
-verified: 2026-09-03
+updated: 2026-09-29
+verified: 2026-09-29
 description: The editor and its parts
 aliases:
   - design editor
@@ -75,7 +75,14 @@ so both sides read one store:
 | `railExtras` | labs publishes its rail rows, the host's layout reads them; two copies and the layout subscribes to a store nothing writes |
 | `mode.js`'s navigator | `setNavigator` on a local copy left the package's `navigator` null, and its fallback is `window.location.assign` — so every in-app navigation did a FULL PAGE LOAD, silently, losing in-memory state |
 
-The last one is the shape to remember: it "worked", the user landed on the
+A fourth, found 2026-09-29 mounting every chrome in `apps/editor`: **the host's configuration**.
+`mediaClient`, `mediaProxyBase` and `settingsStore` are `DesignEditor` props, but underneath they are
+module setters that only `DesignEditor` called — so a host routing straight to `LabsView` or
+`MobileView` got the Kolkrabbi CDN behind a `/media/` proxy it never stood up, and every picked image
+rendered empty. `setMediaClient` · `setMediaProxyBase` · `setSettingsStore` are exported; call them
+once before a chrome mounts.
+
+The last row of the table is the shape to remember: it "worked", the user landed on the
 right route, and only a navigation-entry count showed the reload.
 
 ## Driven by
@@ -86,3 +93,27 @@ Fixes land HERE first, and fxr sees them through `kol-link design-editor`
 before any publish. Labs, the mobile chrome and the chromeless output window
 are alternate chromes over the same engine and ship from this package too:
 they are built FROM its internals, not on top of its component.
+
+## The chromes
+
+Five screens over one engine, all exported, all reachable in `apps/editor` (one rail, the drawer on
+a phone):
+
+| route | chrome | export |
+|---|---|---|
+| `/` | the editor — the compositor | `DesignEditor` |
+| `/labs` | one source under a params rail; its categories ride the HOST's rail (`railExtras`) | `LabsView` |
+| `/randomiser` | two tools — **Generator** and **Effects**. Effects asks for the input media first and keeps it while effects are browsed; the sheet's Back only closes the sheet | `MobileView` |
+| `/core` | the editor with no layer packs — what `@kolkrabbi/design-editor/core` gives | `DesignEditor` from `/core` |
+| `/output` | chromeless, no rail — the recording surface | `OutputView` |
+
+`/core` is a full page load in and out: packs register module-globally when an entry is imported, so
+an SPA hop would reach `/core` with every pack already in. `currentView()` reads the LAST path
+segment, so a host that mounts the chromes under a base (`/apps/editor/labs`) keeps its view keymap.
+
+**The panels** — the layout every one of those chromes shares (categories → sub-categories → a
+leaf, its tabs, folded sections, labeled rows, the modulation dot) — are `AutoControls` over each
+schema, and `apps/panels` renders them alone on the editor's own data: every effect, every
+generator preset, the four layer schemas, each as the rail (inline) and as the inspector (label
+above). A panel fix lands in `editor/params/`, and the app shows it before any chrome does.
+

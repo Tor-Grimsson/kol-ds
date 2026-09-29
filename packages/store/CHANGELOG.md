@@ -4,6 +4,10 @@
 > lives in the repo's session logs). From here every publish adds an entry, and
 > breaking or global-surface changes are flagged **BREAKING**.
 
+## 0.3.1 — 2026-09-29
+
+- `PrintBuyButton`'s coming-soon button is the default tone, not the inverted fill.
+
 ## 0.2.0 — 2026-08-26
 
 - **BREAKING — the DS tier is a peer, not a dependency.** kol-component · kol-theme move from

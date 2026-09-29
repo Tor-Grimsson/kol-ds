@@ -69,7 +69,7 @@ export default function PrintBuyButton({
   if (!hasAnyOption) {
     return (
       <div className={className}>
-        <Button variant="secondary" size={size} disabled>
+        <Button size={size} disabled>
           {comingSoonLabel}
         </Button>
       </div>

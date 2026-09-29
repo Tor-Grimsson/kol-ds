@@ -1,5 +1,5 @@
 /* THE NOTES AND DECKS WIRING, shared by the tool-alone apps (apps/notes, apps/presentation) and
- * apps/media-shell's tabs (2026-09-27) — `useMediaTool`'s idea for the two new tools. The COMPONENTS
+ * apps/media-hub's tabs (2026-09-27) — `useMediaTool`'s idea for the two new tools. The COMPONENTS
  * are the packages' (kol-notes `Notes`, kol-deck `Decks`), so there is nothing to upstream: every app
  * renders the same source. What could still drift is the wiring around them — which files Attach
  * offers, where an uploaded picture goes, which layouts a slide is picked from — so it lives here,
@@ -17,7 +17,7 @@ const nameOf = (key) => key.split('/').pop() || key
 
 /* THE MASTHEAD IS THE TOOL'S TITLE ONLY (app anatomy § Tool frame, rules 3 and 5, 2026-09-27). The
  * packages' default headers carry olina's explanatory subtitles; the product's apps pass the title
- * alone, so apps/notes · apps/presentation and media-shell's tabs read the same. */
+ * alone, so apps/notes · apps/presentation and media-hub's tabs read the same. */
 const NOTES_HEADER = { title: 'NOTES' }
 const DECKS_HEADER = { title: 'DECKS' }
 

@@ -109,5 +109,9 @@ const PATH_TO_MODE = {
 
 export const currentView = () => {
   if (typeof window === 'undefined') return null
-  return PATH_TO_MODE[window.location.pathname] ?? null
+  /* the LAST segment, so a host that mounts the chromes under a base path (the apps tier serves
+     the editor at /apps/editor/labs) still reads its view — the full pathname matched nothing
+     there, and the labs keymap silently fell back to none (2026-09-29) */
+  const last = window.location.pathname.replace(/\/+$/, '').split('/').pop()
+  return PATH_TO_MODE[`/${last}`] ?? null
 }

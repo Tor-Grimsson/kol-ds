@@ -14,6 +14,9 @@ importers:
       esbuild:
         specifier: ^0.25.12
         version: 0.25.12
+      playwright:
+        specifier: ^1.63.0
+        version: 1.63.0
       react-docgen:
         specifier: ^8.0.3
         version: 8.0.3
@@ -44,9 +47,125 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.2.4
         version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.14.2
+        version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+      voyager-fixture:
+        specifier: workspace:*
+        version: link:../voyager-fixture
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/brand-hub:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-deck':
+        specifier: workspace:*
+        version: link:../../packages/deck
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-notes':
+        specifier: workspace:*
+        version: link:../../packages/notes
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-styleguide':
+        specifier: workspace:*
+        version: link:../../packages/styleguide
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      hls.js:
+        specifier: ^1.7.0
+        version: 1.7.3
       media-fixture:
         specifier: workspace:*
         version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+      voyager-fixture:
+        specifier: workspace:*
+        version: link:../voyager-fixture
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/catalog:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       react:
         specifier: ^19.2.0
         version: 19.2.7
@@ -158,6 +277,9 @@ importers:
       '@kolkrabbi/design-editor':
         specifier: workspace:*
         version: link:../../packages/design-editor
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
       '@kolkrabbi/kol-component':
         specifier: workspace:*
         version: link:../../packages/component
@@ -201,6 +323,107 @@ importers:
       vite-plugin-svgr:
         specifier: ^5.2.0
         version: 5.2.0(rollup@4.62.2)(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+
+  apps/fixtures:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../../packages/markdown
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      media-fixture:
+        specifier: workspace:*
+        version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+      voyager-fixture:
+        specifier: workspace:*
+        version: link:../voyager-fixture
+      workshop-fixture:
+        specifier: workspace:*
+        version: link:../workshop-fixture
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/hub:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
 
   apps/markdown:
     dependencies:
@@ -311,9 +534,6 @@ importers:
 
   apps/media-fixture:
     dependencies:
-      '@kolkrabbi/kol-brand':
-        specifier: workspace:*
-        version: link:../../packages/brand
       '@kolkrabbi/kol-component':
         specifier: workspace:*
         version: link:../../packages/component
@@ -333,7 +553,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.7
 
-  apps/media-shell:
+  apps/media-hub:
     dependencies:
       '@floating-ui/react':
         specifier: ^0.27.19
@@ -455,7 +675,172 @@ importers:
         specifier: ^8.0.10
         version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
 
+  apps/notes-hub:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-notes':
+        specifier: workspace:*
+        version: link:../../packages/notes
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      hls.js:
+        specifier: ^1.7.0
+        version: 1.7.3
+      media-fixture:
+        specifier: workspace:*
+        version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/panels:
+    dependencies:
+      '@kolkrabbi/design-editor':
+        specifier: workspace:*
+        version: link:../../packages/design-editor
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+      vite-plugin-svgr:
+        specifier: ^5.2.0
+        version: 5.2.0(rollup@4.62.2)(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+
   apps/presentation:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-deck':
+        specifier: workspace:*
+        version: link:../../packages/deck
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      hls.js:
+        specifier: ^1.7.0
+        version: 1.7.3
+      media-fixture:
+        specifier: workspace:*
+        version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/presentation-hub:
     dependencies:
       '@floating-ui/react':
         specifier: ^0.27.19
@@ -539,6 +924,9 @@ importers:
       '@kolkrabbi/kol-theme':
         specifier: workspace:*
         version: link:../../packages/theme
+      '@kolkrabbi/kol-workshop':
+        specifier: workspace:*
+        version: link:../../packages/workshop
       '@tailwindcss/vite':
         specifier: ^4.2.4
         version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
@@ -548,6 +936,9 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.14.2
+        version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
         specifier: ^4.2.4
         version: 4.3.1
@@ -607,6 +998,54 @@ importers:
       vite:
         specifier: ^8.0.10
         version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/studio:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/voyager-fixture: {}
 
   apps/workshop:
     dependencies:
@@ -713,6 +1152,9 @@ importers:
       '@kolkrabbi/kol-markdown':
         specifier: workspace:^
         version: link:../markdown
+      '@kolkrabbi/kol-search':
+        specifier: workspace:^
+        version: link:../search
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.7)
@@ -986,12 +1428,19 @@ importers:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7(react@19.2.7)
 
-  packages/markdown: {}
+  packages/markdown:
+    dependencies:
+      '@kolkrabbi/kol-search':
+        specifier: workspace:^
+        version: link:../search
 
   packages/media-client: {}
 
   packages/notes:
     dependencies:
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:^
+        version: link:../markdown
       react:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7
@@ -3854,6 +4303,16 @@ packages:
 
   pixi.js@8.20.1:
     resolution: {integrity: sha512-akLVBMLvQbaEViqsmVraK0Njer1q4Q4lm4iNKuzvBiFrV8q+6/+HluJN3sWIwO663IBeQtUUS/CaXFJZs6ffXQ==}
+
+  playwright-core@1.63.0:
+    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
+    engines: {node: '>=20'}
+    hasBin: true
+
+  playwright@1.63.0:
+    resolution: {integrity: sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg==}
+    engines: {node: '>=20'}
+    hasBin: true
 
   postcss@8.5.15:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
@@ -7343,6 +7802,12 @@ snapshots:
       ismobilejs: 1.1.1
       parse-svg-path: 0.2.0
       tiny-lru: 11.4.7
+
+  playwright-core@1.63.0: {}
+
+  playwright@1.63.0:
+    dependencies:
+      playwright-core: 1.63.0
 
   postcss@8.5.15:
     dependencies:

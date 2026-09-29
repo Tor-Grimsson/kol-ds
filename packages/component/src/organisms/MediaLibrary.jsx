@@ -16,6 +16,7 @@ import MediaViewer from './MediaViewer.jsx'
 import { MediaLibraryBrowse, MediaLibraryLibrary } from './MediaLibraryPages.jsx'
 import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
 import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
+import { filterMedia } from '../utilities/mediaSearch.js'
 
 /**
  * MediaLibrary — a browser over an object bucket, in two views over one
@@ -343,10 +344,7 @@ export function MediaLibraryProvider({
     const kindCounts = files.reduce((acc, o) => { acc[o.kind] = (acc[o.kind] || 0) + 1; return acc }, {})
     const kindsPresent = Object.keys(kindCounts).sort().map((k) => ({ value: k, label: KIND_LABEL[k] ?? k, count: kindCounts[k] }))
 
-    const q = search.trim().toLowerCase()
-    const filtered = files.filter(
-      (o) => (kinds.size === 0 || kinds.has(o.kind)) && (!q || o.displayKey.toLowerCase().includes(q)),
-    )
+    const filtered = filterMedia(files.filter((o) => kinds.size === 0 || kinds.has(o.kind)), search, { nameOf: (o) => o.displayKey })
     const sorted = sortFiles(filtered, sort)
 
     const page = pageSize || Infinity
@@ -783,7 +781,7 @@ function LibraryViewer({ index, onIndexChange, onClose, onPick }) {
       actions={(item, i) => (
         <>
           {onPick && <Button size="sm" onClick={() => onPick(viewable[i])}>Use</Button>}
-          <Button variant="secondary" size="sm" onClick={() => copy(item.url)}>
+          <Button size="sm" onClick={() => copy(item.url)}>
             {copied === item.url ? 'Copied' : 'Copy URL'}
           </Button>
         </>

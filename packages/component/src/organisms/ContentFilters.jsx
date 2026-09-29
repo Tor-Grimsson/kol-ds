@@ -7,6 +7,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
 import SearchInput from '../molecules/SearchInput.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
+import { filterItems } from '../utilities/searchItems.js'
 
 /**
  * ContentFilters — universal filter component for content grids.
@@ -214,16 +215,8 @@ const ContentFilters = ({
   }
 
   const filteredItems = useMemo(() => {
-    let result = items
-    if (searchText) {
-      const q = searchText.toLowerCase()
-      result = result.filter((item) =>
-        searchKeys.some((key) => {
-          const val = item[key]
-          return val && String(val).toLowerCase().includes(q)
-        }),
-      )
-    }
+    /* the KOL engine, not a private substring match (apps review 2026-09-29) — utilities/searchItems */
+    let result = filterItems(items, searchText, { keys: searchKeys })
     if (activeFilters.size === 0) return result
     return result.filter((item) => {
       let matches = true

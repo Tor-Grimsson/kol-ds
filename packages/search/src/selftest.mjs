@@ -2,7 +2,7 @@
  * Runnable self-check.  `pnpm --filter @kolkrabbi/kol-search test`
  */
 import assert from 'node:assert'
-import { createIndex, search, parseQuery, highlightRanges, singular, matchSearchItems } from './index.js'
+import { createIndex, search, parseQuery, highlightRanges, singular, matchSearchItems, tagGraph } from './index.js'
 
 const items = [
   { id: 'button', title: 'Button', kind: 'component', space: 'components', category: 'Atoms', tags: ['pattern/action'], description: 'The one button.' },
@@ -55,4 +55,9 @@ assert.deepEqual(search(index, 'button -family').results.map((r) => r.item.id), 
 // --- the legacy predicate is unchanged ---
 assert.deepEqual(matchSearchItems([{ label: 'Button', keywords: ['press'] }], 'pre').map((i) => i.matchedKeyword), ['press'])
 
+
+// --- tagGraph: a node per tag, an edge per shared item ---
+const g = tagGraph([{ id: 'a', tags: ['X', 'y'] }, { id: 'b', tags: ['x', 'z'] }, { id: 'c', tags: ['x', 'y'] }])
+assert.deepEqual(g.nodes.map((n) => [n.id, n.count]), [['x', 3], ['y', 2], ['z', 1]])
+assert.deepEqual(g.edges.map((e) => [e.source, e.target, e.weight]).sort(), [['x', 'y', 2], ['x', 'z', 1]])
 console.log('kol-search self-check: OK')

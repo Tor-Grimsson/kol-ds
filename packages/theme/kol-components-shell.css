@@ -41,7 +41,9 @@
 .kol-shell-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  /* less the phone bar (`--kol-shell-bar-h`, set by AppShell `touch="bar"`): the content column
+   * already pads for it, so a full-height page ends above the bar, not under it (2026-09-29) */
+  min-height: calc(100vh - var(--kol-shell-bar-h, 0px));
   padding: var(--kol-shell-page-pad);
   /* PageShellScrollbarGutter (kol-monitor 2026-08-28): in `fixed` mode this
    * element IS the scroll container and reserves the gutter; in `scroll` mode
@@ -58,7 +60,7 @@
 }
 /* `mode="fixed"` — the element is the scroll container; pair with a
  * `flex:1 overflow:auto` body (the settings idiom) */
-.kol-shell-page--fixed { min-height: 0; height: 100vh; overflow: hidden; }
+.kol-shell-page--fixed { min-height: 0; height: calc(100vh - var(--kol-shell-bar-h, 0px)); overflow: hidden; }
 /* `width="capped"` — the SITE tier: the framework container ladder, centred.
  * `bleed` (the default, unclassed) fills the window — the app tier. The one
  * real difference between a shell page and a `.kol-page`, and it is a prop
@@ -200,6 +202,34 @@
   inset: 0;
   z-index: calc(var(--kol-z-sticky) - 1);
   background: color-mix(in srgb, var(--kol-color-ab-black) 48%, transparent);
+}
+
+/* ── THE PHONE BAR (AppShell `touch="bar"`, apps review 2026-09-29) — the rail as kol-component's
+ * MobileTabBar below 768; past five destinations the fifth tab is More, and More is this sheet,
+ * floated just above the bar. The scrim sits under the bar, so More stays tappable to close. */
+.kol-phone-nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--kol-z-sticky) - 1);
+  border: 0;
+  padding: 0;
+  cursor: default;
+}
+.kol-phone-nav-more {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 8px);
+  z-index: var(--kol-z-sticky);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 60dvh;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: var(--kol-radius-sm);
+  background: var(--kol-surface-primary);
+  border: 1px solid var(--kol-oq-08);
 }
 
 /* ── THE TAP OPENER IS THE LINE (ShellRailCollapsedWithTapOpen, kol-mirror

@@ -196,14 +196,17 @@ export const chipCls = (on) => `${CHIP_CLS} ${on ? 'kol-control--filled' : 'text
  * @param {Array|Set} selected
  * @param {Function} onToggle (value) => void
  * @param {string} noun      the trigger's noun (default 'kinds')
+ * @param {string} variant   passed to the Dropdown like `SettingsChoice`'s — unset inherits the page's
+ *                           tone. It was hard-coded `primary` until 2026-09-29, so on a sunken settings
+ *                           page it was the one lighter dropdown in the section.
  */
-export function SettingsMulti({ options = [], selected = [], onToggle, noun = 'kinds', tone = 'default', size = 'sm', className = '' }) {
+export function SettingsMulti({ options = [], selected = [], onToggle, noun = 'kinds', tone = 'default', size = 'sm', variant, className = '' }) {
   const on = selected instanceof Set ? selected : new Set(selected)
   const opts = [
     { value: '__summary', label: `${on.size} of ${options.length} ${noun}` },
     ...options.map((o) => ({ value: o.value, label: `${on.has(o.value) ? '✓ ' : ''}${o.label ?? String(o.value)}` })),
   ]
-  return <Dropdown size={size} variant="primary" tone={tone} value="__summary" options={opts} onChange={(v) => (v === '__summary' ? null : onToggle?.(v))} className={`w-full ${className}`.trim()} />
+  return <Dropdown size={size} variant={variant} tone={tone} value="__summary" options={opts} onChange={(v) => (v === '__summary' ? null : onToggle?.(v))} className={`w-full ${className}`.trim()} />
 }
 
 /**

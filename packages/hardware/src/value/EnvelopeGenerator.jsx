@@ -114,7 +114,7 @@ function Field({ label, value, onCommit, chars = 4 }) {
 
 function ZoomRow({ label, value, onChange }) {
   return (
-    <Slider label={label} min={0.1} max={10} step={0.1} value={value} onChange={onChange} defaultValue={1} displayWidth={4} className="h-6" />
+    <Slider label={label} min={0.1} max={10} step={0.1} value={value} onChange={onChange} defaultValue={1} displayWidth={4} />
   )
 }
 
