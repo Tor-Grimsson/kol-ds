@@ -3,7 +3,7 @@ title: Blocks & sets
 type: reference
 status: active
 created: 2026-07-30
-updated: 2026-08-01
+updated: 2026-09-30
 description: The two composition layers above components
 aliases:
   - blocks
@@ -19,9 +19,16 @@ related:
   - "[[../03-components/01-inventory|components]]"
   - "[[02-shells|reference shells]]"
   - "[[03-slug-composition-gallery|slug pages & the composition gallery]]"
+  - "[[../00-overview/05-names|names]]"
 ---
 
 # Blocks & sets — composed layers above components
+
+> **Two axes, one chapter (2026-09-30).** Blocks and sets are not two steps of one ladder. A block is
+> **Composition** (grouped by size), and a set is **Collection** (grouped by belonging, a family by
+> purpose that may cross packages). This chapter holds both for history; the words are in
+> [[../00-overview/05-names|names § The tree]]. A set that was only one package's family is that
+> package's page now.
 
 Two layers sit between raw components and full apps, both on the showcase:
 

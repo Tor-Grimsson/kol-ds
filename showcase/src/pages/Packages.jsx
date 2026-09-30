@@ -4,8 +4,8 @@ import { Table } from '@kolkrabbi/kol-component'
 import { buildInventory } from '@kolkrabbi/kol-markdown'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { useFrontmatter } from '../lib/frontmatter.jsx'
-import { TOP_LEVEL } from '../nav/registry.js'
-import { familyHref } from '../lib/sets-registry.js'
+import { TOP_LEVEL, CATEGORY_ORDER, CATEGORY_LABELS } from '../nav/registry.js'
+import { setsOfFamily } from '../lib/sets-registry.js'
 
 /**
  * Packages — every published package, and one page per package (2026-09-30, the names audit: *"a
@@ -78,7 +78,12 @@ export function PackagePage() {
   const show = useFrontmatter('page')
   const p = PACKAGES.find((x) => x.dir === dir)
   if (!p) return <Navigate to="/packages" replace />
-  const holds = TOP_LEVEL.filter((c) => c.family === dir).length
+  /* THE FAMILY (2026-09-30, the library taxonomy): what the package ships, on the atomic ladder,
+   * and the sets built from it — this was SetFamily at /sets/family/<dir>, a set that was only
+   * one package's components, now the package's own page */
+  const members = TOP_LEVEL.filter((c) => c.family === dir)
+  const tiers = CATEGORY_ORDER.map((k) => [k, members.filter((c) => c.category === k)]).filter(([, l]) => l.length)
+  const composed = setsOfFamily(dir)
   return (
     <>
       <DocumentationReader
@@ -90,16 +95,36 @@ export function PackagePage() {
         docHref={packageHref}
         routes={{ docsIndex: '/packages', components: '/components', docFilePath: () => `packages/${dir}/CHANGELOG.md` }}
       />
-      {holds > 0 && (
-        <p className="kol-doc-body mt-10">
-          <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={familyHref(dir)}>{holds} components — the {dir} set</Link>
-        </p>
+      <div className="flex flex-col gap-10 mt-10">
+      {composed.length > 0 && (
+        <DocSection id="sets" title="Sets">
+          <ul className="flex flex-col gap-2">
+            {composed.map((s) => (
+              <li key={s.key} className="kol-doc-body">
+                <Link className={linkCls} to={`/sets/${s.key}`}>{s.title}</Link>
+                {s.description && <span className="text-subtle"> — {s.description}</span>}
+              </li>
+            ))}
+          </ul>
+        </DocSection>
       )}
+      {tiers.map(([k, list]) => (
+        <DocSection key={k} id={k} title={`${CATEGORY_LABELS[k]} · ${list.length}`}>
+          <Table width="column" columns={FAMILY_COLUMNS} rows={list.map((c) => ({ ...c, id: c.name }))} />
+        </DocSection>
+      ))}
+      </div>
     </>
   )
 }
 
 const linkCls = 'kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64'
+
+/* the family table — carried from SetFamily verbatim */
+const FAMILY_COLUMNS = [
+  { accessor: 'displayName', header: 'Component', render: (c) => <Link className={linkCls} to={`/components/${c.slug}`}>{c.displayName}</Link> },
+  { accessor: 'description', header: 'What it is', className: 'kol-table-cell-meta-strong' },
+]
 
 /* the DS Table, not a hand-built list (2026-09-30) */
 const PKG_COLUMNS = [

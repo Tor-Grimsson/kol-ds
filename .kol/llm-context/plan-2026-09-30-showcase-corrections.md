@@ -43,7 +43,7 @@ Verified today — has an `.md` home: components · atoms · molecules · organi
 1. **Packages → its own space** (header tab): the index + a page per package with its changelog. Out of Development.
 2. **Tags · Tag graph · Index → views of the Search page** (Results · Tags · Graph · A–Z).
 3. **Development keeps** References · Quarantine · Records (Phase log, Open questions) · Lobby — the temporary / lookup space.
-4. **Cards → a Blocks category**, not a space (reverses the overnight agent decision).
+4. **Cards → a Blocks category**, not a space (reverses the overnight agent decision). *Reversed 2026-09-30 by `plan-2026-09-30-library-taxonomy` W4: Cards is a set, under Collection.*
 
 ## Open issues
 

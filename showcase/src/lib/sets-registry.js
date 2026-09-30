@@ -53,10 +53,10 @@ export const FEATURED_SETS = SETS.filter((s) => s.featured)
 
 export const getSet = (slug) => SETS.find((s) => s.key === slug)
 
-/* THE SET IS A PACKAGE FAMILY (user ruling on the names audit, 2026-09-30): every component a
- * package ships, shown together, then the apparatus composed from them. Each composed set above
- * belongs to the family that owns its parts — the key is the set file, the value the package dir.
- * A composed set built from kol-component's own parts lives under `component`. */
+/* WHICH PACKAGE PAGE LISTS A SET (2026-09-30, the library taxonomy): a set is a family grouped by
+ * purpose and may cross packages; a package's own family is its page under Packages, and that
+ * page lists the sets built mainly from it — the key is the set file, the value the package dir.
+ * A set built from kol-component's own parts lists under `component`. */
 export const SET_FAMILY = {
   'app-shell': 'shell',
   'chess-apparatus': 'chess',
@@ -75,4 +75,3 @@ export const SET_FAMILY = {
   'work-portfolio': 'content',
 }
 export const setsOfFamily = (dir) => SETS.filter((s) => (SET_FAMILY[s.key] ?? 'component') === dir)
-export const familyHref = (dir) => `/sets/family/${dir}`

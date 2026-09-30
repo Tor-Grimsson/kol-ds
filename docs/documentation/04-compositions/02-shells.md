@@ -37,19 +37,21 @@ Why it went: the chrome was imported by each page rather than mounted once, so f
 carries a *Superseded 2026-09-28* note. Built and judged in `apps/workshop` (over `workshop-fixture`),
 then adopted by the showcase. Plan and decisions: `.kol/llm-context/plan-2026-09-28-showcase-refinement.md` § 3b.
 
+**Re-cut 2026-09-30 (the library taxonomy, `plan-2026-09-30-library-taxonomy`):** the header's tabs are the
+**parents**, and the spaces they held are its rail categories. The words are in [[../00-overview/05-names|names]].
+
 | Space | Root — an index page, rails on | Left rail | Right rail |
 |---|---|---|---|
 | — `/` | the landing, the **only** page without rails | — | — |
-| Components | `/components` — its home, then the wall | Group by (Atomic · Function · Package) · the tree; a chapter opens its tier home | this page · its tags · related |
-| Blocks · Sets | `/blocks` · `/sets` — their homes | blocks by category · sets by package family (a chapter opens the family page) | this page · members as related |
-| Cards | `/cards` — its home, then the cards | one chapter per kind: Heroes · Text & image · Calls to action · Signup · Features · Content cards (2026-09-30) | this page |
-| Styles | `/styles` | Foundations · Icons · Guides (2026-09-30) | this page |
-| Docs | `/docs` | **Documentation · Operations** — the vault only (2026-09-30: the guides and specimen pages moved to Styles) | the reader's rail |
-| Apps | `/apps` | the apps | this page |
-| Development | `/development` | Tools (references, quarantine, tag graph, tags, index) · Records (phase log, open questions) · Packages (by tier, one page each) · Lobby (dev only) | this page |
-| Search — not a space | `/search?q=` | the spaces | this page |
+| — `/library` | the Library's home: the whole tree, drawn | the spaces | this page |
+| Styles | `/styles` | Foundations · Icons · Guides | this page |
+| Composition | `/composition`: its home and the size nesting | **Components** (Group by: Atomic · Function; a chapter opens its tier home) · **Blocks** (by category) · **Apps** (by layer) | this page · its tags · related |
+| Collection | `/collection`: its home, one set from two packages | **Sets** (Cards first, a chapter of its cards; each composed set a row) · **Packages** (by tier, one page each, carrying the package's family) | this page |
+| Docs | `/docs` | **Documentation · Operations**, the vault only | the reader's rail |
+| Search | `/search`: its home until a query is typed | Results · Tags · Graph · A–Z | this page |
+| Development | `/development` | Tools (references, quarantine) · Records (phase log, open questions) · Lobby (dev only) | this page |
 
-- **A space owns more than its root.** Docs lights for `/docs · /documentation`, Styles for `/styles · /foundations · /icons`, Development for `/development · /references · /quarantine`; no URL moved (`SPACE_PREFIXES`, `showcase/src/nav/shell-nav.js`).
+- **A space owns more than its root.** Composition lights for `/components · /blocks · /apps · /app`, Collection for `/sets · /cards · /packages`, Docs for `/docs · /documentation`, Styles for `/styles · /foundations · /icons`, Development for `/development · /references · /quarantine`; no URL moved. `/sets/family/<dir>` redirects to `/packages/<dir>` (`SPACE_PREFIXES`, `showcase/src/nav/shell-nav.js`).
 - **Each space draws its own rails.** `renderSidebar` and a function `defaultTocContent` receive `{ activeRoute }`. The **Tools group is gone** — the header lists the spaces; a second door to each was "one body of content, two doors".
 - **A page tells the right rail what it is about** — `usePageMeta({ tags, related })`, read by the rail with `usePageMetaValue()`. The rail had been handed empty lists on every route.
 - **The rail follows you.** Arriving in a group opens it and folds its siblings.

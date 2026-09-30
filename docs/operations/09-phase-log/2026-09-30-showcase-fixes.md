@@ -11,6 +11,7 @@ tags:
 related:
   - "[[INDEX|Phase log]]"
   - "[[2026-09-30-showcase-build|Showcase build]]"
+  - "[[2026-09-30-library-taxonomy|Library taxonomy]]"
 ---
 
 # Showcase fixes

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { SearchPage, usePageMeta } from '@kolkrabbi/kol-workshop'
+import HomeDoc, { HOMES } from '../lib/HomeDoc.jsx'
 import { SHELL_ROUTES, SEARCH_VIEWS, buildShellSearchItems } from '../nav/shell-nav.js'
 import { useGraph } from './References.jsx'
 
@@ -27,7 +28,10 @@ export function SearchViews() {
 }
 
 export default function Search() {
-  usePageMeta({ tags: [], related: [] })
+  /* the space's home (2026-09-30) — above the results until a query is typed */
+  const hasQuery = Boolean(new URLSearchParams(useLocation().search).get('q'))
+  /* one caller of usePageMeta per page — a parent's call runs after its child's and wins */
+  usePageMeta({ tags: hasQuery ? [] : HOMES.find((d) => d.id === 'search')?.metadata?.tags ?? [], related: [] })
   const { nodes } = useGraph()
   const items = useMemo(() => [
     ...buildShellSearchItems(),
@@ -43,6 +47,7 @@ export default function Search() {
   ], [nodes])
   return (
     <div className="flex flex-col gap-6">
+      {!hasQuery && <HomeDoc id="search" />}
       <SearchViews />
       <SearchPage items={items} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
     </div>

@@ -6,12 +6,12 @@ import { SegmentedToggle, SettingsChoice, useScrollSpy } from '@kolkrabbi/kol-co
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
-import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
+import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import { PHASE_LOG_ROUTE } from '../nav/vault.js'
 import { BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS as BLOCK_LABELS } from './blocks-registry.js'
-import { CARDS, CARD_CATEGORIES, CARD_LABELS } from './cards-registry.js'
-import { setsOfFamily, familyHref } from './sets-registry.js'
-import { TOP_LEVEL, PACKAGE_ORDER, packageLabel } from '../nav/registry.js'
+import { CARDS } from './cards-registry.js'
+import { SETS } from './sets-registry.js'
+import { isSurfaceAdmitted, anyComponentsAdmitted } from '../nav/admitted.js'
 import { labelFromSlug } from '../nav/labels.js'
 import { ICON_SETS } from '../pages/IconsGallery.jsx'
 import { LOBBY_CHAPTERS, LOBBY_INDEX } from '../pages/Lobby.jsx'
@@ -130,67 +130,71 @@ function SpaceRail({ space, onNavigate }) {
     </div>
   )
 
-  if (space === 'components') {
-    return (
-      <div className="shell-rail-stack">
-        <div>
-          {/* the category opens its page (2026-09-30) */}
-          <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
-          <SegmentedToggle
-            options={GROUP_OPTIONS}
-            value={mode}
-            onChange={setMode}
-            size="sm"
-          />
-        </div>
-        <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
-      </div>
-    )
-  }
-  /* THE LADDER ON BLOCKS AND SETS (2026-09-30): a block's chapter is its own `meta.category`; a
-   * set's chapter is its package family, whose header opens the family page. */
-  if (space === 'blocks') {
-    const chapters = BLOCK_CATEGORIES.map((cat) => ({
+  /* COMPOSITION (2026-09-30, the library taxonomy): grouped by size — Components → Blocks → Apps,
+   * each a rail category of its own, each made of the one before. */
+  if (space === 'composition') {
+    const blocks = BLOCK_CATEGORIES.map((cat) => ({
       id: `blk-${cat}`,
       label: BLOCK_LABELS[cat] ?? labelFromSlug(cat),
       path: `/blocks/category/${cat}`,
       children: BLOCKS.filter((b) => b.category === cat).map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/blocks/${b.key}` })),
     }))
-    /* CARDS IS A BLOCKS CATEGORY (2026-09-30) — its own L1 beside the blocks, like Docs' two */
-    const cards = CARD_CATEGORIES.map((cat) => ({
-      id: `crd-${cat}`,
-      label: CARD_LABELS[cat] ?? labelFromSlug(cat),
-      path: `/cards/category/${cat}`,
-      children: CARDS.filter((c) => c.category === cat).map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
+    /* the layers as chapters — each opens its layer home (2026-09-30) */
+    const apps = LAYERS.map((l) => ({
+      id: `layer-${l.id}`,
+      label: l.label,
+      path: `/apps/layer/${l.id}`,
+      children: APPS.filter((a) => a.layer === l.id).map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/app/${a.name}` })),
     }))
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={chapters} basePath="/" label="Blocks" labelTo="/blocks" onNavigate={onNavigate} />
-        <ShellSidebar routes={cards} basePath="/" label="Cards" labelTo="/cards" onNavigate={onNavigate} />
+        {anyComponentsAdmitted() && (
+          <>
+            <div>
+              {/* the category opens its page (2026-09-30) */}
+              <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
+              <SegmentedToggle
+                options={GROUP_OPTIONS}
+                value={mode}
+                onChange={setMode}
+                size="sm"
+              />
+            </div>
+            <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
+          </>
+        )}
+        {isSurfaceAdmitted('blocks') && <ShellSidebar routes={blocks} basePath="/" label="Blocks" labelTo="/blocks" onNavigate={onNavigate} />}
+        {isSurfaceAdmitted('apps') && <ShellSidebar routes={apps} basePath="/" label="Apps" labelTo="/apps" onNavigate={onNavigate} />}
       </div>
     )
   }
-  /* CARDS (2026-09-30): the website sections, one chapter per kind */
-  if (space === 'cards') {
-    return one('Cards', CARD_CATEGORIES.map((cat) => ({
-      id: `crd-${cat}`,
-      label: CARD_LABELS[cat] ?? labelFromSlug(cat),
-      path: `/cards/category/${cat}`,
-      children: CARDS.filter((c) => c.category === cat).map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
-    })), '/cards')
+  /* COLLECTION (2026-09-30): grouped by belonging — Sets by purpose (Cards is one), Packages by
+   * shipping. A set that was one package's family is that package's page now. */
+  if (space === 'collection') {
+    const sets = [
+      {
+        id: 'set-cards',
+        label: 'Cards',
+        path: '/cards',
+        children: CARDS.map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
+      },
+      ...SETS.map((x) => ({ id: `set-${x.key}`, label: x.title, path: `/sets/${x.key}` })),
+    ]
+    const packages = TIER_ORDER.filter((tier) => PACKAGES.some((p) => p.tier === tier)).map((tier) => ({
+      id: `pkg-tier-${tier}`,
+      label: tier.charAt(0).toUpperCase() + tier.slice(1),
+      children: PACKAGES.filter((p) => p.tier === tier).map((p) => ({ id: `pkg-${p.dir}`, label: p.pkg.name.replace('@kolkrabbi/', ''), path: packageHref(p.dir) })),
+    }))
+    return (
+      <div className="shell-rail-stack">
+        {isSurfaceAdmitted('sets') && <ShellSidebar routes={sets} basePath="/" label="Sets" labelTo="/sets" onNavigate={onNavigate} />}
+        <ShellSidebar routes={packages} basePath="/" label="Packages" labelTo="/packages" onNavigate={onNavigate} />
+      </div>
+    )
   }
-  if (space === 'sets') {
-    const chapters = PACKAGE_ORDER
-      .filter((dir) => TOP_LEVEL.some((c) => c.family === dir))
-      /* a family with no sets is not a chapter (2026-09-30) */
-      .filter((dir) => setsOfFamily(dir).length > 0)
-      .map((dir) => ({
-        id: `fam-${dir}`,
-        label: packageLabel(dir),
-        path: familyHref(dir),
-        children: setsOfFamily(dir).map((s) => ({ id: `set-${s.key}`, label: s.title, path: `/sets/${s.key}` })),
-      }))
-    return one('Sets', chapters, '/sets')
+  /* SEARCH (2026-09-30): the four ways to find a page */
+  if (space === 'search') {
+    return one('Search', SEARCH_VIEWS.map((v) => ({ id: `search-${v.value}`, label: v.label, path: v.path })), '/search')
   }
   /* DOCS IS THE VAULT (2026-09-30): Documentation and Operations, as `docs/` is on disk. The
    * guides and the live specimens left for Styles. */
@@ -210,34 +214,6 @@ function SpaceRail({ space, onNavigate }) {
       { id: 'sty-icons', label: 'Icons', path: '/icons', children: Object.entries(ICON_SETS).map(([k, s]) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}` })) },
       { id: 'sty-guides', label: 'Guides', path: '/styles/guides', children: rowsOf(DOCS_GUIDES) },
     ], '/styles')
-  }
-  /* the Apps rail is the index's layers, each app to its home (apps review 2026-09-29) */
-  if (space === 'apps') {
-    /* one category, the layers as chapters — each opens its layer home (2026-09-30) */
-    return one('Apps', LAYERS.map((l) => ({
-      id: `layer-${l.id}`,
-      label: l.label,
-      path: `/apps/layer/${l.id}`,
-      children: APPS.filter((a) => a.layer === l.id).map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/app/${a.name}` })),
-    })), '/apps')
-  }
-  if (space === 'packages') {
-    return (
-      <div className="shell-rail-stack">
-        {/* every published package, by tier — its own space since 2026-09-30 */}
-        <ShellSidebar
-          routes={TIER_ORDER.filter((tier) => PACKAGES.some((p) => p.tier === tier)).map((tier) => ({
-            id: `pkg-tier-${tier}`,
-            label: tier.charAt(0).toUpperCase() + tier.slice(1),
-            children: PACKAGES.filter((p) => p.tier === tier).map((p) => ({ id: `pkg-${p.dir}`, label: p.pkg.name.replace('@kolkrabbi/', ''), path: packageHref(p.dir) })),
-          }))}
-          basePath="/"
-          label="Packages"
-          labelTo="/packages"
-          onNavigate={onNavigate}
-        />
-      </div>
-    )
   }
   if (space === 'development') {
     const tools = rowsOf(DEV_TOOLS)

@@ -24,46 +24,46 @@ import { labelFromSlug as label } from './labels.js'
  * Nothing here decides IA order — that is a user ruling. This file only maps.
  */
 
-/* THE SPACES — the space table (plan-2026-09-28-showcase-refinement § 3b). One header tab per
- * space; each space owns its left rail, its right rail and an index page at its root.
+/* THE SPACES — the library taxonomy (plan-2026-09-30-library-taxonomy). The header tabs are the
+ * PARENTS; their children are rail categories:
  *
- *   Components · Blocks · Sets · Docs · Apps · Development
+ *   Styles · Composition · Collection · Docs · Search · Development
  *
- * Search is not a space: it is the header's palette, and the page Enter opens (/search). References
- * and Quarantine left the header — they are what the repo measures about itself, not what a visitor
- * came for — and live under Development with room for audits and reports. Docs holds Documentation
- * AND Operations under one parent, as `docs/` does on disk, plus the guides (MDX) and the live
- * specimen pages (Foundations, Icons), which had been reachable only by URL and ⌘K since 2026-08-01.
+ * Composition groups by SIZE — Components → Blocks → Apps, each made of the one before.
+ * Collection groups by BELONGING — Sets (by purpose) and Packages (by shipping). The two together
+ * are the Library (`/library`). Docs · Search · Development are reference: about the system, not
+ * part of it. The children's URLs (`/components`, `/blocks`, `/apps`, `/sets`, `/cards`,
+ * `/packages`) did not move — only the space that owns them (SPACE_PREFIXES).
  *
  * `id` is required: ShellSidebar keys collapse state by it. */
 export const ALL_ROUTES = [
-  { id: 'components', label: 'Components', icon: 'component-01', path: '/components' },
-  {
-    id: 'blocks',
-    label: 'Blocks',
-    icon: 'layout',
-    path: '/blocks',
-    children: BLOCKS.map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/blocks/${b.key}` })),
-  },
-  {
-    id: 'sets',
-    label: 'Sets',
-    icon: 'view-list',
-    path: '/sets',
-    children: SETS.map((s) => ({ id: `set-${s.key}`, label: s.title, path: `/sets/${s.key}` })),
-  },
-  /* STYLES (2026-09-30, the names audit): the reference lookup — the live specimen pages that
-   * read their values off the installed packages, the icon sets, and the guides. It holds
-   * everything that used to sit in Docs without being markdown, so Docs is the vault alone. */
-  /* PACKAGES (2026-09-30, user: packages are the product, not a development record) — the index
-   * and a page per package with its changelog. Moved out of Development. */
-  { id: 'packages', label: 'Packages', icon: 'database', path: '/packages' },
+  /* STYLES (2026-09-30, the names audit): what everything is painted with — the live specimen
+   * pages that read their values off the installed packages, the icon sets, and the guides. */
   { id: 'styles', label: 'Styles', icon: 'paint-drop', path: '/styles' },
+  { id: 'composition', label: 'Composition', icon: 'component-01', path: '/composition' },
+  { id: 'collection', label: 'Collection', icon: 'view-list', path: '/collection' },
   { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
-  /* The apps tier (2026-09-27) — each app its own build under /apps/<name>/; this is the index. */
-  { id: 'apps', label: 'Apps', icon: 'grid', path: '/apps' },
+  /* SEARCH is a space (2026-09-30): its four views are its chapters; the magnifier still opens the
+   * palette — one engine behind both. */
+  { id: 'search', label: 'Search', icon: 'search', path: '/search' },
   { id: 'development', label: 'Development', icon: 'library', path: '/development' },
 ]
+
+/* The children of the two Library parents — the rail categories, and the spaces they were until
+ * 2026-09-30. Their surface ids still carry the admission gate (admitted.js). */
+export const LIBRARY_CHILDREN = {
+  composition: [
+    { id: 'components', label: 'Components', path: '/components' },
+    { id: 'blocks', label: 'Blocks', path: '/blocks' },
+    { id: 'apps', label: 'Apps', path: '/apps' },
+  ],
+  collection: [
+    { id: 'sets', label: 'Sets', path: '/sets' },
+    { id: 'packages', label: 'Packages', path: '/packages' },
+  ],
+}
+export const parentOf = (childId) =>
+  Object.keys(LIBRARY_CHILDREN).find((k) => LIBRARY_CHILDREN[k].some((c) => c.id === childId)) ?? childId
 
 /* Styles › Guides — the authored MDX pages (moved from Docs 2026-09-30; the old /docs/<guide>
  * URLs redirect). Not chapter pages of the vault: the 2026-08-01 ruling keeps the Docs tree
@@ -109,26 +109,23 @@ export const DEV_RECORDS = [
 ]
 
 /* The admission gate still decides which spaces render. Development always does — it is what
- * accounts for the gate. */
+ * accounts for the gate. The two Library parents render when any child is admitted; each child is
+ * gated inside its rail. */
 export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
   r.id === 'development' ||
   r.id === 'styles' ||
-  r.id === 'packages' ||
-  isSurfaceAdmitted(r.id) ||
-  (r.id === 'components' && anyComponentsAdmitted()))
+  (LIBRARY_CHILDREN[r.id] ? LIBRARY_CHILDREN[r.id].some((c) => c.id === 'components' ? anyComponentsAdmitted() : c.id === 'packages' || isSurfaceAdmitted(c.id)) : isSurfaceAdmitted(r.id)))
 
 /* Which space a path belongs to. A space owns more URL prefixes than its root: Docs owns the
  * reader and the specimen pages, Development the reference graph and the quarantine page — so
  * none of those URLs had to move. */
 export const SPACE_PREFIXES = {
-  '/components': ['/components'],
-  /* Cards is a Blocks category (2026-09-30) — its URLs stay, the Blocks tab owns them */
-  '/blocks': ['/blocks', '/cards'],
-  '/packages': ['/packages'],
-  '/sets': ['/sets'],
   '/styles': ['/styles', '/foundations', '/icons'],
+  '/composition': ['/composition', '/components', '/blocks', '/apps', '/app'],
+  /* Cards is a set (2026-09-30) — its URLs stay, the Collection tab owns them */
+  '/collection': ['/collection', '/sets', '/cards', '/packages'],
   '/docs': ['/docs', '/documentation'],
-  '/apps': ['/apps', '/app'],
+  '/search': ['/search'],
   '/development': ['/development', '/references', '/quarantine', '/lobby'],
 }
 
@@ -148,28 +145,27 @@ export const buildShellSearchItems = () => {
     id: `cmp-${c.slug}`,
     title: c.displayName,
     kind: 'component',
-    space: 'components',
+    space: 'composition',
     category: CATEGORY_LABELS[c.category] ?? titleCase(c.category),
     tags: componentTags[`/components/${c.slug}`] ?? [],
     keywords: [c.name, c.pkg].filter(Boolean),
     description: c.description,
     href: `/components/${c.slug}`,
   }))
-  /* every space AND its children — ALL_ROUTES, never the admitted SHELL_ROUTES: a held space is
-   * out of the tree, not out of search (validate:reachable E1) */
-  const surfaces = ALL_ROUTES.flatMap((r) => [
-    { id: `space-${r.id}`, title: r.label, kind: 'space', space: r.id, category: 'Spaces', href: r.path },
-    ...(r.children ?? []).map((c) => ({
-      id: c.id,
-      title: c.label,
-      kind: r.id === 'blocks' ? 'block' : 'set',
-      space: r.id,
-      category: r.label,
-      href: c.path,
-    })),
-  ])
-  const families = PACKAGE_ORDER.filter((dir) => TOP_LEVEL.some((c) => c.family === dir)).map((dir) => ({ id: `fam-${dir}`, title: packageLabel(dir), kind: 'set', space: 'sets', category: 'Packages', keywords: [`@kolkrabbi/kol-${dir}`], href: `/sets/family/${dir}` }))
-  const cards = CARDS.map((c) => ({ id: `card-${c.key}`, title: c.title, kind: 'card', space: 'blocks', category: 'Cards', href: `/cards/${c.key}` }))
+  /* every space, the Library and its children — ALL_ROUTES, never the admitted SHELL_ROUTES: a
+   * held space is out of the tree, not out of search (validate:reachable E1) */
+  const surfaces = [
+    ...ALL_ROUTES.flatMap((r) => [
+      { id: `space-${r.id}`, title: r.label, kind: 'space', space: r.id, category: 'Spaces', href: r.path },
+      ...(LIBRARY_CHILDREN[r.id] ?? []).map((c) => ({ id: `space-${c.id}`, title: c.label, kind: 'space', space: r.id, category: r.label, href: c.path })),
+    ]),
+    { id: 'space-library', title: 'Library', kind: 'space', space: 'library', category: 'Spaces', href: '/library' },
+  ]
+  const blocks = BLOCKS.map((b) => ({ id: `block-${b.key}`, title: b.title, kind: 'block', space: 'composition', category: 'Blocks', href: `/blocks/${b.key}` }))
+  const sets = SETS.map((x) => ({ id: `set-${x.key}`, title: x.title, kind: 'set', space: 'collection', category: 'Sets', href: `/sets/${x.key}` }))
+  /* a package's page carries its family (2026-09-30 — the single-package sets folded in) */
+  const packages = PACKAGE_ORDER.filter((dir) => TOP_LEVEL.some((c) => c.family === dir)).map((dir) => ({ id: `pkg-${dir}`, title: packageLabel(dir), kind: 'package', space: 'collection', category: 'Packages', keywords: [`@kolkrabbi/kol-${dir}`], href: `/packages/${dir}` }))
+  const cards = CARDS.map((c) => ({ id: `card-${c.key}`, title: c.title, kind: 'card', space: 'collection', category: 'Cards', href: `/cards/${c.key}` }))
   /* the search views (2026-09-30) — tags, graph and the A–Z index live on the Search page */
   const views = SEARCH_VIEWS.filter((v) => v.value !== 'results').map((v) => ({ id: `search-${v.value}`, title: v.label, kind: 'tool', space: 'search', category: 'Search', description: v.description, href: v.path }))
   const guides = DOCS_GUIDES.map((g) => ({ id: g.id, title: g.label, kind: 'guide', space: 'styles', category: 'Guides', href: g.path }))
@@ -188,7 +184,7 @@ export const buildShellSearchItems = () => {
     date: d.metadata?.updated,
     href: vaultDocHref(d.id),
   }))
-  return [...surfaces, ...components, ...cards, ...views, ...families, ...guides, ...specimens, ...tools, ...records, ...vaultDocs]
+  return [...surfaces, ...components, ...blocks, ...sets, ...packages, ...cards, ...views, ...guides, ...specimens, ...tools, ...records, ...vaultDocs]
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one

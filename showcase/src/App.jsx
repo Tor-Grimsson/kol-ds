@@ -18,7 +18,7 @@ import SetPreview from './pages/SetPreview'
 import Cards from './pages/Cards'
 import CardPage from './pages/CardPage'
 import CardPreview from './pages/CardPreview'
-import SetFamily from './pages/SetFamily'
+import Library, { Composition, Collection } from './pages/Library'
 import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import References from './pages/References'
@@ -119,6 +119,11 @@ export default function App() {
           * URL keeps working */}
         <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
         <Route path="/icons/:set?" element={<IconsGallery />} />
+        {/* THE LIBRARY'S PARENTS (2026-09-30) — the header tabs Composition and Collection, and
+          * the Library over both */}
+        <Route path="/library" element={<Library />} />
+        <Route path="/composition" element={<Composition />} />
+        <Route path="/collection" element={<Collection />} />
         <Route path="/components" element={<Components />} />
         <Route path="/components/group-by" element={<GroupBy />} />
         <Route path="/components/tier/:tier" element={<TierHome />} />
@@ -131,7 +136,8 @@ export default function App() {
         <Route path="/cards/category/:cat" element={<Cards />} />
         <Route path="/cards/:slug" element={<CardPage />} />
         <Route path="/sets" element={<Sets />} />
-        <Route path="/sets/family/:dir" element={<SetFamily />} />
+        {/* a single-package set is that package's page (2026-09-30, the library taxonomy) */}
+        <Route path="/sets/family/*" element={<MovedRedirect from="/sets/family" to="/packages" />} />
         <Route path="/sets/:slug" element={<SetPage />} />
         {/* The holding page. Every route above stays mounted while its category
           * is quarantined — the gate is on the sidebar, not on the router, so a
