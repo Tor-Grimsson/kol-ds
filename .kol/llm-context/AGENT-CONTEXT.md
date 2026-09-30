@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-09-30, OptionRow + media browser items)
+
+- **Published:** component 0.232.0 · 0.233.0, theme 0.160.0 (push is the user's). `OptionRow` is the one list row on the control ramp (palette, columns, FieldRow; the rows view shares its exports); `kol-item-name` is the one name style across columns/rows/grid; media filter bar filters the whole bucket, a typed query gives flat results, ⌘Enter from the palette lands there. **Under evaluation:** the white selected row vs the grid's pill form. **Publish only after the user's yes.** Next: the taxonomy talk (ladder, spaces order, block/app `.md` frontmatter). Log: `session-log/2026-09-30-option-row-and-media-browser-items.md`.
+
 ## Current state (2026-09-30, showcase corrections — the review answered)
 
 - **✅ Published 2026-09-30:** icons 0.31.0 · component 0.231.0 · workshop 0.34.0 (on top of the build's set below). Push is the user's. 32 gates clean; **not yet seen in a browser** — the palette (Open questions Round 5), results page and rails wait on the user's eye.
@@ -29,10 +33,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-28, showcase refinement — space table + engine tier)
 
 - **🧭 Unpublished, ds-0086…0099 (cloud session).** Engine tier: `@kolkrabbi/kol-markdown` + `@kolkrabbi/kol-search` out of kol-workshop (ARCHITECTURE §3). Apps: `workshop-fixture` · `workshop` · `markdown` · `search`. The workshop shell rebuilt to the space table — Components · Blocks · Sets · Docs · Apps · Development, per-space rails, one edge-to-edge scroll region, 256px rails with seams, search page on Enter, settings drawer, `S` sheet, typed wordmark; the showcase moved onto it. **BREAKING**: pages don't pad x in the shell; scroll observers use `SHELL_SCROLL_ROOT`. Cloud-session rules: `docs/operations/08-cloud-sessions/`. Log: `session-log/2026-09-28-showcase-refinement-space-table-and-engine-tier.md`.
-
-## Current state (2026-09-28, editor inspector rebuild)
-
-- **🧭 kol-theme 0.154.0 · kol-icons 0.29.0 · kol-component 0.227.0 · design-editor 0.16.0, published (2026-09-28, newest).** The editor inspector is three named panes (Transform · Appearance · Typography) with `InspectorSection pane`, no sub-labels, no TEXT row; the tool row is Affinity's (sunken armed tile, faint hover tile, press); the transport is fxr's two strips; `SegmentedToggle` names its glyph cells with tooltips; the native-title gate's T2 enforces a tooltip on every editor icon-only control. 29 gates clean. Plan: `plan-2026-09-27-editor-inspector-rebuild.md`. Log: `session-log/2026-09-28-editor-inspector-rebuild-published.md`.
 
 ## Repo standup (2026-06-15)
 

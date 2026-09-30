@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Tag from '../atoms/Tag.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Button from '../atoms/Button.jsx'
@@ -115,6 +115,11 @@ const ContentFilters = ({
   mutuallyExclusiveFilters = [],
   customFilterKeys = [],
   searchKeys = ['label', 'name', 'title', 'type'],
+  /* CONTROLLED SEARCH (2026-09-30) — same seam as `filtersOpen`: a consumer that must know the
+   * query (media swaps the tree for a flat list while one is typed) or hand one in (⌘Enter from its
+   * palette) owns it. Absent, the text stays private, exactly as before. */
+  searchValue,
+  onSearchChange,
   headerActions,
   trailingActions,
   trailingPlacement = 'auto',
@@ -182,8 +187,15 @@ const ContentFilters = ({
     setInternalLayout(next)
     onLayoutChange?.(next)
   }
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchText, setSearchText] = useState('')
+  const [searchOpen, setSearchOpen] = useState(!!searchValue)
+  const [internalSearch, setInternalSearch] = useState('')
+  const searchText = searchValue !== undefined ? searchValue : internalSearch
+  const setSearchText = (next) => {
+    setInternalSearch(next)
+    onSearchChange?.(next)
+  }
+  /* a query handed in from outside opens the field it lives in */
+  useEffect(() => { if (searchValue) setSearchOpen(true) }, [searchValue])
 
 
   const toggleFilter = (filterType, value) => {

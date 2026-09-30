@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-theme
 
+## 0.160.0 — 2026-09-30
+
+**One name style for a file browser's items.**
+
+- **New role `.kol-item-name`** (`kol-type-roles.css`) — mono 12/16: a file or folder's name, the same in the columns, the rows and the grid, whatever the size setting.
+- `.kol-media-tile-name` no longer sets its own font; the tile's name wears `.kol-item-name`. Same pixels.
+
 ## 0.159.0 — 2026-09-30
 
 **`.kol-rail-grab--right`** (the reuse pass — UI built fresh last night swapped for what the DS already ships).

@@ -1,5 +1,7 @@
-import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import formatSize from '../utilities/formatSize.js'
+import { ROW_HEIGHT, ROW_FILL } from '../molecules/OptionRow.jsx'
+import { glyphSize } from '../hooks/glyphLadders.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
@@ -299,11 +301,19 @@ function TagEditor({ tags = [], onChange, suggestions = [] }) {
   )
 }
 
+/* THE ROWS VIEW'S STEP ON THE CONTROL RAMP (user 2026-09-30) — the same `rowSize` the columns take,
+ * handed down by context rather than threaded through every subtree level. These rows keep their
+ * own anatomy (twisty, drag hit, table columns) and take the ramp's box and glyph, OptionRow's
+ * fills (picked = the pressed white, the folder you are in = the trail) and the one item type,
+ * `kol-item-name`, that the columns and the grid use. */
+const RowSize = createContext('md')
+
 /* `depth` indents a row under the folder it was expanded from; `expanded`/`onToggle` draw the
  * disclosure twisty. A folder row without `onToggle` keeps the old behaviour exactly — one chevron
  * that navigates — so nothing that already renders these moves. */
 function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, expanded, onToggle, meta, cols, onContextMenu, drag, dropFiles, selected, current, markKey }) {
   const [over, setOver] = useState(false)
+  const size = useContext(RowSize)
   /* A FOLDER IS A DROP TARGET. `drag` carries the page's move verb and the path this row is; the
    * row highlights only while something is actually over it, so an accidental hover reads as
    * nothing. Without `drag` every handler below is undefined and the row is exactly what it was. */
@@ -333,7 +343,7 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
   return (
     /* THE COLUMN BROWSER'S ROW (user 2026-09-22): `kol-column-browser-row` carries the 4px pill
      * inset, the selected fill and the drop fill; no divider, as the columns have none. */
-    <li onContextMenu={onContextMenu} {...dropProps} data-marquee-key={markKey} data-hit-zone data-drop-over={over || undefined} className={`kol-column-browser-row flex items-center gap-3 py-2 px-3 transition-colors${selected ? ' is-selected' : ''}${current ? ' is-current' : ''}`} style={{ paddingLeft: depth * 20 + 12 }} onClick={onClick} onDoubleClick={onDoubleClick}>
+    <li onContextMenu={onContextMenu} {...dropProps} data-marquee-key={markKey} data-hit-zone data-drop-over={over || undefined} className={`kol-column-browser-row flex items-center gap-3 border border-transparent px-3 ${ROW_HEIGHT[size]} transition-colors${selected ? ` is-selected ${ROW_FILL.selected}` : ''}${current ? ' is-current' : ''}${current && !selected ? ` ${ROW_FILL.trail}` : ''}`} style={{ paddingLeft: depth * 20 + 12 }} onClick={onClick} onDoubleClick={onDoubleClick}>
       {onToggle ? (
         <button type="button" aria-label={expanded ? `Collapse ${name}` : `Expand ${name}`} aria-expanded={!!expanded}
           onClick={(e) => { e.stopPropagation(); onToggle() }}
@@ -345,11 +355,11 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
       {/* THE FOLDER GLYPH IS THE ONE ICON LEFT, so it fills its box (user 2026-09-23: *"only folder
           should use icon, and it should be bigger"*). Every other kind now renders its own bytes. */}
       <span data-hit {...hitDrag} className="kol-row-hit flex items-center gap-3 min-w-0">
-        <span className="w-8 h-8 shrink-0 flex items-center justify-center text-oq-48"><Icon name={icon} size={26} /></span>
+        <span className={`shrink-0 flex items-center justify-center${selected ? '' : ' text-oq-48'}`}><Icon name={icon} size={glyphSize(size)} /></span>
         {/* NO TRAILING SLASH (user 2026-09-22). `partition` hands folders back as `audio/` because a
             slash is what marks one in a flat key space; that is storage's spelling, not a label, and
             `ColumnBrowser` has always stripped it. The glyph says "folder". */}
-        <span className="kol-mono-12 min-w-0 truncate text-fg-default">{name.replace(/\/$/, '')}</span>
+        <span className={`kol-item-name min-w-0 truncate${selected ? '' : ' text-fg-default'}`}>{name.replace(/\/$/, '')}</span>
       </span>
       <span className="flex-1" />
       {/* THE FOLDER'S COUNT SITS IN THE DATE COLUMN and the size column takes a dash — the columns
@@ -357,8 +367,8 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
           promised a click that opens, and a click now SELECTS (opening is a double-click). */}
       {cols && <>
         {cols.tags != null && <span className="shrink-0" style={{ width: cols.tags }} />}
-        <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{meta}</span>
-        <span className="kol-mono-12 text-fg-24 shrink-0 truncate" style={{ width: cols.size }}>—</span>
+        <span className={`kol-item-name ${selected ? "opacity-60" : "text-fg-32"} shrink-0 truncate`} style={{ width: cols.date }}>{meta}</span>
+        <span className={`kol-item-name ${selected ? "opacity-60" : "text-fg-24"} shrink-0 truncate`} style={{ width: cols.size }}>—</span>
       </>}
       <RowMenuButton onOpen={onContextMenu} className="-my-1 -mr-1" />
     </li>
@@ -419,23 +429,24 @@ function RowSubtree({ level, depth, rowLevel, expanded, onToggle, onOpenFolder, 
  * `#img/` drew two rows where the column browser drew four — the two folders, the empty folder the
  * columns knew about, and a file. A list view that cannot show a file is not a list view. */
 function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols, onContextMenu, drag, selected, markKey }) {
+  const size = useContext(RowSize)
   const dragProps = drag ? { draggable: true, onDragStart: (e) => { e.stopPropagation(); drag.onDragStart(e, o.key) } } : {}
   return (
-    <li onContextMenu={onContextMenu} data-marquee-key={markKey ?? o.key} data-hit-zone className={`kol-column-browser-row flex items-center gap-3 py-2 px-3 transition-colors${selected ? ' is-selected' : ''}`} style={{ paddingLeft: depth * 20 + 12 }} onClick={onClick} onDoubleClick={onDoubleClick}>
+    <li onContextMenu={onContextMenu} data-marquee-key={markKey ?? o.key} data-hit-zone className={`kol-column-browser-row flex items-center gap-3 border border-transparent px-3 ${ROW_HEIGHT[size]} transition-colors${selected ? ` is-selected ${ROW_FILL.selected}` : ''}`} style={{ paddingLeft: depth * 20 + 12 }} onClick={onClick} onDoubleClick={onDoubleClick}>
       <span className="w-4 shrink-0" />
       {/* the hit — icon and name, as in the folder row above */}
       <span data-hit {...dragProps} className="kol-row-hit flex items-center gap-3 min-w-0">
-        <span className="w-8 h-8 shrink-0 flex items-center justify-center text-oq-48 overflow-hidden rounded">
+        <span className={`shrink-0 flex items-center justify-center overflow-hidden rounded${selected ? '' : ' text-oq-48'}`} style={{ width: glyphSize(size), height: glyphSize(size) }}>
           {/* a file with no thumbnail draws its glyph at the FOLDER's size — one icon column (user 2026-09-25) */}
-          {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={26} />}
+          {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={glyphSize(size)} />}
         </span>
-        <span className="kol-mono-12 min-w-0 truncate text-fg-default">{o.displayKey ?? o.key.split('/').pop()}</span>
+        <span className={`kol-item-name min-w-0 truncate${selected ? '' : ' text-fg-default'}`}>{o.displayKey ?? o.key.split('/').pop()}</span>
       </span>
       <span className="flex-1" />
       {cols && <>
-        {cols.tags != null && <span className="kol-mono-12 text-fg-48 shrink-0 truncate" style={{ width: cols.tags }}>{(o.tags ?? []).map((t) => `#${t}`).join(' ')}</span>}
-        <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.date }}>{formatDate?.(o.uploaded)}</span>
-        <span className="kol-mono-12 text-fg-32 shrink-0 truncate" style={{ width: cols.size }}>{formatSize(o.size)}</span>
+        {cols.tags != null && <span className={`kol-item-name ${selected ? "opacity-60" : "text-fg-48"} shrink-0 truncate`} style={{ width: cols.tags }}>{(o.tags ?? []).map((t) => `#${t}`).join(' ')}</span>}
+        <span className={`kol-item-name ${selected ? "opacity-60" : "text-fg-32"} shrink-0 truncate`} style={{ width: cols.date }}>{formatDate?.(o.uploaded)}</span>
+        <span className={`kol-item-name ${selected ? "opacity-60" : "text-fg-32"} shrink-0 truncate`} style={{ width: cols.size }}>{formatSize(o.size)}</span>
       </>}
       <RowMenuButton onOpen={onContextMenu} className="-my-1 -mr-1" />
     </li>
@@ -1058,6 +1069,11 @@ export function MediaLibraryBrowse({
    * media-hub, "two too many"). Given, the gear calls it and this page opens no drawer of its own —
    * inside a Hub the Hub's Settings is the one place. Absent, the gear opens the drawer as always. */
   onOpenSettings,
+  /* `searchSuggestions` — what the palette lists before you type. Absent: favourites, smart
+   * folders, then the bucket's top-level folders. An array replaces them; a function receives them
+   * and returns the list. Rows are the palette's shape; a row with `run` calls it instead of
+   * jumping to `id` as a file key. */
+  searchSuggestions,
   /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
    * Absent, a one-bucket consumer collapses the level as ruled 2026-09-03. */
   bucketLevel = false,
@@ -1593,6 +1609,9 @@ export function MediaLibraryBrowse({
    * you, which is what the filter bar is for. */
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  /* the filter bar's own query — lifted so a typed one swaps the tree for a flat list, and so the
+   * palette's ⌘Enter can hand its query over */
+  const [barQuery, setBarQuery] = useState('')
   /* THE ARROWS IN THE GRID AND THE ROWS (user 2026-09-23: *"arrow navigation doesnt work in grid
    * mode? nor in row mode"*). The columns have always had theirs (`ColumnBrowser`); these are the
    * same keys for the other two views, and every one is listed in the shortcuts sheet.
@@ -1929,8 +1948,12 @@ export function MediaLibraryBrowse({
     .map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet) }))
   const filtersOn = !!settings.filters
   /* the bar filters FILES, and a tree is drawn from the files under it — so one filtered list
-   * serves both: the wall renders it, the tree is scoped to the keys in it */
-  const filterItems = isWall ? wallFiles : scoped.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), displayKey: prefix ? o.key.slice(prefix.length) : o.key }))
+   * serves both: the wall renders it, the tree is scoped to the keys in it.
+   * THE TREE'S LIST IS THE WHOLE BUCKET, not the folder you stand in (user 2026-09-30: open the
+   * bar at `brand/og/` and `logos`, `original`, `projects` vanished with no filter set). The
+   * columns draw every level up to the root, so a list scoped to `prefix` cut every sibling path
+   * the moment the bar mounted. */
+  const filterItems = isWall ? wallFiles : sortedObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key }))
   const filterKinds = [...new Set(filterItems.map((o) => o.kind))].sort()
   const filterTags = [...new Set(filterItems.flatMap((o) => o.tags ?? []))].sort()
   /* favourites as a one-chip group: ContentFilters matches a value, so a starred file carries one */
@@ -1980,6 +2003,7 @@ export function MediaLibraryBrowse({
                 className={atTitleRoot ? 'is-root' : ''}
                 height={colH}
                 onHeightChange={onColH}
+                rowSize={rowSize}
                 columnWidths={settings.columnWidths}
                 onColumnResize={(i, px) => setSettings({ ...settings, columnWidths: { ...(settings.columnWidths ?? {}), [i]: px } })}
                 objects={treeObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, key: `${VROOT}${o.key}` }))}
@@ -2166,13 +2190,23 @@ export function MediaLibraryBrowse({
    * inside it, the same preview pane beside them, the same count line under it — with the size
    * slider at its right end, Finder's. */
   const tileSize = settings.tileSize ?? 180
+  const rowSize = settings.rowSize ?? 'md'
   /* the tile size is the GRID's, not a level's (user 2026-09-24: the slider vanished at the root
    * levels) — one control, drawn wherever the grid is */
+  /* THE TREE VIEWS SCALE TOO (user 2026-09-30: *"we might want to scale everything on slider like we
+   * do in grid view"*) — in steps of the control ramp, not pixels, so a row is always a control height */
+  const RAMP = ['xs', 'sm', 'md', 'lg']
+  const rowSlider = (
+    <input type="range" className="slider-black w-32 cursor-pointer" min={0} max={RAMP.length - 1} step={1} value={Math.max(0, RAMP.indexOf(rowSize))}
+      onChange={(e) => setSettings({ ...settings, rowSize: RAMP[Number(e.target.value)] })} aria-label="Row size" />
+  )
   const sizeSlider = (
     <input type="range" className="slider-black w-32 cursor-pointer" min={100} max={360} step={20} value={tileSize}
       onChange={(e) => setSettings({ ...settings, tileSize: Number(e.target.value) })} aria-label="Tile size" />
   )
-  const wallPane = (files) => (
+  /* `hits` = a query's results: no folders, no root level, each file named by its whole path —
+   * in the tree views as a list, the rows' shape; the wall keeps its tiles */
+  const wallPane = (files, hits = false) => (
     <div ref={viewRef} className="flex flex-col gap-2" style={{ height: colH }}>
     <div className="relative border rounded flex overflow-hidden flex-1 min-h-0" style={{ borderColor: 'var(--kol-oq-08)' }}>
     {/* THE MARQUEE IS THE PANE'S, not the tile grid's (user 2026-09-23: a drag only started where
@@ -2185,7 +2219,7 @@ export function MediaLibraryBrowse({
       onContextMenu={titleLevel ? undefined : (e) => menu.openAt(e, { type: 'level', path: prefix })}
       onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { setRowSelection(new Set()); setPickedFile(null); setPickedFolder(null); setPickedBucket(null) } }}>
     {gridMarquee.rect && <div className="kol-marquee" style={gridMarquee.rect} />}
-    {titleLevel ? (
+    {titleLevel && !hits ? (
       <div className="grid gap-x-3 gap-y-5" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${tileSize}px, 1fr))` }}>
         {rootItems.map((it) => (
           <MediaTile key={it.key} preview={<Icon name={it.icon} size="100%" className="text-oq-48" />} name={it.name}
@@ -2193,11 +2227,12 @@ export function MediaLibraryBrowse({
             onClick={(e) => { e.stopPropagation(); setPickedBucket(it.key) }} onDoubleClick={it.open} />
         ))}
       </div>
-    ) : <WallBody files={files} layout="grid" tiles="media" cardMin={tileSize} onSorted={(list) => { gridOrderRef.current = list }}
+    ) : <WallBody files={files} layout={hits && !isWall ? 'list' : 'grid'} tiles="media" cardMin={tileSize} onSorted={(list) => { gridOrderRef.current = list }}
       /* THE GRID DRAWS THE LEVEL'S SUBFOLDERS, ahead of the files (same source: kol-client-olina
        * 2026-09-23 — `projects/` read `0 files` over a blank pane). `flat` is the subtree's files
        * and no folders, as it was. */
-      folders={settings.flat || smartMatches ? [] : folders.map((f) => prefix + f)}
+      folders={settings.flat || smartMatches || hits ? [] : folders.map((f) => prefix + f)}
+      {...(hits && { renderName: (o) => o.key })}
       onOpenFolder={goFolder}
       onPickFolder={(path, e) => { if (selectRow(path, e, [...folders.map((f) => prefix + f), ...files.map((f) => f.key)])) return; rowPickFolder(path) }}
       onFolderContextMenu={(e, path) => menu.openAt(e, { type: 'folder', path, targets: targetsFor(path) })}
@@ -2230,6 +2265,20 @@ export function MediaLibraryBrowse({
     hint: o.key.slice(0, o.key.lastIndexOf('/') + 1) || 'the bucket root',
     group: KIND_LABEL[kindOf(o)] || 'File',
   }))
+  /* THE PALETTE OPENS ON SOMEWHERE TO GO (user 2026-09-30: it opened blank in olina). */
+  const openFolder = (path) => { setAppRoot(false); goFolder(path) }
+  const leafOf = (path) => path.replace(/\/$/, '').split('/').pop()
+  const hintOf = (path) => dirOf(path) || 'the bucket root'
+  const defaultSuggestions = [
+    ...Object.keys(folderRows ?? {}).filter((p) => folderRows[p]?.favourite).sort()
+      .map((p) => ({ id: p, label: leafOf(p), hint: hintOf(p), group: 'Favourites', icon: 'folder', run: () => openFolder(p) })),
+    ...objects.filter((o) => o.favourite && !isSystemFile(o.key))
+      .map((o) => ({ id: o.key, label: leafOf(o.key), hint: hintOf(o.key), group: 'Favourites', icon: 'file' })),
+    ...smartFolders.map((sf) => ({ id: `smart:${sf.id}`, label: sf.name, group: 'Smart folders', icon: 'folder', run: () => setActiveSmart(sf.id) })),
+    ...[...new Set([...treeFolders(''), ...partition(objects.filter((o) => !isSystemFile(o.key)), '').folders])].sort()
+      .map((f) => ({ id: f, label: leafOf(f), group: 'Folders', icon: 'folder', run: () => openFolder(f) })),
+  ]
+  const suggestions = typeof searchSuggestions === 'function' ? searchSuggestions(defaultSuggestions) : (searchSuggestions ?? defaultSuggestions)
   const jumpTo = (key) => {
     const o = objects.find((x) => x.key === key)
     setSearchOpen(false); setSearchQuery('')
@@ -2249,14 +2298,20 @@ export function MediaLibraryBrowse({
     if (q.text && !filterMedia([o], q.text).length) return false
     return true
   }).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key })) : null
+  /* A TYPED QUERY IS A RESULTS LIST (user 2026-09-30, reversing "a flat results list nobody asked
+   * for"): pruning the tree to matching paths hid the files one level down and read as "search only
+   * finds folders". While the bar holds a query, the tree views show every hit flat, each with its
+   * path; clearing it brings the tree back. The wall already was a flat list. */
   const body = (filtered) => (smartMatches
     ? wallPane(filtered ?? smartMatches)
+    : filtered && barQuery.trim() ? wallPane(filtered, true)
     : isWall
       ? wallPane(filtered ?? wallFiles)
       : treeBody(filtered ? new Set(filtered.map((f) => f.key)) : null))
 
   return (
     <div ref={pageRef} {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
+    <RowSize.Provider value={rowSize}>
       <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
         onHome={goTitleRoot}
         onBucket={(v) => { if (v === 'all') goTitleRoot(); else { setAppRoot(false); switchBucket(v) } }}
@@ -2440,7 +2495,10 @@ export function MediaLibraryBrowse({
             placeholder="Search this bucket"
             results={searchResults}
             onExpand={() => searchResults[0] && jumpTo(searchResults[0].id)}
-            onSelect={(item) => jumpTo(item.id)}
+            onSelect={(item) => (item.run ? item.run() : jumpTo(item.id))}
+            suggestions={suggestions}
+            enterLabel="Go to file"
+            onOpenResults={(q) => { setSettings({ ...settings, filters: true }); setBarQuery(q) }}
           />
         )}
         {quickLookFolder && (
@@ -2490,6 +2548,8 @@ export function MediaLibraryBrowse({
             title="Files"
             totalCount={filterItems.length}
             searchKeys={['displayKey']}
+            searchValue={barQuery}
+            onSearchChange={setBarQuery}
             filterGroups={[{ label: 'Kind', key: 'kind', values: filterKinds }, ...(filterTags.length ? [{ label: 'Tags', key: 'tags', values: filterTags }] : []), ...(anyStarred ? [{ label: 'Favourites', key: 'starred', values: ['favourite'] }] : [])]}
             mutuallyExclusiveFilters={['kind']}
             /* ONE FUNNEL, NOT TWO (2026-09-22): the crumb row's funnel mounts this bar AND opens
@@ -2513,7 +2573,7 @@ export function MediaLibraryBrowse({
             {atTop ? '1 folder' : `${bucketList.length} ${bucketList.length === 1 ? 'bucket' : 'buckets'}`}
             {folderTree && ` · ${Object.values(folderTree).reduce((n, t) => n + (t.files ?? 0), 0)} files · ${formatSize(Object.values(folderTree).reduce((n, t) => n + (t.bytes ?? 0), 0))}`}
           </p>
-          {isWall && sizeSlider}
+          {isWall ? sizeSlider : rowSlider}
           </div>
         ) : isWall ? (
           /* ONE LINE'S HEIGHT, like the other views' count line — the slider is 24px tall and made
@@ -2665,6 +2725,7 @@ export function MediaLibraryBrowse({
           </>
         )}
       </div>
+    </RowSize.Provider>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input'
 import { usePopover, PopoverPanel } from '../utilities/Popover'
 import Dropdown from './Dropdown'
+import OptionRow from './OptionRow.jsx'
 
 /**
  * FieldRow — one labeled field row in a record surface (lobby: RecordManager).
@@ -93,23 +94,22 @@ export function StatusChip({ value, options = [], onChange, variant = 'neutral',
           {norm.map(({ value: val, label }) => {
             return (
               <li key={val}>
-                <button
+                <OptionRow
+                  as="button"
                   type="button"
                   role="option"
                   aria-selected={val === value}
-                  className={`kol-helper-12 w-full text-left pr-3 py-2 bg-transparent border-0 cursor-pointer rounded-sm hover:bg-fg-08 inline-flex items-center ${val === value ? 'text-emphasis' : 'text-body'}`}
+                  size="sm"
+                  className="w-full"
                   onClick={() => {
                     onChange?.(val)
                     setOpen(false)
                   }}
-                >
-                  {/* check column always reserved — labels align whether or
-                    * not a row carries the mark (reference grammar) */}
-                  <span className="inline-flex w-7 shrink-0 justify-center" aria-hidden="true">
-                    {val === value && <Icon name="check" size={12} />}
-                  </span>
-                  {label}
-                </button>
+                  /* check column always reserved — labels align whether or
+                   * not a row carries the mark (reference grammar) */
+                  leading={<span className="inline-flex w-4 justify-center">{val === value && <Icon name="check" size={12} />}</span>}
+                  label={label}
+                />
               </li>
             )
           })}

@@ -148,7 +148,7 @@ export const FUNCTIONS_BY_NAME = {
   Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
   ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
-  RecordManager: 'display', FieldRow: 'input', StatusChip: 'input',
+  RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
   Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',

@@ -1497,9 +1497,7 @@
   max-width: 100%;
   padding: 1px 6px;
   border-radius: var(--kol-radius-sm);
-  font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  line-height: 16px;
+  /* type: `.kol-item-name` on the element — one name style in every view */
   text-align: center;
   overflow-wrap: anywhere;
   display: -webkit-box;

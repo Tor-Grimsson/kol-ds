@@ -3,11 +3,11 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
 import Kbd from '../atoms/Kbd.jsx'
+import OptionRow from '../molecules/OptionRow.jsx'
 
 /* ONE COLUMN (2026-09-30): rows, headings and footer sit on the field's own
  * geometry — the p-2 inset, then the md control's 1px ring + 16px pad — so
  * every glyph and word lines up under the field's icon and caret. */
-import { glyphSize } from '../hooks/glyphLadders.js'
 
 /* Rows bucketed by `group` in first-seen order, rank kept inside a group —
  * one heading per group; arrows rove this order, not the engine's. */
@@ -87,6 +87,9 @@ export function HighlightMatch({ label, query, ranges }) {
  *                                 the panel's last line, so Enter is never a surprise
  *                                 (e.g. `All results for “q”`). Rows may carry
  *                                 `highlights` ([start, end] ranges) from the engine.
+ * @param {Function} [onOpenResults] (query) => void — ⌘/Ctrl+Enter: every hit, on the consumer's
+ *                                 own results surface. Plain Enter keeps its meaning.
+ * @param {string}   [resultsLabel] the footer's second line for ⌘Enter (e.g. `All results`)
  */
 export default function ShellSearchOverlay({
   open,
@@ -107,6 +110,8 @@ export default function ShellSearchOverlay({
   onSelect,
   placeholder = 'Search…',
   enterLabel,
+  onOpenResults,
+  resultsLabel = 'All results',
 }) {
   const panelRef = useRef(null)
   const listRef = useRef(null)
@@ -160,6 +165,9 @@ export default function ShellSearchOverlay({
       setActiveIndex((i) => Math.max(i - 1, 0))
     } else if (e.key === 'Enter') {
       e.preventDefault()
+      /* ⌘ENTER OPENS EVERY HIT (user 2026-09-30: *"enter would focus searched item, and maybe
+       * command enter would open the results page"*) — only where the consumer has a place for them. */
+      if ((e.metaKey || e.ctrlKey) && onOpenResults && query) { onOpenResults(query); onClose?.(); return }
       /* Enter COMMITS the query and expands. It only selects when the user has
        * actually arrowed to a row — `activeIndex` starts at 0, so "a row is
        * highlighted" is true from the first keystroke and testing `active >= 0`
@@ -256,33 +264,19 @@ export default function ShellSearchOverlay({
                   {heading && item.group && (
                     <p className="kol-helper-12 text-fg-48 px-4 border-x border-transparent pt-3 pb-2">{item.group}</p>
                   )}
-                  <div
+                  <OptionRow
                     id={optionId(item)}
                     role="option"
                     aria-selected={i === active}
+                    active={i === active}
+                    icon={item.icon}
+                    label={<HighlightMatch label={item.label} query={query} ranges={item.highlights} />}
+                    hint={item.hint}
                     /* preventDefault keeps focus in the input through the click */
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => select(item)}
                     onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
-                    /* the md control's box: 1px ring + 6/16 pad + gap-2 → 32px, same as the field */
-                    className={`flex items-center gap-2 px-4 py-1.5 border border-transparent min-h-[var(--kol-ctl-md)] rounded-[var(--kol-radius-sm)] cursor-pointer kol-mono-14 transition-colors ${
-                      i === active ? 'bg-[var(--kol-tone-bg,var(--kol-surface-secondary))] text-fg' : 'text-fg-80'
-                    }`}
-                  >
-                    {item.icon && (
-                      <span aria-hidden="true" className="flex shrink-0 text-oq-48">
-                        <Icon name={item.icon} size={glyphSize('md')} />
-                      </span>
-                    )}
-                    <span className="flex flex-col min-w-0">
-                      <span className="truncate">
-                        <HighlightMatch label={item.label} query={query} ranges={item.highlights} />
-                      </span>
-                      {item.hint && (
-                        <span className="kol-mono-12 text-fg-48 truncate">{item.hint}</span>
-                      )}
-                    </span>
-                  </div>
+                  />
                 </li>
               )
             })}
@@ -295,6 +289,12 @@ export default function ShellSearchOverlay({
               <Kbd icon="corner-down-left" />
               {query ? enterLabel : 'Go to page'}
             </p>
+            {query && onOpenResults && (
+              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent pt-1">
+                <Kbd icon="command"><Icon name="corner-down-left" size={12} /></Kbd>
+                {resultsLabel}
+              </p>
+            )}
           </div>
         )}
       </div>

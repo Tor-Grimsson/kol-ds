@@ -3,6 +3,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import KindPreview, { KIND_GLYPH } from '../molecules/KindPreview.jsx'
 import FileIcon from '../atoms/FileIcon.jsx'
 import RowMenuButton from '../molecules/RowMenuButton.jsx'
+import OptionRow from '../molecules/OptionRow.jsx'
 import { formatLength } from '../molecules/AudioPreview.jsx'
 import { kindOf as dsKindOf, KIND_LABEL as DS_KIND_LABEL } from '../utilities/mediaKinds.js'
 import useGrabEdge from '../hooks/useGrabEdge.js'
@@ -248,7 +249,7 @@ const ZONE_BOX = 44
  * without the stack: the columns pass none, so a desktop row is byte-identical
  * to what it was. */
 function Row({
-  icon, label, active, cursor = false, trailing, onClick, muted = false,
+  icon, label, active, trail = false, cursor = false, trailing, onClick, muted = false, size = 'md',
   indent = 0, meta, zones = false, thumb, onDisclose, disclosed, onContextMenu, drop, dropFiles, markKey,
 }) {
   const [over, setOver] = useState(false)
@@ -273,6 +274,33 @@ function Row({
       drop.onDrop(drop.path)
     },
   } : {}
+  /* THE DESKTOP ROW IS AN OptionRow (2026-09-30) — the palette's row, on the control ramp, so a size
+   * setting scales height and glyph; the name keeps ONE type in every view (`kol-item-name`, the
+   * grid's), as Finder does. The deepest selection takes the pressed (white) fill, the folders on the
+   * way to it the trail; hover and the bare cursor paint nothing (the 2026-09-02 ruling). The `zones`
+   * row below is the phone's and keeps its own. */
+  if (!zones) return (
+    <OptionRow
+      as="li"
+      size={size}
+      type="kol-item-name"
+      hover={false}
+      selected={active && !trail}
+      trail={active && trail}
+      muted={muted && !cursor}
+      icon={icon}
+      label={label}
+      hint={meta}
+      trailing={<>{trailing}<RowMenuButton onOpen={onContextMenu} className="-my-2 -mr-2" /></>}
+      onContextMenu={onContextMenu}
+      {...dropProps}
+      data-marquee-key={markKey}
+      data-drop-over={over || undefined}
+      className={`kol-column-browser-row${active ? ' is-selected' : ''}${cursor ? ' is-cursor' : ''}`}
+      onClick={onClick}
+      style={indent ? { paddingLeft: `calc(var(--kol-spacing-4) + ${indent} * var(--kol-spacing-5))` } : undefined}
+    />
+  )
   return (
     <li
       onContextMenu={onContextMenu}
@@ -521,6 +549,9 @@ export default function ColumnBrowser({
   /* `folderIcon(path)` — the glyph a folder row wears (default `folder`). The media pages mark a
    * bucket — a SOURCE, not a prefix — with `database` (user 2026-09-23). */
   folderIcon,
+  /* `rowSize` — the desktop rows' step on the control ramp (xs · sm · md · lg = 22 · 26 · 32 · 40),
+   * height, glyph and type together (user 2026-09-30). md matches the search field. */
+  rowSize = 'md',
   /* THE TWO SEAMS THE MOBILE TICKET'S RULINGS POINT AT (ColumnBrowserMobileViews,
    * kol-r2b2 2026-09-03). Both are questions the DS must not answer for a
    * consumer, so neither is computed here:
@@ -1006,12 +1037,16 @@ export default function ColumnBrowser({
             {folders.map((f, i) => (
               <Row
                 key={f}
+                size={rowSize}
                 icon={folderIcon?.(level + f) ?? 'folder'}
                 label={f.replace(/\/$/, '')}
                 markKey={level + f}
                 active={f === activeFolder || isPicked(level + f)}
+                /* a folder on the path is the TRAIL unless it is the deepest pick — the column after
+                 * it is its own contents with nothing chosen, and no file is showing */
+                trail={f === activeFolder && !isPicked(level + f) && (!!shown || k < levels.length - 2)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === i}
-                trailing={<Icon name="chevron-right" size={12} className="text-oq-32" />}
+                trailing={<Icon name="chevron-right" size={12} className={f === activeFolder && !shown && k === levels.length - 2 ? '' : 'text-oq-32'} />}
                 onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'folder', path: level + f }))}
                 drop={dragFor?.(level + f)}
                 dropFiles={onDropFiles ? (list) => onDropFiles(list, level + f) : undefined}
@@ -1021,6 +1056,7 @@ export default function ColumnBrowser({
             {files.map((o, i) => (
               <Row
                 key={o.key}
+                size={rowSize}
                 icon={COL_ICON[kindOf(o)] || 'file'}
                 label={o.displayKey ?? o.key}
                 markKey={o.key}

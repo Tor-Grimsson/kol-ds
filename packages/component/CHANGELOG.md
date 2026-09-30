@@ -1,5 +1,27 @@
 # @kolkrabbi/kol-component
 
+## 0.233.0 — 2026-09-30
+
+**The browser's items read as one set** (needs kol-theme ≥ 0.160.0 for `.kol-item-name`).
+
+- **One item type in every view** — `ColumnBrowser`'s rows, the media rows view and the grid's names all take `kol-item-name` (mono 12/16). The size slider scales the row and the glyph only. ⚠ Visual: the columns were mono-14 in 0.232.0.
+- **Selected is the tone's pressed fill** — `OptionRow selected` and the media rows view paint `--kol-tone-pressed-bg/fg` (white in dark, the grid name's pair outside a tone); the glyph takes the row's ink. The folders on the way to the pick are the trail, oq-08. Hover still paints nothing in the browser (`OptionRow hover={false}`). ⚠ **Under evaluation** — the white row may become the grid's form (grey row, white pill on the name only).
+- **`OptionRow`** — `hint` sits beside the label on its baseline, right-aligned (one line; the palette's paths); `type` overrides the ramp's type class; `hover`; `ROW_FILL` exported. `fill` is gone (0.232.0, one day old).
+- `FieldRow` — the picked option is marked by its check only, as before 0.232.0.
+
+## 0.232.0 — 2026-09-30
+
+**One row, on the control ramp.**
+
+- **New `OptionRow` molecule** — the row you move through: `size` on the control ramp (xs · sm · md · lg → 22 · 26 · 32 · 40; height, pad, type and glyph step together), `active` (tone fill, full ink) · `selected` (oq-08) · `trail` (oq-04) · `muted`, slots `icon` / `leading` / `label` / `hint` / `trailing`, `as`. Hover takes the active fill; `fill={false}` leaves the fills to the caller. `ROW_HEIGHT` / `ROW_TYPE` exported for rows with their own anatomy. `ShellSearchOverlay`'s rows, `ColumnBrowser`'s desktop rows and `FieldRow`'s options now render it.
+- **`ColumnBrowser` `rowSize`** (default `md`). ⚠ Visual: desktop rows were 42px of mono-12 on the Table's padding; they are 32px of mono-14 now, matching the search field. The phone's four-zone row is unchanged.
+- **`MediaLibrary` — the tree views scale.** A row-size slider beside the count line steps the columns and the rows view along the ramp (`settings.rowSize`); the grid keeps its tile slider.
+- **`MediaLibrary` — the filter bar filters the whole bucket.** Opened below the root it filtered only the current folder, so the columns lost every sibling path (`logos`, `original`, `projects` at `brand/og/`) with no filter set.
+- **`MediaLibrary` — a typed query is a results list.** While the filter bar holds a query the columns and rows show every hit flat, each named by its path; clearing it brings the tree back.
+- **`ShellSearchOverlay` — `onOpenResults` (⌘/Ctrl+Enter) and `resultsLabel`.** Enter keeps its meaning; ⌘Enter hands the query to the consumer's results surface, and the footer says so. Media wires it to the filter bar, and says "Go to file" for Enter.
+- **`MediaLibrary` — `searchSuggestions`.** The palette opens on favourites, smart folders and the bucket's top-level folders; an array replaces them, a function receives them. A row with `run` calls it.
+- **`ContentFilters` — controlled search** (`searchValue` / `onSearchChange`); absent, the text stays private as before.
+
 ## 0.231.0 — 2026-09-30
 
 **The search palette, aimed at shadcn's.**

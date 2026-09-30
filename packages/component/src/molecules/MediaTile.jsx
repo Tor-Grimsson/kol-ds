@@ -28,7 +28,7 @@ export default function MediaTile({ preview, name, selected = false, markKey, on
       onContextMenu={onContextMenu}
       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onDoubleClick?.(e) } }}>
       <div className="kol-media-tile-thumb">{preview}</div>
-      <span className="kol-media-tile-name">{name}</span>
+      <span className="kol-media-tile-name kol-item-name">{name}</span>
       <RowMenuButton variant="grey" onOpen={onContextMenu} className="absolute top-1 right-1" />
     </div>
   )

@@ -337,3 +337,17 @@
   text-transform: uppercase;
   color: var(--kol-fg-48);
 }
+
+/* =============================================================================
+ * ITEM — 1 role
+ * ============================================================================= */
+
+/* item-name — a file or folder's name in a browser, the SAME in every view: the columns, the rows
+ * and the grid's caption (user 2026-09-30: *"in finder there is set to the same font style and size
+ * regardless of mode"*). A size setting scales the row and the glyph, never this. Mono because a
+ * truncated row on the helper ramp's line-height 1 clips its descenders. */
+.kol-item-name {
+  font-family: var(--kol-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
