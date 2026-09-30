@@ -8,7 +8,7 @@ import FoundationsTypography from './pages/FoundationsTypography'
 import FoundationsTones from './pages/FoundationsTones'
 import IconsGallery from './pages/IconsGallery'
 import ComponentPage from './pages/ComponentPage'
-import Components, { TierHome } from './pages/Components'
+import Components, { TierHome, FunctionHome } from './pages/Components'
 import Blocks from './pages/Blocks'
 import BlockPage from './pages/BlockPage'
 import BlockPreview from './pages/BlockPreview'
@@ -26,6 +26,8 @@ import ReferenceNode from './pages/ReferenceNode'
 import Search from './pages/Search'
 import DocsIndex from './pages/DocsIndex'
 import StylesIndex from './pages/StylesIndex'
+import GuidesHome from './pages/GuidesHome'
+import GroupBy from './pages/GroupBy'
 import Development from './pages/Development'
 import { TagGraphPage, TagsPage, IndexPage } from './pages/DevTools'
 import Packages, { PackagePage } from './pages/Packages'
@@ -66,6 +68,12 @@ function VaultReader({ docsIndex = '/docs' }) {
       showFrontmatter={show}
     />
   )
+}
+
+/* a moved subtree keeps its tail (2026-09-30) */
+function MovedRedirect({ from, to }) {
+  const { pathname } = useLocation()
+  return <Navigate to={pathname.replace(from, to)} replace />
 }
 
 /* /docs/<guide> → /styles/<guide>: the guides moved to Styles on 2026-09-30 */
@@ -112,11 +120,15 @@ export default function App() {
         <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
         <Route path="/icons/:set?" element={<IconsGallery />} />
         <Route path="/components" element={<Components />} />
+        <Route path="/components/group-by" element={<GroupBy />} />
         <Route path="/components/tier/:tier" element={<TierHome />} />
+        <Route path="/components/function/:fn" element={<FunctionHome />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
         <Route path="/blocks" element={<Blocks />} />
+        <Route path="/blocks/category/:cat" element={<Blocks />} />
         <Route path="/blocks/:slug" element={<BlockPage />} />
         <Route path="/cards" element={<Cards />} />
+        <Route path="/cards/category/:cat" element={<Cards />} />
         <Route path="/cards/:slug" element={<CardPage />} />
         <Route path="/sets" element={<Sets />} />
         <Route path="/sets/family/:dir" element={<SetFamily />} />
@@ -129,12 +141,17 @@ export default function App() {
         <Route path="/references" element={<References />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/search/tags" element={<TagsPage />} />
+        <Route path="/search/graph" element={<TagGraphPage />} />
+        <Route path="/search/index" element={<IndexPage />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/packages/:dir" element={<PackagePage />} />
         <Route path="/development" element={<Development />} />
-        <Route path="/development/tag-graph" element={<TagGraphPage />} />
-        <Route path="/development/tags" element={<TagsPage />} />
-        <Route path="/development/index" element={<IndexPage />} />
-        <Route path="/development/packages" element={<Packages />} />
-        <Route path="/development/packages/:dir" element={<PackagePage />} />
+        {/* moved 2026-09-30 — the old URLs redirect */}
+        <Route path="/development/tag-graph" element={<Navigate to="/search/graph" replace />} />
+        <Route path="/development/tags" element={<Navigate to="/search/tags" replace />} />
+        <Route path="/development/index" element={<Navigate to="/search/index" replace />} />
+        <Route path="/development/packages/*" element={<MovedRedirect from="/development/packages" to="/packages" />} />
         {/* The phase log — docs/operations/09-phase-log/ read by the same reader as the vault,
           * in the Development space (vaultDocHref sends its ids here). */}
         <Route path="/development/log" element={<Navigate to={vaultDocHref(PHASE_LOG_INDEX.id)} replace />} />
@@ -148,6 +165,7 @@ export default function App() {
         <Route path="/docs" element={<DocsIndex />} />
         {/* STYLES (2026-09-30) — the guides moved here from Docs; the old URLs redirect */}
         <Route path="/styles" element={<StylesIndex />} />
+        <Route path="/styles/guides" element={<GuidesHome />} />
         <Route path="/styles/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
         <Route path="/styles/menus" element={<MdxDoc module={MenusDoc} />} />
         <Route path="/styles/loaders" element={<MdxDoc module={LoadersDoc} />} />

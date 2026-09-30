@@ -1,6 +1,7 @@
 import { Fragment, useMemo } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Button, ContentRow, EmptyState, Input, Pill } from '@kolkrabbi/kol-component'
+import { useSearchParams } from 'react-router-dom'
+import { Button, EmptyState, Input, Pill } from '@kolkrabbi/kol-component'
+import ResultRow from './ResultRow.jsx'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 import { DocHeader, DocSection } from '../docs/DocKit.jsx'
 
@@ -44,8 +45,7 @@ const readToken = (t) => (t.kind === 'term'
     ? `${t.field} ${t.value}`
     : `${t.negate ? 'not ' : ''}${t.field === 'tags' ? 'tag' : t.field}: ${t.value}${t.via === 'smart' ? ' (from the word)' : ''}`)
 
-export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60 }) {
-  const navigate = useNavigate()
+export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60, rowVariant = 'underline' }) {
   const [params, setParams] = useSearchParams()
   const q = params.get('q') ?? ''
   const index = useMemo(() => createIndex(items), [items])
@@ -125,16 +125,12 @@ export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_F
           <ol className="flex flex-col">
             {out.results.map((r) => (
               <li key={r.item.id} className="border-t border-fg-08 first:border-t-0">
-                {/* THE SHIPPED ROW (2026-09-30): kol-component's ContentRow, the row form of the
-                  * content-card system — not a row minted here. Article form, no cover. */}
-                <ContentRow
-                  variant="article"
-                  media={false}
-                  href={r.item.href}
-                  onNavigate={(e) => { e.preventDefault(); navigate(r.item.href) }}
-                  eyebrow={[r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
+                <ResultRow
+                  to={r.item.href}
+                  variant={rowVariant}
                   title={<Highlight text={r.item.title} ranges={r.highlights.title} />}
-                  body={r.item.description}
+                  meta={[r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
+                  description={r.item.description}
                 />
               </li>
             ))}

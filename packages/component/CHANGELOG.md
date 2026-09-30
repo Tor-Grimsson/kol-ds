@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-component
 
+## 0.231.0 — 2026-09-30
+
+**The search palette, aimed at shadcn's.**
+
+- **`ShellSearchOverlay`** — an inset filled field on the md control's size, `kol-tone-grey` on the field and the list so the active row is the field's own grey, results under group headings, rows on the field's geometry, a fixed-height body, a footer that always says what Enter does. New `suggestions` prop: rows shown while the query is empty (Enter goes to the first). Rows take an optional `icon`.
+- **New `Kbd` atom** — one key cap (`↵`, `⌘K`, `Esc`), sizes `sm` / `md`, an `icon` prop. Replaces the two hand-rolled `<kbd>` chips.
+- **`SearchInput`** — `bare` now sits on the size ladder (`kol-control-{size}`) instead of a hand-set `px-4 py-3`; its glyph is `oq-48`; a leading `⌘` in `shortcutHint` draws the `command` glyph.
+
 ## 0.230.0 — 2026-09-30
 
 **The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).

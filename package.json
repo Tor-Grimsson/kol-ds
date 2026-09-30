@@ -10,6 +10,7 @@
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:demos": "node scripts/validate-demos.mjs",
+    "validate:homes": "node scripts/validate-homes.mjs",
     "validate:imports": "node scripts/validate-imports.mjs",
     "validate:foundations": "node scripts/validate-foundations.mjs",
     "extract:descriptions": "node scripts/extract-descriptions.mjs",

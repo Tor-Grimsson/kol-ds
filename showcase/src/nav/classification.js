@@ -77,7 +77,7 @@ export const TIERS = {
    * that disagreed about which sections exist (2026-08-01). */
   RightRail: 'molecules',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
-  ShellLayout: 'organisms', DocumentationReader: 'organisms', SearchPage: 'organisms',
+  ShellLayout: 'organisms', DocumentationReader: 'organisms', SearchPage: 'organisms', ResultRow: 'molecules',
   /* Exhibit sections — the scaffold a workshop section is declared against, so
    * the next one is content only. ExhibitCard and ExhibitLinkCard are ATOMS by
    * the placement test (each paints alone and composes no KOL component);
@@ -145,7 +145,7 @@ export const FUNCTIONS_BY_NAME = {
   ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input',
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   LabeledControl: 'input', Label: 'input',
-  Badge: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
+  Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
   ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', StatusChip: 'input',
@@ -277,7 +277,7 @@ export const FUNCTIONS_BY_NAME = {
   DashboardGrid: 'structure', GridCard: 'structure', DashTooltip: 'overlay',
   MetricsDashboard: 'display',
   /* workshop */
-  ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation',
+  ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
   RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
@@ -358,8 +358,8 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
-  /* ColorLoader = IntroLoader · ResultRow = ContentRow (2026-09-30) */
-  'ColorLoader', 'ResultRow',
+  /* ColorLoader = IntroLoader (2026-09-30) */
+  'ColorLoader',
   /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
    * cards are GONE from the barrels, not deprecated. Sources quarantined to
    * `_tmp/2026-08-30-content-set-exports/`. kol-dashboards' `GridCard` is a

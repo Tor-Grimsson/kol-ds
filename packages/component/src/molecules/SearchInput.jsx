@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
+import Kbd from '../atoms/Kbd.jsx'
 
 /**
  * SearchInput — controlled search field on the .kol-control shell. The
@@ -200,8 +201,10 @@ export default function SearchInput({
   const shellCls = [
     bare
       /* kol-control--bare: zero-chrome marker so the theme's coarse-pointer
-       * 16px floor covers this body plan too (OverlaySearchFieldZoomsIOS) */
-      ? 'kol-control--bare flex w-full gap-2.5 px-4 py-3'
+       * 16px floor covers this body plan too (OverlaySearchFieldZoomsIOS).
+       * Chrome off, geometry on: the size's padding + a transparent 1px ring
+       * land it on the 22 · 26 · 32 · 40 ladder like the shell (09-sizes) */
+      ? `kol-control--bare kol-control-${size} flex w-full border border-transparent gap-2`
       : `kol-control${variant ? ` kol-control--${variant}` : ''} kol-control-${size} gap-2${toneClass(tone) ? ` ${toneClass(tone)}` : ''}`,
     'items-center cursor-text',
     SIZE_TYPE[size],
@@ -225,7 +228,7 @@ export default function SearchInput({
     <label className={shellCls}>
       <span
         aria-hidden="true"
-        className={`flex items-center shrink-0 ${bare ? 'text-fg-48' : 'text-auto opacity-50'}`}
+        className={`flex items-center shrink-0 ${bare ? 'text-oq-48' : 'text-auto opacity-50'}`}
       >
         {/* ADJACENT — this glyph sits in the field's line box beside the query */}
         <Icon name="search" size={iconSize ?? glyphSize(size)} />
@@ -254,12 +257,10 @@ export default function SearchInput({
         </button>
       ) : shortcutHint ? (
         /* aria-hidden — affordance, not a label (same stance as Input's prefix/suffix) */
-        <kbd
-          aria-hidden="true"
-          className="inline-flex items-center justify-center shrink-0 h-4 min-w-4 px-1 rounded-[var(--kol-radius-xs)] bg-fg-08 kol-helper-10 text-fg-48"
-        >
-          {shortcutHint}
-        </kbd>
+        /* ⌘ is drawn, not typed — the mono face's ⌘ is the "drawn by a child" cap */
+        shortcutHint.startsWith('⌘')
+          ? <Kbd size="sm" icon="command">{shortcutHint.slice(1)}</Kbd>
+          : <Kbd size="sm">{shortcutHint}</Kbd>
       ) : null}
     </label>
   )

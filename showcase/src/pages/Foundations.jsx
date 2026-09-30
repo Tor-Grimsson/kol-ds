@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import Swatch from '../lib/Swatch.jsx'
+import HomeDoc from '../lib/HomeDoc.jsx'
 import { TOTAL } from '../nav/registry.js'
 import {
   OPACITY_SCALE, FG_SEMANTIC, SURFACES, BRAND_RAMPS, GREY_RAMP,
@@ -44,11 +45,8 @@ export default function Foundations() {
 
   return (
     <>
-      <DocHeader
-        eyebrow="KOL · Foundations"
-        title="Foundations"
-        lede="The tokens, scales, and primitives every KOL component is built from — read live from the installed @kolkrabbi/kol-theme, so this page is always the truth."
-      />
+      {/* the chapter's home (2026-09-30) — markdown with frontmatter, like every level */}
+      <HomeDoc id="foundations" />
 
       <DocSection
         id="opacity"

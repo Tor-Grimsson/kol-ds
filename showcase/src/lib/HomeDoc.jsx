@@ -1,4 +1,4 @@
-import { DocumentationReader } from '@kolkrabbi/kol-workshop'
+import { DocumentationReader, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { buildInventory } from '@kolkrabbi/kol-markdown'
 import { vaultDocHref } from '../nav/vault.js'
 import { useFrontmatter } from './frontmatter.jsx'
@@ -17,12 +17,15 @@ export const HOMES = buildInventory(HOME_MODULES)
 
 export default function HomeDoc({ id }) {
   const show = useFrontmatter('home')
+  /* the page's rail lists the page's headings; the home hands it its frontmatter tags */
+  usePageMeta({ tags: HOMES.find((d) => d.id === id)?.metadata?.tags ?? [], related: [] })
   return (
     <DocumentationReader
       inventory={HOMES}
       modules={HOME_MODULES}
       docId={id}
       showFrontmatter={show}
+      rail={false}
       docHref={vaultDocHref}
       routes={{ docsIndex: '/docs', components: '/components', docFilePath: (d) => `showcase/src/homes/${d}.md` }}
     />

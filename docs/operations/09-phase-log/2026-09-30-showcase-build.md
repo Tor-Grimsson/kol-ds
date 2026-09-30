@@ -71,7 +71,7 @@ The user caught it the next morning: the showcase's settings drawer was hand-bui
 |---|---|
 | the shell's settings drawer — `ShellDrawer` + an eyebrow + undivided rows | `SettingsPanel variant="drawer"` + `SettingsSections divided`, as media |
 | a local rail grip that also persisted the width (against the 2026-09-03 ruling) | `useDragResize` + `.kol-rail-grab`, SideNav's and EditorShell's gesture; width lasts the session |
-| `ResultRow`, a new search row | kol-component's `ContentRow` (article, no cover); `ResultRow` deprecated on the ledger |
+| `ResultRow`, a new search row | **Reversed the same day (user):** `ResultRow` was the user's ruled row (Round 2, underline default), not a reinvention — the `ContentRow` swap overrode it and broke the page. Restored from kol-workshop 0.32.0; the swap is at `_tmp/2026-09-30-resultrow-restore/` |
 | a button grid for the editor's asset thumbnails | `AssetGrid` + `MediaTile`, the media library's grid item |
 | hand-built link lists on Tags, Packages, set families, Styles | `Tag` chips and `Table` |
 | `CompositionDiagram` in a second look beside Shell &amp; Layout's own boxes | one component in Shell &amp; Layout's look; that page draws through it |

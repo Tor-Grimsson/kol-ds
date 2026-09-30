@@ -39,7 +39,6 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `ColorLoader` | foundry | `IntroLoader` | 2026-09-30 |
-| `ResultRow` | workshop | `ContentRow` (kol-component, `variant="article"`, `media={false}`) | 2026-09-30 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |

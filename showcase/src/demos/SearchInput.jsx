@@ -18,6 +18,7 @@ export default function SearchInputDemo() {
   const [b, setB] = useState('')
   const [c, setC] = useState('')
   const [d, setD] = useState('')
+  const [e, setE] = useState('')
   return (
     <>
       <SearchInput
@@ -37,6 +38,13 @@ export default function SearchInputDemo() {
         size="sm"
         value={c}
         onChange={(e) => setC(e.target.value)}
+      />
+      {/* bare body plan — the overlay palette's field, chrome off */}
+      <SearchInput
+        bare
+        value={e}
+        onChange={(ev) => setE(ev.target.value)}
+        onClear={() => setE('')}
       />
       {/* expanding body plan — the /work navbar pattern (uncontrolled open) */}
       <SearchInput

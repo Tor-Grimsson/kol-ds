@@ -33,13 +33,15 @@ The tabs in the showcase header. Each space has a home page and its own left rai
 | Space | Holds |
 |---|---|
 | Components | every component, on the atomic ladder |
-| Blocks | shells and tools composed, and how they breakpoint |
-| Cards | website cards — the sections a marketing site is built from |
+| Blocks | shells and tools composed, and how they breakpoint — with **Cards**, the website sections, as a second category in its rail |
 | Sets | each package's family, and what it composes |
+| Packages | every published package — the index, and a page per package with its changelog |
 | Styles | the reference lookup — tokens, color, type, icons, guides |
 | Docs | the `docs/` vault — Documentation and Operations |
 | Apps | the apps tier — one app per layer or tool |
-| Development | the repo's instruments — tools (tag graph, tags, index), records (phase log, open questions), packages |
+| Development | the repo's instruments — tools (references, quarantine), records (phase log, open questions), the lobby |
+
+The way to *find* a page is not a space: Search has four views — Results · Tags · Graph · A–Z.
 
 ## Rail levels
 
@@ -49,7 +51,7 @@ The same four names in code comments, gate messages and conversation (ruled 2026
 | Level | Is | Example |
 |---|---|---|
 | Category | the eyebrow at the top of a rail block | `COMPONENTS`, `RECORDS` |
-| Chapter | the second level — a count and a chevron; its label opens the chapter's home | `Atoms (67)` |
+| Chapter | the second level — a count and a chevron; its label opens the chapter's home, the chevron only folds | `Atoms (67)` |
 | Page | a link | `Button` |
 | Section | a row in the right rail — a heading on the page | `Installation` |
 

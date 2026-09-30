@@ -11,9 +11,13 @@ const KEY = 'kol-showcase-grouping'
 const DEFAULT = 'atomic'
 const GroupingContext = createContext(null)
 
+/* Order by — the atomic tier (default) or what a component does. Package is a FILTER on the
+ * Components index, never a grouping that sends you to a set page (2026-09-30). */
+export const GROUP_OPTIONS = [{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]
+
 export function GroupingProvider({ children }) {
   const [mode, setModeState] = useState(() => {
-    try { const v = localStorage.getItem(KEY); return ['function', 'package'].includes(v) ? v : DEFAULT } catch { return DEFAULT }
+    try { const v = localStorage.getItem(KEY); return v === 'function' ? v : DEFAULT /* 'package' left Group by 2026-09-30 — it is a filter */ } catch { return DEFAULT }
   })
   const setMode = useCallback((m) => {
     setModeState(m)

@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-09-30 | [[2026-09-30-showcase-fixes\|Showcase fixes]] | the review's corrections — rails, homes, search palette, Group by, Packages, Search views | published · review by eye |
 | 2026-09-30 | [[2026-09-30-showcase-build\|Showcase build]] | the audit built — categories, homes, rails, cards, editor, touch | published · review the agent's decisions |
 | 2026-09-30 | [[2026-09-30-phase-log-and-audit\|Phase log + audit]] | this log, the open-questions page, the audit of names, homes, categories and tags | built · audit waits on the user |
 | 2026-09-29 | [[2026-09-29-apps-review\|Apps review]] | five render gates; `<tool>-hub` naming; Studio, panels, VOYAGER, brand catalogue | published |

@@ -1,6 +1,26 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { Icon } from '@kolkrabbi/kol-icons'
 import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
+import Kbd from '../atoms/Kbd.jsx'
+
+/* ONE COLUMN (2026-09-30): rows, headings and footer sit on the field's own
+ * geometry — the p-2 inset, then the md control's 1px ring + 16px pad — so
+ * every glyph and word lines up under the field's icon and caret. */
+import { glyphSize } from '../hooks/glyphLadders.js'
+
+/* Rows bucketed by `group` in first-seen order, rank kept inside a group —
+ * one heading per group; arrows rove this order, not the engine's. */
+function groupRows(rows) {
+  const order = []
+  const byGroup = new Map()
+  rows.forEach((r) => {
+    const g = r.group ?? ''
+    if (!byGroup.has(g)) { byGroup.set(g, []); order.push(g) }
+    byGroup.get(g).push(r)
+  })
+  return order.flatMap((g) => byGroup.get(g))
+}
 
 /**
  * HighlightMatch — default row renderer: underlines the first
@@ -56,7 +76,9 @@ export function HighlightMatch({ label, query, ranges }) {
  *
  * @param {boolean}  open          mount/unmount the overlay
  * @param {Function} onClose       () => void — backdrop click, Escape, post-select
- * @param {Array}    results       pre-filtered rows: { id, label, group?, hint? }
+ * @param {Array}    results       pre-filtered rows: { id, label, group?, hint?, icon? }
+ * @param {Array}    [suggestions] rows shown while the query is empty (same shape) —
+ *                                 the palette opens on somewhere to go, not a blank box
  * @param {string}   query         controlled query (drives the highlight slice)
  * @param {Function} onQueryChange (string) => void — input change
  * @param {Function} onSelect      (item) => void — row click / Enter; consumer navigates
@@ -69,7 +91,8 @@ export function HighlightMatch({ label, query, ranges }) {
 export default function ShellSearchOverlay({
   open,
   onClose,
-  results = [],
+  results: rawResults = [],
+  suggestions = [],
   /* EXPANDED — the palette's second state (user ruling 2026-08-01). Enter
    * commits the query and opens `children` as the results body; the palette
    * and the old tag overlay are one surface with two states, not two
@@ -92,6 +115,7 @@ export default function ShellSearchOverlay({
   /* Has the user actually chosen a row? See the Enter branch — without this,
    * index 0 counts as a selection and Enter navigates somewhere unasked. */
   const [navigated, setNavigated] = useState(false)
+  const results = groupRows(query ? rawResults : suggestions)
   const active = results.length > 0 ? Math.min(activeIndex, results.length - 1) : -1
 
   /* Focus in on open, restore the opener on close. querySelector instead of
@@ -110,7 +134,7 @@ export default function ShellSearchOverlay({
   /* Keep the active row visible inside the scrolling list. */
   useEffect(() => {
     if (active < 0) return
-    listRef.current?.children[active]?.scrollIntoView({ block: 'nearest' })
+    listRef.current?.querySelectorAll('[role="option"]')[active]?.scrollIntoView({ block: 'nearest' })
   }, [active])
 
   if (!open) return null
@@ -141,7 +165,8 @@ export default function ShellSearchOverlay({
        * highlighted" is true from the first keystroke and testing `active >= 0`
        * made Enter navigate to whatever happened to be first. Committing a
        * query must never be a navigation you didn't choose. */
-      if (navigated) select(results[active])
+      /* An empty query has nothing to commit — Enter goes to the top suggestion. */
+      if (active >= 0 && (navigated || !query)) select(results[active])
       else onExpand?.()
     } else if (e.key === 'Tab') {
       /* Focus trap — the input is the palette's only tab stop. */
@@ -182,8 +207,11 @@ export default function ShellSearchOverlay({
             ))}
           </div>
         )}
+        {/* A REAL FIELD, inset in the panel (2026-09-30, shadcn's palette as
+          * the aim) — the flush `bare` strip read as a hole, not a control. */}
+        <div className="kol-tone-grey p-2">
         <SearchInput
-          bare
+          className="w-full"
           value={query}
           onChange={(e) => onQueryChange?.(e.target.value)}
           placeholder={chips.length > 0 ? 'Narrow these results…' : placeholder}
@@ -193,6 +221,7 @@ export default function ShellSearchOverlay({
           aria-controls={listId}
           aria-activedescendant={active >= 0 ? optionId(results[active]) : undefined}
         />
+        </div>
 
         {/* WHY THIS IS NOT `molecules/Dropdown` (asked 2026-08-01). Dropdown is
           * a SELECT: a trigger, a `value`, `onChange(value)`, and rows that are
@@ -204,7 +233,8 @@ export default function ShellSearchOverlay({
           *
           * THE ROW CONTRACT (was documented nowhere):
           *   label     the row's text, match-highlighted against the query
-          *   group     right-aligned origin — 'Atoms', 'Documentation', 'Tags'
+          *   group     section heading the row files under — 'Atoms', 'Documentation', 'Tags'
+          *   icon      optional leading glyph (kol-icons name)
           *   hint      subtext shown when the LABEL was not what matched
           *   href      a destination; dismisses the palette
           *   action    a closure; runs and KEEPS the palette open (tag rows)
@@ -212,46 +242,60 @@ export default function ShellSearchOverlay({
         {expanded ? (
           <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto">{children}</div>
         ) : results.length > 0 && (
+          /* FIXED BODY HEIGHT — the panel holds still while the list narrows. */
           <ul
             ref={listRef}
             id={listId}
             role="listbox"
-            className="border-t border-fg-08 max-h-80 overflow-y-auto py-1"
+            className="kol-tone-grey h-80 overflow-y-auto px-2 pb-2"
           >
-            {results.map((item, i) => (
-              <li
-                key={item.id}
-                id={optionId(item)}
-                role="option"
-                aria-selected={i === active}
-                /* preventDefault keeps focus in the input through the click */
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => select(item)}
-                onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
-                className={`flex items-center gap-2 px-4 py-1.5 cursor-pointer kol-mono-14 transition-colors ${
-                  i === active ? 'bg-fg-08 text-fg' : 'text-fg-80'
-                }`}
-              >
-                <span className="flex flex-col min-w-0">
-                  <span className="truncate">
-                    <HighlightMatch label={item.label} query={query} ranges={item.highlights} />
-                  </span>
-                  {item.hint && (
-                    <span className="kol-mono-12 text-fg-48 truncate">{item.hint}</span>
+            {results.map((item, i) => {
+              const heading = (item.group ?? '') !== (results[i - 1]?.group ?? '') || i === 0
+              return (
+                <li key={item.id} role="presentation">
+                  {heading && item.group && (
+                    <p className="kol-helper-12 text-fg-48 px-4 border-x border-transparent pt-3 pb-2">{item.group}</p>
                   )}
-                </span>
-                {item.group && (
-                  <span className="ml-auto shrink-0 kol-helper-10 text-fg-48">{item.group}</span>
-                )}
-              </li>
-            ))}
+                  <div
+                    id={optionId(item)}
+                    role="option"
+                    aria-selected={i === active}
+                    /* preventDefault keeps focus in the input through the click */
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => select(item)}
+                    onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
+                    /* the md control's box: 1px ring + 6/16 pad + gap-2 → 32px, same as the field */
+                    className={`flex items-center gap-2 px-4 py-1.5 border border-transparent min-h-[var(--kol-ctl-md)] rounded-[var(--kol-radius-sm)] cursor-pointer kol-mono-14 transition-colors ${
+                      i === active ? 'bg-[var(--kol-tone-bg,var(--kol-surface-secondary))] text-fg' : 'text-fg-80'
+                    }`}
+                  >
+                    {item.icon && (
+                      <span aria-hidden="true" className="flex shrink-0 text-oq-48">
+                        <Icon name={item.icon} size={glyphSize('md')} />
+                      </span>
+                    )}
+                    <span className="flex flex-col min-w-0">
+                      <span className="truncate">
+                        <HighlightMatch label={item.label} query={query} ranges={item.highlights} />
+                      </span>
+                      {item.hint && (
+                        <span className="kol-mono-12 text-fg-48 truncate">{item.hint}</span>
+                      )}
+                    </span>
+                  </div>
+                </li>
+              )
+            })}
           </ul>
         )}
-        {!expanded && enterLabel && query && (
-          <p className="flex items-center gap-2 border-t border-fg-08 px-4 py-2 kol-helper-12 text-fg-64">
-            <kbd className="kol-helper-12 rounded-[var(--kol-radius-sm)] bg-fg-08 px-1.5 py-0.5 text-fg">↵</kbd>
-            {enterLabel}
-          </p>
+        {/* THE FOOTER SAYS WHAT ENTER DOES — always, not only once typing. */}
+        {!expanded && ((!query && results.length > 0) || (query && enterLabel)) && (
+          <div className="border-t border-fg-08 py-2">
+            <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent">
+              <Kbd icon="corner-down-left" />
+              {query ? enterLabel : 'Go to page'}
+            </p>
+          </div>
         )}
       </div>
     </div>

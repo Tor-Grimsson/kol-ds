@@ -39,7 +39,7 @@ export const PACKAGES = Object.entries(PKG_JSON)
 
 const deps = (pkg) => Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).filter((d) => d.startsWith('@kolkrabbi/'))
 const usedBy = (name) => PACKAGES.filter((p) => deps(p.pkg).includes(name)).map((p) => p.pkg.name)
-export const packageHref = (dir) => `/development/packages/${dir}`
+export const packageHref = (dir) => `/packages/${dir}`
 
 /* the package as a markdown document — frontmatter from package.json, body from the changelog */
 const docOf = ({ dir, pkg, changelog, tier }) => {
@@ -77,7 +77,7 @@ export function PackagePage() {
   const { dir } = useParams()
   const show = useFrontmatter('page')
   const p = PACKAGES.find((x) => x.dir === dir)
-  if (!p) return <Navigate to="/development/packages" replace />
+  if (!p) return <Navigate to="/packages" replace />
   const holds = TOP_LEVEL.filter((c) => c.family === dir).length
   return (
     <>
@@ -88,7 +88,7 @@ export function PackagePage() {
         docId={dir}
         showFrontmatter={show}
         docHref={packageHref}
-        routes={{ docsIndex: '/development/packages', components: '/components', docFilePath: () => `packages/${dir}/CHANGELOG.md` }}
+        routes={{ docsIndex: '/packages', components: '/components', docFilePath: () => `packages/${dir}/CHANGELOG.md` }}
       />
       {holds > 0 && (
         <p className="kol-doc-body mt-10">

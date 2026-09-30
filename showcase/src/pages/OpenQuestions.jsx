@@ -1,5 +1,6 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import HomeDoc from '../lib/HomeDoc.jsx'
 
 /**
  * Open questions — visual calls the user picks by eye, in ROUNDS (user, 2026-09-30: *"put them in
@@ -28,14 +29,9 @@ export function OpenQuestionsRound() {
 }
 
 export default function OpenQuestions() {
-  usePageMeta({ tags: [], related: [] })
   return (
     <div className="flex flex-col gap-10 pb-24">
-      <DocHeader
-        eyebrow="Development"
-        title="Open questions"
-        lede="Visual calls shown side by side and picked by eye, one round at a time. Answered rounds stay as the record."
-      />
+      <HomeDoc id="open-questions" />
       <DocSection id="rounds" title="Rounds">
         <ul className="flex flex-col gap-2">
           {ROUNDS.map((r) => (

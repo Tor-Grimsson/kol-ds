@@ -37,39 +37,26 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
   const navCollapsed = isControlled ? collapsed : internalCollapsed
   const handleToggle = isControlled ? onToggle : () => setInternalCollapsed(prev => !prev)
 
-  const [collapsedSections, setCollapsedSections] = useState(() => {
-    const initial = {}
-    routes.forEach((route) => {
-      const sectionPath = getSectionRootPath(route, basePath)
-      const isActive =
-        sectionPath === basePath
-          ? normalizedPath === basePath
-          : normalizedPath === sectionPath || normalizedPath.startsWith(sectionPath + '/')
-      initial[route.id] = !isActive
-    })
-    return initial
+  /* THE RAIL FOLLOWS YOU — INTO A CHILD ONLY (2026-09-30, reversing the 2026-09-28 "open the
+   * group you are in" on its landing page too). Landing on a page INSIDE a chapter opens that
+   * chapter and folds the rest; a chapter's own home opens nothing. Every other chapter starts
+   * folded — including ones this rail has never seen (a Group-by switch hands it new ids, and an
+   * unknown id used to read as open, so every chapter sprang open). */
+  const holdsPage = (route) => (route.children ?? []).some((c) => {
+    const cp = getChildPath(c, basePath).replace(/\/$/, '')
+    return normalizedPath === cp || normalizedPath.startsWith(cp + '/')
   })
-
-  /* THE RAIL FOLLOWS YOU (2026-09-28, user: "the sidebar doesnt highlight that
-   * part, which it probably should by closing/collapsing other categories").
-   * Arriving in a group opens it AND folds its siblings, so the open group is
-   * the one you are in. Opening another by hand still works until you move. */
-  const isRouteActive = (route) => {
-    const sectionPath = getSectionRootPath(route, basePath)
-    const own = sectionPath === basePath
-      ? normalizedPath === basePath
-      : normalizedPath === sectionPath || normalizedPath.startsWith(sectionPath + '/')
-    return own || (route.children ?? []).some((c) => {
-      const cp = getChildPath(c, basePath).replace(/\/$/, '')
-      return normalizedPath === cp || normalizedPath.startsWith(cp + '/')
-    })
+  const followed = () => {
+    const hit = routes.find(holdsPage)
+    return hit ? Object.fromEntries(routes.map((r) => [r.id, r !== hit])) : null
   }
+  const [collapsedSections, setCollapsedSections] = useState(() => followed() ?? {})
   useEffect(() => {
-    const active = routes.filter(isRouteActive)
-    if (!active.length) return
-    setCollapsedSections(Object.fromEntries(routes.map((r) => [r.id, !active.includes(r)])))
+    const next = followed()
+    if (next) setCollapsedSections(next)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [normalizedPath, routes, basePath])
+  const isFolded = (route) => collapsedSections[route.id] ?? true
 
   /* FOLD ALL (2026-09-30, the names audit: *"shortcut collapse/expand the categories"*). The
    * shell's `C` key broadcasts one target state; every rail's chapters take it. */
@@ -80,7 +67,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
   }, [routes])
 
   const handleSectionClick = (route) => {
-    setCollapsedSections((prev) => ({ ...prev, [route.id]: !prev[route.id] }))
+    setCollapsedSections((prev) => ({ ...prev, [route.id]: !(prev[route.id] ?? true) }))
   }
 
   /* The L1 count is every leaf row under it — RailSection shows it only while
@@ -111,27 +98,34 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
              * it should. `collapsible` is what that distinction is now. */
             const hasChildren = route.children?.length > 0
 
+            /* A CHILDLESS ENTRY IS A ROW, not a chapter (2026-09-30): drawn at L2 it read as an
+             * empty category with a blank caret slot. */
+            if (!hasChildren) {
+              return (
+                <nav key={route.id} className="shell-nav-items">
+                  <RailRow to={route.path ?? getSectionRootPath(route, basePath)} onNavigate={onNavigate}>
+                    {route.label}
+                  </RailRow>
+                </nav>
+              )
+            }
+
             return (
               <div key={route.id} className="shell-nav-group">
                 <RailSection
                   level={2}
                   label={route.label}
-                  count={hasChildren ? route.children.length : undefined}
-                  /* THE HEADER ALWAYS LINKS (2026-08-02). It used to link only
-                   * when the group had NO children, so a chapter with pages had
-                   * a dead header and its index had to ride as a row inside
-                   * itself. RailSection already separates the two gestures —
-                   * the label navigates, the rest of the row toggles — so a
-                   * group can open its landing page and still collapse. */
+                  count={route.children.length}
+                  /* THE HEADER ALWAYS LINKS (2026-08-02): the label opens the chapter's home,
+                   * the chevron folds. */
                   to={route.path ?? getSectionRootPath(route, basePath)}
-                  collapsible={hasChildren}
-                  collapsed={!!collapsedSections[route.id]}
+                  collapsed={isFolded(route)}
                   onToggle={() => handleSectionClick(route)}
                   onNavigate={onNavigate}
                   icon={Icon}
                 >
                   <nav className="shell-nav-items">
-                    {(route.children ?? []).map((child) => (
+                    {route.children.map((child) => (
                       <RailRow
                         key={child.id}
                         to={getChildPath(child, basePath)}

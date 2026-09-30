@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import { useTheme, ThemeToggle } from '@kolkrabbi/kol-framework'
@@ -146,6 +146,23 @@ export default function IconsGallery() {
       meta.groups[folder].map((name) => ({ name, group: label(folder), folder, type: CUT_LABEL[getCut(name)] ?? 'Stroke' }))),
     [orderedFolders, meta],
   )
+
+  /* /icons IS THE ICONS HOME (2026-09-30): it rendered the default set a second time */
+  if (!set) {
+    return (
+      <div className="flex flex-col gap-10 pb-24">
+        <HomeDoc id="icons" />
+        <ul className="flex flex-col gap-2">
+          {Object.entries(ICON_SETS).map(([k, s]) => (
+            <li key={k} className="kol-doc-body">
+              <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={`/icons/${k}`}>{s.title}</Link>
+              <span className="text-subtle"> — {s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 
   if (!meta) {
     return (

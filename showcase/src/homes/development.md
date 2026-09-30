@@ -16,6 +16,5 @@ Generated from the repo itself — not the design system, the instruments around
 
 | Section | Holds |
 |---|---|
-| Tools | the reference graph, the admission ledger (Quarantine), the tag graph, every tag, an index of every page |
+| Tools | the reference graph and the admission ledger (Quarantine) |
 | Records | the phase log — every run of work with its phases and decisions — and the open questions, one round per page |
-| Packages | every published package, its version, what it holds, and its changelog |

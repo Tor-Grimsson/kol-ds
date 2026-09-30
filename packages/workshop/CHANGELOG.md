@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-workshop
 
+## 0.34.0 — 2026-09-30
+
+**The review's corrections** (plan-2026-09-30-showcase-corrections).
+
+- **⚠ `ResultRow` is back** — un-deprecated, `underline` (default) and `wash`; `SearchPage` uses it again, `rowVariant` restored. The `ContentRow` swap in 0.33.0 had overridden a ruling.
+- **⚠ Rails:** `RailSection` draws its own chevron (no `icon` prop needed — the right rail had none); a rung's label opens its page at both levels and only the chevron folds; `ShellSidebar` opens only the chapter holding the page you are on and starts every other folded, including ids it has not seen; a childless entry is a plain row, not an empty L2.
+- **`DocumentationReader` takes `rail={false}`** — render the article without taking the right rail (a home sits on a page whose sections the rail must list).
+- **The shell** passes `suggestions` (the spaces) to `ShellSearchOverlay`; the shortcut sheet lists "Search everything" once, `⌘ K , /`. Needs kol-component ≥ 0.231.0.
+
 ## 0.33.0 — 2026-09-30
 
 **The shipped parts, not local ones** (the reuse pass — UI built fresh last night swapped for what the DS already ships).

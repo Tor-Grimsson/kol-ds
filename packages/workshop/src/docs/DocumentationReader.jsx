@@ -85,6 +85,9 @@ const DocumentationReader = ({
   routes = {},
   docId: docIdProp,
   showFrontmatter = true,
+  /* false → render the article only and leave the right rail to the page (a HOME sits on top of
+   * a page whose sections the rail must list — 2026-09-30, "This page (0)" on every home) */
+  rail = true,
 }) => {
   const {
     docsIndex = '/docs',
@@ -309,7 +312,7 @@ const DocumentationReader = ({
    * ShellTocContext then defaults to null, so calling it unguarded threw.
    * No shell → no right rail, and the reader just renders its article. */
   useEffect(() => {
-    if (!setTocContent) return undefined
+    if (!setTocContent || !rail) return undefined
     setTocContent(
       <DocReaderSidebar
         key={docId}
@@ -324,7 +327,7 @@ const DocumentationReader = ({
       />
     )
     return () => setTocContent(null)
-  }, [setTocContent, docId, toc, allTags, topTags, related, docsIndex, components, docFilePath])
+  }, [rail, setTocContent, docId, toc, allTags, topTags, related, docsIndex, components, docFilePath])
 
   if (!doc) {
     return (

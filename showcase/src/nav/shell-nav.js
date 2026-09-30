@@ -45,15 +45,6 @@ export const ALL_ROUTES = [
     path: '/blocks',
     children: BLOCKS.map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/blocks/${b.key}` })),
   },
-  /* CARDS (2026-09-30): the sections a website is built from — heroes, text/image splits, CTAs,
-   * signup, feature and content cards. Not a block (shells and tools) and not a set (a package). */
-  {
-    id: 'cards',
-    label: 'Cards',
-    icon: 'layout',
-    path: '/cards',
-    children: CARDS.map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
-  },
   {
     id: 'sets',
     label: 'Sets',
@@ -64,6 +55,9 @@ export const ALL_ROUTES = [
   /* STYLES (2026-09-30, the names audit): the reference lookup — the live specimen pages that
    * read their values off the installed packages, the icon sets, and the guides. It holds
    * everything that used to sit in Docs without being markdown, so Docs is the vault alone. */
+  /* PACKAGES (2026-09-30, user: packages are the product, not a development record) — the index
+   * and a page per package with its changelog. Moved out of Development. */
+  { id: 'packages', label: 'Packages', icon: 'database', path: '/packages' },
   { id: 'styles', label: 'Styles', icon: 'paint-drop', path: '/styles' },
   { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
   /* The apps tier (2026-09-27) — each app its own build under /apps/<name>/; this is the index. */
@@ -94,10 +88,15 @@ export const DOCS_SPECIMENS = [
 export const DEV_TOOLS = [
   { id: 'dev-references', label: 'References', path: '/references', description: 'The reference graph — what depends on what, with a weight.' },
   { id: 'dev-quarantine', label: 'Quarantine', path: '/quarantine', description: 'What the sidebar admits, what it holds, and the rule each waits on.' },
-  /* the three that had no home (2026-09-30, the names audit) */
-  { id: 'dev-tag-graph', label: 'Tag graph', path: '/development/tag-graph', description: 'Every tag as a node, a line where two share a page.' },
-  { id: 'dev-tags', label: 'Tags', path: '/development/tags', description: 'Every tag in use, by namespace, with its count.' },
-  { id: 'dev-index', label: 'Index', path: '/development/index', description: 'Every page on the site, A to Z, by space.' },
+]
+
+/* THE SEARCH PAGE'S VIEWS (2026-09-30) — the ways to find a page: results, every tag, the tag
+ * graph, every page A–Z. They were Development tools; they are how you look for something. */
+export const SEARCH_VIEWS = [
+  { value: 'results', label: 'Results', path: '/search' },
+  { value: 'tags', label: 'Tags', path: '/search/tags', description: 'Every tag in use, by namespace, with its count.' },
+  { value: 'graph', label: 'Graph', path: '/search/graph', description: 'Every tag as a node, a line where two share a page.' },
+  { value: 'index', label: 'A–Z', path: '/search/index', description: 'Every page on the site, A to Z, by space.' },
 ]
 
 /* Development › Records — what the work leaves behind (2026-09-30). The phase log is the vault's
@@ -106,7 +105,6 @@ export const DEV_TOOLS = [
  * looking, not by reading a description of it. */
 export const DEV_RECORDS = [
   { id: 'dev-phase-log', label: 'Phase log', path: '/development/log', description: 'Every run of work, newest first — the phases, the decisions, the plan behind each.' },
-  { id: 'dev-packages', label: 'Packages', path: '/development/packages', description: 'Every published package, its version and its changelog.' },
   { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', description: 'Decisions still waiting, shown side by side so they are picked by eye.' },
 ]
 
@@ -115,6 +113,7 @@ export const DEV_RECORDS = [
 export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
   r.id === 'development' ||
   r.id === 'styles' ||
+  r.id === 'packages' ||
   isSurfaceAdmitted(r.id) ||
   (r.id === 'components' && anyComponentsAdmitted()))
 
@@ -123,8 +122,9 @@ export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
  * none of those URLs had to move. */
 export const SPACE_PREFIXES = {
   '/components': ['/components'],
-  '/blocks': ['/blocks'],
-  '/cards': ['/cards'],
+  /* Cards is a Blocks category (2026-09-30) — its URLs stay, the Blocks tab owns them */
+  '/blocks': ['/blocks', '/cards'],
+  '/packages': ['/packages'],
   '/sets': ['/sets'],
   '/styles': ['/styles', '/foundations', '/icons'],
   '/docs': ['/docs', '/documentation'],
@@ -162,13 +162,16 @@ export const buildShellSearchItems = () => {
     ...(r.children ?? []).map((c) => ({
       id: c.id,
       title: c.label,
-      kind: r.id === 'blocks' ? 'block' : r.id === 'cards' ? 'card' : 'set',
+      kind: r.id === 'blocks' ? 'block' : 'set',
       space: r.id,
       category: r.label,
       href: c.path,
     })),
   ])
   const families = PACKAGE_ORDER.filter((dir) => TOP_LEVEL.some((c) => c.family === dir)).map((dir) => ({ id: `fam-${dir}`, title: packageLabel(dir), kind: 'set', space: 'sets', category: 'Packages', keywords: [`@kolkrabbi/kol-${dir}`], href: `/sets/family/${dir}` }))
+  const cards = CARDS.map((c) => ({ id: `card-${c.key}`, title: c.title, kind: 'card', space: 'blocks', category: 'Cards', href: `/cards/${c.key}` }))
+  /* the search views (2026-09-30) — tags, graph and the A–Z index live on the Search page */
+  const views = SEARCH_VIEWS.filter((v) => v.value !== 'results').map((v) => ({ id: `search-${v.value}`, title: v.label, kind: 'tool', space: 'search', category: 'Search', description: v.description, href: v.path }))
   const guides = DOCS_GUIDES.map((g) => ({ id: g.id, title: g.label, kind: 'guide', space: 'styles', category: 'Guides', href: g.path }))
   const specimens = DOCS_SPECIMENS.map((g) => ({ id: g.id, title: g.label, kind: 'specimen', space: 'styles', category: 'Foundations', href: g.path }))
   const tools = DEV_TOOLS.map((t) => ({ id: t.id, title: t.label, kind: 'tool', space: 'development', category: 'Tools', description: t.description, href: t.path }))
@@ -185,7 +188,7 @@ export const buildShellSearchItems = () => {
     date: d.metadata?.updated,
     href: vaultDocHref(d.id),
   }))
-  return [...surfaces, ...components, ...families, ...guides, ...specimens, ...tools, ...records, ...vaultDocs]
+  return [...surfaces, ...components, ...cards, ...views, ...families, ...guides, ...specimens, ...tools, ...records, ...vaultDocs]
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one
@@ -215,6 +218,6 @@ export const componentTreeRoutes = (mode) =>
     id: `cmp-${key}`,
     label,
     /* the chapter header opens its home: a tier's own page, or a package's set (2026-09-30) */
-    path: mode === 'atomic' ? `/components/tier/${key}` : mode === 'package' ? `/sets/family/${key.replace(/^pkg-/, '')}` : '/components',
+    path: mode === 'atomic' ? `/components/tier/${key}` : `/components/function/${key}`,
     children: items.map((c) => ({ id: c.slug, label: c.displayName, path: `/components/${c.slug}` })),
   }))

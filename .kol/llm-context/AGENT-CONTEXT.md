@@ -6,10 +6,19 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
+## Later — user ideas, not scheduled
+
+- **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
+
+## Current state (2026-09-30, showcase corrections — the review answered)
+
+- **✅ Published 2026-09-30:** icons 0.31.0 · component 0.231.0 · workshop 0.34.0 (on top of the build's set below). Push is the user's. 32 gates clean; **not yet seen in a browser** — the palette (Open questions Round 5), results page and rails wait on the user's eye.
+- **The shape now:** spaces Components · Blocks · Sets · Packages · Styles · Docs · Apps · Development. **Every label opens its own page, the chevron only folds** (both rail levels); every level is a markdown home in `showcase/src/homes/` (`validate:homes` fails a missing one). Components → `/components/group-by` (the Group-by page) → tier / function chapters; Package is a filter, not an axis. Cards is a second category in the Blocks rail; Packages is its own space; Tags · Graph · A–Z are views of Search. `ResultRow` was restored (underline default) — the `ContentRow` swap had overridden a ruling. Plan: `plan-2026-09-30-showcase-corrections.md` (its Open issues hold the right-rail tags question). Log: `session-log/2026-09-30-showcase-corrections.md`. Phase log entry: *Showcase fixes*.
+
 ## Current state (2026-09-30, 🏁 showcase build — the names audit, built)
 
 - **🏁 Published 2026-09-30.** theme 0.158.0 · component 0.230.0 · framework 0.47.0 · shell 0.59.1 · workshop 0.32.0 · foundry 0.11.0 · icons 0.30.0 · design-editor 0.18.0 · dashboards 0.4.3 · deck 0.2.1 · hardware 0.3.2 · markdown 0.1.2 · styleguide 0.5.3. Push is the user's.
-- **The showcase's shape now:** spaces Components · Blocks · Cards · Sets · Styles · Docs · Apps · Development. Every package is on the atomic ladder (`TIERS` in `classification.js`, package = `family` for the Order-by view and the `/sets/family/<dir>` pages); markdown homes in `showcase/src/homes/`; Docs = the vault; Styles = foundations + icon sets + guides; Cards = `showcase/src/cards/` (18 website cards); Development = tools (tag graph, tags, index), records (phase log, open-questions rounds), packages (page per package), lobby (dev only).
+- **The showcase's shape then:** spaces Components · Blocks · Cards · Sets · Styles · Docs · Apps · Development (superseded above). Every package is on the atomic ladder (`TIERS` in `classification.js`); markdown homes in `showcase/src/homes/`; Docs = the vault; Styles = foundations + icon sets + guides; Cards = `showcase/src/cards/` (18 website cards).
 - **The phase log** lives in `docs/operations/09-phase-log/` — one entry per run, plans archived in `_files/`, title rule ≤3 words / 22 chars (`validate:metadata` M5). Every run adds its entry in the same pass. **Visual calls go on `showcase/src/open-questions/<date>.jsx` rounds**, never into a rule (memory: visual-calls-go-on-the-open-questions-page). Names for everything: `docs/documentation/00-overview/05-names.md`.
 - **The overnight decisions** (agent-made, reversible, for the user's review) are tabled in the phase log entry *Showcase build*; review surface = open-questions Rounds 3 and 4. Plan and playbook: `plan-2026-09-29-phase-log-and-showcase-review.md` (done) · `playbook/2026-09-30-showcase-build.md`. Milestone: `session-log/2026-09-30-MILESTONE-showcase-build.md`.
 
@@ -24,14 +33,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-28, editor inspector rebuild)
 
 - **🧭 kol-theme 0.154.0 · kol-icons 0.29.0 · kol-component 0.227.0 · design-editor 0.16.0, published (2026-09-28, newest).** The editor inspector is three named panes (Transform · Appearance · Typography) with `InspectorSection pane`, no sub-labels, no TEXT row; the tool row is Affinity's (sunken armed tile, faint hover tile, press); the transport is fxr's two strips; `SegmentedToggle` names its glyph cells with tooltips; the native-title gate's T2 enforces a tooltip on every editor icon-only control. 29 gates clean. Plan: `plan-2026-09-27-editor-inspector-rebuild.md`. Log: `session-log/2026-09-28-editor-inspector-rebuild-published.md`.
-
-## Current state (2026-09-27, cloud session closed)
-
-- **📦 Eight published (2026-09-27).** kol-theme 0.153.0 · kol-icons 0.28.0 · kol-component 0.226.0 · kol-shell 0.57.1 · kol-hardware 0.3.0 · kol-styleguide 0.5.2 · kol-deck 0.1.1 · design-editor 0.15.0 — the cloud branch was merged, then deleted. Log: `session-log/2026-09-27-cloud-session-closed-eight-packages-published.md`.
-
-## Current state (2026-09-27, tool frame · curves · the editor back on KOL)
-
-- **🧱 Published 2026-09-27 (see above).** The tool frame is written (16-app-anatomy § Tool frame) and curves / media / controls / the lists / the deck editor wear it; curves rebuilt on kol-hardware 0.3.0. The editor sync ran phases 1–5: 12 editor copies → KOL, one icon system, transport in the motion pack, the inspector pass, the settings-X and `S`-sheet bugs fixed at the KOL root. 29 gates clean. Plans: `plan-2026-09-27-app-frame-and-curves.md`, `plan-2026-09-27-editor-ds-sync.md`. Log: `session-log/2026-09-27-tool-frame-curves-and-editor-ds-sync.md`.
 
 ## Repo standup (2026-06-15)
 

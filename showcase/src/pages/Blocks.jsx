@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom'
 import CollectionLanding from '../lib/CollectionLanding.jsx'
 import {
   BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS, FEATURED_BLOCKS,
@@ -9,16 +10,20 @@ import {
  * machine; full-apparatus compositions live on /sets, same machine.
  */
 export default function Blocks() {
+  /* a category's home (`/blocks/category/:cat`, 2026-09-30) — its markdown over its own items */
+  const { cat } = useParams()
+  const list = cat ? BLOCKS.filter((x) => x.category === cat) : BLOCKS
   return (
     <CollectionLanding
-      items={BLOCKS}
-      categories={BLOCK_CATEGORIES}
+      items={list}
+      categories={cat ? [cat] : BLOCK_CATEGORIES}
       labels={CATEGORY_LABELS}
-      featured={FEATURED_BLOCKS}
+      featured={cat ? list.filter((x) => x.featured) : FEATURED_BLOCKS}
       basePath="/blocks"
       previewBase="/blocks/preview"
       srcDir="blocks"
-      home="blocks"
+      key={cat ?? 'all'}
+      home={cat ? `block-${cat}` : 'blocks'}
       hero={{
         eyebrow: `Blocks · ${BLOCKS.length}`,
         title: 'Blocks',

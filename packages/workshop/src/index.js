@@ -14,6 +14,4 @@ export * from './tags/index.js'
 export * from './exhibit/index.js'
 export * from './compositions/index.js'
 export * from './search/index.js'
-/* retiring — ContentRow replaces it (retirement ledger, 2026-09-30) */
-export { default as ResultRow } from './search/ResultRow.jsx'
 export * from './engine/index.js'

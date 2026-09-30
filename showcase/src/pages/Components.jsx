@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ContentFilters, EmptyState } from '@kolkrabbi/kol-component'
-import { useParams } from 'react-router-dom'
+import { ContentFilters, EmptyState, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { useParams, useSearchParams } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import DemoStage from '../lib/DemoStage.jsx'
-import { groupComponents, FUNCTIONS, TOTAL } from '../nav/registry.js'
-import { useGrouping } from '../lib/grouping.jsx'
+import { groupComponents, FUNCTIONS, TOTAL, packageLabel } from '../nav/registry.js'
+import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
 
 /**
  * Components index — grouped by the active axis (Function default / Atomic),
@@ -103,15 +103,25 @@ export function TierHome() {
   return <Components tier={tier} />
 }
 
-export default function Components({ tier }) {
-  const { mode: gMode } = useGrouping()
+/* a Function chapter's home (`/components/function/input`) — its markdown, then its components */
+export function FunctionHome() {
+  const { fn } = useParams()
+  return <Components fn={fn} />
+}
+
+export default function Components({ tier, fn }) {
+  const { mode: gMode, setMode } = useGrouping()
+  /* THE GROUP-BY PAGE (2026-09-30): the index groups by the axis picked here or in the rail, and
+   * FILTERS by function and package — `?package=workshop` / `?function=input` open it filtered,
+   * without leaving Components. */
+  const [params] = useSearchParams()
   /* a chapter home (`/components/tier/atoms`) shows its own tier on the atomic ladder */
-  const mode = tier ? 'atomic' : gMode
+  const mode = tier ? 'atomic' : fn ? 'function' : gMode
   /* the organism filters a FLAT list; each item remembers its group so the
    * sections can be rebuilt from whatever rows come back */
-  const groups = useMemo(() => groupComponents(mode).filter(([k]) => !tier || k === tier), [mode, tier])
+  const groups = useMemo(() => groupComponents(mode).filter(([k]) => (!tier || k === tier) && (!fn || k === fn)), [mode, tier, fn])
   const items = useMemo(
-    () => groups.flatMap(([key, label, list]) => list.map((c) => ({ ...c, group: key, groupLabel: label, fnLabel: FUNCTIONS[c.function] }))),
+    () => groups.flatMap(([key, label, list]) => list.map((c) => ({ ...c, group: key, groupLabel: label, fnLabel: FUNCTIONS[c.function], pkgLabel: packageLabel(c.family) }))),
     [groups],
   )
   const regroup = (rows) => groups
@@ -125,20 +135,35 @@ export default function Components({ tier }) {
      * page's stack rhythm. */
     <div className="flex flex-col gap-8">
       {/* THE HOME (2026-09-30): the space's and each tier's own markdown page, then the live wall */}
-      <HomeDoc key={tier ?? 'components'} id={tier ?? 'components'} />
+      <HomeDoc key={tier ?? fn ?? 'components'} id={tier ?? (fn ? `function-${fn}` : 'components')} />
+
+      {!tier && !fn && (
+        <div className="flex items-center gap-3">
+          <span className="kol-doc-eyebrow">Group by</span>
+          <SegmentedToggle options={GROUP_OPTIONS} value={mode} onChange={setMode} size="sm" />
+        </div>
+      )}
 
       <ContentFilters
+        key={params.toString()}
+        initialFilters={[
+          ...(params.get('function') && FUNCTIONS[params.get('function')] ? [`fnLabel:${FUNCTIONS[params.get('function')]}`] : []),
+          ...(params.get('package') ? [`pkgLabel:${packageLabel(params.get('package'))}`] : []),
+        ]}
         items={items}
         title="All components"
-        totalCount={tier ? items.length : TOTAL}
+        totalCount={tier || fn ? items.length : TOTAL}
         searchKeys={['name', 'displayName']}
-        filterGroups={[{ label: 'Function', key: 'fnLabel', values: Object.values(FUNCTIONS) }]}
-        mutuallyExclusiveFilters={['fnLabel']}
+        filterGroups={[
+          { label: 'Function', key: 'fnLabel', values: Object.values(FUNCTIONS) },
+          { label: 'Package', key: 'pkgLabel', values: [...new Set(items.map((c) => c.pkgLabel))] },
+        ]}
+        mutuallyExclusiveFilters={['fnLabel', 'pkgLabel']}
         showCountOnlyWhenFiltering
         renderItem={(rows) => {
           const grouped = regroup(rows)
           return grouped.length === 0
-            ? <EmptyState eyebrow="No results" title="No components match." body="Clear the search or the function filter." />
+            ? <EmptyState eyebrow="No results" title="No components match." body="Clear the search or the filters." />
             : (
               <div className="flex flex-col gap-8">
                 {grouped.map(([key, label, list]) => (

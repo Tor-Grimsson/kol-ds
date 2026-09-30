@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.31.0 — 2026-09-30
+
+- **New:** `corner-down-left` (arrow) and `command` (code) — the key-cap glyphs the palette footer and the ⌘K hint typed as characters. 1.5 stroke, 24 grid.
+
 ## 0.30.0 — 2026-09-30
 
 **The align / rotate / flip glyphs, redrawn** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).

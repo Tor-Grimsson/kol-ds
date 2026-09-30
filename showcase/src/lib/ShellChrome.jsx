@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ShellLayout, ShellSidebar, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
 import { buildTagCounts } from '@kolkrabbi/kol-markdown'
 import { SegmentedToggle, SettingsChoice, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { useGrouping } from './grouping.jsx'
+import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
 import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import { PHASE_LOG_ROUTE } from '../nav/vault.js'
@@ -116,8 +116,6 @@ function SpaceToc({ space }) {
  * the spaces, it always just shows the same toggle atomic/function and atoms list expanded"). Each
  * space draws its own; the Tools group is gone — the header already lists the spaces, and a
  * second door to each was "one body of content, two doors". */
-/* Order by — the atomic tier (default), what a component does, or who ships it (2026-09-30). */
-const GROUP_OPTIONS = [{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }, { value: 'package', label: 'Package' }]
 
 const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path }))
 
@@ -125,9 +123,10 @@ function SpaceRail({ space, onNavigate }) {
   const { mode, setMode } = useGrouping()
   const cmpRoutes = useMemo(() => componentTreeRoutes(mode), [mode])
   const vault = useMemo(() => admittedVaultTree(), [])
-  const one = (label, routes) => (
+  /* the category label opens the space's home (2026-09-30) */
+  const one = (label, routes, labelTo) => (
     <div className="shell-rail-stack">
-      <ShellSidebar routes={routes} basePath="/" label={label} onNavigate={onNavigate} />
+      <ShellSidebar routes={routes} basePath="/" label={label} labelTo={labelTo} onNavigate={onNavigate} />
     </div>
   )
 
@@ -135,7 +134,8 @@ function SpaceRail({ space, onNavigate }) {
     return (
       <div className="shell-rail-stack">
         <div>
-          <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
+          {/* the category opens its page (2026-09-30) */}
+          <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
           <SegmentedToggle
             options={GROUP_OPTIONS}
             value={mode}
@@ -143,7 +143,7 @@ function SpaceRail({ space, onNavigate }) {
             size="sm"
           />
         </div>
-        <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" onNavigate={onNavigate} />
+        <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
       </div>
     )
   }
@@ -153,28 +153,44 @@ function SpaceRail({ space, onNavigate }) {
     const chapters = BLOCK_CATEGORIES.map((cat) => ({
       id: `blk-${cat}`,
       label: BLOCK_LABELS[cat] ?? labelFromSlug(cat),
+      path: `/blocks/category/${cat}`,
       children: BLOCKS.filter((b) => b.category === cat).map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/blocks/${b.key}` })),
     }))
-    return one('Blocks', chapters)
+    /* CARDS IS A BLOCKS CATEGORY (2026-09-30) — its own L1 beside the blocks, like Docs' two */
+    const cards = CARD_CATEGORIES.map((cat) => ({
+      id: `crd-${cat}`,
+      label: CARD_LABELS[cat] ?? labelFromSlug(cat),
+      path: `/cards/category/${cat}`,
+      children: CARDS.filter((c) => c.category === cat).map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
+    }))
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={chapters} basePath="/" label="Blocks" labelTo="/blocks" onNavigate={onNavigate} />
+        <ShellSidebar routes={cards} basePath="/" label="Cards" labelTo="/cards" onNavigate={onNavigate} />
+      </div>
+    )
   }
   /* CARDS (2026-09-30): the website sections, one chapter per kind */
   if (space === 'cards') {
     return one('Cards', CARD_CATEGORIES.map((cat) => ({
       id: `crd-${cat}`,
       label: CARD_LABELS[cat] ?? labelFromSlug(cat),
+      path: `/cards/category/${cat}`,
       children: CARDS.filter((c) => c.category === cat).map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
-    })))
+    })), '/cards')
   }
   if (space === 'sets') {
     const chapters = PACKAGE_ORDER
       .filter((dir) => TOP_LEVEL.some((c) => c.family === dir))
+      /* a family with no sets is not a chapter (2026-09-30) */
+      .filter((dir) => setsOfFamily(dir).length > 0)
       .map((dir) => ({
         id: `fam-${dir}`,
         label: packageLabel(dir),
         path: familyHref(dir),
         children: setsOfFamily(dir).map((s) => ({ id: `set-${s.key}`, label: s.title, path: `/sets/${s.key}` })),
       }))
-    return one('Sets', chapters)
+    return one('Sets', chapters, '/sets')
   }
   /* DOCS IS THE VAULT (2026-09-30): Documentation and Operations, as `docs/` is on disk. The
    * guides and the live specimens left for Styles. */
@@ -192,8 +208,8 @@ function SpaceRail({ space, onNavigate }) {
     return one('Styles', [
       { id: 'sty-foundations', label: 'Foundations', path: '/foundations', children: rowsOf(DOCS_SPECIMENS) },
       { id: 'sty-icons', label: 'Icons', path: '/icons', children: Object.entries(ICON_SETS).map(([k, s]) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}` })) },
-      { id: 'sty-guides', label: 'Guides', path: '/styles/shell-and-layout', children: rowsOf(DOCS_GUIDES) },
-    ])
+      { id: 'sty-guides', label: 'Guides', path: '/styles/guides', children: rowsOf(DOCS_GUIDES) },
+    ], '/styles')
   }
   /* the Apps rail is the index's layers, each app to its home (apps review 2026-09-29) */
   if (space === 'apps') {
@@ -203,15 +219,12 @@ function SpaceRail({ space, onNavigate }) {
       label: l.label,
       path: `/apps/layer/${l.id}`,
       children: APPS.filter((a) => a.layer === l.id).map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/app/${a.name}` })),
-    })))
+    })), '/apps')
   }
-  if (space === 'development') {
-    const tools = rowsOf(DEV_TOOLS)
+  if (space === 'packages') {
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={tools} basePath="/" label="Tools" onNavigate={onNavigate} />
-        <ShellSidebar routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" onNavigate={onNavigate} />
-        {/* every published package, by tier — each page is its package.json + changelog (2026-09-30) */}
+        {/* every published package, by tier — its own space since 2026-09-30 */}
         <ShellSidebar
           routes={TIER_ORDER.filter((tier) => PACKAGES.some((p) => p.tier === tier)).map((tier) => ({
             id: `pkg-tier-${tier}`,
@@ -220,9 +233,18 @@ function SpaceRail({ space, onNavigate }) {
           }))}
           basePath="/"
           label="Packages"
-          labelTo="/development/packages"
+          labelTo="/packages"
           onNavigate={onNavigate}
         />
+      </div>
+    )
+  }
+  if (space === 'development') {
+    const tools = rowsOf(DEV_TOOLS)
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={tools} basePath="/" label="Tools" onNavigate={onNavigate} />
+        <ShellSidebar routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" onNavigate={onNavigate} />
         {/* the lobby — dev only, read like a record: the ledger on the label, Inbox · Done · Archive */}
         {import.meta.env.DEV && <ShellSidebar routes={LOBBY_CHAPTERS} basePath="/" label="Lobby" labelTo={LOBBY_INDEX} onNavigate={onNavigate} />}
       </div>

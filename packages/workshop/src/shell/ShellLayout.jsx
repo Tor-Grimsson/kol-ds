@@ -243,8 +243,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
    * app — it was a `?` sheet of its own here. `?` still opens it. */
   const SHORTCUTS = [
     { section: 'Search', items: [
-      { id: 'k', label: 'Search everything', combo: '⌘ K' },
-      { id: 'slash', label: 'Search everything', combo: '/' },
+      { id: 'k', label: 'Search everything', combo: '⌘ K , /' },
       { id: 'enter', label: 'All results, on the search page', combo: '↵' },
     ] },
     { section: 'Shell', items: [
@@ -536,6 +535,8 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             query={searchQuery}
             onQueryChange={setSearchQuery}
             results={searchResults}
+            /* an empty palette opens on the space table, not a blank box */
+            suggestions={navItems.map((n) => ({ id: `space:${n.href}`, label: n.label, href: n.href, icon: 'arrow-right', group: 'Spaces' }))}
             /* THE EXPANDED BODY (user ruling 2026-08-01). The tag browser is
              * not a sibling overlay — it is this palette's second state. Enter
              * commits the query and swaps the result rows for the full body;

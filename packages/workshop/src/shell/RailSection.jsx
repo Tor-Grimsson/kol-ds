@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Icon } from '@kolkrabbi/kol-component'
 
 /**
  * RailSection — THE rail ladder. One component owns every rail header, at
@@ -70,7 +71,7 @@ export default function RailSection({
   onToggle,
   defaultCollapsed = false,
   onNavigate,
-  icon: IconComponent,
+  icon: IconComponent = Icon,
   children,
 }) {
   const [internal, setInternal] = useState(defaultCollapsed)
@@ -120,14 +121,16 @@ export default function RailSection({
    * the eyebrow felt expand-only. A category's door lives in the header tabs.
    * L2 keeps the split (2026-08-02 ruling): its label is a chapter's only
    * door to the landing page, and the chevron marks the toggle. */
-  const labelNode = to && level === 2 ? (
+  /* L1 JOINS L2 (2026-09-30, user: every label opens its home — *"components from the top and
+   * components go to the same components home"*; reverses the 2026-08-09 pure-toggle eyebrow). */
+  const labelNode = to ? (
     /* The label navigates; the rest of the row toggles. stopPropagation keeps
      * one click from doing both. */
     <Link
       to={to}
       onClick={(e) => {
+        /* the label opens the page, the chevron folds (audit § Homes) */
         e.stopPropagation()
-        if (isCollapsed && toggle) toggle()
         if (onNavigate) onNavigate(e)
       }}
     >
