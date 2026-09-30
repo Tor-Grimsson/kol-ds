@@ -5,7 +5,7 @@ status: canonical
 created: 2026-07-31
 updated: 2026-08-01
 verified: 2026-07-10
-description: Brand-guide specimens for colour, logo and type
+description: Brand-guide specimens for color, logo and type
 aliases:
   - styleguide
   - kol-styleguide
@@ -33,10 +33,10 @@ import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-stylegui
 
 ## Component index
 
-### Colour
+### Color
 | Component | What it is |
 |-----------|-----------|
-| `ColorAnatomy` | token-composition specimen — a colour sample + figcaption + inline `<code>` token readout (composes `ColorSwatch`) |
+| `ColorAnatomy` | token-composition specimen — a color sample + figcaption + inline `<code>` token readout (composes `ColorSwatch`) |
 | `ComboLab` (+ `DEFAULT_PALETTE`) | the **60/30/10 combination playground** — palette × layout × logo, with randomize + live readout |
 | `RatioBar` · `Tower` · `QuadSplit` · `CardRow` · `StripeRow` · **`AppliedCard`** | the stage layout primitives (`LAYOUT_COMPONENTS` / `COMBO_LAYOUTS`); AppliedCard is the applied-brand / **business-card mockup** |
 | `generatePalette` · `fgOn` · `hexToHsl` · `hslToHex` · `GENERATION_MODES` | the palette engine (`comboMath.js`) |

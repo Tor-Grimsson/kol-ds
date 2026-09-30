@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { ShellContentWidthContext, ShellNavCollapsedContext, ShellTocCollapsedContext } from '@kolkrabbi/kol-workshop'
 import { Button, Pill, SectionHero } from '@kolkrabbi/kol-component'
 import { slugify } from '../nav/registry.js'
+import { labelFromSlug } from '../nav/labels.js'
 import DemoStage from '../lib/DemoStage.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
@@ -203,7 +204,7 @@ export default function Home() {
     const b = BLOCKS.find((x) => x.key === key)
     return b ? { label: b.title, to: `/blocks/${key}`, node: stageNode(b.Component, b.stage) } : null
   }
-  const demo = (name) => ({ label: name, to: `/components/${slugify(name)}`, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
+  const demo = (name) => ({ label: labelFromSlug(name), to: `/components/${slugify(name)}`, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
   /* Analytics/infra tiles link to the dashboards component they render. */
   const compTo = (name) => `/components/${slugify(name)}`
 
@@ -384,7 +385,9 @@ export default function Home() {
         * header without arithmetic; `full` is 100dvh and would push the wall
         * a header-height below the fold. Copy verbatim from the old block. */}
       <SectionHero
-        height="80"
+        /* 60, not 80 (2026-09-30, the names audit: *"we could see this above the fold"*) — the
+         * live wall now starts on the first screen */
+        height="60"
         background="primary"
         panelMaxWidth="max-w-none"
         eyebrow={<Pill variant="subtle">{`Source-available · v${componentPkg.version}`}</Pill>}
@@ -392,8 +395,9 @@ export default function Home() {
         /* the old block was `.kol-prose-display` (80px); `display-01` is that
          * size on the role ladder (80 desktop · 56 below), sentence case kept */
         headlineSize="display-01"
-        body="A set of source-available React components — inspectors, colour and transparency controls, an icon loader, and an opacity token scale. Installed from npm, rendered live on this page."
-        slotClass={{ body: 'max-w-[var(--kol-content-measure)]' }}
+        body="A set of source-available React components — inspectors, color and transparency controls, an icon loader, and an opacity token scale. Installed from npm, rendered live on this page."
+        /* the buttons centre with the text (2026-09-30 — they sat left of the headline) */
+        slotClass={{ body: 'max-w-[var(--kol-content-measure)]', actions: 'justify-center' }}
         actions={<>
           <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
             Browse components
@@ -403,6 +407,9 @@ export default function Home() {
           </Button>
           <Button variant="primary" onClick={() => navigate('/sets')}>
             Sets
+          </Button>
+          <Button variant="primary" onClick={() => navigate('/apps')}>
+            Apps
           </Button>
           <Button variant="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
             Source
@@ -421,9 +428,8 @@ export default function Home() {
 
       {/* ── Bento wall — full-bleed: capped live content, skeleton edges (shadcn model) ── */}
       <section className="relative overflow-hidden pb-24">
-        <p className="kol-helper-12 text-meta uppercase mb-6 text-center">
-          Rendered live from the packages — dashboards, blocks, and components
-        </p>
+        {/* the "Rendered live from the packages" line went (2026-09-30, the user: "move it below the
+          * fold? or just remove it?") — the hero's body already says it */}
         <GhostFlank side="left" />
         <GhostFlank side="right" />
         {/* Column count derives from the wall's OWN width (min card 20rem, cap 4)

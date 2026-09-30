@@ -3,7 +3,7 @@
  * =============================================================================
  * Component CSS for the type-specimen apparatus. Recreated 2026-07-09 when the
  * type-specimen kit + live-font effects (TypeSample, TypeSpecCard, TextPressure,
- * ColorLoader) moved from @kolkrabbi/kol-component into @kolkrabbi/kol-foundry;
+ * IntroLoader, then ColorLoader) moved from @kolkrabbi/kol-component into @kolkrabbi/kol-foundry;
  * their rules moved here from kol-components-atoms.css with them. CSS always
  * lives in kol-theme — the foundry package ships JS only.
  *
@@ -32,7 +32,7 @@
    Everything else (layout, sizing, weight) is Tailwind utilities / inline vars
    on the JSX. Stroke color comes in through the inline `--kol-text-pressure-
    stroke` custom property (defaulted here so the rule is standalone-safe).
-   ColorLoader composes TextPressure and needs no rules of its own. */
+   IntroLoader composes TextPressure and needs no rules of its own. */
 .kol-text-pressure--stroke .kol-text-pressure-char {
   position: relative;
 }

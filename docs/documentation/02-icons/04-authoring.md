@@ -14,7 +14,7 @@ related:
 
 # Authoring an icon
 
-The grid an icon is drawn to, and the separate loader for full-colour artwork.
+The grid an icon is drawn to, and the separate loader for full-color artwork.
 
 ## Keyline guide
 

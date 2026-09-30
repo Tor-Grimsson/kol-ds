@@ -21,7 +21,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * click, and this one is inside the link rather than being it.
  *
  * Both hover parts ink on the OPACITY scale (`text-oq-80`), not an `fg-*` role:
- * a stroke glyph on a flat fg colour reads wrong against the plate, and oq is
+ * a stroke glyph on a flat fg color reads wrong against the plate, and oq is
  * what the rest of the chrome uses.
  *
  * ONE type class throughout — kol-mono-12. helper-12 is line-height 1 against

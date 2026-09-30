@@ -114,7 +114,7 @@ export function SectionIndex({ sections }) {
   )
 }
 
-/* Colour — the copy, then one swatch row per ramp under its label and note. The first ramp's
+/* Color — the copy, then one swatch row per ramp under its label and note. The first ramp's
  * heading sits in the copy's own prose block (olina's Concept + Greyscale were one block); each
  * further ramp opens its own, as kol-website's hue ramps did. */
 function ColorSection({ s, ramps }) {

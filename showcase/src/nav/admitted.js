@@ -131,7 +131,7 @@ export const CATEGORIES = [
   {
     key: 'blocks-sets',
     label: 'Blocks + Sets',
-    surfaces: ['blocks', 'sets'],
+    surfaces: ['blocks', 'sets', 'cards'],
     categories: [],
     rule: 'docs/documentation/04-compositions/01-blocks-and-sets.md',
     awaits: 'R4 · metadata — verified 2026-08-09: all 31 modules (22 blocks + 9 sets) carry the full contract',

@@ -11,7 +11,7 @@
  * LEDs are the set's own emitters, deliberately NOT `--kol-palette-*` (user
  * ruling: "leds and the colors should stay, they are unique to this set").
  *
- * `JackSocket` appends a hex alpha to its role colour for the glow, so the two
+ * `JackSocket` appends a hex alpha to its role color for the glow, so the two
  * jack roles must resolve to HEX on :root — a consumer overriding them binds a
  * hex, never a var().
  * --------------------------------------------------------------------------- */

@@ -116,7 +116,7 @@ export default function SettingsScaffold({
       {picker}
       {themeToggle}
       {onOpenSettings && (
-        <Tooltip label="Display settings">
+        <Tooltip label="Display">
         <IconFrame
           name="settings-01"
           variant="primary"

@@ -35,7 +35,7 @@ related:
 > **Values live in [[10-opacity-lookup|the lookup]]** — every family, stop and role, generated from the CSS by
 > `pnpm lookups`. This page is the reasoning.
 
-**Colour is hue; this page is ink weight.** [[02-color|Color]] holds the brand
+**Color is hue; this page is ink weight.** [[02-color|Color]] holds the brand
 ramps — the yellows, reds, blues. Everything here is neutral: the theme's own
 ink at some strength, over something. The two are separate systems and are
 looked up separately, which is why they are separate pages.
@@ -43,7 +43,7 @@ looked up separately, which is why they are separate pages.
 ## Ink roles
 
 The eight names. Each is an alias onto one numeric stop — a role is a *position
-on the ladder*, never a colour.
+on the ladder*, never a color.
 
 | Token | Stop | Role |
 |---|---|---|
@@ -147,9 +147,9 @@ Recorded in full because the second ruling overturns the first and the reasoning
 for both still stands on its own terms.
 
 **Morning — `body` → `default`.** *"I will never associate it with color."* The
-stop is a colour, and every other name in the ladder describes ink weight;
+stop is a color, and every other name in the ladder describes ink weight;
 `body` described a **kind of text**, so it read as a type role sitting in a
-colour set — the same class of confusion as the `.text-fg-*` / `--kol-fg-*`
+color set — the same class of confusion as the `.text-fg-*` / `--kol-fg-*`
 split. `default` says what it is: the resting ink, the stop the other four
 deviate from. The utility, the token and all 78 call sites moved together.
 
@@ -166,7 +166,7 @@ ladder instead of the name: these are ink roles, they only ever appear as
 `text-*`, and none of them sets a font.
 
 `default` **survives as a deprecated alias** of `body` so a consumer mid-sweep
-cannot render colourless. All 25 in-repo call sites are already on `text-body`.
+cannot render colorless. All 25 in-repo call sites are already on `text-body`.
 
 Not `base`: Tailwind already ships `.text-base` as a **font-size** utility, so
 that name would have re-created the collision one word over.

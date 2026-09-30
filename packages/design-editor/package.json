@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/design-editor",
-  "version": "0.17.0",
+  "version": "0.19.0",
   "private": false,
   "description": "The Kolkrabbi design editor as one embeddable React component — a DOM/SVG vector + generative compositor (canvas, layers, palette/pattern/type generators, kinetic type, boolean geometry, image export). Consumes the @kolkrabbi/kol-* design system as peers. The one BUILT package in this repo (ARCHITECTURE §4 exception, 2026-09-03).",
   "license": "MIT",

@@ -23,7 +23,7 @@
  * no text-transform beyond the `uppercase` the original carried.
  *
  * @param {ReactNode} caption - Label above the frame; omitted, no figcaption renders
- * @param {string} backdrop - CSS colour for the frame ground (default: the fg-04 wash)
+ * @param {string} backdrop - CSS color for the frame ground (default: the fg-04 wash)
  * @param {string} className - Extra classes on the <figure>
  * @param {ReactNode} children - The mock
  */

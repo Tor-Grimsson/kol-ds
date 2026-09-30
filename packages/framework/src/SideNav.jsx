@@ -398,7 +398,7 @@ function SideNavInner({
        * the aside's position/height/stack live in .kol-sidenav
        * (kol-framework.css). `sticky … h-dvh z-20` here outranked the 767px
        * drawer rule's `position: fixed`, so every consumer page opened one
-       * viewport down on phones. Only colour utilities ride the element. */
+       * viewport down on phones. Only color utilities ride the element. */
       className={`kol-sidenav${background ? ' bg-surface-primary' : ''}${hairline ? ' border-r border-fg-08' : ''}${collapsed ? ' is-collapsed' : ''}${drawerOpen ? ' is-drawer-open' : ''}`}
     >
       {/* NO chip Button in either state (user build order 2026-08-09 — "MAKE

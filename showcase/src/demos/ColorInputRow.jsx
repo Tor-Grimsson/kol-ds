@@ -54,7 +54,7 @@ export default function ColorInputRowDemo() {
 
       {/* THE RESOLVER SEAM + the quick states (editor-set-is-behind-its-source,
         * 2026-09-03). The value here is a `palette:` REF, not a hex — the row
-        * never sees a colour, it asks `resolveRef` for one, so an app keeps its
+        * never sees a color, it asks `resolveRef` for one, so an app keeps its
         * own palette and this stays a composition. The popover's Theme button
         * sets `autoValue`, a `var(--kol-*)` token that flips with light/dark:
         * the swatch paints it LIVE and the field shows `auto` rather than a

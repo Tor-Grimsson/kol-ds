@@ -1,5 +1,24 @@
 # @kolkrabbi/kol-theme
 
+## 0.159.0 — 2026-09-30
+
+**`.kol-rail-grab--right`** (the reuse pass — UI built fresh last night swapped for what the DS already ships).
+
+- A right-hand rail's grab pill sits on its LEFT edge, facing the page. The modifier EditorShell has stamped since it shipped had no rule, so a right rail's pill sat on its outer edge.
+
+## 0.158.0 — 2026-09-30
+
+**Touch floor on doc chrome** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).
+
+- `@media (pointer: coarse)`: the frontmatter panel's tag chips and its Expand toggle take the control ladder's `sm` rung (`--kol-ctl-sm`, 32 on touch). They were 14–24px tall. Desktop is unchanged.
+
+## 0.157.0 — 2026-09-30
+
+**The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).
+
+- **⚠ New rule: an actionable IconFrame wears the KOL ring.** `a.kol-icon-frame:focus-visible` / `button.kol-icon-frame:focus-visible` → `outline: 2px solid var(--kol-focus-ring)`; mouse focus draws none. It had no focus rule, so the browser drew its blue ring on every icon button in a header.
+- Comments: one spelling, `color`.
+
 ## 0.156.0 — 2026-09-29
 
 - **The phone bar** (kol-shell `AppShell touch="bar"`): `.kol-phone-nav-more` (the More sheet above the bar) and `.kol-phone-nav-scrim`.

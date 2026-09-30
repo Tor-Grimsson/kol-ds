@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom'
  *   L1  section  `.shell-sidebar-toggle` + kol-doc-eyebrow    quiet, state glyph at the end
  *   L2  group    `.shell-nav-group-header` + kol-mono-14      louder, chevron
  *
- * L2 carries NO colour class: `.shell-nav-group-header` owns weight 500 and
+ * L2 carries NO color class: `.shell-nav-group-header` owns weight 500 and
  * `--kol-fg-shout` itself (user ruling 2026-08-01). It used to carry
  * `text-body` — a utility that resolved to nothing at the time, and would now
  * fight the rule for the same property. One owner.

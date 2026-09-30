@@ -47,7 +47,7 @@ const RULER = 20   /* the gutter the rulers occupy, screen px */
    a slide's grid has to be over the artwork, so it is ours to draw. */
 const GRID_MARGIN = 80
 const GRID_COLS = 12
-/* fxr's guide colour — deliberately not a token: it has to pop on any fill */
+/* fxr's guide color — deliberately not a token: it has to pop on any fill */
 const GUIDE = '#FF00C8'
 
 export default function SlideStage({ doc, onChange, selectedId, selectedIds = [], onSelect, onEditStart, onEditEnd, showGrid = false }) {

@@ -19,7 +19,7 @@ import { NavLink } from 'react-router-dom'
  * eyebrow-box failure exactly, one rung further down, which is why the rails
  * kept drifting after RailSection fixed L1 and L2.
  *
- * The look now lives in `.shell-nav-item` (layout, colour, hover, focus,
+ * The look now lives in `.shell-nav-item` (layout, color, hover, focus,
  * active); this component owns the markup. `validate:rails` R4 fails a
  * hand-written `shell-nav-item` anywhere but here.
  *

@@ -170,7 +170,7 @@ import {
 - **The page background steps up from a primary back (ShellPageWash, user
   ruling 2026-08-27 — shell ≥0.11.0):** `AppShell`'s content wrapper paints
   `surface-primary` always — the back of the back, in every app — and takes
-  `pageWash` (a CSS colour, e.g. `'var(--kol-fg-12)'`, default none), set as
+  `pageWash` (a CSS color, e.g. `'var(--kol-fg-12)'`, default none), set as
   `--kol-shell-page-wash` on that wrapper; `PageShell` paints
   `var(--kol-shell-page-wash, var(--kol-surface-primary))`, and a page root
   that is not `PageShell` reads the same variable. It is a **transparent wash
@@ -184,7 +184,7 @@ import {
   `PageShell` inside that frame paints nothing over it — both painting made
   `fg-02` render as two 0.02 layers on olina's /slide-deck. It is not
   `--kol-tone-ground`: the wash is a translucent film, the ground is the opaque
-  colour a floating surface paints, and CSS cannot flatten one into the other.
+  color a floating surface paints, and CSS cannot flatten one into the other.
 
 ## App tier
 

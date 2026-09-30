@@ -17,7 +17,7 @@ import {
 
 
 // Read live CSS-var values off <html>; re-read on theme change. Chip *fills*
-// use var() directly and re-colour on their own — this is only for the text.
+// use var() directly and re-color on their own — this is only for the text.
 function useResolved(tokens) {
   const [vals, setVals] = useState({})
   useEffect(() => {

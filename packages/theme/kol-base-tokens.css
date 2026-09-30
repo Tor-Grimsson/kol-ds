@@ -31,7 +31,7 @@
    *             range. Use when a step has to go past the theme's own ink:
    *             "applying a percentage of primary on top of primary won't make
    *             it darker, but applying a percentage of 000000 will."
-   *   absolute  THE THEME'S OWN near-black / near-white, FROZEN. Same colour in
+   *   absolute  THE THEME'S OWN near-black / near-white, FROZEN. Same color in
    *             light and dark — the original meaning of the word here, before
    *             the 2026-08-28 rename collapsed it into an alias of `ab`.
    *

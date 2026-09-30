@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 
-/* Read a colour binding once, lazily — the roles live in kol-theme's
+/* Read a color binding once, lazily — the roles live in kol-theme's
  * kol-components-controls.css. HEX is required here: the ring appends a hex
  * alpha (`${color}${aa}`), so these must resolve to hex on :root, never var(). */
 const _hex = {}
@@ -33,7 +33,7 @@ function stopJackLoop() {
  * signal — `signalRef.current` is `{ type: 'scalar'|'color'|'points', value, … }`,
  * read on a shared rAF at ~15fps, dirty-checked. Drag-to-patch, the registry and
  * the pending cable are the CONSUMER'S: they arrive as the props below and
- * `onPointerDown`. Colour role: `color` is a HEX (the glow appends a hex alpha);
+ * `onPointerDown`. Color role: `color` is a HEX (the glow appends a hex alpha);
  * default is the LED red; the consumer passes `--kol-ctl-signal-input` /
  * `--kol-ctl-cv-attenuate` for its primary / attenuate inputs.
  *
@@ -45,7 +45,7 @@ function stopJackLoop() {
  * @param {boolean}    pending      this output is the pending cable's source
  * @param {boolean}    dimPending   a cable is pending elsewhere (an input shows a dim ring)
  * @param {boolean}    cablesHidden the consumer hides cables — a connected hole fills solid
- * @param {string}     color        HEX role colour (default `--kol-ctl-led-red`)
+ * @param {string}     color        HEX role color (default `--kol-ctl-led-red`)
  * @param {object}     signalRef    `{ current }` — the live signal for the glow
  * @param {boolean}    bg           the fg-04 plate behind the ring (default: outputs only)
  * @param {Function}   onPointerDown  the consumer's routing gesture

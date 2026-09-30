@@ -166,7 +166,7 @@
 .kol-table-token {
   /* THE LOOK LIVES IN ONE PLACE (2026-08-09) — the shared chip recipe in
    * kol-type-roles.css (`.kol-prose code, .kol-doc-code-inline,
-   * .kol-table-token`): font, size, weight, colour, fill, padding, radius.
+   * .kol-table-token`): font, size, weight, color, fill, padding, radius.
    * This rule keeps only the CELL mechanics the prose chip must not have. */
   display: inline-flex;
   align-items: center;

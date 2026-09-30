@@ -395,7 +395,7 @@ const ContentFilters = ({
               * 05-control-chrome.md:109 — "any icon-only control in chrome is
               * IconFrame; nothing hand-writes the square". This wore
               * `kol-btn-md kol-btn-icon` and then removed the background, the
-              * border and the colour by inline style, which is the whole button
+              * border and the color by inline style, which is the whole button
               * paid for and thrown away — and it left the control with no
               * states at all while the search beside it had hover.
               *

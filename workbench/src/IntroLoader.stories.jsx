@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import { ColorLoader } from '@kolkrabbi/kol-foundry'
+import { IntroLoader } from '@kolkrabbi/kol-foundry'
 
 /* Mounted behind a toggle inside a framed stage (the loader fills h-full).
  * dismissOnClick → click the curtain to slide it up + fire onComplete, which
@@ -20,7 +20,7 @@ export const Default = () => {
       <Button onClick={() => setOn(true)} disabled={on}>Play</Button>
       <Frame>
         {on ? (
-          <ColorLoader text="KOLKRABBI" dismissOnClick onComplete={() => setOn(false)} />
+          <IntroLoader text="KOLKRABBI" dismissOnClick onComplete={() => setOn(false)} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <span className="kol-mono-12 text-fg-48">Press Play, then click the curtain.</span>
@@ -38,7 +38,7 @@ export const CustomColors = () => {
       <Button onClick={() => setOn(true)} disabled={on}>Play</Button>
       <Frame>
         {on ? (
-          <ColorLoader
+          <IntroLoader
             text="LOADING"
             dismissOnClick
             bgColor="var(--kol-surface-inverse)"

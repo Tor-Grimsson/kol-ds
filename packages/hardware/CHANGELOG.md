@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.3.2 — 2026-09-30
+
+- Comments and README only: one spelling, `color`.
+
 ## 0.3.1 — 2026-09-29
 
 - `EnvelopeGenerator` — the zoom rows no longer pin `h-6`, which held the coarse-pointer 44px slider row at 24 and overlapped the X and Y touch targets.

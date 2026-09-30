@@ -115,7 +115,7 @@
  *                          only shares the word "token".
  *
  * The two chips had drifted on every value that makes them look alike: fg-04
- * against fg-08, radius-sm against a bare literal, no colour against fg-80.
+ * against fg-08, radius-sm against a bare literal, no color against fg-80.
  * Same concept, two spellings — the `.text-fg-*` vs `--kol-fg-*` lesson again.
  * ONE RECIPE NOW, size and padding included (user ruling 2026-08-09: "it's
  * basically the same style, so why are they so different"). The earlier
@@ -276,7 +276,7 @@
  * uppercase · fg-64; the slot is `eyebrow` on ContentText and SectionText.
  * `kol-card-kicker` is the alias below, on the retirement ledger. */
 /* NO ink on the role (ShellHomeSystem, 2026-08-27): type roles set type, not
- * colour — a baked fg-64 outranked every ink utility beside it. Consumers that
+ * color — a baked fg-64 outranked every ink utility beside it. Consumers that
  * relied on the 64 pass `text-body`; the `kol-card-kicker` alias keeps it. */
 .kol-eyebrow {
   font-family: var(--kol-font-family-mono);

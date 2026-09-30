@@ -22,3 +22,4 @@ The showcase reviewed to source, the quarantine roadmap that acts on it, and the
 | [[../../documentation/01-foundations/07-doc-card-sets\|Doc & card sets]] | Two theme-level type-role sets, one system |
 | [[03-audit-findings\|Audit findings]] | The twenty-two defects, traced to source |
 | [[04-surface-rules\|Surface rules]] | Admission rules for Docs, Search, References |
+| [[05-audit-names-and-homes\|Names and homes audit]] | Names, homes, categories and tags — the 2026-09-29 review, waiting on rulings |

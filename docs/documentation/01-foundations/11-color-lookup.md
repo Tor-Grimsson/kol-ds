@@ -30,7 +30,7 @@ related:
 
 Hue and surface values. **Ink weight is not here** — the `fg-*` / `oq-*`
 ladders and the eight ink roles live in [[10-opacity|opacity]], because they are
-neutral ink at a strength rather than colour.
+neutral ink at a strength rather than color.
 
 ## Surfaces
 

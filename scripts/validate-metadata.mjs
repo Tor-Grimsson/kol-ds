@@ -23,6 +23,10 @@
  *   M3  Sentence case. A title and a description start with a capital.
  *   M4  `created` is present. The panel had only `updated`, so no doc had an
  *       age; backfilled from file birth time, the one honest source available.
+ *   M5  A phase-log entry's title fits its rail row: <= 3 words, <= 22 characters,
+ *       no leading "The"; `+` `&` `/` join a pair and are not words (the H2 law's
+ *       connectors). The Development rail clipped six of ten titles (user,
+ *       2026-09-30: "we dont want clipping … make some title rule").
  *
  * Same shape as validate-headings.mjs and for the same reason: the check is on
  * the SOURCE, not on the renderer. Truncating in the panel would have hidden
@@ -82,6 +86,12 @@ for (const file of walk(VAULT)) {
     }
     if (/^[a-z]/.test(t) && !LOWERCASE_PROPER.test(t)) {
       errors.push(`${rel}  M3 title is not sentence case\n      title: ${t}`)
+    }
+    if (rel.includes('operations/09-phase-log/') && !/\/INDEX\.md$/.test(rel)) {
+      const words = t.split(/\s+/).filter((x) => !/^[+&/]$/.test(x)).length
+      if (words > 3 || t.length > 22 || /^The\s/.test(t)) {
+        errors.push(`${rel}  M5 phase-log title does not fit its rail row (<= 3 words, <= 22 chars, no leading "The")\n      title: ${t}`)
+      }
     }
   }
 

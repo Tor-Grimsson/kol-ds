@@ -13,7 +13,7 @@
  * twice. `SlideRenderer` draws a doc; the thumb, the stage, the presentation and every export render
  * from the same document, so an edit shows everywhere at once.
  *
- * Colours are the deck's own ramp tokens (`var(--grey-N)`), which the renderer defines on the slide
+ * Colors are the deck's own ramp tokens (`var(--grey-N)`), which the renderer defines on the slide
  * itself — so a slide renders the same in any app, with no stylesheet to import. The layouts a deck
  * starts from are the CONSUMER's (olina's fourteen credentials slides are the fixture's seed).
  */
@@ -45,7 +45,7 @@ export const GREYS = Object.fromEntries(
 export const ABSOLUTE_BLACK = '#000000'
 export const BLACK = 'var(--kol-color-absolute-black)'
 
-/** Resolve a document colour to something a standalone SVG or a PPTX can paint. */
+/** Resolve a document color to something a standalone SVG or a PPTX can paint. */
 export const resolveColor = (c) => {
   if (!c) return undefined
   if (c === BLACK) return ABSOLUTE_BLACK

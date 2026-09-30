@@ -7,7 +7,7 @@
  *
  * WHY IT IS A FILLED-SECTION PROBLEM, not a newsletter one. Any member of the
  * family can be a filled surface, and a filled surface inside `.kol-page` has its
- * colour clipped by the page gutter on mobile — strips of page down both sides of
+ * color clipped by the page gutter on mobile — strips of page down both sides of
  * the fill. Reported once per organism until the prop is shared.
  *
  * NOT `.kol-full-bleed`: that escape is CONTAINER-relative, so on an organism

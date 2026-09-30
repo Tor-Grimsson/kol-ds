@@ -47,7 +47,7 @@ Hardware is theme-INVARIANT — a knob cap is black on a white panel too — so 
 --kol-ctl-signal-input · --kol-ctl-cv-attenuate
 ```
 
-`JackSocket` reads its colour role as a HEX off `:root` (it appends a hex alpha for the glow), so a consumer overriding a role binds a hex, never a `var()`.
+`JackSocket` reads its color role as a HEX off `:root` (it appends a hex alpha for the glow), so a consumer overriding a role binds a hex, never a `var()`.
 
 ## Seams
 

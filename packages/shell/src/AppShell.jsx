@@ -90,7 +90,7 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  *                                        tab switch. Matched on `e.code` (`Digit1`…) because Opt+digit yields
  *                                        `¡ ™ £ ¢` as `e.key` on macOS; ignored while typing in a field; only
  *                                        digits with an item; `preventDefault` on a match. Default off.
- * @param {string}  props.pageWash      a CSS colour painted by `PageShell` OVER the shell's primary back
+ * @param {string}  props.pageWash      a CSS color painted by `PageShell` OVER the shell's primary back
  *                                        (ShellPageWash, kol-monitor 2026-08-27 — user: "the back of the back
  *                                        should be primary — then you can just add transparent on top to step
  *                                        up the lightness"): `'var(--kol-fg-12)'` steps the page a rung lighter

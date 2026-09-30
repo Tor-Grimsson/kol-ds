@@ -35,6 +35,10 @@ const COMPONENTS = {
 const ALLOWED_INVERTED = {
   'showcase/src/blocks/hero-full-bleed.jsx': 'site hero — the second CTA of a pair',
   'showcase/src/blocks/feature-showcase.jsx': 'site hero — the second CTA of a pair',
+  'showcase/src/cards/split-image-right.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/cards/split-image-left.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/cards/split-centered.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/cards/split-image-top.jsx': 'site section — the second CTA of a pair',
   'showcase/src/sets/section-set.jsx': 'site section — the second CTA of a pair',
   'showcase/src/demos/FeatureSplit.jsx': 'site section — the second CTA of a pair',
   'showcase/src/demos/SectionSplit.jsx': 'site section — the second CTA of a pair',

@@ -149,7 +149,7 @@ const HAND_COUNT = />\(\{[^}]*\}\)</
  * § 3b) — there is no longer one stack of Components · Tools · Documentation · Operations on
  * every route. The one multi-section rail with a ruled order is Docs: the guides, the live
  * specimens, then the vault's two categories in folder order (02-shells.md § Rails per space). */
-const SECTION_ORDER = ['Guides', 'Specimens', 'Documentation', 'Operations']
+const SECTION_ORDER = ['Documentation', 'Operations']
 const VAULT_MARKER = null
 const ORDER_FILE = 'showcase/src/lib/ShellChrome.jsx'
 

@@ -34,7 +34,7 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 | `TypeSample` | Renders one labeled live specimen — family/weight/size/line-height via props | moved |
 | `TypeSpecCard` | Font-metric data sheet beside a live sample slot | moved |
 | `TextPressure` | Manipulates variable-font axes (`wght`/`wdth`/`ital`) per glyph toward the pointer | moved |
-| `ColorLoader` | Branded loading curtain — times in a live TextPressure variable-font wordmark | moved |
+| `IntroLoader` (was `ColorLoader`) | Branded loading curtain — times in a live TextPressure variable-font wordmark | moved |
 
 ### Scaffold + composition
 
@@ -53,7 +53,7 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 ## Dependencies
 
 - **Shared primitives** (from `@kolkrabbi/kol-component`, never bundled): `Button` · `Divider` · `Icon` · `Slider` · `Dropdown` · `Pill` · `Tag` · `ContentFilters` · `useAxisAnimation` · `usePrefersReducedMotion`.
-- **Peer:** `framer-motion` (`ColorLoader`'s curtain motion). **Optional peer:** `opentype.js` (`GlyphMetricsGrid` falls back without it).
+- **Peer:** `framer-motion` (`IntroLoader`'s curtain motion). **Optional peer:** `opentype.js` (`GlyphMetricsGrid` falls back without it).
 - **CSS:** `kol-components-foundry.css` in `@kolkrabbi/kol-theme` (type-sample/spec rules + the TextPressure stroke ghost); everything else is theme utility classes.
 - **Router:** none — injected `linkComponent` prop (defaults to `<a>`).
 

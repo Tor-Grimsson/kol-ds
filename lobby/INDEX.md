@@ -319,6 +319,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [ag-init-report-handoff-not-outbox](outbox/ag-init-report-handoff-not-outbox.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🔵 filed 2026-09-29 — `/ag-init` reports a newer handoff, stops flagging unanswered outbox receipts | **none** |
 | 🔵 | [TiltFamilyForks](outbox/TiltFamilyForks.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-08-27 — the site's three local tilt forks swap onto component 0.110.0's Tilt family | **none** — the DS side shipped |
 | 🟢 | [ArticleCardSizeSpec](outbox/ArticleCardSizeSpec.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🟢 answered 2026-08-15 — ListingCardSpec returned, executed as kol-content 0.7.0 | **none** |
 

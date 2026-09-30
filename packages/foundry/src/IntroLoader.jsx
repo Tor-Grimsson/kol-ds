@@ -4,7 +4,7 @@ import { usePrefersReducedMotion } from '@kolkrabbi/kol-component'
 import TextPressure from './TextPressure.jsx'
 
 /**
- * ColorLoader — a full-height branded intro/loading curtain. Fills its parent
+ * IntroLoader — a full-height branded intro/loading curtain. Fills its parent
  * on a solid backdrop, times in a variable-font wordmark (a live TextPressure
  * effect) after `wordmarkDelay`, then reveals a bouncing down-chevron cue after
  * `scrollDelay`. With `dismissOnClick`, clicking the curtain slides the whole
@@ -31,7 +31,7 @@ import TextPressure from './TextPressure.jsx'
  * @param {number}    scrollDelay    ms before the chevron cue reveals
  * @param {number}    exitDuration   seconds for the slide-up exit tween
  */
-export default function ColorLoader({
+export default function IntroLoader({
   text = 'KOLKRABBI',
   fontFamily = 'var(--kol-font-family-sans)',
   fontUrl,

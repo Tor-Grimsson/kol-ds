@@ -16,7 +16,7 @@ import { FONT_OPTIONS } from './webFonts.js'
  * on the slide's centre and selects it. Fields: every control is the DS's —
  * `Input` for the words, `Stepper` for the numbers, `Dropdown` for weight,
  * `SegmentedToggle` for font / align / valign / case / italic, `ColorInputRow`
- * for a hex colour (a deck token shows as its string in a plain Input).
+ * for a hex color (a deck token shows as its string in a plain Input).
  *
  * Controlled like the stage: `doc` + `selectedId` in; `onChange(nextDoc)` and
  * `onSelect(id)` out.
@@ -321,7 +321,7 @@ export default function SlideInspector({ doc, selectedIds = [], onChange, onSele
             <LabeledControlSection label={layer.type === 'rule' ? 'Fill' : 'Colour'}>
               <LabeledControl label={layer.type === 'rule' ? 'Fill' : 'Colour'}>
                 <div className="flex flex-col gap-2">
-                  {/* THE DECK'S OWN RAMP FIRST. Every colour in the fourteen
+                  {/* THE DECK'S OWN RAMP FIRST. Every color in the fourteen
                       documents is a `var(--grey-N)` token, and until this row the
                       only way to change one was to TYPE the var() string into a
                       text field. The swatches keep people on the ramp; the hex
@@ -338,12 +338,12 @@ export default function SlideInspector({ doc, selectedIds = [], onChange, onSele
                       />
                     ))}
                   </div>
-                  {/* CUSTOM COLOUR is always reachable (user 2026-09-03: "or set
+                  {/* CUSTOM COLOR is always reachable (user 2026-09-03: "or set
                       custom color?"). It used to appear ONLY when the value was
                       already a hex — a token layer got a plain text field, so the
                       one way off the ramp was to type a hex string by hand.
                       `ColorInputRow` is seeded with the token's RESOLVED hex, so
-                      the picker opens on the colour you can see; writing a hex
+                      the picker opens on the color you can see; writing a hex
                       replaces the token, which is the intent. */}
                   <ColorInputRow hideLabel label="Colour" value={resolveColor(layer.color) ?? '#FFFFFF'} onChange={set('color')} />
                 </div>

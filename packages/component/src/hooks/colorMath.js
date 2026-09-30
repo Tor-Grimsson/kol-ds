@@ -116,7 +116,7 @@ export function harmonyColors(hue, harmony, { saturation = 100, lightness = 50 }
  * package's `colors` payload was half-ignorable).
  *
  * A slot that is `locked`, empty, or has no hex is passed through untouched —
- * locking a colour is the one instruction a re-hue must not overrule.
+ * locking a color is the one instruction a re-hue must not overrule.
  *
  * @param {number} hue base hue, 0–360
  * @param {string|object} harmony harmony id or object

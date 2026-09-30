@@ -171,7 +171,7 @@ function scan(entry) {
 }
 
 const result = {}
-for (const kind of ['blocks', 'sets']) {
+for (const kind of ['blocks', 'sets', 'cards']) {
   result[kind] = {}
   for (const f of readdirSync(join(SRC, kind)).filter((f) => f.endsWith('.jsx'))) {
     result[kind][f.replace('.jsx', '')] = scan(join(SRC, kind, f))
@@ -180,4 +180,4 @@ for (const kind of ['blocks', 'sets']) {
 
 const out = join(SRC, 'usage/composition.json')
 writeFileSync(out, JSON.stringify(result, null, 2))
-console.log(`composition: blocks: ${Object.keys(result.blocks).length} · sets: ${Object.keys(result.sets).length} → showcase/src/usage/composition.json`)
+console.log(`composition: blocks: ${Object.keys(result.blocks).length} · sets: ${Object.keys(result.sets).length} · cards: ${Object.keys(result.cards).length} → showcase/src/usage/composition.json`)

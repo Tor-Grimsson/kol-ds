@@ -57,7 +57,7 @@ import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
  * @param {boolean}   frame     tinted box + border UNDER the media
  * @param {boolean}   border    border only, no tint
  * @param {string}    bg        tint only, no border — a raw token value
- * @param {string}    borderHover  border colour on hover (article's fg-16 step)
+ * @param {string}    borderHover  border color on hover (article's fg-16 step)
  * @param {boolean}   ring      hairline border OVER the media, inset
  * @param {boolean|'hero'} zoom  the artwork creeps up inside its frame on the
  *                            card's hover — 1.06; `'hero'` = the hero rung, 1.02

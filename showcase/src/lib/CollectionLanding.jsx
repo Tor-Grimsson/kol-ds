@@ -1,3 +1,4 @@
+import HomeDoc from './HomeDoc.jsx'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, ViewToggle } from '@kolkrabbi/kol-component'
@@ -115,6 +116,8 @@ export default function CollectionLanding({
   previewBase,
   srcDir,
   hero, // { eyebrow, title, lede, browseLabel }
+  home, // a `src/homes/<id>.md` rendered in place of the header (2026-09-30)
+  intro, // a node between the home and the tab strip
 }) {
   const [tab, setTab] = useState('featured')
   const [view, setView] = useState('list')
@@ -131,7 +134,8 @@ export default function CollectionLanding({
         * pages, but that looks weird if the sidebars are open"). The centred
         * hero and its buttons went; the header is the doc header every other
         * space root wears, and the shell owns the width and the x-padding. */}
-      <DocHeader eyebrow={hero.eyebrow} title={hero.title} lede={hero.lede} />
+      {home ? <HomeDoc id={home} /> : <DocHeader eyebrow={hero.eyebrow} title={hero.title} lede={hero.lede} />}
+      {intro}
 
       {/* ── Category tab strip + Browse all ──────────────────── */}
       <div className="mt-10">

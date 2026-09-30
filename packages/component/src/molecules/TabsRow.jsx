@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import CloseButton from '../utilities/CloseButton.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: nests kol-icons's Icon */

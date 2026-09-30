@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.4.3 — 2026-09-30
+
+- Comments only: one spelling, `color`.
+
 ## 0.4.2 — 2026-09-25
 
 - **`DashStackedBarCard` legend ink takes `oq-64`, not `fg-64`** — the icon-ink law

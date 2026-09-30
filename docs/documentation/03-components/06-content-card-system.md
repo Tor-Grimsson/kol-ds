@@ -268,7 +268,7 @@ third of mine that had overturned him.
 an inline style outranks any class:
 
 1. **No card or row hover had ever fired.** `background` and `borderColor` were
-   set inline, so `.kol-content-hover:hover` could not win. Rest colours are now
+   set inline, so `.kol-content-hover:hover` could not win. Rest colors are now
    custom properties (`--kol-row-bg`, `--kol-card-border`) and the hover rules
    own the declarations.
 2. **A clipped icon never opened.** `style={{ width: 0 }}` beat
@@ -485,7 +485,7 @@ The featured card riding a page's fold (Stack) — `ListingCard size="hero"` as 
 | Classification | **not shown** on the card | no slot — consumer must fold it into `body` |
 | Padding | `p-6` = 24px | `--kol-pad-card-lg` = 24px `=` |
 | Hover | whole card → `surface-inverse`, details fade out, pangram in | **all dropped** |
-| `isActive` | pins the hover treatment | only `selected`, which changes the border colour |
+| `isActive` | pins the hover treatment | only `selected`, which changes the border color |
 
 ### typeface · row — `TypefaceLibraryItem variant="list"` → `ContentRow`
 

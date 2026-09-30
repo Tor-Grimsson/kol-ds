@@ -25,6 +25,7 @@ tags:
   - domain/architecture
   - audience/consumer
 related:
+  - "[[../00-overview/05-names|names]]"
   - "[[11-shell-system|shell system]]"
   - "[[../../operations/07-apps-tier/INDEX|apps tier]]"
 ---

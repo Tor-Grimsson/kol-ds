@@ -55,7 +55,7 @@ Generated from `packages/icons/src/kol-icon-set-v1/` — **regenerate after any 
 
 ## Signal set
 
-`kol-icon-set-signal` (kol-icons ≥0.25.0) — **101 glyphs**, the signal-flow vocabulary for instrument surfaces: waveforms, filters, logic gates, dither patterns, shapers, ramps, transport, cables, colour harmony. A set beside v1 rather than inside it, so an app that renders no rack carries none of it. `<Icon>` resolves v1 first, then this — call sites are unchanged.
+`kol-icon-set-signal` (kol-icons ≥0.25.0) — **101 glyphs**, the signal-flow vocabulary for instrument surfaces: waveforms, filters, logic gates, dither patterns, shapers, ramps, transport, cables, color harmony. A set beside v1 rather than inside it, so an app that renders no rack carries none of it. `<Icon>` resolves v1 first, then this — call sites are unchanged.
 
 | Group | n | Glyphs |
 |---|---|---|

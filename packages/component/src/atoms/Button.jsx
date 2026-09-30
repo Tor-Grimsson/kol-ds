@@ -18,7 +18,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {string} props.iconRight - Icon name to display on the right
  * @param {string} props.iconLeftHover - Icon to show on hover (left position)
  * @param {string} props.iconRightHover - Icon to show on hover (right position)
- * @param {'primary'|'secondary'|'inverted'|'outline'|'ghost'|'grey'|'sunken'} props.tone - the ground (`secondary` = the page surface, `inverted` = the text colour as fill — what `variant="secondary"` paints) (tone-is-the-ground-axis, 2026-09-03) — wins over `variant` on the same element; unset = inherit the wrapper's. `sunken` = the control set's dark well + fg-96 ink (ControlToneSunken); `inverse` aliased
+ * @param {'primary'|'secondary'|'inverted'|'outline'|'ghost'|'grey'|'sunken'} props.tone - the ground (`secondary` = the page surface, `inverted` = the text color as fill — what `variant="secondary"` paints) (tone-is-the-ground-axis, 2026-09-03) — wins over `variant` on the same element; unset = inherit the wrapper's. `sunken` = the control set's dark well + fg-96 ink (ControlToneSunken); `inverse` aliased
  * @param {string} props.iconOnly - Icon name for icon-only button
  * @param {string} props.iconOnlyHover - Icon to show on hover (icon-only)
  * @param {boolean} props.animateIcon - Disable default hover states to focus on icon animation
@@ -82,7 +82,7 @@ const Button = ({
    * rung, oq-80 ink + aria-current — it had lived in the theme with no
    * component able to emit it, the direct cause of the four-container header. */
   /* An UNKNOWN variant is a typo, not a request for the inverted fill — it fell back to
-   * `kol-btn-secondary` (the text colour as fill) until 2026-09-29, so a misspelt variant
+   * `kol-btn-secondary` (the text color as fill) until 2026-09-29, so a misspelt variant
    * shipped inverted. It now stamps nothing, like an unset variant: the wrapper's tone,
    * else primary — and says so in dev. */
   const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'danger', 'grey']

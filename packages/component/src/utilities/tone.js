@@ -4,7 +4,7 @@
  *
  *   primary · secondary · inverted · outline · ghost · grey · sunken
  *
- * `secondary` paints the PAGE SURFACE and `inverted` the text colour as fill
+ * `secondary` paints the PAGE SURFACE and `inverted` the text color as fill
  * (tone-secondary-is-inverse, 2026-09-03; user: "that tone should be called
  * secondary. What is currently secondary should be called inverted") — 0.134.0
  * had lifted `secondary` from Button's variant, which was already an inverse.

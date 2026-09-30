@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { LoaderOverlay, Button } from '@kolkrabbi/kol-component'
-import { ColorLoader } from '@kolkrabbi/kol-foundry'
+import { IntroLoader } from '@kolkrabbi/kol-foundry'
 
 /* LoaderOverlay is fixed and covers the viewport (FullscreenOverlay backdrop),
  * so it's mounted behind a toggle. Loader slot: inject the full-screen
- * ColorLoader curtain (foundry) — click it to slide up and fire onComplete
+ * IntroLoader curtain (foundry) — click it to slide up and fire onComplete
  * (unmounts). Custom: any children mount in place of the loader. */
 
 export const Default = () => {
@@ -14,7 +14,7 @@ export const Default = () => {
       <Button onClick={() => setOpen(true)}>Open loader overlay</Button>
       <span className="kol-mono-12 text-fg-48">Click the curtain to enter.</span>
       {open && (
-        <LoaderOverlay loader={<ColorLoader dismissOnClick onComplete={() => setOpen(false)} />} />
+        <LoaderOverlay loader={<IntroLoader dismissOnClick onComplete={() => setOpen(false)} />} />
       )}
     </div>
   )

@@ -34,7 +34,7 @@ const ITEMS = [
   {
     media: { src: slide('#4C1D95', '#EC4899', 2), kind: 'image', alt: 'Violet to pink gradient' },
     title: 'After Hours in the Print Room',
-    description: 'Risograph experiments, three-colour misregistration, and the happy accidents we kept.',
+    description: 'Risograph experiments, three-color misregistration, and the happy accidents we kept.',
     href: '#/features/print-room',
     ctaLabel: 'See the prints',
   },

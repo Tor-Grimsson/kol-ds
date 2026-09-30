@@ -332,7 +332,7 @@ export default function ContentSetReferenceSet() {
             {...TEXT.file}
             specs={[
               { label: 'Format', value: 'JPEG' },
-              { label: 'Colour', value: 'sRGB' },
+              { label: 'Color', value: 'sRGB' },
             ]}
           />
         </div>

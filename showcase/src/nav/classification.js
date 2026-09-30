@@ -91,13 +91,45 @@ export const TIERS = {
   /* kol-foundry */
   TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
-  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', ColorLoader: 'molecules', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
+  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', IntroLoader: 'organisms', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
   FoundryOpentypeFeatures: 'organisms', FoundryTypefaceDetails: 'organisms', FoundryTypefacePairing: 'organisms',
   TypefaceHero: 'organisms', TypefaceStyleSection: 'organisms', FontPreviewSection: 'organisms',
   VariableFontSection: 'organisms', GlyphMetricsGrid: 'organisms', GlyphMetricsSection: 'organisms',
   FoundryCharacterSets: 'organisms', TypefaceLibraryGrid: 'organisms',
   TypefaceLibraryGridWithVariables: 'organisms', TypeSpecimenLive: 'organisms',
   TypefaceSpecimenPage: 'organisms',
+  /* ── Atomic tiers for the packages that had none (2026-09-30 — the user's ruling on the
+   *    names audit: every component sits on the atomic ladder; ownership is the Package view).
+   *    Same tests as kol-component: an atom paints and stands alone, a molecule nests atoms,
+   *    an organism is a page region, a utility has no face of its own. ── */
+  /* kol-workshop */
+  TagPath: 'atoms',
+  /* kol-framework — was split fw-chrome / fw-structure by ownership */
+  ThemeToggle: 'atoms',
+  SideNav: 'organisms', ShellHeader: 'organisms', PortalFooter: 'organisms',
+  PageHero: 'organisms', PageSection: 'organisms',
+  /* kol-shell */
+  Logomark: 'atoms',
+  TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
+  SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
+  NavRail: 'organisms', PhoneNav: 'organisms', WalkthroughPanel: 'organisms',
+  SettingsScaffold: 'organisms', HubSettings: 'organisms', HubHome: 'organisms',
+  CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms',
+  PageShell: 'utilities',
+  /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
+  Knob: 'atoms', Fader: 'atoms', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
+  IconButton: 'atoms', JackSocket: 'atoms', PanelLabel: 'atoms',
+  LabeledJack: 'molecules', ModuleHeader: 'molecules', EnvelopeModeToggle: 'molecules',
+  SignalScope: 'molecules', SignalReference: 'molecules',
+  ParamSheet: 'organisms', ModuleFrame: 'organisms', ChannelStrip: 'organisms', EnvelopeGenerator: 'organisms',
+  FlipCard: 'utilities',
+  /* kol-deck */
+  SlideThumb: 'molecules', DeckFile: 'molecules', SlideRenderer: 'molecules',
+  SlideStage: 'organisms', SlideInspector: 'organisms', DeckEditor: 'organisms',
+  Decks: 'organisms', DecksCatalog: 'organisms', DeckSettings: 'organisms',
+  /* kol-notes */
+  NoteThumb: 'molecules',
+  NoteEditor: 'organisms', Notes: 'organisms', NotesCatalog: 'organisms',
 }
 
 /* ── Function: closed set — action, input, display, feedback, navigation,
@@ -148,7 +180,7 @@ export const FUNCTIONS_BY_NAME = {
   BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
-  ColorLoader: 'display', LoaderOverlay: 'overlay',
+  IntroLoader: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
   ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
@@ -209,7 +241,7 @@ export const FUNCTIONS_BY_NAME = {
   RatioBar: 'display', Tower: 'display', QuadSplit: 'display',
   CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
   /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
-   * in situ, a colour with its value, an asset in a frame. */
+   * in situ, a color with its value, an asset in a frame. */
   AssetCard: 'display', Swatch: 'display',
   PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
   PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
@@ -326,6 +358,8 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* ColorLoader = IntroLoader · ResultRow = ContentRow (2026-09-30) */
+  'ColorLoader', 'ResultRow',
   /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
    * cards are GONE from the barrels, not deprecated. Sources quarantined to
    * `_tmp/2026-08-30-content-set-exports/`. kol-dashboards' `GridCard` is a

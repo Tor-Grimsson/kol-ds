@@ -13,7 +13,7 @@ const GroupingContext = createContext(null)
 
 export function GroupingProvider({ children }) {
   const [mode, setModeState] = useState(() => {
-    try { return localStorage.getItem(KEY) === 'function' ? 'function' : DEFAULT } catch { return DEFAULT }
+    try { const v = localStorage.getItem(KEY); return ['function', 'package'].includes(v) ? v : DEFAULT } catch { return DEFAULT }
   })
   const setMode = useCallback((m) => {
     setModeState(m)

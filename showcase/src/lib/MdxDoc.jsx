@@ -3,6 +3,7 @@ import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { mdxComponents } from './mdx-components.jsx'
 import { buildProvenance, Pager } from './component-page-parts.jsx'
 import { CATEGORY_LABELS } from '../nav/registry.js'
+import { useFrontmatter } from './frontmatter.jsx'
 
 /**
  * MdxDoc — renders one `.mdx` page: its `meta` export becomes the DocHeader,
@@ -29,7 +30,7 @@ export default function MdxDoc({ module: mod, component }) {
    * a time. `meta` overrides only where the author has something better. */
   const eyebrow = meta.eyebrow
     ?? (component ? `Components / ${CATEGORY_LABELS[component.category] ?? component.category}` : undefined)
-  const title = meta.title ?? component?.name
+  const title = component ? component.displayName : meta.title
   const lede = meta.lede ?? component?.description
 
   /* THE frontmatter panel — the same component the vault reader uses, not a
@@ -49,10 +50,11 @@ export default function MdxDoc({ module: mod, component }) {
    * here as ordinary frontmatter entries, so they get the icon column, the
    * label column and the chip treatment for free. */
   const provenance = component ? buildProvenance(component) : {}
+  const showFrontmatter = useFrontmatter('page')
 
   return (
     <article className="flex w-full min-w-0 flex-col gap-10">
-      <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}), ...provenance }} />
+      {showFrontmatter && <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}), ...provenance }} />}
       {(title || eyebrow) && (
         <DocHeader eyebrow={eyebrow} title={title} lede={lede} />
       )}

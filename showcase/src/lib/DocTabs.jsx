@@ -23,13 +23,13 @@
 const LOOK = {
   chip: {
     row: 'flex items-center gap-1',
-    cell: 'kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 transition-colors',
+    cell: 'kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 transition-colors [@media(pointer:coarse)]:min-h-8',
     on: 'bg-fg-08 text-emphasis',
     off: 'text-meta hover:text-emphasis',
   },
   plain: {
     row: 'flex flex-wrap items-center gap-5 kol-sans-body-02',
-    cell: 'transition-colors',
+    cell: 'transition-colors [@media(pointer:coarse)]:min-h-8',
     on: 'text-emphasis',
     off: 'text-meta hover:text-emphasis',
   },

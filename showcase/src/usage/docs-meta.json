@@ -189,11 +189,15 @@
   },
   "PopoverPanel": {
     "typeClasses": [],
-    "composes": []
+    "composes": [
+      "TONE_VARS"
+    ]
   },
   "Tooltip": {
     "typeClasses": [],
-    "composes": []
+    "composes": [
+      "TONE_VARS"
+    ]
   },
   "ContextMenu": {
     "typeClasses": [],
@@ -279,7 +283,9 @@
       "kol-mono-16",
       "kol-mono-8"
     ],
-    "composes": []
+    "composes": [
+      "Tooltip"
+    ]
   },
   "Stepper": {
     "typeClasses": [
@@ -384,7 +390,8 @@
       "Input",
       "MenuDropdownItem",
       "MenuDropdownNest",
-      "PopoverPanel"
+      "PopoverPanel",
+      "Tooltip"
     ]
   },
   "AddLayerButton": {
@@ -396,7 +403,8 @@
       "Input",
       "MenuDropdownItem",
       "MenuDropdownNest",
-      "PopoverPanel"
+      "PopoverPanel",
+      "Tooltip"
     ]
   },
   "BLEND_MODES": {
@@ -408,7 +416,8 @@
       "Input",
       "MenuDropdownItem",
       "MenuDropdownNest",
-      "PopoverPanel"
+      "PopoverPanel",
+      "Tooltip"
     ]
   },
   "TYPE_LABELS": {
@@ -430,7 +439,8 @@
     ],
     "composes": [
       "Input",
-      "Dropdown"
+      "Dropdown",
+      "Tooltip"
     ]
   },
   "TIMELINE_EASINGS": {
@@ -440,7 +450,8 @@
     ],
     "composes": [
       "Input",
-      "Dropdown"
+      "Dropdown",
+      "Tooltip"
     ]
   },
   "CurveEditor": {
@@ -473,7 +484,8 @@
       "Button",
       "Dropdown",
       "LabeledControl",
-      "Slider"
+      "Slider",
+      "Tooltip"
     ]
   },
   "KEYFRAME_EASES": {
@@ -484,7 +496,8 @@
       "Button",
       "Dropdown",
       "LabeledControl",
-      "Slider"
+      "Slider",
+      "Tooltip"
     ]
   },
   "DEFAULT_KEYFRAMES": {
@@ -495,7 +508,8 @@
       "Button",
       "Dropdown",
       "LabeledControl",
-      "Slider"
+      "Slider",
+      "Tooltip"
     ]
   },
   "Accordion": {
@@ -537,7 +551,8 @@
   "SelectionOverlay": {
     "typeClasses": [],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "VideoBlock": {
@@ -580,6 +595,7 @@
       "ColorSwatch",
       "Input",
       "PopoverPanel",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -596,7 +612,8 @@
   "ColorSwatch": {
     "typeClasses": [],
     "composes": [
-      "TransparentX"
+      "TransparentX",
+      "Tooltip"
     ]
   },
   "Dropdown": {
@@ -609,6 +626,7 @@
     "composes": [
       "TONE_VARS",
       "MenuDropdownItem",
+      "MenuDropdownDivider",
       "PopoverPanel",
       "Icon"
     ]
@@ -782,6 +800,7 @@
     "composes": [
       "Button",
       "PopoverPanel",
+      "Tooltip",
       "MenuDropdownItem",
       "Icon"
     ]
@@ -795,12 +814,21 @@
   "ShellSearchOverlay": {
     "typeClasses": [
       "kol-helper-10",
+      "kol-helper-12",
       "kol-mono-12",
       "kol-mono-14"
     ],
     "composes": [
       "SearchInput",
       "Tag"
+    ]
+  },
+  "ShortcutsOverlay": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "SettingsSections"
     ]
   },
   "Slider": {
@@ -843,6 +871,7 @@
     ],
     "composes": [
       "PopoverPanel",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -851,13 +880,29 @@
     "composes": [
       "Button",
       "Divider",
-      "SplitToolButton"
+      "SplitToolButton",
+      "Tooltip"
+    ]
+  },
+  "DocumentEditor": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Button",
+      "Input",
+      "Textarea",
+      "ViewToggle",
+      "QuickLookFrame",
+      "KindPreview",
+      "FullscreenOverlay"
     ]
   },
   "SwatchControls": {
     "typeClasses": [],
     "composes": [
       "ColorSwatch",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -865,6 +910,7 @@
     "typeClasses": [],
     "composes": [
       "ColorSwatch",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -872,6 +918,7 @@
     "typeClasses": [],
     "composes": [
       "ColorSwatch",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -889,7 +936,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CanvasFrame": {
@@ -897,7 +945,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "PanViewport": {
@@ -905,7 +954,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "PanZoomViewport": {
@@ -913,7 +963,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CanvasZoomContext": {
@@ -921,7 +972,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CANVAS_VIRTUAL_W": {
@@ -929,7 +981,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "DEFAULT_ASPECTS": {
@@ -937,7 +990,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CANVAS_DEFAULTS": {
@@ -945,7 +999,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CanvasRuler": {
@@ -953,7 +1008,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "CanvasGuides": {
@@ -961,7 +1017,8 @@
       "kol-mono-12"
     ],
     "composes": [
-      "CanvasZoomContext"
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "EditorShell": {
@@ -1066,8 +1123,31 @@
       "kol-sans-heading-03"
     ],
     "composes": [
-      "SectionText"
+      "SectionText",
+      "TITLE_ROLES"
     ]
+  },
+  "MastheadContext": {
+    "typeClasses": [
+      "kol-mono-display-02",
+      "kol-mono-display-03",
+      "kol-mono-heading-03",
+      "kol-sans-display-02",
+      "kol-sans-display-03",
+      "kol-sans-heading-03"
+    ],
+    "composes": []
+  },
+  "MASTHEADS": {
+    "typeClasses": [
+      "kol-mono-display-02",
+      "kol-mono-display-03",
+      "kol-mono-heading-03",
+      "kol-sans-display-02",
+      "kol-sans-display-03",
+      "kol-sans-heading-03"
+    ],
+    "composes": []
   },
   "ErrorBoundary": {
     "typeClasses": [
@@ -1199,7 +1279,9 @@
       "kol-mono-12",
       "kol-mono-14"
     ],
-    "composes": []
+    "composes": [
+      "Tooltip"
+    ]
   },
   "MediaLibrary": {
     "typeClasses": [
@@ -1290,6 +1372,7 @@
       "Button",
       "Divider",
       "Input",
+      "Tag",
       "IconFrame",
       "ActionButton",
       "SizeOrDownload",
@@ -1312,7 +1395,10 @@
       "QuickLookFrame",
       "FullscreenOverlay",
       "ContentFilters",
+      "DocumentEditor",
+      "DRAFTS_EVENT",
       "ShellSearchOverlay",
+      "SettingsSections",
       "KIND_LABEL",
       "KINDS",
       "DEFAULT_KINDS",
@@ -1638,6 +1724,10 @@
       "Icon"
     ]
   },
+  "DRAFTS_EVENT": {
+    "typeClasses": [],
+    "composes": []
+  },
   "KINDS": {
     "typeClasses": [],
     "composes": []
@@ -1676,7 +1766,8 @@
       "kol-helper-12"
     ],
     "composes": [
-      "ColorSwatch"
+      "ColorSwatch",
+      "Tooltip"
     ]
   },
   "Table": {
@@ -1976,6 +2067,12 @@
   "TextPressure": {
     "typeClasses": [],
     "composes": []
+  },
+  "IntroLoader": {
+    "typeClasses": [],
+    "composes": [
+      "TextPressure"
+    ]
   },
   "ColorLoader": {
     "typeClasses": [],

@@ -97,6 +97,11 @@ export default function PreviewCard({
   const [variant, setVariant] = useState(variants?.[0] ?? null)
   const sizes = entry?.sizes ?? null
   const [size, setSize] = useState(sizes?.[0] ?? null)
+  /* the third axis (2026-09-30, the names audit: *"can props not be set like buttons variants
+   * … in dropdown?"*): a demo exports `states` for what it would otherwise stack twice —
+   * CurveOverlay's empty · handles · both */
+  const states = entry?.states ?? null
+  const [state, setState] = useState(states?.[0] ?? null)
 
   return (
     <div className={`${CHROME[chrome] ?? CHROME.figure} ${CAPS[cap] ?? CAPS.panel}`.trim()}>
@@ -119,6 +124,9 @@ export default function PreviewCard({
           {sizes?.length > 1 && tab === 'preview' && (
             <AxisPicker options={sizes} value={size} onChange={setSize} label="Size" />
           )}
+          {states?.length > 1 && tab === 'preview' && (
+            <AxisPicker options={states} value={state} onChange={setState} label="State" />
+          )}
           {actions && <div className="flex items-center gap-1">{actions(tab)}</div>}
         </div>
       </div>
@@ -132,7 +140,7 @@ export default function PreviewCard({
         tab === 'preview' && (
           <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>
             {entry?.Component ? (
-              <DemoStage entry={entry} variant={variant} size={size} />
+              <DemoStage entry={entry} variant={variant} size={size} state={state} />
             ) : children || (
               <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
             )}

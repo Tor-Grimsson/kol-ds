@@ -72,12 +72,19 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
  *                                        (default `/docs?tag=…`).
  *   @param {Function} routes.docFilePath (id) => on-disk path copied to clipboard
  *                                        (default `docs/documentation/${id}.md`).
+ * @param {string}   [props.docId]        render this doc instead of the route's `:docId` — a
+ *                                        HOME renders its markdown at the space's own URL
+ *                                        (2026-09-30, the names audit: every level has a home).
+ * @param {boolean}  [props.showFrontmatter=true]  the frontmatter panel; a home hides it by
+ *                                        default and the consumer toggles it.
  */
 const DocumentationReader = ({
   inventory = [],
   modules = {},
   docHref = (id) => `/docs/${id}`,
-  routes = {}
+  routes = {},
+  docId: docIdProp,
+  showFrontmatter = true,
 }) => {
   const {
     docsIndex = '/docs',
@@ -86,7 +93,8 @@ const DocumentationReader = ({
     docFilePath = (id) => `docs/documentation/${id}.md`
   } = routes
 
-  const { docId } = useParams()
+  const { docId: routeDocId } = useParams()
+  const docId = docIdProp ?? routeDocId
   const setTocContent = useContext(ShellTocContext)
   const { openTagMode } = useTagMode()
 
@@ -337,7 +345,7 @@ const DocumentationReader = ({
 
   return (
     <DocsArticle>
-        <DocsFrontmatter metadata={doc.metadata} docId={docId} />
+        {showFrontmatter && <DocsFrontmatter metadata={doc.metadata} docId={docId} />}
         {docTitle && (
           <h1 className="kol-doc-heading">{docTitle}</h1>
         )}

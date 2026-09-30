@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.5.3 — 2026-09-30
+
+- Comments and README only: one spelling, `color`.
+
 ## 0.5.2 — 2026-09-27
 
 - `AssetTable` — the icon-only link / button ink on `oq-64` (the icon-ink gate's I3).

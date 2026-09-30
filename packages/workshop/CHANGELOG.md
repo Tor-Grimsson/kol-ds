@@ -1,5 +1,30 @@
 # @kolkrabbi/kol-workshop
 
+## 0.33.0 — 2026-09-30
+
+**The shipped parts, not local ones** (the reuse pass — UI built fresh last night swapped for what the DS already ships).
+
+- **⚠ The settings drawer is kol-component's `SettingsPanel`** — the drawer media's Display settings and Trash wear (title header, divided sections). It was a hand-built `ShellDrawer` + eyebrow + undivided `SettingsSections`.
+- **⚠ The rails resize with the DS gesture** — `useDragResize` + the `.kol-rail-grab` pill (SideNav's, EditorShell's): drag resizes, a click or a drag under the snap hides the rail, arrows step, release near 256 lands on it; width lasts the session (`persistWidth` off, the 2026-09-03 ruling). Replaces 0.32.0's local grip, which also persisted the width against that ruling.
+- **`SearchPage` rows are kol-component's `ContentRow`** (`variant="article"`, `media={false}`). **`ResultRow` is deprecated** — it forwards to ContentRow and is on the retirement ledger; `rowVariant` is gone.
+
+## 0.32.0 — 2026-09-30
+
+**Resizable rails, the header cluster** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).
+
+- **⚠ Rails resize.** A 6px grip on the edge facing the page: drag sets the width (200–420px, remembered), double-click resets to 256. Through `--kol-shell-nav-w` / `--kol-shell-toc-w` on the shell root.
+- `ShellLayout` passes `menuBelowLg` — the header's hamburger shows only below the desktop width.
+
+## 0.31.0 — 2026-09-30
+
+**The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).
+
+- **`DocumentationReader`** takes `docId` (render a doc at any URL — a home) and `showFrontmatter` (default `true`).
+- **`ShellLayout`** — **⚠ new keys:** `[` and `]` toggle the left and right rails (remembered), `C` folds or opens every chapter in every rail; a `shortcuts` prop adds the consumer's own keys (`{ id, label, combo, key, run }`) to the `S` sheet and the handler. Tooltips are one word (Search · Settings).
+- **`ShellSidebar`** listens for the fold broadcast (`RAIL_FOLD_EVENT`, exported).
+- **⚠ `RightRail` — own tags only, grouped by namespace, the leaf printed** (`topTags` is accepted and ignored); an empty chapter does not render; a folded THIS PAGE / LINKS shows its count; **Pin / Unpin** in Quick actions and a **Pinned** chapter on every page (localStorage).
+- **`ResultRow`** (new) — one search result, `variant="underline"` (default) or `"wash"`; `SearchPage` renders its rows with it (`rowVariant`) and its empty state with kol-component's `EmptyState`.
+
 ## 0.30.1 — 2026-09-29
 
 - `TagGraph` reads its graph from kol-search's `tagGraph` (kol-markdown's `buildTagCooccurrence` is deprecated). Same drawing.

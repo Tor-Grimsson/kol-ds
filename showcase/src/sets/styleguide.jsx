@@ -6,7 +6,7 @@
  * style guide: color (swatch / ramp / spectrum / hex input), type
  * (sample + spec card), assets & layout (asset grid + feature split),
  * long-form prose, and the applied-brand block — the combination lab,
- * mood tiles, logo construction / scaling, type blocks, colour anatomy,
+ * mood tiles, logo construction / scaling, type blocks, color anatomy,
  * and an asset manifest. Every member is already built + published — this
  * file only imports and frames them; nothing is rehomed here.
  *

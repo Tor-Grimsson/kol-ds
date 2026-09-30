@@ -128,7 +128,7 @@ export default function DocsToc({
                * `block transition-colors focus-visible:ring-focus
                * hover:text-emphasis text-body` as utilities, so the same rung
                * rendered a different className here than in the left tree.
-               * Layout, colour, hover and focus live in `.shell-nav-item` now;
+               * Layout, color, hover and focus live in `.shell-nav-item` now;
                * active is the shared `is-active` marker, not `text-emphasis`
                * typed at one call site. Matches RailRow exactly. */
               className={`shell-nav-item kol-mono-14${activeId === item.id ? ' is-active' : ''}`}

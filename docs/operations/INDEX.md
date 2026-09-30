@@ -27,6 +27,7 @@ Repo machinery — how the KOL packages get versioned, published, eyeballed, and
 | [[05-reference-graph/INDEX\|05 — Reference graph]] | **What depends on what, with a weight.** Rated edges mined from the repo's own source; the canon bar is 3× the median, and the deletion guard names who breaks. |
 | [[07-apps-tier/INDEX\|07 — Apps tier]] | **The third tier** — `apps/*` beside `packages/*`, each product a real clickable app over fake mutable data, proved before it is published. Media first, one at a time. Concept lives once in dotfiles and is linked, never copied. |
 | [[08-cloud-sessions/INDEX\|08 — Cloud sessions]] | **Working from a claude.ai cloud container** — the user is the only author, the session branch fast-forwards into `main`, the cloud bumps and the user publishes. |
+| [[09-phase-log/INDEX\|09 — Phase log]] | **Every run of work, newest first** — the phases, the decisions, the plan behind each. Shown on the Development space. |
 
 ## Folder shape
 

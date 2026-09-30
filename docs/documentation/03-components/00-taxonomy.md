@@ -3,7 +3,7 @@ title: Component taxonomy
 type: reference
 status: canonical
 created: 2026-07-15
-updated: 2026-09-03
+updated: 2026-09-30
 verified: 2026-07-04
 description: The tier axis and the function axis
 aliases:
@@ -18,6 +18,7 @@ tags:
   - domain/components
   - audience/consumer
 related:
+  - "[[../00-overview/05-names|names]]"
   - "[[02-placement|component placement]]"
   - "[[01-inventory|component inventory]]"
   - "[[04-diamond-tier|diamond tier]]"
@@ -48,9 +49,15 @@ Which `packages/component/src/<folder>/` (or package) a component lives in. Deci
 | **Molecule** | A **small assembly** — two or more nameable parts working as one unit: label + control, input + buttons, trigger + panel, a card, a row. | `packages/component/src/molecules/` |
 | **Organism** | A **self-contained interface region** — a full bar, table, gallery, band, overlay surface, or manager. | `packages/component/src/organisms/` |
 | **Utility** | **Purpose without a face** — a layout wrapper, a mechanism other components wear, a guard, a fallback state. Real exports with real consumers, but not interface elements. | `packages/component/src/utilities/` |
-| **Framework** | App chrome and page structure — shells, navs, heroes, render-null behaviors. | `packages/framework/src/` |
+| ~~Framework~~ | *Retired as a tier 2026-09-30:* kol-framework's components sit on the ladder like every package's (SideNav, PortalFooter, heroes → organisms; ThemeToggle → atom). | `packages/framework/src/` |
 | **Loader** | Name→asset resolvers (`Icon`, `Graphic`). **Not visual UI** — never listed as components; documented on `/docs/loaders`, galleries live on the Icons pages. | `kol-icons`, `graphics/` |
 | **Hook** | Reusable behavior, no markup of its own (`usePrefersReducedMotion`, `useScrollSpy`). | `packages/component/src/hooks/` |
+
+### Every package on one ladder (2026-09-30)
+
+**Reverses 2026-07-30's ownership tiers.** From 07-30 the flat packages (workshop, dashboards, chess, foundry, styleguide, content, store, framework) were grouped by package, not by tier — so the Components page mixed two axes, and five packages that arrived later (shell, hardware, deck, notes) fell into no group at all: 47 components missing from the rail. The names audit (`docs/operations/03-showcase/05-audit-names-and-homes.md`) put every component on the atomic ladder; ownership is kept as the **Package** ordering and as each package's **set** page. kol-component tiers by folder; every other package by `TIERS` in `showcase/src/nav/classification.js`, which `validate:roster` requires again.
+
+Placement moves the same day: `CloseButton` → atoms (a Button wearing an IconFrame — `validate:taxonomy` check 4 now counts an atom rendering another atom as painting) · `ContextMenu` → molecules · `PathNodeOverlay` · `CropOverlay` · `SelectionOverlay` · `CurveOverlay` → utilities (they paint only onto a target — Test 2) · `ColorLoader` renamed `IntroLoader` (organism; the old name is an alias on the retirement ledger). `Tooltip` and `PopoverPanel` stay in utilities: they are only ever worn, and atoms import Tooltip.
 
 ### KOL Tier IS real atomic — the import test is repealed (2026-08-09)
 
@@ -64,7 +71,7 @@ Deliberate boundary calls, so they aren't relitigated:
 
 1. **Single-value selection controls are atoms** — `SegmentedToggle`, `ViewToggle`, `ToggleBracket`. Their cells are options of ONE control (role=radiogroup), not Buttons.
 2. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`: an Input visibly composed with adjuncts.
-3. **One element with elaborate behavior is still an atom** — `RotaryDial`, `CurveOverlay`: a single control/canvas, however much it does. *(Reworded 2026-08-09 night — the original examples all left atoms the same day: `TiltCard` and `AsciiCursor` to utilities on the paints-and-stands law — fixed-position whole-viewport chrome fails "stands alone", the ExitPreview precedent — and `InteractiveImage` retired to `_tmp/` on zero consumers. The call itself stands: elaborateness never promotes.)*
+3. **One element with elaborate behavior is still an atom** — `RotaryDial`: a single control, however much it does. *(CurveOverlay left for utilities 2026-09-30 — it paints only over a target.)* *(Reworded 2026-08-09 night — the original examples all left atoms the same day: `TiltCard` and `AsciiCursor` to utilities on the paints-and-stands law — fixed-position whole-viewport chrome fails "stands alone", the ExitPreview precedent — and `InteractiveImage` retired to `_tmp/` on zero consumers. The call itself stands: elaborateness never promotes.)*
 4. **`Icon`/`Graphic` never affect tier** — loader infrastructure, invisible to the judgment.
 5. **Imports still go downward only** — atoms never import molecules/organisms; molecules never import organisms; sideways is legal at every rung. This is the part that stays lint-enforced (`scripts/validate-taxonomy.mjs`); placement itself is authored, and the authored map lives in [[02-placement|component placement]].
 

@@ -22,7 +22,7 @@ import { toneClass } from '../utilities/tone.js'
  * frame's own classes declare the same background, foreground and geometry and
  * simply have no state rules to inherit.
  *
- * `variant` borrows the kol-btn COLOUR SET verbatim so the frame sits in the
+ * `variant` borrows the kol-btn COLOR SET verbatim so the frame sits in the
  * same visual system as real buttons; `primary` and `secondary` are inverse
  * pairs that flip with the theme, so light/dark comes free from the tokens with
  * no per-theme props.

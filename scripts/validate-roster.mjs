@@ -55,12 +55,12 @@ for (const dir of readdirSync(PKGS)) {
     if (EXEMPT[name] || DOCS_ONLY.includes(name) || DEPRECATED.includes(name) || MEMBER_OF[name]) continue
 
     const folder = folderOf(src)
-    /* Flat packages classify by OWNERSHIP now (tier = package dir, roster.js
-     * 2026-07-30) — a TIERS entry is no longer required for them. */
+    /* Every package classifies by ATOMIC tier (2026-09-30, reversing 2026-07-30's
+     * ownership tiers): kol-component by folder, the rest by a TIERS entry. */
     const tierOk =
       dir === 'component' ? TIER_FOLDERS.has(folder) || folder === 'graphics'
-      : true
-    if (!tierOk) errors.push(`NO TIER      ${dir.padEnd(14)} ${name}  (kol-component export outside atoms/molecules/organisms/hooks)`)
+      : /^use[A-Z]/.test(name) || TIER_FOLDERS.has(TIERS[name])
+    if (!tierOk) errors.push(`NO TIER      ${dir.padEnd(14)} ${name}  (${dir === 'component' ? 'kol-component export outside atoms/molecules/organisms/utilities/hooks' : 'add an atomic tier to classification.js TIERS'})`)
 
     if (!VALID_FUNCTIONS.has(FUNCTIONS_BY_NAME[name]))
       errors.push(`NO FUNCTION  ${dir.padEnd(14)} ${name}  (add to classification.js FUNCTIONS_BY_NAME)`)

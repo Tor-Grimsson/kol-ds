@@ -243,7 +243,7 @@ export default function ColorInputRow({
           )}
           {/* QUICK STATES. Theme (the auto value — a token that flips with
               light/dark) is offered only where the field HAS one; None is
-              always available, because clearing a colour is not a palette
+              always available, because clearing a color is not a palette
               decision. Both were dropped in the first port, which is what left
               `value == null` renderable but unreachable. */}
           <div className="flex items-center gap-2">

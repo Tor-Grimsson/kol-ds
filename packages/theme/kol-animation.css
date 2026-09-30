@@ -371,6 +371,11 @@
   .kol-rail-grab::before { transition: none; }
 }
 
+/* A RIGHT-HAND RAIL's handle sits on its LEFT edge, facing the page (2026-09-30 — the modifier
+ * EditorShell has stamped since 0.x, `kol-rail-grab--${side}`, had no rule, so a right rail's pill
+ * sat on its outer edge; the workshop shell's right rail needs the same). */
+.kol-rail-grab--right { right: auto; left: -3.5px; }
+
 /* The ColumnBrowser's two handles wear the SAME pill (BrowsePageRulingsAndSeams,
  * kol-r2b2 2026-09-02, user ruling) — `useGrabEdge` drives both. Their geometry
  * and placement differ and stay with the component in

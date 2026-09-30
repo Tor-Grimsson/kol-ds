@@ -1,5 +1,7 @@
-import { DocHeader } from '@kolkrabbi/kol-workshop'
+import { useParams, Navigate } from 'react-router-dom'
 import { Table } from '@kolkrabbi/kol-component'
+import HomeDoc from '../lib/HomeDoc.jsx'
+import CompositionDiagram from '../lib/CompositionDiagram.jsx'
 
 /**
  * Apps — the door to the apps tier (docs/operations/07-apps-tier), GROUPED BY LAYER (apps review
@@ -117,37 +119,63 @@ export const APPS = [
 
 const layerOf = (id) => LAYERS.find((l) => l.id === id)
 
-const layerColumns = [
-  { accessor: 'label', header: 'Layer' },
-  { accessor: 'what', header: 'What it is', className: 'kol-table-cell-meta-strong' },
-  { accessor: 'lives', header: 'Lives in' },
-]
-
 const appColumns = [
   { accessor: 'name', header: 'App', render: (r) => <a id={r.name} href={`/app/${r.name}`} className="kol-link underline scroll-mt-20">{r.name}</a> },
   { accessor: 'what', header: 'What it is', className: 'kol-table-cell-meta-strong' },
   { accessor: 'run', header: 'Local', render: (r) => (r.port ? <code>pnpm {r.run ?? r.name}</code> : '—') },
 ]
 
+/* THE NESTING, drawn (2026-09-30, open questions Round 1 Q5): each box opens its layer's page. */
+const layerHref = (id) => `/apps/layer/${id}`
+const NESTING = {
+  label: 'An app',
+  children: [
+    { label: 'Hub — Home · Settings · the S sheet · walkthrough (the Studio adds Library · Create · Use)', to: layerHref('hub'), children: [
+      { label: 'Shell — rail · layout root · nav keys · phone bar', to: layerHref('shell'), row: true, children: [
+        { label: 'Catalog — masthead · filter · views · cards', to: layerHref('catalog') },
+        { label: 'Tool — the work itself', to: layerHref('tool') },
+      ] },
+    ] },
+    { label: 'Underneath', row: true, children: [
+      { label: 'Engine — plain JS', to: layerHref('engine') },
+      { label: 'Fixture — fake data', to: layerHref('fixture') },
+    ] },
+  ],
+}
+
+function LayerApps({ id }) {
+  return (
+    <Table
+      width="column"
+      className="mt-4"
+      caption={layerOf(id).label}
+      columns={appColumns}
+      rows={APPS.filter((a) => a.layer === id).map((a) => ({ ...a, id: a.name }))}
+    />
+  )
+}
+
+/* a layer's home — its markdown page, then its apps */
+export function AppLayer() {
+  const { layer } = useParams()
+  if (!LAYERS.some((l) => l.id === layer)) return <Navigate to="/apps" replace />
+  return (
+    <>
+      <HomeDoc key={layer} id={`layer-${layer}`} />
+      <LayerApps id={layer} />
+    </>
+  )
+}
+
 export default function Apps() {
   return (
     <>
-      <DocHeader
-        eyebrow="Apps tier"
-        title="Apps"
-        lede="The tools built on the design system, each running on the fixture. A tool’s features ship in the packages; the app is where they are judged."
-      />
-      <Table width="column" className="mt-8" caption="An app is Shell + (Hub) + Tool" columns={layerColumns} rows={LAYERS.map((l) => ({ ...l, id: l.id }))} />
+      <HomeDoc id="apps" />
+      <CompositionDiagram className="mt-8" node={NESTING} />
       {LAYERS.map((l) => (
         <section key={l.id} className="mt-12">
           <h2 id={`layer-${l.id}`} className="kol-doc-eyebrow scroll-mt-20">{l.label}</h2>
-          <Table
-            width="column"
-            className="mt-4"
-            caption={layerOf(l.id).label}
-            columns={appColumns}
-            rows={APPS.filter((a) => a.layer === l.id).map((a) => ({ ...a, id: a.name }))}
-          />
+          <LayerApps id={l.id} />
         </section>
       ))}
     </>

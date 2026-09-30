@@ -71,9 +71,13 @@ for (const [tier, banned] of Object.entries(UPWARD)) {
 //     paint-bearing class (border/bg/text/kol-*). Layout-only utilities like
 //     `flex`/`grid` don't count as paint.
 const PAINT = /<(svg|path|line|circle|rect|img|video|canvas|figcaption)\b|border|bg-|background|<Icon\b|kol-(mono|helper|sans|doc|asset|image|exit|embla|btn|tag|badge)|>[A-Za-z0-9]|dangerouslySetInnerHTML/
+/* An atom that renders ANOTHER atom paints through it — CloseButton is a Button wearing an
+ * IconFrame (2026-09-30, filed back to atoms from utilities on the names audit). */
+const rendersAtom = (txt) => [...txt.matchAll(/import\s+(\w+)\s+from\s+'(?:\.\/|\.\.\/atoms\/)\w+\.jsx'/g)]
+  .some(([, name]) => new RegExp(`<${name}\\b`).test(txt))
 for (const f of files('atoms')) {
   const txt = readFileSync(join(SRC, 'atoms', f), 'utf8')
-  if (!PAINT.test(txt)) {
+  if (!PAINT.test(txt) && !rendersAtom(txt)) {
     violations.push(`paints: atoms/${f} renders no visible mark of its own — an atom paints; move it to utilities/ (or up)`)
   }
 }

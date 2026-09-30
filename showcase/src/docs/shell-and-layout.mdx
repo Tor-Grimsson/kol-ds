@@ -6,39 +6,24 @@ export const meta = {
   lede: 'How a KOL app is framed: Layout is the route-level root, AppShell is the portal chrome nested inside it, SideNav is the navigation rail, ScrollToTop is a render-null behavior. These aren\'t components in the traditional sense — they\'re documented here instead of the components list.',
 }
 
-export function Box({ label, children, className = '' }) {
-  return (
-    <div className={`rounded-[var(--kol-radius-sm)] border border-fg-16 p-3 ${className}`}>
-      <p className="kol-mono-12 text-emphasis mb-2">{label}</p>
-      {children}
-    </div>
-  )
-}
+import CompositionDiagram from '../lib/CompositionDiagram.jsx'
 
 ## The composition
 
 The nesting, as used by the brand app: Layout wraps every route; AppShell wraps the route groups that carry portal chrome.
 
-<Box label="<Layout>  — route-level root frame">
-  <div className="flex flex-col gap-2">
-    <div className="rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-3 py-1.5 kol-mono-12 text-meta">
-      {'<ScrollToTop />'} — render-null behavior
-    </div>
-    <Box label="<main> · <Outlet />">
-      <Box label="<AppShell>  — portal chrome (per route group)">
-        <div className="flex gap-2">
-          <div className="w-28 shrink-0 rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-2 py-4 kol-mono-12 text-meta">
-            {'<SideNav />'}
-          </div>
-          <div className="flex-1 rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 px-2 py-4 kol-mono-12 text-meta">
-            {'<Outlet />'} — pages
-          </div>
-        </div>
-        <p className="kol-mono-12 text-meta mt-2">+ mobile drawer · ModalProvider</p>
-      </Box>
-    </Box>
-  </div>
-</Box>
+<CompositionDiagram node={{
+  label: '<Layout>  — route-level root frame',
+  children: [
+    { label: '<ScrollToTop /> — render-null behavior' },
+    { label: '<main> · <Outlet />', children: [
+      { label: '<AppShell>  — portal chrome (per route group)', row: true, note: '+ mobile drawer · ModalProvider', children: [
+        { label: '<SideNav />', fixed: true },
+        { label: '<Outlet /> — pages' },
+      ] },
+    ] },
+  ],
+}} />
 
 ## Layout
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import { ColorLoader } from '@kolkrabbi/kol-foundry'
+import { IntroLoader } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'lg'
 
@@ -8,10 +8,10 @@ export const stage = 'lg'
  * Play the loading curtain inside a framed stage (not auto-looping). It times
  * in the wordmark, then the down-chevron cue; `dismissOnClick` lets you click
  * the curtain to slide it up and fire onComplete, which resets the demo. The
- * wordmark's variable-font axes need a KOL variable font (a consumer asset) —
- * on the theme sans the pressure axes stay put but the timed reveal still runs.
+ * wordmark's variable-font axes need a KOL variable font — the showcase ships
+ * TGRotVF, so the pressure interaction is live: move the pointer over the wordmark.
  */
-export default function ColorLoaderDemo() {
+export default function IntroLoaderDemo() {
   const [playing, setPlaying] = useState(false)
 
   return (
@@ -21,8 +21,10 @@ export default function ColorLoaderDemo() {
       </Button>
       <div className="relative h-[420px] w-full overflow-hidden rounded border bg-fg-04">
         {playing ? (
-          <ColorLoader
+          <IntroLoader
             text="KOLKRABBI"
+            fontFamily="TG Rot VF"
+            fontUrl="/fonts/tg-typefaces/TGRotVF.ttf"
             dismissOnClick
             onComplete={() => setPlaying(false)}
           />

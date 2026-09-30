@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.59.1 — 2026-09-30
+
+- The settings scaffold's display tooltip is one word (`Display`). Comments: one spelling, `color`.
+
 ## 0.59.0 — 2026-09-29
 
 - **`AppStudio`** (new, exported) — the workstation: the Hub plus a fixed page set, Home · Library · Create · Use · opt-in pages · Settings, in that order, mono by default. `library` is a CatalogPage, `create` a PageHeader over the editor, `use` the tool full-bleed with no wash; each slot renames with `{ path, label, icon }`. What fxr · mirror · monitor each hand-build. Reference app: `apps/studio`.

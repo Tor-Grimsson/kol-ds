@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { pushLayer, popLayer, isTopLayer } from '../utilities/layerStack.js'
 import { createPortal } from 'react-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
-import CloseButton from '../utilities/CloseButton.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
 /* taxonomy-ok: nests kol-icons's Icon (a package import the relative-import

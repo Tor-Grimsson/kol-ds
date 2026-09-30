@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ContentFilters } from '@kolkrabbi/kol-component'
-import { DocHeader } from '@kolkrabbi/kol-workshop'
+import { ContentFilters, EmptyState } from '@kolkrabbi/kol-component'
+import { useParams } from 'react-router-dom'
+import HomeDoc from '../lib/HomeDoc.jsx'
 import DemoStage from '../lib/DemoStage.jsx'
-import { groupComponents, FUNCTIONS, TOTAL, WITH_DEMOS } from '../nav/registry.js'
+import { groupComponents, FUNCTIONS, TOTAL } from '../nav/registry.js'
 import { useGrouping } from '../lib/grouping.jsx'
 
 /**
@@ -42,6 +43,35 @@ function useInView(rootMargin = '250px') {
   return [ref, inView]
 }
 
+/* FIT, NEVER CROP (2026-09-30, the names audit: *"can we somehow scale the content into the
+ * preview?"*). A demo wider or taller than the card's preview box is scaled DOWN to fit, centred;
+ * one that fits is left at 1:1. Measured, so a demo is never guessed at. */
+function Fit({ children }) {
+  const box = useRef(null)
+  const inner = useRef(null)
+  const [scale, setScale] = useState(1)
+  useEffect(() => {
+    const measure = () => {
+      if (!box.current || !inner.current) return
+      const bw = box.current.clientWidth
+      const bh = box.current.clientHeight
+      const iw = inner.current.scrollWidth
+      const ih = inner.current.scrollHeight
+      setScale(Math.min(1, bw / (iw || 1), bh / (ih || 1)))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    if (box.current) ro.observe(box.current)
+    if (inner.current) ro.observe(inner.current)
+    return () => ro.disconnect()
+  }, [])
+  return (
+    <div ref={box} className="flex h-full w-full items-center justify-center overflow-hidden">
+      <div ref={inner} className="shrink-0" style={scale < 1 ? { transform: `scale(${scale})` } : undefined}>{children}</div>
+    </div>
+  )
+}
+
 function ComponentCard({ c }) {
   const [ref, inView] = useInView()
   return (
@@ -50,29 +80,36 @@ function ComponentCard({ c }) {
        nesting error for every such card. The absolute Link keeps the whole
        card clickable without containing the demo. */
     <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24">
-      <div ref={ref} className="pointer-events-none flex max-h-56 min-h-[6rem] items-center justify-center overflow-hidden bg-fg-02 p-5">
+      <div ref={ref} className="pointer-events-none flex h-56 items-center justify-center overflow-hidden bg-fg-02 p-5">
         {c.demo && inView ? (
-          c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />
+          <Fit>{c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />}</Fit>
         ) : (
-          <span className="kol-mono-12 text-meta opacity-50">{c.name}</span>
+          <span className="kol-mono-12 text-meta opacity-50">{c.displayName}</span>
         )}
       </div>
       <div className="flex items-baseline justify-between gap-2 border-t border-fg-08 px-4 py-3">
-        <span className="kol-sans-body-02 text-emphasis">{c.name}</span>
+        <span className="kol-sans-body-02 text-emphasis">{c.displayName}</span>
         <span className="kol-helper-10 uppercase text-meta">{FUNCTIONS[c.function]}</span>
       </div>
       {/* LAST child, not `z-[1]`: a later sibling paints on top, so the overlay
         * link covers the card with no raw z (full-consumption check 5). */}
-      <Link to={`/components/${c.slug}`} className="absolute inset-0" aria-label={c.name} />
+      <Link to={`/components/${c.slug}`} className="absolute inset-0" aria-label={c.displayName} />
     </div>
   )
 }
 
-export default function Components() {
-  const { mode } = useGrouping()
+export function TierHome() {
+  const { tier } = useParams()
+  return <Components tier={tier} />
+}
+
+export default function Components({ tier }) {
+  const { mode: gMode } = useGrouping()
+  /* a chapter home (`/components/tier/atoms`) shows its own tier on the atomic ladder */
+  const mode = tier ? 'atomic' : gMode
   /* the organism filters a FLAT list; each item remembers its group so the
    * sections can be rebuilt from whatever rows come back */
-  const groups = useMemo(() => groupComponents(mode), [mode])
+  const groups = useMemo(() => groupComponents(mode).filter(([k]) => !tier || k === tier), [mode, tier])
   const items = useMemo(
     () => groups.flatMap(([key, label, list]) => list.map((c) => ({ ...c, group: key, groupLabel: label, fnLabel: FUNCTIONS[c.function] }))),
     [groups],
@@ -87,24 +124,21 @@ export default function Components() {
      * header, filter row and sections were flush; gap-8 is the Foundations
      * page's stack rhythm. */
     <div className="flex flex-col gap-8">
-      <DocHeader
-        eyebrow="KOL · Components"
-        title="Components"
-        lede={`${TOTAL} published components · ${WITH_DEMOS} with live previews. Every component carries a canonical snippet plus verbatim examples mined from real KOL apps.`}
-      />
+      {/* THE HOME (2026-09-30): the space's and each tier's own markdown page, then the live wall */}
+      <HomeDoc key={tier ?? 'components'} id={tier ?? 'components'} />
 
       <ContentFilters
         items={items}
         title="All components"
-        totalCount={TOTAL}
-        searchKeys={['name']}
+        totalCount={tier ? items.length : TOTAL}
+        searchKeys={['name', 'displayName']}
         filterGroups={[{ label: 'Function', key: 'fnLabel', values: Object.values(FUNCTIONS) }]}
         mutuallyExclusiveFilters={['fnLabel']}
         showCountOnlyWhenFiltering
         renderItem={(rows) => {
           const grouped = regroup(rows)
           return grouped.length === 0
-            ? <p className="kol-sans-body-01 text-meta">no components match.</p>
+            ? <EmptyState eyebrow="No results" title="No components match." body="Clear the search or the function filter." />
             : (
               <div className="flex flex-col gap-8">
                 {grouped.map(([key, label, list]) => (

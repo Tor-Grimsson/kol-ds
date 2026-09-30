@@ -16,7 +16,7 @@ The KOL **type-foundry system** — the type-specimen apparatus, lifted out of `
 | `TypeSample` | labeled live type-specimen block (props-driven) |
 | `TypeSpecCard` | font-metric data sheet + live sample slot |
 | `TextPressure` | variable-font glyphs deforming toward the pointer |
-| `ColorLoader` | branded loading curtain with a live variable-font wordmark |
+| `IntroLoader` (was `ColorLoader`) | branded loading curtain with a live variable-font wordmark |
 | `glyphSets`, `glyphCategories`, `SPECIMEN_SAMPLE_TEXT` | glyph data |
 
 ```js

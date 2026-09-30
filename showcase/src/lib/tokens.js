@@ -4,7 +4,7 @@
  * These arrays say *what* to show and in what order. The actual values are read
  * LIVE from the loaded @kolkrabbi/kol-theme at render (getComputedStyle), so the
  * page can never drift from the real tokens. Swatch fills use `var(--token)`
- * directly, so they also re-colour instantly on light/dark toggle.
+ * directly, so they also re-color instantly on light/dark toggle.
  */
 
 // KOL's signature: a 14-stop translucent foreground (ink-over-surface) scale.

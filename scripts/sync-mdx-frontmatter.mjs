@@ -124,6 +124,7 @@ const TIER_TAG = {
   molecules: 'domain/components/molecules',
   organisms: 'domain/components/organisms',
   hooks: 'domain/components/hooks',
+  utilities: 'domain/components/utilities',
 }
 
 /** The package a component ships from → the vault leaf for that subject. */
@@ -166,6 +167,15 @@ const deriveTags = (name, description, { tier, pkg, fn }) => {
   const haystack = `${name} ${description ?? ''}`
   for (const [re, tag] of SUBJECT_TAGS) if (re.test(haystack)) tags.add(tag)
   return [...tags].sort()
+}
+
+/* The TIER leaf is derived, not authored — it follows the component when it moves (2026-09-30:
+ * the names audit moved four overlays atoms → utilities and their pages still read
+ * `domain/components/atoms`). Every other authored tag is kept as written. */
+const retier = (tags, tier) => {
+  if (!Array.isArray(tags) || !TIER_TAG[tier]) return tags
+  const rest = tags.filter((t) => !Object.values(TIER_TAG).includes(t))
+  return [...new Set([...rest, TIER_TAG[tier]])].sort()
 }
 
 /* Parse `export const meta = { … }` — a small object literal of scalars and
@@ -271,7 +281,7 @@ for (const file of files) {
      * in place forever. Anything else in `tags` is treated as authored. */
     tags: isGeneratedBaseTags(existing.tags)
       ? deriveTags(name, describe(name), facets[name] ?? {})
-      : existing.tags,
+      : retier(existing.tags, facets[name]?.tier),
     description: existing.description ?? describe(name),
     aliases: existing.aliases ?? [name.toLowerCase()],
     /* AUTHOR WINS, and the disagreement is reported rather than swallowed —

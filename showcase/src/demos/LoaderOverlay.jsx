@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { LoaderOverlay, Button } from '@kolkrabbi/kol-component'
-import { ColorLoader } from '@kolkrabbi/kol-foundry'
+import { IntroLoader } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'hug'
 
 /**
  * LoaderOverlay is fixed and covers the whole viewport (via FullscreenOverlay).
- * Press Play to mount it over everything; the injected full-screen ColorLoader
+ * Press Play to mount it over everything; the injected full-screen IntroLoader
  * curtain (foundry, via the `loader` slot) fades in, then click the curtain to
  * slide it up — its `onComplete` unmounts the overlay.
  */
@@ -18,7 +18,7 @@ export default function LoaderOverlayDemo() {
       <Button onClick={() => setOpen(true)}>Play overlay</Button>
       <span className="kol-helper-12 text-fg-48">Covers the viewport — click the curtain to enter.</span>
       {open && (
-        <LoaderOverlay loader={<ColorLoader dismissOnClick onComplete={() => setOpen(false)} />} />
+        <LoaderOverlay loader={<IntroLoader dismissOnClick onComplete={() => setOpen(false)} />} />
       )}
     </div>
   )

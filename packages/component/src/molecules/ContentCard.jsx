@@ -47,7 +47,7 @@ const BOX = {
   /* SLIDE (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03; user: "they are genuinely
    * different with 16:9 layout and those exposed properties"): file's stack — cover on top, the
    * plate below — on the PAGE'S surface, rest and hover (olina's /slide-deck, read off the render).
-   * The plate is not a tone (user: "no just controls"); it is this kind's colour. */
+   * The plate is not a tone (user: "no just controls"); it is this kind's color. */
   slide: { layout: 'stack', border: null, bg: 'var(--kol-surface-primary)', pad: 'var(--kol-pad-card-sm)' },
   /* THE FRAME READS BACKWARDS (CatalogCardFrameAndZoom, kol-website 2026-08-28 — user, on a 212-tile
    * grid: no frame at rest; the old rest value is the hover): a wall of fg-04 frames is a grid of boxes,
@@ -94,7 +94,7 @@ const BOX = {
  * has no surface of its own to step, so it dims its title instead. */
 const HOVER = {
   file:  'var(--kol-oq-04)',
-  slide: 'var(--kol-surface-primary)', /* the plate holds its colour on hover; the drawer control is the affordance */
+  slide: 'var(--kol-surface-primary)', /* the plate holds its color on hover; the drawer control is the affordance */
   catalog:  'var(--kol-surface-tertiary)',
   /* article and work take NO surface hover, and that is a decision not a gap:
    * article has no surface of its own (its media frame, when on, steps its
@@ -168,7 +168,7 @@ export default function ContentCard({
    * print draw it); `false` turns it off without an `!important` in a consumer sheet */
   plateRule,
   /* `bg` — the card's REST fill, overriding the variant's. It sets
-   * `--kol-card-bg`, not a background, because the rest colours are custom
+   * `--kol-card-bg`, not a background, because the rest colors are custom
    * properties so the hover class can win; that is also why
    * `className="bg-oq-48"` does nothing here and a consumer reaching around the
    * component had to write `className="[--kol-card-bg:var(--kol-oq-48)]"`
@@ -437,7 +437,7 @@ export default function ContentCard({
     'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,
     className: `kol-card group flex ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
-      /* same reason as ContentRow: rest colours are PROPERTIES, because an
+      /* same reason as ContentRow: rest colors are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step
        * would never render. */
       '--kol-card-bg': bg ?? box.bg ?? undefined,
@@ -464,7 +464,7 @@ export default function ContentCard({
         onContextMenu={onContextMenu}
         onDoubleClick={onDoubleClick}
         /* SELECTED HAS TO SHOW (user 2026-09-23: a click in the grid "should select/highlight").
-         * `selected` only flipped a border colour on the variants that HAVE a border, and the file
+         * `selected` only flipped a border color on the variants that HAVE a border, and the file
          * wall's cards have none — so the prop was true and the card looked untouched. The
          * attribute is the hook; the theme paints it, once, for every variant. */
         data-selected={selected || undefined}

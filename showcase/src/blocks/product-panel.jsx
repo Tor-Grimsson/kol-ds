@@ -71,7 +71,7 @@ const TABS = [
     content: (
       <p>
         A ten-color giclée pulled from a hand-built risograph study. Each sheet is printed to order on
-        heavyweight cotton rag, then signed and numbered on the reverse. Colours are matched under D50
+        heavyweight cotton rag, then signed and numbered on the reverse. Colors are matched under D50
         light so the orange holds its warmth from gallery to living room.
       </p>
     ),

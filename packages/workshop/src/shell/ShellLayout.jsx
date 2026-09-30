@@ -1,8 +1,8 @@
-import { createContext, useContext, useMemo, useState, useEffect, Suspense } from 'react'
+import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
-import ShellSidebar from './ShellSidebar.jsx'
-import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsSections, SettingsSwitch, Tooltip } from '@kolkrabbi/kol-component'
+import ShellSidebar, { RAIL_FOLD_EVENT } from './ShellSidebar.jsx'
+import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -79,9 +79,29 @@ export const SHELL_SCROLL_ROOT = '#shell-scroll'
  * overflow (`.shell-rail`, kol-components-workshop.css): exactly one region
  * tall, a seam toward the page, the chrome inset inside the seam.
  * overflow-x-hidden (2026-07-30): long tree rows must not scroll sideways. */
-const NavColumn = ({ children }) => (
-  <aside aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-8">
+/* RESIZABLE RAILS (2026-09-30) — THE DS GESTURE, not a local one: `useDragResize` (the grab edge
+ * SideNav and EditorShell wear — drag resizes, a click or a drag under the snap collapses, arrows
+ * step, release near the default snaps back) and the `.kol-rail-grab` pill. Each rail has its own
+ * token family (`kol-shell-nav` · `kol-shell-toc`, tokens in kol-framework.css) so the two never
+ * drag together; width lasts the session (persistWidth off, the 2026-09-03 ruling). A collapse
+ * from the grab is the shell's own "hide the rail" — the same state `[` / `]` toggle. */
+const useRailGrab = (token, side, hide) => {
+  const ref = useRef(null)
+  const { collapsed, toggleCollapsed, grabProps } = useDragResize(ref, { token, side })
+  useEffect(() => {
+    if (!collapsed) return
+    hide()
+    toggleCollapsed() // un-stamp the hook's collapse — the shell's own state now holds it
+    document.documentElement.style.removeProperty(`--${token}-w`) // it returns at the stylesheet width
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collapsed])
+  return { ref, grab: <div {...grabProps} className={`kol-rail-grab kol-rail-grab--${side} hidden lg:block`} /> }
+}
+
+const NavColumn = ({ children, grip, railRef }) => (
+  <aside ref={railRef} aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-8">
     {children}
+    {grip}
   </aside>
 )
 
@@ -118,8 +138,9 @@ const MainColumn = ({ children, fullHeight, width = 'canvas', padStart, padEnd }
 /* `xl`, not `lg` — the grid only declares a third column at xl (gridCols
  * below). The breakpoint here and the one in gridCols are one decision and
  * must not be stated twice differently. */
-const TocColumn = ({ children }) => (
-  <aside aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-8">
+const TocColumn = ({ children, grip, railRef }) => (
+  <aside ref={railRef} aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-8">
+    {grip}
     {/* The width is the grid track (--kol-shell-toc-w). An empty rail still
       * holds its column (user ruling 2026-08-01): a rail that disappears
       * re-flows main and the same page ends up at two widths. */}
@@ -156,13 +177,18 @@ const toSearchItem = (item, i) => ({
  * @param {string|Function} [brandLabel]  a TYPED label in the second wordmark slot instead of
  *                               the drawn WORKSHOP mark — a string, or `({ activeRoute }) => string`
  *                               so it names the space you are in
+ * @param {Array}  [shortcuts]   the consumer's own keys, `{ id, label, combo, key, run }` — listed
+ *                               in the `S` sheet and bound by the same handler (2026-09-30)
  */
-const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], brandLabel, defaultTocContent, isActive: isActiveProp, actions }) => {
+const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], brandLabel, defaultTocContent, isActive: isActiveProp, actions, shortcuts = [] }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
   const [prefs, setPrefs] = useState(readSettings)
   const setPref = (key, value) => setPrefs((p) => { const next = { ...p, [key]: value }; writeSettings(next); return next })
   const [navCollapsed, setNavCollapsed] = useState(() => readSettings().navHidden === true)
+
   const [tocCollapsed, setTocCollapsed] = useState(() => readSettings().tocHidden === true)
+  const navGrab = useRailGrab('kol-shell-nav', 'left', () => { setNavCollapsed(true); writeSettings({ ...readSettings(), navHidden: true }) })
+  const tocGrab = useRailGrab('kol-shell-toc', 'right', () => { setTocCollapsed(true); writeSettings({ ...readSettings(), tocHidden: true }) })
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   /* ONE QUERY (user ruling 2026-08-01). The palette's text used to live here
    * while tags lived in TagModeContext — two states, and therefore two
@@ -224,9 +250,17 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     { section: 'Shell', items: [
       { id: 'sheet', label: 'This sheet', combo: 'S' },
       { id: 'settings', label: 'Settings', combo: ',' },
+      { id: 'nav', label: 'Left rail', combo: '[' },
+      { id: 'toc', label: 'Right rail', combo: ']' },
+      { id: 'fold', label: 'Fold or open every chapter', combo: 'C' },
       { id: 'esc', label: 'Close what is open', combo: 'Esc' },
     ] },
+    ...(shortcuts.length ? [{ section: 'Page', items: shortcuts.map(({ id, label, combo }) => ({ id, label, combo })) }] : []),
   ]
+  /* the handler binds once; the consumer's list and the fold state are read through refs */
+  const shortcutsRef = useRef(shortcuts)
+  shortcutsRef.current = shortcuts
+  const foldedRef = useRef(false)
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -249,6 +283,19 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       } else if (e.key === ',') {
         e.preventDefault()
         setIsSettingsOpen((v) => !v)
+      } else if (e.key === '[') {
+        e.preventDefault()
+        setNavCollapsed((v) => { writeSettings({ ...readSettings(), navHidden: !v }); return !v })
+      } else if (e.key === ']') {
+        e.preventDefault()
+        setTocCollapsed((v) => { writeSettings({ ...readSettings(), tocHidden: !v }); return !v })
+      } else if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault()
+        foldedRef.current = !foldedRef.current
+        window.dispatchEvent(new CustomEvent(RAIL_FOLD_EVENT, { detail: { collapsed: foldedRef.current } }))
+      } else if (shortcutsRef.current.some((s) => s.key === e.key)) {
+        e.preventDefault()
+        shortcutsRef.current.find((s) => s.key === e.key).run()
       } else if (e.key === 'Escape') {
         setIsShortcutsOpen(false)
       }
@@ -344,13 +391,13 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const searchTrigger = (
     <>
       {actions}
-      <Tooltip label="Search · ⌘K or /">
+      <Tooltip label="Search">
         {/* `md` + full-ink nav (user re-rule 2026-08-09; repeals the 2026-08-01
           * lg ruling). The row law is unchanged: every header glyph on ONE
           * rung, one variant — the rung is just md now. */}
         <IconFrame name="search" variant="nav" size="md" onClick={() => setIsSearchOpen(true)} aria-label="Search" />
       </Tooltip>
-      <Tooltip label="Settings · ,">
+      <Tooltip label="Settings">
         <IconFrame name="settings-01" variant="nav" size="md" onClick={() => setIsSettingsOpen(true)} aria-label="Settings" />
       </Tooltip>
     </>
@@ -414,6 +461,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             isActive={isActive}
             onNavigate={handleNavigate}
             actions={searchTrigger}
+            menuBelowLg
             onMenuClick={() => {
               if (window.matchMedia('(min-width: 1024px)').matches) {
                 /* Both rails to ONE target state — independent `!p` flips made
@@ -441,7 +489,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           >
               <div className={`shell-content-grid grid ${gridCols}`} data-layout={layoutType} style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
                   {showNav && (
-                    <NavColumn>
+                    <NavColumn railRef={navGrab.ref} grip={navGrab.grab}>
                       {renderSidebar ? renderSidebar({ activeRoute }) : <ShellSidebar routes={routes} basePath={basePath} />}
                     </NavColumn>
                   )}
@@ -459,7 +507,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                     * the grid's third track so main keeps one width across
                     * every route (user ruling 2026-08-01). */}
                   {showToc && (
-                    <TocColumn>
+                    <TocColumn railRef={tocGrab.ref} grip={tocGrab.grab}>
                       {effectiveTocContent}
                     </TocColumn>
                   )}
@@ -526,13 +574,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             * settings page or settings sidebar … to offload some functional
             * settings, search settings, sidenav settings"). A right drawer over
             * the page, the same rows the apps' settings use (SettingsSections). */}
-          <ShellDrawer open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} side="right" width={360}>
-            {/* the drawer draws its own close — no second one here */}
-            <div className="flex flex-col gap-6 p-6">
-              <span className="kol-doc-eyebrow">Settings</span>
-              <SettingsSections sections={settingsSections} labelWidth="auto" />
-            </div>
-          </ShellDrawer>
+          {/* THE APPROVED DRAWER (2026-09-30): kol-component's `SettingsPanel` — the composition locked
+            * 2026-08-27 that media's Display settings and Trash already wear: title header, divided
+            * sections. This was a hand-built ShellDrawer + eyebrow + undivided sections. */}
+          <SettingsPanel open={isSettingsOpen} variant="drawer" title="Settings" onClose={() => setIsSettingsOpen(false)}>
+            <SettingsSections sections={settingsSections} divided />
+          </SettingsPanel>
         </div>
         </ShellNavCollapsedContext.Provider>
         </ShellTocCollapsedContext.Provider>

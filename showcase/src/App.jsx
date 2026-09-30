@@ -1,6 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
-import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref } from './nav/vault.js'
+import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref, PHASE_LOG_INDEX } from './nav/vault.js'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
 import FoundationsColor from './pages/FoundationsColor'
@@ -8,25 +8,34 @@ import FoundationsTypography from './pages/FoundationsTypography'
 import FoundationsTones from './pages/FoundationsTones'
 import IconsGallery from './pages/IconsGallery'
 import ComponentPage from './pages/ComponentPage'
-import Components from './pages/Components'
+import Components, { TierHome } from './pages/Components'
 import Blocks from './pages/Blocks'
 import BlockPage from './pages/BlockPage'
 import BlockPreview from './pages/BlockPreview'
 import Sets from './pages/Sets'
 import SetPage from './pages/SetPage'
 import SetPreview from './pages/SetPreview'
+import Cards from './pages/Cards'
+import CardPage from './pages/CardPage'
+import CardPreview from './pages/CardPreview'
+import SetFamily from './pages/SetFamily'
 import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import References from './pages/References'
 import ReferenceNode from './pages/ReferenceNode'
 import Search from './pages/Search'
 import DocsIndex from './pages/DocsIndex'
+import StylesIndex from './pages/StylesIndex'
 import Development from './pages/Development'
+import { TagGraphPage, TagsPage, IndexPage } from './pages/DevTools'
+import Packages, { PackagePage } from './pages/Packages'
+import OpenQuestions, { OpenQuestionsRound } from './pages/OpenQuestions'
 import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
-import Apps from './pages/Apps'
+import Apps, { AppLayer } from './pages/Apps'
 import AppHome from './pages/AppHome'
 import ShellChrome from './lib/ShellChrome.jsx'
+import { useFrontmatter } from './lib/frontmatter.jsx'
 import MdxDoc from './lib/MdxDoc.jsx'
 /* MDX docs — the page IS the document (shadcn model). One import per doc for
  * now; a glob-driven route lands when the rest convert. */
@@ -45,12 +54,33 @@ import * as ShellLayoutDoc from './docs/shell-and-layout.mdx'
  * Bare routes stay OUTSIDE the layout: the block/set previews are the src of
  * the resizable iframes and must render chrome-less by definition.
  */
+/* the vault reader with the page's frontmatter toggle (`F`, 2026-09-30) */
+function VaultReader({ docsIndex = '/docs' }) {
+  const show = useFrontmatter('page')
+  return (
+    <DocumentationReader
+      inventory={VAULT}
+      modules={VAULT_MODULES}
+      docHref={vaultDocHref}
+      routes={{ docsIndex, components: '/components' }}
+      showFrontmatter={show}
+    />
+  )
+}
+
+/* /docs/<guide> → /styles/<guide>: the guides moved to Styles on 2026-09-30 */
+function GuideRedirect() {
+  const { pathname } = useLocation()
+  return <Navigate to={pathname.replace(/^\/docs\//, '/styles/')} replace />
+}
+
 export default function App() {
   return (
     <Routes>
       {/* Chrome-less by contract — iframe sources + dev mirrors */}
       <Route path="/blocks/preview/:slug" element={<BlockPreview />} />
       <Route path="/sets/preview/:slug" element={<SetPreview />} />
+      <Route path="/cards/preview/:slug" element={<CardPreview />} />
 
       {/* TagModeProvider wraps the WHOLE shell, not just the vault route: the
         * reader portals its sidebar into the shell's TOC rail (ShellTocContext),
@@ -82,10 +112,14 @@ export default function App() {
         <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
         <Route path="/icons/:set?" element={<IconsGallery />} />
         <Route path="/components" element={<Components />} />
+        <Route path="/components/tier/:tier" element={<TierHome />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
         <Route path="/blocks" element={<Blocks />} />
         <Route path="/blocks/:slug" element={<BlockPage />} />
+        <Route path="/cards" element={<Cards />} />
+        <Route path="/cards/:slug" element={<CardPage />} />
         <Route path="/sets" element={<Sets />} />
+        <Route path="/sets/family/:dir" element={<SetFamily />} />
         <Route path="/sets/:slug" element={<SetPage />} />
         {/* The holding page. Every route above stays mounted while its category
           * is quarantined — the gate is on the sidebar, not on the router, so a
@@ -96,29 +130,34 @@ export default function App() {
         <Route path="/references/:name" element={<ReferenceNode />} />
         <Route path="/search" element={<Search />} />
         <Route path="/development" element={<Development />} />
+        <Route path="/development/tag-graph" element={<TagGraphPage />} />
+        <Route path="/development/tags" element={<TagsPage />} />
+        <Route path="/development/index" element={<IndexPage />} />
+        <Route path="/development/packages" element={<Packages />} />
+        <Route path="/development/packages/:dir" element={<PackagePage />} />
+        {/* The phase log — docs/operations/09-phase-log/ read by the same reader as the vault,
+          * in the Development space (vaultDocHref sends its ids here). */}
+        <Route path="/development/log" element={<Navigate to={vaultDocHref(PHASE_LOG_INDEX.id)} replace />} />
+        <Route path="/development/log/:docId" element={<VaultReader docsIndex="/development/log" />} />
+        <Route path="/development/open-questions" element={<OpenQuestions />} />
+        <Route path="/development/open-questions/:round" element={<OpenQuestionsRound />} />
         <Route path="/apps" element={<Apps />} />
+        <Route path="/apps/layer/:layer" element={<AppLayer />} />
         {/* an app's HOME — its spec. Singular: `/apps/<name>/` is the app itself (its own build) */}
         <Route path="/app/:name" element={<AppHome />} />
         <Route path="/docs" element={<DocsIndex />} />
-        <Route path="/docs/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
-        <Route path="/docs/menus" element={<MdxDoc module={MenusDoc} />} />
-        <Route path="/docs/loaders" element={<MdxDoc module={LoadersDoc} />} />
-        <Route path="/docs/type-roles" element={<MdxDoc module={TypeRolesDoc} />} />
+        {/* STYLES (2026-09-30) — the guides moved here from Docs; the old URLs redirect */}
+        <Route path="/styles" element={<StylesIndex />} />
+        <Route path="/styles/shell-and-layout" element={<MdxDoc module={ShellLayoutDoc} />} />
+        <Route path="/styles/menus" element={<MdxDoc module={MenusDoc} />} />
+        <Route path="/styles/loaders" element={<MdxDoc module={LoadersDoc} />} />
+        <Route path="/styles/type-roles" element={<MdxDoc module={TypeRolesDoc} />} />
+        {['shell-and-layout', 'menus', 'loaders', 'type-roles'].map((g) => <Route key={g} path={`/docs/${g}`} element={<GuideRedirect />} />)}
         {/* THE VAULT — docs/ rendered by the packaged reader, frontmatter and
           * all. Documentation is a SYSTEM: its own top-level URL space. */}
         {/* the Docs space's root is its index; the old door stays a redirect */}
         <Route path="/documentation" element={<Navigate to="/docs" replace />} />
-        <Route
-          path="/documentation/:docId"
-          element={
-            <DocumentationReader
-              inventory={VAULT}
-              modules={VAULT_MODULES}
-              docHref={vaultDocHref}
-              routes={{ docsIndex: '/docs', components: '/components' }}
-            />
-          }
-        />
+        <Route path="/documentation/:docId" element={<VaultReader />} />
         {import.meta.env.DEV && <Route path="/lobby/*" element={<Lobby />} />}
       </Route>
       {/* THE workshop route — live dogfood of @kolkrabbi/kol-workshop (shell +

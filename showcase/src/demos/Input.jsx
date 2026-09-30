@@ -3,10 +3,13 @@ import { Input, ColorSwatch } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
-/* Variants ramp inline; size rides the toolbar picker. */
+/* The main instance takes the variant and size pickers (2026-09-30 — filled and outline used to
+ * stack); the examples below it are different PROPS (commit on blur, a slot, a property pair),
+ * not variants of the same thing. */
+export const variants = ['filled', 'outline']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
-export default function InputDemo({ size = 'md' }) {
+export default function InputDemo({ variant = 'filled', size = 'md' }) {
   const [v, setV] = useState('')
   const [name, setName] = useState('scope-04')
   const [hex, setHex] = useState('FFCF33')
@@ -15,8 +18,7 @@ export default function InputDemo({ size = 'md' }) {
   const onChange = (e) => setV(e?.target?.value ?? e)
   return (
     <>
-      <Input variant="filled" size={size} placeholder="filled" value={v} onChange={onChange} />
-      <Input variant="outline" size={size} placeholder="outline" value={v} onChange={onChange} />
+      <Input variant={variant} size={size} placeholder={variant} value={v} onChange={onChange} />
       {/* xs + onCommit (ControlsXsRung, 2026-09-01): the panel rung, committing on blur / Enter — the value beside it is what was committed */}
       <div className="flex items-center gap-2">
         <Input variant="outline" size="xs" value={name} onCommit={setName} placeholder="module name" chars={12} />

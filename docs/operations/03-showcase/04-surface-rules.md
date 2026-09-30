@@ -11,6 +11,7 @@ tags:
 related:
   - "[[01-recovery-roadmap|Showcase recovery]]"
   - "[[../../documentation/04-compositions/02-shells|reference shells]]"
+  - "[[05-audit-names-and-homes|Names and homes audit]]"
 ---
 
 # Surface rules — Docs, Search, References

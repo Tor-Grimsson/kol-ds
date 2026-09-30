@@ -11,7 +11,7 @@
  * - `KolLogo` imported from the app → the `mark` node.
  * - A seven-stop client palette (champagne / sand / burgundy / maroon / wine)
  *   → `palette`, defaulting to the theme's own ink and paper. A brand supplies
- *   its own; the DS ships no colour.
+ *   its own; the DS ships no color.
  * - `'Bricolage Grotesque'` and `'JetBrains Mono'` by name → `fonts`,
  *   defaulting to `--kol-font-family-sans-narrow` / `--kol-font-family-mono`.
  *   A foreign family by name in a package is how a consumer's type silently
@@ -248,7 +248,7 @@ export function StoryType({ mark, palette, fonts, quote = 'Your line here.', cla
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
- * @param {string} bg - Ground colour; unset, the `paper` stop
+ * @param {string} bg - Ground color; unset, the `paper` stop
  * @param {'dark'|'light'} polarity - Which way the mark inks against that ground (default: 'dark')
  * @param {string} className - Extra classes on the frame
  */

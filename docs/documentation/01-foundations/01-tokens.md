@@ -36,7 +36,7 @@ weight lives there, and this page keeps the rest.
 
 ### Semantic surfaces sit on top
 
-`--kol-surface-*` names *where* a colour is used; the ladders name *what it is mixed from*. Reach for the surface token in a component rule; reach for a ladder when defining a new surface.
+`--kol-surface-*` names *where* a color is used; the ladders name *what it is mixed from*. Reach for the surface token in a component rule; reach for a ladder when defining a new surface.
 
 `--kol-surface-sunken` is the well, and it is **two declarations, deliberately** (user ruling 2026-08-30: *"I really only wanted that extreme for light"*):
 

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { DocHeader } from '@kolkrabbi/kol-workshop'
+import { DocHeader, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Table } from '@kolkrabbi/kol-component'
 import { APPS, LAYERS } from './Apps.jsx'
 
@@ -12,6 +12,9 @@ import { APPS, LAYERS } from './Apps.jsx'
 export default function AppHome() {
   const { name } = useParams()
   const app = APPS.find((a) => a.name === name)
+  /* an app page carries tags like any page (2026-09-30 — /apps read Tags (0)): its layer, the
+   * packages it takes */
+  usePageMeta({ tags: app ? [`pattern/${app.layer}-layer`, ...app.packages.map((p) => `domain/${p.split(' ')[0]}`)] : [], related: [] })
   if (!app) return <DocHeader eyebrow="Apps tier" title="No such app" lede={`There is no app called “${name}”.`} />
   const layer = LAYERS.find((l) => l.id === app.layer)
   const rows = [

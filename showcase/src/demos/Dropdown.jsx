@@ -8,29 +8,15 @@ const OPTIONS = [
   { value: 'za', label: 'Z → A' },
 ]
 
-/* Variants ramp inline; size rides the toolbar picker. */
+/* ONE instance; variant and size ride the toolbar pickers (2026-09-30, the names audit — the
+ * three variants used to stack side by side, one of them open). */
+export const variants = ['primary', 'grey', 'outline']
 /* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
-export default function DropdownDemo({ size = 'sm' }) {
+export default function DropdownDemo({ variant = 'primary', size = 'sm' }) {
   const [value, setValue] = useState('newest')
-  return (
-    <div className="flex flex-wrap items-start gap-6">
-      {[['primary', 'PRIMARY'], ['grey', 'GREY'], ['outline', 'OUTLINE']].map(([variant, label]) => (
-        <div key={variant} className="flex flex-col gap-2">
-          <span className="kol-helper-10 text-meta">{label}</span>
-          <Dropdown
-            value={value}
-            onChange={setValue}
-            variant={variant}
-            size={size}
-            options={OPTIONS}
-            defaultOpen={variant === 'primary'}
-          />
-        </div>
-      ))}
-    </div>
-  )
+  return <Dropdown value={value} onChange={setValue} variant={variant} size={size} options={OPTIONS} />
 }
 
 /* Index card: one canonical instance, closed. */

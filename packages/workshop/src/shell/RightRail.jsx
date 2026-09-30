@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import RailSection from './RailSection.jsx'
 import RailRow from './RailRow.jsx'
 
@@ -63,6 +64,14 @@ import RailRow from './RailRow.jsx'
  *                                this package does not reach into kol-component
  * @param {Function} onTagClick   (tag) => void
  */
+const PINS_KEY = 'kol-rail-pins'
+const readPins = () => {
+  try { return JSON.parse(localStorage.getItem(PINS_KEY) || '[]') } catch { return [] }
+}
+const writePins = (pins) => {
+  try { localStorage.setItem(PINS_KEY, JSON.stringify(pins)) } catch { /* private mode */ }
+}
+
 export default function RightRail({
   toc = [],
   activeId,
@@ -77,16 +86,46 @@ export default function RightRail({
   /* One collapse map, not a useState per section — a section added later must
    * not need a new hook at the top of this function. */
   const [collapsed, setCollapsed] = useState({})
+
+  /* PINNED (2026-09-30, the names audit: *"add to quicklook or favorites … in the right sidebar
+   * … maintain context-important documents during development … accessible until they dont need
+   * to be"*). Any page can be pinned from Quick actions; the pins show on every page until
+   * unpinned. Kept in this browser (localStorage) — a working set, not shared state. */
+  const { pathname } = useLocation()
+  const [pins, setPins] = useState(readPins)
+  const isPinned = pins.some((p) => p.path === pathname)
+  const togglePin = () => {
+    const label = document.querySelector('#main h1, main h1, h1')?.textContent?.trim() || pathname
+    const next = isPinned ? pins.filter((p) => p.path !== pathname) : [...pins, { path: pathname, label }]
+    setPins(next)
+    writePins(next)
+  }
+  const allActions = [
+    ...actions,
+    { id: 'pin', label: isPinned ? 'Unpin' : 'Pin', icon: IconComponent ? <IconComponent name="pushpin" size={14} /> : null, onClick: togglePin },
+  ]
   const toggle = (key) => setCollapsed((c) => ({ ...c, [key]: !c[key] }))
 
-  /* A tag shown as "this page's" must not repeat below as "the system's". */
-  const own = new Set(tags)
-  const otherTags = topTags.filter(({ tag }) => !own.has(tag))
+  /* OWN TAGS ONLY, GROUPED BY NAMESPACE (2026-09-30, the names audit — ruled on the
+   * recommendation). The rail used to follow a page's own tags with the space's top tags, so a
+   * page with none (/docs/menus) still listed ten, none of them its own. The system's most-used
+   * tags are a way IN, and belong on a home and the search page; `topTags` is accepted and
+   * ignored so no consumer breaks. The namespace law stays in the data — the rail prints it once
+   * as a group label and the leaf under it, instead of truncating the full path on every row. */
+  const byNamespace = tags.reduce((m, tag) => {
+    const [ns, ...rest] = String(tag).split('/')
+    const leaf = rest.join('/') || ns
+    ;(m[rest.length ? ns : ''] ||= []).push({ tag, leaf })
+    return m
+  }, {})
+  void topTags
+  void renderTag
 
   /* Every group is described here rather than spelled out in JSX below, so a
    * section cannot be present in one branch and missing in another — the exact
    * defect that split the two rails. */
-  const group = (key, label, count, children) => (
+  /* A chapter with nothing in it does not render (2026-09-30 — `Related (0)`). */
+  const group = (key, label, count, children) => count === 0 ? null : (
     <RailSection
       level={2}
       label={label}
@@ -101,7 +140,8 @@ export default function RightRail({
 
   return (
     <div className="shell-rail-stack">
-      <RailSection level={1} label="This page">
+      {/* A folded category shows its count, the same as the left rail (2026-09-30) */}
+      <RailSection level={1} label="This page" count={toc.length}>
         <div className="shell-rail-stack-inner">
           {group('toc', 'Contents', toc.length,
             toc.map((h) => (
@@ -113,42 +153,40 @@ export default function RightRail({
         </div>
       </RailSection>
 
-      <RailSection level={1} label="Links">
+      <RailSection level={1} label="Links" count={pins.length + allActions.length + tags.length + related.length}>
         <div className="shell-rail-stack-inner">
-          {group('actions', 'Quick actions', actions.length,
-            actions.map((a) => (
+          {group('pinned', 'Pinned', pins.length,
+            pins.map((p) => (
+              <RailRow key={p.path} to={p.path} icon={IconComponent ? <IconComponent name="pushpin" size={14} /> : null}>
+                {p.label}
+              </RailRow>
+            ))
+          )}
+
+          {group('actions', 'Quick actions', allActions.length,
+            allActions.map((a) => (
               <RailRow key={a.id} to={a.to} onClick={a.onClick} icon={a.icon}>
                 {a.label}
               </RailRow>
             ))
           )}
 
-          {/* ONE list, two ranks. This page's tags lead and carry `emphasis`;
-            * the system's most-used follow at the resting stop with their
-            * count. `otherTags` filters out anything already shown above, so a
-            * tag cannot appear twice in one list. */}
-          {group('tags', 'Tags', tags.length + otherTags.length, (
+          {group('tags', 'Tags', tags.length, (
             <>
-              {tags.map((tag) => (
-                <RailRow
-                  key={`own-${tag}`}
-                  onClick={() => onTagClick?.(tag)}
-                  icon={IconComponent ? <IconComponent name="hash-02" size={14} /> : null}
-                  className="shell-nav-item--own"
-                >
-                  {renderTag ? renderTag(tag) : tag}
-                </RailRow>
-              ))}
-              {otherTags.map(({ tag, count }) => (
-                <RailRow
-                  key={`top-${tag}`}
-                  onClick={() => onTagClick?.(tag)}
-                  icon={IconComponent ? <IconComponent name="hash-02" size={14} /> : null}
-                  trailing={count}
-                  className="shell-nav-item--muted"
-                >
-                  {renderTag ? renderTag(tag) : tag}
-                </RailRow>
+              {Object.entries(byNamespace).map(([ns, list]) => (
+                <div key={`ns-${ns}`}>
+                  {ns && <RailRow className="shell-nav-item--muted">{ns.charAt(0).toUpperCase() + ns.slice(1)}</RailRow>}
+                  {list.map(({ tag, leaf }) => (
+                    <RailRow
+                      key={`own-${tag}`}
+                      sub={!!ns}
+                      onClick={() => onTagClick?.(tag)}
+                      icon={IconComponent ? <IconComponent name="hash-02" size={14} /> : null}
+                    >
+                      {leaf}
+                    </RailRow>
+                  ))}
+                </div>
               ))}
             </>
           ))}

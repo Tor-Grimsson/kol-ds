@@ -93,7 +93,7 @@ export function CanvasFrame({
   const { ratio, label } = resolveAspect(aspect, customRatio, aspects)
   /* NO guideColor → THEME INK (editor DS sync 2026-09-27, from the design editor's copy, which had
    * it and this lift had not): the border and label follow the theme, so the frame reads on a light
-   * page and a dark one. A guideColor (a type frame's own colour) still tints both. */
+   * page and a dark one. A guideColor (a type frame's own color) still tints both. */
   const borderColor = guideColor ? `color-mix(in srgb, ${guideColor} 24%, transparent)` : 'var(--kol-oq-24)'
   const labelColor = guideColor ? `color-mix(in srgb, ${guideColor} 70%, transparent)` : 'var(--kol-fg-64)'
   const virtualH = CANVAS_VIRTUAL_W / ratio

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { usePopover, PopoverPanel } from './Popover.jsx'
+import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
 
 /**
  * ContextMenu — a right-click menu, anchored at the pointer.

@@ -4,7 +4,7 @@ import ColorSwatch from '../atoms/ColorSwatch.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /*
- * SwatchControls — the Photoshop-style top row of the colour panel, in two
+ * SwatchControls — the Photoshop-style top row of the color panel, in two
  * hand-tuned pieces plus the composed row. Hand-tuned visuals (fixed pixel
  * slots, the overlap-by-DOM-order trick, the double-ring halo, the red-slash
  * "none" marker). DO NOT refactor pieces to atoms — the look is intentional
@@ -20,7 +20,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *       No z-index, no transform — DOM order alone stacks them.
  *
  *   <EyedropPick sampleColor onPick disabled />
- *     — eyedropper icon button + a small sample chip of the sampled colour.
+ *     — eyedropper icon button + a small sample chip of the sampled color.
  *       The button is feature-gated: it is hidden entirely when the browser
  *       EyeDropper API is unavailable, and `disabled` dims it when supported
  *       but unusable. The actual EyeDropper call + canvas sampling live at the
@@ -92,7 +92,7 @@ export function SwatchStack({
 }
 
 /**
- * EyedropPick — eyedropper icon button + a sample chip of the sampled colour.
+ * EyedropPick — eyedropper icon button + a sample chip of the sampled color.
  * The button is hidden when the browser EyeDropper API is unavailable (no
  * affordance for an action that can't run); when supported but unusable pass
  * `disabled` to dim it. `onPick` is the app seam where EyeDropper + canvas

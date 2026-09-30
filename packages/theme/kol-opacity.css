@@ -491,7 +491,7 @@
  * `mute` (32%) was retired 2026-04-30 with zero consumers and does not return.
  *
  * Tokens chain through the fg ramp — single source of truth is preserved;
- * descriptors are aliases, never their own colour values.
+ * descriptors are aliases, never their own color values.
  * ============================================================================== */
 
 /* Theme selectors, same reason as the ramp above — the roles chain through
@@ -509,7 +509,7 @@
   --kol-fg-emphasis:  var(--kol-surface-on-primary);
 
   /* DEPRECATED ALIAS — `default` is the old name for `body`, kept pointing at
-   * the same stop so a consumer mid-sweep cannot render colourless. Remove once
+   * the same stop so a consumer mid-sweep cannot render colorless. Remove once
    * no source references it. */
   --kol-fg-default:   var(--kol-fg-body);
 }

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import Button from '../atoms/Button.jsx'
-import CloseButton from '../utilities/CloseButton.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 
 /* taxonomy-ok: molecule — nests Button (atom) + CloseButton (utility). */
 

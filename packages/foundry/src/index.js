@@ -37,7 +37,9 @@ export { default as useFontMetrics, extractFaceMetrics, buildOutlinePaths, glyph
 
 // live-font effects — variable-font axes, animated
 export { default as TextPressure } from './TextPressure.jsx'
-export { default as ColorLoader } from './ColorLoader.jsx'
+/* IntroLoader — renamed from ColorLoader 2026-09-30 (the names audit: it is the site's intro
+ * curtain, and nothing about it is color). `ColorLoader` is the alias, on the retirement ledger. */
+export { default as IntroLoader, default as ColorLoader } from './IntroLoader.jsx'
 
 // reference composition (severed page — data via props, no router/SEO/data-fetch)
 export { default as TypefaceSpecimenPage } from './TypefaceSpecimenPage.jsx'

@@ -109,7 +109,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
 | `LabeledControl` | A label-and-hint wrapper around any control. |
-| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's ColorLoader). |
+| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's IntroLoader). |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
@@ -192,7 +192,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `ToolPalette` | The editor's tool bar as one row — tools arm, actions run, folds (`SplitToolButton`) either arm a variant or run one; dividers between groups. Armed tool, actions and every disabled rule are the consumer's `items`. Scrolls in its own box when narrow. |
 | `DocumentEditor` | Write a text file — open one or make a new one (name + type): a fields form over a markdown file's frontmatter, Write / Split / Preview through `KindPreview`, Attach from a list of files, SVG with its picture. Drafts live in browser memory and restore when newer than the file; ⌘S saves, Revert drops the draft. |
 
-Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `ColorLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
+Foundry specimen organisms ship in the standalone `@kolkrabbi/kol-foundry` package — `IntroLoader` moved there too on 2026-07-09 (its wordmark is a live TextPressure variable-font effect); see the showcase `/sets/foundry-specimen`.
 
 ## Loaders & hooks
 

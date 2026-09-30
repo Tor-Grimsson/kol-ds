@@ -28,14 +28,14 @@ related:
 
 # Opacity lookup
 
-**Colour is hue; this is ink weight.** [[11-color-lookup|Color]] holds the
+**Color is hue; this is ink weight.** [[11-color-lookup|Color]] holds the
 surfaces and ramps. Everything here is the theme's own ink at a strength, over
 something.
 
 ## Ink roles
 
 Eight names, each an alias onto one numeric stop. A role is a position on the
-ladder, never a colour.
+ladder, never a color.
 
 | Role | Stop |
 |---|---|

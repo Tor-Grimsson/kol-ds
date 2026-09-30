@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-foundry
 
+## 0.11.0 — 2026-09-30
+
+**The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).
+
+- **`IntroLoader`** — `ColorLoader` renamed: it is the site's intro curtain (a TextPressure wordmark), and nothing about it is color. `ColorLoader` stays as an alias on the retirement ledger (`docs/operations/01-release/04-retirements.md`).
+- "Swap colors" in the font viewer; comments: one spelling, `color`.
+
 > Started 2026-08-14 at 0.5.5 — earlier versions shipped without entries (that history
 > lives in the repo's session logs). From here every publish adds an entry, and breaking
 > or global-surface changes are flagged **BREAKING**.

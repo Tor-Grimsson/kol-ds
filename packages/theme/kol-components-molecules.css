@@ -67,7 +67,7 @@
  * 2026-08-28). No :hover or :active rules for the trigger live here any more —
  * kol-components-atoms.css excludes `.kol-dd-trigger` from every variant's
  * hover and press instead. The pin-backs that stood here restated each
- * variant's REST colours to cancel the button's, and that failed twice: one
+ * variant's REST colors to cancel the button's, and that failed twice: one
  * went stale when `.kol-btn-outline`'s rest border moved (2026-08-26), and a
  * pin-back out-specifies the tone, so a sunken trigger hovered into the
  * untoned fill. "No state" is an absence now, not a mirror. */
@@ -440,9 +440,9 @@
 }
 .kol-tag-dismiss:hover { opacity: 1; }
 
-/* The per-colour tag palette was DELETED 2026-08-01 with the `color` prop.
+/* The per-color tag palette was DELETED 2026-08-01 with the `color` prop.
  * A chip's look is its variant now (kol-tag--primary|secondary|inverse), the
- * same vocabulary Pill and Button use. Tag colour BY TAXONOMY returns later
+ * same vocabulary Pill and Button use. Tag color BY TAXONOMY returns later
  * as its own decision, layered ON the variants rather than replacing them. */
 
 .control-unified-inverse {
@@ -632,7 +632,7 @@
 
 /* Reads the quiet ring token so the segmented strip is part of the system-wide
  * focus off switch (FocusRingsInConsumers, 2026-08-15). This is the LAST
- * hardcoded focus colour in the theme — with it, `--kol-focus-ring` +
+ * hardcoded focus color in the theme — with it, `--kol-focus-ring` +
  * `--kol-focus-ring-quiet` set to transparent turns every ring off, which is
  * the whole point of the pair. Offset stays -2px: the cell's own inset, not
  * the rails' -1px. */
@@ -1043,7 +1043,7 @@
   /* the FALLBACK is not optional. A variant with no frame publishes no
    * `--kol-row-border`, and `border-color: var(--undefined)` is invalid at
    * computed-value time — it resolves to `unset`, which INHERITS, which is
-   * currentColor, which is the text colour. That is how `default`'s hairline
+   * currentColor, which is the text color. That is how `default`'s hairline
    * divider rendered as a solid white rule. */
   border-color: var(--kol-row-border, transparent);
   transition: background-color 300ms var(--kol-ease-house),
@@ -1238,7 +1238,7 @@
   }
 }
 
-/* The card's rest colours, for the same reason as .kol-row — an inline
+/* The card's rest colors, for the same reason as .kol-row — an inline
  * background/borderColor outranks .kol-content-hover:hover, so the step
  * silently never rendered.
  * `background-clip: padding-box` (CardCornerLeak, kol-monitor 2026-08-28,
@@ -1612,7 +1612,7 @@
 
 /* THE QUICKTIME BAR (PlaybackBarAndAudioSheet, kol-r2b2 2026-08-27 — ruled
  * against the reference). White glyphs on the frosted strip whatever the theme:
- * the ghost IconFrame paints --kol-oq-48, a theme colour, and the bar sits on
+ * the ghost IconFrame paints --kol-oq-48, a theme color, and the bar sits on
  * media, not on the theme. The scrubber is a native range — a 2px track at 40 %
  * white, a tall 4 × 28 white pill for the knob — pseudo-elements, so CSS. */
 .kol-playback-bar .kol-icon-frame { color: var(--kol-color-ab-white); opacity: 0.8; }
@@ -1850,7 +1850,7 @@
  * layer (user: *"we are talking about components, wash affects background"*):
  * a control has no business reproducing a page-level film, and portalling
  * proved it — `.kol-dd-panel` renders at document.body, could not inherit the
- * property, and drew a different colour from its own trigger. Reverted.
+ * property, and drew a different color from its own trigger. Reverted.
  * The collision is a PAGE/token question and belongs there.
  *
  * THE SUNKEN TONE IS `surface-tertiary`, NOT `oq-inverse-96` (measured on
@@ -1882,7 +1882,7 @@
  * `.kol-control` and `.kol-dd-panel` each re-invented it with paints that
  * drifted (`primary` painting `surface-secondary`; the panel's outline
  * hardcoding `surface-primary`, so a dropdown opened over any other ground
- * changed the colour under it).
+ * changed the color under it).
  *
  * SIX TONES, ONE MECHANISM. A tone is a bundle of `--kol-tone-*` custom
  * properties — rest, hover, press, pressed, and what a FLOATING surface of
@@ -1975,9 +1975,9 @@
  * 2026-09-03; user: "I told you I wanted primary surface as a tone … that tone
  * should be called secondary. What is currently secondary should be called
  * inverted."). 0.134.0 lifted the name from Button's `secondary` VARIANT, which
- * was already an inverse, and the page's own colour had no tone at all. The
+ * was already an inverse, and the page's own color had no tone at all. The
  * variant keeps its pixels — it aliases `inverted` below — only the tone word
- * moved. Hover / press are primary's rungs over the page colour. */
+ * moved. Hover / press are primary's rungs over the page color. */
 .kol-tone-secondary {
   --kol-tone-bg: var(--kol-surface-primary);
   --kol-tone-image: none;
@@ -1996,7 +1996,7 @@
   --kol-tone-panel-border-w: 0;
   --kol-tone-panel-border: transparent;
 }
-/* `inverted` — the text colour as fill: Button's / IconFrame's `secondary`
+/* `inverted` — the text color as fill: Button's / IconFrame's `secondary`
  * variant and the panel's `--secondary`, under the name the user gave it.
  * (`inverse` is NOT this: it is sunken's alias from 0.117.0, still on one
  * kol-website call, and stays that until it is dropped — the two words were
@@ -2201,7 +2201,7 @@
  * vanishes on secondary's near-black well. It takes SUNKEN'S RUNG, `fg-08` (the 2026-08-28 ruling, down
  * from fg-16): the tones' own `--kol-tone-active-bg` was tried first and secondary's `oq-16` read
  * "too bright" (user, same day) — that rung is a button's press, not a chip in a well. `inverted` is
- * the exception: its well is the ink colour, where an ink wash disappears, so it keeps its own active
+ * the exception: its well is the ink color, where an ink wash disappears, so it keeps its own active
  * paint. No tone = the fixed chip, as before. */
 :is(.kol-tone-primary, .kol-tone-secondary, .kol-tone-outline, .kol-tone-ghost, .kol-tone-grey) .kol-view-toggle button[aria-pressed="true"],
 .kol-view-toggle:is(.kol-tone-primary, .kol-tone-secondary, .kol-tone-outline, .kol-tone-ghost, .kol-tone-grey) button[aria-pressed="true"] {

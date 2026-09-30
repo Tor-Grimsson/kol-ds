@@ -2,7 +2,7 @@
 
 The KOL **style-guide / brand-guide** component set — the visual specimens a brand manual is built from. Raided from the monorepo `apps/brand` styleguide and assembled here because a brand guide is a shared capability with its own cadence, distinct from the core UI atoms.
 
-Colour anatomy + the **combination lab** (60/30/10 palette × layout × logo, incl. applied-brand mockups), **logo** construction / clearspace / scaling, **mood tiles**, **type blocks**, and **asset spec tables** — plus the colour/type specimen primitives (`ColorRamp`, `ColorSwatch`, `SpectrumGrid`, `TypeSample`, `TypeSpecCard`, `ProsePreview`, `AssetGrid`, `FeatureSplit`) gathered from the core packages.
+Color anatomy + the **combination lab** (60/30/10 palette × layout × logo, incl. applied-brand mockups), **logo** construction / clearspace / scaling, **mood tiles**, **type blocks**, and **asset spec tables** — plus the color/type specimen primitives (`ColorRamp`, `ColorSwatch`, `SpectrumGrid`, `TypeSample`, `TypeSpecCard`, `ProsePreview`, `AssetGrid`, `FeatureSplit`) gathered from the core packages.
 
 ```js
 import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-styleguide'

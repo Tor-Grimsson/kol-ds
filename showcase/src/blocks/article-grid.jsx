@@ -50,9 +50,9 @@ const ROW = [
     href: '#/journal/risograph',
   },
   {
-    title: 'Designing a colour system that survives dark mode',
+    title: 'Designing a color system that survives dark mode',
     excerpt: 'Tokens, contrast, and the one rule that keeps a palette honest across themes.',
-    tags: ['Systems', 'Colour'],
+    tags: ['Systems', 'Color'],
     date: 'Jun 05',
     readingTime: '9 min',
     thumbnail: thumb('#065F46', '#84CC16', 2),

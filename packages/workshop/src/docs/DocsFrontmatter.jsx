@@ -200,13 +200,13 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                 /* `naked`, the SAME Tag rendering the rail's own tag list uses
                  * (DocReaderSidebar). This was the default filled variant, so
                  * the one concept rendered as a solid pill here and as plain
-                 * coloured text six inches to the right.
+                 * colored text six inches to the right.
                  *
                  * NO `color` (user ruling 2026-08-01): passing one swaps the
                  * base class from `tag-control` to `tag tag--{color}`, and
-                 * only `tag-control` has a `:hover` rule — so a coloured Tag
+                 * only `tag-control` has a `:hover` rule — so a colored Tag
                  * silently loses its interaction state. Right component first;
-                 * colour is its own decision, later.
+                 * color is its own decision, later.
                  * `size` is omitted: `sm` is the default and the only size. */
                 <span className="flex flex-wrap gap-1.5">
                   {value.map((tag) => (

@@ -328,7 +328,7 @@ const FontViewer = ({
             <ControlButton active={metricsVisible} onClick={handleToggleMetrics}>
               {metricsVisible ? 'Hide metrics' : 'Show metrics'}
             </ControlButton>
-            <ControlButton onClick={handleSwapColors}>Swap colours</ControlButton>
+            <ControlButton onClick={handleSwapColors}>Swap colors</ControlButton>
             <ControlButton active={randomOrder} onClick={handleRandomize} disabled={!fontLoaded}>
               {randomOrder ? 'Sequential glyph order' : 'Randomize glyph order'}
             </ControlButton>

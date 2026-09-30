@@ -174,7 +174,7 @@ The shell header ran **six** icon controls on **four** containers: `Button`, `ko
 declared four variants and shipped exactly ONE `:hover` rule between them —
 three of its four paths rendered dead, and its own props table advertised them.
 Worse, `color` was a second axis that swapped the base class off `.tag-control`,
-so passing a colour silently cost the chip its interaction.
+so passing a color silently cost the chip its interaction.
 
 `Tag` is rebuilt on **Pill's model**: `primary` · `secondary` · `inverse`, one
 size scale (`sm` default), ONE class scheme (`kol-tag--*`), every variant with
@@ -183,7 +183,7 @@ hover + active.
 | | Was | Now |
 |---|---|---|
 | Variants | 4 declared, 1 hoverable | **3, all hoverable** |
-| Colour | a second axis that broke the base class | **not a prop** — variant is the look |
+| Color | a second axis that broke the base class | **not a prop** — variant is the look |
 | Redundancy | `variant="solid"` **and** a `solid` boolean | gone |
 | Class schemes | 4 (`tag-control` · `tag` · `tag-naked` · `tag-control-inverse`) | **1** — `kol-tag--*` |
 
@@ -192,7 +192,7 @@ theme, C2 on an **interactive** component every one must carry `:hover`. Pill is
 static by contract and correctly exempt — the gate reads interactivity from
 code, never from prose.
 
-Tag colour **by taxonomy** returns later as its own decision, layered on the
+Tag color **by taxonomy** returns later as its own decision, layered on the
 variants rather than replacing them.
 
 ## Overlay chrome
@@ -224,7 +224,7 @@ the control had no hover, no focus ring and no icon.
 It is now `<Button variant="outline" quiet size="sm" iconOnly="x">` — the same
 idiom as `ShellLayout`'s close. `.kol-overlay-close` was cut back to **position
 only**, its inset on `--kol-spacing-3` (the rung that already carried that
-value); the Button brings the box, the border, the colour set and every state.
+value); the Button brings the box, the border, the color set and every state.
 
 **No elevation under a modal.** A `--kol-shadow-xl` reached `.kol-media-picker`
 the same day and was struck out on the user's ruling — the scrim is the
@@ -310,10 +310,10 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 | tone | background | ink | hover · press |
 |---|---|---|---|
 | `sunken` | `surface-sunken` — below the page | `fg-96` | + `fg-04` · + `fg-08` (layered over the well) |
-| `secondary` | **`surface-primary`** — the page's own colour | `surface-on-primary` | `oq-08` · `oq-16` |
+| `secondary` | **`surface-primary`** — the page's own color | `surface-on-primary` | `oq-08` · `oq-16` |
 | `primary` | `surface-secondary` | `surface-on-primary` | `oq-08` · `oq-16` |
 | `grey` | `oq-12` | `surface-on-primary` | `oq-16` · `oq-24` |
-| `inverted` | `surface-on-primary` — the text colour as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48` |
+| `inverted` | `surface-on-primary` — the text color as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48` |
 | `outline` | transparent, + 1px `oq-08` | `surface-on-primary` | `oq-02` (border to 25 % ink) · `oq-08` |
 | `ghost` | transparent | `oq-48` | `oq-04` · `oq-08` |
 

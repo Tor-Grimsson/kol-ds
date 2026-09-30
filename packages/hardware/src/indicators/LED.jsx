@@ -1,4 +1,4 @@
-/* The set's own LED colours (`--kol-ctl-led-*`) — a module that needs a
+/* The set's own LED colors (`--kol-ctl-led-*`) — a module that needs a
  * red/green/yellow uses <LED color="…"> or the same token, never a hex. */
 const COLORS = {
   red: 'var(--kol-ctl-led-red)',
@@ -13,11 +13,11 @@ const HIT_PAD = 5
 
 /**
  * LED — the indicator lamp (kol-monitor's rack, lifted 2026-09-01). Sizes sm 6 ·
- * md 8; colours red · yellow · green · white · blue, or any CSS colour. With
+ * md 8; colors red · yellow · green · white · blue, or any CSS color. With
  * `onClick` an invisible hit pad (+5px each side) overlays the lamp.
  *
  * @param {boolean}  active
- * @param {string}   color   a name above or a CSS colour (default red)
+ * @param {string}   color   a name above or a CSS color (default red)
  * @param {'sm'|'md'|number} size
  * @param {Function} onClick
  */

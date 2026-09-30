@@ -7,6 +7,7 @@ import {
   flip as flipMw,
   shift as shiftMw,
   size as sizeMw,
+  hide as hideMw,
   FloatingPortal,
   FloatingFocusManager,
   useClick,
@@ -101,6 +102,7 @@ export function usePopover({
    * external DOM node (e.g. a parent container ref) instead of wiring
    * `setReference` onto the trigger. Used by TypeBlockToolbar to anchor
    * to its TypeFrame parent. */
+  middleware.push(hideMw({ strategy: 'referenceHidden' })) // last — it reads the final position
   const data = useFloating({
     open,
     onOpenChange,
@@ -110,6 +112,13 @@ export function usePopover({
     elements: referenceElement ? { reference: referenceElement } : undefined,
   })
 
+  /* A PANEL FOLLOWS ITS TRIGGER OUT OF SIGHT (2026-09-30 — docs/menus: an open menu painted over
+   * the sticky header when its trigger scrolled under it, and floated at the page's foot when it
+   * scrolled away). The panel is portalled to <body>, so no scroll container can clip it; `hide`
+   * reports when the trigger is clipped, and the panel hides with it. */
+  const hidden = data.middlewareData.hide?.referenceHidden
+  const floatingStyles = hidden ? { ...data.floatingStyles, visibility: 'hidden' } : data.floatingStyles
+
   const interactions = useInteractions([
     useClick(data.context, { enabled: click }),
     useHover(data.context, { enabled: hover, delay: hoverDelay, move: false }),
@@ -118,7 +127,7 @@ export function usePopover({
     useRole(data.context, { role }),
   ])
 
-  return { ...data, ...interactions, open }
+  return { ...data, floatingStyles, ...interactions, open }
 }
 
 /**

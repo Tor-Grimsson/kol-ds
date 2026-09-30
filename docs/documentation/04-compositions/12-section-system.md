@@ -59,6 +59,14 @@ Every old name stays exported as an **alias** — same render, old prop names ma
 
 Every section's inner grid sits on **one cap — the shell's `--kol-container-max` ladder** (100% → 1400 → 1600 → 1800), never a per-section number (user ruling 2026-08-26, after split / cards / CTA shipped on 1200 / 1400 / 1600). A reading measure inside a section (the FAQ list) is content and keeps its column cap.
 
+## Cards
+
+The showcase's **Cards** space (`/cards`, 2026-09-30) is this family looked at as a catalogue: each
+`Section*` and content-card composition as a card with its own page and copy-paste source, grouped
+by kind — Heroes · Text & image · Calls to action · Signup · Features · Content cards. A card is
+neither a block (shells and tools) nor a set (a package's family). One file per card in
+`showcase/src/cards/`, exporting `meta = { title, description, category }`.
+
 ## Not folded
 
 `NewsletterBand` joined the family as `SectionNewsletter` (2026-08-27); `FramedMediaBand` is the same class and stays under its name — a follow-up when the wave has room. Media inside a section is the caller's node (an image, `HlsVideo`, an interactive card); `ContentMedia` remains the card family's slot.

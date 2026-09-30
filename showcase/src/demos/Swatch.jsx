@@ -4,7 +4,7 @@ export const stage = 'md'
 
 /* The documented swatch: a 96px specimen bar over name + value. `ColorSwatch`
  * (kol-component) is the chip alone — a pressable atom for paint bars; this is
- * the form a colour PAGE needs, and it composes that atom rather than redrawing
+ * the form a color PAGE needs, and it composes that atom rather than redrawing
  * it. The depth, the 6px gap and the baseline-aligned meta row are the two
  * brand apps' own geometry (`.kol-swatch*`, which ships in kol-framework —
  * drawn here rather than depended on). `anchor` marks the canonical stop with a

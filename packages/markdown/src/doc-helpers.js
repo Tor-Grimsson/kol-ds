@@ -116,11 +116,11 @@ export const cleanTitle = (title, id) => {
 
 const TAG_COLORS = ['blue', 'teal', 'green', 'yellow', 'red', 'orange', 'purple', 'dark']
 
-/* Colour BY NAMESPACE, from the closed taxonomy in `.kol/docs-framework/
+/* Color BY NAMESPACE, from the closed taxonomy in `.kol/docs-framework/
  * 03-tag-taxonomy.md`. Ten top-level namespaces, ten stable assignments —
- * so `domain/*` is always one colour and the eye can group by prefix.
+ * so `domain/*` is always one color and the eye can group by prefix.
  *
- * This used to hash the whole tag string into TAG_COLORS. That made the colour
+ * This used to hash the whole tag string into TAG_COLORS. That made the color
  * a function of spelling rather than meaning: `#domain/design-system` and
  * `#domain/iconography` landed on different hues for no reason a reader could
  * see, and renaming a tag silently recoloured it. The taxonomy existed the

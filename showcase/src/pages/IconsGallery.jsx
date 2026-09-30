@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import { useTheme, ThemeToggle } from '@kolkrabbi/kol-framework'
+import HomeDoc from '../lib/HomeDoc.jsx'
 import { Icon, KOL_ICON_SET_V1, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
 import { KeylineBg } from '../lib/icon-controls.jsx'
 
@@ -159,6 +160,10 @@ export default function IconsGallery() {
 
   return (
     <section id={`icons-${set ?? DEFAULT_SET}`}>
+      {/* THE SET'S HOME (2026-09-30, the names audit: each icon set is a set, with its groups,
+        * frontmatter and tags — *"cant remember the names, which further underlines the importance
+        * of a home"*). No H1 of its own: the gallery's header below names the page. */}
+      <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />
       <PageHeader
         size="sm"
         voice="mono"

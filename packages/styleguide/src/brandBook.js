@@ -6,7 +6,7 @@
  * or reproduce — each a stack of sections. The section ids, eyebrows, titles and ledes below are
  * that app's, verbatim — except the Logos and Branded ledes, which named files in that repo and are
  * left for its manifest to set; anything that was the CLIENT's copy (About, Tone, Look, the logo concept,
- * the colour concept) is not here — it comes from the manifest's `book` field, section by section
+ * the color concept) is not here — it comes from the manifest's `book` field, section by section
  * (`@kolkrabbi/kol-brand-template` schema). A manifest key overrides the default of the same name.
  */
 

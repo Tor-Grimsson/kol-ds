@@ -23,7 +23,7 @@ related:
 
 # Code surface
 
-**Why this doc exists (2026-08-01).** *"do we have overview over all the codeblocks in use? how many components?"* — no, and the first answer given was wrong: it said four when there are eleven class names across four packages. Nothing declared them one system, so they drifted on fill, radius and colour, and the only way to find them was to already know their names. This is the file to grep instead.
+**Why this doc exists (2026-08-01).** *"do we have overview over all the codeblocks in use? how many components?"* — no, and the first answer given was wrong: it said four when there are eleven class names across four packages. Nothing declared them one system, so they drifted on fill, radius and color, and the only way to find them was to already know their names. This is the file to grep instead.
 
 ## The roles
 
@@ -38,7 +38,7 @@ There are **four** things, not eleven. The class names below are the parts they 
 
 ## Shared values
 
-**One answer, everywhere:** `font-family: var(--kol-font-family-mono)` · `font-weight: 400` · fill `--kol-fg-08` · radius `var(--kol-radius-sm)` · colour `--kol-fg-80`. The two inline chips had drifted on every one of these (`fg-04` against `fg-08`, `radius-sm` against a bare literal, no colour against `fg-80`) — one concept with two spellings, the `.text-fg-*` / `--kol-fg-*` lesson again.
+**One answer, everywhere:** `font-family: var(--kol-font-family-mono)` · `font-weight: 400` · fill `--kol-fg-08` · radius `var(--kol-radius-sm)` · color `--kol-fg-80`. The two inline chips had drifted on every one of these (`fg-04` against `fg-08`, `radius-sm` against a bare literal, no color against `fg-80`) — one concept with two spellings, the `.text-fg-*` / `--kol-fg-*` lesson again.
 
 **Deliberately different, by role:**
 

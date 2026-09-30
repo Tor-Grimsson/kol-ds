@@ -116,13 +116,13 @@ Conformed on lift (verified by grep + esbuild parse across 25 files):
 - **The tag shelf is indented to the ROW text edge** — `.shell-rail-tags` reads `--kol-pad-rail-row-x`. It used to sit flush left, the only block in the rail setting its own left margin.
 - **The scroll spy activates the FIRST heading at rest (user ruling 2026-08-01).** The top edge-lock cleared the active id, so the rail highlighted nothing — and a page *opens* at rest, which made "no active row" the state the reader saw first and most. The bottom lock had always activated the last id; this is that rule at both ends.
 - **The right rail is THREE eyebrow categories (user ruling 2026-08-01, the fourth asking).** `THIS PAGE` · `TAGS` · `LINKS`. It was one category — "This page" — with four L2 groups under it, so `Tags` rendered as a nav row in `kol-mono-14` beside a category rendered as an eyebrow: *"for the 4th time Tags, change it from this style to EYEBROW"*. A category is a **body of material**, and contents / filing / where-you-can-go are three of them — which is why `Tags` could never be a peer of `Contents`, and why `Related` and `Quick actions` now sit inside `LINKS` rather than under "This page", a category making the opposite claim. The count rule is unchanged: `TAGS` carries none, because a count sits inside a category and never beside its label.
-- **CHAPTER is Medium + `shout`, PAGE is Thin (user rulings 2026-08-01, settled after six attempts).** `.shell-nav-group-header` **500 + `--kol-fg-shout` (88)** against `.shell-nav-item` **100 + `fg-64`**. Every weight-only attempt failed on arithmetic, not cascade: 400→500, 300→500 and 200→500 all applied correctly and none read as hierarchy — measured on the H stem, 300 against 500 is a **0.28 device-pixel** difference in stroke. 700/100 was tried for one turn and reverted: once the rows sit at Thin the weight gap already carries, so the chapter buys its prominence from **ink** instead and stays inside the ramp's normal range. **Weight and colour each do half the work.** Thin is renderable only because the family went **variable** the same day (`wght 100 800`, two faces, 151 kb replacing 1024 kb of statics) — see [[../01-foundations/03-typography|type classes]]. L2 carries **no colour class**: the rule owns weight and ink together, and `text-body` was removed from the rung string rather than left to fight it.
+- **CHAPTER is Medium + `shout`, PAGE is Thin (user rulings 2026-08-01, settled after six attempts).** `.shell-nav-group-header` **500 + `--kol-fg-shout` (88)** against `.shell-nav-item` **100 + `fg-64`**. Every weight-only attempt failed on arithmetic, not cascade: 400→500, 300→500 and 200→500 all applied correctly and none read as hierarchy — measured on the H stem, 300 against 500 is a **0.28 device-pixel** difference in stroke. 700/100 was tried for one turn and reverted: once the rows sit at Thin the weight gap already carries, so the chapter buys its prominence from **ink** instead and stays inside the ramp's normal range. **Weight and color each do half the work.** Thin is renderable only because the family went **variable** the same day (`wght 100 800`, two faces, 151 kb replacing 1024 kb of statics) — see [[../01-foundations/03-typography|type classes]]. L2 carries **no color class**: the rule owns weight and ink together, and `text-body` was removed from the rung string rather than left to fight it.
 - **The active row is `emphasis`, in both rails (user ruling 2026-08-01).** `.shell-nav-item.is-active` reads `var(--kol-fg-emphasis)`, not the raw `--kol-surface-on-primary` it used to — same value, but reached through the ladder. Where-you-are is the one thing in a rail that earns max ink, and the left tree's current PAGE and the right rail's current SECTION are the same state. A call site that reaches past the role set is how a role set ends up with consumers that do not know it exists.
 - **An array frontmatter field is a LIST (user ruling 2026-08-01).** `sources`/`aliases` were `value.join(' · ')` — one run-on string, so three file paths ran off the right edge of the panel with no way to see where one ended. They stack one per line, and `.docs-frontmatter-value` finally carries the `min-width: 0` half of the flex contract that let a long value overflow at all.
 - **The unnamed key is a label too (user ruling 2026-08-01).** `FIELD_LABELS[key] ?? key` printed an unlisted field raw — `imported_from`, snake_case, in a column where every neighbour is sentence case. It falls back to a humanised label now, cased at the data layer as the no-`text-transform` law requires.
 - **ONE search (user ruling 2026-08-01).** `TagModeOverlay` owned a second search — a raw `Input` driving `tag.toLowerCase().includes(q)` — over a corpus the shell's index already covered. It is **deleted, not aligned**: tags are rows in `buildShellSearchItems` carrying an `action` closure instead of an `href`, so the one modal finds a tag the way it finds a doc. The overlay browses (list + graph); it does not search.
 - **Tag mode's `view` lives in the CONTEXT.** `openTagMode(tag, { view })` — the overlay held local `viewMode`, so the graph was reachable only by finding an unlabelled hex glyph inside the already-open overlay. The rail's **Graph view** row needs to name the mode before the overlay exists.
-- **Tags: no `color`, no `size` (user ruling 2026-08-01).** Passing `color` swaps the base class from `tag-control` to `tag tag--{color}`, and **only `tag-control` has a `:hover` rule** — a coloured Tag silently loses its interaction state. `sm` is the default and the only size; `lg` is never used. Colour returns later as its own decision.
+- **Tags: no `color`, no `size` (user ruling 2026-08-01).** Passing `color` swaps the base class from `tag-control` to `tag tag--{color}`, and **only `tag-control` has a `:hover` rule** — a colored Tag silently loses its interaction state. `sm` is the default and the only size; `lg` is never used. Color returns later as its own decision.
 - **The TOC rail holds its grid track even when empty (user ruling 2026-08-01).** The track is `--kol-shell-toc-w`, not `auto`, and mounts on `!tocCollapsed` alone. It used to collapse to zero on heading-less routes so main could reclaim the space — which made the layout a property of page content. Collapsing is a user action and may change the layout; content appearing may not.
 
 ### Known gaps (carried, not silently faked)
@@ -137,6 +137,31 @@ Conformed on lift (verified by grep + esbuild parse across 25 files):
 ## Provenance
 
 Lifted from `kol-monorepo/apps/web`: `components/shell/*`, `components/workshop/**`, `routes/workshop/*`, `utils/parseDocsMarkdown.jsx` + `docsHelpers.js`, `data/workshop/*`. The monorepo repoints onto this package next (see the migration brief at the monorepo root).
+
+## Shell keys
+
+`ShellLayout` binds one shortcut map, rendered by the `S` sheet and bound by the same handler
+(2026-09-30, `kol-workshop` 0.31.0). A consumer adds its own through the `shortcuts` prop
+(`{ id, label, combo, key, run }`) and they appear in the sheet under *Page*.
+
+| Key | Does |
+|---|---|
+| `⌘K` · `/` | search |
+| `S` · `?` | the shortcuts sheet |
+| `,` | settings |
+| `[` · `]` | hide or show the left · right rail (remembered) |
+| `C` | fold or open every chapter in every rail (`RAIL_FOLD_EVENT`) |
+| showcase: `F` | show or hide the frontmatter, remembered per kind of page |
+
+## Rails
+
+The rails resize: a 6px grip on the edge facing the page (200–420px, remembered, double-click
+resets), through `--kol-shell-nav-w` / `--kol-shell-toc-w`. The right rail lists **the page's own
+tags only, grouped by namespace with the leaf printed**; an empty chapter does not render; a folded
+`This page` / `Links` shows its count; **Pin** in Quick actions keeps a page in a *Pinned* chapter
+on every page (localStorage). `ResultRow` is one search result, `underline` (default) or `wash`.
+`DocumentationReader` takes `docId` and `showFrontmatter`, so a home page renders its markdown at
+the space's own URL.
 
 ## Status
 

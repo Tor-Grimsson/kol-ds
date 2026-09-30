@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { pushLayer, popLayer, isTopLayer } from './layerStack.js'
-import CloseButton from './CloseButton.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 
 /**
  * FullscreenOverlay — the scrim + centred sheet every overlay in the repo

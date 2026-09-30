@@ -24,6 +24,8 @@ const getChildPath = (child, basePath) => {
   return p.startsWith('/') ? p : `${basePath}/${p}`
 }
 
+export const RAIL_FOLD_EVENT = 'kol-rail-fold'
+
 const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
   const location = useLocation()
   const normalizedPath = location.pathname.replace(/\/$/, '')
@@ -68,6 +70,14 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
     setCollapsedSections(Object.fromEntries(routes.map((r) => [r.id, !active.includes(r)])))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [normalizedPath, routes, basePath])
+
+  /* FOLD ALL (2026-09-30, the names audit: *"shortcut collapse/expand the categories"*). The
+   * shell's `C` key broadcasts one target state; every rail's chapters take it. */
+  useEffect(() => {
+    const onFold = (e) => setCollapsedSections(Object.fromEntries(routes.map((r) => [r.id, !!e.detail?.collapsed])))
+    window.addEventListener(RAIL_FOLD_EVENT, onFold)
+    return () => window.removeEventListener(RAIL_FOLD_EVENT, onFold)
+  }, [routes])
 
   const handleSectionClick = (route) => {
     setCollapsedSections((prev) => ({ ...prev, [route.id]: !prev[route.id] }))

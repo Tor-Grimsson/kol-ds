@@ -47,7 +47,7 @@ UI packages, an engine tier and a clients tier. Every content/domain system that
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
-| | `@kolkrabbi/kol-styleguide` | brand guide — colour anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
+| | `@kolkrabbi/kol-styleguide` | brand guide — color anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
 | **Engines** (plain JS) | `@kolkrabbi/kol-markdown` | markdown parser, frontmatter read + round-trip, inventory, tag counts — proved in `apps/markdown` |
 | | `@kolkrabbi/kol-search` | query language, ranking with reasons, disjunctive facets — proved in `apps/search` |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |

@@ -1,0 +1,23 @@
+import { Button, SectionCta } from '@kolkrabbi/kol-component'
+
+export const meta = {
+  title: 'Centered CTA',
+  description: 'A centred headline, a line of body and two actions',
+  category: 'cta',
+  type: 'reference',
+  status: 'active',
+  updated: '2026-09-30',
+  tags: ['domain/design-system', 'pattern/website-cards'],
+}
+export const stage = 'full'
+
+export default function CtaCentered() {
+  return (
+    <SectionCta
+      variant="centered"
+      headline="Licence this typeface"
+      body="One licence covers web, desktop and app embedding for the named domains."
+      actions={<><Button>See licences</Button><Button variant="outline">Ask a question</Button></>}
+    />
+  )
+}

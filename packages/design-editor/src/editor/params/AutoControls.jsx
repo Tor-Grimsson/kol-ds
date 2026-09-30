@@ -266,14 +266,15 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
       />
     )
   } else if (p.type === 'toggle') {
-    /* boolean stored as-is. Editor: off/on segmented cells; labs (inline):
-     * the DS ToggleSwitch, right-aligned — unless `labels` carries meaning
-     * the switch can't (`['Clip', 'Visible']`), which keeps the cells. */
+    /* ONE LOOK FOR A BOOLEAN (2026-09-30, the names audit — decided by the agent, the user asleep,
+     * for review): a plain on/off is the DS ToggleSwitch, label left and switch right, in EVERY
+     * skin. It was a switch in the labs skin and an Off/On strip with the label above in the
+     * editor — one atom, two looks. The two-cell strip stays ONLY where `labels` names the two
+     * states (`['Clip', 'Visible']`): that is a choice between two named things, not a bool. */
     const [offLabel, onLabel] = p.labels ?? ['Off', 'On']
-    if (inline && !p.labels) {
-      /* The switch sits at the row's right edge; the label column is
-       * LabeledControl's, same as every other inline row. */
-      /* No local justify-end wrapper: SettingsRow's align="end" owns it. */
+    if (!p.labels) {
+      /* labs skin: SettingsRow already draws label-left / switch-right (align end) */
+      if (!inline) rowInline = false
       control = <ToggleSwitch size={cs} checked={!!value} onChange={(v) => setProp(p.key, v)} />
     } else if (inline) {
       /* labelled pair in the labs skin: the same SegmentedToggle as
@@ -323,7 +324,9 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
   /* The labs skin has ONE label convention — SettingsRow's uppercase helper —
    * so a row that falls back to label-above there (a textarea, a touch range)
    * uppercases too, instead of reading as the odd sentence-case line out. */
+  /* a plain bool in the editor skin: label left, switch right, the row's own sentence-case voice */
+  const plainBool = p.type === 'toggle' && !p.labels && !inline
   return rowInline
     ? <SettingsRow label={p.label} hint={hint} align={align} labelWidth={INLINE_LABEL_W}>{body}</SettingsRow>
-    : <LabeledControl label={inline ? String(p.label).toUpperCase() : p.label} hint={hint} labelWidth={INLINE_LABEL_W}>{body}</LabeledControl>
+    : <LabeledControl inline={plainBool} label={inline ? String(p.label).toUpperCase() : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>
 }

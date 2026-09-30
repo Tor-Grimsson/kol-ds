@@ -1,5 +1,19 @@
 # @kolkrabbi/design-editor
 
+## 0.19.0 — 2026-09-30
+
+**Assets thumbnails on the DS parts** (the reuse pass — UI built fresh last night swapped for what the DS already ships).
+
+- The Images grid is `AssetGrid` + media's own grid item `MediaTile` (a preview and a name) — the tile the media library's grid view draws. It was a button grid built here.
+
+## 0.18.0 — 2026-09-30
+
+**Bucket thumbnails, one look for a boolean** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).
+
+- **Assets** (editor-chrome-review #12): an **Images** section under Logos — the first store the host's media client lists, its first twelve images; a click inserts a photo layer.
+- **⚠ A plain boolean is a switch in every skin** — label left, `ToggleSwitch` right. It was a switch in the labs skin and an Off/On strip with the label above in the editor. The two-cell strip stays only where a parameter's `labels` names the two states (`['Clip', 'Visible']`).
+- Picks up icons 0.30.0's redrawn glyphs and kol-component 0.230.0's popover fix.
+
 ## 0.17.0 — 2026-09-29
 
 (0.16.1 was never published; its one line is folded in here.)

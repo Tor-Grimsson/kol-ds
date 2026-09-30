@@ -107,7 +107,7 @@ function SystemSection({ section, columnsDict }) {
         </div>
       )}
       {/* panel caps tables (kol-theme "Content widths"). Uncapped, these ran
-        * the full shell — a 24-row colour table stretched to 1800px with the
+        * the full shell — a 24-row color table stretched to 1800px with the
         * value column marooned at the far edge. */}
       {section.tables.map((t, i) => (
         <Table

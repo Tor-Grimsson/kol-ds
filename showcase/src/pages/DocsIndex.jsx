@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { DOCS_GUIDES, DOCS_SPECIMENS, admittedVaultTree } from '../nav/shell-nav.js'
+import { DocSection } from '@kolkrabbi/kol-workshop'
+import HomeDoc from '../lib/HomeDoc.jsx'
+import { admittedVaultTree } from '../nav/shell-nav.js'
 
 /**
  * DocsIndex — the Docs space's root (showcase refinement 2026-09-28). `/documentation` used to
@@ -30,18 +31,10 @@ const chapters = (category) => admittedVaultTree()
   .filter((r) => r.to)
 
 export default function DocsIndex() {
-  usePageMeta({ tags: [], related: [] })
   return (
     <div className="flex flex-col gap-10 pb-24">
-      <DocHeader
-        eyebrow="Docs"
-        title="Docs"
-        lede="How the design system is built and used, and how the repo around it runs — the guides, the live specimens, and the written record."
-      />
-      <DocSection id="guides" title="Guides"><Rows items={DOCS_GUIDES.map((g) => ({ to: g.path, label: g.label }))} /></DocSection>
-      <DocSection id="specimens" title="Specimens" lede="Pages that read their values straight off the installed packages.">
-        <Rows items={DOCS_SPECIMENS.map((g) => ({ to: g.path, label: g.label }))} />
-      </DocSection>
+      {/* THE HOME (2026-09-30): Docs is the vault — the guides and specimens moved to Styles */}
+      <HomeDoc id="docs" />
       <DocSection id="documentation" title="Documentation"><Rows items={chapters('documentation')} /></DocSection>
       <DocSection id="operations" title="Operations"><Rows items={chapters('operations')} /></DocSection>
     </div>

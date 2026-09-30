@@ -60,7 +60,7 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {boolean}   [fullBleed=false]  the FILL breaks the page gutter while the content keeps it
  *   (SectionNewsletterFullBleed, kol-website 2026-08-31). This card is a filled surface inside
  *   `.kol-page`, so the gutter clipped its background and left strips of page down both sides of the
- *   colour. Fill and content padding are the same box, so a consumer could not bleed one without
+ *   color. Fill and content padding are the same box, so a consumer could not bleed one without
  *   dragging the other out with it. The breakout literal is SectionHero's, character for character —
  *   two organisms in one family must not invent two ways to leave a gutter. The section's own
  *   `px-5 sm:px-8` then re-insets the content, so only the fill moves.

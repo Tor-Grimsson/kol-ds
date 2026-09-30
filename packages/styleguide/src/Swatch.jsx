@@ -5,7 +5,7 @@ import { ColorSwatch } from '@kolkrabbi/kol-component'
  * with an optional canonical-anchor dot.
  *
  * `ColorSwatch` (kol-component) is the chip alone — a fixed-size pressable atom
- * for paint bars and inspectors. A colour PAGE needs the specimen plus its label
+ * for paint bars and inspectors. A color PAGE needs the specimen plus its label
  * and value, which is the form both brand apps had built locally
  * (`brand-book-mocks-two-consumers`, 2026-09-03: 23 lines, byte-identical in
  * kol-client-olina and kol-website). This composes the atom rather than
@@ -31,7 +31,7 @@ import { ColorSwatch } from '@kolkrabbi/kol-component'
  * The hex is uppercased — that is value formatting, not a text-transform on
  * copy; `name` renders exactly as authored.
  *
- * @param {string} hex - The colour, e.g. '#131316' (required — it is both the paint and the printed value)
+ * @param {string} hex - The color, e.g. '#131316' (required — it is both the paint and the printed value)
  * @param {ReactNode} name - Label beside the value; omitted, only the hex renders
  * @param {boolean} anchor - Mark this stop as the palette's canonical anchor — a difference-blended dot centred on the chip (default: false)
  * @param {number|string} height - Specimen depth, the forks' `.kol-swatch-chip` height (default: 96)

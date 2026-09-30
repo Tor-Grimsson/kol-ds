@@ -130,7 +130,7 @@ const BOX = {
                      * its background and read as a different interaction from every other listing.
                      *
                      * The three passes are the lesson: the ask was "make it look like /work" and
-                     * each ticket named only the state someone had looked at — rest colours, then
+                     * each ticket named only the state someone had looked at — rest colors, then
                      * the derive's collateral, then this. When a user says make X look like Y,
                      * diff EVERY state: rest, hover, selected, focus. */
                     bg: 'var(--kol-surface-secondary)', frame: 'transparent', frameHover: 'var(--kol-fg-08)' },
@@ -171,7 +171,7 @@ export default function ContentRow({
    * card, `contentcard-bg-and-text-props` 2026-09-03; the pair ships together
    * and a consumer that re-grounds one hits the same wall on the other in the
    * same grid). It sets `--kol-row-bg`, not a background, because the rest
-   * colours are custom properties so the hover class can win — which is why
+   * colors are custom properties so the hover class can win — which is why
    * `className="bg-oq-48"` does nothing here either. `selected` still wins:
    * a selected row is the list's state, not the consumer's ground. For the
    * row's INK, pass `text` — it falls through to ContentText. */

@@ -2519,6 +2519,12 @@
       "type": "—",
       "def": "true",
       "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
     }
   ],
   "MenuDropdownItem": [
@@ -4749,6 +4755,12 @@
       "type": "—",
       "def": "0",
       "desc": ""
+    },
+    {
+      "prop": "unsaved",
+      "type": "—",
+      "def": "false",
+      "desc": ""
     }
   ],
   "DeckFile": [
@@ -5361,7 +5373,7 @@
       "desc": ""
     }
   ],
-  "ColorLoader": [
+  "IntroLoader": [
     {
       "prop": "text",
       "type": "—",
@@ -6195,6 +6207,20 @@
       "desc": ""
     }
   ],
+  "PhoneNav": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "'/'",
+      "desc": ""
+    }
+  ],
   "PageShell": [
     {
       "prop": "mode",
@@ -6530,6 +6556,20 @@
       "prop": "themeIn",
       "type": "—",
       "def": "'masthead'",
+      "desc": ""
+    }
+  ],
+  "AppStudio": [
+    {
+      "prop": "pages",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "masthead",
+      "type": "—",
+      "def": "'mono'",
       "desc": ""
     }
   ],

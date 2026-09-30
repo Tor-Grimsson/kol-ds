@@ -24,7 +24,7 @@ Click a component name (e.g. **Button**) to expand it. Its stories appear nested
 
 ## 5. View a component
 
-Click a story (e.g. **Button → Variants**). The canvas renders it live. `Variants` shows all five button variants side by side — primary, secondary, accent, outline, ghost — each in its real theme colour.
+Click a story (e.g. **Button → Variants**). The canvas renders it live. `Variants` shows all five button variants side by side — primary, secondary, accent, outline, ghost — each in its real theme color.
 
 ## 6. Switch between states
 
@@ -45,7 +45,7 @@ Click the **viewport** control (toolbar) to constrain the canvas to preset width
 ## 10. Toggle light / dark and RTL
 
 - The workbench **defaults to dark** (`data-theme="dark"`), matching the design system's own default. The **Theme** toggle (💡) flips light ⇄ dark, and KOL's tokens switch correctly with it — both modes have verified contrast.
-- **Heads-up:** browser extensions that recolor pages (**Dark Reader** and similar) fight the theme and make components look broken — vanishing text, wrong colours. Disable them for the workbench tab; it's the extension, not the component.
+- **Heads-up:** browser extensions that recolor pages (**Dark Reader** and similar) fight the theme and make components look broken — vanishing text, wrong colors. Disable them for the workbench tab; it's the extension, not the component.
 - **RTL** flips text direction to right-to-left — a quick check for bidi-sensitive layouts.
 
 ## 11. View a story's source code

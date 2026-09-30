@@ -5,11 +5,11 @@
  * JSON to go stale (usage-index.json is enrichment, joined in registry.js).
  *
  * Tier resolution:
- *   - kol-component: from the src folder (atoms/molecules/organisms/hooks).
- *   - kol-framework: 'framework' (split fw-chrome/structure/behavior in registry).
- *   - flat packages: from classification.js TIERS (validated for completeness
- *     by `pnpm validate:roster`). Unresolvable → 'misc' — the visible bug
- *     bucket (00-taxonomy: misc must stay empty) — and a red CI build.
+ *   - kol-component: from the src folder (atoms/molecules/organisms/utilities/hooks).
+ *   - every other package: from classification.js TIERS (validated for
+ *     completeness by `pnpm validate:roster`). Unresolvable → 'misc' — the
+ *     visible bug bucket (00-taxonomy: misc must stay empty) — and a red build.
+ *   - `family` is the package dir — the Package ordering and the set pages.
  */
 import { parseBarrelExports, isComponentName, folderOf } from '../../../scripts/lib/parse-barrel.mjs'
 import { TIERS, EXEMPT } from './classification.js'
@@ -46,21 +46,19 @@ for (const [dir, files] of Object.entries(byPackage)) {
      * row survives via first-owner dedup below */
     if (EXEMPT[name] && !EXEMPT[name].startsWith('re-export')) continue
     const folder = folderOf(src)
-    /* Tier = PACKAGE for the flat packages (user ruling 2026-07-30): a
-     * workshop shell piece is not an "atom", a dashboard card is not a
-     * "molecule" — the atomic tiers belong to kol-component only. The old
-     * hand-mapped TIERS put ShellSidebar in Atoms and DashTableCard in
-     * Molecules; classification by ownership can't lie. */
-    const tier =
-      dir === 'component' ? (TIER_FOLDERS.has(folder) ? folder : 'misc')
-      : dir === 'framework' ? 'framework'
-      : dir
+    /* Tier = ATOMIC for every package (user ruling 2026-09-30, reversing 2026-07-30's
+     * ownership tiers): kol-component from its folder, every other package from
+     * classification.js TIERS. Ownership is kept as `family` — the Package ordering and
+     * the set pages read it — so the view survives, it just stops being the default. */
+    const tier = dir === 'component'
+      ? (TIER_FOLDERS.has(folder) ? folder : 'misc')
+      : (TIERS[name] ?? 'misc')
     // hooks by name convention land in the hooks tier regardless of folder
     const rowTier = /^use[A-Z]/.test(name) ? 'hooks' : tier
     /* Admission (quarantine plan, phase 1): a row is derived truthfully either
      * way — `admitted` decides whether the SIDEBAR shows it, never whether it
      * exists. The gate is hand-authored in admitted.js. */
-    ROSTER.push({ name, pkg, src, tier: rowTier, admitted: isComponentAdmitted(rowTier) })
+    ROSTER.push({ name, pkg, family: dir, src, tier: rowTier, admitted: isComponentAdmitted(rowTier) })
   }
 }
 

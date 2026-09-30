@@ -17,6 +17,7 @@ related:
   - "[architecture decisions](../../../.kol/llm-context/ARCHITECTURE.md)"
   - "[[../03-components/01-inventory|components]]"
   - "[[../../operations/01-release/INDEX|release pipeline]]"
+  - "[[05-names|names]]"
 ---
 
 # KOL design system — overview
@@ -31,5 +32,6 @@ related:
 | [[02-tiers\|Package tiers]] | The layers and the dependency direction |
 | [[03-install\|Installing KOL]] | The four-point consumer contract |
 | [[04-full-consumption\|Full consumption]] | The six greps that say a repo is fully on KOL |
+| [[05-names\|Names]] | What every space, rail level and kind of thing is called |
 
 **Three pages beside the index** (2026-08-01) — the chapter minimum. These were headings in one file.

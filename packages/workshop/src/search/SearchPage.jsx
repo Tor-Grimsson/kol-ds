@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import { Button, Input, Pill } from '@kolkrabbi/kol-component'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Button, ContentRow, EmptyState, Input, Pill } from '@kolkrabbi/kol-component'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 import { DocHeader, DocSection } from '../docs/DocKit.jsx'
 
@@ -45,6 +45,7 @@ const readToken = (t) => (t.kind === 'term'
     : `${t.negate ? 'not ' : ''}${t.field === 'tags' ? 'tag' : t.field}: ${t.value}${t.via === 'smart' ? ' (from the word)' : ''}`)
 
 export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60 }) {
+  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const q = params.get('q') ?? ''
   const index = useMemo(() => createIndex(items), [items])
@@ -119,16 +120,22 @@ export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_F
 
       <DocSection id="results" title={`Results (${out.total})`}>
         {out.results.length === 0 ? (
-          <p className="kol-doc-body">{q ? 'Nothing matches. Remove a token above, or try fewer words.' : 'Type to search.'}</p>
+          <EmptyState eyebrow={q ? 'No results' : 'Search'} title={q ? 'Nothing matches.' : 'Type to search.'} body={q ? 'Remove a token above, or try fewer words.' : undefined} />
         ) : (
           <ol className="flex flex-col">
             {out.results.map((r) => (
               <li key={r.item.id} className="border-t border-fg-08 first:border-t-0">
-                <Link to={r.item.href} className="flex flex-col gap-1 py-3 hover:bg-fg-04">
-                  <span className="kol-doc-body text-emphasis"><Highlight text={r.item.title} ranges={r.highlights.title} /></span>
-                  <span className="kol-helper-12 text-subtle">{[r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}</span>
-                  {r.item.description && <span className="kol-doc-body">{r.item.description}</span>}
-                </Link>
+                {/* THE SHIPPED ROW (2026-09-30): kol-component's ContentRow, the row form of the
+                  * content-card system — not a row minted here. Article form, no cover. */}
+                <ContentRow
+                  variant="article"
+                  media={false}
+                  href={r.item.href}
+                  onNavigate={(e) => { e.preventDefault(); navigate(r.item.href) }}
+                  eyebrow={[r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
+                  title={<Highlight text={r.item.title} ranges={r.highlights.title} />}
+                  body={r.item.description}
+                />
               </li>
             ))}
           </ol>

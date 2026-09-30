@@ -20,7 +20,11 @@ const Frame = ({ children, ...rest }) => (
  * with the demo acting as the parent drag system: it hit-tests the
  * handles by data-role, maps pointer → normalized cp and passes the
  * control points back down — the overlay itself never handles drag. */
-export default function CurveOverlayDemo() {
+/* The two modes are a State picker, not two stacked frames (2026-09-30, the names audit: *"why do
+ * we need to stack the same thing 2 times with and without a handle?"*). */
+export const states = ['handles', 'empty', 'both']
+
+export default function CurveOverlayDemo({ state = 'handles' }) {
   const [cp1, setCp1] = useState({ x: 0.3, y: 0.1 })
   const [cp2, setCp2] = useState({ x: 0.7, y: 0.9 })
   const dragging = useRef(null)
@@ -47,17 +51,19 @@ export default function CurveOverlayDemo() {
 
   return (
     <>
-      <Frame>
-        <CurveOverlay width={W} height={H} curve="ease" blend={0.5} />
-      </Frame>
-      <Frame
+      {state !== 'handles' && (
+        <Frame>
+          <CurveOverlay width={W} height={H} curve="ease" blend={0.5} />
+        </Frame>
+      )}
+      {state !== 'empty' && <Frame
         ref={frameRef}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
       >
         <CurveOverlay width={W} height={H} curve="custom" blend={0.5} cp1={cp1} cp2={cp2} />
-      </Frame>
+      </Frame>}
     </>
   )
 }

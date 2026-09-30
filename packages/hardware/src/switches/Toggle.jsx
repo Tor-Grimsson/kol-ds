@@ -16,7 +16,7 @@ const BLINK_MS_DEFAULT = 500
  * @param {'sm'|'md'} size        8 · 12 (default md)
  * @param {number}   padding      hit padding (default 4)
  * @param {boolean}  momentary
- * @param {string}   color        CSS colour (default `var(--kol-ctl-led-red)`)
+ * @param {string}   color        CSS color (default `var(--kol-ctl-led-red)`)
  * @param {Function} onLongPress
  * @param {boolean}  blink · {number} blinkPeriodMs (500)
  * @param {boolean}  forceLit

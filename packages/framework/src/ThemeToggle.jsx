@@ -155,9 +155,11 @@ export default function ThemeToggle({
   const shared = {
     type: 'button',
     onClick,
-    'aria-label': `Switch to ${next} mode`,
+    'aria-label': `Switch to ${next} mode${resetHint}`,
   }
-  const tip = `Switch to ${next} mode${resetHint}`
+  /* ONE WORD (2026-09-30, open questions Round 1 Q4 — ruled many times); the alt-click hint
+   * stays in the aria-label and the S sheet, not the tooltip */
+  const tip = 'Theme'
   const wrap = (node) => (tooltip ? <Tooltip label={tip}>{node}</Tooltip> : node)
 
   /* ── DEPRECATED aliases — old chrome verbatim (0.6.x) ── */

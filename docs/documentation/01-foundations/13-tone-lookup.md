@@ -35,7 +35,7 @@ the showcase's `/foundations/tones`.
 ## Filled
 
 Ordered by how far the fill sits from the page: **sunken** is below it,
-**secondary** is the page itself, then up to **inverted**, the text colour as fill.
+**secondary** is the page itself, then up to **inverted**, the text color as fill.
 In the dark theme that reads darkest → brightest; in the light theme the same list
 runs the other way. **The names cross:** tone `primary` paints `surface-secondary`,
 tone `secondary` paints `surface-primary`.

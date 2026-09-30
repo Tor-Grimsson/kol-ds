@@ -18,6 +18,7 @@ export default function Blocks() {
       basePath="/blocks"
       previewBase="/blocks/preview"
       srcDir="blocks"
+      home="blocks"
       hero={{
         eyebrow: `Blocks · ${BLOCKS.length}`,
         title: 'Blocks',

@@ -43,11 +43,11 @@ import { HARMONIES, harmonyById, harmonyColors, normHue, reHueSlots } from '../h
  * @param {Array}         harmonies   injectable scheme table (default HARMONIES)
  * @param {Array}         slots       the CURRENT palette in role order (`{hex, locked}` objects or plain hex strings). Given, `colors` re-hues these — each slot keeps its own S/L, locked and empty entries pass through — instead of generating flat ones
  * @param {Function}      onChange    ({ hue, colors }) => void
- * @param {Function}      onHueChange (hue) => void — the payload-free seam, for a caller that derives its own colours
+ * @param {Function}      onHueChange (hue) => void — the payload-free seam, for a caller that derives its own colors
  */
 
 /* Marker outline — white for contrast against the fully-saturated ring hues
- * (theme-independent: the wheel's colours, not the surface, sit behind it). */
+ * (theme-independent: the wheel's colors, not the surface, sit behind it). */
 const MARKER_STROKE = '#FFFFFF'
 
 export default function PaletteHarmonyWheel({
@@ -74,9 +74,9 @@ export default function PaletteHarmonyWheel({
   /* Emit next hue + its harmony colors. Held in a ref so the pointer/key
    * handlers stay stable while always seeing the latest props.
    *
-   * With `slots`, the colours are the CALLER'S palette re-hued — each slot
+   * With `slots`, the colors are the CALLER'S palette re-hued — each slot
    * keeping its own saturation and lightness — rather than a fresh flat set.
-   * Both fire, so a caller can take the hue and ignore the colours. */
+   * Both fire, so a caller can take the hue and ignore the colors. */
   emitRef.current = (nextHue) => {
     const h = normHue(nextHue)
     const colors = slots?.length

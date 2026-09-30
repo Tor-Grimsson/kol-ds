@@ -36,7 +36,7 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {boolean}  [fullBleed=false]  the FILL breaks the page gutter while the content keeps it —
  *   the family's shared breakout (`sectionBleed.js`, SectionFamilyFullBleed, kol-website 2026-08-31).
  *   Any member of this family can be a filled surface, and a filled surface inside `.kol-page` has its
- *   colour clipped by the gutter on mobile. Viewport-relative, so unlike `.kol-full-bleed` it does not
+ *   color clipped by the gutter on mobile. Viewport-relative, so unlike `.kol-full-bleed` it does not
  *   over-bleed in a parent with no gutter of its own. The section's horizontal padding re-insets the
  *   CONTENT, so only the fill moves. Default false — nothing renders differently until it is passed.
  * @param {string}    sectionClassName · wrapperClassName · cardsWrapperClassName · actionsClassName · headerClassName · headerTextWidthClass  layout seams

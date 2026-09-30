@@ -28,12 +28,12 @@ const STAGE = {
  * demo opts in by exporting `variants` / `sizes` (see PreviewCard's toolbar
  * pickers); demos that don't simply ignore the props, so this is additive for
  * all ~180 of them. */
-export default function DemoStage({ entry, variant, size }) {
+export default function DemoStage({ entry, variant, size, state }) {
   const C = entry?.Component
   if (!C) return null
   return (
     <div className={STAGE[entry.stage] ?? STAGE.hug}>
-      <ErrorBoundary><C variant={variant} size={size} /></ErrorBoundary>
+      <ErrorBoundary><C variant={variant} size={size} state={state} /></ErrorBoundary>
     </div>
   )
 }

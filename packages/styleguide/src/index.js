@@ -1,6 +1,6 @@
 // @kolkrabbi/kol-styleguide — the brand style-guide component set.
 //
-// Visual specimens a brand manual is built from — colour anatomy + the
+// Visual specimens a brand manual is built from — color anatomy + the
 // combination lab, logo construction / clearspace / scaling, mood tiles,
 // type blocks, asset spec tables. Raided from the monorepo apps/brand
 // styleguide (2026-07). Styling ships in @kolkrabbi/kol-theme

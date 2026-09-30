@@ -7,6 +7,7 @@ import { getComponentBySlug, CATEGORY_LABELS, slugify, TOP_LEVEL } from '../nav/
 import { MDX_DOCS } from '../nav/vault.js'
 import { MEMBERSHIP_FLAGS } from '../nav/classification.js'
 import MdxDoc from '../lib/MdxDoc.jsx'
+import { useFrontmatter } from '../lib/frontmatter.jsx'
 import API_GEN from '../usage/api-tables.json'
 import { mergeApi, buildProvenance, Pager, CodeLine, InstallBlock } from '../lib/component-page-parts.jsx'
 
@@ -22,13 +23,14 @@ const mdxFor = (name) => COMPONENT_DOCS[`../docs/components/${name}.mdx`] ?? nul
 export default function ComponentPage() {
   const { slug } = useParams()
   const c = getComponentBySlug(slug)
+  const showFrontmatter = useFrontmatter('page')
   /* THE PAGE TELLS THE RIGHT RAIL WHAT IT IS ABOUT (2026-09-28): its tags, and its siblings in
    * the same tier as related pages (members have no page of their own). The rail used to be
    * handed empty lists. */
   usePageMeta(c ? {
-    tags: MDX_DOCS.find((d) => d.href === `/components/${c.slug}`)?.metadata?.tags ?? [],
+    tags: MDX_DOCS.find((d) => d.href === `/components/${c.slug}`)?.metadata?.tags ?? [`domain/components/${c.category}`, ...(c.function ? [`pattern/${c.function}`] : [])],
     related: [
-      ...TOP_LEVEL.filter((x) => x.category === c.category && x.slug !== c.slug).slice(0, 6).map((x) => ({ to: `/components/${x.slug}`, label: x.name })),
+      ...TOP_LEVEL.filter((x) => x.category === c.category && x.slug !== c.slug).slice(0, 6).map((x) => ({ to: `/components/${x.slug}`, label: x.displayName })),
     ],
   } : null)
   if (!c) return <Navigate to="/components" replace />
@@ -52,16 +54,29 @@ export default function ComponentPage() {
   return (
     <>
       {flagNotice}
+      {/* FRONTMATTER FIRST, THE SAME AS AN MDX PAGE (2026-09-30, the names audit: *"nothing should
+        * be before frontmatter"*). The generated page used to print the header and the preview,
+        * then a panel with no title, type, status or tags; it now carries what an MDX page's
+        * frontmatter carries, derived from the registry, then the provenance fold. */}
+      {showFrontmatter && (
+        <DocsFrontmatter
+          metadata={{
+            title: c.displayName,
+            type: 'reference',
+            status: 'active',
+            tags: [`domain/components/${c.category}`, ...(c.function ? [`pattern/${c.function}`] : [])],
+            description: c.description,
+            ...buildProvenance(c),
+          }}
+        />
+      )}
       <DocHeader
         eyebrow={`Components / ${CATEGORY_LABELS[c.category] ?? c.category}`}
-        title={c.name}
+        title={c.displayName}
         lede={c.description}
       />
 
       {DEMOS[c.name] && <PreviewCard entry={DEMOS[c.name]} />}
-
-      {/* one panel — the same fold as MdxDoc; see buildProvenance */}
-      <DocsFrontmatter metadata={buildProvenance(c)} />
 
       <DocSection id="installation" title="Installation">
         <InstallBlock pkg={c.pkg} />
@@ -72,10 +87,10 @@ export default function ComponentPage() {
       </DocSection>
 
       {members.length > 0 && (
-        <DocSection id="parts" title="Parts" lede={`${c.name} composes from these parts — import them from the same package.`}>
+        <DocSection id="parts" title="Parts" lede={`${c.displayName} composes from these parts — import them from the same package.`}>
           {members.map((m) => (
             <div key={m.name} className="flex flex-col gap-3">
-              <h3 id={slugify(m.name)} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{m.name}</h3>
+              <h3 id={slugify(m.name)} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{m.displayName}</h3>
               {m.description && <p className="kol-sans-body-02 text-body">{m.description}</p>}
               {DEMOS[m.name] && <PreviewCard entry={DEMOS[m.name]} />}
             </div>

@@ -1,70 +1,56 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { buildInventory } from '@kolkrabbi/kol-workshop/engine'
-import { DEMOS } from '../lib/demos-registry.js'
+import { useFrontmatter } from '../lib/frontmatter.jsx'
 
-/* The lobby as a memory wall — name + live render, nothing else. Globs the
- * repo-root lobby/ specs; entries with a one-file demo render live. */
-const queueModules = import.meta.glob('../../../lobby/*.md', { eager: true, query: '?raw', import: 'default' })
-const doneModules = import.meta.glob('../../../lobby/done/*.md', { eager: true, query: '?raw', import: 'default' })
-
-const modules = { ...queueModules, ...doneModules }
-const inventory = buildInventory(modules)
-
-const entries = inventory.filter((d) => d.id !== 'INDEX' && !d.id.startsWith('WORKLOG'))
-const demoOf = (d) => DEMOS[d.metadata?.component || d.id]
-const rendered = entries.filter(demoOf)
-const specOnly = entries.filter((d) => !demoOf(d))
-
-const basePath = '/lobby'
-const docHref = (id) => `${basePath}/${id}`
-
-function Wall() {
-  return (
-    <div className="max-w-[var(--kol-content-shell)] mx-auto space-y-10" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {rendered.map((d) => (
-          <Link key={d.id} to={docHref(d.id)} className="block">
-            <div className="kol-helper-12 text-emphasis mb-1">{d.metadata?.component || d.id}</div>
-            <div className="rounded border border-fg-08 p-4 max-h-[480px] overflow-hidden pointer-events-none">
-              {(() => { const D = demoOf(d).Component; return <D /> })()}
-            </div>
-          </Link>
-        ))}
-      </div>
-      <div className="kol-helper-12 text-meta leading-7">
-        spec only:{' '}
-        {specOnly.map((d, i) => (
-          <span key={d.id}>
-            {i > 0 && ' · '}
-            <Link to={docHref(d.id)} className="hover:text-emphasis">{d.metadata?.component || d.id}</Link>
-          </span>
-        ))}
-      </div>
-    </div>
-  )
+/**
+ * Lobby (dev only) — the repo's work queue, read like the phase log (2026-09-30, the names audit:
+ * *"if it represents a log, then should it not do like RECORDS and just update and archive
+ * older?"*). The ledger (`lobby/INDEX.md`) is the index; the rail holds Inbox · Done · Archive as
+ * chapters with their counts. It globbed `lobby/*.md` + `lobby/done/`, a layout the lobby left for
+ * `inbox/` · `done/` · `archive/` — so it showed a stale queue — and padded itself against the
+ * shell's own padding (the 2026-09-28 rule: the shell owns page padding).
+ */
+const MODULES = {
+  ...import.meta.glob('../../../lobby/INDEX.md', { eager: true, query: '?raw', import: 'default' }),
+  ...import.meta.glob('../../../lobby/inbox/*.md', { eager: true, query: '?raw', import: 'default' }),
+  ...import.meta.glob('../../../lobby/done/*.md', { eager: true, query: '?raw', import: 'default' }),
+  ...import.meta.glob('../../../lobby/archive/*.md', { eager: true, query: '?raw', import: 'default' }),
 }
+const INVENTORY = buildInventory(MODULES)
+const LEDGER = INVENTORY.find((d) => /lobby\/INDEX\.md$/.test(d.file))
 
-function SpecView() {
+const lobbyHref = (id) => `/lobby/${id}`
+
+/* The rail's Lobby category — one chapter per state folder, the ledger on the category's link. */
+export const LOBBY_CHAPTERS = ['inbox', 'done', 'archive'].map((state) => ({
+  id: `lobby-${state}`,
+  label: state.charAt(0).toUpperCase() + state.slice(1),
+  children: INVENTORY
+    .filter((d) => d.file.includes(`/lobby/${state}/`))
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .map((d) => ({ id: `lobby-${d.id}`, label: d.title, path: lobbyHref(d.id) })),
+})).filter((c) => c.children.length)
+export const LOBBY_INDEX = LEDGER ? lobbyHref(LEDGER.id) : '/lobby'
+
+function Reader() {
+  const show = useFrontmatter('page')
   return (
-    <div className="max-w-[var(--kol-content-column)]" style={{ padding: 'var(--kol-pad-section-y) var(--kol-pad-section-x)' }}>
-      <DocumentationReader
-        inventory={inventory}
-        modules={modules}
-        docHref={docHref}
-        routes={{ docsIndex: basePath, components: '/components' }}
-      />
-    </div>
+    <DocumentationReader
+      inventory={INVENTORY}
+      modules={MODULES}
+      docHref={lobbyHref}
+      routes={{ docsIndex: LOBBY_INDEX, components: '/components', docFilePath: (id) => INVENTORY.find((d) => d.id === id)?.file ?? id }}
+      showFrontmatter={show}
+    />
   )
 }
 
 export default function Lobby() {
   return (
-    <>
-      <Routes>
-        <Route index element={<Wall />} />
-        <Route path=":docId" element={<SpecView />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route index element={LEDGER ? <Navigate to={LOBBY_INDEX} replace /> : null} />
+      <Route path=":docId" element={<Reader />} />
+    </Routes>
   )
 }

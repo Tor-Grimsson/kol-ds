@@ -54,9 +54,9 @@ Order runs foundations-first because everything downstream references it:
 | # | Category | Gate before it returns |
 |---|---|---|
 | 0 | **The shell frame** | `ShellLayout.jsx:186` gains the cap and the ramp; the `lg`/`xl` TOC-column mismatch fixed; `hasToc` stops being always-true. Nothing else can be judged until the frame is right. |
-| 1 | Foundations (tokens, colour, type) | width rule applied; tables at panel; no page-local hexes |
+| 1 | Foundations (tokens, color, type) | width rule applied; tables at panel; no page-local hexes |
 | 2 | Icons | sidebar row navigates; size ramp and toggles verified live. **The icon *mode* toggle cannot return as-was** — the stroke/solid/svg sets were deleted and `Icon`'s `variant` prop removed at kol-icons 0.8.0; the legacy SVGs sit in `_tmp/legacy-icons/`, this machine only. |
-| 3 | Documentation (vault) | frontmatter panel renders the real contract; tag colour by namespace |
+| 3 | Documentation (vault) | frontmatter panel renders the real contract; tag color by namespace |
 | 4 | Components — atoms | membership test applied; each survivor named; each rejection given a reason |
 | 5 | Components — molecules, organisms | same |
 | 6 | Framework, workshop, and the flat packages | same |

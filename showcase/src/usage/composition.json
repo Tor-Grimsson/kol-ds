@@ -200,6 +200,7 @@
         "Input",
         "Label",
         "LabeledControl",
+        "Popover",
         "PropertyInput",
         "Section",
         "SegmentedToggle",
@@ -213,7 +214,9 @@
         "registerIcons",
         "tone"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "media-carousel": {
       "kol": [
@@ -259,14 +262,18 @@
       "kol": [
         "ColorRamp",
         "ColorSwatch",
+        "Popover",
         "SpectrumGrid",
         "TransparentX"
       ],
       "local": {},
       "support": [
-        "cssVar"
+        "cssVar",
+        "tone"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "product-panel": {
       "kol": [
@@ -453,11 +460,15 @@
       ],
       "local": {},
       "support": [
+        "createIndex",
         "formatSize",
         "glyphLadders",
         "layerStack",
+        "masthead",
         "motion",
         "registerIcons",
+        "search",
+        "searchItems",
         "theme",
         "tone",
         "useDragResize",
@@ -542,8 +553,11 @@
       ],
       "local": {},
       "support": [
+        "createIndex",
         "glyphLadders",
         "registerIcons",
+        "search",
+        "searchItems",
         "tone",
         "usePrefersReducedMotion"
       ],
@@ -682,13 +696,13 @@
       ],
       "local": {},
       "support": [
-        "frontmatter",
         "glyphLadders",
         "id3",
         "layerStack",
         "markdownToHtml",
         "mediaKinds",
         "motion",
+        "parseFrontmatter",
         "registerIcons",
         "tone",
         "usePlayback"
@@ -721,6 +735,7 @@
         "Divider",
         "DocFrontmatter",
         "DocPage",
+        "DocumentEditor",
         "Dropdown",
         "FileIcon",
         "FullscreenOverlay",
@@ -747,6 +762,7 @@
         "SearchInput",
         "SegmentedToggle",
         "SettingsPanel",
+        "SettingsSections",
         "ShellDrawer",
         "ShellSearchOverlay",
         "SizeOrDownload",
@@ -754,6 +770,7 @@
         "SortControls",
         "SortHeader",
         "Tag",
+        "Textarea",
         "ToggleCheckbox",
         "ToggleSwitch",
         "VideoSheet",
@@ -761,17 +778,25 @@
       ],
       "local": {},
       "support": [
+        "createIndex",
         "createMediaClient",
         "formatSize",
-        "frontmatter",
         "glyphLadders",
         "id3",
+        "joinFrontmatter",
         "layerStack",
+        "localDrafts",
         "markdownToHtml",
+        "masthead",
         "mediaKinds",
+        "mediaSearch",
         "motion",
+        "parseFrontmatter",
         "ratios",
         "registerIcons",
+        "search",
+        "searchItems",
+        "splitFrontmatter",
         "tone",
         "useCoarsePointer",
         "useGrabEdge",
@@ -813,6 +838,7 @@
         "LegendRow",
         "LineChart",
         "MetricsDashboard",
+        "Popover",
         "ScatterPlot",
         "SegmentedToggle",
         "Sparkline",
@@ -832,7 +858,9 @@
         "useCountUp",
         "useMetricsData"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "prints-store": {
       "kol": [
@@ -884,6 +912,7 @@
         "Divider",
         "DocFrontmatter",
         "DocPage",
+        "DocumentEditor",
         "Dropdown",
         "FieldRow",
         "FileIcon",
@@ -911,6 +940,7 @@
         "SearchInput",
         "SegmentedToggle",
         "SettingsPanel",
+        "SettingsSections",
         "ShellDrawer",
         "ShellSearchOverlay",
         "SizeOrDownload",
@@ -919,6 +949,7 @@
         "SortHeader",
         "Table",
         "Tag",
+        "Textarea",
         "ToggleCheckbox",
         "ToggleSwitch",
         "VideoSheet",
@@ -926,16 +957,24 @@
       ],
       "local": {},
       "support": [
+        "createIndex",
         "formatSize",
-        "frontmatter",
         "glyphLadders",
         "id3",
+        "joinFrontmatter",
         "layerStack",
+        "localDrafts",
         "markdownToHtml",
+        "masthead",
         "mediaKinds",
+        "mediaSearch",
         "motion",
+        "parseFrontmatter",
         "ratios",
         "registerIcons",
+        "search",
+        "searchItems",
+        "splitFrontmatter",
         "tone",
         "useCoarsePointer",
         "useGrabEdge",
@@ -1146,6 +1185,394 @@
         "embla-carousel-react",
         "framer-motion"
       ]
+    }
+  },
+  "cards": {
+    "content-article": {
+      "kol": [
+        "AssetPlaceholder",
+        "ContentCard",
+        "ContentMedia",
+        "ContentText",
+        "Icon",
+        "Tag"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "registerIcons"
+      ],
+      "external": []
+    },
+    "content-bento": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "TiltBento"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "motion",
+        "registerIcons",
+        "tone",
+        "useInViewAttention",
+        "usePrefersReducedMotion",
+        "useTilt"
+      ],
+      "external": [
+        "framer-motion",
+        "hls.js"
+      ]
+    },
+    "cta-centered": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SectionCta",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone"
+      ],
+      "external": []
+    },
+    "cta-connect": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SectionCta",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone"
+      ],
+      "external": []
+    },
+    "cta-editorial": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SectionCta",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone"
+      ],
+      "external": []
+    },
+    "faq": {
+      "kol": [
+        "Accordion",
+        "SectionFaq",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface"
+      ],
+      "external": []
+    },
+    "features-cards": {
+      "kol": [
+        "Button",
+        "Icon",
+        "SectionCardItem",
+        "SectionCards",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useCoarsePointer",
+        "useInViewAttention",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "hero-carousel": {
+      "kol": [
+        "AssetPlaceholder",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel",
+        "SectionHero",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "registerIcons",
+        "sectionBleed",
+        "sectionSurface",
+        "useSectionTheme"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "hero-end": {
+      "kol": [
+        "AssetPlaceholder",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel",
+        "SectionHero",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "registerIcons",
+        "sectionBleed",
+        "sectionSurface",
+        "useSectionTheme"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "hero-media": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel",
+        "SectionHero",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "hero-split": {
+      "kol": [
+        "AssetPlaceholder",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel",
+        "SectionHero",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "registerIcons",
+        "sectionBleed",
+        "sectionSurface",
+        "useSectionTheme"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "hero-text": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "ContentMedia",
+        "EmblaNav",
+        "FeaturedCarousel",
+        "HlsVideo",
+        "Icon",
+        "Image",
+        "OverlayGlassPanel",
+        "SectionHero",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": [
+        "embla-carousel-react",
+        "hls.js"
+      ]
+    },
+    "signup-newsletter": {
+      "kol": [
+        "Button",
+        "Icon",
+        "Input",
+        "SectionNewsletter",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "split-centered": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "Icon",
+        "SectionSplit",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "split-fill": {
+      "kol": [
+        "AssetPlaceholder",
+        "SectionSplit",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "split-image-left": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "Icon",
+        "SectionSplit",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "split-image-right": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "Icon",
+        "SectionSplit",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": []
+    },
+    "split-image-top": {
+      "kol": [
+        "AssetPlaceholder",
+        "Button",
+        "Icon",
+        "SectionSplit",
+        "SectionText"
+      ],
+      "local": {},
+      "support": [
+        "card-media",
+        "glyphLadders",
+        "registerIcons",
+        "sectionBleed",
+        "sectionHeights",
+        "sectionSurface",
+        "tone",
+        "useSectionTheme"
+      ],
+      "external": []
     }
   }
 }

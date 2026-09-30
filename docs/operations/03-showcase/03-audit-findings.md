@@ -22,7 +22,7 @@ Every defect the 2026-07-30 review found, with the file and line it lives at. Th
 
 The showcase passes its own `brand` node — `showcase/src/lib/ShellChrome.jsx:150` → `ShowcaseBrand` at `:88-99` — whose second mark is a typed `<span className="kol-mono-14 tracking-[0.2em]">KOL DS</span>` at `:95`. The comment above it claims "KOL DS has no drawn wordmark asset yet". A drawn wordmark did exist; it was the workshop one, and it was displaced by text that wraps to two lines in the header.
 
-### 1.2 Tag colours are assigned by a string hash
+### 1.2 Tag colors are assigned by a string hash
 
 `packages/workshop/src/engine/doc-helpers.js:86-94`:
 
@@ -35,7 +35,7 @@ export const getTagColor = (tag) => {
 }
 ```
 
-`#domain/design-system` is yellow and `#domain/iconography` is green because of where their character sums land, not because they mean anything. A closed tag taxonomy with ten top-level namespaces already exists at `.kol/docs-framework/03-tag-taxonomy.md:23-37` — `project/ domain/ audience/ provider/ integration/ pattern/ brand/ editor/ archive/ framework/`. Colour belongs to the namespace; nothing consults it.
+`#domain/design-system` is yellow and `#domain/iconography` is green because of where their character sums land, not because they mean anything. A closed tag taxonomy with ten top-level namespaces already exists at `.kol/docs-framework/03-tag-taxonomy.md:23-37` — `project/ domain/ audience/ provider/ integration/ pattern/ brand/ editor/ archive/ framework/`. Color belongs to the namespace; nothing consults it.
 
 The chip fills themselves are palette tokens (`packages/theme/kol-components-molecules.css:284-301`, `var(--kol-palette-*)`) — but the **graph** re-implemented the palette as eight raw hexes at `packages/workshop/src/tags/TagGraph.jsx:123-133`. **Correction to my first pass:** I wrote that none of those were KOL palette values. They all were — `#3740D3` is `--kol-palette-blue`, `#66a44c` is green, `#ffe32e` is yellow. They are hand-typed transcriptions, correct the day they were written and frozen since, so a retuned palette would move every chip and leave the graph behind. Wrong diagnosis, real defect. The chip ink is also a hardcoded `#121215`, repeated seven times.
 
@@ -115,7 +115,7 @@ Everything downstream is a symptom of that:
 | MDX doc tables | yes — panel | `mdx-components.jsx:60` |
 | Component preview figure | yes — panel | `PreviewCard.jsx:28` |
 | Foundations swatch grid | **no** | `Foundations.jsx:45-143` — bare fragment |
-| Foundations colour tables | **no** | `FoundationsColor.jsx:109` — bare `<Table>` |
+| Foundations color tables | **no** | `FoundationsColor.jsx:109` — bare `<Table>` |
 | Typography table | **no** | `FoundationsTypography.jsx:132` — bare `<Table>` |
 | Components index | **no** | `Components.jsx:102` — 4-column waterfall across the full column |
 | Block viewer | **no** | `BlockViewer.jsx:125` — measured 1574px |

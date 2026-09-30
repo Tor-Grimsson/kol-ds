@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-component
 
+## 0.230.0 — 2026-09-30
+
+**The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).
+
+- **Placement** — `CloseButton` → `atoms/` (a Button wearing an IconFrame), `ContextMenu` → `molecules/`, `PathNodeOverlay` · `CropOverlay` · `SelectionOverlay` · `CurveOverlay` → `utilities/` (they paint only onto a target). The barrel is unchanged — every import keeps working.
+- **⚠ Behaviour: a portalled panel hides when its trigger is out of view.** `usePopover` adds floating-ui's `hide` middleware (`referenceHidden`) and returns `floatingStyles` with `visibility: hidden` while the trigger is clipped — an open menu no longer paints over a sticky header or floats at the page's foot when its trigger scrolls away. Every Dropdown, MenuItem, ContextMenu and Tooltip takes it.
+- Comments: one spelling, `color`.
+
 ## 0.229.0 — 2026-09-29
 
 - **Search is the KOL engine everywhere** (apps review). `MediaLibrary`'s four hand-rolled `.includes(q)` filters and `ContentFilters`' substring match now run on `@kolkrabbi/kol-search` (new dependency) through `utilities/mediaSearch.js` (`filterMedia` · `rankMedia`) and `utilities/searchItems.js` (`filterItems`): several words AND, `-word`, `"phrases"`, `tag:x` / `#x`, `kind:image`. A single word still finds everything the substring found.

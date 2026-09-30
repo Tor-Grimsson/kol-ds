@@ -14,7 +14,7 @@ related:
 
 # Foundations
 
-The layer everything else cites — tokens, colour, type, layout. If a component improvises a value, this is the chapter it failed to read.
+The layer everything else cites — tokens, color, type, layout. If a component improvises a value, this is the chapter it failed to read.
 
 Pages come in pairs where a subject has one: the **page** explains, the
 **lookup** is the table of values you scan. Lookups are generated from the theme

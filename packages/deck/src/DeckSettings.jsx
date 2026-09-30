@@ -42,7 +42,7 @@ function SettingsForm({ onClose, slides, greys, absoluteBlack, onApply }) {
   const [background, setBackground] = useState(() => slides[0]?.doc?.bg ?? '')
 
   /* the ground options are the deck's own ramp plus its true black — a deck
-     background is a token like every other colour here, not a free hex */
+     background is a token like every other color here, not a free hex */
   const grounds = [['var(--kol-color-absolute-black)', absoluteBlack], ...Object.entries(greys)]
 
   return (

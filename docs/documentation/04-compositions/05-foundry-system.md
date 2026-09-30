@@ -54,9 +54,9 @@ Four components moved in from `@kolkrabbi/kol-component` — each passes the mem
 | `TypeSample` | a single labeled type-specimen block — family/weight/size/line-height rendered live via props |
 | `TypeSpecCard` | two-column type-spec row — font-metric key/value panel beside a live sample slot |
 | `TextPressure` | a line of variable-font text whose glyphs deform toward the pointer — manipulates `wght`/`wdth`/`ital` per glyph, each frame |
-| `ColorLoader` | full-height branded loading curtain — times in a live TextPressure variable-font wordmark (**peer:** `framer-motion`) |
+| `IntroLoader` | full-height branded loading curtain — times in a live TextPressure variable-font wordmark (**peer:** `framer-motion`) |
 
-`kol-component`'s `LoaderOverlay` now takes a `loader` SLOT instead of hardcoding ColorLoader — consumers inject `<ColorLoader/>` from this package.
+`kol-component`'s `LoaderOverlay` now takes a `loader` SLOT instead of hardcoding IntroLoader — consumers inject `<IntroLoader/>` from this package.
 
 ### Catalog + composition (added 2026-07-09)
 
@@ -95,6 +95,6 @@ The bucket-B engine upgrades — the specimen tools gain a self-measuring row an
 - **Data is injected** — typeface metrics / font files are consumer-supplied flat props (or the bundled `typefaceConfig` fixture).
 - **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation`, `usePrefersReducedMotion` (+ `Icon` from `kol-icons`). This package depends on them.
 - **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take `onNavigate(href, event)` — every item is a real `<a href>`, the callback is the SPA seam (`linkComponent` retired 2026-08-27, FoundryComponentsReconcile; the library grid is on the content set: `ContentFilters` → `ContentCollection` → `ContentCard` / `ContentRow typeface`, with `TypefaceAlphabet` in the row's footer)
-- **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back. **`framer-motion` is a peer** — `ColorLoader`'s curtain motion (2026-07-09).
+- **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back. **`framer-motion` is a peer** — `IntroLoader`'s curtain motion (2026-07-09).
 - **CSS lives in `kol-theme`** — `kol-components-foundry.css` (recreated 2026-07-09 for the moved kit: type-sample/spec rules + the TextPressure stroke ghost); everything else styles with `@kolkrabbi/kol-theme` utility classes. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"` — Tailwind skips `node_modules`, or the utilities never generate).
 - Live specimen: `showcase/src/sets/foundry-specimen.jsx`.

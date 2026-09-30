@@ -128,4 +128,4 @@ members. Deriving from sets alone was the first attempt and it was too narrow:
 `ContentFilters` is composed by `/references` and by **zero** sets, so its page
 rendered blank while the mechanism worked perfectly.
 
-**Previews are conditional, never a column of empty boxes.** A colour token renders its swatch, a type class renders itself applied, everything else renders nothing (`hasPreview()` is the predicate).
+**Previews are conditional, never a column of empty boxes.** A color token renders its swatch, a type class renders itself applied, everything else renders nothing (`hasPreview()` is the predicate).

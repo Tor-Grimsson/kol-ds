@@ -6,11 +6,12 @@ Current state, roadmap, gotchas, and contracts. Read with `ARCHITECTURE.md`.
 
 The maintenance home + npm host + showcase for the KOL design system. See `ARCHITECTURE.md` for the load-bearing decisions.
 
-## Queued for next session (2026-09-29)
+## Current state (2026-09-30, 🏁 showcase build — the names audit, built)
 
-- **Published 2026-09-29:** kol-markdown 0.1.1 · kol-search 0.2.0 · kol-theme 0.156.0 · kol-component 0.229.0 · kol-shell 0.59.0 · kol-hardware 0.3.1 · kol-notes 0.2.0 · kol-deck 0.2.0 · kol-store 0.3.1 · kol-workshop 0.30.1 · design-editor 0.17.0. Push is the user's.
-- **Phase log** on the Development space — the handoff `handoff-2026-09-29-*-phase-log.md` carries the design (plans stay in `.kol/`).
-- Then the workshop + showcase review. Editor rulings still parked: #12 · #14 · #15.
+- **🏁 Published 2026-09-30.** theme 0.158.0 · component 0.230.0 · framework 0.47.0 · shell 0.59.1 · workshop 0.32.0 · foundry 0.11.0 · icons 0.30.0 · design-editor 0.18.0 · dashboards 0.4.3 · deck 0.2.1 · hardware 0.3.2 · markdown 0.1.2 · styleguide 0.5.3. Push is the user's.
+- **The showcase's shape now:** spaces Components · Blocks · Cards · Sets · Styles · Docs · Apps · Development. Every package is on the atomic ladder (`TIERS` in `classification.js`, package = `family` for the Order-by view and the `/sets/family/<dir>` pages); markdown homes in `showcase/src/homes/`; Docs = the vault; Styles = foundations + icon sets + guides; Cards = `showcase/src/cards/` (18 website cards); Development = tools (tag graph, tags, index), records (phase log, open-questions rounds), packages (page per package), lobby (dev only).
+- **The phase log** lives in `docs/operations/09-phase-log/` — one entry per run, plans archived in `_files/`, title rule ≤3 words / 22 chars (`validate:metadata` M5). Every run adds its entry in the same pass. **Visual calls go on `showcase/src/open-questions/<date>.jsx` rounds**, never into a rule (memory: visual-calls-go-on-the-open-questions-page). Names for everything: `docs/documentation/00-overview/05-names.md`.
+- **The overnight decisions** (agent-made, reversible, for the user's review) are tabled in the phase log entry *Showcase build*; review surface = open-questions Rounds 3 and 4. Plan and playbook: `plan-2026-09-29-phase-log-and-showcase-review.md` (done) · `playbook/2026-09-30-showcase-build.md`. Milestone: `session-log/2026-09-30-MILESTONE-showcase-build.md`.
 
 ## Current state (2026-09-29, apps review §6c built)
 

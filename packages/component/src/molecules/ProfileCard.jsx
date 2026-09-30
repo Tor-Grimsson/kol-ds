@@ -27,7 +27,7 @@ import { surfaceClass } from '../utilities/sectionSurface.js'
  * `inverse` with inverse ink, exactly as shipped. `controlVariant` goes straight
  * to the disclosure's `IconFrame`; `pad` is `ContentCard`'s — one step on
  * `--kol-pad-card-*`, overriding the size ramp's padding. The logo is a slot
- * and stays one: its ink follows the shelf, a coloured mark is the asset's.
+ * and stays one: its ink follows the shelf, a colored mark is the asset's.
  *
  * THE SHELF SIZES TO ITS CONTENT. The source held it in a fixed box
  * (`h-60`/`h-44`/`h-32`/`h-24`, `overflow-hidden`) and every vertical size

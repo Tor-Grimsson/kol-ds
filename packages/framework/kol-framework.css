@@ -74,6 +74,17 @@ body {
      which is the BRAND layout's rail. */
   --kol-shell-nav-w: 256px;
   --kol-shell-toc-w: 256px;
+  /* the rails' grab gesture (useDragResize, 2026-09-30) — the same four tokens SideNav's carries;
+     a drag under -snap hides the rail (the shell's own collapse), arrows step, release within
+     -snap-default of 256 lands on it */
+  --kol-shell-nav-snap: 12rem;
+  --kol-shell-nav-step: var(--kol-spacing-4);
+  --kol-shell-nav-snap-default: var(--kol-shell-nav-step);
+  --kol-shell-nav-w-collapsed: 0px;
+  --kol-shell-toc-snap: 12rem;
+  --kol-shell-toc-step: var(--kol-spacing-4);
+  --kol-shell-toc-snap-default: var(--kol-shell-toc-step);
+  --kol-shell-toc-w-collapsed: 0px;
   --kol-container-max: 100%;
 
   /* Opacity tokens (--kol-fg-*) + text-role tokens (--kol-text-*) live in
@@ -177,7 +188,7 @@ body {
 }
 /* A nested route GROUP's header (sidenav-nested-groups, kol-studio
  * 2026-08-26): a non-routing label sitting where a leaf sits, its rows one
- * step further in. Type and colour ride the element as utilities
+ * step further in. Type and color ride the element as utilities
  * (kol-helper-10; text-subtle, text-emphasis when a leaf beneath it is the
  * route); the box lives here. No text-transform — the retired fork's
  * `uppercase` does not return (type law: only the display voice carries one). */

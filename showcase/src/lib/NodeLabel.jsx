@@ -44,7 +44,7 @@ export function NodeLabel({ name, kind, to }) {
 
 /**
  * NodePreview — a placeholder slot that renders ONLY when the node's kind and
- * concern support one. A colour token shows its colour, a type class shows
+ * concern support one. A color token shows its color, a type class shows
  * itself applied. Everything else renders nothing at all — an empty preview
  * box on 500 of 663 rows is noise, not a column.
  */

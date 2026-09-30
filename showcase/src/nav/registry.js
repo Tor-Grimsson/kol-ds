@@ -5,6 +5,7 @@ import { DEMOS } from '../lib/demos-registry.js'
 import { COMPONENT_GROUPS, MEMBER_OF } from '../lib/component-groups.js'
 import { ROSTER } from './roster.js'
 import { FUNCTIONS_BY_NAME, DOCS_ONLY, DEPRECATED } from './classification.js'
+import { labelFromSlug } from './labels.js'
 
 /**
  * The component registry — single source of truth for the showcase.
@@ -112,7 +113,7 @@ const DESCRIPTIONS = {
   AnimatedTitle: 'A scroll-triggered heading that reveals its words one by one as it enters the viewport (GSAP + ScrollTrigger).',
   TextPressure: 'A line of variable-font text whose glyphs deform toward the pointer — width/weight/italic falling off with distance.',
   AsciiCursor: 'A decorative ASCII cursor-follow overlay; vanishes on coarse pointers and prefers-reduced-motion.',
-  ColorLoader: 'A full-height branded intro/loading curtain — a timed variable-font wordmark and scroll cue, with click-to-dismiss.',
+  IntroLoader: 'A full-height branded intro/loading curtain — a timed variable-font wordmark and scroll cue, with click-to-dismiss.',
   LoaderOverlay: 'A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry’s ColorLoader).',
 
   /* P5 — color kit */
@@ -183,13 +184,10 @@ const DESCRIPTIONS = {
  * `loaders`/`graphics` are gone too: loaders are functional infrastructure,
  * documented on /docs/loaders — galleries stay on the Icons pages (C4). */
 export const CATEGORY_ORDER = [
-  /* `utilities` closes the atomic set (2026-08-09 "atoms paint" ruling):
-   * purpose-without-a-face components, one group, bottom of the atomic run. */
+  /* THE ATOMIC LADDER, for every package (2026-09-30 — reverses 2026-07-30's ownership tiers).
+   * `utilities` closes it (2026-08-09 "atoms paint"): purpose without a face, one group.
+   * `misc` is the visible bug bucket — it must stay empty. */
   'atoms', 'molecules', 'organisms', 'utilities',
-  'fw-chrome', 'fw-structure', 'fw-behavior',
-  /* flat packages classify by OWNERSHIP (2026-07-30 ruling) — a shell piece
-   * is not an "atom", a dashboard card is not a "molecule". */
-  'workshop', 'dashboards', 'chess', 'foundry', 'styleguide', 'content', 'store', 'icons', 'brand', 'brand-template',
   'misc',
 ]
 export const CATEGORY_LABELS = {
@@ -197,40 +195,16 @@ export const CATEGORY_LABELS = {
   molecules: 'Molecules',
   organisms: 'Organisms',
   utilities: 'Utilities',
-  'fw-chrome': 'Framework · Chrome',
-  'fw-structure': 'Framework · Structure',
-  'fw-behavior': 'Framework · Behaviors',
-  workshop: 'Workshop',
-  dashboards: 'Dashboards',
-  chess: 'Chess',
-  foundry: 'Foundry',
-  styleguide: 'Styleguide',
-  content: 'Content',
-  store: 'Store',
-  icons: 'Icons',
-  brand: 'Brand',
-  'brand-template': 'Brand template',
   misc: 'Misc',
 }
 
-/* Framework taxonomy — the flat 'framework' bucket split by function:
- * chrome (shell pieces), page structure (heroes/sections), behaviors
- * (render-null utilities). Open question, logged: do the heroes belong in
- * atomic 'organisms' instead of the framework tier? */
-const FRAMEWORK_GROUPS = {
-  AppShell: 'fw-chrome',
-  PageLayout: 'fw-chrome',
-  Layout: 'fw-chrome',
-  SideNav: 'fw-chrome',
-  PortalFooter: 'fw-chrome',
-  ShellHeader: 'fw-chrome',
-  ThemeToggle: 'fw-chrome',
-  BrandHero: 'fw-structure',
-  SubPageHero: 'fw-structure',
-  PageHero: 'fw-structure',
-  PageSection: 'fw-structure',
-  ScrollToTop: 'fw-behavior',
-}
+/* THE PACKAGE VIEW — ownership, kept as an ordering (Order by › Package) and as the set pages,
+ * no longer the default grouping. Keyed by package dir (`family` on the roster row). */
+export const PACKAGE_ORDER = [
+  'component', 'framework', 'shell', 'workshop', 'hardware', 'dashboards', 'chess',
+  'foundry', 'styleguide', 'content', 'store', 'deck', 'notes', 'icons', 'brand', 'brand-template',
+]
+export const packageLabel = (dir) => labelFromSlug(dir)
 
 /* CamelCase / UPPER_SNAKE → kebab-case slug. Stable + unique per component. */
 export function slugify(name) {
@@ -286,8 +260,12 @@ export const COMPONENTS = ROSTER
     const usage = USAGE_BY_NAME.get(c.name)
     return {
       name: c.name,
+      /* THE DISPLAY NAME (user rulings 2026-08-01 + 2026-08-09, wired 2026-09-30): every human-facing
+       * surface reads `displayName` — `Action Button`; imports, snippets, slugs keep `name`. */
+      displayName: labelFromSlug(c.name),
       pkg: c.pkg, /* true owner, from the barrel — InstallBlock can't lie */
-      category: FRAMEWORK_GROUPS[c.name] ?? c.tier,
+      category: c.tier,
+      family: c.family,
       function: FUNCTIONS_BY_NAME[c.name],
       count: usage?.count ?? 0,
       apps: usage?.apps ?? [],
@@ -345,11 +323,19 @@ export function componentsByFunction(list = TOP_LEVEL) {
 
 /* The one grouping entry point both the sidebar and the index call.
  * Returns [ [key, label, items], … ] for the active axis (D1 toggle):
- *   'atomic'   → Tier groups (CATEGORY_LABELS) — default (user ruling 2026-07-30)
- *   'function' → Function groups (FUNCTIONS). */
+ *   'atomic'   → Tier groups (CATEGORY_LABELS) — default
+ *   'function' → Function groups (FUNCTIONS)
+ *   'package'  → one group per package (the ownership view, 2026-09-30). */
 export function groupComponents(mode = 'atomic', list = TOP_LEVEL) {
   if (mode === 'atomic') {
     return componentsByCategory(list).map(([k, items]) => [k, CATEGORY_LABELS[k] ?? k, items])
+  }
+  if (mode === 'package') {
+    const by = {}
+    for (const c of list) (by[c.family] ||= []).push(c)
+    for (const k of Object.keys(by)) by[k].sort((a, b) => a.name.localeCompare(b.name))
+    const order = [...PACKAGE_ORDER, ...Object.keys(by).filter((k) => !PACKAGE_ORDER.includes(k)).sort()]
+    return order.filter((k) => by[k]).map((k) => [`pkg-${k}`, packageLabel(k), by[k]])
   }
   return componentsByFunction(list).map(([k, items]) => [k, FUNCTIONS[k] ?? k, items])
 }

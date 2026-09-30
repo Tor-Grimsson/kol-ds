@@ -5,12 +5,12 @@ import { familyFor } from './typographyCuts'
  *
  * Renders one sample string with a fully consumer-controlled type treatment:
  * cut (Right Grotesk width / mono), weight, italic, size, tracking,
- * line-height, case, alignment, colour, and an optional stroke. A pure,
+ * line-height, case, alignment, color, and an optional stroke. A pure,
  * stateless render — feed it props, it draws the specimen. Defaults land on
  * Right Grotesk regular so a bare `<TypeBlock />` shows a legible baseline.
  *
- * **Position + colour are the consumer's job.** TypeBlock owns no positioned
- * container, outline, or drag chrome, and inherits colour by default
+ * **Position + color are the consumer's job.** TypeBlock owns no positioned
+ * container, outline, or drag chrome, and inherits color by default
  * (`currentColor`) so the surrounding surface / theme drives ink. Wrap it in
  * whatever tile, row, or frame the specimen page needs.
  *
@@ -38,7 +38,7 @@ import { familyFor } from './typographyCuts'
  *   align        text-align
  *   color        ink (default 'currentColor' — inherit from surface / theme)
  *   strokeWidth  outline width in px (0 = none)
- *   strokeColor  outline colour (required for stroke to render)
+ *   strokeColor  outline color (required for stroke to render)
  *   className    extra classes on the sample element
  *   style        inline-style overrides merged last
  */

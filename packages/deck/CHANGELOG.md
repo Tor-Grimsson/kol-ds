@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-deck
 
+## 0.2.1 — 2026-09-30
+
+- Comments only: one spelling, `color`.
+
 ## 0.2.0 — 2026-09-29
 
 - **New is a blank deck.** `open={NEW_DECK}` is a deck not saved yet, in the editor on the first layout, no name asked; the first Save files it ("Untitled deck"). New deck on the shelf opens the same. `NEW_DECK` exported; `DeckEditor unsaved` keeps Save live before the first edit.

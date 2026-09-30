@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { DEV_TOOLS } from '../nav/shell-nav.js'
+import { DocSection } from '@kolkrabbi/kol-workshop'
+import HomeDoc from '../lib/HomeDoc.jsx'
+import { DEV_TOOLS, DEV_RECORDS } from '../nav/shell-nav.js'
 
 /**
  * Development — what the repo measures about itself (showcase refinement 2026-09-28, user:
@@ -12,14 +13,9 @@ import { DEV_TOOLS } from '../nav/shell-nav.js'
 const linkCls = 'kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64'
 
 export default function Development() {
-  usePageMeta({ tags: [], related: [] })
   return (
     <div className="flex flex-col gap-10 pb-24">
-      <DocHeader
-        eyebrow="Development"
-        title="Development"
-        lede="Generated from the repo itself — who depends on what, and what the sidebar admits. Not the design system; the instruments around it."
-      />
+      <HomeDoc id="development" />
       <DocSection id="tools" title="Tools">
         <ul className="flex flex-col gap-2">
           {DEV_TOOLS.map((t) => (
@@ -30,8 +26,15 @@ export default function Development() {
           ))}
         </ul>
       </DocSection>
-      <DocSection id="records" title="Audits and reports">
-        <p className="kol-doc-body">None published yet. A dated audit or a generated report lands here, beside the tools that produce them.</p>
+      <DocSection id="records" title="Records">
+        <ul className="flex flex-col gap-2">
+          {DEV_RECORDS.map((t) => (
+            <li key={t.id} className="kol-doc-body">
+              <Link className={linkCls} to={t.path}>{t.label}</Link>
+              <span className="text-subtle"> — {t.description}</span>
+            </li>
+          ))}
+        </ul>
       </DocSection>
     </div>
   )

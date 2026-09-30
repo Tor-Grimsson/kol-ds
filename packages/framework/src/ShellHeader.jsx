@@ -36,6 +36,8 @@ import ThemeToggle from './ThemeToggle.jsx'
  * @param {ReactNode} actions        Row-1 trailing slot before the theme toggle (e.g. a search-overlay trigger)
  * @param {boolean}   showThemeToggle render the framework ThemeToggle (default true)
  * @param {Function}  onMenuClick    hamburger click; button renders only when set
+ * @param {boolean}   menuBelowLg     the hamburger shows only below `lg` (2026-09-30, the names audit — on a desktop the tab row's own
+ *                                    rail toggles do its job, so it read as a duplicate; default false keeps every consumer as it was)
  * @param {Function}  onNavToggle    dock-left click → toggle left nav; button renders only when set (lg+)
  * @param {Function}  onTocToggle    dock-right click → toggle TOC rail; button renders only when set (lg+)
  * @param {boolean}   navCollapsed   tints the dock-left button
@@ -82,6 +84,7 @@ export default function ShellHeader({
   actions,
   showThemeToggle = true,
   onMenuClick,
+  menuBelowLg = false,
   onNavToggle,
   onTocToggle,
   navCollapsed,
@@ -136,7 +139,7 @@ export default function ShellHeader({
                 </>
               )}
               {onMenuClick && (
-                <Tooltip label="Open navigation menu">
+                <Tooltip label="Menu">
                   {/* IconFrame, not Button (user ruling 2026-08-01). Header
                     * chrome takes a click but must not light up; the frame has
                     * no state rules at all, which is the property Button can
@@ -146,6 +149,7 @@ export default function ShellHeader({
                     name="hamburger"
                     variant="nav"
                     size="md"
+                    className={menuBelowLg ? 'lg:hidden' : ''}
                     onClick={onMenuClick}
                     aria-label="Open navigation menu"
                   />
@@ -193,7 +197,7 @@ export default function ShellHeader({
               {(onNavToggle || onTocToggle) && (
                 <div className="hidden lg:flex items-center gap-1 pb-2">
                   {onNavToggle && (
-                    <Tooltip label="Toggle navigation sidebar">
+                    <Tooltip label="Navigation">
                       {/* The collapsed tint is a VARIANT SWAP, not a state:
                         * `ghost` rests at oq-48, `nav` at oq-64, and both are
                         * static classes with no rules to fire. That is the only
@@ -211,7 +215,7 @@ export default function ShellHeader({
                     </Tooltip>
                   )}
                   {onTocToggle && (
-                    <Tooltip label="Toggle table of contents sidebar">
+                    <Tooltip label="Contents">
                       <IconFrame
                         name="panel-right"
                         variant={tocCollapsed ? 'ghost' : 'nav'}

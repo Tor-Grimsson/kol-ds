@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-hardware",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": false,
   "description": "KOL hardware — panel controls for instruments (mixers, synths, racks, decks), in five groups: value (knob, fader, the touch ParamSheet), switches (toggle, flip, rocker, icon button), indicators (LED, jacks), panel (label, module header), frames (module frame, channel strip, flip card). Plus the signal engine (./signal): one expression compiler and ADSR for every scope and envelope in the estate. Renamed from @kolkrabbi/kol-controls. Sits above @kolkrabbi/kol-{theme,icons,component}.",
   "license": "MIT",

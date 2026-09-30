@@ -107,7 +107,7 @@
   /* Border radius (4px increments) */
   --kol-radius-none: 0;
   /* xs (2026-08-01) — the hairline rung. Claimed out loud: 2px had SIX
-     hand-written `rounded-[2px]` call sites (swatches, colour rows, the
+     hand-written `rounded-[2px]` call sites (swatches, color rows, the
      glass panel) and no token, so the scale's 4px floor was simply being
      ignored rather than followed. A value used six times is a rung. */
   --kol-radius-xs: 2px;

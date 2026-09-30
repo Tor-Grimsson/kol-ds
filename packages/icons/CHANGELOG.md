@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-icons
 
+## 0.30.0 — 2026-09-30
+
+**The align / rotate / flip glyphs, redrawn** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).
+
+- `align-horizontal-{left,center,right}` · `align-vertical-{top,center,bottom}` · `flip-horizontal` · `flip-vertical` · `rotate-left` · `rotate-right` (editor-chrome-review #14): bars 5 tall and wider, a solid axis that never crosses a bar, a dashed flip axis visible at 16px (was a 0.1 dot pattern), triangles enlarged, rotate arrowheads doubled. Same names, same 24 grid, same 1.5 stroke. The previous drawings are kept at `_tmp/2026-09-30-glyph-redraw-before/` in the repo.
+
+## 0.29.1 — 2026-09-30
+
+- Comments only: one spelling, `color`.
+
 ## 0.29.0 — 2026-09-27
 
 - **New in v1:** `typography/text-valign-top|middle|bottom` — a text box's vertical alignment (the

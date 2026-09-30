@@ -3,7 +3,7 @@ import { Table } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* Resolve a CSS custom property off the document root. The download seam is
- * handed a COLOUR, not a token — a consumer swapping `currentColor` in raw SVG
+ * handed a COLOR, not a token — a consumer swapping `currentColor` in raw SVG
  * cannot use `var(--x)`, and resolving it at the call site is how two brand
  * apps ended up with the same four-line helper. SSR-safe: '' when no document. */
 function resolveToken(token) {
@@ -34,7 +34,7 @@ function resolveToken(token) {
  *   button. The consumer opens its own overlay (`FullscreenOverlay` in both
  *   brand apps) at the ink it is handed.
  * - **`row.onDownload(row, resolvedInk)`** — the second argument is the
- *   COMPUTED colour, not the token, so a consumer can swap `currentColor` for
+ *   COMPUTED color, not the token, so a consumer can swap `currentColor` for
  *   it and hand back a white mark that downloads white.
  *
  * Columns adapt to the data: Preview appears only when a row carries a

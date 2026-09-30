@@ -28,6 +28,6 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[08-chess-system\|Chess system]] | Board, pieces, and the play/analysis apparatus |
 | [[09-dashboards-system\|Dashboards system]] | Hand-rolled SVG charts and the dashboard grid |
 | [[13-controls-system\|Controls system]] | Hardware panel controls for instruments |
-| [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for colour, logo and type |
+| [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for color, logo and type |
 | [[15-media-uploads\|Media uploads]] | Converting files on upload, and keeping originals |
 | [[16-app-anatomy\|App anatomy]] | Shell · Catalog · Hub · Tool — the four layers every KOL app is built from |

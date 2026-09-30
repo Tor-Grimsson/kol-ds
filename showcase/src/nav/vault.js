@@ -38,9 +38,31 @@ const VAULT_CONTENT = Object.fromEntries(
 
 export const VAULT = buildInventory(VAULT_CONTENT)
 
+/* THE PHASE LOG lives on disk in docs/operations/09-phase-log/ and on screen in the
+ * Development space (user, 2026-09-30: the log of work done belongs with the repo's other
+ * instruments, and nothing in the showcase reads `.kol/`). One href function decides it, so the
+ * reader, search, the tag graph and every wikilink agree on where a log entry opens. Its
+ * `_files/` hold the archived plans — reachable by link, never rows in a rail. */
+const isPhaseLog = (d) => /docs\/operations\/09-phase-log\//.test(d.file)
+export const PHASE_LOG = VAULT.filter(isPhaseLog)
+const PHASE_LOG_IDS = new Set(PHASE_LOG.map((d) => d.id))
+
 /* Own URL space — Documentation is a SYSTEM (user ruling 2026-07-30), a
  * top-level area beside Components, never a child page under Docs. */
-export const vaultDocHref = (id) => `/documentation/${id}`
+export const vaultDocHref = (id) => (PHASE_LOG_IDS.has(id) ? `/development/log/${id}` : `/documentation/${id}`)
+
+/* The Development rail's Phase log group: the index opens on the header, the entries newest
+ * first. Archived plans stay out of it. */
+export const PHASE_LOG_INDEX = PHASE_LOG.find((d) => /09-phase-log\/index\.md$/i.test(d.file))
+export const PHASE_LOG_ROUTE = {
+  id: 'dev-phase-log',
+  label: 'Phase log',
+  path: '/development/log',
+  children: PHASE_LOG
+    .filter((d) => d !== PHASE_LOG_INDEX && !d.file.includes('/_files/'))
+    .sort((a, b) => b.file.localeCompare(a.file))
+    .map((d) => ({ id: `log-${d.id}`, label: d.title, path: vaultDocHref(d.id) })),
+}
 
 /* Sidebar tree — grouped by the CHAPTER the doc lives in. Folder-based, so
  * unnumbered docs can never silently vanish (the 07-29 numeric-grouping trap).
@@ -69,6 +91,8 @@ import { labelFromSlug as label } from './labels.js'
 export const VAULT_TREE = (() => {
   const groups = new Map()
   for (const d of VAULT) {
+    /* the phase log's home is Development (above), and `_files/` is never a rail row */
+    if (isPhaseLog(d) || d.file.includes('/_files/')) continue
     const segs = relPath(d.file).split('/')
 
     /* A CATEGORY'S OWN `INDEX.md` IS NOT A PAGE (user ruling 2026-08-01). It is

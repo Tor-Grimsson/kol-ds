@@ -2,7 +2,7 @@
  * Metrics dashboard — view-level constants + formatters.
  *
  * These are presentation tokens the MetricsDashboard view needs (ranges, deploy
- * state colours/labels, the categorical palette, byte + relative-time
+ * state colors/labels, the categorical palette, byte + relative-time
  * formatters). The DATA that flows through the dashboard is injected by the
  * consumer via the `data` prop — see MetricsDashboard.jsx. A consumer's own
  * data adapter (e.g. a useMetricsData hook) imports RANGES from here so the

@@ -1,5 +1,24 @@
 # @kolkrabbi/kol-framework
 
+## 0.48.0 — 2026-09-30
+
+**The workshop rails' grab tokens** (the reuse pass — UI built fresh last night swapped for what the DS already ships).
+
+- `--kol-shell-nav-*` / `--kol-shell-toc-*` `-snap` · `-step` · `-snap-default` · `-w-collapsed` — the four tokens `useDragResize` reads, the same set SideNav's rail carries.
+
+## 0.47.0 — 2026-09-30
+
+**`ShellHeader` `menuBelowLg`** (the names audit built — plan-2026-09-29-phase-log-and-showcase-review, second goal).
+
+- New prop, default `false` — the hamburger shows only below `lg`. On a desktop the tab row's own rail toggles do its job, so it read as a duplicate. No consumer changes unless it opts in (kol-workshop's `ShellLayout` does).
+
+## 0.46.0 — 2026-09-30
+
+**The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).
+
+- **Tooltips are one word** — the header's Menu · Navigation · Contents, and `ThemeToggle`'s tooltip is `Theme`; its alt-click hint moved into its `aria-label`.
+- Comments: one spelling, `color`.
+
 ## 0.45.0 — 2026-09-28
 
 - **The workshop shell's rails are their own pair** — `--kol-shell-nav-w: 256px` (new) and

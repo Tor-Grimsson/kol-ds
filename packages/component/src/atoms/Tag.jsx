@@ -18,7 +18,7 @@ const ICON_SIZES = { xs: 8, sm: 10, md: 12, lg: 14 }
  *     `:hover` rule between them, on `.tag-control`. Every other path rendered
  *     dead.
  *   - `color` was a SECOND axis that silently swapped the base class from
- *     `tag-control` to `tag tag--{color}` — so passing a colour cost you the
+ *     `tag-control` to `tag tag--{color}` — so passing a color cost you the
  *     interaction state, invisibly. That is what shipped a solid blue pill you
  *     could not hover.
  *   - `variant="solid"` and a `solid` boolean did the same job.
@@ -28,8 +28,8 @@ const ICON_SIZES = { xs: 8, sm: 10, md: 12, lg: 14 }
  *
  * Now it is Pill's vocabulary — `primary` (filled) · `secondary` (outlined) ·
  * `inverse` — one size scale, ONE class scheme (`kol-tag--*`), and every
- * variant carries hover + active. Colour is not a prop: a chip's look is its
- * variant, exactly as it is on Pill and Button. Tag colour BY TAXONOMY returns
+ * variant carries hover + active. Color is not a prop: a chip's look is its
+ * variant, exactly as it is on Pill and Button. Tag color BY TAXONOMY returns
  * later as its own decision, on top of the variants rather than instead of them.
  *
  * @param {ReactNode} children   label content

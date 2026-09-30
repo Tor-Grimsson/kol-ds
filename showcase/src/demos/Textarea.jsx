@@ -2,16 +2,12 @@ import { Textarea } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
-/* Variants ramp inline; size rides the toolbar picker. */
+/* ONE instance; variant and size ride the toolbar pickers (2026-09-30). */
+export const variants = ['filled', 'outline']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
-export default function TextareaDemo({ size = 'sm' }) {
-  return (
-    <>
-      <Textarea variant="filled" size={size} placeholder="filled" />
-      <Textarea variant="outline" size={size} placeholder="outline" />
-    </>
-  )
+export default function TextareaDemo({ variant = 'filled', size = 'sm' }) {
+  return <Textarea variant={variant} size={size} placeholder={variant} />
 }
 
 /* Index card: one canonical instance. */

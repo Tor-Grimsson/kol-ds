@@ -108,7 +108,7 @@
 /* SURFACE-DERIVED chrome tokens live on the THEME selectors, not `:root` alone
  * (0.52.0, nested-theme-scope) — same reason as the fg ramp in kol-opacity.css:
  * a var() resolves where the property is declared, so a themed SUBTREE that
- * flips --kol-surface-on-primary kept the root's border colour (a white 8%
+ * flips --kol-surface-on-primary kept the root's border color (a white 8%
  * hairline on white paper). The accent family stays in the :root block above
  * on purpose: kol-brand-color.css rebinds it at :root only, and a themed
  * re-declaration here would hand a branded app's nested pane the neutral

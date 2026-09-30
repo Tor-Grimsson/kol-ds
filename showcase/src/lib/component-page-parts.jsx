@@ -160,13 +160,13 @@ export function Pager({ slug }) {
       {prev ? (
         <Link to={`/components/${prev.slug}`} className="group flex flex-col gap-0.5 text-left">
           <span className="kol-mono-12 text-meta">← Prev</span>
-          <span className="kol-mono-14 text-body group-hover:text-emphasis">{prev.name}</span>
+          <span className="kol-mono-14 text-body group-hover:text-emphasis">{prev.displayName}</span>
         </Link>
       ) : <span />}
       {next ? (
         <Link to={`/components/${next.slug}`} className="group flex flex-col gap-0.5 text-right">
           <span className="kol-mono-12 text-meta">Next →</span>
-          <span className="kol-mono-14 text-body group-hover:text-emphasis">{next.name}</span>
+          <span className="kol-mono-14 text-body group-hover:text-emphasis">{next.displayName}</span>
         </Link>
       ) : <span />}
     </nav>

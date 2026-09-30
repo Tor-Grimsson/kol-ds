@@ -55,7 +55,7 @@ export const ShellTocCollapsedContext = createContext(null)
  * @param {ReactNode} footer             below the outlet on the plane
  * @param {ReactNode} defaultTocContent  the TOC rail's content when no page registers one
  * @param {object}    sideNav            every SideNav prop this layout does not own, spread onto the rail
- * @param {string}    pageWash           the plane's wash, a CSS colour (e.g. `'var(--kol-fg-02)'`)
+ * @param {string}    pageWash           the plane's wash, a CSS color (e.g. `'var(--kol-fg-02)'`)
  * @param {boolean}   bare               plane + outlet only (default false)
  */
 export default function PageLayout({ navTree = [], header, footer, defaultTocContent, sideNav, pageWash, bare = false }) {

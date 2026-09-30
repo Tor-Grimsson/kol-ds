@@ -7,7 +7,7 @@
  * TWO SETS (2026-08-28). `kol-icon-set-v1` is the general set — app chrome,
  * navigation, files, media. `kol-icon-set-signal` is the signal-flow set:
  * waveforms, filters, logic gates, dither patterns, shapers, ramps, transport,
- * cables, colour harmony — drawn for instrument surfaces (kol-mirror's rack,
+ * cables, color harmony — drawn for instrument surfaces (kol-mirror's rack,
  * kol-fxr's labs) rather than for chrome. Two sets rather than 101 more glyphs
  * in v1: a rack app takes both, a website takes v1 and carries none of it.
  *

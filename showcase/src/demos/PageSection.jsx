@@ -7,7 +7,7 @@ export default function PageSectionDemo() {
   return (
     <div className="w-full [&_.kol-page]:py-6">
       <PageSection
-        label="01 — Colour"
+        label="01 — Color"
         title="Surface tiers"
         body="The section chrome every chapter is built from: numbered label, title, lede, then content."
       >

@@ -146,7 +146,7 @@ export default function ActionButton({
     const rest = restRef.current
     const on = onRef.current
     /* no confirmIcon = ONE glyph, and the state is carried by the class alone
-     * (a fill, a colour). Nothing to crossfade. */
+     * (a fill, a color). Nothing to crossfade. */
     if (!rest || !on) return undefined
 
     if (first.current) {

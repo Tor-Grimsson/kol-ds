@@ -22,7 +22,7 @@ export default function SwatchControlsDemo() {
   const [active, setActive] = useState('fill')
   const [sample, setSample] = useState('#22C55E')
 
-  /* onSwap — exchange the two paint colours (either chip or the arrow). */
+  /* onSwap — exchange the two paint colors (either chip or the arrow). */
   const swap = () => {
     setFill(stroke)
     setStroke(fill)

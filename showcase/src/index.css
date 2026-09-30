@@ -70,3 +70,14 @@ body {
   --kol-palette-orange-light: #f5ddb3;
   --kol-palette-purple-light: #e0c8ff;
 }
+
+/* THE ACCENT IS KOL-THEME'S OWN, NOT THE BRAND YELLOW (2026-09-30, open questions Round 1 Q1 —
+   the user: "accent should be white, not yellow"). kol-brand-color.css rebinds the accent to the
+   Kolkrabbi yellow for the SITE; the design system's own showcase takes the theme's neutral pair
+   back — ink on surface, white in dark — the same accent the apps already wear. Selection, focus
+   rings and the editing overlays all read it. */
+:root {
+  --kol-accent-primary:        var(--kol-surface-on-primary);
+  --kol-accent-on-primary:     var(--kol-surface-primary);
+  --kol-accent-primary-strong: var(--kol-surface-on-primary);
+}

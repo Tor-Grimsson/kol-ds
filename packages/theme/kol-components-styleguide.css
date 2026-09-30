@@ -2,14 +2,14 @@
  * KOL components — style-guide / brand-guide set
  * =============================================================================
  * Chrome for the @kolkrabbi/kol-styleguide component set: the combination lab,
- * colour anatomy, mood tiles, logo construction/scaling, type blocks, asset
+ * color anatomy, mood tiles, logo construction/scaling, type blocks, asset
  * tables. Raided from the monorepo apps/brand styleguide (2026-07).
  *
  * Layer: ships unlayered; kol-theme.css assigns the layer at import —
  *   @import "./kol-components-styleguide.css" layer(components);
  *
- * KOL conformance: resting type + colour live INLINE on the JSX (kol-* type
- * classes + kol colour utilities); only structural props Tailwind can't express
+ * KOL conformance: resting type + color live INLINE on the JSX (kol-* type
+ * classes + kol color utilities); only structural props Tailwind can't express
  * (grid templates, absolute positioning, transitions, pseudo-elements) live here.
  *
  * Rules are consolidated here as each component lands. Some were relocated from

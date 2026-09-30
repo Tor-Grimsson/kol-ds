@@ -179,7 +179,7 @@
 }
 
 /* POSITION ONLY. The control is a DS Button (quiet, icon-only) as of
- * 2026-08-01 — it brings its own box, border, colour set and states, so this
+ * 2026-08-01 — it brings its own box, border, color set and states, so this
  * class stopped painting one. It used to hand-draw a bordered square around a
  * literal `×` CHARACTER, which is why the button had no hover, no focus ring
  * and no glyph.
@@ -332,7 +332,7 @@
  * Outside the hover guard: :active fires on touch too. */
 /* NO HOVER, NO PRESS ON A DROPDOWN TRIGGER (user ruling 2026-08-28). Every
  * variant excludes `.kol-dd-trigger` at the SOURCE. It used to be cancelled
- * downstream — kol-components-molecules re-stated each variant's rest colours
+ * downstream — kol-components-molecules re-stated each variant's rest colors
  * on :hover — and that restatement was specificity (0,4,0) against the sunken
  * tone's (0,2,0), so hovering a SUNKEN trigger repainted it in the untoned
  * fill: a light box beside two icon controls that stayed dark. */
@@ -639,7 +639,7 @@
    * element, and an element's own declaration beats anything it would inherit —
    * so the override the component's docstring promised was unreachable from any
    * ancestor. Consumers were reaching into `.slider-black` by specificity from
-   * their own stylesheets to get a track colour. `.kol-slider-dual-playhead`
+   * their own stylesheets to get a track color. `.kol-slider-dual-playhead`
    * below had it right from the start; this now matches it. */
   -webkit-appearance: none;
   appearance: none;
@@ -702,7 +702,7 @@
  * grabbed. In-mark is hollow (surface fill, ink ring), out-mark is solid, which
  * is the treatment mirror's local copy proved over months.
  *
- * The playhead colour is a TOKEN. Mirror hardcoded `#2dd4bf`, which is the
+ * The playhead color is a TOKEN. Mirror hardcoded `#2dd4bf`, which is the
  * defect this move exists to end: a literal cannot follow a theme or a
  * consumer's brand. `--kol-slider-playhead` defaults to the accent and is
  * overridable per instance. */
@@ -1132,6 +1132,17 @@ a:hover .icon-hover,
   border: 1px solid var(--kol-tone-border, transparent);
 }
 
+/* THE KOL RING ON AN ACTIONABLE FRAME (2026-09-30 — the header's icon buttons drew the browser's
+ * blue ring: IconFrame renders a bare <button>/<a>, not `.kol-btn`, so it had no focus rule). The
+ * same ring as every Button: `--kol-focus-ring`, keyboard focus only. */
+a.kol-icon-frame:focus-visible,
+button.kol-icon-frame:focus-visible {
+  outline: 2px solid var(--kol-focus-ring);
+  outline-offset: 2px;
+}
+a.kol-icon-frame:focus:not(:focus-visible),
+button.kol-icon-frame:focus:not(:focus-visible) { outline: none; }
+
 /* An ACTIONABLE frame — `onClick`/`href` (user ruling 2026-08-01: *"you dont
  * use a button… you use the ICON COMPONENT… it has no interactive states"*).
  *
@@ -1199,7 +1210,7 @@ a.kol-icon-frame {
  * at rest, shown on hover of the tile (`.kol-media-tile`) or on focus, over
  * full-bleed artwork. Declared AFTER the variants so it wins in-layer — the
  * consumer no longer restates bg-fg-inverse-64 / border-fg-96 beside the
- * variant. Absolute colours: it sits on artwork, not on the theme. NO
+ * variant. Absolute colors: it sits on artwork, not on the theme. NO
  * backdrop-filter — it flips the tile onto a composited layer on hover and the
  * artwork's saturation jumps (Chrome). */
 .kol-play-disc {
