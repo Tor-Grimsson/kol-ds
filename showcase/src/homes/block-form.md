@@ -12,4 +12,4 @@ tags:
 
 # Forms
 
-Fields and controls composed into a form. Each block here is composed from the published packages and shown live, at every width.
+Fields and controls composed into a form. Each module here is composed from the published packages and shown live, at every width.

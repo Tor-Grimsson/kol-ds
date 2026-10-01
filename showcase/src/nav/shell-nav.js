@@ -42,11 +42,12 @@ import { labelFromSlug as label } from './labels.js'
 export const ALL_ROUTES = [
   /* STYLES (2026-09-30, the names audit): what everything is painted with — the live specimen
    * pages that read their values off the installed packages, the icon sets, and the guides. */
-  { id: 'styles', label: 'Styles', icon: 'paint-drop', path: '/styles' },
   /* LIBRARY IS THE ROOT (2026-09-30, the showcase review W2 — user: "make library be the shared
    * root, with composition and collections inside as subcategories"). Composition and Collection
-   * were two tabs with no way to reach the parent they share; they are its two chapters now. */
+   * were two tabs with no way to reach the parent they share; they are its two chapters now.
+   * FIRST IN THE HEADER (2026-10-01 — user: "can library be nr 1 in the header, then styles nr 2"). */
   { id: 'library', label: 'Library', icon: 'layers', path: '/library' },
+  { id: 'styles', label: 'Styles', icon: 'paint-drop', path: '/styles' },
   { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
   /* SEARCH is a space (2026-09-30): its four views are its chapters; the magnifier still opens the
    * palette — one engine behind both. */
@@ -63,7 +64,8 @@ export const LIBRARY_CHAPTERS = [
 export const LIBRARY_CHILDREN = {
   composition: [
     { id: 'components', label: 'Components', path: '/components' },
-    { id: 'blocks', label: 'Blocks', path: '/blocks' },
+    /* named Modules since 2026-10-01 (user ruling) — the id and the files keep `blocks` */
+    { id: 'blocks', label: 'Modules', path: '/modules' },
     { id: 'apps', label: 'Apps', path: '/apps' },
   ],
   collection: [
@@ -75,6 +77,36 @@ export const parentOf = (childId) =>
   Object.keys(LIBRARY_CHILDREN).find((k) => LIBRARY_CHILDREN[k].some((c) => c.id === childId)) ?? childId
 const libraryAdmitted = () => Object.values(LIBRARY_CHILDREN).flat().some((c) =>
   c.id === 'components' ? anyComponentsAdmitted() : c.id === 'packages' || isSurfaceAdmitted(c.id))
+
+/* LIBRARY › LOOKUP (2026-10-01 — user: "I need to be able to quickly go and find things like the
+ * text opacity names, like the tier of mute … we need a home for this I am saying is IMPORTANT and
+ * referenced alot information"). The lookup pages were already written — buried in the vault under
+ * Docs. One group, first in the Library rail, each page the vault doc itself rendered at
+ * `/library/lookup/<id>` (named Lookup, not Reference: Development › References exists). */
+const lookupDoc = (file) => VAULT.find((d) => d.file.endsWith(file))
+export const LOOKUP_ROOT = '/library/lookup'
+export const LOOKUP = [
+  { label: 'Names', file: '00-overview/05-names.md', description: 'What every level and kind is called, the site tree, and the plan shape.' },
+  { label: 'Opacity', file: '01-foundations/10-opacity-lookup.md', description: 'Every ink ladder, role and stop.' },
+  { label: 'Sizes', file: '01-foundations/09-size-lookup.md', description: 'One height per size, every family.' },
+  { label: 'Color', file: '01-foundations/11-color-lookup.md', description: 'Every color value, looked up.' },
+  { label: 'Typography', file: '01-foundations/12-typography-lookup.md', description: 'Every type class, with its real values.' },
+  { label: 'Tones', file: '01-foundations/13-tone-lookup.md', description: 'The seven control tones, ordered by depth.' },
+  { label: 'Tiers', file: '03-components/00-taxonomy.md', description: 'Atom, molecule, organism, utility — what each is.' },
+  { label: 'Placement', file: '03-components/02-placement.md', description: 'The runbook for placing a new component.' },
+].map((x) => ({ ...x, doc: lookupDoc(x.file) })).filter((x) => x.doc)
+  .map((x) => ({ id: `lookup-${x.doc.id}`, label: x.label, description: x.description, path: `${LOOKUP_ROOT}/${x.doc.id}` }))
+
+/* LIBRARY › START (2026-10-01 — user: "where are the copy copies? … just seems like buried
+ * information. Shadcn has introduction page … theres also installation page"). What KOL is, and how
+ * to install it, as the first two pages of the Library — the vault's own overview and install
+ * pages, rendered here the way Lookup's are. */
+export const START_ROOT = '/library/start'
+export const START = [
+  { label: 'Introduction', file: '00-overview/INDEX.md', description: 'What KOL is, and what it ships.' },
+  { label: 'Installation', file: '00-overview/03-install.md', description: 'The install lines and the consumer contract.' },
+].map((x) => ({ ...x, doc: lookupDoc(x.file) })).filter((x) => x.doc)
+  .map((x) => ({ id: `start-${x.doc.id}`, label: x.label, description: x.description, path: `${START_ROOT}/${x.doc.id}` }))
 
 /* Styles › Guides — the authored MDX pages (moved from Docs 2026-09-30; the old /docs/<guide>
  * URLs redirect). Not chapter pages of the vault: the 2026-08-01 ruling keeps the Docs tree
@@ -104,11 +136,17 @@ export const DEV_TOOLS = [
 /* THE SEARCH PAGE'S VIEWS (2026-09-30) — the ways to find a page: results, every tag, the tag
  * graph, every page A–Z. They were Development tools; they are how you look for something. */
 export const SEARCH_VIEWS = [
-  { value: 'results', label: 'Results', path: '/search' },
+  /* a page of its own (2026-10-01 — user: "results isnt even a page it just an alias to search") */
+  { value: 'results', label: 'Results', path: '/search/results' },
   { value: 'tags', label: 'Tags', path: '/search/tags', description: 'Every tag in use, by namespace, with its count.' },
   { value: 'graph', label: 'Graph', path: '/search/graph', description: 'Every tag as a node, a line where two share a page.' },
   { value: 'index', label: 'A–Z', path: '/search/index', description: 'Every page on the site, A to Z, by space.' },
 ]
+
+/* Results remembers its query for this tab, so leaving for Tags · Graph · A–Z and coming back
+ * returns to the results, not the search home (2026-10-01). Written by the Search page. */
+export const LAST_QUERY_KEY = 'kol-search-last-query'
+export const lastSearchQuery = () => { try { return sessionStorage.getItem(LAST_QUERY_KEY) ?? '' } catch { return '' } }
 
 /* Development › Records — what the work leaves behind (2026-09-30). The phase log is the vault's
  * `09-phase-log/` rendered here (`PHASE_LOG_ROUTE`, nav/vault.js); open questions are the
@@ -133,7 +171,7 @@ export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
 export const SPACE_PREFIXES = {
   '/styles': ['/styles', '/foundations', '/icons'],
   /* the Library owns both its chapters' URLs; Cards is a set (2026-09-30) */
-  '/library': ['/library', '/composition', '/components', '/blocks', '/apps', '/app', '/collection', '/sets', '/cards', '/packages'],
+  '/library': ['/library', '/composition', '/components', '/modules', '/blocks', '/apps', '/app', '/collection', '/sets', '/cards', '/packages'],
   '/docs': ['/docs', '/documentation'],
   '/search': ['/search'],
   '/development': ['/development', '/references', '/quarantine', '/lobby'],
@@ -174,7 +212,7 @@ export const buildShellSearchItems = () => {
       ]) : []),
     ]),
   ]
-  const blocks = BLOCKS.map((b) => ({ id: `block-${b.key}`, title: b.title, kind: 'block', space: 'library', category: 'Blocks', href: `/blocks/${b.key}` }))
+  const blocks = BLOCKS.map((b) => ({ id: `block-${b.key}`, title: b.title, kind: 'block', space: 'library', category: 'Modules', href: `/modules/${b.key}` }))
   const sets = SETS.map((x) => ({ id: `set-${x.key}`, title: x.title, kind: 'set', space: 'library', category: 'Sets', href: `/sets/${x.key}` }))
   /* a package's page carries its family (2026-09-30 — the single-package sets folded in) */
   const packages = PACKAGE_ORDER.filter((dir) => TOP_LEVEL.some((c) => c.family === dir)).map((dir) => ({ id: `pkg-${dir}`, title: packageLabel(dir), kind: 'package', space: 'library', category: 'Packages', keywords: [`@kolkrabbi/kol-${dir}`], href: `/packages/${dir}` }))

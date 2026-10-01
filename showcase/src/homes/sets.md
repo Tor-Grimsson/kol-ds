@@ -18,5 +18,5 @@ The same components also sit on the atomic ladder under Components. A set is the
 
 | Is | Isn't |
 |---|---|
-| a family grouped by purpose, and what it composes | a page layout (that is a block) |
+| a family grouped by purpose, and what it composes | a page layout (that is a module) |
 | free to cross packages | a package's own family (that is the package's page) |

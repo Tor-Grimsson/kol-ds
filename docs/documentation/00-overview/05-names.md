@@ -3,7 +3,7 @@ title: Names
 type: reference
 status: active
 created: 2026-09-30
-updated: 2026-09-30
+updated: 2026-10-01
 description: What every level and kind is called
 aliases:
   - names
@@ -37,7 +37,7 @@ KOL                                   the design system
 ├─ Styles                             what everything is painted with
 ├─ Library                            everything you build with
 │   ├─ Composition                    grouped by SIZE — each is made of the one before
-│   │     Components → Blocks → Apps
+│   │     Components → Modules → Apps
 │   └─ Collection                     grouped by BELONGING — the same things, cut another way
 │         Sets      by purpose
 │         Packages  by shipping
@@ -53,7 +53,7 @@ Everything a consumer takes from the design system, cut two ways: **Composition*
 ## Composition
 
 The Library grouped by **size**. Each level is made of the one before it: a component inside a
-block, a block inside an app. Its children are Components, Blocks and Apps.
+module, a module inside an app. Its children are Components, Modules and Apps.
 
 ## Collection
 
@@ -73,10 +73,23 @@ rail, and its children are that rail's categories.
 | Space | Holds |
 |---|---|
 | Styles | what everything is painted with: tokens, color, type, icons, guides |
-| Library | Composition (Components · Blocks · Apps) and Collection (Sets, Cards first · Packages, each package's page carrying install, the apps that use it and its family, its changelog a page of its own) |
+| Library | Composition (Components · Modules · Apps) and Collection (Sets, Cards first · Packages, each package's page carrying install, the apps that use it and its family, its changelog a page of its own) |
 | Docs | the `docs/` vault: Documentation and Operations |
 | Search | the four views: Results · Tags · Graph · A–Z |
 | Development | the repo's instruments: tools (references, quarantine), records (phase log, open questions), the lobby |
+
+## Plan shape
+
+A plan is written **W › phase › list** (ruled 2026-10-01).
+
+| Level | Is | Example |
+|---|---|---|
+| W | a subject — one area of the work | `W1 — Search` |
+| Phase | one buildable piece of that subject, numbered under its W | `1.2 — Results page` |
+| List | what the phase does, one line each | `Enter opens the highlighted suggestion.` |
+
+A phase that needs the user's ruling before it is built is marked **TALK**; one set aside for its
+own session is **PARKED**.
 
 ## Rail levels
 
@@ -113,7 +126,11 @@ Law: [[../03-components/00-taxonomy|component taxonomy]].
 One export with **no face of its own** — a layout wrapper, a mechanism other components wear, an
 overlay drawn onto a target, a guard or a fallback state. One group, beside the ladder.
 
-## Block
+## Module
+
+Called **Block** until 2026-10-01 — that is shadcn's word, and the user ruled ours. Not to be
+confused with a **hardware module** (kol-hardware's `ModuleFrame` · `ModuleHeader`: one unit in a
+rack) — that is a component family, this is a tier of the Library.
 
 A composition of shells and tools — sidenavs, headers, footers, heroes, panels, toolbars — shown at
 every width to show **how it breakpoints**. Copied whole into a page.
@@ -124,7 +141,7 @@ A **website card**: one section of a page — a hero, a text-and-image split (te
 image left, centred, image above), a call to action, a signup, a set of feature cards, an FAQ, a
 content card. Made from the `Section*` components and the content cards, shown live at every width
 with its source to copy. **Cards is a set**, a purpose family drawn from two packages; a card is not
-a block (shells and tools).
+a module (shells and tools).
 
 ## Set
 

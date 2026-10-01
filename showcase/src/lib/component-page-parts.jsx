@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CodeBlock } from '@kolkrabbi/kol-component'
+import { Icon } from '@kolkrabbi/kol-icons'
 import PreviewCard from './PreviewCard.jsx'
 import { setsOf, usedIn } from './set-membership.js'
 import { getComponentBySlug, COMPONENTS_AZ, slugify } from '../nav/registry.js'
@@ -144,7 +145,9 @@ export function InstallBlock({ pkg }) {
       chrome="flush"
       tabsLabel="Package manager"
       tabs={PM_TABS}
-      renderTab={(pm) => <CodeBlock code={`${PMS[pm]} ${pkg}`} language="bash" />}
+      /* the block owns the space under its tab row (2026-10-01): it used to be the code block's
+       * own margin, and with that zeroed in the doc frame the rule sat glued to the code */
+      renderTab={(pm) => <div className="pt-6"><CodeBlock code={`${PMS[pm]} ${pkg}`} language="bash" /></div>}
     />
   )
 }
@@ -155,17 +158,20 @@ export function Pager({ slug }) {
   const prev = i > 0 ? COMPONENTS_AZ[i - 1] : null
   const next = i >= 0 && i < COMPONENTS_AZ.length - 1 ? COMPONENTS_AZ[i + 1] : null
   return (
-    <nav className="mt-2 flex items-center justify-between gap-3 border-t border-fg-08 pt-6">
+    /* capped at the panel like the tables and code above it (2026-10-01 — the rule ran the full
+     * column past a panel-capped table, which read as padding nobody could find), with more air
+     * above; the arrows are the icon set's, not typed characters */
+    <nav className="mt-6 flex max-w-[var(--kol-content-panel)] items-center justify-between gap-3 border-t border-fg-08 pt-6">
       {/* mono, not sans — nav chrome is mono-dominated (user ruling 2026-07-30) */}
       {prev ? (
         <Link to={`/components/${prev.slug}`} className="group flex flex-col gap-0.5 text-left">
-          <span className="kol-mono-12 text-meta">← Prev</span>
+          <span className="kol-mono-12 text-meta inline-flex items-center gap-1.5"><Icon name="arrow-left" size={12} />Prev</span>
           <span className="kol-mono-14 text-body group-hover:text-emphasis">{prev.displayName}</span>
         </Link>
       ) : <span />}
       {next ? (
         <Link to={`/components/${next.slug}`} className="group flex flex-col gap-0.5 text-right">
-          <span className="kol-mono-12 text-meta">Next →</span>
+          <span className="kol-mono-12 text-meta inline-flex items-center justify-end gap-1.5">Next<Icon name="arrow-right" size={12} /></span>
           <span className="kol-mono-14 text-body group-hover:text-emphasis">{next.displayName}</span>
         </Link>
       ) : <span />}

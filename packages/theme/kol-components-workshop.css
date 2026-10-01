@@ -116,6 +116,14 @@
   overscroll-behavior: contain;
 }
 
+/* THE RAIL FADES OUT AT ITS FOOT (2026-10-01 — user, on shadcn's sidebar: "look how they use
+ * gradient fade for information to reveals on scroll"). A long list runs out under a fade instead
+ * of being cut by the window edge; the rail's own bottom padding (`pb-14` on the aside) keeps the last row clear of it. */
+.shell-rail {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+}
+
 .shell-rail--nav {
   border-right: 1px solid var(--kol-oq-08);
   padding-inline-end: var(--kol-pad-chrome-x);

@@ -6,10 +6,7 @@ export const sizes = ['md', 'sm', 'lg']
 
 export default function SectionLabelDemo({ size = 'md' }) {
   return (
-    <>
-      <SectionLabel text="COLLECTIONS" size={size} />
-      <SectionLabel text="FEATURED WORK" size={size} />
-      <SectionLabel text="LATEST PRINTS" size={size} />
-    </>
+    /* one line (2026-10-01): three identical labels said nothing the first did not — size rides the toolbar */
+    <SectionLabel text="COLLECTIONS" size={size} />
   )
 }

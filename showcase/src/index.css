@@ -10,9 +10,13 @@
 @source "../node_modules/@kolkrabbi/kol-content/src";
 @source "../node_modules/@kolkrabbi/kol-dashboards/src";
 @source "../node_modules/@kolkrabbi/kol-foundry/src";
+@source "../node_modules/@kolkrabbi/kol-hardware/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 @source "../node_modules/@kolkrabbi/kol-shell/src";
 @source "../node_modules/@kolkrabbi/kol-store/src";
+/* styleguide was missing (2026-10-01): ClearspaceDiagram's `[&_svg]:w-full [&_svg]:h-full` was never
+   generated, so its layers kept their intrinsic size and the preview rendered offset and clipped */
+@source "../node_modules/@kolkrabbi/kol-styleguide/src";
 @source "../node_modules/@kolkrabbi/kol-workshop/src";
 
 @import "@kolkrabbi/kol-theme";

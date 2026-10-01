@@ -2,6 +2,8 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref, PHASE_LOG_INDEX } from './nav/vault.js'
 import Home from './pages/Home'
+import Lookup, { Start } from './pages/Lookup'
+import DemoPreview from './pages/DemoPreview'
 import Foundations from './pages/Foundations'
 import FoundationsHome from './pages/FoundationsHome'
 import FoundationsColor from './pages/FoundationsColor'
@@ -88,7 +90,12 @@ export default function App() {
   return (
     <Routes>
       {/* Chrome-less by contract — iframe sources + dev mirrors */}
-      <Route path="/blocks/preview/:slug" element={<BlockPreview />} />
+      <Route path="/modules/preview/:slug" element={<BlockPreview />} />
+      {/* a framed component demo, bare (2026-10-01 — demos-registry `frame`) */}
+      <Route path="/components/preview/:name" element={<DemoPreview />} />
+      {/* BLOCKS → MODULES (2026-10-01, user ruling: "we need another name for Blocks, thats shadcn
+          lingo" · "I like modules more"). The old URLs redirect, tail kept. */}
+      <Route path="/blocks/*" element={<MovedRedirect from="/blocks" to="/modules" />} />
       <Route path="/sets/preview/:slug" element={<SetPreview />} />
       <Route path="/cards/preview/:slug" element={<CardPreview />} />
 
@@ -136,9 +143,9 @@ export default function App() {
         <Route path="/components/tier/:tier" element={<TierHome />} />
         <Route path="/components/function/:fn" element={<FunctionHome />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
-        <Route path="/blocks" element={<Blocks />} />
-        <Route path="/blocks/category/:cat" element={<Blocks />} />
-        <Route path="/blocks/:slug" element={<BlockPage />} />
+        <Route path="/modules" element={<Blocks />} />
+        <Route path="/modules/category/:cat" element={<Blocks />} />
+        <Route path="/modules/:slug" element={<BlockPage />} />
         <Route path="/cards" element={<Cards />} />
         <Route path="/cards/category/:cat" element={<Cards />} />
         <Route path="/cards/:slug" element={<CardPage />} />
@@ -153,7 +160,9 @@ export default function App() {
         {/* The reference graph — generated from usage-index + token-index. */}
         <Route path="/references" element={<References />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
-        <Route path="/search" element={<Search />} />
+        {/* ONE route for the home and the results (`/search` · `/search/results`): two routes
+          * remounted the page between them, and the box dropped a keystroke on the way */}
+        <Route path="/search/:view?" element={<Search />} />
         <Route path="/search/tags" element={<TagsPage />} />
         <Route path="/search/graph" element={<TagGraphPage />} />
         <Route path="/search/index" element={<IndexPage />} />
@@ -175,6 +184,11 @@ export default function App() {
         <Route path="/development/log/:docId" element={<VaultReader docsIndex="/development/log" />} />
         <Route path="/development/open-questions" element={<OpenQuestions />} />
         <Route path="/development/open-questions/:round" element={<OpenQuestionsRound />} />
+        {/* Library › Lookup — the vault's lookup pages, rendered in the Library space (2026-10-01) */}
+        <Route path="/library/start" element={<Start />} />
+        <Route path="/library/start/:docId" element={<VaultReader docsIndex="/library/start" />} />
+        <Route path="/library/lookup" element={<Lookup />} />
+        <Route path="/library/lookup/:docId" element={<VaultReader docsIndex="/library/lookup" />} />
         <Route path="/apps" element={<Apps />} />
         <Route path="/apps/layer/:layer" element={<AppLayer />} />
         {/* an app's HOME — its spec. Singular: `/apps/<name>/` is the app itself (its own build) */}

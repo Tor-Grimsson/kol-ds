@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-theme
 
+## 0.162.0 — 2026-10-01
+
+**Review round two** (plan-2026-10-01-showcase-review-round-2).
+
+- **`.kol-badge`** gets a 6px gap — an icon and its label were flush.
+- **`.kol-table--simple`** draws no rule under its last row unless `.kol-table--last-rule` (Table's `lastRule`).
+- **`.kol-rail-grab--line`** (`kol-animation.css`) — the line resize handle.
+- **`.shell-rail`** fades out over its last 3rem (`mask-image`).
+
 ## 0.161.0 — 2026-10-01
 
 **The showcase review** (plan-2026-09-30-showcase-review).

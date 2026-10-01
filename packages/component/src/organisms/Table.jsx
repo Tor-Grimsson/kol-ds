@@ -33,7 +33,7 @@ const WIDTHS = {
   column: '',
 }
 
-const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false }) => {
+const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false, lastRule = false }) => {
   const [sort, setSort] = useState({ key: null, dir: null })
 
   const cycle = (key) =>
@@ -58,7 +58,9 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
   const variantClass = variant === 'simple' ? 'kol-table--simple' : ''
   /* compact — record-surface density (RecordManager, 2026-08-09): the default
    * 12/16 cell box read as bloated rows against the reference table. */
-  const wrapperClass = ['kol-table-wrapper', variantClass, compact && 'kol-table--compact', WIDTHS[width] ?? WIDTHS.panel, className].filter(Boolean).join(' ')
+  /* lastRule — `simple` only: the rule under the LAST row. Off by default (2026-10-01): the
+   * table is usually followed by a divider of its own, and the two read as a double line. */
+  const wrapperClass = ['kol-table-wrapper', variantClass, lastRule && 'kol-table--last-rule', compact && 'kol-table--compact', WIDTHS[width] ?? WIDTHS.panel, className].filter(Boolean).join(' ')
   return (
   <div className={wrapperClass}>
     <table className="kol-table">

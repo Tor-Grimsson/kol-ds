@@ -12,4 +12,4 @@ tags:
 
 # Toolbars
 
-Rows of tools. Each block here is composed from the published packages and shown live, at every width.
+Rows of tools. Each module here is composed from the published packages and shown live, at every width.

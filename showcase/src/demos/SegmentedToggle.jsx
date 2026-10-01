@@ -11,7 +11,9 @@ const OPTIONS = [
  * stack). filled: surface tiles, ring on the SELECTED cell only · tonal: the clicked cell marked
  * by tone, no ring. The stateless action strip below is a different use, not a variant. */
 export const variants = ['default', 'filled', 'tonal']
-export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
+/* the tones the strip PAINTS (2026-10-01): `sunken` is the only one kol-theme defines for `.kol-seg`
+ * — the other six were listed and changed nothing, so the knob looked broken */
+export const tones = ['default', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function SegmentedToggleDemo({ variant = 'default', tone = 'default', size = 'sm' }) {

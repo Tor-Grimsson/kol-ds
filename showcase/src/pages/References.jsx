@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocSection } from '@kolkrabbi/kol-workshop'
+import HomeDoc from '../lib/HomeDoc.jsx'
 import { Link } from 'react-router-dom'
 import { ContentFilters, Table, Button } from '@kolkrabbi/kol-component'
 import { NodeLabel, NodePreview, kindLabel } from '../lib/NodeLabel.jsx'
@@ -165,11 +166,10 @@ export default function References() {
 
   return (
     <>
-      <DocHeader
-        eyebrow="Reference graph"
-        title="What depends on what."
-        lede={`${nodes.length} referenced nodes. Ranked by weighted inbound — a 5★ dependent is a near-copy and breaks if the node goes; a 1★ dependent loses one element. ${canon} nodes sit at or above the canon bar of ${threshold}★ (3× the median of ${median}).`}
-      />
+      {/* the home (2026-10-01 — user: "in development neither references or quarantine have
+        * homes"); the live counts follow it */}
+      <HomeDoc id="references" />
+      <p className="kol-doc-lede mt-6">{`${nodes.length} referenced nodes. ${canon} nodes sit at or above the canon bar of ${threshold}★ (3× the median of ${median}).`}</p>
 
       {/* mt-8: DocHeader's lede butted straight onto the filter row with no
         * breathing space at all — the header ends, the control bar begins. */}
@@ -204,7 +204,9 @@ export default function References() {
         )}
       />
 
-      <DocSection title="How to read this">
+      {/* mt-8: the table's footer line sat flush on this section's rule (2026-10-01) */}
+      <div className="mt-8">
+      <DocSection id="how-to-read-this" title="How to read this">
         <p>
           An edge exists only if changing or deleting the node would change or break the
           dependent. That is derivation, not co-occurrence: two swatches on one ramp never
@@ -217,6 +219,7 @@ export default function References() {
           <code>pnpm validate:frontmatter</code> rather than silently accepted.
         </p>
       </DocSection>
+      </div>
     </>
   )
 }

@@ -27,6 +27,10 @@ export const DEMOS = Object.fromEntries(
        array gets a picker in PreviewCard's toolbar and receives the active one
        as its `variant` / `size` prop — the axes preview in place instead of
        needing a demo file each. */
-    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null, tones: mod.tones || null, sizes: mod.sizes || null, states: mod.states || null },
+    { name: keyOf(path), Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null, tones: mod.tones || null, sizes: mod.sizes || null, states: mod.states || null,
+      /* `frame` (2026-10-01): a page-sized component — a rail fixed to the window, a 100vh scaffold, an
+       * overlay — previews in an iframe on its own bare route, so it is confined to the preview
+       * instead of sitting over the showcase. A number sets the frame's height. */
+      frame: mod.frame || false },
   ]),
 )

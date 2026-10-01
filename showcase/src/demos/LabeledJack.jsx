@@ -5,12 +5,13 @@ import { LabeledJack, JackSocket } from '@kolkrabbi/kol-hardware'
 const WiredJack = (props) => <JackSocket {...props} active />
 
 export const stage = 'md'
-const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, borderRadius: 4, background: 'var(--kol-ctl-hw-case)' }
+/* no panel behind it (2026-10-01 — user: "the component is not the component + its panel, that would be a module") */
+const ROW = { display: 'flex', alignItems: 'center', gap: 16 }
 
 /* A jack with its label in four positions, one with a dim icon, one dimmed whole. */
 export default function LabeledJackDemo() {
   return (
-    <div style={PLATE}>
+    <div style={ROW}>
       <LabeledJack type="in" label="in" labelPosition="top" color="#4ade80" />
       <LabeledJack type="out" label="out" />
       <LabeledJack type="in" label="cv" labelPosition="left" color="#497DA2" />

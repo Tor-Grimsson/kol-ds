@@ -135,9 +135,20 @@ const readBack = (n) => {
  *
  *           STATE is untouched: collapsed/expanded still persists via
  *           `stateKey`, unconditionally, as it always did. The ticket says the
- *           two are separate questions and only asks about the width. */
+ *           two are separate questions and only asks about the width.
+ *   variant — how the handle DRAWS and what a click does (2026-10-01, user: *"we should make another
+ *           drag to resize variant: on hover this pointer, and either hover or click to highlight
+ *           the border, with double click expanding (like if sidebar with icons)"*):
+ *             'pill' (default) — the short pill that wakes as the pointer nears; a CLICK toggles.
+ *             'line'           — the whole edge lights up on hover and while dragging; a click does
+ *                                nothing and a DOUBLE-CLICK toggles expand ↔ collapse (the two
+ *                                cannot share one gesture — see "double-click reset is gone" above,
+ *                                which is why this is a variant and not an addition). */
 export default function useDragResize(ref, options = {}) {
-  const { token = 'kol-sidenav', side = 'left', defaultCollapsed = false, persistWidth = false } = options
+  const { token = 'kol-sidenav', side = 'left', defaultCollapsed = false, persistWidth = false, variant = 'pill' } = options
+  const line = variant === 'line'
+  const lineRef = useRef(line)
+  lineRef.current = line
   /* -1 on a right-hand rail: the same rightward pointer travel that widens a
    * left rail must NARROW a right one, because its handle faces the canvas. */
   const dir = side === 'right' ? -1 : 1
@@ -221,7 +232,7 @@ export default function useDragResize(ref, options = {}) {
       root().removeAttribute(names.draggingAttr)
       document.body.style.cursor = ''
       document.body.style.userSelect = ''
-      if (!moved) { toggleCollapsed(); return } // a click, not a drag
+      if (!moved) { if (!lineRef.current) toggleCollapsed(); return } // a click, not a drag — `line` toggles on double-click
       /* Snap-to-default: release near the stylesheet default clears the
        * override entirely. */
       const { collapsed: c, widthPx: w } = readBack(names)
@@ -304,7 +315,8 @@ export default function useDragResize(ref, options = {}) {
       /* the pill is drawn by `.kol-rail-grab` (kol-animation.css) — the hook
        * only supplies `is-near` and `--kol-rail-grab-y`. A consumer's own
        * className, spread after this, still wins. */
-      className: 'kol-rail-grab',
+      className: line ? 'kol-rail-grab kol-rail-grab--line' : 'kol-rail-grab',
+      ...(line ? { onDoubleClick: toggleCollapsed } : {}),
       role: 'separator',
       'aria-orientation': 'vertical',
       'aria-label': 'Resize navigation',

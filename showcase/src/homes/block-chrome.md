@@ -12,4 +12,4 @@ tags:
 
 # Shell chrome
 
-Headers, bars and the frame around an app. Each block here is composed from the published packages and shown live, at every width.
+Headers, bars and the frame around an app. Each module here is composed from the published packages and shown live, at every width.

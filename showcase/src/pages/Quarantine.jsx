@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { DocSection } from '@kolkrabbi/kol-workshop'
+import HomeDoc from '../lib/HomeDoc.jsx'
 import { Table } from '@kolkrabbi/kol-component'
 import { CATEGORIES, ADMITTED } from '../nav/admitted.js'
 import { ALL_ROUTES } from '../nav/shell-nav.js'
@@ -64,18 +65,15 @@ const columns = (openLabel, ruleLabel, whyLabel) => [
 ]
 
 export default function Quarantine() {
-  usePageMeta({ tags: [], related: [] })
   const held = CATEGORIES.filter((c) => !ADMITTED.has(c.key))
   const admitted = CATEGORIES.filter((c) => ADMITTED.has(c.key))
   const heldComponents = componentsIn(held.flatMap((c) => c.categories)).length
 
   return (
     <>
-      <DocHeader
-        eyebrow="Development · Quarantine"
-        title="Held until its rule is written."
-        lede={`${held.length} of ${CATEGORIES.length} categories are out of the sidebar — ${heldComponents} components and ${held.flatMap((c) => c.surfaces).length} surfaces. Nothing here is deleted or broken: every route below still resolves and still answers ⌘K by name. It is held out of the tree until the rule it waits on is written, and then read against it.`}
-      />
+      {/* the home (2026-10-01); the live counts follow it */}
+      <HomeDoc id="quarantine" />
+      <p className="kol-doc-lede mt-6">{`${held.length} of ${CATEGORIES.length} categories are out of the sidebar — ${heldComponents} components and ${held.flatMap((c) => c.surfaces).length} surfaces.`}</p>
 
       <DocSection id="admitted" title={`Admitted — ${admitted.length}`}>
         <Table width="column" columns={columns('Opens', 'On the rule', 'Why first')} rows={admitted.map((c) => ({ ...c, id: c.key }))} />

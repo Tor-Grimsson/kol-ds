@@ -69,7 +69,7 @@ export function HighlightMatch({ label, query, ranges }) {
  * The ⌘K binding itself lives in the shell's key handler, not here.
  *
  * Keyboard: ArrowUp/ArrowDown rove the active row (mouse hover roves too),
- * Enter selects it (index starts at 0 → Enter-selects-first preserved),
+ * Enter opens it (the top row from the first keystroke), ⌘/Ctrl+Enter opens every hit,
  * Escape closes. Focus trap: focus moves into the input on open, returns to
  * the opener on close, and Tab is pinned — rows are combobox options driven
  * via aria-activedescendant, never tab stops.
@@ -168,13 +168,12 @@ export default function ShellSearchOverlay({
       /* ⌘ENTER OPENS EVERY HIT (user 2026-09-30: *"enter would focus searched item, and maybe
        * command enter would open the results page"*) — only where the consumer has a place for them. */
       if ((e.metaKey || e.ctrlKey) && onOpenResults && query) { onOpenResults(query); onClose?.(); return }
-      /* Enter COMMITS the query and expands. It only selects when the user has
-       * actually arrowed to a row — `activeIndex` starts at 0, so "a row is
-       * highlighted" is true from the first keystroke and testing `active >= 0`
-       * made Enter navigate to whatever happened to be first. Committing a
-       * query must never be a navigation you didn't choose. */
-      /* An empty query has nothing to commit — Enter goes to the top suggestion. */
-      if (active >= 0 && (navigated || !query)) select(results[active])
+      /* ENTER OPENS THE HIGHLIGHTED ROW (user 2026-10-01: *"I think enter should also take you to
+       * the atom but something like command enter take you to the index"* — reverses the
+       * 2026-08-01 "Enter commits, it only selects once you have arrowed"). The top row is drawn
+       * highlighted from the first keystroke, so Enter goes where the highlight says. With no
+       * rows there is nothing to open and Enter commits the query. */
+      if (active >= 0) select(results[active])
       else onExpand?.()
     } else if (e.key === 'Tab') {
       /* Focus trap — the input is the palette's only tab stop. */
@@ -283,17 +282,28 @@ export default function ShellSearchOverlay({
           </ul>
         )}
         {/* THE FOOTER SAYS WHAT ENTER DOES — always, not only once typing. */}
-        {!expanded && ((!query && results.length > 0) || (query && enterLabel)) && (
+        {!expanded && (results.length > 0 || (query && (enterLabel || onOpenResults))) && (
           <div className="border-t border-fg-08 py-2">
-            <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent">
-              <Kbd icon="corner-down-left" />
-              {query ? enterLabel : 'Go to page'}
-            </p>
+            {/* Enter's line names what Enter does NOW: a row is highlighted → it opens that row;
+              * no rows → it commits the query. */}
+            {(results.length > 0 || enterLabel) && (
+              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent">
+                <Kbd icon="corner-down-left" />
+                {results.length > 0 ? 'Go to page' : enterLabel}
+              </p>
+            )}
+            {/* THE RESULTS LINE IS A LINK (user 2026-10-01: *"make 'all results...' at the bottom
+              * also be a link to the results page"*) — the same door ⌘Enter opens. */}
             {query && onOpenResults && (
-              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent pt-1">
+              <button
+                type="button"
+                className="flex items-center gap-2 kol-helper-12 text-fg-48 hover:text-fg-default transition-colors mx-2 px-4 border-x border-transparent pt-1"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => { onOpenResults(query); onClose?.() }}
+              >
                 <Kbd icon="command"><Icon name="corner-down-left" size={12} /></Kbd>
                 {resultsLabel}
-              </p>
+              </button>
             )}
           </div>
         )}

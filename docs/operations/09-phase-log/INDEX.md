@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-10-01 | [[2026-10-01-review-round-two\|Review round two]] | the second review built — palette keys, results page, Lookup and Start, Modules, one component-page frame, the preview scan and 44 demos, the component audit | published · Round 6 waits on the user |
 | 2026-10-01 | [[2026-09-30-showcase-review\|Showcase review]] | the user's review built — the rail at any depth, a page per group, descriptions and tags, search, color, atoms, knobs, load more, apps | built · publish waits |
 | 2026-09-30 | [[2026-09-30-library-taxonomy\|Library taxonomy]] | the parents named and made the tabs — Composition, Collection, Search; homes and diagrams; Cards a set; single-package sets on the package page | built · review by eye |
 | 2026-09-30 | [[2026-09-30-showcase-fixes\|Showcase fixes]] | the review's corrections — rails, homes, search palette, Group by, Packages, Search views | published · review by eye |

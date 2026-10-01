@@ -2,7 +2,8 @@ import { useRef, useEffect, useState } from 'react'
 import { JackSocket } from '@kolkrabbi/kol-hardware'
 
 export const stage = 'md'
-const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, borderRadius: 4, background: 'var(--kol-ctl-hw-case)' }
+/* no panel behind it (2026-10-01 — user: "the component is not the component + its panel, that would be a module") */
+const ROW = { display: 'flex', alignItems: 'center', gap: 16 }
 
 /* Outputs and inputs, rest · connected · pending; the last one glows with a
  * live signal fed through `signalRef` (a sine, so the rim breathes). */
@@ -22,7 +23,7 @@ export default function JackSocketDemo({ size = 'md' }) {
     return () => cancelAnimationFrame(raf)
   }, [])
   return (
-    <div style={PLATE}>
+    <div style={ROW}>
       <JackSocket size={size} type="out" label="out" />
       <JackSocket size={size} type="out" label="out" active />
       <JackSocket size={size} type="out" label="out" pending />

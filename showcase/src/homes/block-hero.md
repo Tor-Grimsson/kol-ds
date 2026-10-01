@@ -13,4 +13,4 @@ tags:
 
 # Heroes
 
-The opening section of a page. Each block here is composed from the published packages and shown live, at every width.
+The opening section of a page. Each module here is composed from the published packages and shown live, at every width.

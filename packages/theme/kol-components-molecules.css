@@ -493,6 +493,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* the icon and the label were flush (2026-10-01) — `icon` renders beside the text with nothing between */
+  gap: 6px;
   border-radius: 4px;
   font-family: var(--kol-font-family-mono);
   font-weight: 470;

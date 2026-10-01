@@ -39,7 +39,8 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
 
   /* THE RAIL FOLLOWS YOU — INTO A CHILD ONLY (2026-09-30, reversing the 2026-09-28 "open the
    * group you are in" on its landing page too). Landing on a page INSIDE a chapter opens that
-   * chapter and folds the rest; a chapter's own home opens nothing. Every other chapter starts
+   * chapter and folds the rest; a chapter's own home keeps that chapter open (2026-10-01, see
+   * `chainTo`). Every other chapter starts
    * folded — including ones this rail has never seen (a Group-by switch hands it new ids, and an
    * unknown id used to read as open, so every chapter sprang open).
    *
@@ -63,6 +64,11 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
       const deeper = chainTo(r.children, [...trail, r])
       if (deeper) return deeper
       if (r.children.some(isHere)) return [...trail, r]
+      /* A GROUP'S OWN HOME KEEPS IT OPEN (user 2026-10-01: *"I dont want to collapse the list
+       * like that when I just want to go to atoms home and still see the atoms list"* — reverses
+       * the 2026-09-30 "a chapter's own home opens nothing"). The label is a link; only the
+       * chevron folds. */
+      if (r.path && getChildPath(r, basePath).replace(/\/$/, '') === normalizedPath) return [...trail, r]
     }
     return null
   }

@@ -23,4 +23,4 @@ Website cards: the **sections a marketing site is built from**, each shown live 
 | Features | image cards, FAQ |
 | Content cards | bento tiles, the article card and its variants |
 
-Cards is a **set**: a family grouped by purpose, one section of a page each, made from the `Section*` components and the content cards. It is not a block, which is a composition of shells and tools.
+Cards is a **set**: a family grouped by purpose, one section of a page each, made from the `Section*` components and the content cards. It is not a module, which is a composition of shells and tools.

@@ -16,7 +16,7 @@ const TREE = {
     { label: 'Library — everything you build with', to: '/library', row: true, children: [
       { label: 'Composition — by size', to: '/composition', children: [
         { label: 'Components', to: '/components' },
-        { label: 'Blocks', to: '/blocks' },
+        { label: 'Modules', to: '/modules' },
         { label: 'Apps', to: '/apps' },
       ] },
       { label: 'Collection — by belonging', to: '/collection', children: [
@@ -37,7 +37,7 @@ const SIZES = {
   label: 'An app — a tool, read through its layers',
   to: '/apps',
   children: [
-    { label: 'A block — shells and tools composed, at every width', to: '/blocks', children: [
+    { label: 'A module — shells and tools composed, at every width', to: '/modules', children: [
       { label: 'Components — one export with a face', to: '/components', row: true, children: [
         { label: 'Atom', to: '/components/tier/atoms' },
         { label: 'Molecule', to: '/components/tier/molecules' },

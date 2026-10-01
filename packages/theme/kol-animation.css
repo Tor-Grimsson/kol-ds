@@ -371,6 +371,23 @@
   .kol-rail-grab::before { transition: none; }
 }
 
+/* THE LINE VARIANT (2026-10-01, `useDragResize({ variant: 'line' })`) — no pill: the whole edge
+ * lights up under the pointer and while dragging, the way an editor's pane border does. A
+ * double-click toggles the rail; the cursor is the same `col-resize`. */
+.kol-rail-grab--line::before {
+  top: 0;
+  translate: -50% 0;
+  height: 100%;
+  border-radius: 0;
+  background: var(--kol-oq-48);
+  transition: opacity 120ms ease, background-color 120ms ease;
+}
+.kol-rail-grab--line:hover::before,
+.kol-rail-grab--line:focus-visible::before,
+.kol-rail-grab--line.is-dragging::before { opacity: 1; background: var(--kol-oq-96); transition-delay: 0ms; }
+/* near is not enough for a line — it lights on the edge itself, not 20px out */
+.kol-rail-grab--line.is-near:not(:hover):not(.is-dragging):not(:focus-visible)::before { opacity: 0; }
+
 /* A RIGHT-HAND RAIL's handle sits on its LEFT edge, facing the page (2026-09-30 — the modifier
  * EditorShell has stamped since 0.x, `kol-rail-grab--${side}`, had no rule, so a right rail's pill
  * sat on its outer edge; the workshop shell's right rail needs the same). */

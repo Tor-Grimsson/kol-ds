@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-workshop
 
+## 0.36.0 — 2026-10-01
+
+**Review round two** (plan-2026-10-01-showcase-review-round-2). Needs kol-component ≥ 0.235.0 and kol-theme ≥ 0.162.0.
+
+- **⚠ `SearchPage`** — rebuilt as a results page: one heading line with the count (only once there is a query), the box, ONE row of chips for the first facet, and scope · the other facets · read-as behind a `+` that opens by itself while one of them narrows the list. No eyebrow, no second count, no tab strip. New `resultsPath`: the box writes its query to that route. The box owns its text, so fast typing is never dropped.
+- **⚠ `ShellSidebar`** — a group's own home keeps the group open (it used to fold it).
+- **`ShellLayout`** — Back/Forward restores the scroll position of the entry you return to; `onOpenResults` is wired so ⌘Enter and the palette footer open `searchPath`; the rails take `pb-14` for the theme's fade.
+- **`DocumentationReader`** — the title leads the outline (`#page-top`), so a doc with no h2 no longer hands the rail an empty list.
+
 ## 0.35.0 — 2026-10-01
 
 **The showcase review** (plan-2026-09-30-showcase-review, W1–W21). Needs kol-component ≥ 0.234.0 and kol-theme ≥ 0.161.0; adds `gsap ^3.13.0` as a peer.

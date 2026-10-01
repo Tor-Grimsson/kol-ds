@@ -102,6 +102,7 @@
   "SwatchStack": "The overlapping fill + stroke paint chips.",
   "EyedropPick": "Sample a color from the screen.",
   "TabsRow": "Text tabs with an underline.",
+  "TabChips": "Tabs as a row of chips.",
   "Canvas": "The editor's aspect-ratio stage.",
   "PanViewport": "Space + drag pan wrapper.",
   "PanZoomViewport": "An infinite canvas to pan and zoom.",

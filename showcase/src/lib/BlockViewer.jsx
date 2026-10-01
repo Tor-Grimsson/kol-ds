@@ -53,7 +53,7 @@ function IconBtn({ icon, label, active, onClick, href }) {
   return <Button {...btn} onClick={onClick} aria-pressed={active} />
 }
 
-export default function BlockViewer({ entry, previewBase = '/blocks/preview', srcDir = 'blocks' }) {
+export default function BlockViewer({ entry, previewBase = '/modules/preview', srcDir = 'blocks' }) {
   const [device, setDevice] = useState('desktop')
   const [width, setWidth] = useState('100%')
   const [reloadKey, setReloadKey] = useState(0)

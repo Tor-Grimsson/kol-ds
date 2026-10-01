@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-component
 
+## 0.236.0 — 2026-10-01
+
+- **New: `TabChips`** — tabs as a row of chips: the active tab a filled chip, the rest quiet text (`tabs [{ id, label }]`, `value`, `onChange`, `ariaLabel`). The tab idiom for inside a toolbar, beside `TabsRow` (underline) and `SegmentedToggle` (joined). It was the showcase's local `DocTabs`, promoted as it was.
+
+## 0.235.0 — 2026-10-01
+
+**Review round two** (plan-2026-10-01-showcase-review-round-2). Needs kol-theme ≥ 0.162.0 for the table and badge rules.
+
+- **⚠ `ShellSearchOverlay`** — Enter opens the highlighted row from the first keystroke (it used to commit the query unless you had arrowed); ⌘/Ctrl+Enter still opens every hit, and the footer's results line is now a button that does the same. With no rows Enter commits as before.
+- **`Table` `lastRule`** — `simple` only: the rule under the last row. **Off by default** — ⚠ visual: a simple table no longer draws a line under its last row.
+- **`useDragResize` `variant: 'line'`** — the whole edge lights on hover and drag, a double-click toggles the rail and a click does nothing. `'pill'` (default) is unchanged.
+
 ## 0.234.0 — 2026-10-01
 
 - **Deprecated: `DropdownTagFilter`** → `SettingsMulti`, the many-of-N on the standard `Dropdown`. It drew its own pill with hardcoded radii (20/22/24) and one look; nothing renders it. On the retirement ledger.

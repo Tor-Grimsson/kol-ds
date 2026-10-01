@@ -19,16 +19,16 @@ export default function Blocks() {
       categories={cat ? [cat] : BLOCK_CATEGORIES}
       labels={CATEGORY_LABELS}
       featured={cat ? list.filter((x) => x.featured) : FEATURED_BLOCKS}
-      basePath="/blocks"
-      previewBase="/blocks/preview"
+      basePath="/modules"
+      previewBase="/modules/preview"
       srcDir="blocks"
       key={cat ?? 'all'}
       home={cat ? `block-${cat}` : 'blocks'}
       hero={{
-        eyebrow: `Blocks · ${BLOCKS.length}`,
-        title: 'Blocks',
+        eyebrow: `Modules · ${BLOCKS.length}`,
+        title: 'Modules',
         lede: 'Composed sections built from the published packages — bigger than a component, smaller than a page. Copy the source, keep the wiring.',
-        browseLabel: 'Browse all blocks',
+        browseLabel: 'Browse all modules',
       }}
     />
   )

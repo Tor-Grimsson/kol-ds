@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspense } from 'react'
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar, { RAIL_FOLD_EVENT } from './ShellSidebar.jsx'
 import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
@@ -99,7 +99,7 @@ const useRailGrab = (token, side, hide) => {
 }
 
 const NavColumn = ({ children, grip, railRef }) => (
-  <aside ref={railRef} aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside ref={railRef} aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-14">
     {children}
     {grip}
   </aside>
@@ -139,7 +139,7 @@ const MainColumn = ({ children, fullHeight, width = 'canvas', padStart, padEnd }
  * below). The breakpoint here and the one in gridCols are one decision and
  * must not be stated twice differently. */
 const TocColumn = ({ children, grip, railRef }) => (
-  <aside ref={railRef} aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-8">
+  <aside ref={railRef} aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-14">
     {grip}
     {/* The width is the grid track (--kol-shell-toc-w). An empty rail still
       * holds its column (user ruling 2026-08-01): a rail that disappears
@@ -231,10 +231,37 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
 
   /* a new page starts at the top of the one scroll region; a hash is the
    * browser's to resolve */
+  /* BACK RETURNS TO WHERE YOU WERE (2026-10-01 — user: "'back' loses the place vertically in the
+   * scroll … now I have to scroll and find my place"). Each history entry remembers its own
+   * scroll offset; Back/Forward (POP) restores it, a fresh navigation still starts at the top.
+   * The page may still be laying out when the entry returns (lazy walls, async demos), so the
+   * restore is retried for a moment until the region is tall enough to reach the offset. */
+  const navigationType = useNavigationType()
+  const scrollMemory = useRef(new Map())
   useEffect(() => {
-    if (location.hash) return
-    document.getElementById('shell-scroll')?.scrollTo(0, 0)
-  }, [location.pathname, location.hash])
+    const el = document.getElementById('shell-scroll')
+    if (!el) return undefined
+    const key = location.key
+    const save = () => scrollMemory.current.set(key, el.scrollTop)
+    el.addEventListener('scroll', save, { passive: true })
+    return () => el.removeEventListener('scroll', save)
+  }, [location.key])
+  useEffect(() => {
+    if (location.hash) return undefined
+    const el = document.getElementById('shell-scroll')
+    if (!el) return undefined
+    const saved = navigationType === 'POP' ? scrollMemory.current.get(location.key) : 0
+    if (!saved) { el.scrollTo(0, 0); return undefined }
+    let frame
+    let tries = 60
+    const restore = () => {
+      el.scrollTo(0, saved)
+      if (Math.abs(el.scrollTop - saved) > 1 && tries-- > 0) frame = requestAnimationFrame(restore)
+    }
+    restore()
+    return () => cancelAnimationFrame(frame)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, location.hash, location.key])
 
   /* THE shortcut map. One list, rendered by the `S` sheet AND bound by the
    * handler below — a shortcut that isn't in this array doesn't exist, so the
@@ -560,6 +587,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
              * it. Without a `searchPath` Enter keeps the older in-place browser. */
             onExpand={searchPath ? openResultsPage : () => tagMode.setExpanded?.(true)}
             enterLabel={searchPath ? `All results for “${searchQuery.trim()}”` : undefined}
+            /* ⌘ENTER AND THE FOOTER LINK open the results page (2026-10-01); plain Enter opens
+             * the highlighted row and only falls through to the page when nothing matched. */
+            onOpenResults={searchPath ? openResultsPage : undefined}
+            resultsLabel={`All results for “${searchQuery.trim()}”`}
             chips={tagMode.isProvided ? tagMode.activeTags : []}
             onRemoveChip={tagMode.removeTag}
             placeholder="Search…"

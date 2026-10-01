@@ -12,4 +12,4 @@ tags:
 
 # Media
 
-Sections built around images and video. Each block here is composed from the published packages and shown live, at every width.
+Sections built around images and video. Each module here is composed from the published packages and shown live, at every width.

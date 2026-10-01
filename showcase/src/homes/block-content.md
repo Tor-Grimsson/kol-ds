@@ -12,4 +12,4 @@ tags:
 
 # Content
 
-Sections that carry articles and listings. Each block here is composed from the published packages and shown live, at every width.
+Sections that carry articles and listings. Each module here is composed from the published packages and shown live, at every width.

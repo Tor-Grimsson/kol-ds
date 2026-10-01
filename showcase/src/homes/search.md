@@ -12,7 +12,7 @@ tags:
 
 # Search
 
-Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K palette and this page query the same index through the same engine. The palette is the quick jump; Enter in it opens this page with the full list.
+Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K palette and this page query the same index through the same engine. The palette is the quick jump; ⌘Enter in it opens this page with the full list.
 
 ## What you can type
 

@@ -11,11 +11,11 @@ export default function BlockPage() {
       items={BLOCKS}
       getItem={getBlock}
       labels={CATEGORY_LABELS}
-      eyebrow="KOL · Blocks"
-      basePath="/blocks"
-      previewBase="/blocks/preview"
+      eyebrow="KOL · Modules"
+      basePath="/modules"
+      previewBase="/modules/preview"
       srcDir="blocks"
-      allLabel="All blocks"
+      allLabel="All modules"
     />
   )
 }

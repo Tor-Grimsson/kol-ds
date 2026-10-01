@@ -17,6 +17,8 @@
  *       one allowed alias
  *   P3  the page behind the link renders — a heading, no page error, and after any redirect it is
  *       not a child's page either
+ *   P4  the page's right rail lists something under "On this page" (user, twice: *"it cant happen
+ *       something is always on this page"*) — an empty outline fails
  *
  * Components are checked in both Group-by modes. Starts the showcase on its own port, kills it.
  */
@@ -112,8 +114,14 @@ try {
     catch { try { await p.goto(BASE + href, { waitUntil: 'load', timeout: 45000 }) } catch (e) { errs.push(`did not load — ${e.message.split('\n')[0]}`) } }
     await p.waitForSelector('main h1', { timeout: 4000 }).catch(() => {})
     const h1 = await p.evaluate(() => document.querySelector('main h1')?.textContent?.trim() ?? '')
+    /* P4 — the outline (2026-10-01). `null` = this page draws no right rail, which is not a breach */
+    await p.waitForSelector('.shell-rail--toc a[href^="#"]', { state: 'attached', timeout: 2000 }).catch(() => {})
+    const outline = await p.evaluate(() => {
+      const toc = document.querySelector('.shell-rail--toc')
+      return toc ? toc.querySelectorAll('a[href^="#"]').length : null
+    })
     p.off('pageerror', onErr)
-    visited.set(href, { h1, landed: new URL(p.url()).pathname, errs })
+    visited.set(href, { h1, outline, landed: new URL(p.url()).pathname, errs })
   }
   const workers = await Promise.all(Array.from({ length: 8 }, () => ctx.newPage()))
   await Promise.all(workers.map(async (p, w) => {
@@ -122,8 +130,9 @@ try {
   pages = visited.size
   for (const [key, node] of found) {
     if (!node.href) continue
-    const { h1, landed, errs } = visited.get(node.href)
+    const { h1, outline, landed, errs } = visited.get(node.href)
     if (!h1) failures.push(`P3  ${key}: ${node.href} renders no heading`)
+    if (outline === 0) failures.push(`P4  ${key}: ${node.href} has nothing under "On this page"`)
     for (const e of errs) failures.push(`P3  ${key}: ${node.href} threw — ${e}`)
     const clash = node.children.find((c) => c.href && c.href === landed && landed !== node.href && !ALIAS.has(c.label))
     if (clash) failures.push(`P3  ${key}: ${node.href} redirects to its child "${clash.label}"`)

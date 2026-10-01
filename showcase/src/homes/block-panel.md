@@ -13,4 +13,4 @@ tags:
 
 # Panels
 
-Inspector and settings panels. Each block here is composed from the published packages and shown live, at every width.
+Inspector and settings panels. Each module here is composed from the published packages and shown live, at every width.

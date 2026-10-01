@@ -21,6 +21,26 @@ import { useFrontmatter } from './frontmatter.jsx'
  * header rather than under the main preview, because an MDX author places the
  * preview and the position can't be inferred.
  */
+/* ONE FRAME FOR EVERY COMPONENT PAGE (2026-10-01 — user: "how can 2 pages that use the same
+ * component to render the page have different spacing settings?"). They did not use the same
+ * one: an authored page rendered inside this article and its rhythm (gap-10 between the page's
+ * parts, gap-6 inside the body), the generated page rendered as loose siblings with DocSection's
+ * own rule + padding — so Action Button's lede sat on its preview and Button's did not. Both
+ * paths render through this now. The code block's own 1.5rem block margin is zeroed here: inside
+ * a gapped column it stacked on the gap, so "Usage → code" read twice as far as "API → table". */
+export function DocArticle({ frontmatter, header, pager, children }) {
+  return (
+    <article className="flex w-full min-w-0 flex-col gap-10">
+      {frontmatter}
+      {header}
+      <div className="flex w-full min-w-0 flex-col gap-6 [&_.kol-codeblock-wrapper]:my-0">
+        {children}
+      </div>
+      {pager}
+    </article>
+  )
+}
+
 export default function MdxDoc({ module: mod, component }) {
   const { default: Body, meta = {} } = mod
 
@@ -53,22 +73,19 @@ export default function MdxDoc({ module: mod, component }) {
   const showFrontmatter = useFrontmatter('page')
 
   return (
-    <article className="flex w-full min-w-0 flex-col gap-10">
-      {showFrontmatter && <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}), ...provenance }} />}
-      {(title || eyebrow) && (
-        <DocHeader eyebrow={eyebrow} title={title} lede={lede} />
-      )}
+    <DocArticle
+      frontmatter={showFrontmatter && <DocsFrontmatter metadata={{ ...fmMeta, ...(title ? { title } : {}), ...provenance }} />}
+      header={(title || eyebrow) && <DocHeader eyebrow={eyebrow} title={title} lede={lede} />}
+      pager={component && <Pager slug={component.slug} />}
+    >
       {/* NOT .kol-prose (2026-07-30, user-surfaced bug): the blog container's
         * 720px cap caged previews and tables too. Markdown elements are typed
         * per-tag by the mdx map through the kol-doc-* roles — running text
         * self-caps at --kol-content-measure, furniture runs the full column
         * (the one-frame law: width is content, not page identity). */}
       <MDXProvider components={mdxComponents}>
-        <div className="flex w-full min-w-0 flex-col gap-6">
-          <Body />
-        </div>
+        <Body />
       </MDXProvider>
-      {component && <Pager slug={component.slug} />}
-    </article>
+    </DocArticle>
   )
 }

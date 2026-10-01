@@ -3,7 +3,7 @@ title: Installing KOL
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-08-27
+updated: 2026-10-01
 description: What a consumer app must provide
 tags:
   - domain/architecture
@@ -14,7 +14,31 @@ related:
 
 # Installing KOL
 
-The four-point consumer contract — what a host app has to give KOL for it to render.
+The install lines, then the four-point consumer contract — what a host app has to give KOL for it to render.
+
+## Install
+
+The base every consumer takes: the theme, the icons and the components.
+
+```bash
+pnpm add @kolkrabbi/kol-theme @kolkrabbi/kol-icons @kolkrabbi/kol-component
+```
+
+```bash
+npm install @kolkrabbi/kol-theme @kolkrabbi/kol-icons @kolkrabbi/kol-component
+```
+
+```bash
+yarn add @kolkrabbi/kol-theme @kolkrabbi/kol-icons @kolkrabbi/kol-component
+```
+
+```bash
+bun add @kolkrabbi/kol-theme @kolkrabbi/kol-icons @kolkrabbi/kol-component
+```
+
+Every other package installs the same way by its own name — each package's page carries its line.
+
+## The contract
 
 Packages ship **raw source** (`.jsx`/`.css`, no build step) — the consumer must be **Vite + Tailwind v4 + React 18/19**. The four-point contract every consumer follows:
 

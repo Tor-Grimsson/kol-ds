@@ -17,16 +17,10 @@
  * @param {Array}    tabs     [{ key, label }]
  * @param {string}   value    active key (parent-owned)
  * @param {Function} onChange (key) => void
- * @param {string}   variant  'chip' (mono, filled active) | 'plain' (sans, ink-weight active)
+ * @param {string}   variant  'plain' (sans, ink-weight active) — the chip look left for kol-component's `TabChips` 2026-10-01
  * @param {string}   ariaLabel accessible name for the strip
  */
 const LOOK = {
-  chip: {
-    row: 'flex items-center gap-1',
-    cell: 'kol-mono-12 rounded-[var(--kol-radius-sm)] px-3 py-1 transition-colors [@media(pointer:coarse)]:min-h-8',
-    on: 'bg-fg-08 text-emphasis',
-    off: 'text-meta hover:text-emphasis',
-  },
   plain: {
     row: 'flex flex-wrap items-center gap-5 kol-sans-body-02',
     cell: 'transition-colors [@media(pointer:coarse)]:min-h-8',
@@ -35,8 +29,8 @@ const LOOK = {
   },
 }
 
-export default function DocTabs({ tabs = [], value, onChange, variant = 'chip', ariaLabel }) {
-  const look = LOOK[variant] ?? LOOK.chip
+export default function DocTabs({ tabs = [], value, onChange, variant = 'plain', ariaLabel }) {
+  const look = LOOK[variant] ?? LOOK.plain
   return (
     <div className={look.row} role="tablist" aria-label={ariaLabel}>
       {tabs.map((t) => {

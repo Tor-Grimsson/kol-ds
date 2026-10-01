@@ -14,7 +14,7 @@ tags:
 
 Everything a consumer takes from the design system. The same things are cut two ways, and each cut is a chapter of the Library tab.
 
-- **Composition** groups by **size**. Components make blocks, and blocks make apps.
+- **Composition** groups by **size**. Components make modules, and modules make apps.
 - **Collection** groups by **belonging**. A set is a family grouped by purpose, and a package is what `npm install` gives you.
 
 Styles sits beside the Library, since everything in it is painted with Styles. Docs, Search and Development sit beside it as reference: they are about the system, not part of it.
@@ -24,6 +24,6 @@ Styles sits beside the Library, since everything in it is painted with Styles. D
 | KOL | the design system |
 | Styles | what everything is painted with: tokens, color, type, icons |
 | Library | everything you build with |
-| Composition | grouped by size: Components → Blocks → Apps |
+| Composition | grouped by size: Components → Modules → Apps |
 | Collection | grouped by belonging: Sets · Packages |
 | Reference | about the system: Docs · Search · Development |

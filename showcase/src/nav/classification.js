@@ -173,7 +173,7 @@ export const FUNCTIONS_BY_NAME = {
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
   HlsVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
   CurveOverlay: 'input', RotaryDial: 'input',
-  TabsRow: 'navigation',
+  TabsRow: 'navigation', TabChips: 'navigation',
   MobileTabBar: 'navigation',
   ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
   ShellSearchOverlay: 'wayfinding', ShellDrawer: 'wayfinding',
@@ -409,13 +409,10 @@ export const NO_DEMO = (() => {
    * then fails on the stale exemption, so the list can't rot upward). */
   const debt = (names, why) => Object.fromEntries(names.map((n) => [n, `no demo yet (2026-08-15 seed) — ${why}`]))
   return {
-    ...debt(['SetupPanel', 'PiecePalette', 'GamePicker', 'MaterialSummary'],
+    ...debt([],
       'chess apparatus parts; the board demos cover the system, these never got their own'),
-    ...debt(['MediaLibrary', 'MediaLibraryProvider', 'PopoverPanel'],
+    ...debt(['MediaLibrary', 'MediaLibraryProvider'],
       'kol-component organisms/overlays predating the demo convention'),
-    ContextMenu: 'no demo yet (2026-09-21) — a right-click menu needs a surface to right-click on, '
-      + 'and a demo stage of one component has none that means anything. It is exercised in '
-      + 'apps/media on folder and file rows; a demo lands with the blocks page that has a list.',
     RowMenuButton: 'renders only on a coarse-pointer device, inside a row or tile that has a context '
       + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop demo (2026-09-23)',
     MediaLibraryExplorer: 'no demo yet (2026-09-21) — it is a variant dispatch over the two page '
@@ -423,7 +420,7 @@ export const NO_DEMO = (() => {
       + 'does, since a demo for either needs an injected client the showcase does not carry. The '
       + 'live surface is apps/media.',
     ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
-    ...debt(['EmblaNav'],
+    ...debt([],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
     ...debt(['FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
@@ -443,12 +440,11 @@ export const NO_DEMO = (() => {
       + 'its parts run against a decks client and a deck document; the live surface is apps/presentation '
       + 'on the fixture. Demos land with a showcase fixture client.'])),
     ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),
-    ...debt(['NavRail', 'PageShell', 'SettingsScaffold', 'TabStrip',
-      'WalkthroughPanel', 'ShortcutsOverlay'],
+    ...debt([],
       'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
-    ...debt(['RatioBar', 'Tower', 'QuadSplit', 'CardRow', 'StripeRow', 'AppliedCard'].slice(1),
+    ...debt([].slice(1),
       'styleguide combo slabs, ungated until the barrel parser was fixed 2026-08-15'),
-    ...debt(['ExhibitOverview', 'ExhibitPage', 'ExhibitSidebar', 'ExhibitLinkCard'],
+    ...debt([],
       'kol-workshop 0.22.0 exhibit system — ships unexercised (AGENT-CONTEXT ⚠️)'),
     /* editor-panels-the-held-specs A1 (2026-09-03): AddLayerButton is the `+`
      * in the layers panel's tab row and renders INSIDE the LayerStack demo,
@@ -493,17 +489,24 @@ export const NO_DEMO = (() => {
      * Swatch DO have demos — they carry no brand. ProfileAvatar left this list in W18 (2026-09-30:
      * every atom previews) — its demo wears the KOL mark, so it invents no brand either. */
     ...Object.fromEntries([
-      'PostPhoto', 'PostType', 'PostProduct', 'PostEditorial', 'StoryPhoto', 'StoryType',
-      'BusinessCardFront', 'BusinessCardBack', 'Envelope', 'Letterhead',
-      'LetterheadCorrespondence', 'EmailSignature',
-    ].map((n) => [n, 'brand-book mock — the styleguide set page renders the whole set off one authored brand object (2026-09-03 ruling)'])),
-    ...debt(['ShellLayout', 'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
-      'RightRail', 'TagModeGate',
-      'DocumentationReader', 'DocHeader', 'DocSection', 'DocTable', 'DocFigure'],
+      ].map((n) => [n, 'brand-book mock — the styleguide set page renders the whole set off one authored brand object (2026-09-03 ruling)'])),
+    ...debt(['ShellLayout', 'TagModeGate'],
       'workshop shell + doc chrome; /workshop-preview renders the system, not the pieces'),
-    ...debt(['SearchPage'], 'a whole page — it IS /search in the showcase and in apps/workshop'),
+    ...debt([], 'a whole page — it IS /search in the showcase and in apps/workshop'),
   }
 })()
+
+/* SHOWN INSIDE ANOTHER DEMO (2026-10-01). A component ruled to have no demo of its own because it
+ * only exists inside a host (NO_DEMO above says which, and why) still has a page — and that page
+ * used to show nothing. It shows the HOST's demo now, with a line saying where to look. */
+export const SHOWN_IN = {
+  AddLayerButton: 'LayerStack',
+  CanvasRuler: 'Canvas',
+  CanvasGuides: 'Canvas',
+  PanZoomViewport: 'Canvas',
+  CanvasZoomContext: 'Canvas',
+  EnvelopeModeToggle: 'EnvelopeGenerator',
+}
 
 /* R1 membership flags — the 2026-08-09 pass, ledger at
  * docs/documentation/03-components/02-placement.md § The pass. A flagged

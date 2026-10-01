@@ -1,6 +1,7 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { DocSection, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { useFrontmatter } from '../lib/frontmatter.jsx'
 
 /**
  * Open questions — visual calls the user picks by eye, in ROUNDS (user, 2026-09-30: *"put them in
@@ -23,9 +24,21 @@ const linkCls = 'kol-doc-body underline decoration-fg-16 underline-offset-4 hove
 
 export function OpenQuestionsRound() {
   const { round } = useParams()
+  const showFrontmatter = useFrontmatter('page')
   const r = ROUNDS.find((x) => x.slug === round)
   if (!r) return <Navigate to="/development/open-questions" replace />
-  return <r.Page />
+  /* EVERY ROUND CARRIES FRONTMATTER (2026-10-01 — user: "open questions dont have frontmatter, only
+   * open questions home has, not the actual entries"), from the `meta` the round already exports */
+  return (
+    <>
+      {showFrontmatter && (
+        <div className="mb-10">
+          <DocsFrontmatter metadata={{ title: `Round ${r.meta.round} — ${r.meta.title}`, type: 'decision', status: r.meta.status, created: r.meta.date, tags: ['domain/workflow', 'audience/agency-internal'] }} />
+        </div>
+      )}
+      <r.Page />
+    </>
+  )
 }
 
 export default function OpenQuestions() {

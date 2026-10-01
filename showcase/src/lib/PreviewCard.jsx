@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { CodeBlock, Dropdown, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { CodeBlock, Dropdown, SegmentedToggle, TabChips } from '@kolkrabbi/kol-component'
 import DemoStage from './DemoStage.jsx'
-import DocTabs from './DocTabs.jsx'
 
 /**
  * PreviewCard — THE Preview/Code card. One chrome, every surface.
@@ -43,6 +42,13 @@ const CAPS = {
 export const ToolbarDivider = () => (
   <span className="mx-1 h-4 w-px shrink-0 bg-oq-08" aria-hidden="true" />
 )
+
+/* THE SIZE KNOB READS UP THE RAMP (2026-10-01 — user: "why does sizing start at md? should it not
+ * be relative to size ramp from smallest to biggest?"). A demo lists its DEFAULT size first, which
+ * is what the preview opens on; the picker shows the ramp in order. Names off the ramp keep the
+ * demo's order. */
+const RAMP = ['xs', 'sm', 'md', 'lg', 'xl']
+const byRamp = (list) => (list.every((v) => RAMP.includes(v)) ? [...list].sort((a, b) => RAMP.indexOf(a) - RAMP.indexOf(b)) : list)
 
 /* One axis, one control: a SegmentedToggle while the options fit at a glance,
  * the Dropdown above four — long variant sets (Button's seven) were eating
@@ -114,7 +120,8 @@ export default function PreviewCard({
         * the chip's own block padding ate the whole gap, so the toolbar read
         * as a bug rather than a row. */}
       <div className="flex items-center gap-2 border-b border-oq-08 px-3 py-2.5">
-        <DocTabs tabs={tabs} value={tab} onChange={setTab} variant="chip" ariaLabel={tabsLabel} />
+        {/* THE DS tab chips (kol-component `TabChips`, 2026-10-01) — this was the local DocTabs */}
+        <TabChips tabs={tabs.map((t) => ({ id: t.key, label: t.label }))} value={tab} onChange={setTab} ariaLabel={tabsLabel} />
         {description && (
           <>
             <ToolbarDivider />
@@ -129,7 +136,7 @@ export default function PreviewCard({
             <AxisPicker options={tones} value={tone} onChange={setTone} label="Tone" />
           )}
           {sizes?.length > 1 && tab === 'preview' && (
-            <AxisPicker options={sizes} value={size} onChange={setSize} label="Size" />
+            <AxisPicker options={byRamp(sizes)} value={size} onChange={setSize} label="Size" />
           )}
           {states?.length > 1 && tab === 'preview' && (
             <AxisPicker options={states} value={state} onChange={setState} label="State" />
@@ -143,6 +150,11 @@ export default function PreviewCard({
       ) : renderBody ? (
         /* hidden, not unmounted — see renderBody above */
         <div className={tab === 'preview' ? 'block' : 'hidden'}>{renderBody()}</div>
+      ) : entry?.frame ? (
+        /* a page-sized demo runs in its own document (demos-registry `frame`) */
+        tab === 'preview' && (
+          <iframe title={`${entry.name} preview`} src={`/components/preview/${entry.name}`} className="block w-full border-0 bg-surface-primary" style={{ height: typeof entry.frame === 'number' ? entry.frame : 560 }} />
+        )
       ) : (
         tab === 'preview' && (
           <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>

@@ -6,7 +6,7 @@ import { SegmentedToggle, SettingsChoice, useScrollSpy } from '@kolkrabbi/kol-co
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
-import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
+import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, LOOKUP, LOOKUP_ROOT, START, START_ROOT, lastSearchQuery, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import { PHASE_LOG_ROUTE, VAULT, vaultDocHref } from '../nav/vault.js'
 import { BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS as BLOCK_LABELS } from './blocks-registry.js'
 import { CARDS } from './cards-registry.js'
@@ -59,22 +59,28 @@ function useHeadings() {
     const read = () => {
       /* SPECIMENS ARE NOT THE PAGE (2026-07-30): a heading inside a demo or a
        * type specimen is sample content, excluded at the source. */
-      const found = [...main.querySelectorAll('h2, h3')]
+      /* THE TITLE IS ON THIS PAGE TOO (2026-10-01 — user: "should on this page not also show the
+       * first part even if it is h1?" · "something is always on this page"). The h1 leads the
+       * outline, so a page with no h2 still lists itself. Titles carry no id, so the first one
+       * is given the page-top anchor. */
+      const found = [...main.querySelectorAll('h1, h2, h3')]
         .filter((h) => !h.closest('[data-toc-skip], .kol-doc-figure, .kol-demo-stage'))
         .map((h) => {
+          if (h.tagName === 'H1' && !h.id && !document.getElementById('page-top')) h.id = 'page-top'
           const id = h.id || h.closest('section[id]')?.id
           return id ? { id, label: h.textContent.trim(), sub: h.tagName === 'H3' } : null
         })
         /* one row per anchor — two headings resolving to one section id are one place (W18) */
         .filter((x, i, all) => x && all.findIndex((y) => y?.id === x.id) === i)
       setItems((prev) =>
-        prev.length === found.length && prev.every((p, i) => p.id === found[i].id) ? prev : found
+        /* labels too — a title that rewrites itself (the results count) kept its first text */
+        prev.length === found.length && prev.every((p, i) => p.id === found[i].id && p.label === found[i].label) ? prev : found
       )
     }
 
     read()
     const observer = new MutationObserver(read)
-    observer.observe(main, { childList: true, subtree: true })
+    observer.observe(main, { childList: true, subtree: true, characterData: true })
     return () => observer.disconnect()
   }, [pathname])
 
@@ -82,7 +88,7 @@ function useHeadings() {
 }
 
 const SEARCH_ITEMS = buildShellSearchItems()
-const searchHref = (q) => `/search?q=${encodeURIComponent(q)}`
+const searchHref = (q) => `/search/results?q=${encodeURIComponent(q)}`
 
 /* THE RIGHT RAIL, PER SPACE (showcase refinement 2026-09-28, user: "each space has its own
  * content and the purpose of the right sidebar is to list that pages content and context"). It
@@ -152,8 +158,8 @@ function SpaceRail({ space, onNavigate }) {
     const blocks = BLOCK_CATEGORIES.map((cat) => ({
       id: `blk-${cat}`,
       label: BLOCK_LABELS[cat] ?? labelFromSlug(cat),
-      path: `/blocks/category/${cat}`,
-      children: BLOCKS.filter((b) => b.category === cat).map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/blocks/${b.key}` })),
+      path: `/modules/category/${cat}`,
+      children: BLOCKS.filter((b) => b.category === cat).map((b) => ({ id: `block-${b.key}`, label: b.title, path: `/modules/${b.key}` })),
     }))
     /* the layers as chapters — each opens its layer home (2026-09-30) */
     const apps = LAYERS.map((l) => ({
@@ -192,16 +198,12 @@ function SpaceRail({ space, onNavigate }) {
     }))
     const composition = [
       anyComponentsAdmitted() && { id: 'lib-components', label: 'Components', path: '/components', children: cmpRoutes },
-      isSurfaceAdmitted('blocks') && { id: 'lib-blocks', label: 'Blocks', path: '/blocks', children: blocks },
+      isSurfaceAdmitted('blocks') && { id: 'lib-blocks', label: 'Modules', path: '/modules', children: blocks },
       isSurfaceAdmitted('apps') && { id: 'lib-apps', label: 'Apps', path: '/apps', children: apps },
     ].filter(Boolean)
     const collection = [
       isSurfaceAdmitted('sets') && { id: 'lib-sets', label: 'Sets', path: '/sets', children: sets },
       { id: 'lib-packages', label: 'Packages', path: '/packages', children: packages },
-    ].filter(Boolean)
-    const library = [
-      composition.length && { id: 'lib-composition', label: 'Composition', path: '/composition', children: composition },
-      { id: 'lib-collection', label: 'Collection', path: '/collection', children: collection },
     ].filter(Boolean)
     return (
       <div className="shell-rail-stack">
@@ -217,13 +219,21 @@ function SpaceRail({ space, onNavigate }) {
             />
           </div>
         )}
-        <ShellSidebar routes={library} basePath="/" label="Library" labelTo="/library" onNavigate={onNavigate} />
+        <ShellSidebar routes={rowsOf(START)} basePath="/" label="Start" labelTo={START_ROOT} onNavigate={onNavigate} />
+        {/* LOOKUP leads the rail (2026-10-01): the names and values you check while building */}
+        <ShellSidebar routes={rowsOf(LOOKUP)} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
+        {/* NO "LIBRARY" LEVEL (2026-10-01 — user: "why does library as a home have to list it self
+          * as the parent? … it should just show group-by, composition and Collection as top level
+          * (uppercase)"). The space is the header tab; its two chapters are the rail's eyebrows. */}
+        {composition.length > 0 && <ShellSidebar routes={composition} basePath="/" label="Composition" labelTo="/composition" onNavigate={onNavigate} />}
+        <ShellSidebar routes={collection} basePath="/" label="Collection" labelTo="/collection" onNavigate={onNavigate} />
       </div>
     )
   }
   /* SEARCH (2026-09-30): the four ways to find a page */
   if (space === 'search') {
-    return one('Search', SEARCH_VIEWS.map((v) => ({ id: `search-${v.value}`, label: v.label, path: v.path })), '/search')
+    /* the Results row returns to the query you left (2026-10-01), the eyebrow to the search home */
+    return one('Search', SEARCH_VIEWS.map((v) => ({ id: `search-${v.value}`, label: v.label, path: v.value === 'results' ? `${v.path}${lastSearchQuery()}` : v.path })), '/search')
   }
   /* DOCS IS THE VAULT (2026-09-30): Documentation and Operations, as `docs/` is on disk. The
    * guides and the live specimens left for Styles. */
@@ -293,7 +303,7 @@ export default function ShellChrome() {
       renderSidebar={({ activeRoute, onNavigate }) => <SpaceRail space={activeRoute?.id} onNavigate={onNavigate} />}
       defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
-      searchPath="/search"
+      searchPath="/search/results"
       shortcuts={[{ id: 'frontmatter', label: 'Frontmatter', combo: 'F', key: 'f', run: toggleFrontmatter }]}
       /* the second wordmark names the space you are in (user: "change the 'workshop' to say …
        * 'design system' when you land … then it could change with the site's navigation") */

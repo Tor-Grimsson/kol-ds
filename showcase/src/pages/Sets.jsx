@@ -24,7 +24,7 @@ export default function Sets() {
       hero={{
         eyebrow: `Sets · ${SETS.length}`,
         title: 'Sets',
-        lede: 'Whole compositions — a board, a dashboard — assembled from the published packages. Bigger than a block: copy the set, keep the wiring.',
+        lede: 'Whole compositions — a board, a dashboard — assembled from the published packages. Bigger than a module: copy the set, keep the wiring.',
         browseLabel: 'Browse all sets',
       }}
     />

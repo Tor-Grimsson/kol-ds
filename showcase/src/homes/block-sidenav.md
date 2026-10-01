@@ -12,4 +12,4 @@ tags:
 
 # Sidenav
 
-Side navigation, composed and breakpointed. Each block here is composed from the published packages and shown live, at every width.
+Side navigation, composed and breakpointed. Each module here is composed from the published packages and shown live, at every width.

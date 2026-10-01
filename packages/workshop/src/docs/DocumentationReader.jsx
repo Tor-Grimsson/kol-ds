@@ -331,7 +331,9 @@ const DocumentationReader = ({
     setTocContent(
       <DocReaderSidebar
         key={docId}
-        toc={toc}
+        /* THE TITLE LEADS THE OUTLINE (2026-10-01 — user: "something is always on this page"): a
+         * chapter index with no h2 used to hand the rail an empty list */
+        toc={docTitle ? [{ id: 'page-top', label: docTitle }, ...toc] : toc}
         allTags={allTags}
         topTags={topTags}
         related={related}
@@ -342,7 +344,7 @@ const DocumentationReader = ({
       />
     )
     return () => setTocContent(null)
-  }, [rail, setTocContent, docId, toc, allTags, topTags, related, docsIndex, components, docFilePath])
+  }, [rail, setTocContent, docId, docTitle, toc, allTags, topTags, related, docsIndex, components, docFilePath])
 
   if (!doc) {
     return (
@@ -365,7 +367,7 @@ const DocumentationReader = ({
     <DocsArticle>
         {showFrontmatter && <DocsFrontmatter metadata={doc.metadata} docId={docId} />}
         {docTitle && (
-          <h1 className="kol-doc-heading">{docTitle}</h1>
+          <h1 id="page-top" className="kol-doc-heading scroll-mt-20">{docTitle}</h1>
         )}
         {/* Render intro blocks (excluding H1 which is docTitle) */}
         {introBlocks.filter(b => b.type !== 'heading1').map((block, index) =>

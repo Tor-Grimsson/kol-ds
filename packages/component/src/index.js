@@ -128,6 +128,8 @@ export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
 export { default as TabsRow } from './molecules/TabsRow.jsx'
+/* TabChips — tabs as chips, for inside a toolbar (2026-10-01; was the showcase's local DocTabs) */
+export { default as TabChips } from './molecules/TabChips.jsx'
 
 // organisms
 /* monorepo sets (P6–P10) — organism members. Foundry members live in the

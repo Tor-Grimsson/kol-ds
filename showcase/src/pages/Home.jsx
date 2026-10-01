@@ -205,7 +205,7 @@ export default function Home() {
 
   const block = (key) => {
     const b = BLOCKS.find((x) => x.key === key)
-    return b ? { label: b.title, to: `/blocks/${key}`, node: stageNode(b.Component, b.stage) } : null
+    return b ? { label: b.title, to: `/modules/${key}`, node: stageNode(b.Component, b.stage) } : null
   }
   const demo = (name) => ({ label: labelFromSlug(name), to: `/components/${slugify(name)}`, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
   /* Analytics/infra tiles link to the dashboards component they render. */
@@ -415,8 +415,8 @@ export default function Home() {
           <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
             Browse components
           </Button>
-          <Button variant="primary" onClick={() => navigate('/blocks')}>
-            Blocks
+          <Button variant="primary" onClick={() => navigate('/modules')}>
+            Modules
           </Button>
           <Button variant="primary" onClick={() => navigate('/sets')}>
             Sets
@@ -445,9 +445,11 @@ export default function Home() {
           * fold? or just remove it?") — the hero's body already says it */}
         <GhostFlank side="left" />
         <GhostFlank side="right" />
+        {/* no x padding here (2026-10-01): the shell pads the page — the wall padding itself again
+          * was the landing's double inset. Pages never pad themselves on x. */}
         {/* Column count derives from the wall's OWN width (min card 20rem, cap 4)
           * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
-        <div ref={wallRef} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+        <div ref={wallRef} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]">
           {/* the stagger is a delay per tile, not a rule per tile — the
             * family's `--kol-reveal-delay` seam; 4 beats then repeat, so a
             * row arrives together and the next row follows */}
@@ -468,7 +470,7 @@ export default function Home() {
         {/* ONE COLUMN BLOCK PER BATCH: CSS columns fill top-down, so a batch poured into the wall above
           * reshuffled every tile on each click; a batch of its own lands under what is already read */}
         {Array.from({ length: extra / MORE_BATCH }, (_, b) => (
-          <div key={b} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+          <div key={b} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]">
             {more.slice(b * MORE_BATCH, (b + 1) * MORE_BATCH).map((t) => (
               <Tile key={t.to} label={t.label} to={t.to}>{t.node}</Tile>
             ))}

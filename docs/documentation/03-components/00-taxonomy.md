@@ -3,7 +3,7 @@ title: Component taxonomy
 type: reference
 status: canonical
 created: 2026-07-15
-updated: 2026-09-30
+updated: 2026-10-01
 verified: 2026-07-04
 description: The tier axis and the function axis
 aliases:
@@ -155,6 +155,27 @@ The rule: **if you'd only ever use it inside its parent, it's a member.** Groupi
 - **Prose from source (2026-07-15)**: the description on a component's page is its file's own JSDoc first sentence (`Name — sentence.` convention; `pnpm extract:descriptions`, regenerated every build). The `DESCRIPTIONS` map in `registry.js` is a fallback for components without a JSDoc header — fix the JSDoc, don't author the map.
 
 ---
+
+## Categories considered
+
+Thought about, not adopted (2026-10-01). Kept here so the question is not started from zero.
+
+**Things that paint or move but are not controls.** A background video (`HlsVideo` — no UI at all), a
+cursor (`AsciiCursor`), an ASCII animation. Ruled: **they stay in utilities**; no new category.
+`HlsVideo` is filed under atoms today and its name says how it streams, not what it is for — both
+still to change.
+
+**What exists, and what is not here.**
+
+| Kind | In the design system | Elsewhere |
+|---|---|---|
+| ASCII cursor | `AsciiCursor` (utilities) | the website carries its own copy |
+| ASCII animation | — | website: `AsciiClouds` |
+| Cursor trail / overlay | — | website: `CursorTrail`, `CursorOverlay`, `CursorContext` |
+| Editor cursors | the browser's own (`move`, `grab`, `grabbing`, the resize pairs), listed in [[../01-foundations/14-cursor-lookup\|Cursor lookup]] | — |
+
+**Collections of parts.** The rack, the mixer, the blog, the foundry — "the parts that make up a
+thing". Not a tier; closer to what a Set was first meant to be. Open.
 
 ## See also
 

@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { SearchPage, usePageMeta, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { useFrontmatter } from '../lib/frontmatter.jsx'
 import HomeDoc, { HOMES } from '../lib/HomeDoc.jsx'
-import { SHELL_ROUTES, SEARCH_VIEWS, buildShellSearchItems } from '../nav/shell-nav.js'
+import { SHELL_ROUTES, SEARCH_VIEWS, LAST_QUERY_KEY, lastSearchQuery, buildShellSearchItems } from '../nav/shell-nav.js'
 import { useGraph } from './References.jsx'
 
 /**
@@ -17,22 +17,43 @@ import { useGraph } from './References.jsx'
 export function SearchViews() {
   const { pathname, search } = useLocation()
   const navigate = useNavigate()
-  const active = SEARCH_VIEWS.find((v) => v.path === pathname)?.value ?? 'results'
+  /* on the search home no view is the current one */
+  const active = SEARCH_VIEWS.find((v) => v.path === pathname)?.value
+  /* THE QUERY SURVIVES THE ROUND TRIP (2026-10-01 — user: "from results to tag to graph to results
+   * it doesnt take you to results, but to search home … should it not show you the search keyword
+   * again?"). The other views carry no `?q=`, so Results remembers its own for this tab; clearing
+   * the query on Results forgets it. */
+  useEffect(() => {
+    if (pathname !== SEARCH_VIEWS[0].path) return
+    try { search ? sessionStorage.setItem(LAST_QUERY_KEY, search) : sessionStorage.removeItem(LAST_QUERY_KEY) } catch { /* private mode */ }
+  }, [pathname, search])
   return (
     <SegmentedToggle
       options={SEARCH_VIEWS.map(({ value, label }) => ({ value, label }))}
       value={active}
-      onChange={(v) => navigate(`${SEARCH_VIEWS.find((x) => x.value === v).path}${v === 'results' ? search : ''}`)}
+      onChange={(v) => navigate(`${SEARCH_VIEWS.find((x) => x.value === v).path}${v === 'results' ? lastSearchQuery() : ''}`)}
       size="sm"
     />
   )
 }
 
+const RESULTS_PATH = SEARCH_VIEWS.find((v) => v.value === 'results').path
+
+/* TWO PAGES, ONE COMPONENT (2026-10-01 — user: "results isnt even a page it just an alias to search …
+ * making that home also the results page wholesale might be a mistake"). `/search` is the space's
+ * home — the engine explained, and the box. `/search/results` is the results, nothing else. Both
+ * routes render this one element, so the box keeps its focus when the first keystroke moves you
+ * from the home to the results; an old `/search?q=` link lands on the results too. */
 export default function Search() {
-  /* the space's home (2026-09-30) — above the results until a query is typed */
-  const hasQuery = Boolean(new URLSearchParams(useLocation().search).get('q'))
+  const { pathname, search } = useLocation()
+  const navigate = useNavigate()
+  const hasQuery = Boolean(new URLSearchParams(search).get('q'))
+  const onResults = pathname === RESULTS_PATH
+  useEffect(() => {
+    if (!onResults && hasQuery) navigate(`${RESULTS_PATH}${search}`, { replace: true })
+  }, [onResults, hasQuery, search, navigate])
   /* one caller of usePageMeta per page — a parent's call runs after its child's and wins */
-  usePageMeta({ tags: hasQuery ? [] : HOMES.find((d) => d.id === 'search')?.metadata?.tags ?? [], related: [] })
+  usePageMeta({ tags: HOMES.find((d) => d.id === (onResults ? 'search-results' : 'search'))?.metadata?.tags ?? [], related: [] })
   const { nodes } = useGraph()
   const items = useMemo(() => [
     ...buildShellSearchItems(),
@@ -46,17 +67,16 @@ export default function Search() {
       href: `/references/${encodeURIComponent(n.name)}`,
     })),
   ], [nodes])
-  /* THE PAGE HAS ITS FRONTMATTER WITH OR WITHOUT A QUERY (W12, 2026-09-30 — user: "search page doesnt
-   * have frontmatter"). It rode the home, and the home steps aside once a query is typed. A page's
-   * rule, not a home's: shown, and `F` hides it. */
-  const showFm = useFrontmatter('page')
-  const fm = HOMES.find((d) => d.id === 'search')?.metadata
+  /* FRONTMATTER IS THERE, HIDDEN (2026-10-01 — user: "frontmatter can be hidden by default on this
+   * page (unhidden by the F), its not important to the results"). The home's rule, not a page's. */
+  const showFm = useFrontmatter('home')
+  const fm = HOMES.find((d) => d.id === (onResults ? 'search-results' : 'search'))?.metadata
   return (
     <div className="flex flex-col gap-6">
-      {showFm && fm && <DocsFrontmatter metadata={fm} docId="search" />}
-      {!hasQuery && <HomeDoc id="search" frontmatter={false} />}
+      {showFm && fm && <DocsFrontmatter metadata={fm} docId={onResults ? 'search-results' : 'search'} />}
+      {!onResults && <HomeDoc id="search" frontmatter={false} />}
       <SearchViews />
-      <SearchPage items={items} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
+      <SearchPage items={items} resultsPath={RESULTS_PATH} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
     </div>
   )
 }

@@ -11,18 +11,10 @@ export const stage = 'hug'
  * no press, no focus wash — for a close that should not light up.
  */
 export const sizes = ['sm', 'xs', 'md', 'lg']
+/* the two bases ride the toolbar (2026-10-01) — they were stacked with lowercase dev notes beside
+ * each (`states (Button)` · `no states (IconFrame)`) */
+export const states = ['states', 'no states']
 
-export default function Demo({ size = 'sm' }) {
-  return (
-    <div className="flex flex-col gap-6">
-      {[true, false].map((states) => (
-        <div key={String(states)} className="flex items-center gap-6">
-          <span className="kol-helper-10 text-meta w-28">
-            {states ? 'states (Button)' : 'no states (IconFrame)'}
-          </span>
-          <CloseButton size={size} states={states} onClick={() => {}} />
-        </div>
-      ))}
-    </div>
-  )
+export default function Demo({ size = 'sm', state = 'states' }) {
+  return <CloseButton size={size} states={state !== 'no states'} onClick={() => {}} />
 }
