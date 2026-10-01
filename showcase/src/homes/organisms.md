@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Self-contained regions of an interface
 tags:
   - domain/components
-  - audience/consumer
+  - domain/components/organisms
 ---
 
 # Organisms

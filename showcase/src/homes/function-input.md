@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Captures a value
 tags:
   - domain/components
-  - audience/consumer
+  - domain/forms
+  - pattern/input
 ---
 
 # Input

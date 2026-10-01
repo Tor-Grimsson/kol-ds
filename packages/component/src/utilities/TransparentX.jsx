@@ -1,5 +1,5 @@
 /**
- * TransparentX — diagonal stroke indicator for transparent / disabled / unused
+ * TransparentX — A slash marking an empty slot. diagonal stroke indicator for transparent / disabled / unused
  * slots. Universal "no value" affordance.
  *
  * Renders absolute-positioned to fill its parent. Parent must be `position:

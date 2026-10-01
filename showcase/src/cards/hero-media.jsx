@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Media hero',
-  description: 'Full-bleed cover media, a surface scrim, and the text in a glass panel',
+  description: 'Text in a glass panel over media',
   category: 'hero',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/media', 'domain/website', 'pattern/website-cards'],
   featured: true,
 }
 export const stage = 'full'

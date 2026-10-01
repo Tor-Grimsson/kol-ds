@@ -6,7 +6,7 @@ import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
- * Dropdown — trigger IS button chrome (2026-07-08 chrome law).
+ * Dropdown — Pick one value from a list. trigger IS button chrome (2026-07-08 chrome law).
  *
  * The trigger emits `kol-btn kol-btn-{variant} kol-btn-{size}` so it renders
  * pixel-identical to a Button of the same variant/size — fills, hover,

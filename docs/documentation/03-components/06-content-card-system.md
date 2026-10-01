@@ -4,14 +4,14 @@ type: reference
 status: draft
 created: 2026-08-15
 updated: 2026-09-03
-description: One card family; wrapper owns the switch
+description: One card family for every listing
 aliases:
   - content-card
   - card-system
   - card-family
 tags:
   - domain/components
-  - audience/consumer
+  - domain/cards
 sources:
   - packages/component/src/molecules/MediaCard.jsx
   - packages/component/src/molecules/MediaRow.jsx

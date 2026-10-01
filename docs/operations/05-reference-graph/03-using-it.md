@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-08-01
 updated: 2026-08-01
-description: The queries, the commands, the limits
+description: Querying the reference graph
 tags:
   - domain/reference-graph
   - audience/agency-internal

@@ -3,13 +3,13 @@ import { KindPreview, FullscreenOverlay, Button, AudioSheet, PlaybackBar, KIND_L
 
 export const meta = {
   title: 'Kind preview',
-  description: 'Every one of the 14 file kinds the media surfaces classify — each in the column preview and in the overlay — plus the QuickTime bar and both audio sheets',
+  description: 'Every file kind in preview',
   category: 'editor',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-08-27',
-  tags: ['domain/design-system', 'pattern/media'],
+  tags: ['domain/files', 'pattern/media'],
 }
 export const stage = 'full'
 

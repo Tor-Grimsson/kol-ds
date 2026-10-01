@@ -1,5 +1,5 @@
 /**
- * Kbd — a key cap: one key or chord (↵, ⌘K, Esc) shown as an affordance.
+ * Kbd — A key cap for a shortcut. a key cap: one key or chord (↵, ⌘K, Esc) shown as an affordance.
  * Replaces the two hand-rolled <kbd> chips (SearchInput's shortcut hint and
  * the palette footer) that had drifted apart (2026-09-30). A plate, so it
  * takes oq — never fg (icons-use-oq law).

@@ -6,7 +6,7 @@ import Dropdown from './Dropdown'
 import OptionRow from './OptionRow.jsx'
 
 /**
- * FieldRow — one labeled field row in a record surface (lobby: RecordManager).
+ * FieldRow — One labelled field in a record. one labeled field row in a record surface (lobby: RecordManager).
  * Label column left, control right; `type` picks the control:
  *
  *   text   → Input, with an optional hint line under it (the slug's derived URL)

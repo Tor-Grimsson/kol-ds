@@ -1,7 +1,7 @@
 import SortHeader from '../atoms/SortHeader.jsx'
 
 /**
- * SortControls — the sortable-header group (ContentFiltersCollection, kol-r2b2
+ * SortControls — A row of sortable headers. the sortable-header group (ContentFiltersCollection, kol-r2b2
  * 2026-08-27): `flex items-center gap-4` of SortHeaders. Click an inactive field
  * → it becomes the sort, ASCENDING; click the active field → the direction
  * flips. `onSort(field)` fires once per click — the consumer writes ONE state

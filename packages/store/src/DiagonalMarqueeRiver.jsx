@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { usePrefersReducedMotion } from '@kolkrabbi/kol-component'
 
 /**
- * DiagonalMarqueeRiver — an auto-scrolling multi-column marquee "river":
+ * DiagonalMarqueeRiver — Columns of items scrolling on a slant. an auto-scrolling multi-column marquee "river":
  * `items` are dealt round-robin into `colCount` vertical columns, each column
  * runs an infinite constant-velocity GSAP y-tween at its own speed, and the
  * whole block is rotated + scaled so the columns stream diagonally across a

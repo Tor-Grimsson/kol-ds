@@ -4,7 +4,7 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 import useCoarsePointer from '../hooks/useCoarsePointer.js'
 
 /**
- * TiltCard — self-contained image card with a spring-based 3D tilt that
+ * TiltCard — An image card that tilts toward the pointer. self-contained image card with a spring-based 3D tilt that
  * follows the pointer (via the shared useTilt hook). On coarse-pointer
  * devices or when the user prefers reduced motion it renders a plain,
  * tilt-free card — no springs, no listeners.

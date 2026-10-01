@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The first screen of a website page
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
+  - domain/website
 ---
 
 # Heroes

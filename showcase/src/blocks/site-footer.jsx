@@ -2,12 +2,12 @@ import { PortalFooter } from '@kolkrabbi/kol-framework'
 
 export const meta = {
   title: 'Site footer',
-  description: 'The rich portal footer with a brand block, link columns, socials and a legal note',
+  description: 'A footer with link columns',
   category: 'footer',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/app-shell', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -2,12 +2,12 @@ import { Button, SectionHero } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Text hero',
-  description: 'No media — the composed text on the surface',
+  description: 'A hero with text only',
   category: 'hero',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

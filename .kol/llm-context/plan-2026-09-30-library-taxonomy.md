@@ -69,4 +69,10 @@ KOL                                   the design system
 ## Open issues
 
 - ~~**Sets that equal one package**~~ — **ruled 2026-09-30 (user):** a set exists only when it is a purpose family worth showing apart from its package; a package's own family is its page. Built: `/sets/family/<dir>` → `/packages/<dir>`, the package page carries the family; `SetFamily.jsx` → `_tmp/2026-09-30-set-family/`.
+- **Points raised 2026-09-30 (evening, user), unfixed:**
+  1. EVERY category group gets its own page — said six times. Gaps: Styles › Foundations shares Tokens' `/foundations`; Collection › Packages tier groups have no path (land on first child); Docs › Documentation / Operations and Development › Tools / Records labels have no `labelTo`. Audit every rail, all spaces.
+  2. Library was promised reachable and is not — only prose links in `homes/composition.md` / `collection.md` and the palette. Ruling: **Library is the shared root; Composition and Collection sit inside it as subcategories.**
+  3. Sets in the Collection rail are wrong: Cards is a chapter (chevron, 18) while every other set is a bare row under it — mixed levels.
+  4. Library-as-root was what the user wanted solved BEFORE the taxonomy session — the plan shipped without it.
+  5. Points are logged as given; no plan is made until the user says so.
 - Right-rail tags question from `plan-2026-09-30-showcase-corrections` is still open.

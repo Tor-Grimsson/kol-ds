@@ -9,7 +9,7 @@ import { surfaceClass } from '../utilities/sectionSurface.js'
  * check can't see). */
 
 /**
- * ProfileCard — the digital namecard (ProfileCard, kol-website 2026-09-01;
+ * ProfileCard — A digital name card. the digital namecard (ProfileCard, kol-website 2026-09-01;
  * carried class-for-class from `apps/web/src/components/ui/ProfileCard.jsx`):
  * a square photo with a disclosure control inset on it, and a SHELF that opens
  * under it (vertical) or beside it (horizontal) — logo, name, mailto, a rack of

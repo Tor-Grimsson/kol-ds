@@ -7,7 +7,7 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
 /* taxonomy-ok: organism — nests PageShell / PageHeader / WalkthroughPanel (relative) + kol-component's ContentFilters + ContentCard / ContentRow */
 
 /**
- * CatalogPage — the app tier's Home / Library page, shipped once (ShellHomeSystem,
+ * CatalogPage — An app's home or library page. the app tier's Home / Library page, shipped once (ShellHomeSystem,
  * kol-fxr 2026-08-27 — fxr's HomePage / LibraryPage and monitor's HomePage were
  * the same page written three times): `PageHeader` → `ContentFilters` (title ·
  * filter · search, the view strip in the header, LIST / GRID below the divider)

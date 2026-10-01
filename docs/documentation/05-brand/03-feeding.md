@@ -4,10 +4,9 @@ type: reference
 status: active
 created: 2026-08-01
 updated: 2026-08-01
-description: Scrape, adapt, and the confidentiality rule
+description: How brand data is gathered and adapted
 tags:
   - domain/brand
-  - audience/consumer
   - brand/assets
 related:
   - "[[INDEX|brand kit]]"

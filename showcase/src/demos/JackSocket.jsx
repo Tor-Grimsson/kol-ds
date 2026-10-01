@@ -6,7 +6,9 @@ const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, bor
 
 /* Outputs and inputs, rest · connected · pending; the last one glows with a
  * live signal fed through `signalRef` (a sine, so the rim breathes). */
-export default function JackSocketDemo() {
+export const sizes = ['md', 'sm']
+
+export default function JackSocketDemo({ size = 'md' }) {
   const sig = useRef({ type: 'scalar', value: 0 })
   /* `ringRef` hands the RING to a consumer's hit-test registry — here it just
    * reports the ring's size so the seam is visibly wired */
@@ -21,13 +23,13 @@ export default function JackSocketDemo() {
   }, [])
   return (
     <div style={PLATE}>
-      <JackSocket type="out" label="out" />
-      <JackSocket type="out" label="out" active />
-      <JackSocket type="out" label="out" pending />
-      <JackSocket type="in" label="in" color="#4ade80" />
-      <JackSocket type="in" label="in" color="#4ade80" dimPending />
-      <JackSocket type="in" label="cv" color="#497DA2" active />
-      <JackSocket type="out" label="sig" active signalRef={sig} ringRef={ring} />
+      <JackSocket size={size} type="out" label="out" />
+      <JackSocket size={size} type="out" label="out" active />
+      <JackSocket size={size} type="out" label="out" pending />
+      <JackSocket size={size} type="in" label="in" color="#4ade80" />
+      <JackSocket size={size} type="in" label="in" color="#4ade80" dimPending />
+      <JackSocket size={size} type="in" label="cv" color="#497DA2" active />
+      <JackSocket size={size} type="out" label="sig" active signalRef={sig} ringRef={ring} />
       <span className="kol-helper-8 text-fg-32" data-ring-px={ringPx}>{ringPx ? `ring ${ringPx}px` : ''}</span>
     </div>
   )

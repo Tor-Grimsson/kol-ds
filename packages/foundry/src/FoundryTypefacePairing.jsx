@@ -10,7 +10,7 @@ const DEFAULT_PAIRINGS = [
 ]
 
 /**
- * FoundryTypefacePairing — the Font Pairings section of a specimen page: the
+ * FoundryTypefacePairing — Typefaces that pair well. the Font Pairings section of a specimen page: the
  * specimen header over a list of PairingCards (kol-website's section, moved in
  * 2026-08-27 — FoundrySpecimenSections).
  *

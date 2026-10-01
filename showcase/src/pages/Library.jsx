@@ -1,4 +1,5 @@
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { DocSection } from '@kolkrabbi/kol-workshop'
 import CompositionDiagram from '../lib/CompositionDiagram.jsx'
 
 /**
@@ -66,7 +67,7 @@ export default function Library() {
   return (
     <>
       <HomeDoc id="library" />
-      <CompositionDiagram className="mt-8" node={TREE} />
+      <DocSection id="tree" title="The tree"><CompositionDiagram node={TREE} /></DocSection>
     </>
   )
 }
@@ -75,7 +76,7 @@ export function Composition() {
   return (
     <>
       <HomeDoc id="composition" />
-      <CompositionDiagram className="mt-8" node={SIZES} />
+      <DocSection id="by-size" title="By size"><CompositionDiagram node={SIZES} /></DocSection>
     </>
   )
 }
@@ -84,7 +85,7 @@ export function Collection() {
   return (
     <>
       <HomeDoc id="collection" />
-      <CompositionDiagram className="mt-8" node={BELONGING} />
+      <DocSection id="by-belonging" title="By belonging"><CompositionDiagram node={BELONGING} /></DocSection>
     </>
   )
 }

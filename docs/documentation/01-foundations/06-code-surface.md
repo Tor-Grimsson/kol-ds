@@ -15,7 +15,7 @@ sources:
   - packages/theme/kol-components-organisms.css
 tags:
   - domain/typography
-  - audience/consumer
+  - domain/code
 related:
   - "[[03-typography|type classes]]"
   - "[[05-layout-systems|layout systems registry]]"

@@ -14,7 +14,7 @@ sources:
   - showcase/src/lib/tokens.js
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/color
 related:
   - "[[02-color|color]]"
   - "[[03-typography|typography]]"
@@ -24,7 +24,7 @@ related:
 
 # Foundations — the token system
 
-KOL's foundation is **translucent ink over surfaces**, not flat fg/bg pairs. Everything below renders live on the showcase's `/foundations` page — that page reads the installed theme at runtime and is always the truth; this doc is the portable summary.
+KOL's foundation is **translucent ink over surfaces**, not flat fg/bg pairs. Everything below renders live on the showcase's `/foundations/tokens` page — that page reads the installed theme at runtime and is always the truth; this doc is the portable summary.
 
 ## Ink ladders
 

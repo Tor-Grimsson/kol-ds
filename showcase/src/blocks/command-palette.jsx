@@ -3,12 +3,12 @@ import { Button, ShellSearchOverlay } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Command palette',
-  description: 'A ⌘K command palette opened from a button, with grouped fixture results',
+  description: 'A ⌘K palette opened from a button',
   category: 'toolbar',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/search', 'pattern/blocks'],
 }
 export const stage = 'md'
 

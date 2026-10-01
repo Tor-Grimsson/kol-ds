@@ -4,7 +4,7 @@ import { resolveCssVar, resolveCssColor, isLight } from '../hooks/cssVar.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
- * SpectrumGrid — matrix view of the whole ramp system: rows = ramps, columns =
+ * SpectrumGrid — Every ramp by every stop. matrix view of the whole ramp system: rows = ramps, columns =
  * stops (50 → 900). Each cell is a ColorSwatch tile with the stop number and
  * hex printed over it (text color contrast-corrected via isLight), so the whole
  * palette is scannable in one grid.

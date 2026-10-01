@@ -1,5 +1,5 @@
 /**
- * OverlayGlassPanel — the KOL frosted-glass content card that floats over
+ * OverlayGlassPanel — A frosted panel over media. the KOL frosted-glass content card that floats over
  * hero/carousel media: translucent surface-primary (color-mix) + a 1px
  * backdrop blur, children stacked vertically. Extracted from 4 identical
  * inline copies in the monorepo (StudioHero, StudioAboutCard,

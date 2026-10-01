@@ -7,7 +7,7 @@ import { useChessControls } from '../context/ChessControlsContext'
 const PALETTE_PIECES = ['pawn', 'rook', 'knight', 'bishop', 'queen', 'king']
 
 /**
- * PiecePalette — the edit-mode placement palette: one row per color, six
+ * PiecePalette — Pieces to place in edit mode. the edit-mode placement palette: one row per color, six
  * piece types each. Selection lives in context (editPlacement) — the BOARD
  * consumes it via placePiece; clicking the selected piece again deselects.
  * Padding-free — composer owns chrome via `className`.

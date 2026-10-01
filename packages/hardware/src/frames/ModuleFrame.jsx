@@ -1,7 +1,7 @@
 import ModuleHeader from '../panel/ModuleHeader.jsx'
 
 /**
- * ModuleFrame — the front panel a module is built in: the header pinned at the top, the body
+ * ModuleFrame — The front panel of a module. the front panel a module is built in: the header pinned at the top, the body
  * below it (frames group, 2026-09-27). Lifted from kol-monitor's `modules/utility/Module.jsx`,
  * where every rack module sits in it; kol-mirror's modules and the controls reference compose
  * the same shape. Presentational — the rack's edit context, power and routing stay in the

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 /**
- * XYPad — a two-axis control pad: drag one puck to vary two values at once.
+ * XYPad — Drag one puck to set two values. a two-axis control pad: drag one puck to vary two values at once.
  *
  * Lifted verbatim from kol-fxr's editor (`compose/inspectors/XYPad.jsx`,
  * `editor-panels-the-held-specs` A6, 2026-09-03 — the row the filer marked

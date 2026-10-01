@@ -16,7 +16,7 @@ sources:
   - packages/component/src/organisms/LayerStack.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[13-controls-system|controls system]]"

@@ -13,7 +13,7 @@ sources:
   - docs/documentation/01-foundations/04-layout-breakpoints.md
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/breakpoints
 related:
   - "[[INDEX|breakpoints]]"
   - "[[01-values|breakpoint values]]"

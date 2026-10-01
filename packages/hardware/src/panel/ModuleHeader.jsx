@@ -1,7 +1,7 @@
 import Toggle from '../switches/Toggle.jsx'
 
 /**
- * ModuleHeader — the enable dot + module name, left-aligned (kol-monitor's rack,
+ * ModuleHeader — A module's name and power dot. the enable dot + module name, left-aligned (kol-monitor's rack,
  * lifted 2026-09-01). In edit mode the yellow dot removes the module; otherwise
  * an optional bypass dot. The consumer's case-power context became `powered`:
  * when the case is off the dot shows off whatever `enabled` says.

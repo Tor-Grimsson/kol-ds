@@ -7,7 +7,7 @@ updated: 2026-08-14
 description: Live HTML reference pages for shipped components
 tags:
   - domain/components
-  - audience/consumer
+  - domain/showcase
 related:
   - "[[../documentation/INDEX|KOL documentation]]"
 ---

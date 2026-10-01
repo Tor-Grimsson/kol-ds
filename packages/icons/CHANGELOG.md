@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.32.0 — 2026-10-01
+
+- **Renamed:** `kol-icon-set-v1` is `kol-icon-set-interface` (user: "icons v1 is a terrible icon set name"). `KOL_ICON_SET_INTERFACE`, `KOL_ICON_SET_INTERFACE_NAMES` and `KOL_ICON_SET_INTERFACE_META` replace the V1 exports, which stay as deprecated aliases on the retirement ledger. Icon names are unchanged, so `<Icon name="…">` needs nothing. `getSet(name)` returns `'interface'` where it returned `'v1'`.
+
 ## 0.31.0 — 2026-09-30
 
 - **New:** `corner-down-left` (arrow) and `command` (code) — the key-cap glyphs the palette footer and the ⌘K hint typed as characters. 1.5 stroke, 24 grid.

@@ -1,5 +1,5 @@
 /**
- * PanelLabel — wraps any control with the panel's text label (kol-monitor's
+ * PanelLabel — A control with its panel label. wraps any control with the panel's text label (kol-monitor's
  * rack `LabeledControl`, lifted 2026-09-01; named `PanelLabel` because
  * `LabeledControl` is kol-component's settings-row control). Matches Knob /
  * Toggle: `kol-helper-8`, `text-fg-32`, uppercase.

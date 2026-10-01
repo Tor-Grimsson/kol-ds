@@ -6,8 +6,10 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The frame around the work
 tags:
-  - domain/compositions
   - audience/agency-internal
+  - domain/app-shell
+  - domain/compositions
+  - domain/editor
 ---
 
 # Shell

@@ -7,7 +7,7 @@ import { BRAND_VIEWS, brandToc, scrollToAnchor } from './brandBook.js'
 /* taxonomy-ok: organism — the brand tool: BrandBook ⇄ BrandAssets under a view switch, with the page's section rail */
 
 /**
- * Brand — the whole brand tool: the brand book's two pages over one manifest, BRAND (the identity)
+ * Brand — The whole brand tool. the whole brand tool: the brand book's two pages over one manifest, BRAND (the identity)
  * and ASSETS (what you download or reproduce), a switch between them, and the page's sections on a
  * rail. ONE component so every app that carries a brand renders the same tool (apps/brand alone,
  * media-hub's Brand tab) — kol-notes' `Notes` shape.

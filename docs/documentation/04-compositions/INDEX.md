@@ -7,7 +7,7 @@ updated: 2026-08-01
 description: The layers built above components
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 related:
   - "[[../INDEX|KOL documentation]]"
 ---

@@ -3,7 +3,7 @@ title: Phase log
 type: index
 status: active
 created: 2026-09-30
-updated: 2026-09-30
+updated: 2026-10-01
 description: Every run of work, newest first
 tags:
   - domain/workflow
@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-10-01 | [[2026-09-30-showcase-review\|Showcase review]] | the user's review built — the rail at any depth, a page per group, descriptions and tags, search, color, atoms, knobs, load more, apps | built · publish waits |
 | 2026-09-30 | [[2026-09-30-library-taxonomy\|Library taxonomy]] | the parents named and made the tabs — Composition, Collection, Search; homes and diagrams; Cards a set; single-package sets on the package page | built · review by eye |
 | 2026-09-30 | [[2026-09-30-showcase-fixes\|Showcase fixes]] | the review's corrections — rails, homes, search palette, Group by, Packages, Search views | published · review by eye |
 | 2026-09-30 | [[2026-09-30-showcase-build\|Showcase build]] | the audit built — categories, homes, rails, cards, editor, touch | published · review the agent's decisions |

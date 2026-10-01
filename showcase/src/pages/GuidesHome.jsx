@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { DocSection } from '@kolkrabbi/kol-workshop'
 import { DOCS_GUIDES } from '../nav/shell-nav.js'
 
 /** Guides — the Styles chapter's home (2026-09-30): its markdown, then every guide. */
@@ -7,6 +8,7 @@ export default function GuidesHome() {
   return (
     <div className="flex flex-col gap-10 pb-24">
       <HomeDoc id="guides" />
+      <DocSection id="guides" title="Guides">
       <ul className="flex flex-col gap-2">
         {DOCS_GUIDES.map((g) => (
           <li key={g.id} className="kol-doc-body">
@@ -15,6 +17,7 @@ export default function GuidesHome() {
           </li>
         ))}
       </ul>
+      </DocSection>
     </div>
   )
 }

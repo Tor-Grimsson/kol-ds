@@ -4,7 +4,7 @@ import PageShell from './PageShell.jsx'
 import { PageHeader } from '@kolkrabbi/kol-component'
 
 /**
- * SettingsScaffold — the settings-page idiom both shells re-implemented inline:
+ * SettingsScaffold — The settings page scaffold. the settings-page idiom both shells re-implemented inline:
  * fixed PageShell, a PageHeader masthead, one header row, then a scrolling body.
  * Content is consumer-authored via `renderContent` — sections/rows are content,
  * not markup.

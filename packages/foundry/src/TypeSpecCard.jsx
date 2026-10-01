@@ -1,5 +1,5 @@
 /**
- * TypeSpecCard — a two-column type-spec row: a left meta panel of key/value
+ * TypeSpecCard — Font metrics beside a live sample. a two-column type-spec row: a left meta panel of key/value
  * pairs (font metrics) beside a live sample slot on the right, with an
  * optional corner label. The "data-sheet" member of the type-specimen kit —
  * pairs the numeric spec of a type style with a rendered example of it

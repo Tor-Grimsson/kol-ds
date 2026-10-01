@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Full-bleed split',
-  description: 'The media covers its half edge to edge, the text centred beside it',
+  description: 'Media filling its half beside the text',
   category: 'split',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/layout', 'domain/media', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

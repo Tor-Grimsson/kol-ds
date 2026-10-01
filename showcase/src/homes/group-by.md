@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: The two ways Components are ordered
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 ---
 
 # Group by

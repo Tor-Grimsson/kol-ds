@@ -7,12 +7,12 @@ updated: 2026-09-30
 description: Everything you build with, cut two ways
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/taxonomy
 ---
 
 # Library
 
-Everything a consumer takes from the design system. The same things are cut two ways, and each cut is a tab in the header.
+Everything a consumer takes from the design system. The same things are cut two ways, and each cut is a chapter of the Library tab.
 
 - **Composition** groups by **size**. Components make blocks, and blocks make apps.
 - **Collection** groups by **belonging**. A set is a family grouped by purpose, and a package is what `npm install` gives you.

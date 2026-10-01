@@ -18,7 +18,8 @@ sources:
   - showcase/src/sets/metrics-dashboard.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/dashboards
+  - domain/layout
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[08-chess-system|chess system]]"

@@ -12,7 +12,7 @@ sources:
   - packages/theme/kol-typography.css
 tags:
   - domain/typography
-  - audience/consumer
+  - domain/tokens
 related:
   - "[[04-layout-breakpoints|layout & breakpoints]]"
   - "[[../03-components/02-placement|component placement]]"

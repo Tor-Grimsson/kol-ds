@@ -1,5 +1,5 @@
 /**
- * AudioPlayer — the interactive audio atom: one native <audio> with the UA's
+ * AudioPlayer — A native audio player with a label. the interactive audio atom: one native <audio> with the UA's
  * own control strip, and an optional label line above it.
  *
  * WHY IT EXISTS. Audio was the one media kind the design system had nothing for,

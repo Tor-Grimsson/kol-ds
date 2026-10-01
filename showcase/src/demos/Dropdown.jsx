@@ -12,11 +12,12 @@ const OPTIONS = [
  * three variants used to stack side by side, one of them open). */
 export const variants = ['primary', 'grey', 'outline']
 /* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
+export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
-export default function DropdownDemo({ variant = 'primary', size = 'sm' }) {
+export default function DropdownDemo({ variant = 'primary', tone = 'default', size = 'sm' }) {
   const [value, setValue] = useState('newest')
-  return <Dropdown value={value} onChange={setValue} variant={variant} size={size} options={OPTIONS} />
+  return <Dropdown value={value} onChange={setValue} variant={variant} tone={tone} size={size} options={OPTIONS} />
 }
 
 /* Index card: one canonical instance, closed. */

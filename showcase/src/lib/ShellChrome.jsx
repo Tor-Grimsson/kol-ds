@@ -1,24 +1,35 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ShellLayout, ShellSidebar, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
-import { buildTagCounts } from '@kolkrabbi/kol-markdown'
+import { buildTagCounts, cleanTitle } from '@kolkrabbi/kol-markdown'
 import { SegmentedToggle, SettingsChoice, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
 import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
-import { PHASE_LOG_ROUTE } from '../nav/vault.js'
+import { PHASE_LOG_ROUTE, VAULT, vaultDocHref } from '../nav/vault.js'
 import { BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS as BLOCK_LABELS } from './blocks-registry.js'
 import { CARDS } from './cards-registry.js'
 import { SETS } from './sets-registry.js'
 import { isSurfaceAdmitted, anyComponentsAdmitted } from '../nav/admitted.js'
 import { labelFromSlug } from '../nav/labels.js'
-import { ICON_SETS } from '../pages/IconsGallery.jsx'
+import { COMPONENTS_AZ } from '../nav/registry.js'
+import { ICON_SETS, iconGroups } from '../pages/IconsGallery.jsx'
 import { LOBBY_CHAPTERS, LOBBY_INDEX } from '../pages/Lobby.jsx'
-import { PACKAGES, TIER_ORDER, packageHref } from '../pages/Packages.jsx'
+import { PACKAGES, TIER_ORDER, packageHref, tierHref, tierLabel } from '../pages/Packages.jsx'
 import { APPS, LAYERS } from '../pages/Apps.jsx'
 import { ROUNDS, roundHref } from '../pages/OpenQuestions.jsx'
 import useEmbed from './useEmbed.js'
+
+/* a set member's page, by export name */
+const COMPONENT_BY_NAME = new Map(COMPONENTS_AZ.map((c) => [c.name, c]))
+
+/* a vault category's own page is its INDEX.md — excluded from the tree as a row (2026-08-01), so it
+ * is the eyebrow's door instead */
+const categoryHref = (cat) => {
+  const doc = VAULT.find((d) => new RegExp(`docs/${cat}/INDEX\\.md$`, 'i').test(d.file))
+  return doc ? vaultDocHref(doc.id) : undefined
+}
 
 /**
  * ShellChrome — the showcase's chrome, mounted ONCE as a route-level layout.
@@ -54,7 +65,8 @@ function useHeadings() {
           const id = h.id || h.closest('section[id]')?.id
           return id ? { id, label: h.textContent.trim(), sub: h.tagName === 'H3' } : null
         })
-        .filter(Boolean)
+        /* one row per anchor — two headings resolving to one section id are one place (W18) */
+        .filter((x, i, all) => x && all.findIndex((y) => y?.id === x.id) === i)
       setItems((prev) =>
         prev.length === found.length && prev.every((p, i) => p.id === found[i].id) ? prev : found
       )
@@ -107,6 +119,7 @@ function SpaceToc({ space }) {
       tags={meta?.tags ?? []}
       renderTag={(tag) => <TagPath tag={tag} />}
       onTagClick={(tag) => navigate(searchHref(`#${tag}`))}
+      tagsHref="/search/tags"
       icon={Icon}
     />
   )
@@ -130,9 +143,12 @@ function SpaceRail({ space, onNavigate }) {
     </div>
   )
 
-  /* COMPOSITION (2026-09-30, the library taxonomy): grouped by size — Components → Blocks → Apps,
-   * each a rail category of its own, each made of the one before. */
-  if (space === 'composition') {
+  /* LIBRARY (2026-09-30, the showcase review W2 — user: "make library be the shared root, with
+   * composition and collections inside as subcategories"). ONE tree under the Library eyebrow:
+   * Composition by size (Components → Blocks → Apps, each made of the one before) and Collection by
+   * belonging (Sets by purpose, Packages by shipping). The rail nests to any depth since W1, so
+   * every level is a fold with its own page: Library › Composition › Components › Atoms › Button. */
+  if (space === 'library') {
     const blocks = BLOCK_CATEGORIES.map((cat) => ({
       id: `blk-${cat}`,
       label: BLOCK_LABELS[cat] ?? labelFromSlug(cat),
@@ -146,31 +162,7 @@ function SpaceRail({ space, onNavigate }) {
       path: `/apps/layer/${l.id}`,
       children: APPS.filter((a) => a.layer === l.id).map((a) => ({ id: `app-${a.name}`, label: a.name, path: `/app/${a.name}` })),
     }))
-    return (
-      <div className="shell-rail-stack">
-        {anyComponentsAdmitted() && (
-          <>
-            <div>
-              {/* the category opens its page (2026-09-30) */}
-              <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
-              <SegmentedToggle
-                options={GROUP_OPTIONS}
-                value={mode}
-                onChange={setMode}
-                size="sm"
-              />
-            </div>
-            <ShellSidebar routes={cmpRoutes} basePath="/" label="Components" labelTo="/components" onNavigate={onNavigate} />
-          </>
-        )}
-        {isSurfaceAdmitted('blocks') && <ShellSidebar routes={blocks} basePath="/" label="Blocks" labelTo="/blocks" onNavigate={onNavigate} />}
-        {isSurfaceAdmitted('apps') && <ShellSidebar routes={apps} basePath="/" label="Apps" labelTo="/apps" onNavigate={onNavigate} />}
-      </div>
-    )
-  }
-  /* COLLECTION (2026-09-30): grouped by belonging — Sets by purpose (Cards is one), Packages by
-   * shipping. A set that was one package's family is that package's page now. */
-  if (space === 'collection') {
+    /* Cards is a set (2026-09-30); a set that was one package's family is that package's page */
     const sets = [
       {
         id: 'set-cards',
@@ -178,17 +170,54 @@ function SpaceRail({ space, onNavigate }) {
         path: '/cards',
         children: CARDS.map((c) => ({ id: `card-${c.key}`, label: c.title, path: `/cards/${c.key}` })),
       },
-      ...SETS.map((x) => ({ id: `set-${x.key}`, label: x.title, path: `/sets/${x.key}` })),
+      /* EVERY SET IS A GROUP OF ITS MEMBERS (W4, 2026-09-30 — user: "sets is wrong in the sidebar":
+       * Cards folded and the rest were bare rows, two levels for one kind of thing). A set's members
+       * are the components it is built from (usage/composition.json), each opening its page. */
+      ...SETS.map((x) => ({
+        id: `set-${x.key}`,
+        /* the NAME, not the title — the rail drops a subtitle after the dash (2026-08-01 ruling) */
+        label: cleanTitle(x.title, x.key),
+        path: `/sets/${x.key}`,
+        children: (x.composition?.kol ?? [])
+          .map((name) => COMPONENT_BY_NAME.get(name))
+          .filter(Boolean)
+          .map((c) => ({ id: `set-${x.key}-${c.slug}`, label: c.displayName, path: `/components/${c.slug}` })),
+      })),
     ]
     const packages = TIER_ORDER.filter((tier) => PACKAGES.some((p) => p.tier === tier)).map((tier) => ({
       id: `pkg-tier-${tier}`,
-      label: tier.charAt(0).toUpperCase() + tier.slice(1),
+      label: tierLabel(tier),
+      path: tierHref(tier),
       children: PACKAGES.filter((p) => p.tier === tier).map((p) => ({ id: `pkg-${p.dir}`, label: p.pkg.name.replace('@kolkrabbi/', ''), path: packageHref(p.dir) })),
     }))
+    const composition = [
+      anyComponentsAdmitted() && { id: 'lib-components', label: 'Components', path: '/components', children: cmpRoutes },
+      isSurfaceAdmitted('blocks') && { id: 'lib-blocks', label: 'Blocks', path: '/blocks', children: blocks },
+      isSurfaceAdmitted('apps') && { id: 'lib-apps', label: 'Apps', path: '/apps', children: apps },
+    ].filter(Boolean)
+    const collection = [
+      isSurfaceAdmitted('sets') && { id: 'lib-sets', label: 'Sets', path: '/sets', children: sets },
+      { id: 'lib-packages', label: 'Packages', path: '/packages', children: packages },
+    ].filter(Boolean)
+    const library = [
+      composition.length && { id: 'lib-composition', label: 'Composition', path: '/composition', children: composition },
+      { id: 'lib-collection', label: 'Collection', path: '/collection', children: collection },
+    ].filter(Boolean)
     return (
       <div className="shell-rail-stack">
-        {isSurfaceAdmitted('sets') && <ShellSidebar routes={sets} basePath="/" label="Sets" labelTo="/sets" onNavigate={onNavigate} />}
-        <ShellSidebar routes={packages} basePath="/" label="Packages" labelTo="/packages" onNavigate={onNavigate} />
+        {anyComponentsAdmitted() && (
+          <div>
+            {/* the category opens its page (2026-09-30) */}
+            <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
+            <SegmentedToggle
+              options={GROUP_OPTIONS}
+              value={mode}
+              onChange={setMode}
+              size="sm"
+            />
+          </div>
+        )}
+        <ShellSidebar routes={library} basePath="/" label="Library" labelTo="/library" onNavigate={onNavigate} />
       </div>
     )
   }
@@ -201,8 +230,9 @@ function SpaceRail({ space, onNavigate }) {
   if (space === 'docs') {
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={vault.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" onNavigate={onNavigate} />
-        <ShellSidebar routes={vault.filter((g) => g.category === 'operations')} basePath="/" label="Operations" onNavigate={onNavigate} />
+        {/* each category opens its own INDEX.md (W3, 2026-09-30 — the eyebrows linked nowhere) */}
+        <ShellSidebar routes={vault.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" labelTo={categoryHref('documentation')} onNavigate={onNavigate} />
+        <ShellSidebar routes={vault.filter((g) => g.category === 'operations')} basePath="/" label="Operations" labelTo={categoryHref('operations')} onNavigate={onNavigate} />
       </div>
     )
   }
@@ -211,7 +241,8 @@ function SpaceRail({ space, onNavigate }) {
   if (space === 'styles') {
     return one('Styles', [
       { id: 'sty-foundations', label: 'Foundations', path: '/foundations', children: rowsOf(DOCS_SPECIMENS) },
-      { id: 'sty-icons', label: 'Icons', path: '/icons', children: Object.entries(ICON_SETS).map(([k, s]) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}` })) },
+      /* each set is a group of its icon groups, each a page (W3, 2026-09-30) */
+      { id: 'sty-icons', label: 'Icons', path: '/icons', children: Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconGroups(k).map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) })) },
       { id: 'sty-guides', label: 'Guides', path: '/styles/guides', children: rowsOf(DOCS_GUIDES) },
     ], '/styles')
   }
@@ -219,8 +250,8 @@ function SpaceRail({ space, onNavigate }) {
     const tools = rowsOf(DEV_TOOLS)
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={tools} basePath="/" label="Tools" onNavigate={onNavigate} />
-        <ShellSidebar routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" onNavigate={onNavigate} />
+        <ShellSidebar routes={tools} basePath="/" label="Tools" labelTo="/development/tools" onNavigate={onNavigate} />
+        <ShellSidebar routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" labelTo="/development/records" onNavigate={onNavigate} />
         {/* the lobby — dev only, read like a record: the ledger on the label, Inbox · Done · Archive */}
         {import.meta.env.DEV && <ShellSidebar routes={LOBBY_CHAPTERS} basePath="/" label="Lobby" labelTo={LOBBY_INDEX} onNavigate={onNavigate} />}
       </div>
@@ -263,7 +294,7 @@ export default function ShellChrome() {
       defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
       searchPath="/search"
-      shortcuts={[{ id: 'frontmatter', label: 'Show or hide frontmatter', combo: 'F', key: 'f', run: toggleFrontmatter }]}
+      shortcuts={[{ id: 'frontmatter', label: 'Frontmatter', combo: 'F', key: 'f', run: toggleFrontmatter }]}
       /* the second wordmark names the space you are in (user: "change the 'workshop' to say …
        * 'design system' when you land … then it could change with the site's navigation") */
       brandLabel={({ activeRoute }) => activeRoute?.label ?? 'Design system'}
@@ -275,7 +306,7 @@ export default function ShellChrome() {
           <a className="kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" href={REPO} target="_blank" rel="noreferrer">GitHub</a>
         ) },
       ] }, { label: 'Components', rows: [
-        { id: 'group', label: 'Group the rail by', render: () => (
+        { id: 'group', label: 'Group by', render: () => (
           <SettingsChoice value={mode} onChange={setMode} options={GROUP_OPTIONS} />
         ) },
       ] }]}

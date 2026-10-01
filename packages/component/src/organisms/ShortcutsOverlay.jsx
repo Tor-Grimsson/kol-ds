@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import SettingsSections from './SettingsSections.jsx'
 
 /**
- * ShortcutsOverlay — the keyboard-shortcut sheet: blurred scrim, centred
+ * ShortcutsOverlay — The keyboard shortcut sheet. the keyboard-shortcut sheet: blurred scrim, centred
  * panel, a 2-col grid (label · keys), Esc / backdrop-click close.
  * Ported from the shared cut (mirror's, "copied from kol-monitor").
  *

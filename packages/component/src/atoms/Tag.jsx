@@ -1,9 +1,10 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 
 const ICON_SIZES = { xs: 8, sm: 10, md: 12, lg: 14 }
+const PALETTE = new Set(['blue', 'teal', 'green', 'yellow', 'red', 'orange', 'purple'])
 
 /**
- * Tag — the INTERACTIVE chip: filterable, selectable, removable.
+ * Tag — An interactive chip to filter or select. the INTERACTIVE chip: filterable, selectable, removable.
  *
  * The chip family (documented at source, 2026-07-30):
  *   Pill  — static label. No states, no handlers. Reach for this for decoration.
@@ -53,9 +54,17 @@ export default function Tag({
   icon,
   onRemove,
   onClick,
+  color,
   className = '',
+  style,
   ...props
 }) {
+  /* COLOR (the showcase review W17, 2026-09-30 — user: "do we hate color? there is no tag colors, no
+   * active error warning nothing"). A palette key (blue · teal · green · yellow · red · orange · purple,
+   * what kol-markdown's getTagColor returns). It sets one hue the variant's fill and ink mix from, so
+   * hover and active stay the variant's own; `dark` and unknown keys stay neutral. Status is Badge's
+   * job (success · warning · error · info), not a Tag color. */
+  const hue = PALETTE.has(color) ? `var(--kol-palette-${color})` : null
   const isInteractive = !!(onClick || onRemove)
   const Element = isInteractive ? 'button' : 'span'
   const iconSize = ICON_SIZES[size] || 12
@@ -84,6 +93,7 @@ export default function Tag({
     VARIANTS[variant] ?? VARIANTS.primary,
     `kol-tag--${size}`,
     active ? 'is-active' : '',
+    hue ? 'kol-tag--hue' : '',
     className
   ].filter(Boolean).join(' ')
 
@@ -97,6 +107,7 @@ export default function Tag({
       {...props}
       type={isInteractive ? 'button' : undefined}
       className={classes}
+      style={hue ? { ...style, '--kol-tag-hue': hue } : style}
       onClick={onClick}
     >
       {icon && <Icon name={icon} size={iconSize} />}

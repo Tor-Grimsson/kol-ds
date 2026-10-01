@@ -6,7 +6,7 @@ import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'
 
 /**
- * SectionCards — the "N-up feature cards" band: a `SectionText` header over a
+ * SectionCards — A header over a row of feature cards. the "N-up feature cards" band: a `SectionText` header over a
  * responsive row of `SectionCardItem` cards, capped by an optional centred
  * action row. `FeaturesCardSection` is this component under its old name and
  * prop names (`headerLabel` → `headline`, `headerDescription` → `body`,

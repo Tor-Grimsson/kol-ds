@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
-import { SearchPage, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { SearchPage, usePageMeta, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
+import { useFrontmatter } from '../lib/frontmatter.jsx'
 import HomeDoc, { HOMES } from '../lib/HomeDoc.jsx'
 import { SHELL_ROUTES, SEARCH_VIEWS, buildShellSearchItems } from '../nav/shell-nav.js'
 import { useGraph } from './References.jsx'
@@ -45,9 +46,15 @@ export default function Search() {
       href: `/references/${encodeURIComponent(n.name)}`,
     })),
   ], [nodes])
+  /* THE PAGE HAS ITS FRONTMATTER WITH OR WITHOUT A QUERY (W12, 2026-09-30 — user: "search page doesnt
+   * have frontmatter"). It rode the home, and the home steps aside once a query is typed. A page's
+   * rule, not a home's: shown, and `F` hides it. */
+  const showFm = useFrontmatter('page')
+  const fm = HOMES.find((d) => d.id === 'search')?.metadata
   return (
     <div className="flex flex-col gap-6">
-      {!hasQuery && <HomeDoc id="search" />}
+      {showFm && fm && <DocsFrontmatter metadata={fm} docId="search" />}
+      {!hasQuery && <HomeDoc id="search" frontmatter={false} />}
       <SearchViews />
       <SearchPage items={items} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
     </div>

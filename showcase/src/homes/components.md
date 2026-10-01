@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Every KOL component, on the atomic ladder
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 ---
 
 # Components

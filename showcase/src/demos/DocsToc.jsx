@@ -19,12 +19,14 @@ const BODY = {
   'toc-demo-theming': 'Links are mono type at reduced emphasis, lifting to full emphasis on hover and while active.',
 }
 
-export default function DocsTocDemo() {
+export const variants = ['list', 'rail']
+
+export default function DocsTocDemo({ variant = 'list' }) {
   return (
     <div className="flex w-full items-start gap-10">
       <div className="w-40 shrink-0">
         <p className="kol-helper-10 text-meta mb-3">On this page</p>
-        <DocsToc toc={TOC} />
+        <DocsToc toc={TOC} variant={variant} />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-6">
         {TOC.map(({ id, label }) => (

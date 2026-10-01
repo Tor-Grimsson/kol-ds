@@ -1,5 +1,5 @@
 /**
- * Stepper — number input + chevron buttons, built on the .kol-control shell.
+ * Stepper — A number input with step buttons. number input + chevron buttons, built on the .kol-control shell.
  *
  *   size="xs" / "sm" (default) / "md" / "lg" — matched padding + type class.
  *   Chevron scale follows the size: 6 / 8 / 10 / 12 px each, stacked. xs is the

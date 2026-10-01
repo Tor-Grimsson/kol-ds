@@ -2,7 +2,7 @@ import { MenuItem as MenuTrigger } from './MenuItem.jsx'
 
 /**
  * @deprecated 2026-07-02 — alias of MenuItem (menu-family unify). Drops when nobody imports it (04-retirements.md).
- * MenuPopover — DEPRECATED alias of MenuItem (2026-07-02 menu-family
+ * MenuPopover — Old name for MenuItem. DEPRECATED alias of MenuItem (2026-07-02 menu-family
  * unification).
  *
  * The two triggers had an identical API (label, children incl. ({ close })

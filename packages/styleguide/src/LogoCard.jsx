@@ -3,7 +3,7 @@ import ClearspaceDiagram, { hasFramework } from './ClearspaceDiagram.jsx'
 import { ToggleSwitch } from '@kolkrabbi/kol-component'
 
 /**
- * LogoCard — framed logo specimen tile with a clearspace / grid toggle.
+ * LogoCard — A logo specimen tile. framed logo specimen tile with a clearspace / grid toggle.
  *
  * A brand-manual logo plate: the mark centered in a padded frame, an optional
  * caption, and — when construction overlays are supplied — a toggle that reveals

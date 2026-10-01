@@ -5,7 +5,7 @@ import { NEW_NOTE } from './notes.js'
 /* taxonomy-ok: organism — kol-component's DocumentEditor, inline in a PageShell, bound to one note row */
 
 /**
- * NoteEditor — one note, open in the page (kol-olina's NoteEdit, on the DS editor).
+ * NoteEditor — One note open for editing. one note, open in the page (kol-olina's NoteEdit, on the DS editor).
  *
  * NoteEdit's two tiers are DocumentEditor's own: the DRAFT is browser memory (`localDrafts`, every
  * pause, keyed `notes:<slug>`), the SAVE is explicit (Save / ⌘S). A draft is restored only if it is

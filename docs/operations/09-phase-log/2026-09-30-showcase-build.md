@@ -4,7 +4,7 @@ type: log
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: The audit built — categories, homes, rails, cards
+description: The names audit, built
 tags:
   - domain/workflow
   - audience/agency-internal

@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Foot hero',
-  description: 'Content pinned to the foot under a veil, with a card across the fold',
+  description: 'Content at the foot under a veil',
   category: 'hero',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

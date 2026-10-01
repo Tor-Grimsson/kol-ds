@@ -128,6 +128,7 @@ export default function RailSection({
      * one click from doing both. */
     <Link
       to={to}
+      className="truncate"
       onClick={(e) => {
         /* the label opens the page, the chevron folds (audit § Homes) */
         e.stopPropagation()
@@ -137,19 +138,20 @@ export default function RailSection({
       {label}
     </Link>
   ) : (
-    <span>{label}</span>
+    <span className="truncate">{label}</span>
   )
 
   const inner = (
     <>
-      <span className="flex items-center gap-2">
+      {/* the label truncates like a row does (W4, 2026-09-30: long set names wrapped to two lines) */}
+      <span className="flex items-center gap-2 min-w-0">
         {chevron}
         {/* L2 rows without a caret keep the caret's width as space, so an
           * expandable row and a childless one share a left edge. */}
         {level === 2 && !chevron && <span aria-hidden="true" style={{ width: 12 }} />}
         {labelNode}
       </span>
-      <span className="flex items-center gap-2">
+      <span className="flex items-center gap-2 shrink-0">
         {countNode}
         {l1State}
       </span>

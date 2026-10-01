@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-08-01
 updated: 2026-08-01
-description: The five stages, the scale, the canon bar
+description: How the reference graph is built
 aliases:
   - reference-pipeline
   - deletion-guard

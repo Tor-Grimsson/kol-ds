@@ -4,7 +4,7 @@ type: log
 status: archived
 created: 2026-09-27
 updated: 2026-09-30
-description: Editor packs, kol-hardware, the signal engine
+description: Splitting the editor into packages
 tags:
   - domain/workflow
   - audience/agency-internal

@@ -4,10 +4,10 @@ type: index
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: Tokens, scales and primitives, read live
+description: Tokens and scales, read live
 tags:
   - domain/foundations
-  - audience/consumer
+  - domain/tokens
 ---
 
 # Foundations

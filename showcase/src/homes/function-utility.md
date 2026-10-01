@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Non-visual helpers
 tags:
   - domain/components
-  - audience/consumer
+  - domain/components/utilities
 ---
 
 # Utility

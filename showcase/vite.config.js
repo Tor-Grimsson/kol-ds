@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
 import mdx from '@mdx-js/rollup'
+import remarkGfm from 'remark-gfm'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,7 +14,9 @@ export default defineConfig({
     /* include: .mdx ONLY — the plugin also claims .md by default, which turns
        every `?raw` markdown import (the docs vault, the lobby queue) into a
        compiled module and breaks the markdown engine downstream. */
-    { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react', include: /\.mdx$/ }) },
+    /* remark-gfm (the showcase review W10, 2026-09-30): MDX is CommonMark, which has no tables — every
+     * `| … |` table in a guide printed as one line of pipes. GFM adds tables, strikethrough and task lists. */
+    { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react', include: /\.mdx$/, remarkPlugins: [remarkGfm] }) },
     react(),
     svgr(),
     tailwindcss(),

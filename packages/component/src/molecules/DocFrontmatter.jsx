@@ -50,7 +50,7 @@ const orderFields = (metadata) => {
 }
 
 /**
- * DocFrontmatter — the frontmatter block above a markdown document's prose: the
+ * DocFrontmatter — A document's frontmatter block. the frontmatter block above a markdown document's prose: the
  * `FRONTMATTER` eyebrow, icon + label keys, mono values, tags as `Tag` chips,
  * arrays stacked, a hairline below. A member of `DocPage`.
  *

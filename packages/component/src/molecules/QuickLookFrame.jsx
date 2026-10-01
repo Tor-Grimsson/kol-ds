@@ -5,7 +5,7 @@ import CloseButton from '../atoms/CloseButton.jsx'
 /* taxonomy-ok: molecule — nests Button (atom) + CloseButton (utility). */
 
 /**
- * QuickLookFrame — the Finder Quick Look window (user 2026-09-23: *"put them in a container LIKE
+ * QuickLookFrame — The preview window. the Finder Quick Look window (user 2026-09-23: *"put them in a container LIKE
  * FINDER … it just makes everything in the design easier to manage if its wrapped together"*).
  * Every kind sat loose on the scrim with its own chrome — a caption line under a picture, a bar
  * floating over a video, a see-through page — so no two kinds looked like one feature. One

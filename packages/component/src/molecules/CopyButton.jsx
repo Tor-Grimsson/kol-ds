@@ -1,7 +1,7 @@
 import ActionButton from '../atoms/ActionButton.jsx'
 
 /**
- * CopyButton — THE copy-to-clipboard control (2026-08-09 user ruling): the
+ * CopyButton — Copy text to the clipboard. THE copy-to-clipboard control (2026-08-09 user ruling): the
  * 32×32 icon button — `copy` glyph flipping to `check` for 2s on copied,
  * no text label. This is the button CodeBlock carried privately since the
  * 2026-07-28 elder replication, promoted to the one shared atom; the old

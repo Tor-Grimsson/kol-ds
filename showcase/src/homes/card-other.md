@@ -6,8 +6,8 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Cards that fit no other category
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
 ---
 
 # Other

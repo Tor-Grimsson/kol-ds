@@ -5,7 +5,7 @@ import CatalogPage from './CatalogPage.jsx'
 /* taxonomy-ok: organism — nests CatalogPage (relative) + kol-component's Button */
 
 /**
- * HubHome — the Hub's Home: a Catalog under the app's masthead (the Hub, 2026-09-26).
+ * HubHome — A hub's home page. the Hub's Home: a Catalog under the app's masthead (the Hub, 2026-09-26).
  * monitor, mirror and fxr each wrote this page on `CatalogPage` with the same five
  * decisions — the mono masthead, RECENT · SAVED, a walkthrough opened by a button,
  * that button's Close label, a "Get started" last step — and the case of the view

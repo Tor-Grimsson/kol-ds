@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Slider } from '@kolkrabbi/kol-component'
 
 /**
- * ParamSheet — a knob or fader, big, at the bottom of the screen. Opened by a
+ * ParamSheet — A big control at the screen's foot. a knob or fader, big, at the bottom of the screen. Opened by a
  * long-press on the control (touch only): a rack knob is 24px and a finger is
  * not, so precision on a phone comes from a full-width track, not from zoom
  * (user, 2026-09-01: "if sometimes things are hard to reach"). Long-press, not

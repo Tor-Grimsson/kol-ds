@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { CanvasZoomContext } from '../hooks/canvasZoom.js'
 
 /**
- * CropOverlay — crop-mode chrome for a photo layer with an explicit crop
+ * CropOverlay — Crop handles over a photo layer. crop-mode chrome for a photo layer with an explicit crop
  * window ({imgX,imgY,imgW,imgH} — the image's draw rect in frame-local px).
  *
  *   • drag inside the frame  → pan the image within the frame (clamped)

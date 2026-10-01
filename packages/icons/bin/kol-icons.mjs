@@ -3,7 +3,7 @@
  * kol-icons CLI — `npx kol-icons audit`
  *
  * Scans the current repo's `<Icon name>` / `iconLeft` / `icon:` usage and classifies
- * each name against the shipped sets: in kol-icon-set-v1 (curated ✓), legacy-only
+ * each name against the shipped sets: in kol-icon-set-interface (curated ✓), legacy-only
  * (breaks when legacy is dropped — migrate or registerIcons), or not-in-package
  * (a locally-registered icon, or a typo). Dependency-free.
  */
@@ -12,7 +12,7 @@ import { join, dirname, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 if (process.argv[2] !== 'audit') {
-  console.log('kol-icons — usage:\n  npx kol-icons audit    scan this repo for icon usage vs kol-icon-set-v1\n')
+  console.log('kol-icons — usage:\n  npx kol-icons audit    scan this repo for icon usage vs kol-icon-set-interface\n')
   process.exit(0)
 }
 
@@ -32,7 +32,7 @@ const svgNames = (rel) => {
   walk(join(PKG, 'src', rel))
   return out
 }
-const v1 = svgNames('kol-icon-set-v1')
+const v1 = svgNames('kol-icon-set-interface')
 const legacy = new Set([...svgNames('stroke'), ...svgNames('solid'), ...svgNames('svg'), ...svgNames('svg-web')])
 
 // scan the consumer repo (cwd) for icon usage

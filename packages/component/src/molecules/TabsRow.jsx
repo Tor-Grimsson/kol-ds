@@ -5,7 +5,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 /* taxonomy-ok: nests kol-icons's Icon */
 
 /**
- * TabsRow — labeled underline tab strip: text tabs where the active tab gets
+ * TabsRow — Text tabs with an underline. labeled underline tab strip: text tabs where the active tab gets
  * a 2px bottom underline and emphasis color; inactive tabs are muted and
  * brighten on hover. Optional leading close button and trailing minimise
  * chevron render only when their handlers are passed — no outer chrome, the

@@ -3,7 +3,7 @@ import { pushLayer, popLayer, isTopLayer } from './layerStack.js'
 import CloseButton from '../atoms/CloseButton.jsx'
 
 /**
- * FullscreenOverlay — the scrim + centred sheet every overlay in the repo
+ * FullscreenOverlay — The scrim and sheet every overlay wears. the scrim + centred sheet every overlay in the repo
  * wears. Owns dismissal (Escape, backdrop, close button), scroll lock and
  * stacking; the consumer supplies the panel.
  *

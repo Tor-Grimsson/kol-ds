@@ -18,7 +18,7 @@ function useCover(src) {
 }
 
 /**
- * AudioSheet — audio in the Quick Look window, Finder's layout (user 2026-09-23, the reference
+ * AudioSheet — Audio in the preview window. audio in the Quick Look window, Finder's layout (user 2026-09-23, the reference
  * shot): the artwork square left, `Time: mm:ss` beside it, the QuickTime bar docked in the
  * window's footer. Artwork = the file's embedded ID3 `APIC` cover (`readCover`); no cover →
  * `FileIcon`, the same page the tile shows. The `cover` / `sheet` variants are gone — there is

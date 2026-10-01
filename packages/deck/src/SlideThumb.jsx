@@ -5,7 +5,7 @@ import { SLIDE_W, SLIDE_H } from './slideDoc.js'
 /* taxonomy-ok: molecule — SlideRenderer measured into a 16:9 box */
 
 /**
- * SlideThumb — one 1920×1080 slide rendered live inside a 16:9 box (kol-olina's brand decks). Measure
+ * SlideThumb — A slide as a thumbnail. one 1920×1080 slide rendered live inside a 16:9 box (kol-olina's brand decks). Measure
  * the box, `zoom` the stage by `width / 1920` — zoom, not transform, so the stage occupies the space
  * it draws in. Serves a card's thumbnail, the filmstrip and the full presentation alike.
  *

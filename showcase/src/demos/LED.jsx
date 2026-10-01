@@ -6,14 +6,15 @@ const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, bor
 
 /* The set's own emitters — red · yellow · green · white · blue — sm and md, and
  * one you can click (the hit pad is 5px wider than the lamp on every side). */
-export default function LEDDemo() {
+export const sizes = ['sm', 'md']
+
+export default function LEDDemo({ size = 'sm' }) {
   const [lit, setLit] = useState(true)
   return (
     <div style={PLATE}>
-      {['red', 'yellow', 'green', 'white', 'blue'].map((c) => <LED key={c} color={c} active />)}
-      {['red', 'yellow', 'green', 'white', 'blue'].map((c) => <LED key={c + 'md'} color={c} active size="md" />)}
-      <LED color="red" active={false} size="md" />
-      <LED color="green" active={lit} size="md" onClick={() => setLit((l) => !l)} />
+      {['red', 'yellow', 'green', 'white', 'blue'].map((c) => <LED key={c} color={c} active size={size} />)}
+      <LED color="red" active={false} size={size} />
+      <LED color="green" active={lit} size={size} onClick={() => setLit((l) => !l)} />
     </div>
   )
 }

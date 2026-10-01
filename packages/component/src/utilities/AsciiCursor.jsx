@@ -495,7 +495,7 @@ function AsciiCursorOverlay({ hideCursor }) {
 }
 
 /**
- * AsciiCursor — full-viewport decorative overlay that shadows the pointer
+ * AsciiCursor — An ASCII crosshair that follows the pointer. full-viewport decorative overlay that shadows the pointer
  * with an ASCII crosshair (diamond variant over interactive elements) and
  * layers ambient effects on top of the page: drifting cursor stars,
  * click-triggered ASCII fireworks, and a right-click Space Invader that

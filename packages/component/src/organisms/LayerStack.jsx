@@ -207,7 +207,7 @@ function CanvasRow({ IconC, active, collapsed, onToggleCollapse, onSelect }) {
 }
 
 /**
- * LayerStack — the layers panel: a z-stacked tree of rows with HTML5 drag to
+ * LayerStack — The layers panel. the layers panel: a z-stacked tree of rows with HTML5 drag to
  * reorder AND reparent in one gesture, hover-revealed eye + lock toggles,
  * inline rename, collapsible containers, and a Canvas root row above it all.
  *
@@ -440,7 +440,7 @@ export default function LayerStack({
 }
 
 /**
- * AddLayerButton — the `+` that opens a menu of layer types. Lives in the
+ * AddLayerButton — Add a layer from a menu. the `+` that opens a menu of layer types. Lives in the
  * panel's tab row, not the stack footer (the source's placement). One entry
  * may expand inline to a kind picker so adding "a shape" doesn't silently
  * default to the first kind.

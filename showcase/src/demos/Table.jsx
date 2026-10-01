@@ -23,11 +23,8 @@ const rows = [
   { id: 3, token: 'accent', value: '#AD5038' },
 ]
 
-export default function TableDemo() {
-  return (
-    <div className="flex flex-col gap-8">
-      <Table caption="Color tokens" columns={columns} rows={rows} />
-      <Table caption="Color tokens, simple" columns={columns} rows={rows} variant="simple" />
-    </div>
-  )
+export const variants = ['default', 'simple']
+
+export default function TableDemo({ variant = 'default' }) {
+  return <Table caption="Color tokens" columns={columns} rows={rows} variant={variant} />
 }

@@ -3,7 +3,7 @@ import { Image } from '@kolkrabbi/kol-component'
 import AuthorLine from './AuthorLine.jsx'
 
 /**
- * ArticleHeader — long-form article masthead: a row of tag Pills, a display
+ * ArticleHeader — An article masthead. long-form article masthead: a row of tag Pills, a display
  * title, an author cluster (DS Avatar + name + role), a `date • readingTime`
  * meta line, an optional excerpt, and an optional hero image. Pure
  * presentational composition of a flat prop bag.

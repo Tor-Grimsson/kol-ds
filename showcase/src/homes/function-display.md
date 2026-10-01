@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Presents read-only content
 tags:
   - domain/components
-  - audience/consumer
+  - domain/slides
+  - pattern/display
 ---
 
 # Display

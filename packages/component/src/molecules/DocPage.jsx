@@ -3,7 +3,7 @@ import DocFrontmatter from './DocFrontmatter.jsx'
 /* taxonomy-ok: molecule — nests DocFrontmatter (relative). */
 
 /**
- * DocPage — ONE plate for every document (DocPageAndKindShowcase, kol-r2b2
+ * DocPage — A page for any text document. ONE plate for every document (DocPageAndKindShowcase, kol-r2b2
  * 2026-08-27, user ruling): markdown · text · code · JSON · YAML render on the
  * same page. Where it sits decides its presentation, in kol-theme (≥0.75.0):
  *

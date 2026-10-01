@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import useScrollSpy from '../hooks/useScrollSpy.js'
 
 /**
- * DocsToc — on-page table of contents for long docs pages: a flat list of
+ * DocsToc — A page's table of contents. on-page table of contents for long docs pages: a flat list of
  * anchor links that highlights the heading currently in view. The scroll
  * spy is useScrollSpy (IntersectionObserver + edge lock); this component
  * only renders the nav and maps the active id onto the links.

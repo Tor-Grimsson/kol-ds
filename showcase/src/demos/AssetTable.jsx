@@ -58,6 +58,8 @@ const ROWS = [
   },
 ]
 
-export default function AssetTableDemo() {
-  return <AssetTable rows={ROWS} caption="KOL brand asset manifest" />
+export const variants = ['default', 'simple']
+
+export default function AssetTableDemo({ variant = 'default' }) {
+  return <AssetTable rows={ROWS} caption="KOL brand asset manifest" variant={variant} />
 }

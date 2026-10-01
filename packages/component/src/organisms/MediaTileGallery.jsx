@@ -2,7 +2,7 @@ import { useState } from 'react'
 import MediaViewer from './MediaViewer.jsx'
 
 /**
- * MediaTileGallery — a stack or grid of framed media tiles that open THE
+ * MediaTileGallery — Media tiles that open a fullscreen viewer. a stack or grid of framed media tiles that open THE
  * shared fullscreen MediaViewer at the clicked tile, paged across all items
  * (the monorepo's FullscreenGallery recreated on the shared viewer instead of
  * its nav-less single image; the AssetFigure/AssetGrid deps are dropped —

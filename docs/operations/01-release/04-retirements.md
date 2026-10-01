@@ -39,6 +39,7 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `ColorLoader` | foundry | `IntroLoader` | 2026-09-30 |
+| `DropdownTagFilter` | component | `SettingsMulti` (`selectedValues` → `selected`, `onChange` → `onToggle`; the standard `Dropdown`'s variants, tones and radius) | 2026-10-01 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |
@@ -49,6 +50,9 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `CardFeatureItem` | component | `SectionCardItem` | 2026-08-26 |
 | `NewsletterBand` | component | `SectionNewsletter` (`title` → `headline`, `description` → `body`) | 2026-08-27 |
 | `BentoCard` | component | `TiltBento` (the Tilt family) | 2026-08-27 |
+| `KOL_ICON_SET_V1` | icons | `KOL_ICON_SET_INTERFACE` — the set was renamed, the icon names did not change | 2026-09-30 |
+| `KOL_ICON_SET_V1_NAMES` | icons | `KOL_ICON_SET_INTERFACE_NAMES` | 2026-09-30 |
+| `KOL_ICON_SET_V1_META` | icons | `KOL_ICON_SET_INTERFACE_META` | 2026-09-30 |
 
 ## CSS classes
 

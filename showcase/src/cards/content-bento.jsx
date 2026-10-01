@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Bento tiles',
-  description: 'Image tiles that tilt toward the pointer and reveal their text on hover',
+  description: 'Tiles that tilt and reveal text',
   category: 'content',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/cards', 'pattern/website-cards'],
 }
 export const stage = 'lg'
 

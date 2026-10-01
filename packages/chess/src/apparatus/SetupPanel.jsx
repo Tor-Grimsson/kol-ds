@@ -3,7 +3,7 @@ import { Button, Input, Dropdown } from '@kolkrabbi/kol-component'
 import { useChessControls } from '../context/ChessControlsContext'
 
 /**
- * SetupPanel — the SETUP POSITION block: header + icon actions (search, flip,
+ * SetupPanel — Set up a chess position. the SETUP POSITION block: header + icon actions (search, flip,
  * clear, copy PGN, edit mode) and the piece-set / board-theme selectors.
  * Reads everything from ChessControlsContext; padding-free — the composer
  * owns spacing, visibility, and responsive behavior via `className`.

@@ -11,7 +11,7 @@ export const clock = (s) => `${String(Math.floor((s || 0) / 60)).padStart(2, '0'
 const RATES = [1, 1.5, 2]
 
 /**
- * PlaybackBar — the QuickTime bar, ruled against the reference (PlaybackBarAndAudioSheet,
+ * PlaybackBar — Play and scrub media. the QuickTime bar, ruled against the reference (PlaybackBarAndAudioSheet,
  * kol-r2b2 2026-08-27; supersedes 0.107.0's strip): a frosted strip over media —
  * `bg-fg-ab-48 backdrop-blur-xl`, **radius 12** (`rounded-xl`, the user's
  * ruling on this surface — the 4px container law stands elsewhere), `h-16 px-8

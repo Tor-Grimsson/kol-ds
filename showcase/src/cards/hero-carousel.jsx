@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Carousel hero',
-  description: 'An array of media turns the hero into an autoplaying carousel',
+  description: 'A hero that cycles its media',
   category: 'hero',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/media', 'domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

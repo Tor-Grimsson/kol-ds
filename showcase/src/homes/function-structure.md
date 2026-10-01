@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Lays out regions
 tags:
   - domain/components
-  - audience/consumer
+  - pattern/structure
 ---
 
 # Structure

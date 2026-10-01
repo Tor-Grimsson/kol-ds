@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: The library grouped by belonging
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/release
+  - domain/taxonomy
 ---
 
 # Collection

@@ -23,7 +23,6 @@ sources:
 tags:
   - domain/tokens
   - domain/components
-  - audience/consumer
 related:
   - "[[01-tokens|tokens]]"
   - "[[03-typography|type classes]]"

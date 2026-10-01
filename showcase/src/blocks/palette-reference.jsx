@@ -2,12 +2,12 @@ import { ColorRamp, SpectrumGrid } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Palette reference',
-  description: 'Token ramps and a full spectrum matrix from the KOL theme',
+  description: 'Theme ramps and the spectrum matrix',
   category: 'color',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/color', 'domain/search', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -2,7 +2,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import JackSocket from './JackSocket.jsx'
 
 /**
- * LabeledJack — a `JackSocket` with an 8px label or a dim icon beside it
+ * LabeledJack — A jack with a label. a `JackSocket` with an 8px label or a dim icon beside it
  * (kol-monitor's rack, lifted 2026-09-01). Use instead of the socket's own
  * `label` when the label should sit left / right / above.
  *

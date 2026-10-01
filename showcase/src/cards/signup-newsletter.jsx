@@ -2,12 +2,12 @@ import { SectionNewsletter } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Newsletter signup',
-  description: "An email field and a submit — the handler is the consumer's",
+  description: "An email field and a submit",
   category: 'signup',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/forms', 'domain/website', 'pattern/website-cards'],
   featured: true,
 }
 export const stage = 'full'

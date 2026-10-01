@@ -9,7 +9,7 @@ aliases:
   - component-placement
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[03-taxonomy-audit-and-plan|taxonomy audit & plan]]"

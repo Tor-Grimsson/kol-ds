@@ -11,13 +11,13 @@ import { Table } from '@kolkrabbi/kol-component'
 export const meta = {
   title: 'Type specimen',
   description:
-    'The full type-specimen apparatus — hero, live weight-axis playground, parsed-metric glyph inspector, character-set browser, size ladder, and a type-scale recipe.',
+    'The full type-specimen apparatus',
   category: 'foundry',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/typography', 'pattern/blocks'],
 }
 export const stage = 'full'
 

@@ -61,7 +61,7 @@ const resolve = (palette, fonts) => [
 ]
 
 /**
- * PostPhoto — feed post, photo ground with the mark in the corner (1:1).
+ * PostPhoto — A photo feed post. feed post, photo ground with the mark in the corner (1:1).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
@@ -83,7 +83,7 @@ export function PostPhoto({ mark, palette, fonts, media, className = '' }) {
 }
 
 /**
- * PostType — feed post, type-driven quote on the accent ground (1:1).
+ * PostType — A type-driven feed post. feed post, type-driven quote on the accent ground (1:1).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
@@ -107,7 +107,7 @@ export function PostType({ mark, palette, fonts, quote = 'Your line here.', clas
 }
 
 /**
- * PostProduct — feed post, product flat with a caption row (1:1).
+ * PostProduct — A product feed post. feed post, product flat with a caption row (1:1).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
@@ -153,7 +153,7 @@ export function PostProduct({
 }
 
 /**
- * PostEditorial — feed post, half photo / half type (1:1).
+ * PostEditorial — A half photo and half type post. feed post, half photo / half type (1:1).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
@@ -194,7 +194,7 @@ export function PostEditorial({
 }
 
 /**
- * StoryPhoto — story frame, full-bleed photo with the mark low-left (9:16).
+ * StoryPhoto — A full-bleed photo story. story frame, full-bleed photo with the mark low-left (9:16).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE
@@ -216,7 +216,7 @@ export function StoryPhoto({ mark, palette, fonts, media, className = '' }) {
 }
 
 /**
- * StoryType — story frame, type-driven with the mark centred low (9:16).
+ * StoryType — A type-driven story. story frame, type-driven with the mark centred low (9:16).
  *
  * @param {ReactNode} mark - The brand mark
  * @param {Object} palette - Partial override of DEFAULT_MOCK_PALETTE — `ink` is the ground here and `accent` the type
@@ -240,7 +240,7 @@ export function StoryType({ mark, palette, fonts, quote = 'Your line here.', cla
 }
 
 /**
- * ProfileAvatar — the round profile mark (1:1).
+ * ProfileAvatar — The round profile mark. the round profile mark (1:1).
  *
  * The forks called it `Avatar`, which is already a kol-component atom (a
  * PERSON's avatar). Two packages exporting one name is a collision the roster

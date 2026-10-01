@@ -85,7 +85,7 @@ const BLOCKS = {
 }
 
 /**
- * PortableTextRenderer — turns a plain block array into `.kol-prose`-styled
+ * PortableTextRenderer — Render block content as prose. turns a plain block array into `.kol-prose`-styled
  * long-form markup via one block-type registry. The design system's CMS
  * renderer (the counterpart to ProseStylesViewer, which only *showcases* the
  * prose styles) — both plug into the same `.kol-prose` stylesheet.

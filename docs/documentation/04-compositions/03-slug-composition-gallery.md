@@ -15,7 +15,7 @@ sources:
   - showcase/src/usage/composition.json
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/media
 related:
   - "[[01-blocks-and-sets|blocks & sets]]"
   - "[[../03-components/01-inventory|components]]"

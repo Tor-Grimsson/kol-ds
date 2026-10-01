@@ -31,10 +31,12 @@ const CARD = {
  * horizontal from md, both w-full. The second row shows the shelf's seams:
  * `shelfTheme="light"` (ink and lockup follow the stamp), a `primary` control,
  * `pad="lg"`; then a `secondary`-surface shelf on a `light` stamp. */
-export default function ProfileCardDemo() {
+export const sizes = ['lg', 'xl', 'md', 'sm']
+
+export default function ProfileCardDemo({ size = 'lg' }) {
   return (
     <div className="flex flex-col items-start gap-8">
-      <ProfileCard {...CARD} size="lg" className="w-full" defaultOpen />
+      <ProfileCard {...CARD} size={size} className="w-full" defaultOpen />
       <div className="flex flex-wrap items-start gap-8">
         <div className="w-[320px]">
           <ProfileCard {...CARD} size="lg" orientation="horizontal" shelfTheme="light" controlVariant="primary" pad="lg" defaultOpen />

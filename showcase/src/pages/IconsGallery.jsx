@@ -1,35 +1,37 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
 import { PageHeader } from '@kolkrabbi/kol-component'
-import { useTheme, ThemeToggle } from '@kolkrabbi/kol-framework'
+import { useTheme } from '@kolkrabbi/kol-framework'
+import { DocHeader } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
-import { Icon, KOL_ICON_SET_V1, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
+import ChapterHome from '../lib/ChapterHome.jsx'
+import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
 import { KeylineBg } from '../lib/icon-controls.jsx'
 
 /* Icon-set registry — BOTH shipped sets (kol-icons ≥0.25.0): v1 is app
  * chrome, signal is the instrument vocabulary. The route's `:set` segment
  * names one; a route that carries none falls back to v1.
  *
- * The group index comes FROM the package (`KOL_ICON_SET_V1`, built by
+ * The group index comes FROM the package (`KOL_ICON_SET_INTERFACE`, built by
  * import.meta.glob over the SVG folder) — never a hand-transcribed name list.
  * A transcription drifts the moment an icon is added; this cannot. */
-const DEFAULT_SET = 'kol-icon-set-v1'
+const DEFAULT_SET = 'kol-icon-set-interface'
 
 export const ICON_SETS = {
-  'kol-icon-set-v1': {
-    label: 'kol-icon-set-v1',
-    title: 'Icons',
-    groups: KOL_ICON_SET_V1,
+  /* named `kol-icon-set-v1` until 2026-09-30 (W8 — user: "icons v1 is a terrible icon set name");
+   * the old URLs redirect (App.jsx) */
+  'kol-icon-set-interface': {
+    label: 'kol-icon-set-interface',
+    title: 'Interface',
+    groups: KOL_ICON_SET_INTERFACE,
   },
   'kol-icon-set-signal': {
     label: 'kol-icon-set-signal',
-    title: 'Icons — signal',
+    title: 'Signal',
     groups: KOL_ICON_SET_SIGNAL,
   },
 }
-/* the SET picker's rows — the header cluster's own seam (a Dropdown, like size) */
-const SET_OPTIONS = Object.keys(ICON_SETS).map((k) => ({ value: k, label: k.replace('kol-icon-set-', '').toUpperCase() }))
 
 /* The gallery's own group order and display names — folder slugs are the data,
  * these are what a reader sees on the filter chips. */
@@ -38,6 +40,13 @@ const ORDER = ['chevron', 'arrow', 'arrow-diagonal', 'caret', 'add-remove', 'tra
   'shape-primitives', 'shape-forms', 'misc']
 const LABELS = { 'add-remove': 'Add / remove', 'eye-lock': 'Eye · lock', 'shape-primitives': 'Shape primitives', 'shape-forms': 'Shape forms' }
 const label = (f) => LABELS[f] ?? f.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
+const byOrder = (a, b) => {
+  const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)
+  return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib) || a.localeCompare(b)
+}
+/* a set's groups in gallery order — the rail's rows and the group pages (W3, 2026-09-30: every
+ * group gets a page) */
+export const iconGroups = (setKey) => Object.keys(ICON_SETS[setKey]?.groups ?? {}).sort(byOrder).map((folder) => ({ folder, label: label(folder), count: ICON_SETS[setKey].groups[folder].length }))
 
 /* The glyph is drawn ONCE at its native 128 and the size control scales it
  * from the centre of the placeholder (user 2026-08-27) — no re-render per
@@ -113,8 +122,7 @@ function Glyph({ name, size, bgLight, guide }) {
  * `ViewToggle`s, size is a `Dropdown`.
  */
 export default function IconsGallery() {
-  const { set } = useParams()
-  const navigate = useNavigate()
+  const { set, group } = useParams()
   const meta = ICON_SETS[set ?? DEFAULT_SET]
 
   /* the ground follows the app theme until the toggle names one (user 2026-08-27) */
@@ -133,11 +141,9 @@ export default function IconsGallery() {
 
   const orderedFolders = useMemo(() => {
     if (!meta) return []
-    return Object.keys(meta.groups).sort((a, b) => {
-      const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)
-      return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib) || a.localeCompare(b)
-    })
-  }, [meta])
+    /* a group's page shows that group only (W3, 2026-09-30) */
+    return Object.keys(meta.groups).filter((f) => !group || f === group).sort(byOrder)
+  }, [meta, group])
 
   /* `group` carries the DISPLAY label so the chips read as the gallery always
    * labelled them ("Add / remove", not "add-remove"). */
@@ -149,26 +155,14 @@ export default function IconsGallery() {
 
   /* /icons IS THE ICONS HOME (2026-09-30): it rendered the default set a second time */
   if (!set) {
-    return (
-      <div className="flex flex-col gap-10 pb-24">
-        <HomeDoc id="icons" />
-        <ul className="flex flex-col gap-2">
-          {Object.entries(ICON_SETS).map(([k, s]) => (
-            <li key={k} className="kol-doc-body">
-              <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={`/icons/${k}`}>{s.title}</Link>
-              <span className="text-subtle"> — {s.label}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+    return <ChapterHome home="icons" title="Sets" noteHeader="Holds" items={Object.entries(ICON_SETS).map(([k, x]) => ({ to: `/icons/${k}`, label: x.title, note: `${Object.keys(x.groups).length} groups · ${Object.values(x.groups).flat().length} icons` }))} />
   }
 
-  if (!meta) {
+  if (!meta || (group && !meta.groups[group])) {
     return (
       <section id="icons-gallery">
         <PageHeader size="sm" voice="mono" title="Unknown set" />
-        <p className="kol-mono-12 text-fg-48 mt-6">No icon set named “{set}”.</p>
+        <p className="kol-mono-12 text-fg-48 mt-6">No icon set named “{set}”{group ? ` with a group “${group}”` : ''}.</p>
       </section>
     )
   }
@@ -176,26 +170,17 @@ export default function IconsGallery() {
   const bgLight = ground === 'light'
 
   return (
-    <section id={`icons-${set ?? DEFAULT_SET}`}>
-      {/* THE SET'S HOME (2026-09-30, the names audit: each icon set is a set, with its groups,
-        * frontmatter and tags — *"cant remember the names, which further underlines the importance
-        * of a home"*). No H1 of its own: the gallery's header below names the page. */}
-      <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />
-      <PageHeader
-        size="sm"
-        voice="mono"
-        title={meta.title}
-        subtitle={`${items.length} icons across ${orderedFolders.length} groups (${meta.label}), resolved straight from the package (@kolkrabbi/kol-icons). Single stroke cut, currentColor. Click any icon to copy its name.`}
-        subtitleMaxWidth="800px"
-        /* the cluster shares the lede's baseline row (kol-shell 0.15.0) */
-        actions={
-          <div className="flex flex-wrap items-center gap-2">
-            <Dropdown tone="sunken" options={SET_OPTIONS} value={set ?? DEFAULT_SET} onChange={(v) => navigate(v === DEFAULT_SET ? '/icons' : `/icons/${v}`)} className="w-32" />
-            <Dropdown tone="sunken" options={SIZES} value={size} onChange={setSize} className="w-24" />
-            <ThemeToggle variant="button" tone="sunken" size="sm" label={false} fill="subtle" />
-          </div>
-        }
-      />
+    <section id={`icons-${set ?? DEFAULT_SET}`} className="flex flex-col gap-10 pb-24">
+      {/* ONE HEADER (W8, 2026-09-30 — user: "icons could and should also fix the layout, its clashing
+        * content filters and a specific style setup for entire page"). The page stacked TWO headers —
+        * the gallery's own (title, a SET picker, size, a theme toggle) over ContentFilters' (title,
+        * filter, search, ground, guide) — and split its controls between them. Now the page's title
+        * is its home (a group page: a DocHeader), and every control rides the one filter row. The
+        * set picker went: the rail and the Icons home list the sets; the theme toggle went: the
+        * shell header has the one. */}
+      {group
+        ? <DocHeader eyebrow={meta.title} title={label(group)} lede={`${items.length} icons in the ${label(group)} group. Click any icon to copy its name.`} />
+        : <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />}
 
       <ContentFilters
         tone="sunken"
@@ -206,7 +191,7 @@ export default function IconsGallery() {
         /* TYPE first — the short group takes the first column; TAGS flows after it */
         filterGroups={[
           { label: 'Type', key: 'type', values: TYPES },
-          { label: 'Tags', key: 'group', values: orderedFolders.map(label) },
+          ...(group ? [] : [{ label: 'Tags', key: 'group', values: orderedFolders.map(label) }]),
         ]}
         mutuallyExclusiveFilters={['type', 'group']}
         showCountOnlyWhenFiltering
@@ -216,6 +201,7 @@ export default function IconsGallery() {
         trailingActions={
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-6">
+              <Dropdown tone="sunken" options={SIZES} value={size} onChange={setSize} className="w-24" />
               <ViewToggle tone="sunken" variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGroundOverride} />
               <Divider variant="vertical" />
               {GUIDE.map((o) => (
@@ -235,7 +221,9 @@ export default function IconsGallery() {
         renderItem={(rows, _view, layout) => {
           const list = layout === 'list'
           return (
-            <ContentCollection form={list ? 'list' : 'grid'} cols={6}>
+            /* a tile floor of 160 — the catalog's own `minColumn`; the 320 default gave ONE column at
+             * 1280 (W8, 2026-09-30) */
+            <ContentCollection form={list ? 'list' : 'grid'} cols={6} minCol="160px">
               {rows.map((item) => list ? (
                 <ContentRow
                   key={item.name}

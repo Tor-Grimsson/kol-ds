@@ -10,7 +10,7 @@ import MaterialSummary from './MaterialSummary.jsx'
 import useChessKeyboardShortcuts from './useChessKeyboardShortcuts.js'
 
 /**
- * AlternativeControlsMock — the reference rail composition: SetupPanel,
+ * AlternativeControlsMock — The chess reference rail in one column. the reference rail composition: SetupPanel,
  * PiecePalette, GamePicker, MaterialSummary, notation and playback stacked
  * in one column. Since 0.5.2 every block is its own exported component and
  * this is just the default arrangement — consumers composing their own rail

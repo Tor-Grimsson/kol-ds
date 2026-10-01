@@ -2,13 +2,13 @@ import { TiltBento } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Bento wall',
-  description: 'A bento grid of media hover-cards with varied spans and inline covers',
+  description: 'A bento grid of media cards',
   category: 'media',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/cards', 'domain/layout', 'domain/media', 'pattern/blocks'],
 }
 export const stage = 'full'
 

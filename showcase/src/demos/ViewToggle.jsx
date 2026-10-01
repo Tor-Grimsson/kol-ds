@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { ViewToggle, Dropdown, Input, Button, IconFrame } from '@kolkrabbi/kol-component'
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
-export default function ViewToggleDemo() {
+export const variants = ['text', 'icon', 'single']
+export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
+export const sizes = ['sm', 'xs', 'md']
+
+export default function ViewToggleDemo({ variant = 'text', tone = 'default', size = 'sm' }) {
   const [view, setView] = useState('grid')
   return (
     <>
-      <ViewToggle viewMode={view} onViewChange={setView} />
-      <ViewToggle viewMode={view} onViewChange={setView} variant="icon" />
-      <ViewToggle viewMode={view} onViewChange={setView} variant="single" />
+      <ViewToggle viewMode={view} onViewChange={setView} variant={variant} tone={tone} size={size} />
       {/* the control set in both tones on the fg-02 wash it was ruled for
         * (ControlToneSunken, 2026-08-28 — was ControlToneInverse's fg-04 row):
         * ViewToggle icon · Dropdown · Input · Button icon-only · IconFrame · ThemeToggle */}

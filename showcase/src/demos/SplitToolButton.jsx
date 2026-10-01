@@ -16,7 +16,9 @@ const SHAPES = [
  * `style={{ width: 28, height: 28, padding: 6 }}` + `iconSize={14}` on the
  * Buttons and let SplitToolButton default to its own 28 — three transcriptions
  * of an off-ladder box, in the reference a consumer copies. */
-export default function SplitToolButtonDemo() {
+export const sizes = ['md', 'xs', 'sm', 'lg']
+
+export default function SplitToolButtonDemo({ size = 'md' }) {
   const [tool, setTool] = useState('select')
   const [shape, setShape] = useState('rectangle')
   return (
@@ -25,7 +27,7 @@ export default function SplitToolButtonDemo() {
         <Button
           variant="ghost"
           quiet
-          size="md"
+          size={size}
           iconOnly="pointer"
           pressed={tool === 'select'}
           onClick={() => setTool('select')}
@@ -35,7 +37,7 @@ export default function SplitToolButtonDemo() {
         <Button
           variant="ghost"
           quiet
-          size="md"
+          size={size}
           iconOnly="type"
           pressed={tool === 'text'}
           onClick={() => setTool('text')}
@@ -43,7 +45,7 @@ export default function SplitToolButtonDemo() {
           title="Text (T)"
         />
         <SplitToolButton
-          size="md"
+          size={size}
           variants={SHAPES}
           value={shape}
           lastPicked={shape}

@@ -15,7 +15,6 @@ sources:
   - packages/theme/kol-components-workshop.css
 tags:
   - domain/compositions
-  - audience/consumer
   - pattern/app-shell
 related:
   - "[[01-blocks-and-sets|blocks & sets]]"
@@ -102,7 +101,7 @@ So it drops into any of the ~70 repos. Zero live `import.meta.glob`, zero `@docs
 Conformed on lift (verified by grep + esbuild parse across 25 files):
 
 - **Buttons** — 0 `ghost` (retiring), 0 `primary`. Buttons carrying a DS chrome hook (`.shell-*`/`.docs-*`) stay **raw `<button>`** (the chrome class IS the DS styling; wrapping in `Button` double-chromes). Genuine actions → `variant="outline"`.
-- **Icons** — every `Icon name` resolves in **kol-icon-set-v1**.
+- **Icons** — every `Icon name` resolves in **kol-icon-set-interface**.
 - **Fonts** — `--kol-font-family-rgrot-*` → `sans-*` (the DS's Right-Grotesk token names).
 - **Casing** — 0 `text-transform`/`uppercase`/`capitalize`.
 - **Sidebar rhythm (2026-07-15, ledger-2.0 #2.6 — ruled, user-reviewed; box law added 2026-08-01):** the right rail keeps its quieter label scale (deliberate hierarchy vs the nav's), but **row rhythm is shared** — the eyebrow and the nav-group-header both read `--kol-pad-rail-row-y`, one token rather than two copies of a number.

@@ -3,7 +3,7 @@ import ExhibitLinkCard from './ExhibitLinkCard.jsx'
 import useExhibitToc from './useExhibitToc.js'
 
 /**
- * ExhibitOverview — an exhibit's landing page: what this section is, then every
+ * ExhibitOverview — An exhibit's landing page. an exhibit's landing page: what this section is, then every
  * child page as a card.
  *
  * The overview contract kol-website's DashboardOverview implements by hand —

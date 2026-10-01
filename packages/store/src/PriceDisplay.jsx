@@ -1,5 +1,5 @@
 /**
- * PriceDisplay — baseline-aligned price line: a large primary amount beside a
+ * PriceDisplay — A price with a small secondary note. baseline-aligned price line: a large primary amount beside a
  * small muted secondary note (a second-currency echo or a cost breakdown).
  * Formats `amount` via Intl.NumberFormat in whole units (prints are priced in
  * round numbers); `secondary` is authored at the call site, parens and all —

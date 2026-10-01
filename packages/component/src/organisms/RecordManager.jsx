@@ -35,7 +35,7 @@ const ToolbarIcon = ({ name, label, onClick, active = false, triggerClassName })
 )
 
 /**
- * RecordManager — full-screen CMS record surface (lobby: RecordManager,
+ * RecordManager — A full-screen CMS record editor. full-screen CMS record surface (lobby: RecordManager,
  * reference: Framer CMS). A reorderable record table plus a slide-over detail
  * panel of FieldRows.
  *

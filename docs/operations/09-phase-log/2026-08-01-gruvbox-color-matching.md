@@ -4,7 +4,7 @@ type: log
 status: archived
 created: 2026-08-01
 updated: 2026-09-30
-description: A color ruling, parked, never run
+description: A parked color ruling
 tags:
   - domain/workflow
   - audience/agency-internal

@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Moves through or re-slices a site
 tags:
   - domain/components
-  - audience/consumer
+  - pattern/wayfinding
 ---
 
 # Wayfinding

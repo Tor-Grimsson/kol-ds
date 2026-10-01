@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { DocHeader, DocSection, TagGraph, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Tag } from '@kolkrabbi/kol-component'
-import { buildTagCounts } from '@kolkrabbi/kol-markdown'
+import { buildTagCounts, getTagColor } from '@kolkrabbi/kol-markdown'
 import { TAG_INVENTORY } from '../nav/vault.js'
 import { buildShellSearchItems, ALL_ROUTES } from '../nav/shell-nav.js'
 import { SearchViews } from './Search.jsx'
@@ -49,7 +49,7 @@ export function TagsPage() {
             * tag on the site wears; a click opens the search on it */}
           <div className="flex flex-wrap gap-2">
             {list.sort((a, b) => b.count - a.count).map(({ tag, leaf, count }) => (
-              <Tag key={tag} onClick={() => navigate(tagSearch(tag))}>{`${leaf} ${count}`}</Tag>
+              <Tag key={tag} color={getTagColor(tag)} onClick={() => navigate(tagSearch(tag))}>{`${leaf} ${count}`}</Tag>
             ))}
           </div>
         </DocSection>

@@ -21,20 +21,22 @@ const BUY_ONLY = {
 
 const NO_PATHS = {}
 
-export default function PrintBuyButtonDemo() {
+export const sizes = ['md', 'sm', 'lg']
+
+export default function PrintBuyButtonDemo({ size = 'md' }) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <span className="kol-mono-12 text-fg-48">buyUrl + printOnDemandUrl — primary and secondary</span>
-        <PrintBuyButton print={BOTH_PATHS} />
+        <PrintBuyButton size={size} print={BOTH_PATHS} />
       </div>
       <div className="flex flex-col gap-2">
         <span className="kol-mono-12 text-fg-48">buyUrl only, ISK price, stacked layout</span>
-        <PrintBuyButton print={BUY_ONLY} layout="stack" size="sm" className="max-w-40" />
+        <PrintBuyButton size={size} print={BUY_ONLY} layout="stack" className="max-w-40" />
       </div>
       <div className="flex flex-col gap-2">
         <span className="kol-mono-12 text-fg-48">no purchase path — safe default</span>
-        <PrintBuyButton print={NO_PATHS} />
+        <PrintBuyButton size={size} print={NO_PATHS} />
       </div>
     </div>
   )

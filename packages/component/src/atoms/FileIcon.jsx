@@ -1,7 +1,7 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
- * FileIcon — the file as a page: folded corner, the kind's glyph, the extension under it.
+ * FileIcon — A file drawn as a page. the file as a page: folded corner, the kind's glyph, the extension under it.
  * Finder's generic document icon (user 2026-09-23: *"a generic preview for that like wav and
  * the type below that finder has"*). What a file shows when it has nothing of its own to draw:
  * audio without cover art, an empty file, a kind no renderer handles.

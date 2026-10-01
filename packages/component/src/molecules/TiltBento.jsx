@@ -64,7 +64,7 @@ function Media({ src, poster, className }) {
 }
 
 /**
- * TiltBento — media hover-card for grid/bento walls, the Tilt family's composed
+ * TiltBento — A tilting media card for bento walls. media hover-card for grid/bento walls, the Tilt family's composed
  * tile (was `BentoCard` until 2026-08-27, user ruling: the three tilting things
  * in the estate are ONE prefix family — `TiltCard` the bare frame, `TiltBento`
  * this tile, `useTilt` the one hook; `BentoCard` is the alias on the retirement

@@ -21,7 +21,7 @@ sources:
   - packages/theme/kol-components-controls.css
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/hardware
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[09-dashboards-system|dashboards system]]"

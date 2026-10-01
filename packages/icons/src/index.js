@@ -4,7 +4,8 @@
  * Export Icon component and icon registry.
  * Usage: <Icon name="arrow-up" size={16} />
  *
- * TWO SETS (2026-08-28). `kol-icon-set-v1` is the general set — app chrome,
+ * TWO SETS (2026-08-28). `kol-icon-set-interface` (named `kol-icon-set-v1` until 2026-09-30 — user:
+ * "icons v1 is a terrible icon set name") is the general set — app chrome,
  * navigation, files, media. `kol-icon-set-signal` is the signal-flow set:
  * waveforms, filters, logic gates, dither patterns, shapers, ramps, transport,
  * cables, color harmony — drawn for instrument surfaces (kol-mirror's rack,
@@ -23,11 +24,11 @@
 export { default as Icon, registerIcons } from './Icon.jsx';
 import CUTS from './cuts.json';
 
-/* kol-icon-set-v1 — the curated set, grouped by folder (keys-only, no SVG
- * content): `{ group: names[] }`. KOL_ICON_SET_V1_NAMES is the flat sorted list. */
-export const KOL_ICON_SET_V1 = (() => {
+/* kol-icon-set-interface — the curated set, grouped by folder (keys-only, no SVG
+ * content): `{ group: names[] }`. KOL_ICON_SET_INTERFACE_NAMES is the flat sorted list. */
+export const KOL_ICON_SET_INTERFACE = (() => {
   const idx = {}
-  for (const p of Object.keys(import.meta.glob('./kol-icon-set-v1/**/*.svg'))) {
+  for (const p of Object.keys(import.meta.glob('./kol-icon-set-interface/**/*.svg'))) {
     const parts = p.split('/')
     const name = (parts.pop() || '').replace('.svg', '')
     const group = parts.pop() || 'misc'
@@ -37,7 +38,7 @@ export const KOL_ICON_SET_V1 = (() => {
   return idx
 })()
 
-export const KOL_ICON_SET_V1_NAMES = Object.values(KOL_ICON_SET_V1).flat().sort()
+export const KOL_ICON_SET_INTERFACE_NAMES = Object.values(KOL_ICON_SET_INTERFACE).flat().sort()
 
 /* kol-icon-set-signal — same shape, same rules, its own folder. */
 export const KOL_ICON_SET_SIGNAL = (() => {
@@ -62,18 +63,25 @@ export const KOL_ICON_SET_SIGNAL_NAMES = Object.values(KOL_ICON_SET_SIGNAL).flat
 const metaOf = (index, set) => Object.fromEntries(
   Object.entries(index).flatMap(([group, names]) => names.map((name) => [name, { group, set, cut: CUTS[name] ?? 'stroke' }])),
 )
-export const KOL_ICON_SET_V1_META = metaOf(KOL_ICON_SET_V1, 'v1')
+export const KOL_ICON_SET_INTERFACE_META = metaOf(KOL_ICON_SET_INTERFACE, 'interface')
 export const KOL_ICON_SET_SIGNAL_META = metaOf(KOL_ICON_SET_SIGNAL, 'signal')
 /* every glyph the package ships, either set — `{ name: { group, set, cut } }` */
-export const KOL_ICON_META = { ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_V1_META }
+export const KOL_ICON_META = { ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_INTERFACE_META }
 export const getCut = (name) => KOL_ICON_META[name]?.cut ?? null
 export const getSet = (name) => KOL_ICON_META[name]?.set ?? null
 
-/* Canonical grouped registry — alias of the v1 index (legacy inventories
+/* Canonical grouped registry — alias of the interface index (legacy inventories
  * ICON_ENTRIES / SOLID_ICON_ENTRIES / ICON_INDEX died with the legacy sets). */
-export const ICONS = KOL_ICON_SET_V1;
+export const ICONS = KOL_ICON_SET_INTERFACE;
 // Flat array of all icon names — BOTH sets, since <Icon> resolves either.
-export const ALL_ICONS = [...new Set([...KOL_ICON_SET_V1_NAMES, ...KOL_ICON_SET_SIGNAL_NAMES])].sort();
+export const ALL_ICONS = [...new Set([...KOL_ICON_SET_INTERFACE_NAMES, ...KOL_ICON_SET_SIGNAL_NAMES])].sort();
+
+/** @deprecated 2026-09-30 → KOL_ICON_SET_INTERFACE — the set was renamed; the icon names did not change */
+export const KOL_ICON_SET_V1 = KOL_ICON_SET_INTERFACE
+/** @deprecated 2026-09-30 → KOL_ICON_SET_INTERFACE_NAMES */
+export const KOL_ICON_SET_V1_NAMES = KOL_ICON_SET_INTERFACE_NAMES
+/** @deprecated 2026-09-30 → KOL_ICON_SET_INTERFACE_META */
+export const KOL_ICON_SET_V1_META = KOL_ICON_SET_INTERFACE_META
 
 // Helper to check if an icon exists
 export const hasIcon = (name) => ALL_ICONS.includes(name);

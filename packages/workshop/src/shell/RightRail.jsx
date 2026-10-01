@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { getTagColor } from '@kolkrabbi/kol-markdown'
 import { useLocation } from 'react-router-dom'
 import RailSection from './RailSection.jsx'
 import RailRow from './RailRow.jsx'
+
+const hueOf = (tag) => { const c = getTagColor(tag); return c === 'dark' ? undefined : `var(--kol-palette-${c})` }
 
 /**
  * RightRail — THE right rail. One component, every route.
@@ -81,6 +84,8 @@ export default function RightRail({
   tags = [],
   renderTag,
   onTagClick,
+  /* where every tag in use is listed (the showcase's /search/tags) — a row in the Tags section */
+  tagsHref,
   icon: IconComponent,
 }) {
   /* One collapse map, not a useState per section — a section added later must
@@ -100,9 +105,18 @@ export default function RightRail({
     setPins(next)
     writePins(next)
   }
+  /* TAGS ARE THEIR OWN SECTION (the showcase review W15, 2026-09-30 — user: "right sidebar has this
+   * page, links, and inside links is tags? feel like maybe tags is its own thing? with tag graph and
+   * all that"). The tag graph is a TAG view, so the caller's `graph` action moves out of Quick actions
+   * and leads the Tags section; every caller already passes it under that id. */
+  const graphAction = actions.find((a) => a.id === 'graph')
   const allActions = [
-    ...actions,
+    ...actions.filter((a) => a.id !== 'graph'),
     { id: 'pin', label: isPinned ? 'Unpin' : 'Pin', icon: IconComponent ? <IconComponent name="pushpin" size={14} /> : null, onClick: togglePin },
+  ]
+  const tagViews = [
+    ...(graphAction ? [graphAction] : []),
+    ...(tagsHref ? [{ id: 'all-tags', label: 'All tags', to: tagsHref, icon: IconComponent ? <IconComponent name="hash-02" size={14} /> : null }] : []),
   ]
   const toggle = (key) => setCollapsed((c) => ({ ...c, [key]: !c[key] }))
 
@@ -153,7 +167,7 @@ export default function RightRail({
         </div>
       </RailSection>
 
-      <RailSection level={1} label="Links" count={pins.length + allActions.length + tags.length + related.length}>
+      <RailSection level={1} label="Links" count={pins.length + allActions.length + related.length}>
         <div className="shell-rail-stack-inner">
           {group('pinned', 'Pinned', pins.length,
             pins.map((p) => (
@@ -171,26 +185,6 @@ export default function RightRail({
             ))
           )}
 
-          {group('tags', 'Tags', tags.length, (
-            <>
-              {Object.entries(byNamespace).map(([ns, list]) => (
-                <div key={`ns-${ns}`}>
-                  {ns && <RailRow className="shell-nav-item--muted">{ns.charAt(0).toUpperCase() + ns.slice(1)}</RailRow>}
-                  {list.map(({ tag, leaf }) => (
-                    <RailRow
-                      key={`own-${tag}`}
-                      sub={!!ns}
-                      onClick={() => onTagClick?.(tag)}
-                      icon={IconComponent ? <IconComponent name="hash-02" size={14} /> : null}
-                    >
-                      {leaf}
-                    </RailRow>
-                  ))}
-                </div>
-              ))}
-            </>
-          ))}
-
           {/* Related carries SOURCES too (user ruling 2026-08-01) — a repo URL
             * or an external reference is another document this one names, and
             * splitting them made two sections that answer the same question. */}
@@ -201,6 +195,33 @@ export default function RightRail({
           )}
         </div>
       </RailSection>
+
+      {/* TAGS — the views of the tag system, then this page's tags, a group per namespace */}
+      {(tagViews.length > 0 || tags.length > 0) && (
+        <RailSection level={1} label="Tags" count={tags.length}>
+          <div className="shell-rail-stack-inner">
+            {tagViews.length > 0 && (
+              <nav className="shell-nav-items">
+                {tagViews.map((a) => (
+                  <RailRow key={a.id} to={a.to} onClick={a.onClick} icon={a.icon}>{a.label}</RailRow>
+                ))}
+              </nav>
+            )}
+            {Object.entries(byNamespace).map(([ns, list]) => <div key={`tags-${ns || 'flat'}`}>{group(`tags-${ns || 'flat'}`, ns ? ns.charAt(0).toUpperCase() + ns.slice(1) : 'Tags', list.length,
+              list.map(({ tag, leaf }) => (
+                <RailRow
+                  key={`own-${tag}`}
+                  onClick={() => onTagClick?.(tag)}
+                  /* the hash wears the tag's namespace color (W17), the same hue its chip and graph node wear */
+                  icon={IconComponent ? <span className="inline-flex" style={{ color: hueOf(tag) }}><IconComponent name="hash-02" size={14} /></span> : null}
+                >
+                  {leaf}
+                </RailRow>
+              ))
+            )}</div>)}
+          </div>
+        </RailSection>
+      )}
     </div>
   )
 }

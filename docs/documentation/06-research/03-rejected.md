@@ -7,7 +7,7 @@ updated: 2026-08-02
 description: What was considered and turned down
 tags:
   - domain/components
-  - audience/consumer
+  - domain/research
 related:
   - "[[INDEX|research]]"
 ---

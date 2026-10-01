@@ -11,7 +11,7 @@ sources:
   - packages/theme/kol-theme.css
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/breakpoints
 related:
   - "[[INDEX|breakpoints]]"
   - "[[../../operations/06-workflows/07-device-testing|testing methods]]"

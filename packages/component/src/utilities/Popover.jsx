@@ -240,7 +240,7 @@ function TooltipOn({
 }
 
 /**
- * PopoverPanel — renders the floater into a portal with default panel chrome.
+ * PopoverPanel — A floating panel in a portal. renders the floater into a portal with default panel chrome.
  *
  * Props:
  *   popover         — the value returned from `usePopover`

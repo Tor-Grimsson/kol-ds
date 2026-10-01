@@ -2,12 +2,12 @@ import { ActionButton, ContentCard, ContentRow, SizeOrDownload } from '@kolkrabb
 
 export const meta = {
   title: 'Content Set — variant reference',
-  description: 'Every ContentCard/ContentRow variant rendered live in both forms, beside the box values that produce it and the repos that render it.',
+  description: 'Every content card and row variant',
   category: 'listing',
   type: 'reference',
   status: 'active',
   updated: '2026-08-29',
-  tags: ['domain/design-system', 'pattern/sets'],
+  tags: ['domain/cards', 'pattern/sets'],
 }
 export const stage = 'full'
 

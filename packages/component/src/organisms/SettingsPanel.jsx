@@ -9,7 +9,7 @@ import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
- * SettingsPanel — a settings surface for the thing you are looking at: you
+ * SettingsPanel — Settings beside the thing they change. a settings surface for the thing you are looking at: you
  * change how a list looks WHILE looking at it, so it is a slide-over (or an
  * overlay), never a route (SettingsPanel, kol-r2b2 2026-08-26 — the
  * per-bucket display settings: kinds allow-list, structure, loading, layout).
@@ -107,7 +107,7 @@ export default function SettingsPanel({
 }
 
 /**
- * SettingsRow — a `LabeledControl inline` (SettingsPanelApproved, 2026-08-27):
+ * SettingsRow — One labelled setting. a `LabeledControl inline` (SettingsPanelApproved, 2026-08-27):
  * uppercase label (`kol-helper-10` tracked, meta ink) in a 160px column, the
  * control fills the rest. A switch sits at the far right (`align="end"`, the
  * default); a dropdown fills the row (`align="fill"`). No hint sentences on the
@@ -127,7 +127,7 @@ export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, chil
   )
 }
 
-/** SettingsSwitch — the row's on/off control: the DS ToggleSwitch, bare, sm.
+/** SettingsSwitch — An on/off setting. the row's on/off control: the DS ToggleSwitch, bare, sm.
  *  `disabledHint` rides a DS `Tooltip` so a switch that cannot act says why;
  *  inside a row's `hint` it wins while hovered, as the native `title` did. */
 export function SettingsSwitch({ on = false, onChange, disabled = false, disabledHint, label, title }) {
@@ -144,7 +144,7 @@ export function SettingsSwitch({ on = false, onChange, disabled = false, disable
   return tip ? <Tooltip label={tip}>{toggle}</Tooltip> : toggle
 }
 
-/** LabeledControlSection — a section of LabeledControls: the EYEBROW
+/** LabeledControlSection — A titled section of labelled controls. a section of LabeledControls: the EYEBROW
  *  (`kol-eyebrow text-fg-80`) standing apart from the rows (gap-3), the rows in
  *  their own stack — `rowGap` 1 for switch rows (24 tall already), 2 for
  *  dropdown rows. `divided` = a hairline above (between sections).
@@ -161,7 +161,7 @@ export function LabeledControlSection({ label, divided = false, rowGap = 2, chil
   )
 }
 
-/** SettingsChoice — the row's one-of-N control: the DS Dropdown, sm · primary
+/** SettingsChoice — A one-of-many setting. the row's one-of-N control: the DS Dropdown, sm · primary
  *  (SettingsPanelEyebrowAndDropdowns — user: "put the toggles inside a dropdown,
  *  because it's super messy like it is"). Options are values or `{ value, label }`;
  *  width is the call site's (`className="w-40"`).
@@ -189,7 +189,7 @@ export const CHIP_CLS = 'kol-control kol-control-sm kol-mono-12'
 export const chipCls = (on) => `${CHIP_CLS} ${on ? 'kol-control--filled' : 'text-meta hover:text-emphasis'}`
 
 /**
- * SettingsMulti — a many-of-N control as ONE Dropdown (SettingsPanelApproved,
+ * SettingsMulti — A many-of-many setting in one dropdown. a many-of-N control as ONE Dropdown (SettingsPanelApproved,
  * 2026-08-27 — the kinds row): the trigger reads `N of M <noun>`, every entry
  * toggles and `✓` marks the ones that are on. No grouping.
  * @param {Array}  options   [{ value, label }]
@@ -210,7 +210,7 @@ export function SettingsMulti({ options = [], selected = [], onToggle, noun = 'k
 }
 
 /**
- * SettingsChipRow — a wrap of toggle chips with optional counts (an
+ * SettingsChipRow — A row of toggle chips. a wrap of toggle chips with optional counts (an
  * allow-list: every chip sets a default, never a gate). `allChip` puts an
  * "all" chip first — the same control chip, filled when every option is on
  * (SettingsPanelEyebrowAndDropdowns — user: "Show all in ghost mode? makes no
@@ -247,7 +247,7 @@ export function SettingsChipRow({ options = [], selected = [], onToggle, allChip
   )
 }
 
-/** SettingsFooter — a Divider, then one `IconFrame refresh` (primary · sm) at the
+/** SettingsFooter — Reset settings to their defaults. a Divider, then one `IconFrame refresh` (primary · sm) at the
  *  right = reset to defaults (SettingsPanelApproved, 2026-08-27). No status word,
  *  no text button. `customised` is accepted for compatibility and unused.
  *

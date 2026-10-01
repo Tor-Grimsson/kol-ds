@@ -7,7 +7,7 @@ updated: 2026-08-01
 description: Bring-your-own, and the promotion loop
 tags:
   - domain/iconography
-  - audience/consumer
+  - domain/packages
 related:
   - "[[INDEX|icons]]"
 ---

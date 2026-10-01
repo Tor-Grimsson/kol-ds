@@ -7,7 +7,7 @@ import { BLANK_LAYOUT, clone, newId } from './slideDoc.js'
 /* taxonomy-ok: organism — the presentation tool: DecksCatalog ⇄ DeckEditor over a consumer-injected client */
 
 /**
- * Decks — the whole presentation tool: the shelf, and a deck open in the editor. ONE component so
+ * Decks — The whole presentation tool. the whole presentation tool: the shelf, and a deck open in the editor. ONE component so
  * every app that carries decks renders the same tool (apps/presentation alone, a shell tab later).
  *
  * THE CLIENT is olina's decks API, as verbs (the fixture fakes them; the real one is a Pages Function

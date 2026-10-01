@@ -3,13 +3,13 @@ import * as chessData from '../demo-data/chess.js'
 
 export const meta = {
   title: 'Chess apparatus',
-  description: 'The full chess analysis apparatus — game archive, board, playback, notation, variations',
+  description: 'The full chess analysis apparatus',
   category: 'game',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/chess', 'pattern/blocks'],
 }
 export const stage = 'full'
 

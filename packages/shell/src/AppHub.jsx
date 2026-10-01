@@ -7,7 +7,7 @@ import { ShortcutsOverlay } from '@kolkrabbi/kol-component'
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / ShortcutsOverlay (relative) */
 
 /**
- * AppHub — Shell + Hub in one call; the app passes its Tool as children (the app anatomy,
+ * AppHub — An app's shell and hub in one. Shell + Hub in one call; the app passes its Tool as children (the app anatomy,
  * `docs/documentation/04-compositions/16-app-anatomy.md`, 2026-09-26).
  *
  * monitor, mirror and fxr each assembled this by hand: the same AppShell props, the same

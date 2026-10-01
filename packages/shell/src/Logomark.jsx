@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 /**
- * Logomark — fetches and INLINES an SVG so currentColor theming works: an
+ * Logomark — An inlined SVG mark. fetches and INLINES an SVG so currentColor theming works: an
  * <img> renders a currentColor mark black in dark mode (invisible). Ported
  * verbatim from the kol-mirror cut (module-level cache; async resolve even on
  * cache hit — sync setState in an effect cascades renders).

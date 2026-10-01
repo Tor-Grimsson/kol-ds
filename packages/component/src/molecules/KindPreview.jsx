@@ -13,7 +13,7 @@ import DocPage from './DocPage.jsx'
 /* taxonomy-ok: molecule — nests the DS media atoms + CodeBlock (relative). */
 
 /**
- * KindPreview — a preview for any kind of file: kol-r2b2's `KindPreview.jsx`,
+ * KindPreview — A preview for any kind of file. a preview for any kind of file: kol-r2b2's `KindPreview.jsx`,
  * promoted 2026-08-27 (SettingsPanelChromeAndColumnPreview). Before it, anything
  * that was not an image or a video showed a grey box with the word "text".
  * HLS → `HlsVideo` (inert — the DS's background-video atom, preview only),

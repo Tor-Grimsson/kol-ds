@@ -28,16 +28,22 @@
  *       connectors). The Development rail clipped six of ten titles (user,
  *       2026-09-30: "we dont want clipping … make some title rule").
  *
+ *   M6  A description is a SUMMARY, not a feature list (user, 2026-09-30: *"description is a
+ *       SHORT summary of what is here IN FEW WORDS.. not an opportunity to list arrays"* — and his
+ *       example, *"Search engine, custom built for wide use-cases"*). No `·` `;` `—` `–` `(`, and
+ *       at most one comma.
+ *
+ * EVERY SURFACE, since the same day (the showcase review W5). M2 and M6 used to hold the vault
+ * alone while package, home, component, set, block and card descriptions ran to paragraphs — 136
+ * of them. Now: the vault, `showcase/src/homes/`, the component MDX `meta`, every package.json,
+ * and the `meta` of every set, block and card. The component MDX descriptions are AUTHORED (the
+ * frontmatter sync keeps an existing value), so they are fixed in the file.
+ *
  * Same shape as validate-headings.mjs and for the same reason: the check is on
  * the SOURCE, not on the renderer. Truncating in the panel would have hidden
  * the babble and kept it, and the next doc would have copied it.
  *
- * SCOPE, STATED OUT LOUD. Hard-fails on the `docs/` vault. The component MDX
- * surface (showcase/src/docs/components/*.mdx) shares the contract but its
- * descriptions are MINED from package JSDoc by extract-descriptions.mjs — a
- * hand-rewrite there is overwritten on the next regen, so the fix is in the
- * package source. Those are COUNTED and printed, never silently skipped: a
- * gate that hides what it does not enforce reads as "covered" when it is not.
+ * SCOPE: the vault gets all six rules; every other surface gets M2 and M6 (below).
  */
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
@@ -47,6 +53,8 @@ const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const VAULT = join(REPO, 'docs')
 const MDX_DIR = join(REPO, 'showcase/src/docs/components')
 const MAX_WORDS = 8
+/* M6 — a list wears one of these, or two commas */
+const isList = (d) => /[·;—–(]/.test(d) || (d.match(/,/g) || []).length >= 2
 
 /* Lowercase by design, not by sloppiness — a brand spells its own name. */
 const LOWERCASE_PROPER = /^(shadcn|npm|pnpm|gsap|opentype|embla|chess\.js|kol-|@kolkrabbi)/
@@ -108,19 +116,42 @@ for (const file of walk(VAULT)) {
     if (/^[a-z]/.test(d) && !LOWERCASE_PROPER.test(d)) {
       errors.push(`${rel}  M3 description is not sentence case\n      ${d.slice(0, 90)}`)
     }
+    if (isList(d)) errors.push(`${rel}  M6 description is a list, not a summary\n      ${d.slice(0, 90)}`)
   }
 }
 
-/* The counted, un-enforced surface — see SCOPE in the header. */
-let mdxOver = 0
-let mdxTotal = 0
-if (existsSync(MDX_DIR)) {
-  for (const name of readdirSync(MDX_DIR)) {
-    if (!name.endsWith('.mdx')) continue
-    mdxTotal++
-    const d = readFileSync(join(MDX_DIR, name), 'utf8').match(/description:\s*"([^"]*)"/)
-    if (d && wordCount(d[1]) > MAX_WORDS) mdxOver++
+/* EVERY OTHER SURFACE — M2 and M6 (W5, 2026-09-30) */
+const described = []
+const fmDescription = (src) => {
+  const fm = src.match(/^---\n([\s\S]*?)\n---/)
+  const d = fm && fm[1].match(/^description:\s*(.+)$/m)
+  return d ? unquote(d[1]) : null
+}
+const objDescription = (src) => {
+  const m = src.match(/description:\s*(['"`])((?:(?!\1)[^\\]|\\.)*)\1/)
+  return m ? m[2].replace(/\\(.)/g, '$1') : null
+}
+const listDir = (dir, ext) => (existsSync(join(REPO, dir)) ? readdirSync(join(REPO, dir)).filter((n) => n.endsWith(ext)).map((n) => `${dir}/${n}`) : [])
+for (const rel of listDir('showcase/src/homes', '.md')) described.push([rel, fmDescription(readFileSync(join(REPO, rel), 'utf8'))])
+for (const rel of listDir('showcase/src/docs/components', '.mdx')) described.push([rel, objDescription(readFileSync(join(REPO, rel), 'utf8'))])
+for (const dir of ['sets', 'blocks', 'cards']) for (const rel of listDir(`showcase/src/${dir}`, '.jsx')) described.push([rel, objDescription(readFileSync(join(REPO, rel), 'utf8'))])
+for (const d of readdirSync(join(REPO, 'packages'))) {
+  const rel = `packages/${d}/package.json`
+  if (existsSync(join(REPO, rel))) described.push([rel, JSON.parse(readFileSync(join(REPO, rel), 'utf8')).description ?? null])
+}
+/* the component descriptions generated from each component's own header comment (extract-descriptions)
+ * — the first sentence after `Name —` is the summary, so it answers to the same two rules */
+const GEN = join(REPO, 'showcase/src/usage/descriptions.json')
+if (existsSync(GEN)) {
+  for (const [name, v] of Object.entries(JSON.parse(readFileSync(GEN, 'utf8')))) {
+    described.push([`${name} (its header comment's first sentence)`, typeof v === 'string' ? v : v?.description])
   }
+}
+for (const [rel, d] of described) {
+  if (!d) continue
+  const w = wordCount(d)
+  if (w > MAX_WORDS) errors.push(`${rel}  M2 description is ${w} words (max ${MAX_WORDS})\n      ${d.slice(0, 90)}…`)
+  if (isList(d)) errors.push(`${rel}  M6 description is a list, not a summary\n      ${d.slice(0, 90)}`)
 }
 
 if (errors.length) {
@@ -128,7 +159,4 @@ if (errors.length) {
   for (const e of errors) console.error('  ' + e)
   process.exit(1)
 }
-console.log(`metadata: clean (${checked} vault docs — titles are names, descriptions <= ${MAX_WORDS} words)`)
-if (mdxOver) {
-  console.log(`metadata: ${mdxOver} of ${mdxTotal} component MDX descriptions exceed ${MAX_WORDS} words — mined from package JSDoc, fix at the source (not enforced here)`)
-}
+console.log(`metadata: clean (${checked} vault docs + ${described.length} other descriptions — names, and summaries of <= ${MAX_WORDS} words)`)

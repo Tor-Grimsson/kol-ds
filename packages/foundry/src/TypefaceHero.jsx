@@ -5,7 +5,7 @@ import { Button } from '@kolkrabbi/kol-component'
  * page-hero region rendering live in the specimen's own font-family. */
 
 /**
- * TypefaceHero — the specimen hero for a typeface page: a centered stack of
+ * TypefaceHero — A typeface's specimen hero. the specimen hero for a typeface page: a centered stack of
  * category pill → giant display name rendered in the typeface's OWN fontFamily
  * → in-family description → download / view-specimen CTAs → an optional
  * licensing caption. Data-driven from one `typeface` object; the giant name is

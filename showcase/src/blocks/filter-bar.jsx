@@ -3,12 +3,12 @@ import { Input, Tag, ViewToggle, Dropdown, Divider, AssetPlaceholder } from '@ko
 
 export const meta = {
   title: 'Filter bar',
-  description: 'A filter bar with search, tags, sort and view mode',
+  description: 'A filter bar with search and sort',
   category: 'toolbar',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/filtering', 'domain/search', 'pattern/blocks'],
 }
 export const stage = 'full'
 

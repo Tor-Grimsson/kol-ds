@@ -1,7 +1,7 @@
 {
   "name": "@kolkrabbi/kol-search",
   "version": "0.2.0",
-  "description": "The KOL search engine — a query language (filters, aliases, negation, phrases, dates, smart terms), a ranker that says why, and disjunctive facet counts. Plain ESM, no React, no dependencies.",
+  "description": "Search engine, custom built for wide use-cases",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",

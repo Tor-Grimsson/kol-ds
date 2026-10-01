@@ -5,7 +5,7 @@ status: canonical
 created: 2026-07-31
 updated: 2026-08-01
 verified: 2026-07-09
-description: Board, pieces, and the play/analysis apparatus
+description: The chess board and analysis apparatus
 aliases:
   - chess
   - kol-chess
@@ -17,7 +17,7 @@ sources:
   - showcase/src/sets/chess-apparatus.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/chess
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[09-dashboards-system|dashboards system]]"

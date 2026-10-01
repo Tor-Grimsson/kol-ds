@@ -19,7 +19,7 @@ sources:
   - showcase/src/sets/work-portfolio.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/data
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"

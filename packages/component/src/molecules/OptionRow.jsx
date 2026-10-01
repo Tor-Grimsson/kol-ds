@@ -1,5 +1,5 @@
 /**
- * OptionRow — one row in a list you move through: the palette's results, a browser's rows, a
+ * OptionRow — One row in a list you move through. one row in a list you move through: the palette's results, a browser's rows, a
  * dropdown's options. Lifted out of ShellSearchOverlay (2026-09-30), where it was hand-rolled next to
  * DropdownTagFilter's, FieldRow's and ColumnBrowser's own — four rows for one job.
  *

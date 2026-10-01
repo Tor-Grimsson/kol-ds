@@ -4,7 +4,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 const PULSE_MS = 100
 
 /**
- * IconButton — the icon-only panel key (kol-monitor's rack, lifted 2026-09-01):
+ * IconButton — An icon-only panel key. the icon-only panel key (kol-monitor's rack, lifted 2026-09-01):
  * 1px border, radius 3, `active` lights the LED-red border and a 15% fill;
  * `momentary` flashes the active style for ~100ms on click — trigger-style
  * actions. Use with `PanelLabel` for a text label.

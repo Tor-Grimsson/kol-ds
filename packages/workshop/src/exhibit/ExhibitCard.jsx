@@ -1,5 +1,5 @@
 /**
- * ExhibitCard — the specimen header inside an exhibit section: what this
+ * ExhibitCard — The header of an exhibit section. the specimen header inside an exhibit section: what this
  * variant is called, what it does, and (optionally) its technical line and its
  * prop signature. Recreated from kol-website's local `DesCard` (37L), which
  * every showcase page in that repo imported by relative path.

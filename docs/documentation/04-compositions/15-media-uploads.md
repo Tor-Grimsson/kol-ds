@@ -16,7 +16,6 @@ sources:
 tags:
   - domain/compositions
   - domain/content-pipeline
-  - audience/consumer
 related:
   - "[[../../operations/07-apps-tier/02-media-app-plan|media app plan]]"
   - "[[07-content-system|content system]]"

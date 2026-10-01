@@ -10,7 +10,7 @@ export const meta = {
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/color', 'domain/editor', 'domain/slides', 'pattern/blocks'],
 }
 export const stage = 'sm'
 

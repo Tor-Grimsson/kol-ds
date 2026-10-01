@@ -7,7 +7,7 @@ updated: 2026-08-02
 description: What KOL is missing, in priority order
 tags:
   - domain/components
-  - audience/consumer
+  - domain/research
 related:
   - "[[INDEX|research]]"
 ---

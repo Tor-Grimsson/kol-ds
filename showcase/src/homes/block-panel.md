@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Inspector and settings panels
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
+  - domain/settings
 ---
 
 # Panels

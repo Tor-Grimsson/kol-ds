@@ -31,7 +31,7 @@ function layoutFor(index, cardSpacing) {
 }
 
 /**
- * ScrollDriftGallery — a pinned hero where vertical scroll scrubs a horizontal
+ * ScrollDriftGallery — A gallery that drifts sideways on scroll. a pinned hero where vertical scroll scrubs a horizontal
  * track ("The Drift"): the section pins and page-scroll drives (1) the track
  * sideways, (2) each floating card at its own parallax speed, (3) a keyframed
  * background-color journey, (4) a slow-parallax vertical title, and (5) a

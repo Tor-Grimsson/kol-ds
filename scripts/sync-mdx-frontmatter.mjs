@@ -23,6 +23,7 @@
  * Usage:  node scripts/sync-mdx-frontmatter.mjs [--check]
  *         --check exits non-zero if any file would change (CI-safe).
  */
+import { topicsOf } from './lib/topic-tags.mjs'
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, dirname, basename, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -116,7 +117,10 @@ const describe = (name) => {
  *
  * Top-level namespaces are the closed set (`.kol/docs-framework/03-tag-taxonomy.md`);
  * nesting stays within the 3-level maximum. */
-const BASE_TAGS = ['domain/design-system', 'domain/components']
+/* `domain/design-system` left the base 2026-09-30 (W6): on every page it connected everything */
+const BASE_TAGS = ['domain/components']
+/* the old base, still recognised as "never authored" so a page carrying exactly it is regenerated */
+const OLD_BASE_TAGS = ['domain/design-system', 'domain/components']
 
 /** Tier → a nested leaf under the components domain. */
 const TIER_TAG = {
@@ -155,7 +159,7 @@ const SUBJECT_TAGS = [
 /** true when `tags` is absent or is exactly the old flat constant */
 const isGeneratedBaseTags = (tags) =>
   !Array.isArray(tags) || tags.length === 0 ||
-  (tags.length === BASE_TAGS.length && BASE_TAGS.every((t) => tags.includes(t)))
+  [BASE_TAGS, OLD_BASE_TAGS].some((base) => tags.length === base.length && base.every((t) => tags.includes(t)))
 
 const deriveTags = (name, description, { tier, pkg, fn }) => {
   const tags = new Set(BASE_TAGS)
@@ -166,6 +170,8 @@ const deriveTags = (name, description, { tier, pkg, fn }) => {
   if (fn && fn !== 'non-component') tags.add(`pattern/${fn}`)
   const haystack = `${name} ${description ?? ''}`
   for (const [re, tag] of SUBJECT_TAGS) if (re.test(haystack)) tags.add(tag)
+  /* what the page is about (W6) — the shared topic list */
+  for (const t of topicsOf(name.replace(/([a-z0-9])([A-Z])/g, '$1 $2'), description)) tags.add(t)
   return [...tags].sort()
 }
 

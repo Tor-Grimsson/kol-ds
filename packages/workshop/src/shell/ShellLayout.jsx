@@ -241,18 +241,21 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
    * sheet can never drift from the bindings. The sheet is kol-component's
    * ShortcutsOverlay (2026-09-28): the same sheet, on the same key, as every
    * app — it was a `?` sheet of its own here. `?` still opens it. */
+  /* FEWEST WORDS (the showcase review W16, 2026-09-30 — user: "shortcuts overlay, too wordy"):
+   * a label names the thing the key does, nothing more. `\\` hides or shows both rails at once. */
   const SHORTCUTS = [
     { section: 'Search', items: [
-      { id: 'k', label: 'Search everything', combo: '⌘ K , /' },
-      { id: 'enter', label: 'All results, on the search page', combo: '↵' },
+      { id: 'k', label: 'Search', combo: '⌘ K , /' },
+      { id: 'enter', label: 'All results', combo: '↵' },
     ] },
     { section: 'Shell', items: [
-      { id: 'sheet', label: 'This sheet', combo: 'S' },
+      { id: 'sheet', label: 'Shortcuts', combo: 'S' },
       { id: 'settings', label: 'Settings', combo: ',' },
       { id: 'nav', label: 'Left rail', combo: '[' },
       { id: 'toc', label: 'Right rail', combo: ']' },
-      { id: 'fold', label: 'Fold or open every chapter', combo: 'C' },
-      { id: 'esc', label: 'Close what is open', combo: 'Esc' },
+      { id: 'rails', label: 'Both rails', combo: '\\' },
+      { id: 'fold', label: 'Fold all', combo: 'C' },
+      { id: 'esc', label: 'Close', combo: 'Esc' },
     ] },
     ...(shortcuts.length ? [{ section: 'Page', items: shortcuts.map(({ id, label, combo }) => ({ id, label, combo })) }] : []),
   ]
@@ -288,6 +291,14 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       } else if (e.key === ']') {
         e.preventDefault()
         setTocCollapsed((v) => { writeSettings({ ...readSettings(), tocHidden: !v }); return !v })
+      } else if (e.key === '\\') {
+        /* BOTH RAILS (W16): any rail showing → hide both; both hidden → show both */
+        e.preventDefault()
+        const s = readSettings()
+        const hide = !(s.navHidden && s.tocHidden)
+        setNavCollapsed(hide)
+        setTocCollapsed(hide)
+        writeSettings({ ...s, navHidden: hide, tocHidden: hide })
       } else if (e.key === 'c' || e.key === 'C') {
         e.preventDefault()
         foldedRef.current = !foldedRef.current
@@ -437,7 +448,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       { id: 'toc', label: 'Right rail', render: () => <SettingsSwitch on={!tocCollapsed} onChange={(on) => { setTocCollapsed(!on); setPref('tocHidden', !on) }} /> },
     ] },
     { label: 'Search', rows: [
-      { id: 'scope', label: 'Quick search in this space only', render: () => <SettingsSwitch on={!!prefs.limitToSpace} onChange={(on) => setPref('limitToSpace', on)} /> },
+      { id: 'scope', label: 'This space only', render: () => <SettingsSwitch on={!!prefs.limitToSpace} onChange={(on) => setPref('limitToSpace', on)} /> },
     ] },
     ...settings,
     { label: 'Keys', rowGap: 1, rows: SHORTCUTS.flatMap((sec) => sec.items).map((k) => ({

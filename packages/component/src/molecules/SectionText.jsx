@@ -1,5 +1,5 @@
 /**
- * SectionText — the ruled text block of the SECTION family (SectionSet,
+ * SectionText — The label, headline and body block. the ruled text block of the SECTION family (SectionSet,
  * kol-website 2026-08-26): label · headline · body · actions, every slot
  * opt-in — an omitted slot renders nothing. The section-tier twin of
  * ContentText: the card family solved "every organism types its own kicker /

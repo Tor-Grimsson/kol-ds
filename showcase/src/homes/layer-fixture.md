@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Fake data the apps run on
 tags:
-  - domain/compositions
   - audience/agency-internal
+  - domain/compositions
+  - domain/editor
 ---
 
 # Fixture

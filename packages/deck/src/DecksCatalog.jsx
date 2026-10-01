@@ -6,7 +6,7 @@ import SlideThumb from './SlideThumb.jsx'
 /* taxonomy-ok: organism — composes kol-shell's CatalogPage (shelf preset) over deck rows with SlideThumb covers */
 
 /**
- * DecksCatalog — the shelf of decks (kol-olina's brand `/slide-deck` manager, ported).
+ * DecksCatalog — The shelf of decks. the shelf of decks (kol-olina's brand `/slide-deck` manager, ported).
  *
  * `CatalogPage preset="shelf"` — the eleven props that page once carried ARE the preset; `toCard`
  * returns fields and handlers and the page renders the slots (star, trash, the slide count). The

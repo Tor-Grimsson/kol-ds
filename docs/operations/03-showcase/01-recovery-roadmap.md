@@ -4,7 +4,7 @@ type: plan
 status: active
 created: 2026-07-31
 updated: 2026-08-01
-description: Twenty-two defects, five root causes, one roadmap
+description: The showcase recovery plan
 aliases:
   - showcase-recovery
   - quarantine-roadmap

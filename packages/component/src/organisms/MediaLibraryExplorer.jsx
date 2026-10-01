@@ -4,7 +4,7 @@ import { useModal } from '../molecules/Modal.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 
 /**
- * MediaLibraryExplorer — the media surface, and since 2026-09-22 a thin name for it.
+ * MediaLibraryExplorer — The media browser. the media surface, and since 2026-09-22 a thin name for it.
  *
  * IT USED TO BE THE MERGE ITSELF: it held a BROWSE · FILES switch and mounted one of two pages,
  * each of which listed the bucket, drew its own header and printed its own count. The user's read

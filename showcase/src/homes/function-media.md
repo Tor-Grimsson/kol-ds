@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Images, video and galleries
 tags:
   - domain/components
-  - audience/consumer
+  - domain/media
+  - pattern/media
 ---
 
 # Media

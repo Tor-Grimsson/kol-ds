@@ -5,7 +5,7 @@ status: active
 created: 2026-08-01
 updated: 2026-09-25
 verified: 2026-07-04
-description: Every exported component, by tier, with its job
+description: Every exported component by tier
 aliases:
   - components
   - component-list
@@ -14,7 +14,7 @@ sources:
   - packages/framework/src/index.js
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[04-diamond-tier|diamond tier]]"

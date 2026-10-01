@@ -3,7 +3,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CopyButton from './CopyButton.jsx'
 
 /**
- * CodeBlock — REPLICATED from the elder reference
+ * CodeBlock — Highlighted code with a copy button. REPLICATED from the elder reference
  * (kol-website/packages/ui/src/molecules/CodeBlock.jsx, 2026-07-28 user
  * mandate): react-syntax-highlighter (Prism) with the oneDark theme flattened
  * onto KOL chrome — transparent bg, 14px/1.6 mono, no text-shadow — a single

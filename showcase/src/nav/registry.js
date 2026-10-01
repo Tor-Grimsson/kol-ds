@@ -4,6 +4,7 @@ import EXTRACTED_DESCRIPTIONS from '../usage/descriptions.json'
 import { DEMOS } from '../lib/demos-registry.js'
 import { COMPONENT_GROUPS, MEMBER_OF } from '../lib/component-groups.js'
 import { ROSTER } from './roster.js'
+import { ACRONYM_COMPONENTS } from '../../../scripts/lib/parse-barrel.mjs'
 import { FUNCTIONS_BY_NAME, DOCS_ONLY, DEPRECATED } from './classification.js'
 import { labelFromSlug } from './labels.js'
 
@@ -217,7 +218,7 @@ export function slugify(name) {
 
 /* Drop non-component exports — UPPER_SNAKE data exports (GRAPHICS, GRAPHIC_RAW)
  * are maps/strings, not components, and shouldn't get doc pages. */
-const isDataExport = (name) => /^[A-Z0-9_]+$/.test(name)
+const isDataExport = (name) => /^[A-Z0-9_]+$/.test(name) && !ACRONYM_COMPONENTS.has(name)
 
 /* DOCS_ONLY + DEPRECATED live in classification.js (plain data — the CI gate
  * imports them without touching this Vite-bound module); re-exported here

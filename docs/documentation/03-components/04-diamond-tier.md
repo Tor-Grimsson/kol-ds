@@ -11,7 +11,7 @@ aliases:
   - diamond
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 sources:
   - .kol/llm-context/session-log
   - .kol/llm-context/backlog/2026-07-08-button-chrome-audit.md

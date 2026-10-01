@@ -6,7 +6,7 @@ import { computeSnapTargets, findSnap } from './snap.js'
 /* taxonomy-ok: organism — SlideRenderer + kol-component's SelectionOverlay, CanvasRuler and CanvasGuides behind one pointer router */
 
 /**
- * SlideStage — the editable slide (2026-09-03, the editor scope, step 2).
+ * SlideStage — The editable slide. the editable slide (2026-09-03, the editor scope, step 2).
  *
  * kol-fxr's `CanvasArea` pointer router, cut to a deck's needs. The document
  * renders through `SlideRenderer` at 1920×1080 under a `zoom`, and the stage

@@ -2,7 +2,7 @@
 import RowMenuButton from './RowMenuButton.jsx'
 
 /**
- * MediaTile — one file in the grid view, Finder's icon view (user 2026-09-23: *"skip the container
+ * MediaTile — One file in the grid view. one file in the grid view, Finder's icon view (user 2026-09-23: *"skip the container
  * card, just show the title and preview, give it hilight focus state … we are fighting the card
  * component"*). The grid borrowed `ContentCard` from the content-filters set — a card with a date,
  * a size and two buttons — so the one view of files that should read like the other two carried

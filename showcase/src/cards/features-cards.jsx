@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Feature cards',
-  description: 'A headline and a row of image cards, each with an icon and a line',
+  description: 'A headline over image cards',
   category: 'features',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/cards', 'domain/media', 'pattern/website-cards'],
   featured: true,
 }
 export const stage = 'full'

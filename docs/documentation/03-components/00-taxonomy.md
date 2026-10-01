@@ -16,7 +16,7 @@ sources:
   - scripts/validate-taxonomy.mjs
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[../00-overview/05-names|names]]"
   - "[[02-placement|component placement]]"

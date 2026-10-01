@@ -14,7 +14,7 @@ import { duplicateLayers, pasteLayers, applyDeckSettings, duplicateSlide } from 
 /* taxonomy-ok: organism — SlideStage + SlideInspector + the filmstrip + DeckFile / DeckSettings / the layout picker / present mode */
 
 /**
- * DeckEditor — one deck, open (kol-olina's brand `/slide-deck/:slug/edit`, ported without the router).
+ * DeckEditor — One deck open for editing. one deck, open (kol-olina's brand `/slide-deck/:slug/edit`, ported without the router).
  *
  * The stage on top, the inspector a floating card beside it, the filmstrip a rail on the floor. Click
  * a thumb to bring a slide up, drag to reorder, the trailing tile opens the layout picker. Present

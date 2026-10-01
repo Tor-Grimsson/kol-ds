@@ -9,7 +9,7 @@ aliases:
   - documentation
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/docs
 related:
   - "[[../INDEX|docs home]]"
 ---

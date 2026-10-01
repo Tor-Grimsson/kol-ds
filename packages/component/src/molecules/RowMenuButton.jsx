@@ -3,7 +3,7 @@ import Button from '../atoms/Button.jsx'
 import useCoarsePointer from '../hooks/useCoarsePointer.js'
 
 /**
- * RowMenuButton — the `···` that stands in for right-click on a touch device (media D-touch,
+ * RowMenuButton — A row's menu on touch devices. the `···` that stands in for right-click on a touch device (media D-touch,
  * 2026-09-23). A finger has no right button, and a held press (`useLongPress`) is invisible until
  * you know it, so on `pointer: coarse` a row or tile that has a context menu wears this. It calls
  * the SAME handler right-click calls, with the tap as the event, so the payload, the selection

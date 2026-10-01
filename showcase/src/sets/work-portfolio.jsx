@@ -15,13 +15,13 @@ const Tags = ({ list = [] }) =>
 
 export const meta = {
   title: 'Work / portfolio',
-  description: 'A studio work index — a showcase-card shelf/grid toggling to a showcase-row list, a scroll-parallax "more work" shelf, and a project-detail GalleryCarousel',
+  description: 'A studio work index',
   category: 'portfolio',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/app-shell', 'domain/content', 'pattern/blocks'],
 }
 export const stage = 'full'
 

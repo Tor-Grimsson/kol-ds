@@ -7,9 +7,10 @@ export const stage = 'md'
  * stack); the examples below it are different PROPS (commit on blur, a slot, a property pair),
  * not variants of the same thing. */
 export const variants = ['filled', 'outline']
+export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
-export default function InputDemo({ variant = 'filled', size = 'md' }) {
+export default function InputDemo({ variant = 'filled', tone = 'default', size = 'md' }) {
   const [v, setV] = useState('')
   const [name, setName] = useState('scope-04')
   const [hex, setHex] = useState('FFCF33')
@@ -18,7 +19,7 @@ export default function InputDemo({ variant = 'filled', size = 'md' }) {
   const onChange = (e) => setV(e?.target?.value ?? e)
   return (
     <>
-      <Input variant={variant} size={size} placeholder={variant} value={v} onChange={onChange} />
+      <Input variant={variant} tone={tone} size={size} placeholder={variant} value={v} onChange={onChange} />
       {/* xs + onCommit (ControlsXsRung, 2026-09-01): the panel rung, committing on blur / Enter — the value beside it is what was committed */}
       <div className="flex items-center gap-2">
         <Input variant="outline" size="xs" value={name} onCommit={setName} placeholder="module name" chars={12} />

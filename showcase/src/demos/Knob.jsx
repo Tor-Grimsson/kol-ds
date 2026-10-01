@@ -6,17 +6,16 @@ const PLATE = { display: 'flex', alignItems: 'center', gap: 16, padding: 16, bor
 
 /* Drag up/down (200px = the range); ⌥-click resets; on touch hold 500ms for the
  * big ParamSheet. Four sizes, the bipolar legend, the row variants. */
-export default function KnobDemo() {
+export const variants = ['column', 'row', 'row-left', 'row-right']
+export const sizes = ['md', 'sm', 'lg', 'xl']
+
+export default function KnobDemo({ variant = 'column', size = 'md' }) {
   const [v, setV] = useState(35)
   const [b, setB] = useState(-20)
   return (
     <div style={PLATE}>
-      <Knob value={v} onChange={setV} label="gain" size="sm" />
-      <Knob value={v} onChange={setV} label="gain" size="md" />
-      <Knob value={v} onChange={setV} label="gain" size="lg" />
-      <Knob value={v} onChange={setV} label="gain" size="xl" />
-      <Knob value={b} onChange={setB} label="pan" bipolar size="md" />
-      <Knob value={v} onChange={setV} label="rate" variant="row-right" labelMinWidth={28} size="sm" />
+      <Knob value={v} onChange={setV} label="gain" variant={variant} labelMinWidth={28} size={size} />
+      <Knob value={b} onChange={setB} label="pan" bipolar variant={variant} labelMinWidth={28} size={size} />
     </div>
   )
 }

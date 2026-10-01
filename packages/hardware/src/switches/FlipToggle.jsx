@@ -1,5 +1,5 @@
 /**
- * FlipToggle — the eurorack flip switch, two or three positions (kol-monitor's
+ * FlipToggle — A eurorack flip switch. the eurorack flip switch, two or three positions (kol-monitor's
  * rack, lifted 2026-09-01). `positions=2`: `value` is a boolean; `positions=3`:
  * `value` is 0 · 1 · 2 (top, centre, bottom / left, centre, right).
  *

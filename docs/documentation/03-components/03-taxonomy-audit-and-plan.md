@@ -18,7 +18,7 @@ sources:
   - docs/documentation/03-components/02-placement.md
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[00-taxonomy|component taxonomy]]"
   - "[[02-placement|component placement]]"

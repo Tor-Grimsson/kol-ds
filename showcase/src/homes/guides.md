@@ -6,8 +6,8 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Live pages that explain a system
 tags:
+  - domain/docs
   - domain/foundations
-  - audience/consumer
 ---
 
 # Guides

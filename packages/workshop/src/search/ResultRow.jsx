@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 /**
- * ResultRow — one search result: a title, a meta line, an optional description, the whole row a
+ * ResultRow — One search result. one search result: a title, a meta line, an optional description, the whole row a
  * link (2026-09-30, open questions Round 2 — the user: *"I like both, is this a component? if it
  * is I would just have it available as variants … underline is more appealing currently"*).
  *
@@ -17,7 +17,9 @@ import { Link } from 'react-router-dom'
  * @param {'underline'|'wash'} [variant='underline']
  */
 const VARIANTS = {
-  underline: { row: 'group flex flex-col gap-1 py-3 opacity-80 hover:opacity-100 focus-visible:opacity-100', title: 'group-hover:underline underline-offset-4' },
+  /* full ink at rest (W11, 2026-09-30 — user: "Results item is also so low opacity"); the ROLES carry
+   * the hierarchy — title emphasis, meta, body — not an opacity on the whole row */
+  underline: { row: 'group flex flex-col gap-1 py-3', title: 'group-hover:underline underline-offset-4' },
   wash: { row: 'flex flex-col gap-1 px-3 py-3 hover:bg-fg-04', title: '' },
 }
 
@@ -26,8 +28,8 @@ export default function ResultRow({ to, title, meta, description, variant = 'und
   return (
     <Link to={to} className={v.row}>
       <span className={`kol-doc-body text-emphasis ${v.title}`.trim()}>{title}</span>
-      {meta && <span className="kol-helper-12 text-subtle">{meta}</span>}
-      {description && <span className="kol-doc-body">{description}</span>}
+      {meta && <span className="kol-helper-12 text-meta">{meta}</span>}
+      {description && <span className="kol-doc-body text-body">{description}</span>}
     </Link>
   )
 }

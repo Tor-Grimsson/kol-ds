@@ -16,7 +16,7 @@ const cardImage = (print, rolls) => {
 }
 
 /**
- * PrintsGrid — the filterable storefront grid organism: a ContentFilters shell
+ * PrintsGrid — A filterable grid of prints. the filterable storefront grid organism: a ContentFilters shell
  * (category / year facets + search + view toggle) wrapping a responsive grid of
  * `ContentCard variant="catalog"` (image-only, flip on select). Cards shuffle once on mount so the wall reorders on
  * each load. Clicking a card reports its rect + slug via `onCardClick` for a

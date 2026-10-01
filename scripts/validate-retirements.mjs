@@ -80,6 +80,15 @@ for (const pkg of PKGS) {
   }
 }
 
+/* (d) a value DECLARED in the barrel itself under @deprecated — the icon set's V1 exports, renamed to
+ * INTERFACE 2026-09-30 (W8): `/** @deprecated … *\/ export const OLD = NEW` */
+for (const pkg of PKGS) {
+  const barrel = readFileSync(join(ROOT, 'packages', pkg, 'src/index.js'), 'utf8')
+  for (const m of barrel.matchAll(/\/\*\*(?:(?!\*\/)[\s\S])*?@deprecated(?:(?!\*\/)[\s\S])*?\*\/\s*export\s+const\s+([A-Za-z0-9_]+)\s*=\s*([A-Za-z0-9_]+)/g)) {
+    if (!aliases.has(m[1])) aliases.set(m[1], { pkg, canonical: m[2], file: 'src/index.js' })
+  }
+}
+
 /* (c) theme CSS classes — the marker line names the date and the replacement */
 const THEME = join(ROOT, 'packages/theme')
 for (const file of readdirSync(THEME).filter((f) => f.endsWith('.css'))) {

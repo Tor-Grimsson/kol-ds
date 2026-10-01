@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The work itself
 tags:
-  - domain/compositions
   - audience/agency-internal
+  - domain/compositions
+  - domain/editor
 ---
 
 # Tool

@@ -12,7 +12,7 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /**
- * ShellDrawer — THE edge drawer: a portalled panel that slides in from the
+ * ShellDrawer — A panel that slides in from an edge. THE edge drawer: a portalled panel that slides in from the
  * left, right or BOTTOM viewport edge over a dimming backdrop. Distinct from Modal
  * (centered prompt/confirm) and FullscreenOverlay (fills the whole viewport,
  * not an edge sheet). Escape, backdrop click and the built-in close button

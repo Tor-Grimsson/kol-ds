@@ -4,10 +4,10 @@ type: index
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: The design system written down, and the repo around it
+description: The design system, written down
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/docs
 ---
 
 # Docs

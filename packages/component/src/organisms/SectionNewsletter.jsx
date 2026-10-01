@@ -8,7 +8,7 @@ import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'
 
 /**
- * SectionNewsletter — the newsletter card of the section family
+ * SectionNewsletter — A newsletter signup card. the newsletter card of the section family
  * (SectionNewsletter, kol-website 2026-08-27 — user: the newsletter as a card
  * in the family, same ladder, same cap, content centred on y, not its own
  * thing). `SectionText` (label · headline · body, centred) with the email

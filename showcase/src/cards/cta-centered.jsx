@@ -2,12 +2,12 @@ import { Button, SectionCta } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Centered CTA',
-  description: 'A centred headline, a line of body and two actions',
+  description: 'A centred headline with two actions',
   category: 'cta',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

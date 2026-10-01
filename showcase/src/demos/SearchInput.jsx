@@ -13,31 +13,24 @@ export function Card() {
   )
 }
 
-export default function SearchInputDemo() {
+export const variants = ['filled', 'ghost', 'outline']
+export const tones = ['default', 'inverse']
+export const sizes = ['md', 'xs', 'sm']
+
+export default function SearchInputDemo({ variant = 'filled', tone = 'default', size = 'md' }) {
   const [a, setA] = useState('')
-  const [b, setB] = useState('')
-  const [c, setC] = useState('')
   const [d, setD] = useState('')
   const [e, setE] = useState('')
   return (
     <>
       <SearchInput
+        variant={variant}
+        tone={tone}
+        size={size}
         value={a}
         onChange={(e) => setA(e.target.value)}
         onClear={() => setA('')}
         shortcutHint="⌘K"
-      />
-      <SearchInput
-        variant="ghost"
-        placeholder="Filter…"
-        value={b}
-        onChange={(e) => setB(e.target.value)}
-        onClear={() => setB('')}
-      />
-      <SearchInput
-        size="sm"
-        value={c}
-        onChange={(e) => setC(e.target.value)}
       />
       {/* bare body plan — the overlay palette's field, chrome off */}
       <SearchInput

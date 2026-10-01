@@ -5,7 +5,7 @@ import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { MenuDropdownItem } from './MenuItem.jsx'
 
 /**
- * ShapeDropdown — split icon-button + variant-menu molecule (the tool-palette
+ * ShapeDropdown — A tool button with a shape menu. split icon-button + variant-menu molecule (the tool-palette
  * idiom: Select · Text · [Shape ▾] · Pattern). The main button reflects the
  * current variant and fires `onAction` with its id; the chevron half opens a
  * menu of all variants — picking one fires `onChange` and closes.

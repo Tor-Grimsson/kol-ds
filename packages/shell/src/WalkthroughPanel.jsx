@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
 
 /**
- * WalkthroughPanel — the absolutely-centred stepped intro card (both repos'
+ * WalkthroughPanel — A stepped intro card. the absolutely-centred stepped intro card (both repos'
  * HomePage): chevron Buttons either side, text column + illustration pane.
  *
  * Steps are content: `[{ title, text: [..], illustration?, actions? }]` —

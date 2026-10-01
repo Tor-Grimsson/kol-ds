@@ -1,12 +1,13 @@
 import { Avatar } from '@kolkrabbi/kol-component'
 
-export default function AvatarDemo() {
+export const sizes = ['md', 'sm', 'lg', 'xl']
+
+export default function AvatarDemo({ size = 'md' }) {
   return (
     <>
-      <Avatar initial="A" size="sm" />
-      <Avatar initial="TG" size="md" />
-      <Avatar initial="K" size="lg" />
-      <Avatar initial="ZO" size="xl" />
+      <Avatar initial="A" size={size} />
+      <Avatar initial="TG" size={size} />
+      <Avatar initial="ZO" size={size} />
     </>
   )
 }

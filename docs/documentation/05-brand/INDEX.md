@@ -15,7 +15,6 @@ sources:
   - packages/scrape/src/index.js
 tags:
   - domain/brand
-  - audience/consumer
   - brand/assets
 related:
   - "[[../01-foundations/02-color|color]]"

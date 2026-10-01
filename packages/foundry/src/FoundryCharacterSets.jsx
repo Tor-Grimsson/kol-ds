@@ -36,7 +36,7 @@ function GlyphCategory({ title, glyphs, fontFamily, fontStyle, className = '' })
 }
 
 /**
- * FoundryCharacterSets — the character-set browser: the shared header ("Character
+ * FoundryCharacterSets — Browse a typeface's character sets. the character-set browser: the shared header ("Character
  * Set" + Roman/Italic dropdown) above a stack of glyph categories rendered in
  * the chosen family/style. Collapsed by default to the first two categories
  * under a fade with a "Show All Glyphs" reveal; clicking expands to every

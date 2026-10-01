@@ -4,7 +4,7 @@ type: reference
 status: canonical
 created: 2026-08-14
 updated: 2026-09-29
-description: The application shell set — rail plus scaffolds
+description: The application shell and its page scaffolds
 aliases:
   - shell
   - kol-shell
@@ -15,7 +15,7 @@ sources:
   - packages/shell/README.md
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/app-shell
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[02-shells|reference shells]]"

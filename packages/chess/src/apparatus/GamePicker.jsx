@@ -4,7 +4,7 @@ import { TIME_CLASS_LABELS, RESULT_LABELS } from './labels.js'
 import { useChessControls } from '../context/ChessControlsContext'
 
 /**
- * GamePicker — the game-selection row: filtered-games dropdown + opening
+ * GamePicker — Pick a game and see its details. the game-selection row: filtered-games dropdown + opening
  * name, and the game-info popover (players / result / time control / date /
  * opening / termination) behind a star button. Padding-free — composer owns
  * chrome via `className`; extra trailing buttons go in `actions`.

@@ -1,5 +1,5 @@
 /**
- * PageShell — the page scaffold every shell page re-declared by hand (6 pages
+ * PageShell — The page scaffold of an app. the page scaffold every shell page re-declared by hand (6 pages
  * in monitor, 4 in mirror — the most-duplicated block in both repos).
  *
  * `mode="scroll"` (default): min-height 100vh, natural page scroll.

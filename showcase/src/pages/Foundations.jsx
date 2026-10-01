@@ -45,8 +45,8 @@ export default function Foundations() {
 
   return (
     <>
-      {/* the chapter's home (2026-09-30) — markdown with frontmatter, like every level */}
-      <HomeDoc id="foundations" />
+      {/* this page's own home (W3, 2026-09-30) — Foundations is the chapter over it */}
+      <HomeDoc id="tokens" />
 
       <DocSection
         id="opacity"

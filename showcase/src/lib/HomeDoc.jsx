@@ -15,7 +15,7 @@ import { useFrontmatter } from './frontmatter.jsx'
 export const HOME_MODULES = import.meta.glob('../homes/*.md', { eager: true, query: '?raw', import: 'default' })
 export const HOMES = buildInventory(HOME_MODULES)
 
-export default function HomeDoc({ id }) {
+export default function HomeDoc({ id, frontmatter }) {
   const show = useFrontmatter('home')
   /* the page's rail lists the page's headings; the home hands it its frontmatter tags */
   usePageMeta({ tags: HOMES.find((d) => d.id === id)?.metadata?.tags ?? [], related: [] })
@@ -24,7 +24,8 @@ export default function HomeDoc({ id }) {
       inventory={HOMES}
       modules={HOME_MODULES}
       docId={id}
-      showFrontmatter={show}
+      /* `frontmatter={false}` — the page draws the panel itself (the search page, W12) */
+      showFrontmatter={frontmatter ?? show}
       rail={false}
       docHref={vaultDocHref}
       routes={{ docsIndex: '/docs', components: '/components', docFilePath: (d) => `showcase/src/homes/${d}.md` }}

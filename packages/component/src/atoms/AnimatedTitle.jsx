@@ -6,7 +6,7 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 gsap.registerPlugin(ScrollTrigger)
 
 /**
- * AnimatedTitle — scroll-triggered heading that reveals its words one by
+ * AnimatedTitle — A heading whose words fly in on scroll. scroll-triggered heading that reveals its words one by
  * one as it scrolls into view: each word starts far off-screen right,
  * rotated in 3D, and flies into place with a fast stagger (GSAP +
  * ScrollTrigger; plays entering the viewport, reverses scrolling back

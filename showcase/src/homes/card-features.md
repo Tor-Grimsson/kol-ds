@@ -6,8 +6,10 @@ created: 2026-09-30
 updated: 2026-09-30
 description: A section that lists what a product does
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
+  - domain/layout
+  - domain/store
 ---
 
 # Features

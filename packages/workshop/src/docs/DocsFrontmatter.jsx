@@ -1,12 +1,13 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { Icon, Tag } from '@kolkrabbi/kol-component'
+import { Badge, Icon, Tag } from '@kolkrabbi/kol-component'
+import { getTagColor } from '@kolkrabbi/kol-markdown'
 import { useTagMode } from '../tags'
 import TagPath from '../tags/TagPath.jsx'
 
 /* EVERY field carries an icon (user ruling 2026-08-01). Ten of these were
  * hard-coded `null`, so two rows had a glyph and the rest sat at a ragged left
  * edge — a column that is sometimes iconned is worse than one that never is.
- * Every name below is verified present in kol-icon-set-v1. */
+ * Every name below is verified present in kol-icon-set-interface. */
 const FIELD_ICONS = {
   file: 'file',
   title: 'type',
@@ -25,7 +26,7 @@ const FIELD_ICONS = {
   tags: 'hash-02',
   /* 2026-08-01: these three rendered iconless while the rule above promised
    * every field carries one — the exact ragged edge that rule exists to stop.
-   * All verified present in kol-icon-set-v1. */
+   * All verified present in kol-icon-set-interface. */
   id: 'hash-01',
   reuses: 'repeat',
   slug: 'external-link',
@@ -133,6 +134,8 @@ const HIDDEN = new Set(['related', 'aliases'])
  * against the key, never with a text-transform. Every other value is content
  * and is printed exactly as written. */
 const CASED_VALUE_FIELDS = new Set(['type', 'status'])
+/* a doc's lifecycle on Badge's status tones (W17): live reads success, in progress warning, gone error */
+const STATUS_TONE = { active: 'success', canonical: 'info', draft: 'warning', archived: 'error', superseded: 'error', deprecated: 'error' }
 
 /** Contract order first, then anything else the doc carries, alphabetically. */
 const orderFields = (metadata) => {
@@ -210,7 +213,7 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                  * `size` is omitted: `sm` is the default and the only size. */
                 <span className="flex flex-wrap gap-1.5">
                   {value.map((tag) => (
-                    <Tag key={tag} onClick={() => openTagMode(tag)}>
+                    <Tag key={tag} color={getTagColor(tag)} onClick={() => openTagMode(tag)}>
                       {/* the path renderer, not the raw string — namespace dims,
                         * leaf carries. Shared with the tag overlay so the two
                         * surfaces cannot spell a tag two ways. */}
@@ -220,6 +223,9 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                 </span>
               ) : DATE_FIELDS.has(key) ? (
                 formatDate(String(value))
+              ) : key === 'status' && STATUS_TONE[String(value).toLowerCase()] ? (
+                /* STATUS WEARS ITS TONE (W17, 2026-09-30 — user: "no active error warning nothing") */
+                <Badge variant={STATUS_TONE[String(value).toLowerCase()]} size="sm">{humanise(String(value))}</Badge>
               ) : CASED_VALUE_FIELDS.has(key) ? (
                 humanise(String(value))
               ) : Array.isArray(value) ? (

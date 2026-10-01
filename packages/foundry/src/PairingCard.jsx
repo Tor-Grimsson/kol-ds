@@ -1,7 +1,7 @@
 import { Divider } from '@kolkrabbi/kol-component'
 
 /**
- * PairingCard — a font-pairing recommendation: two faces side by side around a
+ * PairingCard — Two typefaces side by side. a font-pairing recommendation: two faces side by side around a
  * vertical seam, each with its name IN ITS OWN FACE, a tag and a description.
  * kol-website's `ui/PairingCard.jsx`, ruled on screen and shipped verbatim
  * (FoundrySpecimenSections, 2026-08-27): the tag wears the typeface row's

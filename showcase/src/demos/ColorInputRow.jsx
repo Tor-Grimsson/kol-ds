@@ -37,7 +37,9 @@ const PALETTE = {
 }
 const resolveRef = (value) => PALETTE[value] ?? null
 
-export default function ColorInputRowDemo() {
+export const sizes = ['sm', 'xs', 'md']
+
+export default function ColorInputRowDemo({ size = 'sm' }) {
   const [fill, setFill] = useState('#49A0A2')
   const [ref, setRef] = useState('palette:accent')
   const [accent, setAccent] = useState('#FFCF33')
@@ -47,10 +49,10 @@ export default function ColorInputRowDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-4">
       {/* Core row: swatch + # hex input, emits #UPPER per keystroke */}
-      <ColorInputRow label="Fill" value={fill} onChange={setFill} />
+      <ColorInputRow size={size} label="Fill" value={fill} onChange={setFill} />
 
       {/* Palette-refs mode: swatch opens a grid of pre-resolved KOL ramp entries */}
-      <ColorInputRow label="Accent" value={accent} onChange={setAccent} refs={KOL_RAMP} />
+      <ColorInputRow size={size} label="Accent" value={accent} onChange={setAccent} refs={KOL_RAMP} />
 
       {/* THE RESOLVER SEAM + the quick states (editor-set-is-behind-its-source,
         * 2026-09-03). The value here is a `palette:` REF, not a hex — the row
@@ -60,6 +62,7 @@ export default function ColorInputRowDemo() {
         * the swatch paints it LIVE and the field shows `auto` rather than a
         * frozen literal. None clears to null. */}
       <ColorInputRow
+        size={size}
         label="Stroke"
         value={ref}
         onChange={setRef}
@@ -71,6 +74,7 @@ export default function ColorInputRowDemo() {
 
       {/* Lock + token mode: 4-column grid, swatch is the lock toggle */}
       <ColorInputRow
+        size={size}
         label="Primary"
         tokenName="--kol-color-red-200"
         value={slot}
@@ -81,6 +85,7 @@ export default function ColorInputRowDemo() {
 
       {/* Unused slot: transparent swatch, muted label/token, dimmed input */}
       <ColorInputRow
+        size={size}
         label="Tertiary"
         tokenName="--kol-color-slot-3"
         value={null}

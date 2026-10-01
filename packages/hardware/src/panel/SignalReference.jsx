@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, TabsRow, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
 
 /**
- * SignalReference — the reference an expression or envelope tool is explained with (signal
+ * SignalReference — The reference for a signal tool. the reference an expression or envelope tool is explained with (signal
  * engine, 2026-09-27). ONE component over the reference DATA in `@kolkrabbi/kol-hardware/signal`,
  * in the three shapes the estate already used:
  *

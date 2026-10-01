@@ -17,7 +17,7 @@ sources:
   - packages/component/src/hooks/glyphLadders.js
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/forms
 related:
   - "[[../03-components/05-control-chrome|control chrome law]]"
   - "[[12-typography-lookup|type lookup]]"

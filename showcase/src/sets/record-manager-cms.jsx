@@ -4,13 +4,13 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Record manager CMS',
-  description: 'The full CMS surface around RecordManager — collections rail, record table with reorder/status/slug/media columns, and the slide-over record panel',
+  description: 'The full CMS around RecordManager',
   category: 'editor',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-08-09',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/data', 'pattern/blocks'],
 }
 export const stage = 'full'
 

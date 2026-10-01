@@ -21,7 +21,7 @@ const faceFor = (typeface) => ({
 })
 
 /**
- * TypefaceLibraryGridWithVariables — the library grid with a "By Typeface"
+ * TypefaceLibraryGridWithVariables — The typeface library grid. the library grid with a "By Typeface"
  * filter mode. Default mode shows standard TypefaceLibraryItem cards; selecting
  * a single typeface swaps to TypefaceVariablePreview per weight variant, with an
  * optional Axes filter for multi-axis families.

@@ -10,7 +10,9 @@ export const stage = 'hug'
  * `states={false}` swaps the Button base for IconFrame — same drawing, no hover,
  * no press, no focus wash — for a close that should not light up.
  */
-export default function Demo() {
+export const sizes = ['sm', 'xs', 'md', 'lg']
+
+export default function Demo({ size = 'sm' }) {
   return (
     <div className="flex flex-col gap-6">
       {[true, false].map((states) => (
@@ -18,12 +20,7 @@ export default function Demo() {
           <span className="kol-helper-10 text-meta w-28">
             {states ? 'states (Button)' : 'no states (IconFrame)'}
           </span>
-          {['xs', 'sm', 'md', 'lg'].map((size) => (
-            <div key={size} className="flex flex-col items-center gap-2">
-              <CloseButton size={size} states={states} onClick={() => {}} />
-              <span className="kol-helper-10 text-subtle">{size}</span>
-            </div>
-          ))}
+          <CloseButton size={size} states={states} onClick={() => {}} />
         </div>
       ))}
     </div>

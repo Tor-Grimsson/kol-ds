@@ -27,6 +27,8 @@ const GATES = [
   ['foundations', 'validate-foundations.mjs'],
   ['width', 'validate-width.mjs'],
   ['rails', 'validate-rails.mjs'],
+  /* rail-pages is NOT here (2026-10-01, user: "pnpm validate is not supposed to be a work BLOCKER"): it drives a browser
+   * through every rail, minutes per run. Run `pnpm validate:rail-pages` when rail or nav code changes. */
   ['frontmatter', 'sync-mdx-frontmatter.mjs'],
   ['references', 'validate-references.mjs'],
   ['drift', 'validate-drift.mjs'],

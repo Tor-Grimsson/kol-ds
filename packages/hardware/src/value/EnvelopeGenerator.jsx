@@ -171,7 +171,7 @@ function EnvelopeHandles({ adsr, sec, onDragStart, onDrag, onDragEnd }) {
 }
 
 /**
- * EnvelopeGenerator — a value over time, typed as an equation or shaped as an ADSR envelope
+ * EnvelopeGenerator — A value over time. a value over time, typed as an equation or shaped as an ADSR envelope
  * (signal engine, 2026-09-27). One tool for what kol-mirror's /expressions page, kol-monitor's
  * Scope+ and Env modules and the design editor's Oscilloscope each built alone.
  *

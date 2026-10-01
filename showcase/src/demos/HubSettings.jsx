@@ -10,9 +10,12 @@ const SHORTCUTS = [
 
 /* the Hub's Settings: SETTINGS · ABOUT · REPO, the app's own sections over the shortcuts —
  * the one array the S sheet shows — and the search reads the shortcuts */
-export default function HubSettingsDemo() {
+export const tones = ['sunken', 'default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey']
+
+export default function HubSettingsDemo({ tone = 'sunken' }) {
   return (
     <HubSettings
+      tone={tone}
       app={{ name: 'Shell', about: 'The reference for the Hub.', links: [{ label: 'Design system', url: 'https://ui.kolkrabbi.io' }] }}
       shortcuts={SHORTCUTS}
       content={(

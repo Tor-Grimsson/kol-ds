@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Floats over content
 tags:
   - domain/components
-  - audience/consumer
+  - domain/overlays
+  - pattern/overlay
 ---
 
 # Overlay

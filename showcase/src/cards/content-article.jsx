@@ -3,12 +3,12 @@ import { heroBg, photo, splitFill, gradient } from '../lib/card-media.js'
 
 export const meta = {
   title: 'Article card',
-  description: "The featured article card riding a page's fold, and the smaller variants beside it",
+  description: "A featured article card and its smaller variants",
   category: 'content',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/cards', 'domain/content', 'pattern/website-cards'],
 }
 export const stage = 'lg'
 

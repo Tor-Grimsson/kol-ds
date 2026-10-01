@@ -2,12 +2,12 @@ import { FeaturedCarousel } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Media carousel',
-  description: 'A featured carousel of wide image slides with title, blurb and CTA',
+  description: 'A carousel of wide image slides',
   category: 'media',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/media', 'domain/slides', 'pattern/blocks'],
 }
 export const stage = 'full'
 

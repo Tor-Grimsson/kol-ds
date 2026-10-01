@@ -16,7 +16,7 @@ sources:
   - packages/theme/kol-type-roles.css
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/typography
 related:
   - "[[03-typography|type classes]]"
   - "[[09-sizes|sizes]]"

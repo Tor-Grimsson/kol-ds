@@ -12,7 +12,7 @@ aliases:
   - button-law
 tags:
   - domain/components
-  - audience/consumer
+  - domain/forms
 sources:
   - packages/theme/kol-components-atoms.css
   - packages/component/src/atoms/Button.jsx

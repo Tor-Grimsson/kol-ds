@@ -1,5 +1,5 @@
 /**
- * TypeSample — a single labeled type-specimen block: an optional mono caption
+ * TypeSample — One labelled type specimen. a single labeled type-specimen block: an optional mono caption
  * over one paragraph whose typography is driven entirely by props via inline
  * style. The atomic unit of the type-specimen kit — stack several to show a
  * scale, a weight range, or a family; adjacent samples get a hairline

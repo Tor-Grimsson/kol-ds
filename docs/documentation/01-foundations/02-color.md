@@ -13,7 +13,8 @@ sources:
   - packages/brand/src/index.js
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/brand
+  - domain/color
 related:
   - "[[01-tokens|foundations]]"
   - "[[10-opacity|opacity]]"

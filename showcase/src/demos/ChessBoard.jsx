@@ -10,7 +10,9 @@ export const stage = 'md'
  * illegal move; the demo just applies it and feeds the next fen back in. */
 const START_FEN = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3'
 
-export default function ChessBoardDemo() {
+export const sizes = ['fluid', 'mobile', 'tablet', 'desktop']
+
+export default function ChessBoardDemo({ size = 'fluid' }) {
   const [fen, setFen] = useState(START_FEN)
   const [lastMove, setLastMove] = useState({ from: 'f1', to: 'b5' })
 
@@ -25,7 +27,7 @@ export default function ChessBoardDemo() {
   return (
     <ChessBoard
       fen={fen}
-      size="fluid"
+      size={size}
       orientation="white"
       lastMove={lastMove}
       boardTheme="green-white"

@@ -4,7 +4,7 @@ import { Button, MobileTabBar } from '@kolkrabbi/kol-component'
 /* taxonomy-ok: molecule — MobileTabBar + a More sheet of Buttons */
 
 /**
- * PhoneNav — the rail, on a phone, as a bottom bar (AppShell `touch="bar"`, apps review
+ * PhoneNav — The rail as a phone tab bar. the rail, on a phone, as a bottom bar (AppShell `touch="bar"`, apps review
  * 2026-09-29). The user: *"what about when there are like 10 pages? … this seems like something
  * shell or hub should account for and ship, but not have per app fixes."*
  *

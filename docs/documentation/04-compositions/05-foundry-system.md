@@ -18,7 +18,7 @@ sources:
   - showcase/src/sets/foundry-specimen.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/typography
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[06-store-system|store system]]"

@@ -7,6 +7,7 @@ const SIZE_MAP = {
 }
 
 /**
+ * @deprecated 2026-10-01 — use SettingsMulti (a many-of-N `Dropdown`). Drops when nobody imports it (04-retirements.md).
  * Dropdown Tag Filter
  * Multi-select dropdown where all items start selected
  * Click to deselect, with "Deselect All" option

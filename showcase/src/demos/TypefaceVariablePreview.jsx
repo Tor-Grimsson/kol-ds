@@ -20,15 +20,20 @@ const TYPEFACE = {
 /* Two list rows compare weights side by side — the specimen line is editable
  * and the Size / Leading / Spacing sliders are live. The card variant is the
  * static metrics readout. */
-export default function TypefaceVariablePreviewDemo() {
+export const variants = ['list', 'card']
+
+export default function TypefaceVariablePreviewDemo({ variant = 'list' }) {
   return (
     <div className="flex flex-col gap-6">
       <style>{FONT_FACES}</style>
-      <TypefaceVariablePreview typeface={TYPEFACE} weight="Light" weightValue={300} variant="list" />
-      <TypefaceVariablePreview typeface={TYPEFACE} weight="Black" weightValue={900} variant="list" />
-      <div className="max-w-sm w-full">
-        <TypefaceVariablePreview typeface={TYPEFACE} weight="Medium" weightValue={500} variant="card" />
-      </div>
+      {variant === 'list' ? (<>
+        <TypefaceVariablePreview typeface={TYPEFACE} weight="Light" weightValue={300} variant="list" />
+        <TypefaceVariablePreview typeface={TYPEFACE} weight="Black" weightValue={900} variant="list" />
+      </>) : (
+        <div className="max-w-sm w-full">
+          <TypefaceVariablePreview typeface={TYPEFACE} weight="Medium" weightValue={500} variant="card" />
+        </div>
+      )}
     </div>
   )
 }

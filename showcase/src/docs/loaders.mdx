@@ -18,7 +18,7 @@ Browse the set on [Icons](/icons).
 
 ## Icon
 
-From @kolkrabbi/kol-icons. Resolves a name from consumer-registered SVGs first, then kol-icon-set-v1 — the whole chain since 0.8.0 (legacy sets removed); a miss renders nothing.
+From @kolkrabbi/kol-icons. Resolves a name from consumer-registered SVGs first, then kol-icon-set-interface and kol-icon-set-signal — the whole chain since 0.8.0 (legacy sets removed); a miss renders nothing.
 
 <PreviewCard>
   <div className="flex items-center gap-4">
@@ -54,8 +54,8 @@ The loaders ship their inventories as data — these are maps and lists, not com
 
 <DocTable
   rows={[
-    { prop: 'KOL_ICON_SET_V1 / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it.' },
-    { prop: 'KOL_ICON_SET_V1_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS aliases it.' },
+    { prop: 'KOL_ICON_SET_INTERFACE / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it. KOL_ICON_SET_V1 is its old name.' },
+    { prop: 'KOL_ICON_SET_INTERFACE_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS covers both sets.' },
     { prop: 'hasIcon / getCategory', type: 'fn / fn', def: 'kol-icons', desc: 'Name lookup helpers over the v1 set.' },
     { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
   ]}

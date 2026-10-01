@@ -7,7 +7,7 @@ import { slugFor, blankBody, titleOf, NEW_NOTE } from './notes.js'
 /* taxonomy-ok: organism — the notes tool: NotesCatalog ⇄ NoteEditor over a consumer-injected client */
 
 /**
- * Notes — the whole tool: the list, and a note open in the page. ONE component so every app that
+ * Notes — The whole notes tool. the whole tool: the list, and a note open in the page. ONE component so every app that
  * carries notes renders the same tool (apps/notes alone, media-hub's Notes tab).
  *
  * THE CLIENT is olina's notes API, as verbs (the fixture fakes them; the real one is a Pages Function

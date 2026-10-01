@@ -6,7 +6,7 @@ import SectionText from '../molecules/SectionText.jsx'
 import { minHeightClass } from './sectionHeights.js'
 
 /**
- * SectionFaq — a `SectionText` header over an `Accordion` of question /
+ * SectionFaq — Questions and answers in an accordion. a `SectionText` header over an `Accordion` of question /
  * answer items. The one NEW surface in the section family (SectionSet,
  * 2026-08-26) — the behaviour already shipped in the Accordion molecule; this
  * is the section around it.

@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Each package's components, shown together
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/taxonomy
 ---
 
 # Sets

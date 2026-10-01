@@ -3,7 +3,7 @@ import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
 import GlyphMetricsGrid from './GlyphMetricsGrid.jsx'
 
 /**
- * GlyphMetricsSection — the "Glyph Metrics" specimen section: a section header
+ * GlyphMetricsSection — A typeface's glyph metrics. the "Glyph Metrics" specimen section: a section header
  * (Roman/Italic or Weight/Width axis dropdowns) over the parsed-metric
  * GlyphMetricsGrid. Owns the style/axis selection state and feeds the grid the
  * chosen font URL + `variationSettings`.

@@ -5,7 +5,7 @@ import QuickLookFrame from './QuickLookFrame.jsx'
 /* taxonomy-ok: molecule — nests PlaybackBar + QuickLookFrame (relative). */
 
 /**
- * VideoSheet — video in the Quick Look window: the frame at the video's own aspect ratio, the
+ * VideoSheet — A video in the preview window. video in the Quick Look window: the frame at the video's own aspect ratio, the
  * QuickTime bar docked in the window's footer (2026-09-23 — it floated over the picture, which
  * made video the one kind whose controls sat on the media). No native controls; click on the
  * video toggles play; no autoplay (user 2026-09-23 — Quick Look opens paused), `playsInline`, `preload="metadata"`.

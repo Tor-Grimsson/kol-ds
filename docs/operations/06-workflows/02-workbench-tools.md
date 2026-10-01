@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-07-03
 updated: 2026-08-01
-description: Ladle, Histoire, Storybook and Chromatic compared
+description: Component workbench tools compared
 tags:
   - domain/workflow
   - audience/agency-internal

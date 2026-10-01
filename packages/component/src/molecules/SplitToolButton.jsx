@@ -4,7 +4,7 @@ import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
- * SplitToolButton — single-trigger split tool button + variant menu (the
+ * SplitToolButton — A tool button with a variant menu. single-trigger split tool button + variant menu (the
  * tool-palette idiom: Select · Text · [Shape ◢] · Pattern). A pinned-square
  * quiet/pressed trigger shows the current variant while the group is `active`
  * (else the `lastPicked` variant) plus a corner fold indicator; ONE click both
@@ -65,7 +65,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {string} props.className - Additional classes on the trigger
  */
 
-/* Corner fold marker — `fold-indicator`, promoted into kol-icon-set-v1
+/* Corner fold marker — `fold-indicator`, promoted into kol-icon-set-interface
  * 2026-09-03 from kol-fxr's own drawing (editor-set-is-behind-its-source); the
  * comment that stood here said it did not exist yet and should be promoted, so
  * this is that. Lives inside the button so it dims with kol-btn-quiet and

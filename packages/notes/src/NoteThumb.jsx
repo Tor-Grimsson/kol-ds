@@ -4,7 +4,7 @@ import { KindPreview } from '@kolkrabbi/kol-component'
 /* taxonomy-ok: molecule — KindPreview scaled into a card's media box */
 
 /**
- * NoteThumb — a note's own markdown, rendered by the DS previewer and scaled down to fit a card's
+ * NoteThumb — A note as a thumbnail. a note's own markdown, rendered by the DS previewer and scaled down to fit a card's
  * media box (kol-olina's brand Notes, verbatim).
  *
  * `KindPreview` renders a document at READING size; dropped into a 120px thumb you get one enormous

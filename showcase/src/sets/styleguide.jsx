@@ -55,13 +55,13 @@ import {
 export const meta = {
   title: 'Styleguide',
   description:
-    'The brand style-guide surface — color (swatch, ramp, spectrum matrix, hex input), type (sample + spec card), assets & layout (asset grid, feature split), and a long-form prose specimen, all sourced from apps/brand styleguide origin components.',
+    'The brand style-guide surface',
   category: 'foundry',
   featured: false,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/brand', 'pattern/blocks'],
 }
 export const stage = 'full'
 

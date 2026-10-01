@@ -6,8 +6,11 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The filter-and-cards page
 tags:
-  - domain/compositions
   - audience/agency-internal
+  - domain/cards
+  - domain/compositions
+  - domain/editor
+  - domain/filtering
 ---
 
 # Catalog

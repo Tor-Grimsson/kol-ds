@@ -85,7 +85,7 @@ function SlideMedia({ media, active = true, onEnded, onTimeUpdate }) {
  * the one hero (SectionHeroRound2); this stays as its engine and renders
  * unchanged. Removed from the barrel at the next major.
  *
- * FeaturedCarousel — a full-width carousel of featured media: each wide slide
+ * FeaturedCarousel — A full-width carousel of featured media. a full-width carousel of featured media: each wide slide
  * is a fixed-height frame with an image or HLS-video background and a centered
  * OverlayGlassPanel (title / description / CTA), plus prev/next and optional
  * autoplay with a progress bar.

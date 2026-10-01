@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Blocks that fit no other category
 tags:
   - domain/compositions
-  - audience/consumer
+  - pattern/blocks
 ---
 
 # Other

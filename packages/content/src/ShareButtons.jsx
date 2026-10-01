@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
 
 /**
- * ShareButtons — a share bar for an article or work page. A copy-link button
+ * ShareButtons — Share an article or a work page. a share bar for an article or work page. A copy-link button
  * plus configurable share targets that open the platform's share intent in a
  * new tab/window. KOL-native (DS Button, no raw <button>); labels are authored
  * literals in their final case — no text-transform.

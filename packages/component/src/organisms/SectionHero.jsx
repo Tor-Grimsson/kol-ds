@@ -85,7 +85,7 @@ function MediaLayer({ media }) {
 }
 
 /**
- * SectionHero — the full-bleed media hero: cover-fit background media (image
+ * SectionHero — Full-bleed media hero with a glass panel. the full-bleed media hero: cover-fit background media (image
  * or video) filling a fixed-height section, an optional surface scrim, and
  * the text in a glass panel over it. `FullBleedHero` is this component under
  * its old name (alias kept).

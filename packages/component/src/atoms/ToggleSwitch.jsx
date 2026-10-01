@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * ToggleSwitch — bare by default (2026-07-08 chrome law rewrite).
+ * ToggleSwitch — An on/off switch. bare by default (2026-07-08 chrome law rewrite).
  *
  *   variant="bare" (default) — label + track, no box
  *   variant="primary"        — filled shell (surface-secondary), button geometry

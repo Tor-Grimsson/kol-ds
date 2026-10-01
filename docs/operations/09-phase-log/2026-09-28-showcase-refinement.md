@@ -4,7 +4,7 @@ type: log
 status: archived
 created: 2026-09-28
 updated: 2026-09-30
-description: Space table, per-space rails, search, engines
+description: Per-space rails and one search
 tags:
   - domain/workflow
   - audience/agency-internal

@@ -4,13 +4,13 @@ import { MediaLibrary, MediaPicker, Button } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Media library',
-  description: 'The kol-media bucket in both of its views — the modal picker the editor opens, and the full-page browser a brand book embeds, over one injected client',
+  description: 'The media bucket as picker and browser',
   category: 'editor',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-08-01',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/files', 'domain/forms', 'domain/media', 'pattern/blocks'],
 }
 export const stage = 'full'
 

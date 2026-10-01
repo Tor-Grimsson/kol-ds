@@ -133,7 +133,7 @@ const SIZE_LADDER = [
 ]
 
 /**
- * FontPreviewSection — a stacked multi-size preview: the shared header (weight +
+ * FontPreviewSection — A typeface at several sizes. a stacked multi-size preview: the shared header (weight +
  * Roman/Italic dropdowns) above a ladder of preview blocks at 96 / 64 / 48 / 24
  * px, each pre-seeded with the section's selected weight + italic state. Read a
  * family from display down to body size at a chosen weight.

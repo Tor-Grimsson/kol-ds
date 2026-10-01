@@ -1,7 +1,7 @@
 import Divider from '../atoms/Divider.jsx'
 
 /**
- * SpecList — compact definition list of [label | value] rows: label left and
+ * SpecList — Label and value rows. compact definition list of [label | value] rows: label left and
  * muted, value right-aligned one tone brighter, Divider-separated between
  * rows (never after the last). Data-agnostic "key facts" strip — the caller
  * formats values before passing (e.g. "Limited (30)", "A3, A2, A1").

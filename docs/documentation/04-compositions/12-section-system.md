@@ -16,7 +16,7 @@ sources:
   - packages/component/src/organisms/SectionHero.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/layout
 related:
   - "[[../03-components/06-content-card-system|content card system]]"
   - "[[01-blocks-and-sets|blocks and sets]]"

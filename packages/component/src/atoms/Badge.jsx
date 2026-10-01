@@ -1,5 +1,5 @@
 /**
- * Badge — status / categorization indicator
+ * Badge — A small status label. status / categorization indicator
  *
  * Converted from Badge.tsx (shadcn/CVA) → plain JSX with kol- CSS variables.
  * CSS classes live in components.css under 2-LABELS → Badges.

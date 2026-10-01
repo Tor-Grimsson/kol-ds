@@ -1,5 +1,5 @@
 /**
- * SettingsLinks — the About / Repo link list every app hand-wrote (ShellHomeSystem,
+ * SettingsLinks — The links block of a settings page. the About / Repo link list every app hand-wrote (ShellHomeSystem,
  * kol-fxr 2026-08-27): label `kol-helper-12 text-fg-32` at 72px, the URL as an
  * external link `text-fg-64 hover:text-fg-96 hover:underline`.
  *
@@ -18,7 +18,7 @@ export default function SettingsLinks({ links = [], className = '' }) {
   )
 }
 
-/** SettingsColophon — the "Kolkrabbi Vinnustofa / 2026" foot under a settings scaffold. */
+/** SettingsColophon — The foot of a settings page. the "Kolkrabbi Vinnustofa / 2026" foot under a settings scaffold. */
 export function SettingsColophon({ name = 'Kolkrabbi Vinnustofa', year = new Date().getFullYear(), className = '' }) {
   return (
     <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

@@ -24,7 +24,7 @@ export const ShellTocCollapsedContext = createContext(null)
  * (sidenav-rail-hairline, 2026-08-26): `background`, `hairline`, `isActive`,
  * `onNavigate` … the next rail option needs no AppShell release. */
 /**
- * PageLayout — the brand-book page layout: the `.kol-brand-layout` grid with
+ * PageLayout — The brand-book page layout. the brand-book page layout: the `.kol-brand-layout` grid with
  * the sidenav in its first track, the page plane in the second, the mobile
  * drawer + hamburger, the modal provider and the optional TOC rail.
  *

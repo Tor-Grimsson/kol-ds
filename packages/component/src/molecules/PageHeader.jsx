@@ -1,7 +1,7 @@
 import SectionText from './SectionText.jsx'
 import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
 /**
- * PageHeader — the page's masthead: an optional eyebrow, the title, and a
+ * PageHeader — The page masthead. the page's masthead: an optional eyebrow, the title, and a
  * sub-line.
  *
  * LIVES IN kol-component SINCE 2026-09-03 (page-header-one-masthead,

@@ -6,7 +6,7 @@ import PageShell from './PageShell.jsx'
 /* taxonomy-ok: organism — nests AppHub / CatalogPage / PageShell (relative) + kol-component's PageHeader */
 
 /**
- * AppStudio — the WORKSTATION: the Hub plus a fixed page set (apps review §6c-4, 2026-09-29).
+ * AppStudio — The studio workstation. the WORKSTATION: the Hub plus a fixed page set (apps review §6c-4, 2026-09-29).
  *
  * fxr, mirror and monitor each hand-build the same shape — a landing Catalog, a Library of what the
  * tool makes, a page that composes a new one, the tool itself full-bleed, a page or two of their own,

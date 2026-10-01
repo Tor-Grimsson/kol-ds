@@ -7,7 +7,7 @@ updated: 2026-08-02
 description: How KOL compares to the systems around it
 tags:
   - domain/components
-  - audience/consumer
+  - domain/research
 related:
   - "[[../INDEX|KOL documentation]]"
 ---

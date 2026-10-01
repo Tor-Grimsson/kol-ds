@@ -7,7 +7,6 @@ updated: 2026-08-01
 description: The schema every brand instance conforms to
 tags:
   - domain/brand
-  - audience/consumer
   - brand/assets
 related:
   - "[[INDEX|brand kit]]"

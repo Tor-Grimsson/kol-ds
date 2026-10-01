@@ -12,13 +12,13 @@ import {
 
 export const meta = {
   title: 'App shell',
-  description: 'The application tier as kol-monitor, kol-mirror and kol-fxr actually compose it — the 48px rail, its drawer fold, a catalog home and a settings page, over one router-agnostic path in local state',
+  description: 'The app shell as the apps use it',
   category: 'app',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-09-01',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/app-shell', 'pattern/blocks'],
 }
 export const stage = 'full'
 

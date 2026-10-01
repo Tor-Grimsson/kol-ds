@@ -4,6 +4,7 @@ import { ContentFilters, EmptyState, SegmentedToggle } from '@kolkrabbi/kol-comp
 import { useParams, useSearchParams } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import DemoStage from '../lib/DemoStage.jsx'
+import Fit from '../lib/Fit.jsx'
 import { groupComponents, FUNCTIONS, TOTAL, packageLabel } from '../nav/registry.js'
 import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
 
@@ -43,35 +44,6 @@ function useInView(rootMargin = '250px') {
   return [ref, inView]
 }
 
-/* FIT, NEVER CROP (2026-09-30, the names audit: *"can we somehow scale the content into the
- * preview?"*). A demo wider or taller than the card's preview box is scaled DOWN to fit, centred;
- * one that fits is left at 1:1. Measured, so a demo is never guessed at. */
-function Fit({ children }) {
-  const box = useRef(null)
-  const inner = useRef(null)
-  const [scale, setScale] = useState(1)
-  useEffect(() => {
-    const measure = () => {
-      if (!box.current || !inner.current) return
-      const bw = box.current.clientWidth
-      const bh = box.current.clientHeight
-      const iw = inner.current.scrollWidth
-      const ih = inner.current.scrollHeight
-      setScale(Math.min(1, bw / (iw || 1), bh / (ih || 1)))
-    }
-    measure()
-    const ro = new ResizeObserver(measure)
-    if (box.current) ro.observe(box.current)
-    if (inner.current) ro.observe(inner.current)
-    return () => ro.disconnect()
-  }, [])
-  return (
-    <div ref={box} className="flex h-full w-full items-center justify-center overflow-hidden">
-      <div ref={inner} className="shrink-0" style={scale < 1 ? { transform: `scale(${scale})` } : undefined}>{children}</div>
-    </div>
-  )
-}
-
 function ComponentCard({ c }) {
   const [ref, inView] = useInView()
   return (
@@ -80,7 +52,7 @@ function ComponentCard({ c }) {
        nesting error for every such card. The absolute Link keeps the whole
        card clickable without containing the demo. */
     <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24">
-      <div ref={ref} className="pointer-events-none flex h-56 items-center justify-center overflow-hidden bg-fg-02 p-5">
+      <div ref={ref} data-toc-skip className="pointer-events-none flex h-56 items-center justify-center overflow-hidden bg-fg-02 p-5">
         {c.demo && inView ? (
           <Fit>{c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />}</Fit>
         ) : (

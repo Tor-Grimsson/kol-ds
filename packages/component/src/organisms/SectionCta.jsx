@@ -5,7 +5,7 @@ import SectionText from '../molecules/SectionText.jsx'
 import { minHeightClass } from './sectionHeights.js'
 
 /**
- * SectionCta — the editorial two-column contact/CTA band: a large display
+ * SectionCta — A closing call-to-action band. the editorial two-column contact/CTA band: a large display
  * wordmark on the left (e.g. "/ CONNECT") and a right column of stacked
  * label-over-value rows, each a `SectionText` (label in the helper voice,
  * value as a heading-01; a row with `href` renders its value as a link).

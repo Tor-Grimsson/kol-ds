@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Color tools composed into a block
 tags:
+  - domain/color
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 ---
 
 # Color

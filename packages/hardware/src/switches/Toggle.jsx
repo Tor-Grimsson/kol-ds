@@ -5,7 +5,7 @@ const LONG_PRESS_MS = 500
 const BLINK_MS_DEFAULT = 500
 
 /**
- * Toggle — the LED-dot on/off button with a label (kol-monitor's rack, lifted
+ * Toggle — An LED on/off button. the LED-dot on/off button with a label (kol-monitor's rack, lifted
  * 2026-09-01). `momentary` fires `onChange(true)` and the dot flashes 120ms;
  * `onLongPress` (hold ≥500ms) fires instead of `onChange`; `blink` pulses the
  * dot as an indicator; `forceLit` holds it on.

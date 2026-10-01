@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { DocSection } from '@kolkrabbi/kol-workshop'
 import { groupComponents } from '../nav/registry.js'
 import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
 
@@ -15,6 +16,7 @@ export default function GroupBy() {
     <div className="flex flex-col gap-10 pb-24">
       <HomeDoc id="group-by" />
       <SegmentedToggle options={GROUP_OPTIONS} value={mode} onChange={setMode} size="sm" />
+      <DocSection id="groupings" title="Groupings">
       <ul className="flex flex-col gap-2">
         {groupComponents(mode).map(([key, label, items]) => (
           <li key={key} className="kol-doc-body">
@@ -23,6 +25,7 @@ export default function GroupBy() {
           </li>
         ))}
       </ul>
+      </DocSection>
     </div>
   )
 }

@@ -12,7 +12,7 @@ import useMarquee from '../hooks/useMarquee.js'
 import { GRAB_COLUMN } from '../utilities/motion.js'
 
 /**
- * ColumnBrowser — Finder-style Miller columns over a flat key space (kol-r2b2's
+ * ColumnBrowser — Finder-style columns over a bucket. Finder-style Miller columns over a flat key space (kol-r2b2's
  * `src/ColumnBrowser.jsx`, built and ruled there first — user 2026-08-27: "make
  * it locally first, then ship it" — and shipped verbatim; ticket ColumnBrowser).
  * The listing surface's FOLDER view: it replaces the folder rows above the

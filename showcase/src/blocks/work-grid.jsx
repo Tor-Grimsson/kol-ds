@@ -4,12 +4,12 @@ import { WorkViewToggle } from '@kolkrabbi/kol-content'
 
 export const meta = {
   title: 'Work grid',
-  description: 'A project index that toggles between a tilt-card shelf and a list view',
+  description: 'A project index as shelf or list',
   category: 'content',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/layout', 'pattern/blocks'],
 }
 export const stage = 'full'
 

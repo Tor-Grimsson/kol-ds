@@ -11,7 +11,7 @@ const CUBIC_EASE = 'var(--kol-ease-house)'
 const PILL_EASE = 'cubic-bezier(0.34, 1.2, 0.64, 1)'
 
 /**
- * WorkViewToggle — the `/work` header control: a pill-shaped segmented
+ * WorkViewToggle — Switch the work index between views. the `/work` header control: a pill-shaped segmented
  * **Shelf ⟷ List** view switch with a sliding-pill highlight, beside an
  * expandable inline search. Resting: the two-option toggle + a collapsed
  * search icon-button. Opening search collapses the toggle to zero width (fades

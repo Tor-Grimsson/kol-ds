@@ -28,7 +28,7 @@ function stopJackLoop() {
 }
 
 /**
- * JackSocket — the 3.5mm eurorack jack, PRESENTATIONAL (kol-monitor's rack,
+ * JackSocket — A patch jack. the 3.5mm eurorack jack, PRESENTATIONAL (kol-monitor's rack,
  * lifted 2026-09-01): ring (well) + hole + label, and a rim that glows with the
  * signal — `signalRef.current` is `{ type: 'scalar'|'color'|'points', value, … }`,
  * read on a shared rAF at ~15fps, dirty-checked. Drag-to-patch, the registry and

@@ -2,12 +2,12 @@ import { ContentCard, ContentRow, Tag } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Article grid',
-  description: 'A blog index — hero article over a three-up row and a mini reading list',
+  description: 'A blog index with a hero article',
   category: 'content',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/content', 'domain/layout', 'domain/website', 'pattern/blocks'],
 }
 export const stage = 'full'
 

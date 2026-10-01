@@ -2,7 +2,7 @@
   "name": "@kolkrabbi/kol-deck",
   "version": "0.2.1",
   "private": false,
-  "description": "KOL presentations — slides as data (a 1920×1080 stage of text, image and rule layers), the renderer, the editor, present mode, and PNG · PDF · PPTX · deck-file export. Data and starting layouts are consumer-injected. Sits above @kolkrabbi/kol-{theme,component,shell}.",
+  "description": "Slides as data, edit and present",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",

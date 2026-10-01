@@ -4,10 +4,12 @@ type: index
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: A section that collects an email or an account
+description: A section that collects an email
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
+  - domain/layout
+  - domain/website
 ---
 
 # Signup

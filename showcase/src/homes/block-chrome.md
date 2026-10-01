@@ -6,8 +6,8 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Headers, bars and the frame around an app
 tags:
+  - domain/app-shell
   - domain/compositions
-  - audience/consumer
 ---
 
 # Shell chrome

@@ -29,7 +29,7 @@ const brandedAssetCols = [
 ]
 
 /**
- * BrandAssets — the ASSETS page of the brand tool: what you download or reproduce. Logos (the
+ * BrandAssets — The brand book's assets page. the ASSETS page of the brand tool: what you download or reproduce. Logos (the
  * mark table, with the ink toggle, zoom and recoloured download), the branded-asset register,
  * stationery, social post sizes and profile avatars.
  *

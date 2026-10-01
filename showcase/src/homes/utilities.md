@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Purpose without a face
 tags:
   - domain/components
-  - audience/consumer
+  - domain/components/utilities
 ---
 
 # Utilities

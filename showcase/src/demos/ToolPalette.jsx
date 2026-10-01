@@ -6,7 +6,9 @@ export const stage = 'hug'
 /* All four cell kinds, and all three kinds of fold: Shape ARMS a tool, Boolean RUNS an action
  * (its trigger re-runs the last-picked op), and Text arms with one row — Kinetic type — that runs
  * instead. What is armed, what runs and what is disabled live in this demo, never in the row. */
-export default function ToolPaletteDemo() {
+export const sizes = ['md', 'xs', 'sm', 'lg']
+
+export default function ToolPaletteDemo({ size = 'md' }) {
   const [tool, setTool] = useState('select')
   const [selection, setSelection] = useState(2)
   const [log, setLog] = useState('—')
@@ -35,7 +37,7 @@ export default function ToolPaletteDemo() {
   ]
   return (
     <div className="flex flex-col items-start gap-3">
-      <ToolPalette items={items} activeId={tool} onSelect={setTool} onAction={(id) => setLog(id)} />
+      <ToolPalette size={size} items={items} activeId={tool} onSelect={setTool} onAction={(id) => setLog(id)} />
       <span className="kol-helper-10 text-meta">
         tool: {tool} · last action: {log} · selected: {selection}{' '}
         <button type="button" className="underline" onClick={() => setSelection((n) => (n + 1) % 3)}>cycle</button>

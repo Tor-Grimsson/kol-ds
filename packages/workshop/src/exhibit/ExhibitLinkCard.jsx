@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-component'
 
 /**
- * ExhibitLinkCard — the card an exhibit's landing page uses for each child
+ * ExhibitLinkCard — A card linking to an exhibit page. the card an exhibit's landing page uses for each child
  * page. Recreated from kol-website's `OverviewCard`, which carried a standing
  * note on itself: *"vendored verbatim from elder @kol/ui (no DS twin as of
  * kol-dashboards 0.2.0); lobby to the DS or fold into kol-dashboards if a

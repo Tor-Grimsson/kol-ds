@@ -6,7 +6,7 @@ const DEFAULTS = { wdth: 100, wght: 400, ital: 0, alpha: 1 }
 const STATIC_VARIATION = "'wght' 400, 'wdth' 100, 'ital' 0.00"
 
 /**
- * TextPressure — a single line of variable-font text whose glyphs deform
+ * TextPressure — Text that deforms toward the pointer. a single line of variable-font text whose glyphs deform
  * toward the pointer: characters nearest the cursor grow widest / heaviest /
  * most italic, and the effect falls off linearly with distance. A
  * requestAnimationFrame loop lerps a smoothed follower toward the raw cursor

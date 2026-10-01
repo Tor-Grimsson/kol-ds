@@ -19,7 +19,7 @@ sources:
   - showcase/src/lib/mdx-components.jsx
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/app-shell
 related:
   - "[[04-layout-breakpoints|layout & breakpoints]]"
   - "[[03-typography|typography]]"

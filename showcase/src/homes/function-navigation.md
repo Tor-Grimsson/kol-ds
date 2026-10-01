@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Moves between views
 tags:
   - domain/components
-  - audience/consumer
+  - domain/navigation
+  - pattern/navigation
 ---
 
 # Navigation

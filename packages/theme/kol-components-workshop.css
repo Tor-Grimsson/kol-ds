@@ -295,6 +295,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* the count never touches the label (W4, 2026-09-30: "Blog / editorial(28)") */
+  gap: var(--kol-spacing-2);
   transition: color 0.15s ease;
 }
 
@@ -355,6 +357,13 @@
   flex-direction: column;
   gap: 0;
   margin-top: 4px;
+}
+
+/* A CHAPTER INSIDE A CHAPTER (2026-09-30, the showcase review W1 — the rail nests to any depth).
+ * The nested group steps in by the ROW's text indent, so its caret sits on its sibling rows' text
+ * edge and its own rows land one indent further; the indent is read, never retyped. */
+.shell-nav-nest {
+  padding-left: var(--kol-pad-rail-row-x);
 }
 
 /* Navigation items — layout only; type/color (+ active) in JSX. */

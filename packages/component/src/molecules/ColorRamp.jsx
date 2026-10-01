@@ -3,7 +3,7 @@ import ColorSwatch from '../atoms/ColorSwatch.jsx'
 import { resolveCssVar, isLight } from '../hooks/cssVar.js'
 
 /**
- * ColorRamp — one specimen row of color chips for a token-doc page. A label
+ * ColorRamp — One row of color chips. one specimen row of color chips for a token-doc page. A label
  * (+ optional note) above a run of ColorSwatch chips, each captioned with its
  * name and resolved value. Merges the former Ramp (static hex) + ColorRamp
  * (live CSS var) widgets into one component with two mutually-exclusive inputs:

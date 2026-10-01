@@ -2,7 +2,7 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
- * Textarea — multi-line text atom built on the .kol-control shell with the
+ * Textarea — Multi-line text input. multi-line text atom built on the .kol-control shell with the
  * `--textarea` modifier (display: block).
  *
  *   variant="filled" (default) — persistent solid bg
@@ -14,7 +14,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * Default rows = 3 (kept short — long content gets scrollbars instead of
  * dominating the panel). Resize is real (2026-07-08): native resize is
  * OFF (Firefox's built-in grip cannot be hidden any other way) and the
- * kol-icon-set-v1 `resize-grip` icon IS the drag handle — corner drag,
+ * kol-icon-set-interface `resize-grip` icon IS the drag handle — corner drag,
  * min 120×40. One grip, every browser.
  *
  * The X-drag is container-clamped (2026-08-12, TextareaResizeClamp): the

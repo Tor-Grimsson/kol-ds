@@ -332,6 +332,21 @@
   border-color: currentColor;
 }
 
+/* hue — a colored chip (W17, 2026-09-30). Tag.jsx sets --kol-tag-hue from its `color` prop; the
+ * fill, hover and active are the primary chip's own steps, mixed from the hue instead of the ink.
+ * The ink is the hue mixed toward the text color so yellow still reads on a light surface. */
+.kol-tag--primary.kol-tag--hue {
+  background-color: color-mix(in srgb, var(--kol-tag-hue) 18%, transparent);
+  color: color-mix(in srgb, var(--kol-tag-hue) 70%, var(--kol-surface-on-primary));
+}
+.kol-tag--primary.kol-tag--hue:hover {
+  background-color: color-mix(in srgb, var(--kol-tag-hue) 28%, transparent);
+}
+.kol-tag--primary.kol-tag--hue.is-active {
+  background-color: color-mix(in srgb, var(--kol-tag-hue) 36%, transparent);
+  border-color: currentColor;
+}
+
 /* secondary — the outlined chip. Mirrors .pill-outline. */
 .kol-tag--secondary {
   background-color: var(--kol-surface-primary);

@@ -9,7 +9,7 @@ const VARIANTS = {
 }
 
 /**
- * StackHero — full-bleed image hero with a bottom-anchored, centered title +
+ * StackHero — A full-bleed hero with its title low. full-bleed image hero with a bottom-anchored, centered title +
  * description under a bottom-up scrim. Built ON the DS FullBleedHero: the
  * background Image plus a tokenized gradient scrim are handed in as the hero's
  * media node, and the copy rides in the content slot pinned to the bottom.

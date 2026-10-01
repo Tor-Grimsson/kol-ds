@@ -3,7 +3,7 @@ import ParamSheet from './ParamSheet.jsx'
 import { armLongPress } from './armLongPress.js'
 
 /**
- * Fader — the rack slider (kol-monitor's panel `Slider`, lifted 2026-09-01;
+ * Fader — A panel slider. the rack slider (kol-monitor's panel `Slider`, lifted 2026-09-01;
  * named `Fader` because `Slider` is kol-component's app control and the two are
  * different tiers on purpose — a 2px track on a 24px eurorack panel is not app
  * chrome). Same conventions as Knob: `kol-helper-8` label, inline styles, pointer

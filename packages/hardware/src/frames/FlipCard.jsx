@@ -1,5 +1,5 @@
 /**
- * FlipCard — a face that turns over in place to show its back (frames group, 2026-09-27). Lifted
+ * FlipCard — A face that turns to show its back. a face that turns over in place to show its back (frames group, 2026-09-27). Lifted
  * from kol-mirror's channel flip (`styles/components.css` .mirror-flip-*), where a strip turns
  * to its patch panel. The body turns; everything around it holds still, so the back is the same
  * shaped object as the front.

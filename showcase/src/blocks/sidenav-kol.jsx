@@ -3,13 +3,13 @@ import { Icon } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'KOL sidenav',
-  description: 'The KOL app sidenav — icon hops with an expanding page tree',
+  description: 'The app sidenav with a page tree',
   category: 'sidenav',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/app-shell', 'domain/navigation', 'pattern/blocks'],
 }
 export const stage = 'full'
 

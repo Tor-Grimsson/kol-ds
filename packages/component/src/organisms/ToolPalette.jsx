@@ -5,7 +5,7 @@ import SplitToolButton from '../molecules/SplitToolButton.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
- * ToolPalette — the editor's tool bar as one row (kol-fxr `shell/panels/ToolPalette.jsx`,
+ * ToolPalette — The editor's tool bar. the editor's tool bar as one row (kol-fxr `shell/panels/ToolPalette.jsx`,
  * editor-panels-the-held-specs A3, 2026-09-25). Four kinds of cell, all on one pinned-square rung:
  *
  * - `tool` — arms a mode; lit while `activeId` is its id

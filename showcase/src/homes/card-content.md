@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Cards that link to articles or work
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
+  - domain/content
 ---
 
 # Content cards

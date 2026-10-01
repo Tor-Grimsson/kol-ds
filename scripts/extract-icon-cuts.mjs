@@ -11,7 +11,7 @@
  * `star-solid`, `pause` → solid.
  *
  * Writes packages/icons/src/cuts.json — `{ name: 'stroke' | 'solid' }`, sorted
- * — which index.js folds into KOL_ICON_SET_V1_META next to the folder group. A
+ * — which index.js folds into KOL_ICON_SET_INTERFACE_META next to the folder group. A
  * new SVG classifies itself on the next run; `--check` fails when the JSON is
  * stale, so it can never drift from the drawings.
  */
@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ICONS_SRC = join(HERE, '..', 'packages', 'icons', 'src')
 /* both sets — a glyph classifies itself wherever it lives (2026-08-28) */
-const SETS = ['kol-icon-set-v1', 'kol-icon-set-signal'].map((s) => join(ICONS_SRC, s))
+const SETS = ['kol-icon-set-interface', 'kol-icon-set-signal'].map((s) => join(ICONS_SRC, s))
 const OUT = join(HERE, '..', 'packages', 'icons', 'src', 'cuts.json')
 const CHECK = process.argv.includes('--check')
 

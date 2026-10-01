@@ -7,7 +7,7 @@ import SettingsLinks, { SettingsColophon } from './SettingsLinks.jsx'
 /* taxonomy-ok: organism — nests SettingsScaffold / SettingsShortcuts / SettingsLinks (relative) + kol-component's SettingsPanel / SettingsSections */
 
 /**
- * HubSettings — the Hub's Settings page (the Hub, 2026-09-26). monitor, mirror and fxr
+ * HubSettings — A hub's settings page. the Hub's Settings page (the Hub, 2026-09-26). monitor, mirror and fxr
  * each put the same page on `SettingsScaffold`: SETTINGS · ABOUT · REPO with the same
  * three subtitles, the same theme toggle in the masthead, About as the app's prose over
  * the colophon, Repo as a link list, and the keyboard shortcuts from the one array the

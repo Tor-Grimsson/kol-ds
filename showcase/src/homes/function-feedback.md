@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Communicates state
 tags:
   - domain/components
-  - audience/consumer
+  - pattern/feedback
 ---
 
 # Feedback

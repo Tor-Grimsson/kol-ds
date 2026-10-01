@@ -109,7 +109,7 @@ function TermRow({ term, onSet, onRemove, canRemove }) {
 }
 
 /**
- * CurveEditor — curve authoring: a kind picker, per-kind ranges and
+ * CurveEditor — Author a curve by kind and expression. curve authoring: a kind picker, per-kind ranges and
  * EXPRESSION fields, and the epicycle term list.
  *
  * Lifted from kol-fxr's editor (`compose/inspectors/CurveEditor.jsx`,

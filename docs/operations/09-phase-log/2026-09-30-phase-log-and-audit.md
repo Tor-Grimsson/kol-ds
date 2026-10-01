@@ -4,7 +4,7 @@ type: log
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: This log, open questions, the names audit
+description: The phase log and the names audit
 tags:
   - domain/workflow
   - audience/agency-internal

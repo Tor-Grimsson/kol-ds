@@ -8,7 +8,7 @@ import { TabsRow } from '@kolkrabbi/kol-component'
 import { Dropdown } from '@kolkrabbi/kol-component'
 
 /**
- * ProductDetailLayout — the pure two-column PDP skeleton: a full-height media
+ * ProductDetailLayout — A product page layout. the pure two-column PDP skeleton: a full-height media
  * gallery beside a scrollable details column (eyebrow + title + tags, a
  * SpecList of key facts, an underline TabsRow with its panel, then a purchase
  * block of price / size / quantity / CTA / fine print / back link).

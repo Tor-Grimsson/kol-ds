@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { SectionText } from '@kolkrabbi/kol-component'
 
 /**
- * PageHero — the page's opening band: label · title · lede, with an optional
+ * PageHero — A page's opening band. the page's opening band: label · title · lede, with an optional
  * mark beside the text and an optional back link above it.
  *
  * ONE HERO (page-family-is-not-a-set, kol-client-olina 2026-09-03; user, on

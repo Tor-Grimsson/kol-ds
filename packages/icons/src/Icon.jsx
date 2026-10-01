@@ -1,7 +1,7 @@
 /**
  * Icon Component
  *
- * Dynamically loads and renders SVG icons from kol-icon-set-v1 and
+ * Dynamically loads and renders SVG icons from kol-icon-set-interface and
  * kol-icon-set-signal (or consumer-registered sets)
  *
  * @param {Object} props
@@ -13,7 +13,7 @@
  */
 import { useEffect, useState } from 'react'
 
-/* ONE icon home: kol-icon-set-v1. Legacy sets removed 0.8.0 (2026-07-28) —
+/* ONE icon home: kol-icon-set-interface. Legacy sets removed 0.8.0 (2026-07-28) —
  * a name either resolves from v1 or from consumer-registered SVGs, nothing else.
  *
  * The raw SVG strings live in ./iconData.js and are pulled in via a single
@@ -75,7 +75,7 @@ export const registerIcons = (globMap) => {
   }
 }
 
-/* Resolution order: consumer-registered → kol-icon-set-v1 → kol-icon-set-signal.
+/* Resolution order: consumer-registered → kol-icon-set-interface → kol-icon-set-signal.
  * That's the whole chain — a miss is a real miss.
  *
  * v1 BEFORE signal, and it decides the twelve names both sets drew (2026-08-28):

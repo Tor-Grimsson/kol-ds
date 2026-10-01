@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo, forwardRef } from 'react'
 
 /**
- * PrintGridCardGsap — the river-column variant of {@link PrintGridCard}: same
+ * PrintGridCardGsap — A print card for the marquee river. the river-column variant of {@link PrintGridCard}: same
  * portrait image card, minus the 3D flip, plus a forwarded ref so a parent GSAP
  * timeline (e.g. the DiagonalMarqueeRiver / a scroll river) can measure and
  * tween the node. On mount it randomly shows artwork or the framed print mockup.

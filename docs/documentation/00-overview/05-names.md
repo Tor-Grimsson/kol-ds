@@ -12,7 +12,7 @@ aliases:
   - rail levels
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/files
 related:
   - "[[INDEX|Overview]]"
   - "[[../03-components/00-taxonomy|component taxonomy]]"
@@ -73,8 +73,7 @@ rail, and its children are that rail's categories.
 | Space | Holds |
 |---|---|
 | Styles | what everything is painted with: tokens, color, type, icons, guides |
-| Composition | Components · Blocks · Apps |
-| Collection | Sets (Cards first) · Packages, each package's page carrying its family and its changelog |
+| Library | Composition (Components · Blocks · Apps) and Collection (Sets, Cards first · Packages, each package's page carrying install, the apps that use it and its family, its changelog a page of its own) |
 | Docs | the `docs/` vault: Documentation and Operations |
 | Search | the four views: Results · Tags · Graph · A–Z |
 | Development | the repo's instruments: tools (references, quarantine), records (phase log, open questions), the lobby |
@@ -87,7 +86,7 @@ The same four names in code comments, gate messages and conversation (ruled 2026
 | Level | Is | Example |
 |---|---|---|
 | Category | the eyebrow at the top of a rail block | `COMPONENTS`, `RECORDS` |
-| Chapter | the second level — a count and a chevron; its label opens the chapter's home, the chevron only folds | `Atoms (67)` |
+| Chapter | the second level — a count and a chevron; its label opens the chapter's home, the chevron only folds. A chapter may hold chapters: the rail nests to any depth (Library › Composition › Components › Atoms) | `Atoms (61)` |
 | Page | a link | `Button` |
 | Section | a row in the right rail — a heading on the page | `Installation` |
 
@@ -142,7 +141,7 @@ component it ships, on the atomic ladder, and the sets built from it), its chang
 ## Styles
 
 The reference lookup: pages that read their values straight off the installed packages
-(Foundations), the icon sets (V1 · Signal), and the guides.
+(Foundations), the icon sets (Interface · Signal), and the guides.
 
 ## App layers
 

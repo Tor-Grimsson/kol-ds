@@ -9,7 +9,7 @@ import MediaViewer from './MediaViewer.jsx'
 const DRAG_THRESHOLD_SQ = 25
 
 /**
- * GalleryCarousel — the project-detail media gallery: a horizontal, drag-scroll
+ * GalleryCarousel — A shelf of media that opens fullscreen. the project-detail media gallery: a horizontal, drag-scroll
  * shelf of image/video tiles where clicking a tile opens THE shared fullscreen
  * MediaViewer starting at that tile.
  *

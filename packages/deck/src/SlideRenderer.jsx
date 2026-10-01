@@ -4,7 +4,7 @@ import { ensureFont } from './webFonts.js'
 /* taxonomy-ok: atom — draws one slide document at 1920×1080 */
 
 /**
- * SlideRenderer — draws a slide document at 1920×1080, nothing scaled here (kol-olina's brand decks).
+ * SlideRenderer — Draw a slide at full size. draws a slide document at 1920×1080, nothing scaled here (kol-olina's brand decks).
  * Whoever holds it (SlideThumb, SlideStage) sets the zoom. Every layer carries `data-layer-id`, which
  * is what the stage's pointer router reads — the renderer is the same in the editor and out of it, so
  * what you drag is what you present.

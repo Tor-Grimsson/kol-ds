@@ -15,13 +15,13 @@ import {
 
 export const meta = {
   title: 'Design editor',
-  description: 'A working mini design editor — draggable, resizable, recolourable boxes on a 1080-virtual canvas, with the real LayerStack, InspectorRail, XYPad and selection overlay',
+  description: 'A working mini design editor',
   category: 'editor',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-09-03',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/editor', 'pattern/blocks'],
 }
 export const stage = 'full'
 

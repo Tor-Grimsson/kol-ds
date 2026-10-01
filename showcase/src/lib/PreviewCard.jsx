@@ -95,6 +95,10 @@ export default function PreviewCard({
    * second demo file or a trip off the page. */
   const variants = entry?.variants ?? null
   const [variant, setVariant] = useState(variants?.[0] ?? null)
+  /* tone (W19, 2026-09-30 — user: "atom button had dropdown for variant, to atom ne and size, now its
+   * back to only variant?"): the ground axis (tone-is-the-ground-axis) beside the look */
+  const tones = entry?.tones ?? null
+  const [tone, setTone] = useState(tones?.[0] ?? null)
   const sizes = entry?.sizes ?? null
   const [size, setSize] = useState(sizes?.[0] ?? null)
   /* the third axis (2026-09-30, the names audit: *"can props not be set like buttons variants
@@ -121,6 +125,9 @@ export default function PreviewCard({
           {variants?.length > 1 && tab === 'preview' && (
             <AxisPicker options={variants} value={variant} onChange={setVariant} label="Variant" />
           )}
+          {tones?.length > 1 && tab === 'preview' && (
+            <AxisPicker options={tones} value={tone} onChange={setTone} label="Tone" />
+          )}
           {sizes?.length > 1 && tab === 'preview' && (
             <AxisPicker options={sizes} value={size} onChange={setSize} label="Size" />
           )}
@@ -140,7 +147,7 @@ export default function PreviewCard({
         tab === 'preview' && (
           <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>
             {entry?.Component ? (
-              <DemoStage entry={entry} variant={variant} size={size} state={state} />
+              <DemoStage entry={entry} variant={variant} tone={tone} size={size} state={state} />
             ) : children || (
               <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
             )}

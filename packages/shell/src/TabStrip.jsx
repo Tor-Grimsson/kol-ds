@@ -1,5 +1,5 @@
 /**
- * TabStrip — the flat text-tab idiom both shells use twice (ContentFilters
+ * TabStrip — A row of text tabs. the flat text-tab idiom both shells use twice (ContentFilters
  * view-mode/layout spans, Settings tabs): `kol-helper-14`, active
  * `text-fg-96`, rest `text-fg-32 hover:text-fg-48`.
  *

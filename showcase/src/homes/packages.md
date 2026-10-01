@@ -6,8 +6,8 @@ created: 2026-09-30
 updated: 2026-09-30
 description: Every published package and its changelog
 tags:
+  - domain/packages
   - domain/release
-  - audience/consumer
 ---
 
 # Packages

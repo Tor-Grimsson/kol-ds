@@ -7,7 +7,7 @@ updated: 2026-08-27
 description: What a consumer app must provide
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/app-shell
 related:
   - "[[INDEX|overview]]"
 ---

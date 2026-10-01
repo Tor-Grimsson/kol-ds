@@ -1,7 +1,7 @@
 import Image from '../atoms/Image'
 
 /**
- * FramedMediaBand — full-width media breather band: a centered, aspect-locked
+ * FramedMediaBand — A full-width band with one framed image. full-width media breather band: a centered, aspect-locked
  * frame (bordered surface-secondary panel, rounded) holding one object-cover
  * image. Extracted from the foundry TypefacePage, where it sat inlined 5x
  * verbatim between content sections. The double radius (`rounded` panel,

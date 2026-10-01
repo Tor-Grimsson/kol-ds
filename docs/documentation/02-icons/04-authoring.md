@@ -7,7 +7,7 @@ updated: 2026-08-01
 description: The keyline guide, and Graphic
 tags:
   - domain/iconography
-  - audience/consumer
+  - domain/content
 related:
   - "[[INDEX|icons]]"
 ---

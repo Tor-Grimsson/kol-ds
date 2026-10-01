@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: One interface element that paints and stands alone
 tags:
   - domain/components
-  - audience/consumer
+  - domain/components/atoms
 ---
 
 # Atoms

@@ -27,6 +27,6 @@ export const DEMOS = Object.fromEntries(
        array gets a picker in PreviewCard's toolbar and receives the active one
        as its `variant` / `size` prop — the axes preview in place instead of
        needing a demo file each. */
-    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null, sizes: mod.sizes || null, states: mod.states || null },
+    { Component: mod.default, Card: mod.Card || null, source: sources[path], stage: mod.stage || 'hug', variants: mod.variants || null, tones: mod.tones || null, sizes: mod.sizes || null, states: mod.states || null },
   ]),
 )

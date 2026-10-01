@@ -2,9 +2,10 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } fro
 import { useNavigate, Link } from 'react-router-dom'
 import { ShellContentWidthContext, ShellNavCollapsedContext, ShellTocCollapsedContext } from '@kolkrabbi/kol-workshop'
 import { Button, Pill, SectionHero } from '@kolkrabbi/kol-component'
-import { slugify } from '../nav/registry.js'
+import { slugify, COMPONENTS } from '../nav/registry.js'
 import { labelFromSlug } from '../nav/labels.js'
 import DemoStage from '../lib/DemoStage.jsx'
+import Fit from '../lib/Fit.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 import { DEMOS } from '../lib/demos-registry.js'
 import { BLOCKS } from '../lib/blocks-registry.js'
@@ -137,6 +138,8 @@ function Tile({ label, to, className = '', style, children }) {
 
 // Render a registry block (or demo) through the shared DemoStage contract so it
 // picks up its own stage sizing; centre the capped ones inside the tile.
+const MORE_BATCH = 12
+
 const stageNode = (Component, stage) => (
   <div className="flex justify-center">
     <DemoStage entry={{ Component, stage }} />
@@ -209,6 +212,10 @@ export default function Home() {
   const compTo = (name) => `/components/${slugify(name)}`
 
   const hasDaily = dailyVisits.length > 2
+
+  /* the rest of the library for Load more — demos that fit a tile (a slim Card, or a hug/sm/md stage),
+   * skipping what the curated wall already shows (`more`, after `tiles`) */
+  const [extra, setExtra] = useState(0)
 
   // Curated, interleaved wall — short stat cards between tall chart/table cards
   // so the columns-masonry packs with rhythm.
@@ -375,6 +382,12 @@ export default function Home() {
     dailyVisits, visitors, pageviews, session, totalVisitsMonth,
     topPages, topCountries, devices, totalSessions, deploys, b2Data, hasDaily,
   ])
+  const more = useMemo(() => {
+    const shown = new Set(tiles.map((t) => t.to))
+    return COMPONENTS
+      .filter((c) => c.demo && (c.demo.Card || ['hug', 'sm', 'md'].includes(c.demo.stage)) && !shown.has(`/components/${c.slug}`))
+      .map((c) => ({ label: c.displayName, to: `/components/${c.slug}`, node: <Fit height={false}>{c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />}</Fit> }))
+  }, [tiles])
 
   return (
     <>
@@ -450,6 +463,22 @@ export default function Home() {
             </Tile>
           ))}
         </div>
+        {/* LOAD MORE (the showcase review W20, 2026-09-30 — user: "landing page needs load more"): the
+          * curated wall, then every other live component demo, most used first, a batch at a time */}
+        {/* ONE COLUMN BLOCK PER BATCH: CSS columns fill top-down, so a batch poured into the wall above
+          * reshuffled every tile on each click; a batch of its own lands under what is already read */}
+        {Array.from({ length: extra / MORE_BATCH }, (_, b) => (
+          <div key={b} className="relative z-10 mx-auto max-w-[var(--kol-content-shell)] gap-5 [columns:4_20rem]" style={{ paddingInline: 'var(--kol-pad-section-x)' }}>
+            {more.slice(b * MORE_BATCH, (b + 1) * MORE_BATCH).map((t) => (
+              <Tile key={t.to} label={t.label} to={t.to}>{t.node}</Tile>
+            ))}
+          </div>
+        ))}
+        {extra < more.length && (
+          <div className="relative z-10 mt-4 flex justify-center">
+            <Button onClick={() => setExtra((n) => n + MORE_BATCH)}>Load more</Button>
+          </div>
+        )}
       </section>
     </>
   )

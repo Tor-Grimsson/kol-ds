@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { ToggleSwitch } from '@kolkrabbi/kol-component'
 
-export default function ToggleSwitchDemo() {
+export const variants = ['bare', 'primary', 'outline']
+export const sizes = ['md', 'xs', 'sm', 'lg']
+
+export default function ToggleSwitchDemo({ variant = 'bare', size = 'md' }) {
   const [on, setOn] = useState(true)
+  const [off, setOff] = useState(false)
   return (
     <>
-      <ToggleSwitch label="Bare" checked={on} onChange={setOn} />
-      <ToggleSwitch label="Primary" checked={on} onChange={setOn} variant="primary" />
-      <ToggleSwitch label="Outline" checked={on} onChange={setOn} variant="outline" />
+      <ToggleSwitch label="On" checked={on} onChange={setOn} variant={variant} size={size} />
+      <ToggleSwitch label="Off" checked={off} onChange={setOff} variant={variant} size={size} />
     </>
   )
 }

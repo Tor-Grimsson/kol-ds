@@ -15,7 +15,7 @@ const PIECE_MAP = {
 const PIECE_VALUES = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 }
 
 /**
- * MaterialSummary — the MATERIAL evaluation bar (tinted by the active board
+ * MaterialSummary — The material balance and captured pieces. the MATERIAL evaluation bar (tinted by the active board
  * theme) plus the per-side captured-piece rows with point totals. Reads
  * capturedPieces / boardTheme / pieceSet from context. Padding-free —
  * composer owns chrome via `className`.

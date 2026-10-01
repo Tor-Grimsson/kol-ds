@@ -5,7 +5,7 @@ status: canonical
 created: 2026-09-03
 updated: 2026-09-03
 verified: 2026-09-03
-description: Every surface, accent, state and ramp value
+description: Every color value, looked up
 aliases:
   - color-lookup
   - colors-lookup
@@ -16,7 +16,7 @@ sources:
   - packages/framework/kol-brand-color.css
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/color
 related:
   - "[[02-color|color]]"
   - "[[10-opacity|opacity]]"

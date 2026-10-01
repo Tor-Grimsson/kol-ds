@@ -81,7 +81,7 @@ function Handle({ cx, cy, role }) {
 }
 
 /**
- * CurveOverlay — SVG easing/curve visualizer laid absolutely over a frame:
+ * CurveOverlay — An easing curve drawn over a frame. SVG easing/curve visualizer laid absolutely over a frame:
  * a dashed accent curve with endpoint dots, and — in `curve="custom"`
  * mode — a two-handle cubic-bezier editor (Figma/After-Effects style)
  * with tangent lines back to the anchored endpoints.

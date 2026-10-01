@@ -1,6 +1,7 @@
-import { useParams, Navigate } from 'react-router-dom'
+import { useParams, Navigate, Link } from 'react-router-dom'
 import { Table } from '@kolkrabbi/kol-component'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { DocSection } from '@kolkrabbi/kol-workshop'
 import CompositionDiagram from '../lib/CompositionDiagram.jsx'
 
 /**
@@ -125,6 +126,15 @@ const appColumns = [
   { accessor: 'run', header: 'Local', render: (r) => (r.port ? <code>pnpm {r.run ?? r.name}</code> : '—') },
 ]
 
+/* EVERY APP, FIRST (the showcase review W21, 2026-09-30 — user: "apps: show a table first"): one
+ * table of all of them with their layer, before the diagram explains the layers */
+const allColumns = [
+  { accessor: 'name', header: 'App', render: (r) => <a href={`/app/${r.name}`} className="kol-link underline">{r.name}</a> },
+  { accessor: 'layer', header: 'Layer', render: (r) => <Link to={layerHref(r.layer)} className="kol-link underline">{layerOf(r.layer).label}</Link> },
+  appColumns[1],
+  appColumns[2],
+]
+
 /* THE NESTING, drawn (2026-09-30, open questions Round 1 Q5): each box opens its layer's page. */
 const layerHref = (id) => `/apps/layer/${id}`
 const NESTING = {
@@ -162,7 +172,7 @@ export function AppLayer() {
   return (
     <>
       <HomeDoc key={layer} id={`layer-${layer}`} />
-      <LayerApps id={layer} />
+      <div className="mt-10"><DocSection id="apps" title="Apps"><LayerApps id={layer} /></DocSection></div>
     </>
   )
 }
@@ -171,7 +181,12 @@ export default function Apps() {
   return (
     <>
       <HomeDoc id="apps" />
-      <CompositionDiagram className="mt-8" node={NESTING} />
+      <div className="mt-10">
+        <DocSection id="all-apps" title="All apps">
+          <Table width="column" columns={allColumns} rows={APPS.map((a) => ({ ...a, id: a.name }))} />
+        </DocSection>
+      </div>
+      <CompositionDiagram className="mt-12" node={NESTING} />
       {LAYERS.map((l) => (
         <section key={l.id} className="mt-12">
           <h2 id={`layer-${l.id}`} className="kol-doc-eyebrow scroll-mt-20">{l.label}</h2>

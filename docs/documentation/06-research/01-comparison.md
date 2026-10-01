@@ -7,7 +7,7 @@ updated: 2026-08-02
 description: The two systems compared, axis by axis
 tags:
   - domain/components
-  - audience/consumer
+  - domain/research
 related:
   - "[[INDEX|research]]"
 ---

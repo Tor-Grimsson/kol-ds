@@ -2,12 +2,12 @@ import { Button, SectionHero, SectionSplit, SectionCards, SectionCta, SectionNew
 
 export const meta = {
   title: 'Section Set',
-  description: 'The website sections as one page — split hero, split, cards band, CTA, newsletter, FAQ — every one composed from SectionText',
+  description: 'The website sections as one page',
   category: 'editorial',
   type: 'reference',
   status: 'draft',
   updated: '2026-08-26',
-  tags: ['domain/design-system', 'pattern/sets'],
+  tags: ['domain/layout', 'pattern/sets'],
 }
 export const stage = 'full'
 

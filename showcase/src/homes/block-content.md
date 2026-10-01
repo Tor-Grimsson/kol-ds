@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Sections that carry articles and listings
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/content
 ---
 
 # Content

@@ -23,7 +23,7 @@ sources:
   - packages/theme/kol-opaque.css
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/color
 related:
   - "[[01-tokens|tokens]]"
   - "[[02-color|color]]"

@@ -197,7 +197,22 @@ const DocumentationReader = ({
           <div key={blockKey} className="max-w-[var(--kol-content-panel)]">
             <Table
               variant="simple"
-              columns={block.headers.map((header, i) => ({ accessor: `c${i}`, header }))}
+              /* THE CELL ROLE PER COLUMN (the showcase review W8, 2026-09-30 — the Icons home's third
+               * column clipped). Every cell took Table's default `kol-table-cell-text`, which never
+               * wraps, inside a wrapper whose scrollbar is hidden: a wide markdown table lost its right
+               * edge silently on every doc. A column whose cells all fit in three words and 24 characters is a TOKEN
+               * column (single line); any longer cell makes it COPY, which wraps with real leading —
+               * the two roles kol-type-roles.css already defines for exactly this split. */
+              columns={block.headers.map((header, i) => ({
+                accessor: `c${i}`,
+                header,
+                className: block.rows.some((row) => {
+                  const text = String(row[i]?.content ?? '')
+                  return text.split(/\s+/).filter(Boolean).length > 3 || text.length > 24
+                })
+                  ? 'kol-doc-table-copy'
+                  : 'kol-doc-table-token',
+              }))}
               rows={block.rows.map((row, rowIndex) => ({
                 id: rowIndex,
                 ...Object.fromEntries(row.map((cell, cellIndex) => [

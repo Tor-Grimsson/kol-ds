@@ -12,7 +12,7 @@ sources:
   - .kol/llm-context/backlog/2026-07-29-device-testing-audit.md
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/breakpoints
 related:
   - "[[INDEX|breakpoints]]"
   - "[[../../documentation/08-breakpoints/02-best-practices|best practices]]"

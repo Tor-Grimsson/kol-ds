@@ -2,7 +2,7 @@ import ContentCard from './ContentCard.jsx'
 import ContentRow from './ContentRow.jsx'
 
 /**
- * ContentItem — the form switch the estate hand-wrote nine times
+ * ContentItem — A card or a row by layout. the form switch the estate hand-wrote nine times
  * (`layout === 'list' ? row : card`). One prop picks the form; everything
  * else passes through to ContentCard / ContentRow unchanged, so a listing
  * under a LIST/GRID toggle is one component with one prop flipped.

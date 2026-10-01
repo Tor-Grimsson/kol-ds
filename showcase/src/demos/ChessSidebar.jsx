@@ -8,7 +8,7 @@ export const stage = 'sm'
  * the way ChessBoardWithSidebar does: provider + useChessControls hand it the
  * real sample games and live transport — stepping moves updates the "move N"
  * meta line. size="sm" keeps the 8-piece palette rows inside the sm column. */
-function SidebarStage() {
+function SidebarStage({ variant, size }) {
   const {
     selectedGame,
     selectedGameId,
@@ -34,16 +34,20 @@ function SidebarStage() {
       onStepForward={stepForward}
       onGoToEnd={goToEnd}
       onTogglePlayback={togglePlayback}
-      size="sm"
+      variant={variant}
+      size={size}
       className="w-full"
     />
   )
 }
 
-export default function ChessSidebarDemo() {
+export const variants = ['default', 'minimal', 'plain']
+export const sizes = ['sm', 'md', 'lg']
+
+export default function ChessSidebarDemo({ variant = 'default', size = 'sm' }) {
   return (
     <ChessControlsProvider chessData={chessData}>
-      <SidebarStage />
+      <SidebarStage variant={variant} size={size} />
     </ChessControlsProvider>
   )
 }

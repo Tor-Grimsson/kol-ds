@@ -1,5 +1,5 @@
 /**
- * ChannelStrip — a mixer channel's face (frames group, 2026-09-27). Lifted from kol-mirror's
+ * ChannelStrip — A mixer channel. a mixer channel's face (frames group, 2026-09-27). Lifted from kol-mirror's
  * SymphonyMixer strip: a plate one rung below the desk, a top row of controls beside a column of
  * actions, then the channel's sliders, then a footer. Slots only — which controls, which
  * actions, what they do, all stay in the consumer.

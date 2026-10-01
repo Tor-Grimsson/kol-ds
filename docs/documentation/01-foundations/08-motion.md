@@ -11,7 +11,8 @@ sources:
   - scripts/validate-motion.mjs
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/editor
+  - domain/overlays
 related:
   - "[[01-tokens|tokens]]"
   - "[[../03-components/05-control-chrome|control chrome]]"

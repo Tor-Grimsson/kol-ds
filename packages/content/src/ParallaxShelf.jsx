@@ -68,7 +68,7 @@ function ShelfTilt({ children }) {
 }
 
 /**
- * ParallaxShelf — one horizontal shelf row: a drag-free Embla carousel of
+ * ParallaxShelf — A shelf of project cards with parallax. one horizontal shelf row: a drag-free Embla carousel of
  * project cards with scroll-driven parallax. As the page scrolls the track is
  * nudged horizontally by `delta × parallax × direction`, the strength easing in
  * the further down the page you are; alternating rows (`fromLeft`) scroll in

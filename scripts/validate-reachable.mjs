@@ -119,7 +119,7 @@ if (!/action:\s*item\.action/.test(projection)) {
 }
 
 /* ── E4 · every nav icon resolves ── */
-const iconDir = join(REPO, 'packages/icons/src/kol-icon-set-v1')
+const iconDir = join(REPO, 'packages/icons/src/kol-icon-set-interface')
 const iconNames = new Set()
 if (existsSync(iconDir)) {
   const walk = (dir) => {
@@ -134,7 +134,7 @@ if (existsSync(iconDir)) {
 for (const m of navSrc.matchAll(/icon:\s*'([^']+)'/g)) {
   if (iconNames.size && !iconNames.has(m[1])) {
     errors.push(
-      `showcase/src/nav/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-v1 — ` +
+      `showcase/src/nav/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-interface — ` +
       'Icon warns and renders null, so the tab ships label-only'
     )
   }

@@ -6,7 +6,7 @@ import VariableFontSection from './VariableFontSection.jsx'
 import GlyphMetricsSection from './GlyphMetricsSection.jsx'
 
 /**
- * TypefaceSpecimenPage — the full data-driven typeface specimen composition:
+ * TypefaceSpecimenPage — A full typeface specimen page. the full data-driven typeface specimen composition:
  * hero → styles → preview → variable axes → glyph metrics, interleaved with
  * editorial photos. Drives every section generically from one `typeface` config
  * object (see the bundled `typefaceConfig` / `getTypefaceConfig`).

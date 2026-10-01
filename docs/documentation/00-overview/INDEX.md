@@ -10,7 +10,7 @@ aliases:
   - kol-overview
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[../../operations/01-release/02-shipped-packages|shipped packages]]"
   - "[[01-package-topology|package topology]]"

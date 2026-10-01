@@ -1,5 +1,5 @@
 /**
- * Figure — the shared caption'd media shell for long-form prose: optional
+ * Figure — Captioned media for long-form prose. the shared caption'd media shell for long-form prose: optional
  * label above, an aspect-locked bordered frame around `children`, optional
  * figcaption below. ImageBlock and VideoBlock (and the portable-text image
  * renderer) all compose this one shell.

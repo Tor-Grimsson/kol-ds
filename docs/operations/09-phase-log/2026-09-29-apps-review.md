@@ -4,7 +4,7 @@ type: log
 status: archived
 created: 2026-09-29
 updated: 2026-09-30
-description: Render gates, Hub naming, Studio, brand catalogue
+description: Render gates and the app tiers
 tags:
   - domain/workflow
   - audience/agency-internal

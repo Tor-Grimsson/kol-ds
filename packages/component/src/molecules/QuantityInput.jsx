@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 /**
- * QuantityInput — a compact integer quantity picker with two control layouts.
+ * QuantityInput — Pick a whole-number quantity. a compact integer quantity picker with two control layouts.
  *
  *   controls="chevron" (default) — value with a stacked up/down chevron pair
  *                                  on the right, inside a full-width field.

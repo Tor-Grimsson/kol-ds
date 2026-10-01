@@ -8,7 +8,7 @@ import { FONT_OPTIONS } from './webFonts.js'
 /* taxonomy-ok: organism — composes kol-component's LayerStack, LabeledControlSection, Input, Dropdown, ViewToggle, SegmentedToggle, ColorSwatch, ColorInputRow and MediaLibrary into the slide inspector */
 
 /**
- * SlideInspector — the rail beside the stage (2026-09-03, the editor scope,
+ * SlideInspector — The layers and fields of a slide. the rail beside the stage (2026-09-03, the editor scope,
  * steps 3 + 4): the LAYER STACK on top, the selected layer's FIELDS under it.
  *
  * Stack: top of the list = topmost on the slide. Click selects, eye hides,

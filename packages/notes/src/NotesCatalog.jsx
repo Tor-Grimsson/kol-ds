@@ -7,7 +7,7 @@ import { previewOf } from './notes.js'
 /* taxonomy-ok: organism — composes kol-shell's CatalogPage over note rows with NoteThumb as the card media */
 
 /**
- * NotesCatalog — the notes list (kol-olina's brand `/notes`, ported; the prop shapes are that page's,
+ * NotesCatalog — The notes list. the notes list (kol-olina's brand `/notes`, ported; the prop shapes are that page's,
  * which were copied from its SlideDeckManager rather than invented).
  *
  * `CatalogPage preset="shelf"` with `article` cards and rows — `slide` is a 16:9 cover card built for

@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The instruments around the design system
 tags:
-  - domain/workflow
   - audience/agency-internal
+  - domain/hardware
+  - domain/workflow
 ---
 
 # Development

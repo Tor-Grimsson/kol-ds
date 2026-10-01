@@ -1,5 +1,5 @@
 /**
- * iconData — the raw SVG maps behind <Icon>: kol-icon-set-v1 and
+ * iconData — the raw SVG maps behind <Icon>: kol-icon-set-interface and
  * kol-icon-set-signal.
  *
  * The SVGs are eager-inlined here as raw strings, but this module is only
@@ -11,7 +11,7 @@
  * v1-only by user ruling. Consumers needing a dead name registerIcons() their
  * own SVG or promote a glyph into v1 here.
  */
-const v1Modules = import.meta.glob('./kol-icon-set-v1/**/*.svg', { eager: true, query: '?raw', import: 'default' })
+const v1Modules = import.meta.glob('./kol-icon-set-interface/**/*.svg', { eager: true, query: '?raw', import: 'default' })
 /* kol-icon-set-signal (2026-08-28) — the signal-flow set: waveforms, filters,
  * logic gates, dither patterns, shapers, transport, cables. Drawn for the
  * instrument surfaces (kol-mirror's rack, kol-fxr's labs) rather than for app

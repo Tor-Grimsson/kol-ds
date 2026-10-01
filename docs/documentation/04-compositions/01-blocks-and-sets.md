@@ -14,7 +14,7 @@ sources:
   - showcase/src/lib/PreviewCard.jsx
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 related:
   - "[[../03-components/01-inventory|components]]"
   - "[[02-shells|reference shells]]"

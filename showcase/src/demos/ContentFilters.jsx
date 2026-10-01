@@ -25,9 +25,12 @@ const renderItem = (filteredItems) => (
 
 export const stage = 'full'
 
-export default function ContentFiltersDemo() {
+export const tones = ['default', 'inverse']
+
+export default function ContentFiltersDemo({ tone = 'default' }) {
   return (
     <ContentFilters
+      tone={tone}
       title="Catalogue"
       items={items}
       totalCount={items.length}

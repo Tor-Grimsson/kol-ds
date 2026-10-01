@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Triggers an operation
 tags:
   - domain/components
-  - audience/consumer
+  - pattern/action
 ---
 
 # Action

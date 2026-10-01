@@ -1,7 +1,7 @@
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
 /**
- * ContentCollection — the container half of the content-card system: the
+ * ContentCollection — A grid or list of content items. the container half of the content-card system: the
  * grid/list switch plus the motion that belongs to it. Animation lives in
  * the wrapper — the only place it can (06-content-card-system.md §6);
  * cards never animate themselves.

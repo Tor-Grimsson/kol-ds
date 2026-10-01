@@ -10,19 +10,14 @@ const art = `data:image/svg+xml,${encodeURIComponent(
  * snaps to quantized zones, lags on a lazy spring, and only tilts back,
  * pivoting about its bottom edge. Coarse pointers and reduced-motion
  * users get the same cards, static. */
-export default function TiltCardDemo() {
+export const variants = ['default', 'grounded']
+
+export default function TiltCardDemo({ variant = 'default' }) {
   return (
-    <div className="flex flex-wrap gap-6">
-      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded">
-        <span className="absolute bottom-3 left-3 kol-mono-12" style={{ color: '#8a8a94' }}>
-          default
-        </span>
-      </TiltCard>
-      <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded" variant="grounded">
-        <span className="absolute bottom-3 left-3 kol-mono-12" style={{ color: '#8a8a94' }}>
-          grounded
-        </span>
-      </TiltCard>
-    </div>
+    <TiltCard src={art} alt="Placeholder artwork" className="w-64 h-40 rounded" variant={variant}>
+      <span className="absolute bottom-3 left-3 kol-mono-12" style={{ color: '#8a8a94' }}>
+        {variant}
+      </span>
+    </TiltCard>
   )
 }

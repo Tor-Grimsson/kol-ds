@@ -4,10 +4,12 @@ type: index
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: Text beside an image — left, right, centred or above
+description: Text beside an image
 tags:
+  - domain/cards
   - domain/compositions
-  - audience/consumer
+  - domain/layout
+  - domain/media
 ---
 
 # Text & image

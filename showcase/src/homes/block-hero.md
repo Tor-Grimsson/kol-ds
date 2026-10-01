@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: The opening section of a page
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/layout
+  - domain/website
 ---
 
 # Heroes

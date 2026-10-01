@@ -7,16 +7,51 @@ updated: 2026-09-30
 description: One engine behind the palette and this page
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/search
 ---
 
 # Search
 
-Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K palette and this page query the same index through the same engine, `kol-search`. The palette is the quick jump and this page is the full list.
+Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K palette and this page query the same index through the same engine. The palette is the quick jump; Enter in it opens this page with the full list.
 
-## The engine
+## What you can type
 
-A query is words plus filters. `in:collection` limits it to a space, `is:component` to a kind, and `#domain/compositions` to a tag. Results are ranked by where the words hit: the title first, then headings, tags and description. The facets count what the rest of the query leaves.
+A query is words plus filters, in any order. Every word must match somewhere on a page; every filter narrows the list.
+
+| Type | Finds |
+|---|---|
+| `button` | pages where the word appears |
+| `"exact phrase"` | the words together, never read as a filter |
+| `-legacy` | pages without the word |
+| `#layout` or `tag:layout` | pages carrying the tag |
+| `is:component` or `kind:component` | one kind of page: component, doc, block, set, package |
+| `in:library` or `space:library` | one header tab: styles, library, docs, search, development |
+| `cat:atoms` or `category:atoms` | one category, such as a tier or a block category |
+| `-tag:draft` | leaves a tag out |
+| `after:2026-09-01` · `before:2026-10-01` | pages updated in a date range |
+
+**A bare word can be a filter.** A word that names a category, kind or tab becomes that filter on its own, so `atom` lists the atoms and `doc` lists the docs. Filters on different fields must all hold; several values of one field mean any of them.
+
+## How it ranks
+
+Each word scores by the best place it lands on a page, from most to least:
+
+| Where the word lands | Weight |
+|---|---|
+| the whole title | 100 |
+| the start of the title | 60 |
+| the start of a word in the title (camelCase splits, so `Anatomy` finds `ColorAnatomy`) | 40 |
+| inside the title | 25 |
+| a tag, exactly | 30 |
+| inside a tag | 12 |
+| a heading | 15 |
+| a keyword | 10 |
+| the description | 8 |
+| the body | 3 |
+
+Ties sort by title. Every result keeps the reason it ranked where it did, and the counts beside each filter are what the rest of the query leaves.
+
+The engine is `@kolkrabbi/kol-search`, plain JavaScript; the palette and this page run the same index through it.
 
 ## Tags
 

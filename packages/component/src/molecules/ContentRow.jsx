@@ -2,7 +2,7 @@ import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
 
 /**
- * ContentRow — the row form of the content-card system: leading thumb (where
+ * ContentRow — The row form of a content card. the row form of the content-card system: leading thumb (where
  * the variant has one) beside the ruled text. Box values — thumb size, gap,
  * padding, frame — default per variant to the RULED structures from the live
  * review (06-content-card-system.md §2 boxes): default is a bare table-like

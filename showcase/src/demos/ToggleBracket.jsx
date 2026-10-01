@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { ToggleBracket } from '@kolkrabbi/kol-component'
 
-export default function ToggleBracketDemo() {
+export const variants = ['default', 'plain']
+
+export default function ToggleBracketDemo({ variant = 'default' }) {
   const [a, setA] = useState(false)
   const [b, setB] = useState(true)
-  const [c, setC] = useState(true)
   return (
     <>
-      <ToggleBracket label="DEFAULT OFF" value={a} onToggle={setA} />
-      <ToggleBracket label="DEFAULT ON" value={b} onToggle={setB} />
-      <ToggleBracket label="PLAIN VARIANT" value={c} onToggle={setC} variant="plain" />
+      <ToggleBracket label="DEFAULT OFF" value={a} onToggle={setA} variant={variant} />
+      <ToggleBracket label="DEFAULT ON" value={b} onToggle={setB} variant={variant} />
     </>
   )
 }

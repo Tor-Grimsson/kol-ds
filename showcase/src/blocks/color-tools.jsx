@@ -3,12 +3,12 @@ import { ColorInputRow, ShapeDropdown } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Color tools',
-  description: 'A paint panel — fill / stroke / effects color rows over a shape scope',
+  description: 'Fill and stroke color rows',
   category: 'toolbar',
   type: 'reference',
   status: 'active',
   updated: '2026-08-09',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/color', 'domain/editor', 'pattern/blocks'],
 }
 export const stage = 'md'
 

@@ -6,7 +6,7 @@ import useSectionTheme from '../hooks/useSectionTheme.js'
 import { minHeightClass } from './sectionHeights.js'
 
 /**
- * SectionSplit — the media-and-text split section, on `SectionText` (the
+ * SectionSplit — Text beside media. the media-and-text split section, on `SectionText` (the
  * text column) beside the media frame. Two columns at/above 901px, one
  * stacked column below. `FeatureSplit` is this component under its old name
  * and old prop names (kept as an alias — see FeatureSplit.jsx).

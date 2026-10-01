@@ -6,8 +6,9 @@ created: 2026-09-30
 updated: 2026-09-30
 description: The closing section of a page
 tags:
+  - domain/app-shell
   - domain/compositions
-  - audience/consumer
+  - domain/layout
 ---
 
 # Footers

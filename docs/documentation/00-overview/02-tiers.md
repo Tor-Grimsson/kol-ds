@@ -7,7 +7,7 @@ updated: 2026-08-01
 description: How the packages are layered
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/editor
 related:
   - "[[INDEX|overview]]"
 ---

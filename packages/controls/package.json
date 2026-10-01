@@ -2,7 +2,7 @@
   "name": "@kolkrabbi/kol-controls",
   "version": "0.4.0",
   "private": false,
-  "description": "DEPRECATED — renamed to @kolkrabbi/kol-hardware (2026-09-27). This version re-exports it unchanged so existing imports keep working; move to `@kolkrabbi/kol-hardware` at your next bump.",
+  "description": "Old name for kol-hardware",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",

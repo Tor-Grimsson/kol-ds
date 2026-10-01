@@ -10,7 +10,7 @@ aliases:
   - consuming-the-ds
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/packages
 related:
   - "[[03-install|install]]"
   - "[[01-package-topology|package topology]]"

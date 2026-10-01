@@ -419,7 +419,7 @@ function isTypingTarget(el) {
 }
 
 /**
- * PanZoomViewport — infinite-canvas viewport (pan + zoom), and the one that
+ * PanZoomViewport — An infinite canvas to pan and zoom. infinite-canvas viewport (pan + zoom), and the one that
  * publishes `CanvasZoomContext`.
  *
  * Pan: hold Space + drag (cursor grab/grabbing), or two-finger trackpad
@@ -787,7 +787,7 @@ export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
 }
 
 /**
- * CanvasRuler — top + left rulers in virtual-canvas px, mapped through the
+ * CanvasRuler — Rulers along the canvas edges. top + left rulers in virtual-canvas px, mapped through the
  * measured frame geometry (see useFrameGeom).
  *
  * Dragging off a ruler starts a new guide: the ruler only ANNOUNCES the
@@ -900,7 +900,7 @@ function GuideLine({ axis, screenPos, interactive, onGrab }) {
 }
 
 /**
- * CanvasGuides — ruler guides rendered at the viewport level so each line
+ * CanvasGuides — Guide lines across the whole canvas. ruler guides rendered at the viewport level so each line
  * spans the entire visible canvas area instead of clipping to the letterbox
  * frame. Positions are stored in virtual canvas px and threaded down as props
  * — the viewport is chrome and owns no guide state; the screen mapping is the

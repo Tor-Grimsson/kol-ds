@@ -59,8 +59,12 @@ export const TIERS = {
   SetupPanel: 'molecules', PiecePalette: 'molecules', GamePicker: 'molecules',
   MaterialSummary: 'molecules',
   /* kol-dashboards */
-  DashMetricCard: 'atoms', DashStackedBarCard: 'atoms', DashSlotCard: 'atoms',
-  Sparkline: 'atoms', DashboardGrid: 'atoms', GridCard: 'atoms', DashTooltip: 'atoms',
+  /* THE CARDS ARE NOT ATOMS (the showcase review W18, 2026-09-30 — user: "dash* these are built using
+   * nested element, how are they atoms?"). A card is a header, a value, a trend: molecules, beside
+   * their sibling cards. The grid and its cell paint nothing of their own: utilities, the layout
+   * wrappers' shelf. Sparkline is one line — the dashboards' only atom. */
+  DashMetricCard: 'molecules', DashStackedBarCard: 'molecules', DashSlotCard: 'molecules',
+  Sparkline: 'atoms', DashboardGrid: 'utilities', GridCard: 'utilities', DashTooltip: 'molecules',
   DashChartCard: 'molecules', DashListCard: 'molecules', DashFeaturedCard: 'molecules',
   DashAlertCard: 'molecules', DashTableCard: 'molecules',
   Histogram: 'molecules', Candlestick: 'molecules', ScatterPlot: 'molecules',
@@ -71,7 +75,8 @@ export const TIERS = {
    * children slot, composes no KOL component (the chevron is injected), and
    * previews in isolation. It is the rail LADDER — every rail header at every
    * rung comes from it (2026-08-01). */
-  ShellSidebar: 'atoms', WorkshopDefaultSidebar: 'atoms', RailSection: 'atoms', RailRow: 'atoms',
+  /* The two sidebars compose RailSection and RailRow — the RightRail precedent below (W18). */
+  ShellSidebar: 'molecules', WorkshopDefaultSidebar: 'molecules', RailSection: 'atoms', RailRow: 'atoms',
   /* RightRail is a MOLECULE: it composes RailSection and RailRow, which is the
    * nesting test. THE right rail for every route — it replaced two components
    * that disagreed about which sections exist (2026-08-01). */
@@ -83,7 +88,9 @@ export const TIERS = {
    * the placement test (each paints alone and composes no KOL component);
    * ExhibitSidebar is a MOLECULE by the nesting test (RailSection + RailRow +
    * DocsToc, the RightRail precedent); the two page scaffolds are ORGANISMS. */
-  ExhibitCard: 'atoms', ExhibitLinkCard: 'atoms',
+  ExhibitCard: 'atoms',
+  /* ExhibitLinkCard renders a Tag since the chip unification — it composes, so it is a molecule (W18) */
+  ExhibitLinkCard: 'molecules',
   ExhibitSidebar: 'molecules',
   ExhibitOverview: 'organisms', ExhibitPage: 'organisms',
   /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
@@ -119,6 +126,8 @@ export const TIERS = {
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
   Knob: 'atoms', Fader: 'atoms', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
   IconButton: 'atoms', JackSocket: 'atoms', PanelLabel: 'atoms',
+  /* LED had a function but no tier — the all-caps name read as a data export and hid it (W19) */
+  LED: 'atoms',
   LabeledJack: 'molecules', ModuleHeader: 'molecules', EnvelopeModeToggle: 'molecules',
   SignalScope: 'molecules', SignalReference: 'molecules',
   ParamSheet: 'organisms', ModuleFrame: 'organisms', ChannelStrip: 'organisms', EnvelopeGenerator: 'organisms',
@@ -327,7 +336,6 @@ export const EXEMPT = {
    * name with a different site/dashboard-tier component; both stay on the
    * roster under their own package) + contexts + single-parent sub-parts */
   AppShell: 'namesake:framework-site-shell vs shell-app-shell',
-  ContentFilters: 'namesake:component-filters vs shell-catalog-organism',
   GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
   NavHiddenContext: 'non-component',
   MastheadContext: 'non-component',
@@ -358,6 +366,8 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* DropdownTagFilter = SettingsMulti (2026-10-01): its own pill and hardcoded radius, no consumer */
+  'DropdownTagFilter',
   /* ColorLoader = IntroLoader (2026-09-30) */
   'ColorLoader',
   /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
@@ -413,9 +423,9 @@ export const NO_DEMO = (() => {
       + 'does, since a demo for either needs an injected client the showcase does not carry. The '
       + 'live surface is apps/media.',
     ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
-    ...debt(['AudioPlayer', 'EmblaNav'],
+    ...debt(['EmblaNav'],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
-    ...debt(['GlyphItem', 'FontViewerComponent', 'FontViewerSection'],
+    ...debt(['FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
     AppHub: 'the Hub in one call (2026-09-26) — its rail is position: fixed to the window and its keys '
       + '(, S \\ ⌥1–9) listen on the window, so on a demo stage it would sit over the showcase and take '
@@ -434,11 +444,11 @@ export const NO_DEMO = (() => {
       + 'on the fixture. Demos land with a showcase fixture client.'])),
     ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),
     ...debt(['NavRail', 'PageShell', 'SettingsScaffold', 'TabStrip',
-      'WalkthroughPanel', 'ShortcutsOverlay', 'Logomark'],
+      'WalkthroughPanel', 'ShortcutsOverlay'],
       'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
     ...debt(['RatioBar', 'Tower', 'QuadSplit', 'CardRow', 'StripeRow', 'AppliedCard'].slice(1),
       'styleguide combo slabs, ungated until the barrel parser was fixed 2026-08-15'),
-    ...debt(['ExhibitOverview', 'ExhibitPage', 'ExhibitSidebar', 'ExhibitCard', 'ExhibitLinkCard'],
+    ...debt(['ExhibitOverview', 'ExhibitPage', 'ExhibitSidebar', 'ExhibitLinkCard'],
       'kol-workshop 0.22.0 exhibit system — ships unexercised (AGENT-CONTEXT ⚠️)'),
     /* editor-panels-the-held-specs A1 (2026-09-03): AddLayerButton is the `+`
      * in the layers panel's tab row and renders INSIDE the LayerStack demo,
@@ -480,14 +490,15 @@ export const NO_DEMO = (() => {
      * set page renders all thirteen off one authored `BRAND_BOOK` object, which
      * is both the exercise and the reference call shape; thirteen per-component
      * pages would each have to invent a brand to show anything. AssetCard and
-     * Swatch DO have demos — they carry no brand. */
+     * Swatch DO have demos — they carry no brand. ProfileAvatar left this list in W18 (2026-09-30:
+     * every atom previews) — its demo wears the KOL mark, so it invents no brand either. */
     ...Object.fromEntries([
       'PostPhoto', 'PostType', 'PostProduct', 'PostEditorial', 'StoryPhoto', 'StoryType',
-      'ProfileAvatar', 'BusinessCardFront', 'BusinessCardBack', 'Envelope', 'Letterhead',
+      'BusinessCardFront', 'BusinessCardBack', 'Envelope', 'Letterhead',
       'LetterheadCorrespondence', 'EmailSignature',
     ].map((n) => [n, 'brand-book mock — the styleguide set page renders the whole set off one authored brand object (2026-09-03 ruling)'])),
     ...debt(['ShellLayout', 'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
-      'RightRail', 'RailSection', 'RailRow', 'TagModeGate', 'TagPath',
+      'RightRail', 'TagModeGate',
       'DocumentationReader', 'DocHeader', 'DocSection', 'DocTable', 'DocFigure'],
       'workshop shell + doc chrome; /workshop-preview renders the system, not the pieces'),
     ...debt(['SearchPage'], 'a whole page — it IS /search in the showcase and in apps/workshop'),

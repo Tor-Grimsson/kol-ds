@@ -22,7 +22,7 @@ export const DEFAULT_KEYFRAMES = [
 ]
 
 /**
- * KeyframeEditor — a keyframe list over a pose track, kept sorted by `t`.
+ * KeyframeEditor — A sorted list of keyframes. a keyframe list over a pose track, kept sorted by `t`.
  *
  *   { t: 0..1, rot: [x, y, z] RADIANS, pos: [x, y, z], scale, ease }
  *

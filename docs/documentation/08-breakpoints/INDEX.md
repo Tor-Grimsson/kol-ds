@@ -12,7 +12,7 @@ sources:
   - packages/theme/kol-theme.css
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/breakpoints
 related:
   - "[[01-values|breakpoint values]]"
   - "[[02-best-practices|best practices]]"

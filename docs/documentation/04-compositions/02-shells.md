@@ -9,7 +9,6 @@ aliases:
   - reference-shells
 tags:
   - domain/layout
-  - audience/consumer
   - pattern/app-shell
 sources:
   - showcase/src/lib/ShellChrome.jsx
@@ -43,22 +42,21 @@ then adopted by the showcase. Plan and decisions: `.kol/llm-context/plan-2026-09
 | Space | Root — an index page, rails on | Left rail | Right rail |
 |---|---|---|---|
 | — `/` | the landing, the **only** page without rails | — | — |
-| — `/library` | the Library's home: the whole tree, drawn | the spaces | this page |
 | Styles | `/styles` | Foundations · Icons · Guides | this page |
-| Composition | `/composition`: its home and the size nesting | **Components** (Group by: Atomic · Function; a chapter opens its tier home) · **Blocks** (by category) · **Apps** (by layer) | this page · its tags · related |
-| Collection | `/collection`: its home, one set from two packages | **Sets** (Cards first, a chapter of its cards; each composed set a row) · **Packages** (by tier, one page each, carrying the package's family) | this page |
+| Library | `/library`: the whole tree, drawn | ONE tree under the Library eyebrow (W2, 2026-09-30): **Composition** (`/composition`) › Components (Group by: Atomic · Function) · Blocks (by category) · Apps (by layer); **Collection** (`/collection`) › Sets (each a group of its members; Cards holds its cards) · Packages (by tier). Every level is a fold with its own page; the rail opens the FIRST place the page sits in tree order (W4) | This page · Links · Tags |
 | Docs | `/docs` | **Documentation · Operations**, the vault only | the reader's rail |
 | Search | `/search`: its home until a query is typed | Results · Tags · Graph · A–Z | this page |
 | Development | `/development` | Tools (references, quarantine) · Records (phase log, open questions) · Lobby (dev only) | this page |
 
-- **A space owns more than its root.** Composition lights for `/components · /blocks · /apps · /app`, Collection for `/sets · /cards · /packages`, Docs for `/docs · /documentation`, Styles for `/styles · /foundations · /icons`, Development for `/development · /references · /quarantine`; no URL moved. `/sets/family/<dir>` redirects to `/packages/<dir>` (`SPACE_PREFIXES`, `showcase/src/nav/shell-nav.js`).
+- **A space owns more than its root.** Library lights for `/composition · /components · /blocks · /apps · /app · /collection · /sets · /cards · /packages`, Docs for `/docs · /documentation`, Styles for `/styles · /foundations · /icons`, Development for `/development · /references · /quarantine`; no URL moved. `/sets/family/<dir>` redirects to `/packages/<dir>` (`SPACE_PREFIXES`, `showcase/src/nav/shell-nav.js`).
+- **The right rail is three L1 sections (W15, 2026-09-30):** **This page** (the page's headings — a home's tables sit in titled sections so it fills) · **Links** (Quick actions, Related) · **Tags** (Tag graph, All tags at `/search/tags`, then the page's tags by namespace, each hash in its namespace color). Tags was a group inside Links.
 - **Each space draws its own rails.** `renderSidebar` and a function `defaultTocContent` receive `{ activeRoute }`. The **Tools group is gone** — the header lists the spaces; a second door to each was "one body of content, two doors".
 - **A page tells the right rail what it is about** — `usePageMeta({ tags, related })`, read by the rail with `usePageMetaValue()`. The rail had been handed empty lists on every route.
 - **The rail follows you.** Arriving in a group opens it and folds its siblings.
 - **A folded L1 says so** — a state glyph at the row's end, and while folded, how much it holds.
 - **Geometry.** One scroll region under the header, edge to edge (`#shell-scroll`, `SHELL_SCROLL_ROOT`); the rails are sticky inside it, **256px each** on their own tokens (`--kol-shell-nav-w` · `--kol-shell-toc-w`), each ending in an opaque 08 seam with the chrome inset inside it. Main pads the page ladder from a seam, only on a side that has a rail; **pages do not pad themselves on x**. Laws in [[../01-foundations/05-layout-systems|layout systems]].
 - **Search.** The palette runs `@kolkrabbi/kol-search` (ranked, every hit underlined, `atom` → the Atoms category). **Enter opens the search page** (`searchPath`), whose whole state is the query in the URL — Back returns to it. A tag clicked anywhere opens `/search?q=#tag`; the tag graph stays one click away in every right rail. `/` and ⌘K open the palette.
-- **Keys and settings.** `S` (and `?`) opens kol-component's `ShortcutsOverlay` — the sheet every app opens; `,` opens the settings drawer (the rails, quick search in this space only, the page's own rows, the keymap).
+- **Keys and settings.** `S` (and `?`) opens kol-component's `ShortcutsOverlay` — the sheet every app opens; `,` opens the settings drawer (the rails, "this space only" for quick search, the page's own rows, the keymap); `[` `]` hide one rail, `\` both (W16). Every label names what the key does, in the fewest words.
 - **The wordmark names the space** — `brandLabel`: typed Right Grotesk Tight, DESIGN SYSTEM on `/`, the space's name elsewhere, aligned with the page text.
 
 ### Embed mode — `?embed=1` (2026-07-30)
@@ -281,9 +279,9 @@ The second one is **deleted, not aligned.** Tags are rows in the shell's index, 
 | Reaching the graph | an unlabelled hex glyph in the overlay's corner | a **Graph view** row in the rail |
 | `view` state | local to the overlay | in the **context** — `openTagMode(tag, { view })` |
 
-**Tags is a category**, not a tag dump: `Graph view` · `Search` · this page's tags. `Quick actions` sits on the same rung. Both are `RailSection level={2}`.
+*Superseded 2026-09-30 (W15) — Tags is its own L1 section; § The space table.* **Tags is a category**, not a tag dump: `Graph view` · `Search` · this page's tags. `Quick actions` sits on the same rung. Both are `RailSection level={2}`.
 
-**Tag chrome:** no `color`, no `size`. Passing `color` swaps the base class off `tag-control`, and **only `tag-control` carries a `:hover` rule** — a colored Tag silently loses its interaction state. `sm` is the default and the only size used. Color is a separate decision, later.
+*Superseded 2026-09-30 (W17) — `Tag color` mixes the primary chip's fill, hover and active from one hue (`.kol-tag--hue`), so a colored chip keeps its states; tags wear their namespace color (`getTagColor`), status wears `Badge`'s tones.* **Tag chrome:** no `color`, no `size`. Passing `color` swaps the base class off `tag-control`, and **only `tag-control` carries a `:hover` rule** — a colored Tag silently loses its interaction state. `sm` is the default and the only size used. Color is a separate decision, later.
 
 ### THE RIGHT RAIL HOLDS ITS COLUMN, EMPTY OR NOT (user ruling 2026-08-01)
 

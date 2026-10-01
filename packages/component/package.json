@@ -1,7 +1,7 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.233.0",
-  "description": "KOL design-system components — atoms through organisms, emitting canonical kol-* classes. Pairs with @kolkrabbi/kol-theme for styling.",
+  "version": "0.234.0",
+  "description": "The core component library",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",

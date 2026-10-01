@@ -41,7 +41,7 @@ const HUE_GRADIENT =
   'linear-gradient(to right, hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%), hsl(180,100%,50%), hsl(240,100%,50%), hsl(300,100%,50%), hsl(360,100%,50%))'
 
 /**
- * HueStrip — 1D hue slider: a rainbow bar with a draggable knob. Pointer
+ * HueStrip — A hue slider. 1D hue slider: a rainbow bar with a draggable knob. Pointer
  * drag anywhere on the strip; focus + Left/Right (or Down/Up) arrow keys
  * nudge hue by 1° (role="slider").
  *
@@ -116,7 +116,7 @@ export function HueStrip({ hue, onChange }) {
 }
 
 /**
- * SBSquare — 2D saturation/value picker: white→hue horizontal gradient with
+ * SBSquare — Pick saturation and value on a square. 2D saturation/value picker: white→hue horizontal gradient with
  * a black overlay fading upward, crosshair handle. Fills its container
  * (consumer owns the size — and the rounding: apply `rounded-[var(--kol-radius-xs)]
  * overflow-hidden` on the wrapper). Focus + arrow keys nudge: Left/Right =
@@ -233,7 +233,7 @@ function vertexAt(angleRad) {
 }
 
 /**
- * WheelTriangle — HSV color wheel: conic hue ring with an inscribed,
+ * WheelTriangle — A hue wheel with a value triangle. HSV color wheel: conic hue ring with an inscribed,
  * rotating HSV triangle for saturation/value. Ring press snaps hue to the
  * cursor angle and drags; triangle press grabs the SV handle with a
  * cursor↔handle offset so fine tuning never teleports it. Focus + arrow
@@ -478,7 +478,7 @@ function SvgHandle({ cx, cy, r = 2.4 }) {
 }
 
 /**
- * SpectrumControls — the composed classic square picker: HueStrip stacked
+ * SpectrumControls — A hue strip over a saturation square. The composed classic square picker: HueStrip stacked
  * over a fill-height SBSquare, per the source color panel's Hue mode layout
  * (SBSquare wrapped in `rounded-[var(--kol-radius-xs)] overflow-hidden`, see its comment).
  * Fills its container — the consumer owns the outer size. For the ring

@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Fields and controls composed into a form
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/forms
 ---
 
 # Forms

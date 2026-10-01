@@ -596,7 +596,7 @@ function FileEditorHost({ o, client, bucket, onClose, onSaved, assets }) {
 }
 
 /**
- * MediaInspector — the full-screen viewer for one file in a set: image, video
+ * MediaInspector — View one file at full size. the full-screen viewer for one file in a set: image, video
  * (scrubbable, audio on), audio, or a document page, in one `QuickLookFrame`, with
  * prev / next fixed at the viewport edges.
  *

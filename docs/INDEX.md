@@ -10,7 +10,7 @@ aliases:
   - docs-home
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/docs
 related:
   - "[[documentation/INDEX|KOL documentation]]"
 ---

@@ -35,6 +35,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { NOISE } from './lib/topic-tags.mjs'
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const VAULT = join(REPO, 'docs')
@@ -76,12 +77,56 @@ for (const file of files) {
     if (!NAMESPACES.has(t.split('/')[0])) {
       errors.push(`${rel}  \`${t}\` is outside the closed namespace set — add the namespace to docs-framework 03 first, or use an existing one`)
     }
+    if (NOISE.has(t)) errors.push(`${rel}  T5 \`${t}\` says nothing — tag what the doc is about`)
+  }
+}
+
+/* THE SHOWCASE PAGES TOO (the showcase review W6, 2026-09-30 — user: *"I've never seen any other tags
+ * than maybe 8 total"*, *"hashtag consumer?! … how about search query index"*). 208 pages shared 35
+ * tags; `domain/design-system` sat on 137. The homes, component pages, sets, blocks and cards now
+ * answer to T1 and T2, to T3 on their own count, and to:
+ *
+ *   T5  no NOISE tag (`domain/design-system`, `audience/consumer`) — on every page, so it says nothing
+ *
+ * T5 holds the vault too (#consumer was on 67 of its docs).
+ * T4 is counted over vault + showcase together: a showcase page sharing a vault leaf IS the edge. */
+const fmTags = (src) => {
+  const fm = src.match(/^---\n([\s\S]*?)\n---/)
+  const b = fm?.[1].match(/^tags:\n((?:\s+-\s.+\n?)+)/m)
+  return b ? [...b[1].matchAll(/-\s*(\S+)/g)].map((m) => m[1]) : []
+}
+const arrTags = (src) => {
+  const a = src.match(/tags:\s*\[([\s\S]*?)\]/)
+  return a ? [...a[1].matchAll(/["'`]([^"'`]+)["'`]/g)].map((m) => m[1]) : []
+}
+const showcase = []
+for (const f of readdirSync(join(REPO, 'showcase/src/homes')).filter((n) => n.endsWith('.md'))) {
+  showcase.push([`showcase/src/homes/${f}`, fmTags(readFileSync(join(REPO, 'showcase/src/homes', f), 'utf8'))])
+}
+for (const dir of ['docs/components', 'sets', 'blocks', 'cards']) {
+  for (const f of readdirSync(join(REPO, 'showcase/src', dir)).filter((n) => /\.(mdx|jsx)$/.test(n))) {
+    showcase.push([`showcase/src/${dir}/${f}`, arrTags(readFileSync(join(REPO, 'showcase/src', dir, f), 'utf8'))])
+  }
+}
+const scCounts = new Map()
+for (const [rel, tags] of showcase) {
+  if (tags.length < 2) errors.push(`${rel}  ${tags.length} tag(s), needs 2 — one tag is a label, two is a position`)
+  for (const t of tags) {
+    scCounts.set(t, (scCounts.get(t) ?? 0) + 1)
+    counts.set(t, (counts.get(t) ?? 0) + 1)
+    if (!NAMESPACES.has(t.split('/')[0])) errors.push(`${rel}  \`${t}\` is outside the closed namespace set`)
+    if (NOISE.has(t)) errors.push(`${rel}  T5 \`${t}\` is on every page and says nothing — tag what the page is about`)
+  }
+}
+for (const [tag, n] of scCounts) {
+  if (tag.startsWith('domain/') && n > showcase.length / 2) {
+    errors.push(`\`${tag}\` covers ${n}/${showcase.length} showcase pages — split it into real subjects`)
   }
 }
 
 const half = files.length / 2
 for (const [tag, n] of counts) {
-  if (tag.startsWith('domain/') && n > half) {
+  if (tag.startsWith('domain/') && n - (scCounts.get(tag) ?? 0) > half) {
     errors.push(`\`${tag}\` covers ${n}/${files.length} docs — a domain tag on most of the vault clusters nothing. Split it into real subjects.`)
   }
   if (n === 1) {
@@ -94,4 +139,4 @@ if (errors.length) {
   for (const e of errors) console.error('  ' + e)
   process.exit(1)
 }
-console.log(`tags: clean (${files.length} docs, ${counts.size} tags, every one shared and none over half)`)
+console.log(`tags: clean (${files.length} docs + ${showcase.length} showcase pages, ${counts.size} tags, every one shared and none over half)`)

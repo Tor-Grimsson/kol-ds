@@ -4,7 +4,7 @@ type: log
 status: archived
 created: 2026-08-09
 updated: 2026-09-30
-description: Tiers re-ruled, atoms paint, Utilities minted
+description: Tiers re-ruled and Utilities minted
 tags:
   - domain/workflow
   - audience/agency-internal

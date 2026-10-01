@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-07-08
 updated: 2026-08-27
-description: The loader, the packaged set, and bring-your-own
+description: The icon loader and the shipped sets
 aliases:
   - icons
   - iconography
@@ -13,7 +13,7 @@ sources:
   - packages/icons/src/index.js
 tags:
   - domain/iconography
-  - audience/consumer
+  - domain/packages
 related:
   - "[[../00-overview/INDEX|overview]]"
   - "[[01-inventory|icon inventory]]"
@@ -22,7 +22,7 @@ related:
 
 # Icons — the loader, the set, and bring-your-own
 
-`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-v1`, the general set for app chrome, and `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces. `<Icon>` resolves consumer → v1 → signal; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-v1, grouped — the legacy gallery and `/icons/v1` were consolidated into it, 2026-07-28).
+`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-interface` (named `kol-icon-set-v1` until 2026-09-30; `KOL_ICON_SET_V1` stays as a deprecated alias), the general set for app chrome, and `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces. `<Icon>` resolves consumer → v1 → signal; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-interface, grouped — the legacy gallery and `/icons/v1` were consolidated into it, 2026-07-28).
 
 ## The chapter
 
@@ -37,4 +37,4 @@ related:
 
 ## Glyph cut
 
-`KOL_ICON_SET_V1` is the folder index (`{ group: names[] }`); **`KOL_ICON_SET_V1_META`** (kol-icons ≥0.24.0, IconSetCut) is per glyph — `{ name: { group, cut } }`, `cut` being how it is drawn, `stroke` | `solid`, derived from the markup at build (`pnpm extract:icons` → `src/cuts.json`; the `icon-cuts` gate fails when stale). A gallery filters by type from the package; nobody globs the SVG folder to learn what the set already knows.
+`KOL_ICON_SET_INTERFACE` is the folder index (`{ group: names[] }`); **`KOL_ICON_SET_INTERFACE_META`** (kol-icons ≥0.24.0, IconSetCut) is per glyph — `{ name: { group, cut } }`, `cut` being how it is drawn, `stroke` | `solid`, derived from the markup at build (`pnpm extract:icons` → `src/cuts.json`; the `icon-cuts` gate fails when stale). A gallery filters by type from the package; nobody globs the SVG folder to learn what the set already knows.

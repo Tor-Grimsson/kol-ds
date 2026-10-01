@@ -57,7 +57,7 @@ function StyleCard({ label, weight, width, italic, isActive, onHover, onClick, f
 const pickDefault = (list) => list.find((s) => s.isDefault) || list[3] || list[0]
 
 /**
- * TypefaceStyleSection — the weight/width/italic style showcase: a sticky
+ * TypefaceStyleSection — Every style of a typeface. the weight/width/italic style showcase: a sticky
  * inverted preview panel on the left (renders `AaBbCc / 01234567 / {(!@#$?&)}`
  * in the hovered/selected style) beside a grid of every available style on the
  * right. Derives its behavior generically from `typeface.styles`: italic →

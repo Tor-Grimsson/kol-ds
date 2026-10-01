@@ -19,7 +19,7 @@ import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
 import { filterMedia } from '../utilities/mediaSearch.js'
 
 /**
- * MediaLibrary — a browser over an object bucket, in two views over one
+ * MediaLibrary — Browse and pick files from a bucket. a browser over an object bucket, in two views over one
  * headless core. Consolidates four consumer forks (kol-ds-fxr, kol-labs-single,
  * kol-client-kolkrabbi, kol-website/brand — 9 files, ~1542 lines) that had
  * already diverged: only fxr carried the canvas-taint fix, only labs carried
@@ -263,7 +263,7 @@ function sortFiles(files, { by, dir }) {
 }
 
 /**
- * MediaLibraryProvider — the headless core: one list call, then a
+ * MediaLibraryProvider — The data core behind the media views. the headless core: one list call, then a
  * PREFIX-SCOPED view over it: the folders directly under the prefix, the
  * files at that level (or the whole subtree in `flat`), the kind allow-list,
  * the search, the sort with direction, and paging.

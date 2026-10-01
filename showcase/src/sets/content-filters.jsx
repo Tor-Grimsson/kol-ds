@@ -2,12 +2,12 @@ import { ContentFilters, ContentCollection, ContentItem } from '@kolkrabbi/kol-c
 
 export const meta = {
   title: 'Content filters',
-  description: 'The listing apparatus every consumer hand-rolled — ContentFilters over a ContentCollection of ContentItems, LIST/GRID as one prop instead of nine hand-written switches',
+  description: 'A filterable listing in list or grid',
   category: 'listing',
   type: 'reference',
   status: 'active',
   updated: '2026-08-15',
-  tags: ['domain/design-system', 'pattern/sets'],
+  tags: ['domain/filtering', 'domain/layout', 'pattern/sets'],
 }
 export const stage = 'full'
 

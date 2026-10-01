@@ -5,7 +5,7 @@ import { slideToPngBlob, deckToPdfBlob, deckToPptxBlob, saveBlob } from './slide
 /* taxonomy-ok: organism — FullscreenOverlay + LabeledControlSection as the deck's save / export / import sheet */
 
 /**
- * DeckFile — save, export and import behind one sheet (kol-olina's brand decks; user 2026-09-03:
+ * DeckFile — Save and export a deck. save, export and import behind one sheet (kol-olina's brand decks; user 2026-09-03:
  * *"we rather have export import save load modal setup"*).
  *
  *   Save            — `onSave(slides)`, the consumer's database. Explicit, one write.

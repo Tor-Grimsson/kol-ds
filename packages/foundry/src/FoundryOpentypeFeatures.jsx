@@ -11,7 +11,7 @@ const DEFAULT_FEATURES = [
 ]
 
 /**
- * FoundryOpentypeFeatures — the OpenType Features section of a specimen page:
+ * FoundryOpentypeFeatures — A typeface's OpenType features. the OpenType Features section of a specimen page:
  * the specimen header over a row of text-only SectionCardItems (kol-website's
  * section, moved in 2026-08-27 — FoundrySpecimenSections; its FeatureGrid /
  * FeatureCard are the family card with no visual). Hover only, never a

@@ -3,7 +3,7 @@ import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
- * AlignmentGrid — the align control: TWO three-way strips, X and Y.
+ * AlignmentGrid — Align on X and Y. the align control: TWO three-way strips, X and Y.
  *
  * Rebuilt on `SegmentedToggle` 2026-09-03 (`editor-chrome-review`, the user's
  * own pass over the running editor: *"alignment isnt using segmentedtoggle?"*).

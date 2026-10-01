@@ -41,14 +41,36 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
    * group you are in" on its landing page too). Landing on a page INSIDE a chapter opens that
    * chapter and folds the rest; a chapter's own home opens nothing. Every other chapter starts
    * folded — including ones this rail has never seen (a Group-by switch hands it new ids, and an
-   * unknown id used to read as open, so every chapter sprang open). */
-  const holdsPage = (route) => (route.children ?? []).some((c) => {
-    const cp = getChildPath(c, basePath).replace(/\/$/, '')
+   * unknown id used to read as open, so every chapter sprang open).
+   *
+   * ANY DEPTH (2026-09-30, the showcase review W1 — user: Library › Composition › Components ›
+   * Atoms › Button). A chapter may hold chapters; every group at every depth is a fold of its own,
+   * and the chain down to where you are opens and everything off it folds. */
+  const isHere = (route) => {
+    /* a pathless group is not a place — without this its basePath fallback matched every URL */
+    if (!route.path) return false
+    const cp = getChildPath(route, basePath).replace(/\/$/, '')
     return normalizedPath === cp || normalizedPath.startsWith(cp + '/')
-  })
+  }
+  const groupsOf = (list) => list.flatMap((r) => (r.children?.length ? [r, ...groupsOf(r.children)] : []))
+  /* ONE PLACE YOU ARE (W4, 2026-09-30). A page can sit in more than one group — Button is an
+   * atom AND a member of every set that uses it — and opening every group that holds it would
+   * unfold half the rail. The first place in tree order wins: its chain opens, the rest fold. */
+  const chainTo = (list, trail = []) => {
+    for (const r of list) {
+      if (!r.children?.length) continue
+      /* deepest first: `/sets` holds `/sets/app-shell` by prefix, but the set's own row is the place */
+      const deeper = chainTo(r.children, [...trail, r])
+      if (deeper) return deeper
+      if (r.children.some(isHere)) return [...trail, r]
+    }
+    return null
+  }
   const followed = () => {
-    const hit = routes.find(holdsPage)
-    return hit ? Object.fromEntries(routes.map((r) => [r.id, r !== hit])) : null
+    const chain = chainTo(routes)
+    if (!chain) return null
+    const open = new Set(chain.map((g) => g.id))
+    return Object.fromEntries(groupsOf(routes).map((g) => [g.id, !open.has(g.id)]))
   }
   const [collapsedSections, setCollapsedSections] = useState(() => followed() ?? {})
   useEffect(() => {
@@ -61,7 +83,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
   /* FOLD ALL (2026-09-30, the names audit: *"shortcut collapse/expand the categories"*). The
    * shell's `C` key broadcasts one target state; every rail's chapters take it. */
   useEffect(() => {
-    const onFold = (e) => setCollapsedSections(Object.fromEntries(routes.map((r) => [r.id, !!e.detail?.collapsed])))
+    const onFold = (e) => setCollapsedSections(Object.fromEntries(groupsOf(routes).map((r) => [r.id, !!e.detail?.collapsed])))
     window.addEventListener(RAIL_FOLD_EVENT, onFold)
     return () => window.removeEventListener(RAIL_FOLD_EVENT, onFold)
   }, [routes])
@@ -71,8 +93,37 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
   }
 
   /* The L1 count is every leaf row under it — RailSection shows it only while
-   * the section is folded (2026-09-28). */
-  const leafCount = routes.reduce((n, r) => n + (r.children?.length ? r.children.length : 1), 0)
+   * the section is folded (2026-09-28). At any depth: leaves, not groups. */
+  const leavesOf = (list) => list.reduce((n, r) => n + (r.children?.length ? leavesOf(r.children) : 1), 0)
+  const leafCount = leavesOf(routes)
+
+  /* ONE GROUP, AT ANY DEPTH. A chapter's child with children of its own is a chapter again — the
+   * same RailSection rung, the same count and chevron, stepped in one row-indent by `.shell-nav-nest`
+   * so its caret sits on its siblings' text edge. A leaf is a RailRow wherever it lands. */
+  const renderGroup = (route) => (
+    <RailSection
+      level={2}
+      label={route.label}
+      count={route.children.length}
+      /* THE HEADER ALWAYS LINKS (2026-08-02): the label opens the chapter's home,
+       * the chevron folds. */
+      to={route.path ?? getSectionRootPath(route, basePath)}
+      collapsed={isFolded(route)}
+      onToggle={() => handleSectionClick(route)}
+      onNavigate={onNavigate}
+      icon={Icon}
+    >
+      <nav className="shell-nav-items">
+        {route.children.map((child) => (child.children?.length ? (
+          <div key={child.id} className="shell-nav-nest">{renderGroup(child)}</div>
+        ) : (
+          <RailRow key={child.id} to={getChildPath(child, basePath)} onNavigate={onNavigate}>
+            {child.label}
+          </RailRow>
+        )))}
+      </nav>
+    </RailSection>
+  )
   return (
     /* One rail layout, one class (2026-08-01). This was `space-y-4` against the
      * right rail's `space-y-6` against the outer `flex flex-col gap-6` — three
@@ -90,55 +141,30 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
         icon={Icon}
       >
         <div className="shell-rail-stack-inner">
-          {routes.map((route) => {
-            /* A group with no children is not a group — it is a link. It used
-             * to render as a header anyway: a chevron that rotated over an
-             * empty body, no count, and no navigation, so clicking "Icons" or
-             * "Components" in the tree did nothing at all while looking like
-             * it should. `collapsible` is what that distinction is now. */
-            const hasChildren = route.children?.length > 0
-
+          {/* LOOSE ROWS SHARE ONE LIST (the showcase review W12, 2026-09-30 — user: "the spaces are
+            * incorrect in the left sidebar"). Each childless entry rendered its own <nav>, and the
+            * stack's 16px gap landed between every pair, so a rail of four rows (Search) read 46px
+            * apart instead of a list's 26. Consecutive rows are one run now; a chapter breaks it. */}
+          {routes.reduce((runs, route) => {
+            const last = runs[runs.length - 1]
+            if (!route.children?.length && last && !last.group) last.rows.push(route)
+            else runs.push(route.children?.length ? { group: route } : { rows: [route] })
+            return runs
+          }, []).map((run) => (run.group ? (
+            <div key={run.group.id} className="shell-nav-group">
+              {renderGroup(run.group)}
+            </div>
+          ) : (
             /* A CHILDLESS ENTRY IS A ROW, not a chapter (2026-09-30): drawn at L2 it read as an
              * empty category with a blank caret slot. */
-            if (!hasChildren) {
-              return (
-                <nav key={route.id} className="shell-nav-items">
-                  <RailRow to={route.path ?? getSectionRootPath(route, basePath)} onNavigate={onNavigate}>
-                    {route.label}
-                  </RailRow>
-                </nav>
-              )
-            }
-
-            return (
-              <div key={route.id} className="shell-nav-group">
-                <RailSection
-                  level={2}
-                  label={route.label}
-                  count={route.children.length}
-                  /* THE HEADER ALWAYS LINKS (2026-08-02): the label opens the chapter's home,
-                   * the chevron folds. */
-                  to={route.path ?? getSectionRootPath(route, basePath)}
-                  collapsed={isFolded(route)}
-                  onToggle={() => handleSectionClick(route)}
-                  onNavigate={onNavigate}
-                  icon={Icon}
-                >
-                  <nav className="shell-nav-items">
-                    {route.children.map((child) => (
-                      <RailRow
-                        key={child.id}
-                        to={getChildPath(child, basePath)}
-                        onNavigate={onNavigate}
-                      >
-                        {child.label}
-                      </RailRow>
-                    ))}
-                  </nav>
-                </RailSection>
-              </div>
-            )
-          })}
+            <nav key={run.rows[0].id} className="shell-nav-items">
+              {run.rows.map((route) => (
+                <RailRow key={route.id} to={route.path ?? getSectionRootPath(route, basePath)} onNavigate={onNavigate}>
+                  {route.label}
+                </RailRow>
+              ))}
+            </nav>
+          )))}
         </div>
       </RailSection>
     </div>

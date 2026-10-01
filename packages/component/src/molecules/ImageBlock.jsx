@@ -2,7 +2,7 @@ import Figure from '../atoms/Figure.jsx'
 import Image from '../atoms/Image.jsx'
 
 /**
- * ImageBlock — a captioned prose image: the DS Figure shell (optional label,
+ * ImageBlock — A captioned image for prose. a captioned prose image: the DS Figure shell (optional label,
  * aspect-locked bordered frame, optional figcaption) wrapping a cover-fit DS
  * Image. The long-form counterpart to VideoBlock — both compose the same
  * Figure atom, so the frame chrome lives in one place.

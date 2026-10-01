@@ -7,7 +7,8 @@ updated: 2026-09-30
 description: Sections that sell or announce
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/website
+  - pattern/blocks
 ---
 
 # Marketing

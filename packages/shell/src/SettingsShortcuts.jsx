@@ -7,7 +7,7 @@ import { SettingsRow } from '@kolkrabbi/kol-component'
  * baseline row did. */
 
 /**
- * SettingsShortcuts — the keyboard-shortcuts block of a settings page
+ * SettingsShortcuts — The shortcuts block of a settings page. the keyboard-shortcuts block of a settings page
  * (ShellHomeSystem, kol-fxr 2026-08-27): the same `[{ section, items: [{ id,
  * label, combo }] }]` array `ShortcutsOverlay` takes, laid out UP TO six columns ×
  * two sections per column, filled column-first (user, 2026-08-27) — each

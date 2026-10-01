@@ -1,5 +1,5 @@
 /**
- * Pill — the STATIC chip: a label, category, or status word. Not clickable.
+ * Pill — A static label chip. the STATIC chip: a label, category, or status word. Not clickable.
  *
  * The chip family, so the right one gets reached for (documented at source,
  * 2026-07-30):

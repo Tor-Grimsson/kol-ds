@@ -79,7 +79,7 @@ const capsStyle = (fonts) => ({
 })
 
 /**
- * BusinessCardFront — the mark, centred, on paper.
+ * BusinessCardFront — The front of a business card. the mark, centred, on paper.
  *
  * @param {ReactNode} mark - The brand mark; sized to 70% of the card height
  * @param {Object} palette - Partial override of DEFAULT_STATIONERY_PALETTE
@@ -128,7 +128,7 @@ export function BusinessCardBack({ info, palette, fonts, className = '' }) {
 }
 
 /**
- * Envelope — DL, mark top-left, return address bottom-right, fold line.
+ * Envelope — A DL envelope. DL, mark top-left, return address bottom-right, fold line.
  *
  * @param {ReactNode} mark - The brand mark, in an 8-unit-tall box
  * @param {Object} info - Partial override of DEFAULT_BRAND_INFO — reads identity.name and the studio block
@@ -162,7 +162,7 @@ export function Envelope({ mark, info, palette, fonts, className = '' }) {
 }
 
 /**
- * Letterhead — A4: wordmark, body, contact rule at the foot.
+ * Letterhead — An A4 letterhead. A4: wordmark, body, contact rule at the foot.
  *
  * @param {ReactNode} mark - The brand mark (a wordmark in the forks), in a 10-unit-tall box
  * @param {Object} info - Partial override of DEFAULT_BRAND_INFO — reads identity.founder, contact.web, contact.phone, studio.city, studio.country
@@ -214,7 +214,7 @@ export function Letterhead({ mark, info, palette, fonts, children, signoff = 'Wa
 }
 
 /**
- * LetterheadCorrespondence — the richer sheet: mark + address block, a
+ * LetterheadCorrespondence — A letterhead for correspondence. the richer sheet: mark + address block, a
  * date/ref/to grid, the body, a signed signoff, and a legal footer.
  *
  * The forks called this `LetterheadB`. Renamed on the way in — a B suffix says
@@ -350,7 +350,7 @@ export function LetterheadCorrespondence({
 export const LetterheadB = LetterheadCorrespondence
 
 /**
- * EmailSignature — mark, rule, name and contact line.
+ * EmailSignature — An email signature. mark, rule, name and contact line.
  *
  * @param {ReactNode} mark - The brand mark, in a 16-unit square
  * @param {Object} info - Partial override of DEFAULT_BRAND_INFO — reads identity.founder, identity.name, contact.email, contact.web

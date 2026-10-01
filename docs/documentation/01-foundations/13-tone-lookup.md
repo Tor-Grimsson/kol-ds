@@ -15,7 +15,7 @@ sources:
   - packages/theme/kol-base-tokens.css
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/color
 related:
   - "[[../03-components/05-control-chrome|control chrome]]"
   - "[[11-color-lookup|color lookup]]"

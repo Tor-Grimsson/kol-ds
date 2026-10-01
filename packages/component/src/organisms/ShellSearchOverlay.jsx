@@ -59,7 +59,7 @@ export function HighlightMatch({ label, query, ranges }) {
 }
 
 /**
- * ShellSearchOverlay — the ⌘K command palette: fullscreen dim + centered
+ * ShellSearchOverlay — The ⌘K search palette. the ⌘K command palette: fullscreen dim + centered
  * panel, a bare SearchInput on top, result rows beneath (HighlightMatch
  * label, dim hint line, right-aligned group label). Distinct from Modal
  * (prompt/confirm only) — this is the search/command primitive.

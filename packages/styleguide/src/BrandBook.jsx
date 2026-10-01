@@ -11,7 +11,7 @@ import { typeSections } from './typeSpecimen.js'
 /* taxonomy-ok: organism — the brand book's identity page: PageHero + PageSection chapters over LogoCard, Swatch and the type specimens */
 
 /**
- * BrandBook — the BRAND page of the brand tool: the identity, one scrolling page of chapters
+ * BrandBook — The brand book's identity page. the BRAND page of the brand tool: the identity, one scrolling page of chapters
  * (About · Tone · Look · Logo · Lockups · Color · Typography) under a hero and a chapter index.
  *
  * kol-olina's apps/brand `pages/brand/*`, carried class-for-class; what was that client's copy now

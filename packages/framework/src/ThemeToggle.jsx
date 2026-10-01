@@ -3,7 +3,7 @@ import { Tooltip } from '@kolkrabbi/kol-component'
 import { useTheme } from './theme.js'
 
 /**
- * Theme toggle — two-position glyph-roll button (the approved 2-variant spec).
+ * Theme toggle — Switch between light and dark. Two-position glyph-roll button (the approved 2-variant spec).
  *
  * Clicking cycles **light ↔ dark**. `system` is not a position — see the
  * ruling above MODE_LABEL. Alt- or shift-click clears the choice and hands the

@@ -113,6 +113,13 @@ export const mdxComponents = {
    * reading measure while Preview/Api/Install run the full column. List and
    * link treatments mirror the generated pages (DocsMenus / MetaRows). */
   p: (props) => <p className="kol-doc-body" {...props} />,
+  /* GFM tables (W10, 2026-09-30) — THE doc table role, `.kol-doc-table` (kol-type-roles.css types its
+   * th and td), capped at the panel like every other piece of doc furniture */
+  table: (props) => (
+    <div className="max-w-[var(--kol-content-panel)] overflow-x-auto">
+      <table className="kol-doc-table" {...props} />
+    </div>
+  ),
   ul: (props) => <ul className="flex list-disc flex-col gap-2 pl-5 kol-doc-body" {...props} />,
   ol: (props) => <ol className="flex list-decimal flex-col gap-2 pl-5 kol-doc-body" {...props} />,
   code: (props) => <code className="kol-doc-code-inline" {...props} />,

@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Rows of tools
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 ---
 
 # Toolbars

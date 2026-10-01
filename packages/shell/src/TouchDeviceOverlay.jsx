@@ -17,7 +17,7 @@ export function useTouchPrimary() {
 }
 
 /**
- * TouchDeviceOverlay — "Desktop recommended", once, on a touch-primary device
+ * TouchDeviceOverlay — A desktop-recommended note on touch devices. "Desktop recommended", once, on a touch-primary device
  * (kol-monitor's overlay, promoted 2026-08-27 — ShellHomeSystem; `AppShell
  * touch="overlay"` mounts it). Dismissal is remembered in localStorage.
  *

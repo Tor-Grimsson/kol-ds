@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-theme
 
+## 0.161.0 — 2026-10-01
+
+**The showcase review** (plan-2026-09-30-showcase-review).
+
+- **`.shell-nav-nest`** (`kol-components-workshop.css`) — one rail indent per nested group level; `.shell-nav-group-header` gets a gap so a long label never touches its count.
+- **`.kol-tag--hue`** (`kol-components-molecules.css`) — a primary Tag mixed from `--kol-tag-hue`: fill, hover and active are the primary chip's own steps, so a colored chip keeps its states.
+
 ## 0.160.0 — 2026-09-30
 
 **One name style for a file browser's items.**

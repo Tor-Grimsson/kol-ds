@@ -11,7 +11,7 @@ import { splitFrontmatter, joinFrontmatter } from '@kolkrabbi/kol-markdown'
 import { readDraft, writeDraft, clearDraft } from '../utilities/localDrafts.js'
 
 /**
- * DocumentEditor — write a text file: open one, or make a new one (media D1 plan v2, 2026-09-26).
+ * DocumentEditor — Open or write a text file. write a text file: open one, or make a new one (media D1 plan v2, 2026-09-26).
  *
  * The concept is kol-olina's brand notes page (NoteEdit): a title, a markdown body, Write / Preview,
  * attachments from the bucket, a page for writing something NEW rather than a button hidden in a

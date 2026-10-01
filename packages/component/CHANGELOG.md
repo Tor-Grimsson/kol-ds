@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-component
 
+## 0.234.0 — 2026-10-01
+
+- **Deprecated: `DropdownTagFilter`** → `SettingsMulti`, the many-of-N on the standard `Dropdown`. It drew its own pill with hardcoded radii (20/22/24) and one look; nothing renders it. On the retirement ledger.
+
+- **`Tag color`** — a palette hue (blue · teal · green · yellow · red · orange · purple, what kol-markdown's `getTagColor` returns); sets `--kol-tag-hue` and `.kol-tag--hue`, keeping hover and active. Status stays `Badge`'s. Needs kol-theme ≥ 0.161.0.
+
 ## 0.233.0 — 2026-09-30
 
 **The browser's items read as one set** (needs kol-theme ≥ 0.160.0 for `.kol-item-name`).

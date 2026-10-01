@@ -5,13 +5,13 @@ import {
 
 export const meta = {
   title: 'Color picker',
-  description: 'An HSV spectrum, swatch stack and hex row on one shared color',
+  description: 'A spectrum picker with swatches and hex',
   category: 'color',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/color', 'domain/forms', 'pattern/blocks'],
 }
 export const stage = 'sm'
 

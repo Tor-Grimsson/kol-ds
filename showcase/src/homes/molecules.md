@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Nameable parts working as one unit
 tags:
   - domain/components
-  - audience/consumer
+  - domain/components/molecules
 ---
 
 # Molecules

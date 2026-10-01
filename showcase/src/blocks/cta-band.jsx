@@ -2,12 +2,12 @@ import { CtaGlobal } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Contact CTA band',
-  description: 'An editorial closing CTA band with a display wordmark and a mailto contact row',
+  description: 'A closing call-to-action band',
   category: 'marketing',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/website', 'pattern/blocks'],
 }
 export const stage = 'full'
 

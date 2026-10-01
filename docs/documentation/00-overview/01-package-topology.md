@@ -17,7 +17,7 @@ sources:
   - .kol/llm-context/ARCHITECTURE.md
 tags:
   - domain/architecture
-  - audience/consumer
+  - domain/packages
 related:
   - "[[../04-compositions/04-workshop-system|workshop system]]"
   - "[[../04-compositions/05-foundry-system|foundry component index]]"
@@ -37,7 +37,7 @@ UI packages, an engine tier and a clients tier. Every content/domain system that
 | Tier | Package | Owns |
 |------|---------|------|
 | **Foundation** | `@kolkrabbi/kol-theme` | all CSS — tokens, `.kol-prose`, per-component sheets (chess/dashboards/workshop/etc.) |
-| | `@kolkrabbi/kol-icons` | `Icon` loader + `kol-icon-set-v1` |
+| | `@kolkrabbi/kol-icons` | `Icon` loader + `kol-icon-set-interface` |
 | **Core** | `@kolkrabbi/kol-component` | general atoms → organisms + hooks (see below) |
 | | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
 | **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — docs viewer, tag graph, shell; runs on the two engines below |

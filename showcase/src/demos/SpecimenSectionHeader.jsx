@@ -3,12 +3,15 @@ import { SpecimenSectionHeader } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'md'
 
-export default function SpecimenSectionHeaderDemo() {
+export const sizes = ['lg', 'md', 'sm']
+
+export default function SpecimenSectionHeaderDemo({ size = 'lg' }) {
   const [style, setStyle] = useState('roman')
   const [weight, setWeight] = useState('400')
 
   return (
     <SpecimenSectionHeader
+      size={size}
       label="Character Set"
       icon="foundation"
       selectedStyle={style}

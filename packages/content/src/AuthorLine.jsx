@@ -1,7 +1,7 @@
 import { Avatar } from '@kolkrabbi/kol-component'
 
 /**
- * AuthorLine — the author cluster (DS Avatar + name + role), pulled out of
+ * AuthorLine — An author's avatar and name. the author cluster (DS Avatar + name + role), pulled out of
  * ArticleHeader so it stands on its own (bylines, cards, footers, work
  * credits). Strings render in their authored case — no text-transform (KOL
  * rule), no JS casing.

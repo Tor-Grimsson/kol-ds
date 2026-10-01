@@ -2,13 +2,13 @@ import { FullBleedHero, OverlayGlassPanel, Button } from '@kolkrabbi/kol-compone
 
 export const meta = {
   title: 'Full-bleed hero',
-  description: 'A landing hero: a frosted glass panel with eyebrow, title, lede and two actions over full-bleed cover media',
+  description: 'A glass panel over full-bleed media',
   category: 'hero',
   featured: true,
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',
-  tags: ['domain/design-system', 'pattern/blocks'],
+  tags: ['domain/media', 'domain/website', 'pattern/blocks'],
 }
 export const stage = 'full'
 

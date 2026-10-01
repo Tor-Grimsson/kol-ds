@@ -1,7 +1,7 @@
 import { ColorSwatch } from '@kolkrabbi/kol-component'
 
 /**
- * Swatch — the DOCUMENTED swatch: a specimen bar over its meta row (name, hex),
+ * Swatch — A documented color swatch. the DOCUMENTED swatch: a specimen bar over its meta row (name, hex),
  * with an optional canonical-anchor dot.
  *
  * `ColorSwatch` (kol-component) is the chip alone — a fixed-size pressable atom

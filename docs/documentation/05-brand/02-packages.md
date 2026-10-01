@@ -4,10 +4,9 @@ type: reference
 status: active
 created: 2026-08-01
 updated: 2026-08-01
-description: kol-brand, the template slate, and their jobs
+description: The brand packages and what each does
 tags:
   - domain/brand
-  - audience/consumer
   - brand/assets
 related:
   - "[[INDEX|brand kit]]"

@@ -101,7 +101,7 @@
 }
 .kol-control--textarea.kol-control-md > textarea { padding: 6px 16px; }
 .kol-control--textarea.kol-control-lg > textarea { padding: 8px 20px; }
-/* The grip — kol-icon-set-v1 `resize-grip` at the native placement. It IS
+/* The grip — kol-icon-set-interface `resize-grip` at the native placement. It IS
  * the resize handle (JS corner drag, both axes, in Textarea.jsx); native
  * resize is OFF because Firefox's grip can't be hidden any other way. */
 .kol-textarea-resize-icon {

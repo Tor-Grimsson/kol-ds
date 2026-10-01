@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Side navigation, composed and breakpointed
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/navigation
 ---
 
 # Sidenav

@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-07-31
 updated: 2026-08-01
-description: One shell frame, three inner caps, one rhythm
+description: One page frame, its caps and rhythm
 aliases:
   - breakpoints
   - layout-law
@@ -16,7 +16,7 @@ sources:
   - showcase/src/pages/Home.jsx
 tags:
   - domain/layout
-  - audience/consumer
+  - domain/breakpoints
 related:
   - "[[01-tokens|tokens]]"
   - "[[03-typography|typography]]"

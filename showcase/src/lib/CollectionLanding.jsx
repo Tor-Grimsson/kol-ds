@@ -85,9 +85,11 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
   return (
     <div className="flex flex-col gap-14">
       {items.map((b) => (
-        <div key={b.key} id={b.key} className="flex flex-col gap-4">
+        <div key={b.key} className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            {/* Visible link affordance — the title routes to the item's page. */}
+            {/* Visible link affordance — the title routes to the item's page. A real H2 (W15,
+              * 2026-09-30), so the right rail's This page lists every item shown. */}
+            <h2 id={b.key} className="m-0 scroll-mt-20">
             <Link
               to={`${basePath}/${b.key}`}
               className="group inline-flex items-center gap-2 kol-sans-heading-03 text-emphasis underline decoration-fg-24 underline-offset-4 hover:decoration-current"
@@ -95,6 +97,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
               {b.title}
               <Icon name="arrow-upright" size={16} className="text-oq-48 transition-colors group-hover:text-emphasis" />
             </Link>
+            </h2>
             <span className="kol-doc-eyebrow">
               {labels[b.category] ?? b.category}
             </span>

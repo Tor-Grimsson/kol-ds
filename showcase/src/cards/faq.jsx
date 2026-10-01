@@ -2,12 +2,12 @@ import { SectionFaq } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'FAQ',
-  description: 'A header over an accordion — one open at a time',
+  description: 'Questions in an accordion',
   category: 'features',
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

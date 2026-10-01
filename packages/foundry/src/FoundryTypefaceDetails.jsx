@@ -11,7 +11,7 @@ const DEFAULT_DETAILS = [
 ]
 
 /**
- * FoundryTypefaceDetails — the Font Details section of a specimen page: the
+ * FoundryTypefaceDetails — A typeface's details. the Font Details section of a specimen page: the
  * specimen header, a row of text-only SectionCardItems (designer · categories
  * · styles · format) and the download / specimen buttons (kol-website's
  * section, moved in 2026-08-27 — FoundrySpecimenSections).

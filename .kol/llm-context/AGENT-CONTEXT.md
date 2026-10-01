@@ -10,6 +10,11 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-01, showcase review W1–W22 — published)
+
+- **Published 2026-10-01:** theme 0.161.0 · icons 0.32.0 · component 0.234.0 · workshop 0.35.0. Push is the user's. Header: Styles · Library · Docs · Search · Development; Library holds Composition (Components · Blocks · Apps) and Collection (Sets · Packages); the rail nests to any depth and every group opens its own page. Decisions + open items: phase log *Showcase review*. Log: `session-log/2026-10-01-showcase-review-w1-w22-published.md`.
+- **`pnpm validate` is fast (32 gates, ~5s)** — the browser gate is `pnpm validate:rail-pages`, run only when rail/nav code changes. Never run the full suite after doc edits (memory: validate-is-not-a-blocker).
+
 ## Current state (2026-09-30, library taxonomy)
 
 - **Built, not published (no package changed).** Header tabs are the parents: Styles · Composition (Components · Blocks · Apps) · Collection (Sets · Packages) · Docs · Search · Development. Homes + diagrams at `/library` · `/composition` · `/collection`; Search has a home. Cards is a set; a single-package family is its package page (`/sets/family/*` → `/packages/*`). Words: `05-names.md` § The tree. Plan: `plan-2026-09-30-library-taxonomy.md` (built). Log: `session-log/2026-09-30-library-taxonomy.md`. Next: the user's eye, then `.md` + `uses` beside blocks/apps, Styles › Ladders.
@@ -29,10 +34,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **The showcase's shape then:** spaces Components · Blocks · Cards · Sets · Styles · Docs · Apps · Development (superseded above). Every package is on the atomic ladder (`TIERS` in `classification.js`); markdown homes in `showcase/src/homes/`; Docs = the vault; Styles = foundations + icon sets + guides; Cards = `showcase/src/cards/` (18 website cards).
 - **The phase log** lives in `docs/operations/09-phase-log/` — one entry per run, plans archived in `_files/`, title rule ≤3 words / 22 chars (`validate:metadata` M5). Every run adds its entry in the same pass. **Visual calls go on `showcase/src/open-questions/<date>.jsx` rounds**, never into a rule (memory: visual-calls-go-on-the-open-questions-page). Names for everything: `docs/documentation/00-overview/05-names.md`.
 - **The overnight decisions** (agent-made, reversible, for the user's review) are tabled in the phase log entry *Showcase build*; review surface = open-questions Rounds 3 and 4. Plan and playbook: `plan-2026-09-29-phase-log-and-showcase-review.md` (done) · `playbook/2026-09-30-showcase-build.md`. Milestone: `session-log/2026-09-30-MILESTONE-showcase-build.md`.
-
-## Current state (2026-09-29, apps review §6c built)
-
-- **🧩 Published 2026-09-29.** Editor chromes on one rail (design-editor 0.17.0 exports the host config), `validate:views`, `AppStudio` + apps/studio, apps/panels, VOYAGER (`apps/voyager-fixture`) + apps/fixtures, apps/brand = the catalogue, apps/brand-hub = a client's home. 31 gates · render 20 apps clean · build ✓. Log: `session-log/2026-09-29-apps-review-6c-built.md`.
 
 ## Repo standup (2026-06-15)
 

@@ -1,5 +1,5 @@
 /**
- * RockerSwitch — the I/O rocker with a backlit paddle (kol-monitor's
+ * RockerSwitch — A lit rocker switch. the I/O rocker with a backlit paddle (kol-monitor's
  * `PowerModule`, the switch alone, lifted 2026-09-01). 28 × 38 housing on the
  * hardware cap; the paddle sits top when on (LED red, glowing) and bottom when
  * off; static I / O legends on the housing show whichever half is uncovered.

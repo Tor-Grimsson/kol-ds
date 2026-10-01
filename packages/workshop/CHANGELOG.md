@@ -1,5 +1,18 @@
 # @kolkrabbi/kol-workshop
 
+## 0.35.0 — 2026-10-01
+
+**The showcase review** (plan-2026-09-30-showcase-review, W1–W21). Needs kol-component ≥ 0.234.0 and kol-theme ≥ 0.161.0; adds `gsap ^3.13.0` as a peer.
+
+- **⚠ `ShellSidebar` nests to any depth** — a group's children may be groups (`.shell-nav-nest` per level); the rail opens one chain to the page you are on, deepest match first; a pathless group is never "here"; consecutive leaf rows share one `nav.shell-nav-items`.
+- **`RailSection`** — a long label truncates; the count never wraps.
+- **`RightRail`** — **Tags** is its own section (Tag graph, All tags via the new `tagsHref`, then the page's tags by namespace), out of Quick actions and Links; each tag's hash wears its namespace color.
+- **`DocsFrontmatter`** — tags carry their namespace color (`getTagColor`); `status` renders as a `Badge` on its tone (active success · canonical info · draft warning · archived/superseded/deprecated error).
+- **`DocumentationReader`** — a markdown table column is `kol-doc-table-copy` when any cell is prose, else `kol-doc-table-token`.
+- **`SearchPage` / `ResultRow`** — scope, read-as and facet chips are `Tag` sm; facets fold into a `TabsRow`; tag facets are colored; the input is md; result rows lose the 80 % dim.
+- **`TagGraph`** — rewritten: one force simulation, pre-settled before the first frame, GSAP entrance and focus.
+- **`ShellLayout`** — `\` hides or shows both rails; the shortcut and settings labels say what the key does in one or two words.
+
 ## 0.34.0 — 2026-09-30
 
 **The review's corrections** (plan-2026-09-30-showcase-corrections).

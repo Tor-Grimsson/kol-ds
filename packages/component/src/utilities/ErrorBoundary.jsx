@@ -2,7 +2,7 @@ import { Component } from 'react'
 import Button from '../atoms/Button.jsx'
 
 /**
- * ErrorBoundary — class error boundary (boundaries can't be hooks). Catches
+ * ErrorBoundary — Catches a crash and shows a fallback. class error boundary (boundaries can't be hooks). Catches
  * render errors in its subtree and swaps in a centered full-screen fallback
  * ("Something went wrong") with two recovery actions: retry in place and go
  * home. A dev-only error/stack panel renders on Vite dev builds

@@ -7,7 +7,8 @@ updated: 2026-09-03
 description: The values every component is built from
 tags:
   - domain/tokens
-  - audience/consumer
+  - domain/color
+  - domain/typography
 related:
   - "[[../INDEX|KOL documentation]]"
 ---

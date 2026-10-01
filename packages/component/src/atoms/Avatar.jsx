@@ -8,7 +8,7 @@ const SIZE_MAP = {
 }
 
 /**
- * Avatar — the initials disc, or a photo at the same geometry.
+ * Avatar — Initials or a photo in a disc. the initials disc, or a photo at the same geometry.
  *
  * `src` was added when the ArticleHeader reconciliation (2026-08-15) found the
  * consumer hand-rolling `<img className="w-12 h-12 rounded-full object-cover">`

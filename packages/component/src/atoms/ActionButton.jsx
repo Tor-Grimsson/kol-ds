@@ -6,7 +6,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
- * ActionButton — an icon control that CONFIRMS what it did (2026-08-15 user
+ * ActionButton — An icon button that confirms what it did. an icon control that CONFIRMS what it did (2026-08-15 user
  * ruling: *"where is the 'code copied' or whatever message"*).
  *
  * The confirm-flip existed exactly once, welded to the clipboard inside

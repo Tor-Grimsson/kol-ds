@@ -3,6 +3,7 @@ import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref, PHASE_LOG_INDEX } from './nav/vault.js'
 import Home from './pages/Home'
 import Foundations from './pages/Foundations'
+import FoundationsHome from './pages/FoundationsHome'
 import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
 import FoundationsTones from './pages/FoundationsTones'
@@ -30,7 +31,8 @@ import GuidesHome from './pages/GuidesHome'
 import GroupBy from './pages/GroupBy'
 import Development from './pages/Development'
 import { TagGraphPage, TagsPage, IndexPage } from './pages/DevTools'
-import Packages, { PackagePage } from './pages/Packages'
+import Packages, { PackagePage, PackageTier, PackageChangelog } from './pages/Packages'
+import { DevTools, DevRecords } from './pages/DevChapters'
 import OpenQuestions, { OpenQuestionsRound } from './pages/OpenQuestions'
 import Quarantine from './pages/Quarantine'
 import Demo from './pages/Demo'
@@ -110,7 +112,9 @@ export default function App() {
           * expanded body now, so the shell mounts it once and there is nothing
           * left to gate. One surface, one mount. */}
         <Route path="/" element={<Home />} />
-        <Route path="/foundations" element={<Foundations />} />
+        {/* the chapter has its own page and Tokens its own URL (W3, 2026-09-30) */}
+        <Route path="/foundations" element={<FoundationsHome />} />
+        <Route path="/foundations/tokens" element={<Foundations />} />
         <Route path="/foundations/color" element={<FoundationsColor />} />
         <Route path="/foundations/typography" element={<FoundationsTypography />} />
         <Route path="/foundations/tones" element={<FoundationsTones />} />
@@ -118,7 +122,10 @@ export default function App() {
           * takes the default set, `/icons/:set` names one; the old comparison
           * URL keeps working */}
         <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
+        {/* the Interface set was `kol-icon-set-v1` until 2026-09-30 (W8) */}
+        <Route path="/icons/kol-icon-set-v1/*" element={<MovedRedirect from="/icons/kol-icon-set-v1" to="/icons/kol-icon-set-interface" />} />
         <Route path="/icons/:set?" element={<IconsGallery />} />
+        <Route path="/icons/:set/:group" element={<IconsGallery />} />
         {/* THE LIBRARY'S PARENTS (2026-09-30) — the header tabs Composition and Collection, and
           * the Library over both */}
         <Route path="/library" element={<Library />} />
@@ -151,8 +158,12 @@ export default function App() {
         <Route path="/search/graph" element={<TagGraphPage />} />
         <Route path="/search/index" element={<IndexPage />} />
         <Route path="/packages" element={<Packages />} />
+        <Route path="/packages/tier/:tier" element={<PackageTier />} />
         <Route path="/packages/:dir" element={<PackagePage />} />
+        <Route path="/packages/:dir/changelog" element={<PackageChangelog />} />
         <Route path="/development" element={<Development />} />
+        <Route path="/development/tools" element={<DevTools />} />
+        <Route path="/development/records" element={<DevRecords />} />
         {/* moved 2026-09-30 — the old URLs redirect */}
         <Route path="/development/tag-graph" element={<Navigate to="/search/graph" replace />} />
         <Route path="/development/tags" element={<Navigate to="/search/tags" replace />} />

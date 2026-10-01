@@ -7,7 +7,7 @@ export const meta = {
   type: 'reference',
   status: 'active',
   updated: '2026-09-30',
-  tags: ['domain/design-system', 'pattern/website-cards'],
+  tags: ['domain/app-shell', 'domain/website', 'pattern/website-cards'],
 }
 export const stage = 'full'
 

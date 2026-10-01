@@ -1,5 +1,5 @@
 /**
- * EmptyState — a stacked "nothing here yet / nothing selected" text block
+ * EmptyState — What a panel shows when it has nothing. a stacked "nothing here yet / nothing selected" text block
  * for inspectors, empty rails and unshipped panels. Ported from the brand
  * editor's inspector Placeholder (renamed: AssetPlaceholder already owns
  * the placeholder name). All lines render as authored — no auto casing

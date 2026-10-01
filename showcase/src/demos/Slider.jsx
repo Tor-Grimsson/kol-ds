@@ -10,13 +10,16 @@ export const stage = 'md'
  * (SliderDualThumbAndPlayhead, kol-mirror) — a mixer running 23 faders in a
  * 24px row is why `readout="value"` exists, and an in/out trim pair is why
  * `variant="dual"` does. */
-export default function SliderDemo() {
+export const variants = ['minimal', 'dual']
+
+export default function SliderDemo({ variant = 'minimal' }) {
   const [v, setV] = useState(40)
   const [inV, setInV] = useState(20)
   const [outV, setOutV] = useState(80)
   const [head, setHead] = useState(50)
   return (
     <div className="flex w-full flex-col gap-4">
+      {variant === 'minimal' && (<>
       <Slider min={0} max={100} value={v} onChange={setV} />
       <Slider label="Opacity" min={0} max={100} value={v} onChange={setV} />
 
@@ -33,6 +36,8 @@ export default function SliderDemo() {
         formatValue={(n) => `${Math.round(n)}%`}
       />
       <Slider label="Send" min={0} max={100} value={v} onChange={setV} readout="none" />
+      </>)}
+      {variant === 'dual' && (<>
 
       {/* dual — two thumbs on one rail, in-mark hollow and out-mark solid so
         * you can tell which end you grabbed. The clamp is the component's. */}
@@ -63,6 +68,7 @@ export default function SliderDemo() {
         playhead={head}
         onPlayheadChange={setHead}
       />
+      </>)}
     </div>
   )
 }

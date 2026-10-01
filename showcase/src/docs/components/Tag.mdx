@@ -8,10 +8,12 @@ export const meta = {
   tags: [
     "domain/components",
     "domain/components/atoms",
-    "domain/design-system",
+    "domain/filtering",
+    "domain/forms",
+    "domain/tags",
     "pattern/display",
   ],
-  description: "The INTERACTIVE chip: filterable, selectable, removable.",
+  description: "An interactive chip to filter or select.",
   aliases: [
     "tag",
   ],
@@ -51,6 +53,7 @@ labels.
   {"prop":"children / text","type":"ReactNode / string","def":"—","desc":"Tag label."},
   {"prop":"solid","type":"boolean","def":"false","desc":"Solid fill style."},
   {"prop":"active","type":"boolean","def":"false","desc":"Active/selected state."},
+  {"prop":"color","type":"'blue' | 'teal' | 'green' | 'yellow' | 'red' | 'orange' | 'purple'","def":"—","desc":"A palette hue for the chip, e.g. getTagColor(tag)."},
   {"prop":"hash","type":"boolean","def":"true","desc":"Prefix with `#`."},
   {"prop":"size","type":"sm | md | lg","def":"—","desc":"Tag size."},
   {"prop":"icon","type":"string","def":"—","desc":"Leading icon name."},

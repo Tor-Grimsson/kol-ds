@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 const FULL = 'Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz'
 
 /**
- * TypefaceAlphabet — the specimen alphabet, trimmed to what fits on one line.
+ * TypefaceAlphabet — A typeface's alphabet on one line. the specimen alphabet, trimmed to what fits on one line.
  * Lifted verbatim from TypefaceLibraryItem's list variant (binary-search the
  * character count against the container width, ResizeObserver re-measures) so
  * the DS row's `footer` clips the same way the local card always did.

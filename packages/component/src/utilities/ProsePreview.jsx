@@ -1,5 +1,5 @@
 /**
- * ProsePreview — a full rich-text specimen: one `.kol-prose` block exercising
+ * ProsePreview — Every long-form prose element in one view. a full rich-text specimen: one `.kol-prose` block exercising
  * every long-form element — H1–H4 ladder, section lede, body paragraph,
  * blockquote, indented passage, code block, pullout, and unordered/ordered
  * lists — so the KOL prose stylesheet can be reviewed end-to-end in one view.

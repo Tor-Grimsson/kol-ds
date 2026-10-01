@@ -15,7 +15,7 @@ export function getEmbedUrl(url) {
 }
 
 /**
- * VideoBlock — a captioned prose video: the DS Figure shell (optional label,
+ * VideoBlock — A captioned video for prose. a captioned prose video: the DS Figure shell (optional label,
  * aspect-locked bordered frame, optional figcaption) wrapping either an
  * <iframe> embed (YouTube/Vimeo, auto-parsed from `url`) or a native <video>
  * file player. Embed wins when `url` parses; otherwise the `file` player runs.

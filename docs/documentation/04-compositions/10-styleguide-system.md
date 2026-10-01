@@ -16,7 +16,9 @@ sources:
   - packages/styleguide/README.md
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/brand
+  - domain/typography
+  - domain/color
 related:
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"

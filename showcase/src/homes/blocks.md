@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: Shells and tools composed, and how they breakpoint
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/editor
 ---
 
 # Blocks

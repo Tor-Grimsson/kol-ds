@@ -92,7 +92,7 @@ export function SwatchStack({
 }
 
 /**
- * EyedropPick — eyedropper icon button + a sample chip of the sampled color.
+ * EyedropPick — Sample a color from the screen. eyedropper icon button + a sample chip of the sampled color.
  * The button is hidden when the browser EyeDropper API is unavailable (no
  * affordance for an action that can't run); when supported but unusable pass
  * `disabled` to dim it. `onPick` is the app seam where EyeDropper + canvas
@@ -173,7 +173,7 @@ function NoneMarker({ onClear }) {
 }
 
 /**
- * SwatchControls — the composed colour-panel top row: SwatchStack (fill /
+ * SwatchControls — Fill and stroke swatches with an eyedropper. The composed colour-panel top row: SwatchStack (fill /
  * stroke paint chips + swap + none) alongside EyedropPick (eyedropper +
  * sample chip). Fully controlled and store-free; the app owns the swap, clear,
  * and pick handlers.

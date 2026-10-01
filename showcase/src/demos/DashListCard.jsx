@@ -17,11 +17,13 @@ const topCountries = [
   { label: 'United Kingdom', value: '164', detail: '10%', color: 'var(--kol-palette-orange)' },
 ]
 
-export default function DashListCardDemo() {
+export const variants = ['meter', 'ratings', 'text']
+
+export default function DashListCardDemo({ variant = 'meter' }) {
   return (
     <>
       <DashListCard
-        variant="meter"
+        variant={variant}
         title="Top pages"
         subtitle="By pageviews"
         icon="bookmark"
@@ -29,7 +31,7 @@ export default function DashListCardDemo() {
         footer="Last 30 days"
       />
       <DashListCard
-        variant="ratings"
+        variant={variant}
         title="Top countries"
         subtitle="By visitors"
         icon="roadmap"

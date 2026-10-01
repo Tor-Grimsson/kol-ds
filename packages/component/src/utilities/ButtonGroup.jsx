@@ -1,5 +1,5 @@
 /**
- * ButtonGroup — responsive layout wrapper for a group of Buttons: stacked
+ * ButtonGroup — Lay out a group of buttons. responsive layout wrapper for a group of Buttons: stacked
  * full-width on mobile, horizontal row from `sm` up, aligned left / center /
  * right. Pure layout — children compose at the call site and render as-is
  * (nothing is cloned, no props injected); all button behavior lives on each

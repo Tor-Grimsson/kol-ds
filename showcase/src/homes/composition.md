@@ -7,7 +7,7 @@ updated: 2026-09-30
 description: The library grouped by size
 tags:
   - domain/compositions
-  - audience/consumer
+  - domain/taxonomy
 ---
 
 # Composition

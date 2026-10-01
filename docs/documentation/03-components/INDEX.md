@@ -7,7 +7,7 @@ updated: 2026-08-01
 description: How the library is classified and placed
 tags:
   - domain/components
-  - audience/consumer
+  - domain/taxonomy
 related:
   - "[[../INDEX|KOL documentation]]"
 ---

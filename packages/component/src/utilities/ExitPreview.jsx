@@ -1,5 +1,5 @@
 /**
- * ExitPreview — the escape hatch out of a preview surface, worn as a fixed
+ * ExitPreview — A pill to leave a preview. the escape hatch out of a preview surface, worn as a fixed
  * pill. Router-AGNOSTIC by the same seam kol-shell uses for navigation: it
  * renders a plain `<a>` unless the consumer hands it its router's link.
  *

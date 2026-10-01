@@ -5,7 +5,7 @@ import { armLongPress } from './armLongPress.js'
 const SIZES = { sm: 24, md: 32, lg: 40, xl: 64 }
 
 /**
- * Knob — SVG rotary knob with drag-to-change (kol-monitor's rack, lifted
+ * Knob — A rotary knob. SVG rotary knob with drag-to-change (kol-monitor's rack, lifted
  * 2026-09-01). 270° sweep; drag ns, 200px of travel = the range; ⌥-click resets
  * to `defaultValue`; on touch a 500ms hold opens `ParamSheet` instead of the drag.
  *

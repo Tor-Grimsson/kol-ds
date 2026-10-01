@@ -4,7 +4,7 @@ import RailSection from '../shell/RailSection.jsx'
 import RailRow from '../shell/RailRow.jsx'
 
 /**
- * ExhibitSidebar — the rail block an exhibit page registers into the shell's
+ * ExhibitSidebar — An exhibit page's rail block. the rail block an exhibit page registers into the shell's
  * TOC slot: on-this-page, the section's documentation links, and quick actions.
  * Recreated from kol-website's local `WorkshopSidebarContent`.
  *

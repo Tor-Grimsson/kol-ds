@@ -1,5 +1,5 @@
 /**
- * AssetGrid — thin responsive N-column grid for tiling asset figures
+ * AssetGrid — A responsive grid for asset figures. thin responsive N-column grid for tiling asset figures
  * (swatches, placeholders, spec cards). Fixed 2/3/4-column layout that
  * collapses to 2 columns under the md breakpoint and to 1 column under
  * 480px, all via Tailwind responsive utilities — no CSS of its own.

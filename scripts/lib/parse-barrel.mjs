@@ -10,7 +10,10 @@
  */
 
 /* PascalCase and not UPPER_SNAKE (GRAPHICS, ICON_ENTRIES are data, not components) */
-export const isComponentName = (n) => /^[A-Z]/.test(n) && !/^[A-Z0-9_]+$/.test(n)
+/* An all-caps name is a data export (GRAPHICS, KOL_ICON_SET_*) — unless it is a component spelled as an
+ * acronym. LED read as data and had no page, row or tier (W19, 2026-09-30). */
+export const ACRONYM_COMPONENTS = new Set(['LED'])
+export const isComponentName = (n) => /^[A-Z]/.test(n) && (ACRONYM_COMPONENTS.has(n) || !/^[A-Z0-9_]+$/.test(n))
 
 /* './atoms/X.jsx' → 'atoms'; './X.jsx' → null (flat package) */
 export const folderOf = (src) => (src?.match(/^\.\/(\w[\w-]*)\//) || [])[1] || null

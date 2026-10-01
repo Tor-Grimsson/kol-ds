@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * SignalScope — the oscilloscope every expression tool draws (signal engine, 2026-09-27): a
+ * SignalScope — An oscilloscope trace of a signal. the oscilloscope every expression tool draws (signal engine, 2026-09-27): a
  * trace of `sample(t)` over a window, the knob range as dashed reference lines, a midline, and
  * a playhead that sweeps the window live. kol-mirror's /expressions scope, kol-monitor's
  * Scope / Scope+ and the design editor's Oscilloscope loop each drew their own.
