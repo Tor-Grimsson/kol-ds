@@ -69,10 +69,10 @@ const addEdge = (owner, target, stars) => {
   if (!owner) return
   ;(reuseEdges[owner] ||= []).push({ target, stars })
 }
-/* Only a component's OWN source may author its edges. `showcase/src/demos/` holds
- * a same-named file per component, and a demo rendering <Accordion> made the
+/* Only a component's OWN source may author its edges. `showcase/src/previews/` holds
+ * a same-named file per component, and a preview rendering <Accordion> made the
  * AccordionPanel page claim it reused Accordion — an edge that belongs to the
- * demo, not to the component. Sources live under packages/<pkg>/src/. */
+ * preview, not to the component. Sources live under packages/<pkg>/src/. */
 const isSource = (p) => /(^|\/)packages\/[^/]+\/src\//.test(p)
 for (const [file, list] of Object.entries(composition)) {
   if (!isSource(file)) continue

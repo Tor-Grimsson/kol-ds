@@ -27,7 +27,7 @@ export default function WalkthroughPanel({ steps = [], iconComponent, onClose })
       maxWidth: 960, width: '100%', zIndex: 10,
     }}>
       <Button
-        variant="grey"
+        tone="grey"
         size="md"
         iconOnly="chevron-left"
         iconComponent={iconComponent}
@@ -76,7 +76,7 @@ export default function WalkthroughPanel({ steps = [], iconComponent, onClose })
       </div>
 
       <Button
-        variant="grey"
+        tone="grey"
         size="md"
         iconOnly="chevron-right"
         iconComponent={iconComponent}

@@ -30,7 +30,7 @@ function FlattenAction({ layer }) {
   if (!flattenParatype) return null
   return (
     <Tooltip label="Flatten the glyph(s) to vector shape layers (one-way)"><Button aria-label="Flatten the glyph(s) to vector shape layers (one-way)"
-      variant="primary" size="sm" className="w-full"
+      tone="primary" size="sm" className="w-full"
       onClick={() => flattenParatype(layer.id)}
     >
       Flatten to vector

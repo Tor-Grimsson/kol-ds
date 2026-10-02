@@ -263,7 +263,7 @@ export default function App() {
         ) : (
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-8 lg:grid-cols-[16rem_minmax(0,1fr)]">
           <div className="flex min-h-0 flex-col gap-4 overflow-y-auto pb-12">
-            {hasFilters && <span className="self-start"><Button variant="ghost" size="sm" onClick={() => setFilters({})}>Clear the boxes</Button></span>}
+            {hasFilters && <span className="self-start"><Button tone="ghost" size="sm" onClick={() => setFilters({})}>Clear the boxes</Button></span>}
             <Facets facets={out.facets} filters={filters} toggle={toggle} />
           </div>
           <div className="flex min-h-0 flex-col gap-2 overflow-y-auto pb-12">

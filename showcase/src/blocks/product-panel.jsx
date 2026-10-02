@@ -104,7 +104,7 @@ export default function ProductPanel() {
       minQuantity={1}
       maxQuantity={10}
       actions={
-        <Button variant="primary" size="lg" className="w-full" onClick={() => {}}>
+        <Button tone="primary" size="lg" className="w-full" onClick={() => {}}>
           Add to cart
         </Button>
       }

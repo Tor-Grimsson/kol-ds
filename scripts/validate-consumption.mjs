@@ -13,7 +13,7 @@
  * this gate keeps it fixed.
  *
  * SCOPE — the showcase's OWN pages and chrome: `src/pages`, `src/lib`,
- * `src/nav`. NOT `demos/`, `sets/`, `blocks/`, `usage/`: those exist to show
+ * `src/nav`. NOT `previews/`, `sets/`, `blocks/`, `usage/`: those exist to show
  * raw code and copy-paste sources, and the raw code is the point.
  *
  * Three of the six checks apply here (1 is package deps — the showcase renders

@@ -23,7 +23,7 @@ export { default as Avatar } from './atoms/Avatar.jsx'
 export { default as Badge } from './atoms/Badge.jsx'
 export { default as Button } from './atoms/Button.jsx'
 export { default as CloseButton } from './atoms/CloseButton.jsx'
-export { default as ActionButton } from './atoms/ActionButton.jsx'
+export { default as ActionButton } from './molecules/ActionButton.jsx'
 export { default as FileIcon } from './atoms/FileIcon.jsx'
 export { default as SizeOrDownload } from './atoms/SizeOrDownload.jsx'
 export { default as SortHeader } from './atoms/SortHeader.jsx'
@@ -38,8 +38,10 @@ export { default as IconFrame } from './atoms/IconFrame.jsx'
 export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
 export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
-export { default as HlsVideo } from './atoms/HlsVideo.jsx'
-/* AudioPlayer — HlsVideo's opposite number: same tier and shape, inverted
+/* BackgroundVideo — renamed from HlsVideo and moved to utilities 2026-10-01 (user ruling: no UI,
+ * and the name said how it streams, not what it is for). `HlsVideo` is the alias, on the ledger. */
+export { default as BackgroundVideo, default as HlsVideo } from './utilities/BackgroundVideo.jsx'
+/* AudioPlayer — BackgroundVideo's opposite number: same tier and shape, inverted
  * intent (built to be operated, not decorative). See its header before editing
  * either one. */
 export { default as AudioPlayer } from './atoms/AudioPlayer.jsx'
@@ -49,10 +51,12 @@ export { default as LabeledControl } from './molecules/LabeledControl.jsx'
 export { default as OverlayGlassPanel } from './utilities/OverlayGlassPanel.jsx'
 export { default as Pill } from './atoms/Pill.jsx'
 export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
+/* armLongPress — the touch hold the panel value controls report (moved from kol-hardware 2026-10-01) */
+export { armLongPress } from './utilities/armLongPress.js'
 export { default as ContextMenu, useContextMenu } from './molecules/ContextMenu.jsx'
 export { default as ProsePreview } from './utilities/ProsePreview.jsx'
 export { default as QuantityInput } from './molecules/QuantityInput.jsx'
-export { default as RotaryDial } from './atoms/RotaryDial.jsx'
+export { default as RotaryDial } from './molecules/RotaryDial.jsx'
 export { default as SearchInput } from './molecules/SearchInput.jsx'
 export { default as InspectorSection, default as Section } from './molecules/InspectorSection.jsx'
 export { default as SectionText } from './molecules/SectionText.jsx'
@@ -96,8 +100,10 @@ export { default as SectionCardItem, default as CardFeatureItem } from './molecu
 export { default as CodeBlock } from './molecules/CodeBlock.jsx'
 export { default as ColorInputRow } from './molecules/ColorInputRow.jsx'
 export { default as ColorRamp } from './molecules/ColorRamp.jsx'
-export { default as ColorSwatch } from './atoms/ColorSwatch.jsx'
+export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
+/* MultiSelect — several pick-one settings in one dropdown, a column each (2026-10-01, first cut) */
+export { default as MultiSelect } from './molecules/MultiSelect.jsx'
 export { default as FieldRow, StatusChip } from './molecules/FieldRow.jsx'
 export { default as FramedMediaBand } from './organisms/FramedMediaBand.jsx'
 export { default as Image } from './atoms/Image.jsx'

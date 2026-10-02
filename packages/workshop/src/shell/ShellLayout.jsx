@@ -281,7 +281,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       { id: 'nav', label: 'Left rail', combo: '[' },
       { id: 'toc', label: 'Right rail', combo: ']' },
       { id: 'rails', label: 'Both rails', combo: '\\' },
-      { id: 'fold', label: 'Fold all', combo: 'C' },
+      { id: 'fold', label: 'Fold / expand all', combo: 'C' },
       { id: 'esc', label: 'Close', combo: 'Esc' },
     ] },
     ...(shortcuts.length ? [{ section: 'Page', items: shortcuts.map(({ id, label, combo }) => ({ id, label, combo })) }] : []),

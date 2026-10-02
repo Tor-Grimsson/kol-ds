@@ -154,7 +154,7 @@ const usesOf = (name, pkg, css) => {
     : new RegExp(`import\\s*\\{[^}]*\\b${name}\\b[^}]*\\}\\s*from\\s*['"]@kolkrabbi/kol-${pkg}(?:/[^'"]*)?['"]`)
   const hits = new Map()
   for (const { repo, f } of files) {
-    if (basename(f).replace(/\.\w+$/, '') === name) continue // the alias's own demo/usage page
+    if (basename(f).replace(/\.\w+$/, '') === name) continue // the alias's own preview/usage page
     if (f.includes('/usage/')) continue // mined reference material, not a consumer
     let src; try { src = readFileSync(f, 'utf8') } catch { continue }
     if (re.test(src)) hits.set(repo, (hits.get(repo) ?? 0) + 1)

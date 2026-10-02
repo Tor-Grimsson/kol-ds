@@ -287,7 +287,7 @@ function ParamsLink({ layer }) {
   return (
     <InspectorSection pane label="Parameters">
       <Tooltip label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}><Button aria-label={layer.type === 'pattern' ? 'Open the Pattern tab' : 'Open the Parameters tab'}
-        variant="primary" size="sm" className="w-full"
+        tone="primary" size="sm" className="w-full"
         onClick={openParams}
       >
         {labelFor(layer)}
@@ -304,7 +304,7 @@ function GroupFields({ layer, ungroupLayer }) {
         <span className="kol-helper-12 text-meta">{childCount} layer{childCount === 1 ? '' : 's'}</span>
       </LabeledControl>
       <Button
-        variant="primary"
+        tone="primary"
         size="sm"
         className="w-full"
         onClick={() => ungroupLayer(layer.id)}
@@ -372,14 +372,14 @@ function ImageSource({ layer, patch }) {
       )}
       <div className="flex items-center gap-2">
         <Button
-          variant="primary" size="sm" iconLeft="upload" iconSize={12}
+          tone="primary" size="sm" iconLeft="upload" iconSize={12}
           className="flex-1"
           onClick={() => fileRef.current?.click()}
         >
           {layer.src ? 'Replace' : 'Upload image'}
         </Button>
         <Button
-          variant="primary" size="sm"
+          tone="primary" size="sm"
           className="flex-1"
           onClick={() => setPickerOpen(true)}
         >
@@ -387,7 +387,7 @@ function ImageSource({ layer, patch }) {
         </Button>
         {layer.src && (
           <Tooltip label="Clear image"><Button
-            variant="primary" size="sm" iconOnly="trash" iconSize={12}
+            tone="primary" size="sm" iconOnly="trash" iconSize={12}
             aria-label="Clear image"
             onClick={onClear}
           /></Tooltip>
@@ -518,7 +518,7 @@ function LayoutFields({ layer, setProp, patch }) {
         * more common"): a KOL Button on the inputs' rung, a lock that closes when constrained. It was
         * a raw <button> inking a corner glyph `fg` from its wrapper. */}
       <Tooltip label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}>
-        <Button variant="ghost" size="sm" iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
+        <Button tone="ghost" size="sm" iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
           aria-label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'} onClick={toggleLock} />
       </Tooltip>
     </div>

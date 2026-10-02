@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ContentFilters, EmptyState, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ContentFilters, EmptyState, SegmentedToggle, SettingsMulti } from '@kolkrabbi/kol-component'
 import { useParams, useSearchParams } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
-import DemoStage from '../lib/DemoStage.jsx'
+import PreviewStage from '../lib/PreviewStage.jsx'
 import Fit from '../lib/Fit.jsx'
 import { groupComponents, FUNCTIONS, TOTAL, packageLabel } from '../nav/registry.js'
 import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
@@ -11,7 +11,7 @@ import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
 /**
  * Components index — grouped by the active axis (Function default / Atomic),
  * A→Z within each group, function chips as a cross-cutting filter. Cards flow
- * in waterfall columns with a capped preview so tall demos can't blow holes
+ * in waterfall columns with a capped preview so tall previews can't blow holes
  * in the layout.
  *
  * THE FILTER ROW IS `ContentFilters`, THE ORGANISM (2026-09-02 — the showcase
@@ -23,9 +23,9 @@ import { useGrouping, GROUP_OPTIONS } from '../lib/grouping.jsx'
  * over the rows the organism hands back.
  */
 
-/* Gate the live demo on visibility: the index renders 100+ cards, and each
- * live DemoStage is expensive to mount. Without this, regrouping (the
- * Atomic⇄Function toggle) remounts every card and re-inits every demo in one
+/* Gate the live preview on visibility: the index renders 100+ cards, and each
+ * live PreviewStage is expensive to mount. Without this, regrouping (the
+ * Atomic⇄Function toggle) remounts every card and re-inits every preview in one
  * blocking task (~150ms). Off-screen cards render the cheap name placeholder
  * until scrolled near; once shown, they stay shown. `useReveal` can't do this
  * — it toggles a class, it doesn't return an in-view state. */
@@ -47,14 +47,14 @@ function useInView(rootMargin = '250px') {
 function ComponentCard({ c }) {
   const [ref, inView] = useInView()
   return (
-    /* Overlay link, not a wrapping <Link>: live demos contain real anchors
+    /* Overlay link, not a wrapping <Link>: live previews contain real anchors
        (footers, work cards) and <a>-in-<a> is invalid HTML — React logs a
        nesting error for every such card. The absolute Link keeps the whole
-       card clickable without containing the demo. */
+       card clickable without containing the preview. */
     <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12 transition-colors hover:border-fg-24">
       <div ref={ref} data-toc-skip className="pointer-events-none flex h-56 items-center justify-center overflow-hidden bg-fg-02 p-5">
-        {c.demo && inView ? (
-          <Fit>{c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />}</Fit>
+        {c.preview && inView ? (
+          <Fit>{c.preview.Card ? <c.preview.Card /> : <PreviewStage entry={c.preview} />}</Fit>
         ) : (
           <span className="kol-mono-12 text-meta opacity-50">{c.displayName}</span>
         )}
@@ -101,6 +101,36 @@ export default function Components({ tier, fn }) {
     .filter(([, , list]) => list.length)
 
 
+  const renderRows = (rows) => {
+    const grouped = regroup(rows)
+    return grouped.length === 0
+      ? <EmptyState eyebrow="No results" title="No components match." body="Clear the search or the filters." />
+      : (
+        <div className="flex flex-col gap-8">
+          {grouped.map(([key, label, list]) => (
+            <section key={key} id={key} className="scroll-mt-20">
+              <h2 className="kol-helper-10 uppercase tracking-widest text-meta mb-4 border-b border-fg-08 pb-2">
+                {label} · {list.length}
+              </h2>
+              {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid.
+                * Column count derives from the wall's own width (min card 20rem, cap 4)
+                * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
+              <div className="gap-4 [columns:4_20rem]">
+                {list.map((c) => <ComponentCard key={c.name} c={c} />)}
+              </div>
+            </section>
+          ))}
+        </div>
+      )
+  }
+
+  /* A TIER'S HOME FILTERS BY GROUPING (2026-10-01 — user ruling: a checklist dropdown on the right of
+   * the "All components" bar to show or hide the big groupings — hardware, chess, the editor —
+   * instead of ContentFilters). The groupings are the packages; all start on. */
+  const packages = useMemo(() => [...new Set(items.map((c) => c.pkgLabel))].sort(), [items])
+  const [off, setOff] = useState(() => new Set())
+  const shownPackages = packages.filter((p) => !off.has(p))
+
   return (
     /* The page stack (user, 2026-08-09: "make a breather in the layout") —
      * header, filter row and sections were flush; gap-8 is the Foundations
@@ -116,6 +146,22 @@ export default function Components({ tier, fn }) {
         </div>
       )}
 
+      {tier ? (
+        <>
+          <div className="flex items-center gap-4 border-b border-fg-08 pb-3">
+            <span className="kol-doc-eyebrow">All components</span>
+            <div className="ml-auto w-56">
+              <SettingsMulti
+                noun="packages"
+                options={packages.map((p) => ({ value: p, label: p }))}
+                selected={shownPackages}
+                onToggle={(p) => setOff((prev) => { const next = new Set(prev); next.has(p) ? next.delete(p) : next.add(p); return next })}
+              />
+            </div>
+          </div>
+          {renderRows(items.filter((c) => !off.has(c.pkgLabel)))}
+        </>
+      ) : (
       <ContentFilters
         key={params.toString()}
         initialFilters={[
@@ -132,29 +178,9 @@ export default function Components({ tier, fn }) {
         ]}
         mutuallyExclusiveFilters={['fnLabel', 'pkgLabel']}
         showCountOnlyWhenFiltering
-        renderItem={(rows) => {
-          const grouped = regroup(rows)
-          return grouped.length === 0
-            ? <EmptyState eyebrow="No results" title="No components match." body="Clear the search or the filters." />
-            : (
-              <div className="flex flex-col gap-8">
-                {grouped.map(([key, label, list]) => (
-                  <section key={key} id={key} className="scroll-mt-20">
-                    <h2 className="kol-helper-10 uppercase tracking-widest text-meta mb-4 border-b border-fg-08 pb-2">
-                      {label} · {list.length}
-                    </h2>
-                    {/* Waterfall — tall cards (heroes, tables) can't blow holes in a row grid.
-                      * Column count derives from the wall's own width (min card 20rem, cap 4)
-                      * — viewport breakpoints can't see the rails (05-layout-systems § walls). */}
-                    <div className="gap-4 [columns:4_20rem]">
-                      {list.map((c) => <ComponentCard key={c.name} c={c} />)}
-                    </div>
-                  </section>
-                ))}
-              </div>
-            )
-        }}
+        renderItem={renderRows}
       />
+      )}
     </div>
   )
 }

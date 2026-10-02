@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-workshop
 
+## Unreleased
+
+**The question round** (2026-10-01 — the review's open calls, ruled and built). Needs kol-search with `indexGraph`.
+
+- **`ResultRow` `icon`** — a glyph before the title. **`SearchPage` `kindIcons`** (`{ kind: iconName }`) puts one on each row and **`rowMeta="path"`** prints the route as the second line.
+- **⚠ `DocSection`** keeps its own distance: a section that follows a sibling takes `mt-10` unless its parent is a flex container (which spaces it with `gap`). Pages that stacked sections in a fragment had the rule flush under the content above.
+- **`ShellSidebar`** — a route may carry `icon` (a glyph on the row or beside the group's label); `section: true` children are `#` anchors on their parent's page, not leaves; `label={null}` draws the tree with no category over it. **`RailRow`** — a `to` with a `#` is a Link whose active state is the hash. **`RailSection` `glyph`**.
+- **`TagGraph`** — `files`, `orphans`, `filter`, `labels` (`auto · all · none`), `nodeScale`, `linkScale`, `onFileClick`: docs and untagged docs as nodes beside the tags, a text filter and display settings.
+- The shortcuts sheet lists `C` as "Fold / expand all" — it always did both.
+
 ## 0.36.0 — 2026-10-01
 
 **Review round two** (plan-2026-10-01-showcase-review-round-2). Needs kol-component ≥ 0.235.0 and kol-theme ≥ 0.162.0.

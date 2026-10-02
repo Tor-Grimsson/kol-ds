@@ -45,14 +45,14 @@ export default function CameraPoseSlots({ layer, patch, camParams, isEngine, sho
       <div className="flex items-center gap-1">
         {camParams.length > 0 && slots.map((s, i) => (
           <Tooltip key={i} label={s ? 'Recall pose (shift-click = overwrite)' : 'Save pose'}><Button aria-label={s ? 'Recall pose (shift-click = overwrite)' : 'Save pose'}
-            variant={s ? 'secondary' : 'ghost'}
+            tone={s ? 'inverted' : 'ghost'}
             size="sm"
             onClick={(e) => ((e.shiftKey || !s) ? save(i) : recall(i))}
           >
             {i + 1}
           </Button></Tooltip>
         ))}
-        <Button variant="primary" size="sm" className="ml-auto" onClick={reset}>
+        <Button tone="primary" size="sm" className="ml-auto" onClick={reset}>
           Reset
         </Button>
       </div>

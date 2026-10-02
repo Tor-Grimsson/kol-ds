@@ -1,4 +1,4 @@
-import DemoStage from './DemoStage.jsx'
+import PreviewStage from './PreviewStage.jsx'
 
 /**
  * CollectionPreview — the BARE render of one collection item at
@@ -35,7 +35,7 @@ export default function CollectionPreview({ slug, getItem }) {
   return (
     <div className="flex min-h-dvh w-full overflow-auto bg-surface-primary p-6">
       <div className="m-auto w-full">
-        <DemoStage entry={entry} />
+        <PreviewStage entry={entry} />
       </div>
     </div>
   )

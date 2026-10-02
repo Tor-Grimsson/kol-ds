@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, Divider, Input, SegmentedToggle, Slider } from '@kolkrabbi/kol-component'
-import Knob from './Knob.jsx'
+import { Button, Divider, Input, RotaryDial, SegmentedToggle, Slider } from '@kolkrabbi/kol-component'
+import ParamSheet from './ParamSheet.jsx'
 import Toggle from '../switches/Toggle.jsx'
 import SignalScope from '../indicators/SignalScope.jsx'
 import SignalReference from '../panel/SignalReference.jsx'
@@ -212,6 +212,8 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
   const own = useEnvelopeGenerator(options)
   const g = generator ?? own
   const [collapsed, setCollapsed] = useState(false)
+  /* the holder opens the touch sheet, not the knob (2026-10-01): which ADSR stage is held */
+  const [sheet, setSheet] = useState(null)
   const { mode, adsr, view } = g
 
   const sample = mode === 'equation'
@@ -223,12 +225,12 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
 
   const transport = (
     <div className="flex h-6 shrink-0 items-center gap-3">
-      <Button variant="ghost" size="sm" iconOnly={g.playing ? 'pause' : 'play'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />
+      <Button tone="ghost" size="sm" iconOnly={g.playing ? 'pause' : 'play'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />
       <Field label="BPM" value={g.bpm} chars={3} onCommit={(v) => g.setBpm(Math.max(1, Math.min(999, num(v, g.bpm))))} />
       {mode === 'adsr' && (
         <>
           <Toggle value={g.cycle} onChange={g.setCycle} label="cycle" />
-          <Button variant="ghost" size="sm" onClick={g.fire}>Trigger</Button>
+          <Button tone="ghost" size="sm" onClick={g.fire}>Trigger</Button>
         </>
       )}
       <span className="ml-auto text-fg-48">{mode === 'adsr' ? `${passSec.toFixed(2)} s` : ''}</span>
@@ -276,10 +278,10 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
           )}
         </div>
         <div className="flex min-h-6 shrink-0 flex-wrap items-center justify-between gap-x-2">
-          {mode === 'equation' && <Button variant="ghost" size="sm" iconLeft="maximize" onClick={g.fit}>Fit</Button>}
-          {panel && <Button variant="ghost" size="sm" iconLeft="columns" onClick={() => setCollapsed(!collapsed)} className="hidden lg:inline-flex">{collapsed ? 'Expand' : 'Collapse'}</Button>}
-          {g.save && <Button variant="ghost" size="sm" iconLeft="save" onClick={g.save}>Save</Button>}
-          <Button variant="ghost" size="sm" iconLeft="refresh" onClick={mode === 'equation' ? g.reset : () => g.setAdsr(ADSR_DEFAULTS)}>Reset</Button>
+          {mode === 'equation' && <Button tone="ghost" size="sm" iconLeft="maximize" onClick={g.fit}>Fit</Button>}
+          {panel && <Button tone="ghost" size="sm" iconLeft="columns" onClick={() => setCollapsed(!collapsed)} className="hidden lg:inline-flex">{collapsed ? 'Expand' : 'Collapse'}</Button>}
+          {g.save && <Button tone="ghost" size="sm" iconLeft="save" onClick={g.save}>Save</Button>}
+          <Button tone="ghost" size="sm" iconLeft="refresh" onClick={mode === 'equation' ? g.reset : () => g.setAdsr(ADSR_DEFAULTS)}>Reset</Button>
         </div>
         <Divider className="shrink-0 py-1" />
         {mode === 'equation' ? (
@@ -299,8 +301,11 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
         ) : (
           <div className="flex shrink-0 flex-wrap items-end justify-between gap-4">
             {[['attack', 'A'], ['decay', 'D'], ['sustain', 'S'], ['release', 'R']].map(([key, label]) => (
-              <Knob key={key} value={adsr[key]} onChange={(v) => g.setAdsr({ [key]: v })} label={label} size="md" defaultValue={ADSR_DEFAULTS[key]} />
+              <RotaryDial variant="panel" key={key} value={adsr[key]} onChange={(v) => g.setAdsr({ [key]: v })} label={label} size="md" defaultValue={ADSR_DEFAULTS[key]} onHold={() => setSheet({ key, label })} />
             ))}
+            {sheet && (
+              <ParamSheet label={sheet.label} value={adsr[sheet.key]} min={0} max={100} defaultValue={ADSR_DEFAULTS[sheet.key]} onChange={(v) => g.setAdsr({ [sheet.key]: v })} onClose={() => setSheet(null)} />
+            )}
             <Field label="Hold" value={r2(adsr.hold)} onCommit={(v) => g.setAdsr({ hold: Math.max(0, num(v, adsr.hold)) })} />
           </div>
         )}

@@ -1,5 +1,19 @@
 # @kolkrabbi/kol-component
 
+## Unreleased
+
+**The question round** (2026-10-01 — the review's open calls, ruled and built). Needs kol-theme with `.bg-surface-sunken` only if you use that class.
+
+- **New: `MultiSelect`** — several pick-one settings in one dropdown: closed it is the Dropdown's trigger reading every current value, open it is a popover with a column per setting (`groups [{ id, label, options }]`, `value { [id]: value }`, `onChange(id, value)`). First cut.
+- **`Dropdown`** — an option `{ heading: 'Variant' }` draws a row that names the list; never a choice.
+- **⚠ `Button` `variant`: six values deprecated** — `primary · secondary · outline · ghost · grey · control` are tones under a second name. Pass `tone` (`secondary` → `tone="inverted"`, `control` → `tone="ghost"`). They still render exactly as before and warn once in dev; `variant` keeps `accent · danger · nav`. On the retirement ledger (§ Props).
+- **`Slider variant="panel"`** — the rack slider, kol-hardware's `Fader` merged in: a drawn 2px track, `direction="vertical"`, `height`, and `onHold` (a 500ms touch hold).
+- **`RotaryDial variant="panel"`** — the rack knob, kol-hardware's `Knob` merged in: `size` `sm · md · lg · xl`, `labelPlacement`, `bipolar`, `labelMinWidth`, `onHold`.
+- **`LabeledControl variant="panel"`** — the panel label, kol-hardware's `PanelLabel` merged in: `labelPosition` `top · bottom · left · right`, `labelClass`, `gap`.
+- **`armLongPress`** exported — moved here from kol-hardware with the controls that arm it.
+- **Renamed: `HlsVideo` → `BackgroundVideo`**, and it is a utility now, not an atom (it has no UI). `HlsVideo` is the alias.
+- **Tier moves** (source folders only — imports from the package root are unchanged): `ActionButton`, `ColorSwatch`, `RotaryDial` atoms → molecules.
+
 ## 0.236.0 — 2026-10-01
 
 - **New: `TabChips`** — tabs as a row of chips: the active tab a filled chip, the rest quiet text (`tabs [{ id, label }]`, `value`, `onChange`, `ariaLabel`). The tab idiom for inside a toolbar, beside `TabsRow` (underline) and `SegmentedToggle` (joined). It was the showcase's local `DocTabs`, promoted as it was.

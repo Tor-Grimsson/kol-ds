@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-hardware
 
+## Unreleased
+
+**The question round** (2026-10-01). Needs the kol-component that ships the `panel` variants.
+
+- **New: the rack** — `RackCase` · `RackRow` · `RackSlot`, and the grid constants `HP_PX · TOTAL_HP · MIN_HP · ROW_HEIGHT · RAIL_HEIGHT · hpToPx`. The case, its 1U / 3U rows with their rails, and the HP-wide slot, lifted from kol-monitor. What mounts where, routing and edit mode stay in the consumer.
+- **⚠ `Fader` · `Knob` · `PanelLabel` are deprecated aliases** — they are kol-component's `Slider` · `RotaryDial` · `LabeledControl` at `variant="panel"`. Same props, with two renames on the replacements: `Knob`'s `variant` (the label placement) is `labelPlacement`; `PanelLabel`'s `horizontal` is `labelPosition="right"`.
+- **⚠ BREAKING — `Knob` and `Fader` no longer open `ParamSheet`.** A 500ms touch hold calls `onHold({ label, value, min, max, … })`; render `ParamSheet` from whatever holds the control. Without `onHold` a held touch is a drag. `EnvelopeGenerator` does this for its own knobs.
+- `armLongPress` moved to kol-component; still exported from here.
+
 ## 0.3.2 — 2026-09-30
 
 - Comments and README only: one spelling, `color`.

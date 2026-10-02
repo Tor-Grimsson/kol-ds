@@ -5,9 +5,10 @@ import { Button, ViewToggle } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import { Icon } from '@kolkrabbi/kol-icons'
 import BlockViewer from './BlockViewer.jsx'
-import DemoStage from './DemoStage.jsx'
+import PreviewStage from './PreviewStage.jsx'
 import DocTabs from './DocTabs.jsx'
 import COMPOSITION from '../usage/composition.json'
+import LandingWall from './LandingWall.jsx'
 
 /* Provenance at browse level (2026-07-15 audit P1-2): what a set/block is
  * actually made of — KOL components vs local scaffolding vs external deps —
@@ -46,7 +47,7 @@ function GalleryCard({ item, labels, basePath, previewBase }) {
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="h-[200%] w-[200%] origin-top-left scale-50">
             {item.stage === 'hug'
-              ? <div className="flex h-full w-full items-center justify-center p-8"><DemoStage entry={item} /></div>
+              ? <div className="flex h-full w-full items-center justify-center p-8"><PreviewStage entry={item} /></div>
               : <item.Component />}
           </div>
         </div>
@@ -121,9 +122,12 @@ export default function CollectionLanding({
   hero, // { eyebrow, title, lede, browseLabel }
   home, // a `src/homes/<id>.md` rendered in place of the header (2026-09-30)
   intro, // a node between the home and the tab strip
+  /* open on the landing wall — every item as a card, Load more (2026-10-01); the category tabs and
+   * the list view still show the full stages */
+  wall = false,
 }) {
-  const [tab, setTab] = useState('featured')
-  const [view, setView] = useState('list')
+  const [tab, setTab] = useState(wall ? 'all' : 'featured')
+  const [view, setView] = useState(wall ? 'grid' : 'list')
 
   const featuredItems = featured.length ? featured : items
   const shown = tab === 'all' ? items : tab === 'featured' ? featuredItems : items.filter((b) => b.category === tab)
@@ -158,7 +162,7 @@ export default function CollectionLanding({
                 ]}
               />
             )}
-            <Button variant="primary" size="sm" selected={tab === 'all'} onClick={() => setTab('all')}>
+            <Button tone="primary" size="sm" selected={tab === 'all'} onClick={() => setTab('all')}>
               {hero.browseLabel}
             </Button>
           </div>
@@ -167,11 +171,7 @@ export default function CollectionLanding({
         {/* ── Stages (list) or compact cards (grid, browse-all only) ── */}
         <section className="py-10 pb-24">
           {tab === 'all' && view === 'grid' ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {shown.map((b) => (
-                <GalleryCard key={b.key} item={b} labels={labels} basePath={basePath} previewBase={previewBase} />
-              ))}
-            </div>
+            <LandingWall items={shown} render={(b) => <GalleryCard item={b} labels={labels} basePath={basePath} previewBase={previewBase} />} />
           ) : (
             <StageList items={shown} labels={labels} basePath={basePath} previewBase={previewBase} srcDir={srcDir} />
           )}

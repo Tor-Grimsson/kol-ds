@@ -31,7 +31,7 @@ One page. Nothing here is new — it is the rest of the section, compressed.
 | agent state, plan, session log | `.kol/llm-context/` | per that folder |
 | a component's doc page | `showcase/src/docs/components/<Name>.mdx` | none |
 | a standalone doc page | `showcase/src/docs/<kebab>.mdx` | none |
-| a live demo | `showcase/src/demos/<kebab>.jsx` | none |
+| a live preview | `showcase/src/previews/<kebab>.jsx` | none |
 | generator output | `showcase/src/usage/` | generator's own |
 | a supporting image | nearest `_assets/` | none |
 | a supporting non-renderable | nearest `_files/` | none |
@@ -41,7 +41,7 @@ One page. Nothing here is new — it is the rest of the section, compressed.
 | Root | Files | Human or machine | Feeds |
 |---|---|---|---|
 | `docs/**/*.md` | 54 | human | Documentation surface, vault tree, ⌘K, tags |
-| `showcase/src/demos/` | 179 | human | live previews |
+| `showcase/src/previews/` | 179 | human | live previews |
 | `showcase/src/docs/*.mdx` | 70 | human | component + standalone doc pages |
 | `showcase/src/blocks/` | 22 | human | Blocks |
 | `packages/*/src/**/index.js` | 19 | human (code) | the component roster |

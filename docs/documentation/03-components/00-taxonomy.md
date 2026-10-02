@@ -59,6 +59,12 @@ Which `packages/component/src/<folder>/` (or package) a component lives in. Deci
 
 Placement moves the same day: `CloseButton` → atoms (a Button wearing an IconFrame — `validate:taxonomy` check 4 now counts an atom rendering another atom as painting) · `ContextMenu` → molecules · `PathNodeOverlay` · `CropOverlay` · `SelectionOverlay` · `CurveOverlay` → utilities (they paint only onto a target — Test 2) · `ColorLoader` renamed `IntroLoader` (organism; the old name is an alias on the retirement ledger). `Tooltip` and `PopoverPanel` stay in utilities: they are only ever worn, and atoms import Tooltip.
 
+### Seven atoms become molecules (2026-10-01, user rulings)
+
+The component audit scanned sixty atoms for what they render. Moved to molecules: `ChessBoard` (a board is pieces arranged; the piece is the atom) · `ColorSwatch` (a chip, its transparency mark and its tooltip) · `ActionButton` (a button, a tooltip and a confirm state) · `RailSection` (a toggle, a link, a count and a body) · `ClearspaceDiagram` (three drawings composed into one figure).
+
+**Control + label + value is a molecule; the bare control is the atom.** `RotaryDial`, `Knob` and `Fader` each draw a label and a readout beside the control, so they are molecules as shipped — the same shape as `Slider`, which always was one. This supersedes Test 3's `RotaryDial` example below: elaborate behavior still never promotes, a label and a readout do. A bare dial or track without them is not yet split out as its own atom.
+
 ### KOL Tier IS real atomic — the import test is repealed (2026-08-09)
 
 From 2026-07-04 to 2026-08-09 the tiers were derived from a **mechanical import test** ("does this file import another KOL component?"). That test filed by build accident, not by anatomy: a hand-rolled filter dropdown sat in Atoms because it imported nothing, while a one-line `Image` wrapper sat in Molecules because it imported a fallback. **User ruling, 2026-08-09: the categories were wrong.** The tiers now follow atomic design as it is actually meant:

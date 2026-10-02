@@ -120,7 +120,7 @@ function ModalView({ state, closeWith }) {
         )}
         <div className="flex gap-2 justify-end">
           {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
-          <Button variant="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
+          <Button tone="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
         </div>
       </div>
     </div>

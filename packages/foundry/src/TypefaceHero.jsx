@@ -81,11 +81,11 @@ const TypefaceHero = ({
 
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button variant="primary" href={downloadHref}>
+            <Button tone="primary" href={downloadHref}>
               {downloadLabel}
             </Button>
             <Button
-              variant="outline"
+              tone="outline"
               href={specimenLink}
               onClick={onSpecimenClick ? handleSpecimenClick : undefined}
             >

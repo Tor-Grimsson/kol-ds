@@ -923,7 +923,7 @@
       "desc": ""
     }
   ],
-  "HlsVideo": [
+  "BackgroundVideo": [
     {
       "prop": "active",
       "type": "—",
@@ -1014,6 +1014,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "labelPosition",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "labelClass",
+      "type": "—",
+      "def": "'kol-helper-8'",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "0",
       "desc": ""
     }
   ],
@@ -1216,6 +1234,12 @@
       "prop": "disabled",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'dial'",
       "desc": ""
     }
   ],
@@ -1444,6 +1468,70 @@
       "prop": "style",
       "type": "—",
       "def": "{}",
+      "desc": ""
+    }
+  ],
+  "Kbd": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "OptionRow": [
+    {
+      "prop": "as",
+      "type": "—",
+      "def": "'div'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "trail",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "hover",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "muted",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -2217,6 +2305,38 @@
       "desc": ""
     }
   ],
+  "MultiSelect": [
+    {
+      "prop": "groups",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "StatusChip": [
     {
       "prop": "options",
@@ -2609,6 +2729,12 @@
       "desc": ""
     },
     {
+      "prop": "suggestions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
       "prop": "expanded",
       "type": "—",
       "def": "false",
@@ -2630,6 +2756,12 @@
       "prop": "placeholder",
       "type": "—",
       "def": "'Search…'",
+      "desc": ""
+    },
+    {
+      "prop": "resultsLabel",
+      "type": "—",
+      "def": "'All results'",
       "desc": ""
     }
   ],
@@ -2872,6 +3004,20 @@
       "prop": "tabs",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    }
+  ],
+  "TabChips": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -4461,6 +4607,12 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "lastRule",
+      "type": "—",
+      "def": "false",
+      "desc": ""
     }
   ],
   "Graphic": [
@@ -5573,6 +5725,12 @@
       "desc": ""
     },
     {
+      "prop": "menuBelowLg",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -5671,47 +5829,9 @@
   ],
   "Knob": [
     {
-      "prop": "variant",
-      "type": "—",
-      "def": "'column'",
-      "desc": ""
-    },
-    {
-      "prop": "bipolar",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
       "prop": "size",
       "type": "—",
       "def": "'sm'",
-      "desc": ""
-    }
-  ],
-  "Fader": [
-    {
-      "prop": "min",
-      "type": "—",
-      "def": "0",
-      "desc": ""
-    },
-    {
-      "prop": "max",
-      "type": "—",
-      "def": "100",
-      "desc": ""
-    },
-    {
-      "prop": "step",
-      "type": "—",
-      "def": "1",
-      "desc": ""
-    },
-    {
-      "prop": "direction",
-      "type": "—",
-      "def": "'horizontal'",
       "desc": ""
     }
   ],
@@ -5901,18 +6021,6 @@
       "type": "—",
       "def": "'bottom'",
       "desc": ""
-    },
-    {
-      "prop": "labelClass",
-      "type": "—",
-      "def": "'kol-helper-8'",
-      "desc": ""
-    },
-    {
-      "prop": "gap",
-      "type": "—",
-      "def": "0",
-      "desc": ""
     }
   ],
   "ModuleHeader": [
@@ -5974,6 +6082,34 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "RackRow": [
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'3u'",
+      "desc": ""
+    }
+  ],
+  "RackSlot": [
+    {
+      "prop": "hp",
+      "type": "—",
+      "def": "8",
+      "desc": ""
+    },
+    {
+      "prop": "u",
+      "type": "—",
+      "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "overflow",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],

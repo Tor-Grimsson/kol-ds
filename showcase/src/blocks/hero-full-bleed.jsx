@@ -32,8 +32,8 @@ export default function HeroFullBleed() {
             every screen your team ships already speaks the same language.
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Button variant="primary" size="lg" href="#get-started">Start building</Button>
-            <Button variant="secondary" size="lg" href="#tour">Take the tour</Button>
+            <Button tone="primary" size="lg" href="#get-started">Start building</Button>
+            <Button tone="inverted" size="lg" href="#tour">Take the tour</Button>
           </div>
         </OverlayGlassPanel>
       }

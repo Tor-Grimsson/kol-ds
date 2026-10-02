@@ -3,7 +3,8 @@ import {
   Button, Dropdown, IconFrame, Input, SearchInput, SettingsChoice, SettingsSwitch, ViewToggle,
 } from '@kolkrabbi/kol-component'
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { relatedDocs } from '../nav/vault.js'
 
 /**
  * FoundationsTones — the control set on any ground, in any tone (user, 2026-09-26: "a page
@@ -34,7 +35,11 @@ const WASHES = { none: '', 'fg-02': 'bg-fg-02', 'fg-04': 'bg-fg-04' }
 
 const opts = (list, fmt = (v) => v) => list.map((v) => ({ value: v, label: fmt(v) }))
 
+/* the law behind what this page shows — the right rail's Related rows (2026-10-01) */
+const RELATED = relatedDocs(['01-foundations/13-tone-lookup.md', '01-foundations/02-color.md'])
+
 export default function FoundationsTones() {
+  usePageMeta({ tags: [], related: RELATED })
   const [tone, setTone] = useState('sunken')
   const [surface, setSurface] = useState('primary')
   const [wash, setWash] = useState('fg-02')

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## Unreleased
+
+- **`TouchDeviceOverlay` `force`** — show the note whatever the pointer and whatever was dismissed (a preview, or a "show it again"); dismissing a forced note stores nothing.
+
 ## 0.59.1 — 2026-09-30
 
 - The settings scaffold's display tooltip is one word (`Display`). Comments: one spelling, `color`.

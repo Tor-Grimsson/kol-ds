@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { relatedDocs } from '../nav/vault.js'
 import { resolveCssVar, resolveTokenThemed } from '../lib/resolve-css-var.jsx'
 import { BRAND_COLORS_SECTIONS, UI_COLORS_SECTIONS } from '../data/color.js'
 import RampTuner from '../lib/RampTuner.jsx'
@@ -150,7 +151,11 @@ function useRedRamp() {
   return ramp
 }
 
+/* the law behind what this page shows — the right rail's Related rows (2026-10-01) */
+const RELATED = relatedDocs(['01-foundations/02-color.md', '01-foundations/11-color-lookup.md', '01-foundations/10-opacity.md'])
+
 export default function FoundationsColor() {
+  usePageMeta({ tags: [], related: RELATED })
   const redRamp = useRedRamp()
   return (
     <>

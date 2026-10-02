@@ -169,7 +169,7 @@ export default function FilesDialog({
    * neither has anything to flip to. */
   const rowAction = (icon, label, run) => (
     <Tooltip label={label}><Button
-      variant="ghost" quiet size="sm" iconOnly={icon}
+      tone="ghost" quiet size="sm" iconOnly={icon}
       aria-label={label}
       onClick={(e) => { e.stopPropagation(); run() }}
     /></Tooltip>
@@ -302,7 +302,7 @@ export default function FilesDialog({
             />
             </span>
             <Button
-              variant="primary" size="sm"
+              tone="primary" size="sm"
               disabled={!saveName.trim()}
               onClick={() => { onSaveCurrent(saveName.trim()); onClose?.() }}
             >
@@ -315,7 +315,7 @@ export default function FilesDialog({
             The export name is a FIELD because `onSaveSettings` hardcoded
             `kol-design-editor.json` for every file anyone ever exported. */}
         <div className="flex items-center gap-2 pt-3 border-t border-oq-08">
-          <Button variant="primary" size="sm" iconLeft="upload" onClick={() => fileRef.current?.click()}>
+          <Button tone="primary" size="sm" iconLeft="upload" onClick={() => fileRef.current?.click()}>
             Import
           </Button>
           <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={pickImport} />
@@ -330,14 +330,14 @@ export default function FilesDialog({
               onChange={(e) => { touchedName.current = true; setExportName(e.target.value) }}
             />
             <Button
-              variant="primary" size="sm" iconLeft="download"
+              tone="primary" size="sm" iconLeft="download"
               disabled={!selected}
               onClick={() => onExportItem?.(selected, exportName.trim() || labelOf(selected))}
             >
               Export
             </Button>
             <Button
-              variant="primary" size="sm"
+              tone="primary" size="sm"
               disabled={!selected}
               onClick={() => selected && openItem(selected)}
             >

@@ -211,7 +211,7 @@ export default function PrintsStore() {
         price={{ amount: selected.price, currency: 'EUR', secondary: `(${selected.priceISK})` }}
         sizeOptions={selected.sizes}
         actions={
-          <Button variant="primary" size="lg" className="w-full justify-center">
+          <Button tone="primary" size="lg" className="w-full justify-center">
             Add to cart
           </Button>
         }

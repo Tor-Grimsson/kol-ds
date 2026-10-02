@@ -145,7 +145,10 @@ a module (shells and tools).
 
 ## Set
 
-A **family grouped by purpose**: components shown together, then what they compose. It may cross
+**The parts that make a thing** (user ruling 2026-10-01 — *"I need to be able to find the
+collection of parts that make up things like the rack, or the mixer or the blog, or the foundry"*;
+it is what a set was first meant to be). A set's page leads with its parts, by tier, then shows them
+working together, then the source. Rack and Mixer joined that day. It may cross
 packages. Cards takes the `Section*` family from kol-component and the content cards from kol-content.
 A family that is only one package's components is not a set: it is that package's page under
 Packages (2026-09-30).

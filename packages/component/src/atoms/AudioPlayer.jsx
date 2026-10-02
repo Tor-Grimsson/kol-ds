@@ -7,11 +7,11 @@
  * the browser painted. The MediaLibrary widening (kol-component 0.39.0) made
  * audio objects arrive — 116 sound files in `kol-vault-media` alone — and left
  * minting this as the open taxonomy call; this is that call made: an ATOM,
- * beside HlsVideo.
+ * beside BackgroundVideo.
  *
- * THE CONTRAST WITH HlsVideo, which is the thing to read before touching either.
+ * THE CONTRAST WITH BackgroundVideo, which is the thing to read before touching either.
  * Same tier, same shape — one native media element, all layout via `className`,
- * no composition — and **inverted intent**. HlsVideo is deliberately inert:
+ * no composition — and **inverted intent**. BackgroundVideo is deliberately inert:
  * `pointer-events: none`, `controls={false}`, plus the hardening set (no PiP, no
  * download, no fullscreen, no remote playback, no context menu). It is
  * decorative. This atom exists **to be operated**, so none of that hardening

@@ -56,15 +56,15 @@ function EntryScreen({ onGenerate, onEffects, chromes }) {
           <span className="kol-eyebrow text-body">{modeById('randomiser').label}</span>
         )}
         <div className="flex flex-col gap-2">
-          <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.randomiser} iconRight={MODE_ICONS.randomiser} onClick={onGenerate}>Generate</Button>
-          <Button variant="primary" size="lg" className={SPREAD} iconLeft="filter" iconRight="filter" onClick={onEffects}>Effects</Button>
+          <Button tone="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.randomiser} iconRight={MODE_ICONS.randomiser} onClick={onGenerate}>Generate</Button>
+          <Button tone="primary" size="lg" className={SPREAD} iconLeft="filter" iconRight="filter" onClick={onEffects}>Effects</Button>
           {chromes && isTabletSized() && (
-            <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.editor} iconRight={MODE_ICONS.editor} onClick={goDesktop}>
+            <Button tone="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.editor} iconRight={MODE_ICONS.editor} onClick={goDesktop}>
               {modeById('editor').label}
             </Button>
           )}
           {chromes && (
-            <Button variant="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.labs} iconRight={MODE_ICONS.labs} onClick={goLabs}>
+            <Button tone="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.labs} iconRight={MODE_ICONS.labs} onClick={goLabs}>
               {modeById('labs').label}
             </Button>
           )}
@@ -274,7 +274,7 @@ function MobileBody() {
             <LabsSourcePicker layer={active} />
           </div>
           <div className="flex justify-center pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-            <Button variant="outline" size="lg" onClick={restart}>Back</Button>
+            <Button tone="outline" size="lg" onClick={restart}>Back</Button>
           </div>
         </div>
       )}

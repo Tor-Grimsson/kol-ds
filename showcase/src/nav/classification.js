@@ -18,7 +18,7 @@
  *    the playbook arc. ──────────────────────────────────────────────────── */
 export const TIERS = {
   /* kol-styleguide */
-  MoodTile: 'atoms', TypeBlock: 'atoms', ClearspaceDiagram: 'atoms', LogoScaling: 'atoms',
+  MoodTile: 'atoms', TypeBlock: 'atoms', ClearspaceDiagram: 'molecules', LogoScaling: 'atoms',
   ColorAnatomy: 'molecules', AssetTable: 'molecules', LogoCard: 'molecules',
   /* comboLayouts.jsx — the palette-combination slabs ComboLab arranges, also
    * exported standalone for a guide that wants one. Surfaced 2026-08-15 when
@@ -32,7 +32,7 @@ export const TIERS = {
   AssetCard: 'atoms', Swatch: 'molecules',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
   PostEditorial: 'molecules', StoryPhoto: 'molecules', StoryType: 'molecules',
-  ProfileAvatar: 'atoms',
+  BrandAvatar: 'atoms',
   BusinessCardFront: 'molecules', BusinessCardBack: 'molecules', Envelope: 'molecules',
   Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
   /* the brand tool (2026-09-27): the two brand-book pages are page regions, the tool is both of them */
@@ -49,7 +49,8 @@ export const TIERS = {
   PrintBuyButton: 'molecules',
   ProductDetailLayout: 'organisms', DiagonalMarqueeRiver: 'organisms', PrintsGrid: 'organisms',
   /* kol-chess */
-  ChessBoard: 'atoms', ChessPiece: 'atoms',
+  /* a board is pieces arranged; the piece is the atom (user ruling 2026-10-01) */
+  ChessBoard: 'molecules', ChessPiece: 'atoms',
   NotationPanel: 'molecules', PlaybackControls: 'molecules', VariationTree: 'molecules',
   ChessAnalysisLayout: 'organisms', ChessBoardWithControls: 'organisms',
   ChessBoardWithSidebar: 'organisms', ChessBoardFullscreen: 'organisms',
@@ -71,12 +72,14 @@ export const TIERS = {
   LineChart: 'molecules', DonutChart: 'molecules', Heatmap: 'molecules',
   MetricsDashboard: 'organisms',
   /* kol-workshop */
-  /* RailSection is an ATOM by the placement test: it renders one row and its
+  /* RailSection is a MOLECULE (user ruling 2026-10-01): a toggle, a link, a count and a body —
+   * nameable parts working as one unit. The note below is how it was read until then. */
+  /* (was) RailSection is an ATOM by the placement test: it renders one row and its
    * children slot, composes no KOL component (the chevron is injected), and
    * previews in isolation. It is the rail LADDER — every rail header at every
    * rung comes from it (2026-08-01). */
   /* The two sidebars compose RailSection and RailRow — the RightRail precedent below (W18). */
-  ShellSidebar: 'molecules', WorkshopDefaultSidebar: 'molecules', RailSection: 'atoms', RailRow: 'atoms',
+  ShellSidebar: 'molecules', WorkshopDefaultSidebar: 'molecules', RailSection: 'molecules', RailRow: 'atoms',
   /* RightRail is a MOLECULE: it composes RailSection and RailRow, which is the
    * nesting test. THE right rail for every route — it replaced two components
    * that disagreed about which sections exist (2026-08-01). */
@@ -124,7 +127,8 @@ export const TIERS = {
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms',
   PageShell: 'utilities',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
-  Knob: 'atoms', Fader: 'atoms', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
+  /* control + label + value is a molecule (user ruling 2026-10-01) — Knob and Fader draw all three */
+  Knob: 'molecules', Fader: 'molecules', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
   IconButton: 'atoms', JackSocket: 'atoms', PanelLabel: 'atoms',
   /* LED had a function but no tier — the all-caps name read as a data export and hid it (W19) */
   LED: 'atoms',
@@ -132,6 +136,8 @@ export const TIERS = {
   SignalScope: 'molecules', SignalReference: 'molecules',
   ParamSheet: 'organisms', ModuleFrame: 'organisms', ChannelStrip: 'organisms', EnvelopeGenerator: 'organisms',
   FlipCard: 'utilities',
+  /* the rack (2026-10-01): the case is a region, a row paints its rails, a slot paints nothing */
+  RackCase: 'organisms', RackRow: 'molecules', RackSlot: 'utilities',
   /* kol-deck */
   SlideThumb: 'molecules', DeckFile: 'molecules', SlideRenderer: 'molecules',
   SlideStage: 'organisms', SlideInspector: 'organisms', DeckEditor: 'organisms',
@@ -171,9 +177,9 @@ export const FUNCTIONS_BY_NAME = {
   MediaLibraryExplorer: 'media',
   ContextMenu: 'overlay', useContextMenu: 'utility',
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
-  HlsVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
+  BackgroundVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
   CurveOverlay: 'input', RotaryDial: 'input',
-  TabsRow: 'navigation', TabChips: 'navigation',
+  TabsRow: 'navigation', TabChips: 'navigation', MultiSelect: 'input',
   MobileTabBar: 'navigation',
   ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
   ShellSearchOverlay: 'wayfinding', ShellDrawer: 'wayfinding',
@@ -254,7 +260,7 @@ export const FUNCTIONS_BY_NAME = {
   AssetCard: 'display', Swatch: 'display',
   PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
   PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
-  ProfileAvatar: 'media',
+  BrandAvatar: 'media',
   BusinessCardFront: 'display', BusinessCardBack: 'display', Envelope: 'display',
   Letterhead: 'display', LetterheadCorrespondence: 'display', EmailSignature: 'display',
   /* content */
@@ -277,6 +283,7 @@ export const FUNCTIONS_BY_NAME = {
   EnvelopeGenerator: 'input', SignalScope: 'display', SignalReference: 'display',
   EnvelopeModeToggle: 'input', useEnvelopeGenerator: 'utility',
   ModuleFrame: 'structure', ChannelStrip: 'structure', FlipCard: 'structure',
+  RackCase: 'structure', RackRow: 'structure', RackSlot: 'structure',
   /* dashboards */
   DashMetricCard: 'display', DashStackedBarCard: 'display', DashChartCard: 'display',
   DashListCard: 'display', DashFeaturedCard: 'display', DashAlertCard: 'feedback',
@@ -370,6 +377,11 @@ export const DEPRECATED = [
   'DropdownTagFilter',
   /* ColorLoader = IntroLoader (2026-09-30) */
   'ColorLoader',
+  /* HlsVideo = BackgroundVideo, ProfileAvatar = BrandAvatar (2026-10-01) */
+  'HlsVideo', 'ProfileAvatar',
+  /* the hardware twins merged into kol-component as `variant="panel"` (2026-10-01):
+   * Fader = Slider · Knob = RotaryDial · PanelLabel = LabeledControl */
+  'Fader', 'Knob', 'PanelLabel',
   /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
    * cards are GONE from the barrels, not deprecated. Sources quarantined to
    * `_tmp/2026-08-30-content-set-exports/`. kol-dashboards' `GridCard` is a
@@ -397,49 +409,40 @@ export const DEPRECATED = [
   'LetterheadB',
 ]
 
-/* Components that ship without a demo file ON PURPOSE (pnpm validate:demos).
- * A reason is mandatory — the gate exists because "no demo yet" was never
+/* Components that ship without a preview file ON PURPOSE (pnpm validate:preview-files).
+ * A reason is mandatory — the gate exists because "no preview yet" was never
  * written down anywhere, so nobody could tell debt from a ruling. Anything not
- * listed here needs showcase/src/demos/<Name>.jsx. */
-export const NO_DEMO = (() => {
+ * listed here needs showcase/src/previews/<Name>.jsx. */
+export const NO_PREVIEW = (() => {
   /* THE 2026-08-15 SEED — debt, not rulings. These 46 shipped without a page
    * because nothing failed the build when they didn't; they are listed so the
    * gate can go live against NEW work while this backlog is worked down. A
-   * name leaves this map by getting showcase/src/demos/<Name>.jsx (the gate
+   * name leaves this map by getting showcase/src/previews/<Name>.jsx (the gate
    * then fails on the stale exemption, so the list can't rot upward). */
-  const debt = (names, why) => Object.fromEntries(names.map((n) => [n, `no demo yet (2026-08-15 seed) — ${why}`]))
+  const debt = (names, why) => Object.fromEntries(names.map((n) => [n, `no preview yet (2026-08-15 seed) — ${why}`]))
   return {
     ...debt([],
-      'chess apparatus parts; the board demos cover the system, these never got their own'),
-    ...debt(['MediaLibrary', 'MediaLibraryProvider'],
-      'kol-component organisms/overlays predating the demo convention'),
+      'chess apparatus parts; the board previews cover the system, these never got their own'),
+    /* MediaLibrary has a preview since 2026-10-01 (the apps/media entry in a frame); the provider and
+     * the explorer dispatch are shown inside it (SHOWN_IN) */
+    MediaLibraryProvider: 'a context provider — it draws nothing of its own; shown inside MediaLibrary',
     RowMenuButton: 'renders only on a coarse-pointer device, inside a row or tile that has a context '
-      + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop demo (2026-09-23)',
-    MediaLibraryExplorer: 'no demo yet (2026-09-21) — it is a variant dispatch over the two page '
-      + 'components, and `MediaLibrary` itself is still on this list; it gets a demo when that one '
-      + 'does, since a demo for either needs an injected client the showcase does not carry. The '
-      + 'live surface is apps/media.',
+      + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop preview (2026-09-23)',
+    MediaLibraryExplorer: 'a variant dispatch over the two page components — it is what the MediaLibrary '
+      + 'preview runs (`variant="explorer"`), so it is shown inside that one',
     ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
     ...debt([],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
     ...debt(['FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
-    AppHub: 'the Hub in one call (2026-09-26) — its rail is position: fixed to the window and its keys '
-      + '(, S \\ ⌥1–9) listen on the window, so on a demo stage it would sit over the showcase and take '
-      + 'its keys. Its parts have demos (HubHome, HubSettings); the whole thing lives at apps/hub.',
-    AppStudio: 'the Studio in one call (2026-09-29) — AppHub plus the workstation pages, so the same fixed rail '
-      + 'and window keys; its parts have demos (HubHome, HubSettings, CatalogPage); the whole thing lives at apps/studio.',
-    ...Object.fromEntries(['Notes', 'NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'kol-notes 0.1.0 (2026-09-27) — '
-      + 'every part reads a notes client (list · load · save · delete) the showcase does not carry; the '
-      + 'live surface is apps/notes on the fixture. Demos land with a showcase fixture client.'])),
-    ...Object.fromEntries(['Brand', 'BrandBook', 'BrandAssets'].map((n) => [n, 'kol-styleguide 0.5.0 (2026-09-27) — '
-      + 'the brand tool and its two pages render a whole brand manifest, marks included; the live surface is '
-      + 'apps/brand on the fixture brand. A demo lands with a showcase fixture brand.'])),
-    ...Object.fromEntries(['Decks', 'DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
-      'SlideStage', 'SlideInspector'].map((n) => [n, 'kol-deck 0.1.0 (2026-09-27) — the tool, its editor and '
-      + 'its parts run against a decks client and a deck document; the live surface is apps/presentation '
-      + 'on the fixture. Demos land with a showcase fixture client.'])),
-    ...debt(['TouchDeviceOverlay', 'useTouchPrimary'], 'renders only on a coarse-pointer device; nothing to show on a desktop demo'),
+    ...Object.fromEntries(['NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'a part of the notes tool — it reads the '
+      + 'tool\'s client, so it is shown inside the Notes preview (the apps/notes entry on the fixture, 2026-10-01)'])),
+    ...Object.fromEntries(['BrandBook', 'BrandAssets'].map((n) => [n, 'one of the brand tool\'s two pages — it renders a '
+      + 'whole brand manifest, so it is shown inside the Brand preview (the apps/brand-hub entry on Voyager, 2026-10-01)'])),
+    ...Object.fromEntries(['DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
+      'SlideStage', 'SlideInspector'].map((n) => [n, 'a part of the presentation tool — it runs against a deck document, '
+      + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),
+    useTouchPrimary: 'a hook — it draws nothing; TouchDeviceOverlay, which reads it, has the preview',
     ...debt([],
       'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
     ...debt([].slice(1),
@@ -447,38 +450,38 @@ export const NO_DEMO = (() => {
     ...debt([],
       'kol-workshop 0.22.0 exhibit system — ships unexercised (AGENT-CONTEXT ⚠️)'),
     /* editor-panels-the-held-specs A1 (2026-09-03): AddLayerButton is the `+`
-     * in the layers panel's tab row and renders INSIDE the LayerStack demo,
+     * in the layers panel's tab row and renders INSIDE the LayerStack preview,
      * where it adds real rows to the tree — a page of its own would show one
      * button and a menu that adds to nothing. */
-    AddLayerButton: 'rendered in the LayerStack demo, where it adds rows to the live tree (2026-09-03)',
+    AddLayerButton: 'rendered in the LayerStack preview, where it adds rows to the live tree (2026-09-03)',
     /* the full-screen viewer needs a real media set and a URL resolver to show
-     * anything; the MediaLibrary demo opens it on real files (2026-09-04). */
-    MediaInspector: 'opened from the MediaLibrary demo, over real files (2026-09-04 ruling)',
-    EnvelopeModeToggle: 'rendered in the EnvelopeGenerator demo — the generator draws it when it keeps its own state (2026-09-27)',
+     * anything; the MediaLibrary preview opens it on real files (2026-09-04). */
+    MediaInspector: 'opened from the MediaLibrary preview, over real files (2026-09-04 ruling)',
+    EnvelopeModeToggle: 'rendered in the EnvelopeGenerator preview — the generator draws it when it keeps its own state (2026-09-27)',
     /* rulers-and-guides-are-private (2026-09-03): both layers render INSIDE the
-     * Canvas demo, over its `panEnabled` viewport, where a drag off a ruler
+     * Canvas preview, over its `panEnabled` viewport, where a drag off a ruler
      * makes a real guide. A page of their own would have to build a canvas to
      * show one tick. */
-    CanvasRuler: 'rendered in the Canvas demo, over its live viewport (2026-09-03 ruling)',
-    CanvasGuides: 'rendered in the Canvas demo — drag off a ruler to create one (2026-09-03 ruling)',
+    CanvasRuler: 'rendered in the Canvas preview, over its live viewport (2026-09-03 ruling)',
+    CanvasGuides: 'rendered in the Canvas preview — drag off a ruler to create one (2026-09-03 ruling)',
     /* editor-panels-the-held-specs B2 (2026-09-03) — a RULING: these two are
      * editing chrome whose every prop is a consumer's geometry and write path
      * (a path layer with nodes, a photo with a crop rect, screen→virtual,
-     * an undo transaction). A demo would have to build a small editor to show
+     * an undo transaction). A preview would have to build a small editor to show
      * one drag. `packages/design-editor` in THIS repo runs both on real layers
      * and is built under the same gates — that is the exercise. */
     ...Object.fromEntries([
       ['PathNodeOverlay', 'editing chrome over a consumer path layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
       ['CropOverlay', 'editing chrome over a consumer photo layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
     ]),
-    /* editor-set-is-behind-its-source (2026-09-03) — a RULING. `Canvas`'s demo
+    /* editor-set-is-behind-its-source (2026-09-03) — a RULING. `Canvas`'s preview
      * renders `panEnabled`, which IS a PanZoomViewport, so a second page would
      * show the same pan/zoom/rulers twice; and a context object renders
      * nothing at all — its contract is that `SelectionOverlay` divides by it,
-     * which the Canvas demo shows by zooming. */
+     * which the Canvas preview shows by zooming. */
     ...Object.fromEntries([
-      ['PanZoomViewport', "the Canvas demo IS this — `panEnabled` wraps in it (2026-09-03 ruling)"],
-      ['CanvasZoomContext', 'a context object — nothing to render; the Canvas demo exercises it by zooming (2026-09-03 ruling)'],
+      ['PanZoomViewport', "the Canvas preview IS this — `panEnabled` wraps in it (2026-09-03 ruling)"],
+      ['CanvasZoomContext', 'a context object — nothing to render; the Canvas preview exercises it by zooming (2026-09-03 ruling)'],
     ]),
     /* brand-book-mocks-two-consumers (2026-09-03) — a RULING, not debt: these
      * thirteen are one SET, and a mock of a mark in situ says nothing without a
@@ -486,8 +489,8 @@ export const NO_DEMO = (() => {
      * set page renders all thirteen off one authored `BRAND_BOOK` object, which
      * is both the exercise and the reference call shape; thirteen per-component
      * pages would each have to invent a brand to show anything. AssetCard and
-     * Swatch DO have demos — they carry no brand. ProfileAvatar left this list in W18 (2026-09-30:
-     * every atom previews) — its demo wears the KOL mark, so it invents no brand either. */
+     * Swatch DO have previews — they carry no brand. ProfileAvatar left this list in W18 (2026-09-30:
+     * every atom previews) — its preview wears the KOL mark, so it invents no brand either. */
     ...Object.fromEntries([
       ].map((n) => [n, 'brand-book mock — the styleguide set page renders the whole set off one authored brand object (2026-09-03 ruling)'])),
     ...debt(['ShellLayout', 'TagModeGate'],
@@ -496,9 +499,9 @@ export const NO_DEMO = (() => {
   }
 })()
 
-/* SHOWN INSIDE ANOTHER DEMO (2026-10-01). A component ruled to have no demo of its own because it
- * only exists inside a host (NO_DEMO above says which, and why) still has a page — and that page
- * used to show nothing. It shows the HOST's demo now, with a line saying where to look. */
+/* SHOWN INSIDE ANOTHER PREVIEW (2026-10-01). A component ruled to have no preview of its own because it
+ * only exists inside a host (NO_PREVIEW above says which, and why) still has a page — and that page
+ * used to show nothing. It shows the HOST's preview now, with a line saying where to look. */
 export const SHOWN_IN = {
   AddLayerButton: 'LayerStack',
   CanvasRuler: 'Canvas',
@@ -506,6 +509,14 @@ export const SHOWN_IN = {
   PanZoomViewport: 'Canvas',
   CanvasZoomContext: 'Canvas',
   EnvelopeModeToggle: 'EnvelopeGenerator',
+  /* the tools' parts, on their tool's framed preview (2026-10-01) */
+  NotesCatalog: 'Notes', NoteEditor: 'Notes', NoteThumb: 'Notes',
+  DecksCatalog: 'Decks', DeckEditor: 'Decks', DeckFile: 'Decks', DeckSettings: 'Decks',
+  SlideRenderer: 'Decks', SlideThumb: 'Decks', SlideStage: 'Decks', SlideInspector: 'Decks',
+  BrandBook: 'Brand', BrandAssets: 'Brand',
+  MediaLibraryProvider: 'MediaLibrary', MediaLibraryExplorer: 'MediaLibrary',
+  /* ruled 2026-09-04 to open from the MediaLibrary preview — which exists now */
+  MediaInspector: 'MediaLibrary',
 }
 
 /* R1 membership flags — the 2026-08-09 pass, ledger at
@@ -518,5 +529,5 @@ export const MEMBERSHIP_FLAGS = {
   TagModeGate:
     'orphaned export — its only mount was deleted by the ONE-search ruling (2026-08-01); the package still ships it',
   AlternativeControlsMock:
-    'a demo harness in a published API — it assembles the chess control apparatus for showing, not for consuming',
+    'a preview harness in a published API — it assembles the chess control apparatus for showing, not for consuming',
 }

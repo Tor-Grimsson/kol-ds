@@ -145,7 +145,7 @@ function graphColumns(threshold) {
         <div className="flex items-center justify-end gap-2">
           <Button
             size="sm"
-            variant="ghost"
+            tone="ghost"
             onClick={() => navigator.clipboard?.writeText(n.name)}
           >
             Copy

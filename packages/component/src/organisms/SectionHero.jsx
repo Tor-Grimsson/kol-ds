@@ -1,7 +1,7 @@
 import { isValidElement } from 'react'
 import { FULL_BLEED, bleedClass } from './sectionBleed.js'
 import { surfaceClass } from '../utilities/sectionSurface.js'
-import HlsVideo from '../atoms/HlsVideo.jsx'
+import BackgroundVideo from '../utilities/BackgroundVideo.jsx'
 import Image from '../atoms/Image.jsx'
 import OverlayGlassPanel from '../utilities/OverlayGlassPanel.jsx'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
@@ -42,7 +42,7 @@ const SPLIT_HEIGHTS = {
 }
 
 /**
- * Background layer: a media descriptor becomes a cover-fit Image / HlsVideo /
+ * Background layer: a media descriptor becomes a cover-fit Image / BackgroundVideo /
  * inert <video> (`.kol-full-bleed-hero-media` pins it absolute + object-cover
  * — CSS in @kol/theme); a ready ReactNode renders as-is and must position
  * itself (give it that same class).
@@ -69,7 +69,7 @@ function MediaLayer({ media }) {
         />
       )
     }
-    return <HlsVideo src={src} poster={poster} className="kol-full-bleed-hero-media" />
+    return <BackgroundVideo src={src} poster={poster} className="kol-full-bleed-hero-media" />
   }
 
   return (

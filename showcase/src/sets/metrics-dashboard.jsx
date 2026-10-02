@@ -15,7 +15,7 @@ export const stage = 'full'
 
 /* Consumer content, injected into the package view (which ships no baked data):
  * the kolkrabbi.io milestone timeline. The dashboard data comes from a local
- * useMetricsData adapter that renders the demo fixtures (same shape as the live
+ * useMetricsData adapter that renders the preview fixtures (same shape as the live
  * /api/metrics responses). Swap the adapter for a live one to wire real data. */
 const MILESTONES = [
   { date: '2026-03-05', type: 'ship', text: 'Metrics dashboard live with Umami' },

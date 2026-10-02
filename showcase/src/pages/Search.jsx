@@ -37,6 +37,9 @@ export function SearchViews() {
   )
 }
 
+/* the result row ruled on open-questions Round 6 (2026-10-01): wash, a glyph for the kind, the path as the second line */
+const KIND_ICONS = { component: 'component-01', block: 'layout', card: 'rectangle', set: 'layers', package: 'database', space: 'folder', guide: 'book-open', specimen: 'paint-drop', tool: 'customize', record: 'journal', reference: 'code', doc: 'file', index: 'library' }
+
 const RESULTS_PATH = SEARCH_VIEWS.find((v) => v.value === 'results').path
 
 /* TWO PAGES, ONE COMPONENT (2026-10-01 — user: "results isnt even a page it just an alias to search …
@@ -76,7 +79,7 @@ export default function Search() {
       {showFm && fm && <DocsFrontmatter metadata={fm} docId={onResults ? 'search-results' : 'search'} />}
       {!onResults && <HomeDoc id="search" frontmatter={false} />}
       <SearchViews />
-      <SearchPage items={items} resultsPath={RESULTS_PATH} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
+      <SearchPage items={items} rowVariant="wash" rowMeta="path" kindIcons={KIND_ICONS} resultsPath={RESULTS_PATH} spaces={SHELL_ROUTES.map((r) => ({ value: r.id, label: r.label }))} />
     </div>
   )
 }

@@ -136,7 +136,7 @@ export default function BlockViewer({ entry, previewBase = '/modules/preview', s
       )}
       {/* Copy source — KOL blocks are copy-paste, not npx-installable */}
       <Button
-        variant="primary"
+        tone="primary"
         size="sm"
         iconLeft={copied ? 'check' : 'terminal'}
         onClick={copySource}

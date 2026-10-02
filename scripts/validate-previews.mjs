@@ -4,7 +4,7 @@
  * 2026-10-01).
  *
  * The user asked three times for the components without a preview to be found by a scan instead
- * of by eye. validate-demos proves a demo FILE exists; nothing proved it draws anything — a demo
+ * of by eye. validate-preview-files proves a preview FILE exists; nothing proved it draws anything — a preview
  * can exist and render an empty stage, throw into its error boundary, or never be placed on the
  * page. This reads the RENDERED page, like validate-rail-pages.
  *
@@ -41,10 +41,10 @@ function readPreview() {
   const fig = document.querySelector('main .kol-doc-figure')
   if (!fig) return { v: 'V1', why: 'no preview card on the page' }
   const text = fig.textContent ?? ''
-  if (/no live preview|No demo registered/.test(text)) return { v: 'V1', why: 'the card says there is no demo' }
+  if (/no live preview|No preview registered/.test(text)) return { v: 'V1', why: 'the card says there is no preview' }
   /* the stage is the card's body — everything after the toolbar row */
   const body = [...fig.children].slice(1)
-  /* a framed demo (demos-registry `frame`) draws in its own document — look inside it */
+  /* a framed preview (previews-registry `frame`) draws in its own document — look inside it */
   const inFrame = (f) => { try { return [...(f.contentDocument?.body?.querySelectorAll('*') ?? [])].some((el) => { const r = el.getBoundingClientRect(); return r.width > 4 && r.height >= 1 && el.children.length === 0 }) } catch { return false } }
   const drawn = body.some((b) => [b, ...b.querySelectorAll('iframe')].some((f) => f.tagName === 'IFRAME' && inFrame(f))) || body.some((b) => [...b.querySelectorAll('*')].some((el) => {
     const r = el.getBoundingClientRect()
@@ -52,7 +52,7 @@ function readPreview() {
     return el.tagName !== 'IFRAME' && r.width > 4 && r.height >= 1 && el.children.length === 0
   }))
   if (!drawn) return { v: 'V2', why: 'the stage is empty' }
-  if (/Something went wrong|failed to render/i.test(text)) return { v: 'V3', why: 'the demo fell into its error boundary' }
+  if (/Something went wrong|failed to render/i.test(text)) return { v: 'V3', why: 'the preview fell into its error boundary' }
   return null
 }
 
@@ -75,7 +75,7 @@ try {
     p.on('pageerror', onErr)
     try { await p.goto(BASE + href, { waitUntil: 'load', timeout: 45000 }) } catch { /* reported as no preview below */ }
     await p.waitForSelector('main h1', { timeout: 8000 }).catch(() => {})
-    /* a framed demo needs its own document to load */
+    /* a framed preview needs its own document to load */
     if (await p.$('main .kol-doc-figure iframe')) {
       await p.waitForFunction(() => { try { return (document.querySelector('main .kol-doc-figure iframe')?.contentDocument?.getElementById('root')?.querySelectorAll('*').length ?? 0) > 2 } catch { return false } }, null, { timeout: 15000 }).catch(() => {})
     }

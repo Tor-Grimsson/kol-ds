@@ -33,7 +33,7 @@ const ChessAnalysisLayout = ({ chessData, overlayActions = null, panel = null, e
   return (
     <div className="flex h-dvh min-h-0 flex-col gap-3 pt-3">
       <div className="flex flex-shrink-0 items-center">
-        <Button variant="ghost" size="sm" iconLeft="grid" onClick={() => setArchiveOpen(true)}>
+        <Button tone="ghost" size="sm" iconLeft="grid" onClick={() => setArchiveOpen(true)}>
           Games
         </Button>
       </div>
@@ -48,7 +48,7 @@ const ChessAnalysisLayout = ({ chessData, overlayActions = null, panel = null, e
             * overlayActions is the consumer slot (e.g. a ThemeToggle) beside it */}
           <div className="-mr-2 -mt-1 mb-2 flex items-center justify-end gap-2">
             {overlayActions}
-            <Button variant="ghost" size="sm" iconLeft="x" onClick={() => setArchiveOpen(false)}>
+            <Button tone="ghost" size="sm" iconLeft="x" onClick={() => setArchiveOpen(false)}>
               Close
             </Button>
           </div>

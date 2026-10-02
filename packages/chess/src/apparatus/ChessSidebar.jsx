@@ -43,7 +43,7 @@ const ChessSidebar = ({
   const showFullscreenToggle = typeof onToggleFullscreen === 'function'
   const fullscreenLabel = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'
   const toolbarButton = (iconName, onClick, ariaLabel) => (
-    <Button variant="primary" size="sm" iconOnly={iconName} onClick={onClick} aria-label={ariaLabel} />
+    <Button tone="primary" size="sm" iconOnly={iconName} onClick={onClick} aria-label={ariaLabel} />
   )
 
   return (
@@ -52,7 +52,7 @@ const ChessSidebar = ({
         <div className="flex items-center justify-between gap-3">
           <span className="board-playback__badge">{'{}'} Setup Position</span>
           {showFullscreenToggle ? (
-            <Button variant="outline" size="sm" onClick={onToggleFullscreen}>
+            <Button tone="outline" size="sm" onClick={onToggleFullscreen}>
               {fullscreenLabel}
             </Button>
           ) : null}

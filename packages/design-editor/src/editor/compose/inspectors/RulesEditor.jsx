@@ -53,10 +53,10 @@ export default function RulesEditor({ layer, patch, seed }) {
           />
         ))}
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
+          <Button tone="primary" size="sm" iconLeft="plus" onClick={addRule}>
             Add rule
           </Button>
-          <Button variant="primary" size="sm" onClick={randomizeRules}>
+          <Button tone="primary" size="sm" onClick={randomizeRules}>
             Randomize
           </Button>
         </div>

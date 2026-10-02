@@ -39,7 +39,7 @@ export default function SectionSet() {
         label="THE STUDIO"
         headline={<>Built to hold <em>course</em></>}
         body="Label, display headline and lede beside a cover-fit visual. Pass meta for a stats strip or actions for a button row — pick one."
-        actions={<><Button>Explore</Button><Button variant="secondary">Read the log</Button></>}
+        actions={<><Button>Explore</Button><Button tone="inverted">Read the log</Button></>}
         media={<div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, var(--kol-fg-08) 0%, var(--kol-fg-32) 100%)' }} />}
         caption="FIG 01 — HARBOUR, REYKJAVÍK"
       />
@@ -48,7 +48,7 @@ export default function SectionSet() {
         body="A small studio building typefaces, design systems, and brand work in the open."
         headerClassName="w-full"
         features={features}
-        actions={<><Button>Explore projects</Button><Button variant="ghost">Get in touch</Button></>}
+        actions={<><Button>Explore projects</Button><Button tone="ghost">Get in touch</Button></>}
         actionsClassName="pt-8"
       />
       <SectionCta eyebrow="/ CONNECT" promptLabel="WORKING ON A PROJECT?" heading="SEND A MESSAGE" contactLabel="CONTACT" email="hello@kolkrabbi.io" />

@@ -12,10 +12,10 @@ import { getComponentBySlug, slugify } from '../nav/registry.js'
  * The first pass answered SETS ONLY, and that was too narrow a question:
  * ContentFilters is composed by four showcase surfaces and by zero sets, so its
  * page rendered blank while the mechanism was working perfectly. The map now
- * covers every surface that composes a component — sets, blocks and demos —
+ * covers every surface that composes a component — sets, blocks and previews —
  * and the two facts stay SEPARATE rows so neither can mislead:
  *
- *   in_sets  — sets only. Absent when zero. Never padded with demos.
+ *   in_sets  — sets only. Absent when zero. Never padded with previews.
  *   used_in  — the wider answer, each entry labelled with its kind.
  *
  * Derived, never authored: every registry already carries each file's raw
@@ -37,10 +37,10 @@ function namesIn(source = '') {
   return [...found]
 }
 
-/* Demos are globbed here rather than taken from demos-registry, because a demo's
+/* Previews are globbed here rather than taken from previews-registry, because a preview's
  * KIND matters: it proves usage but it is not a composition. */
-const demoSources = import.meta.glob('../demos/*.jsx', { eager: true, query: '?raw', import: 'default' })
-const demoName = (path) => (path.split('/').pop() || '').replace('.jsx', '')
+const previewSources = import.meta.glob('../previews/*.jsx', { eager: true, query: '?raw', import: 'default' })
+const previewName = (path) => (path.split('/').pop() || '').replace('.jsx', '')
 
 /* Pages are surfaces too — ContentFilters' only real consumer is /references,
  * and leaving pages out was exactly the too-narrow question this file was
@@ -52,8 +52,8 @@ const pageName = (path) => (path.split('/').pop() || '').replace('.jsx', '')
 const SURFACES = [
   ...SETS.map((s) => ({ kind: 'set', key: s.key, title: s.title, uses: namesIn(s.source) })),
   ...BLOCKS.map((b) => ({ kind: 'block', key: b.key, title: b.title, uses: namesIn(b.source) })),
-  ...Object.entries(demoSources).map(([path, src]) => ({
-    kind: 'demo', key: demoName(path), title: `${demoName(path)} demo`, uses: namesIn(src),
+  ...Object.entries(previewSources).map(([path, src]) => ({
+    kind: 'preview', key: previewName(path), title: `${previewName(path)} preview`, uses: namesIn(src),
   })),
   ...Object.entries(pageSources).map(([path, src]) => ({
     kind: 'page', key: pageName(path), title: pageName(path), uses: namesIn(src),
@@ -70,8 +70,8 @@ export const SURFACES_BY_COMPONENT = (() => {
   const out = {}
   for (const s of SURFACES) {
     for (const name of s.uses) {
-      /* a demo of X is not "usage of X" — it IS X's own page */
-      if (s.kind === 'demo' && s.key === name) continue
+      /* a preview of X is not "usage of X" — it IS X's own page */
+      if (s.kind === 'preview' && s.key === name) continue
       ;(out[name] ||= []).push(s)
     }
   }
@@ -90,12 +90,12 @@ export const setsOf = (name) =>
 
 /**
  * Everything that composes it, as display strings. Blocks and sets print by
- * title; demos collapse to one "N demos" entry so a widely-demoed component
+ * title; previews collapse to one "N previews" entry so a widely-demoed component
  * does not bury its real compositions.
  */
 export const usedIn = (name) => {
   const all = SURFACES_BY_COMPONENT[name] ?? []
-  const named = all.filter((s) => s.kind !== 'demo').map((s) => s.title)
-  const demos = all.filter((s) => s.kind === 'demo').length
-  return demos ? [...named, `${demos} ${demos === 1 ? 'demo' : 'demos'}`] : named
+  const named = all.filter((s) => s.kind !== 'preview').map((s) => s.title)
+  const previews = all.filter((s) => s.kind === 'preview').length
+  return previews ? [...named, `${previews} ${previews === 1 ? 'preview' : 'previews'}`] : named
 }

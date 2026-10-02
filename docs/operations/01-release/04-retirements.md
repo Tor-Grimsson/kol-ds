@@ -40,6 +40,11 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `ColorLoader` | foundry | `IntroLoader` | 2026-09-30 |
 | `DropdownTagFilter` | component | `SettingsMulti` (`selectedValues` → `selected`, `onChange` → `onToggle`; the standard `Dropdown`'s variants, tones and radius) | 2026-10-01 |
+| `HlsVideo` | component | `BackgroundVideo` — same component, same props; it is a utility now, not an atom | 2026-10-01 |
+| `ProfileAvatar` | styleguide | `BrandAvatar` — same component, same props | 2026-10-01 |
+| `Fader` | hardware | `Slider variant="panel"` (kol-component) — same props | 2026-10-01 |
+| `Knob` | hardware | `RotaryDial variant="panel"` (kol-component) — same props; `variant` (the label placement) is `labelPlacement` | 2026-10-01 |
+| `PanelLabel` | hardware | `LabeledControl variant="panel"` (kol-component) — same props; `horizontal` is `labelPosition="right"` | 2026-10-01 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |
@@ -53,6 +58,18 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `KOL_ICON_SET_V1` | icons | `KOL_ICON_SET_INTERFACE` — the set was renamed, the icon names did not change | 2026-09-30 |
 | `KOL_ICON_SET_V1_NAMES` | icons | `KOL_ICON_SET_INTERFACE_NAMES` | 2026-09-30 |
 | `KOL_ICON_SET_V1_META` | icons | `KOL_ICON_SET_INTERFACE_META` | 2026-09-30 |
+
+## Props
+
+Aliases the gate cannot see — a prop value is not an export. Same lifetime, kept by hand.
+
+| Alias | Package | Replacement | Since |
+|---|---|---|---|
+| `Button variant="primary" · "outline" · "ghost" · "grey"` | component | `tone` of the same name | 2026-10-01 |
+| `Button variant="secondary"` | component | `tone="inverted"` — `secondary` painted the inverted fill; tone `secondary` is the page surface | 2026-10-01 |
+| `Button variant="control"` | component | `tone="ghost"` | 2026-10-01 |
+
+`variant` keeps `accent · danger · nav`. The six still render as they did and warn once in dev; `pnpm validate:variants` (V3) keeps this repo off them.
 
 ## CSS classes
 

@@ -112,7 +112,7 @@ export default function DocsTypeRoles() {
         <Spec label="DocFigure — framed container + caption">
           <DocFigure caption="DocFigure with its caption row.">
             <div className="flex min-h-24 items-center justify-center bg-fg-02 p-6">
-              <span className="kol-doc-body">any content — image, video, live demo</span>
+              <span className="kol-doc-body">any content — image, video, live preview</span>
             </div>
           </DocFigure>
         </Spec>

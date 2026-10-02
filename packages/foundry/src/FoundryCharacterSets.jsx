@@ -100,7 +100,7 @@ const FoundryCharacterSets = ({
                 }}
               />
               <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                <Button onClick={() => setShowAll(true)} variant="outline">
+                <Button onClick={() => setShowAll(true)} tone="outline">
                   Show All Glyphs
                 </Button>
               </div>

@@ -17,7 +17,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * corner fold inside its own box, and `blurOnClick` must blur the button
  * itself. The class output — kol-btn kol-btn-ghost kol-btn-icon kol-btn-{size}
  * + kol-btn-quiet / kol-btn-pressed — is exactly what
- * `<Button variant="ghost" quiet pressed iconOnly>` emits, so the box and the
+ * `<Button tone="ghost" quiet pressed iconOnly>` emits, so the box and the
  * visual contract stay Button's.
  *
  * `size` was a raw px number (28) with a transcribed 14px glyph until 0.182.0:

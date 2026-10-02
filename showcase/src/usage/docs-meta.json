@@ -36,7 +36,9 @@
       "kol-mono-16",
       "kol-mono-8"
     ],
-    "composes": []
+    "composes": [
+      "VARIANT_TONE"
+    ]
   },
   "CloseButton": {
     "typeClasses": [],
@@ -140,6 +142,10 @@
       "CloseButton"
     ]
   },
+  "BackgroundVideo": {
+    "typeClasses": [],
+    "composes": []
+  },
   "HlsVideo": {
     "typeClasses": [],
     "composes": []
@@ -170,7 +176,8 @@
   },
   "LabeledControl": {
     "typeClasses": [
-      "kol-helper-10"
+      "kol-helper-10",
+      "kol-helper-8"
     ],
     "composes": []
   },
@@ -223,18 +230,20 @@
     "typeClasses": [
       "kol-helper-12"
     ],
-    "composes": []
+    "composes": [
+      "RotaryDialPanel"
+    ]
   },
   "SearchInput": {
     "typeClasses": [
       "kol-helper",
-      "kol-helper-10",
       "kol-mono",
       "kol-mono-12",
       "kol-mono-14",
       "kol-mono-8"
     ],
     "composes": [
+      "Kbd",
       "Icon"
     ]
   },
@@ -293,6 +302,24 @@
       "kol-mono-14",
       "kol-mono-16",
       "kol-mono-8"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "Kbd": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "OptionRow": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-14"
     ],
     "composes": [
       "Icon"
@@ -618,6 +645,7 @@
   },
   "Dropdown": {
     "typeClasses": [
+      "kol-helper-12",
       "kol-mono-12",
       "kol-mono-14",
       "kol-mono-16",
@@ -631,6 +659,20 @@
       "Icon"
     ]
   },
+  "MultiSelect": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16",
+      "kol-mono-8"
+    ],
+    "composes": [
+      "MenuDropdownItem",
+      "PopoverPanel",
+      "Icon"
+    ]
+  },
   "FieldRow": {
     "typeClasses": [
       "kol-helper-12",
@@ -640,6 +682,7 @@
       "Input",
       "PopoverPanel",
       "Dropdown",
+      "OptionRow",
       "Icon"
     ]
   },
@@ -652,6 +695,7 @@
       "Input",
       "PopoverPanel",
       "Dropdown",
+      "OptionRow",
       "Icon"
     ]
   },
@@ -814,13 +858,14 @@
   "ShellSearchOverlay": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-12",
-      "kol-mono-12",
-      "kol-mono-14"
+      "kol-helper-12"
     ],
     "composes": [
       "SearchInput",
-      "Tag"
+      "Tag",
+      "Kbd",
+      "OptionRow",
+      "Icon"
     ]
   },
   "ShortcutsOverlay": {
@@ -836,7 +881,8 @@
       "kol-helper-12"
     ],
     "composes": [
-      "Input"
+      "Input",
+      "SliderPanel"
     ]
   },
   "SpecList": {
@@ -930,6 +976,12 @@
       "CloseButton",
       "Icon"
     ]
+  },
+  "TabChips": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": []
   },
   "Canvas": {
     "typeClasses": [
@@ -1046,7 +1098,7 @@
       "kol-sans-heading-01"
     ],
     "composes": [
-      "HlsVideo",
+      "BackgroundVideo",
       "AssetPlaceholder",
       "Button",
       "Image"
@@ -1060,7 +1112,7 @@
       "kol-sans-heading-01"
     ],
     "composes": [
-      "HlsVideo",
+      "BackgroundVideo",
       "AssetPlaceholder",
       "Button",
       "Image"
@@ -1174,7 +1226,7 @@
     ],
     "composes": [
       "Image",
-      "HlsVideo",
+      "BackgroundVideo",
       "EmblaNav",
       "OverlayGlassPanel"
     ]
@@ -1189,7 +1241,7 @@
     "typeClasses": [],
     "composes": [
       "FULL_BLEED",
-      "HlsVideo",
+      "BackgroundVideo",
       "Image",
       "OverlayGlassPanel",
       "AssetPlaceholder",
@@ -1202,7 +1254,7 @@
     "typeClasses": [],
     "composes": [
       "FULL_BLEED",
-      "HlsVideo",
+      "BackgroundVideo",
       "Image",
       "OverlayGlassPanel",
       "AssetPlaceholder",
@@ -1369,6 +1421,8 @@
       "kol-sans-display-03"
     ],
     "composes": [
+      "ROW_HEIGHT",
+      "ROW_FILL",
       "Button",
       "Divider",
       "Input",
@@ -1584,6 +1638,7 @@
       "kol-mono-14"
     ],
     "composes": [
+      "VARIANT_TONE",
       "Input",
       "Button",
       "SectionText"
@@ -1603,6 +1658,7 @@
     "composes": [
       "FileIcon",
       "RowMenuButton",
+      "OptionRow",
       "KIND_LABEL",
       "GRAB_COLUMN",
       "Icon"
@@ -1616,7 +1672,7 @@
     "composes": [
       "AudioTile",
       "VideoTile",
-      "HlsVideo",
+      "BackgroundVideo",
       "CodeBlock",
       "AssetPlaceholder",
       "FileIcon",

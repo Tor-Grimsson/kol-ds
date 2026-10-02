@@ -57,9 +57,9 @@ export default function ShellTopbar() {
         }}
         actions={
           <>
-            <Button variant="ghost" size="sm" iconOnly="bell" aria-label="Notifications" onClick={() => {}} />
-            <Button variant="ghost" size="sm" iconOnly="user" aria-label="Account" onClick={() => {}} />
-            <Button variant="primary" size="sm" onClick={() => {}}>Sign in</Button>
+            <Button tone="ghost" size="sm" iconOnly="bell" aria-label="Notifications" onClick={() => {}} />
+            <Button tone="ghost" size="sm" iconOnly="user" aria-label="Account" onClick={() => {}} />
+            <Button tone="primary" size="sm" onClick={() => {}}>Sign in</Button>
           </>
         }
       />

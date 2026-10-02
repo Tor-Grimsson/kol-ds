@@ -221,6 +221,12 @@
   color: var(--kol-surface-on-inverse);
 }
 
+/* the sunken surface had a token and no class (2026-10-01) — the preview stage reached for
+ * `bg-[var(--kol-surface-sunken)]`. Ground only: what sits in a well keeps its own ink. */
+.bg-surface-sunken {
+  background-color: var(--kol-surface-sunken);
+}
+
 /* ---------------------------------------------------------------------------
  * Elevation Utilities
  * --------------------------------------------------------------------------- */

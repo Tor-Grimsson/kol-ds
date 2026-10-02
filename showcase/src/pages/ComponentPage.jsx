@@ -1,7 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { DocHeader, DocsFrontmatter, usePageMeta } from '@kolkrabbi/kol-workshop'
 import PreviewCard from '../lib/PreviewCard.jsx'
-import { DEMOS } from '../lib/demos-registry.js'
+import { PREVIEWS } from '../lib/previews-registry.js'
 import { getComponentBySlug, CATEGORY_LABELS, slugify, TOP_LEVEL } from '../nav/registry.js'
 import { MDX_DOCS } from '../nav/vault.js'
 import { MEMBERSHIP_FLAGS, SHOWN_IN } from '../nav/classification.js'
@@ -83,12 +83,12 @@ export default function ComponentPage() {
         )}
         pager={<Pager slug={c.slug} />}
       >
-        {DEMOS[c.name] && <PreviewCard entry={DEMOS[c.name]} />}
-        {/* no demo of its own, by ruling: it lives inside a host — show the host (SHOWN_IN) */}
-        {!DEMOS[c.name] && DEMOS[SHOWN_IN[c.name]] && (
+        {PREVIEWS[c.name] && <PreviewCard entry={PREVIEWS[c.name]} />}
+        {/* no preview of its own, by ruling: it lives inside a host — show the host (SHOWN_IN) */}
+        {!PREVIEWS[c.name] && PREVIEWS[SHOWN_IN[c.name]] && (
           <>
-            <p className="kol-doc-body">{`${c.displayName} is shown inside the ${labelFromSlug(SHOWN_IN[c.name])} demo.`}</p>
-            <PreviewCard entry={DEMOS[SHOWN_IN[c.name]]} />
+            <p className="kol-doc-body">{`${c.displayName} is shown inside the ${labelFromSlug(SHOWN_IN[c.name])} preview.`}</p>
+            <PreviewCard entry={PREVIEWS[SHOWN_IN[c.name]]} />
           </>
         )}
 
@@ -106,7 +106,7 @@ export default function ComponentPage() {
               <div key={m.name} className="flex flex-col gap-3">
                 <h3 id={slugify(m.name)} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{m.displayName}</h3>
                 {m.description && <p className="kol-sans-body-02 text-body">{m.description}</p>}
-                {DEMOS[m.name] && <PreviewCard entry={DEMOS[m.name]} />}
+                {PREVIEWS[m.name] && <PreviewCard entry={PREVIEWS[m.name]} />}
               </div>
             ))}
           </>

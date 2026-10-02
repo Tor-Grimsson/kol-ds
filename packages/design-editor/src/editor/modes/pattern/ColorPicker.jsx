@@ -99,10 +99,10 @@ export default function ColorPicker({ values, onChange, onCopyCss, onReset }) {
       />
 
       <div className="flex gap-2 pt-2 border-t border-oq-08">
-        <Button variant="primary" size="sm" className="flex-1" onClick={onCopyCss}>
+        <Button tone="primary" size="sm" className="flex-1" onClick={onCopyCss}>
           Copy CSS
         </Button>
-        <Button variant="primary" size="sm" className="flex-1" onClick={onReset}>
+        <Button tone="primary" size="sm" className="flex-1" onClick={onReset}>
           Reset
         </Button>
       </div>

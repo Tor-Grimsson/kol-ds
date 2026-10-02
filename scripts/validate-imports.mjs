@@ -13,7 +13,7 @@
  *      named after a published package (workshop/, dashboards/, shell/,
  *      vendor/) — KOL components come from `@kolkrabbi/*` specifiers only.
  *
- * Showcase-local fixtures/adapters live in src/data/ or demos/_fixtures/.
+ * Showcase-local fixtures/adapters live in src/data/ or previews/_fixtures/.
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'

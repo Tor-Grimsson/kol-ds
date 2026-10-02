@@ -80,7 +80,7 @@ export default function PrintBuyButton({
     <div className={`${layoutClass} ${className}`}>
       {hasPrimary && (
         <Button
-          variant="primary"
+          tone="primary"
           size={size}
           href={primaryUrl}
           target="_blank"
@@ -92,7 +92,7 @@ export default function PrintBuyButton({
 
       {hasPOD && (
         <Button
-          variant={hasPrimary ? 'secondary' : 'primary'}
+          tone={hasPrimary ? 'inverted' : 'primary'}
           size={size}
           href={printOnDemandUrl}
           target="_blank"

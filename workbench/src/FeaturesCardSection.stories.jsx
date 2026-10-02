@@ -24,7 +24,7 @@ export const WithHeaderAndCtas = () => (
     ctas={
       <>
         <Button>Explore projects</Button>
-        <Button variant="ghost">Get in touch</Button>
+        <Button tone="ghost">Get in touch</Button>
       </>
     }
     ctasClassName="pt-8"

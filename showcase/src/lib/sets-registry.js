@@ -42,6 +42,7 @@ export const SET_CATEGORY_LABELS = {
   foundry: 'Foundry',
   editor: 'Editors',
   app: 'App shell',
+  hardware: 'Hardware',
   other: 'Other',
 }
 
@@ -66,8 +67,10 @@ export const SET_FAMILY = {
   'foundry-specimen': 'foundry',
   'kind-preview': 'component',
   'media-library': 'component',
+  mixer: 'hardware',
   'metrics-dashboard': 'dashboards',
   'prints-store': 'store',
+  rack: 'hardware',
   'record-manager-cms': 'component',
   'section-set': 'component',
   'stack-blog': 'content',

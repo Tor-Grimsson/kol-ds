@@ -100,7 +100,7 @@ export default function KindPreviewSet() {
                 <Preview row={row} />
               </div>
             </div>
-            <div><Button variant="outline" size="sm" onClick={() => setOpen(row)}>Open in overlay</Button></div>
+            <div><Button tone="outline" size="sm" onClick={() => setOpen(row)}>Open in overlay</Button></div>
           </li>
         ))}
       </ul>

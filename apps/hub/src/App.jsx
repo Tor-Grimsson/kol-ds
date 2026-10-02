@@ -80,7 +80,7 @@ export default function App() {
     { title: '1. Home', text: ['What you opened last and what you saved — RECENT and SAVED — one page, before you go looking.'], illustration: <Art name="home-01" /> },
     { title: '2. Tool', text: ['The work itself. Every app on the Hub brings its own; this one is a placeholder.'], illustration: <Art name="layers" /> },
     { title: '3. Keys', text: ['⌥1 is Home, then the rail in order. Comma opens Settings and closes it again. S shows every shortcut.'], illustration: <Art name="nav-settings" /> },
-    { title: 'Get started', actions: (close) => <Button variant="grey" size="md" onClick={() => { close(); navigate('/tool') }}>Open the tool</Button> },
+    { title: 'Get started', actions: (close) => <Button tone="grey" size="md" onClick={() => { close(); navigate('/tool') }}>Open the tool</Button> },
   ]
 
   return (
@@ -97,7 +97,7 @@ export default function App() {
         filtersTitle: 'All Items',
         filterGroups: [{ label: 'Kind', key: 'kind', values: ['draft', 'final'] }],
         toCard: (item, { layout }) => ({ key: item.name, title: item.title, detail: item.detail, date: item.date, size: item.size, media: <Art name="layers" size={layout === 'list' ? 20 : 48} />, onClick: () => navigate('/tool') }),
-        actions: <Button variant="grey" size="md" onClick={() => navigate('/tool')}>New</Button>,
+        actions: <Button tone="grey" size="md" onClick={() => navigate('/tool')}>New</Button>,
       }}
       settings={{
         sections,

@@ -37,7 +37,7 @@ This repo serves its own documentation. The showcase at `ui.kolkrabbi.io` is a l
 |---|---|---|---|
 | `docs/` | **you** — the human vault | humans, by hand | anyone, including the app |
 | `.kol/` | **agents** — state, plans, session logs | agents | agents |
-| `showcase/src/` | **the machine** — app content + generated output | humans (MDX, demos) + generators (JSON) | the app only |
+| `showcase/src/` | **the machine** — app content + generated output | humans (MDX, previews) + generators (JSON) | the app only |
 
 **The rule that was broken:** generated output never lands in `docs/`. A generator may *read* the vault; it may not *write* into it. Machine-written catalogs belong in `showcase/src/`, beside the JSON the app actually consumes.
 
@@ -49,7 +49,7 @@ SOURCES                          DERIVATION                    SURFACES
 packages/*/src/index.js   ──┐
 docs/**/*.md              ──┤
 showcase/src/docs/*.mdx   ──┼──▶  showcase/src/lib/       ──▶  left rail (tree)
-showcase/src/demos/*      ──┤     roster · vault ·             right rail (TOC)
+showcase/src/previews/*      ──┤     roster · vault ·             right rail (TOC)
 showcase/src/blocks/*     ──┤     shell-nav · registry ·       ⌘K search
 showcase/src/sets/*       ──┤     classification · admitted    routes / pages
 showcase/src/usage/*.json ──┘                                  tag graph

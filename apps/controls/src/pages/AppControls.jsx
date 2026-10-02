@@ -35,10 +35,13 @@ export default function AppControls() {
   return (
     <div className="mt-8">
       <Specimen title="Button" ships="kol-component · Button">
-        {['primary', 'grey', 'outline', 'ghost', 'nav', 'danger'].map((variant) => (
+        {['primary', 'grey', 'outline', 'ghost'].map((tone) => (
+          <Button key={tone} tone={tone} size="sm">{tone}</Button>
+        ))}
+        {['nav', 'danger'].map((variant) => (
           <Button key={variant} variant={variant} size="sm">{variant}</Button>
         ))}
-        <Button variant="grey" size="sm" iconLeft="play">With icon</Button>
+        <Button tone="grey" size="sm" iconLeft="play">With icon</Button>
       </Specimen>
 
       <Specimen title="SegmentedToggle" ships="kol-component · SegmentedToggle">

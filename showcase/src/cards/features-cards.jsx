@@ -26,7 +26,7 @@ export default function FeaturesCards() {
       body="A small studio building typefaces, design systems and brand work in the open."
       headerClassName="w-full"
       features={features}
-      actions={<><Button>Explore projects</Button><Button variant="ghost">Get in touch</Button></>}
+      actions={<><Button>Explore projects</Button><Button tone="ghost">Get in touch</Button></>}
       actionsClassName="pt-8"
     />
   )

@@ -163,7 +163,9 @@ const Dropdown = ({
   /* `{ divider: true }` in `options` draws a hairline between groups (FoundationsTones, 2026-09-26 —
    * user: none on top, the filled tones in order, outline and ghost apart). It is never a choice:
    * the lookup, the fallback and the trigger's width all read the choices only. */
-  const choices = options.filter((opt) => !opt?.divider)
+  /* `{ heading: 'Variant' }` names the list (2026-10-01 — user: "first item 'variant' then divider
+   * then the list"): a row that says what the dropdown sets, never a choice. */
+  const choices = options.filter((opt) => !opt?.divider && !opt?.heading)
   const currentOption = choices.find((opt) => opt.value === value) || choices[0]
 
   /* A clamped list (Popover caps the panel to the viewport) can open with the
@@ -172,7 +174,7 @@ const Dropdown = ({
   const listRef = useRef(null)
   useEffect(() => {
     if (!isOpen) return
-    const idx = options.findIndex((opt) => !opt?.divider && opt.value === currentOption?.value)
+    const idx = options.findIndex((opt) => !opt?.divider && !opt?.heading && opt.value === currentOption?.value)
     listRef.current?.children[idx]?.scrollIntoView({ block: 'nearest' })
   }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -253,6 +255,7 @@ const Dropdown = ({
         <div ref={listRef} className="kol-dd-list" role="listbox">
           {options.map((option, i) => {
             if (option?.divider) return <MenuDropdownDivider key={`divider-${i}`} />
+            if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8 px-2 h-5' : 'kol-helper-12 px-3 h-8'} flex shrink-0 items-center text-meta`}>{option.heading}</div>
             const isActive = option.value === currentOption?.value
             return (
               <MenuDropdownItem

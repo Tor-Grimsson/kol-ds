@@ -2,6 +2,8 @@
 
 **Raised:** 2026-10-01, the user's review of ui.kolkrabbi.io. Points verbatim: `backlog/2026-10-01-showcase-review-round-2.md` (P1–P10); each phase names the P it answers.
 **Status:** every phase not TALK or PARKED is built (✅), 2026-10-01 — **published**: kol-theme 0.162.0 · kol-component 0.235.0 · kol-workshop 0.36.0. TALK visuals are on open-questions Round 6. Record: `docs/operations/09-phase-log/2026-10-01-review-round-two.md`. **TALK** = his to rule before it is built; nothing here is decided for him.
+
+**2026-10-02 — the TALK phases were ruled in one question round and built** (1.3 · 1.6 · 2.2 · 3.2 · 3.7 · 3.8 · 5.4 · 6.6 · 6.7 · 6.9 · 6.12 · 6.14 · 7.1–7.3 · 7.5, plus the previews in 4.3). 6.5 (sections vs shadcn) was ruled no change. Record: `docs/operations/09-phase-log/2026-10-02-question-round.md`; journal: `playbook/2026-10-01-review-round-2-goals.md`. Not published. Still open: the audio four (one recommendation, `backlog/2026-10-01-component-audit.md` § 5) and tags (parked).
 **Shape:** W › phase › list. A W is a subject; a phase is one buildable piece of it; the list is what the phase does.
 **Laws carried:** every rail group opens its own page; the label is a link, the chevron folds; something is always "on this page"; visual calls go on the open-questions page, not into a rule; nothing is deleted — replaced files move to `_tmp/<date>-<what>/`.
 **How a phase closes:** acceptance line first, gates green, then Playwright against his own words.

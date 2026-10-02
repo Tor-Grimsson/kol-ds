@@ -88,8 +88,8 @@ through `ComponentSpecimen`, stacked vertically:
 - **Header row** — the component name + a tag (`FUNCTION` for KOL, `LOCAL PART`
   for locals) + a `View →` link to `/components/<slug>` when the component has a
   page.
-- **Body** — the component rendered **live** via `DEMOS[name]` (the one-file
-  demo, through `DemoStage`), wrapped in an `ErrorBoundary`. If no demo exists,
+- **Body** — the component rendered **live** via `PREVIEWS[name]` (the one-file
+  preview, through `PreviewStage`), wrapped in an `ErrorBoundary`. If no preview exists,
   a labelled fallback card shows the description and links out.
 
 So the gallery is a live, top-to-bottom showcase of everything the set is built
@@ -99,8 +99,8 @@ dashboard cards / board parts render live as `local` containers).
 ## Adding sets
 
 1. Drop `showcase/src/<sets|blocks>/<kebab-name>.jsx` — default export + `meta`.
-2. Make sure **every member component has a demo** at
-   `showcase/src/demos/<ComponentName>.jsx` (name matches the export exactly),
+2. Make sure **every member component has a preview** at
+   `showcase/src/previews/<ComponentName>.jsx` (name matches the export exactly),
    so its gallery container renders live rather than a labelled fallback.
 3. `node scripts/extract-composition.mjs` to regenerate the manifest.
 4. `pnpm build` + open the slug; confirm the gallery lists every component.

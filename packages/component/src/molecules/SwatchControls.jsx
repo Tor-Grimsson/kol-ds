@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import ColorSwatch from '../atoms/ColorSwatch.jsx'
+import ColorSwatch from './ColorSwatch.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /*

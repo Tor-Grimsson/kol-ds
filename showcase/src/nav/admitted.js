@@ -113,7 +113,7 @@ export const CATEGORIES = [
     categories: ['molecules', 'organisms', 'utilities'],
     rule: 'docs/documentation/03-components/02-placement.md',
     awaits: 'R1 · membership — same 2026-08-09 pass',
-    why: 'All kept; demo gaps (PopoverPanel, the five color-tool molecules) recorded as gaps, not failures.',
+    why: 'All kept; preview gaps (PopoverPanel, the five color-tool molecules) recorded as gaps, not failures.',
   },
   {
     key: 'packages',
@@ -126,7 +126,7 @@ export const CATEGORIES = [
     ],
     rule: 'docs/documentation/03-components/02-placement.md',
     awaits: 'R1 · membership — same 2026-08-09 pass, per package',
-    why: 'Package-tier membership is ARCHITECTURE §3\'s recorded decision; TagModeGate (orphaned mount) and AlternativeControlsMock (demo harness) flagged, their pages say so.',
+    why: 'Package-tier membership is ARCHITECTURE §3\'s recorded decision; TagModeGate (orphaned mount) and AlternativeControlsMock (preview harness) flagged, their pages say so.',
   },
   {
     key: 'blocks-sets',

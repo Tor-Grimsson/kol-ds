@@ -16,7 +16,7 @@ import useExhibitToc from './useExhibitToc.js'
  *   label="Scope: Dashboard — Overview"
  *   title="Dashboard"
  *   body="Modular dashboards, charts and KPI components…"
- *   action={<Button variant="primary" href="https://kolkrabbi.io/metrics">Open metrics</Button>}
+ *   action={<Button tone="primary" href="https://kolkrabbi.io/metrics">Open metrics</Button>}
  *   cards={[{ id: 'setup', label: 'Setup', subtitle: '…', icon: 'book-open', href: '/workshop/dashboard/setup' }]}
  * />
  * ```

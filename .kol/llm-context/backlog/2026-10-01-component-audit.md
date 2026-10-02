@@ -58,3 +58,18 @@ Six of nine variants are tones under a second name. Left as its own axis, `varia
 ## 4. Components with no working preview
 
 `pnpm validate:previews` (new, browser gate) — 81 of 325 component pages draw no preview. The list is the gate's output; `--list` prints bare names.
+
+## 5. The four audio components — read 2026-10-01, one recommendation
+
+Read in full: `AudioPlayer` (atoms), `AudioPreview` (molecules — the file also exports `AudioTile`, `VideoTile`, `formatLength`), `AudioSheet`, `PlaybackBar`, plus `usePlayback` and every importer in this repo.
+
+| Component | What it is | Rendered by |
+|---|---|---|
+| `AudioPlayer` | the browser's native `<audio controls>` strip under a label | nothing in this repo |
+| `AudioPreview` (the default export) | a drawn inline transport: play · seek `Slider` · volume popover | nothing in this repo — only its siblings `AudioTile` · `VideoTile` · `formatLength` are imported |
+| `AudioSheet` | audio in the Quick Look window: artwork, time, the bar docked in the footer | `MediaLibraryPages` |
+| `PlaybackBar` | the transport bar — play, skip, scrub, volume, speed; presentational over `usePlayback` | `AudioSheet`, `VideoSheet`, `QuickLookFrame`, the design editor |
+
+**Recommendation: one transport, `PlaybackBar`. Retire `AudioPlayer` and `AudioPreview`'s player; keep `AudioTile` · `VideoTile` · `AudioSheet` · `PlaybackBar`.** The tile is the column's one-button preview, the sheet is the window, the bar is the transport both sheets share — three jobs, no overlap. The two that go are two more ways to play a file that nothing here draws any more: the live path has been tile → sheet → bar since 2026-09-23.
+
+Before it is done: the importer scan on the MBP is a partial estate (memory: consumer scans run on the iMac) — the two would be deprecated with ledger rows, and drop only after the iMac's scan says nobody imports them. `AudioTile` / `VideoTile` / `formatLength` would move out of `AudioPreview.jsx` into a file named for what is left.

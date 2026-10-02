@@ -293,7 +293,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
         render: (game) => (
           <div className="analysis-table__actions">
             <Button
-              variant="outline"
+              tone="outline"
               size="sm"
               onClick={(e) => {
                 e.preventDefault()
@@ -393,7 +393,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
             * names the month, so the button never repeats it. */}
           {selectedMonth && !loadedMonths.has(selectedMonth) && (
             <Button
-              variant="primary"
+              tone="primary"
               size="sm"
               className="analysis-control"
               onClick={() => handleLoadMonth(selectedMonth)}
@@ -467,7 +467,7 @@ const GameArchiveTable = ({ chessData, onGameLoad }) => {
 
         {canShowAll && (
           <Button
-            variant="outline"
+            tone="outline"
             size="sm"
             onClick={() => setShowAllGames((value) => !value)}
           >

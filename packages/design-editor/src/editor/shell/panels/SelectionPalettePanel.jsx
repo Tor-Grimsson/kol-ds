@@ -83,7 +83,7 @@ export default function SelectionPalettePanel() {
         )}
         {canDelete && (
           <Tooltip label="Delete selected"><Button
-            variant="ghost"
+            tone="ghost"
             size="sm"
             quiet
             iconOnly="trash"
@@ -129,7 +129,7 @@ function HeaderMoreMenu({ layer, layerOnlyIds, layers, ops }) {
     <>
       <Tooltip label="More actions">
         <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-          <Button variant="ghost" size="sm" quiet iconOnly="more" aria-label="More actions" pressed={open} />
+          <Button tone="ghost" size="sm" quiet iconOnly="more" aria-label="More actions" pressed={open} />
         </span>
       </Tooltip>
       <PopoverPanel popover={popover} panel={false} focus={false} className="z-[var(--kol-z-tooltip)] bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 176 }}>

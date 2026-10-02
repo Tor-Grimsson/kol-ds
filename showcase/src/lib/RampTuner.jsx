@@ -81,12 +81,12 @@ export default function RampTuner({ name, cssVarPrefix, stops, anchor, notes = {
             onChange={(v) => { const h = hexToHsv(v); if (h) setHsv(h) }}
           />
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={() => setHsv(hexToHsv(stops[anchor]))}>
+            <Button size="sm" tone="outline" onClick={() => setHsv(hexToHsv(stops[anchor]))}>
               Reset
             </Button>
             <Button
               size="sm"
-              variant={follows ? 'primary' : 'outline'}
+              tone={follows ? 'primary' : 'outline'}
               onClick={() => setFollows((f) => !f)}
               aria-pressed={follows}
             >
@@ -142,7 +142,7 @@ export default function RampTuner({ name, cssVarPrefix, stops, anchor, notes = {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="kol-doc-eyebrow text-meta">Paste into kol-brand-color.css</span>
-          <Button size="sm" variant="outline" iconLeft={copied ? 'check' : 'copy'} onClick={copy}>
+          <Button size="sm" tone="outline" iconLeft={copied ? 'check' : 'copy'} onClick={copy}>
             {copied ? 'Copied' : 'Copy'}
           </Button>
         </div>

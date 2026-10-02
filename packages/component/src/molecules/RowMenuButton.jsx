@@ -16,5 +16,5 @@ import useCoarsePointer from '../hooks/useCoarsePointer.js'
 export default function RowMenuButton({ onOpen, variant = 'ghost', className = '' }) {
   const coarse = useCoarsePointer()
   if (!coarse || !onOpen) return null
-  return <Button variant={variant} size="md" iconOnly="more" aria-label="More actions" className={`shrink-0 ${className}`.trim()} onClick={onOpen} />
+  return <Button tone={variant} size="md" iconOnly="more" aria-label="More actions" className={`shrink-0 ${className}`.trim()} onClick={onOpen} />
 }

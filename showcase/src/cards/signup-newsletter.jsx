@@ -14,7 +14,7 @@ export const stage = 'full'
 
 /* a mock handler: resolves after 600ms; an address starting "fail" rejects, to show the error line */
 const subscribe = (email) =>
-  new Promise((resolve, reject) => setTimeout(() => (email.startsWith('fail') ? reject(new Error('demo')) : resolve()), 600))
+  new Promise((resolve, reject) => setTimeout(() => (email.startsWith('fail') ? reject(new Error('preview')) : resolve()), 600))
 
 export default function SignupNewsletter() {
   return (

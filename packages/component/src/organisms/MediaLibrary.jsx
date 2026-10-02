@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import ActionButton from '../atoms/ActionButton.jsx'
+import ActionButton from '../molecules/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'

@@ -115,7 +115,7 @@ export default function BatchExportModal({ open, onClose, runBatchExport, baseAs
               : `${jobs.length} file${jobs.length === 1 ? '' : 's'}`}
           </span>
           <Button
-            variant="primary"
+            tone="primary"
             size="sm"
             iconLeft="download"
             iconSize={12}

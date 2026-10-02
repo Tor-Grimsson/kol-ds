@@ -137,7 +137,7 @@ export function TextSurface({ layer }) {
   const settingsTrigger = (
     <Tooltip label="Type settings">
       <span ref={settings.refs.setReference} {...settings.getReferenceProps()} className="inline-flex">
-        <Button variant="ghost" size="sm" iconOnly="slider-01" aria-label="Type settings" pressed={settingsOpen} />
+        <Button tone="ghost" size="sm" iconOnly="slider-01" aria-label="Type settings" pressed={settingsOpen} />
       </span>
     </Tooltip>
   )

@@ -6,9 +6,10 @@ const Row = ({ children }) => (
 
 export const Variants = () => (
   <Row>
-    {['primary', 'secondary', 'accent', 'outline', 'ghost'].map((v) => (
-      <Button key={v} variant={v}>{v}</Button>
+    {['primary', 'inverted', 'outline', 'ghost'].map((t) => (
+      <Button key={t} tone={t}>{t}</Button>
     ))}
+    <Button variant="accent">accent</Button>
   </Row>
 )
 
@@ -24,7 +25,7 @@ export const WithIcons = () => (
   <Row>
     <Button iconLeft="check">Confirm</Button>
     <Button iconRight="arrow-right">Next</Button>
-    <Button variant="outline" iconOnly="settings-01" aria-label="Settings" />
+    <Button tone="outline" iconOnly="settings-01" aria-label="Settings" />
   </Row>
 )
 
@@ -38,5 +39,5 @@ export const States = () => (
 )
 
 export const AsLink = () => (
-  <Button href="#" variant="outline" iconRight="external-link">Link button</Button>
+  <Button href="#" tone="outline" iconRight="external-link">Link button</Button>
 )

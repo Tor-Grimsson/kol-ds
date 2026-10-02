@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { VARIANT_TONE } from '../utilities/tone.js'
 import { bleedClass } from './sectionBleed.js'
 import { surfaceClass } from '../utilities/sectionSurface.js'
 import Input from '../atoms/Input.jsx'
@@ -185,7 +186,7 @@ export default function SectionNewsletter({
             />
             <Button
               type="submit"
-              variant={submitVariant}
+              {...(VARIANT_TONE[submitVariant] ? { tone: VARIANT_TONE[submitVariant] } : { variant: submitVariant })}
               size={controlSize}
               disabled={status === 'submitting'}
               className="w-full sm:w-auto"

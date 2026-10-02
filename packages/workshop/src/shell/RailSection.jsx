@@ -72,6 +72,8 @@ export default function RailSection({
   defaultCollapsed = false,
   onNavigate,
   icon: IconComponent = Icon,
+  /* a leading glyph for the group, between the caret and the label (rail icons, 2026-10-01) */
+  glyph,
   children,
 }) {
   const [internal, setInternal] = useState(defaultCollapsed)
@@ -149,6 +151,7 @@ export default function RailSection({
         {/* L2 rows without a caret keep the caret's width as space, so an
           * expandable row and a childless one share a left edge. */}
         {level === 2 && !chevron && <span aria-hidden="true" style={{ width: 12 }} />}
+        {glyph}
         {labelNode}
       </span>
       <span className="flex items-center gap-2 shrink-0">

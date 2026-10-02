@@ -105,7 +105,7 @@ export default function KeyframeEditor({
         {kfs.map((kf, i) => (
           <Button
             key={i}
-            variant={i === sel ? 'primary' : 'secondary'}
+            tone={i === sel ? 'primary' : 'inverted'}
             size="sm"
             className="w-full"
             style={{ justifyContent: 'space-between' }}
@@ -117,8 +117,8 @@ export default function KeyframeEditor({
         ))}
       </div>
       <div className="flex gap-2">
-        <Button variant="primary" size="sm" className="flex-1" onClick={onAdd}>Add @ playhead</Button>
-        <Tooltip label="Delete keyframe"><Button variant="ghost" size="sm" onClick={onDelete} disabled={kfs.length <= 1}>Delete</Button></Tooltip>
+        <Button tone="primary" size="sm" className="flex-1" onClick={onAdd}>Add @ playhead</Button>
+        <Tooltip label="Delete keyframe"><Button tone="ghost" size="sm" onClick={onDelete} disabled={kfs.length <= 1}>Delete</Button></Tooltip>
       </div>
 
       <span className="kol-helper-10 text-meta">Pose</span>

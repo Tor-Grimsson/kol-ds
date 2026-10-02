@@ -26,6 +26,12 @@ export const TONES = ['primary', 'secondary', 'inverted', 'outline', 'ghost', 'g
 export const toneClass = (tone) =>
   tone === 'inverse' ? 'kol-tone-sunken' : TONES.includes(tone) ? `kol-tone-${tone}` : ''
 
+/* THE SIX VARIANTS THAT WERE TONES (user ruling 2026-10-01). Button's `variant` named five grounds
+ * and a legacy alias of one; each is a tone under a second name — the theme's variant classes are
+ * aliases of the tone bundles. `variant` keeps `accent · danger · nav`; these six are deprecated
+ * aliases on the retirement ledger. `secondary` is the misleading one: it paints `inverted`. */
+export const VARIANT_TONE = { primary: 'primary', secondary: 'inverted', outline: 'outline', ghost: 'ghost', grey: 'grey', control: 'ghost' }
+
 /* the properties a bundle sets — Dropdown copies them from its trigger onto
  * the PORTALLED panel, which the cascade cannot reach */
 export const TONE_VARS = [

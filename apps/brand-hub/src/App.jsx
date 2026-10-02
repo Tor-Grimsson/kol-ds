@@ -150,7 +150,7 @@ function EditorDoor() {
   return (
     <PageShell>
       <PageHeader title="Editor" subtitle="The design editor is an app of its own — it opens beside this one, on the same fixture bucket." size="sm" voice="mono" />
-      <Button variant="primary" size="md" onClick={() => window.open(EDITOR_URL, '_blank', 'noopener')}>Open the editor</Button>
+      <Button tone="primary" size="md" onClick={() => window.open(EDITOR_URL, '_blank', 'noopener')}>Open the editor</Button>
     </PageShell>
   )
 }

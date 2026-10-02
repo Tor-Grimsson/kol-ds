@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, RailRow, ResultRow, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Button, Dropdown, SegmentedToggle, TabChips, TabsRow } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, MultiSelect, SegmentedToggle, TabChips, TabsRow } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* Round 6 — the visual calls out of the 2026-10-01 review (plan-2026-10-01-showcase-review-round-2,
@@ -44,12 +44,14 @@ function Knobs() {
   const [variant, setVariant] = useState('primary')
   const [tone, setTone] = useState('default')
   const [size, setSize] = useState('md')
-  const opts = (name, list) => list.map((v) => ({ value: v, label: `${name}: ${v}` }))
+  /* the user's own proposal (2026-10-01): the knob's name as the first row, a divider, then the list */
+  const named = (name, list) => [{ heading: name }, { divider: true }, ...list.map((v) => ({ value: v, label: v }))]
   const V = ['primary', 'secondary', 'accent', 'outline', 'ghost']
   const T = ['default', 'primary', 'secondary', 'inverted', 'sunken']
   const S = ['xs', 'sm', 'md', 'lg']
+  const GROUPS = [['Variant', V, variant, setVariant], ['Tone', T, tone, setTone], ['Size', S, size, setSize]]
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       <div className={cell}>
         <div className="flex items-center gap-2">
           <Dropdown size="sm" options={V.map((v) => ({ value: v, label: v }))} value={variant} onChange={setVariant} />
@@ -60,11 +62,21 @@ function Knobs() {
       </div>
       <div className={cell}>
         <div className="flex items-center gap-2">
-          <Dropdown size="sm" options={opts('Variant', V)} value={variant} onChange={setVariant} />
-          <Dropdown size="sm" options={opts('Tone', T)} value={tone} onChange={setTone} />
-          <Dropdown size="sm" options={opts('Size', S)} value={size} onChange={setSize} />
+          <Dropdown size="sm" options={named('Variant', V)} value={variant} onChange={setVariant} />
+          <Dropdown size="sm" options={named('Tone', T)} value={tone} onChange={setTone} />
+          <Dropdown size="sm" options={named('Size', S)} value={size} onChange={setSize} />
         </div>
-        <span className={cap}>B — three dropdowns, each naming its knob, values capitalised by the name</span>
+        <span className={cap}>B — ANSWERED 2026-10-01: three dropdowns, each with its name as the first row, a divider, then the list</span>
+      </div>
+      <div className={cell}>
+        <div className="flex items-center gap-2">
+          <MultiSelect
+            groups={GROUPS.map(([name, list]) => ({ id: name, label: name, options: list.map((v) => ({ value: v, label: v })) }))}
+            value={{ Variant: variant, Tone: tone, Size: size }}
+            onChange={(id, v) => GROUPS.find(([name]) => name === id)[3](v)}
+          />
+        </div>
+        <span className={cap}>C — kol-component `MultiSelect`: one dropdown, a popover with a column per setting</span>
       </div>
     </div>
   )
@@ -92,7 +104,7 @@ export default function OpenQuestionsRound6() {
           </div>
           <div className={cell}>
             <ResultRow variant="wash" to="/components/tag" title={<span className="inline-flex items-center gap-2"><Icon name="layers" size={14} />Tag</span>} meta="/components/tag" description="An interactive chip to filter or select." />
-            <span className={cap}>C — wash, an icon for the kind, the path as the second line</span>
+            <span className={cap}>C — ANSWERED 2026-10-01: wash, an icon for the kind, the path as the second line</span>
           </div>
         </div>
       </DocSection>
@@ -105,7 +117,7 @@ export default function OpenQuestionsRound6() {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           <Ground className="bg-fg-02" label="A — today: fg-02 over the page" />
           <Ground className="bg-surface-primary" label="B — the page ground itself" />
-          <Ground className="bg-[var(--kol-surface-sunken)]" label="C — the sunken surface" />
+          <Ground className="bg-surface-sunken" label="C — ANSWERED 2026-10-01: the sunken surface" />
         </div>
       </DocSection>
 
@@ -125,7 +137,7 @@ export default function OpenQuestionsRound6() {
             <nav className="shell-nav-items">
               {[['Names', 'book-open'], ['Opacity', 'layers'], ['Sizes', 'grid'], ['Color', 'paint-drop']].map(([l, i]) => <RailRow key={l} icon={<Icon name={i} size={14} />} onClick={() => {}}>{l}</RailRow>)}
             </nav>
-            <span className={cap}>B — a glyph per row</span>
+            <span className={cap}>B — ANSWERED 2026-10-01: a glyph per row</span>
           </div>
         </div>
       </DocSection>
@@ -138,7 +150,7 @@ export default function OpenQuestionsRound6() {
           </div>
           <div className={cell}>
             <div className="relative h-32 border-r border-fg-08 bg-fg-02"><div className="kol-rail-grab kol-rail-grab--line" /></div>
-            <span className={cap}>B — the line: the edge lights up, a double-click toggles</span>
+            <span className={cap}>B — the line: the edge lights up, a double-click toggles. Kept as a variant beside the pill (2026-10-01)</span>
           </div>
         </div>
       </DocSection>

@@ -27,7 +27,11 @@ export function DocHeader({ eyebrow, title, lede, children }) {
 
 export function DocSection({ id, title, lede, children }) {
   return (
-    <section id={id} className="flex flex-col gap-4 border-t border-fg-08 pt-8 scroll-mt-20">
+    /* THE SECTION KEEPS ITS OWN DISTANCE (2026-10-01 — user, on the tokens page: the rule sat flush
+     * under the last swatch's caption). It drew a rule with nothing above it and left the gap to the
+     * page; ten pages stack sections in a fragment and supplied none. A page that already spaces its
+     * children with a flex gap keeps that gap — the margin only lands where the parent is not one. */
+    <section id={id} className="flex flex-col gap-4 border-t border-fg-08 pt-8 scroll-mt-20 [:not(.flex)>*+&]:mt-10">
       {title && <h2 className="kol-doc-section-title">{title}</h2>}
       {lede && <p className="kol-doc-body max-w-[var(--kol-content-measure)]">{lede}</p>}
       {children}

@@ -129,20 +129,20 @@ function PhotoFileTab({ layer }) {
     <div className="flex flex-col gap-2">
       <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPick} />
       <input ref={videoRef} type="file" accept="video/*" className="hidden" onChange={onPickVideo} />
-      <Button variant="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => fileRef.current?.click()}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => fileRef.current?.click()}>
         Upload image
       </Button>
-      <Button variant="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => videoRef.current?.click()}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => videoRef.current?.click()}>
         Upload video
       </Button>
-      <Button variant="primary" size={cs} className="w-full" iconLeft="image" iconSize={12} onClick={() => setPickerOpen(true)}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="image" iconSize={12} onClick={() => setPickerOpen(true)}>
         From library
       </Button>
-      <Button variant="primary" size={cs} className="w-full" iconLeft="camera" iconSize={12} onClick={onWebcam}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="camera" iconSize={12} onClick={onWebcam}>
         Webcam
       </Button>
       {(layer.src || layer.srcType === 'webcam') && (
-        <Button variant="primary" size={cs} className="w-full" iconLeft="trash" iconSize={12} onClick={onClear}>
+        <Button tone="primary" size={cs} className="w-full" iconLeft="trash" iconSize={12} onClick={onClear}>
           Clear image
         </Button>
       )}
@@ -167,10 +167,10 @@ function SettingsFileTab({ onSaveSettings, onLoadSettings, onSave, currentPreset
   }
   return (
     <div className="flex flex-col gap-2">
-      <Button variant="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={onSaveSettings}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={onSaveSettings}>
         Save to file
       </Button>
-      <Button variant="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => fileRef.current?.click()}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => fileRef.current?.click()}>
         Load from file
       </Button>
       <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onPick} />
@@ -178,17 +178,17 @@ function SettingsFileTab({ onSaveSettings, onLoadSettings, onSave, currentPreset
       {/* kol Divider's h-px never generates (Tailwind skips node_modules) —
           use the footer's own border-t divider idiom instead. */}
       <div className="border-t border-oq-08 my-1" />
-      <Button variant="primary" size={cs} className="w-full" onClick={onSave}>
+      <Button tone="primary" size={cs} className="w-full" onClick={onSave}>
         {currentPresetId ? 'Save' : 'Save…'}
       </Button>
       {/* Save as… opens the dialog — see MenuTop */}
-      <Button variant="primary" size={cs} className="w-full" onClick={() => openFiles({ focusName: true })}>
+      <Button tone="primary" size={cs} className="w-full" onClick={() => openFiles({ focusName: true })}>
         Save as…
       </Button>
       {/* Import and export live in the dialog too — these two buttons stay
           because they are one click and the dialog is the place you go when
           one click is not what you wanted. */}
-      <Button variant="primary" size={cs} className="w-full" onClick={() => openFiles()}>
+      <Button tone="primary" size={cs} className="w-full" onClick={() => openFiles()}>
         Files…
       </Button>
     </div>
@@ -264,7 +264,7 @@ export default function EditorFooter() {
         <div className="self-stretch -mx-2 border-t border-oq-08 mb-2" />
         {TransportBar && (
           <Tooltip label={playing ? 'Pause' : 'Play'} shortcut="Space">
-            <Button variant="ghost" size="md" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'}
+            <Button tone="ghost" size="md" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'}
               onClick={playing ? pause : play} className="self-center" />
           </Tooltip>
         )}
@@ -276,7 +276,7 @@ export default function EditorFooter() {
     <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 20px 24px 20px' }}>
       <div className="flex items-center gap-2">
         {touch && TransportBar && (
-          <Tooltip label="Transport"><Button variant="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} /></Tooltip>
+          <Tooltip label="Transport"><Button tone="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} /></Tooltip>
         )}
         {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
         {/* the default strip — raised cells, dividers, the selected one on the ground — filling
@@ -314,26 +314,26 @@ export default function EditorFooter() {
               <Dropdown size={cs} variant="subtle" className="flex-1 w-full" options={scaleOptions} value={pngScale} onChange={setPngScale} />
               <span className="kol-helper-10 text-meta whitespace-nowrap">{canvasW * pngScale} × {canvasH * pngScale} px</span>
             </div>
-            <Button variant="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={() => onExportPng(pngScale)}>
+            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={() => onExportPng(pngScale)}>
               Export PNG
             </Button>
-            <Button variant="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={exportWebm}>
+            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={exportWebm}>
               Export loop (webm)
             </Button>
             {/* Live capture — records the composed frame in real time (transport
                 running, params being tweaked), complementing the deterministic
                 loop bake above. */}
-            <Button variant={recording ? 'secondary' : 'primary'} size={cs} className="w-full" iconLeft={recording ? 'eye-on' : 'download'} iconSize={12} onClick={toggleRecord}>
+            <Button tone={recording ? 'inverted' : 'primary'} size={cs} className="w-full" iconLeft={recording ? 'eye-on' : 'download'} iconSize={12} onClick={toggleRecord}>
               {recording ? 'Stop recording' : 'Record'}
             </Button>
             {/* Chromeless output in its own tab — a clean surface to screen-
                 record with OS / tab capture (bypasses the in-app Record path). */}
-            <Button variant="primary" size={cs} className="w-full" iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
+            <Button tone="primary" size={cs} className="w-full" iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
               Open output window
             </Button>
             {/* Multi-size matrix — tick aspects × scales, bundle every PNG into
                 one .zip. */}
-            <Button variant="primary" size={cs} className="w-full" iconLeft="copy" iconSize={12} onClick={() => setBatchOpen(true)}>
+            <Button tone="primary" size={cs} className="w-full" iconLeft="copy" iconSize={12} onClick={() => setBatchOpen(true)}>
               Batch export
             </Button>
           </LabeledControlSection>

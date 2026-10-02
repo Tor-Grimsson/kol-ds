@@ -213,15 +213,15 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
           left — Deck settings on Edit, File on Lock. It drops to its own line instead. */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          {onClose && <Button size="sm" variant="ghost" iconLeft="chevron-left" onClick={onClose}>Decks</Button>}
+          {onClose && <Button size="sm" tone="ghost" iconLeft="chevron-left" onClick={onClose}>Decks</Button>}
           <ViewToggle variant="icon" tone="sunken" viewMode={locked ? 'lock' : 'edit'} onViewChange={(v) => setLocked(v === 'lock')}
             options={[{ value: 'edit', label: 'Edit', icon: 'pen-nib' }, { value: 'lock', label: 'Lock', icon: 'lock' }]} />
           <span className="kol-mono-12 text-fg-48 truncate">{deck.name}{status ? ` · ${status}` : ''}</span>
         </div>
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" iconOnly="settings-01" aria-label="Deck settings" onClick={() => setSettingsOpen(true)} />
-          <Button size="sm" variant="ghost" iconLeft="file" onClick={() => setFileOpen(true)}>File</Button>
-          <Button size="sm" variant="ghost" iconLeft="play" disabled={!slides.length} onClick={() => setPresent(active)}>Present</Button>
+          <Button size="sm" tone="ghost" iconOnly="settings-01" aria-label="Deck settings" onClick={() => setSettingsOpen(true)} />
+          <Button size="sm" tone="ghost" iconLeft="file" onClick={() => setFileOpen(true)}>File</Button>
+          <Button size="sm" tone="ghost" iconLeft="play" disabled={!slides.length} onClick={() => setPresent(active)}>Present</Button>
           <Button size="sm" disabled={!dirty} onClick={() => save().catch(() => {})}>Save</Button>
         </div>
       </div>

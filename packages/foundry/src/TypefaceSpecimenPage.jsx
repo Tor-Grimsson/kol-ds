@@ -108,7 +108,7 @@ const TypefaceSpecimenPage = ({
               <span className="kol-mono-xs text-fg-64">{category}</span>
               <p className="kol-mono-xs text-auto max-w-[480px] md:max-w-[600px]">{description}</p>
               <LinkEl {...linkPropsFor('/foundry/licensing')}>
-                <Button variant="primary" size="sm">Download Font</Button>
+                <Button tone="primary" size="sm">Download Font</Button>
               </LinkEl>
             </div>
           </Hero>

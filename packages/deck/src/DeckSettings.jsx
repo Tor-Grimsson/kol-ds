@@ -77,7 +77,7 @@ function SettingsForm({ onClose, slides, greys, absoluteBlack, onApply }) {
       </LabeledControlSection>
 
       <div className="flex justify-end gap-2">
-        <Button size="sm" variant="ghost" onClick={onClose}>Cancel</Button>
+        <Button size="sm" tone="ghost" onClick={onClose}>Cancel</Button>
         <Button size="sm" onClick={() => onApply?.({ name, date, background })}>Apply to deck</Button>
       </div>
     </div>

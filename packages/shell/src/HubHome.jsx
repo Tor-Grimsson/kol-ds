@@ -71,7 +71,7 @@ export default function HubHome({
         <>
           {actions}
           {steps.length > 0 && (
-            <Button variant="grey" size="md" onClick={() => setTouring((t) => !t)}>
+            <Button tone="grey" size="md" onClick={() => setTouring((t) => !t)}>
               {touring ? 'Close' : 'Walkthrough'}
             </Button>
           )}

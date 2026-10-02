@@ -32,7 +32,7 @@ export default function InspectorRail() {
             <p className="kol-helper-12 text-meta">{ids.length} layers selected.</p>
             <AlignmentPanel />
             <Button
-              variant="primary"
+              tone="primary"
               size="sm"
               className="w-full"
               iconLeft="component-01"

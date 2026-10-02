@@ -18,6 +18,18 @@
    generated, so its layers kept their intrinsic size and the preview rendered offset and clipped */
 @source "../node_modules/@kolkrabbi/kol-styleguide/src";
 @source "../node_modules/@kolkrabbi/kol-workshop/src";
+/* THE TOOLS' PREVIEWS MOUNT THE APPS' OWN ENTRY FILES (2026-10-01 — previews/Notes · Decks ·
+   MediaLibrary · AppHub · AppStudio · Brand), so their classes — and kol-notes' and kol-deck's, which
+   the showcase does not otherwise import — are scanned where they live. */
+@source "../../packages/notes/src";
+@source "../../packages/deck/src";
+@source "../../apps/notes/src";
+@source "../../apps/presentation/src";
+@source "../../apps/media/src";
+@source "../../apps/media-fixture/src";
+@source "../../apps/hub/src";
+@source "../../apps/studio/src";
+@source "../../apps/brand-hub/src";
 
 @import "@kolkrabbi/kol-theme";
 /* Dogfoods the shipped @source manifest (DS-CHANGES #9). In the workspace the

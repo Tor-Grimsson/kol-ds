@@ -135,7 +135,7 @@ function PatternSurface({ layer }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <Button variant="primary" size="sm" className="w-full" onClick={onRollAll}>
+      <Button tone="primary" size="sm" className="w-full" onClick={onRollAll}>
         Randomize all
       </Button>
       <SeedField seed={seed} />
@@ -160,10 +160,10 @@ function PatternSurface({ layer }) {
             />
           ))}
           <div className="grid grid-cols-2 gap-2">
-            <Button variant="primary" size="sm" iconLeft="plus" onClick={addRule}>
+            <Button tone="primary" size="sm" iconLeft="plus" onClick={addRule}>
               Add rule
             </Button>
-            <Button variant="primary" size="sm" onClick={randomizeRules}>
+            <Button tone="primary" size="sm" onClick={randomizeRules}>
               Randomize
             </Button>
           </div>
@@ -180,7 +180,7 @@ function PatternSurface({ layer }) {
       </LabeledControl>
 
       <Tooltip label="Save current pattern params to the shared library"><Button aria-label="Save current pattern params to the shared library"
-        variant="primary" size="sm" className="w-full"
+        tone="primary" size="sm" className="w-full"
         onClick={onSave}
       >
         Save pattern to library

@@ -204,16 +204,16 @@ function PaletteModalBody({ onClose, layoutId, setLayoutId, harmonyId, setHarmon
             <PalettePreview layoutId={layoutId} palette={palette} bgOn={bgOn} />
 
             <div className="flex gap-2 border-t border-oq-08 pt-2">
-              <Button variant="primary" size="sm" className="flex-1" onClick={randomize}>
+              <Button tone="primary" size="sm" className="flex-1" onClick={randomize}>
                 Randomize
               </Button>
-              <Button variant="primary" size="sm" className="flex-1" onClick={reset}>
+              <Button tone="primary" size="sm" className="flex-1" onClick={reset}>
                 Reset
               </Button>
             </div>
 
             <Button
-              variant="primary"
+              tone="primary"
               size="sm"
               className="w-full"
               onClick={() => savePalette({ colors, bgEnabled: bgOn, poolId, modeId })}

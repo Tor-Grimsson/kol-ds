@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
 import Swatch from '../lib/Swatch.jsx'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { relatedDocs } from '../nav/vault.js'
 import { TOTAL } from '../nav/registry.js'
 import {
   OPACITY_SCALE, FG_SEMANTIC, SURFACES, BRAND_RAMPS, GREY_RAMP,
@@ -39,6 +40,9 @@ function useResolved(tokens) {
 /* Swatch is the ported brand styleguide swatch (lib/Swatch.jsx, E2) —
  * token name meta-left, resolved value strong-right. */
 
+/* the law behind what this page shows — the right rail's Related rows (2026-10-01) */
+const RELATED = relatedDocs(['01-foundations/01-tokens.md', '01-foundations/10-opacity.md', '01-foundations/09-sizes.md'])
+
 export default function Foundations() {
   const resolved = useResolved(ALL_TOKENS)
   const val = (t) => resolved[t]
@@ -46,7 +50,7 @@ export default function Foundations() {
   return (
     <>
       {/* this page's own home (W3, 2026-09-30) — Foundations is the chapter over it */}
-      <HomeDoc id="tokens" />
+      <HomeDoc id="tokens" related={RELATED} />
 
       <DocSection
         id="opacity"

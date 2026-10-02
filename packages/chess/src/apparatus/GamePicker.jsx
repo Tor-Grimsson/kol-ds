@@ -46,7 +46,7 @@ export default function GamePicker({ className = '', actions = null }) {
       <div className="flex items-center gap-2">
         {selectedGame && (
           <span ref={infoPopover.refs.setReference} {...infoPopover.getReferenceProps()} className="inline-flex">
-            <Button variant="ghost" size="sm" iconOnly="star-solid" selected={infoOpen} title="Game info" aria-label="Game info" />
+            <Button tone="ghost" size="sm" iconOnly="star-solid" selected={infoOpen} title="Game info" aria-label="Game info" />
           </span>
         )}
         {actions}

@@ -1,28 +1,10 @@
+import { LabeledControl } from '@kolkrabbi/kol-component'
+
 /**
- * PanelLabel — A control with its panel label. wraps any control with the panel's text label (kol-monitor's
- * rack `LabeledControl`, lifted 2026-09-01; named `PanelLabel` because
- * `LabeledControl` is kol-component's settings-row control). Matches Knob /
- * Toggle: `kol-helper-8`, `text-fg-32`, uppercase.
- *
- * @param {string}   label
- * @param {boolean}  horizontal      shorthand for a row
- * @param {'top'|'bottom'|'left'|'right'} labelPosition  (default bottom)
- * @param {string}   labelClass      type class (default `kol-helper-8`)
- * @param {number}   gap
- * @param {ReactNode} children
+ * @deprecated 2026-10-01 — use `<LabeledControl variant="panel">` from kol-component. Drops when nobody imports it (04-retirements.md).
+ * PanelLabel — A control with its panel label. the panel label is LabeledControl's panel variant now
+ * (user ruling 2026-10-01). Same props; `horizontal` is `labelPosition="right"`.
  */
-export default function PanelLabel({ label, horizontal = false, labelPosition = 'bottom', labelClass = 'kol-helper-8', gap = 0, children }) {
-  const isRow = horizontal || labelPosition === 'left' || labelPosition === 'right'
-  const labelEl = label && (
-    <span className={`${labelClass} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>
-      {label}
-    </span>
-  )
-  return (
-    <div style={{ display: 'inline-flex', flexDirection: isRow ? 'row' : 'column', alignItems: 'center', gap }}>
-      {(labelPosition === 'top' || labelPosition === 'left') && labelEl}
-      {children}
-      {(labelPosition === 'bottom' || labelPosition === 'right') && labelEl}
-    </div>
-  )
+export default function PanelLabel({ horizontal = false, labelPosition = 'bottom', ...props }) {
+  return <LabeledControl variant="panel" labelPosition={horizontal && labelPosition === 'bottom' ? 'right' : labelPosition} {...props} />
 }

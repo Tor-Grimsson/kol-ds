@@ -2,7 +2,7 @@
  * Runnable self-check.  `pnpm --filter @kolkrabbi/kol-search test`
  */
 import assert from 'node:assert'
-import { createIndex, search, parseQuery, highlightRanges, singular, matchSearchItems, tagGraph } from './index.js'
+import { createIndex, search, parseQuery, highlightRanges, singular, matchSearchItems, tagGraph, indexGraph } from './index.js'
 
 const items = [
   { id: 'button', title: 'Button', kind: 'component', space: 'components', category: 'Atoms', tags: ['pattern/action'], description: 'The one button.' },
@@ -60,4 +60,13 @@ assert.deepEqual(matchSearchItems([{ label: 'Button', keywords: ['press'] }], 'p
 const g = tagGraph([{ id: 'a', tags: ['X', 'y'] }, { id: 'b', tags: ['x', 'z'] }, { id: 'c', tags: ['x', 'y'] }])
 assert.deepEqual(g.nodes.map((n) => [n.id, n.count]), [['x', 3], ['y', 2], ['z', 1]])
 assert.deepEqual(g.edges.map((e) => [e.source, e.target, e.weight]).sort(), [['x', 'y', 2], ['x', 'z', 1]])
+
+// --- indexGraph: files join their tags, orphans join nothing, the filter keeps what matches ---
+const gi = [{ id: 'a', title: 'Alpha', tags: ['x', 'y'] }, { id: 'b', title: 'Beta', tags: ['x'] }, { id: 'c', title: 'Gamma' }]
+assert.deepEqual(indexGraph(gi), tagGraph(gi), 'nothing switched on is the tag graph')
+const gf = indexGraph(gi, { files: true })
+assert.deepEqual(gf.nodes.map((n) => n.id).sort(), ['file:a', 'file:b', 'x', 'y'])
+assert.deepEqual(gf.edges.map((e) => [e.source, e.target]).sort(), [['file:a', 'x'], ['file:a', 'y'], ['file:b', 'x']], 'tags join through their files')
+assert.deepEqual(indexGraph(gi, { orphans: true }).nodes.filter((n) => n.orphan).map((n) => n.label), ['Gamma'])
+assert.deepEqual(indexGraph(gi, { files: true, filter: 'alp' }).nodes.map((n) => n.id), ['file:a'])
 console.log('kol-search self-check: OK')

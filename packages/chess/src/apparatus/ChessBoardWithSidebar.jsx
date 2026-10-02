@@ -16,7 +16,7 @@ const GLYPH_TO_ICON = {
 
 const ToolbarButton = ({ label, onClick }) => {
   const { icon, label: ariaLabel } = GLYPH_TO_ICON[label]
-  return <Button variant="primary" size="sm" iconOnly={icon} onClick={onClick} aria-label={ariaLabel} />
+  return <Button tone="primary" size="sm" iconOnly={icon} onClick={onClick} aria-label={ariaLabel} />
 }
 
 const ChessBoardWithSidebarContent = ({ className = '', onToggleFullscreen = null, isFullscreen = false }) => {

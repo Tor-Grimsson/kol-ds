@@ -32,3 +32,39 @@ export function tagGraph(items = []) {
   }
   return { nodes, edges }
 }
+
+/**
+ * indexGraph — the index as a network of tags AND the items that carry them (2026-10-01 — user
+ * ruling on the graph: files and orphans beside tags, with a filter). With nothing switched on it is
+ * `tagGraph`.
+ *
+ *   files    a node per tagged item, joined to each of its tags. The tag-to-tag edges go: with the
+ *            items drawn, two tags are joined THROUGH the items they share, which is what the
+ *            co-occurrence edge was standing in for.
+ *   orphans  a node per item with no tags — joined to nothing, which is the point of seeing them.
+ *   filter   keeps the nodes whose id or label holds the text, and the edges between two kept nodes.
+ *
+ * Item nodes are `{ id: 'file:<item id>', label, href, count: 1, type: 'file', orphan }`.
+ *
+ * @returns {{ nodes: [{ id, count, type, label?, href?, orphan? }], edges: [{ source, target, weight }] }}
+ */
+export function indexGraph(items = [], { files = false, orphans = false, filter = '' } = {}) {
+  const base = tagGraph(items)
+  let nodes = [...base.nodes]
+  let edges = files ? [] : [...base.edges]
+  for (const item of items) {
+    const tags = (Array.isArray(item?.tags) ? item.tags : []).map((t) => String(t).toLowerCase())
+    const orphan = tags.length === 0
+    if (orphan ? !orphans : !files) continue
+    const id = `file:${item.id}`
+    nodes.push({ id, label: item.title ?? String(item.id), href: item.href, count: 1, type: 'file', orphan })
+    for (const tag of new Set(tags)) edges.push({ source: id, target: tag, weight: 1 })
+  }
+  const q = String(filter).trim().toLowerCase()
+  if (q) {
+    nodes = nodes.filter((n) => `${n.id} ${n.label ?? ''}`.toLowerCase().includes(q))
+    const kept = new Set(nodes.map((n) => n.id))
+    edges = edges.filter((e) => kept.has(e.source) && kept.has(e.target))
+  }
+  return { nodes, edges }
+}

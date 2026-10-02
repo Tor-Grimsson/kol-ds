@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## Unreleased
+
+**The question round** (2026-10-01 — the review's open calls, ruled and built).
+
+- **`.bg-surface-sunken`** — the sunken surface had a token and no class.
+
 ## 0.162.0 — 2026-10-01
 
 **Review round two** (plan-2026-10-01-showcase-review-round-2).

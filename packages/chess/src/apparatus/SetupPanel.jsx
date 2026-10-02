@@ -48,17 +48,17 @@ export default function SetupPanel({ className = '', actions = null }) {
         </div>
         <div className="flex items-center gap-2 text-fg-64">
           <Button
-            variant="ghost"
+            tone="ghost"
             size="sm"
             iconOnly="search"
             onClick={() => setShowSearch(!showSearch)}
             title="Search games"
             aria-label="Search games"
           />
-          <Button variant="ghost" size="sm" iconOnly="refresh" onClick={toggleOrientation} title="Flip board" aria-label="Flip board" />
-          <Button variant="ghost" size="sm" iconOnly="x" onClick={loadEmptyPosition} title="Clear board" aria-label="Clear board" />
-          <Button variant="ghost" size="sm" iconOnly="copy" onClick={handleExportPgn} title="Copy PGN" aria-label="Copy PGN" />
-          <Button variant="ghost" size="sm" iconOnly="edit" onClick={toggleEditMode} selected={isEditMode} title="Toggle edit mode" aria-label="Toggle edit mode" />
+          <Button tone="ghost" size="sm" iconOnly="refresh" onClick={toggleOrientation} title="Flip board" aria-label="Flip board" />
+          <Button tone="ghost" size="sm" iconOnly="x" onClick={loadEmptyPosition} title="Clear board" aria-label="Clear board" />
+          <Button tone="ghost" size="sm" iconOnly="copy" onClick={handleExportPgn} title="Copy PGN" aria-label="Copy PGN" />
+          <Button tone="ghost" size="sm" iconOnly="edit" onClick={toggleEditMode} selected={isEditMode} title="Toggle edit mode" aria-label="Toggle edit mode" />
           {actions}
         </div>
       </div>

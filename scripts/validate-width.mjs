@@ -103,11 +103,11 @@ if (ANY_CONTENT_CAP.test(outsideMain)) {
 }
 
 /* ── W2 · hardcoded pixel max-widths ───────────────────────────────────────
- * Scoped to chrome and pages. `demos/`, `blocks/` and `sets/` are component
+ * Scoped to chrome and pages. `previews/`, `blocks/` and `sets/` are component
  * SPECIMENS — a 420px glass panel or a 520px card is that component's own
  * size, not a content frame, and forcing those onto the content scale would
  * be the improvisation this gate exists to stop, pointed the other way. */
-const SKIP = /showcase\/src\/(demos|blocks|sets)\//
+const SKIP = /showcase\/src\/(previews|blocks|sets)\//
 const SCOPES = ['showcase/src', 'packages/workshop/src', 'packages/framework/src']
 for (const scope of SCOPES) {
   for (const file of walk(join(REPO, scope))) {

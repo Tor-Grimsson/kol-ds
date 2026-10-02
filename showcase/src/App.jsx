@@ -3,7 +3,7 @@ import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref, PHASE_LOG_INDEX } from './nav/vault.js'
 import Home from './pages/Home'
 import Lookup, { Start } from './pages/Lookup'
-import DemoPreview from './pages/DemoPreview'
+import PreviewFrame from './pages/PreviewFrame'
 import Foundations from './pages/Foundations'
 import FoundationsHome from './pages/FoundationsHome'
 import FoundationsColor from './pages/FoundationsColor'
@@ -91,8 +91,8 @@ export default function App() {
     <Routes>
       {/* Chrome-less by contract — iframe sources + dev mirrors */}
       <Route path="/modules/preview/:slug" element={<BlockPreview />} />
-      {/* a framed component demo, bare (2026-10-01 — demos-registry `frame`) */}
-      <Route path="/components/preview/:name" element={<DemoPreview />} />
+      {/* a framed component preview, bare (2026-10-01 — previews-registry `frame`) */}
+      <Route path="/components/preview/:name" element={<PreviewFrame />} />
       {/* BLOCKS → MODULES (2026-10-01, user ruling: "we need another name for Blocks, thats shadcn
           lingo" · "I like modules more"). The old URLs redirect, tail kept. */}
       <Route path="/blocks/*" element={<MovedRedirect from="/blocks" to="/modules" />} />

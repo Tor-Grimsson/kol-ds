@@ -1,13 +1,14 @@
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Tile } from '../lib/LandingWall.jsx'
 import { useNavigate, Link } from 'react-router-dom'
 import { ShellContentWidthContext, ShellNavCollapsedContext, ShellTocCollapsedContext } from '@kolkrabbi/kol-workshop'
 import { Button, Pill, SectionHero } from '@kolkrabbi/kol-component'
 import { slugify, COMPONENTS } from '../nav/registry.js'
 import { labelFromSlug } from '../nav/labels.js'
-import DemoStage from '../lib/DemoStage.jsx'
+import PreviewStage from '../lib/PreviewStage.jsx'
 import Fit from '../lib/Fit.jsx'
 import ErrorBoundary from '../lib/ErrorBoundary.jsx'
-import { DEMOS } from '../lib/demos-registry.js'
+import { PREVIEWS } from '../lib/previews-registry.js'
 import { BLOCKS } from '../lib/blocks-registry.js'
 import useMetricsData, { timeAgo } from '../data/metrics/useMetricsData.js'
 /* Workspace-relative on purpose: the component package's exports map doesn't
@@ -35,7 +36,7 @@ import {
  * docs furniture), a full-height text hero, then a dense
  * columns-masonry "bento wall" of RICH composed cards — real metrics
  * dashboards (offline mock data), copy-pasteable blocks, and a few atomic
- * component demos for rhythm. Every tile is a live @kolkrabbi render,
+ * component previews for rhythm. Every tile is a live @kolkrabbi render,
  * error-boundaried — the page is the proof.
  */
 
@@ -118,31 +119,14 @@ function GhostFlank({ side }) {
   )
 }
 
-// ── Tile frame — uniform labeled specimen, error-boundaried ───────────────────
-// The label is the way IN (user ask 2026-08-09, "make the section header link
-// to it") — every tile with a destination renders its header as a Link.
-function Tile({ label, to, className = '', style, children }) {
-  return (
-    <div className={`mb-5 break-inside-avoid overflow-hidden rounded border border-fg-08 bg-surface-primary p-4 ${className}`.trim()} style={style}>
-      {to ? (
-        <Link to={to} className="kol-helper-10 text-meta uppercase mb-3 block hover:text-emphasis hover:underline">
-          {label}
-        </Link>
-      ) : (
-        <p className="kol-helper-10 text-meta uppercase mb-3">{label}</p>
-      )}
-      <ErrorBoundary>{children}</ErrorBoundary>
-    </div>
-  )
-}
-
-// Render a registry block (or demo) through the shared DemoStage contract so it
+// The tile frame is the shared one (lib/LandingWall.jsx) — the same card every kind's wall wears.
+// Render a registry block (or preview) through the shared PreviewStage contract so it
 // picks up its own stage sizing; centre the capped ones inside the tile.
 const MORE_BATCH = 12
 
 const stageNode = (Component, stage) => (
   <div className="flex justify-center">
-    <DemoStage entry={{ Component, stage }} />
+    <PreviewStage entry={{ Component, stage }} />
   </div>
 )
 
@@ -207,13 +191,13 @@ export default function Home() {
     const b = BLOCKS.find((x) => x.key === key)
     return b ? { label: b.title, to: `/modules/${key}`, node: stageNode(b.Component, b.stage) } : null
   }
-  const demo = (name) => ({ label: labelFromSlug(name), to: `/components/${slugify(name)}`, node: stageNode(DEMOS[name]?.Component, DEMOS[name]?.stage) })
+  const preview = (name) => ({ label: labelFromSlug(name), to: `/components/${slugify(name)}`, node: stageNode(PREVIEWS[name]?.Component, PREVIEWS[name]?.stage) })
   /* Analytics/infra tiles link to the dashboards component they render. */
   const compTo = (name) => `/components/${slugify(name)}`
 
   const hasDaily = dailyVisits.length > 2
 
-  /* the rest of the library for Load more — demos that fit a tile (a slim Card, or a hug/sm/md stage),
+  /* the rest of the library for Load more — previews that fit a tile (a slim Card, or a hug/sm/md stage),
    * skipping what the curated wall already shows (`more`, after `tiles`) */
   const [extra, setExtra] = useState(0)
 
@@ -254,7 +238,7 @@ export default function Home() {
         />
       ),
     },
-    demo('Button'),
+    preview('Button'),
     {
       label: 'Analytics · top pages',
       to: compTo('DashListCard'),
@@ -314,7 +298,7 @@ export default function Home() {
         </DashChartCard>
       ),
     },
-    demo('SegmentedToggle'),
+    preview('SegmentedToggle'),
     {
       label: 'Analytics · traffic mix',
       to: compTo('DashStackedBarCard'),
@@ -328,7 +312,7 @@ export default function Home() {
         />
       ),
     },
-    demo('Badge'),
+    preview('Badge'),
     {
       label: 'Analytics · avg session',
       to: compTo('DashMetricCard'),
@@ -359,7 +343,7 @@ export default function Home() {
         />
       ),
     },
-    demo('ViewToggle'),
+    preview('ViewToggle'),
     {
       label: 'Analytics · top countries',
       to: compTo('DashListCard'),
@@ -375,9 +359,9 @@ export default function Home() {
       ),
     },
     block('filter-bar'),
-    demo('ColorSwatch'),
-    demo('Tag'),
-    demo('Stepper'),
+    preview('ColorSwatch'),
+    preview('Tag'),
+    preview('Stepper'),
   ].filter(Boolean), [
     dailyVisits, visitors, pageviews, session, totalVisitsMonth,
     topPages, topCountries, devices, totalSessions, deploys, b2Data, hasDaily,
@@ -385,8 +369,8 @@ export default function Home() {
   const more = useMemo(() => {
     const shown = new Set(tiles.map((t) => t.to))
     return COMPONENTS
-      .filter((c) => c.demo && (c.demo.Card || ['hug', 'sm', 'md'].includes(c.demo.stage)) && !shown.has(`/components/${c.slug}`))
-      .map((c) => ({ label: c.displayName, to: `/components/${c.slug}`, node: <Fit height={false}>{c.demo.Card ? <c.demo.Card /> : <DemoStage entry={c.demo} />}</Fit> }))
+      .filter((c) => c.preview && (c.preview.Card || ['hug', 'sm', 'md'].includes(c.preview.stage)) && !shown.has(`/components/${c.slug}`))
+      .map((c) => ({ label: c.displayName, to: `/components/${c.slug}`, node: <Fit height={false}>{c.preview.Card ? <c.preview.Card /> : <PreviewStage entry={c.preview} />}</Fit> }))
   }, [tiles])
 
   return (
@@ -412,19 +396,19 @@ export default function Home() {
         /* the buttons centre with the text (2026-09-30 — they sat left of the headline) */
         slotClass={{ body: 'max-w-[var(--kol-content-measure)]', actions: 'justify-center' }}
         actions={<>
-          <Button variant="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
+          <Button tone="primary" iconRight="arrow-right" onClick={() => navigate('/components')}>
             Browse components
           </Button>
-          <Button variant="primary" onClick={() => navigate('/modules')}>
+          <Button tone="primary" onClick={() => navigate('/modules')}>
             Modules
           </Button>
-          <Button variant="primary" onClick={() => navigate('/sets')}>
+          <Button tone="primary" onClick={() => navigate('/sets')}>
             Sets
           </Button>
-          <Button variant="primary" onClick={() => navigate('/apps')}>
+          <Button tone="primary" onClick={() => navigate('/apps')}>
             Apps
           </Button>
-          <Button variant="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
+          <Button tone="outline" iconLeft="code" href="https://github.com/Tor-Grimsson/kol-ds">
             Source
           </Button>
           {/* THE INSTALL LINE LIVES IN THE HERO (showcase refinement 2026-09-28 — user: "theres a
@@ -466,7 +450,7 @@ export default function Home() {
           ))}
         </div>
         {/* LOAD MORE (the showcase review W20, 2026-09-30 — user: "landing page needs load more"): the
-          * curated wall, then every other live component demo, most used first, a batch at a time */}
+          * curated wall, then every other live component preview, most used first, a batch at a time */}
         {/* ONE COLUMN BLOCK PER BATCH: CSS columns fill top-down, so a batch poured into the wall above
           * reshuffled every tile on each click; a batch of its own lands under what is already read */}
         {Array.from({ length: extra / MORE_BATCH }, (_, b) => (

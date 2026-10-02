@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { DocSection, DocTable } from '@kolkrabbi/kol-workshop'
 import { CodeBlock } from '@kolkrabbi/kol-component'
 import PreviewCard from './PreviewCard.jsx'
-import { DEMOS } from './demos-registry.js'
+import { PREVIEWS } from './previews-registry.js'
 import API_GEN from '../usage/api-tables.json'
 import { mergeApi, InstallBlock } from './component-page-parts.jsx'
 import { getComponentBySlug, slugify } from '../nav/registry.js'
@@ -14,7 +14,7 @@ import { getComponentBySlug, slugify } from '../nav/registry.js'
  * components embedded in the prose. `component-docs.js` (a 43-entry JS object
  * of hand-typed usage strings + API tables) exists only because there was no
  * document format to hold them; with MDX there is nothing left to hand-type —
- * <Preview> reads the demos registry, <Api> reads the react-docgen extraction.
+ * <Preview> reads the previews registry, <Api> reads the react-docgen extraction.
  *
  * Headings get ids so the shell's auto-TOC can anchor them (ShellChrome walks
  * the rendered headings; a heading with no id is skipped).
@@ -26,13 +26,13 @@ const slug = (children) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
 
-/** <Preview name="Button" /> — the live demo from the registry, preview/code tabs. */
+/** <Preview name="Button" /> — the live preview from the registry, preview/code tabs. */
 export function Preview({ name, minH }) {
-  const entry = DEMOS[name]
+  const entry = PREVIEWS[name]
   if (!entry) {
     return (
       <div className="kol-doc-figure p-6">
-        <p className="kol-mono-12 text-meta">No demo registered for “{name}”.</p>
+        <p className="kol-mono-12 text-meta">No preview registered for “{name}”.</p>
       </div>
     )
   }
@@ -72,7 +72,7 @@ export function Install({ name }) {
 
 /**
  * <Parts name="Accordion" /> — the member components a compound composes from,
- * each with its own live demo. Mirrors the generated page's "Parts" section so
+ * each with its own live preview. Mirrors the generated page's "Parts" section so
  * a compound component doesn't lose its sub-parts on conversion.
  */
 export function Parts({ name }) {
@@ -85,7 +85,7 @@ export function Parts({ name }) {
         <div key={m.name} className="flex flex-col gap-3">
           <h3 id={slug(m.name)} className="kol-sans-heading-05 text-emphasis scroll-mt-20">{m.name}</h3>
           {m.description && <p className="kol-sans-body-02 text-body">{m.description}</p>}
-          {DEMOS[m.name] && <PreviewCard entry={DEMOS[m.name]} />}
+          {PREVIEWS[m.name] && <PreviewCard entry={PREVIEWS[m.name]} />}
         </div>
       ))}
     </>

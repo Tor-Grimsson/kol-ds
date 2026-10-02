@@ -213,26 +213,26 @@ export default function SoftformsLayers({ layer }) {
               <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
               <span className="truncate flex-1 min-w-0">{labelOf(typeOpts, f.t)}</span>
               <Tooltip label="Move form up"><Button
-                variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
+                tone="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
                 aria-label="Move form up"
                 disabled={i >= forms.length - 1}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i + 1) }}
                 style={{ transform: 'rotate(180deg)' }}
               /></Tooltip>
               <Tooltip label="Move form down"><Button
-                variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
+                tone="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
                 aria-label="Move form down"
                 disabled={i <= 0}
                 onClick={(e) => { e.stopPropagation(); swapForm(i, i - 1) }}
               /></Tooltip>
               <Tooltip label="Duplicate form"><Button
-                variant="ghost" size="sm" quiet iconOnly="copy" iconSize={12}
+                tone="ghost" size="sm" quiet iconOnly="copy" iconSize={12}
                 aria-label="Duplicate form"
                 disabled={forms.length >= MAX_FORMS}
                 onClick={(e) => { e.stopPropagation(); dupForm(i) }}
               /></Tooltip>
               <Tooltip label="Delete form"><Button
-                variant="ghost" size="sm" quiet iconOnly="trash" iconSize={12}
+                tone="ghost" size="sm" quiet iconOnly="trash" iconSize={12}
                 aria-label="Delete form"
                 disabled={forms.length <= minForms}
                 onClick={(e) => { e.stopPropagation(); delForm(i) }}
@@ -243,7 +243,7 @@ export default function SoftformsLayers({ layer }) {
       </div>
 
       <Button
-        variant="primary" size="sm" className="w-full" iconLeft="plus" iconSize={12}
+        tone="primary" size="sm" className="w-full" iconLeft="plus" iconSize={12}
         disabled={forms.length >= MAX_FORMS} onClick={addForm}
       >
         Add form
@@ -251,7 +251,7 @@ export default function SoftformsLayers({ layer }) {
 
       {!is3d && (
         <Tooltip label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"><Button aria-label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"
-          variant="primary" size="sm" className="w-full"
+          tone="primary" size="sm" className="w-full"
           onClick={() => window.dispatchEvent(new CustomEvent('kol:softform-edit', { detail: { id: layer.id, index: Math.max(0, sel) } }))}
         >
           Edit forms on canvas
@@ -282,12 +282,12 @@ export default function SoftformsLayers({ layer }) {
 
       <span className="kol-helper-10 text-meta pt-1">Randomise forms</span>
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="primary" size="sm" onClick={rollColor}>Color</Button>
-        <Button variant="primary" size="sm" onClick={rollTransform}>Transform</Button>
-        <Button variant="primary" size="sm" onClick={rollScale}>Scale</Button>
-        <Button variant="primary" size="sm" onClick={rollAnim}>Animation</Button>
+        <Button tone="primary" size="sm" onClick={rollColor}>Color</Button>
+        <Button tone="primary" size="sm" onClick={rollTransform}>Transform</Button>
+        <Button tone="primary" size="sm" onClick={rollScale}>Scale</Button>
+        <Button tone="primary" size="sm" onClick={rollAnim}>Animation</Button>
       </div>
-      <Button variant="primary" size="sm" className="w-full" onClick={rollRearrange}>Rearrange</Button>
+      <Button tone="primary" size="sm" className="w-full" onClick={rollRearrange}>Rearrange</Button>
     </div>
   )
 }

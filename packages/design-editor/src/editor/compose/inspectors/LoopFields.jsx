@@ -250,7 +250,7 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
           {/* Rolls WHICH PRESET you are on — the axis the rail had no button
               for. Hidden when the group holds nothing else to move to. */}
           {presetRollPool(layer).length > 0 && (
-            <Button variant="primary" size={cs} className="w-full" onClick={() => {
+            <Button tone="primary" size={cs} className="w-full" onClick={() => {
               const s = seed.take()
               const patch = computePresetRoll(layer, s)
               if (patch) updateLayer(layer.id, patch)
@@ -258,7 +258,7 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
               Randomize preset
             </Button>
           )}
-          <Button variant="primary" size={cs} className="w-full" onClick={(e) => (e.altKey ? resetScope(allScopeParams(schema, layer)) : roll(allScopeParams(schema, layer), undefined, { withFilters: true }))}>
+          <Button tone="primary" size={cs} className="w-full" onClick={(e) => (e.altKey ? resetScope(allScopeParams(schema, layer)) : roll(allScopeParams(schema, layer), undefined, { withFilters: true }))}>
             Randomize all
           </Button>
           {scopes.length > 0 && (
@@ -266,7 +266,7 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
              * (Pattern's 5, Penrose's 6-plus-reset), verified 2026-08-09. */
             <div className="grid grid-cols-2 gap-2">
               {scopes.map((s) => (
-                <Button key={s.id} variant="primary" size={cs} onClick={(e) => (e.altKey ? resetScope(s.params) : roll(s.params, s))}>
+                <Button key={s.id} tone="primary" size={cs} onClick={(e) => (e.altKey ? resetScope(s.params) : roll(s.params, s))}>
                   {s.label}
                 </Button>
               ))}
@@ -276,7 +276,7 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
                   the same _rollSeed flow; ⌥-click resets like the chip. */}
               {layer.loopId === 'math-expression' && (
                 <Button
-                  variant="primary"
+                  tone="primary"
                   size={cs}
                   onClick={(e) => {
                     if (e.altKey) return resetScope(scopes.find((s) => s.id === 'Expression')?.params ?? [])
@@ -312,10 +312,10 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
               min/max to the curve; Reset restores the View section. */}
           {layer.loopId === 'math-expression' && (
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="primary" size={cs} onClick={() => updateLayer(layer.id, fitBounds(layer))}>
+              <Button tone="primary" size={cs} onClick={() => updateLayer(layer.id, fitBounds(layer))}>
                 Fit
               </Button>
-              <Button variant="primary" size={cs} onClick={() => resetScope(scopes.find((s) => s.id === 'View')?.params ?? [])}>
+              <Button tone="primary" size={cs} onClick={() => resetScope(scopes.find((s) => s.id === 'View')?.params ?? [])}>
                 Reset
               </Button>
             </div>

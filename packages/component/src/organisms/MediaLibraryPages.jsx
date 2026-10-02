@@ -8,7 +8,7 @@ import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'
 import Tag from '../atoms/Tag.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
-import ActionButton from '../atoms/ActionButton.jsx'
+import ActionButton from '../molecules/ActionButton.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
@@ -849,7 +849,7 @@ function TrashPanel({ trash, onClose, run, confirm }) {
     <SettingsPanel variant="drawer" title="Trash" onClose={onClose}
       footer={items.length > 0 && trash.empty ? (
         <SettingsFooter>
-          <Button variant="primary" size="sm" onClick={async () => {
+          <Button tone="primary" size="sm" onClick={async () => {
             if (confirm && !(await confirm(`Empty the trash? ${items.length} item${items.length === 1 ? '' : 's'} will be gone for good.`, { okLabel: 'Empty trash' }))) return
             run(async () => { await trash.empty(); setSel(new Set()) })
           }}>Empty trash</Button>
@@ -3034,8 +3034,8 @@ export function MediaLibraryLibrary({
     if (editingKey === o.key) {
       return (
         <div className="flex gap-2">
-          <Button variant="primary" size="sm" onClick={commitRename} disabled={renaming}>{renaming ? 'Saving…' : 'Save'}</Button>
-          <Button variant="ghost" size="sm" onClick={cancelRename} disabled={renaming}>Cancel</Button>
+          <Button tone="primary" size="sm" onClick={commitRename} disabled={renaming}>{renaming ? 'Saving…' : 'Save'}</Button>
+          <Button tone="ghost" size="sm" onClick={cancelRename} disabled={renaming}>Cancel</Button>
         </div>
       )
     }

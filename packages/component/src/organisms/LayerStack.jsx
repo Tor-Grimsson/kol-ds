@@ -425,7 +425,7 @@ export default function LayerStack({
           <Tooltip label={`Group ${layerSelectionCount} selected layers`}>
           <Button
             iconComponent={IconC}
-            variant="primary"
+            tone="primary"
             size="sm"
             iconLeft="layers"
             onClick={() => onGroup(layerSelectedIds)}
@@ -476,7 +476,7 @@ export function AddLayerButton({
         <Tooltip label="Add layer">
         <Button
           iconComponent={IconC}
-          variant="primary"
+          tone="primary"
           size="sm"
           quiet
           iconOnly="plus"

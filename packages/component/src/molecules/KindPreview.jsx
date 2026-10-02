@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AudioTile, VideoTile } from './AudioPreview.jsx'
-import HlsVideo from '../atoms/HlsVideo.jsx'
+import BackgroundVideo from '../utilities/BackgroundVideo.jsx'
 import CodeBlock from './CodeBlock.jsx'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 import FileIcon from '../atoms/FileIcon.jsx'
@@ -16,7 +16,7 @@ import DocPage from './DocPage.jsx'
  * KindPreview — A preview for any kind of file. a preview for any kind of file: kol-r2b2's `KindPreview.jsx`,
  * promoted 2026-08-27 (SettingsPanelChromeAndColumnPreview). Before it, anything
  * that was not an image or a video showed a grey box with the word "text".
- * HLS → `HlsVideo` (inert — the DS's background-video atom, preview only),
+ * HLS → `BackgroundVideo` (inert — the DS's background-video atom, preview only),
  * video → `VideoTile` and audio → `AudioTile` (ColumnBrowserMediaFacts
  * 2026-08-27 — the square column tile with one play/pause control; no Figure, no
  * border — `VideoBlock`'s Figure border is why kol-r2b2 bypassed it; the overlay
@@ -171,10 +171,10 @@ export default function KindPreview({
 
   if (kind === 'playlist') {
     /* the caption is pane chrome — in a tile it is a line of prose over the picture */
-    if (fit !== 'pane') return <HlsVideo src={url} poster={poster} className="w-full h-full object-cover" />
+    if (fit !== 'pane') return <BackgroundVideo src={url} poster={poster} className="w-full h-full object-cover" />
     return (
       <div className="flex flex-col items-center gap-2">
-        <HlsVideo src={url} poster={poster} className="max-w-full max-h-[70vh] rounded" />
+        <BackgroundVideo src={url} poster={poster} className="max-w-full max-h-[70vh] rounded" />
         <span className="kol-mono-12 text-meta">HLS stream · playback is preview-only, no controls</span>
       </div>
     )

@@ -46,7 +46,7 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
       {current?.icon ? (
         <Tooltip label={current.label}>
         <Button
-          variant="ghost"
+          tone="ghost"
           size="sm"
           quiet
           iconOnly={current.icon}
@@ -55,7 +55,7 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
         />
         </Tooltip>
       ) : (
-        <Button variant="ghost" size="sm" quiet onClick={() => onAction?.(current?.id)}>
+        <Button tone="ghost" size="sm" quiet onClick={() => onAction?.(current?.id)}>
           {current?.label}
         </Button>
       )}
@@ -67,7 +67,7 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
         {...popover.getReferenceProps()}
         className="inline-flex"
       >
-        <Button variant="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={10} aria-label="Variants" />
+        <Button tone="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={10} aria-label="Variants" />
       </span>
       {/* w-max: a float sizes to its CONTENT (floating-ui contract) — without
         * it the absolutely-positioned panel can stretch against its containing

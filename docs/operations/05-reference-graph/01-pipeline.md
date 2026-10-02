@@ -61,8 +61,8 @@ than a filter to tune:
 | 4 | **weight** | computed, never declared; a hand-set star is reported as a disagreement, never overwritten | `sync-mdx-frontmatter.mjs:280-287` |
 | 5 | **consume** | canon bar · deletion guard · lineage | `scripts/validate-references.mjs` · `/references` |
 
-**Stage 3's restriction is load-bearing.** `showcase/src/demos/` holds a same-named
-file per component, and a demo rendering `<Accordion>` once made the AccordionPanel
+**Stage 3's restriction is load-bearing.** `showcase/src/previews/` holds a same-named
+file per component, and a preview rendering `<Accordion>` once made the AccordionPanel
 page claim it reused Accordion. `isSource()` restricts authorship to
 `packages/<pkg>/src/`.
 

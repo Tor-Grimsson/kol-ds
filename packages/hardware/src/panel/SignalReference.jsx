@@ -107,7 +107,7 @@ function PopButton({ label, list, onPick, onAppend, size }) {
     <>
       {/* Button takes no ref — the wrapper is the anchor, and the click reaches it by bubbling */}
       <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        <Button variant="grey" size={size} pressed={open}>{label}</Button>
+        <Button tone="grey" size={size} pressed={open}>{label}</Button>
       </span>
       <PopoverPanel popover={popover} className="w-80 max-h-96 overflow-y-auto p-3">
         <div className="flex flex-col gap-3">

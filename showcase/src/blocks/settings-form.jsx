@@ -31,8 +31,8 @@ export default function SettingsForm() {
       <ToggleSwitch label="Newsletter" checked={newsletter} onChange={setNewsletter} />
       <Divider />
       <div className="flex items-center justify-end gap-2">
-        <Button variant="ghost">Cancel</Button>
-        <Button variant="primary">Save changes</Button>
+        <Button tone="ghost">Cancel</Button>
+        <Button tone="primary">Save changes</Button>
       </div>
     </div>
   )

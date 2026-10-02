@@ -57,7 +57,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `EmptyState` | A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors. |
 | `ExitPreview` | A router-aware link out of preview mode. |
 | `Figure` | A caption’d, aspect-locked media frame for long-form prose. |
-| `HlsVideo` | A non-interactive background HLS video — hls.js with Safari-native fallback. |
+| `BackgroundVideo` | A non-interactive background HLS video — hls.js with Safari-native fallback. |
 | `Image` | A raster image with graceful missing-asset fallback. |
 | `Input` | Single-line text field with prefix/suffix, icons, and size variants. |
 | `Label` | A form-field label. |

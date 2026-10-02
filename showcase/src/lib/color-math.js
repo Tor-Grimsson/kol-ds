@@ -3,7 +3,7 @@
  *
  * The DS's picker family (`SpectrumControls`) is deliberately colour-math-only
  * and never converts — its header says conversion "lives at the call site".
- * This is that call site's shared copy, so the blocks demo and the foundations
+ * This is that call site's shared copy, so the blocks preview and the foundations
  * tuner stop each carrying their own.
  *
  * HSV is what the picker speaks ({ hue, sat, val }); HSL is what a ramp's

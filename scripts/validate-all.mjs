@@ -19,7 +19,7 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const GATES = [
   ['syntax', 'validate-syntax.mjs'],
   ['roster', 'validate-roster.mjs'],
-  ['demos', 'validate-demos.mjs'],
+  ['preview-files', 'validate-preview-files.mjs'],
   ['homes', 'validate-homes.mjs'],
   ['imports', 'validate-imports.mjs'],
   ['taxonomy', 'validate-taxonomy.mjs'],

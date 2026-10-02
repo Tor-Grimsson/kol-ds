@@ -1,7 +1,7 @@
 import { Component } from 'react'
 
 /**
- * Degrades a crashing live demo to a quiet note instead of taking down the
+ * Degrades a crashing live preview to a quiet note instead of taking down the
  * whole gallery — the mined usage reference below it still renders.
  */
 export default class ErrorBoundary extends Component {
@@ -14,7 +14,7 @@ export default class ErrorBoundary extends Component {
   }
   render() {
     if (this.state.failed) {
-      return <div className="kol-type-mono-xs text-meta opacity-60">live demo unavailable — see usage below</div>
+      return <div className="kol-type-mono-xs text-meta opacity-60">live preview unavailable — see usage below</div>
     }
     return this.props.children
   }

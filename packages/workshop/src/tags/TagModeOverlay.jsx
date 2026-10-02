@@ -105,7 +105,7 @@ const TagModeOverlay = () => {
                 <div className="flex items-center justify-between pl-5 min-[1600px]:pl-6">
                   {/* PRIMARY (user 2026-08-01). `outline quiet` is the
                     * recessive rung — this is the one action in the body. */}
-                  <Button variant="primary" size="sm" onClick={clearTags}>
+                  <Button tone="primary" size="sm" onClick={clearTags}>
                     Clear filters
                   </Button>
                   {/* NO CHIPS HERE (2026-08-01). The palette renders the

@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
  * @param {string}    to           the route the row opens
  * @param {ReactNode} title        the result's name (a highlighted node is fine)
  * @param {string}    [meta]       kind · category · space · date
+ * @param {ReactNode} [icon]       a glyph for the kind, before the title (Round 6, 2026-10-01)
  * @param {ReactNode} [description]
  * @param {'underline'|'wash'} [variant='underline']
  */
@@ -23,11 +24,11 @@ const VARIANTS = {
   wash: { row: 'flex flex-col gap-1 px-3 py-3 hover:bg-fg-04', title: '' },
 }
 
-export default function ResultRow({ to, title, meta, description, variant = 'underline' }) {
+export default function ResultRow({ to, title, meta, description, icon, variant = 'underline' }) {
   const v = VARIANTS[variant] ?? VARIANTS.underline
   return (
     <Link to={to} className={v.row}>
-      <span className={`kol-doc-body text-emphasis ${v.title}`.trim()}>{title}</span>
+      <span className={`kol-doc-body text-emphasis ${icon ? 'inline-flex items-center gap-2' : ''} ${v.title}`.replace(/\s+/g, ' ').trim()}>{icon}{title}</span>
       {meta && <span className="kol-helper-12 text-meta">{meta}</span>}
       {description && <span className="kol-doc-body text-body">{description}</span>}
     </Link>

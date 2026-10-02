@@ -25,7 +25,7 @@ Nothing in the showcase is hand-maintained twice. Every surface is derived from 
 | # | Root | Files | Authored by | Read by | Feeds |
 |---|---|---|---|---|---|
 | 1 | `docs/**/*.md` | 54 | **human** | `showcase/src/lib/vault.js` (eager glob) | Documentation surface, vault tree, ⌘K, tag graph |
-| 2 | `showcase/src/demos/` | 179 | human | `demos-registry.js` | live previews on component pages |
+| 2 | `showcase/src/previews/` | 179 | human | `previews-registry.js` | live previews on component pages |
 | 3 | `showcase/src/docs/*.mdx` | 70 | human | `@mdx-js/rollup` + `MdxDoc.jsx` | component doc pages, the four standalone doc pages |
 | 4 | `showcase/src/blocks/` | 22 | human | `shell-nav.js` | Blocks surface |
 | 5 | `packages/*/src/**/index.js` | 19 barrels | human (as code) | `scripts/lib/parse-barrel.mjs` → `roster.js` | the component roster — every component that exists |
@@ -84,7 +84,7 @@ Nothing about the content changed; only which root owns it. Nothing read the mar
 |---|---|---|
 | `docs/` | hand-authored markdown, `_assets/`, `_files/`, and a generated document ABOUT the repo when its parent INDEX marks it generated | a generated catalog the app renders, app config, code |
 | `.kol/` | agent state — architecture, context, plans, session logs, playbooks | anything a human is expected to read as documentation |
-| `showcase/src/` | MDX pages, demos, blocks, sets, generated JSON, generated catalogs | the canonical text of a design-system rule (that lives in `docs/`) |
+| `showcase/src/` | MDX pages, previews, blocks, sets, generated JSON, generated catalogs | the canonical text of a design-system rule (that lives in `docs/`) |
 
 ## The generators
 
@@ -112,7 +112,7 @@ Two surfaces render them, and they share their cell rendering rather than growin
 
 **Where a component is used is DERIVED, never authored** (`showcase/src/lib/set-membership.js`).
 Every registry already carries each file's raw source, so membership is read
-from its `@kolkrabbi/*` import statements across **sets · blocks · demos ·
+from its `@kolkrabbi/*` import statements across **sets · blocks · previews ·
 pages**. An authored list would be a second copy of those imports and would
 drift on the first edit.
 
@@ -120,8 +120,8 @@ Two facts, two rows, so neither misleads:
 
 | Row | Answers | Notes |
 |---|---|---|
-| `in_sets` | which **sets** compose it | absent when zero — never padded with demos |
-| `used_in` | every surface that composes it | demos collapse to "N demos"; a demo of X is not usage of X |
+| `in_sets` | which **sets** compose it | absent when zero — never padded with previews |
+| `used_in` | every surface that composes it | previews collapse to "N previews"; a preview of X is not usage of X |
 
 The set page reads the same map in the other direction (`membersOf`) to list its
 members. Deriving from sets alone was the first attempt and it was too narrow:

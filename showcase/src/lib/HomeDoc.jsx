@@ -15,10 +15,10 @@ import { useFrontmatter } from './frontmatter.jsx'
 export const HOME_MODULES = import.meta.glob('../homes/*.md', { eager: true, query: '?raw', import: 'default' })
 export const HOMES = buildInventory(HOME_MODULES)
 
-export default function HomeDoc({ id, frontmatter }) {
+export default function HomeDoc({ id, frontmatter, related = [] }) {
   const show = useFrontmatter('home')
   /* the page's rail lists the page's headings; the home hands it its frontmatter tags */
-  usePageMeta({ tags: HOMES.find((d) => d.id === id)?.metadata?.tags ?? [], related: [] })
+  usePageMeta({ tags: HOMES.find((d) => d.id === id)?.metadata?.tags ?? [], related })
   return (
     <DocumentationReader
       inventory={HOMES}

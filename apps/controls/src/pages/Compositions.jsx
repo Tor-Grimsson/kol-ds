@@ -80,7 +80,7 @@ function Channel() {
   return (
     <div className="flex flex-col items-start gap-3">
       <FlipCard flipped={flipped} width={320} front={<ChannelFront />} back={<ChannelBack />} />
-      <Button variant="grey" size="sm" onClick={() => setFlipped((f) => !f)}>{flipped ? 'Show front' : 'Show back'}</Button>
+      <Button tone="grey" size="sm" onClick={() => setFlipped((f) => !f)}>{flipped ? 'Show front' : 'Show back'}</Button>
     </div>
   )
 }

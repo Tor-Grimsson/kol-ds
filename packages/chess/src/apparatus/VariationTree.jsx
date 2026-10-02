@@ -50,7 +50,7 @@ const VariationTree = () => {
               <div className="flex flex-wrap gap-2 text-fg-70">
                 {line.moves.map((move, idx) => (
                   <Button
-                    variant="ghost"
+                    tone="ghost"
                     size="sm"
                     key={`${line.id}-${idx}`}
                     selected={activeSideline?.id === line.id && activeSideline?.index === idx}
@@ -96,7 +96,7 @@ const VariationNode = ({ node, depth, moveIndex, onSelectPly }) => {
   return (
     <div className="flex flex-col gap-1">
       <Button
-        variant="ghost"
+        tone="ghost"
         size="sm"
         onClick={() => onSelectPly(node.ply)}
         selected={isActive}

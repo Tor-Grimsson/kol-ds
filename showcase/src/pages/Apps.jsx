@@ -1,4 +1,5 @@
 import { useParams, Navigate, Link } from 'react-router-dom'
+import LandingWall from '../lib/LandingWall.jsx'
 import { Table } from '@kolkrabbi/kol-component'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { DocSection } from '@kolkrabbi/kol-workshop'
@@ -184,6 +185,17 @@ export default function Apps() {
       <div className="mt-10">
         <DocSection id="all-apps" title="All apps">
           <Table width="column" columns={allColumns} rows={APPS.map((a) => ({ ...a, id: a.name }))} />
+        </DocSection>
+      </div>
+      {/* THE WALL (2026-10-01): every app as a card, the landing's format — after the table, which stays first */}
+      <div className="mt-12">
+        <DocSection id="wall" title="Every app">
+          <LandingWall items={APPS.map((a) => ({ key: a.name, label: `${a.name} · ${layerOf(a.layer).label}`, to: `/app/${a.name}`, node: (
+            <div className="flex flex-col gap-3">
+              <p className="kol-doc-body text-body">{a.what}</p>
+              <p className="kol-helper-10 text-meta">{a.packages.join(' · ')}</p>
+            </div>
+          ) }))} />
         </DocSection>
       </div>
       <CompositionDiagram className="mt-12" node={NESTING} />

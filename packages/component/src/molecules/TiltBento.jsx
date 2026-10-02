@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import useInViewAttention from '../hooks/useInViewAttention.js'
 import { motion } from 'framer-motion'
-import HlsVideo from '../atoms/HlsVideo.jsx'
+import BackgroundVideo from '../utilities/BackgroundVideo.jsx'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 import Button from '../atoms/Button.jsx'
 import Image from '../atoms/Image.jsx'
@@ -9,7 +9,7 @@ import useTilt from '../hooks/useTilt.js'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
 
 /* taxonomy-ok: nests the same-file Media helper plus DS atoms/molecules
- * (HlsVideo, AssetPlaceholder, Button, Image) it composes — an organism. */
+ * (BackgroundVideo, AssetPlaceholder, Button, Image) it composes — an organism. */
 
 /**
  * True on coarse-pointer (touch/no-hover) devices. Local to TiltBento, mirrors
@@ -37,7 +37,7 @@ function useCoarsePointer() {
 
 /**
  * Media — internal, NOT exported. Sniffs `src` by extension and renders the
- * right full-bleed media element: `.m3u8` → HlsVideo, `.mov|.mp4|.webm` →
+ * right full-bleed media element: `.m3u8` → BackgroundVideo, `.mov|.mp4|.webm` →
  * autoplay <video>, any other src → the Image molecule (its own broken-asset
  * fallback), and no src → AssetPlaceholder. Positioning/fit arrive via
  * `className`; Image gets an inline height so its base `h-auto` can't beat the
@@ -45,7 +45,7 @@ function useCoarsePointer() {
  */
 function Media({ src, poster, className }) {
   if (!src) return <AssetPlaceholder className={className} />
-  if (/\.m3u8$/i.test(src)) return <HlsVideo src={src} poster={poster} className={className} />
+  if (/\.m3u8$/i.test(src)) return <BackgroundVideo src={src} poster={poster} className={className} />
   if (/\.(mov|mp4|webm)$/i.test(src)) {
     return (
       <video
@@ -198,7 +198,7 @@ export default function TiltBento({
               <div className={revealClass}>
                 <Button
                   href={href}
-                  variant="primary"
+                  tone="primary"
                   size="sm"
                   {...(isExternal
                     ? { target: '_blank', rel: 'noreferrer noopener' }

@@ -1,6 +1,6 @@
 /**
  * Blocks — composed, copy-pasteable KOL UI sections (the shadcn "blocks" model:
- * between raw components and full pages). Same one-file mechanics as demos:
+ * between raw components and full pages). Same one-file mechanics as previews:
  * each block in ../blocks/<Name>.jsx renders live AND ships its own ?raw source.
  * Blocks export `meta = { title, description, category, featured? }` and
  * optionally `stage`. Full-apparatus compositions (chess, metrics) are *sets*,

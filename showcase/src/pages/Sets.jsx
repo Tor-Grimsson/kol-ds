@@ -21,6 +21,7 @@ export default function Sets() {
       previewBase="/sets/preview"
       srcDir="sets"
       home="sets"
+      wall
       hero={{
         eyebrow: `Sets · ${SETS.length}`,
         title: 'Sets',

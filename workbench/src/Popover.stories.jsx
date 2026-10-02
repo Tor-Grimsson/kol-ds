@@ -4,10 +4,10 @@ import { usePopover, PopoverPanel, Tooltip, Button } from '@kolkrabbi/kol-compon
 export const Tooltips = () => (
   <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
     <Tooltip label="Settings" shortcut="S">
-      <Button variant="outline" iconOnly="settings-01" aria-label="Settings" />
+      <Button tone="outline" iconOnly="settings-01" aria-label="Settings" />
     </Tooltip>
     <Tooltip label="Search" placement="bottom">
-      <Button variant="outline" iconOnly="search" aria-label="Search" />
+      <Button tone="outline" iconOnly="search" aria-label="Search" />
     </Tooltip>
   </div>
 )

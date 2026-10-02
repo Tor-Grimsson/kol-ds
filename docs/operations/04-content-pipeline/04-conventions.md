@@ -29,7 +29,7 @@ The governing principle of this repo, learned the hard way across 2026-07-30: **
 | `docs/**` | kebab-case, lowercase, `NN-` prefix | framework `01-conventions.md`. `INDEX.md` and UPPERCASE meta files (`SHIPPED-PACKAGES.md`) are exempt |
 | generated catalogs | keep the generator's naming, unprefixed | the generator owns the folder; hand-renaming its output breaks the next run |
 | `showcase/src/docs/*.mdx` | PascalCase for component docs (`Button.mdx`), kebab for standalone pages | the filename is the lookup key for `ComponentPage` |
-| `showcase/src/demos/` | kebab, one file per demo | one-file demo model — preview and code render from the same file, so they cannot drift |
+| `showcase/src/previews/` | kebab, one file per preview | one-file preview model — preview and code render from the same file, so they cannot drift |
 
 **Generated catalogs live outside `docs/`** ([[01-sources|sources]]). The exemption above describes how a generator names its files; it is not permission to write them into the vault.
 

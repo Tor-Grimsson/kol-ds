@@ -100,7 +100,7 @@ export default function App() {
       </span>
       {shape === 'popover' && popovers}
       {shape === 'panel' && <span className="inline-flex lg:hidden">{popovers}</span>}
-      {shape === 'sheet' && <Button variant="grey" size="sm" pressed={sheetOpen} onClick={() => setSheetOpen(true)}>REF</Button>}
+      {shape === 'sheet' && <Button tone="grey" size="sm" pressed={sheetOpen} onClick={() => setSheetOpen(true)}>REF</Button>}
     </>
   )
 

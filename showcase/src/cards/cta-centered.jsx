@@ -17,7 +17,7 @@ export default function CtaCentered() {
       variant="centered"
       headline="Licence this typeface"
       body="One licence covers web, desktop and app embedding for the named domains."
-      actions={<><Button>See licences</Button><Button variant="outline">Ask a question</Button></>}
+      actions={<><Button>See licences</Button><Button tone="outline">Ask a question</Button></>}
     />
   )
 }

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 /**
  * RailRow — THE L3 rail row. The ladder's bottom rung, owned like the other two.
@@ -28,7 +28,9 @@ import { NavLink } from 'react-router-dom'
  * `NavLink` drives it for routes; `active` drives it for hash links and
  * buttons, which react-router cannot resolve.
  *
- * @param {string}   [to]       route → NavLink, active resolved by the router
+ * @param {string}   [to]       route → NavLink, active resolved by the router. A `to` carrying a `#` is a
+ *                              SECTION of a page (2026-10-01): the router would light every section of
+ *                              the open page at once, so it is a plain Link and `active` decides
  * @param {string}   [href]     plain anchor (hash links: on-this-page)
  * @param {Function} [onClick]  no `to`/`href` → a <button>
  * @param {boolean}  [active]   forced active state (hash links, buttons)
@@ -63,6 +65,13 @@ export default function RailRow({
     </>
   )
 
+  if (to && to.includes('#')) {
+    return (
+      <Link to={to} className={cls(active)} onClick={onNavigate}>
+        {inner}
+      </Link>
+    )
+  }
   if (to) {
     return (
       <NavLink to={to} end className={({ isActive }) => cls(isActive || active)} onClick={onNavigate}>

@@ -19,7 +19,7 @@ export default function SplitImageLeft() {
       label="THE FLEET"
       headline={<>Built to hold <em>course</em></>}
       body="An editorial pull: label, display headline and lede beside a cover-fit visual."
-      actions={<><Button>Explore the fleet</Button><Button variant="secondary">Read the log</Button></>}
+      actions={<><Button>Explore the fleet</Button><Button tone="inverted">Read the log</Button></>}
       media={<div className="absolute inset-0" style={splitFill} />}
       caption="FIG 01 — HARBOUR, REYKJAVÍK"
     />

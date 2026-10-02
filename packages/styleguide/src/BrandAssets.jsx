@@ -3,7 +3,7 @@ import { ContentCollection, FullscreenOverlay, Table } from '@kolkrabbi/kol-comp
 import PageSection from '@kolkrabbi/kol-framework/src/PageSection.jsx'
 import AssetTable from './AssetTable.jsx'
 import AssetCard from './AssetCard.jsx'
-import { ProfileAvatar } from './SocialMocks.jsx'
+import { BrandAvatar } from './SocialMocks.jsx'
 import { BusinessCardBack, BusinessCardFront, EmailSignature, Envelope, Letterhead } from './StationeryMocks.jsx'
 import BrandMark from './BrandMark.jsx'
 import { Prose, SectionIndex } from './BrandBook.jsx'
@@ -134,7 +134,7 @@ export default function BrandAssets({ brand, Logo, logoSources }) {
             <PageSection key={s.key} {...head}>
               <div className="kol-grid mt-8 items-start">
                 {brand.social.avatars.map(({ bg, polarity }, i) => (
-                  <AssetCard key={i}><ProfileAvatar mark={mark(marks.avatar, { className: 'w-1/2' })} bg={bg} polarity={polarity} /></AssetCard>
+                  <AssetCard key={i}><BrandAvatar mark={mark(marks.avatar, { className: 'w-1/2' })} bg={bg} polarity={polarity} /></AssetCard>
                 ))}
               </div>
             </PageSection>

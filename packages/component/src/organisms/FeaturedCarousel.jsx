@@ -1,13 +1,13 @@
 import { isValidElement, useCallback, useEffect, useRef, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from '../atoms/Image.jsx'
-import HlsVideo from '../atoms/HlsVideo.jsx'
+import BackgroundVideo from '../utilities/BackgroundVideo.jsx'
 import EmblaNav from '../molecules/EmblaNav.jsx'
 import OverlayGlassPanel from '../utilities/OverlayGlassPanel.jsx'
 
 /**
  * Per-slide media layer: a `{ src, kind }` descriptor becomes a cover-fit
- * Image / HlsVideo / inert <video> pinned over the frame
+ * Image / BackgroundVideo / inert <video> pinned over the frame
  * (`.kol-featured-carousel-media` — absolute inset-0 object-cover, CSS in
  * @kol/theme, out-cascades Image's baked `h-auto`). A ready ReactNode renders
  * as-is and must position itself (give it that same class). `onEnded` /
@@ -36,7 +36,7 @@ function SlideMedia({ media, active = true, onEnded, onTimeUpdate }) {
 
   if (kind === 'video') {
     // Non-HLS file (mp4/webm): a plain inert video. HLS manifests and the
-    // poster-only case go through HlsVideo, which owns hls.js attachment and
+    // poster-only case go through BackgroundVideo, which owns hls.js attachment and
     // the non-interactive hardening set. `loop` is dropped once `onEnded` is
     // wired so the active slide plays once, then advances.
     if (src && !src.endsWith('.m3u8')) {
@@ -57,7 +57,7 @@ function SlideMedia({ media, active = true, onEnded, onTimeUpdate }) {
       )
     }
     return (
-      <HlsVideo
+      <BackgroundVideo
         src={src}
         poster={poster}
         active={active}

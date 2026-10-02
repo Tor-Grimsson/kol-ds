@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import { gsap } from 'gsap'
 import { useNavigate } from 'react-router-dom'
 import { getTagColor } from '@kolkrabbi/kol-markdown'
-import { tagGraph } from '@kolkrabbi/kol-search'
+import { indexGraph } from '@kolkrabbi/kol-search'
 import { EASE, DURATION, s } from '@kolkrabbi/kol-component/utilities/motion'
 
 /**
@@ -30,11 +30,25 @@ import { EASE, DURATION, s } from '@kolkrabbi/kol-component/utilities/motion'
  *     curves are kol-component's motion constants; reduced motion skips the tweens.
  *   - LABELS WHERE THEY HELP. Every node printed its name; now the larger tags carry a label at rest
  *     and the rest show theirs when focused.
+ *
+ * FILES, ORPHANS AND SETTINGS (2026-10-01 — user ruling: files and orphans beside tags, with filter
+ * and display settings; no force controls). The data is kol-search's `indexGraph`:
+ *
+ *   `files`      a node per tagged doc, joined to its tags (the tags then join through their docs)
+ *   `orphans`    a node per doc with no tags
+ *   `filter`     text — keeps the nodes it matches
+ *   `labels`     'auto' (the eight biggest tags, the rest on focus) · 'all' · 'none'
+ *   `nodeScale` · `linkScale`   multipliers on the drawn radius and the edge width (default 1)
+ *
+ * A doc node is a small neutral dot, named by its title; clicking one calls `onFileClick(node)`,
+ * else opens its `href`.
  */
 const defaultTagHref = (tag) => `/workshop/design-system/documentation?tag=${encodeURIComponent(tag)}`
 
 const radiusOf = (d) => Math.max(5, Math.min(14, 4 + Math.sqrt(d.count) * 2.2))
 const fillOf = (d) => {
+  /* a doc is not a tag: one neutral ink, an orphan fainter still */
+  if (d.type === 'file') return d.orphan ? 'var(--kol-oq-24)' : 'var(--kol-oq-48)'
   /* palette tokens, not copies; `dark` is a surface role with no palette entry */
   const key = getTagColor(d.id)
   return key === 'dark' ? 'var(--kol-surface-on-primary)' : `var(--kol-palette-${key}, var(--kol-palette-teal))`
@@ -42,7 +56,7 @@ const fillOf = (d) => {
 const EDGE = 'color-mix(in srgb, var(--kol-surface-on-primary) 24%, transparent)'
 const ACCENT = 'var(--kol-accent-primary)'
 
-const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHref }) => {
+const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHref, files = false, orphans = false, filter = '', labels = 'auto', nodeScale = 1, linkScale = 1, onFileClick }) => {
   const svgRef = useRef(null)
   const containerRef = useRef(null)
   const sceneRef = useRef(null)
@@ -54,7 +68,10 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
 
   const sourceDocs = allDocs || docs
   /* the engine's graph (kol-search `tagGraph`, 2026-09-29) over the docs' tags */
-  const graphData = useMemo(() => tagGraph(sourceDocs.map((d) => ({ id: d.id, tags: d.metadata?.tags ?? [] }))), [sourceDocs])
+  const graphData = useMemo(() => indexGraph(
+    sourceDocs.map((d) => ({ id: d.id, tags: d.metadata?.tags ?? [], title: d.metadata?.title ?? d.title, href: d.href })),
+    { files, orphans, filter },
+  ), [sourceDocs, files, orphans, filter])
 
   useEffect(() => {
     const update = () => {
@@ -82,10 +99,12 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
     const zoom = d3.zoom().scaleExtent([0.3, 4]).on('zoom', (e) => g.attr('transform', e.transform))
     svg.call(zoom).on('dblclick.zoom', null)
 
+    /* the drawn radius: a tag by its count, a doc small and fixed, both by the display scale */
+    const R = (d) => (d.type === 'file' ? 4 : radiusOf(d)) * nodeScale
     const nodes = graphData.nodes.map((d) => ({ ...d }))
     const links = graphData.edges.map((d) => ({ ...d }))
     const maxW = d3.max(links, (l) => l.weight) || 1
-    const counts = nodes.map((d) => d.count).sort((a, b) => b - a)
+    const counts = nodes.filter((d) => d.type !== 'file').map((d) => d.count).sort((a, b) => b - a)
     /* the eight biggest tags keep their label at rest; the rest show on focus */
     const labelFloor = counts[Math.min(7, counts.length - 1)] ?? 0
 
@@ -108,10 +127,10 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
       .force('link', d3.forceLink(links).id((d) => d.id)
         .distance((l) => 45 + 95 * (1 - l.weight / maxW))
         .strength((l) => 0.08 + 0.4 * (l.weight / maxW)))
-      .force('charge', d3.forceManyBody().strength((d) => -70 - radiusOf(d) * 16).distanceMax(span * 0.8))
+      .force('charge', d3.forceManyBody().strength((d) => -70 - R(d) * 16).distanceMax(span * 0.8))
       .force('x', d3.forceX(cx).strength(0.07))
       .force('y', d3.forceY(cy).strength(0.07))
-      .force('collide', d3.forceCollide((d) => radiusOf(d) + 9).iterations(2))
+      .force('collide', d3.forceCollide((d) => R(d) + 9).iterations(2))
       .velocityDecay(0.38)
       .alphaDecay(0.035)
       .stop()
@@ -120,7 +139,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
 
     const link = g.append('g').attr('class', 'links').selectAll('line').data(links).enter().append('line')
       .attr('stroke', EDGE)
-      .attr('stroke-width', (l) => 0.6 + 1.6 * (l.weight / maxW))
+      .attr('stroke-width', (l) => (0.6 + 1.6 * (l.weight / maxW)) * linkScale)
       .attr('stroke-linecap', 'round')
       .attr('opacity', 0)
 
@@ -135,8 +154,8 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
       .attr('stroke-width', 1.5)
 
     const label = node.append('text')
-      .text((d) => `#${d.id}`)
-      .attr('dy', (d) => radiusOf(d) + 12)
+      .text((d) => (d.type === 'file' ? d.label : `#${d.id}`))
+      .attr('dy', (d) => R(d) + 12)
       .attr('text-anchor', 'middle')
       .attr('fill', 'var(--kol-fg-72)')
       .attr('font-family', 'var(--kol-font-family-mono)')
@@ -152,7 +171,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
     sim.on('tick', place)
 
     /* ── the resting look, and a focus — both tweened ── */
-    const restLabel = (d) => (d.count >= labelFloor ? 1 : 0)
+    const restLabel = (d) => (labels === 'all' ? 1 : labels === 'none' ? 0 : d.type !== 'file' && d.count >= labelFloor ? 1 : 0)
     const paint = (focusId) => {
       const lit = focusId ? near.get(focusId) : null
       const act = activeRef.current
@@ -160,7 +179,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
         duration: t(DURATION.slow),
         ease: EASE.houseGsap,
         opacity: (i) => (lit ? (lit.has(nodes[i].id) ? 1 : 0.15) : act && nodes[i].id !== act ? 0.45 : 0.95),
-        attr: { r: (i) => radiusOf(nodes[i]) * (nodes[i].id === focusId ? 1.3 : 1) },
+        attr: { r: (i) => R(nodes[i]) * (nodes[i].id === focusId ? 1.3 : 1) },
         overwrite: 'auto',
       })
       gsap.to(label.nodes(), {
@@ -196,7 +215,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
     gsap.to(circle.nodes(), {
       duration: t(DURATION.spring),
       ease: 'back.out(1.6)',
-      attr: { r: (i) => radiusOf(nodes[i]) },
+      attr: { r: (i) => R(nodes[i]) },
       opacity: 0.95,
       delay: (i) => (reduced ? 0 : (dist(nodes[i]) / maxDist) * 0.35),
       onComplete: () => paint(null),
@@ -214,7 +233,8 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
     node
       .on('click', (event, d) => {
         event.stopPropagation()
-        if (onTagClick) onTagClick(d.id)
+        if (d.type === 'file') { if (onFileClick) onFileClick(d); else if (d.href) navigate(d.href) }
+        else if (onTagClick) onTagClick(d.id)
         else navigate(tagHref(d.id))
       })
       .on('mouseenter', (event, d) => { setHoveredNode(d); paint(d.id) })
@@ -231,7 +251,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
       svg.interrupt()
       sceneRef.current = null
     }
-  }, [graphData, dimensions, navigate, onTagClick, tagHref])
+  }, [graphData, dimensions, navigate, onTagClick, onFileClick, tagHref, labels, nodeScale, linkScale])
 
   /* ── an active-tag change re-paints; it never rebuilds the layout ── */
   useEffect(() => { sceneRef.current?.paint(null) }, [activeTag])
@@ -239,7 +259,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
   if (graphData.nodes.length === 0) {
     return (
       <div className="text-fg-48 kol-mono-12 py-4 px-2">
-        No tags found.
+        Nothing to draw.
       </div>
     )
   }
@@ -249,7 +269,7 @@ const TagGraph = ({ docs, activeTag, onTagClick, allDocs, tagHref = defaultTagHr
       <svg ref={svgRef} width={dimensions.width} height={dimensions.height} className="tag-graph-svg" />
       {hoveredNode && (
         <div className="tag-graph-tooltip kol-helper-10 text-emphasis">
-          #{hoveredNode.id} ({hoveredNode.count} {hoveredNode.count === 1 ? 'doc' : 'docs'})
+          {hoveredNode.type === 'file' ? hoveredNode.label : `#${hoveredNode.id} (${hoveredNode.count} ${hoveredNode.count === 1 ? 'doc' : 'docs'})`}
         </div>
       )}
     </div>

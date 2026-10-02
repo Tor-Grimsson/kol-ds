@@ -26,7 +26,7 @@
  *   const brand = { mark: <Asset name="logomark" />, palette: { accent: '#F3F1EC' } }
  *   <PostPhoto {...brand} />
  *   <StoryType {...brand} quote={<>Quiet,<br/>considered.</>} />
- *   <ProfileAvatar {...brand} />
+ *   <BrandAvatar {...brand} />
  *
  * One object spread into each mock is the intended call shape — no context, no
  * provider: a brand book renders these in a grid and already holds the object.
@@ -240,7 +240,9 @@ export function StoryType({ mark, palette, fonts, quote = 'Your line here.', cla
 }
 
 /**
- * ProfileAvatar — The round profile mark. the round profile mark (1:1).
+ * BrandAvatar — The brand's round profile mark. the round profile mark (1:1). Renamed from
+ * `ProfileAvatar` 2026-10-01 (user ruling): it is a brand-book mock of the brand's mark in a social
+ * profile frame, not a second `Avatar` — that one is a person. `ProfileAvatar` is the alias.
  *
  * The forks called it `Avatar`, which is already a kol-component atom (a
  * PERSON's avatar). Two packages exporting one name is a collision the roster
@@ -252,7 +254,7 @@ export function StoryType({ mark, palette, fonts, quote = 'Your line here.', cla
  * @param {'dark'|'light'} polarity - Which way the mark inks against that ground (default: 'dark')
  * @param {string} className - Extra classes on the frame
  */
-export function ProfileAvatar({ mark, palette, bg, polarity = 'dark', className = '' }) {
+export function BrandAvatar({ mark, palette, bg, polarity = 'dark', className = '' }) {
   const [pal] = resolve(palette)
   return (
     <div
@@ -263,3 +265,6 @@ export function ProfileAvatar({ mark, palette, bg, polarity = 'dark', className 
     </div>
   )
 }
+
+/** @deprecated 2026-10-01 — use BrandAvatar. Drops when nobody imports it (04-retirements.md). */
+export const ProfileAvatar = BrandAvatar

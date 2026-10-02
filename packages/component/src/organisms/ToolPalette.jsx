@@ -60,7 +60,7 @@ const ToolPalette = ({
       return (
         /* the DS tooltip carries the key as its own chip (the native-title sweep, 2026-09-26) */
         <Tooltip key={it.id} label={it.label} shortcut={it.shortcut}>
-        <Button variant="ghost" size={size} quiet iconOnly={it.icon} iconComponent={iconComponent}
+        <Button tone="ghost" size={size} quiet iconOnly={it.icon} iconComponent={iconComponent}
           pressed={isTool ? activeId === it.id : undefined} disabled={it.disabled}
           aria-label={it.label}
           onClick={(e) => { (isTool ? onSelect : onAction)?.(it.id); blur(e) }} />

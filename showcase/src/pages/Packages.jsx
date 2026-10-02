@@ -1,4 +1,5 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
+import LandingWall from '../lib/LandingWall.jsx'
 import { DocSection, DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { Table } from '@kolkrabbi/kol-component'
 import { buildInventory } from '@kolkrabbi/kol-markdown'
@@ -216,6 +217,15 @@ export default function Packages() {
   return (
     <div className="flex flex-col gap-10 pb-24">
       <HomeDoc id="packages" />
+      {/* THE WALL (2026-10-01): every package as a card, the landing's format; the tables follow */}
+      <DocSection id="wall" title="Every package">
+        <LandingWall items={PACKAGES.map((p) => ({ key: p.dir, label: `${p.pkg.name.replace('@kolkrabbi/', '')} · ${p.pkg.version}`, to: packageHref(p.dir), node: (
+          <div className="flex flex-col gap-3">
+            <p className="kol-doc-body text-body">{p.pkg.description ?? '—'}</p>
+            <p className="kol-helper-10 text-meta uppercase">{p.tier}</p>
+          </div>
+        ) }))} />
+      </DocSection>
       {TIER_ORDER.map((tier) => {
         const list = PACKAGES.filter((p) => p.tier === tier)
         if (!list.length) return null

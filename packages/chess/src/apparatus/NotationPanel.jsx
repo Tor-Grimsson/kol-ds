@@ -20,7 +20,7 @@ const SidelineRow = ({ line, activeSideline, onSelectSidelineMove }) => (
     {line.moves.map((move, index) => (
       <Button
         key={`${line.id}-${index}`}
-        variant="ghost"
+        tone="ghost"
         size="sm"
         className="chess-notation-sideline"
         selected={activeSideline?.id === line.id && activeSideline?.index === index}
@@ -86,7 +86,7 @@ const NotationPanel = ({
               {pair.moveNumber}.
             </span>
             <Button
-              variant="ghost"
+              tone="ghost"
               size="sm"
               className="w-full justify-start gap-1.5"
               disabled={!pair.white}
@@ -97,7 +97,7 @@ const NotationPanel = ({
               {pair.white && decorate?.(pair.white)}
             </Button>
             <Button
-              variant="ghost"
+              tone="ghost"
               size="sm"
               className="w-full justify-start gap-1.5"
               disabled={!pair.black}

@@ -29,7 +29,7 @@ export const stage = 'full'
  * travelled to mid-screen. All three were visible at 390 and nothing in the
  * showcase rendered the tier at 390.
  *
- * WHY IT NEEDED TO BE A SET AND NOT A DEMO. `AppShell` owns the viewport — a
+ * WHY IT NEEDED TO BE A SET AND NOT A PREVIEW. `AppShell` owns the viewport — a
  * fixed rail, a fixed trigger, a scrim at modal z — so mounting it inside the
  * docs chrome puts two fixed rails in one corner. `stage = 'full'` sends it to
  * `/sets/preview/app-shell`, and BlockViewer iframes THAT at 390 / 768 / 1280,
@@ -100,8 +100,8 @@ export default function AppShellSet() {
       onViewChange={setView}
       toCard={(p) => ({ key: p.name, title: p.title, detail: p.detail, media: <img src={p.img} alt="" />, onClick: () => {} })}
       actions={<>
-        <Button variant="grey" size="md">New rack</Button>
-        <Button variant="grey" size="md" onClick={() => setShortcuts(true)}>Shortcuts</Button>
+        <Button tone="grey" size="md">New rack</Button>
+        <Button tone="grey" size="md" onClick={() => setShortcuts(true)}>Shortcuts</Button>
       </>}
     />
   )

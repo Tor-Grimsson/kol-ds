@@ -61,6 +61,17 @@ registry and the render loop still stay out. It also carries **the signal engine
 (`./signal`, plain JS): one expression compiler and one ADSR, replacing four drifted copies, and
 `EnvelopeGenerator` over it. **Do not** grow frames into wired modules.
 
+**Amended 2026-10-01 (user ruling, deliberately against "`Fader`/`PanelDropdown`/`PanelLabel`
+coexist with `Slider`/`Dropdown`/`LabeledControl` by design"):** a control that does the same job
+as a kol-component control is that control's **`variant="panel"`**, not a second component —
+*"is there a logical reason to have two components that look close to or completely identical
+separate?"*. `Fader` → `Slider`, `Knob` → `RotaryDial`, `PanelLabel` → `LabeledControl`; the panel
+drawing lives in kol-component and the kol-hardware names are aliases on the retirement ledger
+(`PanelDropdown` had already gone this way in kol-controls 0.3.0). What stays in kol-hardware is
+what has **no** app twin — a control with a state the app atoms do not have (`IconButton`'s lit
+LED key, the switches, the jacks, the LED), the frames and the signal engine. **Do not** merge one
+of those without reading it first: `IconButton` was proposed for `Button` and was not one.
+
 **Clients tier** (added 2026-07-03): headless service SDKs — **one package per service contract** (`@kolkrabbi/kol-*-client`), plain ESM, no React, no deps on or from the UI packages; the package version tracks its API contract. First: `kol-media-client`. **Do not** merge clients into a grab-bag package — unrelated contracts must not version in lock-step.
 
 **Engine tier** (added 2026-09-28, user ruling): **plain-JS engines** that more than one package

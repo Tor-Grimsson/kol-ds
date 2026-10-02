@@ -100,12 +100,18 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
 
   /* The L1 count is every leaf row under it — RailSection shows it only while
    * the section is folded (2026-09-28). At any depth: leaves, not groups. */
-  const leavesOf = (list) => list.reduce((n, r) => n + (r.children?.length ? leavesOf(r.children) : 1), 0)
+  /* A PAGE THAT LISTS ITS SECTIONS IS STILL ONE PAGE (2026-10-01): `section: true` children are
+   * `#` anchors on their parent's page, not leaves of the tree. */
+  const isPage = (r) => !r.children?.length || r.children.every((c) => c.section)
+  const leavesOf = (list) => list.reduce((n, r) => n + (isPage(r) ? 1 : leavesOf(r.children)), 0)
   const leafCount = leavesOf(routes)
 
   /* ONE GROUP, AT ANY DEPTH. A chapter's child with children of its own is a chapter again — the
    * same RailSection rung, the same count and chevron, stepped in one row-indent by `.shell-nav-nest`
    * so its caret sits on its siblings' text edge. A leaf is a RailRow wherever it lands. */
+  /* A ROUTE MAY CARRY A GLYPH (rail icons, open-questions Round 6, ruled 2026-10-01): `icon` is an
+   * icon name, drawn on the row or beside the group's label. The consumer decides which routes. */
+  const glyphOf = (route) => (route.icon ? <Icon name={route.icon} size={14} className="shrink-0" /> : undefined)
   const renderGroup = (route) => (
     <RailSection
       level={2}
@@ -118,17 +124,52 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
       onToggle={() => handleSectionClick(route)}
       onNavigate={onNavigate}
       icon={Icon}
+      glyph={glyphOf(route)}
     >
-      <nav className="shell-nav-items">
+      {/* a group that wears a glyph steps its children in by the glyph (14 + the 8 gap), so they
+        * still hang under its LABEL — without it they sat left of the word they belong to */}
+      <nav className={`shell-nav-items ${route.icon ? 'pl-[22px]' : ''}`.trim()}>
         {route.children.map((child) => (child.children?.length ? (
           <div key={child.id} className="shell-nav-nest">{renderGroup(child)}</div>
         ) : (
-          <RailRow key={child.id} to={getChildPath(child, basePath)} onNavigate={onNavigate}>
+          <RailRow key={child.id} to={getChildPath(child, basePath)} onNavigate={onNavigate}
+            icon={glyphOf(child)}
+            active={child.section ? `${location.pathname}${location.hash}` === child.path : undefined}>
             {child.label}
           </RailRow>
         )))}
       </nav>
     </RailSection>
+  )
+  /* `label={null}` draws the tree with no L1 section over it (2026-10-01) — a space whose rail is
+   * its pages, not a category of them (Search: user ruling, the space does not list itself). */
+  const body = (
+    <div className="shell-rail-stack-inner">
+      {/* LOOSE ROWS SHARE ONE LIST (the showcase review W12, 2026-09-30 — user: "the spaces are
+        * incorrect in the left sidebar"). Each childless entry rendered its own <nav>, and the
+        * stack's 16px gap landed between every pair, so a rail of four rows (Search) read 46px
+        * apart instead of a list's 26. Consecutive rows are one run now; a chapter breaks it. */}
+      {routes.reduce((runs, route) => {
+        const last = runs[runs.length - 1]
+        if (!route.children?.length && last && !last.group) last.rows.push(route)
+        else runs.push(route.children?.length ? { group: route } : { rows: [route] })
+        return runs
+      }, []).map((run) => (run.group ? (
+        <div key={run.group.id} className="shell-nav-group">
+          {renderGroup(run.group)}
+        </div>
+      ) : (
+        /* A CHILDLESS ENTRY IS A ROW, not a chapter (2026-09-30): drawn at L2 it read as an
+         * empty category with a blank caret slot. */
+        <nav key={run.rows[0].id} className="shell-nav-items">
+          {run.rows.map((route) => (
+            <RailRow key={route.id} to={route.path ?? getSectionRootPath(route, basePath)} onNavigate={onNavigate} icon={glyphOf(route)}>
+              {route.label}
+            </RailRow>
+          ))}
+        </nav>
+      )))}
+    </div>
   )
   return (
     /* One rail layout, one class (2026-08-01). This was `space-y-4` against the
@@ -136,43 +177,20 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
      * spellings of the same stack, and `space-y` fights any child that owns a
      * margin, which the eyebrow box does. */
     <div className="shell-rail-stack-inner">
-      <RailSection
-        level={1}
-        label={label}
-        to={labelTo}
-        count={leafCount}
-        collapsed={navCollapsed}
-        onToggle={handleToggle}
-        onNavigate={onNavigate}
-        icon={Icon}
-      >
-        <div className="shell-rail-stack-inner">
-          {/* LOOSE ROWS SHARE ONE LIST (the showcase review W12, 2026-09-30 — user: "the spaces are
-            * incorrect in the left sidebar"). Each childless entry rendered its own <nav>, and the
-            * stack's 16px gap landed between every pair, so a rail of four rows (Search) read 46px
-            * apart instead of a list's 26. Consecutive rows are one run now; a chapter breaks it. */}
-          {routes.reduce((runs, route) => {
-            const last = runs[runs.length - 1]
-            if (!route.children?.length && last && !last.group) last.rows.push(route)
-            else runs.push(route.children?.length ? { group: route } : { rows: [route] })
-            return runs
-          }, []).map((run) => (run.group ? (
-            <div key={run.group.id} className="shell-nav-group">
-              {renderGroup(run.group)}
-            </div>
-          ) : (
-            /* A CHILDLESS ENTRY IS A ROW, not a chapter (2026-09-30): drawn at L2 it read as an
-             * empty category with a blank caret slot. */
-            <nav key={run.rows[0].id} className="shell-nav-items">
-              {run.rows.map((route) => (
-                <RailRow key={route.id} to={route.path ?? getSectionRootPath(route, basePath)} onNavigate={onNavigate}>
-                  {route.label}
-                </RailRow>
-              ))}
-            </nav>
-          )))}
-        </div>
-      </RailSection>
+      {label === null ? body : (
+        <RailSection
+          level={1}
+          label={label}
+          to={labelTo}
+          count={leafCount}
+          collapsed={navCollapsed}
+          onToggle={handleToggle}
+          onNavigate={onNavigate}
+          icon={Icon}
+        >
+          {body}
+        </RailSection>
+      )}
     </div>
   )
 }

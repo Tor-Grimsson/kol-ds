@@ -24,6 +24,7 @@ export default function Blocks() {
       srcDir="blocks"
       key={cat ?? 'all'}
       home={cat ? `block-${cat}` : 'blocks'}
+      wall={!cat}
       hero={{
         eyebrow: `Modules · ${BLOCKS.length}`,
         title: 'Modules',

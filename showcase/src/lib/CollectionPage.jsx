@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import BlockViewer from './BlockViewer.jsx'
-import DemoStage from './DemoStage.jsx'
+import PreviewStage from './PreviewStage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
-import { DEMOS } from './demos-registry.js'
+import { PREVIEWS } from './previews-registry.js'
 import { slugify, getComponentBySlug, FUNCTIONS } from '../nav/registry.js'
 
 /** drop keys the page already renders as chrome, so nothing prints twice */
@@ -28,13 +28,13 @@ const kolHref = (name) => {
 
 const chipCls = 'inline-flex items-center rounded-[var(--kol-radius-sm)] border border-fg-12 px-2.5 py-1 kol-mono-12'
 
-/* One component of the collection, in its own container — live demo where one
+/* One component of the collection, in its own container — live preview where one
  * exists, otherwise a labelled card linking to the component's own page. */
 function ComponentSpecimen({ name, local = false }) {
   const slug = slugify(name)
   const comp = getComponentBySlug(slug)
   const href = kolHref(name)
-  const demo = DEMOS[name]
+  const preview = PREVIEWS[name]
   const fn = comp?.function ? FUNCTIONS[comp.function] : null
   const tag = local ? 'LOCAL PART' : fn
 
@@ -51,8 +51,8 @@ function ComponentSpecimen({ name, local = false }) {
       </div>
       <div className="flex min-h-[96px] items-center justify-center p-6">
         <ErrorBoundary>
-          {demo
-            ? <DemoStage entry={demo} />
+          {preview
+            ? <PreviewStage entry={preview} />
             : <p className="max-w-[var(--kol-content-measure)] text-center kol-mono-12 text-meta">{comp?.description || (local ? 'Showcase-local part composed into this set.' : 'Live preview on the component page.')}</p>}
         </ErrorBoundary>
       </div>
@@ -80,7 +80,7 @@ function Composition({ composition }) {
       )}
 
       {/* Showcase-local parts (chess board, dashboard cards…) — same container
-          treatment, one after another, live where a demo exists. */}
+          treatment, one after another, live where a preview exists. */}
       {localAreas.map(([area, names]) => (
         <div key={area} className="flex flex-col gap-4">
           <p className="kol-helper-10 uppercase tracking-widest text-meta">{area} — local parts ({names.length})</p>
@@ -140,7 +140,8 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
       {/* slot: a SET lists its member components here (set-membership.js) */}
       {afterPreview}
       <Composition composition={entry.composition} />
-      <div className="flex items-center justify-between border-t border-fg-08 pt-6">
+      {/* mt-10: the rule sat flush under the composition table on all 38 module pages (gap scan, 2026-10-01) */}
+      <div className="mt-10 flex items-center justify-between border-t border-fg-08 pt-6">
         {prev ? (
           <Link to={`${basePath}/${prev.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">← {prev.title}</Link>
         ) : <span />}

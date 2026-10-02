@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * validate-syntax — every package source file must TRANSFORM.
+ * validate-syntax — every package source file must TRANSFORM, and so must the showcase, the
+ * workbench and the apps (2026-10-01).
  *
  * Born 2026-08-09, the day "18 gates clean" blessed a publish that could not
  * parse: kol-component 0.28.0 shipped a JSX comment at expression position in
@@ -34,6 +35,15 @@ for (const pkg of readdirSync(join(ROOT, 'packages'))) {
   try { statSync(src) } catch { continue }
   walk(src)
 }
+/* THE APPS TRANSFORM TOO (2026-10-01). A codemod rewrote a quoted `<Button variant='primary' />`
+ * inside a showcase preview's string, the string stopped parsing, and the whole showcase went
+ * blank behind a dev-server 500 — while this gate, reading packages only, said clean. Whatever
+ * this repo runs is read here: the showcase, the workbench and every app. */
+const packageCount = files.length
+for (const dir of ['showcase/src', 'workbench/src', ...readdirSync(join(ROOT, 'apps')).map((a) => `apps/${a}/src`)]) {
+  try { statSync(join(ROOT, dir)) } catch { continue }
+  walk(join(ROOT, dir))
+}
 
 const violations = []
 for (const f of files) {
@@ -49,4 +59,4 @@ if (violations.length) {
   for (const v of violations) console.error('  ✗ ' + v)
   process.exit(1)
 }
-console.log(`syntax: clean (${files.length} package source files transform)`)
+console.log(`syntax: clean (${packageCount} package source files transform, ${files.length - packageCount} showcase · workbench · app files)`)

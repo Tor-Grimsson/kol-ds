@@ -39,7 +39,7 @@ export default function EffectScreen({ layer, chain, onPick, onBack }) {
           {(category ? category.filters : categories).map((item) => (
             <Button
               key={item.id}
-              variant="primary"
+              tone="primary"
               size="lg"
               className={SPREAD}
               iconLeft={category ? 'filter' : 'chevron-right'}
@@ -53,7 +53,7 @@ export default function EffectScreen({ layer, chain, onPick, onBack }) {
         {/* Back unwinds one level: out of a category first, then out of the
             sheet — the phone has no second way out. */}
         <Button
-          variant="grey"
+          tone="grey"
           size="lg"
           className={SPREAD}
           iconLeft="arrow-left"

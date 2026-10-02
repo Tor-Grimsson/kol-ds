@@ -5,7 +5,7 @@ function Bomb() {
   const [armed, setArmed] = useState(false)
   if (armed) throw new Error('Demo crash: the bomb went off')
   return (
-    <Button variant="primary" onClick={() => setArmed(true)}>
+    <Button tone="primary" onClick={() => setArmed(true)}>
       Throw an error
     </Button>
   )
@@ -24,7 +24,7 @@ export const CustomFallback = () => (
     fallback={({ error, reset }) => (
       <div className="p-6 rounded bg-surface-secondary space-y-4">
         <p className="kol-mono-14">Custom fallback: {error?.toString()}</p>
-        <Button variant="primary" onClick={reset}>Reset</Button>
+        <Button tone="primary" onClick={reset}>Reset</Button>
       </div>
     )}
   >

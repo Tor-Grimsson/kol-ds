@@ -33,9 +33,9 @@ export default function ShareButtons({ url, title = '', targets = ['x', 'linkedi
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className}`.trim()}>
       {label && <span className="kol-helper-12 text-fg-48">{label}</span>}
-      <Button variant="outline" size="sm" onClick={copy}>{copied ? 'Copied' : 'Copy link'}</Button>
+      <Button tone="outline" size="sm" onClick={copy}>{copied ? 'Copied' : 'Copy link'}</Button>
       {targets.filter((t) => INTENT[t]).map((t) => (
-        <Button key={t} variant="outline" size="sm" onClick={() => open(t)}>{LABEL[t] ?? t}</Button>
+        <Button key={t} tone="outline" size="sm" onClick={() => open(t)}>{LABEL[t] ?? t}</Button>
       ))}
     </div>
   )

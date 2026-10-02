@@ -11,7 +11,7 @@ function Demo() {
         Prompt
       </Button>
       <Button
-        variant="outline"
+        tone="outline"
         onClick={async () => setResult(String(await confirm('Discard unsaved changes?')))}
       >
         Confirm

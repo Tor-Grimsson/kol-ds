@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { CodeBlock, Dropdown, SegmentedToggle, TabChips } from '@kolkrabbi/kol-component'
-import DemoStage from './DemoStage.jsx'
+import { CodeBlock, Dropdown, TabChips } from '@kolkrabbi/kol-component'
+import PreviewStage from './PreviewStage.jsx'
 
 /**
  * PreviewCard — THE Preview/Code card. One chrome, every surface.
@@ -11,7 +11,7 @@ import DemoStage from './DemoStage.jsx'
  * `CodeBlock` vs a bespoke `<pre>`, and a toolbar the other didn't have. Two
  * cards, two answers to every question. They are now one component: this file
  * owns the frame, the seam, the radius, the tab bar and the code tab, and the
- * BODY is pluggable — a live demo here, a device-resizable iframe in blocks.
+ * BODY is pluggable — a live preview here, a device-resizable iframe in blocks.
  *
  * The width cap is a PROP, not a fork. Component pages cap at `panel`; blocks
  * and sets cap at `shell`, because page-level compositions are shell-wide by
@@ -19,7 +19,7 @@ import DemoStage from './DemoStage.jsx'
  * shell-wide apparatus lives in Blocks/Sets, not on component pages"). Both
  * read the same scale; neither improvises a pixel value.
  *
- * min-h floor is 10rem: the old 20rem stage read as a void around one-row demos.
+ * min-h floor is 10rem: the old 20rem stage read as a void around one-row previews.
  */
 const TABS = [
   { key: 'preview', label: 'Preview' },
@@ -44,32 +44,26 @@ export const ToolbarDivider = () => (
 )
 
 /* THE SIZE KNOB READS UP THE RAMP (2026-10-01 — user: "why does sizing start at md? should it not
- * be relative to size ramp from smallest to biggest?"). A demo lists its DEFAULT size first, which
+ * be relative to size ramp from smallest to biggest?"). A preview lists its DEFAULT size first, which
  * is what the preview opens on; the picker shows the ramp in order. Names off the ramp keep the
- * demo's order. */
+ * preview's order. */
 const RAMP = ['xs', 'sm', 'md', 'lg', 'xl']
 const byRamp = (list) => (list.every((v) => RAMP.includes(v)) ? [...list].sort((a, b) => RAMP.indexOf(a) - RAMP.indexOf(b)) : list)
 
-/* One axis, one control: a SegmentedToggle while the options fit at a glance,
- * the Dropdown above four — long variant sets (Button's seven) were eating
- * the whole toolbar lane as a toggle. */
-const AxisPicker = ({ options, value, onChange, label }) =>
-  options.length > 4 ? (
-    <Dropdown
-      size="sm"
-      options={options.map((v) => ({ value: v, label: v }))}
-      value={value}
-      onChange={onChange}
-    />
-  ) : (
-    <SegmentedToggle
-      size="sm"
-      value={value}
-      onChange={onChange}
-      options={options.map((v) => ({ value: v, label: v }))}
-      ariaLabel={label}
-    />
-  )
+/* One axis, one control, and it says what it is (open-questions Round 6, ruled 2026-10-01 — user:
+ * "can we have in the variant dropdown say first item 'variant' then divider then the list?", and
+ * on the size toggle: "it clashes with the dropdown having that border. maybe we change to
+ * dropdown?"). Every axis is a Dropdown: its name as the first row, a divider, the list. Labels
+ * are capitalised (user, twice: "everything is always in lowercase"); the value passed on is raw. */
+const capitalise = (v) => (typeof v === 'string' && v ? v[0].toUpperCase() + v.slice(1) : v)
+const AxisPicker = ({ options, value, onChange, label }) => (
+  <Dropdown
+    size="sm"
+    options={[{ heading: label }, { divider: true }, ...options.map((v) => ({ value: v, label: capitalise(v) }))]}
+    value={value}
+    onChange={onChange}
+  />
+)
 
 export default function PreviewCard({
   entry,
@@ -88,7 +82,7 @@ export default function PreviewCard({
   /** right-aligned toolbar controls; receives the active tab so preview-only
    *  controls can hide on Code without a second toolbar */
   actions,
-  /** replaces the centred demo canvas — blocks pass their iframe stage. Kept
+  /** replaces the centred preview canvas — blocks pass their iframe stage. Kept
    *  mounted across tab flips so the frame never reboots on a Code→Preview
    *  round trip (remounting it was the original slow-switch bug). */
   renderBody,
@@ -96,9 +90,9 @@ export default function PreviewCard({
 }) {
   const [tab, setTab] = useState(tabs[0]?.key ?? 'preview')
   /* Variant preview (user ruling 2026-08-01) / size preview (2026-08-09): a
-   * demo exports `variants` / `sizes` and the pickers ride the toolbar's
+   * preview exports `variants` / `sizes` and the pickers ride the toolbar's
    * EXISTING actions lane, so both axes flip in place instead of needing a
-   * second demo file or a trip off the page. */
+   * second preview file or a trip off the page. */
   const variants = entry?.variants ?? null
   const [variant, setVariant] = useState(variants?.[0] ?? null)
   /* tone (W19, 2026-09-30 — user: "atom button had dropdown for variant, to atom ne and size, now its
@@ -108,7 +102,7 @@ export default function PreviewCard({
   const sizes = entry?.sizes ?? null
   const [size, setSize] = useState(sizes?.[0] ?? null)
   /* the third axis (2026-09-30, the names audit: *"can props not be set like buttons variants
-   * … in dropdown?"*): a demo exports `states` for what it would otherwise stack twice —
+   * … in dropdown?"*): a preview exports `states` for what it would otherwise stack twice —
    * CurveOverlay's empty · handles · both */
   const states = entry?.states ?? null
   const [state, setState] = useState(states?.[0] ?? null)
@@ -151,15 +145,15 @@ export default function PreviewCard({
         /* hidden, not unmounted — see renderBody above */
         <div className={tab === 'preview' ? 'block' : 'hidden'}>{renderBody()}</div>
       ) : entry?.frame ? (
-        /* a page-sized demo runs in its own document (demos-registry `frame`) */
+        /* a page-sized preview runs in its own document (previews-registry `frame`) */
         tab === 'preview' && (
           <iframe title={`${entry.name} preview`} src={`/components/preview/${entry.name}`} className="block w-full border-0 bg-surface-primary" style={{ height: typeof entry.frame === 'number' ? entry.frame : 560 }} />
         )
       ) : (
         tab === 'preview' && (
-          <div className={`flex ${minH} items-center justify-center bg-fg-02 p-10`}>
+          <div className={`flex ${minH} items-center justify-center bg-surface-sunken p-10`}>
             {entry?.Component ? (
-              <DemoStage entry={entry} variant={variant} tone={tone} size={size} state={state} />
+              <PreviewStage entry={entry} variant={variant} tone={tone} size={size} state={state} />
             ) : children || (
               <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
             )}

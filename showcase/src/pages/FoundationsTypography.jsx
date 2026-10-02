@@ -1,6 +1,7 @@
 import { createRef } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
-import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
+import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
+import { relatedDocs } from '../nav/vault.js'
 import { LiveValue, LiveClassValue, LiveNodeValue, LiveNodeFace } from '../lib/resolve-css-var.jsx'
 import { TYPOGRAPHY_SECTIONS } from '../data/typography.js'
 
@@ -159,7 +160,11 @@ function SystemSection({ section, columnsDict }) {
 // ─── Page ────────────────────────────────────────────────────────
 
 
+/* the law behind what this page shows — the right rail's Related rows (2026-10-01) */
+const RELATED = relatedDocs(['01-foundations/03-typography.md', '01-foundations/12-typography-lookup.md'])
+
 export default function FoundationsTypography() {
+  usePageMeta({ tags: [], related: RELATED })
   return (
     <>
       <DocHeader

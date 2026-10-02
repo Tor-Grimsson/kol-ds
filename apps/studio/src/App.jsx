@@ -74,7 +74,7 @@ export default function App() {
     { title: '1. Library', text: ['What the tool makes and what it is made from — patches and modules — in one Catalog.'], illustration: <Art name="nav-library" /> },
     { title: '2. Create', text: ['Compose a new one: the header names it, the page under it is the editor.'], illustration: <Art name="nav-create" /> },
     { title: '3. Use', text: ['The tool itself, full-bleed. ⌥1 is Home, then the rail in order; S shows every key.'], illustration: <Art name="nav-rack" /> },
-    { title: 'Get started', actions: (close) => <Button variant="grey" size="md" onClick={() => { close(); navigate('/create') }}>New patch</Button> },
+    { title: 'Get started', actions: (close) => <Button tone="grey" size="md" onClick={() => { close(); navigate('/create') }}>New patch</Button> },
   ]
 
   return (
@@ -90,7 +90,7 @@ export default function App() {
         filtersTitle: 'All Patches',
         filterGroups: [{ label: 'Kind', key: 'kind', values: KINDS }],
         toCard: card,
-        actions: <Button variant="grey" size="md" onClick={() => navigate('/create')}>New patch</Button>,
+        actions: <Button tone="grey" size="md" onClick={() => navigate('/create')}>New patch</Button>,
       }}
       library={{
         header: { title: 'Library', subtitle: 'Patches and the modules they are made from' },

@@ -27,7 +27,7 @@ export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './c
 export { default as AssetCard } from './AssetCard.jsx'
 export { default as Swatch } from './Swatch.jsx'
 export {
-  PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, ProfileAvatar,
+  PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, BrandAvatar, ProfileAvatar,
   DEFAULT_MOCK_PALETTE, DEFAULT_MOCK_FONTS,
 } from './SocialMocks.jsx'
 export {

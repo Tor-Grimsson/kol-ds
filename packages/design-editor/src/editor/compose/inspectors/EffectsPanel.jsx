@@ -213,7 +213,7 @@ function LayerEffects({ layer }) {
       )}
       {chain.length > 0 && selIdx != null && (
         <Tooltip label={chain.length >= MAX_FILTERS ? `Chain is full (${MAX_FILTERS} effects)` : 'Add another effect'}><Button aria-label={chain.length >= MAX_FILTERS ? `Chain is full (${MAX_FILTERS} effects)` : 'Add another effect'}
-          variant="primary" size="sm" className="w-full"
+          tone="primary" size="sm" className="w-full"
           onClick={() => setSelIdx(null)}
           disabled={chain.length >= MAX_FILTERS}
         >
@@ -223,7 +223,7 @@ function LayerEffects({ layer }) {
 
       {/* ── empty chain: just the button (Figma's add-first flow) ── */}
       {chain.length === 0 && !adding && (
-        <Button variant="primary" size="sm" className="w-full" onClick={() => setAdding(true)}>
+        <Button tone="primary" size="sm" className="w-full" onClick={() => setAdding(true)}>
           Add effect
         </Button>
       )}
@@ -329,7 +329,7 @@ export function StageRolls({ def, view, tab, onPatch, inline = false }) {
     <div className="flex flex-col gap-2">
       <SeedField seed={seed} inline={inline} />
       {allParams.length > 0 && (
-        <Button variant="primary" size={cs} className="w-full"
+        <Button tone="primary" size={cs} className="w-full"
           onClick={(e) => (e.altKey ? reset(allParams) : roll(allParams))}>
           {motion ? 'Randomize motion' : 'Randomize all'}
         </Button>
@@ -338,7 +338,7 @@ export function StageRolls({ def, view, tab, onPatch, inline = false }) {
         /* Odd counts keep the lone half-width cell — Generate's grid does. */
         <div className="grid grid-cols-2 gap-2">
           {scopes.map((sc) => (
-            <Button key={sc.id} variant="primary" size={cs}
+            <Button key={sc.id} tone="primary" size={cs}
               onClick={(e) => (e.altKey ? reset(sc.params) : roll(sc.params, sc))}>
               {sc.label}
             </Button>
@@ -480,7 +480,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
           </div>
         )
       })}
-      <Button variant="primary" size={cs} className="w-full" iconLeft="plus" iconSize={12} onClick={() => add()}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="plus" iconSize={12} onClick={() => add()}>
         Add custom sweep
       </Button>
     </div>

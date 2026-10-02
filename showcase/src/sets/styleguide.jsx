@@ -43,7 +43,7 @@ import {
   PostEditorial,
   StoryPhoto,
   StoryType,
-  ProfileAvatar,
+  BrandAvatar,
   BusinessCardFront,
   BusinessCardBack,
   Envelope,
@@ -395,7 +395,7 @@ export default function StyleguideSet() {
       <Section title="Social">
         <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           <AssetCard caption="Avatar">
-            <ProfileAvatar {...BRAND_BOOK} />
+            <BrandAvatar {...BRAND_BOOK} />
           </AssetCard>
           <AssetCard caption="Post — photo">
             <PostPhoto {...BRAND_BOOK} />

@@ -40,8 +40,8 @@ export default function FeatureShowcase() {
       ctasClassName="pt-10 pb-4"
       ctas={
         <>
-          <Button variant="primary" size="md" href="#docs">Read the docs</Button>
-          <Button variant="secondary" size="md" href="#components">Browse components</Button>
+          <Button tone="primary" size="md" href="#docs">Read the docs</Button>
+          <Button tone="inverted" size="md" href="#components">Browse components</Button>
         </>
       }
     />

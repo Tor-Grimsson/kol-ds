@@ -23,8 +23,8 @@ const DEFAULT_DETAILS = [
 export default function FoundryTypefaceDetails({ details = DEFAULT_DETAILS, actions, label = 'Font Details', icon = 'info', className = '' }) {
   const buttons = actions === undefined ? (
     <ButtonGroup align="center">
-      <Button variant="primary">Download Font</Button>
-      <Button variant="outline">View Specimen</Button>
+      <Button tone="primary">Download Font</Button>
+      <Button tone="outline">View Specimen</Button>
     </ButtonGroup>
   ) : actions
   return (

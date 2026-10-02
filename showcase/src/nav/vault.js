@@ -49,6 +49,14 @@ const PHASE_LOG_IDS = new Set(PHASE_LOG.map((d) => d.id))
 
 /* Own URL space — Documentation is a SYSTEM (user ruling 2026-07-30), a
  * top-level area beside Components, never a child page under Docs. */
+/* A PAGE'S DOCUMENTATION, as the right rail's Related rows (2026-10-01 — user: "is there linking
+ * between foundation color typography tones etc and documentations? seems like what you would show
+ * in the right sidebar"). Named by file, so a renamed doc drops out rather than linking nowhere. */
+export const relatedDocs = (files) => files
+  .map((f) => VAULT.find((d) => d.file.endsWith(f)))
+  .filter(Boolean)
+  .map((d) => ({ label: d.metadata?.title ?? d.title ?? d.id, to: vaultDocHref(d.id) }))
+
 export const vaultDocHref = (id) => (PHASE_LOG_IDS.has(id) ? `/development/log/${id}` : `/documentation/${id}`)
 
 /* The Development rail's Phase log group: the index opens on the header, the entries newest

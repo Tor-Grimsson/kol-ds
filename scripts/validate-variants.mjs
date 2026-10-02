@@ -16,6 +16,9 @@
  *       button, which I have said numerous times NOT to default, the default is fucking called
  *       primary"*. An unset variant inherits the wrapper's tone, else primary — that is the default.
  *
+ *   V3  `<Button variant>` is never one of the six tone-duplicates (primary · secondary · outline ·
+ *       ghost · grey · control) — deprecated 2026-10-01; the ground is `tone`.
+ *
  * Button's allowed set is read from its `KNOWN` list (it has no `variant === '…'` branches).
  * Only literal values are checked; an expression (`variant={v}`) is the caller's to get right.
  */
@@ -40,9 +43,13 @@ const ALLOWED_INVERTED = {
   'showcase/src/cards/split-centered.jsx': 'site section — the second CTA of a pair',
   'showcase/src/cards/split-image-top.jsx': 'site section — the second CTA of a pair',
   'showcase/src/sets/section-set.jsx': 'site section — the second CTA of a pair',
-  'showcase/src/demos/FeatureSplit.jsx': 'site section — the second CTA of a pair',
-  'showcase/src/demos/SectionSplit.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/previews/FeatureSplit.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/previews/SectionSplit.jsx': 'site section — the second CTA of a pair',
 }
+
+/* V3 (2026-10-01): the six Button variants that were tones under a second name — deprecated
+ * aliases, so nothing in this repo passes them any more */
+const TONE_VARIANTS = ['primary', 'secondary', 'outline', 'ghost', 'grey', 'control']
 
 function allowed(file) {
   const src = readFileSync(join(ROOT, file), 'utf8')
@@ -73,12 +80,18 @@ for (const [name, file] of Object.entries(COMPONENTS)) {
   for (const f of files) {
     const src = readFileSync(f, 'utf8')
     for (const m of src.matchAll(tag)) {
+      /* V2 follows the ground to where it lives now: `tone="inverted"` is the same fill */
+      if (name === 'Button' && /\btone="inverted"/.test(m[1]) && !ALLOWED_INVERTED[relative(ROOT, f)]) {
+        errors.push(`${relative(ROOT, f)}:${src.slice(0, m.index).split('\n').length}  <Button tone="inverted"> — the inverted fill; drop it (inherits the tone, else primary) or allowlist the file with a reason (V2)`)
+      }
       const v = m[1].match(/\bvariant="([\w-]+)"/)
       if (!v) continue
       seen++
       const line = src.slice(0, m.index).split('\n').length
       if (!ok.has(v[1])) {
         errors.push(`${relative(ROOT, f)}:${line}  <${name} variant="${v[1]}"> — not a variant (has: ${[...ok].join(' · ')}) (V1)`)
+      } else if (name === 'Button' && TONE_VARIANTS.includes(v[1])) {
+        errors.push(`${relative(ROOT, f)}:${line}  <Button variant="${v[1]}"> — a deprecated alias of a tone; pass tone="${v[1] === 'secondary' ? 'inverted' : v[1] === 'control' ? 'ghost' : v[1]}" (V3)`)
       } else if (name === 'Button' && v[1] === 'secondary' && !ALLOWED_INVERTED[relative(ROOT, f)]) {
         errors.push(`${relative(ROOT, f)}:${line}  <Button variant="secondary"> — the inverted fill; drop the variant (inherits the tone, else primary) or allowlist the file with a reason (V2)`)
       }

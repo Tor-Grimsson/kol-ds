@@ -3,6 +3,7 @@ import { getTagColor } from '@kolkrabbi/kol-markdown'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { EmptyState, Input, Tag } from '@kolkrabbi/kol-component'
 import ResultRow from './ResultRow.jsx'
+import { Icon } from '@kolkrabbi/kol-icons'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 
 /**
@@ -47,7 +48,7 @@ const readToken = (t) => (t.kind === 'term'
     ? `${t.field} ${t.value}`
     : `${t.negate ? 'not ' : ''}${t.field === 'tags' ? 'tag' : t.field}: ${t.value}${t.via === 'smart' ? ' (from the word)' : ''}`)
 
-export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60, rowVariant = 'underline', resultsPath }) {
+export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60, rowVariant = 'underline', rowMeta = 'facts', kindIcons, resultsPath }) {
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
   const q = params.get('q') ?? ''
@@ -163,7 +164,9 @@ export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_F
                     to={r.item.href}
                     variant={rowVariant}
                     title={<Highlight text={r.item.title} ranges={r.highlights.title} />}
-                    meta={[r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
+                    /* Round 6 (2026-10-01): `kindIcons` puts a glyph for the kind on the row, `rowMeta="path"` prints the route as the second line */
+                    icon={kindIcons?.[r.item.kind] && <Icon name={kindIcons[r.item.kind]} size={14} />}
+                    meta={rowMeta === 'path' ? r.item.href : [r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
                     description={r.item.description}
                   />
                 </li>

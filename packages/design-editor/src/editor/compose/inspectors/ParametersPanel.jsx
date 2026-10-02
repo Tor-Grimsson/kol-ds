@@ -91,7 +91,7 @@ function LayerParameters({ layer }) {
       <>
         {tab === 'generate' && ['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line'].includes(layer.kind) && (
           <Tooltip label="Convert the shape to an editable bezier path (one-way)"><Button aria-label="Convert the shape to an editable bezier path (one-way)"
-            variant="primary" size="sm" className="w-full"
+            tone="primary" size="sm" className="w-full"
             onClick={() => convertShapeToPath(layer.id)}
           >
             Convert to path
@@ -211,7 +211,7 @@ function PatternFields({ layer, setProp, updateLayer, palette, renderAnimate, ta
           )}
 
           <div className="pt-2 border-t border-oq-08">
-            <Tooltip label="Flatten the pattern to static SVG shapes (one-way)"><Button aria-label="Flatten the pattern to static SVG shapes (one-way)" variant="primary" size="sm" className="w-full" onClick={onFlatten}
+            <Tooltip label="Flatten the pattern to static SVG shapes (one-way)"><Button aria-label="Flatten the pattern to static SVG shapes (one-way)" tone="primary" size="sm" className="w-full" onClick={onFlatten}
              >
               Flatten
             </Button></Tooltip>
@@ -290,7 +290,7 @@ function TextFields({ layer, setProp, updateLayer, palette, renderAnimate, tab }
               ? 'Flatten the text to glyph-outline shapes (one-way)'
               : 'Flatten needs an outline font — switch the Family to Right Grotesk'}><Button aria-label={isOutlineFamily(layerFamily(layer))
               ? 'Flatten the text to glyph-outline shapes (one-way)'
-              : 'Flatten needs an outline font — switch the Family to Right Grotesk'} variant="primary" size="sm" className="w-full" onClick={onFlatten}
+              : 'Flatten needs an outline font — switch the Family to Right Grotesk'} tone="primary" size="sm" className="w-full" onClick={onFlatten}
             disabled={!isOutlineFamily(layerFamily(layer))}
            >
             Flatten

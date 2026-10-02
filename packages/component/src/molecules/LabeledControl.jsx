@@ -23,6 +23,9 @@
  *            kol-monitor 2026-09-01 — in a narrow multi-column grid a fixed
  *            160 label left the control 4px, and a nowrap combo painted into
  *            the neighbour column; the 48px column gap had been hiding it).
+ *   variant — `'panel'` is the hardware panel label (was kol-hardware `PanelLabel`, merged
+ *            2026-10-01): `kol-helper-8`, uppercase, hugging the control; it takes
+ *            `labelPosition` (`top · bottom · left · right`, default bottom), `labelClass` and `gap`.
  *   children — the control body.
  *   className — additional classes on the wrapper.
  */
@@ -33,7 +36,26 @@ export default function LabeledControl({
   labelWidth = 48,
   children,
   className = '',
+  variant,
+  labelPosition = 'bottom',
+  labelClass = 'kol-helper-8',
+  gap = 0,
 }) {
+  if (variant === 'panel') {
+    const isRow = labelPosition === 'left' || labelPosition === 'right'
+    const labelEl = label && (
+      <span className={`${labelClass} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>
+        {label}
+      </span>
+    )
+    return (
+      <div style={{ display: 'inline-flex', flexDirection: isRow ? 'row' : 'column', alignItems: 'center', gap }}>
+        {(labelPosition === 'top' || labelPosition === 'left') && labelEl}
+        {children}
+        {(labelPosition === 'bottom' || labelPosition === 'right') && labelEl}
+      </div>
+    )
+  }
   const showLabel  = !!label
   const labelInner = (
     <>

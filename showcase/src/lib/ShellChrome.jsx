@@ -7,6 +7,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
 import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, LOOKUP, LOOKUP_ROOT, START, START_ROOT, lastSearchQuery, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
+import PAGE_SECTIONS from '../nav/page-sections.json'
 import { PHASE_LOG_ROUTE, VAULT, vaultDocHref } from '../nav/vault.js'
 import { BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS as BLOCK_LABELS } from './blocks-registry.js'
 import { CARDS } from './cards-registry.js'
@@ -45,7 +46,7 @@ const categoryHref = (cat) => {
  */
 
 /* Auto-TOC: read the headings the page actually rendered. Runs after paint on
- * every navigation, and again when the main column mutates (async demos,
+ * every navigation, and again when the main column mutates (async previews,
  * lazily-mounted sections). ids are required — a heading without one can't be
  * linked, so it's skipped rather than silently mis-anchored. */
 function useHeadings() {
@@ -57,14 +58,14 @@ function useHeadings() {
     if (!main) return undefined
 
     const read = () => {
-      /* SPECIMENS ARE NOT THE PAGE (2026-07-30): a heading inside a demo or a
+      /* SPECIMENS ARE NOT THE PAGE (2026-07-30): a heading inside a preview or a
        * type specimen is sample content, excluded at the source. */
       /* THE TITLE IS ON THIS PAGE TOO (2026-10-01 — user: "should on this page not also show the
        * first part even if it is h1?" · "something is always on this page"). The h1 leads the
        * outline, so a page with no h2 still lists itself. Titles carry no id, so the first one
        * is given the page-top anchor. */
       const found = [...main.querySelectorAll('h1, h2, h3')]
-        .filter((h) => !h.closest('[data-toc-skip], .kol-doc-figure, .kol-demo-stage'))
+        .filter((h) => !h.closest('[data-toc-skip], .kol-doc-figure, .kol-preview-stage'))
         .map((h) => {
           if (h.tagName === 'H1' && !h.id && !document.getElementById('page-top')) h.id = 'page-top'
           const id = h.id || h.closest('section[id]')?.id
@@ -137,6 +138,36 @@ function SpaceToc({ space }) {
  * second door to each was "one body of content, two doors". */
 
 const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path }))
+
+/* A ROW WITH NO CHILDREN LISTS ITS PAGE'S SECTIONS (2026-10-01 — user: "cant we just use # to link
+ * to sections? something so the sidebar doesnt look so dislocated when there are no sub items?").
+ * The sections are read off the rendered page into `nav/page-sections.json` (`pnpm
+ * extract:sections`); a page with fewer than two has nothing to list and stays a row. A count
+ * printed into a heading ("Admitted — 12") is dropped — the manifest is not re-read per render. */
+/* RAIL GLYPHS (open-questions Round 6, ruled 2026-10-01): a glyph on every group, and on the pages
+ * of Docs and Styles. The ~325 component rows stay text. A route named here wears that glyph; any
+ * other group wears the folder, any other Docs or Styles page the file. */
+const RAIL_ICONS = {
+  'lib-components': 'component-01', 'lib-blocks': 'layout', 'lib-apps': 'desktop', 'lib-sets': 'layers', 'lib-packages': 'database',
+  'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-utilities': 'customize',
+  'set-cards': 'rectangle',
+  'spec-foundations': 'slider-01', 'spec-color': 'paint-drop', 'spec-typography': 'type', 'spec-tones': 'opacity',
+  'docs-shell': 'layout', 'docs-menus': 'hamburger', 'docs-loaders': 'refresh', 'docs-type-roles': 'aa',
+  'search-results': 'search', 'search-tags': 'hash-01', 'search-graph': 'polygon', 'search-index': 'view-list',
+  'dev-references': 'code', 'dev-quarantine': 'lock', 'dev-open-questions': 'message',
+}
+const withIcons = (routes, { pages = false, leaf } = {}) => routes.map((r) => {
+  const group = r.children?.some((c) => !c.section)
+  const icon = RAIL_ICONS[r.id] ?? (r.section ? undefined : group ? 'folder' : pages ? (leaf ?? 'file') : undefined)
+  return { ...r, ...(icon ? { icon } : null), ...(r.children ? { children: withIcons(r.children, { pages, leaf }) } : null) }
+})
+
+const withSections = (routes) => routes.map((r) => {
+  if (r.children?.length) return { ...r, children: withSections(r.children) }
+  const at = (r.path ?? '').split('?')[0]
+  const sections = PAGE_SECTIONS[at]
+  return sections ? { ...r, children: sections.map((x) => ({ id: `${r.id}#${x.id}`, label: x.label.replace(/\s[—·]\s\d+$/, ''), path: `${at}#${x.id}`, section: true })) } : r
+})
 
 function SpaceRail({ space, onNavigate }) {
   const { mode, setMode } = useGrouping()
@@ -219,21 +250,23 @@ function SpaceRail({ space, onNavigate }) {
             />
           </div>
         )}
-        <ShellSidebar routes={rowsOf(START)} basePath="/" label="Start" labelTo={START_ROOT} onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(rowsOf(START), { pages: true })} basePath="/" label="Start" labelTo={START_ROOT} onNavigate={onNavigate} />
         {/* LOOKUP leads the rail (2026-10-01): the names and values you check while building */}
-        <ShellSidebar routes={rowsOf(LOOKUP)} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(rowsOf(LOOKUP), { pages: true })} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
         {/* NO "LIBRARY" LEVEL (2026-10-01 — user: "why does library as a home have to list it self
           * as the parent? … it should just show group-by, composition and Collection as top level
           * (uppercase)"). The space is the header tab; its two chapters are the rail's eyebrows. */}
-        {composition.length > 0 && <ShellSidebar routes={composition} basePath="/" label="Composition" labelTo="/composition" onNavigate={onNavigate} />}
-        <ShellSidebar routes={collection} basePath="/" label="Collection" labelTo="/collection" onNavigate={onNavigate} />
+        {composition.length > 0 && <ShellSidebar routes={withIcons(composition)} basePath="/" label="Composition" labelTo="/composition" onNavigate={onNavigate} />}
+        <ShellSidebar routes={withIcons(collection)} basePath="/" label="Collection" labelTo="/collection" onNavigate={onNavigate} />
       </div>
     )
   }
   /* SEARCH (2026-09-30): the four ways to find a page */
   if (space === 'search') {
     /* the Results row returns to the query you left (2026-10-01), the eyebrow to the search home */
-    return one('Search', SEARCH_VIEWS.map((v) => ({ id: `search-${v.value}`, label: v.label, path: v.value === 'results' ? `${v.path}${lastSearchQuery()}` : v.path })), '/search')
+    /* NO "SEARCH" LEVEL (2026-10-01, the Library ruling applied here): the space is the header tab,
+     * its four views are the rail — each listing its own sections. */
+    return one(null, withIcons(withSections(SEARCH_VIEWS.map((v) => ({ id: `search-${v.value}`, label: v.label, path: v.value === 'results' ? `${v.path}${lastSearchQuery()}` : v.path })))), '/search')
   }
   /* DOCS IS THE VAULT (2026-09-30): Documentation and Operations, as `docs/` is on disk. The
    * guides and the live specimens left for Styles. */
@@ -241,23 +274,27 @@ function SpaceRail({ space, onNavigate }) {
     return (
       <div className="shell-rail-stack">
         {/* each category opens its own INDEX.md (W3, 2026-09-30 — the eyebrows linked nowhere) */}
-        <ShellSidebar routes={vault.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" labelTo={categoryHref('documentation')} onNavigate={onNavigate} />
-        <ShellSidebar routes={vault.filter((g) => g.category === 'operations')} basePath="/" label="Operations" labelTo={categoryHref('operations')} onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(vault.filter((g) => g.category === 'documentation'), { pages: true })} basePath="/" label="Documentation" labelTo={categoryHref('documentation')} onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(vault.filter((g) => g.category === 'operations'), { pages: true })} basePath="/" label="Operations" labelTo={categoryHref('operations')} onNavigate={onNavigate} />
       </div>
     )
   }
   /* STYLES (2026-09-30): the reference lookup — foundations read off the packages, the icon
    * sets, the guides. */
   if (space === 'styles') {
-    return one('Styles', [
-      { id: 'sty-foundations', label: 'Foundations', path: '/foundations', children: rowsOf(DOCS_SPECIMENS) },
-      /* each set is a group of its icon groups, each a page (W3, 2026-09-30) */
-      { id: 'sty-icons', label: 'Icons', path: '/icons', children: Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconGroups(k).map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) })) },
-      { id: 'sty-guides', label: 'Guides', path: '/styles/guides', children: rowsOf(DOCS_GUIDES) },
-    ], '/styles')
+    /* NO "STYLES" LEVEL (2026-10-01, the Library ruling applied here): Foundations, Icons and
+     * Guides are the rail's top layer; a page with no children lists its sections. */
+    return (
+      <div className="shell-rail-stack">
+        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_SPECIMENS)), { pages: true })} basePath="/" label="Foundations" labelTo="/foundations" onNavigate={onNavigate} />
+        {/* each set is a group of its icon groups, each a page (W3, 2026-09-30) */}
+        <ShellSidebar routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconGroups(k).map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) })), { pages: true, leaf: 'grid' })} basePath="/" label="Icons" labelTo="/icons" onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_GUIDES)), { pages: true })} basePath="/" label="Guides" labelTo="/styles/guides" onNavigate={onNavigate} />
+      </div>
+    )
   }
   if (space === 'development') {
-    const tools = rowsOf(DEV_TOOLS)
+    const tools = withIcons(withSections(rowsOf(DEV_TOOLS)))
     return (
       <div className="shell-rail-stack">
         <ShellSidebar routes={tools} basePath="/" label="Tools" labelTo="/development/tools" onNavigate={onNavigate} />

@@ -91,7 +91,7 @@ function NumInput({ value, onChange, min = 0, max = 99 }) {
 function ToggleChip({ active, onClick, children, title }) {
   return (
     <Tooltip label={title}><Button aria-label={title}
-      variant={active ? 'primary' : 'outline'}
+      tone={active ? 'primary' : 'outline'}
       size="sm"
       onClick={onClick}
       aria-pressed={active}
@@ -121,7 +121,7 @@ export default function RuleRow({ rule, onChange, onRemove, onReroll }) {
           />
         </div>
         <Tooltip label="Re-randomize this rule"><Button
-          variant="ghost"
+          tone="ghost"
           size="sm"
           iconOnly="refresh"
           iconSize={12}
@@ -131,7 +131,7 @@ export default function RuleRow({ rule, onChange, onRemove, onReroll }) {
           style={{ padding: 6 }}
         /></Tooltip>
         <Tooltip label="Remove rule"><Button
-          variant="ghost"
+          tone="ghost"
           size="sm"
           iconOnly="x"
           iconSize={12}

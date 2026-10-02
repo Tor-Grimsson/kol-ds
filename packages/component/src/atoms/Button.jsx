@@ -1,5 +1,5 @@
 import { isValidElement } from 'react'
-import { toneClass } from '../utilities/tone.js'
+import { toneClass, VARIANT_TONE } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -12,7 +12,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'primary'|'secondary'|'accent'|'outline'|'ghost'|'nav'|'danger'|'grey'|'control'} props.variant - Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'accent'|'danger'|'nav'} props.variant - The intent; the GROUND is `tone`. `primary · secondary · outline · ghost · grey · control` are deprecated aliases of tones (2026-10-01, on the retirement ledger): pass `tone` — `secondary` is `tone="inverted"`, `control` is `tone="ghost"`, the rest keep their name. Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Button size (default: 'md'); xs is the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 22px shell (20 icon-only), opt-in by prop
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
@@ -36,6 +36,8 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {ElementType|ReactNode} props.iconComponent - Icon renderer seam — a component that receives `{ name, size, className, style }` in place of the DS Icon (custom icon registries plug in here), or a pre-rendered node dropped in verbatim where the glyph would go. Defaults to DS Icon.
  * @param {boolean} props.pressed - Toggle state — sets `aria-pressed` (true/false) and `kol-btn-pressed`; a `quiet` button drops its dimming while pressed. Leave undefined for non-toggle buttons.
  */
+const warned = new Set()
+
 const Button = ({
   children,
   variant,
@@ -85,6 +87,12 @@ const Button = ({
    * `kol-btn-secondary` (the text color as fill) until 2026-09-29, so a misspelt variant
    * shipped inverted. It now stamps nothing, like an unset variant: the wrapper's tone,
    * else primary — and says so in dev. */
+  /* the six tone-duplicates still render exactly as they did — an alias gains nothing and loses
+   * nothing — and say once in dev what replaces them */
+  if (import.meta.env.DEV && VARIANT_TONE[variant] && !warned.has(variant)) {
+    warned.add(variant)
+    console.warn(`Button: variant="${variant}" is deprecated — use tone="${VARIANT_TONE[variant]}"`)
+  }
   const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'danger', 'grey']
   const known = !resolvedVariant || KNOWN.includes(resolvedVariant)
   if (!known && import.meta.env.DEV) console.warn(`Button: unknown variant "${resolvedVariant}" — rendering the inherited tone (primary)`)

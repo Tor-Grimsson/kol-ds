@@ -1,4 +1,4 @@
-import ActionButton from '../atoms/ActionButton.jsx'
+import ActionButton from './ActionButton.jsx'
 
 /**
  * CopyButton — Copy text to the clipboard. THE copy-to-clipboard control (2026-08-09 user ruling): the

@@ -98,9 +98,9 @@ function MediaLightbox({ files, index, onClose, onIndexChange, onUse, accept, bu
             </div>
             <div className="flex items-center gap-2">
               {pickable && (
-                <Button variant="primary" size="sm" onClick={() => onUse(f)}>Use</Button>
+                <Button tone="primary" size="sm" onClick={() => onUse(f)}>Use</Button>
               )}
-              <Button variant="primary" size="sm" onClick={() => copyUrl(f)}>
+              <Button tone="primary" size="sm" onClick={() => copyUrl(f)}>
                 {copied ? 'Copied' : 'Copy URL'}
               </Button>
             </div>
@@ -197,7 +197,7 @@ export default function MediaPicker({ open, onClose, onPick, accept = 'all' }) {
               className="flex-1"
             />
             <Tooltip label="Close"><Button
-              variant="primary" size="sm" quiet
+              tone="primary" size="sm" quiet
               iconOnly="x" iconSize={14}
               aria-label="Close"
               onClick={onClose}

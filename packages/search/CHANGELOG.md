@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-search
 
+## Unreleased
+
+- **`indexGraph(items, { files, orphans, filter })`** — the index as a network of tags and the items that carry them: a node per tagged item joined to its tags, a node per untagged item, and a text filter. With nothing switched on it is `tagGraph`.
+
 ## 0.2.0 — 2026-09-29
 
 - **`tagGraph(items)`** — the index's tags as a network: `{ nodes: [{ id, count, type }], edges: [{ source, target, weight }] }` over engine items (`id` + `tags[]`), tags lower-cased. The node graph is a view of the search index (ruling D4); moved here from kol-markdown's `buildTagCooccurrence`. In the self-check.

@@ -355,7 +355,7 @@ export default function RecordManager({
             )}
             {saveState != null && <span className="kol-helper-10 text-meta truncate leading-normal">{saveState}</span>}
             {onPublish && (
-              <Button variant="primary" size="sm" onClick={() => onPublish(record)}>
+              <Button tone="primary" size="sm" onClick={() => onPublish(record)}>
                 {publishLabel}
               </Button>
             )}

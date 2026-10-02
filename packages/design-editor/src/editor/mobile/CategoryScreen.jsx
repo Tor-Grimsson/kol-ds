@@ -49,7 +49,7 @@ export default function CategoryScreen({ onPick, onInsert, onBack, onDismiss }) 
             return (
               <Button
                 key={entry.label}
-                variant="primary"
+                tone="primary"
                 size="lg"
                 className={SPREAD}
                 iconLeft={icon}
@@ -63,11 +63,11 @@ export default function CategoryScreen({ onPick, onInsert, onBack, onDismiss }) 
         </div>
         <div className="flex flex-col gap-2">
           {onInsert && (
-            <Button variant="grey" size="lg" className={SPREAD} iconLeft="image" iconRight="image" onClick={onInsert}>
+            <Button tone="grey" size="lg" className={SPREAD} iconLeft="image" iconRight="image" onClick={onInsert}>
               Insert image or video
             </Button>
           )}
-          {onBack && <Button variant="grey" size="lg" className={SPREAD} iconLeft="arrow-left" iconRight="arrow-left" onClick={onBack}>Back</Button>}
+          {onBack && <Button tone="grey" size="lg" className={SPREAD} iconLeft="arrow-left" iconRight="arrow-left" onClick={onBack}>Back</Button>}
         </div>
       </div>
     </div>

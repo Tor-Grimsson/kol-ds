@@ -8,7 +8,7 @@ const MetricCard = ({ icon, label, value, delta, trend = 'up' }) => {
     <div className="chess-hero-metric">
       <div className="chess-hero-metric__header">
         <div className="chess-hero-metric__icon">{icon}</div>
-        <Button variant="primary" size="sm" iconOnly="more" aria-label="More" className="chess-hero-metric__menu-btn" />
+        <Button tone="primary" size="sm" iconOnly="more" aria-label="More" className="chess-hero-metric__menu-btn" />
       </div>
       <div className="chess-hero-metric__label">{label}</div>
       <div className="chess-hero-metric__value">{value}</div>
@@ -257,7 +257,7 @@ const ChessHero = ({ chessData }) => {
 
           <div className="chess-hero__side-footer">
             <span className="chess-hero__side-period">Last 12 months</span>
-            <Button variant="primary" size="sm">View report</Button>
+            <Button tone="primary" size="sm">View report</Button>
           </div>
 
           <div className="chess-hero__side-metric">
@@ -293,7 +293,7 @@ const ChessHero = ({ chessData }) => {
               <span className="chess-hero__side-status-dot" />
               Live data
             </span>
-            <Button variant="primary" size="sm">View report</Button>
+            <Button tone="primary" size="sm">View report</Button>
           </div>
         </div>
       </div>

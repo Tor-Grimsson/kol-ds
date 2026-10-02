@@ -17,7 +17,7 @@ export const stage = 'full'
  * installs — so the gallery can't drift from what's published. Styling comes from
  * @kolkrabbi/kol-theme (kol-components-chess.css). Game data comes from the package's
  * own adapter (the app supplies it — getSampleGames / getManifest /
- * getMonthlySummary / getRandomMonth / loadMonthGames / getGamePgnByIdAsync; demo set
+ * getMonthlySummary / getRandomMonth / loadMonthGames / getGamePgnByIdAsync; preview set
  * bundled, full archive fetched from the B2 CDN). */
 /* The brief-2.0 `panel` seam, exercised: a compact strip INSIDE the provider
  * reading live state via useChessControls() — the stand-in for the consumer's
@@ -37,7 +37,7 @@ function PanelStrip() {
 export default function ChessApparatusSet() {
   return (
     /* The consumer's exact shell wrapper (kol-chess src/App.jsx, mirrored by
-     * /demo) — the wrapper owns gutters only; since chess 0.5.1 the stage
+     * /preview) — the wrapper owns gutters only; since chess 0.5.1 the stage
      * sizes + centers itself off 100dvh (no consumer width cap). */
     <div className="min-h-screen bg-surface-primary">
       <div className="px-4 md:px-6">

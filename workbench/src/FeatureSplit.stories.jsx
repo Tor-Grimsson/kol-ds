@@ -15,7 +15,7 @@ export const Default = () => (
     ctas={
       <>
         <Button>Explore the fleet</Button>
-        <Button variant="secondary">Read the log</Button>
+        <Button tone="inverted">Read the log</Button>
       </>
     }
     media={media}

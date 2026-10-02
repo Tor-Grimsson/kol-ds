@@ -1,0 +1,980 @@
+{
+  "/development": [
+    {
+      "id": "tools",
+      "label": "Tools"
+    },
+    {
+      "id": "records",
+      "label": "Records"
+    }
+  ],
+  "/development/log/2026-07-30-quarantine-and-readmit": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-08-01-gruvbox-color-matching": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-08-09-membership-and-preview-contract": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-27-app-frame-and-curves": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-27-deconstruction-roadmap": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-27-editor-ds-sync": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-27-editor-inspector-rebuild": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-28-showcase-refinement": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-29-apps-review": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-30-library-taxonomy": [
+    {
+      "id": "the-tree",
+      "label": "The tree"
+    },
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-30-phase-log-and-audit": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-30-showcase-build": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "corrections",
+      "label": "Corrections"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-30-showcase-fixes": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-09-30-showcase-review": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/2026-10-01-review-round-two": [
+    {
+      "id": "phases",
+      "label": "Phases"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions"
+    },
+    {
+      "id": "open",
+      "label": "Open"
+    }
+  ],
+  "/development/log/plan-2026-07-30-quarantine-reimport": [
+    {
+      "id": "the-one-non-negotiable",
+      "label": "The one non-negotiable"
+    },
+    {
+      "id": "phase-0--the-four-rules",
+      "label": "Phase 0 — the four rules"
+    },
+    {
+      "id": "phase-1--quarantine",
+      "label": "Phase 1 — quarantine"
+    },
+    {
+      "id": "phase-2--readmission",
+      "label": "Phase 2 — readmission"
+    },
+    {
+      "id": "phase-3--enforcement",
+      "label": "Phase 3 — enforcement"
+    },
+    {
+      "id": "sequencing-notes",
+      "label": "Sequencing notes"
+    },
+    {
+      "id": "open-question--needs-his-answer-before-phase-2-row-4",
+      "label": "Open question — needs his answer before phase 2 row 4"
+    }
+  ],
+  "/development/log/plan-2026-08-01-gruvbox-colour-matching": [
+    {
+      "id": "why-it-is-parked-not-closed",
+      "label": "Why it is parked, not closed"
+    },
+    {
+      "id": "what-travelled-with-it-now-delivered",
+      "label": "What travelled with it, now delivered"
+    },
+    {
+      "id": "what-a-ruling-would-need-to-answer",
+      "label": "What a ruling would need to answer"
+    },
+    {
+      "id": "where-the-relevant-material-already-is",
+      "label": "Where the relevant material already is"
+    }
+  ],
+  "/development/log/plan-2026-08-09-membership-and-preview-contract": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-what-the-user-said-item-by-item",
+      "label": "1. What the user said, item by item"
+    },
+    {
+      "id": "2-wave-a--chrome-isolated-no-system-consequence",
+      "label": "2. Wave A — chrome (isolated, no system consequence)"
+    },
+    {
+      "id": "3-wave-c--the-preview-contract-this-is-the-solve-it-once-one",
+      "label": "3. Wave C — the preview contract (this is the \"solve it once\" one)"
+    },
+    {
+      "id": "4-wave-e--atoms-are-visual-and-the-shelf-must-prove-it",
+      "label": "4. Wave E — atoms are VISUAL, and the shelf must prove it"
+    },
+    {
+      "id": "5-wave-d--the-space-between-the-words",
+      "label": "5. Wave D — the space between the words"
+    },
+    {
+      "id": "6-wave-b--two-real-component-defects",
+      "label": "6. Wave B — two real component defects"
+    },
+    {
+      "id": "7-sequence",
+      "label": "7. Sequence"
+    }
+  ],
+  "/development/log/plan-2026-09-27-app-frame-and-curves": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-what-the-user-said",
+      "label": "1. What the user said"
+    },
+    {
+      "id": "2-the-rule--the-appstool-frame-wave-a-document-it",
+      "label": "2. The rule — the `apps/<tool>` frame (wave A: document it)"
+    },
+    {
+      "id": "3-curves-rebuilt-wave-b",
+      "label": "3. Curves, rebuilt (wave B)"
+    },
+    {
+      "id": "4-conform-the-other-apps-wave-c--per-app-on-the-users-go",
+      "label": "4. Conform the other apps (wave C — per app, on the user's go)"
+    },
+    {
+      "id": "5-verification",
+      "label": "5. Verification"
+    },
+    {
+      "id": "6-done-notes-2026-09-27",
+      "label": "6. Done notes (2026-09-27)"
+    }
+  ],
+  "/development/log/plan-2026-09-27-deconstruction-roadmap": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-editor-split-fxr--design-editor",
+      "label": "1. Editor split (fxr → design-editor)"
+    },
+    {
+      "id": "2-controls-kol-controls--appscontrols",
+      "label": "2. Controls (kol-controls → apps/controls)"
+    },
+    {
+      "id": "3-curve-generator-the-math-generator--an-app",
+      "label": "3. Curve generator (the math generator → an app)"
+    },
+    {
+      "id": "4-text-track--parked",
+      "label": "4. Text track — parked"
+    },
+    {
+      "id": "5-monitor--mirror",
+      "label": "5. Monitor · mirror"
+    },
+    {
+      "id": "6-adoption-applies-to-every-track",
+      "label": "6. Adoption (applies to every track)"
+    }
+  ],
+  "/development/log/plan-2026-09-27-editor-ds-sync": [
+    {
+      "id": "the-problem-in-one-paragraph",
+      "label": "The problem in one paragraph"
+    },
+    {
+      "id": "the-goal",
+      "label": "The goal"
+    },
+    {
+      "id": "phase-1--fix-the-blue-focus-ring-in-kol-itself",
+      "label": "Phase 1 — Fix the blue focus ring in KOL itself"
+    },
+    {
+      "id": "phase-2--make-the-gates-see-the-editor",
+      "label": "Phase 2 — Make the gates see the editor"
+    },
+    {
+      "id": "phase-3--swap-the-editors-copies-for-kols",
+      "label": "Phase 3 — Swap the editor's copies for KOL's"
+    },
+    {
+      "id": "phase-4--one-icon-system",
+      "label": "Phase 4 — One icon system"
+    },
+    {
+      "id": "phase-5--the-inspector-pass",
+      "label": "Phase 5 — The inspector pass"
+    },
+    {
+      "id": "settled-user-2026-09-27",
+      "label": "Settled (user, 2026-09-27)"
+    },
+    {
+      "id": "publishing",
+      "label": "Publishing"
+    }
+  ],
+  "/development/log/plan-2026-09-27-editor-inspector-rebuild": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-what-the-user-said",
+      "label": "1. What the user said"
+    },
+    {
+      "id": "2-phase-1--kol-root-fixes-every-app-benefits",
+      "label": "2. Phase 1 — KOL root fixes (every app benefits)"
+    },
+    {
+      "id": "3-phase-2--the-inspector-as-panes",
+      "label": "3. Phase 2 — The inspector, as panes"
+    },
+    {
+      "id": "4-phase-3--transport-and-selection",
+      "label": "4. Phase 3 — Transport and selection"
+    },
+    {
+      "id": "5-not-in-this-plan-parked-his-rulings",
+      "label": "5. Not in this plan (parked, his rulings)"
+    },
+    {
+      "id": "6-publishing",
+      "label": "6. Publishing"
+    }
+  ],
+  "/development/log/plan-2026-09-28-showcase-refinement": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-tags",
+      "label": "1. Tags"
+    },
+    {
+      "id": "2-workstreams",
+      "label": "2. Workstreams"
+    },
+    {
+      "id": "2b-the-package-split-agreed-2026-09-28",
+      "label": "2b. The package split (agreed 2026-09-28)"
+    },
+    {
+      "id": "2c-sequence",
+      "label": "2c. Sequence"
+    },
+    {
+      "id": "3b-the-space-table-decided-2026-09-28--the-user-put-the-whole-plan-on-one-run-you-are-go-on-the-plan",
+      "label": "3b. The space table (decided 2026-09-28 — the user put the whole plan on one run: \"you are go on the plan\")"
+    },
+    {
+      "id": "3-decisions-for-the-user",
+      "label": "3. Decisions for the user"
+    },
+    {
+      "id": "4-screenshots-still-wanted",
+      "label": "4. Screenshots still wanted"
+    },
+    {
+      "id": "5-laws-read-for-this-pass",
+      "label": "5. Laws read for this pass"
+    }
+  ],
+  "/development/log/plan-2026-09-29-apps-review": [
+    {
+      "id": "0-the-one-sentence",
+      "label": "0. The one sentence"
+    },
+    {
+      "id": "1-tags",
+      "label": "1. Tags"
+    },
+    {
+      "id": "2-vocabulary-so-we-talk-the-same-language",
+      "label": "2. Vocabulary (so we talk the same language)"
+    },
+    {
+      "id": "3-workstreams",
+      "label": "3. Workstreams"
+    },
+    {
+      "id": "4-decisions--all-ruled-2026-09-29",
+      "label": "4. Decisions — all ruled 2026-09-29"
+    },
+    {
+      "id": "5-not-in-this-plan",
+      "label": "5. Not in this plan"
+    },
+    {
+      "id": "6-proposed-next--for-the-users-review-2026-09-29",
+      "label": "6. Proposed next — for the user's review (2026-09-29)"
+    }
+  ],
+  "/development/log/plan-2026-09-29-phase-log-and-showcase-review": [
+    {
+      "id": "w1--phase-log",
+      "label": "W1 — Phase log"
+    },
+    {
+      "id": "w2--names-conventions-homes-tags-the-audit",
+      "label": "W2 — Names, conventions, homes, tags (the audit)"
+    },
+    {
+      "id": "w3--rails",
+      "label": "W3 — Rails"
+    },
+    {
+      "id": "w4--component-page",
+      "label": "W4 — Component page"
+    },
+    {
+      "id": "w5--shell-chrome",
+      "label": "W5 — Shell chrome"
+    },
+    {
+      "id": "w6--pages",
+      "label": "W6 — Pages"
+    },
+    {
+      "id": "w7--editor",
+      "label": "W7 — Editor"
+    },
+    {
+      "id": "w8--breakpoints--touch-standing",
+      "label": "W8 — Breakpoints + touch (standing)"
+    },
+    {
+      "id": "order",
+      "label": "Order"
+    }
+  ],
+  "/development/log/plan-2026-09-30-library-taxonomy": [
+    {
+      "id": "the-tree",
+      "label": "The tree"
+    },
+    {
+      "id": "w1--names-built-after-w2w4-on-the-users-call-document-what-shipped",
+      "label": "W1 — Names (built after W2–W4, on the user's call: document what shipped)"
+    },
+    {
+      "id": "w2--homes-every-parent-draws-its-tree",
+      "label": "W2 — Homes (every parent draws its tree)"
+    },
+    {
+      "id": "w3--header-and-rails",
+      "label": "W3 — Header and rails"
+    },
+    {
+      "id": "w4--cards-move-to-sets",
+      "label": "W4 — Cards move to Sets"
+    },
+    {
+      "id": "w5--record",
+      "label": "W5 — Record"
+    },
+    {
+      "id": "after-this-plan-not-in-it",
+      "label": "After this plan (not in it)"
+    },
+    {
+      "id": "open-issues",
+      "label": "Open issues"
+    }
+  ],
+  "/development/log/plan-2026-09-30-showcase-review": [
+    {
+      "id": "phase-1--the-tree",
+      "label": "Phase 1 — The tree"
+    },
+    {
+      "id": "phase-2--what-the-pages-say",
+      "label": "Phase 2 — What the pages say"
+    },
+    {
+      "id": "phase-3--search",
+      "label": "Phase 3 — Search"
+    },
+    {
+      "id": "phase-4--rails-shell-color",
+      "label": "Phase 4 — Rails, shell, color"
+    },
+    {
+      "id": "phase-5--components-and-apps",
+      "label": "Phase 5 — Components and apps"
+    },
+    {
+      "id": "phase-6--record",
+      "label": "Phase 6 — Record"
+    }
+  ],
+  "/development/open-questions/2026-09-30": [
+    {
+      "id": "q1",
+      "label": "Accent"
+    },
+    {
+      "id": "q2",
+      "label": "Dark green"
+    },
+    {
+      "id": "q3",
+      "label": "Search rows"
+    },
+    {
+      "id": "q4",
+      "label": "Tooltips"
+    },
+    {
+      "id": "q5",
+      "label": "Apps nesting"
+    }
+  ],
+  "/development/open-questions/2026-09-30-c": [
+    {
+      "id": "q1",
+      "label": "Header cluster"
+    },
+    {
+      "id": "q2",
+      "label": "Settings drawer"
+    },
+    {
+      "id": "q3",
+      "label": "Rail states"
+    },
+    {
+      "id": "q4",
+      "label": "Editor"
+    }
+  ],
+  "/development/open-questions/2026-09-30-e": [
+    {
+      "id": "palette",
+      "label": "Palette"
+    },
+    {
+      "id": "glyphs",
+      "label": "Key-cap glyphs"
+    }
+  ],
+  "/development/open-questions/2026-10-01": [
+    {
+      "id": "result-row",
+      "label": "1 · Result row"
+    },
+    {
+      "id": "tabs",
+      "label": "2 · The tab chips"
+    },
+    {
+      "id": "ground",
+      "label": "3 · Preview ground"
+    },
+    {
+      "id": "knobs",
+      "label": "4 · Knob bar"
+    },
+    {
+      "id": "rail-icons",
+      "label": "5 · Rail icons"
+    },
+    {
+      "id": "resize",
+      "label": "6 · Resize handle — the line variant"
+    }
+  ],
+  "/foundations/color": [
+    {
+      "id": "brand-aliases",
+      "label": "Brand aliases"
+    },
+    {
+      "id": "brand-ramps",
+      "label": "Brand ramps"
+    },
+    {
+      "id": "cream",
+      "label": "Cream ramp"
+    },
+    {
+      "id": "grey",
+      "label": "Greyscale"
+    },
+    {
+      "id": "tune-red",
+      "label": "Tune the rust anchor"
+    },
+    {
+      "id": "surface",
+      "label": "Surface"
+    },
+    {
+      "id": "state",
+      "label": "State"
+    },
+    {
+      "id": "absolute",
+      "label": "Absolute"
+    },
+    {
+      "id": "fg-primitives",
+      "label": "Opacity primitives (--kol-fg-NN)"
+    },
+    {
+      "id": "fg-families",
+      "label": "Opacity class families"
+    },
+    {
+      "id": "oq-primitives",
+      "label": "Opaque neutrals (--kol-oq-NN)"
+    }
+  ],
+  "/foundations/tokens": [
+    {
+      "id": "opacity",
+      "label": "Opacity & foreground scale"
+    },
+    {
+      "id": "surfaces",
+      "label": "Surface tiers"
+    },
+    {
+      "id": "brand",
+      "label": "Brand ramps"
+    },
+    {
+      "id": "type",
+      "label": "Type scale"
+    },
+    {
+      "id": "radius",
+      "label": "Corner radius"
+    },
+    {
+      "id": "shadow",
+      "label": "Shadow scale"
+    },
+    {
+      "id": "utilities",
+      "label": "Utilities"
+    },
+    {
+      "id": "components",
+      "label": "Components"
+    }
+  ],
+  "/foundations/typography": [
+    {
+      "id": "sans-families",
+      "label": "Family tokens"
+    },
+    {
+      "id": "sans-atomic",
+      "label": "Sans atomic classes"
+    },
+    {
+      "id": "prose",
+      "label": "Prose container"
+    },
+    {
+      "id": "mono",
+      "label": "Mono"
+    },
+    {
+      "id": "opacity",
+      "label": "Reading hierarchy (descriptors)"
+    },
+    {
+      "id": "cuts",
+      "label": "Cuts loaded"
+    }
+  ],
+  "/icons": [
+    {
+      "id": "use-one",
+      "label": "Use one"
+    },
+    {
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "id": "color",
+      "label": "Color"
+    },
+    {
+      "id": "your-own",
+      "label": "Your own"
+    },
+    {
+      "id": "pages",
+      "label": "Sets"
+    }
+  ],
+  "/quarantine": [
+    {
+      "id": "admitted",
+      "label": "Admitted — 12"
+    },
+    {
+      "id": "how",
+      "label": "How a category comes back"
+    }
+  ],
+  "/search": [
+    {
+      "id": "what-you-can-type",
+      "label": "What you can type"
+    },
+    {
+      "id": "how-it-ranks",
+      "label": "How it ranks"
+    },
+    {
+      "id": "tags",
+      "label": "Tags"
+    },
+    {
+      "id": "the-graph",
+      "label": "The graph"
+    }
+  ],
+  "/search/index": [
+    {
+      "id": "library",
+      "label": "Library · 392"
+    },
+    {
+      "id": "styles",
+      "label": "Styles · 8"
+    },
+    {
+      "id": "docs",
+      "label": "Docs · 110"
+    },
+    {
+      "id": "search",
+      "label": "Search · 3"
+    },
+    {
+      "id": "development",
+      "label": "Development · 32"
+    }
+  ],
+  "/search/tags": [
+    {
+      "id": "audience",
+      "label": "Audience"
+    },
+    {
+      "id": "brand",
+      "label": "Brand"
+    },
+    {
+      "id": "domain",
+      "label": "Domain"
+    },
+    {
+      "id": "pattern",
+      "label": "Pattern"
+    },
+    {
+      "id": "provider",
+      "label": "Provider"
+    }
+  ],
+  "/styles": [
+    {
+      "id": "foundations",
+      "label": "Foundations"
+    },
+    {
+      "id": "icons",
+      "label": "Icons"
+    },
+    {
+      "id": "guides",
+      "label": "Guides"
+    }
+  ],
+  "/styles/loaders": [
+    {
+      "id": "why-loaders-are-not-components",
+      "label": "Why loaders are not components"
+    },
+    {
+      "id": "icon",
+      "label": "Icon"
+    },
+    {
+      "id": "graphic",
+      "label": "Graphic"
+    },
+    {
+      "id": "data-exports",
+      "label": "Data exports"
+    },
+    {
+      "id": "gotchas",
+      "label": "Gotchas"
+    }
+  ],
+  "/styles/menus": [
+    {
+      "id": "the-family",
+      "label": "The family"
+    },
+    {
+      "id": "which-one-do-i-use",
+      "label": "Which one do I use?"
+    },
+    {
+      "id": "standards",
+      "label": "Standards"
+    },
+    {
+      "id": "unification-roadmap",
+      "label": "Unification & roadmap"
+    }
+  ],
+  "/styles/shell-and-layout": [
+    {
+      "id": "the-composition",
+      "label": "The composition"
+    },
+    {
+      "id": "layout",
+      "label": "Layout"
+    },
+    {
+      "id": "appshell",
+      "label": "AppShell"
+    },
+    {
+      "id": "sidenav",
+      "label": "SideNav"
+    },
+    {
+      "id": "scrolltotop",
+      "label": "ScrollToTop"
+    },
+    {
+      "id": "the-docs-shell-this-site",
+      "label": "The docs shell (this site)"
+    }
+  ],
+  "/styles/type-roles": [
+    {
+      "id": "preview-codeblock",
+      "label": "Preview — CodeBlock"
+    },
+    {
+      "id": "preview-table",
+      "label": "Preview — Table"
+    },
+    {
+      "id": "the-doc-roles",
+      "label": "The doc roles"
+    },
+    {
+      "id": "dockit",
+      "label": "DocKit"
+    }
+  ]
+}

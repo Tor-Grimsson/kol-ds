@@ -36,7 +36,7 @@ const PlaybackControls = () => {
         {playbackButtons.map(({ icon, label, action }) => (
           <Button
             key={icon}
-            variant="grey"
+            tone="grey"
             size="sm"
             iconOnly={icon}
             aria-label={label}

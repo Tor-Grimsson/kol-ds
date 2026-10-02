@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import Input from '../atoms/Input.jsx'
+import SliderPanel from './SliderPanel.jsx'
 
 /**
  * Slider — range slider with label and a value readout. The LINEAR VARIANT of
- * RotaryDial (atoms/RotaryDial.jsx): both implement the shared value-control
+ * RotaryDial (molecules/RotaryDial.jsx): both implement the shared value-control
  * contract — `value` / `min` / `max` / `step` / `onChange(next: number)` /
  * `label` / `size` / `disabled` / `formatValue` / `defaultValue`.
  * Controlled; onChange always fires with the plain number.
@@ -42,7 +43,10 @@ import Input from '../atoms/Input.jsx'
  * @param {Object} props.style - forwarded to the wrapper; the seam for `--kol-slider-track` / `--kol-slider-playhead`
  * @param {number} props.defaultValue - alt-click the control resets to this (falls back to `min`). Same contract on RotaryDial
  * @param {'input'|'value'|'none'} props.readout - `input` (default) an editable Input · `value` a plain right-aligned span, RotaryDial's own display-only readout · `none`
- * @param {'minimal'|'dual'} props.variant - `dual` = two thumbs on one rail
+ * @param {'minimal'|'dual'|'panel'} props.variant - `dual` = two thumbs on one rail · `panel` = the rack slider (was kol-hardware `Fader`, merged 2026-10-01): a drawn 2px track for a hardware panel; takes `value · onChange · min · max · step · label` plus the three below
+ * @param {'horizontal'|'vertical'} props.direction - panel only — horizontal takes the row and shows a readout; vertical is a fixed `height`
+ * @param {number} props.height - panel only, vertical (default 60)
+ * @param {Function} props.onHold - panel only — touch hold, 500ms: `({ label, value, min, max, step }) => void`; the holder opens its sheet
  * @param {number} props.value2 - dual only — the out value
  * @param {Function} props.onChange2 - dual only — (next: number) => void for the out thumb
  * @param {string} props.label1 - dual only — replaces the formatted in value above the rail
@@ -73,6 +77,9 @@ const Slider = ({
   playhead = null,
   onPlayheadChange,
   style,
+  direction,
+  height,
+  onHold,
 }) => {
   /* Label ↔ input pairing — the <label> is a sibling of the range input, so
    * without an htmlFor/id pair the visible label confers no accessible name. */
@@ -167,6 +174,10 @@ const Slider = ({
     if (!e.altKey || !onChange || disabled) return
     e.preventDefault()
     onChange(defaultValue ?? min)
+  }
+
+  if (variant === 'panel') {
+    return <SliderPanel value={value} onChange={onChange} min={min} max={max} step={step} label={label} direction={direction} height={height} onHold={onHold} />
   }
 
   if (variant === 'dual') {

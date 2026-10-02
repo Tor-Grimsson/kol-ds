@@ -194,7 +194,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
       <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-[var(--fxr-rail,0px)] z-10 flex gap-2 px-3">
         {/* Pill shows the preset name only — the group·preset long form
             stays on the expanded header (user ruling 2026-08-12). */}
-        <Button variant="primary" size="lg" onClick={() => setOpen(true)}>
+        <Button tone="primary" size="lg" onClick={() => setOpen(true)}>
           <span className="flex items-center gap-2">
             {isLoop ? layer.presetLabel : 'Media'}
             <Icon name="chevron-down" size={16} className="rotate-180" />
@@ -205,10 +205,10 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
             Before that this button was loop-only, so an image or video
             collapsed to Download and the pill, nothing to press. */}
         {(isLoop || chain.length > 0) && (
-          <Button variant="primary" size="lg" onClick={rollAll}>Randomize all</Button>
+          <Button tone="primary" size="lg" onClick={rollAll}>Randomize all</Button>
         )}
         {/* Capture without re-expanding the sheet (2026-08-12). */}
-        <Button variant="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
+        <Button tone="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
       </div>
     )
   }
@@ -282,10 +282,10 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
           {activeTab === 'generate' && isLoop && (
             <div className="flex flex-col gap-2 pt-3">
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="primary" size="lg" iconRight="refresh" onClick={shufflePreset}>Preset</Button>
-                <Button variant="primary" size="lg" onClick={() => setShowCats(true)}>Generator</Button>
+                <Button tone="primary" size="lg" iconRight="refresh" onClick={shufflePreset}>Preset</Button>
+                <Button tone="primary" size="lg" onClick={() => setShowCats(true)}>Generator</Button>
               </div>
-              <Button variant="primary" size="lg" className="w-full" onClick={rollAll}>
+              <Button tone="primary" size="lg" className="w-full" onClick={rollAll}>
                 Randomize all
               </Button>
               {scopes.length > 0 && (
@@ -309,8 +309,8 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                   below the chain, so the strips read as tabs with nothing
                   behind them and the Randomize they belong to was last. */}
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="primary" size="lg" onClick={() => setShowFx(true)}>Add effect</Button>
-                <Button variant="primary" size="lg" disabled={!chain.length} onClick={rollFilters}>Randomize</Button>
+                <Button tone="primary" size="lg" onClick={() => setShowFx(true)}>Add effect</Button>
+                <Button tone="primary" size="lg" disabled={!chain.length} onClick={rollFilters}>Randomize</Button>
               </div>
               {/* THE CHAIN, IN RENDER ORDER. The array is already tier-sorted
                   by addFilter (canvas → pixi GPU → the single terminal GL
@@ -336,7 +336,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                 return (
                   <div key={stage.key} className="flex flex-col gap-2">
                     <Button
-                      variant="grey"
+                      tone="grey"
                       size="lg"
                       className={SPREAD}
                       iconLeft="trash"
@@ -368,9 +368,9 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
               <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size="lg" ariaLabel="Aspect" />
               <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size="lg" ariaLabel="Aspect (landscape) and fill" />
               <div className="grid grid-cols-3 gap-2">
-                <Button variant="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
-                <Button variant="primary" size="lg" onClick={() => setUiHidden(true)}>Hide UI</Button>
-                <Button variant="primary" size="lg" onClick={onRestart}>Start over</Button>
+                <Button tone="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
+                <Button tone="primary" size="lg" onClick={() => setUiHidden(true)}>Hide UI</Button>
+                <Button tone="primary" size="lg" onClick={onRestart}>Start over</Button>
               </div>
             </div>
           )}

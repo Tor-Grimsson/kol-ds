@@ -1,7 +1,7 @@
 import USAGE from '../usage/usage-index.json'
 import DOCS_META from '../usage/docs-meta.json'
 import EXTRACTED_DESCRIPTIONS from '../usage/descriptions.json'
-import { DEMOS } from '../lib/demos-registry.js'
+import { PREVIEWS } from '../lib/previews-registry.js'
 import { COMPONENT_GROUPS, MEMBER_OF } from '../lib/component-groups.js'
 import { ROSTER } from './roster.js'
 import { ACRONYM_COMPONENTS } from '../../../scripts/lib/parse-barrel.mjs'
@@ -12,7 +12,7 @@ import { labelFromSlug } from './labels.js'
  * The component registry — single source of truth for the showcase.
  * Marries three layers:
  *   1. usage-index.json  — mined metadata (pkg, category, count, apps, examples)
- *   2. DEMOS             — one-file live demos: render + ?raw source (lib/demos-registry.js)
+ *   2. PREVIEWS             — one-file live previews: render + ?raw source (lib/previews-registry.js)
  *   3. DESCRIPTIONS      — one-line human summary, authored here
  * Drives the sidebar nav, the /components index, and each /components/:slug page.
  */
@@ -81,7 +81,7 @@ const DESCRIPTIONS = {
   AssetGrid: 'A thin responsive N-column grid for tiling asset figures.',
   CurveOverlay: 'An SVG easing/curve visualizer with a two-handle bezier editor in custom mode.',
   DocsToc: 'An on-page table of contents that highlights the heading in view via useScrollSpy.',
-  HlsVideo: 'A non-interactive background HLS video — hls.js with Safari-native fallback.',
+  BackgroundVideo: 'A non-interactive background HLS video — hls.js with Safari-native fallback.',
   PriceDisplay: 'A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note.',
   ProsePreview: 'A full rich-text specimen exercising the whole kol-prose stylesheet in one view.',
   RotaryDial: 'A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping.',
@@ -273,7 +273,7 @@ export const COMPONENTS = ROSTER
       files: usage?.files ?? 0,
       examples: usage?.examples ?? [],
       slug: slugify(c.name),
-      demo: DEMOS[c.name] || null,
+      preview: PREVIEWS[c.name] || null,
       /* JSDoc-extracted first (source truth, build-fresh) → authored fallback */
       description: EXTRACTED_DESCRIPTIONS[c.name] || DESCRIPTIONS[c.name] || '',
       /* Source-mined doc meta (scripts/extract-docs-meta.mjs): the kol type
@@ -342,4 +342,4 @@ export function groupComponents(mode = 'atomic', list = TOP_LEVEL) {
 }
 
 export const TOTAL = TOP_LEVEL.length
-export const WITH_DEMOS = TOP_LEVEL.filter((c) => c.demo).length
+export const WITH_PREVIEWS = TOP_LEVEL.filter((c) => c.preview).length

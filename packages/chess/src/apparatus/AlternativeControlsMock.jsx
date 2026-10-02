@@ -42,7 +42,7 @@ const AlternativeControlsMock = () => {
           className="flex-shrink-0"
           actions={
             <Button
-              variant="ghost"
+              tone="ghost"
               size="sm"
               iconOnly="settings-01"
               className="lg:hidden"

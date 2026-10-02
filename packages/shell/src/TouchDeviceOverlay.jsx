@@ -23,14 +23,18 @@ export function useTouchPrimary() {
  *
  * @param {string} appName   the sentence's subject ("Monitor is built for mouse and keyboard…")
  * @param {string} message   override the sentence whole
+ * @param {boolean} force    show it whatever the pointer and whatever was dismissed — for a preview
+ *                           or a settings "show it again"; dismissing a forced note stores nothing
  */
-export default function TouchDeviceOverlay({ appName = 'This app', message }) {
+export default function TouchDeviceOverlay({ appName = 'This app', message, force = false }) {
   const coarse = useTouchPrimary()
   const [dismissed, setDismissed] = useState(() => {
     try { return localStorage.getItem(STORAGE_KEY) === '1' } catch { return false }
   })
-  if (!coarse || dismissed) return null
+  const [closed, setClosed] = useState(false)
+  if (force ? closed : !coarse || dismissed) return null
   const dismiss = () => {
+    if (force) { setClosed(true); return }
     try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* storage blocked */ }
     setDismissed(true)
   }

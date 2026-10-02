@@ -36,7 +36,7 @@ here when it is found or made.
 | `copy` | it will be duplicated | `TimelineDock` |
 | `zoom-in` | click to see it larger | `MediaLibrary`, `MediaTileGallery`, `AssetTable` |
 | `not-allowed` | it is disabled | `MenuItem`, `SwatchControls`, disabled buttons |
-| `col-resize` | drag the edge sideways | the rail grab handle, `Canvas` rulers, the column browser |
+| `col-resize` | drag the edge sideways | the rail grab handle (pill and line variants), `Canvas` rulers, the column browser |
 | `row-resize` | drag the edge up or down | `Canvas` rulers, the column browser |
 | `ew-resize` | resize left or right | `CropOverlay`, `SelectionOverlay`, `TimelineDock` |
 | `ns-resize` | resize up or down, or turn a value | `CropOverlay`, `SelectionOverlay`, `Knob`, `Fader` |

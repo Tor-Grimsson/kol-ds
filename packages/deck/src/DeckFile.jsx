@@ -81,7 +81,7 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
         {onSave && (
           <LabeledControlSection label="Save">
             <div className="flex items-center gap-2">
-              <Button size="sm" variant="ghost" iconLeft="upload" disabled={!!busy} onClick={save}>{label('save', 'Save deck', 'Saving')}</Button>
+              <Button size="sm" tone="ghost" iconLeft="upload" disabled={!!busy} onClick={save}>{label('save', 'Save deck', 'Saving')}</Button>
               {done && <span className="kol-helper-10 text-fg-48">{done}</span>}
             </div>
           </LabeledControlSection>
@@ -89,18 +89,18 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
 
         <LabeledControlSection label="Export">
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportOne}>{label('one', 'PNG, this slide', 'Exporting')}</Button>
-            <Button size="sm" variant="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportAll}>{label('all', `PNG, all ${slides.length}`, 'PNG')}</Button>
-            <Button size="sm" variant="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportPdf}>{label('pdf', 'PDF, whole deck', 'PDF')}</Button>
-            <Button size="sm" variant="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportPptx}>{label('pptx', 'PPTX, whole deck', 'Building PPTX')}</Button>
-            <Button size="sm" variant="ghost" iconLeft="file" disabled={!!busy} onClick={exportJson}>{label('json', 'Deck file (.deck.json)', 'Saving')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportOne}>{label('one', 'PNG, this slide', 'Exporting')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportAll}>{label('all', `PNG, all ${slides.length}`, 'PNG')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportPdf}>{label('pdf', 'PDF, whole deck', 'PDF')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportPptx}>{label('pptx', 'PPTX, whole deck', 'Building PPTX')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="file" disabled={!!busy} onClick={exportJson}>{label('json', 'Deck file (.deck.json)', 'Saving')}</Button>
           </div>
           <span className="kol-helper-10 text-fg-48">PPTX opens in PowerPoint and Keynote as editable slides, set in the fonts installed on that machine.</span>
         </LabeledControlSection>
 
         <LabeledControlSection label="Import">
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="ghost" iconLeft="folder" disabled={!!busy} onClick={() => fileRef.current?.click()}>{label('import', 'Open deck file', 'Reading')}</Button>
+            <Button size="sm" tone="ghost" iconLeft="folder" disabled={!!busy} onClick={() => fileRef.current?.click()}>{label('import', 'Open deck file', 'Reading')}</Button>
             <span className="kol-helper-10 text-fg-48">Replaces the slides in the editor.</span>
           </div>
           <input ref={fileRef} type="file" accept="application/json,.json" hidden
@@ -110,7 +110,7 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
         {error && <p className="kol-mono-12 text-fg-64">{error}</p>}
 
         <div className="flex justify-end">
-          <Button size="sm" variant="ghost" onClick={onClose}>Close</Button>
+          <Button size="sm" tone="ghost" onClick={onClose}>Close</Button>
         </div>
       </div>
     </FullscreenOverlay>

@@ -103,7 +103,7 @@ export default function Parametric() {
 
       <Specimen title="ParamSheet" ships="kol-hardware · ParamSheet — the touch sheet a long-press opens">
         <Knob value={v} onChange={setV} label="gain" size="md" />
-        <Button variant="grey" size="sm" onClick={() => setSheet(true)}>Open sheet</Button>
+        <Button tone="grey" size="sm" onClick={() => setSheet(true)}>Open sheet</Button>
         {sheet && <ParamSheet label="gain" value={v} min={0} max={100} defaultValue={50} onChange={setV} onClose={() => setSheet(false)} />}
       </Specimen>
 
