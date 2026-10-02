@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-02, monitor rehearsed — published)
+
+- **Published 2026-10-02 (second wave):** theme 0.164.0 · component 0.238.0 · hardware 0.4.1. Push is the user's (kol-ds-ui and dotfiles). `apps/rack` is kol-monitor's rack page alone and `apps/rack-hub` (5196) is its shell and pages around it — monitor's files, copied, on this repo's packages; 56 of 60 modules and every desktop tab pixel-identical to the live site. The edits monitor needs when it bumps, and what the bump visibly changes: `backlog/2026-10-02-monitor-bump-notes.md`. Parked: the phone pass (`plan-2026-10-02-mobile-pass.md`, new gate `pnpm validate:phone`). Open: mixer and panels (`backlog/2026-10-02-rack-and-mixer-apps-fail.md` — mixer starts from kol-mirror, on his word only). He works kol-monitor on the MBP himself. Log: `session-log/2026-10-02-monitor-rehearsal-rack-and-rack-hub.md`.
+
 ## Current state (2026-10-02, the approved build list — published)
 
 - **Published 2026-10-02:** theme 0.163.0 · icons 0.33.0 · search 0.3.0 · component 0.237.0 · shell 0.60.0 · styleguide 0.6.0 · workshop 0.37.0 · hardware 0.4.0 · foundry 0.12.0. Push is the user's. One player (`MediaPlayer`), `Slider` vertical + scrub, `Knob` (alias `RotaryDial`), `apps/rack` · `apps/mixer`, the rail's icon state (`ShellNavColumn`), "search modal" not "palette". hardware 0.4.0 breaks monitor · mirror · fxr until they pass `onHold` — bulletined, tickets still to file from the iMac. Log: `session-log/2026-10-02-approved-build-list-published.md`.
@@ -26,11 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-30, OptionRow + media browser items)
 
 - **Published:** component 0.232.0 · 0.233.0, theme 0.160.0 (push is the user's). `OptionRow` is the one list row on the control ramp (palette, columns, FieldRow; the rows view shares its exports); `kol-item-name` is the one name style across columns/rows/grid; media filter bar filters the whole bucket, a typed query gives flat results, ⌘Enter from the palette lands there. **Under evaluation:** the white selected row vs the grid's pill form. **Publish only after the user's yes.** Next: the taxonomy talk (ladder, spaces order, block/app `.md` frontmatter). Log: `session-log/2026-09-30-option-row-and-media-browser-items.md`.
-
-## Current state (2026-09-30, showcase corrections — the review answered)
-
-- **✅ Published 2026-09-30:** icons 0.31.0 · component 0.231.0 · workshop 0.34.0 (on top of the build's set below). Push is the user's. 32 gates clean; **not yet seen in a browser** — the palette (Open questions Round 5), results page and rails wait on the user's eye.
-- **The shape now:** spaces Components · Blocks · Sets · Packages · Styles · Docs · Apps · Development. **Every label opens its own page, the chevron only folds** (both rail levels); every level is a markdown home in `showcase/src/homes/` (`validate:homes` fails a missing one). Components → `/components/group-by` (the Group-by page) → tier / function chapters; Package is a filter, not an axis. Cards is a second category in the Blocks rail; Packages is its own space; Tags · Graph · A–Z are views of Search. `ResultRow` was restored (underline default) — the `ContentRow` swap had overridden a ruling. Plan: `plan-2026-09-30-showcase-corrections.md` (its Open issues hold the right-rail tags question). Log: `session-log/2026-09-30-showcase-corrections.md`. Phase log entry: *Showcase fixes*.
 
 ## Repo standup (2026-06-15)
 

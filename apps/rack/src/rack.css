@@ -1,0 +1,19 @@
+/* The rack's own two rules — kol-monitor's, from its index.css and kol-typography-mono.css.
+ * Imported by rack/Standalone.jsx: the showcase's Rack set mounts that file and never loads this
+ * app's index.css, where monitor keeps the same rules. */
+
+/* the sidebar's width */
+:root { --sidebar-width: 18rem; }
+@media (min-width: 1024px) {
+  :root { --sidebar-width: 20rem; }
+}
+
+.sidebar-width { width: var(--sidebar-width); }
+
+/* the one below-floor helper: the 6px readout on a module panel (Clock's BPM, Power's I / O) */
+.kol-helper-xxxxs {
+  font-family: var(--kol-font-family-mono);
+  font-size: 6px;
+  line-height: 125%;
+  font-weight: 500;
+}

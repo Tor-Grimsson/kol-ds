@@ -10,6 +10,8 @@ export const variants = ['default', 'accent', 'danger', 'nav']
  * to atom ne and size, now its back to only variant?"). Tone is the ground and wins over variant. */
 export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['md', 'xs', 'sm', 'lg']
+/* the axes as ONE MultiSelect in the toolbar (2026-10-02, the user's preview of it on this page) */
+export const picker = 'multi'
 
 export default function ButtonPreview({ variant = 'default', tone = 'default', size = 'md' }) {
   const p = { variant: variant === 'default' ? undefined : variant, tone, size }

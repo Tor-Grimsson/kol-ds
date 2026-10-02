@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The rack test bed — kol-hardware’s case with 1U and 3U rows, modules with headers and labeled controls in both heights, and the touch hold that opens ParamSheet. No audio, no routing. Never published.",
+  "description": "The rack alone — kol-monitor’s rack page on this repo’s packages: its 59 module types, cables, render loop, sidebar and edit mode, with the control seams on kol-hardware. No shell, no other pages; apps/rack-hub adds those. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-hardware": "workspace:*",
@@ -18,9 +19,15 @@
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
+    "gsap": "^3.13.0",
     "react": "^19.2.0",
+    "react-colorful": "^5.8.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.2.4"
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "three": "^0.185.1",
+    "use-context-selector": "^2.0.0",
+    "webm-muxer": "^5.1.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

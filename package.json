@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter mixer build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter rack-hub build && pnpm --filter mixer build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:preview-files": "node scripts/validate-preview-files.mjs",
@@ -29,7 +29,7 @@
     "validate:rail-pages": "node scripts/validate-rail-pages.mjs",
     "validate:previews": "node scripts/validate-previews.mjs",
     "validate:gaps": "node scripts/validate-gaps.mjs",
-    "validate:gaps": "node scripts/validate-gaps.mjs",
+    "validate:phone": "node scripts/validate-gaps.mjs --phone",
     "validate:drift": "node scripts/validate-drift.mjs",
     "validate:reachable": "node scripts/validate-reachable.mjs",
     "validate:vault-links": "node scripts/validate-vault-links.mjs",
@@ -83,6 +83,7 @@
     "fixtures": "pnpm --filter fixtures dev",
     "brand-hub": "pnpm --filter brand-hub dev",
     "rack": "pnpm --filter rack dev",
+    "rack-hub": "pnpm --filter rack-hub dev",
     "mixer": "pnpm --filter mixer dev"
   },
   "devDependencies": {

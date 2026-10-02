@@ -1,0 +1,9 @@
+/* The hub's CSS is the rack's (kol-monitor's index.css, in apps/rack) — one stylesheet for both
+   apps — plus the two source folders Tailwind has to scan from here. */
+@import "../../rack/src/index.css";
+@source "../../rack/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-hardware/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";

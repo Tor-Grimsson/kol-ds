@@ -23,7 +23,8 @@ export default function ModuleFrame({
 }) {
   return (
     <div
-      className={className}
+      /* `kol-hw-panel`: the plate keeps its desk control sizes on touch (kol-components-controls.css) */
+      className={`kol-hw-panel ${className}`}
       style={{
         width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
         padding: `${PAD}px 0 ${u === 1 ? 8 : PAD}px`, userSelect: 'none', ...style,

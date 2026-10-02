@@ -122,7 +122,10 @@ export function MenuItem({
  * stack reserves the widest label in its own face, and a row set in a different
  * one measured 3px wider and clipped the selected row beside its check. */
 const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-3 h-8', md: 'kol-helper-12 px-3 h-8', lg: 'kol-helper-12 px-3 h-8' }
-export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', children }) {
+/* `rowClass` — the row's type, side padding and height, whole, in place of the size's own
+ * (Dropdown passes it, 2026-10-02: its rows wear the trigger's face and sit on the trigger's
+ * text edge; a menu's rows keep `ROW_BY_SIZE`). */
+export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
   return (
     <button
       type="button"
@@ -133,7 +136,7 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
       disabled={disabled}
       role="menuitem"
       style={height != null ? { height } : undefined}
-      className={`kol-menu-btn w-full ${ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
+      className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}

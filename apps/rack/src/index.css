@@ -1,19 +1,50 @@
 @import "tailwindcss";
 
-/* THE WORKSPACE FORM — point at this app's own node_modules symlinks (same reason as apps/brand). */
+/* THE WORKSPACE FORM — kol-monitor relies on the theme's @source manifest (kol-sources.css, below),
+   whose sibling paths resolve to nothing through a workspace symlink; these point at this app's own
+   node_modules instead (same reason as apps/brand). Everything else in this file is monitor's. */
 @source "../node_modules/@kolkrabbi/kol-component/src";
 @source "../node_modules/@kolkrabbi/kol-hardware/src";
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 @source "../node_modules/@kolkrabbi/kol-shell/src";
 
-@import "@kolkrabbi/kol-theme";
-@import "@kolkrabbi/kol-theme/kol-type-roles.css";
-/* ARCHITECTURE §5 — framework chrome in the components layer */
-@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+/* The app tier only — kol-theme minus the five domain packs (chess · workshop ·
+   foundry · dashboards · styleguide), none of which a rack app renders.
+   Requires kol-theme >=0.77.0 (FullConsumptionContract Part 1). */
+@import "@kolkrabbi/kol-theme/core";
+/* the controls pack — hardware + LED tokens for @kolkrabbi/kol-hardware; a
+   core consumer imports the packs it renders (kol-theme 0.124.0) */
+@import "@kolkrabbi/kol-theme/kol-components-controls.css" layer(components);
+/* Tailwind never scans node_modules — the DS @source manifest points it at
+   every raw-JSX package. Requires kol-theme ≥0.42.2: earlier manifests were
+   a silent no-op under pnpm (KolSourcesPnpmResolution). */
 @import "@kolkrabbi/kol-theme/kol-sources.css";
+@import "./styles/kol-typography-mono.css";
+@import "./styles/monitor-overrides.css";
+@import "./styles/components.css";
 
-body {
-  background-color: var(--kol-surface-primary);
-  color: var(--kol-surface-on-primary);
+:root {
+  --sidebar-width: 18rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --sidebar-width: 20rem;
+  }
+}
+
+.sidebar-width {
+  width: var(--sidebar-width);
+}
+
+html, body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea, [contenteditable="true"], [contenteditable=""] {
+  -webkit-user-select: text;
+  user-select: text;
 }

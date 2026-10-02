@@ -1,0 +1,202 @@
+// LineGenModule — 2D pattern generator
+// 8HP — lines, grid, circle, spiral, lissajous
+// Pure math → points output, like Wireframe but flat
+
+import { useState, useRef } from 'react'
+import { useModuleEnabled } from '../../hooks/useModuleEnabled.js'
+import { useModule } from '../../hooks/useModuleRegistry.jsx'
+import { points, readScalar, readCv } from '../../hooks/signals'
+import { sinLut, cosLut } from '../../hooks/trigLut'
+import Module from '../utility/Module'
+import LabeledJack from '../parametric/LabeledJack'
+import Knob from '../parametric/Knob'
+import IconSelect from '../parametric/IconSelect'
+import { useConnectedPorts } from '../../hooks/usePatchRouting.jsx'
+
+const SHAPES = ['line', 'grid', 'circle', 'spiral', 'lissa']
+const RESOLUTION = 64
+
+function generate(shape, freq, density, phase, t) {
+  const pts = []
+  const edges = []
+  const f = 0.5 + (freq / 100) * 9.5
+  const d = Math.max(2, Math.round((density / 100) * 16))
+
+  switch (shape) {
+    case 'line': {
+      // Parallel lines that shift over time
+      const count = d
+      for (let l = 0; l < count; l++) {
+        const y = (l + 0.5) / count
+        const offset = sinLut(t * f + l * 0.5) * 0.05
+        const i0 = pts.length
+        pts.push({ x: 0.05, y: y + offset })
+        pts.push({ x: 0.95, y: y + offset })
+        edges.push([i0, i0 + 1])
+      }
+      break
+    }
+    case 'grid': {
+      // Grid that warps over time
+      const count = d
+      for (let i = 0; i <= count; i++) {
+        const t0 = (i / count)
+        // Horizontal lines
+        const hi0 = pts.length
+        for (let j = 0; j <= RESOLUTION / 4; j++) {
+          const x = j / (RESOLUTION / 4)
+          const warp = sinLut(x * Math.PI * f + t + i) * 0.02
+          pts.push({ x: 0.05 + x * 0.9, y: 0.05 + t0 * 0.9 + warp })
+        }
+        for (let j = 0; j < RESOLUTION / 4; j++) edges.push([hi0 + j, hi0 + j + 1])
+        // Vertical lines
+        const vi0 = pts.length
+        for (let j = 0; j <= RESOLUTION / 4; j++) {
+          const y = j / (RESOLUTION / 4)
+          const warp = sinLut(y * Math.PI * f + t + i) * 0.02
+          pts.push({ x: 0.05 + t0 * 0.9 + warp, y: 0.05 + y * 0.9 })
+        }
+        for (let j = 0; j < RESOLUTION / 4; j++) edges.push([vi0 + j, vi0 + j + 1])
+      }
+      break
+    }
+    case 'circle': {
+      // Concentric circles that pulse
+      const rings = d
+      for (let r = 0; r < rings; r++) {
+        const radius = (0.1 + (r / rings) * 0.35) * (1 + sinLut(t * f + r) * 0.1)
+        const i0 = pts.length
+        const segs = Math.max(12, RESOLUTION / 2)
+        for (let i = 0; i < segs; i++) {
+          const a = (i / segs) * Math.PI * 2
+          pts.push({ x: 0.5 + cosLut(a) * radius, y: 0.5 + sinLut(a) * radius })
+        }
+        for (let i = 0; i < segs; i++) edges.push([i0 + i, i0 + (i + 1) % segs])
+      }
+      break
+    }
+    case 'spiral': {
+      // Expanding spiral
+      const turns = 1 + (d / 4)
+      const i0 = pts.length
+      for (let i = 0; i < RESOLUTION; i++) {
+        const n = i / RESOLUTION
+        const a = n * turns * Math.PI * 2 + t * f
+        const r = n * 0.4
+        pts.push({ x: 0.5 + cosLut(a) * r, y: 0.5 + sinLut(a) * r })
+      }
+      for (let i = 0; i < RESOLUTION - 1; i++) edges.push([i0 + i, i0 + i + 1])
+      break
+    }
+    case 'lissa': {
+      // Lissajous figure — freq ratio creates the pattern
+      const ratio = 1 + Math.floor(d / 4)
+      const i0 = pts.length
+      for (let i = 0; i < RESOLUTION; i++) {
+        const n = (i / RESOLUTION) * Math.PI * 2
+        const x = sinLut(n * f + t) * 0.4
+        const y = cosLut(n * f * ratio + phase + t * 0.3) * 0.4
+        pts.push({ x: 0.5 + x, y: 0.5 + y })
+      }
+      for (let i = 0; i < RESOLUTION - 1; i++) edges.push([i0 + i, i0 + i + 1])
+      edges.push([i0 + RESOLUTION - 1, i0]) // close the loop
+      break
+    }
+  }
+
+  return { pts, edges }
+}
+
+function LineGenPanel({ shape, freq, density, speed, enabled, onToggle, onShapeChange, onFreqChange, onDensityChange, onSpeedChange, id, freqConn, freqInRef, densConn, densInRef, spdConn, spdInRef, outRef }) {
+  const rowStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, width: '100%', padding: '0 2px' }
+
+  return (
+    <Module label="LineGen" enabled={enabled} onToggle={onToggle}>
+      <div style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'space-between', height: '100%', padding: '4px 0',
+      }}>
+        <IconSelect value={shape} onChange={onShapeChange} columns={3} items={[
+          { value: 'line', icon: 'line-line' }, { value: 'grid', icon: 'line-grid' }, { value: 'circle', icon: 'line-circle' },
+          { value: 'spiral', icon: 'line-spiral' }, { value: 'lissa', icon: 'line-lissa', label: 'lissajous' },
+        ]} />
+        <div style={rowStyle}>
+          <LabeledJack type="in" port="freq" moduleId={id} active={freqConn} signalRef={freqInRef} label="in" size="sm" />
+          <Knob value={freq} onChange={onFreqChange} label="frq" />
+        </div>
+        <div style={rowStyle}>
+          <LabeledJack type="in" port="dens" moduleId={id} active={densConn} signalRef={densInRef} label="in" size="sm" />
+          <Knob value={density} onChange={onDensityChange} label="den" />
+        </div>
+        <div style={rowStyle}>
+          <LabeledJack type="in" port="spd" moduleId={id} active={spdConn} signalRef={spdInRef} label="in" size="sm" />
+          <Knob value={speed} onChange={onSpeedChange} label="spd" />
+        </div>
+        <LabeledJack type="out" port="out" moduleId={id} signalRef={outRef} label="out" />
+      </div>
+    </Module>
+  )
+}
+
+export default function LineGenModule({ id = 'line1', init, preview }) {
+  if (preview) return <LineGenPanel shape="circle" freq={20} density={50} speed={50} enabled={false} onToggle={() => {}} onShapeChange={() => {}} onFreqChange={() => {}} onDensityChange={() => {}} onSpeedChange={() => {}} id={id} freqConn={false} freqInRef={{ current: null }} densConn={false} densInRef={{ current: null }} spdConn={false} spdInRef={{ current: null }} outRef={{ current: null }} />
+
+  const [shape, setShape] = useState(init?.shape ?? 'circle')
+  const [freq, setFreq] = useState(init?.freq ?? 20)
+  const [density, setDensity] = useState(init?.density ?? 50)
+  const [speed, setSpeed] = useState(init?.speed ?? 50)
+  const [enabled, setEnabled] = useModuleEnabled()
+  const cp = useConnectedPorts(id)
+
+  const enabledRef = useRef(true)
+  const shapeRef = useRef('circle')
+  const freqRef = useRef(20)
+  const densityRef = useRef(50)
+  const speedRef = useRef(50)
+  const outRef = useRef(null)
+  const freqInRef = useRef(null)
+  const densInRef = useRef(null)
+  const spdInRef = useRef(null)
+
+  enabledRef.current = enabled
+  shapeRef.current = shape
+  freqRef.current = freq
+  densityRef.current = density
+  speedRef.current = speed
+
+  const freqConn = cp.has('freq')
+  const densConn = cp.has('dens')
+  const spdConn = cp.has('spd')
+
+  const saveStateRef = useRef({})
+  saveStateRef.current = { shape, freq, density, speed }
+
+  useModule({
+    id,
+    stateRef: saveStateRef,
+    inputs: {
+      freq: { type: 'scalar', cv: 'offset' },
+      dens: { type: 'scalar', cv: 'offset' },
+      spd: { type: 'scalar', cv: 'offset' },
+    },
+    outputs: { out: { type: 'points' } },
+    process: (inputs, dt, t) => {
+      if (!enabledRef.current) { outRef.current = null; return { out: null } }
+      freqInRef.current = inputs.freq
+      densInRef.current = inputs.dens
+      spdInRef.current = inputs.spd
+
+      const f = readCv(inputs.freq, freqRef.current)
+      const d = readCv(inputs.dens, densityRef.current)
+      const s = readCv(inputs.spd, speedRef.current) / 50
+
+      const { pts, edges: edgeList } = generate(shapeRef.current, f, d, t * s, t * s)
+      const out = points(pts, edgeList)
+      out.aspectLock = true
+      outRef.current = out
+      return { out }
+    },
+  })
+
+  return <LineGenPanel shape={shape} freq={freq} density={density} speed={speed} enabled={enabled} onToggle={() => setEnabled(!enabled)} onShapeChange={setShape} onFreqChange={setFreq} onDensityChange={setDensity} onSpeedChange={setSpeed} id={id} freqConn={freqConn} freqInRef={freqInRef} densConn={densConn} densInRef={densInRef} spdConn={spdConn} spdInRef={spdInRef} outRef={outRef} />
+}

@@ -36,6 +36,19 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
 /* xs (ControlsXsRung, 2026-09-01): the panel rung, opt-in by prop — the default stays sm (2026-07-28 law) */
 const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+/* THE LIST IS THE TRIGGER'S, CONTINUED (2026-10-02 — user: *"the list has different padding then the
+ * button"*). Two things were off at every size but one. The rows were set in `kol-helper-12`
+ * whatever the trigger wore, and the helper is wider — "Newest first" fitted its trigger and was
+ * cut off in its own row. And the rows sat 4px in from the trigger's text, because the list pads
+ * itself by 4 on top of the row's padding. So: the row wears the trigger's face, and its side
+ * padding is the trigger's (8 · 12 · 16 · 20) less the list's 4. */
+const ROW_PAD = { xs: 'px-1', sm: 'px-2', md: 'px-3', lg: 'px-4' }
+/* …AND THE TRIGGER'S HEIGHT (same day — user: *"is it always the same regardless of size?"*). It was:
+ * 32px rows at sm · md · lg whatever the trigger stood (26 · 32 · 40), 20 at xs. A row is the
+ * trigger's box now, on the control ramp (22 · 26 · 32 · 40 — `--kol-ctl-*`, so the touch rung and
+ * a hardware panel move rows and trigger together). */
+const ROW_H = { xs: 'h-[var(--kol-ctl-xs)]', sm: 'h-[var(--kol-ctl-sm)]', md: 'h-[var(--kol-ctl-md)]', lg: 'h-[var(--kol-ctl-lg)]' }
+const ROW = { xs: `kol-mono-8 ${ROW_PAD.xs} ${ROW_H.xs}`, sm: `kol-mono-12 ${ROW_PAD.sm} ${ROW_H.sm}`, md: `kol-mono-14 ${ROW_PAD.md} ${ROW_H.md}`, lg: `kol-mono-16 ${ROW_PAD.lg} ${ROW_H.lg}` }
 /* Caret size comes from the INDICATOR ladder (glyphLadders.js) — the private
  * map that lived here was a transcription of ADJACENT, which is the wrong
  * ladder for a decoration: it put a caret one rung HEAVIER than the label
@@ -95,6 +108,11 @@ const Dropdown = ({
    * has one implementation and the drawing stays the caller's. */
   triggerAdornment,
   defaultOpen = false,
+  /* `stayOpen` — a click outside does not close the list (the trigger and Esc still do). For a
+   * surface where the open list is the thing being looked at while other controls are worked:
+   * the showcase's preview, with its toolbar pickers beside it (user 2026-10-02: *"can we
+   * disclude the preview from that behaviour?"*). */
+  stayOpen = false,
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -107,12 +125,26 @@ const Dropdown = ({
    * ambient case is the one only this can serve. */
   const triggerRef = useRef(null)
   const [ambient, setAmbient] = useState(null)
+  /* …AND SO IS A ZOOM (2026-10-02, kol-monitor's rack — user: *"what about the dropdown in general?
+   * its kinda wrong no"*). A trigger inside a zoomed surface (the rack at 80%) is drawn smaller,
+   * but the portalled list was not: it kept its full-size type inside a panel pinned to the
+   * trigger's SHRUNKEN width, so the names were cut off — 18 of monitor's 40 presets at 80%, all
+   * of them at 50%. The trigger's scale is its drawn width over its layout width; the list's
+   * content takes the same zoom, so trigger and list stay one piece at any scale. */
+  const [scale, setScale] = useState(1)
+  const [inPanel, setInPanel] = useState(false)
   useLayoutEffect(() => {
     if (!isOpen || !triggerRef.current) return
     const cs = getComputedStyle(triggerRef.current)
     const vars = {}
     for (const v of TONE_VARS) { const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val }
     setAmbient(vars)
+    const laid = triggerRef.current.offsetWidth
+    const s = laid ? triggerRef.current.getBoundingClientRect().width / laid : 1
+    setScale(Math.abs(s - 1) > 0.01 ? s : 1)
+    /* and the panel it opened from: a hardware plate keeps its desk sizes on touch, and the
+     * portalled list would otherwise take the touch rung its trigger skipped */
+    setInPanel(!!triggerRef.current.closest('.kol-hw-panel'))
   }, [isOpen])
 
   // sm everywhere unless explicitly overridden (see docblock size law).
@@ -132,6 +164,7 @@ const Dropdown = ({
     flip: false,
     matchReferenceWidth: true,
     role: 'listbox',
+    dismiss: stayOpen ? { outsidePress: false } : true,
   })
 
   /* Width belongs to the CALL SITE (2026-08-09 user call — "width without any
@@ -241,21 +274,25 @@ const Dropdown = ({
         popover={popover}
         panel={false}
         focus={false}
-        className={`kol-dd-panel ${resolvedVariant ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)}`.replace(/\s+/g, ' ').trim()}
+        className={`kol-dd-panel ${resolvedVariant ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)} ${inPanel ? 'kol-hw-panel' : ''}`.replace(/\s+/g, ' ').trim()}
         style={{
           ...ambient,
           '--kol-dd-max-rows': maxRows ?? 10,
-          /* xs rows are 20px; the panel's max-height reads the row height */
-          ...(resolvedSize === 'xs' && rowHeight == null ? { '--kol-dd-row-h': '20px' } : null),
+          /* a row is the trigger's height; the panel's max-height reads it */
+          ...(rowHeight == null ? { '--kol-dd-row-h': `var(--kol-ctl-${resolvedSize})` } : null),
           ...(rowHeight != null ? { '--kol-dd-row-h': typeof rowHeight === 'number' ? `${rowHeight}px` : rowHeight } : null),
         }}
       >
-        {(resolvedVariant === 'primary' || resolvedVariant === 'grey') && <div className="kol-dd-div" />}
+        {/* THE HAIRLINE UNDER THE TRIGGER, ALWAYS (2026-10-02 — user: *"I see it sometimes and sometimes
+          * not"*). It was drawn only for `variant="primary" | "grey"`: a dropdown toned by `tone=`
+          * got none, and an outline one lost its divider too — the panel sits 1px over the trigger's
+          * bottom border, which was meant to be it. One rule: an open dropdown has the line. */}
+        <div className="kol-dd-div" />
 
-        <div ref={listRef} className="kol-dd-list" role="listbox">
+        <div ref={listRef} className="kol-dd-list" role="listbox" style={scale !== 1 ? { zoom: scale } : undefined}>
           {options.map((option, i) => {
             if (option?.divider) return <MenuDropdownDivider key={`divider-${i}`} />
-            if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8 px-2 h-5' : 'kol-helper-12 px-3 h-8'} flex shrink-0 items-center text-meta`}>{option.heading}</div>
+            if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8' : 'kol-helper-12'} ${ROW_H[resolvedSize] ?? ROW_H.sm} ${ROW_PAD[resolvedSize] ?? ROW_PAD.sm} flex shrink-0 items-center text-meta`}>{option.heading}</div>
             const isActive = option.value === currentOption?.value
             return (
               <MenuDropdownItem
@@ -268,6 +305,7 @@ const Dropdown = ({
                  * brighten. The check mark is what marks the current value. */
                 hover={false}
                 size={resolvedSize}
+                rowClass={ROW[resolvedSize] ?? ROW.sm}
                 height={rowHeight}
                 onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
                 onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}

@@ -2,8 +2,10 @@
  * that make up things like the rack"). The case and its 1U / 3U rows, a slot per module, the
  * module frame, and the panel controls inside: knobs, a slider, switches, lights and jacks.
  *
- * IT IS apps/rack's OWN ENTRY FILE (2026-10-02), mounted here — the set and the app cannot drift. */
-export { default } from '../../../apps/rack/src/App.jsx'
+ * IT IS apps/rack's OWN RACK TAB (2026-10-02), mounted here — the set and the app cannot drift.
+ * `Standalone.jsx` is that tab without the app's router and nav rail (a router cannot nest in the
+ * showcase's). */
+export { default } from '../../../apps/rack/src/rack/Standalone.jsx'
 
 export const meta = {
   title: 'Rack',

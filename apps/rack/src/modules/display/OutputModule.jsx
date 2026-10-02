@@ -1,0 +1,168 @@
+// OutputModule — composited multi-layer display
+// 16HP, 4 layered inputs, background brightness, pen input for style
+
+import { useRef, useState } from 'react'
+import { useCanvasLoop } from '../../hooks/useCanvasLoop'
+import { useModuleEnabled } from '../../hooks/useModuleEnabled.js'
+import { useModule } from '../../hooks/useModuleRegistry.jsx'
+import Module from '../utility/Module'
+import LabeledJack from '../parametric/LabeledJack'
+import Knob from '../parametric/Knob'
+import Divider from '../../components/atoms/Divider'
+import { useConnectedPorts } from '../../hooks/usePatchRouting.jsx'
+import { drawSignal } from './drawSignal'
+
+const BUF_LEN = 128
+const CHANNELS = ['a', 'b', 'c', 'd']
+
+function OutputPanel({ canvasRef, bg, trails, enabled, onToggle, onBgChange, onTrailsChange, id, connected, inputRefs, penConnected, penRef, bgConnected, bgInRef }) {
+  return (
+    <Module label="Out" enabled={enabled} onToggle={onToggle}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        gap: 4,
+      }}>
+
+        <canvas
+          ref={canvasRef}
+          width={240}
+          height={140}
+          style={{
+            flex: 1,
+            width: '100%',
+            borderRadius: 2,
+            border: '1px solid var(--kol-fg-08)',
+          }}
+        />
+
+        <div style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center', gap: 6 }}>
+          <LabeledJack type="in" port="bg" moduleId={id} active={bgConnected} signalRef={bgInRef} label="cv" size="sm" />
+          <Knob value={bg} onChange={onBgChange} label="bg" />
+          <Knob value={trails} onChange={onTrailsChange} label="trails" />
+          <Divider variant="vertical" className="py-1.5" />
+          {CHANNELS.map(ch => (
+            <LabeledJack
+              key={ch}
+              type="in"
+              port={ch}
+              moduleId={id}
+              active={connected[ch]}
+              signalRef={{ get current() { return inputRefs.current[ch] } }}
+              label={ch}
+            />
+          ))}
+          <Divider variant="vertical" className="py-1.5" />
+          <LabeledJack type="in" port="pen" moduleId={id} active={penConnected} signalRef={penRef} label="pen" size="sm" />
+        </div>
+      </div>
+    </Module>
+  )
+}
+
+export default function OutputModule({ id = 'out1', init, preview }) {
+  if (preview) {
+    const dummyInputRefs = { current: { a: null, b: null, c: null, d: null } }
+    return <OutputPanel canvasRef={{ current: null }} bg={0} trails={0} enabled={false} onToggle={() => {}} onBgChange={() => {}} onTrailsChange={() => {}} id={id} connected={{ a: false, b: false, c: false, d: false }} inputRefs={dummyInputRefs} penConnected={false} penRef={{ current: null }} bgConnected={false} bgInRef={{ current: null }} />
+  }
+
+  const canvasRef = useRef(null)
+  const [bg, setBg] = useState(init?.bg ?? 0)
+  const [trails, setTrails] = useState(init?.trails ?? 0)
+  const [enabled, setEnabled] = useModuleEnabled()
+  const enabledRef = useRef(true)
+  enabledRef.current = enabled
+  const cp = useConnectedPorts(id)
+
+  const bgRef = useRef(0)
+  bgRef.current = bg
+  const trailsRef = useRef(0)
+  trailsRef.current = trails
+
+  const inputRefs = useRef({ a: null, b: null, c: null, d: null })
+  const penRef = useRef(null)
+  const bgInRef = useRef(null)
+
+  const historyRefs = useRef({
+    a: new Float32Array(BUF_LEN),
+    b: new Float32Array(BUF_LEN),
+    c: new Float32Array(BUF_LEN),
+    d: new Float32Array(BUF_LEN),
+  })
+  const writeIdxRef = useRef(0)
+
+  const connected = {}
+  for (const ch of CHANNELS) {
+    connected[ch] = cp.has(ch)
+  }
+  const penConnected = cp.has('pen')
+  const bgConnected = cp.has('bg')
+
+  const saveStateRef = useRef({})
+  saveStateRef.current = { bg, trails }
+
+  useModule({
+    id,
+    stateRef: saveStateRef,
+    inputs: {
+      a: { type: 'any' },
+      b: { type: 'any' },
+      c: { type: 'any' },
+      d: { type: 'any' },
+      pen: { type: 'pen' },
+      bg: { type: 'scalar', cv: 'offset' },
+    },
+    outputs: {},
+    process: (inputs) => {
+      if (!enabledRef.current) {
+        for (const ch of CHANNELS) inputRefs.current[ch] = null
+        penRef.current = null
+        return {}
+      }
+      penRef.current = inputs.pen
+      bgInRef.current = inputs.bg
+      const idx = writeIdxRef.current
+      for (const ch of CHANNELS) {
+        inputRefs.current[ch] = inputs[ch]
+        if (inputs[ch] && inputs[ch].type === 'scalar') {
+          historyRefs.current[ch][idx] = inputs[ch].value
+        } else {
+          historyRefs.current[ch][idx] = 0
+        }
+      }
+      writeIdxRef.current = (idx + 1) % BUF_LEN
+      return {}
+    },
+  })
+
+  useCanvasLoop(canvasRef, () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    const w = canvas.width, h = canvas.height
+    if (!w || !h) return
+
+    if (!enabledRef.current) {
+      ctx.fillStyle = 'rgba(8,8,8,1)'
+      ctx.fillRect(0, 0, w, h)
+      return
+    }
+
+    const bgVal = bgInRef.current?.type === 'scalar' ? bgInRef.current.value : bgRef.current
+    const g = Math.round((bgVal / 100) * 255)
+    const a = 1 - Math.pow(trailsRef.current / 100, 0.3)
+    ctx.fillStyle = `rgba(${g},${g},${g},${a})`
+    ctx.fillRect(0, 0, w, h)
+
+    const wi = writeIdxRef.current
+    const p = penRef.current
+    for (const ch of CHANNELS) {
+      const signal = inputRefs.current[ch]
+      if (!signal) continue
+      drawSignal(ctx, signal, 0, 0, w, h, historyRefs.current[ch], wi, BUF_LEN, p)
+    }
+  })
+
+  return <OutputPanel canvasRef={canvasRef} bg={bg} trails={trails} enabled={enabled} onToggle={() => setEnabled(!enabled)} onBgChange={setBg} onTrailsChange={setTrails} id={id} connected={connected} inputRefs={inputRefs} penConnected={penConnected} penRef={penRef} bgConnected={bgConnected} bgInRef={bgInRef} />
+}

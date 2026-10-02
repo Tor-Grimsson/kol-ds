@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.4.1 — 2026-10-02
+
+- **`ModuleFrame` carries `kol-hw-panel`** — the marker the theme's touch rung skips, so a module's controls keep their desk sizes on touch. Needs the kol-theme of this release; a consumer with its own module frame adds the class to its root.
+
 ## 0.4.0 — 2026-10-02
 
 - **Changed:** `Knob` wraps kol-component's `Knob` (was `RotaryDial`); still the deprecated alias. Needs the kol-component that ships `Knob`.

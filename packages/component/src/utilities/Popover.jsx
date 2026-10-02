@@ -123,7 +123,9 @@ export function usePopover({
     useClick(data.context, { enabled: click }),
     useHover(data.context, { enabled: hover, delay: hoverDelay, move: false }),
     useFocus(data.context, { enabled: focus }),
-    useDismiss(data.context, { enabled: dismiss }),
+    /* `dismiss` may be an object of floating-ui's own options — `{ outsidePress: false }` keeps Esc
+     * and drops the outside click (Dropdown `stayOpen`) */
+    useDismiss(data.context, typeof dismiss === 'object' && dismiss ? { enabled: true, ...dismiss } : { enabled: dismiss }),
     useRole(data.context, { role }),
   ])
 

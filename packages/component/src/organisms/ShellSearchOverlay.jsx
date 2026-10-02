@@ -90,6 +90,9 @@ export function HighlightMatch({ label, query, ranges }) {
  * @param {Function} [onOpenResults] (query) => void — ⌘/Ctrl+Enter: every hit, on the consumer's
  *                                 own results surface. Plain Enter keeps its meaning.
  * @param {string}   [resultsLabel] the footer's second line for ⌘Enter (e.g. `All results`)
+ * @param {string}   [selectLabel] the footer's Enter line while a row is highlighted (default
+ *                                 `Go to page`) — a modal whose rows are not pages says what
+ *                                 Enter does instead (the rack's module search: `Add module`)
  */
 export default function ShellSearchOverlay({
   open,
@@ -112,6 +115,7 @@ export default function ShellSearchOverlay({
   enterLabel,
   onOpenResults,
   resultsLabel = 'All results',
+  selectLabel = 'Go to page',
 }) {
   const panelRef = useRef(null)
   const listRef = useRef(null)
@@ -289,7 +293,7 @@ export default function ShellSearchOverlay({
             {(results.length > 0 || enterLabel) && (
               <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent">
                 <Kbd icon="corner-down-left" />
-                {results.length > 0 ? 'Go to page' : enterLabel}
+                {results.length > 0 ? selectLabel : enterLabel}
               </p>
             )}
             {/* THE RESULTS LINE IS A LINK (user 2026-10-01: *"make 'all results...' at the bottom

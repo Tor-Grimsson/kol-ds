@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CodeBlock, Dropdown, TabChips } from '@kolkrabbi/kol-component'
+import { CodeBlock, Dropdown, MultiSelect, TabChips } from '@kolkrabbi/kol-component'
 import PreviewStage from './PreviewStage.jsx'
 
 /**
@@ -106,6 +106,13 @@ export default function PreviewCard({
    * CurveOverlay's empty · handles · both */
   const states = entry?.states ?? null
   const [state, setState] = useState(states?.[0] ?? null)
+  /* the axes that have more than one value, in toolbar order — what the MultiSelect picker shows */
+  const axes = [
+    { id: 'variant', label: 'Variant', options: variants, value: variant, set: setVariant },
+    { id: 'tone', label: 'Tone', options: tones, value: tone, set: setTone },
+    { id: 'size', label: 'Size', options: sizes && byRamp(sizes), value: size, set: setSize },
+    { id: 'state', label: 'State', options: states, value: state, set: setState },
+  ].filter((a) => a.options?.length > 1)
 
   return (
     <div className={`${CHROME[chrome] ?? CHROME.figure} ${CAPS[cap] ?? CAPS.panel}`.trim()}>
@@ -123,16 +130,27 @@ export default function PreviewCard({
           </>
         )}
         <div className="ml-auto flex items-center gap-2">
-          {variants?.length > 1 && tab === 'preview' && (
+          {/* `picker = 'multi'` (2026-10-02 — user: "I'd also wanna preview the multiselect, can we see
+            * that on the button and dropdown component page?"): the same axes as ONE MultiSelect, a
+            * column each, where the default is a Dropdown per axis. Opt-in per preview. */}
+          {entry?.picker === 'multi' && tab === 'preview' && axes.length > 0 && (
+            <MultiSelect
+              size="sm"
+              groups={axes.map((a) => ({ id: a.id, label: a.label, options: a.options.map((v) => ({ value: v, label: capitalise(v) })) }))}
+              value={Object.fromEntries(axes.map((a) => [a.id, a.value]))}
+              onChange={(id, v) => axes.find((a) => a.id === id)?.set(v)}
+            />
+          )}
+          {entry?.picker !== 'multi' && variants?.length > 1 && tab === 'preview' && (
             <AxisPicker options={variants} value={variant} onChange={setVariant} label="Variant" />
           )}
-          {tones?.length > 1 && tab === 'preview' && (
+          {entry?.picker !== 'multi' && tones?.length > 1 && tab === 'preview' && (
             <AxisPicker options={tones} value={tone} onChange={setTone} label="Tone" />
           )}
-          {sizes?.length > 1 && tab === 'preview' && (
+          {entry?.picker !== 'multi' && sizes?.length > 1 && tab === 'preview' && (
             <AxisPicker options={byRamp(sizes)} value={size} onChange={setSize} label="Size" />
           )}
-          {states?.length > 1 && tab === 'preview' && (
+          {entry?.picker !== 'multi' && states?.length > 1 && tab === 'preview' && (
             <AxisPicker options={states} value={state} onChange={setState} label="State" />
           )}
           {actions && <div className="flex items-center gap-1">{actions(tab)}</div>}

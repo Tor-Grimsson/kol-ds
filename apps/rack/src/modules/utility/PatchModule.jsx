@@ -1,0 +1,147 @@
+// PatchModule — save/load/clear patch presets
+// 6HP 3U
+
+import { useState, useRef } from 'react'
+import { usePatchRouting } from '../../hooks/usePatchRouting.jsx'
+import { useModuleRegistry } from '../../hooks/useModuleRegistry.jsx'
+import { useRack } from '../../hooks/useRackContext.jsx'
+import { savePatchFile, loadPatchFile } from '../../hooks/usePatchFile.js'
+import { patches } from '../../data/patches.js'
+import Module from './Module'
+
+import Dropdown from '@kolkrabbi/kol-component/molecules/Dropdown'
+import Button from '../../components/atoms/Button'
+
+function PatchPanel({ tab, onTabChange, current, names, cableCount, onCurrentChange, onLoad, onSave, onClear, onExport, onImport }) {
+  /* THE BUTTONS ARE THE DS BUTTON (user 2026-10-02: *"what buttons are these?"*). They were raw
+   * <button> tags with their own border, padding and type — about 17px tall beside the 22px
+   * dropdown. `Button size="xs"` is the panel rung, the same 22px box. */
+  return (
+    <Module label="Patch" enabled={true} onToggle={() => {}} u={1}>
+      <div style={{
+        display: 'flex', flexDirection: 'column',
+        /* gap 4 (was 6): the DS buttons are 22px, 5 taller than the hand-drawn ones, and the
+         * 1U plate has 101px — at 6 the cable count ran off the bottom */
+        height: '100%', padding: '4px 2px', gap: 4,
+      }}>
+
+        <div style={{ display: 'flex', gap: 8, padding: '0 2px' }}>
+          {['preset', 'file'].map(t => (
+            <span
+              key={t}
+              onClick={() => onTabChange(t)}
+              className={`kol-helper-8 cursor-pointer select-none ${tab === t ? 'text-fg-64' : 'text-fg-32'}`}
+              style={{ textTransform: 'uppercase' }}
+            >{t === 'preset' ? 'Preset' : 'File'}</span>
+          ))}
+        </div>
+
+        {tab === 'preset' && (
+          <>
+            {/* line-height 0: the dropdown's root is an inline-block around its trigger, so the
+              * wrapper's line strut made it 26–27px tall for a 22px trigger */}
+            <div style={{ display: 'flex', padding: '0 2px', lineHeight: 0 }}>
+              <Dropdown size="xs" tone="outline" value={current} options={names.map((o) => ({ value: o, label: o }))} onChange={onCurrentChange} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '0 2px' }}>
+              <div style={{ display: 'flex', gap: 3 }}>
+                <Button tone="outline" size="xs" className="flex-1" onClick={onLoad}>Load</Button>
+                <Button tone="outline" size="xs" className="flex-1" onClick={onSave}>Save</Button>
+              </div>
+              <Button tone="outline" size="xs" className="flex-1" onClick={onClear}>Clear</Button>
+            </div>
+            <span className="kol-helper-xxxxs text-fg-24" style={{ padding: '0 4px' }}>
+              {cableCount} cables
+            </span>
+          </>
+        )}
+
+        {tab === 'file' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '0 2px' }}>
+            <Button tone="outline" size="xs" className="flex-1" onClick={onExport}>Export</Button>
+            <Button tone="outline" size="xs" className="flex-1" onClick={onImport}>Import</Button>
+          </div>
+        )}
+      </div>
+    </Module>
+  )
+}
+
+export default function PatchModule({ id = 'patch1', preview }) {
+  if (preview) return <PatchPanel tab="preset" onTabChange={() => {}} current="init" names={['init']} cableCount={0} onCurrentChange={() => {}} onLoad={() => {}} onSave={() => {}} onClear={() => {}} onExport={() => {}} onImport={() => {}} />
+
+  const routing = usePatchRouting()
+  const { modulesRef } = useModuleRegistry()
+  const rack = useRack()
+  const [tab, setTab] = useState('preset')
+  const [saved, setSaved] = useState(() => ({ ...patches }))
+  const [current, setCurrent] = useState('init')
+  const [saveSlot, setSaveSlot] = useState(1)
+
+  const names = Object.keys(saved)
+
+  const handleLoad = () => {
+    const patch = saved[current]
+    if (!patch) return
+    if (patch.rows) rack.loadPreset(patch)
+    const conns = patch.connections || (Array.isArray(patch) ? patch : [])
+    routing.loadPatch([...conns])
+  }
+
+  const handleSave = () => {
+    const name = `usr-${String(saveSlot).padStart(2, '0')}`
+    const snapshot = routing.connections.map(c => ({ ...c }))
+    setSaved(prev => ({ ...prev, [name]: snapshot }))
+    setCurrent(name)
+    setSaveSlot(s => s + 1)
+
+    const modules = modulesRef.current
+
+    // Rack placement with per-module state inline. Modules are emitted in
+    // left-to-right visual order (sorted by offset), and each entry carries its
+    // offset so gaps between modules survive a save/load round-trip.
+    const rows = rack.rows.map(row => ({
+      height: row.height,
+      modules: [...row.modules]
+        .sort((a, b) => a.offset - b.offset)
+        .map(m => {
+          const entry = { type: m.type, id: m.id, offset: m.offset }
+          const reg = modules.get(m.id)
+          const state = reg?.stateRef?.current
+          if (state && Object.keys(state).length > 0) entry.state = { ...state }
+          return entry
+        }),
+    }))
+
+    // Enabled modules — capture the actual enabled state, not "has output".
+    const on = []
+    for (const [id, mod] of modules) {
+      if (mod.enabledRef?.current) on.push(id)
+    }
+
+    const full = { name, rows, connections: snapshot, on }
+    navigator.clipboard.writeText(JSON.stringify(full, null, 2)).catch(() => {})
+  }
+
+  const handleClear = () => {
+    routing.loadPatch([])
+    setCurrent('init')
+  }
+
+  const handleExport = () => {
+    const caseName = sessionStorage.getItem('caseName')?.replace(/^"|"$/g, '') || current
+    const desc = sessionStorage.getItem('caseDescription')?.replace(/^"|"$/g, '') || ''
+    savePatchFile(rack, routing.connections, modulesRef, caseName, desc || undefined)
+  }
+
+  const handleImport = async () => {
+    const patch = await loadPatchFile()
+    if (!patch) return
+    if (patch.name) sessionStorage.setItem('caseName', JSON.stringify(patch.name))
+    if (patch.description) sessionStorage.setItem('caseDescription', JSON.stringify(patch.description))
+    if (patch.rows) rack.loadPreset(patch)
+    if (patch.connections) routing.loadPatch(patch.connections)
+  }
+
+  return <PatchPanel tab={tab} onTabChange={setTab} current={current} names={names} cableCount={routing.connections.length} onCurrentChange={setCurrent} onLoad={handleLoad} onSave={handleSave} onClear={handleClear} onExport={handleExport} onImport={handleImport} />
+}

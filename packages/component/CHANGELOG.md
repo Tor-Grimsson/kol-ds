@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-component
 
+## 0.238.0 — 2026-10-02
+
+- **Fixed: `Dropdown` — the open list takes the zoom of its trigger.** The list is portalled, so inside a zoomed surface (kol-monitor's rack at 80%) it kept its full-size type in a panel pinned to the trigger's shrunken width, and the names were cut off. It now measures the trigger's drawn-over-laid-out width and zooms the list to match.
+- **`Dropdown` — the hairline under the trigger is drawn for every tone.** It was keyed on `variant="primary" | "grey"`, so a dropdown toned by `tone=` had none and an outline one lost its divider (the panel covers the trigger's bottom border). ⚠ visual: outline, ghost and `tone=`-only dropdowns gain the line when open.
+- **`Dropdown` — the list is the trigger's, continued.** Rows wear the trigger's face at every size (they were `kol-helper-12` at sm · md · lg, wider than the trigger's, so the longest value was cut off in its own row) and sit on the trigger's text edge (they were 4px in at xs · sm · lg). `MenuDropdownItem` takes `rowClass` for it; a menu's rows are unchanged. ⚠ visual: dropdown rows at md and lg are larger type (14 · 16).
+- **`Dropdown` — a row is its trigger's height.** Rows were 32px at sm · md · lg and 20 at xs; they are on the control ramp now (22 · 26 · 32 · 40, `--kol-ctl-*`). ⚠ visual: lists are tighter at sm, taller at lg, 2px a row taller at xs.
+- **`Dropdown stayOpen`** — an outside click does not close the list (the trigger and Esc still do). `usePopover`'s `dismiss` takes floating-ui's options object for it.
+- **`Dropdown` in a hardware panel** — a list portalled out of a `.kol-hw-panel` carries the marker, so it skips the touch rung its trigger skips (needs the kol-theme and kol-hardware of this release).
+- **`Input` in a hardware panel** — the field keeps its desk height on touch (`pointer-coarse:not-[.kol-hw-panel_*]:h-[22px]`); the type still goes to 16px there, so iOS does not zoom.
+- **`@kolkrabbi/kol-component/atoms/RotaryDial`** resolves again — the export map points the old subpath at `molecules/Knob.jsx` (the barrel aliased the name; a subpath has no alias unless the map carries one). Drops with the `RotaryDial` name.
+- **`ShellSearchOverlay selectLabel`** — the footer's Enter line while a row is highlighted (default `Go to page`, unchanged). A search modal whose rows are not pages says what Enter does: the rack's module search passes `Add module`.
+
 ## 0.237.0 — 2026-10-02
 
 - **New:** `MediaPlayer` (molecule) — `variant="video" | "audio"`, and `frame` to draw inside `QuickLookFrame`; absent, it plays inline. The media, `PlaybackBar` and `usePlayback` as one player.

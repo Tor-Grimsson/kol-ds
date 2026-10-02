@@ -159,8 +159,11 @@ export default function Input({
    * from the font's ascender+descender (font-metric), not strictly from
    * CSS line-height. Result: kol-control-sm ends up 26.5px instead of 26.
    * h-4 / h-[18px] / h-[22px] match the kol-mono-12 / -14 / -16 line-heights; on touch every size is
-   * the 16 / 22 rung (D5, 2026-09-29 — see SearchInput) */
-  const heightCls = `${size === 'xs' ? 'h-3' : size === 'sm' ? 'h-4' : size === 'md' ? 'h-[18px]' : 'h-[22px]'} pointer-coarse:h-[22px]`
+   * the 16 / 22 rung (D5, 2026-09-29 — see SearchInput) — except inside a hardware panel
+   * (`.kol-hw-panel`, 2026-10-02): a module's field keeps its desk height on touch, as the rest of
+   * the plate does (kol-components-controls.css). The type still goes to 16px there, so iOS does
+   * not zoom into it. */
+  const heightCls = `${size === 'xs' ? 'h-3' : size === 'sm' ? 'h-4' : size === 'md' ? 'h-[18px]' : 'h-[22px]'} pointer-coarse:not-[.kol-hw-panel_*]:h-[22px]`
 
   const inputCls = [
     'min-w-0 bg-transparent border-none outline-none text-auto',

@@ -1324,9 +1324,14 @@ a.kol-icon-frame {
   /* THE TOUCH RUNG (D5, 2026-09-29 — see kol-base-tokens.css): every text control types 16 / 22 on
    * touch, so a derived box grows exactly as the pinned tokens do — xs/sm 4+4+22+2 = 32, md
    * 6+6+22+2 = 36, lg 40. Two classes, so it outranks the size's own kol-mono-* class. */
-  .kol-btn.kol-btn-xs, .kol-btn.kol-btn-sm, .kol-btn.kol-btn-md, .kol-btn.kol-btn-lg,
+  /* NOT INSIDE A HARDWARE PANEL (2026-10-02, kol-monitor's Patch module): a module is drawn at the
+   * rack's own zoom, and its `xs` controls are the PANEL rung — 8px type in a 22px box on a 96px
+   * plate. The rung lifted its dropdown to 16 / 32 and it no longer fitted. `.kol-hw-panel` marks
+   * the plate (ModuleFrame) and a list portalled out of one (Dropdown); `:where()` keeps the
+   * rule's specificity where it was. The box tokens are pinned back in kol-components-controls.css. */
+  :is(.kol-btn.kol-btn-xs, .kol-btn.kol-btn-sm, .kol-btn.kol-btn-md, .kol-btn.kol-btn-lg,
   .kol-control.kol-control-xs, .kol-control.kol-control-sm, .kol-control.kol-control-md, .kol-control.kol-control-lg,
-  .kol-seg .kol-seg-cell, .kol-menu-btn.kol-menu-btn {
+  .kol-seg .kol-seg-cell, .kol-menu-btn.kol-menu-btn):where(:not(.kol-hw-panel, .kol-hw-panel *)) {
     font-size: 16px;
     line-height: 22px;
   }

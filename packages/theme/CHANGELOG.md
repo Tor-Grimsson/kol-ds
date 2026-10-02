@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## 0.164.0 — 2026-10-02
+
+- **A hardware panel keeps its desk sizes on touch.** The touch rung (2026-09-29) grows every control on a coarse pointer — `xs` 22 → 32, type to 16 / 22 — and it reached into module plates, where `xs` is the panel rung: kol-monitor's Patch dropdown rendered 32px with 16px type on a 96px plate. `.kol-hw-panel` (kol-hardware's `ModuleFrame`, and a `Dropdown` list portalled out of one) pins `--kol-ctl-*` back to the desk values (`kol-components-controls.css`) and the rung's type rule skips it (`kol-components-atoms.css`, specificity unchanged).
+- **A dropdown's rows sit on its trigger's text edge.** `.kol-dd-list` pads inline by 4px + the trigger's 1px border − the panel's own border, so a filled panel (no border) no longer stands 1px left of an outlined one. The tone bundles write `--kol-tone-panel-border-w: 0px` (was a unitless `0`).
+- **A module's plate is the ground for its dropdowns.** `.kol-hw-panel.bg-surface-secondary` sets `--kol-tone-ground` to `surface-secondary`, so an outline or ghost dropdown on a module opens in the plate's colour, not the page's.
+
 ## 0.163.0 — 2026-10-02
 
 - **Changed:** `.kol-playback-scrub` takes the theme's ink at rest and reads `--kol-slider-track`; only a bar floating over media paints it white. Docked and floating bars are pixel-identical.

@@ -142,6 +142,12 @@
  * variables on the panel; the list scrolls at the ceiling as it always could. */
 .kol-dd-list {
   padding: var(--kol-spacing-1);
+  /* THE ROWS SIT ON THE TRIGGER'S TEXT EDGE (2026-10-02). The trigger always carries a 1px border
+   * (transparent on a filled tone); the panel carries one only on outline. So a filled panel's
+   * rows stood 1px left of the trigger's text. The list makes up the difference: 4px, plus the
+   * trigger's 1, less whatever border the panel has. (`0px`, not `0`, in the tone bundles — a
+   * unitless zero cannot be subtracted from a length.) */
+  padding-inline: calc(var(--kol-spacing-1) + 1px - var(--kol-tone-panel-border-w, 0px));
   overflow-y: auto;
   min-height: 0;
   max-height: calc(var(--kol-dd-max-rows, 10) * var(--kol-dd-row-h, 2rem) + var(--kol-spacing-1) * 2);
@@ -1986,7 +1992,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-surface-secondary);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 /* `secondary` PAINTS THE PAGE SURFACE (tone-secondary-is-inverse, kol-client-olina
@@ -2011,7 +2017,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-surface-primary);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 /* `inverted` — the text color as fill: Button's / IconFrame's `secondary`
@@ -2035,7 +2041,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-surface-on-primary);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 .kol-tone-outline,
@@ -2073,7 +2079,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 .kol-tone-grey,
@@ -2092,7 +2098,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-oq-12);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 .kol-tone-sunken,
@@ -2111,7 +2117,7 @@
   --kol-tone-pressed-image: linear-gradient(var(--kol-fg-08), var(--kol-fg-08));
   --kol-tone-pressed-fg: var(--kol-fg-96);
   --kol-tone-panel-bg: var(--kol-surface-sunken);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 :where(.kol-btn-nav) {
@@ -2129,7 +2135,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 :where(.kol-icon-frame-nav) {
@@ -2147,7 +2153,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 :where(.kol-control--plain) {
@@ -2165,7 +2171,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 :where(.kol-btn-danger, .kol-icon-frame-danger) {
@@ -2183,7 +2189,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--ui-error);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 :where(.kol-btn-accent, .kol-icon-frame-accent) {
@@ -2201,7 +2207,7 @@
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-surface-primary);
   --kol-tone-panel-bg: var(--kol-accent-primary);
-  --kol-tone-panel-border-w: 0;
+  --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
 

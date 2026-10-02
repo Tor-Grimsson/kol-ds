@@ -34,3 +34,28 @@
   --kol-ctl-signal-input: #4ade80;
   --kol-ctl-cv-attenuate: #497DA2;
 }
+
+/* A HARDWARE PANEL KEEPS ITS DESK SIZES ON TOUCH (2026-10-02). The touch rung (kol-base-tokens.css)
+ * grows every control box on a coarse pointer — xs 22 → 32 — so a finger can hit app chrome. A
+ * module is not app chrome: it is drawn at the rack's zoom, which is how it is made reachable, and
+ * its controls are sized to the plate. `.kol-hw-panel` is ModuleFrame's root, and Dropdown puts it
+ * on a list it portals out of one. The type half of the rung skips the same marker
+ * (kol-components-atoms.css). */
+@media (pointer: coarse) {
+  .kol-hw-panel {
+    --kol-ctl-xs: 22px;
+    --kol-ctl-sm: 26px;
+    --kol-ctl-md: 32px;
+    --kol-ctl-lg: 40px;
+  }
+}
+
+/* THE PLATE IS THE GROUND (2026-10-02, kol-monitor's Patch module). An outline or ghost dropdown
+ * paints its list in `--kol-tone-ground` — "the ground it sits on", `surface-primary` unless
+ * something says otherwise (kol-components-molecules.css, TONE). A module's plate is
+ * `surface-secondary`, so the list came out page-coloured, darker than the trigger above it. The
+ * default plate says what it is; a consumer that passes its own plate class sets the ground with it. */
+.kol-hw-panel.bg-surface-secondary {
+  --kol-tone-ground: var(--kol-surface-secondary);
+}
+
