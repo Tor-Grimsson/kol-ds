@@ -61,3 +61,9 @@ other shell consumer that uses `PageSection` has to rediscover it.
 - [ ] with no consumer wrapper: first heading 48px off the nav rail at 1440, 24px in at 390
 - [ ] `.kol-page`'s max-width / auto margin inside the shell ruled, either way
 - [ ] an exhibit page (`ExhibitPage` / `ExhibitOverview`) measured in the shell, not only read from source
+
+## ADDRESSED — 2026-10-02 · kol-theme@0.164.1
+
+`.shell-main .kol-page { padding-inline: 0; max-width: none; margin-inline: 0 }` in `kol-components-workshop.css`. The cap went with the pad, on the law already written in `04-compositions/02-shells.md`: inside the shell the page body's cap is made once in `MainColumn` (canvas · shell · none), and `.kol-page`'s own `--kol-container-max` + auto margin re-capped and re-centred a `none` page. The 64px block padding stays.
+
+Measured in the showcase, where `ExhibitPage` and `ExhibitOverview` render inside the shell's preview box: before, the section's heading sat 48px inside its parent at 1440; after, 0px at 1440 and at 390, no sideways scroll. A `PageSection` outside the shell (`/components/preview/PageSection`) still pads 20px at 390. Not measured: a `PageSection` as a direct page of the shell — the showcase has none, so the 48px / 24px box is kol-website's to tick, with its `[&_.kol-page]:px-0` wrapper deleted.

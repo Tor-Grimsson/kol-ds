@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.164.1 — 2026-10-02
+
+- **Fixed: a `PageSection` inside the workshop shell was inset twice on x.** `ShellLayout`'s main pads `--kol-pad-section-x` from the rail (0.155.0) and `.kol-page` padded it again — 96px off the rail at 1440, 44px in at 390; kol-workshop's `ExhibitPage` and `ExhibitOverview` are built from it. `.shell-main .kol-page` now drops its x padding, and its `--kol-container-max` cap and auto margin with it: inside the shell the width is the page's call, made once in `MainColumn`. A `.kol-page` outside the shell is unchanged. A consumer carrying a wrapper for this (kol-website's `[&_.kol-page]:px-0`) can delete it.
+
 ## 0.164.0 — 2026-10-02
 
 - **A hardware panel keeps its desk sizes on touch.** The touch rung (2026-09-29) grows every control on a coarse pointer — `xs` 22 → 32, type to 16 / 22 — and it reached into module plates, where `xs` is the panel rung: kol-monitor's Patch dropdown rendered 32px with 16px type on a 96px plate. `.kol-hw-panel` (kol-hardware's `ModuleFrame`, and a `Dropdown` list portalled out of one) pins `--kol-ctl-*` back to the desk values (`kol-components-controls.css`) and the rung's type rule skips it (`kol-components-atoms.css`, specificity unchanged).

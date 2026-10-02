@@ -168,6 +168,19 @@
   min-width: 0;
 }
 
+/* A `.kol-page` INSIDE THE SHELL YIELDS ITS X (kol-website, 2026-10-02). "Pages do not pad
+ * themselves on x" was written above on 2026-09-28 and kol-framework's `PageSection` never heard
+ * it: `.kol-page` pads `--kol-pad-section-x` again, so a section sat 48 + 48 = 96px off the rail
+ * at 1440 — and kol-workshop's own `ExhibitPage` / `ExhibitOverview` are built from it. The cap
+ * goes with the pad: inside the shell the width is the page's call, made once in `MainColumn`
+ * (canvas · shell · none), and `.kol-page`'s own `--kol-container-max` + auto margin was a
+ * second answer that re-capped and re-centred a `none` page. The block padding stays. */
+.shell-main .kol-page {
+  padding-inline: 0;
+  max-width: none;
+  margin-inline: 0;
+}
+
 /* THE TYPED WORDMARK — the shell's second mark as live type in the Tight cut
  * (2026-09-28), sized so its caps stand as tall as the drawn KOLKRABBI mark
  * beside it (h-6). The display voice is uppercase by contract. */

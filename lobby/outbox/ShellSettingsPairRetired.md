@@ -3,7 +3,7 @@
 **Filed:** 2026-08-30 → **kol-mirror** + **kol-monitor**
 **Entries:** `~/dev/projects/kol-{mirror,monitor}/lobby/inbox/ShellSettingsPairRetired.md`
 **Ledgers:** each repo's `lobby/INDEX.md` — **the truth about this ticket**
-**Last known:** 🔵 `filed` · synced 2026-08-30
+**Last known:** 🟢 `closed` · synced 2026-10-02 — closed at kol-mirror and kol-monitor; the swap shipped in both 2026-08-30 under the forcing bump
 
 ## Why it went there
 

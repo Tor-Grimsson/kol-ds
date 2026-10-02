@@ -3,7 +3,7 @@
 **Filed:** 2026-08-27 → **kol-website**
 **Entry:** `~/dev/projects/kol-website/lobby/inbox/TiltFamilyForks.md`
 **Ledger:** `~/dev/projects/kol-website/lobby/INDEX.md` — **the truth about this ticket**
-**Last known:** 🔵 `filed` · synced 2026-08-27
+**Last known:** 🟢 `closed` · synced 2026-10-02 — executed at kol-website 2026-08-27 on kol-component `^0.110.0`; the three forks retired there
 
 ## Why it went there
 

@@ -3,7 +3,7 @@
 **Filed:** 2026-08-30 → **kol-fxr** + **kol-mirror** + **kol-monitor**
 **Entries:** `~/dev/projects/kol-{fxr,mirror,monitor}/lobby/inbox/SettingsMastheadCluster.md`
 **Ledgers:** each repo's `lobby/INDEX.md` — **the truth about this ticket**
-**Last known:** 🔵 `filed` · synced 2026-08-30
+**Last known:** 🟢 `closed` · synced 2026-10-02 — adopted and filed to `done/` at kol-fxr, kol-mirror and kol-monitor; fxr was the first to render it
 
 ## Why it went there
 

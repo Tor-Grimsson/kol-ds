@@ -31,7 +31,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.164.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-theme` | **0.164.1** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.33.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
 | `@kolkrabbi/kol-component` | **0.238.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.48.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
@@ -54,7 +54,7 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-markdown` | **0.1.2** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
+| `@kolkrabbi/kol-markdown` | **0.1.3** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
 | `@kolkrabbi/kol-search` | **0.3.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets, the tag graph (`tagGraph`) |
 
 ## Other tiers

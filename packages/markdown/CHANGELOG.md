@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-markdown
 
+## 0.1.3 — 2026-10-02
+
+- Republished so the `@kolkrabbi/kol-search` range reaches `^0.3.0` — 0.1.2 pinned `^0.2.0`, so every consumer of kol-component 0.237.0 installed two copies of kol-search. No source change.
+
 ## 0.1.2 — 2026-09-30
 
 - Comments only: one spelling, `color`.
