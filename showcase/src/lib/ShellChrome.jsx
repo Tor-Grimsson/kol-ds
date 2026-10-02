@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ShellLayout, ShellSidebar, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
 import { buildTagCounts, cleanTitle } from '@kolkrabbi/kol-markdown'
-import { SegmentedToggle, SettingsChoice, useScrollSpy } from '@kolkrabbi/kol-component'
+import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
@@ -169,7 +169,7 @@ const withSections = (routes) => routes.map((r) => {
   return sections ? { ...r, children: sections.map((x) => ({ id: `${r.id}#${x.id}`, label: x.label.replace(/\s[—·]\s\d+$/, ''), path: `${at}#${x.id}`, section: true })) } : r
 })
 
-function SpaceRail({ space, onNavigate }) {
+function SpaceRail({ space, onNavigate, railMode }) {
   const { mode, setMode } = useGrouping()
   const cmpRoutes = useMemo(() => componentTreeRoutes(mode), [mode])
   const vault = useMemo(() => admittedVaultTree(), [])
@@ -238,7 +238,8 @@ function SpaceRail({ space, onNavigate }) {
     ].filter(Boolean)
     return (
       <div className="shell-rail-stack">
-        {anyComponentsAdmitted() && (
+        {/* a control has no place on an icon rail — it returns when the rail opens */}
+        {anyComponentsAdmitted() && railMode !== 'icons' && (
           <div>
             {/* the category opens its page (2026-09-30) */}
             <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
@@ -337,7 +338,7 @@ export default function ShellChrome() {
       routes={SHELL_ROUTES}
       basePath="/"
       isActive={isShellTabActive(pathname)}
-      renderSidebar={({ activeRoute, onNavigate }) => <SpaceRail space={activeRoute?.id} onNavigate={onNavigate} />}
+      renderSidebar={({ activeRoute, onNavigate, mode: railMode }) => <SpaceRail space={activeRoute?.id} onNavigate={onNavigate} railMode={railMode} />}
       defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
       searchPath="/search/results"
@@ -345,14 +346,15 @@ export default function ShellChrome() {
       /* the second wordmark names the space you are in (user: "change the 'workshop' to say …
        * 'design system' when you land … then it could change with the site's navigation") */
       brandLabel={({ activeRoute }) => activeRoute?.label ?? 'Design system'}
-      /* GITHUB MOVED INTO SETTINGS (2026-09-30, Round 3 Q1 — decided on the recommendation, the user
-       * asleep, for review): the header's right side is search · settings · theme, three glyphs,
-       * and the source link is a row in the drawer's Links section. */
-      settings={[{ label: 'Links', rows: [
-        { id: 'github', label: 'Source', render: () => (
-          <a className="kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" href={REPO} target="_blank" rel="noreferrer">GitHub</a>
-        ) },
-      ] }, { label: 'Components', rows: [
+      /* GITHUB IS BACK IN THE HEADER (user ruling 2026-10-02): four glyphs — GitHub · search ·
+       * settings · theme. Round 3 had moved it into the drawer's Links section. Same rung and
+       * variant as the shell's own three (the row law: every header glyph on one rung). */
+      actions={(
+        <Tooltip label="GitHub">
+          <IconFrame name="social-github" variant="nav" size="md" href={REPO} target="_blank" rel="noreferrer" aria-label="GitHub" />
+        </Tooltip>
+      )}
+      settings={[{ label: 'Components', rows: [
         { id: 'group', label: 'Group by', render: () => (
           <SettingsChoice value={mode} onChange={setMode} options={GROUP_OPTIONS} />
         ) },

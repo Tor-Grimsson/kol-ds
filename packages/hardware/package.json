@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-hardware",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "private": false,
   "description": "Panel controls for instruments",
   "license": "MIT",
@@ -13,9 +13,9 @@
     "./*": "./src/*"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.156.0",
+    "@kolkrabbi/kol-component": ">=0.237.0",
     "@kolkrabbi/kol-icons": ">=0.25.0",
-    "@kolkrabbi/kol-theme": ">=0.124.0",
+    "@kolkrabbi/kol-theme": ">=0.163.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0"
   },

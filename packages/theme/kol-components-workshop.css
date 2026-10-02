@@ -134,6 +134,36 @@
   padding-inline-start: var(--kol-pad-chrome-x);
 }
 
+/* THE RAIL'S THIRD STATE — ICONS (user ruling 2026-10-02: *"I wanted that icon state on the rails"*).
+ * Beside visible and hidden: the left rail as a strip, one glyph per group. Its grid track is the
+ * framework's collapsed-rail width (`--kol-sidenav-w-collapsed`, set in ShellLayout), so the strip
+ * drops the open rail's inner inset and centres its glyphs.
+ *
+ * HOVER OPENS IT OVER THE PAGE (`.is-peek`, stamped by ShellNavColumn): the column grows to the
+ * open rail's width past its own track, on the sticky tier with the page's surface behind it, so
+ * the page under it does not reflow — a hover must not move the thing you are reading. */
+.shell-rail--icons {
+  padding-inline-end: 0;
+}
+.shell-rail--icons.is-peek {
+  width: var(--kol-shell-nav-w);
+  z-index: var(--kol-z-sticky);
+  background: var(--kol-surface-primary);
+  padding-inline-end: var(--kol-pad-chrome-x);
+}
+.shell-rail-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kol-spacing-1);
+}
+/* the group you are in: the rail's active wash HELD ON (the 2026-08-12 ruling `.kol-shell-rail`
+ * already carries — navigation is location, never a pressed tool) */
+.shell-rail-icons .kol-btn-nav[aria-current="page"] {
+  background-color: var(--kol-oq-04);
+  color: var(--kol-oq-96);
+}
+
 .shell-main {
   min-width: 0;
 }

@@ -6,13 +6,13 @@ const NO_HOLD = { move() {}, cancel() {} }
 const SIZES = { sm: 24, md: 32, lg: 40, xl: 64 }
 
 /**
- * RotaryDialPanel — RotaryDial's `variant="panel"`: the rack knob. A cap and a pointer line in the
+ * KnobPanel — Knob's `variant="panel"`: the rack knob. A cap and a pointer line in the
  * hardware cap colors, sized 24 · 32 · 40 · 64 by name, with the four label placements and the
- * bipolar legend. It was kol-hardware's `Knob` (kol-monitor's rack, lifted 2026-09-01) and is
- * carried here class for class — merged into RotaryDial 2026-10-01 (user ruling). Not exported:
- * reach it through `<RotaryDial variant="panel">`.
+ * bipolar legend. It was kol-hardware's own `Knob` (kol-monitor's rack, lifted 2026-09-01) and is
+ * carried here class for class — merged in 2026-10-01 (user ruling). Not exported:
+ * reach it through `<Knob variant="panel">`.
  */
-export default function RotaryDialPanel({ value, onChange, min, max, label, variant = 'column', bipolar = false, labelMinWidth, size: sizeProp = 'sm', defaultValue, onHold }) {
+export default function KnobPanel({ value, onChange, min, max, label, variant = 'column', bipolar = false, labelMinWidth, size: sizeProp = 'sm', defaultValue, onHold }) {
   const size = SIZES[sizeProp] || SIZES.sm
   const effMin = min ?? (bipolar ? -100 : 0)
   const effMax = max ?? 100

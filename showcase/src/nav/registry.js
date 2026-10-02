@@ -84,7 +84,7 @@ const DESCRIPTIONS = {
   BackgroundVideo: 'A non-interactive background HLS video — hls.js with Safari-native fallback.',
   PriceDisplay: 'A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note.',
   ProsePreview: 'A full rich-text specimen exercising the whole kol-prose stylesheet in one view.',
-  RotaryDial: 'A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping.',
+  Knob: 'A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping.',
   TypeSample: 'A single labeled type-specimen block driven by family/weight/size/line-height props.',
   TypeSpecCard: 'A two-column type-spec row — font metrics beside a live sample slot.',
   ShapeDropdown: 'A split icon-button + variant-menu — act on the current variant or pick another.',
@@ -95,7 +95,7 @@ const DESCRIPTIONS = {
   FeatureSplit: 'An editorial media-and-text split section — kicker, display pull, lede, stats or CTAs.',
   SearchInput: 'A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling.',
   ShellDrawer: 'An edge-anchored slide-in drawer with focus trap, scroll-lock, and Esc/backdrop close.',
-  ShellSearchOverlay: 'The ⌘K command palette — dim, bare search field, keyboard-roved result rows.',
+  ShellSearchOverlay: 'The ⌘K search modal — dim, bare search field, keyboard-roved result rows.',
   ShellHeader: 'The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions.',
 
   /* P3 — layout / marketing organisms */

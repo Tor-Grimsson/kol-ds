@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Button, ShellSearchOverlay } from '@kolkrabbi/kol-component'
 
 export const meta = {
-  title: 'Command palette',
-  description: 'A ⌘K palette opened from a button',
+  title: 'Search modal',
+  description: 'A ⌘K search modal opened from a button',
   category: 'toolbar',
   type: 'reference',
   status: 'active',
@@ -24,7 +24,7 @@ const RESULTS = [
   { id: 'invite', label: 'Invite a collaborator', group: 'Settings', hint: 'Share studio access' },
 ]
 
-export default function CommandPalette() {
+export default function SearchModal() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
@@ -39,7 +39,7 @@ export default function CommandPalette() {
         Search commands
       </Button>
       <p className="kol-mono-12 text-fg-48">
-        {selected ? `Ran command: ${selected}` : 'Open the palette, then arrow through the results'}
+        {selected ? `Ran command: ${selected}` : 'Open the search modal, then arrow through the results'}
       </p>
 
       <ShellSearchOverlay

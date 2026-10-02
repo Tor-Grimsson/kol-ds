@@ -10,7 +10,7 @@ export const stage = 'md'
  * (SliderDualThumbAndPlayhead, kol-mirror) — a mixer running 23 faders in a
  * 24px row is why `readout="value"` exists, and an in/out trim pair is why
  * `variant="dual"` does. */
-export const variants = ['minimal', 'dual', 'panel']
+export const variants = ['minimal', 'vertical', 'scrub', 'dual', 'panel']
 
 export default function SliderPreview({ variant = 'minimal' }) {
   const [v, setV] = useState(40)
@@ -24,8 +24,8 @@ export default function SliderPreview({ variant = 'minimal' }) {
       <Slider min={0} max={100} value={v} onChange={setV} />
       <Slider label="Opacity" min={0} max={100} value={v} onChange={setV} />
 
-      {/* readout="value" — RotaryDial's display-only readout. alt-click resets
-        * to defaultValue; the same gesture works on RotaryDial. */}
+      {/* readout="value" — Knob's display-only readout. alt-click resets
+        * to defaultValue; the same gesture works on Knob. */}
       <Slider
         label="Gain"
         min={0}
@@ -38,6 +38,17 @@ export default function SliderPreview({ variant = 'minimal' }) {
       />
       <Slider label="Send" min={0} max={100} value={v} onChange={setV} readout="none" />
       </>)}
+      {variant === 'vertical' && (
+        /* direction="vertical" — the same track stood upright at `height`; label above, readout below */
+        <div className="flex items-end gap-8">
+          <Slider direction="vertical" readout="none" min={0} max={100} value={v} onChange={setV} aria-label="Volume" />
+          <Slider direction="vertical" label="Vol" readout="value" min={0} max={100} value={v} onChange={setV} height={128} />
+        </div>
+      )}
+      {variant === 'scrub' && (
+        /* scrub — the media scrubber: a thin track and a 4 × 28 pill knob. PlaybackBar's. */
+        <Slider variant="scrub" readout="none" min={0} max={100} value={v} onChange={setV} aria-label="Scrub" />
+      )}
       {variant === 'dual' && (<>
 
       {/* dual — two thumbs on one rail, in-mark hollow and out-mark solid so

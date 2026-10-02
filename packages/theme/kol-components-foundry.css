@@ -211,79 +211,14 @@
   font-size: 0.7rem;
 }
 
-.font-viewer-slider-group input[type='range'] {
-  flex: 1;
-  height: 15px;
-  padding: 7px 0;
-  cursor: pointer;
-  background: linear-gradient(var(--fv-black), var(--fv-black)) center/100% 1px no-repeat;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.font-viewer-slider-group input[type='range']::-webkit-slider-runnable-track,
-.font-viewer-slider-group input[type='range']::-moz-range-track {
-  width: 100%;
-  height: 1px;
-  background: transparent;
-}
-
-.font-viewer-slider-group input[type='range']::-webkit-slider-runnable-track {
-  border-radius: 9999px;
-}
-
-.font-viewer-slider-group input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: var(--fv-black);
-  cursor: pointer;
-  margin-top: 0;
-}
-
-.font-viewer-slider-group input[type='range']::-moz-range-thumb {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: var(--fv-black);
-  cursor: pointer;
-}
-
-.font-viewer-slider-group input[type='range']::-moz-range-track {
-  border-radius: 9999px;
-}
-
-.font-viewer-slider-group input[type='range']::-ms-track {
-  width: 100%;
-  height: 1px;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-
-.font-viewer-slider-group input[type='range']::-ms-fill-lower,
-.font-viewer-slider-group input[type='range']::-ms-fill-upper {
-  background: var(--fv-black);
-}
-
-.font-viewer-slider-group input[type='range']::-ms-thumb {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: var(--fv-black);
-  cursor: pointer;
-}
-
-.font-viewer-slider-group input[type='range']::-webkit-slider-thumb,
-.font-viewer-slider-group input[type='range']::-moz-range-thumb {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: var(--fv-black);
-  cursor: pointer;
-}
+/* The range is `Slider` now (2026-10-02 — the ~65 lines that drew one here are in
+ * `_tmp/2026-10-02-foundry-slider-css/`). The viewer keeps its own two-color scheme (`--fv-*`,
+ * swapped at runtime), so the slider's track, knob and readout are bound to it here. */
+.font-viewer-slider-group { --kol-slider-track: var(--fv-black); }
+.font-viewer-slider-group .slider-black::-webkit-slider-thumb { background: var(--fv-black); }
+.font-viewer-slider-group .slider-black::-moz-range-thumb { background: var(--fv-black); }
+.font-viewer-slider-group label,
+.font-viewer-slider-group span { color: var(--fv-black); background: transparent; padding: 0; }
 
 .font-viewer-variable-axes {
   margin-top: 12px;

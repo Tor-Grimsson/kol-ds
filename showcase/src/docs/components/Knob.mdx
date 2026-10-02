@@ -1,7 +1,7 @@
 export const meta = {
   id: "2.41.0",
-  slug: "rotary-dial",
-  title: "RotaryDial",
+  slug: "knob",
+  title: "Knob",
   type: "reference",
   status: "active",
   updated: "2026-07-03",
@@ -15,21 +15,22 @@ export const meta = {
   description: "Drag-to-set rotary knob numeric input.",
   aliases: [
     "rotarydial",
+    "rotary-dial",
   ],
 }
 
-<Preview name="RotaryDial" />
+<Preview name="Knob" />
 
 ## Installation
 
-<Install name="RotaryDial" />
+<Install name="Knob" />
 
 ## Usage
 
 ```jsx
-import { RotaryDial } from '@kolkrabbi/kol-component'
+import { Knob } from '@kolkrabbi/kol-component'
 
-<RotaryDial label="Drive" value={v} onChange={setV} min={0} max={100} />
+<Knob label="Drive" value={v} onChange={setV} min={0} max={100} />
 ```
 
 ## Behavior
@@ -42,7 +43,7 @@ step from min. Controlled; `onChange` always fires with the plain number.
 
 ## Props
 
-<Api name="RotaryDial" rows={[
+<Api name="Knob" rows={[
   {"prop":"value","type":"number","def":"0","desc":"Controlled value; drives rotation and readout. Shared value-control contract with `Slider` — the linear variant."},
   {"prop":"onChange","type":"(n) => void","def":"—","desc":"Fires with the plain number. RAF-throttled while dragging; immediate on arrow keys."},
   {"prop":"min / max / step","type":"number","def":"0 / 100 / 1","desc":"Range and increment."},

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { RackCase, RackRow, RackSlot, ModuleFrame, LabeledJack, LED } from '@kolkrabbi/kol-hardware'
-import { RotaryDial } from '@kolkrabbi/kol-component'
+import { Knob } from '@kolkrabbi/kol-component'
 
 export const stage = 'full'
 
@@ -10,7 +10,7 @@ function Lfo({ label }) {
   return (
     <ModuleFrame label={label} enabled={on} onToggle={() => setOn((o) => !o)}>
       <div className="flex flex-col items-center gap-4">
-        <RotaryDial variant="panel" value={rate} onChange={setRate} label="rate" size="md" />
+        <Knob variant="panel" value={rate} onChange={setRate} label="rate" size="md" />
         <LabeledJack type="out" label="out" />
       </div>
     </ModuleFrame>

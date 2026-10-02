@@ -70,7 +70,7 @@ and `apps/search`.
 
 ### Search, settings, keys (2026-09-28)
 
-- **The palette ranks** — `ShellLayout` indexes `searchItems` with kol-search (`createIndex` · `search`):
+- **The search modal ranks** — `ShellLayout` indexes `searchItems` with kol-search (`createIndex` · `search`):
   title › tag › heading › keyword › description › body, every hit underlined, and a word naming a
   category/kind/space is read as that filter (`atom` → Atoms). Items in kol-search's shape
   (`title · kind · space · category · tags · headings · keywords · description · date · href`) or the

@@ -7,7 +7,7 @@ export const meta = {
   round: 7,
   date: '2026-10-02',
   title: 'Audio, the rack app, older rounds',
-  status: 'open',
+  status: 'answered',
 }
 
 const cell = 'flex flex-col gap-2 rounded border border-fg-08 p-4'

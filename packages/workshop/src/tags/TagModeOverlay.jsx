@@ -108,7 +108,7 @@ const TagModeOverlay = () => {
                   <Button tone="primary" size="sm" onClick={clearTags}>
                     Clear filters
                   </Button>
-                  {/* NO CHIPS HERE (2026-08-01). The palette renders the
+                  {/* NO CHIPS HERE (2026-08-01). The search modal renders the
                     * active tags in its input row — this block repeated them
                     * inside the body, so one filter showed as two chips. The
                     * query's facets belong to the query's input. */}

@@ -9,6 +9,9 @@
 export { default as ShellLayout } from './ShellLayout.jsx'
 export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext, ShellNavCollapsedContext, ShellContentWidthContext, SHELL_SCROLL_ROOT, usePageMeta, usePageMetaValue } from './ShellLayout.jsx'
 export { default as ShellSidebar } from './ShellSidebar.jsx'
+/* the left rail's column and its three states — open · icons · hidden (2026-10-02) */
+export { ShellNavColumn } from './ShellLayout.jsx'
+export { ShellRailModeContext } from './ShellSidebar.jsx'
 /* RailSection — THE rail ladder. Every rail header at every rung comes from
  * here, in both rails; see the file header for why a class alone was not
  * enough. `pnpm validate:rails` R4 asserts it. */

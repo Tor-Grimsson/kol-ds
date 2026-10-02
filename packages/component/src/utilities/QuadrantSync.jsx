@@ -469,7 +469,10 @@ export default function QuadrantSync ({
               <input
                 id="kq-fade" type="range" min={15} max={100} value={Math.round(fade * 100)}
                 onChange={(e) => setFade(Number(e.target.value) / 100)}
-                style={{ width: '100%', accentColor: handleColor, display: 'block' }}
+                /* Slider's own track, not the browser's range (2026-10-02): a utility cannot import the
+                 * Slider molecule, so the range wears its class and its `--kol-slider-track` seam */
+                className="slider-black w-full block cursor-pointer"
+                style={{ '--kol-slider-track': handleColor }}
               />
             </div>
 

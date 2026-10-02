@@ -2,7 +2,7 @@
  * nav/ — THE MANIFEST.
  *
  * These seven files are one system: they turn the repo's seven content roots
- * into the sidebar, the search palette and the routes. They lived in `lib/` as
+ * into the sidebar, the search modal and the routes. They lived in `lib/` as
  * seven unrelated-looking helpers with no name and no index, which is exactly
  * how a *chapter* came to be rendered as a *category* on 2026-07-30 — nothing
  * told the next reader that they were parts of one thing.

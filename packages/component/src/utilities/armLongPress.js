@@ -1,4 +1,4 @@
-// armLongPress — the touch hold a value control reports (Slider/RotaryDial `variant="panel"`; kol-monitor 2026-09-01,
+// armLongPress — the touch hold a value control reports (Slider/Knob `variant="panel"`; kol-monitor 2026-09-01,
 // moved here from kol-hardware 2026-10-01 with the controls that arm it).
 
 const HOLD_MS = 500

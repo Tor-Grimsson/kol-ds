@@ -115,7 +115,7 @@ export default function App() {
         }
       >
         {/* TagModeGate is GONE (user ruling 2026-08-01). It existed to mount a
-          * SECOND overlay beside the palette; the tag browser is the palette's
+          * SECOND overlay beside the search modal; the tag browser is the search modal's
           * expanded body now, so the shell mounts it once and there is nothing
           * left to gate. One surface, one mount. */}
         <Route path="/" element={<Home />} />
@@ -129,8 +129,6 @@ export default function App() {
           * takes the default set, `/icons/:set` names one; the old comparison
           * URL keeps working */}
         <Route path="/icons/brand" element={<Navigate to="/icons" replace />} />
-        {/* the Interface set was `kol-icon-set-v1` until 2026-09-30 (W8) */}
-        <Route path="/icons/kol-icon-set-v1/*" element={<MovedRedirect from="/icons/kol-icon-set-v1" to="/icons/kol-icon-set-interface" />} />
         <Route path="/icons/:set?" element={<IconsGallery />} />
         <Route path="/icons/:set/:group" element={<IconsGallery />} />
         {/* THE LIBRARY'S PARENTS (2026-09-30) — the header tabs Composition and Collection, and

@@ -2,7 +2,8 @@
 // (mixers, synths, racks, decks). Renamed from kol-controls 2026-09-27 (user ruling: "hardware"
 // says what it is — `controls` also meant the app atoms). Five groups:
 //
-//   value        things you turn or slide — Knob · Fader · the touch ParamSheet
+//   value        things you turn or slide — the touch ParamSheet (Knob · Fader are kol-component's
+//                `Knob` / `Slider` at `variant="panel"`; the names here are aliases)
 //   switches     hardware switches and buttons — Toggle · FlipToggle · RockerSwitch · IconButton
 //   indicators   lights and patching — LED · JackSocket · LabeledJack
 //   panel        panel furniture — PanelLabel · ModuleHeader

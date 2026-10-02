@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import RotaryDialPanel from './RotaryDialPanel.jsx'
+import KnobPanel from './KnobPanel.jsx'
 
 /** Clamp to min–max, snapped to the nearest step from min. */
 const snapTo = (v, min, max, step) => {
@@ -8,11 +8,16 @@ const snapTo = (v, min, max, step) => {
 }
 
 /**
- * RotaryDial — drag-to-set rotary knob numeric input. The KNOB VARIANT of
+ * Knob — drag-to-set rotary knob numeric input. The ROTARY TWIN of
  * Slider (molecules/Slider.jsx): both implement the shared value-control
  * contract — `value` / `min` / `max` / `step` / `onChange(next: number)` /
  * `label` / `size` / `disabled` / `formatValue`. Controlled; onChange always
  * fires with the plain number.
+ *
+ * ONE KNOB, TWO VARIANTS (user ruling 2026-10-02: *"knob being the more simple form, rotary dial
+ * being more of a variant"*). It was `RotaryDial` with kol-hardware's `Knob` wrapped over it; the
+ * name is `Knob` now, `dial` is the ring-and-disc drawing that name used to mean, and `RotaryDial`
+ * is the alias on the retirement ledger.
  *
  * Vertical pointer drag rotates the whole dial over a 270° sweep (−135° to
  * +135°) mapped onto min–max; a full sweep is ~200px of drag, movement
@@ -31,12 +36,12 @@ const snapTo = (v, min, max, step) => {
  * @param {number}   size        dial px size (default 80); derives ring + disc radii
  * @param {boolean}  disabled    blocks drag + keyboard and dims the control (default false)
  * @param {Function} formatValue optional readout formatter (value: number) => string; default `${value}%`
- * @param {'dial'|'panel'} variant  `panel` = the rack knob (was kol-hardware `Knob`, merged 2026-10-01): a cap in the hardware colors;
+ * @param {'dial'|'panel'} variant  `dial` (default) = the ring and disc · `panel` = the rack knob (kol-hardware's, merged 2026-10-01): a cap in the hardware colors;
  *                            there `size` is `sm · md · lg · xl` (24 · 32 · 40 · 64) and it also takes `labelPlacement`
  *                            (`column · row · row-left · row-right`), `bipolar`, `labelMinWidth` and `onHold`
  * @param {number}   defaultValue alt-click the dial resets to this (falls back to `min`) — Slider carries the same gesture
  */
-export default function RotaryDial({
+export default function Knob({
   label,
   value = 0,
   onChange,
@@ -129,7 +134,7 @@ export default function RotaryDial({
   }
 
   if (variant === 'panel') {
-    return <RotaryDialPanel value={value} onChange={onChange} min={bipolar && min === 0 ? undefined : min} max={max} label={label} variant={labelPlacement} bipolar={bipolar} labelMinWidth={labelMinWidth} size={typeof size === 'string' ? size : undefined} defaultValue={defaultValue} onHold={onHold} />
+    return <KnobPanel value={value} onChange={onChange} min={bipolar && min === 0 ? undefined : min} max={max} label={label} variant={labelPlacement} bipolar={bipolar} labelMinWidth={labelMinWidth} size={typeof size === 'string' ? size : undefined} defaultValue={defaultValue} onHold={onHold} />
   }
 
   const outerRadius = size / 2

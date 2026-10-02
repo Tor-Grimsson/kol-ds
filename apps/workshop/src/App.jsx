@@ -26,7 +26,7 @@ import { CORPUS, DOC_MODULES, SPACES, DEV_PAGES, COMPONENTS, BLOCKS, SETS, compo
 /* apps/workshop — kol-workshop's shell over workshop-fixture, built to the space table
  * (plan-2026-09-28-showcase-refinement § 3b): each space owns its left rail and its right rail,
  * every space root is an index page in the space's own layout, `/` is the only landing, search
- * is the header's palette plus the page Enter opens, and the second wordmark names the space. */
+ * is the header's search modal plus the page Enter opens, and the second wordmark names the space. */
 
 const { inventory, tree, componentTree, searchItems, hrefOf } = CORPUS
 const DOCS = inventory.filter((d) => docSpace(d.file) === 'docs')
@@ -193,7 +193,7 @@ function Home() {
       <DocHeader
         eyebrow="Fixture"
         title="The workshop shell, alone."
-        lede="kol-workshop's header, rails, palette, reader and search page over an invented corpus — 19 docs, 24 components, 3 blocks, 2 sets. Nothing here is the real design system."
+        lede="kol-workshop's header, rails, search modal, reader and search page over an invented corpus — 19 docs, 24 components, 3 blocks, 2 sets. Nothing here is the real design system."
       />
       <DocSection id="spaces" title="Spaces">
         <LinkList items={SPACES.map((s) => [s.path, s.label])} />

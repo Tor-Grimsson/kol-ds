@@ -3,14 +3,14 @@ import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button, Kbd, ShellSearchOverlay } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
-/* Round 5 — the ⌘K palette aimed at shadcn's (2026-09-30): an inset field, suggestions on an
+/* Round 5 — the ⌘K search modal aimed at shadcn's (2026-09-30): an inset field, suggestions on an
  * empty query, group headings, tile rows, a footer that always says what Enter does, a body
  * that holds its height. The live ⌘K in this shell wears the same build. */
 export const meta = {
   round: 5,
   date: '2026-09-30',
-  title: 'Search palette — shadcn aim',
-  status: 'open',
+  title: 'Search modal — shadcn aim',
+  status: 'answered',
 }
 
 /* lucide's drawings (ISC), inlined for the side-by-side only */
@@ -51,12 +51,12 @@ export default function OpenQuestionsRound5() {
     <div className="flex flex-col gap-10 pb-24">
       <DocHeader
         eyebrow="Open questions · Round 5 · 2026-09-30"
-        title="Search palette — shadcn aim"
+        title="Search modal — shadcn aim"
         lede="Open it empty, then type “button”. Same build as ⌘K in this shell."
       />
-      <DocSection id="palette" title="Palette">
+      <DocSection id="search-modal" title="Search modal">
         <div>
-          <Button onClick={() => setOpen(true)}>Open palette</Button>
+          <Button onClick={() => setOpen(true)}>Open search modal</Button>
         </div>
         <ShellSearchOverlay
           open={open}
@@ -79,7 +79,7 @@ export default function OpenQuestionsRound5() {
           <span className="flex items-center gap-2 kol-helper-12 text-fg-48"><Kbd icon="corner-down-left" />Go to page</span>
           <Kbd size="sm" icon="command">K</Kbd>
         </div>
-        <p className="kol-doc-body">New in kol-icon-set-v1, drawn to the set's 1.5 stroke; lucide at its own 2. Keep, or send your own.</p>
+        <p className="kol-doc-body">New in kol-icon-set-interface, drawn to the set's 1.5 stroke; lucide at its own 2. Keep, or send your own.</p>
       </DocSection>
     </div>
   )

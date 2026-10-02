@@ -11,7 +11,7 @@ const FILES = [
 ]
 
 /* a preview for any kind: markdown → prose in .kol-prose, json / yaml / text / code → CodeBlock,
- * audio → AudioPlayer, HLS → HlsVideo, the rest → AssetPlaceholder */
+ * audio → AudioTile, video → VideoTile, the rest → AssetPlaceholder */
 export default function KindPreviewPreview() {
   return (
     <div className="flex w-full flex-col gap-6">

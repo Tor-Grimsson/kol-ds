@@ -26,7 +26,7 @@ export default function ShellSearchOverlayPreview() {
   }
   return (
     <div className="flex items-center gap-4">
-      <Button onClick={() => setOpen(true)}>Open palette</Button>
+      <Button onClick={() => setOpen(true)}>Open search modal</Button>
       <p className="kol-mono-12 text-fg-48">
         {picked ? `Selected: ${picked.label}` : 'Arrows move · Enter selects · Esc closes'}
       </p>

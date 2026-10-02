@@ -34,7 +34,7 @@ export const COMPONENTS = [
   c('MediaLibrary', 'Organisms', 'media', 'Browse, filter and preview files in a bucket.', ['domain/media', 'domain/search']),
   c('SettingsForm', 'Organisms', 'structure', 'Grouped settings rows with a save bar.', ['pattern/structure']),
   c('ShortcutsSheet', 'Organisms', 'overlay', 'Every keyboard shortcut on one sheet, opened with S.', ['pattern/overlay', 'domain/workflow']),
-  c('CommandPalette', 'Organisms', 'navigation', 'Jump anywhere from the keyboard.', ['domain/search', 'pattern/wayfinding']),
+  c('SearchModal', 'Organisms', 'navigation', 'Jump anywhere from the keyboard.', ['domain/search', 'pattern/wayfinding']),
   c('Divider', 'Utilities', 'structure', 'A hairline between regions.', ['pattern/structure']),
   c('Figure', 'Utilities', 'display', 'A framed image with a caption.', ['pattern/display', 'domain/media']),
   c('VisuallyHidden', 'Utilities', 'utility', 'Text for screen readers only.', ['domain/a11y']),
@@ -48,5 +48,5 @@ export const BLOCKS = [
 
 export const SETS = [
   { key: 'controls', title: 'Controls', description: 'Every input at every size.', members: ['Button', 'Input', 'Textarea', 'Toggle', 'Dropdown', 'SegmentedToggle'] },
-  { key: 'overlays', title: 'Overlays', description: 'Everything that floats.', members: ['Tooltip', 'Popover', 'Dropdown', 'ShortcutsSheet', 'CommandPalette'] },
+  { key: 'overlays', title: 'Overlays', description: 'Everything that floats.', members: ['Tooltip', 'Popover', 'Dropdown', 'ShortcutsSheet', 'SearchModal'] },
 ]

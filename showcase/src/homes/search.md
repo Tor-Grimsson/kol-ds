@@ -4,7 +4,7 @@ type: index
 status: active
 created: 2026-09-30
 updated: 2026-09-30
-description: One engine behind the palette and this page
+description: One engine behind the search modal and page
 tags:
   - domain/architecture
   - domain/search
@@ -12,7 +12,7 @@ tags:
 
 # Search
 
-Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K palette and this page query the same index through the same engine. The palette is the quick jump; ⌘Enter in it opens this page with the full list.
+Every page on the site is one item in one index: its title, kind, space, category, tags, headings and description. The ⌘K search modal and this page query the same index through the same engine. The search modal is the quick jump; ⌘Enter in it opens this page with the full list.
 
 ## What you can type
 
@@ -51,7 +51,7 @@ Each word scores by the best place it lands on a page, from most to least:
 
 Ties sort by title. Every result keeps the reason it ranked where it did, and the counts beside each filter are what the rest of the query leaves.
 
-The engine is `@kolkrabbi/kol-search`, plain JavaScript; the palette and this page run the same index through it.
+The engine is `@kolkrabbi/kol-search`, plain JavaScript; the search modal and this page run the same index through it.
 
 ## Tags
 

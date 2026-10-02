@@ -54,9 +54,9 @@ The loaders ship their inventories as data — these are maps and lists, not com
 
 <DocTable
   rows={[
-    { prop: 'KOL_ICON_SET_INTERFACE / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it. KOL_ICON_SET_V1 is its old name.' },
+    { prop: 'KOL_ICON_SET_INTERFACE / ICONS', type: '{ [group]: name[] }', def: 'kol-icons', desc: 'THE set, grouped by folder (keys-only); ICONS aliases it.' },
     { prop: 'KOL_ICON_SET_INTERFACE_NAMES / ALL_ICONS', type: 'string[]', def: 'kol-icons', desc: 'Flat sorted name list; ALL_ICONS covers both sets.' },
-    { prop: 'hasIcon / getCategory', type: 'fn / fn', def: 'kol-icons', desc: 'Name lookup helpers over the v1 set.' },
+    { prop: 'hasIcon / getCategory', type: 'fn / fn', def: 'kol-icons', desc: 'Name lookup helpers over the Interface set.' },
     { prop: 'GRAPHICS', type: '{ [category]: name[] }', def: 'kol-component', desc: 'Graphic inventory grouped by category (keys-only, no SVG content).' },
   ]}
 />

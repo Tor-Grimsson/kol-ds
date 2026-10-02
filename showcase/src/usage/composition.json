@@ -85,24 +85,6 @@
         "@floating-ui/react"
       ]
     },
-    "command-palette": {
-      "kol": [
-        "Button",
-        "Icon",
-        "Kbd",
-        "OptionRow",
-        "SearchInput",
-        "ShellSearchOverlay",
-        "Tag"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "registerIcons",
-        "tone"
-      ],
-      "external": []
-    },
     "cta-band": {
       "kol": [
         "Button",
@@ -306,6 +288,24 @@
         "@floating-ui/react"
       ]
     },
+    "search-modal": {
+      "kol": [
+        "Button",
+        "Icon",
+        "Kbd",
+        "OptionRow",
+        "SearchInput",
+        "ShellSearchOverlay",
+        "Tag"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "registerIcons",
+        "tone"
+      ],
+      "external": []
+    },
     "settings-form": {
       "kol": [
         "Button",
@@ -323,6 +323,70 @@
         "tone"
       ],
       "external": []
+    },
+    "shell-rail-states": {
+      "kol": [
+        "Button",
+        "CloseButton",
+        "Divider",
+        "Dropdown",
+        "FullscreenOverlay",
+        "Icon",
+        "IconFrame",
+        "Kbd",
+        "LabeledControl",
+        "MenuItem",
+        "OptionRow",
+        "Popover",
+        "RailRow",
+        "RailSection",
+        "RightRail",
+        "SearchInput",
+        "SegmentedToggle",
+        "SettingsPanel",
+        "SettingsSections",
+        "SettingsSwitch",
+        "ShellDrawer",
+        "ShellHeader",
+        "ShellNavColumn",
+        "ShellSearchOverlay",
+        "ShellSidebar",
+        "ShortcutsOverlay",
+        "Tag",
+        "TagGraph",
+        "TagModeContext",
+        "TagModeOverlay",
+        "TagPath",
+        "ThemeToggle",
+        "ToggleSwitch",
+        "Tooltip"
+      ],
+      "local": {},
+      "support": [
+        "buildTagCounts",
+        "cleanTitle",
+        "createIndex",
+        "extractDocNumber",
+        "getTagColor",
+        "glyphLadders",
+        "glyphSize",
+        "indexGraph",
+        "layerStack",
+        "matchSearchItems",
+        "motion",
+        "registerIcons",
+        "search",
+        "theme",
+        "tone",
+        "useDragResize",
+        "useGrabEdge",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap",
+        "react-router-dom"
+      ]
     },
     "shell-topbar": {
       "kol": [
@@ -682,8 +746,6 @@
       "kol": [
         "ActionButton",
         "AssetPlaceholder",
-        "AudioPreview",
-        "AudioSheet",
         "BackgroundVideo",
         "Button",
         "CloseButton",
@@ -697,7 +759,9 @@
         "IconFrame",
         "Input",
         "KindPreview",
+        "MediaPlayer",
         "PdfPage",
+        "PlayTile",
         "PlaybackBar",
         "Popover",
         "QuickLookFrame",
@@ -731,8 +795,6 @@
       "kol": [
         "ActionButton",
         "AssetPlaceholder",
-        "AudioPreview",
-        "AudioSheet",
         "BackgroundVideo",
         "Button",
         "CloseButton",
@@ -762,6 +824,7 @@
         "MediaLibraryExplorer",
         "MediaLibraryPages",
         "MediaPicker",
+        "MediaPlayer",
         "MediaTile",
         "MediaViewer",
         "MenuItem",
@@ -769,6 +832,7 @@
         "Modal",
         "OptionRow",
         "PdfPage",
+        "PlayTile",
         "PlaybackBar",
         "Popover",
         "QuickLookFrame",
@@ -788,7 +852,6 @@
         "Textarea",
         "ToggleCheckbox",
         "ToggleSwitch",
-        "VideoSheet",
         "ViewToggle"
       ],
       "local": {},
@@ -884,14 +947,19 @@
         "Icon",
         "IconButton",
         "Input",
+        "Knob",
+        "KnobPanel",
         "LabeledControl",
-        "RotaryDial",
-        "RotaryDialPanel",
+        "ParamSheet",
         "Slider",
         "SliderPanel",
         "Toggle"
       ],
-      "local": {},
+      "local": {
+        "..": [
+          "App"
+        ]
+      },
       "support": [
         "armLongPress",
         "glyphLadders",
@@ -936,21 +1004,26 @@
         "IconButton",
         "Input",
         "JackSocket",
+        "Knob",
+        "KnobPanel",
         "LabeledControl",
         "LabeledJack",
         "ModuleFrame",
         "ModuleHeader",
+        "ParamSheet",
         "RackCase",
         "RackRow",
         "RackSlot",
         "RockerSwitch",
-        "RotaryDial",
-        "RotaryDialPanel",
         "Slider",
         "SliderPanel",
         "Toggle"
       ],
-      "local": {},
+      "local": {
+        "..": [
+          "App"
+        ]
+      },
       "support": [
         "armLongPress",
         "eurorack",
@@ -964,8 +1037,6 @@
       "kol": [
         "ActionButton",
         "AssetPlaceholder",
-        "AudioPreview",
-        "AudioSheet",
         "BackgroundVideo",
         "Button",
         "CloseButton",
@@ -995,6 +1066,7 @@
         "MediaLibrary",
         "MediaLibraryExplorer",
         "MediaLibraryPages",
+        "MediaPlayer",
         "MediaTile",
         "MediaViewer",
         "MenuItem",
@@ -1002,6 +1074,7 @@
         "Modal",
         "OptionRow",
         "PdfPage",
+        "PlayTile",
         "PlaybackBar",
         "Popover",
         "QuickLookFrame",
@@ -1023,7 +1096,6 @@
         "Textarea",
         "ToggleCheckbox",
         "ToggleSwitch",
-        "VideoSheet",
         "ViewToggle"
       ],
       "local": {},

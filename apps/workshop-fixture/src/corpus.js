@@ -4,7 +4,7 @@ import { buildInventory, fileLabel } from '@kolkrabbi/kol-markdown'
 import { COMPONENTS, BLOCKS, SETS } from './components.js'
 
 /* The shell's spaces — the space table (plan-2026-09-28-showcase-refinement § 3b). Search is not
- * a space: it is the header's palette and the page Enter opens. Development holds what the repo
+ * a space: it is the header's search modal and the page Enter opens. Development holds what the repo
  * measures about itself; Docs holds documentation AND operations, one parent as on disk. */
 export const SPACES = [
   { id: 'components', label: 'Components', icon: 'component-01', path: '/components' },

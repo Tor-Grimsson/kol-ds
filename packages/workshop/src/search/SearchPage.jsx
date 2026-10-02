@@ -7,14 +7,14 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 
 /**
- * SearchPage — The search results page. THE results page (2026-09-28). Enter in the shell's palette
+ * SearchPage — The search results page. THE results page (2026-09-28). Enter in the shell's search modal
  * lands here with `?q=`; so does a tag clicked anywhere (`#tag`). The WHOLE
  * state is the query string in the URL — scope and facet picks are written back
  * into it as `in:` · `kind:` · `cat:` · `tag:` tokens — so Back returns to the
  * same results, a result link is an ordinary navigation, and a search can be
  * shared as a link.
  *
- * It replaced two surfaces that each did half the job: the palette's in-place
+ * It replaced two surfaces that each did half the job: the search modal's in-place
  * tag browser and a page whose groups were whatever `sectionLabel` each
  * source happened to emit.
  *

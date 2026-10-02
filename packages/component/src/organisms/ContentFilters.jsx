@@ -117,7 +117,7 @@ const ContentFilters = ({
   searchKeys = ['label', 'name', 'title', 'type'],
   /* CONTROLLED SEARCH (2026-09-30) — same seam as `filtersOpen`: a consumer that must know the
    * query (media swaps the tree for a flat list while one is typed) or hand one in (⌘Enter from its
-   * palette) owns it. Absent, the text stays private, exactly as before. */
+   * search modal) owns it. Absent, the text stays private, exactly as before. */
   searchValue,
   onSearchChange,
   headerActions,

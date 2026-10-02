@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AudioTile, VideoTile } from './AudioPreview.jsx'
+import { AudioTile, VideoTile } from './PlayTile.jsx'
 import BackgroundVideo from '../utilities/BackgroundVideo.jsx'
 import CodeBlock from './CodeBlock.jsx'
 import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
@@ -20,7 +20,7 @@ import DocPage from './DocPage.jsx'
  * video → `VideoTile` and audio → `AudioTile` (ColumnBrowserMediaFacts
  * 2026-08-27 — the square column tile with one play/pause control; no Figure, no
  * border — `VideoBlock`'s Figure border is why kol-r2b2 bypassed it; the overlay
- * player is `AudioPreview`), markdown → rendered prose in `.kol-prose`
+ * player is `MediaPlayer`), markdown → rendered prose in `.kol-prose`
  * (markdownToHtml, KindPreviewMarkdown 2026-08-27), json / yaml / text / code →
  * `CodeBlock` (language by kind or extension) — every document on ONE plate,
  * `DocPage` (DocPageAndKindShowcase 2026-08-27: the overlay's A-series page, the

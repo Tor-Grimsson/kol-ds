@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-search
 
-## Unreleased
+## 0.3.0 — 2026-10-02
 
 - **`indexGraph(items, { files, orphans, filter })`** — the index as a network of tags and the items that carry them: a node per tagged item joined to its tags, a node per untagged item, and a text filter. With nothing switched on it is `tagGraph`.
 

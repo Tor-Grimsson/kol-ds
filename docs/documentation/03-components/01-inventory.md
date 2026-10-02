@@ -67,7 +67,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Popover` | The floating-primitive module — usePopover, PopoverPanel, and Tooltip on Floating UI. |
 | `PriceDisplay` | A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note. |
 | `ProsePreview` | A full rich-text specimen exercising the whole kol-prose stylesheet in one view. |
-| `RotaryDial` | A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping. |
+| `Knob` | A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping — `variant` dial · panel. `RotaryDial` is its alias (2026-10-02). |
 | `SectionLabel` | A label with an icon affordance for collapsible sections. |
 | `SegmentedToggle` | A joined N-way segmented control. |
 | `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
@@ -156,7 +156,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `SectionCta` (alias `CtaGlobal`) | Display wordmark beside stacked label-over-value rows, each a `SectionText`. |
 | `KindPreview` | A preview for any kind of file — text / code as a CodeBlock, audio, HLS, the rest as a placeholder; the DS media kinds (`kindOf`, `extOf`, `KIND_LABEL`) ship beside it. |
 | `PlaybackBar` | The QuickTime bar as its own molecule (kol-r2b2, 2026-08-27, ruled against the reference): frosted `fg-absolute-48` + blur-xl, **radius 12**, white glyphs, `mm:ss` elapsed / total, a native scrubber with the 4 × 28 pill knob, volume behind `speaker`, `>>` speed. Presentational — `usePlayback` owns the element. |
-| `VideoSheet` | The overlay for video: the frame with `PlaybackBar` floating over its bottom edge (inset 16, radius 12); click toggles; `onMeta({ w, h, len })`. |
+| `MediaPlayer` | The one player (2026-10-02) — `variant` video · audio; `frame` draws it in `QuickLookFrame`, absent it plays inline. `VideoSheet` · `AudioSheet` · `AudioPreview` · `AudioPlayer` are its aliases. |
 | `AudioSheet` | Audio in the overlay, two variants — `cover` (the ID3 artwork is the frame, the bar floats) · `sheet` (the QuickTime audio window: dark plate, cover square, `Time: mm:ss`, the bar flush). No cover → the `music-note` square. |
 | `DocPage` | ONE plate for every document (markdown · text · code · JSON · YAML — kol-r2b2, 2026-08-27): the base plate; in the overlay an A-series page (85vh, 1:√2, inside the 10rem arrow gutters); in the column zoomed 0.5. `KindPreview` reaches for it; `DocFrontmatter` (a member) renders markdown's frontmatter above the prose. |
 | `CatalogPage` | The app tier's Home / Library page shipped once — PageHeader → ContentFilters → the catalog grid of `ContentCard` / `ContentRow catalog` → the action row; `toCard` is the contract. |
@@ -179,7 +179,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
-| `ShellSearchOverlay` | The ⌘K command palette — dim, bare search field, keyboard-roved result rows. |
+| `ShellSearchOverlay` | The ⌘K search modal — dim, bare search field, keyboard-roved result rows. |
 | `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, and the composed square picker. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |

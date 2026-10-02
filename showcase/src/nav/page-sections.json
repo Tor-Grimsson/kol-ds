@@ -645,8 +645,8 @@
   ],
   "/development/open-questions/2026-09-30-e": [
     {
-      "id": "palette",
-      "label": "Palette"
+      "id": "search-modal",
+      "label": "Search modal"
     },
     {
       "id": "glyphs",

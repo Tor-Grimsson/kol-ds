@@ -10,7 +10,7 @@ export const meta = {
   round: 6,
   date: '2026-10-01',
   title: 'Review round 2 — the visual calls',
-  status: 'open',
+  status: 'answered',
 }
 
 const cell = 'flex flex-col gap-3 rounded border border-fg-08 p-4'

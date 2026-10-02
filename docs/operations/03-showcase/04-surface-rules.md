@@ -42,8 +42,8 @@ modal. It exists on the user's ruling (2026-08-01: *"make a page for me to
 view, show me a modal and show me a page"*). It is a tool, not a category:
 Tools group.
 
-*2026-09-28: still the page form of the palette — and now its destination. Enter
-in the palette opens it; it runs `@kolkrabbi/kol-search` over the same items,
+*2026-09-28: still the page form of the search modal — and now its destination. Enter
+in the search modal opens it; it runs `@kolkrabbi/kol-search` over the same items,
 with a scope row and facets, as kol-workshop's `SearchPage`. It is not a space
 and not a header tab.*
 

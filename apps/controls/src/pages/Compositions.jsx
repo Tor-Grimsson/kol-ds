@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import {
-  Knob, Toggle, LED, IconButton, LabeledJack, PanelLabel, ModuleFrame, ChannelStrip, FlipCard,
+  Toggle, LED, IconButton, LabeledJack, PanelLabel, ModuleFrame, ChannelStrip, FlipCard,
 } from '@kolkrabbi/kol-hardware'
 import {
-  Button, RotaryDial, Slider, Dropdown, SegmentedToggle, ToggleSwitch, LabeledControl, LabeledControlSection,
+  Button, Knob, Slider, Dropdown, SegmentedToggle, ToggleSwitch, LabeledControl, LabeledControlSection,
   LayerStack, TimelineDock, CurveEditor, defaultCurveFor,
 } from '@kolkrabbi/kol-component'
 import Specimen from '../Specimen.jsx'
@@ -22,8 +22,8 @@ function ModuleFront() {
     <div className="w-40 border border-oq-08">
       <ModuleFrame label="LFO" enabled={on} onToggle={() => setOn((o) => !o)} className="bg-surface-primary">
         <div className="grid grid-cols-2 place-items-center gap-y-4">
-          <Knob value={rate} onChange={setRate} label="rate" size="md" />
-          <Knob value={depth} onChange={setDepth} label="depth" size="md" />
+          <Knob variant="panel" value={rate} onChange={setRate} label="rate" size="md" />
+          <Knob variant="panel" value={depth} onChange={setDepth} label="depth" size="md" />
           <Toggle value={sync} onChange={setSync} label="sync" />
           <PanelLabel label="clk"><LED color="yellow" active={on} size="md" /></PanelLabel>
           <LabeledJack type="in" label="cv" color="#497DA2" />
@@ -48,7 +48,7 @@ function ChannelFront() {
       power={<Toggle value={on} onChange={setOn} label="on" horizontal />}
       controls={(
         <div className="grid grid-cols-3 gap-x-2 gap-y-1">
-          {DIALS.map((d) => <RotaryDial key={d} label={d} value={vals[d]} onChange={(x) => setVals((v) => ({ ...v, [d]: x }))} size={36} />)}
+          {DIALS.map((d) => <Knob key={d} label={d} value={vals[d]} onChange={(x) => setVals((v) => ({ ...v, [d]: x }))} size={36} />)}
         </div>
       )}
       actions={TILES.map((i) => <IconButton key={i} icon={i} active={tile === i} onClick={() => setTile((t) => (t === i ? null : i))} title={i} iconSize={14} />)}

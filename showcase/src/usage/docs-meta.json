@@ -150,12 +150,6 @@
     "typeClasses": [],
     "composes": []
   },
-  "AudioPlayer": {
-    "typeClasses": [
-      "kol-mono-12"
-    ],
-    "composes": []
-  },
   "Input": {
     "typeClasses": [
       "kol-mono-",
@@ -226,12 +220,20 @@
     "typeClasses": [],
     "composes": []
   },
+  "Knob": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "KnobPanel"
+    ]
+  },
   "RotaryDial": {
     "typeClasses": [
       "kol-helper-12"
     ],
     "composes": [
-      "RotaryDialPanel"
+      "KnobPanel"
     ]
   },
   "SearchInput": {
@@ -1444,8 +1446,8 @@
       "MenuDropdownDivider",
       "Tooltip",
       "KindPreview",
-      "AudioSheet",
-      "VideoSheet",
+      "MediaPlayer",
+      "Slider",
       "QuickLookFrame",
       "FullscreenOverlay",
       "ContentFilters",
@@ -1680,35 +1682,66 @@
       "DocPage"
     ]
   },
-  "AudioPreview": {
-    "typeClasses": [],
+  "MediaPlayer": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
     "composes": [
-      "IconFrame",
-      "Slider",
-      "PopoverPanel"
+      "QuickLookFrame",
+      "FileIcon"
+    ]
+  },
+  "VideoSheet": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "QuickLookFrame",
+      "FileIcon"
+    ]
+  },
+  "AudioSheet": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "QuickLookFrame",
+      "FileIcon"
+    ]
+  },
+  "AudioPreview": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "QuickLookFrame",
+      "FileIcon"
+    ]
+  },
+  "AudioPlayer": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "QuickLookFrame",
+      "FileIcon"
     ]
   },
   "AudioTile": {
     "typeClasses": [],
     "composes": [
-      "IconFrame",
-      "Slider",
-      "PopoverPanel"
+      "IconFrame"
     ]
   },
   "VideoTile": {
     "typeClasses": [],
     "composes": [
-      "IconFrame",
-      "Slider",
-      "PopoverPanel"
-    ]
-  },
-  "VideoSheet": {
-    "typeClasses": [],
-    "composes": [
-      "PlaybackBar",
-      "QuickLookFrame"
+      "IconFrame"
     ]
   },
   "PlaybackBar": {
@@ -1718,16 +1751,8 @@
     ],
     "composes": [
       "IconFrame",
+      "Slider",
       "PopoverPanel"
-    ]
-  },
-  "AudioSheet": {
-    "typeClasses": [
-      "kol-mono-16"
-    ],
-    "composes": [
-      "QuickLookFrame",
-      "FileIcon"
     ]
   },
   "QuickLookFrame": {

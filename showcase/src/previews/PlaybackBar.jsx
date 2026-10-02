@@ -8,7 +8,7 @@ const poster = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://ww
 /* The QuickTime bar, presentational — the showcase carries no video, so this
  * drives it with a simulated clock: play runs the elapsed time against a 25 s
  * length, seek and skip move it, `>>` cycles the speed. Over a poster frame the
- * way VideoSheet floats it (inset 16, radius 12). */
+ * way an inline MediaPlayer floats it (inset 16, radius 12). */
 export default function PlaybackBarPreview() {
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(12)

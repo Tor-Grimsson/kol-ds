@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { KindPreview, FullscreenOverlay, Button, AudioSheet, PlaybackBar, KIND_LABEL } from '@kolkrabbi/kol-component'
+import { KindPreview, FullscreenOverlay, Button, MediaPlayer, PlaybackBar, KIND_LABEL } from '@kolkrabbi/kol-component'
 
 export const meta = {
   title: 'Kind preview',
@@ -107,13 +107,13 @@ export default function KindPreviewSet() {
 
       <section className="flex flex-col gap-6 border-t pt-8" style={{ borderColor: 'var(--kol-oq-08)' }}>
         <h2 className="kol-sans-heading-04 text-emphasis">The QuickTime bar</h2>
-        <p className="kol-mono-12 text-meta">PlaybackBar over a poster on a simulated clock (move the pointer while playing) — VideoSheet floats exactly this over the video, inset 16, radius 12.</p>
+        <p className="kol-mono-12 text-meta">PlaybackBar over a poster on a simulated clock (move the pointer while playing) — MediaPlayer floats exactly this over an inline video, inset 16, radius 12.</p>
         <BarOnAClock />
       </section>
 
       <section className="flex flex-col gap-6 border-t pt-8" style={{ borderColor: 'var(--kol-oq-08)' }}>
-        <h2 className="kol-sans-heading-04 text-emphasis">AudioSheet · sheet</h2>
-        <AudioSheet src={wav} ext="wav" />
+        <h2 className="kol-sans-heading-04 text-emphasis">MediaPlayer · audio in the window</h2>
+        <MediaPlayer variant="audio" src={wav} ext="wav" frame={{}} />
       </section>
 
       {open && (

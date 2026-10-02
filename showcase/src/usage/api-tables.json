@@ -83,12 +83,6 @@
   ],
   "ChessBoardWithControls": [
     {
-      "prop": "externalGame",
-      "type": "—",
-      "def": "null",
-      "desc": ""
-    },
-    {
       "prop": "panel",
       "type": "—",
       "def": "null",
@@ -112,12 +106,6 @@
       "prop": "isFullscreen",
       "type": "—",
       "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "externalGame",
-      "type": "—",
-      "def": "null",
       "desc": ""
     }
   ],
@@ -335,12 +323,6 @@
   ],
   "ChessPiece": [
     {
-      "prop": "color",
-      "type": "—",
-      "def": "'white'",
-      "desc": ""
-    },
-    {
       "prop": "size",
       "type": "—",
       "def": "64",
@@ -356,12 +338,6 @@
       "prop": "style",
       "type": "—",
       "def": "{}",
-      "desc": ""
-    },
-    {
-      "prop": "pieceSet",
-      "type": "—",
-      "def": "'default'",
       "desc": ""
     }
   ],
@@ -931,20 +907,6 @@
       "desc": ""
     }
   ],
-  "AudioPlayer": [
-    {
-      "prop": "preload",
-      "type": "—",
-      "def": "'metadata'",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
   "Input": [
     {
       "prop": "type",
@@ -1199,7 +1161,7 @@
       "desc": ""
     }
   ],
-  "RotaryDial": [
+  "Knob": [
     {
       "prop": "value",
       "type": "—",
@@ -1827,27 +1789,9 @@
   ],
   "AddLayerButton": [
     {
-      "prop": "types",
+      "prop": "parentId",
       "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "iconFor",
-      "type": "—",
-      "def": "(type) => DEFAULT_TYPE_ICONS[type] ?? 'rectangle'",
-      "desc": ""
-    },
-    {
-      "prop": "iconComponent",
-      "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
-      "desc": ""
-    },
-    {
-      "prop": "menuWidth",
-      "type": "—",
-      "def": "180",
+      "def": "null",
       "desc": ""
     }
   ],
@@ -3463,105 +3407,9 @@
   ],
   "FeaturedCarousel": [
     {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "sectionLabel",
-      "type": "—",
-      "def": "'Featured'",
-      "desc": ""
-    },
-    {
-      "prop": "ctaLabel",
-      "type": "—",
-      "def": "'Learn more'",
-      "desc": ""
-    },
-    {
-      "prop": "height",
-      "type": "—",
-      "def": "'h-[440px] md:h-[640px]'",
-      "desc": ""
-    },
-    {
-      "prop": "titleClassName",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "descriptionClassName",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "showHeader",
+      "prop": "active",
       "type": "—",
       "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "showTitle",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "showDescription",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "showCta",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "fullWidth",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "rounded",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "navPosition",
-      "type": "—",
-      "def": "'stack'",
-      "desc": ""
-    },
-    {
-      "prop": "autoPlay",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "autoPlayInterval",
-      "type": "—",
-      "def": "5000",
-      "desc": ""
-    },
-    {
-      "prop": "options",
-      "type": "—",
-      "def": "{ align: 'center', loop: true }",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -4011,39 +3859,15 @@
   ],
   "MediaInspector": [
     {
-      "prop": "title",
+      "prop": "tags",
       "type": "—",
-      "def": "'MEDIA'",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "prefix",
+      "prop": "suggestions",
       "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "header",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "stats",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "formatDate",
-      "type": "—",
-      "def": "(iso) => (iso ? new Date(iso).toISOString().slice(0, 10) : '')",
+      "def": "[]",
       "desc": ""
     }
   ],
@@ -4339,21 +4163,39 @@
   ],
   "ColumnBrowser": [
     {
-      "prop": "kindOf",
+      "prop": "trail",
       "type": "—",
-      "def": "function kindOf(o) {\n  if (o.forcedKind) return o.forcedKind\n  if (isSystemFile(o.key)) return 'system'\n  const ct = o.contentType || ''\n  if (ct.startsWith('image/')) return 'image'\n  if (ct.startsWith('video/')) return 'video'\n  if (ct.startsWith('audio/')) return 'audio'\n  const ext = extOf(o.key)\n  if (EXT_KINDS[ext]) return EXT_KINDS[ext]\n  if (ct === 'text/markdown') return 'markdown'\n  if (ct === 'application/json') return 'json'\n  if (ct.startsWith('text/')) return 'text'\n  if (ct.startsWith('font/')) return 'font'\n  return 'other'\n}",
+      "def": "false",
       "desc": ""
     },
     {
-      "prop": "formatSize",
+      "prop": "cursor",
       "type": "—",
-      "def": "(n) => `${n} B`",
+      "def": "false",
       "desc": ""
     },
     {
-      "prop": "formatDate",
+      "prop": "muted",
       "type": "—",
-      "def": "(d) => d",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "indent",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "zones",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -4401,19 +4243,39 @@
       "desc": ""
     }
   ],
+  "MediaPlayer": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'video'",
+      "desc": ""
+    },
+    {
+      "prop": "preload",
+      "type": "—",
+      "def": "'metadata'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "AudioPlayer": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "AudioTile": [
     {
       "prop": "fallback",
       "type": "—",
       "def": "null",
-      "desc": ""
-    }
-  ],
-  "AudioPreview": [
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -4521,51 +4383,9 @@
   ],
   "RecordManager": [
     {
-      "prop": "columns",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "rows",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "fields",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "publishLabel",
-      "type": "—",
-      "def": "'Publish'",
-      "desc": ""
-    },
-    {
-      "prop": "reorderLabel",
-      "type": "—",
-      "def": "(n) => `Reorder row ${n}`",
-      "desc": ""
-    },
-    {
-      "prop": "sortActive",
+      "prop": "active",
       "type": "—",
       "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "filterActive",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -4701,21 +4521,9 @@
   ],
   "PortableTextRenderer": [
     {
-      "prop": "blocks",
+      "prop": "level",
       "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "prose",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
+      "def": "2",
       "desc": ""
     }
   ],
@@ -4831,39 +4639,9 @@
   ],
   "ParallaxShelf": [
     {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "fromLeft",
+      "prop": "settled",
       "type": "—",
       "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "heights",
-      "type": "—",
-      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
-      "desc": ""
-    },
-    {
-      "prop": "enter",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "tilt",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -4897,21 +4675,15 @@
   ],
   "DeckEditor": [
     {
-      "prop": "layouts",
+      "prop": "orientation",
       "type": "—",
-      "def": "[]",
+      "def": "'vertical'",
       "desc": ""
     },
     {
-      "prop": "railLeft",
+      "prop": "size",
       "type": "—",
-      "def": "0",
-      "desc": ""
-    },
-    {
-      "prop": "unsaved",
-      "type": "—",
-      "def": "false",
+      "def": "16",
       "desc": ""
     }
   ],
@@ -5045,27 +4817,15 @@
   ],
   "FontPreviewSection": [
     {
-      "prop": "fontFamily",
+      "prop": "fontStyle",
       "type": "—",
-      "def": "'system-ui, sans-serif'",
+      "def": "'normal'",
       "desc": ""
     },
     {
-      "prop": "badgeText",
+      "prop": "text",
       "type": "—",
-      "def": "'Preview'",
-      "desc": ""
-    },
-    {
-      "prop": "showDropdown",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "availableWeights",
-      "type": "—",
-      "def": "[\n  'Thin', 'Extralight', 'Light', 'Regular', 'Medium', 'Semibold', 'Bold', 'Extrabold', 'Black',\n]",
+      "def": "'Rennimjúkt eðal flauel, duft slæðist niður, silkislaufa & æðardúnn, fiður daðra dilur, friður. Sjáumst sjaldnar en sálagárur, samverustundir við skák að sötri, soðin sjálfsögðum samtölum. Spakir sötra á sætu seyði, sjónlistarspjall, síðfóníur, söngur sungin suður af Síberíu, setið að sálrænum stríðsglæpum, svaðil-pöttum og skyndimátum, svarthvítar svikamyllur, sökkvandi skálínur spegla sýnirnar – seinni tíðirnar.'",
       "desc": ""
     },
     {
@@ -5075,47 +4835,35 @@
       "desc": ""
     },
     {
-      "prop": "sizes",
+      "prop": "initialSize",
       "type": "—",
-      "def": "[\n  { size: 96, lines: 1 },\n  { size: 64, lines: 3 },\n  { size: 48, lines: 4 },\n  { size: 24, lines: 5, leading: 50 },\n]",
+      "def": "64",
+      "desc": ""
+    },
+    {
+      "prop": "initialLeading",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "lineClamp",
+      "type": "—",
+      "def": "null",
       "desc": ""
     }
   ],
   "VariableFontSection": [
     {
-      "prop": "fontFamily",
+      "prop": "isPlaying",
       "type": "—",
-      "def": "'system-ui, sans-serif'",
+      "def": "false",
       "desc": ""
     },
     {
-      "prop": "badgeText",
+      "prop": "size",
       "type": "—",
-      "def": "'Variable axis'",
-      "desc": ""
-    },
-    {
-      "prop": "text",
-      "type": "—",
-      "def": "'Variable'",
-      "desc": ""
-    },
-    {
-      "prop": "minWeight",
-      "type": "—",
-      "def": "300",
-      "desc": ""
-    },
-    {
-      "prop": "maxWeight",
-      "type": "—",
-      "def": "900",
-      "desc": ""
-    },
-    {
-      "prop": "showDropdown",
-      "type": "—",
-      "def": "true",
+      "def": "28",
       "desc": ""
     }
   ],
@@ -5215,21 +4963,9 @@
   ],
   "FoundryCharacterSets": [
     {
-      "prop": "fontFamily",
+      "prop": "className",
       "type": "—",
-      "def": "'system-ui, sans-serif'",
-      "desc": ""
-    },
-    {
-      "prop": "showDropdown",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "collapsedCount",
-      "type": "—",
-      "def": "2",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -5827,14 +5563,6 @@
       "desc": ""
     }
   ],
-  "Knob": [
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'sm'",
-      "desc": ""
-    }
-  ],
   "Toggle": [
     {
       "prop": "horizontal",
@@ -6227,21 +5955,15 @@
   ],
   "EnvelopeModeToggle": [
     {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "bodyClass",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "bare",
-      "type": "—",
-      "def": "false",
       "desc": ""
     }
   ],
@@ -6596,6 +6318,12 @@
       "prop": "appName",
       "type": "—",
       "def": "'This app'",
+      "desc": ""
+    },
+    {
+      "prop": "force",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],

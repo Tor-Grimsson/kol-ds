@@ -10,7 +10,7 @@ import { CORPUS } from 'workshop-fixture'
  * breakpoint before it ships (apps review 2026-09-29 — the user: *"having the results page, and the
  * shortcuts, and overlay etc. in the same app is kinda the point"*):
  *
- *   ⌘K     the overlay palette (ShellSearchOverlay) on the same engine — Enter commits the query here
+ *   ⌘K     the search modal (ShellSearchOverlay) on the same engine — Enter commits the query here
  *   /      focuses the query on the results page
  *   S      the syntax sheet
  *   RESULTS · GRAPH   the page's two views: the ranked results, or the index's tags as a network
@@ -58,7 +58,7 @@ const RUNG_LABEL = {
 
 const SHORTCUTS = [
   { section: 'Query', items: [
-    { id: 'palette', label: 'The search palette', combo: '⌘K' },
+    { id: 'search-modal', label: 'The search modal', combo: '⌘K' },
     { id: 'focus', label: 'Focus the query', combo: '/' },
     { id: 'tag', label: 'Tag filter', combo: 'tag:x · #x' },
     { id: 'kind', label: 'Kind filter', combo: 'is:x · kind:x' },
@@ -179,9 +179,9 @@ export default function App() {
   const [filters, setFilters] = useState({})
   const [sheet, setSheet] = useState(false)
   const [view, setView] = useState('results')
-  const [palette, setPalette] = useState(false)
+  const [modal, setModal] = useState(false)
   const [pq, setPq] = useState('')
-  const paletteRows = useMemo(
+  const modalRows = useMemo(
     () => search(INDEX, pq, { limit: 30 }).results.map((r) => ({ id: r.item.id, label: r.item.title, group: r.item.kind, hint: r.item.space, highlights: r.highlights.title })),
     [pq],
   )
@@ -198,10 +198,10 @@ export default function App() {
       return { ...prev, [field]: next }
     })
 
-  /* ⌘K opens the palette; `/` focuses the query (never the browser's find); S opens the sheet */
+  /* ⌘K opens the search modal; `/` focuses the query (never the browser's find); S opens the sheet */
   useEffect(() => {
     const onKey = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPalette((v) => !v); return }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setModal((v) => !v); return }
       if (e.metaKey || e.ctrlKey || e.altKey) return
       const el = e.target
       const typing = el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')
@@ -274,15 +274,15 @@ export default function App() {
         )}
       </div>
       <ShellSearchOverlay
-        open={palette}
-        onClose={() => { setPalette(false); setPq('') }}
+        open={modal}
+        onClose={() => { setModal(false); setPq('') }}
         query={pq}
         onQueryChange={setPq}
-        results={paletteRows}
+        results={modalRows}
         placeholder="Search the fixture"
         enterLabel={pq ? `All results for “${pq}”` : undefined}
-        onExpand={() => { setQ(pq); setView('results'); setPalette(false); setPq('') }}
-        onSelect={(item) => { setQ(`"${item.label}"`); setView('results'); setPalette(false); setPq('') }}
+        onExpand={() => { setQ(pq); setView('results'); setModal(false); setPq('') }}
+        onSelect={(item) => { setQ(`"${item.label}"`); setView('results'); setModal(false); setPq('') }}
       />
       {sheet && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setSheet(false)} />}
     </PageShell>

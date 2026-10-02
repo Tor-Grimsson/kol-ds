@@ -50,7 +50,7 @@ export const ALL_ROUTES = [
   { id: 'styles', label: 'Styles', icon: 'paint-drop', path: '/styles' },
   { id: 'docs', label: 'Docs', icon: 'book-open', path: '/docs' },
   /* SEARCH is a space (2026-09-30): its four views are its chapters; the magnifier still opens the
-   * palette — one engine behind both. */
+   * search modal — one engine behind both. */
   { id: 'search', label: 'Search', icon: 'search', path: '/search' },
   { id: 'development', label: 'Development', icon: 'library', path: '/development' },
 ]
@@ -184,9 +184,9 @@ const titleCase = (s = '') => s.replace(/^./, (c) => c.toUpperCase())
 const vaultCategoryLabel = (file) => label(file.replace(/^.*?docs\//, '').split('/')[0])
 
 /* SEARCH ITEMS — kol-search's shape: title · kind · space · category · tags · headings ·
- * keywords · description · date · href. One list feeds the palette and the /search page.
+ * keywords · description · date · href. One list feeds the search modal and the /search page.
  * `category` is always a display label — an unmapped key used to leak through raw, so a
- * palette row read `shell` beside `Atoms`. */
+ * search modal row read `shell` beside `Atoms`. */
 export const buildShellSearchItems = () => {
   const componentTags = Object.fromEntries(MDX_DOCS.map((d) => [d.href, d.metadata?.tags ?? []]))
   const components = COMPONENTS_AZ.map((c) => ({

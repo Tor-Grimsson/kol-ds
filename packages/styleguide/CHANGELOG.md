@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-styleguide
 
-## Unreleased
+## 0.6.0 — 2026-10-02
 
 - **Renamed: `ProfileAvatar` → `BrandAvatar`** — it is the brand's mark in a profile frame, not a second `Avatar`. `ProfileAvatar` is the alias.
 

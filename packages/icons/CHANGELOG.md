@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-icons
 
+## 0.33.0 — 2026-10-02
+
+- **New:** `text-justify-left` · `-center` · `-right` · `-all`, `text-align-toward-spine` · `text-align-away-spine`, `space-evenly-horizontal` · `space-evenly-vertical`.
+- **Redrawn:** `rotate-left` · `rotate-right` (an open arc, a clear gap before the arrowhead) and `corner-down-left` (a smaller head).
+
 ## 0.32.0 — 2026-10-01
 
 - **Renamed:** `kol-icon-set-v1` is `kol-icon-set-interface` (user: "icons v1 is a terrible icon set name"). `KOL_ICON_SET_INTERFACE`, `KOL_ICON_SET_INTERFACE_NAMES` and `KOL_ICON_SET_INTERFACE_META` replace the V1 exports, which stay as deprecated aliases on the retirement ledger. Icon names are unchanged, so `<Icon name="…">` needs nothing. `getSet(name)` returns `'interface'` where it returned `'v1'`.

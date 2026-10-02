@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
-import ShellSidebar, { RAIL_FOLD_EVENT } from './ShellSidebar.jsx'
+import ShellSidebar, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellSidebar.jsx'
 import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
@@ -98,12 +98,42 @@ const useRailGrab = (token, side, hide) => {
   return { ref, grab: <div {...grabProps} className={`kol-rail-grab kol-rail-grab--${side} hidden lg:block`} /> }
 }
 
-const NavColumn = ({ children, grip, railRef }) => (
-  <aside ref={railRef} aria-label="Navigation" className="shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-14">
-    {children}
-    {grip}
-  </aside>
-)
+/**
+ * ShellNavColumn — The left rail's column. the frame the shell's left rail sits in: sticky, one
+ * scroll region tall, a seam toward the page. It owns the rail's THREE STATES (user ruling
+ * 2026-10-02) — `open`, `icons` and hidden, which is simply not mounting it.
+ *
+ * In `icons` the column is a narrow strip (the track is the framework's collapsed-rail width,
+ * `--kol-sidenav-w-collapsed`) and every `ShellSidebar` inside draws one glyph per group. Hover
+ * opens the whole rail OVER the page at its full width — the track does not move, so the page
+ * never reflows — and leaving folds it back. A touch has no hover: there the glyphs are the nav.
+ *
+ * @param {'open'|'icons'} mode
+ * @param {ReactNode|Function} children  the rail; a function gets the state it is drawn in
+ *                                       (`open` while an icon rail is hovered), so a consumer can
+ *                                       drop what does not fit a strip
+ * @param {ReactNode} grip     the resize handle — not drawn on an icon rail
+ * @param {Object}    railRef
+ */
+export function ShellNavColumn({ mode = 'open', children, grip, railRef }) {
+  const [peek, setPeek] = useState(false)
+  const icons = mode === 'icons'
+  const shown = icons && !peek ? 'icons' : 'open'
+  return (
+    <aside
+      ref={railRef}
+      aria-label="Navigation"
+      className={`shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-14 ${icons ? `shell-rail--icons ${peek ? 'is-peek' : ''}` : ''}`.trim()}
+      onMouseEnter={icons ? () => setPeek(true) : undefined}
+      onMouseLeave={icons ? () => setPeek(false) : undefined}
+    >
+      <ShellRailModeContext.Provider value={shown}>
+        {typeof children === 'function' ? children(shown) : children}
+      </ShellRailModeContext.Provider>
+      {!icons && grip}
+    </aside>
+  )
+}
 
 const MainColumn = ({ children, fullHeight, width = 'canvas', padStart, padEnd }) => {
   /* the map lives INSIDE MainColumn on purpose — validate:width W1 reads the
@@ -159,7 +189,7 @@ const writeSettings = (next) => {
 }
 
 /* A search item in either shape — the kol-search item (`title · kind · space ·
- * category · tags · headings · keywords · description · href`) or the palette's
+ * category · tags · headings · keywords · description · href`) or the search modal's
  * older row (`label · sectionLabel · …`). Both keep working. */
 const toSearchItem = (item, i) => ({
   ...item,
@@ -179,18 +209,24 @@ const toSearchItem = (item, i) => ({
  *                               so it names the space you are in
  * @param {Array}  [shortcuts]   the consumer's own keys, `{ id, label, combo, key, run }` — listed
  *                               in the `S` sheet and bound by the same handler (2026-09-30)
+ * @param {Function} [renderSidebar]  `({ activeRoute, onNavigate, mode }) => node` — the space's
+ *                               rail. `mode` is `open` or `icons` (the left rail's third state,
+ *                               2026-10-02): every `ShellSidebar` reads it by itself, so `mode`
+ *                               is only for what else the consumer puts in the rail
  */
 const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], brandLabel, defaultTocContent, isActive: isActiveProp, actions, shortcuts = [] }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
   const [prefs, setPrefs] = useState(readSettings)
   const setPref = (key, value) => setPrefs((p) => { const next = { ...p, [key]: value }; writeSettings(next); return next })
   const [navCollapsed, setNavCollapsed] = useState(() => readSettings().navHidden === true)
+  /* the left rail's third state — a strip of icons that opens on hover (see ShellNavColumn) */
+  const navIcons = prefs.navIcons === true
 
   const [tocCollapsed, setTocCollapsed] = useState(() => readSettings().tocHidden === true)
   const navGrab = useRailGrab('kol-shell-nav', 'left', () => { setNavCollapsed(true); writeSettings({ ...readSettings(), navHidden: true }) })
   const tocGrab = useRailGrab('kol-shell-toc', 'right', () => { setTocCollapsed(true); writeSettings({ ...readSettings(), tocHidden: true }) })
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  /* ONE QUERY (user ruling 2026-08-01). The palette's text used to live here
+  /* ONE QUERY (user ruling 2026-08-01). The search modal's text used to live here
    * while tags lived in TagModeContext — two states, and therefore two
    * surfaces. Both facets are the context's now. The local pair survives ONLY
    * for a consumer mounting the shell without a TagModeProvider, where the
@@ -374,7 +410,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
    * rails are the workshop shell's own pair (--kol-shell-nav-w ·
    * --kol-shell-toc-w, 256px each since 2026-09-28): the left used to read
    * --kol-sidenav-w, the draggable app sidenav's 264/320 ladder. */
-  const gridCols = showNav
+  /* an icon rail's track is the framework's collapsed-rail width — the same strip, one token */
+  const gridCols = showNav && navIcons
+    ? showToc
+      ? 'lg:grid-cols-[var(--kol-sidenav-w-collapsed)_minmax(0,1fr)] xl:grid-cols-[var(--kol-sidenav-w-collapsed)_minmax(0,1fr)_var(--kol-shell-toc-w)]'
+      : 'lg:grid-cols-[var(--kol-sidenav-w-collapsed)_minmax(0,1fr)]'
+    : showNav
     ? showToc
       ? 'lg:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)] xl:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)_var(--kol-shell-toc-w)]'
       : 'lg:grid-cols-[var(--kol-shell-nav-w)_minmax(0,1fr)]'
@@ -440,7 +481,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     </>
   )
 
-  /* THE ENGINE IS kol-search (2026-09-28) — the palette ran a first-substring
+  /* THE ENGINE IS kol-search (2026-09-28) — the search modal ran a first-substring
    * match, so `atom` ranked AppHub first on a word in its description and only
    * one row lit its match. Ranked now, every hit highlighted, and a word that
    * names a category (`atom`) filters by it. `limitToSpace` (settings) scopes
@@ -472,6 +513,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const settingsSections = [
     { label: 'Layout', rows: [
       { id: 'nav', label: 'Left rail', render: () => <SettingsSwitch on={!navCollapsed} onChange={(on) => { setNavCollapsed(!on); setPref('navHidden', !on) }} /> },
+      { id: 'nav-icons', label: 'Icons only', render: () => <SettingsSwitch on={navIcons} onChange={(on) => setPref('navIcons', on)} /> },
       { id: 'toc', label: 'Right rail', render: () => <SettingsSwitch on={!tocCollapsed} onChange={(on) => { setTocCollapsed(!on); setPref('tocHidden', !on) }} /> },
     ] },
     { label: 'Search', rows: [
@@ -526,9 +568,9 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           >
               <div className={`shell-content-grid grid ${gridCols}`} data-layout={layoutType} style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
                   {showNav && (
-                    <NavColumn railRef={navGrab.ref} grip={navGrab.grab}>
-                      {renderSidebar ? renderSidebar({ activeRoute }) : <ShellSidebar routes={routes} basePath={basePath} />}
-                    </NavColumn>
+                    <ShellNavColumn mode={navIcons ? 'icons' : 'open'} railRef={navGrab.ref} grip={navGrab.grab}>
+                      {(mode) => (renderSidebar ? renderSidebar({ activeRoute, mode }) : <ShellSidebar routes={routes} basePath={basePath} />)}
+                    </ShellNavColumn>
                   )}
 
                   <MainColumn fullHeight={isFullHeight} width={contentWidth} padStart={showNav} padEnd={showToc}>
@@ -573,10 +615,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             query={searchQuery}
             onQueryChange={setSearchQuery}
             results={searchResults}
-            /* an empty palette opens on the space table, not a blank box */
+            /* an empty search modal opens on the space table, not a blank box */
             suggestions={navItems.map((n) => ({ id: `space:${n.href}`, label: n.label, href: n.href, icon: 'arrow-right', group: 'Spaces' }))}
             /* THE EXPANDED BODY (user ruling 2026-08-01). The tag browser is
-             * not a sibling overlay — it is this palette's second state. Enter
+             * not a sibling overlay — it is this search modal's second state. Enter
              * commits the query and swaps the result rows for the full body;
              * committed tags ride along as chips on the same query. */
             expanded={tagMode.isProvided && tagMode.expanded}
@@ -596,7 +638,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             placeholder="Search…"
             onSelect={(item) => {
               /* `action` before `href`: not every hit is a destination. A tag
-               * row FILTERS the same query and the palette STAYS OPEN — closing
+               * row FILTERS the same query and the search modal STAYS OPEN — closing
                * it was the behaviour that forced tags into a second overlay.
                * Only a destination dismisses. */
               if (typeof item?.action === 'function') {

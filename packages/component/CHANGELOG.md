@@ -1,6 +1,12 @@
 # @kolkrabbi/kol-component
 
-## Unreleased
+## 0.237.0 — 2026-10-02
+
+- **New:** `MediaPlayer` (molecule) — `variant="video" | "audio"`, and `frame` to draw inside `QuickLookFrame`; absent, it plays inline. The media, `PlaybackBar` and `usePlayback` as one player.
+- **Deprecated:** `VideoSheet` · `AudioSheet` · `AudioPreview` · `AudioPlayer` are aliases of `MediaPlayer` (ledger). `AudioPreview` and `AudioPlayer` now draw the `PlaybackBar` instead of their own transport and the browser's strip. `AudioTile` · `VideoTile` · `formatLength` are unchanged exports, from `PlayTile.jsx`.
+- **New:** `Slider direction="vertical"` (the standard track, upright at `height`), `Slider variant="scrub"` (the media scrubber) and an `aria-label` pass-through. `PlaybackBar`'s scrubber and volume, the media pages' row-size and tile-size sliders and `QuadrantSync`'s fade take the Slider track.
+- **Renamed:** `RotaryDial` is `Knob` — `variant="dial"` (default) · `"panel"`. `RotaryDial` is the alias (ledger).
+- **Fixed:** `Kbd`'s icon follows the cap — 10 in `sm`, 12 in `md`.
 
 **The question round** (2026-10-01 — the review's open calls, ruled and built). Needs kol-theme with `.bg-surface-sunken` only if you use that class.
 

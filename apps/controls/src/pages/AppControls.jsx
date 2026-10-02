@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Button, SegmentedToggle, ToggleSwitch, ToggleCheckbox, Slider, Stepper, Dropdown, Input, RotaryDial, XYPad,
+  Button, SegmentedToggle, ToggleSwitch, ToggleCheckbox, Slider, Stepper, Dropdown, Input, Knob, XYPad,
   LabeledControl, InspectorSection, LabeledControlSection, SettingsRow, SettingsSwitch,
 } from '@kolkrabbi/kol-component'
 import Specimen from '../Specimen.jsx'
@@ -75,11 +75,11 @@ export default function AppControls() {
         <Input prefix="#" value={hex} onChange={(e) => setHex(e.target.value)} chars={6} />
       </Specimen>
 
-      <Specimen title="RotaryDial · XYPad" ships="kol-component · RotaryDial · XYPad"
+      <Specimen title="Knob · XYPad" ships="kol-component · Knob · XYPad"
         handBuilt={['kol-mirror — its own RotaryDial: compact, dense/master variants, modulation assign (hall-of-mirrors/RotaryDial.jsx)']}>
-        <RotaryDial value={dial} onChange={setDial} />
-        <RotaryDial label="Drive" value={dial} onChange={setDial} step={5} size={64} />
-        <RotaryDial label="INT" value={dial} onChange={setDial} size={36} />
+        <Knob value={dial} onChange={setDial} />
+        <Knob label="Drive" value={dial} onChange={setDial} step={5} size={64} />
+        <Knob label="INT" value={dial} onChange={setDial} size={36} />
         <div className="w-56">
           <XYPad xValue={xy.x} yValue={xy.y} xMin={50} xMax={200} yMin={100} yMax={900} xLabel="Width" yLabel="Weight"
             onChange={(x, y) => setXy({ x: Math.round(x), y: Math.round(y) })} />

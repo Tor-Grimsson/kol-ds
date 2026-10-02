@@ -59,7 +59,7 @@ export function HighlightMatch({ label, query, ranges }) {
 }
 
 /**
- * ShellSearchOverlay — The ⌘K search palette. the ⌘K command palette: fullscreen dim + centered
+ * ShellSearchOverlay — The ⌘K search modal. the ⌘K search modal: fullscreen dim + centered
  * panel, a bare SearchInput on top, result rows beneath (HighlightMatch
  * label, dim hint line, right-aligned group label). Distinct from Modal
  * (prompt/confirm only) — this is the search/command primitive.
@@ -78,7 +78,7 @@ export function HighlightMatch({ label, query, ranges }) {
  * @param {Function} onClose       () => void — backdrop click, Escape, post-select
  * @param {Array}    results       pre-filtered rows: { id, label, group?, hint?, icon? }
  * @param {Array}    [suggestions] rows shown while the query is empty (same shape) —
- *                                 the palette opens on somewhere to go, not a blank box
+ *                                 the search modal opens on somewhere to go, not a blank box
  * @param {string}   query         controlled query (drives the highlight slice)
  * @param {Function} onQueryChange (string) => void — input change
  * @param {Function} onSelect      (item) => void — row click / Enter; consumer navigates
@@ -96,8 +96,8 @@ export default function ShellSearchOverlay({
   onClose,
   results: rawResults = [],
   suggestions = [],
-  /* EXPANDED — the palette's second state (user ruling 2026-08-01). Enter
-   * commits the query and opens `children` as the results body; the palette
+  /* EXPANDED — the search modal's second state (user ruling 2026-08-01). Enter
+   * commits the query and opens `children` as the results body; the search modal
    * and the old tag overlay are one surface with two states, not two
    * components. `chips` are the committed tag facets of the same query. */
   expanded = false,
@@ -176,7 +176,7 @@ export default function ShellSearchOverlay({
       if (active >= 0) select(results[active])
       else onExpand?.()
     } else if (e.key === 'Tab') {
-      /* Focus trap — the input is the palette's only tab stop. */
+      /* Focus trap — the input is the search modal's only tab stop. */
       e.preventDefault()
     }
   }
@@ -214,7 +214,7 @@ export default function ShellSearchOverlay({
             ))}
           </div>
         )}
-        {/* A REAL FIELD, inset in the panel (2026-09-30, shadcn's palette as
+        {/* A REAL FIELD, inset in the panel (2026-09-30, shadcn's search modal as
           * the aim) — the flush `bare` strip read as a hole, not a control. */}
         <div className="kol-tone-grey p-2">
         <SearchInput
@@ -243,8 +243,8 @@ export default function ShellSearchOverlay({
           *   group     section heading the row files under — 'Atoms', 'Documentation', 'Tags'
           *   icon      optional leading glyph (kol-icons name)
           *   hint      subtext shown when the LABEL was not what matched
-          *   href      a destination; dismisses the palette
-          *   action    a closure; runs and KEEPS the palette open (tag rows)
+          *   href      a destination; dismisses the search modal
+          *   action    a closure; runs and KEEPS the search modal open (tag rows)
           * Built by `buildShellSearchItems` (showcase/src/nav/shell-nav.js). */}
         {expanded ? (
           <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto">{children}</div>

@@ -85,7 +85,9 @@ for (const { index, base } of roots) {
         : names.length === 1 ? names[0]
         : names[docs.indexOf(doc)] ?? null
       if (!name || !doc.props) continue
-      tables[name] = Object.entries(doc.props).map(([prop, p]) => ({
+      /* first package wins, as `sources` above — kol-hardware's deprecated `Knob` wrapper must not
+       * overwrite kol-component's Knob (2026-10-02) */
+      tables[name] ??= Object.entries(doc.props).map(([prop, p]) => ({
         prop,
         type: typeOf(p),
         def: p.defaultValue?.value ?? '—',

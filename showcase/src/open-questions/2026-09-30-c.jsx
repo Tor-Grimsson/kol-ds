@@ -10,7 +10,7 @@ export const meta = {
   round: 3,
   date: '2026-09-30',
   title: 'Header cluster, settings, rail states, editor',
-  status: 'decided — review',
+  status: 'answered',
 }
 
 const card = 'flex min-w-0 flex-col gap-3 rounded border border-fg-08 p-4'

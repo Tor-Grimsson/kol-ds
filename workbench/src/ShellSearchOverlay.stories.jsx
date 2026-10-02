@@ -14,7 +14,7 @@ const INDEX = [
   { id: 'dropdown', label: 'Dropdown', group: 'Molecules' },
 ]
 
-export const Palette = () => {
+export const SearchModal = () => {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState(null)
@@ -27,7 +27,7 @@ export const Palette = () => {
   }
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <Button onClick={() => setOpen(true)}>Open palette</Button>
+      <Button onClick={() => setOpen(true)}>Open search modal</Button>
       <span className="kol-mono-12 text-fg-48">
         {picked ? `Selected: ${picked.label}` : 'Type to filter · arrows move · Enter selects · Esc closes'}
       </span>

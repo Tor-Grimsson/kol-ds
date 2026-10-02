@@ -79,6 +79,8 @@ export const TIERS = {
    * previews in isolation. It is the rail LADDER — every rail header at every
    * rung comes from it (2026-08-01). */
   /* The two sidebars compose RailSection and RailRow — the RightRail precedent below (W18). */
+  /* the left rail's column: a slot frame that paints only its seam — EditorShell's shelf (2026-10-02) */
+  ShellNavColumn: 'utilities',
   ShellSidebar: 'molecules', WorkshopDefaultSidebar: 'molecules', RailSection: 'molecules', RailRow: 'atoms',
   /* RightRail is a MOLECULE: it composes RailSection and RailRow, which is the
    * nesting test. THE right rail for every route — it replaced two components
@@ -127,8 +129,8 @@ export const TIERS = {
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms',
   PageShell: 'utilities',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
-  /* control + label + value is a molecule (user ruling 2026-10-01) — Knob and Fader draw all three */
-  Knob: 'molecules', Fader: 'molecules', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
+  /* control + label + value is a molecule (user ruling 2026-10-01) — Fader draws all three */
+  Fader: 'molecules', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
   IconButton: 'atoms', JackSocket: 'atoms', PanelLabel: 'atoms',
   /* LED had a function but no tier — the all-caps name read as a data export and hid it (W19) */
   LED: 'atoms',
@@ -171,14 +173,14 @@ export const FUNCTIONS_BY_NAME = {
   QuadrantSync: 'overlay',
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media', FileIcon: 'media', QuickLookFrame: 'media', MediaTile: 'media',
   RowMenuButton: 'action',
-  EmblaNav: 'navigation', AudioPlayer: 'media',
+  EmblaNav: 'navigation', MediaPlayer: 'media',
   MediaViewer: 'media', MediaTileGallery: 'media', Figure: 'media',
   MediaLibrary: 'media', MediaPicker: 'media', MediaLibraryProvider: 'utility',
   MediaLibraryExplorer: 'media',
   ContextMenu: 'overlay', useContextMenu: 'utility',
   OverlayGlassPanel: 'display', EmptyState: 'feedback',
   BackgroundVideo: 'media', AssetGrid: 'structure', FeatureSplit: 'structure',
-  CurveOverlay: 'input', RotaryDial: 'input',
+  CurveOverlay: 'input', Knob: 'input',
   TabsRow: 'navigation', TabChips: 'navigation', MultiSelect: 'input',
   MobileTabBar: 'navigation',
   ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
@@ -225,7 +227,7 @@ export const FUNCTIONS_BY_NAME = {
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
-  ActionButton: 'action', SizeOrDownload: 'action', SortHeader: 'input', SortControls: 'input', CopyButton: 'action', ColumnBrowser: 'wayfinding', KindPreview: 'media', AudioPreview: 'media', VideoSheet: 'media', PlaybackBar: 'media', AudioSheet: 'media', DocPage: 'display', PopoverPanel: 'overlay', SettingsPanel: 'overlay',
+  ActionButton: 'action', SizeOrDownload: 'action', SortHeader: 'input', SortControls: 'input', CopyButton: 'action', ColumnBrowser: 'wayfinding', KindPreview: 'media', PlaybackBar: 'media', DocPage: 'display', PopoverPanel: 'overlay', SettingsPanel: 'overlay',
   PaletteHarmonyWheel: 'input',
   /* content-card system (2026-08-15) */
   ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
@@ -276,7 +278,7 @@ export const FUNCTIONS_BY_NAME = {
   SetupPanel: 'action', PiecePalette: 'input', GamePicker: 'input',
   MaterialSummary: 'display', useChessKeyboardShortcuts: 'utility',
   /* kol-hardware — hardware panel controls (KolControlsPackage 2026-09-01; renamed from kol-controls 2026-09-27) */
-  Knob: 'input', Fader: 'input', Toggle: 'input', FlipToggle: 'input', LED: 'feedback',
+  Fader: 'input', Toggle: 'input', FlipToggle: 'input', LED: 'feedback',
   IconButton: 'action',
   PanelLabel: 'structure', ModuleHeader: 'structure', JackSocket: 'input', LabeledJack: 'input',
   RockerSwitch: 'input', ParamSheet: 'overlay',
@@ -293,7 +295,7 @@ export const FUNCTIONS_BY_NAME = {
   DashboardGrid: 'structure', GridCard: 'structure', DashTooltip: 'overlay',
   MetricsDashboard: 'display',
   /* workshop */
-  ShellLayout: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
+  ShellLayout: 'structure', ShellNavColumn: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
   RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
   TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
@@ -325,6 +327,9 @@ export const FUNCTIONS_BY_NAME = {
 export const EXEMPT = {
   /* styleguide — foreign re-exports (ComboLab's layout primitives are
    * registry-internal, not barrel-exported — nothing to exempt) */
+  /* ONE Knob (2026-10-02): kol-hardware's export is kol-component's Knob at `variant="panel"`, kept on
+   * the path the racks import — a deprecated wrapper, on the ledger */
+  Knob: 're-export:@kolkrabbi/kol-component',
   AssetGrid: 're-export:@kolkrabbi/kol-component', FeatureSplit: 're-export:@kolkrabbi/kol-component',
   ProsePreview: 're-export:@kolkrabbi/kol-component', SpectrumGrid: 're-export:@kolkrabbi/kol-component',
   /* shell — the keymap sheet moved to kol-component 2026-09-28; kol-shell re-exports it */
@@ -334,7 +339,7 @@ export const EXEMPT = {
   ChessControlsProvider: 'non-component',
   /* workshop — contexts, providers, single-parent doc/tag sub-parts */
   ShellTocContext: 'non-component', ShellFullHeightContext: 'non-component', ShellContentWidthContext: 'non-component',
-  ShellTocCollapsedContext: 'non-component', ShellNavCollapsedContext: 'non-component', TagModeProvider: 'non-component',
+  ShellTocCollapsedContext: 'non-component', ShellNavCollapsedContext: 'non-component', ShellRailModeContext: 'non-component', TagModeProvider: 'non-component',
   DocsArticle: 'member-of:DocumentationReader', DocsHeader: 'member-of:DocumentationReader',
   DocsFrontmatter: 'member-of:DocumentationReader',
   TagModeOverlay: 'member-of:TagModeGate', TagGraph: 'member-of:TagModeOverlay',
@@ -350,7 +355,7 @@ export const EXEMPT = {
   PageBleed: 'member-of:PageShell',
   LabeledControlSection: 'member-of:SettingsPanel', SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
   SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
-  AudioTile: 'member-of:AudioPreview', VideoTile: 'member-of:AudioPreview', DocFrontmatter: 'member-of:DocPage',
+  AudioTile: 'member-of:KindPreview', VideoTile: 'member-of:KindPreview', DocFrontmatter: 'member-of:DocPage',
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
@@ -379,9 +384,12 @@ export const DEPRECATED = [
   'ColorLoader',
   /* HlsVideo = BackgroundVideo, ProfileAvatar = BrandAvatar (2026-10-01) */
   'HlsVideo', 'ProfileAvatar',
+  /* the four players are MediaPlayer (2026-10-02): `variant` video · audio, `frame` for the window */
+  'VideoSheet', 'AudioSheet', 'AudioPreview', 'AudioPlayer',
   /* the hardware twins merged into kol-component as `variant="panel"` (2026-10-01):
-   * Fader = Slider · Knob = RotaryDial · PanelLabel = LabeledControl */
-  'Fader', 'Knob', 'PanelLabel',
+   * Fader = Slider · PanelLabel = LabeledControl. The knob: `Knob` is kol-component's name now and
+   * `RotaryDial` its alias (2026-10-02) */
+  'Fader', 'PanelLabel', 'RotaryDial',
   /* Content Set retirement wave — step 3 landed 2026-08-30: the eight absorbed
    * cards are GONE from the barrels, not deprecated. Sources quarantined to
    * `_tmp/2026-08-30-content-set-exports/`. kol-dashboards' `GridCard` is a
@@ -430,7 +438,6 @@ export const NO_PREVIEW = (() => {
       + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop preview (2026-09-23)',
     MediaLibraryExplorer: 'a variant dispatch over the two page components — it is what the MediaLibrary '
       + 'preview runs (`variant="explorer"`), so it is shown inside that one',
-    ...debt(['VideoSheet'], 'the QuickTime bar needs a video the showcase does not carry (PlayDiscAndVideoBar 2026-08-27)'),
     ...debt([],
       'born 2026-08-15, shipped straight to consumers without a showcase surface'),
     ...debt(['FontViewerComponent', 'FontViewerSection'],
@@ -443,6 +450,8 @@ export const NO_PREVIEW = (() => {
       'SlideStage', 'SlideInspector'].map((n) => [n, 'a part of the presentation tool — it runs against a deck document, '
       + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),
     useTouchPrimary: 'a hook — it draws nothing; TouchDeviceOverlay, which reads it, has the preview',
+    ShellNavColumn: 'the left rail\'s column — a frame around a rail, sticky inside the shell\'s scroll region. The Module '
+      + '/modules/shell-rail-states mounts it with the real header and both rails in its three states (2026-10-02)',
     ...debt([],
       'kol-shell 0.1.0 — the package ships entirely unexercised (AGENT-CONTEXT ⚠️)'),
     ...debt([].slice(1),

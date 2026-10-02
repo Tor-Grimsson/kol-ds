@@ -7,5 +7,5 @@ export { parseQuery, FIELD_ALIASES } from './query.js'
 export { highlightRanges, norm, singular } from './text.js'
 /* the index's tags as a network — the node graph's data (ruling D4, 2026-09-29) */
 export { tagGraph, indexGraph } from './graph.js'
-/* the substring predicate kol-workshop's palette runs on today — kept until the palette moves to `search` */
+/* the substring predicate kol-workshop's search modal runs on today — kept until the search modal moves to `search` */
 export { matchSearchItems } from './match.js'

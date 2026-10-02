@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-shell
 
-## Unreleased
+## 0.60.0 — 2026-10-02
 
 - **`TouchDeviceOverlay` `force`** — show the note whatever the pointer and whatever was dismissed (a preview, or a "show it again"); dismissing a forced note stores nothing.
 

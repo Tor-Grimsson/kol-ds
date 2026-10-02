@@ -9,9 +9,9 @@ import ChapterHome from '../lib/ChapterHome.jsx'
 import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
 import { KeylineBg } from '../lib/icon-controls.jsx'
 
-/* Icon-set registry — BOTH shipped sets (kol-icons ≥0.25.0): v1 is app
+/* Icon-set registry — BOTH shipped sets (kol-icons ≥0.25.0): interface is app
  * chrome, signal is the instrument vocabulary. The route's `:set` segment
- * names one; a route that carries none falls back to v1.
+ * names one; a route that carries none falls back to interface.
  *
  * The group index comes FROM the package (`KOL_ICON_SET_INTERFACE`, built by
  * import.meta.glob over the SVG folder) — never a hand-transcribed name list.
@@ -19,8 +19,6 @@ import { KeylineBg } from '../lib/icon-controls.jsx'
 const DEFAULT_SET = 'kol-icon-set-interface'
 
 export const ICON_SETS = {
-  /* named `kol-icon-set-v1` until 2026-09-30 (W8 — user: "icons v1 is a terrible icon set name");
-   * the old URLs redirect (App.jsx) */
   'kol-icon-set-interface': {
     label: 'kol-icon-set-interface',
     title: 'Interface',

@@ -12,7 +12,7 @@ const SIZES = { sm: 6, md: 8 }
 const HIT_PAD = 5
 
 /**
- * LED — the indicator lamp (kol-monitor's rack, lifted 2026-09-01). Sizes sm 6 ·
+ * LED — An indicator lamp. the indicator lamp (kol-monitor's rack, lifted 2026-09-01). Sizes sm 6 ·
  * md 8; colors red · yellow · green · white · blue, or any CSS color. With
  * `onClick` an invisible hit pad (+5px each side) overlays the lamp.
  *

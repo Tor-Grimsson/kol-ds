@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, Divider, Input, RotaryDial, SegmentedToggle, Slider } from '@kolkrabbi/kol-component'
+import { Button, Divider, Input, Knob, SegmentedToggle, Slider } from '@kolkrabbi/kol-component'
 import ParamSheet from './ParamSheet.jsx'
 import Toggle from '../switches/Toggle.jsx'
 import SignalScope from '../indicators/SignalScope.jsx'
@@ -301,7 +301,7 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
         ) : (
           <div className="flex shrink-0 flex-wrap items-end justify-between gap-4">
             {[['attack', 'A'], ['decay', 'D'], ['sustain', 'S'], ['release', 'R']].map(([key, label]) => (
-              <RotaryDial variant="panel" key={key} value={adsr[key]} onChange={(v) => g.setAdsr({ [key]: v })} label={label} size="md" defaultValue={ADSR_DEFAULTS[key]} onHold={() => setSheet({ key, label })} />
+              <Knob variant="panel" key={key} value={adsr[key]} onChange={(v) => g.setAdsr({ [key]: v })} label={label} size="md" defaultValue={ADSR_DEFAULTS[key]} onHold={() => setSheet({ key, label })} />
             ))}
             {sheet && (
               <ParamSheet label={sheet.label} value={adsr[sheet.key]} min={0} max={100} defaultValue={ADSR_DEFAULTS[sheet.key]} onChange={(v) => g.setAdsr({ [sheet.key]: v })} onClose={() => setSheet(null)} />

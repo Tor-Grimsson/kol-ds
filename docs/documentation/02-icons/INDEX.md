@@ -22,7 +22,7 @@ related:
 
 # Icons — the loader, the set, and bring-your-own
 
-`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-interface` (named `kol-icon-set-v1` until 2026-09-30; `KOL_ICON_SET_V1` stays as a deprecated alias), the general set for app chrome, and `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces. `<Icon>` resolves consumer → v1 → signal; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-interface, grouped — the legacy gallery and `/icons/v1` were consolidated into it, 2026-07-28).
+`@kolkrabbi/kol-icons` ships one component (`Icon`) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-interface`, the general set for app chrome, and `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces. `<Icon>` resolves consumer → interface → signal; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-interface, grouped).
 
 ## The chapter
 

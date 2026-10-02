@@ -1,6 +1,10 @@
 # @kolkrabbi/kol-theme
 
-## Unreleased
+## 0.163.0 — 2026-10-02
+
+- **Changed:** `.kol-playback-scrub` takes the theme's ink at rest and reads `--kol-slider-track`; only a bar floating over media paints it white. Docked and floating bars are pixel-identical.
+- **New:** the rail's icon state — `.shell-rail--icons` (+ `.is-peek`) and `.shell-rail-icons`.
+- **Changed:** the font viewer's range rules are gone; its sliders are `Slider`, bound to the viewer's own `--fv-*` scheme.
 
 **The question round** (2026-10-01 — the review's open calls, ruled and built).
 

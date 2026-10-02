@@ -4,6 +4,7 @@ import { GlyphAnimator } from './GlyphAnimator.js'
 import { MetricsOverlay } from './MetricsOverlay.js'
 import { UIControls } from './UIControls.js'
 import { FontInfoRenderer } from './FontInfo.js'
+import { Slider } from '@kolkrabbi/kol-component'
 
 const DEFAULT_VERTICAL = 50
 
@@ -391,27 +392,14 @@ const ControlButton = ({ active, disabled, onClick, children }) => (
   </button>
 )
 
-const SliderControl = ({ id, label, min, max, step, value, onChange, formattedValue }) => {
-  const handleChange = (event) => {
-    onChange(event.target.value)
-  }
-
-  return (
-    <div className="font-viewer-slider-group">
-      <label htmlFor={id}>{label}</label>
-      <input
-        id={id}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={handleChange}
-      />
-      <span>{formattedValue}</span>
-    </div>
-  )
-}
+/* THE DS SLIDER (2026-10-02), not a range drawn here: the row keeps its own label column so the
+ * tracks line up, and Slider draws the track and the value readout. */
+const SliderControl = ({ label, min, max, step, value, onChange, formattedValue }) => (
+  <div className="font-viewer-slider-group">
+    <label>{label}</label>
+    <Slider className="flex-1" readout="value" min={min} max={max} step={step} value={value} onChange={onChange} formatValue={() => formattedValue} aria-label={label} />
+  </div>
+)
 
 const VariationControl = ({ axis, value, onChange }) => {
   const sliderId = `font-axis-${axis.tag}`

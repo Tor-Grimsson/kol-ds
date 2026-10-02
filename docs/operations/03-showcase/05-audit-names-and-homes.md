@@ -231,7 +231,7 @@ it — rail, index cards, page title, pager, search. Imports and snippets keep `
 ## Tools
 
 **Finding.** The tag graph is a quick action on the right rail and nothing else; there is no tag
-list; there is no index of every page; the search page opens only from Enter in the palette.
+list; there is no index of every page; the search page opens only from Enter in the search modal.
 
 **Proposal.** Development › Tools gets **Tag graph**, **Tags** (every tag with its count, each
 opening `/search?q=#tag`) and **Index** (every page A→Z, by space). Search keeps its doors (⌘K,

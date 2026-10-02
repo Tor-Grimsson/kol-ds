@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-search",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Search engine, custom built for wide use-cases",
   "license": "MIT",
   "type": "module",

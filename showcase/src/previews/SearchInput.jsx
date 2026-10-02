@@ -32,7 +32,7 @@ export default function SearchInputPreview({ variant = 'filled', tone = 'default
         onClear={() => setA('')}
         shortcutHint="⌘K"
       />
-      {/* bare body plan — the overlay palette's field, chrome off */}
+      {/* bare body plan — the search modal's field, chrome off */}
       <SearchInput
         bare
         value={e}

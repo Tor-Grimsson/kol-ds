@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/refs -- floating-ui's `refs.setReference` is a callback ref, as in the DS Tooltip */
 import { useState } from 'react'
 import IconFrame from '../atoms/IconFrame.jsx'
+import Slider from './Slider.jsx'
 import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
 
-/* taxonomy-ok: molecule — nests IconFrame (atom) + PopoverPanel (relative). */
+/* taxonomy-ok: molecule — nests IconFrame (atom) + Slider / PopoverPanel (relative). */
 
 /* mm:ss — the reference bar shows two-digit minutes (00:12 · 00:25) */
 export const clock = (s) => `${String(Math.floor((s || 0) / 60)).padStart(2, '0')}:${String(Math.floor((s || 0) % 60)).padStart(2, '0')}`
@@ -18,9 +19,9 @@ const RATES = [1, 1.5, 2]
  * gap-7` — white glyphs whatever the theme (`.kol-playback-bar`, kol-theme ≥0.75.0:
  * opacity .8, 1 on hover / focus-visible), the transport cluster (`skip-back-15` ·
  * play / pause · `skip-forward-15`, ghost IconFrames, gap-5), elapsed as `mm:ss`
- * (`kol-mono-16 tabular-nums`), a native range scrubber (2px track at white 40 %,
- * a 4 × 28 white pill knob — `.kol-playback-scrub`), the TOTAL length (not the
- * remaining), volume behind `speaker` (the vertical `slider-black` range in a
+ * (`kol-mono-16 tabular-nums`), the scrubber (`Slider variant="scrub"`: a 2px
+ * track, a 4 × 28 pill knob — white over media), the TOTAL length (not the
+ * remaining), volume behind `speaker` (`Slider direction="vertical"` in a
  * PopoverPanel), and `>>` (`chevrons-right`) cycling the speed 1 → 1.5 → 2.
  *
  * PRESENTATIONAL — the sheet owns the media element (`usePlayback`); this bar
@@ -59,23 +60,13 @@ export default function PlaybackBar({ playing, time, duration, rate = 1, onToggl
         <IconFrame name="skip-forward-15" variant="ghost" size="md" iconSize={22} onClick={() => onSeek(time + 15)} aria-label="Forward 15 seconds" />
       </div>
       <span className="kol-mono-16 tabular-nums opacity-80">{clock(time)}</span>
-      <input type="range" className="kol-playback-scrub flex-1 min-w-0" min={0} max={duration || 0} step={0.1} value={time} onChange={(e) => onSeek(Number(e.target.value))} aria-label="Scrub" />
+      <Slider variant="scrub" readout="none" className="flex-1 min-w-0" min={0} max={duration || 0} step={0.1} value={time} onChange={onSeek} aria-label="Scrub" />
       <span className="kol-mono-16 tabular-nums opacity-80">{clock(duration)}</span>
       <span ref={pop.refs.setReference} {...pop.getReferenceProps()} className="inline-flex">
         <IconFrame name="speaker" variant={open ? 'secondary' : 'ghost'} size="md" onClick={() => {}} aria-label="Volume" />
       </span>
       <PopoverPanel popover={pop} className="p-2">
-        <div className="w-6 h-24 flex items-center justify-center">
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={volume}
-            onChange={(e) => { const v = Number(e.target.value); onVolume?.(v / 100); setVolume(v) }}
-            className="slider-black cursor-pointer w-24 -rotate-90"
-            aria-label="Volume"
-          />
-        </div>
+        <Slider direction="vertical" readout="none" min={0} max={100} value={volume} onChange={(v) => { onVolume?.(v / 100); setVolume(v) }} aria-label="Volume" />
       </PopoverPanel>
       {onRate && (
         <span className="flex items-center gap-1">

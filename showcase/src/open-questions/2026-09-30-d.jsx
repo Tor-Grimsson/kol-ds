@@ -9,7 +9,7 @@ export const meta = {
   round: 4,
   date: '2026-09-30',
   title: 'Align, rotate, flip — redrawn',
-  status: 'open',
+  status: 'answered',
 }
 
 const NAMES = ["align-horizontal-left", "align-horizontal-center", "align-horizontal-right", "align-vertical-top", "align-vertical-center", "align-vertical-bottom", "rotate-left", "rotate-right", "flip-horizontal", "flip-vertical"]

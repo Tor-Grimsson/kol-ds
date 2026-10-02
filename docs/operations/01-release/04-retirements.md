@@ -40,11 +40,16 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `ColorLoader` | foundry | `IntroLoader` | 2026-09-30 |
 | `DropdownTagFilter` | component | `SettingsMulti` (`selectedValues` → `selected`, `onChange` → `onToggle`; the standard `Dropdown`'s variants, tones and radius) | 2026-10-01 |
-| `HlsVideo` | component | `BackgroundVideo` — same component, same props; it is a utility now, not an atom | 2026-10-01 |
-| `ProfileAvatar` | styleguide | `BrandAvatar` — same component, same props | 2026-10-01 |
-| `Fader` | hardware | `Slider variant="panel"` (kol-component) — same props | 2026-10-01 |
-| `Knob` | hardware | `RotaryDial variant="panel"` (kol-component) — same props; `variant` (the label placement) is `labelPlacement` | 2026-10-01 |
-| `PanelLabel` | hardware | `LabeledControl variant="panel"` (kol-component) — same props; `horizontal` is `labelPosition="right"` | 2026-10-01 |
+| `HlsVideo` | component | `BackgroundVideo` — same component, same props; it is a utility now, not an atom | 2026-10-02 |
+| `ProfileAvatar` | styleguide | `BrandAvatar` — same component, same props | 2026-10-02 |
+| `Fader` | hardware | `Slider variant="panel"` (kol-component) — same props | 2026-10-02 |
+| `Knob` | hardware | `Knob variant="panel"` (kol-component) — same props; `variant` (the label placement) is `labelPlacement` | 2026-10-02 |
+| `RotaryDial` | component | `Knob` — same component, same props; the ring-and-disc is `variant="dial"`, the default | 2026-10-02 |
+| `PanelLabel` | hardware | `LabeledControl variant="panel"` (kol-component) — same props; `horizontal` is `labelPosition="right"` | 2026-10-02 |
+| `VideoSheet` | component | `MediaPlayer variant="video" frame={…}` — same props | 2026-10-02 |
+| `AudioSheet` | component | `MediaPlayer variant="audio" frame={…}` (`onDuration(s)` → `onMeta({ len })`) | 2026-10-02 |
+| `AudioPreview` | component | `MediaPlayer variant="audio"` (`onDuration(s)` → `onMeta({ len })`) — the transport is `PlaybackBar` | 2026-10-02 |
+| `AudioPlayer` | component | `MediaPlayer variant="audio"` — the native strip is `PlaybackBar`; the label is the caller's | 2026-10-02 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |
 | `FeatureSplit` | component | `SectionSplit` (`flip` → `align="left"`) | 2026-08-26 |

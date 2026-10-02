@@ -617,6 +617,49 @@ importers:
         specifier: ^8.0.10
         version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
 
+  apps/mixer:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-hardware':
+        specifier: workspace:*
+        version: link:../../packages/hardware
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
   apps/notes:
     dependencies:
       '@floating-ui/react':
@@ -881,6 +924,49 @@ importers:
       media-fixture:
         specifier: workspace:*
         version: link:../media-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/rack:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-hardware':
+        specifier: workspace:*
+        version: link:../../packages/hardware
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
       react:
         specifier: ^19.2.0
         version: 19.2.7

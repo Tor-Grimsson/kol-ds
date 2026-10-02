@@ -1315,7 +1315,7 @@ a.kol-icon-frame {
  * field to the token's line-height (h-4 / h-[18px] / h-[22px]), so a 16px face
  * in an unlifted 16px box would clip. */
 /* `.kol-control--bare` is a MARKER, not chrome (OverlaySearchFieldZoomsIOS,
- * 2026-09-01): SearchInput's `bare` body plan — the overlay palette's field —
+ * 2026-09-01): SearchInput's `bare` body plan — the search modal's field —
  * sits in a plain <label>, outside both shells, and was the field that put a
  * whole mobile review in a zoomed page. The marker carries no rules of its
  * own; it exists so the floor below keys on every body plan the DS ships,

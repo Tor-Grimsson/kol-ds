@@ -155,4 +155,4 @@ To reach it: open a vault doc at `/documentation/<id>`, click a tag pill, then c
 
 ### 1.10 The second search
 
-`buildShellSearchItems` (`shell-nav.js:95-122`) feeds the ⌘K palette with components, surfaces and vault docs. The tag overlay ships its own unrelated "Search tags…" field (`TagModeOverlay.jsx`). Two search surfaces, neither aware of the other.
+`buildShellSearchItems` (`shell-nav.js:95-122`) feeds the ⌘K search modal with components, surfaces and vault docs. The tag overlay ships its own unrelated "Search tags…" field (`TagModeOverlay.jsx`). Two search surfaces, neither aware of the other.

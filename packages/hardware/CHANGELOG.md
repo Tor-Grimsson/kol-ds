@@ -1,6 +1,8 @@
 # @kolkrabbi/kol-hardware
 
-## Unreleased
+## 0.4.0 — 2026-10-02
+
+- **Changed:** `Knob` wraps kol-component's `Knob` (was `RotaryDial`); still the deprecated alias. Needs the kol-component that ships `Knob`.
 
 **The question round** (2026-10-01). Needs the kol-component that ships the `panel` variants.
 

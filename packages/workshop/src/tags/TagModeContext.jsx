@@ -33,7 +33,7 @@ export const TagModeProvider = ({
    * keywords"). `text` + `activeTags` are two facets of the SAME query, not
    * two searches — ShellLayout used to hold `searchQuery` in its own local
    * state while tags lived here, which is the whole reason the app had two
-   * surfaces. `expanded` is the palette's second state: Enter commits the
+   * surfaces. `expanded` is the search modal's second state: Enter commits the
    * query and opens the results body, Escape collapses it. */
   const openTagMode = useCallback((tag = null, { view = 'list', expanded = false } = {}) => {
     setState((prev) => ({
@@ -109,7 +109,7 @@ export const TagModeProvider = ({
 
   const value = useMemo(() => ({
     /* Lets a consumer tell a real provider from the inert fallback, so
-     * ShellLayout can own its own palette state when mounted without one
+     * ShellLayout can own its own search modal state when mounted without one
      * instead of silently no-op'ing every keystroke. */
     isProvided: true,
     isOpen: state.isOpen,

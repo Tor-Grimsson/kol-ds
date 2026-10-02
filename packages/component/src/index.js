@@ -41,10 +41,6 @@ export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
 /* BackgroundVideo — renamed from HlsVideo and moved to utilities 2026-10-01 (user ruling: no UI,
  * and the name said how it streams, not what it is for). `HlsVideo` is the alias, on the ledger. */
 export { default as BackgroundVideo, default as HlsVideo } from './utilities/BackgroundVideo.jsx'
-/* AudioPlayer — BackgroundVideo's opposite number: same tier and shape, inverted
- * intent (built to be operated, not decorative). See its header before editing
- * either one. */
-export { default as AudioPlayer } from './atoms/AudioPlayer.jsx'
 export { default as Input } from './atoms/Input.jsx'
 export { default as Label } from './atoms/Label.jsx'
 export { default as LabeledControl } from './molecules/LabeledControl.jsx'
@@ -56,7 +52,8 @@ export { armLongPress } from './utilities/armLongPress.js'
 export { default as ContextMenu, useContextMenu } from './molecules/ContextMenu.jsx'
 export { default as ProsePreview } from './utilities/ProsePreview.jsx'
 export { default as QuantityInput } from './molecules/QuantityInput.jsx'
-export { default as RotaryDial } from './molecules/RotaryDial.jsx'
+/* Knob — the survivor's name (2026-10-02): `variant` dial · panel. `RotaryDial` is the alias, on the ledger. */
+export { default as Knob, default as RotaryDial } from './molecules/Knob.jsx'
 export { default as SearchInput } from './molecules/SearchInput.jsx'
 export { default as InspectorSection, default as Section } from './molecules/InspectorSection.jsx'
 export { default as SectionText } from './molecules/SectionText.jsx'
@@ -191,10 +188,11 @@ export { default as SectionNewsletter } from './organisms/SectionNewsletter.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'
 export { default as ColumnBrowser } from './organisms/ColumnBrowser.jsx'
 export { default as KindPreview } from './molecules/KindPreview.jsx'
-export { default as AudioPreview, AudioTile, VideoTile, formatLength } from './molecules/AudioPreview.jsx'
-export { default as VideoSheet } from './molecules/VideoSheet.jsx'
+/* MediaPlayer — the one player (2026-10-02): `variant` video · audio, `frame` for the Quick Look
+ * window. VideoSheet · AudioSheet · AudioPreview · AudioPlayer are its aliases, on the ledger. */
+export { default as MediaPlayer, VideoSheet, AudioSheet, AudioPreview, AudioPlayer } from './molecules/MediaPlayer.jsx'
+export { AudioTile, VideoTile, formatLength } from './molecules/PlayTile.jsx'
 export { default as PlaybackBar } from './molecules/PlaybackBar.jsx'
-export { default as AudioSheet } from './molecules/AudioSheet.jsx'
 export { default as QuickLookFrame } from './molecules/QuickLookFrame.jsx'
 export { default as MediaTile } from './molecules/MediaTile.jsx'
 export { default as RowMenuButton } from './molecules/RowMenuButton.jsx'

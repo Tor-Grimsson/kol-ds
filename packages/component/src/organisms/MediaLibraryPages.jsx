@@ -29,10 +29,10 @@ import useMarquee from '../hooks/useMarquee.js'
 import useLongPress from '../hooks/useLongPress.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import KindPreview from '../molecules/KindPreview.jsx'
-import AudioSheet from '../molecules/AudioSheet.jsx'
-import VideoSheet from '../molecules/VideoSheet.jsx'
+import MediaPlayer from '../molecules/MediaPlayer.jsx'
+import Slider from '../molecules/Slider.jsx'
 import QuickLookFrame from '../molecules/QuickLookFrame.jsx'
-import { formatLength } from '../molecules/AudioPreview.jsx'
+import { formatLength } from '../molecules/PlayTile.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { useModal } from '../molecules/Modal.jsx'
 import ContentFilters from './ContentFilters.jsx'
@@ -65,7 +65,7 @@ import { nearestRatio } from '../utilities/ratios.js'
  *                        SortControls · the selection bar while selecting), the
  *                        wall on ContentCard / ContentRow default, paging, the
  *                        per-bucket list cache, the stats line, the inspector
- *                        lightbox (image · VideoSheet · AudioSheet · DocPage via
+ *                        lightbox (image · MediaPlayer · DocPage via
  *                        KindPreview)
  *
  * Both take the injected `client` (`{ listMedia, mediaUrl, proxied?, buckets? }`
@@ -686,9 +686,9 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
             onLoad={(e) => setDims({ key: o.key, w: e.target.naturalWidth, h: e.target.naturalHeight })} />
         </QuickLookFrame>
       ) : isVideo(o.contentType) ? (
-        <VideoSheet key={o.key} src={mediaUrl(o.key)} poster={poster ? mediaUrl(poster) : undefined} onMeta={(m) => setDims({ key: o.key, ...m })} frame={frame} />
+        <MediaPlayer key={o.key} variant="video" src={mediaUrl(o.key)} poster={poster ? mediaUrl(poster) : undefined} onMeta={(m) => setDims({ key: o.key, ...m })} frame={frame} />
       ) : kind === 'audio' ? (
-        <AudioSheet key={o.key} src={mediaUrl(o.key)} ext={extOf(o.key)} onDuration={(len) => setDims({ key: o.key, len })} frame={frame} />
+        <MediaPlayer key={o.key} variant="audio" src={mediaUrl(o.key)} ext={extOf(o.key)} onMeta={(m) => setDims({ key: o.key, ...m })} frame={frame} />
       ) : (
         <QuickLookFrame {...frame}>
           <KindPreview o={o} fit="sheet" urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} />
@@ -1069,9 +1069,9 @@ export function MediaLibraryBrowse({
    * media-hub, "two too many"). Given, the gear calls it and this page opens no drawer of its own —
    * inside a Hub the Hub's Settings is the one place. Absent, the gear opens the drawer as always. */
   onOpenSettings,
-  /* `searchSuggestions` — what the palette lists before you type. Absent: favourites, smart
+  /* `searchSuggestions` — what the search modal lists before you type. Absent: favourites, smart
    * folders, then the bucket's top-level folders. An array replaces them; a function receives them
-   * and returns the list. Rows are the palette's shape; a row with `run` calls it instead of
+   * and returns the list. Rows are the search modal's shape; a row with `run` calls it instead of
    * jumping to `id` as a file key. */
   searchSuggestions,
   /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
@@ -1604,13 +1604,13 @@ export function MediaLibraryBrowse({
     openQuickLook({ files, index })
   }
 
-  /* SEARCH IS THE DS'S OWN PALETTE (2026-09-22). `/` is the file-manager habit and ⌘K the app one,
+  /* SEARCH IS THE DS'S OWN MODAL (2026-09-22). `/` is the file-manager habit and ⌘K the app one,
    * so both open it; it searches the bucket's keys and JUMPS — it does not filter the list under
    * you, which is what the filter bar is for. */
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   /* the filter bar's own query — lifted so a typed one swaps the tree for a flat list, and so the
-   * palette's ⌘Enter can hand its query over */
+   * search modal's ⌘Enter can hand its query over */
   const [barQuery, setBarQuery] = useState('')
   /* THE ARROWS IN THE GRID AND THE ROWS (user 2026-09-23: *"arrow navigation doesnt work in grid
    * mode? nor in row mode"*). The columns have always had theirs (`ColumnBrowser`); these are the
@@ -2197,12 +2197,12 @@ export function MediaLibraryBrowse({
    * do in grid view"*) — in steps of the control ramp, not pixels, so a row is always a control height */
   const RAMP = ['xs', 'sm', 'md', 'lg']
   const rowSlider = (
-    <input type="range" className="slider-black w-32 cursor-pointer" min={0} max={RAMP.length - 1} step={1} value={Math.max(0, RAMP.indexOf(rowSize))}
-      onChange={(e) => setSettings({ ...settings, rowSize: RAMP[Number(e.target.value)] })} aria-label="Row size" />
+    <Slider readout="none" size={128} min={0} max={RAMP.length - 1} step={1} value={Math.max(0, RAMP.indexOf(rowSize))}
+      onChange={(v) => setSettings({ ...settings, rowSize: RAMP[v] })} aria-label="Row size" />
   )
   const sizeSlider = (
-    <input type="range" className="slider-black w-32 cursor-pointer" min={100} max={360} step={20} value={tileSize}
-      onChange={(e) => setSettings({ ...settings, tileSize: Number(e.target.value) })} aria-label="Tile size" />
+    <Slider readout="none" size={128} min={100} max={360} step={20} value={tileSize}
+      onChange={(v) => setSettings({ ...settings, tileSize: v })} aria-label="Tile size" />
   )
   /* `hits` = a query's results: no folders, no root level, each file named by its whole path —
    * in the tree views as a list, the rows' shape; the wall keeps its tiles */
@@ -2256,7 +2256,7 @@ export function MediaLibraryBrowse({
     </div>
   )
 
-  /* The palette's own ruling (2026-08-01) is that Enter COMMITS the query rather than navigating
+  /* The search modal's own ruling (2026-08-01) is that Enter COMMITS the query rather than navigating
    * to whatever happened to be first — so `onExpand` is where a committed query lands, and here
    * that means the top hit. Arrow-then-Enter and a click go through `onSelect`, same jump. */
   const searchResults = rankMedia(objects, searchQuery, { limit: 50 }).map((o) => ({
@@ -2265,7 +2265,7 @@ export function MediaLibraryBrowse({
     hint: o.key.slice(0, o.key.lastIndexOf('/') + 1) || 'the bucket root',
     group: KIND_LABEL[kindOf(o)] || 'File',
   }))
-  /* THE PALETTE OPENS ON SOMEWHERE TO GO (user 2026-09-30: it opened blank in olina). */
+  /* THE SEARCH MODAL OPENS ON SOMEWHERE TO GO (user 2026-09-30: it opened blank in olina). */
   const openFolder = (path) => { setAppRoot(false); goFolder(path) }
   const leafOf = (path) => path.replace(/\/$/, '').split('/').pop()
   const hintOf = (path) => dirOf(path) || 'the bucket root'

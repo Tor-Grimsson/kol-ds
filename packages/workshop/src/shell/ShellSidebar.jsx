@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-component'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Button, Icon, Tooltip } from '@kolkrabbi/kol-component'
 import RailSection from './RailSection.jsx'
 import RailRow from './RailRow.jsx'
 
@@ -26,8 +26,17 @@ const getChildPath = (child, basePath) => {
 
 export const RAIL_FOLD_EVENT = 'kol-rail-fold'
 
+/* THE RAIL'S THIRD STATE (user ruling 2026-10-02: *"I wanted that icon state on the rails. even if
+ * we dont use it, I want to see it"*). Beside visible and hidden: `icons` — the rail is a narrow
+ * strip, one glyph per group, and opens on hover. The column that holds the rail (`ShellNavColumn`)
+ * provides the state; every ShellSidebar inside it reads it, so a consumer's rail takes the state
+ * without passing a prop. Outside a provider a rail is `open`, as it always was. */
+export const ShellRailModeContext = createContext('open')
+
 const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
   const location = useLocation()
+  const navigate = useNavigate()
+  const mode = useContext(ShellRailModeContext)
   const normalizedPath = location.pathname.replace(/\/$/, '')
 
   // Controlled mode: collapsed + onToggle from parent
@@ -141,6 +150,24 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
       </nav>
     </RailSection>
   )
+  /* ICONS ONLY — one glyph per group (a group's own, else the folder; a page's, else the file), no
+   * eyebrow, no rows. The DS nav button on the control ladder's `md` rung, the same rung the header
+   * glyphs stand on; the group you are in holds the rail's active wash (`.shell-rail-icons`). */
+  if (mode === 'icons') {
+    const holds = (r) => isHere(r) || (r.children ?? []).some(holds)
+    return (
+      <nav className="shell-rail-icons" aria-label={label ?? undefined}>
+        {routes.map((route) => (
+          <Tooltip key={route.id} label={route.label} placement="right">
+            <Button variant="nav" size="md" iconOnly={route.icon ?? (route.children?.length ? 'folder' : 'file')}
+              aria-label={route.label} aria-current={holds(route) ? 'page' : undefined}
+              onClick={(e) => { navigate(getSectionRootPath(route, basePath)); onNavigate?.(e) }} />
+          </Tooltip>
+        ))}
+      </nav>
+    )
+  }
+
   /* `label={null}` draws the tree with no L1 section over it (2026-10-01) — a space whose rail is
    * its pages, not a category of them (Search: user ruling, the space does not list itself). */
   const body = (

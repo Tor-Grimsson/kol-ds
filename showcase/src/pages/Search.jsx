@@ -8,8 +8,8 @@ import { SHELL_ROUTES, SEARCH_VIEWS, LAST_QUERY_KEY, lastSearchQuery, buildShell
 import { useGraph } from './References.jsx'
 
 /**
- * Search — the showcase's /search: kol-workshop's SearchPage over the same items the palette
- * searches, plus the reference graph's nodes (a family too large for the palette). Replaced
+ * Search — the showcase's /search: kol-workshop's SearchPage over the same items the search modal
+ * searches, plus the reference graph's nodes (a family too large for the search modal). Replaced
  * SearchResults (2026-09-28), whose groups were whatever `sectionLabel` each source emitted —
  * "reference graph, utilities, documentation, molecules" with no scope and no filters.
  */

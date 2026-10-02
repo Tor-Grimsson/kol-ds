@@ -2,7 +2,7 @@
  * mediaSearch — the media library's search, on the KOL engine (`@kolkrabbi/kol-search`).
  *
  * Four places in the media pages each ran their own `key.toLowerCase().includes(q)` — the browse
- * filter, the ⌘K palette, the smart-folder text match, the picker's filter (apps review,
+ * filter, the ⌘K search modal, the smart-folder text match, the picker's filter (apps review,
  * 2026-09-29). One helper now, so the media search speaks the same language as every other KOL
  * search: several words must ALL match, `-word` must not, `"a phrase"`, `tag:x` / `#x`,
  * `kind:image` / `is:video`, `after:2026-09-01`. A plain substring still finds what it found.
@@ -24,7 +24,7 @@ const toItem = (o, nameOf) => ({
   o,
 })
 
-/** ranked hits, best first — the palette's order. `nameOf(o)` overrides the title (a display key). */
+/** ranked hits, best first — the search modal's order. `nameOf(o)` overrides the title (a display key). */
 export function rankMedia(objects, query, { nameOf, limit } = {}) {
   const q = String(query ?? '').trim()
   if (!q) return limit ? objects.slice(0, limit) : objects

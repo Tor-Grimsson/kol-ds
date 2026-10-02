@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-foundry
 
+## 0.12.0 — 2026-10-02
+
+- **Changed:** `FontViewerComponent`'s sliders are kol-component's `Slider readout="value"`.
+
 ## 0.11.0 — 2026-09-30
 
 **The names audit** (plan-2026-09-29-phase-log-and-showcase-review — the names audit + W3–W6).

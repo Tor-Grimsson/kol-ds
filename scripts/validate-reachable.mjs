@@ -72,7 +72,7 @@ for (const list of ['DOCS_GUIDES', 'DOCS_SPECIMENS', 'DEV_TOOLS']) {
 }
 
 /* ── E2 · tags reach search ──
- * Rewritten 2026-09-28. Tags were palette rows with an `action` that opened the in-place tag
+ * Rewritten 2026-09-28. Tags were search modal rows with an `action` that opened the in-place tag
  * browser — the "weird nested overlay" the user asked to retire. A tag is a filter of THE search
  * now: items carry their tags (a `#tag` token or the Tags facet finds them), and a tag clicked in
  * a rail opens the search page on it. Either half missing and tags are unreachable again. */
@@ -100,7 +100,7 @@ if (/\{hasFilters && viewMode === 'graph' \?/.test(overlaySrc)) {
   )
 }
 
-/* ── E5 · the palette's row projection is not lossy ──
+/* ── E5 · the search modal's row projection is not lossy ──
  * ShellLayout reshapes engine results into the overlay's row shape. That map
  * rebuilt every row as a fixed set of fields, so a consumer's `action` closure
  * was dropped between the engine and `onSelect` — the row rendered, matched,

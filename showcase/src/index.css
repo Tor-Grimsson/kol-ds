@@ -30,6 +30,8 @@
 @source "../../apps/hub/src";
 @source "../../apps/studio/src";
 @source "../../apps/brand-hub/src";
+@source "../../apps/rack/src";
+@source "../../apps/mixer/src";
 
 @import "@kolkrabbi/kol-theme";
 /* Dogfoods the shipped @source manifest (DS-CHANGES #9). In the workspace the

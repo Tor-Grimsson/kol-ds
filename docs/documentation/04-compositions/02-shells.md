@@ -55,7 +55,7 @@ then adopted by the showcase. Plan and decisions: `.kol/llm-context/plan-2026-09
 - **The rail follows you.** Arriving in a group opens it and folds its siblings.
 - **A folded L1 says so** — a state glyph at the row's end, and while folded, how much it holds.
 - **Geometry.** One scroll region under the header, edge to edge (`#shell-scroll`, `SHELL_SCROLL_ROOT`); the rails are sticky inside it, **256px each** on their own tokens (`--kol-shell-nav-w` · `--kol-shell-toc-w`), each ending in an opaque 08 seam with the chrome inset inside it. Main pads the page ladder from a seam, only on a side that has a rail; **pages do not pad themselves on x**. Laws in [[../01-foundations/05-layout-systems|layout systems]].
-- **Search.** The palette runs `@kolkrabbi/kol-search` (ranked, every hit underlined, `atom` → the Atoms category). **Enter opens the search page** (`searchPath`), whose whole state is the query in the URL — Back returns to it. A tag clicked anywhere opens `/search?q=#tag`; the tag graph stays one click away in every right rail. `/` and ⌘K open the palette.
+- **Search.** The search modal runs `@kolkrabbi/kol-search` (ranked, every hit underlined, `atom` → the Atoms category). **Enter opens the search page** (`searchPath`), whose whole state is the query in the URL — Back returns to it. A tag clicked anywhere opens `/search?q=#tag`; the tag graph stays one click away in every right rail. `/` and ⌘K open the search modal.
 - **Keys and settings.** `S` (and `?`) opens kol-component's `ShortcutsOverlay` — the sheet every app opens; `,` opens the settings drawer (the rails, "this space only" for quick search, the page's own rows, the keymap); `[` `]` hide one rail, `\` both (W16). Every label names what the key does, in the fewest words.
 - **The wordmark names the space** — `brandLabel`: typed Right Grotesk Tight, DESIGN SYSTEM on `/`, the space's name elsewhere, aligned with the page text.
 
@@ -220,7 +220,7 @@ confidently wrong gets obeyed, which is worse.
 
 kol-fxr's labs rail, kol-monitor's rack sidebar and kol-mirror's surface sidebar were three hand-rolls of one idea (~1,370 lines; only fxr's collapsed, and it wore `SideNav`'s classes without importing `SideNav`) — user: *"I see these 3 as very similar things … I would rather all use the same geometry layout."* `SideNav` (framework ≥0.30.0) is that geometry: **action leaves** `{ label, onSelect, active? }` beside route leaves, at any depth and as a category, so a rail that dispatches (an effect, a module, a surface) uses the component and walks no history; **router-agnostic** through `currentPath` + `onNavigate(event, to)` (kol-shell's contract), so a router-free app can mount it; and **the collapse rule** — a row that can survive collapse has an icon; one that cannot is not a row, it is a label: a top-level node with no icon renders `.kol-sidenav-section`, the eyebrow over its rows, hidden on collapse while the icon rows beneath stay — and its rows are its **siblings**, not its children (kol-fxr's adoption, 2026-08-28: nested under the label they sit inside `.kol-sidenav-list`, which collapse hides, so the icon rows would go down with the label and the rule defeats itself). And a consumer mounting `SideNav` inside its own flex or grid cell — not as the layout's direct child — has to **stretch it** (`flex: 1; width: 100%`), or the aside sizes to its content and reads as a half-width rail: fxr's measured 32px inside a 56px track was that, not the token. The three forks retire onto it, each in its own ticket — and so did the app shell's own rail: since kol-shell 0.13.0 `AppShell` mounts a collapsed `SideNav` (RailSideNavPixelParity, user: *"same component both states super nice"*), so an app rail and the brand sidebar are one geometry to the pixel.
 
-### THE SEARCH PALETTE'S CONTRACT (documented 2026-08-01)
+### THE SEARCH MODAL'S CONTRACT (documented 2026-08-01)
 
 **It is not `molecules/Dropdown`.** Dropdown is a SELECT — a trigger, a `value`, `onChange(value)`, rows that are options. This is a COMBOBOX: a text query filtering a live list whose rows carry a group, a hint, and may fire an action instead of selecting. Same ARIA family, different control; folding one into the other means building this inside Dropdown.
 
@@ -229,8 +229,8 @@ kol-fxr's labs rail, kol-monitor's rack sidebar and kol-mirror's surface sidebar
 | `label` | the row's text, match-highlighted against the query |
 | `group` | right-aligned origin — `Atoms`, `Documentation`, `Tags` |
 | `hint` | subtext, shown when the label was **not** what matched |
-| `href` | a destination — dismisses the palette |
-| `action` | a closure — runs and **keeps** the palette open (tag rows) |
+| `href` | a destination — dismisses the search modal |
+| `action` | a closure — runs and **keeps** the search modal open (tag rows) |
 
 Built by `buildShellSearchItems` (`showcase/src/nav/shell-nav.js`).
 
@@ -240,11 +240,11 @@ Built by `buildShellSearchItems` (`showcase/src/nav/shell-nav.js`).
 
 **The tag body is chrome, not prose.** It wore `.docs-article`, the prose wrapper, which centred every row and imposed a reading measure on a filter list. Its rows wore `.tag-list-item` / `.tag-list-count` — classes with **no CSS rule anywhere in the repo**, which is exactly why they centred and carried no type. They are `RailRow`s now.
 
-**The overlay panel has no border and no shadow.** Both were tried and both were wrong: the shadow was another product's floating-card idiom, the hairline left an empty palette reading as a bordered empty box. The scrim is the separation.
+**The overlay panel has no border and no shadow.** Both were tried and both were wrong: the shadow was another product's floating-card idiom, the hairline left an empty search modal reading as a bordered empty box. The scrim is the separation.
 
 **One header-icon size.** `HEADER_ICON` (`ShellHeader`) — the row mixed 18 against the ThemeToggle's 24: four controls, two scales, in one bar.
 
-### ONE SURFACE — the palette IS the tag browser (user ruling 2026-08-01)
+### ONE SURFACE — the search modal IS the tag browser (user ruling 2026-08-01)
 
 *Superseded 2026-09-28 (user: "instead of another weird nested overlay") — Enter opens the search page; the tag browser opens only from the tag graph action. § The space table.*
 
@@ -253,14 +253,14 @@ Matching their chrome was not unification: the app still had **two components, t
 | Layer | Was | Now |
 |---|---|---|
 | Query | `searchQuery` in `ShellLayout` + `activeTags` in the context | one — `{ text, tags[] }` in `TagModeContext` |
-| Surface | palette **or** tag overlay | palette **expands** into the tag body |
+| Surface | search modal **or** tag overlay | search modal **expands** into the tag body |
 | Mounts | `ShellLayout` + `TagModeGate` in `App.jsx` | one, in `ShellLayout` |
 | Views | list here, graph there | `list` \| `graph` on the one body |
-| Chips | only in the tag overlay | in the palette input, removable |
+| Chips | only in the tag overlay | in the search modal input, removable |
 
 **Enter commits and expands.** It used to test `active >= 0`, but `activeIndex` starts at 0 — a row is "highlighted" from the first keystroke, so Enter navigated somewhere you never chose. It now selects only after a real arrow or hover (`navigated`), and otherwise expands.
 
-**A tag row keeps the palette open**; only a destination dismisses. Closing on a tag click is exactly what forced tags into a second overlay.
+**A tag row keeps the search modal open**; only a destination dismisses. Closing on a tag click is exactly what forced tags into a second overlay.
 
 `TagModeGate` is deleted — it existed to mount that second overlay. `TagModeOverlay` survives as the **expanded body**: no scrim, no panel chrome, no close button, no chips of its own (the input owns them).
 

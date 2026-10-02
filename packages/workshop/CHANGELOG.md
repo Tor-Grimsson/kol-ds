@@ -1,6 +1,8 @@
 # @kolkrabbi/kol-workshop
 
-## Unreleased
+## 0.37.0 — 2026-10-02
+
+- **New:** the left rail's third state, icons only — a strip of one glyph per group that opens on hover. `ShellNavColumn` (the rail's column, exported) and `ShellRailModeContext`; `ShellSidebar` reads the state itself. `ShellLayout` gains an "Icons only" row in Settings › Layout and passes `mode` to `renderSidebar`.
 
 **The question round** (2026-10-01 — the review's open calls, ruled and built). Needs kol-search with `indexGraph`.
 

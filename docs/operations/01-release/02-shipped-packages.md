@@ -31,20 +31,20 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.162.0** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.32.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.236.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-theme` | **0.163.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.33.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.237.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.48.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
-| `@kolkrabbi/kol-shell` | **0.59.1** | Application shell — `NavRail` + `AppShell` (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
-| `@kolkrabbi/kol-workshop` | **0.36.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
+| `@kolkrabbi/kol-shell` | **0.60.0** | Application shell — `NavRail` + `AppShell` (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
+| `@kolkrabbi/kol-workshop` | **0.37.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
 | `@kolkrabbi/kol-dashboards` | **0.4.3** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
-| `@kolkrabbi/kol-hardware` | **0.3.2** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |
+| `@kolkrabbi/kol-hardware` | **0.4.0** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |
 | `@kolkrabbi/kol-controls` | **0.4.0** | **Deprecated** — a re-export of `kol-hardware`, so existing imports resolve until consumers move |
 | `@kolkrabbi/kol-chess` | **0.10.0** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
-| `@kolkrabbi/kol-foundry` | **0.11.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
+| `@kolkrabbi/kol-foundry` | **0.12.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.1** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.5.3** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
+| `@kolkrabbi/kol-styleguide` | **0.6.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
 | `@kolkrabbi/kol-notes` | **0.2.0** | Notes — a note is a database row with a markdown body: the catalog, the editor in the page, the whole tool over a consumer-injected client. Opens on a blank note (`NEW_NOTE`) |
 | `@kolkrabbi/kol-deck` | **0.2.1** | Decks — the shelf, the deck editor, present and export (PDF · PNG · PPTX) over a consumer-injected client. Opens on a blank deck (`NEW_DECK`) |
 
@@ -55,7 +55,7 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 | Package | Version | Job |
 |---|---|---|
 | `@kolkrabbi/kol-markdown` | **0.1.2** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
-| `@kolkrabbi/kol-search` | **0.2.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets, the tag graph (`tagGraph`) |
+| `@kolkrabbi/kol-search` | **0.3.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets, the tag graph (`tagGraph`) |
 
 ## Other tiers
 
