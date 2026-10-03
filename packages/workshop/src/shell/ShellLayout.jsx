@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspen
 import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellSidebar.jsx'
-import { IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
+import { FullscreenOverlay, IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -262,6 +262,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const [isFullHeight, setIsFullHeight] = useState(false)
   const [contentWidth, setContentWidth] = useState('canvas')
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
+  const [isTreeOpen, setIsTreeOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -318,6 +319,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       { id: 'toc', label: 'Right rail', combo: ']' },
       { id: 'rails', label: 'Both rails', combo: '\\' },
       { id: 'fold', label: 'Fold / expand all', combo: 'C' },
+      { id: 'tree', label: 'Whole tree', combo: 'T' },
       { id: 'esc', label: 'Close', combo: 'Esc' },
     ] },
     ...(shortcuts.length ? [{ section: 'Page', items: shortcuts.map(({ id, label, combo }) => ({ id, label, combo })) }] : []),
@@ -366,6 +368,11 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
         e.preventDefault()
         foldedRef.current = !foldedRef.current
         window.dispatchEvent(new CustomEvent(RAIL_FOLD_EVENT, { detail: { collapsed: foldedRef.current } }))
+      } else if (e.key === 't' || e.key === 'T') {
+        /* THE WHOLE TREE (user 2026-10-02: *"C … is just about the visual tree per space, I was
+         * talking about a shortcut to get the entire tree in any given view"*) */
+        e.preventDefault()
+        setIsTreeOpen((v) => !v)
       } else if (shortcutsRef.current.some((s) => s.key === e.key)) {
         e.preventDefault()
         shortcutsRef.current.find((s) => s.key === e.key).run()
@@ -654,6 +661,25 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           </ShellSearchOverlay>
 
           {isShortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setIsShortcutsOpen(false)} />}
+
+          {/* THE WHOLE TREE, FROM ANY PAGE (`T`, 2026-10-02): every space's rail side by side, every
+            * fold open, over the page like the search modal. Each column is the consumer's own rail
+            * for that space (`renderSidebar`) drawn in the `full` rail mode, so it cannot list
+            * anything the rails do not. A row closes the sheet and goes there. */}
+          <FullscreenOverlay open={isTreeOpen} onClose={() => setIsTreeOpen(false)} scrim>
+            <div className="shell-tree bg-surface-primary">
+              {routes.map((route) => (
+                <section key={route.id ?? route.path} className="shell-tree-space">
+                  <Link to={route.path?.startsWith('/') ? route.path : `${basePath}/${route.path ?? ''}`} className="kol-doc-eyebrow text-emphasis" onClick={() => setIsTreeOpen(false)}>{route.label}</Link>
+                  <ShellRailModeContext.Provider value="full">
+                    {renderSidebar
+                      ? renderSidebar({ activeRoute: route, onNavigate: () => setIsTreeOpen(false), mode: 'full' })
+                      : <ShellSidebar routes={route.children ?? []} basePath={basePath} label={null} onNavigate={() => setIsTreeOpen(false)} />}
+                  </ShellRailModeContext.Provider>
+                </section>
+              ))}
+            </div>
+          </FullscreenOverlay>
 
           {/* THE SHELL'S SETTINGS (2026-09-28, user: "might we also want to utilize a
             * settings page or settings sidebar … to offload some functional

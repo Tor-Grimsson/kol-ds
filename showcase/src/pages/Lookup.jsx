@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { DocSection } from '@kolkrabbi/kol-workshop'
-import { LOOKUP, START } from '../nav/shell-nav.js'
+import { LOOKUP_GROUPS, START } from '../nav/shell-nav.js'
 
 /* a Library group whose pages are vault docs (2026-10-01): its markdown home, then every page */
 function VaultGroupHome({ home, items }) {
@@ -22,9 +22,21 @@ function VaultGroupHome({ home, items }) {
   )
 }
 
-/** Lookup — the names and values you check while building. */
+/** Lookup — the names and values you check while building: its three groups, each a page. */
 export default function Lookup() {
-  return <VaultGroupHome home="lookup" items={LOOKUP} />
+  return <VaultGroupHome home="lookup" items={LOOKUP_GROUPS} />
+}
+
+const groupItems = (id) => LOOKUP_GROUPS.find((g) => g.id === id).items
+
+/** Lookup › Foundations — every value, looked up. */
+export function LookupFoundations() {
+  return <VaultGroupHome home="lookup-foundations" items={groupItems('lookup-foundations')} />
+}
+
+/** Lookup › Taxonomy — the names, the tiers, the placement runbook. */
+export function LookupTaxonomy() {
+  return <VaultGroupHome home="lookup-taxonomy" items={groupItems('lookup-taxonomy')} />
 }
 
 /** Start — what KOL is and how to install it. */

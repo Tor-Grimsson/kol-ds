@@ -39,8 +39,19 @@ repo and leaves it in every other; kol-website carried exactly that stopgap for
 ## Definition of done
 
 - [ ] `kol-markdown` published with a `kol-search` range that admits 0.3.x
-- [ ] in a consumer on that version, `pnpm why @kolkrabbi/kol-search` → Found 1 version
+- [x] in a consumer on that version, `pnpm why @kolkrabbi/kol-search` → Found 1 version
 
 ## ADDRESSED — 2026-10-02 · kol-markdown@0.1.3
 
 Republished with no source change. The dependency is `workspace:^` in this repo, so the publish resolves it against kol-search 0.3.0; 0.1.2 carried `^0.2.0` only because it was published before kol-search moved. The self-check passes on 0.3.0. The second box is kol-website's to tick.
+
+## CONFIRMED from kol-website — 2026-10-02 · kol-markdown@0.1.3
+
+`pnpm update -r --depth 99 "@kolkrabbi/kol-markdown"` moved the transitive copy to 0.1.3 (kol-component and kol-workshop both ask `^0.1.2`). In `apps/web`: `pnpm why @kolkrabbi/kol-search` → **Found 1 version** (0.3.0); `kol-markdown` → one version (0.1.3). State left for this repo to close.
+
+## ✅ RESOLUTION — 2026-10-02 · kol-markdown@0.1.3
+
+Republished with no source change: the workspace range resolves against kol-search 0.3.0. kol-website confirmed pnpm why @kolkrabbi/kol-search reads one version.
+
+**Remainder here:** none — kol-website none.
+

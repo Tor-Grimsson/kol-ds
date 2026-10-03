@@ -45,6 +45,10 @@ for (const [dir, files] of Object.entries(byPackage)) {
     /* re-export exemptions only suppress the non-owning copy — the owner's
      * row survives via first-owner dedup below */
     if (EXEMPT[name] && !EXEMPT[name].startsWith('re-export')) continue
+    /* A RE-EXPORT IS A ROW UNDER ITS OWNER ONLY (2026-10-02). The re-exporting copy was pushed too
+     * and only ROSTER_BY_NAME dropped it, so every list read off ROSTER carried it — with no TIERS
+     * entry it fell to `misc`: kol-hardware's `Knob` was the whole Misc tier, a tier with no home. */
+    if (EXEMPT[name]?.startsWith('re-export:') && EXEMPT[name].slice('re-export:'.length) !== pkg) continue
     const folder = folderOf(src)
     /* Tier = ATOMIC for every package (user ruling 2026-09-30, reversing 2026-07-30's
      * ownership tiers): kol-component from its folder, every other package from

@@ -58,7 +58,7 @@ other shell consumer that uses `PageSection` has to rediscover it.
 ## Definition of done
 
 - [ ] a `PageSection` inside `ShellLayout` adds no x padding of its own, at any width
-- [ ] with no consumer wrapper: first heading 48px off the nav rail at 1440, 24px in at 390
+- [x] with no consumer wrapper: first heading 48px off the nav rail at 1440, 24px in at 390
 - [ ] `.kol-page`'s max-width / auto margin inside the shell ruled, either way
 - [ ] an exhibit page (`ExhibitPage` / `ExhibitOverview`) measured in the shell, not only read from source
 
@@ -67,3 +67,22 @@ other shell consumer that uses `PageSection` has to rediscover it.
 `.shell-main .kol-page { padding-inline: 0; max-width: none; margin-inline: 0 }` in `kol-components-workshop.css`. The cap went with the pad, on the law already written in `04-compositions/02-shells.md`: inside the shell the page body's cap is made once in `MainColumn` (canvas · shell · none), and `.kol-page`'s own `--kol-container-max` + auto margin re-capped and re-centred a `none` page. The 64px block padding stays.
 
 Measured in the showcase, where `ExhibitPage` and `ExhibitOverview` render inside the shell's preview box: before, the section's heading sat 48px inside its parent at 1440; after, 0px at 1440 and at 390, no sideways scroll. A `PageSection` outside the shell (`/components/preview/PageSection`) still pads 20px at 390. Not measured: a `PageSection` as a direct page of the shell — the showcase has none, so the 48px / 24px box is kol-website's to tick, with its `[&_.kol-page]:px-0` wrapper deleted.
+
+## CONFIRMED from kol-website — 2026-10-02 · kol-theme@0.164.1
+
+Wrapper deleted from `WorkshopChrome.jsx`; measured on the built app, `/workshop` and `/workshop/design-system`, `PageSection` as a direct page of the shell:
+
+| viewport | `.kol-page` x pad | `main` x pad | first heading |
+|---|---|---|---|
+| 1440 | 0 / 0 | 48 / 48 | 48px off the nav rail (328 from the edge) |
+| 1100 | 0 / 0 | 48 / 0 | 48px off the nav rail; right edge 24 (no right rail) |
+| 390 | 0 / 0 | 0 / 0 | 24px in |
+
+`.kol-page` max-width `none`, no sideways scroll at any of the three. Identical to what the wrapper produced. State left for this repo to close.
+
+## ✅ RESOLUTION — 2026-10-02 · kol-theme@0.164.1
+
+A .kol-page inside .shell-main drops its x padding, its --kol-container-max cap and its auto margin; inside the shell the cap is MainColumn's. kol-website deleted its wrapper and measured 48px off the rail at 1440 and 24px in at 390.
+
+**Remainder here:** none — kol-website none.
+

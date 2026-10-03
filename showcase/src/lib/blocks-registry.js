@@ -40,12 +40,11 @@ export const CATEGORY_LABELS = {
   content: 'Content',
   media: 'Media',
   color: 'Color',
-  sidenav: 'Sidenav',
-  chrome: 'Shell chrome',
+  /* ONE GROUP (user ruling 2026-10-02): sidenav, shell chrome and footers were three */
+  navigation: 'Navigation',
   panel: 'Panels',
   form: 'Forms',
   toolbar: 'Toolbars',
-  footer: 'Footers',
   other: 'Other',
 }
 

@@ -73,6 +73,15 @@ for (const [name, dirs] of Object.entries(owners)) {
     errors.push(`COLLISION    ${dirs.join('+').padEnd(14)} ${name}  (mark the re-export in EXEMPT)`)
 }
 
+/* a re-export's named owner must export the name — the roster keeps the owner's row and drops the
+ * rest, so a wrong owner drops every row (and before 2026-10-02 the stray copy fell into `misc`) */
+for (const [name, why] of Object.entries(EXEMPT)) {
+  if (!why.startsWith('re-export:@kolkrabbi/kol-')) continue
+  const owner = why.slice('re-export:@kolkrabbi/kol-'.length)
+  if (owners[name] && !owners[name].includes(owner))
+    errors.push(`RE-EXPORT    ${owners[name].join('+').padEnd(14)} ${name}  (EXEMPT names kol-${owner} as the owner, which does not export it)`)
+}
+
 /* reverse rot: classification keys that match no live export.
  * Only component/hook-shaped names — lowercase util keys never enter liveNames. */
 const shaped = (n) => isComponentName(n) || /^use[A-Z]/.test(n)

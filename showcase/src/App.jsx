@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { TagModeProvider, DocumentationReader } from '@kolkrabbi/kol-workshop'
 import { VAULT, VAULT_MODULES, TAG_INVENTORY, vaultDocHref, PHASE_LOG_INDEX } from './nav/vault.js'
 import Home from './pages/Home'
-import Lookup, { Start } from './pages/Lookup'
+import Lookup, { Start, LookupFoundations, LookupTaxonomy } from './pages/Lookup'
 import PreviewFrame from './pages/PreviewFrame'
 import Foundations from './pages/Foundations'
 import FoundationsHome from './pages/FoundationsHome'
@@ -186,6 +186,8 @@ export default function App() {
         <Route path="/library/start" element={<Start />} />
         <Route path="/library/start/:docId" element={<VaultReader docsIndex="/library/start" />} />
         <Route path="/library/lookup" element={<Lookup />} />
+        <Route path="/library/lookup/foundations" element={<LookupFoundations />} />
+        <Route path="/library/lookup/taxonomy" element={<LookupTaxonomy />} />
         <Route path="/library/lookup/:docId" element={<VaultReader docsIndex="/library/lookup" />} />
         <Route path="/apps" element={<Apps />} />
         <Route path="/apps/layer/:layer" element={<AppLayer />} />

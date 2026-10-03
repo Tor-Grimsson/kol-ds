@@ -42,6 +42,7 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  * open/close is the consumer's `onNavigate` (kol-mirror's model: navigating to
  * `/settings` while already there returns to the last page), and the theme
  * toggle lives on the settings page, not in the rail (user, 2026-08-28).
+ * @param {boolean} [props.railFade=true]  the rail's list fades out at its foot (`NavRail fade`); `false` opts out
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
  * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
@@ -130,6 +131,7 @@ export default function AppShell({
   onNavigate,
   iconComponent,
   railComponent: Rail = NavRail,
+  railFade = true,
   railToggleKey,
   touch = 'shell',
   appName,
@@ -370,6 +372,7 @@ export default function AppShell({
           onNavigate={navigate}
           iconComponent={iconComponent}
           drawer={drawer}
+          fade={railFade}
         />
       )}
       {/* THE BACK OF THE BACK — surface-primary, always, in every app; the

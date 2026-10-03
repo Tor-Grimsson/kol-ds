@@ -6,7 +6,7 @@ import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } fro
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
-import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, LOOKUP, LOOKUP_ROOT, START, START_ROOT, lastSearchQuery, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
+import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, LOOKUP_GROUPS, LOOKUP_ROOT, lastSearchQuery, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import PAGE_SECTIONS from '../nav/page-sections.json'
 import { PHASE_LOG_ROUTE, VAULT, vaultDocHref } from '../nav/vault.js'
 import { BLOCKS, BLOCK_CATEGORIES, CATEGORY_LABELS as BLOCK_LABELS } from './blocks-registry.js'
@@ -137,7 +137,8 @@ function SpaceToc({ space }) {
  * space draws its own; the Tools group is gone — the header already lists the spaces, and a
  * second door to each was "one body of content, two doors". */
 
-const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path }))
+/* a row keeps the glyph its data names (2026-10-02) — the drawer's Spaces rows dropped theirs here */
+const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.path, ...(x.icon ? { icon: x.icon } : null) }))
 
 /* A ROW WITH NO CHILDREN LISTS ITS PAGE'S SECTIONS (2026-10-01 — user: "cant we just use # to link
  * to sections? something so the sidebar doesnt look so dislocated when there are no sub items?").
@@ -154,11 +155,32 @@ const RAIL_ICONS = {
   'spec-foundations': 'slider-01', 'spec-color': 'paint-drop', 'spec-typography': 'type', 'spec-tones': 'opacity',
   'docs-shell': 'layout', 'docs-menus': 'hamburger', 'docs-loaders': 'refresh', 'docs-type-roles': 'aa',
   'search-results': 'search', 'search-tags': 'hash-01', 'search-graph': 'polygon', 'search-index': 'view-list',
-  'dev-references': 'code', 'dev-quarantine': 'lock', 'dev-open-questions': 'message',
+  'dev-references': 'code', 'dev-quarantine': 'lock', 'dev-open-questions': 'message', 'dev-phase-log': 'journal',
+  /* EVERY GROUP ITS OWN GLYPH (user 2026-10-02: "all use the same icon? … the way icons are put in
+   * generally is a bit lazy") — the folder was the fallback for every group below this line */
+  'lookup-start': 'flag', 'lookup-foundations': 'foundation', 'lookup-taxonomy': 'atomic-atomic-01',
+  'cmp-action': 'pointer', 'cmp-display': 'eye-on', 'cmp-feedback': 'bell', 'cmp-input': 'edit', 'cmp-media': 'image',
+  'cmp-navigation': 'direction-cross', 'cmp-overlay': 'toggle-overlay', 'cmp-structure': 'columns', 'cmp-wayfinding': 'roadmap', 'cmp-utility': 'customize',
+  'blk-hero': 'image', 'blk-marketing': 'trending-up', 'blk-content': 'journal', 'blk-media': 'video', 'blk-color': 'paint-drop',
+  'blk-navigation': 'panel-left', 'blk-panel': 'panel-right', 'blk-form': 'clipboard', 'blk-toolbar': 'slider-02', 'blk-other': 'more',
+  'layer-engine': 'bolt', 'layer-shell': 'panel-left', 'layer-hub': 'home-01', 'layer-catalog': 'grid', 'layer-tool': 'pen', 'layer-fixture': 'database',
+  'pkg-tier-UI': 'user-interface', 'pkg-tier-app': 'desktop', 'pkg-tier-engine': 'bolt', 'pkg-tier-client': 'cloud', 'pkg-tier-brand kit': 'kolkrabbi', 'pkg-tier-deprecated alias': 'trash',
+  'set-app-shell': 'panel-left', 'set-chess-apparatus': 'chess-rook', 'set-content-filters': 'filter', 'set-content-set-reference': 'rows',
+  'set-design-editor': 'pen-nib', 'set-foundry-specimen': 'font-01', 'set-kind-preview': 'eye-on', 'set-media-library': 'image',
+  'set-metrics-dashboard': 'stat-chart-a', 'set-mixer': 'slider-02', 'set-prints-store': 'bucket', 'set-rack': 'rack',
+  'set-record-manager-cms': 'database', 'set-section-set': 'row', 'set-stack-blog': 'journal', 'set-styleguide': 'paint-drop', 'set-work-portfolio': 'grid',
 }
+/* the vault's chapters carry generated ids (`vault-<category>-<chapter>`) — matched by their chapter */
+const RAIL_ICON_RULES = [
+  [/^vault-.*overview/, 'info'], [/^vault-.*foundations/, 'foundation'], [/^vault-.*icons/, 'star'], [/^vault-.*components/, 'component-01'],
+  [/^vault-.*compositions/, 'layout'], [/^vault-.*brand/, 'kolkrabbi'], [/^vault-.*research/, 'search'], [/^vault-.*breakpoints/, 'mobile'],
+  [/^vault-.*release/, 'upload'], [/^vault-.*workbench/, 'terminal'], [/^vault-.*showcase/, 'desktop'], [/^vault-.*content-pipeline/, 'cable-on'],
+  [/^vault-.*reference-graph/, 'polygon'], [/^vault-.*workflows/, 'roadmap'], [/^vault-.*apps-tier/, 'layers'], [/^vault-.*cloud-sessions/, 'cloud'],
+  [/^vault-.*phase-log/, 'journal'],
+]
 const withIcons = (routes, { pages = false, leaf } = {}) => routes.map((r) => {
   const group = r.children?.some((c) => !c.section)
-  const icon = RAIL_ICONS[r.id] ?? (r.section ? undefined : group ? 'folder' : pages ? (leaf ?? 'file') : undefined)
+  const icon = RAIL_ICONS[r.id] ?? r.icon ?? RAIL_ICON_RULES.find(([re]) => re.test(r.id))?.[1] ?? (r.section ? undefined : group ? 'folder' : pages ? (leaf ?? 'file') : undefined)
   return { ...r, ...(icon ? { icon } : null), ...(r.children ? { children: withIcons(r.children, { pages, leaf }) } : null) }
 })
 
@@ -239,7 +261,7 @@ function SpaceRail({ space, onNavigate, railMode }) {
     return (
       <div className="shell-rail-stack">
         {/* a control has no place on an icon rail — it returns when the rail opens */}
-        {anyComponentsAdmitted() && railMode !== 'icons' && (
+        {anyComponentsAdmitted() && railMode !== 'icons' && railMode !== 'full' && (
           <div>
             {/* the category opens its page (2026-09-30) */}
             <Link to="/components/group-by" className="shell-sidebar-label kol-doc-eyebrow block">Group by</Link>
@@ -251,9 +273,9 @@ function SpaceRail({ space, onNavigate, railMode }) {
             />
           </div>
         )}
-        <ShellSidebar routes={withIcons(rowsOf(START), { pages: true })} basePath="/" label="Start" labelTo={START_ROOT} onNavigate={onNavigate} />
-        {/* LOOKUP leads the rail (2026-10-01): the names and values you check while building */}
-        <ShellSidebar routes={withIcons(rowsOf(LOOKUP), { pages: true })} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
+        {/* LOOKUP leads the rail (2026-10-01): the names and values you check while building — one
+          * section of three groups since 2026-10-02 (Start · Foundations · Taxonomy) */}
+        <ShellSidebar routes={withIcons(LOOKUP_GROUPS.map((g) => ({ id: g.id, label: g.label, path: g.path, children: rowsOf(g.items) })), { pages: true })} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
         {/* NO "LIBRARY" LEVEL (2026-10-01 — user: "why does library as a home have to list it self
           * as the parent? … it should just show group-by, composition and Collection as top level
           * (uppercase)"). The space is the header tab; its two chapters are the rail's eyebrows. */}

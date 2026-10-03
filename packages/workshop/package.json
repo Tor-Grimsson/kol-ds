@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-workshop",
-  "version": "0.37.0",
+  "version": "0.38.0",
   "private": false,
   "description": "Docs viewer, shell and tag system",
   "license": "MIT",
@@ -20,7 +20,7 @@
   "peerDependencies": {
     "@kolkrabbi/kol-component": ">=0.237.0",
     "@kolkrabbi/kol-framework": ">=0.45.0",
-    "@kolkrabbi/kol-theme": ">=0.163.0",
+    "@kolkrabbi/kol-theme": ">=0.165.0",
     "@kolkrabbi/kol-icons": ">=0.18.0",
     "gsap": "^3.13.0",
     "react": "^18.3.0 || ^19.0.0",

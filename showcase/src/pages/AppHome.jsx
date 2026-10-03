@@ -30,7 +30,7 @@ export default function AppHome() {
       <DocHeader eyebrow={`Apps tier · ${layer?.label ?? ''}`} title={app.name} lede={app.what} />
       {app.port && (
         <p className="mt-6 kol-doc-body">
-          <a href={`/apps/${app.name}/`} className="kol-link underline">Open {app.name}</a>
+          <a href={`/apps/${app.name}/`} target="_blank" rel="noreferrer" className="kol-link underline">Open {app.name}</a>
         </p>
       )}
       <Table

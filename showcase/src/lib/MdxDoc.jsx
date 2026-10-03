@@ -1,7 +1,7 @@
 import { MDXProvider } from '@mdx-js/react'
 import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { mdxComponents } from './mdx-components.jsx'
-import { buildProvenance, Pager } from './component-page-parts.jsx'
+import { buildProvenance, Pager, Nested } from './component-page-parts.jsx'
 import { CATEGORY_LABELS } from '../nav/registry.js'
 import { useFrontmatter } from './frontmatter.jsx'
 
@@ -86,6 +86,7 @@ export default function MdxDoc({ module: mod, component }) {
       <MDXProvider components={mdxComponents}>
         <Body />
       </MDXProvider>
+      {component && <Nested component={component} Heading={mdxComponents.h2} />}
     </DocArticle>
   )
 }

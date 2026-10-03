@@ -140,6 +140,7 @@ export const mdxComponents = {
     const cls = 'text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current'
     return href?.startsWith('/')
       ? <Link to={href} className={cls} {...p}>{children}</Link>
-      : <a href={href} className={cls} {...p}>{children}</a>
+      /* a link that leaves the site opens a new tab (user 2026-10-02); an in-page `#` stays */
+      : <a href={href} className={cls} {...(/^https?:/.test(href ?? '') ? { target: '_blank', rel: 'noreferrer' } : null)} {...p}>{children}</a>
   },
 }

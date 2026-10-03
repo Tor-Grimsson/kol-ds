@@ -82,6 +82,10 @@
   letter-spacing: 0.04em;
   color: var(--kol-fg-default);
   max-width: var(--kol-content-measure);
+  /* a run with no space in it — `A`/`B`/`C` code chips, a long path — breaks instead of pushing
+   * the page sideways (the phone pass, 2026-10-02: 83 pages scrolled on x). A last resort only:
+   * a line that fits is left alone. */
+  overflow-wrap: anywhere;
 }
 
 /* ── Content furniture — twinned with prose (one rule, two entry points) ── */

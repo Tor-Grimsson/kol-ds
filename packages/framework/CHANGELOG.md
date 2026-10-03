@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.49.0 — 2026-10-02
+
+- **BREAKING (a default flips): the chrome inset is 20 on a phone.** `--kol-pad-chrome-x` was `24` at every width; below 768 it is the page ladder's `20` now, so the shell's header, its frame and a page stand on one edge (user ruling 2026-10-02 — a phone page sat 4px off the ladder). `24` from 768, as before. A consumer measuring against 24 at phone width moves by 4px.
+
 ## 0.48.0 — 2026-09-30
 
 **The workshop rails' grab tokens** (the reuse pass — UI built fresh last night swapped for what the DS already ships).

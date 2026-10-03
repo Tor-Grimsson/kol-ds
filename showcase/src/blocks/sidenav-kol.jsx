@@ -4,7 +4,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 export const meta = {
   title: 'KOL sidenav',
   description: 'The app sidenav with a page tree',
-  category: 'sidenav',
+  category: 'navigation',
   featured: true,
   type: 'reference',
   status: 'active',

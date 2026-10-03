@@ -4,7 +4,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 export const meta = {
   title: 'Workshop sidenav',
   description: 'A sidenav with collapsible sections',
-  category: 'sidenav',
+  category: 'navigation',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',

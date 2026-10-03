@@ -168,6 +168,38 @@
   min-width: 0;
 }
 
+/* THE WHOLE-TREE SHEET (`T`, 2026-10-02) — every space's rail side by side, every fold open. One
+ * column per space, each scrolling its own overflow; on a phone the columns stack and the sheet
+ * scrolls as one. Sized to the window less the overlay's own margin. */
+.shell-tree {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(14rem, 18rem);
+  gap: var(--kol-spacing-6);
+  max-width: calc(100vw - 2 * var(--kol-pad-section-x));
+  max-height: calc(100dvh - 2 * var(--kol-spacing-12));
+  padding: var(--kol-spacing-6);
+  border: 1px solid var(--kol-oq-08);
+  border-radius: var(--kol-radius-sm);
+  overflow-x: auto;
+}
+.shell-tree-space {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kol-spacing-4);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+@media (max-width: 767px) {
+  .shell-tree {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    overflow-y: auto;
+  }
+  .shell-tree-space { overflow-y: visible; }
+}
+
 /* A `.kol-page` INSIDE THE SHELL YIELDS ITS X (kol-website, 2026-10-02). "Pages do not pad
  * themselves on x" was written above on 2026-09-28 and kol-framework's `PageSection` never heard
  * it: `.kol-page` pads `--kol-pad-section-x` again, so a section sat 48 + 48 = 96px off the rail

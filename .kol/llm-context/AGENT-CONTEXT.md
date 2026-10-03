@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-02 evening, the phone pass — published)
+
+- **Published 2026-10-02 (third wave):** theme 0.165.0 · framework 0.49.0 · component 0.239.0 · workshop 0.38.0 · shell 0.61.0 (and theme 0.164.1 · markdown 0.1.3 before it). Push is the user's. The mobile plan was opened and built from his answers: chrome inset 20 on a phone, a rail title opens its page and expands nothing (`validate:rail-pages` P5), Lookup as Start · Foundations · Taxonomy, modules' Navigation group, `T` for the whole tree, nested components on every component page, `Button variant="tab"` + `TabChips` on the size ramp, `NavRail fade`. What is left of the phone pass: `plan-2026-10-02-mobile-pass.md` § D. Lobby: two kol-website tickets closed, `section-split-frame-ratio-holds-at-desktop` addressed and waiting on kol-website. Log: `session-log/2026-10-02-phone-pass-and-website-tickets.md`.
+
 ## Current state (2026-10-02, monitor rehearsed — published)
 
 - **Published 2026-10-02 (second wave):** theme 0.164.0 · component 0.238.0 · hardware 0.4.1. Push is the user's (kol-ds-ui and dotfiles). `apps/rack` is kol-monitor's rack page alone and `apps/rack-hub` (5196) is its shell and pages around it — monitor's files, copied, on this repo's packages; 56 of 60 modules and every desktop tab pixel-identical to the live site. The edits monitor needs when it bumps, and what the bump visibly changes: `backlog/2026-10-02-monitor-bump-notes.md`. Parked: the phone pass (`plan-2026-10-02-mobile-pass.md`, new gate `pnpm validate:phone`). Open: mixer and panels (`backlog/2026-10-02-rack-and-mixer-apps-fail.md` — mixer starts from kol-mirror, on his word only). He works kol-monitor on the MBP himself. Log: `session-log/2026-10-02-monitor-rehearsal-rack-and-rack-hub.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-09-30, library taxonomy)
 
 - **Built, not published (no package changed).** Header tabs are the parents: Styles · Composition (Components · Blocks · Apps) · Collection (Sets · Packages) · Docs · Search · Development. Homes + diagrams at `/library` · `/composition` · `/collection`; Search has a home. Cards is a set; a single-package family is its package page (`/sets/family/*` → `/packages/*`). Words: `05-names.md` § The tree. Plan: `plan-2026-09-30-library-taxonomy.md` (built). Log: `session-log/2026-09-30-library-taxonomy.md`. Next: the user's eye, then `.md` + `uses` beside blocks/apps, Styles › Ladders.
-
-## Current state (2026-09-30, OptionRow + media browser items)
-
-- **Published:** component 0.232.0 · 0.233.0, theme 0.160.0 (push is the user's). `OptionRow` is the one list row on the control ramp (palette, columns, FieldRow; the rows view shares its exports); `kol-item-name` is the one name style across columns/rows/grid; media filter bar filters the whole bucket, a typed query gives flat results, ⌘Enter from the palette lands there. **Under evaluation:** the white selected row vs the grid's pill form. **Publish only after the user's yes.** Next: the taxonomy talk (ladder, spaces order, block/app `.md` frontmatter). Log: `session-log/2026-09-30-option-row-and-media-browser-items.md`.
 
 ## Repo standup (2026-06-15)
 

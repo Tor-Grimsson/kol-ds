@@ -108,6 +108,23 @@
   z-index: var(--kol-z-sticky);
 }
 
+/* THE RAIL'S LIST FADES OUT AT ITS FOOT (user 2026-10-02: *"add the gradient fade you put on
+ * workshop rails on the other rail in shell, and make it a prop so can opt out"*). The same mask
+ * `.shell-rail` wears (kol-components-workshop.css, 2026-10-01): the last 3rem run to nothing, and
+ * the list pads by as much so its last row scrolls clear of it. On the LIST, not the rail — the
+ * mark above and the pinned rows below stay whole. `NavRail fade={false}` drops the class. */
+.kol-shell-rail-list {
+  scrollbar-width: none;
+}
+.kol-shell-rail-list::-webkit-scrollbar {
+  display: none;
+}
+.kol-shell-rail-list--fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  padding-bottom: 3rem;
+}
+
 /* The 2026-08-12 active-state ruling, carried natively so consumers delete
  * their overrides: ink full-strength in EVERY state (the nav variant's oq-64
  * rest is site-nav quiet, wrong on an icon rail — the rail also sets oq-96

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CodeBlock } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -8,6 +8,50 @@ import { getComponentBySlug, COMPONENTS_AZ, slugify } from '../nav/registry.js'
 import SOURCES from '../usage/component-sources.json'
 import ORIGINS from '../usage/component-origins.json'
 import STYLING from '../usage/styling.json'
+import COMPOSITION from '../usage/composition-index.json'
+
+/* WHAT A COMPONENT IS BUILT FROM, AND WHAT IS BUILT FROM IT (user 2026-10-02: *"components dont
+ * list their dependencies and nested components? they should be interconnected no?"*). Game
+ * Picker renders `Dropdown` and its page never said so: `composes` came from docs-meta.json, which
+ * covers kol-component only. The composition index reads every package's source, so both
+ * directions come from it — one derivation, read both ways. Only names with a page are kept. */
+const stemOf = (file) => file.split('/').pop().replace(/\.\w+$/, '')
+const USES = {}
+const USED_BY = {}
+for (const [file, list] of Object.entries(COMPOSITION)) {
+  if (!/(^|\/)packages\/[^/]+\/src\//.test(file)) continue
+  const from = stemOf(file)
+  for (const { target } of list) {
+    if (target === from) continue
+    ;(USES[from] ||= new Set()).add(target)
+    ;(USED_BY[target] ||= new Set()).add(from)
+  }
+}
+const pagesOf = (names) => [...(names ?? [])]
+  .map((n) => getComponentBySlug(slugify(n)))
+  .filter(Boolean)
+  .sort((a, b) => a.displayName.localeCompare(b.displayName))
+
+/** The two lists on a component page — what it renders, and what renders it — each a link. */
+export function Nested({ component, Heading }) {
+  const rows = [
+    ['Nested components', pagesOf(USES[component.name])],
+    ['Used by', pagesOf(USED_BY[component.name])],
+  ].filter(([, list]) => list.length)
+  /* flat siblings, like every other section of the page — the heading carries the section air */
+  return rows.map(([title, list]) => (
+    <Fragment key={title}>
+      <Heading>{title}</Heading>
+      <ul className="flex flex-wrap gap-x-4 gap-y-2">
+        {list.map((c) => (
+          <li key={c.slug} className="kol-doc-body">
+            <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={`/components/${c.slug}`}>{c.displayName}</Link>
+          </li>
+        ))}
+      </ul>
+    </Fragment>
+  ))
+}
 
 /**
  * The furniture a component doc carries regardless of how its body is authored.
@@ -108,7 +152,9 @@ export function buildProvenance(component) {
   const classes = [...(styling?.classes ?? []), ...(styling?.dynamic ?? [])]
   if (classes.length) out.classes = classes.map((c) => `.${c}`)
   if (styling?.tokens?.length) out.tokens = styling.tokens
-  if (meta?.composes?.length) out.composes = meta.composes
+  /* docs-meta covers kol-component only; the composition index covers every package */
+  const composes = [...new Set([...(meta?.composes ?? []), ...pagesOf(USES[name]).map((c) => c.name)])]
+  if (composes.length) out.composes = composes
   /* the OTHER direction of set membership — ContentFilters is in two sets and
    * its page never said so (user ruling 2026-08-01) */
   const sets = name ? setsOf(name) : []

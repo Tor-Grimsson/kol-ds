@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-component
 
+## 0.239.0 — 2026-10-02
+
+- **Fixed: `SectionSplit`'s frame keeps its `ratio` beside the text** (section-split-frame-ratio-holds-at-desktop, kol-website). From 901px the frame carried the column's width AND the rung's height, so `aspect-ratio` had nothing to decide — a `5/4` frame rendered 2.22 at 1600 and cropped its image. The width is `auto` again there: the rung sets the height, the ratio the width, the column caps it (the 2026-08-27 rule on the prop). **Visible:** a bounded frame beside text can stand narrower than its column — take a taller rung for bigger media. Below 901px unchanged.
+- **New: `Button variant="tab"`** — the tab chip as a Button state: quiet text at rest, a soft filled chip while `pressed`. Needs kol-theme ≥0.165.0.
+- **Changed: `TabChips` is on the control size ramp.** Each chip is a `Button variant="tab"`; new `size` prop (default `sm`, 26px — it was a bare 24px button beside 26px controls). Needs kol-theme ≥0.165.0: on an older theme the chips paint as plain buttons.
+
 ## 0.238.0 — 2026-10-02
 
 - **Fixed: `Dropdown` — the open list takes the zoom of its trigger.** The list is portalled, so inside a zoomed surface (kol-monitor's rack at 80%) it kept its full-size type in a panel pinned to the trigger's shrunken width, and the names were cut off. It now measures the trigger's drawn-over-laid-out width and zooms the list to match.

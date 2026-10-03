@@ -12,7 +12,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'accent'|'danger'|'nav'} props.variant - The intent; the GROUND is `tone`. `primary · secondary · outline · ghost · grey · control` are deprecated aliases of tones (2026-10-01, on the retirement ledger): pass `tone` — `secondary` is `tone="inverted"`, `control` is `tone="ghost"`, the rest keep their name. Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'accent'|'danger'|'nav'|'tab'} props.variant - The intent; the GROUND is `tone`. `tab` is the tab chip (2026-10-02): quiet text at rest, a soft filled chip while `pressed`. `primary · secondary · outline · ghost · grey · control` are deprecated aliases of tones (2026-10-01, on the retirement ledger): pass `tone` — `secondary` is `tone="inverted"`, `control` is `tone="ghost"`, the rest keep their name. Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Button size (default: 'md'); xs is the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 22px shell (20 icon-only), opt-in by prop
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
@@ -93,7 +93,7 @@ const Button = ({
     warned.add(variant)
     console.warn(`Button: variant="${variant}" is deprecated — use tone="${VARIANT_TONE[variant]}"`)
   }
-  const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'danger', 'grey']
+  const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'tab', 'danger', 'grey']
   const known = !resolvedVariant || KNOWN.includes(resolvedVariant)
   if (!known && import.meta.env.DEV) console.warn(`Button: unknown variant "${resolvedVariant}" — rendering the inherited tone (primary)`)
   const variantClass = resolvedVariant && known ? `kol-btn-${resolvedVariant}` : ''

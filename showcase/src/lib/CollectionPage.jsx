@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { DocHeader, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import BlockViewer from './BlockViewer.jsx'
+import { DocArticle } from './MdxDoc.jsx'
 import PreviewStage from './PreviewStage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { PREVIEWS } from './previews-registry.js'
@@ -122,33 +123,42 @@ export default function CollectionPage({ slug, items, getItem, labels, eyebrow, 
   const prev = items[i - 1]
   const next = items[i + 1]
 
+  /* THE COMPONENT PAGE'S FRAME (user 2026-10-02: *"spacing on modules is wrong, does it not follow
+   * components pages spacing and gaps?"*). These parts were loose siblings with no gap of their own:
+   * the description sat 5px over the preview and the next heading 0px under it, on all 41 module
+   * and card pages. `DocArticle` is the frame every component page renders in — gap-10 between the
+   * page's parts, gap-6 inside the body — so the three page kinds share one rhythm. */
   return (
-    <>
-      {/* THE frontmatter panel — the same component the vault reader and every
-        * MDX page use. Sets and blocks are JSX modules, not markdown, so their
-        * contract lives in the module's `meta` export; converged 2026-07-30 so
-        * one panel serves all three surfaces instead of one surface showing
-        * nothing. `title`/`description` are already the header, so they're
-        * dropped here rather than printed twice. */}
-      <DocsFrontmatter metadata={omit(entry.meta, ['title', 'description'])} />
-      <DocHeader
-        eyebrow={`${eyebrow} · ${labels[entry.category] ?? entry.category}`}
-        title={entry.title}
-        lede={entry.description}
-      />
+    <DocArticle
+      /* THE frontmatter panel — the same component the vault reader and every
+       * MDX page use. Sets and blocks are JSX modules, not markdown, so their
+       * contract lives in the module's `meta` export; converged 2026-07-30 so
+       * one panel serves all three surfaces instead of one surface showing
+       * nothing. `title`/`description` are already the header, so they're
+       * dropped here rather than printed twice. */
+      frontmatter={<DocsFrontmatter metadata={omit(entry.meta, ['title', 'description'])} />}
+      header={(
+        <DocHeader
+          eyebrow={`${eyebrow} · ${labels[entry.category] ?? entry.category}`}
+          title={entry.title}
+          lede={entry.description}
+        />
+      )}
+      pager={(
+        <div className="flex items-center justify-between border-t border-fg-08 pt-6">
+          {prev ? (
+            <Link to={`${basePath}/${prev.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">← {prev.title}</Link>
+          ) : <span />}
+          {next ? (
+            <Link to={`${basePath}/${next.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">{next.title} →</Link>
+          ) : <span />}
+        </div>
+      )}
+    >
       <BlockViewer entry={entry} previewBase={previewBase} srcDir={srcDir} />
       {/* slot: a SET lists its member components here (set-membership.js) */}
       {afterPreview}
       <Composition composition={entry.composition} />
-      {/* mt-10: the rule sat flush under the composition table on all 38 module pages (gap scan, 2026-10-01) */}
-      <div className="mt-10 flex items-center justify-between border-t border-fg-08 pt-6">
-        {prev ? (
-          <Link to={`${basePath}/${prev.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">← {prev.title}</Link>
-        ) : <span />}
-        {next ? (
-          <Link to={`${basePath}/${next.key}`} className="kol-mono-12 text-meta hover:text-emphasis transition-colors">{next.title} →</Link>
-        ) : <span />}
-      </div>
-    </>
+    </DocArticle>
   )
 }

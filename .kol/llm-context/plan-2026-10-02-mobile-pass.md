@@ -1,6 +1,6 @@
-# Plan — mobile pass and the points logged with it (PARKED)
+# Plan — mobile pass and the points logged with it (OPEN)
 
-**Status:** parked 2026-10-02 on the user's word ("park it for later so we can do actual work"). Nothing below is built. Do not start any of it without his go.
+**Status:** opened 2026-10-02 evening on the user's word, after being parked that morning. His answers are in § C; build from there.
 
 **Evidence, all in `_tmp/2026-10-02-mobile-pass/`:**
 - `findings.md` — every measured defect, by pattern, with its pages
@@ -29,7 +29,32 @@
 7. **Button tone + states that match the tab toggle; tab toggle on the control size ramp** (22 · 26 · 32 · 40). Read Button's existing tones first and reuse one before adding. **Waits: go.**
 8. **No question, queued:** glyphs on the drawer's Spaces rows · distinct rail glyphs instead of file / folder everywhere (`RAIL_ICONS`, `showcase/src/lib/ShellChrome.jsx`) · external links (the app links named) open in a new tab.
 
-9. **The line under an open dropdown's trigger** (2026-10-02, after it was made to draw for every tone): "im not loving the divider, but I cant with it right now." Open — his call whether it stays, goes for every tone, or changes. `Dropdown.jsx` (`.kol-dd-div`).
+## C. His answers — 2026-10-02 evening (the plan is open; build these)
+
+- **A4 inset:** both 20 on a phone — the chrome inset steps to the ladder's 20 below 768. **Built** (`kol-framework.css`), not published.
+- **B3 Game Picker:** it does use `Dropdown`; his point was that the component page does not list it. Ruled wider: every component page lists what it uses and what uses it (`composition-index.json` has the data; only `ReferenceNode` shows it).
+- **B4:** yes — one Lookup section, groups Start (2) · **Foundations** (5: Opacity, Sizes, Color, Typography, Tones — not "Styles", the header tab keeps that name) · Taxonomy (3: Names, Tiers, Placement).
+- **B5:** yes — Navigation = Sidenav · Shell chrome · Footers.
+- **B6:** yes — `T` opens every space's full tree as an overlay, like the search modal.
+- **B1 · B2 · B7 · B8:** no question; build.
+- The line under an open dropdown's trigger is **not part of this plan** (his word); removed from it.
+
+## D. Built — 2026-10-02 evening (nothing published; he looks first)
+
+- **Inset 20 on a phone** — `--kol-pad-chrome-x` steps to 20 below 768 (`kol-framework.css`).
+- **B1 title click** — a group's own home leaves its fold as it was (`ShellSidebar.jsx` `chainTo`, own home checked before the children: a vault chapter's home is also its `About` row). Gate: `validate:rail-pages` P5, 40 title clicks.
+- **B2 Misc** — a re-export is a roster row under its owner only (`nav/roster.js`); `validate:roster` checks the named owner exports it.
+- **B3 nested components** — every component page lists Nested components and Used by, linked, from `composition-index.json` (`component-page-parts.jsx` `Nested`); the frontmatter's `composes` reads the same source.
+- **B4 Lookup** — one section, groups Start · Foundations · Taxonomy, each with a page (`/library/lookup/foundations`, `/library/lookup/taxonomy`) and a home.
+- **B5 Navigation** — module categories sidenav · chrome · footer are one, `navigation`; the three old homes are in `_tmp/2026-10-02-module-category-homes/`.
+- **B6 `T`** — the whole tree of every space as an overlay (`ShellLayout.jsx`, rail mode `full`, `.shell-tree`).
+- **B7** — `Button variant="tab"` (a bundle like `nav`, not an eighth tone) and `TabChips` drawn from it, `size` on the control ramp (default `sm`, 26).
+- **B8** — the drawer's Spaces rows keep their glyphs; every rail group has its own glyph (`RAIL_ICONS`, `RAIL_ICON_RULES`); external links in markdown, MDX and the app page open a new tab.
+- **A1 landing** — the hero is a minimum height on a phone and drops its doubled inset.
+- **A2** — module, card and set pages render in `DocArticle`, the component page's frame.
+- **A3** — `.kol-doc-body` wraps an unbroken run; `/cards` caption truncates.
+
+**Left, measured after the build (`validate:phone` over the 26 worst pages):** the open menu on `/components/menu-item` and `/components/menu-dropdown-item` (201px); `/sets/preview/prints-store` (94px, and 24 inset — a preview route outside the shell); `/documentation/01-tokens` (3px); the 3–7px ones in § A6 (diagram labels, swatch captions, placeholders, `/modules/article-grid` row). A5 (the preview bar's dropdowns cut off) not looked at.
 
 ## Not in this plan
 

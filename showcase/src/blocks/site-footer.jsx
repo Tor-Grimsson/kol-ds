@@ -3,7 +3,7 @@ import { PortalFooter } from '@kolkrabbi/kol-framework'
 export const meta = {
   title: 'Site footer',
   description: 'A footer with link columns',
-  category: 'footer',
+  category: 'navigation',
   type: 'reference',
   status: 'active',
   updated: '2026-07-30',

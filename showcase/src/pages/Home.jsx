@@ -384,7 +384,10 @@ export default function Home() {
       <SectionHero
         /* 60, not 80 (2026-09-30, the names audit: *"we could see this above the fold"*) — the
          * live wall now starts on the first screen */
-        height="60"
+        /* A MINIMUM ON A PHONE (2026-10-02, the phone pass): `60` is a fixed 50svh there, and five
+         * buttons plus the install line stand taller than that — the hero clipped them and the wall
+         * sat on the Source button. The same rung from md, where the content fits. */
+        height="min-h-[50svh] md:h-[60vh]"
         background="primary"
         panelMaxWidth="max-w-none"
         eyebrow={<Pill variant="subtle">{`Source-available · v${componentPkg.version}`}</Pill>}
@@ -420,7 +423,9 @@ export default function Home() {
             <span className="text-subtle">$</span> npm i @kolkrabbi/kol-component
           </p>
         </>}
-        className="text-center"
+        /* the hero's own 24px inset stacks on the page's on a phone (text sat 44px in, where every
+         * other page stands on 20) — the page's inset alone there */
+        className="text-center max-md:[&>div]:px-0"
       />
 
       {/* ── Bento wall — full-bleed: capped live content, skeleton edges (shadcn model) ── */}

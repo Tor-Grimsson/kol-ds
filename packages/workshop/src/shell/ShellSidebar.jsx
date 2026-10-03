@@ -30,7 +30,8 @@ export const RAIL_FOLD_EVENT = 'kol-rail-fold'
  * we dont use it, I want to see it"*). Beside visible and hidden: `icons` — the rail is a narrow
  * strip, one glyph per group, and opens on hover. The column that holds the rail (`ShellNavColumn`)
  * provides the state; every ShellSidebar inside it reads it, so a consumer's rail takes the state
- * without passing a prop. Outside a provider a rail is `open`, as it always was. */
+ * without passing a prop. Outside a provider a rail is `open`, as it always was. A third value,
+ * `full`, is the whole-tree sheet's: an open rail with every fold open. */
 export const ShellRailModeContext = createContext('open')
 
 const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
@@ -48,8 +49,8 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
 
   /* THE RAIL FOLLOWS YOU — INTO A CHILD ONLY (2026-09-30, reversing the 2026-09-28 "open the
    * group you are in" on its landing page too). Landing on a page INSIDE a chapter opens that
-   * chapter and folds the rest; a chapter's own home keeps that chapter open (2026-10-01, see
-   * `chainTo`). Every other chapter starts
+   * chapter and folds the rest; a chapter's own home leaves that chapter's fold alone (2026-10-02,
+   * see `chainTo`). Every other chapter starts
    * folded — including ones this rail has never seen (a Group-by switch hands it new ids, and an
    * unknown id used to read as open, so every chapter sprang open).
    *
@@ -72,28 +73,32 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
       /* deepest first: `/sets` holds `/sets/app-shell` by prefix, but the set's own row is the place */
       const deeper = chainTo(r.children, [...trail, r])
       if (deeper) return deeper
-      if (r.children.some(isHere)) return [...trail, r]
-      /* A GROUP'S OWN HOME KEEPS IT OPEN (user 2026-10-01: *"I dont want to collapse the list
-       * like that when I just want to go to atoms home and still see the atoms list"* — reverses
-       * the 2026-09-30 "a chapter's own home opens nothing"). The label is a link; only the
-       * chevron folds. */
-      if (r.path && getChildPath(r, basePath).replace(/\/$/, '') === normalizedPath) return [...trail, r]
+      /* A GROUP'S OWN HOME LEAVES ITS FOLD AS IT WAS (user 2026-10-02, said many times: *"just
+       * clicking a title opens the home, if I want to expand then I fucking click the expand
+       * chevron"*). The 2026-10-01 reading opened the group on its own home, so a title click
+       * expanded its children; the 2026-09-30 one folded it. Neither: the way down to it opens,
+       * the group itself stays as the chevron left it — open stays open, folded stays folded.
+       * Checked BEFORE the children: a vault chapter's home is also its `About` row, and reading
+       * that as "a child is here" opened every Docs chapter on a title click.
+       * `validate:rail-pages` P5 holds it. */
+      if (r.path && getChildPath(r, basePath).replace(/\/$/, '') === normalizedPath) return { open: trail, keep: r.id }
+      if (r.children.some(isHere)) return { open: [...trail, r] }
     }
     return null
   }
-  const followed = () => {
-    const chain = chainTo(routes)
-    if (!chain) return null
-    const open = new Set(chain.map((g) => g.id))
-    return Object.fromEntries(groupsOf(routes).map((g) => [g.id, !open.has(g.id)]))
+  const followed = (prev = {}) => {
+    const at = chainTo(routes)
+    if (!at) return null
+    const open = new Set(at.open.map((g) => g.id))
+    return Object.fromEntries(groupsOf(routes).map((g) => [g.id, g.id === at.keep ? (prev[g.id] ?? true) : !open.has(g.id)]))
   }
   const [collapsedSections, setCollapsedSections] = useState(() => followed() ?? {})
   useEffect(() => {
-    const next = followed()
-    if (next) setCollapsedSections(next)
+    setCollapsedSections((prev) => followed(prev) ?? prev)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [normalizedPath, routes, basePath])
-  const isFolded = (route) => collapsedSections[route.id] ?? true
+  /* `full` — the whole-tree sheet (`T`, 2026-10-02): every fold open, nothing to follow */
+  const isFolded = (route) => (mode === 'full' ? false : collapsedSections[route.id] ?? true)
 
   /* FOLD ALL (2026-09-30, the names audit: *"shortcut collapse/expand the categories"*). The
    * shell's `C` key broadcasts one target state; every rail's chapters take it. */
@@ -210,7 +215,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
           label={label}
           to={labelTo}
           count={leafCount}
-          collapsed={navCollapsed}
+          collapsed={mode === 'full' ? false : navCollapsed}
           onToggle={handleToggle}
           onNavigate={onNavigate}
           icon={Icon}

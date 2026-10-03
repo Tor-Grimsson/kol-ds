@@ -63,7 +63,8 @@ export const renderInlineTokens = (
           return token.text
         }
         return (
-          <a key={tokenKey} href={token.url} className={linkCls}>
+          /* a link that leaves the site opens a new tab (2026-10-02); a relative or `#` link stays */
+          <a key={tokenKey} href={token.url} className={linkCls} {...(/^https?:/.test(token.url) ? { target: '_blank', rel: 'noreferrer' } : null)}>
             {token.text}
           </a>
         )

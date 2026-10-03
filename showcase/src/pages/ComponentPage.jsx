@@ -13,7 +13,7 @@ import API_GEN from '../usage/api-tables.json'
 
 /* the generated page's headings are the authored page's headings — same class, same anchor rule */
 const H2 = mdxComponents.h2
-import { buildProvenance, Pager, CodeLine, InstallBlock } from '../lib/component-page-parts.jsx'
+import { buildProvenance, Pager, CodeLine, InstallBlock, Nested } from '../lib/component-page-parts.jsx'
 
 /* MDX seam (2026-07-30): a component with `src/docs/components/<Name>.mdx`
  * renders that document — the shadcn model, where a component page IS a
@@ -118,6 +118,7 @@ export default function ComponentPage() {
             <Api name={c.name} />
           </>
         )}
+        <Nested component={c} Heading={H2} />
       </DocArticle>
     </>
   )

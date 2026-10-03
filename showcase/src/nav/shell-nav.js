@@ -86,16 +86,16 @@ const libraryAdmitted = () => Object.values(LIBRARY_CHILDREN).flat().some((c) =>
 const lookupDoc = (file) => VAULT.find((d) => d.file.endsWith(file))
 export const LOOKUP_ROOT = '/library/lookup'
 export const LOOKUP = [
-  { label: 'Names', file: '00-overview/05-names.md', description: 'What every level and kind is called, the site tree, and the plan shape.' },
-  { label: 'Opacity', file: '01-foundations/10-opacity-lookup.md', description: 'Every ink ladder, role and stop.' },
-  { label: 'Sizes', file: '01-foundations/09-size-lookup.md', description: 'One height per size, every family.' },
-  { label: 'Color', file: '01-foundations/11-color-lookup.md', description: 'Every color value, looked up.' },
-  { label: 'Typography', file: '01-foundations/12-typography-lookup.md', description: 'Every type class, with its real values.' },
-  { label: 'Tones', file: '01-foundations/13-tone-lookup.md', description: 'The seven control tones, ordered by depth.' },
-  { label: 'Tiers', file: '03-components/00-taxonomy.md', description: 'Atom, molecule, organism, utility — what each is.' },
-  { label: 'Placement', file: '03-components/02-placement.md', description: 'The runbook for placing a new component.' },
+  { label: 'Names', icon: 'bookmark', file: '00-overview/05-names.md', description: 'What every level and kind is called, the site tree, and the plan shape.' },
+  { label: 'Opacity', icon: 'opacity', file: '01-foundations/10-opacity-lookup.md', description: 'Every ink ladder, role and stop.' },
+  { label: 'Sizes', icon: 'resize-fixed', file: '01-foundations/09-size-lookup.md', description: 'One height per size, every family.' },
+  { label: 'Color', icon: 'paint-drop', file: '01-foundations/11-color-lookup.md', description: 'Every color value, looked up.' },
+  { label: 'Typography', icon: 'type', file: '01-foundations/12-typography-lookup.md', description: 'Every type class, with its real values.' },
+  { label: 'Tones', icon: 'brightness', file: '01-foundations/13-tone-lookup.md', description: 'The seven control tones, ordered by depth.' },
+  { label: 'Tiers', icon: 'layers', file: '03-components/00-taxonomy.md', description: 'Atom, molecule, organism, utility — what each is.' },
+  { label: 'Placement', icon: 'target', file: '03-components/02-placement.md', description: 'The runbook for placing a new component.' },
 ].map((x) => ({ ...x, doc: lookupDoc(x.file) })).filter((x) => x.doc)
-  .map((x) => ({ id: `lookup-${x.doc.id}`, label: x.label, description: x.description, path: `${LOOKUP_ROOT}/${x.doc.id}` }))
+  .map((x) => ({ id: `lookup-${x.doc.id}`, label: x.label, icon: x.icon, description: x.description, path: `${LOOKUP_ROOT}/${x.doc.id}` }))
 
 /* LIBRARY › START (2026-10-01 — user: "where are the copy copies? … just seems like buried
  * information. Shadcn has introduction page … theres also installation page"). What KOL is, and how
@@ -103,10 +103,22 @@ export const LOOKUP = [
  * pages, rendered here the way Lookup's are. */
 export const START_ROOT = '/library/start'
 export const START = [
-  { label: 'Introduction', file: '00-overview/INDEX.md', description: 'What KOL is, and what it ships.' },
-  { label: 'Installation', file: '00-overview/03-install.md', description: 'The install lines and the consumer contract.' },
+  { label: 'Introduction', icon: 'info', file: '00-overview/INDEX.md', description: 'What KOL is, and what it ships.' },
+  { label: 'Installation', icon: 'download', file: '00-overview/03-install.md', description: 'The install lines and the consumer contract.' },
 ].map((x) => ({ ...x, doc: lookupDoc(x.file) })).filter((x) => x.doc)
-  .map((x) => ({ id: `start-${x.doc.id}`, label: x.label, description: x.description, path: `${START_ROOT}/${x.doc.id}` }))
+  .map((x) => ({ id: `start-${x.doc.id}`, label: x.label, icon: x.icon, description: x.description, path: `${START_ROOT}/${x.doc.id}` }))
+
+/* ONE LOOKUP SECTION, THREE GROUPS (user ruling 2026-10-02 — "start and lookup break the siderail
+ * rule. and all use the same icon"). Start and Lookup were two eyebrows holding loose page rows;
+ * the rail rule is an eyebrow over GROUPS, each with its own page, glyph and count — the way
+ * Composition holds Components and Modules. The middle group is Foundations, not Styles: the
+ * header tab keeps that name. The pages' URLs did not move. */
+const lookupPages = (...labels) => LOOKUP.filter((x) => labels.includes(x.label))
+export const LOOKUP_GROUPS = [
+  { id: 'lookup-start', label: 'Start', path: START_ROOT, description: 'What KOL is and how to install it.', items: START },
+  { id: 'lookup-foundations', label: 'Foundations', path: `${LOOKUP_ROOT}/foundations`, description: 'Opacity, sizes, color, typography and tones — every value, looked up.', items: lookupPages('Opacity', 'Sizes', 'Color', 'Typography', 'Tones') },
+  { id: 'lookup-taxonomy', label: 'Taxonomy', path: `${LOOKUP_ROOT}/taxonomy`, description: 'What each level is called, the tiers, and where a component belongs.', items: lookupPages('Names', 'Tiers', 'Placement') },
+]
 
 /* Styles › Guides — the authored MDX pages (moved from Docs 2026-09-30; the old /docs/<guide>
  * URLs redirect). Not chapter pages of the vault: the 2026-08-01 ruling keeps the Docs tree

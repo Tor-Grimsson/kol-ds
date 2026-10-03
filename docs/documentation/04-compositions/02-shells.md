@@ -3,7 +3,7 @@ title: Reference shells
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-30
+updated: 2026-10-02
 description: The documented app shells, and their uses
 aliases:
   - reference-shells
@@ -355,7 +355,7 @@ All three surfaces now carry the same fields: the vault's 46 markdown docs alrea
 | `MainColumn` content | `mx-auto`, capped at **`--kol-content-canvas`** — the one cap that binds the page body, made once here rather than in every page |
 | `fullHeight` main | deliberately uncapped; it *is* the fill-the-viewport escape hatch (iframe embeds) |
 
-**One inset for both header and frame (2026-07-31, user ruling).** The header carried its own improvised Tailwind steps while the frame carried the page ramp, so the sidebar hung right of the wordmark directly above it. Both now read `--kol-pad-chrome-x` — shell chrome is not page content and gets its own, tighter, flat inset. `--kol-sidenav-w` was corrected to the rail width every grid track already used, so the header's brand block finally lines up with the sidebar column it exists to align to.
+**One inset for both header and frame (2026-07-31, user ruling).** The header carried its own improvised Tailwind steps while the frame carried the page ramp, so the sidebar hung right of the wordmark directly above it. Both now read `--kol-pad-chrome-x` — shell chrome is not page content and gets its own, tighter inset: 24, and 20 on a phone (below 768, user ruling 2026-10-02), where it meets the page ladder so header and page share one edge. `--kol-sidenav-w` was corrected to the rail width every grid track already used, so the header's brand block finally lines up with the sidebar column it exists to align to.
 
 The same disease as `--kol-container-max` resolving short of `--kol-content-shell`: one element, two answers. `validate:width`'s W1 was a file-wide regex, so an uncapped main and a capped frame — opposite defects — both passed it; it now asserts the cap is **inside** `MainColumn`, **is the canvas token**, and is **absent everywhere else** in the file.
 
@@ -418,3 +418,7 @@ Both shells lived side-by-side since the workshop port; the comparison lands on 
 - Selling compositions, not parts → **blocks**.
 - New page in either shell: the shell is imported, never re-authored per page.
 - **Every icon control in the header is `IconFrame variant="nav" size="lg"`** (2026-08-01). Six controls had been running four containers and two glyph sizes — GitHub, search, hamburger and both rail toggles now share one frame and take the glyph from `SOLO`; `ShellHeader`'s private `iconBtnCls` is deleted and the showcase's hand-written GitHub anchor with it. Not `Button`: header chrome takes a click but must never light up, so `IconFrame` gained an interactive path instead. The theme toggle keeps its full-ink no-hover model, which is a 2026-07-30 ruling and not drift. Law + gate: [[../03-components/05-control-chrome\|control chrome]] § Icon box.
+- **A rail title opens its page and expands nothing (2026-10-02, said many times before it held).** Landing on a group's own home leaves its fold as it was — open stays open, folded stays folded — and only the chevron folds. The check for "this is the group's own home" runs BEFORE "one of its children is here": a vault chapter's home is also its `About` row, and the other order expanded every Docs chapter on a title click. `pnpm validate:rail-pages` P5 clicks every visible title and fails on a fold that opens.
+- **`T` is the whole tree (2026-10-02).** `C` folds the current space's rail; `T` opens every space's rail side by side with every fold open, as an overlay over whatever page you are on. Each column is the consumer's own `renderSidebar` for that space in the `full` rail mode, so the sheet cannot list anything the rails do not.
+- **An eyebrow holds groups, never loose rows (2026-10-02).** The Library's Start and Lookup eyebrows held page rows directly, all on the file glyph. Lookup is one section of three groups now — Start · Foundations · Taxonomy — each with its own page, glyph and count, like Composition's. Every rail group names its own glyph (`RAIL_ICONS` in the showcase's `ShellChrome.jsx`); the folder is no longer the default look.
+- **The chrome inset is 20 on a phone (2026-10-02).** `--kol-pad-chrome-x` steps to the page ladder's phone value below 768, so header, frame and page share one edge; 24 from 768.

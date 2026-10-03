@@ -101,9 +101,12 @@ body {
      deliberately tighter: chrome is not page content. The shell header and the
      shell content frame both read this, so they cannot disagree; before it,
      the header carried bare Tailwind steps and the frame carried the page ramp.
-     FLAT, not stepped — one value at every width, on the user's word.
+     ONE STEP (user ruling 2026-10-02, the phone pass): on a phone it is the
+     page ladder's 20, so the header, the frame and a page all stand on one
+     edge — it was 24 at every width, which put a phone page 4px off the
+     ladder. 24 returns at 768, where the 2026-07-31 ruling was made.
      Do NOT reach for this on page containers — that is --kol-pad-section-x. */
-  --kol-pad-chrome-x: var(--kol-spacing-6);
+  --kol-pad-chrome-x: var(--kol-spacing-5);
 
   /* Stepped page / section / band padding tokens.
      Used by chrome (topnav, sidenav) and landing bands. Scaled at 768 / 1024
@@ -117,6 +120,7 @@ body {
 
 @media (min-width: 768px) {
   :root {
+    --kol-pad-chrome-x:  var(--kol-spacing-6);
     --kol-pad-page-x:    32px;
     --kol-pad-page-y:    96px;
     --kol-pad-section-x: 32px;

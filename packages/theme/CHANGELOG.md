@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-theme
 
+## 0.165.0 — 2026-10-02
+
+**The phone pass** (2026-10-02 — the user's review of the showcase at 390px, ruled and built).
+
+- **A floating panel is never wider than the window.** `.kol-popover-float` caps at `100vw − 16px`. A panel sizes to its content and `shift` can only slide it, so one wider than a phone hung off the edge and — parked off-screen with its reference — stretched the page sideways.
+- **An unbroken run wraps in doc body text.** `.kol-doc-body` takes `overflow-wrap: anywhere`: a row of code chips or a long path breaks instead of pushing the page past the screen. A line that fits is unchanged.
+- **New: the `tab` bundle** (`.kol-btn-tab`) — quiet text at rest, ink on hover with no wash, a soft `08` chip in full ink while pressed. A variant like `nav`, not an eighth tone. Read by kol-component 0.239.0's `Button variant="tab"` and `TabChips`.
+- **New: `.shell-tree` · `.shell-tree-space`** — the workshop shell's whole-tree sheet (`T`, kol-workshop 0.38.0).
+- **New: `.kol-shell-rail-list` (+ `--fade`)** — the app rail's list region and its foot fade, the mask `.shell-rail` wears (kol-shell 0.61.0).
+
 ## 0.164.1 — 2026-10-02
 
 - **Fixed: a `PageSection` inside the workshop shell was inset twice on x.** `ShellLayout`'s main pads `--kol-pad-section-x` from the rail (0.155.0) and `.kol-page` padded it again — 96px off the rail at 1440, 44px in at 390; kol-workshop's `ExhibitPage` and `ExhibitOverview` are built from it. `.shell-main .kol-page` now drops its x padding, and its `--kol-container-max` cap and auto margin with it: inside the shell the width is the page's call, made once in `MainColumn`. A `.kol-page` outside the shell is unchanged. A consumer carrying a wrapper for this (kol-website's `[&_.kol-page]:px-0`) can delete it.

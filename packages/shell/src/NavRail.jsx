@@ -70,6 +70,10 @@ import Logomark from './Logomark.jsx'
  * @param {boolean} drawer  off-canvas mode: no grab, no drag, no token writes, rows always
  *   labelled, and the rail sizes itself from `--kol-shell-drawer-width` (default 240px).
  *   AppShell sets this from `touch="drawer"` — see ShellRailNoDrawerOnMobile, 2026-08-31.
+ * @param {boolean} [fade=true]  the list fades out at its foot — the workshop rail's fade
+ *   (2026-10-01), here too on the user's word (2026-10-02). The rows sit in their own scroll
+ *   region between the mark and the pinned bottom rows, so a list longer than the window scrolls
+ *   and runs out under the fade instead of being cut by the edge. `false` draws the list plain.
  */
 const RAIL_W = '--kol-shell-rail-width'
 const CLOSED = 48
@@ -277,6 +281,7 @@ export default function NavRail({
   iconComponent,
   hidden = false,
   drawer = false,
+  fade = true,
 }) {
   const railRef = useRef(null)
   const grabRef = useRef(null)
@@ -340,9 +345,12 @@ export default function NavRail({
         </div>
         </Tooltip>
       )}
-      {items.map(row)}
-      {/* the spacer IS the layout */}
-      <div className="flex-1" />
+      {/* THE LIST IS ITS OWN REGION (2026-10-02): it takes the room between the mark and the pinned
+        * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,
+        * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}
+      <div className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
+        {items.map(row)}
+      </div>
       {/* the rule runs the full rail width, out past the px-2 */}
       {bottomItems.length > 0 && <div className="self-stretch -mx-2 border-t border-fg-08" />}
       {bottomItems.map(row)}

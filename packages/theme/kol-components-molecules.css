@@ -22,6 +22,11 @@
   /* above the ShellDrawer sheet (z 200) — a Dropdown in the settings drawer
    * opened BEHIND it (SettingsPanelApproved, 2026-08-27) */
   z-index: 210;
+  /* NEVER WIDER THAN THE WINDOW (the phone pass, 2026-10-02). A panel sizes to its content
+   * (`w-max`) and `shift` can only slide it, so one wider than a phone hung off the right edge
+   * and — parked off-screen with its reference — still stretched the page 200px sideways. The 8px
+   * each side is `shift`'s own padding. */
+  max-width: calc(100vw - 16px);
 }
 
 /* ── Dropdown — .kol-dd-* ─────────────────────────────────────────────────
@@ -2137,6 +2142,32 @@
   --kol-tone-panel-bg: var(--kol-tone-ground, var(--kol-surface-primary));
   --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
+}
+/* THE TAB BUNDLE (user 2026-10-02: *"can we add a tone and states to button that reflect the new
+ * tabtoggle?"*). A VARIANT like `nav`, not an eighth tone — a tone is a ground, ordered by depth,
+ * and this is a state idiom: quiet text at rest, ink on hover with no wash, and the selected tab a
+ * soft `08` chip in full ink (where every ground's pressed is the inverted fill). `TabChips` is
+ * this variant on the control size ramp. */
+:where(.kol-btn-tab) {
+  --kol-tone-bg: transparent;
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-fg-meta);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: transparent;
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-fg-emphasis);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-04);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-oq-08);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-fg-emphasis);
+}
+/* the selected tab keeps its chip under the pointer — hover is for the tabs you are not on (the
+ * shared hover rule would repaint it with the bundle's transparent hover ground) */
+.kol-btn.kol-btn-tab.kol-btn-pressed:not(.kol-dd-trigger):hover {
+  background-color: var(--kol-tone-pressed-bg);
+  color: var(--kol-tone-pressed-fg);
 }
 :where(.kol-icon-frame-nav) {
   --kol-tone-bg: transparent;

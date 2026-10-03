@@ -5,7 +5,7 @@ import { Button } from '@kolkrabbi/kol-component'
 export const meta = {
   title: 'Shell topbar',
   description: 'The shell header with tabs and search',
-  category: 'chrome',
+  category: 'navigation',
   featured: true,
   type: 'reference',
   status: 'active',

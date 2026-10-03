@@ -19,6 +19,8 @@
  *       not a child's page either
  *   P4  the page's right rail lists something under "On this page" (user, twice: *"it cant happen
  *       something is always on this page"*) — an empty outline fails
+ *   P5  clicking a group's TITLE opens its page and expands nothing (user, many times, 2026-10-02:
+ *       *"just clicking a title opens the home"*) — only the chevron folds and unfolds
  *
  * Components are checked in both Group-by modes. Starts the showcase on its own port, kills it.
  */
@@ -69,6 +71,7 @@ const server = spawn('pnpm', ['--filter', 'showcase', 'exec', 'vite', '--port', 
 const failures = []
 let groups = 0
 let pages = 0
+let titleClicks = 0
 try {
   if (!(await waitFor(`${BASE}/`, 90000))) throw new Error('showcase dev server did not start')
   const browser = await chromium.launch()
@@ -97,6 +100,22 @@ try {
         if (!node.href) { failures.push(`P1  ${key}: no page — the label links nowhere`); continue }
         const clash = node.children.find((c) => c.href === node.href && !ALIAS.has(c.label))
         if (clash) failures.push(`P2  ${key}: opens ${node.href}, which is its child "${clash.label}"'s page`)
+      }
+      /* P5 — a title click opens the home and expands nothing: fold everything, click each visible
+       * group's label, and its fold must still be shut */
+      if (mode !== 'atomic') continue
+      await page.evaluate(() => window.dispatchEvent(new CustomEvent('kol-rail-fold', { detail: { collapsed: true } })))
+      await page.waitForTimeout(150)
+      const head = '.shell-rail--nav .shell-nav-group-header[role="button"]'
+      const titles = await page.evaluate((sel) => [...new Set([...document.querySelectorAll(`${sel}[aria-expanded="false"] a`)].map((a) => a.getAttribute('href')))], head)
+      for (const href of titles) {
+        const link = page.locator(`${head} a[href="${href}"]`).first()
+        if (!(await link.count())) continue
+        await link.click()
+        await page.waitForTimeout(250)
+        const open = await page.evaluate(([sel, h]) => document.querySelector(`${sel} a[href="${h}"]`)?.closest('[role="button"]')?.getAttribute('aria-expanded'), [head, href])
+        titleClicks++
+        if (open === 'true') failures.push(`P5  ${space}: clicking the title ${href} expanded its children`)
       }
     }
   }
@@ -148,4 +167,4 @@ if (failures.length) {
   console.log(`rail-pages: ${failures.length} violation(s)\n\n  ${failures.join('\n  ')}`)
   process.exit(1)
 }
-console.log(`rail-pages: clean (${groups} categories and groups, ${pages} pages, every one its own)`)
+console.log(`rail-pages: clean (${groups} categories and groups, ${pages} pages, every one its own; ${titleClicks} title clicks expanded nothing)`)

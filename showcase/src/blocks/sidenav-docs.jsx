@@ -5,7 +5,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 export const meta = {
   title: 'Documentation sidenav',
   description: 'A docs sidenav with grouped navigation and search',
-  category: 'sidenav',
+  category: 'navigation',
   featured: true,
   type: 'reference',
   status: 'active',

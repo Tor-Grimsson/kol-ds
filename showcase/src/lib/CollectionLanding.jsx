@@ -24,7 +24,9 @@ function ProvenanceBadge({ itemKey, basePath }) {
     m.external?.length ? m.external.join(' · ') : null,
   ].filter(Boolean)
   return (
-    <span className="kol-helper-10 text-subtle whitespace-nowrap">{parts.join(' · ')}</span>
+    /* truncates in a row that has run out of room (the phone pass, 2026-10-02): held on one line
+     * a long dependency list pushed /cards 83px past the screen */
+    <span className="kol-helper-10 text-subtle min-w-0 truncate">{parts.join(' · ')}</span>
   )
 }
 

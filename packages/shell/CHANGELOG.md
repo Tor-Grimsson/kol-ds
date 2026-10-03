@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.61.0 — 2026-10-02
+
+- **New: the rail's list fades out at its foot** — `NavRail fade` (default `true`), `AppShell railFade`. The rows sit in their own scroll region between the mark and the pinned bottom rows, so a list longer than the window scrolls and runs out under the fade instead of being cut by the edge. `fade={false}` draws it plain. Needs kol-theme ≥0.165.0.
+
 ## 0.60.0 — 2026-10-02
 
 - **`TouchDeviceOverlay` `force`** — show the note whatever the pointer and whatever was dismissed (a preview, or a "show it again"); dismissing a forced note stores nothing.

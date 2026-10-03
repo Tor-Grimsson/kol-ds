@@ -47,7 +47,10 @@ import { minHeightClass } from './sectionHeights.js'
  * @param {ReactNode} media        image / video / interactive node for the visual column
  * @param {string}    [ratio='4/5'] aspect ratio of the media frame. THE FRAME IS BOUNDED BY THE
  *   RUNG (SectionSplitMediaBounded, 2026-08-27): its height is the section's `height` rung minus
- *   the vertical padding, its width follows the ratio (capped at the column). Before, the frame
+ *   the vertical padding, its width follows the ratio (capped at the column) — the RUNG is the
+ *   dimension that holds and the WIDTH the one that yields, so a frame can stand narrower than its
+ *   column; take a taller rung for bigger media. Below 901px, stacked, it is the other way round:
+ *   the frame is as wide as the column and its height follows the ratio. Before, the frame
  *   was as wide as its column and set the section's height itself, so `40` · `60` · `80`
  *   rendered identically — a ladder that only floors is decorative for a card with media.
  * @param {boolean}   [mediaHover=false] zoom the media on frame hover (the CardFeatureItem numbers)
@@ -251,7 +254,15 @@ export default function SectionSplit({
              * silently, which is why it was reported as a ProfileCard crop.
              * Below 901 the frame is `w-full` + ratio: width decides, height
              * follows, media never clips. ≥901 nothing moves. */
-            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
+            /* …AND THE WIDTH FOLLOWS AGAIN FROM 901 (section-split-frame-ratio-holds-at-desktop,
+             * kol-website 2026-10-02; user: *"why is this no longer its original ratio? its
+             * squished?"*). `w-full` was written for the stack and applied at every width, so
+             * beside the text the frame had BOTH dimensions fixed — the column's width and the
+             * rung's height — and `aspect-ratio` had nothing left to decide: a `5/4` frame
+             * rendered 2.22 at 1600 and cropped its image. From 901 the width is `auto` again:
+             * the rung sets the height, the ratio sets the width, the column caps it — the
+             * 2026-08-27 rule written on the `ratio` prop. */
+            className={`kol-section-split-visual relative w-full min-[901px]:w-auto max-w-full justify-self-center rounded-[var(--kol-radius-sm)] min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
             style={{ aspectRatio: ratio }}
           >
             {media ?? (placeholder === true

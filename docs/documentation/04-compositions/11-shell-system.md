@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-09-29
+updated: 2026-10-02
 description: The application shell and its page scaffolds
 aliases:
   - shell
@@ -78,6 +78,8 @@ import {
 ```
 
 ## Contracts
+
+**The rail's list fades at its foot (kol-shell 0.61.0, 2026-10-02).** `NavRail`'s rows sit in their own scroll region between the mark and the pinned bottom rows; a list longer than the window scrolls and runs out under a 3rem fade — the workshop rail's mask — instead of being cut by the edge. `fade` (default `true`) on `NavRail`, `railFade` on `AppShell`; `false` draws the list plain.
 
 - **Router-agnostic** — `currentPath` + `onNavigate` props; render the
   router's element as children. No react-router dependency.

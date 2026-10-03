@@ -7,7 +7,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 export const meta = {
   title: 'Shell rail states',
   description: 'The real shell chrome in three rail states',
-  category: 'chrome',
+  category: 'navigation',
   type: 'reference',
   status: 'active',
   updated: '2026-10-02',

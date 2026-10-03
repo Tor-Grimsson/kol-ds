@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-workshop
 
+## 0.38.0 — 2026-10-02
+
+- **Fixed: a rail title opens its page and expands nothing.** Landing on a group's own home leaves its fold as it was — open stays open, folded stays folded; only the chevron folds. It opened the group (2026-10-01), and in a rail whose chapter home is also a row (the vault's `About`) every title click expanded its chapter.
+- **New: `T` opens the whole tree** — every space's rail side by side, every fold open, as an overlay; a row closes it and goes there. Listed on the `S` sheet. New rail mode `full` on `ShellRailModeContext`; `renderSidebar` is called once per space with `mode: 'full'`. Needs kol-theme ≥0.165.0.
+- **Changed: a markdown link that leaves the site opens a new tab.**
+
 ## 0.37.0 — 2026-10-02
 
 - **New:** the left rail's third state, icons only — a strip of one glyph per group that opens on hover. `ShellNavColumn` (the rail's column, exported) and `ShellRailModeContext`; `ShellSidebar` reads the state itself. `ShellLayout` gains an "Icons only" row in Settings › Layout and passes `mode` to `renderSidebar`.

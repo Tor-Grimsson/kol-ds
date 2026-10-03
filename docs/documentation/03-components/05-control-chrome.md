@@ -3,7 +3,7 @@ title: Control chrome
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-26
+updated: 2026-10-02
 verified: 2026-07-08
 description: The button law every interactive control references
 aliases:
@@ -44,6 +44,8 @@ Two **structural** variants carry the hierarchy; the rest are **role** variants 
 | **grey** | `oq-12` fill | Quiet filled chrome — dense tool rails, playback transports; also the Dropdown `grey` chrome (rest-only there per the dropdown ruling). |
 
 `default`, `subtle`, `minimal`, `plain`, `control` are **legacy aliases**, not variants (see *Legacy aliases* below).
+
+**`tab` is a role variant (component 0.239.0 · theme 0.165.0, 2026-10-02).** The tab chip as a Button state: quiet text at rest, ink on hover with no wash, a soft `08` chip in full ink while `pressed`. A variant with its own bundle, like `nav` — not a tone, because a tone is a ground ordered by depth and this is a state idiom. `TabChips` is this variant on the control size ramp (`size`, default `sm`).
 
 **The five ground variants are tones** (tone-is-the-ground-axis, kol-client-olina 2026-09-03 — theme ≥0.134.0, component ≥0.176.0): `primary` · `secondary` · `outline` · `ghost` · `grey` on Button are aliases of `tone="…"`, and so are the control shell's `filled` / `outline`, the icon-frame variants and the dropdown panel's `--primary` / `--grey` / `--outline`. `danger` and `accent` are semantic intent, not a ground — they stay variants. `nav` stays too: the ticket read it as ghost, but it is `oq-80` ink against ghost's `oq-48` (and the `aria-current` rule); it is ghost's chrome rung. See *Tone* below.
 
