@@ -192,7 +192,7 @@ function MovementViewport({ state }) {
   )
 }
 
-export default function MirrorViewport({ state }) {
+export default function MirrorViewport({ state, arrangement }) {
   const isVariantHall = ['displacement', 'movement', 'copies'].includes(state.activeHall)
   const showDefault = !state.activeHall || (isVariantHall && !state.activeVariant)
 
@@ -231,7 +231,7 @@ export default function MirrorViewport({ state }) {
           inherited from a session log rather than asked for. What a phone does
           with three channel strips, a routing matrix and an FX rack is a real
           design problem — but hiding it was never the answer to that. */}
-      {state.activeHall === 'symphony' && <SymphonyViewport state={state} />}
+      {state.activeHall === 'symphony' && <SymphonyViewport state={state} arrangement={arrangement} />}
 
       {state.activeHall === 'archive' && <ArchiveViewport state={state} />}
 

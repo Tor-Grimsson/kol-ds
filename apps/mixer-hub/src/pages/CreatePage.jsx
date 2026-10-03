@@ -291,7 +291,7 @@ export default function CreatePage() {
               type="button"
               aria-label="Rename mixer"
               title="Rename mixer"
-              className="text-fg-48 hover:text-fg-96 cursor-pointer"
+              className="text-oq-48 hover:text-oq-96 cursor-pointer"
               style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0 }}
               onPointerDown={(e) => {
                 e.preventDefault()
@@ -381,7 +381,7 @@ export default function CreatePage() {
                             type="button"
                             aria-label="Remove module"
                             onClick={() => removePlaced(m.id)}
-                            className="absolute text-fg-32 hover:text-fg-96 cursor-pointer"
+                            className="absolute text-oq-32 hover:text-oq-96 cursor-pointer"
                             style={{ top: 6, right: 6, background: 'none', border: 'none', padding: 4, lineHeight: 0 }}
                           >
                             <Icon name="x" size={12} />
@@ -526,15 +526,15 @@ export default function CreatePage() {
               type="button"
               onClick={() => channels.length && setPatchTable((v) => !v)}
               title="Patch table"
-              className={`cursor-pointer ${channels.length ? 'text-fg-80 hover:text-fg-96' : 'text-fg-32'}`}
+              className={`cursor-pointer ${channels.length ? 'text-oq-80 hover:text-oq-96' : 'text-oq-32'}`}
               style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0 }}
             >
               <Icon name="flip-y" size={20} />
             </button>
-            <button type="button" onClick={() => setDots((v) => !v)} title="Dot grid" className="text-fg-80 hover:text-fg-96 cursor-pointer" style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0, opacity: dots ? 1 : 0.4 }}>
+            <button type="button" onClick={() => setDots((v) => !v)} title="Dot grid" className="text-oq-80 hover:text-oq-96 cursor-pointer" style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0, opacity: dots ? 1 : 0.4 }}>
               <Icon name="grid-02" size={20} />
             </button>
-            <button type="button" onClick={clear} title="Clear the mixer" className="text-fg-80 hover:text-fg-96 cursor-pointer" style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0 }}>
+            <button type="button" onClick={clear} title="Clear the mixer" className="text-oq-80 hover:text-oq-96 cursor-pointer" style={{ background: 'none', border: 'none', padding: 8, lineHeight: 0 }}>
               <Icon name="x" size={20} />
             </button>
           </div>

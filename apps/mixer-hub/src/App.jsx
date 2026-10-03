@@ -29,6 +29,7 @@ import { ABOUT, LINKS, settings } from './pages/SettingsPage.jsx'
  *   #/library      Library     CatalogPage — mirror's variants · effects · expressions
  *   #/create       Create      mirror's desk builder
  *   #/studio       Studio      the tool, full-bleed (apps/mixer)
+ *   #/studio-b     Studio B    the same tool, float arrangement — to compare (2026-10-03)
  *   #/expressions  Expression  kol-hardware's EnvelopeGenerator — NOT a copy of mirror's page:
  *                              the same math, one engine (kol-hardware ./signal)
  *   #/mixer        Mixer       CatalogPage — the desk's modules · patches; #/mixer/<id> one module
@@ -98,6 +99,10 @@ function Studio() {
         create={{ children: <CreatePage /> }}
         use={{ path: '/studio', label: 'Studio', icon: 'nav-studio', children: <MirrorPlayground /> }}
         pages={[
+          /* STUDIO B (2026-10-03, the user's idea, beside Studio to compare): the same tool in its
+             float arrangement — the desk takes the whole view, the monitor is a window over it,
+             the tape deck is a desk module. Studio is untouched. */
+          { path: '/studio-b', icon: 'layers', label: 'Studio B', children: <MirrorPlayground arrangement="float" /> },
           { path: '/expressions', icon: 'frequency', label: 'Expression', children: <Expression key={state?.expr ?? ''} /> },
           {
             path: '/mixer', icon: 'rack', label: 'Mixer',
@@ -114,6 +119,8 @@ function Studio() {
           { path: '/icons', icon: 'grid-02', label: 'Icons', children: <WideOnly what="The icon sheet"><IconsPage /></WideOnly> },
         ]}
         settings={settings}
+        /* Studio B is the tool too: bare primary and full-bleed, as AppStudio gives the Studio */
+        shell={pathname === '/studio-b' ? { pageWash: null } : undefined}
       />
       {/* Space, F and adaptive quality on every page, as in mirror; S is the Hub's sheet */}
       <StudioKeys sheet={false} />

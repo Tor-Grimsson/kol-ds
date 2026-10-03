@@ -183,6 +183,42 @@
 .text-oq-inverse-96 { color: var(--kol-oq-inverse-96); }
 
 /* ==============================================================================
+ * CLASSES — Text hover (standard + inverse)
+ * ============================================================================== */
+
+.hover\:text-oq-01:hover { color: var(--kol-oq-01); }
+.hover\:text-oq-02:hover { color: var(--kol-oq-02); }
+.hover\:text-oq-04:hover { color: var(--kol-oq-04); }
+.hover\:text-oq-08:hover { color: var(--kol-oq-08); }
+.hover\:text-oq-12:hover { color: var(--kol-oq-12); }
+.hover\:text-oq-16:hover { color: var(--kol-oq-16); }
+.hover\:text-oq-24:hover { color: var(--kol-oq-24); }
+.hover\:text-oq-32:hover { color: var(--kol-oq-32); }
+.hover\:text-oq-40:hover { color: var(--kol-oq-40); }
+.hover\:text-oq-48:hover { color: var(--kol-oq-48); }
+.hover\:text-oq-64:hover { color: var(--kol-oq-64); }
+.hover\:text-oq-72:hover { color: var(--kol-oq-72); }
+.hover\:text-oq-80:hover { color: var(--kol-oq-80); }
+.hover\:text-oq-88:hover { color: var(--kol-oq-88); }
+.hover\:text-oq-96:hover { color: var(--kol-oq-96); }
+
+.hover\:text-oq-inverse-01:hover { color: var(--kol-oq-inverse-01); }
+.hover\:text-oq-inverse-02:hover { color: var(--kol-oq-inverse-02); }
+.hover\:text-oq-inverse-04:hover { color: var(--kol-oq-inverse-04); }
+.hover\:text-oq-inverse-08:hover { color: var(--kol-oq-inverse-08); }
+.hover\:text-oq-inverse-12:hover { color: var(--kol-oq-inverse-12); }
+.hover\:text-oq-inverse-16:hover { color: var(--kol-oq-inverse-16); }
+.hover\:text-oq-inverse-24:hover { color: var(--kol-oq-inverse-24); }
+.hover\:text-oq-inverse-32:hover { color: var(--kol-oq-inverse-32); }
+.hover\:text-oq-inverse-40:hover { color: var(--kol-oq-inverse-40); }
+.hover\:text-oq-inverse-48:hover { color: var(--kol-oq-inverse-48); }
+.hover\:text-oq-inverse-64:hover { color: var(--kol-oq-inverse-64); }
+.hover\:text-oq-inverse-72:hover { color: var(--kol-oq-inverse-72); }
+.hover\:text-oq-inverse-80:hover { color: var(--kol-oq-inverse-80); }
+.hover\:text-oq-inverse-88:hover { color: var(--kol-oq-inverse-88); }
+.hover\:text-oq-inverse-96:hover { color: var(--kol-oq-inverse-96); }
+
+/* ==============================================================================
  * CLASSES — Border opacity (standard + inverse)
  * ============================================================================== */
 

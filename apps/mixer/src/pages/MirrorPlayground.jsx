@@ -21,7 +21,9 @@ import { useNarrow } from '../hooks/useNarrow'
 const moduleRow = (m) => ({ id: m.id, label: m.name, group: m.group, hint: m.detail, add: m.add })
 const MODULE_ROWS = MODULE_REGISTRY.map(moduleRow)
 
-export default function MirrorPlayground() {
+/* `arrangement` — 'stage' (default, the studio as it is) or 'float' (2026-10-03: the desk takes the
+   view and the monitor is a window over it — `SymphonyViewport`). The hub mounts both as tabs. */
+export default function MirrorPlayground({ arrangement }) {
   const state = useMirrorState()
   const narrow = useNarrow()
 
@@ -135,6 +137,27 @@ export default function MirrorPlayground() {
           ? { ...c, enabled: true, canvasFx: [...(c.canvasFx || []), { type: fxId, enabled: true, params: getDefaultCanvasFxParams(fxId) }] }
           : c
       )))
+      stateRef.current.selectHall('symphony')
+    },
+    /* PLACING A UNIT (2026-10-03). The registry gives the FX units and the desk's own modules
+       `add: api.placeUnit(…)`, and this api never had the verb — picking any of the fifteen from
+       ⌘K or the shelf threw "api.placeUnit is not a function".
+       AN FX PICK LOADS THE MODULE AND NOTHING ELSE (user, same day: *"it should go into a
+       independednt fx module with inputs and outputs"*, then *"no preconfigured paths ever. just
+       load the fx. the whole point is to patch yourself … think about a physical mixer, does it
+       ever do anything on auto"*). So: one module on the desk, its IN and its OUT empty. No
+       channel, no bus, no master slot — every cable is his, a loop into itself included.
+       A one-per-desk module is already on this desk, so its pick does nothing. */
+    placeUnit: (entryId) => {
+      if (!entryId.startsWith('fx:')) return
+      const type = entryId.slice(3)
+      stateRef.current.setSymphonyFxModules((prev) => [...prev, {
+        id: String(prev.reduce((n, m) => Math.max(n, Number(m.id) || 0), 0) + 1),
+        type,
+        params: getDefaultCanvasFxParams(type),
+        enabled: true,
+        input: null,
+      }])
       stateRef.current.selectHall('symphony')
     },
     /* The cable. A channel that is not in `master.inputs` is force-disabled by
@@ -377,7 +400,7 @@ export default function MirrorPlayground() {
         className="mirror-viewport flex-1 relative"
         style={sidebarOpen ? { paddingLeft: (sidebarWidth ?? getDefaultWidth()) + 24 } : undefined}
       >
-        <MirrorViewport state={state} />
+        <MirrorViewport state={state} arrangement={arrangement} />
       </main>
 
     </div>

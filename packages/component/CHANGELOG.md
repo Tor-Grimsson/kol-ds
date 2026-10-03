@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-component
 
+## Unreleased
+
+- **Fixed: `ContentFilters` — a chip that is not offered does not filter.** The active set outlives a change of `filterGroups`, so on a page whose views swap the groups (a Library of Variants · Effects · Expressions) a chip picked in one view kept filtering the next, where no item carries its key: an empty list under "(1) filter active" with no chip to untick. Only chips the current groups offer apply (plus `customFilterKeys`); the stored set is untouched, so the chip is still on when its view comes back. A page whose groups never change behaves as before.
+- **Fixed: a catalog row is one line.** `ContentRow variant="catalog"` (and `print`) is a fixed 36px rung, but neither slot truncated: a long `detail` took its full width and the title wrapped under it, so one row stood two or three lines tall in a list of single-line rows. The title now keeps its width and the detail takes what is left and truncates (`ContentText`'s new `lead` line — a `between` the other way round). A row whose detail already fitted renders as it did.
+
 ## 0.239.0 — 2026-10-02
 
 - **Fixed: `SectionSplit`'s frame keeps its `ratio` beside the text** (section-split-frame-ratio-holds-at-desktop, kol-website). From 901px the frame carried the column's width AND the rung's height, so `aspect-ratio` had nothing to decide — a `5/4` frame rendered 2.22 at 1600 and cropped its image. The width is `auto` again there: the rung sets the height, the ratio the width, the column caps it (the 2026-08-27 rule on the prop). **Visible:** a bounded frame beside text can stand narrower than its column — take a taller rung for bigger media. Below 901px unchanged.

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## Unreleased
+
+- **New: `hover:text-oq-*`** (+ `-inverse`) in `kol-opaque.css` — the opaque ladder's text hover, all fifteen stops. The file's header promised "+ hover" and only `bg-oq-*` had it, so every icon wrapper moved off `fg` by the icon-ink law (`text-fg-32 hover:text-fg-96` → `text-oq-32 hover:text-oq-96`) lost its hover colour: nine files already used the class and it matched nothing.
+
 ## 0.165.0 — 2026-10-02
 
 **The phone pass** (2026-10-02 — the user's review of the showcase at 390px, ruled and built).

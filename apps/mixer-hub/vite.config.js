@@ -36,8 +36,8 @@ export default defineConfig(({ command }) => ({
     /* R2 media, same-origin — kol-mirror's own proxy. `r2.kolkrabbi.io` sends no
        Access-Control-Allow-Origin, so a cross-origin fetch taints any canvas it is drawn into, and
        the studio reads those pixels back (slitscan, trails, every canvas FX). `/media/` is
-       kol-media-client's default proxyPath. Dev only: the built copy under ui.kolkrabbi.io has no
-       such rewrite, so its media browser loads nothing. */
+       kol-media-client's default proxyPath. The built copy under ui.kolkrabbi.io gets the same path
+       from the `/media/(.*)` rewrite in the root vercel.json (mirror's own, 2026-10-03). */
     proxy: {
       '/media': {
         target: 'https://r2.kolkrabbi.io',

@@ -56,7 +56,9 @@ const VIEWS = {
   },
 }
 
-/* ON THE HUB (apps/mixer-hub): the Mixer sheet's props — the same page as the Library, the desk's sets */
+/* ON THE HUB (apps/mixer-hub): the Mixer sheet's props — the same page as the Library, the desk's sets.
+   The masthead is monitor's, verbatim (user 2026-10-03: "what does monitor do? follow that") — its
+   Library page holds these two views and reads "Library / Modules and patches". */
 export function useMixerCatalog() {
-  return useCatalogLibrary({ storageKey: 'mixer-tab', views: VIEW_MODE_OPTIONS, viewsConfig: VIEWS })
+  return useCatalogLibrary({ storageKey: 'mixer-tab', views: VIEW_MODE_OPTIONS, viewsConfig: VIEWS, subtitle: 'Modules and patches' })
 }

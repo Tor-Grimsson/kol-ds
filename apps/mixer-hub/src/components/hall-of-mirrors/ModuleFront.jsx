@@ -7,7 +7,7 @@ import GeneratorModule from '../../../../mixer/src/components/hall-of-mirrors/mo
 import PatchModule from '../../../../mixer/src/components/hall-of-mirrors/modules/PatchModule.jsx'
 import RecorderUnit from '../../../../mixer/src/components/hall-of-mirrors/RecorderUnit.jsx'
 import FxUnit from '../../../../mixer/src/components/hall-of-mirrors/FxUnit.jsx'
-import FxModule from './modules/FxModule'
+import FxModule from '../../../../mixer/src/components/hall-of-mirrors/modules/FxModule.jsx'
 import InputModule from './modules/InputModule'
 import { GENERATOR_VARIANTS } from '../../../../mixer/src/data/mirrorVariants.js'
 import { findVariant } from '../../../../mixer/src/data/mirrorVariants.js'

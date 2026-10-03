@@ -226,13 +226,25 @@ const ContentFilters = ({
     onFilterChange?.(activeFilters, mode)
   }
 
+  /* A CHIP THAT IS NOT OFFERED DOES NOT FILTER (2026-10-03, kol-mirror's Library on the hub). The
+   * set outlives a change of `filterGroups` — a page with views swaps the groups under it — and a
+   * chip picked in one view kept filtering the next, where no item carries its key: an empty list
+   * under a "(1) filter active" whose chip is nowhere on the page. Only what the current groups
+   * offer applies (and the consumer's own `customFilterKeys`). The stored set is left alone, so
+   * the chip is still on when its view comes back. */
+  const liveFilters = useMemo(() => {
+    const offered = new Set(filterGroups.flatMap((g) => g.values.map((v) => `${g.key}:${v}`)))
+    const live = [...activeFilters].filter((f) => offered.has(f) || customFilterKeys.includes(f.split(':')[0]))
+    return live.length === activeFilters.size ? activeFilters : new Set(live)
+  }, [activeFilters, filterGroups, customFilterKeys])
+
   const filteredItems = useMemo(() => {
     /* the KOL engine, not a private substring match (apps review 2026-09-29) — utilities/searchItems */
     let result = filterItems(items, searchText, { keys: searchKeys })
-    if (activeFilters.size === 0) return result
+    if (liveFilters.size === 0) return result
     return result.filter((item) => {
       let matches = true
-      activeFilters.forEach((filter) => {
+      liveFilters.forEach((filter) => {
         const [filterType, value] = filter.split(':')
         if (customFilterKeys.includes(filterType)) return
         const itemValue = item[filterType]
@@ -244,9 +256,9 @@ const ContentFilters = ({
       })
       return matches
     })
-  }, [items, activeFilters, customFilterKeys, searchText, searchKeys])
+  }, [items, liveFilters, customFilterKeys, searchText, searchKeys])
 
-  const showCount = !showCountOnlyWhenFiltering || isExpanded || searchOpen || activeFilters.size > 0
+  const showCount = !showCountOnlyWhenFiltering || isExpanded || searchOpen || liveFilters.size > 0
 
   /* THE FILTER VALUE IS A TAG — the atom's whole reason to exist ("a Tag with
    * no handler is a Pill wearing the wrong name"). Three defects lived here
@@ -464,12 +476,12 @@ const ContentFilters = ({
             />
             {headerActions}
           </div>
-          {activeFilters.size > 0 && (
+          {liveFilters.size > 0 && (
             <span
               className="kol-helper-12 text-fg-48 cursor-pointer select-none group flex items-center gap-2"
               onClick={(e) => { e.stopPropagation(); clearAllFilters() }}
             >
-              <span className="underline">({activeFilters.size}) {activeFilters.size === 1 ? 'filter' : 'filters'} active</span>
+              <span className="underline">({liveFilters.size}) {liveFilters.size === 1 ? 'filter' : 'filters'} active</span>
               <span className="hidden group-hover:inline text-fg-64">×</span>
             </span>
           )}
@@ -543,14 +555,14 @@ const ContentFilters = ({
           <div className="flex min-w-0 flex-1 items-start gap-8 md:gap-16">
             {leadingActions}
             {isExpanded && filterGroups.map((group, i) => renderFilterGroup(group, i))}
-            {isExpanded && activeFilters.size > 0 && (
+            {isExpanded && liveFilters.size > 0 && (
               <button
                 type="button"
                 onClick={clearAllFilters}
                 className="kol-helper-12 transition-colors underline text-fg-32 hover:text-fg-48"
                 style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
-                Clear all ({activeFilters.size})
+                Clear all ({liveFilters.size})
               </button>
             )}
           </div>

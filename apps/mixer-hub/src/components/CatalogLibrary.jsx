@@ -34,8 +34,10 @@ import { exportEntry, importEntry, removeFromLibrary } from '../../../mixer/src/
  * @param {Function} media        (item) => the card's media, for kinds only the
  *                                page can draw (a patch's signal path, an
  *                                expression's waveform)
+ * @param {string}   subtitle     the masthead's second line — which sets this page holds
+ *                                (2026-10-03: the Mixer page said what the Library says)
  */
-export default function useCatalogLibrary({ storageKey, views, viewsConfig, media }) {
+export default function useCatalogLibrary({ storageKey, views, viewsConfig, media, subtitle = 'Every set the instrument has' }) {
   const navigate = useNavigate()
   const [tab, setTab] = usePersistedState(storageKey, views[0].value)
   const view = viewsConfig[tab] ?? viewsConfig[views[0].value]
@@ -85,7 +87,7 @@ export default function useCatalogLibrary({ storageKey, views, viewsConfig, medi
       }
 
   return {
-    header: { title: 'Library', subtitle: 'Every set the instrument has', size: 'sm' },
+    header: { title: 'Library', subtitle, size: 'sm' },
     items: view.items,
     filtersTitle: view.title,
     filterGroups: view.filterGroups.filter((g) => g.values.length),

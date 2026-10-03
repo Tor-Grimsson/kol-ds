@@ -62,6 +62,10 @@ function FpsMeter() {
   )
 }
 
+/* NO RAIL HERE, so this sheet does not list the rail's two keys (2026-10-03) — `\` and ⌥1–9 did
+ * nothing. The hub hands the full list to its own sheet, where there is a rail. */
+const SHEET_SHORTCUTS = KEYBOARD_SHORTCUTS.map((s) => ({ ...s, items: s.items.filter((i) => i.id !== 'rail' && i.id !== 'nav') }))
+
 /* What mirror's shell gave EVERY route — the frame budget (F), Space for the transport, adaptive
  * quality — and its shortcuts sheet (S). A hub has its own sheet on S (AppHub), so apps/mixer-hub
  * mounts this with `sheet={false}`. */
@@ -85,7 +89,7 @@ export function StudioKeys({ sheet = true }) {
 
   return (
     <>
-      {showShortcuts && <ShortcutsOverlay shortcuts={KEYBOARD_SHORTCUTS} onClose={() => setShowShortcuts(false)} />}
+      {showShortcuts && <ShortcutsOverlay shortcuts={SHEET_SHORTCUTS} onClose={() => setShowShortcuts(false)} />}
       {showFps && <FpsMeter />}
     </>
   )

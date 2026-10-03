@@ -136,7 +136,10 @@ const desk = (m) => ({
   front: { kind: 'desk', id: m.id },
   /* a photograph of the module itself — `pnpm generate-previews` captures the
      front through `/dev/capture?module=<id>` */
-  preview: `/previews/modules/${m.id}.png`,
+  /* IN THIS REPO the root `public/previews/modules/` is shared with the rack, and monitor's patch
+     module already holds `patch.png` — so the desk's patch bay is `mixer-patch.png` here
+     (2026-10-03). In kol-mirror it is `patch.png`, as generated. */
+  preview: `/previews/modules/${m.id === 'patch' ? 'mixer-patch' : m.id}.png`,
 })
 
 /* PATCHES — a source and the FX that finish it, added as ONE unit. Both halves

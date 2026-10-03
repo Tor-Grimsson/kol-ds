@@ -69,7 +69,11 @@ const RAMP = {
     /* detail truncates (ShellHomeSystem, 2026-08-27): a wrapping blurb set three
      * cards' plates at three heights and misaligned the media */
     card: { title: 'kol-mono-14 text-emphasis', detail: 'kol-mono-10 text-meta truncate' },
-    row:  { title: 'kol-mono-12 text-emphasis', detail: 'kol-mono-10 text-meta' },
+    /* ONE LINE, BOTH (2026-10-03): the row is a fixed 36px rung and neither slot truncated, so a
+     * long detail took its full width and the title wrapped under it — "Slit-Scan Camera" on three
+     * lines in a row twice the height of its neighbours. The title keeps its width and the detail
+     * gives way (`lead` below). */
+    row:  { title: 'kol-mono-12 text-emphasis truncate', detail: 'kol-mono-10 text-meta truncate' },
   },
   /* `print` folded into `catalog` 2026-08-29 — its row was already catalog's,
    * and its card differed only by `detail` not truncating. It aliases now. */
@@ -136,6 +140,9 @@ const RAMP = {
  * ['group', …] = 16px baseline group · ['between', …] = header.between ·
  * ['stack', …] = a vertical block on the tight 4px gap, nestable inside any of
  * the above. In a `between`, the LEADING part flexes and the trailing one hugs.
+ * ['lead', …] is a `between` the other way round: the leading part keeps its own
+ * width and the TRAILING one takes what is left and truncates — for a row whose
+ * trailing text is the long one (catalog's detail).
  *
  * A third kind, ['line', …] — fixed-width trailing columns for a table-like
  * row — was removed 2026-08-15. `default.row` was its only caller and moved to
@@ -148,7 +155,7 @@ const ORDER = {
   file:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
   /* slide: title, then date · size · slide count on one baseline (read off olina's /slide-deck) */
   slide: { card: ['title', ['group', 'date', 'size', 'meta']], row: ['title', ['group', 'date', 'size', 'meta']] },
-  catalog:  { card: ['title', 'detail'], row: [['between', 'title', 'detail']] },
+  catalog:  { card: ['title', 'detail'], row: [['lead', 'title', 'detail']] },
   /* title + body are ONE block in BOTH forms — a `stack`, so they sit on the
    * tight 4px internal gap while tags, kicker and the meta group keep the
    * form's own outer gap. A flat column gave every line the same gap, which
@@ -318,7 +325,8 @@ export default function ContentText({
   const render = (entry, i, trailing = false) => {
     if (typeof entry === 'string') return line(entry)
     const [kind, ...slots] = entry
-    const parts = slots.map((s, j) => render(s, j, kind === 'between' && j === slots.length - 1)).filter(Boolean)
+    const split = kind === 'between' || kind === 'lead'
+    const parts = slots.map((s, j) => render(s, j, split && j === slots.length - 1)).filter(Boolean)
     if (!parts.length) return null
     if (kind === 'stack') {
       /* A TRAILING column right-aligns (user ruling 2026-08-15) — it sits at
@@ -338,16 +346,21 @@ export default function ContentText({
          * baseline — a two-line column has no single baseline to share with the
          * title beside it, and baseline-aligning it hangs the second line below
          * the row's floor. */
-        className={`flex min-w-0 ${parts.length > 1 && Array.isArray(slots[slots.length - 1]) ? 'items-center' : 'items-baseline'} ${kind === 'between' ? 'justify-between' : ''}`}
+        className={`flex min-w-0 ${parts.length > 1 && Array.isArray(slots[slots.length - 1]) ? 'items-center' : 'items-baseline'} ${split ? 'justify-between' : ''}`}
         style={{ gap: 'var(--kol-spacing-6)' }}
       >
         {/* the LEADING part of a `between` takes the room; the trailing column
           * hugs its content. Without this the left stack sized to its content
           * and the big line truncated at a quarter of the row's width while
           * empty space sat between the two columns. */}
-        {kind === 'between' && parts.length > 1
+        {split && parts.length > 1
           ? parts.map((p, j) => (
-              <div key={j} className={j === 0 ? 'min-w-0 flex-1' : 'shrink-0 text-right'}>{p}</div>
+              /* `lead`: the leading part is its own width (a flex item's default — it shrinks only
+               * when it alone is wider than the row); the trailing one starts from nothing and
+               * takes the remainder, so it is the one that truncates */
+              <div key={j} className={kind === 'lead'
+                ? (j === 0 ? 'min-w-0' : 'min-w-0 flex-1 text-right')
+                : (j === 0 ? 'min-w-0 flex-1' : 'shrink-0 text-right')}>{p}</div>
             ))
           : parts}
       </div>

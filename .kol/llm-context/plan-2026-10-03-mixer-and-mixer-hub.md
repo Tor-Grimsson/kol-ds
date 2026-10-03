@@ -71,7 +71,7 @@ He: *"what about mixer-hub?"* · *"expression is also in the generator right? sa
 
 He, 2026-10-03: *"you built it as is, but you didnt fix any of the bugs? should we add the missing tabs, then close this round and open a fresh for bug fixes?"* Both apps carry mirror as it is. Nothing below is fixed. What was seen while building, his to add to and order:
 
-1. **The viewframe** is crushed to a stub and the tape deck is cut off below about 3300 wide (`/studio`). Mirror's own layout; live has it too.
+1. **The viewframe** is crushed to a stub and the tape deck is cut off below about 3300 wide (`/studio`). Mirror's own layout; live has it too. **Fixed in the copy 2026-10-03, waits on his eye:** the desk was a fixed 669px at every window size; its box is now capped by default at half the window less its chrome (`SymphonyMixer.jsx` — a dragged rule still wins, double-click returns to the cap), and the monitor slides left by the overlap to clear the deck (`SymphonyViewport.jsx`). 1600×1000: frame 509×380, was 152×179. Unchanged from about 1350 tall and 1900 wide; still cramped under about 800 tall. Mirror has not been told. His next idea, for the logic pass: the mixer takes the whole view, the frame floats over it (draggable, resizable, hideable) and the deck becomes a module — as a second tab, to A/B against this.
 2. **Icon ink** — 26 icons in mirror's code inked on `fg`; the gate wants `oq`. Waits on his word (the rack's were moved on his word).
 3. **The desk's dials** compile with mirror's `hooks/useExpressionValue.js`, not kol-hardware `./signal`. One seam.
 4. **The four hand-built controls** — `RotaryDial` · `QuantityInput` · `ColorPicker` · `ChannelMaster` — against `Knob variant="panel"`, kol-component's `QuantityInput`, `ChannelStrip`.
@@ -85,3 +85,30 @@ He, 2026-10-03: *"you built it as is, but you didnt fix any of the bugs? should 
 12. **Not checked:** a filter chip carried from one Library view into the next (the Library slot has no `key` reset; the Mixer sheet does), recording and export, the media browser against R2, real iOS Safari.
 
 Then, his order of 2026-10-02: fxr labs, then the generator.
+
+## G. The bug round and Studio B — built 2026-10-03, waits on his eye
+
+His rulings on § F, the same day: 1 yes · 2 "what does monitor do? follow that" · 3 yes · 4 yes · 5 yes · 6 yes · 7 yes · 8 ok · 9 "dont tell mirror anything yet". Then *"do everything in one go"*. Journal: `playbook/2026-10-03-mixer-bug-round-and-studio-b.md`. Nothing published; kol-mirror neither edited nor told.
+
+| § F | Outcome |
+|---|---|
+| 1 viewframe | fixed (above) — this is Studio **A** |
+| 2 icon ink | 26 sites on `oq`, same stop. Found on the way: kol-theme had no `hover:text-oq-*` — added (theme, Unreleased) |
+| 3 dials on `./signal` | `useExpressionValue.compile` is the engine's. 42 of 42 comparable expressions identical at min 0 (`_tmp/2026-10-03-mixer-testbed/compile-parity.mjs`). Differs by design where a dial's min is not 0: TEMPO (10–400) and generator controls that start above zero |
+| 4 hand-built controls | **Two of the pairings in § F were name matches, not twins.** `RotaryDial` → an adapter over `Knob variant="panel"`; it keeps the expression box and the modulation menu, which the DS knob does not have. `QuantityInput` → the DS **`Stepper`** (the DS `QuantityInput` is a display-only quantity picker), with the draft held in the adapter because `Stepper` rejects a typed digit below `min`. `ColorPicker` → its chip is the DS `ColorSwatch`; the RGBA popover stays, nothing ships for it. **`ChannelMaster` not swapped:** `ChannelStrip` is the channel CARD's frame, not this column's, and the DS vertical panel slider is a 60px rack fader with no scale — its two knobs came across with `RotaryDial`. Originals: `_tmp/2026-10-03-mixer-own-controls/` |
+| 5 masthead | monitor has no separate module sheet (Modules · Patches are views of its Library, "Library / Modules and patches"). His 2026-09-02 split stands; the Mixer page now reads monitor's line |
+| 6 three-line title | fixed in kol-component: a catalog row is one line, the detail gives way (`ContentText` `lead`) |
+| 7 patch card | mirror's image is `mixer-patch.png` here |
+| 8 media | mirror's own `/media/(.*)` rewrite in `vercel.json`; proven in dev (listing, proxy, canvas read-back), the rewrite itself needs a deploy |
+| 9 rail keys | the standalone sheet drops them |
+| 10 sketchbook chrome | Icons on `ContentFilters`. Tape left: its Run chip is text and it draws no icon |
+| 11 dead search chrome | cut; original in `_tmp/2026-10-03-module-palette-search/` |
+| 12 not checked | chip carry-over was real — fixed in `ContentFilters` (a chip the current groups do not offer does not filter). Media against R2 ✓ in dev. **Still not checked:** recording and export (scripted twice, never reached a take), real iOS Safari |
+
+**Found while checking, fixed:** picking an FX unit or a one-per-desk module from ⌘K or the shelf threw `api.placeUnit is not a function` — the studio's palette api never had Create's verb. **Ruled the same day, in three steps** — *"picking an fx should load in the effects from the effects page"*, then *"it should go into a independednt fx module with inputs and outputs"*, then *"no preconfigured paths ever. just load the fx. the whole point is to patch yourself … think about a physical mixer, does it ever do anything on auto"*. Built: an FX pick puts ONE module on the desk (`FxModule`, moved from the hub into `apps/mixer`) with a real IN and a real OUT, both empty — no channel, bus or master slot is touched. The IN takes any OUT (a channel, a bus return, another module, itself — a one-frame loop); the OUT goes into a channel IN, another module's IN or a master slot. State `symphonyFxModules`, rules + check in `hooks/patchGraph.js` / `patchGraph.test.mjs`, engine `useFrameBuffer.processFxModules`. Two auto-routings I built or proposed on the way (append to a channel's chain; park on a preset FX bus) are gone. Ceilings: modules are not in undo or in a saved patch file; a module in a master slot draws at full level (the strip has no fader for it); Screen 2 and the patch table (P) do not list module cables. A one-per-desk module is already on the studio's desk, so its pick does nothing.
+
+**Studio B** (`#/studio-b`, second rail tab): `arrangement="float"` — the desk fills the view, the monitor is a window (`FloatingFrame` on monitor's `useFloating`, copied; drag by the body, corner grip, V or `[Frame]` hides), the deck is a "Tape" module on the desk. Studio A renders as before. Not in B: Screen 2, a remembered window position. If B is kept: lift `useFloating` to a package.
+
+**DS leads, not acted on:** `Stepper` cannot be typed into when `min` > 9 (it checks bounds per keystroke); kol-hardware's `ChannelStrip` is the twin of mirror's channel card (`Channel` in `SymphonyMixer.jsx`), which still draws its own.
+
+**Gates:** 31 of 32 (`retirements` 2 — `AppShell` and `BrandHero`, the iMac's drop); `validate:render` clean for both apps, Studio B in its routes; both build; the showcase's Mixer set renders clean.
