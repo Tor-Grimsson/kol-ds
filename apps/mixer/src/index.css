@@ -1,19 +1,23 @@
 @import "tailwindcss";
 
-/* THE WORKSPACE FORM — point at this app's own node_modules symlinks (same reason as apps/brand). */
+/* THE WORKSPACE FORM — kol-mirror relies on the theme's @source manifest (kol-sources.css, below),
+   whose sibling paths resolve to nothing through a workspace symlink; these point at this app's own
+   node_modules instead (same reason as apps/rack). Everything else in this file is mirror's. */
 @source "../node_modules/@kolkrabbi/kol-component/src";
-@source "../node_modules/@kolkrabbi/kol-hardware/src";
 @source "../node_modules/@kolkrabbi/kol-framework/src";
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 @source "../node_modules/@kolkrabbi/kol-shell/src";
 
-@import "@kolkrabbi/kol-theme";
-@import "@kolkrabbi/kol-theme/kol-type-roles.css";
-/* ARCHITECTURE §5 — framework chrome in the components layer */
-@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+/* `/core`, not the umbrella (kol-theme 0.77.0): the studio renders none of the domain packs. */
+@import "@kolkrabbi/kol-theme/core";
+/* @source manifest — KOL packages ship raw JSX and Tailwind skips node_modules,
+ * so utilities used inside DS components are never generated without this. */
 @import "@kolkrabbi/kol-theme/kol-sources.css";
+@import "./styles/kol-typography-mono.css"; /* JetBrains face + the mono family token */
+@import "./styles/mirror-overrides.css";    /* mirror's accent */
 
-body {
-  background-color: var(--kol-surface-primary);
-  color: var(--kol-surface-on-primary);
-}
+/* Mirror's `styles/components.css` and the layout block that follows these imports in its
+   index.css are in mixer.css, which Standalone.jsx imports — so the showcase's Mixer set gets
+   them too, and this app loads them once. */
+
+html { overscroll-behavior-x: none; }

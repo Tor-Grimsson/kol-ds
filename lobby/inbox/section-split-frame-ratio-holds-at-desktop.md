@@ -61,3 +61,16 @@ The width follows again from 901px: the frame is `w-full min-[901px]:w-auto`, so
 
 Measured in the showcase's `SectionSplit` preview (`ratio="4/5"`): 251×314 at 1600×950 and 179×224 at 1280×800 — 0.80 at both, where it was 696×314 (2.22); 350×438 at 390, `w-full` + ratio, unchanged. kol-website's `h-auto` stopgap on `HomeFoundry` can go; its `5/4` frame will read 393×314 at 1600 — if that is too small in the column, the section wants a taller rung. Closes on kol-website measuring it.
 
+## CONFIRMED from kol-website — 2026-10-03 · kol-component@0.239.0
+
+Stopgap deleted from `HomeFoundry.jsx`; the section took `height="80"` (393×314 on the default rung was too small in the column). Measured on the built app, `ratio="5/4"`, 1200×960 image:
+
+| viewport | frame | ratio | section |
+|---|---|---|---|
+| 1600×950 | 630×504 | 1.25 | 760 |
+| 1440×900 | 580×464 | 1.25 | 720 |
+| 1280×800 | 480×384 | 1.25 | 640 |
+| 390×844 | 350×280 | 1.25 | unchanged |
+
+Three desktop viewport heights, the ratio holds at each; nothing cropped. State left for this repo to close.
+

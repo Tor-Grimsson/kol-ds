@@ -622,6 +622,73 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.19
         version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      embla-carousel-react:
+        specifier: ^8.6.0
+        version: 8.6.0(react@19.2.7)
+      embla-carousel-wheel-gestures:
+        specifier: ^8.1.0
+        version: 8.1.0(embla-carousel@8.6.0)
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      pixi.js:
+        specifier: ^8.19.0
+        version: 8.20.1
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-colorful:
+        specifier: ^5.8.0
+        version: 5.8.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.14.2
+        version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  apps/mixer-hub:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-brand':
+        specifier: workspace:*
+        version: link:../../packages/brand
       '@kolkrabbi/kol-component':
         specifier: workspace:*
         version: link:../../packages/component
@@ -634,6 +701,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@kolkrabbi/kol-media-client':
+        specifier: workspace:*
+        version: link:../../packages/media-client
       '@kolkrabbi/kol-shell':
         specifier: workspace:*
         version: link:../../packages/shell
@@ -643,12 +713,30 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.2.4
         version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      embla-carousel-react:
+        specifier: ^8.6.0
+        version: 8.6.0(react@19.2.7)
+      embla-carousel-wheel-gestures:
+        specifier: ^8.1.0
+        version: 8.1.0(embla-carousel@8.6.0)
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+      pixi.js:
+        specifier: ^8.19.0
+        version: 8.20.1
       react:
         specifier: ^19.2.0
         version: 19.2.7
+      react-colorful:
+        specifier: ^5.8.0
+        version: 5.8.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-dom:
         specifier: ^19.2.0
         version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.14.2
+        version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
         specifier: ^4.2.4
         version: 4.3.1
@@ -3512,6 +3600,12 @@ packages:
     peerDependencies:
       embla-carousel: 8.6.0
 
+  embla-carousel-wheel-gestures@8.1.0:
+    resolution: {integrity: sha512-J68jkYrxbWDmXOm2n2YHl+uMEXzkGSKjWmjaEgL9xVvPb3HqVmg6rJSKfI3sqIDVvm7mkeTy87wtG/5263XqHQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      embla-carousel: ^8.0.0 || ~8.0.0-rc03
+
   embla-carousel@8.6.0:
     resolution: {integrity: sha512-SjWyZBHJPbqxHOzckOfo8lHisEaJWmwd23XppYFYVh10bU66/Pn5tkVkbkCMZVdbUE5eTCI2nD8OyIP4Z+uwkA==}
 
@@ -5086,6 +5180,10 @@ packages:
   webm-muxer@5.1.4:
     resolution: {integrity: sha512-ditzgFVFbfqPaugkIr4mGhAdob5K9HY6Rzlh7TRsA368yA1sp/m5O7nQCcMLdgFDeNGtFPg8B+MeXLtpzKWX6Q==}
     deprecated: This library is superseded by Mediabunny. Please migrate to it.
+
+  wheel-gestures@2.3.0:
+    resolution: {integrity: sha512-6b+PIXuKIy0ibVnF04GoijGKGIDwjlYSK7bCgicuQwPLivfjoLeCCK0bwbjyOdrStDTNPlyGFixIj0d0kZzwiQ==}
+    engines: {node: '>=18'}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -6684,6 +6782,11 @@ snapshots:
   embla-carousel-reactive-utils@8.6.0(embla-carousel@8.6.0):
     dependencies:
       embla-carousel: 8.6.0
+
+  embla-carousel-wheel-gestures@8.1.0(embla-carousel@8.6.0):
+    dependencies:
+      embla-carousel: 8.6.0
+      wheel-gestures: 2.3.0
 
   embla-carousel@8.6.0: {}
 
@@ -8613,6 +8716,8 @@ snapshots:
     dependencies:
       '@types/dom-webcodecs': 0.1.13
       '@types/wicg-file-system-access': 2020.9.8
+
+  wheel-gestures@2.3.0: {}
 
   which@2.0.2:
     dependencies:

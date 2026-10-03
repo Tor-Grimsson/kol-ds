@@ -31,7 +31,21 @@ export default defineConfig(({ command }) => ({
   resolve: { dedupe: ['react', 'react-dom'] },
 
   // its own port, so it runs beside the other apps
-  server: { port: 5195 },
+  server: {
+    port: 5195,
+    /* R2 media, same-origin — kol-mirror's own proxy. `r2.kolkrabbi.io` sends no
+       Access-Control-Allow-Origin, so a cross-origin fetch taints any canvas it is drawn into, and
+       the studio reads those pixels back (slitscan, trails, every canvas FX). `/media/` is
+       kol-media-client's default proxyPath. Dev only: the built copy under ui.kolkrabbi.io has no
+       such rewrite, so its media browser loads nothing. */
+    proxy: {
+      '/media': {
+        target: 'https://r2.kolkrabbi.io',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/media/, ''),
+      },
+    },
+  },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

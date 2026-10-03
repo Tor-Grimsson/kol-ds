@@ -49,6 +49,7 @@ const ROUTES = {
   panels: ['#/effects', '#/generators/pattern', '#/inspector/text', '#/inspector/photo'],
   'brand-hub': ['#/', '#/assets', '#/notes', '#/decks', '#/media', '#/editor', '#/settings'],
   'rack-hub': ['#/', '#/rack', '#/library', '#/create', '#/stage', '#/settings'],
+  'mixer-hub': ['#/', '#/library', '#/create', '#/studio', '#/expressions', '#/mixer', '#/tape', '#/fronts', '#/icons', '#/settings'],
   fixtures: ['#media/buckets', '#media/files', '#workshop/docs', '#workshop/components', '#voyager/files', '#voyager/brand', '#voyager/business'],
 }
 

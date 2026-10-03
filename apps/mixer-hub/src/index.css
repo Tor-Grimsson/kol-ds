@@ -1,0 +1,11 @@
+/* The hub's CSS is the mixer's (kol-mirror's index.css, in apps/mixer) — one stylesheet for both
+   apps — plus the controls pack kol-hardware's generator draws with and the folders Tailwind has
+   to scan from here. */
+@import "../../mixer/src/index.css";
+@import "@kolkrabbi/kol-theme/kol-components-controls.css" layer(components);
+@source "../../mixer/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-hardware/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";

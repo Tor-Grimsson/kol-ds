@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The mixer test bed — a row of kol-hardware channel strips with their knobs and sliders, and the touch hold that opens ParamSheet. No audio, no routing. Never published.",
+  "description": "The mixer alone — kol-mirror’s studio on this repo’s packages: its desk (channel strips, master out, routing, clock, generators), viewframe and tape deck, mirror’s files, copied. No shell, no other pages. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,15 +11,22 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
-    "@kolkrabbi/kol-hardware": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
+    "embla-carousel-react": "^8.6.0",
+    "embla-carousel-wheel-gestures": "^8.1.0",
+    "gsap": "^3.15.0",
+    "pixi.js": "^8.19.0",
     "react": "^19.2.0",
+    "react-colorful": "^5.8.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
