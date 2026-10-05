@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM — the editor is read from its source (see vite.config.js), so Tailwind
+   has to be pointed at it and at the DS packages it is built from. */
+@source "../../../packages/design-editor/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+/* ARCHITECTURE §5 — framework chrome in the components layer */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+
+html,
+body,
+#root {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+}

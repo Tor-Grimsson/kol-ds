@@ -3,7 +3,7 @@ title: Phase log
 type: index
 status: active
 created: 2026-09-30
-updated: 2026-10-01
+updated: 2026-10-05
 description: Every run of work, newest first
 tags:
   - domain/workflow
@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-10-05 | [[2026-10-05-labs-and-generator\|Labs + generator]] | fxr rehearsed as `apps/editor-hub`; five regressions fixed; `apps/panels` rebuilt; `apps/labs` and `apps/generator`; one frame for both — a rail at a desk, a sheet on a phone | published · review by eye |
 | 2026-10-02 | [[2026-10-02-question-round\|Question round]] | round two's open calls answered and built — rail sections and glyphs, the walls, the graph, the hardware twins merged, Button's variants, Sets as parts, the rack, demo → preview, tool previews, the gap scan |
 | 2026-10-01 | [[2026-10-01-review-round-two\|Review round two]] | the second review built — palette keys, results page, Lookup and Start, Modules, one component-page frame, the preview scan and 44 demos, the component audit | published · Round 6 waits on the user |
 | 2026-10-01 | [[2026-09-30-showcase-review\|Showcase review]] | the user's review built — the rail at any depth, a page per group, descriptions and tags, search, color, atoms, knobs, load more, apps | built · publish waits |

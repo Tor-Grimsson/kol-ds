@@ -55,6 +55,17 @@ function LoopField({ seconds, onCommit, size }) {
 
 const glyph = (name, size) => <Icon name={name} size={glyphSize(size, true)} />
 
+/* THE GLYPH CELLS ARE SQUARE ON THE LADDER (26 / 32 / 40 — the DS icon-only geometry; ruled
+ * 2026-09-02 so ▶❚❚ · Loop / N s · ■◀◀ is one line at every rail width). The 2026-09-27 rebuild
+ * onto `SegmentedToggle` left them at a text cell's padding — 53px a cell at `md` — and the two
+ * strips squeezed the loop field until its number had no width at all: on a phone the transport
+ * read "Loop / s". Written out per rung: Tailwind only emits a class it can read whole. */
+const SQUARE = {
+  sm: 'shrink-0 [&_.kol-seg-cell]:flex-none [&_.kol-seg-cell]:px-0 [&_.kol-seg-cell]:w-[var(--kol-ctl-sm)]',
+  md: 'shrink-0 [&_.kol-seg-cell]:flex-none [&_.kol-seg-cell]:px-0 [&_.kol-seg-cell]:w-[var(--kol-ctl-md)]',
+  lg: 'shrink-0 [&_.kol-seg-cell]:flex-none [&_.kol-seg-cell]:px-0 [&_.kol-seg-cell]:w-[var(--kol-ctl-lg)]',
+}
+
 export default function TransportBar({ size = 'sm' }) {
   const { playing, loopSeconds, play, pause, stop, rewind, setLoopSeconds } = useTransport()
   /* fxr's shape (inspector rebuild 2026-09-27 — user: "should look closer to this"): play | pause
@@ -63,7 +74,7 @@ export default function TransportBar({ size = 'sm' }) {
   return (
     <div className="flex items-center gap-2">
       <SegmentedToggle
-        size={size} ariaLabel="Playback" value={playing ? 'play' : 'pause'}
+        size={size} ariaLabel="Playback" value={playing ? 'play' : 'pause'} className={SQUARE[size]}
         onChange={(v) => (v === 'play' ? play() : pause())}
         options={[
           { value: 'play', ariaLabel: 'Play', tooltip: 'Play (Space)', label: glyph('play', size) },
@@ -74,7 +85,7 @@ export default function TransportBar({ size = 'sm' }) {
         <LoopField seconds={loopSeconds} onCommit={setLoopSeconds} size={size} />
       </div>
       <SegmentedToggle
-        size={size} ariaLabel="Reset" value={null}
+        size={size} ariaLabel="Reset" value={null} className={SQUARE[size]}
         onChange={(v) => (v === 'stop' ? stop() : rewind())}
         options={[
           { value: 'stop', ariaLabel: 'Stop', label: glyph('stop', size) },

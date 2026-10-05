@@ -103,7 +103,7 @@ export function SourceStrip({ layer }) {
   const src = useSourceInput(layer)
   return (
     <>
-      <SegmentedToggle variant="filled"
+      <SegmentedToggle
         value={null}
         onChange={(v) => ({ library: src.openLibrary, upload: src.openUpload, camera: src.openCamera }[v]?.())}
         options={src.svgMode ? SVG_SOURCE_OPTIONS : SOURCE_OPTIONS}

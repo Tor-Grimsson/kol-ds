@@ -205,7 +205,10 @@ export default function EditorFooter() {
    * loaded. `/core` has no motion and shows no time controls. */
   const TransportBar = pack('motion')?.TransportBar ?? null
   const tabs = (touch || !TransportBar) ? TABS_TOUCH : TABS
-  const [tab, setTab] = useState(touch || !TransportBar ? 'output' : 'transport')
+  /* ON TOUCH THE FOOTER IS ONE ROW UNTIL A TAB IS OPENED (2026-10-05): the rail is a sheet half
+   * the display high there, and Output's eight controls standing open took all of it. No tab is
+   * lit at rest; a tap opens one and the same tap closes it. */
+  const [tab, setTab] = useState(touch ? null : (TransportBar ? 'transport' : 'output'))
   const [transportOpen, setTransportOpen] = useState(false)
   const [pngScale, setPngScale] = useState(1)
   const [batchOpen, setBatchOpen] = useState(false)
@@ -281,7 +284,7 @@ export default function EditorFooter() {
         {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
         {/* the default strip — raised cells, dividers, the selected one on the ground — filling
           * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs) */}
-        <SegmentedToggle value={tab} onChange={setTab} options={tabs} size={cs} className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
+        <SegmentedToggle value={tab} onChange={(v) => setTab((t) => (touch && t === v ? null : v))} options={tabs} size={cs} className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
       </div>
       {/* stays mounted hidden on desktop so playback chrome never re-inits on a
           tab switch; on touch the bar lives in the sheet below */}

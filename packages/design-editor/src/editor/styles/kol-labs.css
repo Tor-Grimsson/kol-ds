@@ -151,34 +151,52 @@
 }
 
 
-/* ───── TOUCH — the params rail is a DRAWER (2026-09-01) ─────
- * A bare shell (a phone, or a tablet not opted into desktop) has no shell
- * rail, so the catalog rows had nowhere to render and the params column took
- * 264 of a 390px screen. `LabsView` stamps `data-touch` on the wrapper and
- * swaps in a top bar with one toggle per rail. The nav is the catalog SHEET
- * (its own fixed layer); THIS is the params rail — off the grid, sliding in
- * from the right, under that bar, over the stage. Same rail, same footer. */
+/* ───── TOUCH — the params rail is a SHEET along the bottom (2026-10-05) ─────
+ * It was a drawer from the right under a top bar (2026-09-01): open, it left 126px of a 390px
+ * stage. Now it is the generator's frame — `LabsView` stamps `data-touch` on the wrapper, and the
+ * right rail becomes the grid's second ROW: the stage refits in the row above it, the rail's
+ * header is the collapse control, and collapsed (`data-params` unset) the rail is gone and a pill
+ * stands in for it. The nav is still the shell's drawer. Same rail, same footer. */
 .kol-editor-labs[data-touch] .kol-editor-grid {
-  --_rail-track: 0px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: "canvas" "right";
+}
+.kol-editor-labs[data-touch] .kol-editor-left {
+  display: none;
 }
 .kol-editor-labs[data-touch] .kol-editor-right {
-  position: fixed;
-  top: 48px;                         /* the touch bar (h-12) holds the toggle that closes this */
-  right: 0;
-  bottom: 0;
-  /* THE DESKTOP RAIL'S WIDTH — `--kol-sidenav-w` (264), the same rail on every
-     device. It got there by taking width OUT of the content, not by widening
-     the drawer: the transport is a glyph opening a viewport-wide sheet
-     (EditorFooter), the generative strip reads Gen · Style · Anim on touch,
-     the range box is 5 chars. */
-  width: min(var(--kol-sidenav-w), calc(100vw - 48px));
-  z-index: var(--kol-z-overlay);
+  /* half the display at most — the other half is the picture the controls change */
+  max-height: 50dvh;
+  border-left: 0;
   overflow: hidden;
-  transform: translateX(100%);
-  transition: transform 150ms ease;
+  padding-bottom: env(safe-area-inset-bottom);
 }
-.kol-editor-labs[data-touch][data-params="open"] .kol-editor-right {
-  transform: none;
+.kol-editor-labs[data-touch]:not([data-params="open"]) .kol-editor-right {
+  display: none;
+}
+/* the sheet's header is the generator's: no rule under it, the body starting straight below */
+.kol-editor-labs[data-touch] .kol-editor-rail-header {
+  border-bottom: 0;
+}
+.kol-editor-labs[data-touch] :is(.kol-compose-inspector-body, .kol-inspector-rail-body) {
+  padding-top: 0;
+}
+/* THE SHEET IS AS TALL AS ITS CONTENT, up to the half. On a desk these three fill a rail of known
+ * height (`flex: 1`, basis 0); in a sheet whose height is its content that basis collapses the
+ * body to nothing — an empty labs showed a header over a footer and no hint between. They size to
+ * content here and shrink (the body scrolls) once the half is reached. */
+.kol-editor-labs[data-touch] .kol-editor-rail-body,
+.kol-editor-labs[data-touch] .kol-editor-rail-body .kol-compose-rail--inspector,
+.kol-editor-labs[data-touch] :is(.kol-compose-inspector-body, .kol-inspector-rail-body) {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+/* the footer is one row until a tab is opened (EditorFooter); opened, it may take the sheet — the
+ * body above it gives way and it scrolls inside what is left */
+.kol-editor-labs[data-touch] .kol-editor-rail-footer {
+  max-height: calc(50dvh - 36px);
+  overflow-y: auto;
 }
 /* THE COARSE-POINTER INPUT FLOOR IS OFF IN THE TOUCH RAIL. kol-theme 0.112.0
  * bumps every `.kol-control input` to 16px/22px under (pointer: coarse) so iOS
@@ -198,6 +216,19 @@
   .kol-editor-labs[data-touch] .kol-control input,
   .kol-editor-labs[data-touch] .kol-control--bare input {
     height: 18px;
+  }
+  /* …AND SO IS THE TOUCH RUNG (2026-10-03, found rehearsing kol-fxr in apps/editor-hub). kol-theme
+   * 0.158.0 lifts the WHOLE ladder on a coarse pointer — md is 16 / 22 in a 36px box — which undid
+   * the ruling above from the other side: the inputs held 14 while every dropdown, strip and
+   * button beside them went to 16, the rows grew past the 264px drawer ("Scanli…") and a row fell
+   * off the fold. The rail is the md rung, 14 / 18 in 32, as fxr runs it — the same opt-out the
+   * rack's hardware panels take (`.kol-hw-panel`). */
+  .kol-editor-labs[data-touch] {
+    --kol-ctl-md: 32px;
+  }
+  .kol-editor-labs[data-touch] :is(.kol-btn.kol-btn-md, .kol-control.kol-control-md, .kol-seg .kol-seg-cell, .kol-menu-btn.kol-menu-btn) {
+    font-size: 14px;
+    line-height: 18px;
   }
 }
 

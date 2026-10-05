@@ -74,9 +74,13 @@ export default function LayerInspector({ layer }) {
             </div>
             {/* The transform cluster — STATELESS (the 2026-08-12 state law: no selected ring on
               * action strips). Flipped axes tint their glyph accent. */}
+            {/* the cells SHARE the half-rail: a photo layer adds Crop, and four `sm` cells at their own
+              * padding are 163px in a 140px track — Crop sat half outside the rail (found in
+              * apps/panels, 2026-10-03). Three cells already filled the track, so they do not move. */}
             <SegmentedToggle
               variant="filled" size="sm" value={null}
               ariaLabel="Transform"
+              className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1"
               options={[
                 { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={glyphSize('sm', true)} /> },
                 { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-horizontal" size={glyphSize('sm', true)} /></span> },

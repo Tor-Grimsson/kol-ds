@@ -89,6 +89,9 @@ function MobileBody() {
   const [fxFlow, setFxFlow] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [stageFit, setStageFit] = useState('contain')  /* contain = 4:5 letterbox · cover = fill display */
+  /* AT A DESK THE PANEL IS A RAIL (2026-10-05) — labs' frame, on the right — and the stage
+     stands beside it rather than under it. The overlay reports when its rail is on screen. */
+  const [railShown, setRailShown] = useState(false)
 
   /* Pinch-to-scale the stage (touch): frame the shot after Hide UI without
    * any controls. Capture-phase so a second finger suspends the sim-pointer
@@ -238,8 +241,8 @@ function MobileBody() {
           scale 1 with no transform the stage escaped to the viewport and sat
           under the shell rail. */}
       <div
-        className="absolute inset-0 touch-none"
-        style={{ transform: `scale(${stageScale})` }}
+        className="absolute inset-y-0 left-0 touch-none"
+        style={{ transform: `scale(${stageScale})`, right: railShown ? 'var(--kol-sidenav-w, 320px)' : 0 }}
         onPointerDownCapture={onPinchDown}
         onPointerMoveCapture={onPinchMove}
         onPointerUpCapture={onPinchEnd}
@@ -263,6 +266,8 @@ function MobileBody() {
           aspectValue={stageFit === 'cover' ? 'fill' : aspect}
           openEffects={fxFlow && !pickerOpen}
           onAspect={setStageAspect}
+          rail={!chromes}
+          onRail={setRailShown}
         />
       )}
       {/* Source picker overlay — labs' two-pane (From library | Upload)

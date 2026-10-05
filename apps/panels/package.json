@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Parameter panels alone — the editor's AutoControls over its own schemas (effects, generators, the inspector), read from design-editor's source: categories, sub-categories, tabs, sections, labeled controls, modulation. Never published.",
+  "description": "Parameter panels alone — labs with the stage taken out: its catalog on the rail, labs' params rail beside the editor's inspector for the one picked layer, read from design-editor's source. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

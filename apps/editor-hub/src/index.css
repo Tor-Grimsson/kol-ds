@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM — the editor is read from its source (see vite.config.js), so Tailwind has to
+   be pointed at it and at the DS packages it is built from. kol-fxr needs none of these lines: it
+   takes the editor's built stylesheet. */
+@source "../../../packages/design-editor/src";
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";
+
+/* From here down it is kol-fxr's index.css, import for import: `/core` (the umbrella minus the
+   five domain packs), the source manifest, the brand layer, the framework chrome. */
+@import "@kolkrabbi/kol-theme/core";
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+@import "@kolkrabbi/kol-framework/kol-framework.css";

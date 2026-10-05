@@ -3,7 +3,7 @@ title: Design-editor system
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-29
+updated: 2026-10-05
 verified: 2026-09-29
 description: The editor and its parts
 aliases:
@@ -111,9 +111,30 @@ a phone):
 an SPA hop would reach `/core` with every pack already in. `currentView()` reads the LAST path
 segment, so a host that mounts the chromes under a base (`/apps/editor/labs`) keeps its view keymap.
 
+**Labs and the generator share one frame** (2026-10-05). Their controls sit in the same place and
+open the same way, per device: **a rail on the right at a desk** (`--kol-sidenav-w` wide, top to
+bottom, the first bar on one y in both) and **a sheet along the bottom on a phone** (half the
+display at most; labs' stage refits above it). The panel's first row is `PanelHeader` — the title
+collapses it — and collapsed it is `PanelPills`, bottom-left; both chromes take them from
+`editor/components/PanelHeader.jsx`. The nav is the host's rail: its drawer on a phone, the
+hamburger top-right. What differs between the two is what the panel holds — labs' parametric
+controls, the generator's rolls — not where it is. Each is alone in `apps/labs` and
+`apps/generator`.
+
+The same chromes inside kol-fxr's own shell and pages — Home, Library, Settings, its rail and its
+keys — are `apps/editor-hub`: fxr's files, copied, on this repo's packages. It is the rehearsal for
+fxr's bump.
+
 **The panels** — the layout every one of those chromes shares (categories → sub-categories → a
 leaf, its tabs, folded sections, labeled rows, the modulation dot) — are `AutoControls` over each
-schema, and `apps/panels` renders them alone on the editor's own data: every effect, every
-generator preset, the four layer schemas, each as the rail (inline) and as the inspector (label
-above). A panel fix lands in `editor/params/`, and the app shows it before any chrome does.
+schema, inside two surfaces: labs' params rail (`LabsParams`, which the randomiser's sheet shares
+its parts with) and the compositor's inspector (`SelectionPalettePanel`). `apps/panels` is labs
+with the stage taken out: labs' catalog on the rail, its one layer in the document, and those two
+surfaces side by side — the touch drawer on a phone. A panel fix lands in `editor/params/` or
+`editor/labs/`, and the app shows it with no image in the way.
+
+**The labs skin has one segmented control** (user, 2026-09-01): the default `SegmentedToggle` — one
+group shell, dividers, the sunken selected cell (`kol-labs.css`). `variant="filled"` is the
+compositor inspector's; in the labs rail and the randomiser's sheet it reads as bare text, and a
+stateless strip there has no button shape at all.
 

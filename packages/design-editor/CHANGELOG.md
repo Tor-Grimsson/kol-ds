@@ -1,5 +1,22 @@
 # @kolkrabbi/design-editor
 
+## 0.20.0 — 2026-10-05
+
+Found rehearsing kol-fxr on today's packages (`apps/editor-hub`, 2026-10-03), and the frame work that followed (`apps/labs` · `apps/generator`, 2026-10-05).
+
+- **⚠ Changed: labs and the generator share one frame** (2026-10-05, the user: "they opposite open, and they dont follow the same structure"). Labs hung its controls off a top bar and a right drawer; the generator rose from the bottom at every width. Now, per device, for both:
+  - **On a phone, a sheet along the bottom.** Labs' params rail is the grid's second row — half the display at most, the stage refitting whole above it (the drawer left 126px of a 390 stage). Its top bar and the right drawer are gone; the title row collapses it and a pill bottom-left brings it back. The nav is still the shell's drawer.
+  - **At a desk, a rail on the right.** The generator's panel is labs' rail — the same width, the same insets, its first bar on the same y, controls at `sm` — where it was the phone sheet stretched across the window (382px tab cells at 1600). The stage stands beside it.
+  - Both wear the same two parts, `PanelHeader` and `PanelPills` (`editor/components/`), lifted out of the generator.
+- **Changed: on touch, labs' footer is one row until a tab is opened.** Output's eight controls stood open and would have taken the whole sheet; a tap opens a tab and the same tap closes it.
+- **Fixed: the generator's collapsed row fits a phone.** Three `lg` pills are 440px on a 390 screen and Download ran 38px off the edge (live fxr too). The row wraps upward; the pill keeps the bottom line.
+- **Fixed: the transport's loop length is visible again.** Its glyph cells went back to squares on the ladder (the 2026-09-02 ruling); at a text cell's padding the two strips squeezed the number to no width — on a phone the bar read "Loop / s".
+- Peers: kol-theme ≥0.158.0 — the labs sheet and the transport read the control ladder's tokens (`--kol-ctl-*`).
+- **Fixed: labs' and the randomiser's segmented strips are the default look again.** The sync of 0.15.0 set every `SegmentedToggle` to `filled`; in the labs skin that dropped the group shell and the dividers, and the randomiser's roll-scope strip (stateless, so no cell is ever the filled one) drew as bare text. Fourteen strips in `labs/`, `mobile/` and the labs-skin branches of `AutoControls` and `LoopFields`. The editor's inspector keeps `filled`.
+- **Fixed: labs' Loops row opens Loops.** Its first page is a nested group, which carries no pick of its own, so the rail row had nothing to run and pressing it did nothing — live fxr has the dead row today. It runs the group's first leaf, like every other row.
+- **Fixed: Crop is inside the inspector.** A photo layer's transform cluster (rotate · flip · flip · crop) was 163px in a 140px track, so Crop sat half outside the rail. The four cells share the track.
+- **Fixed: labs' touch drawer keeps the `md` rung.** kol-theme 0.158.0's touch rung lifted every control in it to 16 / 22 in a 36px box; values truncated in the 264px drawer and a row fell off the fold. The drawer pins 14 / 18 in 32 for the whole rung, not only its inputs.
+
 ## 0.19.0 — 2026-09-30
 
 **Assets thumbnails on the DS parts** (the reuse pass — UI built fresh last night swapped for what the DS already ships).

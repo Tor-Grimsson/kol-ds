@@ -1,6 +1,6 @@
 import '../styles/kol-labs.css'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { Button, Tooltip } from '@kolkrabbi/kol-component'
+import { Tooltip } from '@kolkrabbi/kol-component'
 import { EditorProviders } from '../Editor'
 import EditorShell from '../EditorShell'
 import { useFps } from '../shell/Canvas'
@@ -18,7 +18,9 @@ import LabsSourcePicker from './LabsSourcePicker'
 import { transport } from '../params/transport'
 import { getAppSettings } from '../lib/appSettings'
 import { groupOfPreset, presetById, presetLayerPatch } from '../../loops/registry'
+import { PanelHeader, PanelPills } from '../components/PanelHeader'
 import { useLabsLayer } from './useLabsLayer'
+import { sheetLabels } from './sheetLabels'
 import { isMobileDevice, wantsDesktop } from '../mobile/device'
 import { ControlSizeContext } from '../params/controlSize'
 
@@ -123,7 +125,9 @@ function LabsStage() {
         </div>
       )}
 
-      <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
+      {/* on a phone the cell is the half above the sheet, and the frame's margin there is thinner
+          than the chips' own inset — they sat on its corner */}
+      <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2 [@media(pointer:coarse)]:bottom-1">
         <Tooltip label="Zoom out"><button aria-label="Zoom out" type="button" className={chipCls} onClick={() => step(-1)}>−</button></Tooltip>
         <Tooltip label="Reset zoom (0)"><button aria-label="Reset zoom (0)" type="button" className={chipCls} onClick={() => setZoom(1)}>
           {Math.round(zoom * 100)}%
@@ -241,27 +245,22 @@ function LabsRail() {
   )
 }
 
-/* ── TOUCH: THE PARAMS RAIL IS A DRAWER (user, 2026-09-01: "labs needs both
- * sidebars, just via hamburger menu to open close, otherwise labs doesn't work
- * on mobile, it has parametric controls") ──
+/* ── TOUCH: THE PARAMS ARE A SHEET ALONG THE BOTTOM (2026-10-05) ──
  *
- * The LEFT sidebar is the shell's: `AppShell touch="drawer"` (kol-shell 0.31.0,
- * adopted here the same day) takes the rail off-canvas under 768px with its own
- * hamburger fixed top-right, and labs' catalog rows ride it as L1/L2 exactly as
- * on desktop — nothing labs-side to draw. The RIGHT one is this: on a coarse
- * pointer the params column would take 264 of a 390px screen, so a top bar
- * carries its toggle (left — the shell's trigger owns the right corner) and
- * kol-labs.css slides the rail in under the bar, over the stage. Nothing is
- * re-skinned; the rail is moved off the grid, that is all. */
+ * They were a drawer from the right under a top bar (2026-09-01): open, it left 126px of a 390
+ * stage, so a slider moved a picture you could not see — and it was the generator's frame turned
+ * round: that one rises from the bottom, this one dropped from the top (user: "they opposite open
+ * … one starts at y=x and the other starts at y=x opposite"). One frame now, the generator's. The
+ * rail is the grid's second ROW (kol-labs.css), so the stage refits above it; its first row is
+ * `PanelHeader` (the title collapses it), and collapsed it is `PanelPills`, bottom-left — the two
+ * parts the generator wears. The LEFT sidebar is still the shell's drawer: `AppShell
+ * touch="drawer"`, the hamburger top-right, labs' catalog rows riding it as on a desk. */
 const TouchRails = createContext(null)
 
-function LabsTouchBar() {
-  const { paramsOpen, toggleParams } = useContext(TouchRails)
-  return (
-    <div className="flex h-12 shrink-0 items-center border-b border-oq-08 bg-surface-primary px-2">
-      <Tooltip label="Parameters"><Button variant="nav" size="lg" iconOnly="panel-right" aria-label="Parameters" pressed={paramsOpen} onClick={toggleParams} /></Tooltip>
-    </div>
-  )
+function LabsSheetHeader() {
+  const { collapseParams } = useContext(TouchRails)
+  const { layer } = useLabsLayer()
+  return <PanelHeader title={sheetLabels(layer).title} onCollapse={collapseParams} className="px-4" />
 }
 
 /* The desktop rail minus its grab: no `useDragResize`, so nothing stamps a
@@ -301,8 +300,10 @@ const LABS_REGISTRY = {
 
 const LABS_REGISTRY_TOUCH = {
   ...LABS_REGISTRY,
-  topbar: LabsTouchBar,
-  panels: LABS_REGISTRY.panels.map((p) => (p.Component === LabsRail ? { ...p, Component: LabsTouchRail } : p)),
+  panels: [
+    { slot: 'right.header', order: 0, Component: LabsSheetHeader },
+    ...LABS_REGISTRY.panels.map((p) => (p.Component === LabsRail ? { ...p, Component: LabsTouchRail } : p)),
+  ],
 }
 
 function LabsBody() {
@@ -314,7 +315,19 @@ function LabsBody() {
    * `mobile/device.js` writes): read once — a device does not change
    * mid-mount. */
   const touch = isMobileDevice() && !wantsDesktop()
-  const [paramsOpen, setParamsOpen] = useState(false)
+  /* open, as the generator's panel is — the sheet sits under the stage, not over it */
+  const [paramsOpen, setParamsOpen] = useState(true)
+  /* a pick from the nav brings a collapsed sheet back */
+  useEffect(() => {
+    if (!touch) return undefined
+    const open = () => setParamsOpen(true)
+    window.addEventListener('kol:open-params', open)
+    window.addEventListener('kol:open-effects', open)
+    return () => {
+      window.removeEventListener('kol:open-params', open)
+      window.removeEventListener('kol:open-effects', open)
+    }
+  }, [touch])
 
   /* ONE RAIL, NOT TWO (user ruling 2026-08-27) — and since 2026-08-28 it is
    * literally ONE COMPONENT: labs no longer hides the shell rail and mounts
@@ -414,12 +427,13 @@ function LabsBody() {
       {/* draws nothing — hands labs' categories to the shell rail */}
       <LabsNav />
       {touch ? (
-        <TouchRails.Provider value={{ paramsOpen, toggleParams: () => setParamsOpen((v) => !v) }}>
-          {/* ONE SIZE GROUP IN THE DRAWER — 'md', the rung where the DS's
+        <TouchRails.Provider value={{ collapseParams: () => setParamsOpen(false) }}>
+          {/* ONE SIZE GROUP IN THE SHEET — 'md', the rung where the DS's
               ladders agree (see controlSize.js). */}
           <ControlSizeContext.Provider value="md">
             <EditorShell registry={LABS_REGISTRY_TOUCH} />
           </ControlSizeContext.Provider>
+          {!paramsOpen && <PanelPills tone="grey" label={sheetLabels(layer).pill} onOpen={() => setParamsOpen(true)} />}
         </TouchRails.Provider>
       ) : (
         <EditorShell registry={LABS_REGISTRY} />

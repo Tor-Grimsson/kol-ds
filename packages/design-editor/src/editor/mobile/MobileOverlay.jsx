@@ -1,4 +1,3 @@
-import { Icon } from '@kolkrabbi/kol-icons'
 import { useEffect, useState } from 'react'
 import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
@@ -11,11 +10,11 @@ import EffectScreen from './EffectScreen'
 import { deriveScopes, allScopeParams, computeRoll, computePresetRoll, computeFilterRoll, useRollSeed } from '../params/rolls'
 import { resolvedChain } from '../compose/filterChain'
 import { effectHost } from '../compose/inspectors/effectCategories'
+import { PanelHeader, PanelPills } from '../components/PanelHeader'
 
 /**
- * MobileOverlay — one SEE-THROUGH floating modal (35% surface veil, no
- * borders anywhere), content split into SegmentedToggle tabs so only one
- * concern shows at a time:
+ * MobileOverlay — the generator's control panel, content split into
+ * SegmentedToggle tabs so only one concern shows at a time:
  *
  *   Generate  — preset ⚄ / generator switch, then the inspector's roll block
  *   Transport — the established `TransportBar`, verbatim (▶ ❚❚ · Loop/N s · ■ ◀◀)
@@ -27,6 +26,13 @@ import { effectHost } from '../compose/inspectors/effectCategories'
  *
  * Rolls skip the desktop's motion/look dropdown-to-Custom bookkeeping — the
  * mobile doc is ephemeral and those dropdowns never render on it.
+ *
+ * THE FRAME IS THE DEVICE'S, AND IT IS LABS' TOO (2026-10-05): on a phone a
+ * full-bleed sheet along the bottom at `lg`, the touch rung; at a desk
+ * (`rail`) the right rail — labs' width, labs' insets, labs' `sm` rung —
+ * where it was the same sheet stretched 1552px wide with 382px tab cells.
+ * Header and collapsed pill are `PanelHeader` / `PanelPills`, shared with
+ * labs.
  */
 
 const PANEL_STYLE = {
@@ -69,17 +75,19 @@ const STRIP_CLAMP = '[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1 [&_.kol-se
  * ROWS bend instead. ponytail: 9.6px/char is lg mono-16's real advance —
  * an estimate, not a measurement; swap for a canvas measure if a font
  * change ever drifts it. */
-const CH = 9.6
+const CH = { lg: 9.6, sm: 7.2 }
 const CELL_PAD = 10
-function packRows(cells) {
+/* the rail's inner width at its narrowest (`--kol-sidenav-w` 264 less the 16px insets) */
+const RAIL_BUDGET = 232
+function packRows(cells, size) {
   /* px-3 panel inset both sides; 480 caps the budget on tablets so rows
-   * don't stretch to six thin cells. */
-  const budget = Math.min(window.innerWidth, 480) - 24
+   * don't stretch to six thin cells. In the rail the budget is the rail's. */
+  const budget = size === 'sm' ? RAIL_BUDGET : Math.min(window.innerWidth, 480) - 24
   const rows = []
   let row = []
   let maxW = 0
   for (const c of cells) {
-    const w = c.label.length * CH + CELL_PAD
+    const w = c.label.length * CH[size] + CELL_PAD
     const m = Math.max(maxW, w)
     if (row.length && (row.length + 1) * m > budget) {
       rows.push(row); row = [c]; maxW = w
@@ -91,14 +99,14 @@ function packRows(cells) {
   return rows
 }
 
-function ScopeStrips({ cells }) {
-  return packRows(cells).map((row, i) => (
-    <SegmentedToggle variant="filled"
+function ScopeStrips({ cells, size }) {
+  return packRows(cells, size).map((row, i) => (
+    <SegmentedToggle
       key={i}
       value={null}
       onChange={(v) => row.find((c) => c.value === v)?.run()}
       options={row}
-      size="lg"
+      size={size}
       ariaLabel="Randomize scope"
       className={STRIP_CLAMP}
     />
@@ -108,14 +116,14 @@ function ScopeStrips({ cells }) {
 /* Loop-length quick chips (own component so the per-tick useTransport
  * re-render stays scoped here, not the whole overlay). */
 const LOOP_CHIP_OPTS = [2, 4, 8, 16].map((s) => ({ value: String(s), label: `${s}s` }))
-function LoopChips() {
+function LoopChips({ size }) {
   const { loopSeconds, setLoopSeconds } = useTransport()
   return (
-    <SegmentedToggle variant="filled"
+    <SegmentedToggle
       value={String(loopSeconds)}
       onChange={(v) => setLoopSeconds(Number(v))}
       options={LOOP_CHIP_OPTS}
-      size="lg"
+      size={size}
       ariaLabel="Loop length"
     />
   )
@@ -137,7 +145,7 @@ const ASPECT_ROW_2 = [
   { value: 'fill', label: 'Fill' },
 ]
 
-export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false }) {
+export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false, rail = false, onRail }) {
   const { updateLayer, addFilter, removeFilter } = useComposeState()
   const { onExportPng } = useComposeFile()
   const [uiHidden, setUiHidden] = useState(false)
@@ -148,6 +156,11 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
   const seed = useRollSeed(layer)
   /* the Effects tool opens its sheet as soon as its media has landed */
   useEffect(() => { if (openEffects) { setOpen(true); setShowFx(true) } }, [openEffects])
+  /* the rung of the frame: the rail is the desk's `sm`, the sheet is touch's `lg` */
+  const cs = rail ? 'sm' : 'lg'
+  /* the stage makes room for the rail only while the rail is on screen */
+  const railShown = rail && !!layer && open && !uiHidden
+  useEffect(() => { onRail?.(railShown); return () => onRail?.(false) }, [railShown]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!layer) return null
 
@@ -191,25 +204,19 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
    * label+chevron holds one x in both states. */
   if (!open) {
     return (
-      <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-[var(--fxr-rail,0px)] z-10 flex gap-2 px-3">
-        {/* Pill shows the preset name only — the group·preset long form
-            stays on the expanded header (user ruling 2026-08-12). */}
-        <Button tone="primary" size="lg" onClick={() => setOpen(true)}>
-          <span className="flex items-center gap-2">
-            {isLoop ? layer.presetLabel : 'Media'}
-            <Icon name="chevron-down" size={16} className="rotate-180" />
-          </span>
-        </Button>
+      /* Pill shows the preset name only — the group·preset long form stays on
+         the expanded header (user ruling 2026-08-12). */
+      <PanelPills label={isLoop ? layer.presetLabel : 'Media'} onOpen={() => setOpen(true)} size={cs}>
         {/* Media has no generator schema, but an effect chain is still
             rollable — computeRoll's filter half carries it (2026-08-27).
             Before that this button was loop-only, so an image or video
             collapsed to Download and the pill, nothing to press. */}
         {(isLoop || chain.length > 0) && (
-          <Button tone="primary" size="lg" onClick={rollAll}>Randomize all</Button>
+          <Button tone="primary" size={cs} onClick={rollAll}>Randomize all</Button>
         )}
         {/* Capture without re-expanding the sheet (2026-08-12). */}
-        <Button tone="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
-      </div>
+        <Button tone="primary" size={cs} onClick={() => onExportPng(2)}>Download</Button>
+      </PanelPills>
     )
   }
 
@@ -241,27 +248,26 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
         />
       )}
 
-      {/* The one modal — full-bleed, square, solid surface (user 2026-08-12) */}
+      {/* The one modal — full-bleed, square, solid surface (user 2026-08-12) —
+          along the bottom on a phone; at a desk the right rail, labs' own
+          (`--kol-sidenav-w` wide, top to bottom, a hairline on its inner edge). */}
       <div
-        className="fixed right-0 left-[var(--fxr-rail,0px)] bottom-0 z-10 pb-[env(safe-area-inset-bottom)]"
+        className={rail
+          ? 'fixed top-0 right-0 bottom-0 z-10 flex w-[var(--kol-sidenav-w,320px)] flex-col overflow-y-auto border-l border-oq-08'
+          : 'fixed right-0 left-[var(--fxr-rail,0px)] bottom-0 z-10 pb-[env(safe-area-inset-bottom)]'}
         style={PANEL_STYLE}
       >
         {/* Header — title tap collapses; Start over always reachable (it was
-            buried in the Output tab — "can't go back", user 2026-08-12). */}
-        <div className="flex w-full items-center px-3">
-          <button
-            className="kol-helper-12 text-meta flex flex-1 items-center gap-2 py-2.5"
-            onClick={() => setOpen(false)}
-          >
-            <span>{title}</span>
-            {/* Real icon, opaque ink (the icons law — the header's text-meta
-                alpha stays on the TEXT only). */}
-            <Icon name="chevron-down" size={16} className="text-oq-48" />
-          </button>
-          <button className="kol-helper-12 text-meta py-2.5" onClick={onRestart}>Start over</button>
-        </div>
+            buried in the Output tab — "can't go back", user 2026-08-12). In the
+            rail it holds labs' insets, so both rails' first rows start on one y. */}
+        <PanelHeader
+          title={title}
+          onCollapse={() => setOpen(false)}
+          className={rail ? 'px-4 pt-2.5 pb-1.5' : 'px-3'}
+          action={<button className="kol-helper-12 text-meta py-2.5" onClick={onRestart}>Start over</button>}
+        />
 
-        <div className="px-3 pb-3">
+        <div className={rail ? 'px-4 pb-5' : 'px-3 pb-3'}>
           {/* THE STRIP MUST NEVER OVERFLOW. `.kol-seg-cell` is `flex: 1` but a
               flex item's default `min-width: auto` pins it to its own nowrap
               text, so cells push past the shell instead of sharing it — four
@@ -271,25 +277,25 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
               phone width. Descendant selectors into DS internals are the
               sanctioned escape — a consumer cannot reach `.kol-seg-cell`
               otherwise, and the size ladder stays `lg`. */}
-          <SegmentedToggle variant="filled"
+          <SegmentedToggle
             value={activeTab}
             onChange={setTab}
             options={tabs}
-            size="lg"
-            className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-2 [&_.kol-seg-cell]:overflow-hidden"
+            size={cs}
+            className={rail ? STRIP_CLAMP : '[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-2 [&_.kol-seg-cell]:overflow-hidden'}
           />
 
           {activeTab === 'generate' && isLoop && (
             <div className="flex flex-col gap-2 pt-3">
               <div className="grid grid-cols-2 gap-2">
-                <Button tone="primary" size="lg" iconRight="refresh" onClick={shufflePreset}>Preset</Button>
-                <Button tone="primary" size="lg" onClick={() => setShowCats(true)}>Generator</Button>
+                <Button tone="primary" size={cs} iconRight="refresh" onClick={shufflePreset}>Preset</Button>
+                <Button tone="primary" size={cs} onClick={() => setShowCats(true)}>Generator</Button>
               </div>
-              <Button tone="primary" size="lg" className="w-full" onClick={rollAll}>
+              <Button tone="primary" size={cs} className="w-full" onClick={rollAll}>
                 Randomize all
               </Button>
               {scopes.length > 0 && (
-                <ScopeStrips cells={[
+                <ScopeStrips size={cs} cells={[
                   ...scopes.map((s) => ({ value: s.id, label: s.label, run: () => rollScope(s) })),
                   /* Re-trigger — restart the sim clock (rewind: t=0 + a new
                       reset epoch, keeps playing). Accumulative sims (penrose
@@ -309,8 +315,8 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                   below the chain, so the strips read as tabs with nothing
                   behind them and the Randomize they belong to was last. */}
               <div className="grid grid-cols-2 gap-2">
-                <Button tone="primary" size="lg" onClick={() => setShowFx(true)}>Add effect</Button>
-                <Button tone="primary" size="lg" disabled={!chain.length} onClick={rollFilters}>Randomize</Button>
+                <Button tone="primary" size={cs} onClick={() => setShowFx(true)}>Add effect</Button>
+                <Button tone="primary" size={cs} disabled={!chain.length} onClick={rollFilters}>Randomize</Button>
               </div>
               {/* THE CHAIN, IN RENDER ORDER. The array is already tier-sorted
                   by addFilter (canvas → pixi GPU → the single terminal GL
@@ -337,7 +343,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                   <div key={stage.key} className="flex flex-col gap-2">
                     <Button
                       tone="grey"
-                      size="lg"
+                      size={cs}
                       className={SPREAD}
                       iconLeft="trash"
                       iconRight="trash"
@@ -346,7 +352,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                       {`${i + 1}. ${stage.def?.label ?? stage.id}`}
                     </Button>
                     {stageScopes.length > 0 && (
-                      <ScopeStrips cells={stageScopes.map((sc) => ({ value: sc.id, label: sc.label, run: () => rollStage(sc) }))} />
+                      <ScopeStrips size={cs} cells={stageScopes.map((sc) => ({ value: sc.id, label: sc.label, run: () => rollStage(sc) }))} />
                     )}
                   </div>
                 )
@@ -356,21 +362,21 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
 
           {activeTab === 'transport' && pack('motion') && (
             <div className="flex flex-col gap-2 pt-3">
-              {(() => { const TransportBar = pack('motion').TransportBar; return <TransportBar size="lg" /> })()}
+              {(() => { const TransportBar = pack('motion').TransportBar; return <TransportBar size={cs} /> })()}
               {/* Loop-length quick chips — typing in the bar's field is desk
                   work; touch picks. Fills the tab's dead width (2026-08-12). */}
-              <LoopChips />
+              <LoopChips size={cs} />
             </div>
           )}
 
           {activeTab === 'output' && (
             <div className="flex flex-col gap-2 pt-3">
-              <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size="lg" ariaLabel="Aspect" />
-              <SegmentedToggle variant="filled" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size="lg" ariaLabel="Aspect (landscape) and fill" />
+              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size={cs} ariaLabel="Aspect" />
+              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size={cs} ariaLabel="Aspect (landscape) and fill" />
               <div className="grid grid-cols-3 gap-2">
-                <Button tone="primary" size="lg" onClick={() => onExportPng(2)}>Download</Button>
-                <Button tone="primary" size="lg" onClick={() => setUiHidden(true)}>Hide UI</Button>
-                <Button tone="primary" size="lg" onClick={onRestart}>Start over</Button>
+                <Button tone="primary" size={cs} onClick={() => onExportPng(2)}>Download</Button>
+                <Button tone="primary" size={cs} onClick={() => setUiHidden(true)}>Hide UI</Button>
+                <Button tone="primary" size={cs} onClick={onRestart}>Start over</Button>
               </div>
             </div>
           )}

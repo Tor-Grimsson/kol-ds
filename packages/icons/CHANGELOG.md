@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.33.1 — 2026-10-05
+
+- **Fixed:** an `<Icon>` that rendered before the icon chunk landed could stay blank for good. The chunk arriving between the render and the effect that subscribes to it reached nobody — under a Suspense boundary that gap is as long as the lazy route takes. Found on kol-fxr's rail at `/editor` and `/randomiser`, rehearsed in `apps/editor-hub`.
+
 ## 0.33.0 — 2026-10-02
 
 - **New:** `text-justify-left` · `-center` · `-right` · `-all`, `text-align-toward-spine` · `text-align-away-spine`, `space-evenly-horizontal` · `space-evenly-vertical`.

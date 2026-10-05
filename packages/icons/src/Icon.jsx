@@ -42,7 +42,11 @@ loadIcons()
 const useIconsReady = () => {
   const [ready, setReady] = useState(() => !!ICONS)
   useEffect(() => {
-    if (ICONS) return undefined
+    /* the chunk can land BETWEEN the render (which read `ICONS` as null) and this effect — under a
+       Suspense boundary that gap is as long as the lazy route takes. Nobody was subscribed then, so
+       returning here without setting the state left the icon blank for good (kol-fxr's rail on
+       /editor and /randomiser, found in apps/editor-hub 2026-10-03). */
+    if (ICONS) { setReady(true); return undefined }
     const cb = () => setReady(true)
     subscribers.add(cb)
     loadIcons()

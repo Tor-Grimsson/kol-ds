@@ -83,7 +83,9 @@ export default function LabsNav() {
       const pages = entry.pages ?? []
       /* pressing a group runs its first leaf — the group IS its first category
          when you have not picked one; the rest are the right rail's chips */
-      const own = entry.onSelect ?? pages[0]?.onSelect
+      /* …and when the first page is itself a nested group (Loops: one group per registry group),
+         its first leaf — without this the row had no entry and pressing it did nothing */
+      const own = entry.onSelect ?? pages[0]?.onSelect ?? pages[0]?.children?.[0]?.onSelect
       if (own) dispatch.set(path, own)
       const section = items[items.length - 1]
       const row = { icon: entry.icon, path, label: entry.label }

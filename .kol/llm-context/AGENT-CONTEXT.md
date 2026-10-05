@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-05, labs and the generator — published)
+
+- **Published 2026-10-05:** theme 0.166.0 · icons 0.33.1 · component 0.239.1 · design-editor 0.20.0. Push is the user's. kol-fxr is rehearsed as `apps/editor-hub` (5198); `apps/labs` (5199) and `apps/generator` (5200) are the two tools alone, on one frame — a rail on the right at a desk, a sheet along the bottom on a phone (`PanelHeader` · `PanelPills` in design-editor); `apps/panels` is labs with the stage taken out. **He has looked at none of it yet** — take his corrections before building further. What fxr needs when it bumps: `backlog/2026-10-03-fxr-bump-notes.md`. The mixer is still parked (`session-bridge/handoff-2026-10-03-1853-mixer-parked-fxr-labs-next.md`). `pnpm validate` 31 of 32 — `retirements` (`AppShell`, `BrandHero` in kol-framework; the iMac's drop). Log: `session-log/2026-10-05-labs-and-generator-one-frame-published.md`.
+
 ## Current state (2026-10-02 evening, the phone pass — published)
 
 - **Published 2026-10-02 (third wave):** theme 0.165.0 · framework 0.49.0 · component 0.239.0 · workshop 0.38.0 · shell 0.61.0 (and theme 0.164.1 · markdown 0.1.3 before it). Push is the user's. The mobile plan was opened and built from his answers: chrome inset 20 on a phone, a rail title opens its page and expands nothing (`validate:rail-pages` P5), Lookup as Start · Foundations · Taxonomy, modules' Navigation group, `T` for the whole tree, nested components on every component page, `Button variant="tab"` + `TabChips` on the size ramp, `NavRail fade`. What is left of the phone pass: `plan-2026-10-02-mobile-pass.md` § D. Lobby: two kol-website tickets closed, `section-split-frame-ratio-holds-at-desktop` addressed and waiting on kol-website. Log: `session-log/2026-10-02-phone-pass-and-website-tickets.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Published 2026-10-01:** theme 0.161.0 · icons 0.32.0 · component 0.234.0 · workshop 0.35.0. Push is the user's. Header: Styles · Library · Docs · Search · Development; Library holds Composition (Components · Blocks · Apps) and Collection (Sets · Packages); the rail nests to any depth and every group opens its own page. Decisions + open items: phase log *Showcase review*. Log: `session-log/2026-10-01-showcase-review-w1-w22-published.md`.
 - **`pnpm validate` is fast (32 gates, ~5s)** — the browser gate is `pnpm validate:rail-pages`, run only when rail/nav code changes. Never run the full suite after doc edits (memory: validate-is-not-a-blocker).
-
-## Current state (2026-09-30, library taxonomy)
-
-- **Built, not published (no package changed).** Header tabs are the parents: Styles · Composition (Components · Blocks · Apps) · Collection (Sets · Packages) · Docs · Search · Development. Homes + diagrams at `/library` · `/composition` · `/collection`; Search has a home. Cards is a set; a single-package family is its package page (`/sets/family/*` → `/packages/*`). Words: `05-names.md` § The tree. Plan: `plan-2026-09-30-library-taxonomy.md` (built). Log: `session-log/2026-09-30-library-taxonomy.md`. Next: the user's eye, then `.md` + `uses` beside blocks/apps, Styles › Ladders.
 
 ## Repo standup (2026-06-15)
 

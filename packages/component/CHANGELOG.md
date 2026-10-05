@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-component
 
-## Unreleased
+## 0.239.1 — 2026-10-05
 
 - **Fixed: `ContentFilters` — a chip that is not offered does not filter.** The active set outlives a change of `filterGroups`, so on a page whose views swap the groups (a Library of Variants · Effects · Expressions) a chip picked in one view kept filtering the next, where no item carries its key: an empty list under "(1) filter active" with no chip to untick. Only chips the current groups offer apply (plus `customFilterKeys`); the stored set is untouched, so the chip is still on when its view comes back. A page whose groups never change behaves as before.
 - **Fixed: a catalog row is one line.** `ContentRow variant="catalog"` (and `print`) is a fixed 36px rung, but neither slot truncated: a long `detail` took its full width and the title wrapped under it, so one row stood two or three lines tall in a list of single-line rows. The title now keeps its width and the detail takes what is left and truncates (`ContentText`'s new `lead` line — a `between` the other way round). A row whose detail already fitted renders as it did.

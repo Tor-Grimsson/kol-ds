@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/design-editor",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "private": false,
   "description": "The design editor as one component",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "@kolkrabbi/kol-shell": ">=0.51.0 <1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@kolkrabbi/kol-theme": ">=0.154.0 <1"
+    "@kolkrabbi/kol-theme": ">=0.158.0 <1"
   },
   "dependencies": {
     "colord": "^2.9.3",

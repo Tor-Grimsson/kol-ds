@@ -39,6 +39,10 @@
       "destination": "/apps/editor/index.html"
     },
     {
+      "source": "/apps/editor-hub/(.*)",
+      "destination": "/apps/editor-hub/index.html"
+    },
+    {
       "source": "/apps/controls/(.*)",
       "destination": "/apps/controls/index.html"
     },

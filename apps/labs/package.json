@@ -1,0 +1,32 @@
+{
+  "name": "labs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Labs alone — @kolkrabbi/design-editor's LabsView from workspace source: one source under a params rail, its catalog on the rail, on the fixture bucket. Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kolkrabbi/design-editor": "workspace:*",
+    "@kolkrabbi/kol-brand": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "media-fixture": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10",
+    "vite-plugin-svgr": "^5.2.0"
+  }
+}
