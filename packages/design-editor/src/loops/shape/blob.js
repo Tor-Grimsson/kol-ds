@@ -11,8 +11,8 @@ export default {
   duration: 8,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#c2502e' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#f6c453' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#c2502e' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#f6c453' },
     ...FILL_PARAMS,
     { key: 'amp', label: 'Wobble', type: 'range', min: 0, max: 0.4, step: 0.02, default: 0.18 },
     { key: 'lobes', label: 'Lobes', type: 'range', min: 2, max: 8, step: 1, default: 4, noRandom: true },

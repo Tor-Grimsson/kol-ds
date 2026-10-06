@@ -53,6 +53,7 @@ export default function App() {
       }}
       railToggleKey={'\\'}
       touch="drawer"
+      railSections="enter"
       pageWash="var(--kol-fg-02)"
     >
       {api && <ExtrasBridge useRailExtras={api.useRailExtras} onChange={setExtras} />}

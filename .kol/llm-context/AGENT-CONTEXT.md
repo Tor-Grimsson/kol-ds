@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-06, fxr on a phone + kol-website wave — published)
+
+- **Published 2026-10-06:** kol-component 0.240.0 · kol-shell 0.62.0 · kol-workshop 0.39.0 · design-editor 0.21.0 · kol-media-client 0.4.1. Push is the user's. kol-website's four tickets closed (`lobby/done/`). Handoff: `session-bridge/handoff-2026-10-06-0135-fxr-phone-and-website-wave-published.md`. `apps/generator` is `apps/randomiser`. Labs opens on an entry card and asks for media in a card; phone frame by width (labs <1024, randomiser <768) as well as touch; both sheets half/tall with a draggable grabber; the editor under 1024 is a note; labs' rail enters sections (`railSections="enter"`); S opens the standard sheet. All decided on the recommendation for his review. Plan: `plan-2026-10-05-fxr-on-a-phone.md`; findings: `backlog/2026-10-05-fxr-phone-findings.md`. Log: `session-log/2026-10-06-fxr-on-a-phone.md`.
+
 ## Current state (2026-10-05, labs and the generator — published)
 
 - **Published 2026-10-05:** theme 0.166.0 · icons 0.33.1 · component 0.239.1 · design-editor 0.20.0. Push is the user's. kol-fxr is rehearsed as `apps/editor-hub` (5198); `apps/labs` (5199) and `apps/generator` (5200) are the two tools alone, on one frame — a rail on the right at a desk, a sheet along the bottom on a phone (`PanelHeader` · `PanelPills` in design-editor); `apps/panels` is labs with the stage taken out. **He has looked at none of it yet** — take his corrections before building further. What fxr needs when it bumps: `backlog/2026-10-03-fxr-bump-notes.md`. The mixer is still parked (`session-bridge/handoff-2026-10-03-1853-mixer-parked-fxr-labs-next.md`). `pnpm validate` 31 of 32 — `retirements` (`AppShell`, `BrandHero` in kol-framework; the iMac's drop). Log: `session-log/2026-10-05-labs-and-generator-one-frame-published.md`.
@@ -25,11 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-02, the approved build list — published)
 
 - **Published 2026-10-02:** theme 0.163.0 · icons 0.33.0 · search 0.3.0 · component 0.237.0 · shell 0.60.0 · styleguide 0.6.0 · workshop 0.37.0 · hardware 0.4.0 · foundry 0.12.0. Push is the user's. One player (`MediaPlayer`), `Slider` vertical + scrub, `Knob` (alias `RotaryDial`), `apps/rack` · `apps/mixer`, the rail's icon state (`ShellNavColumn`), "search modal" not "palette". hardware 0.4.0 breaks monitor · mirror · fxr until they pass `onHold` — bulletined, tickets still to file from the iMac. Log: `session-log/2026-10-02-approved-build-list-published.md`.
-
-## Current state (2026-10-01, showcase review W1–W22 — published)
-
-- **Published 2026-10-01:** theme 0.161.0 · icons 0.32.0 · component 0.234.0 · workshop 0.35.0. Push is the user's. Header: Styles · Library · Docs · Search · Development; Library holds Composition (Components · Blocks · Apps) and Collection (Sets · Packages); the rail nests to any depth and every group opens its own page. Decisions + open items: phase log *Showcase review*. Log: `session-log/2026-10-01-showcase-review-w1-w22-published.md`.
-- **`pnpm validate` is fast (32 gates, ~5s)** — the browser gate is `pnpm validate:rail-pages`, run only when rail/nav code changes. Never run the full suite after doc edits (memory: validate-is-not-a-blocker).
 
 ## Repo standup (2026-06-15)
 

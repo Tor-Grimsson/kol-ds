@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import MediaPicker from '../../library/MediaPicker'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
@@ -15,6 +15,7 @@ import { ensureWebcam } from '../../lib/webcam'
 import { ASPECTS } from '../aspects'
 import BatchExportModal from './BatchExportModal'
 import { useControlSize, stripClamp } from '../../params/controlSize'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
  * EditorFooter — the tabbed rail footer, ported from the labs standard
@@ -278,13 +279,19 @@ export default function EditorFooter() {
   return (
     <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 20px 24px 20px' }}>
       <div className="flex items-center gap-2">
-        {touch && TransportBar && (
-          <Tooltip label="Transport"><Button tone="primary" size={cs} iconOnly="play" aria-label="Transport" pressed={transportOpen} onClick={() => setTransportOpen((v) => !v)} /></Tooltip>
-        )}
         {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
         {/* the default strip — raised cells, dividers, the selected one on the ground — filling
-          * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs) */}
-        <SegmentedToggle value={tab} onChange={(v) => setTab((t) => (touch && t === v ? null : v))} options={tabs} size={cs} className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()} />
+          * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs).
+          * ON TOUCH THE TRANSPORT IS ITS FIRST CELL (2026-10-06; the user: "transport new layout
+          * uneven"): a filled ▶ square stood beside the strip as a second shape; now one strip,
+          * the ▶ cell lit while the transport sheet is up. */}
+        <SegmentedToggle
+          value={touch && transportOpen ? 'transport-sheet' : tab}
+          onChange={(v) => { if (v === 'transport-sheet') { setTransportOpen((o) => !o); return } setTab((t) => (touch && t === v ? null : v)) }}
+          options={touch && TransportBar ? [{ value: 'transport-sheet', label: <Icon name="play" size={glyphSize(cs, true)} />, ariaLabel: 'Transport' }, ...tabs] : tabs}
+          size={cs}
+          className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()}
+        />
       </div>
       {/* stays mounted hidden on desktop so playback chrome never re-inits on a
           tab switch; on touch the bar lives in the sheet below */}
@@ -296,7 +303,10 @@ export default function EditorFooter() {
       {touch && TransportBar && transportOpen && (
         <div
           className="fixed inset-x-0 bottom-0 flex items-center gap-3 border-t border-oq-08 bg-surface-primary px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          style={{ zIndex: 'var(--kol-z-modal)' }}
+          /* over the sheet it rises from, UNDER the shell's nav drawer and its scrim (kol-shell:
+             the scrim is sticky − 1). At `--kol-z-modal` it stood on top of an open drawer
+             (2026-10-05). */
+          style={{ zIndex: 'calc(var(--kol-z-sticky) - 2)' }}
         >
           <div className="flex-1 min-w-0"><TransportBar size={cs} /></div>
           <Tooltip label="Close transport"><Button variant="nav" size={cs} iconOnly="x" aria-label="Close transport" onClick={() => setTransportOpen(false)} /></Tooltip>

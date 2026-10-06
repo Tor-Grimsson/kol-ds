@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-workshop",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "private": false,
   "description": "Docs viewer, shell and tag system",
   "license": "MIT",

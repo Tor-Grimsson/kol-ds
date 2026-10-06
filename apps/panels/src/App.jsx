@@ -16,7 +16,7 @@ import { PanelHeader, PanelPills } from 'design-editor-src/editor/components/Pan
 import EditorFooter from 'design-editor-src/editor/shell/panels/EditorFooter'
 import SelectionPalettePanel from 'design-editor-src/editor/shell/panels/SelectionPalettePanel'
 import { ControlSizeContext } from 'design-editor-src/editor/params/controlSize'
-import { isMobileDevice, wantsDesktop } from 'design-editor-src/editor/mobile/device'
+import { isMobileDevice, wantsDesktop, useBelow, LABS_BELOW } from 'design-editor-src/editor/mobile/device'
 import { useRailExtras, RAIL_EXTRA_PREFIX } from 'design-editor-src/railExtras'
 
 /* PARAMETER PANELS, ALONE (rebuilt 2026-10-03 — the user: "apps/panels also fails … they just look
@@ -79,7 +79,9 @@ export default function App() {
 function Panels() {
   const { layer } = useLabsLayer()
   const { selectedId, select } = useComposeState()
-  const touch = isMobileDevice() && !wantsDesktop()
+  /* labs' own test (LabsView): a touch device, or a window under 1024 */
+  const narrow = useBelow(LABS_BELOW)
+  const touch = (isMobileDevice() && !wantsDesktop()) || narrow
 
   /* the one layer stays selected — every inspector resolves its subject from `selectedId`
    * (LabsView's rule) */

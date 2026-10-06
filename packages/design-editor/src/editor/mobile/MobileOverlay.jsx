@@ -10,7 +10,7 @@ import EffectScreen from './EffectScreen'
 import { deriveScopes, allScopeParams, computeRoll, computePresetRoll, computeFilterRoll, useRollSeed } from '../params/rolls'
 import { resolvedChain } from '../compose/filterChain'
 import { effectHost } from '../compose/inspectors/effectCategories'
-import { PanelHeader, PanelPills } from '../components/PanelHeader'
+import { PanelHeader, PanelPills, SheetGrab, SHEET_H } from '../components/PanelHeader'
 
 /**
  * MobileOverlay — the generator's control panel, content split into
@@ -145,7 +145,7 @@ const ASPECT_ROW_2 = [
   { value: 'fill', label: 'Fill' },
 ]
 
-export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false, rail = false, onRail }) {
+export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false, rail = false, onRail, onSheet }) {
   const { updateLayer, addFilter, removeFilter } = useComposeState()
   const { onExportPng } = useComposeFile()
   const [uiHidden, setUiHidden] = useState(false)
@@ -153,6 +153,12 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
   const [showCats, setShowCats] = useState(false)
   const [showFx, setShowFx] = useState(false)
   const [tab, setTab] = useState('generate')
+  /* ONE HEIGHT FOR EVERY TAB (2026-10-05, decided on the recommendation for review). The sheet was
+     as tall as its tab — 332 · 140 · 188 · 236 at 390 — so the strip jumped under the thumb on
+     every switch, and on Generate it covered the bottom third of a stage that never refitted.
+     Now it is labs' sheet: half the display (tall on the grabber), the stage refitting above it
+     (`onSheet`), the controls scrolling inside when they outgrow it. */
+  const [tall, setTall] = useState(false)
   const seed = useRollSeed(layer)
   /* the Effects tool opens its sheet as soon as its media has landed */
   useEffect(() => { if (openEffects) { setOpen(true); setShowFx(true) } }, [openEffects])
@@ -161,6 +167,10 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
   /* the stage makes room for the rail only while the rail is on screen */
   const railShown = rail && !!layer && open && !uiHidden
   useEffect(() => { onRail?.(railShown); return () => onRail?.(false) }, [railShown]) // eslint-disable-line react-hooks/exhaustive-deps
+  /* …and the sheet's height, so the stage can stand above it */
+  const sheetShown = !rail && !!layer && open && !uiHidden
+  const sheetH = sheetShown ? (tall ? SHEET_H.tall : SHEET_H.half) : null
+  useEffect(() => { onSheet?.(sheetH); return () => onSheet?.(null) }, [sheetH]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!layer) return null
 
@@ -254,9 +264,12 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
       <div
         className={rail
           ? 'fixed top-0 right-0 bottom-0 z-10 flex w-[var(--kol-sidenav-w,320px)] flex-col overflow-y-auto border-l border-oq-08'
-          : 'fixed right-0 left-[var(--fxr-rail,0px)] bottom-0 z-10 pb-[env(safe-area-inset-bottom)]'}
-        style={PANEL_STYLE}
+          : 'fixed right-0 left-[var(--fxr-rail,0px)] bottom-0 z-10 flex flex-col pb-[env(safe-area-inset-bottom)]'}
+        /* the TOP edge is set, not the height, so it always meets the stage's bottom edge (the same
+           `dvh` sum in MobileView) whatever the layout viewport's own height is doing */
+        style={rail ? PANEL_STYLE : { ...PANEL_STYLE, top: `calc(100dvh - ${sheetH ?? SHEET_H.half})` }}
       >
+        {!rail && <SheetGrab tall={tall} onToggle={() => setTall((v) => !v)} onDrag={(dir) => { if (dir < 0) setTall(true); else if (tall) setTall(false); else setOpen(false) }} />}
         {/* Header — title tap collapses; Start over always reachable (it was
             buried in the Output tab — "can't go back", user 2026-08-12). In the
             rail it holds labs' insets, so both rails' first rows start on one y. */}
@@ -267,7 +280,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
           action={<button className="kol-helper-12 text-meta py-2.5" onClick={onRestart}>Start over</button>}
         />
 
-        <div className={rail ? 'px-4 pb-5' : 'px-3 pb-3'}>
+        <div className={rail ? 'px-4 pb-5' : 'min-h-0 flex-1 overflow-y-auto px-3 pb-3'}>
           {/* THE STRIP MUST NEVER OVERFLOW. `.kol-seg-cell` is `flex: 1` but a
               flex item's default `min-width: auto` pins it to its own nowrap
               text, so cells push past the shell instead of sharing it — four

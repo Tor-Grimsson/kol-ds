@@ -121,7 +121,10 @@ export function usePopover({
 
   const interactions = useInteractions([
     useClick(data.context, { enabled: click }),
-    useHover(data.context, { enabled: hover, delay: hoverDelay, move: false }),
+    /* `mouseOnly` — a hover is a mouse's (2026-10-05, found on labs' phone sheet). Touch has none:
+     * a tap read as a hover that never ends, so a tooltip opened on the tap and stayed over the
+     * next control. Only Tooltip opens on hover, and the keyboard still reaches it through `focus`. */
+    useHover(data.context, { enabled: hover, delay: hoverDelay, move: false, mouseOnly: true }),
     useFocus(data.context, { enabled: focus }),
     /* `dismiss` may be an object of floating-ui's own options — `{ outsidePress: false }` keeps Esc
      * and drops the outside click (Dropdown `stayOpen`) */

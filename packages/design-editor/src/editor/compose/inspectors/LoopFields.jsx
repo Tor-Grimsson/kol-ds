@@ -173,8 +173,12 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
           hairline between groups — the picker stack and the theme rows were
           bare children of the surface's 20px column, three rhythms in one
           rail. The editor keeps its own stacking. */}
+      {/* …and in labs' rail the stack heads the GENERATE tab only (2026-10-06; the user: "too many
+          labels … too many folded things"): it stood above every tab, three of the six rows a
+          phone sheet shows, while Style and Animation have nothing to pick. The editor's own
+          inspector (`inline` off) keeps it where it was. */}
       {picker && (inline
-        ? <LabeledControlSection divided><LoopPicker layer={layer} tree={tree} inline /></LabeledControlSection>
+        ? (tab === 'generate' && <LabeledControlSection divided><LoopPicker layer={layer} tree={tree} inline /></LabeledControlSection>)
         : <LoopPicker layer={layer} tree={tree} />)}
 
       {tabStrip}

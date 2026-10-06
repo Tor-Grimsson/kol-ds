@@ -7,6 +7,11 @@
       "source": "/apps/media-shell/:path*",
       "destination": "/apps/media-hub/:path*",
       "permanent": true
+    },
+    {
+      "source": "/apps/generator/:path*",
+      "destination": "/apps/randomiser/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [

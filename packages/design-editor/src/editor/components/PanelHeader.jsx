@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Button } from '@kolkrabbi/kol-component'
 
@@ -48,5 +49,42 @@ export function PanelPills({ label, onOpen, size = 'lg', tone = 'primary', child
       </Button>
       {children}
     </div>
+  )
+}
+
+/* THE SHEET RESTS AT TWO HEIGHTS (2026-10-05, decided on the recommendation for review — Apple's
+ * two detents, a grabber that shows it and cycles them on a tap): HALF the display, the default,
+ * and TALL (`--kol-sheet-h`: 50dvh · 85dvh). Labs' Style tab is four screens of controls in a
+ * half sheet; tall is two. The grabber is the sheet's first row on a phone, above the header; a
+ * 24px row for the 24px hit box, the line itself 36×4 in opaque oq ink. Tap only — drag is the
+ * upgrade if the tap is not enough (ponytail). */
+export const SHEET_H = { half: '50dvh', tall: '85dvh' }
+export function SheetGrab({ tall, onToggle, onDrag }) {
+  /* …AND IT DRAGS (2026-10-06, the user: "draggable handle is not draggable"): a vertical pull of
+     more than 32px fires `onDrag(-1 | 1)` on release, up or down, and the tap is then swallowed;
+     a shorter move is a tap. Pointer capture, so the finger may leave the line. */
+  const drag = useRef({ y: null, moved: false, swallow: false }).current
+  const down = (e) => { drag.y = e.clientY; drag.moved = false; e.currentTarget.setPointerCapture?.(e.pointerId) }
+  const move = (e) => { if (drag.y !== null && Math.abs(e.clientY - drag.y) > 32) drag.moved = true }
+  const up = (e) => {
+    if (drag.y === null) return
+    const dy = e.clientY - drag.y; drag.y = null
+    if (drag.moved && onDrag) { onDrag(dy < 0 ? -1 : 1); drag.swallow = true }
+  }
+  const click = () => { if (drag.swallow) { drag.swallow = false; return } onToggle?.() }
+  return (
+    <button
+      type="button"
+      aria-label={tall ? 'Lower the sheet' : 'Raise the sheet'}
+      aria-pressed={tall}
+      className="flex h-6 w-full shrink-0 touch-none items-center justify-center"
+      onPointerDown={down}
+      onPointerMove={move}
+      onPointerUp={up}
+      onPointerCancel={() => { drag.y = null }}
+      onClick={click}
+    >
+      <span className="h-1 w-9 rounded-full bg-oq-16" />
+    </button>
   )
 }

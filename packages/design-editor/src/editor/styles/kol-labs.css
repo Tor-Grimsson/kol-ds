@@ -151,6 +151,17 @@
 }
 
 
+/* NO PARAMS RAIL ON AN EMPTY STAGE (2026-10-06; the user: "why do you even need the right rail if
+ * it doesnt have anything. wouldnt it just not show?"). It folded with the shell rail, which opens
+ * closed, so first load was two 48px strips and a black frame. The desk grid drops the track until
+ * a layer exists; the sheet frame keeps its own rules below (`data-touch`). */
+.kol-editor-labs[data-empty]:not([data-touch]) .kol-editor-grid {
+  --_rail-track: 0px;
+}
+.kol-editor-labs[data-empty]:not([data-touch]) .kol-editor-right {
+  display: none;
+}
+
 /* ───── TOUCH — the params rail is a SHEET along the bottom (2026-10-05) ─────
  * It was a drawer from the right under a top bar (2026-09-01): open, it left 126px of a 390px
  * stage. Now it is the generator's frame — `LabsView` stamps `data-touch` on the wrapper, and the
@@ -166,8 +177,9 @@
   display: none;
 }
 .kol-editor-labs[data-touch] .kol-editor-right {
-  /* half the display at most — the other half is the picture the controls change */
-  max-height: 50dvh;
+  /* half the display at most — the other half is the picture the controls change; tall on the
+     grabber (`--kol-sheet-h`, PanelHeader.jsx `SHEET_H`) */
+  max-height: var(--kol-sheet-h, 50dvh);
   border-left: 0;
   overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
@@ -195,7 +207,7 @@
 /* the footer is one row until a tab is opened (EditorFooter); opened, it may take the sheet — the
  * body above it gives way and it scrolls inside what is left */
 .kol-editor-labs[data-touch] .kol-editor-rail-footer {
-  max-height: calc(50dvh - 36px);
+  max-height: calc(var(--kol-sheet-h, 50dvh) - 36px);
   overflow-y: auto;
 }
 /* THE COARSE-POINTER INPUT FLOOR IS OFF IN THE TOUCH RAIL. kol-theme 0.112.0

@@ -60,7 +60,7 @@ const hueOf = (tag) => { const c = getTagColor(tag); return c === 'dark' ? undef
  *                                the scroll spy; both rails must agree on it)
  * @param {Array}    related      [{ id, href, label }] — label is the target's
  *                                own SHORT title, never a wikilink display text
- * @param {Array}    actions      [{ id, label, icon, to?, onClick? }]
+ * @param {Array}    actions      [{ id, label, icon, to?, href?, onClick? }] — `href` for an action that leaves the site
  * @param {Array}    topTags      [{ tag, count }] — the way in, not a dump
  * @param {Array}    tags         [string] — this page's own tags
  * @param {Function} renderTag    (tag) => node — the chip renderer, injected so
@@ -179,7 +179,7 @@ export default function RightRail({
 
           {group('actions', 'Quick actions', allActions.length,
             allActions.map((a) => (
-              <RailRow key={a.id} to={a.to} onClick={a.onClick} icon={a.icon}>
+              <RailRow key={a.id} to={a.to} href={a.href} onClick={a.onClick} icon={a.icon}>
                 {a.label}
               </RailRow>
             ))
@@ -203,7 +203,7 @@ export default function RightRail({
             {tagViews.length > 0 && (
               <nav className="shell-nav-items">
                 {tagViews.map((a) => (
-                  <RailRow key={a.id} to={a.to} onClick={a.onClick} icon={a.icon}>{a.label}</RailRow>
+                  <RailRow key={a.id} to={a.to} href={a.href} onClick={a.onClick} icon={a.icon}>{a.label}</RailRow>
                 ))}
               </nav>
             )}

@@ -12,7 +12,8 @@ import { useColorTarget } from './useColorTarget'
  * `useColorTarget`. Each body reads/writes through that target so picking a
  * swatch, dragging a hue strip, or adjusting a slider mutates the same value.
  */
-const COLOR_TABS = ['Stroke', 'Colour', 'Swatches'].map((t) => ({ id: t, label: t }))
+/* the id stays `Colour` (callers pass it as defaultTab); the label is the ruling's spelling */
+const COLOR_TABS = ['Stroke', 'Colour', 'Swatches'].map((t) => ({ id: t, label: t === 'Colour' ? 'Color' : t }))
 
 export default function ColorModal({ defaultTab = 'Colour', onClose, onMinimise }) {
   const [tab, setTab] = useState(defaultTab)

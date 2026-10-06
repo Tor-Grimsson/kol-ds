@@ -137,16 +137,33 @@ const CASED_VALUE_FIELDS = new Set(['type', 'status'])
 /* a doc's lifecycle on Badge's status tones (W17): live reads success, in progress warning, gone error */
 const STATUS_TONE = { active: 'success', canonical: 'info', draft: 'warning', archived: 'error', superseded: 'error', deprecated: 'error' }
 
-/** Contract order first, then anything else the doc carries, alphabetically. */
-const orderFields = (metadata) => {
+/** Contract order first, then anything else the doc carries, alphabetically. A consumer's
+ * `fields[key].order` places a key at that index of the list; `hidden` drops it. */
+const orderFields = (metadata, fields = {}) => {
   const present = Object.keys(metadata).filter(
-    (k) => !HIDDEN.has(k) && metadata[k] != null && metadata[k] !== '' &&
+    (k) => !(fields[k]?.hidden ?? HIDDEN.has(k)) && metadata[k] != null && metadata[k] !== '' &&
       !(Array.isArray(metadata[k]) && metadata[k].length === 0)
   )
-  const known = FIELD_ORDER.filter((k) => present.includes(k))
-  const rest = present.filter((k) => !FIELD_ORDER.includes(k)).sort()
-  return [...known, ...rest]
+  const placed = present.filter((k) => Number.isFinite(fields[k]?.order))
+  const known = FIELD_ORDER.filter((k) => present.includes(k) && !placed.includes(k))
+  const rest = present.filter((k) => !FIELD_ORDER.includes(k) && !placed.includes(k)).sort()
+  const list = [...known, ...rest]
+  for (const k of placed.sort((a, b) => fields[a].order - fields[b].order)) list.splice(Math.min(fields[k].order, list.length), 0, k)
+  return list
 }
+
+/* A VALUE THAT IS A URL IS A LINK (reader-takes-field-config-and-page-actions, kol-website
+ * 2026-10-05): `url`/`repo` printed as plain text. Printed without the protocol, in the body's
+ * link idiom, opening a new tab as the body's external links do (render-tokens). */
+const URL_RE = /^https?:\/\//
+const LINK_CLS = 'text-emphasis underline decoration-fg-16 underline-offset-2 hover:decoration-current break-all'
+const printValue = (v) => {
+  const s = String(v)
+  return URL_RE.test(s) ? <a href={s} target="_blank" rel="noreferrer" className={LINK_CLS}>{s.replace(URL_RE, '').replace(/\/$/, '')}</a> : s
+}
+/* …and a key with no icon entry takes this one, so the label column keeps one left edge whatever
+ * a document carries (the 2026-08-01 rule above, made true for keys this file has never seen) */
+const DEFAULT_ICON = 'hash-01'
 
 /* Every field rendered as a date. `updated`/`created`/`verified` are the
  * kol-docs names; `date`/`modified` are the sample dialect's. */
@@ -159,7 +176,13 @@ const formatDate = (dateStr) => {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.')
 }
 
-const DocsFrontmatter = ({ metadata, docId }) => {
+/**
+ * @param {Object} [fields]  per-key config from the consumer, merged over this file's tables:
+ *                           `{ [key]: { label, icon, order, hidden, render(value, metadata) } }`
+ *                           (2026-10-05, kol-website /workshop). No config is the output as before,
+ *                           apart from URL values as links and the default icon.
+ */
+const DocsFrontmatter = ({ metadata, docId, fields: config = {} }) => {
   const { openTagMode } = useTagMode()
   /* THE PANEL COLLAPSES, THE PAGE SCROLLS (user call 2026-08-09). A long
    * frontmatter (Dropdown: classes + reuses + tokens) made the panel the
@@ -170,7 +193,7 @@ const DocsFrontmatter = ({ metadata, docId }) => {
   const [expanded, setExpanded] = useState(false)
   const [overflowing, setOverflowing] = useState(false)
 
-  const fields = metadata ? orderFields(metadata) : []
+  const fields = metadata ? orderFields(metadata, config) : []
 
   useLayoutEffect(() => {
     const el = bodyRef.current
@@ -190,16 +213,17 @@ const DocsFrontmatter = ({ metadata, docId }) => {
       >
       {fields.map((key) => {
         const value = metadata[key]
-        const icon = FIELD_ICONS[key]
+        const cfg = config[key] ?? {}
+        const icon = cfg.icon ?? FIELD_ICONS[key] ?? DEFAULT_ICON
 
         return (
           <div key={key} className="docs-frontmatter-row">
             <span className="docs-frontmatter-key kol-helper-12 text-meta">
               {icon && <Icon name={icon} size={14} className="text-oq-48" />}
-              {FIELD_LABELS[key] ?? humanise(key)}
+              {cfg.label ?? FIELD_LABELS[key] ?? humanise(key)}
             </span>
             <span className="docs-frontmatter-value kol-mono-12 text-strong">
-              {key === 'tags' && Array.isArray(value) ? (
+              {cfg.render ? cfg.render(value, metadata) : key === 'tags' && Array.isArray(value) ? (
                 /* `naked`, the SAME Tag rendering the rail's own tag list uses
                  * (DocReaderSidebar). This was the default filled variant, so
                  * the one concept rendered as a solid pill here and as plain
@@ -248,11 +272,11 @@ const DocsFrontmatter = ({ metadata, docId }) => {
                  * and a glyph restating it is decoration. */
                 <span className="docs-frontmatter-list">
                   {value.map((item, i) => (
-                    <span key={i} className="break-all">{String(item)}</span>
+                    <span key={i} className="break-all">{printValue(item)}</span>
                   ))}
                 </span>
               ) : (
-                String(value)
+                printValue(value)
               )}
             </span>
           </div>

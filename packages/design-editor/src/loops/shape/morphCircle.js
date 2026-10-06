@@ -14,8 +14,8 @@ export default {
   duration: 6,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#16161a' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#16161a' },
     ...FILL_PARAMS,
     { key: 'minR', label: 'Min radius', type: 'range', min: 0.05, max: 0.4, step: 0.01, default: 0.12 },
     { key: 'maxR', label: 'Max radius', type: 'range', min: 0.3, max: 0.62, step: 0.01, default: 0.46 },

@@ -41,4 +41,4 @@ export const stripClamp = (cs) => (cs === 'sm' ? undefined : STRIP_CLAMP)
 /* The labs rail's inline label column — wide enough for "ORIGINAL COLOR".
    Shared by every row shape in the rail (AutoControls' schema rows, the
    picker stack, LoopFields' theme rows) so their controls start on one x. */
-export const RAIL_LABEL_W = 96
+export const RAIL_LABEL_W = 112 /* 96 wrapped ORIGINAL COLOR onto two lines (2026-10-06) */

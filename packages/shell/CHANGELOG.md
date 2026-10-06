@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-shell
 
+## 0.62.0 — 2026-10-06
+
+- **New: `NavRail sections="enter"` / `AppShell railSections`** — a section row replaces the list with its rows under a Back row instead of unfolding in place (2026-10-06, the user on labs: "an 'enter' mode in the left sidebar instead of collapse folder"). Default `fold`, unchanged for every other rail.
+- **Fixed: pressing a section row in an open rail folds and unfolds it.** `NavRail` opened a section on a press only while the rail was closed; open, the press fell through to `onNavigate` with the section's path, which no consumer dispatches. At a desk that was a dead press on the row's icon and name. On a touch drawer `AppShell` closes the drawer on every navigate, so pressing a section's name shut the nav and loaded nothing (labs on a phone, 2026-10-05 — the same on live fxr). The chevron is unchanged; a row without `sub` still navigates.
+
 ## 0.61.0 — 2026-10-02
 
 - **New: the rail's list fades out at its foot** — `NavRail fade` (default `true`), `AppShell railFade`. The rows sit in their own scroll region between the mark and the pinned bottom rows, so a list longer than the window scrolls and runs out under the fade instead of being cut by the edge. `fade={false}` draws it plain. Needs kol-theme ≥0.165.0.

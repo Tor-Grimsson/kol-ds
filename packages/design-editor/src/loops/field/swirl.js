@@ -12,9 +12,9 @@ export default {
   duration: 8,
   camera: CAMERA_SCHEMA,
   params: [
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'bg', default: '#06060a' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'fg', default: '#7a3fb0' },
-    { key: 'colC', label: 'Colour C', type: 'color', role: 'accent', default: '#f4f1ea' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'bg', default: '#06060a' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'fg', default: '#7a3fb0' },
+    { key: 'colC', label: 'Color C', type: 'color', role: 'accent', default: '#f4f1ea' },
     { key: 'arms', label: 'Arms', type: 'range', min: 1, max: 12, step: 1, default: 5, noRandom: true },
     { key: 'twist', label: 'Twist', type: 'range', min: 0, max: 8, step: 0.5, default: 3 },
   ],

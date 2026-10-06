@@ -32,7 +32,7 @@ export const MOTION_SECTIONS = new Set(['Motion', 'Frame', 'Form'])
 const NEVER_ROLL = new Set(['theme', 'invert'])
 
 const COLOR_SCOPE = '__color'
-const SCOPE_LABELS = { [COLOR_SCOPE]: 'Colour', Frame: 'Motion Frame', Form: 'Motion Form' }
+const SCOPE_LABELS = { [COLOR_SCOPE]: 'Color', Frame: 'Motion Frame', Form: 'Motion Form' } /* color, the ruling (2026-09-30); the cell read Colour beside a Color section */
 
 /**
  * Scope buttons for a layer's schema: one per distinct section in schema

@@ -249,10 +249,10 @@ export default {
   // motion scopes) without moving any control.
   params: [
     // Palette
-    { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0e0e11', section: 'Colour' },
-    { key: 'color', label: 'Colour', type: 'color', role: 'fg', default: '#fcfbf8', section: 'Colour' },
-    { key: 'color2', label: 'Colour 2', type: 'color', role: 'accent', default: '#c2502e', section: 'Colour' },
-    { key: 'color3', label: 'Colour 3', type: 'color', default: '#3f6485', section: 'Colour' },
+    { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0e0e11', section: 'Color' },
+    { key: 'color', label: 'Color', type: 'color', role: 'fg', default: '#fcfbf8', section: 'Color' },
+    { key: 'color2', label: 'Color 2', type: 'color', role: 'accent', default: '#c2502e', section: 'Color' },
+    { key: 'color3', label: 'Color 3', type: 'color', default: '#3f6485', section: 'Color' },
     // Tiles — shape + grid (grid shared with weave)
     { key: 'shape', label: 'Shape', type: 'select', options: TILE_SHAPE_OPTIONS, default: DEFAULT_SHAPE_ID, when: isTiles, section: 'Tiles' },
     // Glyph tile (shape:'glyph') — char/run + a Right Grotesk cut (glyphTile.js)
@@ -267,7 +267,7 @@ export default {
     { key: 'gap', label: 'Gap', type: 'range', min: -40, max: 80, step: 1, default: 8, when: (l) => !isField(l), section: 'Grid' },
     { key: 'stretch', label: 'Stretch', type: 'toggle', default: false, when: isTiles, section: 'Grid' },
     { key: 'showGrid', label: 'Grid overlay', type: 'toggle', default: false, when: isTiles, section: 'Grid' },
-    { key: 'colorRule', label: 'Colour rule', type: 'select', options: COLOR_RULE_OPTIONS, default: 'none', when: isTiles, section: 'Colour' },
+    { key: 'colorRule', label: 'Color rule', type: 'select', options: COLOR_RULE_OPTIONS, default: 'none', when: isTiles, section: 'Color' },
     // Weave — the interlacing (structure scope, shared with the grid)
     { key: 'weaveType', label: 'Weave', type: 'select', options: WEAVE_OPTIONS, default: 'plain', when: isWeave, section: 'Grid' },
     { key: 'strandWidth', label: 'Strand width', type: 'range', min: 0.3, max: 1, step: 0.02, default: 0.7, when: isWeave, section: 'Grid' },
@@ -311,7 +311,7 @@ export default {
     { key: 'pulse', label: 'Pulse', type: 'range', min: 0, max: 1, step: 0.05, default: 0, when: (l) => !isField(l), section: 'Form' },
     { key: 'fade', label: 'Fade', type: 'range', min: 0, max: 1, step: 0.05, default: 0, when: (l) => !isField(l), section: 'Form' },
     { key: 'swing', label: 'Swing', type: 'range', min: 0, max: 180, step: 5, default: 0, when: isTiles, section: 'Form' },
-    { key: 'colorMix', label: 'Colour mix', type: 'range', min: 0, max: 1, step: 0.05, default: 0, when: isTiles, section: 'Form' },
+    { key: 'colorMix', label: 'Color mix', type: 'range', min: 0, max: 1, step: 0.05, default: 0, when: isTiles, section: 'Form' },
   ],
   defaults: {
     shape: DEFAULT_SHAPE_ID,

@@ -12,7 +12,6 @@ import { FILTERS } from '../../filters'
 import { resolvedChain, MAX_FILTERS } from '../compose/filterChain'
 import { effectCategories, categoryOf, presetParamOf, FX_RACK_GROUPS, rackGroupFilters, postProcessingFilters } from '../compose/inspectors/effectCategories'
 import { SweepStack, StageRolls } from '../compose/inspectors/EffectsPanel'
-import { SourceStrip } from './LabsSourcePicker'
 import { LoopFields } from '../compose/inspectors/LoopFields'
 import KineticPanel from '../compose/inspectors/KineticPanel'
 import { KINETIC_TREE, KINETIC_PRESETS, presetComp } from '../../kinetic/presets'
@@ -85,6 +84,7 @@ const GEN_TABS_TOUCH = [
  * authored case (never uppercased), justify-between, active = emphasis.
  * `pills` is the para-type variant (labs ChipsRow): bordered pill chips. */
 function ChipsRow({ options, active, onPick, spread = false, pills = false }) {
+  const cs = useControlSize()
   if (!options?.length) return null
   if (pills) {
     return (
@@ -106,22 +106,19 @@ function ChipsRow({ options, active, onPick, spread = false, pills = false }) {
       </div>
     )
   }
+  /* ONE STRIP STYLE (2026-10-06; the user: "too many labels … unorganised structure"): the
+     siblings were bare text spread across the row, a third look beside the Effect · Motion strip
+     and the source strip (gone — the File tab has every source action). They are the DS strip now,
+     the selected sibling lit; `spread` is the strip's own equal cells. */
   return (
-    <div className={`flex flex-wrap items-center gap-x-5 gap-y-1.5${spread ? ' justify-between' : ''}`}>
-      {options.map((o) => (
-        <button
-          key={o.value}
-          type="button"
-          onClick={() => onPick(o.value)}
-          className={[
-            'kol-helper-12 cursor-pointer',
-            o.value === active ? 'text-emphasis' : 'text-meta hover:text-emphasis',
-          ].join(' ')}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
+    <SegmentedToggle
+      value={active ?? null}
+      onChange={onPick}
+      options={options}
+      size={cs}
+      ariaLabel="Siblings"
+      className={stripClamp(cs)}
+    />
   )
 }
 
@@ -280,7 +277,6 @@ function EffectSurface({ layer, showMod }) {
   const auto = { layer: paramsView, setProp: setStageProp, palette, renderAnimate, inline: true }
   return (
     <Surface chips={chips} active={stage.id} onPick={onChip} spread={isTrio} title={title} fx
-      preStrip={<SourceStrip layer={layer} />}
       tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
       {tab === 'effect' && (
         <>
@@ -427,7 +423,6 @@ function GenerativeSurface({ layer, showMod, tree }) {
   return (
     <Surface
       title={groupLabel} chips={chips} active={layer.presetId} onPick={onChip} pills
-      preStrip={layer.loopGroup === 'distress' ? <SourceStrip layer={layer} /> : undefined}
       tabStrip={<SegmentedToggle value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}
     >
       <LoopFields

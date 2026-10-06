@@ -55,7 +55,7 @@ const PATTERN_TILE_FORM = [
   { id: 'pulse-wave',   label: 'Pulse Wave',   params: { spin: 0, animAxis: 'diag',   animCycles: 1, animWaves: 3, pulse: 0.7, fade: 0,   swing: 0,  colorMix: 0 } },
   { id: 'fade-wave',    label: 'Fade Wave',    params: { spin: 0, animAxis: 'col',    animCycles: 1, animWaves: 2, pulse: 0,   fade: 0.8, swing: 0,  colorMix: 0 } },
   { id: 'sway',         label: 'Sway',         params: { spin: 0, animAxis: 'diag',   animCycles: 1, animWaves: 2, pulse: 0,   fade: 0,   swing: 60, colorMix: 0 } },
-  { id: 'colour-sweep', label: 'Colour Sweep', params: { spin: 0, animAxis: 'diag',   animCycles: 1, animWaves: 2, pulse: 0,   fade: 0,   swing: 0,  colorMix: 1 } },
+  { id: 'colour-sweep', label: 'Color Sweep', params: { spin: 0, animAxis: 'diag',   animCycles: 1, animWaves: 2, pulse: 0,   fade: 0,   swing: 0,  colorMix: 1 } },
   { id: 'ripple',       label: 'Ripple',       params: { spin: 0, animAxis: 'radial', animCycles: 1, animWaves: 4, pulse: 0.5, fade: 0.5, swing: 0,  colorMix: 0 } },
 ]
 const PATTERN_FIELD_FRAME = [

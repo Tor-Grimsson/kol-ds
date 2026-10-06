@@ -59,9 +59,8 @@ const ROUTES = {
  * allowed, so an allowance is never a silent hole. `match` is tested against the violation line. */
 const ALLOWED = [
   { app: 'editor', match: /R2 overlap: "(Stroke color" and "Fill color|Fill color" and "Stroke color)"/, why: 'SwatchStack overlaps fill + stroke on purpose (the pair model, editor-chrome-review #16)' },
-  /* the COMPOSITOR only — labs and the randomiser have phone layouts and are held to them; a phone
-   * at `/` is gated to the randomiser, so only /core shows the compositor at 390 */
-  { app: 'editor', vp: 'phone', match: /^editor (core )?@phone .*R2 overlap/, why: 'the compositor has no phone layout yet — parked with the editor rulings, not a regression' },
+  /* the compositor's phone allowance went 2026-10-05: under 1024 the editor shows a note in the
+   * shell's place (Editor.jsx), so there is nothing of it to overlap at 390 */
 ]
 
 const apps = readdirSync(join(ROOT, 'apps')).filter((a) => {

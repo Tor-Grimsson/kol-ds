@@ -23,13 +23,13 @@
  * write auth in a browser-shipped package.
  */
 
-// adminBase stays admin. until media.kolkrabbi.io actually fronts the Pages app.
-// 0.1.1 shipped it as media. prematurely: that hostname is still the R2 bucket,
-// which serves no /api, so listMedia() 404s on it. admin. is also the safe
-// end-state default — it stays attached after the move, so this line never has
-// to change again. publicBase is the one that genuinely moved (R2 → r2.).
+// adminBase is media. (0.4.1, media-client-admin-base-is-media, kol-website 2026-10-05). The media
+// app has ONE hostname by the user's ruling: media.kolkrabbi.io is the admin and answers /api;
+// writes are gated by the login, not the host. admin. only 301s to it and is detached once nothing
+// names it. The 0.1.1 worry — media. was the raw R2 bucket with no /api — is gone: the bucket is
+// r2. (publicBase).
 const DEFAULTS = {
-  adminBase: 'https://admin.kolkrabbi.io',
+  adminBase: 'https://media.kolkrabbi.io',
   publicBase: 'https://r2.kolkrabbi.io',
   proxyPath: '/media/',
 }

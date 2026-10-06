@@ -77,6 +77,11 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
  *                                        (2026-09-30, the names audit: every level has a home).
  * @param {boolean}  [props.showFrontmatter=true]  the frontmatter panel; a home hides it by
  *                                        default and the consumer toggles it.
+ * @param {Object}   [props.fields]       per-key frontmatter config, handed to DocsFrontmatter:
+ *                                        `{ [key]: { label, icon, order, hidden, render } }`
+ * @param {node}     [props.actions]      the page's own actions (a button to the live app),
+ *                                        rendered under the title and before the intro; absent,
+ *                                        nothing (2026-10-05, kol-website /workshop)
  */
 const DocumentationReader = ({
   inventory = [],
@@ -85,6 +90,8 @@ const DocumentationReader = ({
   routes = {},
   docId: docIdProp,
   showFrontmatter = true,
+  fields,
+  actions,
   /* false → render the article only and leave the right rail to the page (a HOME sits on top of
    * a page whose sections the rail must list — 2026-09-30, "This page (0)" on every home) */
   rail = true,
@@ -365,10 +372,11 @@ const DocumentationReader = ({
 
   return (
     <DocsArticle>
-        {showFrontmatter && <DocsFrontmatter metadata={doc.metadata} docId={docId} />}
+        {showFrontmatter && <DocsFrontmatter metadata={doc.metadata} docId={docId} fields={fields} />}
         {docTitle && (
           <h1 id="page-top" className="kol-doc-heading scroll-mt-20">{docTitle}</h1>
         )}
+        {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
         {/* Render intro blocks (excluding H1 which is docTitle) */}
         {introBlocks.filter(b => b.type !== 'heading1').map((block, index) =>
           renderBlock(block, `intro-${block.type}-${index}`)

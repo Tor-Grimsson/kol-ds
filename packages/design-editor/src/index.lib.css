@@ -172,3 +172,12 @@
      consumer binds nothing */
   --kol-canvas-guide: #D3869B;
 }
+
+/* THE RANDOMISER'S GROUND IS BLACK IN EITHER THEME, and a host's drawer trigger floats over it
+   (kol-shell's hamburger, top-right). In the light theme that was dark ink on black — on live fxr
+   too (2026-10-05). While the randomiser is mounted the trigger takes the frozen light ink;
+   opaque, as every glyph is. A selector across packages because the trigger is the host's and
+   the black is ours. */
+:root:has(.kol-editor-randomiser) .kol-shell-drawer-trigger {
+  color: var(--kol-color-absolute-white);
+}

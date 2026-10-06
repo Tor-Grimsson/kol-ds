@@ -195,13 +195,18 @@ export default function SectionSplit({
     <section
       ref={themeRef}
       data-theme={themeStamp}
-      className={`kol-section-split flex flex-col justify-center px-5 py-16 md:px-8 md:py-24 lg:px-14 lg:py-32 [--kol-section-py:4rem] md:[--kol-section-py:6rem] lg:[--kol-section-py:8rem] ${minHeightClass(height)} ${surfaceClass(background, 'none')} ${bleed} ${className}`.replace(/\s+/g, ' ').trim()}
+      className={`kol-section-split flex flex-col justify-center py-16 md:py-24 lg:py-32 [--kol-section-py:4rem] md:[--kol-section-py:6rem] lg:[--kol-section-py:8rem] ${minHeightClass(height)} ${surfaceClass(background, 'none')} ${bleed} ${className}`.replace(/\s+/g, ' ').trim()}
       style={sectionStyle}
     >
       {/* ONE cap for the whole section family (user ruling 2026-08-26): the shell's
         * --kol-container-max ladder — 100% → 1400 → 1600 → 1800. Split ran 1200,
         * cards 1400, the CTA 1600: three numbers for one job, unflagged. */}
-      <div className={`w-full max-w-[var(--kol-container-max,var(--kol-content-shell,1800px))] mx-auto ${grid} ${innerClassName}`.replace(/\s+/g, ' ').trim()}>
+      {/* …AND THE RULED GUTTER IS INSIDE THAT CAP (section-split-content-media-and-ruled-gutter,
+        * kol-website 2026-10-06): the section padded itself px-5/8/14 OUTSIDE the cap, so its text
+        * started 56 at 1440 against 48 for every `.kol-page` band below it, and at 1920 the padding
+        * fell outside the cap and did nothing. Now the inner box is `.kol-page`'s own measure —
+        * the cap, then `--kol-pad-section-x` inside it. `fill` keeps its edge-to-edge halves. */}
+      <div className={`w-full max-w-[var(--kol-container-max,var(--kol-content-shell,1800px))] mx-auto px-[var(--kol-pad-section-x,20px)] ${grid} ${innerClassName}`.replace(/\s+/g, ' ').trim()}>
         {/* `order` rather than `flex-row-reverse`: the grid is one column below
           * 901px, and DOM order is what decides the stack there. */}
         <SectionText
@@ -262,8 +267,13 @@ export default function SectionSplit({
              * rendered 2.22 at 1600 and cropped its image. From 901 the width is `auto` again:
              * the rung sets the height, the ratio sets the width, the column caps it — the
              * 2026-08-27 rule written on the `ratio` prop. */
-            className={`kol-section-split-visual relative w-full min-[901px]:w-auto max-w-full justify-self-center rounded-[var(--kol-radius-sm)] min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))] ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
-            style={{ aspectRatio: ratio }}
+            /* `ratio="auto"` IS CONTENT, NOT A FRAME (section-split-content-media-and-ruled-gutter,
+             * kol-website 2026-10-06): with no ratio there is nothing for the width to follow, so
+             * the rung-minus-padding height made a fixed window over a card with its own height —
+             * /studio's 621px ProfileCard showed as a 104px strip at 1440. Auto media takes the
+             * column's width and its own height, at every width; a ratio keeps the bounded rule. */
+            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] ${ratio === 'auto' ? '' : 'min-[901px]:w-auto min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))]'} ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
+            style={ratio === 'auto' ? undefined : { aspectRatio: ratio }}
           >
             {media ?? (placeholder === true
               ? <AssetPlaceholder className="h-full w-full" />

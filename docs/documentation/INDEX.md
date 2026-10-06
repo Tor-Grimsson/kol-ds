@@ -3,7 +3,7 @@ title: KOL documentation
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-09-03
+updated: 2026-10-05
 description: The design system, documented in numbered sections
 aliases:
   - documentation
@@ -52,7 +52,7 @@ loud — that is a claim, and it belongs in the doc before it reaches the code.
 | **03 — Components** | [[03-components/00-taxonomy\|taxonomy]] · [[03-components/01-inventory\|inventory]] · [[03-components/04-diamond-tier\|diamond tier]] · [[03-components/05-control-chrome\|control chrome]] · [[03-components/02-placement\|placement rules]] · [[03-components/03-taxonomy-audit-and-plan\|taxonomy audit & plan]] | `/components` |
 | **04 — Compositions** | [[04-compositions/01-blocks-and-sets\|blocks & sets]] · [[04-compositions/02-shells\|shells]] · [[04-compositions/03-slug-composition-gallery\|composition gallery]] · [[04-compositions/04-workshop-system\|workshop system]] · [[04-compositions/05-foundry-system\|foundry system]] · [[04-compositions/06-store-system\|store system]] · [[04-compositions/07-content-system\|content system]] · [[04-compositions/08-chess-system\|chess system]] · [[04-compositions/09-dashboards-system\|dashboards system]] · [[04-compositions/10-styleguide-system\|styleguide system]] · [[04-compositions/11-shell-system\|shell system]] · [[04-compositions/12-section-system\|section system]] · [[04-compositions/13-controls-system\|controls system]] · [[04-compositions/14-design-editor-system\|design-editor system]] · [[04-compositions/15-media-uploads\|media uploads]] · [[04-compositions/16-app-anatomy\|app anatomy]] | `/blocks`, `/sets`, `/docs/shell-and-layout` |
 | [[05-brand/INDEX\|05 — Brand kit]] | The manifest schema, kol-brand, template, scrape + adapter | — |
-| **06 — Research** | [[06-research/01-comparison\|shadcn ⇄ KOL benchmark]] · [[../operations/06-workflows/INDEX\|how other teams work]] | — |
+| **06 — Research** | [[06-research/01-comparison\|shadcn ⇄ KOL benchmark]] · [[06-research/04-tools-on-a-phone\|tools on a phone]] · [[../operations/06-workflows/INDEX\|how other teams work]] | — |
 | *07 — Usage* | **Moved out 2026-07-31.** The mined per-component references are app content, not a chapter — they live at `showcase/src/usage/components/`, and the app renders them from `usage-index.json`. See [[../operations/04-content-pipeline/01-sources\|content pipeline → sources]]. | `/components/:slug` |
 | [[08-breakpoints/INDEX\|08 — Breakpoints]] | [[08-breakpoints/01-values\|values]] · [[08-breakpoints/02-best-practices\|best practices]] · [[../operations/06-workflows/07-device-testing|testing methods]] · [[08-breakpoints/04-kol-ds-rules\|KOL-DS rules]] | — |
 

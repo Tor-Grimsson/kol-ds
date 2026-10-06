@@ -681,8 +681,11 @@ export default function ColumnBrowser({
   const rootRef = useRef(null)
   /* `autoFocus` (ColumnBrowserSeams, kol-r2b2 2026-08-28): the arrow keys were dead until a row was
    * clicked — nothing focused the root on mount, and the consumer reached into the DOM for it. Re-run
-   * on `prefix`, so a bucket switch from the header (which takes focus) hands the keyboard back. */
-  useEffect(() => { if (autoFocus) rootRef.current?.focus() }, [autoFocus, prefix])
+   * on `prefix`, so a bucket switch from the header (which takes focus) hands the keyboard back.
+   * `preventScroll` (explorer-autofocus-scrolls-the-fixed-page, kol-website 2026-10-06): inside
+   * `PageShell mode="fixed"` the focus scrolled the page's scroller 102px to bring the browser into
+   * view, and the header opened off-screen. The keyboard still lands here; the page stays put. */
+  useEffect(() => { if (autoFocus) rootRef.current?.focus({ preventScroll: true }) }, [autoFocus, prefix])
 
   /* THE KEYBOARD SELECTS TOO (user 2026-09-23: *"the highlight focus is on the correct item, this
    * has been a problem for awhile"*). Clicks reported through `onSelectClick`; the arrows moved

@@ -31,7 +31,7 @@ import { Link, NavLink } from 'react-router-dom'
  * @param {string}   [to]       route → NavLink, active resolved by the router. A `to` carrying a `#` is a
  *                              SECTION of a page (2026-10-01): the router would light every section of
  *                              the open page at once, so it is a plain Link and `active` decides
- * @param {string}   [href]     plain anchor (hash links: on-this-page)
+ * @param {string}   [href]     plain anchor (hash links: on-this-page); an `http(s)` href opens a new tab
  * @param {Function} [onClick]  no `to`/`href` → a <button>
  * @param {boolean}  [active]   forced active state (hash links, buttons)
  * @param {node}     [icon]     leading glyph
@@ -80,8 +80,11 @@ export default function RailRow({
     )
   }
   if (href) {
+    /* a link that leaves the site opens a new tab, as the body's do (render-tokens, 2026-10-02);
+       hash and same-site links stay in it (2026-10-05, kol-website) */
+    const external = /^https?:\/\//.test(href) ? { target: '_blank', rel: 'noreferrer' } : null
     return (
-      <a href={href} className={cls(active)} onClick={onNavigate}>
+      <a href={href} className={cls(active)} onClick={onNavigate} {...external}>
         {inner}
       </a>
     )

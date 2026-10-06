@@ -3,7 +3,7 @@ title: Breakpoint practices
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-08-01
+updated: 2026-10-05
 description: Writing responsive code without inventing numbers
 aliases:
   - responsive best practices
@@ -15,6 +15,7 @@ tags:
 related:
   - "[[INDEX|breakpoints]]"
   - "[[../../operations/06-workflows/07-device-testing|testing methods]]"
+  - "[[../06-research/04-tools-on-a-phone|tools on a phone]]"
 ---
 
 # Breakpoints — best practices

@@ -1,5 +1,29 @@
 # @kolkrabbi/design-editor
 
+## 0.21.0 — 2026-10-06
+
+Found walking labs and the randomiser on a phone (2026-10-05).
+
+- **Changed: under 768 a window gets the phone's frame, whatever the pointer.** Sheet or rail was the device's alone (`isMobileDevice()`), so a desktop window narrowed to a phone's width kept the desk frame — labs' two rails as 48px strips either side of the stage, the randomiser's 264px rail beside a 126px stage. `useNarrow()` (`editor/mobile/device.js`, `NARROW_BELOW = 768` — the width kol-shell's `AppShell` folds its own rail at) joins the device test in `LabsView` and `MobileView`. A touch device keeps the sheet at any width, as before; from 768 a mouse gets the rails, as before. Crossing the fold swaps the frame and keeps the layer.
+His review of 2026-10-06 (*"what is the user doing in here, he has to start by opening the left modal"*), each decided on the recommendation for review:
+
+- **New: labs opens on an entry card** (`labs/LabsCatalogCard.jsx`) — over the stage, at a desk and on a phone: the catalog's four sections (Effects · Generative · Vector · Composition; Modulation is not a door, its row only opens the params), a section's groups behind it, Back between. The same rows LabsNav publishes to the shell rail, read twice. Gone on a pick, back when the layer goes; `Catalog` in the phone sheet's header reopens it.
+- **Changed: an effect asks for its media in a card** (`LabsSourceCard`) — From library · Upload · Camera · Back — where three full-height panes stood across the stage and broke at a half window. The randomiser's picker is the same column of doors.
+- **Changed: no params rail on an empty stage at a desk**, and a pick opens it (it folds with the shell rail, which opens closed — first load was two 48px strips).
+- **Changed: labs' sheet starts under 1024, not 768** (`LABS_BELOW`): both rails open together and left the stage 240px wide at 768. The randomiser keeps 768.
+- **Changed: labs' S opens the editor's shortcuts sheet.** Only the compositor's canvas had ever dispatched it, so labs' S opened its own "Animate any value" card — retired to `_tmp/2026-10-06-labs-shortcuts-card/` (its expression quick-doc went with it). Each chrome now registers itself (`setMountedView`), so a host serving one chrome at `/` still gets that chrome's rows.
+- **Changed: the stage's zoom chips are keys** — `+` / `−` step, `0` fits — listed in the sheet under Labs.
+- **Changed: labs' sibling chips are the DS strip**, and the Library · Upload · Camera strip left the params (the File tab has every source action). The rail's label column is 112 (96 wrapped ORIGINAL COLOR).
+- **Changed: the sheet's grabber drags** — up raises, down lowers, then collapses; a tap still cycles.
+- **Fixed: `Colour` → `Color`**- **Changed: labs' rail enters a section** (`railSections="enter"` in `apps/labs` and `apps/editor-hub`); the pickers head the Generate tab only; on touch the ▶ is the footer strip's first cell, not a separate button.
+- **Fixed: `Colour` → `Color`** in every schema label and section, the roll cell and the color panel's tab (the ruling; a `Colour` scope stood beside a `Color` one).
+- **New: the phone sheet rests at two heights, both tools** (`SheetGrab` · `SHEET_H`, `components/PanelHeader.jsx`, decided on the recommendation for review): half the display, and tall (85%) on a grabber at the sheet's top — a tap cycles them; drag is not wired. Labs' Style tab was four screens of controls in a half sheet.
+- **Changed: the randomiser's sheet is one height on every tab, and the stage refits above it.** It was as tall as its tab (332 · 140 · 188 · 236 at 390), so the strip jumped under the thumb and on Generate the sheet covered the bottom third of the stage. It is labs' sheet now; the controls scroll inside it.
+- **Changed: under 1024 the editor shows a note in the compositor's place** (`Editor.jsx`, decided on the recommendation for review): its two 320px panels left an 80px stage at 768 and none at 480. The card names the width, offers Labs and the randomiser, and opens the shell anyway on request. The render gate's written allowance for the compositor at 390 is deleted.
+- **Fixed: the randomiser's sheet is not behind the source picker.** Effects opens the picker over an empty media layer, and the sheet was already up under the picker's see-through scrim — the picker's Back sat on the sheet's `Add effect` / `Randomize` row. The sheet mounts when the media lands.
+- **Fixed: labs' touch transport bar sits under the nav drawer.** It was at `--kol-z-modal`, above the shell's drawer and its scrim, so it stayed drawn across the bottom of an open drawer.
+- **Fixed: a host's drawer trigger is light over the randomiser.** The randomiser's ground is black in either theme; in the light theme kol-shell's hamburger was dark ink on it (live fxr too). While the randomiser is mounted the trigger takes `--kol-color-absolute-white` — one rule in `index.lib.css`, keyed on the new `.kol-editor-randomiser` root class.
+
 ## 0.20.0 — 2026-10-05
 
 Found rehearsing kol-fxr on today's packages (`apps/editor-hub`, 2026-10-03), and the frame work that followed (`apps/labs` · `apps/generator`, 2026-10-05).

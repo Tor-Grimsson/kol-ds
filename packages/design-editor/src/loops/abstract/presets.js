@@ -132,7 +132,7 @@ const mstpLoop = {
     { key: 'colors', label: 'Colors', type: 'select', default: 'candy', options: opts(MSTP_COLORS) },
     /* engine colorMode: smooth height→palette vs per-pixel winning scale
      * (labs SegmentedToggle values 'palette' | 'scale') */
-    { key: 'colorMode', label: 'Colour mode', type: 'select', default: 'palette',
+    { key: 'colorMode', label: 'Color mode', type: 'select', default: 'palette',
       options: [{ value: 'palette', label: 'Palette' }, { value: 'scale', label: 'By scale' }] },
     { key: 'relief', label: 'Relief', type: 'range', min: 0, max: 8, step: 0.25, default: 3 },
     { key: 'speed', label: 'Speed', type: 'range', min: 0.2, max: 3, step: 0.1, default: 1 },

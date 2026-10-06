@@ -108,10 +108,15 @@ export const SHORTCUTS = [
      handler. Declared here so the cheat sheet stops showing the editor's
      answer for `R` while standing in labs. */
   { id: 'labs-reset',  combo: 'R',       label: 'Reset to defaults', section: 'Labs', views: ['labs'] },
+  /* the stage's zoom — the −/100%/+ chips left the stage 2026-10-06 (LabsStage binds these) */
+  { id: 'labs-zoom-in',  combo: 'Plus',  label: 'Zoom the stage in',  section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-zoom-out', combo: '-',     label: 'Zoom the stage out', section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-zoom-fit', combo: '0',     label: 'Fit the stage',      section: 'Labs', views: ['labs'], passive: true },
   { id: 'labs-reroll', combo: 'Shift+R', label: 'Reroll',            section: 'Labs', views: ['labs'] },
 ]
 
 const KEY_LABELS = {
+  Plus:       '+',
   Mod:        '⌘',
   Shift:      '⇧',
   Alt:        '⌥',

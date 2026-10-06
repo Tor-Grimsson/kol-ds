@@ -1,9 +1,9 @@
 {
-  "name": "generator",
+  "name": "randomiser",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The generator alone — @kolkrabbi/design-editor's MobileView (the randomiser: Generate and Effects) from workspace source, no shell, on the fixture bucket. Never published.",
+  "description": "The randomiser alone — @kolkrabbi/design-editor's MobileView (its two tools: Generate and Effects) from workspace source, no shell, on the fixture bucket. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

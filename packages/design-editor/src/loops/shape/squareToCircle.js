@@ -12,8 +12,8 @@ export default {
   duration: 6,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#c2502e' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#c2502e' },
     ...FILL_PARAMS,
     { key: 'size', label: 'Size', type: 'range', min: 0.3, max: 0.62, step: 0.01, default: 0.42 },
     { key: 'nMax', label: 'Squareness', type: 'range', min: 3, max: 12, step: 0.5, default: 8 },

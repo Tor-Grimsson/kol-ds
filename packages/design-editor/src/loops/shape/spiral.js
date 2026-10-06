@@ -12,8 +12,8 @@ export default {
   duration: 6,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#2b6a8f' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#2b6a8f' },
     ...FILL_PARAMS,
     ...SHAPE_FILL_PARAMS,
     { key: 'turns', label: 'Turns', type: 'range', min: 2, max: 8, step: 1, default: 5, noRandom: true },

@@ -12,8 +12,8 @@ export default {
   duration: 8,
   camera: CAMERA_SCHEMA,
   params: [
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'bg', default: '#0b0b0e' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'fg', default: '#e8e4dc' },
     { key: 'freq', label: 'Frequency', type: 'range', min: 1, max: 16, step: 0.5, default: 6 },
     { key: 'soft', label: 'Softness', type: 'range', min: 0.02, max: 1, step: 0.02, default: 0.3 },
   ],

@@ -12,8 +12,8 @@ export default {
   duration: 6,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#c2502e' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#c2502e' },
     ...FILL_PARAMS,
     { key: 'ringFill', label: 'Fill rings', type: 'toggle', default: false, tab: 'color' },
     { key: 'ringAlpha', label: 'Fill opacity', type: 'range', min: 0.05, max: 1, step: 0.05, default: 0.5, tab: 'color', noRandom: true },

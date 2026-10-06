@@ -9,8 +9,8 @@ import { useTheme } from '@kolkrabbi/kol-framework'
 import { firstPresetPatch, loopById, resolveCameraKeys } from '../../loops/registry'
 import { useTool } from '../state/tools'
 import LabsSourcePicker from '../labs/LabsSourcePicker'
-import { isTabletSized, goDesktop, isMobileDevice, wantsDesktop } from './device'
-import { goLabs, modeById } from '../mode'
+import { isTabletSized, goDesktop, isMobileDevice, wantsDesktop, useNarrow } from './device'
+import { goLabs, modeById, setMountedView } from '../mode'
 import { MODE_ICONS } from '../labs/catalog'
 import CategoryScreen, { SPREAD } from './CategoryScreen'
 import MobileOverlay from './MobileOverlay'
@@ -82,6 +82,9 @@ function MobileBody() {
      CHROME doors (Editor · Labs) and the chooser heading stay touch-only: under
      the shell rail the rail IS the chooser (user, 2026-08-27). */
   const chromes = isMobileDevice() && !wantsDesktop()
+  /* …and the FRAME follows the window too (2026-10-05): under 768 a desk window gets the sheet,
+     where the 264px rail left the stage 126px of a 390 window. The doors above stay the device's. */
+  const narrow = useNarrow()
   const start = () => 'entry'
   const [screen, setScreen] = useState(start)   /* entry | category | live */
   /* Effects: the input media first, then the effect sheet — and the media is
@@ -92,6 +95,8 @@ function MobileBody() {
   /* AT A DESK THE PANEL IS A RAIL (2026-10-05) — labs' frame, on the right — and the stage
      stands beside it rather than under it. The overlay reports when its rail is on screen. */
   const [railShown, setRailShown] = useState(false)
+  /* …and above the SHEET on a phone (2026-10-05): the overlay reports the sheet's height, or null */
+  const [sheetH, setSheetH] = useState(null)
 
   /* Pinch-to-scale the stage (touch): frame the shot after Hide UI without
    * any controls. Capture-phase so a second finger suspends the sim-pointer
@@ -142,6 +147,7 @@ function MobileBody() {
 
   /* re-stamps a saved theme choice on mount (kol-framework's store) */
   useTheme()
+  useEffect(() => { setMountedView('randomiser'); return () => setMountedView(null) }, [])
   useEffect(() => {
     /* The provider inits aspect '4:5' but canvasW/H 1080×1080 — desktop
      * reconciles that in EditorBody's boot; mobile must do the same or every
@@ -231,7 +237,7 @@ function MobileBody() {
   }
 
   return (
-    <div className="relative h-dvh bg-black">
+    <div className="kol-editor-randomiser relative h-dvh bg-black">
       {/* touch-none: touches over the stage arrive as pointer events (the
           mouse modulation source), not browser pan/zoom gestures. Scoped to
           the stage wrapper — the overlay/screens above keep native touch
@@ -239,10 +245,12 @@ function MobileBody() {
           containing block for OutputStage's fixed positioning, so the pinch
           scale applies to the whole stage — ALWAYS present (2026-08-27): at
           scale 1 with no transform the stage escaped to the viewport and sat
-          under the shell rail. */}
+          under the shell rail. overflow-hidden (2026-10-05): with the wrapper
+          ending above the sheet, a canvas still at its old size overran the box
+          for a frame, and mobile Chrome read that as a wider page and zoomed out. */}
       <div
-        className="absolute inset-y-0 left-0 touch-none"
-        style={{ transform: `scale(${stageScale})`, right: railShown ? 'var(--kol-sidenav-w, 320px)' : 0 }}
+        className="absolute inset-y-0 left-0 touch-none overflow-hidden"
+        style={{ transform: `scale(${stageScale})`, right: railShown ? 'var(--kol-sidenav-w, 320px)' : 0, bottom: sheetH ?? 0 }}
         onPointerDownCapture={onPinchDown}
         onPointerMoveCapture={onPinchMove}
         onPointerUpCapture={onPinchEnd}
@@ -257,7 +265,10 @@ function MobileBody() {
       {screen === 'category' && (
         <CategoryScreen onPick={startGenerative} onInsert={startInsert} onBack={() => setScreen('entry')} />
       )}
-      {screen === 'live' && (
+      {/* …and NOT under the source picker (2026-10-05): the picker's scrim is see-through, so the
+          sheet stood behind it and the picker's Back landed on the sheet's own button row. One
+          surface at a time — the sheet mounts when the media lands. */}
+      {screen === 'live' && !pickerOpen && (
         <MobileOverlay
           layer={active}
           onSwitchCategory={switchCategory}
@@ -266,8 +277,9 @@ function MobileBody() {
           aspectValue={stageFit === 'cover' ? 'fill' : aspect}
           openEffects={fxFlow && !pickerOpen}
           onAspect={setStageAspect}
-          rail={!chromes}
+          rail={!chromes && !narrow}
           onRail={setRailShown}
+          onSheet={setSheetH}
         />
       )}
       {/* Source picker overlay — labs' two-pane (From library | Upload)

@@ -43,6 +43,9 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  * `/settings` while already there returns to the last page), and the theme
  * toggle lives on the settings page, not in the rail (user, 2026-08-28).
  * @param {boolean} [props.railFade=true]  the rail's list fades out at its foot (`NavRail fade`); `false` opts out
+ * @param {'fold'|'enter'} [props.railSections='fold']  how a section row opens: `fold` unfolds it in place (the
+ *                                        accordion), `enter` replaces the list with its rows under a Back row
+ *                                        (`NavRail sections`, 2026-10-06 — labs' catalog)
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
  * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
@@ -132,6 +135,7 @@ export default function AppShell({
   iconComponent,
   railComponent: Rail = NavRail,
   railFade = true,
+  railSections = 'fold',
   railToggleKey,
   touch = 'shell',
   appName,
@@ -373,6 +377,7 @@ export default function AppShell({
           iconComponent={iconComponent}
           drawer={drawer}
           fade={railFade}
+          sections={railSections}
         />
       )}
       {/* THE BACK OF THE BACK — surface-primary, always, in every app; the

@@ -6,16 +6,16 @@ import svgr from 'vite-plugin-svgr'
 
 const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.meta.url))
 
-// An apps/* member: runs locally on `pnpm generator` (the generator alone, 2026-10-05), and publishes into the showcase's output at ui.kolkrabbi.io/apps/generator.
+// An apps/* member: runs locally on `pnpm randomiser` (the randomiser alone, 2026-10-05; `apps/generator` until 2026-10-05), and publishes into the showcase's output at ui.kolkrabbi.io/apps/randomiser.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
   plugins: [react(), svgr(), tailwindcss()],
 
-  base: command === 'build' ? '/apps/generator/' : '/',
+  base: command === 'build' ? '/apps/randomiser/' : '/',
 
   build: {
     // Built after the showcase, whose emptyOutDir would otherwise wipe this folder.
-    outDir: '../../showcase/dist/apps/generator',
+    outDir: '../../showcase/dist/apps/randomiser',
     emptyOutDir: true,
     // the editor is one ~4MB application; the warning says nothing new
     chunkSizeWarningLimit: 8000,

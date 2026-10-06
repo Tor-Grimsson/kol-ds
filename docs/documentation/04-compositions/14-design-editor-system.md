@@ -4,7 +4,7 @@ type: reference
 status: canonical
 created: 2026-09-03
 updated: 2026-10-05
-verified: 2026-09-29
+verified: 2026-10-05
 description: The editor and its parts
 aliases:
   - design editor
@@ -112,14 +112,21 @@ an SPA hop would reach `/core` with every pack already in. `currentView()` reads
 segment, so a host that mounts the chromes under a base (`/apps/editor/labs`) keeps its view keymap.
 
 **Labs and the generator share one frame** (2026-10-05). Their controls sit in the same place and
-open the same way, per device: **a rail on the right at a desk** (`--kol-sidenav-w` wide, top to
-bottom, the first bar on one y in both) and **a sheet along the bottom on a phone** (half the
-display at most; labs' stage refits above it). The panel's first row is `PanelHeader` — the title
+open the same way: **a rail on the right at a desk** (`--kol-sidenav-w` wide, top to bottom, the
+first bar on one y in both) and **a sheet along the bottom on a phone — or in any window under
+768** (`useNarrow`, `editor/mobile/device.js`; the width kol-shell folds its rail at). The sheet
+is **half the display, or tall on its grabber** (`SheetGrab` · `SHEET_H`), one height on every tab,
+and both stages refit above it. **Labs opens on an entry card** (`LabsCatalogCard`, both frames): the catalog's four sections,
+then a section's groups; Effects and Vector then ask for media in a card (`LabsSourceCard`). At a
+desk the params rail appears with the first pick. Labs' sheet starts under 1024 (`LABS_BELOW`),
+the randomiser's under 768. **The compositor stands
+down under 1024** (`Editor.jsx`): a card in its place with Labs and the randomiser as doors.
+Decided on the recommendation 2026-10-05, for the user's review. The panel's first row is `PanelHeader` — the title
 collapses it — and collapsed it is `PanelPills`, bottom-left; both chromes take them from
 `editor/components/PanelHeader.jsx`. The nav is the host's rail: its drawer on a phone, the
 hamburger top-right. What differs between the two is what the panel holds — labs' parametric
 controls, the generator's rolls — not where it is. Each is alone in `apps/labs` and
-`apps/generator`.
+`apps/randomiser`.
 
 The same chromes inside kol-fxr's own shell and pages — Home, Library, Settings, its rail and its
 keys — are `apps/editor-hub`: fxr's files, copied, on this repo's packages. It is the rehearsal for

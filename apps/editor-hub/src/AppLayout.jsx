@@ -173,6 +173,7 @@ export default function AppLayout() {
          No `settingsKey` — `SettingsKey` below is the gesture (see its note). */
       settingsPath="/settings"
       touch="drawer"
+      railSections="enter"
       pageWash="var(--kol-fg-02)"
     >
       <SettingsKey />

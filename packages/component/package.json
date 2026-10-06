@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.239.1",
+  "version": "0.240.0",
   "description": "The core component library",
   "license": "MIT",
   "type": "module",

@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-component
 
+## 0.240.0 — 2026-10-06
+
+- **Fixed: `SectionSplit ratio="auto"` media is shown whole** (section-split-content-media-and-ruled-gutter, kol-website). From 901px the frame was the rung minus the padding with `overflow-hidden`, so a content card (kolkrabbi.io `/studio`'s ProfileCard, 621px) showed as a 104px strip at 1440. Auto media takes the column's width and its own height; a ratio keeps the bounded rule (5/4 on `height="80"` at 1600×950: 630×504, as before).
+- **Changed: `SectionSplit` pads inside its cap with `--kol-pad-section-x`** — `.kol-page`'s measure — instead of `px-5/8/14` outside it, so its text starts where the bands around it do: 108 at 1920, 48 at 1440 and 1024, 20 at 390. `fill` unchanged.
+- **Fixed: `ColumnBrowser autoFocus` does not scroll the page** (explorer-autofocus-scrolls-the-fixed-page, kol-website): `focus({ preventScroll: true })`. Inside `PageShell mode="fixed"` the focus scrolled the page 102px and the header opened off-screen.
+- **Fixed: a tooltip does not open on a tap.** `Tooltip` opens on hover, and touch has no hover — a tap read as one that never ends, so the tooltip opened and stayed over the next control (found on labs' phone sheet, 2026-10-05: "Transport" over `Save to file`, a rail row's name hanging off the nav drawer). `usePopover`'s hover is mouse-only now; `Tooltip` is its one hover consumer. A keyboard still opens it through focus, a mouse as before. **On a touch screen a tooltip no longer shows at all** — say so if a page leaned on tap-to-read.
+
 ## 0.239.1 — 2026-10-05
 
 - **Fixed: `ContentFilters` — a chip that is not offered does not filter.** The active set outlives a change of `filterGroups`, so on a page whose views swap the groups (a Library of Variants · Effects · Expressions) a chip picked in one view kept filtering the next, where no item carries its key: an empty list under "(1) filter active" with no chip to untick. Only chips the current groups offer apply (plus `customFilterKeys`); the stored set is untouched, so the chip is still on when its view comes back. A page whose groups never change behaves as before.

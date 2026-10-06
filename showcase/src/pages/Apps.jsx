@@ -106,7 +106,7 @@ export const APPS = [
       { path: '/', what: 'An empty stage — the nav is the way in' },
       { path: '?preset=<id>', what: 'A preset by name — labs writes the pick to the URL itself' },
     ] },
-  { name: 'generator', layer: 'tool', port: 5200, what: 'The generator alone — the randomiser, its two tools Generate and Effects, with no shell. The same frame as labs: a rail on the right at a desk, a sheet along the bottom on a phone.',
+  { name: 'randomiser', layer: 'tool', port: 5200, what: 'The randomiser alone — its two tools Generate and Effects, with no shell. The same frame as labs: a rail on the right at a desk, a sheet along the bottom on a phone.',
     layers: ['Tool'], packages: ['design-editor (source)'], optIns: ['fixture: media-fixture'],
     consumer: 'Route to MobileView after setMediaClient / setSettingsStore; setNavigator sends its Labs and Editor doors where your app keeps them.' },
   { name: 'editor-hub', layer: 'tool', port: 5198, what: 'kol-fxr’s shell and pages around the editor’s chromes — Home, Library, Editor, Labs, Randomiser and Settings, with the chromes from design-editor’s source.',

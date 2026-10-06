@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-workshop
 
+## 0.39.0 — 2026-10-06
+
+- **New: the doc reader takes a consumer's field config and page actions** (reader-takes-field-config-and-page-actions, kol-website).
+  - `DocumentationReader fields` → `DocsFrontmatter fields`: per key `{ label, icon, order, hidden, render(value, metadata) }`, merged over the block's own tables. No config is the output as before, apart from the two defaults below.
+  - A frontmatter value that is a URL renders as a link (no protocol shown, new tab), as a single value and inside an array.
+  - A key with no icon entry takes a default glyph — no iconless row.
+  - `DocumentationReader actions`: a node under the title, before the intro.
+  - `RailRow` opens an `http(s)` `href` in a new tab; `RightRail` actions accept `href`.
+
 ## 0.38.0 — 2026-10-02
 
 - **Fixed: a rail title opens its page and expands nothing.** Landing on a group's own home leaves its fold as it was — open stays open, folded stays folded; only the chevron folds. It opened the group (2026-10-01), and in a rail whose chapter home is also a row (the vault's `About`) every title click expanded its chapter.

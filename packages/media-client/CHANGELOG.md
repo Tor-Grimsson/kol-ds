@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-media-client
 
+## 0.4.1 — 2026-10-06
+
+- **`adminBase` defaults to `https://media.kolkrabbi.io`** (media-client-admin-base-is-media, kol-website). The media app has one hostname; `admin.` only redirects and is retiring. Consumers on the default reached the API through a 301; bump and they reach it directly.
+
 ## 0.4.0 — 2026-09-03
 
 - **`buckets` takes an ARRAY meaning exactly these** (one-bucket-consumer,

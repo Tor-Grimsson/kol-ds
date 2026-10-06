@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from 'react'
 import { withView, navigateTo } from '../mode'
 
 /* Mobile-chrome gating. Primary-pointer coarse + real touch = phone/tablet →
@@ -5,6 +6,30 @@ import { withView, navigateTo } from '../mode'
  * primary pointer and gets the desktop editor natively. */
 export const isMobileDevice = () =>
   window.matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints > 0
+
+/* THE FRAME FOLLOWS THE WINDOW AS WELL AS THE DEVICE (2026-10-05). Sheet or rail was
+ * `isMobileDevice()` alone, so a desktop window narrowed to a phone's width kept the desk frame:
+ * labs' two rails squeezed to strips either side of the stage, the randomiser's 264px rail beside
+ * a 126px stage. Under 768 the tools take the frame a phone gets — the width kol-shell's
+ * `AppShell` folds its own rail into a drawer at (`drawerBelow`), and for its reason: "a width,
+ * not a pointer test … a narrow desktop window" has no room either. A touch device keeps the
+ * sheet at any width, as before; this only adds the narrow window to it. */
+export const NARROW_BELOW = 768
+/* …and the compositor's own floor: two 320px panels and a menu bar want 1024 (at 768 the stage
+ * was 80px wide, by 480 gone). Under it the editor shows a note, not a squeezed shell. */
+export const EDITOR_BELOW = 1024
+/* …and labs' (2026-10-06): labs has TWO rails that open together (the 2026-08-30 pairing), so at
+ * 768 both open left the stage 240px wide, 496 at 1024. Under 1024 labs takes the sheet; the
+ * randomiser, with one rail, keeps 768. */
+export const LABS_BELOW = 1024
+const below = new Map()
+const queryBelow = (px) => { if (!below.has(px)) below.set(px, window.matchMedia(`(max-width: ${px - 1}px)`)); return below.get(px) }
+export const useBelow = (px) => useSyncExternalStore(
+  (cb) => { const mq = queryBelow(px); mq.addEventListener('change', cb); return () => mq.removeEventListener('change', cb) },
+  () => queryBelow(px).matches,
+  () => false,
+)
+export const useNarrow = () => useBelow(NARROW_BELOW)
 
 /* Tablets get the "Use desktop editor" opt-in on the entry screen; phones
  * don't. ~600px shortest screen side is the phone/tablet line. */

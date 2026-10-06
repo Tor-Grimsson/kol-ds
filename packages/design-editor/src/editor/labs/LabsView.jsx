@@ -13,15 +13,16 @@ import TimelineDock from '../params/TimelineDock'
 import { useDragResize } from '@kolkrabbi/kol-framework'
 import LabsNav from './LabsNav'
 import LabsParams from './LabsParams'
-import LabsShortcuts from './LabsShortcuts'
-import LabsSourcePicker from './LabsSourcePicker'
+import { LabsSourceCard } from './LabsSourcePicker'
 import { transport } from '../params/transport'
 import { getAppSettings } from '../lib/appSettings'
 import { groupOfPreset, presetById, presetLayerPatch } from '../../loops/registry'
-import { PanelHeader, PanelPills } from '../components/PanelHeader'
+import { PanelHeader, PanelPills, SheetGrab, SHEET_H } from '../components/PanelHeader'
+import LabsCatalogCard from './LabsCatalogCard'
 import { useLabsLayer } from './useLabsLayer'
+import { setMountedView } from '../mode'
 import { sheetLabels } from './sheetLabels'
-import { isMobileDevice, wantsDesktop } from '../mobile/device'
+import { isMobileDevice, wantsDesktop, useBelow, LABS_BELOW } from '../mobile/device'
 import { ControlSizeContext } from '../params/controlSize'
 
 /**
@@ -64,6 +65,7 @@ const chipCls = 'px-2 py-1 rounded border border-oq-08 bg-surface-secondary kol-
 
 function LabsStage() {
   const { layer } = useLabsLayer()
+  const { removeLayer } = useComposeState()
   const needsSource = layer?.type === 'photo' && !layer.src && layer.srcType !== 'webcam'
 
   /* Labs' frame doesn't fill the cell — it floats at a zoom the user drives.
@@ -104,6 +106,10 @@ function LabsStage() {
       const t = e.target
       if (t?.tagName === 'INPUT' || t?.tagName === 'TEXTAREA' || t?.isContentEditable) return
       if (e.key === 'f' || e.key === 'F') { setShowFps((v) => !v); return }
+      /* the zoom chips left the stage (2026-10-06, the user: "fold the zoom into a shortcut"):
+         − and + (= without shift) step, 0 fits — listed in the shortcuts sheet (keymap.js) */
+      if (e.key === '-' || e.key === '_') { step(-1); return }
+      if (e.key === '+' || e.key === '=') { step(1); return }
       if (ZOOM_KEYS[e.key] !== undefined) setZoom(ZOOM_KEYS[e.key])
     }
     window.addEventListener('keydown', onKey)
@@ -117,26 +123,19 @@ function LabsStage() {
       style={{ background: 'var(--kol-surface-secondary)' }}
       onDoubleClick={() => setZoom(1)}
     >
-      {needsSource ? (
-        <LabsSourcePicker layer={layer} />
-      ) : (
-        <div style={{ width: `${zoom * LABS_FIT * 100}%`, height: `${zoom * LABS_FIT * 100}%` }}>
-          <OutputCanvas />
+      <div style={{ width: `${zoom * LABS_FIT * 100}%`, height: `${zoom * LABS_FIT * 100}%` }}>
+        <OutputCanvas />
+      </div>
+      {/* an effect picked before any media: the card asks for it (2026-10-06, was three panes
+          across the stage); Back drops the empty layer, and the entry card comes back */}
+      {needsSource && <LabsSourceCard layer={layer} title={sheetLabels(layer).title} onBack={() => removeLayer(layer.id)} />}
+
+      {/* the fps readout (F); the zoom chips that stood beside it are keys now */}
+      {showFps && (
+        <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2 [@media(pointer:coarse)]:bottom-1">
+          <Tooltip label="Framerate — press F to hide"><span className={chipCls}>{fps} fps</span></Tooltip>
         </div>
       )}
-
-      {/* on a phone the cell is the half above the sheet, and the frame's margin there is thinner
-          than the chips' own inset — they sat on its corner */}
-      <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2 [@media(pointer:coarse)]:bottom-1">
-        <Tooltip label="Zoom out"><button aria-label="Zoom out" type="button" className={chipCls} onClick={() => step(-1)}>−</button></Tooltip>
-        <Tooltip label="Reset zoom (0)"><button aria-label="Reset zoom (0)" type="button" className={chipCls} onClick={() => setZoom(1)}>
-          {Math.round(zoom * 100)}%
-        </button></Tooltip>
-        <Tooltip label="Zoom in"><button aria-label="Zoom in" type="button" className={chipCls} onClick={() => step(1)}>+</button></Tooltip>
-        {showFps && (
-          <Tooltip label="Framerate — press F to hide"><span className={chipCls}>{fps} fps</span></Tooltip>
-        )}
-      </div>
     </div>
   )
 }
@@ -258,9 +257,18 @@ function LabsRail() {
 const TouchRails = createContext(null)
 
 function LabsSheetHeader() {
-  const { collapseParams } = useContext(TouchRails)
+  const { collapseParams, catalog, toggleCatalog } = useContext(TouchRails)
   const { layer } = useLabsLayer()
-  return <PanelHeader title={sheetLabels(layer).title} onCollapse={collapseParams} className="px-4" />
+  /* the randomiser's "Start over" seat, with labs' one action: the catalog card in and out */
+  const action = <button className="kol-helper-12 text-meta py-2.5" aria-pressed={catalog} onClick={toggleCatalog}>Catalog</button>
+  return <PanelHeader title={sheetLabels(layer).title} onCollapse={collapseParams} className="px-4" action={action} />
+}
+
+/* the sheet's first row: the grabber (PanelHeader.jsx) */
+function LabsSheetGrab() {
+  const { tall, setTall, collapseParams } = useContext(TouchRails)
+  /* a tap cycles; a drag up raises, a drag down lowers, then collapses */
+  return <SheetGrab tall={tall} onToggle={() => setTall((v) => !v)} onDrag={(dir) => { if (dir < 0) setTall(true); else if (tall) setTall(false); else collapseParams() }} />
 }
 
 /* The desktop rail minus its grab: no `useDragResize`, so nothing stamps a
@@ -301,7 +309,8 @@ const LABS_REGISTRY = {
 const LABS_REGISTRY_TOUCH = {
   ...LABS_REGISTRY,
   panels: [
-    { slot: 'right.header', order: 0, Component: LabsSheetHeader },
+    { slot: 'right.header', order: 0, Component: LabsSheetGrab },
+    { slot: 'right.header', order: 1, Component: LabsSheetHeader },
     ...LABS_REGISTRY.panels.map((p) => (p.Component === LabsRail ? { ...p, Component: LabsTouchRail } : p)),
   ],
 }
@@ -312,11 +321,30 @@ function LabsBody() {
   const bootedRef = useRef(false)
 
   /* Coarse pointer without the desktop opt-in (the `kol-desktop` key
-   * `mobile/device.js` writes): read once — a device does not change
-   * mid-mount. */
-  const touch = isMobileDevice() && !wantsDesktop()
+   * `mobile/device.js` writes) — OR a window under 1024 (`LABS_BELOW`, 2026-10-05/06): narrowed, a
+   * desk window kept both rails as 48px strips either side of the stage. The device does not
+   * change mid-mount; the window does, and crossing the fold swaps the whole frame (the two
+   * shells below are different trees, so the rail's drag hook and the sheet never overlap). */
+  const narrow = useBelow(LABS_BELOW)  /* 1024 — see device.js; 768 until 2026-10-06 */
+  const touch = (isMobileDevice() && !wantsDesktop()) || narrow
+  /* the sheet mounts no drag hook, so a `data-rail="collapsed"` the desk rail left on :root (it
+   * folds with the shell rail, and that is a drawer down here) would fold the footer to its
+   * collapsed dock inside the sheet; the desk rail stamps its own again when it comes back */
+  useEffect(() => { if (touch) document.documentElement.removeAttribute('data-rail') }, [touch])
   /* open, as the generator's panel is — the sheet sits under the stage, not over it */
   const [paramsOpen, setParamsOpen] = useState(true)
+  /* the sheet's two heights (PanelHeader.jsx `SHEET_H`), and the catalog card in it — open while
+     there is nothing on the stage, so the way in is in the sheet, not only in the corner; a pick
+     closes it */
+  const [tall, setTall] = useState(false)
+  /* THE ENTRY CARD (LabsCatalogCard), both frames: open while the stage is empty, gone on a pick,
+     back when the layer goes; the sheet's `Catalog` and the rail's rows reopen it */
+  const [catalog, setCatalog] = useState(() => !layer)
+  useEffect(() => { setCatalog(!layer) }, [layer?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  /* …and at a desk a pick OPENS the params rail: it folds with the shell rail (the 2026-08-30
+     pairing), which opens closed, so a pick landed on a 48px strip and nothing to turn. Dropping
+     the collapsed stamp here lets the pairing bring the shell rail out with it. */
+  useEffect(() => { if (layer && !touch) document.documentElement.removeAttribute('data-rail') }, [layer?.id]) // eslint-disable-line react-hooks/exhaustive-deps
   /* a pick from the nav brings a collapsed sheet back */
   useEffect(() => {
     if (!touch) return undefined
@@ -338,6 +366,8 @@ function LabsBody() {
 
   /* Undo / redo / grid — the mode-agnostic keymap the editor mounts too. */
   useGlobalShortcuts()
+  /* this chrome, for the shortcuts sheet's labs rows when the host's path says nothing */
+  useEffect(() => { setMountedView('labs'); return () => setMountedView(null) }, [])
 
   /* Boot once: theme, then the global default aspect — the same
    * reconciliation EditorBody does (the provider seeds aspect '4:5' but
@@ -391,6 +421,13 @@ function LabsBody() {
         transport.toggle()
         return
       }
+      /* S = the editor's shortcuts sheet (EditorShell mounts it for every chrome). Only the
+         compositor's canvas dispatched it, so labs' S had only ever opened its own card (retired
+         2026-10-06). */
+      if ((e.key === 's' || e.key === 'S') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        window.dispatchEvent(new CustomEvent('kol:show-shortcuts'))
+        return
+      }
       if ((e.key === 'c' || e.key === 'C') && !e.metaKey && !e.ctrlKey && !e.altKey) {
         setTool(toolRef.current === 'orbit' ? 'select' : 'orbit')
       }
@@ -423,11 +460,11 @@ function LabsBody() {
   /* `.kol-editor-labs` scopes kol-labs.css to this chrome; `contents` keeps the
    * wrapper out of layout so the shell's grid is untouched. */
   return (
-    <div className="kol-editor-labs contents" data-touch={touch || undefined} data-params={paramsOpen ? 'open' : undefined}>
+    <div className="kol-editor-labs contents" data-touch={touch || undefined} data-params={paramsOpen ? 'open' : undefined} data-empty={layer ? undefined : ''} style={tall ? { '--kol-sheet-h': SHEET_H.tall } : undefined}>
       {/* draws nothing — hands labs' categories to the shell rail */}
       <LabsNav />
       {touch ? (
-        <TouchRails.Provider value={{ collapseParams: () => setParamsOpen(false) }}>
+        <TouchRails.Provider value={{ collapseParams: () => setParamsOpen(false), tall, setTall, catalog, toggleCatalog: () => setCatalog((v) => !v) }}>
           {/* ONE SIZE GROUP IN THE SHEET — 'md', the rung where the DS's
               ladders agree (see controlSize.js). */}
           <ControlSizeContext.Provider value="md">
@@ -438,8 +475,9 @@ function LabsBody() {
       ) : (
         <EditorShell registry={LABS_REGISTRY} />
       )}
-      {/* S = the "Animate any value" card (labs' shortcuts overlay). */}
-      <LabsShortcuts />
+      {/* labs' own shortcuts card retired 2026-10-06 (the user: "dont we have a standardized
+          shortcuts look?") — S opens the editor's sheet, which EditorShell mounts for every chrome */}
+      {catalog && <LabsCatalogCard onPicked={() => setCatalog(false)} onClose={() => setCatalog(false)} />}
     </div>
   )
 }

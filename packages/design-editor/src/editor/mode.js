@@ -107,11 +107,18 @@ const PATH_TO_MODE = {
   '/randomiser': 'randomiser',
 }
 
+/* THE MOUNTED CHROME SAYS WHICH IT IS (2026-10-06): a host that serves one chrome at `/`
+   (`apps/labs`, `apps/randomiser`) has no view in its path, so the shortcuts sheet dropped every
+   labs-only row there. Each chrome registers itself on mount; the path still wins when it speaks. */
+let mountedView = null
+export const setMountedView = (view) => { mountedView = view }
+
 export const currentView = () => {
   if (typeof window === 'undefined') return null
   /* the LAST segment, so a host that mounts the chromes under a base path (the apps tier serves
      the editor at /apps/editor/labs) still reads its view — the full pathname matched nothing
      there, and the labs keymap silently fell back to none (2026-09-29) */
   const last = window.location.pathname.replace(/\/+$/, '').split('/').pop()
-  return PATH_TO_MODE[`/${last}`] ?? null
+  /* the mounted chrome first: a host serving one chrome at `/` has a path that reads as home */
+  return mountedView ?? PATH_TO_MODE[`/${last}`] ?? null
 }

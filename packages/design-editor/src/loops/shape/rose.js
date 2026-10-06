@@ -12,8 +12,8 @@ export default {
   duration: 7,
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#0b0b0e' },
-    { key: 'colA', label: 'Colour A', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'colB', label: 'Colour B', type: 'color', role: 'accent', default: '#8f5ad0' },
+    { key: 'colA', label: 'Color A', type: 'color', role: 'fg', default: '#e8e4dc' },
+    { key: 'colB', label: 'Color B', type: 'color', role: 'accent', default: '#8f5ad0' },
     ...FILL_PARAMS,
     ...SHAPE_FILL_PARAMS,
     { key: 'k', label: 'Petals (k)', type: 'range', min: 2, max: 9, step: 1, default: 5, noRandom: true },

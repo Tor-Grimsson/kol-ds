@@ -167,7 +167,7 @@ function IconAt({ name, size, component }) {
   return <Cmp name={name} size={size} />
 }
 
-function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail }) {
+function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail, onEnter }) {
   const [open, setOpen] = useState(false)
   /* A SECTION ROW IS NOT A DESTINATION (RailSectionPressOpensRail, kol-fxr
    * 2026-08-30 — user: *"if I press effects from collapsed nav it should maybe
@@ -183,8 +183,13 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
    * "nothing auto-expands" — that rule is about ARRIVING on a route; this is an
    * explicit press. */
   const isSection = sub?.length > 0
+  /* …AND IN AN OPEN RAIL THE SAME PRESS FOLDS AND UNFOLDS IT (2026-10-05, labs on a phone). Open,
+   * it still fell through to `onNavigate` with that path no consumer dispatches: dead at a desk,
+   * and worse on a touch drawer, where AppShell closes the drawer on every navigate — pressing a
+   * section's name shut the nav and loaded nothing. */
   const press = () => {
-    if (isSection && !railOpen) { onOpenRail?.(); setOpen(true); return }
+    if (isSection && onEnter) { if (!railOpen) onOpenRail?.(); onEnter(); return }
+    if (isSection) { if (!railOpen) onOpenRail?.(); setOpen((v) => !railOpen || !v); return }
     onNavigate?.(path)
   }
   const active = path === '/' ? currentPath === '/' : currentPath.startsWith(path)
@@ -221,7 +226,7 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
         {sub?.length > 0 && (
           <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0">
           <Button
-            iconOnly={open ? 'chevron-down' : 'chevron-right'}
+            iconOnly={onEnter ? 'chevron-right' : open ? 'chevron-down' : 'chevron-right'}
             iconSize={16}
             iconComponent={iconComponent}
             variant="nav"
@@ -230,14 +235,14 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
             size="md"
             className="shrink-0"
             style={{ color: 'var(--kol-oq-96)' }}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
+            aria-expanded={onEnter ? undefined : open}
+            onClick={onEnter ? press : () => setOpen((v) => !v)}
             aria-label={`${label} sub categories`}
           />
           </Tooltip>
         )}
       </div>
-      {railOpen && open && sub.map((s) => {
+      {railOpen && open && !onEnter && sub.map((s) => {
         const on = s.path === '/' ? currentPath === '/' : currentPath.startsWith(s.path)
         return (
           <Tooltip key={s.path} label={s.label} placement="right" asChild>
@@ -282,18 +287,28 @@ export default function NavRail({
   hidden = false,
   drawer = false,
   fade = true,
+  sections = 'fold',
 }) {
   const railRef = useRef(null)
   const grabRef = useRef(null)
   const [railOpen, setRailOpen] = useState(false)
+  /* ENTER MODE (`sections="enter"`, 2026-10-06 — the user, on labs: "having a 'enter' mode in the
+   * left sidebar instead of collapse folder?"): pressing a section replaces the list with that
+   * section's rows under a Back row, instead of unfolding it in place. `fold` is the accordion
+   * every rail had and keeps. Per consumer, not a law: labs' catalog is five sections of up to
+   * ten rows each, which is where an accordion stops reading. */
+  const [entered, setEntered] = useState(null)
   const snapOpenRef = useRef(null)
   /* the grab strip is not rendered in drawer mode, so the hook's ref stays null
    * and it no-ops on its own — no second argument needed */
   useGrabEdge(grabRef)
   useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)
   if (hidden) return null
+  const enterMode = sections === 'enter'
+  const section = enterMode && entered ? items.find((i) => i.path === entered) : null
   const row = (item) => (
-    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />
+    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()}
+      onEnter={enterMode ? () => setEntered(item.path) : undefined} />
   )
   return (
     <div
@@ -349,7 +364,12 @@ export default function NavRail({
         * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,
         * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}
       <div className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
-        {items.map(row)}
+        {section ? (
+          <>
+            <RailItem icon="arrow-left" path={section.path} label={section.label} currentPath="" onNavigate={() => setEntered(null)} iconComponent={iconComponent} railOpen={drawer || railOpen} />
+            {section.sub.map((s) => <RailItem key={s.path} {...s} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} />)}
+          </>
+        ) : items.map(row)}
       </div>
       {/* the rule runs the full rail width, out past the px-2 */}
       {bottomItems.length > 0 && <div className="self-stretch -mx-2 border-t border-fg-08" />}

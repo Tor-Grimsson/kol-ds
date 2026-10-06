@@ -1,6 +1,6 @@
-import { Icon } from '@kolkrabbi/kol-icons'
 import { useRef, useState } from 'react'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
 import MediaPicker from '../library/MediaPicker'
 import { proxied, isVideoType } from '../library/mediaLibrary'
 import { useLayerEdit } from '../compose/useLayerEdit'
@@ -125,33 +125,38 @@ const SOURCE_OPTIONS = [
 /* no Camera pane — a webcam yields pixels, the distressor needs paths */
 const SVG_SOURCE_OPTIONS = SOURCE_OPTIONS.slice(0, 2)
 
+/* THE DOORS, AS A COLUMN (2026-10-06; the user: "it seems weird to overlay 3 columns for upload,
+ * why not use some sort of modal"). Three full-height panes broke at a half-width window and on a
+ * phone; these are the randomiser's card rows, and the callers put the card around them:
+ * `LabsSourceCard` on labs' stage, MobileView's own scrim and Back on the randomiser. */
 export default function LabsSourcePicker({ layer }) {
   const src = useSourceInput(layer)
-
-  /* oq-48, not fg-meta: these panes carry a 28px EditorIcon, and alpha ink
-   * multiplies where strokes overlap (the opaque-icons law). oq-48 reads
-   * identical on the resting surface but stays opaque. Hover lifts the GROUND
-   * as well as the ink — a full-height pane is a big target and ink alone
-   * barely reads at this size. */
-  const pane = 'flex-1 flex flex-col items-center justify-center gap-3 cursor-pointer text-oq-48 hover:text-emphasis hover:bg-oq-02 transition-colors'
-
   return (
-    <div className="w-full h-full flex items-stretch p-6 gap-px">
-      <button type="button" className={pane} onClick={src.openLibrary}>
-        <Icon name="image" size={28} />
-        <span className="kol-mono-12">From library</span>
-      </button>
-      <div className="w-px" style={{ background: 'var(--kol-oq-08)' }} />
-      <button type="button" className={pane} onClick={src.openUpload}>
-        <Icon name="upload" size={28} />
-        <span className="kol-mono-12">Upload</span>
-      </button>
-      <div className="w-px" style={{ background: 'var(--kol-oq-08)' }} />
-      <button type="button" className={pane} onClick={src.openCamera}>
-        <Icon name="camera" size={28} />
-        <span className="kol-mono-12">Camera</span>
-      </button>
+    <div className="flex flex-col gap-2">
+      <Button tone="primary" size="lg" className={SPREAD} iconLeft="image" iconRight="image" onClick={src.openLibrary}>From library</Button>
+      <Button tone="primary" size="lg" className={SPREAD} iconLeft="upload" iconRight="upload" onClick={src.openUpload}>Upload</Button>
+      {!src.svgMode && (
+        <Button tone="primary" size="lg" className={SPREAD} iconLeft="camera" iconRight="camera" onClick={src.openCamera}>Camera</Button>
+      )}
       {src.nodes}
+    </div>
+  )
+}
+
+/* Labs' card: the effect's name on top, the doors, Back (which drops the empty layer, so the entry
+ * card comes back). The same card as the catalog's, one step on. */
+export function LabsSourceCard({ layer, title, onBack }) {
+  useSheetChrome(onBack)
+  return (
+    <div className="fixed inset-y-0 right-0 left-[var(--fxr-rail,0px)] kol-overlay-scrim flex flex-col items-center overflow-y-auto p-6" style={{ zIndex: 'var(--kol-z-modal)' }}>
+      <div className="my-auto w-full max-w-sm rounded p-8 flex flex-col gap-6" style={{ background: 'var(--kol-surface-primary)' }}>
+        <div className="flex flex-col gap-2">
+          <span className="kol-eyebrow text-body">{title}</span>
+          <span className="kol-mono-12 text-meta">Pick the media it works on.</span>
+        </div>
+        <LabsSourcePicker layer={layer} />
+        <Button tone="grey" size="lg" className={SPREAD} iconLeft="arrow-left" iconRight="arrow-left" onClick={onBack}>Back</Button>
+      </div>
     </div>
   )
 }
