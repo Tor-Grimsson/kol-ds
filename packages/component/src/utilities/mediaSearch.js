@@ -16,7 +16,7 @@ import { kindOf } from './mediaKinds.js'
 
 const toItem = (o, nameOf) => ({
   id: o.key,
-  title: nameOf ? nameOf(o) : o.key.slice(o.key.lastIndexOf('/') + 1) || o.key,
+  title: nameOf ? nameOf(o) : o.displayName ?? (o.key.slice(o.key.lastIndexOf('/') + 1) || o.key),
   keywords: [o.key],
   tags: o.tags ?? [],
   kind: o.kind ?? kindOf(o),

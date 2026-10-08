@@ -440,7 +440,7 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
           {/* a file with no thumbnail draws its glyph at the FOLDER's size — one icon column (user 2026-09-25) */}
           {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={glyphSize(size)} />}
         </span>
-        <span className={`kol-item-name min-w-0 truncate${selected ? '' : ' text-fg-default'}`}>{o.displayKey ?? o.key.split('/').pop()}</span>
+        <span className={`kol-item-name min-w-0 truncate${selected ? '' : ' text-fg-default'}`}>{o.displayKey ?? o.displayName ?? o.key.split('/').pop()}</span>
       </span>
       <span className="flex-1" />
       {cols && <>
@@ -588,7 +588,7 @@ function FileEditorHost({ o, client, bucket, onClose, onSaved, assets }) {
     return () => { live = false }
   }, [o.key]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <DocumentEditor name={o.displayKey ?? o.key.split('/').pop()} kind={editKindOf(o)} text={text}
+    <DocumentEditor name={o.displayKey ?? o.displayName ?? o.key.split('/').pop()} kind={editKindOf(o)} text={text}
       savedAt={o.uploaded ? Date.parse(o.uploaded) : 0} draft={{ bucket, key: o.key }} assets={assets}
       onSave={async (next) => { const r = await client.writeText(o.key, next, bucket); onSaved?.(o.key, r, next) }}
       onClose={onClose} />
@@ -646,7 +646,7 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
     shownDims?.len && formatLength(shownDims.len),
   ].filter(Boolean).join(' · ')
   const frame = {
-    title: o.displayKey ?? o.key.split('/').pop(),
+    title: o.displayKey ?? o.displayName ?? o.key.split('/').pop(),
     meta: facts,
     onClose,
     /* ‹ › and n / N only when the window pages a SELECTION (user 2026-09-23: *"I only selected one
@@ -1081,6 +1081,8 @@ export function MediaLibraryBrowse({
    * browse surface inside the modal card needs the selection for its Use button). Keys are
    * bucket-relative. Absent, nothing. */
   onPickFile,
+  /* `o.displayName` on a listed object is its LABEL in every view, Quick Look and search (kol-fxr
+   * 2026-10-08: names not unique, so the key is an id). Absent, the label is the key, as before. */
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
@@ -1945,7 +1947,7 @@ export function MediaLibraryBrowse({
    * settings the wall always had. */
   const wallKinds = new Set(settings.kinds ?? SETTINGS_BASE.kinds)
   const wallSource = settings.flat
-    ? scoped.map((o) => ({ ...o, displayKey: prefix ? o.key.slice(prefix.length) : o.key }))
+    ? scoped.map((o) => ({ ...o, displayKey: o.displayName ?? (prefix ? o.key.slice(prefix.length) : o.key) }))
     : dirFiles
   const wallVisible = wallKinds.has('system') ? wallSource : wallSource.filter((o) => !isSystemFile(o.key))
   const wallGrouped = settings.groupVariants ? groupVariants(wallVisible) : wallVisible
@@ -1958,7 +1960,7 @@ export function MediaLibraryBrowse({
    * bar at `brand/og/` and `logos`, `original`, `projects` vanished with no filter set). The
    * columns draw every level up to the root, so a list scoped to `prefix` cut every sibling path
    * the moment the bar mounted. */
-  const filterItems = isWall ? wallFiles : sortedObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key }))
+  const filterItems = isWall ? wallFiles : sortedObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.displayName ?? o.key }))
   const filterKinds = [...new Set(filterItems.map((o) => o.kind))].sort()
   const filterTags = [...new Set(filterItems.flatMap((o) => o.tags ?? []))].sort()
   /* favourites as a one-chip group: ContentFilters matches a value, so a starred file carries one */
@@ -2266,7 +2268,7 @@ export function MediaLibraryBrowse({
    * that means the top hit. Arrow-then-Enter and a click go through `onSelect`, same jump. */
   const searchResults = rankMedia(objects, searchQuery, { limit: 50 }).map((o) => ({
     id: o.key,
-    label: o.key.split('/').pop(),
+    label: o.displayName ?? o.key.split('/').pop(),
     hint: o.key.slice(0, o.key.lastIndexOf('/') + 1) || 'the bucket root',
     group: KIND_LABEL[kindOf(o)] || 'File',
   }))
@@ -2302,7 +2304,7 @@ export function MediaLibraryBrowse({
     if ((q.kinds ?? []).length && !q.kinds.includes(kindOf(o))) return false
     if (q.text && !filterMedia([o], q.text).length) return false
     return true
-  }).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.key })) : null
+  }).map((o) => ({ ...o, kind: kindOf(o), poster: posterFor(o.key, keySet), displayKey: o.displayName ?? o.key })) : null
   /* A TYPED QUERY IS A RESULTS LIST (user 2026-09-30, reversing "a flat results list nobody asked
    * for"): pruning the tree to matching paths hid the files one level down and read as "search only
    * finds folders". While the bar holds a query, the tree views show every hit flat, each with its
@@ -2971,7 +2973,7 @@ export function MediaLibraryLibrary({
 
   const scoped = prefix ? objects.filter((o) => o.key.startsWith(prefix)) : objects
   const { files: dirFiles } = partition(scoped, prefix)
-  const flatFiles = scoped.map((o) => ({ ...o, displayKey: prefix ? o.key.slice(prefix.length) : o.key }))
+  const flatFiles = scoped.map((o) => ({ ...o, displayKey: o.displayName ?? (prefix ? o.key.slice(prefix.length) : o.key) }))
   const levelFiles = flat ? flatFiles : dirFiles
   const systemCount = levelFiles.filter((o) => isSystemFile(o.key)).length
   const visibleFiles = kinds.has('system') ? levelFiles : levelFiles.filter((o) => !isSystemFile(o.key))

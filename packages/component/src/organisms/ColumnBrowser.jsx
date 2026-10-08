@@ -187,7 +187,7 @@ const defaultPartition = (objects, prefix) => {
     const rel = prefix ? o.key.slice(prefix.length) : o.key
     const slash = rel.indexOf('/')
     if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))
-    else files.push({ ...o, displayKey: o.displayKey ?? rel })
+    else files.push({ ...o, displayKey: o.displayKey ?? o.displayName ?? rel })
   }
   return { folders: [...folderSet].sort(), files }
 }
