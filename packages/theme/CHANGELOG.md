@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-theme
 
+## 0.167.0 — 2026-10-08
+
+- **New: `.kol-media-tiles`** — MediaTileGallery's grid: `--kol-media-tiles-cols` from `sm` up, two across below 640 (rule 6). Found on `apps/media/viewer` at 390: four 75px tiles.
+- **New: the modal library's phone cut** (`kol-components-organisms.css`, with kol-component's modal work of 2026-10-07). Under 768 `.kol-media-picker` is a full-height sheet — the overlay's 24px lane goes (`.kol-overlay:has(> .kol-overlay-sheet > .kol-media-picker)`), the border and radius go, `--kol-media-tile-min` drops to 8rem so tiles pack two across at 390. It had no phone layout at all.
+
 ## 0.166.0 — 2026-10-05
 
 - **New: `hover:text-oq-*`** (+ `-inverse`) in `kol-opaque.css` — the opaque ladder's text hover, all fifteen stops. The file's header promised "+ hover" and only `bg-oq-*` had it, so every icon wrapper moved off `fg` by the icon-ink law (`text-fg-32 hover:text-fg-96` → `text-oq-32 hover:text-oq-96`) lost its hover colour: nine files already used the class and it matched nothing.

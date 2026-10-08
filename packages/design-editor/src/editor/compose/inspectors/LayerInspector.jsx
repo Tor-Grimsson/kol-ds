@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import MediaPicker from '../../library/MediaPicker'
-import { proxied, isVideoType } from '../../library/mediaLibrary'
+import { MediaLibrary } from '@kolkrabbi/kol-component'
+import { proxied, isVideoType, getMediaClient } from '../../library/mediaLibrary'
 import { Button, Dropdown, InspectorSection, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { LabeledControl } from '@kolkrabbi/kol-component'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
@@ -397,7 +397,8 @@ function ImageSource({ layer, patch }) {
           /></Tooltip>
         )}
       </div>
-      <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onPick={onLibraryPick} />
+      {/* the DS modal library (2026-10-07) — the editor's own picker is retired; a media layer takes image or video */}
+      <MediaLibrary variant="modal" open={pickerOpen} client={getMediaClient()} accept={['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
     </LabeledControl>
   )
 }

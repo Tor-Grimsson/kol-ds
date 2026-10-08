@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react'
-import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { Button, SegmentedToggle, MediaLibrary } from '@kolkrabbi/kol-component'
 import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
-import MediaPicker from '../library/MediaPicker'
-import { proxied, isVideoType } from '../library/mediaLibrary'
+import { proxied, isVideoType, getMediaClient } from '../library/mediaLibrary'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { saveClip } from '../lib/clipStore'
 import { ensureWebcam } from '../lib/webcam'
 import { useControlSize, stripClamp } from '../params/controlSize'
+
+/* SVG is `image` by kind in the DS library, so a vector-only door reads the object itself. */
+const isSvgObject = (o) => /\.svg$/i.test(o.key) || /svg/i.test(o.contentType || '')
 
 /**
  * LabsSourcePicker — the two-pane empty state an effect shows while its
@@ -76,7 +78,9 @@ function useSourceInput(layer) {
   const nodes = (
     <>
       <input ref={fileRef} type="file" accept={svgMode ? '.svg,image/svg+xml' : 'image/*,video/*'} className="hidden" onChange={onUpload} />
-      <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onPick={onLibraryPick} accept={svgMode ? 'svg' : 'all'} />
+      {/* THE DS MODAL LIBRARY (2026-10-07) — the editor's own picker is retired; `accept` is what this
+         door can take: vector only for an SVG source (`image` by kind, so a function), else image or video. */}
+      <MediaLibrary variant="modal" open={pickerOpen} client={getMediaClient()} accept={svgMode ? isSvgObject : ['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
     </>
   )
   return {

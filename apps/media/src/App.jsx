@@ -8,6 +8,7 @@ import { useFixtureMedia, useMediaTool, TOOL_SHORTCUTS } from 'media-fixture/wir
  * its own module and the same tool opened differently one shell over; retired to _tmp/). */
 const fixtureClient = createFixtureClient();
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell';
+import { Button, PageHeader, MediaTileGallery } from '@kolkrabbi/kol-component';
 
 /* kol-r2b2's App.jsx, PORTED 1:1. Every ruling, comment, class and behaviour is
  * that file's. Four wiring changes and one addition, and nothing else:
@@ -45,7 +46,98 @@ const TITLE = 'MEDIA';
  * header, the crumb line and the columns; `library` renders the wall below it with
  * `header={false}`, sharing one bucket, one prefix and one settings object. */
 
+/* THE PICKER PAGE — `/picker` (user, 2026-10-07: "apps/media/picker"). The modal library as a
+ * consumer opens it: fxr's three library doors, a brand book's image slot — `MediaLibrary
+ * variant="modal"` over a client, `onSelect(url, { contentType, kind })` back. The component
+ * page previews the component; this is the preview of its USE, over the fixture bucket, with
+ * the pick shown under the button. The modal's Store dropdown lists the fixture's two buckets. */
+function PickerPage() {
+  const [open, setOpen] = useState(false);
+  const [picked, setPicked] = useState(null);
+  return (
+    <PageShell className="gap-10">
+      <PageHeader
+        title="Picker"
+        subtitle="The modal library a consumer opens over its bucket — pick a file, get its URL"
+        size="sm"
+        voice="mono"
+      />
+      <div className="flex flex-col items-start gap-6">
+        <Button tone="grey" size="md" onClick={() => setOpen(true)}>Pick media</Button>
+        {picked && (
+          <div className="flex items-start gap-4">
+            {picked.kind === 'video'
+              ? <video src={picked.url} muted controls className="w-48 rounded border border-oq-08" />
+              : <img src={picked.url} alt="" className="w-48 rounded border border-oq-08" />}
+            <dl className="kol-mono-12 flex flex-col gap-1">
+              <div><dt className="text-fg-32 inline">url </dt><dd className="inline break-all">{picked.url}</dd></div>
+              <div><dt className="text-fg-32 inline">contentType </dt><dd className="inline">{picked.contentType}</dd></div>
+              <div><dt className="text-fg-32 inline">kind </dt><dd className="inline">{picked.kind}</dd></div>
+            </dl>
+          </div>
+        )}
+      </div>
+      <MediaLibrary
+        variant="modal"
+        open={open}
+        client={fixtureClient}
+        accept={['image', 'video']}
+        onClose={() => setOpen(false)}
+        onSelect={(url, meta) => setPicked({ url, ...meta })}
+      />
+    </PageShell>
+  );
+}
+
+/* THE VIEWER PAGE — `/viewer`: `MediaTileGallery` over one fixture folder, each tile opening THE
+ * fullscreen `MediaViewer` at that tile, paged across the set — the site-tier way into the viewer
+ * (the library's tiles open the same viewer from inside the explorer). */
+function ViewerPage() {
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    let on = true;
+    fixtureClient.listMedia('img/01-shoots/', { bucket: 'r2' }).then((objs) => {
+      if (!on) return;
+      setItems(objs
+        .filter((o) => /^image\//.test(o.contentType ?? ''))
+        .map((o) => ({ url: fixtureClient.mediaUrl(o.key, 'r2'), alt: o.key.split('/').pop(), kind: 'image', caption: o.key.split('/').pop() })));
+    });
+    return () => { on = false; };
+  }, []);
+  return (
+    <PageShell className="gap-10">
+      <PageHeader
+        title="Viewer"
+        subtitle="Framed tiles that open the fullscreen viewer at the tile, paged across the set"
+        size="sm"
+        voice="mono"
+      />
+      <MediaTileGallery items={items} layout="grid" cols={4} />
+    </PageShell>
+  );
+}
+
+/* EVERY SURFACE THE MEDIA FAMILY SHIPS HAS A ROUTE (user, 2026-10-08: "I want to preview and
+ * sync every media output, mobile desktop touch, every variant"):
+ *
+ *   /          explorer — the browser and the wall as two views of one surface (media as it ships)
+ *   /browse    browse   — the column browser alone, the bucket dropdown, the crumb line
+ *   /library   library  — the files wall alone: FILES, filter · search, grid / list, FLAT, the sort row
+ *   /picker    modal    — the picker a consumer opens over its bucket
+ *   /viewer    MediaViewer, from MediaTileGallery's tiles
+ *
+ * Paths, not hashes — the hash is the folder prefix. Built, the app sits under `/apps/media/` and
+ * vercel.json rewrites `/apps/media/(.*)` to its index.html. */
+const route = () => location.pathname.slice(import.meta.env.BASE_URL.length).replace(/\/+$/, '');
+
 export default function App() {
+  const r = route();
+  if (r === 'picker') return <PickerPage />;
+  if (r === 'viewer') return <ViewerPage />;
+  return <Library variant={r === 'browse' || r === 'library' ? r : 'explorer'} />;
+}
+
+function Library({ variant }) {
   // The folder path lives in the URL hash (#img/04-collections/) so browser
   // Back/Forward walk folders and a reload lands where you were.
   const [prefix, setPrefixState] = useState(() => decodeURIComponent(location.hash.slice(1)));
@@ -94,7 +186,7 @@ export default function App() {
           inside one). `media-browse` is the count-line hook — a class we own beats a DOM shape
           we don't. */}
       <MediaLibrary
-        variant="explorer"
+        variant={variant}
         {...media.props}
         {...tool.props}
         prefix={prefix}

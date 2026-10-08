@@ -88,6 +88,10 @@ export const setMediaClient = (c) => {
 
 export { isImageType, isVideoType, formatSize }
 
+/** The live client, for the DS modal library (`MediaLibrary variant="modal"` takes a client;
+ *  since 2026-10-07 it is the editor's picker — its own `library/MediaPicker.jsx` is retired). */
+export const getMediaClient = () => client
+
 /** Public URL for a key on its bucket's own host. */
 export const mediaUrl = (key, bucket = DEFAULT_BUCKET) => client.mediaUrl(key, bucket)
 

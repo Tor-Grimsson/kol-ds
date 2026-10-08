@@ -1,9 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import AppLayout from './AppLayout'
-import HomePage from './pages/HomePage'
 import LibraryPage from './pages/LibraryPage'
-import SettingsPage from './pages/SettingsPage'
 /* The router bridge and the device gate come from the PACKAGE, not a local
    copy — `mode.js` holds `let navigator` as module state, so registering the
    router on our copy left the package's null and every in-package hop fell
@@ -110,9 +108,11 @@ function LegacyViewRedirect({ children }) {
   return <Navigate to={path} replace />
 }
 
+/* Home and Settings are the Hub's pages (AppLayout's `AppHub` renders them at
+   `/` and `/settings` itself), so these routes carry only the device gate. */
 function HomeRoute() {
   if (isMobileDevice() && !wantsDesktop()) return <Navigate to="/randomiser" replace />
-  return <HomePage />
+  return null
 }
 
 export default function App() {
@@ -126,7 +126,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<HomeRoute />} />
             <Route path="/library" element={<LibraryPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/settings" element={null} />
             {/* the chromes ride under the rail too (user, 2026-08-27 — "show the
                 sidebar in each mode"); `\` hides it, see AppLayout */}
             <Route path="/editor" element={<Editor />} />

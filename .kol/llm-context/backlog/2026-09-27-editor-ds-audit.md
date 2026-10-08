@@ -23,7 +23,7 @@ store-agnostic, and the editor never switched back. Similarity is code lines, co
 | `shell/panels/ToolPalette.jsx` (419) | `organisms/ToolPalette` (41 code lines) | 4% | KOL's is the decoupled A3 lift (items in, store out); editor still runs the coupled original, 9 raw `<button>`s | editor feeds `items` to KOL's |
 | `compose/InspectorRail.jsx` | `molecules/InspectorRail` | 10% | KOL's is the decoupled A7 lift | import KOL |
 | `EditorShell.jsx` | `utilities/EditorShell` | 10% | different jobs — KOL's is the two-rail frame, the editor's hosts it | check whether the editor's uses KOL's frame |
-| `library/MediaPicker.jsx` (301) | `MediaPicker` (in `organisms/MediaLibrary`) | — | two pickers | diff |
+| `library/MediaPicker.jsx` (301) | `MediaPicker` (in `organisms/MediaLibrary`) | — | two pickers | **done 2026-10-07** — the DS modal got the bucket switch and a function `accept`; the editor's three doors open `MediaLibrary variant="modal"`, its own picker retired to `_tmp/2026-10-07-design-editor-media-picker/` |
 
 Same job, different name:
 

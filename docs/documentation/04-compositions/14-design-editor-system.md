@@ -128,9 +128,11 @@ hamburger top-right. What differs between the two is what the panel holds — la
 controls, the generator's rolls — not where it is. Each is alone in `apps/labs` and
 `apps/randomiser`.
 
-The same chromes inside kol-fxr's own shell and pages — Home, Library, Settings, its rail and its
-keys — are `apps/editor-hub`: fxr's files, copied, on this repo's packages. It is the rehearsal for
-fxr's bump.
+The same chromes inside kol-fxr's shell — the Hub's Home and Settings, fxr's Library, its rail and
+its keys — are `apps/editor-hub`: fxr's files, copied, on this repo's packages. It is the rehearsal
+for fxr's bump. On `AppHub` since 2026-10-07, as fxr is: Home's SAVED set reads `loadLibrary()`
+(design-editor 0.22.0) on every render, so the shell tier mounts no library provider — one above
+the shell went stale beside the editor's own, which `Editor.jsx` mounts itself.
 
 **The panels** — the layout every one of those chromes shares (categories → sub-categories → a
 leaf, its tabs, folded sections, labeled rows, the modulation dot) — are `AutoControls` over each

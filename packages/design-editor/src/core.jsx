@@ -18,7 +18,7 @@ import { openFiles, closeFiles, useFilesDialog } from './editor/library/filesDia
 import { setNavigator, VIEW_PATHS } from './editor/mode'
 import { isMobileDevice, wantsDesktop, setWantsDesktop } from './editor/mobile/device'
 import { MODES, setMode, withView, currentView } from './editor/mode'
-import { GeneratorLibraryProvider, useGeneratorLibrary, LIBRARY_SLOT_KEYS } from './editor/library/LibraryProvider'
+import { GeneratorLibraryProvider, useGeneratorLibrary, LIBRARY_SLOT_KEYS, loadLibrary } from './editor/library/LibraryProvider'
 import { shortcutsBySection, comboLabel } from './editor/state/keymap'
 import { useSettingsSections, AppSettingsSections, DisplaySettingsDrawer } from './settings/AppSettings'
 import { BRAND } from './brand/config'
@@ -139,6 +139,9 @@ export { setNavigator, VIEW_PATHS, isMobileDevice, wantsDesktop, setWantsDesktop
  *   MODES · setMode · withView · currentView      the mode table and view router
  *   GeneratorLibraryProvider · useGeneratorLibrary · LIBRARY_SLOT_KEYS
  *                                                  the saved-generators library
+ *   loadLibrary                                    the sanitised library, read fresh with
+ *                                                  no provider — a Hub Home's SAVED set
+ *                                                  (kol-fxr, 2026-10-07)
  *   shortcutsBySection · comboLabel               the keymap, for a cheat sheet
  *   useSettingsSections · AppSettingsSections · DisplaySettingsDrawer
  *                                                  the settings rows, defined once
@@ -147,7 +150,7 @@ export { setNavigator, VIEW_PATHS, isMobileDevice, wantsDesktop, setWantsDesktop
  */
 export {
   MODES, setMode, withView, currentView,
-  GeneratorLibraryProvider, useGeneratorLibrary, LIBRARY_SLOT_KEYS,
+  GeneratorLibraryProvider, useGeneratorLibrary, LIBRARY_SLOT_KEYS, loadLibrary,
   shortcutsBySection, comboLabel,
   useSettingsSections, AppSettingsSections, DisplaySettingsDrawer,
   BRAND,

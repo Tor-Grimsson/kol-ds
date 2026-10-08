@@ -243,6 +243,14 @@ function loadFromStorage() {
   }
 }
 
+/* THE READER, EXPORTED (library-reader-for-a-hub-home, kol-fxr 2026-10-07): a Hub Home
+ * lists SAVED from `(view) => items`, evaluated in its own render, and the provider cannot
+ * sit above the shell — `Editor.jsx` mounts its own, and a save there never reaches an
+ * outer copy (`storage` fires cross-tab only). This is the same function the provider seeds
+ * from — validators and migrations included — so a host reads fresh with no provider and
+ * no second copy of the storage key. */
+export { loadFromStorage as loadLibrary }
+
 function saveToStorage(state) {
   if (typeof window === 'undefined') return
   try {

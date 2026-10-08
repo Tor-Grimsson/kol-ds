@@ -3,8 +3,8 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import ActionButton from '../molecules/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
+import Dropdown from '../molecules/Dropdown.jsx'
 import Input from '../atoms/Input.jsx'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
@@ -12,6 +12,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
 import ContentCard from '../molecules/ContentCard.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
+import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
 import MediaViewer from './MediaViewer.jsx'
 import { MediaLibraryBrowse, MediaLibraryLibrary } from './MediaLibraryPages.jsx'
 import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
@@ -136,6 +137,8 @@ function kindOf(o) {
  * every stream it held. A picker asks for what it can pick: `['image','video']`. */
 function acceptsKind(accept) {
   if (!accept || accept === 'all') return () => true
+  /* a function reads the object itself — a vector-only picker wants `.svg`, which is `image` by kind */
+  if (typeof accept === 'function') return accept
   const wanted = new Set(Array.isArray(accept) ? accept : [accept])
   return (o) => wanted.has(o.kind)
 }
@@ -298,6 +301,14 @@ export function MediaLibraryProvider({
    * from the flat view you just left. Derived, not an effect. */
   const [paging, setPaging] = useState({ id: null, visible: 0 })
 
+  /* THE STORE (2026-10-07, design-editor's picker folded into this one): a client with
+   * `buckets()` lists one at a time and the modal's header switches it — the browse page's
+   * rule, "a client with none is one bucket and no dropdown". Switching lands at the root:
+   * a prefix is one bucket's path. */
+  const buckets = useMemo(() => client?.buckets?.() ?? [], [client])
+  const [bucket, setBucketState] = useState(() => buckets[0]?.id ?? null)
+  const setBucket = (id) => { setBucketState(id); setPrefix('') }
+
   useEffect(() => {
     if (!client) return undefined
     let cancelled = false
@@ -305,12 +316,12 @@ export function MediaLibraryProvider({
     setLoading(true)
     setError(null)
     client
-      .listMedia('', { signal: controller.signal })
+      .listMedia('', { signal: controller.signal, bucket: bucket ?? undefined })
       .then((objs) => { if (!cancelled) setObjects(objs) })
       .catch((e) => { if (!cancelled && e.name !== 'AbortError') setError(e.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true; controller.abort() }
-  }, [client])
+  }, [client, bucket])
 
   /* click an inactive field → ascending; click the active one → flip */
   const sortBy = (by) =>
@@ -344,6 +355,10 @@ export function MediaLibraryProvider({
     const kindCounts = files.reduce((acc, o) => { acc[o.kind] = (acc[o.kind] || 0) + 1; return acc }, {})
     const kindsPresent = Object.keys(kindCounts).sort().map((k) => ({ value: k, label: KIND_LABEL[k] ?? k, count: kindCounts[k] }))
 
+    /* `q` is the paging key's and the stats' view of the search — the engine swap (kol-search,
+     * 2026-09-29) dropped its definition and the modal threw on open; found 2026-10-07 when the
+     * editor's doors moved onto it, since no consumer had opened this variant in between. */
+    const q = search.trim().toLowerCase()
     const filtered = filterMedia(files.filter((o) => kinds.size === 0 || kinds.has(o.kind)), search, { nameOf: (o) => o.displayKey })
     const sorted = sortFiles(filtered, sort)
 
@@ -396,10 +411,13 @@ export function MediaLibraryProvider({
       viewable,
       loading,
       error,
-      mediaUrl: client?.mediaUrl ?? ((key) => key),
+      bucket,
+      buckets,
+      setBucket,
+      mediaUrl: client?.mediaUrl ? (key) => client.mediaUrl(key, bucket ?? undefined) : (key) => key,
       proxied: client?.proxied ?? ((url) => url),
     }
-  }, [objects, prefix, flat, sort, search, kinds, paging, pageSize, loading, error, accept, client])
+  }, [objects, prefix, flat, sort, search, kinds, paging, pageSize, loading, error, accept, client, bucket, buckets])
 
   return <MediaLibraryContext.Provider value={value}>{children}</MediaLibraryContext.Provider>
 }
@@ -880,7 +898,7 @@ function PickerBody({ items, viewMode, onOpen, onPick }) {
 /* The picker's chrome — ContentFilters owns the animated search, the kind
  * filter, the view toggle and the N-of-M count; sort rides its header slot. */
 function LibraryChrome({ onOpen, onPick }) {
-  const { folders, sorted, sort, sortBy } = useMediaLibrary()
+  const { folders, sorted, sort, sortBy, bucket, buckets, setBucket } = useMediaLibrary()
   const [viewMode, setViewMode] = useState('grid')
 
   const items = useMemo(
@@ -891,6 +909,11 @@ function LibraryChrome({ onOpen, onPick }) {
     [folders, sorted],
   )
   const kinds = useMemo(() => [...new Set(sorted.map((o) => o.kind))].sort(), [sorted])
+  /* THE STORE — the header at `md+`, a row above the list on a phone. `cls` on the control rather
+   * than a wrapper: a `display: contents` wrapper lost to the phone hide in one host. */
+  const store = (cls = '') => buckets.length > 1 && (
+    <Dropdown size="sm" className={`min-w-0 max-w-[45vw] md:w-48 md:max-w-none ${cls}`.trim()} options={buckets.map((b) => ({ value: b.id, label: b.label }))} value={bucket} onChange={setBucket} aria-label="Store" />
+  )
 
   return (
     <>
@@ -900,16 +923,40 @@ function LibraryChrome({ onOpen, onPick }) {
         titleIcon="folder"
         totalCount={items.length}
         searchKeys={['name']}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        viewModeOptions={VIEW_OPTIONS}
         mutuallyExclusiveFilters={['kind']}
         filterGroups={[{ label: 'Kind', key: 'kind', values: ['folder', ...kinds] }]}
-        headerActions={
-          <SegmentedToggle size="sm" value={sort.by} onChange={sortBy} options={SORT_OPTIONS} ariaLabel="Sort by" />
-        }
-        renderItem={(filtered, mode) => (
-          <PickerBody items={filtered} viewMode={mode} onOpen={onOpen} onPick={onPick} />
+        /* THE WALL'S ROW (2026-10-08, one header for the family): the view pair as icons on the row's
+         * trailing slot, the sort as the row below at `md+` — what `MediaLibraryLibrary` draws — and
+         * below `md` both fold into one `···`, the browse page's fold. It wore GRID · LIST as text and
+         * four sort cells in the header. The store (when the client has more than one) rides the
+         * header at `md+` and is a row above the list on a phone. Decided on the recommendation. */
+        headerActions={store('max-md:hidden')}
+        trailingActions={(
+          <>
+            <div className="hidden md:flex items-center gap-6"><ViewToggle viewMode={viewMode} onViewChange={setViewMode} variant="icon" options={VIEW_OPTIONS} /></div>
+            <div className="md:hidden">
+              <MenuItem label={<Icon name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
+                {({ close }) => (
+                  <div className="py-1 w-[200px]">
+                    {VIEW_OPTIONS.map((opt) => (
+                      <MenuDropdownItem key={opt.value} onClick={() => { setViewMode(opt.value); close() }} shortcut={viewMode === opt.value ? <Icon name="check" size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                    ))}
+                    <MenuDropdownDivider />
+                    {SORT_OPTIONS.map((opt) => (
+                      <MenuDropdownItem key={opt.value} onClick={() => { sortBy(opt.value); close() }} shortcut={sort.by === opt.value ? <Icon name={sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                    ))}
+                  </div>
+                )}
+              </MenuItem>
+            </div>
+          </>
+        )}
+        belowActions={<div className="h-8 hidden md:flex items-center"><SortControls /></div>}
+        renderItem={(filtered) => (
+          <>
+            {buckets.length > 1 && <div className="md:hidden flex items-center gap-3 flex-wrap" style={{ marginBottom: 'var(--kol-spacing-3)' }}>{store()}</div>}
+            <PickerBody items={filtered} viewMode={viewMode} onOpen={onOpen} onPick={onPick} />
+          </>
         )}
       />
       <PathBar />
@@ -931,7 +978,9 @@ function PickerShell({ onClose, onPick }) {
       {/* While the viewer is up it owns Escape — handing the picker a no-op
         * close means one keypress steps back one level instead of exiting the
         * whole picker, which is the behaviour the fxr fork hand-rolled. */}
-      <FullscreenOverlay open onClose={viewerIndex === null ? onClose : () => {}}>
+      {/* `scrim` — a modal OVER the page it was opened from, not an opaque surface in its place
+        * (user, 2026-10-07, on labs: "its not overlay, its complete full screen") */}
+      <FullscreenOverlay open scrim onClose={viewerIndex === null ? onClose : () => {}}>
         <div className="kol-media-picker">
           <LibraryChrome onOpen={setViewerIndex} onPick={pick} />
         </div>

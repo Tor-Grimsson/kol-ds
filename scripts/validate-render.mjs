@@ -40,6 +40,9 @@ const ROUTES = {
   hub: ['#/', '#/settings', '#/tool'],
   shell: ['#/one', '#/settings'],
   brand: ['colour/ramps', 'colour/anchors', 'colour/combinations', 'type/families', 'logo/displays', 'logo/clearspace', 'logo/scaling', 'stationery/business-card', 'stationery/set', 'assets/downloads', 'assets/imagery', 'assets/business'],
+  /* an object names a control to PRESS after the route loads — an overlay (the picker, the viewer)
+   * is nothing until something opens it, and a route alone never measured one */
+  media: ['', 'browse', 'library', { path: 'picker', press: 'Pick media' }, { path: 'viewer', press: 'tt-01.jpg' }],
   notes: ['', '#list'],
   presentation: ['', '#list'],
   'notes-hub': ['#/', '#/notes'],
@@ -128,7 +131,11 @@ function measure() {
    * (the element on top at the overlap's centre is one of the two, not a scrim or a closed layer) */
   const r2 = []
   const seen = new Set()
-  const hits = [...document.querySelectorAll(INTERACTIVE)].filter((e) => {
+  /* AN OPEN MODAL MAKES THE PAGE BEHIND IT INERT (2026-10-08, the first overlay the gate pressed open):
+   * a control under the sheet is covered by design, not by accident — only the topmost dialog's own
+   * controls are compared while one is open */
+  const modal = [...document.querySelectorAll('[role=dialog][aria-modal=true]')].pop()
+  const hits = [...(modal ?? document).querySelectorAll(INTERACTIVE)].filter((e) => {
     if (!vis(e)) return false
     const r = shown(e)
     return r && r.bottom > 0 && r.right > 0 && r.top < innerHeight && r.left < innerWidth
@@ -210,14 +217,21 @@ for (const [i, app] of targets.entries()) {
       const page = await ctx.newPage()
       let errs = []
       page.on('pageerror', (e) => errs.push(e.message.split('\n')[0]))
-      for (const route of ROUTES[app] ?? ['']) {
+      for (const entry of ROUTES[app] ?? ['']) {
+        const { path: route, press } = typeof entry === 'string' ? { path: entry } : entry
         errs = []
         await page.goto(base + route, { waitUntil: 'networkidle' })
         await page.waitForTimeout(400)
+        if (press) {
+          /* a control by its accessible name first (a tile button named by its image), then by text */
+          const target = (await page.getByRole('button', { name: press, exact: true }).count()) ? page.getByRole('button', { name: press, exact: true }).first() : page.getByText(press, { exact: true }).first()
+          await target.click({ timeout: 10000 }).catch((e) => errs.push(`press "${press}": ${e.message.split('\n')[0]}`))
+          await page.waitForTimeout(700)
+        }
         const { r1, r2, r3, compared } = await page.evaluate(measure)
         checked++
         rowsCompared += compared
-        const where = `${app}${route ? ` ${route}` : ''} @${vp.name}`
+        const where = `${app}${route ? ` ${route}` : ''}${press ? ` › ${press}` : ''} @${vp.name}`
         for (const m of r1) push(app, vp.name, `${where}  R1 row height: ${m}`)
         for (const m of r2) push(app, vp.name, `${where}  R2 overlap: ${m}`)
         for (const m of r3) push(app, vp.name, `${where}  R3 tone: ${m}`)

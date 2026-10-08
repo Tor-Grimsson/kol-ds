@@ -520,6 +520,32 @@
   background: var(--kol-surface-primary);
 }
 
+/* ON A PHONE THE PICKER IS A FULL-HEIGHT SHEET (2026-10-07). The card had no phone layout:
+ * at 390 it kept its 64rem ask, overflowed the viewport sideways and the header ran off the
+ * right edge. The sheet takes the viewport — the overlay's 24px lane goes, the border and the
+ * radius go — the body still owns the scroll, and tiles pack two across. The same cut the
+ * sheet's own tables use (`.kol-table-cell-*` above). */
+@media (max-width: 768px) {
+  .kol-overlay:has(> .kol-overlay-sheet > .kol-media-picker) { padding: 0; }
+  .kol-overlay-sheet:has(> .kol-media-picker) { width: 100%; }
+  .kol-media-picker {
+    --kol-media-tile-min: 8rem;
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+    padding: var(--kol-spacing-12) var(--kol-spacing-4) var(--kol-spacing-4);
+  }
+}
+
+/* MediaTileGallery's grid — `cols` from `sm` up, two across below it (08-breakpoints rule 6; found
+ * on apps/media/viewer at 390, 2026-10-08: four 75px tiles). */
+.kol-media-tiles { grid-template-columns: repeat(var(--kol-media-tiles-cols, 4), minmax(0, 1fr)); }
+@media (max-width: 640px) {
+  .kol-media-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* The browser is the same body with no card around it — in flow, it takes the
  * width the consumer gives it. Tiles at 260 (MediaLibraryReconcile, kol-r2b2
  * 2026-08-26 — FileList's `minmax(260px, 1fr)`; the picker keeps 10rem

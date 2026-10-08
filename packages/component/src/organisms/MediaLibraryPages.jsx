@@ -2600,8 +2600,12 @@ export function MediaLibraryBrowse({
 
         {/* ONE MENU FOR EVERY ROW. `useContextMenu` carries the payload from whichever row opened
           * it, so this is a single instance rather than one per row, and the entries are built from
-          * what `fileActions` actually supplies — a read-only bucket gets no menu at all. */}
-        {canWrite && (
+          * what `fileActions` actually supplies. IT MOUNTS ON A READ-ONLY BUCKET TOO (kol-website,
+          * 2026-10-08: on B2 "I cant right click to get context modal … cant download assets"): Copy URL
+          * and Download are read verbs — the client's URLs — and gating the whole menu on `canWrite`
+          * took them away with the write verbs. `fa` is the write seam: empty when the bucket cannot
+          * be written, so every write verb below folds away and the read verbs stay. */}
+        {(() => { const fa = canWrite ? fileActions : {}; return (
           <ContextMenu menu={menu}>
             {(target) => {
               if (!target) return null
@@ -2611,7 +2615,7 @@ export function MediaLibraryBrowse({
                * not one of them — renaming five things to one name is not a thing — so it stays
                * single and disappears from a multi-selection rather than lying about what it does. */
               const many = (target.targets ?? []).length > 1 ? target.targets : null
-              const custom = (fileActions.items ?? []).filter((it) => !it.when || it.when(target))
+              const custom = (fa.items ?? []).filter((it) => !it.when || it.when(target))
               const customItems = custom.length > 0 && (
                 <>
                   <MenuDropdownDivider />
@@ -2625,7 +2629,7 @@ export function MediaLibraryBrowse({
                   <>
                     <MenuDropdownItem disabled>{many.length} selected</MenuDropdownItem>
                     <MenuDropdownDivider />
-                    {fileActions.move && (
+                    {fa.move && (
                       <MenuDropdownItem iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuDropdownItem>
                     )}
                     {many.every((p) => !p.endsWith('/')) && (
@@ -2635,7 +2639,7 @@ export function MediaLibraryBrowse({
                         {canTag && <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuDropdownItem>}
                       </>
                     )}
-                    {fileActions.remove && (
+                    {fa.remove && (
                       <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} onClick={() => doBatch(many, 'remove', 'Delete')}>Delete {many.length}</MenuDropdownItem>
                     )}
                     {customItems}
@@ -2644,7 +2648,7 @@ export function MediaLibraryBrowse({
               }
               return (
                 <>
-                  {fileActions.createFolder && (
+                  {fa.createFolder && (
                     <MenuDropdownItem iconLeft={<Icon name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New folder{isFolder ? ` in ${target.path.replace(/\/$/, '').split('/').pop()}` : ''}
                     </MenuDropdownItem>
@@ -2655,7 +2659,7 @@ export function MediaLibraryBrowse({
                     <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New document…
                     </MenuDropdownItem>
-                  ) : fileActions.createFile && (
+                  ) : fa.createFile && (
                     <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New file
                     </MenuDropdownItem>
@@ -2666,10 +2670,10 @@ export function MediaLibraryBrowse({
                     </MenuDropdownItem>
                   )}
                   {!isLevel && <MenuDropdownDivider />}
-                  {!isLevel && fileActions.rename && (
+                  {!isLevel && fa.rename && (
                     <MenuDropdownItem iconLeft={<Icon name="edit" size={14} />} onClick={() => doRename(target.path, isFolder)}>Rename</MenuDropdownItem>
                   )}
-                  {!isLevel && fileActions.move && (
+                  {!isLevel && fa.move && (
                     <MenuDropdownItem iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doMove(target.path)}>Move to…</MenuDropdownItem>
                   )}
                   {/* A FOLDER GETS COPY URL TOO (user 2026-09-23) — through the SAME `mediaUrl`
@@ -2693,7 +2697,7 @@ export function MediaLibraryBrowse({
                   {target.type === 'file' && canEdit && editKindOf(target.o ?? { key: target.path }) && (
                     <MenuDropdownItem iconLeft={<Icon name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuDropdownItem>
                   )}
-                  {!isLevel && fileActions.remove && (
+                  {!isLevel && fa.remove && (
                     <>
                       <MenuDropdownDivider />
                       <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} onClick={() => doDelete(target.path, isFolder)}>Delete</MenuDropdownItem>
@@ -2704,7 +2708,7 @@ export function MediaLibraryBrowse({
               )
             }}
           </ContextMenu>
-        )}
+        ) })()}
         {busyAction && <span className="sr-only" role="status">Working…</span>}
 
         {/* THE TAB PILL (item 16) — floats over the list, so the list owes it
@@ -3112,8 +3116,31 @@ export function MediaLibraryLibrary({
         layoutOptions={layoutOptions}
         layout={layout}
         onLayoutChange={setLayout}
-        trailingActions={<div className="flex items-center gap-6"><ViewToggle viewMode={layout} onViewChange={setLayout} variant="icon" options={LAYOUT_OPTIONS} /></div>}
-        belowActions={layout === 'off' ? null : <div className="h-8 flex items-center"><SortControls options={SORT_OPTIONS} sortBy={sortBy} sortDir={sortDir} onSort={handleSort} /></div>}
+        /* BELOW `md` THE VIEWS AND THE SORT FOLD INTO ONE `···` (2026-10-08, apps/media/library at 390:
+         * the FILES row, the three view icons and NAME · DATE · SIZE · KIND stacked three rows over the
+         * list) — the browse page's fold, item 15, so the two pages fold the same way. Decided on the
+         * recommendation, for review. */
+        trailingActions={(
+          <>
+            <div className="hidden md:flex items-center gap-6"><ViewToggle viewMode={layout} onViewChange={setLayout} variant="icon" options={LAYOUT_OPTIONS} /></div>
+            <div className="md:hidden">
+              <MenuItem label={<Icon name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
+                {({ close }) => (
+                  <div className="py-1 w-[200px]">
+                    {LAYOUT_OPTIONS.map((opt) => (
+                      <MenuDropdownItem key={opt.value} onClick={() => { setLayout(opt.value); close() }} shortcut={layout === opt.value ? <Icon name="check" size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                    ))}
+                    <MenuDropdownDivider />
+                    {SORT_OPTIONS.map((opt) => (
+                      <MenuDropdownItem key={opt.value} onClick={() => { handleSort(opt.value); close() }} shortcut={sortBy === opt.value ? <Icon name={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                    ))}
+                  </div>
+                )}
+              </MenuItem>
+            </div>
+          </>
+        )}
+        belowActions={layout === 'off' ? null : <div className="h-8 hidden md:flex items-center"><SortControls options={SORT_OPTIONS} sortBy={sortBy} sortDir={sortDir} onSort={handleSort} /></div>}
         /* ONE WALL BODY, shared with the merged surface (2026-09-22) */
         renderItem={(filtered) => (
           <WallBody files={filtered} layout={layout} sortBy={sortBy} sortDir={sortDir} pageSize={pageSize} listId={listId}

@@ -66,8 +66,13 @@ function ViewerStage({ media, index, onIndexChange }) {
     return () => document.removeEventListener('keydown', onKey)
   }, [emblaApi])
 
+  /* THE STAGE SETS ITS OWN WIDTH (2026-10-08, apps/media/viewer): FullscreenOverlay's sheet hugs
+   * its content, and the overlay is a grid whose one track is sized by that content — so `w-full`
+   * here resolved against nothing, the embla track grew to every slide side by side (six slides,
+   * 3888px at 1440) and the stage showed blank with the first image 1.6k off the left edge. The
+   * viewport minus the overlay's 24px lane each side is the width a fullscreen stage means. */
   return (
-    <div className="relative w-full">
+    <div className="relative w-[calc(100vw-3rem)]">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex items-center">
           {media.map((item, i) => (
@@ -122,8 +127,15 @@ export default function MediaViewer({ open, media = [], index = 0, onIndexChange
   const actionRow = typeof actions === 'function' ? actions(media[index], index) : actions
 
   return (
-    <FullscreenOverlay open onClose={onClose}>
+    /* `scrim` (2026-10-08, apps/media/viewer): without it the overlay painted its opaque light
+     * surface, and the viewer's inverse ink — caption, the paging chips — drew light on light and
+     * read as "an image and nothing else". The chips (md and up) and the caption were always there. */
+    <FullscreenOverlay open scrim onClose={onClose}>
       <ViewerStage media={media} index={index} onIndexChange={onIndexChange} />
+      {/* on a phone the chips are off and a swipe pages — the position says there is more */}
+      {media.length > 1 && (
+        <div className="md:hidden mt-3 text-center kol-helper-12 text-fg-inverse-64" aria-live="polite">{index + 1} / {media.length}</div>
+      )}
       {actionRow && (
         <div className="mt-4 flex items-center justify-center gap-2">{actionRow}</div>
       )}

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
-import MediaPicker from '../../library/MediaPicker'
-import { proxied, isVideoType } from '../../library/mediaLibrary'
+import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize, MediaLibrary } from '@kolkrabbi/kol-component'
+import { proxied, isVideoType, getMediaClient } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
 import AudioInputRow from '../../params/AudioInputRow'
@@ -147,7 +146,8 @@ function PhotoFileTab({ layer }) {
           Clear image
         </Button>
       )}
-      <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onPick={onLibraryPick} />
+      {/* the DS modal library (2026-10-07) — the editor's own picker is retired; a media layer takes image or video */}
+      <MediaLibrary variant="modal" open={pickerOpen} client={getMediaClient()} accept={['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
     </div>
   )
 }

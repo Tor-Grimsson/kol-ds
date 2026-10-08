@@ -25,9 +25,12 @@ export default function MediaTileGallery({ items = [], layout = 'stack', cols = 
 
   return (
     <>
+      {/* `cols` is the count from `sm` up; below it the grid is two across (08-breakpoints rule 6 —
+        * grid collapse is canonical, first break sm). The count rides a variable so the theme's one
+        * phone rule can override it: an inline `gridTemplateColumns` could not be out-ranked. */}
       <div
-        className={isGrid ? 'grid gap-4' : 'flex flex-col gap-4'}
-        style={isGrid ? { gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` } : undefined}
+        className={isGrid ? 'kol-media-tiles grid gap-4' : 'flex flex-col gap-4'}
+        style={isGrid ? { '--kol-media-tiles-cols': cols } : undefined}
       >
         {items.map((item, i) => (
           <figure key={i} className="min-w-0">

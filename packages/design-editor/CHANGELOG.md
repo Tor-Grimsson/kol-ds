@@ -1,5 +1,15 @@
 # @kolkrabbi/design-editor
 
+## 0.23.0 — 2026-10-08
+
+- **Changed: the library door is the DS modal** (`MediaLibrary variant="modal"`, kol-component). The editor carried its own 301-line picker (`library/MediaPicker.jsx`, the labs LibraryPage model) because the DS modal listed one bucket; the DS modal switches buckets now, so the footer's From library, the layer inspector's and labs' source card open the one modal every consumer sees — retired to `_tmp/2026-10-07-design-editor-media-picker/`. Same pick contract (`onSelect(url, { contentType })`, the caller still `proxied()`s it). `accept` is what each door takes: image or video, vector only for an SVG source. New export on `library/mediaLibrary.js` internally: `getMediaClient()`. Peers: kol-component ≥0.241.0 · kol-theme ≥0.167.0 (the modal's bucket switch and phone cut).
+
+## 0.22.0 — 2026-10-07
+
+`library-reader-for-a-hub-home` (kol-fxr, filed 2026-10-07 on its move to `AppHub`).
+
+- **New: `loadLibrary()`** on the root and `core` entries — the sanitised saved library, read fresh from storage with no provider, validators and migrations included (it is the function `GeneratorLibraryProvider` seeds from). For a Hub Home's SAVED set: `HubHome` evaluates `items: (view) => …` in its own render, and a provider above the shell goes stale beside the editor's own (`Editor.jsx` mounts one; `storage` fires cross-tab only). `apps/editor-hub` is on `AppHub` with it — Home, Settings and the S sheet are the Hub's, its hand-built pages retired.
+
 ## 0.21.0 — 2026-10-06
 
 Found walking labs and the randomiser on a phone (2026-10-05).

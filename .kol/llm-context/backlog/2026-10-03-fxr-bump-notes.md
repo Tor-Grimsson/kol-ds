@@ -57,7 +57,7 @@ No hard break. Every route loads with a clean console on the new packages; nothi
 
 ## 6. Leads, not acted on
 
-- fxr's Home · Library · Settings are the slots `AppStudio` ships (kol-shell). It would take fxr the way it took mirror in `apps/mixer-hub`; labs' rail rows would need a seam for rows inserted under one item.
+- ~~fxr's Home · Library · Settings are the slots `AppStudio` ships (kol-shell).~~ **Ruled 2026-10-07: fxr is on `AppHub`, not `AppStudio`** — `AppHub` passes `items` straight through, so labs' rows inserted under Labs ride as they do today; `AppStudio` builds the rail from its slots and has no seam for them, and its Library · Create · Use shape is monitor's, not fxr's. Home's SAVED set reads `loadLibrary()` (design-editor 0.22.0, `library-reader-for-a-hub-home`); `apps/editor-hub` is on it the same way. Keep the local ⌥-digit handler — `navKeys` numbers the rows as given, and labs' inserted rows would shift ⌥5–9 on that route.
 - `apps/controls` — all three of its pages now have a live app: the parametric set in `apps/rack`, the compositions in `apps/rack` and `apps/mixer`, the app controls and panel formats in `apps/editor-hub` and `apps/panels`.
 
 ## 7. Not rehearsed
