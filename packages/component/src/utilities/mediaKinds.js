@@ -127,7 +127,7 @@ export function groupVariants(files) {
   for (const [base, list] of groups) {
     if (list.length < 2) { out.push(list[0]); continue }
     list.sort((a, b) => a.width - b.width)
-    out.push({ ...list[0], displayKey: base, variants: list, totalSize: list.reduce((n, f) => n + (f.size || 0), 0) })
+    out.push({ ...list[0], displayKey: list[0].displayName ?? base, variants: list, totalSize: list.reduce((n, f) => n + (f.size || 0), 0) })
   }
   return out
 }
@@ -140,7 +140,7 @@ export function partition(objects, prefix) {
     const rel = prefix ? o.key.slice(prefix.length) : o.key
     const slash = rel.indexOf('/')
     if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))
-    else files.push({ ...o, displayKey: rel })
+    else files.push({ ...o, displayKey: o.displayName ?? rel })
   }
   return { folders: [...folderSet].sort(), files }
 }

@@ -247,7 +247,10 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
   const mediaUrl = (key) => client?.mediaUrl?.(key, bucketId ?? undefined) ?? key
   const downloadUrl = (key) => client?.downloadUrl?.(key, bucketId ?? undefined) ?? mediaUrl(key)
   const writable = !!bucketMeta.writable && !!(client?.deleteObject || client?.renameObject)
-  return { buckets, bucketMeta, bucketId, settings, setSettings, objects, setObjects, folderInfo, setFolderInfo, reload, error, ready, mediaUrl, downloadUrl, writable }
+  /* A CLIENT WITH NO `mediaUrl` HAS NO URLS (kol-fxr 2026-10-08: a stored preset is not a fetchable
+   * object) — Copy URL, Download and Quick Look's fetch all go, as write verbs go without a writer. */
+  const hasUrl = typeof client?.mediaUrl === 'function'
+  return { buckets, bucketMeta, bucketId, settings, setSettings, objects, setObjects, folderInfo, setFolderInfo, reload, error, ready, mediaUrl, downloadUrl, writable, hasUrl }
 }
 
 /* ── shared pieces, kol-r2b2's ─────────────────────────────────────────────── */
@@ -622,7 +625,7 @@ function FileEditorHost({ o, client, bucket, onClose, onSaved, assets }) {
  * @param {boolean} showNav - ‹ › and n / N in the header (default on); off when not paging a selection
  * @param {Function} onEdit - `(file) => void` — an Edit action in the header for a text file (markdown · json · yaml · text · code); absent, no Edit
  */
-export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl, downloadUrl, keySet, showNav = true, onEdit }) {
+export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl, downloadUrl, keySet, showNav = true, onEdit, hasUrl = true }) {
   const o = files[index]
   const [dims, setDims] = useState(null)
   /* the window's size survives paging — Finder keeps it — so it lives here, not in the frame,
@@ -666,17 +669,26 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
             <Button variant="nav" size="sm" iconOnly="edit" onClick={() => onEdit(o)} aria-label="Edit" />
           </Tooltip>
         )}
-        <CopyAction label="Copy URL" text={mediaUrl(o.key)} />
-        <Tooltip label="Download">
-          <Button variant="nav" size="sm" iconOnly="download" href={downloadUrl(o.key)} download={o.key.split('/').pop()} aria-label="Download" />
-        </Tooltip>
+        {hasUrl && (
+          <>
+            <CopyAction label="Copy URL" text={mediaUrl(o.key)} />
+            <Tooltip label="Download">
+              <Button variant="nav" size="sm" iconOnly="download" href={downloadUrl(o.key)} download={o.key.split('/').pop()} aria-label="Download" />
+            </Tooltip>
+          </>
+        )}
       </span>
     ),
   }
   return (
     /* QUICK LOOK DIMS, it does not black out — you keep the list you came from in view */
     <FullscreenOverlay open onClose={onClose} closeButton={false} scrim>
-      {isImage(o.contentType) ? (
+      {!hasUrl ? (
+        /* nothing to fetch, so nothing to draw — said, not spun on (kol-fxr 2026-10-08) */
+        <QuickLookFrame {...frame}>
+          <p className="kol-helper-12 text-meta p-8">No preview</p>
+        </QuickLookFrame>
+      ) : isImage(o.contentType) ? (
         <QuickLookFrame {...frame}>
           {/* A VECTOR HAS NO PIXEL SIZE (user 2026-09-24: a 32px logo.svg opened as a 32px window). It
             * is drawn in a 640 box — the window's max if that is smaller — and contained in it. */}
@@ -1081,6 +1093,8 @@ export function MediaLibraryBrowse({
    * browse surface inside the modal card needs the selection for its Use button). Keys are
    * bucket-relative. Absent, nothing. */
   onPickFile,
+  /* `searchPlaceholder` — the search field's words; a store that is not a bucket names itself (kol-fxr 2026-10-08) */
+  searchPlaceholder = 'Search this bucket',
   /* `o.displayName` on a listed object is its LABEL in every view, Quick Look and search (kol-fxr
    * 2026-10-08: names not unique, so the key is an id). Absent, the label is the key, as before. */
 }) {
@@ -1091,7 +1105,11 @@ export function MediaLibraryBrowse({
   const [ownBucket, setOwnBucket] = useState(bucket)
   const bucketId = bucket ?? ownBucket
   const lib = useBucketLibrary({ client, bucket: bucketId, defaults, settings: settingsProp, onSettingsChange, refreshKey })
-  const { buckets, bucketMeta, settings, setSettings, objects, error, mediaUrl, downloadUrl, writable } = lib
+  const { buckets, bucketMeta, settings, setSettings, objects, error, mediaUrl, downloadUrl, hasUrl } = lib
+  /* `fileActions` GIVEN IS A WRITER (kol-fxr 2026-10-08): the consumer brings its own verbs, so the
+   * client need not carry a `deleteObject` stub to be treated as writable. The bucket still has to
+   * say it is writable. */
+  const writable = lib.writable || (!!fileActions && !!bucketMeta.writable)
   const switchBucket = (id, pfx = '') => { if (bucket == null) setOwnBucket(id); onBucketChange?.(id); setPrefix(pfx) }
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [trashOpen, setTrashOpen] = useState(false)
@@ -2008,6 +2026,7 @@ export function MediaLibraryBrowse({
               <ColumnBrowser
                 autoFocus={autoFocus}
                 className={atTitleRoot ? 'is-root' : ''}
+                tapSelects={!!onPickFile}
                 height={colH}
                 onHeightChange={onColH}
                 rowSize={rowSize}
@@ -2435,7 +2454,7 @@ export function MediaLibraryBrowse({
             value={query}
             onChange={(e) => setQuery(e.target.value ?? '')}
             onClear={() => setQuery('')}
-            placeholder="Search this bucket"
+            placeholder={searchPlaceholder}
             size="sm"
             className="flex-1 min-w-0"
           />
@@ -2499,7 +2518,7 @@ export function MediaLibraryBrowse({
             onClose={() => { setSearchOpen(false); setSearchQuery('') }}
             query={searchQuery}
             onQueryChange={setSearchQuery}
-            placeholder="Search this bucket"
+            placeholder={searchPlaceholder}
             results={searchResults}
             onExpand={() => searchResults[0] && jumpTo(searchResults[0].id)}
             onSelect={(item) => (item.run ? item.run() : jumpTo(item.id))}
@@ -2516,7 +2535,7 @@ export function MediaLibraryBrowse({
           </FullscreenOverlay>
         )}
         {quickLook && (
-          <MediaInspector files={quickLook.files} index={quickLook.index} onClose={closeQuickLook} mediaUrl={mediaUrl} downloadUrl={downloadUrl} keySet={keySet} showNav={rowSelection.size > 1}
+          <MediaInspector files={quickLook.files} index={quickLook.index} onClose={closeQuickLook} mediaUrl={mediaUrl} downloadUrl={downloadUrl} hasUrl={hasUrl} keySet={keySet} showNav={rowSelection.size > 1}
             onEdit={canEdit ? (f) => { closeQuickLook(); openEditor(f) } : undefined}
             onPrev={() => stepQuickLook(-1)} onNext={() => stepQuickLook(1)} />
         )}
@@ -2639,7 +2658,7 @@ export function MediaLibraryBrowse({
                     {fa.move && (
                       <MenuDropdownItem iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuDropdownItem>
                     )}
-                    {many.every((p) => !p.endsWith('/')) && (
+                    {hasUrl && many.every((p) => !p.endsWith('/')) && (
                       <>
                         <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuDropdownItem>
                         <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuDropdownItem>
@@ -2653,8 +2672,17 @@ export function MediaLibraryBrowse({
                   </>
                 )
               }
+              const qlFile = onPickFile && target.type === 'file' ? objects.find((o) => o.key === target.path) : null
               return (
                 <>
+                  {/* A PICKER'S TAP SELECTS (`tapSelects`), so Quick Look needs a door of its own on a
+                    * phone — the menu (kol-fxr 2026-10-08). Only with `onPickFile`; others are unchanged. */}
+                  {qlFile && (
+                    <>
+                      <MenuDropdownItem iconLeft={<Icon name="eye-on" size={14} />} onClick={() => openQuickLook({ files: [qlFile], index: 0 })}>Quick Look</MenuDropdownItem>
+                      <MenuDropdownDivider />
+                    </>
+                  )}
                   {fa.createFolder && (
                     <MenuDropdownItem iconLeft={<Icon name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New folder{isFolder ? ` in ${target.path.replace(/\/$/, '').split('/').pop()}` : ''}
@@ -2687,10 +2715,10 @@ export function MediaLibraryBrowse({
                       seam a file goes through, so what a folder URL means is the consumer's call
                       (a CDN prefix, a listing, a signed path) and never this page's guess. No
                       Download: a folder is not an object to fetch. */}
-                  {!isLevel && (
+                  {hasUrl && !isLevel && (
                     <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl([target.path])}>Copy URL</MenuDropdownItem>
                   )}
-                  {target.type === 'file' && (
+                  {hasUrl && target.type === 'file' && (
                     <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuDropdownItem>
                   )}
                   {!isLevel && canTag && (

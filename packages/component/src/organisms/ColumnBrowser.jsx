@@ -87,6 +87,7 @@ import { GRAB_COLUMN } from '../utilities/motion.js'
  * `KOL-R2B2/<label>/…`) must strip its own prefix before it can look anything up or build a URL —
  * the browser has no idea which part of a path is yours (kol-r2b2 2026-09-04).
  * @param {Function} folderMeta  (prefix, view) => string — a folder's own meta line (`date · N items` in list, `N items` in grid). A SEAM, not a computation: counting by prefix is O(n) per folder, and a consumer that already holds a folder tree answers it for free
+ * @param {boolean} tapSelects  below the breakpoint a file tap selects only, no Quick Look (a picker)
  * @param {'list'|'grid'} stackView  the mobile view below the breakpoint (default 'list'); `grid` is 3-up tiles, flat — a grid has nowhere to put an inline child list
  *
  * BELOW `md` (768) THIS IS A DIFFERENT TREE — one full-width inline-expanding
@@ -573,6 +574,9 @@ export default function ColumnBrowser({
    * media bucket the thumbnail IS the tile, so it carries counts and sizes
    * rather than dates (§2). Above the breakpoint the columns are unaffected. */
   stackView = 'list',
+  /* `tapSelects` — below the breakpoint a file tap SELECTS and opens nothing (kol-fxr 2026-10-08: a
+   * picker's tap must pick, and Quick Look covered the host's Open button). Off: a tap opens Quick Look. */
+  tapSelects = false,
   autoFocus = false,
   className = '',
 }) {
@@ -899,6 +903,7 @@ export default function ColumnBrowser({
                     if (isFolder) { onPrefix(r.level + r.name); return }
                     const files = itemsAt(r.level ?? '').filter((it) => it.type === 'file').map((it) => it.o)
                     pick(o)
+                    if (tapSelects) return
                     onQuickLook?.({ files: files.length ? files : [o], index: Math.max(0, files.findIndex((f) => f.key === o.key)) })
                   }}
                 >
@@ -966,6 +971,7 @@ export default function ColumnBrowser({
                 onClick={() => {
                   const files = itemsAt(r.level ?? '').filter((it) => it.type === 'file').map((it) => it.o)
                   pick(r.o)
+                  if (tapSelects) return
                   onQuickLook?.({ files: files.length ? files : [r.o], index: Math.max(0, files.findIndex((f) => f.key === r.o.key)) })
                 }}
               />

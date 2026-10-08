@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
+import { pushLayer, popLayer } from '../utilities/layerStack.js'
 
 /**
  * ContextMenu — a right-click menu, anchored at the pointer.
@@ -63,6 +64,13 @@ export function useContextMenu() {
 }
 
 export default function ContextMenu({ menu, children, className = '' }) {
+  /* ONE ESCAPE, ONE LEVEL (kol-fxr 2026-10-08: a menu opened inside a FullscreenOverlay took the
+   * dialog with it). Open, the menu is the top layer, so the overlay under it ignores that Escape. */
+  useEffect(() => {
+    if (!menu.open) return undefined
+    const layer = pushLayer()
+    return () => popLayer(layer)
+  }, [menu.open])
   if (!menu.open) return null
   return (
     /* `focus={false}` — FloatingFocusManager reads attributes off the reference,

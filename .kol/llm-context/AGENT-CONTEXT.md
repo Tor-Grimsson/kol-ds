@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-08 night, the browse surface as a picker over any store — published)
+
+- **Published 2026-10-08:** kol-component 0.244.0. Push is the user's (with theme 0.168.0 · component 0.242.0–0.243.0). kol-fxr's `browse-views-label-by-display-name` closed: names in every view, no URL verbs without `mediaUrl`, one Escape per level, a picker's phone tap selects, `searchPlaceholder`, `fileActions` = writer — walked here first. fxr's remainder: bump, drop its stubs, swap the port in. Picker A/B still waits on his ruling. Log: `session-log/2026-10-08-browse-surface-as-a-picker-over-any-store.md`.
+
 ## Current state (2026-10-08 late, fxr's display-name ticket — published)
 
 - **Published 2026-10-08:** kol-component 0.243.0. Push is the user's. The browse surface labels a file by `o.displayName` when the client gives one (every view, Quick Look, search); kol-fxr's `browse-surface-honours-display-name` closed and its receipt returned — fxr bumps, swaps its parked files-dialog port in, walks it. Picker A/B still waits on his ruling. Log: `session-log/2026-10-08-browse-surface-honours-display-name.md`.
@@ -25,10 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-06, fxr on a phone + kol-website wave — published)
 
 - **Published 2026-10-06:** kol-component 0.240.0 · kol-shell 0.62.0 · kol-workshop 0.39.0 · design-editor 0.21.0 · kol-media-client 0.4.1. Push is the user's. kol-website's four tickets closed (`lobby/done/`). Handoff: `session-bridge/handoff-2026-10-06-0135-fxr-phone-and-website-wave-published.md`. `apps/generator` is `apps/randomiser`. Labs opens on an entry card and asks for media in a card; phone frame by width (labs <1024, randomiser <768) as well as touch; both sheets half/tall with a draggable grabber; the editor under 1024 is a note; labs' rail enters sections (`railSections="enter"`); S opens the standard sheet. All decided on the recommendation for his review. Plan: `plan-2026-10-05-fxr-on-a-phone.md`; findings: `backlog/2026-10-05-fxr-phone-findings.md`. Log: `session-log/2026-10-06-fxr-on-a-phone.md`.
-
-## Current state (2026-10-05, labs and the generator — published)
-
-- **Published 2026-10-05:** theme 0.166.0 · icons 0.33.1 · component 0.239.1 · design-editor 0.20.0. Push is the user's. kol-fxr is rehearsed as `apps/editor-hub` (5198); `apps/labs` (5199) and `apps/generator` (5200) are the two tools alone, on one frame — a rail on the right at a desk, a sheet along the bottom on a phone (`PanelHeader` · `PanelPills` in design-editor); `apps/panels` is labs with the stage taken out. **He has looked at none of it yet** — take his corrections before building further. What fxr needs when it bumps: `backlog/2026-10-03-fxr-bump-notes.md`. The mixer is still parked (`session-bridge/handoff-2026-10-03-1853-mixer-parked-fxr-labs-next.md`). `pnpm validate` 31 of 32 — `retirements` (`AppShell`, `BrandHero` in kol-framework; the iMac's drop). Log: `session-log/2026-10-05-labs-and-generator-one-frame-published.md`.
 
 ## Repo standup (2026-06-15)
 
