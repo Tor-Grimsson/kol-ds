@@ -96,3 +96,9 @@ the lazily appended one is later in source — its `.hidden` beat fxr's `md:flex
 editor's stylesheet first in `index.css` now (before `tailwindcss`); the editor's bundle uses no
 responsive variant, so nothing flips the other way. Your rehearsal could not see it: workspace source,
 one Tailwind pass.
+
+**Also, 2026-10-08:** design-editor **0.23.0** (kol-component ≥0.241.0 · kol-theme ≥0.167.0) swaps the
+editor's own picker for the DS modal library — the footer's From library, the layer inspector's and
+labs' source card open `MediaLibrary variant="modal"`: a scrim over the page, the Store dropdown, a
+full-height sheet on a phone. Labs' library door looks different after the bump; the pick contract is
+unchanged. The old picker is in this repo's `_tmp/2026-10-07-design-editor-media-picker/`.

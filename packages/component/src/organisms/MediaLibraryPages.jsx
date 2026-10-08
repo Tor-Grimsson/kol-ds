@@ -1077,6 +1077,10 @@ export function MediaLibraryBrowse({
   /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
    * Absent, a one-bucket consumer collapses the level as ruled 2026-09-03. */
   bucketLevel = false,
+  /* `onPickFile(o | null)` — the selected file, reported as it changes (picker A, 2026-10-08: the
+   * browse surface inside the modal card needs the selection for its Use button). Keys are
+   * bucket-relative. Absent, nothing. */
+  onPickFile,
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
@@ -1090,6 +1094,7 @@ export function MediaLibraryBrowse({
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [trashOpen, setTrashOpen] = useState(false)
   const [pickedFile, setPickedFile] = useState(null)
+  useEffect(() => { onPickFile?.(pickedFile) }, [pickedFile]) // eslint-disable-line react-hooks/exhaustive-deps
   /* ROW VIEW PICKS, and only one at a time: a click selects and fills the preview, a DOUBLE click
    * opens (user 2026-09-22, Finder's behaviour — "clicking shouldnt automatically open it"). The
    * chevron still expands in place, which is the third thing and always was. */

@@ -99,6 +99,14 @@ that ships a build (§4's exception), and it carries pixi / three / d3 which no
 `design-editor`. kol-fxr is now its first consumer, and the repo that demos and
 drives it.
 
+**Amended 2026-10-08 (user ruling, against the paragraph above as first written):** the editor is
+**developed in kol-fxr**, which took `packages/design-editor/src` local — *"Im not developing the
+editor in that repo through endless roundtrips"*. This copy is a **mirror, refreshed from fxr's
+source after the fact**; it keeps publishing `@kolkrabbi/design-editor` for the other consumers
+(apps/editor-hub · labs · randomiser · panels here, olina) from what fxr has shipped, never ahead of
+it. No ticket goes to fxr for editor work from here; the component-tier parts still belong in
+`kol-component`, and that is the one direction that stays: fxr files DS asks here as before.
+
 **Do not** collapse packages back into one app, and do not add reverse dependencies (e.g. component importing framework).
 
 ## §4 — Packages ship raw source; consumers must be Vite + Tailwind v4

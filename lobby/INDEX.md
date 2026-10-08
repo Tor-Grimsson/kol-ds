@@ -333,6 +333,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-08 | **`design-editor-0-23-0-the-ds-modal-library` filed to kol-fxr** — design-editor 0.23.0 opens the DS modal library at the editor's three doors; fxr bumps (0.23.0 · component 0.241.0 · theme 0.167.0) and looks at labs' From library on a desk and at 390. Receipt in `outbox/`. |
 | 2026-10-07 | **`library-reader-for-a-hub-home` addressed** — design-editor 0.22.0 exports `loadLibrary()`; `apps/editor-hub` moved onto `AppHub` on it (Home · Settings · the S sheet are the Hub's, its hand-built pages retired to `_tmp/2026-10-07-editor-hub-hub-pages/`), checked in a browser: save in `/editor`, Home's SAVED lists it in the same tab. |
 | 2026-10-07 | **`library-reader-for-a-hub-home` filed from kol-fxr** — fxr took the October bump (design-editor 0.21.0 · component 0.240.0 · shell 0.62.0 · theme 0.166.0 · framework 0.49.0 · icons 0.33.1 · media-client 0.4.1) and went onto `AppHub` the same session; Home stays on its own `CatalogPage` until the library reader is exported. |
 | 2026-10-06 | **The four kol-website tickets closed** — published kol-component 0.240.0 · kol-workshop 0.39.0 · kol-media-client 0.4.1 (with kol-shell 0.62.0 · design-editor 0.21.0). Earlier the same day: **addressed** — SectionSplit (auto media, ruled gutter), ColumnBrowser `preventScroll`, kol-media-client `adminBase` → `media.` (0.4.1), kol-workshop reader `fields` · `actions` · external rail links. Unreleased; 🟢 when the wave ships.

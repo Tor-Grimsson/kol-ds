@@ -10,6 +10,14 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-08 later, picker A/B — published)
+
+- **Published 2026-10-08:** kol-theme 0.168.0 · kol-component 0.242.0. Push is the user's. The picker card holds one fixed height (`--kol-media-picker-h`); `apps/media` `/picker` is A (the browse surface in the modal card, Use footer, via the new `onPickFile` seam) and `/picker/b` is B (the modal as it ships) — his ruling decides the package swap. `/browse` cut. fxr's file browser consumes the browse surface, never copies. Log: `session-log/2026-10-08-picker-a-b-and-fixed-height.md`.
+
+## Current state (2026-10-08, the media family — published)
+
+- **Published 2026-10-08:** kol-theme 0.167.0 · kol-component 0.241.0 · design-editor 0.23.0 (and design-editor 0.22.0 on 2026-10-07). Push is the user's. One modal library for every consumer: the editor's own picker is retired (`_tmp/2026-10-07-design-editor-media-picker/`), the DS modal switches buckets, is an overlay, has a phone sheet and the wall's row; `MediaViewer` and `MediaTileGallery` fixed on the walk; the file context menu mounts on read-only buckets (kol-website's B2 download). `apps/media` previews every surface (`/` · `/browse` · `/library` · `/picker` · `/viewer`); `validate:render` presses a named control so overlays are measured. Round 8 on the open-questions page (`showcase/src/open-questions/2026-10-08.jsx`, decided · review) holds the nine calls. `apps/editor-hub` is on `AppHub` with `loadLibrary()`. Lobby: `library-reader-for-a-hub-home` 🟠 (closes on fxr); `design-editor-0-23-0-the-ds-modal-library` filed to kol-fxr. Log: `session-log/2026-10-08-media-family-every-surface-on-a-phone.md`.
+
 ## Current state (2026-10-06, fxr on a phone + kol-website wave — published)
 
 - **Published 2026-10-06:** kol-component 0.240.0 · kol-shell 0.62.0 · kol-workshop 0.39.0 · design-editor 0.21.0 · kol-media-client 0.4.1. Push is the user's. kol-website's four tickets closed (`lobby/done/`). Handoff: `session-bridge/handoff-2026-10-06-0135-fxr-phone-and-website-wave-published.md`. `apps/generator` is `apps/randomiser`. Labs opens on an entry card and asks for media in a card; phone frame by width (labs <1024, randomiser <768) as well as touch; both sheets half/tall with a draggable grabber; the editor under 1024 is a note; labs' rail enters sections (`railSections="enter"`); S opens the standard sheet. All decided on the recommendation for his review. Plan: `plan-2026-10-05-fxr-on-a-phone.md`; findings: `backlog/2026-10-05-fxr-phone-findings.md`. Log: `session-log/2026-10-06-fxr-on-a-phone.md`.
@@ -21,14 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-02 evening, the phone pass — published)
 
 - **Published 2026-10-02 (third wave):** theme 0.165.0 · framework 0.49.0 · component 0.239.0 · workshop 0.38.0 · shell 0.61.0 (and theme 0.164.1 · markdown 0.1.3 before it). Push is the user's. The mobile plan was opened and built from his answers: chrome inset 20 on a phone, a rail title opens its page and expands nothing (`validate:rail-pages` P5), Lookup as Start · Foundations · Taxonomy, modules' Navigation group, `T` for the whole tree, nested components on every component page, `Button variant="tab"` + `TabChips` on the size ramp, `NavRail fade`. What is left of the phone pass: `plan-2026-10-02-mobile-pass.md` § D. Lobby: two kol-website tickets closed, `section-split-frame-ratio-holds-at-desktop` addressed and waiting on kol-website. Log: `session-log/2026-10-02-phone-pass-and-website-tickets.md`.
-
-## Current state (2026-10-02, monitor rehearsed — published)
-
-- **Published 2026-10-02 (second wave):** theme 0.164.0 · component 0.238.0 · hardware 0.4.1. Push is the user's (kol-ds-ui and dotfiles). `apps/rack` is kol-monitor's rack page alone and `apps/rack-hub` (5196) is its shell and pages around it — monitor's files, copied, on this repo's packages; 56 of 60 modules and every desktop tab pixel-identical to the live site. The edits monitor needs when it bumps, and what the bump visibly changes: `backlog/2026-10-02-monitor-bump-notes.md`. Parked: the phone pass (`plan-2026-10-02-mobile-pass.md`, new gate `pnpm validate:phone`). Open: mixer and panels (`backlog/2026-10-02-rack-and-mixer-apps-fail.md` — mixer starts from kol-mirror, on his word only). He works kol-monitor on the MBP himself. Log: `session-log/2026-10-02-monitor-rehearsal-rack-and-rack-hub.md`.
-
-## Current state (2026-10-02, the approved build list — published)
-
-- **Published 2026-10-02:** theme 0.163.0 · icons 0.33.0 · search 0.3.0 · component 0.237.0 · shell 0.60.0 · styleguide 0.6.0 · workshop 0.37.0 · hardware 0.4.0 · foundry 0.12.0. Push is the user's. One player (`MediaPlayer`), `Slider` vertical + scrub, `Knob` (alias `RotaryDial`), `apps/rack` · `apps/mixer`, the rail's icon state (`ShellNavColumn`), "search modal" not "palette". hardware 0.4.0 breaks monitor · mirror · fxr until they pass `onHold` — bulletined, tickets still to file from the iMac. Log: `session-log/2026-10-02-approved-build-list-published.md`.
 
 ## Repo standup (2026-06-15)
 

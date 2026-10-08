@@ -54,9 +54,9 @@ export const APPS = [
     layers: ['Tool'], packages: ['kol-component (MediaLibrary)', 'kol-media-client', 'kol-search'], optIns: ['search engine', 'PWA', 'fixture: media-fixture'], consumer: `A client over your bucket (kol-media-client); for home-screen install, ${PWA}.`,
     routes: [
       { path: '/', what: 'explorer — the column browser and the files wall as two views of one surface (media as it ships)' },
-      { path: '/browse', what: 'browse — the column browser alone: the bucket dropdown, the crumb line, folders and files' },
       { path: '/library', what: 'library — the files wall alone: FILES, filter · search, grid / list, FLAT, the sort row (what kol-website’s brand app still runs)' },
-      { path: '/picker', what: 'modal — the picker a consumer opens over its bucket: one button, the pick shown under it; the Store dropdown switches the fixture’s two buckets' },
+      { path: '/picker', what: 'picker A — the browse surface (columns · rows · grid) in the modal card, a Use button for the selected file; also /picker/a' },
+      { path: '/picker/b', what: 'picker B — the modal as it ships: its own grid | list listing, the Store dropdown switching the fixture’s two buckets; kept until the A/B is ruled' },
       { path: '/viewer', what: 'MediaViewer — MediaTileGallery’s framed tiles open the fullscreen viewer at the tile, paged across the set' },
     ] },
   { name: 'media-hub', layer: 'tool', port: 5175, what: 'Media as it ships — Shell + Hub + the media tool. One settings place; the phone bar.',

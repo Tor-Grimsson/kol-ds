@@ -42,7 +42,7 @@ const ROUTES = {
   brand: ['colour/ramps', 'colour/anchors', 'colour/combinations', 'type/families', 'logo/displays', 'logo/clearspace', 'logo/scaling', 'stationery/business-card', 'stationery/set', 'assets/downloads', 'assets/imagery', 'assets/business'],
   /* an object names a control to PRESS after the route loads — an overlay (the picker, the viewer)
    * is nothing until something opens it, and a route alone never measured one */
-  media: ['', 'browse', 'library', { path: 'picker', press: 'Pick media' }, { path: 'viewer', press: 'tt-01.jpg' }],
+  media: ['', 'library', { path: 'picker', press: 'Pick media' }, { path: 'picker/b', press: 'Pick media' }, { path: 'viewer', press: 'tt-01.jpg' }],
   notes: ['', '#list'],
   presentation: ['', '#list'],
   'notes-hub': ['#/', '#/notes'],
