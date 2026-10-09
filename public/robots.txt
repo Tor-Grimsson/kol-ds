@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /quarantine
+Disallow: /development
+
+Sitemap: https://ui.kolkrabbi.io/sitemap.xml

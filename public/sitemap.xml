@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ui.kolkrabbi.io/</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/apps</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/collection</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/components</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/composition</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/docs</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/foundations/color</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/foundations/tokens</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/foundations/tones</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/foundations/typography</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/library</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/modules</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/packages</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/references</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/search</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/search/graph</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/search/index</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/search/tags</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/sets</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/styles</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/styles/loaders</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/styles/menus</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/styles/shell-and-layout</loc></url>
+  <url><loc>https://ui.kolkrabbi.io/styles/type-roles</loc></url>
+</urlset>
