@@ -3,7 +3,7 @@ title: Media uploads
 type: reference
 status: active
 created: 2026-09-25
-updated: 2026-09-25
+updated: 2026-10-09
 description: Converting files on upload, and keeping originals
 aliases:
   - media uploads
@@ -68,4 +68,4 @@ From kol-client-olina, 2026-09-18 — theirs, recorded here as precedent, not as
 3. Pick: originals folder or not.
 4. Re-list through `refreshKey` after the uploads land.
 
-If a second consumer takes the recipe unchanged, that is the signal to lift it into `@kolkrabbi/kol-media-client` as a pure `prepareUpload(file)` that returns the objects to put — until then it lives in the consumer.
+**Lifted 2026-10-09** — kol-website was the second consumer (`upload-dialog-optimise-and-keep-originals`). The recipe is `@kolkrabbi/kol-media-client` ≥0.5.0: `prepareUpload(file, { folder, optimise, keepOriginals })` returns `[{ key, blob, thumb? }]` to put, and `isOptimisable(file)` says whether to ask. Three changes from olina's copy: alpha is kept (a transparent still becomes WebP, never JPEG on white); any still already ≤2560 wide and ≤500 KB is left as it is (olina skipped only JPEGs, and a small PNG came back larger as a JPEG); and a still over 500 KB at quality 0.4 steps its width down until it fits. The question is asked with `useModal().confirm(title, { options })` (kol-component ≥0.248.0) — toggle rows, resolving `{ ok, values }`. `apps/media` (the fixture wiring) runs both on a dropped file.

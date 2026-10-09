@@ -64,3 +64,28 @@ bucket and passes it back in as `defaultValue`.
 A kol-website drop of a 6 MB PNG with both toggles on puts `<folder>/<stem>.jpg` (or the alpha-safe
 format) ≤500 KB and `<folder>/original/<name>.png` unchanged; with Optimise off, puts the file as-is;
 a drop of one MP4 shows no dialog. kol-website consumes it the turn it returns.
+
+---
+
+## Resolution — 2026-10-09 · 🟢 closed
+
+**Shipped `@kolkrabbi/kol-media-client@0.5.0` + `@kolkrabbi/kol-component@0.248.0`.**
+
+1. **`prepareUpload(file, { folder, optimise, keepOriginals })`** (`media-client/src/upload.js`) →
+   `[{ key, blob, thumb? }]`, pure. olina's recipe with three changes: **alpha kept** — a still
+   with a transparent pixel is re-encoded as WebP (PNG where a browser cannot encode WebP), never
+   JPEG on white; **any** still already ≤2560 wide and ≤500 KB is left as it is (olina skipped only
+   JPEGs — a 224 KB PNG came back a 409 KB JPEG); a still still over 500 KB at quality 0.4 steps its
+   width down by a fifth until it fits (floor 640). Video / SVG / GIF / undecodable pass through; a
+   video carries `thumb`. Plus `isOptimisable(file)`, `cleanName`, `videoThumb`.
+2. **`useModal().confirm(title, { options })`** — `[{ id, label, hint?, defaultValue? }]` as
+   `ToggleCheckbox` rows; resolves `{ ok, values }` (on cancel too); a plain boolean without
+   `options`. Widened `confirm` rather than a new kind. Preview: `/components/use-modal` → Toggles.
+
+Walked in `apps/media` (the fixture wiring now runs both): a 7.2 MB PNG dropped on `img/` asked the
+two questions, Upload put `img/test-render.jpg` and `img/original/test-render.png` (7.2 MB, the
+same file); an MP4 drop showed no dialog. Measured: a 3200×1800 noise PNG (8.8 MB) → 497 KB JPEG;
+the same with alpha → 478 KB WebP; optimise off → the file as is. Doc: `15-media-uploads.md`.
+
+For kol-website: bump both; the fixture's `onDropFiles` in `apps/media-fixture/src/wiring.jsx` is
+the shape to copy (ask only when `isOptimisable` hits, remember `values` per bucket).

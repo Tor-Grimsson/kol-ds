@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 19 entries
+## Queue — 18 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -56,7 +56,6 @@ accrues entries and never closes.
 | 🟠 | [column-preview-crops-wide-images](inbox/column-preview-crops-wide-images.md) | **kol-client-olina** — the preview pane's `ImageFrame` (`MediaLibraryPages.jsx:199`) snaps to the nearest of seven preset ratios (widest 16:9) and fills it with `object-cover`, so a 2.8:1 wordmark or an 11:1 nav logo shows as a cropped fragment. Ask: `object-contain` when the image is outside the ladder (or for SVG); photos unchanged | 2026-09-25 ← kol-client-olina | 🟠 `addressed` — **ships `@kolkrabbi/kol-component@0.221.0`** (2026-09-25): `ImageFrame` draws an SVG or an image past the ladder's ends `object-contain`; the ratio snap and photos near a preset are unchanged. Proved live in `apps/media`. Closes on kol-client-olina verifying it running |
 | 🟠 | [column-view-drops-the-picked-file](inbox/column-view-drops-the-picked-file.md) | **kol-client-olina** — `ColumnBrowser` keeps its own `picked` state (`ColumnBrowser.jsx:547`) and the media pages never pass `pickedFile` in, so a file picked in rows or grid is dropped on a switch to columns (rows ↔ grid keep it). Ask: a controlled `picked` prop, fed `pickedFile` by `MediaLibraryPages` | 2026-09-25 ← kol-client-olina | 🟠 `addressed` — **ships `@kolkrabbi/kol-component@0.221.0`** (2026-09-25): `ColumnBrowser` takes a controlled `picked`; the media pages feed it `pickedFile`, so a pick in rows or grid opens columns on that file, selected, previewed, cursor on it. Proved live in `apps/media`. Closes on kol-client-olina verifying it running |
 | 🟠 | [library-reader-for-a-hub-home](inbox/library-reader-for-a-hub-home.md) | **kol-fxr** — fxr is on `AppHub` (user ruling 2026-10-07): Settings, the `S` sheet and the rail are the Hub's, but Home cannot follow — `HubHome` takes its items as data, and the SAVED set needs `useGeneratorLibrary()`, whose provider goes stale beside the editor's own (`Editor.jsx:80` mounts one; `storage` fires cross-tab only). Ask: export the sanitised reader (`loadFromStorage`, `LibraryProvider.jsx:222`) from `core` so `home.items` reads fresh with no provider | 2026-10-07 ← kol-fxr | 🟠 `addressed` — **ships `@kolkrabbi/design-editor@0.22.0`** (2026-10-07): `loadLibrary()` on the root and `core` entries — the provider's own `loadFromStorage` under that name, validators and migrations included. `apps/editor-hub` is on `AppHub` with it: a preset saved in `/editor` (File → Save…) is on Home's SAVED in the same tab, no reload, 0 console errors (`_tmp/2026-10-07-hub-home-check/`). Closes on fxr bumping and seeing it |
-| 🔵 | [upload-dialog-optimise-and-keep-originals](inbox/upload-dialog-optimise-and-keep-originals.md) | **kol-website** — media app uploads byte for byte (R2 1.38 GB). Ask: lift olina's recipe into kol-media-client as `prepareUpload(file, { optimise, keepOriginals })` (your 15-media-uploads doc's second-consumer trigger), alpha-safe; and `useModal().confirm` takes toggle `options` so the upload asks both questions in one KOL dialog | 2026-10-09 | 🔵 `filed` |
 
 
 ## Closed
@@ -71,6 +70,7 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [upload-dialog-optimise-and-keep-originals](done/upload-dialog-optimise-and-keep-originals.md) | **kol-website** — lift olina's upload recipe into kol-media-client as `prepareUpload`, alpha-safe; toggle `options` on `useModal().confirm` so one dialog asks optimise / keep originals | 2026-10-09 ← kol-website | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-media-client@0.5.0` + `@kolkrabbi/kol-component@0.248.0`**: `prepareUpload` · `isOptimisable` (alpha kept as WebP; any web-sized still untouched; width steps down past q0.4); `confirm(title, { options })` → `{ ok, values }`. Walked in `apps/media` |
 | 🟢 | [SegmentedSunkenNoBorder](done/SegmentedSunkenNoBorder.md) | **kol-fxr** — the sunken `SegmentedToggle` kept a transparent 1px border, so its cells sat 2px short of the pinned height beside a Button. Ask: `border-width: 0` in that tone, dividers unchanged. kol-theme | 2026-10-09 ← kol-fxr | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.171.0`**: sunken/inverse strip `border-width: 0`; cells fill the pinned height, the 1px dividers stay |
 | 🟢 | [EditorTransformGlyphs](done/EditorTransformGlyphs.md) | **kol-fxr** — the inspector Transform strip's nine glyphs (six align marks, rotate, flip h/v) do not resolve at the 16px rung (editor-chrome-review #14, held since 2026-09-03 as icon-design work). Ask: redraw for 16px with a proposal page first; a `kol-icons` minor | 2026-10-09 ← kol-fxr | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-icons@0.34.0`**: the nine redrawn as A (solid align boxes, solid flip axis, 270° rotate), Round 9 for review |
 | 🟢 | [HubWalkthroughEscape](done/HubWalkthroughEscape.md) | **kol-fxr** — the Hub's walkthrough carousel ignores Escape (audit A5, re-checked with a real key): only its × and the footer's Close end it, while the page behind stays live. Ask: Escape closes, ← → page; or a scrim that says it is not modal | 2026-10-09 ← kol-fxr | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-shell@0.63.0`**: `WalkthroughPanel` takes Escape (→ `onClose`) and ← →, on the DS layer stack |
@@ -343,6 +343,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-09 | **`upload-dialog-optimise-and-keep-originals` closed** — kol-media-client 0.5.0 · kol-component 0.248.0; receipt returned to kol-website; queue 19 → 18 |
 | 2026-10-09 | **`upload-dialog-optimise-and-keep-originals` filed from kol-website** — `prepareUpload` into kol-media-client + toggle options on `useModal().confirm`; queue 18 → 19 |
 | 2026-10-09 | **`SegmentedSunkenNoBorder` closed** — kol-theme 0.171.0; the sunken strip drops its border, cells take the full pinned height; receipt returned; queue 19 → 18 |
 | 2026-10-09 | **`SegmentedSunkenNoBorder` filed from kol-fxr** — the sunken strip's invisible border (fxr plan 17 item 3); queue 18 → 19 |

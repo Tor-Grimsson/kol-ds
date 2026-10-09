@@ -33,7 +33,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 |---|---|---|
 | `@kolkrabbi/kol-theme` | **0.171.0** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.35.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.247.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
+| `@kolkrabbi/kol-component` | **0.248.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>` |
 | `@kolkrabbi/kol-framework` | **0.49.0** | Site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
 | `@kolkrabbi/kol-shell` | **0.63.0** | Application shell — `NavRail` + `AppShell` (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.39.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
@@ -62,7 +62,7 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 | Package | Version | Job |
 |---|---|---|
 | `@kolkrabbi/design-editor` | **0.23.0** | **App tier — the one BUILT package** (ARCHITECTURE §4 exception, 2026-09-03). The whole editor as `<DesignEditor />`; moved in from kol-fxr, which had published it unversioned by any gate. Since 0.14.0 also `/core` (no layer packs) and one subpath per pack — `/generators` · `/effects` · `/motion` |
-| `@kolkrabbi/kol-media-client` | **0.4.1** | Read-only client for the kol-media CDN |
+| `@kolkrabbi/kol-media-client` | **0.5.0** | Client for the kol-media CDN — read, plus `prepareUpload` |
 | `@kolkrabbi/kol-brand-template` | **0.3.0** | Brand-manifest schema + house defaults + CSS generator |
 | `@kolkrabbi/kol-brand` | **0.1.3** | Kolkrabbi's own brand manifest (ramps, type, logo SVGs) |
 | `@kolkrabbi/kol-scrape` | **0.1.0** | Presence/press scraper CLI |

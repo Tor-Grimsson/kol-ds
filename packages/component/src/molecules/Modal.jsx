@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { createPortal } from 'react-dom'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
+import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
 
 /**
  * Modal — promise-based prompt + confirm + alert dialogs.
@@ -21,9 +22,25 @@ import Input from '../atoms/Input.jsx'
  * Returned promise resolves to:
  *   - prompt  → string (value) on submit, `null` on cancel
  *   - confirm → boolean: `true` on confirm, `false` on cancel
+ *   - confirm with `options` → `{ ok, values: { [id]: boolean } }` (below)
  *   - alert   → undefined, once dismissed. One button; `okLabel` names it.
  *     Added 2026-09-22 (media-pages-route-dialogs-through-usemodal) so an
  *     error report needs no native `alert()` beside DS prompts.
+ *
+ * TOGGLES (upload-dialog-optimise-and-keep-originals, kol-website 2026-10-09): `confirm` takes
+ * `options: [{ id, label, hint?, defaultValue? }]`, drawn as `ToggleCheckbox` rows between the
+ * title and the buttons, so one dialog asks a question and its settings:
+ *
+ *   const { ok, values } = await confirm('Web-optimise raster images?', {
+ *     okLabel: 'Upload',
+ *     options: [
+ *       { id: 'optimise', label: 'Optimise', hint: '≤2560 px, ≤500 KB', defaultValue: true },
+ *       { id: 'keepOriginals', label: 'Keep originals', hint: 'original/<name>', defaultValue: true },
+ *     ],
+ *   })
+ *
+ * `values` comes back on cancel too (the toggles as left), so a consumer can remember them either
+ * way. Without `options`, confirm still resolves a plain boolean — existing callers untouched.
  *
  * Mounted once at the app root (BrandLayout). Renders into `document.body`
  * via portal, so it floats above any rail / scroll-context.
@@ -45,8 +62,8 @@ export function ModalProvider({ children }) {
     new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, resolve })),
   [])
 
-  const confirm = useCallback((title, { okLabel, cancelLabel } = {}) =>
-    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, resolve })),
+  const confirm = useCallback((title, { okLabel, cancelLabel, options } = {}) =>
+    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, options: options?.length ? options : null, resolve })),
   [])
 
   const alert = useCallback((title, { okLabel } = {}) =>
@@ -66,11 +83,14 @@ export function ModalProvider({ children }) {
 
 function ModalView({ state, closeWith }) {
   const [val, setVal] = useState(state.defaultValue ?? '')
+  const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
   const inputRef = useRef(null)
 
-  /* alert resolves `undefined` whichever way it is dismissed */
-  const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'alert' ? undefined : true)
-  const cancel = () => closeWith(state.kind === 'prompt' ? null : state.kind === 'alert' ? undefined : false)
+  /* alert resolves `undefined` whichever way it is dismissed; a confirm with toggles resolves
+   * `{ ok, values }` */
+  const answer = (ok) => (state.options ? { ok, values } : ok)
+  const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'alert' ? undefined : answer(true))
+  const cancel = () => closeWith(state.kind === 'prompt' ? null : state.kind === 'alert' ? undefined : answer(false))
 
   useEffect(() => {
     if (state.kind === 'prompt') inputRef.current?.focus()
@@ -80,7 +100,7 @@ function ModalView({ state, closeWith }) {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [state.kind, val, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.kind, val, values, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
@@ -118,6 +138,19 @@ function ModalView({ state, closeWith }) {
             className="w-full"
           />
         )}
+        {state.options && (
+          <div className="flex flex-col gap-3">
+            {state.options.map((o) => (
+              <ToggleCheckbox
+                key={o.id}
+                label={o.label}
+                hint={o.hint}
+                checked={values[o.id]}
+                onChange={(next) => setValues((v) => ({ ...v, [o.id]: next }))}
+              />
+            ))}
+          </div>
+        )}
         <div className="flex gap-2 justify-end">
           {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
           <Button tone="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
@@ -147,9 +180,10 @@ export function useModal() {
       const v = window.prompt(title, def)
       return v
     },
-    confirm: async (title) => {
-      if (typeof window === 'undefined') return false
-      return window.confirm(title)
+    /* the fallback cannot draw toggles: options come back at their defaults */
+    confirm: async (title, { options } = {}) => {
+      const ok = typeof window !== 'undefined' && window.confirm(title)
+      return options?.length ? { ok, values: Object.fromEntries(options.map((o) => [o.id, !!o.defaultValue])) } : ok
     },
     alert: async (title) => {
       if (typeof window !== 'undefined') window.alert(title)

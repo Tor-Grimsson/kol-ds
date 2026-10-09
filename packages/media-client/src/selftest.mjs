@@ -19,7 +19,7 @@
  * environment where that line works, and it was the only one it ran in. Hence
  * the browser-shaped case at the end here.
  */
-import { createMediaClient, KOL_BUCKETS, formatSize } from './index.js'
+import { createMediaClient, KOL_BUCKETS, formatSize, prepareUpload, isOptimisable, cleanName } from './index.js'
 
 const eq = (got, want, what) => {
   if (JSON.stringify(got) !== JSON.stringify(want)) throw new Error(`${what}: ${JSON.stringify(got)} !== ${JSON.stringify(want)}`)
@@ -40,6 +40,18 @@ eq(c.proxied('https://r2.kolkrabbi.io/01.jpg'), '/media/01.jpg', 'no table = the
 eq([formatSize(null), formatSize(undefined), formatSize(NaN), formatSize(0)], ['', '', '', '0 B'],
    'a sizeless object formats to nothing, and 0 is still a size')
 
+/* prepareUpload — the paths Node can run (no canvas): names, the ask, and every pass-through */
+eq(cleanName('*HERO Shot.PNG'), 'hero-shot.png', 'cleanName slugs and keeps the extension')
+eq([{ type: 'image/png' }, { type: 'image/jpeg' }, { type: 'image/svg+xml' }, { type: 'image/gif' }, { type: 'video/mp4' }].map(isOptimisable),
+   [true, true, false, false, false], 'only stills are optimisable')
+const png = new File([new Uint8Array(8)], 'Render 01.png', { type: 'image/png' })
+eq((await prepareUpload(png, { folder: '/labs/', optimise: false })).map((o) => [o.key, o.blob === png]),
+   [['labs/render-01.png', true]], 'optimise off = the file as is, under its clean name')
+eq((await prepareUpload(new File(['<svg/>'], 'Logo.svg', { type: 'image/svg+xml' }), { folder: 'a' })).map((o) => o.key),
+   ['a/logo.svg'], 'svg passes through')
+const mp4 = await prepareUpload(new File([new Uint8Array(8)], 'clip.mp4', { type: 'video/mp4' }))
+eq([mp4.length, mp4[0].key, 'thumb' in mp4[0]], [1, 'clip.mp4', true], 'video passes through with a thumb slot')
+
 /* THE BROWSER CASE — the one that would have caught 0.3.0. Re-import the module
  * with `process` removed from the global scope, exactly as a browser has it. */
 const savedProcess = globalThis.process
@@ -51,4 +63,4 @@ try {
   globalThis.process = savedProcess
 }
 
-console.log('kol-media-client: 10 checks passed (including a no-`process` import)')
+console.log('kol-media-client: 15 checks passed (including a no-`process` import)')

@@ -11,6 +11,8 @@
  */
 import { useState } from 'react'
 import { kindOf } from '@kolkrabbi/kol-component/utilities/mediaKinds'
+import { useModal } from '@kolkrabbi/kol-component/molecules/Modal'
+import { isOptimisable, prepareUpload } from '@kolkrabbi/kol-media-client'
 import { DEFAULTS } from './defaults.js'
 /* re-exported so an app reads the defaults through the subpath it already imports */
 export { DEFAULTS }
@@ -45,6 +47,8 @@ export function useFixtureMedia({ client, title = 'MEDIA', setPrefix = () => {},
   /* The tree is read fresh after every mutation — the store IS the tree, so a folder created,
    * moved or emptied shows in the columns at once. */
   const [folderTree, setFolderTree] = useState(() => client.folderTree())
+  const modal = useModal()
+  const [uploadChoice, setUploadChoice] = useState({})
   const touched = () => { setFolderTree(client.folderTree()); setRefreshKey((k) => k + 1) }
 
   const switchBucket = (id) => {
@@ -112,9 +116,29 @@ export function useFixtureMedia({ client, title = 'MEDIA', setPrefix = () => {},
     ],
   }
 
-  /* DESKTOP FILES DROPPED ON A FOLDER — the fixture's upload, so a dropped photo previews as itself. */
+  /* DESKTOP FILES DROPPED ON A FOLDER — the fixture's upload, so a dropped photo previews as itself.
+   * A drop holding a still asks the two questions in one DS dialog and kol-media-client prepares the
+   * objects (upload-dialog-optimise-and-keep-originals, 2026-10-09); a drop of video / SVG goes up
+   * without asking. The last answer is remembered per bucket and comes back as the default. */
   const onDropFiles = async (files, folder) => {
-    for (const f of Array.from(files)) await client.uploadFile(f, `${folder}${f.name}`, bucketId)
+    const list = Array.from(files)
+    let opts = { optimise: false, keepOriginals: false }
+    if (list.some(isOptimisable)) {
+      const last = uploadChoice[bucketId] ?? { optimise: true, keepOriginals: true }
+      const { ok, values } = await modal.confirm('Web-optimise raster images?', {
+        okLabel: 'Upload',
+        options: [
+          { id: 'optimise', label: 'Optimise', hint: '≤2560 px, ≤500 KB', defaultValue: last.optimise },
+          { id: 'keepOriginals', label: 'Keep originals', hint: 'original/<name>', defaultValue: last.keepOriginals },
+        ],
+      })
+      if (!ok) return
+      setUploadChoice((c) => ({ ...c, [bucketId]: values }))
+      opts = values
+    }
+    for (const f of list) {
+      for (const { key, blob } of await prepareUpload(f, { folder, ...opts })) await client.uploadFile(blob, key, bucketId)
+    }
     touched()
   }
 

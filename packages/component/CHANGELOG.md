@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.248.0 — 2026-10-09
+
+- **New: `useModal().confirm(title, { options })`** — `options: [{ id, label, hint?, defaultValue? }]` draws `ToggleCheckbox` rows between the title and the buttons and resolves `{ ok, values }` (on cancel too, so a consumer can remember the toggles). Without `options`, confirm still resolves a boolean. The native fallback returns the defaults.
+
 ## 0.247.0 — 2026-10-09
 
 - **Changed: `ContentRow variant="catalog"` carries a thumb** — the full 36 rung, square — when it is given `media`. A catalog row without `media` still has none (no MISSING plate). User: "catalog should change its default".

@@ -30,6 +30,21 @@ function Triggers() {
       >
         Prompt
       </Button>
+      {/* `options` — toggle rows between the title and the buttons; resolves { ok, values } */}
+      <Button
+        size="sm"
+        onClick={() =>
+          confirm('Web-optimise raster images?', {
+            okLabel: 'Upload',
+            options: [
+              { id: 'optimise', label: 'Optimise', hint: '≤2560 px, ≤500 KB', defaultValue: true },
+              { id: 'keepOriginals', label: 'Keep originals', hint: 'original/<name>', defaultValue: true },
+            ],
+          })
+        }
+      >
+        Toggles
+      </Button>
     </div>
   )
 }

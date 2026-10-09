@@ -210,3 +210,7 @@ export async function uploadToLibrary(blob, key, { proxyPath = '/api/library/upl
   if (!r.ok) throw new Error(`${r.status} ${await r.text()}`)
   return r.json()
 }
+
+// ── Upload preparation (upload-dialog-optimise-and-keep-originals, kol-website 2026-10-09) ──
+// Pure: one file → the objects to put. The consumer puts them. See upload.js.
+export { prepareUpload, isOptimisable, cleanName, videoThumb } from './upload.js'
