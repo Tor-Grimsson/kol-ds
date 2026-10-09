@@ -1,11 +1,10 @@
 import { Badge } from '@kolkrabbi/kol-component'
 
-export default function BadgeWithIconPreview() {
-  return (
-    <>
-      <Badge variant="success" icon="check">Verified</Badge>
-      <Badge variant="warning" icon="alert-triangle">Pending</Badge>
-      <Badge variant="critical" icon="x">Failed</Badge>
-    </>
-  )
+/* the variant rides the picker (2026-10-09 — "just show default and give options to variants") */
+export const variants = ['success', 'warning', 'critical']
+const ICON = { success: 'check', warning: 'alert-triangle', critical: 'x' }
+const TEXT = { success: 'Verified', warning: 'Pending', critical: 'Failed' }
+
+export default function BadgeWithIconPreview({ variant = 'success' }) {
+  return <Badge variant={variant} icon={ICON[variant]}>{TEXT[variant]}</Badge>
 }

@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-icons",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "The icon loader and icon sets",
   "license": "MIT",
   "type": "module",

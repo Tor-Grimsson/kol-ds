@@ -21,21 +21,21 @@ const VARIANTS = [
   { variant: 'typeface', props: { title: S.title, body: S.body, date: S.date } },
 ]
 
-export default function ContentTextPreview() {
+/* the variant rides the picker (2026-10-09 — "just show default and give options to variants") */
+export const variants = VARIANTS.map((v) => v.variant)
+
+export default function ContentTextPreview({ variant = 'default' }) {
+  const { props } = VARIANTS.find((v) => v.variant === variant) ?? VARIANTS[0]
   return (
-    <div className="flex w-full max-w-[52rem] flex-col gap-8">
-      {VARIANTS.map(({ variant, props }) => (
-        <div key={variant} className="grid grid-cols-2 items-start gap-6">
-          <div className="flex flex-col gap-2">
-            <p className="kol-helper-10 text-meta">{variant} · card</p>
-            <ContentText variant={variant} form="card" {...props} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="kol-helper-10 text-meta">{variant} · row</p>
-            <ContentText variant={variant} form="row" {...props} />
-          </div>
-        </div>
-      ))}
+    <div className="grid w-full max-w-[52rem] grid-cols-2 items-start gap-6">
+      <div className="flex flex-col gap-2">
+        <p className="kol-helper-10 text-meta">card</p>
+        <ContentText variant={variant} form="card" {...props} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="kol-helper-10 text-meta">row</p>
+        <ContentText variant={variant} form="row" {...props} />
+      </div>
     </div>
   )
 }

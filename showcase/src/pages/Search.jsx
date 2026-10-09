@@ -38,7 +38,7 @@ export function SearchViews() {
 }
 
 /* the result row ruled on open-questions Round 6 (2026-10-01): wash, a glyph for the kind, the path as the second line */
-const KIND_ICONS = { component: 'component-01', block: 'layout', card: 'rectangle', set: 'layers', package: 'database', space: 'folder', guide: 'book-open', specimen: 'paint-drop', tool: 'customize', record: 'journal', reference: 'code', doc: 'file', index: 'library' }
+const KIND_ICONS = { component: 'component-01', block: 'layout', card: 'rectangle', set: 'layers', package: 'database', space: 'folder', guide: 'book-open', specimen: 'paint-drop', 'icon set': 'grid', 'icon group': 'folder', icon: 'grid', tool: 'nav-settings', record: 'journal', reference: 'code', doc: 'file', index: 'library' }
 
 const RESULTS_PATH = SEARCH_VIEWS.find((v) => v.value === 'results').path
 

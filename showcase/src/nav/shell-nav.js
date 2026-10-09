@@ -8,6 +8,7 @@ import { isSurfaceAdmitted, isComponentAdmitted, anyComponentsAdmitted, isChapte
 /* Chapter folder → display label. THE rule, imported — it was written here and
  * in vault.js byte-identically until 2026-08-01. See nav/labels.js. */
 import { labelFromSlug as label } from './labels.js'
+import { KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL } from '@kolkrabbi/kol-icons'
 
 /**
  * shell-nav — the adapter from the showcase's own data into the shapes
@@ -136,7 +137,9 @@ export const DOCS_SPECIMENS = [
   { id: 'spec-foundations', label: 'Tokens', path: '/foundations/tokens', source: 'packages/theme/kol-theme.css · kol-opacity.css' },
   { id: 'spec-color', label: 'Color', path: '/foundations/color', source: 'packages/theme/kol-color.css · packages/framework/kol-brand-color.css' },
   { id: 'spec-typography', label: 'Typography', path: '/foundations/typography', source: 'packages/theme/kol-typography.css · kol-type-roles.css' },
-  { id: 'spec-tones', label: 'Tones', path: '/foundations/tones', source: 'packages/component/src/utilities/tone.js · packages/theme/kol-color.css' },
+  /* `parent` — the rail files Tones under Color (2026-10-09 — user: "why is tone seperate here?
+   * shouldnt it be under color?"); the URL stays */
+  { id: 'spec-tones', label: 'Tones', path: '/foundations/tones', parent: 'spec-color', source:'packages/component/src/utilities/tone.js · packages/theme/kol-color.css' },
 ]
 
 /* Development › Tools — generated from the repo itself */
@@ -233,6 +236,18 @@ export const buildShellSearchItems = () => {
   const views = SEARCH_VIEWS.filter((v) => v.value !== 'results').map((v) => ({ id: `search-${v.value}`, title: v.label, kind: 'tool', space: 'search', category: 'Search', description: v.description, href: v.path }))
   const guides = DOCS_GUIDES.map((g) => ({ id: g.id, title: g.label, kind: 'guide', space: 'styles', category: 'Guides', href: g.path }))
   const specimens = DOCS_SPECIMENS.map((g) => ({ id: g.id, title: g.label, kind: 'specimen', space: 'styles', category: 'Foundations', href: g.path }))
+  /* the icon sets, their groups and every icon (2026-10-09 — ⌘K found none of them); an icon
+   * opens its group's page */
+  const icons = Object.entries({ 'kol-icon-set-interface': KOL_ICON_SET_INTERFACE, 'kol-icon-set-signal': KOL_ICON_SET_SIGNAL }).flatMap(([set, groups]) => {
+    const setTitle = label(set.replace('kol-icon-set-', ''))
+    return [
+      { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icons', keywords: [set], href: `/icons/${set}` },
+      ...Object.entries(groups).flatMap(([folder, names]) => [
+        { id: `icons-${set}-${folder}`, title: label(folder), kind: 'icon group', space: 'styles', category: setTitle, href: `/icons/${set}/${folder}` },
+        ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), keywords: [setTitle], href: `/icons/${set}/${folder}` })),
+      ]),
+    ]
+  })
   const tools = DEV_TOOLS.map((t) => ({ id: t.id, title: t.label, kind: 'tool', space: 'development', category: 'Tools', description: t.description, href: t.path }))
   const records = DEV_RECORDS.map((t) => ({ id: t.id, title: t.label, kind: 'record', space: 'development', category: 'Records', description: t.description, href: t.path }))
   const vaultDocs = VAULT.map((d) => ({
@@ -247,7 +262,7 @@ export const buildShellSearchItems = () => {
     date: d.metadata?.updated,
     href: vaultDocHref(d.id),
   }))
-  return [...surfaces, ...components, ...blocks, ...sets, ...packages, ...cards, ...views, ...guides, ...specimens, ...tools, ...records, ...vaultDocs]
+  return [...surfaces, ...components, ...blocks, ...sets, ...packages, ...cards, ...views, ...guides, ...specimens, ...icons, ...tools, ...records, ...vaultDocs]
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one

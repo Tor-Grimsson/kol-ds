@@ -150,7 +150,7 @@ const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.pa
  * other group wears the folder, any other Docs or Styles page the file. */
 const RAIL_ICONS = {
   'lib-components': 'component-01', 'lib-blocks': 'layout', 'lib-apps': 'desktop', 'lib-sets': 'layers', 'lib-packages': 'database',
-  'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-utilities': 'customize',
+  'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-utilities': 'nav-settings',
   'set-cards': 'rectangle',
   'spec-foundations': 'slider-01', 'spec-color': 'paint-drop', 'spec-typography': 'type', 'spec-tones': 'opacity',
   'docs-shell': 'layout', 'docs-menus': 'hamburger', 'docs-loaders': 'refresh', 'docs-type-roles': 'aa',
@@ -160,14 +160,14 @@ const RAIL_ICONS = {
    * generally is a bit lazy") — the folder was the fallback for every group below this line */
   'lookup-start': 'flag', 'lookup-foundations': 'foundation', 'lookup-taxonomy': 'atomic-atomic-01',
   'cmp-action': 'pointer', 'cmp-display': 'eye-on', 'cmp-feedback': 'bell', 'cmp-input': 'edit', 'cmp-media': 'image',
-  'cmp-navigation': 'direction-cross', 'cmp-overlay': 'toggle-overlay', 'cmp-structure': 'columns', 'cmp-wayfinding': 'roadmap', 'cmp-utility': 'customize',
+  'cmp-navigation': 'direction-cross', 'cmp-overlay': 'toggle-overlay', 'cmp-structure': 'columns', 'cmp-wayfinding': 'roadmap', 'cmp-utility': 'nav-settings',
   'blk-hero': 'image', 'blk-marketing': 'trending-up', 'blk-content': 'journal', 'blk-media': 'video', 'blk-color': 'paint-drop',
   'blk-navigation': 'panel-left', 'blk-panel': 'panel-right', 'blk-form': 'clipboard', 'blk-toolbar': 'slider-02', 'blk-other': 'more',
   'layer-engine': 'bolt', 'layer-shell': 'panel-left', 'layer-hub': 'home-01', 'layer-catalog': 'grid', 'layer-tool': 'pen', 'layer-fixture': 'database',
-  'pkg-tier-UI': 'user-interface', 'pkg-tier-app': 'desktop', 'pkg-tier-engine': 'bolt', 'pkg-tier-client': 'cloud', 'pkg-tier-brand kit': 'kolkrabbi', 'pkg-tier-deprecated alias': 'trash',
+  'pkg-tier-UI': 'metrics', 'pkg-tier-app': 'desktop', 'pkg-tier-engine': 'bolt', 'pkg-tier-client': 'cloud', 'pkg-tier-brand kit': 'kolkrabbi', 'pkg-tier-deprecated alias': 'trash',
   'set-app-shell': 'panel-left', 'set-chess-apparatus': 'chess-rook', 'set-content-filters': 'filter', 'set-content-set-reference': 'rows',
   'set-design-editor': 'pen-nib', 'set-foundry-specimen': 'font-01', 'set-kind-preview': 'eye-on', 'set-media-library': 'image',
-  'set-metrics-dashboard': 'stat-chart-a', 'set-mixer': 'slider-02', 'set-prints-store': 'bucket', 'set-rack': 'rack',
+  'set-metrics-dashboard': 'stat-chart-a', 'set-mixer': 'slider-02', 'set-prints-store': 'bucket', 'set-rack': 'rack-v',
   'set-record-manager-cms': 'database', 'set-section-set': 'row', 'set-stack-blog': 'journal', 'set-styleguide': 'paint-drop', 'set-work-portfolio': 'grid',
 }
 /* the vault's chapters carry generated ids (`vault-<category>-<chapter>`) — matched by their chapter */
@@ -309,7 +309,11 @@ function SpaceRail({ space, onNavigate, railMode }) {
      * Guides are the rail's top layer; a page with no children lists its sections. */
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_SPECIMENS)), { pages: true })} basePath="/" label="Foundations" labelTo="/foundations" onNavigate={onNavigate} />
+        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_SPECIMENS.filter((x) => !x.parent))).map((r) => {
+          /* a page filed under another (`parent`) rides after that page's sections */
+          const kids = rowsOf(DOCS_SPECIMENS.filter((x) => x.parent === r.id))
+          return kids.length ? { ...r, children: [...(r.children ?? []), ...kids] } : r
+        }), { pages: true })} basePath="/" label="Foundations" labelTo="/foundations" onNavigate={onNavigate} />
         {/* each set is a group of its icon groups, each a page (W3, 2026-09-30) */}
         <ShellSidebar routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconGroups(k).map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) })), { pages: true, leaf: 'grid' })} basePath="/" label="Icons" labelTo="/icons" onNavigate={onNavigate} />
         <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_GUIDES)), { pages: true })} basePath="/" label="Guides" labelTo="/styles/guides" onNavigate={onNavigate} />

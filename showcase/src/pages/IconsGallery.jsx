@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
 import { PageHeader } from '@kolkrabbi/kol-component'
-import { useTheme } from '@kolkrabbi/kol-framework'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import ChapterHome from '../lib/ChapterHome.jsx'
@@ -50,7 +49,10 @@ export const iconGroups = (setKey) => Object.keys(ICON_SETS[setKey]?.groups ?? {
  * from the centre of the placeholder (user 2026-08-27) — no re-render per
  * size, and the keyline guide scales with it. */
 const NATIVE = 128
-const SIZES = [16, 20, 24, 32, 48, 64, 128].map((v) => ({ value: v, label: String(v) }))
+/* FIT is the default (2026-10-09 — user: "why is the guide and icons not using the available space?
+ * hard to visualise margins like this"): the 24 grid spans the whole tile, so the keylines read
+ * edge to edge; a number still shows the glyph at that px */
+const SIZES = [{ value: 'fit', label: 'Fit' }, ...[16, 20, 24, 32, 48, 64, 128].map((v) => ({ value: v, label: String(v) }))]
 const GROUNDS = [
   { value: 'dark', label: 'Dark ground', icon: 'mode-toggle-01' },
   { value: 'light', label: 'Light ground', icon: 'brightness' },
@@ -80,11 +82,21 @@ function Glyph({ name, size, bgLight, guide }) {
     >
       <span
         className="relative block shrink-0"
-        style={{ width: NATIVE, height: NATIVE, transform: `scale(${size / NATIVE})` }}
+        style={size === 'fit' ? { width: '100%', height: '100%' } : { width: NATIVE, height: NATIVE, transform: `scale(${size / NATIVE})` }}
       >
         {guide && <KeylineBg bgLight={bgLight} />}
-        <Icon name={name} size={NATIVE} />
+        <Icon name={name} size={size === 'fit' ? '100%' : NATIVE} />
       </span>
+    </div>
+  )
+}
+
+/* The LIST row's thumb (2026-10-09 — user: "this list card is terrible for this … no preview?"):
+ * the glyph at 20 on the same ground as the tiles, filling the catalog row's square. */
+function RowGlyph({ name, bgLight }) {
+  return (
+    <div className="w-full h-full flex items-center justify-center" style={{ background: bgLight ? '#FFFFFF' : '#0E0E11', color: bgLight ? '#0E0E11' : '#FFFFFF' }}>
+      <Icon name={name} size={20} />
     </div>
   )
 }
@@ -123,12 +135,11 @@ export default function IconsGallery() {
   const { set, group } = useParams()
   const meta = ICON_SETS[set ?? DEFAULT_SET]
 
-  /* the ground follows the app theme until the toggle names one (user 2026-08-27) */
-  const { theme } = useTheme()
-  const [groundOverride, setGroundOverride] = useState(null)
-  const ground = groundOverride ?? theme
+  /* light ground by default (2026-10-09 — user: "make light ground default"; it followed the app
+   * theme from 2026-08-27) */
+  const [ground, setGround] = useState('light')
   const [guide, setGuide] = useState(false)
-  const [size, setSize] = useState(NATIVE)
+  const [size, setSize] = useState('fit')
   const [copied, setCopied] = useState(null)
 
   const copy = (name) => {
@@ -181,7 +192,6 @@ export default function IconsGallery() {
         : <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />}
 
       <ContentFilters
-        tone="sunken"
         items={items}
         title="Icons"
         totalCount={items.length}
@@ -199,8 +209,8 @@ export default function IconsGallery() {
         trailingActions={
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-6">
-              <Dropdown tone="sunken" options={SIZES} value={size} onChange={setSize} className="w-24" />
-              <ViewToggle tone="sunken" variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGroundOverride} />
+              <Dropdown tone="primary" options={SIZES} value={size} onChange={setSize} className="w-24" />
+              <ViewToggle tone="primary" variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGround} />
               <Divider variant="vertical" />
               {GUIDE.map((o) => (
                 <span
@@ -228,6 +238,7 @@ export default function IconsGallery() {
                   variant="catalog"
                   title={copied === item.name ? 'copied!' : item.name}
                   detail={item.group}
+                  media={<RowGlyph name={item.name} bgLight={bgLight} />}
                   onClick={() => copy(item.name)}
                 />
               ) : (

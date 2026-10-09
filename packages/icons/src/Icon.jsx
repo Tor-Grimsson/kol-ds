@@ -87,10 +87,19 @@ export const registerIcons = (globMap) => {
  * flat — one name, one glyph — so a second drawing under a shipped name cannot
  * be expressed, only silently win. Those twelve were left out of the signal set
  * rather than shipped to collide; v1's are what render. */
+/* RENAMED GLYPHS — the old name still resolves to the new glyph, so a consumer's bump does not
+ * blank an icon. Drop each once no repo in the estate names it (Retirements R2).
+ *   customize → nav-settings (2026-10-09: two drawings of one sliders mark; nav-settings has the
+ *     punched hole)
+ *   user-interface → metrics (2026-10-09: it is the metrics app's mark, moved to `identity`)
+ *   rack → rack-v (2026-10-09: beside the new rack-h) */
+export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'metrics', rack: 'rack-v' }
+
 const resolveIcon = (name) => {
   if (CUSTOM[name]) return CUSTOM[name]
   if (!ICONS) return undefined
-  return ICONS.V1[name] ?? ICONS.SIGNAL[name]
+  const n = RENAMED_ICONS[name] ?? name
+  return ICONS.V1[n] ?? ICONS.SIGNAL[n]
 }
 
 const normalizeSize = (value) => {

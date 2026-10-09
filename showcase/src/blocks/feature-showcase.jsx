@@ -19,7 +19,7 @@ const FEATURES = [
   },
   {
     title: 'Themed by tokens',
-    icon: 'customize',
+    icon: 'nav-settings',
     description: 'Colors, type and spacing resolve from CSS variables, so light and dark stay honest.',
   },
   {

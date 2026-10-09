@@ -21,7 +21,8 @@
  * consumers register their own SVGs via registerIcons() or promote a glyph.
  */
 
-export { default as Icon, registerIcons } from './Icon.jsx';
+export { default as Icon, registerIcons, RENAMED_ICONS } from './Icon.jsx';
+import { RENAMED_ICONS } from './Icon.jsx';
 import CUTS from './cuts.json';
 
 /* kol-icon-set-interface — the curated set, grouped by folder (keys-only, no SVG
@@ -84,7 +85,7 @@ export const KOL_ICON_SET_V1_NAMES = KOL_ICON_SET_INTERFACE_NAMES
 export const KOL_ICON_SET_V1_META = KOL_ICON_SET_INTERFACE_META
 
 // Helper to check if an icon exists
-export const hasIcon = (name) => ALL_ICONS.includes(name);
+export const hasIcon = (name) => ALL_ICONS.includes(RENAMED_ICONS[name] ?? name);
 
 // Get category for an icon
 export const getCategory = (name) => {

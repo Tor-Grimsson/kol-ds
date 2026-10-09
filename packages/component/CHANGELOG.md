@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.247.0 — 2026-10-09
+
+- **Changed: `ContentRow variant="catalog"` carries a thumb** — the full 36 rung, square — when it is given `media`. A catalog row without `media` still has none (no MISSING plate). User: "catalog should change its default".
+
 ## 0.241.0 — 2026-10-08
 
 - **New: the modal library switches buckets** (`MediaLibrary variant="modal"`, 2026-10-07). A client with `buckets()` gets a Store dropdown in the modal's header, as the browse page has; switching lists that bucket from its root. It listed the client's default bucket only, which is why design-editor kept a 301-line picker of its own with a Store dropdown — that picker is retired and the editor's three library doors (the footer, the layer inspector, labs' source card) open this modal.

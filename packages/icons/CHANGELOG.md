@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-icons
 
+## 0.35.0 — 2026-10-09
+
+- **Redrawn** (the user's review of the Styles › Icons page): `cable-unlock` (an open shackle — it drew as `cable-lock`) · `cable-trans` (two clear gaps) · `clr-anl` (dots on the ring) · `clr-mono` (the circle keyline) · `curve-exp` / `curve-log` (exact mirrors) · `dith-cross` (a gap to its frame) · `dith-diamond` · `dith-flower` (fill the box; petals clear of the centre) · `logic-or` · `logic-nor` · `logic-not` · `logic-nand` (no overlapping strokes) · `grad-lin` · `gen-wave` (meet or clear the frame) · `tr-inf` (one round line) · `rotate-left` / `rotate-right` (one arc, the head on the curve) · `rack` (rails meet the frame) · `globe` (equal thirds).
+- **New:** `rack-h`.
+- **Changed:** `kol-ds` and `kolkrabbi` scaled onto the 18 keyline square (they ran edge to edge).
+- **Renamed:** `customize` → `nav-settings` (one sliders mark, not two) `user-interface` → `metrics` and `rack` → `rack-v` (beside `rack-h`). The old names still resolve (`RENAMED_ICONS`); `hasIcon` answers for them.
+- **Changed:** the `kolkrabbi` group is `identity` (`kol-ds`, `kolkrabbi`, `metrics`) — group names only; icon names are unchanged.
+
 ## 0.33.1 — 2026-10-05
 
 - **Fixed:** an `<Icon>` that rendered before the icon chunk landed could stay blank for good. The chunk arriving between the render and the effect that subscribes to it reached nobody — under a Suspense boundary that gap is as long as the lazy route takes. Found on kol-fxr's rail at `/editor` and `/randomiser`, rehearsed in `apps/editor-hub`.

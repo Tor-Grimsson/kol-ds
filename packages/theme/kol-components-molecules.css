@@ -2293,7 +2293,7 @@
  * selected cell takes the well and the fg-96 ink; rest cells stay as the
  * default paints them. `filled` / `tonal` keep their own selected law. On the
  * element, or inherited from a sunken wrapper. */
-:is(.kol-seg.kol-tone-sunken, .kol-seg.kol-tone-inverse, .kol-tone-sunken .kol-seg):not(.kol-seg--filled) { border-color: transparent; }
+:is(.kol-seg.kol-tone-sunken, .kol-seg.kol-tone-inverse, .kol-tone-sunken .kol-seg):not(.kol-seg--filled) { border-width: 0; }
 :is(.kol-seg.kol-tone-sunken, .kol-seg.kol-tone-inverse, .kol-tone-sunken .kol-seg):not(.kol-seg--filled) .kol-seg-cell.is-active {
   background: var(--kol-surface-sunken);
   color: var(--kol-fg-96);

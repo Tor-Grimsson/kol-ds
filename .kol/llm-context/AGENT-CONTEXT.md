@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-09 evening, the icons + Styles review)
+
+- **CLOSED — published:** kol-theme 0.171.0 (fxr's SegmentedSunkenNoBorder, closed) · kol-icons 0.35.0 · kol-component 0.247.0; Round 10 approved. Push is the user's. kol-icons 0.35.0 (17 redraws, `rack-h`, `identity` group, `customize`/`user-interface` renamed via `RENAMED_ICONS`) · kol-component 0.247.0 (catalog row thumb). Showcase: icons in ⌘K, Tones under Color, icons page light/primary/Fit/list thumbs, variant pickers on four previews. Round 10 for review. Plan: `plan-2026-10-09-icons-and-styles-review.md`. Log: `session-log/2026-10-09-icons-and-styles-review.md`.
+
 ## Current state (2026-10-09 later, fxr's four — published)
 
 - **Published 2026-10-09:** kol-theme 0.170.0 · kol-component 0.246.0 · kol-shell 0.63.0 · kol-icons 0.34.0. Push is the user's. Walkthrough Escape/arrows on the layer stack (now exported from kol-component); PageHeader + ContentFilters fold on a phone; primary hover/press step down from the rest fill in both themes; nine transform glyphs redrawn. All four fxr tickets closed; Round 9 on open-questions holds the calls for review. Picker A/B still waits on his ruling. Log: `session-log/2026-10-09-fxr-four-walkthrough-settings-hover-glyphs.md`.
@@ -25,10 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-08 late, fxr's display-name ticket — published)
 
 - **Published 2026-10-08:** kol-component 0.243.0. Push is the user's. The browse surface labels a file by `o.displayName` when the client gives one (every view, Quick Look, search); kol-fxr's `browse-surface-honours-display-name` closed and its receipt returned — fxr bumps, swaps its parked files-dialog port in, walks it. Picker A/B still waits on his ruling. Log: `session-log/2026-10-08-browse-surface-honours-display-name.md`.
-
-## Current state (2026-10-08 later, picker A/B — published)
-
-- **Published 2026-10-08:** kol-theme 0.168.0 · kol-component 0.242.0. Push is the user's. The picker card holds one fixed height (`--kol-media-picker-h`); `apps/media` `/picker` is A (the browse surface in the modal card, Use footer, via the new `onPickFile` seam) and `/picker/b` is B (the modal as it ships) — his ruling decides the package swap. `/browse` cut. fxr's file browser consumes the browse surface, never copies. Log: `session-log/2026-10-08-picker-a-b-and-fixed-height.md`.
 
 ## Repo standup (2026-06-15)
 

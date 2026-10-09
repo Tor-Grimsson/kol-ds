@@ -6,8 +6,8 @@ import ContentText from './ContentText.jsx'
  * the variant has one) beside the ruled text. Box values — thumb size, gap,
  * padding, frame — default per variant to the RULED structures from the live
  * review (06-content-card-system.md §2 boxes): default is a bare table-like
- * line with a 48px thumb; catalog/print are framed between-headers with no
- * thumb; article rides a 120px 16:9 thumb; work a framed 64px row; typeface a
+ * line with a 48px thumb; catalog/print are framed between-headers with a
+ * 36 square thumb when `media` is passed (none without); article rides a 120px 16:9 thumb; work a framed 64px row; typeface a
  * framed no-thumb block.
  *
  * @param {string}    variant   file | catalog | print | article | work | typeface | roster
@@ -57,7 +57,10 @@ const BOX = {
   /* catalog/print rows render AT 36px — the shipped GridCard list row is a
    * fixed 36 and the Y padding was what pushed it past that. X padding stays;
    * `minH` is now the whole height budget and the row centres inside it. */
-  catalog:  { thumb: 0,   ratio: '1 / 1',  pad: `0 ${S3}`,     gap: S3, frame: 'var(--kol-fg-04)', bg: 'var(--kol-surface-tertiary)', minH: 36, align: 'items-center', hover: 'var(--kol-oq-04)' },
+  /* catalog carries a thumb (2026-10-09 — user: "catalog should change its default"): the full
+   * 36 rung, square, and ONLY when `media` is passed — every catalog row that never had one keeps
+   * none, rather than growing a MISSING plate (`mediaOnly`). */
+  catalog:  { thumb: 36,  mediaOnly: true, ratio: '1 / 1',  pad: `0 ${S3}`,     gap: S3, frame: 'var(--kol-fg-04)', bg: 'var(--kol-surface-tertiary)', minH: 36, align: 'items-center', hover: 'var(--kol-oq-04)' },
   /* ListingCard's row thumb is `bg-fg-12` bare — a tint, no border. */
   /* article had NO hover of any kind — the only row in the family you could
    * point at and get nothing back. It has no surface of its own, so it takes
@@ -188,7 +191,7 @@ export default function ContentRow({
    * consumer listing coverless documents should not have to say it two
    * different ways on the card and the row. `media={false}` reads the same in
    * both; `thumb` still wins when it is passed explicitly. */
-  const thumbPx = thumb ?? (media === false ? 0 : box.thumb)
+  const thumbPx = thumb ?? (media === false || (box.mediaOnly && media == null) ? 0 : box.thumb)
   const padY = (paddingY != null ? `${paddingY}px` : String(box.pad)).trim().split(/\s+/)[0]
 
   /* The md: STEP is a custom property, not a Tailwind variant. Tailwind cannot

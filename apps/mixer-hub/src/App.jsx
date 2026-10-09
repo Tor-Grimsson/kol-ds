@@ -105,7 +105,7 @@ function Studio() {
           { path: '/studio-b', icon: 'layers', label: 'Studio B', children: <MirrorPlayground arrangement="float" /> },
           { path: '/expressions', icon: 'frequency', label: 'Expression', children: <Expression key={state?.expr ?? ''} /> },
           {
-            path: '/mixer', icon: 'rack', label: 'Mixer',
+            path: '/mixer', icon: 'rack-v', label: 'Mixer',
             children: (
               <Routes>
                 <Route path="/mixer" element={<MixerSheet />} />
