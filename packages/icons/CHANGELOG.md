@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-icons
 
+## 0.37.0 — 2026-10-09
+
+- **New:** `r2b2` in `identity` — the media app's mark (R 2 / B 2, Right Grotesk Wide Dark), on the set keyline beside `kol-ds` and `fxr`, `currentColor`.
+
+## 0.36.0 — 2026-10-09
+
+- **New:** `fxr` in `identity` — kol-fxr's glitch-split lettering, on the set keyline beside `kol-ds`, `currentColor`.
+
 ## 0.35.0 — 2026-10-09
 
 - **Redrawn** (the user's review of the Styles › Icons page): `cable-unlock` (an open shackle — it drew as `cable-lock`) · `cable-trans` (two clear gaps) · `clr-anl` (dots on the ring) · `clr-mono` (the circle keyline) · `curve-exp` / `curve-log` (exact mirrors) · `dith-cross` (a gap to its frame) · `dith-diamond` · `dith-flower` (fill the box; petals clear of the centre) · `logic-or` · `logic-nor` · `logic-not` · `logic-nand` (no overlapping strokes) · `grad-lin` · `gen-wave` (meet or clear the frame) · `tr-inf` (one round line) · `rotate-left` / `rotate-right` (one arc, the head on the curve) · `rack` (rails meet the frame) · `globe` (equal thirds).

@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 18 entries
+## Queue — 21 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -56,6 +56,9 @@ accrues entries and never closes.
 | 🟠 | [column-preview-crops-wide-images](inbox/column-preview-crops-wide-images.md) | **kol-client-olina** — the preview pane's `ImageFrame` (`MediaLibraryPages.jsx:199`) snaps to the nearest of seven preset ratios (widest 16:9) and fills it with `object-cover`, so a 2.8:1 wordmark or an 11:1 nav logo shows as a cropped fragment. Ask: `object-contain` when the image is outside the ladder (or for SVG); photos unchanged | 2026-09-25 ← kol-client-olina | 🟠 `addressed` — **ships `@kolkrabbi/kol-component@0.221.0`** (2026-09-25): `ImageFrame` draws an SVG or an image past the ladder's ends `object-contain`; the ratio snap and photos near a preset are unchanged. Proved live in `apps/media`. Closes on kol-client-olina verifying it running |
 | 🟠 | [column-view-drops-the-picked-file](inbox/column-view-drops-the-picked-file.md) | **kol-client-olina** — `ColumnBrowser` keeps its own `picked` state (`ColumnBrowser.jsx:547`) and the media pages never pass `pickedFile` in, so a file picked in rows or grid is dropped on a switch to columns (rows ↔ grid keep it). Ask: a controlled `picked` prop, fed `pickedFile` by `MediaLibraryPages` | 2026-09-25 ← kol-client-olina | 🟠 `addressed` — **ships `@kolkrabbi/kol-component@0.221.0`** (2026-09-25): `ColumnBrowser` takes a controlled `picked`; the media pages feed it `pickedFile`, so a pick in rows or grid opens columns on that file, selected, previewed, cursor on it. Proved live in `apps/media`. Closes on kol-client-olina verifying it running |
 | 🟠 | [library-reader-for-a-hub-home](inbox/library-reader-for-a-hub-home.md) | **kol-fxr** — fxr is on `AppHub` (user ruling 2026-10-07): Settings, the `S` sheet and the rail are the Hub's, but Home cannot follow — `HubHome` takes its items as data, and the SAVED set needs `useGeneratorLibrary()`, whose provider goes stale beside the editor's own (`Editor.jsx:80` mounts one; `storage` fires cross-tab only). Ask: export the sanitised reader (`loadFromStorage`, `LibraryProvider.jsx:222`) from `core` so `home.items` reads fresh with no provider | 2026-10-07 ← kol-fxr | 🟠 `addressed` — **ships `@kolkrabbi/design-editor@0.22.0`** (2026-10-07): `loadLibrary()` on the root and `core` entries — the provider's own `loadFromStorage` under that name, validators and migrations included. `apps/editor-hub` is on `AppHub` with it: a preset saved in `/editor` (File → Save…) is on Home's SAVED in the same tab, no reload, 0 console errors (`_tmp/2026-10-07-hub-home-check/`). Closes on fxr bumping and seeing it |
+| 🟢 | [title-root-row-slider-on-phone](done/title-root-row-slider-on-phone.md) | **kol-website** — at the multi-bucket root on a phone the count line hides its text but still draws the row-size slider, and `rowSize` is desktop-only, so it does nothing. Ask: no row slider on a phone | 2026-10-09 | 🟢 `closed` — **@kolkrabbi/kol-component@0.250.0** |
+| 🟢 | [identity-fxr-and-app-icon-size](done/identity-fxr-and-app-icon-size.md) | **kol-website** — FXR's mark is not in kol-icons `identity`, and no doc fixes the app-icon size (R2B2 was 75%, FXR 60%; user ruled 60%). Ask: `identity/fxr.svg` from kol-fxr's favicon at the set keyline + the 60% app-icon rule written down | 2026-10-09 | 🟢 `closed` — **@kolkrabbi/kol-icons@0.36.0** |
+| 🟢 | [identity-r2b2](done/identity-r2b2.md) | **kol-website** — the media app's new mark (R 2 / B 2, Right Grotesk Wide Dark, live as touch icon + favicon). Ask: `identity/r2b2.svg` at the set keyline beside `kol-ds` and `fxr` | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-icons@0.37.0`** |
 
 
 ## Closed
@@ -343,6 +346,13 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-09 | **`identity-r2b2` closed** — kol-icons 0.37.0 published; receipt returned; queue 21 → 20 |
+| 2026-10-09 | **`identity-r2b2` filed from kol-website** — the media app's R2B2 mark into the identity group; queue 20 → 21 |
+| 2026-10-09 | **`identity-fxr-and-app-icon-size` + `title-root-row-slider-on-phone` closed** — kol-icons 0.36.0 · kol-component 0.250.0 published; receipts returned; queue 20 → 18 |
+| 2026-10-09 | **`title-root-row-slider-on-phone` addressed** — the title root's row slider is desk-only; kol-component 0.250.0, awaiting publish |
+| 2026-10-09 | **`title-root-row-slider-on-phone` filed from kol-website** — dead row slider at the title root on a phone; queue 19 → 20 |
+| 2026-10-09 | **`identity-fxr-and-app-icon-size` addressed** — `fxr` in identity (kol-icons 0.36.0, awaiting publish) + `02-icons/05-app-icons.md`; inventory regenerated |
+| 2026-10-09 | **`identity-fxr-and-app-icon-size` filed from kol-website** — fxr into the identity group + the 60% app-icon rule; queue 18 → 19 |
 | 2026-10-09 | **`upload-dialog-optimise-and-keep-originals` closed** — kol-media-client 0.5.0 · kol-component 0.248.0; receipt returned to kol-website; queue 19 → 18 |
 | 2026-10-09 | **`upload-dialog-optimise-and-keep-originals` filed from kol-website** — `prepareUpload` into kol-media-client + toggle options on `useModal().confirm`; queue 18 → 19 |
 | 2026-10-09 | **`SegmentedSunkenNoBorder` closed** — kol-theme 0.171.0; the sunken strip drops its border, cells take the full pinned height; receipt returned; queue 19 → 18 |

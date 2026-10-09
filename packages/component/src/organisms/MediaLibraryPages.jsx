@@ -2599,7 +2599,7 @@ export function MediaLibraryBrowse({
             {atTop ? '1 folder' : `${bucketList.length} ${bucketList.length === 1 ? 'bucket' : 'buckets'}`}
             {folderTree && ` · ${Object.values(folderTree).reduce((n, t) => n + (t.files ?? 0), 0)} files · ${formatSize(Object.values(folderTree).reduce((n, t) => n + (t.bytes ?? 0), 0))}`}
           </p>
-          {isWall ? sizeSlider : rowSlider}
+          {isWall ? sizeSlider : !phone && rowSlider}
           </div>
         ) : isWall ? (
           /* ONE LINE'S HEIGHT, like the other views' count line — the slider is 24px tall and made

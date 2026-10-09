@@ -3,7 +3,7 @@ title: Icons
 type: reference
 status: active
 created: 2026-07-08
-updated: 2026-08-27
+updated: 2026-10-09
 description: The icon loader and the shipped sets
 aliases:
   - icons
@@ -17,6 +17,7 @@ tags:
 related:
   - "[[../00-overview/INDEX|overview]]"
   - "[[01-inventory|icon inventory]]"
+  - "[[05-app-icons|app icons]]"
   - "[[../03-components/01-inventory|components]]"
 ---
 
@@ -32,8 +33,9 @@ related:
 | [[02-loader\|Icon loader]] | The `<Icon>` component and the packaged set |
 | [[03-custom\|Custom icons]] | `registerIcons`, the retired legacy trees, the promotion loop |
 | [[04-authoring\|Authoring an icon]] | The keyline guide and `<Graphic>` |
+| [[05-app-icons\|App icons]] | The touch / home-screen icon — mark at 60 %, ground, 180×180 export |
 
-**Four pages beside the index** (2026-08-01) — the chapter minimum is three.
+**Five pages beside the index** (2026-08-01; app icons 2026-10-09) — the chapter minimum is three.
 
 ## Glyph cut
 
