@@ -523,19 +523,39 @@ const ContentFilters = ({
 
       {/* the view family's own line below md (`auto`) or always (`below`) —
         * full width, wrapping, so no view is ever off the page */}
-      {viewModeOptions && viewPlacement !== 'header' && (
-        <div className={`${viewPlacement === 'auto' ? 'md:hidden ' : ''}mb-3`}>
-          {viewStrip('flex flex-wrap gap-y-2')}
-        </div>
-      )}
-      {/* the consumer's trailing controls: their OWN line below md (`auto`) or
-        * always (`below`) — full width, wrapping. In the below row's right
-        * group they measured 223px beside LIST/GRID in a 342px track. */}
-      {trailingActions && trailingPlacement !== 'header' && (
-        <div className={`${trailingPlacement === 'auto' ? 'md:hidden ' : ''}mb-3 flex flex-wrap items-center gap-6 gap-y-2`}>
-          {trailingActions}
-        </div>
-      )}
+      {/* BELOW `md` THE VIEW STRIP AND THE TRAILING CONTROLS SHARE ONE WRAPPING LINE (kol-fxr
+        * 2026-10-09, HubSettingsHeaderAt390: fxr's SETTINGS label and its options/shortcuts toggle
+        * were two ragged rows of one rung). Same rung, same line; it still wraps when they do not
+        * fit, so nothing is ever off the page. `below` placements keep their own line at every width. */}
+      {(() => {
+        const view = viewModeOptions && viewPlacement !== 'header'
+        const trail = trailingActions && trailingPlacement !== 'header'
+        const shared = view && trail && viewPlacement === 'auto' && trailingPlacement === 'auto'
+        if (shared) return (
+          <div className="md:hidden mb-3 flex flex-wrap items-center gap-6 gap-y-2">
+            {/* the desk's order — trailing, then the strip — so a consumer's divider sits between them */}
+            {trailingActions}
+            {viewStrip('flex flex-wrap gap-y-2')}
+          </div>
+        )
+        return (
+          <>
+            {view && (
+              <div className={`${viewPlacement === 'auto' ? 'md:hidden ' : ''}mb-3`}>
+                {viewStrip('flex flex-wrap gap-y-2')}
+              </div>
+            )}
+            {/* the consumer's trailing controls: their OWN line below md (`auto`) or
+              * always (`below`) — full width, wrapping. In the below row's right
+              * group they measured 223px beside LIST/GRID in a 342px track. */}
+            {trail && (
+              <div className={`${trailingPlacement === 'auto' ? 'md:hidden ' : ''}mb-3 flex flex-wrap items-center gap-6 gap-y-2`}>
+                {trailingActions}
+              </div>
+            )}
+          </>
+        )
+      })()}
 
       {/* BELOW the divider: the filter GROUPS only. Left-aligned columns —
         * label above values — visible only while the filter toggle is open.

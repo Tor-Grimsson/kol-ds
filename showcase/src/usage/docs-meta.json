@@ -449,6 +449,16 @@
       "Tooltip"
     ]
   },
+  "StepList": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Button",
+      "Icon"
+    ]
+  },
   "TYPE_LABELS": {
     "typeClasses": [],
     "composes": []
@@ -980,10 +990,10 @@
     ]
   },
   "TabChips": {
-    "typeClasses": [
-      "kol-mono-12"
-    ],
-    "composes": []
+    "typeClasses": [],
+    "composes": [
+      "Button"
+    ]
   },
   "Canvas": {
     "typeClasses": [
@@ -1346,8 +1356,8 @@
       "ActionButton",
       "Button",
       "Divider",
+      "Dropdown",
       "Input",
-      "SegmentedToggle",
       "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
@@ -1355,6 +1365,9 @@
       "ContentCard",
       "ContentRow",
       "ContentFilters",
+      "MenuItem",
+      "MenuDropdownItem",
+      "MenuDropdownDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
@@ -1372,8 +1385,8 @@
       "ActionButton",
       "Button",
       "Divider",
+      "Dropdown",
       "Input",
-      "SegmentedToggle",
       "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
@@ -1381,6 +1394,9 @@
       "ContentCard",
       "ContentRow",
       "ContentFilters",
+      "MenuItem",
+      "MenuDropdownItem",
+      "MenuDropdownDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
@@ -1398,8 +1414,8 @@
       "ActionButton",
       "Button",
       "Divider",
+      "Dropdown",
       "Input",
-      "SegmentedToggle",
       "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
@@ -1407,6 +1423,9 @@
       "ContentCard",
       "ContentRow",
       "ContentFilters",
+      "MenuItem",
+      "MenuDropdownItem",
+      "MenuDropdownDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",

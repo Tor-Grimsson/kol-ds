@@ -653,6 +653,17 @@
  * moves by. */
 .kol-seg-cell:hover { color: var(--kol-oq-64); }
 
+/* A CELL THAT CANNOT BE CHOSEN (kol-fxr 2026-10-09 — the Morph rail faked it with an opacity span
+ * and an onChange guard). Ink one rung under rest, no hover lift, the pointer says so; the fill and
+ * the divider stay, which is why it is ink and not opacity. Selected + disabled keeps the selected
+ * ground with this ink. */
+.kol-seg-cell[aria-disabled="true"],
+.kol-seg-cell[aria-disabled="true"]:hover,
+.kol-seg--filled .kol-seg-cell[aria-disabled="true"]:hover {
+  color: var(--kol-oq-24);
+  cursor: default;
+}
+
 .kol-seg-cell.is-active {
   background: transparent;
   color: var(--kol-fg-emphasis);
@@ -1986,12 +1997,19 @@
    * button): *"whatever it is cut it in half, so if 8 then 4 … bc there are
    * hover and selected state"*. Hover takes the shallow rung and active the
    * next, so the two step instead of colliding. There is no 92 on this ladder,
-   * so it is 96 → 88 rather than an exact halving. */
-  --kol-tone-hover-bg: var(--kol-oq-ab-96);
+   * so it is 96 → 88 rather than an exact halving.
+   *
+   * ⚠ MEASURED WRONG IN ONE THEME EACH (kol-fxr 2026-10-09, ButtonPrimaryHoverDeeper). The `ab`
+   * rungs are read from the PAGE, the rest fill is not the page: light rest 242, hover ab-96 = 245
+   * (LIGHTER — the grey the user reported), press ab-88 = 224; dark rest 25, hover 10, press ab-88
+   * = 31 (lighter). So the step is taken from the REST FILL itself, down a fixed 8 and 16 in both
+   * themes — light 242 → 234 → 226, dark 25 → 17 → 9. Deeper is darker on both grounds. Decided on
+   * the recommendation; Round 9 shows the three steps in both themes for review. */
+  --kol-tone-hover-bg: rgb(from var(--kol-surface-secondary) calc(r - 8) calc(g - 8) calc(b - 8));
   --kol-tone-hover-image: none;
   --kol-tone-hover-fg: var(--kol-surface-on-primary);
   --kol-tone-hover-border: transparent;
-  --kol-tone-active-bg: var(--kol-oq-ab-88);
+  --kol-tone-active-bg: rgb(from var(--kol-surface-secondary) calc(r - 16) calc(g - 16) calc(b - 16));
   --kol-tone-active-image: none;
   --kol-tone-pressed-bg: var(--kol-surface-on-primary);
   --kol-tone-pressed-image: none;

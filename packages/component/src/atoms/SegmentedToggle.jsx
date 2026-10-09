@@ -29,8 +29,12 @@
  *               strip (canvas alignment, transform cluster); onChange is the
  *               action dispatch.
  *   onChange  — handler (newValue) => void
- *   options   — [{ value, label, ariaLabel?, tooltip? }] — a cell whose label is not a string
- *               (a glyph) shows its `ariaLabel` as a KOL Tooltip; `tooltip` overrides it
+ *   options   — [{ value, label, ariaLabel?, tooltip?, disabled? }] — a cell whose label is not a string
+ *               (a glyph) shows its `ariaLabel` as a KOL Tooltip; `tooltip` overrides it.
+ *               `disabled` (kol-fxr 2026-10-09): the cell draws the family's disabled ink
+ *               (`aria-disabled`, not the attribute — the tooltip still gives the reason),
+ *               refuses the press, and ←/→ step over it. It may still be the current `value`
+ *               (the ground changed under it): selected + disabled, no throw.
  *   variant   — 'default' (shipped chrome: shared outer stroke + dividers,
  *               filled active cell) | 'filled' (the state law's tiles: every
  *               cell a surface-secondary tile with 1px transparent gaps, NO
@@ -66,7 +70,12 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
     const dir = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key]
     if (!dir || !options.length) return
     e.preventDefault()
-    const next = (focusIdx + dir + options.length) % options.length
+    let next = focusIdx
+    for (let step = 0; step < options.length; step++) {
+      next = (next + dir + options.length) % options.length
+      if (!options[next].disabled) break
+    }
+    if (options[next].disabled) return
     onChange?.(options[next].value)
     e.currentTarget.children[next]?.focus()
   }
@@ -94,8 +103,9 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
             role={stateless ? undefined : 'radio'}
             aria-checked={stateless ? undefined : isActive}
             aria-label={opt.ariaLabel}
+            aria-disabled={opt.disabled || undefined}
             tabIndex={stateless ? 0 : (i === focusIdx ? 0 : -1)}
-            onClick={() => onChange?.(opt.value)}
+            onClick={opt.disabled ? undefined : () => onChange?.(opt.value)}
             className={['kol-seg-cell', cellType, isActive && 'is-active'].filter(Boolean).join(' ')}
           >
             {opt.label}

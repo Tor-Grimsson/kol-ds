@@ -55,6 +55,7 @@
   "CropOverlay": "Crop handles over a photo layer.",
   "LayerStack": "The layers panel.",
   "AddLayerButton": "Add a layer from a menu.",
+  "StepList": "A numbered list of slots ordered by hand.",
   "TimelineDock": "The keyframe timeline, docked below a canvas.",
   "CurveEditor": "Author a curve by kind and expression.",
   "KeyframeEditor": "A sorted list of keyframes.",

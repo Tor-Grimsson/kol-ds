@@ -239,6 +239,7 @@ export const FUNCTIONS_BY_NAME = {
   XYPad: 'input', InspectorRail: 'structure',
   PathNodeOverlay: 'overlay', CropOverlay: 'overlay',
   LayerStack: 'structure', AddLayerButton: 'action', BLEND_MODES: 'utility',
+  StepList: 'structure',
   TimelineDock: 'input', sampleTrack: 'utility', TIMELINE_EASINGS: 'utility',
   SettingsSections: 'structure',
   MediaInspector: 'overlay',

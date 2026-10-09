@@ -107,7 +107,7 @@ export default function SectionText({
     ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p>
     : <div className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</div>)
   const cluster = actions && (
-    <div className={cls(`${actionsClass} shrink-0 h-0 self-center`, 'actions')} style={slotStyle.actions}>{actions}</div>
+    <div className={cls(`${actionsClass} shrink-0 md:h-0 md:self-center`, 'actions')} style={slotStyle.actions}>{actions}</div>
   )
   return (
     <div className={`kol-section-text flex flex-col ${gap} ${alignCls} ${className}`.replace(/\s+/g, ' ').trim()} style={style}>
@@ -133,7 +133,10 @@ export default function SectionText({
            * have been space between … on the right edge"). The column is `items-start`, so this
            * row shrank to its content and `justify-between` had no room to act: the cluster sat
            * against the subtitle on every PageHeader with actions. */
-          <div className="flex self-stretch items-baseline justify-between gap-6">
+          /* BELOW `md` THE CLUSTER DROPS UNDER THE BODY (kol-fxr 2026-10-09, HubSettingsHeaderAt390:
+           * at 390 the cluster kept its natural width and left the lede ~110px, three lines). It
+           * takes its own row there, with its real height; the zero-height trick is a desk rule. */
+          <div className="flex flex-col md:flex-row self-stretch md:items-baseline md:justify-between gap-3 md:gap-6">
             {bodyNode}
             {cluster}
           </div>

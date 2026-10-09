@@ -10,6 +10,14 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-09 later, fxr's four — published)
+
+- **Published 2026-10-09:** kol-theme 0.170.0 · kol-component 0.246.0 · kol-shell 0.63.0 · kol-icons 0.34.0. Push is the user's. Walkthrough Escape/arrows on the layer stack (now exported from kol-component); PageHeader + ContentFilters fold on a phone; primary hover/press step down from the rest fill in both themes; nine transform glyphs redrawn. All four fxr tickets closed; Round 9 on open-questions holds the calls for review. Picker A/B still waits on his ruling. Log: `session-log/2026-10-09-fxr-four-walkthrough-settings-hover-glyphs.md`.
+
+## Current state (2026-10-09, fxr's StepList and SegmentedToggle disabled — published)
+
+- **Published 2026-10-09:** kol-component 0.245.0 · kol-theme 0.169.0. Push is the user's. `StepList` molecule on a new `hooks/usePointerSort` (lifted from `RecordManager`, which now uses it — pointer, so touch works); `SegmentedToggle` `options[].disabled`. Both fxr tickets closed, receipts returned. kol-website's B2 menu was fixed in 0.241.0 — it only needs the bump. Picker A/B still waits on his ruling. Log: `session-log/2026-10-09-steplist-and-segmented-disabled.md`.
+
 ## Current state (2026-10-08 night, the browse surface as a picker over any store — published)
 
 - **Published 2026-10-08:** kol-component 0.244.0. Push is the user's (with theme 0.168.0 · component 0.242.0–0.243.0). kol-fxr's `browse-views-label-by-display-name` closed: names in every view, no URL verbs without `mediaUrl`, one Escape per level, a picker's phone tap selects, `searchPlaceholder`, `fileActions` = writer — walked here first. fxr's remainder: bump, drop its stubs, swap the port in. Picker A/B still waits on his ruling. Log: `session-log/2026-10-08-browse-surface-as-a-picker-over-any-store.md`.
@@ -21,14 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-08 later, picker A/B — published)
 
 - **Published 2026-10-08:** kol-theme 0.168.0 · kol-component 0.242.0. Push is the user's. The picker card holds one fixed height (`--kol-media-picker-h`); `apps/media` `/picker` is A (the browse surface in the modal card, Use footer, via the new `onPickFile` seam) and `/picker/b` is B (the modal as it ships) — his ruling decides the package swap. `/browse` cut. fxr's file browser consumes the browse surface, never copies. Log: `session-log/2026-10-08-picker-a-b-and-fixed-height.md`.
-
-## Current state (2026-10-08, the media family — published)
-
-- **Published 2026-10-08:** kol-theme 0.167.0 · kol-component 0.241.0 · design-editor 0.23.0 (and design-editor 0.22.0 on 2026-10-07). Push is the user's. One modal library for every consumer: the editor's own picker is retired (`_tmp/2026-10-07-design-editor-media-picker/`), the DS modal switches buckets, is an overlay, has a phone sheet and the wall's row; `MediaViewer` and `MediaTileGallery` fixed on the walk; the file context menu mounts on read-only buckets (kol-website's B2 download). `apps/media` previews every surface (`/` · `/browse` · `/library` · `/picker` · `/viewer`); `validate:render` presses a named control so overlays are measured. Round 8 on the open-questions page (`showcase/src/open-questions/2026-10-08.jsx`, decided · review) holds the nine calls. `apps/editor-hub` is on `AppHub` with `loadLibrary()`. Lobby: `library-reader-for-a-hub-home` 🟠 (closes on fxr); `design-editor-0-23-0-the-ds-modal-library` filed to kol-fxr. Log: `session-log/2026-10-08-media-family-every-surface-on-a-phone.md`.
-
-## Current state (2026-10-06, fxr on a phone + kol-website wave — published)
-
-- **Published 2026-10-06:** kol-component 0.240.0 · kol-shell 0.62.0 · kol-workshop 0.39.0 · design-editor 0.21.0 · kol-media-client 0.4.1. Push is the user's. kol-website's four tickets closed (`lobby/done/`). Handoff: `session-bridge/handoff-2026-10-06-0135-fxr-phone-and-website-wave-published.md`. `apps/generator` is `apps/randomiser`. Labs opens on an entry card and asks for media in a card; phone frame by width (labs <1024, randomiser <768) as well as touch; both sheets half/tall with a draggable grabber; the editor under 1024 is a note; labs' rail enters sections (`railSections="enter"`); S opens the standard sheet. All decided on the recommendation for his review. Plan: `plan-2026-10-05-fxr-on-a-phone.md`; findings: `backlog/2026-10-05-fxr-phone-findings.md`. Log: `session-log/2026-10-06-fxr-on-a-phone.md`.
 
 ## Repo standup (2026-06-15)
 

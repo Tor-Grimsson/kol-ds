@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-shell",
-  "version": "0.62.0",
+  "version": "0.63.0",
   "private": false,
   "description": "The application shell",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "./src/*": "./src/*"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.229.0",
+    "@kolkrabbi/kol-component": ">=0.246.0",
     "@kolkrabbi/kol-icons": ">=0.16.0",
     "@kolkrabbi/kol-theme": ">=0.165.0",
     "gsap": "^3.13.0",

@@ -10,6 +10,7 @@ import FieldRow, { StatusChip } from '../molecules/FieldRow'
 import { Tooltip } from '../utilities/Popover'
 import Table from './Table'
 import MediaLibrary from './MediaLibrary'
+import usePointerSort from '../hooks/usePointerSort.js'
 
 /* TOOLBAR ICONS ARE BARE GLYPHS (user ruling 2026-08-09, verbatim: "did I
  * ask for a button?? … the only thing that should hover is full opacity and
@@ -93,8 +94,9 @@ export default function RecordManager({
 }) {
   const wrapRef = useRef(null)
   const [searchOpen, setSearchOpen] = useState(false)
-  const dragRef = useRef(null)
-  const [drag, setDrag] = useState(null) // { from, over, x, y } during a drag
+  /* { from, over, x, y } during a drag — the sort lives in hooks/usePointerSort (lifted 2026-10-09
+   * so StepList is not a second copy); this file keeps only which rows it measures */
+  const { drag, startDrag: beginSort } = usePointerSort(onReorder)
   const [active, setActive] = useState(null)
   const [picker, setPicker] = useState(null) // the field being picked for
   const [selected, setSelected] = useState(() => new Set())
@@ -118,36 +120,7 @@ export default function RecordManager({
     onSelectionChange?.([...next])
   }
 
-  /* ── pointer sort ─────────────────────────────────────────────────────── */
-  const startDrag = (e, from) => {
-    if (!onReorder) return
-    e.preventDefault()
-    const rowEls = wrapRef.current?.querySelectorAll('.kol-table-row')
-    if (!rowEls?.length) return
-    const rects = [...rowEls].map((el) => el.getBoundingClientRect())
-    const move = (ev) => {
-      const hit = rects.findIndex((r) => ev.clientY < r.bottom)
-      const over = hit === -1 ? rects.length - 1 : hit
-      dragRef.current = { from, over, x: ev.clientX, y: ev.clientY }
-      setDrag(dragRef.current)
-    }
-    const up = () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', up)
-      document.body.style.cursor = ''
-      document.body.style.userSelect = ''
-      const d = dragRef.current
-      dragRef.current = null
-      setDrag(null)
-      if (d && d.over !== d.from) onReorder(d.from, d.over)
-    }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', up)
-    document.body.style.cursor = 'grabbing'
-    document.body.style.userSelect = 'none'
-    dragRef.current = { from, over: from, x: e.clientX, y: e.clientY }
-    setDrag(dragRef.current)
-  }
+  const startDrag = (e, from) => beginSort(e, from, wrapRef.current?.querySelectorAll('.kol-table-row'))
 
   /* ── columns: resolve types, prepend handle + checkbox ────────────────── */
   const builtColumns = useMemo(() => {

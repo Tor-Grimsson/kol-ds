@@ -1845,6 +1845,50 @@
       "desc": ""
     }
   ],
+  "StepList": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "activeIndex",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "reorder",
+      "type": "—",
+      "def": "'grab'",
+      "desc": ""
+    },
+    {
+      "prop": "readOnly",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "addLabel",
+      "type": "—",
+      "def": "'Add a step'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "TimelineDock": [
     {
       "prop": "tracks",
@@ -2238,6 +2282,12 @@
     },
     {
       "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "stayOpen",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -2707,6 +2757,12 @@
       "type": "—",
       "def": "'All results'",
       "desc": ""
+    },
+    {
+      "prop": "selectLabel",
+      "type": "—",
+      "def": "'Go to page'",
+      "desc": ""
     }
   ],
   "ShortcutsOverlay": [
@@ -2956,6 +3012,12 @@
       "prop": "tabs",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
       "desc": ""
     },
     {
@@ -6005,7 +6067,19 @@
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <Tooltip label={logomark.title} placement=\"right\" asChild>\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n        </Tooltip>\n      )}\n      {items.map(row)}\n      {/* the spacer IS the layout */}\n      <div className=\"flex-1\" />\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
+      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n  fade = true,\n  sections = 'fold',\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  /* ENTER MODE (`sections=\"enter\"`, 2026-10-06 — the user, on labs: \"having a 'enter' mode in the\n   * left sidebar instead of collapse folder?\"): pressing a section replaces the list with that\n   * section's rows under a Back row, instead of unfolding it in place. `fold` is the accordion\n   * every rail had and keeps. Per consumer, not a law: labs' catalog is five sections of up to\n   * ten rows each, which is where an accordion stops reading. */\n  const [entered, setEntered] = useState(null)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const enterMode = sections === 'enter'\n  const section = enterMode && entered ? items.find((i) => i.path === entered) : null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()}\n      onEnter={enterMode ? () => setEntered(item.path) : undefined} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <Tooltip label={logomark.title} placement=\"right\" asChild>\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n        </Tooltip>\n      )}\n      {/* THE LIST IS ITS OWN REGION (2026-10-02): it takes the room between the mark and the pinned\n        * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,\n        * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}\n      <div className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>\n        {section ? (\n          <>\n            <RailItem icon=\"arrow-left\" path={section.path} label={section.label} currentPath=\"\" onNavigate={() => setEntered(null)} iconComponent={iconComponent} railOpen={drawer || railOpen} />\n            {section.sub.map((s) => <RailItem key={s.path} {...s} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} />)}\n          </>\n        ) : items.map(row)}\n      </div>\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "railFade",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "railSections",
+      "type": "—",
+      "def": "'fold'",
       "desc": ""
     },
     {
@@ -6062,6 +6136,18 @@
       "prop": "drawer",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fade",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "'fold'",
       "desc": ""
     }
   ],

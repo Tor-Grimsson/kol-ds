@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Button } from '@kolkrabbi/kol-component'
+import { useEffect, useRef, useState } from 'react'
+import { Button, pushLayer, popLayer, isTopLayer } from '@kolkrabbi/kol-component'
 
 /**
  * WalkthroughPanel — A stepped intro card. the absolutely-centred stepped intro card (both repos'
@@ -13,10 +13,29 @@ import { Button } from '@kolkrabbi/kol-component'
  * `onClose` draws an X INSIDE the card, top-right (user, 2026-09-26, on media-hub:
  * the panel had no close of its own, so every app put one outside the card or on a
  * page button). Unset = no X, exactly as before.
+ *
+ * KEYS (kol-fxr 2026-10-09, HubWalkthroughEscape): Escape calls `onClose`, ← → page. The panel
+ * joins the DS overlay layer stack, so a sheet opened above it takes the Escape first, and keys
+ * typed into a field are left alone.
  */
 export default function WalkthroughPanel({ steps = [], iconComponent, onClose }) {
   const [step, setStep] = useState(0)
   const current = steps[step]
+  const live = useRef()
+  live.current = { onClose, last: steps.length - 1 }
+  useEffect(() => {
+    const layer = pushLayer()
+    const onKey = (e) => {
+      if (!isTopLayer(layer) || e.metaKey || e.ctrlKey || e.altKey) return
+      const el = e.target
+      if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')) return
+      if (e.key === 'Escape' && live.current.onClose) { e.preventDefault(); live.current.onClose() }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); setStep((s) => Math.max(0, s - 1)) }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); setStep((s) => Math.min(live.current.last, s + 1)) }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('keydown', onKey); popLayer(layer) }
+  }, [])
   if (!current) return null
 
   return (

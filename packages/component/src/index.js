@@ -38,6 +38,9 @@ export { default as IconFrame } from './atoms/IconFrame.jsx'
 export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
 export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
+/* the overlay layer stack — which open layer owns Escape; exported so a layer in another package
+ * (kol-shell's walkthrough) joins the same stack instead of a second one (2026-10-09) */
+export { pushLayer, popLayer, isTopLayer } from './utilities/layerStack.js'
 /* BackgroundVideo — renamed from HlsVideo and moved to utilities 2026-10-01 (user ruling: no UI,
  * and the name said how it streams, not what it is for). `HlsVideo` is the alias, on the ledger. */
 export { default as BackgroundVideo, default as HlsVideo } from './utilities/BackgroundVideo.jsx'
@@ -79,6 +82,7 @@ export { default as InspectorRail } from './molecules/InspectorRail.jsx'
 export { default as PathNodeOverlay } from './utilities/PathNodeOverlay.jsx'
 export { default as CropOverlay } from './utilities/CropOverlay.jsx'
 export { default as LayerStack, AddLayerButton, BLEND_MODES } from './organisms/LayerStack.jsx'
+export { default as StepList } from './molecules/StepList.jsx'
 export { TYPE_LABELS, BOOL_OP_LABELS, SHAPE_KIND_LABELS, labelForLayer, rowLabelForLayer, findLayerDeep } from './hooks/layerTree.js'
 export { default as TimelineDock, sampleTrack, TIMELINE_EASINGS } from './organisms/TimelineDock.jsx'
 export { default as CurveEditor, CURVE_KINDS, defaultCurveFor } from './organisms/CurveEditor.jsx'

@@ -77,6 +77,7 @@
   "LayerStack": "packages/component/src/organisms/LayerStack.jsx",
   "AddLayerButton": "packages/component/src/organisms/LayerStack.jsx",
   "BLEND_MODES": "packages/component/src/organisms/LayerStack.jsx",
+  "StepList": "packages/component/src/molecules/StepList.jsx",
   "TYPE_LABELS": "packages/component/src/hooks/layerTree.js",
   "BOOL_OP_LABELS": "packages/component/src/hooks/layerTree.js",
   "SHAPE_KIND_LABELS": "packages/component/src/hooks/layerTree.js",

@@ -5,6 +5,8 @@ const OPTIONS = [
   { value: 'grid', label: 'Grid' },
   { value: 'list', label: 'List' },
   { value: 'feed', label: 'Feed' },
+  /* a cell that cannot be chosen right now — the reason rides its tooltip (kol-fxr 2026-10-09) */
+  { value: 'map', label: 'Map', disabled: true, tooltip: 'No location on these items' },
 ]
 
 /* ONE instance; variant and size ride the toolbar pickers (2026-09-30 — the variants used to
