@@ -17,3 +17,13 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+/* The boot curtain (index.html) leaves once React has painted: two frames after the first commit,
+   a 240ms fade (none under reduced motion — the CSS drops the transition), then out of the DOM. */
+const boot = document.getElementById('kds-boot')
+if (boot) {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    boot.classList.add('is-done')
+    setTimeout(() => boot.remove(), 300)
+  }))
+}

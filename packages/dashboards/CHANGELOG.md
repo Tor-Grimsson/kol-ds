@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.5.0 — 2026-10-09
+
+- **Phone layout for `MetricsDashboard`** (kol-website, measured at 390): the section tabs scroll sideways inside their own strip; below md the deploy timeline takes its own line under the range control, and the status line drops the build duration so the ref has room. Desk unchanged. Pairs with kol-theme 0.172.0.
+
 ## 0.4.3 — 2026-09-30
 
 - Comments only: one spelling, `color`.

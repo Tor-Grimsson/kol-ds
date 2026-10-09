@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.172.0 — 2026-10-09
+
+- **`.dash-grid` rows size to content below md** (`@container (max-width: 767px)`): the 240px floor stays at desk, where it is the viewport-fit grid; on a phone it left stat cards two-thirds empty.
+
 ## 0.167.0 — 2026-10-08
 
 - **New: `.kol-media-tiles`** — MediaTileGallery's grid: `--kol-media-tiles-cols` from `sm` up, two across below 640 (rule 6). Found on `apps/media/viewer` at 390: four 75px tiles.

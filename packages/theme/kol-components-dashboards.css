@@ -21,6 +21,12 @@
 
 /* On 2-col mobile grid, clamp oversized spans via data attribute + !important
    to override inline styles. At 540px+ the grid is 4-col so no clamping needed. */
+/* A PHONE READS CONTENT HEIGHT (kol-website 2026-10-09): the 240 floor is the desk's
+   viewport-fit grid; below md it left a three-line stat card two-thirds empty. */
+@container (max-width: 767px) {
+  .dash-grid { grid-auto-rows: auto; }
+}
+
 @container (max-width: 539px) {
   .dash-grid > [data-cols="3"],
   .dash-grid > [data-cols="4"] {

@@ -136,7 +136,7 @@ const DeployBar = ({ deploys }) => {
         <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: color }} />
         <span style={{ color }}>{label}</span>
         <span className="text-fg-48">{timeAgo(latest.created)}</span>
-        {latest.duration && <span className="text-fg-32">{latest.duration}s build</span>}
+        {latest.duration && <span className="text-fg-32 hidden md:inline">{latest.duration}s build</span>}
       </div>
 
       <span className="text-fg-24">|</span>
@@ -163,7 +163,7 @@ const DeployBar = ({ deploys }) => {
 
 const TimelineBar = ({ range, onRangeChange, milestones }) => {
   return (
-    <div className="flex items-center gap-3 py-1.5 border-b border-fg-08">
+    <div className="flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-1.5 py-1.5 border-b border-fg-08">
       <SegmentedToggle
         size="sm"
         ariaLabel="Time range"
@@ -173,7 +173,7 @@ const TimelineBar = ({ range, onRangeChange, milestones }) => {
         className="shrink-0"
       />
 
-      <div className="flex-1 overflow-hidden">
+      <div className="basis-full md:basis-0 flex-1 min-w-0 overflow-hidden">
         <div className="flex gap-4 kol-helper-12 text-fg-48 overflow-x-auto scrollbar-none">
           {milestones.slice(0, 6).map((m, i) => (
             <span key={i} className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
@@ -542,13 +542,16 @@ export default function MetricsDashboard({ data, milestones = [], mainHost }) {
             {error ? `error: ${error}` : 'live'}
           </span>
         </div>
-        <SegmentedToggle
-          size="sm"
-          ariaLabel="Dashboard section"
-          value={tab}
-          onChange={setTab}
-          options={TABS.map(t => ({ value: t.id, label: t.label }))}
-        />
+        <div className="max-w-full overflow-x-auto scrollbar-none">
+          <SegmentedToggle
+            size="sm"
+            ariaLabel="Dashboard section"
+            value={tab}
+            onChange={setTab}
+            options={TABS.map(t => ({ value: t.id, label: t.label }))}
+            className="w-max"
+          />
+        </div>
       </div>
 
       <TimelineBar range={range} onRangeChange={setRange} milestones={milestones} />
