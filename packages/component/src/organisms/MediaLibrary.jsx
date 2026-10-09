@@ -14,7 +14,7 @@ import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
 import MediaViewer from './MediaViewer.jsx'
-import { MediaLibraryBrowse, MediaLibraryLibrary } from './MediaLibraryPages.jsx'
+import { MediaLibraryBrowse, MediaLibraryLibrary, SETTINGS_BASE } from './MediaLibraryPages.jsx'
 import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
 import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
 import { filterMedia } from '../utilities/mediaSearch.js'
@@ -1021,11 +1021,16 @@ function PickerShell({ onClose, onPick }) {
  * `defaults` to seed) · `folderTree` (browse: the baked tree) · `headerActions`
  * (the app's own upload / write icons) · `refreshKey`.
  *
- * @param {string}   variant  'explorer' | 'browse' | 'library' | 'modal' | 'page' (alias of library)
+ * @param {string}   variant  'explorer' | 'browse' | 'library' | 'modal' | 'picker' | 'page' (alias of library)
+ *   `picker` — the modal card with the BROWSE surface inside it (columns · rows · grid, the
+ *   bucket dropdown, search), read-only, and a Use footer for the selected file. Same props
+ *   as `modal` (`open` · `client` · `accept` · `onClose` · `onSelect`); `modal` keeps its own
+ *   grid | list listing. Was apps/media's picker A (2026-10-08) — a variant, not a choice
+ *   (user 2026-10-09: "why is this even a choice? it should be a variant option").
  *   `explorer` is browse + library as two views of ONE surface — one header, one
  *   count, one listing, a switch beside the bucket dropdown. Prefer it for a new
  *   consumer; the other two remain for the ones that stack them by hand.
- * @param {boolean}  open     modal only — mounts the overlay
+ * @param {boolean}  open     modal / picker only — mounts the overlay
  * @param {object}   client   `{ listMedia, mediaUrl, proxied? }`; omit inside a provider
  * @param {string|string[]} accept  'all' (default) = everything · one kind · an
  *   allow-list `['image','video']`
@@ -1052,6 +1057,7 @@ export default function MediaLibrary({
     if (!open) return null
     return withProvider(<PickerShell onClose={onClose} onPick={onSelect} />, opts)
   }
+  if (variant === 'picker') return open ? <PickerBrowse client={client} accept={accept} onClose={onClose} onSelect={onSelect} {...pageProps} /> : null
   if (variant === 'browse') return <MediaLibraryBrowse client={client} {...pageProps} />
   /* `explorer` = the two above as TWO VIEWS OF ONE SURFACE, one mounted at a
    * time behind a switch in the header — one wordmark, one count, one listing,
@@ -1062,6 +1068,42 @@ export default function MediaLibrary({
   /* `page` = the library wall (alias, one release): its old knobs map onto the settings seed */
   const seed = variant === 'page' ? { defaults: { pageSize, sortBy: defaultSort?.by, sortDir: defaultSort?.dir, flat, ...(pageProps.defaults ?? {}) } } : {}
   return <MediaLibraryLibrary client={client} {...pageProps} {...seed} />
+}
+
+/* THE PICKER — the browse surface in the modal card. Read-only (no verbs, no drop, no trash: a
+ * picker picks). Its settings are held here and never saved, so a consumer's stored browse
+ * settings are untouched. The views take the card's height less its chrome. */
+const PICKER_CHROME = 280 // ponytail: hand-measured header + count line + footer; tune if the chrome changes
+function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...browseProps }) {
+  const [settings, setSettings] = useState(() => ({ ...SETTINGS_BASE, columnHeight: `calc(var(--kol-media-picker-h) - ${PICKER_CHROME}px)` }))
+  const [bucket, setBucket] = useState(browseProps.bucket)
+  const [file, setFile] = useState(null)
+  const ok = !!file && acceptsKind(accept)({ ...file, kind: kindOf(file) })
+  const use = () => {
+    onSelect?.(client.mediaUrl(file.key, bucket ?? undefined), { contentType: file.contentType, kind: kindOf(file) })
+    onClose?.()
+  }
+  return (
+    <FullscreenOverlay open scrim onClose={onClose}>
+      <div className="kol-media-picker gap-4">
+        <MediaLibraryBrowse
+          {...browseProps}
+          client={client}
+          title={title}
+          bucket={bucket}
+          onBucketChange={(id) => { setBucket(id); browseProps.onBucketChange?.(id) }}
+          settings={settings}
+          onSettingsChange={setSettings}
+          onPickFile={setFile}
+        />
+        <div className="mt-auto flex items-center justify-end gap-4">
+          <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
+          <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
+          <Button size="md" disabled={!ok} onClick={use}>Use</Button>
+        </div>
+      </div>
+    </FullscreenOverlay>
+  )
 }
 
 /** @deprecated 2026-08-01 — alias of `MediaLibrary variant="modal"`. Kept so

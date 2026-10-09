@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.249.0 — 2026-10-09
+
+- **New: `MediaLibrary variant="picker"`** — the browse surface (columns · rows · grid, bucket dropdown, search) inside the modal card, read-only, with a Use footer for the selected file. Same props as `modal` (`open` · `client` · `accept` · `onClose` · `onSelect`); its settings are held, never saved. `modal` keeps its own grid | list listing. It was apps/media's picker A — user: "why is this even a choice? it should be a variant option".
+
 ## 0.248.0 — 2026-10-09
 
 - **New: `useModal().confirm(title, { options })`** — `options: [{ id, label, hint?, defaultValue? }]` draws `ToggleCheckbox` rows between the title and the buttons and resolves `{ ok, values }` (on cancel too, so a consumer can remember the toggles). Without `options`, confirm still resolves a boolean. The native fallback returns the defaults.

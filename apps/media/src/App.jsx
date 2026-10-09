@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary';
-import { SETTINGS_BASE } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages';
 import { createFixtureClient } from 'media-fixture';
 import { useFixtureMedia, useMediaTool, TOOL_SHORTCUTS } from 'media-fixture/wiring';
 
@@ -9,7 +8,7 @@ import { useFixtureMedia, useMediaTool, TOOL_SHORTCUTS } from 'media-fixture/wir
  * its own module and the same tool opened differently one shell over; retired to _tmp/). */
 const fixtureClient = createFixtureClient();
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell';
-import { Button, PageHeader, MediaTileGallery, FullscreenOverlay } from '@kolkrabbi/kol-component';
+import { Button, PageHeader, MediaTileGallery } from '@kolkrabbi/kol-component';
 
 /* kol-r2b2's App.jsx, PORTED 1:1. Every ruling, comment, class and behaviour is
  * that file's. Four wiring changes and one addition, and nothing else:
@@ -52,22 +51,26 @@ const TITLE = 'MEDIA';
  * variant="modal"` over a client, `onSelect(url, { contentType, kind })` back. The component
  * page previews the component; this is the preview of its USE, over the fixture bucket, with
  * the pick shown under the button. The modal's Store dropdown lists the fixture's two buckets. */
-/* PICKER A / B (user 2026-10-08: "why not at least see A/B before making destructive changes?").
- *   A  /picker · /picker/a — the browse surface (columns · rows · grid) inside the modal card,
- *      a Use button for the selected file. Built HERE, in the app: the package's modal is
- *      untouched until he rules.
- *   B  /picker/b — `MediaLibrary variant="modal"` as it ships: its own grid | list listing.
+/* THE PICKER IS A VARIANT (user 2026-10-09: "why is this even a choice? it should be a variant
+ * option"). Picker A was built here 2026-10-08 to be seen before the package changed; it is
+ * `MediaLibrary variant="picker"` now — the browse surface in the modal card with a Use footer —
+ * and `variant="modal"` keeps its own grid | list listing. Both routes stay so each variant is
+ * walked as a consumer opens it:
+ *   /picker · /picker/a — variant="picker"
+ *   /picker/b           — variant="modal"
  * Both cards are one fixed height (the theme's `--kol-media-picker-h`), whatever the folder holds. */
 function PickerPage({ variant }) {
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState(null);
+  const media = useFixtureMedia({ client: fixtureClient, title: TITLE });
+  const { title, folderMeta, thumbnailFor, formatDate, folderTree } = media.props;
   return (
     <PageShell className="gap-10">
       <PageHeader
-        title={`Picker ${variant.toUpperCase()}`}
-        subtitle={variant === 'a'
-          ? 'A — the browse surface in the modal card: columns · rows · grid, select a file, Use'
-          : 'B — the modal as it ships: its own grid | list listing'}
+        title={`variant="${variant}"`}
+        subtitle={variant === 'picker'
+          ? 'The browse surface in the modal card: columns · rows · grid, select a file, Use'
+          : 'The modal library: its own grid | list listing'}
         size="sm"
         voice="mono"
       />
@@ -86,54 +89,16 @@ function PickerPage({ variant }) {
           </div>
         )}
       </div>
-      {variant === 'a'
-        ? open && <PickerA onClose={() => setOpen(false)} onSelect={(url, meta) => setPicked({ url, ...meta })} />
-        : (
-          <MediaLibrary
-            variant="modal"
-            open={open}
-            client={fixtureClient}
-            accept={['image', 'video']}
-            onClose={() => setOpen(false)}
-            onSelect={(url, meta) => setPicked({ url, ...meta })}
-          />
-        )}
+      <MediaLibrary
+        variant={variant}
+        open={open}
+        client={fixtureClient}
+        accept={['image', 'video']}
+        onClose={() => setOpen(false)}
+        onSelect={(url, meta) => setPicked({ url, ...meta })}
+        {...(variant === 'picker' ? { title, folderMeta, thumbnailFor, formatDate, folderTree } : {})}
+      />
     </PageShell>
-  );
-}
-
-/* THE BROWSE SURFACE AS THE PICKER'S BODY. Read-only (no verbs, no drop, no trash: a picker picks)
- * and its settings held here, so the stored `/` settings are never touched. The views' height is
- * the card's less its chrome. Same accept as B: images and videos. */
-const PICKER_CHROME = 280; // ponytail: hand-measured header + count line + footer; tune if the chrome changes
-const PICKABLE = /^(image|video)\//;
-function PickerA({ onClose, onSelect }) {
-  const media = useFixtureMedia({ client: fixtureClient, title: TITLE });
-  const { client, title, bucket, onBucketChange, refreshKey, folderMeta, thumbnailFor, formatDate, folderTree } = media.props;
-  const [settings, setSettings] = useState(() => ({ ...SETTINGS_BASE, columnHeight: `calc(var(--kol-media-picker-h) - ${PICKER_CHROME}px)` }));
-  const [file, setFile] = useState(null);
-  const ok = file && PICKABLE.test(file.contentType ?? '');
-  const use = () => {
-    onSelect(fixtureClient.mediaUrl(file.key, media.bucketId), { contentType: file.contentType, kind: file.contentType.split('/')[0] });
-    onClose();
-  };
-  return (
-    <FullscreenOverlay open scrim onClose={onClose}>
-      <div className="kol-media-picker gap-4">
-        <MediaLibrary
-          variant="browse"
-          {...{ client, title, bucket, onBucketChange, refreshKey, folderMeta, thumbnailFor, formatDate, folderTree }}
-          settings={settings}
-          onSettingsChange={setSettings}
-          onPickFile={setFile}
-        />
-        <div className="mt-auto flex items-center justify-end gap-4">
-          <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
-          <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
-          <Button size="md" disabled={!ok} onClick={use}>Use</Button>
-        </div>
-      </div>
-    </FullscreenOverlay>
   );
 }
 
@@ -170,8 +135,8 @@ function ViewerPage() {
  *
  *   /          explorer — the browser and the wall as two views of one surface (media as it ships)
  *   /library   library  — the files wall alone: FILES, filter · search, grid / list, FLAT, the sort row
- *   /picker    picker A — the browse surface in the modal card (also /picker/a); /picker/b is the
- *              modal as it ships, kept until the A/B is ruled
+ *   /picker    MediaLibrary variant="picker" (also /picker/a); /picker/b is variant="modal", the
+ *              modal library with its own grid | list
  *   /viewer    MediaViewer, from MediaTileGallery's tiles
  *
  * Paths, not hashes — the hash is the folder prefix. Built, the app sits under `/apps/media/` and
@@ -180,8 +145,8 @@ const route = () => location.pathname.slice(import.meta.env.BASE_URL.length).rep
 
 export default function App() {
   const r = route();
-  if (r === 'picker' || r === 'picker/a') return <PickerPage variant="a" />;
-  if (r === 'picker/b') return <PickerPage variant="b" />;
+  if (r === 'picker' || r === 'picker/a') return <PickerPage variant="picker" />;
+  if (r === 'picker/b') return <PickerPage variant="modal" />;
   if (r === 'viewer') return <ViewerPage />;
   return <Library variant={r === 'library' ? r : 'explorer'} />;
 }
