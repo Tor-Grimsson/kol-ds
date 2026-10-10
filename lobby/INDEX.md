@@ -31,13 +31,15 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 22 entries
+## Queue — 24 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [PrimaryHoverIsTheWell](done/PrimaryHoverIsTheWell.md) | **kol-fxr** — `Button tone="primary"` hover is the rest fill minus 8 (`#19191d` → `#111115`), one step off the rail/card ground `#121215`, so the button vanishes on hover. Ask: primary hover = `--kol-surface-sunken`, press one step past | 2026-10-10 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.173.0`**: dark hover is the well (10), press 2; light unchanged (its well is white) |
+| ⚪ | [metrics-dashboard-on-the-app-hub](archive/metrics-dashboard-on-the-app-hub.md) | **kol-website** — metrics moves onto kol-shell `AppHub` like fxr / media-hub, but `MetricsDashboard` keeps its tab in local state and always draws its own title + tab row. Ask: controlled `tab`/`onTabChange`, exported tab list, `chrome={false}` | 2026-10-09 | ⚪ `parked` — kol-website is auditing the metrics header + navigation first; it comes back with one concrete ask if needed. kol-dashboards stays here (chess uses it) |
 | 🟢 | [metrics-dashboard-on-a-phone](done/metrics-dashboard-on-a-phone.md) | **kol-website** — MetricsDashboard has no phone layout: `grid-auto-rows: minmax(240px, auto)` makes every stat card 240 px for three lines, the tab and host rows run off the edge unscrollable, the deploy timeline is squeezed beside the range control. Ask: content-height rows below md, scrolling rows, timeline on its own line | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.172.0` + `@kolkrabbi/kol-dashboards@0.5.0`** |
 | 🟠 | [section-split-frame-ratio-holds-at-desktop](inbox/section-split-frame-ratio-holds-at-desktop.md) | **kol-website** — at ≥901px `SectionSplit`'s bounded frame carries `w-full` and a fixed rung height together, so `ratio` decides nothing: `ratio="5/4"` renders 696×314 at 1600×950 and crops a 1200×960 image. Correct below 901px. Since `SectionSplitVisualWidth` (~0.150). Ask: the ratio holds at desktop, and which dimension yields is ruled — both candidates measured in the entry | 2026-10-02 | 🟠 `addressed` — **ships `@kolkrabbi/kol-component@0.239.0`** (2026-10-02): from 901px the frame's width follows the ratio again (`w-auto`; the rung holds, the column caps) — the 2026-08-27 rule on the prop. Measured 0.80 for `4/5` at 1600×950 and 1280×800; below 901 unchanged. Closes on kol-website measuring it |
 | 🟠 | [content-card-needs-no-cover](inbox/content-card-needs-no-cover.md) | **kol-client-olina** — `/notes` lists markdown documents from D1 and every card and row draws a dashed MISSING plate: the card family reads an absent cover as a MISSING asset, not as a document that has none. Two asks — a card with no cover renders with no plate, and `cover` accepts a NODE so a consumer can hand the card its own rendered preview. **Their user's instruction: check with kol-r2b2 on ask 2 before designing it** — `KindPreview` is theirs and already previews CONTENT | 2026-09-04 | 🟠 `addressed` — **both asks ship, `@kolkrabbi/kol-component@0.210.0`** (2026-09-04). Ask 1: `media={false}` = no cover, no slot, text at full width — `false` because it is React's own "render nothing" and because it rendered an EMPTY FRAME before, so nothing moves for an omitted `media`; on `ContentRow` too, since `thumb={0}` made a SIZE answer a question about MEANING. Ask 2: **asked kol-r2b2 first and built their shape, not mine** — `text` BESIDE `o` (prose inside the media object would make it mean two things) and `kind` shipped WITH it, because classification reads the extension off the key and a keyless D1 row lands on `other`: the right content rendered as the wrong thing. Their deck-preview caution taken — a slide is a layout, not text, and comes back as its own ask. Also the aside: `ContentText` now warns on an unknown slot in dev. Closes on olina dropping the placeholder workaround |
@@ -347,6 +349,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-10 | **`PrimaryHoverIsTheWell` closed** — kol-theme 0.173.0; dark hover to the well, light kept; receipt returned |
+| 2026-10-09 | **`metrics-dashboard-on-the-app-hub` parked** — kol-website audits the metrics header + nav first; kol-dashboards stays here; nothing built |
+| 2026-10-09 | **`metrics-dashboard-on-the-app-hub` filed from kol-website** — controlled tab + no own chrome so AppHub can drive it; queue 22 → 23 |
 | 2026-10-09 | **`metrics-dashboard-on-a-phone` closed** — kol-theme 0.172.0 + kol-dashboards 0.5.0 published; receipt returned |
 | 2026-10-09 | **`metrics-dashboard-on-a-phone` filed from kol-website** — the dashboard's phone layout (row floor, overflowing rows, timeline); queue 21 → 22 |
 | 2026-10-09 | **`identity-r2b2` closed** — kol-icons 0.37.0 published; receipt returned; queue 21 → 20 |

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.173.0 — 2026-10-10
+
+- **Fixed: primary hover vanished in dark** (kol-fxr, PrimaryHoverIsTheWell). Rest 25 minus 8 was 17 on an 18 rail. New per-theme surface tokens `--kol-surface-secondary-hover` / `-press`: dark goes to the well (10) and one past it (2); light keeps 242 → 234 → 226 (the well is the white pole there, lighter than rest). The primary tone reads them.
+
 ## 0.172.0 — 2026-10-09
 
 - **`.dash-grid` rows size to content below md** (`@container (max-width: 767px)`): the 240px floor stays at desk, where it is the viewport-fit grid; on a phone it left stat cards two-thirds empty.

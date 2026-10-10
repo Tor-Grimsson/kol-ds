@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-09 late night, identity marks + showcase head)
+
+- **Published:** kol-icons 0.37.0 (`fxr`, `r2b2` in identity) · kol-component 0.250.0 · kol-theme 0.172.0 · kol-dashboards 0.5.0. Push is the user's. App-icon rule at `02-icons/05-app-icons.md`. Showcase has touch icon, SEO head, sitemap (`scripts/extract-sitemap.mjs`), boot curtain. Open: "open source" vs "source-available" in the meta description; Vercel retention only settable in the dashboard. Log: `session-log/2026-10-09-identity-marks-app-icons-showcase-head.md`.
+
 ## Current state (2026-10-09 night, picker is a variant + upload dialog)
 
 - **Picker A/B is ruled — it is a variant:** `MediaLibrary variant="picker"` (the browse surface in the modal card, Use footer) beside `variant="modal"`; apps/media `/picker` and `/picker/b` show each. kol-component 0.249.0 published. kol-website's `upload-dialog-optimise-and-keep-originals` closed (kol-media-client 0.5.0 · kol-component 0.248.0).
@@ -25,10 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-09, fxr's StepList and SegmentedToggle disabled — published)
 
 - **Published 2026-10-09:** kol-component 0.245.0 · kol-theme 0.169.0. Push is the user's. `StepList` molecule on a new `hooks/usePointerSort` (lifted from `RecordManager`, which now uses it — pointer, so touch works); `SegmentedToggle` `options[].disabled`. Both fxr tickets closed, receipts returned. kol-website's B2 menu was fixed in 0.241.0 — it only needs the bump. Picker A/B still waits on his ruling. Log: `session-log/2026-10-09-steplist-and-segmented-disabled.md`.
-
-## Current state (2026-10-08 night, the browse surface as a picker over any store — published)
-
-- **Published 2026-10-08:** kol-component 0.244.0. Push is the user's (with theme 0.168.0 · component 0.242.0–0.243.0). kol-fxr's `browse-views-label-by-display-name` closed: names in every view, no URL verbs without `mediaUrl`, one Escape per level, a picker's phone tap selects, `searchPlaceholder`, `fileActions` = writer — walked here first. fxr's remainder: bump, drop its stubs, swap the port in. Picker A/B still waits on his ruling. Log: `session-log/2026-10-08-browse-surface-as-a-picker-over-any-store.md`.
 
 ## Repo standup (2026-06-15)
 
