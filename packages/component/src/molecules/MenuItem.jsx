@@ -40,13 +40,16 @@ export function MenuItem({
    * beside it, so media's phone `···` stood 32 next to a 26 `sm` search field. `size` pins it to the
    * control heights (01-foundations/09-sizes: 22 · 26 · 32 · 40); `md` is the 32 it always was. */
   size = 'md',
+  /* the panel's gap below the trigger. A trigger inside a taller bar passes a negative value so
+   * the panel's top lands on the bar's own line (MenuItemOffset, kol-fxr 2026-10-13) */
+  offset = 4,
 }) {
   const [open, setOpen] = useState(defaultOpen)
   const popover = usePopover({
     open,
     onOpenChange: setOpen,
     placement: align === 'end' ? 'bottom-end' : 'bottom-start',
-    offset: 4,
+    offset,
     role: 'menu',
   })
 

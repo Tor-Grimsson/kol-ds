@@ -6,7 +6,7 @@
  *
  *   import { listMedia, mediaUrl } from '@kolkrabbi/kol-media-client'
  *   const objs = await listMedia('photoshoot/')  // [{ key, contentType, size }]
- *   <img src={mediaUrl(obj.key)} />              // https://r2.kolkrabbi.io/<key>
+ *   <img src={mediaUrl(obj)} />                  // https://r2.kolkrabbi.io/<storageKey ?? key>
  *
  * The contract (owned by kol-media-admin — bump this package when it changes):
  *   GET <adminBase>/api/list?prefix=<folder> → { objects: [{ key, contentType, size }] }
@@ -143,7 +143,13 @@ export function createMediaClient({
     .sort((a, b) => b.re.source.length - a.re.source.length)
 
   /** Public URL for a bucket key — on a named bucket's own host when the table names it. */
-  const mediaUrl = (key, bucket) => `${table[bucket]?.publicBase ?? publicBase}/${key}`
+  /* A ROW OR A KEY. Given a listed row it builds on `storageKey` — the permanent R2 key the bytes
+   * live at; `key` is the PATH, which rename and move change (MediaLibraryUrlOnStorageKey,
+   * kol-website 2026-10-13). A row without `storageKey` (an API that predates it) uses `key`. */
+  const mediaUrl = (keyOrRow, bucket) => {
+    const key = typeof keyOrRow === 'object' && keyOrRow ? (keyOrRow.storageKey ?? keyOrRow.key) : keyOrRow
+    return `${table[bucket]?.publicBase ?? publicBase}/${key}`
+  }
 
   /** The buckets this client can list — `[]` without a table. */
   const bucketList = () => Object.values(table)

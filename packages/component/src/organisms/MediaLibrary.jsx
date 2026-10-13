@@ -337,6 +337,7 @@ export function MediaLibraryProvider({
 
   const value = useMemo(() => {
     const annotated = objects.map((o) => ({ ...o, kind: kindOf(o) }))
+    const storageOf = new Map(objects.filter((o) => o.storageKey).map((o) => [o.key, o.storageKey]))
     const scoped = prefix ? annotated.filter((o) => o.key.startsWith(prefix)) : annotated
     const folders = foldersUnder(scoped, prefix)
     /* level = the direct children; flat = every object under the prefix */
@@ -415,7 +416,9 @@ export function MediaLibraryProvider({
       bucket,
       buckets,
       setBucket,
-      mediaUrl: client?.mediaUrl ? (key) => client.mediaUrl(key, bucket ?? undefined) : (key) => key,
+      /* a PATH resolves to the row's `storageKey` — the object never moves, rename and move edit
+       * the row (MediaLibraryUrlOnStorageKey, kol-website 2026-10-13); no `storageKey`, the path */
+      mediaUrl: client?.mediaUrl ? (key) => client.mediaUrl(storageOf.get(key) ?? key, bucket ?? undefined) : (key) => key,
       proxied: client?.proxied ?? ((url) => url),
     }
   }, [objects, prefix, flat, sort, search, kinds, paging, pageSize, loading, error, accept, client, bucket, buckets])
@@ -1081,7 +1084,7 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
   const [file, setFile] = useState(null)
   const ok = !!file && acceptsKind(accept)({ ...file, kind: kindOf(file) })
   const use = () => {
-    onSelect?.(client.mediaUrl(file.key, bucket ?? undefined), { contentType: file.contentType, kind: kindOf(file) })
+    onSelect?.(client.mediaUrl(file.storageKey ?? file.key, bucket ?? undefined), { contentType: file.contentType, kind: kindOf(file) })
     onClose?.()
   }
   return (

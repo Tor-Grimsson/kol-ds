@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-component
 
+## 0.257.0 — 2026-10-13
+
+- **Fixed: `MediaLibrary` and the media pages build URLs on `storageKey`** (MediaLibraryUrlOnStorageKey, kol-website). The API lists `key` (the path) and `storageKey` (where the bytes live), and a rename or move changes only the path, so `mediaUrl(path)` 404'd for a renamed file or a new upload (`f/<id>.<ext>`). Both `mediaUrl` wrappers (the provider's and the pages') now resolve a path to its row's `storageKey`, which covers every site: thumbs, previews, posters, Copy URL, picks. The picker's Use builds on the row. `downloadUrl` stays on the path. Without `storageKey` nothing changes.
+
+## 0.256.0 — 2026-10-13
+
+Three asks from kol-fxr's editor head, walked against Affinity — all additive; every default renders as before except the ruler.
+
+- **New: `MenuItem offset`** (MenuItemOffset) — the panel's gap under the trigger, default 4. Negative values overlap, so a trigger inside a taller bar can land the panel's top border on the bar's line.
+- **New: `ToolPalette orientation="vertical"`** (ToolPaletteVertical) — a one-button-wide strip: `flex-col`, scrolls on y, hairline dividers across the strip, and every fold opens `right-start`. **New `SplitToolButton placement`** (default `bottom-start`) carries it.
+- **Changed: `CanvasRuler` is graduated** (CanvasRulerGraduated) — no band: the bar is transparent with its inner-edge hairline, three tick ranks (major at `niceStep`, medium at half, minor at a tenth; 18 · 9 · 4px, `fg-48` / `fg-24`), sans 10 labels beside the major tick, `px` in the corner square, and a 1px `fg-64` line on each ruler that follows the container's pointer. Guides still drag off both rulers; `niceStep` / `ticksFor` keep their exports.
+
 ## 0.255.0 — 2026-10-13
 
 - **Fixed: `SelectionOverlay`'s size label clears the rotate handle** (SelectionOverlayLabelClearsRotateHandle, kol-fxr). 0.253.0 hung the upright label under the rotated bounds, which is where the rotate handle lands when the box points down: at 180° the handle sat on the label's `×`. When the handle's centre falls in the label's column below the box, the label hangs 6px under the handle instead. Other angles are unchanged.

@@ -244,7 +244,10 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
   const folderInfo = loaded.folders ?? {}
   const setFolderInfo = (fn) => setLoaded((prev) => ({ ...prev, folders: fn(prev.folders ?? {}) }))
   const error = ready ? loaded.error : null
-  const mediaUrl = (key) => client?.mediaUrl?.(key, bucketId ?? undefined) ?? key
+  /* a PATH resolves to the row's `storageKey` — the object never moves, rename and move edit the
+   * row (MediaLibraryUrlOnStorageKey, kol-website 2026-10-13); no `storageKey`, the path */
+  const storageOf = useMemo(() => new Map(objects.filter((o) => o.storageKey).map((o) => [o.key, o.storageKey])), [objects])
+  const mediaUrl = (key) => client?.mediaUrl?.(storageOf.get(key) ?? key, bucketId ?? undefined) ?? key
   const downloadUrl = (key) => client?.downloadUrl?.(key, bucketId ?? undefined) ?? mediaUrl(key)
   const writable = !!bucketMeta.writable && !!(client?.deleteObject || client?.renameObject)
   /* A CLIENT WITH NO `mediaUrl` HAS NO URLS (kol-fxr 2026-10-08: a stored preset is not a fetchable

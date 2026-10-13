@@ -62,6 +62,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * A variant may carry its own `onSelect()` — that row does its own thing instead of `onChange`
  * (Text: "Text" arms the tool, "Kinetic type" inserts a layer). Without `lastPicked` the trigger
  * remembers the last row picked from the menu (kol-fxr ToolPalette, editor-panels-the-held-specs A3).
+ * @param {string} props.placement - Where the fold opens, floating-ui's placement — a vertical `ToolPalette` passes `'right-start'` (default: 'bottom-start')
  * @param {string} props.className - Additional classes on the trigger
  */
 
@@ -87,6 +88,7 @@ const SplitToolButton = ({
   onTrigger,
   disabled = false,
   iconComponent: IconC = Icon,
+  placement = 'bottom-start',
   className = '',
   'aria-label': ariaLabel,
 }) => {
@@ -94,7 +96,7 @@ const SplitToolButton = ({
   const popover = usePopover({
     open,
     onOpenChange: setOpen,
-    placement: 'bottom-start',
+    placement,
     offset: 4,
     role: 'menu',
   })

@@ -9,14 +9,16 @@ export function Card() {
 }
 
 export const sizes = ['md', 'xs', 'sm', 'lg']
+/* `offset` — the panel's gap under the trigger; 0 touches it, a negative overlaps */
+export const variants = ['4', '0', '-2']
 
-export default function MenuItemPreview({ size = 'md' }) {
+export default function MenuItemPreview({ size = 'md', variant = '4' }) {
   return (
     /* The panel is portalled (escapes overflow by design), so the preview must
        reserve the space it lands on — otherwise the open-by-default menu
        overlays whatever sits under the card in dense galleries. */
     <div className="flex min-h-[220px] w-full items-start justify-center">
-    <MenuItem label="File" size={size} defaultOpen>
+    <MenuItem label="File" size={size} offset={Number(variant)} defaultOpen>
       <div className="min-w-[180px] py-1">
         <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>
           New file

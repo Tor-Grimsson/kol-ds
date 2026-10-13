@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-media-client
 
+## 0.6.0 — 2026-10-13
+
+- **New: `mediaUrl` takes a listed row** (MediaLibraryUrlOnStorageKey, kol-website). `mediaUrl(row)` builds on `row.storageKey`, the permanent R2 key the bytes live at. `row.key` is the PATH, and rename and move change it. A row without `storageKey`, or a plain key string, builds exactly as before. Pass the row, not `row.key`.
+
 ## 0.5.0 — 2026-10-09
 
 - **New: `prepareUpload(file, { folder, optimise, keepOriginals })`** — kol-client-olina's upload recipe, lifted (kol-website was the second consumer). One file → `[{ key, blob, thumb? }]` to put: the web copy (≤2560 wide, ≤500 KB) and, with `keepOriginals`, the untouched file at `original/<name>`. Pure — the consumer puts. A transparent still keeps its alpha (WebP), never JPEG on white; any still already web-sized is left as it is; one still over 500 KB at quality 0.4 steps its width down. Video / SVG / GIF / undecodable pass through; a video carries a 96px `thumb`.

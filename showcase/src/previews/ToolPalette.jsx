@@ -7,8 +7,9 @@ export const stage = 'hug'
  * (its trigger re-runs the last-picked op), and Text arms with one row — Kinetic type — that runs
  * instead. What is armed, what runs and what is disabled live in this preview, never in the row. */
 export const sizes = ['md', 'xs', 'sm', 'lg']
+export const variants = ['horizontal', 'vertical']
 
-export default function ToolPalettePreview({ size = 'md' }) {
+export default function ToolPalettePreview({ size = 'md', variant = 'horizontal' }) {
   const [tool, setTool] = useState('select')
   const [selection, setSelection] = useState(2)
   const [log, setLog] = useState('—')
@@ -37,7 +38,7 @@ export default function ToolPalettePreview({ size = 'md' }) {
   ]
   return (
     <div className="flex flex-col items-start gap-3">
-      <ToolPalette size={size} items={items} activeId={tool} onSelect={setTool} onAction={(id) => setLog(id)} />
+      <ToolPalette size={size} orientation={variant} items={items} activeId={tool} onSelect={setTool} onAction={(id) => setLog(id)} />
       <span className="kol-helper-10 text-meta">
         tool: {tool} · last action: {log} · selected: {selection}{' '}
         <button type="button" className="underline" onClick={() => setSelection((n) => (n + 1) % 3)}>cycle</button>

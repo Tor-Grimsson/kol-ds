@@ -805,6 +805,29 @@ export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
  */
 export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, disabled = false }) {
   const geom = useFrameGeom(containerRef, virtualWidth)
+  const hPointer = useRef(null)
+  const vPointer = useRef(null)
+
+  /* The pointer line on each ruler follows the container's own pointermove — written straight
+   * to the two <line>s, so a mouse move never re-renders a few hundred ticks. */
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const move = (e) => {
+      const r = el.getBoundingClientRect()
+      hPointer.current?.setAttribute('transform', `translate(${e.clientX - r.left} 0)`)
+      vPointer.current?.setAttribute('transform', `translate(0 ${e.clientY - r.top})`)
+      hPointer.current?.setAttribute('visibility', 'visible')
+      vPointer.current?.setAttribute('visibility', 'visible')
+    }
+    const leave = () => {
+      hPointer.current?.setAttribute('visibility', 'hidden')
+      vPointer.current?.setAttribute('visibility', 'hidden')
+    }
+    el.addEventListener('pointermove', move)
+    el.addEventListener('pointerleave', leave)
+    return () => { el.removeEventListener('pointermove', move); el.removeEventListener('pointerleave', leave) }
+  }, [containerRef])
 
   const startGuideDrag = (axis) => (e) => {
     if (disabled || e.button !== 0) return
@@ -815,47 +838,59 @@ export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, dis
   }
 
   if (!geom || geom.pxPer <= 0) return null
-  const step   = niceStep(geom.pxPer)
-  const hTicks = ticksFor(geom.left, geom.pxPer, geom.cw, step)
-  const vTicks = ticksFor(geom.top,  geom.pxPer, geom.ch, step)
+  /* Three ranks (CanvasRulerGraduated, kol-fxr 2026-10-13): the major at `niceStep`, the medium
+   * at half of it, the minor at a tenth — counted by index `k`, not by value, so a 25 step's
+   * 2.5 minors never round onto each other. */
+  const step  = niceStep(geom.pxPer)
+  const minor = step / 10
+  const graduate = (origin, span) => {
+    const out = []
+    const last = Math.floor((span - origin) / geom.pxPer / minor)
+    for (let k = Math.ceil(-origin / geom.pxPer / minor); k <= last; k++) {
+      out.push({ k, s: origin + k * minor * geom.pxPer, rank: k % 10 === 0 ? 0 : k % 5 === 0 ? 1 : 2 })
+    }
+    return out
+  }
+  const hTicks = graduate(geom.left, geom.cw)
+  const vTicks = graduate(geom.top, geom.ch)
 
-  /* Ruler chrome rides the themed fg ramp so it flips with light/dark: an 8%
-   * bar with fg ticks/labels, all naturally contrast-correct in both themes —
-   * no hardcoded greys. */
-  const tickColor   = 'var(--kol-fg-48)'
+  /* No band: the bar is transparent and the pasteboard shows through, one hairline at the inner
+   * edge. Ink rides the themed fg ramp so it flips with light/dark. */
+  const LEN         = [RULER, 9, 4]
+  const tickColor   = ['var(--kol-fg-48)', 'var(--kol-fg-24)', 'var(--kol-fg-24)']
   const textColor   = 'var(--kol-fg-64)'
-  const barBg       = 'var(--kol-fg-08)'
   const borderColor = 'var(--kol-oq-16)'
-  const labelStyle  = { fontFamily: 'var(--kol-font-family-mono)', fontSize: 9 }
+  const labelStyle  = { fontFamily: 'var(--kol-font-family-sans)', fontSize: 10 }
+  const label = (k) => Math.round(k * minor)
 
   return (
     <>
       <svg width="100%" height={RULER}
         onPointerDown={startGuideDrag('h')}
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 4, cursor: 'row-resize' }}>
-        <rect x={0} y={0} width="100%" height={RULER} fill={barBg} />
-        {hTicks.map(({ v, s }) => (
-          <g key={v}>
-            <line x1={s} y1={RULER - 5} x2={s} y2={RULER} stroke={tickColor} strokeWidth={1} />
-            <text x={s + 2} y={9} fill={textColor} style={labelStyle}>{v}</text>
+        {hTicks.map(({ k, s, rank }) => (
+          <g key={k}>
+            <line x1={s} y1={RULER - LEN[rank]} x2={s} y2={RULER} stroke={tickColor[rank]} strokeWidth={1} />
+            {rank === 0 && <text x={s + 3} y={10} fill={textColor} style={labelStyle}>{label(k)}</text>}
           </g>
         ))}
         <line x1={0} y1={RULER - 0.5} x2="100%" y2={RULER - 0.5} stroke={borderColor} strokeWidth={1} />
+        <line ref={hPointer} x1={0.5} y1={0} x2={0.5} y2={RULER} stroke={textColor} strokeWidth={1} visibility="hidden" />
       </svg>
       <svg width={RULER} height="100%"
         onPointerDown={startGuideDrag('v')}
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 4, cursor: 'col-resize' }}>
-        <rect x={0} y={0} width={RULER} height="100%" fill={barBg} />
-        {vTicks.map(({ v, s }) => (
-          <g key={v}>
-            <line x1={RULER - 5} y1={s} x2={RULER} y2={s} stroke={tickColor} strokeWidth={1} />
-            <text x={9} y={s - 2} fill={textColor} style={labelStyle}
-              transform={`rotate(-90 9 ${s - 2})`}>{v}</text>
+        {vTicks.map(({ k, s, rank }) => (
+          <g key={k}>
+            <line x1={RULER - LEN[rank]} y1={s} x2={RULER} y2={s} stroke={tickColor[rank]} strokeWidth={1} />
+            {rank === 0 && <text x={10} y={s - 3} fill={textColor} style={labelStyle}
+              transform={`rotate(-90 10 ${s - 3})`}>{label(k)}</text>}
           </g>
         ))}
         <line x1={RULER - 0.5} y1={0} x2={RULER - 0.5} y2="100%" stroke={borderColor} strokeWidth={1} />
+        <line ref={vPointer} x1={0} y1={0.5} x2={RULER} y2={0.5} stroke={textColor} strokeWidth={1} visibility="hidden" />
       </svg>
-      <div style={{ position: 'absolute', top: 0, left: 0, width: RULER, height: RULER, background: barBg, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, zIndex: 4, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, width: RULER, height: RULER, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, zIndex: 4, pointerEvents: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: textColor, ...labelStyle }}>px</div>
     </>
   )
 }

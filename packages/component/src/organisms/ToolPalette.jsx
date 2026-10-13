@@ -28,6 +28,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {string} props.activeId - The armed tool's id — a `tool` item's, or any variant's of a tool fold
  * @param {Function} props.onSelect - (id) => void — a tool (or a tool variant) was armed
  * @param {Function} props.onAction - (id) => void — an action (or an action variant) was run
+ * @param {'horizontal'|'vertical'} props.orientation - A row (default), or a one-button-wide strip: hairline dividers across it, folds opening to its right (ToolPaletteVertical, kol-fxr 2026-10-13)
  * @param {'xs'|'sm'|'md'|'lg'} props.size - The rung — 22 · 26 · 32 · 40 (default: 'md', the source's 32)
  * @param {ElementType} props.iconComponent - Glyph renderer receiving `{ name, size, className, style }` (default: DS `Icon`)
  * @param {string} props.className - Additional classes on the row
@@ -39,13 +40,18 @@ const ToolPalette = ({
   activeId,
   onSelect,
   onAction,
+  orientation = 'horizontal',
   size = 'md',
   iconComponent = Icon,
   className = '',
-}) => (
-  <div className={`kol-tool-palette flex items-center gap-1 min-w-0 overflow-x-auto ${className}`.trim()}>
+}) => {
+  const vertical = orientation === 'vertical'
+  return (
+  <div className={`kol-tool-palette flex items-center gap-1 ${vertical ? 'flex-col min-h-0 overflow-y-auto' : 'min-w-0 overflow-x-auto'} ${className}`.trim()}>
     {items.map((it, i) => {
-      if (it.kind === 'divider') return <Divider key={`d${i}`} variant="vertical" height={20} className="mx-1.5 shrink-0" />
+      if (it.kind === 'divider') return vertical
+        ? <Divider key={`d${i}`} variant="horizontal" className="my-1.5 shrink-0 self-stretch" />
+        : <Divider key={`d${i}`} variant="vertical" height={20} className="mx-1.5 shrink-0" />
       if (it.kind === 'split') {
         const variants = (it.variants ?? []).map((v) => (v.action && !it.action ? { ...v, onSelect: () => onAction?.(v.id) } : v))
         const run = (id) => (it.action ? onAction : onSelect)?.(id)
@@ -53,7 +59,8 @@ const ToolPalette = ({
           <SplitToolButton key={it.id} variants={variants} value={activeId} size={size} iconComponent={iconComponent}
             active={!it.action && variants.some((v) => v.id === activeId && !v.action)}
             onChange={run} onTrigger={it.action ? run : undefined}
-            disabled={it.disabled} blurOnClick aria-label={it.label} />
+            disabled={it.disabled} blurOnClick aria-label={it.label}
+            placement={vertical ? 'right-start' : undefined} />
         )
       }
       const isTool = it.kind === 'tool'
@@ -68,6 +75,7 @@ const ToolPalette = ({
       )
     })}
   </div>
-)
+  )
+}
 
 export default ToolPalette
