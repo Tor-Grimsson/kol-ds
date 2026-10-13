@@ -18,6 +18,15 @@ const SHAPES = [
  * of an off-ladder box, in the reference a consumer copies. */
 export const sizes = ['md', 'xs', 'sm', 'lg']
 
+/* An ACTION fold with nothing selected: `disabled` disarms the trigger, the caret still opens it,
+ * and the rows that do not apply are greyed, never hidden (SplitToolButtonFoldAlwaysOpens, 2026-10-13). */
+const ROTATE = [
+  { id: 'rotate-left', label: 'Rotate 90° left', icon: 'rotate-left', shortcut: '⇧L', disabled: true },
+  { id: 'rotate-right', label: 'Rotate 90° right', icon: 'rotate-right', shortcut: '⇧V', disabled: true },
+  { id: 'flip-h', label: 'Flip horizontal', icon: 'flip-horizontal', disabled: true },
+  { id: 'flip-v', label: 'Flip vertical', icon: 'flip-vertical', disabled: true },
+]
+
 export default function SplitToolButtonPreview({ size = 'md' }) {
   const [tool, setTool] = useState('select')
   const [shape, setShape] = useState('rectangle')
@@ -55,6 +64,7 @@ export default function SplitToolButtonPreview({ size = 'md' }) {
             setTool('shape')
           }}
         />
+        <SplitToolButton size={size} variants={ROTATE} onTrigger={() => {}} disabled aria-label="Rotate" />
       </div>
       <span className="kol-helper-10 text-meta">
         tool: {tool} · shape: {shape}

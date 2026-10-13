@@ -4,7 +4,7 @@ export const meta = {
   title: "MenuDropdownNest",
   type: "reference",
   status: "active",
-  updated: "2026-07-30",
+  updated: "2026-10-13",
   tags: [
     "domain/components",
     "domain/components/molecules",
@@ -12,7 +12,7 @@ export const meta = {
     "domain/navigation",
     "pattern/overlay",
   ],
-  description: "Accordion-style row inside a dropdown panel.",
+  description: "A submenu row inside a dropdown panel — inline accordion, or a flyout beside the row.",
   aliases: [
     "menudropdownnest",
   ],
@@ -35,13 +35,26 @@ import { MenuDropdownNest } from '@kolkrabbi/kol-component'
 ## Behavior
 
 The nested-submenu member of the [MenuItem](/components/menu-item) family —
-a row that opens a second-level panel of
-[MenuDropdownItem](/components/menu-dropdown-item) rows beside it.
+a row that holds a second-level list of
+[MenuDropdownItem](/components/menu-dropdown-item) rows.
+
+- **Accordion** (default) — a click expands the rows inline, under the row,
+  indented on a hairline.
+- **Flyout** (`flyout`) — the rows open in a panel **beside** the row, the way a
+  desktop menu bar does. Hover opens, leaving closes, a click toggles (touch),
+  → opens and ← closes. The panel stays on screen: it lifts above the window's
+  foot and flips to the row's left at the right edge. Flyouts nest to any depth;
+  `scroll` caps a long leaf list at 60vh.
+
+A leaf click closes the whole menu in both modes.
 
 ## Props
 
 <Api name="MenuDropdownNest" rows={[
   {"prop":"label","type":"string","def":"—","desc":"Row label."},
   {"prop":"children","type":"ReactNode","def":"—","desc":"Rows revealed when expanded."},
-  {"prop":"iconLeft","type":"ReactNode","def":"—","desc":"Leading icon in a fixed column."}
+  {"prop":"iconLeft","type":"ReactNode","def":"—","desc":"Leading icon in a fixed column."},
+  {"prop":"flyout","type":"boolean","def":"false","desc":"Open the rows in a panel beside the row instead of inline."},
+  {"prop":"scroll","type":"boolean","def":"false","desc":"Flyout only — cap the panel at 60vh and scroll. Clips its own flyouts, so only for a leaf list."},
+  {"prop":"disabled","type":"boolean","def":"false","desc":"Dim the row; it neither opens nor toggles."}
 ]} />

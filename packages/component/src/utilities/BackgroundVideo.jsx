@@ -22,8 +22,25 @@ import Hls from 'hls.js'
  * @param {boolean}  active    plays only while true (default true) — an
  *   off-stage carousel slide pauses instead of autoplaying beside the
  *   active one (FeaturedCarouselFullWidth, 2026-08-26)
+ * @param {Object}   hlsConfig hls.js config spread over `HLS_DEFAULTS`; read when `src` attaches
+ *   (a changed object alone does not reload the stream)
  */
-export default function BackgroundVideo({ src, poster, className, onEnded, active = true, ...props }) {
+/* START WHERE THE PLAYER CAN SHOW IT (BackgroundVideoStartsAtLowestRendition, kol-website
+ * 2026-10-13 — user: *"why is this video so low res? … its super long lag till you get good res?"*).
+ * A bare `new Hls()` starts at the manifest's FIRST rendition (360p on every bucket master) on a
+ * 500 kbps guess and only climbs after measured fragments, so a 640px card played upscaled 360p
+ * until ABR caught up. Auto start level, a broadband guess until measured, and never above the
+ * element's own size. The ticket's three keys plus `testBandwidth: false`. */
+export const HLS_DEFAULTS = {
+  startLevel: -1,
+  /* without this, an auto start still loads its FIRST fragment at the lowest rendition to measure
+   * bandwidth — measured 2026-10-13: 360 → 720 with it on, 720 from the first fragment with it off */
+  testBandwidth: false,
+  abrEwmaDefaultEstimate: 8_000_000,
+  capLevelToPlayerSize: true,
+}
+
+export default function BackgroundVideo({ src, poster, className, onEnded, active = true, hlsConfig, ...props }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
@@ -38,7 +55,7 @@ export default function BackgroundVideo({ src, poster, className, onEnded, activ
     if (!video || !src) return
 
     if (Hls.isSupported()) {
-      const hls = new Hls()
+      const hls = new Hls({ ...HLS_DEFAULTS, ...hlsConfig })
       hls.loadSource(src)
       hls.attachMedia(video)
       return () => hls.destroy()
@@ -46,7 +63,7 @@ export default function BackgroundVideo({ src, poster, className, onEnded, activ
       // Safari native HLS support
       video.src = src
     }
-  }, [src])
+  }, [src]) // eslint-disable-line react-hooks/exhaustive-deps -- hlsConfig is read at attach
 
   return (
     <video

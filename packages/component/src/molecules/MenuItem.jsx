@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 
@@ -125,6 +125,9 @@ const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-3 h-8', m
 /* `rowClass` — the row's type, side padding and height, whole, in place of the size's own
  * (Dropdown passes it, 2026-10-02: its rows wear the trigger's face and sit on the trigger's
  * text edge; a menu's rows keep `ROW_BY_SIZE`). */
+/* `flex`, not `inline-flex` (MenuDropdownItemBlockRow, kol-fxr 2026-10-13): as bare children of a
+ * content-sized (`w-max`) panel, inline rows measured as ONE line — five starters ≈ 795px. A block
+ * row still fills a fixed panel through `w-full` and lets a content-sized one hug its longest label. */
 export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
   return (
     <button
@@ -136,7 +139,7 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
       disabled={disabled}
       role="menuitem"
       style={height != null ? { height } : undefined}
-      className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 inline-flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
+      className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
@@ -155,16 +158,48 @@ export function MenuDropdownDivider() {
 }
 
 /**
- * MenuDropdownNest — accordion-style row inside a dropdown panel. Click
- * the row to expand/collapse its children inline (below the row, in the
- * same panel). The trailing chevron rotates 90° to indicate state.
+ * MenuDropdownNest — a row inside a dropdown panel that holds a submenu.
  *
- * Same visual shape as MenuDropdownItem at rest. Clicking a leaf
- * MenuDropdownItem inside an open nest still closes the entire menu via
- * the standard data-menu-item bubble. Clicking the nest row itself only
- * toggles its own expansion.
+ * Default — ACCORDION: click the row to expand/collapse its children inline
+ * (below the row, in the same panel); the trailing chevron rotates 90°.
+ *
+ * `flyout` — the submenu opens BESIDE the row, the way a desktop menu bar does
+ * (MenuDropdownNestFlyout, kol-fxr 2026-10-13 — the editor's Affinity-style
+ * bar: Tools › Generative › Loops › Field › preset). Hover opens, leaving the
+ * row and its panel closes, a click toggles (touch), → opens and ← closes from
+ * the keyboard. The panel is a DOM CHILD of the row, never a portal: MenuItem
+ * closes on a click bubbling from `[data-menu-item]` and dismisses on an outside
+ * press, so a portalled panel would read as "outside" and close the menu under
+ * the pointer. One measure on open keeps it on screen — lifted to end above the
+ * window's foot (never past its head), flipped to the row's left when it would
+ * cross the right edge. Flyouts nest to any depth.
+ *
+ * `scroll` (flyout only) — caps the panel at 60vh and scrolls it, for long leaf
+ * lists. A scrolling panel clips its own flyouts, so give it to a panel with no
+ * flyouts inside.
+ *
+ * Either way, a leaf MenuDropdownItem inside still closes the whole menu via the
+ * standard data-menu-item bubble; the nest row itself only toggles.
  */
-export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
+export function MenuDropdownNest({ prefix, iconLeft, label, disabled, flyout = false, scroll = false, children }) {
+  if (flyout) return <MenuFlyoutNest prefix={prefix} iconLeft={iconLeft} label={label} disabled={disabled} scroll={scroll}>{children}</MenuFlyoutNest>
+  return <MenuAccordionNest prefix={prefix} iconLeft={iconLeft} label={label} disabled={disabled}>{children}</MenuAccordionNest>
+}
+
+const NEST_ROW = 'kol-menu-btn w-full kol-helper-12 px-3 h-8 shrink-0 flex items-center gap-2 text-left disabled:opacity-40 disabled:cursor-not-allowed'
+
+function NestRowBody({ prefix, iconLeft, label }) {
+  return (
+    <>
+      {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
+      {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
+      {/* leading-normal — same descender fix as MenuDropdownItem above. */}
+      <span className="flex-1 truncate leading-normal">{label}</span>
+    </>
+  )
+}
+
+function MenuAccordionNest({ prefix, iconLeft, label, disabled, children }) {
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -172,12 +207,10 @@ export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="kol-menu-btn w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
+        disabled={disabled}
+        className={`${NEST_ROW} text-body hover:text-emphasis`}
       >
-        {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
-        {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
-        {/* leading-normal — same descender fix as MenuDropdownItem above. */}
-        <span className="flex-1 truncate leading-normal">{label}</span>
+        <NestRowBody prefix={prefix} iconLeft={iconLeft} label={label} />
         <Icon
           name="chevron-down"
           size={10}
@@ -191,5 +224,63 @@ export function MenuDropdownNest({ prefix, iconLeft, label, children }) {
         </div>
       )}
     </>
+  )
+}
+
+function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, children }) {
+  const [open, setOpen] = useState(false)
+  const [fit, setFit] = useState({ dy: 0, flip: false })
+  const row = useRef(null)
+  const panel = useRef(null)
+
+  useLayoutEffect(() => {
+    if (!open) { setFit({ dy: 0, flip: false }); return }
+    const r = panel.current?.getBoundingClientRect()
+    /* lift it to end above the window's foot, never past its head — a panel taller than the
+     * window keeps its top rows (`scroll` is the answer for a long one) */
+    if (r) setFit({ dy: Math.max(8 - r.top, Math.min(0, window.innerHeight - 8 - r.bottom)), flip: r.right > window.innerWidth - 8 })
+  }, [open])
+
+  return (
+    <div
+      className="relative"
+      onPointerEnter={() => !disabled && setOpen(true)}
+      onPointerLeave={() => setOpen(false)}
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowLeft' && open) { e.stopPropagation(); setOpen(false); row.current?.focus() }
+      }}
+    >
+      <button
+        ref={row}
+        type="button"
+        role="menuitem"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        disabled={disabled}
+        onClick={() => setOpen((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowRight') {
+            e.preventDefault()
+            setOpen(true)
+            requestAnimationFrame(() => panel.current?.querySelector('button:not(:disabled)')?.focus())
+          }
+        }}
+        className={`${NEST_ROW} ${open ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
+      >
+        <NestRowBody prefix={prefix} iconLeft={iconLeft} label={label} />
+        <Icon name="chevron-right" size={10} className="text-emphasis shrink-0" />
+      </button>
+      {open && (
+        /* top -5 = the panel's 1px border + 4px pad, so its first row sits on the trigger row */
+        <div
+          ref={panel}
+          role="menu"
+          className={`absolute ${fit.flip ? 'right-full' : 'left-full'} flex flex-col w-max min-w-[180px] max-w-[320px] py-1 bg-surface-secondary rounded border border-oq-08 shadow-lg z-10 ${scroll ? 'max-h-[60vh] overflow-y-auto' : ''}`}
+          style={{ top: -5 + fit.dy }}
+        >
+          {children}
+        </div>
+      )}
+    </div>
   )
 }

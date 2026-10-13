@@ -83,7 +83,7 @@
   "ContentCollection": "A grid or list of content items.",
   "MenuItem": "Top-level menu entry.",
   "MenuDropdownItem": "Action row inside a MenuItem's dropdown panel.",
-  "MenuDropdownNest": "Accordion-style row inside a dropdown panel.",
+  "MenuDropdownNest": "A row inside a dropdown panel that holds a submenu.",
   "MenuPopover": "Old name for MenuItem.",
   "PropertyInput": "Stacked label + input for inspector-style property panels.",
   "ShapeDropdown": "A tool button with a shape menu.",

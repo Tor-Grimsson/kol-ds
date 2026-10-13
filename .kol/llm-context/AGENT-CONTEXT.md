@@ -10,6 +10,18 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-13 later, fxr toolbar + canvas, HLS start)
+
+- **Published:** kol-component 0.253.0 · 0.254.0 · 0.255.0.
+  - `SplitToolButton`: the fold opens even when disabled, and rows can be greyed one by one.
+  - `SelectionOverlay`: the size label stays upright and clears the rotate handle.
+  - `BackgroundVideo`: `HLS_DEFAULTS` + `hlsConfig`; it starts at a rendition the player can show.
+- Four tickets closed and receipts returned. No `🔵` rows left. Push is the user's. Log: `session-log/2026-10-13-fxr-toolbar-canvas-and-hls-start.md`.
+
+## Current state (2026-10-13, fxr's menu-bar asks)
+
+- **Published:** kol-component 0.252.0. Adds `MenuDropdownNest flyout`, makes menu rows `flex`, adds `Dropdown ariaLabel`, and keeps `ShellSearchOverlay` open for `action`/`keepOpen` rows. All four of fxr's 2026-10-13 tickets are closed and their receipts returned. Push is the user's. Log: `session-log/2026-10-13-fxr-menus-search-dropdown.md`.
+
 ## Current state (2026-10-10 later, picker close on the header row)
 
 - **Published:** kol-component 0.251.0 — `MediaLibrary variant="picker"`'s X rides `headerTrailing` on the gear's row. fxr's MediaPickerCloseOnTheHeaderRow closed; fxr to adopt `variant="picker"`. Push is the user's. Log: `session-log/2026-10-13-picker-close-on-the-header-row.md`.
@@ -18,17 +30,9 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Published:** kol-theme 0.173.0 — dark primary hover = the well (new `--kol-surface-secondary-hover` / `-press`, per theme); light unchanged. fxr's PrimaryHoverIsTheWell closed, receipt returned. Push is the user's. Log: `session-log/2026-10-10-primary-hover-is-the-well.md`.
 
-## Current state (2026-10-09 late night, identity marks + showcase head)
-
-- **Published:** kol-icons 0.37.0 (`fxr`, `r2b2` in identity) · kol-component 0.250.0 · kol-theme 0.172.0 · kol-dashboards 0.5.0. Push is the user's. App-icon rule at `02-icons/05-app-icons.md`. Showcase has touch icon, SEO head, sitemap (`scripts/extract-sitemap.mjs`), boot curtain. Open: "open source" vs "source-available" in the meta description; Vercel retention only settable in the dashboard. Log: `session-log/2026-10-09-identity-marks-app-icons-showcase-head.md`.
-
 ## Current state (2026-10-09 night, picker is a variant + upload dialog)
 
 - **Picker A/B is ruled — it is a variant:** `MediaLibrary variant="picker"` (the browse surface in the modal card, Use footer) beside `variant="modal"`; apps/media `/picker` and `/picker/b` show each. kol-component 0.249.0 published. kol-website's `upload-dialog-optimise-and-keep-originals` closed (kol-media-client 0.5.0 · kol-component 0.248.0).
-
-## Current state (2026-10-09 evening, the icons + Styles review)
-
-- **CLOSED — published:** kol-theme 0.171.0 (fxr's SegmentedSunkenNoBorder, closed) · kol-icons 0.35.0 · kol-component 0.247.0; Round 10 approved. Push is the user's. kol-icons 0.35.0 (17 redraws, `rack-h`, `identity` group, `customize`/`user-interface` renamed via `RENAMED_ICONS`) · kol-component 0.247.0 (catalog row thumb). Showcase: icons in ⌘K, Tones under Color, icons page light/primary/Fit/list thumbs, variant pickers on four previews. Round 10 for review. Plan: `plan-2026-10-09-icons-and-styles-review.md`. Log: `session-log/2026-10-09-icons-and-styles-review.md`.
 
 ## Repo standup (2026-06-15)
 

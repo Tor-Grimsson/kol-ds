@@ -1,5 +1,29 @@
 # @kolkrabbi/kol-component
 
+## 0.255.0 — 2026-10-13
+
+- **Fixed: `SelectionOverlay`'s size label clears the rotate handle** (SelectionOverlayLabelClearsRotateHandle, kol-fxr). 0.253.0 hung the upright label under the rotated bounds, which is where the rotate handle lands when the box points down: at 180° the handle sat on the label's `×`. When the handle's centre falls in the label's column below the box, the label hangs 6px under the handle instead. Other angles are unchanged.
+
+## 0.254.0 — 2026-10-13
+
+- **Fixed: `BackgroundVideo` starts HLS at the rendition the player can show** (BackgroundVideoStartsAtLowestRendition, kol-website — user: "why is this video so low res? … its super long lag till you get good res?"). A bare `new Hls()` started at the manifest's first rendition (360p on every bucket master). The new exported `HLS_DEFAULTS` are `startLevel: -1`, `testBandwidth: false`, `abrEwmaDefaultEstimate: 8_000_000` and `capLevelToPlayerSize: true`. Measured on the B2 hero master: a 1280×720 element now plays 720p from the first fragment (it was 360p first), and a 446×250 tile stays at 360p. **New `hlsConfig`** is spread over the defaults; it is read when `src` attaches. `FeaturedCarousel` and `TiltBento` get the fix through `BackgroundVideo`.
+
+## 0.253.0 — 2026-10-13
+
+Two asks from kol-fxr's editor toolbar and canvas.
+
+- **Changed: `SplitToolButton disabled` disarms the action, not the fold** (SplitToolButtonFoldAlwaysOpens — user: "even if nothing is applicable shouldn't it still show what's available"). The trigger is dimmed and its click arms nothing, but the fold still opens. New `variants[].disabled` greys a row (never hidden); its click does nothing and the fold stays open. Rows are `flex`, so the panel hugs its longest row instead of spanning the canvas (the 0.252.0 menu-row fix, applied here). ⚠️ A disabled trigger is no longer a `disabled` button: it takes focus and opens.
+- **Changed: `SelectionOverlay`'s `W × H` label stays upright** (SelectionOverlayLabelUpright — user: "the size here glued to the side is so small it can't be read"). It sits outside the rotated chrome, centred 6px under the rotated box's bounds at any angle, at 12px (was 10). `showLabel`, `labelFormatter` and `accentColor` are unchanged.
+
+## 0.252.0 — 2026-10-13
+
+Four asks from kol-fxr's editor menu bar and Morph step picker — all additive; every default renders as before.
+
+- **New: `MenuDropdownNest flyout`** (MenuDropdownNestFlyout) — the submenu opens beside its row, the way a desktop menu bar does: hover opens, leaving closes, a click toggles (touch), → / ← from the keyboard. The panel is a DOM child of the row, so a leaf click still closes the whole menu and an outside press still dismisses it. One measure on open keeps it on screen (lifted above the window's foot, flipped left at the right edge). Flyouts nest to any depth; `scroll` caps a leaf list at 60vh. `disabled` on both modes. The accordion stays the default.
+- **Fixed: `MenuDropdownItem` and the nest row are `flex`, not `inline-flex`** (MenuDropdownItemBlockRow) — as bare children of a content-sized (`w-max`) panel, five rows measured as one line (≈795px). The panel now hugs its longest label; `w-full` still fills a fixed one.
+- **New: `Dropdown ariaLabel`** (DropdownAriaLabel) — names what the dropdown chooses. The trigger reads "label, value" ("Color view, Hue"), so the value is still announced. Same name as `SegmentedToggle`'s.
+- **Changed: `ShellSearchOverlay` keeps open for `action` and `keepOpen` rows** (ShellSearchOverlayActionKeepsOpen) — the row contract always said an `action` row keeps the modal open; `select()` closed after every pick. Such a row now reaches `onSelect` and `onClose` is not called; the overlay never runs the closure itself, so a shell that already runs it in `onSelect` (workshop's tag rows) does not run it twice. New `keepOpen` row flag for a drill-in. The highlight returns to the top row when the rows change, keyed on row ids, not array identity. ⚠️ A consumer whose `action` rows relied on the close now stays open — call `onClose` from `onSelect` to keep the old behaviour.
+
 ## 0.251.0 — 2026-10-10
 
 - **Fixed: `MediaLibrary variant="picker"`'s close sits on the header row** (kol-fxr, MediaPickerCloseOnTheHeaderRow — user: "x close is in a weird place"). The overlay's corner X floated ~100px above the header; it now rides `headerTrailing` after the gear, its right edge on the footer's. A consumer's own `headerTrailing` still renders, before it.

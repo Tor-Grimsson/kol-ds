@@ -318,6 +318,7 @@
   "EnvelopeGenerator": "packages/hardware/src/value/EnvelopeGenerator.jsx",
   "EnvelopeModeToggle": "packages/hardware/src/value/EnvelopeGenerator.jsx",
   "Icon": "packages/icons/src/Icon.jsx",
+  "RENAMED_ICONS": "packages/icons/src/Icon.jsx",
   "Notes": "packages/notes/src/Notes.jsx",
   "NotesCatalog": "packages/notes/src/NotesCatalog.jsx",
   "NoteEditor": "packages/notes/src/NoteEditor.jsx",

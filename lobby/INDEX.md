@@ -31,13 +31,21 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 25 entries
+## Queue — 32 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [SelectionOverlayLabelClearsRotateHandle](done/SelectionOverlayLabelClearsRotateHandle.md) | **kol-fxr** — 0.253.0's upright size label hangs under the rotated bounds; at ≈135°–225° the rotate handle points down and sits on it. Ask: the label clears the handle | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.255.0`**: the size label hangs 6px under the rotate handle when the handle falls in its column below the box |
+| 🟢 | [SplitToolButtonFoldAlwaysOpens](done/SplitToolButtonFoldAlwaysOpens.md) | **kol-fxr** — `SplitToolButton`: `disabled` disables the trigger caret included, so a fold with nothing applicable cannot open, and `variants` take no per-row `disabled`; the panel is `w-max` over `w-full inline-flex` rows and opens canvas-wide (`MenuDropdownItemBlockRow`, unfixed here). Ask: `disabled` disarms the action only, variants take `disabled` and grey, rows are block | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.253.0`**: `disabled` disarms the trigger's action only — the fold opens; `variants[].disabled` greys a row; rows are `flex`, the panel hugs its longest row |
+| 🟢 | [SelectionOverlayLabelUpright](done/SelectionOverlayLabelUpright.md) | **kol-fxr** — `SelectionOverlay`'s `W × H` label rotates with the chrome, so a 90° box shows it on end at its right edge, 10px. Ask: counter-rotate, centre under the screen bounds, 12px | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.253.0`**: the `W × H` label is upright, centred 6px under the rotated box's bounds, 12px |
+| 🟢 | [BackgroundVideoStartsAtLowestRendition](done/BackgroundVideoStartsAtLowestRendition.md) | **kol-website** — `BackgroundVideo` builds `new Hls()` with no config, so hls.js starts at the manifest's first rendition (360p on every B2 master) on a 500 kbps estimate: a 640px bento tile plays upscaled pixels until ABR climbs. Ask: `startLevel: -1`, `abrEwmaDefaultEstimate: 8e6`, `capLevelToPlayerSize: true` (or an `hlsConfig` prop over those defaults) | 2026-10-13 ← kol-website | 🟢 `closed` — **`@kolkrabbi/kol-component@0.254.0`**: `HLS_DEFAULTS` (`startLevel -1` · `testBandwidth false` · 8 Mbps estimate · `capLevelToPlayerSize`) + `hlsConfig`; a 1280×720 player plays 720p from the first fragment |
+| 🟢 | [MenuDropdownNestFlyout](done/MenuDropdownNestFlyout.md) | **kol-fxr** — `MenuDropdownNest` is an accordion (`MenuItem.jsx:167-195`); a desktop menu bar's submenus open **beside** their row. Ask: a flyout mode (hover-open, DOM-child panel so `MenuItem`'s click-close and outside-press keep working, on-screen measure, `scroll` for leaf lists). kol-fxr's `MenuFlyout.jsx` is the reference | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.252.0`**: `MenuDropdownNest flyout` (+ `scroll`, `disabled`): hover opens beside the row, leaf click closes the whole menu, flips at the right edge, nests to any depth |
+| 🟢 | [MenuDropdownItemBlockRow](done/MenuDropdownItemBlockRow.md) | **kol-fxr** — `MenuDropdownItem` (`:139`) and the nest row (`:175`) are `inline-flex`, so bare rows in a `w-max` panel measure side by side (5 rows ≈ 795px). Ask: `flex` instead | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.252.0`**: `MenuDropdownItem` and the nest row are `flex`; a `w-max` panel hugs its longest label |
+| 🟢 | [ShellSearchOverlayActionKeepsOpen](done/ShellSearchOverlayActionKeepsOpen.md) | **kol-fxr** — the row contract says an `action` row runs and keeps the modal open (`:251`); `select()` (`:151-154`) always calls `onClose`. Ask: honour it (or a row `keepOpen`), reset the active row when `suggestions` change | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.252.0`**: `action` and new `keepOpen` rows select and keep the modal open; the highlight resets when the rows change |
+| 🟢 | [DropdownAriaLabel](done/DropdownAriaLabel.md) | **kol-fxr** — `Dropdown`'s trigger has no accessible name and no prop to pass one. Ask: `ariaLabel`, as `SegmentedToggle` takes | 2026-10-13 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.252.0`**: `Dropdown ariaLabel`; the trigger reads "label, value" |
 | 🟢 | [MediaPickerCloseOnTheHeaderRow](done/MediaPickerCloseOnTheHeaderRow.md) | **kol-fxr** — in the picker (`FullscreenOverlay` + `MediaLibrary variant="browse"`), the overlay X floats ~100px above the header row and aligns with nothing. Ask: the close sits on the header row, right edge on the controls' edge (a `headerEnd` slot or positioning against the header) | 2026-10-10 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.251.0`**: the picker variant's X rides `headerTrailing`, on the gear's row |
 | 🟢 | [PrimaryHoverIsTheWell](done/PrimaryHoverIsTheWell.md) | **kol-fxr** — `Button tone="primary"` hover is the rest fill minus 8 (`#19191d` → `#111115`), one step off the rail/card ground `#121215`, so the button vanishes on hover. Ask: primary hover = `--kol-surface-sunken`, press one step past | 2026-10-10 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.173.0`**: dark hover is the well (10), press 2; light unchanged (its well is white) |
 | ⚪ | [metrics-dashboard-on-the-app-hub](archive/metrics-dashboard-on-the-app-hub.md) | **kol-website** — metrics moves onto kol-shell `AppHub` like fxr / media-hub, but `MetricsDashboard` keeps its tab in local state and always draws its own title + tab row. Ask: controlled `tab`/`onTabChange`, exported tab list, `chrome={false}` | 2026-10-09 | ⚪ `parked` — kol-website is auditing the metrics header + navigation first; it comes back with one concrete ask if needed. kol-dashboards stays here (chess uses it) |
@@ -350,6 +358,17 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-13 | **`SelectionOverlayLabelClearsRotateHandle` closed** — kol-component 0.255.0; receipt returned |
+| 2026-10-13 | **`BackgroundVideoStartsAtLowestRendition` closed** — kol-component 0.254.0; receipt returned |
+| 2026-10-13 | **Filed from kol-fxr** — `SelectionOverlayLabelClearsRotateHandle` (found adopting 0.253.0) |
+| 2026-10-13 | **`SplitToolButtonFoldAlwaysOpens` closed** — kol-component 0.253.0; receipt returned |
+| 2026-10-13 | **`SelectionOverlayLabelUpright` closed** — kol-component 0.253.0; receipt returned |
+| 2026-10-13 | **Two filed from kol-fxr** — `SplitToolButtonFoldAlwaysOpens` · `SelectionOverlayLabelUpright` (its plan 30 §§ 12–13) |
+| 2026-10-13 | **`MenuDropdownNestFlyout` closed** — kol-component 0.252.0; receipt returned |
+| 2026-10-13 | **`MenuDropdownItemBlockRow` closed** — kol-component 0.252.0; receipt returned |
+| 2026-10-13 | **`ShellSearchOverlayActionKeepsOpen` closed** — kol-component 0.252.0; receipt returned |
+| 2026-10-13 | **`DropdownAriaLabel` closed** — kol-component 0.252.0; receipt returned |
+| 2026-10-13 | **Four filed from kol-fxr** — `MenuDropdownNestFlyout` · `MenuDropdownItemBlockRow` · `ShellSearchOverlayActionKeepsOpen` · `DropdownAriaLabel` (its plan 17 #16–19, from plans 28–29) |
 | 2026-10-10 | **`MediaPickerCloseOnTheHeaderRow` closed** — kol-component 0.251.0; picker X on the header row; receipt returned |
 | 2026-10-10 | **`PrimaryHoverIsTheWell` closed** — kol-theme 0.173.0; dark hover to the well, light kept; receipt returned |
 | 2026-10-09 | **`metrics-dashboard-on-the-app-hub` parked** — kol-website audits the metrics header + nav first; kol-dashboards stays here; nothing built |

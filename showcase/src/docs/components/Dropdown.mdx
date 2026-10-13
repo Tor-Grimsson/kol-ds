@@ -61,5 +61,6 @@ actions use [MenuItem](/components/menu-item); this is value-list selection.
   {"prop":"value","type":"string","def":"—","desc":"Selected value (defaults to first)."},
   {"prop":"onChange","type":"(value) => void","def":"—","desc":"Fires with the chosen value."},
   {"prop":"variant","type":"primary | outline","def":"primary","desc":"Button chrome on the trigger (chrome law). Legacy aliases: default/subtle → primary, minimal → outline."},
-  {"prop":"size","type":"sm | md | lg","def":"auto","desc":"Overrides the viewport-derived size."}
+  {"prop":"size","type":"sm | md | lg","def":"auto","desc":"Overrides the viewport-derived size."},
+  {"prop":"ariaLabel","type":"string","def":"—","desc":"What the dropdown chooses. The trigger's name becomes \"label, value\" (\"Color view, Hue\"), so the current value is still announced. Same name as SegmentedToggle's."}
 ]} />

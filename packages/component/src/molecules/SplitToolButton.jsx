@@ -47,7 +47,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * `icon` and `shortcut` rows, which any menu wants.
  *
  * @param {Object} props
- * @param {{id: string, label: string, icon: string, shortcut?: string}[]} props.variants - Variants: menu rows + trigger glyph
+ * @param {{id: string, label: string, icon: string, shortcut?: string, disabled?: boolean}[]} props.variants - Variants: menu rows + trigger glyph. A `disabled` row is drawn greyed, never hidden; its click does nothing and the fold stays open
  * @param {string} props.value - Active variant id (controlled)
  * @param {Function} props.onChange - Fires with a variant id — on menu pick, and on trigger click while inactive (arming)
  * @param {string} props.lastPicked - Variant id the trigger shows while the group is inactive (default: variants[0])
@@ -55,7 +55,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Trigger box on the pinned-square ladder — 22 · 26 · 32 · 40 (default: 'md'). The glyph follows the SOLO ladder; it is never set at the call site
  * @param {boolean} props.blurOnClick - Blur the trigger after click so a canvas can reclaim focus and refresh its cursor (default: false)
  * @param {Function} props.onTrigger - Replaces the trigger's arm: fires with the trigger variant's id on every click. For a fold of one-shot ACTIONS (Boolean: the trigger re-runs the last-picked op) — no pressed state is implied (default: arm via `onChange`)
- * @param {boolean} props.disabled - Disables the trigger — `.kol-btn:disabled` dims it (default: false)
+ * @param {boolean} props.disabled - Disarms the trigger's ACTION and dims it; the fold still opens, so what the tool offers stays visible (SplitToolButtonFoldAlwaysOpens, kol-fxr 2026-10-13 — user: *"even if nothing is applicable shouldn't it still show what's available"*). Grey the rows that do not apply with `variants[].disabled` (default: false)
  * @param {ElementType} props.iconComponent - Glyph renderer receiving `{ name, size, className, style }` — Button's seam (default: DS `Icon`)
  * @param {string} props.aria-label - Trigger label fallback when no variant resolves
  *
@@ -108,12 +108,14 @@ const SplitToolButton = ({
   /* Arm the last-picked variant on the same click that toggles the menu —
    * floating-ui's useClick (on the reference) handles the open/close half. */
   const handleTriggerClick = (event) => {
+    if (disabled) return
     if (onTrigger) { if (triggerVariant) onTrigger(triggerVariant.id) }
     else if (!active && triggerVariant) onChange?.(triggerVariant.id)
     if (blurOnClick) event.currentTarget.blur()
   }
 
   const handleSelect = (variant) => {
+    if (variant.disabled) return
     if (variant.onSelect) variant.onSelect()
     else { onChange?.(variant.id); setOwnLast(variant.id) }
     setOpen(false)
@@ -127,7 +129,9 @@ const SplitToolButton = ({
         {...popover.getReferenceProps({ onClick: handleTriggerClick })}
         type="button"
         className={`relative kol-btn kol-btn-ghost kol-btn-icon kol-btn-${size} ${active ? 'kol-btn-pressed' : 'kol-btn-quiet'} ${className}`.trim()}
-        disabled={disabled}
+        /* NOT the `disabled` attribute — that kills the click that opens the fold. Dimmed inline so
+         * it outranks the tool palette's `.kol-btn-quiet { opacity: 1 }`. */
+        style={disabled ? { opacity: 'var(--kol-opacity-disabled)' } : undefined}
         aria-pressed={onTrigger ? undefined : active}
         aria-label={label}
       >
@@ -148,8 +152,11 @@ const SplitToolButton = ({
             <button
               key={variant.id}
               type="button"
+              disabled={variant.disabled}
               onClick={() => handleSelect(variant)}
-              className="w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
+              /* `flex`, not `inline-flex` — inline rows in this `w-max` panel measured as one line,
+               * as wide as the canvas (MenuDropdownItemBlockRow's fix, 0.252.0, applied here) */
+              className="w-full kol-helper-12 px-3 h-8 flex items-center gap-2 text-body hover:text-emphasis disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:text-body text-left"
             >
               <span className="shrink-0 w-4 inline-flex items-center justify-center">
                 <IconC name={variant.icon} size={14} />

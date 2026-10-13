@@ -113,6 +113,11 @@ const Dropdown = ({
    * the showcase's preview, with its toolbar pickers beside it (user 2026-10-02: *"can we
    * disclude the preview from that behaviour?"*). */
   stayOpen = false,
+  /* `ariaLabel` — what the dropdown CHOOSES (DropdownAriaLabel, kol-fxr 2026-10-13: a Color pane's
+   * Hue · Wheel · HSL · RGB picker read as "Hue, popup button", no word for what it picks). Same name
+   * as SegmentedToggle's. An aria-label replaces the button's text, so the current value rides along
+   * after it — "Color view, Hue" — and is still announced. */
+  ariaLabel,
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -239,6 +244,7 @@ const Dropdown = ({
         className={triggerCls}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        aria-label={ariaLabel ? [ariaLabel, currentOption?.label].filter((t) => typeof t === 'string' && t).join(', ') : undefined}
         data-state={isOpen ? 'open' : 'closed'}
       >
         {iconOnly ? (

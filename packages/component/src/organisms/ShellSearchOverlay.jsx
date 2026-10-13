@@ -81,7 +81,8 @@ export function HighlightMatch({ label, query, ranges }) {
  *                                 the search modal opens on somewhere to go, not a blank box
  * @param {string}   query         controlled query (drives the highlight slice)
  * @param {Function} onQueryChange (string) => void — input change
- * @param {Function} onSelect      (item) => void — row click / Enter; consumer navigates
+ * @param {Function} onSelect      (item) => void — row click / Enter; consumer navigates. A row
+ *                                 with `keepOpen` or `action` selects and the modal stays open
  * @param {string}   placeholder   input placeholder
  * @param {string}   [enterLabel]  what Enter does when no row is picked — shown as
  *                                 the panel's last line, so Enter is never a surprise
@@ -137,8 +138,12 @@ export default function ShellSearchOverlay({
     return () => { if (prev instanceof HTMLElement) prev.focus() }
   }, [open])
 
-  /* Roving row resets to the top on every query change / reopen. */
-  useEffect(() => { setActiveIndex(0); setNavigated(false) }, [query, open])
+  /* Roving row resets to the top on every query change / reopen — and when the ROWS change under an
+   * unchanged query (ShellSearchOverlayActionKeepsOpen, kol-fxr 2026-10-13: a drill-in swaps the
+   * suggestions for a category's presets). Keyed on the row ids, not the array's identity, so a
+   * consumer passing a fresh array every render does not snap the highlight back to the top. */
+  const rowsKey = results.map((r) => r.id).join('\u0000')
+  useEffect(() => { setActiveIndex(0); setNavigated(false) }, [query, open, rowsKey])
 
   /* Keep the active row visible inside the scrolling list. */
   useEffect(() => {
@@ -148,9 +153,13 @@ export default function ShellSearchOverlay({
 
   if (!open) return null
 
+  /* A row that KEEPS THE MODAL OPEN — `keepOpen`, or an `action` row (the contract below always said
+   * so; until 0.252.0 every pick closed — ShellSearchOverlayActionKeepsOpen, kol-fxr 2026-10-13). It
+   * still reaches `onSelect`, and the closure stays the consumer's to run there: the overlay running
+   * it too would fire it twice in every shell that already does (workshop's tag rows). */
   const select = (item) => {
     onSelect?.(item)
-    onClose?.()
+    if (!(item?.keepOpen || typeof item?.action === 'function')) onClose?.()
   }
 
   const optionId = (item) => `${listId}-${item.id}`
@@ -248,7 +257,9 @@ export default function ShellSearchOverlay({
           *   icon      optional leading glyph (kol-icons name)
           *   hint      subtext shown when the LABEL was not what matched
           *   href      a destination; dismisses the search modal
-          *   action    a closure; runs and KEEPS the search modal open (tag rows)
+          *   action    a closure, run by the consumer's `onSelect`; the search modal STAYS OPEN (tag rows)
+          *   keepOpen  the row selects and the search modal STAYS OPEN — a drill-in (category →
+          *             its items, a "← All" row back); the consumer swaps `suggestions`/`results`
           * Built by `buildShellSearchItems` (showcase/src/nav/shell-nav.js). */}
         {expanded ? (
           <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto">{children}</div>

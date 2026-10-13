@@ -2655,6 +2655,20 @@
       "desc": ""
     }
   ],
+  "MenuDropdownNest": [
+    {
+      "prop": "flyout",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "scroll",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
   "PaletteHarmonyWheel": [
     {
       "prop": "size",

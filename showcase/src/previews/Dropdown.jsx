@@ -20,7 +20,7 @@ export const picker = 'multi'
 export default function DropdownPreview({ variant = 'primary', tone = 'default', size = 'sm' }) {
   const [value, setValue] = useState('newest')
   /* stayOpen: the open list is what this page shows — it stays while the toolbar picks a size or tone */
-  return <Dropdown value={value} onChange={setValue} variant={variant} tone={tone} size={size} options={OPTIONS} stayOpen />
+  return <Dropdown value={value} onChange={setValue} variant={variant} tone={tone} size={size} options={OPTIONS} ariaLabel="Sort" stayOpen />
 }
 
 /* Index card: one canonical instance, closed. */
