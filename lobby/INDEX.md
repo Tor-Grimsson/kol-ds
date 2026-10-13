@@ -31,13 +31,14 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 24 entries
+## Queue — 25 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [MediaPickerCloseOnTheHeaderRow](done/MediaPickerCloseOnTheHeaderRow.md) | **kol-fxr** — in the picker (`FullscreenOverlay` + `MediaLibrary variant="browse"`), the overlay X floats ~100px above the header row and aligns with nothing. Ask: the close sits on the header row, right edge on the controls' edge (a `headerEnd` slot or positioning against the header) | 2026-10-10 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-component@0.251.0`**: the picker variant's X rides `headerTrailing`, on the gear's row |
 | 🟢 | [PrimaryHoverIsTheWell](done/PrimaryHoverIsTheWell.md) | **kol-fxr** — `Button tone="primary"` hover is the rest fill minus 8 (`#19191d` → `#111115`), one step off the rail/card ground `#121215`, so the button vanishes on hover. Ask: primary hover = `--kol-surface-sunken`, press one step past | 2026-10-10 ← kol-fxr | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.173.0`**: dark hover is the well (10), press 2; light unchanged (its well is white) |
 | ⚪ | [metrics-dashboard-on-the-app-hub](archive/metrics-dashboard-on-the-app-hub.md) | **kol-website** — metrics moves onto kol-shell `AppHub` like fxr / media-hub, but `MetricsDashboard` keeps its tab in local state and always draws its own title + tab row. Ask: controlled `tab`/`onTabChange`, exported tab list, `chrome={false}` | 2026-10-09 | ⚪ `parked` — kol-website is auditing the metrics header + navigation first; it comes back with one concrete ask if needed. kol-dashboards stays here (chess uses it) |
 | 🟢 | [metrics-dashboard-on-a-phone](done/metrics-dashboard-on-a-phone.md) | **kol-website** — MetricsDashboard has no phone layout: `grid-auto-rows: minmax(240px, auto)` makes every stat card 240 px for three lines, the tab and host rows run off the edge unscrollable, the deploy timeline is squeezed beside the range control. Ask: content-height rows below md, scrolling rows, timeline on its own line | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-theme@0.172.0` + `@kolkrabbi/kol-dashboards@0.5.0`** |
@@ -349,6 +350,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-10 | **`MediaPickerCloseOnTheHeaderRow` closed** — kol-component 0.251.0; picker X on the header row; receipt returned |
 | 2026-10-10 | **`PrimaryHoverIsTheWell` closed** — kol-theme 0.173.0; dark hover to the well, light kept; receipt returned |
 | 2026-10-09 | **`metrics-dashboard-on-the-app-hub` parked** — kol-website audits the metrics header + nav first; kol-dashboards stays here; nothing built |
 | 2026-10-09 | **`metrics-dashboard-on-the-app-hub` filed from kol-website** — controlled tab + no own chrome so AppHub can drive it; queue 22 → 23 |

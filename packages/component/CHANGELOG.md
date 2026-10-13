@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.251.0 — 2026-10-10
+
+- **Fixed: `MediaLibrary variant="picker"`'s close sits on the header row** (kol-fxr, MediaPickerCloseOnTheHeaderRow — user: "x close is in a weird place"). The overlay's corner X floated ~100px above the header; it now rides `headerTrailing` after the gear, its right edge on the footer's. A consumer's own `headerTrailing` still renders, before it.
+
 ## 0.250.0 — 2026-10-09
 
 - **Fixed:** `MediaLibrary`'s title root drew the row-size slider on a phone, where `rowSize` reaches nothing (the phone browser is the stack). It is desk-only now; the grid's tile slider stays. kol-website, from the user's iPhone.

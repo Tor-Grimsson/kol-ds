@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ActionButton from '../molecules/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import Input from '../atoms/Input.jsx'
@@ -1084,7 +1085,10 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
     onClose?.()
   }
   return (
-    <FullscreenOverlay open scrim onClose={onClose}>
+    /* THE X SITS ON THE HEADER ROW (MediaPickerCloseOnTheHeaderRow, kol-fxr 2026-10-10 — user: *"x
+     * close is in a weird place, align better"*). The overlay's corner close floated ~100px above
+     * the header and lined up with nothing; it rides `headerTrailing`, after the gear, instead. */
+    <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
       <div className="kol-media-picker gap-4">
         <MediaLibraryBrowse
           {...browseProps}
@@ -1095,6 +1099,7 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
           settings={settings}
           onSettingsChange={setSettings}
           onPickFile={setFile}
+          headerTrailing={<>{browseProps.headerTrailing}<CloseButton onClick={onClose} /></>}
         />
         <div className="mt-auto flex items-center justify-end gap-4">
           <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
