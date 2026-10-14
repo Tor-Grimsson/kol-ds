@@ -69,3 +69,7 @@ Not asked: a new prop, or a change to one-bucket consumers without `bucketLevel`
 Both bugs, in `MediaLibraryPages.jsx`. **The flag is derived**: `atTitleRoot = appRoot && !prefix && !pickedFile && !pickedFolder`; `setPrefix`, `pickFile` and `pickFolder` clear `appRoot`, and every read goes through the derivation. **Rows and grid list the buckets** at the title root, one row / tile each; and **one level above it** holds the title as a single folder (the columns' column 0), reached by ⌘↑, ⇧Enter or the title crumb. A picked file OR folder ends the crumb in every view (it was the columns' alone). Buckets behave as folders — click highlights, double-click / Enter opens — and preview their totals.
 
 Proved live in `apps/media` at 1400: the ticket's repro ends with the full path crumb in rows and grid; ⌘↑ from a file ends at the top with the title selected; columns unchanged.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

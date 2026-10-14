@@ -51,3 +51,7 @@ Every `prompt()`/`confirm()`/`alert()` in `MediaLibraryPages.jsx` now goes throu
 **Also in 0.217.0, so it is not a surprise:** the media surface changed shape underneath — Browse and Files are ONE surface with three views (columns · rows · grid; `list` duplicated rows and now lands on rows). `view` is the new key; `folderView` and `layout` are still read and kept in step beneath it, so nothing you pass breaks. Click selects · double-click opens · right-click is the menu · space is Quick Look (a resizable window, folders too). Opt-in, absent means unchanged: `trash={{ items, restore, purge, empty }}` (delete moves aside instead of "cannot be undone"). New dependency `pdfjs-dist`, lazy — PDFs show page one. Known, not fixed: in column view, dropping a file onto another FILE's row renames the dragged file (pre-existing, unfiled).
 
 Closes on kol-client-olina verifying it in their running app.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

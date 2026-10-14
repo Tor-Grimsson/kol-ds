@@ -10,6 +10,14 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-14 latest, lobby cleared)
+
+- Eighteen 🟠 rows closed on the user's ruling — all shipped and cited; the inbox is empty. **A ticket closes the turn its version ships; the filer's verification is never a close condition, and closed tickets are never reported.** Push is the user's. Log: `session-log/2026-10-14-lobby-eighteen-closes.md`.
+
+## Current state (2026-10-14 later, viewport touch gestures)
+
+- **Published:** kol-component 0.259.0 — `PanZoomViewport` takes two-finger pinch + pan; a one-finger tap fires `onSpaceTap`. fxr's ViewportTouchGestures closed, receipt returned. Push is the user's. Log: `session-log/2026-10-14-viewport-touch-gestures.md`.
+
 ## Current state (2026-10-14, fxr head asks, storageKey URLs, zoom commands)
 
 - **Published:** kol-component 0.256.0 · 0.257.0 · 0.258.0 · kol-media-client 0.6.0.
@@ -29,14 +37,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-13, fxr's menu-bar asks)
 
 - **Published:** kol-component 0.252.0. Adds `MenuDropdownNest flyout`, makes menu rows `flex`, adds `Dropdown ariaLabel`, and keeps `ShellSearchOverlay` open for `action`/`keepOpen` rows. All four of fxr's 2026-10-13 tickets are closed and their receipts returned. Push is the user's. Log: `session-log/2026-10-13-fxr-menus-search-dropdown.md`.
-
-## Current state (2026-10-10 later, picker close on the header row)
-
-- **Published:** kol-component 0.251.0 — `MediaLibrary variant="picker"`'s X rides `headerTrailing` on the gear's row. fxr's MediaPickerCloseOnTheHeaderRow closed; fxr to adopt `variant="picker"`. Push is the user's. Log: `session-log/2026-10-13-picker-close-on-the-header-row.md`.
-
-## Current state (2026-10-10, primary hover is the well)
-
-- **Published:** kol-theme 0.173.0 — dark primary hover = the well (new `--kol-surface-secondary-hover` / `-press`, per theme); light unchanged. fxr's PrimaryHoverIsTheWell closed, receipt returned. Push is the user's. Log: `session-log/2026-10-10-primary-hover-is-the-well.md`.
 
 ## Repo standup (2026-06-15)
 

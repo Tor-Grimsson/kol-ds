@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.259.0 — 2026-10-14
+
+- **New: `PanZoomViewport` touch** (ViewportTouchGestures, kol-fxr — user: "in mobile I still cant pinch zoom move with 2 fingers. and I think one tap should start stop transport play/pause"). Two fingers pinch-zoom at their midpoint and the midpoint's travel pans, in one gesture, inside the real clamps; while they are down the transform layer takes no pointer events, as with Space held. One finger stays the consumer's, except a tap (up within 350 ms and 12 px, no second finger) fires `onSpaceTap`. The container carries `touch-action: none`. Mouse, trackpad and keys are unchanged.
+
 ## 0.258.0 — 2026-10-13
 
 - **New: `PanZoomViewport` view commands** (CanvasViewCommands, kol-fxr — user: "wait command 1 2 3 4 are not bound?"). Two window events beside `kol:zoom-at`: **`kol:zoom-fit`** `{ to }` — `'frame'` (default) is ⌘0's opening view, `'width'` fills the viewport with the frame's width centred vertically, `{ x, y, w, h }` in frame px fills it with that rect, 24px around it, centred; **`kol:zoom-to`** `{ scale }` — a real scale (1 = 100%) about the viewport centre.

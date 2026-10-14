@@ -42,3 +42,7 @@ the collapse; the ask is to reach the level, not to force it.
 ## ADDRESSED — 2026-09-23 · kol-component@0.218.0
 
 `bucketLevel` (default `false`) on `MediaLibraryBrowse`, reaching `MediaLibraryExplorer` through its prop spread. `true` keeps the virtual root with one bucket: column 0 the title, column 1 the bucket row, then its folders — the same `VROOT`/`unroot` path multi-bucket consumers take, so drop, move and menu verbs still get bucket-relative paths. The header dropdown stays hidden with one bucket. Absent, `single` is what it was on 0.217.0. 27 gates clean; not proved live in `apps/media`.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

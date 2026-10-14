@@ -102,3 +102,7 @@ editor's own picker for the DS modal library — the footer's From library, the 
 labs' source card open `MediaLibrary variant="modal"`: a scrim over the page, the Store dropdown, a
 full-height sheet on a phone. Labs' library door looks different after the bump; the pick contract is
 unchanged. The old picker is in this repo's `_tmp/2026-10-07-design-editor-media-picker/`.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

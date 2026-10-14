@@ -442,14 +442,15 @@ function isTypingTarget(el) {
  * transform layer disable while Space is held so layer mousedowns don't fire
  * mid-pan. `f` toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
  * { clientX, clientY, factor } · `kol:zoom-to` { scale } (real, 1 = 100%) · `kol:zoom-fit` { to:
- * 'frame' | 'width' | { x, y, w, h } } — window events. Zoom is clamped at 2%–3200% real.
+ * 'frame' | 'width' | { x, y, w, h } } — window events. Zoom is clamped at 2%–3200% real. Touch:
+ * two fingers pinch-zoom + pan; a one-finger tap fires `onSpaceTap`.
  *
  * @param {ReactNode} backdrop   placed behind the frame (grid / dark bg); the consumer owns its sizing — oversize it so panning never reveals an edge
  * @param {boolean}   showRulers draw the virtual-px rulers (default true)
  * @param {{h: number[], v: number[]}} guides guide positions in VIRTUAL px
  * @param {Function}  setGuides  updater for `guides`; without both, no guides layer renders
  * @param {boolean}   guidesInteractive  allow grab + create (default true)
- * @param {Function}  onSpaceTap fires on a Space press released without panning
+ * @param {Function}  onSpaceTap fires on a Space press released without panning, or a one-finger touch tap
  * @param {ReactNode} children   the letterboxed frame
  */
 export function PanZoomViewport({
@@ -469,6 +470,7 @@ export function PanZoomViewport({
   const [dragging, setDragging]   = useState(false)
   const [view, setView]           = useState({ zoom: 1, x: 0, y: 0 })
   const dragStart                 = useRef(null)
+  const [pinching, setPinching]   = useState(false)
   const [showFps, setShowFps]     = useState(false)
   const fps                       = useFps(showFps)
   /* Ref mirror so the keyup listener calls the latest callback without
@@ -563,6 +565,59 @@ export function PanZoomViewport({
     return () => node.removeEventListener('wheel', onWheel)
   }, [])
 
+  /* Touch (ViewportTouchGestures, kol-fxr 2026-10-14): two fingers pinch-zoom at their midpoint and
+   * the midpoint's travel pans, in one gesture; the transform layer goes deaf while they are down so
+   * a consumer's tool never sees the second finger. One finger stays the consumer's, except a TAP
+   * (up within TAP_MS and TAP_PX, no second finger joined) fires `onSpaceTap`. Down is caught in the
+   * capture phase on the container; move/up on window, so a finger leaving the frame still ends. */
+  useEffect(() => {
+    const node = containerRef.current
+    if (!node) return
+    const TAP_MS = 350, TAP_PX = 12
+    const pts = new Map()
+    let pinch = null, tap = null
+    const pair = () => {
+      const [a, b] = [...pts.values()]
+      return { mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, d: Math.hypot(a.x - b.x, a.y - b.y) || 1 }
+    }
+    const onDown = (e) => {
+      if (e.pointerType !== 'touch') return
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (pts.size === 1) tap = { id: e.pointerId, t: e.timeStamp, x: e.clientX, y: e.clientY }
+      else if (pts.size === 2) { tap = null; pinch = pair(); setPinching(true) }
+    }
+    const onMove = (e) => {
+      if (!pts.has(e.pointerId)) return
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > TAP_PX) tap = null
+      if (!pinch || pts.size < 2) return
+      const prev = pinch, next = pair()
+      pinch = next
+      const r = node.getBoundingClientRect()
+      const fit = fitOf(node)
+      setView((v) => {
+        const z = zoomAt(v, next.d / prev.d, prev.mx - r.left, prev.my - r.top, fit)
+        return { ...z, x: z.x + next.mx - prev.mx, y: z.y + next.my - prev.my }
+      })
+    }
+    const onEnd = (e) => {
+      if (!pts.delete(e.pointerId)) return
+      if (tap?.id === e.pointerId && e.type === 'pointerup' && e.timeStamp - tap.t < TAP_MS) spaceTapRef.current?.()
+      if (tap?.id === e.pointerId) tap = null
+      if (pinch && pts.size < 2) { pinch = null; setPinching(false) }
+    }
+    node.addEventListener('pointerdown', onDown, true)
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onEnd)
+    window.addEventListener('pointercancel', onEnd)
+    return () => {
+      node.removeEventListener('pointerdown', onDown, true)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onEnd)
+      window.removeEventListener('pointercancel', onEnd)
+    }
+  }, [])
+
   /* A consumer's zoom TOOL announces clicks as `kol:zoom-at` (client coords +
    * factor) rather than reaching into this state — anchored zoom at the
    * pointer. Same idiom as `kol:guide-drag-start` below. */
@@ -654,7 +709,7 @@ export function PanZoomViewport({
       <div
         ref={containerRef}
         className="relative w-full h-full overflow-hidden select-none"
-        style={cursor ? { cursor } : undefined}
+        style={{ cursor, touchAction: 'none' }}
         onMouseDown={onMouseDown}
       >
         {/* No transition on the transform: editing chrome (selection
@@ -667,7 +722,7 @@ export function PanZoomViewport({
           style={{
             transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})`,
             transformOrigin: '0 0',
-            pointerEvents: spaceHeld ? 'none' : 'auto',
+            pointerEvents: spaceHeld || pinching ? 'none' : 'auto',
           }}
         >
           {backdrop}

@@ -38,3 +38,7 @@ is a prefix filter on the same sum and no fetch.
 ## ADDRESSED — 2026-09-23 · kol-component@0.218.0
 
 Below the root the count line's grey tail is the current folder's recursive total — `· in projects: N files · size`, every file under the prefix (system files included, as the root's `bucket:` tail counts them). Hidden when it would repeat the bright part (a leaf). Root unchanged. One line in `MediaLibraryPages.jsx`; 27 gates clean; not proved live in `apps/media`.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

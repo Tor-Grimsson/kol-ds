@@ -64,3 +64,7 @@ and pass a rendered preview as `cover`.
 - Consumer: `apps/brand/src/pages/Notes.jsx`, kol-shell `CatalogPage`, kol-component `ContentCard` / `ContentRow` at `article`.
 - Versions: kol-component 0.203.0 · kol-shell 0.51.0 · kol-theme 0.145.0.
 - The text slots are `title · body · eyebrow · detail · date · size · meta · tags`. Worth noting separately: an unknown prop is dropped SILENTLY — we passed `summary` and every card rendered empty with no warning anywhere. A dev-mode warning on an unrecognised text slot would have saved an hour.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

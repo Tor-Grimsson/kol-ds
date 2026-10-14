@@ -57,3 +57,7 @@ Writing 51 `/lobby-ds` specs and letting the DS triage them. Rejected: it moves 
 - [ ] kol-noter marks the register's `Ship?` column against that answer (the user's call per component)
 - [ ] The agreed number of specs is staged via `/lobby-ds`, in the agreed order
 - [ ] Receipt returned to `~/dev/projects/kol-docs/kol-noter/lobby/outbox/note-component-extraction-lead.md`
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

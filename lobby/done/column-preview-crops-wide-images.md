@@ -39,3 +39,7 @@ images, `image/svg+xml`), so the whole graphic shows inside the frame. Photos ne
 `ImageFrame` keeps the ratio snap and the frame size. It draws `object-contain` for an SVG (`image/svg+xml`, from the first paint) or for an image whose own ratio is past the ladder's ends (wider than 16:9, taller than 9:16); photos near a preset keep `object-cover`. Both call sites (columns, and the rows / grid pane) pass the vector flag.
 
 Proved live in `apps/media`: `logo.svg` → contain; `tt-07.jpg` (4:5) → cover in a 4 / 5 frame, as before; an 11:1 PNG swapped into the frame → contain in a 16 / 9 frame. The fixture has no wide SVG, so `olina-wordmark.svg` itself is yours to confirm.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

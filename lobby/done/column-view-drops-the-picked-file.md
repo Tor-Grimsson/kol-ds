@@ -38,3 +38,7 @@ way a pick in columns already does.
 `ColumnBrowser` takes a controlled `picked` (a key or an object; absent = internal, exactly as before). Given, the browser opens on that file's level — calling `onPrefix` when the file sits deeper than the current prefix — with its row selected, previewed, and the keyboard cursor seeded on it. `MediaLibraryPages` passes `pickedFile`, re-rooted to the virtual path.
 
 Proved live in `apps/media` (multi-bucket, so virtual paths): rows → columns and grid → columns keep the file; a file picked inside an expanded subfolder in rows lands columns on that folder; ↑ from the carried pick moves to the file above; clicking a folder clears the pick.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

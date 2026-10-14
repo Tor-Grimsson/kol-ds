@@ -62,3 +62,7 @@ from the source (not run):
 ## ADDRESSED — 2026-09-23 · kol-component@0.219.0
 
 All three, in `MediaLibraryPages.jsx`, no new props on the pages. **Grid** draws the level's subfolders as `MediaTile`s ahead of the files (double-click opens, the folder menu on right-click, click selects; `flat` draws none) and the count line reads `7 folders · 1 file · …`. **The wall's container** takes `onContextMenu` for the level; a tile's own menu stops the event first, so it still wins. **⌘↑** is one `goUp` — parent → … → bucket top → title root (`setAppRoot(true)`), handled before the empty-list bail-out in grid and falling through to it from the top of rows; with one bucket and no `bucketLevel` it ends at the bucket's top. Checked live at 1400 in `apps/media`: grid from `#img/` → bucket top → title root; rows reaches the title root and stays. 27 gates clean.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

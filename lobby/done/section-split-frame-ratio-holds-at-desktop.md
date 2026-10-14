@@ -74,3 +74,7 @@ Stopgap deleted from `HomeFoundry.jsx`; the section took `height="80"` (393×314
 
 Three desktop viewport heights, the ratio holds at each; nothing cropped. State left for this repo to close.
 
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

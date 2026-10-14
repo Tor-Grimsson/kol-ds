@@ -166,3 +166,7 @@ Built across 2026-09-21 → 09-25 (session logs of those dates). Against the def
 - **Clear changes** resets the tree to its seed (`App.jsx`).
 - `docs/operations/07-apps-tier/` links `~/.dotfiles/docs/operations/systems/apps-tier/INDEX.md`, not a restatement.
 - No second app started.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

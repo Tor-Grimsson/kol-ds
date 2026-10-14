@@ -256,3 +256,7 @@ span/input dance are gone with it.
 - **15** — the `tone="primary"` hover STOP. His ruling.
 - **10 + 11** stay unreproducible from a screenshot. **12** is a feature, and it
   wants the same thumbnail-source call the mobile browser wanted.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.

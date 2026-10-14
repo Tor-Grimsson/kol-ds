@@ -294,3 +294,7 @@ Remaining by your order: **A2 · A4 · A5**, then **B1** — whose real question
 **All seventeen rows answered:** A8 via `Input` · A6 · A7 · B2 · A1 · B3 · A4 · A5 · A3 shipped · B1 + A2 stay in the engine by ruling.
 
 **Remainder at kol-fxr:** adopt `ToolPalette` (pass `EditorIcon` as `iconComponent`) on the next bump, and re-measure in a browser.
+
+## CLOSED — 2026-10-14
+
+Closed on the user's ruling: the asked-for change is shipped and cited above. Verification in the filing repo is theirs, not a condition here.
