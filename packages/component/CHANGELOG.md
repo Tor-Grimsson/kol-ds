@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-component
 
+## 0.258.0 — 2026-10-13
+
+- **New: `PanZoomViewport` view commands** (CanvasViewCommands, kol-fxr — user: "wait command 1 2 3 4 are not bound?"). Two window events beside `kol:zoom-at`: **`kol:zoom-fit`** `{ to }` — `'frame'` (default) is ⌘0's opening view, `'width'` fills the viewport with the frame's width centred vertically, `{ x, y, w, h }` in frame px fills it with that rect, 24px around it, centred; **`kol:zoom-to`** `{ scale }` — a real scale (1 = 100%) about the viewport centre.
+- **Changed: zoom clamps are in real terms** — 2%–3200% of one screen px per frame px, was 0.1–8× of the fitted frame (a 1080 frame fitted at ~0.58 capped at ~464% real, so 800% was out of reach). ⌘0 / ⌘= / ⌘- and the wheel are otherwise unchanged.
+
 ## 0.257.0 — 2026-10-13
 
 - **Fixed: `MediaLibrary` and the media pages build URLs on `storageKey`** (MediaLibraryUrlOnStorageKey, kol-website). The API lists `key` (the path) and `storageKey` (where the bytes live), and a rename or move changes only the path, so `mediaUrl(path)` 404'd for a renamed file or a new upload (`f/<id>.<ext>`). Both `mediaUrl` wrappers (the provider's and the pages') now resolve a path to its row's `storageKey`, which covers every site: thumbs, previews, posters, Copy URL, picks. The picker's Use builds on the row. `downloadUrl` stays on the path. Without `storageKey` nothing changes.

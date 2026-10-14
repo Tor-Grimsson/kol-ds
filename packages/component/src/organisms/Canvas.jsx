@@ -368,15 +368,27 @@ export function PanViewport({ backdrop, children }) {
  * clamps, the anchor math, the wheel handling and the chip layout are the
  * source's — fxr is the reference for this set. */
 
-const ZOOM_MIN = 0.1
-const ZOOM_MAX = 8
+/* The clamps are in REAL terms — screen px per frame px, `zoom × fit` (CanvasViewCommands, kol-fxr
+ * 2026-10-13). They were 0.1–8 relative to the fitted frame, so a 1080 frame fitted at ~0.58 capped
+ * at ~464% real and Affinity's 800% could not be reached. */
+const ZOOM_MIN_REAL = 0.02
+const ZOOM_MAX_REAL = 32
+const FIT_MARGIN = 24 /* screen px around a rect fitted by `kol:zoom-fit` */
+
+/* The fit scale: the frame's LAYOUT width (untransformed) over its virtual width. 1 without a frame. */
+function fitOf(node) {
+  const w = node?.querySelector('[data-canvas-frame]')?.offsetWidth
+  return w ? w / CANVAS_VIRTUAL_W : 1
+}
+
+const clampZoom = (z, fit) => Math.min(ZOOM_MAX_REAL / fit, Math.max(ZOOM_MIN_REAL / fit, z))
 
 /* Anchor a zoom change at a screen point (sx, sy relative to the viewport
  * top-left) so the content under the cursor stays put. Transform is
  * `translate(x,y) scale(zoom)` with origin 0,0, so screen = p*zoom + pan;
  * inverting for a fixed p gives the new pan below. */
-function zoomAt(v, factor, sx, sy) {
-  const z2 = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, v.zoom * factor))
+function zoomAt(v, factor, sx, sy, fit = 1) {
+  const z2 = clampZoom(v.zoom * factor, fit)
   return {
     zoom: z2,
     x: sx - (sx - v.x) * (z2 / v.zoom),
@@ -428,7 +440,9 @@ function isTypingTarget(el) {
  * `translate() scale()` on the transform layer carries both, so a consumer's
  * screen→virtual math needs no zoom awareness. Pointer events on the
  * transform layer disable while Space is held so layer mousedowns don't fire
- * mid-pan. `f` toggles an fps chip beside the zoom readout.
+ * mid-pan. `f` toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
+ * { clientX, clientY, factor } · `kol:zoom-to` { scale } (real, 1 = 100%) · `kol:zoom-fit` { to:
+ * 'frame' | 'width' | { x, y, w, h } } — window events. Zoom is clamped at 2%–3200% real.
  *
  * @param {ReactNode} backdrop   placed behind the frame (grid / dark bg); the consumer owns its sizing — oversize it so panning never reveals an edge
  * @param {boolean}   showRulers draw the virtual-px rulers (default true)
@@ -482,11 +496,11 @@ export function PanZoomViewport({
         } else if (e.key === '=' || e.key === '+') {
           e.preventDefault()
           const r = containerRef.current?.getBoundingClientRect()
-          setView((v) => zoomAt(v, 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2))
+          setView((v) => zoomAt(v, 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2, fitOf(containerRef.current)))
         } else if (e.key === '-') {
           e.preventDefault()
           const r = containerRef.current?.getBoundingClientRect()
-          setView((v) => zoomAt(v, 1 / 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2))
+          setView((v) => zoomAt(v, 1 / 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2, fitOf(containerRef.current)))
         }
       }
     }
@@ -540,7 +554,7 @@ export function PanZoomViewport({
       const sx = e.clientX - rect.left
       const sy = e.clientY - rect.top
       if (e.ctrlKey || e.metaKey) {
-        setView((v) => zoomAt(v, Math.exp(-e.deltaY * 0.0015), sx, sy))
+        setView((v) => zoomAt(v, Math.exp(-e.deltaY * 0.0015), sx, sy, fitOf(node)))
       } else {
         setView((v) => ({ ...v, x: v.x - e.deltaX, y: v.y - e.deltaY }))
       }
@@ -558,10 +572,53 @@ export function PanZoomViewport({
       if (!node) return
       const { clientX, clientY, factor } = e.detail
       const rect = node.getBoundingClientRect()
-      setView((v) => zoomAt(v, factor, clientX - rect.left, clientY - rect.top))
+      setView((v) => zoomAt(v, factor, clientX - rect.left, clientY - rect.top, fitOf(node)))
+    }
+    /* `kol:zoom-to` { scale } — a REAL scale (1 = 100%: one screen px per frame px), about the
+     * viewport centre, so a consumer's 100–800% steps need not measure the fit. */
+    const onZoomTo = (e) => {
+      const node = containerRef.current
+      if (!node) return
+      const fit = fitOf(node)
+      const r = node.getBoundingClientRect()
+      setView((v) => zoomAt(v, e.detail.scale / (v.zoom * fit), r.width / 2, r.height / 2, fit))
+    }
+    /* `kol:zoom-fit` { to } — `'frame'` (default) is ⌘0's opening view; `'width'` fills the
+     * viewport with the frame's width, centred vertically; `{ x, y, w, h }` in frame (virtual) px
+     * fills it with that rect, FIT_MARGIN around it, centred. */
+    const onZoomFit = (e) => {
+      const node = containerRef.current
+      const frame = node?.querySelector('[data-canvas-frame]')
+      const to = e.detail?.to ?? 'frame'
+      if (!frame || to === 'frame') { setView({ zoom: 1, x: 0, y: 0 }); return }
+      const fit = fitOf(node)
+      const cr = node.getBoundingClientRect()
+      const fr = frame.getBoundingClientRect()
+      setView((v) => {
+        /* the frame's rect at rest (zoom 1, no pan), in viewport px */
+        const fx = (fr.left - cr.left - v.x) / v.zoom
+        const fy = (fr.top - cr.top - v.y) / v.zoom
+        const rect = to === 'width'
+          ? { x: fx, y: fy, w: frame.offsetWidth, h: frame.offsetHeight }
+          : { x: fx + to.x * fit, y: fy + to.y * fit, w: to.w * fit, h: to.h * fit }
+        const zoom = clampZoom(to === 'width'
+          ? cr.width / rect.w
+          : Math.min((cr.width - 2 * FIT_MARGIN) / rect.w, (cr.height - 2 * FIT_MARGIN) / rect.h), fit)
+        return {
+          zoom,
+          x: cr.width / 2 - (rect.x + rect.w / 2) * zoom,
+          y: cr.height / 2 - (rect.y + rect.h / 2) * zoom,
+        }
+      })
     }
     window.addEventListener('kol:zoom-at', onZoomEvt)
-    return () => window.removeEventListener('kol:zoom-at', onZoomEvt)
+    window.addEventListener('kol:zoom-to', onZoomTo)
+    window.addEventListener('kol:zoom-fit', onZoomFit)
+    return () => {
+      window.removeEventListener('kol:zoom-at', onZoomEvt)
+      window.removeEventListener('kol:zoom-to', onZoomTo)
+      window.removeEventListener('kol:zoom-fit', onZoomFit)
+    }
   }, [])
 
   /* `f` toggles the fps chip (measured only while shown). Guarded against

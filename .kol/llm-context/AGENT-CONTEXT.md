@@ -10,6 +10,14 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-14, fxr head asks, storageKey URLs, zoom commands)
+
+- **Published:** kol-component 0.256.0 · 0.257.0 · 0.258.0 · kol-media-client 0.6.0.
+  - fxr's head: `MenuItem offset`, `ToolPalette orientation="vertical"` and `SplitToolButton placement`; `CanvasRuler` is graduated.
+  - kol-website: media URLs are built on `storageKey`.
+  - fxr's View › Zoom: `kol:zoom-fit` / `kol:zoom-to`, with clamps in real terms.
+- Five tickets closed and receipts returned. No `🔵` rows left. Push is the user's. Log: `session-log/2026-10-14-fxr-head-asks-storagekey-zoom-commands.md`.
+
 ## Current state (2026-10-13 later, fxr toolbar + canvas, HLS start)
 
 - **Published:** kol-component 0.253.0 · 0.254.0 · 0.255.0.
@@ -29,10 +37,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-10, primary hover is the well)
 
 - **Published:** kol-theme 0.173.0 — dark primary hover = the well (new `--kol-surface-secondary-hover` / `-press`, per theme); light unchanged. fxr's PrimaryHoverIsTheWell closed, receipt returned. Push is the user's. Log: `session-log/2026-10-10-primary-hover-is-the-well.md`.
-
-## Current state (2026-10-09 night, picker is a variant + upload dialog)
-
-- **Picker A/B is ruled — it is a variant:** `MediaLibrary variant="picker"` (the browse surface in the modal card, Use footer) beside `variant="modal"`; apps/media `/picker` and `/picker/b` show each. kol-component 0.249.0 published. kol-website's `upload-dialog-optimise-and-keep-originals` closed (kol-media-client 0.5.0 · kol-component 0.248.0).
 
 ## Repo standup (2026-06-15)
 
