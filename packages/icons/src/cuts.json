@@ -190,6 +190,7 @@
   "message": "stroke",
   "metrics": "solid",
   "minus": "stroke",
+  "mirror": "solid",
   "mobile": "stroke",
   "mode-toggle-01": "stroke",
   "mode-toggle-02": "stroke",

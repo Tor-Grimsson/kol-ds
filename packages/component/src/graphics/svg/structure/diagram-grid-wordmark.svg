@@ -1,18 +1,16 @@
-<svg width="657" height="257" viewBox="0 0 657 257" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="265.06" height="168.61" viewBox="0 0 265.06 168.61" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.2">
-<rect x="0.375" y="0.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="592.375" y="0.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="0.375" y="192.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="592.375" y="192.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<path d="M0.375 162.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 94.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 64.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 192.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 256.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 0.375H656.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M64.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M656.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M592.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
+<rect x="0" y="0" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="201.06" y="0" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="0" y="104.61000000000001" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="201.06" y="104.61000000000001" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<path d="M0 0H265.06" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 64H265.06" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 104.61000000000001H265.06" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 168.61H265.06" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 0V168.61" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M64 0V168.61" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M201.06 0V168.61" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M265.06 0V168.61" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
 </g>
 </svg>

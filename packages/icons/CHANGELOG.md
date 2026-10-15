@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.38.0 — 2026-10-15
+
+- **New:** `mirror` in `identity` — Mirror's mark (M R over its reflection, Right Grotesk Wide Dark, the reflected row cut ±1), on the set keyline beside `kol-ds`, `fxr`, `r2b2`, `currentColor`.
+
 ## 0.37.0 — 2026-10-09
 
 - **New:** `r2b2` in `identity` — the media app's mark (R 2 / B 2, Right Grotesk Wide Dark), on the set keyline beside `kol-ds` and `fxr`, `currentColor`.

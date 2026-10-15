@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.260.0 — 2026-10-14
+
+- **Fixed: the `structure/diagram-*` clearspace graphics are Kolkrabbi's** (ClearspaceGraphicsAreAnotherCreations, kol-website — user: "Logomark, wordmark and both lockups render Another Creation"). The twelve `diagram-{grid,x,logo}-{logomark,wordmark,lockup-hori,lockup-vert}` layers carried a client's marks and its signature glyph. Now: `logo` is the mark from `@kolkrabbi/kol-brand`, verbatim; `x` is the clearspace unit — the logomark, ghosted, filling each corner square — per kol-brand's rule that clearspace equals the logomark height on all sides; `grid` is the frame, the margin lines and the four unit squares. All three layers of a variant share one viewBox, and the grid strokes are `currentColor`, not white. Names unchanged.
+
 ## 0.259.0 — 2026-10-14
 
 - **New: `PanZoomViewport` touch** (ViewportTouchGestures, kol-fxr — user: "in mobile I still cant pinch zoom move with 2 fingers. and I think one tap should start stop transport play/pause"). Two fingers pinch-zoom at their midpoint and the midpoint's travel pans, in one gesture, inside the real clamps; while they are down the transform layer takes no pointer events, as with Space held. One finger stays the consumer's, except a tap (up within 350 ms and 12 px, no second finger) fires `onSpaceTap`. The container carries `touch-action: none`. Mouse, trackpad and keys are unchanged.

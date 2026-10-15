@@ -25,6 +25,7 @@ Anything else that lands in `docs/` is repo-related documentation that isn't the
 
 - **[[operations/INDEX|operations/]]** — the [[operations/01-release/02-shipped-packages|shipped-packages table]], release pipeline, and workbench (repo/CI process, not design-system content).
 - **[[visual-reference/INDEX|visual-reference/]]** — live HTML pages rendering every shipped variation of a component against the real token cascade, light+dark side by side (open in a browser; graduated proposal pages, kept verbatim to the shipped chrome).
+- **[[stack/INDEX|stack/]]** — drafts and asset candidates for posts about this repo on kolkrabbi.io's Stack (writing *about* the system, not the system).
 
 The deeper machinery lives **outside** the vault, at the repo root:
 

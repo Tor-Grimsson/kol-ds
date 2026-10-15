@@ -10,7 +10,17 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## Current state (2026-10-14 latest, lobby cleared)
+## Current state (2026-10-15, stack post drafts + identity-mirror)
+
+- **Published:** kol-icons 0.38.0 — `mirror` in `identity`. kol-mirror's identity-mirror closed, receipt returned.
+- **Parked, unfinished:** a kolkrabbi.io Stack post about this repo in `docs/stack/` — three drafts, graphics + motion candidate pages. Waits on the user's picks; then plates, clips, and a `/repo-stack` skill. Push is the user's. Log: `session-log/2026-10-15-stack-post-drafts-and-identity-mirror.md`.
+
+## Current state (2026-10-14 latest, clearspace graphics)
+
+- **Published:** kol-component 0.260.0 — the twelve `structure/diagram-*` clearspace layers are Kolkrabbi's, drawn from kol-brand's marks with the ghosted logomark as the unit. kol-website's ClearspaceGraphicsAreAnotherCreations closed, receipt returned. Lobby clear. Push is the user's. Log: `session-log/2026-10-14-clearspace-graphics-are-kolkrabbis.md`.
+- Known: kol-brand's `kol-lockup-vert.svg` is a wide lockup, not a vertical one — unruled.
+
+## Current state (2026-10-14 earlier, lobby cleared)
 
 - Eighteen 🟠 rows closed on the user's ruling — all shipped and cited; the inbox is empty. **A ticket closes the turn its version ships; the filer's verification is never a close condition, and closed tickets are never reported.** Push is the user's. Log: `session-log/2026-10-14-lobby-eighteen-closes.md`.
 
@@ -25,18 +35,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
   - kol-website: media URLs are built on `storageKey`.
   - fxr's View › Zoom: `kol:zoom-fit` / `kol:zoom-to`, with clamps in real terms.
 - Five tickets closed and receipts returned. No `🔵` rows left. Push is the user's. Log: `session-log/2026-10-14-fxr-head-asks-storagekey-zoom-commands.md`.
-
-## Current state (2026-10-13 later, fxr toolbar + canvas, HLS start)
-
-- **Published:** kol-component 0.253.0 · 0.254.0 · 0.255.0.
-  - `SplitToolButton`: the fold opens even when disabled, and rows can be greyed one by one.
-  - `SelectionOverlay`: the size label stays upright and clears the rotate handle.
-  - `BackgroundVideo`: `HLS_DEFAULTS` + `hlsConfig`; it starts at a rendition the player can show.
-- Four tickets closed and receipts returned. No `🔵` rows left. Push is the user's. Log: `session-log/2026-10-13-fxr-toolbar-canvas-and-hls-start.md`.
-
-## Current state (2026-10-13, fxr's menu-bar asks)
-
-- **Published:** kol-component 0.252.0. Adds `MenuDropdownNest flyout`, makes menu rows `flex`, adds `Dropdown ariaLabel`, and keeps `ShellSearchOverlay` open for `action`/`keepOpen` rows. All four of fxr's 2026-10-13 tickets are closed and their receipts returned. Push is the user's. Log: `session-log/2026-10-13-fxr-menus-search-dropdown.md`.
 
 ## Repo standup (2026-06-15)
 

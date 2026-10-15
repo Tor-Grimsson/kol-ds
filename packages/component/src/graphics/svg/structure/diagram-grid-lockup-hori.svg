@@ -1,23 +1,16 @@
-<svg width="833" height="257" viewBox="0 0 833 257" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="337.24" height="192" viewBox="0 0 337.24 192" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.2">
-<rect x="0.375" y="0.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="768.375" y="0.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="592.375" y="0.375" width="48" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="0.375" y="192.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="592.375" y="192.375" width="48" height="64" fill="currentColor" fill-opacity="0.1"/>
-<rect x="768.375" y="192.375" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
-<path d="M0.375 162.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 94.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 64.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 192.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 256.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 0.375H832.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M0.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M64.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M616.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M640.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M592.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M832.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
-<path d="M768.375 0.375V256.375" stroke="white" stroke-width="0.75" stroke-linecap="square" stroke-dasharray="4 4"/>
+<rect x="0" y="0" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="273.24" y="0" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="0" y="128" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<rect x="273.24" y="128" width="64" height="64" fill="currentColor" fill-opacity="0.1"/>
+<path d="M0 0H337.24" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 64H337.24" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 128H337.24" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 192H337.24" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M0 0V192" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M64 0V192" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M273.24 0V192" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
+<path d="M337.24 0V192" stroke="currentColor" stroke-width="0.5" stroke-dasharray="6 2"/>
 </g>
 </svg>
