@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-component
 
+## 0.261.0 — 2026-10-15
+
+- **Fixed: the media picker's × is the card's, and its title has ink** (media-picker-close-and-title, kol-mirror — user: *"you ever seen a close out button before??"*). The × left the control cluster: it sits alone at the far end of the title's row, the Display Settings drawer's shape (`MediaLibraryBrowse onHeaderClose`). The header title takes `text-fg-96` — portalled into a body with no colour it inherited black on the dark card.
+- **New: `IconToggle`** (IconToggle, kol-mirror — user: *"why is everything in brackets icon AND TEXT? … we want to minimise noise"*). An icon-only toggle: the icon is the control, the state is its ink (`oq-32` off · `oq-64` off-hover · `oq-96` on · `oq-12` disabled), the name is the DS tooltip. `tone="danger"` puts the on ink on `--ui-error`; `iconOn` swaps the glyph with the state; `label` is required. Square on the size ladder, xs 22 · sm 26 · md 32 (the ticket's 24 is not a rung). The interactive twin of `IconFrame`, on its own `.kol-icon-toggle` classes. Needs kol-theme ≥0.174.0.
+- **Fixed: `MediaLibrary variant="modal"` grid tiles are `picker`'s** (MediaLibraryModalTilesBroken, kol-mirror). The grid wore `ContentCard` default — a heading-04 filename and an actions column on top of the size. It now renders `MediaTile`, preview over name, as `picker`'s grid does: click opens the lightbox (Use · Copy URL), double-click or Enter uses the file. List view unchanged.
+
 ## 0.260.0 — 2026-10-14
 
 - **Fixed: the `structure/diagram-*` clearspace graphics are Kolkrabbi's** (ClearspaceGraphicsAreAnotherCreations, kol-website — user: "Logomark, wordmark and both lockups render Another Creation"). The twelve `diagram-{grid,x,logo}-{logomark,wordmark,lockup-hori,lockup-vert}` layers carried a client's marks and its signature glyph. Now: `logo` is the mark from `@kolkrabbi/kol-brand`, verbatim; `x` is the clearspace unit — the logomark, ghosted, filling each corner square — per kol-brand's rule that clearspace equals the logomark height on all sides; `grid` is the frame, the margin lines and the four unit squares. All three layers of a variant share one viewBox, and the grid strokes are `currentColor`, not white. Names unchanged.

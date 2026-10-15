@@ -1205,6 +1205,34 @@ a.kol-icon-frame {
   border: 1px solid transparent;
 }
 
+/* ───── IconToggle — an icon-only toggle; the state is the INK (IconToggle, kol-mirror 2026-10-15) ─────
+ * The interactive twin of IconFrame: no ground, no border, no pressed fill — its own classes, so
+ * nothing of kol-btn-* is inherited. Ink on the oq ladder (icons-use-oq law). */
+.kol-icon-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: var(--kol-radius-sm);
+  color: var(--kol-oq-32);
+  cursor: pointer;
+}
+.kol-icon-toggle[aria-pressed="false"]:not(:disabled):hover { color: var(--kol-oq-64); }
+.kol-icon-toggle[aria-pressed="true"] { color: var(--kol-oq-96); }
+.kol-icon-toggle-danger[aria-pressed="true"] { color: var(--ui-error); }
+.kol-icon-toggle:disabled { color: var(--kol-oq-12); cursor: default; }
+.kol-icon-toggle:focus-visible { outline: 2px solid var(--kol-focus-ring); outline-offset: 2px; }
+.kol-icon-toggle:focus:not(:focus-visible) { outline: none; }
+.kol-icon-toggle-xs { width: var(--kol-ctl-xs); height: var(--kol-ctl-xs); }
+.kol-icon-toggle-sm { width: var(--kol-ctl-sm); height: var(--kol-ctl-sm); }
+.kol-icon-toggle-md { width: var(--kol-ctl-md); height: var(--kol-ctl-md); }
+
 /* PlayDisc — the Finder play/pause disc on a media tile (PlayDiscAndVideoBar,
  * kol-r2b2 2026-08-27): a round `IconFrame secondary lg radius="full"`, hidden
  * at rest, shown on hover of the tile (`.kol-media-tile`) or on focus, over

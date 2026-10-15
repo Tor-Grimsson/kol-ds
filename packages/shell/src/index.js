@@ -39,3 +39,5 @@ export { default as HubHome } from './HubHome.jsx'
 export { default as HubSettings } from './HubSettings.jsx'
 // the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
 export { default as AppStudio } from './AppStudio.jsx'
+// a consumer slot in the opened rail — the page portals into it (NavRailConsumerSlot, kol-monitor 2026-10-15)
+export { RailSlotProvider, useRailSlot } from './railSlot.jsx'

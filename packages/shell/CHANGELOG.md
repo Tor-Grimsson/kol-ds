@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-shell
 
+## 0.64.0 — 2026-10-15
+
+- **New: `library.children` on `AppStudio`** (StudioLibraryChildren, kol-monitor) — renders in place of the CatalogPage, so a router can hold pages under the slot (`/library/:id`) with the Library rung still active. No `children` → the CatalogPage as before. kol-mirror's `Studio.jsx` fork existed for this line alone.
+- **New: `create.shell: false`** — the Create slot renders its `children` bare, for a Create that owns its PageShell (monitor's fixed case canvas beside its scrolling modules list).
+- **New: `RailSlotProvider` / `useRailSlot`** (NavRailConsumerSlot, kol-monitor) — under the provider, `NavRail`'s opened width carries a consumer slot below the rows and publishes its node; the page portals in with its own state (`createPortal(<Panel/>, useRailSlot().slot)`). Always mounted — content keeps its state across open/close — zero tall while closed, the rows shrink to content while open. `railOpen` mirrors the rail. No provider → no slot, the rail unchanged. Retires monitor's `RackRail` fork.
+
 ## 0.62.0 — 2026-10-06
 
 - **New: `NavRail sections="enter"` / `AppShell railSections`** — a section row replaces the list with its rows under a Back row instead of unfolding in place (2026-10-06, the user on labs: "an 'enter' mode in the left sidebar instead of collapse folder"). Default `fold`, unchanged for every other rail.

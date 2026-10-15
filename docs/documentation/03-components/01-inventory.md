@@ -75,6 +75,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
 | `ToggleBracket` | A `Label [STATE]` text toggle. |
+| `IconToggle` | An icon-only toggle — the state is the ink, the name is the tooltip; `tone="danger"`, `iconOn` swaps the glyph. The interactive twin of `IconFrame`. |
 | `ToggleCheckbox` | A labeled checkbox for a binary opt-in; `variant="media"` carries a solid plate for use inside a media frame. |
 | `SortHeader` | One sortable field — label + direction arrow, in the strip voice. |
 | `SizeOrDownload` | The card's size slot — the size at rest, a download link on hover. |

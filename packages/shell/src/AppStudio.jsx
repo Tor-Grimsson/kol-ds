@@ -28,8 +28,12 @@ import PageShell from './PageShell.jsx'
  *
  * @param {Object} app          AppHub's `{ name, subtitle, logomark, about, links }`
  * @param {Object} home         HubHome's props — the landing Catalog (required: a Studio opens on Home)
- * @param {Object} [library]    CatalogPage's props, plus `{ path, label, icon }`
- * @param {Object} [create]     `{ header (PageHeader props), children, path, label, icon }`
+ * @param {Object} [library]    CatalogPage's props — or `children` (a router, for pages under the
+ *                              slot: `/library/:id`), which renders in place of the CatalogPage —
+ *                              plus `{ path, label, icon }`
+ * @param {Object} [create]     `{ header (PageHeader props), children, path, label, icon }`;
+ *                              `shell: false` renders `children` bare — for a Create that owns its
+ *                              PageShell (a fixed canvas beside a scrolling list)
  * @param {Object} [use]        `{ children, path, label, icon }` — the tool
  * @param {Array}  [pages]      `[{ path, icon, label, children }]` — opt-in pages, after Use
  * @param {Object} [settings]   HubSettings' props
@@ -63,10 +67,10 @@ export default function AppStudio({
 
   let page = null
   if (lib && at(lib.path)) {
-    const { path: _p, label: _l, icon: _i, ...props } = lib
-    page = <CatalogPage {...props} />
+    const { path: _p, label: _l, icon: _i, children, ...props } = lib
+    page = children ?? <CatalogPage {...props} />
   } else if (make && at(make.path)) {
-    page = (
+    page = make.shell === false ? make.children : (
       <PageShell>
         {make.header && <PageHeader size="sm" {...make.header} />}
         {make.children}

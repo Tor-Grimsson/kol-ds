@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.174.0 — 2026-10-15
+
+- **New: `.kol-icon-toggle`** — kol-component's `IconToggle` (kol-mirror). No ground, no border; ink on the oq ladder by `aria-pressed`, `-danger` on `--ui-error`, the KOL focus ring, squares on `--kol-ctl-{xs,sm,md}`.
+
 ## 0.173.0 — 2026-10-10
 
 - **Fixed: primary hover vanished in dark** (kol-fxr, PrimaryHoverIsTheWell). Rest 25 minus 8 was 17 on an 18 rail. New per-theme surface tokens `--kol-surface-secondary-hover` / `-press`: dark goes to the well (10) and one past it (2); light keeps 242 → 234 → 226 (the well is the white pole there, lighter than rest). The primary tone reads them.

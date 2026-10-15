@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-15 later, monitor + mirror seams)
+
+- **Published:** kol-shell 0.64.0 (`AppStudio library.children` · `create.shell: false` · `RailSlotProvider`/`useRailSlot`) · kol-component 0.261.0 (`IconToggle`, modal grid on `MediaTile`, picker × on the title row) · kol-theme 0.174.0. Five mirror/monitor tickets closed, receipts returned. Standing go: tickets from mirror/monitor are built when the watch fires. Push is the user's. Log: `session-log/2026-10-15-monitor-mirror-seams-and-icontoggle.md`.
+
 ## Current state (2026-10-15, stack post drafts + identity-mirror)
 
 - **Published:** kol-icons 0.38.0 — `mirror` in `identity`. kol-mirror's identity-mirror closed, receipt returned.
@@ -27,14 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-14 later, viewport touch gestures)
 
 - **Published:** kol-component 0.259.0 — `PanZoomViewport` takes two-finger pinch + pan; a one-finger tap fires `onSpaceTap`. fxr's ViewportTouchGestures closed, receipt returned. Push is the user's. Log: `session-log/2026-10-14-viewport-touch-gestures.md`.
-
-## Current state (2026-10-14, fxr head asks, storageKey URLs, zoom commands)
-
-- **Published:** kol-component 0.256.0 · 0.257.0 · 0.258.0 · kol-media-client 0.6.0.
-  - fxr's head: `MenuItem offset`, `ToolPalette orientation="vertical"` and `SplitToolButton placement`; `CanvasRuler` is graduated.
-  - kol-website: media URLs are built on `storageKey`.
-  - fxr's View › Zoom: `kol:zoom-fit` / `kol:zoom-to`, with clamps in real terms.
-- Five tickets closed and receipts returned. No `🔵` rows left. Push is the user's. Log: `session-log/2026-10-14-fxr-head-asks-storagekey-zoom-commands.md`.
 
 ## Repo standup (2026-06-15)
 

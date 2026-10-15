@@ -9,6 +9,7 @@ import { GRAB } from '@kolkrabbi/kol-component/utilities/motion'
 import { useGrabEdge } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Logomark from './Logomark.jsx'
+import { useRailSlot } from './railSlot.jsx'
 
 /**
  * NavRail — the flat rail. ONE fixed column, every child a direct child of it
@@ -70,6 +71,11 @@ import Logomark from './Logomark.jsx'
  * @param {boolean} drawer  off-canvas mode: no grab, no drag, no token writes, rows always
  *   labelled, and the rail sizes itself from `--kol-shell-drawer-width` (default 240px).
  *   AppShell sets this from `touch="drawer"` — see ShellRailNoDrawerOnMobile, 2026-08-31.
+ * Under a `RailSlotProvider` the opened width also carries a CONSUMER SLOT below the rows
+ * (NavRailConsumerSlot, kol-monitor 2026-10-15) — content that is not a row list (monitor's module
+ * catalog: rows that insert, not paths). Always mounted so portalled content keeps its state across
+ * open/close; zero tall and clipped while closed. No provider → no slot, the render unchanged.
+ *
  * @param {boolean} [fade=true]  the list fades out at its foot — the workshop rail's fade
  *   (2026-10-01), here too on the user's word (2026-10-02). The rows sit in their own scroll
  *   region between the mark and the pinned bottom rows, so a list longer than the window scrolls
@@ -299,6 +305,13 @@ export default function NavRail({
    * ten rows each, which is where an accordion stops reading. */
   const [entered, setEntered] = useState(null)
   const snapOpenRef = useRef(null)
+  const slotRef = useRef(null)
+  const ctx = useRailSlot()
+  const setSlot = ctx?.setSlot
+  const setCtxOpen = ctx?.setRailOpen
+  const slotOpen = drawer || railOpen
+  useEffect(() => { setSlot?.(slotRef.current); return () => setSlot?.(null) }, [setSlot, hidden])
+  useEffect(() => { setCtxOpen?.(slotOpen) }, [setCtxOpen, slotOpen])
   /* the grab strip is not rendered in drawer mode, so the hook's ref stays null
    * and it no-ops on its own — no second argument needed */
   useGrabEdge(grabRef)
@@ -363,7 +376,7 @@ export default function NavRail({
       {/* THE LIST IS ITS OWN REGION (2026-10-02): it takes the room between the mark and the pinned
         * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,
         * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}
-      <div className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
+      <div style={ctx && slotOpen ? { flex: '0 1 auto' } : undefined} className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
         {section ? (
           <>
             <RailItem icon="arrow-left" path={section.path} label={section.label} currentPath="" onNavigate={() => setEntered(null)} iconComponent={iconComponent} railOpen={drawer || railOpen} />
@@ -371,6 +384,13 @@ export default function NavRail({
           </>
         ) : items.map(row)}
       </div>
+      {ctx && (
+        <div
+          ref={slotRef}
+          className="kol-shell-rail-slot w-full min-h-0 overflow-x-hidden"
+          style={{ flex: slotOpen ? '1 1 auto' : '0 0 0px', overflowY: slotOpen ? 'auto' : 'hidden' }}
+        />
+      )}
       {/* the rule runs the full rail width, out past the px-2 */}
       {bottomItems.length > 0 && <div className="self-stretch -mx-2 border-t border-fg-08" />}
       {bottomItems.map(row)}

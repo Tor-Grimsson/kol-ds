@@ -2,15 +2,13 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import ActionButton from '../molecules/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
-import CloseButton from '../atoms/CloseButton.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import Input from '../atoms/Input.jsx'
-import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
-import ContentCard from '../molecules/ContentCard.jsx'
+import MediaTile from '../molecules/MediaTile.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
@@ -33,8 +31,8 @@ import { filterMedia } from '../utilities/mediaSearch.js'
  * Same contract as kol-dashboards / kol-chess / kol-content.
  *
  * COMPOSED, NOT BUILT. Every part is an existing DS member:
- *   ContentCard    — the grid tile, `variant="default"` (thumb · download in the
- *                    frame corner · title · date · size-or-download · inline actions)
+ *   MediaTile      — the grid tile, preview over name — `picker`'s tile (was ContentCard
+ *                    default until 2026-10-15, MediaLibraryModalTilesBroken)
  *   ContentRow     — the list row, `variant="default"` (thumb · title · date · size · actions)
  *                    MediaCard / MediaRow retired 2026-08-26 (ContentSetRetirement);
  *                    this was the DS's own last composition of them, swapped 2026-08-27
@@ -711,23 +709,18 @@ function FilesBody({ files, viewMode, onOpen, onPick }) {
       </div>
     )
   }
-  /* INLINE controls, never labelled Buttons (ContentSetRetirement, 2026-08-27):
-   * the card's `actions` float in the plate's corner beside the title, so a
-   * labelled Button there sits on the copy — kol-r2b2's column of
-   * `.kol-inline-control`s is the shape that fits. The card's download is the
-   * frame-corner `control` + the size slot (SizeOrDownload); the row keeps its
-   * glyph beside Copy. `Use` (picker only) is the same control wearing `plus`. */
-  const actionsFor = (row, form) => (
-    <div className={form === 'row' ? 'flex items-center gap-2' : 'flex h-full flex-col items-center justify-between'}>
+  /* INLINE controls, never labelled Buttons (ContentSetRetirement, 2026-08-27) —
+   * the list row's Use · Copy · Download. `Use` (picker only) is the same control
+   * wearing `plus`. The grid's tile carries none (see below). */
+  const actionsFor = (row) => (
+    <div className="flex items-center gap-2">
       {onPick && <ActionButton chrome="inline" size="sm" icon="plus" confirmIcon="check" label="Use" confirmLabel="Used" onAction={() => onPick(row)} />}
       <ActionButton chrome="inline" size="sm" icon="copy" confirmIcon="check" label="Copy URL" confirmLabel="Copied" onAction={() => copy(urlFor(row))} />
-      {form === 'row' && (
-        <ActionButton chrome="inline" size="sm" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" href={urlFor(row)} />
-      )}
+      <ActionButton chrome="inline" size="sm" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" href={urlFor(row)} />
     </div>
   )
-  /* the title voice is the family's ruled default (heading-04 card / heading-05
-   * row, truncated by ContentText); the full key rides as the tooltip, as before */
+  /* the row's title voice is the family's ruled default (heading-05, truncated by
+   * ContentText); the tile's is MediaTile's. The full key rides as the tooltip. */
   const nameFor = (row) => <Tooltip label={row.key} asChild><span>{row.displayKey}</span></Tooltip>
   const date = (row) => (row.uploaded ? String(row.uploaded).slice(0, 10) : undefined)
   const size = (row) => formatSize(row.size) || undefined
@@ -744,24 +737,25 @@ function FilesBody({ files, viewMode, onOpen, onPick }) {
               title={nameFor(row)}
               date={date(row)}
               size={size(row)}
-              actions={actionsFor(row, 'row')}
+              actions={actionsFor(row)}
             />
           ))}
         </div>
       ) : (
-        <div className="kol-media-grid">
+        /* THE PICKER'S TILE (MediaLibraryModalTilesBroken, kol-mirror 2026-10-15). The grid wore
+         * `ContentCard` default — a heading-04 filename, and an actions column that sat on the size —
+         * while `picker`'s grid is `MediaTile`, preview over name (the card was retired from the file
+         * grid 2026-09-23 for exactly that). Same item here: a click opens the lightbox, where Use and
+         * Copy URL live; a double-click (or Enter) uses the file. */
+        <div className="kol-media-grid gap-y-5">
           {files.map((row) => (
-            <ContentCard
+            <MediaTile
               key={row.key}
-              variant="default"
-              media={thumbFor(row)}
-              control={
-                <ActionButton chrome="media" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" href={urlFor(row)} />
-              }
-              title={nameFor(row)}
-              date={date(row)}
-              size={size(row) && <SizeOrDownload href={urlFor(row)}>{size(row)}</SizeOrDownload>}
-              actions={actionsFor(row, 'card')}
+              markKey={row.key}
+              preview={<div className="w-full h-full flex items-center justify-center bg-fg-04 overflow-hidden"><Thumb row={row} mediaUrl={mediaUrl} /></div>}
+              name={nameFor(row)}
+              onClick={openerFor(row)}
+              onDoubleClick={onPick ? () => onPick(row) : undefined}
             />
           ))}
         </div>
@@ -1090,7 +1084,9 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
   return (
     /* THE X SITS ON THE HEADER ROW (MediaPickerCloseOnTheHeaderRow, kol-fxr 2026-10-10 — user: *"x
      * close is in a weird place, align better"*). The overlay's corner close floated ~100px above
-     * the header and lined up with nothing; it rides `headerTrailing`, after the gear, instead. */
+     * the header and lined up with nothing. In the control cluster after the gear it read as one more
+     * control (media-picker-close-and-title, kol-mirror 2026-10-15), so it is the header's own ×:
+     * alone at the far end of the title's row, the drawer's shape. */
     <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
       <div className="kol-media-picker gap-4">
         <MediaLibraryBrowse
@@ -1102,7 +1098,7 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
           settings={settings}
           onSettingsChange={setSettings}
           onPickFile={setFile}
-          headerTrailing={<>{browseProps.headerTrailing}<CloseButton onClick={onClose} /></>}
+          onHeaderClose={onClose}
         />
         <div className="mt-auto flex items-center justify-end gap-4">
           <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>

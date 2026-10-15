@@ -8,6 +8,7 @@ import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'
 import Tag from '../atoms/Tag.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 import ActionButton from '../molecules/ActionButton.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
@@ -903,7 +904,7 @@ function TrashPanel({ trash, onClose, run, confirm }) {
   )
 }
 
-function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta, writable, headerActions, onSettings, onTrash, onHome, headerTrailing }) {
+function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta, writable, headerActions, onSettings, onTrash, onHome, headerTrailing, onClose }) {
   /* the app's masthead voice when a Shell sets one (2026-09-29), else the display voice as before */
   const titleCls = mastheadTitleClass(useMasthead(), 'kol-sans-display-03')
   /* ONE BUCKET, NO DROPDOWN (user 2026-09-22) — a picker with one thing in it chooses nothing. */
@@ -916,12 +917,14 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
     <header className="flex items-baseline justify-between gap-4">
       {onHome ? (
         <button type="button" onClick={onHome}
-          className={`${titleCls} min-w-0 truncate text-left cursor-pointer transition-opacity hover:opacity-64`}
+          className={`${titleCls} text-fg-96 min-w-0 truncate text-left cursor-pointer transition-opacity hover:opacity-64`}
           aria-label={`${title} — back to the top`}>{title}</button>
       ) : (
-        <h1 className={`${titleCls} min-w-0 truncate`}>{title}</h1>
+        /* its own ink (media-picker-close-and-title, kol-mirror 2026-10-15): portalled into a body
+         * with no colour, the title inherited black on the dark card */
+        <h1 className={`${titleCls} text-fg-96 min-w-0 truncate`}>{title}</h1>
       )}
-      <div className="flex items-center gap-2 min-w-0">
+      <div className={`flex items-center gap-2 min-w-0${onClose ? ' ml-auto' : ''}`}>
         {options.length > 0 && <Dropdown className="min-w-0 max-w-[45vw] md:w-48 md:max-w-none" value={appRoot ? 'all' : bucketId} onChange={onBucket} options={options} />}
         {headerActions}
         {/* The DS's own `Tooltip` (utilities/Popover → `.kol-tooltip`), not a `title`
@@ -947,6 +950,10 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
           * the row directly beneath it. */}
         {headerTrailing}
       </div>
+      {/* THE × IS THE CARD'S, NOT A CONTROL (media-picker-close-and-title, kol-mirror 2026-10-15 — user:
+        * "you ever seen a close out button before??", pointing at the Display Settings drawer). Alone at
+        * the far end of the title's row, outside the control cluster — the drawer's shape. */}
+      {onClose && <CloseButton onClick={onClose} className="shrink-0 self-center" />}
     </header>
   )
 }
@@ -1031,6 +1038,8 @@ export function MediaLibraryBrowse({
    * rendering what it rendered. */
   view: viewProp, onViewChange,
   folderTree, headerActions, headerTrailing, refreshKey, onOpen, autoFocus = false, settingsFooter, className = '', banner,
+  /* `onHeaderClose` — a × alone at the far end of the title row, outside the controls (the picker card) */
+  onHeaderClose,
   /* `smartFolder` — a smart folder's id to open ON (a Home tile linking straight to one); the chips
    * take over from there (media D1 plan v2) */
   smartFolder,
@@ -2341,7 +2350,7 @@ export function MediaLibraryBrowse({
   return (
     <div ref={pageRef} {...press} className={`flex flex-col gap-6 ${className}`.trim()}>
     <RowSize.Provider value={rowSize}>
-      <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onTrash={trash ? () => setTrashOpen(true) : undefined}
+      <LibraryHeader title={title} buckets={buckets} bucketId={bucketMeta.id} appRoot={atTitleRoot} bucketMeta={bucketMeta} writable={writable} headerActions={headerActions} headerTrailing={headerTrailing} onClose={onHeaderClose} onTrash={trash ? () => setTrashOpen(true) : undefined}
         onHome={goTitleRoot}
         onBucket={(v) => { if (v === 'all') goTitleRoot(); else { setAppRoot(false); switchBucket(v) } }}
         onSettings={onOpenSettings ?? (() => setSettingsOpen(true))} />

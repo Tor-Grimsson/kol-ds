@@ -159,7 +159,7 @@ export const FUNCTIONS_BY_NAME = {
   Button: 'action', ThemeToggle: 'action',
   Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
   QuantityInput: 'input', PropertyInput: 'input',
-  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input',
+  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input', IconToggle: 'input',
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   LabeledControl: 'input', Label: 'input',
   Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
@@ -223,7 +223,7 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
+  useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -351,6 +351,7 @@ export const EXEMPT = {
   AppShell: 'namesake:framework-site-shell vs shell-app-shell',
   GridCard: 'namesake:dashboards-grid-cell vs shell-A4-card',
   NavHiddenContext: 'non-component',
+  RailSlotProvider: 'non-component',
   MastheadContext: 'non-component',
   SettingsToggleContext: 'non-component',
   PageBleed: 'member-of:PageShell',
@@ -451,6 +452,7 @@ export const NO_PREVIEW = (() => {
       'SlideStage', 'SlideInspector'].map((n) => [n, 'a part of the presentation tool — it runs against a deck document, '
       + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),
     useTouchPrimary: 'a hook — it draws nothing; TouchDeviceOverlay, which reads it, has the preview',
+    RailSlotProvider: 'a context — it draws nothing; NavRail renders the slot it publishes',
     ShellNavColumn: 'the left rail\'s column — a frame around a rail, sticky inside the shell\'s scroll region. The Module '
       + '/modules/shell-rail-states mounts it with the real header and both rails in its three states (2026-10-02)',
     ...debt([],

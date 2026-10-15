@@ -1,0 +1,39 @@
+export const meta = {
+  id: "2.83.0",
+  slug: "icon-toggle",
+  title: "IconToggle",
+  type: "reference",
+  status: "active",
+  updated: "2026-10-15",
+  tags: [
+    "domain/components",
+    "domain/components/atoms",
+    "domain/forms",
+    "pattern/input",
+  ],
+  description: "Icon-only toggle — the state is the ink.",
+  aliases: [
+    "icontoggle",
+  ],
+}
+
+<Preview name="IconToggle" />
+
+## Installation
+
+<Install name="IconToggle" />
+
+## Usage
+
+```jsx
+import { IconToggle } from '@kolkrabbi/kol-component'
+
+<IconToggle icon="unlock" iconOn="lock" label="Lock" title="Lock the view (L)" pressed={locked} onChange={setLocked} tone="danger" />
+```
+
+## Variants
+
+The interactive twin of `IconFrame`: no ground, no border, no pressed fill. Off is `oq-32` ink,
+on is `oq-96`, hover lifts off to `oq-64`. `tone="danger"` puts the on ink on the error red.
+`iconOn` swaps the glyph with the state. `label` is required — there is no visible text — and
+`title` is the tooltip, default `label`. Square on the size ladder: xs 22 · sm 26 · md 32.
