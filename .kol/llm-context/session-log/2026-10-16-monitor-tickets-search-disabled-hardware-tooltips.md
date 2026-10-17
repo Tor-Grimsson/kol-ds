@@ -33,3 +33,14 @@
 ## Next Steps
 1. User pushes kol-ds-ui
 2. Monitor bumps and drops its carries (no-room group, RefDropdown classes, picker header override)
+
+## Amended — 2026-10-17
+
+- Catalog docs caught up: `showcase/src/docs/components/{Tooltip,ShellSearchOverlay,MenuItem}.mdx` document `disabled`, `results[].disabled` / `disabledHint`, `size`. Props + frontmatter gates clean.
+- **Published kol-icons 0.39.0** — `identity/monitor.svg` (kol-monitor's identity-monitor; clip ids `kol-monitor-t/-b`); cuts regenerated, inventory 245 · identity 7, CHANGELOG, shipped table. Same optical size as `fxr`. Closed, receipt returned. Harness: `_tmp/2026-10-17-identity-monitor/`.
+
+## Amended — 2026-10-17 (later)
+
+- **Published kol-component 0.264.0** — `ColorPickerPopover` (organisms/; swatch xs 16 · sm 24 → SB square, hue, new `AlphaStrip`, hex; ⌥-click resets; on `SpectrumControls`, no react-colorful) + `hexToHsva` / `hsvaToHex`. Preview, MDX, nav, inventory. monitor's ColorPickerPopover closed, receipt returned. Harness: `_tmp/2026-10-17-color-picker/`.
+- `showcase/src/pages/IconsGallery.jsx` — a numeric size sizes the tile too: floor `48 + size × 2`, columns follow (2000px: 16 → 13 across, 128 → 4); Fit unchanged. Names wrap / overflow slightly at 16–24.
+- Rules: receipts only after the version is live on the registry (memory); watch re-arms silently — `/ag-init` 6b + global CLAUDE.md; `/log-work` gained the amend check (1b).

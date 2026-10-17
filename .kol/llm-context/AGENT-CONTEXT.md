@@ -12,7 +12,7 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Current state (2026-10-16, monitor tickets)
 
-- **Published:** kol-component 0.262.0 · 0.263.0 (`ShellSearchOverlay` disabled rows, `OptionRow disabled`, `MenuItem` xs trigger type, `Tooltip disabled`, media library header centred) · kol-hardware 0.5.0 (no native `title`; DS Tooltip, silent on a pending jack). Five monitor tickets closed, receipts returned. Push is the user's. Log: `session-log/2026-10-16-monitor-tickets-search-disabled-hardware-tooltips.md`.
+- **Published:** kol-component 0.262.0 · 0.263.0 (`ShellSearchOverlay` disabled rows, `OptionRow disabled`, `MenuItem` xs trigger type, `Tooltip disabled`, media library header centred) · kol-hardware 0.5.0 (no native `title`; DS Tooltip, silent on a pending jack). Five monitor tickets closed, receipts returned. Amended 2026-10-17: kol-icons 0.39.0 (`monitor` in `identity`), catalog docs for the new props, kol-component 0.264.0 (`ColorPickerPopover`, `AlphaStrip`), icon gallery tiles follow the size. Push is the user's. Log: `session-log/2026-10-16-monitor-tickets-search-disabled-hardware-tooltips.md`.
 
 ## Current state (2026-10-15 later, monitor + mirror seams)
 

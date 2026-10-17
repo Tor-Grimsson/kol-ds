@@ -65,6 +65,31 @@ export function rgbToHex(r, g, b) {
     .toUpperCase()
 }
 
+/* ── HSVA / hex — the picker's model (ColorPickerPopover, kol-monitor 2026-10-17) ── */
+
+/** '#RRGGBB' | '#RRGGBBAA' → { hue 0–360, sat 0–100, val 0–100, alpha 0–1 }; null when unparsable. */
+export function hexToHsva(hex) {
+  const m = /^#?([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(hex ?? '')
+  if (!m) return null
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255)
+  const max = Math.max(r, g, b)
+  const d = max - Math.min(r, g, b)
+  const hue = d === 0 ? 0
+    : max === r ? 60 * (((g - b) / d) % 6)
+    : max === g ? 60 * ((b - r) / d + 2)
+    : 60 * ((r - g) / d + 4)
+  return { hue: normHue(hue), sat: max ? (d / max) * 100 : 0, val: max * 100, alpha: m[2] ? parseInt(m[2], 16) / 255 : 1 }
+}
+
+/** { hue, sat, val, alpha } → uppercase '#RRGGBB', or '#RRGGBBAA' when alpha < 1. */
+export function hsvaToHex({ hue, sat, val, alpha = 1 }) {
+  const s = sat / 100
+  const v = val / 100
+  const f = (n) => { const k = (n + hue / 60) % 6; return (v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255 }
+  const hex = rgbToHex(f(5), f(3), f(1))
+  return alpha < 1 ? hex + Math.round(Math.max(0, alpha) * 255).toString(16).padStart(2, '0').toUpperCase() : hex
+}
+
 /** Wrap any hue into [0, 360). */
 export const normHue = (h) => ((h % 360) + 360) % 360
 

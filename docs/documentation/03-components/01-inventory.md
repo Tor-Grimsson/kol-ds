@@ -181,7 +181,8 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
 | `ShellSearchOverlay` | The ⌘K search modal — dim, bare search field, keyboard-roved result rows. |
-| `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, and the composed square picker. |
+| `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, AlphaStrip, and the composed square picker. |
+| `ColorPickerPopover` | A swatch that opens a colour picker — saturation square, hue and opacity strips, hex; ⌥-click resets to `defaultValue`. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |
 | `Table` | THE data table. Columns opt into sorting with `sortable` (header is a real button, cycles asc→desc→none, sets `aria-sort`); `width="panel"` (default) \| `"column"` is the cap contract — see [[../01-foundations/05-layout-systems\|layout systems]]. Cells wear `.kol-table-pill` / `.kol-table-token`, never bare text. |

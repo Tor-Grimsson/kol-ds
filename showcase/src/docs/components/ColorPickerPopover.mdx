@@ -1,0 +1,54 @@
+export const meta = {
+  id: "2.84.0",
+  slug: "color-picker-popover",
+  title: "ColorPickerPopover",
+  type: "reference",
+  status: "active",
+  updated: "2026-10-17",
+  tags: [
+    "domain/components",
+    "domain/components/organisms",
+    "domain/forms",
+    "pattern/input",
+  ],
+  description: "A swatch that opens a colour picker — square, hue, opacity, hex.",
+  aliases: [
+    "colorpickerpopover",
+    "color-picker",
+  ],
+}
+
+<Preview name="ColorPickerPopover" />
+
+## Installation
+
+<Install name="ColorPickerPopover" />
+
+## Usage
+
+```jsx
+import { ColorPickerPopover } from '@kolkrabbi/kol-component'
+
+<ColorPickerPopover color={color} onChange={setColor} defaultValue="#E74C3C" />
+```
+
+## Behavior
+
+Click the swatch: a popover right-aligned under it, flipping up where there is no room, with the
+saturation square, the hue and opacity strips, and the hex. Every drag emits an uppercase hex — 8
+digits only when opacity is under 100%. The hex field emits once it holds 6 or 8 digits. Esc and an
+outside press close it; ⌥-click on the swatch resets to `defaultValue` instead of opening. None
+(`transparent` or empty) draws the slashed swatch. A token or `currentColor` paints live in the
+swatch and is resolved once when the picker opens. Built on [SpectrumControls](/components/spectrum-controls)
+and its `AlphaStrip`.
+
+## Props
+
+<Api name="ColorPickerPopover" rows={[
+  {"prop":"color","type":"string","def":"—","desc":"`#RRGGBB`, `#RRGGBBAA`, `transparent` / empty (none), or any CSS colour."},
+  {"prop":"onChange","type":"(hex) => void","def":"—","desc":"Every drag and every complete hex typed."},
+  {"prop":"defaultValue","type":"string","def":"—","desc":"⌥-click on the swatch resets to it."},
+  {"prop":"size","type":"xs | sm","def":"xs","desc":"Swatch 16 · 24."},
+  {"prop":"label","type":"string","def":"'Color'","desc":"The swatch's accessible name."},
+  {"prop":"className","type":"string","def":"''","desc":"Classes on the swatch button."}
+]} />

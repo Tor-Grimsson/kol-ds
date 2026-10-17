@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.39.0 — 2026-10-17
+
+- **New:** `monitor` in `identity` — Monitor's mark (M O N as FXR draws F X R, Right Grotesk Tall Dark, the M a quarter wider, the row cut at its middle and slid ±1), on the set keyline beside `kol-ds`, `fxr`, `r2b2`, `mirror`, `currentColor`.
+
 ## 0.38.0 — 2026-10-15
 
 - **New:** `mirror` in `identity` — Mirror's mark (M R over its reflection, Right Grotesk Wide Dark, the reflected row cut ±1), on the set keyline beside `kol-ds`, `fxr`, `r2b2`, `currentColor`.

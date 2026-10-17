@@ -115,6 +115,74 @@ export function HueStrip({ hue, onChange }) {
   )
 }
 
+/* the transparency checker behind an alpha ramp — literal greys, like the spectra (not themeable) */
+const CHECKER = 'repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 0 0 / 8px 8px'
+
+/**
+ * AlphaStrip — An opacity slider. HueStrip's twin for alpha: the colour ramped from transparent to
+ * opaque over a checker, same knob, same inset (ColorPickerPopover, kol-monitor 2026-10-17). Focus +
+ * Left/Right (or Down/Up) nudge alpha by 1% (role="slider").
+ *
+ * @param {number}   alpha    controlled alpha, 0–1
+ * @param {string}   color    the opaque colour the ramp ends on (any CSS colour)
+ * @param {Function} onChange (alpha: number) => void — fires on press, drag, and arrow keys
+ */
+export function AlphaStrip({ alpha, color, onChange }) {
+  const ref = useRef(null)
+  const dragging = useRef(false)
+
+  const update = useCallback((clientX) => {
+    const node = ref.current
+    if (!node) return
+    const rect  = node.getBoundingClientRect()
+    const inner = rect.width - 2 * HANDLE_R
+    if (inner <= 0) return
+    onChange(Math.max(0, Math.min(1, (clientX - rect.left - HANDLE_R) / inner)))
+  }, [onChange])
+
+  useEffect(() => {
+    const onMove = (e) => { if (dragging.current) update(e.clientX) }
+    const onUp   = ()  => { dragging.current = false }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+    }
+  }, [update])
+
+  const onKeyDown = (e) => {
+    let next = null
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = Math.min(1, alpha + 0.01)
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = Math.max(0, alpha - 0.01)
+    if (next === null) return
+    e.preventDefault()
+    onChange(next)
+  }
+
+  return (
+    <div
+      ref={ref}
+      role="slider"
+      tabIndex={0}
+      aria-label="Opacity"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(alpha * 100)}
+      onPointerDown={(e) => { dragging.current = true; update(e.clientX); e.preventDefault() }}
+      onKeyDown={onKeyDown}
+      className="relative rounded-[var(--kol-radius-xs)] cursor-pointer touch-none"
+      style={{ height: 12, background: `linear-gradient(to right, transparent, ${color}), ${CHECKER}` }}
+    >
+      <div className="absolute inset-y-0" style={{ left: HANDLE_R, right: HANDLE_R }}>
+        <Handle left={`${alpha * 100}%`} top="50%" />
+      </div>
+    </div>
+  )
+}
+
 /**
  * SBSquare — Pick saturation and value on a square. 2D saturation/value picker: white→hue horizontal gradient with
  * a black overlay fading upward, crosshair handle. Fills its container

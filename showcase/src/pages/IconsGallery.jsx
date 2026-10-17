@@ -230,8 +230,11 @@ export default function IconsGallery() {
           const list = layout === 'list'
           return (
             /* a tile floor of 160 — the catalog's own `minColumn`; the 320 default gave ONE column at
-             * 1280 (W8, 2026-09-30) */
-            <ContentCollection form={list ? 'list' : 'grid'} cols={6} minCol="160px">
+             * 1280 (W8, 2026-09-30). A NUMBER SIZES THE TILE TOO (user 2026-10-17: "icon containers
+             * should also get smaller … go from 5 columns to what is relative to the size"): the
+             * tile floor is the glyph twice over plus a 48 margin, and the wall fills as many columns
+             * as fit — 16 ≈ 7 across, 128 two */
+            <ContentCollection form={list ? 'list' : 'grid'} {...(size === 'fit' ? { cols: 6, minCol: '160px' } : { min: `${48 + size * 2}px` })}>
               {rows.map((item) => list ? (
                 <ContentRow
                   key={item.name}

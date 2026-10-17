@@ -130,7 +130,8 @@ export { default as ShellSearchOverlay } from './organisms/ShellSearchOverlay.js
 export { default as ShortcutsOverlay } from './organisms/ShortcutsOverlay.jsx'
 export { default as Slider } from './molecules/Slider.jsx'
 export { default as SpecList } from './molecules/SpecList.jsx'
-export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle } from './organisms/SpectrumControls.jsx'
+export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle, AlphaStrip } from './organisms/SpectrumControls.jsx'
+export { default as ColorPickerPopover } from './organisms/ColorPickerPopover.jsx'
 export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
@@ -263,7 +264,7 @@ export { resolveCssVar, resolveCssColor, isLight } from './hooks/cssVar.js'
 
 // color math (support module — HSL/hex conversion + harmony generation)
 export {
-  hexToHsl, hslToHex, rgbToHex, normHue,
+  hexToHsl, hslToHex, rgbToHex, normHue, hexToHsva, hsvaToHex,
   HARMONIES, harmonyById, harmonyColors, generateHarmony,
   SEED_MODE_IDS, seedHarmony,
 } from './hooks/colorMath.js'

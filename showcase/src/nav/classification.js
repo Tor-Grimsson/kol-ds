@@ -198,7 +198,7 @@ export const FUNCTIONS_BY_NAME = {
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   IntroLoader: 'display', LoaderOverlay: 'overlay',
-  SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input',
+  SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input', ColorPickerPopover: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
   ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
   PortableTextRenderer: 'display', StackHero: 'structure',
@@ -361,7 +361,7 @@ export const EXEMPT = {
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
-  WheelTriangle: 'member-of:SpectrumControls',
+  WheelTriangle: 'member-of:SpectrumControls', AlphaStrip: 'member-of:SpectrumControls',
   SwatchStack: 'member-of:SwatchControls', EyedropPick: 'member-of:SwatchControls',
   CanvasFrame: 'member-of:Canvas', PanViewport: 'member-of:Canvas',
 }

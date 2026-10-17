@@ -44,7 +44,7 @@ on top, result rows beneath (highlighted label, dim hint line, right-aligned
 group label). **Content-agnostic** — the consumer filters (the workshop engine
 pairs it with `matchSearchItems`) and passes `results`; selection emits
 `onSelect(item)` and the consumer navigates. Keyboard: arrows rove, Enter
-selects (index starts at 0), Escape closes, Tab is pinned — rows are combobox
+selects (index starts at the first enabled row; `disabled` rows are skipped), Escape closes, Tab is pinned — rows are combobox
 options via `aria-activedescendant`, never tab stops. Distinct from Modal —
 this is the search/command primitive.
 
@@ -58,5 +58,7 @@ this is the search/command primitive.
   {"prop":"onQueryChange","type":"(string) => void","def":"—","desc":"Input change (value, not event)."},
   {"prop":"onSelect","type":"(item) => void","def":"—","desc":"Row click / Enter on active row; fires then closes — unless the row keeps it open (below)."},
   {"prop":"results[].keepOpen","type":"boolean","def":"false","desc":"The row selects and the modal stays open — a drill-in (category → its items, a \"← All\" row back). Swap `suggestions`/`results`; the highlight returns to the top row when the rows change."},
-  {"prop":"results[].action","type":"() => void","def":"—","desc":"A closure the consumer's `onSelect` runs (tag rows). Implies `keepOpen`; the overlay never runs it itself."}
+  {"prop":"results[].action","type":"() => void","def":"—","desc":"A closure the consumer's `onSelect` runs (tag rows). Implies `keepOpen`; the overlay never runs it itself."},
+  {"prop":"results[].disabled","type":"boolean","def":"false","desc":"Drawn at the disabled opacity, skipped by the arrows, never reaches `onSelect` (a module with no room on the rack)."},
+  {"prop":"results[].disabledHint","type":"string","def":"—","desc":"Replaces `hint` on a disabled row with the reason."}
 ]} />

@@ -31,13 +31,15 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 44 entries
+## Queue — 46 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [ColorPickerPopover](done/ColorPickerPopover.md) | **kol-monitor** — the KOL has no colour picker you click a colour into; monitor's swatch + portalled react-colorful popover + hex Input is the reference (review: monitor `/dev` → Color picker) | 2026-10-17 | `filed` — from a kol-monitor session |
+| 🟢 | [identity-monitor](done/identity-monitor.md) | **kol-monitor** — `identity/monitor.svg`, the Monitor app's mark (MON, FXR's shape, Tall Dark, cut ±1), ready-made in monitor's `_tmp/` | 2026-10-17 | `filed` — from a kol-monitor session |
 | 🟢 | [MediaPickerHeaderCentred](done/MediaPickerHeaderCentred.md) | **kol-monitor** — supersedes MediaPickerCloseOnControlRow (its `self-end` ask was wrong): the picker header `items-baseline` → `items-center`, so the whole control row centres on the wordmark | 2026-10-16 | `filed` — from a kol-monitor session |
 | 🟢 | [MediaPickerCloseOnControlRow](done/MediaPickerCloseOnControlRow.md) | **kol-monitor** — the Media picker's × centres on the wordmark (`items-baseline` row, textless `self-center` ×), 10px above the controls; ask: `self-end`. Third report on this × | 2026-10-16 | `filed` — from a kol-monitor session |
 | 🟢 | [ShellSearchDisabledRow](done/ShellSearchDisabledRow.md) | **kol-monitor** — `ShellSearchOverlay` rows take `disabled`: muted, skipped by ↑↓, never reach `onSelect` (⌘K Add module on a full rack) | 2026-10-15 | `filed` — from a kol-monitor session |
@@ -902,3 +904,7 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-16 | **`MediaPickerCloseOnControlRow` closed** → **kol-component@0.262.0**. `LibraryHeader`'s × is `self-end`, not `self-center`. Measured in apps/media /picker at 1440, light and dark: × centre 151.5, gear 151; right edge = content edge (1211). The `modal` variant has no gear row — its × is the overlay sheet's own corner close, and did not move. |
 | 2026-10-16 | **`MediaPickerHeaderCentred` filed from kol-monitor** — corrects MediaPickerCloseOnControlRow: the row, not the ×, was wrong; measured centred with `items-center` |
 | 2026-10-16 | **`MediaPickerHeaderCentred` closed** → **kol-component@0.263.0**. `LibraryHeader`'s `<header>` is `items-center`, and the × drops `self-end` — it centres with the row. Measured in apps/media /picker at 1440, light and dark: wordmark cap middle 139.1, gear and × 140.5, dropdown 141; × right edge = content edge. The full-page library header (apps/media /) centres the same way: cap middle 70.6, trash and gear 72. |
+| 2026-10-17 | **`identity-monitor` filed from kol-monitor** — the Monitor app mark for kol-icons' identity group, file attached |
+| 2026-10-17 | **`identity-monitor` closed** → **kol-icons@0.39.0**. `identity/monitor.svg` is monitor's `_tmp/` file verbatim, minus its comment line (the set carries none), with the clip ids namespaced `kol-monitor-t` / `-b` as mirror's were. Cuts regenerated (solid); inventory 245 icons, identity 7. Rendered beside `kol-ds` · `fxr` · `r2b2` · `mirror` at 96 and 24: glyph bounds 23.72 × 23.40 against fxr's 24.55 × 23.37 — the same optical size. |
+| 2026-10-17 | **`ColorPickerPopover` filed from kol-monitor** — a colour picker molecule; monitor's atom is the reference |
+| 2026-10-17 | **`ColorPickerPopover` closed** → **kol-component@0.264.0**. `ColorPickerPopover` (organisms/ — it composes the `SpectrumControls` organism): swatch `size` xs 16 · sm 24 with the 1px `--kol-border-default` ring; click opens saturation square 180×140, hue strip, the new `AlphaStrip`, hex `Input`. Uppercase hex out, 8 digits only under 100% opacity; the hex field emits at 6 or 8 digits. Placement is `usePopover` (`bottom-end`, flips up) — no fixed maths, no z-index 9999; Esc / outside press close, Enter opens from the keyboard; ⌥-click resets to `defaultValue` without opening. None is `ColorSwatch showTransparent` in `--ui-error` (no #e74c3c); `currentColor` / tokens paint live and resolve once on open via `resolveCssColor` — no MutationObserver, no injected `<style>`, no react-colorful. Verified in a harness, dark and light: 16px swatch, panel 4px under and right-aligned, drag / alpha / hex 6 + 8 emit, Esc + outside close, ⌥-click reset, flip up at the viewport foot, currentColor → FAFAFA / 121215. |

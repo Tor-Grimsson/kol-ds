@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-component
 
+## 0.264.0 — 2026-10-17
+
+- **New: `ColorPickerPopover`** (ColorPickerPopover, kol-monitor — the estate's only click-a-colour-in picker was monitor's local react-colorful atom). A swatch (`size` xs 16 · sm 24) that opens a popover: saturation square, hue strip, opacity strip, hex. Every drag emits uppercase hex, 8 digits only under 100% opacity; the hex field emits at 6 or 8 digits. Right-aligned under the swatch via `usePopover`, flips up near the bottom; Esc and an outside press close it, Enter opens it from the keyboard; ⌥-click resets to `defaultValue`. None (`transparent` / empty) is the slashed swatch in `--ui-error`. A token or `currentColor` paints live and is resolved once on open — no theme observer. Built on `SpectrumControls`, no new dependency. An organism: it composes one.
+- **New: `AlphaStrip`** in the `SpectrumControls` family — HueStrip's twin for opacity, the colour ramped over a checker.
+- **New: `hexToHsva` · `hsvaToHex`** in the colour math — the picker's model; round-trips 6- and 8-digit hex.
+
 ## 0.263.0 — 2026-10-16
 
 - **Fixed: the media library header row centres on the wordmark** (MediaPickerHeaderCentred, kol-monitor — supersedes 0.262.0's × fix). `LibraryHeader` was `items-baseline`, which set the controls' 12px text on the display title's baseline, so the whole control row — bucket dropdown, lock, trash, gear, × — hung below the wordmark. Now `items-center`, and the × drops its `self-end`. Measured at 1440 in the picker: wordmark cap middle 139.1, gear and × 140.5, dropdown 141. The full-page library header moves the same way.
