@@ -24,6 +24,8 @@
  * @param {string}    as       element to render (`div` · `button` · `li`)
  * @param {boolean}   hover    false = hover paints nothing (the media browser's ruling, 2026-09-02)
  * @param {boolean}   muted    a row that is there but not the point (fg-48)
+ * @param {boolean}   disabled a row that is there but cannot be picked: the disabled opacity, no
+ *                             hover, not-allowed — the caller keeps it out of its keyboard order
  *
  * `ROW_HEIGHT` / `ROW_TYPE` / `ROW_FILL` are exported for a row that cannot take this anatomy (the
  * media rows view's table row: twisty, drag hit, columns) — it still sits on the same ramp and fills.
@@ -60,6 +62,7 @@ export default function OptionRow({
   trail = false,
   hover = true,
   muted = false,
+  disabled = false,
   icon,
   leading,
   label,
@@ -69,12 +72,13 @@ export default function OptionRow({
   children,
   ...rest
 }) {
-  const state = selected ? ROW_FILL.selected : active ? ROW_FILL.active : trail ? ROW_FILL.trail
+  const state = disabled ? 'text-fg-80 opacity-[var(--kol-opacity-disabled)]'
+    : selected ? ROW_FILL.selected : active ? ROW_FILL.active : trail ? ROW_FILL.trail
     : `${muted ? 'text-fg-48' : 'text-fg-80'}${hover ? ` hover:${TONE}` : ''}`
   const lead = leading ?? (icon && <Icon name={icon} size={glyphSize(size)} />)
   return (
     <Tag
-      className={`flex items-center gap-2 px-4 border border-transparent ${ROW_HEIGHT[size] ?? ROW_HEIGHT.md} rounded-[var(--kol-radius-sm)] cursor-pointer text-left ${type ?? ROW_TYPE[size] ?? ROW_TYPE.md} transition-colors ${state} ${className}`.trim()}
+      className={`flex items-center gap-2 px-4 border border-transparent ${ROW_HEIGHT[size] ?? ROW_HEIGHT.md} rounded-[var(--kol-radius-sm)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} text-left ${type ?? ROW_TYPE[size] ?? ROW_TYPE.md} transition-colors ${state} ${className}`.trim()}
       {...rest}
     >
       {/* the glyph takes the row's ink when selected — a grey mark on a white fill reads as a hole */}

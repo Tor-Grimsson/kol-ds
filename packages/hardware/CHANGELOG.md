@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.5.0 — 2026-10-16
+
+- **No native `title` anywhere** (HardwareNativeTitle, kol-monitor). `IconButton`, `JackSocket` and `ModuleHeader`'s remove / bypass dots show the DS `Tooltip`, attached to the element itself (`asChild`) — no wrapper, so grid geometry (`IconSelect`) does not move. A jack's tooltip is silent while a cable is pending (`pending` or `dimPending`), so patching never flashes tooltips. `IconButton` takes its `title` as `aria-label` too. The `title` prop keeps its name; no call-site change. Needs kol-component ≥0.262.0 (`Tooltip disabled`).
+
 ## 0.4.1 — 2026-10-02
 
 - **`ModuleFrame` carries `kol-hw-panel`** — the marker the theme's touch rung skips, so a module's controls keep their desk sizes on touch. Needs the kol-theme of this release; a consumer with its own module frame adds the class to its root.

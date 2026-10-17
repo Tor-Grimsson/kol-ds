@@ -913,8 +913,10 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
    * like a home button"). The crumb row's root already did exactly this and the wordmark above it
    * did nothing — the one element every file manager makes clickable was the one that was inert.
    * Without the prop it stays a plain <h1>, so nothing existing changes. */
+  /* CENTRED, not baseline (MediaPickerHeaderCentred, kol-monitor 2026-10-16): on the baseline the
+   * controls' 12px text sat on the display title's, so every control box hung below the wordmark */
   return (
-    <header className="flex items-baseline justify-between gap-4">
+    <header className="flex items-center justify-between gap-4">
       {onHome ? (
         <button type="button" onClick={onHome}
           className={`${titleCls} text-fg-96 min-w-0 truncate text-left cursor-pointer transition-opacity hover:opacity-64`}
@@ -952,8 +954,9 @@ function LibraryHeader({ title, buckets, bucketId, appRoot, onBucket, bucketMeta
       </div>
       {/* THE × IS THE CARD'S, NOT A CONTROL (media-picker-close-and-title, kol-mirror 2026-10-15 — user:
         * "you ever seen a close out button before??", pointing at the Display Settings drawer). Alone at
-        * the far end of the title's row, outside the control cluster — the drawer's shape. */}
-      {onClose && <CloseButton onClick={onClose} className="shrink-0 self-center" />}
+        * the far end of the title's row, outside the control cluster — the drawer's shape. It centres with
+        * the row like every control in it. */}
+      {onClose && <CloseButton onClick={onClose} className="shrink-0" />}
     </header>
   )
 }

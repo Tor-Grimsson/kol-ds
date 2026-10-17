@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-component
 
+## 0.263.0 — 2026-10-16
+
+- **Fixed: the media library header row centres on the wordmark** (MediaPickerHeaderCentred, kol-monitor — supersedes 0.262.0's × fix). `LibraryHeader` was `items-baseline`, which set the controls' 12px text on the display title's baseline, so the whole control row — bucket dropdown, lock, trash, gear, × — hung below the wordmark. Now `items-center`, and the × drops its `self-end`. Measured at 1440 in the picker: wordmark cap middle 139.1, gear and × 140.5, dropdown 141. The full-page library header moves the same way.
+
+## 0.262.0 — 2026-10-16
+
+- **New: `ShellSearchOverlay` rows take `disabled`** (ShellSearchDisabledRow, kol-monitor — ⌘K Add module on a full rack). A disabled row is drawn at the disabled opacity with a not-allowed cursor, ↑↓ step over it, hover does not activate it, and click or Enter never reach `onSelect`. The top-row highlight starts on the first enabled row. `disabledHint` replaces the row's `hint` with the reason. Rows without it are unchanged.
+- **New: `OptionRow disabled`** — the row state the overlay uses: disabled opacity, no hover fill, not-allowed. The caller keeps it out of its keyboard order.
+- **Fixed: `MenuItem size="xs"` trigger wears the rung's type** (MenuItemXsTriggerType, kol-monitor). The trigger took its height from `size` but hardcoded `kol-helper-12 px-3`, so xs set 12px tracked type in a 22px box. `TRIGGER_BY_SIZE`: xs → `kol-mono-8 px-2`, the face its rows and `Button size="xs"` already wear; sm · md · lg unchanged.
+- **New: `Tooltip disabled`** (HardwareNativeTitle, kol-monitor) — stays mounted, never opens. For a trigger whose tooltip must go quiet without its element remounting under the pointer (a patch jack mid-drag).
+- **Fixed: the media picker's × sits on the control row** (MediaPickerCloseOnControlRow, kol-monitor — user: *"CLOSE X BUTTON IS IN THE WRONG PLACE"*). `LibraryHeader`'s row is baseline-aligned, so `self-center` centred the × on the display wordmark, 10px above the gear. `self-end`: centre 151.5 against the gear's 151 at 1440. The `modal` variant's × is the overlay's and did not move.
+
 ## 0.261.0 — 2026-10-15
 
 - **Fixed: the media picker's × is the card's, and its title has ink** (media-picker-close-and-title, kol-mirror — user: *"you ever seen a close out button before??"*). The × left the control cluster: it sits alone at the far end of the title's row, the Display Settings drawer's shape (`MediaLibraryBrowse onHeaderClose`). The header title takes `text-fg-96` — portalled into a body with no colour it inherited black on the dark card.

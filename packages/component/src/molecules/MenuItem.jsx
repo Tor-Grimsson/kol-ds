@@ -21,6 +21,9 @@ import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
  */
 /* the ladder's tokens, so the touch rung (D5, 2026-09-29) grows the trigger with its row */
 const TRIGGER_H = { xs: 'var(--kol-ctl-xs)', sm: 'var(--kol-ctl-sm)', md: 'var(--kol-ctl-md)', lg: 'var(--kol-ctl-lg)' }
+/* and its type: xs wears its rows' face, as `Button size="xs"` beside it does (MenuItemXsTriggerType,
+ * kol-monitor 2026-10-15 — 12px helper type in a 22px box) */
+const TRIGGER_BY_SIZE = { xs: 'kol-mono-8 px-2', sm: 'kol-helper-12 px-3', md: 'kol-helper-12 px-3', lg: 'kol-helper-12 px-3' }
 
 export function MenuItem({
   label,
@@ -61,7 +64,7 @@ export function MenuItem({
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
         type="button"
-        className={`kol-menu-btn kol-helper-12 px-3 inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
+        className={`kol-menu-btn ${TRIGGER_BY_SIZE[size] ?? TRIGGER_BY_SIZE.md} inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
         style={{ height: TRIGGER_H[size] ?? TRIGGER_H.md }}
       >
         <span>{label}</span>

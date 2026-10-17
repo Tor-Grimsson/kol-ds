@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-16, monitor tickets)
+
+- **Published:** kol-component 0.262.0 · 0.263.0 (`ShellSearchOverlay` disabled rows, `OptionRow disabled`, `MenuItem` xs trigger type, `Tooltip disabled`, media library header centred) · kol-hardware 0.5.0 (no native `title`; DS Tooltip, silent on a pending jack). Five monitor tickets closed, receipts returned. Push is the user's. Log: `session-log/2026-10-16-monitor-tickets-search-disabled-hardware-tooltips.md`.
+
 ## Current state (2026-10-15 later, monitor + mirror seams)
 
 - **Published:** kol-shell 0.64.0 (`AppStudio library.children` · `create.shell: false` · `RailSlotProvider`/`useRailSlot`) · kol-component 0.261.0 (`IconToggle`, modal grid on `MediaTile`, picker × on the title row) · kol-theme 0.174.0. Five mirror/monitor tickets closed, receipts returned. Standing go: tickets from mirror/monitor are built when the watch fires. Push is the user's. Log: `session-log/2026-10-15-monitor-mirror-seams-and-icontoggle.md`.
@@ -27,10 +31,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-14 earlier, lobby cleared)
 
 - Eighteen 🟠 rows closed on the user's ruling — all shipped and cited; the inbox is empty. **A ticket closes the turn its version ships; the filer's verification is never a close condition, and closed tickets are never reported.** Push is the user's. Log: `session-log/2026-10-14-lobby-eighteen-closes.md`.
-
-## Current state (2026-10-14 later, viewport touch gestures)
-
-- **Published:** kol-component 0.259.0 — `PanZoomViewport` takes two-finger pinch + pan; a one-finger tap fires `onSpaceTap`. fxr's ViewportTouchGestures closed, receipt returned. Push is the user's. Log: `session-log/2026-10-14-viewport-touch-gestures.md`.
 
 ## Repo standup (2026-06-15)
 

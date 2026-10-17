@@ -156,6 +156,9 @@ const TooltipNest = createContext(null)
  * element that takes a ref: an intrinsic tag always does; a component only if it forwards one
  * (React 18 needs forwardRef), so Button / IconFrame keep the wrapper. Its own ref and handlers are
  * kept — the reference props merge over the child's. */
+/* `disabled` (HardwareNativeTitle, kol-monitor 2026-10-15): the tooltip stays mounted but never
+ * opens — a jack mid-patch. Dropping the label instead would swap the tree and remount the trigger
+ * under the pointer. */
 const childRefOf = (el) => ('ref' in (el.props ?? {}) ? el.props.ref : reactVersion.startsWith('18') ? el.ref : undefined)
 
 export function Tooltip(props) {
@@ -173,12 +176,13 @@ function TooltipOn({
   children,
   triggerClassName = 'inline-flex',
   asChild = false,
+  disabled = false,
 }) {
   const [open, setOpen] = useState(false)
   const [covered, setCovered] = useState(false)
   const parent = useContext(TooltipNest)
   const popover = usePopover({
-    open: open && !covered,
+    open: open && !covered && !disabled,
     onOpenChange: (v) => { setOpen(v); parent?.(v) },
     placement,
     offset,
@@ -194,7 +198,7 @@ function TooltipOn({
    * trigger's RESOLVED `--kol-tone-*` onto the panel. No tone in effect = nothing copied, and the
    * tooltip keeps its own surface. */
   const [ambient, setAmbient] = useState(null)
-  const shown = open && !covered
+  const shown = open && !covered && !disabled
   useLayoutEffect(() => {
     const ref = popover.refs.reference.current
     /* the SURROUNDINGS' tone, not the trigger's own: an `asChild` trigger can be a variant button

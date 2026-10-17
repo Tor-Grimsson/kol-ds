@@ -1,3 +1,4 @@
+import { Tooltip } from '@kolkrabbi/kol-component'
 import Toggle from '../switches/Toggle.jsx'
 
 /**
@@ -22,17 +23,19 @@ export default function ModuleHeader({ label, enabled, onToggle, powered = true,
         {label}
       </span>
       {editMode && onRemove ? (
+        <Tooltip label="Send module to workbench" asChild>
         <div
           onClick={(e) => { e.stopPropagation(); onRemove() }}
-          title="Send module to workbench"
           style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--kol-ctl-led-yellow)', cursor: 'pointer', flexShrink: 0 }}
         />
+        </Tooltip>
       ) : onBypass ? (
+        <Tooltip label={bypass ? 'Bypassed — click to re-engage' : 'Bypass'} asChild>
         <div
           onClick={(e) => { e.stopPropagation(); onBypass() }}
-          title={bypass ? 'Bypassed — click to re-engage' : 'Bypass'}
           style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--kol-ctl-cv-attenuate)', opacity: bypass ? 0.25 : 1, cursor: 'pointer', flexShrink: 0 }}
         />
+        </Tooltip>
       ) : null}
     </div>
   )

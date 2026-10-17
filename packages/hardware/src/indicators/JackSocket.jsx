@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { Tooltip } from '@kolkrabbi/kol-component'
 
 /* Read a color binding once, lazily — the roles live in kol-theme's
  * kol-components-controls.css. HEX is required here: the ring appends a hex
@@ -49,7 +50,8 @@ function stopJackLoop() {
  * @param {object}     signalRef    `{ current }` — the live signal for the glow
  * @param {boolean}    bg           the fg-04 plate behind the ring (default: outputs only)
  * @param {Function}   onPointerDown  the consumer's routing gesture
- * @param {string}     title
+ * @param {string}     title        the DS `Tooltip` (default `label`), on the jack itself; silent while a
+ *                                cable is pending anywhere, so a drag never flashes tooltips (HardwareNativeTitle)
  * @param {object|Function} ringRef  the RING element (ControlsJackSeams, kol-monitor 2026-09-01) — the
  *                                consumer's drag-to-patch registers it for hit-testing (pointerup finds
  *                                the nearest input ring centre); a ref object or a callback
@@ -113,11 +115,11 @@ export default function JackSocket({
   const hole = size === 'sm' ? 4 : 6
 
   return (
+    <Tooltip label={title ?? label} asChild disabled={pending || dimPending}>
     <div
       className="inline-flex flex-col items-center gap-0.5 select-none"
       style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}
       onPointerDown={onPointerDown}
-      title={title ?? label}
     >
       <div
         className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}
@@ -158,5 +160,6 @@ export default function JackSocket({
         </span>
       )}
     </div>
+    </Tooltip>
   )
 }

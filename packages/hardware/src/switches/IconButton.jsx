@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
+import { Tooltip } from '@kolkrabbi/kol-component'
 
 const PULSE_MS = 100
 
@@ -12,7 +13,8 @@ const PULSE_MS = 100
  * @param {string}   icon         icon name
  * @param {boolean}  active · disabled · momentary
  * @param {Function} onClick
- * @param {string}   title
+ * @param {string}   title        the DS `Tooltip`, attached to the key itself (HardwareNativeTitle,
+ *                                kol-monitor 2026-10-15 — no native `title`, no wrapper in a grid)
  * @param {number}   iconSize     (default 10)
  * @param {ElementType} iconComponent  icon renderer seam (default kol-icons `Icon`)
  */
@@ -32,9 +34,10 @@ export default function IconButton({ icon, active, onClick, title, momentary, di
   }
 
   return (
+    <Tooltip label={title} asChild>
     <button
       type="button"
-      title={title}
+      aria-label={title}
       onClick={handleClick}
       disabled={disabled}
       style={{
@@ -54,5 +57,6 @@ export default function IconButton({ icon, active, onClick, title, momentary, di
     >
       <IconCmp name={icon} size={iconSize} />
     </button>
+    </Tooltip>
   )
 }

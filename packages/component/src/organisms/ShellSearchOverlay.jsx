@@ -76,7 +76,7 @@ export function HighlightMatch({ label, query, ranges }) {
  *
  * @param {boolean}  open          mount/unmount the overlay
  * @param {Function} onClose       () => void — backdrop click, Escape, post-select
- * @param {Array}    results       pre-filtered rows: { id, label, group?, hint?, icon? }
+ * @param {Array}    results       pre-filtered rows: { id, label, group?, hint?, icon?, disabled?, disabledHint? }
  * @param {Array}    [suggestions] rows shown while the query is empty (same shape) —
  *                                 the search modal opens on somewhere to go, not a blank box
  * @param {string}   query         controlled query (drives the highlight slice)
@@ -126,7 +126,14 @@ export default function ShellSearchOverlay({
    * index 0 counts as a selection and Enter navigates somewhere unasked. */
   const [navigated, setNavigated] = useState(false)
   const results = groupRows(query ? rawResults : suggestions)
-  const active = results.length > 0 ? Math.min(activeIndex, results.length - 1) : -1
+  /* a `disabled` row is drawn but never active: ↑↓ step over it, Enter and click never reach
+   * `onSelect` (ShellSearchDisabledRow, kol-monitor 2026-10-15 — a module with no room on the rack) */
+  const clamped = Math.min(activeIndex, results.length - 1)
+  const active = clamped >= 0 && !results[clamped].disabled ? clamped : -1
+  const step = (from, dir) => {
+    for (let i = from + dir; i >= 0 && i < results.length; i += dir) if (!results[i].disabled) return i
+    return from
+  }
 
   /* Focus in on open, restore the opener on close. querySelector instead of
    * a ref through SearchInput — ref-as-prop needs React 19 and the package
@@ -143,7 +150,7 @@ export default function ShellSearchOverlay({
    * suggestions for a category's presets). Keyed on the row ids, not the array's identity, so a
    * consumer passing a fresh array every render does not snap the highlight back to the top. */
   const rowsKey = results.map((r) => r.id).join('\u0000')
-  useEffect(() => { setActiveIndex(0); setNavigated(false) }, [query, open, rowsKey])
+  useEffect(() => { setActiveIndex(Math.max(0, results.findIndex((r) => !r.disabled))); setNavigated(false) }, [query, open, rowsKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Keep the active row visible inside the scrolling list. */
   useEffect(() => {
@@ -158,6 +165,7 @@ export default function ShellSearchOverlay({
    * still reaches `onSelect`, and the closure stays the consumer's to run there: the overlay running
    * it too would fire it twice in every shell that already does (workshop's tag rows). */
   const select = (item) => {
+    if (item?.disabled) return
     onSelect?.(item)
     if (!(item?.keepOpen || typeof item?.action === 'function')) onClose?.()
   }
@@ -171,11 +179,11 @@ export default function ShellSearchOverlay({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault()
       setNavigated(true)
-      setActiveIndex((i) => Math.min(i + 1, results.length - 1))
+      setActiveIndex((i) => step(Math.min(i, results.length - 1), 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       setNavigated(true)
-      setActiveIndex((i) => Math.max(i - 1, 0))
+      setActiveIndex((i) => step(Math.min(i, results.length - 1), -1))
     } else if (e.key === 'Enter') {
       e.preventDefault()
       /* ⌘ENTER OPENS EVERY HIT (user 2026-09-30: *"enter would focus searched item, and maybe
@@ -258,6 +266,8 @@ export default function ShellSearchOverlay({
           *   hint      subtext shown when the LABEL was not what matched
           *   href      a destination; dismisses the search modal
           *   action    a closure, run by the consumer's `onSelect`; the search modal STAYS OPEN (tag rows)
+          *   disabled  drawn muted, skipped by ↑↓, never reaches `onSelect`; `disabledHint` replaces
+          *             `hint` with the reason (a full rack: "no room")
           *   keepOpen  the row selects and the search modal STAYS OPEN — a drill-in (category →
           *             its items, a "← All" row back); the consumer swaps `suggestions`/`results`
           * Built by `buildShellSearchItems` (showcase/src/nav/shell-nav.js). */}
@@ -282,14 +292,16 @@ export default function ShellSearchOverlay({
                     id={optionId(item)}
                     role="option"
                     aria-selected={i === active}
+                    aria-disabled={item.disabled || undefined}
                     active={i === active}
+                    disabled={item.disabled}
                     icon={item.icon}
                     label={<HighlightMatch label={item.label} query={query} ranges={item.highlights} />}
-                    hint={item.hint}
+                    hint={(item.disabled && item.disabledHint) || item.hint}
                     /* preventDefault keeps focus in the input through the click */
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => select(item)}
-                    onMouseEnter={() => { setActiveIndex(i); setNavigated(true) }}
+                    onMouseEnter={() => { if (!item.disabled) { setActiveIndex(i); setNavigated(true) } }}
                   />
                 </li>
               )
