@@ -13,14 +13,14 @@ const write = (key, value) => { try { localStorage.setItem(key, value) } catch {
  * instructions for making the dev tab to the hub … localhost only using the </> icon"*). Each app had built
  * this page by hand and each read differently; this is the page made once, for reading.
  *
- * The shape: a small mono masthead with one line saying what the page is, the tabs on their own row under
- * it, the active tab's one-line description, then the tab's content at full width. Detail belongs in the
+ * The shape: a small mono masthead with one line saying what the page is, the chip tabs on their own row under
+ * it, then the tab's content at full width. Detail belongs in the
  * content's own toggles, not in more text here. The open tab is remembered per app.
  *
  * Rendered by `AppHub` / `AppStudio` from their `dev` prop, only on a dev server (`import.meta.env.DEV`),
- * at `/dev`, behind the `code` rail row.
+ * at `/dev`, behind a `code` rail row after the app's own rows.
  *
- * @param {Array}  tabs        `[{ value, label, description?, content }]`
+ * @param {Array}  tabs        `[{ value, label, content }]`
  * @param {string} [title='Dev']
  * @param {string} [subtitle]  one line: what the page is
  * @param {string} [storageKey] where the open tab is remembered
@@ -34,10 +34,9 @@ export default function HubDev({ tabs = [], title = 'Dev', subtitle = 'Experimen
     <PageShell className="gap-6">
       <PageHeader size="sm" voice="mono" title={title} subtitle={subtitle} />
       {tabs.length > 1 && (
-        <div className="flex flex-col gap-2 border-b border-fg-08 pb-4">
-          <TabsRow look="text" tabs={tabs.map(({ value, label }) => ({ value, label }))} value={active?.value} onChange={pick} tracked />
-          {active?.description && <p className="kol-helper-12 text-meta">{active.description}</p>}
-        </div>
+        /* chip tabs — the ones ui.kolkrabbi.io's component pages use — and nothing between them and the
+         * content (HubDevChrome, kol-monitor 2026-10-18 — user: *"why are we puttin sub description below the tabs?"*) */
+        <TabsRow look="chip" tabs={tabs.map(({ value, label }) => ({ value, label }))} value={active?.value} onChange={pick} ariaLabel={title} />
       )}
       {active && <div className="min-w-0">{active.content}</div>}
     </PageShell>

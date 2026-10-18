@@ -39,8 +39,8 @@ import { CommandOverlay } from '@kolkrabbi/kol-component'
  *                              to neccessarily have settings manditory part of the rail"*) — no `settings`, no rail
  *                              row, no route, no `,` key. It was pinned whether the app had settings or not.
  * @param {Object}   dev        HubDev's props (`tabs`, `title`, `subtitle`) + `path` (default `/dev`). OPT-IN, and only on
- *                              a dev server (`import.meta.env.DEV`; `always: true` overrides) — a `code` row above
- *                              Settings (CompareGridDevTab, kol-monitor 2026-10-17)
+ *                              a dev server (`import.meta.env.DEV`; `always: true` overrides) — a `code` row after
+ *                              the app's own rows (CompareGridDevTab · HubDevChrome, kol-monitor)
  * @param {Array}    shortcuts  `[{ section, items: [{ id, label, combo }] }]` — the sheet AND Settings
  * @param {ReactNode} themeToggle  Settings' masthead toggle (a node — kol-framework is not a peer)
  * @param {string}   shortcutsKey  default `s`; `null` turns the sheet key off (a tool that owns S)
@@ -96,13 +96,16 @@ export default function AppHub({
       : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
         ? <HubDev storageKey={`kol-dev-tab:${app.name ?? 'app'}`} {...devProps} />
         : children
-  const bottom = [...(devOn ? [{ icon: 'code', path: devPath, label: 'Dev' }] : []), ...(settings ? SETTINGS_ROW(settingsPath) : [])]
+  /* the Dev row closes the app's own rows — under Stage in monitor (HubDevChrome, kol-monitor 2026-10-18 — user:
+   * *"why did the dev tab move? it was fine where it was. below stage"*); Settings keeps the bottom alone */
+  const rows = devOn ? [...items, { icon: 'code', path: devPath, label: 'Dev' }] : items
+  const bottom = settings ? SETTINGS_ROW(settingsPath) : []
   /* the phone bar lists Home as a tab — the rail draws it as the mark, the bar has no mark */
-  const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...items, ...bottom]
+  const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...rows, ...bottom]
 
   return (
     <AppShell
-      items={items}
+      items={rows}
       bottomItems={bottom}
       barItems={barItems}
       logomark={app.logomark ? { svgUrl: app.logomark, title: app.name } : undefined}

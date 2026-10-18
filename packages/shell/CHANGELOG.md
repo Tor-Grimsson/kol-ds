@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.67.0 — 2026-10-18
+
+- **The Dev page's chrome** (HubDevChrome, kol-monitor — user: *"why did the dev tab move? it was fine where it was. below stage"*). The `code` row closes the app's own rows (under Stage in monitor) instead of sitting above Settings; the tabs are `TabsRow look="chip"`, the tabs ui.kolkrabbi.io's component pages use; no description line under them — a tab's `description` is no longer drawn.
+
 ## 0.66.0 — 2026-10-17
 
 - **`S` opens the ⌘K overlay's shortcuts mode** — the whole keymap at a glance, this page's first, typing filters, Enter runs a row (CommandOverlayModes). Needs kol-component ≥0.266.0.

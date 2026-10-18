@@ -60,7 +60,7 @@ Read off monitor, mirror and fxr (2026-09-26) — each assembled the same Hub by
 | Home | `CatalogPage` + mono masthead + RECENT · SAVED + a Walkthrough toggle + a Get-started step | `HubHome`: views RECENT · SAVED (caps, renamable), `items` may be `(view) => items`, walkthrough opt-in with its X inside the card, list = the file row stacked (brand's) |
 | Settings | `SettingsScaffold` with SETTINGS · ABOUT · REPO, the same subtitles and theme toggle, About = prose + colophon, Repo = links, shortcuts at the foot | `HubSettings`: fxr's page as the reference, every feature opt-in — `sections` (rows as data, searched) · `drawer` (the gear opens the same sections) · `picker` · `splitShortcuts` (OPTIONS / SHORTCUTS) · `content` · extra `tabs`; ABOUT · REPO below the rule |
 | Shortcuts sheet | `S` in monitor and mirror, `?` in media-hub (now `S`) | `S`, app-wide, off with `shortcutsKey={null}`; a section with `routes` shows first on its pages and muted under ELSEWHERE on the rest — bind its keys with `shortcutInScope` |
-| Dev | a hand-built `/dev` page apiece, gated differently (monitor localhost-only with `code`, mirror always with `component`) | `HubDev` from `dev={{ tabs }}`: a dev server only, the `code` row above Settings, `/dev`; the tabs on their own row with one line each, the content full width; a comparison is a `CompareGrid` tab |
+| Dev | a hand-built `/dev` page apiece, gated differently (monitor localhost-only with `code`, mirror always with `component`) | `HubDev` from `dev={{ tabs }}`: a dev server only, the `code` row after the app's own rows, `/dev`; chip tabs (`TabsRow look="chip"`), then the content full width; a comparison is a `CompareGrid` tab |
 
 **Routes.** `/` is Home, `/settings` is Settings, any other path is the tool. Router-agnostic, like `AppShell`.
 
@@ -93,7 +93,7 @@ mirror · monitor each hand-build, monitor.kolkrabbi.io the reference. `AppStudi
 | Create | `/create` | `create` | a Catalog-headed editor page: `header` over the editor (monitor: CASE · MODULES) |
 | Use | `/use` | `use` | the tool, full-bleed — no page padding, no wash (monitor: the rack) |
 | — | `pages[].path` | `pages` | opt-in pages (monitor: Stage) |
-| Dev | `/dev` | `dev` | `HubDev`, a dev server only — the `code` row above Settings |
+| Dev | `/dev` | `dev` | `HubDev`, a dev server only — the `code` row after the app's own rows |
 | Settings | `/settings` | `settings` | `HubSettings`, pinned at the rail's foot |
 
 The **order** is the Studio's; each slot renames with `{ path, label, icon }` (monitor's Use is

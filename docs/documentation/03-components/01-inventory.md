@@ -183,7 +183,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
 | `CommandOverlay` (was `ShellSearchOverlay`) | The ⌘K overlay — search · go · add · shortcuts (`mode`); ↑↓ rows, → / Enter opens a category, ← back; disabled rows; the keymap at a glance in `shortcuts`. |
 | `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, AlphaStrip, and the composed square picker. |
-| `HubDev` (kol-shell) | A hub's development page — mono masthead, the tabs on their own row with one line each, full-width content; `AppHub` / `AppStudio` `dev` renders it on a dev server at `/dev` behind the `code` row. |
+| `HubDev` (kol-shell) | A hub's development page — mono masthead, chip tabs, full-width content; `AppHub` / `AppStudio` `dev` renders it on a dev server at `/dev` behind a `code` row after the app's own rows. |
 | `CompareGrid` | Two versions of many things side by side — A beside B on `IconPlate`s, each side named, the toolbar size · ground · guide · state filter, a state chip per item. |
 | `ColorPickerPopover` | A swatch that opens a colour picker — saturation square, hue and opacity strips, hex; ⌥-click resets to `defaultValue`. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
