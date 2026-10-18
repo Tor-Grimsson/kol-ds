@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-18 later, the overlays)
+
+- **Published:** kol-component 0.275.0 · kol-shell 0.71.0 · kol-theme 0.176.0 · kol-workshop 0.41.0. CommandOverlay fold rows (shortcuts = folds, page sections open, ⌘↵ all); only two names, rail and overlay (`SettingsPanel variant="rail"`, `drawer` alias); `--kol-pad-overlay`; ShortcutsOverlay = SettingsPanel with `variant`; AppHub `⇧S` rail. New `apps/overlays` + the Overlays set. Then kol-component 0.275.0 · kol-shell 0.71.0 (AppHub ⇧S rail) and kol-icons 0.40.0 · 0.41.0 (monitor's signal icons, `grid-3x3`, `video-off`); monitor told. Push is the user's. Log: `session-log/2026-10-18-overlays-app-folds-rail-shortcuts.md`.
+
 ## Current state (2026-10-18, the 2026-10-17 plan)
 
 - **Done:** `plan-2026-10-17-icon-gallery-and-references.md` W1–W9 + 6.4 (one header, picked on Round 11) and the dev-favicon system; six monitor tickets closed. **Published:** kol-component 0.267.0 · kol-shell 0.67.0 · kol-framework 0.51.0 · kol-theme 0.175.0 · kol-foundry 0.13.0 · kol-workshop 0.40.0. New names: CommandOverlay · Rail · TabsRow `look` · LoaderIntro (old names aliased on the ledger). Receipts go only after the registry lists the version. Push is the user's. Log: `session-log/2026-10-18-plan-icons-references-templates-header.md`.
@@ -26,11 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Published:** kol-icons 0.38.0 — `mirror` in `identity`. kol-mirror's identity-mirror closed, receipt returned.
 - **Parked, unfinished:** a kolkrabbi.io Stack post about this repo in `docs/stack/` — three drafts, graphics + motion candidate pages. Waits on the user's picks; then plates, clips, and a `/repo-stack` skill. Push is the user's. Log: `session-log/2026-10-15-stack-post-drafts-and-identity-mirror.md`.
-
-## Current state (2026-10-14 latest, clearspace graphics)
-
-- **Published:** kol-component 0.260.0 — the twelve `structure/diagram-*` clearspace layers are Kolkrabbi's, drawn from kol-brand's marks with the ghosted logomark as the unit. kol-website's ClearspaceGraphicsAreAnotherCreations closed, receipt returned. Lobby clear. Push is the user's. Log: `session-log/2026-10-14-clearspace-graphics-are-kolkrabbis.md`.
-- Known: kol-brand's `kol-lockup-vert.svg` is a wide lockup, not a vertical one — unruled.
 
 ## Repo standup (2026-06-15)
 
