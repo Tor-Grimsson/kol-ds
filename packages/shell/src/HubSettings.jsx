@@ -191,7 +191,7 @@ export default function HubSettings({
       {hasDrawer && (
         <SettingsPanel
           open={drawerOpen}
-          variant="drawer"
+          variant="rail"
           title={drawerCfg.title ?? 'Display settings'}
           onClose={() => setDrawerOpen(false)}
           /* the footer's children sit before reset in its row — media's theme · reset arrangement */

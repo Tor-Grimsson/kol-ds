@@ -68,6 +68,7 @@ export const SET_FAMILY = {
   'kind-preview': 'component',
   'media-library': 'component',
   mixer: 'hardware',
+  overlays: 'component',
   'metrics-dashboard': 'dashboards',
   'prints-store': 'store',
   rack: 'hardware',

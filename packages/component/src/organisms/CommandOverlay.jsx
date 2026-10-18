@@ -4,8 +4,6 @@ import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
 import Kbd from '../atoms/Kbd.jsx'
 import OptionRow from '../molecules/OptionRow.jsx'
-import Button from '../atoms/Button.jsx'
-import { Tooltip } from '../utilities/Popover.jsx'
 import { shortcutInScope } from './ShortcutsOverlay.jsx'
 
 /* ONE COLUMN (2026-09-30): rows, headings and footer sit on the field's own
@@ -64,26 +62,46 @@ export function HighlightMatch({ label, query, ranges }) {
 /* THE MODES (CommandOverlayModes, kol-monitor 2026-10-17 — user: *"can we make the modal more general then just
  * search? … add module would be another, shortcuts could be a third"*). One field, one grouped list, one footer;
  * the mode only sets the footer's words and, for `shortcuts`, where the rows come from. */
-const MODE_LABEL = { search: 'Go to page', go: 'Go to page', add: 'Add', shortcuts: 'Run' }
-const MODE_PLACEHOLDER = { search: 'Search…', go: 'Go to…', add: 'Add…', shortcuts: 'Search shortcuts…' }
+/* `go` was `search` under another placeholder — folded into it (user 2026-10-18); still accepted as its old name */
+const MODE_LABEL = { search: 'Go to page', add: 'Add' }
+const MODE_PLACEHOLDER = { search: 'Search…', add: 'Add…' }
 
-/* the keymap as rows: every section visible at once, this page's first, the rest muted and never run */
-function shortcutRows(shortcuts, path, query) {
-  const q = query.trim().toLowerCase()
-  const rows = (sec, here) => (sec.items ?? []).map((it) => ({
-    id: `${sec.section}:${it.id ?? it.label}`, label: it.label, hint: it.combo ?? it.keys,
-    group: here ? sec.section : `Elsewhere · ${sec.section}`, disabled: !here, run: it.run,
+/* THE KEYMAP AS FOLDS (user 2026-10-18: *"shortcuts doesnt make any sense in command overlay, it should just be
+ * shortcuts fold"*): this page's sections (plus those with no `routes`) as fold rows under "Shortcuts", each opening
+ * its keys in place — label left, combo right, never run. The index keeps two keys with one label apart. */
+function shortcutFolds(shortcuts, path) {
+  return shortcuts.filter((s) => shortcutInScope(s, path)).map((s) => ({
+    /* the page's own sections start OPEN (user 2026-10-18: *"if you are in rack then its already expanded no?"*) —
+     * a section with `routes` that match; App (no routes, everywhere) starts folded */
+    id: `cat:${s.section}`, label: s.section, group: 'Shortcuts', open: !!s.routes?.length,
+    items: (s.items ?? []).map((it, i) => ({ id: it.id ?? `${i}:${it.label}`, label: it.label, hint: it.combo ?? it.keys })),
   }))
-  const all = [...shortcuts.filter((s) => shortcutInScope(s, path)).flatMap((s) => rows(s, true)),
-    ...shortcuts.filter((s) => !shortcutInScope(s, path)).flatMap((s) => rows(s, false))]
-  return q ? all.filter((r) => r.label.toLowerCase().includes(q) || String(r.hint ?? '').toLowerCase().includes(q)) : all
+}
+
+/* FOLD ROWS (user 2026-10-18: *"shortcuts could be used for things like add, where you wanna find category not a flat
+ * list, and all could also be a category"*): any row carrying `items` is a category that opens its rows under it, in
+ * place — the arrow turns down. Its children take its group and an indent; nothing else on the list moves. */
+function unfold(rows, opened) {
+  return rows.flatMap((r) => {
+    if (!Array.isArray(r.items)) return [r]
+    const on = opened.has(r.id)
+    return [
+      { ...r, icon: on ? 'arrow-down' : 'arrow-right', fold: true },
+      ...(on ? r.items.map((c) => ({ ...c, id: `${r.id}/${c.id}`, group: r.group, indent: true, of: r.id })) : []),
+    ]
+  })
 }
 
 /**
  * CommandOverlay — The ⌘K overlay: search, add, go, shortcuts. Was `ShellSearchOverlay` (still exported, an
- * alias). `mode` names what the overlay is for — `search` (default) · `go` · `add` · `shortcuts`. In
- * `shortcuts` it draws `shortcuts` (the AppHub keymap) as rows: every section at once, the current page's
- * first, the rest muted under "Elsewhere"; typing filters; Enter runs a row's `run`.
+ * alias). `mode` names what the overlay is for — `search` (default) · `add` · `shortcuts` (`go` is search's old name). In
+ * `shortcuts` it draws `shortcuts` (the AppHub keymap) with NO field, as fold rows: the current page's sections
+ * under "Shortcuts", each opening its keys in place (label · combo, never run). AppHub's `S` opens this.
+ *
+ * FOLD ROWS, any mode: a row with `items` is a category — Enter / → / click opens it in place, ← or Enter again
+ * closes it; its children are ordinary rows (Enter selects them). An "All" category is just a fold row holding
+ * every item. `open: true` on a fold row starts it open; ⌘/Ctrl+Enter (and the footer's second line) opens or
+ * closes them all.
  *
  * ARROWS (2026-10-17 — user: *"arrows up down can focus category and arrows left right can enter and back,
  * along with enter key"*): ↑↓ move through rows; → or Enter opens a category (a `keepOpen` row); ← goes back
@@ -122,7 +140,7 @@ function shortcutRows(shortcuts, path, query) {
  *                                 own results surface. Plain Enter keeps its meaning.
  * @param {string}   [resultsLabel] the footer's second line for ⌘Enter (e.g. `All results`)
  * @param {Function} [onBack]      a drill-in's way back (CommandOverlayModes, kol-monitor 2026-10-17): set, the
- *                                 field row leads with a back arrow, and Backspace on an empty field calls it —
+ *                                 search glyph becomes a back arrow in its slot (the field never moves); Backspace on an empty field calls it —
  *                                 instead of a "← All" row that scrolls away with the list
  * @param {string}   [backLabel]   the arrow's tooltip (default `Back`) — name where it goes ("All modules")
  * @param {string}   [selectLabel] the footer's Enter line while a row is highlighted (default
@@ -164,9 +182,16 @@ export default function CommandOverlay({
   /* Has the user actually chosen a row? See the Enter branch — without this,
    * index 0 counts as a selection and Enter navigates somewhere unasked. */
   const [navigated, setNavigated] = useState(false)
+  /* the fold rows' open categories */
+  const [opened, setOpened] = useState(() => new Set())
+  const toggle = (c, on) => setOpened((o) => { const n = new Set(o); (on ?? !n.has(c)) ? n.add(c) : n.delete(c); return n })
+  const noField = mode === 'shortcuts'
+  const back = onBack
+  if (mode === 'go') mode = 'search'
   const placeholder = placeholderProp ?? MODE_PLACEHOLDER[mode] ?? 'Search…'
   const selectLabel = selectLabelProp ?? MODE_LABEL[mode] ?? 'Go to page'
-  const results = mode === 'shortcuts' ? shortcutRows(shortcuts, currentPath, query) : groupRows(query ? rawResults : suggestions)
+  const base = mode === 'shortcuts' ? shortcutFolds(shortcuts, currentPath) : groupRows(query ? rawResults : suggestions)
+  const results = unfold(base, opened)
   /* a `disabled` row is drawn but never active: ↑↓ step over it, Enter and click never reach
    * `onSelect` (ShellSearchDisabledRow, kol-monitor 2026-10-15 — a module with no room on the rack) */
   const clamped = Math.min(activeIndex, results.length - 1)
@@ -182,15 +207,17 @@ export default function CommandOverlay({
   useEffect(() => {
     if (!open) return undefined
     const prev = document.activeElement
-    panelRef.current?.querySelector('input')?.focus()
-    return () => { if (prev instanceof HTMLElement) prev.focus() }
+    ;(panelRef.current?.querySelector('input') ?? panelRef.current)?.focus()
+    setOpened(new Set(base.filter((r) => r.items && r.open).map((r) => r.id)))
+    return () => { setOpened(new Set()); if (prev instanceof HTMLElement) prev.focus() }
   }, [open])
 
   /* Roving row resets to the top on every query change / reopen — and when the ROWS change under an
    * unchanged query (ShellSearchOverlayActionKeepsOpen, kol-fxr 2026-10-13: a drill-in swaps the
    * suggestions for a category's presets). Keyed on the row ids, not the array's identity, so a
    * consumer passing a fresh array every render does not snap the highlight back to the top. */
-  const rowsKey = results.map((r) => r.id).join('\u0000')
+  /* the BASE rows, not the unfolded ones: opening a category must not throw the highlight back to the top */
+  const rowsKey = base.map((r) => r.id).join('\u0000')
   useEffect(() => { setActiveIndex(Math.max(0, results.findIndex((r) => !r.disabled))); setNavigated(false) }, [query, open, rowsKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Keep the active row visible inside the scrolling list. */
@@ -207,20 +234,37 @@ export default function CommandOverlay({
    * it too would fire it twice in every shell that already does (workshop's tag rows). */
   const select = (item) => {
     if (item?.disabled) return
-    if (mode === 'shortcuts') { onClose?.(); item?.run?.(); onSelect?.(item); return }
+    if (item?.fold) { toggle(item.id); return }
+    /* a key is never run: Enter on one folds its category back up, the highlight on the category */
+    if (mode === 'shortcuts') {
+      if (item?.of != null) { toggle(item.of, false); setActiveIndex(results.findIndex((x) => x.id === item.of)) }
+      return
+    }
     onSelect?.(item)
     if (!(item?.keepOpen || typeof item?.action === 'function')) onClose?.()
   }
 
   const optionId = (item) => `${listId}-${item.id}`
 
+  /* EXPAND / COLLAPSE ALL (user 2026-10-18: *"needs a expand/collapse all shortcut next to expand in the bottom"*) */
+  const folds = base.filter((r) => Array.isArray(r.items))
+  const allOpen = folds.length > 0 && folds.every((r) => opened.has(r.id))
+  const toggleAll = () => setOpened(allOpen ? new Set() : new Set(folds.map((r) => r.id)))
+
   const handleKeyDown = (e) => {
-    if (e.key === 'Backspace' && !query && onBack) {
+    if (e.key === 'Backspace' && !query && back) {
       e.preventDefault()
-      onBack()
-    } else if (e.key === 'ArrowLeft' && !query && onBack) {
+      back()
+    } else if (e.key === 'ArrowLeft' && !query && back) {
       e.preventDefault()
-      onBack()
+      back()
+    } else if (!query && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') && active >= 0 && (results[active].fold || results[active].of != null)) {
+      /* fold rows: → opens the highlighted category, ← closes it (from a child row, its own category) */
+      e.preventDefault()
+      const r = results[active]
+      const c = r.fold ? r.id : r.of
+      if (e.key === 'ArrowRight' && r.fold) toggle(c, true)
+      if (e.key === 'ArrowLeft') { toggle(c, false); if (!r.fold) setActiveIndex(results.findIndex((x) => x.id === c)) }
     } else if (e.key === 'ArrowRight' && !query && active >= 0 && results[active]?.keepOpen) {
       e.preventDefault()
       select(results[active])
@@ -240,6 +284,8 @@ export default function CommandOverlay({
       /* ⌘ENTER OPENS EVERY HIT (user 2026-09-30: *"enter would focus searched item, and maybe
        * command enter would open the results page"*) — only where the consumer has a place for them. */
       if ((e.metaKey || e.ctrlKey) && onOpenResults && query) { onOpenResults(query); onClose?.(); return }
+      /* ⌘ENTER ON FOLDS opens every category, or closes them all when all are open */
+      if ((e.metaKey || e.ctrlKey) && folds.length) { toggleAll(); return }
       /* ENTER OPENS THE HIGHLIGHTED ROW (user 2026-10-01: *"I think enter should also take you to
        * the atom but something like command enter take you to the index"* — reverses the
        * 2026-08-01 "Enter commits, it only selects once you have arrowed"). The top row is drawn
@@ -268,10 +314,13 @@ export default function CommandOverlay({
       />
       <div
         ref={panelRef}
+        /* no field (shortcuts): the panel takes focus and the keys */
+        tabIndex={noField ? -1 : undefined}
+        onKeyDown={noField ? handleKeyDown : undefined}
         role="dialog"
         aria-modal="true"
         aria-label="Search"
-        className={`kol-overlay-panel mx-4 ${expanded ? 'max-w-[var(--kol-content-panel)]' : 'max-w-lg'}`}
+        className={`kol-overlay-panel mx-4 ${noField ? 'outline-none ' : ''}${expanded ? 'max-w-[var(--kol-content-panel)]' : 'max-w-lg'}`}
       >
         {/* THE MODE, said out loud (user 2026-08-01: "how do you set search
           * mode? theres no helper, message or mode clearly readble"). Two
@@ -288,25 +337,25 @@ export default function CommandOverlay({
         )}
         {/* A REAL FIELD, inset in the panel (2026-09-30, shadcn's search modal as
           * the aim) — the flush `bare` strip read as a hole, not a control. */}
+        {!noField && (
         <div className="kol-tone-grey p-2 flex items-center gap-2">
-        {onBack && (
-          <Tooltip label={backLabel}>
-            {/* mousedown keeps focus in the field, as the rows do */}
-            <Button iconOnly="arrow-left" tone="ghost" size="md" aria-label={backLabel} onMouseDown={(e) => e.preventDefault()} onClick={onBack} />
-          </Tooltip>
-        )}
+        {/* THE BACK ARROW TAKES THE SEARCH GLYPH'S SLOT (user 2026-10-18: *"why would the back move the input?!"*) —
+          * a button beside the field shrank it and shifted the caret on every drill-in */}
         <SearchInput
           className="w-full min-w-0 flex-1"
           value={query}
           onChange={(e) => onQueryChange?.(e.target.value)}
           placeholder={chips.length > 0 ? 'Narrow these results…' : placeholder}
           onKeyDown={handleKeyDown}
+          onBack={back}
+          backLabel={backLabel}
           role="combobox"
           aria-expanded={results.length > 0}
           aria-controls={listId}
           aria-activedescendant={active >= 0 ? optionId(results[active]) : undefined}
         />
         </div>
+        )}
 
         {/* WHY THIS IS NOT `molecules/Dropdown` (asked 2026-08-01). Dropdown is
           * a SELECT: a trigger, a `value`, `onChange(value)`, and rows that are
@@ -336,14 +385,15 @@ export default function CommandOverlay({
             ref={listRef}
             id={listId}
             role="listbox"
-            className="kol-tone-grey h-80 overflow-y-auto px-2 pb-2"
+            className={`kol-tone-grey h-80 overflow-y-auto px-2 pb-2${noField ? ' pt-2' : ''}`}
           >
             {results.map((item, i) => {
               const heading = (item.group ?? '') !== (results[i - 1]?.group ?? '') || i === 0
               return (
                 <li key={item.id} role="presentation">
                   {heading && item.group && (
-                    <p className="kol-helper-12 text-fg-48 px-4 border-x border-transparent pt-3 pb-2">{item.group}</p>
+                    /* the rail's eyebrow (user 2026-10-18: *"sections shoudl be uppercase eyebrow like in siderail"*) */
+                    <p className="kol-eyebrow text-fg-80 px-4 border-x border-transparent pt-3 pb-2">{item.group}</p>
                   )}
                   <OptionRow
                     id={optionId(item)}
@@ -353,6 +403,8 @@ export default function CommandOverlay({
                     active={i === active}
                     disabled={item.disabled}
                     icon={item.icon}
+                    /* a fold's key row sits under its category's label, past the chevron */
+                    leading={item.indent ? <span className="inline-block w-4" /> : undefined}
                     label={<HighlightMatch label={item.label} query={query} ranges={item.highlights} />}
                     hint={(item.disabled && item.disabledHint) || item.hint}
                     /* preventDefault keeps focus in the input through the click */
@@ -371,9 +423,24 @@ export default function CommandOverlay({
             {/* Enter's line names what Enter does NOW: a row is highlighted → it opens that row;
               * no rows → it commits the query. */}
             {(results.length > 0 || enterLabel) && (
-              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent">
+              /* 44px on touch — a finger-sized line */
+              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent pointer-coarse:min-h-11">
                 <Kbd icon="corner-down-left" />
-                {results.length > 0 ? selectLabel : enterLabel}
+                {results.length > 0
+                  ? (results[active]?.fold ? (opened.has(results[active].id) ? 'Collapse' : 'Expand') : noField ? 'Collapse' : selectLabel)
+                  : enterLabel}
+                {/* the second action on the same line, right — ⌘↵, the footer's idiom for "the other one" */}
+                {folds.length > 0 && !query && (
+                  <button
+                    type="button"
+                    className="ml-auto flex items-center gap-2 text-fg-48 hover:text-fg-default transition-colors cursor-pointer"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={toggleAll}
+                  >
+                    <Kbd icon="command"><Icon name="corner-down-left" size={12} /></Kbd>
+                    {allOpen ? 'Collapse all' : 'Expand all'}
+                  </button>
+                )}
               </p>
             )}
             {/* THE RESULTS LINE IS A LINK (user 2026-10-01: *"make 'all results...' at the bottom

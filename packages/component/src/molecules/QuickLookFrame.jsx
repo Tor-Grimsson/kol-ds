@@ -11,7 +11,7 @@ import CloseButton from '../atoms/CloseButton.jsx'
  * floating over a video, a see-through page — so no two kinds looked like one feature. One
  * opaque window now holds all of them:
  *
- *   header  close · ‹ › n / N · the file's name · its facts · the kind's actions, right-aligned
+ *   header  ‹ › n / N · the file's name · its facts · the kind's actions and the close, right-aligned
  *   body    the media at its own aspect ratio, capped to the viewport — the window hugs it
  *   footer  the transport, when the kind has one (`PlaybackBar docked`)
  *
@@ -61,9 +61,6 @@ export default function QuickLookFrame({ title, meta, actions, onClose, nav, siz
       className={`kol-quicklook${footer ? ' kol-quicklook--footer' : ''}${size ? ' kol-quicklook--sized' : ''} ${className}`.trim()}>
       {header && (
         <div className="kol-quicklook-header">
-          {/* THE ESTATE'S CLOSE IDIOM, and every header control wears it (user 2026-09-23): bare at
-            * rest, a wash on hover — a filled container read as a second surface on the header */}
-          {onClose && <CloseButton size="sm" onClick={onClose} />}
           {nav?.total > 1 && (
             /* the pager is its own group: the count sits off the chevrons, and the group sits clear of
              * the file's name (user 2026-09-23) */
@@ -77,6 +74,10 @@ export default function QuickLookFrame({ title, meta, actions, onClose, nav, siz
           {meta && <span className="kol-mono-12 text-meta truncate">{meta}</span>}
           <span className="flex-1" />
           {actions}
+          {/* THE ESTATE'S CLOSE IDIOM, and every header control wears it (user 2026-09-23): bare at
+            * rest, a wash on hover — a filled container read as a second surface on the header. LAST, at the
+            * far right (user 2026-10-18: *"X should be space between justify on the right"*) */}
+          {onClose && <CloseButton size="sm" onClick={onClose} />}
         </div>
       )}
       <div className="kol-quicklook-body">{children}</div>

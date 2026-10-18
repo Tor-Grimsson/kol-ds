@@ -770,7 +770,7 @@ export function mediaSettingsSections({ settings, onChange, profile }) {
  * composition the user locked 2026-08-27), drawn from `mediaSettingsSections`. */
 function MediaSettings({ settings, onChange, onReset, onClose, profile, settingsFooter }) {
   return (
-    <SettingsPanel variant="drawer" title="Display settings" onClose={onClose} footer={<SettingsFooter onReset={onReset} resetLabel="Reset preferences">{settingsFooter}</SettingsFooter>}>
+    <SettingsPanel variant="rail" title="Display settings" onClose={onClose} footer={<SettingsFooter onReset={onReset} resetLabel="Reset preferences">{settingsFooter}</SettingsFooter>}>
       <SettingsSections sections={mediaSettingsSections({ settings, onChange, profile })} divided />
     </SettingsPanel>
   )
@@ -862,7 +862,7 @@ function TrashPanel({ trash, onClose, run, confirm }) {
     run(async () => { for (const id of ids) await trash.purge(id); setSel(new Set()) })
   }
   return (
-    <SettingsPanel variant="drawer" title="Trash" onClose={onClose}
+    <SettingsPanel variant="rail" title="Trash" onClose={onClose}
       footer={items.length > 0 && trash.empty ? (
         <SettingsFooter>
           <Button tone="primary" size="sm" onClick={async () => {

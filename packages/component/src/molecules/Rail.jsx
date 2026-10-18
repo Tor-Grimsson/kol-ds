@@ -219,7 +219,7 @@ export default function Rail({
         style={sizeStyle}
       >
         {grab}
-        <div className="flex h-full flex-col px-4 py-4 md:px-5 lg:px-6">
+        <div className="flex h-full flex-col p-[var(--kol-pad-overlay)]">
           {header != null && <div className="mb-6 min-w-0">{header}</div>}
           <div className="flex-1 overflow-auto" style={{ overflowAnchor: 'none' }}>{children}</div>
         </div>
@@ -238,7 +238,7 @@ export default function Rail({
     : `inset-y-0 max-w-full ${side === 'right' ? 'right-0' : 'left-0'} ${edgeCls} ${extent == null ? 'w-full' : ''}`
   /* padding per side (RailOverlay): a bottom rail clears the home bar at its foot; a top rail its notch */
   const size = vertical
-    ? { ...(extent != null ? { height: px(extent) } : {}), ...(side === 'bottom' ? { paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' } : { paddingTop: 'calc(1rem + env(safe-area-inset-top, 0px))' }) }
+    ? { ...(extent != null ? { height: px(extent) } : {}), ...(side === 'bottom' ? { paddingBottom: 'calc(var(--kol-pad-overlay) + env(safe-area-inset-bottom, 0px))' } : { paddingTop: 'calc(var(--kol-pad-overlay) + env(safe-area-inset-top, 0px))' }) }
     : extent != null ? { width: px(extent) } : undefined
   const motionBackdrop = reduced
     ? ''
@@ -265,7 +265,7 @@ export default function Rail({
         tabIndex={-1}
         /* `edge` / `shadow` (SettingsPanelApproved, 2026-08-27): the approved settings
          * drawer has neither — the sheet meets the page flat */
-        className={`fixed z-[200] flex flex-col bg-surface-primary px-4 py-4 outline-none md:px-5 lg:px-6 ${backdrop && shadow ? 'shadow-2xl' : ''} ${place} border-oq-08 ${motionPanel} ${className}`}
+        className={`fixed z-[200] flex flex-col bg-surface-primary p-[var(--kol-pad-overlay)] outline-none ${backdrop && shadow ? 'shadow-2xl' : ''} ${place} border-oq-08 ${motionPanel} ${className}`}
         style={size}
       >
         {grab}

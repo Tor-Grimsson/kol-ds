@@ -110,7 +110,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `ErrorBoundary` | Catches render errors in its subtree and shows a recovery fallback with retry and go-home. |
 | `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
-| `LabeledControl` | A label-and-hint wrapper around any control. |
+| `LabeledControl` | A label-and-hint wrapper around any control. `inline text` (also on `SettingsRow`): a text value — the same tracked meta label on a 16px line, on the baseline, as tall as its text. |
 | `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's LoaderIntro). |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
@@ -175,7 +175,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, then a **prefix-scoped** view: the folders directly under the prefix, the files at that level (or the whole subtree in `flat`), the kind allow-list, the search, the sort with direction, and paging keyed to what is listed. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
 | `MediaLibraryExplorer` | A thin name for the media surface: ONE page, three views (columns · rows · grid), one listing, header and count line. It only carries the view state for a consumer that wants to own it; `MediaLibraryBrowse` IS the surface. |
 | `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |
-| `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `Rail` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
+| `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `Rail` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column; `text` for a text value), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
 | `NewsletterBand` | **Deprecated 2026-08-27** — `SectionNewsletter` under its old name (`title` → `headline`, `description` → `body`). |
 | `ParallaxShelf` | A scroll-parallax horizontal shelf of WorkCards. |
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |

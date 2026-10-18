@@ -1,5 +1,6 @@
 import Button from '../atoms/Button.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
+import CloseButton from '../atoms/CloseButton.jsx'
 import Divider from '../atoms/Divider.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
 import LabeledControl from '../molecules/LabeledControl.jsx'
@@ -14,10 +15,10 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * overlay), never a route (SettingsPanel, kol-r2b2 2026-08-26 — the
  * per-bucket display settings: kinds allow-list, structure, loading, layout).
  *
- * TWO PRESENTATIONS, ONE ANATOMY (the user's ask): `variant="drawer"` is a
- * right-anchored sheet over a scrim, `variant="overlay"` the same panel
+ * TWO PRESENTATIONS, ONE ANATOMY (the user's ask): `variant="rail"` is a
+ * right-anchored rail over a scrim, `variant="overlay"` the same content
  * centred. Only the shell differs; header · intro · sections · footer are the
- * same nodes in both. Neither shell is built here — the drawer IS ShellDrawer
+ * same nodes in both. Neither shell is built here — the rail IS `Rail`
  * (scrim, Escape, focus trap, scroll lock, focus return, the × control) and
  * the overlay IS FullscreenOverlay (scrim, Escape, backdrop dismiss, scroll
  * lock, the corner ×). The source had none of that: scrim click was the only
@@ -35,8 +36,9 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *
  * @param {boolean}  open      mounted and shown (default true — the parent
  *                             usually conditionally renders it)
- * @param {'drawer'|'overlay'} variant  presentation
- * @param {number|string} width  panel width (default 380)
+ * @param {'rail'|'overlay'} variant  presentation — `rail` (default) or `overlay`, the only two names (user 2026-10-18);
+ *                                     `drawer` is the old name of `rail`, still accepted
+ * @param {number|string} width  width (default 380 for the rail, the ⌘K overlay's 32rem for the overlay)
  * @param {string}   title     header line 1
  * @param {string}   subtitle  header line 2 (the approved drawer passes none)
  * @param {string}   intro     a note under the header (the approved drawer passes none)
@@ -46,8 +48,8 @@ import { Tooltip } from '../utilities/Popover.jsx'
  */
 export default function SettingsPanel({
   open = true,
-  variant = 'drawer',
-  width = 380,
+  variant = 'rail',
+  width: widthProp,
   title,
   subtitle,
   intro,
@@ -76,22 +78,27 @@ export default function SettingsPanel({
 
   if (variant === 'overlay') {
     if (!open) return null
+    /* THE DRAWER'S ANATOMY IN A CENTRED PANEL (user 2026-10-18: *"wrong width wrong close placement, header is
+     * bullshit"*): the ⌘K overlay's width, the × on the header's own line as the rail has it, a Divider under the
+     * header — it was 380 wide with the × floating in a lane above the title and nothing under the header */
+    const width = widthProp ?? 'min(32rem, calc(100vw - 32px))'
     return (
-      <FullscreenOverlay open onClose={onClose}>
-        {/* the corner × rides the sheet at --kol-spacing-3; the panel reserves
-          * that lane on top (the .kol-media-picker precedent) instead of the
-          * control moving */}
+      <FullscreenOverlay open scrim closeButton={false} onClose={onClose}>
         <div
-          className={`kol-overlay-panel flex flex-col gap-4 p-6 pt-12 ${className}`}
+          className={`kol-overlay-panel flex flex-col p-[var(--kol-pad-overlay)] ${className}`}
           style={{ width: typeof width === 'number' ? `${width}px` : width, maxWidth: '100%', maxHeight: '85vh', overflowY: 'auto' }}
         >
-          {header}
-          {body}
+          <div className="mb-6 flex items-center gap-4">
+            <div className="min-w-0 flex-1">{header}</div>
+            <CloseButton onClick={onClose} className="shrink-0" />
+          </div>
+          <div className="flex flex-col gap-4"><Divider />{body}</div>
         </div>
       </FullscreenOverlay>
     )
   }
 
+  const width = widthProp ?? 380
   return (
     /* THE APPROVED DRAWER (SettingsPanelApproved, kol-r2b2 2026-08-27 — user: "LOCK
        THIS"): no edge, no shadow, a Divider under the header, the sections.
@@ -115,11 +122,12 @@ export default function SettingsPanel({
  * 2026-09-22, kol-client-olina). `labelWidth="auto"` passes through
  * to LabeledControl: the label flexes and truncates, the control hugs — for a
  * row living in a column narrower than the 160px label default
- * (SettingsShortcutsComboOverflow, kol-monitor 2026-09-01).
+ * (SettingsShortcutsComboOverflow, kol-monitor 2026-09-01). `text` is a row whose value is text — the same label,
+ * on the baseline, as tall as its text (LabeledControl's `text`; SettingsRowMonoBaseline, kol-monitor 2026-10-18).
  */
-export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, children }) {
+export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, text = false, children }) {
   return (
-    <LabeledControl inline label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
+    <LabeledControl inline text={text} label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
       {hint
         ? <Tooltip label={hint} triggerClassName={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</Tooltip>
         : <span className={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</span>}

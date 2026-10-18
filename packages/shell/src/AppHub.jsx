@@ -3,7 +3,7 @@ import AppShell from './AppShell.jsx'
 import HubHome from './HubHome.jsx'
 import HubSettings from './HubSettings.jsx'
 import HubDev from './HubDev.jsx'
-import { CommandOverlay } from '@kolkrabbi/kol-component'
+import { CommandOverlay, ShortcutsOverlay } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubDev (relative) + kol-component's CommandOverlay */
 
@@ -23,7 +23,7 @@ import { CommandOverlay } from '@kolkrabbi/kol-component'
  * Router-agnostic like AppShell: pass `currentPath` + `onNavigate`, and your router's element
  * (`<Outlet/>`) as children.
  *
- * KEYS: `,` toggles Settings · `S` toggles the shortcuts sheet · `\` hides the rail ·
+ * KEYS: `,` toggles Settings · `S` toggles the shortcuts sheet · `⇧S` the shortcuts rail · `\` hides the rail ·
  * ⌥1…9 walks the rail top to bottom, mark first, Settings last. None fire while typing.
  *
  * @param {Object}   app        `{ name, subtitle, logomark (svg url), about (node), links [{label,url}] }`
@@ -44,6 +44,8 @@ import { CommandOverlay } from '@kolkrabbi/kol-component'
  * @param {Array}    shortcuts  `[{ section, items: [{ id, label, combo }] }]` — the sheet AND Settings
  * @param {ReactNode} themeToggle  Settings' masthead toggle (a node — kol-framework is not a peer)
  * @param {string}   shortcutsKey  default `s`; `null` turns the sheet key off (a tool that owns S)
+ * @param {string}   shortcutsRailKey  default `S` (⇧S) — the same keymap in the right rail (`ShortcutsOverlay variant="rail"`),
+ *                              this page's sections; `null` turns it off. The rail was hand-built in kol-monitor (2026-10-18)
  * @param {'display'|'mono'} masthead  the app's one masthead (AppShell's) — set, Home and Settings follow it; unset
  *                              (the default), they keep the Hub's mono title (2026-09-29)
  * @param {Object}   shell      any AppShell prop, spread last (`touch`, `pageWash`, `drawerOpenOn`, `railComponent`, …)
@@ -65,17 +67,32 @@ export default function AppHub({
   settingsPath = '/settings',
   homePath = '/',
   shortcutsKey = 's',
+  shortcutsRailKey = 'S',
   masthead,
   shell,
   children,
 }) {
   const [sheet, setSheet] = useState(false)
-  const [sheetQuery, setSheetQuery] = useState('')
+  const [rail, setRail] = useState(false)
+
+  /* ⇧S — the keymap in the rail. Its own listener: the `S` listener ignores Shift, so the two never both fire */
+  useEffect(() => {
+    if (!shortcutsRailKey) return undefined
+    const onKey = (e) => {
+      if (e.key !== shortcutsRailKey || !e.shiftKey || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return
+      const t = e.target
+      if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName)) return
+      e.preventDefault()
+      setRail((v) => !v)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [shortcutsRailKey])
 
   useEffect(() => {
     if (!shortcutsKey) return undefined
     const onKey = (e) => {
-      if (e.key.toLowerCase() !== shortcutsKey || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return
+      if (e.key !== shortcutsKey || e.shiftKey || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return
       const t = e.target
       if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName)) return
       e.preventDefault()
@@ -126,9 +143,11 @@ export default function AppHub({
       {...shell}
     >
       {page}
-      {/* THE SHEET IS THE OVERLAY'S SHORTCUTS MODE (5.3, 2026-10-17): the whole keymap at a glance, this page's
-        * first, the rest under Elsewhere; typing filters, Enter runs a row */}
-      <CommandOverlay open={sheet} mode="shortcuts" shortcuts={shortcuts} currentPath={currentPath} query={sheetQuery} onQueryChange={setSheetQuery} onClose={() => { setSheet(false); setSheetQuery('') }} />
+      {/* THE SHEET IS THE ⌘K MODAL WITH NO FIELD (ShortcutsOverlayCategories, kol-monitor 2026-10-18 — user: *"I said
+        * no search, I didnt say DONT USE THE FUCKIN MODAL OVERLAY"*): this page's sections as categories under
+        * "Shortcuts", each drilling in to its keys; `S` toggles, Esc closes; ⇧S is the rail's. Reverses 0.68.0's swap. */}
+      <CommandOverlay open={sheet} mode="shortcuts" shortcuts={shortcuts} currentPath={currentPath} onClose={() => setSheet(false)} />
+      {rail && <ShortcutsOverlay variant="rail" shortcuts={shortcuts} currentPath={currentPath} onClose={() => setRail(false)} />}
     </AppShell>
   )
 }

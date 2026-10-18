@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import SettingsSections from './SettingsSections.jsx'
+import SettingsPanel, { LabeledControlSection, SettingsRow } from './SettingsPanel.jsx'
 
 /**
  * ShortcutsOverlay — The keyboard shortcut sheet. the keyboard-shortcut sheet: blurred scrim, centred
@@ -41,9 +40,12 @@ import SettingsSections from './SettingsSections.jsx'
  *
  * @param {Array} props.shortcuts - `[{ label, combo }]` or `[{ section, items: [{ id, label, combo }] }]` — the same array `SettingsShortcuts` takes (ShellHomeSystemMonitorGaps, kol-monitor 2026-08-27: the overlay read `keys` while the settings block read `combo`; `combo` is the name, `keys` is tolerated for a release)
  * @param {Function} props.onClose
+ * @param {string} [props.title]  the header, beside the × (default `Shortcuts`)
+ * @param {'overlay'|'rail'} [props.variant]  centred (default) or the right rail — SettingsPanel's two forms, so an app
+ *   never hand-builds the rail (kol-monitor's ShortcutsRail, 2026-10-18)
  * @param {string} [props.currentPath]  sections may carry `routes: ['/rack']` (CommandOverlayModes, kol-monitor
- *   2026-10-17 — user: *"im in dev, how can I cable lock here?"*): with a path, the sections that work here come
- *   first and the rest sit muted under ELSEWHERE, never as if they worked here. A section without `routes`
+ *   2026-10-17 — user: *"im in dev, how can I cable lock here?"*): with a path, only the sections that work here
+ *   are drawn (ShortcutsOverlayList, kol-monitor 2026-10-18 — the muted ELSEWHERE block is gone). A section without `routes`
  *   works everywhere. Bind keys from the same scope with `shortcutInScope`.
  */
 
@@ -53,68 +55,25 @@ export const shortcutInScope = (section, path) => !section?.routes?.length || pa
 
 const isSectioned = (list) => Array.isArray(list?.[0]?.items)
 
-/* A shortcut as a settings ROW: the label on the left, the combo as the row's
- * value. `labelWidth="auto"` makes the label yield and the combo hug. A combo
- * holds on one line from `sm` up; below it, it wraps under its label (LabeledControl stacks) — media's
- * combos are sentences ("Drag from empty space (rows: …"), and held on one line
- * they pushed the sheet past both edges of a phone (apps review, 2026-09-29). */
-const toRow = ({ label, combo, keys }) => ({
-  label,
-  align: 'fill',
-  labelWidth: 'auto',
-  value: <span className="text-fg-32 kol-helper-12 sm:whitespace-nowrap">{combo ?? keys}</span>,
-})
-
-export default function ShortcutsOverlay({ shortcuts = [], onClose, currentPath }) {
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose?.() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-
-  const sectioned = isSectioned(shortcuts)
-  const here = sectioned ? shortcuts.filter((s) => shortcutInScope(s, currentPath)) : []
-  const elsewhere = sectioned ? shortcuts.filter((s) => !shortcutInScope(s, currentPath)) : []
-
+/* ONE OVERLAY, NOT TWO (user 2026-10-18, retiring the near-copy): the sheet is `SettingsPanel variant="overlay"` —
+ * the title on the header with the × beside it, a Divider, then the sections exactly as monitor's ⇧S rail draws
+ * them (LabeledControlSection divided · SettingsRow text · the combo in mono). Same props as before, plus `title`. */
+export default function ShortcutsOverlay({ shortcuts = [], onClose, currentPath, title = 'Shortcuts', variant = 'overlay' }) {
+  const sections = isSectioned(shortcuts)
+    ? shortcuts.filter((s) => shortcutInScope(s, currentPath))
+    : [{ items: shortcuts }]
   return (
-    <div
-      onClick={onClose}
-      /* THE scrim (overlay-scrim-outliers, kol-client-olina 2026-09-03; user: "we
-         removed the blur and put just color on the background … we missed this").
-         This drew its own — an 8 % inverse wash plus a 2px blur — after the
-         2026-09-01 no-blur ruling and the one-tint-48 class. */
-      className="fixed inset-0 select-none kol-overlay-scrim"
-      style={{ display: 'grid', placeItems: 'center', zIndex: 'var(--kol-z-modal)' }}
-    >
-      {/* `bg-oq-04`, not `bg-surface-primary` (user, 2026-09-03: *"this is too
-          bright"*). Over a near-black editor canvas the raised page surface
-          reads as a lit slab, and an `fg-16` stroke on top of it was the
-          brightest edge on screen. The OPAQUE ramp is right here: the sheet
-          must not let the canvas through, and `oq-04` is a 4 % lift off the
-          ground rather than a surface from the page's own ladder — so the
-          panel separates from the scrimmed canvas without a stroke. */}
-      <div
-        /* THE SHEET FITS THE WINDOW (editor review #4, 2026-09-27): a long keymap — the design
-         * editor's is six sections — ran past both edges of the viewport with no way to reach the
-         * rest. Capped to the window less a margin, scrolling inside. */
-        className="kol-shortcuts-panel text-fg-64 kol-helper-12 bg-oq-04 flex flex-col gap-6 overflow-y-auto"
-        /* and the window's WIDTH too (apps review, 2026-09-29): nothing capped it, so the widest
-         * row set the sheet's width and a phone showed its middle third */
-        style={{ padding: 24, borderRadius: 4, maxHeight: 'calc(100dvh - 48px)', maxWidth: 'calc(100vw - 32px)' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <SettingsSections
-          sections={sectioned
-            ? here.map(({ section, items = [] }) => ({ label: section, rowGap: 1, rows: items.map(toRow) }))
-            : [{ rowGap: 1, rows: shortcuts.map(toRow) }]}
-        />
-        {elsewhere.length > 0 && (
-          <div className="flex flex-col gap-4 opacity-[var(--kol-opacity-disabled)]">
-            <span className="kol-helper-10 text-fg-48">ELSEWHERE</span>
-            <SettingsSections sections={elsewhere.map(({ section, items = [] }) => ({ label: section, rowGap: 1, rows: items.map(toRow) }))} />
-          </div>
-        )}
-      </div>
-    </div>
+    <SettingsPanel open variant={variant} title={title} onClose={onClose}>
+      {sections.map((sec, n) => (
+        <LabeledControlSection key={sec.section ?? n} label={sec.section} divided rowGap={1}>
+          {(sec.items ?? []).map((it, i) => (
+            /* the index keeps two keys with one label apart (monitor's Pointer has two "Pan") */
+            <SettingsRow key={it.id ?? `${i}:${it.label}`} label={it.label} text>
+              <span className="kol-mono-12 text-fg-80">{it.combo ?? it.keys}</span>
+            </SettingsRow>
+          ))}
+        </LabeledControlSection>
+      ))}
+    </SettingsPanel>
   )
 }

@@ -28,6 +28,7 @@
 @source "../../apps/media/src";
 @source "../../apps/media-fixture/src";
 @source "../../apps/hub/src";
+@source "../../apps/overlays/src";
 @source "../../apps/studio/src";
 @source "../../apps/brand-hub/src";
 @source "../../apps/rack/src";

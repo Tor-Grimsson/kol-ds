@@ -688,7 +688,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           {/* THE APPROVED DRAWER (2026-09-30): kol-component's `SettingsPanel` — the composition locked
             * 2026-08-27 that media's Display settings and Trash already wear: title header, divided
             * sections. This was a hand-built ShellDrawer + eyebrow + undivided sections. */}
-          <SettingsPanel open={isSettingsOpen} variant="drawer" title="Settings" onClose={() => setIsSettingsOpen(false)}>
+          <SettingsPanel open={isSettingsOpen} variant="rail" title="Settings" onClose={() => setIsSettingsOpen(false)}>
             <SettingsSections sections={settingsSections} divided />
           </SettingsPanel>
         </div>

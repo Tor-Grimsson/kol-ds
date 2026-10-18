@@ -43,6 +43,10 @@ import Kbd from '../atoms/Kbd.jsx'
  * @param {Function} onOpenChange (expanding) (bool) => void — trigger click / Escape
  * @param {number}   expandedWidth (expanding) open pill width in px (default 280)
  * @param {string}   triggerLabel (expanding) aria-label on the icon trigger (default 'Open search')
+ * @param {Function} [onBack]     a drill-in's way back: the leading search glyph becomes a back arrow IN THE SAME
+ *                                SLOT, so the field never moves (CommandOverlay's second layer — user 2026-10-18:
+ *                                *"why would the back move the input?!"*)
+ * @param {string}   [backLabel]  the back arrow's aria-label (default `Back`)
  * @param {string}   className    extra classes on the shell
  */
 
@@ -88,6 +92,8 @@ export default function SearchInput({
   iconSize,
   fieldHeight,
   triggerLabel = 'Open search',
+  onBack,
+  backLabel = 'Back',
   className = '',
   ...inputProps
 }) {
@@ -226,13 +232,26 @@ export default function SearchInput({
 
   return (
     <label className={shellCls}>
-      <span
-        aria-hidden="true"
-        className={`flex items-center shrink-0 ${bare ? 'text-oq-48' : 'text-auto opacity-50'}`}
-      >
-        {/* ADJACENT — this glyph sits in the field's line box beside the query */}
-        <Icon name="search" size={iconSize ?? glyphSize(size)} />
-      </span>
+      {onBack ? (
+        <button
+          type="button"
+          aria-label={backLabel}
+          /* mousedown keeps focus in the field */
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onBack}
+          className={`flex items-center shrink-0 cursor-pointer transition-colors ${bare ? 'text-oq-48 hover:text-oq-96' : 'text-auto opacity-50 hover:opacity-100'}`}
+        >
+          <Icon name="arrow-left" size={iconSize ?? glyphSize(size)} />
+        </button>
+      ) : (
+        <span
+          aria-hidden="true"
+          className={`flex items-center shrink-0 ${bare ? 'text-oq-48' : 'text-auto opacity-50'}`}
+        >
+          {/* ADJACENT — this glyph sits in the field's line box beside the query */}
+          <Icon name="search" size={iconSize ?? glyphSize(size)} />
+        </span>
+      )}
       <input
         type="search"
         value={value ?? ''}

@@ -23,6 +23,11 @@
  *            kol-monitor 2026-09-01 — in a narrow multi-column grid a fixed
  *            160 label left the control 4px, and a nowrap combo painted into
  *            the neighbour column; the 48px column gap had been hiding it).
+ *   text   — bool, `inline` only. A row whose value is TEXT (a shortcut's combo, a reading): the label keeps
+ *            the Settings label look (helper-10, tracked, meta ink) on a real 16px line, label and value share
+ *            a baseline, and the value cell is a flex box so no inherited line-height strut makes the row taller
+ *            than its text (SettingsRowMonoBaseline → SettingsRowTextKeepsLabel, kol-monitor 2026-10-18: a
+ *            mono-12 fg-80 label read as the section's own header).
  *   variant — `'panel'` is the hardware panel label (was kol-hardware `PanelLabel`, merged
  *            2026-10-01): `kol-helper-8`, uppercase, hugging the control; it takes
  *            `labelPosition` (`top · bottom · left · right`, default bottom), `labelClass` and `gap`.
@@ -36,6 +41,7 @@ export default function LabeledControl({
   labelWidth = 48,
   children,
   className = '',
+  text = false,
   variant,
   labelPosition = 'bottom',
   labelClass = 'kol-helper-8',
@@ -76,16 +82,16 @@ export default function LabeledControl({
      * showed as "C" or not at all. Label on its line, the value under it. */
     const labelAuto = labelWidth === 'auto'
     return (
-      <div className={`flex ${labelAuto ? 'flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-3' : 'items-center gap-3'} ${className}`}>
+      <div className={`flex ${labelAuto ? `flex-col items-start gap-1 sm:flex-row ${text ? 'sm:items-baseline' : 'sm:items-center'} sm:gap-3` : `${text ? 'items-baseline' : 'items-center'} gap-3`} ${className}`}>
         {showLabel && (
           <span
-            className={`kol-helper-10 tracking-widest text-meta ${labelAuto ? 'max-w-full min-w-0 truncate sm:flex-1' : 'shrink-0'}`}
+            className={`kol-helper-10 tracking-widest text-meta${text ? ' leading-4' : ''} ${labelAuto ? 'max-w-full min-w-0 truncate sm:flex-1' : 'shrink-0'}`}
             style={labelAuto ? undefined : { width: labelWidth }}
           >
             {labelInner}
           </span>
         )}
-        <div className={labelAuto ? 'min-w-0 max-w-full sm:overflow-hidden' : 'flex-1 min-w-0'}>{children}</div>
+        <div className={`${text ? 'flex ' : ''}${labelAuto ? 'min-w-0 max-w-full sm:overflow-hidden' : 'flex-1 min-w-0'}`}>{children}</div>
       </div>
     )
   }

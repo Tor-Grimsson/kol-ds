@@ -43,6 +43,12 @@
    * indent instead of retyping it. */
   --kol-pad-rail-row-x: 1.25rem;
 
+  /* OVERLAY padding (2026-10-18, user ruling) — the inset of every rail and overlay holding settings-shaped content:
+   * `Rail`, SettingsPanel's overlay, ShortcutsOverlay. The chrome inset's values (20 below 768, 24 from 768) so one
+   * piece of content has one edge wherever it is shown — the rail stood at 16 · 20 · 24 and the overlays at a flat
+   * 24. CommandOverlay (field-aligned rows) and the Quick Look header (a toolbar) keep their own. */
+  --kol-pad-overlay: var(--kol-spacing-5);
+
   /* CARD padding (2026-08-15, content-card ruling) — flat, stepped by the
    * card's `size` prop, never by breakpoint. 12/16/24. */
   --kol-pad-card-sm: 0.75rem;
@@ -160,6 +166,11 @@
   --kol-shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.08);
   --kol-shadow-xl: 0 20px 25px rgba(255, 255, 255, 0.1);
   --kol-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.04);
+}
+
+/* the overlay inset steps up with the chrome inset (--kol-pad-overlay, above) */
+@media (min-width: 768px) {
+  :root { --kol-pad-overlay: var(--kol-spacing-6); }
 }
 
 /* System-follow dark (0.11.6) — only when no explicit theme is stamped.
