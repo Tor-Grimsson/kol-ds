@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-shell
 
+## 0.66.0 — 2026-10-17
+
+- **`S` opens the ⌘K overlay's shortcuts mode** — the whole keymap at a glance, this page's first, typing filters, Enter runs a row (CommandOverlayModes). Needs kol-component ≥0.266.0.
+- **`TabStrip` is an alias** of kol-component's `TabsRow look="text"` (TabsStackedLayout, ledger) — same render. `HubDev` and `PhoneNav` use `TabsRow` directly.
+
+## 0.65.0 — 2026-10-17
+
+- **New: `HubDev` and the `dev` slot on `AppHub` / `AppStudio`** (CompareGridDevTab, kol-monitor — user: *"add instructions for making the dev tab to the hub … localhost only using the </> icon"*). `dev={{ tabs: [{ value, label, description, content }] }}` renders a development page at `/dev` behind a `code` rail row above Settings — on a dev server only (`import.meta.env.DEV`; `always: true` overrides), never in a production build. The page: a mono masthead with one line, the tabs on their own row with one line each, the content full width; the open tab is remembered per app. A comparison is a `CompareGrid` tab. Built for reading: monitor supplied the content, not the layout.
+- **The shortcuts sheet follows the page:** `AppHub` passes `currentPath` to `ShortcutsOverlay`, so sections with `routes` sort to the page that uses them and the rest sit under ELSEWHERE. `shortcutInScope` is re-exported. Needs kol-component ≥0.265.0.
+
 ## 0.64.0 — 2026-10-15
 
 - **New: `library.children` on `AppStudio`** (StudioLibraryChildren, kol-monitor) — renders in place of the CatalogPage, so a router can hold pages under the slot (`/library/:id`) with the Library rung still active. No `children` → the CatalogPage as before. kol-mirror's `Studio.jsx` fork existed for this line alone.

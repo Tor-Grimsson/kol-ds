@@ -41,7 +41,15 @@ import SettingsSections from './SettingsSections.jsx'
  *
  * @param {Array} props.shortcuts - `[{ label, combo }]` or `[{ section, items: [{ id, label, combo }] }]` — the same array `SettingsShortcuts` takes (ShellHomeSystemMonitorGaps, kol-monitor 2026-08-27: the overlay read `keys` while the settings block read `combo`; `combo` is the name, `keys` is tolerated for a release)
  * @param {Function} props.onClose
+ * @param {string} [props.currentPath]  sections may carry `routes: ['/rack']` (CommandOverlayModes, kol-monitor
+ *   2026-10-17 — user: *"im in dev, how can I cable lock here?"*): with a path, the sections that work here come
+ *   first and the rest sit muted under ELSEWHERE, never as if they worked here. A section without `routes`
+ *   works everywhere. Bind keys from the same scope with `shortcutInScope`.
  */
+
+/** Does a shortcut section work on `path`? No `routes` → everywhere; a route matches itself and below it. */
+export const shortcutInScope = (section, path) => !section?.routes?.length || path == null
+  || section.routes.some((r) => path === r || path.startsWith(`${r.replace(/\/$/, '')}/`))
 
 const isSectioned = (list) => Array.isArray(list?.[0]?.items)
 
@@ -57,7 +65,7 @@ const toRow = ({ label, combo, keys }) => ({
   value: <span className="text-fg-32 kol-helper-12 sm:whitespace-nowrap">{combo ?? keys}</span>,
 })
 
-export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
+export default function ShortcutsOverlay({ shortcuts = [], onClose, currentPath }) {
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose?.() }
     window.addEventListener('keydown', onKey)
@@ -65,6 +73,8 @@ export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
   }, [onClose])
 
   const sectioned = isSectioned(shortcuts)
+  const here = sectioned ? shortcuts.filter((s) => shortcutInScope(s, currentPath)) : []
+  const elsewhere = sectioned ? shortcuts.filter((s) => !shortcutInScope(s, currentPath)) : []
 
   return (
     <div
@@ -95,9 +105,15 @@ export default function ShortcutsOverlay({ shortcuts = [], onClose }) {
       >
         <SettingsSections
           sections={sectioned
-            ? shortcuts.map(({ section, items = [] }) => ({ label: section, rowGap: 1, rows: items.map(toRow) }))
+            ? here.map(({ section, items = [] }) => ({ label: section, rowGap: 1, rows: items.map(toRow) }))
             : [{ rowGap: 1, rows: shortcuts.map(toRow) }]}
         />
+        {elsewhere.length > 0 && (
+          <div className="flex flex-col gap-4 opacity-[var(--kol-opacity-disabled)]">
+            <span className="kol-helper-10 text-fg-48">ELSEWHERE</span>
+            <SettingsSections sections={elsewhere.map(({ section, items = [] }) => ({ label: section, rowGap: 1, rows: items.map(toRow) }))} />
+          </div>
+        )}
       </div>
     </div>
   )

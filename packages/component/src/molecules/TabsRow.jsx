@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import CloseButton from '../atoms/CloseButton.jsx'
+import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: nests kol-icons's Icon */
@@ -20,8 +21,102 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {Function} onChange   (id) => void — fires on tab click or arrow-key move
  * @param {Function} onClose    () => void — show + wire the leading close button
  * @param {Function} onMinimise () => void — show + wire the trailing minimise chevron
+ *
+ * ONE TAB COMPONENT, FOUR LOOKS (TabsStackedLayout, kol-monitor 2026-10-17 — four components drew one control):
+ * @param {'underline'|'chip'|'text'|'stacked'} [look='underline']
+ *        underline — this row, as it always was
+ *        chip      — the active tab a filled chip, the rest quiet (was `TabChips`); `size` is the control rung
+ *        text      — flat helper-type tabs, the active one bright (was kol-shell's `TabStrip`); `size` is the
+ *                    helper size (default 14), `tracked` adds 1px tracking
+ *        stacked   — icon over label (was `MobileTabBar`); tabs take `icon`
+ * @param {'inline'|'phone'} [placement='inline']  `phone` floats a stacked bar fixed to the bottom below `md`
+ *        (MobileTabBar's placement — the consumer owes the list `--kol-tabbar-h` of bottom padding)
+ * Tabs are `{ id, label }` or `{ value, label }` (either key), plus `icon` for stacked.
  */
-export default function TabsRow({ tabs = [], value, onChange, onClose, onMinimise }) {
+export const TABBAR_H = 56
+
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', size, tracked = false, ariaLabel, className, style }) {
+  const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
+  if (look === 'chip') return <ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} ariaLabel={ariaLabel} className={className ?? ''} />
+  if (look === 'text') return <TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={className ?? 'gap-6'} style={style} />
+  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} className={className ?? ''} />
+  return <UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} />
+}
+
+/* chip — TabChips verbatim */
+function ChipTabs({ tabs, value, onChange, size, ariaLabel, className }) {
+  return (
+    <div className={`flex items-center gap-1 ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
+      {tabs.map((t) => {
+        const active = t.id === value
+        return (
+          /* a tab is selected, not pressed — the role's own attribute replaces Button's aria-pressed */
+          <Button key={t.id} variant="tab" size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} onClick={() => onChange?.(t.id)}>
+            {t.label}
+          </Button>
+        )
+      })}
+    </div>
+  )
+}
+
+/* text — kol-shell's TabStrip verbatim */
+function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
+  return (
+    <div className={`flex items-center ${className}`.trim()} style={style}>
+      {tabs.map((opt) => (
+        <span
+          key={opt.id}
+          onClick={() => onChange?.(opt.id)}
+          className={`kol-helper-${size} cursor-pointer select-none ${value === opt.id ? 'text-fg-96' : 'text-fg-32 hover:text-fg-48'}`}
+          style={tracked ? { letterSpacing: 1 } : undefined}
+        >
+          {opt.label}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/* stacked — MobileTabBar's tab verbatim; its fixed bottom pill is `placement="phone"`, inline is a plain row */
+function StackedTabs({ tabs, value, onChange, placement, className }) {
+  if (tabs.length === 0) return null
+  const phone = placement === 'phone'
+  return (
+    <nav
+      className={`${phone ? 'kol-mobile-tabbar md:hidden fixed inset-x-0 bottom-0 z-[var(--kol-z-sticky)] ' : ''}flex items-stretch ${className}`.trim()}
+      style={phone ? {
+        height: TABBAR_H,
+        /* the pill's own ground, not the page's — it floats OVER content, so a
+         * transparent bar would show rows sliding through the labels */
+        background: 'var(--kol-surface-primary)',
+        borderTop: '1px solid var(--kol-oq-08)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+      } : { height: TABBAR_H }}
+      aria-label="Sections"
+    >
+      {tabs.map((t) => {
+        const active = t.id === value
+        return (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onChange?.(t.id)}
+            aria-current={active ? 'page' : undefined}
+            className="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 cursor-pointer"
+            style={{ background: 'transparent', border: 'none', color: active ? 'var(--kol-fg-default)' : 'var(--kol-fg-48)' }}
+          >
+            {t.icon && <Icon name={t.icon} size={18} />}
+            {/* helper is single-line chrome, which a tab label always is */}
+            <span className="kol-helper-10 truncate max-w-full px-1">{t.label}</span>
+          </button>
+        )
+      })}
+    </nav>
+  )
+}
+
+function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise }) {
   const listRef = useRef(null)
   const activeIdx = tabs.findIndex((t) => t.id === value)
 

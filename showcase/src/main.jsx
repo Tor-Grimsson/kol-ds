@@ -1,3 +1,4 @@
+import { hideLoaderApp } from '@kolkrabbi/kol-framework'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -18,12 +19,5 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
-/* The boot curtain (index.html) leaves once React has painted: two frames after the first commit,
-   a 240ms fade (none under reduced motion — the CSS drops the transition), then out of the DOM. */
-const boot = document.getElementById('kds-boot')
-if (boot) {
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    boot.classList.add('is-done')
-    setTimeout(() => boot.remove(), 300)
-  }))
-}
+/* the app loader (written into index.html by `loaderApp()`) leaves once React has painted */
+hideLoaderApp()

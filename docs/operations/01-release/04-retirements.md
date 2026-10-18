@@ -38,7 +38,13 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
-| `ColorLoader` | foundry | `IntroLoader` | 2026-09-30 |
+| `TabChips` | component | `TabsRow look="chip"` (same props) | 2026-10-17 |
+| `MobileTabBar` | component | `TabsRow look="stacked" placement="phone"` (same props; `TABBAR_H` from TabsRow) | 2026-10-17 |
+| `TabStrip` | shell | kol-component's `TabsRow look="text"` (`options` → `tabs`) | 2026-10-17 |
+| `ShellDrawer` | component | `Rail` (same props, plus `side="top"` · `mode="push"` · `resizable`) | 2026-10-17 |
+| `ShellSearchOverlay` | component | `CommandOverlay` (same props, plus `mode` · `shortcuts` · `currentPath`) | 2026-10-17 |
+| `ColorLoader` | foundry | `LoaderIntro` | 2026-09-30 |
+| `IntroLoader` | foundry | `LoaderIntro` | 2026-10-17 |
 | `DropdownTagFilter` | component | `SettingsMulti` (`selectedValues` → `selected`, `onChange` → `onToggle`; the standard `Dropdown`'s variants, tones and radius) | 2026-10-01 |
 | `HlsVideo` | component | `BackgroundVideo` — same component, same props; it is a utility now, not an atom | 2026-10-02 |
 | `ProfileAvatar` | styleguide | `BrandAvatar` — same component, same props | 2026-10-02 |

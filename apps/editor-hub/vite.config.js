@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
+import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 
 const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.meta.url))
 
@@ -10,7 +11,7 @@ const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.met
 // packages, 2026-10-03), and publishes into the showcase's output at ui.kolkrabbi.io/apps/editor-hub.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [react(), svgr(), tailwindcss()],
+  plugins: [devFavicon({ label: 'E' }), react(), svgr(), tailwindcss()],
 
   base: command === 'build' ? '/apps/editor-hub/' : '/',
 

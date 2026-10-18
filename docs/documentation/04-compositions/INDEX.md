@@ -31,3 +31,4 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for color, logo and type |
 | [[15-media-uploads\|Media uploads]] | Converting files on upload, and keeping originals |
 | [[16-app-anatomy\|App anatomy]] | Shell · Catalog · Hub · Tool — the four layers every KOL app is built from |
+| [[17-rail-and-overlay\|Rail and overlay]] | The two words for every surface at the edge or over the page |

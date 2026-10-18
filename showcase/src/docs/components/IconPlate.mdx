@@ -1,0 +1,48 @@
+export const meta = {
+  id: "2.85.0",
+  slug: "icon-plate",
+  title: "IconPlate",
+  type: "reference",
+  status: "active",
+  updated: "2026-10-17",
+  tags: [
+    "domain/components",
+    "domain/components/atoms",
+    "domain/iconography",
+  ],
+  description: "A glyph's specimen plate — the box is the size.",
+  aliases: [
+    "iconplate",
+    "keylineguide",
+  ],
+}
+
+<Preview name="IconPlate" />
+
+## Installation
+
+<Install name="IconPlate" />
+
+## Usage
+
+```jsx
+import { IconPlate } from '@kolkrabbi/kol-component'
+
+<IconPlate size={48} ground="light" guide><Icon name="chevron-down" size={48} /></IconPlate>
+```
+
+## Behavior
+
+The ground, the keyline guide and the glyph share one square: a 20 plate is 20px, and the guide is the
+glyph's own 24-unit grid. The ground is a specimen ground — light or dark paper the app theme never
+touches. The plate draws no glyph; pass one sized to the plate. `size="fill"` takes the parent's width and
+stays square. `KeylineGuide` is the guide on its own, for a positioned parent.
+
+## Props
+
+<Api name="IconPlate" rows={[
+  {"prop":"size","type":"number | 'fill'","def":"24","desc":"The plate's edge in px, or the parent's width."},
+  {"prop":"ground","type":"light | dark","def":"light","desc":"The specimen ground."},
+  {"prop":"guide","type":"boolean","def":"false","desc":"The keyline grid behind the glyph."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The glyph, sized to the plate."}
+]} />

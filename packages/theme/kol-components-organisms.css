@@ -337,6 +337,19 @@
  * Stack hero's lede already sat. Sans is opt-in through `bodyClass` /
  * `slotClass`. The 72% ink is unchanged. */
 .kol-feature-split-body,
+.kol-header-lede,
+.kol-header-lede-section {
+  /* THE HEADER'S DESCRIPTION (Round 11, approved 2026-10-18 — sizes after Material 3's title large and
+   * body large): Right Grotesk Light, opened tracking, the mono body's 72% ink. Regular 400 at 16 read heavy,
+   * small and tight beside the mono. */
+  margin: 0;
+  font-family: var(--kol-font-family-sans);
+  font-weight: 300;
+  color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
+}
+.kol-header-lede { font-size: 22px; line-height: 28px; letter-spacing: 0.01em; }
+.kol-header-lede-section { font-size: 16px; line-height: 24px; letter-spacing: 0.5px; }
+
 .kol-section-text-body {
   margin: 0;
   font-family: var(--kol-font-family-mono);

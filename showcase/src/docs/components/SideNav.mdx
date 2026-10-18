@@ -81,8 +81,8 @@ Distinct from the workshop's ShellSidebar (grouped doc trees).
   {"prop":"currentPath","type":"string","def":"—","desc":"Router-agnostic seam: with it the rail never calls react-router — route leaves render <a href> and call onNavigate(event, to); a router-free app can mount it."},
   {"prop":"background","type":"boolean","def":"true","desc":"false renders the rail chromeless — no fill — to float over consumer media (the brand-hero model)."},
   {"prop":"hairline","type":"boolean","def":"false","desc":"Paints the right-edge border-r border-fg-08. Off by default (2026-08-26); the footer's border-t is unaffected."},
-  {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile drawer state (managed by AppShell)."},
+  {"prop":"drawerOpen","type":"boolean","def":"—","desc":"Mobile rail state (managed by AppShell)."},
   {"prop":"onCloseDrawer","type":"function","def":"—","desc":"Close callback for the mobile drawer."},
-  {"prop":"onNavigate","type":"(event, to) => void","def":"—","desc":"Fired when any nav link is clicked (drawer close, analytics); with currentPath it is the navigation itself."},
+  {"prop":"onNavigate","type":"(event, to) => void","def":"—","desc":"Fired when any nav link is clicked (rail close, analytics); with currentPath it is the navigation itself."},
   {"prop":"isActive","type":"(path) => boolean","def":"—","desc":"Overrides router active detection for pages and link rows."}
 ]} />

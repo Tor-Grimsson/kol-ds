@@ -3,13 +3,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
+import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 
 const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.meta.url))
 
 // An apps/* member: runs locally on `pnpm labs` (labs alone, 2026-10-05), and publishes into the showcase's output at ui.kolkrabbi.io/apps/labs.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [react(), svgr(), tailwindcss()],
+  plugins: [devFavicon({ label: 'L' }), react(), svgr(), tailwindcss()],
 
   base: command === 'build' ? '/apps/labs/' : '/',
 

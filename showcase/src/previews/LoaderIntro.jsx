@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import { IntroLoader } from '@kolkrabbi/kol-foundry'
+import { LoaderIntro } from '@kolkrabbi/kol-foundry'
 
 export const stage = 'lg'
 
@@ -11,7 +11,7 @@ export const stage = 'lg'
  * wordmark's variable-font axes need a KOL variable font — the showcase ships
  * TGRotVF, so the pressure interaction is live: move the pointer over the wordmark.
  */
-export default function IntroLoaderPreview() {
+export default function LoaderIntroPreview() {
   const [playing, setPlaying] = useState(false)
 
   return (
@@ -21,7 +21,7 @@ export default function IntroLoaderPreview() {
       </Button>
       <div className="relative h-[420px] w-full overflow-hidden rounded border bg-fg-04">
         {playing ? (
-          <IntroLoader
+          <LoaderIntro
             text="KOLKRABBI"
             fontFamily="TG Rot VF"
             fontUrl="/fonts/tg-typefaces/TGRotVF.ttf"

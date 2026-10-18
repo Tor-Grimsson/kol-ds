@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, ShellSearchOverlay } from '@kolkrabbi/kol-component'
+import { Button, CommandOverlay } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 /* drill-in: categories first, a `keepOpen` row swaps the list in place (the ⌘K drill-in) */
@@ -36,12 +36,12 @@ function DrillIn() {
     <div className="flex items-center gap-4">
       <Button onClick={() => setOpen(true)}>Open search modal</Button>
       <p className="kol-mono-12 text-fg-48">{picked ? `Selected: ${picked.label}` : 'Pick a category — the modal stays open'}</p>
-      <ShellSearchOverlay open={open} onClose={close} results={results} suggestions={suggestions} query={query} onQueryChange={setQuery} onSelect={select} />
+      <CommandOverlay open={open} onClose={close} results={results} suggestions={suggestions} query={query} onQueryChange={setQuery} onSelect={select} />
     </div>
   )
 }
 
-export default function ShellSearchOverlayPreview({ variant = 'default' }) {
+export default function CommandOverlayPreview({ variant = 'default' }) {
   if (variant === 'drill-in') return <DrillIn />
   return <Plain />
 }
@@ -63,7 +63,7 @@ function Plain() {
       <p className="kol-mono-12 text-fg-48">
         {picked ? `Selected: ${picked.label}` : 'Arrows move · Enter selects · Esc closes'}
       </p>
-      <ShellSearchOverlay
+      <CommandOverlay
         open={open}
         onClose={close}
         results={results}

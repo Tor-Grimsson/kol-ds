@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, MobileTabBar } from '@kolkrabbi/kol-component'
+import { Button, TabsRow } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: molecule — MobileTabBar + a More sheet of Buttons */
 
@@ -68,7 +68,9 @@ export default function PhoneNav({ items = [], currentPath = '/', onNavigate }) 
           ))}
         </div>
       )}
-      <MobileTabBar
+      <TabsRow
+        look="stacked"
+        placement="phone"
         tabs={tabs}
         value={value}
         onChange={(v) => (v === MORE ? setOpen((o) => !o) : onNavigate?.(v))}

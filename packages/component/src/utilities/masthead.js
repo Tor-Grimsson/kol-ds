@@ -22,8 +22,8 @@ export const MASTHEADS = {
 
 /* the title role per voice and size — PageHeader's ladder, here so a tool's own title reads it too */
 export const TITLE_ROLES = {
-  sans: { sm: 'kol-sans-heading-03', md: 'kol-sans-display-03', lg: 'kol-sans-display-02' },
-  mono: { sm: 'kol-mono-heading-03', md: 'kol-mono-display-03', lg: 'kol-mono-display-02' },
+  sans: { sm: 'kol-sans-heading-03', md: 'kol-sans-display-03', lg: 'kol-sans-display-02', xl: 'kol-sans-display-01' },
+  mono: { sm: 'kol-mono-heading-03', md: 'kol-mono-display-03', lg: 'kol-mono-display-02', xl: 'kol-mono-display-02' },
 }
 
 export const MastheadContext = createContext(null)

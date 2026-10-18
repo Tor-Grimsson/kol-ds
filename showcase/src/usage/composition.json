@@ -291,20 +291,38 @@
     "search-modal": {
       "kol": [
         "Button",
+        "CloseButton",
+        "CommandOverlay",
+        "Divider",
+        "Dropdown",
+        "FullscreenOverlay",
         "Icon",
+        "IconFrame",
         "Kbd",
+        "LabeledControl",
+        "MenuItem",
         "OptionRow",
+        "Popover",
         "SearchInput",
+        "SettingsPanel",
+        "SettingsSections",
+        "ShellDrawer",
         "ShellSearchOverlay",
-        "Tag"
+        "ShortcutsOverlay",
+        "Tag",
+        "ToggleSwitch"
       ],
       "local": {},
       "support": [
         "glyphLadders",
+        "layerStack",
         "registerIcons",
-        "tone"
+        "tone",
+        "usePrefersReducedMotion"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react"
+      ]
     },
     "settings-form": {
       "kol": [
@@ -328,6 +346,7 @@
       "kol": [
         "Button",
         "CloseButton",
+        "CommandOverlay",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
@@ -525,6 +544,7 @@
         "SizeOrDownload",
         "Tag",
         "ThemeToggle",
+        "ToggleCheckbox",
         "ToggleSwitch",
         "Tooltip",
         "WalkthroughPanel"
@@ -534,9 +554,12 @@
         "createIndex",
         "formatSize",
         "glyphLadders",
+        "isTopLayer",
         "layerStack",
         "masthead",
         "motion",
+        "popLayer",
+        "pushLayer",
         "registerIcons",
         "search",
         "searchItems",
@@ -791,6 +814,30 @@
         "react-syntax-highlighter/dist/esm/styles/prism"
       ]
     },
+    "loaders": {
+      "kol": [
+        "Button",
+        "CloseButton",
+        "FullscreenOverlay",
+        "Icon",
+        "IconFrame",
+        "LoaderIntro",
+        "LoaderOverlay",
+        "Table",
+        "TextPressure"
+      ],
+      "local": {},
+      "support": [
+        "glyphLadders",
+        "layerStack",
+        "registerIcons",
+        "tone",
+        "usePrefersReducedMotion"
+      ],
+      "external": [
+        "framer-motion"
+      ]
+    },
     "media-library": {
       "kol": [
         "ActionButton",
@@ -800,6 +847,7 @@
         "CloseButton",
         "CodeBlock",
         "ColumnBrowser",
+        "CommandOverlay",
         "ContentCard",
         "ContentFilters",
         "ContentMedia",
@@ -841,7 +889,7 @@
         "SettingsPanel",
         "SettingsSections",
         "ShellDrawer",
-        "ShellSearchOverlay",
+        "ShortcutsOverlay",
         "SizeOrDownload",
         "Slider",
         "SliderPanel",
@@ -945,6 +993,7 @@
         "AssetPlaceholder",
         "Button",
         "CloseButton",
+        "CommandOverlay",
         "ContentMedia",
         "ContentRow",
         "ContentText",
@@ -1125,6 +1174,7 @@
       "kol": [
         "Button",
         "CloseButton",
+        "CommandOverlay",
         "CtlIconButton",
         "CtlJackSocket",
         "CtlLabeledJack",
@@ -1158,7 +1208,8 @@
         "SliderPanel",
         "Tag",
         "Toggle",
-        "ToggleSwitch"
+        "ToggleSwitch",
+        "Tooltip"
       ],
       "local": {
         "..": [
@@ -1303,6 +1354,7 @@
         "CloseButton",
         "CodeBlock",
         "ColumnBrowser",
+        "CommandOverlay",
         "ContentCard",
         "ContentFilters",
         "ContentMedia",
@@ -1345,7 +1397,7 @@
         "SettingsPanel",
         "SettingsSections",
         "ShellDrawer",
-        "ShellSearchOverlay",
+        "ShortcutsOverlay",
         "SizeOrDownload",
         "Slider",
         "SliderPanel",

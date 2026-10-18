@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspen
 import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellSidebar.jsx'
-import { FullscreenOverlay, IconFrame, ShellDrawer, ShellSearchOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
+import { FullscreenOverlay, IconFrame, Rail, CommandOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -602,7 +602,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
 
           {/* `open`, not `isOpen` — the old prop name silently kept the drawer
             * shut, so there was no navigation at all below lg. */}
-          <ShellDrawer
+          <Rail
             open={isNavDrawerOpen}
             onClose={() => setIsNavDrawerOpen(false)}
           >
@@ -610,13 +610,13 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
               ? renderSidebar({ activeRoute, onNavigate: () => setIsNavDrawerOpen(false) })
               : <ShellSidebar routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />
             }
-          </ShellDrawer>
+          </Rail>
 
           {/* The overlay owns no filtering — the shell holds the query and
             * feeds it results (the pre-0.12 API `isOpen/routes/items` matched
             * nothing, so ⌘K rendered an empty box and searchItems was dead).
             * Selecting routes to item.href; matchSearchItems is the engine's. */}
-          <ShellSearchOverlay
+          <CommandOverlay
             open={isSearchOpen}
             onClose={closeSearch}
             query={searchQuery}
@@ -658,7 +658,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             }}
           >
             {tagMode.isProvided && tagMode.expanded ? <TagModeOverlay /> : null}
-          </ShellSearchOverlay>
+          </CommandOverlay>
 
           {isShortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setIsShortcutsOpen(false)} />}
 

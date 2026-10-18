@@ -53,7 +53,7 @@ export const ALL_ROUTES = [
   /* SEARCH is a space (2026-09-30): its four views are its chapters; the magnifier still opens the
    * search modal — one engine behind both. */
   { id: 'search', label: 'Search', icon: 'search', path: '/search' },
-  { id: 'development', label: 'Development', icon: 'library', path: '/development' },
+  { id: 'development', label: 'Development', icon: 'code', path: '/development' },
 ]
 
 /* The Library's two chapters and what each holds — the spaces they were until 2026-09-30. The
@@ -67,6 +67,8 @@ export const LIBRARY_CHILDREN = {
     { id: 'components', label: 'Components', path: '/components' },
     /* named Modules since 2026-10-01 (user ruling) — the id and the files keep `blocks` */
     { id: 'blocks', label: 'Modules', path: '/modules' },
+    /* the page layer, between modules and apps (W6, 2026-10-17) */
+    { id: 'templates', label: 'Templates', path: '/templates' },
     { id: 'apps', label: 'Apps', path: '/apps' },
   ],
   collection: [
@@ -186,7 +188,7 @@ export const SHELL_ROUTES = ALL_ROUTES.filter((r) =>
 export const SPACE_PREFIXES = {
   '/styles': ['/styles', '/foundations', '/icons'],
   /* the Library owns both its chapters' URLs; Cards is a set (2026-09-30) */
-  '/library': ['/library', '/composition', '/components', '/modules', '/blocks', '/apps', '/app', '/collection', '/sets', '/cards', '/packages'],
+  '/library': ['/library', '/composition', '/components', '/modules', '/blocks', '/templates', '/apps', '/app', '/collection', '/sets', '/cards', '/packages'],
   '/docs': ['/docs', '/documentation'],
   '/search': ['/search'],
   '/development': ['/development', '/references', '/quarantine', '/lobby'],

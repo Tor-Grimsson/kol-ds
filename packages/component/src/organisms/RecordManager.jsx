@@ -5,7 +5,7 @@ import Button from '../atoms/Button'
 import SearchInput from '../molecules/SearchInput'
 import ToggleCheckbox from '../atoms/ToggleCheckbox'
 import IconFrame from '../atoms/IconFrame'
-import ShellDrawer from '../molecules/ShellDrawer'
+import Rail from '../molecules/Rail.jsx'
 import FieldRow, { StatusChip } from '../molecules/FieldRow'
 import { Tooltip } from '../utilities/Popover'
 import Table from './Table'
@@ -308,7 +308,7 @@ export default function RecordManager({
       {/* detail panel — ShellDrawer owns the slide-over chrome AND the close ×;
         * this header carries only the record actions (reference: … ▶ save-state
         * Publish). aria-label defaults follow ShellDrawer's own precedent. */}
-      <ShellDrawer
+      <Rail
         open={!!active}
         onClose={() => setActive(null)}
         side="right"
@@ -357,7 +357,7 @@ export default function RecordManager({
             ))}
           </div>
         )}
-      </ShellDrawer>
+      </Rail>
 
       {/* media picker — the EXISTING MediaLibrary organism, modal variant;
         * client injected, never imported (§3). accept comes from the field. */}

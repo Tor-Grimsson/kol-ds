@@ -103,7 +103,7 @@ export const TIERS = {
   /* kol-foundry */
   TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
-  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', IntroLoader: 'organisms', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
+  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', LoaderIntro: 'organisms', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
   FoundryOpentypeFeatures: 'organisms', FoundryTypefaceDetails: 'organisms', FoundryTypefacePairing: 'organisms',
   TypefaceHero: 'organisms', TypefaceStyleSection: 'organisms', FontPreviewSection: 'organisms',
   VariableFontSection: 'organisms', GlyphMetricsGrid: 'organisms', GlyphMetricsSection: 'organisms',
@@ -125,7 +125,7 @@ export const TIERS = {
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
   NavRail: 'organisms', PhoneNav: 'organisms', WalkthroughPanel: 'organisms',
-  SettingsScaffold: 'organisms', HubSettings: 'organisms', HubHome: 'organisms',
+  SettingsScaffold: 'organisms', HubSettings: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms',
   PageShell: 'utilities',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
@@ -159,7 +159,7 @@ export const FUNCTIONS_BY_NAME = {
   Button: 'action', ThemeToggle: 'action',
   Input: 'input', Textarea: 'input', Slider: 'input', Stepper: 'input',
   QuantityInput: 'input', PropertyInput: 'input',
-  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input', IconToggle: 'input',
+  ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input', IconToggle: 'input', IconPlate: 'display', CompareGrid: 'display',
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   LabeledControl: 'input', Label: 'input',
   Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
@@ -184,7 +184,7 @@ export const FUNCTIONS_BY_NAME = {
   TabsRow: 'navigation', TabChips: 'navigation', MultiSelect: 'input',
   MobileTabBar: 'navigation',
   ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
-  ShellSearchOverlay: 'wayfinding', ShellDrawer: 'wayfinding',
+  CommandOverlay: 'wayfinding', Rail: 'wayfinding',
   DocsToc: 'wayfinding', AsciiCursor: 'wayfinding',
   WorkViewToggle: 'wayfinding', ShellHeader: 'wayfinding', PortalFooter: 'wayfinding',
   PriceDisplay: 'display', ProsePreview: 'display', TypeSample: 'display',
@@ -197,7 +197,7 @@ export const FUNCTIONS_BY_NAME = {
   BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
-  IntroLoader: 'display', LoaderOverlay: 'overlay',
+  LoaderIntro: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input', ColorPickerPopover: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
   ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
@@ -307,7 +307,7 @@ export const FUNCTIONS_BY_NAME = {
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
-  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', HubHome: 'structure', HubSettings: 'structure',
+  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', HubHome: 'structure', HubSettings: 'structure', HubDev: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
   Logomark: 'display',
@@ -362,6 +362,7 @@ export const EXEMPT = {
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
   WheelTriangle: 'member-of:SpectrumControls', AlphaStrip: 'member-of:SpectrumControls',
+  KeylineGuide: 'member-of:IconPlate',
   SwatchStack: 'member-of:SwatchControls', EyedropPick: 'member-of:SwatchControls',
   CanvasFrame: 'member-of:Canvas', PanViewport: 'member-of:Canvas',
 }
@@ -380,10 +381,18 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* ShellSearchOverlay = CommandOverlay (2026-10-17): one overlay with modes */
+  'ShellSearchOverlay',
+  /* ShellDrawer = Rail (2026-10-17): two words, rail and overlay */
+  'ShellDrawer',
+  /* TabChips · TabStrip · MobileTabBar = TabsRow `look` (2026-10-17): one tab component */
+  'TabChips', 'TabStrip', 'MobileTabBar',
   /* DropdownTagFilter = SettingsMulti (2026-10-01): its own pill and hardcoded radius, no consumer */
   'DropdownTagFilter',
   /* ColorLoader = IntroLoader (2026-09-30) */
   'ColorLoader',
+  /* IntroLoader = LoaderIntro (2026-10-17): Loader<Job> */
+  'IntroLoader',
   /* HlsVideo = BackgroundVideo, ProfileAvatar = BrandAvatar (2026-10-01) */
   'HlsVideo', 'ProfileAvatar',
   /* the four players are MediaPlayer (2026-10-02): `variant` video · audio, `frame` for the window */

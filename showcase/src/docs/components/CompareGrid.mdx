@@ -1,0 +1,55 @@
+export const meta = {
+  id: "2.86.0",
+  slug: "compare-grid",
+  title: "CompareGrid",
+  type: "reference",
+  status: "active",
+  updated: "2026-10-17",
+  tags: [
+    "domain/components",
+    "domain/components/organisms",
+    "domain/iconography",
+  ],
+  description: "Two versions of many things, side by side, each side named.",
+  aliases: [
+    "comparegrid",
+    "diff",
+  ],
+}
+
+<Preview name="CompareGrid" />
+
+## Installation
+
+<Install name="CompareGrid" />
+
+## Usage
+
+```jsx
+import { CompareGrid } from '@kolkrabbi/kol-component'
+
+<CompareGrid
+  labels={{ a: 'monitor', b: 'kol-icons' }}
+  items={names.map((n) => ({ id: n, label: n, a: local[n] && (({ size }) => <LocalIcon name={n} size={size} />), b: ({ size }) => <Icon name={n} size={size} />, state: stateOf(n) }))}
+/>
+```
+
+## Behavior
+
+Each item is a pair of plates — A beside B, each side named in words, the item's name under the pair.
+A side draws at the chosen size on an `IconPlate`, with its real 16px size beside its name. A side may be a
+node or a renderer `({ size, ground, guide }) => node`. A missing side is an empty plate carrying its
+`candidate` (or the item's name). The toolbar is controls: size 24 · 48 · 96 · 128, ground, guide, and — when items carry a
+`state` — a filter with counts. `state` also shows as a chip on the item.
+
+## Props
+
+<Api name="CompareGrid" rows={[
+  {"prop":"items","type":"{ id, label, a, b, state?, candidate? }[]","def":"[]","desc":"The pairs. `a` / `b` a node or a renderer; `state` the consumer's word, a chip and a filter; `candidate` names what an empty side maps to."},
+  {"prop":"labels","type":"{ a, b }","def":"{ a: 'A', b: 'B' }","desc":"What each side is."},
+  {"prop":"defaultSize","type":"number","def":"96","desc":"The opening size."},
+  {"prop":"defaultGround","type":"light | dark","def":"light","desc":"The opening ground."},
+  {"prop":"defaultGuide","type":"boolean","def":"true","desc":"The keyline guide on at open."},
+  {"prop":"showActual","type":"boolean","def":"true","desc":"The 16px real size beside each side's name."},
+  {"prop":"className","type":"string","def":"''","desc":"Classes on the root."}
+]} />

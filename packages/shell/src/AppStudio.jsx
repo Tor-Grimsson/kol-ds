@@ -37,6 +37,7 @@ import PageShell from './PageShell.jsx'
  * @param {Object} [use]        `{ children, path, label, icon }` — the tool
  * @param {Array}  [pages]      `[{ path, icon, label, children }]` — opt-in pages, after Use
  * @param {Object} [settings]   HubSettings' props
+ * @param {Object} [dev]        HubDev's props — AppHub's `dev`: a dev server's `code` page at `/dev`
  * @param {'mono'|'display'} [masthead='mono']
  * @param {Object} [shell]      any AppShell prop, spread last
  */
@@ -51,6 +52,7 @@ export default function AppStudio({
   use,
   pages = [],
   settings,
+  dev,
   walkthrough,
   shortcuts,
   themeToggle,
@@ -92,6 +94,7 @@ export default function AppStudio({
       home={home}
       walkthrough={walkthrough}
       settings={settings}
+      dev={dev}
       shortcuts={shortcuts}
       themeToggle={themeToggle}
       shortcutsKey={shortcutsKey}

@@ -26,6 +26,8 @@ import WorkshopDocsPreview from './pages/WorkshopDocsPreview'
 import Lobby from './pages/Lobby'
 import References from './pages/References'
 import ReferenceNode from './pages/ReferenceNode'
+import ReferenceSlice from './pages/ReferenceSlice'
+import { TemplatesHome, TemplatePage, BlocksHome as TemplateBlocksHome, BlockPage as TemplateBlockPage } from './pages/Templates'
 import Search from './pages/Search'
 import DocsIndex from './pages/DocsIndex'
 import StylesIndex from './pages/StylesIndex'
@@ -142,6 +144,11 @@ export default function App() {
         <Route path="/components/function/:fn" element={<FunctionHome />} />
         <Route path="/components/:slug" element={<ComponentPage />} />
         <Route path="/modules" element={<Blocks />} />
+        {/* the page layer (W6, 2026-10-17): templates and the blocks their bodies are made of */}
+        <Route path="/templates" element={<TemplatesHome />} />
+        <Route path="/templates/blocks" element={<TemplateBlocksHome />} />
+        <Route path="/templates/blocks/:slug" element={<TemplateBlockPage />} />
+        <Route path="/templates/:slug" element={<TemplatePage />} />
         <Route path="/modules/category/:cat" element={<Blocks />} />
         <Route path="/modules/:slug" element={<BlockPage />} />
         <Route path="/cards" element={<Cards />} />
@@ -157,6 +164,12 @@ export default function App() {
         <Route path="/quarantine" element={<Quarantine />} />
         {/* The reference graph — generated from usage-index + token-index. */}
         <Route path="/references" element={<References />} />
+        {/* the graph by slice (2026-10-17): a kind, and a concern inside it — static segments outrank :name */}
+        <Route path="/references/components" element={<ReferenceSlice slug="components" />} />
+        <Route path="/references/tokens" element={<ReferenceSlice slug="tokens" />} />
+        <Route path="/references/tokens/:concern" element={<ReferenceSlice slug="tokens" />} />
+        <Route path="/references/classes" element={<ReferenceSlice slug="classes" />} />
+        <Route path="/references/classes/:concern" element={<ReferenceSlice slug="classes" />} />
         <Route path="/references/:name" element={<ReferenceNode />} />
         {/* ONE route for the home and the results (`/search` · `/search/results`): two routes
           * remounted the page between them, and the box dropped a keystroke on the way */}

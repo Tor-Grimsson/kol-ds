@@ -6,6 +6,10 @@ import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } fro
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
+import { useDevSpace } from './devSpace.js'
+import { REFERENCE_TREE } from './referenceTree.js'
+import { TEMPLATES, templateHref, blockHref } from './templates-registry.js'
+import { TEMPLATE_BLOCKS } from '../templates/blocks.jsx'
 import { SHELL_ROUTES, DOCS_GUIDES, DOCS_SPECIMENS, DEV_TOOLS, SEARCH_VIEWS, LOOKUP_GROUPS, LOOKUP_ROOT, lastSearchQuery, isShellTabActive, buildShellSearchItems, componentTreeRoutes, admittedVaultTree } from '../nav/shell-nav.js'
 import PAGE_SECTIONS from '../nav/page-sections.json'
 import { PHASE_LOG_ROUTE, VAULT, vaultDocHref } from '../nav/vault.js'
@@ -149,13 +153,14 @@ const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.pa
  * of Docs and Styles. The ~325 component rows stay text. A route named here wears that glyph; any
  * other group wears the folder, any other Docs or Styles page the file. */
 const RAIL_ICONS = {
-  'lib-components': 'component-01', 'lib-blocks': 'layout', 'lib-apps': 'desktop', 'lib-sets': 'layers', 'lib-packages': 'database',
+  'lib-components': 'component-01', 'lib-blocks': 'layout', 'lib-templates': 'panel-left', 'tpl-blocks': 'rows', 'lib-apps': 'desktop', 'lib-sets': 'layers', 'lib-packages': 'database',
   'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-utilities': 'nav-settings',
   'set-cards': 'rectangle',
   'spec-foundations': 'slider-01', 'spec-color': 'paint-drop', 'spec-typography': 'type', 'spec-tones': 'opacity',
   'docs-shell': 'layout', 'docs-menus': 'hamburger', 'docs-loaders': 'refresh', 'docs-type-roles': 'aa',
   'search-results': 'search', 'search-tags': 'hash-01', 'search-graph': 'polygon', 'search-index': 'view-list',
   'dev-references': 'code', 'dev-quarantine': 'lock', 'dev-open-questions': 'message', 'dev-phase-log': 'journal',
+  'ref-components': 'component-01', 'ref-tokens': 'slider-01', 'ref-classes': 'code-simple',
   /* EVERY GROUP ITS OWN GLYPH (user 2026-10-02: "all use the same icon? … the way icons are put in
    * generally is a bit lazy") — the folder was the fallback for every group below this line */
   'lookup-start': 'flag', 'lookup-foundations': 'foundation', 'lookup-taxonomy': 'atomic-atomic-01',
@@ -168,7 +173,7 @@ const RAIL_ICONS = {
   'set-app-shell': 'panel-left', 'set-chess-apparatus': 'chess-rook', 'set-content-filters': 'filter', 'set-content-set-reference': 'rows',
   'set-design-editor': 'pen-nib', 'set-foundry-specimen': 'font-01', 'set-kind-preview': 'eye-on', 'set-media-library': 'image',
   'set-metrics-dashboard': 'stat-chart-a', 'set-mixer': 'slider-02', 'set-prints-store': 'bucket', 'set-rack': 'rack-v',
-  'set-record-manager-cms': 'database', 'set-section-set': 'row', 'set-stack-blog': 'journal', 'set-styleguide': 'paint-drop', 'set-work-portfolio': 'grid',
+  'set-loaders': 'refresh', 'set-record-manager-cms': 'database', 'set-section-set': 'row', 'set-stack-blog': 'journal', 'set-styleguide': 'paint-drop', 'set-work-portfolio': 'grid',
 }
 /* the vault's chapters carry generated ids (`vault-<category>-<chapter>`) — matched by their chapter */
 const RAIL_ICON_RULES = [
@@ -252,6 +257,10 @@ function SpaceRail({ space, onNavigate, railMode }) {
     const composition = [
       anyComponentsAdmitted() && { id: 'lib-components', label: 'Components', path: '/components', children: cmpRoutes },
       isSurfaceAdmitted('blocks') && { id: 'lib-blocks', label: 'Modules', path: '/modules', children: blocks },
+      isSurfaceAdmitted('templates') && { id: 'lib-templates', label: 'Templates', path: '/templates', children: [
+        ...TEMPLATES.map((t) => ({ id: `tpl-${t.slug}`, label: t.title, path: templateHref(t.slug) })),
+        { id: 'tpl-blocks', label: 'Blocks', path: '/templates/blocks', children: TEMPLATE_BLOCKS.map((b) => ({ id: `tpl-block-${b.slug}`, label: b.title, path: blockHref(b.slug) })) },
+      ] },
       isSurfaceAdmitted('apps') && { id: 'lib-apps', label: 'Apps', path: '/apps', children: apps },
     ].filter(Boolean)
     const collection = [
@@ -321,7 +330,8 @@ function SpaceRail({ space, onNavigate, railMode }) {
     )
   }
   if (space === 'development') {
-    const tools = withIcons(withSections(rowsOf(DEV_TOOLS)))
+    /* References is a GROUP (2026-10-17): its kinds, and the concerns inside tokens and classes */
+    const tools = withIcons(withSections(rowsOf(DEV_TOOLS)).map((r) => (r.id === 'dev-references' ? { ...r, children: REFERENCE_TREE } : r)))
     return (
       <div className="shell-rail-stack">
         <ShellSidebar routes={tools} basePath="/" label="Tools" labelTo="/development/tools" onNavigate={onNavigate} />
@@ -340,7 +350,10 @@ export default function ShellChrome() {
   const { pathname } = useLocation()
   const embedded = useEmbed()
   const { mode, setMode } = useGrouping()
-  const searchItems = SEARCH_ITEMS
+  /* Development: a dev server always; the site only after `D` (lib/devSpace.js) — out of the tabs and ⌘K */
+  const [devShown, toggleDev] = useDevSpace()
+  const routes = devShown ? SHELL_ROUTES : SHELL_ROUTES.filter((r) => r.id !== 'development')
+  const searchItems = devShown ? SEARCH_ITEMS : SEARCH_ITEMS.filter((i) => i.space !== 'development')
   const toggleFrontmatter = useFrontmatterToggle()
 
   /* ?embed=1 — main content only, for iframing showcase pages into other
@@ -361,14 +374,17 @@ export default function ShellChrome() {
 
   return (
     <ShellLayout
-      routes={SHELL_ROUTES}
+      routes={routes}
       basePath="/"
       isActive={isShellTabActive(pathname)}
       renderSidebar={({ activeRoute, onNavigate, mode: railMode }) => <SpaceRail space={activeRoute?.id} onNavigate={onNavigate} railMode={railMode} />}
       defaultTocContent={({ activeRoute }) => <SpaceToc space={activeRoute?.id} />}
       searchItems={searchItems}
       searchPath="/search/results"
-      shortcuts={[{ id: 'frontmatter', label: 'Frontmatter', combo: 'F', key: 'f', run: toggleFrontmatter }]}
+      shortcuts={[
+        { id: 'frontmatter', label: 'Frontmatter', combo: 'F', key: 'f', run: toggleFrontmatter },
+        ...(import.meta.env.DEV ? [] : [{ id: 'development', label: 'Development space', combo: 'D', key: 'd', run: toggleDev }]),
+      ]}
       /* the second wordmark names the space you are in (user: "change the 'workshop' to say …
        * 'design system' when you land … then it could change with the site's navigation") */
       brandLabel={({ activeRoute }) => activeRoute?.label ?? 'Design system'}

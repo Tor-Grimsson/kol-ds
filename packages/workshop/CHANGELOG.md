@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-workshop
 
+## 0.40.0 — 2026-10-17
+
+- The workshop shell uses `Rail` and `CommandOverlay` (kol-component's new names for ShellDrawer and ShellSearchOverlay). Needs kol-component ≥0.266.0. No visual change.
+
 ## 0.39.0 — 2026-10-06
 
 - **New: the doc reader takes a consumer's field config and page actions** (reader-takes-field-config-and-page-actions, kol-website).

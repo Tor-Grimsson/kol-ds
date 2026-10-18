@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Tooltip } from '@kolkrabbi/kol-component'
 
 /**
  * NodeLabel / NodePreview — the shared cell renderers for anything the
@@ -51,11 +52,10 @@ export function NodeLabel({ name, kind, to }) {
 export function NodePreview({ name, kind, concern }) {
   if (kind === 'token' && concern === 'color') {
     return (
-      <span
-        className="inline-block align-middle w-6 h-4 rounded-xs border border-fg-08"
-        style={{ background: `var(${name})` }}
-        title={name}
-      />
+      /* the DS tooltip, not a native title (References 3.2, 2026-10-17) */
+      <Tooltip label={name} asChild>
+        <span className="inline-block align-middle w-6 h-4 rounded-xs border border-fg-08" style={{ background: `var(${name})` }} />
+      </Tooltip>
     )
   }
 

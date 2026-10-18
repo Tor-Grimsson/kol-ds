@@ -4,6 +4,7 @@ import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { SearchPage, usePageMeta, DocsFrontmatter } from '@kolkrabbi/kol-workshop'
 import { useFrontmatter } from '../lib/frontmatter.jsx'
 import HomeDoc, { HOMES } from '../lib/HomeDoc.jsx'
+import { devSpaceShown } from '../lib/devSpace.js'
 import { SHELL_ROUTES, SEARCH_VIEWS, LAST_QUERY_KEY, lastSearchQuery, buildShellSearchItems } from '../nav/shell-nav.js'
 import { useGraph } from './References.jsx'
 
@@ -59,8 +60,8 @@ export default function Search() {
   usePageMeta({ tags: HOMES.find((d) => d.id === (onResults ? 'search-results' : 'search'))?.metadata?.tags ?? [], related: [] })
   const { nodes } = useGraph()
   const items = useMemo(() => [
-    ...buildShellSearchItems(),
-    ...nodes.map((n) => ({
+    ...buildShellSearchItems().filter((i) => devSpaceShown() || i.space !== 'development'),
+    ...(devSpaceShown() ? nodes : []).map((n) => ({
       id: `node:${n.kind}:${n.name}`,
       title: n.name,
       kind: 'reference',

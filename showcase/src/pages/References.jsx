@@ -2,10 +2,11 @@ import { useMemo } from 'react'
 import { DocSection } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { Link } from 'react-router-dom'
-import { ContentFilters, Table, Button } from '@kolkrabbi/kol-component'
+import { ContentFilters, Table, Button, Tooltip } from '@kolkrabbi/kol-component'
 import { NodeLabel, NodePreview, kindLabel } from '../lib/NodeLabel.jsx'
 import usageIndex from '../usage/usage-index.json'
 import tokenIndex from '../usage/token-index.json'
+import { KIND_SLICES, concernsOf, concernLabel, countOf, sliceHref } from '../lib/referenceTree.js'
 
 /**
  * References — the reference graph, rendered.
@@ -29,8 +30,6 @@ import tokenIndex from '../usage/token-index.json'
  * read `edgesnode` with every cell in the same weight.
  */
 
-const CONCERNS = ['color', 'type', 'layout', 'nav', 'chrome', 'component', 'breakpoint']
-const KINDS = ['component', 'token', 'class']
 
 export function useGraph() {
   return useMemo(() => {
@@ -67,7 +66,7 @@ export function useGraph() {
 /* Columns, in scan order: the number that ranks the row, then what it IS, then
  * where it comes from. Numeric columns are right-aligned and carry the ink;
  * the provenance columns are deliberately light so the eye lands on the name. */
-function graphColumns(threshold) {
+export function graphColumns(threshold) {
   return [
     {
       accessor: 'weighted',
@@ -78,7 +77,8 @@ function graphColumns(threshold) {
       render: (n) => (
         <span className="kol-mono-12 text-emphasis font-medium">
           {n.weighted}
-          {n.weighted >= threshold && <span title="canon candidate" className="text-fg-32"> ●</span>}
+          {/* the DS tooltip, never a native title (3.2, 2026-10-17) */}
+          {n.weighted >= threshold && <Tooltip label="Canon candidate" asChild><span className="text-fg-32"> ●</span></Tooltip>}
         </span>
       ),
     },
@@ -159,10 +159,24 @@ function graphColumns(threshold) {
   ]
 }
 
+/* The ranked table every slice page shows: search by name, the top 300, the rest behind the search. */
+export function NodeTable({ nodes, threshold, title = 'Nodes', caption, limit = 300, search = true }) {
+  const columns = useMemo(() => graphColumns(threshold), [threshold])
+  const table = (rows) => (
+    <>
+      {/* A DATA table declares its own width — seven columns need the
+        * content column, not the panel rung meant for two. */}
+      <Table width="column" caption={caption} columns={columns} rows={rows.slice(0, limit).map((n) => ({ ...n, id: `${n.kind}:${n.name}` }))} />
+      {rows.length > limit && <p className="kol-helper-12 text-meta mt-4">Showing the top {limit} of {rows.length}. Narrow with the search.</p>}
+    </>
+  )
+  if (!search) return table(nodes)
+  return <ContentFilters items={nodes} title={title} titleIcon="library" totalCount={nodes.length} searchKeys={['name', 'definedIn']} renderItem={table} />
+}
+
 export default function References() {
   const { nodes, median, threshold } = useGraph()
   const canon = nodes.filter((n) => n.weighted >= threshold).length
-  const columns = useMemo(() => graphColumns(threshold), [threshold])
 
   return (
     <>
@@ -171,41 +185,27 @@ export default function References() {
       <HomeDoc id="references" />
       <p className="kol-doc-lede mt-6">{`${nodes.length} referenced nodes. ${canon} nodes sit at or above the canon bar of ${threshold}★ (3× the median of ${median}).`}</p>
 
-      {/* mt-8: DocHeader's lede butted straight onto the filter row with no
-        * breathing space at all — the header ends, the control bar begins. */}
-      <ContentFilters
-        className="mt-8"
-        items={nodes}
-        title="Nodes"
-        titleIcon="library"
-        totalCount={nodes.length}
-        searchKeys={['name', 'definedIn']}
-        mutuallyExclusiveFilters={['kind', 'concern']}
-        filterGroups={[
-          { label: 'Kind', key: 'kind', values: KINDS },
-          { label: 'Concern', key: 'concern', values: CONCERNS },
-        ]}
-        renderItem={(rows) => (
-          <>
-            {/* A DATA table declares its own width — seven columns need the
-              * content column, not the panel rung meant for two. */}
-            <Table
-              width="column"
-              caption="Reference graph nodes ranked by weighted inbound"
-              columns={columns}
-              rows={rows.slice(0, 300).map((n) => ({ ...n, id: `${n.kind}:${n.name}` }))}
-            />
-            {rows.length > 300 && (
-              <p className="kol-helper-12 text-meta mt-4">
-                Showing the top 300 of {rows.length}. Narrow with the filter.
-              </p>
-            )}
-          </>
-        )}
-      />
-
-      {/* mt-8: the table's footer line sat flush on this section's rule (2026-10-01) */}
-      <div className="mt-8">
+      {/* A HOME, NOT A DUMP (2026-10-17): the 721 nodes are read by slice on their own pages; the home
+        * shows what tops the whole graph and where each slice lives */}
+      <div className="mt-8 flex flex-col gap-8">
+        <DocSection id="top-10" title="Top 10">
+          <NodeTable nodes={nodes.slice(0, 10)} threshold={threshold} caption="The ten most-referenced nodes across every kind" search={false} />
+        </DocSection>
+        <DocSection id="slices" title="Slices">
+          <ul className="flex flex-col gap-3">
+            {KIND_SLICES.map(({ kind, slug, label }) => (
+              <li key={slug} className="flex flex-col gap-1">
+                <Link to={sliceHref(slug)} className="kol-doc-body underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64">{label}</Link>
+                <span className="kol-helper-12 text-meta">
+                  {countOf(kind)} nodes{concernsOf(kind).length ? ' · ' : ''}
+                  {concernsOf(kind).map(({ concern, count }, i) => (
+                    <span key={concern}>{i ? ' · ' : ''}<Link to={sliceHref(slug, concern)} className="hover:text-emphasis">{concernLabel(concern)} {count}</Link></span>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </DocSection>
       <DocSection id="how-to-read-this" title="How to read this">
         <p>
           An edge exists only if changing or deleting the node would change or break the

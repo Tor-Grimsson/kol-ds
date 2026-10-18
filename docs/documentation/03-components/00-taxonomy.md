@@ -90,7 +90,7 @@ Atomic design is a design principle, not an invisible-helper principle — the u
 
 What fails either test but still earns its exports lives in **`utilities/`** — one folder, one sidebar group, deliberately not eight scattered homes (user ruling: *"group this together"*). Utilities sit outside the import ladder: any tier may import `utilities/`; `utilities/` may import atoms/hooks/graphics but never molecules or organisms — a mechanism stays primitive.
 
-The 2026-08-09 re-file (13 members): from atoms — `AssetGrid` (paintless grid wrapper), `Popover` (positioning mechanism), `OverlayGlassPanel` (surface treatment), `TiltCard` (behavior wrapper), `AssetPlaceholder` (Image/Graphic's fallback state), `TransparentX` (decoration drawn onto a slot), `ExitPreview` (fixed-position chrome), `ProsePreview` (type specimen); from molecules — `ButtonGroup` (pure layout), `FullscreenOverlay` (the scrim+sheet mechanism five components wear), `LoaderOverlay` (slot pass-through), `ErrorBoundary` (guard); from organisms — `EditorShell` (slot frame). Kept after challenge: `MenuPopover` (renders a MenuItem — visual, on its own deprecation track) and the `Section`/`LabeledControl` pair (group header vs field label — different roles, near-identical JSX).
+The 2026-08-09 re-file (13 members): from atoms — `AssetGrid` (paintless grid wrapper), `Popover` (positioning mechanism), `OverlayGlassPanel` (surface treatment), `TiltCard` (behavior wrapper), `AssetPlaceholder` (Image/Graphic's fallback state), `TransparentX` (decoration drawn onto a slot), `ExitPreview` (fixed-position chrome), `ProsePreview` (type specimen); from molecules — `ButtonGroup` (pure layout), `FullscreenOverlay` (the scrim+overlay mechanism five components wear), `LoaderOverlay` (slot pass-through), `ErrorBoundary` (guard); from organisms — `EditorShell` (slot frame). Kept after challenge: `MenuPopover` (renders a MenuItem — visual, on its own deprecation track) and the `Section`/`LabeledControl` pair (group header vs field label — different roles, near-identical JSX).
 
 ### How the Tier axis shows in the sidebar
 
@@ -117,7 +117,7 @@ A **closed, Material-style set**. Every current and future component maps to exa
 | **Display** | Presents read-only content — Badge, Tag, Avatar, Table, ColorSwatch. |
 | **Feedback** | Communicates state — EmptyState, ErrorBoundary. |
 | **Navigation** | Moves between views — SideNav, TabsRow. |
-| **Wayfinding** | How a user moves through or re-slices a site — navigation, filtering, search, site chrome: ContentFilters, DropdownTagFilter, ShellSearchOverlay, ShellDrawer, DocsToc, AsciiCursor. |
+| **Wayfinding** | How a user moves through or re-slices a site — navigation, filtering, search, site chrome: ContentFilters, DropdownTagFilter, CommandOverlay, Rail, DocsToc, AsciiCursor. |
 | **Overlay** | Floats over content — Menu, Tooltip, Modal, FullscreenOverlay. |
 | **Media** | Images/video/galleries — Image, Carousel, HlsVideo, MediaViewer, MediaTileGallery. |
 | **Structure** | Lays out regions — heroes, FeatureSplit, AssetGrid, EditorShell. |
@@ -125,7 +125,7 @@ A **closed, Material-style set**. Every current and future component maps to exa
 
 Closed means **new components slot into an existing Function** — you don't invent a new one. If nothing fits, that's a signal to reconsider the component, not to grow the set.
 
-*Amended 2026-07-09:* **Wayfinding** joined the set — the deliberate-amendment path, not an exception to closedness. Members: ContentFilters, DropdownTagFilter, ShellSearchOverlay, ShellDrawer, DocsToc, and AsciiCursor (site-chrome delight), plus the cross-package members WorkViewToggle (kol-content) and ShellHeader + PortalFooter (kol-framework) — the registry's `FUNCTION_MAP` carries all of them, cross-package included.
+*Amended 2026-07-09:* **Wayfinding** joined the set — the deliberate-amendment path, not an exception to closedness. Members: ContentFilters, DropdownTagFilter, CommandOverlay, Rail, DocsToc, and AsciiCursor (site-chrome delight), plus the cross-package members WorkViewToggle (kol-content) and ShellHeader + PortalFooter (kol-framework) — the registry's `FUNCTION_MAP` carries all of them, cross-package included.
 
 ---
 

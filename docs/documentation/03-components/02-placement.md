@@ -57,13 +57,13 @@ The repeal (2026-08-09) re-judged all 93 kol-component files. 20 moved; the judg
 
 | Move | Components | Why |
 |---|---|---|
-| atoms → molecules | `DocsToc` · `DropdownTagFilter` · `FullscreenOverlay` · `LabeledControl` · `QuantityInput` · `SearchInput` · `Section` · `Stepper` | Assemblies the import test couldn't see: nav-link cluster, trigger+panel+tags, scrim+sheet+close, label+control, input+buttons |
+| atoms → molecules | `DocsToc` · `DropdownTagFilter` · `FullscreenOverlay` · `LabeledControl` · `QuantityInput` · `SearchInput` · `Section` · `Stepper` | Assemblies the import test couldn't see: nav-link cluster, trigger+panel+tags, scrim+overlay+close, label+control, input+buttons |
 | molecules → atoms | `ColorSwatch` · `Image` · `PaletteHarmonyWheel` · `SelectionOverlay` | Single elements the import test had promoted: a chip, an image, a wheel control, selection chrome |
 | molecules → organisms | `FramedMediaBand` · `ShellSearchOverlay` · `SpectrumControls` | Whole regions: a page band, the ⌘K search surface, the full color-picker apparatus |
 | organisms → molecules | `TiltBento` · `Carousel` · `ErrorBoundary` · `LoaderOverlay` | Not regions: a card, a scroll mechanism, a fallback panel, an overlay+curtain pair |
 | organisms → atoms | `AsciiCursor` | One canvas element, however elaborate its behavior |
 
-Unmoved judgment anchors: `Button`/`Input`/`Tag`/`Popover` atoms · `Slider`/`Dropdown`/`Modal`/`FieldRow`/`ShellDrawer` molecules · `Table`/`ContentFilters`/`MediaLibrary`/`RecordManager` + the heroes/bands organisms.
+Unmoved judgment anchors: `Button`/`Input`/`Tag`/`Popover` atoms · `Slider`/`Dropdown`/`Modal`/`FieldRow`/`Rail` molecules · `Table`/`ContentFilters`/`MediaLibrary`/`RecordManager` + the heroes/bands organisms.
 
 ### The utilities re-file (2026-08-09, evening — the "atoms paint" ruling)
 
@@ -73,7 +73,7 @@ The second half of the same day's re-rule ([[00-taxonomy|taxonomy]] § An atom P
 |---|---|---|
 | atoms | `AssetGrid` · `Popover` · `OverlayGlassPanel` · `TiltCard` | Paint nothing of their own: a grid wrapper, a positioning mechanism, a surface treatment, a transform wrapper |
 | atoms | `AssetPlaceholder` · `TransparentX` · `ExitPreview` · `ProsePreview` | Paint, but never stand alone: Image/Graphic's fallback state, a mark drawn onto a slot, fixed-position chrome (its CSS ships from kol-framework), a type specimen |
-| molecules | `ButtonGroup` · `FullscreenOverlay` · `LoaderOverlay` · `ErrorBoundary` | Pure layout (its own docblock's word) · the scrim+sheet mechanism five components wear · a slot pass-through · a guard that paints only on crash |
+| molecules | `ButtonGroup` · `FullscreenOverlay` · `LoaderOverlay` · `ErrorBoundary` | Pure layout (its own docblock's word) · the scrim+overlay mechanism five components wear · a slot pass-through · a guard that paints only on crash |
 | organisms | `EditorShell` | A slot frame — AssetGrid at region scale |
 
 Struck by the user: `MenuPopover` (renders a MenuItem — visual; dies on its own deprecation track) · the `Section`/`LabeledControl` merge flag (group header vs field label — different roles). `FullscreenOverlay` is the one row held on the placement test alone — it does paint, but is only ever worn.

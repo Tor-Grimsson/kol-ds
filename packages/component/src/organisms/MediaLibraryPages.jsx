@@ -20,7 +20,7 @@ import RowMenuButton from '../molecules/RowMenuButton.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import SortControls from '../molecules/SortControls.jsx'
 import SearchInput from '../molecules/SearchInput.jsx'
-import MobileTabBar, { TABBAR_H } from '../molecules/MobileTabBar.jsx'
+import TabsRow, { TABBAR_H } from '../molecules/TabsRow.jsx'
 import { filterMedia, rankMedia } from '../utilities/mediaSearch.js'
 import { useMasthead, mastheadTitleClass } from '../utilities/masthead.js'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
@@ -40,7 +40,7 @@ import ContentFilters from './ContentFilters.jsx'
 import DocumentEditor from './DocumentEditor.jsx'
 import { listDrafts, moveDrafts, DRAFTS_EVENT } from '../utilities/localDrafts.js'
 import { parseFrontmatter } from '@kolkrabbi/kol-markdown'
-import ShellSearchOverlay from './ShellSearchOverlay.jsx'
+import CommandOverlay from './CommandOverlay.jsx'
 import ColumnBrowser, { isFileDrag, Preview as ColumnPreview, SelectionPreview } from './ColumnBrowser.jsx'
 import SettingsPanel, { SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter } from './SettingsPanel.jsx'
 import SettingsSections from './SettingsSections.jsx'
@@ -2528,7 +2528,7 @@ export function MediaLibraryBrowse({
         </div>
 
         {searchOpen && (
-          <ShellSearchOverlay
+          <CommandOverlay
             open
             onClose={() => { setSearchOpen(false); setSearchQuery('') }}
             query={searchQuery}
@@ -2775,7 +2775,7 @@ export function MediaLibraryBrowse({
         {tabs?.length > 0 && (
           <>
             <div className="md:hidden" aria-hidden="true" style={{ height: TABBAR_H }} />
-            <MobileTabBar tabs={tabs} value={activeTab} onChange={onTabChange} />
+            <TabsRow look="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
           </>
         )}
       </div>
@@ -3205,7 +3205,7 @@ export function MediaLibraryLibrary({
       {tabs?.length > 0 && (
         <>
           <div className="md:hidden" aria-hidden="true" style={{ height: TABBAR_H }} />
-          <MobileTabBar tabs={tabs} value={activeTab} onChange={onTabChange} />
+          <TabsRow look="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
         </>
       )}
     </div>

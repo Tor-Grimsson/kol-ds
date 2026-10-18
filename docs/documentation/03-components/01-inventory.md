@@ -48,7 +48,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Avatar` | A circular initial/identity chip in four sizes. |
 | `Badge` | A status pill — success, warning, critical, info, outline. |
 | `Button` | Trigger an action or event — primary, secondary, outline, ghost, or icon-only. |
-| `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `ShellDrawer` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
+| `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `Rail` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
 | `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
@@ -75,6 +75,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
 | `ToggleBracket` | A `Label [STATE]` text toggle. |
+| `IconPlate` | A glyph's specimen plate — ground, keyline guide and glyph in one square the size of the glyph; `KeylineGuide` is the guide alone. |
 | `IconToggle` | An icon-only toggle — the state is the ink, the name is the tooltip; `tone="danger"`, `iconOn` swaps the glyph. The interactive twin of `IconFrame`. |
 | `ToggleCheckbox` | A labeled checkbox for a binary opt-in; `variant="media"` carries a solid plate for use inside a media frame. |
 | `SortHeader` | One sortable field — label + direction arrow, in the strip voice. |
@@ -110,7 +111,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
 | `LabeledControl` | A label-and-hint wrapper around any control. |
-| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's IntroLoader). |
+| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's LoaderIntro). |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
@@ -120,13 +121,13 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |
 | `InspectorSection` (alias `Section`) | A small-caps label above a stack of controls, for inspectors. |
 | `ShapeDropdown` | A split icon-button + variant-menu — act on the current variant or pick another. |
-| `ShellDrawer` | An edge-anchored slide-in drawer with focus trap, scroll-lock, and Esc/backdrop close. |
+| `Rail` (was `ShellDrawer`) | A surface docked to an edge — left · right · top · bottom; `mode="over"` slides over the page (scrim, focus trap, Esc), `mode="push"` sits in the layout; `resizable` from the edge facing the page. |
 | `Slider` | Select a numeric value from a range with a draggable track. |
 | `SpecList` | A compact label/value definition list with Divider-separated rows. |
 | `SplitToolButton` | A single-trigger split tool button — one click arms the last-picked variant and opens the variant menu. |
 | `Stepper` | Increment or decrement a number with +/− controls (editable field). |
 | `SwatchControls` | A paint-chip stack + eyedropper — swatch slots on ColorSwatch with an EyeDropper-API pick affordance. |
-| `TabsRow` | A labeled underline tab strip — active tab gets a 2px underline. |
+| `TabsRow` | THE tab component — `look` underline (default) · chip (was `TabChips`) · text (was kol-shell's `TabStrip`) · stacked icon-over-label (was `MobileTabBar`); `placement="phone"` floats the stacked bar at the bottom below `md`. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
 | `InspectorRail` | The selection-routing shell of an inspector panel — nothing / canvas / one / many, with canvas winning over multi-select. The panels are the consumer's, passed as renderers. |
 | `QuickLookFrame` | Quick Look's window — one opaque raised surface for every kind that HUGS its body: header (close · pager · name · meta · actions), body, optional footer, a corner grip to resize. The body sets the width at its own ratio. |
@@ -169,19 +170,21 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
 | `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
-| `MediaLibrary` | A browser over an object bucket — **ONE component, its variants**: `browse` (folder / files: the bucket dropdown, the crumb line, `ColumnBrowser`, the count) and `library` (the content-filters wall: kinds · search · SELECT / FLAT · grid | list | off · sort · the cards · paging · the inspector · the settings drawer) are kol-r2b2's app cut in two (MediaLibraryPages, 2026-08-27 — "bucket is a control, not a page"); `modal` is the picker; `page` a deprecated alias of `library`. The client is injected; the pages render read-only unless it carries the write seams. |
+| `MediaLibrary` | A browser over an object bucket — **ONE component, its variants**: `browse` (folder / files: the bucket dropdown, the crumb line, `ColumnBrowser`, the count) and `library` (the content-filters wall: kinds · search · SELECT / FLAT · grid | list | off · sort · the cards · paging · the inspector · the settings rail) are kol-r2b2's app cut in two (MediaLibraryPages, 2026-08-27 — "bucket is a control, not a page"); `modal` is the picker; `page` a deprecated alias of `library`. The client is injected; the pages render read-only unless it carries the write seams. |
 | `MediaPicker` | A thin **alias** of `MediaLibrary` at `variant="modal"`, kept so existing call sites keep working (its `MediaBrowser` twin is gone). They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
 | `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, then a **prefix-scoped** view: the folders directly under the prefix, the files at that level (or the whole subtree in `flat`), the kind allow-list, the search, the sort with direction, and paging keyed to what is listed. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |
 | `MediaLibraryExplorer` | A thin name for the media surface: ONE page, three views (columns · rows · grid), one listing, header and count line. It only carries the view state for a consumer that wants to own it; `MediaLibraryBrowse` IS the surface. |
 | `MediaViewer` | The fullscreen paged media viewer — arrow keys, swipe, wrap-around, on FullscreenOverlay + embla. |
-| `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `ShellDrawer` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
+| `SettingsPanel` | A settings surface for the thing you are looking at — change how a list looks *while* looking at it (from kol-r2b2's per-bucket display settings, 2026-08-26). **Two presentations, one anatomy**: `variant="drawer"` rides `Rail` (right-anchored; scrim, Escape, focus trap, scroll lock), `variant="overlay"` rides `FullscreenOverlay` (centred). Header · intro · `Section divided` stack · footer. Parts: `SettingsRow` (grid — the hint wraps in its own column), `SettingsSwitch` (`ToggleSwitch`), `SettingsChoice` (`SegmentedToggle`), `SettingsChipRow` (toggle chips with counts), `SettingsFooter`. No `text-transform` — casing at the call site. |
 | `NewsletterBand` | **Deprecated 2026-08-27** — `SectionNewsletter` under its old name (`title` → `headline`, `description` → `body`). |
 | `ParallaxShelf` | A scroll-parallax horizontal shelf of WorkCards. |
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
-| `ShellSearchOverlay` | The ⌘K search modal — dim, bare search field, keyboard-roved result rows. |
+| `CommandOverlay` (was `ShellSearchOverlay`) | The ⌘K overlay — search · go · add · shortcuts (`mode`); ↑↓ rows, → / Enter opens a category, ← back; disabled rows; the keymap at a glance in `shortcuts`. |
 | `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, AlphaStrip, and the composed square picker. |
+| `HubDev` (kol-shell) | A hub's development page — mono masthead, the tabs on their own row with one line each, full-width content; `AppHub` / `AppStudio` `dev` renders it on a dev server at `/dev` behind the `code` row. |
+| `CompareGrid` | Two versions of many things side by side — A beside B on `IconPlate`s, each side named, the toolbar size · ground · guide · state filter, a state chip per item. |
 | `ColorPickerPopover` | A swatch that opens a colour picker — saturation square, hue and opacity strips, hex; ⌥-click resets to `defaultValue`. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |
@@ -223,7 +226,7 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 
 | Component | Tier | Job |
 |---|---|---|
-| `PageLayout` (alias `AppShell`) | chrome | The brand-book page layout — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile drawer + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
+| `PageLayout` (alias `AppShell`) | chrome | The brand-book page layout — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile rail + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
 | `SideNav` | chrome | The grouped, scroll-spied navigation rail. |
 | `PortalFooter` | chrome | The portal footer. |
 | `ShellHeader` | chrome | The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions. |

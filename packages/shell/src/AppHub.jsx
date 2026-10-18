@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import AppShell from './AppShell.jsx'
 import HubHome from './HubHome.jsx'
 import HubSettings from './HubSettings.jsx'
-import { ShortcutsOverlay } from '@kolkrabbi/kol-component'
+import HubDev from './HubDev.jsx'
+import { CommandOverlay } from '@kolkrabbi/kol-component'
 
-/* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / ShortcutsOverlay (relative) */
+/* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubDev (relative) + kol-component's CommandOverlay */
 
 /**
  * AppHub — An app's shell and hub in one. Shell + Hub in one call; the app passes its Tool as children (the app anatomy,
@@ -37,6 +38,9 @@ import { ShortcutsOverlay } from '@kolkrabbi/kol-component'
  *                              OPT-IN like AppShell's `bottomItems` (apps review 2026-09-29: *"not sure it makes sense
  *                              to neccessarily have settings manditory part of the rail"*) — no `settings`, no rail
  *                              row, no route, no `,` key. It was pinned whether the app had settings or not.
+ * @param {Object}   dev        HubDev's props (`tabs`, `title`, `subtitle`) + `path` (default `/dev`). OPT-IN, and only on
+ *                              a dev server (`import.meta.env.DEV`; `always: true` overrides) — a `code` row above
+ *                              Settings (CompareGridDevTab, kol-monitor 2026-10-17)
  * @param {Array}    shortcuts  `[{ section, items: [{ id, label, combo }] }]` — the sheet AND Settings
  * @param {ReactNode} themeToggle  Settings' masthead toggle (a node — kol-framework is not a peer)
  * @param {string}   shortcutsKey  default `s`; `null` turns the sheet key off (a tool that owns S)
@@ -55,6 +59,7 @@ export default function AppHub({
   home,
   walkthrough,
   settings,
+  dev,
   shortcuts = [],
   themeToggle,
   settingsPath = '/settings',
@@ -65,6 +70,7 @@ export default function AppHub({
   children,
 }) {
   const [sheet, setSheet] = useState(false)
+  const [sheetQuery, setSheetQuery] = useState('')
 
   useEffect(() => {
     if (!shortcutsKey) return undefined
@@ -79,12 +85,18 @@ export default function AppHub({
     return () => window.removeEventListener('keydown', onKey)
   }, [shortcutsKey])
 
+  /* the dev page is a dev server's only — a production build never routes it or draws its row */
+  const devOn = !!dev && (dev.always || !!import.meta.env?.DEV)
+  const devPath = dev?.path ?? '/dev'
+  const { path: _dp, always: _da, ...devProps } = dev ?? {}
   const page = home && currentPath === homePath
     ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...home} />
     : settings && currentPath === settingsPath
       ? <HubSettings app={app} shortcuts={shortcuts} themeToggle={themeToggle} {...settings} />
-      : children
-  const bottom = settings ? SETTINGS_ROW(settingsPath) : []
+      : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
+        ? <HubDev storageKey={`kol-dev-tab:${app.name ?? 'app'}`} {...devProps} />
+        : children
+  const bottom = [...(devOn ? [{ icon: 'code', path: devPath, label: 'Dev' }] : []), ...(settings ? SETTINGS_ROW(settingsPath) : [])]
   /* the phone bar lists Home as a tab — the rail draws it as the mark, the bar has no mark */
   const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...items, ...bottom]
 
@@ -111,7 +123,9 @@ export default function AppHub({
       {...shell}
     >
       {page}
-      {sheet && <ShortcutsOverlay shortcuts={shortcuts} onClose={() => setSheet(false)} />}
+      {/* THE SHEET IS THE OVERLAY'S SHORTCUTS MODE (5.3, 2026-10-17): the whole keymap at a glance, this page's
+        * first, the rest under Elsewhere; typing filters, Enter runs a row */}
+      <CommandOverlay open={sheet} mode="shortcuts" shortcuts={shortcuts} currentPath={currentPath} query={sheetQuery} onQueryChange={setSheetQuery} onClose={() => { setSheet(false); setSheetQuery('') }} />
     </AppShell>
   )
 }

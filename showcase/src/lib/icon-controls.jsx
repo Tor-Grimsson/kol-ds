@@ -7,28 +7,11 @@
  * 2026-07-28 after the legacy-gallery cleanup deleted it while the v1 page
  * still consumed it.
  */
+import { KeylineGuide } from '@kolkrabbi/kol-component'
 
-export const KeylineBg = ({ bgLight }) => {
-  const diag = '#0A8DA4'
-  const key  = bgLight ? '#CA3ABC' : '#F2D24B'
-  return (
-    <svg
-      width="100%" height="100%" viewBox="0 0 24 24"
-      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-    >
-      <g stroke={diag} strokeWidth="0.1" strokeDasharray="0.4 0.6" opacity="1" fill="none">
-        <path d="M0 0 L24 24" />
-        <path d="M24 0 L0 24" />
-      </g>
-      <g stroke={key} strokeWidth="0.1" strokeDasharray="0.4 0.6" opacity="1" fill="none">
-        <rect x="4" y="2" width="16" height="20" rx="1" />
-        <rect x="3" y="3" width="18" height="18" rx="1" />
-        <rect x="2" y="4" width="20" height="16" rx="1" />
-        <circle cx="12" cy="12" r="4" />
-      </g>
-    </svg>
-  )
-}
+/* the guide is the DS's now (kol-component `KeylineGuide`, 2026-10-17) — this name stays for the
+ * pages that import it */
+export const KeylineBg = ({ bgLight }) => <KeylineGuide light={bgLight} />
 
 const SegBtn = ({ active, onClick, children }) => (
   <button

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { KeylineBg, SegGroup } from '../lib/icon-controls.jsx'
+import { IconPlate } from '@kolkrabbi/kol-component'
+import { SegGroup } from '../lib/icon-controls.jsx'
 
 /* Round 10 — the icons review, 2026-10-09 (plan-2026-10-09-icons-and-styles-review W2 + W3). Drawn
  * on his directions and shipped (kol-icons 0.35.0), decided for review. `before` is the shipped
@@ -52,13 +53,9 @@ const SIZES = [24, 48, 96, 128].map((v) => ({ value: v, label: String(v) }))
 const ONOFF = [{ value: true, label: 'ON' }, { value: false, label: 'OFF' }]
 const GROUND = [{ value: true, label: 'LIGHT' }, { value: false, label: 'DARK' }]
 
+/* on the DS plate since 2026-10-17 (IconPlate — the box IS the size) */
 function Plate({ size, light, guide, children }) {
-  return (
-    <span className="relative inline-flex shrink-0 items-center justify-center" style={{ width: size, height: size, background: light ? '#FFFFFF' : '#0E0E11', color: light ? '#0E0E11' : '#FFFFFF' }}>
-      {guide && <KeylineBg bgLight={light} />}
-      {children}
-    </span>
-  )
+  return <IconPlate size={size} ground={light ? 'light' : 'dark'} guide={guide}>{children}</IconPlate>
 }
 
 const sized = (markup, size) => markup.replace(/<svg[^>]*>/, (m) => m.replace(/\s(width|height)="[^"]*"/g, '').replace('<svg ', `<svg width="${size}" height="${size}" `))

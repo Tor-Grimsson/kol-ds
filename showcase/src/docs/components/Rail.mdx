@@ -1,7 +1,7 @@
 export const meta = {
   id: "2.47.0",
-  slug: "shell-drawer",
-  title: "ShellDrawer",
+  slug: "rail",
+  title: "Rail",
   type: "reference",
   status: "active",
   updated: "2026-07-03",
@@ -12,7 +12,7 @@ export const meta = {
     "domain/slides",
     "pattern/wayfinding",
   ],
-  description: "A panel that slides in from an edge.",
+  description: "A surface docked to an edge — over the page or pushing it.",
   aliases: [
     "shelldrawer",
   ],
@@ -21,18 +21,18 @@ export const meta = {
   ],
 }
 
-<Preview name="ShellDrawer" />
+<Preview name="Rail" />
 
 ## Installation
 
-<Install name="ShellDrawer" />
+<Install name="Rail" />
 
 ## Usage
 
 ```jsx
-import { ShellDrawer } from '@kolkrabbi/kol-component'
+import { Rail } from '@kolkrabbi/kol-component'
 
-<ShellDrawer open={open} onClose={() => setOpen(false)} side="left" width={320}>{nav}</ShellDrawer>
+<Rail open={open} onClose={() => setOpen(false)} side="left" width={320}>{nav}</Rail>
 ```
 
 ## Behavior
@@ -45,9 +45,21 @@ while open; focus moves in, is trapped, and returns to the opener on close.
 The slide transition is gated on `prefers-reduced-motion` — reduced users get
 an instant mount with no transform animation.
 
+## Rail and overlay
+
+Anything docked to an edge — left, right, top or bottom — that collapses and expands is a **rail**; anything
+floating over the page that closes is an **overlay**. `mode="over"` (the default) slides the rail over the page on a
+scrim, with focus trap, Escape and scroll lock. `mode="push"` sits it in the layout: `open` expands it, closed it
+collapses to nothing. `resizable` adds a grab line on the edge that faces the page — a bottom rail's top edge.
+`ShellDrawer` is the old name, an alias.
+
 ## Props
 
-<Api name="ShellDrawer" rows={[
+<Api name="Rail" rows={[
+  {"prop":"mode","type":"over | push","def":"over","desc":"Over the page on a scrim, or in the layout pushing it."},
+  {"prop":"resizable","type":"boolean","def":"false","desc":"A grab line on the edge facing the page drags the size."},
+  {"prop":"minSize · maxSize","type":"number","def":"120 · 960","desc":"The drag's bounds, px."},
+  {"prop":"onResize","type":"(px) => void","def":"—","desc":"Every drag step."},
   {"prop":"open","type":"boolean","def":"—","desc":"Drawer visible; drives the slide in/out."},
   {"prop":"onClose","type":"function","def":"—","desc":"Esc, backdrop, and close button all call it."},
   {"prop":"side","type":"left | right","def":"left","desc":"Edge the panel slides from."},

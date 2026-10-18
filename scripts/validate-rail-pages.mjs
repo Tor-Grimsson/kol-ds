@@ -21,6 +21,10 @@
  *       something is always on this page"*) — an empty outline fails
  *   P5  clicking a group's TITLE opens its page and expands nothing (user, many times, 2026-10-02:
  *       *"just clicking a title opens the home"*) — only the chevron folds and unfolds
+ *   P6  no page sits loose under a category: every row directly under an eyebrow is a GROUP (2026-10-17 —
+ *       user, on Development › Tools › References: *"illegal page here without a category? how is this
+ *       slipping?"*). It slipped because P1–P5 check the groups that exist and never ask whether a page
+ *       is in one
  *
  * Components are checked in both Group-by modes. Starts the showcase on its own port, kills it.
  */
@@ -55,6 +59,16 @@ function readRail() {
   for (const eb of rail.querySelectorAll('.shell-sidebar-toggle, .shell-sidebar-label')) {
     const a = eb.matches('a') ? eb : eb.querySelector('a')
     out.push({ kind: 'category', label: text(eb), href: hrefOf(a), children: [] })
+  }
+  /* P6 — a bare link straight under a category's list is a page with no group */
+  for (const eb of rail.querySelectorAll('.shell-sidebar-toggle, .shell-sidebar-label')) {
+    const list = eb.nextElementSibling
+    if (!list) continue
+    for (const row of list.children) {
+      if (row.matches('.shell-nav-group')) continue
+      const a = row.matches('a') ? row : row.querySelector('a')
+      if (a) out.push({ kind: 'loose', label: text(a), href: hrefOf(a), under: text(eb), children: [] })
+    }
   }
   for (const head of rail.querySelectorAll('.shell-nav-group-header[role="button"]')) {
     const body = head.nextElementSibling
@@ -95,6 +109,7 @@ try {
          * first child tells them apart */
         const key = `${space} · ${node.kind} ${node.label}${node.children[0]?.href ? ` (over ${node.children[0].href})` : ''}`
         if (found.has(key)) continue
+        if (node.kind === 'loose') { found.set(key, { ...node, href: null }); failures.push(`P6  ${space} · ${node.under} › ${node.label}: a page with no group — ${node.href}`); continue }
         found.set(key, node)
         groups++
         if (!node.href) { failures.push(`P1  ${key}: no page — the label links nowhere`); continue }
@@ -167,4 +182,4 @@ if (failures.length) {
   console.log(`rail-pages: ${failures.length} violation(s)\n\n  ${failures.join('\n  ')}`)
   process.exit(1)
 }
-console.log(`rail-pages: clean (${groups} categories and groups, ${pages} pages, every one its own; ${titleClicks} title clicks expanded nothing)`)
+console.log(`rail-pages: clean (${groups} categories and groups, ${pages} pages, every one its own; ${titleClicks} title clicks expanded nothing; no loose page)`)

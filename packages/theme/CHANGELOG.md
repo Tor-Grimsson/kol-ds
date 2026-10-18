@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.175.0 — 2026-10-18
+
+- **New: `.kol-header-lede` · `.kol-header-lede-section`** — the header's description (Round 11, approved): Right Grotesk Light, 22/28 +0.01em on a page, 16/24 +0.5px on a section, the mono body's 72% ink. Sizes after Material 3's title large and body large.
+
 ## 0.174.0 — 2026-10-15
 
 - **New: `.kol-icon-toggle`** — kol-component's `IconToggle` (kol-mirror). No ground, no border; ink on the oq ladder by `aria-pressed`, `-danger` on `--ui-error`, the KOL focus ring, squares on `--kol-ctl-{xs,sm,md}`.

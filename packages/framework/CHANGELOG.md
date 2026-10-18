@@ -1,5 +1,16 @@
 # @kolkrabbi/kol-framework
 
+## 0.51.0 — 2026-10-18
+
+- **`devFavicon` is one letter** (user: *"dev favicon should only use letter like M for monitor"*) — a longer `label` is cut to its first letter; default `K`.
+
+## 0.50.0 — 2026-10-17
+
+- **New: `@kolkrabbi/kol-framework/vite`** — Vite plugins, Node-side, for an app's `vite.config`:
+  - **`devFavicon({ label, ground, ink })`** — the dev tab is tellable at a glance (user: *"I need to be able to tell which tabs are localhost dev and which are production"*). On the dev server the favicon becomes a solid tile with the app's 1–3 letters; a build never sees it. It REPLACES the icon link (fxr appended a second, which Firefox ignores; mirror swapped it at runtime). Each app's label and ground: 16-app-anatomy.md § Dev favicon.
+  - **`loaderApp({ graphic, size })`** (AppLoader, kol-monitor — user: *"shouldnt that loader just be owned in DS … with custom graphic input as prop?"*). Writes the app loader into `index.html` — the mark centred on the theme's ground, pulsing while the bundle downloads — static HTML, as it has to be. `graphic` is SVG markup or a path to an .svg.
+- **New: `hideLoaderApp()`** — call after the first commit: two frames later the loader fades (240 ms, none under reduced motion) and leaves the DOM.
+
 ## 0.49.0 — 2026-10-02
 
 - **BREAKING (a default flips): the chrome inset is 20 on a phone.** `--kol-pad-chrome-x` was `24` at every width; below 768 it is the page ladder's `20` now, so the shell's header, its frame and a page stand on one edge (user ruling 2026-10-02 — a phone page sat 4px off the ladder). `24` from 768, as before. A consumer measuring against 24 at phone width moves by 4px.

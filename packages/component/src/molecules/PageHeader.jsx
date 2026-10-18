@@ -48,7 +48,12 @@ import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
  *                            default, so no shell page moves.
  *                      site  sans lede (`kol-sans-body-01`) — what kolkrabbi.io's `/prints`
  *                            and `/work` build by hand today.
- * @param {string}    size      sm | md | lg (default md)
+ * @param {string}    size      sm | md | lg | xl (default md; xl = display-01, the approved page header)
+ * @param {'page'|'section'} level  ONE HEADER, TWO LEVELS (Round 11, approved 2026-10-18): `section` is the same
+ *                    header one step down — an h2, and in the site register the section description
+ *                    (16/24 Light +0.5px) under the page's (22/28 Light +0.01em). Default `page`.
+ * @param {ReactNode} media     a mark above the eyebrow (a logo, an SVG) — shown only when passed
+ * @param {ReactNode} description  the subtitle's other name — the header's description
  * @param {'sans'|'mono'} voice  the title's family (default sans). `mono` = the
  *                    app tier's masthead (PageHeaderMonoTitle, kol-fxr 2026-08-27 —
  *                    user ruling: kol-monitor's JetBrains Mono 32 / 500 is the look):
@@ -75,24 +80,26 @@ import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
  * utilities/masthead.js since 2026-09-29 so a tool's own title reads the same table. */
 const TITLE = TITLE_ROLES
 /* the ONE thing the registers disagree about */
-const LEDE = { app: 'kol-mono-14', site: 'kol-sans-body-01' }
+const LEDE = { app: 'text-oq-64 kol-mono-14', site: 'kol-header-lede', 'site-section': 'kol-header-lede-section' }
 
-export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle, actions, subtitleMaxWidth, size: ownSize = 'md', voice: ownVoice = 'sans', register = 'app', titleClass, masthead, className = '' }) {
+export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle0, description, actions, subtitleMaxWidth, size: ownSize = 'md', voice: ownVoice = 'sans', register = 'app', level = 'page', media, titleClass, masthead, className = '' }) {
+  const ownSubtitle = ownSubtitle0 ?? description
+  const section = level === 'section'
   const m = useMasthead(masthead)
   const voice = m ? m.voice : ownVoice
   const size = m ? m.size : ownSize
   const subtitle = m && !m.subtitle ? undefined : ownSubtitle
   const roles = TITLE[voice] ?? TITLE.sans
-  return (
+  const header = (
     /* the block owns its own rhythm — margins inline, never in a shared type
        class, which leaks estate-wide (ShellHeaderFilterRefinements, 2026-08-15) */
     <SectionText
       eyebrow={eyebrow}
       headline={title}
-      headlineAs="h1"
+      headlineAs={section ? 'h2' : 'h1'}
       headlineClass={`text-fg-96 ${titleClass ?? roles[size] ?? roles.md}${m?.upper ? ' uppercase' : ''}`}
       body={subtitle}
-      bodyClass={`text-oq-64 ${LEDE[register] ?? LEDE.app} min-w-0`}
+      bodyClass={`${(register === 'site' && section ? LEDE['site-section'] : LEDE[register]) ?? LEDE.app} min-w-0`}
       actions={actions}
       actionsPlacement="inline"
       actionsClass="flex items-center gap-4"
@@ -105,7 +112,14 @@ export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle, acti
       gap="gap-3"
       slotStyle={{ body: { maxWidth: subtitleMaxWidth } }}
       className={className}
-      style={{ marginBottom: 'var(--kol-page-header-mb, 40px)' }}
+      style={media ? undefined : { marginBottom: 'var(--kol-page-header-mb, 40px)' }}
     />
+  )
+  if (!media) return header
+  return (
+    <div className="flex flex-col gap-4" style={{ marginBottom: 'var(--kol-page-header-mb, 40px)' }}>
+      <span className="inline-flex text-emphasis">{media}</span>
+      {header}
+    </div>
   )
 }

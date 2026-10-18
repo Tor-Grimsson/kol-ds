@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 
 // An apps/* member: runs locally on `pnpm search-app` (`pnpm search` is pnpm's own registry search) (kol-search over workshop-fixture, 2026-09-28), and publishes into the
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/search.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [react(), tailwindcss()],
+  plugins: [devFavicon({ label: 'S' }), react(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
   // on its own port, so `pnpm search-app` stays an ordinary localhost root.

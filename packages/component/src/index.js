@@ -35,6 +35,7 @@ export { default as DocsToc } from './molecules/DocsToc.jsx'
 export { default as DropdownTagFilter } from './molecules/DropdownTagFilter.jsx'
 export { default as EmptyState } from './molecules/EmptyState.jsx'
 export { default as IconFrame } from './atoms/IconFrame.jsx'
+export { default as IconPlate, KeylineGuide } from './atoms/IconPlate.jsx'
 export { default as IconToggle } from './atoms/IconToggle.jsx'
 export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
@@ -124,20 +125,25 @@ export { ModalProvider, useModal } from './molecules/Modal.jsx'
 export { default as PaletteHarmonyWheel } from './molecules/PaletteHarmonyWheel.jsx'
 export { default as PropertyInput } from './molecules/PropertyInput.jsx'
 export { default as ShapeDropdown } from './molecules/ShapeDropdown.jsx'
+export { default as Rail } from './molecules/Rail.jsx'
+/** @deprecated 2026-10-17 — alias of Rail */
 export { default as ShellDrawer } from './molecules/ShellDrawer.jsx'
+export { default as CommandOverlay } from './organisms/CommandOverlay.jsx'
+/** @deprecated 2026-10-17 — alias of CommandOverlay */
 export { default as ShellSearchOverlay } from './organisms/ShellSearchOverlay.jsx'
 /* the keymap sheet — moved in from kol-shell 2026-09-28 so the workshop shell and the apps open ONE sheet on S */
-export { default as ShortcutsOverlay } from './organisms/ShortcutsOverlay.jsx'
+export { default as ShortcutsOverlay, shortcutInScope } from './organisms/ShortcutsOverlay.jsx'
 export { default as Slider } from './molecules/Slider.jsx'
 export { default as SpecList } from './molecules/SpecList.jsx'
 export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle, AlphaStrip } from './organisms/SpectrumControls.jsx'
 export { default as ColorPickerPopover } from './organisms/ColorPickerPopover.jsx'
+export { default as CompareGrid } from './organisms/CompareGrid.jsx'
 export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
-export { default as TabsRow } from './molecules/TabsRow.jsx'
-/* TabChips — tabs as chips, for inside a toolbar (2026-10-01; was the showcase's local DocTabs) */
+export { default as TabsRow, TABBAR_H } from './molecules/TabsRow.jsx'
+/** @deprecated 2026-10-17 — alias of `TabsRow look="chip"` */
 export { default as TabChips } from './molecules/TabChips.jsx'
 
 // organisms
@@ -162,7 +168,8 @@ export { default as Carousel } from './molecules/Carousel.jsx'
  * stage reaches for it instead of re-typing the button markup, which is how the
  * three in-package copies (and kol-website's CarouselNavigation) happened. */
 export { default as EmblaNav } from './molecules/EmblaNav.jsx'
-export { default as MobileTabBar, TABBAR_H } from './molecules/MobileTabBar.jsx'
+/** @deprecated 2026-10-17 — alias of `TabsRow look="stacked" placement="phone"` */
+export { default as MobileTabBar } from './molecules/MobileTabBar.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as PageHeader } from './molecules/PageHeader.jsx'
 export { MastheadContext, MASTHEADS, useMasthead, mastheadTitleClass } from './utilities/masthead.js'

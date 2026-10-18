@@ -46,7 +46,7 @@ import { SettingsPanel, SettingsRow, SettingsSwitch, SettingsChoice, SettingsChi
 
 ## Behavior
 
-One anatomy — header · intro · sections · footer — in two presentations: `drawer` rides [ShellDrawer](/components/shell-drawer) (right-anchored; scrim, Escape, focus trap, scroll lock, focus return, the × control), `overlay` rides FullscreenOverlay (centred; Escape, backdrop dismiss, focus trap). Sections are the DS `Section` with `divided`. The parts: `SettingsRow` (label + hint left, control right — a grid, so a long hint wraps in its own column), `SettingsSwitch` (ToggleSwitch sm; `disabled` + `disabledHint`), `SettingsChoice` (SegmentedToggle sm; options are values or `{ value, label }`), `SettingsChipRow` (toggle chips with counts: `options` as `[{ value, label, count }]`, `selected`, `onToggle`), `SettingsFooter` (`customised` word + `onReset` ghost button). Casing is authored at the call site.
+One anatomy — header · intro · sections · footer — in two presentations: `drawer` rides [Rail](/components/rail) (right-anchored; scrim, Escape, focus trap, scroll lock, focus return, the × control), `overlay` rides FullscreenOverlay (centred; Escape, backdrop dismiss, focus trap). Sections are the DS `Section` with `divided`. The parts: `SettingsRow` (label + hint left, control right — a grid, so a long hint wraps in its own column), `SettingsSwitch` (ToggleSwitch sm; `disabled` + `disabledHint`), `SettingsChoice` (SegmentedToggle sm; options are values or `{ value, label }`), `SettingsChipRow` (toggle chips with counts: `options` as `[{ value, label, count }]`, `selected`, `onToggle`), `SettingsFooter` (`customised` word + `onReset` ghost button). Casing is authored at the call site.
 
 ## Props
 
@@ -59,6 +59,6 @@ One anatomy — header · intro · sections · footer — in two presentations: 
   {"prop":"intro","type":"string","def":"—","desc":"The one-line note under the header."},
   {"prop":"onClose","type":"() => void","def":"—","desc":"× · scrim · Escape."},
   {"prop":"footer","type":"ReactNode","def":"—","desc":"The foot slot — SettingsFooter is the default shape."},
-  {"prop":"children","type":"ReactNode","def":"—","desc":"The sections — the APPROVED drawer (kol-r2b2, 2026-08-27): LabeledControlSection (the kol-eyebrow at fg-80, rowGap 1 for switch rows / 2 for dropdown rows) → SettingsRow (a LabeledControl inline: uppercase helper-10 label at 160, hint on the control title; align end for switches, fill for dropdowns) → SettingsSwitch / SettingsChoice (a full-width Dropdown) / SettingsMulti (one Dropdown of toggling entries — N of M kinds) ; SettingsFooter = Divider + reset IconFrame. The drawer has no edge and no shadow."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The sections — the APPROVED rail (kol-r2b2, 2026-08-27): LabeledControlSection (the kol-eyebrow at fg-80, rowGap 1 for switch rows / 2 for dropdown rows) → SettingsRow (a LabeledControl inline: uppercase helper-10 label at 160, hint on the control title; align end for switches, fill for dropdowns) → SettingsSwitch / SettingsChoice (a full-width Dropdown) / SettingsMulti (one Dropdown of toggling entries — N of M kinds) ; SettingsFooter = Divider + reset IconFrame. The rail has no edge and no shadow."},
   {"prop":"className","type":"string","def":"''","desc":"Extra classes on the panel."}
 ]} />

@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ContentFilters, ContentCollection, ContentCard, ContentRow, ViewToggle, Dropdown, Divider } from '@kolkrabbi/kol-component'
+import { ContentFilters, ContentCollection, ContentRow, ViewToggle, Dropdown, Divider, IconPlate, IconToggle } from '@kolkrabbi/kol-component'
+import { TabStrip } from '@kolkrabbi/kol-shell'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import ChapterHome from '../lib/ChapterHome.jsx'
 import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
-import { KeylineBg } from '../lib/icon-controls.jsx'
 
 /* Icon-set registry — BOTH shipped sets (kol-icons ≥0.25.0): interface is app
  * chrome, signal is the instrument vocabulary. The route's `:set` segment
@@ -45,10 +45,6 @@ const byOrder = (a, b) => {
  * group gets a page) */
 export const iconGroups = (setKey) => Object.keys(ICON_SETS[setKey]?.groups ?? {}).sort(byOrder).map((folder) => ({ folder, label: label(folder), count: ICON_SETS[setKey].groups[folder].length }))
 
-/* The glyph is drawn ONCE at its native 128 and the size control scales it
- * from the centre of the placeholder (user 2026-08-27) — no re-render per
- * size, and the keyline guide scales with it. */
-const NATIVE = 128
 /* FIT is the default (2026-10-09 — user: "why is the guide and icons not using the available space?
  * hard to visualise margins like this"): the 24 grid spans the whole tile, so the keylines read
  * edge to edge; a number still shows the glyph at that px */
@@ -57,47 +53,45 @@ const GROUNDS = [
   { value: 'dark', label: 'Dark ground', icon: 'mode-toggle-01' },
   { value: 'light', label: 'Light ground', icon: 'brightness' },
 ]
-/* the guide is a TEXT strip in the layout strip's own voice (user 2026-08-27:
- * "GUIDE CLEAR in the same style as ICONS on the left") — the bare strip only
- * exists inside ContentFilters, so its classes are mirrored here verbatim */
-const GUIDE = [{ value: true, label: 'GUIDE' }, { value: false, label: 'CLEAR' }]
-
 /* TYPE — Stroke | Solid, the set's own fact (kol-icons ≥0.24.0 `getCut`, IconSetCut
  * 2026-08-27 — user: "TYPE (stroke solid)? then TAGS"). Chip labels are cased here. */
 const CUT_LABEL = { stroke: 'Stroke', solid: 'Solid' }
 const TYPES = ['Stroke', 'Solid']
 const LAYOUTS = [{ value: 'list', label: 'LIST' }, { value: 'grid', label: 'GRID' }]
 
-/* The card's media: the specimen ground (fixed, like the DS gallery's — a
- * light or dark plate the theme never touches) with the glyph centred on it.
- * SQUARE by its own aspect (user: "6 columns square graphic placeholder") —
- * the card runs `ratio="auto"` so this box, not the catalog's A4 frame, sets
- * the height; a card ratio that yields a square only at one column width is
- * not a square. */
-function Glyph({ name, size, bgLight, guide }) {
+/* THE TILE IS THE GALLERY'S OWN (2026-10-17 — user: "only fit uses the container correctly … the zoom
+ * hover is wrong … I think the problem is the card you are using"). `ContentCard catalog` brought a frame,
+ * an image-led hover zoom and a title that wrapped or cut the name. The tile is now the DS plate — the box
+ * IS the size, guide and glyph fill it (`IconPlate`, kol-component) — with the whole name and its group
+ * under it, in the catalog card's own voices. Click copies the name; nothing moves on hover. */
+/* The name steps down with the plate so the column can follow the size and the name still never breaks
+ * mid-word: each floor is the set's longest unbroken run with its hyphen (`highlighter-`) measured at that
+ * type, +2 (mono: 6 · 7.2 · 8.4 px a character). */
+const nameType = (size) => (size !== 'fit' && size <= 20 ? ['kol-mono-10', 74] : size !== 'fit' && size <= 24 ? ['kol-mono-12', 89] : ['kol-mono-14', 103])
+
+function Tile({ item, size, ground, guide, copied, onCopy }) {
   return (
-    <div
-      className="w-full aspect-square flex items-center justify-center"
-      style={{ background: bgLight ? '#FFFFFF' : '#0E0E11', color: bgLight ? '#0E0E11' : '#FFFFFF' }}
-    >
-      <span
-        className="relative block shrink-0"
-        style={size === 'fit' ? { width: '100%', height: '100%' } : { width: NATIVE, height: NATIVE, transform: `scale(${size / NATIVE})` }}
-      >
-        {guide && <KeylineBg bgLight={bgLight} />}
-        <Icon name={name} size={size === 'fit' ? '100%' : NATIVE} />
-      </span>
+    <div>
+      <button type="button" onClick={() => onCopy(item.name)} className="flex w-full flex-col items-start gap-3 text-left cursor-pointer focus-visible:outline-1 focus-visible:outline-offset-2">
+        <IconPlate size={size === 'fit' ? 'fill' : size} ground={ground} guide={guide}>
+          <Icon name={item.name} size={size === 'fit' ? '100%' : size} />
+        </IconPlate>
+        <span className="flex flex-col gap-1">
+          <span className={`${nameType(size)[0]} text-emphasis`}>{copied === item.name ? 'copied!' : item.name}</span>
+          <span className="kol-mono-10 text-meta">{item.group}</span>
+        </span>
+      </button>
     </div>
   )
 }
 
-/* The LIST row's thumb (2026-10-09 — user: "this list card is terrible for this … no preview?"):
- * the glyph at 20 on the same ground as the tiles, filling the catalog row's square. */
-function RowGlyph({ name, bgLight }) {
+/* The LIST row's thumb follows the size control too (2026-10-17 — user: "list completely ignores
+ * dropdown size scaling"); Fit keeps the row's own square. */
+function RowGlyph({ name, size, ground, guide }) {
   return (
-    <div className="w-full h-full flex items-center justify-center" style={{ background: bgLight ? '#FFFFFF' : '#0E0E11', color: bgLight ? '#0E0E11' : '#FFFFFF' }}>
-      <Icon name={name} size={20} />
-    </div>
+    <IconPlate size={size === 'fit' ? 'fill' : size} ground={ground} guide={guide}>
+      <Icon name={name} size={size === 'fit' ? 20 : size} />
+    </IconPlate>
   )
 }
 
@@ -139,6 +133,7 @@ export default function IconsGallery() {
    * theme from 2026-08-27) */
   const [ground, setGround] = useState('light')
   const [guide, setGuide] = useState(false)
+  const [layout, setLayout] = useState('grid')
   const [size, setSize] = useState('fit')
   const [copied, setCopied] = useState(null)
 
@@ -176,8 +171,6 @@ export default function IconsGallery() {
     )
   }
 
-  const bgLight = ground === 'light'
-
   return (
     <section id={`icons-${set ?? DEFAULT_SET}`} className="flex flex-col gap-10 pb-24">
       {/* ONE HEADER (W8, 2026-09-30 — user: "icons could and should also fix the layout, its clashing
@@ -203,59 +196,43 @@ export default function IconsGallery() {
         ]}
         mutuallyExclusiveFilters={['type', 'group']}
         showCountOnlyWhenFiltering
-        layoutOptions={LAYOUTS}
-        layoutClassName="kol-helper-12"
-        defaultLayout="grid"
+        layout={layout}
+        onLayoutChange={setLayout}
+        /* ONE CONTROL ROW (2026-10-17 — user: "guide clear could just be a iconframe toggle … then we can
+         * move list / grid there instead … in the bigger size"): size · ground · guide │ LIST GRID, and no
+         * strip under the divider */
         trailingActions={
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-6">
-              <Dropdown tone="primary" options={SIZES} value={size} onChange={setSize} className="w-24" />
-              <ViewToggle tone="primary" variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGround} />
-              <Divider variant="vertical" />
-              {GUIDE.map((o) => (
-                <span
-                  key={o.label}
-                  onClick={() => setGuide(o.value)}
-                  aria-pressed={guide === o.value}
-                  className={`kol-helper-14 cursor-pointer select-none ${guide === o.value ? 'text-oq-96' : 'text-oq-48 hover:text-oq-64'}`}
-                  style={{ letterSpacing: 1 }}
-                >
-                  {o.label}
-                </span>
-              ))}
-            </div>
+          <div className="flex items-center gap-6">
+            <Dropdown tone="primary" options={SIZES} value={size} onChange={setSize} className="w-24" />
+            <ViewToggle tone="primary" variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGround} />
+            <IconToggle icon="grid" label="Guide" title="Keyline guide" pressed={guide} onChange={setGuide} size="md" />
+            <Divider variant="vertical" />
+            <TabStrip options={LAYOUTS} value={layout} onChange={setLayout} tracked />
           </div>
         }
-        renderItem={(rows, _view, layout) => {
+        renderItem={(rows) => {
           const list = layout === 'list'
-          return (
-            /* a tile floor of 160 — the catalog's own `minColumn`; the 320 default gave ONE column at
-             * 1280 (W8, 2026-09-30). A NUMBER SIZES THE TILE TOO (user 2026-10-17: "icon containers
-             * should also get smaller … go from 5 columns to what is relative to the size"): the
-             * tile floor is the glyph twice over plus a 48 margin, and the wall fills as many columns
-             * as fit — 16 ≈ 7 across, 128 two */
-            <ContentCollection form={list ? 'list' : 'grid'} {...(size === 'fit' ? { cols: 6, minCol: '160px' } : { min: `${48 + size * 2}px` })}>
-              {rows.map((item) => list ? (
+          /* A NUMBER SIZES THE COLUMN (user 2026-10-17: "go from 5 columns to what is relative to the
+           * size"): the column is twice the plate, never under the name's floor; Fit keeps six across */
+          const cols = size === 'fit' ? { cols: 6, minCol: '160px' } : { min: `${Math.max(size * 2, nameType(size)[1])}px` }
+          return list ? (
+            <ContentCollection form="list">
+              {rows.map((item) => (
                 <ContentRow
                   key={item.name}
                   variant="catalog"
                   title={copied === item.name ? 'copied!' : item.name}
                   detail={item.group}
-                  media={<RowGlyph name={item.name} bgLight={bgLight} />}
-                  onClick={() => copy(item.name)}
-                />
-              ) : (
-                <ContentCard
-                  key={item.name}
-                  variant="catalog"
-                  ratio="auto"
-                  plateRule={false}
-                  title={copied === item.name ? 'copied!' : item.name}
-                  detail={item.group}
-                  media={<Glyph name={item.name} size={size} bgLight={bgLight} guide={guide} />}
+                  thumb={size === 'fit' ? undefined : size}
+                  minHeight={size === 'fit' ? undefined : Math.max(36, size + 8)}
+                  media={<RowGlyph name={item.name} size={size} ground={ground} guide={guide} />}
                   onClick={() => copy(item.name)}
                 />
               ))}
+            </ContentCollection>
+          ) : (
+            <ContentCollection form="grid" {...cols}>
+              {rows.map((item) => <Tile key={item.name} item={item} size={size} ground={ground} guide={guide} copied={copied} onCopy={copy} />)}
             </ContentCollection>
           )
         }}

@@ -47,6 +47,8 @@ export const ADMITTED = new Set([
   'references',
   /* APPS admitted 2026-09-27 on the user's instruction — the showcase had no door to the apps tier. */
   'apps',
+  /* TEMPLATES admitted 2026-10-17 (W6) — the page layer between modules and apps */
+  'templates',
 ])
 
 /* ── THE CATEGORIES ────────────────────────────────────────────────────────
@@ -163,6 +165,15 @@ export const CATEGORIES = [
     rule: 'docs/operations/03-showcase/04-surface-rules.md',
     awaits: 'rule written 2026-08-09 — generated measurement, no hand-authored rows',
     why: 'Placed in the Tools group beside Search; built from usage-index + token-index, so it cannot rot.',
+  },
+  {
+    key: 'templates',
+    label: 'Templates',
+    surfaces: ['templates'],
+    categories: [],
+    rule: '.kol/llm-context/plan-2026-10-17-icon-gallery-and-references.md',
+    awaits: 'nothing structural — one page per template and per block, generated from the registry',
+    why: 'The page layer: a template names its header, its blocks, what it is built from and who uses it.',
   },
   {
     key: 'apps',

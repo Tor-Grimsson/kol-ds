@@ -151,8 +151,15 @@ export default function useDragResize(ref, options = {}) {
   lineRef.current = line
   /* -1 on a right-hand rail: the same rightward pointer travel that widens a
    * left rail must NARROW a right one, because its handle faces the canvas. */
-  const dir = side === 'right' ? -1 : 1
-  const names = useMemo(() => buildNames(token), [token])
+  /* ANY EDGE (RailOverlay, kol-monitor 2026-10-17): `top` / `bottom` rails resize on Y — the handle on a bottom
+   * rail is its TOP edge, so upward travel grows it. The size goes to `--<token>-h` (and `-h-collapsed`) instead
+   * of `-w`; every other token is shared. */
+  const vertical = side === 'top' || side === 'bottom'
+  const dir = side === 'right' || side === 'bottom' ? -1 : 1
+  const names = useMemo(() => {
+    const n = buildNames(token)
+    return vertical ? { ...n, widthKey: `${token}-h`, wVar: `--${token}-h`, collapsedVar: `--${token}-h-collapsed` } : n
+  }, [token, vertical])
 
   /* the handle's own ref, so the shared gesture can find it. Returned in
    * `grabProps`, so a consumer already spreading those gets the wake, the
@@ -210,7 +217,7 @@ export default function useDragResize(ref, options = {}) {
     const onMove = (e) => {
       if (!drag.current) return
       const d = drag.current
-      const dx = e.clientX - d.startX
+      const dx = (vertical ? e.clientY : e.clientX) - d.startX
       /* Below the slop the pointer is still a CLICK — resizing from the
        * first pixel would jitter the rail on every toggle press. */
       if (!d.moved) {
@@ -248,15 +255,15 @@ export default function useDragResize(ref, options = {}) {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
     }
-  }, [names, dir])
+  }, [names, dir, vertical])
 
   const onPointerDown = (e) => {
     const snapPx = readVarPx(names.snapVar)
     if (defaultPx.current == null || snapPx == null) return // tokens absent → inert
     e.preventDefault()
     drag.current = {
-      startX: e.clientX,
-      startW: ref.current?.getBoundingClientRect().width ?? defaultPx.current,
+      startX: vertical ? e.clientY : e.clientX,
+      startW: (vertical ? ref.current?.getBoundingClientRect().height : ref.current?.getBoundingClientRect().width) ?? defaultPx.current,
       snapPx,
       /* mirror's ceiling (default × 3), resolved from the token not hardcoded */
       maxPx: defaultPx.current * 3,
@@ -284,8 +291,8 @@ export default function useDragResize(ref, options = {}) {
     /* The arrow that GROWS is the one pointing away from the rail's own edge —
      * ArrowRight on a left rail, ArrowLeft on a right one. Same inversion the
      * pointer gets, so keyboard and drag never disagree. */
-    const growKey = dir === 1 ? 'ArrowRight' : 'ArrowLeft'
-    const shrinkKey = dir === 1 ? 'ArrowLeft' : 'ArrowRight'
+    const growKey = vertical ? (dir === 1 ? 'ArrowDown' : 'ArrowUp') : (dir === 1 ? 'ArrowRight' : 'ArrowLeft')
+    const shrinkKey = vertical ? (dir === 1 ? 'ArrowUp' : 'ArrowDown') : (dir === 1 ? 'ArrowLeft' : 'ArrowRight')
     if (e.key === growKey) {
       e.preventDefault()
       if (c) stampCollapsed(names, false)

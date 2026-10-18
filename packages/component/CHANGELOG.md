@@ -1,5 +1,23 @@
 # @kolkrabbi/kol-component
 
+## 0.267.0 — 2026-10-18
+
+- **One header, two levels** (Round 11, approved 2026-10-18). `PageHeader` takes `level="page" | "section"` (a section header is an h2 one step down), `media` (a logo above the eyebrow, only when passed), `description` (the subtitle's other name) and `size="xl"` (display-01). In `register="site"` the description is `.kol-header-lede` (page) or `.kol-header-lede-section` — Light, opened tracking, 72% ink; it was body-01 Regular at 64%, which read heavy, small and tight. The app register is unchanged. Needs kol-theme ≥0.175.0.
+
+## 0.266.0 — 2026-10-17
+
+- **New: `CommandOverlay`** (CommandOverlayModes, kol-monitor). The ⌘K overlay with `mode` — `search` (default) · `go` · `add` · `shortcuts`. In `shortcuts` it draws the keymap: every section at once, this page's first, the rest muted under Elsewhere; typing filters, Enter runs. **Arrows:** ↑↓ rows, → or Enter opens a category, ← goes back — ← / → only while the field is empty. `ShellSearchOverlay` is now its alias (ledger).
+- **New: `Rail`** (RailOverlay, kol-monitor — user ruling: *"rail and overlay"*). A surface docked to any edge — left · right · **top** · bottom; `mode="over"` (scrim, focus trap, Escape, as before) or **`mode="push"`** (in the layout, collapses to nothing); **`resizable`** from the edge facing the page (`minSize` · `maxSize` · `onResize`). `ShellDrawer` is its alias (ledger). SettingsPanel and RecordManager ride it.
+- **`useDragResize` on any edge** — `side` `top` · `bottom` resize on Y into `--<token>-h`.
+- **`TabsRow look`** (TabsStackedLayout, kol-monitor — user: *"wouldnt it just be mobile variant? it seems like a normal tab system"*). One tab component: `underline` (default) · `chip` · `text` · `stacked` (icon over label, usable inline anywhere), and `placement="phone"` for the bottom bar below md. `TabChips` and `MobileTabBar` are aliases (ledger); their DOM is unchanged. `TABBAR_H` now exports from TabsRow too.
+
+## 0.265.0 — 2026-10-17
+
+- **New: `IconPlate` + `KeylineGuide`** (CompareGridDevTab, kol-monitor). A glyph's specimen plate where the box IS the size: ground (light / dark, a specimen ground the theme never touches), the 24-unit keyline guide and the glyph in one square, so a 20 plate is 20px and the guide is the glyph's own grid. `size="fill"` takes the parent's width. The icon gallery, the open-questions rounds and `CompareGrid` all draw on it.
+- **New: `CompareGrid`** (CompareGridDevTab, kol-monitor — user: *"why are we inventing the wheel for this every time … the way you diff local vs DS is very confusing, its ill labeled, hard to read"*). Two versions of many things side by side: A beside B on `IconPlate`s, each side named by the consumer, the 16px real size beside each name, the item's name and a state chip under the pair. The toolbar is controls: size 24 · 48 · 96 · 128, ground, guide, a filter by the consumer's own states with counts. A missing side is an empty plate carrying its `candidate`. A side is a node or `({ size, ground, guide }) => node`.
+- **New: `ShellSearchOverlay onBack` / `backLabel`** (CommandOverlayModes, kol-monitor). A drill-in's way back: the field row leads with a back arrow (the DS tooltip names where it goes), and Backspace on an empty field calls it — instead of an "← All" row that scrolls away. Focus stays in the field.
+- **New: page-aware shortcuts** (CommandOverlayModes — user: *"im in dev, how can I cable lock here?"*). A shortcut section takes `routes: ['/rack']`; `ShortcutsOverlay currentPath` shows the sections that work here first and the rest muted under ELSEWHERE. `shortcutInScope(section, path)` is the same test for binding the keys, so the sheet and the bindings come from one source.
+
 ## 0.264.0 — 2026-10-17
 
 - **New: `ColorPickerPopover`** (ColorPickerPopover, kol-monitor — the estate's only click-a-colour-in picker was monitor's local react-colorful atom). A swatch (`size` xs 16 · sm 24) that opens a popover: saturation square, hue strip, opacity strip, hex. Every drag emits uppercase hex, 8 digits only under 100% opacity; the hex field emits at 6 or 8 digits. Right-aligned under the swatch via `usePopover`, flips up near the bottom; Esc and an outside press close it, Enter opens it from the keyboard; ⌥-click resets to `defaultValue`. None (`transparent` / empty) is the slashed swatch in `--ui-error`. A token or `currentColor` paints live and is resolved once on open — no theme observer. Built on `SpectrumControls`, no new dependency. An organism: it composes one.

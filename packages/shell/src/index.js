@@ -26,7 +26,7 @@ export { default as TabStrip } from './TabStrip.jsx'
 export { default as SettingsScaffold } from './SettingsScaffold.jsx'
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
 /* lives in kol-component since 0.228.0 — re-exported so every kol-shell import keeps resolving */
-export { ShortcutsOverlay } from '@kolkrabbi/kol-component'
+export { ShortcutsOverlay, shortcutInScope } from '@kolkrabbi/kol-component'
 export { default as Logomark } from './Logomark.jsx'
 // the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)
 export { default as CatalogPage } from './CatalogPage.jsx'
@@ -37,6 +37,7 @@ export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOve
 export { default as AppHub } from './AppHub.jsx'
 export { default as HubHome } from './HubHome.jsx'
 export { default as HubSettings } from './HubSettings.jsx'
+export { default as HubDev } from './HubDev.jsx'
 // the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
 export { default as AppStudio } from './AppStudio.jsx'
 // a consumer slot in the opened rail — the page portals into it (NavRailConsumerSlot, kol-monitor 2026-10-15)

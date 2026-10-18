@@ -4,13 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
 import mdx from '@mdx-js/rollup'
 import remarkGfm from 'remark-gfm'
+import { devFavicon, loaderApp } from '@kolkrabbi/kol-framework/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   // mdx MUST precede react: it compiles .mdx → JSX, which react then transforms.
   // `providerImportSource` lets MDXProvider inject the shared component map, so
   // a doc gets <Preview>, <ApiTable> etc. without importing them per file.
-  plugins: [
+  plugins: [devFavicon({ label: 'K' }), loaderApp({ graphic: '../packages/icons/src/kol-icon-set-interface/identity/kol-ds.svg' }), 
     /* include: .mdx ONLY — the plugin also claims .md by default, which turns
        every `?raw` markdown import (the docs vault, the lobby queue) into a
        compiled module and breaks the markdown engine downstream. */

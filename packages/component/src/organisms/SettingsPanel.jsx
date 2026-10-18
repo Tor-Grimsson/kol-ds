@@ -4,7 +4,7 @@ import Divider from '../atoms/Divider.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
 import LabeledControl from '../molecules/LabeledControl.jsx'
 import ToggleSwitch from '../atoms/ToggleSwitch.jsx'
-import ShellDrawer from '../molecules/ShellDrawer.jsx'
+import Rail from '../molecules/Rail.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -100,9 +100,9 @@ export default function SettingsPanel({
        paints `bg-surface-primary`, the same token as the page, so the scrim was
        the only thing separating them — with it off the panel was invisible and
        the controls floated in the right third of the screen. */
-    <ShellDrawer open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false}>
+    <Rail open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false}>
       <div className="flex flex-col gap-4"><Divider />{body}</div>
-    </ShellDrawer>
+    </Rail>
   )
 }
 
