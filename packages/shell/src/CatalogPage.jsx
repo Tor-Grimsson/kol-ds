@@ -208,7 +208,7 @@ export default function CatalogPage({
 
   return (
     <PageShell width={width} className={`${PRESETS[preset]?.className ?? ''} ${className}`.trim()} style={{ overflow: 'hidden', '--kol-catalog-n': cols ?? undefined, ...style }}>
-      {header && <PageHeader {...header} />}
+      {header && <PageHeader level="app" {...header} />}
       <div style={{ flex: 1, position: 'relative' }}>
         {open && <WalkthroughPanel steps={walkthrough.steps} iconComponent={walkthrough.iconComponent} onClose={walkthrough.onClose} />}
         <ContentFilters

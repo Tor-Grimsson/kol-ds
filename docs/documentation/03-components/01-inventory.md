@@ -53,7 +53,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
 | `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
-| `Divider` | A thin rule separating content, horizontal or vertical. |
+| `Divider` | A thin rule separating content, horizontal or vertical. Vertical `height` is px (default 16, centred) or `'fill'` — stretches to the row (0.276.0). |
 | `EmptyState` | A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors. |
 | `ExitPreview` | A router-aware link out of preview mode. |
 | `Figure` | A caption’d, aspect-locked media frame for long-form prose. |
@@ -115,7 +115,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
 | `Modal` | The modal system — ModalProvider + useModal for imperative dialogs. |
-| `PageHeader` | The page's masthead — eyebrow · title (`h1`) · sub-line · `actions` on the sub-line's first baseline — a **composition of `SectionText`** (0.175.0). From `kol-shell` since 0.174.0 (page-header-one-masthead, 2026-09-03): one import serves a site page and an app page. `size` sm · md · lg picks the title role, `voice` sans · mono its family, `register` app (mono sub-line) · site (sans lede) the sub-line's voice — the one thing the registers disagree about. Bottom rhythm `--kol-page-header-mb` (40px). |
+| `PageHeader` | The page's masthead — eyebrow · title (`h1`) · sub-line · `actions` on the sub-line's first baseline — a **composition of `SectionText`** (0.175.0). From `kol-shell` since 0.174.0 (page-header-one-masthead, 2026-09-03): one import serves a site page and an app page. One header since 0.276.0 (Round 11): `level` page (display-01 · 22/28 lede — the hero) | app (display-01 at 46/60 · 19/26 lede — app pages, 0.279.0) | section (display-03 · 16/24 lede), classes in `PAGE_HEADER_ROLES`; `size` · `voice` · `register` · `masthead` retired and ignored. Bottom rhythm `--kol-page-header-mb` (40px). |
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
 | `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
 | `SearchInput` | A controlled search field — leading icon, shortcut kbd chip, clear ×; Input’s search sibling. |

@@ -212,7 +212,9 @@ context by every page inside: `PageHeader`, the Hub's Home and Settings, `Catalo
 own title. **No default** (the user, revising D3): unset, every page renders as its own props say,
 so a bump moves nobody's headers — fxr · mirror · monitor stay mono. A Catalog with no Shell takes
 `header.masthead` itself. A page that overrides the app's voice is the thing the render gate is
-for.
+for. **Superseded for `PageHeader` 2026-10-18** (kol-component 0.276.0): it ignores the masthead and
+renders the one Round 11 header; `CatalogPage`, the Hub's pages, Settings, Dev and AppStudio's create page
+default to its `app` level (display-01 at 46 / 60 — kol-shell 0.72.0, kol-component 0.279.0).
 
 **The Hub is opt-in, page by page.** `AppHub` = the Shell + the standard pages around a tool:
 

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.72.0 — 2026-10-18
+
+- **App pages wear `PageHeader level="app"`** (PageHeaderAppLevel, kol-monitor). `CatalogPage` (and so `HubHome`), `SettingsScaffold` (`HubSettings`), `HubDev` and `AppStudio`'s create page default to the app level — the old mono masthead size — instead of 0.276.0's display-01 hero. A consumer's `header.level` still wins. Needs kol-component ≥0.277.0.
+
 ## 0.67.0 — 2026-10-18
 
 - **The Dev page's chrome** (HubDevChrome, kol-monitor — user: *"why did the dev tab move? it was fine where it was. below stage"*). The `code` row closes the app's own rows (under Stage in monitor) instead of sitting above Settings; the tabs are `TabsRow look="chip"`, the tabs ui.kolkrabbi.io's component pages use; no description line under them — a tab's `description` is no longer drawn.

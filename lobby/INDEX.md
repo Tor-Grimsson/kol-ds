@@ -38,6 +38,9 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [PageHeaderAppLevelDisplay](done/PageHeaderAppLevelDisplay.md) | **kol-monitor** — corrects PageHeaderAppLevel: `app` is display-02 + light lede between page and section, not mono | 2026-10-18 | `filed` — from a kol-monitor session |
+| 🟢 | [PageHeaderAppLevel](done/PageHeaderAppLevel.md) | **kol-monitor** — PageHeader level between page and section, at the old mono masthead size, default for app-tier pages; display-01 stays for heroes | 2026-10-18 | `filed` — from a kol-monitor session |
+| 🟢 | [DividerHeightFill](done/DividerHeightFill.md) | **kol-monitor** — `Divider variant="vertical" height="fill"`: stretch to the row (eurorack panel rules) | 2026-10-18 | `filed` — from a kol-monitor session |
 | 🟢 | [IconVideoOff](done/IconVideoOff.md) | **kol-monitor** — `video-off` for kol-icons (the off state of `video`); monitor's last local icon | 2026-10-18 | `filed` — from a kol-monitor session |
 | 🟢 | [SignalIconsFromMonitor](done/SignalIconsFromMonitor.md) | **kol-monitor** — 20 monitor shapes kol-icons lacks, into the signal set; grad-rad · grid · clr-mono · dith-melt · dith-xhatch corrected toward monitor's drawing | 2026-10-18 | `filed` — from a kol-monitor session |
 | 🟢 | [HubDevChrome](done/HubDevChrome.md) | **kol-monitor** — the Dev page: `code` row back in the main list (under Stage), `TabsRow look="chip"`, no description line under the tabs | 2026-10-18 | `filed` — from a kol-monitor session |
@@ -946,3 +949,9 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-18 | **`IconVideoOff` filed from kol-monitor** — `video-off`, monitor's last local icon |
 | 2026-10-18 | **`IconVideoOff` read** — drawn on `eye-off`'s idiom (the shipped `video`, a 3→21 slash, the outline broken at the crossings); up as Development › Open questions › Round 13 for the user's review |
 | 2026-10-18 | **`IconVideoOff` closed** → **kol-icons@0.41.0**. kol-icons 0.41.0: `video-off` in the interface set (files, beside `video`) — `eye-off`'s idiom: the shipped `video`, one 3→21 slash, the outline broken where the slash crosses it; 1.5 round strokes. |
+| 2026-10-18 | **`DividerHeightFill` filed from kol-monitor** — vertical Divider `height="fill"` |
+| 2026-10-18 | **`DividerHeightFill` closed** → **kol-component@0.276.0**. Vertical `Divider height="fill"` stretches to the row; numeric height unchanged. Shipped with PageHeader as the one Round 11 header. |
+| 2026-10-18 | **`PageHeaderAppLevel` filed from kol-monitor** — app-page header level at the old mono size |
+| 2026-10-18 | **`PageHeaderAppLevel` closed** → **kol-component@0.277.0 · kol-shell@0.72.0**. `PageHeader level="app"` (mono heading-03 · mono-14 lede); shell app pages default to it; `PAGE_HEADER_ROLES` exported. |
+| 2026-10-18 | **`PageHeaderAppLevelDisplay` filed from kol-monitor** — app level is display-02, not mono |
+| 2026-10-18 | **`PageHeaderAppLevelDisplay` closed** → **kol-component@0.279.0 · kol-theme@0.177.0**. `app` = display-01 at 46 / 60 (Tailwind), 19/26 light lede; Round 14 on Open questions. |

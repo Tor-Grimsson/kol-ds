@@ -171,7 +171,7 @@ export { default as EmblaNav } from './molecules/EmblaNav.jsx'
 /** @deprecated 2026-10-17 — alias of `TabsRow look="stacked" placement="phone"` */
 export { default as MobileTabBar } from './molecules/MobileTabBar.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
-export { default as PageHeader } from './molecules/PageHeader.jsx'
+export { default as PageHeader, PAGE_HEADER_ROLES } from './molecules/PageHeader.jsx'
 export { MastheadContext, MASTHEADS, useMasthead, mastheadTitleClass } from './utilities/masthead.js'
 export { default as ErrorBoundary } from './utilities/ErrorBoundary.jsx'
 export { default as FeatureSplit } from './organisms/FeatureSplit.jsx'

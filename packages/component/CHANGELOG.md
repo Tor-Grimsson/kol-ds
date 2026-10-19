@@ -1,5 +1,22 @@
 # @kolkrabbi/kol-component
 
+## 0.279.0 — 2026-10-18
+
+- **`PageHeader level="app"` is page's display at 46 / 60** (PageHeaderAppLevelDisplay, final — the user's numbers). Title `kol-sans-display-01 text-[46px] md:text-[60px]` instead of 0.278.0's display-02 — no new style; lede `.kol-header-lede-app` unchanged. `PAGE_HEADER_ROLES.app` follows. Needs kol-theme ≥0.177.0 and the consumer's `@source` on kol-component.
+
+## 0.278.0 — 2026-10-18
+
+- **`PageHeader level="app"` is display, between page and section** (PageHeaderAppLevelDisplay, kol-monitor — user: *"did I ask for mono?!?! OR DID I SAY MAKE THE TEXT SMALLER AS IN THE HEIGHT, SO THAT IT IS BETWEEN SECTION AND PAGE"*). 0.277.0 made it mono; now `kol-sans-display-02` over `.kol-header-lede-app` (19/26 Light), `PAGE_HEADER_ROLES.app` to match. Needs kol-theme ≥0.177.0.
+
+## 0.277.0 — 2026-10-18
+
+- **`PageHeader level="app"`** (PageHeaderAppLevel, kol-monitor — user: *"that display is fine for Section Hero like in brand but not for EVERYTHING ELSE that uses the mono"*). A third level: the retired mono masthead as a level — h1 `kol-mono-heading-03` over a `kol-mono-14` lede at oq-64. `page` (display-01) stays the hero; kol-shell 0.72.0's app pages default to `app`. **New export `PAGE_HEADER_ROLES`** — `{ page | app | section: { title, lede } }`, for a page that draws its own title (monitor's Create inputs).
+
+## 0.276.0 — 2026-10-18
+
+- **`PageHeader` is the one header** (Round 11 made the default — user: *"did we not update any of the apps that use it?"*). 0.267.0 shipped the approved look behind `register="site"` + `size="xl"` and kept the old defaults, so no app moved. Now `level` page | section is the only choice: page = h1 display-01 over `.kol-header-lede`, section = h2 display-03 over `.kol-header-lede-section`. `size` · `voice` · `register` · `masthead` (and an `AppShell masthead`) are accepted and ignored, so every caller — CatalogPage, the Hub's Home and Settings, AppStudio, monitor's own pages — renders it on the bump with no edit. `titleClass` stays the seam. Needs kol-theme ≥0.175.0.
+- **`Divider variant="vertical" height="fill"`** (DividerHeightFill, kol-monitor). The rule stretches to the row (`self-stretch`, no fixed height) — eurorack panels' full-height group rules; `className` padding insets it. Numeric `height` (default 16, centred) unchanged.
+
 ## 0.267.0 — 2026-10-18
 
 - **One header, two levels** (Round 11, approved 2026-10-18). `PageHeader` takes `level="page" | "section"` (a section header is an h2 one step down), `media` (a logo above the eyebrow, only when passed), `description` (the subtitle's other name) and `size="xl"` (display-01). In `register="site"` the description is `.kol-header-lede` (page) or `.kol-header-lede-section` — Light, opened tracking, 72% ink; it was body-01 Regular at 64%, which read heavy, small and tight. The app register is unchanged. Needs kol-theme ≥0.175.0.

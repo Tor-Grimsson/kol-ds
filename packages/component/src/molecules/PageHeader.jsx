@@ -1,5 +1,4 @@
 import SectionText from './SectionText.jsx'
-import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
 /**
  * PageHeader — The page masthead. the page's masthead: an optional eyebrow, the title, and a
  * sub-line.
@@ -20,45 +19,22 @@ import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
  * `kol-component` at `>=0.127.0`, so every shell consumer already had it.
  * This overrides ARCHITECTURE §3's list, which named it kol-shell's.
  *
- * TWO SCALES, because two things were being called a page header. An app page
- * (monitor's Library, mirror's settings) wears a compact heading; a SITE page
- * (kol-website's /work) opens on the display scale and the difference is not a
- * preference, it is which register you are in. `size` picks:
- *
- *   sm   kol-sans-heading-03  32px — app chrome, a titled panel
- *   md   kol-sans-display-03  36 / 42 / 48px — the default page masthead
- *   lg   kol-sans-display-02  44 / 56 / 64px — a landing or section opener
- *
- * The title used to be `kol-heading-sm`, a retired t-shirt stop with NO rule
- * anywhere in kol-theme, so every page title in every shell app fell through to
- * the browser's default h1 (found 2026-08-15). It was mapped to heading-03,
- * which was still too quiet for a page — hence the scale.
+ * ONE SCALE since 2026-10-18 (Round 11): the app/site split, `size` sm–xl and the mono voice are
+ * retired — `level` page | section is the only choice (see the block under this one).
  *
  * `eyebrow` is the small label above the title (kol-website's "USE CASES").
  * It self-hides when unset, so an app page passes nothing and gets nothing.
  *
  * @param {ReactNode} eyebrow   small label above the title
  * @param {ReactNode} title
- * @param {ReactNode} subtitle  mono line under the title
- * @param {'app'|'site'} register  which REGISTER the masthead is in (default `app`).
- *                    The registers differ in the sub-line's voice and nothing else — the
- *                    title roles, the sizes and the actions baseline are shared, which is
- *                    what made this one component rather than two:
- *                      app   mono sub-line (`kol-mono-14`) — an app page's masthead. The
- *                            default, so no shell page moves.
- *                      site  sans lede (`kol-sans-body-01`) — what kolkrabbi.io's `/prints`
- *                            and `/work` build by hand today.
- * @param {string}    size      sm | md | lg | xl (default md; xl = display-01, the approved page header)
- * @param {'page'|'section'} level  ONE HEADER, TWO LEVELS (Round 11, approved 2026-10-18): `section` is the same
- *                    header one step down — an h2, and in the site register the section description
- *                    (16/24 Light +0.5px) under the page's (22/28 Light +0.01em). Default `page`.
+ * @param {ReactNode} subtitle  the lede under the title (`description` is its other name)
+ * @param {'page'|'app'|'section'} level  ONE HEADER (Round 11, approved 2026-10-18): page = h1
+ *                    display-01 over `.kol-header-lede` (22/28 Light) — the hero; app = h1 display-01 at
+ *                    46/60 (`text-[46px] md:text-[60px]`) over `.kol-header-lede-app` (19/26 Light) — the app tier's pages; section = h2
+ *                    display-03 over `.kol-header-lede-section` (16/24 Light +0.5px). Default `page`.
+ *                    Classes per level: `PAGE_HEADER_ROLES`.
  * @param {ReactNode} media     a mark above the eyebrow (a logo, an SVG) — shown only when passed
  * @param {ReactNode} description  the subtitle's other name — the header's description
- * @param {'sans'|'mono'} voice  the title's family (default sans). `mono` = the
- *                    app tier's masthead (PageHeaderMonoTitle, kol-fxr 2026-08-27 —
- *                    user ruling: kol-monitor's JetBrains Mono 32 / 500 is the look):
- *                    kol-mono-heading-03 · kol-mono-display-03 · kol-mono-display-02
- *                    (kol-theme ≥0.67.0). The subtitle stays kol-mono-14.
  * @param {string}    titleClass  replaces the title role whole (the ContentText seam)
  * @param {ReactNode} actions   a control cluster on the SUBTITLE's first baseline — on the title's
  *                    when there is no subtitle (PageHeaderTrailingSlot, kol-website 2026-08-28;
@@ -68,28 +44,32 @@ import { TITLE_ROLES, useMasthead } from '../utilities/masthead.js'
  *                    with an `!important` on the margin — a DS text role re-implemented outside.
  * @param {string}    subtitleMaxWidth  the lede's measure (e.g. '800px' or '60ch'), a prop
  *                    instead of a consumer selector reaching inside
- * @param {'display'|'mono'} masthead  the APP's masthead (utilities/masthead.js, 2026-09-29): inside
- *                    a Shell it comes from `AppShell masthead` and WINS over `voice`/`size`, and
- *                    `display` drops the subtitle — one app, one header. Outside a Shell, unset =
- *                    the props as given, so no site page moves.
+ * size · voice · register · masthead — retired 2026-10-18, accepted and ignored.
  * The bottom rhythm is `--kol-page-header-mb` (default 40px): inline, as before, but through a
  * variable a consumer can re-point where an inline literal could only be `!important`-ed.
  */
-/* the title role per size and voice — the one thing PageHeader knows that the
- * base does not, because the base's ladder is the SECTION scale. Lives in
- * utilities/masthead.js since 2026-09-29 so a tool's own title reads the same table. */
-const TITLE = TITLE_ROLES
-/* the ONE thing the registers disagree about */
-const LEDE = { app: 'text-oq-64 kol-mono-14', site: 'kol-header-lede', 'site-section': 'kol-header-lede-section' }
+/* ONE HEADER (Round 11 made the default, user 2026-10-18 — "did we not update any of the apps that
+ * use it?"). 0.267.0 shipped the approved header behind `register="site"` + `size="xl"` and left the
+ * defaults alone, so no app moved: monitor's Home still wore the mono masthead. Now the level is the
+ * only choice — page = display-01 over the 22/28 lede, section = display-03 over the 16/24 lede — and
+ * `size` · `voice` · `register` · `masthead` are accepted and ignored, so every caller (and every
+ * Shell's masthead) renders the one header with no edit. `titleClass` stays the seam. */
+/* THREE LEVELS since 0.277.0 (PageHeaderAppLevel, kol-monitor — user: *"that display is fine for Section
+ * Hero like in brand but not for EVERYTHING ELSE that uses the mono"*). `app` sits BETWEEN page and section,
+ * in their family (0.278.0 — user: *"did I ask for mono?!?! … MAKE THE TEXT SMALLER … SO THAT IT IS BETWEEN
+ * SECTION AND PAGE"*; 0.277.0 had made it mono): page's display-01 at 46 · 60 (from 768) in Tailwind,
+ * no new style (0.279.0), over a 19/26 light lede. The app tier's Home ·
+ * Library · Settings · Dev pages, which kol-shell defaults to it. Exported so a page drawing its own title
+ * (monitor's Create inputs) matches the level. */
+export const PAGE_HEADER_ROLES = {
+  page: { title: 'kol-sans-display-01', lede: 'kol-header-lede' },
+  app: { title: 'kol-sans-display-01 text-[46px] md:text-[60px]', lede: 'kol-header-lede-app' },
+  section: { title: 'kol-sans-display-03', lede: 'kol-header-lede-section' },
+}
 
-export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle0, description, actions, subtitleMaxWidth, size: ownSize = 'md', voice: ownVoice = 'sans', register = 'app', level = 'page', media, titleClass, masthead, className = '' }) {
-  const ownSubtitle = ownSubtitle0 ?? description
+export default function PageHeader({ eyebrow, title, subtitle, description, actions, subtitleMaxWidth, level = 'page', media, titleClass, className = '' }) {
   const section = level === 'section'
-  const m = useMasthead(masthead)
-  const voice = m ? m.voice : ownVoice
-  const size = m ? m.size : ownSize
-  const subtitle = m && !m.subtitle ? undefined : ownSubtitle
-  const roles = TITLE[voice] ?? TITLE.sans
+  const roles = PAGE_HEADER_ROLES[level] ?? PAGE_HEADER_ROLES.page
   const header = (
     /* the block owns its own rhythm — margins inline, never in a shared type
        class, which leaks estate-wide (ShellHeaderFilterRefinements, 2026-08-15) */
@@ -97,9 +77,9 @@ export default function PageHeader({ eyebrow, title, subtitle: ownSubtitle0, des
       eyebrow={eyebrow}
       headline={title}
       headlineAs={section ? 'h2' : 'h1'}
-      headlineClass={`text-fg-96 ${titleClass ?? roles[size] ?? roles.md}${m?.upper ? ' uppercase' : ''}`}
-      body={subtitle}
-      bodyClass={`${(register === 'site' && section ? LEDE['site-section'] : LEDE[register]) ?? LEDE.app} min-w-0`}
+      headlineClass={`text-fg-96 ${titleClass ?? roles.title}`}
+      body={subtitle ?? description}
+      bodyClass={`${roles.lede} min-w-0`}
       actions={actions}
       actionsPlacement="inline"
       actionsClass="flex items-center gap-4"

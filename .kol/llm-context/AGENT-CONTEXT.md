@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-18 latest, one header)
+
+- **Published:** kol-component 0.279.0 · kol-shell 0.72.0 · kol-theme 0.177.0. PageHeader is the one header — `level` page · app · section, the old size/voice/register/masthead ignored; kol-shell app pages default to `app` (display-01 at 46/60); `PAGE_HEADER_ROLES`; vertical `Divider height="fill"`. Three monitor tickets closed. Round 14 on Open questions awaits review; nothing publishes before he reviews. Push is the user's. Log: `session-log/2026-10-18-one-header-levels-divider-fill.md`.
+
 ## Current state (2026-10-18 later, the overlays)
 
 - **Published:** kol-component 0.275.0 · kol-shell 0.71.0 · kol-theme 0.176.0 · kol-workshop 0.41.0. CommandOverlay fold rows (shortcuts = folds, page sections open, ⌘↵ all); only two names, rail and overlay (`SettingsPanel variant="rail"`, `drawer` alias); `--kol-pad-overlay`; ShortcutsOverlay = SettingsPanel with `variant`; AppHub `⇧S` rail. New `apps/overlays` + the Overlays set. Then kol-component 0.275.0 · kol-shell 0.71.0 (AppHub ⇧S rail) and kol-icons 0.40.0 · 0.41.0 (monitor's signal icons, `grid-3x3`, `video-off`); monitor told. Push is the user's. Log: `session-log/2026-10-18-overlays-app-folds-rail-shortcuts.md`.
@@ -25,11 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-15 later, monitor + mirror seams)
 
 - **Published:** kol-shell 0.64.0 (`AppStudio library.children` · `create.shell: false` · `RailSlotProvider`/`useRailSlot`) · kol-component 0.261.0 (`IconToggle`, modal grid on `MediaTile`, picker × on the title row) · kol-theme 0.174.0. Five mirror/monitor tickets closed, receipts returned. Standing go: tickets from mirror/monitor are built when the watch fires. Push is the user's. Log: `session-log/2026-10-15-monitor-mirror-seams-and-icontoggle.md`.
-
-## Current state (2026-10-15, stack post drafts + identity-mirror)
-
-- **Published:** kol-icons 0.38.0 — `mirror` in `identity`. kol-mirror's identity-mirror closed, receipt returned.
-- **Parked, unfinished:** a kolkrabbi.io Stack post about this repo in `docs/stack/` — three drafts, graphics + motion candidate pages. Waits on the user's picks; then plates, clips, and a `/repo-stack` skill. Push is the user's. Log: `session-log/2026-10-15-stack-post-drafts-and-identity-mirror.md`.
 
 ## Repo standup (2026-06-15)
 

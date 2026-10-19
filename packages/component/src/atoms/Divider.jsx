@@ -10,8 +10,10 @@ import React from 'react'
  * @param {Object} props
  * @param {string} props.variant - 'horizontal' or 'vertical' (default: 'horizontal')
  * @param {string} props.className - Additional classes
- * @param {number} props.height - vertical variant only: the rule's height in px
- *   (default 16 — sized to the type it separates, not to the row)
+ * @param {number|'fill'} props.height - vertical variant only: the rule's height in px
+ *   (default 16 — sized to the type it separates, not to the row), or `'fill'` — the rule
+ *   stretches to the row (DividerHeightFill, kol-monitor 2026-10-18: eurorack panels separate
+ *   jack and knob groups with full-height rules); `className` padding insets it
  * @param {string} props.opacity - Opacity level (01, 02, 04, 08, 12, 16, 24, 32, 48, 64, 80, 88, 96) (default: '08')
  */
 const Divider = ({ variant = 'horizontal', className = '', opacity = '08', inverse = false, height = 16 }) => {
@@ -26,6 +28,13 @@ const Divider = ({ variant = 'horizontal', className = '', opacity = '08', inver
      * gave a rule taller than the 18px type beside it, and any `self-*` passed
      * from a call site lost to the hardcoded one. `align-self: center` with an
      * explicit height puts it back on the type; `height` stays overridable. */
+    if (height === 'fill') {
+      return (
+        <div className={`flex self-stretch ${className}`.trim()}>
+          <div className={opacityClass} style={{ width: '1px' }} />
+        </div>
+      )
+    }
     return (
       <div className={`flex self-center items-center justify-center ${className}`.trim()} style={{ height }}>
         <div className={opacityClass} style={{ width: '1px', height: '100%' }} />

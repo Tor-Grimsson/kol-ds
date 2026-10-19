@@ -32,7 +32,7 @@ export default function HubDev({ tabs = [], title = 'Dev', subtitle = 'Experimen
 
   return (
     <PageShell className="gap-6">
-      <PageHeader size="sm" voice="mono" title={title} subtitle={subtitle} />
+      <PageHeader level="app" title={title} subtitle={subtitle} />
       {tabs.length > 1 && (
         /* chip tabs — the ones ui.kolkrabbi.io's component pages use — and nothing between them and the
          * content (HubDevChrome, kol-monitor 2026-10-18 — user: *"why are we puttin sub description below the tabs?"*) */

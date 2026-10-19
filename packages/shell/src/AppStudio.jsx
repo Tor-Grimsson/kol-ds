@@ -74,7 +74,7 @@ export default function AppStudio({
   } else if (make && at(make.path)) {
     page = make.shell === false ? make.children : (
       <PageShell>
-        {make.header && <PageHeader size="sm" {...make.header} />}
+        {make.header && <PageHeader level="app" {...make.header} />}
         {make.children}
       </PageShell>
     )

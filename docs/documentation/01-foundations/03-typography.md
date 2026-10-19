@@ -82,7 +82,7 @@ JetBrains Mono ships as **two** `@font-face` rules — roman and italic, each `f
 | `kol-mono-14` | 14 / 18px |
 | `kol-mono-16` | 16 / 22px |
 | `kol-mono-20` | 20 / 26px |
-| `kol-mono-heading-03` · `kol-mono-display-03` · `kol-mono-display-02` | 32 / 110% · display-03 · display-02 tokens / 100% — **weight 500**, the app tier's masthead voice (`PageHeader voice="mono"`, 2026-08-27) |
+| `kol-mono-heading-03` · `kol-mono-display-03` · `kol-mono-display-02` | 32 / 110% · display-03 · display-02 tokens / 100% — **weight 500**, the app tier's masthead voice (was `PageHeader voice="mono"`, 2026-08-27 — retired 2026-10-18, PageHeader is one sans header) |
 
 ### Sans sets — tokens, with leading
 

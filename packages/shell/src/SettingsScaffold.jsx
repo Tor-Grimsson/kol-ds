@@ -137,6 +137,7 @@ export default function SettingsScaffold({
         * `voice="mono"`, `size`, `titleClass`, `eyebrow` all pass through.
         * `actions` is where the drawer opener goes. */}
       <PageHeader
+        level="app"
         title={active?.title}
         subtitle={active?.subtitle}
         actions={cluster}

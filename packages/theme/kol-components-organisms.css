@@ -338,6 +338,7 @@
  * `slotClass`. The 72% ink is unchanged. */
 .kol-feature-split-body,
 .kol-header-lede,
+.kol-header-lede-app,
 .kol-header-lede-section {
   /* THE HEADER'S DESCRIPTION (Round 11, approved 2026-10-18 — sizes after Material 3's title large and
    * body large): Right Grotesk Light, opened tracking, the mono body's 72% ink. Regular 400 at 16 read heavy,
@@ -349,6 +350,8 @@
 }
 .kol-header-lede { font-size: 22px; line-height: 28px; letter-spacing: 0.01em; }
 .kol-header-lede-section { font-size: 16px; line-height: 24px; letter-spacing: 0.5px; }
+/* the app level, between page and section (PageHeaderAppLevelDisplay, kol-monitor 2026-10-18) */
+.kol-header-lede-app { font-size: 19px; line-height: 26px; letter-spacing: 0.3px; }
 
 .kol-section-text-body {
   margin: 0;
