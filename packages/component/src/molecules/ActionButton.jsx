@@ -190,6 +190,8 @@ export default function ActionButton({
     </button>
   )
   /* The label shows as the DS Tooltip, not a native `title` (kol-client-olina 2026-09-22) — and
-   * it follows the swap, so a Copy URL reads "Copied" while the check is up. */
-  return aria ? <Tooltip label={aria}>{control}</Tooltip> : control
+   * it follows the swap, so a Copy URL reads "Copied" while the check is up. `asChild` anchors it to
+   * the control itself: a positioned control (CodeBlock's `kol-frame-control`) leaves the wrapper span
+   * behind in flow (kol-atlas 2026-10-19). */
+  return aria ? <Tooltip label={aria} asChild>{control}</Tooltip> : control
 }

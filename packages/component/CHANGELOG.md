@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-component
 
+## 0.280.0 — 2026-10-19
+
+- **`ActionButton`'s tooltip anchors to the control** (ActionButtonTooltipAnchor, kol-atlas). `Tooltip asChild`, so a positioned control — CodeBlock's copy button (`kol-frame-control`) — no longer shows its tip at the empty wrapper span ~950px away.
+- **Quick Look fits SVGs to the window, and a click fills the width** (QuickLookFit, kol-atlas). `MediaInspector`'s image body keeps the 640 box only for an SVG under 640 wide (or with no size); a larger one fits like a raster. Clicking the image toggles fit ↔ fill width (the body scrolls); paging opens the next file in fit. Needs kol-theme ≥0.178.0.
+
 ## 0.279.0 — 2026-10-18
 
 - **`PageHeader level="app"` is page's display at 46 / 60** (PageHeaderAppLevelDisplay, final — the user's numbers). Title `kol-sans-display-01 text-[46px] md:text-[60px]` instead of 0.278.0's display-02 — no new style; lede `.kol-header-lede-app` unchanged. `PAGE_HEADER_ROLES.app` follows. Needs kol-theme ≥0.177.0 and the consumer's `@source` on kol-component.

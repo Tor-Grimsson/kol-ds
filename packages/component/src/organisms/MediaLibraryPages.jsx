@@ -636,6 +636,9 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
    * which remounts whenever the kind changes */
   const [size, setSize] = useState(null)
   const shownDims = dims && dims.key === o?.key ? dims : null
+  /* fill width is per file: paging lands on a key that is not this one, so it opens in fit */
+  const [fillKey, setFillKey] = useState(null)
+  const fill = fillKey != null && fillKey === o?.key
   useEffect(() => {
     const onKey = (e) => { if (e.shiftKey) return; if (e.key === 'ArrowLeft') onPrev(); if (e.key === 'ArrowRight') onNext() }
     window.addEventListener('keydown', onKey)
@@ -694,11 +697,14 @@ export function MediaInspector({ files, index, onClose, onPrev, onNext, mediaUrl
         </QuickLookFrame>
       ) : isImage(o.contentType) ? (
         <QuickLookFrame {...frame}>
-          {/* A VECTOR HAS NO PIXEL SIZE (user 2026-09-24: a 32px logo.svg opened as a 32px window). It
-            * is drawn in a 640 box — the window's max if that is smaller — and contained in it. */}
+          {/* A SMALL VECTOR HAS NO USEFUL PIXEL SIZE (user 2026-09-24: a 32px logo.svg opened as a 32px
+            * window). One under 640 wide — or with no size at all — is drawn in a 640 box, the window's
+            * max if that is smaller; a big one fits the window like a raster (kol-atlas 2026-10-19: its
+            * 1200×800 cards sat in the 640 box). A click toggles fit ↔ fill width; paging resets to fit. */}
           <img src={mediaUrl(o.key)} alt={o.displayKey}
-            className="kol-quicklook-media"
-            style={extOf(o.key) === 'svg' || o.contentType === 'image/svg+xml' ? { width: 'min(var(--kol-ql-max-w), 640px)', height: 'min(var(--kol-ql-media-h), 640px)' } : undefined}
+            className={`kol-quicklook-media${fill ? ' kol-quicklook-media--fill' : ''}`}
+            style={!fill && (extOf(o.key) === 'svg' || o.contentType === 'image/svg+xml') && !(shownDims?.w >= 640) ? { width: 'min(var(--kol-ql-max-w), 640px)', height: 'min(var(--kol-ql-media-h), 640px)' } : undefined}
+            onClick={() => setFillKey(fill ? null : o.key)}
             onLoad={(e) => setDims({ key: o.key, w: e.target.naturalWidth, h: e.target.naturalHeight })} />
         </QuickLookFrame>
       ) : isVideo(o.contentType) ? (

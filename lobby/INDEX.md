@@ -31,13 +31,15 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 51 entries
+## Queue — 53 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [QuickLookFit](done/QuickLookFit.md) | **kol-atlas** — `MediaInspector` draws every SVG in a fixed 640px box; fit images (SVG too) to the window, click toggles fit ↔ fill width | 2026-10-19 | `closed` — **kol-component 0.280.0 · kol-theme 0.178.0**: SVGs ≥640 fit the window, click toggles fill width; verified in apps/media |
+| 🟢 | [ActionButtonTooltipAnchor](done/ActionButtonTooltipAnchor.md) | **kol-atlas** — `ActionButton`'s tooltip anchors to the button (`asChild`), not its wrapper span; CodeBlock's copy tip lands ~950px away | 2026-10-19 | `closed` — **kol-component 0.280.0**: `Tooltip asChild`; tip 6px under CodeBlock's copy button in apps/markdown |
 | 🟢 | [PageHeaderAppLevelDisplay](done/PageHeaderAppLevelDisplay.md) | **kol-monitor** — corrects PageHeaderAppLevel: `app` is display-02 + light lede between page and section, not mono | 2026-10-18 | `filed` — from a kol-monitor session |
 | 🟢 | [PageHeaderAppLevel](done/PageHeaderAppLevel.md) | **kol-monitor** — PageHeader level between page and section, at the old mono masthead size, default for app-tier pages; display-01 stays for heroes | 2026-10-18 | `filed` — from a kol-monitor session |
 | 🟢 | [DividerHeightFill](done/DividerHeightFill.md) | **kol-monitor** — `Divider variant="vertical" height="fill"`: stretch to the row (eurorack panel rules) | 2026-10-18 | `filed` — from a kol-monitor session |
@@ -394,6 +396,8 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-19 | **`ActionButtonTooltipAnchor` + `QuickLookFit` closed** → **kol-component@0.280.0 · kol-theme@0.178.0**. ActionButton's tooltip anchors to the control; Quick Look fits SVGs ≥640 to the window, click toggles fill width. Receipts returned to kol-atlas. |
+| 2026-10-19 | `QuickLookFit` filed from kol-atlas: SVGs open in a fixed 640px box. |
 | 2026-10-14 | **`ClearspaceGraphicsAreAnotherCreations` closed** → **kol-component@0.260.0**. The `structure/diagram-*` clearspace layers carried Another Creation's marks and its signature `x` glyph; redrawn from kol-brand's four marks with the ghosted logomark as the clearspace unit in each corner square, grid strokes `currentColor`, one viewBox per variant, names unchanged. Receipt returned to kol-website. |
 | 2026-10-14 | **Eighteen 🟠 rows closed on the user's ruling** — every one shipped and cited; the filer's verification is not a close condition here (lifecycle law 3: the agent closes on evidence). Moved to `done/`: apps-tier-media-first · column-browser-height-takes-css-length · column-preview-crops-wide-images · column-view-drops-the-picked-file · content-card-needs-no-cover · count-line-totals-the-folder · editor-chrome-review · editor-panels-the-held-specs · file-actions-take-custom-verbs · library-reader-for-a-hub-home · media-pages-route-dialogs-through-usemodal · media-root-shows-a-single-bucket · media-views-disagree-on-folders-menu-and-up · native-title-tooltips-in-ds-components · note-component-extraction-lead · os-file-drop-onto-folder-seam · section-split-frame-ratio-holds-at-desktop · title-root-flag-outlives-the-path-in-rows-and-grid |
 | 2026-10-14 | **`ViewportTouchGestures` closed** → **kol-component@0.259.0**. PanZoomViewport takes touch: two fingers pinch-zoom at their midpoint and the midpoint's travel pans in the same gesture, inside the real clamps; the transform layer is `pointer-events: none` while they are down. One finger stays the consumer's; a tap (up < 350 ms, < 12 px, no second finger) fires `onSpaceTap`. Container carries `touch-action: none`. Verified on the showcase canvas with CDP touch points: pinch out → 4.0×, the point under the fingers held (0.1351, 0.2741 of the frame before and after); two-finger drag → pan +50, +40; one tap → onSpaceTap ×1; one-finger drag and a 500 ms hold → 0. |
@@ -955,3 +959,4 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-18 | **`PageHeaderAppLevel` closed** → **kol-component@0.277.0 · kol-shell@0.72.0**. `PageHeader level="app"` (mono heading-03 · mono-14 lede); shell app pages default to it; `PAGE_HEADER_ROLES` exported. |
 | 2026-10-18 | **`PageHeaderAppLevelDisplay` filed from kol-monitor** — app level is display-02, not mono |
 | 2026-10-18 | **`PageHeaderAppLevelDisplay` closed** → **kol-component@0.279.0 · kol-theme@0.177.0**. `app` = display-01 at 46 / 60 (Tailwind), 19/26 light lede; Round 14 on Open questions. |
+| 2026-10-19 | **`ActionButtonTooltipAnchor` filed from kol-atlas** — CodeBlock's copy-button tooltip anchors to the wrapper span, not the absolutely positioned button |

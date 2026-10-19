@@ -10,6 +10,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-19, kol-atlas tickets)
+
+- **Published:** kol-component 0.280.0 · kol-theme 0.178.0. `ActionButton` tooltip `asChild` (anchors to the control); Quick Look fits SVGs ≥640 to the window, click toggles fill width. Two kol-atlas tickets closed, receipts returned. Push is the user's. Log: `session-log/2026-10-19-atlas-tooltip-anchor-quicklook-fit.md`.
+
 ## Current state (2026-10-18 latest, one header)
 
 - **Published:** kol-component 0.279.0 · kol-shell 0.72.0 · kol-theme 0.177.0. PageHeader is the one header — `level` page · app · section, the old size/voice/register/masthead ignored; kol-shell app pages default to `app` (display-01 at 46/60); `PAGE_HEADER_ROLES`; vertical `Divider height="fill"`. Three monitor tickets closed. Round 14 on Open questions awaits review; nothing publishes before he reviews. Push is the user's. Log: `session-log/2026-10-18-one-header-levels-divider-fill.md`.
@@ -25,10 +29,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-16, monitor tickets)
 
 - **Published:** kol-component 0.262.0 · 0.263.0 (`ShellSearchOverlay` disabled rows, `OptionRow disabled`, `MenuItem` xs trigger type, `Tooltip disabled`, media library header centred) · kol-hardware 0.5.0 (no native `title`; DS Tooltip, silent on a pending jack). Five monitor tickets closed, receipts returned. Amended 2026-10-17: kol-icons 0.39.0 (`monitor` in `identity`), catalog docs for the new props, kol-component 0.264.0 (`ColorPickerPopover`, `AlphaStrip`), icon gallery tiles follow the size. Push is the user's. Log: `session-log/2026-10-16-monitor-tickets-search-disabled-hardware-tooltips.md`.
-
-## Current state (2026-10-15 later, monitor + mirror seams)
-
-- **Published:** kol-shell 0.64.0 (`AppStudio library.children` · `create.shell: false` · `RailSlotProvider`/`useRailSlot`) · kol-component 0.261.0 (`IconToggle`, modal grid on `MediaTile`, picker × on the title row) · kol-theme 0.174.0. Five mirror/monitor tickets closed, receipts returned. Standing go: tickets from mirror/monitor are built when the watch fires. Push is the user's. Log: `session-log/2026-10-15-monitor-mirror-seams-and-icontoggle.md`.
 
 ## Repo standup (2026-06-15)
 

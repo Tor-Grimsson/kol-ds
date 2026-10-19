@@ -1447,6 +1447,12 @@
   max-height: var(--kol-ql-media-h);
   object-fit: contain;
 }
+/* an image zooms on click; a video's click is play */
+img.kol-quicklook-media { cursor: zoom-in; }
+/* FILL WIDTH (a click on the image, kol-atlas 2026-10-19): the window's width, height follows, and the
+ * body scrolls when the image is taller — from its top, not centred past it */
+img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-height: none; cursor: zoom-out; }
+.kol-quicklook-body:has(> .kol-quicklook-media--fill) { align-items: flex-start; max-height: var(--kol-ql-media-h); overflow-y: auto; }
 /* audio — Finder's: the artwork square left, the length beside it */
 .kol-quicklook-audio {
   display: flex;

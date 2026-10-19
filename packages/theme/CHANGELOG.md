@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.178.0 — 2026-10-19
+
+- **Quick Look fill width** (QuickLookFit, kol-atlas): `img.kol-quicklook-media` takes a `zoom-in` cursor; `.kol-quicklook-media--fill` sets the window's width and scrolls the body from the top, `zoom-out` cursor.
+
 ## 0.177.0 — 2026-10-18
 
 - **New: `.kol-header-lede-app`** — PageHeader's `app` level lede, between page and section: Right Grotesk Light 19/26 +0.3px, 72% ink (PageHeaderAppLevelDisplay, kol-monitor).
