@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-component
 
+## 0.281.0 — 2026-10-19
+
+- **`prompt` masks a password** (ModalPromptPassword, kol-atlas). `prompt(title, '', { type: 'password' })` renders the field `type="password"` with `autoComplete="current-password"`; `placeholder` rides in the same options. The native no-provider fallback cannot mask.
+- **OK is the bright button.** `tone="inverted"` — since tone-is-the-ground-axis `primary` is the dark ground, so OK drew like Cancel and nothing showed what Enter does. Prompt, confirm and alert.
+- **The dialog owns the keyboard.** Opens focused (prompt → field, confirm/alert → OK), Tab and Shift+Tab cycle inside it, Enter on a focused button presses that button. `role="dialog"` / `"alertdialog"`, `aria-modal`, labelled by its title.
+
 ## 0.280.0 — 2026-10-19
 
 - **`ActionButton`'s tooltip anchors to the control** (ActionButtonTooltipAnchor, kol-atlas). `Tooltip asChild`, so a positioned control — CodeBlock's copy button (`kol-frame-control`) — no longer shows its tip at the empty wrapper span ~950px away.

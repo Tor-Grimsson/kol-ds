@@ -19,6 +19,13 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
  * stay OK / Cancel, existing callers untouched (ModalConfirmLabels,
  * 2026-08-12). Enter/Escape keep their meanings regardless of labels.
  *
+ * PASSWORD (ModalPromptPassword, kol-atlas 2026-10-19): `prompt(title, '', { type: 'password' })`
+ * masks the field (`autoComplete="current-password"`) for the family's sign-in prompts. The
+ * native fallback cannot mask — mount a ModalProvider. `placeholder` sits in the same options.
+ *
+ * KEYBOARD: the dialog opens focused (prompt → its field, confirm/alert → OK), Tab cycles inside
+ * it, and Enter on a focused button presses that button rather than submitting.
+ *
  * Returned promise resolves to:
  *   - prompt  → string (value) on submit, `null` on cancel
  *   - confirm → boolean: `true` on confirm, `false` on cancel
@@ -58,8 +65,8 @@ export function ModalProvider({ children }) {
     })
   }, [])
 
-  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel } = {}) =>
-    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, resolve })),
+  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel, type = 'text', placeholder } = {}) =>
+    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, type, placeholder, resolve })),
   [])
 
   const confirm = useCallback((title, { okLabel, cancelLabel, options } = {}) =>
@@ -85,6 +92,7 @@ function ModalView({ state, closeWith }) {
   const [val, setVal] = useState(state.defaultValue ?? '')
   const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
   const inputRef = useRef(null)
+  const dialogRef = useRef(null)
 
   /* alert resolves `undefined` whichever way it is dismissed; a confirm with toggles resolves
    * `{ ok, values }` */
@@ -92,11 +100,24 @@ function ModalView({ state, closeWith }) {
   const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'alert' ? undefined : answer(true))
   const cancel = () => closeWith(state.kind === 'prompt' ? null : state.kind === 'alert' ? undefined : answer(false))
 
+  /* focus once on open — the key effect below re-runs per keystroke and would steal it back */
   useEffect(() => {
     if (state.kind === 'prompt') inputRef.current?.focus()
+    else dialogRef.current?.querySelector('[data-modal-ok]')?.focus()
+  }, [state.kind])
+
+  useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') cancel()
-      if (e.key === 'Enter')  submit()
+      if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') submit()
+      if (e.key === 'Tab') {
+        const els = [...(dialogRef.current?.querySelectorAll('button, input') ?? [])].filter((el) => !el.disabled)
+        if (!els.length) return
+        const i = els.indexOf(document.activeElement)
+        const next = e.shiftKey ? (i <= 0 ? els.length - 1 : i - 1) : (i === els.length - 1 ? 0 : i + 1)
+        e.preventDefault()
+        els[next].focus()
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -115,6 +136,10 @@ function ModalView({ state, closeWith }) {
       }}
     >
       <div
+        ref={dialogRef}
+        role={state.kind === 'prompt' ? 'dialog' : 'alertdialog'}
+        aria-modal="true"
+        aria-labelledby="kol-modal-title"
         onMouseDown={(e) => e.stopPropagation()}
         className="kol-modal flex flex-col gap-4 p-5 rounded border border-fg-08"
         style={{
@@ -127,10 +152,13 @@ function ModalView({ state, closeWith }) {
         {/* kol-mono-12, not helper: dialog copy WRAPS, and helper's
           * line-height 1 is single-line chrome only (type protocol). */}
         {/* pre-line: an alert can carry a failure list, one per line */}
-        <p className="kol-mono-12 text-emphasis whitespace-pre-line">{state.title}</p>
+        <p id="kol-modal-title" className="kol-mono-12 text-emphasis whitespace-pre-line">{state.title}</p>
         {state.kind === 'prompt' && (
           <Input
             ref={inputRef}
+            type={state.type}
+            autoComplete={state.type === 'password' ? 'current-password' : undefined}
+            placeholder={state.placeholder}
             variant="outline"
             size="sm"
             value={val}
@@ -153,7 +181,9 @@ function ModalView({ state, closeWith }) {
         )}
         <div className="flex gap-2 justify-end">
           {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
-          <Button tone="primary"   size="sm" onClick={submit}>{state.okLabel ?? 'OK'}</Button>
+          {/* inverted, not primary: since tone-is-the-ground-axis (2026-09-03) primary is the
+            * dark ground, so OK drew the same as Cancel and nothing showed what Enter does */}
+          <Button tone="inverted"  size="sm" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
         </div>
       </div>
     </div>

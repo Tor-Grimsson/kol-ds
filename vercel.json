@@ -32,6 +32,10 @@
       "destination": "/apps/overlays/index.html"
     },
     {
+      "source": "/apps/stationery/(.*)",
+      "destination": "/apps/stationery/index.html"
+    },
+    {
       "source": "/apps/notes/(.*)",
       "destination": "/apps/notes/index.html"
     },

@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-10-05
+updated: 2026-10-20
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -11,6 +11,7 @@ tags:
   - audience/agency-internal
 related:
   - "[[../INDEX|Operations]]"
+  - "[[04-stationery-desk|Stationery desk]]"
 ---
 
 # Apps tier
@@ -24,6 +25,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | [[01-tier-rules\|Tier rules]] | How an app is wired here — shape, publishing, ownership, data, gotchas. Outlives any one app |
 | [[02-media-app-plan\|Media app plan]] | The first app — phases, acceptance, and the one decision still held |
 | [[03-candidate-apps\|Candidate apps]] | The roster the tier will absorb, one at a time. Only media is committed |
+| [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — the quote, invoice and letter layouts designed on a canvas against the brand book's set; where they ship |
 
 ## The apps
 
@@ -61,6 +63,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/search` | `pnpm search-app` (5185) · `/apps/search` | every search surface — the ⌘K search modal, the results page (the query, how it was read, results with their reasons, facets), `/` focus, and RESULTS · GRAPH (the index's tags as a network, kol-search `tagGraph`). `pnpm search` is pnpm's own registry search, hence the name |
 | `apps/workshop-fixture` | — (private package) | the invented corpus the three apps above share: 19 markdown docs with frontmatter across documentation · operations · development, 24 components, 3 blocks, 2 sets, the showcase's spaces — built into the vault tree, the component tree and kol-search items |
 | `apps/media-fixture` | — (private package) | the imagined olina setup both apps run on: a fake bucket (`bucket.js`) and a fake D1 (`d1.js`), the client over them, and `useFixtureMedia` — the wiring both apps share so neither grows a copy |
+| `apps/stationery` | `pnpm stationery` (5202) · `/apps/stationery` | **the stationery desk** (2026-10-20) — Kolkrabbi's printed set on a pan-and-zoom canvas (kol-component's `PanZoomViewport` over rack's dot grid): the brand sheets and the real invoices as references, the brand book's card · envelope · letterhead · signature at print size wearing kol-brand's marks and facts, and the quote and invoice layouts being designed on A4. See [[04-stationery-desk\|Stationery desk]] |
 
 A media feature ships in the DS and shows in `apps/media`; `apps/media-hub` adds only the Shell and Hub around it. `apps/shell` and `apps/hub` are the references those layers are judged against.
 

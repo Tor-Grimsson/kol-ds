@@ -30,6 +30,13 @@ function Triggers() {
       >
         Prompt
       </Button>
+      {/* `type: 'password'` — the sign-in prompt masks the field */}
+      <Button
+        size="sm"
+        onClick={() => prompt('Password:', '', { type: 'password', okLabel: 'Sign in' })}
+      >
+        Password
+      </Button>
       {/* `options` — toggle rows between the title and the buttons; resolves { ok, values } */}
       <Button
         size="sm"

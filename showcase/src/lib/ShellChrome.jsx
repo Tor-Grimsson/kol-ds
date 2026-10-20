@@ -257,10 +257,10 @@ function SpaceRail({ space, onNavigate, railMode }) {
     const composition = [
       anyComponentsAdmitted() && { id: 'lib-components', label: 'Components', path: '/components', children: cmpRoutes },
       isSurfaceAdmitted('blocks') && { id: 'lib-blocks', label: 'Modules', path: '/modules', children: blocks },
-      isSurfaceAdmitted('templates') && { id: 'lib-templates', label: 'Templates', path: '/templates', children: [
-        ...TEMPLATES.map((t) => ({ id: `tpl-${t.slug}`, label: t.title, path: templateHref(t.slug) })),
-        { id: 'tpl-blocks', label: 'Blocks', path: '/templates/blocks', children: TEMPLATE_BLOCKS.map((b) => ({ id: `tpl-block-${b.slug}`, label: b.title, path: blockHref(b.slug) })) },
-      ] },
+      /* its own group, between Modules and Templates (user 2026-10-20: "why is blocks inside templates?
+       * looks weird") — the parts a template body is made of sit one size under the templates */
+      isSurfaceAdmitted('templates') && { id: 'tpl-blocks', label: 'Template blocks', path: '/templates/blocks', children: TEMPLATE_BLOCKS.map((b) => ({ id: `tpl-block-${b.slug}`, label: b.title, path: blockHref(b.slug) })) },
+      isSurfaceAdmitted('templates') && { id: 'lib-templates', label: 'Templates', path: '/templates', children: TEMPLATES.map((t) => ({ id: `tpl-${t.slug}`, label: t.title, path: templateHref(t.slug) })) },
       isSurfaceAdmitted('apps') && { id: 'lib-apps', label: 'Apps', path: '/apps', children: apps },
     ].filter(Boolean)
     const collection = [

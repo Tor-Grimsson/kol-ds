@@ -138,11 +138,13 @@ export default function SearchInput({
 
   /* Escape closes, and so does clicking away — a field that can only be closed
    * by emptying it and blurring is a trap, and this one had neither wired. The
-   * listener only exists while open. */
+   * listener only exists while open. A click away closes an EMPTY field only: with a query in it,
+   * the results below are what you are clicking (the icon catalog lost its filter on every tile
+   * click, 2026-10-20), so the query stays until Escape or the clear. */
   const shellRef = useRef(null)
   useEffect(() => {
     if (!expanding || !isOpen) return undefined
-    const away = (e) => { if (shellRef.current && !shellRef.current.contains(e.target)) setOpen(false) }
+    const away = (e) => { if (shellRef.current && !shellRef.current.contains(e.target) && !inputRef.current?.value) setOpen(false) }
     const esc = (e) => { if (e.key === 'Escape') setOpen(false) }
     document.addEventListener('mousedown', away)
     document.addEventListener('keydown', esc)

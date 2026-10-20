@@ -106,6 +106,12 @@ export const APPS = [
       { path: '/core', what: 'The editor with no layer packs — what @kolkrabbi/design-editor/core gives a consumer (a full load)' },
       { path: '/output', what: 'The chromeless output window, no rail (OutputView)' },
     ] },
+  { name: 'stationery', layer: 'tool', port: 5202, what: 'The stationery desk — Kolkrabbi’s printed set on a pan-and-zoom canvas: the brand sheets and the real invoices as references, the brand book’s card · envelope · letterhead · signature at print size, and the quote and invoice layouts being designed on A4. The paper is always light; what overflows A4 hangs off the sheet past a red line.',
+    layers: ['Tool'], packages: ['kol-component (PanZoomViewport)', 'kol-styleguide', 'kol-brand'], optIns: ['Space + drag · ⌘ scroll · ⌘0 · G dots · T ground · S sheet'],
+    consumer: 'Nothing to install yet — the layouts move into a package (kol-stationery) once the quote is settled; until then the desk is the workbench and the Kolkrabbi Stationery artifact is the hand-off.',
+    routes: [
+      { path: '/', what: 'The desk — references · the brand book’s set · the A4 row (letterhead, correspondence, quote v1 · v2 · v3, invoice)' },
+    ] },
   { name: 'labs', layer: 'tool', port: 5199, what: 'Labs alone — one source under a params rail, its catalog on the rail. At a desk the params are a rail on the right; on a phone a sheet along the bottom, the stage whole above it.',
     layers: ['Shell (the rail is labs’ own catalog)', 'Tool'], packages: ['design-editor (source)', 'kol-shell'], optIns: ['phone drawer (touch="drawer")', 'fixture: media-fixture'],
     consumer: 'Route to LabsView after setMediaClient / setSettingsStore; hand its railExtras rows to your rail.',
