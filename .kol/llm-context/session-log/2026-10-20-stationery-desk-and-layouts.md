@@ -35,3 +35,9 @@
 1. He iterates the artifact and shares the layout back → `packages/stationery` (Quote · Invoice · Letter · Envelope · BusinessCard, data contract, print CSS), the styleguide mocks move over, kol-atlas bumps, QuoteDocument closes
 2. Parked behind it, all three said yes to: a `brand` function in the closed set with the branded components under it; rename kol-shell's `Logomark` (an SVG loader) so "Logomark" means the brand asset; a Brand chapter under Styles (Logos · Colors · Type · Stationery · Social)
 3. Round 15 awaits his review; the SearchInput fix awaits his publish yes
+
+## Amended — 2026-10-20
+
+- Published kol-component 0.282.0 (the SearchInput click-away fix); registry confirmed live
+- Icon categories built on the Round 15 recommendation (user: "you choose"): `showcase/src/nav/icon-categories.js` is the data; the rail folds set → category → groups, every category is a page (`/icons/<set>/<slug>`, resolved before a group), ⌘K lists a category with its groups (the row files under its own name — the engine's facet jump lists a section's members). Three renamed so slugs never collide with group folders: Design tools · Other · Color & gradient. Round 15 marked decided, for review
+- The quote is iterated elsewhere (the artifact); the package waits for the layout to come back

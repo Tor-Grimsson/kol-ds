@@ -19,7 +19,7 @@ import { SETS } from './sets-registry.js'
 import { isSurfaceAdmitted, anyComponentsAdmitted } from '../nav/admitted.js'
 import { labelFromSlug } from '../nav/labels.js'
 import { COMPONENTS_AZ } from '../nav/registry.js'
-import { ICON_SETS, iconGroups } from '../pages/IconsGallery.jsx'
+import { ICON_SETS, iconCategories } from '../pages/IconsGallery.jsx'
 import { LOBBY_CHAPTERS, LOBBY_INDEX } from '../pages/Lobby.jsx'
 import { PACKAGES, TIER_ORDER, packageHref, tierHref, tierLabel } from '../pages/Packages.jsx'
 import { APPS, LAYERS } from '../pages/Apps.jsx'
@@ -323,8 +323,10 @@ function SpaceRail({ space, onNavigate, railMode }) {
           const kids = rowsOf(DOCS_SPECIMENS.filter((x) => x.parent === r.id))
           return kids.length ? { ...r, children: [...(r.children ?? []), ...kids] } : r
         }), { pages: true })} basePath="/" label="Foundations" labelTo="/foundations" onNavigate={onNavigate} />
-        {/* each set is a group of its icon groups, each a page (W3, 2026-09-30) */}
-        <ShellSidebar routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconGroups(k).map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) })), { pages: true, leaf: 'grid' })} basePath="/" label="Icons" labelTo="/icons" onNavigate={onNavigate} />
+        {/* each set folds into its categories, each a page over its groups, each a page (W3, 2026-09-30; Round 15, 2026-10-20) */}
+        <ShellSidebar routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconCategories(k).map((c) => (c.slug
+          ? { id: `icons-${k}-c-${c.slug}`, label: c.name, path: `/icons/${k}/${c.slug}`, children: c.groups.map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) }
+          : { id: `icons-${k}-${c.folder}`, label: c.label, path: `/icons/${k}/${c.folder}` })) })), { pages: true, leaf: 'grid' })} basePath="/" label="Icons" labelTo="/icons" onNavigate={onNavigate} />
         <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_GUIDES)), { pages: true })} basePath="/" label="Guides" labelTo="/styles/guides" onNavigate={onNavigate} />
       </div>
     )

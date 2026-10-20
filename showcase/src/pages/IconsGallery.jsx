@@ -5,6 +5,7 @@ import { TabStrip } from '@kolkrabbi/kol-shell'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import { ICON_CATEGORIES, findCategory } from '../nav/icon-categories.js'
 import ChapterHome from '../lib/ChapterHome.jsx'
 import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
 
@@ -44,6 +45,14 @@ const byOrder = (a, b) => {
 /* a set's groups in gallery order — the rail's rows and the group pages (W3, 2026-09-30: every
  * group gets a page) */
 export const iconGroups = (setKey) => Object.keys(ICON_SETS[setKey]?.groups ?? {}).sort(byOrder).map((folder) => ({ folder, label: label(folder), count: ICON_SETS[setKey].groups[folder].length }))
+/* a set's categories, each with its groups in gallery order (Round 15, 2026-10-20); a group no category
+ * claims rides after them as a bare group, so nothing drops out of the rail */
+export const iconCategories = (setKey) => {
+  const groups = iconGroups(setKey)
+  const cats = (ICON_CATEGORIES[setKey] ?? []).map((c) => ({ ...c, groups: groups.filter((g) => c.groups.includes(g.folder)) }))
+  const placed = new Set(cats.flatMap((c) => c.groups.map((g) => g.folder)))
+  return [...cats, ...groups.filter((g) => !placed.has(g.folder))]
+}
 
 /* FIT is the default (2026-10-09 — user: "why is the guide and icons not using the available space?
  * hard to visualise margins like this"): the 24 grid spans the whole tile, so the keylines read
@@ -143,11 +152,13 @@ export default function IconsGallery() {
     setTimeout(() => setCopied((c) => (c === name ? null : c)), 1200)
   }
 
+  /* the URL's last segment is a category first (Round 15), then a group */
+  const category = set && group ? findCategory(set, group) : null
   const orderedFolders = useMemo(() => {
     if (!meta) return []
-    /* a group's page shows that group only (W3, 2026-09-30) */
-    return Object.keys(meta.groups).filter((f) => !group || f === group).sort(byOrder)
-  }, [meta, group])
+    /* a group's page shows that group only (W3, 2026-09-30); a category's page shows its groups */
+    return Object.keys(meta.groups).filter((f) => category ? category.groups.includes(f) : !group || f === group).sort(byOrder)
+  }, [meta, group, category])
 
   /* `group` carries the DISPLAY label so the chips read as the gallery always
    * labelled them ("Add / remove", not "add-remove"). */
@@ -162,7 +173,7 @@ export default function IconsGallery() {
     return <ChapterHome home="icons" title="Sets" noteHeader="Holds" items={Object.entries(ICON_SETS).map(([k, x]) => ({ to: `/icons/${k}`, label: x.title, note: `${Object.keys(x.groups).length} groups · ${Object.values(x.groups).flat().length} icons` }))} />
   }
 
-  if (!meta || (group && !meta.groups[group])) {
+  if (!meta || (group && !meta.groups[group] && !category)) {
     return (
       <section id="icons-gallery">
         <PageHeader size="sm" voice="mono" title="Unknown set" />
@@ -181,7 +192,7 @@ export default function IconsGallery() {
         * set picker went: the rail and the Icons home list the sets; the theme toggle went: the
         * shell header has the one. */}
       {group
-        ? <DocHeader eyebrow={meta.title} title={label(group)} lede={`${items.length} icons in the ${label(group)} group. Click any icon to copy its name.`} />
+        ? <DocHeader eyebrow={meta.title} title={category ? category.name : label(group)} lede={category ? `${items.length} icons in ${category.groups.length} groups. Click any icon to copy its name.` : `${items.length} icons in the ${label(group)} group. Click any icon to copy its name.`} />
         : <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />}
 
       <ContentFilters
@@ -192,7 +203,8 @@ export default function IconsGallery() {
         /* TYPE first — the short group takes the first column; TAGS flows after it */
         filterGroups={[
           { label: 'Type', key: 'type', values: TYPES },
-          ...(group ? [] : [{ label: 'Tags', key: 'group', values: orderedFolders.map(label) }]),
+          /* a category's page keeps the Tags chips — its groups */
+          ...(group && !category ? [] : [{ label: 'Tags', key: 'group', values: orderedFolders.map(label) }]),
         ]}
         mutuallyExclusiveFilters={['type', 'group']}
         showCountOnlyWhenFiltering

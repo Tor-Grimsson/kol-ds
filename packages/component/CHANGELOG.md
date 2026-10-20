@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.282.0 — 2026-10-20
+
+- **An expanding `SearchInput` keeps its query when you click away** (the icon catalog lost its filter on every tile click — user: "does not select it, but clears it from selection which is so annoying"). A click outside closes the field only while it is empty; with a query in it the results below are what you are clicking. Escape and the clear still close it.
+
 ## 0.281.0 — 2026-10-19
 
 - **`prompt` masks a password** (ModalPromptPassword, kol-atlas). `prompt(title, '', { type: 'password' })` renders the field `type="password"` with `autoComplete="current-password"`; `placeholder` rides in the same options. The native no-provider fallback cannot mask.

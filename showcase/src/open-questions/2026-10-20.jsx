@@ -8,8 +8,12 @@ export const meta = {
   round: 15,
   date: '2026-10-20',
   title: 'Icon categories',
-  status: 'open',
+  status: 'decided, review',
 }
+/* DECIDED ON THE RECOMMENDATION, for review (2026-10-20 — user: "icons sure whatever you want, you
+ * choose"). Built as drawn here, with three names changed so a category's URL slug never collides with
+ * a group folder in its set: Editing → Design tools, Misc → Other, Color → Color & gradient. The live
+ * data is `nav/icon-categories.js`; the rail, the gallery and ⌘K read it. */
 
 const SETS = [
   {

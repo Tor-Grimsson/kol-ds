@@ -12,7 +12,7 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Current state (2026-10-20, the stationery desk)
 
-- **Built, nothing published:** `apps/stationery` (5202) — a PanZoomViewport desk with the brand sheets, his real invoices, the brand book's stationery at print size and the kol-atlas quote mockups on A4; the layouts handed over as the Kolkrabbi Stationery artifact (quote · invoice · letter) for him to iterate, then `packages/stationery`. Catalog search no longer drops its query on click (kol-component, **unpublished**, 0.282.0 on his yes). Blocks lifted out of Templates. Round 15 (icon categories) open. Parked, all yes'd: a `brand` function, the `Logomark` rename, a Brand chapter under Styles. `QuoteDocument` stays open. Log: `session-log/2026-10-20-stationery-desk-and-layouts.md`.
+- **Built, nothing published:** `apps/stationery` (5202) — a PanZoomViewport desk with the brand sheets, his real invoices, the brand book's stationery at print size and the kol-atlas quote mockups on A4; the layouts handed over as the Kolkrabbi Stationery artifact (quote · invoice · letter) for him to iterate, then `packages/stationery`. Catalog search no longer drops its query on click — **kol-component 0.282.0 published**. Blocks lifted out of Templates. Icon categories built on the Round 15 recommendation (`nav/icon-categories.js`; set → category → groups in the rail, each category a page, ⌘K rows); Round 15 decided, for review. Parked, all yes'd: a `brand` function, the `Logomark` rename, a Brand chapter under Styles. `QuoteDocument` stays open. Log: `session-log/2026-10-20-stationery-desk-and-layouts.md`.
 
 ## Current state (2026-10-19 later, prompt password)
 

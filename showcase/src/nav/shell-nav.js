@@ -1,5 +1,6 @@
 import { COMPONENTS_AZ, CATEGORY_LABELS, groupComponents, TOP_LEVEL, PACKAGE_ORDER, packageLabel } from './registry.js'
 import { BLOCKS } from '../lib/blocks-registry.js'
+import { ICON_CATEGORIES, categoryOf } from './icon-categories.js'
 import { SETS } from '../lib/sets-registry.js'
 import { CARDS } from '../lib/cards-registry.js'
 import { VAULT, VAULT_TREE, MDX_DOCS, vaultDocHref } from './vault.js'
@@ -244,8 +245,12 @@ export const buildShellSearchItems = () => {
     const setTitle = label(set.replace('kol-icon-set-', ''))
     return [
       { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icons', keywords: [set], href: `/icons/${set}` },
+      /* a category is a page over its groups (Round 15, 2026-10-20); its groups file under it. The row
+       * files under ITS OWN name: a query that names a section lists that section's rows (the engine's
+       * facet jump), so the page's row has to be a member of its section to be offered */
+      ...(ICON_CATEGORIES[set] ?? []).map((c) => ({ id: `icons-${set}-c-${c.slug}`, title: c.name, kind: 'icon category', space: 'styles', category: c.name, keywords: [setTitle, ...c.groups.map(label)], href: `/icons/${set}/${c.slug}` })),
       ...Object.entries(groups).flatMap(([folder, names]) => [
-        { id: `icons-${set}-${folder}`, title: label(folder), kind: 'icon group', space: 'styles', category: setTitle, href: `/icons/${set}/${folder}` },
+        { id: `icons-${set}-${folder}`, title: label(folder), kind: 'icon group', space: 'styles', category: categoryOf(set, folder)?.name ?? setTitle, href: `/icons/${set}/${folder}` },
         ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), keywords: [setTitle], href: `/icons/${set}/${folder}` })),
       ]),
     ]
