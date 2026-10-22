@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.53.0 — 2026-10-22
+
+- **`hideLoaderApp({ minMs = 600 })`** (LoaderAppMinimumTime, kol-monitor): the loader holds at least `minMs` from navigation start, so a fast load no longer flashes the mark; a slow load waits nothing extra. Reduced motion drops the fade, not the minimum. Each app sets its own `minMs`; `0` is the old behaviour.
+
 ## 0.52.0 — 2026-10-22
 
 - **`SideNav` is `NavRail variant="site"`** from kol-component under its old name — deprecated, on the retirement ledger, same props. It keeps the react-router read (`useLocation`, `useNavigate`, the basename on hrefs) and renders `ThemeToggle` in the rail's slot. Rendering is unchanged; the active category icon is ink (kol-theme 0.179.0). Needs kol-component ≥0.283.0.

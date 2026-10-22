@@ -17,6 +17,12 @@
       "type": "—",
       "def": "null",
       "desc": ""
+    },
+    {
+      "prop": "chessData",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ChessBoard": [
@@ -79,13 +85,31 @@
       "type": "—",
       "def": "null",
       "desc": ""
+    },
+    {
+      "prop": "fen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ChessBoardWithControls": [
     {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
       "prop": "panel",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "chessData",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -106,6 +130,18 @@
       "prop": "isFullscreen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "externalGame",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "chessData",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -227,6 +263,20 @@
       "desc": ""
     }
   ],
+  "GameArchiveTable": [
+    {
+      "prop": "chessData",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onGameLoad",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "NotationPanel": [
     {
       "prop": "notationPairs",
@@ -277,6 +327,38 @@
       "desc": ""
     }
   ],
+  "VariationTree": [
+    {
+      "prop": "moves",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "depth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "moveIndex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectPly",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "SetupPanel": [
     {
       "prop": "className",
@@ -323,6 +405,12 @@
   ],
   "ChessPiece": [
     {
+      "prop": "color",
+      "type": "—",
+      "def": "'white'",
+      "desc": ""
+    },
+    {
       "prop": "size",
       "type": "—",
       "def": "64",
@@ -339,13 +427,25 @@
       "type": "—",
       "def": "{}",
       "desc": ""
+    },
+    {
+      "prop": "pieceSet",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "piece",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ChessHero": [
     {
-      "prop": "trend",
+      "prop": "chessData",
       "type": "—",
-      "def": "'up'",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -354,6 +454,18 @@
       "prop": "externalGame",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "chessData",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -381,6 +493,30 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "containerClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lineClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AssetGrid": [
@@ -400,6 +536,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -427,6 +569,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "category",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Avatar": [
@@ -447,6 +601,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "initial",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Badge": [
@@ -466,6 +632,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -529,6 +707,90 @@
       "type": "—",
       "def": "'default'",
       "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconRight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeftHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconRightHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconOnly",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconOnlyHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconGap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pressed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CloseButton": [
@@ -554,6 +816,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -587,6 +855,48 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "confirmIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "confirmLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FileIcon": [
@@ -594,6 +904,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "ext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "glyph",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -621,6 +943,18 @@
       "type": "—",
       "def": "'Downloaded'",
       "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SortHeader": [
@@ -640,6 +974,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -667,6 +1013,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "sortBy",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CopyButton": [
@@ -674,6 +1026,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -688,6 +1046,36 @@
       "prop": "blend",
       "type": "—",
       "def": "0.5",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cp1",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cp2",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "easing",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -783,6 +1171,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "toc",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DropdownTagFilter": [
@@ -809,6 +1209,18 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "EmptyState": [
@@ -822,6 +1234,30 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -855,6 +1291,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "IconPlate": [
@@ -880,6 +1340,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -927,6 +1399,36 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconOn",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ExitPreview": [
@@ -955,6 +1457,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FullscreenOverlay": [
@@ -969,6 +1489,30 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "initialFocus",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "BackgroundVideo": [
@@ -976,6 +1520,36 @@
       "prop": "active",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEnded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hlsConfig",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1021,6 +1595,90 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCommit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "chars",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "suffix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotRight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "affordance",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "unit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Label": [
@@ -1028,6 +1686,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "htmlFor",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1073,6 +1743,30 @@
       "type": "—",
       "def": "0",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "OverlayGlassPanel": [
@@ -1117,6 +1811,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Pill": [
@@ -1136,6 +1836,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1169,6 +1875,24 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcut",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PopoverPanel": [
@@ -1195,6 +1919,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "popover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ContextMenu": [
@@ -1203,6 +1951,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "menu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ProsePreview": [
@@ -1210,6 +1970,30 @@
       "prop": "quote",
       "type": "—",
       "def": "'Above as below — justice is a starfield.'",
+      "desc": ""
+    },
+    {
+      "prop": "h1",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "paragraph",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "code",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pullout",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1242,6 +2026,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1286,6 +2082,54 @@
       "prop": "variant",
       "type": "—",
       "def": "'dial'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "formatValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelPlacement",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bipolar",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelMinWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onHold",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1349,6 +2193,66 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClear",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutHint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFocus",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fieldHeight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "InspectorSection": [
@@ -1374,6 +2278,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1443,6 +2359,66 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headlineClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionLabel": [
@@ -1456,6 +2432,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1489,6 +2471,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Stepper": [
@@ -1521,6 +2521,36 @@
       "type": "—",
       "def": "{}",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Kbd": [
@@ -1534,6 +2564,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1591,6 +2633,48 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailing",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Tag": [
@@ -1622,6 +2706,48 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1661,6 +2787,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ToggleBracket": [
@@ -1693,6 +2837,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ToggleCheckbox": [
@@ -1712,6 +2874,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1738,6 +2918,30 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1770,6 +2974,18 @@
       "prop": "perspective",
       "type": "—",
       "def": "700",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1823,6 +3039,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "viewMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "XYPad": [
@@ -1855,6 +3083,36 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "xValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "yValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "xLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "yLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "InspectorRail": [
@@ -1883,11 +3141,123 @@
       "desc": ""
     }
   ],
-  "AddLayerButton": [
+  "PathNodeOverlay": [
     {
-      "prop": "parentId",
+      "prop": "layer",
       "type": "—",
-      "def": "null",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "viewW",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "viewH",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "toVirtual",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "updateLayer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "beginTransaction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "commitTransaction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CropOverlay": [
+    {
+      "prop": "layer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "toVirtual",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "updateLayer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "beginTransaction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "commitTransaction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "BLEND_MODES": [
+    {
+      "prop": "IconC",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "collapsed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleCollapse",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -1939,6 +3309,92 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectCanvas",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleVisible",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleLocked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRename",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onReorder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onGroup",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AddLayerButton": [
+    {
+      "prop": "types",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "iconFor",
+      "type": "—",
+      "def": "(type) => DEFAULT_TYPE_ICONS[type] ?? 'rectangle'",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "menuWidth",
+      "type": "—",
+      "def": "180",
+      "desc": ""
+    },
+    {
+      "prop": "nested",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "StepList": [
@@ -1983,6 +3439,38 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TIMELINE_EASINGS": [
+    {
+      "prop": "t",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TimelineDock": [
@@ -2008,6 +3496,50 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onSeek",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CURVE_KINDS": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "args",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "validate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCommit",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2035,6 +3567,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "validate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "KeyframeEditor": [
@@ -2055,6 +3605,30 @@
       "type": "—",
       "def": "[\n  { t: 0, rot: [0, 0, 0], pos: [0, 0, 0], scale: 1, ease: 'inout' },\n  { t: 1, rot: [0, Math.PI * 2, 0], pos: [0, 0, 0], scale: 1, ease: 'inout' },\n]",
       "desc": ""
+    },
+    {
+      "prop": "keyframes",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSeek",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPause",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Accordion": [
@@ -2063,6 +3637,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AccordionPanel": [
@@ -2070,6 +3650,36 @@
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2084,6 +3694,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2105,6 +3727,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onAlign",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ImageBlock": [
@@ -2124,6 +3752,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2163,6 +3809,18 @@
       "type": "—",
       "def": "'Rotate'",
       "desc": ""
+    },
+    {
+      "prop": "box",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "showRotate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "VideoBlock": [
@@ -2201,6 +3859,36 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "url",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "file",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionCardItem": [
@@ -2227,6 +3915,60 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "visual",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backgroundColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "zoom",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CodeBlock": [
@@ -2246,6 +3988,36 @@
       "prop": "copy",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "code",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "language",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filename",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2291,6 +4063,54 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "refs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "resolveRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "autoValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleLock",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tokenName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ColorRamp": [
@@ -2298,6 +4118,42 @@
       "prop": "stops",
       "type": "—",
       "def": "[100, 200, 300, 400, 500]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ramp",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "vars",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "colors",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "anchor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2355,6 +4211,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Dropdown": [
@@ -2393,6 +4267,60 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rowHeight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOptionHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconOnly",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "triggerAdornment",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MultiSelect": [
@@ -2425,6 +4353,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "StatusChip": [
@@ -2445,6 +4385,18 @@
       "type": "—",
       "def": "'sm'",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FieldRow": [
@@ -2464,6 +4416,42 @@
       "prop": "disabled",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2497,6 +4485,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "srcSet",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Image": [
@@ -2516,6 +4528,30 @@
       "prop": "loading",
       "type": "—",
       "def": "'lazy'",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "category",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "aspectRatio",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2542,6 +4578,132 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "kicker",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "detail",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "date",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tags",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "clamp",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bodyClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "kickerClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "detailClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dateClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sizeClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metaClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tagsClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2605,6 +4767,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "bg",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "borderHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ContentCard": [
@@ -2637,6 +4817,150 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pad",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tagVariant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ring",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "zoom",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "flip",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fade",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "plateRule",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bg",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "control",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "controlStart",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "reveal",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "expandedContent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onContextMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDoubleClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ContentRow": [
@@ -2662,6 +4986,102 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "thumb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "paddingY",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "specs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "minHeight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onContextMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDoubleClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tagVariant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bg",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2696,6 +5116,36 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "minCol",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cols",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "listMin",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2741,6 +5191,24 @@
       "type": "—",
       "def": "4",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MenuDropdownItem": [
@@ -2755,6 +5223,66 @@
       "type": "—",
       "def": "'sm'",
       "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPointerEnter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPointerLeave",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcut",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MenuDropdownNest": [
@@ -2768,6 +5296,44 @@
       "prop": "scroll",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ModalProvider": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2801,6 +5367,30 @@
       "type": "—",
       "def": "[\n  { id: 'analogous',     label: 'Analogous',           roleOffsets: [0, -30, -15, 15, 30] },\n  { id: 'complementary', label: 'Complementary',       roleOffsets: [0, 0, 0, 180, 180] },\n  { id: 'split',         label: 'Split complementary', roleOffsets: [0, 150, 210, 0, 150] },\n  { id: 'triadic',       label: 'Triadic',             roleOffsets: [0, 120, 240, 0, 120] },\n  { id: 'tetradic',      label: 'Tetradic',            roleOffsets: [0, 90, 180, 270, 0] },\n]",
       "desc": ""
+    },
+    {
+      "prop": "hue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slots",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onHueChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PropertyInput": [
@@ -2815,6 +5405,42 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "step",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ShapeDropdown": [
@@ -2828,6 +5454,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -2897,6 +5541,48 @@
       "type": "—",
       "def": "true",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onResize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CommandOverlay": [
@@ -2953,6 +5639,84 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExpand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemoveChip",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onQueryChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "enterLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenResults",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selectLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ShortcutsOverlay": [
@@ -2972,6 +5736,18 @@
       "prop": "variant",
       "type": "—",
       "def": "'overlay'",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3035,6 +5811,102 @@
       "type": "—",
       "def": "null",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "formatValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fontSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value2",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange2",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label1",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label2",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPlayheadChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "direction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onHold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "aria-label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SpecList": [
@@ -3048,6 +5920,112 @@
       "prop": "framed",
       "type": "—",
       "def": "false",
+      "desc": ""
+    }
+  ],
+  "HueStrip": [
+    {
+      "prop": "hue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AlphaStrip": [
+    {
+      "prop": "alpha",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SBSquare": [
+    {
+      "prop": "hue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sat",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "val",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WheelTriangle": [
+    {
+      "prop": "hue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sat",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "val",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChangeHue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChangeSV",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SpectrumControls": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3068,6 +6046,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultValue",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3163,6 +6159,36 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lastPicked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTrigger",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "aria-label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ToolPalette": [
@@ -3194,6 +6220,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "activeId",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3227,6 +6271,54 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "kind",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "draft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSave",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCreate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "assets",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPickAsset",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SwatchStack": [
@@ -3247,6 +6339,18 @@
       "type": "—",
       "def": "'fill'",
       "desc": ""
+    },
+    {
+      "prop": "onSwap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClear",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "EyedropPick": [
@@ -3254,6 +6358,18 @@
       "prop": "disabled",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "sampleColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3274,6 +6390,42 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fillColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "strokeColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSwap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClear",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sampleColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3300,6 +6452,130 @@
       "prop": "tracked",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMinimise",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TABBAR_H": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CanvasFrame": [
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "customRatio",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "aspects",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bgColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "guideColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3339,6 +6615,80 @@
       "type": "—",
       "def": "true",
       "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "customRatio",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "aspects",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bgColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "guideColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "guides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "setGuides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSpaceTap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PanViewport": [
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PanZoomViewport": [
@@ -3352,6 +6702,36 @@
       "prop": "guidesInteractive",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "guides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "setGuides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSpaceTap",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3367,6 +6747,38 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "containerRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CANVAS_VIRTUAL_W": [
+    {
+      "prop": "axis",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "screenPos",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "interactive",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onGrab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CanvasGuides": [
@@ -3374,6 +6786,30 @@
       "prop": "virtualWidth",
       "type": "—",
       "def": "1080",
+      "desc": ""
+    },
+    {
+      "prop": "containerRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "guides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "setGuides",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "interactive",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3407,6 +6843,72 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "topbar",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leftHeader",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "left",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leftFooter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "canvasHeader",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "canvasFooter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightHeader",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "right",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightFooter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "overlays",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "GalleryCarousel": [
@@ -3432,6 +6934,32 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "AsciiCursor": [
+    {
+      "prop": "x",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "y",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDone",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3495,6 +7023,54 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "buttonLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Carousel": [
@@ -3508,6 +7084,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3552,6 +7134,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onPrev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNext",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3693,6 +7287,150 @@
       "type": "—",
       "def": "'kol-helper-12 text-oq-48'",
       "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "totalCount",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filtersOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFiltersOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "initialFilters",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderItem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "viewModeOptions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "viewMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewModeChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultViewMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "layoutOptions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultLayout",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onLayoutChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFilterChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "searchValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSearchChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headerActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailingActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leadingActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "belowActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PageHeader": [
@@ -3706,6 +7444,54 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitleMaxWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleClass",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3729,6 +7515,20 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "svgUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailSlotProvider": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FeatureSplit": [
@@ -3737,13 +7537,189 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "kicker",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ctas",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaAspect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FeaturedCarousel": [
     {
-      "prop": "active",
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sectionLabel",
+      "type": "—",
+      "def": "'Featured'",
+      "desc": ""
+    },
+    {
+      "prop": "ctaLabel",
+      "type": "—",
+      "def": "'Learn more'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "'h-[440px] md:h-[640px]'",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "descriptionClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "showHeader",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showTitle",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showDescription",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showCta",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "fullWidth",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "rounded",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "navPosition",
+      "type": "—",
+      "def": "'stack'",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlay",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "autoPlayInterval",
+      "type": "—",
+      "def": "5000",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "{ align: 'center', loop: true }",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "renderTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FeaturesCardSection": [
+    {
+      "prop": "headerLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headerDescription",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ctas",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ctasClassName",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -3825,6 +7801,156 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "theme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foot",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ctaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "showTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "showDescription",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "showCta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "descriptionClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headlineSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelProps",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionSplit": [
@@ -3905,6 +8031,90 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "theme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "textAlign",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bgImage",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionCards": [
@@ -3979,6 +8189,72 @@
       "type": "—",
       "def": "'w-full md:w-[30%]'",
       "desc": ""
+    },
+    {
+      "prop": "theme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "itemStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionCta": [
@@ -4010,6 +8286,72 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "promptLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "heading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "contactLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "email",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4054,6 +8396,74 @@
       "prop": "innerClassName",
       "type": "—",
       "def": "'max-w-[var(--kol-content-column)] flex flex-col gap-8'",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LoaderOverlay": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loader",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4111,6 +8521,12 @@
       "type": "—",
       "def": "!IS_PROD",
       "desc": ""
+    },
+    {
+      "prop": "onSyncLine",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MediaLibraryProvider": [
@@ -4136,6 +8552,18 @@
       "prop": "flat",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "client",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4181,6 +8609,18 @@
       "type": "—",
       "def": "null",
       "desc": ""
+    },
+    {
+      "prop": "client",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MediaPicker": [
@@ -4189,19 +8629,97 @@
       "type": "—",
       "def": "'all'",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "client",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MediaInspector": [
     {
-      "prop": "tags",
+      "prop": "showNav",
       "type": "—",
-      "def": "[]",
+      "def": "true",
       "desc": ""
     },
     {
-      "prop": "suggestions",
+      "prop": "hasUrl",
       "type": "—",
-      "def": "[]",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "files",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "index",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPrev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "downloadUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "keySet",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEdit",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4216,6 +8734,30 @@
       "prop": "phoneTabs",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onKinds",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4257,6 +8799,30 @@
       "type": "—",
       "def": "0",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onIndexChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SettingsPanel": [
@@ -4276,6 +8842,48 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "intro",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4297,6 +8905,24 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SettingsSwitch": [
@@ -4310,6 +8936,30 @@
       "prop": "disabled",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabledHint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4330,6 +8980,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4356,6 +9018,30 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4395,6 +9081,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SettingsChipRow": [
@@ -4415,6 +9113,18 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAll",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SettingsFooter": [
@@ -4422,6 +9132,18 @@
       "prop": "resetLabel",
       "type": "—",
       "def": "'Reset to defaults'",
+      "desc": ""
+    },
+    {
+      "prop": "onReset",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4442,6 +9164,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "labelWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4493,43 +9227,309 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "theme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "background",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "submitLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSubmit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "id",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "inputId",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "slotStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NewsletterBand": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ColumnBrowser": [
     {
-      "prop": "trail",
+      "prop": "objects",
       "type": "—",
-      "def": "false",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "cursor",
+      "prop": "prefix",
       "type": "—",
-      "def": "false",
+      "def": "''",
       "desc": ""
     },
     {
-      "prop": "muted",
+      "prop": "onPrefix",
       "type": "—",
-      "def": "false",
+      "def": "() => {}",
       "desc": ""
     },
     {
-      "prop": "size",
+      "prop": "quickLook",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "kindOf",
+      "type": "—",
+      "def": "function kindOf(o) {\n  if (o.forcedKind) return o.forcedKind\n  if (isSystemFile(o.key)) return 'system'\n  const ct = o.contentType || ''\n  if (ct.startsWith('image/')) return 'image'\n  if (ct.startsWith('video/')) return 'video'\n  if (ct.startsWith('audio/')) return 'audio'\n  const ext = extOf(o.key)\n  if (EXT_KINDS[ext]) return EXT_KINDS[ext]\n  if (ct === 'text/markdown') return 'markdown'\n  if (ct === 'application/json') return 'json'\n  if (ct.startsWith('text/')) return 'text'\n  if (ct.startsWith('font/')) return 'font'\n  return 'other'\n}",
+      "desc": ""
+    },
+    {
+      "prop": "kindLabel",
+      "type": "—",
+      "def": "{\n  image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF', markdown: 'Markdown', json: 'JSON', yaml: 'YAML', text: 'Text', code: 'Code',\n  playlist: 'HLS', font: 'Font', archive: 'Archive', segments: 'HLS segments',\n  system: 'System', other: 'File',\n}",
+      "desc": ""
+    },
+    {
+      "prop": "formatSize",
+      "type": "—",
+      "def": "(bytes) => {\n  if (bytes == null) return '—'\n  if (bytes < 1024) return `${bytes} B`\n  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`\n  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`\n  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`\n}",
+      "desc": ""
+    },
+    {
+      "prop": "formatDate",
+      "type": "—",
+      "def": "(v) => {\n  if (!v) return ''\n  const d = new Date(v)\n  return Number.isNaN(d.getTime()) ? String(v) : d.toISOString().slice(0, 10)\n}",
+      "desc": ""
+    },
+    {
+      "prop": "partition",
+      "type": "—",
+      "def": "(objects, prefix) => {\n  const folderSet = new Set()\n  const files = []\n  for (const o of objects) {\n    const rel = prefix ? o.key.slice(prefix.length) : o.key\n    const slash = rel.indexOf('/')\n    if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))\n    else files.push({ ...o, displayKey: o.displayKey ?? o.displayName ?? rel })\n  }\n  return { folders: [...folderSet].sort(), files }\n}",
+      "desc": ""
+    },
+    {
+      "prop": "defaultHeight",
+      "type": "—",
+      "def": "528",
+      "desc": ""
+    },
+    {
+      "prop": "columnWidth",
+      "type": "—",
+      "def": "260",
+      "desc": ""
+    },
+    {
+      "prop": "rowSize",
       "type": "—",
       "def": "'md'",
       "desc": ""
     },
     {
-      "prop": "indent",
+      "prop": "stackView",
       "type": "—",
-      "def": "0",
+      "def": "'list'",
       "desc": ""
     },
     {
-      "prop": "zones",
+      "prop": "tapSelects",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "autoFocus",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onQuickLook",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "picked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "urlOf",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderPreview",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderDetails",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onHeightChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columnWidths",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onColumnResize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRowContextMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dragFor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDropFiles",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selectedKeys",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectKeys",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folderIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "thumbnailFor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folderMeta",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4575,6 +9575,30 @@
       "type": "—",
       "def": "8 * 1024 * 1024",
       "desc": ""
+    },
+    {
+      "prop": "o",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "kind",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MediaPlayer": [
@@ -4595,6 +9619,66 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMeta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "VideoSheet": [
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AudioSheet": [
+    {
+      "prop": "frame",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDuration",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AudioPreview": [
+    {
+      "prop": "onDuration",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AudioPlayer": [
@@ -4603,6 +9687,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "preload",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AudioTile": [
@@ -4610,6 +9712,26 @@
       "prop": "fallback",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "VideoTile": [
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "poster",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4631,6 +9753,48 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "playing",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "time",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "duration",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSeek",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onVolume",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "QuickLookFrame": [
@@ -4638,6 +9802,60 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "nav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onResize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4653,6 +9871,42 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "preview",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "markKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDoubleClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onContextMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "RowMenuButton": [
@@ -4667,6 +9921,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DocPage": [
@@ -4674,6 +9934,26 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "frontmatter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocFrontmatter": [
+    {
+      "prop": "metadata",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4713,13 +9993,217 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "image",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "alt",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "email",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shelfTheme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shelfBackground",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pad",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "RecordManager": [
     {
-      "prop": "active",
+      "prop": "columns",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fields",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "publishLabel",
+      "type": "—",
+      "def": "'Publish'",
+      "desc": ""
+    },
+    {
+      "prop": "reorderLabel",
+      "type": "—",
+      "def": "(n) => `Reorder row ${n}`",
+      "desc": ""
+    },
+    {
+      "prop": "sortActive",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "filterActive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onReorder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectRow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSortToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFilterToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "query",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onQueryChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "searchPlaceholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelectionChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "saveState",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPublish",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPreview",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOverflow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaClient",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4734,6 +10218,12 @@
       "prop": "brandAnchors",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "ramps",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4767,6 +10257,30 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rowClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Graphic": [
@@ -4780,6 +10294,30 @@
       "prop": "aspectRatio",
       "type": "—",
       "def": "'1 / 1'",
+      "desc": ""
+    },
+    {
+      "prop": "category",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4819,6 +10357,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "srcSet",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ArticleHeader": [
@@ -4851,13 +10413,91 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "authorName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "authorTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "authorInitial",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "authorImage",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "date",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "readingTime",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "excerpt",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "heroImage",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "heroImageSrcSet",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "heroImageSizes",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PortableTextRenderer": [
     {
-      "prop": "level",
+      "prop": "blocks",
       "type": "—",
-      "def": "2",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "prose",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -4872,6 +10512,30 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "initial",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "image",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4898,6 +10562,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "url",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4969,13 +10639,91 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onQuery",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ParallaxShelf": [
     {
-      "prop": "settled",
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "fromLeft",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "heights",
+      "type": "—",
+      "def": "['h-[408px] md:h-[560px]', 'h-[372px] md:h-[520px]', 'h-[336px] md:h-[480px]']",
+      "desc": ""
+    },
+    {
+      "prop": "enter",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "tilt",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderCard",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metaClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "plugins",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -4997,6 +10745,42 @@
       "type": "—",
       "def": "520",
       "desc": ""
+    },
+    {
+      "prop": "renderCard",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCardClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "totalWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "intro",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "outro",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Decks": [
@@ -5005,19 +10789,149 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "client",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaClient",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onUpload",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DecksCatalog": [
+    {
+      "prop": "decks",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNew",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFavourite",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDelete",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DECK_SHORTCUTS": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DeckEditor": [
     {
-      "prop": "orientation",
+      "prop": "layouts",
       "type": "—",
-      "def": "'vertical'",
+      "def": "[]",
       "desc": ""
     },
     {
-      "prop": "size",
+      "prop": "railLeft",
       "type": "—",
-      "def": "16",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "unsaved",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "deck",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSave",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaClient",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onUpload",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5039,6 +10953,36 @@
       "type": "—",
       "def": "0",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSave",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onImport",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DeckSettings": [
@@ -5059,6 +11003,46 @@
       "type": "—",
       "def": "'#000000'",
       "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onApply",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SlideRenderer": [
+    {
+      "prop": "doc",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SlideThumb": [
+    {
+      "prop": "doc",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SlideStage": [
@@ -5073,6 +11057,42 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "doc",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selectedId",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEditStart",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEditEnd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SlideInspector": [
@@ -5080,6 +11100,54 @@
       "prop": "selectedIds",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "doc",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDuplicate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mediaClient",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onUpload",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "grab",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5113,6 +11181,48 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "badgeText",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selectedStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onStyleChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selectedWeight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onWeightChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypefaceHero": [
@@ -5133,6 +11243,24 @@
       "type": "—",
       "def": "'View Specimen'",
       "desc": ""
+    },
+    {
+      "prop": "downloadHref",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSpecimenClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "licenseNote",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypefaceStyleSection": [
@@ -5151,15 +11279,27 @@
   ],
   "FontPreviewSection": [
     {
-      "prop": "fontStyle",
+      "prop": "fontFamily",
       "type": "—",
-      "def": "'normal'",
+      "def": "'system-ui, sans-serif'",
       "desc": ""
     },
     {
-      "prop": "text",
+      "prop": "badgeText",
       "type": "—",
-      "def": "'Rennimjúkt eðal flauel, duft slæðist niður, silkislaufa & æðardúnn, fiður daðra dilur, friður. Sjáumst sjaldnar en sálagárur, samverustundir við skák að sötri, soðin sjálfsögðum samtölum. Spakir sötra á sætu seyði, sjónlistarspjall, síðfóníur, söngur sungin suður af Síberíu, setið að sálrænum stríðsglæpum, svaðil-pöttum og skyndimátum, svarthvítar svikamyllur, sökkvandi skálínur spegla sýnirnar – seinni tíðirnar.'",
+      "def": "'Preview'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "availableWeights",
+      "type": "—",
+      "def": "[\n  'Thin', 'Extralight', 'Light', 'Regular', 'Medium', 'Semibold', 'Bold', 'Extrabold', 'Black',\n]",
       "desc": ""
     },
     {
@@ -5169,35 +11309,47 @@
       "desc": ""
     },
     {
-      "prop": "initialSize",
+      "prop": "sizes",
       "type": "—",
-      "def": "64",
-      "desc": ""
-    },
-    {
-      "prop": "initialLeading",
-      "type": "—",
-      "def": "10",
-      "desc": ""
-    },
-    {
-      "prop": "lineClamp",
-      "type": "—",
-      "def": "null",
+      "def": "[\n  { size: 96, lines: 1 },\n  { size: 64, lines: 3 },\n  { size: 48, lines: 4 },\n  { size: 24, lines: 5, leading: 50 },\n]",
       "desc": ""
     }
   ],
   "VariableFontSection": [
     {
-      "prop": "isPlaying",
+      "prop": "fontFamily",
       "type": "—",
-      "def": "false",
+      "def": "'system-ui, sans-serif'",
       "desc": ""
     },
     {
-      "prop": "size",
+      "prop": "badgeText",
       "type": "—",
-      "def": "28",
+      "def": "'Variable axis'",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "'Variable'",
+      "desc": ""
+    },
+    {
+      "prop": "minWeight",
+      "type": "—",
+      "def": "300",
+      "desc": ""
+    },
+    {
+      "prop": "maxWeight",
+      "type": "—",
+      "def": "900",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
       "desc": ""
     }
   ],
@@ -5293,13 +11445,37 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "fontUrlRoman",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fontUrlItalic",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FoundryCharacterSets": [
     {
-      "prop": "className",
+      "prop": "fontFamily",
       "type": "—",
-      "def": "''",
+      "def": "'system-ui, sans-serif'",
+      "desc": ""
+    },
+    {
+      "prop": "showDropdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "collapsedCount",
+      "type": "—",
+      "def": "2",
       "desc": ""
     }
   ],
@@ -5353,6 +11529,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FoundryTypefacePairing": [
@@ -5387,6 +11569,74 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "leftTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leftTag",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leftDescription",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leftFontFamily",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightTag",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightDescription",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rightFontFamily",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TypefaceLibraryGrid": [
+    {
+      "prop": "typefaces",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderItem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "totalCount",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypefaceLibraryGridWithVariables": [
@@ -5394,6 +11644,30 @@
       "prop": "typefaceWeights",
       "type": "—",
       "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "typefaces",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "totalCount",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "titleIcon",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5415,6 +11689,12 @@
       "type": "—",
       "def": "'list'",
       "desc": ""
+    },
+    {
+      "prop": "typeface",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypefaceAlphabet": [
@@ -5434,6 +11714,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5455,6 +11741,30 @@
       "type": "—",
       "def": "32",
       "desc": ""
+    },
+    {
+      "prop": "family",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lineHeight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypeSpecCard": [
@@ -5462,6 +11772,18 @@
       "prop": "meta",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5500,6 +11822,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5593,6 +11927,12 @@
       "type": "—",
       "def": "true",
       "desc": ""
+    },
+    {
+      "prop": "fontUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "IntroLoader": [
@@ -5643,6 +11983,18 @@
       "type": "—",
       "def": "1.8",
       "desc": ""
+    },
+    {
+      "prop": "fontUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onComplete",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "TypefaceSpecimenPage": [
@@ -5650,6 +12002,24 @@
       "prop": "titleClassName",
       "type": "—",
       "def": "'text-8xl'",
+      "desc": ""
+    },
+    {
+      "prop": "typeface",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "linkComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "HeroComponent",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5689,6 +12059,20 @@
       "type": "—",
       "def": "{}",
       "desc": ""
+    },
+    {
+      "prop": "fontUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FontViewerSection": [
+    {
+      "prop": "fontUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "GlyphItem": [
@@ -5715,6 +12099,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "glyph",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMouseEnter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PageLayout": [
@@ -5728,6 +12130,44 @@
       "prop": "bare",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultTocContent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sideNav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pageWash",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SideNav": [
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5754,6 +12194,66 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "brand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "isActive",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "search",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMenuClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTocToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "navCollapsed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tocCollapsed",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5831,6 +12331,68 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "id",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PortalFooter": [
+    {
+      "prop": "brand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "socials",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PageHero": [
@@ -5844,6 +12406,42 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "backTo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lede",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mark",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5895,6 +12493,30 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onLongPress",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "FlipToggle": [
@@ -5909,6 +12531,50 @@
       "type": "—",
       "def": "2",
       "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelA",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelB",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labelC",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RockerSwitch": [
+    {
+      "prop": "on",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "IconButton": [
@@ -5922,6 +12588,42 @@
       "prop": "iconComponent",
       "type": "—",
       "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "momentary",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5942,6 +12644,12 @@
       "prop": "size",
       "type": "—",
       "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -5987,6 +12695,48 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signalRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bg",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPointerDown",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ringRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "LabeledJack": [
@@ -6019,6 +12769,18 @@
       "type": "—",
       "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 8,\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <Tooltip label={title ?? label} asChild disabled={pending || dimPending}>\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${/^\\d+$/.test(String(labelSize)) ? labelSize : 8} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n    </Tooltip>\n  )\n}",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PanelLabel": [
@@ -6041,6 +12803,48 @@
       "type": "—",
       "def": "true",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "enabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "editMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bypass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBypass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ModuleFrame": [
@@ -6061,6 +12865,60 @@
       "type": "—",
       "def": "'bg-surface-secondary'",
       "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "enabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "editMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bypass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBypass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ChannelStrip": [
@@ -6074,6 +12932,36 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "power",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "controls",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "faders",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6095,6 +12983,32 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "front",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "back",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RackCase": [
+    {
+      "prop": "hp",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "RackRow": [
@@ -6102,6 +13016,12 @@
       "prop": "height",
       "type": "—",
       "def": "'3u'",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6122,6 +13042,18 @@
       "prop": "overflow",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6215,6 +13147,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "sample",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPan",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SignalReference": [
@@ -6235,6 +13179,36 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "saved",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAppend",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "EnvelopeModeToggle": [
@@ -6249,6 +13223,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "generator",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "EnvelopeGenerator": [
@@ -6262,6 +13242,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "generator",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6282,6 +13268,122 @@
       "prop": "style",
       "type": "—",
       "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Notes": [
+    {
+      "prop": "client",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "assets",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NotesCatalog": [
+    {
+      "prop": "notes",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNew",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFavourite",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDelete",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NoteEditor": [
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSave",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "assets",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NoteThumb": [
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6327,6 +13429,90 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bottomItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logomark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railToggleKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "appName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pageWash",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "settingsPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "settingsKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "barItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "masthead",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PhoneNav": [
@@ -6340,6 +13526,12 @@
       "prop": "currentPath",
       "type": "—",
       "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6360,6 +13552,32 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PageBleed": [
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6395,6 +13613,72 @@
       "type": "—",
       "def": "'sunken'",
       "desc": ""
+    },
+    {
+      "prop": "defaultTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderContent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "searchKeys",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailingActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "picker",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenSettings",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filtersProps",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "WalkthroughPanel": [
@@ -6402,6 +13686,18 @@
       "prop": "steps",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6495,6 +13791,84 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "toCard",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filtersTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "walkthrough",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailingActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filtersProps",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SettingsShortcuts": [
@@ -6563,6 +13937,12 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "message",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AppHub": [
@@ -6607,6 +13987,72 @@
       "type": "—",
       "def": "'S'",
       "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "home",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "walkthrough",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "settings",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "masthead",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shell",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "HubHome": [
@@ -6626,6 +14072,42 @@
       "prop": "views",
       "type": "—",
       "def": "[\n  { value: 'recent', label: 'RECENT' },\n  { value: 'saved', label: 'SAVED' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "walkthrough",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6664,6 +14146,42 @@
       "prop": "themeIn",
       "type": "—",
       "def": "'masthead'",
+      "desc": ""
+    },
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "drawer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "content",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "picker",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "comboLabel",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6704,6 +14222,96 @@
       "prop": "masthead",
       "type": "—",
       "def": "'mono'",
+      "desc": ""
+    },
+    {
+      "prop": "app",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "home",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "library",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "create",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "use",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "settings",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "walkthrough",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutsKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shell",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6767,6 +14375,102 @@
       "type": "—",
       "def": "[]",
       "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "price",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSizeChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onQuantityChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shippingNote",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backLink",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultEdition",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEditionChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultShipping",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onShippingChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "computePrice",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DiagonalMarqueeRiver": [
@@ -6817,6 +14521,12 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "renderItem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PriceDisplay": [
@@ -6830,6 +14540,18 @@
       "prop": "locale",
       "type": "—",
       "def": "'de-DE'",
+      "desc": ""
+    },
+    {
+      "prop": "amount",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "secondary",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6857,6 +14579,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCardClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "activeSlug",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ctaSlot",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PrintGridCardGsap": [
@@ -6864,6 +14610,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "print",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCardClick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6909,6 +14667,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "print",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MoodTile": [
@@ -6922,6 +14686,50 @@
       "prop": "overlay",
       "type": "—",
       "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ColorAnatomy": [
+    {
+      "prop": "sample",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "code",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -6997,6 +14805,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "strokeColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AssetTable": [
@@ -7028,6 +14848,18 @@
       "prop": "inkTokens",
       "type": "—",
       "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPreviewZoom",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7073,6 +14905,24 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "ClearspaceDiagram": [
@@ -7098,6 +14948,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "logo",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7133,6 +14989,20 @@
       "desc": ""
     }
   ],
+  "DEFAULT_PALETTE": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ComboLab": [
     {
       "prop": "layouts",
@@ -7157,6 +15027,30 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "palette",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "palettes",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pool",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AssetCard": [
@@ -7164,6 +15058,24 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7185,6 +15097,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Brand": [
@@ -7193,13 +15117,75 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "brand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "Logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logoSources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "BrandBook": [
     {
-      "prop": "className",
+      "prop": "brand",
       "type": "—",
-      "def": "'mt-12'",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "Logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logoSources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "BrandAssets": [
+    {
+      "prop": "brand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "Logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logoSources",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7208,6 +15194,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7228,6 +15226,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -7273,6 +15283,18 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "mark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "LockupBuilder": [
@@ -7292,6 +15314,18 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "mark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ]

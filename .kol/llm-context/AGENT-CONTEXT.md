@@ -11,6 +11,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-22 later, catalog variants · loader minimum)
+
+- **Published:** kol-component 0.284.0 (no-cover catalog card keeps its text at the foot) · kol-framework 0.53.0 (`hideLoaderApp({ minMs = 600 })`, kol-monitor ticket). Built: Round 16 (the variants button), the catalog app's variants button, the Content Card page (real variants, full width, props axis), every props table now lists every destructured prop. Open: Round 16 pick, plan 2.2 TALK. Push is the user's. Plan: `plan-2026-10-22-catalog-variants-and-no-cover.md`. Log: `session-log/2026-10-22-catalog-variants-no-cover-loader-minimum.md`.
+
 ## Current state (2026-10-22, one nav rail)
 
 - **Built:** one nav rail — `NavRail` (app · site variants) now lives in kol-component with Logomark and the rail slot, kol-shell re-exports them, kol-framework's `SideNav` is the deprecated alias over `variant="site"`. Also: NavRail folder notes (`to` on a section), label-only sub rows aligned to L1 labels, the rail's own open width `--kol-shell-rail-open` in kol-theme (fxr 320 vs mirror/monitor 264 came from which app loaded kol-framework.css), active sidebar icon ink with `--kol-sidenav-active-icon`. kol-website ticketed to drop brand's sidebar overrides. Published theme 0.179.0 · component 0.283.0 · shell 0.73.0 · framework 0.52.0; showcase NavRail page shows both variants. Push is the user's. Plan: `plan-2026-10-22-one-nav-rail.md`. Log: `session-log/2026-10-22-one-nav-rail.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-19 later, prompt password)
 
 - **Published:** kol-component 0.281.0. `prompt(title, '', { type: 'password', placeholder })` masks the field; OK is `tone="inverted"` (primary drew like Cancel); the dialog opens focused, traps Tab, carries dialog roles. kol-atlas ticket closed, receipt returned; registry confirmed live. Push is the user's. Log: `session-log/2026-10-19-modal-prompt-password-keyboard.md`.
-
-## Current state (2026-10-19, kol-atlas tickets)
-
-- **Published:** kol-component 0.280.0 · kol-theme 0.178.0. `ActionButton` tooltip `asChild` (anchors to the control); Quick Look fits SVGs ≥640 to the window, click toggles fill width. Two kol-atlas tickets closed, receipts returned. Push is the user's. Log: `session-log/2026-10-19-atlas-tooltip-anchor-quicklook-fit.md`.
 
 ## Repo standup (2026-06-15)
 

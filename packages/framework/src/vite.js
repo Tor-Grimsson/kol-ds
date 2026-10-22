@@ -34,7 +34,7 @@ export function devFavicon({ label = 'K', ground = '#7C5CFF', ink = '#FFFFFF' } 
  * owned in DS and consumed by the fxr monitor and mirror? with custom graphic input as prop?"*). The app's mark
  * centred on the theme's ground, pulsing while the bundle downloads. It has to be static HTML in `index.html` —
  * a React component would only appear after the wait it covers — so this plugin writes it there: fxr's loader,
- * once, with the graphic as an option. Call `hideLoaderApp()` (kol-framework) after the first commit.
+ * once, with the graphic as an option. Call `hideLoaderApp()` (kol-framework) after the first commit — it holds the loader 600 ms from navigation start (`minMs`).
  *
  * Ground and ink follow the stored `data-theme`, else the system (run `THEME_BOOT_SCRIPT` before it, as every
  * KOL app does). Reduced motion: no pulse, no fade.

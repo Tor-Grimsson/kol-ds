@@ -91,7 +91,7 @@ Nothing about the content changed; only which root owns it. Nothing read the mar
 | Script | Reads | Writes |
 |---|---|---|
 | `extract-usage.mjs` | consumer repos under `~/dev/projects` | `usage-index.json` + `showcase/src/usage/components/*.md` |
-| `extract-api.mjs` | package sources | `component-sources.json`, API rows |
+| `extract-api.mjs` | package sources | `component-sources.json`, API rows — one per destructured prop, defaulted or not (2026-10-22) |
 | `extract-origins.mjs` | package sources | per-component import provenance |
 | `extract-tokens.mjs` | theme + framework CSS | `token-index.json` + the token-graph markdown |
 | `extract-manifest.mjs` | `docs/`, package barrels, its own editorial table | [[06-manifest-tree\|the manifest tree]] — the one generated doc that belongs in `docs/` |

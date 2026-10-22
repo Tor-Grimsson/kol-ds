@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.284.0 — 2026-10-22
+
+- **A catalog card with no cover keeps its text at the foot.** `ContentCard` `variant="catalog"` with `media={false}` dropped the media box and the plate rose to the top of an empty A4 frame; the plate now sits on the frame's bottom edge. Other variants unchanged.
+
 ## 0.283.0 — 2026-10-22
 
 - **One nav rail: `NavRail` lives here** (the one nav rail, user ruling). Moved from kol-shell with `Logomark` and `RailSlotProvider` / `useRailSlot`; kol-shell re-exports all three. `variant` app (default, the flat 48px rail) · site (the grouped site sidebar that was kol-framework's `SideNav`, carried class-for-class, router-free — `currentPath` + `onNavigate(event, to)`, `hrefFor`, `themeToggle` as a render function).

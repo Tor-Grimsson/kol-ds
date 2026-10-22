@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-framework",
-  "version": "0.52.0",
+  "version": "0.53.0",
   "description": "Site shell and page layout",
   "license": "MIT",
   "type": "module",

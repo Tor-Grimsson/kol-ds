@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 58 entries
+## Queue — 59 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -41,6 +41,7 @@ accrues entries and never closes.
 | 🔵 | [MediaGalleryModes](inbox/MediaGalleryModes.md) | **kol-branding** — one media set, viewer-switchable carousel · grid · waterfall, click opens `MediaViewer`; composes GalleryCarousel + MediaTileGallery, waterfall is new | 2026-10-21 | `filed` — from a kol-branding session |
 | 🔵 | [TextFold](inbox/TextFold.md) | **kol-branding** — long prose folds to N lines below md with a More / Less ghost button, toggle only when cut | 2026-10-22 | `filed` — from a kol-branding session |
 | 🔵 | [ColorRampNarrowCaptions](inbox/ColorRampNarrowCaptions.md) | **kol-branding** — ColorRamp captions overflow their columns at phone width (10-step ramp at 390), page scrolls sideways | 2026-10-22 | `filed` — from a kol-branding session |
+| 🟡 | [LoaderAppMinimumTime](inbox/LoaderAppMinimumTime.md) | **kol-monitor** — `hideLoaderApp({ minMs = 600 })`: hold the app loader at least 600 ms from navigation start (user ruling 2026-10-22); a fast load flashes it today | 2026-10-22 | `read` — built in `packages/framework/src/loaderApp.js`: fast load done at 616 ms, `minMs: 0` at 44 ms; kol-framework publish waits on the user's yes |
 | ⚫ | [QuoteDocument](archive/QuoteDocument.md) | **kol-atlas** — a printable A4 quote layout for client work: three mockups (v1 original · v2 invoice-synced · v3 split), assets in `_assets/2026-10-20-quote-document/` | 2026-10-20 | ⚫ `retired` — user ruling: not built in kol-ds-ui; `apps/stationery` stays live, the layout lives in the Stationery artifact |
 | 🟢 | [ModalPromptPassword](done/ModalPromptPassword.md) | **kol-atlas** — `useModal().prompt` has no masked mode; add `{ type: 'password' }` for the family's sign-in prompts | 2026-10-19 | `closed` — **kol-component 0.281.0**: `{ type: 'password' }` masks the field; OK bright, keyboard trapped in the dialog; verified in the useModal preview |
 | 🟢 | [QuickLookFit](done/QuickLookFit.md) | **kol-atlas** — `MediaInspector` draws every SVG in a fixed 640px box; fit images (SVG too) to the window, click toggles fit ↔ fill width | 2026-10-19 | `closed` — **kol-component 0.280.0 · kol-theme 0.178.0**: SVGs ≥640 fit the window, click toggles fill width; verified in apps/media |
@@ -402,6 +403,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-22 | **`LoaderAppMinimumTime` filed from kol-monitor** — `hideLoaderApp` minimum time on screen, 600 ms by the user's ruling |
 | 2026-10-22 | `brand-sidenav-drop-overrides` filed to kol-website: brand's two sidebar overrides are covered by the package once kol-theme publishes. |
 | 2026-10-21 | `MediaGalleryModes` filed from kol-branding: carousel · grid · waterfall over one media set, opening MediaViewer. |
 | 2026-10-20 | **`QuoteDocument` retired** — user ruling: not built here; `apps/stationery` stays live; moved to `archive/` |

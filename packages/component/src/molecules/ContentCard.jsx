@@ -274,7 +274,10 @@ export default function ContentCard({
         '--kol-plate-pad': padding,
         '--kol-plate-pad-md': box.padMd,
         padding,
-        marginTop: box.layout === 'stack' && !noMedia ? box.mediaGap : undefined,
+        /* a fill-card with no cover keeps its frame and its plate keeps the FOOT — dropping the media
+         * box had floated the plate to the top over an empty frame (user 2026-10-22: "the text section
+         * is supposed to be on the bottom") */
+        marginTop: box.layout === 'stack' && !noMedia ? box.mediaGap : box.layout === 'fill-card' && noMedia ? 'auto' : undefined,
         borderTop: (plateRule ?? box.plateTop) ? '1px solid var(--kol-fg-04)' : undefined,
         background: box.layout === 'drawer' ? 'var(--kol-surface-inverse)' : box.plateBg,
         color: box.layout === 'drawer' ? 'var(--kol-fg-inverse)' : undefined,
