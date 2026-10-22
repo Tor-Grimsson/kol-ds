@@ -36,6 +36,10 @@
       "destination": "/apps/stationery/index.html"
     },
     {
+      "source": "/apps/brand-lab/(.*)",
+      "destination": "/apps/brand-lab/index.html"
+    },
+    {
       "source": "/apps/notes/(.*)",
       "destination": "/apps/notes/index.html"
     },

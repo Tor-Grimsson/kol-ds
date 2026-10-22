@@ -3,7 +3,7 @@ title: Style-guide system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-08-01
+updated: 2026-10-20
 verified: 2026-07-10
 description: Brand-guide specimens for color, logo and type
 aliases:
@@ -42,6 +42,8 @@ import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-stylegui
 | `ComboLab` (+ `DEFAULT_PALETTE`) | the **60/30/10 combination playground** — palette × layout × logo, with randomize + live readout |
 | `RatioBar` · `Tower` · `QuadSplit` · `CardRow` · `StripeRow` · **`AppliedCard`** | the stage layout primitives (`LAYOUT_COMPONENTS` / `COMBO_LAYOUTS`); AppliedCard is the applied-brand / **business-card mockup** |
 | `generatePalette` · `fgOn` · `hexToHsl` · `hslToHex` · `GENERATION_MODES` | the palette engine (`comboMath.js`) |
+| `ColorLab` | the **palette builder** from one base color — harmony wheel, roles, four brand slots, ten-hue palette + blue-grey and grey ramps, five-step blend ramps, 60/30/10 composition; controlled by one value (carried from kol-atlas, 2026-10-20) |
+| `deriveColorLab` · `colorLabCss` · `blendRamp` · `neutralRamp` · `DEFAULT_COLOR_LAB` · `COLOR_ROLES` · `COLOR_SLOTS` · `COLOR_MIX` | ColorLab's math (`colorLab.js`) — the value → the palette, and the palette as `--brand-*` CSS |
 
 ### Logo
 | Component | What it is |
@@ -49,12 +51,16 @@ import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-stylegui
 | `LogoCard` | framed logo tile + caption + clearspace toggle |
 | `ClearspaceDiagram` (+ `hasFramework`) | clearspace/keyline overlay (grid → keyline → logo), all layers injected nodes |
 | `LogoScaling` | 4-variant × 10-step (128→8px) responsive scale matrix |
+| `Lockup` (+ `LOCKUP_SCALES`) | the branded-house lockup — mark beside a parent name, a product name and descriptors; horizontal · hero · wordmark at sm → xl |
+| `LockupBuilder` | the live lockup builder — name, descriptors, variant and scale beside a Lockup, a brand's naming levels as preset rows |
 
 ### Type
 | Component | What it is |
 |-----------|-----------|
 | `TypeBlock` | typography specimen primitive — family/cut/weight/size/tracking/`case` (explicit prop, default `none` — no auto-casing) |
 | `WEIGHTS` · `CUTS` · `CASES` · `familyFor` | cut/weight/case data (`typographyCuts.js`) |
+| `TypeScaleLab` | the **modular type scale** — base size × musical ratio, a spec row + live sample per step, in the brand's own faces |
+| `typeScale` · `typeScaleCss` · `TYPE_RATIOS` · `TYPE_STEPS` · `DEFAULT_TYPE_SCALE` | the scale math (`typeScale.js`) — steps with size and 4px-grid line height, and the scale as `--type-*` CSS |
 
 ### Assets
 | Component | What it is |

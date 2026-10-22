@@ -13,7 +13,7 @@
 export { default as AppShell } from './AppShell.jsx'
 export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
-export { default as NavRail } from './NavRail.jsx'
+export { NavRail } from '@kolkrabbi/kol-component' // lives in kol-component since 2026-10-22
 export { default as PhoneNav } from './PhoneNav.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
 /* PageHeader MOVED to @kolkrabbi/kol-component 2026-09-03 (page-header-one-masthead).
@@ -27,7 +27,7 @@ export { default as SettingsScaffold } from './SettingsScaffold.jsx'
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
 /* lives in kol-component since 0.228.0 — re-exported so every kol-shell import keeps resolving */
 export { ShortcutsOverlay, shortcutInScope } from '@kolkrabbi/kol-component'
-export { default as Logomark } from './Logomark.jsx'
+export { Logomark } from '@kolkrabbi/kol-component'
 // the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)
 export { default as CatalogPage } from './CatalogPage.jsx'
 export { default as SettingsShortcuts } from './SettingsShortcuts.jsx'
@@ -41,4 +41,4 @@ export { default as HubDev } from './HubDev.jsx'
 // the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
 export { default as AppStudio } from './AppStudio.jsx'
 // a consumer slot in the opened rail — the page portals into it (NavRailConsumerSlot, kol-monitor 2026-10-15)
-export { RailSlotProvider, useRailSlot } from './railSlot.jsx'
+export { RailSlotProvider, useRailSlot } from '@kolkrabbi/kol-component'

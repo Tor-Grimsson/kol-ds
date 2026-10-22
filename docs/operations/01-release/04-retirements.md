@@ -34,6 +34,7 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
 | `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
+| `SideNav` | framework | `NavRail variant="site"` from kol-component (same props; kol-framework's `SideNav` keeps the react-router read and the ThemeToggle) | 2026-10-22 |
 | `BrandHero` | framework | `PageHero` | 2026-09-03 |
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |

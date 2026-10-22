@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import NavRail from './NavRail.jsx'
+import { NavRail } from '@kolkrabbi/kol-component'
 import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'

@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-10-02
+updated: 2026-10-22
 description: The application shell and its page scaffolds
 aliases:
   - shell
@@ -46,8 +46,10 @@ writes. **`kol-framework.css` is no longer required by the shell.**
 **Grab to open** (*"when you grab it should not move the icons one pixel, only
 reveal the title, and a chevron to see sub categories"* · *"when it opens it
 should push the main content inside"*): the pill on the rail's edge — kol-r2b2's,
-verbatim — drags the width between 48 and the sidenav ladder's rung (264, 320
-from 1536), snaps to the nearer on release, toggles on a click. Every row is
+verbatim — drags the width between 48 and the rail's own open width,
+`--kol-shell-rail-open` in kol-theme (264, 320 from 1536; until 2026-10-22 it read
+kol-framework's `--kol-sidenav-w`, so apps without kol-framework.css opened at 264
+everywhere), snaps to the nearer on release, toggles on a click. Every row is
 `[32px rung][label][chevron]` clipped by its own width, so the icon column never
 moves; the label is revealed by the clip and the content column follows the same
 variable. **Two levels** (shell ≥0.17.0, RailTwoLevelSections — user: *"the NAV has 20px
@@ -59,7 +61,8 @@ the route. **Nothing auto-expands**: an L2 row is behind both the clipped width
 and its section's own disclosure, and `open` starts false with no prop to get it
 wrong. L2 is not a `Button` — the icon-button ladder is 22/26/32/40 (2026-09-03) and
 this rung is 20; adding an `xs` rung is a change to that ladder's law. A sub row
-with no `icon` renders label-only. `AppShell railComponent` renders a different
+with no `icon` renders label-only, its label on L1's label column (44px in — the
+32px rung plus the 12px gap; 2026-10-22, it had sat under the icon column). `AppShell railComponent` renders a different
 rail, so proving a rail change no longer means forking `AppShell` too. The chrome is `.kol-rail-grab` (kol-theme's `kol-animation.css`), the
 pointer numbers `GRAB` (kol-component's `utilities/motion`); `gsap` is a peer.
 
@@ -80,6 +83,17 @@ import {
 ## Contracts
 
 **The rail's list fades at its foot (kol-shell 0.61.0, 2026-10-02).** `NavRail`'s rows sit in their own scroll region between the mark and the pinned bottom rows; a list longer than the window scrolls and runs out under a 3rem fade — the workshop rail's mask — instead of being cut by the edge. `fade` (default `true`) on `NavRail`, `railFade` on `AppShell`; `false` draws the list plain.
+
+**`NavRail` lives in kol-component (2026-10-22, the one nav rail).** `NavRail`, `Logomark` and `RailSlotProvider` / `useRailSlot` moved out of kol-shell, which re-exports all of them — every import from `@kolkrabbi/kol-shell` keeps working. `NavRail variant="site"` is the site sidebar that was kol-framework's `SideNav`, carried class-for-class; `SideNav` is now that variant under its old name, on the retirement ledger, with react-router and the ThemeToggle wired in. A site needs no kol-shell for its sidebar — the `PageHeader` precedent.
+
+**How a section opens is opt-in (kol-shell, 2026-10-06 · 2026-10-22).** Two independent choices, both off by default:
+
+| Choice | Prop | Default | Opt-in |
+|---|---|---|---|
+| Sub pages open in place or replace the list | `sections` on `NavRail` · `railSections` on `AppShell` | `fold` — unfolds under the section | `enter` — the section's rows under a Back row (labs) |
+| A section is also a page — a **folder note** | `to` on the section item | no `to` — the row only folds or enters | `to` — icon and label open the page, the chevron alone folds or enters (`RailSection`'s `to` split in kol-workshop) |
+
+**Active icon is ink (kol-theme, 2026-10-22).** The site rail's active row icon is `var(--kol-sidenav-active-icon, var(--kol-surface-on-primary))` — no accent. A repo that wants a colour sets `--kol-sidenav-active-icon` on `:root`; nothing else needs overriding.
 
 - **Router-agnostic** — `currentPath` + `onNavigate` props; render the
   router's element as children. No react-router dependency.

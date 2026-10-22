@@ -1,4 +1,4 @@
-import { Logomark } from '@kolkrabbi/kol-shell'
+import { Logomark } from '@kolkrabbi/kol-component'
 
 export default function LogomarkPreview() {
   return (

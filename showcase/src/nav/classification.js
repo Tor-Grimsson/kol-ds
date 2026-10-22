@@ -37,6 +37,8 @@ export const TIERS = {
   Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
   /* the brand tool (2026-09-27): the two brand-book pages are page regions, the tool is both of them */
   Brand: 'organisms', BrandBook: 'organisms', BrandAssets: 'organisms',
+  /* the brand lab (2026-10-20): the generators a brand is made with, carried from kol-atlas */
+  ColorLab: 'organisms', TypeScaleLab: 'organisms', LockupBuilder: 'organisms', Lockup: 'molecules',
   /* kol-content */
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
@@ -315,6 +317,8 @@ export const FUNCTIONS_BY_NAME = {
   Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
   /* styleguide — the brand tool (2026-09-27) */
   Brand: 'structure', BrandBook: 'structure', BrandAssets: 'structure',
+  /* styleguide — the brand lab (2026-10-20): each one sets a brand's values */
+  ColorLab: 'input', TypeScaleLab: 'input', LockupBuilder: 'input', Lockup: 'display',
   /* deck — kol-deck (2026-09-27): presentations as a tool */
   Decks: 'structure', DecksCatalog: 'wayfinding', DeckEditor: 'structure', DeckFile: 'overlay', DeckSettings: 'overlay',
   SlideRenderer: 'display', SlideThumb: 'display', SlideStage: 'input', SlideInspector: 'input', useDeckHistory: 'utility',
@@ -335,6 +339,8 @@ export const EXEMPT = {
   ProsePreview: 're-export:@kolkrabbi/kol-component', SpectrumGrid: 're-export:@kolkrabbi/kol-component',
   /* shell — the keymap sheet moved to kol-component 2026-09-28; kol-shell re-exports it */
   ShortcutsOverlay: 're-export:@kolkrabbi/kol-component',
+  /* the one nav rail moved to kol-component 2026-10-22; kol-shell re-exports these */
+  NavRail: 're-export:@kolkrabbi/kol-component', Logomark: 're-export:@kolkrabbi/kol-component', useRailSlot: 're-export:@kolkrabbi/kol-component',
   TypeSample: 're-export:@kolkrabbi/kol-foundry', TypeSpecCard: 're-export:@kolkrabbi/kol-foundry',
   /* chess */
   ChessControlsProvider: 'non-component',
@@ -387,6 +393,8 @@ export const DEPRECATED = [
   'ShellDrawer',
   /* TabChips · TabStrip · MobileTabBar = TabsRow `look` (2026-10-17): one tab component */
   'TabChips', 'TabStrip', 'MobileTabBar',
+  /* SideNav = NavRail variant="site" (2026-10-22): one nav rail */
+  'SideNav',
   /* DropdownTagFilter = SettingsMulti (2026-10-01): its own pill and hardcoded radius, no consumer */
   'DropdownTagFilter',
   /* ColorLoader = IntroLoader (2026-09-30) */

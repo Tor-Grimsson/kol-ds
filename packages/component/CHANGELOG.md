@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-component
 
+## 0.283.0 — 2026-10-22
+
+- **One nav rail: `NavRail` lives here** (the one nav rail, user ruling). Moved from kol-shell with `Logomark` and `RailSlotProvider` / `useRailSlot`; kol-shell re-exports all three. `variant` app (default, the flat 48px rail) · site (the grouped site sidebar that was kol-framework's `SideNav`, carried class-for-class, router-free — `currentPath` + `onNavigate(event, to)`, `hrefFor`, `themeToggle` as a render function).
+- **Folder notes.** A section item with `to` opens that page from its icon and label; the chevron alone folds or enters. Without `to`, unchanged.
+- **Label-only sub rows align** with their section's label instead of sitting under the icon column.
+- **The rail's open width** reads `--kol-shell-rail-open` (kol-theme ≥0.179.0), not kol-framework's `--kol-sidenav-w`.
+- **The media picker has no X and no border** (2026-10-21): Escape, the backdrop and Cancel close it; `pt-5`.
+
 ## 0.282.0 — 2026-10-20
 
 - **An expanding `SearchInput` keeps its query when you click away** (the icon catalog lost its filter on every tile click — user: "does not select it, but clears it from selection which is so annoying"). A click outside closes the field only while it is empty; with a query in it the results below are what you are clicking. Escape and the clear still close it.

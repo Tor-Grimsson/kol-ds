@@ -51,6 +51,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `Rail` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
+| `Logomark` | An inlined, sanitized SVG mark that themes by `currentColor`. Moved from kol-shell 2026-10-22 with `NavRail`. |
 | `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
 | `Divider` | A thin rule separating content, horizontal or vertical. Vertical `height` is px (default 16, centred) or `'fill'` — stretches to the row (0.276.0). |
@@ -151,6 +152,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
+| `NavRail` | THE nav rail, `variant` app (default — the flat 48px rail that grabs open; sections fold or enter, a section with `to` is a folder note) · site (the grouped site sidebar, kol-framework's `SideNav` until 2026-10-22). Moved from kol-shell 2026-10-22, which re-exports it. |
 | `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. **A base** (2026-09-03): `PageHeader` is a composition of it. `actionsPlacement="inline"` (0.175.0) puts the cluster on the body's first baseline at no height; `style` reaches the root. Molecule. |
 | `SectionHero` (alias `FullBleedHero`) | Cover media + scrim; text props render as `SectionText` in its own glass panel, or `panel` renders the caller's node verbatim. |
 | `SectionSplit` (alias `FeatureSplit`) | `SectionText` beside the media frame; `align: 'right' \| 'left' \| 'center'` — media side, or one centred column. |
@@ -227,7 +229,7 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 | Component | Tier | Job |
 |---|---|---|
 | `PageLayout` (alias `AppShell`) | chrome | The brand-book page layout — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile rail + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
-| `SideNav` | chrome | The grouped, scroll-spied navigation rail. |
+| `SideNav` | chrome | **Deprecated alias** of `NavRail variant="site"` (kol-component) since 2026-10-22 — the same drawing, plus the react-router read and the ThemeToggle. |
 | `PortalFooter` | chrome | The portal footer. |
 | `ShellHeader` | chrome | The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions. |
 | `ThemeToggle` | chrome | A light/dark switcher persisted to localStorage. |

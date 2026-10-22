@@ -165,7 +165,7 @@ export default function PreviewCard({
       ) : entry?.frame ? (
         /* a page-sized preview runs in its own document (previews-registry `frame`) */
         tab === 'preview' && (
-          <iframe title={`${entry.name} preview`} src={`/components/preview/${entry.name}`} className="block w-full border-0 bg-surface-primary" style={{ height: typeof entry.frame === 'number' ? entry.frame : 560 }} />
+          <iframe title={`${entry.name} preview`} src={`/components/preview/${entry.name}${variant ? `?variant=${variant}` : ''}`} className="block w-full border-0 bg-surface-primary" style={{ height: typeof entry.frame === 'number' ? entry.frame : 560 }} />
         )
       ) : (
         tab === 'preview' && (

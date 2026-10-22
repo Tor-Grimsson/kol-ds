@@ -45,10 +45,10 @@ import { useRailSlot } from '../../../rack/src/hooks/useRailSlot.jsx'
 const RAIL_W = '--kol-shell-rail-width'
 const CLOSED = 48
 
-/* the OPEN width is the sidenav's ladder (kol-framework: 264, 320 from 1536),
+/* the OPEN width is the rail's own ladder (`--kol-shell-rail-open` in kol-theme: 264, 320 from 1536),
  * read at drag time so the rail lands on whichever rung the window is on */
 const openWidth = () => {
-  const v = getComputedStyle(document.documentElement).getPropertyValue('--kol-sidenav-w').trim()
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--kol-shell-rail-open').trim()
   const px = parseFloat(v)
   return Number.isFinite(px) ? (v.endsWith('rem') ? px * 16 : px) : 264
 }

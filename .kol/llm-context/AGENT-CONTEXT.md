@@ -8,7 +8,16 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Later — user ideas, not scheduled
 
+- **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
+
+## Current state (2026-10-22, one nav rail)
+
+- **Built:** one nav rail — `NavRail` (app · site variants) now lives in kol-component with Logomark and the rail slot, kol-shell re-exports them, kol-framework's `SideNav` is the deprecated alias over `variant="site"`. Also: NavRail folder notes (`to` on a section), label-only sub rows aligned to L1 labels, the rail's own open width `--kol-shell-rail-open` in kol-theme (fxr 320 vs mirror/monitor 264 came from which app loaded kol-framework.css), active sidebar icon ink with `--kol-sidenav-active-icon`. kol-website ticketed to drop brand's sidebar overrides. Published theme 0.179.0 · component 0.283.0 · shell 0.73.0 · framework 0.52.0; showcase NavRail page shows both variants. Push is the user's. Plan: `plan-2026-10-22-one-nav-rail.md`. Log: `session-log/2026-10-22-one-nav-rail.md`.
+
+## Current state (2026-10-21, brand lab)
+
+- **Built, nothing published:** kol-styleguide gains ColorLab, TypeScaleLab, Lockup and LockupBuilder (carried from kol-atlas) and new `apps/brand-lab` (5203) holds the Kolkrabbi revamp draft — the revamp itself later moves to its own repo, `kol-branding`. The media picker has no X (Escape/backdrop/Cancel) and no card border. QuoteDocument retired. Two kol-monitor tickets filed (save patch, loader minimum time). Open: the "- text" currentColor issue needs his repo and screen. Log: `session-log/2026-10-21-brand-lab-picker-no-x.md`.
 
 ## Current state (2026-10-20, the stationery desk)
 
@@ -21,14 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-19, kol-atlas tickets)
 
 - **Published:** kol-component 0.280.0 · kol-theme 0.178.0. `ActionButton` tooltip `asChild` (anchors to the control); Quick Look fits SVGs ≥640 to the window, click toggles fill width. Two kol-atlas tickets closed, receipts returned. Push is the user's. Log: `session-log/2026-10-19-atlas-tooltip-anchor-quicklook-fit.md`.
-
-## Current state (2026-10-18 latest, one header)
-
-- **Published:** kol-component 0.279.0 · kol-shell 0.72.0 · kol-theme 0.177.0. PageHeader is the one header — `level` page · app · section, the old size/voice/register/masthead ignored; kol-shell app pages default to `app` (display-01 at 46/60); `PAGE_HEADER_ROLES`; vertical `Divider height="fill"`. Three monitor tickets closed. Round 14 on Open questions awaits review; nothing publishes before he reviews. Push is the user's. Log: `session-log/2026-10-18-one-header-levels-divider-fill.md`.
-
-## Current state (2026-10-18 later, the overlays)
-
-- **Published:** kol-component 0.275.0 · kol-shell 0.71.0 · kol-theme 0.176.0 · kol-workshop 0.41.0. CommandOverlay fold rows (shortcuts = folds, page sections open, ⌘↵ all); only two names, rail and overlay (`SettingsPanel variant="rail"`, `drawer` alias); `--kol-pad-overlay`; ShortcutsOverlay = SettingsPanel with `variant`; AppHub `⇧S` rail. New `apps/overlays` + the Overlays set. Then kol-component 0.275.0 · kol-shell 0.71.0 (AppHub ⇧S rail) and kol-icons 0.40.0 · 0.41.0 (monitor's signal icons, `grid-3x3`, `video-off`); monitor told. Push is the user's. Log: `session-log/2026-10-18-overlays-app-folds-rail-shortcuts.md`.
 
 ## Repo standup (2026-06-15)
 

@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+## 0.179.0 — 2026-10-22
+
+- **`--kol-shell-rail-open`** — the nav rail's own open width, 264 · 320 from 1536. Every app rail opens to the same width whether or not it loads kol-framework.css.
+- **The active sidebar icon is ink**, not accent: `var(--kol-sidenav-active-icon, var(--kol-surface-on-primary))` — set `--kol-sidenav-active-icon` on `:root` to change it per repo.
+- **`.kol-media-picker` has no border** (2026-10-21).
+
 ## 0.178.0 — 2026-10-19
 
 - **Quick Look fill width** (QuickLookFit, kol-atlas): `img.kol-quicklook-media` takes a `zoom-in` cursor; `.kol-quicklook-media--fill` sets the window's width and scrolls the body from the top, `zoom-out` cursor.

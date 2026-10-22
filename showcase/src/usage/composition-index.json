@@ -1826,23 +1826,6 @@
       "stars": 3
     }
   ],
-  "packages/shell/src/NavRail.jsx": [
-    {
-      "target": "Button",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "ThemeToggle",
-      "uses": 1,
-      "stars": 3
-    },
-    {
-      "target": "Logomark",
-      "uses": 1,
-      "stars": 3
-    }
-  ],
   "packages/shell/src/SettingsScaffold.jsx": [
     {
       "target": "Divider",
@@ -3958,6 +3941,18 @@
     },
     {
       "target": "ParallaxShelf",
+      "uses": 1,
+      "stars": 3
+    }
+  ],
+  "packages/component/src/organisms/NavRail.jsx": [
+    {
+      "target": "Button",
+      "uses": 1,
+      "stars": 3
+    },
+    {
+      "target": "Logomark",
       "uses": 1,
       "stars": 3
     }

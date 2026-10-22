@@ -821,8 +821,12 @@
   color: var(--kol-surface-on-primary);
 }
 
+/* The active icon is ink, not accent (2026-10-22, user: "no active icon color, follow brand
+ * just using white, but allow change per repo"). One variable, unset by default: a repo that
+ * wants a colour sets `--kol-sidenav-active-icon` on :root. Brand's override block carried
+ * this value since 2026-08-01; it is the default now. */
 .kol-sidenav-hop.is-active .kol-sidenav-hop-icon {
-  color: var(--kol-accent-primary);
+  color: var(--kol-sidenav-active-icon, var(--kol-surface-on-primary));
 }
 
 /* .kol-sidenav-group — RETIRED here 0.52.1 (sidenav-nested-groups): the

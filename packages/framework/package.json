@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-framework",
-  "version": "0.51.0",
+  "version": "0.52.0",
   "description": "Site shell and page layout",
   "license": "MIT",
   "type": "module",
@@ -14,9 +14,9 @@
     "./kol-brand-color.css": "./kol-brand-color.css"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.177.0",
+    "@kolkrabbi/kol-component": ">=0.283.0",
     "@kolkrabbi/kol-icons": ">=0.18.0",
-    "@kolkrabbi/kol-theme": ">=0.138.0",
+    "@kolkrabbi/kol-theme": ">=0.179.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
     "react-router-dom": "^6.0.0 || ^7.0.0"

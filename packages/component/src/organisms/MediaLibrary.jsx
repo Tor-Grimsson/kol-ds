@@ -1071,7 +1071,7 @@ export default function MediaLibrary({
 /* THE PICKER — the browse surface in the modal card. Read-only (no verbs, no drop, no trash: a
  * picker picks). Its settings are held here and never saved, so a consumer's stored browse
  * settings are untouched. The views take the card's height less its chrome. */
-const PICKER_CHROME = 280 // ponytail: hand-measured header + count line + footer; tune if the chrome changes
+const PICKER_CHROME = 252 // ponytail: hand-measured header + count line + footer (280 less the 28px close lane, 2026-10-20); tune if the chrome changes
 function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...browseProps }) {
   const [settings, setSettings] = useState(() => ({ ...SETTINGS_BASE, columnHeight: `calc(var(--kol-media-picker-h) - ${PICKER_CHROME}px)` }))
   const [bucket, setBucket] = useState(browseProps.bucket)
@@ -1082,13 +1082,11 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
     onClose?.()
   }
   return (
-    /* THE X SITS ON THE HEADER ROW (MediaPickerCloseOnTheHeaderRow, kol-fxr 2026-10-10 — user: *"x
-     * close is in a weird place, align better"*). The overlay's corner close floated ~100px above
-     * the header and lined up with nothing. In the control cluster after the gear it read as one more
-     * control (media-picker-close-and-title, kol-mirror 2026-10-15), so it is the header's own ×:
-     * alone at the far end of the title's row, the drawer's shape. */
+    /* NO X (user 2026-10-20: *"at this point just use escape"*). Escape, the backdrop and Cancel close it.
+     * The X moved three times (overlay corner → title row, 2026-10-10 → beside the gear → corner again)
+     * and was wrong each time; without it the card's block-start lane goes too (`pt-5`). */
     <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
-      <div className="kol-media-picker gap-4">
+      <div className="kol-media-picker gap-4 pt-5">
         <MediaLibraryBrowse
           {...browseProps}
           client={client}
@@ -1098,7 +1096,6 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
           settings={settings}
           onSettingsChange={setSettings}
           onPickFile={setFile}
-          onHeaderClose={onClose}
         />
         <div className="mt-auto flex items-center justify-end gap-4">
           <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>

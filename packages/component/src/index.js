@@ -172,6 +172,11 @@ export { default as EmblaNav } from './molecules/EmblaNav.jsx'
 export { default as MobileTabBar } from './molecules/MobileTabBar.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as PageHeader, PAGE_HEADER_ROLES } from './molecules/PageHeader.jsx'
+/* the one nav rail (2026-10-22) — `variant` app (the flat 48px rail) · site (the grouped site
+ * sidebar, kol-framework's SideNav until then). Moved from kol-shell, which re-exports all three. */
+export { default as NavRail } from './organisms/NavRail.jsx'
+export { default as Logomark } from './atoms/Logomark.jsx'
+export { RailSlotProvider, useRailSlot } from './hooks/railSlot.jsx'
 export { MastheadContext, MASTHEADS, useMasthead, mastheadTitleClass } from './utilities/masthead.js'
 export { default as ErrorBoundary } from './utilities/ErrorBoundary.jsx'
 export { default as FeatureSplit } from './organisms/FeatureSplit.jsx'

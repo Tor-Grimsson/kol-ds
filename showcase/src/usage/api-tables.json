@@ -857,6 +857,78 @@
       "desc": ""
     }
   ],
+  "IconPlate": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "ground",
+      "type": "—",
+      "def": "'light'",
+      "desc": ""
+    },
+    {
+      "prop": "guide",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "KeylineGuide": [
+    {
+      "prop": "light",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "IconToggle": [
+    {
+      "prop": "pressed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady()\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "ExitPreview": [
     {
       "prop": "to",
@@ -979,6 +1051,12 @@
       "desc": ""
     },
     {
+      "prop": "text",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "labelPosition",
       "type": "—",
       "def": "'bottom'",
@@ -1082,6 +1160,12 @@
     },
     {
       "prop": "asChild",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -1252,6 +1336,12 @@
       "prop": "triggerLabel",
       "type": "—",
       "def": "'Open search'",
+      "desc": ""
+    },
+    {
+      "prop": "backLabel",
+      "type": "—",
+      "def": "'Back'",
       "desc": ""
     },
     {
@@ -1486,6 +1576,12 @@
     },
     {
       "prop": "muted",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -2639,6 +2735,12 @@
       "type": "—",
       "def": "'md'",
       "desc": ""
+    },
+    {
+      "prop": "offset",
+      "type": "—",
+      "def": "4",
+      "desc": ""
     }
   ],
   "MenuDropdownItem": [
@@ -2729,7 +2831,75 @@
       "desc": ""
     }
   ],
-  "ShellSearchOverlay": [
+  "Rail": [
+    {
+      "prop": "side",
+      "type": "—",
+      "def": "'left'",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'over'",
+      "desc": ""
+    },
+    {
+      "prop": "resizable",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "minSize",
+      "type": "—",
+      "def": "120",
+      "desc": ""
+    },
+    {
+      "prop": "maxSize",
+      "type": "—",
+      "def": "960",
+      "desc": ""
+    },
+    {
+      "prop": "closeSide",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "closeSize",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "edge",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "shadow",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "CommandOverlay": [
     {
       "prop": "results",
       "type": "—",
@@ -2761,21 +2931,27 @@
       "desc": ""
     },
     {
-      "prop": "placeholder",
-      "type": "—",
-      "def": "'Search…'",
-      "desc": ""
-    },
-    {
       "prop": "resultsLabel",
       "type": "—",
       "def": "'All results'",
       "desc": ""
     },
     {
-      "prop": "selectLabel",
+      "prop": "backLabel",
       "type": "—",
-      "def": "'Go to page'",
+      "def": "'Back'",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'search'",
+      "desc": ""
+    },
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
       "desc": ""
     }
   ],
@@ -2784,6 +2960,18 @@
       "prop": "shortcuts",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Shortcuts'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'overlay'",
       "desc": ""
     }
   ],
@@ -2863,6 +3051,70 @@
       "desc": ""
     }
   ],
+  "ColorPickerPopover": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'xs'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Color'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "CompareGrid": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "{ a: 'A', b: 'B' }",
+      "desc": ""
+    },
+    {
+      "prop": "defaultSize",
+      "type": "—",
+      "def": "96",
+      "desc": ""
+    },
+    {
+      "prop": "defaultGround",
+      "type": "—",
+      "def": "'light'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultGuide",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "showActual",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "SplitToolButton": [
     {
       "prop": "variants",
@@ -2901,6 +3153,12 @@
       "desc": ""
     },
     {
+      "prop": "placement",
+      "type": "—",
+      "def": "'bottom-start'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -2912,6 +3170,12 @@
       "prop": "items",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "orientation",
+      "type": "—",
+      "def": "'horizontal'",
       "desc": ""
     },
     {
@@ -3019,25 +3283,23 @@
       "type": "—",
       "def": "[]",
       "desc": ""
-    }
-  ],
-  "TabChips": [
+    },
     {
-      "prop": "tabs",
+      "prop": "look",
       "type": "—",
-      "def": "[]",
+      "def": "'underline'",
       "desc": ""
     },
     {
-      "prop": "size",
+      "prop": "placement",
       "type": "—",
-      "def": "'sm'",
+      "def": "'inline'",
       "desc": ""
     },
     {
-      "prop": "className",
+      "prop": "tracked",
       "type": "—",
-      "def": "''",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -3293,20 +3555,6 @@
       "desc": ""
     }
   ],
-  "MobileTabBar": [
-    {
-      "prop": "tabs",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    }
-  ],
   "ContentFilters": [
     {
       "prop": "tone",
@@ -3449,21 +3697,31 @@
   ],
   "PageHeader": [
     {
-      "prop": "size",
+      "prop": "level",
       "type": "—",
-      "def": "'md'",
+      "def": "'page'",
       "desc": ""
     },
     {
-      "prop": "voice",
+      "prop": "className",
       "type": "—",
-      "def": "'sans'",
+      "def": "''",
       "desc": ""
-    },
+    }
+  ],
+  "NavRail": [
     {
-      "prop": "register",
+      "prop": "variant",
       "type": "—",
       "def": "'app'",
+      "desc": ""
+    }
+  ],
+  "Logomark": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "20",
       "desc": ""
     },
     {
@@ -4011,13 +4269,7 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'drawer'",
-      "desc": ""
-    },
-    {
-      "prop": "width",
-      "type": "—",
-      "def": "380",
+      "def": "'rail'",
       "desc": ""
     },
     {
@@ -4038,6 +4290,12 @@
       "prop": "labelWidth",
       "type": "—",
       "def": "160",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "false",
       "desc": ""
     }
   ],
@@ -5473,56 +5731,6 @@
       "desc": ""
     }
   ],
-  "SideNav": [
-    {
-      "prop": "drawerOpen",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "navTree",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "background",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "hairline",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "bottomItems",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "themeToggle",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "expandOnSelect",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "defaultCollapsed",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    }
-  ],
   "ShellHeader": [
     {
       "prop": "nav",
@@ -5809,7 +6017,7 @@
     {
       "prop": "jackComponent",
       "type": "—",
-      "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 8,\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n      title={title ?? label}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${/^\\d+$/.test(String(labelSize)) ? labelSize : 8} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n  )\n}",
+      "def": "function JackSocket({\n  type = 'out',\n  size = 'md',\n  label,\n  labelSize = 8,\n  active = false,\n  pending = false,\n  dimPending = false,\n  cablesHidden = false,\n  color,\n  signalRef,\n  bg,\n  onPointerDown,\n  title,\n  ringRef: ringRefProp,\n}) {\n  const ringRef = useRef(null)\n  /* one element, two refs: the glow loop's and the consumer's */\n  const setRing = (el) => {\n    ringRef.current = el\n    if (typeof ringRefProp === 'function') ringRefProp(el)\n    else if (ringRefProp) ringRefProp.current = el\n  }\n  const catColor = color || token('--kol-ctl-led-red')\n  const isConnected = active\n\n  // Animate ring glow proportional to signal value (shared rAF, ~15fps, dirty-checked)\n  useEffect(() => {\n    if (!signalRef || !ringRef.current) return\n    let prevNorm = -1\n    const cb = () => {\n      const signal = signalRef.current\n      let val = 0\n      if (!signal) val = 0\n      else if (signal.type === 'scalar') val = signal.value\n      else if (signal.type === 'color') { const c = signal.value; val = Math.max(c.r, c.g, c.b) * 100 }\n      else if (signal.type === 'points') val = signal.value?.length > 0 ? (signal.opacity ?? 1) * 100 : 0\n      const norm = Math.min(1, val / 100)\n      if (norm === prevNorm) return\n      prevNorm = norm\n      const ring = ringRef.current\n      if (ring) {\n        const alpha = Math.round(norm * 255).toString(16).padStart(2, '0')\n        ring.style.borderColor = norm > 0.01 ? `${catColor}${alpha}` : 'var(--kol-fg-24)'\n        ring.style.boxShadow = norm > 0.01 ? `0 0 ${2 + norm * 6}px ${catColor}${alpha}` : 'inset 0 1px 2px rgba(0,0,0,0.5)'\n      }\n    }\n    jackCallbacks.add(cb)\n    startJackLoop()\n    return () => {\n      jackCallbacks.delete(cb)\n      if (jackCallbacks.size === 0) stopJackLoop()\n    }\n  }, [signalRef, catColor])\n\n  const s = size === 'sm' ? 12 : 16\n  const hole = size === 'sm' ? 4 : 6\n\n  return (\n    <Tooltip label={title ?? label} asChild disabled={pending || dimPending}>\n    <div\n      className=\"inline-flex flex-col items-center gap-0.5 select-none\"\n      style={{ cursor: type === 'out' ? 'grab' : (dimPending ? 'pointer' : 'default'), touchAction: 'none' }}\n      onPointerDown={onPointerDown}\n    >\n      <div\n        className={(bg ?? type === 'out') ? 'bg-fg-04' : ''}\n        style={{ width: `${s + 4}px`, height: `${s + 4}px`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}\n      >\n        <div\n          ref={setRing}\n          style={{\n            width: `${s}px`,\n            height: `${s}px`,\n            borderRadius: '50%',\n            backgroundColor: 'var(--kol-ctl-hw-well)',\n            border: `1.5px solid ${\n              pending ? catColor\n              : active ? catColor\n              : dimPending && type === 'in' ? `${catColor}66`\n              : 'var(--kol-fg-24)'\n            }`,\n            display: 'flex',\n            alignItems: 'center',\n            justifyContent: 'center',\n            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)',\n            transition: 'border-color 0.1s',\n          }}\n        >\n          <div style={{\n            width: `${hole}px`,\n            height: `${hole}px`,\n            borderRadius: '50%',\n            backgroundColor: cablesHidden && isConnected ? catColor : isConnected || pending ? `${catColor}66` : 'var(--kol-ctl-hw-well)',\n            border: type === 'in' ? '1px solid var(--kol-ctl-hw-cap-edge)' : '0.5px solid var(--kol-ctl-hw-shade)',\n          }} />\n        </div>\n      </div>\n      {label && (\n        <span className={`kol-helper-${/^\\d+$/.test(String(labelSize)) ? labelSize : 8} text-fg-32`} style={{ textTransform: 'uppercase', lineHeight: 1 }}>\n          {label}\n        </span>\n      )}\n    </div>\n    </Tooltip>\n  )\n}",
       "desc": ""
     }
   ],
@@ -6081,7 +6289,7 @@
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({\n  items = [],\n  bottomItems = [],\n  logomark,\n  currentPath = '',\n  onNavigate,\n  iconComponent,\n  hidden = false,\n  drawer = false,\n  fade = true,\n  sections = 'fold',\n}) {\n  const railRef = useRef(null)\n  const grabRef = useRef(null)\n  const [railOpen, setRailOpen] = useState(false)\n  /* ENTER MODE (`sections=\"enter\"`, 2026-10-06 — the user, on labs: \"having a 'enter' mode in the\n   * left sidebar instead of collapse folder?\"): pressing a section replaces the list with that\n   * section's rows under a Back row, instead of unfolding it in place. `fold` is the accordion\n   * every rail had and keeps. Per consumer, not a law: labs' catalog is five sections of up to\n   * ten rows each, which is where an accordion stops reading. */\n  const [entered, setEntered] = useState(null)\n  const snapOpenRef = useRef(null)\n  /* the grab strip is not rendered in drawer mode, so the hook's ref stays null\n   * and it no-ops on its own — no second argument needed */\n  useGrabEdge(grabRef)\n  useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)\n  if (hidden) return null\n  const enterMode = sections === 'enter'\n  const section = enterMode && entered ? items.find((i) => i.path === entered) : null\n  const row = (item) => (\n    <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()}\n      onEnter={enterMode ? () => setEntered(item.path) : undefined} />\n  )\n  return (\n    <div\n      ref={railRef}\n      /* ONE SIDE, ALWAYS LEFT (ShellDrawerSideCorrection, kol-chess 2026-09-01).\n        * 0.34.0 mirrored the panel to fix a button: the complaint was the\n        * trigger travelling to mid-screen, never the navigation's side. The\n        * trigger is now pinned top-right in both states, so a left panel has\n        * nothing to collide with and the drawer opens where the rail lives. */\n      className=\"kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08\"\n      /* A drawer takes its own width, NOT the live rail token — that token is\n        * zeroed in drawer mode so the content gets the whole viewport back. */\n      style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}\n    >\n      {!drawer && (\n        /* A BUTTON, and on touch A THICKER LINE (ShellRailCollapsedWithTapOpen,\n         * kol-mirror 2026-09-01; corrected by RailGrabTapIsALine, kol-monitor\n         * 2026-09-02 — user: \"it was a thicker line\" · \"who decided it should be\n         * a chevron?\"): `touch=\"shell\"` keeps the 48px rail visible and its\n         * only opener was this 8px strip, whose pill wakes on pointer\n         * PROXIMITY — a thumb never hovers. The 0.38.0 answer was a disc with a\n         * chevron; that was the DS agent's shape, not the user's ruling. The\n         * opener is the strip ITSELF: under `(pointer: coarse)` the theme\n         * widens it to a thumb-sized hit and shows the pill thick at rest — the\n         * same affordance a fine pointer drags, no glyph. A press with no travel\n         * already toggled; it just had no hit area on touch. The drag hook binds\n         * pointer events, so a button works exactly as the div did, and it says\n         * what it is. Enter/Space toggle for the keyboard. */\n        <button\n          type=\"button\"\n          ref={grabRef}\n          className=\"kol-rail-grab\"\n          aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}\n          aria-expanded={railOpen}\n          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}\n        />\n      )}\n      {logomark && (\n        /* the mark, and the app name beside it when open — uppercase like the\n         * rows (user 2026-08-28: \"uppercase CONSISTENCY\"). The `w-8` centring box\n         * puts the 20px mark on the same x as the 20px glyphs below it. */\n        <Tooltip label={logomark.title} placement=\"right\" asChild>\n        <div\n          onClick={() => onNavigate?.('/')}\n          className=\"text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4\"\n        >\n          <span className=\"w-8 flex justify-center shrink-0\"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>\n          <span className=\"kol-helper-12 uppercase flex-1 min-w-0 truncate\">{logomark.title}</span>\n        </div>\n        </Tooltip>\n      )}\n      {/* THE LIST IS ITS OWN REGION (2026-10-02): it takes the room between the mark and the pinned\n        * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,\n        * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}\n      <div className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>\n        {section ? (\n          <>\n            <RailItem icon=\"arrow-left\" path={section.path} label={section.label} currentPath=\"\" onNavigate={() => setEntered(null)} iconComponent={iconComponent} railOpen={drawer || railOpen} />\n            {section.sub.map((s) => <RailItem key={s.path} {...s} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} />)}\n          </>\n        ) : items.map(row)}\n      </div>\n      {/* the rule runs the full rail width, out past the px-2 */}\n      {bottomItems.length > 0 && <div className=\"self-stretch -mx-2 border-t border-fg-08\" />}\n      {bottomItems.map(row)}\n    </div>\n  )\n}",
+      "def": "function NavRail({ variant = 'app', ...props }) {\n  return variant === 'site' ? <NavRailSite {...props} /> : <AppRail {...props} />\n}",
       "desc": ""
     },
     {
@@ -6118,50 +6326,6 @@
       "prop": "drawerOpenOn",
       "type": "—",
       "def": "[]",
-      "desc": ""
-    }
-  ],
-  "NavRail": [
-    {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "bottomItems",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "currentPath",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "hidden",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "drawer",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "fade",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "sections",
-      "type": "—",
-      "def": "'fold'",
       "desc": ""
     }
   ],
@@ -6207,18 +6371,6 @@
       "desc": ""
     },
     {
-      "prop": "size",
-      "type": "—",
-      "def": "14",
-      "desc": ""
-    },
-    {
-      "prop": "tracked",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
       "prop": "className",
       "type": "—",
       "def": "'gap-6'",
@@ -6250,20 +6402,6 @@
       "prop": "steps",
       "type": "—",
       "def": "[]",
-      "desc": ""
-    }
-  ],
-  "Logomark": [
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "20",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     }
   ],
@@ -6463,6 +6601,12 @@
       "type": "—",
       "def": "'s'",
       "desc": ""
+    },
+    {
+      "prop": "shortcutsRailKey",
+      "type": "—",
+      "def": "'S'",
+      "desc": ""
     }
   ],
   "HubHome": [
@@ -6520,6 +6664,32 @@
       "prop": "themeIn",
       "type": "—",
       "def": "'masthead'",
+      "desc": ""
+    }
+  ],
+  "HubDev": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Dev'",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "'Experiments and reference, not the app'",
+      "desc": ""
+    },
+    {
+      "prop": "storageKey",
+      "type": "—",
+      "def": "'kol-dev-tab'",
       "desc": ""
     }
   ],
@@ -7030,6 +7200,98 @@
       "prop": "className",
       "type": "—",
       "def": "'mt-12'",
+      "desc": ""
+    }
+  ],
+  "ColorLab": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "TypeScaleLab": [
+    {
+      "prop": "faces",
+      "type": "—",
+      "def": "{\n  display: { family: 'var(--kol-font-family-sans-narrow)', label: 'Right Grotesk Narrow', weight: 500 },\n  heading: { family: 'var(--kol-font-family-sans-compact)', label: 'Right Grotesk Compact', weight: 500 },\n  text: { family: 'var(--kol-font-family-sans)', label: 'Right Grotesk', weight: 400 },\n}",
+      "desc": ""
+    },
+    {
+      "prop": "samples",
+      "type": "—",
+      "def": "{\n  headline: 'The quick brown fox jumps over the lazy dog',\n  text: 'A modular scale sets every size from one base and one ratio, so the steps keep the same proportion from the smallest note to the largest headline.',\n}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "Lockup": [
+    {
+      "prop": "parent",
+      "type": "—",
+      "def": "'Brand'",
+      "desc": ""
+    },
+    {
+      "prop": "product",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "descriptor",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "descriptor2",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "scale",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'horizontal'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "LockupBuilder": [
+    {
+      "prop": "parent",
+      "type": "—",
+      "def": "'Brand'",
+      "desc": ""
+    },
+    {
+      "prop": "presets",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ]

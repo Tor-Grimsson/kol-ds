@@ -535,7 +535,7 @@
    * on the SHEET corner, so at even padding it landed on top of the view
    * toggle. The card reserves the lane instead of the close moving. */
   padding: var(--kol-spacing-12) var(--kol-spacing-5) var(--kol-spacing-5);
-  border: 1px solid var(--kol-oq-08);
+  /* no border (user 2026-10-20: "the border? is so ugly") — the scrim is the separation */
   border-radius: var(--kol-radius-sm);
   background: var(--kol-surface-primary);
 }

@@ -49,3 +49,12 @@ export { default as Brand } from './Brand.jsx'
 export { default as BrandBook } from './BrandBook.jsx'
 export { default as BrandAssets } from './BrandAssets.jsx'
 export { brandSections, brandToc, brandInfo, BRAND_VIEWS, BOOK_SECTIONS, ASSET_SECTIONS } from './brandBook.js'
+
+// The brand lab (2026-10-20): the generators a brand is MADE with — carried from kol-atlas's Assets pages.
+// Each is controlled by one value, and the math is exported so a brand can be emitted without the UI.
+export { default as ColorLab } from './ColorLab.jsx'
+export { deriveColorLab, colorLabCss, blendRamp, neutralRamp, DEFAULT_COLOR_LAB, COLOR_ROLES, COLOR_SLOTS, COLOR_MIX } from './colorLab.js'
+export { default as TypeScaleLab } from './TypeScaleLab.jsx'
+export { typeScale, typeScaleCss, TYPE_RATIOS, TYPE_STEPS, DEFAULT_TYPE_SCALE } from './typeScale.js'
+export { default as Lockup, LOCKUP_SCALES } from './Lockup.jsx'
+export { default as LockupBuilder } from './LockupBuilder.jsx'

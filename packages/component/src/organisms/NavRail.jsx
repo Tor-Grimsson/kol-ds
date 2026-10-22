@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Button, Tooltip } from '@kolkrabbi/kol-component'
-import { GRAB } from '@kolkrabbi/kol-component/utilities/motion'
+/* taxonomy-ok: organism — nests Button (atom) + Logomark (atom) + Tooltip (utility). Moved
+ * from kol-shell 2026-10-22 (the one nav rail, user: "lets go for your recommendation"): the
+ * app rail and the site rail are one component, and a site must not install the app shell
+ * for its sidebar — the PageHeader precedent. kol-shell re-exports it. */
+import Button from '../atoms/Button.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
+import { GRAB } from '../utilities/motion.js'
 /* the grab pill's proximity wake, travel and dwell — ONE implementation, shared
  * with kol-framework's useDragResize (OneGrabGestureBothRails, kol-fxr
  * 2026-08-30: two rails on one screen felt different because each package had
  * built the gesture itself). It lived here until then. */
-import { useGrabEdge } from '@kolkrabbi/kol-component'
+import useGrabEdge from '../hooks/useGrabEdge.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import Logomark from './Logomark.jsx'
-import { useRailSlot } from './railSlot.jsx'
+import Logomark from '../atoms/Logomark.jsx'
+import { useRailSlot } from '../hooks/railSlot.jsx'
+import NavRailSite from './NavRailSite.jsx'
 
 /**
  * NavRail — the flat rail. ONE fixed column, every child a direct child of it
@@ -64,6 +70,7 @@ import { useRailSlot } from './railSlot.jsx'
  * flag a consumer has to remember.
  *
  * @param {Array}  items        `{ icon, path, label, sub?: [{ icon?, path, label }] }`
+ *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron folds
  * @param {Array}  bottomItems  pinned below the rule (Settings)
  * @param {Object} logomark     `{ svgUrl, title }` — the mark, and the app name beside it when open
  * @param {string} currentPath  active match: '/' exact, else prefix → aria-current="page"
@@ -84,10 +91,10 @@ import { useRailSlot } from './railSlot.jsx'
 const RAIL_W = '--kol-shell-rail-width'
 const CLOSED = 48
 
-/* the OPEN width is the sidenav's ladder (kol-framework: 264, 320 from 1536),
- * read at drag time so the rail lands on whichever rung the window is on */
+/* the OPEN width is the rail's own ladder (`--kol-shell-rail-open` in kol-theme: 264, 320
+ * from 1536), read at drag time so the rail lands on whichever rung the window is on */
 const openWidth = () => {
-  const v = getComputedStyle(document.documentElement).getPropertyValue('--kol-sidenav-w').trim()
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--kol-shell-rail-open').trim()
   const px = parseFloat(v)
   return Number.isFinite(px) ? (v.endsWith('rem') ? px * 16 : px) : 264
 }
@@ -173,7 +180,7 @@ function IconAt({ name, size, component }) {
   return <Cmp name={name} size={size} />
 }
 
-function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail, onEnter }) {
+function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail, onEnter }) {
   const [open, setOpen] = useState(false)
   /* A SECTION ROW IS NOT A DESTINATION (RailSectionPressOpensRail, kol-fxr
    * 2026-08-30 — user: *"if I press effects from collapsed nav it should maybe
@@ -193,12 +200,18 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
    * it still fell through to `onNavigate` with that path no consumer dispatches: dead at a desk,
    * and worse on a touch drawer, where AppShell closes the drawer on every navigate — pressing a
    * section's name shut the nav and loaded nothing. */
+  /* FOLDER NOTE (2026-10-22, user: "like foldernote in obsidian where a parent/group/folder can
+   * also be a note"). Opt-in per section: give it `to` and its icon and label open that page,
+   * while the chevron alone folds or enters — `RailSection`'s `to` split in kol-workshop. A
+   * section without `to` is unchanged. */
   const press = () => {
+    if (isSection && to) { onNavigate?.(to); return }
     if (isSection && onEnter) { if (!railOpen) onOpenRail?.(); onEnter(); return }
     if (isSection) { if (!railOpen) onOpenRail?.(); setOpen((v) => !railOpen || !v); return }
     onNavigate?.(path)
   }
-  const active = path === '/' ? currentPath === '/' : currentPath.startsWith(path)
+  const target = to ?? path
+  const active = target === '/' ? currentPath === '/' : currentPath.startsWith(target)
   return (
     <>
       <div className="flex items-center gap-3 w-full overflow-hidden shrink-0">
@@ -242,7 +255,7 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
             className="shrink-0"
             style={{ color: 'var(--kol-oq-96)' }}
             aria-expanded={onEnter ? undefined : open}
-            onClick={onEnter ? press : () => setOpen((v) => !v)}
+            onClick={onEnter ? () => { if (!railOpen) onOpenRail?.(); onEnter() } : () => setOpen((v) => !v)}
             aria-label={`${label} sub categories`}
           />
           </Tooltip>
@@ -254,9 +267,11 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
           <Tooltip key={s.path} label={s.label} placement="right" asChild>
           <div
             /* 18px of gutter puts the 20px box at x 26, so its 12px glyph starts
-             * at 30 — one step right of L1's 20-in-32 at 14 (measured in fxr) */
-            className="flex items-center gap-3 w-full overflow-hidden shrink-0 cursor-pointer"
-            style={{ paddingLeft: 18 }}
+             * at 30 — one step right of L1's 20-in-32 at 14 (measured in fxr). A row
+             * with no glyph starts its label on L1's label column instead — 32px
+             * rung + 12px gap (2026-10-22, kol-branding: label-only rows sat under
+             * the icon column, left of their own section's name) */
+            className={`flex items-center gap-3 w-full overflow-hidden shrink-0 cursor-pointer ${s.icon ? 'pl-[18px]' : 'pl-11'}`}
             onClick={() => onNavigate?.(s.path)}
             aria-current={on ? 'page' : undefined}
           >
@@ -283,7 +298,17 @@ function RailItem({ icon, path, label, sub, currentPath, onNavigate, iconCompone
   )
 }
 
-export default function NavRail({
+/* ONE RAIL, TWO VARIANTS (2026-10-22, the one nav rail — user: "should it not be a variant of
+ * NavRail? since they are so similar"). `app` (default) is the flat 48px rail below; `site` is the
+ * grouped site sidebar that was kol-framework's `SideNav`, carried class-for-class so a site
+ * renders exactly as before — it takes SideNav's props (`navTree`, `isActive`, `background`,
+ * `currentPath`, `onNavigate(event, to)` …). kol-framework's `SideNav` is that variant under the
+ * old name, with react-router and the theme toggle wired in. */
+export default function NavRail({ variant = 'app', ...props }) {
+  return variant === 'site' ? <NavRailSite {...props} /> : <AppRail {...props} />
+}
+
+function AppRail({
   items = [],
   bottomItems = [],
   logomark,

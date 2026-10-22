@@ -126,6 +126,21 @@
       "Icon"
     ]
   },
+  "IconPlate": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "KeylineGuide": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "IconToggle": {
+    "typeClasses": [],
+    "composes": [
+      "SOLO",
+      "Tooltip"
+    ]
+  },
   "ExitPreview": {
     "typeClasses": [],
     "composes": []
@@ -832,7 +847,8 @@
     ],
     "composes": [
       "Button",
-      "Input"
+      "Input",
+      "ToggleCheckbox"
     ]
   },
   "PaletteHarmonyWheel": {
@@ -861,13 +877,19 @@
       "Icon"
     ]
   },
-  "ShellDrawer": {
+  "Rail": {
     "typeClasses": [],
     "composes": [
       "CloseButton"
     ]
   },
-  "ShellSearchOverlay": {
+  "ShellDrawer": {
+    "typeClasses": [],
+    "composes": [
+      "Rail"
+    ]
+  },
+  "CommandOverlay": {
     "typeClasses": [
       "kol-helper-10",
       "kol-helper-12"
@@ -880,13 +902,17 @@
       "Icon"
     ]
   },
+  "ShellSearchOverlay": {
+    "typeClasses": [],
+    "composes": [
+      "CommandOverlay"
+    ]
+  },
   "ShortcutsOverlay": {
     "typeClasses": [
-      "kol-helper-12"
+      "kol-mono-12"
     ],
-    "composes": [
-      "SettingsSections"
-    ]
+    "composes": []
   },
   "Slider": {
     "typeClasses": [
@@ -921,6 +947,34 @@
   "WheelTriangle": {
     "typeClasses": [],
     "composes": []
+  },
+  "AlphaStrip": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "ColorPickerPopover": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "Input",
+      "PopoverPanel",
+      "HueStrip",
+      "SBSquare",
+      "AlphaStrip"
+    ]
+  },
+  "CompareGrid": {
+    "typeClasses": [
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "IconPlate",
+      "IconToggle",
+      "Pill",
+      "SegmentedToggle",
+      "ViewToggle"
+    ]
   },
   "SplitToolButton": {
     "typeClasses": [
@@ -982,17 +1036,32 @@
   },
   "TabsRow": {
     "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
       "kol-mono-12"
     ],
     "composes": [
       "CloseButton",
+      "Button",
+      "Icon"
+    ]
+  },
+  "TABBAR_H": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
       "Icon"
     ]
   },
   "TabChips": {
     "typeClasses": [],
     "composes": [
-      "Button"
+      "TabsRow"
     ]
   },
   "Canvas": {
@@ -1143,20 +1212,8 @@
     ]
   },
   "MobileTabBar": {
-    "typeClasses": [
-      "kol-helper-10"
-    ],
-    "composes": [
-      "Icon"
-    ]
-  },
-  "TABBAR_H": {
-    "typeClasses": [
-      "kol-helper-10"
-    ],
-    "composes": [
-      "Icon"
-    ]
+    "typeClasses": [],
+    "composes": []
   },
   "ContentFilters": {
     "typeClasses": [
@@ -1177,25 +1234,50 @@
     "typeClasses": [
       "kol-helper",
       "kol-helper-12",
-      "kol-mono-14",
-      "kol-mono-display-02",
-      "kol-mono-display-03",
-      "kol-mono-heading-03",
-      "kol-sans-body-01",
-      "kol-sans-display-02",
-      "kol-sans-display-03",
-      "kol-sans-heading-03"
+      "kol-sans-display-01",
+      "kol-sans-display-03"
     ],
     "composes": [
-      "SectionText",
-      "TITLE_ROLES"
+      "SectionText"
     ]
+  },
+  "PAGE_HEADER_ROLES": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-12",
+      "kol-sans-display-01",
+      "kol-sans-display-03"
+    ],
+    "composes": [
+      "SectionText"
+    ]
+  },
+  "NavRail": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "Tooltip",
+      "GRAB",
+      "Logomark",
+      "NavRailSite"
+    ]
+  },
+  "Logomark": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "RailSlotProvider": {
+    "typeClasses": [],
+    "composes": []
   },
   "MastheadContext": {
     "typeClasses": [
       "kol-mono-display-02",
       "kol-mono-display-03",
       "kol-mono-heading-03",
+      "kol-sans-display-01",
       "kol-sans-display-02",
       "kol-sans-display-03",
       "kol-sans-heading-03"
@@ -1207,6 +1289,7 @@
       "kol-mono-display-02",
       "kol-mono-display-03",
       "kol-mono-heading-03",
+      "kol-sans-display-01",
       "kol-sans-display-02",
       "kol-sans-display-03",
       "kol-sans-heading-03"
@@ -1358,11 +1441,10 @@
       "Divider",
       "Dropdown",
       "Input",
-      "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
       "Tooltip",
-      "ContentCard",
+      "MediaTile",
       "ContentRow",
       "ContentFilters",
       "MenuItem",
@@ -1371,6 +1453,7 @@
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
+      "SETTINGS_BASE",
       "MediaLibraryExplorer",
       "SettingsChipRow",
       "Icon"
@@ -1387,11 +1470,10 @@
       "Divider",
       "Dropdown",
       "Input",
-      "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
       "Tooltip",
-      "ContentCard",
+      "MediaTile",
       "ContentRow",
       "ContentFilters",
       "MenuItem",
@@ -1400,6 +1482,7 @@
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
+      "SETTINGS_BASE",
       "MediaLibraryExplorer",
       "SettingsChipRow",
       "Icon"
@@ -1416,11 +1499,10 @@
       "Divider",
       "Dropdown",
       "Input",
-      "SizeOrDownload",
       "ViewToggle",
       "FullscreenOverlay",
       "Tooltip",
-      "ContentCard",
+      "MediaTile",
       "ContentRow",
       "ContentFilters",
       "MenuItem",
@@ -1429,6 +1511,7 @@
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
+      "SETTINGS_BASE",
       "MediaLibraryExplorer",
       "SettingsChipRow",
       "Icon"
@@ -1449,6 +1532,7 @@
       "Input",
       "Tag",
       "IconFrame",
+      "CloseButton",
       "ActionButton",
       "SizeOrDownload",
       "ToggleCheckbox",
@@ -1472,7 +1556,7 @@
       "ContentFilters",
       "DocumentEditor",
       "DRAFTS_EVENT",
-      "ShellSearchOverlay",
+      "CommandOverlay",
       "SettingsSections",
       "KIND_LABEL",
       "KINDS",
@@ -1512,11 +1596,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1530,11 +1615,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1548,11 +1634,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1566,11 +1653,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1584,11 +1672,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1602,11 +1691,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1620,11 +1710,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1638,11 +1729,12 @@
     "composes": [
       "Button",
       "Dropdown",
+      "CloseButton",
       "Divider",
       "IconFrame",
       "LabeledControl",
       "ToggleSwitch",
-      "ShellDrawer",
+      "Rail",
       "FullscreenOverlay",
       "Tooltip"
     ]
@@ -1853,7 +1945,7 @@
       "SearchInput",
       "ToggleCheckbox",
       "IconFrame",
-      "ShellDrawer",
+      "Rail",
       "Tooltip",
       "Table",
       "MediaLibrary",
@@ -1934,13 +2026,9 @@
     ]
   },
   "SideNav": {
-    "typeClasses": [
-      "kol-helper-10",
-      "kol-helper-12"
-    ],
+    "typeClasses": [],
     "composes": [
-      "ThemeToggle",
-      "Icon"
+      "ThemeToggle"
     ]
   },
   "ShellHeader": {
@@ -2167,6 +2255,12 @@
   "TextPressure": {
     "typeClasses": [],
     "composes": []
+  },
+  "LoaderIntro": {
+    "typeClasses": [],
+    "composes": [
+      "TextPressure"
+    ]
   },
   "IntroLoader": {
     "typeClasses": [],

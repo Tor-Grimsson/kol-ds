@@ -17,6 +17,11 @@
    * the rail mounts. 0.80.0–0.87.x had it derive from the sidenav tokens,
    * while the rail WAS a collapsed SideNav; that is reversed. */
   --kol-shell-rail-width: 48px;
+  /* The rail's OPEN width — its own ladder, 264 · 320 from 1536 (2026-10-22). NavRail
+   * read kol-framework's `--kol-sidenav-w` for this, so an app that loads kol-framework.css
+   * (fxr) opened to 320 on a wide screen and one that does not (mirror, monitor) fell back to
+   * 264 — the same rail, two widths, decided by an unrelated import. */
+  --kol-shell-rail-open: 264px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin.
    * ONE LADDER FOR THE ESTATE (two-page-scaffolds-one-job, kol-client-olina
    * 2026-09-03): this is `--kol-pad-section-x`, the page-content ladder every
@@ -31,6 +36,7 @@
    * pair cannot drift. */
   --kol-shell-page-pad: var(--kol-pad-section-x, clamp(20px, 5vw, 48px));
 }
+@media (min-width: 1536px) { :root { --kol-shell-rail-open: 320px; } }
 
 /* ── PageShell ──────────────────────────────────────────────────────────── */
 

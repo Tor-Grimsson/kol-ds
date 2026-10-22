@@ -16,6 +16,7 @@ export const BOOK_SECTIONS = [
   { key: 'hero', id: 'hero', label: 'brand guidelines', lede: 'Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.' },
   { key: 'overview', id: 'brand-overview', label: 'Overview', title: 'Chapters', lede: 'Each chapter is its own page. They read in order, but every one stands alone for handoff.' },
   { key: 'about', id: 'about', nav: 'About', label: '01 — about', copy: true },
+  { key: 'messages', id: 'key-messages', nav: 'Key messages', label: '01 — about · key messages', title: 'Key messages', copy: true },
   { key: 'tone', id: 'voice', nav: 'Tone', label: '02 — tone', title: 'Tone', copy: true },
   { key: 'look', id: 'look', nav: 'Look', label: '03 — look', title: 'Look', copy: true },
   { key: 'logo', id: 'logos-concept', nav: 'Logo', label: '04 — logos · concept', title: 'The mark', marks: ['wordmark', 'logomark'] },
@@ -29,8 +30,13 @@ export const ASSET_SECTIONS = [
   { key: 'logos', id: 'logos', nav: 'Logos', label: '01 — logos', title: 'Logos' },
   { key: 'branded', id: 'branded-assets', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
   { key: 'stationery', id: 'assets-stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
+  { key: 'labels', id: 'labels', nav: 'Labels', label: '09 — labels', title: 'Labels', copy: true },
+  { key: 'packaging', id: 'packaging', nav: 'Packaging', label: '10 — packaging', title: 'Packaging', copy: true },
+  { key: 'mockups', id: 'mockups', nav: 'Mockups', label: '11 — mockups', title: 'Mockups', copy: true },
   { key: 'social', id: 'social-sizes', nav: 'Social', label: '12 — social · sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
   { key: 'profile', id: 'social-profile', nav: 'Profile', label: '13 — social · profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },
+  { key: 'generators', id: 'generators', nav: 'Generators', label: '14 — generators', title: 'Generators', copy: true },
+  { key: 'deck', id: 'slide-deck', nav: 'Slide deck', label: '15 — slide deck', title: 'Slide deck', copy: true },
 ]
 
 /* the two pages, for a view switch */
@@ -47,6 +53,8 @@ function shows(s, brand) {
   if (s.copy) return hasCopy(s)
   if (s.key === 'color') return Boolean(brand?.ramps?.length) || hasCopy(s)
   if (s.key === 'logos') return Boolean(brand?.logos?.length)
+  /* the marks sections draw the manifest's logos — their default lede is not enough to show empty frames */
+  if (s.key === 'logo' || s.key === 'lockups') return Boolean(brand?.logos?.length || s.blocks?.length || s.after?.length)
   if (s.key === 'social') return Boolean(brand?.social?.templates?.length)
   if (s.key === 'profile') return Boolean(brand?.social?.avatars?.length)
   return true

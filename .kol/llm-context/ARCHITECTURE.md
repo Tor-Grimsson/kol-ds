@@ -48,6 +48,15 @@ from `SectionText` on two pages. The rest of that page's stack (`ContentFilters`
 reunites one page's components in one package. Nothing circular: shell peers on component.
 `kol-shell` does not re-export it — the import path changes, which is the whole migration.
 
+**Amended 2026-10-22 (user ruling, deliberately against "Do not fold shell into framework or
+component" above):** the nav rail is ONE component, `NavRail` in **kol-component**, with `variant`
+app (the flat rail) · site (kol-framework's `SideNav`, carried class-for-class). It moved out of
+kol-shell with `Logomark` and the rail slot because every other host broke this section: kol-shell
+hosting it would make kol-framework import kol-shell (a reverse dependency, and a site installing
+the app shell for its sidebar — why `PageHeader` moved). kol-shell re-exports all three; kol-framework's
+`SideNav` is an alias that keeps the react-router read and the ThemeToggle, which kol-component cannot
+carry. The site variant's box CSS still lives in kol-framework.css. The rest of kol-shell stays.
+
 **Twelfth UI package — `kol-hardware`, born `kol-controls` (added 2026-09-01, renamed 2026-09-27):** hardware panel controls for instruments — knob, fader, LED, toggles, rocker, jack socket, panel selector/dropdown/input, module header, the touch `ParamSheet` — lifted from kol-monitor's rack (`KolControlsPackage`; user: *"make a controls package in the ds … it's mainly about mixer strips, knobs and stuff specific to modules, mixers and synth hardware"*). A different TIER from `component`'s app atoms — a rack fader is a 2px track on a 24px panel, not app chrome — so `Fader`/`PanelDropdown`/`PanelLabel` coexist with `Slider`/`Dropdown`/`LabeledControl` by design. Consumers: kol-monitor (rack), kol-mirror (CRT bezel, transport deck), kol-fxr (editor controls). **Routing, the rack, the registry and render loops stay in the consumers**; the package is presentational with seams (`ModuleHeader powered`, `JackSocket`'s routing props, `iconComponent`). Tokens in `kol-theme` (`kol-components-controls.css`, `--kol-ctl-*` — theme-invariant hardware caps, the set's own LED emitters, hex jack roles). **Do not** fold controls into `component`, and do not swap a consumer's rack controls for app atoms.
 
 **Amended 2026-09-27 (user rulings, deliberately against the line above as first written):**

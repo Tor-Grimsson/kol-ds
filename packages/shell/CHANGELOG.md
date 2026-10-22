@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.73.0 — 2026-10-22
+
+- **`NavRail`, `Logomark`, `RailSlotProvider` / `useRailSlot` moved to kol-component** and are re-exported here — every import from `@kolkrabbi/kol-shell` keeps working. `AppShell` renders kol-component's `NavRail`. Needs kol-component ≥0.283.0 · kol-theme ≥0.179.0.
+
 ## 0.72.0 — 2026-10-18
 
 - **App pages wear `PageHeader level="app"`** (PageHeaderAppLevel, kol-monitor). `CatalogPage` (and so `HubHome`), `SettingsScaffold` (`HubSettings`), `HubDev` and `AppStudio`'s create page default to the app level — the old mono masthead size — instead of 0.276.0's display-01 hero. A consumer's `header.level` still wins. Needs kol-component ≥0.277.0.

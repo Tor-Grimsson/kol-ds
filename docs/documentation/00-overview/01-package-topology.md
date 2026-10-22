@@ -39,7 +39,7 @@ UI packages, an engine tier and a clients tier. Every content/domain system that
 | **Foundation** | `@kolkrabbi/kol-theme` | all CSS — tokens, `.kol-prose`, per-component sheets (chess/dashboards/workshop/etc.) |
 | | `@kolkrabbi/kol-icons` | `Icon` loader + `kol-icon-set-interface` |
 | **Core** | `@kolkrabbi/kol-component` | general atoms → organisms + hooks (see below) |
-| | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
+| | `@kolkrabbi/kol-framework` | site shell — `PageLayout`, `SideNav` (alias of kol-component's `NavRail variant="site"`, with the router wired), `ShellHeader`, `ThemeToggle`, `Layout`, `ScrollToTop`; the page kit `PageHero` · `PageSection` |
 | **Domain** (standalone) | `@kolkrabbi/kol-workshop` | docs system — docs viewer, tag graph, shell; runs on the two engines below |
 | | `@kolkrabbi/kol-dashboards` | analytics — cards, SVG charts, `MetricsDashboard` |
 | | `@kolkrabbi/kol-hardware` | hardware panel controls in five groups — value · switches · indicators · panel · frames — and the signal engine (`./signal`); renamed from `kol-controls` 2026-09-27 |

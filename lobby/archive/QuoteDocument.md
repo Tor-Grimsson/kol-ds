@@ -41,3 +41,7 @@ kol-brand `Asset` / `kol-lockup-hori.svg`. Number formatting stays the consumer'
 - **Page fit is unsolved.** Printed in headless Chrome, v1 and v3 run to **three** pages (page 1 overflows by the payment schedule's tail and footer); v2 fits two. The user ruled out squeezing space to fit (*"DONT WORK REDUCTIVE"*), so a fix has to be structural: move a block to page 2, or let it flow onto three pages.
 - **VSK is open:** the mockups show VSK 24% (478,800 on 1,995,000), but the user's invoice charges VSK 0. The online quote also says "prices exclude 24% VSK".
 - kol-atlas also has a rejected in-app attempt, `apps/workspace/src/components/QuotePrint.jsx` (dev-only `/quote/print`, three layouts on KOL doc roles), still in its tree. Its useful part is the data wiring: the numbers come from Project + Hours through the engine, so the PDF and `/quote` cannot disagree.
+
+## ⚫ RETIRED — 2026-10-20
+
+The user's ruling: the quote is not built in kol-ds-ui. `apps/stationery` (ui.kolkrabbi.io/apps/stationery) stays live as the desk; the layout is iterated in the Kolkrabbi Stationery artifact, outside this repo. Nothing to build here.

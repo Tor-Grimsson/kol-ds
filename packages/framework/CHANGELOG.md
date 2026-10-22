@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.52.0 — 2026-10-22
+
+- **`SideNav` is `NavRail variant="site"`** from kol-component under its old name — deprecated, on the retirement ledger, same props. It keeps the react-router read (`useLocation`, `useNavigate`, the basename on hrefs) and renders `ThemeToggle` in the rail's slot. Rendering is unchanged; the active category icon is ink (kol-theme 0.179.0). Needs kol-component ≥0.283.0.
+
 ## 0.51.0 — 2026-10-18
 
 - **`devFavicon` is one letter** (user: *"dev favicon should only use letter like M for monitor"*) — a longer `label` is cut to its first letter; default `K`.
