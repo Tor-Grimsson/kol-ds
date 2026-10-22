@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-component
 
+## 0.285.0 — 2026-10-22
+
+- **`SectionText` carries the header levels** (user: *"rename PageHeader to something that describes section text elements and ship together"*). `level` page · app · section · content fills the role defaults; explicit props still win. `media` renders above the eyebrow with a level. `SECTION_TEXT_LEVELS` exported.
+- **New level `content`** (DevSectionHeader, kol-fxr): a section of a page's content — `kol-eyebrow` · h3 heading-04 · body-01 fg-64 at 64ch, 16px to its body.
+- **Deprecated: `PageHeader` · `PAGE_HEADER_ROLES`** → `SectionText level` · `SECTION_TEXT_LEVELS`. Same props, same render; on the retirement ledger.
+- **A float opened inside a float stacks above it.** `PopoverPanel` sets `--kol-float-depth` for its children, so a Dropdown inside a popover panel no longer opens under it (needs kol-theme ≥0.180.0; older themes render as before).
+
 ## 0.284.0 — 2026-10-22
 
 - **A catalog card with no cover keeps its text at the foot.** `ContentCard` `variant="catalog"` with `media={false}` dropped the media box and the plate rose to the top of an empty A4 frame; the plate now sits on the frame's bottom edge. Other variants unchanged.

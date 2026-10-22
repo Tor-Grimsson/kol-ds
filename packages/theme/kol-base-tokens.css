@@ -237,3 +237,8 @@
     --kol-ctl-lg: 40px;
   }
 }
+
+/* THE PAGE DOES NOT BOUNCE (OverscrollNone, kol-monitor 2026-10-22): rubber-banding on Safari and iPhone.
+ * Nine apps each carried their own copy; this file is loaded by both `core` and the umbrella, so every
+ * KOL app gets it. `none`, not `-x` — that stopped only the sideways bounce. */
+html { overscroll-behavior: none; }

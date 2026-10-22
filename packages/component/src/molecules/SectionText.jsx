@@ -36,6 +36,15 @@
  *                                 stamps `reveal` on each part; nothing animates in the DS)
  * @param {object}    slotStyle    inline style per slot — `{ headline: { '--reveal-delay': '0.1s' } }`
  * @param {string}    className    extra classes on the block
+ * @param {'page'|'app'|'section'|'content'} [level]  THE HEADER LEVELS (2026-10-22, user: *"rename PageHeader to
+ *                    something that describes section text elements"* — PageHeader is now an alias of this). A
+ *                    level fills the role defaults; any explicit prop still wins. page = h1 display-01 over
+ *                    `.kol-header-lede` — the hero; app = h1 display-01 at 46/60 over `.kol-header-lede-app`;
+ *                    section = h2 display-03 over `.kol-header-lede-section`; content = h3 heading-04 under a
+ *                    `kol-eyebrow`, over body-01 fg-64 at 64ch — a section of a page's CONTENT (a dev tab's
+ *                    sections, DevSectionHeader, kol-fxr). A level sets actions inline, and the bottom rhythm
+ *                    to `--kol-page-header-mb` (40px; content 16px). Unset = the section family as before.
+ * @param {ReactNode} media        a mark above the eyebrow (a logo, an SVG) — with a `level` only
  */
 export const HEADLINE_ROLE = {
   pull: 'kol-section-text-pull',
@@ -50,18 +59,29 @@ export const HEADLINE_ROLE = {
   'heading-05': 'kol-sans-heading-05',
 }
 
+/* ONE HEADER, FOUR LEVELS (Round 11 + PageHeaderAppLevel, carried from PageHeader whole). `title` is the
+ * headline's type, `lede` the body's; the rest default the block for that level. */
+export const SECTION_TEXT_LEVELS = {
+  page: { title: 'kol-sans-display-01', lede: 'kol-header-lede' },
+  app: { title: 'kol-sans-display-01 text-[46px] md:text-[60px]', lede: 'kol-header-lede-app' },
+  section: { title: 'kol-sans-display-03', lede: 'kol-header-lede-section', as: 'h2' },
+  /* content (DevSectionHeader, kol-fxr 2026-10-22 — the user's approved look: *"maybe title and description is
+   * one step bigger?"*; never `kol-helper-*` for a paragraph) */
+  content: { title: 'kol-sans-heading-04', lede: 'kol-sans-body-01 text-fg-64', eyebrow: 'kol-eyebrow text-fg-48', as: 'h3', gap: 'gap-2', mb: '16px', measure: '64ch' },
+}
+
 export default function SectionText({
   eyebrow,
   label,
   headline,
   headlineSize = 'heading-02',
-  headlineAs: Headline = 'h2',
+  headlineAs,
   headlineCase = 'auto',
   headlineClass,
   body,
   actions,
   align = 'start',
-  gap = 'gap-4',
+  gap,
   children,
   /* ONE eyebrow voice across the set (SectionTextLabelVoice, user 2026-08-26:
    * "closer to the hero eyebrow") — the hero's helper-12 / meta, small and
@@ -69,8 +89,8 @@ export default function SectionText({
    * the eyebrow ROLE (ruled the same day), on `.kol-section-text-eyebrow`. */
   eyebrowClass,
   labelClass,
-  bodyClass = 'kol-section-text-body',
-  actionsClass = 'flex flex-wrap gap-4',
+  bodyClass,
+  actionsClass,
   /* ACTIONS ON THE BODY'S BASELINE (page-header-one-masthead, 2026-09-03).
    * Default `below` is the section stack every organism renders. `inline` puts
    * the cluster in ONE flex row with the body, which is the only way to land it
@@ -86,7 +106,7 @@ export default function SectionText({
    * Horizontal layout is untouched, so a long body cannot run under the
    * controls (PageHeaderTrailingSlot / PageHeaderActionsGrowsBlock, carried in
    * from `PageHeader` when it became a composition of this base). */
-  actionsPlacement = 'below',
+  actionsPlacement,
   slotClass = {},
   slotStyle = {},
   className = '',
@@ -94,10 +114,29 @@ export default function SectionText({
      (PageHeader's `--kol-page-header-mb`). `slotStyle` reaches the slots; this
      was the one box it could not reach. */
   style,
+  level,
+  media,
 }) {
+  /* a LEVEL fills the header defaults; an explicit prop always wins */
+  const L = level ? SECTION_TEXT_LEVELS[level] ?? SECTION_TEXT_LEVELS.page : null
+  const Headline = headlineAs ?? L?.as ?? (L ? 'h1' : 'h2')
+  if (L) {
+    headlineClass = `text-fg-96 ${headlineClass ?? L.title}`
+    bodyClass ??= `${L.lede} min-w-0`
+    actionsClass ??= 'flex items-center gap-4'
+    actionsPlacement ??= 'inline'
+    slotStyle = L.measure && !slotStyle.body?.maxWidth ? { ...slotStyle, body: { ...slotStyle.body, maxWidth: L.measure } } : slotStyle
+    if (!media) style = { marginBottom: `var(--kol-page-header-mb, ${L.mb ?? '40px'})`, ...style }
+  }
+  gap ??= L?.gap ?? (L ? 'gap-3' : 'gap-4')
+  bodyClass ??= 'kol-section-text-body'
+  actionsClass ??= 'flex flex-wrap gap-4'
+  actionsPlacement ??= 'below'
   /* `label` / `labelClass` / slot key `label` = aliases of `eyebrow` (2026-08-27) */
   const eb = eyebrow ?? label
-  const ebClass = eyebrowClass ?? labelClass ?? 'kol-helper-12 text-meta'
+  /* a level's eyebrow is HELPER, not mono (PageHeader's ruling 2026-08-15), off `oq-64`; content's is the
+   * `kol-eyebrow` role */
+  const ebClass = eyebrowClass ?? labelClass ?? (L ? L.eyebrow ?? 'kol-helper-12 text-oq-64' : 'kol-helper-12 text-meta')
   const cls = (base, slot) => `${base} ${slotClass[slot] ?? (slot === 'eyebrow' ? slotClass.label : undefined) ?? ''}`.trim()
   const alignCls = align === 'center' ? 'items-center text-center' : 'items-start text-left'
   const inlineActions = actionsPlacement === 'inline' && !!actions && !!body
@@ -109,7 +148,7 @@ export default function SectionText({
   const cluster = actions && (
     <div className={cls(`${actionsClass} shrink-0 md:h-0 md:self-center`, 'actions')} style={slotStyle.actions}>{actions}</div>
   )
-  return (
+  const block = (
     <div className={`kol-section-text flex flex-col ${gap} ${alignCls} ${className}`.replace(/\s+/g, ' ').trim()} style={style}>
       {/* `kol-section-text-eyebrow` = uppercase by ROLE (kol-theme ≥0.55.0);
         * `labelClass` is the voice riding beside it */}
@@ -144,6 +183,13 @@ export default function SectionText({
         : bodyNode)}
       {children}
       {actions && !inlineActions && !inlineHead && <div className={cls(actionsClass, 'actions')} style={slotStyle.actions}>{actions}</div>}
+    </div>
+  )
+  if (!(L && media)) return block
+  return (
+    <div className="flex flex-col gap-4" style={{ marginBottom: `var(--kol-page-header-mb, ${L.mb ?? '40px'})` }}>
+      <span className="inline-flex text-emphasis">{media}</span>
+      {block}
     </div>
   )
 }

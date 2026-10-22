@@ -20,8 +20,10 @@
  * sheet and its options intercept nothing. */
 .kol-popover-float {
   /* above the ShellDrawer sheet (z 200) — a Dropdown in the settings drawer
-   * opened BEHIND it (SettingsPanelApproved, 2026-08-27) */
-  z-index: 210;
+   * opened BEHIND it (SettingsPanelApproved, 2026-08-27). A float opened from INSIDE a float sits one
+   * step higher (`--kol-float-depth`, set by PopoverPanel): the inner one's portal mounts first, so at
+   * one z the outer panel covered its own dropdown's list (catalog variants panel, 2026-10-22). */
+  z-index: calc(210 + var(--kol-float-depth, 0));
   /* NEVER WIDER THAN THE WINDOW (the phone pass, 2026-10-02). A panel sizes to its content
    * (`w-max`) and `shift` can only slide it, so one wider than a phone hung off the right edge
    * and — parked off-screen with its reference — still stretched the page 200px sideways. The 8px

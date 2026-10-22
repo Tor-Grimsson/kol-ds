@@ -259,6 +259,9 @@ function TooltipOn({
  *   className       — extra classes on the panel
  *   style           — extra inline styles merged with floatingStyles
  */
+/* how many floats this one is opened from inside — context crosses portals, the DOM order does not */
+const FloatDepth = createContext(0)
+
 export function PopoverPanel({
   popover,
   children,
@@ -276,6 +279,7 @@ export function PopoverPanel({
   className = '',
   style: extraStyle,
 }) {
+  const depth = useContext(FloatDepth)
   if (!popover.open) return null
 
   const { refs, floatingStyles, context, getFloatingProps } = popover
@@ -295,12 +299,12 @@ export function PopoverPanel({
   const node = (
     <div
       ref={refs.setFloating}
-      style={extraStyle ? { ...floatingStyles, ...extraStyle } : floatingStyles}
+      style={{ ...floatingStyles, ...(depth ? { '--kol-float-depth': depth } : null), ...extraStyle }}
       className={cls}
       data-editor-keep-selection
       {...getFloatingProps()}
     >
-      {children}
+      <FloatDepth.Provider value={depth + 1}>{children}</FloatDepth.Provider>
     </div>
   )
 

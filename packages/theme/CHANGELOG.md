@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-theme
 
+## 0.180.0 — 2026-10-22
+
+- **`html { overscroll-behavior: none }`** (OverscrollNone, kol-monitor) in `kol-base-tokens.css`, which `core` and the umbrella both load — the page no longer rubber-bands on Safari / iPhone. Apps can drop their local copy.
+- **`.kol-popover-float` reads `--kol-float-depth`** — `z-index: calc(210 + depth)`, so a float opened inside a float stacks above it (kol-component ≥0.285.0 sets it).
+
 ## 0.179.0 — 2026-10-22
 
 - **`--kol-shell-rail-open`** — the nav rail's own open width, 264 · 320 from 1536. Every app rail opens to the same width whether or not it loads kol-framework.css.
