@@ -93,7 +93,9 @@ const BOX = {
  * control vanishing. article is the exception the shipped card already set: it
  * has no surface of its own to step, so it dims its title instead. */
 const HOVER = {
-  file:  'var(--kol-oq-04)',
+  /* file: no fill change on hover (user 2026-10-22: "remove the card background color change on hover") —
+   * the cover's zoom and the corner controls are its hover. Was oq-04. */
+  file:  null,
   slide: 'var(--kol-surface-primary)', /* the plate holds its color on hover; the drawer control is the affordance */
   catalog:  'var(--kol-surface-tertiary)',
   /* article and work take NO surface hover, and that is a decision not a gap:

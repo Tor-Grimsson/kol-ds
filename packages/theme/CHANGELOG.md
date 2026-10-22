@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-theme
 
+## 0.183.0 — 2026-10-22
+
+- **A selected card has no ring.** The 2px inset ring on `.kol-card[data-selected]` is gone; the card's select checkbox is the mark. `data-selected` stays as the hook. Keyboard focus keeps its ring.
+
+## 0.182.0 — 2026-10-22
+
+- **`.kol-media-control` hover has no accent** — the glyph keeps its ink (was the brand yellow); the plate stepping up and the glyph growing are the hover.
+
+## 0.181.0 — 2026-10-22
+
+- **Fix: a dropdown inside a popover panel opened under it.** 0.180.0 stepped a nested float by 1 (211), but a chromed panel (`.kol-popover`) sits on the 300 tier, so the list still went under the panel. Every float tier now adds `--kol-float-depth × 100` (`.kol-popover-float`, `.kol-popover`, the tooltip): one level in clears every tier.
+
 ## 0.180.0 — 2026-10-22
 
 - **`html { overscroll-behavior: none }`** (OverscrollNone, kol-monitor) in `kol-base-tokens.css`, which `core` and the umbrella both load — the page no longer rubber-bands on Safari / iPhone. Apps can drop their local copy.

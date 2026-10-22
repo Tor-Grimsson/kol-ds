@@ -55,7 +55,8 @@ import Tag from '../atoms/Tag'
 /* [variant][form][slot] → 'type-class ink-role', verbatim from the ruled table */
 const RAMP = {
   file: {
-    card: { title: 'kol-sans-heading-04 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+    /* the card's title is the row's, heading-05 (user 2026-10-22: "can we make the title smaller?" — was heading-04, 24px) */
+    card: { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
   },
   /* SLIDE — a deck (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03;

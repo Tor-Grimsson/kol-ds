@@ -64,6 +64,7 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  * @param {string}    cardVariant    the grid card's variant, per page (default `catalog`); `toCard` may return `variant` per card
  * @param {'catalog'|'file'} rowVariant  the list row (default `catalog`, the 36px no-thumb row); `file` = the 48px thumb row, for a catalog whose grid shows a cover —
  *                                 its slots (`date` · `size` · `meta` · `selected`) come from `toCard` like everything else
+ * @param {number}  listColumns  the list grid's column ceiling (default 3 for a file or slide row, else 4); tracks never go under 240
  * @param {'grid'|'stack'} listLayout   the list's container (default `grid`, rows four across — monitor's ruling); `stack` = one row per line
  * @param {ElementType} iconComponent  icon renderer seam for ContentFilters
  * @param {boolean}  showCountOnlyWhenFiltering  (default true)
@@ -174,6 +175,10 @@ export default function CatalogPage({
      line, which is what a list of files is (MediaLibrary stacks); olina's deck list
      rendered three 300px rows side by side (user: "why is it tiny?"). */
   listLayout = PRESETS[preset]?.listLayout ?? 'grid',
+  /* the LIST grid's column ceiling (2026-10-22 — user: *"are you passing props on number of items/columns?"*). It was
+     a hard 4 — monitor's ruling for the 36px catalog row. A file or slide row is a contained tile with a 72 thumb, so
+     it defaults to 3 (user: *"change this one to 3"*). Tracks still never go under 240. */
+  listColumns = rowVariant === 'file' || rowVariant === 'slide' ? 3 : 4,
   iconComponent,
   showCountOnlyWhenFiltering = true,
   filtersProps,
@@ -246,7 +251,7 @@ export default function CatalogPage({
             /* the catalog grid is a CLASS (`.kol-catalog-grid`, kol-theme ≥0.138.0) reading
              * `--kol-catalog-n`, the count measured above and set on PageShell — the same
              * number the filter row's first group reads */
-            <div ref={layout === 'list' ? undefined : gridRef} className={layout === 'list' ? undefined : 'kol-catalog-grid'} style={layout === 'list' ? (listLayout === 'stack' ? { display: 'flex', flexDirection: 'column', gap: 8 } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, max(240px, calc((100% - 3 * 8px) / 4))), 1fr))', gap: 8 }) : undefined}>
+            <div ref={layout === 'list' ? undefined : gridRef} className={layout === 'list' ? undefined : 'kol-catalog-grid'} style={layout === 'list' ? (listLayout === 'stack' ? { display: 'flex', flexDirection: 'column', gap: 8 } : { display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, max(240px, calc((100% - ${listColumns - 1} * 8px) / ${listColumns}))), 1fr))`, gap: 8 }) : undefined}>
               {rows.map((item, i) => {
                 if (hidden.has(i)) return null
                 const c = cards[i]

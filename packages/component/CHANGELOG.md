@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-component
 
+## 0.287.0 — 2026-10-22
+
+- **The file row is the file card, sideways.** `ContentRow variant="file"` is a contained tile: the card's fg-02 ground, rounded and clipped, a 72 thumb flush at the row's full height (no radius of its own), and one padded text section (12) holding the copy and the actions. The actions column spans the section's height; title on the top pad, date · size on the bottom one. Was a bare ruled line with a 48 thumb and a divider.
+- **The file card has no hover fill.** `HOVER.file` was oq-04.
+
+## 0.286.0 — 2026-10-22
+
+- **The file card's title is heading-05 (20px)**, the row's — was heading-04 (24px).
+
 ## 0.285.0 — 2026-10-22
 
 - **`SectionText` carries the header levels** (user: *"rename PageHeader to something that describes section text elements and ship together"*). `level` page · app · section · content fills the role defaults; explicit props still win. `media` renders above the eyebrow with a level. `SECTION_TEXT_LEVELS` exported.

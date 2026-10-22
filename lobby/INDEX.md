@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 60 entries
+## Queue — 58 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -41,8 +41,6 @@ accrues entries and never closes.
 | 🔵 | [MediaGalleryModes](inbox/MediaGalleryModes.md) | **kol-branding** — one media set, viewer-switchable carousel · grid · waterfall, click opens `MediaViewer`; composes GalleryCarousel + MediaTileGallery, waterfall is new | 2026-10-21 | `filed` — from a kol-branding session |
 | 🔵 | [TextFold](inbox/TextFold.md) | **kol-branding** — long prose folds to N lines below md with a More / Less ghost button, toggle only when cut | 2026-10-22 | `filed` — from a kol-branding session |
 | 🔵 | [ColorRampNarrowCaptions](inbox/ColorRampNarrowCaptions.md) | **kol-branding** — ColorRamp captions overflow their columns at phone width (10-step ramp at 390), page scrolls sideways | 2026-10-22 | `filed` — from a kol-branding session |
-| 🟡 | [OverscrollNone](inbox/OverscrollNone.md) | **kol-monitor** — `html { overscroll-behavior: none; }` in kol-theme's base layer; nine apps carry their own copy, monitor bounces without one | 2026-10-22 | `filed` — from a kol-monitor session |
-| 🟡 | [DevSectionHeader](inbox/DevSectionHeader.md) | **kol-fxr** — a section header for `HubDev` tab content: eyebrow (`kol-eyebrow text-fg-48`) · title (`kol-sans-heading-04 text-fg-96`) · description (`kol-sans-body-01 text-fg-64`, 64ch); HubDev lays out nothing inside a tab, so each app invents one | 2026-10-22 | `filed` — from a kol-fxr session |
 | ⚫ | [QuoteDocument](archive/QuoteDocument.md) | **kol-atlas** — a printable A4 quote layout for client work: three mockups (v1 original · v2 invoice-synced · v3 split), assets in `_assets/2026-10-20-quote-document/` | 2026-10-20 | ⚫ `retired` — user ruling: not built in kol-ds-ui; `apps/stationery` stays live, the layout lives in the Stationery artifact |
 | 🟢 | [ModalPromptPassword](done/ModalPromptPassword.md) | **kol-atlas** — `useModal().prompt` has no masked mode; add `{ type: 'password' }` for the family's sign-in prompts | 2026-10-19 | `closed` — **kol-component 0.281.0**: `{ type: 'password' }` masks the field; OK bright, keyboard trapped in the dialog; verified in the useModal preview |
 | 🟢 | [QuickLookFit](done/QuickLookFit.md) | **kol-atlas** — `MediaInspector` draws every SVG in a fixed 640px box; fit images (SVG too) to the window, click toggles fit ↔ fill width | 2026-10-19 | `closed` — **kol-component 0.280.0 · kol-theme 0.178.0**: SVGs ≥640 fit the window, click toggles fill width; verified in apps/media |
@@ -123,6 +121,8 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [DevSectionHeader](done/DevSectionHeader.md) | **kol-fxr** — the section header for content (eyebrow · title · description) | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.285.0**: `SectionText level="content"` (user ruling: the header levels live on SectionText, `PageHeader` deprecated alias); registry live; receipt to kol-fxr |
+| 🟢 | [OverscrollNone](done/OverscrollNone.md) | **kol-monitor** — `html { overscroll-behavior: none }` in kol-theme, loaded by `core` and the umbrella | 2026-10-22 | 2026-10-22 | `closed` — **kol-theme 0.180.0**: rule in `kol-base-tokens.css`; registry live; receipt to kol-monitor |
 | 🟢 | [LoaderAppMinimumTime](done/LoaderAppMinimumTime.md) | **kol-monitor** — `hideLoaderApp({ minMs = 600 })`: the app loader holds at least 600 ms from navigation start | 2026-10-22 | 2026-10-22 | `closed` — **kol-framework 0.53.0**: fast load done at 616 ms, `minMs: 0` at 44 ms; per-app `minMs`; registry live; receipt to kol-monitor |
 | 🟢 | [ViewportTouchGestures](done/ViewportTouchGestures.md) | **kol-fxr** — `PanZoomViewport` has no touch gesture: a finger can't zoom or move the stage and can't press `onSpaceTap`. Ask: two-finger pinch at the midpoint + pan, one-finger tap → `onSpaceTap`, `touch-action: none` | 2026-10-14 ← kol-fxr | 2026-10-14 | 🔵 `filed` |
 | 🟢 | [CanvasViewCommands](done/CanvasViewCommands.md) | **kol-fxr** — `PanZoomViewport` can't fit from outside (⌘0's reset is key-only), can't fit a rect (To Width / To Selection), and `ZOOM_MAX = 8` is relative to the fitted frame so 800% real is unreachable. Ask: `kol:zoom-fit { to }`, the cap in real terms, optionally `kol:zoom-to { scale }` | 2026-10-13 ← kol-fxr | 2026-10-13 | 🔵 `filed` |
@@ -982,3 +982,5 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-22 | `ColorRampNarrowCaptions` filed from kol-branding: ramp captions overflow on phones. |
 
 | 2026-10-22 | **`LoaderAppMinimumTime` closed — kol-framework 0.53.0** — `hideLoaderApp` holds the loader 600 ms from navigation start, `minMs` per app; receipt written to kol-monitor's outbox |
+| 2026-10-22 | **`OverscrollNone` closed — kol-theme 0.180.0** — the page no longer rubber-bands; receipt written to kol-monitor's outbox |
+| 2026-10-22 | **`DevSectionHeader` closed — kol-component 0.285.0** — `SectionText level="content"`, `PageHeader` now an alias of SectionText; receipt written to kol-fxr's outbox |

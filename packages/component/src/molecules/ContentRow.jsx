@@ -47,7 +47,11 @@ const BOX = {
    * grey background, remove it"). The default row is a bare ruled line — a
    * full-width grey band under it is heavier than the line itself. Scoped to
    * `default`: catalog and print still carry the same `oq-04`, unruled. */
-  file:  { thumb: 48,  ratio: '1 / 1',  pad: `${S2} 0`,     gap: S3, align: 'items-center', divider: true },
+  /* THE FILE CARD'S ANATOMY, SIDEWAYS (user 2026-10-22: *"its 2 items IMAGE + TEXT in one container that has rounded
+   * corners and bg color. the padding is done on the text"*). The row is the container — fg-02, rounded, clipped, no
+   * padding, no gap; the thumb is a 72 square flush in it; `plate` is the text section's padding (12 all round), and the text, specs
+   * and actions live inside that one padded box. */
+  file:  { thumb: 72, ratio: '1 / 1', pad: '0px', gap: '0px', align: 'items-stretch', bg: 'var(--kol-fg-02)', clip: true, plate: S3 },
   /* SLIDE (slide-variant-and-shelf-preset, 2026-09-03): file's row with the thumb FILLING the
    * rung's height and taking its width from 16:9 — 48 tall, 85 wide, the whole frame — not
    * the 48 square, which cropped a deck to a sliver (read off olina's /slide-deck). `minH` 64
@@ -269,9 +273,11 @@ export default function ContentRow({
          * media object-covers into it; row height = max(thumb, text). This
          * retires the 2026-08-15 fill-the-height ruling and the `thumbSquare`
          * exception it needed. Rows never zoom their thumb — cards keep theirs. */
-        <div className={`kol-row-thumb shrink-0 self-start ${thumbPx === 'fill' ? 'is-fill' : ''} ${thumbPx === 'fill' && ratioAxis === 'height' ? 'pays-height' : ''}`.replace(/\s+/g, ' ').trim()}>
+        <div className={`kol-row-thumb shrink-0 ${box.plate ? 'self-stretch' : 'self-start'} ${thumbPx === 'fill' ? 'is-fill' : ''} ${thumbPx === 'fill' && ratioAxis === 'height' ? 'pays-height' : ''}`.replace(/\s+/g, ' ').trim()}>
           <ContentMedia
             ratio={null}
+            /* a row that clips its own corners does not round the thumb again — the card's rule (2026-08-15) */
+            radius={!box.clip}
             border={box.thumbBorder ?? false}
             bg={box.thumbBg}
             className={box.thumbRadius ? 'rounded-[var(--kol-radius-xs)]' : ''}
@@ -284,7 +290,20 @@ export default function ContentRow({
         * ruled it on screen): the two lines stack to 34 inside a 40 content box,
         * and pushing them fully apart puts the ascenders hard against the thumb's
         * top and bottom edges. It is the ROW's ruling, so the row passes it. */}
+      {box.plate ? (
+        /* the TEXT SECTION — one padded box holding the copy, the specs and the actions (the card's plate) */
+        /* items-STRETCH: the actions column spans the padded height, so a column of controls spreads from the
+         * top pad to the bottom pad as it does on the card's plate, and the copy spans it too — title on the top
+         * pad, date · size on the bottom one, level with the last control (user 2026-10-22) */
+        <div className="flex flex-1 min-w-0 items-stretch" style={{ padding: box.plate, gap: box.plateGap ?? box.plate }}>
+          {/* the meta line's leading is its type size, so its baseline lands on the bottom pad, level with the last
+            * control — at its 16px line the digits sat ~4px above it (user 2026-10-22) */}
+          <ContentText variant={variant} form="row" className="flex-1 justify-between [&_.kol-mono-12]:leading-none" tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+          {actions && <div className="shrink-0">{actions}</div>}
+        </div>
+      ) : (
       <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+      )}
       {/* `specs` rides the trailing edge on EVERY variant — year · material ·
        * edition is a content difference, not a geometry one, and minting a
        * seventh page-named box for it is the exact mistake §1 of the ticket is
@@ -302,12 +321,12 @@ export default function ContentRow({
         </dl>
       )}
       {/* trailing edge, never in the text flow — MediaRow's placement */}
-      {actions && <div className="shrink-0">{actions}</div>}
+      {actions && !box.plate && <div className="shrink-0">{actions}</div>}
     </>
   )
 
   const common = {
-    className: `kol-row group flex ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && box.hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-row group flex ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${box.clip ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && box.hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: vars,
   }
 

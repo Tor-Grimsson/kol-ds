@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.74.0 — 2026-10-22
+
+- **`CatalogPage` `listColumns`** — the list grid's column ceiling, was a hard 4. Defaults to 3 for a file or slide row, 4 otherwise; tracks never go under 240.
+
 ## 0.73.0 — 2026-10-22
 
 - **`NavRail`, `Logomark`, `RailSlotProvider` / `useRailSlot` moved to kol-component** and are re-exported here — every import from `@kolkrabbi/kol-shell` keeps working. `AppShell` renders kol-component's `NavRail`. Needs kol-component ≥0.283.0 · kol-theme ≥0.179.0.

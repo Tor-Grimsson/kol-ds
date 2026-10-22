@@ -972,12 +972,10 @@ a:hover .icon-hover,
 }
 /* hover goes LIGHTER, not darker (user ruling 2026-08-15) — oq mixes ink into
  * the surface, so up the scale is up in brightness. */
-/* the brand anchor, with the theme's own palette as the fallback — the yellow
- * lives in kol-brand-color.css which the consumer supplies, so the theme must
- * not hard-depend on it. NOT --kol-accent-primary, which resolves to white. */
+/* NO ACCENT on hover (user 2026-10-22: *"remove the accent color on the download on the image"*) — the
+ * glyph keeps its ink; the plate stepping up and the glyph growing are the hover. Was the brand yellow. */
 .kol-media-control:hover {
   background: var(--kol-surface-tertiary);
-  color: var(--kol-color-yellow-300, var(--kol-palette-yellow));
 }
 /* The press RAMPS. The rule that is being entered owns the curve going in, so
  * this one carries a slow ease-in-out; the base rule's bounce owns coming back

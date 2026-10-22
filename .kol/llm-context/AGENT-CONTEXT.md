@@ -11,6 +11,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-22 night, file row · SectionText levels)
+
+- **Published:** kol-theme 0.183.0 · kol-component 0.287.0 · kol-shell 0.74.0. `PageHeader` is a deprecated alias of `SectionText level` (page · app · section · content); nested floats stack above their parent; the file row is the file card sideways (contained, flush thumb, padded text section); `CatalogPage listColumns`. Three lobby tickets closed. Push is the user's. Log: `session-log/2026-10-22-file-row-sectiontext-levels-float-stacking.md`.
+
 ## Current state (2026-10-22 later, catalog variants · loader minimum)
 
 - **Published:** kol-component 0.284.0 (no-cover catalog card keeps its text at the foot) · kol-framework 0.53.0 (`hideLoaderApp({ minMs = 600 })`, kol-monitor ticket). Built: Round 16 (the variants button), the catalog app's variants button, the Content Card page (real variants, full width, props axis), every props table now lists every destructured prop. Open: Round 16 pick, plan 2.2 TALK. Push is the user's. Plan: `plan-2026-10-22-catalog-variants-and-no-cover.md`. Log: `session-log/2026-10-22-catalog-variants-no-cover-loader-minimum.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-20, the stationery desk)
 
 - **Built, nothing published:** `apps/stationery` (5202) — a PanZoomViewport desk with the brand sheets, his real invoices, the brand book's stationery at print size and the kol-atlas quote mockups on A4; the layouts handed over as the Kolkrabbi Stationery artifact (quote · invoice · letter) for him to iterate, then `packages/stationery`. Catalog search no longer drops its query on click — **kol-component 0.282.0 published**. Blocks lifted out of Templates. Icon categories built on the Round 15 recommendation (`nav/icon-categories.js`; set → category → groups in the rail, each category a page, ⌘K rows); Round 15 decided, for review. Parked, all yes'd: a `brand` function, the `Logomark` rename, a Brand chapter under Styles. `QuoteDocument` stays open. Log: `session-log/2026-10-20-stationery-desk-and-layouts.md`.
-
-## Current state (2026-10-19 later, prompt password)
-
-- **Published:** kol-component 0.281.0. `prompt(title, '', { type: 'password', placeholder })` masks the field; OK is `tone="inverted"` (primary drew like Cancel); the dialog opens focused, traps Tab, carries dialog roles. kol-atlas ticket closed, receipt returned; registry confirmed live. Push is the user's. Log: `session-log/2026-10-19-modal-prompt-password-keyboard.md`.
 
 ## Repo standup (2026-06-15)
 
