@@ -1965,6 +1965,14 @@
       "desc": ""
     }
   ],
+  "AppItemMenuProvider": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ProsePreview": [
     {
       "prop": "quote",
@@ -2301,12 +2309,6 @@
       "desc": ""
     },
     {
-      "prop": "headlineAs",
-      "type": "—",
-      "def": "'h2'",
-      "desc": ""
-    },
-    {
       "prop": "headlineCase",
       "type": "—",
       "def": "'auto'",
@@ -2316,30 +2318,6 @@
       "prop": "align",
       "type": "—",
       "def": "'start'",
-      "desc": ""
-    },
-    {
-      "prop": "gap",
-      "type": "—",
-      "def": "'gap-4'",
-      "desc": ""
-    },
-    {
-      "prop": "bodyClass",
-      "type": "—",
-      "def": "'kol-section-text-body'",
-      "desc": ""
-    },
-    {
-      "prop": "actionsClass",
-      "type": "—",
-      "def": "'flex flex-wrap gap-4'",
-      "desc": ""
-    },
-    {
-      "prop": "actionsPlacement",
-      "type": "—",
-      "def": "'below'",
       "desc": ""
     },
     {
@@ -2379,6 +2357,12 @@
       "desc": ""
     },
     {
+      "prop": "headlineAs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "headlineClass",
       "type": "—",
       "def": "—",
@@ -2392,6 +2376,12 @@
     },
     {
       "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gap",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -2415,7 +2405,37 @@
       "desc": ""
     },
     {
+      "prop": "bodyClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actionsClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actionsPlacement",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "level",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -4157,6 +4177,44 @@
       "desc": ""
     }
   ],
+  "TextFold": [
+    {
+      "prop": "lines",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "as",
+      "type": "—",
+      "def": "'div'",
+      "desc": ""
+    },
+    {
+      "prop": "moreLabel",
+      "type": "—",
+      "def": "'More'",
+      "desc": ""
+    },
+    {
+      "prop": "lessLabel",
+      "type": "—",
+      "def": "'Less'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ColorSwatch": [
     {
       "prop": "selected",
@@ -4903,6 +4961,12 @@
       "desc": ""
     },
     {
+      "prop": "tone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "control",
       "type": "—",
       "def": "—",
@@ -5080,6 +5144,12 @@
     },
     {
       "prop": "bg",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6935,6 +7005,12 @@
       "type": "—",
       "def": "''",
       "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AsciiCursor": [
@@ -7447,12 +7523,6 @@
       "desc": ""
     },
     {
-      "prop": "eyebrow",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
       "prop": "title",
       "type": "—",
       "def": "—",
@@ -7471,25 +7541,31 @@
       "desc": ""
     },
     {
-      "prop": "actions",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
       "prop": "subtitleMaxWidth",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "media",
+      "prop": "titleClass",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "titleClass",
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -8784,6 +8860,62 @@
       "prop": "tileClassName",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MediaGalleryModes": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "modes",
+      "type": "—",
+      "def": "['carousel', 'grid', 'waterfall']",
+      "desc": ""
+    },
+    {
+      "prop": "cols",
+      "type": "—",
+      "def": "3",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultMode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onModeChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -13159,6 +13291,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "now",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SignalReference": [
@@ -13778,6 +13916,12 @@
       "prop": "listLayout",
       "type": "—",
       "def": "PRESETS[preset]?.listLayout ?? 'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "listColumns",
+      "type": "—",
+      "def": "rowVariant === 'file' || rowVariant === 'app' || rowVariant === 'slide' ? 3 : 4",
       "desc": ""
     },
     {

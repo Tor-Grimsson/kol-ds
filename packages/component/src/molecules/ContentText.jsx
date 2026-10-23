@@ -56,14 +56,14 @@ import Tag from '../atoms/Tag'
 const RAMP = {
   file: {
     /* the card's title is the row's, heading-05 (user 2026-10-22: "can we make the title smaller?" — was heading-04, 24px) */
-    card: { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
-    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+    card: { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
+    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
   },
   /* APP — the `file` text with a `meta` line under the title (AppCardMeta, kol-monitor 2026-10-23: a module's
    * `6HP 3U — Control`, a patch's `12 modules, 9 connections`). Without `meta` it is the file text. */
   app: {
-    card: { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
-    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+    card: { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
+    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
   },
   /* SLIDE — a deck (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03;
    * user: "they are genuinely different with 16:9 layout and those exposed
@@ -330,6 +330,9 @@ export default function ContentText({
    * needs exactly that: classification over year at the right edge, which a
    * flat slot list cannot express and which was previously collapsed into one
    * `date` slot that lost a value. */
+  /* a file's date · size never break inside a value (AppCardDateSizeWrap, kol-mirror 2026-10-23: `2026-10-` /
+   * `23` at ~170px columns): each value is nowrap, and when the pair does not fit the size drops to the next line */
+  const wrapGroup = variant === 'file' || variant === 'app'
   const render = (entry, i, trailing = false) => {
     if (typeof entry === 'string') return line(entry)
     const [kind, ...slots] = entry
@@ -354,8 +357,8 @@ export default function ContentText({
          * baseline — a two-line column has no single baseline to share with the
          * title beside it, and baseline-aligning it hangs the second line below
          * the row's floor. */
-        className={`flex min-w-0 ${parts.length > 1 && Array.isArray(slots[slots.length - 1]) ? 'items-center' : 'items-baseline'} ${split ? 'justify-between' : ''}`}
-        style={{ gap: 'var(--kol-spacing-6)' }}
+        className={`flex min-w-0 ${wrapGroup && kind === 'group' ? 'flex-wrap' : ''} ${parts.length > 1 && Array.isArray(slots[slots.length - 1]) ? 'items-center' : 'items-baseline'} ${split ? 'justify-between' : ''}`}
+        style={wrapGroup && kind === 'group' ? { columnGap: 'var(--kol-spacing-6)', rowGap: 0 } : { gap: 'var(--kol-spacing-6)' }}
       >
         {/* the LEADING part of a `between` takes the room; the trailing column
           * hugs its content. Without this the left stack sized to its content

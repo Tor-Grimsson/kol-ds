@@ -67,7 +67,7 @@ function AppPlate({ name, verbs, onSettings }) {
 }
 
 const placeholder = (
-  <div className="size-full flex items-center justify-center bg-oq-04 text-fg-24" aria-label="No preview yet">
+  <div className="size-full flex items-center justify-center bg-oq-04 text-oq-24" aria-label="No preview yet">
     <Icon name="image" size={24} />
   </div>
 )
@@ -81,12 +81,14 @@ export function useAppItem(variant, { title, verbs, download, menuItems, date, s
   if (variant !== 'app') return null
   const hasMenu = !!menu && !!(verbs?.rename || verbs?.duplicate || verbs?.remove || menuItems)
   const openMenu = hasMenu ? (e) => menu.openAt(e, { name: title, verbs, menuItems }) : undefined
+  /* the cover's download stops its click at the control, as the plate does — a card that opens on click
+   * opened under the download too (AppCardDownloadClickBubbles, kol-monitor 2026-10-23) */
   return {
     tone: tone ?? 'secondary',
     date: typeof date === 'number' ? new Date(date).toISOString().slice(0, 10) : date,
     size: typeof size === 'number' ? formatSize(size) : size,
     media: typeof media === 'string' ? <img src={media} alt={title ?? ''} className="size-full object-cover" /> : media ?? placeholder,
-    control: download ? <ActionButton chrome="media" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" onAction={download} /> : undefined,
+    control: download ? <ActionButton chrome="media" icon="download" confirmIcon="check" label="Download" confirmLabel="Downloaded" onAction={(e) => { e?.stopPropagation(); return download(e) }} /> : undefined,
     actions: openMenu || verbs?.remove ? <AppPlate name={title} verbs={verbs} onSettings={openMenu} /> : undefined,
     onContextMenu: openMenu,
   }

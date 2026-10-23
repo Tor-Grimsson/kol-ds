@@ -85,6 +85,8 @@ a new variant cheap — a variant is a `ContentText` composition plus a
 
 **A fifth kind, `slide`** (2026-09-03, user-ruled — *"they are genuinely different with 16:9 layout and those exposed properties"*): a deck is a 1920×1080 stage. Card: file's stack at `16 / 9`, plate `surface-primary` rest and hover. Row: the thumb fills the rung's height and takes its width from the ratio (48 × 85). Text: `title · date · size · meta` (the slide count). Every value read off kol-client-olina's /slide-deck; `CatalogPage preset="shelf"` composes it.
 
+**`app`** (2026-10-23, CatalogAppVariant — kol-fxr's approved saved-file card, shared by a bump): the `file` card and row with an app library's parts slotted from raw writes — `verbs` (`{ rename?, duplicate?, remove? }`), `download`, `menuItems`. Download on the cover (its click stops at the control, 0.294.0), a cog over a trash in the plate, Rename · Duplicate · Delete on the cog and on right-click from the page's one `AppItemMenuProvider`; Rename prompts and Delete confirms (`useModal`). A verb not passed is not drawn. `date` takes ms, `size` bytes, `media` a src (none → the image placeholder); `meta` is a line under the title (0.292.0); date · size never break inside a value (0.295.0); tone `secondary`, no hover fill (0.293.0). `file` itself is untouched. `CatalogPage preset="app"` composes it — opt-in, every other preset stays.
+
 Six, and `default` is declared.
 
 `default` · `catalog` · `print` · `article` · `work` · `typeface`

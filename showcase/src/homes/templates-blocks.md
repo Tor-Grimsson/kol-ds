@@ -4,7 +4,7 @@ type: index
 status: active
 created: 2026-10-17
 updated: 2026-10-17
-description: What a template's body is made of — text, media, tables, embeds
+description: The blocks a template's body is made of
 tags:
   - audience/maintainer
   - domain/components

@@ -2,7 +2,7 @@
 
 ## 0.13.0 — 2026-10-17
 
-- **`LoaderIntro`** — `IntroLoader` renamed to the `Loader<Job>` convention beside `LoaderOverlay` · `LoaderApp` (AppLoader, kol-monitor). It stays in kol-foundry: it is drawn by `TextPressure`, a live-font component, and kol-component may not import foundry. `IntroLoader` and `ColorLoader` are aliases (ledger).
+- **`LoaderIntro`** — `IntroLoader` renamed to the `Loader<Job>` convention beside `LoaderOverlay` · `LoaderApp` (AppLoader, kol-monitor). It stays in kol-foundry: it is drawn by `TextPressure`, a live-font component, and kol-component may not import foundry. `IntroLoader` and the name before it stay as aliases (ledger).
 
 ## 0.12.0 — 2026-10-02
 

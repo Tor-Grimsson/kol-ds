@@ -221,6 +221,14 @@
       "PopoverPanel"
     ]
   },
+  "AppItemMenuProvider": {
+    "typeClasses": [],
+    "composes": [
+      "ActionButton",
+      "MenuDropdownItem",
+      "Icon"
+    ]
+  },
   "ProsePreview": {
     "typeClasses": [
       "kol-helper-12",
@@ -278,8 +286,28 @@
   },
   "SectionText": {
     "typeClasses": [
+      "kol-helper",
       "kol-helper-12",
       "kol-mono-14",
+      "kol-sans-body-01",
+      "kol-sans-display-01",
+      "kol-sans-display-02",
+      "kol-sans-display-03",
+      "kol-sans-display-04",
+      "kol-sans-heading-01",
+      "kol-sans-heading-02",
+      "kol-sans-heading-03",
+      "kol-sans-heading-04",
+      "kol-sans-heading-05"
+    ],
+    "composes": []
+  },
+  "SECTION_TEXT_LEVELS": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-12",
+      "kol-mono-14",
+      "kol-sans-body-01",
       "kol-sans-display-01",
       "kol-sans-display-02",
       "kol-sans-display-03",
@@ -663,6 +691,12 @@
       "ColorSwatch"
     ]
   },
+  "TextFold": {
+    "typeClasses": [],
+    "composes": [
+      "Button"
+    ]
+  },
   "ColorSwatch": {
     "typeClasses": [],
     "composes": [
@@ -774,7 +808,9 @@
     ]
   },
   "ContentRow": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-mono-12"
+    ],
     "composes": [
       "ContentMedia",
       "ContentText"
@@ -1231,26 +1267,12 @@
     ]
   },
   "PageHeader": {
-    "typeClasses": [
-      "kol-helper",
-      "kol-helper-12",
-      "kol-sans-display-01",
-      "kol-sans-display-03"
-    ],
-    "composes": [
-      "SectionText"
-    ]
+    "typeClasses": [],
+    "composes": []
   },
   "PAGE_HEADER_ROLES": {
-    "typeClasses": [
-      "kol-helper",
-      "kol-helper-12",
-      "kol-sans-display-01",
-      "kol-sans-display-03"
-    ],
-    "composes": [
-      "SectionText"
-    ]
+    "typeClasses": [],
+    "composes": []
   },
   "NavRail": {
     "typeClasses": [
@@ -1575,6 +1597,17 @@
       "kol-helper-12"
     ],
     "composes": [
+      "MediaViewer"
+    ]
+  },
+  "MediaGalleryModes": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "GalleryCarousel",
+      "MediaTileGallery",
       "MediaViewer"
     ]
   },

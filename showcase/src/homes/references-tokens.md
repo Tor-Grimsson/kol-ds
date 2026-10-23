@@ -4,7 +4,7 @@ type: index
 status: active
 created: 2026-10-17
 updated: 2026-10-17
-description: Every design token the graph sees, by what it governs
+description: Every design token, by what it governs
 tags:
   - audience/maintainer
   - domain/architecture

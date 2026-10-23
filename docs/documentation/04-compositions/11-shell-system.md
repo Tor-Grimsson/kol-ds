@@ -114,8 +114,11 @@ import {
   capped, 3 tracks on a 280 floor, the `slide` card and row (component ≥0.178.0),
   stacked list, `kol-tone-secondary` on the root, the All / Recent view strip —
   and `toCard` returns fields and handlers (`bytes count cover onDownload
-  onFavourite onDelete favourited`) while the page renders the slots. Explicit
-  props win over a preset.
+  onFavourite onDelete favourited`) while the page renders the slots. `app`
+  (shell ≥0.75.0) is an app's saved files — the `app` card and row, three list
+  columns, and the page's one Rename · Duplicate · Delete menu; `toCard` returns
+  `verbs download menuItems date size media meta`. Opt-in. Explicit props win
+  over a preset.
 - **Grid geometry (documented default):** catalog grid = **up to** six tracks,
   gap 24 · list = up to four, gap 8 — a CEILING WITH A FLOOR, the same law
   `ContentCollection` carries (2026-09-01): the floor is `CatalogPage

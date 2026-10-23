@@ -471,6 +471,7 @@ export const NO_PREVIEW = (() => {
       + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),
     useTouchPrimary: 'a hook — it draws nothing; TouchDeviceOverlay, which reads it, has the preview',
     RailSlotProvider: 'a context — it draws nothing; NavRail renders the slot it publishes',
+    AppItemMenuProvider: 'a context — it draws nothing; the `app` card and row open its menu, shown in the CatalogPage preview (`app` variant, 2026-10-23)',
     ShellNavColumn: 'the left rail\'s column — a frame around a rail, sticky inside the shell\'s scroll region. The Module '
       + '/modules/shell-rail-states mounts it with the real header and both rails in its three states (2026-10-02)',
     ...debt([],

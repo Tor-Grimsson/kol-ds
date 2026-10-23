@@ -210,7 +210,8 @@ export default function ContentRow({
   const variant = aliased.startsWith('showcase') && layout ? LAYOUT_KEY[layout] ?? aliased : aliased
   const box = BOX[variant] ?? BOX.file
   const ground = bg ?? (tone ? 'var(--kol-tone-bg)' : box.bg)
-  const hover = tone ? 'var(--kol-tone-hover-bg)' : box.hover
+  /* `app` keeps file's no-fill hover (AppCardNoHoverFill) */
+  const hover = tone && !app ? 'var(--kol-tone-hover-bg)' : box.hover
   /* `media={false}` — NO COVER, not a missing one (content-card-needs-no-cover,
    * kol-client-olina 2026-09-04). The row could already hide its thumb with
    * `thumb={0}`, but that is a SIZE answering a question about MEANING, and a

@@ -2,19 +2,36 @@
   "blocks": {
     "article-grid": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
+        "Button",
         "ContentCard",
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Icon",
-        "Tag"
+        "Input",
+        "MenuItem",
+        "Modal",
+        "Popover",
+        "Tag",
+        "ToggleCheckbox"
       ],
       "local": {},
       "support": [
-        "registerIcons"
+        "formatSize",
+        "glyphLadders",
+        "layerStack",
+        "motion",
+        "registerIcons",
+        "tone"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
     },
     "bento-wall": {
       "kol": [
@@ -480,30 +497,47 @@
     },
     "work-grid": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
+        "Button",
         "ContentCard",
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Icon",
+        "Input",
         "Kbd",
+        "MenuItem",
+        "Modal",
+        "Popover",
         "SearchInput",
         "Tag",
+        "ToggleCheckbox",
         "WorkViewToggle"
       ],
       "local": {},
       "support": [
+        "formatSize",
         "glyphLadders",
+        "layerStack",
+        "motion",
         "registerIcons",
         "tone"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
     }
   },
   "sets": {
     "app-shell": {
       "kol": [
         "ActionButton",
+        "AppItem",
+        "AppItemMenuProvider",
         "AppShell",
         "AssetPlaceholder",
         "Button",
@@ -514,6 +548,7 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
@@ -524,6 +559,7 @@
         "LabeledControl",
         "Logomark",
         "MenuItem",
+        "Modal",
         "ModalProvider",
         "NavRail",
         "NavRailSite",
@@ -629,6 +665,8 @@
     },
     "content-filters": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
         "Button",
         "ContentCard",
@@ -638,18 +676,26 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Divider",
         "Icon",
         "IconFrame",
+        "Input",
         "Kbd",
+        "MenuItem",
+        "Modal",
         "Popover",
         "SearchInput",
-        "Tag"
+        "Tag",
+        "ToggleCheckbox"
       ],
       "local": {},
       "support": [
         "createIndex",
+        "formatSize",
         "glyphLadders",
+        "layerStack",
+        "motion",
         "registerIcons",
         "search",
         "searchItems",
@@ -657,25 +703,35 @@
         "usePrefersReducedMotion"
       ],
       "external": [
-        "@floating-ui/react"
+        "@floating-ui/react",
+        "gsap"
       ]
     },
     "content-set-reference": {
       "kol": [
         "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
+        "Button",
         "ContentCard",
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Icon",
+        "Input",
+        "MenuItem",
+        "Modal",
         "Popover",
         "SizeOrDownload",
-        "Tag"
+        "Tag",
+        "ToggleCheckbox"
       ],
       "local": {},
       "support": [
+        "formatSize",
         "glyphLadders",
+        "layerStack",
         "motion",
         "registerIcons",
         "tone"
@@ -841,6 +897,7 @@
     "media-library": {
       "kol": [
         "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
         "BackgroundVideo",
         "Button",
@@ -990,6 +1047,8 @@
     },
     "mixer": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
         "Button",
         "CloseButton",
@@ -997,15 +1056,18 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
         "Icon",
         "IconFrame",
+        "Input",
         "Kbd",
         "LabeledControl",
         "Logomark",
         "MenuItem",
+        "Modal",
         "OptionRow",
         "Popover",
         "Rail",
@@ -1017,6 +1079,7 @@
         "ShortcutsOverlay",
         "TabsRow",
         "Tag",
+        "ToggleCheckbox",
         "ToggleSwitch"
       ],
       "local": {
@@ -1089,6 +1152,7 @@
         "adaptiveScale",
         "blendOptions",
         "createMediaClient",
+        "formatSize",
         "glyphLadders",
         "gpuAnalog",
         "gpuFx",
@@ -1101,6 +1165,7 @@
         "mirrorVariants",
         "mixerModules",
         "moduleRegistry",
+        "motion",
         "patchFile",
         "patchGraph",
         "patchJacksContext",
@@ -1396,6 +1461,7 @@
     "record-manager-cms": {
       "kol": [
         "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
         "BackgroundVideo",
         "Button",
@@ -1540,6 +1606,7 @@
     "stack-blog": {
       "kol": [
         "ActionButton",
+        "AppItem",
         "ArticleHeader",
         "AssetPlaceholder",
         "AuthorLine",
@@ -1551,6 +1618,7 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "CopyButton",
         "Divider",
         "EmblaNav",
@@ -1560,6 +1628,9 @@
         "Icon",
         "Image",
         "ImageBlock",
+        "Input",
+        "MenuItem",
+        "Modal",
         "OverlayGlassPanel",
         "Pill",
         "Popover",
@@ -1570,11 +1641,14 @@
         "StackHero",
         "Table",
         "Tag",
+        "ToggleCheckbox",
         "VideoBlock"
       ],
       "local": {},
       "support": [
+        "formatSize",
         "glyphLadders",
+        "layerStack",
         "motion",
         "registerIcons",
         "sectionBleed",
@@ -1656,6 +1730,8 @@
     },
     "work-portfolio": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
         "Button",
         "Carousel",
@@ -1664,20 +1740,27 @@
         "ContentMedia",
         "ContentRow",
         "ContentText",
+        "ContextMenu",
         "EmblaNav",
         "FullscreenOverlay",
         "GalleryCarousel",
         "Icon",
         "IconFrame",
+        "Input",
         "Kbd",
         "MediaViewer",
+        "MenuItem",
+        "Modal",
         "ParallaxShelf",
+        "Popover",
         "SearchInput",
         "Tag",
+        "ToggleCheckbox",
         "WorkViewToggle"
       ],
       "local": {},
       "support": [
+        "formatSize",
         "glyphLadders",
         "layerStack",
         "motion",
@@ -1688,27 +1771,46 @@
         "useTilt"
       ],
       "external": [
+        "@floating-ui/react",
         "embla-carousel-react",
-        "framer-motion"
+        "framer-motion",
+        "gsap"
       ]
     }
   },
   "cards": {
     "content-article": {
       "kol": [
+        "ActionButton",
+        "AppItem",
         "AssetPlaceholder",
+        "Button",
         "ContentCard",
         "ContentMedia",
         "ContentText",
+        "ContextMenu",
         "Icon",
-        "Tag"
+        "Input",
+        "MenuItem",
+        "Modal",
+        "Popover",
+        "Tag",
+        "ToggleCheckbox"
       ],
       "local": {},
       "support": [
         "card-media",
-        "registerIcons"
+        "formatSize",
+        "glyphLadders",
+        "layerStack",
+        "motion",
+        "registerIcons",
+        "tone"
       ],
-      "external": []
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
     },
     "content-bento": {
       "kol": [

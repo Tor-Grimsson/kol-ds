@@ -4,7 +4,7 @@ type: index
 status: active
 created: 2026-10-17
 updated: 2026-10-17
-description: The page shapes — one header, a body of blocks, for one kind of content
+description: Page shapes for one kind of content
 tags:
   - audience/maintainer
   - domain/components

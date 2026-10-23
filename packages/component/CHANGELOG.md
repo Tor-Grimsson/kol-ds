@@ -1,5 +1,21 @@
 # @kolkrabbi/kol-component
 
+## 0.295.1 — 2026-10-23
+
+- The `app` card's no-preview placeholder inks its icon `text-oq-24`, not `text-fg-24` — icons take the opaque ladder (`validate:icon-ink`).
+
+## 0.295.0 — 2026-10-23
+
+- **A file's date and size never break inside a value** (AppCardDateSizeWrap, kol-mirror · kol-fxr). On the `file` and `app` card and row, `date` and `size` are `whitespace-nowrap`, and their group wraps: when the pair does not fit beside the plate, the size drops to the next line whole. At ~170px columns `2026-10-23` and `1.7 KB` read whole — they had broken as `2026-10-` / `23` and `1.7` / `KB`.
+
+## 0.294.0 — 2026-10-23
+
+- **The `app` card's download no longer opens the card** (AppCardDownloadClickBubbles, kol-monitor). The cover's download control stops its click, as the plate's controls do; a card that opens on click (monitor's Home → the rack) stays put. The row has no download control.
+
+## 0.293.0 — 2026-10-23
+
+- **A clickable `app` card or row takes no hover fill** (AppCardNoHoverFill, kol-fxr). Its default `secondary` tone had brought the tone's hover step; `app` now keeps `file`'s ruling — no background change on hover, cursor pointer stays. The rest ground is unchanged; consumers pass nothing.
+
 ## 0.292.0 — 2026-10-23
 
 - **The `app` card and row draw `meta`** (AppCardMeta, kol-monitor). A line under the title — a module's `6HP 3U — Control`, a patch's `12 modules, 9 connections` — in `kol-mono-12 text-meta`, truncated; `date` · `size` stay on the line below. Without `meta` the card is unchanged. `file` is untouched.
@@ -158,7 +174,7 @@ Three asks from kol-fxr's editor head, walked against Affinity — all additive;
 
 ## 0.254.0 — 2026-10-13
 
-- **Fixed: `BackgroundVideo` starts HLS at the rendition the player can show** (BackgroundVideoStartsAtLowestRendition, kol-website — user: "why is this video so low res? … its super long lag till you get good res?"). A bare `new Hls()` started at the manifest's first rendition (360p on every bucket master). The new exported `HLS_DEFAULTS` are `startLevel: -1`, `testBandwidth: false`, `abrEwmaDefaultEstimate: 8_000_000` and `capLevelToPlayerSize: true`. Measured on the B2 hero master: a 1280×720 element now plays 720p from the first fragment (it was 360p first), and a 446×250 tile stays at 360p. **New `hlsConfig`** is spread over the defaults; it is read when `src` attaches. `FeaturedCarousel` and `TiltBento` get the fix through `BackgroundVideo`.
+- **Fixed: `BackgroundVideo` starts HLS at the rendition the player can show** (BackgroundVideoStartsAtLowestRendition, kol-website — user: "why is this video so low res? … its super long lag till you get good res?"). A bare `new Hls()` started at the manifest's first rendition (360p on every bucket master). The new exported `HLS_DEFAULTS` are `startLevel: -1`, `testBandwidth: false`, `abrEwmaDefaultEstimate: 8_000_000` and `capLevelToPlayerSize: true`. Measured on the B2 hero master: a 1280×720 element now plays 720p from the first fragment (it was 360p first), and a 446×250 tile stays at 360p. **New `hlsConfig`** is spread over the defaults; it is read when `src` attaches. `SectionHero`'s media carousel and `TiltBento` get the fix through `BackgroundVideo`.
 
 ## 0.253.0 — 2026-10-13
 

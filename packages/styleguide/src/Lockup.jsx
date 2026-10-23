@@ -1,7 +1,7 @@
 /* taxonomy-ok: molecule — a mark beside a parent name, a product name and descriptors */
 
 /**
- * Lockup — the branded-house lockup: a parent name over a product name and an optional uppercase
+ * Lockup — A branded-house lockup of two names. The branded-house lockup: a parent name over a product name and an optional uppercase
  * descriptor, beside the mark.
  *
  * Carried from kol-atlas `components/lockup/Lockup.jsx` (itself kol-client-canalix's branded-house

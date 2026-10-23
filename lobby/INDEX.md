@@ -122,6 +122,9 @@ accrues entries and never closes.
 | 🟢 | [OverscrollNone](done/OverscrollNone.md) | **kol-monitor** — `html { overscroll-behavior: none }` in kol-theme, loaded by `core` and the umbrella | 2026-10-22 | 2026-10-22 | `closed` — **kol-theme 0.180.0**: rule in `kol-base-tokens.css`; registry live; receipt to kol-monitor |
 | 🟢 | [LoaderAppMinimumTime](done/LoaderAppMinimumTime.md) | **kol-monitor** — `hideLoaderApp({ minMs = 600 })`: the app loader holds at least 600 ms from navigation start | 2026-10-22 | 2026-10-22 | `closed` — **kol-framework 0.53.0**: fast load done at 616 ms, `minMs: 0` at 44 ms; per-app `minMs`; registry live; receipt to kol-monitor |
 | 🟢 | [SignalScopePlayedTraceAndClock](done/SignalScopePlayedTraceAndClock.md) | **kol-mirror** — `SignalScope`: played trace + playhead in the accent token, and a `now` clock prop so the scope follows a host transport | 2026-10-22 | 2026-10-22 | `closed` — **kol-hardware 0.6.0**: played part · playhead · dot on `--kol-slider-playhead`, `now` on SignalScope and forwarded by `useEnvelopeGenerator`; registry live; receipt to kol-mirror |
+| 🟢 | [AppCardDateSizeWrap](done/AppCardDateSizeWrap.md) | **kol-mirror** — the `app` card’s date · size line breaks mid-value at narrow columns | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.295.0**: `date` · `size` nowrap; the group wraps so size drops below whole; registry live; receipt to kol-mirror |
+| 🟢 | [AppCardDownloadClickBubbles](done/AppCardDownloadClickBubbles.md) | **kol-monitor** — the `app` card’s cover download stops its click at the control | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.294.0**: the cover download stops propagation in its `onAction`; registry live; receipt to kol-monitor |
+| 🟢 | [AppCardNoHoverFill](done/AppCardNoHoverFill.md) | **kol-fxr** — a clickable `app` card takes no surface hover fill | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.293.0**: card and row: the tone hover step is skipped for `app`; registry live; receipt to kol-fxr |
 | 🟢 | [AppCardMeta](done/AppCardMeta.md) | **kol-monitor** — a `meta` line on the `app` card and row | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.292.0**: `meta` under the title on the `app` card and row; absent = unchanged; registry live; receipt to kol-monitor |
 | 🟢 | [CatalogAppVariant](done/CatalogAppVariant.md) | **kol-fxr** — an `app` variant on ContentCard + ContentRow and `preset="app"` on CatalogPage — the approved saved-file card | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.291.0 · kol-shell 0.75.0**: `variant="app"` on card + row, `AppItemMenuProvider`, `CatalogPage preset="app"`; registry live; receipt to kol-fxr |
 | 🟢 | [EnvelopeGeneratorHostClockControls](done/EnvelopeGeneratorHostClockControls.md) | **kol-mirror** — `EnvelopeGenerator`: hide Play/Pause and BPM when the host owns the clock (`now`) | 2026-10-22 | 2026-10-22 | `closed` — **kol-hardware 0.6.1**: with `now` the row draws no Play/Pause, BPM or Trigger; cycle stays; registry live; receipt to kol-mirror |
@@ -415,6 +418,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-23 | **`AppCardDateSizeWrap` filed from kol-mirror** — date · size wrap mid-value on the `app` card (fxr too) |
+| 2026-10-23 | **`AppCardDownloadClickBubbles` filed from kol-monitor** — cover download click reaches the card |
+| 2026-10-23 | **`AppCardNoHoverFill` filed from kol-fxr** — no hover fill on a clickable `app` card/row |
 | 2026-10-23 | **`AppCardMeta` filed from kol-monitor** — `meta` on the `app` card/row |
 | 2026-10-23 | **`CatalogAppVariant` filed from kol-fxr** — `app` card/row variant + `preset="app"`; answers fxr, mirror, monitor |
 | 2026-10-22 | **`FileCardTitleClearsActions` filed from kol-fxr** — title truncates before the plate actions |
@@ -998,6 +1004,9 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 
 | 2026-10-22 | **`LoaderAppMinimumTime` closed — kol-framework 0.53.0** — `hideLoaderApp` holds the loader 600 ms from navigation start, `minMs` per app; receipt written to kol-monitor's outbox |
 | 2026-10-22 | **`SignalScopePlayedTraceAndClock` closed — kol-hardware 0.6.0** — the scope's played part in the accent token and a host `now` clock; receipt written to kol-mirror's outbox |
+| 2026-10-22 | **`AppCardDateSizeWrap` closed — kol-component 0.295.0** — `date` · `size` nowrap; the group wraps so size drops below whole; receipt written to kol-mirror's outbox |
+| 2026-10-22 | **`AppCardDownloadClickBubbles` closed — kol-component 0.294.0** — the cover download stops propagation in its `onAction`; receipt written to kol-monitor's outbox |
+| 2026-10-22 | **`AppCardNoHoverFill` closed — kol-component 0.293.0** — card and row: the tone hover step is skipped for `app`; receipt written to kol-fxr's outbox |
 | 2026-10-22 | **`AppCardMeta` closed — kol-component 0.292.0** — `meta` under the title on the `app` card and row; absent = unchanged; receipt written to kol-monitor's outbox |
 | 2026-10-22 | **`CatalogAppVariant` closed — kol-component 0.291.0 · kol-shell 0.75.0** — `variant="app"` on card + row, `AppItemMenuProvider`, `CatalogPage preset="app"`; receipt written to kol-fxr's outbox |
 | 2026-10-22 | **`EnvelopeGeneratorHostClockControls` closed — kol-hardware 0.6.1** — with `now` the row draws no Play/Pause, BPM or Trigger; cycle stays; receipt written to kol-mirror's outbox |

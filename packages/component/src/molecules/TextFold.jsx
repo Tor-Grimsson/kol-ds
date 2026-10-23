@@ -5,7 +5,7 @@ import Button from '../atoms/Button.jsx'
 const CLAMP = { 2: 'max-md:line-clamp-2', 3: 'max-md:line-clamp-3', 4: 'max-md:line-clamp-4', 6: 'max-md:line-clamp-6' }
 
 /**
- * TextFold — Long text folded to a few lines on phones. (TextFold, kol-branding 2026-10-22 — the
+ * TextFold — Long text folded short on phones. (TextFold, kol-branding 2026-10-22 — the
  * user: *"on mobile text heavy blocks are not always relevant but good to know more information
  * is there if you want it"*.) Below md the text clamps to `lines` with a More / Less ghost button;
  * md and up shows it whole. The button only appears when the text is actually cut — measured,

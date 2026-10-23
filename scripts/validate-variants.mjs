@@ -36,6 +36,8 @@ const COMPONENTS = {
 
 /* file → why the inverted Button is right there. A site hero's second CTA is the one case. */
 const ALLOWED_INVERTED = {
+  'packages/component/src/molecules/Modal.jsx': 'the dialog OK — primary is the dark ground since tone-is-the-ground-axis, so OK drew the same as Cancel',
+  'apps/catalog/src/App.jsx': 'the floating Variants button — Round 16 drew it inverted over the page',
   'showcase/src/blocks/hero-full-bleed.jsx': 'site hero — the second CTA of a pair',
   'showcase/src/blocks/feature-showcase.jsx': 'site hero — the second CTA of a pair',
   'showcase/src/cards/split-image-right.jsx': 'site section — the second CTA of a pair',

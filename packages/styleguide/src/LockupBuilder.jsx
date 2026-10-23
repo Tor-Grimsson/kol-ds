@@ -5,7 +5,7 @@ import Lockup from './Lockup.jsx'
 /* taxonomy-ok: organism — the live lockup builder: name / descriptor / variant / scale controls beside a Lockup stage, preset rows below */
 
 /**
- * LockupBuilder — type a product name, add descriptors, pick a variant and scale; the presets run a
+ * LockupBuilder — Build a product lockup from a name. Type a product name, add descriptors, pick a variant and scale; the presets run a
  * brand's naming levels through the same Lockup.
  *
  * Carried from kol-atlas `components/lockup/LiveLockup.jsx` (2026-10-20); the parent, the mark, the

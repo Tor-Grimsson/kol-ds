@@ -4,7 +4,7 @@ type: reference
 status: active
 created: 2026-10-17
 updated: 2026-10-17
-description: Two words for every surface at the edge or over the page
+description: Two words for edge and overlay surfaces
 aliases:
   - rail
   - overlay

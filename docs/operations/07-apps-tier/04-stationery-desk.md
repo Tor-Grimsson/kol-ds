@@ -4,7 +4,7 @@ type: plan
 status: active
 created: 2026-10-20
 updated: 2026-10-20
-description: The quote, invoice and letter layouts, designed in apps/stationery and shipped as kol-stationery
+description: Quote, invoice and letter layouts for print
 tags:
   - domain/workflow
   - pattern/workflow
@@ -43,7 +43,7 @@ related:
 | T | ground light / dark (the paper stays white) |
 | S | the shortcuts sheet |
 
-## What is on the desk
+## Desk
 
 | Row | Pieces | Source |
 |---|---|---|

@@ -3,7 +3,7 @@
  * on kol-monitor's real content. It is apps/overlays' own list, mounted as is: the set and the app cannot drift. */
 export const meta = {
   title: 'Overlays',
-  description: 'Every overlay in the KOL, on monitor’s real content',
+  description: 'Every KOL overlay, on monitor’s real content',
   category: 'app',
   type: 'reference',
   status: 'active',

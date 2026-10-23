@@ -11,6 +11,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-23, the app card variant)
+
+- **Published:** kol-component 0.291.0–0.295.1 (`variant="app"` card + row, `AppItemMenuProvider`, `meta`, no hover fill, download stops its click, date · size never break) · kol-shell 0.75.0 (`CatalogPage preset="app"`, opt-in) · kol-hardware 0.6.1 · kol-icons 0.42.0–0.44.0 (mirror's undo · redo · atomic-molecule-04 · wave · rabbit). fxr, mirror, monitor all adopted. 31 of 32 gates green. Push is the user's. Log: `session-log/2026-10-23-app-card-variant-mirror-icons-gates.md`.
+
 ## Current state (2026-10-22 late night, lobby sweep)
 
 - **Published:** kol-hardware 0.6.0 (SignalScope played part in the accent, `now` clock) · kol-component 0.288.0–0.290.0 (menu rows 8px, card/row `tone`, `TextFold`, `MediaGalleryModes` + waterfall, ColorRamp phone width, long title clears the card's actions). Seven tickets closed, inbox empty. Push is the user's. Log: `session-log/2026-10-22-lobby-sweep-scope-tone-gallery-fold.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-22, one nav rail)
 
 - **Built:** one nav rail — `NavRail` (app · site variants) now lives in kol-component with Logomark and the rail slot, kol-shell re-exports them, kol-framework's `SideNav` is the deprecated alias over `variant="site"`. Also: NavRail folder notes (`to` on a section), label-only sub rows aligned to L1 labels, the rail's own open width `--kol-shell-rail-open` in kol-theme (fxr 320 vs mirror/monitor 264 came from which app loaded kol-framework.css), active sidebar icon ink with `--kol-sidenav-active-icon`. kol-website ticketed to drop brand's sidebar overrides. Published theme 0.179.0 · component 0.283.0 · shell 0.73.0 · framework 0.52.0; showcase NavRail page shows both variants. Push is the user's. Plan: `plan-2026-10-22-one-nav-rail.md`. Log: `session-log/2026-10-22-one-nav-rail.md`.
-
-## Current state (2026-10-21, brand lab)
-
-- **Built, nothing published:** kol-styleguide gains ColorLab, TypeScaleLab, Lockup and LockupBuilder (carried from kol-atlas) and new `apps/brand-lab` (5203) holds the Kolkrabbi revamp draft — the revamp itself later moves to its own repo, `kol-branding`. The media picker has no X (Escape/backdrop/Cancel) and no card border. QuoteDocument retired. Two kol-monitor tickets filed (save patch, loader minimum time). Open: the "- text" currentColor issue needs his repo and screen. Log: `session-log/2026-10-21-brand-lab-picker-no-x.md`.
 
 ## Repo standup (2026-06-15)
 

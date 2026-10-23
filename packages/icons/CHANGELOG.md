@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-icons
 
+## 0.44.0 — 2026-10-23
+
+- **New:** `rabbit` in `misc` — kol-mirror's last local glyph. Its filled outline is Lucide's `rabbit` (ISC) expanded at 1.5-wide walls, so the centerline is Lucide's own path: a 1.5 `currentColor` stroke, round caps and joins, scaled 0.9 about the centre onto 3–21 to sit on the set's keyline (the outline reached 1.2–22.75).
+
+## 0.43.0 — 2026-10-23
+
+- **New:** `wave` in `shape-forms` — kol-mirror's three waves at the set's 1.5 `currentColor` stroke. Mirror's outline reached x 1.3–22.7; the centerlines are scaled horizontally onto 3–21 (mirror's call), the vertical untouched.
+
+## 0.42.0 — 2026-10-23
+
+- **New:** `undo` · `redo` in `tools` and `atomic-molecule-04` in `atomic` — kol-mirror's last local glyphs. Mirror's copies were expanded outlines (undo / redo at 2px); these are the set's 1.5 `currentColor` strokes, round caps and joins, drawn on the centerlines of mirror's outlines.
+
 ## 0.39.0 — 2026-10-17
 
 - **New:** `monitor` in `identity` — Monitor's mark (M O N as FXR draws F X R, Right Grotesk Tall Dark, the M a quarter wider, the row cut at its middle and slid ±1), on the set keyline beside `kol-ds`, `fxr`, `r2b2`, `mirror`, `currentColor`.

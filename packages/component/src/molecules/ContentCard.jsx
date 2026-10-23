@@ -479,7 +479,8 @@ export default function ContentCard({
     if (onClick) onClick(event)
   }
   const interactive = href || onClick
-  const hoverBg = tone ? 'var(--kol-tone-hover-bg)' : HOVER[variant]
+  /* `app` keeps file's no-fill hover (AppCardNoHoverFill): its default tone must not bring the tone's hover step */
+  const hoverBg = tone && !app ? 'var(--kol-tone-hover-bg)' : HOVER[variant]
 
   const common = {
     'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,

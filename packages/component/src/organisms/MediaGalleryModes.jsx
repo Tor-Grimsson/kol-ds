@@ -7,7 +7,7 @@ import MediaViewer from './MediaViewer.jsx'
 const LABELS = { carousel: 'Carousel', grid: 'Grid', waterfall: 'Waterfall' }
 
 /**
- * MediaGalleryModes — One media set, three ways to look at it. (MediaGalleryModes, kol-branding
+ * MediaGalleryModes — One media set, three ways to view it. (MediaGalleryModes, kol-branding
  * 2026-10-21 — the user: *"a carousel is a nice viewing experience, unless you are looking for
  * specific thing, then you might wanna grid or waterfall the images"*.) The viewer switches
  * carousel (`GalleryCarousel`) · grid · waterfall (`MediaTileGallery`); any item opens the one

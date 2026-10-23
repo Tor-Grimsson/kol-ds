@@ -1,4 +1,9 @@
 {
+  "AppCardNoHoverFill": {
+    "repo": "kol-ds-ui",
+    "source": "kol-ds-ui/packages/component/src/molecules/AppItem.jsx#L79-L86 · kol-ds-ui/packages/component/src/molecules/ContentCard.jsx#L482-L494",
+    "date": null
+  },
   "AppShellSet": {
     "repo": "kol-monitor",
     "source": "kol-monitor/src/components/AppLayout.jsx#L1-L21 + kol-mirror/src/components/AppLayout.jsx#L1-L23 (full inventory per piece below)",
@@ -29,6 +34,11 @@
     "source": "kol-component/src/molecules/CardFeatureItem.jsx (+ FeaturesCardSection.jsx)",
     "date": null
   },
+  "CatalogAppVariant": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/components/FileCard.jsx#L1-L97 · kol-fxr/src/pages/LibraryPage.jsx#L118-L156 · kol-fxr/src/AppLayout.jsx#L323-L360",
+    "date": null
+  },
   "ChessBoardFluidCoordinates": {
     "repo": "kol-chess",
     "source": "kol-chess ChessBoard (apparatus) · coordinate labels",
@@ -47,6 +57,11 @@
   "ColorPickerPopover": {
     "repo": "kol-monitor",
     "source": "kol-monitor/src/components/atoms/ColorPicker.jsx#L28-L154",
+    "date": null
+  },
+  "ColorRampNarrowCaptions": {
+    "repo": "kol-branding",
+    "source": "kol-branding/src/pages/Foundations.jsx (Ramp) — ColorRamp with 10–12 static colours",
     "date": null
   },
   "ColorSwatch": {
@@ -114,6 +129,11 @@
     "source": "kol-website — apps/web/src/routes/Metrics.jsx + workshop/DashboardComponents.jsx",
     "date": null
   },
+  "DevSectionHeader": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/pages/DevCards.jsx#L30-L41",
+    "date": null
+  },
   "DisplayTightRamp": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L150 + components/sections/home/HomeHero.jsx",
@@ -147,6 +167,11 @@
   "Icon (align · rotate · flip)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/compose/inspectors/LayerInspector.jsx (Transform strip)",
+    "date": null
+  },
+  "EnvelopeGenerator": {
+    "repo": "kol-hardware",
+    "source": "kol-hardware/src/value/EnvelopeGenerator.jsx#L228-L239",
     "date": null
   },
   "FeaturedCarouselFullWidth": {
@@ -252,6 +277,11 @@
   "kol-media-client (packages/media-client)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/library/mediaLibrary.js#L55-L62 · kol-mirror/src/hooks/useMediaLibrary.js#L24-L28",
+    "date": null
+  },
+  "MediaGalleryModes": {
+    "repo": "user",
+    "source": "user request in a kol-branding session (no consumer source — new component)",
     "date": null
   },
   "MediaLibraryPages": {
@@ -544,6 +574,11 @@
     "source": "kol-framework/kol-framework.css#L46 (`--kol-sidenav-w: 16rem`) · kol-website/apps/brand/src/styles/sidenav-collapse.css (the local carry)",
     "date": null
   },
+  "SignalScope": {
+    "repo": "kol-mirror",
+    "source": "kol-mirror/src/components/hall-of-mirrors/ExpressionReference.jsx#L191-L218",
+    "date": null
+  },
   "Slider · RotaryDial": {
     "repo": "kol-mirror",
     "source": "kol-mirror/src/components/atoms/Slider.jsx (the whole local component) · kol-mirror/src/styles/components.css#L36-L181 (its skin) · consumers at kol-mirror/src/components/hall-of-mirrors/RecorderUnit.jsx + SymphonyMixer.jsx",
@@ -572,6 +607,11 @@
   "TagTertiary": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/routes/Work.jsx (row tags: `<Tag variant=\"secondary\" className=\"border-transparent work-tag\">`) + styles/ui.css `.kol-tag.work-tag`",
+    "date": null
+  },
+  "TextFold": {
+    "repo": "kol-branding",
+    "source": "kol-branding/src/hub/Fold.jsx#L1-L29",
     "date": null
   },
   "Textarea (resize grip)": {

@@ -12,7 +12,7 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /**
- * Rail — A surface docked to an edge (RailOverlay, kol-monitor 2026-10-17 — user ruling: *"rail and overlay"*).
+ * Rail — A surface docked to an edge. A surface docked to an edge (RailOverlay, kol-monitor 2026-10-17 — user ruling: *"rail and overlay"*).
  * Anything docked to an edge — left, right, top or bottom — that collapses and expands is a rail; anything
  * floating over the page that closes is an overlay. Drawer, shelf, panel and sheet are retired as names
  * (`ShellDrawer` is this component's old name, an alias).

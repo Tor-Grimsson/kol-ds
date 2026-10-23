@@ -55,7 +55,9 @@ for (const category of readdirSync(VAULT)) {
 
   for (const chapter of readdirSync(catPath)) {
     const chPath = join(catPath, chapter)
-    if (chapter.startsWith('.') || !statSync(chPath).isDirectory()) continue
+    /* `_assets` / `_files` beside a category's chapters are media, not a chapter — the same skip the subfolder
+     * and page walks already make (docs/stack/_assets, 2026-10-23) */
+    if (chapter.startsWith('.') || chapter.startsWith('_') || !statSync(chPath).isDirectory()) continue
     checked++
 
     const rel = relative(REPO, chPath)

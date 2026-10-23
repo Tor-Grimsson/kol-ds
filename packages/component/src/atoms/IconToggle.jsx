@@ -5,7 +5,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
 /* taxonomy-ok: atom — one control, Icon + the DS Tooltip */
 
 /**
- * IconToggle — an icon-only toggle: the icon is the control, the state is its INK, the name is the
+ * IconToggle — An icon-only toggle whose ink shows its state. an icon-only toggle: the icon is the control, the state is its INK, the name is the
  * tooltip (IconToggle, kol-mirror 2026-10-15 — user: *"why is everything in brackets icon AND TEXT?
  * all of this is also listed in shortcuts so? … because we want to minimise noise"*).
  *

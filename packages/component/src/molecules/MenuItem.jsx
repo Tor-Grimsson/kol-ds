@@ -164,7 +164,7 @@ export function MenuDropdownDivider() {
 }
 
 /**
- * MenuDropdownNest — a row inside a dropdown panel that holds a submenu.
+ * MenuDropdownNest — A dropdown row that opens a submenu. a row inside a dropdown panel that holds a submenu.
  *
  * Default — ACCORDION: click the row to expand/collapse its children inline
  * (below the row, in the same panel); the trailing chevron rotates 90°.

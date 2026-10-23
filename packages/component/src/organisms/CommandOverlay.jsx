@@ -93,7 +93,7 @@ function unfold(rows, opened) {
 }
 
 /**
- * CommandOverlay — The ⌘K overlay: search, add, go, shortcuts. Was `ShellSearchOverlay` (still exported, an
+ * CommandOverlay — The ⌘K search modal. The ⌘K overlay: search, add, go, shortcuts. Was `ShellSearchOverlay` (still exported, an
  * alias). `mode` names what the overlay is for — `search` (default) · `add` · `shortcuts` (`go` is search's old name). In
  * `shortcuts` it draws `shortcuts` (the AppHub keymap) with NO field, as fold rows: the current page's sections
  * under "Shortcuts", each opening its keys in place (label · combo, never run). AppHub's `S` opens this.

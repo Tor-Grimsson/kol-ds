@@ -3,7 +3,7 @@ import { NavRail } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle'
 
 /**
- * SideNav — `NavRail variant="site"` under its old name (2026-10-22, the one nav rail).
+ * SideNav — The grouped navigation rail. `NavRail variant="site"` under its old name (2026-10-22, the one nav rail).
  *
  * @deprecated — use `NavRail variant="site"` from `@kolkrabbi/kol-component`. This name is on the
  * retirement ledger; it stays so every site keeps resolving.
