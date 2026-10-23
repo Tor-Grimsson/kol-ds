@@ -55,3 +55,10 @@ click any item → MediaViewer at that item, paged across the whole set
 - Organism. Either a new `MediaGalleryModes` composing the three, or `mode` added to one of the existing two — DS agent's call; the ask is the switchable modes, not a name.
 - Waterfall is the only new layout.
 - Captions verbatim, no auto-casing.
+
+## Resolution — 2026-10-22 · kol-component 0.289.0
+
+- New organism `MediaGalleryModes` — `SegmentedToggle` over `GalleryCarousel` (carousel) or `MediaTileGallery` (grid · waterfall); one `MediaViewer` owned here, so the last-opened item survives a mode change.
+- `MediaTileGallery layout="waterfall"`: CSS columns, own aspect, no crop; `cols` from sm, two below.
+- `onOpen` on `GalleryCarousel` and `MediaTileGallery` hands the click to a host-owned viewer.
+- Verified in the showcase: carousel 6 items, waterfall 3 columns, a tile opens the viewer and Escape closes it, grid switches.

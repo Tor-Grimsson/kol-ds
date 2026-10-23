@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-hardware
 
+## 0.6.1 — 2026-10-22
+
+- **`EnvelopeGenerator` hides the clock controls under a host clock** (EnvelopeGeneratorHostClockControls, kol-mirror). With `now`, the transport row draws no Play/Pause, BPM or Trigger — the host's transport plays, sets the pace and restarts. Cycle stays: it still decides whether the host's time wraps over the pass or holds at the end. Without `now`, nothing changes.
+
+## 0.6.0 — 2026-10-22
+
+- **`SignalScope` draws the played part in the accent** (SignalScopePlayedTraceAndClock, kol-mirror). While live, the curve is faint and the trace up to the playhead, the playhead and its dot read `--kol-slider-playhead` — the accent unless a host overrides it, the slider's token. A static scope draws as before.
+- **`now` — an external clock.** `SignalScope now={() => t}` reads its time from the host every frame (a desk transport); `rate` and `playing` stop applying. `useEnvelopeGenerator({ now })` forwards it to `EnvelopeGenerator`'s scope. Without it nothing changes.
+
 ## 0.5.0 — 2026-10-16
 
 - **No native `title` anywhere** (HardwareNativeTitle, kol-monitor). `IconButton`, `JackSocket` and `ModuleHeader`'s remove / bypass dots show the DS `Tooltip`, attached to the element itself (`asChild`) — no wrapper, so grid geometry (`IconSelect`) does not move. A jack's tooltip is silent while a cable is pending (`pending` or `dimPending`), so patching never flashes tooltips. `IconButton` takes its `title` as `aria-label` too. The `title` prop keeps its name; no call-site change. Needs kol-component ≥0.262.0 (`Tooltip disabled`).

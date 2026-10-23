@@ -11,6 +11,10 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
+## Current state (2026-10-22 late night, lobby sweep)
+
+- **Published:** kol-hardware 0.6.0 (SignalScope played part in the accent, `now` clock) · kol-component 0.288.0–0.290.0 (menu rows 8px, card/row `tone`, `TextFold`, `MediaGalleryModes` + waterfall, ColorRamp phone width, long title clears the card's actions). Seven tickets closed, inbox empty. Push is the user's. Log: `session-log/2026-10-22-lobby-sweep-scope-tone-gallery-fold.md`.
+
 ## Current state (2026-10-22 night, file row · SectionText levels)
 
 - **Published:** kol-theme 0.183.0 · kol-component 0.287.0 · kol-shell 0.74.0. `PageHeader` is a deprecated alias of `SectionText level` (page · app · section · content); nested floats stack above their parent; the file row is the file card sideways (contained, flush thumb, padded text section); `CatalogPage listColumns`. Three lobby tickets closed. Push is the user's. Log: `session-log/2026-10-22-file-row-sectiontext-levels-float-stacking.md`.
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-21, brand lab)
 
 - **Built, nothing published:** kol-styleguide gains ColorLab, TypeScaleLab, Lockup and LockupBuilder (carried from kol-atlas) and new `apps/brand-lab` (5203) holds the Kolkrabbi revamp draft — the revamp itself later moves to its own repo, `kol-branding`. The media picker has no X (Escape/backdrop/Cancel) and no card border. QuoteDocument retired. Two kol-monitor tickets filed (save patch, loader minimum time). Open: the "- text" currentColor issue needs his repo and screen. Log: `session-log/2026-10-21-brand-lab-picker-no-x.md`.
-
-## Current state (2026-10-20, the stationery desk)
-
-- **Built, nothing published:** `apps/stationery` (5202) — a PanZoomViewport desk with the brand sheets, his real invoices, the brand book's stationery at print size and the kol-atlas quote mockups on A4; the layouts handed over as the Kolkrabbi Stationery artifact (quote · invoice · letter) for him to iterate, then `packages/stationery`. Catalog search no longer drops its query on click — **kol-component 0.282.0 published**. Blocks lifted out of Templates. Icon categories built on the Round 15 recommendation (`nav/icon-categories.js`; set → category → groups in the rail, each category a page, ⌘K rows); Round 15 decided, for review. Parked, all yes'd: a `brand` function, the `Logomark` rename, a Brand chapter under Styles. `QuoteDocument` stays open. Log: `session-log/2026-10-20-stationery-desk-and-layouts.md`.
 
 ## Repo standup (2026-06-15)
 

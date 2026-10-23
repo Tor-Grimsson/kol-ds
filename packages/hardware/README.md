@@ -18,7 +18,7 @@ A different TIER from `kol-component`'s app atoms: a `kol-component` Slider is a
 | | `IconButton` | 1px-bordered icon key, momentary pulse |
 | indicators | `LED` | 6 / 8px lamp — red · yellow · green · white · blue, optional hit pad |
 | | `JackSocket`, `LabeledJack` | the 3.5mm jack, presentational: ring, hole, label, a rim that glows with `signalRef`. **Routing stays in the consumer** |
-| | `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead; zoom X/Y, drag to pan, a clock `rate`, `loop` or one-shot on `trigger`, `height="fill"` |
+| | `SignalScope` | the oscilloscope — a trace of any `sample(t)`, the knob range dashed, a live playhead; zoom X/Y, drag to pan, a clock `rate` or a host's `now`, `loop` or one-shot on `trigger`, the played part in the accent, `height="fill"` |
 | panel | `PanelLabel` | label wrapper, four positions |
 | | `ModuleHeader` | Toggle + module name + edit-mode remove dot / bypass dot |
 | | `SignalReference` | an expression / envelope reference — `variant` `panel` (mirror's box) · `tabs` · `popover` (EX / REF) · `sheet` |

@@ -29,8 +29,10 @@ const DRAG_THRESHOLD_SQ = 25
  * @param {string} title          alt-text fallback (`${title} ${i+1}`)
  * @param {number} defaultAspect  tile aspect when an item omits `aspect` (default 0.8)
  * @param {string} className      extra classes on the section
+ * @param {Function} onOpen        `(index) => void` — a host that owns the viewer (MediaGalleryModes)
+ *                                  takes the click; the carousel then draws no viewer of its own
  */
-export default function GalleryCarousel({ media = [], title = '', defaultAspect = 0.8, className = '' }) {
+export default function GalleryCarousel({ media = [], title = '', defaultAspect = 0.8, className = '', onOpen }) {
   const [viewerIndex, setViewerIndex] = useState(null)
   const pointerStart = useRef({ x: 0, y: 0 })
   const dragged = useRef(false)
@@ -60,7 +62,7 @@ export default function GalleryCarousel({ media = [], title = '', defaultAspect 
               style={{ aspectRatio: aspect }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
-              onClick={() => { if (!dragged.current) setViewerIndex(i) }}
+              onClick={() => { if (!dragged.current) (onOpen ?? setViewerIndex)(i) }}
             >
               {item.kind === 'video' ? (
                 <video src={item.url} autoPlay muted playsInline loop className="w-full h-full object-cover" />
@@ -72,13 +74,13 @@ export default function GalleryCarousel({ media = [], title = '', defaultAspect 
         })}
       </Carousel>
 
-      <MediaViewer
+      {!onOpen && <MediaViewer
         open={viewerIndex !== null}
         media={media}
         index={viewerIndex ?? 0}
         onIndexChange={setViewerIndex}
         onClose={() => setViewerIndex(null)}
-      />
+      />}
     </section>
   )
 }

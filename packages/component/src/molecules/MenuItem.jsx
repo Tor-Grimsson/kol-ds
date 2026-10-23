@@ -127,7 +127,7 @@ export function MenuItem({
 /* xs wears the TRIGGER's face (kol-mono-8), not the helper: the trigger's ghost
  * stack reserves the widest label in its own face, and a row set in a different
  * one measured 3px wider and clipped the selected row beside its check. */
-const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-3 h-8', md: 'kol-helper-12 px-3 h-8', lg: 'kol-helper-12 px-3 h-8' }
+const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-2 h-8', md: 'kol-helper-12 px-2 h-8', lg: 'kol-helper-12 px-2 h-8' }
 /* `rowClass` — the row's type, side padding and height, whole, in place of the size's own
  * (Dropdown passes it, 2026-10-02: its rows wear the trigger's face and sit on the trigger's
  * text edge; a menu's rows keep `ROW_BY_SIZE`). */

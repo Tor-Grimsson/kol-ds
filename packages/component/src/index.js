@@ -55,6 +55,7 @@ export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
 /* armLongPress — the touch hold the panel value controls report (moved from kol-hardware 2026-10-01) */
 export { armLongPress } from './utilities/armLongPress.js'
 export { default as ContextMenu, useContextMenu } from './molecules/ContextMenu.jsx'
+export { AppItemMenuProvider } from './molecules/AppItem.jsx'
 export { default as ProsePreview } from './utilities/ProsePreview.jsx'
 export { default as QuantityInput } from './molecules/QuantityInput.jsx'
 /* Knob — the survivor's name (2026-10-02): `variant` dial · panel. `RotaryDial` is the alias, on the ledger. */
@@ -103,6 +104,7 @@ export { default as SectionCardItem, default as CardFeatureItem } from './molecu
 export { default as CodeBlock } from './molecules/CodeBlock.jsx'
 export { default as ColorInputRow } from './molecules/ColorInputRow.jsx'
 export { default as ColorRamp } from './molecules/ColorRamp.jsx'
+export { default as TextFold } from './molecules/TextFold.jsx'
 export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
 /* MultiSelect — several pick-one settings in one dropdown, a column each (2026-10-01, first cut) */
@@ -197,6 +199,7 @@ export { default as MediaLibrary, MediaLibraryProvider, useMediaLibrary, MediaPi
 export { MediaInspector, mediaSettingsSections, SETTINGS_BASE as MEDIA_SETTINGS_BASE } from './organisms/MediaLibraryPages.jsx'
 export { default as MediaLibraryExplorer } from './organisms/MediaLibraryExplorer.jsx'
 export { default as MediaTileGallery } from './organisms/MediaTileGallery.jsx'
+export { default as MediaGalleryModes } from './organisms/MediaGalleryModes.jsx'
 export { default as MediaViewer } from './organisms/MediaViewer.jsx'
 export { default as SettingsPanel, LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsChipRow, SettingsFooter } from './organisms/SettingsPanel.jsx'
 /* the settings BODY as data — one call for the page, the drawer and a sheet

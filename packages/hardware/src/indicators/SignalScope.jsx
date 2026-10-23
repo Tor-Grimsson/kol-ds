@@ -16,7 +16,13 @@ import { useEffect, useRef } from 'react'
  * THE CLOCK is the scope's: `rate` is time units per second (BPM / 60 for a beat clock), and
  * `playing` stops it where it is. `loop` (default) wraps the playhead over `sec`; off, the
  * playhead runs `0 → sec` once and holds at the end, and every change of `trigger` fires it
- * again — a one-shot envelope's gate.
+ * again — a one-shot envelope's gate. `now` hands the clock to the host instead: a
+ * `() => t` read every frame (mirror's desk transport), and `rate` / `playing` stop applying.
+ *
+ * THE PLAYED PART IS THE ACCENT (SignalScopePlayedTraceAndClock, kol-mirror): while live, the
+ * curve is faint and the trace up to the playhead, the playhead and its dot take
+ * `--kol-slider-playhead` (the accent unless a host overrides it) — where the position is in the
+ * signal, at a glance.
  *
  * @param {(t:number)=>number} sample
  * @param {number} min · max       the view (default 0…100)
@@ -30,20 +36,21 @@ import { useEffect, useRef } from 'react'
  * @param {number}  rate           time units per second (default 1)
  * @param {boolean} loop           wrap the playhead (default true); off = one pass per `trigger`
  * @param {number}  trigger        a counter — each change restarts the pass
+ * @param {()=>number} now         an external clock (time units); overrides the scope's own
  * @param {number|'fill'} height   px (default 320), or `fill` to take the parent's height
  */
 const css = (el, name, fallback) => getComputedStyle(el).getPropertyValue(name).trim() || fallback
 
 export default function SignalScope({
   sample, min = 0, max = 100, sec = 5, ofs = 0, zoomX = 1, zoomY = 1, panY = 0, onPan,
-  refLines = [0, 100], live = true, playing = true, rate = 1, loop = true, trigger = 0,
+  refLines = [0, 100], live = true, playing = true, rate = 1, loop = true, trigger = 0, now,
   height = 320, className = '',
 }) {
   const ref = useRef(null)
   const args = useRef({})
   const drawRef = useRef(null)
   const clock = useRef({ t: 0, last: 0 })
-  args.current = { sample, min, max, sec, ofs, zoomX, zoomY, panY, refLines, live, playing, rate, loop }
+  args.current = { sample, min, max, sec, ofs, zoomX, zoomY, panY, refLines, live, playing, rate, loop, now }
 
   // a trigger restarts the pass
   useEffect(() => { clock.current.t = 0 }, [trigger])
@@ -59,7 +66,8 @@ export default function SignalScope({
       const now = performance.now()
       const dt = (now - clock.current.last) / 1000
       clock.current.last = now
-      if (a.live && a.playing) clock.current.t += dt * a.rate
+      if (a.now) clock.current.t = a.now()
+      else if (a.live && a.playing) clock.current.t += dt * a.rate
       const fn = a.sample
       const dpr = window.devicePixelRatio || 1
       const { width: w, height: h } = canvas.getBoundingClientRect()
@@ -71,6 +79,7 @@ export default function SignalScope({
       ctx.clearRect(0, 0, w, h)
       const ink = css(canvas, '--kol-surface-on-primary', '#e8e4dc')
       const red = css(canvas, '--kol-ctl-led-red', '#e74c3c')
+      const accent = css(canvas, '--kol-slider-playhead', css(canvas, '--kol-accent-primary', ink))
       const pad = 12
       const span = (a.max - a.min) / (a.zoomY || 1) || 1
       const lo = (a.min + a.max) / 2 + a.panY - span / 2
@@ -101,26 +110,35 @@ export default function SignalScope({
       ctx.fillStyle = ink
       ctx.fillText(fmt(hi), 4, pad + 9)
       ctx.fillText(fmt(lo), 4, h - pad - 3)
-      // trace
-      ctx.globalAlpha = 1
-      ctx.strokeStyle = ink
-      ctx.lineWidth = 1.5
-      ctx.beginPath()
-      for (let x = 0; x <= w; x++) {
-        const y = toY(fn ? fn(a.ofs + (x / w) * dur) : lo)
-        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+      const trace = (to) => {
+        ctx.beginPath()
+        for (let x = 0; x <= to; x++) {
+          const y = toY(fn ? fn(a.ofs + (x / w) * dur) : lo)
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+        }
+        ctx.stroke()
       }
-      ctx.stroke()
+      const played = a.live && fn
+      // trace — faint under a playhead, the played part drawn over it
+      ctx.globalAlpha = played ? 0.15 : 1
+      ctx.strokeStyle = ink
+      ctx.lineWidth = played ? 1 : 1.5
+      trace(w)
+      ctx.globalAlpha = 1
       // playhead — over the base window, whatever the zoom (mirror's)
-      if (a.live && fn) {
-        const t = a.loop ? clock.current.t % a.sec : Math.min(clock.current.t, a.sec)
+      if (played) {
+        const t = a.loop ? ((clock.current.t % a.sec) + a.sec) % a.sec : Math.max(0, Math.min(clock.current.t, a.sec))
         const px = toX(t)
+        ctx.strokeStyle = accent
+        ctx.lineWidth = 2
+        if (px > 0) trace(Math.min(px, w))
         if (px >= 0 && px <= w) {
           const py = toY(fn(t))
-          ctx.globalAlpha = 0.25
+          ctx.globalAlpha = 0.4
+          ctx.lineWidth = 1
           ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, h); ctx.stroke()
           ctx.globalAlpha = 1
-          ctx.fillStyle = ink
+          ctx.fillStyle = accent
           ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill()
         }
       }

@@ -33,12 +33,13 @@ const VIEWS = [{ value: 'recent', label: 'RECENT' }, { value: 'saved', label: 'S
  * prop beats the preset — `shelf` with `cardVariant="catalog"` still passed would not be the shelf. */
 const PRESET_AXES = {
   catalog: { card: 'catalog', row: 'catalog', list: 'grid', width: 'bleed' },
+  app: { card: 'app', row: 'app', list: 'grid', width: 'bleed', cols: '3' },
   shelf: { card: 'slide', row: 'slide', list: 'stack', width: 'capped' },
 }
 const AXES = [
-  { key: 'preset', label: 'Preset', values: ['catalog', 'shelf'] },
-  { key: 'card', label: 'Card', values: ['catalog', 'file', 'slide', 'article', 'showcase'] },
-  { key: 'row', label: 'Row', values: ['catalog', 'file', 'slide'] },
+  { key: 'preset', label: 'Preset', values: ['catalog', 'app', 'shelf'] },
+  { key: 'card', label: 'Card', values: ['catalog', 'file', 'app', 'slide', 'article', 'showcase'] },
+  { key: 'row', label: 'Row', values: ['catalog', 'file', 'app', 'slide'] },
   { key: 'list', label: 'List', values: ['grid', 'stack'] },
   /* the list grid's column ceiling — CatalogPage's `listColumns` */
   { key: 'cols', label: 'Columns', values: ['1', '2', '3', '4'] },
@@ -60,6 +61,9 @@ const pattern = <img src={PATTERN} alt="" />
 /* the shelf draws download · star · trash only when the handlers exist — placeholders, so the reference shows them */
 const noop = () => {}
 const SHELF_SLOTS = { count: 12, onDownload: noop, onFavourite: noop, onDelete: noop }
+/* the APP card and row (CatalogAppVariant, kol-component 0.291.0): raw writes in, the page draws download ·
+ * cog over trash · Rename / Duplicate / Delete on cog and right-click — placeholders, so the reference shows them */
+const APP_SLOTS = { download: noop, verbs: { rename: noop, duplicate: noop, remove: noop } }
 /* the FILE card as the media library draws it (MediaLibraryPages' grid): download on the cover, the select
  * checkbox in the cover's other corner, copy · rename · delete in the plate, the size as a download link,
  * click selects. Without these the reference showed a bare card (user 2026-10-22: *"where are the icons,
@@ -130,7 +134,7 @@ export default function App() {
         views={VIEWS}
         view={view}
         onViewChange={setView}
-        toCard={(it) => ({ key: it.name, title: it.title, detail: `${it.kind} · ${it.tags.map((t) => `#${t}`).join(' ')}`, date: it.date, size: it.size, zoom: axes.zoom === 'on', ...(axes.media === 'image' ? { media: placeholder } : axes.media === 'pattern' ? { media: pattern } : axes.media === 'none' ? { media: false } : null), ...(axes.preset === 'shelf' ? SHELF_SLOTS : null), ...(axes.card === 'file' ? fileSlots(it, picked.has(it.name), () => toggle(it.name)) : null) })}
+        toCard={(it) => ({ key: it.name, title: it.title, detail: `${it.kind} · ${it.tags.map((t) => `#${t}`).join(' ')}`, date: it.date, size: it.size, zoom: axes.zoom === 'on', ...(axes.media === 'image' ? { media: placeholder } : axes.media === 'pattern' ? { media: pattern } : axes.media === 'none' ? { media: false } : null), ...(axes.preset === 'shelf' ? SHELF_SLOTS : null), ...(axes.card === 'file' ? fileSlots(it, picked.has(it.name), () => toggle(it.name)) : null), ...(axes.card === 'app' || axes.row === 'app' ? APP_SLOTS : null) })}
       />
       <VariantsButton axes={axes} onChange={change} />
     </>

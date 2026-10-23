@@ -86,13 +86,19 @@ export default function ColorRamp({
           {note && <span className="kol-mono-12 text-meta italic max-w-[60ch] text-right">{note}</span>}
         </div>
       )}
-      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+      {/* narrow widths (ColorRampNarrowCaptions, kol-branding 2026-10-22): a 10-step ramp at 390 gave
+        * ~30px columns its captions ran out of and the page scrolled sideways. Below sm it wraps to
+        * five a row, and a caption truncates inside its column instead of widening it. */}
+      <div
+        className="grid gap-2 grid-cols-[repeat(var(--ramp-cols-narrow),minmax(0,1fr))] sm:grid-cols-[repeat(var(--ramp-cols),minmax(0,1fr))]"
+        style={{ '--ramp-cols': cols, '--ramp-cols-narrow': Math.min(cols, 5) }}
+      >
         {chips.map((c, i) => {
           const value = c.literal ?? values[c.key] ?? ''
           const fill = c.literal ?? `var(${c.token})`
           const isAnchor = anchor != null && (anchor === c.stop || anchor === c.name || anchor === i)
           return (
-            <div key={c.key} className="flex flex-col gap-1.5">
+            <div key={c.key} className="flex min-w-0 flex-col gap-1.5">
               <div className="relative">
                 <ColorSwatch hex={fill} size="fill" radius="sm" title={`${c.name} ${value}`} />
                 {isAnchor && value && (
@@ -101,9 +107,9 @@ export default function ColorRamp({
                   </span>
                 )}
               </div>
-              <div className="flex flex-col items-start gap-0.5 leading-tight">
-                <span className="kol-helper-10 text-emphasis">{c.name}{isAnchor && ' ★'}</span>
-                <span className="kol-helper-10 text-meta">{value}</span>
+              <div className="flex min-w-0 flex-col items-start gap-0.5 leading-tight">
+                <span className="kol-helper-10 text-emphasis max-w-full truncate">{c.name}{isAnchor && ' ★'}</span>
+                <span className="kol-helper-10 text-meta max-w-full truncate">{value}</span>
               </div>
             </div>
           )

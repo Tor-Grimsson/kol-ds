@@ -1,5 +1,30 @@
 # @kolkrabbi/kol-component
 
+## 0.292.0 — 2026-10-23
+
+- **The `app` card and row draw `meta`** (AppCardMeta, kol-monitor). A line under the title — a module's `6HP 3U — Control`, a patch's `12 modules, 9 connections` — in `kol-mono-12 text-meta`, truncated; `date` · `size` stay on the line below. Without `meta` the card is unchanged. `file` is untouched.
+
+## 0.291.0 — 2026-10-23
+
+- **`variant="app"` on `ContentCard` and `ContentRow`** (CatalogAppVariant, kol-fxr). kol-fxr's approved saved-file card as a variant: the `file` card and row with the parts slotted from raw writes — `verbs` (`{ rename?, duplicate?, remove? }`), `download`, `menuItems`. Download on the cover, a cog over a trash stacked in the plate, Rename · Duplicate · Delete on the cog and on right-click; Rename prompts, Delete confirms (`useModal`). A verb not passed is not drawn. `date` takes ms (→ ISO day), `size` bytes (→ `formatSize`), `media` a src (none → the image placeholder); `tone` defaults `secondary`. `file` is untouched.
+- **New: `AppItemMenuProvider`** — the one menu a page's `app` items open. kol-shell's `CatalogPage` mounts it; without one an `app` card draws download and trash only.
+
+## 0.290.0 — 2026-10-22
+
+- **A long title truncates left of the actions** (FileCardTitleClearsActions, kol-fxr). `ContentCard`'s plate measures its absolute actions and reserves their width (+ one pad) on the text side, so the title's ellipsis ends before the cog instead of under it. `ContentRow`'s text section takes `min-w-0`, so its title shrinks beside the actions column instead of pushing it. Showcase: a long-title file card, and the row's `long title` state.
+
+## 0.289.0 — 2026-10-22
+
+- **New: `MediaGalleryModes`** (kol-branding). One media set the viewer switches between carousel (`GalleryCarousel`) · grid · waterfall (`MediaTileGallery`) on a `SegmentedToggle`; any item opens the one `MediaViewer`, paged across the set. `modes` · `mode` / `defaultMode` / `onModeChange` · `cols` · `title`.
+- **`MediaTileGallery layout="waterfall"`** — CSS columns, each item at its own aspect, no crop; `cols` from sm up, two below. **`onOpen`** on it and on `GalleryCarousel`: a host that owns the viewer takes the click and the gallery draws none of its own.
+- **New: `TextFold`** (kol-branding). Long text clamps to `lines` (2 · 3 · 4 · 6) below md with a More / Less ghost Button, shown only when the text is cut; md and up reads whole. `moreLabel` · `lessLabel` as authored.
+- **`ColorRamp` at phone width** (ColorRampNarrowCaptions, kol-branding). Below sm a long ramp wraps to five a row, and captions truncate inside their column — a 10-step ramp at 390 no longer scrolls the page sideways.
+
+## 0.288.0 — 2026-10-22
+
+- **Menu rows sit at 8px side padding** (MenuRowSidePadding, kol-fxr). `MenuDropdownItem` rows at `sm` · `md` · `lg` were `px-3` (12); now `px-2` — every `MenuItem` dropdown and `ContextMenu`.
+- **`ContentCard` and `ContentRow` take `tone`** (ContentCardRowTone, kol-fxr). The rest ground and its hover step come from one `kol-tone-*` bundle, so they move together; `bg` still wins the rest fill. Unset → the variant's own ground. Showcase: two toned file cards, and the row's `tone` state.
+
 ## 0.287.0 — 2026-10-22
 
 - **The file row is the file card, sideways.** `ContentRow variant="file"` is a contained tile: the card's fg-02 ground, rounded and clipped, a 72 thumb flush at the row's full height (no radius of its own), and one padded text section (12) holding the copy and the actions. The actions column spans the section's height; title on the top pad, date · size on the bottom one. Was a bare ruled line with a 48 thumb and a divider.

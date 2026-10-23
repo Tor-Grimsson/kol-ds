@@ -27,11 +27,11 @@ const adsrWindow = (adsr) => envelopeLength(adsr) * 1.15
 
 /**
  * useEnvelopeGenerator(options) — the generator's state, for a host that arranges the parts.
- * Takes the component's own options (`default*`, `saved`, `savedAdsr`, `onSave`, `onChange`).
+ * Takes the component's own options (`default*`, `saved`, `savedAdsr`, `onSave`, `onChange`, `now`).
  */
 export function useEnvelopeGenerator({
   defaultMode = 'equation', defaultExpr = 'wave(t)', defaultAdsr = ADSR_DEFAULTS,
-  saved, savedAdsr, onSave, onChange,
+  saved, savedAdsr, onSave, onChange, now,
 } = {}) {
   const [mode, setModeState] = useState(defaultMode)
   const [expr, setExprState] = useState(defaultExpr)
@@ -69,7 +69,7 @@ export function useEnvelopeGenerator({
   return {
     mode, setMode, expr, setExpr, compiled, adsr, setAdsr, view, setView, fit, reset,
     cycle, setCycle, playing, setPlaying, bpm, setBpm, trigger, fire: () => setTrigger((n) => n + 1),
-    heldSec, setHeldSec, save,
+    heldSec, setHeldSec, save, now,
     /* spread into <SignalReference> — the current mode's data, whichever shape it takes. Key the
      * element on `mode` so its open tab resets when the data changes under it. */
     reference: {
@@ -188,7 +188,9 @@ function EnvelopeHandles({ adsr, sec, onDragStart, onDrag, onDragEnd }) {
  * itself.
  *
  * TIME is the scope's clock: `bpm` sets its speed (60 BPM = one unit a second, so `t` reads as
- * seconds at the default and as beats at any other). Play / pause stops it where it is.
+ * seconds at the default and as beats at any other). Play / pause stops it where it is. `now`
+ * (`() => t`) hands the clock to the host — a desk transport — and the scope reads it instead;
+ * Play/Pause, BPM and Trigger are then not drawn, since the host's transport does their jobs.
  *
  * ADSR: four handles on the scope — A (attack time), D (decay time), S (at the end of the hold:
  * sideways = how long the gate holds, up/down = the sustain level), R (release time). The scope
@@ -205,6 +207,7 @@ function EnvelopeHandles({ adsr, sec, onDragStart, onDrag, onDragEnd }) {
  * @param {string}  defaultExpr
  * @param {object}  defaultAdsr        knob values 0…100, `hold` in seconds (`ADSR_DEFAULTS`)
  * @param {Array}   saved · savedAdsr  the host's own rows for each mode's Saved tab
+ * @param {()=>number} now           an external clock for the scope (overrides play / BPM)
  * @param {Function} onSave            `({ mode, code }) => void` — shows a Save button; `code` is the
  *                                     expression, or the envelope as `a10 d30 s70 r50 h1`
  */
@@ -223,14 +226,18 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
   const passSec = mode === 'equation' ? sec : envelopeLength(adsr)
   const panel = reference === true || reference === 'panel'
 
+  /* a host clock (`now`) owns play, speed and restart — the controls for them would do nothing, so
+   * they are not drawn (EnvelopeGeneratorHostClockControls, kol-mirror 2026-10-22). Cycle still
+   * acts: it decides whether the host's time wraps over the pass or holds at its end. */
+  const ownClock = !g.now
   const transport = (
     <div className="flex h-6 shrink-0 items-center gap-3">
-      <Button tone="ghost" size="sm" iconOnly={g.playing ? 'pause' : 'play'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />
-      <Field label="BPM" value={g.bpm} chars={3} onCommit={(v) => g.setBpm(Math.max(1, Math.min(999, num(v, g.bpm))))} />
+      {ownClock && <Button tone="ghost" size="sm" iconOnly={g.playing ? 'pause' : 'play'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />}
+      {ownClock && <Field label="BPM" value={g.bpm} chars={3} onCommit={(v) => g.setBpm(Math.max(1, Math.min(999, num(v, g.bpm))))} />}
       {mode === 'adsr' && (
         <>
           <Toggle value={g.cycle} onChange={g.setCycle} label="cycle" />
-          <Button tone="ghost" size="sm" onClick={g.fire}>Trigger</Button>
+          {ownClock && <Button tone="ghost" size="sm" onClick={g.fire}>Trigger</Button>}
         </>
       )}
       <span className="ml-auto text-fg-48">{mode === 'adsr' ? `${passSec.toFixed(2)} s` : ''}</span>
@@ -270,6 +277,7 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
             rate={g.bpm / 60}
             loop={mode === 'equation' || g.cycle}
             trigger={g.trigger}
+            now={g.now}
             className="absolute inset-0"
           />
           {mode === 'adsr' && (

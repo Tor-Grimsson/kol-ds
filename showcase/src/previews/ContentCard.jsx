@@ -94,6 +94,12 @@ function Specimens({ variant }) {
       {/* `bg` + `text` (contentcard-bg-and-text-props, 2026-09-03): `bg` writes `--kol-card-bg`,
         * NOT a background — a `bg-*` utility loses to the property the hover step needs */}
       <ContentCard variant="file" bg="var(--kol-oq-48)" title={S.title} date={S.date} size={S.size} />
+      {/* `tone` (ContentCardRowTone, kol-fxr 2026-10-22): rest + hover from one tone bundle */}
+      <ContentCard variant="file" tone="grey" onClick={() => {}} title={S.title} date={S.date} size={S.size} />
+      <ContentCard variant="file" tone="sunken" onClick={() => {}} title={S.title} date={S.date} size={S.size} />
+      {/* a long title truncates LEFT of the actions (FileCardTitleClearsActions, kol-fxr 2026-10-22) */}
+      <ContentCard variant="file" title="Morph W 1791484577796 - a name far longer than the card" date={S.date} size={S.size}
+        actions={<div className="flex flex-col justify-between"><ActionButton chrome="inline" size="sm" icon="settings" label="Settings" onAction={() => {}} /><ActionButton chrome="inline" size="sm" icon="trash" label="Delete" onAction={() => {}} /></div>} />
     </div>
   )
   if (variant === 'catalog') return (

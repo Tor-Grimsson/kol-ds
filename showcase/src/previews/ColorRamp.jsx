@@ -21,6 +21,12 @@ export default function ColorRampPreview() {
         colors={[['yellow', '#FFCF33'], ['red', '#AD5038'], ['blue', '#222D3D']]}
         anchor="yellow"
       />
+
+      {/* Ten steps — five a row below sm, captions truncate in their column (ColorRampNarrowCaptions) */}
+      <ColorRamp
+        label="Ten steps (static hex)"
+        colors={[['highlight-cider', '#F2E3B3'], ['highlight-sand', '#E8D29A'], ['highlight-ochre', '#D9B65E'], ['highlight-amber', '#C9952F'], ['highlight-rust', '#AD5038'], ['highlight-brick', '#8A3B2A'], ['highlight-plum', '#5C2E40'], ['highlight-ink', '#2B2340'], ['highlight-navy', '#1B2440'], ['highlight-night', '#001141']]}
+      />
     </div>
   )
 }

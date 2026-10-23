@@ -42,3 +42,8 @@ div (flex col, items-start, gap-1)
 
 ## Recreation notes
 - Atom/molecule. The breakpoint could be a prop (`below="md"`). Labels authored at the call site if the DS prefers (`moreLabel`, `lessLabel`), no auto-casing.
+
+## Resolution — 2026-10-22 · kol-component 0.289.0
+
+- New molecule `TextFold`, carried from kol-branding `src/hub/Fold.jsx`: `max-md:line-clamp-{2,3,4,6}`, measured with a ResizeObserver, ghost sm Button `md:hidden` only when cut. Labels are props (`moreLabel` · `lessLabel`, default More · Less).
+- Verified at 390: 3-line clamp (54 of 216px), More opens, label flips to Less.

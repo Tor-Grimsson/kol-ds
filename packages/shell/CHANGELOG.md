@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.75.0 — 2026-10-23
+
+- **`CatalogPage preset="app"`** (CatalogAppVariant, kol-fxr). An app's saved files: `cardVariant` and `rowVariant` `app`, three list columns, and the page's one Rename · Duplicate · Delete menu mounted for you — `toCard` returns `verbs` · `download` · `menuItems` · `date` ms · `size` bytes · `media` src and the page passes no `useContextMenu`. Every CatalogPage now mounts `AppItemMenuProvider`, so a `variant: 'app'` card from `toCard` gets the menu on any preset. Needs kol-component ≥0.291.0.
+
 ## 0.74.0 — 2026-10-22
 
 - **`CatalogPage` `listColumns`** — the list grid's column ceiling, was a hard 4. Defaults to 3 for a file or slide row, 4 otherwise; tracks never go under 240.

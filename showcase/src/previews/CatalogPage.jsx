@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, MenuDropdownItem } from '@kolkrabbi/kol-component'
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 
 export const stage = 'full'
-/* `catalog` = the app tier's Home / Library page · `shelf` = the whole deck page as one word (preset) */
-export const variants = ['catalog', 'shelf']
+/* `catalog` = the app tier's Home / Library page · `app` = an app's saved files (preset) · `shelf` = the whole deck page as one word (preset) */
+export const variants = ['catalog', 'app', 'shelf']
 
 const IMG = (h) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="850"><rect width="600" height="850" fill="hsl(${h} 25% 50%)"/></svg>`)
 const RECENT = [
@@ -27,6 +27,37 @@ export default function CatalogPagePreview({ variant = 'catalog' }) {
   const [view, setView] = useState('recent')
   const [tour, setTour] = useState(false)
   const [favs, setFavs] = useState(() => new Set(['press']))
+  const [files, setFiles] = useState(() => [
+    { id: 'f1', name: 'Morph W 1791484577796', meta: '12 modules, 9 connections', savedAt: Date.parse('2026-10-22'), bytes: 18400, thumb: IMG(20) },
+    { id: 'f2', name: 'Poster 04', savedAt: Date.parse('2026-10-20'), bytes: 6200 },
+    { id: 'f3', name: 'Loop study', savedAt: Date.parse('2026-10-18'), bytes: 41000, thumb: IMG(200) },
+  ])
+  if (variant === 'app') {
+    /* the app preset (CatalogAppVariant, kol-fxr 2026-10-23): toCard returns raw writes and the
+     * page draws download, cog over trash, and the one Rename · Duplicate · Delete menu */
+    const write = (id, fn) => setFiles((fs) => fn(fs, fs.findIndex((f) => f.id === id)))
+    return (
+      <CatalogPage
+        key="app"
+        preset="app"
+        header={{ title: 'Library', subtitle: 'Everything saved on this device.' }}
+        items={files}
+        filtersTitle="All Saved"
+        searchKeys={['name']}
+        toCard={(f) => ({
+          key: f.id, title: f.name, meta: f.meta, date: f.savedAt, size: f.bytes, media: f.thumb,
+          download: () => {},
+          verbs: {
+            rename: (name) => write(f.id, (fs, i) => fs.map((x, j) => (j === i ? { ...x, name } : x))),
+            duplicate: () => write(f.id, (fs, i) => [...fs.slice(0, i + 1), { ...fs[i], id: `${f.id}-${Date.now()}`, name: `${f.name} copy` }, ...fs.slice(i + 1)]),
+            remove: () => write(f.id, (fs, i) => fs.filter((_, j) => j !== i)),
+          },
+          menuItems: <MenuDropdownItem onClick={() => {}}>Export</MenuDropdownItem>,
+          onClick: () => {},
+        })}
+      />
+    )
+  }
   if (variant === 'shelf') {
     /* the shelf: toCard returns FIELDS and HANDLERS, the preset renders the slots
      * — download on the image, star and trash on the plate, the size cell — so

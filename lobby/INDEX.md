@@ -31,16 +31,13 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 58 entries
+## Queue — 55 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
-| 🔵 | [MediaGalleryModes](inbox/MediaGalleryModes.md) | **kol-branding** — one media set, viewer-switchable carousel · grid · waterfall, click opens `MediaViewer`; composes GalleryCarousel + MediaTileGallery, waterfall is new | 2026-10-21 | `filed` — from a kol-branding session |
-| 🔵 | [TextFold](inbox/TextFold.md) | **kol-branding** — long prose folds to N lines below md with a More / Less ghost button, toggle only when cut | 2026-10-22 | `filed` — from a kol-branding session |
-| 🔵 | [ColorRampNarrowCaptions](inbox/ColorRampNarrowCaptions.md) | **kol-branding** — ColorRamp captions overflow their columns at phone width (10-step ramp at 390), page scrolls sideways | 2026-10-22 | `filed` — from a kol-branding session |
 | ⚫ | [QuoteDocument](archive/QuoteDocument.md) | **kol-atlas** — a printable A4 quote layout for client work: three mockups (v1 original · v2 invoice-synced · v3 split), assets in `_assets/2026-10-20-quote-document/` | 2026-10-20 | ⚫ `retired` — user ruling: not built in kol-ds-ui; `apps/stationery` stays live, the layout lives in the Stationery artifact |
 | 🟢 | [ModalPromptPassword](done/ModalPromptPassword.md) | **kol-atlas** — `useModal().prompt` has no masked mode; add `{ type: 'password' }` for the family's sign-in prompts | 2026-10-19 | `closed` — **kol-component 0.281.0**: `{ type: 'password' }` masks the field; OK bright, keyboard trapped in the dialog; verified in the useModal preview |
 | 🟢 | [QuickLookFit](done/QuickLookFit.md) | **kol-atlas** — `MediaInspector` draws every SVG in a fixed 640px box; fit images (SVG too) to the window, click toggles fit ↔ fill width | 2026-10-19 | `closed` — **kol-component 0.280.0 · kol-theme 0.178.0**: SVGs ≥640 fit the window, click toggles fill width; verified in apps/media |
@@ -124,6 +121,16 @@ accrues entries and never closes.
 | 🟢 | [DevSectionHeader](done/DevSectionHeader.md) | **kol-fxr** — the section header for content (eyebrow · title · description) | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.285.0**: `SectionText level="content"` (user ruling: the header levels live on SectionText, `PageHeader` deprecated alias); registry live; receipt to kol-fxr |
 | 🟢 | [OverscrollNone](done/OverscrollNone.md) | **kol-monitor** — `html { overscroll-behavior: none }` in kol-theme, loaded by `core` and the umbrella | 2026-10-22 | 2026-10-22 | `closed` — **kol-theme 0.180.0**: rule in `kol-base-tokens.css`; registry live; receipt to kol-monitor |
 | 🟢 | [LoaderAppMinimumTime](done/LoaderAppMinimumTime.md) | **kol-monitor** — `hideLoaderApp({ minMs = 600 })`: the app loader holds at least 600 ms from navigation start | 2026-10-22 | 2026-10-22 | `closed` — **kol-framework 0.53.0**: fast load done at 616 ms, `minMs: 0` at 44 ms; per-app `minMs`; registry live; receipt to kol-monitor |
+| 🟢 | [SignalScopePlayedTraceAndClock](done/SignalScopePlayedTraceAndClock.md) | **kol-mirror** — `SignalScope`: played trace + playhead in the accent token, and a `now` clock prop so the scope follows a host transport | 2026-10-22 | 2026-10-22 | `closed` — **kol-hardware 0.6.0**: played part · playhead · dot on `--kol-slider-playhead`, `now` on SignalScope and forwarded by `useEnvelopeGenerator`; registry live; receipt to kol-mirror |
+| 🟢 | [AppCardMeta](done/AppCardMeta.md) | **kol-monitor** — a `meta` line on the `app` card and row | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.292.0**: `meta` under the title on the `app` card and row; absent = unchanged; registry live; receipt to kol-monitor |
+| 🟢 | [CatalogAppVariant](done/CatalogAppVariant.md) | **kol-fxr** — an `app` variant on ContentCard + ContentRow and `preset="app"` on CatalogPage — the approved saved-file card | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.291.0 · kol-shell 0.75.0**: `variant="app"` on card + row, `AppItemMenuProvider`, `CatalogPage preset="app"`; registry live; receipt to kol-fxr |
+| 🟢 | [EnvelopeGeneratorHostClockControls](done/EnvelopeGeneratorHostClockControls.md) | **kol-mirror** — `EnvelopeGenerator`: hide Play/Pause and BPM when the host owns the clock (`now`) | 2026-10-22 | 2026-10-22 | `closed` — **kol-hardware 0.6.1**: with `now` the row draws no Play/Pause, BPM or Trigger; cycle stays; registry live; receipt to kol-mirror |
+| 🟢 | [FileCardTitleClearsActions](done/FileCardTitleClearsActions.md) | **kol-fxr** — a long file-card title truncates under the plate’s actions, not before them | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.290.0**: card reserves the measured actions width on the text side; row text `min-w-0`; registry live; receipt to kol-fxr |
+| 🟢 | [ColorRampNarrowCaptions](done/ColorRampNarrowCaptions.md) | **kol-branding** — ColorRamp captions overflow their columns at phone width | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.289.0**: below sm a ramp wraps to five a row; captions truncate in their column; registry live; receipt to kol-branding |
+| 🟢 | [TextFold](done/TextFold.md) | **kol-branding** — long prose folds to N lines below md with a More / Less ghost button | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.289.0**: new `TextFold` — `lines` · `as` · `moreLabel` · `lessLabel`; registry live; receipt to kol-branding |
+| 🟢 | [MediaGalleryModes](done/MediaGalleryModes.md) | **kol-branding** — one media set, viewer-switchable carousel · grid · waterfall, click opens `MediaViewer` | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.289.0**: new `MediaGalleryModes`; `MediaTileGallery layout="waterfall"`; `onOpen` on both galleries; registry live; receipt to kol-branding |
+| 🟢 | [ContentCardRowTone](done/ContentCardRowTone.md) | **kol-fxr** — `ContentCard` + `ContentRow` take `tone` — rest ground and hover from one tone bundle | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.288.0**: `tone` on both; rest + hover from `--kol-tone-bg` / `--kol-tone-hover-bg`; `bg` still wins; registry live; receipt to kol-fxr |
+| 🟢 | [MenuRowSidePadding](done/MenuRowSidePadding.md) | **kol-fxr** — `MenuDropdownItem` rows have 12px left/right padding; should be 8px | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.288.0**: `ROW_BY_SIZE` sm · md · lg `px-3` → `px-2`; registry live; receipt to kol-fxr |
 | 🟢 | [ViewportTouchGestures](done/ViewportTouchGestures.md) | **kol-fxr** — `PanZoomViewport` has no touch gesture: a finger can't zoom or move the stage and can't press `onSpaceTap`. Ask: two-finger pinch at the midpoint + pan, one-finger tap → `onSpaceTap`, `touch-action: none` | 2026-10-14 ← kol-fxr | 2026-10-14 | 🔵 `filed` |
 | 🟢 | [CanvasViewCommands](done/CanvasViewCommands.md) | **kol-fxr** — `PanZoomViewport` can't fit from outside (⌘0's reset is key-only), can't fit a rect (To Width / To Selection), and `ZOOM_MAX = 8` is relative to the fitted frame so 800% real is unreachable. Ask: `kol:zoom-fit { to }`, the cap in real terms, optionally `kol:zoom-to { scale }` | 2026-10-13 ← kol-fxr | 2026-10-13 | 🔵 `filed` |
 | 🟢 | [MediaLibraryUrlOnStorageKey](done/MediaLibraryUrlOnStorageKey.md) | **kol-website** — media.kolkrabbi.io's R2 `/api/list` now lists from D1: `key` = path, **`storageKey`** = the permanent R2 key (the object never moves; rename edits the row). `MediaLibrary` / `MediaLibraryPages` / `kol-media-client` build every URL on `key`, so a renamed or newly uploaded file 404s. Ask: `mediaUrl(row.storageKey ?? row.fullKey ?? row.key)` at the nine sites; `downloadUrl` stays on `key` | 2026-10-13 ← kol-website | 2026-10-13 | 🔵 `filed` |
@@ -393,6 +400,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [FxrLibraryOnAppPreset](outbox/FxrLibraryOnAppPreset.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
+| 🟢 | [MirrorLibraryOnAppPreset](outbox/MirrorLibraryOnAppPreset.md) | **kol-mirror** — `~/dev/projects/kol-mirror/lobby/INDEX.md` | 🟢 closed 2026-10-23 | **none** |
+| 🟢 | [MonitorLibraryOnAppPreset](outbox/MonitorLibraryOnAppPreset.md) | **kol-monitor** — `~/dev/projects/kol-monitor/lobby/INDEX.md` | 🟢 closed 2026-10-23 | **none** |
 | 🔵 | [brand-sidenav-drop-overrides](outbox/brand-sidenav-drop-overrides.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-10-22 | **none** |
 | 🟢 | [plan-shape-w-phase-list](outbox/plan-shape-w-phase-list.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🟢 closed 2026-10-15 | **none** |
 | 🟢 | [ag-init-report-handoff-not-outbox](outbox/ag-init-report-handoff-not-outbox.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🟢 closed 2026-10-05 — `ag-init` steps 6 + 7: a newer handoff is reported in one line, unanswered outbox receipts are not flagged; verified from this repo's boots on 2026-10-03 | **none** |
@@ -405,6 +415,11 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-23 | **`AppCardMeta` filed from kol-monitor** — `meta` on the `app` card/row |
+| 2026-10-23 | **`CatalogAppVariant` filed from kol-fxr** — `app` card/row variant + `preset="app"`; answers fxr, mirror, monitor |
+| 2026-10-22 | **`FileCardTitleClearsActions` filed from kol-fxr** — title truncates before the plate actions |
+| 2026-10-22 | **`ContentCardRowTone` filed from kol-fxr** — a `tone` on card and row |
+| 2026-10-22 | **`MenuRowSidePadding` filed from kol-fxr** — menu row side padding 12px → 8px |
 | 2026-10-22 | **`DevSectionHeader` filed from kol-fxr** — one section header for dev-tab content instead of one per app |
 | 2026-10-22 | **`OverscrollNone` filed from kol-monitor** — one overscroll rule in kol-theme instead of a copy per app |
 | 2026-10-22 | **`LoaderAppMinimumTime` filed from kol-monitor** — `hideLoaderApp` minimum time on screen, 600 ms by the user's ruling |
@@ -982,5 +997,17 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-22 | `ColorRampNarrowCaptions` filed from kol-branding: ramp captions overflow on phones. |
 
 | 2026-10-22 | **`LoaderAppMinimumTime` closed — kol-framework 0.53.0** — `hideLoaderApp` holds the loader 600 ms from navigation start, `minMs` per app; receipt written to kol-monitor's outbox |
+| 2026-10-22 | **`SignalScopePlayedTraceAndClock` closed — kol-hardware 0.6.0** — the scope's played part in the accent token and a host `now` clock; receipt written to kol-mirror's outbox |
+| 2026-10-22 | **`AppCardMeta` closed — kol-component 0.292.0** — `meta` under the title on the `app` card and row; absent = unchanged; receipt written to kol-monitor's outbox |
+| 2026-10-22 | **`CatalogAppVariant` closed — kol-component 0.291.0 · kol-shell 0.75.0** — `variant="app"` on card + row, `AppItemMenuProvider`, `CatalogPage preset="app"`; receipt written to kol-fxr's outbox |
+| 2026-10-22 | **`EnvelopeGeneratorHostClockControls` closed — kol-hardware 0.6.1** — with `now` the row draws no Play/Pause, BPM or Trigger; cycle stays; receipt written to kol-mirror's outbox |
+| 2026-10-22 | **`FileCardTitleClearsActions` closed — kol-component 0.290.0** — card reserves the measured actions width on the text side; row text `min-w-0`; receipt written to kol-fxr's outbox |
+| 2026-10-22 | **`ColorRampNarrowCaptions` closed — kol-component 0.289.0** — below sm a ramp wraps to five a row; captions truncate in their column; receipt written to kol-branding's outbox |
+| 2026-10-22 | **`TextFold` closed — kol-component 0.289.0** — new `TextFold` — `lines` · `as` · `moreLabel` · `lessLabel`; receipt written to kol-branding's outbox |
+| 2026-10-22 | **`MediaGalleryModes` closed — kol-component 0.289.0** — new `MediaGalleryModes`; `MediaTileGallery layout="waterfall"`; `onOpen` on both galleries; receipt written to kol-branding's outbox |
+| 2026-10-22 | **`ContentCardRowTone` closed — kol-component 0.288.0** — `tone` on both; rest + hover from `--kol-tone-bg` / `--kol-tone-hover-bg`; `bg` still wins; receipt written to kol-fxr's outbox |
+| 2026-10-22 | **`MenuRowSidePadding` closed — kol-component 0.288.0** — `ROW_BY_SIZE` sm · md · lg `px-3` → `px-2`; receipt written to kol-fxr's outbox |
 | 2026-10-22 | **`OverscrollNone` closed — kol-theme 0.180.0** — the page no longer rubber-bands; receipt written to kol-monitor's outbox |
 | 2026-10-22 | **`DevSectionHeader` closed — kol-component 0.285.0** — `SectionText level="content"`, `PageHeader` now an alias of SectionText; receipt written to kol-fxr's outbox |
+| 2026-10-22 | **`SignalScopePlayedTraceAndClock` filed from kol-mirror** — the accent played trace and an external clock, both lost when mirror's Expressions tab moved onto `EnvelopeGenerator` |
+| 2026-10-22 | **`EnvelopeGeneratorHostClockControls` filed from kol-mirror** — follow-up to `SignalScopePlayedTraceAndClock`: the clock controls are dead under `now` |

@@ -32,3 +32,8 @@ ColorRamp, ColorSwatch.
 
 ## Recreation notes
 Consumer workaround today: wrap in `overflow-x-auto` with a 560px min width. Remove once ColorRamp owns narrow widths.
+
+## Resolution — 2026-10-22 · kol-component 0.289.0
+
+- `ColorRamp`: grid columns from `--ramp-cols` (sm up, max 10) and `--ramp-cols-narrow` (min(n,5), below sm); chip column `min-w-0`, both caption spans `max-w-full truncate`.
+- Verified at 390: a 10-step static ramp lays out 5 a row, page overflow 0; at 1280 it is 10 across. Specimen added to the showcase preview.

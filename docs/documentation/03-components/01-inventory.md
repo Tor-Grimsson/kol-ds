@@ -56,6 +56,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
 | `Divider` | A thin rule separating content, horizontal or vertical. Vertical `height` is px (default 16, centred) or `'fill'` — stretches to the row (0.276.0). |
 | `EmptyState` | A stacked eyebrow/title/body/footer block for empty panels and unshipped inspectors. |
+| `TextFold` | Long text folded to `lines` (2 · 3 · 4 · 6) below md with a More / Less ghost Button, shown only when the text is cut (measured); md and up shows it whole. Molecule. |
 | `ExitPreview` | A router-aware link out of preview mode. |
 | `Figure` | A caption’d, aspect-locked media frame for long-form prose. |
 | `BackgroundVideo` | A non-interactive background HLS video — hls.js with Safari-native fallback. |
@@ -135,6 +136,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `MediaTile` | One tile of the media grid — the caller's preview node over a name, selected / drop-over states, double-click opens; on a coarse pointer it carries the `···` menu. |
 | `RowMenuButton` | The `···` that opens a row's or tile's own context menu on a touch device — renders only under a coarse pointer; the menu is the caller's. |
 | `ContextMenu` / `useContextMenu` | A right-click menu anchored at the pointer — a popover whose anchor is a point, so it inherits flip, shift, portal and dismissal; `useContextMenu().openAt(e, payload)` opens it from any `onContextMenu`. |
+| `AppItemMenuProvider` | The ONE Rename · Duplicate · Delete menu an app's `app` cards and rows open (cog and right-click) — CatalogPage mounts it; wrap your own when an `app` card sits outside one (CatalogAppVariant, 0.291.0). |
 
 Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
@@ -163,7 +165,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `MediaPlayer` | The one player (2026-10-02) — `variant` video · audio; `frame` draws it in `QuickLookFrame`, absent it plays inline. `VideoSheet` · `AudioSheet` · `AudioPreview` · `AudioPlayer` are its aliases. |
 | `AudioSheet` | Audio in the overlay, two variants — `cover` (the ID3 artwork is the frame, the bar floats) · `sheet` (the QuickTime audio window: dark plate, cover square, `Time: mm:ss`, the bar flush). No cover → the `music-note` square. |
 | `DocPage` | ONE plate for every document (markdown · text · code · JSON · YAML — kol-r2b2, 2026-08-27): the base plate; in the overlay an A-series page (85vh, 1:√2, inside the 10rem arrow gutters); in the column zoomed 0.5. `KindPreview` reaches for it; `DocFrontmatter` (a member) renders markdown's frontmatter above the prose. |
-| `CatalogPage` | The app tier's Home / Library page shipped once — PageHeader → ContentFilters → the catalog grid of `ContentCard` / `ContentRow catalog` → the action row; `toCard` is the contract. |
+| `CatalogPage` | The app tier's Home / Library page shipped once — PageHeader → ContentFilters → the catalog grid of `ContentCard` / `ContentRow catalog` → the action row; `toCard` is the contract. `preset="app"` (kol-shell 0.75.0): the `app` card and row — `toCard` returns `verbs` · `download` · `menuItems` · `date` ms · `size` bytes · `media` src — and the page's one menu. |
 | `SettingsShortcuts` / `SettingsLinks` / `SettingsColophon` | The keyboard-shortcuts block (six columns, column-first), the About / Repo link list, and the foot line — the settings furniture three apps hand-wrote. |
 | `TouchDeviceOverlay` | "Desktop recommended", once, on a touch-primary device — `AppShell touch="overlay"` mounts it; `useTouchPrimary` beside it. |
 | `ColumnBrowser` | Finder-style Miller columns over a flat key space — the listing surface's folder view, with a preview column, Finder's keyboard and Quick Look. |
@@ -171,7 +173,8 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `SectionFaq` | `SectionText` header over `Accordion` `{ q, a }` items; `singleOpen` optional. New 2026-08-26. |
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
 | `GalleryCarousel` | A project media gallery — DS Carousel opening into MediaViewer at the clicked index. |
-| `MediaTileGallery` | A stack or grid of framed media tiles opening the shared MediaViewer at the clicked index. |
+| `MediaTileGallery` | A stack, grid or waterfall (CSS columns, no crop — 0.289.0) of framed media tiles opening the shared MediaViewer at the clicked index; `onOpen` hands the click to a host that owns the viewer. |
+| `MediaGalleryModes` | One media set, viewer-switched carousel (`GalleryCarousel`) · grid · waterfall (`MediaTileGallery`) on a `SegmentedToggle`; any item opens the one `MediaViewer`, paged across the set. `modes` · `mode`/`defaultMode`/`onModeChange` · `cols` · `title`. Organism. |
 | `MediaLibrary` | A browser over an object bucket — **ONE component, its variants**: `browse` (folder / files: the bucket dropdown, the crumb line, `ColumnBrowser`, the count) and `library` (the content-filters wall: kinds · search · SELECT / FLAT · grid | list | off · sort · the cards · paging · the inspector · the settings rail) are kol-r2b2's app cut in two (MediaLibraryPages, 2026-08-27 — "bucket is a control, not a page"); `modal` is the picker; `page` a deprecated alias of `library`. The client is injected; the pages render read-only unless it carries the write seams. |
 | `MediaPicker` | A thin **alias** of `MediaLibrary` at `variant="modal"`, kept so existing call sites keep working (its `MediaBrowser` twin is gone). They were two components until 2026-08-01; the user's ruling — *"they are more like variants, same shit different viewing"*. |
 | `MediaLibraryProvider` / `useMediaLibrary` | The headless core behind both media views — one list call, then a **prefix-scoped** view: the folders directly under the prefix, the files at that level (or the whole subtree in `flat`), the kind allow-list, the search, the sort with direction, and paging keyed to what is listed. **The client is injected**, never imported: ARCHITECTURE §3 keeps the clients tier free of UI deps in both directions. |

@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { ActionButton, ContentCard, ContentFilters, ContentRow, SizeOrDownload, formatSize } from '@kolkrabbi/kol-component'
+import { ActionButton, AppItemMenuProvider, ContentCard, ContentFilters, ContentRow, SizeOrDownload, formatSize } from '@kolkrabbi/kol-component'
 import PageShell from './PageShell.jsx'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import WalkthroughPanel from './WalkthroughPanel.jsx'
@@ -37,7 +37,9 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  * variant's A4, so nothing existing moves. Anything `ContentFilters` takes that the page has no
  * prop for goes through `filtersProps` — `mutuallyExclusiveFilters` was the gap.
  *
- * @param {'catalog'|'shelf'} preset  the whole page as one word (default `catalog` = today's defaults). `shelf` = a
+ * @param {'catalog'|'app'|'shelf'} preset  the whole page as one word (default `catalog` = today's defaults). `app` = an
+ *                                 app's saved files: the `app` card and row (`toCard` returns `verbs` · `download` ·
+ *                                 `menuItems` · `date` ms · `size` bytes · `media` src) and one shared menu. `shelf` = a
  *                                 shelf of slide decks: capped · 3 tracks on a 280 floor · `slide` card and row · stacked
  *                                 list · `kol-tone-secondary` on the root · the All / Recent view strip; `toCard` returns
  *                                 the deck's fields and handlers — `title date bytes count cover href onNavigate onDownload
@@ -62,9 +64,9 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  * @param {number}    minColumn      the grid track's floor in px (default 160) — a minimum, never a count
  * @param {number}    maxColumns     the grid's ceiling (default 6, the ruling); a three-deck shelf passes 3 and the tracks share the width
  * @param {string}    cardVariant    the grid card's variant, per page (default `catalog`); `toCard` may return `variant` per card
- * @param {'catalog'|'file'} rowVariant  the list row (default `catalog`, the 36px no-thumb row); `file` = the 48px thumb row, for a catalog whose grid shows a cover —
+ * @param {'catalog'|'file'|'app'} rowVariant  the list row (default `catalog`, the 36px no-thumb row); `file` = the 48px thumb row, for a catalog whose grid shows a cover —
  *                                 its slots (`date` · `size` · `meta` · `selected`) come from `toCard` like everything else
- * @param {number}  listColumns  the list grid's column ceiling (default 3 for a file or slide row, else 4); tracks never go under 240
+ * @param {number}  listColumns  the list grid's column ceiling (default 3 for a file, app or slide row, else 4); tracks never go under 240
  * @param {'grid'|'stack'} listLayout   the list's container (default `grid`, rows four across — monitor's ruling); `stack` = one row per line
  * @param {ElementType} iconComponent  icon renderer seam for ContentFilters
  * @param {boolean}  showCountOnlyWhenFiltering  (default true)
@@ -97,6 +99,9 @@ function computeHiddenSet(items, expandedIdx) {
  * value read off the render. An explicit prop always wins over its preset. */
 const PRESETS = {
   catalog: {},
+  /* an app's saved files (CatalogAppVariant, kol-fxr 2026-10-23): the `app` card and row — `toCard`
+   * returns `verbs` · `download` · `menuItems` · `date` · `size` · `media` and the page draws the rest */
+  app: { cardVariant: 'app', rowVariant: 'app' },
   shelf: {
     width: 'capped', maxColumns: 3, minColumn: 280,
     cardVariant: 'slide', rowVariant: 'slide', listLayout: 'stack',
@@ -178,7 +183,7 @@ export default function CatalogPage({
   /* the LIST grid's column ceiling (2026-10-22 — user: *"are you passing props on number of items/columns?"*). It was
      a hard 4 — monitor's ruling for the 36px catalog row. A file or slide row is a contained tile with a 72 thumb, so
      it defaults to 3 (user: *"change this one to 3"*). Tracks still never go under 240. */
-  listColumns = rowVariant === 'file' || rowVariant === 'slide' ? 3 : 4,
+  listColumns = rowVariant === 'file' || rowVariant === 'app' || rowVariant === 'slide' ? 3 : 4,
   iconComponent,
   showCountOnlyWhenFiltering = true,
   filtersProps,
@@ -211,7 +216,9 @@ export default function CatalogPage({
     observer.current = ro
   }, [minColumn, maxColumns])
 
+  /* the page's ONE menu for its `app` cards and rows (AppItem.jsx) — closed, it renders nothing */
   return (
+    <AppItemMenuProvider>
     <PageShell width={width} className={`${PRESETS[preset]?.className ?? ''} ${className}`.trim()} style={{ overflow: 'hidden', '--kol-catalog-n': cols ?? undefined, ...style }}>
       {header && <PageHeader level="app" {...header} />}
       <div style={{ flex: 1, position: 'relative' }}>
@@ -280,5 +287,6 @@ export default function CatalogPage({
       {children}
       {actions && <div style={{ display: 'flex', gap: 12, marginTop: 48, alignSelf: 'flex-start' }}>{actions}</div>}
     </PageShell>
+    </AppItemMenuProvider>
   )
 }

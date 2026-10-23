@@ -22,7 +22,7 @@
  * @param {ReactNode} date       default · article · typeface
  * @param {'card'|'row'|'hero'} form  the block's form; `hero` is article's featured text (ContentCard `hero`)
  * @param {ReactNode} size       default · article (file size / read length)
- * @param {ReactNode} meta       work only
+ * @param {ReactNode} meta       work · slide · app (a line under the title)
  * @param {number}    gap        inner line gap in px (defaults per variant/form)
  * @param {string}    tagVariant the Tag variant the `tags` slot draws (default `primary` — a soft ink wash that reads as a chip
  *   on a plain surface; CardTagsNoVisibleFill, kol-website 2026-09-01: `tertiary` is surface-primary with no border and was
@@ -58,6 +58,12 @@ const RAMP = {
     /* the card's title is the row's, heading-05 (user 2026-10-22: "can we make the title smaller?" — was heading-04, 24px) */
     card: { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+  },
+  /* APP — the `file` text with a `meta` line under the title (AppCardMeta, kol-monitor 2026-10-23: a module's
+   * `6HP 3U — Control`, a patch's `12 modules, 9 connections`). Without `meta` it is the file text. */
+  app: {
+    card: { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
+    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta', size: 'kol-mono-12 text-meta' },
   },
   /* SLIDE — a deck (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03;
    * user: "they are genuinely different with 16:9 layout and those exposed
@@ -154,6 +160,7 @@ const RAMP = {
  * read off the shipped components and the live pages they render on. */
 const ORDER = {
   file:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
+  app:   { card: ['title', 'meta', ['group', 'date', 'size']], row: ['title', 'meta', ['group', 'date', 'size']] },
   /* slide: title, then date · size · slide count on one baseline (read off olina's /slide-deck) */
   slide: { card: ['title', ['group', 'date', 'size', 'meta']], row: ['title', ['group', 'date', 'size', 'meta']] },
   catalog:  { card: ['title', 'detail'], row: [['lead', 'title', 'detail']] },

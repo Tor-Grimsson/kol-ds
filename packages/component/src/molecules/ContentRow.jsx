@@ -1,5 +1,7 @@
 import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
+import { useAppItem } from './AppItem.jsx'
+import { toneClass } from '../utilities/tone.js'
 
 /**
  * ContentRow — The row form of a content card. the row form of the content-card system: leading thumb (where
@@ -10,7 +12,8 @@ import ContentText from './ContentText.jsx'
  * 36 square thumb when `media` is passed (none without); article rides a 120px 16:9 thumb; work a framed 64px row; typeface a
  * framed no-thumb block.
  *
- * @param {string}    variant   file | catalog | print | article | work | typeface | roster
+ * @param {string}    variant   file | app | catalog | print | article | work | typeface | roster
+ *                             (`app` = the file row with `verbs` · `menuItems` slotted — AppItem.jsx)
  *                             (`default` is an alias of `file`). `roster` is the pickable
  *                             row: filled tile, no border or divider, a FIXED 56px height the
  *                             content fills, a 40px square thumb and two truncated lines.
@@ -183,12 +186,31 @@ export default function ContentRow({
    * a selected row is the list's state, not the consumer's ground. For the
    * row's INK, pass `text` — it falls through to ContentText. */
   bg,
+  /* `tone` — the ground from the control set's tone ladder (ContentCardRowTone, kol-fxr 2026-10-22):
+   * the rest fill AND its hover step from one `kol-tone-*` bundle, so they move together. `bg`
+   * still wins the rest fill when both are passed. Unset → the variant's own ground. */
+  tone,
   className = '',
   ...text
 }) {
+  /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` row with its parts slotted from
+   * `verbs` · `download` · `menuItems` — AppItem.jsx. They never reach ContentText. */
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone })
+  delete text.verbs; delete text.download; delete text.menuItems
+  if (app) {
+    variantProp = 'file'
+    tone = app.tone
+    media = app.media
+    actions = app.actions ?? actions
+    onContextMenu = app.onContextMenu ?? onContextMenu
+    text.date = app.date
+    text.size = app.size
+  }
   const aliased = ALIAS[variantProp] ?? variantProp
   const variant = aliased.startsWith('showcase') && layout ? LAYOUT_KEY[layout] ?? aliased : aliased
   const box = BOX[variant] ?? BOX.file
+  const ground = bg ?? (tone ? 'var(--kol-tone-bg)' : box.bg)
+  const hover = tone ? 'var(--kol-tone-hover-bg)' : box.hover
   /* `media={false}` — NO COVER, not a missing one (content-card-needs-no-cover,
    * kol-client-olina 2026-09-04). The row could already hide its thumb with
    * `thumb={0}`, but that is a SIZE answering a question about MEANING, and a
@@ -240,12 +262,12 @@ export default function ContentRow({
      * consumer setting it got no error and no change. Undefined publishes
      * nothing and the CSS fallback keeps every current row square. */
     '--kol-row-thumb-ratio': ratio ?? box.ratio,
-    '--kol-content-hover-bg': box.hover,
+    '--kol-content-hover-bg': hover,
     '--kol-content-hover-border': box.frameHover,
     /* rest values are PROPERTIES, not inline declarations — an inline
      * `background`/`borderColor` outranks every class, so the hover rules in
      * kol-theme could never win and no row hover fired at all. */
-    '--kol-row-bg': selected ? 'var(--kol-fg-04)' : bg ?? box.bg,
+    '--kol-row-bg': selected ? 'var(--kol-fg-04)' : ground,
     '--kol-row-border': box.frame || undefined,
   }
 
@@ -260,7 +282,7 @@ export default function ContentRow({
    * (a rendered alphabet, a waveform, a sparkline) is never the family's. */
   const inner = box.column ? (
     <>
-      <ContentText variant={variant} form="row" className="w-full" tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+      <ContentText variant={app ? 'app' : variant} form="row" className="w-full" tagVariant={tagVariant ?? (/surface-/.test(ground ?? '') ? 'tertiary' : 'primary')} {...text} />
       {footer}
     </>
   ) : (
@@ -298,11 +320,11 @@ export default function ContentRow({
         <div className="flex flex-1 min-w-0 items-stretch" style={{ padding: box.plate, gap: box.plateGap ?? box.plate }}>
           {/* the meta line's leading is its type size, so its baseline lands on the bottom pad, level with the last
             * control — at its 16px line the digits sat ~4px above it (user 2026-10-22) */}
-          <ContentText variant={variant} form="row" className="flex-1 justify-between [&_.kol-mono-12]:leading-none" tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+          <ContentText variant={app ? 'app' : variant} form="row" className="min-w-0 flex-1 justify-between [&_.kol-mono-12]:leading-none" tagVariant={tagVariant ?? (/surface-/.test(ground ?? '') ? 'tertiary' : 'primary')} {...text} />
           {actions && <div className="shrink-0">{actions}</div>}
         </div>
       ) : (
-      <ContentText variant={variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...text} />
+      <ContentText variant={app ? 'app' : variant} form="row" className={`flex-1 ${box.height != null ? 'py-[2px]' : ''}`.trim()} tagVariant={tagVariant ?? (/surface-/.test(ground ?? '') ? 'tertiary' : 'primary')} {...text} />
       )}
       {/* `specs` rides the trailing edge on EVERY variant — year · material ·
        * edition is a content difference, not a geometry one, and minting a
@@ -326,7 +348,7 @@ export default function ContentRow({
   )
 
   const common = {
-    className: `kol-row group flex ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${box.clip ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && box.hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-row group flex ${toneClass(tone)} ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${box.clip ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: vars,
   }
 

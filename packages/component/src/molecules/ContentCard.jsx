@@ -1,5 +1,8 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
+import { useAppItem } from './AppItem.jsx'
+import { toneClass } from '../utilities/tone.js'
 
 /**
  * ContentCard — the card form of the content-card system. Variants differ in
@@ -24,6 +27,11 @@ import ContentText from './ContentText.jsx'
  * (named `pad`, not `size` — `size` is the ruled TEXT slot). Image-only cards
  * (print) pass no text slots and render no plate. Exotic chrome (drawers,
  * keylines, specimens) is consumer content through `media`.
+ *
+ * APP (CatalogAppVariant, kol-fxr 2026-10-23): `variant="app"` is the `file` card with an app
+ * library's parts slotted from `verbs` (`{ rename?, duplicate?, remove? }`), `download` and
+ * `menuItems` — download on the cover, cog over trash in the plate, the page's one menu on
+ * right-click. `date` takes ms, `size` bytes, `media` a src. See AppItem.jsx.
  */
 
 /* ruled defaults — defaults, not hardcodes; `ratio` stays overridable while
@@ -179,6 +187,10 @@ export default function ContentCard({
    * move together. For the card's INK, pass `text` — it falls through to
    * ContentText with the rest of the slots. */
   bg,
+  /* `tone` — the ground from the control set's tone ladder (ContentCardRowTone, kol-fxr 2026-10-22):
+   * the rest fill AND its hover step from one `kol-tone-*` bundle, so they move together. `bg`
+   * still wins the rest fill when both are passed. Unset → the variant's own ground. */
+  tone,
   control,
   controlStart,
   reveal,
@@ -198,11 +210,26 @@ export default function ContentCard({
   className = '',
   ...text
 }) {
+  /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` card with its parts slotted from
+   * `verbs` · `download` · `menuItems` — AppItem.jsx. They never reach ContentText. */
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone })
+  delete text.verbs; delete text.download; delete text.menuItems
+  if (app) {
+    variantProp = 'file'
+    tone = app.tone
+    media = app.media
+    control = app.control ?? control
+    actions = app.actions ?? actions
+    onContextMenu = app.onContextMenu ?? onContextMenu
+    text.date = app.date
+    text.size = app.size
+  }
   const aliased = ALIAS[variantProp] ?? variantProp
   /* `layout` only re-keys inside the showcase family — it is not a general
    * escape hatch that would let any variant borrow another's box. */
   const variant = aliased.startsWith('showcase') && layout ? LAYOUT_KEY[layout] ?? aliased : aliased
   const box = BOX[variant] ?? BOX.file
+  const ground = bg ?? (tone ? 'var(--kol-tone-bg)' : box.bg)
   const doFlip = flip ?? box.flip
   /* HERO (2026-08-27 — the featured card riding a page's fold; ListingCard
    * size="hero" had no ContentCard equivalent, which is why Stack still
@@ -234,6 +261,20 @@ export default function ContentCard({
    * left, instead of bottom-right (the 2026-08-15 ruling). Block from the
    * first value, inline from the second (or the same one). */
   const [padBlock, padInline = padBlock] = String(padding ?? '0').trim().split(/\s+/)
+  /* the copy stops BEFORE the actions (FileCardTitleClearsActions, kol-fxr 2026-10-22): they are
+   * absolute, so the text column spanned the plate and a long title's ellipsis landed under the cog.
+   * Their measured width (+ one pad) is reserved on the text side, so `truncate` ends left of them. */
+  const actionsRef = useRef(null)
+  const [actionsW, setActionsW] = useState(0)
+  useLayoutEffect(() => {
+    const el = actionsRef.current
+    if (!el) { setActionsW(0); return undefined }
+    const measure = () => setActionsW(el.offsetWidth)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [actions != null])
   /* image-only cards (print) pass no text slots — the empty plate must not render */
   const hasText = ['title', 'body', 'kicker', 'detail', 'date', 'size', 'meta', 'tags'].some((k) => textSlots[k] != null)
   /* `actions` sit IN THE TEXT PLATE, bottom-right (user ruling 2026-08-15:
@@ -250,7 +291,7 @@ export default function ContentCard({
    * true: a rounded still floating inside a square grey card, plate corners
    * square (kol-client-hrafn, screenshot-confirmed on 0.183.0, fixed 0.183.1).
    * One prop is not done until every derivation reads it. */
-  const framed = box.border != null || (bg ?? box.bg) != null
+  const framed = box.border != null || ground != null
 
   /* NO COVER IS NOT A MISSING COVER (content-card-needs-no-cover,
    * kol-client-olina 2026-09-04). `ContentMedia` turns absent children into an
@@ -274,6 +315,7 @@ export default function ContentCard({
       className="kol-card-plate relative"
       style={{
         '--kol-plate-pad': padding,
+        '--kol-plate-actions-w': actionsW ? `calc(${actionsW}px + ${padInline})` : undefined,
         '--kol-plate-pad-md': box.padMd,
         padding,
         /* a fill-card with no cover keeps its frame and its plate keeps the FOOT — dropping the media
@@ -287,13 +329,14 @@ export default function ContentCard({
         zIndex: box.layout === 'canvas' ? 1 : undefined,
       }}
     >
-      {hasText && <ContentText variant={variant} form={isHero ? 'hero' : 'card'} tagVariant={tagVariant ?? (/surface-/.test(bg ?? box.bg ?? '') ? 'tertiary' : 'primary')} {...textSlots} />}
+      {hasText && <ContentText variant={app ? 'app' : variant} form={isHero ? 'hero' : 'card'} className={actionsW ? 'min-w-0 pr-[var(--kol-plate-actions-w)]' : ''} tagVariant={tagVariant ?? (/surface-/.test(ground ?? '') ? 'tertiary' : 'primary')} {...textSlots} />}
       {/* ABSOLUTE, not a flex sibling: the plate's height moves with the title
         * and the meta, so a laid-out stack would stretch or drift with it. The
         * inset reads the SAME pad token the plate uses, so the icons sit the
         * same distance from the top and right edges as the copy does. */}
       {actions && (
         <div
+          ref={actionsRef}
           className="absolute flex"
           style={{ top: padBlock, bottom: padBlock, right: padInline }}
         >
@@ -436,16 +479,16 @@ export default function ContentCard({
     if (onClick) onClick(event)
   }
   const interactive = href || onClick
-  const hoverBg = HOVER[variant]
+  const hoverBg = tone ? 'var(--kol-tone-hover-bg)' : HOVER[variant]
 
   const common = {
     'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,
-    className: `kol-card group flex ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-card group flex ${toneClass(tone)} ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
       /* same reason as ContentRow: rest colors are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step
        * would never render. */
-      '--kol-card-bg': bg ?? box.bg ?? undefined,
+      '--kol-card-bg': ground ?? undefined,
       '--kol-card-border': box.border ? (selected ? 'var(--kol-fg-64)' : box.border) : undefined,
       '--kol-content-hover-bg': hoverBg ?? undefined,
       '--kol-content-hover-border': box.frameHover ?? undefined,
