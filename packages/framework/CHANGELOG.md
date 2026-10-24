@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-framework
 
+## 0.54.0 — 2026-10-24
+
+- **`SiteLayout`** (user 2026-10-24: *"why not SiteLayout instead? to at least name it with variant 'site'"*) — the site frame, named for the rail variant it frames; `PageLayout` and `AppShell` stay as aliases on the retirements ledger. A site is `SiteLayout` plus a nav tree and routes — `apps/site-hub` is the reference; `docs/documentation/04-compositions/18-site-frame.md` the page.
+- **The phone mode is the app rail's drawer** (user: *"I think we should use that hamburger siderail"*): below 768 the rail goes off-canvas and slides on the shell's 220ms curve, a 32px nav Button pinned top-right swaps hamburger for × (`.kol-shell-drawer-trigger`), a scrim button closes on tap (`.kol-shell-drawer-scrim`), Escape and a destination close. The round top-left hamburger and the opacity backdrop are gone. The open drawer's rows are the wide row, on the chrome inset (20 on a phone).
+- **The collapse is one motion** (user: *"some shifting and not very smooth animation between collapsed and expanded rail"*): the narrow row is the wide row with its gutter eased to the column's centre and its label faded on the grid's 180ms clock; the caret fades; reduced motion turns it off. Needs kol-theme ≥0.186.0 (the row's transition list) and kol-component ≥0.298.0 (the stable tree).
+- **The theme toggle is a tree row** — `ThemeToggle variant="row"`: the roll at 16 in the icon column, the target's words in the rows' voice, the rail's hop box, so it collapses as a row does; `SideNav` passes it to the rail's theme slot in both states with the rail's tooltip. No `icon` fallback.
+- **`CategoryPage`** — new: the foldernote's overview from the nav tree — `PageHero` (the category's label, lede) over a `ContentCollection` of its pages as the article card, each page's `card` on its tree row.
+- **The rail's gutters on `--kol-pad-chrome-x`** — rows, header, group label, section label, footer; the collapsed gutter is `(w-collapsed − 20) / 2`.
+
 ## 0.53.0 — 2026-10-22
 
 - **`hideLoaderApp({ minMs = 600 })`** (LoaderAppMinimumTime, kol-monitor): the loader holds at least `minMs` from navigation start, so a fast load no longer flashes the mark; a slow load waits nothing extra. Reduced motion drops the fade, not the minimum. Each app sets its own `minMs`; `0` is the old behaviour.

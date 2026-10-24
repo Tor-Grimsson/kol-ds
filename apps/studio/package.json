@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The Studio's reference app — kol-shell's AppStudio (the Hub + Home · Library · Create · Use · pages · Settings) around placeholder pages. Never published.",
+  "description": "The studio canvas alone — kol-component's CanvasStudio, the dotted surface the rack and the desk sit on, judged without chrome. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
-    "@kolkrabbi/kol-brand": "workspace:*",
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",

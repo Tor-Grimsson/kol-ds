@@ -224,6 +224,11 @@
     "source": "kol-theme/kol-typography.css (.kol-sans-heading-02)",
     "date": null
   },
+  "HubHomeContract": {
+    "repo": "kol-shell",
+    "source": "kol-shell/src/HubHome.jsx#L1-L83 · kol-fxr/src/AppLayout.jsx#L330-L357 · kol-mirror/src/pages/HomePage.jsx#L98-L151 · kol-monitor/src/pages/HomePage.jsx#L85-L152",
+    "date": null
+  },
   "PageHeader / HubSettings (kol-shell)": {
     "repo": "kol-fxr",
     "source": "kol-fxr /settings at 390 (AppHub's HubSettings, kol-shell 0.62.0)",
@@ -597,6 +602,11 @@
   "StepList": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/morph/MorphTab.jsx#L184-L246",
+    "date": null
+  },
+  "StyleguideSrcExports": {
+    "repo": "kol-styleguide",
+    "source": "kol-styleguide/package.json#exports · kol-framework/package.json#exports · kol-branding/vite.config.js#L10-L18",
     "date": null
   },
   "TableMobileScroll": {

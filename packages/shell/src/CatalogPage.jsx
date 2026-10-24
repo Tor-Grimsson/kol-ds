@@ -1,10 +1,11 @@
-import { useCallback, useRef, useState } from 'react'
-import { ActionButton, AppItemMenuProvider, ContentCard, ContentFilters, ContentRow, SizeOrDownload, formatSize } from '@kolkrabbi/kol-component'
+import { useEffect, useRef, useState } from 'react'
+import { ActionButton, AppItemMenuProvider, ContentCard, ContentFilters, ContentRow, SizeOrDownload, formatSize, useMediaQuery } from '@kolkrabbi/kol-component'
 import PageShell from './PageShell.jsx'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import WalkthroughPanel from './WalkthroughPanel.jsx'
+import CatalogGrid from './CatalogGrid.jsx'
 
-/* taxonomy-ok: organism — nests PageShell / PageHeader / WalkthroughPanel (relative) + kol-component's ContentFilters + ContentCard / ContentRow */
+/* taxonomy-ok: organism — nests PageShell / PageHeader / WalkthroughPanel / CatalogGrid (relative) + kol-component's ContentFilters + ContentCard / ContentRow */
 
 /**
  * CatalogPage — An app's home or library page. the app tier's Home / Library page, shipped once (ShellHomeSystem,
@@ -57,6 +58,12 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  * @param {string}   defaultLayout 'grid' (default) | 'list'
  * @param {{steps: Array, open: boolean, onClose?: Function, iconComponent?: ElementType}} walkthrough  the panel over the catalog; `onClose` draws its X inside the card
  * @param {ReactNode} actions      the bottom row's buttons
+ * @param {'scroll'|'fixed'} mode  the page's HEIGHT (plan-2026-10-23 § 4.12, his idea: *"100vh and have the content vertically
+ *                                 scroll … new file and walkthrough are always at the same place regardless of content"*):
+ *                                 `scroll` (default) is the page as it was; `fixed` holds the page at the viewport's height,
+ *                                 the catalog scrolls in its own region and the action row sits at the foot, in the same
+ *                                 place with one item or a hundred
+ * @param {boolean}  actionsOnPhone  draw the action row below `md` (default true); false when the phone bar's More sheet carries it
  * @param {'bleed'|'capped'} width   the page's TIER, forwarded to PageShell (two-page-scaffolds-one-job, 2026-09-03):
  *                                 `bleed` (default) fills the window — the app tier; `capped` centres on the
  *                                 framework container — the site tier, so a brand book adopting this page keeps its geometry
@@ -68,6 +75,12 @@ import WalkthroughPanel from './WalkthroughPanel.jsx'
  *                                 its slots (`date` · `size` · `meta` · `selected`) come from `toCard` like everything else
  * @param {number}  listColumns  the list grid's column ceiling (default 3 for a file, app or slide row, else 4); tracks never go under 240
  * @param {'grid'|'stack'} listLayout   the list's container (default `grid`, rows four across — monitor's ruling); `stack` = one row per line
+ * @param {'list'|'grid'} phoneLayout  below `md` (768, the shell's `drawerBelow` rung): `list` (default) draws the list with the
+ *                                 preset's row and no LIST / GRID strip — a phone gets rows, the grid card breaks its
+ *                                 layout (studio-hub review 2, § 7.2 — *"I do like just using row contentcard for mobile …
+ *                                 if we opt for just using row card on mobile, then we don't need to show it at all"*);
+ *                                 `grid` keeps the desk's strip and layouts on a phone
+ * @param {ReactNode} lead         a node between the masthead and the catalog (HubHome's quick links on a phone)
  * @param {ElementType} iconComponent  icon renderer seam for ContentFilters
  * @param {boolean}  showCountOnlyWhenFiltering  (default true)
  * @param {Object}   filtersProps  spread onto ContentFilters last — e.g. `{ mutuallyExclusiveFilters: ['category', 'u_label'] }`
@@ -98,10 +111,16 @@ function computeHiddenSet(items, expandedIdx) {
  * defaults, byte-identical. `shelf` is olina's /slide-deck as it stood, every
  * value read off the render. An explicit prop always wins over its preset. */
 const PRESETS = {
-  catalog: {},
+  /* the app tier holds still (user 2026-10-23: *"I do like the heading fixed at the top … a rule to avoid vertical
+   * scroll"*): the masthead and filter row stay, the catalog scrolls, the action row is the foot. `mode` below. */
+  catalog: { mode: 'fixed' },
   /* an app's saved files (CatalogAppVariant, kol-fxr 2026-10-23): the `app` card and row — `toCard`
    * returns `verbs` · `download` · `menuItems` · `date` · `size` · `media` and the page draws the rest */
-  app: { cardVariant: 'app', rowVariant: 'app' },
+  /* 208 FLOOR (user 2026-10-24: *"the layout of the card CAN NOT CHANGE on resolution available"*): the card's text
+   * column is the track less 24 of plate pad and the 28 the cog and trash reserve; `2026-10-23` · 24 gap · `999.9 KB`
+   * at mono-12 is 72 + 24 + 58 = 154, so a 208 track holds the pair on one line for every size, and a narrower page
+   * drops a column (CatalogGrid's measured count) instead of breaking the row. Was 160, where the size wrapped by file. */
+  app: { cardVariant: 'app', rowVariant: 'app', mode: 'fixed', minColumn: 208 },
   shelf: {
     width: 'capped', maxColumns: 3, minColumn: 280,
     cardVariant: 'slide', rowVariant: 'slide', listLayout: 'stack',
@@ -119,6 +138,50 @@ const stop = (e) => { e.preventDefault(); e.stopPropagation() }
  * the size cell is SizeOrDownload; `count` is the slide count. A slot the
  * consumer supplies itself is left alone. The consumer writes no JSX for
  * actions — that is the point of the preset. */
+/* THE FOLD (user 2026-10-23, Firefox's rail as the example: *"the first row is clipped, like we want … a slight shadow"*):
+ * the fixed mode's scroll region with a 32px fade from the page's ground at its TOP edge, only once rows have scrolled
+ * under it, so a cut row reads as folded under the edge. The top alone (user 2026-10-23: *"I dont think we need it on bottom"*). A fade, not a
+ * shadow: on this ground a shadow has nothing to fall on. `bleed` runs the region through the page's bottom pad. */
+function ScrollRegion({ bleed, children }) {
+  const ref = useRef(null)
+  const [under, setUnder] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return undefined
+    const read = () => setUnder(el.scrollTop > 0)
+    read()
+    el.addEventListener('scroll', read, { passive: true })
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(read)
+    ro?.observe(el)
+    if (el.firstElementChild) ro?.observe(el.firstElementChild)
+    return () => { el.removeEventListener('scroll', read); ro?.disconnect() }
+  }, [])
+  const fade = (
+    <div
+      aria-hidden
+      /* PAGE-WIDE, through the side pads, so the band has no visible ends (user 2026-10-23: "it clips the left and right");
+       * the opaque surface under the wash, else a translucent wash fading to nothing is a band you hardly see */
+      className="pointer-events-none absolute h-8 transition-opacity duration-150"
+      style={{
+        top: 0,
+        left: 'calc(var(--kol-shell-page-pad) * -1)',
+        right: 'calc(var(--kol-shell-page-pad) * -1)',
+        opacity: under ? 1 : 0,
+        background: 'linear-gradient(to bottom, var(--kol-shell-page-wash, transparent), transparent), linear-gradient(to bottom, var(--kol-surface-primary) 20%, transparent)',
+      }}
+    />
+  )
+  return (
+    /* THE FOLD SITS RIGHT UNDER THE LIST / GRID ROW (user 2026-10-23: *"it could fade further up"*): ContentFilters puts 24px
+     * of air above its items; the region takes that air INSIDE its scroll box, so at rest nothing moves and a scrolled row
+     * folds under the row above, not 24px below it */
+    <div className="relative flex min-h-0 flex-1 flex-col" style={{ marginTop: 'calc(var(--kol-spacing-6) * -1)', marginBottom: bleed ? 'calc(var(--kol-shell-page-pad) * -1)' : undefined }}>
+      <div ref={ref} style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingTop: 'var(--kol-spacing-6)' }}>{children}</div>
+      {fade}
+    </div>
+  )
+}
+
 function toSlideCard(c, { layout }) {
   const { bytes, count, cover, favourited, onDownload, onFavourite, onDelete, downloadHref, ...rest } = c
   const list = layout === 'list'
@@ -142,6 +205,9 @@ export default function CatalogPage({
   /* FIRST, so every default below can read it */
   preset = 'catalog',
   header,
+  /* a site-tier page (`capped`, the shelf) is a document and scrolls; the app tier's presets hold still */
+  mode,
+  actionsOnPhone = true,
   width = PRESETS[preset]?.width ?? 'bleed',
   items = [],
   toCard,
@@ -187,41 +253,28 @@ export default function CatalogPage({
   iconComponent,
   showCountOnlyWhenFiltering = true,
   filtersProps,
+  phoneLayout = 'list',
+  lead,
   children,
   className = '',
   style,
 }) {
+  mode = mode ?? (width === 'capped' ? 'scroll' : PRESETS[preset]?.mode ?? 'scroll')
   const open = walkthrough?.open === true
-  /* THE TRACK COUNT, MEASURED (CatalogFilterFirstGroupTrackCount, 2026-09-03).
-   * `.kol-catalog-grid` and `.kol-filters-first` both read `--kol-catalog-n`
-   * from the page: up to 6 tracks, none narrower than `minColumn`, gap 24 —
-   * `min(6, floor((W + 24) / (minColumn + 24)))`, exactly what the old inline
-   * `auto-fill` resolved to, now a number the filter row can read too. In JS
-   * because the CSS form (`round()` over a length ÷ length) is Chromium-only —
-   * theme 0.137.0 rendered ONE column in Firefox. `undefined` until measured
-   * → the theme's fallback of 6, the pre-0.137.0 geometry. */
+  /* a phone gets rows: the list, and no LIST / GRID strip to choose from */
+  const phoneRows = useMediaQuery('(max-width: 767px)') && phoneLayout !== 'grid'
+  /* THE TRACK COUNT, MEASURED by `CatalogGrid` (CatalogFilterFirstGroupTrackCount, 2026-09-03) and set here on the
+   * page too, where the filter row's `.kol-filters-first` reads the same `--kol-catalog-n`. `null` until measured →
+   * the theme's fallback of 6, the pre-0.137.0 geometry. */
   const [cols, setCols] = useState(null)
-  const observer = useRef(null)
-  /* a CALLBACK ref: the grid mounts and unmounts with the layout toggle, and a
-   * callback ref sees both — an effect keyed on a value out of this scope does
-   * not (the first cut referenced `renderItem`'s `layout` here and threw) */
-  const gridRef = useCallback((el) => {
-    observer.current?.disconnect()
-    observer.current = null
-    if (!el) return
-    const measure = (W) => setCols((c) => { const n = Math.max(1, Math.min(maxColumns, Math.floor((W + 24) / (minColumn + 24)))); return c === n ? c : n })
-    measure(el.getBoundingClientRect().width)
-    const ro = new ResizeObserver(([entry]) => measure(entry.contentRect.width))
-    ro.observe(el)
-    observer.current = ro
-  }, [minColumn, maxColumns])
 
   /* the page's ONE menu for its `app` cards and rows (AppItem.jsx) — closed, it renders nothing */
   return (
     <AppItemMenuProvider>
-    <PageShell width={width} className={`${PRESETS[preset]?.className ?? ''} ${className}`.trim()} style={{ overflow: 'hidden', '--kol-catalog-n': cols ?? undefined, ...style }}>
+    <PageShell mode={mode} width={width} className={`${PRESETS[preset]?.className ?? ''} ${className}`.trim()} style={{ overflow: 'hidden', '--kol-catalog-n': cols ?? undefined, ...style }}>
       {header && <PageHeader level="app" {...header} />}
-      <div style={{ flex: 1, position: 'relative' }}>
+      {lead}
+      <div style={mode === 'fixed' ? { flex: 1, minHeight: 0, position: 'relative', display: 'flex', flexDirection: 'column' } : { flex: 1, position: 'relative' }}>
         {open && <WalkthroughPanel steps={walkthrough.steps} iconComponent={walkthrough.iconComponent} onClose={walkthrough.onClose} />}
         <ContentFilters
           items={items}
@@ -236,8 +289,9 @@ export default function CatalogPage({
           viewMode={view}
           onViewModeChange={onViewChange}
           defaultViewMode={defaultView}
-          layoutOptions={open ? undefined : layouts}
+          layoutOptions={open || phoneRows ? undefined : layouts}
           defaultLayout={defaultLayout}
+          layout={phoneRows ? 'list' : undefined}
           renderItem={(rows, viewMode, layout) => {
             if (open) return null
             const cards = rows.map((item) => { const c = toCard ? toCard(item, { view: viewMode, layout }) : { title: item.title ?? item.name, detail: item.detail }; return preset === 'shelf' ? toSlideCard(c, { layout }) : c })
@@ -254,38 +308,39 @@ export default function CatalogPage({
               * expanded-card neighbour math (computeHiddenSet) stays a
               * six-column ruling — below the ceiling the hide-set is
               * desktop-only geometry. */
-            return (
-            /* the catalog grid is a CLASS (`.kol-catalog-grid`, kol-theme ≥0.138.0) reading
-             * `--kol-catalog-n`, the count measured above and set on PageShell — the same
-             * number the filter row's first group reads */
-            <div ref={layout === 'list' ? undefined : gridRef} className={layout === 'list' ? undefined : 'kol-catalog-grid'} style={layout === 'list' ? (listLayout === 'stack' ? { display: 'flex', flexDirection: 'column', gap: 8 } : { display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, max(240px, calc((100% - ${listColumns - 1} * 8px) / ${listColumns}))), 1fr))`, gap: 8 }) : undefined}>
+            /* the grid and the list are `CatalogGrid` (studio-hub review 2, § 3.1): the measured tracks, `.kol-catalog-grid`,
+             * the list's `listColumns` — one piece, so StudioCreate's parts draw on the same one */
+            const grid = (
+            <CatalogGrid layout={layout} minColumn={minColumn} maxColumns={maxColumns} listColumns={listColumns} listLayout={listLayout} onColumns={setCols}>
               {rows.map((item, i) => {
                 if (hidden.has(i)) return null
                 const c = cards[i]
                 const key = c.key ?? item.key ?? item.id ?? item.name ?? i
                 /* A COMPOSITION FORWARDS THE WHOLE CONTRACT OF WHAT IT COMPOSES (user
                  * 2026-09-03: "why wouldn't we as standard practice ALLOW VARIANT CHANGE
-                 * EVERY TIME WE USE THOSE CONTENT CARDS?"). Five tickets on this file in
-                 * one day were the same defect — a key missing from `toCard` because no
-                 * prior consumer had needed it: `ratio`, `trailingActions`, `rowVariant`,
-                 * `date` / `size`, the list container. So `toCard`'s return is SPREAD
-                 * onto the card and the row: every prop either takes is reachable per
-                 * card, today and for props not written yet; `variant` per card beats
-                 * the page's `cardVariant` / `rowVariant`; `fit` keeps its `cover`
-                 * default. `key` is React's and is lifted out first. */
+                 * EVERY TIME WE USE THOSE CONTENT CARDS?"). `toCard`'s return is SPREAD
+                 * onto the card and the row; `variant` per card beats the page's
+                 * `cardVariant` / `rowVariant`; `fit` keeps its `cover` default. `key`
+                 * is React's and is lifted out first. */
                 const { key: _key, ...forwarded } = c
                 return layout === 'list'
                   ? <ContentRow key={key} {...forwarded} variant={c.variant ?? rowVariant} />
                   : <ContentCard key={key} {...forwarded} variant={c.variant ?? cardVariant} fit={c.fit ?? 'cover'} />
               })}
-            </div>
+            </CatalogGrid>
             )
+            /* `fixed`: the catalog scrolls in its own region — the fill chain ContentFilters keeps for a fixed page
+             * (ContentFiltersFillChain) ends here, in a scroller; the page itself never scrolls */
+            /* TO THE PAGE'S EDGE (user 2026-10-23: *"padding bottom is still there clipping"*): with no foot row under it the
+             * region bleeds through the page's bottom pad, so a cut row reads as scrolling under the edge, not stopped above a band */
+            return mode === 'fixed' ? <ScrollRegion bleed={!actions}>{grid}</ScrollRegion> : grid
           }}
           {...filtersProps}
         />
       </div>
       {children}
-      {actions && <div style={{ display: 'flex', gap: 12, marginTop: 48, alignSelf: 'flex-start' }}>{actions}</div>}
+      {/* `fixed`: the action row is the page's FOOT, the same place with one item or a hundred */}
+      {actions && <div className={actionsOnPhone ? 'flex' : 'flex max-md:hidden'} style={{ gap: 12, marginTop: mode === 'fixed' ? 24 : 48, alignSelf: 'flex-start', flexShrink: 0 }}>{actions}</div>}
     </PageShell>
     </AppItemMenuProvider>
   )

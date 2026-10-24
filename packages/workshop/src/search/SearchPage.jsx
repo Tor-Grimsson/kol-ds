@@ -173,7 +173,7 @@ export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_F
               ))}
             </ol>
           )}
-          {out.total > out.results.length && <p className="kol-helper-12 text-meta">{out.total - out.results.length} more — narrow the query.</p>}
+          {out.total > out.results.length && <p className="kol-mono-12 text-meta">{out.total - out.results.length} more — narrow the query.</p>}
         </section>
       )}
     </div>

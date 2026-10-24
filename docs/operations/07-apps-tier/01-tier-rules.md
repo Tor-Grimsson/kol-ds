@@ -3,7 +3,7 @@ title: Tier rules
 type: reference
 status: active
 created: 2026-09-21
-updated: 2026-09-27
+updated: 2026-10-23
 description: How an app is wired in this repo
 tags:
   - domain/workflow
@@ -15,6 +15,7 @@ related:
   - "[[INDEX|Apps tier]]"
   - "[[02-media-app-plan|Media app plan]]"
   - "[[03-candidate-apps|Candidate apps]]"
+  - "[[07-app-dev-with-local-worker|App dev with a local worker]]"
 ---
 
 # Tier rules
@@ -50,6 +51,8 @@ Fake, mutable, in-memory, with a reset control. No provider, no network, no cred
 ## Viewing
 
 Two surfaces, two jobs. **Development and testing are local** — each app has its own dev script at the root (`pnpm media` beside `pnpm workbench`) and runs on its own port. **Every app also publishes to a slug** under the showcase's deploy — `ui.kolkrabbi.io/apps/<name>` — so the current state can be opened from any machine without building anything. The slug is a window, not a workspace.
+
+**Every dev server listens on the network** (user ruling 2026-10-23). `server: { port, host: true }` in the app's Vite config, never a `--host` flag on the root script (a flag passed through `pnpm --filter … dev -- --host` does not reach Vite, and the server silently binds localhost only). The app then opens on this machine and on a phone on the same wifi at `http://<the Mac's LAN IP>:<port>`, the address Vite prints as its Network line. `pnpm hubs` runs the four review surfaces together — studio-hub, FXR, Mirror, Monitor (`apps/studio-hub`, `apps/editor-hub`, `apps/mixer-hub`, `apps/rack-hub`) on 5190, 5198, 5197, 5196 — each printing its own Network line.
 
 Four pieces make the slug work:
 

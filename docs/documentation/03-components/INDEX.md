@@ -25,3 +25,4 @@ What the library contains, how it is classified, and where a new component goes.
 | [[04-diamond-tier\|Diamond tier]] | The battle-tested components worth copying from |
 | [[05-control-chrome\|Control chrome]] | The button law every interactive control references |
 | [[06-content-card-system\|The ContentCard system]] | **Draft** — one card family: card and row as separate components, joined by a wrapper that owns the grid⇄list switch |
+| [[07-canvas-family\|The canvas family]] | **Draft** — two canvases on one engine: the editor's artboard and the studio's dotted surface, one key table, ⌘ the canvas's modifier |

@@ -807,6 +807,12 @@
       "desc": ""
     },
     {
+      "prop": "frame",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "states",
       "type": "—",
       "def": "true",
@@ -820,6 +826,12 @@
     },
     {
       "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hover",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -4215,6 +4227,50 @@
       "desc": ""
     }
   ],
+  "PageControls": [
+    {
+      "prop": "views",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sticky",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "toggles",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "jump",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "legend",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ColorSwatch": [
     {
       "prop": "selected",
@@ -5595,6 +5651,12 @@
       "desc": ""
     },
     {
+      "prop": "closeHover",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -6519,6 +6581,18 @@
       "desc": ""
     },
     {
+      "prop": "shape",
+      "type": "—",
+      "def": "'bar'",
+      "desc": ""
+    },
+    {
+      "prop": "collapsed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "tracked",
       "type": "—",
       "def": "false",
@@ -6544,6 +6618,12 @@
     },
     {
       "prop": "onMinimise",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExpand",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6611,6 +6691,50 @@
       "desc": ""
     }
   ],
+  "TABBAR_PILL_INSET": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tracked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "CanvasFrame": [
     {
       "prop": "aspect",
@@ -6649,7 +6773,7 @@
       "desc": ""
     }
   ],
-  "Canvas": [
+  "CanvasEditor": [
     {
       "prop": "align",
       "type": "—",
@@ -6825,7 +6949,7 @@
       "desc": ""
     }
   ],
-  "CANVAS_VIRTUAL_W": [
+  "CanvasZoomContext": [
     {
       "prop": "axis",
       "type": "—",
@@ -6878,6 +7002,134 @@
     },
     {
       "prop": "interactive",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CanvasStudio": [
+    {
+      "prop": "grid",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "minZoom",
+      "type": "—",
+      "def": "0.1",
+      "desc": ""
+    },
+    {
+      "prop": "maxZoom",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "touch",
+      "type": "—",
+      "def": "'studio'",
+      "desc": ""
+    },
+    {
+      "prop": "spaceWhenOver",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onGridChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "locked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onLockChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gridRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "surfaceRef",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ignore",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSpaceTap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "overlay",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -7565,6 +7817,12 @@
       "desc": ""
     },
     {
+      "prop": "actionsPlacement",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "media",
       "type": "—",
       "def": "—",
@@ -7575,7 +7833,13 @@
     {
       "prop": "variant",
       "type": "—",
-      "def": "'app'",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "preset",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -9013,6 +9277,12 @@
       "desc": ""
     },
     {
+      "prop": "headerActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "children",
       "type": "—",
       "def": "—",
@@ -9264,6 +9534,12 @@
       "prop": "resetLabel",
       "type": "—",
       "def": "'Reset to defaults'",
+      "desc": ""
+    },
+    {
+      "prop": "resetDisabled",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -12577,6 +12853,32 @@
       "desc": ""
     }
   ],
+  "CategoryPage": [
+    {
+      "prop": "navTree",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "'280px'",
+      "desc": ""
+    },
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "'16 / 9'",
+      "desc": ""
+    },
+    {
+      "prop": "id",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "Toggle": [
     {
       "prop": "horizontal",
@@ -13529,7 +13831,7 @@
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({ variant = 'app', ...props }) {\n  return variant === 'site' ? <NavRailSite {...props} /> : <AppRail {...props} />\n}",
+      "def": "function NavRail({ variant, preset, ...props }) {\n  const name = preset ?? (variant === 'site' ? 'site' : 'app')\n  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />\n  const Named = RAIL_PRESETS[name]?.component\n  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset \"${name}\"`); return null }\n  return <Named {...props} />\n}",
       "desc": ""
     },
     {
@@ -13539,15 +13841,9 @@
       "desc": ""
     },
     {
-      "prop": "railSections",
+      "prop": "rail",
       "type": "—",
-      "def": "'fold'",
-      "desc": ""
-    },
-    {
-      "prop": "touch",
-      "type": "—",
-      "def": "'shell'",
+      "def": "'app'",
       "desc": ""
     },
     {
@@ -13564,6 +13860,12 @@
     },
     {
       "prop": "drawerOpenOn",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "barHiddenOn",
       "type": "—",
       "def": "[]",
       "desc": ""
@@ -13605,7 +13907,19 @@
       "desc": ""
     },
     {
+      "prop": "railSections",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "railToggleKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "touch",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -13641,6 +13955,12 @@
       "desc": ""
     },
     {
+      "prop": "barActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "masthead",
       "type": "—",
       "def": "—",
@@ -13664,6 +13984,18 @@
       "prop": "currentPath",
       "type": "—",
       "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "shape",
+      "type": "—",
+      "def": "'bar'",
       "desc": ""
     },
     {
@@ -13750,6 +14082,12 @@
       "prop": "tone",
       "type": "—",
       "def": "'sunken'",
+      "desc": ""
+    },
+    {
+      "prop": "filters",
+      "type": "—",
+      "def": "true",
       "desc": ""
     },
     {
@@ -13847,6 +14185,12 @@
       "desc": ""
     },
     {
+      "prop": "actionsOnPhone",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "width",
       "type": "—",
       "def": "PRESETS[preset]?.width ?? 'bleed'",
@@ -13931,6 +14275,12 @@
       "desc": ""
     },
     {
+      "prop": "phoneLayout",
+      "type": "—",
+      "def": "'list'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -13938,6 +14288,12 @@
     },
     {
       "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14003,7 +14359,69 @@
       "desc": ""
     },
     {
+      "prop": "lead",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CatalogGrid": [
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "minColumn",
+      "type": "—",
+      "def": "160",
+      "desc": ""
+    },
+    {
+      "prop": "maxColumns",
+      "type": "—",
+      "def": "6",
+      "desc": ""
+    },
+    {
+      "prop": "listColumns",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "listLayout",
+      "type": "—",
+      "def": "'grid'",
+      "desc": ""
+    },
+    {
+      "prop": "onColumns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14091,109 +14509,7 @@
   ],
   "AppHub": [
     {
-      "prop": "app",
-      "type": "—",
-      "def": "{}",
-      "desc": ""
-    },
-    {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
       "prop": "shortcuts",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "settingsPath",
-      "type": "—",
-      "def": "'/settings'",
-      "desc": ""
-    },
-    {
-      "prop": "homePath",
-      "type": "—",
-      "def": "'/'",
-      "desc": ""
-    },
-    {
-      "prop": "shortcutsKey",
-      "type": "—",
-      "def": "'s'",
-      "desc": ""
-    },
-    {
-      "prop": "shortcutsRailKey",
-      "type": "—",
-      "def": "'S'",
-      "desc": ""
-    },
-    {
-      "prop": "currentPath",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onNavigate",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "iconComponent",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "home",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "walkthrough",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "settings",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "dev",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "themeToggle",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "masthead",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "shell",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "children",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14207,7 +14523,7 @@
       "desc": ""
     },
     {
-      "prop": "items",
+      "prop": "files",
       "type": "—",
       "def": "[]",
       "desc": ""
@@ -14219,6 +14535,12 @@
       "desc": ""
     },
     {
+      "prop": "actionsInBar",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "title",
       "type": "—",
       "def": "—",
@@ -14226,6 +14548,66 @@
     },
     {
       "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDownload",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRename",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDuplicate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTags",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNote",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14243,13 +14625,25 @@
       "desc": ""
     },
     {
-      "prop": "actions",
+      "prop": "iconComponent",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "iconComponent",
+      "prop": "touch",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "touring",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTouringChange",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14290,6 +14684,12 @@
       "prop": "themeIn",
       "type": "—",
       "def": "'masthead'",
+      "desc": ""
+    },
+    {
+      "prop": "filters",
+      "type": "—",
+      "def": "true",
       "desc": ""
     },
     {
@@ -14423,6 +14823,18 @@
       "desc": ""
     },
     {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signIn",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "dev",
       "type": "—",
       "def": "—",
@@ -14454,6 +14866,228 @@
     },
     {
       "prop": "shell",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "StudioCreate": [
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "parts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "partGroups",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "caseCount",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "showCase",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "defaultPage",
+      "type": "—",
+      "def": "'case'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "toCard",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPlace",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPartPointerDown",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caseControls",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caseActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "caseLink",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onViewChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "page",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPageChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "canvas",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "StudioCreateAction": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pressed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "StudioDetail": [
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "back",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "code",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "preview",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "notFound",
       "type": "—",
       "def": "—",
       "desc": ""

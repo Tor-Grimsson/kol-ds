@@ -90,6 +90,11 @@ everything else is a prop:
 | md | 6 · 16 | `kol-mono-14` | 16 | 20 (32box) |
 | lg | 8 · 20 | `kol-mono-16` | 18 | 24 (36box) |
 
+`variant="row"` is the sidenav's tree row (2026-10-24): the roll at 16 in the
+20px icon column, the target's words in the rows' voice, the rail's hop box, so
+it collapses as a row does. kol-framework's `SideNav` passes it to the rail's
+theme slot; it takes no size, fill, label or width.
+
 Deprecated aliases render their 0.6.x chrome verbatim: `icon` →
 `button + fill none + label off` · `hop` → `button + fullWidth` ·
 `hop-bare` → `flush + fullWidth`.
@@ -97,7 +102,7 @@ Deprecated aliases render their 0.6.x chrome verbatim: `icon` →
 ## Props
 
 <Api name="ThemeToggle" rows={[
-  {"prop":"variant","type":"button | flush","def":"button","desc":"Container geometry. Deprecated aliases: icon, hop, hop-bare (render old chrome verbatim)."},
+  {"prop":"variant","type":"button | flush | row","def":"button","desc":"Container geometry; row = the sidenav's tree row. Deprecated aliases: icon, hop, hop-bare (render old chrome verbatim)."},
   {"prop":"fill","type":"subtle | none","def":"—","desc":"The one bg element — button variant only. subtle = grey fill, none = invisible container."},
   {"prop":"label","type":"boolean","def":"true","desc":"Text on/off. Off on button geometry pins the square box per rung."},
   {"prop":"iconRight","type":"boolean","def":"false","desc":"Glyph right of the text (left default)."},

@@ -54,7 +54,7 @@ export default function ReferenceNode() {
       <DocSection title="Deletion guard — who breaks">
         {node.edges.length ? (
           <>
-            <p className="kol-helper-12">
+            <p className="kol-mono-12">
               {[5, 4, 3, 2, 1].filter((s) => byStar[s]).map((s) => `${byStar[s]}×${s}★`).join(' · ')}
               {' — '}a 5★ dependent is a near-copy and will break; a 1★ dependent loses one element.
             </p>
@@ -83,7 +83,7 @@ export default function ReferenceNode() {
               rows={node.edges.map((e) => ({ id: e.file, stars: e.stars, uses: e.uses, file: e.file }))}
             />
             {node.edgeCount > node.edges.length && (
-              <p className="kol-helper-12 mt-4">
+              <p className="kol-mono-12 mt-4">
                 Showing {node.edges.length} of {node.edgeCount} edges — the index caps the list.
               </p>
             )}

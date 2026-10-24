@@ -7,8 +7,10 @@
  * and kol-brand-color.css.
  */
 
-export { default as PageLayout, default as AppShell } from './PageLayout.jsx'
-export { ShellTocContext, ShellTocCollapsedContext } from './PageLayout.jsx'
+/* the site frame — `SiteLayout` (2026-10-24, named for the rail variant it frames); `PageLayout` and `AppShell` are
+ * its earlier names, aliases on the retirements ledger */
+export { default as SiteLayout, default as PageLayout, default as AppShell } from './SiteLayout.jsx'
+export { ShellTocContext, ShellTocCollapsedContext } from './SiteLayout.jsx'
 export { default as SideNav } from './SideNav.jsx'
 /* MOVED to kol-component 2026-09-03 (editor-set-is-behind-its-source): its
  * EditorShell needs the same rails and cannot import this package. Re-exported
@@ -24,3 +26,4 @@ export { default as PageSection } from './PageSection.jsx'
 export { default as PortalFooter } from './PortalFooter.jsx'
 export { default as ScrollToTop } from './ScrollToTop.jsx'
 export { default as PageHero, default as BrandHero, default as SubPageHero } from './PageHero.jsx'
+export { default as CategoryPage } from './CategoryPage.jsx'

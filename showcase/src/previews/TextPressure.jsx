@@ -12,7 +12,7 @@ export default function TextPressurePreview() {
   return (
     <div className="flex w-full flex-col gap-10">
       <div>
-        <p className="kol-helper-12 mb-3 text-fg-48">width + weight — hover to deform</p>
+        <p className="kol-mono-12 mb-3 text-fg-48">width + weight — hover to deform</p>
         <div className="h-28 w-full">
           <TextPressure text="KOLKRABBI" minFontSize={32} italic={false} {...VF} />
         </div>

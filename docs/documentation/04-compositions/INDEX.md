@@ -3,7 +3,7 @@ title: Compositions
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-10-24
 description: The layers built above components
 tags:
   - domain/compositions
@@ -31,4 +31,6 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[10-styleguide-system\|Style-guide system]] | Brand-guide specimens for color, logo and type |
 | [[15-media-uploads\|Media uploads]] | Converting files on upload, and keeping originals |
 | [[16-app-anatomy\|App anatomy]] | Shell · Catalog · Hub · Tool — the four layers every KOL app is built from |
+| [[17-settings\|Settings]] | The three settings tiers — the rail, the page, the filtered page — and what each is built from |
 | [[17-rail-and-overlay\|Rail and overlay]] | The two words for every surface at the edge or over the page |
+| [[18-site-frame\|Site frame]] | `SiteLayout` plus a nav tree and routes — the frame every site on the site rail stands in, its tree contract and its parts |

@@ -167,7 +167,7 @@ export function NodeTable({ nodes, threshold, title = 'Nodes', caption, limit = 
       {/* A DATA table declares its own width — seven columns need the
         * content column, not the panel rung meant for two. */}
       <Table width="column" caption={caption} columns={columns} rows={rows.slice(0, limit).map((n) => ({ ...n, id: `${n.kind}:${n.name}` }))} />
-      {rows.length > limit && <p className="kol-helper-12 text-meta mt-4">Showing the top {limit} of {rows.length}. Narrow with the search.</p>}
+      {rows.length > limit && <p className="kol-mono-12 text-meta mt-4">Showing the top {limit} of {rows.length}. Narrow with the search.</p>}
     </>
   )
   if (!search) return table(nodes)

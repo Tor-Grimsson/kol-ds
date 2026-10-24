@@ -148,7 +148,7 @@ function TypographySection({ s, brand }) {
       <Prose blocks={s.blocks} />
       {/* Sans italic at display size — real italic cuts, fired by plain font-style: italic. */}
       <div className="mt-12 flex flex-col gap-2 py-3 border-b border-fg-08">
-        <span className="kol-helper-12 text-meta uppercase tracking-wider">
+        <span className="kol-mono-12 text-meta uppercase tracking-wider">
           .kol-prose-display-md · sans narrow · roman + italic
         </span>
         <p className="kol-prose-display-md m-0">

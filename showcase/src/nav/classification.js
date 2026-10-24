@@ -120,7 +120,7 @@ export const TIERS = {
   TagPath: 'atoms',
   /* kol-framework — was split fw-chrome / fw-structure by ownership */
   ThemeToggle: 'atoms',
-  SideNav: 'organisms', ShellHeader: 'organisms', PortalFooter: 'organisms',
+  SideNav: 'organisms', ShellHeader: 'organisms', PortalFooter: 'organisms', CategoryPage: 'organisms',
   PageHero: 'organisms', PageSection: 'organisms',
   /* kol-shell */
   Logomark: 'atoms',
@@ -128,7 +128,7 @@ export const TIERS = {
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
   NavRail: 'organisms', PhoneNav: 'organisms', WalkthroughPanel: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
-  CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms',
+  CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
   PageShell: 'utilities',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
   /* control + label + value is a molecule (user ruling 2026-10-01) — Fader draws all three */
@@ -186,7 +186,7 @@ export const FUNCTIONS_BY_NAME = {
   CurveOverlay: 'input', Knob: 'input',
   TabsRow: 'navigation', TabChips: 'navigation', MultiSelect: 'input',
   MobileTabBar: 'navigation',
-  ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding',
+  ContentFilters: 'wayfinding', DropdownTagFilter: 'wayfinding', PageControls: 'wayfinding',
   CommandOverlay: 'wayfinding', Rail: 'wayfinding',
   DocsToc: 'wayfinding', AsciiCursor: 'wayfinding',
   WorkViewToggle: 'wayfinding', ShellHeader: 'wayfinding', PortalFooter: 'wayfinding',
@@ -208,7 +208,8 @@ export const FUNCTIONS_BY_NAME = {
   SourcesReferences: 'display',
   GalleryCarousel: 'media', ParallaxShelf: 'media',
   ProductDetailLayout: 'structure', DiagonalMarqueeRiver: 'media', ScrollDriftGallery: 'media',
-  Canvas: 'structure', SelectionOverlay: 'overlay', EditorShell: 'structure', AlignmentGrid: 'input',
+  /* the canvas family (2026-10-23): the artboard and the dotted surface, one engine under both */
+  CanvasEditor: 'structure', CanvasStudio: 'structure', Canvas: 'structure', SelectionOverlay: 'overlay', EditorShell: 'structure', AlignmentGrid: 'input',
   SpecimenSectionHeader: 'structure', GlyphMetricsGrid: 'display', VariableFontSection: 'input',
   TypefaceHero: 'display', TypefaceStyleSection: 'display', FontPreviewSection: 'display',
   FoundryCharacterSets: 'display',
@@ -236,7 +237,7 @@ export const FUNCTIONS_BY_NAME = {
   ContentText: 'display', ContentMedia: 'media', ContentCard: 'display',
   ContentRow: 'display', ContentItem: 'display', ContentCollection: 'structure',
   /* the canvas viewport's zoom seam (editor-set-is-behind-its-source, 2026-09-03) */
-  PanZoomViewport: 'structure', CanvasZoomContext: 'utility', useFps: 'utility',
+  PanZoomViewport: 'structure', CanvasZoomContext: 'utility', useFps: 'utility', useCanvasViewport: 'utility',
   CanvasRuler: 'display', CanvasGuides: 'display', useFrameGeom: 'utility', niceStep: 'utility', ticksFor: 'utility',
   /* editor-panels-the-held-specs A6 (2026-09-03) */
   XYPad: 'input', InspectorRail: 'structure',
@@ -255,7 +256,7 @@ export const FUNCTIONS_BY_NAME = {
   /* the structural-fork hook (ColumnBrowserStackMode, 2026-09-03) */
   useMediaQuery: 'utility',
   /* framework */
-  AppShell: 'structure', PageLayout: 'structure',
+  AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', CategoryPage: 'structure',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', TypeBlock: 'display', AssetTable: 'display',
   LogoCard: 'display', ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
@@ -310,7 +311,7 @@ export const FUNCTIONS_BY_NAME = {
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
-  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', HubHome: 'structure', HubSettings: 'structure', HubDev: 'structure',
+  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', StudioCreate: 'structure', StudioDetail: 'display', StudioCreateAction: 'action', CatalogGrid: 'structure', HubHome: 'structure', HubSettings: 'structure', HubDev: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
   Logomark: 'display',
@@ -371,7 +372,8 @@ export const EXEMPT = {
   WheelTriangle: 'member-of:SpectrumControls', AlphaStrip: 'member-of:SpectrumControls',
   KeylineGuide: 'member-of:IconPlate',
   SwatchStack: 'member-of:SwatchControls', EyedropPick: 'member-of:SwatchControls',
-  CanvasFrame: 'member-of:Canvas', PanViewport: 'member-of:Canvas',
+  CanvasFrame: 'member-of:CanvasEditor',
+  StudioCreateAction: 'member-of:StudioCreate',
 }
 
 /* ── Off-roster lists (moved from registry.js so the CI gate can import
@@ -381,7 +383,7 @@ export const EXEMPT = {
  * Providers/contexts render nothing themselves — a card would always be a
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
-  'Layout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
+  'Layout', 'SiteLayout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
   'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext',
 ]
 
@@ -396,6 +398,8 @@ export const DEPRECATED = [
   'TabChips', 'TabStrip', 'MobileTabBar',
   /* SideNav = NavRail variant="site" (2026-10-22): one nav rail */
   'SideNav',
+  /* Canvas = CanvasEditor (2026-10-23): the canvas family; PanZoomViewport and PanViewport = CanvasEditor's `panEnabled` on useCanvasViewport */
+  'Canvas', 'PanZoomViewport', 'PanViewport',
   /* DropdownTagFilter = SettingsMulti (2026-10-01): its own pill and hardcoded radius, no consumer */
   'DropdownTagFilter',
   /* ColorLoader = IntroLoader (2026-09-30) */
@@ -472,6 +476,7 @@ export const NO_PREVIEW = (() => {
     useTouchPrimary: 'a hook — it draws nothing; TouchDeviceOverlay, which reads it, has the preview',
     RailSlotProvider: 'a context — it draws nothing; NavRail renders the slot it publishes',
     AppItemMenuProvider: 'a context — it draws nothing; the `app` card and row open its menu, shown in the CatalogPage preview (`app` variant, 2026-10-23)',
+    CatalogGrid: 'rendered in the CatalogPage and StudioCreate previews — the grid both pages draw their cards and rows on (2026-10-23)',
     ShellNavColumn: 'the left rail\'s column — a frame around a rail, sticky inside the shell\'s scroll region. The Module '
       + '/modules/shell-rail-states mounts it with the real header and both rails in its three states (2026-10-02)',
     ...debt([],
@@ -493,8 +498,8 @@ export const NO_PREVIEW = (() => {
      * Canvas preview, over its `panEnabled` viewport, where a drag off a ruler
      * makes a real guide. A page of their own would have to build a canvas to
      * show one tick. */
-    CanvasRuler: 'rendered in the Canvas preview, over its live viewport (2026-09-03 ruling)',
-    CanvasGuides: 'rendered in the Canvas preview — drag off a ruler to create one (2026-09-03 ruling)',
+    CanvasRuler: 'rendered in the CanvasEditor preview, over its live viewport (2026-09-03 ruling)',
+    CanvasGuides: 'rendered in the CanvasEditor preview — drag off a ruler to create one (2026-09-03 ruling)',
     /* editor-panels-the-held-specs B2 (2026-09-03) — a RULING: these two are
      * editing chrome whose every prop is a consumer's geometry and write path
      * (a path layer with nodes, a photo with a crop rect, screen→virtual,
@@ -511,8 +516,8 @@ export const NO_PREVIEW = (() => {
      * nothing at all — its contract is that `SelectionOverlay` divides by it,
      * which the Canvas preview shows by zooming. */
     ...Object.fromEntries([
-      ['PanZoomViewport', "the Canvas preview IS this — `panEnabled` wraps in it (2026-09-03 ruling)"],
-      ['CanvasZoomContext', 'a context object — nothing to render; the Canvas preview exercises it by zooming (2026-09-03 ruling)'],
+      ['CanvasZoomContext', 'a context object — nothing to render; the CanvasEditor preview exercises it by zooming (2026-09-03 ruling)'],
+      ['useCanvasViewport', 'the engine under CanvasEditor and CanvasStudio — both previews ARE it (2026-10-23)'],
     ]),
     /* brand-book-mocks-two-consumers (2026-09-03) — a RULING, not debt: these
      * thirteen are one SET, and a mock of a mark in situ says nothing without a
@@ -535,10 +540,10 @@ export const NO_PREVIEW = (() => {
  * used to show nothing. It shows the HOST's preview now, with a line saying where to look. */
 export const SHOWN_IN = {
   AddLayerButton: 'LayerStack',
-  CanvasRuler: 'Canvas',
-  CanvasGuides: 'Canvas',
-  PanZoomViewport: 'Canvas',
-  CanvasZoomContext: 'Canvas',
+  CanvasRuler: 'CanvasEditor',
+  CanvasGuides: 'CanvasEditor',
+  CanvasZoomContext: 'CanvasEditor',
+  useCanvasViewport: 'CanvasStudio',
   EnvelopeModeToggle: 'EnvelopeGenerator',
   /* the tools' parts, on their tool's framed preview (2026-10-01) */
   NotesCatalog: 'Notes', NoteEditor: 'Notes', NoteThumb: 'Notes',

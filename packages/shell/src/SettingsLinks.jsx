@@ -10,7 +10,7 @@ export default function SettingsLinks({ links = [], className = '' }) {
     <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       {links.map(({ label, url, text }) => (
         <div key={label} style={{ display: 'flex', gap: 12, alignItems: 'baseline' }}>
-          <span className="text-fg-32 kol-helper-12" style={{ width: 72, flexShrink: 0 }}>{label}</span>
+          <span className="text-fg-32 kol-helper-12 whitespace-nowrap" style={{ minWidth: 72, flexShrink: 0 }}>{label}</span>
           <a href={url} target="_blank" rel="noopener noreferrer" className="text-fg-64 kol-helper-12 hover:text-fg-96 hover:underline">{text ?? url}</a>
         </div>
       ))}

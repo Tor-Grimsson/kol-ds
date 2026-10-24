@@ -5,7 +5,7 @@ import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
 import PhoneNav from './PhoneNav.jsx'
-import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
+import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kolkrabbi/kol-component'
 
 /**
  * AppShell — layout root: the rail + the content column. No header, no
@@ -43,12 +43,15 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  * `/settings` while already there returns to the last page), and the theme
  * toggle lives on the settings page, not in the rail (user, 2026-08-28).
  * @param {boolean} [props.railFade=true]  the rail's list fades out at its foot (`NavRail fade`); `false` opts out
- * @param {'fold'|'enter'} [props.railSections='fold']  how a section row opens: `fold` unfolds it in place (the
+ * @param {'app'|'site'|'workshop'} [props.rail='app']  WHICH RAIL (NavRail's preset, 2026-10-24): `app` the studio rail,
+ *                                        `site` the brand rail, `workshop` the workshop rail. The preset decides the phone
+ *                                        nav's shape too (`RAIL_PRESETS[rail].phone`) unless `touch` is passed
+ * @param {'expand'|'enter'} [props.railSections]  how a section row opens — the preset's unless passed: `expand` opens it in place (the
  *                                        accordion), `enter` replaces the list with its rows under a Back row
  *                                        (`NavRail sections`, 2026-10-06 — labs' catalog)
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
- * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
+ * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'|'pill'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
  *                                        'drawer' takes the rail OFF-CANVAS below `drawerBelow`, hands its width
  *                                        back to the content, and renders a trigger that brings it in over a scrim.
  *                                        Tapping a destination closes it. (ShellRailNoDrawerOnMobile, kol-chess
@@ -68,9 +71,14 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  *                                        description. One app, one header — media-hub wore both. NO DEFAULT (user, 2026-09-29): unset,
  *                                        every page renders as its own props say, so a consumer's bump moves nothing
  *                                        (fxr · mirror · monitor are mono by ruling).
+ * @param {Array}  [props.barActions]      `[{ label, icon?, onPress }]` — buttons at the top of the bar's More sheet (PhoneNav `actions`)
  * @param {Array}  [props.barItems]        the bar's destinations under `touch="bar"` (default items + bottomItems) —
  *                                        a Hub passes Home first, which the rail draws as the mark instead
- * @param {number} [props.drawerBelow=768]  viewport width under which `touch="drawer"` folds. A width, not a
+ * @param {string[]} [props.barHiddenOn=[]]  paths (matched like the rail's active row) where the phone bar STEPS ASIDE
+ *                                        for a tool (studio-hub review 2, § 7.1 — *"or we have to hide show the bottom
+ *                                        when you're in labs or randomiser or morph?"*): on one, the bar unmounts and
+ *                                        `--kol-shell-bar-h` is 0, so the tool takes the full height
+ * @param {number} [props.drawerBelow=768]  viewport width under which `touch="drawer"` takes the rail off-canvas. A width, not a
  *                                        pointer test: an iPad is coarse and has room, a narrow desktop window is
  *                                        fine-pointered and does not.
  *                                        `bare` renders the children with NO shell on a coarse-pointer device unless
@@ -79,7 +87,7 @@ import { TABBAR_H, MastheadContext } from '@kolkrabbi/kol-component'
  * @param {string[]} [props.drawerOpenOn=[]]  paths whose ENTRY opens the drawer (ShellDrawerOpenOnRoute,
  *                                        kol-mirror 2026-09-01 — user: "the rail should load open on home, not
  *                                        everywhere"): a home that is a catalog IS navigation, and arriving there
- *                                        with the nav folded hides the one thing the page is for. Matched like the
+ *                                        with the nav collapsed hides the one thing the page is for. Matched like the
  *                                        rail's active row — `'/'` exact, anything else by prefix. Every other path
  *                                        keeps the close-on-navigate rule; above `drawerBelow` there is no drawer
  *                                        and the list is inert. A list, not a boolean: the policy is per-route and
@@ -135,9 +143,10 @@ export default function AppShell({
   iconComponent,
   railComponent: Rail = NavRail,
   railFade = true,
-  railSections = 'fold',
+  rail = 'app',
+  railSections,
   railToggleKey,
-  touch = 'shell',
+  touch: touchProp,
   appName,
   pageWash,
   navKeys = false,
@@ -146,6 +155,8 @@ export default function AppShell({
   drawerBelow = 768,
   drawerOpenOn = NO_PATHS,
   barItems,
+  barActions,
+  barHiddenOn = NO_PATHS,
   masthead,
   children,
 }) {
@@ -164,8 +175,15 @@ export default function AppShell({
     mq.addEventListener('change', on)
     return () => mq.removeEventListener('change', on)
   }, [drawerBelow])
+  /* `shell` is AppShell's own default (the rail regardless); a Hub passes the preset's phone shape */
+  const touch = touchProp ?? 'shell'
   const drawer = touch === 'drawer' && narrow
-  const bar = touch === 'bar' && narrow
+  /* the bar steps aside on a tool's paths — no bar, no bar height; the rail stays off too (a phone has no rail) */
+  /* `pill` is the bar in TabsRow's pill shape (user 2026-10-23) — the same rows, the same More, floated off the edge */
+  const barLike = touch === 'bar' || touch === 'pill'
+  /* the preset's phone shape when the app did not say (AppHub passes it through) */
+  const barAside = barLike && narrow && barHiddenOn.some((x) => (x === '/' ? currentPath === '/' : currentPath === x || currentPath?.startsWith(`${x}/`)))
+  const bar = barLike && narrow && !barAside
   const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => { if (!drawer) setDrawerOpen(false) }, [drawer])
   useEffect(() => {
@@ -245,7 +263,7 @@ export default function AppShell({
    * child effects run before parent effects, so a consumer hiding the rail on a
    * path change was overwritten in the same commit. */
   /* …unless the destination is one where nav IS the page (`drawerOpenOn`):
-   * there the entry OPENS it. Runs on mount, on the fold and on navigation
+   * there the entry OPENS it. Runs on mount, on the collapse and on navigation
    * alike — `drawer` is a dep — so a phone arriving on home gets the rail. */
   /* Keyed on the BOOLEAN, not the array: a consumer's inline `['/']` is a new
    * identity every render too (the showcase set passes one), and the effect
@@ -337,7 +355,7 @@ export default function AppShell({
          * margin for `navHidden` closes it here — the rail then takes its own
          * `--kol-shell-drawer-width` rather than this token. */
         data-rail-drawer={drawer ? (drawerOpen ? 'open' : 'closed') : undefined}
-        style={navHidden || drawer || bar ? { '--kol-shell-rail-width': '0px' } : undefined}
+        style={navHidden || drawer || bar || barAside ? { '--kol-shell-rail-width': '0px' } : undefined}
       >
       {touch === 'overlay' && <TouchDeviceOverlay appName={appName} />}
       {/* THE TRIGGER SHIPS HERE, not in every consumer's page header — the rail
@@ -365,8 +383,8 @@ export default function AppShell({
           onClick={() => setDrawerOpen(false)}
         />
       )}
-      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} currentPath={currentPath} onNavigate={navigate} />}
-      {!navHidden && !bar && (
+      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} actions={barActions} shape={touch === 'pill' ? 'pill' : 'bar'} currentPath={currentPath} onNavigate={navigate} />}
+      {!navHidden && !bar && !barAside && (
         <Rail
           items={items}
           bottomItems={bottomItems}
@@ -377,6 +395,7 @@ export default function AppShell({
           iconComponent={iconComponent}
           drawer={drawer}
           fade={railFade}
+          preset={rail}
           sections={railSections}
         />
       )}
@@ -384,7 +403,10 @@ export default function AppShell({
         * page paints its wash over it (ShellPageWash). */}
       {/* the margin IS the rail's live width, so the content is pushed
         * through the drag and the snap (RailFlatGrabOpen) */}
-      <div className="bg-surface-primary min-w-0" style={{ marginLeft: `var(--kol-shell-rail-width)`, '--kol-shell-page-wash': pageWash, ...(bar && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }) }}>
+      <div className="bg-surface-primary min-w-0" style={{ marginLeft: `var(--kol-shell-rail-width)`, '--kol-shell-page-wash': pageWash, /* `bar` pads the page by its height; `pill` FLOATS OVER the page (user 2026-10-23: *"why doesn't it overlay the bottom"*) —
+       * no pad, the page runs under it, and `--kol-shell-bar-clear` is what a scroll region's last row and a fixed foot clear */
+      ...(bar && touch !== 'pill' && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }),
+      ...(bar && touch === 'pill' && { '--kol-shell-bar-h': '0px', '--kol-shell-bar-clear': `calc(${TABBAR_H + TABBAR_PILL_INSET}px + env(safe-area-inset-bottom, 0px))` }), ...(barAside && { '--kol-shell-bar-h': '0px' }) }}>
         {children}
       </div>
       </div>

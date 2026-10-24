@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 
-// An apps/* member: runs locally on `pnpm studio` (the Studio — the workstation shape, apps review §6c 2026-09-29), and publishes into the
-// showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/studio.
+// An apps/* member: runs locally on `pnpm studio` (the studio canvas alone — apps-tier naming D2: `apps/<tool>` is the
+// tool, `apps/studio-hub` adds the Shell and Hub around it; plan-2026-10-23), and publishes into the showcase's
+// output so the current state is viewable at ui.kolkrabbi.io/apps/studio.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
   plugins: [devFavicon({ label: 'S' }), react(), tailwindcss()],
@@ -31,8 +32,8 @@ export default defineConfig(({ command }) => ({
   // crashes at runtime with a null dispatcher. Force one.
   resolve: { dedupe: ['react', 'react-dom'] },
 
-  // its own port after apps/catalog (5189), so they run at once
-  server: { port: 5190 },
+  // its own port after apps/brand-lab (5203), so they run at once
+  server: { port: 5204 },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

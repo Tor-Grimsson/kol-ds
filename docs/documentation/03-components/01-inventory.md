@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-25
+updated: 2026-10-24
 verified: 2026-07-04
 description: Every exported component by tier
 aliases:
@@ -136,7 +136,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `MediaTile` | One tile of the media grid — the caller's preview node over a name, selected / drop-over states, double-click opens; on a coarse pointer it carries the `···` menu. |
 | `RowMenuButton` | The `···` that opens a row's or tile's own context menu on a touch device — renders only under a coarse pointer; the menu is the caller's. |
 | `ContextMenu` / `useContextMenu` | A right-click menu anchored at the pointer — a popover whose anchor is a point, so it inherits flip, shift, portal and dismissal; `useContextMenu().openAt(e, payload)` opens it from any `onContextMenu`. |
-| `AppItemMenuProvider` | The ONE Rename · Duplicate · Delete menu an app's `app` cards and rows open (cog and right-click) — CatalogPage mounts it; wrap your own when an `app` card sits outside one (CatalogAppVariant, 0.291.0). |
+| `AppItemMenuProvider` | The ONE Rename · Duplicate · Delete menu an app's `app` cards and rows open on right-click, and the ONE file rail the cog opens (the settings drawer, `SettingsPanel variant="rail"`, 0.296.0; an organism since) — CatalogPage mounts it; wrap your own when an `app` card sits outside one (CatalogAppVariant, 0.291.0). |
 
 Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `MenuItem` → `MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest`. Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
@@ -145,8 +145,10 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | Component | Job |
 |---|---|
 | `ArticleHeader` | An article masthead — flat-prop title, meta, and an Avatar byline. |
-| `Canvas` | A pan/zoom artboard stage owning the 1080-virtual-pixel coordinate contract. |
+| `CanvasEditor` | The editor's artboard — a pan/zoom stage owning the 1080-virtual-pixel coordinate contract (`Canvas`, its old name, is an alias). |
+| `CanvasStudio` | An infinite dotted surface to arrange things on — the rack's and the desk's canvas; the background only, on the same engine as the artboard. |
 | `ContentFilters` | A full filter bar — search, tag groups, view modes — for content grids. |
+| `PageControls` | The page's own controls in one sticky strip — series chips (`toggles`), view switches (`views`), the count readout, section tabs (`jump`), a dot legend — every page the same order (2026-10-24, site-hub W4). Not content filters: it drives the page's rendering, not a collection's facets. Molecule. |
 | `CtaGlobal` | An editorial two-column contact/CTA band — a display wordmark beside stacked label-over-value rows. |
 | `DiagonalMarqueeRiver` | A gsap diagonal marquee grid with a renderItem slot (reduced-motion static). |
 | `EditorShell` | A two-rail editor frame — left/right panel slots around a canvas region. |
@@ -154,7 +156,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
-| `NavRail` | THE nav rail, `variant` app (default — the flat 48px rail that grabs open; sections fold or enter, a section with `to` is a folder note) · site (the grouped site sidebar, kol-framework's `SideNav` until 2026-10-22). Moved from kol-shell 2026-10-22, which re-exports it. |
+| `NavRail` | THE nav rail, three **presets** (`preset`, 2026-10-24): `app` the studio rail — the flat 48px rail that grabs open, sections enter and expand, the pill on the phone, Media · Sign in · Settings at the foot; `site` the brand rail (kol-framework's `SideNav` until 2026-10-22); `workshop` the workshop rail (kol-workshop's `ShellSidebar`, registered through `registerRailPreset`). A section whose rows hold sections enters (and exits on Back); one whose rows are leaves expands (and collapses) in place — the expanded rows a group (`.kol-rail-group`, the sm rung on a 4px gap, 2026-10-24). Moved from kol-shell 2026-10-22, which re-exports it. |
 | `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. **A base** (2026-09-03): `PageHeader` is a composition of it. `actionsPlacement="inline"` (0.175.0) puts the cluster on the body's first baseline at no height; `style` reaches the root. Molecule. |
 | `SectionHero` (alias `FullBleedHero`) | Cover media + scrim; text props render as `SectionText` in its own glass panel, or `panel` renders the caller's node verbatim. |
 | `SectionSplit` (alias `FeatureSplit`) | `SectionText` beside the media frame; `align: 'right' \| 'left' \| 'center'` — media side, or one centred column. |
@@ -231,13 +233,14 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 
 | Component | Tier | Job |
 |---|---|---|
-| `PageLayout` (alias `AppShell`) | chrome | The brand-book page layout — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile rail + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
+| `SiteLayout` (aliases `PageLayout` · `AppShell`, renamed 2026-10-24 for the rail variant it frames) | chrome | The site frame — the `.kol-brand-layout` grid: sidenav in the first track, the page plane in the second, mobile rail + hamburger, modal provider, optional TOC rail. `pageWash` is the plane's wash over the primary back (kol-shell's prop and variable), `bare` renders plane + outlet only (the embed branch). Renamed from `AppShell` 2026-09-03 (0.39.0): every consumer `BrandLayout.jsx` was a copy of it. |
 | `SideNav` | chrome | **Deprecated alias** of `NavRail variant="site"` (kol-component) since 2026-10-22 — the same drawing, plus the react-router read and the ThemeToggle. |
 | `PortalFooter` | chrome | The portal footer. |
 | `ShellHeader` | chrome | The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions. |
 | `ThemeToggle` | chrome | A light/dark switcher persisted to localStorage. |
 | `Layout` | chrome | The outer page layout wrapper. |
 | `PageHero` (aliases `BrandHero` · `SubPageHero`) | structure | The page kit's opening band — label · title · lede, `mark` beside the text, `backTo` / `backLabel` above it — a composition of `SectionText` in the `kol-prose-*` voices (0.39.0, page-family-is-not-a-set). One hero: the two old names were one core with one optional slot each. |
+| `CategoryPage` | structure | The foldernote — a rail category's overview from the nav tree: `PageHero` (its label, lede) over a `ContentCollection` of its pages as the article card, each page's `card` on its tree row; nothing listed by hand (2026-10-24, site-hub W4). |
 | `PageSection` | structure | A titled, labeled content section with anchor support; its head composes `SectionText` since 0.39.0 (internals only — the `kol-prose-*` voices are the base's seams). |
 | `ScrollToTop` | behavior | Resets scroll position on route change. |
 | `useTheme` | behavior | Theme-state hook — live light/dark state synced across consumers; ships with `applyTheme`, `getInitialTheme`, `THEME_STORAGE_KEY`. ThemeToggle is its UI. |

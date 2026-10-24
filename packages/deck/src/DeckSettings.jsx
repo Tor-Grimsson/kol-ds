@@ -56,7 +56,7 @@ function SettingsForm({ onClose, slides, greys, absoluteBlack, onApply }) {
           <LabeledControl label="Date line">
             <Input size="sm" className="w-full" value={date} onChange={(e) => setDate(e.target.value)} />
           </LabeledControl>
-          <p className="kol-helper-10 text-fg-48">
+          <p className="kol-mono-10 text-fg-48">
             Written into every slide that carries the matching role, not by matching text.
           </p>
       </LabeledControlSection>

@@ -50,12 +50,14 @@ import { SideNav } from '@kolkrabbi/kol-framework'
 The app-site navigation rail, replicated from the elder reference
 (kol-website apps/brand, 2026-08-09 user mandate). A category is a disclosure
 button — icon, label, trailing caret — whose pages list opens in place; a
-category with `to` and no `pages` (Home) renders as a plain link row.
+category with `to` and no `pages` (Home) renders as a plain link row; a
+category with `to` AND `pages` is a foldernote (2026-10-24) — its row opens
+the page and discloses, the caret alone toggles.
 Disclosure is independent per category and loads closed. The active category
 is derived from the route — no resolver prop.
 
 **Nested route groups (0.24.0).** A page row may be a `{ label, children }`
-node: it renders as a non-routing group header over its own rows, indented one
+node: it renders as a non-routing group header (uppercase, one ink that never lights, 2026-10-24) over its own rows, indented one
 step, recursively, and lights up when a leaf beneath it is the current route.
 The tree shape is the opt-in — there is no prop — and a tree without group
 nodes renders exactly as before. The earlier "two levels only" line was the

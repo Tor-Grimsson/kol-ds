@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-10-20
+updated: 2026-10-24
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -23,6 +23,10 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | Page | What it holds |
 |---|---|
 | [[01-tier-rules\|Tier rules]] | How an app is wired here — shape, publishing, ownership, data, gotchas. Outlives any one app |
+| [[05-studio-parity\|Studio parity]] | The checklist every Studio app is read against — studio-hub's rows and the pass that checks them |
+| [[06-studio-adoption\|Studio adoption]] | The playbook a sibling repo runs to take the Studio as shipped — nine steps, the in-tree hubs as twins, the pass as the acceptance |
+| [[07-app-dev-with-local-worker\|App dev with a local worker]] | The rule for every app with a D1 worker — one `pnpm dev` runs the app and the worker locally, kol-fxr's `scripts/dev.mjs` file for file; dev saves never reach the live database |
+| [[08-site-adoption\|Site adoption]] | The playbook a site on the site rail runs to take the frame as shipped — SiteLayout for its BrandLayout, the tree's foldernotes and groups, the pages on the parts, site-hub's walks as the check |
 | [[02-media-app-plan\|Media app plan]] | The first app — phases, acceptance, and the one decision still held |
 | [[03-candidate-apps\|Candidate apps]] | The roster the tier will absorb, one at a time. Only media is committed |
 | [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — the quote, invoice and letter layouts designed on a canvas against the brand book's set; where they ship |
@@ -41,8 +45,9 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/presentation-hub` | `pnpm presentation-hub` (5188) · `/apps/presentation-hub` | Shell + Hub + decks — Edit (a blank deck, `/`) and Decks (`/decks`) on one rail |
 | `apps/brand` | `pnpm brand` (5179) · `/apps/brand` | **the brand catalogue** (2026-09-29) — every building block a brand is made of, one route each, on VOYAGER: color (ramps · swatches · anchors · combinations), type (families · scale), logo (displays · clearspace · scaling), stationery (business card · set), assets (downloads · imagery · business data). kol-framework's `PageLayout` is its frame, so the brand-book frame is proved here too. Real paths under the Vite base |
 | `apps/brand-hub` | `pnpm brand-hub` (5193) · `/apps/brand-hub` | **a client's home on VOYAGER** — what `apps/brand` showed until 2026-09-29: kol-styleguide's `Brand` (the book at `/`, the assets at `/assets`) on `AppHub`, with notes · decks · media as opt-in tools and the editor as an opt-in app, switched in Settings (per browser). What a `brand.<domain>` site is made of |
+| `apps/site-hub` | `pnpm site-hub` (5205) · `/apps/site-hub` | **the site-rail shape made once** (2026-10-24) — kol-framework's `PageLayout` with `NavRail variant="site"` around a client's brand site on VOYAGER: Home (the landing hero), Brand (kol-styleguide's `BrandBook`, its chapters as the rail's sub-rows), Assets (`BrandAssets`), Research — three shapes of a research page: Compare (`PageControls` over columns), Sheet (`.kol-sheet`, the Research-Spec on itself, its headings on the TOC rail), Boards (a gallery by set), its overview the foldernote `CategoryPage` — and the rest of the rail as rows. The reference for brand.kolkrabbi.io and every `brand.<domain>` site, as studio-hub is for the Studio apps; which pages and how they look is the user's (plan-2026-10-24-site-hub W2) |
 | `apps/brand-lab` | `pnpm brand-lab` (5203) · `/apps/brand-lab` | **where a brand is made** (2026-10-20) — kol-styleguide's ColorLab, TypeScaleLab and LockupBuilder (carried from kol-atlas's Assets pages) over one draft; Guide draws the draft's brand book in its own colors and faces, Export prints the draft and its CSS. The Kolkrabbi revamp is the first draft (`src/drafts/kolkrabbi.js`), separate from `@kolkrabbi/kol-brand` |
-| `apps/shell` | `pnpm shell` (5186) · `/apps/shell` | the Shell alone — `AppShell` around ten placeholder pages, so the phone bar's More overflow is always on screen |
+| `apps/shell` | `pnpm shell` (5186) · `/apps/shell` | the frame alone, under either rail (2026-10-24): the Variants button's one axis, Rail — app (`AppShell`, the phone bar, ten pages so the bar's More overflow is always on screen) · site (`SiteLayout`, the grab edge, the phone drawer) — the same pages and hash routes under both |
 | `apps/hub` | `pnpm hub` (5176) · `/apps/hub` | the Hub alone around a placeholder tool — Home, Settings, the `S` sheet, the walkthrough |
 | `apps/studio` | `pnpm studio` (5190) · `/apps/studio` | the Studio alone around placeholder pages — kol-shell's `AppStudio`: Home · Library · Create · Use · Stage (opt-in) · Settings, mono; the workstation fxr · mirror · monitor hand-build |
 | `apps/catalog` | `pnpm catalog` (5189) · `/apps/catalog` | the Catalog alone — `CatalogPage` on the kol-search engine, with the masthead option (DISPLAY · MONO) |

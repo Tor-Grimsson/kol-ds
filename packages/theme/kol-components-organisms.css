@@ -554,7 +554,8 @@
     width: 100%;
     border: 0;
     border-radius: 0;
-    padding: var(--kol-spacing-12) var(--kol-spacing-4) var(--kol-spacing-4);
+    /* no bottom pad on the phone (user 2026-10-23): the body scrolls to the edge, a pad read as a clipped last row */
+    padding: var(--kol-spacing-12) var(--kol-spacing-4) 0;
   }
 }
 

@@ -3,7 +3,7 @@ title: Shell system
 type: reference
 status: canonical
 created: 2026-08-14
-updated: 2026-10-22
+updated: 2026-10-24
 description: The application shell and its page scaffolds
 aliases:
   - shell
@@ -52,19 +52,7 @@ kol-framework's `--kol-sidenav-w`, so apps without kol-framework.css opened at 2
 everywhere), snaps to the nearer on release, toggles on a click. Every row is
 `[32px rung][label][chevron]` clipped by its own width, so the icon column never
 moves; the label is revealed by the clip and the content column follows the same
-variable. **Two levels** (shell ≥0.17.0, RailTwoLevelSections — user: *"the NAV has 20px
-icons in 32px containers, maybe level below has 12px icons in 20px container
-aligned to right"*): an item with `sub` is a SECTION — the same L1 row plus its
-caret — and its rows are L2, a 12px glyph in a 20px box indented so the glyph
-column sits one step right of L1's (x 14 → 30), `oq-64` at rest and `oq-96` on
-the route. **Nothing auto-expands**: an L2 row is behind both the clipped width
-and its section's own disclosure, and `open` starts false with no prop to get it
-wrong. L2 is not a `Button` — the icon-button ladder is 22/26/32/40 (2026-09-03) and
-this rung is 20; adding an `xs` rung is a change to that ladder's law. A sub row
-with no `icon` renders label-only, its label on L1's label column (44px in — the
-32px rung plus the 12px gap; 2026-10-22, it had sat under the icon column). `AppShell railComponent` renders a different
-rail, so proving a rail change no longer means forking `AppShell` too. The chrome is `.kol-rail-grab` (kol-theme's `kol-animation.css`), the
-pointer numbers `GRAB` (kol-component's `utilities/motion`); `gsap` is a peer.
+variable. **The rail has three presets** (2026-10-24, `NavRail preset`): `app` the studio rail described here, `site` the brand rail (brand.kolkrabbi.io), `workshop` the workshop rail (ui.kolkrabbi.io, kol-workshop's ShellSidebar registered under the name). `AppShell rail` names one and passes nothing else about the rail. **Sections, two word pairs** (2026-10-23, against fxr's labs rail; the words ruled 2026-10-24): an item with `sub` is a section. A section **expands** (`sections="expand"`) — its rows open under it in place as FULL rows, the same 20px glyph, `kol-helper-12` and oq-96 ink, each level 38px in so a child's glyph starts on its parent's label column — and **collapses**. A section **enters** (`sections="enter"`, the `app` preset's) — its rows replace the list under a Back row — and **exits** on Back. One rule decides which: a section whose rows hold sections of their own enters; a section whose rows are leaves expands. Chrome enters, Labs enters, Effects expands. The 12px-glyph, oq-64 L2 row of 2026-08 is retired. Nothing auto-expands. A sub row with no `icon` renders label-only on the label column.
 
 `settings` and `themeToggle` left with the SideNav rail: Settings is a
 `bottomItems` rung whose open/close is the consumer's `onNavigate`, and the
@@ -90,7 +78,7 @@ import {
 
 | Choice | Prop | Default | Opt-in |
 |---|---|---|---|
-| Sub pages open in place or replace the list | `sections` on `NavRail` · `railSections` on `AppShell` | `fold` — unfolds under the section | `enter` — the section's rows under a Back row (labs) |
+| A section expands in place or enters under a Back row | `sections` on `NavRail` (`expand` · `enter`), the `app` preset's is `enter`; `railSections` on `AppShell` overrides | the rule: rows that hold sections enter, leaf rows expand |
 | A section is also a page — a **folder note** | `to` on the section item | no `to` — the row only folds or enters | `to` — icon and label open the page, the chevron alone folds or enters (`RailSection`'s `to` split in kol-workshop) |
 
 **Active icon is ink (kol-theme, 2026-10-22).** The site rail's active row icon is `var(--kol-sidenav-active-icon, var(--kol-surface-on-primary))` — no accent. A repo that wants a colour sets `--kol-sidenav-active-icon` on `:root`; nothing else needs overriding.
@@ -119,6 +107,32 @@ import {
   columns, and the page's one Rename · Duplicate · Delete menu; `toCard` returns
   `verbs download menuItems date size media meta`. Opt-in. Explicit props win
   over a preset.
+- **`StudioCreate`** (shell ≥0.77.0, plan-2026-10-23 § 3.4 — reference monitor): Create as a catalog of parts beside
+  the case on the studio canvas, monitor's page made once. A page fixed on the case view and scrolling on the parts
+  view; an editable masthead; `ContentFilters` with CASE ⇄ PARTS (`labels`), the parts' groups (`partGroups`, `exclusive`
+  per group), LIST and GRID on `CatalogGrid` with `ContentCard` / `ContentRow variant="catalog"` (the Catalog's own grid,
+  card and row — studio-hub review 2), Insert as the card's and the row's `actions` (an `ActionButton` in the plate,
+  `onPlace`); the case on kol-component's `CanvasStudio` under the
+  whole-page dot grid; the masthead is `PageHeader level="app"` with both editable fields on `SECTION_TEXT_LEVELS.app`'s
+  title and lede classes (2026-10-23), the same header as Library's; a bottom bar with the zoom readout, the consumer's `caseActions` and `caseLink`. The case
+  model, Add row and Set HP (`caseControls`), the parts and the workbench stay the consumer's; a consumer with its own
+  viewport on `CanvasStudio` renders it through `canvas({ gridRef, view, onViewChange })`. `AppStudio`'s `create`
+  slot takes it as children with `shell: false`.
+- **`CatalogGrid`** (shell ≥0.77.0, studio-hub review 2 § 3.1): the catalog grid lifted out of `CatalogPage` — the
+  measured track count (up to 6, never under 160, gap 24, `--kol-catalog-n` on the grid and reported through
+  `onColumns`), `.kol-catalog-grid`, and the list grid (`listColumns`, never under 240; or `listLayout="stack"`).
+  `CatalogPage` and `StudioCreate` both draw on it, so Create's parts and a Library's measure the same.
+- **`StudioDetail`** (shell ≥0.78.0, plan home-library-detail-one-card § 3.1): the page a Library card opens — a module, a
+  patch, a file — made once from data: `back` (a TEXT LINK `‹ Back` in the masthead's eyebrow, history back by default —
+  never a pill, user 2026-10-24: *"what back is this"*), `title` · `subtitle` (`SectionText level="app"`), `description`
+  (sentences), `sections` of rows `{ kind?, label, value?, hint? }` or `text`, `code` (the first lines, "View full source"
+  in an overlay with download), `preview` (an image with click-to-expand, or the consumer's node — a rendered module
+  front), `actions` `[{ label, onClick }]` as DS Buttons under a hairline, `notFound`. Routes are one scheme on every
+  app: `/library/module/<id>` and `/library/patch/<id>`; a patch card opens its page, Load lives there. The prose is
+  `kol-mono-12`, the section labels `kol-helper-14` — kol-monitor's page of 2026-09-02 was the source.
+- **`CatalogPage mode`** (shell ≥0.77.0): `fixed` is the app tier's default (the `app` and `catalog` presets), `scroll` the site tier's (`capped`, `shelf`) — the page at the viewport's height, the
+  catalog scrolling in its own region to the page's edge; Home's New and Walkthrough in the masthead's round button and its sheet (the phone More's rows, 2026-10-23), no foot row
+  (plan-2026-10-23 § 4.12, his idea, shown on `apps/studio-hub` as Home B).
 - **Grid geometry (documented default):** catalog grid = **up to** six tracks,
   gap 24 · list = up to four, gap 8 — a CEILING WITH A FLOOR, the same law
   `ContentCollection` carries (2026-09-01): the floor is `CatalogPage
@@ -199,7 +213,7 @@ import {
   than a token each app binds, because fxr's stylesheet is imports-only by rule.
   **One owner per pixel (2026-09-03):** the variable means what is LEFT to
   paint. `AppShell` hands the wash down and `PageShell` paints it; kol-framework's
-  `PageLayout` paints it on its own plane and hands down `transparent`, so a
+  `SiteLayout` paints it on its own plane and hands down `transparent`, so a
   `PageShell` inside that frame paints nothing over it — both painting made
   `fg-02` render as two 0.02 layers on olina's /slide-deck. It is not
   `--kol-tone-ground`: the wash is a translucent film, the ground is the opaque
@@ -216,8 +230,18 @@ values take the rail off the screen:
 | `touch` | under 768 | for |
 |---|---|---|
 | `bar` | a **bottom bar** (`PhoneNav`, on kol-component's `MobileTabBar`): up to five destinations, else four + **More** — a sheet with the rest and Settings. The content pads by `--kol-shell-bar-h` | an app whose destinations are pages — the Hub's default |
+| `pill` | the bar in `TabsRow`'s **pill shape** (2026-10-23, iOS Files beside it): rounded, centred, floated `TABBAR_PILL_INSET` (16px) off the edge, hugging its tabs, 28px glyphs, the active tab a filled pill; the same rows, the same More — and **the fold**: on More the bar folds into one round × at its right end, the sheet hugging its words beside it, bottoms on one line, in the pill's chrome; the ×, the scrim or a pick unfolds it. It FLOATS: the page runs under it (`--kol-shell-bar-h` is 0), and a scroll region's end and a fixed foot clear it by `--kol-shell-bar-clear` | the Hub reviewed beside `bar` — studio-hub's default |
 | `drawer` | the rail off-canvas behind a hamburger, in over a scrim | an app whose rail carries a tool's own rows — the editor's labs categories ride it |
 | `shell` (default) · `bare` · `overlay` | the rail regardless · no shell on a coarse pointer · the touch-device notice | older consumers, unchanged |
+
+Both phone navs ship (2026-10-23 — *"fxr on mobile uses the bottom a lot … we should ship both versions"*). The
+bar's labels wear the rail's row type and ink — `kol-helper-12 uppercase`, oq-64 at rest, oq-96 on the route, the
+20px glyph — from one constant (`hooks/railRow.js`) that `NavRail` and `TabsRow`'s phone tab both read.
+`barHiddenOn` (paths) lets the bar step aside for a tool: on one, the bar unmounts and `--kol-shell-bar-h` is 0,
+so the canvas takes the full height (studio-hub: `/studio` and under `/chrome`). Below `md` a `CatalogPage`
+draws rows — the preset's row, no LIST / GRID strip (`phoneLayout="grid"` opts back) — and `HubHome`'s
+`touch.doors` are an opt-in 2 × 2 of large buttons above them (`CatalogPage lead`; fxr's chromes). `PageShell`'s
+heights are `100dvh` with `100vh` as the fallback, so a fixed page's foot sits above iOS Safari's chrome.
 
 No app fixes its own phone nav: the hamburger over a masthead's controls (media-hub) was the bug
 that made this the Shell's job. `barItems` overrides what the bar lists; `shell` lives in
@@ -237,13 +261,23 @@ default to its `app` level (display-01 at 46 / 60 — kol-shell 0.72.0, kol-comp
 
 | page | prop | without it |
 |---|---|---|
-| Home — a `CatalogPage` (the mark goes here) | `home` | no Home: `homePath` renders the tool and the mark goes there (media-hub: the column browser IS the app) |
-| Settings — `HubSettings`, pinned at the rail's foot | `settings` | no row, no route, no `,` key |
-| the shortcuts sheet | `shortcuts` + `shortcutsKey` (`s`; `null` = off) | an empty sheet |
+| Home — a `CatalogPage` on `preset="app"`, drawn by `HubHome` from DATA: `files` (with `tags` and `details`), the handlers, `filterGroups`, `action` (HubHomeContract, 2026-10-23 — no `toCard`, no passthrough, files only, the app row three across; the cog opens the file's info rail; see [[16-app-anatomy\|app anatomy]]) (the mark goes here) | `home` | no Home: `homePath` renders the tool and the mark goes there (media-hub: the column browser IS the app) |
+| Settings, pinned at the rail's foot — three tiers, opt-in (2026-10-23): the rail (default; `SettingsPanel` over `sections` as TYPED rows — `type: 'choice' | 'switch'`, a text `value`, a section's `note`; the Hub draws every control and string, no JSX reaches it (2026-10-24); the tab row is exactly Settings · Shortcuts · About · Repo, the three drawn by the Hub on every app, no app tab; the theme toggle (kol-framework's, drawn by the Hub) and a live reset — the theme back to the system, then the app's — in its footer; no route), `page: true` (`HubSettings` at `settingsPath`, two columns from `lg`, no filter bar, the gear opens the drawer), `filters: true` (the page keeps its filter bar, tabs and search) | `settings` | no row, no route, no `,` key |
+| the shortcuts sheet, every section open on arrival and Collapse all folding them (2026-10-23) | `shortcuts` + `shortcutsKey` (`s`; `null` = off) | an empty sheet |
 | the walkthrough | `walkthrough` (Home's button) | no button |
+| the search modal on ⌘K / Ctrl+K, one `CommandOverlay` over Files (Home's `files`, Enter opens), Pages (the rail) and Shortcuts (the keymap as folds, every one open on arrival, the footer reading Collapse all) (2026-10-23) | always on; `home.files` fills Files | Pages and Shortcuts only |
+| Media, a row at the rail's foot opening `MediaLibrary variant="picker"` — the column browser with the preview pane, Cancel and Use, mirror's — over the app's client (2026-10-23) | `media` (`{ client, accept?, onSelect? }`) | no row |
+| Sign in, the user row at the foot (a person while out, a cloud while in); the Hub asks in the DS dialog — the password prompt, then `onPress(password)`; signed in, the sign-out confirm, then `onPress(null)` (fxr's flow, 2026-10-23) | `signIn` (`{ signedIn, onPress(password \| null) }`) | no row |
+
+The Hub mounts `ModalProvider` (2026-10-23): the file rail's Delete confirm, the Rename prompt and the Sign in
+prompt are the DS dialog on every Hub; a consumer's own provider above it keeps working.
 
 When a tool sits in a Hub, its own settings gear hands over to the Hub's page (`onOpenSettings`) —
 one settings object, one place. Alone, a tool keeps its gear.
+
+No `kol-helper-*` on a sentence — `pnpm validate:helper-text` (in `pnpm validate`, 2026-10-23) fails on an element
+whose literal class carries a helper and whose own literal text runs five words, holds a sentence break or ends with a
+period, or on a helper told to wrap ([[../01-foundations/03-typography|typography]], the fault line).
 
 Every exported view has to be mounted somewhere a person can open it — `pnpm validate:views`
 (V1). A Shell feature with no app to show it on is a feature nobody checks.

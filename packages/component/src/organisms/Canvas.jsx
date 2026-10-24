@@ -1,9 +1,14 @@
-import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CanvasZoomContext } from '../hooks/canvasZoom.js'
+import { useCanvasViewport, useFps, zoomAt } from '../hooks/canvasViewport.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 /**
- * Canvas — the editor's aspect-ratio stage.
+ * CanvasEditor — The editor's artboard. the editor's aspect-ratio stage, one of the two surfaces of the
+ * canvas family (2026-10-23): a FIXED frame you pan and zoom around, with rulers and guides.
+ * `CanvasStudio` is the other — an infinite dotted surface. Both read `useCanvasViewport`
+ * (hooks/canvasViewport.js): one set of gestures, one key table (`CANVAS_KEYS`), ⌘ the
+ * canvas's modifier. `Canvas` is this component's old name, an alias on the ledger.
  *
  * A letterboxed frame (dashed guide border + mono ratio label) that hosts its
  * children in a **fixed 1080-virtual-pixel coordinate space** and scales the
@@ -16,8 +21,9 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * dividing by the live scale (frameWidth / 1080).
  *
  * Ships from this file: `CanvasZoomContext`, `CanvasFrame` (the bare scale
- * layer), `Canvas` (the letterbox, default export), `PanZoomViewport` (pan +
- * zoom + rulers + guides), `PanViewport` (pan only) and `useFps`.
+ * layer), `CanvasEditor` (the letterbox, default export), `PanZoomViewport` (pan +
+ * zoom + rulers + guides — deprecated, the engine is the hook), `PanViewport` (pan
+ * only — deprecated) and `useFps` (re-exported from the hook).
  *
  * Ported from kol-fxr's editor with three app-couplings dropped (per lobby
  * spec): the static `ASPECTS` table → an `aspects` prop (+ DEFAULT_ASPECTS);
@@ -40,6 +46,8 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * had, so `import { CanvasZoomContext } from '@kolkrabbi/kol-component'` and
  * every existing deep import keep working. */
 export { CanvasZoomContext }
+/* the fps hook lives with the engine now; the name stays here for every import that had it */
+export { useFps }
 
 /* Fixed virtual canvas width — children render in this pixel space and the
  * outer rect scales to fit the viewport via CSS transform. Height is derived
@@ -168,7 +176,7 @@ export function CanvasFrame({
 }
 
 /**
- * Canvas — letterboxed stage (default export).
+ * CanvasEditor — letterboxed stage (default export).
  *
  * The OUTER wrapper letterboxes the inner `<CanvasFrame>` (rect carries the
  * optional `bgColor`, dashed border, label, and virtual-pixel scale layer).
@@ -197,7 +205,7 @@ export function CanvasFrame({
  * @param {Function}  onSpaceTap  fires when Space was pressed and released WITHOUT panning — a tap, not a drag. fxr binds its transport play/pause here; unset, a tap does nothing
  * @param {ReactNode} children    rendered in the 1080-virtual scale layer
  */
-export default function Canvas({
+export default function CanvasEditor({
   aspect,
   customRatio,
   aspects,
@@ -261,6 +269,7 @@ export default function Canvas({
 }
 
 /**
+ * @deprecated 2026-10-23 → `CanvasEditor panEnabled` (the engine is `useCanvasViewport`); kept so a consumer composing its own viewport keeps resolving.
  * PanViewport — Space + drag pan wrapper. **Pan only, no zoom.**
  *
  * Kept for a consumer composing its own viewport, and because it is what
@@ -362,11 +371,10 @@ export function PanViewport({ backdrop, children }) {
 
 /* ── Pan + zoom ────────────────────────────────────────────────────────────
  * Ported verbatim from kol-fxr `src/editor/shell/Canvas.jsx` (2026-09-03,
- * `editor-set-is-behind-its-source`). Two app couplings became seams: the
- * Space-tap `transport.toggle()` is now `onSpaceTap`, and the hardwired
- * `.kol-grid-bg` div is the `backdrop` node this package already took. The
- * clamps, the anchor math, the wheel handling and the chip layout are the
- * source's — fxr is the reference for this set. */
+ * `editor-set-is-behind-its-source`); the gestures moved into `useCanvasViewport`
+ * (hooks/canvasViewport.js) on 2026-10-23 so the studio surface reads the same ones.
+ * What stays here is the editor's: the clamps in REAL terms, the fit, the
+ * `kol:zoom-*` window events, the rulers, the guides and the chips. */
 
 /* The clamps are in REAL terms — screen px per frame px, `zoom × fit` (CanvasViewCommands, kol-fxr
  * 2026-10-13). They were 0.1–8 relative to the fitted frame, so a 1080 frame fitted at ~0.58 capped
@@ -381,66 +389,17 @@ function fitOf(node) {
   return w ? w / CANVAS_VIRTUAL_W : 1
 }
 
-const clampZoom = (z, fit) => Math.min(ZOOM_MAX_REAL / fit, Math.max(ZOOM_MIN_REAL / fit, z))
-
-/* Anchor a zoom change at a screen point (sx, sy relative to the viewport
- * top-left) so the content under the cursor stays put. Transform is
- * `translate(x,y) scale(zoom)` with origin 0,0, so screen = p*zoom + pan;
- * inverting for a fixed p gives the new pan below. */
-function zoomAt(v, factor, sx, sy, fit = 1) {
-  const z2 = clampZoom(v.zoom * factor, fit)
-  return {
-    zoom: z2,
-    x: sx - (sx - v.x) * (z2 / v.zoom),
-    y: sy - (sy - v.y) * (z2 / v.zoom),
-  }
-}
-
-/* useFps(enabled) — live framerate, measured only while `enabled` (the RAF
- * idles when off); returns frames per second, updated twice a second.
- * Exported because a consumer's own stage corner renders the same chip.
- *
- * A plain block comment on purpose: `@param` belongs to a destructured props
- * signature, and the props gate pairs a `/** … *\/` block with the next such
- * export — a JSDoc'd positional hook hands its `@param` to the component
- * below it, which is exactly the false positive it reported on this file. */
-export function useFps(enabled) {
-  const [fps, setFps] = useState(0)
-  useEffect(() => {
-    if (!enabled) return
-    let raf, frames = 0, last = performance.now()
-    const loop = (now) => {
-      frames++
-      if (now - last >= 500) {
-        setFps(Math.round((frames * 1000) / (now - last)))
-        frames = 0
-        last = now
-      }
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [enabled])
-  return fps
-}
-
-function isTypingTarget(el) {
-  if (!el) return false
-  const tag = el.tagName
-  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
-}
-
 /**
- * PanZoomViewport — An infinite canvas to pan and zoom. infinite-canvas viewport (pan + zoom), and the one that
+ * @deprecated 2026-10-23 → `CanvasEditor panEnabled`; the pan and zoom are `useCanvasViewport`'s, shared with `CanvasStudio`. Kept so an editor composing its own stage keeps resolving.
+ * PanZoomViewport — An infinite canvas to pan and zoom. the editor's viewport (pan + zoom), and the one that
  * publishes `CanvasZoomContext`.
  *
- * Pan: hold Space + drag (cursor grab/grabbing), or two-finger trackpad
- * scroll. Zoom: Cmd/Ctrl + wheel or trackpad pinch, anchored at the pointer;
- * Cmd+0 resets, Cmd+= / Cmd+- step-zoom at the viewport center. A single
- * `translate() scale()` on the transform layer carries both, so a consumer's
- * screen→virtual math needs no zoom awareness. Pointer events on the
- * transform layer disable while Space is held so layer mousedowns don't fire
- * mid-pan. `f` toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
+ * Pan: hold Space + drag (cursor grab/grabbing), middle-drag, ⌘-drag, or a plain two-finger
+ * scroll. Zoom: ⌘/Ctrl + wheel or a trackpad pinch, anchored at the pointer; ⌘0 resets, ⌘= / ⌘−
+ * step-zoom at the viewport centre (`CANVAS_KEYS`). A single `translate() scale()` on the
+ * transform layer carries both, so a consumer's screen→virtual math needs no zoom awareness.
+ * Pointer events on the transform layer disable while Space is held so layer mousedowns don't
+ * fire mid-pan. `F` toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
  * { clientX, clientY, factor } · `kol:zoom-to` { scale } (real, 1 = 100%) · `kol:zoom-fit` { to:
  * 'frame' | 'width' | { x, y, w, h } } — window events. Zoom is clamped at 2%–3200% real. Touch:
  * two fingers pinch-zoom + pan; a one-finger tap fires `onSpaceTap`.
@@ -462,161 +421,20 @@ export function PanZoomViewport({
   guidesInteractive = true,
   onSpaceTap,
 }) {
-  const containerRef              = useRef(null)
-  const [spaceHeld, setSpaceHeld] = useState(false)
-  /* Space tap vs Space+drag: the ref records whether a pan drag consumed this
-   * Space press (set on pan mousedown), so keyup can tell them apart. */
-  const spacePannedRef = useRef(false)
-  const [dragging, setDragging]   = useState(false)
-  const [view, setView]           = useState({ zoom: 1, x: 0, y: 0 })
-  const dragStart                 = useRef(null)
-  const [pinching, setPinching]   = useState(false)
-  const [showFps, setShowFps]     = useState(false)
-  const fps                       = useFps(showFps)
-  /* Ref mirror so the keyup listener calls the latest callback without
-   * rebinding the window listeners on every consumer re-render. */
-  const spaceTapRef = useRef(onSpaceTap)
-  spaceTapRef.current = onSpaceTap
-
-  /* Space toggles pan mode; Cmd+0 / Cmd+= / Cmd+- drive zoom from the
-   * keyboard (centered on the viewport). Skipped while typing in a field. */
-  useEffect(() => {
-    const isInputTarget = (el) =>
-      el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
-    const onKeyDown = (e) => {
-      if (isInputTarget(e.target)) return
-      if (e.code === 'Space') {
-        e.preventDefault()
-        if (!e.repeat) spacePannedRef.current = false
-        setSpaceHeld(true)
-        return
-      }
-      if (e.metaKey || e.ctrlKey) {
-        if (e.key === '0') {
-          e.preventDefault()
-          setView({ zoom: 1, x: 0, y: 0 })
-        } else if (e.key === '=' || e.key === '+') {
-          e.preventDefault()
-          const r = containerRef.current?.getBoundingClientRect()
-          setView((v) => zoomAt(v, 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2, fitOf(containerRef.current)))
-        } else if (e.key === '-') {
-          e.preventDefault()
-          const r = containerRef.current?.getBoundingClientRect()
-          setView((v) => zoomAt(v, 1 / 1.2, (r?.width ?? 0) / 2, (r?.height ?? 0) / 2, fitOf(containerRef.current)))
-        }
-      }
-    }
-    const onKeyUp = (e) => {
-      if (e.code === 'Space') {
-        setSpaceHeld(false)
-        setDragging(false)
-        dragStart.current = null
-        /* No pan happened → this was a tap. fxr binds play/pause here; the
-         * same input guard as keydown so typing a space in a field is not a
-         * tap. Unset, a tap does nothing. */
-        if (!spacePannedRef.current && !isInputTarget(e.target)) spaceTapRef.current?.()
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    window.addEventListener('keyup', onKeyUp)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-      window.removeEventListener('keyup', onKeyUp)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!dragging) return
-    const onMove = (e) => {
-      if (!dragStart.current) return
-      const { x: sx, y: sy } = dragStart.current
-      setView((v) => ({ ...v, x: e.clientX - sx, y: e.clientY - sy }))
-    }
-    const onUp = () => {
-      setDragging(false)
-      dragStart.current = null
-    }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseup', onUp)
-    }
-  }, [dragging])
-
-  /* Wheel: Cmd/Ctrl+wheel or trackpad pinch (ctrlKey) → zoom at pointer;
-   * plain two-finger scroll → pan. Native non-passive listener so we can
-   * preventDefault the browser's page-zoom / scroll. */
-  useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    const onWheel = (e) => {
-      e.preventDefault()
-      const rect = node.getBoundingClientRect()
-      const sx = e.clientX - rect.left
-      const sy = e.clientY - rect.top
-      if (e.ctrlKey || e.metaKey) {
-        setView((v) => zoomAt(v, Math.exp(-e.deltaY * 0.0015), sx, sy, fitOf(node)))
-      } else {
-        setView((v) => ({ ...v, x: v.x - e.deltaX, y: v.y - e.deltaY }))
-      }
-    }
-    node.addEventListener('wheel', onWheel, { passive: false })
-    return () => node.removeEventListener('wheel', onWheel)
-  }, [])
-
-  /* Touch (ViewportTouchGestures, kol-fxr 2026-10-14): two fingers pinch-zoom at their midpoint and
-   * the midpoint's travel pans, in one gesture; the transform layer goes deaf while they are down so
-   * a consumer's tool never sees the second finger. One finger stays the consumer's, except a TAP
-   * (up within TAP_MS and TAP_PX, no second finger joined) fires `onSpaceTap`. Down is caught in the
-   * capture phase on the container; move/up on window, so a finger leaving the frame still ends. */
-  useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    const TAP_MS = 350, TAP_PX = 12
-    const pts = new Map()
-    let pinch = null, tap = null
-    const pair = () => {
-      const [a, b] = [...pts.values()]
-      return { mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, d: Math.hypot(a.x - b.x, a.y - b.y) || 1 }
-    }
-    const onDown = (e) => {
-      if (e.pointerType !== 'touch') return
-      pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
-      if (pts.size === 1) tap = { id: e.pointerId, t: e.timeStamp, x: e.clientX, y: e.clientY }
-      else if (pts.size === 2) { tap = null; pinch = pair(); setPinching(true) }
-    }
-    const onMove = (e) => {
-      if (!pts.has(e.pointerId)) return
-      pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
-      if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > TAP_PX) tap = null
-      if (!pinch || pts.size < 2) return
-      const prev = pinch, next = pair()
-      pinch = next
-      const r = node.getBoundingClientRect()
-      const fit = fitOf(node)
-      setView((v) => {
-        const z = zoomAt(v, next.d / prev.d, prev.mx - r.left, prev.my - r.top, fit)
-        return { ...z, x: z.x + next.mx - prev.mx, y: z.y + next.my - prev.my }
-      })
-    }
-    const onEnd = (e) => {
-      if (!pts.delete(e.pointerId)) return
-      if (tap?.id === e.pointerId && e.type === 'pointerup' && e.timeStamp - tap.t < TAP_MS) spaceTapRef.current?.()
-      if (tap?.id === e.pointerId) tap = null
-      if (pinch && pts.size < 2) { pinch = null; setPinching(false) }
-    }
-    node.addEventListener('pointerdown', onDown, true)
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerup', onEnd)
-    window.addEventListener('pointercancel', onEnd)
-    return () => {
-      node.removeEventListener('pointerdown', onDown, true)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerup', onEnd)
-      window.removeEventListener('pointercancel', onEnd)
-    }
-  }, [])
+  const containerRef = useRef(null)
+  const vp = useCanvasViewport({
+    ref: containerRef,
+    minZoom: ZOOM_MIN_REAL,
+    maxZoom: ZOOM_MAX_REAL,
+    fit: () => fitOf(containerRef.current),
+    touch: 'editor',
+    onSpaceTap,
+  })
+  const { view, setView, clamp, spaceHeld, pinching, cursor, showFps, fps } = vp
+  const setViewRef = useRef(setView)
+  setViewRef.current = setView
+  const clampRef = useRef(clamp)
+  clampRef.current = clamp
 
   /* A consumer's zoom TOOL announces clicks as `kol:zoom-at` (client coords +
    * factor) rather than reaching into this state — anchored zoom at the
@@ -627,7 +445,7 @@ export function PanZoomViewport({
       if (!node) return
       const { clientX, clientY, factor } = e.detail
       const rect = node.getBoundingClientRect()
-      setView((v) => zoomAt(v, factor, clientX - rect.left, clientY - rect.top, fitOf(node)))
+      setViewRef.current((v) => zoomAt(v, factor, clientX - rect.left, clientY - rect.top, clampRef.current))
     }
     /* `kol:zoom-to` { scale } — a REAL scale (1 = 100%: one screen px per frame px), about the
      * viewport centre, so a consumer's 100–800% steps need not measure the fit. */
@@ -636,7 +454,7 @@ export function PanZoomViewport({
       if (!node) return
       const fit = fitOf(node)
       const r = node.getBoundingClientRect()
-      setView((v) => zoomAt(v, e.detail.scale / (v.zoom * fit), r.width / 2, r.height / 2, fit))
+      setViewRef.current((v) => zoomAt(v, e.detail.scale / (v.zoom * fit), r.width / 2, r.height / 2, clampRef.current))
     }
     /* `kol:zoom-fit` { to } — `'frame'` (default) is ⌘0's opening view; `'width'` fills the
      * viewport with the frame's width, centred vertically; `{ x, y, w, h }` in frame (virtual) px
@@ -645,20 +463,20 @@ export function PanZoomViewport({
       const node = containerRef.current
       const frame = node?.querySelector('[data-canvas-frame]')
       const to = e.detail?.to ?? 'frame'
-      if (!frame || to === 'frame') { setView({ zoom: 1, x: 0, y: 0 }); return }
+      if (!frame || to === 'frame') { setViewRef.current({ zoom: 1, x: 0, y: 0 }); return }
       const fit = fitOf(node)
       const cr = node.getBoundingClientRect()
       const fr = frame.getBoundingClientRect()
-      setView((v) => {
+      setViewRef.current((v) => {
         /* the frame's rect at rest (zoom 1, no pan), in viewport px */
         const fx = (fr.left - cr.left - v.x) / v.zoom
         const fy = (fr.top - cr.top - v.y) / v.zoom
         const rect = to === 'width'
           ? { x: fx, y: fy, w: frame.offsetWidth, h: frame.offsetHeight }
           : { x: fx + to.x * fit, y: fy + to.y * fit, w: to.w * fit, h: to.h * fit }
-        const zoom = clampZoom(to === 'width'
+        const zoom = clampRef.current(to === 'width'
           ? cr.width / rect.w
-          : Math.min((cr.width - 2 * FIT_MARGIN) / rect.w, (cr.height - 2 * FIT_MARGIN) / rect.h), fit)
+          : Math.min((cr.width - 2 * FIT_MARGIN) / rect.w, (cr.height - 2 * FIT_MARGIN) / rect.h))
         return {
           zoom,
           x: cr.width / 2 - (rect.x + rect.w / 2) * zoom,
@@ -676,32 +494,6 @@ export function PanZoomViewport({
     }
   }, [])
 
-  /* `f` toggles the fps chip (measured only while shown). Guarded against
-   * typing targets so text fields don't flip it. */
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key !== 'f' && e.key !== 'F') return
-      if (e.metaKey || e.ctrlKey || e.altKey) return
-      if (isTypingTarget(e.target)) return
-      setShowFps((v) => !v)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  const onMouseDown = (e) => {
-    if (!spaceHeld) return
-    e.preventDefault()
-    spacePannedRef.current = true
-    dragStart.current = { x: e.clientX - view.x, y: e.clientY - view.y }
-    setDragging(true)
-  }
-
-  /* Only override the cursor while actively panning (Space-held / dragging).
-   * At rest, leave it unset so consumers above can apply their own cursor
-   * (a tool-driven cursor) and have it visible across the backdrop AND the
-   * canvas frame, not just the frame area. */
-  const cursor = dragging ? 'grabbing' : spaceHeld ? 'grab' : undefined
   const atRest = view.zoom === 1 && view.x === 0 && view.y === 0
 
   return (
@@ -710,7 +502,6 @@ export function PanZoomViewport({
         ref={containerRef}
         className="relative w-full h-full overflow-hidden select-none"
         style={{ cursor, touchAction: 'none' }}
-        onMouseDown={onMouseDown}
       >
         {/* No transition on the transform: editing chrome (selection
             wireframe, path nodes) sizes itself by 1/zoom from React state,
@@ -720,7 +511,7 @@ export function PanZoomViewport({
         <div
           className="absolute inset-0"
           style={{
-            transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})`,
+            transform: vp.transform,
             transformOrigin: '0 0',
             pointerEvents: spaceHeld || pinching ? 'none' : 'auto',
           }}
@@ -744,7 +535,7 @@ export function PanZoomViewport({
         {showRulers && <CanvasRuler containerRef={containerRef} disabled={spaceHeld} />}
 
         {/* Zoom % + fps — matching chips. Zoom (click resets to 100% /
-            centered) first, fps to its right, shown while `f` toggles it. */}
+            centered) first, fps to its right, shown while `F` toggles it. */}
         <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
           <Tooltip label="Reset zoom (⌘0)" asChild>
           <button

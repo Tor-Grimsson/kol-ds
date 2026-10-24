@@ -3,7 +3,7 @@ title: Type classes
 type: reference
 status: active
 created: 2026-07-31
-updated: 2026-08-27
+updated: 2026-10-24
 description: The two families, and when to use which
 aliases:
   - type-classes
@@ -31,6 +31,8 @@ Every piece of text in a KOL component uses a `kol-*` type class — never frees
 
 The quick test: *can this string ever wrap?* Yes → line-height set. No (structurally single-line) → helper.
 
+The gate: `pnpm validate:helper-text` (in `pnpm validate`, 2026-10-23) fails on an element whose literal `className` carries `kol-helper-*` and whose own literal text has five or more words, holds a `. ` or ends with a period (H1), or a helper beside `whitespace-normal`, `line-clamp-*` or `text-wrap` (H2). A `SettingsRow` label never wraps by construction (`whitespace-nowrap truncate`).
+
 ## Inventory
 
 ### Role sets — `kol-doc-*` + `kol-card-*` (2026-07-28, `kol-type-roles.css`)
@@ -39,6 +41,7 @@ Opt-in role families over the scales below — see [[07-doc-card-sets|the doc+ca
 **Doc set** (11): `kol-doc-{eyebrow,heading,section-title,lede,body,code,code-inline,table,figure,caption,footer}` — doc-chrome ramp; the content-furniture roles (code/table/figure/caption/footer) are twin-selectored with `.kol-prose` bare tags (one rule, two entry points; prose code rules moved there, prose gains table/figure styling).
 **Card set** (6): `kol-card-{title,kicker,meta,excerpt,value,tag}` — the shared card text ramp (mono voice, compact titles, clamp knob `--kol-card-excerpt-lines`).
 Head roles are deliberately NOT twinned with prose — the editorial `.kol-prose-*` head family stays its own scale.
+**Sheet** — `.kol-sheet` (2026-10-24, `kol-typography.css`): the DOCUMENT voice beside the editorial prose — kol-atlas's Research-Spec carried class for class: 15/1.6 body on a 724 edge, h1 36 · h2 24 · h3 18 with hairlines and the `why` aside, `when` / `dw` meta lines with a `k` key, `note`, `tb` item text, footnotes, `term`s, the `media` figure grid, `tablewrap` plain and `kv`, `totalbar`, the `ol` outline and `proj`, the numbered margin. Its four tokens map onto KOL's (ink · fg-64 · fg-12 · fg-04 · accent-primary · ui-error), the sub-class names stay the spec's so an atlas document renders unchanged. Shown on itself at `apps/site-hub` › Research › Sheet.
 
 
 ### Helper scale — mono, weight 500, `line-height: 1`, letter-spaced

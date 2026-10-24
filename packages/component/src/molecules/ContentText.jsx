@@ -22,7 +22,7 @@
  * @param {ReactNode} date       default · article · typeface
  * @param {'card'|'row'|'hero'} form  the block's form; `hero` is article's featured text (ContentCard `hero`)
  * @param {ReactNode} size       default · article (file size / read length)
- * @param {ReactNode} meta       work · slide · app (a line under the title)
+ * @param {ReactNode} meta       work · slide (a line under the title) — never `app`, whose text is the file's (2026-10-23)
  * @param {number}    gap        inner line gap in px (defaults per variant/form)
  * @param {string}    tagVariant the Tag variant the `tags` slot draws (default `primary` — a soft ink wash that reads as a chip
  *   on a plain surface; CardTagsNoVisibleFill, kol-website 2026-09-01: `tertiary` is surface-primary with no border and was
@@ -59,12 +59,10 @@ const RAMP = {
     card: { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
     row:  { title: 'kol-sans-heading-05 text-emphasis truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
   },
-  /* APP — the `file` text with a `meta` line under the title (AppCardMeta, kol-monitor 2026-10-23: a module's
-   * `6HP 3U — Control`, a patch's `12 modules, 9 connections`). Without `meta` it is the file text. */
-  app: {
-    card: { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
-    row:  { title: 'kol-sans-heading-05 text-emphasis truncate', meta: 'kol-mono-12 text-meta truncate', date: 'kol-mono-12 text-meta whitespace-nowrap', size: 'kol-mono-12 text-meta whitespace-nowrap' },
-  },
+  /* APP IS THE FILE TEXT, exactly (user ruling 2026-10-23: the `meta` line 0.292.0 put under the title — a patch's
+   * `12 modules, 9 connections` — was never designed for; a card with it and one without put date and size on
+   * different baselines, *"ILLEGAL and layout BREAKING"*). `app` aliases to `file` below; what the card no longer
+   * carries lives in the file's info rail (AppItem.jsx). */
   /* SLIDE — a deck (slide-variant-and-shelf-preset, kol-client-olina 2026-09-03;
    * user: "they are genuinely different with 16:9 layout and those exposed
    * properties"). file's voices plus a `meta` line — the slide count. */
@@ -160,7 +158,6 @@ const RAMP = {
  * read off the shipped components and the live pages they render on. */
 const ORDER = {
   file:  { card: ['title', ['group', 'date', 'size']], row: ['title', ['group', 'date', 'size']] },
-  app:   { card: ['title', 'meta', ['group', 'date', 'size']], row: ['title', 'meta', ['group', 'date', 'size']] },
   /* slide: title, then date · size · slide count on one baseline (read off olina's /slide-deck) */
   slide: { card: ['title', ['group', 'date', 'size', 'meta']], row: ['title', ['group', 'date', 'size', 'meta']] },
   catalog:  { card: ['title', 'detail'], row: [['lead', 'title', 'detail']] },
@@ -227,7 +224,8 @@ const GAPS = {
 
 /* `default` → `file` (user 2026-08-29) — kept working as an alias here too,
  * because ContentText is exported and a consumer can drive it directly. */
-const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
+/* `app` → `file` (2026-10-23): an app card's text IS the file's — title, date, size — by ruling */
+const ALIAS = { default: 'file', app: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
 
 /* dev-only, and warns ONCE per offending prop — a card family renders these by
  * the hundred in a list and a per-render warning would bury the first one. */
@@ -331,8 +329,11 @@ export default function ContentText({
    * flat slot list cannot express and which was previously collapsed into one
    * `date` slot that lost a value. */
   /* a file's date · size never break inside a value (AppCardDateSizeWrap, kol-mirror 2026-10-23: `2026-10-` /
-   * `23` at ~170px columns): each value is nowrap, and when the pair does not fit the size drops to the next line */
-  const wrapGroup = variant === 'file' || variant === 'app'
+   * `23` at ~170px columns): each value is nowrap, and when the pair does not fit the size drops to the next line.
+   * NOT THE `app` CARD (user 2026-10-24: *"the layout of the card CAN NOT CHANGE on resolution available, the field can
+   * not line break"*): its group is one line at every width — the `app` grid's floor (CatalogPage, 208) is what makes
+   * the pair fit, so a narrower page drops a column instead of breaking the line */
+  const wrapGroup = variant === 'file' && variantProp !== 'app'
   const render = (entry, i, trailing = false) => {
     if (typeof entry === 'string') return line(entry)
     const [kind, ...slots] = entry

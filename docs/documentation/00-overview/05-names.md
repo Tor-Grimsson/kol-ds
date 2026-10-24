@@ -121,6 +121,8 @@ atomic ladder by what it **is**:
 
 Law: [[../03-components/00-taxonomy|component taxonomy]].
 
+**The canvas family** (2026-10-23): `CanvasEditor` is the artboard (a fixed frame with rulers, the editor's), `CanvasStudio` the studio (an infinite dotted surface, the rack's and the desk's); both on `useCanvasViewport`, one key table, ⌘ the canvas's modifier. [[../03-components/07-canvas-family|The canvas family]].
+
 ## Utility
 
 One export with **no face of its own** — a layout wrapper, a mechanism other components wear, an

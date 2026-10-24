@@ -1049,6 +1049,10 @@ export function MediaLibraryBrowse({
   folderTree, headerActions, headerTrailing, refreshKey, onOpen, autoFocus = false, settingsFooter, className = '', banner,
   /* `onHeaderClose` — a × alone at the far end of the title row, outside the controls (the picker card) */
   onHeaderClose,
+  /* `onInsert(o)` — a file row's menu LEADS with Insert (the picker on a phone, user 2026-10-23: *"you just select the
+   * image and maybe dropdown says insert"*); `canInsert(o)` gates it per file (the picker's `accept`) */
+  onInsert,
+  canInsert,
   /* `smartFolder` — a smart folder's id to open ON (a Home tile linking straight to one); the chips
    * take over from there (media D1 plan v2) */
   smartFolder,
@@ -1107,6 +1111,8 @@ export function MediaLibraryBrowse({
    * and returns the list. Rows are the search modal's shape; a row with `run` calls it instead of
    * jumping to `id` as a file key. */
   searchSuggestions,
+  /* `startAtRoot` — open at the title root, the buckets listed, instead of inside `bucket` (the picker, 2026-10-23) */
+  startAtRoot = false,
   /* `bucketLevel` — keep title → bucket → folders with ONE bucket (kol-client-olina 2026-09-23).
    * Absent, a one-bucket consumer collapses the level as ruled 2026-09-03. */
   bucketLevel = false,
@@ -1122,7 +1128,7 @@ export function MediaLibraryBrowse({
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
   const setPrefix = (v) => { if (v) setAppRoot(false); if (prefixProp == null) setOwnPrefix(v); onPrefix?.(v) }
-  const [appRoot, setAppRoot] = useState(false)
+  const [appRoot, setAppRoot] = useState(!!startAtRoot)
   const [ownBucket, setOwnBucket] = useState(bucket)
   const bucketId = bucket ?? ownBucket
   const lib = useBucketLibrary({ client, bucket: bucketId, defaults, settings: settingsProp, onSettingsChange, refreshKey })
@@ -1946,6 +1952,17 @@ export function MediaLibraryBrowse({
   const ROOT = title
   const label = bucketMeta.label || 'bucket'
   const VROOT = single ? '' : `${ROOT}/${label}/`
+  /* THE PICKER'S TILES AND COUNTS BY DEFAULT (user 2026-10-23, the Hub's Media on a phone beside kol-website's media app:
+   * folders read bare, files drew a kind glyph). A consumer's `thumbnailFor` / `folderMeta` still win; without them an
+   * image file shows itself (the client's URL, lazy) and a folder counts the files under it in the loaded listing. */
+  const thumbOf = thumbnailFor ?? ((o) => (hasUrl && kindOf(o) === 'image'
+    ? <img src={mediaUrl(unroot(o.key))} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+    : null))
+  const metaOf = folderMeta ?? ((path) => {
+    const pre = unroot(path).replace(/\/?$/, '/')
+    const n = objects.filter((o) => o.key.startsWith(pre) && !o.key.endsWith('/')).length
+    return n ? `${n} item${n === 1 ? '' : 's'}` : ''
+  })
   const unroot = (p) => (VROOT && p.startsWith(VROOT) ? p.slice(VROOT.length) : p)
   /* ONE LEVEL, ONE ANSWER. The column view merges the baked tree with the live partition inside its
    * `partition` prop; the row view used the live partition alone and therefore disagreed with the
@@ -2074,8 +2091,8 @@ export function MediaLibraryBrowse({
                 kindLabel={KIND_LABEL}
                 formatSize={formatSize}
                 formatDate={formatDate}
-                thumbnailFor={thumbnailFor}
-                folderMeta={folderMeta}
+                thumbnailFor={thumbOf}
+                folderMeta={metaOf}
                 /* the PROP wins when a consumer passes one; otherwise the `···`
                    owns it through settings (item 15) */
                 stackView={stackView ?? settings.stackView ?? 'list'}
@@ -2192,7 +2209,7 @@ export function MediaLibraryBrowse({
                       onContextMenu={(e) => menu.openAt(e, { type: 'folder', path, targets: targetsFor(path) })}
                       drag={dragFor?.(path)}
                       dropFiles={dropFilesTo?.(path)}
-                      meta={folderMeta?.(path) || undefined}
+                      meta={metaOf(path) || undefined}
                       cols={rowCols}
                       onToggle={() => toggleRow(path)}
                       onClick={(e) => { if (!selectRow(path, e, order)) rowPickFolder(path) }}
@@ -2205,14 +2222,14 @@ export function MediaLibraryBrowse({
                       onOpenFile={(o) => { const lvl = rowLevel(o.key.slice(0, o.key.lastIndexOf('/') + 1), treeObjects).files; openQuickLook({ files: lvl, index: Math.max(0, lvl.findIndex((f) => f.key === o.key)) }) }}
                       selectRow={selectRow} order={order} selectedKeys={rowSelection}
                       onRowContextMenu={(e, payload) => menu.openAt(e, payload)} dragFor={dragFor} dropFilesTo={dropFilesTo}
-                      formatDate={formatDate} folderMeta={folderMeta} thumbnailFor={thumbnailFor} cols={rowCols}
+                      formatDate={formatDate} folderMeta={metaOf} thumbnailFor={thumbOf} cols={rowCols}
                       pickedKey={pickedFolder ?? pickedFile?.key ?? null} currentKey={prefix}
                     />}
                   </Fragment>
                 )
               })}
               {rowLevel('', treeObjects).files.map((o) => (
-                <FileRow key={o.key} o={o} formatDate={formatDate} thumb={thumbnailFor?.(o)} cols={rowCols}
+                <FileRow key={o.key} o={o} formatDate={formatDate} thumb={thumbOf(o)} cols={rowCols}
                   selected={rowSelection.has(o.key) || pickedFile?.key === o.key}
                   onDoubleClick={() => { const lvl = rowLevel('', treeObjects).files; openQuickLook({ files: lvl, index: Math.max(0, lvl.findIndex((f) => f.key === o.key)) }) }}
                   onContextMenu={(e) => menu.openAt(e, { type: 'file', path: o.key, o, targets: targetsFor(o.key) })}
@@ -2694,8 +2711,15 @@ export function MediaLibraryBrowse({
                 )
               }
               const qlFile = onPickFile && target.type === 'file' ? objects.find((o) => o.key === target.path) : null
+              const insFile = onInsert && target.type === 'file' ? (objects.find((o) => o.key === target.path) ?? target.o) : null
               return (
                 <>
+                  {insFile && (!canInsert || canInsert(insFile)) && (
+                    <>
+                      <MenuDropdownItem iconLeft={<Icon name="plus" size={14} />} onClick={() => { onInsert(insFile); close() }}>Insert</MenuDropdownItem>
+                      <MenuDropdownDivider />
+                    </>
+                  )}
                   {/* A PICKER'S TAP SELECTS (`tapSelects`), so Quick Look needs a door of its own on a
                     * phone — the menu (kol-fxr 2026-10-08). Only with `onPickFile`; others are unchanged. */}
                   {qlFile && (

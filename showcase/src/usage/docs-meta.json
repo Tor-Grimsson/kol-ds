@@ -44,7 +44,8 @@
     "typeClasses": [],
     "composes": [
       "Button",
-      "IconFrame"
+      "IconFrame",
+      "Icon"
     ]
   },
   "ActionButton": {
@@ -222,11 +223,19 @@
     ]
   },
   "AppItemMenuProvider": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-mono-12"
+    ],
     "composes": [
-      "ActionButton",
+      "MenuCtx",
       "MenuDropdownItem",
-      "Icon"
+      "Tag",
+      "Input",
+      "Textarea",
+      "IconFrame",
+      "Button",
+      "Tooltip",
+      "SettingsSections"
     ]
   },
   "ProsePreview": {
@@ -538,7 +547,8 @@
   },
   "CurveEditor": {
     "typeClasses": [
-      "kol-helper-10"
+      "kol-helper-10",
+      "kol-mono-10"
     ],
     "composes": [
       "Button",
@@ -549,7 +559,8 @@
   },
   "CURVE_KINDS": {
     "typeClasses": [
-      "kol-helper-10"
+      "kol-helper-10",
+      "kol-mono-10"
     ],
     "composes": [
       "Button",
@@ -695,6 +706,16 @@
     "typeClasses": [],
     "composes": [
       "Button"
+    ]
+  },
+  "PageControls": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Tag",
+      "SegmentedToggle",
+      "TabsRow"
     ]
   },
   "ColorSwatch": {
@@ -1079,6 +1100,7 @@
     "composes": [
       "CloseButton",
       "Button",
+      "RAIL_ROW",
       "Icon"
     ]
   },
@@ -1091,6 +1113,20 @@
     "composes": [
       "CloseButton",
       "Button",
+      "RAIL_ROW",
+      "Icon"
+    ]
+  },
+  "TABBAR_PILL_INSET": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
       "Icon"
     ]
   },
@@ -1098,6 +1134,15 @@
     "typeClasses": [],
     "composes": [
       "TabsRow"
+    ]
+  },
+  "CanvasEditor": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "CanvasZoomContext",
+      "Tooltip"
     ]
   },
   "Canvas": {
@@ -1171,6 +1216,29 @@
       "CanvasZoomContext",
       "Tooltip"
     ]
+  },
+  "CanvasStudio": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "CanvasZoomContext",
+      "CANVAS_GRID_CELL",
+      "CANVAS_GRID_IMAGE",
+      "Tooltip"
+    ]
+  },
+  "CANVAS_KEYS": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CANVAS_GRID_CELL": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CANVAS_GRID_IMAGE": {
+    "typeClasses": [],
+    "composes": []
   },
   "CanvasRuler": {
     "typeClasses": [
@@ -1283,6 +1351,20 @@
       "Tooltip",
       "GRAB",
       "Logomark",
+      "RAIL_ROW",
+      "NavRailSite"
+    ]
+  },
+  "RAIL_PRESETS": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "Tooltip",
+      "GRAB",
+      "Logomark",
+      "RAIL_ROW",
       "NavRailSite"
     ]
   },
@@ -1477,6 +1559,7 @@
       "MediaLibraryLibrary",
       "SETTINGS_BASE",
       "MediaLibraryExplorer",
+      "MastheadContext",
       "SettingsChipRow",
       "Icon"
     ]
@@ -1506,6 +1589,7 @@
       "MediaLibraryLibrary",
       "SETTINGS_BASE",
       "MediaLibraryExplorer",
+      "MastheadContext",
       "SettingsChipRow",
       "Icon"
     ]
@@ -1535,6 +1619,7 @@
       "MediaLibraryLibrary",
       "SETTINGS_BASE",
       "MediaLibraryExplorer",
+      "MastheadContext",
       "SettingsChipRow",
       "Icon"
     ]
@@ -1773,10 +1858,14 @@
     ]
   },
   "SettingsSections": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-mono-12"
+    ],
     "composes": [
       "LabeledControlSection",
-      "SettingsRow"
+      "SettingsChoice",
+      "SettingsRow",
+      "SettingsSwitch"
     ]
   },
   "SectionNewsletter": {
@@ -2080,6 +2169,7 @@
   },
   "ThemeToggle": {
     "typeClasses": [
+      "kol-helper-12",
       "kol-mono-12",
       "kol-mono-14",
       "kol-mono-16"
@@ -2150,6 +2240,12 @@
       "kol-prose-lede"
     ],
     "composes": []
+  },
+  "CategoryPage": {
+    "typeClasses": [],
+    "composes": [
+      "PageHero"
+    ]
   },
   "SpecimenSectionHeader": {
     "typeClasses": [

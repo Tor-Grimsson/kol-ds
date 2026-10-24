@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-09-25
+updated: 2026-10-24
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -40,6 +40,7 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `BrandHero` | framework | `PageHero` | 2026-09-03 |
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
+| `PageLayout` | framework | `SiteLayout` — the same frame, named for the rail variant it frames (`variant="site"`); `AppShell` now aliases `SiteLayout` too | 2026-10-24 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `TabChips` | component | `TabsRow look="chip"` (same props) | 2026-10-17 |
 | `MobileTabBar` | component | `TabsRow look="stacked" placement="phone"` (same props; `TABBAR_H` from TabsRow) | 2026-10-17 |
@@ -58,6 +59,9 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `VideoSheet` | component | `MediaPlayer variant="video" frame={…}` — same props | 2026-10-02 |
 | `AudioSheet` | component | `MediaPlayer variant="audio" frame={…}` (`onDuration(s)` → `onMeta({ len })`) | 2026-10-02 |
 | `AudioPreview` | component | `MediaPlayer variant="audio"` (`onDuration(s)` → `onMeta({ len })`) — the transport is `PlaybackBar` | 2026-10-02 |
+| `Canvas` | component | `CanvasEditor` — same component, same props; the artboard of the canvas family (`CanvasStudio` is the dotted surface, both on `useCanvasViewport`) | 2026-10-23 |
+| `PanZoomViewport` | component | `CanvasEditor panEnabled` — the pan and zoom are `useCanvasViewport`'s, shared with `CanvasStudio`; same props on the editor | 2026-10-23 |
+| `PanViewport` | component | `CanvasEditor panEnabled` — pan only was a third of the viewport; the engine carries pan and zoom | 2026-10-23 |
 | `AudioPlayer` | component | `MediaPlayer variant="audio"` — the native strip is `PlaybackBar`; the label is the caller's | 2026-10-02 |
 | `MediaPicker` | component | `MediaLibrary variant="modal"` | 2026-08-01 |
 | `FullBleedHero` | component | `SectionHero` | 2026-08-26 |

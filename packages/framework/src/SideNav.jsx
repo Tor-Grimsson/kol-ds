@@ -40,6 +40,9 @@ function RouterSideNav({ onNavigate, ...props }) {
   )
 }
 
+/* the theme is a TREE ROW (user 2026-10-24, site-hub): `ThemeToggle variant="row"` wears the rail's hop
+ * box and follows the collapse as every row does, so there is no `icon` fallback; collapsed it carries the
+ * toggle's own tooltip, as the rows carry theirs */
 const themeSlot = (on = true) => (on === false ? false : ({ collapsed }) => (
-  <ThemeToggle variant={collapsed ? 'icon' : 'hop-bare'} size="md" />
+  <ThemeToggle variant="row" tooltip={collapsed} />
 ))

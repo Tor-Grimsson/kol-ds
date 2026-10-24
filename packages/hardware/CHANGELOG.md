@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## Unreleased — 2026-10-23
+
+- **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
+
 ## 0.6.1 — 2026-10-22
 
 - **`EnvelopeGenerator` hides the clock controls under a host clock** (EnvelopeGeneratorHostClockControls, kol-mirror). With `now`, the transport row draws no Play/Pause, BPM or Trigger — the host's transport plays, sets the pace and restarts. Cycle stays: it still decides whether the host's time wraps over the pass or holds at the end. Without `now`, nothing changes.

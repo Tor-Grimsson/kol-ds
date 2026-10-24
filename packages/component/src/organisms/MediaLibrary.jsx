@@ -15,6 +15,8 @@ import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/Me
 import MediaViewer from './MediaViewer.jsx'
 import { MediaLibraryBrowse, MediaLibraryLibrary, SETTINGS_BASE } from './MediaLibraryPages.jsx'
 import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
+import { MastheadContext } from '../utilities/masthead.js'
+import useMediaQuery from '../hooks/useMediaQuery.js'
 import { SettingsChipRow, chipCls } from './SettingsPanel.jsx'
 import { filterMedia } from '../utilities/mediaSearch.js'
 
@@ -877,7 +879,7 @@ function PickerBody({ items, viewMode, onOpen, onPick }) {
   if (loading) return <p className="kol-helper-12 text-meta">Loading…</p>
   const files = items.filter((r) => r.type !== 'folder')
   const shownFolders = items.filter((r) => r.type === 'folder')
-  if (items.length === 0) return <p className="kol-helper-12 text-meta">Nothing here.</p>
+  if (items.length === 0) return <p className="kol-mono-12 text-meta">Nothing here.</p>
   return (
     <div className="kol-media-scroll flex flex-col gap-3">
       {shownFolders.length > 0 && (
@@ -1076,32 +1078,52 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
   const [settings, setSettings] = useState(() => ({ ...SETTINGS_BASE, columnHeight: `calc(var(--kol-media-picker-h) - ${PICKER_CHROME}px)` }))
   const [bucket, setBucket] = useState(browseProps.bucket)
   const [file, setFile] = useState(null)
-  const ok = !!file && acceptsKind(accept)({ ...file, kind: kindOf(file) })
-  const use = () => {
-    onSelect?.(client.mediaUrl(file.storageKey ?? file.key, bucket ?? undefined), { contentType: file.contentType, kind: kindOf(file) })
+  const fits = (f) => !!f && acceptsKind(accept)({ ...f, kind: kindOf(f) })
+  const ok = fits(file)
+  const use = (f = file) => {
+    onSelect?.(client.mediaUrl(f.storageKey ?? f.key, bucket ?? undefined), { contentType: f.contentType, kind: kindOf(f) })
     onClose?.()
   }
+  /* ON A PHONE THERE IS NO FOOT (user 2026-10-23: *"on mobile you just select the image and maybe dropdown says insert"*):
+   * a tap selects, the row's menu leads with Insert, and the × on the title row is the way out — Escape has no key there */
+  const phone = useMediaQuery('(max-width: 767px)')
+  /* ON A PHONE THE CARD'S BODY SCROLLS (user 2026-10-23: *"media tab doesn't scroll"*): the stack hugs its rows and
+   * expects the PAGE to scroll, as r2b2's does — inside the card, which clips, nothing did, so rows past the fold were
+   * unreachable. The browse page takes the card's remaining height and scrolls, header and all. */
   return (
     /* NO X (user 2026-10-20: *"at this point just use escape"*). Escape, the backdrop and Cancel close it.
      * The X moved three times (overlay corner → title row, 2026-10-10 → beside the gear → corner again)
      * and was wrong each time; without it the card's block-start lane goes too (`pt-5`). */
     <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
       <div className="kol-media-picker gap-4 pt-5">
+        {/* THE PICKER READS AS THE MEDIA APP (user 2026-10-23, beside kol-r2b2 on a phone): the title in the display voice —
+          * a modal card, not a page of the app, so the shell's masthead does not reach it — and the listing opening at
+          * the title root, the buckets as rows (the database glyph), each with its count. The browse surface's own
+          * `startAtRoot`; one bucket collapses it as ever. */}
+        <MastheadContext.Provider value={null}>
         <MediaLibraryBrowse
           {...browseProps}
           client={client}
           title={title}
           bucket={bucket}
+          startAtRoot
           onBucketChange={(id) => { setBucket(id); browseProps.onBucketChange?.(id) }}
           settings={settings}
           onSettingsChange={setSettings}
           onPickFile={setFile}
+          onHeaderClose={phone ? onClose : undefined}
+          className={phone ? 'min-h-0 flex-1 overflow-y-auto' : browseProps.className}
+          onInsert={phone ? use : undefined}
+          canInsert={fits}
         />
-        <div className="mt-auto flex items-center justify-end gap-4">
-          <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
-          <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
-          <Button size="md" disabled={!ok} onClick={use}>Use</Button>
-        </div>
+        </MastheadContext.Provider>
+        {!phone && (
+          <div className="mt-auto flex items-center justify-end gap-4">
+            <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
+            <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
+            <Button size="md" disabled={!ok} onClick={() => use()}>Use</Button>
+          </div>
+        )}
       </div>
     </FullscreenOverlay>
   )

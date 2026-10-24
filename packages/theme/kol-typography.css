@@ -1110,6 +1110,150 @@
 
 .kol-prose blockquote cite::before { content: '— '; opacity: 0.6; }
 
+
+/* =============================================================================
+ * SHEET (the document voice) — kol-atlas's Research-Spec, class for class
+ * (site-hub W4, user 2026-10-24: "I would like to use kol-atlas styles at least in part").
+ * One rule per thing, the same on every page: h1–h4 with hairlines and the quiet `why` aside,
+ * `when` / `dw` meta lines with their `k` key, `note`, `tb` item text, footnotes (`sup.fn`,
+ * `ol.fns`), `term` and `term.missing`, the `media` figure grid, `tablewrap` plain and `kv`,
+ * `totalbar`, the `ol` outline (details/summary, `mk`, `cnt`, `meta`) and `proj` — the numbered
+ * margin with its gutter. The spec's own values; its four tokens map onto KOL's and nothing is
+ * invented: ink → surface-on-primary · muted → fg-64 · line → fg-12 · soft → fg-04 · accent →
+ * accent-primary · note → ui-error · display and body → the sans · mono → the mono. The sub-class
+ * names stay the spec's (`.proj`, `.ol`, `.ms` …), scoped under .kol-sheet, so a document written
+ * for kol-atlas renders here unchanged. Beside .kol-prose, not instead: prose is the article voice
+ * (16/24, weight 300); the sheet is the research document (15/1.6, the outline, the numbers).
+ * Source: kol-branding src/canvas/source/Research-Spec.dc.html (kol-atlas workspace.css).
+ * ============================================================================= */
+.kol-sheet {
+  --bg: var(--kol-surface-primary); --surface: var(--kol-surface-primary); --ink: var(--kol-surface-on-primary);
+  --muted: var(--kol-fg-64); --line: var(--kol-fg-12); --soft: var(--kol-fg-04);
+  --accent: var(--kol-accent-primary); --note: var(--ui-error);
+  --edge: 724px;
+  --display: var(--kol-font-family-sans); --body: var(--kol-font-family-sans); --mono: var(--kol-font-family-mono);
+}
+.kol-sheet{padding:16px 0 28px;min-width:0;color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+.kol-sheet h1,.kol-sheet h2,.kol-sheet h3,.kol-sheet h4{font-family:var(--display);line-height:1.2;text-wrap:balance;letter-spacing:-.005em;font-weight:700}
+.kol-sheet h1{font-size:36px;margin:0 0 12px}
+.kol-sheet h2{font-size:24px;margin:44px 0 16px;padding-top:24px;border-top:1px solid var(--line)}
+.kol-sheet h2:first-child,.kol-sheet h1+h2{border-top:0;padding-top:0;margin-top:20px}
+.kol-sheet h3{font-size:18px;margin:28px 0 4px;padding-top:18px;border-top:1px solid var(--line)}
+.kol-sheet h2+h3{border-top:0;padding-top:0;margin-top:16px}
+.kol-sheet .mk{font-size:15px;margin-left:8px}
+.kol-sheet h3 .why,.kol-sheet h2 .why{font-size:13px}
+.kol-sheet p{margin:8px 0;max-width:var(--edge)}
+.kol-sheet ul,.kol-sheet ol{margin:6px 0 10px;padding-left:22px;max-width:var(--edge)}
+.kol-sheet ul{list-style:disc}
+.kol-sheet ol{list-style:decimal}
+.kol-sheet li{margin:3px 0}
+.kol-sheet li::marker{color:var(--accent)}
+.kol-sheet strong{font-weight:600}
+.kol-sheet em{font-style:italic}
+.kol-sheet :not(pre)>code{font-family:var(--mono);font-size:.88em;background:color-mix(in srgb,var(--ink) 8%,transparent);padding:1px 5px;border-radius:4px}
+.kol-sheet a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:4px}
+.kol-sheet blockquote{margin:12px 0;padding:8px 14px;border-left:3px solid var(--line);color:var(--muted);max-width:var(--edge)}
+.kol-sheet hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+.kol-sheet [id^="a-"]{scroll-margin-top:72px}
+.kol-sheet .tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:8px}
+.kol-sheet table{border-collapse:collapse;width:100%;font-size:13.5px}
+.kol-sheet th,.kol-sheet td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.kol-sheet th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--soft);font-weight:600}
+.kol-sheet tr:last-child td{border-bottom:0}
+.kol-sheet td.num,.kol-sheet th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kol-sheet tr.group td{background:var(--soft);font-weight:600}
+.kol-sheet tr.total td{font-weight:700;background:var(--bg)}
+.kol-sheet .tablewrap.kv td:first-child{width:130px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.kol-sheet .totalbar{display:flex;flex-wrap:wrap;gap:6px 28px;align-items:baseline;margin-top:22px;padding:14px 16px;border-radius:8px;background:var(--soft);font-size:13.5px}
+.kol-sheet .totalbar b{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:16px}
+.kol-sheet .totalbar .over{color:var(--note)}
+.kol-sheet .term{border-bottom:1px dotted var(--accent);cursor:help;font-weight:500}
+.kol-sheet .term.missing{border:0;color:var(--note);background:var(--soft);padding:0 4px;border-radius:3px}
+.kol-sheet .media{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.kol-sheet .media figure{margin:0}
+.kol-sheet .media img,.kol-sheet .media video{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:var(--soft);border:1px solid var(--line);border-radius:4px}
+.kol-sheet .media .doc{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;background:var(--soft);border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:12px;text-decoration:none}
+.kol-sheet .media figcaption{margin-top:6px;font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.kol-sheet .why{font-family:var(--body);font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.kol-sheet p.when,.kol-sheet p.dw{font-size:13px;color:var(--muted);margin:0}
+.kol-sheet p.when .k,.kol-sheet p.dw .k{color:var(--ink)}
+.kol-sheet p.when+p:not(.dw){margin-top:12px}
+.kol-sheet p.dw+p{margin-top:12px}
+.kol-sheet p.note{font-size:10px;color:color-mix(in srgb,var(--ink) 48%,transparent);max-width:none;margin-top:10px}
+.kol-sheet p.tb{margin:6px 0 0;font-size:14.5px}
+.kol-sheet sup.fn{line-height:0;vertical-align:baseline;position:relative;top:-.5em;font-size:.75em}
+.kol-sheet sup.fn a{text-decoration:none;font-weight:600;color:color-mix(in srgb,var(--ink) 48%,transparent)}
+.kol-sheet ol.fns{font-size:10px;color:color-mix(in srgb,var(--ink) 48%,transparent);margin:32px 0 0;padding-left:0;list-style:none}
+.kol-sheet ol.fns li{margin:2px 0}
+.kol-sheet ol.fns .fnn{margin-right:.4em}
+.kol-sheet ol.fns .url{color:color-mix(in srgb,var(--ink) 36%,transparent);overflow-wrap:anywhere}
+.kol-sheet .ol .ms{margin-top:20px}
+.kol-sheet .ol .ms>summary.mh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:var(--display);font-weight:700;font-size:20px;padding:2px 8px;line-height:1.3}
+.kol-sheet .ol .mh a{color:var(--ink);text-decoration:none}
+.kol-sheet .ol .mh a:hover,.kol-sheet .ol .pt a:hover,.kol-sheet .ol li a:hover{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1.5px}
+.kol-sheet .ol .mh .meta{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:12px;color:var(--muted)}
+.kol-sheet .ol details.ph{margin-left:24px}
+.kol-sheet .ol summary{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:4px 8px;font-size:13.5px;line-height:1.45;cursor:pointer;list-style:none;border-radius:6px}
+.kol-sheet .ol summary::-webkit-details-marker{display:none}
+.kol-sheet .ol summary::before{content:"";flex:none;width:6px;height:6px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg);align-self:center}
+.kol-sheet .ol details[open]>summary::before{transform:rotate(45deg)}
+.kol-sheet .ol details.empty>summary{cursor:default}
+.kol-sheet .ol details.empty>summary::before{visibility:hidden}
+.kol-sheet .ol .pt a{color:var(--ink);text-decoration:none;font-weight:600}
+.kol-sheet .ol .mk{font-size:12px}
+.kol-sheet .ol .cnt{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.kol-sheet .ol ul{margin:0 0 4px;padding:0 10px 2px 34px;list-style:none}
+.kol-sheet .ol li{margin:4px 0;font-size:13px;line-height:1.5}
+.kol-sheet .ol li a{color:var(--ink);text-decoration:none}
+.kol-sheet .ol li .tn{display:inline-block;min-width:44px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.kol-sheet.proj{--g:64px;--ti:var(--g);--measure:calc(var(--edge) - var(--g));padding-left:var(--g)}
+.kol-sheet.proj .num{display:inline-block;width:var(--g);margin-left:calc(-1 * var(--g));font-variant-numeric:tabular-nums}
+.kol-sheet.proj h1,.kol-sheet.proj h1+p{margin-left:calc(-1 * var(--g))}
+.kol-sheet.proj h2,.kol-sheet.proj h3{margin-left:calc(-1 * var(--g));padding-left:var(--g)}
+.kol-sheet.proj h2{padding-left:0}
+.kol-sheet.proj h3 .num{color:var(--muted);font-weight:500}
+.kol-sheet.proj h3{margin-bottom:6px}
+.kol-sheet.proj h4{font-family:var(--body);font-size:15.5px;font-weight:600;letter-spacing:0;margin:26px 0 4px;line-height:1.4}
+.kol-sheet.proj h4 .num{font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);vertical-align:1px}
+.kol-sheet.proj h4.done::after{content:"  \2713"}
+.kol-sheet.proj h4+p{margin-top:2px}
+.kol-sheet.proj p.tb{font-size:14.5px;color:color-mix(in srgb,var(--ink) 70%,transparent)}
+.kol-sheet.proj h4,.kol-sheet.proj p.tb{margin-left:var(--ti)}
+.kol-sheet.proj ul.tb,.kol-sheet.proj ol.tb{margin-left:calc(var(--ti) + 2px);padding-left:18px;font-size:14.5px;color:color-mix(in srgb,var(--ink) 70%,transparent)}
+.kol-sheet.proj .tb strong{color:var(--ink)}
+.kol-sheet.proj h1 .num,.kol-sheet.proj h2 .num{width:auto;margin-left:0;margin-right:1em}
+.kol-sheet.proj h2 .num{color:var(--accent)}
+.kol-sheet:not(.proj) h1 .num{margin-right:1em}
+.kol-sheet h1 .num{color:var(--accent)}
+.kol-sheet p.stats{display:flex;flex-wrap:wrap;gap:4px 24px}
+.kol-sheet.proj p[data-ms],.kol-sheet.proj ol.fns[data-ms]{margin-left:calc(-1 * var(--g))}
+.kol-sheet.proj ul[data-ms]{margin-left:calc(-1 * var(--g));padding-left:0;list-style:none}
+.kol-sheet.proj ul[data-ms] li{margin:4px 0;color:var(--muted)}
+.kol-sheet.proj ul[data-ms] li strong{color:var(--ink)}
+.kol-sheet.proj p,.kol-sheet.proj ol.fns{max-width:var(--measure)}
+.kol-sheet.proj p[data-ms],.kol-sheet.proj ul[data-ms],.kol-sheet.proj ol.fns[data-ms]{max-width:calc(var(--measure) + var(--g))}
+.kol-sheet.proj p.tb,.kol-sheet.proj ul.tb,.kol-sheet.proj ol.tb{max-width:calc(var(--measure) - var(--ti))}
+.kol-sheet.proj p.note{max-width:none}
+@media (max-width:560px){.kol-sheet{padding:16px 0 20px}}
+@media (max-width:767px){
+.kol-sheet.proj{--g:0px}
+.kol-sheet.proj .num,.kol-sheet.proj h1 .num,.kol-sheet.proj h2 .num{display:inline;width:auto;margin-left:0;margin-right:.5em}
+.kol-sheet .ol .why{display:none}
+}
+.kol-sheet h2:has(+ [data-embed^="ac-"]){height:0;margin:0;padding:0;border:0;overflow:hidden}
+.kol-sheet .tablewrap:not(.kv){border:0;border-radius:0;margin:24px 0}
+.kol-sheet p+.tablewrap:not(.kv){margin-top:40px}
+.kol-sheet .tablewrap:not(.kv) table{font-family:var(--mono);font-size:12px;line-height:1.4}
+.kol-sheet .tablewrap:not(.kv) th{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:0;line-height:1.3;color:var(--ink);background:var(--soft);padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+.kol-sheet .tablewrap:not(.kv) th:first-child{border-top-left-radius:4px}
+.kol-sheet .tablewrap:not(.kv) th:last-child{border-top-right-radius:4px}
+.kol-sheet .tablewrap:not(.kv) td{padding:12px 16px;color:var(--muted);border-bottom:1px solid color-mix(in srgb,var(--ink) 8%,transparent);font-family:var(--mono)}
+.kol-sheet .tablewrap:not(.kv) tr:last-child td{border-bottom:0}
+.kol-sheet .tablewrap:not(.kv) tr.total td{font-weight:700;color:var(--ink);background:none}
+.kol-sheet .tablewrap:not(.kv) tr.total td strong{font-weight:700}
+.kol-sheet .tablewrap:not(.kv) td a{color:var(--ink);text-decoration:none}
+.kol-sheet .tablewrap:not(.kv) td a:hover{text-decoration:underline}
+
 /* =============================================================================
  * TAILWIND CONTRACT — font-family exposures
  * Lets JSX use font-display / font-narrow / etc. instead of arbitrary value

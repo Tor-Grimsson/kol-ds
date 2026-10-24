@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-workshop
 
+## Unreleased — 2026-10-23
+
+- **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
+
 ## 0.40.0 — 2026-10-17
 
 - The workshop shell uses `Rail` and `CommandOverlay` (kol-component's new names for ShellDrawer and ShellSearchOverlay). Needs kol-component ≥0.266.0. No visual change.

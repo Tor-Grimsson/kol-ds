@@ -38,7 +38,7 @@ export default function TapePage() {
           style={{ color: playing ? 'var(--kol-accent-primary)' : 'var(--kol-fg-64)', border: '1px solid var(--kol-fg-16)', borderRadius: 'var(--kol-radius-xs)', padding: '6px 14px' }}
           onClick={() => transport.toggle()}
         >{playing ? 'Running' : 'Run'}</span>
-        <span className="kol-helper-12 text-fg-32">All ten run off the studio transport — Space works here too.</span>
+        <span className="kol-mono-12 text-fg-32">All ten run off the studio transport — Space works here too.</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 32 }}>

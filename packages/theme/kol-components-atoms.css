@@ -801,7 +801,9 @@
   color: var(--kol-fg-80);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  transition: color 150ms ease, background 150ms ease;
+  /* padding and gap ride the same list (2026-10-24, the rail's clip model, kol-framework.css): this rule outranks
+   * the framework's box rule, and a `transition` shorthand here would otherwise drop the collapse's easing */
+  transition: color 150ms ease, background 150ms ease, padding 180ms ease, gap 180ms ease;
 }
 
 .kol-sidenav-hop:hover {
@@ -1024,6 +1026,15 @@ a:hover .icon-hover,
  * is the accent's alone, on hover and on its on-state; spending it on every
  * hover left the on-state with nothing of its own to say. */
 .kol-inline-control:hover { color: var(--kol-oq-96); }
+/* THE TAP TARGET ON TOUCH (HubHomeContract's mobile pass, apps/hub at 390 — 2026-10-23): the `app` card's
+ * cog and trash measured 16 × 16 on a coarse pointer, under the ladder's touch rung (32, kol-base-tokens).
+ * The glyph stays 16 — the card reserves the actions column from the control's box, so growing the box
+ * narrows every plate — and the finger gets 32: a pseudo-element 8px past each edge, drawn by nothing,
+ * hit by the browser. A pinned control grows its box on touch; a bare glyph grows its reach. */
+@media (pointer: coarse) {
+  .kol-inline-control { position: relative; }
+  .kol-inline-control::after { content: ''; position: absolute; inset: -8px; }
+}
 
 .kol-inline-control--accent:hover,
 .kol-inline-control--on,
@@ -1282,6 +1293,20 @@ a.kol-icon-frame {
  *
  * Same cure as IconFrame above: own your classes, inherit no states.
  * ═══════════════════════════════════════════════════════════════ */
+
+/* THE INK STEP (user 2026-10-23, on the settings rail's footer and close: *"give them both oq-80, then full on
+ * hover, just to give it slight elevated state"*). A bare control with no wash steps its INK instead: oq-80 at rest,
+ * oq-96 on hover. `.kol-ink-step` on the control itself (CloseButton `hover={false}`), or on a row of them
+ * (SettingsFooter) — it reaches the frame, the theme toggle and an icon-only button inside. */
+:is(.kol-ink-step, .kol-ink-step > *) :is(.kol-icon-frame, .kol-theme-toggle, .kol-btn:not(.kol-dd-trigger)),
+:is(.kol-icon-frame, .kol-theme-toggle, .kol-btn:not(.kol-dd-trigger)).kol-ink-step {
+  --kol-tone-fg: var(--kol-oq-80);
+  transition: color var(--kol-transition-fast, 150ms) ease;
+}
+:is(.kol-ink-step, .kol-ink-step > *) :is(.kol-icon-frame, .kol-theme-toggle, .kol-btn:not(.kol-dd-trigger)):hover,
+:is(.kol-icon-frame, .kol-theme-toggle, .kol-btn:not(.kol-dd-trigger)).kol-ink-step:hover {
+  --kol-tone-fg: var(--kol-oq-96);
+}
 
 .kol-theme-toggle {
   display: inline-flex;

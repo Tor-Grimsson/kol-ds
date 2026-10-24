@@ -62,6 +62,8 @@ import { PageHeader } from '@kolkrabbi/kol-component'
  * @param {Function}  props.onOpenSettings  the gear's handler — opens the app's settings
  *                                          drawer. The scaffold draws the control
  * @param {Object}    props.filtersProps    escape hatch — anything else the organism takes
+ * @param {boolean}   props.filters         the filter bar (default true); `false` renders the content alone under the
+ *                                          masthead — no tabs, no search (HubSettings' page tier, 2026-10-23)
  */
 export default function SettingsScaffold({
   tabs = [],
@@ -78,6 +80,7 @@ export default function SettingsScaffold({
   themeToggle,
   onOpenSettings,
   filtersProps,
+  filters = true,
 }) {
   const [tab, setTab] = useState(defaultTab ?? tabs[0]?.value)
   const active = tabs.find((t) => t.value === tab)
@@ -143,7 +146,10 @@ export default function SettingsScaffold({
         actions={cluster}
         {...header}
       />
-      <ContentFilters
+      {/* NO FILTER BAR (`filters={false}`, review 2 § 6.3 — the page tier without the filters tier): the content alone,
+        * in the same scroll region the filter row's render gives it */}
+      {!filters && <div style={{ flex: 1, minHeight: 0, overflow: 'auto', paddingTop: 4, paddingBottom: 4 }}>{renderContent?.(tab)}</div>}
+      {filters && <ContentFilters
         tone={tone}
         title={title}
         items={items ?? []}
@@ -181,7 +187,7 @@ export default function SettingsScaffold({
           </div>
         )}
         {...filtersProps}
-      />
+      />}
     </PageShell>
   )
 }

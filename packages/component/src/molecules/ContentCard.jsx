@@ -131,8 +131,12 @@ const MEDIA = {
   showcase: { zoom: true },
   /* frame OFF by default (ListingCardThumbBorder, user 2026-08-27: "I hate
    * border — remove border"): the article thumb's hairline is opt-in —
-   * `frame` turns it on, and with it the fg-08 → fg-16 hover step */
-  article: { frame: false, borderHover: true, zoom: true },
+   * `frame` turns it on, and with it the fg-08 → fg-16 hover step.
+   * ZOOM OFF (user 2026-10-24, site-hub W4: "an annoying habit of using article
+   * contentcard with a stupid zoom on hover"): a page link is not image-led —
+   * the thumb stays put, as the app card's hover fill went (2026-10-23). `zoom`
+   * stays an opt-in prop; the hero rung is hero's own. */
+  article: { frame: false, borderHover: true, zoom: false },
 }
 
 /* VARIANTS ARE CONTENT KINDS, NEVER PAGE NAMES (user ruling 2026-08-29:
@@ -211,14 +215,17 @@ export default function ContentCard({
   ...text
 }) {
   /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` card with its parts slotted from
-   * `verbs` · `download` · `menuItems` — AppItem.jsx. They never reach ContentText. */
-  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone })
-  delete text.verbs; delete text.download; delete text.menuItems
+   * `verbs`, `download`, `menuItems`, and `tags`, `details`, `onTags` for the info rail — AppItem.jsx.
+   * None of them reach ContentText; an app card's `tags` are the rail's, never chips on the plate. */
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert })
+  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert
   if (app) {
+    delete text.tags
     variantProp = 'file'
     tone = app.tone
     media = app.media
     control = app.control ?? control
+    controlStart = app.controlStart ?? controlStart
     actions = app.actions ?? actions
     onContextMenu = app.onContextMenu ?? onContextMenu
     text.date = app.date

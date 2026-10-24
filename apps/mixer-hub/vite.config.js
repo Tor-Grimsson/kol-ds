@@ -7,7 +7,7 @@ import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/mixer-hub.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [devFavicon({ label: 'M' }), react(), tailwindcss()],
+  plugins: [devFavicon({ label: 'W', ground: '#49A0A2' }) /* kol-mirror's dev tile (16-app-anatomy § Dev favicon) */, react(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
   // on its own port, so `pnpm mixer-hub` stays an ordinary localhost root.
@@ -34,6 +34,7 @@ export default defineConfig(({ command }) => ({
   // its own port, so it runs beside the other apps
   server: {
     port: 5197,
+    host: true,
     /* R2 media, same-origin — kol-mirror's own proxy. `r2.kolkrabbi.io` sends no
        Access-Control-Allow-Origin, so a cross-origin fetch taints any canvas it is drawn into, and
        the studio reads those pixels back (slitscan, trails, every canvas FX). `/media/` is

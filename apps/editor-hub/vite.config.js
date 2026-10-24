@@ -11,7 +11,7 @@ const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.met
 // packages, 2026-10-03), and publishes into the showcase's output at ui.kolkrabbi.io/apps/editor-hub.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [devFavicon({ label: 'E' }), react(), svgr(), tailwindcss()],
+  plugins: [devFavicon({ label: 'X', ground: '#F2D24B' }) /* kol-fxr's dev tile (16-app-anatomy § Dev favicon) */, react(), svgr(), tailwindcss()],
 
   base: command === 'build' ? '/apps/editor-hub/' : '/',
 
@@ -41,6 +41,7 @@ export default defineConfig(({ command }) => ({
   // root vercel.json carries the same rewrite.
   server: {
     port: 5198,
+    host: true,
     proxy: {
       '/media': { target: 'https://r2.kolkrabbi.io', changeOrigin: true, rewrite: (p) => p.replace(/^\/media/, '') },
     },

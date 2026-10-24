@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.45.0 — 2026-10-24
+
+- **A registered glyph never overrides a DS name** (user 2026-10-24: kol-mirror's `registerIcons` of its own set put its `refresh` into the settings rail's reset — *"whats the point of standardizing if we let this slip so easily"*). The packaged sets resolve first for every name they ship; a consumer's glyph resolves only for names the DS has none for, and dev warns once per collision. Until now a registration won over the set — a repo could redraw any DS glyph app-wide without a word.
+
 ## 0.44.0 — 2026-10-23
 
 - **New:** `rabbit` in `misc` — kol-mirror's last local glyph. Its filled outline is Lucide's `rabbit` (ISC) expanded at 1.5-wide walls, so the centerline is Lucide's own path: a 1.5 `currentColor` stroke, round caps and joins, scaled 0.9 about the centre onto 3–21 to sit on the set's keyline (the outline reached 1.2–22.75).

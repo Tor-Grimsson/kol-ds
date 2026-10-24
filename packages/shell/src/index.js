@@ -30,6 +30,7 @@ export { ShortcutsOverlay, shortcutInScope } from '@kolkrabbi/kol-component'
 export { Logomark } from '@kolkrabbi/kol-component'
 // the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)
 export { default as CatalogPage } from './CatalogPage.jsx'
+export { default as CatalogGrid } from './CatalogGrid.jsx'
 export { default as SettingsShortcuts } from './SettingsShortcuts.jsx'
 export { default as SettingsLinks, SettingsColophon } from './SettingsLinks.jsx'
 export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOverlay.jsx'
@@ -40,5 +41,8 @@ export { default as HubSettings } from './HubSettings.jsx'
 export { default as HubDev } from './HubDev.jsx'
 // the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
 export { default as AppStudio } from './AppStudio.jsx'
+// Create: a catalog of parts beside the case on the studio canvas — monitor's page made once (plan-2026-10-23 § 3.4)
+export { default as StudioCreate, StudioCreateAction } from './StudioCreate.jsx'
+export { default as StudioDetail } from './StudioDetail.jsx'
 // a consumer slot in the opened rail — the page portals into it (NavRailConsumerSlot, kol-monitor 2026-10-15)
 export { RailSlotProvider, useRailSlot } from '@kolkrabbi/kol-component'

@@ -84,6 +84,14 @@
       "destination": "/apps/catalog/index.html"
     },
     {
+      "source": "/apps/site-hub/(.*)",
+      "destination": "/apps/site-hub/index.html"
+    },
+    {
+      "source": "/apps/studio-hub/(.*)",
+      "destination": "/apps/studio-hub/index.html"
+    },
+    {
       "source": "/apps/studio/(.*)",
       "destination": "/apps/studio/index.html"
     },

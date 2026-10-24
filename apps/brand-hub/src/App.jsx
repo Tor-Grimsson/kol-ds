@@ -5,7 +5,6 @@ import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
 import { Brand } from '@kolkrabbi/kol-styleguide'
 import { Notes, NEW_NOTE } from '@kolkrabbi/kol-notes'
 import { Decks, NEW_DECK } from '@kolkrabbi/kol-deck'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
 import { createFixtureClient } from 'media-fixture'
 import { useFixtureMedia, useMediaTool, useNotesTool, useDecksTool, DEFAULTS } from 'media-fixture/wiring'
 import { VOYAGER } from 'voyager-fixture'
@@ -89,6 +88,9 @@ export default function App() {
     ],
     tone: 'secondary',
     themeIn: 'drawer',
+    /* the page tier with its filters — this app's page as it was (settings tiers, 2026-10-23) */
+    page: true,
+    filters: true,
   }
 
   return (
@@ -106,7 +108,6 @@ export default function App() {
       currentPath={section}
       onNavigate={navigate}
       shortcuts={SHORTCUTS}
-      themeToggle={<ThemeToggle fill="none" label={false} size="sm" />}
       settings={settings}
     >
       {section === '/' || section === '/assets' ? brand

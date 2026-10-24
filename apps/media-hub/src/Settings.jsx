@@ -94,5 +94,6 @@ export function useSettings({ client, media, view, setView, resetView }) {
 
   /* NO DRAWER (apps review 2026-09-29): a gear on the settings page opened the same rows again —
    * one of three settings surfaces. The page is the one place; the theme sits in its masthead. */
-  return { sections, tabs: [tagsTab], themeIn: 'masthead' }
+  /* the page tier with its filters — the page as it was (settings tiers, 2026-10-23) */
+  return { sections, tabs: [tagsTab], themeIn: 'masthead', page: true, filters: true }
 }

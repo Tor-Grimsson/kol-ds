@@ -9,6 +9,11 @@
 export { default as ShellLayout } from './ShellLayout.jsx'
 export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext, ShellNavCollapsedContext, ShellContentWidthContext, SHELL_SCROLL_ROOT, usePageMeta, usePageMetaValue } from './ShellLayout.jsx'
 export { default as ShellSidebar } from './ShellSidebar.jsx'
+/* the workshop rail IS a NavRail preset (2026-10-24): `NavRail preset="workshop"` renders ShellSidebar once this
+ * package is imported — kol-component cannot import kol-workshop, so the name is registered from here */
+import { registerRailPreset } from '@kolkrabbi/kol-component'
+import ShellSidebarForRail from './ShellSidebar.jsx'
+registerRailPreset('workshop', ShellSidebarForRail)
 /* the left rail's column and its three states — open · icons · hidden (2026-10-02) */
 export { ShellNavColumn } from './ShellLayout.jsx'
 export { ShellRailModeContext } from './ShellSidebar.jsx'

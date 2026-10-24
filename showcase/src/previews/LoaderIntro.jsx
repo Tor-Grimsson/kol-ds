@@ -30,7 +30,7 @@ export default function LoaderIntroPreview() {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <p className="kol-helper-12 text-fg-48">Press Play — then click the curtain to enter.</p>
+            <p className="kol-mono-12 text-fg-48">Press Play — then click the curtain to enter.</p>
           </div>
         )}
       </div>

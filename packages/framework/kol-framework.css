@@ -160,7 +160,20 @@ body {
   gap: 0.75rem;
   width: 100%;
   position: relative;
-  padding: 0.5rem 2.5rem 0.5rem 1.5rem;
+  /* the gutter is THE CHROME INSET (`--kol-pad-chrome-x`, 05-layout-systems: 20 on a phone, 24 from 768) — the rail
+   * carried a literal 1.5rem of its own until 2026-10-24, right on the desk and wrong in the phone drawer */
+  padding: 0.5rem 2.5rem 0.5rem var(--kol-pad-chrome-x);
+  /* THE CLIP MODEL (user 2026-10-24: "some shifting and not very smooth animation between collapsed and
+   * expanded"): the collapsed row is the same row with its padding and gap eased on the grid's own 180ms
+   * clock, the label fading under the rail's edge — not a second layout that snaps in while the column is
+   * still moving. The glyph slides from the gutter to the narrow column's centre; nothing jumps. */
+  white-space: nowrap;
+  overflow: hidden;
+  transition: padding 180ms ease, gap 180ms ease;
+}
+.kol-sidenav-hop-label {
+  overflow: hidden;
+  transition: opacity 120ms ease;
 }
 /* THE HEADER SLOT (RailLogomarkAtTop, kol-fxr 2026-08-28 — user, on the
  * raven in the footer: "why did you move the logo from top to bottom?"): the
@@ -175,14 +188,25 @@ body {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 1rem 2.5rem 0 1.5rem;
+  padding: 1rem 2.5rem 0 var(--kol-pad-chrome-x);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: padding 180ms ease, gap 180ms ease;
 }
 /* the caret rides a PLAIN span (Icon stamps inline-flex on its own element,
  * which would outrank the collapsed display:none) */
+/* the caret's box lives HERE, not as a utility on the element (2026-10-24: the foldernote's caret is a <button>, and
+ * an `inline-flex` utility on it outranked the collapsed rule's display:none, so the chevron showed on the narrow
+ * rail) — a 12px line box for the span and the button alike */
 .kol-sidenav-hop-caret {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: transform 150ms ease, opacity 120ms ease, visibility 0s linear 120ms;
 }
 .kol-sidenav-list {
   display: flex;
@@ -194,11 +218,13 @@ body {
  * 2026-08-26): a non-routing label sitting where a leaf sits, its rows one
  * step further in. Type and color ride the element as utilities
  * (kol-helper-10; text-subtle, text-emphasis when a leaf beneath it is the
- * route); the box lives here. No text-transform — the retired fork's
- * `uppercase` does not return (type law: only the display voice carries one). */
+ * route); the box lives here. The `uppercase` rides the element as a utility
+ * too (user ruling 2026-10-24 on the another-creation reference, reversing the
+ * 2026-08-26 line that kept it out). */
 .kol-sidenav-group {
   display: block;
-  padding: 0.25rem 1.5rem 0.25rem 3.5rem;
+  /* one step in from the gutter: the inset + the icon column (20) + the gap (12) */
+  padding: 0.25rem var(--kol-pad-chrome-x) 0.25rem calc(var(--kol-pad-chrome-x) + 2rem);
 }
 /* THE COLLAPSE RULE (WorkspaceSidebarGeometry, kol-fxr 2026-08-27 — user: "I
  * would rather all use the same geometry layout"): a row that can survive
@@ -208,9 +234,9 @@ body {
  * thing narrowing (the brand sidebar's model) instead of rows vanishing. */
 .kol-sidenav-section {
   display: block;
-  padding: 0.5rem 1.5rem 0.25rem 1.5rem;
+  padding: 0.5rem var(--kol-pad-chrome-x) 0.25rem var(--kol-pad-chrome-x);
 }
-.kol-sidenav-footer { padding-inline: 1.5rem 1rem; }
+.kol-sidenav-footer { padding-inline: var(--kol-pad-chrome-x) 1rem; }
 
 /* The aside's OWN box (SideNavMobilePosition, kol-website 2026-08-25) — the
  * hop's law above, one element up. `sticky top-0 self-start h-dvh flex
@@ -238,9 +264,11 @@ body {
  * rail — one look, two triggers. */
 :root[data-sidenav="collapsed"] .kol-brand-layout { grid-template-columns: var(--kol-sidenav-w-collapsed) minmax(0, 1fr); }
 :root[data-sidenav="collapsed"] .kol-sidenav-hops { padding: 0 0 var(--kol-spacing-4); margin-bottom: var(--kol-spacing-4); }
-:root[data-sidenav="collapsed"] .kol-sidenav-hop { padding: var(--kol-spacing-2) 0; justify-content: center; gap: 0; }
-:root[data-sidenav="collapsed"] .kol-sidenav-header { padding: 1rem 0 0; justify-content: center; gap: 0; }
-:root[data-sidenav="collapsed"] .kol-sidenav-hop-label { display: none; }
+/* the narrow row is the wide row with its gutter eased to the column's centre — (56 − 20) / 2 — and its label
+ * faded, so the toggle animates as one motion (the clip model, above) */
+:root[data-sidenav="collapsed"] .kol-sidenav-hop { padding: var(--kol-spacing-2) 0 var(--kol-spacing-2) calc((var(--kol-sidenav-w-collapsed) - 1.25rem) / 2); gap: 0; }
+:root[data-sidenav="collapsed"] .kol-sidenav-header { padding: 1rem 0 0 calc((var(--kol-sidenav-w-collapsed) - 1.25rem) / 2); gap: 0; }
+:root[data-sidenav="collapsed"] .kol-sidenav-hop-label { opacity: 0; }
 :root[data-sidenav="collapsed"] .kol-sidenav-body { display: none; }
 :root[data-sidenav="collapsed"] .kol-sidenav-hop-count,
 :root[data-sidenav="collapsed"] .kol-sidenav-section-toggle { display: none; }
@@ -248,9 +276,12 @@ body {
  * port): the disclosure caret and the disclosed list are noise in a rail with
  * no labels; the theme slot and footer centre; the footer wordmark swaps for
  * its initial — both spans live in one <a>, so the link survives either state. */
-:root[data-sidenav="collapsed"] .kol-sidenav-hop-caret,
+:root[data-sidenav="collapsed"] .kol-sidenav-hop-caret { opacity: 0; visibility: hidden; pointer-events: none; }
 :root[data-sidenav="collapsed"] .kol-sidenav-section,
 :root[data-sidenav="collapsed"] .kol-sidenav-list { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .kol-brand-layout, .kol-sidenav-hop, .kol-sidenav-header, .kol-sidenav-hop-label, .kol-sidenav-hop-caret { transition: none; }
+}
 :root[data-sidenav="collapsed"] .kol-sidenav-theme-slot { padding-inline: 0; justify-content: center; }
 :root[data-sidenav="collapsed"] .kol-sidenav-footer { padding-inline: 0; justify-content: center; }
 .kol-sidenav-footer-mark { display: none; }
@@ -322,28 +353,29 @@ body {
 }
 
 @media (max-width: 767px) {
-  /* Mobile drawer mode: hide the sidebar from the layout grid entirely.
-     SideNav repositions as a fixed slide-in panel triggered by the hamburger
-     in BrandLayout. Backdrop is the sibling .kol-sidenav-backdrop. */
+  /* THE PHONE MODE IS THE APP RAIL'S DRAWER (user 2026-10-24): the rail leaves the grid and slides in from
+     the left on the shell's curve; SiteLayout stamps `data-rail-drawer` on the root and renders the shell's
+     trigger (`.kol-shell-drawer-trigger`, top-right, hamburger/×) and scrim (`.kol-shell-drawer-scrim`) —
+     both kol-theme's, shared with AppShell. The round top-left hamburger and the opacity backdrop are in
+     `_tmp/2026-10-24-site-drawer/`. */
   .kol-brand-layout { grid-template-columns: minmax(0, 1fr); }
   .kol-sidenav {
     position: fixed;
     inset: 0 auto 0 0;
     width: min(80vw, 280px);
     transform: translateX(-100%);
-    transition: transform 220ms ease;
+    transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   .kol-sidenav.is-drawer-open { transform: translateX(0); }
+  @media (prefers-reduced-motion: reduce) { .kol-sidenav { transition: none; } }
   /* Restore expanded labels + body inside the open drawer (override the rail rules above). */
-  .kol-sidenav.is-drawer-open .kol-sidenav-hop { padding: 8px 0; justify-content: flex-start; gap: 12px; }
-  .kol-sidenav.is-drawer-open .kol-sidenav-header { padding: 1rem 2.5rem 0 1.5rem; justify-content: flex-start; gap: 12px; }
+  /* the open drawer's row is the WIDE row — the gutter at 1.5rem as on the desk (user 2026-10-24: "mobile is missing
+     padding left?"; this line restored `padding: 8px 0`, the narrow row's zero gutter, so the rows hugged the edge) */
+  .kol-sidenav.is-drawer-open .kol-sidenav-hop { padding: 0.5rem 2.5rem 0.5rem var(--kol-pad-chrome-x); justify-content: flex-start; gap: 0.75rem; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-header { padding: 1rem 2.5rem 0 var(--kol-pad-chrome-x); justify-content: flex-start; gap: 0.75rem; }
   .kol-sidenav.is-drawer-open .kol-sidenav-hop-label { display: inline; }
   .kol-sidenav.is-drawer-open .kol-sidenav-section { display: block; }
   .kol-sidenav.is-drawer-open .kol-sidenav-body { display: block; }
-  .kol-brand-layout[data-drawer-open="true"] .kol-sidenav-backdrop {
-    opacity: 1;
-    pointer-events: auto;
-  }
 }
 
 /* SideNav primitives (.kol-sidenav-hop, -hop-icon, -hop-label, -link,

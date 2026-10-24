@@ -51,6 +51,7 @@ const GATES = [
   ['variants', 'validate-variants.mjs'],
   ['control-type', 'validate-control-type.mjs'],
   ['views', 'validate-views.mjs'],
+  ['helper-text', 'validate-helper-text.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

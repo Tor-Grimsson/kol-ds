@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import AppLayout from './AppLayout'
-import LibraryPage from './pages/LibraryPage'
 /* The router bridge and the device gate come from the PACKAGE, not a local
    copy — `mode.js` holds `let navigator` as module state, so registering the
    router on our copy left the package's null and every in-package hop fell
@@ -125,7 +124,9 @@ export default function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<HomeRoute />} />
-            <Route path="/library" element={<LibraryPage />} />
+            {/* Library, Morph and Settings are the Studio's pages — the routes only keep the router from 404-ing */}
+            <Route path="/library/*" element={null} />
+            <Route path="/morph" element={null} />
             <Route path="/settings" element={null} />
             {/* the chromes ride under the rail too (user, 2026-08-27 — "show the
                 sidebar in each mode"); `\` hides it, see AppLayout */}

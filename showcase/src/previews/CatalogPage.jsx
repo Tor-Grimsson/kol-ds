@@ -28,13 +28,14 @@ export default function CatalogPagePreview({ variant = 'catalog' }) {
   const [tour, setTour] = useState(false)
   const [favs, setFavs] = useState(() => new Set(['press']))
   const [files, setFiles] = useState(() => [
-    { id: 'f1', name: 'Morph W 1791484577796', meta: '12 modules, 9 connections', savedAt: Date.parse('2026-10-22'), bytes: 18400, thumb: IMG(20) },
-    { id: 'f2', name: 'Poster 04', savedAt: Date.parse('2026-10-20'), bytes: 6200 },
-    { id: 'f3', name: 'Loop study', savedAt: Date.parse('2026-10-18'), bytes: 41000, thumb: IMG(200) },
+    { id: 'f1', name: 'Morph W 1791484577796', savedAt: Date.parse('2026-10-22'), bytes: 18400, thumb: IMG(20), tags: ['poster', 'loop'], details: [{ label: 'Modules', value: 12 }, { label: 'Connections', value: 9 }] },
+    { id: 'f2', name: 'Poster 04', savedAt: Date.parse('2026-10-20'), bytes: 6200, tags: ['poster'], details: [{ label: 'Layers', value: 3 }] },
+    { id: 'f3', name: 'Loop study', savedAt: Date.parse('2026-10-18'), bytes: 41000, thumb: IMG(200), tags: ['loop'], details: [{ label: 'Layers', value: 5 }] },
   ])
   if (variant === 'app') {
     /* the app preset (CatalogAppVariant, kol-fxr 2026-10-23): toCard returns raw writes and the
-     * page draws download, cog over trash, and the one Rename · Duplicate · Delete menu */
+     * page draws download, cog over trash, the one Rename · Duplicate · Delete menu on right-click, and
+     * the file's info rail on the cog (tags, details, the verbs — 2026-10-23) */
     const write = (id, fn) => setFiles((fs) => fn(fs, fs.findIndex((f) => f.id === id)))
     return (
       <CatalogPage
@@ -45,7 +46,9 @@ export default function CatalogPagePreview({ variant = 'catalog' }) {
         filtersTitle="All Saved"
         searchKeys={['name']}
         toCard={(f) => ({
-          key: f.id, title: f.name, meta: f.meta, date: f.savedAt, size: f.bytes, media: f.thumb,
+          key: f.id, title: f.name, date: f.savedAt, size: f.bytes, media: f.thumb,
+          tags: f.tags, details: f.details,
+          onTags: (tags) => write(f.id, (fs, i) => fs.map((x, j) => (j === i ? { ...x, tags } : x))),
           download: () => {},
           verbs: {
             rename: (name) => write(f.id, (fs, i) => fs.map((x, j) => (j === i ? { ...x, name } : x))),

@@ -12,7 +12,7 @@
 // that has no Case, no snap and no workbench.
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTouchGestures } from '../../../rack/src/hooks/useTouchGestures.js'
+import { useTouchGestures } from './useTouchGestures.js'
 
 // 0.3 → 0.1 with touch (2026-09-01): the fit at 390 is ~0.19, and a pinch
 // clamped to 0.3 could never return to it. `0` still resets to the fit.

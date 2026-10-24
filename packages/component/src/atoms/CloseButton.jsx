@@ -1,5 +1,7 @@
 import Button from '../atoms/Button.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
+import { Icon } from '@kolkrabbi/kol-icons'
+import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
  * CloseButton — the X that dismisses a thing. One component, so there is one.
@@ -43,14 +45,32 @@ import IconFrame from '../atoms/IconFrame.jsx'
  * rung either way — only the state machine differs, which is exactly the
  * distinction IconFrame was promoted for (2026-08-01).
  *
+ * TWO SWITCHES, INDEPENDENT (user 2026-10-23: *"why dont we ship close button with and without frame, padding,
+ * hover … in this case just remove the hover, nothing else, but some cases might only want the icon not the frame"*).
+ * `hover={false}` keeps the box and its padding (the hit area and the alignment do not move) and drops the wash; its
+ * ink steps instead, oq-80 at rest and oq-96 on hover (`.kol-ink-step`) —
+ * the IconFrame base, which is what `states={false}` always was; `states` stays as its alias. `frame={false}` is the
+ * glyph alone: no box, no padding, the rung's solo glyph size at full ink. Both default on, so no close changes.
+ *
  * @param {Function} onClick   dismiss
- * @param {boolean}  states    interactive states (default true → Button); false → IconFrame, no states
+ * @param {boolean}  hover     the hover wash (default true); false keeps the box, drops the wash
+ * @param {boolean}  frame     the box and its padding (default true); false = the glyph alone
+ * @param {boolean}  states    alias of `hover` (kept — every `states={false}` call site reads the same)
  * @param {'xs'|'sm'|'md'|'lg'} size  the rung (default 'sm'); match the row it sits in
  * @param {string}   label     accessible name (default 'Close')
  * @param {string}   className extra classes — positioning, never chrome
  */
-export default function CloseButton({ onClick, size = 'sm', label = 'Close', states = true, className = '', ...rest }) {
-  if (!states) {
+export default function CloseButton({ onClick, size = 'sm', label = 'Close', hover, frame = true, states = true, className = '', ...rest }) {
+  const washes = hover ?? states
+  if (!frame) {
+    return (
+      <button type="button" onClick={onClick} aria-label={label} className={`inline-flex shrink-0 items-center justify-center bg-transparent border-none p-0 cursor-pointer text-oq-96 ${className}`.trim()} {...rest}>
+        <Icon name="x" size={glyphSize(size, true)} />
+      </button>
+    )
+  }
+  if (!washes) {
+    /* no wash: the INK steps instead — oq-80 at rest, oq-96 on hover (`.kol-ink-step`, kol-theme) */
     return (
       <IconFrame
         name="x"
@@ -58,7 +78,7 @@ export default function CloseButton({ onClick, size = 'sm', label = 'Close', sta
         size={size}
         onClick={onClick}
         aria-label={label}
-        className={className}
+        className={`kol-ink-step ${className}`.trim()}
         {...rest}
       />
     )

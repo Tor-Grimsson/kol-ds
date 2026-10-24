@@ -53,7 +53,7 @@ export default function PaletteHarmonyWheelPreview() {
         ))}
       </div>
 
-      <p className="kol-helper-12 text-fg-48">
+      <p className="kol-mono-12 text-fg-48">
         Drag the ring or focus it and use arrow keys (shift = 15°) · hue {Math.round(hue)}°
       </p>
     </div>

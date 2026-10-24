@@ -194,10 +194,12 @@ export default function ContentRow({
   ...text
 }) {
   /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` row with its parts slotted from
-   * `verbs` · `download` · `menuItems` — AppItem.jsx. They never reach ContentText. */
-  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone })
-  delete text.verbs; delete text.download; delete text.menuItems
+   * `verbs`, `download`, `menuItems`, and `tags`, `details`, `onTags` for the info rail — AppItem.jsx.
+   * None of them reach ContentText; an app row's `tags` are the rail's, never chips in the row. */
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert, row: true })
+  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert
   if (app) {
+    delete text.tags
     variantProp = 'file'
     tone = app.tone
     media = app.media

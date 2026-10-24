@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.7.0 — 2026-10-24
+
+- **`./src/*` is open in `exports`** (StyleguideSrcExports, kol-branding 2026-10-24) — the kol-framework pattern, so a forked brand-book composition deep-imports `BrandMark.jsx`, `typeSpecimen.js`, `SocialMocks.jsx` and `StationeryMocks.jsx` by path instead of aliasing `node_modules` in Vite. The raw-JSX contract is unchanged.
+
+- **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
+
 ## 0.6.0 — 2026-10-02
 
 - **Renamed: `ProfileAvatar` → `BrandAvatar`** — it is the brand's mark in a profile frame, not a second `Avatar`. `ProfileAvatar` is the alias.

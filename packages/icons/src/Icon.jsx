@@ -57,8 +57,9 @@ const useIconsReady = () => {
 
 /* Consumer-registered icons — a repo brings its OWN svg folder and registers it,
  * so <Icon name> resolves app-specific icons that never ship in the package. They
- * win over the packaged set (a repo can also override a shared icon). Resolves
- * synchronously, so custom icons render without waiting on the packaged chunk. */
+ * fill the names the packaged set has none for and NEVER override a shipped name
+ * (2026-10-24; they used to win). Resolves synchronously, so custom icons render
+ * without waiting on the packaged chunk. */
 const CUSTOM = Object.create(null)
 
 /**
@@ -95,11 +96,23 @@ export const registerIcons = (globMap) => {
  *   rack → rack-v (2026-10-09: beside the new rack-h) */
 export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'metrics', rack: 'rack-v' }
 
+/* A REGISTERED GLYPH NEVER OVERRIDES A DS NAME (user 2026-10-24: kol-mirror registered its own set over the resolver and
+ * its `refresh` replaced the DS's in the settings rail's reset — *"how can it register its own in a FIXED PRESET OF
+ * SETTINGS?"*). The packaged sets win for every name they ship; a consumer's glyph resolves only for names the DS has
+ * none for. Before the packaged chunk lands a colliding custom glyph may paint once; the DS's takes over on load.
+ * Dev warns once per overridden name, so a collision is seen, not silently lost. */
+const overridden = new Set()
 const resolveIcon = (name) => {
-  if (CUSTOM[name]) return CUSTOM[name]
-  if (!ICONS) return undefined
   const n = RENAMED_ICONS[name] ?? name
-  return ICONS.V1[n] ?? ICONS.SIGNAL[n]
+  const shipped = ICONS ? (ICONS.V1[n] ?? ICONS.SIGNAL[n]) : undefined
+  if (shipped) {
+    if (CUSTOM[name] && import.meta.env?.DEV && !overridden.has(name)) {
+      overridden.add(name)
+      console.warn(`kol-icons: "${name}" is a DS glyph — the registered one is ignored (a registration never overrides a shipped name, 2026-10-24). Register it under another name if it is a different drawing.`)
+    }
+    return shipped
+  }
+  return CUSTOM[name]
 }
 
 const normalizeSize = (value) => {

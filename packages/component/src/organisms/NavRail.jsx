@@ -15,6 +15,7 @@ import useGrabEdge from '../hooks/useGrabEdge.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Logomark from '../atoms/Logomark.jsx'
 import { useRailSlot } from '../hooks/railSlot.jsx'
+import { RAIL_ROW } from '../hooks/railRow.js'
 import NavRailSite from './NavRailSite.jsx'
 
 /**
@@ -69,8 +70,19 @@ import NavRailSite from './NavRailSite.jsx'
  * wrong — arriving on a route reveals nothing, by construction rather than by a
  * flag a consumer has to remember.
  *
+ * THE PRESETS (user 2026-10-24: *"the rail, do you make a preset for this? like catalog has preset?"*) — three rails, one
+ * name each, in `RAIL_PRESETS` below: `app` is the studio rail (this file's AppRail: the 48px rail that grabs open,
+ * sections ENTER and EXPAND, the pill on the phone, Media · Sign in · Settings at the foot); `site` is the brand rail
+ * (NavRailSite — brand.kolkrabbi.io); `workshop` is the workshop rail (kol-workshop's ShellSidebar, registered through
+ * `registerRailPreset` since kol-component cannot import kol-workshop). AppShell passes the preset and reads its phone
+ * shape; an app passes nothing else about the rail.
+ *
+ * THE WORDS (user 2026-10-24): a section ENTERS (its rows replace the list under a Back row) and EXITS (Back); a section
+ * EXPANDS (its rows open under it in place) and COLLAPSES. No other words, in code or docs.
+ *
+ * @param {'app'|'site'|'workshop'} preset  which rail (default `app`); `variant="site"` is the old spelling of `preset="site"`
  * @param {Array}  items        `{ icon, path, label, sub?: [{ icon?, path, label }] }`
- *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron folds
+ *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron expands or enters
  * @param {Array}  bottomItems  pinned below the rule (Settings)
  * @param {Object} logomark     `{ svgUrl, title }` — the mark, and the app name beside it when open
  * @param {string} currentPath  active match: '/' exact, else prefix → aria-current="page"
@@ -175,12 +187,8 @@ function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
 /* one row: the rung exactly where the closed rail had it, then the label and
  * (with `sub`) the chevron — the row clips to the rail's width */
 /* the L2 glyph goes through the same injection seam Button gives L1 */
-function IconAt({ name, size, component }) {
-  const Cmp = component || Icon
-  return <Cmp name={name} size={size} />
-}
 
-function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail, onEnter }) {
+function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconComponent, railOpen, onOpenRail, onEnter, depth = 0 }) {
   const [open, setOpen] = useState(false)
   /* A SECTION ROW IS NOT A DESTINATION (RailSectionPressOpensRail, kol-fxr
    * 2026-08-30 — user: *"if I press effects from collapsed nav it should maybe
@@ -202,7 +210,7 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
    * section's name shut the nav and loaded nothing. */
   /* FOLDER NOTE (2026-10-22, user: "like foldernote in obsidian where a parent/group/folder can
    * also be a note"). Opt-in per section: give it `to` and its icon and label open that page,
-   * while the chevron alone folds or enters — `RailSection`'s `to` split in kol-workshop. A
+   * while the chevron alone expands or enters — `RailSection`'s `to` split in kol-workshop. A
    * section without `to` is unchanged. */
   const press = () => {
     if (isSection && to) { onNavigate?.(to); return }
@@ -214,16 +222,20 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
   const active = target === '/' ? currentPath === '/' : currentPath.startsWith(target)
   return (
     <>
-      <div className="flex items-center gap-3 w-full overflow-hidden shrink-0">
+      {/* an expanded row is the SAME row as its parent — same glyph, same type, same ink — shifted so its icon starts on
+        * the parent's LABEL column (user 2026-10-23: *"same image size same text size but aligned to where the word LABS
+        * starts"*): the label sits 44px in (the 32px rung + the 12px gap) and the glyph 6px inside its rung, so one step is 38px — the child's glyph starts on the parent's label column */}
+      <div className="flex items-center gap-3 w-full overflow-hidden shrink-0" style={depth ? { paddingLeft: depth * 38 } : undefined}>
         {/* the DS tooltip, not the browser's (the native-title sweep, 2026-09-26) — to the RIGHT,
           * out over the page, since the collapsed rail's glyph is all there is to read */}
         <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0">
         <Button
           iconOnly={icon}
-          iconSize={20}
+          iconSize={RAIL_ROW.glyph}
           iconComponent={iconComponent}
           variant="nav"
-          size="md"
+          /* an expanded row sits on the sm rung (26), the glyph and the type unchanged */
+          size={depth ? 'sm' : 'md'}
           className="shrink-0"
           /* nav ACTIVE keys off aria-current="page" (kol-components-atoms.css) —
            * a brighter glyph, never the pressed fill */
@@ -237,7 +249,7 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
         />
         </Tooltip>
         <span
-          className="kol-helper-12 uppercase text-oq-96 flex-1 min-w-0 truncate cursor-pointer"
+          className={`${RAIL_ROW.label} text-oq-96 flex-1 min-w-0 truncate cursor-pointer`}
           onClick={press}
         >
           {label}
@@ -261,39 +273,18 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
           </Tooltip>
         )}
       </div>
-      {railOpen && open && !onEnter && sub.map((s) => {
-        const on = s.path === '/' ? currentPath === '/' : currentPath.startsWith(s.path)
-        return (
-          <Tooltip key={s.path} label={s.label} placement="right" asChild>
-          <div
-            /* 18px of gutter puts the 20px box at x 26, so its 12px glyph starts
-             * at 30 — one step right of L1's 20-in-32 at 14 (measured in fxr). A row
-             * with no glyph starts its label on L1's label column instead — 32px
-             * rung + 12px gap (2026-10-22, kol-branding: label-only rows sat under
-             * the icon column, left of their own section's name) */
-            className={`flex items-center gap-3 w-full overflow-hidden shrink-0 cursor-pointer ${s.icon ? 'pl-[18px]' : 'pl-11'}`}
-            onClick={() => onNavigate?.(s.path)}
-            aria-current={on ? 'page' : undefined}
-          >
-            {s.icon && (
-              <span
-                className="w-5 h-5 shrink-0 inline-flex items-center justify-center"
-                style={{ color: on ? 'var(--kol-oq-96)' : 'var(--kol-oq-64)' }}
-                aria-hidden="true"
-              >
-                <IconAt name={s.icon} size={12} component={iconComponent} />
-              </span>
-            )}
-            <span
-              className="kol-helper-12 uppercase flex-1 min-w-0 truncate"
-              style={{ color: on ? 'var(--kol-oq-96)' : 'var(--kol-oq-64)' }}
-            >
-              {s.label}
-            </span>
-          </div>
-          </Tooltip>
-        )
-      })}
+      {/* EXPAND: the rows open under their section as FULL rows, one label column in (user 2026-10-23 — the 12px glyph,
+        * oq-64, 18px-gutter L2 row is retired: *"why are the sub items so small? low opacity?"*). An expanded row may expand
+        * again; it recurses. THE EXPANDED ROWS ARE A GROUP (user 2026-10-24: *"should the expanded list not be a little
+        * tighter? … I dont see that its a contained group"*): their own container, `.kol-rail-group`, the rows at the sm
+        * rung (26) with the same 20 glyph and type, on a 4px gap — against the top level's 32 rows on 8 */}
+      {railOpen && open && !onEnter && (
+        <div className="kol-rail-group flex w-full flex-col items-start gap-1">
+          {sub.map((s) => (
+            <RailItem key={s.path} {...s} depth={depth + 1} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={railOpen} onOpenRail={onOpenRail} />
+          ))}
+        </div>
+      )}
     </>
   )
 }
@@ -304,8 +295,21 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
  * renders exactly as before — it takes SideNav's props (`navTree`, `isActive`, `background`,
  * `currentPath`, `onNavigate(event, to)` …). kol-framework's `SideNav` is that variant under the
  * old name, with react-router and the theme toggle wired in. */
-export default function NavRail({ variant = 'app', ...props }) {
-  return variant === 'site' ? <NavRailSite {...props} /> : <AppRail {...props} />
+/* THE PRESET TABLE — what each named rail is; AppShell reads `phone` for the bar's shape. `workshop` is registered. */
+export const RAIL_PRESETS = {
+  app: { sections: 'enter', phone: 'pill', foot: ['media', 'signIn', 'settings'] },
+  site: { component: NavRailSite },
+  workshop: { component: null },
+}
+/* a package that owns a rail registers it under its name (kol-workshop → `workshop`); the name then renders here */
+export function registerRailPreset(name, Component) { RAIL_PRESETS[name] = { ...(RAIL_PRESETS[name] ?? {}), component: Component } }
+
+export default function NavRail({ variant, preset, ...props }) {
+  const name = preset ?? (variant === 'site' ? 'site' : 'app')
+  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />
+  const Named = RAIL_PRESETS[name]?.component
+  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset "${name}"`); return null }
+  return <Named {...props} />
 }
 
 function AppRail({
@@ -318,17 +322,20 @@ function AppRail({
   hidden = false,
   drawer = false,
   fade = true,
-  sections = 'fold',
+  sections = 'expand',
 }) {
   const railRef = useRef(null)
   const grabRef = useRef(null)
   const [railOpen, setRailOpen] = useState(false)
   /* ENTER MODE (`sections="enter"`, 2026-10-06 — the user, on labs: "having a 'enter' mode in the
    * left sidebar instead of collapse folder?"): pressing a section replaces the list with that
-   * section's rows under a Back row, instead of unfolding it in place. `fold` is the accordion
-   * every rail had and keeps. Per consumer, not a law: labs' catalog is five sections of up to
-   * ten rows each, which is where an accordion stops reading. */
-  const [entered, setEntered] = useState(null)
+   * section's rows under a Back row, instead of expanding it in place. `expand` is the accordion
+   * every rail had and keeps (`fold` was its old spelling and still reads as `expand`).
+   * ONE RULE (user 2026-10-24: *"EFFECTS in LABS is supposed to COLLAPSE, thats the last step"*): a section whose rows
+   * hold sections of their own ENTERS; a section whose rows are leaves EXPANDS and COLLAPSES in place, its rows the
+   * expanded rows above. Chrome enters → Labs enters → Effects expands. `entered` is a PATH STACK; Back EXITS one level,
+   * the mark still goes home. */
+  const [entered, setEntered] = useState([])
   const snapOpenRef = useRef(null)
   const slotRef = useRef(null)
   const ctx = useRailSlot()
@@ -342,11 +349,15 @@ function AppRail({
   useGrabEdge(grabRef)
   useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)
   if (hidden) return null
-  const enterMode = sections === 'enter'
-  const section = enterMode && entered ? items.find((i) => i.path === entered) : null
+  const enterMode = (sections === 'fold' ? 'expand' : sections) === 'enter'
+  const enters = (item) => enterMode && !!item.sub?.some((s) => s.sub?.length > 0)
+  /* the entered sections, root first — a stale path (the items changed under it) ends the walk */
+  const trail = []
+  if (enterMode) for (const p of entered) { const next = (trail.at(-1)?.sub ?? items).find((i) => i.path === p); if (!next) break; trail.push(next) }
+  const section = trail.at(-1) ?? null
   const row = (item) => (
     <RailItem key={item.path} {...item} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} onOpenRail={() => snapOpenRef.current?.()}
-      onEnter={enterMode ? () => setEntered(item.path) : undefined} />
+      onEnter={enters(item) ? () => setEntered([item.path]) : undefined} />
   )
   return (
     <div
@@ -404,8 +415,9 @@ function AppRail({
       <div style={ctx && slotOpen ? { flex: '0 1 auto' } : undefined} className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
         {section ? (
           <>
-            <RailItem icon="arrow-left" path={section.path} label={section.label} currentPath="" onNavigate={() => setEntered(null)} iconComponent={iconComponent} railOpen={drawer || railOpen} />
-            {section.sub.map((s) => <RailItem key={s.path} {...s} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen} />)}
+            <RailItem icon="arrow-left" path={section.path} label={section.label} currentPath="" onNavigate={() => setEntered(trail.slice(0, -1).map((t) => t.path))} iconComponent={iconComponent} railOpen={drawer || railOpen} />
+            {section.sub.map((s) => <RailItem key={s.path} {...s} currentPath={currentPath} onNavigate={onNavigate} iconComponent={iconComponent} railOpen={drawer || railOpen}
+              onEnter={enters(s) ? () => setEntered([...trail.map((t) => t.path), s.path]) : undefined} />)}
           </>
         ) : items.map(row)}
       </div>

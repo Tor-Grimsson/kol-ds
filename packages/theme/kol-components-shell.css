@@ -50,6 +50,9 @@
   /* less the phone bar (`--kol-shell-bar-h`, set by AppShell `touch="bar"`): the content column
    * already pads for it, so a full-height page ends above the bar, not under it (2026-09-29) */
   min-height: calc(100vh - var(--kol-shell-bar-h, 0px));
+  /* the VISIBLE viewport (studio-hub review 2, § 7.4): on iOS Safari 100vh is taller than what shows under the
+   * browser chrome, so a fixed page's foot sat under it and the page scrolled. dvh where supported, vh above it */
+  min-height: calc(100dvh - var(--kol-shell-bar-h, 0px));
   padding: var(--kol-shell-page-pad);
   /* PageShellScrollbarGutter (kol-monitor 2026-08-28): in `fixed` mode this
    * element IS the scroll container and reserves the gutter; in `scroll` mode
@@ -66,7 +69,7 @@
 }
 /* `mode="fixed"` — the element is the scroll container; pair with a
  * `flex:1 overflow:auto` body (the settings idiom) */
-.kol-shell-page--fixed { min-height: 0; height: calc(100vh - var(--kol-shell-bar-h, 0px)); overflow: hidden; }
+.kol-shell-page--fixed { min-height: 0; height: calc(100vh - var(--kol-shell-bar-h, 0px)); height: calc(100dvh - var(--kol-shell-bar-h, 0px)); overflow: hidden; }
 /* `width="capped"` — the SITE tier: the framework container ladder, centred.
  * `bleed` (the default, unclassed) fills the window — the app tier. The one
  * real difference between a shell page and a `.kol-page`, and it is a prop
@@ -238,21 +241,25 @@
   padding: 0;
   cursor: default;
 }
+/* THE SHEET'S CHROME (user 2026-10-23: "match rounding better"): the pill's ground and hairline, a rounding near the
+ * folded circle's. One class on whatever holds `MoreRows` — the phone bar's sheet, Home's masthead popover. */
+.kol-more-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 24px;
+  background: var(--kol-surface-secondary);
+  border: 1px solid var(--kol-oq-08);
+}
 .kol-phone-nav-more {
   position: fixed;
   left: 12px;
   right: 12px;
   bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 8px);
   z-index: var(--kol-z-sticky);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   max-height: 60dvh;
   overflow-y: auto;
-  padding: 8px;
-  border-radius: var(--kol-radius-sm);
-  background: var(--kol-surface-primary);
-  border: 1px solid var(--kol-oq-08);
 }
 
 /* ── THE TAP OPENER IS THE LINE (ShellRailCollapsedWithTapOpen, kol-mirror
@@ -287,3 +294,7 @@
     transition: none;
   }
 }
+
+/* ── StudioDetail — the preview's hover veil (kol-shell 0.78.0, 2026-10-24): "Click to expand" over the image on hover
+   only; the overlay itself is opacity 0 inline, so a touch device never sees it until a tap opens the full view ── */
+.kol-detail-preview:hover .kol-detail-preview-overlay { opacity: 1; }

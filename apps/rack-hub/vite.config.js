@@ -7,7 +7,7 @@ import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/rack-hub.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [devFavicon({ label: 'R' }), react(), tailwindcss()],
+  plugins: [devFavicon({ label: 'M', ground: '#CE4646' }) /* kol-monitor's dev tile (16-app-anatomy § Dev favicon) */, react(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
   // on its own port, so `pnpm rack-hub` stays an ordinary localhost root.
@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
   resolve: { dedupe: ['react', 'react-dom'] },
 
   // its own port, so it runs beside the other apps
-  server: { port: 5196 },
+  server: { port: 5196, host: true },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

@@ -26,6 +26,7 @@
  *                    a ROLE on the molecule, never a hero-side class)
  * @param {ReactNode} body         lede / paragraph(s)
  * @param {ReactNode} actions      row of Buttons / links / Tags
+ * @param {'inline'|'below'|'head'} actionsPlacement  where the cluster sits — a level's default; `head` puts it on the headline's row whatever the body
  * @param {'start'|'center'} [align='start']  text-align + item alignment
  * @param {string}    [gap='gap-4']  inner rhythm (a Tailwind gap step)
  * @param {ReactNode} children     extra slots rendered between body and actions
@@ -140,7 +141,10 @@ export default function SectionText({
   const cls = (base, slot) => `${base} ${slotClass[slot] ?? (slot === 'eyebrow' ? slotClass.label : undefined) ?? ''}`.trim()
   const alignCls = align === 'center' ? 'items-center text-center' : 'items-start text-left'
   const inlineActions = actionsPlacement === 'inline' && !!actions && !!body
-  const inlineHead = actionsPlacement === 'inline' && !!actions && !body && !!headline
+  /* `head` — the cluster shares the HEADLINE's row whatever the body (the Hub's masthead button, user 2026-10-23:
+   * *"more aligned like 'Studio'"* — it sat on the subtitle's line); centred on the title, not on its baseline */
+  const headRow = actionsPlacement === 'head' && !!actions && !!headline
+  const inlineHead = (actionsPlacement === 'inline' && !!actions && !body && !!headline) || headRow
   const headlineNode = headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>
   const bodyNode = body && (typeof body === 'string'
     ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p>
@@ -160,7 +164,7 @@ export default function SectionText({
            * comment used to sit on the fallthrough below, which stacked the cluster under the
            * headline instead: the docstring promised a row the code never drew. It WRAPS: on a
            * phone a wide cluster drops under the title rather than pushing the page sideways. */
-          <div className="flex flex-wrap self-stretch items-baseline justify-between gap-x-6 gap-y-3">
+          <div className={`flex flex-wrap self-stretch ${headRow ? 'items-center' : 'items-baseline'} justify-between gap-x-6 gap-y-3`}>
             {headlineNode}
             <div className={cls(`${actionsClass} shrink-0`, 'actions')} style={slotStyle.actions}>{actions}</div>
           </div>

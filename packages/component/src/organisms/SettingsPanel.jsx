@@ -44,6 +44,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {string}   intro     a note under the header (the approved drawer passes none)
  * @param {Function} onClose   × · scrim · Escape
  * @param {ReactNode} footer   the foot slot — `SettingsFooter` is the default shape
+ * @param {ReactNode} headerActions  controls on the header line, before the × (the file rail's edit pencil, 2026-10-23)
  * @param {ReactNode} children the sections
  */
 export default function SettingsPanel({
@@ -55,17 +56,21 @@ export default function SettingsPanel({
   intro,
   onClose,
   footer,
+  headerActions,
   children,
   className = '',
 }) {
   const header = (
-    <div className="flex min-w-0 flex-col">
+    <div className="flex min-w-0 items-center gap-2">
+    <div className="flex min-w-0 flex-1 flex-col">
       {/* THE APP REGISTER (SettingsPanelChromeAndColumnPreview, kol-r2b2 2026-08-27 —
         * user: "all wrong font styles"): the collection beside the panel is the
         * reference — helper-14 uppercase titles, the eyebrow for section labels,
         * mono-12 rows and hints. No mono-10 anywhere. */}
       {title && <span className="kol-helper-14 uppercase text-emphasis">{title}</span>}
       {subtitle && <span className="kol-mono-12 text-meta">{subtitle}</span>}
+    </div>
+    {headerActions}
     </div>
   )
   const body = (
@@ -90,7 +95,7 @@ export default function SettingsPanel({
         >
           <div className="mb-6 flex items-center gap-4">
             <div className="min-w-0 flex-1">{header}</div>
-            <CloseButton onClick={onClose} className="shrink-0" />
+            <CloseButton onClick={onClose} hover={false} className="shrink-0" />
           </div>
           <div className="flex flex-col gap-4"><Divider />{body}</div>
         </div>
@@ -107,7 +112,7 @@ export default function SettingsPanel({
        paints `bg-surface-primary`, the same token as the page, so the scrim was
        the only thing separating them — with it off the panel was invisible and
        the controls floated in the right third of the screen. */
-    <Rail open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false}>
+    <Rail open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false} closeHover={false}>
       <div className="flex flex-col gap-4"><Divider />{body}</div>
     </Rail>
   )
@@ -185,7 +190,7 @@ export function LabeledControlSection({ label, divided = false, rowGap = 2, chil
  * falls back to primary — the same render wherever there is no wrapper. */
 export function SettingsChoice({ options = [], value, onChange, ariaLabel, tone = 'default', size = 'sm', variant, className = '' }) {
   const opts = options.map((o) => (o != null && typeof o === 'object' ? o : { value: o, label: String(o) }))
-  return <Dropdown size={size} variant={variant} tone={tone} value={value} onChange={onChange} options={opts} className={`w-full ${className}`.trim()} aria-label={ariaLabel} />
+  return <Dropdown size={size} variant={variant} tone={tone} value={value} onChange={onChange} options={opts} className={`w-full ${className}`.trim()} ariaLabel={ariaLabel} />
 }
 
 /* THE CONTROL CHIP (SettingsPanelCompliance, user 2026-08-27: "WROOOONG" on the
@@ -268,15 +273,17 @@ export function SettingsChipRow({ options = [], selected = [], onToggle, allChip
  *
  *  `gap-2` on the row (user 2026-08-28): `flex justify-end` with no gap is right
  *  for one control and wrong for two — the chip and the reset icon touched. */
-export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', children }) {
+export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', resetDisabled = false, children }) {
   return (
     <div className="flex flex-col gap-4">
       <Divider />
-      <div className="flex justify-end items-center gap-2">
+      <div className="kol-ink-step flex justify-end items-center gap-2">
         {children}
-        {onReset && (
-          <Tooltip label={resetLabel}>
-            <IconFrame name="refresh" variant="primary" size="sm" onClick={onReset} aria-label={resetLabel} />
+        {/* `resetDisabled`: the control stays in its place, dimmed and inert — one footer shape on every rail, whether or
+          * not the app has preferences to reset yet (user 2026-10-24: *"standardise what goes in"*) */}
+        {(onReset || resetDisabled) && (
+          <Tooltip label={resetDisabled ? 'Nothing to reset' : resetLabel}>
+            <IconFrame name="refresh" variant="nav" size="sm" onClick={resetDisabled ? undefined : onReset} aria-label={resetLabel} aria-disabled={resetDisabled || undefined} className={resetDisabled ? 'opacity-40 pointer-events-none' : ''} />
           </Tooltip>
         )}
       </div>

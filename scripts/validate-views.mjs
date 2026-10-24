@@ -24,15 +24,24 @@ import { fileURLToPath } from 'node:url'
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
 const VIEW = /^[A-Z][A-Za-z0-9]*(View|Page|Screen|Layout|Editor|Library|Explorer|Dashboard|Book|Hub|Shell|Studio)$/
 
+/* ONE COMPONENT UNDER TWO NAMES (2026-10-24): `export { default as PageLayout, default as AppShell } from
+ * './PageLayout.jsx'` is one view with an alias, and reaching either name reaches the view. Until now the alias was
+ * reached by accident — a hub's `<AppShell` (kol-shell's) matched the name — and failed the day the hubs stopped
+ * importing kol-framework. Aliases from one statement count as each other. */
+const ALIASES = new Map()
+
 /* the names an entry file exports */
 function exportsOf(file) {
   const src = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
   const names = new Set()
   for (const m of src.matchAll(/export\s*\{([^}]*)\}/g)) {
+    const defaults = []
     for (const part of m[1].split(',')) {
       const name = part.trim().split(/\s+as\s+/).pop()?.trim()
       if (name) names.add(name)
+      if (/^default\s+as\s+/.test(part.trim()) && name) defaults.push(name)
     }
+    if (defaults.length > 1) for (const d of defaults) ALIASES.set(d, defaults)
   }
   for (const m of src.matchAll(/export\s+(?:default\s+)?(?:function|const|class)\s+([A-Za-z0-9_]+)/g)) names.add(m[1])
   return [...names].filter((n) => VIEW.test(n))
@@ -85,7 +94,8 @@ for (const dir of readdirSync(join(REPO, 'packages'))) {
   }
   for (const view of views) {
     checked++
-    if (!reached.has(view)) errors.push(`${pkg}  ${view} — exported, mounted nowhere (no app or showcase page renders it, nor anything they render)`)
+    const mounted = reached.has(view) || (ALIASES.get(view) ?? []).some((a) => reached.has(a))
+    if (!mounted) errors.push(`${pkg}  ${view} — exported, mounted nowhere (no app or showcase page renders it, nor anything they render)`)
   }
 }
 

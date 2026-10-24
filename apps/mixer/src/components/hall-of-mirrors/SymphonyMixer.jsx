@@ -24,6 +24,7 @@ import { WIRE_COLORS } from './wireColors'
 import ExpressionReference from './ExpressionReference'
 import Dropdown from '../molecules/Dropdown'
 import GrabEdge from '../GrabEdge'
+import { CanvasStudio } from '@kolkrabbi/kol-component'
 import MediaBrowser from './MediaBrowser'
 import useFileDrop from '../../hooks/useFileDrop'
 import LoadUnit from './LoadUnit'
@@ -714,125 +715,25 @@ export default function SymphonyMixer({
   const [fxOpenAll, setFxOpenAll] = useState({ open: false, tick: 0 })
   const [masterFxTab, setMasterFxTab] = useState('fx')
   /* DESK VIEW — pan and zoom over the desk (user 2026-08-28: "I want to move
-     around either with space bar grab and move or some other key bind").
-     A LAYER over embla, not a replacement: with no modifier held the loop and
-     its wheel-scroll behave exactly as before.
+     around either with space bar grab and move or some other key bind"). THE CANVAS'S since
+     2026-10-23: kol-component's `CanvasStudio` draws the surface — the dot grid, Space+drag,
+     middle-drag and ⌘-drag pan, scroll pans, ⌘ wheel and pinch zoom at the cursor (0.25× – 3×),
+     ⌘0 resets, G toggles the grid, L locks — the same keys the rack has (⌘ is the canvas's
+     modifier by ruling; ⌥ is the Hub's). A LAYER over embla, not a replacement: with no modifier
+     held the loop and its wheel-scroll behave exactly as before.
 
-       hold SPACE + drag   pan   (the canvas idiom — grab the surface and move)
-       middle-drag         pan   (no keys, for a mouse)
-       alt / ⌘ + drag      pan
-       alt / ⌘ + wheel     zoom toward the cursor, 0.25× – 3×
-       alt + 0             reset
+     SPACE IS THE TRANSPORT'S (App.jsx:164 — play/pause, every route). While the pointer is over
+     the desk the canvas takes it (`spaceWhenOver`, the capture phase), so grabbing the canvas
+     cannot also start the clock. Off the desk, Space is the transport's as always.
 
-     SPACE IS THE TRANSPORT'S (App.jsx:164 — play/pause, every route). While the
-     pointer is over the desk this takes it, in the CAPTURE phase with
-     `stopImmediatePropagation`, so grabbing the canvas cannot also start the
-     clock. Off the desk, Space is the transport's as always.
-
-     The transform wraps ONLY the embla viewport. PatchCableOverlay stays
-     outside it on purpose — it measures jacks in screen pixels, so leaving it
-     unscaled keeps cables landing on jacks instead of double-applying the zoom. */
-  const [view, setView] = useState({ z: 1, x: 0, y: 0 })
-  /* LOCK — kol-monitor's idiom exactly (RackViewport/useKeybindings): a state
-     for the label and a REF the handlers read, because they are registered once
-     and would otherwise close over a stale value. `L` toggles it; every pan and
-     zoom handler early-returns on it. */
+     The transform wraps ONLY the embla viewport. PatchCableOverlay stays outside it on purpose —
+     it measures jacks in screen pixels, so leaving it unscaled keeps cables landing on jacks
+     instead of double-applying the zoom — as the canvas's `overlay`. */
+  const [view, setView] = useState({ zoom: 1, x: 0, y: 0 })
   const [locked, setLocked] = useState(false)
-  const lockedRef = useRef(false)
-  /* The dot grid, kol-monitor's exactly (hooks/useDotGrid.js): a radial-gradient
-     cell whose SIZE scales with the zoom and whose POSITION carries the pan, so
-     the surface visibly moves under the modules instead of the modules sliding
-     over a static field. `g` toggles it, same key as over there. */
   const [dots, setDots] = useState(true)
-  const [grab, setGrab] = useState(null) // null | 'ready' | 'panning'
-  const panRef = useRef(null)
-  const overRef = useRef(false)
-  const spaceRef = useRef(false)
-  useEffect(() => {
-    const el = deskRef.current
-    if (!el) return
-    const onEnter = () => { overRef.current = true }
-    const onLeave = () => { overRef.current = false }
-    const onWheel = (e) => {
-      if (lockedRef.current) return
-      if (!(e.altKey || e.metaKey)) return
-      e.preventDefault()
-      const box = el.getBoundingClientRect()
-      const cx = e.clientX - box.left
-      const cy = e.clientY - box.top
-      setView(v => {
-        const z = Math.max(0.25, Math.min(3, v.z * (1 - e.deltaY * 0.0015)))
-        const k = z / v.z
-        // hold the point under the cursor still while the scale changes
-        return { z, x: cx - (cx - v.x) * k, y: cy - (cy - v.y) * k }
-      })
-    }
-    const onDown = (e) => {
-      if (lockedRef.current) return
-      const wants = spaceRef.current || e.button === 1 || ((e.altKey || e.metaKey) && e.button === 0)
-      if (!wants) return
-      e.preventDefault()
-      panRef.current = { x: e.clientX, y: e.clientY }
-      setGrab('panning')
-    }
-    const onMove = (e) => {
-      const p = panRef.current
-      if (!p) return
-      const dx = e.clientX - p.x
-      const dy = e.clientY - p.y
-      panRef.current = { x: e.clientX, y: e.clientY }
-      setView(v => ({ ...v, x: v.x + dx, y: v.y + dy }))
-    }
-    const onUp = () => {
-      if (!panRef.current) return
-      panRef.current = null
-      setGrab(spaceRef.current ? 'ready' : null)
-    }
-    const noInput = (e) => !e.target.closest('input, textarea, [contenteditable]')
-    const onKeyDown = (e) => {
-      // g toggles the dot grid (kol-monitor binds the same key)
-      if (e.code === 'KeyG' && !e.metaKey && !e.ctrlKey && !e.altKey && noInput(e)) {
-        e.preventDefault()
-        setDots(v => !v)
-        return
-      }
-      // L locks the view (kol-monitor binds the same key)
-      if (e.code === 'KeyL' && !e.metaKey && !e.ctrlKey && noInput(e)) {
-        e.preventDefault()
-        setLocked(v => { lockedRef.current = !v; return !v })
-        return
-      }
-      if (e.code === 'Space' && !e.repeat && !lockedRef.current && overRef.current && noInput(e) && !spaceRef.current) {
-        // take Space from the transport, but only over the desk
-        e.preventDefault()
-        e.stopImmediatePropagation()
-        spaceRef.current = true
-        setGrab(g => g === 'panning' ? g : 'ready')
-      }
-      if (e.altKey && e.key === '0' && !lockedRef.current) setView({ z: 1, x: 0, y: 0 })
-    }
-    const onKeyUp = (e) => {
-      if (e.code === 'Space') { spaceRef.current = false; if (!panRef.current) setGrab(null) }
-    }
-    el.addEventListener('pointerenter', onEnter)
-    el.addEventListener('pointerleave', onLeave)
-    el.addEventListener('wheel', onWheel, { passive: false })
-    el.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerup', onUp)
-    window.addEventListener('keydown', onKeyDown, true)
-    window.addEventListener('keyup', onKeyUp, true)
-    return () => {
-      el.removeEventListener('pointerenter', onEnter)
-      el.removeEventListener('pointerleave', onLeave)
-      el.removeEventListener('wheel', onWheel)
-      el.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerup', onUp)
-      window.removeEventListener('keydown', onKeyDown, true)
-      window.removeEventListener('keyup', onKeyUp, true)
-    }
-  }, [])
+  /* the dot grid rides the desk's dark backdrop (it bleeds 48px up over the tab row) — the canvas paints it there */
+  const gridHostRef = useRef(null)
 
   const [mixerTab, setMixerTab] = useState('mixer')
   // Flip-to-patch (2026-08-12) — per-channel card flip + pending patch source
@@ -1056,7 +957,7 @@ export default function SymphonyMixer({
           <span
             className="cursor-pointer select-none kol-helper-14 flex items-center gap-2"
             style={{ color: locked ? 'rgba(231,76,60,0.9)' : 'var(--kol-fg-32)' }}
-            onClick={() => setLocked(v => { lockedRef.current = !v; return !v })}
+            onClick={() => setLocked(v => !v)}
             title={locked ? 'Unlock the view (L)' : 'Lock the view (L)'}
           >
             <Icon name={locked ? 'lock' : 'unlock'} size={14} />
@@ -1065,7 +966,23 @@ export default function SymphonyMixer({
         </span>
       </div>
       <PatchJacksProvider>
-      <div ref={deskRef} style={{ position: 'relative' }}>
+      <CanvasStudio
+        surfaceRef={deskRef}
+        gridRef={gridHostRef}
+        view={view}
+        onViewChange={setView}
+        grid={dots}
+        onGridChange={setDots}
+        locked={locked}
+        onLockChange={setLocked}
+        minZoom={0.25}
+        maxZoom={3}
+        touch="none"
+        spaceWhenOver
+        /* the desk is a block in the page, not a flex fill; the backdrop below bleeds past its box */
+        style={{ flex: 'none', minHeight: 'auto', overflow: 'visible', touchAction: 'auto' }}
+        overlay={(
+          <>
       {/* THE DESK IS DARKER THAN THE PAGE (user 2026-08-28: "make channel mixer
           darker, remove the 02 — below the line"). The route paints the shell's
           `--kol-fg-02` page wash; below the tab rule the desk goes DARKER than
@@ -1087,34 +1004,23 @@ export default function SymphonyMixer({
           panel that starts at the rule rather than a field beginning under it. */}
       <div
         aria-hidden
+        ref={gridHostRef}
         className="absolute"
-        style={{
-          inset: '-48px -16px 0',
-          zIndex: -1,
-          background: 'var(--kol-surface-absolute-split)',
-          ...(dots ? {
-            backgroundImage: 'radial-gradient(var(--kol-fg-12) 1px, transparent 1px)',
-            backgroundSize: `${36 * view.z}px ${36 * view.z}px`,
-            backgroundPosition: `${view.x}px ${view.y}px`,
-          } : null),
-        }}
+        style={{ inset: '-48px -16px 0', zIndex: -1, background: 'var(--kol-surface-absolute-split)' }}
       />
       {/* Patch cables (v2, 2026-08-15) — full between flipped bays, ghosted otherwise */}
       {isVisible && mixerTab === 'mixer' && (
         <PatchCableOverlay channels={channels} flipped={flippedCards} inputs={master.inputs} screen2={screen2} fxModules={fxModules} containerRef={deskRef} />
       )}
+      {mixerTab === 'expressions' && <ExpressionReference />}
+          </>
+        )}
+      >
       {/* A Mixer — channels + master section as an EMBLA LOOP (user ruling
           2026-08-12): the desk is a circle, wheel scrolls it endlessly in
           either direction. watchDrag off so pointer drags stay with the
           knobs/sliders; WheelGesturesPlugin carries two-finger scroll.
           Centering released — the loop has no edges to center between. */}
-      <div
-        style={{
-          transform: `translate(${view.x}px, ${view.y}px) scale(${view.z})`,
-          transformOrigin: '0 0',
-          cursor: grab === 'panning' ? 'grabbing' : grab === 'ready' ? 'grab' : undefined,
-        }}
-      >
       <div
         ref={layout === 'row' ? deskViewportRef : undefined}
         /* THE STAGE GETS AT LEAST HALF THE WINDOW (2026-10-03, the crushed
@@ -1383,9 +1289,7 @@ export default function SymphonyMixer({
         {ringPad > 0 && [0, 1].map((k) => <div key={`spacer-${k}`} data-spacer="" aria-hidden className="shrink-0" style={{ width: ringPad }} />)}
       </div>
       </div>
-      </div>{/* close the zoom/pan layer */}
-      {mixerTab === 'expressions' && <ExpressionReference />}
-      </div>{/* close relative wrapper */}
+      </CanvasStudio>
       </PatchJacksProvider>
 
     </div>

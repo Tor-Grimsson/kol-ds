@@ -118,6 +118,8 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [HubHomeContract](done/HubHomeContract.md) | **kol-fxr** — Home is a closed data contract on `HubHome`; the hub draws every card; built in `apps/hub` first, mobile pass at 390 · 768 | 2026-10-23 | 2026-10-24 | `closed` — **kol-shell 0.77.0** (the contract since 0.76.0) · **kol-theme 0.184.0** · **kol-component 0.296.0**; registry live; adoption orchestrated step by step into fxr · mirror · monitor; receipt to kol-fxr |
+| 🟢 | [StyleguideSrcExports](done/StyleguideSrcExports.md) | **kol-branding** — open `./src/*` in kol-styleguide's `exports` (the kol-framework pattern) | 2026-10-24 | 2026-10-24 | `closed` — **kol-styleguide 0.7.0**; registry live; kol-branding's alias dropped the same hour; receipt to kol-branding |
 | 🟢 | [DevSectionHeader](done/DevSectionHeader.md) | **kol-fxr** — the section header for content (eyebrow · title · description) | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.285.0**: `SectionText level="content"` (user ruling: the header levels live on SectionText, `PageHeader` deprecated alias); registry live; receipt to kol-fxr |
 | 🟢 | [OverscrollNone](done/OverscrollNone.md) | **kol-monitor** — `html { overscroll-behavior: none }` in kol-theme, loaded by `core` and the umbrella | 2026-10-22 | 2026-10-22 | `closed` — **kol-theme 0.180.0**: rule in `kol-base-tokens.css`; registry live; receipt to kol-monitor |
 | 🟢 | [LoaderAppMinimumTime](done/LoaderAppMinimumTime.md) | **kol-monitor** — `hideLoaderApp({ minMs = 600 })`: the app loader holds at least 600 ms from navigation start | 2026-10-22 | 2026-10-22 | `closed` — **kol-framework 0.53.0**: fast load done at 616 ms, `minMs: 0` at 44 ms; per-app `minMs`; registry live; receipt to kol-monitor |
@@ -403,6 +405,8 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [one-search-modal](outbox/one-search-modal.md) | **kol-branding** — `~/dev/projects/kol-branding/lobby/INDEX.md` | 🔵 `filed` 2026-10-24 | a kol-shell seam for the app's results, only if the Hub's modal has none |
+| 🔵 | [scaffold-vite-server-host-true](outbox/scaffold-vite-server-host-true.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
 | 🔵 | [FxrLibraryOnAppPreset](outbox/FxrLibraryOnAppPreset.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
 | 🟢 | [MirrorLibraryOnAppPreset](outbox/MirrorLibraryOnAppPreset.md) | **kol-mirror** — `~/dev/projects/kol-mirror/lobby/INDEX.md` | 🟢 closed 2026-10-23 | **none** |
 | 🟢 | [MonitorLibraryOnAppPreset](outbox/MonitorLibraryOnAppPreset.md) | **kol-monitor** — `~/dev/projects/kol-monitor/lobby/INDEX.md` | 🟢 closed 2026-10-23 | **none** |
@@ -418,6 +422,11 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-24 | **one-search-modal** filed with kol-branding (site-hub 4.5): the rail's Search row opens a second, broken search modal; one modal, the Hub's, fed the app's index. |
+| 2026-10-24 | **`HubHomeContract` closed** — kol-shell 0.77.0 · kol-theme 0.184.0 · kol-component 0.296.0 live; adoption into fxr · mirror · monitor orchestrated from here step by step |
+| 2026-10-24 | **`StyleguideSrcExports` closed** — kol-styleguide 0.7.0 live; kol-branding dropped its Vite alias |
+| 2026-10-23 | **`HubHomeContract` addressed — built in `apps/hub`, unpublished** — `HubHome` closed to a data contract (kol-shell 0.76.0 in the tree), four in-repo consumers migrated, the mobile pass measured at 390 · 768 · 1440, kol-theme 0.184.0 touch reach on the inline control; awaiting the user's review before any app adopts |
+| 2026-10-23 | **`HubHomeContract` filed from kol-fxr** — Home as a closed data contract on `HubHome`; reference build in `apps/hub` first, `app` card mobile pass |
 | 2026-10-23 | **`AppCardDateSizeWrap` filed from kol-mirror** — date · size wrap mid-value on the `app` card (fxr too) |
 | 2026-10-23 | **`AppCardDownloadClickBubbles` filed from kol-monitor** — cover download click reaches the card |
 | 2026-10-23 | **`AppCardNoHoverFill` filed from kol-fxr** — no hover fill on a clickable `app` card/row |
@@ -1020,3 +1029,5 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-22 | **`DevSectionHeader` closed — kol-component 0.285.0** — `SectionText level="content"`, `PageHeader` now an alias of SectionText; receipt written to kol-fxr's outbox |
 | 2026-10-22 | **`SignalScopePlayedTraceAndClock` filed from kol-mirror** — the accent played trace and an external clock, both lost when mirror's Expressions tab moved onto `EnvelopeGenerator` |
 | 2026-10-22 | **`EnvelopeGeneratorHostClockControls` filed from kol-mirror** — follow-up to `SignalScopePlayedTraceAndClock`: the clock controls are dead under `now` |
+| 2026-10-24 | **`StyleguideSrcExports` addressed** — `"./src/*": "./src/*"` in kol-styleguide's `exports` (option 1, one line, kol-framework's pattern), changelog line under Unreleased; publishes with the next kol-styleguide wave, then kol-branding drops its alias |
+| 2026-10-24 | **`StyleguideSrcExports` filed from kol-branding** — open `./src/*` in kol-styleguide's `exports` (the kol-framework pattern), so the forked brand book stops aliasing the deep path in Vite |

@@ -71,9 +71,10 @@ const MODE_PLACEHOLDER = { search: 'Search…', add: 'Add…' }
  * its keys in place — label left, combo right, never run. The index keeps two keys with one label apart. */
 function shortcutFolds(shortcuts, path) {
   return shortcuts.filter((s) => shortcutInScope(s, path)).map((s) => ({
-    /* the page's own sections start OPEN (user 2026-10-18: *"if you are in rack then its already expanded no?"*) —
-     * a section with `routes` that match; App (no routes, everywhere) starts folded */
-    id: `cat:${s.section}`, label: s.section, group: 'Shortcuts', open: !!s.routes?.length,
+    /* EVERY section starts OPEN (user 2026-10-23: *"you should see the shortcuts expanded, not choose navigate or
+     * help, so expand all should be collapse all, with expanded the default"*) — the footer reads Collapse all on
+     * open and folds them all in one press. Until then only a section with matching `routes` opened. */
+    id: `cat:${s.section}`, label: s.section, group: 'Shortcuts', open: true,
     items: (s.items ?? []).map((it, i) => ({ id: it.id ?? `${i}:${it.label}`, label: it.label, hint: it.combo ?? it.keys })),
   }))
 }
@@ -96,7 +97,8 @@ function unfold(rows, opened) {
  * CommandOverlay — The ⌘K search modal. The ⌘K overlay: search, add, go, shortcuts. Was `ShellSearchOverlay` (still exported, an
  * alias). `mode` names what the overlay is for — `search` (default) · `add` · `shortcuts` (`go` is search's old name). In
  * `shortcuts` it draws `shortcuts` (the AppHub keymap) with NO field, as fold rows: the current page's sections
- * under "Shortcuts", each opening its keys in place (label · combo, never run). AppHub's `S` opens this.
+ * under "Shortcuts", every one open on arrival (its keys in place, label and combo, never run), the footer's
+ * Collapse all folding them. AppHub's `S` opens this; its ⌘K opens `search` over files, pages and the same keymap.
  *
  * FOLD ROWS, any mode: a row with `items` is a category — Enter / → / click opens it in place, ← or Enter again
  * closes it; its children are ordinary rows (Enter selects them). An "All" category is just a fold row holding

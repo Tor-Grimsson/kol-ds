@@ -25,7 +25,7 @@ export default function QuadrantSyncPreview() {
         </Button>
         {line ? <span className="kol-mono-12 text-fg-64">{line}</span> : null}
       </div>
-      <span className="kol-helper-12 text-fg-48">
+      <span className="kol-mono-12 text-fg-48">
         Dev-only chrome — it renders nothing when NODE_ENV is production.
       </span>
 

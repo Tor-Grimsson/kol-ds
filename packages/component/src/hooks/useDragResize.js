@@ -24,7 +24,9 @@ import useGrabEdge from './useGrabEdge.js'
  *
  *  - CLICK TOGGLES expand↔collapse: pointerup with < 3px of travel is a
  *    click, never a resize — drags only start past the slop, so toggle
- *    presses can't jitter the rail.
+ *    presses can't jitter the rail. Expanding by a press lands on the
+ *    stylesheet's rung for the viewport, not a remembered drag width
+ *    (2026-10-24).
  *  - DRAG resizes; live width goes to --kol-sidenav-w on :root so the grid,
  *    shell-header brand block and aside follow one number. Dragging under
  *    --kol-sidenav-snap stamps :root[data-sidenav="collapsed"].
@@ -189,6 +191,10 @@ export default function useDragResize(ref, options = {}) {
   const toggleCollapsed = () => {
     const { collapsed: c } = readBack(names)
     stampCollapsed(names, !c)
+    /* EXPANDING BY A PRESS LANDS ON THE RUNG (user 2026-10-24: "clicking the rail when collapsed should go to
+     * that default"): the stylesheet's width for this viewport (264 · 320 from 1536), never a remembered drag
+     * width — the override is cleared, and persisted as cleared */
+    if (c) writeWidth(names, null)
     syncAndPersist()
   }
 

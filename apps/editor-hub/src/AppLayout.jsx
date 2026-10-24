@@ -1,16 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { AppHub, useNavHidden, useSettingsToggle } from '@kolkrabbi/kol-shell'
-import { Button, Dropdown } from '@kolkrabbi/kol-component'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import { AppStudio, PageShell, useNavHidden, useSettingsToggle } from '@kolkrabbi/kol-shell'
+import { PageHeader } from '@kolkrabbi/kol-component'
+import { downloadBlob } from '@kolkrabbi/kol-component'
+/* THE SETTINGS ROWS ARE TYPED DATA over the editor's own store (2026-10-24): the package exports its rows as `render`
+   closures drawing their own sunken Dropdown — the hole the rail refuses now — so this layout names the same six
+   settings as data and the Hub draws the controls. kol-fxr's AppSettings takes the same shape on adoption. */
+import { useAppSettings, setAppSetting } from '../../../packages/design-editor/src/editor/lib/appSettings.js'
+import { ASPECTS } from '../../../packages/design-editor/src/editor/shell/aspects.js'
+import { pack } from '../../../packages/design-editor/src/editor/packs.js'
+import { transport } from '../../../packages/design-editor/src/editor/params/transport.js'
 import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import { createFixtureClient } from 'media-fixture'
+import { cover, title } from '../../studio-hub/src/covers.js'
+import Library from './pages/Library.jsx'
 /* The rail-extras store moved into the package with labs (0.4.0): labs WRITES
    it and this layout READS it, so two module copies meant subscribing to a
    store nothing ever touched. One copy, one store. */
 import {
   useRailExtras, RAIL_EXTRA_PREFIX,
-  MODES, setMode, withView, loadLibrary,
-  useSettingsSections, shortcutsBySection, comboLabel, currentView,
+  setMode, withView, loadLibrary,
+  shortcutsBySection, comboLabel, currentView,
 } from '@kolkrabbi/design-editor'
 
 /**
@@ -67,27 +77,59 @@ import {
  * `var(--kol-shell-page-wash, var(--kol-surface-primary))` itself.
  */
 
+/* THE RAIL IS FXR'S (user 2026-10-24, fxr.kolkrabbi.io: *"this is how FXR rail should look … labs is the one you enter
+ * instead of entering chrome. chrome was just done in studio-hub to show the system for labs"*): Library · Editor · Labs ·
+ * Randomiser · Morph. Labs ENTERS (its categories hold sections — Effects expands inside), the rest are rows; the Chrome
+ * section and its page of 2026-10-23 are gone (the old layout is in _tmp/2026-10-24-create-on-studiocreate/). The
+ * chromes own the phone's bottom edge. Morph is a row with a placeholder page until the mirrored editor carries its route. */
+const CHROME_ROWS = [
+  { icon: 'desktop', path: '/editor', label: 'Editor', bar: false },
+  { icon: 'globe', path: '/labs', label: 'Labs', bar: false },
+  { icon: 'refresh', path: '/randomiser', label: 'Randomiser', bar: false },
+  { icon: 'swap', path: '/morph', label: 'Morph', bar: false },
+]
 export const NAV_ITEMS = [
   { icon: 'nav-library', path: '/library', label: 'Library' },
-  { icon: 'desktop', path: '/editor', label: 'Editor' },
-  { icon: 'globe', path: '/labs', label: 'Labs' },
-  { icon: 'refresh', path: '/randomiser', label: 'Randomiser' },
+  ...CHROME_ROWS,
 ]
 
 const SETTINGS_PATH = '/settings'
-const CHROME_PATHS = new Set(['/editor', '/labs', '/randomiser'])
+const CHROME_PATHS = new Set(['/editor', '/labs', '/randomiser', '/morph'])
 
 /* The ⌥-digit order: the rail READ TOP TO BOTTOM, logomark first. Derived from
    the rows above so adding a destination cannot silently renumber the rest —
    the only hardcoded entries are Home (the mark, not a row) and the Hub's
    pinned Settings. */
-const KEY_ORDER = ['/', ...NAV_ITEMS.map((n) => n.path), SETTINGS_PATH]
+const KEY_ORDER = ['/', ...NAV_ITEMS.map((n) => n.path), SETTINGS_PATH] /* Home, Library, Editor, Labs, Randomiser, Morph, Settings */
+
+/* the editor's six settings, typed; the store's defaults for the rail's reset (kol-fxr's AppSettings owns the originals) */
+const ASPECT_OPTIONS = ASPECTS.map((a) => ({ value: a.id, label: a.label })).filter((o) => o.value !== 'custom')
+const LOOP_LENGTH_OPTIONS = [2, 4, 8, 12, 16].map((n) => ({ value: n, label: `${n} s` }))
+const SETTING_DEFAULTS = { defaultAspect: '4:5', defaultTheme: 'kol', autoplay: false, clipToFrame: true, labsModDots: false, defaultLoopSeconds: 4 }
+function useSettings() {
+  const s = useAppSettings()
+  return {
+    sections: [
+      { label: 'Defaults', rows: [
+        { label: 'Default aspect', type: 'choice', options: ASPECT_OPTIONS, value: s.defaultAspect, onChange: (v) => setAppSetting('defaultAspect', v) },
+        ...(pack('generators') ? [{ label: 'Loop theme', type: 'choice', options: pack('generators').THEME_OPTIONS, value: s.defaultTheme, onChange: (v) => setAppSetting('defaultTheme', v) }] : []),
+        { label: 'Clip to frame', type: 'switch', on: s.clipToFrame, onChange: (v) => setAppSetting('clipToFrame', v) },
+        { label: 'Modulation dots', type: 'switch', on: s.labsModDots, onChange: (v) => setAppSetting('labsModDots', v) },
+      ] },
+      { label: 'Transport', rows: [
+        { label: 'Autoplay', type: 'switch', on: s.autoplay, onChange: (v) => setAppSetting('autoplay', v) },
+        { label: 'Loop length', type: 'choice', options: LOOP_LENGTH_OPTIONS, value: s.defaultLoopSeconds, onChange: (n) => { setAppSetting('defaultLoopSeconds', n); transport.setLoopSeconds(n) } },
+      ] },
+    ],
+    drawer: { onReset: () => { Object.entries(SETTING_DEFAULTS).forEach(([k, v]) => setAppSetting(k, v)); transport.setLoopSeconds(SETTING_DEFAULTS.defaultLoopSeconds) } },
+  }
+}
 
 const APP = {
-  name: 'Effexor FXR',
+  name: 'FXR', /* kol-fxr's (AppLayout.jsx:116) */
   subtitle: 'Pick a chrome. All three run the same engine.',
   logomark: logomarkUrl,
-  about: <>A DOM/SVG design compositor — frames, layers, vector tools — with generative, kinetic-type and effects layers on the same engine, served through three chromes: the Editor, Labs, and the Randomiser. Ships as a standalone app and as the embeddable <code>@kolkrabbi/design-editor</code> library.</>,
+  about: 'A DOM/SVG design compositor — frames, layers, vector tools — with generative, kinetic-type and effects layers on the same engine, served through three chromes: the Editor, Labs, and the Randomiser. Ships as a standalone app and as the embeddable @kolkrabbi/design-editor library.',
   links: [
     { label: 'GitHub', url: 'https://github.com/Tor-Grimsson/kol-fxr' },
     { label: 'Kolkrabbi', url: 'https://fxr.kolkrabbi.io' },
@@ -95,32 +137,104 @@ const APP = {
   ],
 }
 
-/* HOME'S SETS. RECENT = the three chromes, the starting points; SAVED = the
-   library's saved presets (monitor: the empty rack vs all presets). `name` /
-   `title` are what the page's search reads. Card media = a photo of the chrome
-   (`public/previews/chromes/<id>.png`). Saved presets have no load path outside
-   the editor (LibraryPage's ruling), so their cards are static — the library
-   page is where they are managed. */
-const CHROMES = MODES.map((m) => ({ name: m.id, title: m.label, detail: m.blurb }))
-
-const fmtDate = (ms) =>
-  new Date(ms).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
-
-const savedCards = () => (loadLibrary().preset ?? []).map((p) => ({
-  name: p.id,
-  title: p.name || 'Untitled preset',
-  detail: `${p.layers?.length ?? 0} layers · ${p.aspect ?? '1:1'} · ${fmtDate(p.savedAt)}`,
+/* HOME'S FILES (HubHomeContract, 2026-10-23): the Hub draws the cards; this app hands it DATA. The
+   files are the library's saved presets, read through `loadLibrary()` on every render (library-reader-
+   for-a-hub-home: a provider above the shell goes stale beside the editor's own); a preset's cover is
+   the `thumb` captured at save (plan 39 § 3.1); its layers and aspect are `details`, shown in the rail
+   the cog opens (the card is title, date, size — his ruling 2026-10-23). New File is the action button,
+   not a card (files only). A saved preset has no load path outside the editor
+   (LibraryPage's ruling), so a click opens the editor. The editor mirrored here exports no storage
+   writes — `renameStored` · `duplicateStored` · `removeStored` are fxr's own, ahead of the mirror — so
+   the cards carry no verbs until the mirror is refreshed; a verb not passed is not drawn. */
+const presetOf = (id) => (loadLibrary().preset ?? []).find((p) => p.id === id)
+/* THE REVIEW SEED (user 2026-10-23: *"editor hub has no cards"*): a fresh browser has no saved presets, so Home drew
+ * nothing. With none saved, twelve dummy presets stand in — the same covers studio-hub draws — and leave the moment a
+ * real preset is saved. Nothing is written to the library. */
+const DAY = 86400000
+/* THE CHROME IS A MARK ON THE CARD (user 2026-10-24): a file is saved as the chrome it was made with — an Editor file, a
+ * Labs file, a Randomiser file (a simplified Labs file), a Morph file (a transition between files). They show together;
+ * the mark is the chrome's glyph in the cover's corner, and the rail reads Chrome · Editor. Never a filter. */
+const CHROMES = {
+  editor: { icon: 'desktop', label: 'Editor', of: 'Chrome' },
+  labs: { icon: 'globe', label: 'Labs', of: 'Chrome' },
+  randomiser: { icon: 'refresh', label: 'Randomiser', of: 'Chrome' },
+  morph: { icon: 'swap', label: 'Morph', of: 'Chrome' },
+}
+const chromeOf = (p) => CHROMES[String(p?.chrome ?? p?.view ?? p?.source ?? 'editor').toLowerCase()] ?? CHROMES.editor
+const SEED_NAMES = ['neon-grid', 'poster-a', 'kinetic-type', 'halftone', 'glitch-wash', 'ribbon', 'noise-field', 'stencil', 'wave-text', 'collage', 'scanlines', 'monogram']
+const SEED = SEED_NAMES.map((slug, i) => ({
+  id: `seed-${slug}`,
+  name: title(slug),
+  updatedAt: Date.parse('2026-10-23T12:00:00Z') - i * DAY,
+  bytes: 1800 + i * 940,
+  cover: cover(i + 30),
+  tags: [['poster', 'social', 'test', 'loop'][i % 4]],
+  mark: Object.values(CHROMES)[i % 4],
+  details: [{ label: 'Layers', value: 2 + (i % 6) }, { label: 'Aspect', value: ['1:1', '4:5', '16:9'][i % 3] }],
 }))
+const filesOf = (saved) => {
+  const list = saved.map((p) => ({
+    id: p.id,
+    name: p.name || 'Untitled preset',
+    mark: chromeOf(p),
+    details: [{ label: 'Layers', value: p.layers?.length ?? 0 }, { label: 'Aspect', value: p.aspect ?? '1:1' }],
+    updatedAt: p.updatedAt ?? p.savedAt,
+    bytes: new Blob([JSON.stringify(p)]).size,
+    cover: p.thumb,
+  }))
+  return list.length ? list : SEED
+}
+/* EVERY VERB, OVER THIS APP'S OWN STATE (user 2026-10-24: *"why isnt there a trash icon in cards in library? how can you
+ * manage your library?"* — the hubs passed no handlers, so the card had no cog, no trash, and the rail no pencil). The
+ * files live here, seeded from the library or the review seed and re-read when the library's presets change; Rename,
+ * Duplicate, Delete, tags and the note write this state, the way studio-hub's do. The editor mirrored here exports no
+ * storage writes, so a verb on a real preset is this session's until fxr's `renameStored` · `duplicateStored` ·
+ * `removeStored` arrive with the next refresh of the mirror. */
+function useFiles() {
+  const saved = loadLibrary().preset ?? []
+  const key = saved.map((p) => p.id).join()
+  const [files, setFiles] = useState(() => filesOf(saved))
+  useEffect(() => { setFiles(filesOf(loadLibrary().preset ?? [])) }, [key])
+  return [files, setFiles]
+}
+/* LABS ALWAYS CARRIES ITS CATEGORIES (user 2026-10-24: at Home, Chrome EXPANDED instead of entering, because Labs' rows
+ * were leaves — its categories reached the rail only after a labs pick: *"its literally in THE STUDIO-HUB"*). The five
+ * sections and their groups are read off the editor's labs catalog with no layer and no handlers — the shape, not the
+ * picks — so by the one rule Chrome enters, Labs enters, Effects expands, at Home and on /labs alike. Lazily, like the
+ * chromes: the catalog pulls the engines, which the shell tier never carries. A press on a group before labs is mounted
+ * opens /labs and runs the pick once LabsNav has published its dispatch (`pendingPick`). */
+const noop = () => {}
+function useLabsRows() {
+  const [rows, setRows] = useState([])
+  useEffect(() => {
+    let on = true
+    import('../../../packages/design-editor/src/editor/labs/catalog.js').then(({ buildLabsCatalog, SECTION_ICONS }) => {
+      if (!on) return
+      const items = []
+      buildLabsCatalog({ layer: null, setOnly: noop, addFilter: noop, patchFilter: noop, carriedSource: () => ({}) }).forEach((entry) => {
+        if (entry.id.startsWith('sec:')) { items.push({ icon: SECTION_ICONS[entry.id.slice(4)] ?? 'square', path: `${RAIL_EXTRA_PREFIX}${entry.id}`, label: entry.label, sub: [] }); return }
+        const row = { icon: entry.icon, path: `${RAIL_EXTRA_PREFIX}${entry.id}`, label: entry.label }
+        const section = items[items.length - 1]
+        if (section?.sub) section.sub.push(row); else items.push(row)
+      })
+      setRows(items)
+    })
+    return () => { on = false }
+  }, [])
+  return rows
+}
+/* the Media row's client — the media fixture, as studio-hub's (fxr's real client arrives with its bump) */
+const fixtureClient = createFixtureClient()
 
-/* THE SETTINGS MASTHEAD'S PICKER — three chromes where kol-r2b2's row 1 has
-   buckets. `tone="sunken"` because the page wears a wash and the control sits
-   BELOW its plane. */
-const CHROME_PICKS = [
-  { value: '', label: 'Open a chrome' },
-  { value: 'editor', label: 'Editor' },
-  { value: 'labs', label: 'Labs' },
-  { value: 'randomiser', label: 'Randomiser' },
-]
+
+/* Morph — a row with a placeholder page until the mirrored editor carries its route (fxr has it) */
+function MorphPage() {
+  return (
+    <PageShell className="gap-10">
+      <PageHeader level="app" title="Morph" subtitle="A transition between files. The mirrored editor carries no Morph route yet." />
+    </PageShell>
+  )
+}
 
 /* Publishes `--fxr-rail` — the rail's width, or 0 when hidden or absent — so a
    chrome's FIXED layers (the randomiser's overlays) keep clear of it; AppShell
@@ -171,30 +285,60 @@ function SettingsKey() {
 export default function AppLayout() {
   const location = useLocation()
   const navigate = useNavigate()
-  const sections = useSettingsSections()
+  const settings = useSettings()
 
   /* A route can hand the rail its own rows (labs' categories) — one rail, not
      a second component per chrome. Their paths are sentinels, so they dispatch
      instead of routing. */
   const extras = useRailExtras()
+  const labsRows = useLabsRows()
+  /* the Sign in row — a dummy session, as studio-hub's; the reference accepts any password */
+  const [signedIn, setSignedIn] = useState(false)
+  const [files, setFiles] = useFiles()
+
+  /* Remember the pick, then leave for the chrome. */
+  const enter = (id) => { setMode(id); navigate(withView(id)) }
+
+  /* a labs pick pressed before labs is mounted — run when LabsNav publishes its dispatch */
+  const pendingPick = useRef(null)
+  useEffect(() => {
+    const p = pendingPick.current
+    if (p && extras.dispatch) { pendingPick.current = null; extras.dispatch(p) }
+  }, [extras])
 
   /* Every hop is an SPA transition since 2026-08-27 — the chromes are lazy
      routes that mount and unmount like any page. */
   const onNavigate = (path) => {
     if (path?.startsWith(RAIL_EXTRA_PREFIX)) {
+      if (!extras.dispatch) { pendingPick.current = path; enter('labs'); return }
       /* A labs pick swaps the layer without a route change, and the touch
          drawer only closes itself on `currentPath` — so it stayed open over
          the thing just picked. The scrim is the DS's own close control; press
          it. ponytail: DOM poke — replace with a shell seam if kol-shell ships
          one (a drawer that closes on any onNavigate, or a setDrawerOpen). */
-      if (extras.dispatch?.(path)) document.querySelector('.kol-shell-drawer-scrim')?.click()
+      if (extras.dispatch(path)) document.querySelector('.kol-shell-drawer-scrim')?.click()
       return
     }
     navigate(path)
   }
 
-  /* Remember the pick, then leave for the chrome. */
-  const enter = (id) => { setMode(id); navigate(withView(id)) }
+  /* HOME'S DATA, AND THE ONE FILE CARD (studio-hub's shape): Library draws the same card from the same handlers */
+  const edit = (id, patch) => setFiles((fs) => fs.map((x) => (x.id === id ? { ...x, ...patch } : x)))
+  const home = {
+    files,
+    onOpen: () => enter('editor'),
+    onDownload: (f) => { const { cover: _c, ...data } = presetOf(f.id) ?? f; downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `${f.name}.json`) },
+    onRename: (f, name) => edit(f.id, { name, updatedAt: Date.now() }),
+    onDuplicate: (f) => setFiles((fs) => [{ ...f, id: `${f.id}-${Date.now().toString(36)}`, name: `${f.name} copy`, updatedAt: Date.now() }, ...fs]),
+    onRemove: (f) => setFiles((fs) => fs.filter((x) => x.id !== f.id)),
+    onTags: (f, tags) => edit(f.id, { tags }),
+    onNote: (f, note) => edit(f.id, { note }),
+    /* the rail's Upload image (2.2): the picked picture becomes the file's cover */
+    onCover: (f, src) => edit(f.id, { cover: src }),
+    /* ponytail: New File opens the editor — the editor has no "new document" door outside its own
+       File menu yet (fxr's opens the four-door chooser); wire it when the mirror carries one. */
+    action: { label: 'New File', onClick: () => enter('editor') },
+  }
 
   /* ⌥1…⌥6 — the rail top to bottom, HOME included. See the docblock for why
      this is local rather than AppShell's `navKeys`. */
@@ -219,76 +363,53 @@ export default function AppLayout() {
   const inChrome = CHROME_PATHS.has(location.pathname)
 
   return (
-    <AppHub
+    <>
+    <SettingsKey />
+    <AppStudio
       app={APP}
-      /* Labs' category rows sit DIRECTLY UNDER Labs, not after the whole nav —
-         they belong to that destination, and appending them put them below
-         Randomiser. `KEY_ORDER` is derived from NAV_ITEMS, not from this, so
-         ⌥-digit is unaffected by where they land. */
-      items={extras.items.length
-        ? NAV_ITEMS.flatMap((n) => (n.path === '/labs' ? [n, ...extras.items] : [n]))
-        : NAV_ITEMS}
       currentPath={location.pathname}
       onNavigate={onNavigate}
-      settingsPath={SETTINGS_PATH}
       /* Scoped by `currentView()` — null on a shell page, so the full map
          renders, which is the right answer for a settings page reached from the
          rail rather than from an editor. */
       shortcuts={shortcutsBySection(currentView())}
       shortcutsKey={inChrome ? null : 's'}
-      themeToggle={<ThemeToggle fill="none" tone="sunken" label={false} size="sm" />}
-      home={{
-        items: (view) => (view === 'recent' ? CHROMES : savedCards()),
-        filtersTitle: 'All Chromes',
-        toCard: (c, { view: v }) => ({
-          key: c.name,
-          title: c.title,
-          detail: c.detail,
-          media: v === 'recent' ? <img src={`/previews/chromes/${c.name}.png`} alt={c.title} /> : undefined,
-          onClick: v === 'recent' ? () => enter(c.name) : undefined,
-        }),
-        /* ponytail: New File is a placeholder — the editor has no "new document"
-           door outside its own File menu yet; wire it when one exists. */
-        actions: <Button tone="grey" size="md" onClick={() => {}}>New File</Button>,
-      }}
+      home={home}
+      /* THE LIBRARY IS WHAT FXR SHIPS (user 2026-10-24) — every labs and randomiser preset, ten morph files, ten editor
+         files, by chrome, on the one card, each with its page (pages/Library.jsx); Home above is the user's saves */
+      library={{ children: <Library /> }}
+      /* the chromes are the router's routes, rendered through the Outlet; Labs always carries its categories — the live
+         rows (with their picks) on /labs, the catalog's shape everywhere else — so Labs enters and Effects expands */
+      pages={CHROME_ROWS.map((c) => ({
+        ...c,
+        children: c.path === '/morph' ? <MorphPage /> : <RailFrame><Outlet /></RailFrame>,
+        ...(c.path === '/labs' ? { sub: extras.items.length ? extras.items : labsRows } : {}),
+      }))}
       /* ponytail: placeholder steps — monitor's five-step tour has no fxr copy yet. */
       walkthrough={[
         { title: '1. Pick a chrome', text: ['Placeholder.'] },
-        { title: 'Get Started', actions: (close) => <Button tone="grey" size="md" onClick={() => { close(); enter('editor') }}>Open Editor</Button> },
+        { title: 'Get Started', actions: [{ label: 'Open Editor', onClick: () => enter('editor') }] },
       ]}
+      /* the Hub's rows at the rail's foot — Media (the picker over the fixture) and Sign in — as studio-hub has them */
+      media={{ client: fixtureClient }}
+      signIn={{ signedIn, onPress: (password) => setSignedIn(password != null) }}
       /* THE ROWS ARE NOT AUTHORED HERE. `@kolkrabbi/design-editor` owns the
          sections and the editor's drawer renders the same ones, so the page and
          the in-place panel cannot drift the way the two topbar menus once did.
          The gear opens the Hub's drawer over the same rows. */
-      settings={{
-        sections,
-        drawer: true,
-        splitShortcuts: true,
-        comboLabel,
-        picker: (
-          <Dropdown
-            className="w-48"
-            tone="sunken"
-            options={CHROME_PICKS}
-            value=""
-            onChange={(v) => v && navigate(`/${v}`)}
-            aria-label="Open a chrome"
-          />
-        ),
-      }}
+      /* the rail over the editor's own sections — studio-hub's tier (user 2026-10-24); the chrome picker left with the page,
+         the Chrome section in the rail is the way in */
+      /* the six settings as typed rows over the editor's store, reset in the footer; no Theme row — the Hub's toggle is the one */
+      settings={{ ...settings, comboLabel }}
+      /* the Hub's Dev row, on every rail on a dev server even with nothing in it (user 2026-10-24: "its not optional") */
+      dev={{ tabs: [] }}
+      /* the rail is AppStudio's preset; these two keys stay the chromes' — see the docblock */
       shell={{
         railToggleKey: '\\',
-        touch: 'drawer',
-        railSections: 'enter',
-        /* the two keys the chromes own — see the docblock */
         navKeys: false,
         settingsKey: undefined,
       }}
-    >
-      <SettingsKey />
-      <RailFrame>
-        <Outlet />
-      </RailFrame>
-    </AppHub>
+    />
+    </>
   )
 }

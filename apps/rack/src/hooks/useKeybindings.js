@@ -4,8 +4,8 @@
 import { useEffect } from 'react'
 
 // VideoModulo-specific keybindings (sidebar, edit, mute, cables, shortcuts, display, library search)
-// Viewport keybindings (space, zoom, snap) are handled by RackViewport
-export function useKeybindings({ setSidebarOpen, setViewLocked, viewLockedRef, rackStateRef, toggleAll, setCableLocked, setCableVisibility, setShowShortcuts, setDisplayHidden, setShowLibrarySearch, setShowPatchTable }) {
+// Viewport keybindings (space, zoom, lock, grid, snap) are the canvas's — CanvasStudio in RackViewport
+export function useKeybindings({ setSidebarOpen, rackStateRef, toggleAll, setCableLocked, setCableVisibility, setShowShortcuts, setDisplayHidden, setShowLibrarySearch, setShowPatchTable }) {
   useEffect(() => {
     const noInput = (e) => !e.target.closest('input, textarea')
 
@@ -23,9 +23,6 @@ export function useKeybindings({ setSidebarOpen, setViewLocked, viewLockedRef, r
 
       // Mute all
       if ((mod || noInput(e)) && e.key === 'm') { e.preventDefault(); toggleAll() }
-
-      // Lock view
-      if ((mod || noInput(e)) && e.key === 'l') { e.preventDefault(); setViewLocked(v => { viewLockedRef.current = !v; return !v }) }
 
       // Cable lock
       if (noInput(e) && !mod && e.key === 'c') { e.preventDefault(); setCableLocked(v => !v) }

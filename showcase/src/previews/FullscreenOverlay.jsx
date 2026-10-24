@@ -25,7 +25,7 @@ export default function FullscreenOverlayPreview() {
           Open without close button
         </Button>
       </div>
-      <span className="kol-helper-12 text-fg-48">
+      <span className="kol-mono-12 text-fg-48">
         Esc or a backdrop click closes either way — the × is chrome, not the only exit.
       </span>
       <FullscreenOverlay open={open} onClose={() => setOpen(false)} closeButton={closeButton}>

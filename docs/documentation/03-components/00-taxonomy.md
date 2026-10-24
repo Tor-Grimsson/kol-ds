@@ -100,7 +100,7 @@ The "Atomic" sidebar grouping is the full Tier set, in this order:
 
 `atoms · molecules · organisms · utilities · framework·chrome · framework·structure · framework·behavior · hooks · misc`
 
-- **Framework is split three ways** for browsing — `chrome` (shell pieces: PageLayout, SideNav, PortalFooter, ShellHeader, ThemeToggle, Layout), `structure` (the page kit: PageHero, PageSection), `behavior` (render-null utilities: ScrollToTop). *(Open question, tracked in the audit: do the heroes belong in atomic `organisms` instead of the framework tier?)*
+- **Framework is split three ways** for browsing — `chrome` (shell pieces: SiteLayout, SideNav, PortalFooter, ShellHeader, ThemeToggle, Layout), `structure` (the page kit: PageHero, PageSection), `behavior` (render-null utilities: ScrollToTop). *(Open question, tracked in the audit: do the heroes belong in atomic `organisms` instead of the framework tier?)*
 - **Loaders are not a sidebar group.** `Icon`/`Graphic` are documented on `/docs/loaders`; their galleries stay on `/icons`.
 - **`misc`** is a fallback bucket. It should stay empty — anything landing there is an unclassified component and a bug to fix, not a home.
 

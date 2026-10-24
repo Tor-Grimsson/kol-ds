@@ -85,7 +85,6 @@ export default function App() {
       currentPath={currentPath}
       onNavigate={navigate}
       shortcuts={SHORTCUTS}
-      themeToggle={tool.themeChip}
       settings={settings}
       /* the tool's MEDIA voice on every page — Settings wore the mono title beside it (review #4) */
       masthead="display"

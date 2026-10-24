@@ -6,7 +6,7 @@ import usePersistedState from '../hooks/usePersistedState'
 import { usePatchRouting } from '../hooks/usePatchRouting.jsx'
 import { useCasePower } from '../hooks/useCasePower.jsx'
 import { useRack } from '../hooks/useRackContext.jsx'
-import { useRailSlot } from '../hooks/useRailSlot.jsx'
+import { useRailSlot } from '@kolkrabbi/kol-shell' // the DS rail's consumer slot (NavRailConsumerSlot), as kol-monitor's
 import { useKeybindings } from '../hooks/useKeybindings'
 import { patches } from '../data/patches'
 import { ROW_WIDTH, TOTAL_HP } from '../modules/utility/eurorack'
@@ -55,7 +55,8 @@ function VideoModuloInner() {
     })
   }, [nav])
   const [viewLocked, setViewLocked] = useState(false)
-  const viewLockedRef = useRef(false)
+  // the viewport's zoom setter — the sidebar's − / + and fit write through it (the canvas owns the view)
+  const zoomSetterRef = useRef(null)
   const [cableLocked, setCableLocked] = usePersistedState('rack-cableLocked', false)
   const [cableVisibility, setCableVisibility] = usePersistedState('rack-cableVis', 'trans')
   const [showShortcuts, setShowShortcuts] = useState(false)
@@ -70,7 +71,7 @@ function VideoModuloInner() {
   rackRef2.current = rack
   const rackOuterRef = useRef(null)
 
-  useKeybindings({ setSidebarOpen, setViewLocked, viewLockedRef, rackStateRef: rackRef2, toggleAll, setCableLocked, setCableVisibility, setShowShortcuts, setDisplayHidden, setShowLibrarySearch, setShowPatchTable })
+  useKeybindings({ setSidebarOpen, rackStateRef: rackRef2, toggleAll, setCableLocked, setCableVisibility, setShowShortcuts, setDisplayHidden, setShowLibrarySearch, setShowPatchTable })
 
   // Reset nav visibility when leaving rack
   const navRef = useRef(nav)
@@ -126,10 +127,10 @@ function VideoModuloInner() {
             rack={rack}
             routing={routing}
             zoom={zoom}
-            onZoomChange={setZoom}
+            onZoomChange={(v) => zoomSetterRef.current?.(v)}
             onZoomFit={() => {
               const el = rackOuterRef.current
-              if (el) setZoom(Math.min(2, Math.max(0.5, el.clientWidth / BASE_WIDTH)))
+              if (el) zoomSetterRef.current?.(Math.min(2, Math.max(0.5, el.clientWidth / BASE_WIDTH)))
             }}
             onHide={() => setSidebarOpen(false)}
             cableVisibility={cableVisibility}
@@ -188,14 +189,14 @@ function VideoModuloInner() {
       />
 
       {!displayHidden && <button
-        onClick={() => setViewLocked(v => { viewLockedRef.current = !v; return !v })}
+        onClick={() => setViewLocked(v => !v)}
         className="fixed z-50 kol-helper-12 text-fg-48 hover:text-fg-96 cursor-pointer select-none"
         style={{ bottom: 16, right: 16, background: 'none', border: 'none', padding: 0, color: viewLocked ? 'rgba(231,76,60,0.9)' : undefined }}
       >
         [{viewLocked ? 'Locked' : 'Lock'}]
       </button>}
 
-      <RackViewport style={{ minHeight: '100vh', marginLeft: sidebarOpen ? 'var(--sidebar-width)' : 0 }} onEditCase={nav ? () => navigate('/create?from=rack') : undefined} viewLockedRef={viewLockedRef} />
+      <RackViewport style={{ minHeight: '100vh', marginLeft: sidebarOpen ? 'var(--sidebar-width)' : 0 }} onEditCase={nav ? () => navigate('/create?from=rack') : undefined} locked={viewLocked} onLockChange={setViewLocked} onZoomChange={setZoom} zoomSetterRef={zoomSetterRef} />
     </div>
   )
 }

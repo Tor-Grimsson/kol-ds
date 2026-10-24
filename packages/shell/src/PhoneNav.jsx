@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Button, TabsRow } from '@kolkrabbi/kol-component'
+import { TabsRow, TABBAR_H, TABBAR_PILL_INSET, tabbarPillWidth } from '@kolkrabbi/kol-component'
+import MoreRows from './MoreSheet.jsx'
 
 /* taxonomy-ok: molecule — MobileTabBar + a More sheet of Buttons */
 
@@ -18,6 +19,9 @@ import { Button, TabsRow } from '@kolkrabbi/kol-component'
  * @param {Array}    items        `{ icon, path, label }` in rail order, bottom rows last
  * @param {string}   currentPath
  * @param {Function} onNavigate   `(path) => void`
+ * @param {Array}    actions      `[{ label, icon?, onPress }]` — the page's own buttons, at the top of More (Home's New and
+ *                                Walkthrough on a phone, user 2026-10-23); with any, More shows even with five or fewer rows
+ * @param {'bar'|'pill'} shape    TabsRow's phone shape (AppShell `touch="pill"`); the More sheet floats above either
  */
 const MORE = '__more'
 const MAX = 5
@@ -26,7 +30,7 @@ const activePath = (items, path) => items
   .filter((i) => (i.path === '/' ? path === '/' : path === i.path || path.startsWith(`${i.path}/`)))
   .sort((a, b) => b.path.length - a.path.length)[0]?.path
 
-export default function PhoneNav({ items = [], currentPath = '/', onNavigate }) {
+export default function PhoneNav({ items = [], currentPath = '/', onNavigate, actions = [], shape = 'bar' }) {
   const [open, setOpen] = useState(false)
   useEffect(() => { setOpen(false) }, [currentPath])
   useEffect(() => {
@@ -36,14 +40,24 @@ export default function PhoneNav({ items = [], currentPath = '/', onNavigate }) 
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const overflow = items.length > MAX
+  const overflow = items.length > MAX || (actions.length > 0 && items.length >= MAX)
+  const hasMore = overflow || actions.length > 0
   const inBar = overflow ? items.slice(0, MAX - 1) : items
   const inMore = overflow ? items.slice(MAX - 1) : []
   const active = activePath(items, currentPath)
   const value = open || inMore.some((i) => i.path === active) ? MORE : active
 
   const tabs = inBar.map((i) => ({ value: i.path, label: i.label, icon: i.icon }))
-  if (overflow) tabs.push({ value: MORE, label: 'More', icon: 'more' })
+  if (hasMore) tabs.push({ value: MORE, label: 'More', icon: 'more' })
+  /* THE SHEET HUGS ITS WORDS AND SITS BESIDE THE × (user 2026-10-23, his reference: iOS Photos' menu next to its ×, *"but
+   * align to bottom"*) — to the left of the collapsed ×, a 12px gap, the two bottom edges on one line */
+  const pill = shape === 'pill'
+  const sheetStyle = {
+    left: 'auto',
+    right: pill ? `calc(50% - ${tabbarPillWidth(tabs.length) / 2}px + ${TABBAR_H + 12}px)` : `calc(${100 / tabs.length}% + 8px)`,
+    bottom: pill ? `calc(env(safe-area-inset-bottom, 0px) + ${TABBAR_PILL_INSET}px)` : 'env(safe-area-inset-bottom, 0px)',
+    width: 'max-content', minWidth: 220, maxWidth: `calc(100vw - ${TABBAR_H + 36}px)`,
+  }
 
   return (
     <>
@@ -52,25 +66,16 @@ export default function PhoneNav({ items = [], currentPath = '/', onNavigate }) 
         <button type="button" aria-label="Close more" className="kol-phone-nav-scrim kol-overlay-scrim" onClick={() => setOpen(false)} />
       )}
       {open && (
-        <div className="kol-phone-nav-more" role="menu" aria-label="More">
-          {inMore.map((i) => (
-            <Button
-              key={i.path}
-              variant="nav"
-              size="md"
-              iconLeft={i.icon}
-              aria-current={i.path === active ? 'page' : undefined}
-              className="w-full justify-start"
-              onClick={() => { setOpen(false); onNavigate?.(i.path) }}
-            >
-              {i.label}
-            </Button>
-          ))}
+        <div className="kol-phone-nav-more kol-more-sheet" role="menu" aria-label="More" style={sheetStyle}>
+          <MoreRows actions={actions} items={inMore} active={active} onPick={(x) => { setOpen(false); if (x.path) onNavigate?.(x.path) }} />
         </div>
       )}
       <TabsRow
         look="stacked"
         placement="phone"
+        shape={shape}
+        collapsed={open}
+        onExpand={() => setOpen(false)}
         tabs={tabs}
         value={value}
         onChange={(v) => (v === MORE ? setOpen((o) => !o) : onNavigate?.(v))}

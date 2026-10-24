@@ -3,6 +3,7 @@ import { Divider, LabeledControlSection, SettingsFooter, SettingsPanel, Settings
 import SettingsScaffold from './SettingsScaffold.jsx'
 import SettingsShortcuts from './SettingsShortcuts.jsx'
 import SettingsLinks, { SettingsColophon } from './SettingsLinks.jsx'
+import About from './About.jsx'
 
 /* taxonomy-ok: organism — nests SettingsScaffold / SettingsShortcuts / SettingsLinks (relative) + kol-component's SettingsPanel / SettingsSections */
 
@@ -47,6 +48,11 @@ import SettingsLinks, { SettingsColophon } from './SettingsLinks.jsx'
  *                                 footer beside reset, apps/media's arrangement. `drawer` with no drawer
  *                                 falls back to the masthead, so the toggle is never lost
  * @param {Function}  comboLabel   (combo) => string, for SettingsShortcuts
+ * @param {boolean}   filters      the filter bar (default true, the page as it was). `false` is the PAGE TIER without the
+ *                                 filters tier (review 2, § 6.3 — *"most of the time you will only need a siderail … if
+ *                                 you are super heavy then you might want a page, then when the page is getting heavy you
+ *                                 might want filters"*): no bar, no tabs; two columns from `lg` — the sections left on the
+ *                                 drawer's row shape, `SettingsShortcuts` then About and Repo right
  * @param {string}    tone         the page's control tone (default `sunken`, SettingsScaffold's): the
  *                                 filter row, the masthead gear AND every control in the settings rows,
  *                                 which inherit it from a `kol-tone-*` wrapper — `tone: 'primary'` in an
@@ -75,6 +81,7 @@ export default function HubSettings({
   comboLabel,
   tone = 'sunken',
   themeIn = 'masthead',
+  filters = true,
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mode, setMode] = useState('options')
@@ -150,7 +157,7 @@ export default function HubSettings({
       <div className="flex flex-col gap-8">
         {app.about && (
           <LabeledControlSection label={app.name}>
-            <div className="text-fg-48 kol-mono-14" style={{ maxWidth: 640 }}>{app.about}</div>
+            <About about={app.about} />
           </LabeledControlSection>
         )}
         <SettingsColophon />
@@ -164,10 +171,34 @@ export default function HubSettings({
     return tabs.find((t) => t.value === tab)?.content ?? null
   }
 
+  /* THE PAGE TIER WITHOUT FILTERS — one page, two columns from `lg`: the sections on the drawer's row shape (the column
+   * capped as the settings column is), and the keymap, About and Repo beside them */
+  const plain = () => (
+    <div className={`kol-tone-${tone} grid items-start gap-x-12 gap-y-10 lg:grid-cols-2`}>
+      <div className="flex flex-col gap-8" style={{ maxWidth: COLUMN }}>
+        {content}
+        {sections?.length > 0 && <SettingsSections sections={sections} divided />}
+      </div>
+      <div className="flex flex-col gap-10 min-w-0">
+        {shortcuts.length > 0 && (
+          <LabeledControlSection label="Keyboard Shortcuts"><SettingsShortcuts sections={shortcuts} comboLabel={comboLabel} /></LabeledControlSection>
+        )}
+        {app.about && (
+          <LabeledControlSection label={app.name}>
+            <About about={app.about} />
+          </LabeledControlSection>
+        )}
+        {app.links?.length > 0 && <LabeledControlSection label="Links"><SettingsLinks links={app.links} /></LabeledControlSection>}
+        <SettingsColophon />
+      </div>
+    </div>
+  )
+
   return (
     <>
       <SettingsScaffold
-        tabs={all}
+        filters={filters}
+        tabs={filters ? all : all.slice(0, 1)}
         defaultTab="settings"
         header={{ size: 'sm', voice: 'mono' }}
         tone={tone}
@@ -185,7 +216,7 @@ export default function HubSettings({
             <Divider variant="vertical" />
           </>
         ) : undefined}
-        renderContent={render}
+        renderContent={filters ? render : plain}
       />
       {/* the drawer is the page's other half, a SIBLING of the scaffold — never inside its scroll */}
       {hasDrawer && (

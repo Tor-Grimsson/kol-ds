@@ -37,6 +37,14 @@ import { useTheme } from './theme.js'
  *     same prop list minus `fill`; no square pinning (there is no box);
  *     size scales text + glyph only.
  *
+ *   variant "row" — the sidenav's TREE ROW (user 2026-10-24, site-hub: "this theme toggle is not
+ *     the same kind of row item as the rest … just the rolling icon and pair it with a text in the
+ *     same as in the rows"): `.kol-sidenav-hop` with the roll at 16 in the 20px icon column and
+ *     the target's words in `.kol-sidenav-hop-label`, the rows' voice (kol-helper-12). The box is
+ *     the rail's rule, so it collapses as a row does — no `icon` fallback. Takes no size, fill,
+ *     label or width: a row is the rail's geometry, not the toggle's. kol-framework's SideNav
+ *     passes it to the rail's theme slot.
+ *
  * Glyph law: text-adjacent 14/16/18 (stays inside the rung line box);
  * solo 16/20/24 (the pinned-square pairing).
  *
@@ -161,6 +169,25 @@ export default function ThemeToggle({
    * stays in the aria-label and the S sheet, not the tooltip */
   const tip = 'Theme'
   const wrap = (node) => (tooltip ? <Tooltip label={tip}>{node}</Tooltip> : node)
+
+  /* ── THE ROW — the rail's tree row verbatim (NavRailSite's `rowCls` + glyph + label; the box lives in
+   * .kol-sidenav-hop, kol-framework.css, never a utility here — the 2026-08-09 defect) ── */
+  if (variant === 'row') {
+    /* the row's tooltip is the RAIL's: to the right, on a block trigger, present in both states and merely
+     * disabled when the labels show (user 2026-10-24: collapsed, the toggle sat half off the rail — the default
+     * inline-flex trigger sized itself to the hidden label and centred wide; and a trigger that came and went
+     * remounted the row on every toggle) */
+    return (
+      <Tooltip label={tip} placement="right" triggerClassName="block w-full" disabled={!tooltip}>
+        <button {...shared} className={`kol-sidenav-hop kol-helper-12 text-emphasis bg-transparent border-0 cursor-pointer text-left ${extra}`.trim()}>
+          <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true">
+            {iconSwap(16)}
+          </span>
+          <span className="kol-sidenav-hop-label flex-1 min-w-0">{MODE_LABEL[next]}</span>
+        </button>
+      </Tooltip>
+    )
+  }
 
   /* ── DEPRECATED aliases — old chrome verbatim (0.6.x) ── */
   if (variant === 'icon') {

@@ -17,6 +17,7 @@
     "@kolkrabbi/kol-hardware": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-shell": "workspace:*",
+    "media-fixture": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "gsap": "^3.13.0",

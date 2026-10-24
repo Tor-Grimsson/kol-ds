@@ -27,20 +27,30 @@ import PageShell from './PageShell.jsx'
  * Router-agnostic like AppShell: `currentPath` + `onNavigate`. Everything else is AppHub's.
  *
  * @param {Object} app          AppHub's `{ name, subtitle, logomark, about, links }`
- * @param {Object} home         HubHome's props — the landing Catalog (required: a Studio opens on Home)
+ * @param {Object} home         HubHome's props — the landing Catalog's DATA (`files` · `template` · handlers;
+ *                              required: a Studio opens on Home)
  * @param {Object} [library]    CatalogPage's props — or `children` (a router, for pages under the
  *                              slot: `/library/:id`), which renders in place of the CatalogPage —
  *                              plus `{ path, label, icon }`
- * @param {Object} [create]     `{ header (PageHeader props), children, path, label, icon }`;
+ * @param {Object} [create]     `{ header (PageHeader props), children, path, label, icon, bar? }` (`bar: false` as `pages`);
  *                              `shell: false` renders `children` bare — for a Create that owns its
  *                              PageShell (a fixed canvas beside a scrolling list)
  * @param {Object} [use]        `{ children, path, label, icon }` — the tool
- * @param {Array}  [pages]      `[{ path, icon, label, children }]` — opt-in pages, after Use
+ * @param {Array}  [pages]      `[{ path, icon, label, children, sub?, bar? }]` — opt-in pages, after Use; `bar: false` on a page
+ *                              (or a sub row) that owns the phone's bottom edge hides the bar there, as Use does; a page with `sub`
+ *                              is a SECTION whose rows (each `{ path, icon, label, children, sub? }`) open under it
+ *                              (rows that hold sections enter under a Back row; leaf rows expand in place)
  * @param {Object} [settings]   HubSettings' props
+ * @param {Object} [media]      AppHub's `media` — the Media row at the rail's foot, the DS modal library over a client
+ * @param {Object} [signIn]     AppHub's `signIn` — the user row at the rail's foot; the press is the consumer's
  * @param {Object} [dev]        HubDev's props — AppHub's `dev`: a dev server's `code` page at `/dev`
  * @param {'mono'|'display'} [masthead='mono']
- * @param {Object} [shell]      any AppShell prop, spread last
+ * @param {Object} [shell]      any AppShell prop, spread last. The rail is `NavRail preset="app"` (AppHub's), so an app
+ *                              passes nothing about it; the Studio adds `barHiddenOn` — Use and every `bar: false` page
  */
+/* a rail row and its `sub` rows, every level deep (Chrome → Labs → Effects → its groups); a page's `children` stay here */
+const railRow = ({ path, icon, label, sub, to }) => ({ path, icon, label, ...(sub && { sub: sub.map(railRow) }), ...(to && { to }) }) // `bar`, `children` stay here
+
 export default function AppStudio({
   app,
   currentPath,
@@ -52,6 +62,8 @@ export default function AppStudio({
   use,
   pages = [],
   settings,
+  media,
+  signIn,
   dev,
   walkthrough,
   shortcuts,
@@ -66,11 +78,17 @@ export default function AppStudio({
   const tool = slot(use, '/use', 'Use', 'nav-rack')
   const rows = [lib, make, tool, ...pages].filter(Boolean)
   const at = (p) => currentPath === p || currentPath.startsWith(`${p}/`)
+  /* THE BAR STEPS ASIDE on the tool and on any page that owns the phone's bottom edge (mirror's bottom sheet, the rack's
+   * chrome, fxr's chromes). The rail itself is NavRail's `app` preset, through AppHub; `shell` still overrides, deliberately. */
+  const flatPages = (list) => list.flatMap((p) => [...flatPages(p.sub ?? []), p])
+  const barHiddenOn = [tool?.path, make?.bar === false ? make.path : null, ...flatPages(pages).filter((p) => p.bar === false).map((p) => p.path)].filter(Boolean)
 
   let page = null
   if (lib && at(lib.path)) {
-    const { path: _p, label: _l, icon: _i, children, ...props } = lib
-    page = children ?? <CatalogPage {...props} />
+    /* `key` is React's, lifted out so a consumer can remount the Catalog per view (a chip from one view must not
+     * survive into the other and filter everything out — mixer-hub's `key={props.view}`) */
+    const { path: _p, label: _l, icon: _i, children, key, ...props } = lib
+    page = children ?? <CatalogPage key={key} {...props} />
   } else if (make && at(make.path)) {
     page = make.shell === false ? make.children : (
       <PageShell>
@@ -81,26 +99,31 @@ export default function AppStudio({
   } else if (tool && at(tool.path)) {
     page = tool.children
   } else {
-    page = pages.find((p) => at(p.path))?.children ?? null
+    /* a page may be a SECTION — `sub` rows under it (plan-2026-10-23 § 3.5: the Chrome section that enters to
+     * Editor, Labs, Randomiser, Morph; Effects expands its leaves) — so the walk reads every level, the deepest match first */
+    const flat = (list) => list.flatMap((p) => [...flat(p.sub ?? []), p])
+    page = flat(pages).find((p) => at(p.path))?.children ?? null
   }
 
   return (
     <AppHub
       app={app}
-      items={rows.map(({ path, icon, label }) => ({ path, icon, label }))}
+      items={rows.map(railRow)}
       currentPath={currentPath}
       onNavigate={onNavigate}
       iconComponent={iconComponent}
       home={home}
       walkthrough={walkthrough}
       settings={settings}
+      media={media}
+      signIn={signIn}
       dev={dev}
       shortcuts={shortcuts}
       themeToggle={themeToggle}
       shortcutsKey={shortcutsKey}
       masthead={masthead}
       /* the tool sits on bare surface-primary, full-bleed; every other page keeps the Hub's wash */
-      shell={{ ...(tool && at(tool.path) ? { pageWash: null } : null), ...shell }}
+      shell={{ barHiddenOn, ...(tool && at(tool.path) ? { pageWash: null } : null), ...shell }}
     >
       {page}
     </AppHub>

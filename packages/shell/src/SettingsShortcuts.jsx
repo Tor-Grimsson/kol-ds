@@ -39,7 +39,7 @@ import { SettingsRow } from '@kolkrabbi/kol-component'
 export default function SettingsShortcuts({ sections = [], comboLabel = (c) => c, className = '' }) {
   return (
     <div
-      className={`grid md:grid-rows-2 md:grid-flow-col gap-x-6 md:gap-x-12 gap-y-6 ${className}`.trim()}
+      className={`grid md:grid-rows-[auto_auto] md:grid-flow-col gap-x-6 md:gap-x-12 gap-y-6 ${className}`.trim()}
       style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, max(150px, calc((100% - 5 * 48px) / 6))), 1fr))' }}
     >
       {sections.map(({ section, items }) => (

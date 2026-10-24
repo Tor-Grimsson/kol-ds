@@ -1,5 +1,23 @@
 # @kolkrabbi/kol-theme
 
+## 0.186.0 — 2026-10-24
+
+- **`.kol-sheet` — the document voice** (site-hub W4, user 2026-10-24: *"I would like to use kol-atlas styles at least in part"*). kol-atlas's Research-Spec carried class for class into `kol-typography.css` beside `.kol-prose`: 15/1.6 on a 724 edge, h1 36 · h2 24 · h3 18 with hairlines and the `why` aside, `when` / `dw` meta lines, `note`, `tb`, footnotes, `term`s, the `media` figure grid, `tablewrap` plain and `kv`, `totalbar`, the `ol` outline, `proj` — the numbered margin. Its four tokens map onto KOL's (ink · fg-64 · fg-12 · fg-04 · accent-primary · ui-error); the sub-class names stay the spec's so an atlas document renders unchanged.
+- **The site rail's row eases its box** — `.kol-sidenav-hop`'s transition list carries `padding` and `gap` beside colour, so the rail's collapse is one motion (kol-framework 0.54.0's clip model); this rule outranks the framework's and a shorthand here would have dropped the easing.
+
+## 0.185.0 — 2026-10-24
+
+- **`.kol-detail-preview`** — StudioDetail's preview veil (kol-shell 0.78.0): "Click to expand" over the image on hover only.
+
+## 0.184.0 — 2026-10-23
+
+- `.kol-media-picker` on a phone has no bottom pad (user 2026-10-23): the card's body scrolls to the edge now, and the pad read as a clipped last row.
+
+- **`.kol-ink-step`** — a bare control with no wash steps its ink: oq-80 at rest, oq-96 on hover, on the control or on a row of them (user 2026-10-23).
+
+- **An inline control takes a 32px tap target on touch** (HubHomeContract's mobile pass, kol-fxr — the `app` card's cog and trash measured 16 × 16 on a phone, under the ladder's touch rung). `.kol-inline-control` under `pointer: coarse` carries an invisible 8px reach past each edge; the glyph and the box it reserves on the card's plate are unchanged, at every width.
+- **`PageShell` holds the visible viewport** (studio-hub review 2, § 7.4 — *"home b on mobile does not do what it describes, only on desktop"*). `.kol-shell-page` and `.kol-shell-page--fixed` size by `100dvh`, with the `100vh` line kept above as the fallback: on iOS Safari `100vh` is taller than what shows under the browser chrome, so a fixed page's foot sat under it and the page scrolled.
+
 ## 0.183.0 — 2026-10-22
 
 - **A selected card has no ring.** The 2px inset ring on `.kol-card[data-selected]` is gone; the card's select checkbox is the mark. `data-selected` stays as the hook. Keyboard focus keeps its ring.

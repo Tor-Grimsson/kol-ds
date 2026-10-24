@@ -32,7 +32,7 @@ export default function ExitPreviewPreview() {
       >
         <ExitPreview />
       </div>
-      <span className="kol-helper-12 text-fg-48">
+      <span className="kol-mono-12 text-fg-48">
         Router-agnostic · floats bottom-left of its containing block · clicking navigates to the site root
       </span>
     </div>

@@ -52,7 +52,7 @@
  * surface swap would hide. The ink stays `text-auto` (surface-on-primary).
  * ONE OWNER PER PIXEL (2026-09-03): the variable means what is LEFT to paint.
  * kol-shell's `AppShell` hands the wash down for this to paint; kol-framework's
- * `PageLayout` paints it on its own plane and hands down `transparent`, so a
+ * `SiteLayout` paints it on its own plane and hands down `transparent`, so a
  * PageShell inside it does not paint it again (it used to — two 0.02 layers).
  *
  * @param {'scroll'|'fixed'} mode   scroll (default) | fixed — see above

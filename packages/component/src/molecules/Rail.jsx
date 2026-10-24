@@ -52,6 +52,7 @@ const FOCUSABLE =
  * @param {ReactNode}     header    header-row content beside the close button (replaces the source's baked-in wordmark)
  * @param {boolean}       backdrop  render the dimming scrim (default true); false = panel alone, no darken/blur, close via × / Esc
  * @param {'xs'|'sm'|'md'|'lg'} closeSize  the close control's rung (default 'sm' — match the controls in the panel)
+ * @param {boolean}       closeHover  the close's hover wash (default true); `false` keeps its box, drops the wash (CloseButton `hover`)
  * @param {ReactNode}     children  scrollable panel body
  * @param {string}        className extra classes on the panel
  */
@@ -80,6 +81,7 @@ export default function Rail({
    * `sm` is the default because a drawer header sits over its own controls.
    * Named `closeSize`, not `size` — `size` is already the panel's own box. */
   closeSize = 'sm',
+  closeHover = true,
   children,
   className = '',
   /* SettingsPanelApproved (2026-08-27): the settings drawer has neither */
@@ -278,7 +280,7 @@ export default function Rail({
           {closeSide === 'start' && (
             /* bare glyph, no container (user 2026-08-09: "the X close icon
              * does not need a container") — body ink at rest, emphasis on hover */
-            <CloseButton onClick={onClose} size={closeSize} className="shrink-0" />
+            <CloseButton onClick={onClose} size={closeSize} hover={closeHover} className="shrink-0" />
           )}
           {header != null && <div className="min-w-0 flex-1">{header}</div>}
           {/* A NORMAL ICON BUTTON (user 2026-09-02: *"it should just be like a
@@ -288,7 +290,7 @@ export default function Rail({
             * the md rung's 32px around a glyph six under it, and it read as an
             * oversized empty square. No override: the rung sets both. */}
           {closeSide !== 'start' && (
-            <CloseButton onClick={onClose} size={closeSize} className="ml-auto shrink-0" />
+            <CloseButton onClick={onClose} size={closeSize} hover={closeHover} className="ml-auto shrink-0" />
           )}
         </div>
         <div className="flex-1 overflow-y-auto pr-1" style={{ overflowAnchor: 'none' }}>

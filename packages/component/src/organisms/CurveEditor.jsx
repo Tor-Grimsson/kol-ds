@@ -158,7 +158,7 @@ export default function CurveEditor({ value, onChange, stock = null, validate, k
       <span className="kol-helper-10 text-meta">Curve</span>
       <Dropdown size="sm" variant="subtle" className="w-full" options={kinds} value={kind} onChange={setKind} />
       {!isCustom && (
-        <p className="kol-helper-10 text-meta">Editing “{stock.label}” forks it to a custom curve.</p>
+        <p className="kol-mono-10 text-meta">Editing “{stock.label}” forks it to a custom curve.</p>
       )}
 
       {kind === 'epicycle' && (

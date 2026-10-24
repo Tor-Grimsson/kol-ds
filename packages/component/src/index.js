@@ -55,7 +55,7 @@ export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
 /* armLongPress — the touch hold the panel value controls report (moved from kol-hardware 2026-10-01) */
 export { armLongPress } from './utilities/armLongPress.js'
 export { default as ContextMenu, useContextMenu } from './molecules/ContextMenu.jsx'
-export { AppItemMenuProvider } from './molecules/AppItem.jsx'
+export { default as AppItemMenuProvider } from './organisms/AppItemMenuProvider.jsx'
 export { default as ProsePreview } from './utilities/ProsePreview.jsx'
 export { default as QuantityInput } from './molecules/QuantityInput.jsx'
 /* Knob — the survivor's name (2026-10-02): `variant` dial · panel. `RotaryDial` is the alias, on the ledger. */
@@ -105,6 +105,7 @@ export { default as CodeBlock } from './molecules/CodeBlock.jsx'
 export { default as ColorInputRow } from './molecules/ColorInputRow.jsx'
 export { default as ColorRamp } from './molecules/ColorRamp.jsx'
 export { default as TextFold } from './molecules/TextFold.jsx'
+export { default as PageControls } from './molecules/PageControls.jsx'
 export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
 /* MultiSelect — several pick-one settings in one dropdown, a column each (2026-10-01, first cut) */
@@ -144,7 +145,7 @@ export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
-export { default as TabsRow, TABBAR_H } from './molecules/TabsRow.jsx'
+export { default as TabsRow, TABBAR_H, TABBAR_PILL_INSET, tabbarPillWidth } from './molecules/TabsRow.jsx'
 /** @deprecated 2026-10-17 — alias of `TabsRow look="chip"` */
 export { default as TabChips } from './molecules/TabChips.jsx'
 
@@ -156,7 +157,12 @@ export { default as TabChips } from './molecules/TabChips.jsx'
  * editor: the viewport publishes the zoom, every piece of editing chrome reads
  * it. Absent from this barrel until 0.185.0, which is why the first port of
  * this set could not keep its chrome screen-constant. */
-export { default as Canvas, CanvasFrame, PanViewport, PanZoomViewport, CanvasZoomContext, useFps, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
+/* THE CANVAS FAMILY (2026-10-23): `CanvasEditor` is the artboard (`Canvas`, its old name, is an alias
+ * on the ledger — one default under two names), `CanvasStudio` the infinite dotted surface the rack and
+ * the desk sit on; both read `useCanvasViewport`, one engine, one key table (`CANVAS_KEYS`). */
+export { default as CanvasEditor, default as Canvas, CanvasFrame, PanViewport, PanZoomViewport, CanvasZoomContext, useFps, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
+export { default as CanvasStudio } from './organisms/CanvasStudio.jsx'
+export { useCanvasViewport, CANVAS_KEYS, CANVAS_GRID_CELL, CANVAS_GRID_IMAGE } from './hooks/canvasViewport.js'
 /* The rulers and the guides, public since 2026-09-03 (rulers-and-guides-are-private):
  * they measure the RENDERED rect, so they work over a CSS-zoomed stage with no
  * PanZoomViewport anywhere — which is their second consumer on day one. */
@@ -176,7 +182,7 @@ export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as PageHeader, PAGE_HEADER_ROLES } from './molecules/PageHeader.jsx'
 /* the one nav rail (2026-10-22) — `variant` app (the flat 48px rail) · site (the grouped site
  * sidebar, kol-framework's SideNav until then). Moved from kol-shell, which re-exports all three. */
-export { default as NavRail } from './organisms/NavRail.jsx'
+export { default as NavRail, RAIL_PRESETS, registerRailPreset } from './organisms/NavRail.jsx'
 export { default as Logomark } from './atoms/Logomark.jsx'
 export { RailSlotProvider, useRailSlot } from './hooks/railSlot.jsx'
 export { MastheadContext, MASTHEADS, useMasthead, mastheadTitleClass } from './utilities/masthead.js'

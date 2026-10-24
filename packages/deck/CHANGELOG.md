@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-deck
 
+## Unreleased — 2026-10-23
+
+- **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
+
 ## 0.2.1 — 2026-09-30
 
 - Comments only: one spelling, `color`.

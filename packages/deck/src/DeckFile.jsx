@@ -95,13 +95,13 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
             <Button size="sm" tone="ghost" iconLeft="download" disabled={!!busy || none} onClick={exportPptx}>{label('pptx', 'PPTX, whole deck', 'Building PPTX')}</Button>
             <Button size="sm" tone="ghost" iconLeft="file" disabled={!!busy} onClick={exportJson}>{label('json', 'Deck file (.deck.json)', 'Saving')}</Button>
           </div>
-          <span className="kol-helper-10 text-fg-48">PPTX opens in PowerPoint and Keynote as editable slides, set in the fonts installed on that machine.</span>
+          <span className="kol-mono-10 text-fg-48">PPTX opens in PowerPoint and Keynote as editable slides, set in the fonts installed on that machine.</span>
         </LabeledControlSection>
 
         <LabeledControlSection label="Import">
           <div className="flex items-center gap-2">
             <Button size="sm" tone="ghost" iconLeft="folder" disabled={!!busy} onClick={() => fileRef.current?.click()}>{label('import', 'Open deck file', 'Reading')}</Button>
-            <span className="kol-helper-10 text-fg-48">Replaces the slides in the editor.</span>
+            <span className="kol-mono-10 text-fg-48">Replaces the slides in the editor.</span>
           </div>
           <input ref={fileRef} type="file" accept="application/json,.json" hidden
             onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) importJson(f) }} />

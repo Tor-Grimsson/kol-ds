@@ -1,5 +1,9 @@
 # @kolkrabbi/design-editor
 
+## Unreleased — 2026-10-23
+
+- **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
+
 ## 0.23.0 — 2026-10-08
 
 - **Changed: the library door is the DS modal** (`MediaLibrary variant="modal"`, kol-component). The editor carried its own 301-line picker (`library/MediaPicker.jsx`, the labs LibraryPage model) because the DS modal listed one bucket; the DS modal switches buckets now, so the footer's From library, the layer inspector's and labs' source card open the one modal every consumer sees — retired to `_tmp/2026-10-07-design-editor-media-picker/`. Same pick contract (`onSelect(url, { contentType })`, the caller still `proxied()`s it). `accept` is what each door takes: image or video, vector only for an SVG source. New export on `library/mediaLibrary.js` internally: `getMediaClient()`. Peers: kol-component ≥0.241.0 · kol-theme ≥0.167.0 (the modal's bucket switch and phone cut).

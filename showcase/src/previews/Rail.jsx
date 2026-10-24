@@ -17,7 +17,7 @@ export default function RailPreview() {
       </div>
       <div className="flex h-72 flex-col overflow-hidden rounded border border-fg-08">
         <div className="flex flex-1 items-center justify-center kol-mono-12 text-meta">the page</div>
-        <Rail mode="push" side="bottom" open={docked} height={140} resizable minSize={80} maxSize={240} header={<span className="kol-helper-12 text-meta">BOTTOM RAIL · drag its top edge</span>}>
+        <Rail mode="push" side="bottom" open={docked} height={140} resizable minSize={80} maxSize={240} header={<span className="kol-mono-12 text-meta">BOTTOM RAIL · drag its top edge</span>}>
           <p className="kol-mono-12 text-meta">Docked, pushing the page up.</p>
         </Rail>
       </div>

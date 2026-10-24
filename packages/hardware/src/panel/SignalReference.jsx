@@ -73,7 +73,7 @@ function Tabs({ sections, tabs, saved, onPick, onAppend }) {
       <TabsRow tabs={visible} value={current?.id} onChange={setTab} />
       <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
         {current?.id === 'saved' && !saved?.length
-          ? <div className="kol-helper-10 text-fg-48">Nothing saved yet.</div>
+          ? <div className="kol-mono-10 text-fg-48">Nothing saved yet.</div>
           : list.map((s) => <Section key={s.title} section={s} onPick={onPick} onAppend={onAppend} showTitle={list.length > 1} />)}
       </div>
     </div>
@@ -93,7 +93,7 @@ function Panel({ sections, tabs, saved, onPick, onAppend }) {
       </div>
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4" style={{ scrollbarWidth: 'none' }}>
         {current?.id === 'saved' && !saved?.length
-          ? <div className="kol-helper-10 text-fg-48">Nothing saved yet.</div>
+          ? <div className="kol-mono-10 text-fg-48">Nothing saved yet.</div>
           : list.map((s) => <Section key={s.title} section={s} onPick={onPick} onAppend={onAppend} showTitle={list.length > 1} />)}
       </div>
     </div>

@@ -8,28 +8,28 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Later — user ideas, not scheduled
 
-- **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` — the DS's client brand home (apps review §6c-8, 2026-09-29) — is on `AppHub`, the app rail; brand.kolkrabbi.io (kol-website) is on the site rail (`SideNav` = `NavRail variant="site"`). Nothing reconciles the two. His call, his session.
+- **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` is on `AppHub`, the app rail; `apps/site-hub` (2026-10-24) is the site rail's reference beside it, and `apps/shell` shows both rails on one set of pages. The specimens exist; the call is his, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
+
+## 🏁 Current state (2026-10-24 late — site-hub, the site frame)
+
+- **Published** kol-theme 0.186.0 · kol-component 0.298.0 · kol-framework 0.54.0 (changelogs, the shipped and retirements ledgers bumped); push is his. `apps/site-hub` (5205) — the sites' reference, as studio-hub is the Studio's: kol-framework's **`SiteLayout`** (was `PageLayout`; `PageLayout` · `AppShell` alias it) with `NavRail variant="site"` on VOYAGER — Home, Brand (a foldernote, every chapter grouped), Assets, Research (Overview · Compare · Sheet · Boards). His rulings on the rail are in the packages: the **foldernote** (`to` on a category with pages), **uppercase groups at one ink**, the **theme row**, the **one-motion collapse** (gutter and gap eased, label faded, nothing remounts), a press from collapsed lands on the **rung** (264 · 320 from 1536), **no auto-expand**, the **app rail's phone drawer** (top-right hamburger/×, scrim), the gutter on **`--kol-pad-chrome-x`** (20 phone · 24 desk). Content parts: `.kol-sheet`, `PageControls`, `CategoryPage`, the article card's zoom off. `apps/shell` shows both rails behind catalog's Variants button. Docs: `04-compositions/18-site-frame.md` (the entry for agents: a site is SiteLayout + a tree + routes), `07-apps-tier/08-site-adoption.md`. Parked: his review of the content pages (plan 4.7), W3. Filed: kol-branding `one-search-modal`. Plan: `plan-2026-10-24-site-hub.md`; log: `session-log/2026-10-24-site-hub-the-site-frame.md`.
+
+## Current state (2026-10-24 night — MILESTONE: the Studio on three repos)
+
+- **Closed:** the Studio adoption and his review of it, two days to one shape. Live: kol-theme 0.185.0 · kol-icons 0.45.0 · kol-component 0.297.0 · kol-shell 0.78.1 · kol-styleguide 0.7.0. kol-fxr · kol-mirror · kol-monitor on `AppStudio`: Home = the user's saves, Library = what ships, every card the same (title · date · size · cover with download · cog · trash, Insert on Create), `StudioDetail` behind `/library/module|patch/<id>`, the file rail with Date · Size and Upload image, covers = the output; the pass green — mirror 92/92 · monitor 92/92 · fxr 71/71 then 70/71. Parked in the plan: fxr's on-demand quantised covers (its session, 1.4) and its Library subtitle (his copy, 1.5). Laws recorded: Home vs Library, one card, cover = output, the Dev row on every rail, the orchestrator's word is his go, only the repos he names. Milestone: `session-log/2026-10-24-MILESTONE-studio-on-three-repos.md`; phase log `docs/operations/09-phase-log/2026-10-24-home-library-one-card.md`. Push is his on four repos.
+
+## Current state (2026-10-24 later, the wave published, the adoption orchestrated)
+
+- **Published:** kol-theme 0.184.0 · kol-icons 0.45.0 · kol-component 0.296.0 · kol-shell 0.77.0 · kol-styleguide 0.7.0; HubHomeContract and StyleguideSrcExports closed, inbox empty. kol-fxr · kol-mirror · kol-monitor adopted the Studio from this session, one step per message against each repo's twin, measured by `_tmp/2026-10-24-hubs-pass/pass-repos.mjs` — fxr 54/54, mirror 71/71, monitor 71/71, consoles clean. **Open for his review:** Home (the user's saves) vs Library (what the app ships with) were conflated in the steps and the twins — mirror's and monitor's Library PATCHES list Home's files, fxr's Library is its chrome saves with non-clickable cards; the decided-for-review items are in the log. The `nav-studio` glyph was reverted — the DS already ships it as `device/rack-h` (and `rack-v`); kol-icons stays 0.45.0. Push is the user's on four repos (kol-branding was messaged without his instruction — overstepping, his ruling). Later the same day: the Hub's Dev row is law on every rail (restored in mirror and monitor, added to the five in-repo hubs, playbook corrected); mirror and monitor run their D1 worker locally from `pnpm dev` on fxr's `scripts/dev.mjs` (ports fxr 8787 · mirror 8788 · monitor 8789) — `docs/operations/07-apps-tier/07-app-dev-with-local-worker.md`. Log: `session-log/2026-10-24-studio-wave-published-adoption-orchestrated.md`.
+
+## Current state (2026-10-24, the hubs against the template)
+
+- **Built, unpublished:** plan-2026-10-24-hubs-against-the-template W1–W6 — FXR, Mirror and Monitor match studio-hub page for page, measured by `_tmp/2026-10-24-hubs-pass/pass.mjs`, which diffs each hub against the reference directly (FXR 54/54, Mirror 71/71, Monitor 71/71). The settings rail takes typed rows only, with Settings · Shortcuts · About · Repo and a live reset on every app and the Hub drawing kol-framework's ThemeToggle itself (kol-shell peers on kol-framework); the walkthrough, About and Create's link are data; a registered glyph never overrides a DS name (kol-icons 0.45.0); FXR's rail is fxr.kolkrabbi.io's. In the tree: kol-component 0.296.0 · kol-shell 0.77.0 · kol-icons 0.45.0 · kol-styleguide Unreleased (StyleguideSrcExports). Render clean on the four hubs, 32 of 33 gates. The adoption playbook for the siblings is `docs/operations/07-apps-tier/06-studio-adoption.md`. Push and publish are the user's. Log: `session-log/2026-10-24-hubs-against-the-template.md`.
 
 ## Current state (2026-10-23, the app card variant)
 
 - **Published:** kol-component 0.291.0–0.295.1 (`variant="app"` card + row, `AppItemMenuProvider`, `meta`, no hover fill, download stops its click, date · size never break) · kol-shell 0.75.0 (`CatalogPage preset="app"`, opt-in) · kol-hardware 0.6.1 · kol-icons 0.42.0–0.44.0 (mirror's undo · redo · atomic-molecule-04 · wave · rabbit). fxr, mirror, monitor all adopted. 31 of 32 gates green. Push is the user's. Log: `session-log/2026-10-23-app-card-variant-mirror-icons-gates.md`.
-
-## Current state (2026-10-22 late night, lobby sweep)
-
-- **Published:** kol-hardware 0.6.0 (SignalScope played part in the accent, `now` clock) · kol-component 0.288.0–0.290.0 (menu rows 8px, card/row `tone`, `TextFold`, `MediaGalleryModes` + waterfall, ColorRamp phone width, long title clears the card's actions). Seven tickets closed, inbox empty. Push is the user's. Log: `session-log/2026-10-22-lobby-sweep-scope-tone-gallery-fold.md`.
-
-## Current state (2026-10-22 night, file row · SectionText levels)
-
-- **Published:** kol-theme 0.183.0 · kol-component 0.287.0 · kol-shell 0.74.0. `PageHeader` is a deprecated alias of `SectionText level` (page · app · section · content); nested floats stack above their parent; the file row is the file card sideways (contained, flush thumb, padded text section); `CatalogPage listColumns`. Three lobby tickets closed. Push is the user's. Log: `session-log/2026-10-22-file-row-sectiontext-levels-float-stacking.md`.
-
-## Current state (2026-10-22 later, catalog variants · loader minimum)
-
-- **Published:** kol-component 0.284.0 (no-cover catalog card keeps its text at the foot) · kol-framework 0.53.0 (`hideLoaderApp({ minMs = 600 })`, kol-monitor ticket). Built: Round 16 (the variants button), the catalog app's variants button, the Content Card page (real variants, full width, props axis), every props table now lists every destructured prop. Open: Round 16 pick, plan 2.2 TALK. Push is the user's. Plan: `plan-2026-10-22-catalog-variants-and-no-cover.md`. Log: `session-log/2026-10-22-catalog-variants-no-cover-loader-minimum.md`.
-
-## Current state (2026-10-22, one nav rail)
-
-- **Built:** one nav rail — `NavRail` (app · site variants) now lives in kol-component with Logomark and the rail slot, kol-shell re-exports them, kol-framework's `SideNav` is the deprecated alias over `variant="site"`. Also: NavRail folder notes (`to` on a section), label-only sub rows aligned to L1 labels, the rail's own open width `--kol-shell-rail-open` in kol-theme (fxr 320 vs mirror/monitor 264 came from which app loaded kol-framework.css), active sidebar icon ink with `--kol-sidenav-active-icon`. kol-website ticketed to drop brand's sidebar overrides. Published theme 0.179.0 · component 0.283.0 · shell 0.73.0 · framework 0.52.0; showcase NavRail page shows both variants. Push is the user's. Plan: `plan-2026-10-22-one-nav-rail.md`. Log: `session-log/2026-10-22-one-nav-rail.md`.
 
 ## Repo standup (2026-06-15)
 

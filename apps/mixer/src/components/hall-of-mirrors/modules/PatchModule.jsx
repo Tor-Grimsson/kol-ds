@@ -82,7 +82,7 @@ export default function PatchModule({ api, master, channels = [] }) {
                 className="w-full"
               />
             ) : (
-              <span className="kol-helper-10 text-fg-32">No patches yet — name one below and save.</span>
+              <span className="kol-mono-10 text-fg-32">No patches yet — name one below and save.</span>
             )}
 
             <div className="flex gap-1 shrink-0">
@@ -158,11 +158,11 @@ export default function PatchModule({ api, master, channels = [] }) {
                 })}
               >Import</button>
             </div>
-            <div className="kol-helper-10 text-fg-32" style={{ lineHeight: '150%' }}>
+            <div className="kol-mono-10 text-fg-32" style={{ lineHeight: '150%' }}>
               Export writes the patch selected on the Preset tab. Import reads a
               patch file onto the desk and keeps it in the library.
             </div>
-            <div className="kol-helper-10 text-fg-24" style={{ lineHeight: '150%' }}>
+            <div className="kol-mono-10 text-fg-24" style={{ lineHeight: '150%' }}>
               Uploaded images and recorded takes are not carried — a patch
               reloads against the default source.
             </div>

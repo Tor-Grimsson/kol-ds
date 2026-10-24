@@ -1,7 +1,7 @@
 import { Divider, SectionText } from '@kolkrabbi/kol-component'
 
 /* The chapter section of the brand-book page kit — `PageHero` · `PageSection`
- * · `PageLayout`. Its head COMPOSES `SectionText` (page-family-is-not-a-set,
+ * · `SiteLayout`. Its head COMPOSES `SectionText` (page-family-is-not-a-set,
  * 2026-09-03) instead of hand-stacking label / title / lede: the voices are the
  * same `.kol-prose-*` trio as before, passed as the base's seams, and each class
  * carries its own bottom margin, so the block's gap is 0 and nothing moved. */

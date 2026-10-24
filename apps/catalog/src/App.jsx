@@ -61,9 +61,10 @@ const pattern = <img src={PATTERN} alt="" />
 /* the shelf draws download · star · trash only when the handlers exist — placeholders, so the reference shows them */
 const noop = () => {}
 const SHELF_SLOTS = { count: 12, onDownload: noop, onFavourite: noop, onDelete: noop }
-/* the APP card and row (CatalogAppVariant, kol-component 0.291.0): raw writes in, the page draws download ·
- * cog over trash · Rename / Duplicate / Delete on cog and right-click — placeholders, so the reference shows them */
-const APP_SLOTS = { download: noop, verbs: { rename: noop, duplicate: noop, remove: noop }, onClick: noop }
+/* the APP card and row (CatalogAppVariant, kol-component 0.291.0): raw writes in, the page draws download,
+ * cog over trash, Rename / Duplicate / Delete on right-click and the file's info rail on the cog (tags, details —
+ * 2026-10-23) — placeholders, so the reference shows them */
+const APP_SLOTS = { download: noop, verbs: { rename: noop, duplicate: noop, remove: noop }, onClick: noop, onTags: noop }
 /* the FILE card as the media library draws it (MediaLibraryPages' grid): download on the cover, the select
  * checkbox in the cover's other corner, copy · rename · delete in the plate, the size as a download link,
  * click selects. Without these the reference showed a bare card (user 2026-10-22: *"where are the icons,
@@ -134,7 +135,7 @@ export default function App() {
         views={VIEWS}
         view={view}
         onViewChange={setView}
-        toCard={(it) => ({ key: it.name, title: it.title, detail: `${it.kind} · ${it.tags.map((t) => `#${t}`).join(' ')}`, date: it.date, size: it.size, zoom: axes.zoom === 'on', ...(axes.media === 'image' ? { media: placeholder } : axes.media === 'pattern' ? { media: pattern } : axes.media === 'none' ? { media: false } : null), ...(axes.preset === 'shelf' ? SHELF_SLOTS : null), ...(axes.card === 'file' ? fileSlots(it, picked.has(it.name), () => toggle(it.name)) : null), ...(axes.card === 'app' || axes.row === 'app' ? APP_SLOTS : null) })}
+        toCard={(it) => ({ key: it.name, title: it.title, detail: `${it.kind} · ${it.tags.map((t) => `#${t}`).join(' ')}`, date: it.date, size: it.size, zoom: axes.zoom === 'on', ...(axes.media === 'image' ? { media: placeholder } : axes.media === 'pattern' ? { media: pattern } : axes.media === 'none' ? { media: false } : null), ...(axes.preset === 'shelf' ? SHELF_SLOTS : null), ...(axes.card === 'file' ? fileSlots(it, picked.has(it.name), () => toggle(it.name)) : null), ...(axes.card === 'app' || axes.row === 'app' ? { ...APP_SLOTS, tags: it.tags, details: [{ label: 'Kind', value: it.kind }] } : null) })}
       />
       <VariantsButton axes={axes} onChange={change} />
     </>

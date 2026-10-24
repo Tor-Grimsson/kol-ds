@@ -24,6 +24,13 @@ import useDragResize from '../hooks/useDragResize.js'
  * and no `pages` (Home) renders as a plain link row — it has nothing to
  * disclose.
  *
+ * THE FOLDERNOTE (user 2026-10-24, site-hub: "make a prop so you can choose if
+ * you want to make the category a clickable page. this is how its set in
+ * kol-branding"): a category with `to` AND `pages` is a page of its own — its
+ * row is a link that opens the page and discloses the pages under it; the
+ * caret alone toggles the disclosure without navigating. Lit by its own route
+ * or any page beneath. No `to` = the disclosure button it always was.
+ *
  * The 2026-08-01 "TWO LEVELS ONLY" ruling was the BRAND APP's, about its
  * scroll-spied `#anchor` section layer — that layer stays dead (an `{ id }`
  * leaf is dropped). It was inscribed here as a law for every consumer, and
@@ -107,9 +114,12 @@ import useDragResize from '../hooks/useDragResize.js'
  *   `themeToggle`      `false` drops the theme slot (default `true`)
  *   `iconComponent`    the hop glyph's renderer, kol-shell's seam — `(props:
  *                      { name, size }) => element`; default the DS `Icon`
- *   `expandOnSelect`   `false` keeps the rail collapsed when a row navigates or
- *                      dispatches — an app rail stays a rail. Default `true`, the
- *                      brand ruling ("pressing any icon would expand the sidebar")
+ *   `expandOnSelect`   `true` expands the rail when a row navigates, dispatches
+ *                      or discloses from the collapsed state. Default `false`
+ *                      (user 2026-10-24: "dont auto expand rail when you click an
+ *                      icon when its collapsed" — reversing the 2026-08-09 brand
+ *                      ruling "pressing any icon would expand the sidebar"): a
+ *                      collapsed rail stays collapsed, the press does its job
  *   `defaultCollapsed` boots collapsed when nothing is stored (useDragResize)
  * `background` (2026-08-09, prop): `true` (default) paints the rail surface;
  * `false` renders chromeless so the rail can float over a consumer's media
@@ -119,12 +129,13 @@ import useDragResize from '../hooks/useDragResize.js'
  */
 
 const pageBase =
-  'kol-sidenav-link kol-helper-10 block relative py-[4px] pl-14 pr-6 no-underline transition-colors duration-150'
+  'kol-sidenav-link kol-helper-10 block relative py-[4px] pl-[calc(var(--kol-pad-chrome-x)+2rem)] pr-6 no-underline transition-colors duration-150'
 
 /* The active-dot pseudo-element is positioned by `--kol-sidenav-dot-left`
- * (kol-components-atoms.css). The page row indents 3.5rem (pl-14); the dot
- * sits 0.875rem inside that, in the gutter the icon column leaves. */
-const pageStyle = { '--kol-sidenav-dot-left': '2.625rem' }
+ * (kol-components-atoms.css). The page row indents one step past the chrome inset
+ * (`--kol-pad-chrome-x` + the icon column + the gap, 2026-10-24 — it was a literal
+ * 3.5rem); the dot sits 0.875rem inside that, in the gutter the icon column leaves. */
+const pageStyle = { '--kol-sidenav-dot-left': 'calc(var(--kol-pad-chrome-x) + 1.125rem)' }
 /* Category and page must not share a stop: category `emphasis`, page `strong`
  * — two rungs of one ladder, so the tree reads as hierarchy (elder ruling). */
 const pageCls = `${pageBase} text-strong hover:text-emphasis`
@@ -140,7 +151,18 @@ const leavesOf = (rows) => rows.flatMap((r) => (r.children ? leavesOf(rowsOf(r.c
 /* A nested row sits one --kol-spacing-3 step further in per depth. Inline,
  * not a rule: `pl-14` rides the leaf as a utility and outranks anything in
  * this layer. Depth 0 carries no indent so a flat tree renders unchanged. */
-const indentOf = (depth) => `calc(3.5rem + ${depth} * var(--kol-spacing-3))`
+const indentOf = (depth) => `calc(var(--kol-pad-chrome-x) + 2rem + ${depth} * var(--kol-spacing-3))`
+
+/* the route leaf is always an `<a href>` handing the route to `onNavigate(event, to)` — the
+ * router lives in the consumer (kol-framework's `SideNav` wraps this with react-router). A
+ * modified click (cmd, ctrl, shift, middle) is left to the browser, as a NavLink left it.
+ * Hoisted out of the component so its identity is stable across renders (see `leafProps`). */
+function RouteLeaf({ to, href, active, onNavigate, className, style, children, onPress }) {
+  return (
+    <a href={href} style={style} className={className(active)} aria-current={active ? 'page' : undefined}
+      onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onPress?.(); onNavigate(e, to) }}>{children}</a>
+  )
+}
 
 export default function NavRailSite({
   currentPath: pathname = '',
@@ -164,7 +186,7 @@ export default function NavRailSite({
   footer,
   themeToggle = true,
   iconComponent,
-  expandOnSelect = true,
+  expandOnSelect = false,
   defaultCollapsed = false,
 }) {
   const Glyph = iconComponent ?? Icon
@@ -190,16 +212,11 @@ export default function NavRailSite({
     setOpenPanel(null)
     if (collapsed && expandOnSelect) toggleCollapsed()
   }
-  /* the route leaf is always an `<a href>` handing the route to `onNavigate(event, to)` — the
-   * router lives in the consumer (kol-framework's `SideNav` wraps this with react-router). A
-   * modified click (cmd, ctrl, shift, middle) is left to the browser, as a NavLink left it. */
-  const RouteLeaf = ({ to, className, style, children }) => {
-    const active = isPageActive(to)
-    return (
-      <a href={hrefFor ? hrefFor(to) : to} style={style} className={className(active)} aria-current={active ? 'page' : undefined}
-        onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); handleNavigate(e, to) }}>{children}</a>
-    )
-  }
+  /* what a route leaf needs from this render — `RouteLeaf` itself is hoisted above the component
+   * (2026-10-24): declared in here it was a NEW component type every render, so React threw every
+   * row's DOM away and rebuilt it on each toggle, disclosure or route — the rail flashed and lost
+   * hover and focus on the collapse. */
+  const leafProps = (to) => ({ to, href: hrefFor ? hrefFor(to) : to, active: isPageActive(to), onNavigate: handleNavigate })
 
   /* Which categories are disclosed. INDEPENDENT per category (elder ruling
    * 2026-08-01) — arriving somewhere must not silently close wherever you
@@ -249,11 +266,14 @@ export default function NavRailSite({
    * up the way a category does — when one of its leaves is the current route. */
   const renderRows = (rows, depth) => rows.map((row, i) => {
     if (row.children) {
-      const lit = leavesOf(rowsOf(row.children)).some(isLeafActive)
       return (
         <li key={row.id ?? `${row.label}-${i}`}>
           <div
-            className={`kol-sidenav-group kol-helper-10${lit ? ' text-emphasis' : ' text-subtle'}`}
+            /* UPPERCASE (user 2026-10-24, the another-creation reference: "look at uppercase sections") — the fork's
+             * `uppercase` utility returns, as the reference carries it; the group is a section label in the rows' voice.
+             * ONE INK (user 2026-10-24: "just keep them same opacity"): the label never lights — the row's dot says
+             * which row is active, and a label that brightened said it twice. */
+            className="kol-sidenav-group kol-helper-10 uppercase text-subtle"
             style={depth ? { paddingLeft: indentOf(depth) } : undefined}
           >
             {row.label}
@@ -263,7 +283,9 @@ export default function NavRailSite({
       )
     }
     /* the dot keeps its 0.875rem lead on the text at every depth */
-    const leafStyle = depth ? { paddingLeft: indentOf(depth), '--kol-sidenav-dot-left': `calc(2.625rem + ${depth} * var(--kol-spacing-3))` } : pageStyle
+    /* a row under a group sits 2px further in than the step, dot and text together, so the dot's edge lines up under
+     * the group label's first letter (user 2026-10-24: "just indent the dot+text by 2px to right") */
+    const leafStyle = depth ? { paddingLeft: `calc(${indentOf(depth)} + 2px)`, '--kol-sidenav-dot-left': `calc(var(--kol-pad-chrome-x) + 1.125rem + 2px + ${depth} * var(--kol-spacing-3))` } : pageStyle
     if (row.onSelect) {
       return (
         <li key={row.id ?? `${row.label}-${i}`}>
@@ -281,7 +303,7 @@ export default function NavRailSite({
     }
     return (
       <li key={row.to}>
-        <RouteLeaf to={row.to} style={leafStyle} className={(active) => (active ? pageActiveCls : pageCls)}>
+        <RouteLeaf {...leafProps(row.to)} style={leafStyle} className={(active) => (active ? pageActiveCls : pageCls)}>
           {row.label}
         </RouteLeaf>
       </li>
@@ -293,6 +315,8 @@ export default function NavRailSite({
               const pages = pagesOf(cat)
               const isOpen = openCats.has(cat.id)
               const isLink = !pages.length && cat.to
+              /* the FOLDERNOTE: a category that is a page of its own (`to` with `pages`) */
+              const isFolder = pages.length > 0 && !!cat.to
               const isPanel = !pages.length && !cat.to && !!cat.panel
               const isAction = !pages.length && !cat.to && !isPanel && cat.onSelect
               /* THE COLLAPSE RULE: no icon, no route, no action = a LABEL over
@@ -318,8 +342,28 @@ export default function NavRailSite({
               /* A category is a <button>, not a link — it has no route by
                  definition, and an <a href> would promise a page that does
                  not exist. Clicking it discloses its pages. */
-              const head = isLink ? (
-                <RouteLeaf to={cat.to} className={(active) => `${rowCls}${active ? ' is-active' : ''}`}>
+              const head = isFolder ? (
+                /* the row opens the page and discloses; the caret beside it (a sibling — a button cannot sit
+                 * inside a link) toggles the disclosure alone */
+                <>
+                  <RouteLeaf {...leafProps(cat.to)} onPress={() => discloseCat(cat.id)} className={(active) => `${rowCls}${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
+                    {glyph}
+                    <span className="kol-sidenav-hop-label flex-1 min-w-0">{cat.label}</span>
+                  </RouteLeaf>
+                  <button
+                    type="button"
+                    /* no display utility on the caret — it would outrank the collapsed rule's display:none (the 2026-08-09 defect; the
+                     * box lives in .kol-sidenav-hop-caret, kol-framework.css) */
+                    className={`kol-sidenav-hop-caret bg-transparent border-0 cursor-pointer p-0 text-emphasis${isOpen ? '' : ' -rotate-90'}`}
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? `Collapse ${cat.label}` : `Expand ${cat.label}`}
+                    onClick={() => (collapsed ? (expandOnSelect && toggleCollapsed(), discloseCat(cat.id)) : toggleCat(cat.id))}
+                  >
+                    <Icon name="chevron-down" size={12} />
+                  </button>
+                </>
+              ) : isLink ? (
+                <RouteLeaf {...leafProps(cat.to)} className={(active) => `${rowCls}${active ? ' is-active' : ''}`}>
                   {glyph}
                   <span className="kol-sidenav-hop-label flex-1 min-w-0">{cat.label}</span>
                 </RouteLeaf>
@@ -354,7 +398,7 @@ export default function NavRailSite({
                    * an expand that lands on a closed tree. */
                   onClick={() => {
                     if (collapsed) {
-                      toggleCollapsed()
+                      if (expandOnSelect) toggleCollapsed()
                       discloseCat(cat.id)
                     } else {
                       toggleCat(cat.id)
@@ -366,7 +410,7 @@ export default function NavRailSite({
                   {/* plain wrapper span — Icon stamps inline-flex on its own
                     * element, which would outrank the rail's display:none */}
                   <span
-                    className={`kol-sidenav-hop-caret transition-transform duration-150${isOpen ? '' : ' -rotate-90'}`}
+                    className={`kol-sidenav-hop-caret${isOpen ? '' : ' -rotate-90'}`}
                     aria-hidden="true"
                   >
                     <Icon name="chevron-down" size={12} />
@@ -377,11 +421,12 @@ export default function NavRailSite({
                 <li key={cat.id} className="relative">
                   {/* Collapsed rail hides the label — the tooltip is the only
                       thing naming the row. Portalled, so overflow can't clip it. */}
-                  {collapsed ? (
-                    <Tooltip label={cat.label} placement="right" triggerClassName="block">
-                      {head}
-                    </Tooltip>
-                  ) : head}
+                  {/* ONE TREE IN BOTH STATES (2026-10-24, the clip model): the Tooltip wraps the row expanded too,
+                      disabled — wrapping only when collapsed rebuilt every row on the toggle, losing hover and
+                      focus and flashing the rail. Portalled, so overflow can't clip it. */}
+                  <Tooltip label={cat.label} placement="right" triggerClassName="block" disabled={!collapsed}>
+                    {head}
+                  </Tooltip>
 
                   {!isLink && !isAction && !isPanel && isOpen && (
                     <ul className="kol-sidenav-list">{renderRows(pages, 0)}</ul>
@@ -420,8 +465,8 @@ export default function NavRailSite({
         </nav>
       </div>
 
-      {/* hop-bare carries its own gutter padding; collapsed falls back to
-          `icon` — a full-width label can't sit in the collapsed rail. */}
+      {/* the theme slot holds a TREE ROW (kol-framework's SideNav passes `ThemeToggle variant="row"`,
+          2026-10-24): it wears .kol-sidenav-hop and follows the collapse as the rows do. */}
       <div className="pb-4">
           {/* the theme slot is the consumer's: kol-component cannot import kol-framework's
             * toggle, so `themeToggle` is a render function `({ collapsed }) => node` (kol-framework's

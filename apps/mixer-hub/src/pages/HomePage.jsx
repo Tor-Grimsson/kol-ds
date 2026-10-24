@@ -1,18 +1,25 @@
-import { useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { findVariant } from '../../../mixer/src/data/mirrorVariants.js'
-import Button from '../../../mixer/src/components/atoms/Button.jsx'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { downloadBlob } from '@kolkrabbi/kol-component'
+import { useLibrary, addToLibrary, removeFromLibrary, exportEntry } from '../../../mixer/src/hooks/useLibraryStore.js'
+import { PatchThumb } from '../components/PatchThumb.jsx'
+import { cover, title } from '../../../studio-hub/src/covers.js'
 
 /**
- * ON THE HUB (apps/mixer-hub, 2026-10-03): this file is mirror's Home as DATA — `useHome()` returns
- * `HubHome`'s props and the walkthrough, and kol-shell's `AppStudio` draws the page. The masthead,
- * the RECENT · SAVED strip and the Walkthrough button are the Hub's now; what is below is mirror's.
+ * ON THE HUB (apps/mixer-hub, 2026-10-03): this file is Mirror's Home as DATA — `useHome()` returns
+ * `HubHome`'s props, the walkthrough and the one file card, and kol-shell's `AppStudio` draws the page.
  *
- * HomePage — /, on kol-shell's `CatalogPage` (ShellHomeSystemAdoption,
- * 2026-08-27 — this page, fxr's and monitor's were the same page written
- * three times). Recent = the one Empty Studio card (monitor's "Empty 7U");
- * Saved = the persisted memory slots. The full catalogue lives in /library.
- * Walkthrough is the panel over the catalog; grey action buttons bottom-left.
+ * HOME IS A DATA CONTRACT (HubHomeContract, 2026-10-23): the Hub draws every card. The files are the
+ * saved patches (useLibraryStore, kind `patch`, the shipped presets excluded — those live in Library),
+ * or the review seed when none is saved; a click opens the studio; Enter Studio is the action button.
+ * The memory slots are not files and left Home for the Library (fxr's ruling of plan 39).
+ *
+ * EVERY VERB, OVER THIS APP'S OWN STATE (user 2026-10-24: *"why isnt there a trash icon in cards in
+ * library? how can you manage your library?"* — Mirror passed no rename, tags or note, so the card had
+ * no cog and the rail no pencil). The files live here, seeded from the store and re-read when its
+ * patches change; Rename, tags and the note write this state (the store has no write for them),
+ * Duplicate and Delete write the store when the file is a saved patch, and the cover's download is the
+ * store's export. `fileCard` is the one card Home and Library draw, studio-hub's shape.
  */
 
 const WALKTHROUGH_STEPS = [
@@ -54,69 +61,63 @@ const WALKTHROUGH_STEPS = [
   { title: 'Get started', actions: true },
 ]
 
-const PREVIEW_SRC = '/images/stack-hero-400.jpg'
+/* a saved patch as Home's file — its live channel count and description as the rail's details */
+const patchFile = (e) => ({
+  id: e.id,
+  name: e.name,
+  tags: e.tags ?? [],
+  note: e.description ?? '',
+  details: [{ label: 'Channels', value: (e.data?.channels || []).filter((c) => c.variantId).length }],
+  updatedAt: e.savedAt,
+  bytes: new Blob([JSON.stringify(e)]).size,
+  cover: <PatchThumb patch={e} />,
+})
 
-const EMPTY_STUDIO = [
-  { name: 'empty-studio', title: 'Empty Studio', detail: '3 channels — mixer, buses, routing', src: PREVIEW_SRC, alt: 'Empty Studio' },
-]
+/* THE REVIEW SEED (user 2026-10-23, the hubs beside studio-hub): a fresh browser has no saved patches, so Home drew
+ * nothing. With none saved, twelve dummy patches stand in — studio-hub's covers — and leave with the first real save. */
+const DAY = 86400000
+const SEED_NAMES = ['mirror-ball', 'tunnel', 'kaleido', 'ripple-tank', 'strobe', 'feedback-loop', 'chroma-split', 'warp-field', 'tiles', 'scan-fold', 'prism', 'slit-scan']
+const SEED = SEED_NAMES.map((slug, i) => ({
+  id: `seed-${slug}`,
+  name: title(slug),
+  tags: [['loop', 'poster', 'social', 'test'][i % 4]],
+  details: [{ label: 'Channels', value: 1 + (i % 4) }],
+  updatedAt: Date.parse('2026-10-23T12:00:00Z') - i * DAY,
+  bytes: 2400 + i * 760,
+  cover: cover(i + 60),
+  note: i % 2 ? '' : `Patched for the ${['Mengi', 'Iðnó', 'Harpa', 'Gaukurinn'][i % 4]} show.`,
+}))
+
+const filesOf = (patches) => (patches.length ? patches.map(patchFile) : SEED)
 
 export function useHome() {
   const navigate = useNavigate()
-  const [view, setView] = useState('recent')
+  const patches = useLibrary('patch').filter((e) => !e.preset)
+  const key = patches.map((e) => e.id).join()
+  const [files, setFiles] = useState(() => filesOf(patches))
+  useEffect(() => { setFiles(filesOf(patches)) }, [key]) // eslint-disable-line react-hooks/exhaustive-deps
+  const entry = (id) => patches.find((e) => e.id === id)
+  const edit = (id, patch) => setFiles((fs) => fs.map((x) => (x.id === id ? { ...x, ...patch } : x)))
 
-  // Re-read on every route change — slots only change in the studio, and this hook never remounts.
-  const { pathname } = useLocation()
-  const memory = useMemo(() => {
-    try {
-      const raw = localStorage.getItem('mirror-archive')
-      if (raw) return (JSON.parse(raw) || []).map((s, i) => ({ slot: s, i })).filter(({ slot }) => slot)
-    } catch { /* no memory */ }
-    return []
-  }, [pathname])
-
-  const saved = memory.map(({ slot, i }) => ({
-    name: `m${i + 1}`,
-    title: `M${i + 1} — ${findVariant(slot.variantId)?.title || slot.variantId}`,
-    detail: slot.variantId,
-    src: slot.imageSrc || PREVIEW_SRC,
-    alt: '',
-    slotIndex: i,
-  }))
-
-  const illustration = <img src="/images/stack-hero-800.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
-  /* the Hub hands a step's `actions` its own close */
+  /* the walkthrough as DATA (2026-10-24): the cover the Hub draws, and the Get started actions as `{ label, onClick }` —
+   * the Hub draws the buttons (Mirror drew its own, not the DS's) and closes the walkthrough before each handler */
   const walkthrough = WALKTHROUGH_STEPS.map((s) => s.actions
-    ? {
-        ...s,
-        actions: (close) => (
-          <>
-            <Button tone="grey" size="md" onClick={() => { close(); navigate('/studio') }}>Enter Studio</Button>
-            <Button tone="grey" size="md" onClick={() => { close(); navigate('/library') }}>Browse Library</Button>
-          </>
-        ),
-      }
-    : { ...s, illustration })
+    ? { ...s, actions: [{ label: 'Enter Studio', onClick: () => navigate('/studio') }, { label: 'Browse Library', onClick: () => navigate('/library') }] }
+    : { ...s, cover: '/images/stack-hero-800.jpg' })
 
-  return {
-    walkthrough,
-    home: {
-      items: view === 'recent' ? EMPTY_STUDIO : saved,
-      filtersTitle: 'Studio',
-      view,
-      onViewChange: setView,
-      toCard: (item) => ({
-        key: item.name,
-        title: item.title,
-        detail: item.detail,
-        media: <img src={item.src} alt={item.alt} />,
-        onClick: item.slotIndex != null
-          ? () => navigate('/studio', { state: { slotIndex: item.slotIndex } })
-          : () => navigate('/studio'),
-      }),
-      actions: <Button tone="grey" size="md" onClick={() => navigate('/studio')}>Enter Studio</Button>,
-      children: view === 'saved' && memory.length === 0 && (
-        <p className="kol-helper-12 text-fg-32">No saved slots yet — save one from the studio sidebar.</p>
-      ),
-    },
+  const home = {
+    files,
+    onOpen: () => navigate('/studio'),
+    onDownload: (f) => { const e = entry(f.id); if (e) { exportEntry(e); return } const { cover: _c, ...data } = f; downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `${f.name}.json`) },
+    onRename: (f, name) => edit(f.id, { name, updatedAt: Date.now() }),
+    onDuplicate: (f) => { const e = entry(f.id); if (e) addToLibrary({ ...e, name: `${e.name} copy` }); else setFiles((fs) => [{ ...f, id: `${f.id}-${Date.now().toString(36)}`, name: `${f.name} copy`, updatedAt: Date.now() }, ...fs]) },
+    onRemove: (f) => { if (entry(f.id)) removeFromLibrary(f.id); else setFiles((fs) => fs.filter((x) => x.id !== f.id)) },
+    onTags: (f, tags) => edit(f.id, { tags }),
+    onNote: (f, note) => edit(f.id, { note }),
+    /* the rail's Upload image (2.2) — the picked picture becomes the save's cover (kol-mirror's writes `setThumb`) */
+    onCover: (f, src) => edit(f.id, { cover: <img src={src} alt="" className="size-full object-cover" /> }),
+    action: { label: 'Enter Studio', onClick: () => navigate('/studio') },
   }
+
+  return { walkthrough, home }
 }

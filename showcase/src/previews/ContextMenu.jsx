@@ -16,7 +16,7 @@ export default function ContextMenuPreview() {
           </li>
         ))}
       </ul>
-      <p className="kol-helper-12 text-meta">Right-click a row.</p>
+      <p className="kol-mono-12 text-meta">Right-click a row.</p>
       <ContextMenu menu={menu}>
         {(row) => (
           <>

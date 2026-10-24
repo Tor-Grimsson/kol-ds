@@ -98,7 +98,7 @@ export default function FxModule({
             `mirrorVariants`. A binary param (min 0, max 1) renders as a state
             row rather than a one-notch fader. */}
         {entries.length === 0 && (
-          <span className="kol-helper-12 text-fg-32">No parameters — it is on or off</span>
+          <span className="kol-mono-12 text-fg-32">No parameters — it is on or off</span>
         )}
         {entries.map(([key, spec]) => {
           const value = params[key] ?? spec.default

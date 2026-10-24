@@ -12,7 +12,7 @@ import SectionText, { SECTION_TEXT_LEVELS } from './SectionText.jsx'
 /** @deprecated → `SECTION_TEXT_LEVELS` */
 export const PAGE_HEADER_ROLES = SECTION_TEXT_LEVELS
 
-export default function PageHeader({ title, subtitle, description, subtitleMaxWidth, titleClass, level = 'page', eyebrow, actions, media, className = '' }) {
+export default function PageHeader({ title, subtitle, description, subtitleMaxWidth, titleClass, level = 'page', eyebrow, actions, actionsPlacement, media, className = '' }) {
   return (
     <SectionText
       level={level}
@@ -21,6 +21,7 @@ export default function PageHeader({ title, subtitle, description, subtitleMaxWi
       headlineClass={titleClass}
       body={subtitle ?? description}
       actions={actions}
+      actionsPlacement={actionsPlacement}
       media={media}
       slotStyle={subtitleMaxWidth ? { body: { maxWidth: subtitleMaxWidth } } : undefined}
       className={className}

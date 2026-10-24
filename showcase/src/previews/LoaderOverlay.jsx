@@ -16,7 +16,7 @@ export default function LoaderOverlayPreview() {
   return (
     <div className="flex flex-col items-start gap-2">
       <Button onClick={() => setOpen(true)}>Play overlay</Button>
-      <span className="kol-helper-12 text-fg-48">Covers the viewport — click the curtain to enter.</span>
+      <span className="kol-mono-12 text-fg-48">Covers the viewport — click the curtain to enter.</span>
       {open && (
         <LoaderOverlay loader={<LoaderIntro dismissOnClick onComplete={() => setOpen(false)} />} />
       )}

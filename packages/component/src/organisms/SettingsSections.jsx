@@ -1,4 +1,23 @@
-import { LabeledControlSection, SettingsRow } from './SettingsPanel.jsx'
+import { LabeledControlSection, SettingsChoice, SettingsRow, SettingsSwitch } from './SettingsPanel.jsx'
+
+/* A STRING VALUE WEARS THE DS'S CLASS (user 2026-10-24, on Mirror's settings rail: *"YOU ARE USING A HELPER text for
+ * paragraphs"* — *"THIS SHOULDNT BE POSSIBLE if you were using a preset"*). A consumer that hands rows as data never
+ * picks a text class: a plain `value` is drawn in `kol-mono-12 text-body`, the file rail's and the shortcut rows' voice.
+ * A node passed as `value` is the consumer's and stays as given. */
+const isText = (v) => typeof v === 'string' || typeof v === 'number'
+const textValue = (v) => <span className="kol-mono-12 text-body">{v}</span>
+/* a section's `note` — a sentence or two under the eyebrow, before the rows (Mirror's Memory, Monitor's Patches): mono-12
+ * in the meta ink, the panel's own intro voice. It wraps — the helper law is about helper text, and this is not helper */
+const notes = (note) => (Array.isArray(note) ? note : [note]).map((n, i) => <p key={i} className="kol-mono-12 text-meta">{n}</p>)
+/* the typed controls — the DS's, in the surface's tone; `render` stays the escape hatch for a control the DS has no word for */
+const control = (row) => {
+  if (row.type === 'choice') return <SettingsChoice options={row.options ?? []} value={row.value} onChange={row.onChange} ariaLabel={row.ariaLabel ?? (typeof row.label === 'string' ? row.label : undefined)} />
+  if (row.type === 'switch') return <SettingsSwitch on={!!row.on} onChange={row.onChange} disabled={row.disabled} disabledHint={row.disabledHint} label={row.ariaLabel ?? (typeof row.label === 'string' ? row.label : undefined)} />
+  if (row.render) return row.render()
+  return isText(row.value) ? textValue(row.value) : row.value
+}
+/* a typed row's cell: a choice fills the value column, a switch sits at its end, text sits on the baseline */
+const rowAlign = (row, fallback) => row.align ?? (row.type === 'choice' ? 'fill' : fallback)
 
 /**
  * SettingsSections — settings rows AS DATA, rendered once.
@@ -31,11 +50,16 @@ import { LabeledControlSection, SettingsRow } from './SettingsPanel.jsx'
  * text (a keyboard combo, a version string), which is what lets the shortcuts
  * sheet and the settings page's shortcut block be the same call.
  *
+ * TYPED ROWS (user 2026-10-24, on FXR's rail drawing its own sunken dropdown beside the reference's: *"we are literally
+ * avoiding this custom per repo shit"*): a row names its CONTROL as data and this draws it — `{ type: 'choice', options,
+ * value, onChange, ariaLabel? }` is a `SettingsChoice`, `{ type: 'switch', on, onChange, disabled?, disabledHint? }` a
+ * `SettingsSwitch` — in the surface's tone, never the consumer's. The Hub's rail takes typed rows and refuses `render`.
+ *
  * `divided` puts the hairline above a section — pass it on EVERY section, the
  * first included: the rule is `.kol-section--divided + .kol-section--divided`,
  * so the first draws nothing and skipping it just costs the next its line.
  *
- * @param {Array<{label?: string, rows: Array<{label: ReactNode, render?: Function, value?: ReactNode, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint)
+ * @param {Array<{label?: string, note?: string|string[], rows?: Array<{label: ReactNode, type?: 'choice'|'switch', options?: Array, value?: ReactNode, on?: boolean, onChange?: Function, render?: Function, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint; `note` a sentence or two under the eyebrow; a string `value` is drawn in the DS's mono-12 and sits on the baseline; `type: 'choice'` / `'switch'` rows are drawn here)
  * @param {boolean} [divided=false] - Hairline above each section
  * @param {number|'auto'} [labelWidth] - Default label column for every row — `'auto'` makes the label yield and the control hug, which is what a narrow column or a nowrap value needs
  * @param {string} [align] - Default row alignment passed to `SettingsRow`
@@ -46,16 +70,17 @@ export default function SettingsSections({ sections = [], divided = false, label
     <div className={`kol-settings-sections flex flex-col gap-6 ${className}`.trim()}>
       {sections.map((sec, i) => (
         <LabeledControlSection key={sec.label ?? i} label={sec.label} divided={divided} rowGap={sec.rowGap}>
-          {sec.rows.map((row, j) => (
+          {sec.note != null && notes(sec.note)}
+          {(sec.rows ?? []).map((row, j) => (
             <SettingsRow
               key={row.id ?? row.label ?? j}
               label={row.label}
               hint={row.hint}
-              align={row.align ?? align}
+              align={rowAlign(row, align)}
               labelWidth={row.labelWidth ?? labelWidth}
-              text={row.text}
+              text={row.text ?? (!row.render && !row.type && isText(row.value))}
             >
-              {row.render ? row.render() : row.value}
+              {control(row)}
             </SettingsRow>
           ))}
         </LabeledControlSection>

@@ -85,7 +85,9 @@ export default function LabeledControl({
       <div className={`flex ${labelAuto ? `flex-col items-start gap-1 sm:flex-row ${text ? 'sm:items-baseline' : 'sm:items-center'} sm:gap-3` : `${text ? 'items-baseline' : 'items-center'} gap-3`} ${className}`}>
         {showLabel && (
           <span
-            className={`kol-helper-10 tracking-widest text-meta${text ? ' leading-4' : ''} ${labelAuto ? 'max-w-full min-w-0 truncate sm:flex-1' : 'shrink-0'}`}
+            /* A LABEL NEVER WRAPS (review 2, § 6.2 — the helper law by construction, 01-foundations/03-typography.md:29):
+             * `whitespace-nowrap truncate`, so a long one ends in an ellipsis instead of breaking onto a second line */
+            className={`kol-helper-10 tracking-widest text-meta whitespace-nowrap truncate${text ? ' leading-4' : ''} ${labelAuto ? 'max-w-full min-w-0 sm:flex-1' : 'shrink-0'}`}
             style={labelAuto ? undefined : { width: labelWidth }}
           >
             {labelInner}

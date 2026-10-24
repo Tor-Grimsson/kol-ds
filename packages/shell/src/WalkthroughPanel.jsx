@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, pushLayer, popLayer, isTopLayer } from '@kolkrabbi/kol-component'
+import { warnJsx } from './warnJsx.js'
 
 /**
  * WalkthroughPanel — A stepped intro card. the absolutely-centred stepped intro card (both repos'
  * HomePage): chevron Buttons either side, text column + illustration pane.
  *
- * Steps are content: `[{ title, text: [..], illustration?, actions? }]` —
- * `illustration` is a render slot (monitor globs SVGs, mirror uses a JPEG),
- * a step with `actions` renders that node centred instead of the text/image
- * split (the "Get started" step).
+ * Steps are content: `[{ title, text: [..], cover?, illustration?, actions? }]` —
+ * `cover` is an image src the panel draws itself (full-bleed, at 60 %), `illustration` a render slot for a
+ * DRAWING (monitor globs SVGs); a step with `actions` renders them centred instead of the text/image split
+ * (the "Get started" step). THE ACTIONS ARE DATA (user 2026-10-24: Mirror and Monitor each drew their own
+ * Button there, one of them not the DS's): `[{ label, onClick, icon? }]`, drawn here as `Button tone="grey"
+ * size="md"`; a node is still drawn, with a dev warning.
  *
  * `onClose` draws an X INSIDE the card, top-right (user, 2026-09-26, on media-hub:
  * the panel had no close of its own, so every app put one outside the card or on a
@@ -72,7 +75,9 @@ export default function WalkthroughPanel({ steps = [], iconComponent, onClose })
         )}
         {current.actions ? (
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            {current.actions}
+            {Array.isArray(current.actions)
+              ? current.actions.map((a, i) => <Button key={a.label ?? i} tone="grey" size="md" iconLeft={a.icon} iconComponent={iconComponent} onClick={a.onClick}>{a.label}</Button>)
+              : (warnJsx('walkthrough[].actions', 'Pass [{ label, onClick }]; the panel draws the buttons.'), current.actions)}
           </div>
         ) : (
           <>
@@ -85,9 +90,9 @@ export default function WalkthroughPanel({ steps = [], iconComponent, onClose })
               </div>
               <span className="text-fg-48 kol-helper-12">{step + 1} / {steps.length}</span>
             </div>
-            {current.illustration && (
+            {(current.cover || current.illustration) && (
               <div style={{ flex: '0 0 50%', overflow: 'hidden' }}>
-                {current.illustration}
+                {current.cover ? <img src={current.cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }} /> : current.illustration}
               </div>
             )}
           </>

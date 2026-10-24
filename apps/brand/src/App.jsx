@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { PageLayout } from '@kolkrabbi/kol-framework'
+import { SiteLayout } from '@kolkrabbi/kol-framework'
 import { PageHeader, Table } from '@kolkrabbi/kol-component'
 import {
   Swatch, ColorAnatomy, ComboLab, TypeBlock, LogoCard, LogoScaling, AssetCard, AssetTable, MoodTile,
@@ -13,7 +13,7 @@ import { VOYAGER } from 'voyager-fixture'
  * brand looks like WALKED THROUGH is apps/brand-hub now; this is the parts shelf that book and every
  * brand.<domain> site are built from.
  *
- * The frame is kol-framework's `PageLayout` — the brand-book layout (sidenav, drawer, TOC rail) every
+ * The frame is kol-framework's `SiteLayout` — the brand-book layout (sidenav, drawer, TOC rail) every
  * consumer's BrandLayout.jsx copies — so the frame is proved here too. Routes are real paths under
  * the Vite base (`/apps/brand/…` built; vercel.json rewrites it). */
 
@@ -251,7 +251,7 @@ export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <Routes>
-        <Route element={<PageLayout navTree={NAV} pageWash="var(--kol-fg-02)" />}>
+        <Route element={<SiteLayout navTree={NAV} pageWash="var(--kol-fg-02)" />}>
           {ROUTES.map(([path, El]) => <Route key={path} path={path} element={<El />} />)}
           <Route path="*" element={<Navigate to="/colour/ramps" replace />} />
         </Route>

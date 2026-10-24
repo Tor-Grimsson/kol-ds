@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
 import { AppHub, PageShell } from '@kolkrabbi/kol-shell'
-import { Button, Dropdown, PageHeader, SettingsChoice, SettingsSwitch } from '@kolkrabbi/kol-component'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
+import { Button, Dropdown, PageHeader, SettingsChoice, SettingsSwitch, downloadBlob } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
 
 /* THE HUB'S REFERENCE APP (the app anatomy, 2026-09-26). Shell + Hub + a placeholder tool,
  * judged on its own: everything on screen except the tool page is kol-shell's `AppHub`. An
  * app on the Hub is this file — an app description, its sets, its keymap, and its tool.
+ *
+ * HOME IS DATA (HubHomeContract, 2026-10-23): this app hands `HubHome` its files and the handlers,
+ * and the Hub draws every card — the same card fxr, mirror and monitor get. The review surface for
+ * the Studio shape is `apps/studio-hub`; this app is the Hub alone, as it was.
  *
  * Routing is the hash, so a reload lands where you were:  #/  home · #/tool · #/settings */
 
@@ -26,11 +29,23 @@ const APP = {
 
 const ITEMS = [{ icon: 'layers', path: '/tool', label: 'Tool' }]
 
-/* placeholder sets — RECENT is the one empty start, SAVED a handful of things made */
-const RECENT = [{ name: 'empty', title: 'Empty tool', detail: 'Start from nothing' }]
-const SAVED = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'].map((t, i) => ({
-  name: t.toLowerCase(), title: t, detail: `Saved ${i + 1} d ago`, kind: i % 2 ? 'draft' : 'final',
-  date: `2026-09-${String(25 - i).padStart(2, '0')}`, size: `${(i + 1) * 120} KB`,
+/* placeholder FILES — Home's contract: `{ id, name, updatedAt, bytes?, cover?, tags?, details? }` plus the keys
+ * its filter group reads (`kind`). Fourteen, so RECENT shows its cap of twelve and SAVED every one; one long
+ * name and a few without a cover, so the truncation and the placeholder are on the page. The card shows
+ * title, date and size and nothing else (his ruling 2026-10-23); the tags and the details are the rail's,
+ * opened from the cog. The covers are glyphs, as the walkthrough's art is. */
+const DAY = 86400000
+const ART = ['layers', 'globe', 'desktop', 'video', 'image', 'cloud']
+const TAGS = ['poster', 'social', 'print', 'loop', 'draft']
+const SEED = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel', 'India', 'Juliett', 'Kilo', 'Lima', 'Mike', 'November'].map((t, i) => ({
+  id: t.toLowerCase(),
+  name: i === 2 ? 'Charlie, a name long enough to truncate' : t,
+  updatedAt: Date.parse('2026-10-23T12:00:00Z') - i * DAY,
+  bytes: 1200 + i * 7300,
+  kind: i % 2 ? 'draft' : 'final',
+  tags: [TAGS[i % TAGS.length], TAGS[(i + 2) % TAGS.length]],
+  details: [{ label: 'Layers', value: 3 + (i % 5) }, { label: 'Aspect', value: i % 2 ? '4:5' : '1:1' }],
+  cover: i % 5 === 3 ? undefined : <Art name={ART[i % ART.length]} size={48} />,
 }))
 
 /* placeholder settings — the app's own rows, AS DATA: the page and the gear's drawer render
@@ -66,6 +81,8 @@ export default function App() {
   const navigate = (p) => { location.hash = encodeURI(p) }
   const [prefs, setPrefs] = useState(DEFAULTS)
   const set = (k) => (v) => setPrefs((p) => ({ ...p, [k]: v }))
+  /* the files live here; the verbs write them and the Hub re-draws */
+  const [files, setFiles] = useState(SEED)
   const sections = [
     { label: 'Defaults', rows: [
       { label: 'Default aspect', render: () => <SettingsChoice options={['1:1', '4:5', '16:9'].map((v) => ({ value: v, label: v }))} value={prefs.aspect} onChange={set('aspect')} ariaLabel="Default aspect" /> },
@@ -91,16 +108,25 @@ export default function App() {
       onNavigate={navigate}
       shortcuts={SHORTCUTS}
       walkthrough={walkthrough}
-      themeToggle={<ThemeToggle fill="none" label={false} size="sm" />}
       home={{
-        items: (view) => (view === 'recent' ? RECENT : SAVED),
-        filtersTitle: 'All Items',
-        filterGroups: [{ label: 'Kind', key: 'kind', values: ['draft', 'final'] }],
-        toCard: (item, { layout }) => ({ key: item.name, title: item.title, detail: item.detail, date: item.date, size: item.size, media: <Art name="layers" size={layout === 'list' ? 20 : 48} />, onClick: () => navigate('/tool') }),
-        actions: <Button tone="grey" size="md" onClick={() => navigate('/tool')}>New</Button>,
+        files,
+        onOpen: () => navigate('/tool'),
+        onTags: (f, tags) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, tags } : x))),
+        /* the file as JSON — the cover is a node, not data */
+        onDownload: ({ cover: _cover, ...f }) => downloadBlob(new Blob([JSON.stringify(f, null, 2)], { type: 'application/json' }), `${f.name}.json`),
+        onRename: (f, name) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, name, updatedAt: Date.now() } : x))),
+        onDuplicate: (f) => setFiles((fs) => [{ ...f, id: `${f.id}-${Date.now().toString(36)}`, name: `${f.name} copy`, updatedAt: Date.now() }, ...fs]),
+        onRemove: (f) => setFiles((fs) => fs.filter((x) => x.id !== f.id)),
+        filterGroups: [{ label: 'Kind', key: 'kind', values: ['draft', 'final'], exclusive: true }],
+        action: { label: 'New', onClick: () => navigate('/tool') },
       }}
+      /* the Hub's Dev row, on every rail on a dev server even with nothing in it (user 2026-10-24: "its not optional") */
+      dev={{ tabs: [] }}
       settings={{
         sections,
+        /* the page tier with its filters — the page as it was (settings tiers, 2026-10-23) */
+        page: true,
+        filters: true,
         tone: 'secondary',
         themeIn: 'drawer',
         drawer: { onReset: () => setPrefs(DEFAULTS) },

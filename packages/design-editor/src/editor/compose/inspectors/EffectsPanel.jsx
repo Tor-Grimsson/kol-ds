@@ -55,7 +55,7 @@ export default function EffectsPanel() {
       <div className="kol-compose-inspector-body">
         {layer
           ? <LayerEffects key={layer.id} layer={layer} />
-          : <Hint className="kol-helper-12 text-meta">Select a layer to edit its effect.</Hint>}
+          : <Hint className="kol-mono-12 text-meta">Select a layer to edit its effect.</Hint>}
       </div>
     </div>
   )
@@ -245,7 +245,7 @@ function LayerEffects({ layer }) {
       )}
 
       {chain.length > 0 && layer.imgW != null && (
-        <span className="kol-helper-12 text-meta">Filters don't apply to cropped photos.</span>
+        <span className="kol-mono-12 text-meta">Filters don't apply to cropped photos.</span>
       )}
       {/* Camera drag — orbit-capable engine filters (Rutt-Etra). */}
       {stage?.def?.orbit && (
