@@ -2029,8 +2029,8 @@ importers:
   packages/framework:
     dependencies:
       '@kolkrabbi/kol-theme':
-        specifier: '>=0.179.0'
-        version: 0.179.0
+        specifier: '>=0.186.0'
+        version: 0.186.0
       react:
         specifier: ^18.3.0 || ^19.0.0
         version: 19.2.7
@@ -2783,8 +2783,8 @@ packages:
   '@kolkrabbi/kol-theme@0.142.0':
     resolution: {integrity: sha512-q5yT7y/b2aDgVwI8RqVP0fIe7jc+7J8QnjjtUnuAC1SUZpOxJBsh7ra0Mq2OZzTo6ztGyo/l2kMAJ9SxwK3Glw==}
 
-  '@kolkrabbi/kol-theme@0.179.0':
-    resolution: {integrity: sha512-YVAJNOz7SNOU+zKmYa6qBN4Givjp+zWRzGLdORnOvLgY5HKOPjTwLXZLk49X/vYCf4FlVy3Yhc/zMEKWmoz7sQ==}
+  '@kolkrabbi/kol-theme@0.186.0':
+    resolution: {integrity: sha512-l0VA1gQrm8AV92wog4NEHR8Q7IN7c1mb9BQLsjQ4TUp6hFjOvkUjceho5O3lHPFQnFIadhJd9mDtNpf3PsqQVQ==}
 
   '@ladle/react-context@1.0.1':
     resolution: {integrity: sha512-xVQ8siyOEQG6e4Knibes1uA3PTyXnqiMmfSmd5pIbkzeDty8NCBtYHhTXSlfmcDNEsw/G8OzNWo4VbyQAVDl2A==}
@@ -6071,7 +6071,7 @@ snapshots:
 
   '@kolkrabbi/kol-theme@0.142.0': {}
 
-  '@kolkrabbi/kol-theme@0.179.0': {}
+  '@kolkrabbi/kol-theme@0.186.0': {}
 
   '@ladle/react-context@1.0.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
