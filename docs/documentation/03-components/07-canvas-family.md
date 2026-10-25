@@ -3,7 +3,7 @@ title: The canvas family
 type: reference
 status: draft
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-25
 description: Two canvases on one engine, one key table
 aliases:
   - canvas-family
@@ -52,6 +52,7 @@ Two surfaces, one engine. They differ in model, not in gesture: a frame you move
 | Framerate chip | F | both |
 | Dot grid | G | studio |
 | Lock the view | L | studio |
+| Snap positions — 7 8 9 top, 4 5 6 middle, 1 2 3 bottom, each left · centre · right; a pan to 48 inside the edge, never a zoom (`snapKeys={false}` for a canvas that needs its digits; `snapRef` names the box) | 1–9 | studio |
 
 Touch: two fingers pan at their midpoint and pinch-zoom anchored there, on both. On the studio a lone finger pans empty surface (a finger on a control is the control's). On the editor a lone finger is the tool's, except a tap, which fires `onSpaceTap`. Keys never fire while typing in a field.
 

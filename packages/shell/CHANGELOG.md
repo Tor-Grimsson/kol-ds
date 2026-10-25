@@ -1,5 +1,24 @@
 # @kolkrabbi/kol-shell
 
+## 0.82.0 — 2026-10-24
+
+- **`HubHome` takes `backReveal`** (HubHomeBackReveal, kol-monitor 2026-10-24): a page-level `backReveal` (`flip-image` · `flip-card` · `hover`) for every Home card, and a file's own `backReveal` wins. Home's file → card map dropped it, so Home's cards were always the default `flip-image` while the Library's turned whole. Monitor passes `home={{ …, backReveal: 'flip-card' }}`.
+
+## 0.81.0 — 2026-10-24
+
+- **`CatalogPage` and `HubHome` take `flipped` · `backHover`** (AppCardWholeFlip, kol-monitor 2026-10-24 — *"make the cards flip on a shortcut and disable the hover"*): a page-level `flipped` turns every card that has a `back` (the app binds a key), `backHover` opts the hover reveal in (off by default since kol-component 0.301.0); a card's own from `toCard` wins. Needs kol-component ≥0.301.0.
+- **`AppHub defaultTheme`** (AppHubDefaultTheme, kol-mirror 2026-10-24 — *"make this repo dark mode default"*): `"light"` | `"dark"` (or `app.defaultTheme`) is what the rail's reset and the toggle's system choice land on, instead of the OS — the Hub stamps `data-theme-default` and kol-framework ≥0.55.0's `applyTheme('system')` reads it. A dark-first app stays dark through a reset on a light-mode Mac; omit it and nothing changes. kol-framework peer ≥0.55.0.
+
+## 0.80.0 — 2026-10-24
+
+- **`CatalogPage` keeps its place on Back** (CatalogPageKeepsPlaceOnBack, kol-mirror 2026-10-24 — user: *"going back from module or patch to library or some hub page, previous location is not respected"*). The page keeps a place per HISTORY ENTRY (`history.state.key`, react-router's, a hash router too) and catalog name: the chips, the search, LIST / GRID, the page's own view and the fixed region's scroll come back when Back or Forward shows the same entry again; a fresh navigation is a new entry and starts clean. Always on, nothing to pass; a consumer's `filtersProps` handlers (`onFilterChange` · `onLayoutChange` · `initialFilters`) still apply; a view the consumer controls (mirror's `?view=`) stays the consumer's. Without a router's history key the page is as before.
+- **The settings rail's Docs tab; Repo folds into About** (SettingsRailDocsTab, kol-mirror 2026-10-24 — user: *"settings are so overloaded with information that its hard to navigate … we should just start a documentation tab for it"*). `app.docs: [{ label, paragraphs }]` draws a Docs tab on the rail — an app's explanatory prose as data, each entry a section in About's voice, out of the settings sections' notes; `app.links` draw under About (a Links section over the colophon), so the row is Settings · Shortcuts · About · Docs, four words on one line on every hub. No `app.docs` = no Docs tab. The page tier (`HubSettings`) keeps its own ABOUT and REPO.
+
+## 0.79.0 — 2026-10-24
+
+- **`HubHome` files carry `images`; `onBack` · `onImages`** (FileRailImages, kol-monitor 2026-10-24) — a file's `images` `[{ id, src, label? }]` reach the card's rail as its Files section (kol-component), and the Hub hands the picks and writes through: `onBack(file, src)` and `onCover(file, src)` are the Cover and Back picks (the picked image's src, `null` when that image is removed), `onImages(file, next)` the Upload tile and the × — the whole list back. A file without `images` keeps today's rail. Needs kol-component ≥0.299.0.
+- **`HubHome` files carry `back`** (AppCardBackCover, kol-monitor 2026-10-24) — a file's second cover (src | node), mapped to the card's `back` as `cover → media` is; the Hub draws nothing else for it. Needs kol-component ≥0.299.0, kol-theme ≥0.187.0.
+
 ## 0.78.1 — 2026-10-24
 
 - **Create's parts have the cog and the rail** — `StudioCreate` mounts `AppItemMenuProvider` around its parts grid, as `CatalogPage` does, so a part's card carries every icon the Library's does (cog · trash · download · Insert) and its right-click the one menu. The pass caught it on the reference: `create.parts.fields` read `cog: false` on studio-hub and every hub alike.

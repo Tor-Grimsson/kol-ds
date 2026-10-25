@@ -53,10 +53,27 @@ scrim, with focus trap, Escape and scroll lock. `mode="push"` sits it in the lay
 collapses to nothing. `resizable` adds a grab line on the edge that faces the page — a bottom rail's top edge.
 `ShellDrawer` is the old name, an alias.
 
+## Roles
+
+`role` names the job and the rail takes its shell from it — side, tier, scrim and key — so an app stops choosing them
+(RailRoles, 2026-10-25). `useRailKey(role, onToggle)` binds the key. Explicit props still win; no role draws an edge — `edge` is the opt-in. Every rail with a header draws the standard header: the title line with the ×, then the hairline (2026-10-25). Only `settings` dims the page.
+
+| Role | Key | Desk | Phone (below 768) |
+|---|---|---|---|
+| `patch` | P | right, the app tier (380), no scrim | bottom, 70dvh |
+| `page` | H | the settings rail's shell without the scrim — right, 380 (`SettingsPanel role="page"`) | fills the screen |
+| `settings` | , | right, the app tier, the scrim (`SettingsPanel`) | fills the screen |
+| `bottom` | E | bottom, 30dvh, resizable, no scrim, the full width over the nav rail with `RailNav` inside (`nav`) | bottom, 50dvh |
+
 ## Props
 
 <Api name="Rail" rows={[
+  {"prop":"role","type":"patch | page | settings | bottom","def":"—","desc":"The JOB (RailRoles, 2026-10-25): the side, tier, scrim and key of one of the four rails every tool has (RAIL_ROLES), and the phone rule below 768 — the patch rail turns bottom, a settings-shaped rail fills the screen. Explicit props win; useRailKey binds the key."},
   {"prop":"mode","type":"over | push","def":"over","desc":"Over the page on a scrim, or in the layout pushing it."},
+  {"prop":"variant","type":"app | site","def":"—","desc":"The TIER (RailKit, 2026-10-24): the side rail's width when none is given — app and site 380 (--kol-rail-w-app · -site) — and its padding (--kol-pad-rail-app · -site, the overlay inset — 20 · 24 from 768). Unset, the rail is as before."},
+  {"prop":"footer","type":"ReactNode","def":"—","desc":"A foot pinned under the scrolling body, drawn as a band with a full-width rule (2026-10-25) — RailFoot is its shape (fxr's transport dock); SettingsFooter's reset on any rail."},
+  {"prop":"nav","type":"ReactNode","def":"—","desc":"A rail inside the rail (2026-10-25): RailNav, the collapsed nav rail's 48 icon column, stood at the panel's edge with the header, body and foot padded beside it — the bottom rail over the nav rail carries its views as glyphs under it."},
+  {"prop":"style","type":"Object","def":"—","desc":"On the panel, last."},
   {"prop":"resizable","type":"boolean","def":"false","desc":"A grab line on the edge facing the page drags the size."},
   {"prop":"minSize · maxSize","type":"number","def":"120 · 960","desc":"The drag's bounds, px."},
   {"prop":"onResize","type":"(px) => void","def":"—","desc":"Every drag step."},

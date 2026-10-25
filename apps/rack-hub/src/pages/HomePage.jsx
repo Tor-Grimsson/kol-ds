@@ -88,6 +88,8 @@ export const FILES = allPresets.slice(0, 4).map((p, i) => {
     updatedAt: Date.parse('2026-10-23T12:00:00Z') - i * DAY,
     bytes: new Blob([JSON.stringify(src)]).size,
     cover: `/previews/patches/${p.name}.png`,
+    back: `/previews/racks/${p.name}.png`,
+    images: [{ id: 'output', src: `/previews/patches/${p.name}.png`, label: 'Output' }, { id: 'rack', src: `/previews/racks/${p.name}.png`, label: 'Rack' }],
     type: p.type,
     tags: p.tags,
     details: [{ label: 'Modules', value: src.rows?.reduce((n, r) => n + (r.modules?.length || 0), 0) || 0 }, { label: 'Connections', value: src.connections?.length || 0 }],
@@ -125,8 +127,11 @@ export function useHome() {
     onRemove: (f) => setFiles((fs) => fs.filter((x) => x.id !== f.id)),
     onTags: (f, tags) => edit(f.id, { tags }),
     onNote: (f, note) => edit(f.id, { note }),
-    /* the rail's Upload image (2.2) — the picked picture becomes the save's cover */
+    /* the rail's Files section (FileRailImages): the cover and back are picked from the save's images (`null` when the
+     * image that was it is removed); upload and × hand the whole list back */
     onCover: (f, src) => edit(f.id, { cover: src }),
+    onBack: (f, src) => edit(f.id, { back: src }),
+    onImages: (f, next) => edit(f.id, { images: next }),
     filterGroups: FILTER_GROUPS,
     action: { label: 'New Rack', onClick: () => navigate('/create') },
   }

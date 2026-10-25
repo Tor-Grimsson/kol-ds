@@ -39,6 +39,7 @@ import SliderPanel from './SliderPanel.jsx'
  * @param {Function} props.formatValue - Optional formatter for displayed value; Knob's default readout is `${value}%`
  * @param {string} props.className - Additional wrapper classes
  * @param {number} props.displayWidth - Width of the value readout, in characters (default: 6)
+ * @param {'rail'} props.readoutPreset - the readout Input's `preset` (2026-10-25): `rail` takes the chip to 8 at the sides, a rail row's digits
  * @param {string} props.fontSize - Font size for label/value (e.g., '11px')
  * @param {Object} props.style - forwarded to the wrapper; the seam for `--kol-slider-track` / `--kol-slider-playhead`
  * @param {number} props.defaultValue - alt-click the control resets to this (falls back to `min`). Same contract on Knob
@@ -67,6 +68,7 @@ const Slider = ({
   formatValue,
   className = '',
   displayWidth = 6,
+  readoutPreset,
   fontSize,
   defaultValue,
   readout = 'input',
@@ -286,6 +288,7 @@ const Slider = ({
       inputMode="decimal"
       variant="filled"
       size="sm"
+      preset={readoutPreset}
       chars={displayWidth}
       value={draft}
       disabled={disabled}

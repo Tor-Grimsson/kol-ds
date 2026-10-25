@@ -1,6 +1,8 @@
 # @kolkrabbi/kol-hardware
 
-## Unreleased — 2026-10-23
+## 0.7.0 — 2026-10-24
+
+- **`FlipCard` swaps faces by backface, not by a clock** (FlipCardFaceSwap, kol-monitor 2026-10-24 — *"the card flipps, but the image snaps in once its landed. not believable."*). The timed `visibility` swap at duration / 2 left a blank card from edge-on (~a third of an `ease` turn) to the swap, and the back popped in near the end. Both faces hide their backface (`-webkit-` too), the back is pre-rotated in the preserve-3d turner, so the back shows exactly as the card passes edge-on at any `duration`; the face that is away is `inert` and aria-hidden — out of tab order, which is what the visibility had been for.
 
 - **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.
 

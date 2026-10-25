@@ -38,8 +38,11 @@ import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  * @param {string}   title · subtitle  Home's own masthead instead — for a Home that is not the front
  *                                door (media-hub's Library at `/library`, 2026-09-26: it said "Media")
  * @param {Array}    files        the user's files, the ONLY source of cards:
- *                                `[{ id, name, updatedAt (ms), bytes?, cover? (src | node), tags?: string[],
- *                                note?: string, mark?: { icon, label, of? }, details?: [{ label, value }] }]` — `mark` is a glyph
+ *                                `[{ id, name, updatedAt (ms), bytes?, cover? (src | node), back? (src | node), images?: [{ id, src, label? }],
+ *                                tags?: string[], note?: string, mark?: { icon, label, of? }, details?: [{ label, value }] }]` — `back` is the card's
+ *                                second cover, revealed on hover (AppCardBackCover, monitor: the rack behind the output); `images` are the
+ *                                file's pictures, the rail's Files section (FileRailImages): quicklook, remove, upload, and the cover and back
+ *                                picked from them; `mark` is a glyph
  *                                on the cover's other corner for what the file is (FXR: the chrome it was made with) — newest first wherever they come from; a
  *                                file may carry the keys its `filterGroups` read (monitor's `type`)
  * @param {Function} onOpen       `(file)` — the card and the row click; required with `files`
@@ -51,7 +54,16 @@ import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  * @param {Function} onTags       `(file, tags)` — the rail's tag chips write through it; absent → tags read-only
  * @param {Function} onNote       `(file, text)` — the rail's note (a plain description, 2026-10-23) writes through it; absent → read-only
  * @param {Function} onCover      `(file, src)` — the rail's Upload image (2026-10-24): the DS picker's webp data URL for the
- *                                file's cover; the consumer stores it as the file's `cover`. Absent → no Cover row
+ *                                file's cover; the consumer stores it as the file's `cover`. Absent → no Cover row. With `images`
+ *                                on the file it is the Cover PICK instead — `src` is the picked image's, or `null` when that image is removed (FileRailImages)
+ * @param {Function} onBack       `(file, src)` — the rail's Back pick over the file's `images`; the consumer stores it as `back`
+ * @param {boolean}  flipped · backHover  the cards' back (AppCardWholeFlip, 2026-10-24): `flipped` turns every card that has a `back` — the
+ *                                page turns them on a key; `backHover` opts the hover reveal in (default off)
+ * @param {string}   backReveal   the cards' back treatment (HubHomeBackReveal, 2026-10-24): `flip-image` (default) · `flip-card` ·
+ *                                `hover`, for every card; a file's own `backReveal` wins
+ * @param {Function} onImages     `(file, next)` — the rail's Upload tile and × write the WHOLE list back (`[{ id, src, label? }]`, the
+ *                                rail names a new image's id); the consumer stores it as the file's `images`. Absent → no tile, no ×.
+ *                                An image removed while it was the cover or the back clears it: `onCover(file, null)` · `onBack(file, null)`
  * @param {Object}   touch        QUICK LINKS ON A PHONE, opt-in (studio-hub review 2, § 7.2 — *"fxr would use the quicklinks
  *                                for picking chrome right on mobile, while monitor and mirror wouldn't"*):
  *                                `{ doors: [{ icon, label, onPress }] }` — on a coarse pointer or below `md`, the doors as a
@@ -116,6 +128,11 @@ export default function HubHome({
   onTags,
   onNote,
   onCover,
+  onBack,
+  onImages,
+  flipped,
+  backHover,
+  backReveal,
   filterGroups,
   action,
   views = HUB_VIEWS,
@@ -161,6 +178,8 @@ export default function HubHome({
       date: item.updatedAt,
       size: item.bytes,
       media: item.cover,
+      back: item.back,
+      backReveal: item.backReveal ?? backReveal,
       tags: item.tags,
       details: item.details,
       onTags: onTags ? (tags) => onTags(item, tags) : undefined,
@@ -168,6 +187,10 @@ export default function HubHome({
       mark: item.mark,
       onNote: onNote ? (text) => onNote(item, text) : undefined,
       onCover: onCover ? (src) => onCover(item, src) : undefined,
+      /* the rail's Files section (FileRailImages, 2026-10-24): the file's images, and the picks and writes over them */
+      images: item.images,
+      onBack: onBack ? (src) => onBack(item, src) : undefined,
+      onImages: onImages ? (next) => onImages(item, next) : undefined,
       verbs: Object.keys(verbs).length ? verbs : undefined,
       download: onDownload ? () => onDownload(item) : undefined,
       onClick: onOpen ? () => onOpen(item) : undefined,
@@ -208,6 +231,8 @@ export default function HubHome({
       header={{ title: title ?? app.name, subtitle: subtitle ?? app.subtitle, size: 'sm', voice: 'mono', actions: headerMenu, actionsPlacement: headerMenu ? 'head' : undefined }}
       items={items}
       toCard={toCard}
+      flipped={flipped}
+      backHover={backHover}
       filtersTitle="All Files"
       filterGroups={groups?.map(({ exclusive: _x, ...g }) => g)}
       filtersProps={exclusive?.length ? { mutuallyExclusiveFilters: exclusive } : undefined}

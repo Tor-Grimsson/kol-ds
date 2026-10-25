@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && node scripts/extract-sitemap.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter overlays build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio-hub build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter rack-hub build && pnpm --filter mixer build && pnpm --filter mixer-hub build && pnpm --filter editor-hub build && pnpm --filter labs build && pnpm --filter randomiser build && pnpm --filter stationery build && pnpm --filter brand-lab build && pnpm --filter site-hub build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && node scripts/extract-sitemap.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter overlays build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio-hub build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter rack-hub build && pnpm --filter mixer build && pnpm --filter mixer-hub build && pnpm --filter editor-hub build && pnpm --filter labs build && pnpm --filter randomiser build && pnpm --filter stationery build && pnpm --filter brand-lab build && pnpm --filter site-hub build && pnpm --filter rails build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:preview-files": "node scripts/validate-preview-files.mjs",
@@ -82,6 +82,7 @@
     "search-app": "pnpm --filter search dev",
     "studio-hub": "pnpm --filter studio-hub dev",
     "site-hub": "pnpm --filter site-hub dev",
+    "rails": "pnpm --filter rails dev",
     "hubs": "pnpm --parallel --filter studio-hub --filter editor-hub --filter mixer-hub --filter rack-hub dev",
     "studio": "pnpm --filter studio dev",
     "panels": "pnpm --filter panels dev",

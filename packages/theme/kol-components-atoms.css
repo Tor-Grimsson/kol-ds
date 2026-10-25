@@ -137,6 +137,10 @@
 .kol-control-sm { padding: 4px 12px; }
 .kol-control-md { padding: 6px 16px; }
 .kol-control-lg { padding: 8px 20px; }
+/* THE RAIL PRESET (his review 2026-10-25: *"change padding from 12 to 8 on input here and call it a variant or preset
+ * for input on rails"*): a control in a rail's row keeps its rung's height and takes 8 at the sides — a slider's
+ * readout chip is three digits, not a field. `Input preset="rail"`; the Slider's `readoutPreset` passes it on. */
+.kol-control--rail { padding-inline: 8px; }
 
 /* ─── Disabled ─── */
 
@@ -867,7 +871,9 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--kol-accent-primary);
+  /* THE ROW'S INK, not the accent (SiteRailDotNoAccent, kol-studio 2026-10-24 — user: *"the dot is not supposed to be
+   * accented. remove the accent!"*): the active row is on-primary, and its dot is the same ink in both themes */
+  background: currentColor;
 }
 
 

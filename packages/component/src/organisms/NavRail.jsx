@@ -392,6 +392,10 @@ function AppRail({
           className="kol-rail-grab"
           aria-label={railOpen ? 'Collapse navigation' : 'Expand navigation'}
           aria-expanded={railOpen}
+          /* a pointer press never leaves focus on the strip (2026-10-25): a rail closing on its key returned focus here
+           * and the strip lit its full-height focus ring — *"make sure this doesnt happen when I press E 2 times"*.
+           * Pointer events still reach the drag hook; Tab + Enter/Space keep the keyboard path */
+          onMouseDown={(e) => e.preventDefault()}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snapOpenRef.current?.(!railOpen) } }}
         />
       )}

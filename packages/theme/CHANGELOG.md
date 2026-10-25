@@ -1,5 +1,25 @@
 # @kolkrabbi/kol-theme
 
+## 0.190.0 — 2026-10-25
+
+- **The rail's inset is 16 on every rail; the nav rail opens to 380** (his second review, 2026-10-25 — *"the entire padding on the bottom rail and side rail is completely different then the navrail? why dont we unify?"* · *"MAKE 16!!!"* · *"navrail expanded also gets the same width as we just set"*): `--kol-pad-rail-app` is `--kol-spacing-4` (16) on every width; it was the overlay inset (20 · 24 from 768). `--kol-shell-rail-open` is 380 flat (was 264 · 320 from 1536). **`.kol-control--rail`** — the Input's rail preset, `padding-inline: 8px`. **`.kol-rail-grab--top` · `--bottom`** (kol-animation.css) — the grab pill on a horizontal edge, travelling on x, for `Rail resizable` on a bottom or top rail.
+- **The app rail tier is 380** (round 18 answered, user 2026-10-25 — *"why is settings now less wide? it was fine before?"*): `--kol-rail-w-app` 320 → 380, the settings rail as locked 2026-08-27; the site tier was 380 already. One width, two padding tokens.
+
+## 0.189.0 — 2026-10-24
+
+- **The rail tiers' tokens** (RailKit, kol-monitor 2026-10-24 — *"currently settings is showing 380 wide and padding is totally different in the rail and the settings"*): `--kol-rail-w-app` 320 · `--kol-rail-w-site` 380, `--kol-pad-rail-app` · `--kol-pad-rail-site` (both the overlay inset). `Rail variant` and `SettingsPanel tier` (kol-component 0.301.0) read them, so the settings rail and a page rail of one app are one size.
+- **The card's back: the whole card turns, hover opt-in** (AppCardWholeFlip, kol-monitor 2026-10-24; kol-animation.css). The `[data-back]` rules moved off `.kol-card` so `flip-card`'s turner around the root carries them; the hover (and focus) reveal needs `data-back-hover`, `data-flipped` turns the card on the consumer's word; 450ms ease. Pairs with kol-component 0.301.0.
+
+## 0.188.0 — 2026-10-24
+
+- **The site rail's active dot is the row's ink, not the accent** (SiteRailDotNoAccent, kol-studio 2026-10-24 — user: *"the dot is not supposed to be accented. remove the accent!"*). `.kol-sidenav-link.is-active::before` paints `currentColor` — on-primary with the active row, in both themes. Its position is 0.298.0's ruling (the chrome inset plus the depth indent, site-hub's) and does not move.
+- **`.kol-table-cell-text--wrap`** (TableWrapTextCell, kol-studio 2026-10-24) — the body cell that wraps: the `cell-text` face and size with `white-space: normal` inside a 12–32rem measure, for a long free-text column that must not push the table sideways. `Table` puts it on a column's `wrap: true` (kol-component).
+- **The TOC rail's long labels stay in the column** (TocRailLongLabels, kol-studio 2026-10-24: a doc's own title ran left out of the aside and over the page's table at 1440). `.kol-toc` is capped at the frame's TOC column (kol-framework's `--kol-shell-toc-w`, 256, padding included — it was fixed and content-sized, so a long label grew the whole rail leftwards), its rows are bounded by it, and `.kol-toc-label` is capped at the row's width over the lens's largest scale (1.2) and ellipsizes past it, so even the lit row ends inside the column.
+
+## 0.187.0 — 2026-10-24
+
+- **`.kol-card[data-back]` — the card's second cover** (AppCardBackCover, kol-monitor 2026-10-24; kol-animation.css). The three reveal treatments of `ContentCard back` keyed off the root's `data-back`: `flip-image` and `flip-card` on the print flip's turn (0.4s ease-out, preserve-3d, perspective 1000, `backface-visibility: hidden` faces), `hover` an opacity cut with no transition. Hover under `(hover: hover)` and `:focus-visible`; reduced motion drops the turn's transition so both flips become the cut.
+
 ## 0.186.0 — 2026-10-24
 
 - **`.kol-sheet` — the document voice** (site-hub W4, user 2026-10-24: *"I would like to use kol-atlas styles at least in part"*). kol-atlas's Research-Spec carried class for class into `kol-typography.css` beside `.kol-prose`: 15/1.6 on a 724 edge, h1 36 · h2 24 · h3 18 with hairlines and the `why` aside, `when` / `dw` meta lines, `note`, `tb`, footnotes, `term`s, the `media` figure grid, `tablewrap` plain and `kv`, `totalbar`, the `ol` outline, `proj` — the numbered margin. Its four tokens map onto KOL's (ink · fg-64 · fg-12 · fg-04 · accent-primary · ui-error); the sub-class names stay the spec's so an atlas document renders unchanged.

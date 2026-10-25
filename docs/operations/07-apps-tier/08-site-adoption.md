@@ -15,6 +15,7 @@ aliases:
 related:
   - "[[INDEX|Apps tier]]"
   - "[[06-studio-adoption|Studio adoption]]"
+  - "[[09-app-adoption|App adoption]]"
   - "[[../../documentation/04-compositions/18-site-frame|Site frame]]"
 ---
 

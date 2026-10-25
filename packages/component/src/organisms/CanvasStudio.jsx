@@ -13,7 +13,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * modules snapping to HP, the patch cables, the workbench, the desk's embla loop — stays the
  * app's, rendered as `children` (in the pan-zoom layer) or `overlay` (screen space, over it).
  * `CanvasEditor` is its sibling: a fixed artboard with rulers; both read `useCanvasViewport`,
- * so a gesture or a key means the same thing on either. The keys are `CANVAS_KEYS`.
+ * so a gesture or a key means the same thing on either. The keys are `CANVAS_KEYS`; `1–9` are the studio's snap positions.
  *
  * The grid: a 1px `--kol-fg-12` dot on a 36px cell, the cell scaled by the zoom and the field
  * offset by the pan, so the surface moves under the work. A consumer may host it on a bigger box
@@ -37,6 +37,12 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {boolean}  spaceWhenOver  Space grabs only while the pointer is over the surface (an app whose Space is the transport's elsewhere)
  * @param {string}   ignore       a selector whose matches keep their own wheel and touch (an inner scroller); default fields and `[data-scroll-own]`
  * @param {Function} onSpaceTap   a Space press released without a pan
+ * @param {boolean}  snapKeys     `1–9` SNAP THE VIEW (CanvasStudioSnapPositions, kol-mirror 2026-10-25; default true): monitor's nine
+ *                                positions, numpad-laid — 7 8 9 the top, 4 5 6 the middle, 1 2 3 the bottom, left · centre · right —
+ *                                the content box panned to 48 inside the surface's edge or centred, never zoomed. `false` for a
+ *                                canvas that needs its digits
+ * @param {React.RefObject<HTMLElement>} snapRef  the element the snap positions place (monitor's rack); absent, the union of the
+ *                                layer's children
  * @param {ReactNode} backdrop    a node behind the children, inside the pan-zoom layer
  * @param {ReactNode} overlay     nodes in screen space over the layer — cables, chips
  * @param {string}   className    on the surface
@@ -60,6 +66,8 @@ export default function CanvasStudio({
   spaceWhenOver = false,
   ignore,
   onSpaceTap,
+  snapKeys = true,
+  snapRef,
   backdrop,
   overlay,
   className = '',
@@ -75,10 +83,20 @@ export default function CanvasStudio({
     if (!fit || !sh || !h) return undefined
     return { zoom: Math.min(maxZoom, Math.max(minZoom, sh / h)), x: 0, y: 0 }
   }
+  /* the box the snap positions place: the named element, else everything on the layer (screen space, so the zoom is in it) */
+  const contentBox = () => {
+    if (snapRef?.current) return snapRef.current.getBoundingClientRect()
+    const kids = [...(layer.current?.children ?? [])].map((k) => k.getBoundingClientRect()).filter((r) => r.width || r.height)
+    if (!kids.length) return null
+    const left = Math.min(...kids.map((r) => r.left)), top = Math.min(...kids.map((r) => r.top))
+    const right = Math.max(...kids.map((r) => r.right)), bottom = Math.max(...kids.map((r) => r.bottom))
+    return { left, top, right, bottom, width: right - left, height: bottom - top }
+  }
   const vp = useCanvasViewport({
     ref, view, defaultView, onViewChange, minZoom, maxZoom, rest: fitView,
     locked, onLockChange, grid, onGridChange, gridKey: true, lockKey: true,
     touch, spaceWhenOver, ignore, onSpaceTap,
+    snapKeys, content: contentBox,
   })
   const { zoom, x, y } = vp.view
   /* on open, the fit is the view — after layout, so the layer has its height */

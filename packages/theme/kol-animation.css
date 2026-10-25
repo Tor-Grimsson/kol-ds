@@ -184,6 +184,68 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────
+ * ContentCard `back` — the second cover (AppCardBackCover, kol-monitor
+ * 2026-10-24: a patch card's cover is the patch's OUTPUT now, and the rack
+ * it was built on is still worth seeing — "both on one card: the output in
+ * front and the rack revealed on hover"). Hover and keyboard focus reveal
+ * it; `selected` is never read, so the selected state does not move. The
+ * card root names the treatment in `data-back`; the three are on the
+ * open-questions page (round 17) for the user's pick:
+ *
+ *   flip-image  the media turns — the print flip's turn (0.4s ease-out,
+ *               preserve-3d, perspective 1000) with a real back face; the
+ *               plate and the corner controls stay put
+ *   flip-card   the whole card turns; the back fills it, bare
+ *   hover       the back CUTS in over the front — a swap, never an
+ *               opacity crossfade (user: "not fade")
+ *
+ * Touch has no hover and gets nothing: the front is the card. Reduced
+ * motion drops the turn's transition, so both flips become the cut.
+ * ───────────────────────────────────────────────────────────────────── */
+/* THE WHOLE CARD TURNS (AppCardWholeFlip, kol-monitor 2026-10-24 — user: *"it doesnt truly flip the card, there is
+ * still the background that remains"*): `flip-card`'s attributes ride a TURNER around the card root, so the root — its
+ * ground included — is the front face and nothing stays behind; `flip-image` and `hover` still mark the root. The
+ * reveal is OPT-IN: hover (and keyboard focus) turn a card only under `data-back-hover` (*"hover flips card? default
+ * off"*), and `data-flipped` turns it on the consumer's word (*"make the cards flip on a shortcut"*) — a page turns
+ * every card on a key. The turn is monitor's: 450ms ease, both faces backface-hidden, never a timed visibility. */
+[data-back] .kol-card-turn-inner {
+  position: relative;
+}
+[data-back] .kol-card-face--back {
+  position: absolute;
+  inset: 0;
+}
+[data-back^="flip"] .kol-card-turn,
+[data-back="flip-card"].kol-card-turn {
+  perspective: 1000px;
+}
+[data-back^="flip"] .kol-card-turn-inner {
+  transform-style: preserve-3d;
+  transition: transform 450ms ease;
+}
+[data-back^="flip"] .kol-card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+[data-back^="flip"] .kol-card-face--back {
+  transform: rotateY(180deg);
+}
+[data-back="hover"] .kol-card-face--back {
+  opacity: 0;
+}
+@media (hover: hover) {
+  [data-back^="flip"][data-back-hover]:hover .kol-card-turn-inner { transform: rotateY(180deg); }
+  [data-back="hover"][data-back-hover]:hover .kol-card-face--back { opacity: 1; }
+}
+[data-back^="flip"][data-back-hover]:focus-within .kol-card-turn-inner,
+[data-back^="flip"][data-flipped] .kol-card-turn-inner { transform: rotateY(180deg); }
+[data-back="hover"][data-back-hover]:focus-within .kol-card-face--back,
+[data-back="hover"][data-flipped] .kol-card-face--back { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  [data-back^="flip"] .kol-card-turn-inner { transition: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
  * ContentMedia — the hover zoom
  *
  * A state the house serves on image-led cards: the artwork creeps up
@@ -387,6 +449,30 @@
 .kol-rail-grab--line.is-dragging::before { opacity: 1; background: var(--kol-oq-96); transition-delay: 0ms; }
 /* near is not enough for a line — it lights on the edge itself, not 20px out */
 .kol-rail-grab--line.is-near:not(:hover):not(.is-dragging):not(:focus-visible)::before { opacity: 0; }
+
+/* A HORIZONTAL EDGE wears the same pill, turned (his review 2026-10-25: *"why does bottom rail not have the same grab
+ * system as other rails?"* — `Rail resizable` drew a full-width wash until then). `--top` is a bottom rail's handle on
+ * its top edge, `--bottom` a top rail's on its bottom edge; the pill travels on x (`useGrabEdge({ axis: 'x' })`,
+ * `--kol-rail-grab-x`), held half its length from either end as the vertical one is. */
+.kol-rail-grab--top,
+.kol-rail-grab--bottom {
+  top: auto;
+  bottom: auto;
+  right: 0;
+  left: 0;
+  width: auto;
+  height: 8px;
+  cursor: row-resize;
+}
+.kol-rail-grab--top { top: -3.5px; }
+.kol-rail-grab--bottom { bottom: -3.5px; }
+.kol-rail-grab--top::before,
+.kol-rail-grab--bottom::before {
+  top: 50%;
+  left: clamp(2.25rem, var(--kol-rail-grab-x, 50%), calc(100% - 2.25rem));
+  width: 4.5rem;
+  height: 0.125rem;
+}
 
 /* A RIGHT-HAND RAIL's handle sits on its LEFT edge, facing the page (2026-09-30 — the modifier
  * EditorShell has stamped since 0.x, `kol-rail-grab--${side}`, had no rule, so a right rail's pill

@@ -106,7 +106,7 @@ function SiteRail() {
   return (
     <HashRouter>
       <Routes>
-        <Route element={<SiteLayout navTree={TREE} sideNav={{ bottomItems: BOTTOM }} />}>
+        <Route element={<SiteLayout navTree={TREE} sideNav={{ bottomItems: BOTTOM }} pageWash="var(--kol-fg-02)" />}>
           {ALL.map((p) => <Route key={p.path} path={p.path} element={<SitePage />} />)}
           <Route path="*" element={<Navigate to="/one" replace />} />
         </Route>

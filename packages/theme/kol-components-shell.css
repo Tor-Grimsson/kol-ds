@@ -21,7 +21,9 @@
    * read kol-framework's `--kol-sidenav-w` for this, so an app that loads kol-framework.css
    * (fxr) opened to 320 on a wide screen and one that does not (mirror, monitor) fell back to
    * 264 — the same rail, two widths, decided by an unrelated import. */
-  --kol-shell-rail-open: 264px;
+  /* the open rail is the rail width — 380, the same as a side rail (his ruling 2026-10-25: *"navrail expanded also gets the
+     same width as we just set"*); it ramped 264 · 320 from 1536 until then */
+  --kol-shell-rail-open: 380px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin.
    * ONE LADDER FOR THE ESTATE (two-page-scaffolds-one-job, kol-client-olina
    * 2026-09-03): this is `--kol-pad-section-x`, the page-content ladder every
@@ -36,7 +38,7 @@
    * pair cannot drift. */
   --kol-shell-page-pad: var(--kol-pad-section-x, clamp(20px, 5vw, 48px));
 }
-@media (min-width: 1536px) { :root { --kol-shell-rail-open: 320px; } }
+
 
 /* ── PageShell ──────────────────────────────────────────────────────────── */
 

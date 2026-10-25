@@ -85,7 +85,7 @@ vault reader's markdown tables are both presets over this component.
 ## Props
 
 <Api name="Table" rows={[
-  {"prop":"columns","type":"array","def":"—","desc":"Column configs: { accessor, header, render?, className? }."},
+  {"prop":"columns","type":"array","def":"—","desc":"Column configs: { accessor, header, render?, className?, wrap? } — wrap: true is the body cell that wraps (kol-table-cell-text--wrap, a 12–32rem measure) for a long free-text column (TableWrapTextCell, 2026-10-24)."},
   {"prop":"rows","type":"array","def":"—","desc":"Row objects; cell read via column.accessor unless render is given."},
   {"prop":"variant","type":"default | simple","def":"default","desc":"Bordered vs borderless/flush."},
   {"prop":"caption","type":"string","def":"—","desc":"Screen-reader caption."}

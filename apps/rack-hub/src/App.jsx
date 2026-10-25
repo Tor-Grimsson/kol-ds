@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { HashRouter, Routes, Route, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { AppStudio, CatalogPage, RailSlotProvider, useNavHidden } from '@kolkrabbi/kol-shell'
 import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
@@ -61,7 +61,7 @@ const MODULE_GROUPS = [
   { label: 'Category', key: 'category', values: ['control', 'math', 'generators', 'display', 'utility'] },
   { label: 'Size', key: 'u_label', values: ['1U', '3U'] },
 ]
-function LibrarySheet() {
+function LibrarySheet({ flipped, backHover }) {
   const [view, setView] = useState('patches')
   const files = view === 'patches'
   const { patches, modules, card } = useShipped()
@@ -79,6 +79,8 @@ function LibrarySheet() {
       filtersProps={files ? undefined : { mutuallyExclusiveFilters: ['category', 'u_label'] }}
       searchKeys={['title', 'name', 'type']}
       toCard={card}
+      flipped={flipped}
+      backHover={backHover}
     />
   )
 }
@@ -106,6 +108,25 @@ function Studio() {
   const { home, walkthrough } = useHome()
   /* the Sign in row — a dummy session, as studio-hub's; the reference accepts any password */
   const [signedIn, setSignedIn] = useState(false)
+  /* THE CARDS' BACK (AppCardWholeFlip, 2026-10-24 — user: *"make the cards flip on a shortcut and disable the hover"* ·
+   * *"hover flips card? default off"*): `F` turns every card on Home and Library; the Settings rail's Display switch opts
+   * the hover in — monitor's `useHoverFlip`, as the twin wires it */
+  const [flipped, setFlipped] = useState(false)
+  const [hoverFlip, setHoverFlip] = useState(false)
+  useEffect(() => {
+    const on = (e) => {
+      if (e.key !== 'f' && e.key !== 'F') return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return
+      setFlipped((v) => !v)
+    }
+    window.addEventListener('keydown', on)
+    return () => window.removeEventListener('keydown', on)
+  }, [])
+  /* the switch joins monitor's Display section (its own `useHoverFlip` lives there) */
+  const hoverRow = { label: 'Hover flips card', type: 'switch', on: hoverFlip, onChange: setHoverFlip, hint: 'Off: the cards turn on F' }
+  const liveSettings = { ...settings, sections: (settings.sections ?? []).map((s) => (s.label === 'Display' ? { ...s, rows: [...(s.rows ?? []), hoverRow] } : s)) }
 
   return (
     <RailSlotProvider>
@@ -116,11 +137,11 @@ function Studio() {
           onNavigate={navigate}
           shortcuts={SHORTCUTS}
           walkthrough={walkthrough}
-          home={home}
+          home={{ ...home, flipped, backHover: hoverFlip, backReveal: 'flip-card' }}
           library={{
             children: (
               <Routes>
-                <Route path="/library" element={<LibrarySheet />} />
+                <Route path="/library" element={<LibrarySheet flipped={flipped} backHover={hoverFlip} />} />
                 <Route path="/library/patch/:patchName" element={<PatchDetailPage />} />
                 <Route path="/library/module/:moduleType" element={<ModuleDetailPage />} />
                 <Route path="/library/:id" element={<LegacyModuleRedirect />} />
@@ -154,7 +175,7 @@ function Studio() {
               ),
             },
           ]}
-          settings={settings}
+          settings={liveSettings}
           /* the Hub's Dev row, on every rail on a dev server even with nothing in it (user 2026-10-24: "its not optional") */
           dev={{ tabs: [] }}
           media={{ client: fixtureClient }}

@@ -62,7 +62,10 @@ body {
   --kol-sidenav-snap: 12rem;                   /* drag under this snaps to -w-collapsed */
   --kol-sidenav-step: var(--kol-spacing-4);    /* keyboard resize increment */
   --kol-sidenav-snap-default: var(--kol-sidenav-step); /* release within this of the default clears the override */
-  --kol-sidenav-w-collapsed: 56px;
+  /* THE RAIL'S OWN GUTTER (user 2026-10-24): 20 open and collapsed, the 20px glyph centred in a 60 rail so it never moves
+     on collapse. Not the chrome inset — 24 read too padded against the glyph, the old collapsed 18 too tight */
+  --kol-sidenav-pad-x: 1.25rem;
+  --kol-sidenav-w-collapsed: calc(var(--kol-sidenav-pad-x) * 2 + 1.25rem);
   /* THE WORKSHOP SHELL'S RAILS — their own pair, 256px each (showcase
      refinement 2026-09-28, user: "should they both be the same width? layout
      feels asymmetrical"). The left rail used to read --kol-sidenav-w, which is
@@ -160,9 +163,8 @@ body {
   gap: 0.75rem;
   width: 100%;
   position: relative;
-  /* the gutter is THE CHROME INSET (`--kol-pad-chrome-x`, 05-layout-systems: 20 on a phone, 24 from 768) — the rail
-   * carried a literal 1.5rem of its own until 2026-10-24, right on the desk and wrong in the phone drawer */
-  padding: 0.5rem 2.5rem 0.5rem var(--kol-pad-chrome-x);
+  /* the gutter is the rail's own, `--kol-sidenav-pad-x` (20, every width and the phone drawer) */
+  padding: 0.5rem 2.5rem 0.5rem var(--kol-sidenav-pad-x);
   /* THE CLIP MODEL (user 2026-10-24: "some shifting and not very smooth animation between collapsed and
    * expanded"): the collapsed row is the same row with its padding and gap eased on the grid's own 180ms
    * clock, the label fading under the rail's edge — not a second layout that snaps in while the column is
@@ -188,7 +190,7 @@ body {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 1rem 2.5rem 0 var(--kol-pad-chrome-x);
+  padding: 1rem 2.5rem 0 var(--kol-sidenav-pad-x);
   white-space: nowrap;
   overflow: hidden;
   transition: padding 180ms ease, gap 180ms ease;
@@ -224,7 +226,7 @@ body {
 .kol-sidenav-group {
   display: block;
   /* one step in from the gutter: the inset + the icon column (20) + the gap (12) */
-  padding: 0.25rem var(--kol-pad-chrome-x) 0.25rem calc(var(--kol-pad-chrome-x) + 2rem);
+  padding: 0.25rem var(--kol-sidenav-pad-x) 0.25rem calc(var(--kol-sidenav-pad-x) + 2rem);
 }
 /* THE COLLAPSE RULE (WorkspaceSidebarGeometry, kol-fxr 2026-08-27 — user: "I
  * would rather all use the same geometry layout"): a row that can survive
@@ -234,9 +236,9 @@ body {
  * thing narrowing (the brand sidebar's model) instead of rows vanishing. */
 .kol-sidenav-section {
   display: block;
-  padding: 0.5rem var(--kol-pad-chrome-x) 0.25rem var(--kol-pad-chrome-x);
+  padding: 0.5rem var(--kol-sidenav-pad-x) 0.25rem var(--kol-sidenav-pad-x);
 }
-.kol-sidenav-footer { padding-inline: var(--kol-pad-chrome-x) 1rem; }
+.kol-sidenav-footer { padding-inline: var(--kol-sidenav-pad-x) 1rem; }
 
 /* The aside's OWN box (SideNavMobilePosition, kol-website 2026-08-25) — the
  * hop's law above, one element up. `sticky top-0 self-start h-dvh flex
@@ -371,8 +373,8 @@ body {
   /* Restore expanded labels + body inside the open drawer (override the rail rules above). */
   /* the open drawer's row is the WIDE row — the gutter at 1.5rem as on the desk (user 2026-10-24: "mobile is missing
      padding left?"; this line restored `padding: 8px 0`, the narrow row's zero gutter, so the rows hugged the edge) */
-  .kol-sidenav.is-drawer-open .kol-sidenav-hop { padding: 0.5rem 2.5rem 0.5rem var(--kol-pad-chrome-x); justify-content: flex-start; gap: 0.75rem; }
-  .kol-sidenav.is-drawer-open .kol-sidenav-header { padding: 1rem 2.5rem 0 var(--kol-pad-chrome-x); justify-content: flex-start; gap: 0.75rem; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-hop { padding: 0.5rem 2.5rem 0.5rem var(--kol-sidenav-pad-x); justify-content: flex-start; gap: 0.75rem; }
+  .kol-sidenav.is-drawer-open .kol-sidenav-header { padding: 1rem 2.5rem 0 var(--kol-sidenav-pad-x); justify-content: flex-start; gap: 0.75rem; }
   .kol-sidenav.is-drawer-open .kol-sidenav-hop-label { display: inline; }
   .kol-sidenav.is-drawer-open .kol-sidenav-section { display: block; }
   .kol-sidenav.is-drawer-open .kol-sidenav-body { display: block; }

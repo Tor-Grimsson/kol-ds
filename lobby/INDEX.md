@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 55 entries
+## Queue — 54 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -118,6 +118,21 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [CanvasStudioSnapPositions](done/CanvasStudioSnapPositions.md) | **kol-mirror** — `CanvasStudio` binds monitor's 1–9 snap positions (numpad-laid pan, no zoom), the `snap` row in `CANVAS_KEYS` | 2026-10-25 | 2026-10-25 | `closed` — **kol-component 0.302.0** live; receipt to kol-mirror |
+| 🟢 | [HubHomeBackReveal](done/HubHomeBackReveal.md) | **kol-monitor** — `HubHome` takes `backReveal` (page-level, a file's own wins); Home's cards turn whole with `flip-card` | 2026-10-24 | 2026-10-24 | `closed` — **kol-shell 0.82.0** live; receipt to kol-monitor |
+| 🟢 | [RailKit](done/RailKit.md) | **kol-monitor** — the rail kit, `Rail variant` + `footer`, the tier tokens, `SettingsPanel tier`, `apps/rails`, `19-rails.md`; the app width on round 18 | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.301.0 · kol-theme 0.189.0** live; receipt to kol-monitor |
+| 🟢 | [FlipCardFaceSwap](done/FlipCardFaceSwap.md) | **kol-monitor** — `FlipCard` swaps faces by backface, the away face inert; no blank frames | 2026-10-24 | 2026-10-24 | `closed` — **kol-hardware 0.7.0** live; receipt to kol-monitor |
+| 🟢 | [AppCardWholeFlip](done/AppCardWholeFlip.md) | **kol-monitor** — `flip-card` turns the whole card (a turner around the root); `flipped` controlled on the card, CatalogPage, HubHome; hover opt-in (`backHover`) | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.301.0 · kol-theme 0.189.0 · kol-shell 0.81.0** live; receipt to kol-monitor |
+| 🟢 | [AppHubDefaultTheme](done/AppHubDefaultTheme.md) | **kol-mirror** — `AppHub defaultTheme`: reset and the toggle's system land on the app's default, not the OS | 2026-10-24 | 2026-10-24 | `closed` — **kol-framework 0.55.0 · kol-shell 0.81.0** live; receipt to kol-mirror |
+| 🟢 | [SiteRailDotNoAccent](done/SiteRailDotNoAccent.md) | **kol-studio** — the site rail's active dot is the row's ink, not the accent; its position confirmed as 0.298.0's | 2026-10-24 | 2026-10-24 | `closed` — **kol-theme 0.188.0** live; receipt to kol-studio |
+| 🟢 | [TableWrapTextCell](done/TableWrapTextCell.md) | **kol-studio** — `Table` columns take `wrap: true`: the body cell that wraps inside a 12–32rem measure | 2026-10-24 | 2026-10-24 | `closed` — **kol-theme 0.188.0 · kol-component 0.300.0** live; receipt to kol-studio |
+| 🟢 | [TocRailLongLabels](done/TocRailLongLabels.md) | **kol-studio** — the TOC rail capped at the frame's TOC column (256), its labels capped and ellipsized inside it | 2026-10-24 | 2026-10-24 | `closed` — **kol-theme 0.188.0** live; receipt to kol-studio |
+| 🟢 | [CatalogPageKeepsPlaceOnBack](done/CatalogPageKeepsPlaceOnBack.md) | **kol-mirror** — `CatalogPage` keeps its place per history entry: chips, search, LIST / GRID, the panel, the view, the region's scroll; a fresh navigation is clean | 2026-10-24 | 2026-10-24 | `closed` — **kol-shell 0.80.0** live; receipt to kol-mirror |
+| 🟢 | [SettingsRailDocsTab](done/SettingsRailDocsTab.md) | **kol-mirror** — the settings rail's Docs tab from `app.docs`; Repo's links fold under About; Settings · Shortcuts · About · Docs on one line | 2026-10-24 | 2026-10-24 | `closed` — **kol-shell 0.80.0** live; receipt to kol-mirror |
+| 🟢 | [AppCardBackCover](done/AppCardBackCover.md) | **kol-monitor** — `ContentCard back` + `backReveal` (flip-image · flip-card · hover), `HubHome` files carry `back`; the three on open questions round 17 for his pick | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.299.0 · kol-theme 0.187.0 · kol-shell 0.79.0** live, `flip-image` the default until his ruling; receipt to kol-monitor |
+| 🟢 | [FileRailImages](done/FileRailImages.md) | **kol-monitor** — the File Rail's Files section: `images`, quicklook, × and upload via `onImages(next)`, the cover and back picked, the pencil in the foot | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.299.0 · kol-shell 0.79.0** live; receipt to kol-monitor |
+| 🟢 | [SettingsPanelBackdrop](done/SettingsPanelBackdrop.md) | **kol-monitor** — `SettingsPanel backdrop` (and `mode`) forwarded to its `Rail`; `false` is the no-scrim setup for a page-level rail | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.299.0** live; receipt to kol-monitor |
+| 🟢 | [AppAdoptionPlaybook](done/AppAdoptionPlaybook.md) | **dotfiles** — an AppShell adoption playbook beside `08-site-adoption.md`, for `/repo-layout app` | 2026-10-24 | 2026-10-24 | `closed` — `docs/operations/07-apps-tier/09-app-adoption.md`, sections 0–6, indexed and cross-linked; vault-links green; receipt to dotfiles (its `app` row is the remainder there) |
 | 🟢 | [HubHomeContract](done/HubHomeContract.md) | **kol-fxr** — Home is a closed data contract on `HubHome`; the hub draws every card; built in `apps/hub` first, mobile pass at 390 · 768 | 2026-10-23 | 2026-10-24 | `closed` — **kol-shell 0.77.0** (the contract since 0.76.0) · **kol-theme 0.184.0** · **kol-component 0.296.0**; registry live; adoption orchestrated step by step into fxr · mirror · monitor; receipt to kol-fxr |
 | 🟢 | [StyleguideSrcExports](done/StyleguideSrcExports.md) | **kol-branding** — open `./src/*` in kol-styleguide's `exports` (the kol-framework pattern) | 2026-10-24 | 2026-10-24 | `closed` — **kol-styleguide 0.7.0**; registry live; kol-branding's alias dropped the same hour; receipt to kol-branding |
 | 🟢 | [DevSectionHeader](done/DevSectionHeader.md) | **kol-fxr** — the section header for content (eyebrow · title · description) | 2026-10-22 | 2026-10-22 | `closed` — **kol-component 0.285.0**: `SectionText level="content"` (user ruling: the header levels live on SectionText, `PageHeader` deprecated alias); registry live; receipt to kol-fxr |
@@ -405,6 +420,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [RailRolesOnMonitor](outbox/RailRolesOnMonitor.md) | **kol-monitor** — `~/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-25 | **none** — the DS side shipped: kol-component 0.302.0 · kol-theme 0.190.0 |
 | 🔵 | [one-search-modal](outbox/one-search-modal.md) | **kol-branding** — `~/dev/projects/kol-branding/lobby/INDEX.md` | 🔵 `filed` 2026-10-24 | a kol-shell seam for the app's results, only if the Hub's modal has none |
 | 🔵 | [scaffold-vite-server-host-true](outbox/scaffold-vite-server-host-true.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
 | 🔵 | [FxrLibraryOnAppPreset](outbox/FxrLibraryOnAppPreset.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
@@ -422,6 +438,29 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-25 | **`CanvasStudioSnapPositions` closed** — kol-component 0.302.0 live; receipt to kol-mirror. **The rail wave published**: kol-theme 0.190.0 · kol-framework 0.56.0 · kol-component 0.302.0 (`Rail role`, the standard header and foot, `RailNav`, 380 · 16, the DS grab on resizable rails, slider rows, `Input preset="rail"`, the site rail's 20 gutter) |
+| 2026-10-25 | **`RailRolesOnMonitor` filed into kol-monitor** — the MODULES list out of the nav rail (his review: not asked for, not correct), `Rail role` + `useRailKey` on the bump, the bottom rail beside the rail |
+| 2026-10-25 | **`CanvasStudioSnapPositions` filed from kol-mirror, built the same day** — `1–9` snap on CanvasStudio, unpublished with the rail wave |
+| 2026-10-24 | **`HubHomeBackReveal` closed** — kol-shell 0.82.0 live; receipt to kol-monitor |
+| 2026-10-24 | **`HubHomeBackReveal` filed from kol-monitor**: Home's cards ignore `backReveal` |
+| 2026-10-24 | **`RailKit`, `FlipCardFaceSwap`, `AppCardWholeFlip`, `AppHubDefaultTheme` closed** — kol-theme 0.189.0 · kol-framework 0.55.0 · kol-component 0.301.0 · kol-hardware 0.7.0 · kol-shell 0.81.0 live; receipts to kol-monitor and kol-mirror |
+| 2026-10-24 | **`AppCardWholeFlip` filed from kol-monitor**: the whole card turns; `flipped` controlled, hover opt-in |
+| 2026-10-24 | **`FlipCardFaceSwap` filed from kol-monitor**: FlipCard's timed visibility swap leaves a blank card mid-turn |
+| 2026-10-24 | **`SiteRailDotNoAccent`, `TableWrapTextCell`, `TocRailLongLabels` closed** — kol-theme 0.188.0 · kol-component 0.300.0 live; receipts to kol-studio |
+| 2026-10-24 | **`RailKit` filed from kol-monitor**: a rail kit + per-tier sizes + `apps/rails` (bottom Rail included), fxr's inspector as the model |
+| 2026-10-24 | **`CatalogPageKeepsPlaceOnBack` and `SettingsRailDocsTab` closed** — kol-shell 0.80.0 live; receipts to kol-mirror |
+| 2026-10-24 | **`TableWrapTextCell` and `TocRailLongLabels` filed** — from kol-studio's `/clients` on the page kit |
+| 2026-10-24 | **`SiteRailDotNoAccent` filed** — from kol-studio: the site rail's active dot loses the accent |
+| 2026-10-24 | **`AppCardBackCover` closed** — the wave live; `flip-image` default, the pick his on round 17; receipt to kol-monitor |
+| 2026-10-24 | **`FileRailImages` and `SettingsPanelBackdrop` closed** — kol-component 0.299.0 · kol-shell 0.79.0 live (kol-theme 0.187.0 in the same wave); receipts to kol-monitor |
+| 2026-10-24 | **`SettingsPanelBackdrop` addressed** — `SettingsPanel backdrop` forwards to the Rail, default unchanged; unpublished |
+| 2026-10-24 | **`SettingsPanelBackdrop` filed from kol-monitor**: `SettingsPanel` forwards `backdrop`, for page-level settings over a live page |
+| 2026-10-24 | **`FileRailImages` addressed** — the rail's Files section (thumbnails, quicklook, × and upload via `onImages`, the cover and back picked), the pencil in the foot; rack-hub and studio-hub carry `images`; the twin's patch previews swapped for the real outputs; unpublished |
+| 2026-10-24 | **`FileRailImages` filed from kol-monitor**: the File Rail shows a file's images, the cover is picked from them, the pencil joins the foot row |
+| 2026-10-24 | **`AppCardBackCover` addressed** — `back` + `backReveal` on the card, three treatments on round 17 for his pick; rack-hub carries the rack shots; unpublished |
+| 2026-10-24 | **`AppCardBackCover` filed from kol-monitor**: a hover-revealed second cover on the `app` card, three treatments for the user's pick |
+| 2026-10-24 | **`AppAdoptionPlaybook` closed** — `07-apps-tier/09-app-adoption.md` written in the site playbook's shape; receipt to dotfiles |
+| 2026-10-24 | **AppAdoptionPlaybook** filed from dotfiles: `/repo-layout` ships `site` and `app`; site runs `08-site-adoption.md`, app has no playbook. Ask: `09-app-adoption.md` in the same shape. |
 | 2026-10-24 | **one-search-modal** filed with kol-branding (site-hub 4.5): the rail's Search row opens a second, broken search modal; one modal, the Hub's, fed the app's index. |
 | 2026-10-24 | **`HubHomeContract` closed** — kol-shell 0.77.0 · kol-theme 0.184.0 · kol-component 0.296.0 live; adoption into fxr · mirror · monitor orchestrated from here step by step |
 | 2026-10-24 | **`StyleguideSrcExports` closed** — kol-styleguide 0.7.0 live; kol-branding dropped its Vite alias |

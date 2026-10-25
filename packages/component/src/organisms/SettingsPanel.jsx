@@ -8,6 +8,7 @@ import ToggleSwitch from '../atoms/ToggleSwitch.jsx'
 import Rail from '../molecules/Rail.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
+import { RailHeader } from './RailKit.jsx'
 
 /**
  * SettingsPanel — Settings beside the thing they change. a settings surface for the thing you are looking at: you
@@ -38,18 +39,33 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *                             usually conditionally renders it)
  * @param {'rail'|'overlay'} variant  presentation — `rail` (default) or `overlay`, the only two names (user 2026-10-18);
  *                                     `drawer` is the old name of `rail`, still accepted
- * @param {number|string} width  width (default 380 for the rail, the ⌘K overlay's 32rem for the overlay)
+ * @param {'app'|'site'} tier   THE RAIL'S TIER (RailKit, kol-monitor 2026-10-24; default `app`): its width and padding are
+ *                            the tier's tokens, the same the page rails read — `app` 320, `site` 380, the overlay inset.
+ *                            The 380 of 2026-08-27 is the site tier's; an app's settings rail is as wide as its other rails
+ * @param {'settings'|'page'} role  THE RAIL'S ROLE (RailRoles, 2026-10-25; default `settings`): `page` for a page's own settings rail
+ *                            (monitor's Stage, Rack — H), which is this same shell under the page's key; `Rail role` carries it
+ * @param {number|string} width  width — overrides the tier's for the rail; the ⌘K overlay's 32rem for the overlay
  * @param {string}   title     header line 1
  * @param {string}   subtitle  header line 2 (the approved drawer passes none)
  * @param {string}   intro     a note under the header (the approved drawer passes none)
  * @param {Function} onClose   × · scrim · Escape
  * @param {ReactNode} footer   the foot slot — `SettingsFooter` is the default shape
  * @param {ReactNode} headerActions  controls on the header line, before the × (the file rail's edit pencil, 2026-10-23)
+ * @param {boolean}  backdrop  the rail's scrim — unset, THE ROLE decides (review 2, 2026-10-25: `settings` dims and locks the page,
+ *                            `page` does not — *"H does not include dark overlay, that is only settings"*). `false`
+ *                            is the Rail's own: the panel alone, no scrim, no scroll lock, no focus trap — a PAGE-LEVEL rail
+ *                            over a live page, the bottom rail's setup (SettingsPanelBackdrop, kol-monitor 2026-10-24: the
+ *                            rack's and the stage's settings open over the running picture and its keys keep working).
+ *                            `rail` only; the overlay keeps its scrim
+ * @param {'over'|'push'} mode  the Rail's own (default `over`): `over` slides over the page, `push` sits in the layout and
+ *                            pushes it — inline, no scrim, no trap. Forwarded with `backdrop` (same ticket); `rail` only
  * @param {ReactNode} children the sections
  */
 export default function SettingsPanel({
   open = true,
   variant = 'rail',
+  tier = 'app',
+  role = 'settings',
   width: widthProp,
   title,
   subtitle,
@@ -57,27 +73,19 @@ export default function SettingsPanel({
   onClose,
   footer,
   headerActions,
+  backdrop,
+  mode = 'over',
   children,
   className = '',
 }) {
-  const header = (
-    <div className="flex min-w-0 items-center gap-2">
-    <div className="flex min-w-0 flex-1 flex-col">
-      {/* THE APP REGISTER (SettingsPanelChromeAndColumnPreview, kol-r2b2 2026-08-27 —
-        * user: "all wrong font styles"): the collection beside the panel is the
-        * reference — helper-14 uppercase titles, the eyebrow for section labels,
-        * mono-12 rows and hints. No mono-10 anywhere. */}
-      {title && <span className="kol-helper-14 uppercase text-emphasis">{title}</span>}
-      {subtitle && <span className="kol-mono-12 text-meta">{subtitle}</span>}
-    </div>
-    {headerActions}
-    </div>
-  )
+  /* THE APP REGISTER (SettingsPanelChromeAndColumnPreview, kol-r2b2 2026-08-27 — user: "all wrong font styles"): the
+   * collection beside the panel is the reference — helper-14 uppercase titles, the eyebrow for section labels, mono-12
+   * rows and hints. The header is the kit's `RailHeader` (RailKit, 2026-10-24): the same node every page rail wears. */
+  const header = <RailHeader title={title} subtitle={subtitle} actions={headerActions} />
   const body = (
     <>
       {intro && <p className="kol-mono-12 text-meta">{intro}</p>}
       <div className="flex flex-col gap-5">{children}</div>
-      {footer && <div className="mt-2">{footer}</div>}
     </>
   )
 
@@ -97,23 +105,29 @@ export default function SettingsPanel({
             <div className="min-w-0 flex-1">{header}</div>
             <CloseButton onClick={onClose} hover={false} className="shrink-0" />
           </div>
-          <div className="flex flex-col gap-4"><Divider />{body}</div>
+          <div className="flex flex-col gap-4"><Divider />{body}{footer && <div className="mt-2">{footer}</div>}</div>
         </div>
       </FullscreenOverlay>
     )
   }
 
-  const width = widthProp ?? 380
+  /* no 380 here any more: the width is the tier's token unless the caller sets one (RailKit) */
+  const width = widthProp
   return (
     /* THE APPROVED DRAWER (SettingsPanelApproved, kol-r2b2 2026-08-27 — user: "LOCK
-       THIS"): no edge, no shadow, a Divider under the header, the sections.
+       THIS"): no edge, no shadow, the Rail's hairline under the header, the sections.
        THE SCRIM IS BACK (settings-drawer-has-no-surface, kol-client-olina
        2026-09-03). `backdrop={false}` stood here from 2026-08-30; the drawer
        paints `bg-surface-primary`, the same token as the page, so the scrim was
        the only thing separating them — with it off the panel was invisible and
-       the controls floated in the right third of the screen. */
-    <Rail open={open} onClose={onClose} side="right" width={width} header={header} className={className} edge={false} shadow={false} closeHover={false}>
-      <div className="flex flex-col gap-4"><Divider />{body}</div>
+       the controls floated in the right third of the screen.
+       `backdrop` FORWARDS (SettingsPanelBackdrop, kol-monitor 2026-10-24): the default keeps olina's scrim; a page-level
+       rail passes `false` and gets the Rail's own no-scrim setup — the page keeps running under it. */
+    <Rail role={role} open={open} onClose={onClose} side="right" variant={tier} width={width} header={header} className={className} edge={false} shadow={false} closeHover={false} backdrop={backdrop} mode={mode}
+      /* the foot is the Rail's pinned slot now (RailKit): reset and the verbs stay in reach while the sections scroll */
+      footer={footer}>
+      {/* the hairline under the header is the Rail's now (the standard header, 2026-10-25) — every rail has it */}
+      <div className="flex flex-col gap-4">{body}</div>
     </Rail>
   )
 }
@@ -260,7 +274,7 @@ export function SettingsChipRow({ options = [], selected = [], onToggle, allChip
   )
 }
 
-/** SettingsFooter — Reset settings to their defaults. a Divider, then one `IconFrame refresh` (primary · sm) at the
+/** SettingsFooter — Reset settings to their defaults. one `IconFrame refresh` (primary · sm) at the
  *  right = reset to defaults (SettingsPanelApproved, 2026-08-27). No status word,
  *  no text button. `customised` is accepted for compatibility and unused.
  *
@@ -275,9 +289,8 @@ export function SettingsChipRow({ options = [], selected = [], onToggle, allChip
  *  for one control and wrong for two — the chip and the reset icon touched. */
 export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', resetDisabled = false, children }) {
   return (
-    <div className="flex flex-col gap-4">
-      <Divider />
-      <div className="kol-ink-step flex justify-end items-center gap-2">
+    /* no Divider here since 2026-10-25: the rule is the Rail's foot band, full width */
+    <div className="kol-ink-step flex justify-end items-center gap-2">
         {children}
         {/* `resetDisabled`: the control stays in its place, dimmed and inert — one footer shape on every rail, whether or
           * not the app has preferences to reset yet (user 2026-10-24: *"standardise what goes in"*) */}
@@ -287,6 +300,5 @@ export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', rese
           </Tooltip>
         )}
       </div>
-    </div>
   )
 }

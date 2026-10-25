@@ -53,11 +53,15 @@ One anatomy — header · intro · sections · footer — in two presentations: 
 <Api name="SettingsPanel" rows={[
   {"prop":"open","type":"boolean","def":"true","desc":"Mounted and shown."},
   {"prop":"variant","desc":"The presentation."},
-  {"prop":"width","type":"number | string","def":"380","desc":"Panel width."},
+  {"prop":"role","type":"settings | page","def":"settings","desc":"The rail's role (RailRoles, 2026-10-25): page for a page's own settings rail (monitor's Stage, Rack — H), the same shell under the page's key."},
+  {"prop":"tier","type":"app | site","def":"app","desc":"The rail's tier (RailKit, 2026-10-24): its width and padding are the tier's tokens — app 380, site 380, the overlay inset — the same the page rails read; width overrides. The header is the kit's RailHeader and the footer is pinned under the sections."},
+  {"prop":"width","type":"number | string","def":"the tier's","desc":"Panel width — overrides the tier's token (app 380 · site 380)."},
   {"prop":"title","type":"string","def":"—","desc":"Header line 1."},
   {"prop":"subtitle","type":"string","def":"—","desc":"Header line 2 — the context."},
   {"prop":"intro","type":"string","def":"—","desc":"The one-line note under the header."},
   {"prop":"onClose","type":"() => void","def":"—","desc":"× · scrim · Escape."},
+  {"prop":"backdrop","type":"boolean","def":"the role's","desc":"The rail's scrim — unset, the role decides (2026-10-25): settings dims and locks the page, page does not. false forces the Rail's no-scrim setup; true forces the scrim."},
+  {"prop":"mode","type":"'over' | 'push'","def":"'over'","desc":"rail only, the Rail's own: over slides over the page; push sits in the layout and pushes it — inline, no scrim, no trap."},
   {"prop":"footer","type":"ReactNode","def":"—","desc":"The foot slot — SettingsFooter is the default shape."},
   {"prop":"children","type":"ReactNode","def":"—","desc":"The sections — the APPROVED rail (kol-r2b2, 2026-08-27): LabeledControlSection (the kol-eyebrow at fg-80, rowGap 1 for switch rows / 2 for dropdown rows) → SettingsRow (a LabeledControl inline: uppercase helper-10 label at 160, hint on the control title; align end for switches, fill for dropdowns) → SettingsSwitch / SettingsChoice (a full-width Dropdown) / SettingsMulti (one Dropdown of toggling entries — N of M kinds) ; SettingsFooter = Divider + reset IconFrame. The rail has no edge and no shadow."},
   {"prop":"className","type":"string","def":"''","desc":"Extra classes on the panel."}

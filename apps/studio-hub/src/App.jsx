@@ -25,10 +25,17 @@ const APP = {
   name: 'Studio',
   subtitle: 'The workstation shape around a studio',
   logomark,
+  /* the reference is dark-first (AppHubDefaultTheme, 2026-10-24): reset and the toggle's system land on dark, not the OS */
+  defaultTheme: 'dark',
   about: 'The reference for the Studio hub — the pages every studio app has around its canvas: Home, Library, Create, the studio itself, Media, Sign in and Settings. The parts and the files are placeholders; the shape is the product.',
   links: [
     { label: 'Design system', url: 'https://ui.kolkrabbi.io' },
     { label: 'Reference', url: 'https://monitor.kolkrabbi.io', text: 'monitor.kolkrabbi.io' },
+  ],
+  /* the rail's Docs tab (SettingsRailDocsTab, 2026-10-24): an app's explanatory prose as data, out of Settings' notes */
+  docs: [
+    { label: 'Home and Library', paragraphs: ['Home is the user\'s saves, every card the same: title, date, size, the cover with its download, the cog and the trash. The Library is what the app ships, its presets and its parts, on the same card.'] },
+    { label: 'Create', paragraphs: ['Create is the case view and the parts view on one page. A part inserts into the case; the case keeps the zoom readout in its bottom bar.'] },
   ],
 }
 
@@ -45,6 +52,8 @@ const SEED = PATCHES.map((slug, i) => ({
   updatedAt: Date.parse('2026-10-23T12:00:00Z') - i * DAY,
   bytes: 900 + i * 1370,
   cover: i === PATCHES.length - 1 ? undefined : cover(i),
+  /* the file's images (FileRailImages, 2026-10-24): the rail's Files section; the last file holds none yet */
+  images: i === PATCHES.length - 1 ? [] : [{ id: 'cover', src: cover(i), label: 'Cover' }],
   kind: i % 2 ? 'draft' : 'final',
   tags: [TAGS[i % TAGS.length], ...(i % 3 === 0 ? [TAGS[(i + 1) % TAGS.length]] : [])],
   note: i % 2 ? '' : `Patched for the ${['Mengi', 'Iðnó', 'Harpa', 'Gaukurinn'][i % 4]} show. Slow the clock before the second row.`,
@@ -60,7 +69,7 @@ const SEED = PATCHES.map((slug, i) => ({
 const SHIP_DATE = Date.parse('2026-10-19T12:00:00Z')
 const SHIPPED_NAMES = ['mesh', 'orbit', 'pulse', 'quad', 'ribbon', 'scan', 'slit', 'strobe', 'tunnel', 'weave']
 const SHIPPED = SHIPPED_NAMES.map((slug, i) => ({
-  id: slug, kind: 'patch', name: title(slug), updatedAt: SHIP_DATE - i * DAY, bytes: 1200 + i * 910, cover: cover(i + 40),
+  id: slug, kind: 'patch', name: title(slug), updatedAt: SHIP_DATE - i * DAY, bytes: 1200 + i * 910, cover: cover(i + 40), images: [{ id: 'cover', src: cover(i + 40), label: 'Cover' }],
   tags: [TAGS[(i + 1) % TAGS.length]], note: '', details: [{ label: 'Modules', value: 3 + (i % 7) }, { label: 'Connections', value: 2 + (i % 5) }],
   description: `A shipped patch — ${title(slug)} runs ${3 + (i % 7)} modules into the output. The shape is the product; the patch is a placeholder.`,
 }))
@@ -69,7 +78,7 @@ const MODULE_TYPES = ['attenuator', 'channel', 'clock', 'clockDiv', 'colorize', 
 const PARTS = MODULE_TYPES.map((type, i) => ({
   id: type, kind: 'part', type, name: title(type),
   category: CATEGORIES[i % CATEGORIES.length], u_label: i % 4 === 0 ? '1U' : '3U', hp: 4 + (i % 5) * 2,
-  updatedAt: SHIP_DATE - i * DAY, bytes: 400 + i * 37, cover: `/previews/modules/${type}.png`, tags: [CATEGORIES[i % CATEGORIES.length]], note: '',
+  updatedAt: SHIP_DATE - i * DAY, bytes: 400 + i * 37, cover: `/previews/modules/${type}.png`, images: [{ id: 'front', src: `/previews/modules/${type}.png`, label: 'Front' }], tags: [CATEGORIES[i % CATEGORIES.length]], note: '',
   details: [{ label: 'Category', value: title(CATEGORIES[i % CATEGORIES.length]) }, { label: 'Width', value: `${4 + (i % 5) * 2}HP` }, { label: 'Height', value: i % 4 === 0 ? '1U' : '3U' }],
   description: `${title(type)} — a module of the ${CATEGORIES[i % CATEGORIES.length]} category, ${4 + (i % 5) * 2}HP wide. A placeholder definition; the page's shape is the product.`,
 }))
@@ -204,8 +213,11 @@ export default function App() {
     onRemove: (f) => setFiles((fs) => fs.filter((x) => x.id !== f.id)),
     onTags: (f, tags) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, tags } : x))),
     onNote: (f, note) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, note } : x))),
-    /* the rail's Upload image (2026-10-24): the picked picture becomes the file's cover */
+    /* the rail's Files section (FileRailImages, 2026-10-24): the cover and back are PICKED from the file's images (`null`
+     * when the image that was it is removed); upload and × hand the whole list back */
     onCover: (f, src) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, cover: src } : x))),
+    onBack: (f, src) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, back: src } : x))),
+    onImages: (f, next) => setFiles((fs) => fs.map((x) => (x.id === f.id ? { ...x, images: next } : x))),
     filterGroups: [{ label: 'Kind', key: 'kind', values: ['draft', 'final'], exclusive: true }],
     action: { label: 'New', onClick: () => navigate('/create') },
     /* quick links on the phone (review 2, § 7.2): fxr's chromes as four doors above the rows, when he turns them on */
@@ -226,10 +238,13 @@ export default function App() {
   const setOf = (f) => (f.kind === 'part' ? setParts : setShipped)
   const edit = (f, patch) => setOf(f)((fs) => fs.map((x) => (x.id === f.id ? { ...x, ...patch } : x)))
   const shipCard = (f) => ({
-    key: f.id, title: f.name, date: f.updatedAt, size: f.bytes, media: f.cover, tags: f.tags, details: f.details,
+    key: f.id, title: f.name, date: f.updatedAt, size: f.bytes, media: f.cover, back: f.back, images: f.images, tags: f.tags, details: f.details,
     onTags: (tags) => edit(f, { tags }),
     note: f.note, onNote: (note) => edit(f, { note }),
+    /* the rail's picks and writes over the file's images (FileRailImages) */
     onCover: (src) => edit(f, { cover: src }),
+    onBack: (src) => edit(f, { back: src }),
+    onImages: (next) => edit(f, { images: next }),
     verbs: {
       rename: (name) => edit(f, { name, updatedAt: Date.now() }),
       duplicate: () => setOf(f)((fs) => [{ ...f, id: `${f.id}-${Date.now().toString(36)}`, name: `${f.name} copy`, updatedAt: Date.now() }, ...fs]),

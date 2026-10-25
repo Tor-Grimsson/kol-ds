@@ -99,7 +99,9 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
         {sorted.map((row, rowIndex) => (
           <tr key={row.id ?? row.token ?? rowIndex} className={`kol-table-row${rowClassName ? ` ${rowClassName(row, rowIndex)}` : ''}`}>
             {columns.map((column) => (
-              <td key={column.accessor} className={(typeof column.className === 'function' ? column.className(row) : column.className) ?? 'kol-table-cell-text'} style={column.style}>
+              /* a column's `wrap: true` is the body cell that wraps (TableWrapTextCell, kol-studio 2026-10-24) — the default
+               * class with its `--wrap` modifier; a column naming its own className keeps it */
+              <td key={column.accessor} className={(typeof column.className === 'function' ? column.className(row) : column.className) ?? (column.wrap ? 'kol-table-cell-text kol-table-cell-text--wrap' : 'kol-table-cell-text')} style={column.style}>
                 {column.render ? column.render(row) : row[column.accessor] ?? '—'}
               </td>
             ))}

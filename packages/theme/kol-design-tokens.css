@@ -49,6 +49,22 @@
    * 24. CommandOverlay (field-aligned rows) and the Quick Look header (a toolbar) keep their own. */
   --kol-pad-overlay: var(--kol-spacing-5);
 
+  /* RAIL TIERS (RailKit, kol-monitor 2026-10-24 — user: *"currently settings is showing 380 wide and padding is totally
+   * different in the rail and the settings"*). One width and one padding per tier, the same `app` · `site` split the
+   * cards and the page headers take; `Rail variant` and `SettingsPanel tier` read them, so a page rail and the settings
+   * rail of one app cannot disagree. Both tiers are 380 — the settings rail as locked 2026-08-27; `app` stood at 320
+   * (the shell rail's open width on a wide screen) from 2026-10-24 until his ruling on round 18 the next day (*"why is
+   * settings now less wide? it was fine before?"*). fxr's inspector rides the shell rail's 264 · 320 ramp and monitor's
+   * patch table had 440 — their adoption items. The padding is the overlay inset in both — the 2026-10-18 ruling — named
+   * per tier so one can move without the other. */
+  --kol-rail-w-app: 380px;
+  --kol-rail-w-site: 380px;
+  /* THE RAIL'S INSET IS 16, EVERY RAIL, EVERY WIDTH (his review 2026-10-25: *"the entire padding on the bottom rail and
+     side rail is completely different then the navrail? why dont we unify?"* · then, on 20: *"MAKE 16!!!"*). It was the
+     overlay inset (20 · 24 from 768); an hour at the page's 48 read as *"you went backwards"*, 20 as still too much. */
+  --kol-pad-rail-app: var(--kol-spacing-4);
+  --kol-pad-rail-site: var(--kol-pad-overlay);
+
   /* CARD padding (2026-08-15, content-card ruling) — flat, stepped by the
    * card's `size` prop, never by breakpoint. 12/16/24. */
   --kol-pad-card-sm: 0.75rem;

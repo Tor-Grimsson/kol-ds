@@ -196,8 +196,8 @@ export default function ContentRow({
   /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` row with its parts slotted from
    * `verbs`, `download`, `menuItems`, and `tags`, `details`, `onTags` for the info rail — AppItem.jsx.
    * None of them reach ContentText; an app row's `tags` are the rail's, never chips in the row. */
-  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert, row: true })
-  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, back: text.back, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert, images: text.images, onImages: text.onImages, onBack: text.onBack, row: true })
+  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert; delete text.back; delete text.images; delete text.onImages; delete text.onBack
   if (app) {
     delete text.tags
     variantProp = 'file'

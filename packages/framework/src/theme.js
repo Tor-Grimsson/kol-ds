@@ -63,6 +63,12 @@ export function applyTheme(theme) {
   if (theme === 'system') {
     delete document.documentElement.dataset.theme
     try { localStorage.removeItem(THEME_STORAGE_KEY) } catch { /* storage blocked */ }
+    /* THE APP'S DEFAULT STANDS IN FOR THE OS (AppHubDefaultTheme, kol-mirror 2026-10-24 — user: *"make this repo dark
+     * mode default"*): a dark-first app stamps `data-theme-default="dark"` on the root (the Hub does it from
+     * `defaultTheme`), and handing the page back to the system lands on that, not on prefers-color-scheme — stamped,
+     * never persisted, so the saved choice stays "none" and a reload stamps the same default again. */
+    const fallback = document.documentElement.dataset.themeDefault
+    if (fallback === 'light' || fallback === 'dark') document.documentElement.dataset.theme = fallback
     return
   }
   document.documentElement.dataset.theme = theme

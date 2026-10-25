@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ActionButton, AppItemMenuProvider, ContentCard, ContentFilters, ContentRow, SizeOrDownload, formatSize, useMediaQuery } from '@kolkrabbi/kol-component'
 import PageShell from './PageShell.jsx'
 import { PageHeader } from '@kolkrabbi/kol-component'
@@ -83,7 +83,13 @@ import CatalogGrid from './CatalogGrid.jsx'
  * @param {ReactNode} lead         a node between the masthead and the catalog (HubHome's quick links on a phone)
  * @param {ElementType} iconComponent  icon renderer seam for ContentFilters
  * @param {boolean}  showCountOnlyWhenFiltering  (default true)
+ * @param {boolean}  flipped · backHover  the cards' back (AppCardWholeFlip, 2026-10-24): `flipped` turns every card that has a `back`
+ *                                (a page turns them on a key), `backHover` opts the hover reveal in; a card's own from `toCard` wins
  * @param {Object}   filtersProps  spread onto ContentFilters last — e.g. `{ mutuallyExclusiveFilters: ['category', 'u_label'] }`
+ *
+ * THE PAGE KEEPS ITS PLACE per history entry (CatalogPageKeepsPlaceOnBack, kol-mirror 2026-10-24): Back restores the
+ * chips, the search, LIST / GRID, the page's own view and the fixed region's scroll; a fresh navigation starts clean.
+ * Always on — see `usePlace` below.
  */
 const LAYOUTS = [
   { value: 'list', label: 'LIST' },
@@ -142,19 +148,64 @@ const stop = (e) => { e.preventDefault(); e.stopPropagation() }
  * the fixed mode's scroll region with a 32px fade from the page's ground at its TOP edge, only once rows have scrolled
  * under it, so a cut row reads as folded under the edge. The top alone (user 2026-10-23: *"I dont think we need it on bottom"*). A fade, not a
  * shadow: on this ground a shadow has nothing to fall on. `bleed` runs the region through the page's bottom pad. */
-function ScrollRegion({ bleed, children }) {
+/* THE PLACE PER HISTORY ENTRY (CatalogPageKeepsPlaceOnBack, kol-mirror 2026-10-24 — user: *"going back from module or
+ * patch to library or some hub page, previous location is not respected"*). Back is `navigate(-1)`: the route is right,
+ * and the page remounts with every piece of its state fresh — ContentFilters' chips, search and LIST / GRID, and the fixed
+ * mode's own scroll region, which no router scroll restoration reaches. The page keeps its place in a module-level map
+ * keyed on the HISTORY ENTRY (react-router writes `{ key }` into `history.state`, a hash router too) and the catalog's
+ * name, so Back and Forward restore it and a fresh navigation — a new entry — starts clean. Always on: there is nothing
+ * to configure, and the consumer's half (a view in the URL) stays the consumer's. No `history.state.key` (no router) =
+ * no place, the page as before. Fifty entries, the oldest out. */
+const PLACES = new Map()
+const PLACE_CAP = 50
+const historyKey = () => {
+  try { const s = window.history.state; return s?.key ?? (s?.idx != null ? `idx:${s.idx}` : null) } catch { return null }
+}
+function usePlace(name) {
+  /* read once per mount — the entry the page was mounted under */
+  const key = useMemo(() => { const k = historyKey(); return k ? `${k}|${name ?? ''}` : null }, [name])
+  const saved = key ? PLACES.get(key) : undefined
+  const write = (patch) => {
+    if (!key) return
+    const next = { ...(PLACES.get(key) ?? {}), ...patch }
+    PLACES.delete(key); PLACES.set(key, next)
+    if (PLACES.size > PLACE_CAP) PLACES.delete(PLACES.keys().next().value)
+  }
+  return { saved, write }
+}
+
+function ScrollRegion({ bleed, place, children }) {
   const ref = useRef(null)
   const [under, setUnder] = useState(false)
+  /* the place's scrollTop, PENDING until the region is tall enough to take it — on mount the rows are laid out but a
+   * cover may not be, and a scrollTop set past the current scrollHeight clamps to 0 */
+  const pendingRef = useRef(place?.saved?.scrollTop || null)
   useEffect(() => {
     const el = ref.current
     if (!el) return undefined
+    const restore = () => {
+      const want = pendingRef.current
+      if (want != null && el.scrollHeight - el.clientHeight >= want) { el.scrollTop = want; pendingRef.current = null }
+    }
     const read = () => setUnder(el.scrollTop > 0)
+    /* written from the scroll event alone, never from the resize read, and never a 0 that is the CLAMP rather than the
+     * user: the region's content goes before the element does on the way out, scrollTop snaps to 0 and the browser fires
+     * one last scroll — the trace showed it overwriting the 240 just written. A region with nothing to scroll, a region
+     * no longer in the document, or a pending restore sitting at 0 all read as that clamp */
+    const onScroll = () => {
+      read()
+      if (!el.isConnected || el.scrollHeight <= el.clientHeight) return
+      if (pendingRef.current != null && el.scrollTop === 0) return
+      pendingRef.current = null
+      if (el.clientHeight > 0) place?.write({ scrollTop: el.scrollTop })
+    }
+    restore()
     read()
-    el.addEventListener('scroll', read, { passive: true })
-    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(read)
+    el.addEventListener('scroll', onScroll, { passive: true })
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { restore(); read() })
     ro?.observe(el)
     if (el.firstElementChild) ro?.observe(el.firstElementChild)
-    return () => { el.removeEventListener('scroll', read); ro?.disconnect() }
+    return () => { el.removeEventListener('scroll', onScroll); ro?.disconnect() }
   }, [])
   const fade = (
     <div
@@ -255,6 +306,8 @@ export default function CatalogPage({
   filtersProps,
   phoneLayout = 'list',
   lead,
+  flipped,
+  backHover,
   children,
   className = '',
   style,
@@ -267,6 +320,14 @@ export default function CatalogPage({
    * page too, where the filter row's `.kol-filters-first` reads the same `--kol-catalog-n`. `null` until measured →
    * the theme's fallback of 6, the pre-0.137.0 geometry. */
   const [cols, setCols] = useState(null)
+
+  /* the place (CatalogPageKeepsPlaceOnBack): what this page restores on Back — the chips, the search, LIST / GRID, the
+   * view when it is the page's own, the region's scroll. The consumer's `filtersProps` handlers still fire. */
+  const place = usePlace(filtersTitle ?? header?.title ?? preset)
+  const [search, setSearch] = useState(() => place.saved?.search ?? '')
+  /* the filter panel's open state is part of the place too: the chips come back where they were seen */
+  const [filtersOpen, setFiltersOpen] = useState(() => place.saved?.open ?? false)
+  const { onFilterChange: consumerOnFilterChange, initialFilters: consumerInitialFilters, onLayoutChange: consumerOnLayoutChange, ...restFiltersProps } = filtersProps ?? {}
 
   /* the page's ONE menu for its `app` cards and rows (AppItem.jsx) — closed, it renders nothing */
   return (
@@ -287,11 +348,18 @@ export default function CatalogPage({
           viewModeOptions={views}
           trailingActions={trailingActions}
           viewMode={view}
-          onViewModeChange={onViewChange}
-          defaultViewMode={defaultView}
+          onViewModeChange={(v) => { place.write({ view: v }); onViewChange?.(v) }}
+          defaultViewMode={place.saved?.view ?? defaultView}
           layoutOptions={open || phoneRows ? undefined : layouts}
-          defaultLayout={defaultLayout}
+          defaultLayout={place.saved?.layout ?? defaultLayout}
+          onLayoutChange={(l) => { place.write({ layout: l }); consumerOnLayoutChange?.(l) }}
           layout={phoneRows ? 'list' : undefined}
+          initialFilters={place.saved?.filters ?? consumerInitialFilters}
+          onFilterChange={(set, vm) => { place.write({ filters: [...set] }); consumerOnFilterChange?.(set, vm) }}
+          searchValue={search}
+          onSearchChange={(q) => { setSearch(q); place.write({ search: q }) }}
+          filtersOpen={filtersOpen}
+          onFiltersOpenChange={(o) => { setFiltersOpen(o); place.write({ open: o }) }}
           renderItem={(rows, viewMode, layout) => {
             if (open) return null
             const cards = rows.map((item) => { const c = toCard ? toCard(item, { view: viewMode, layout }) : { title: item.title ?? item.name, detail: item.detail }; return preset === 'shelf' ? toSlideCard(c, { layout }) : c })
@@ -325,7 +393,7 @@ export default function CatalogPage({
                 const { key: _key, ...forwarded } = c
                 return layout === 'list'
                   ? <ContentRow key={key} {...forwarded} variant={c.variant ?? rowVariant} />
-                  : <ContentCard key={key} {...forwarded} variant={c.variant ?? cardVariant} fit={c.fit ?? 'cover'} />
+                  : <ContentCard key={key} {...forwarded} variant={c.variant ?? cardVariant} fit={c.fit ?? 'cover'} flipped={c.flipped ?? flipped} backHover={c.backHover ?? backHover} />
               })}
             </CatalogGrid>
             )
@@ -333,9 +401,9 @@ export default function CatalogPage({
              * (ContentFiltersFillChain) ends here, in a scroller; the page itself never scrolls */
             /* TO THE PAGE'S EDGE (user 2026-10-23: *"padding bottom is still there clipping"*): with no foot row under it the
              * region bleeds through the page's bottom pad, so a cut row reads as scrolling under the edge, not stopped above a band */
-            return mode === 'fixed' ? <ScrollRegion bleed={!actions}>{grid}</ScrollRegion> : grid
+            return mode === 'fixed' ? <ScrollRegion bleed={!actions} place={place}>{grid}</ScrollRegion> : grid
           }}
-          {...filtersProps}
+          {...restFiltersProps}
         />
       </div>
       {children}

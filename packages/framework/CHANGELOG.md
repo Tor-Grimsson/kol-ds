@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-framework
 
+## 0.56.0 — 2026-10-25
+
+- **The site rail has its own 20px gutter** (user 2026-10-25 — *"why is the rail collapsed 18px padded while open 24px?"*). `--kol-sidenav-pad-x` (1.25rem) on every rail row, header, group, section, footer and the phone drawer, open and collapsed; `--kol-sidenav-w-collapsed` is derived from it (`pad × 2 + 1.25rem` = 60, was a flat 56), so the 20px glyph sits 20 in both ways and never moves on collapse. The rail no longer reads the chrome inset (24 on a desk read too padded against the glyph).
+
+## 0.55.0 — 2026-10-24
+
+- **The app's default theme stands in for the OS** (AppHubDefaultTheme, kol-mirror 2026-10-24 — *"make this repo dark mode default"*). `applyTheme('system')` — the toggle's alt-click and the Hub's reset — lands on `data-theme-default` when the root carries one (`AppHub defaultTheme` stamps it), instead of prefers-color-scheme: stamped, never persisted, so a dark-first app stays dark through a reset on a light-mode Mac. No attribute = as before.
+
 ## 0.54.0 — 2026-10-24
 
 - **`SiteLayout`** (user 2026-10-24: *"why not SiteLayout instead? to at least name it with variant 'site'"*) — the site frame, named for the rail variant it frames; `PageLayout` and `AppShell` stay as aliases on the retirements ledger. A site is `SiteLayout` plus a nav tree and routes — `apps/site-hub` is the reference; `docs/documentation/04-compositions/18-site-frame.md` the page.

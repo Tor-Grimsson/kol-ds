@@ -254,7 +254,7 @@ export const FUNCTIONS_BY_NAME = {
   TYPE_LABELS: 'utility', BOOL_OP_LABELS: 'utility', SHAPE_KIND_LABELS: 'utility', labelForLayer: 'utility', rowLabelForLayer: 'utility', findLayerDeep: 'utility',
   pathD: 'utility', pathBounds: 'utility', shiftNode: 'utility', normalizePath: 'utility', scalePathNodes: 'utility', normalizePathRings: 'utility', rotatePathNodes: 'utility', dist: 'utility', nearestSegmentT: 'utility', splitSegment: 'utility', smoothNode: 'utility',
   /* the structural-fork hook (ColumnBrowserStackMode, 2026-09-03) */
-  useMediaQuery: 'utility',
+  useMediaQuery: 'utility', useRailKey: 'utility',
   /* framework */
   AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', CategoryPage: 'structure',
   /* styleguide */
@@ -365,6 +365,8 @@ export const EXEMPT = {
   PageBleed: 'member-of:PageShell',
   LabeledControlSection: 'member-of:SettingsPanel', SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
   SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
+  /* the rail kit (RailKit 2026-10-24): the parts of a Rail's content; RailSection · RailRow are aliases of the two above */
+  RailHeader: 'member-of:Rail', RailTabs: 'member-of:Rail', RailHint: 'member-of:Rail', RailActions: 'member-of:Rail', RailFoot: 'member-of:Rail', RailNav: 'member-of:Rail', RailSection: 'member-of:Rail', RailRow: 'member-of:Rail',
   AudioTile: 'member-of:KindPreview', VideoTile: 'member-of:KindPreview', DocFrontmatter: 'member-of:DocPage',
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',

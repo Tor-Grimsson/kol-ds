@@ -1,4 +1,5 @@
 import { LabeledControlSection, SettingsChoice, SettingsRow, SettingsSwitch } from './SettingsPanel.jsx'
+import Slider from '../molecules/Slider.jsx'
 
 /* A STRING VALUE WEARS THE DS'S CLASS (user 2026-10-24, on Mirror's settings rail: *"YOU ARE USING A HELPER text for
  * paragraphs"* — *"THIS SHOULDNT BE POSSIBLE if you were using a preset"*). A consumer that hands rows as data never
@@ -13,11 +14,17 @@ const notes = (note) => (Array.isArray(note) ? note : [note]).map((n, i) => <p k
 const control = (row) => {
   if (row.type === 'choice') return <SettingsChoice options={row.options ?? []} value={row.value} onChange={row.onChange} ariaLabel={row.ariaLabel ?? (typeof row.label === 'string' ? row.label : undefined)} />
   if (row.type === 'switch') return <SettingsSwitch on={!!row.on} onChange={row.onChange} disabled={row.disabled} disabledHint={row.disabledHint} label={row.ariaLabel ?? (typeof row.label === 'string' ? row.label : undefined)} />
+  /* a slider row (review 2, 2026-10-25 — the Stage's parameters in H): the DS Slider across the value column, the track
+   * fluid, the readout the DS Input at a fixed `displayWidth` (3 chars) so every row's track and chip align (his review:
+   * *"sliders should be using the space better and we have input component"*); `min` · `max` · `step` · `value` ·
+   * `onChange` · `formatValue` · `defaultValue` are the Slider's. Its label column is 80 unless a width is given — the
+   * track takes the rest (*"why cant the slider use the space available"*); the chip is `preset="rail"`, 8 at the sides */
+  if (row.type === 'slider') return <Slider className="w-full" readout="input" displayWidth={row.displayWidth ?? 3} readoutPreset="rail" min={row.min} max={row.max} step={row.step} value={row.value} onChange={row.onChange} formatValue={row.formatValue} defaultValue={row.defaultValue} disabled={row.disabled} aria-label={row.ariaLabel ?? (typeof row.label === 'string' ? row.label : undefined)} />
   if (row.render) return row.render()
   return isText(row.value) ? textValue(row.value) : row.value
 }
 /* a typed row's cell: a choice fills the value column, a switch sits at its end, text sits on the baseline */
-const rowAlign = (row, fallback) => row.align ?? (row.type === 'choice' ? 'fill' : fallback)
+const rowAlign = (row, fallback) => row.align ?? (row.type === 'choice' || row.type === 'slider' ? 'fill' : fallback)
 
 /**
  * SettingsSections — settings rows AS DATA, rendered once.
@@ -53,13 +60,14 @@ const rowAlign = (row, fallback) => row.align ?? (row.type === 'choice' ? 'fill'
  * TYPED ROWS (user 2026-10-24, on FXR's rail drawing its own sunken dropdown beside the reference's: *"we are literally
  * avoiding this custom per repo shit"*): a row names its CONTROL as data and this draws it — `{ type: 'choice', options,
  * value, onChange, ariaLabel? }` is a `SettingsChoice`, `{ type: 'switch', on, onChange, disabled?, disabledHint? }` a
- * `SettingsSwitch` — in the surface's tone, never the consumer's. The Hub's rail takes typed rows and refuses `render`.
+ * `SettingsSwitch`, `{ type: 'slider', min, max, step, value, onChange }` the DS `Slider` (review 2, 2026-10-25) — in
+ * the surface's tone, never the consumer's. The Hub's rail takes typed rows and refuses `render`.
  *
  * `divided` puts the hairline above a section — pass it on EVERY section, the
  * first included: the rule is `.kol-section--divided + .kol-section--divided`,
  * so the first draws nothing and skipping it just costs the next its line.
  *
- * @param {Array<{label?: string, note?: string|string[], rows?: Array<{label: ReactNode, type?: 'choice'|'switch', options?: Array, value?: ReactNode, on?: boolean, onChange?: Function, render?: Function, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint; `note` a sentence or two under the eyebrow; a string `value` is drawn in the DS's mono-12 and sits on the baseline; `type: 'choice'` / `'switch'` rows are drawn here)
+ * @param {Array<{label?: string, note?: string|string[], rows?: Array<{label: ReactNode, type?: 'choice'|'switch'|'slider', options?: Array, value?: ReactNode, on?: boolean, onChange?: Function, min?: number, max?: number, step?: number, formatValue?: Function, defaultValue?: number, displayWidth?: number, render?: Function, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint; `note` a sentence or two under the eyebrow; a string `value` is drawn in the DS's mono-12 and sits on the baseline; `type: 'choice'` / `'switch'` / `'slider'` rows are drawn here — a slider is the DS Slider across the value column, fluid track + the Input readout at `displayWidth` chars (3, `preset="rail"`), its label column 80 unless set; `min` · `max` · `step` · `value` · `onChange`)
  * @param {boolean} [divided=false] - Hairline above each section
  * @param {number|'auto'} [labelWidth] - Default label column for every row — `'auto'` makes the label yield and the control hug, which is what a narrow column or a nowrap value needs
  * @param {string} [align] - Default row alignment passed to `SettingsRow`
@@ -77,7 +85,7 @@ export default function SettingsSections({ sections = [], divided = false, label
               label={row.label}
               hint={row.hint}
               align={rowAlign(row, align)}
-              labelWidth={row.labelWidth ?? labelWidth}
+              labelWidth={row.labelWidth ?? labelWidth ?? (row.type === 'slider' ? 80 : undefined)}
               text={row.text ?? (!row.render && !row.type && isText(row.value))}
             >
               {control(row)}

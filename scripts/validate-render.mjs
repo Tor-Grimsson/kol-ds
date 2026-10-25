@@ -50,6 +50,9 @@ const ROUTES = {
   editor: ['', 'labs', 'randomiser', 'core'],
   'editor-hub': ['', 'library', 'settings', 'labs', 'randomiser'],
   labs: ['', '?preset=scan-spaced-drift'],
+  /* the rails reference: every rail on one frame, each opened from its button (RailRoles 2026-10-25) */
+  /* the page rail (H) opens on a scrim that covers the buttons for the presses after it on the same hash — it goes last */
+  rails: ['#/stage', '#/rack', { path: '#/stage', press: 'Bottom rail E' }, { path: '#/stage', press: 'Patch table P' }, { path: '#/stage', press: 'Page settings H' }],
   'studio-hub': ['#/', '#/library', '#/library/patch/mesh', '#/library/part/lfo', '#/create', '#/studio', '#/chrome', '#/chrome/labs', '#/settings'],
   'site-hub': ['', 'brand', 'brand#color', 'assets', 'assets#logos', 'slide-deck', 'research', 'research/compare', 'research/sheet', 'research/boards'],
   studio: [''],

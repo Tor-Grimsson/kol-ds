@@ -68,7 +68,7 @@ const placeholder = (
  * cover's other corner and reads in the rail. Always runs the same hooks (one
  * context read), so ContentCard / ContentRow call it unconditionally.
  */
-export function useAppItem(variant, { title, verbs, download, menuItems, date, size, media, tone, tags, details, onTags, note, onNote, mark, onCover, onInsert, row = false }) {
+export function useAppItem(variant, { title, verbs, download, menuItems, date, size, media, back, tone, tags, details, onTags, note, onNote, mark, onCover, onInsert, images, onImages, onBack, row = false }) {
   const ctx = useContext(MenuCtx)
   if (variant !== 'app') return null
   const menu = ctx?.menu
@@ -79,8 +79,12 @@ export function useAppItem(variant, { title, verbs, download, menuItems, date, s
   const dateText = typeof date === 'number' ? new Date(date).toISOString().slice(0, 10) : date
   const sizeText = typeof size === 'number' ? formatSize(size) : size
   /* the cog opens the file's info rail (user ruling 2026-10-23); right-click keeps the menu. `onCover(src)` is the
-   * rail's Upload image (2026-10-24) */
-  const openInfo = ctx ? () => ctx.openInfo({ name: title, verbs, download, tags, details, onTags, note, onNote, mark, date: dateText, size: sizeText, onCover }) : undefined
+   * rail's Upload image (2026-10-24), or the Cover pick when the file carries `images` (FileRailImages): the rail's
+   * Files section reads the card's own cover and back srcs for its marks, so both go along as strings */
+  const openInfo = ctx ? () => ctx.openInfo({
+    name: title, verbs, download, tags, details, onTags, note, onNote, mark, date: dateText, size: sizeText, onCover,
+    images, onImages, onBack, cover: typeof media === 'string' ? media : undefined, back: typeof back === 'string' ? back : undefined,
+  }) : undefined
   /* the cover's download stops its click at the control, as the plate does — a card that opens on click
    * opened under the download too (AppCardDownloadClickBubbles, kol-monitor 2026-10-23) */
   return {

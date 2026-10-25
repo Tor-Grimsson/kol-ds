@@ -33,7 +33,26 @@ export const CANVAS_KEYS = [
   { id: 'fps', label: 'Framerate', combo: 'F' },
   { id: 'grid', label: 'Dot grid', combo: 'G', surface: 'studio' },
   { id: 'lock', label: 'Lock the view', combo: 'L', surface: 'studio' },
+  { id: 'snap', label: 'Snap positions', combo: '1–9', surface: 'studio' },
 ]
+
+/* THE SNAP POSITIONS (CanvasStudioSnapPositions, kol-mirror 2026-10-25 — monitor's RackViewport keys, so mirror's desk
+ * reuses them instead of a fourth copy: *"read monitor and see what shortcuts they have set as convention and reuse
+ * those"*). Numpad-laid: 7 8 9 the top, 4 5 6 the middle, 1 2 3 the bottom, each at the left · centre · right. A PAN,
+ * never a zoom — the content box lands `snapPadding` inside the surface's edge, or centred on that axis. */
+export const SNAP_PADDING = 48
+const SNAP = {
+  7: [0, 0], 8: [0.5, 0], 9: [1, 0],
+  4: [0, 0.5], 5: [0.5, 0.5], 6: [1, 0.5],
+  1: [0, 1], 2: [0.5, 1], 3: [1, 1],
+}
+/* where the content's top-left should land, in surface space, for key `k`: 0 = the padding, 1 = the far edge less
+ * the padding and the content's size, 0.5 = centred */
+function snapTarget(k, surface, content, p) {
+  const [ax, ay] = SNAP[k]
+  const at = (a, size, extent) => (a === 0.5 ? (extent - size) / 2 : a === 0 ? p : extent - p - size)
+  return { x: at(ax, content.width, surface.width), y: at(ay, content.height, surface.height) }
+}
 
 /* the dot grid — kol-monitor's and kol-mirror's exact rule, on the token: a 1px fg-12 dot on a
  * 36px cell at zoom 1, the cell scaled by the zoom and the field offset by the pan so the surface
@@ -116,6 +135,9 @@ const REST = { zoom: 1, x: 0, y: 0 }
  *                  gives Space to the transport elsewhere), in the capture phase
  *   ignore         a selector — wheel and touch pass through what matches (an inner scroller)
  *   onSpaceTap     a Space press released without a pan, or a one-finger tap on the editor
+ *   snapKeys       whether `1–9` snap the view to the nine positions (the studio does, the editor does not)
+ *   content        () => DOMRect | null — the content box the snap positions place, in screen space
+ *   snapPadding    the inset a snapped edge keeps from the surface's edge (default 48, monitor's)
  * Returns { view, setView, reset, zoomTo, spaceHeld, dragging, pinching, deaf, cursor, locked,
  * setLocked, grid, setGrid, showFps, fps, transform }. */
 export function useCanvasViewport({
@@ -137,6 +159,9 @@ export function useCanvasViewport({
   spaceWhenOver = false,
   ignore = 'input, textarea, select, [data-scroll-own]',
   onSpaceTap,
+  snapKeys = false,
+  content,
+  snapPadding = SNAP_PADDING,
 }) {
   const [inner, setInner] = useState(defaultView ?? REST)
   const controlled = viewProp !== undefined
@@ -192,10 +217,13 @@ export function useCanvasViewport({
   const spaceRef = useRef(false)
   const overRef = useRef(!spaceWhenOver)
   const dragStart = useRef(null)
-  const optsRef = useRef({ gridKey, lockKey, spaceWhenOver, touch, ignore })
-  optsRef.current = { gridKey, lockKey, spaceWhenOver, touch, ignore }
+  const optsRef = useRef({ gridKey, lockKey, spaceWhenOver, touch, ignore, snapKeys, snapPadding })
+  optsRef.current = { gridKey, lockKey, spaceWhenOver, touch, ignore, snapKeys, snapPadding }
+  const contentRef = useRef(content)
+  contentRef.current = content
 
-  /* keys — Space (pan mode, a tap), ⌘0 / ⌘= / ⌘− (zoom), F (fps), G and L where the surface binds them */
+  /* keys — Space (pan mode, a tap), ⌘0 / ⌘= / ⌘− (zoom), F (fps), G and L where the surface binds them, 1–9 the snap
+   * positions where it binds those (⌥1–9 stay the Hub's: the alt check above returns first) */
   useEffect(() => {
     const onKeyDown = (e) => {
       if (isTypingTarget(e.target)) return
@@ -221,7 +249,18 @@ export function useCanvasViewport({
       if (e.altKey) return
       if (e.key === 'f' || e.key === 'F') { setShowFps((v) => !v); return }
       if (o.gridKey && (e.key === 'g' || e.key === 'G')) { e.preventDefault(); setGridRef.current((v) => !v); return }
-      if (o.lockKey && (e.key === 'l' || e.key === 'L')) { e.preventDefault(); setLockedRef.current((v) => !v) }
+      if (o.lockKey && (e.key === 'l' || e.key === 'L')) { e.preventDefault(); setLockedRef.current((v) => !v); return }
+      if (o.snapKeys && e.key.length === 1 && '123456789'.includes(e.key)) {
+        e.preventDefault()
+        if (lockedRef.current) return
+        const surface = ref.current?.getBoundingClientRect()
+        const box = contentRef.current?.()
+        if (!surface || !box) return
+        /* the view's translate is in screen px (translate, then scale), so the pan moves by the screen delta as is */
+        const t = snapTarget(e.key, surface, box, o.snapPadding)
+        const dx = surface.left + t.x - box.left, dy = surface.top + t.y - box.top
+        setViewRef.current((v) => ({ ...v, x: v.x + dx, y: v.y + dy }))
+      }
     }
     const onKeyUp = (e) => {
       if (e.code !== 'Space') return

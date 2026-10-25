@@ -19,12 +19,15 @@ const titleOf = (name) => name.replace(/([A-Z])/g, ' $1').replace(/[-_]/g, ' ').
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
 const PATCH_NAMES = Object.keys(patches).filter((k) => k !== 'ref' && k !== 'empty')
-/* a shipped patch as a file — its cover is the patch's OUTPUT (1.6; /previews/patches holds the output capture) */
+/* a shipped patch as a file — its cover is the patch's OUTPUT (1.6; /previews/patches holds the output capture); its BACK
+ * is the rack it was built on (AppCardBackCover, 2026-10-24; /previews/racks, monitor's rack screenshots), revealed on hover */
 export const SHIPPED_PATCHES = PATCH_NAMES.map((name, i) => {
   const src = patches[name]
   return {
     id: name, kind: 'patch', name: titleOf(name), type: src.type ?? 'patches', tags: src.tags ?? [],
-    updatedAt: SHIP_DATE - i * DAY, bytes: new Blob([JSON.stringify(src)]).size, cover: `/previews/patches/${name}.png`,
+    updatedAt: SHIP_DATE - i * DAY, bytes: new Blob([JSON.stringify(src)]).size, cover: `/previews/patches/${name}.png`, back: `/previews/racks/${name}.png`,
+    /* the file's images (FileRailImages): the output and the rack — the rail shows them, the cover and back are picked from them */
+    images: [{ id: 'output', src: `/previews/patches/${name}.png`, label: 'Output' }, { id: 'rack', src: `/previews/racks/${name}.png`, label: 'Rack' }],
     details: [{ label: 'Modules', value: src.rows?.reduce((n, r) => n + (r.modules?.length || 0), 0) || 0 }, { label: 'Connections', value: src.connections?.length || 0 }],
     data: src,
   }
@@ -33,6 +36,7 @@ export const SHIPPED_PATCHES = PATCH_NAMES.map((name, i) => {
 export const SHIPPED_MODULES = Object.entries(MODULE_DEFS).map(([type, def], i) => ({
   id: type, kind: 'module', name: def.label, category: def.category, u_label: `${def.u}U`, tags: [def.category],
   updatedAt: SHIP_DATE - i * DAY, bytes: new Blob([JSON.stringify(def)]).size, cover: `/previews/modules/${type}.png`,
+  images: [{ id: 'front', src: `/previews/modules/${type}.png`, label: 'Front' }],
   details: [{ label: 'Category', value: cap(def.category) }, { label: 'Width', value: `${def.hp}HP` }, { label: 'Height', value: `${def.u}U` }],
   data: def,
 }))
@@ -45,10 +49,14 @@ export function useShipped() {
   const setOf = (f) => (f.kind === 'module' ? setModules : setPatches)
   const edit = (f, patch) => setOf(f)((fs) => fs.map((x) => (x.id === f.id ? { ...x, ...patch } : x)))
   const card = (f) => ({
-    key: f.id, title: f.name, date: f.updatedAt, size: f.bytes, media: f.cover, tags: f.tags, details: f.details,
+    key: f.id, title: f.name, date: f.updatedAt, size: f.bytes, media: f.cover, back: f.back, backReveal: 'flip-card', images: f.images, tags: f.tags, details: f.details,
     onTags: (tags) => edit(f, { tags }),
     note: f.note, onNote: (note) => edit(f, { note }),
+    /* the rail's picks and writes over the file's images (FileRailImages) — the rail hands the whole list, and `null` to
+     * cover or back when the image that was it is removed */
     onCover: (src) => edit(f, { cover: src }),
+    onBack: (src) => edit(f, { back: src }),
+    onImages: (next) => edit(f, { images: next }),
     verbs: {
       rename: (name) => edit(f, { name, updatedAt: Date.now() }),
       duplicate: () => setOf(f)((fs) => [{ ...f, id: `${f.id}-${Date.now().toString(36)}`, name: `${f.name} copy`, updatedAt: Date.now() }, ...fs]),

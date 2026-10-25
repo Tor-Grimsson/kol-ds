@@ -46,7 +46,12 @@ import { CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAI
  * picker over the consumer's client, Sign in asks for the password in the DS dialog and hands it to the consumer. `shell.bottomItems` still replaces
  * the whole foot, as it always did.
  *
- * @param {Object}   app        `{ name, subtitle, logomark (svg url), about (node), links [{label,url}] }`
+ * @param {'light'|'dark'} defaultTheme  THE APP'S DEFAULT THEME (AppHubDefaultTheme, kol-mirror 2026-10-24 — *"make this repo dark mode
+ *                              default"*): reset and the toggle's system choice land on it instead of the OS (kol-framework ≥0.55.0
+ *                              reads `data-theme-default`, which the Hub stamps). `app.defaultTheme` says the same. Omit it and
+ *                              nothing changes
+ * @param {Object}   app        `{ name, subtitle, logomark (svg url), about (string | paragraphs), links [{label,url}], docs [{ label, paragraphs }] }` —
+ *                              `docs` is the rail's Docs tab, an app's explanatory prose as data (SettingsRailDocsTab, 2026-10-24)
  * @param {Array}    items      the tool's rail rows `{ icon, path, label }` — Home is the mark, Settings is pinned
  * @param {string}   currentPath · {Function} onNavigate · {ElementType} iconComponent   as AppShell
  * @param {string}   homePath   where Home lives (default `/`); anything else puts the tool at `/`
@@ -65,8 +70,9 @@ import { CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAI
  *                              their options and values, or a text `value`; the Hub draws every control, label, value and
  *                              note in its own class and tone), the theme toggle and reset in its footer. ONE SHAPE ON
  *                              EVERY RAIL (user 2026-10-24: *"is there no criteria of what information goes into settings
- *                              rail?"* · *"not 2 lines"*): the tab row is exactly Settings · Shortcuts · About · Repo —
- *                              the three drawn by the Hub from `shortcuts`, `app.about` and `app.links`, on studio-hub as
+ *                              rail?"* · *"not 2 lines"*): the tab row is exactly Settings · Shortcuts · About · Docs —
+ *                              the three drawn by the Hub from `shortcuts`, `app.about` + `app.links` (the links under About,
+ *                              SettingsRailDocsTab 2026-10-24) and `app.docs` (an app's prose, `[{ label, paragraphs }]`), on studio-hub as
  *                              on every hub; an app has NO tab of its own (a fifth word does not fit the rail on one
  *                              line) — its rows all go under Settings as sections, and the rail scrolls. Reset is live on
  *                              every rail: it hands the theme back to the system (the Hub's own setting), then runs the
@@ -125,16 +131,26 @@ const RAIL_TABS = {
   },
   about: {
     label: 'About',
+    /* the links draw under About (SettingsRailDocsTab, kol-mirror 2026-10-24): Repo's list folds in here, so the row's
+     * fourth word can be Docs and it stays one line */
     draw: ({ app }) => (
       <div className="flex flex-col gap-8">
         {app.about && <LabeledControlSection label={app.name}><About about={app.about} /></LabeledControlSection>}
+        {app.links?.length > 0 && <LabeledControlSection label="Links"><SettingsLinks links={app.links} /></LabeledControlSection>}
         <SettingsColophon />
       </div>
     ),
   },
-  repo: {
-    label: 'Repo',
-    draw: ({ app }) => <LabeledControlSection label="Links"><SettingsLinks links={app.links ?? []} /></LabeledControlSection>,
+  docs: {
+    label: 'Docs',
+    /* an app's explanatory prose AS DATA — `app.docs: [{ label, paragraphs }]`, each a section in About's voice, out of
+     * the settings sections' notes (user, on mirror's rail: *"settings are so overloaded with information that its hard to
+     * navigate … we should just start a documentation tab for it"*). No JSX: `About` warns on a node */
+    draw: ({ app }) => (
+      <div className="flex flex-col gap-8">
+        {app.docs.map((d, i) => <LabeledControlSection key={d.label ?? i} label={d.label}><About about={d.paragraphs ?? d.text} /></LabeledControlSection>)}
+      </div>
+    ),
   },
 }
 /* the rail's rows: typed, text, or nothing — a `render` row is JSX and is dropped here with a warning */
@@ -150,6 +166,8 @@ export default function AppHub(props) {
 
 function HubFrame({
   app = {},
+  /* the app's default theme (AppHubDefaultTheme, kol-mirror 2026-10-24): what reset and the toggle's system fall back to */
+  defaultTheme,
   items = [],
   currentPath,
   onNavigate,
@@ -184,14 +202,24 @@ function HubFrame({
   const [settingsTab, setSettingsTab] = useState('settings')
   const modal = useModal()
   const theme = useTheme()
+  /* THE DEFAULT THEME IS A ROOT ATTRIBUTE kol-framework's theme reads (`data-theme-default`): reset (`theme.clear()`)
+   * and the toggle's alt-click hand the page to it, not to the OS — a dark-first app stays dark on a light-mode Mac */
+  const themeDefault = defaultTheme ?? app.defaultTheme
+  useEffect(() => {
+    if (!themeDefault) return undefined
+    document.documentElement.dataset.themeDefault = themeDefault
+    return () => { delete document.documentElement.dataset.themeDefault }
+  }, [themeDefault])
   if (themeToggle != null) warnJsx('themeToggle', 'The Hub draws the theme toggle itself; drop the prop.')
-  /* THE RAIL'S TABS, the same four on every hub: Settings · Shortcuts · About · Repo, the three from what the app already
-   * passes; an app's `tabs` are not drawn — its rows belong under Settings (dev warns) */
+  /* THE RAIL'S TABS, the same four on every hub: Settings · Shortcuts · About · Docs, the three from what the app already
+   * passes — Repo's links sit under About since SettingsRailDocsTab (kol-mirror 2026-10-24: *"settings are so overloaded with
+   * information … we should just start a documentation tab for it"*), so the fourth word is the app's prose, `app.docs`, drawn
+   * when it has any; an app's `tabs` are not drawn — its rows belong under Settings (dev warns) */
   if (settingsDrawer && settings.tabs?.length) warnJsx('settings.tabs', 'The rail has no app tabs — put the rows under settings.sections.')
   const railTabs = settingsDrawer ? [
     ...(shortcuts.length ? [{ value: 'shortcuts', label: RAIL_TABS.shortcuts.label, named: RAIL_TABS.shortcuts }] : []),
-    ...(app.about ? [{ value: 'about', label: RAIL_TABS.about.label, named: RAIL_TABS.about }] : []),
-    ...(app.links?.length ? [{ value: 'repo', label: RAIL_TABS.repo.label, named: RAIL_TABS.repo }] : []),
+    ...((app.about || app.links?.length) ? [{ value: 'about', label: RAIL_TABS.about.label, named: RAIL_TABS.about }] : []),
+    ...(app.docs?.length ? [{ value: 'docs', label: RAIL_TABS.docs.label, named: RAIL_TABS.docs }] : []),
   ] : []
   if (settingsDrawer && settings.content != null) warnRailJsx('content')
   const railRows = settingsDrawer ? railSections(settings.sections) : []

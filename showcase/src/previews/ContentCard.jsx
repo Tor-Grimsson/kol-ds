@@ -80,7 +80,7 @@ export const variants = ['file', 'catalog', 'slide', 'article', 'showcase', 'can
 
 /* THE PROPS NO SPECIMEN SHOWED (2026-10-22, "missing properties"), as the third axis: `specimens` is the
  * variant's own set; every other state draws that prop on the picked variant */
-export const states = ['specimens', 'no cover', 'corner controls', 'fit', 'ratio', 'fade']
+export const states = ['specimens', 'no cover', 'corner controls', 'fit', 'ratio', 'fade', 'back']
 
 const grid = 'grid w-full grid-cols-3 items-start gap-4'
 const kind = (v) => (v === 'canvas' ? { variant: 'showcase', layout: 'canvas' } : { variant: v })
@@ -155,6 +155,8 @@ function PropState({ variant, state }) {
     ]
     : state === 'fit' ? ['cover', 'natural', 'compact'].map((f) => [`fit="${f}"`, { media: <img src={TALL} alt="" />, fit: f }])
     : state === 'ratio' ? ['1 / 1', '4 / 5', '16 / 9'].map((r) => [`ratio="${r}"`, { media: img, ratio: r }])
+    /* `back` (AppCardBackCover, 2026-10-24): the second cover on hover or focus; the three treatments are round 17's */
+    : state === 'back' ? ['flip-image', 'flip-card', 'hover'].map((m) => [`back · backReveal="${m}"`, { media: img, back: TALL, backReveal: m, onClick: () => {} }])
     : [['fade · cover fades in', { media: img, fade: true }], ['no fade', { media: img }]]
   return (
     <div className={grid}>

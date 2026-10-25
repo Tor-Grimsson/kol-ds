@@ -128,7 +128,7 @@ export { ModalProvider, useModal } from './molecules/Modal.jsx'
 export { default as PaletteHarmonyWheel } from './molecules/PaletteHarmonyWheel.jsx'
 export { default as PropertyInput } from './molecules/PropertyInput.jsx'
 export { default as ShapeDropdown } from './molecules/ShapeDropdown.jsx'
-export { default as Rail } from './molecules/Rail.jsx'
+export { default as Rail, RAIL_ROLES, useRailKey } from './molecules/Rail.jsx'
 /** @deprecated 2026-10-17 — alias of Rail */
 export { default as ShellDrawer } from './molecules/ShellDrawer.jsx'
 export { default as CommandOverlay } from './organisms/CommandOverlay.jsx'
@@ -162,7 +162,7 @@ export { default as TabChips } from './molecules/TabChips.jsx'
  * the desk sit on; both read `useCanvasViewport`, one engine, one key table (`CANVAS_KEYS`). */
 export { default as CanvasEditor, default as Canvas, CanvasFrame, PanViewport, PanZoomViewport, CanvasZoomContext, useFps, CANVAS_VIRTUAL_W, DEFAULT_ASPECTS, CANVAS_DEFAULTS } from './organisms/Canvas.jsx'
 export { default as CanvasStudio } from './organisms/CanvasStudio.jsx'
-export { useCanvasViewport, CANVAS_KEYS, CANVAS_GRID_CELL, CANVAS_GRID_IMAGE } from './hooks/canvasViewport.js'
+export { useCanvasViewport, CANVAS_KEYS, SNAP_PADDING, CANVAS_GRID_CELL, CANVAS_GRID_IMAGE } from './hooks/canvasViewport.js'
 /* The rulers and the guides, public since 2026-09-03 (rulers-and-guides-are-private):
  * they measure the RENDERED rect, so they work over a CSS-zoomed stage with no
  * PanZoomViewport anywhere — which is their second consumer on day one. */
@@ -211,6 +211,10 @@ export { default as SettingsPanel, LabeledControlSection, SettingsRow, SettingsS
 /* the settings BODY as data — one call for the page, the drawer and a sheet
  * (user 2026-09-03: "lets normalise a component they can grab") */
 export { default as SettingsSections } from './organisms/SettingsSections.jsx'
+/* the rail kit (RailKit, kol-monitor 2026-10-24): the parts a Rail's content is built from; RailSection and RailRow
+ * are the settings rail's LabeledControlSection and SettingsRow under the kit's names — the same components */
+export { RailHeader, RailTabs, RailHint, RailActions, RailFoot, RailNav } from './organisms/RailKit.jsx'
+export { LabeledControlSection as RailSection, SettingsRow as RailRow } from './organisms/SettingsPanel.jsx'
 export { default as SectionNewsletter } from './organisms/SectionNewsletter.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'
 export { default as ColumnBrowser } from './organisms/ColumnBrowser.jsx'

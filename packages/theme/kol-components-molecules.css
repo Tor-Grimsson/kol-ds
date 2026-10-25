@@ -2342,6 +2342,11 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   display: flex;
   flex-direction: column;
   padding-block: var(--kol-spacing-8);
+  /* THE RAIL STAYS IN ITS COLUMN (TocRailLongLabels, kol-studio 2026-10-24): fixed and content-sized, a long label grew
+   * the whole rail leftwards over the page. Capped at the frame's TOC column (kol-framework's `--kol-shell-toc-w`, 256),
+   * padding included; the rows are bounded by it and the labels ellipsize inside. */
+  box-sizing: border-box;
+  max-width: var(--kol-shell-toc-w, 16rem);
 }
 /* The lens scales about the edge the rail is pinned to, so the column's outer
  * edge stays a straight line while the type breathes. The wide inner padding is
@@ -2366,6 +2371,9 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   gap: var(--kol-spacing-3);
   padding-block: 2px;
   text-decoration: none;
+  /* bounded by the rail's content box, so the label's cap below has a width to read (a content-sized row would take
+   * the long label's own width) */
+  max-width: 100%;
 }
 .kol-toc--right .kol-toc-row { justify-content: flex-end; }
 .kol-toc--left  .kol-toc-row { flex-direction: row-reverse; justify-content: flex-end; }
@@ -2379,6 +2387,14 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
    * the scale did not. */
   display: inline-block;
   white-space: nowrap;
+  /* A LONG LABEL STAYS IN THE COLUMN (TocRailLongLabels, kol-studio 2026-10-24: a doc's own title, "Rebrand — Expanded
+   * Scope (Campaign + Motion)", ran left out of the aside and over the page's table). The label is capped at the row's
+   * width over the lens's largest scale (0.78 + 0.42 = 1.2, growing from the outer edge), so even the lit row ends
+   * inside the rail; past that it ellipsizes. */
+  min-width: 0;
+  max-width: calc(100% / 1.2);
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: calc(0.26 + 0.74 * var(--m));
   transform: scale(calc(0.78 + 0.42 * var(--m)));
   will-change: transform, opacity;

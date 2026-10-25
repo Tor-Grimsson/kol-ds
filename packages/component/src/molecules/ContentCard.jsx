@@ -32,6 +32,25 @@ import { toneClass } from '../utilities/tone.js'
  * library's parts slotted from `verbs` (`{ rename?, duplicate?, remove? }`), `download` and
  * `menuItems` — download on the cover, cog over trash in the plate, the page's one menu on
  * right-click. `date` takes ms, `size` bytes, `media` a src. See AppItem.jsx.
+ *
+ * THE BACK (AppCardBackCover, kol-monitor 2026-10-24): `back` is a SECOND cover — a src or a node,
+ * passed as `media` is — revealed on hover and on keyboard focus, never on `selected` (the print
+ * flip rides `selected`, so a consumer could not put it on hover without the card reading as
+ * selected). Monitor's case: the patch's OUTPUT in front, the rack it was built on behind. `backReveal`
+ * is HOW it shows — `flip-image` (the media turns, the plate and the corner controls stay; default),
+ * `flip-card` (the whole card turns, the back fills it, bare), `hover` (the back cuts in over the
+ * front, no motion) — three treatments on the open-questions page (round 17) for the user's pick; the
+ * losers go after his ruling. The choreography is kol-theme's (`[data-back]`, kol-animation.css);
+ * reduced motion makes both flips the cut; touch has no hover and keeps the front. Absent `back` = the
+ * card as it was. Not `reveal`: that name is the canvas card's overlay NODE.
+ *
+ * THE WHOLE CARD TURNS, ON A KEY, HOVER OPT-IN (AppCardWholeFlip, kol-monitor 2026-10-24 — user: *"it doesnt truly
+ * flip the card, there is still the background that remains"* · *"make the cards flip on a shortcut and disable the
+ * hover"* · *"hover flips card? default off"*). `flip-card` is a 3D turner AROUND the card: the card root — plate, text,
+ * controls, its own ground — is the front face, and the back is a second full face on the card's surface
+ * (surface-secondary, the card's radius) holding the picture; nothing stays behind. `flipped` (controlled) turns the
+ * card — `CatalogPage` and `HubHome` take a page-level one, so a page turns every card on a key — and `backHover`
+ * (default false) opts the hover (and keyboard focus) reveal in. The faces swap by backface, never a timed visibility.
  */
 
 /* ruled defaults — defaults, not hardcodes; `ratio` stays overridable while
@@ -178,6 +197,12 @@ export default function ContentCard({
   /* `flip` + `fade` — behaviours, not variants (the print fold, 2026-08-29) */
   flip,
   fade,
+  /* `back` + `backReveal` — the second cover and how it shows (AppCardBackCover, 2026-10-24) */
+  back,
+  backReveal = 'flip-image',
+  /* `flipped` · `backHover` — the controlled turn and the opt-in hover (AppCardWholeFlip, 2026-10-24) */
+  flipped = false,
+  backHover = false,
   /* plateRule (CatalogCardFrameAndZoom): the plate's top hairline — default the variant's (catalog and
    * print draw it); `false` turns it off without an `!important` in a consumer sheet */
   plateRule,
@@ -217,8 +242,8 @@ export default function ContentCard({
   /* `app` (CatalogAppVariant, kol-fxr 2026-10-23) is the `file` card with its parts slotted from
    * `verbs`, `download`, `menuItems`, and `tags`, `details`, `onTags` for the info rail — AppItem.jsx.
    * None of them reach ContentText; an app card's `tags` are the rail's, never chips on the plate. */
-  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert })
-  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert
+  const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, back, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert, images: text.images, onImages: text.onImages, onBack: text.onBack })
+  delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert; delete text.images; delete text.onImages; delete text.onBack
   if (app) {
     delete text.tags
     variantProp = 'file'
@@ -317,6 +342,17 @@ export default function ContentCard({
    * existing consumer is untouched. */
   const noMedia = media === false
 
+  /* THE BACK: a src becomes the cover's `<img>`, cover-cropped at the consumer's `--kol-media-focus`
+   * (monitor binds `top left`, so a rack reads its modules — the old rack previews' anchor); a node
+   * is the consumer's. The three treatments share two FACES in one TURN; the theme keys the motion
+   * off `data-back` on the root. `flip-card` wraps the whole body (below); the other two wrap the
+   * media only, so the plate and the corner controls hold still. */
+  const backNode = back == null ? null
+    : typeof back === 'string' ? <img src={back} alt="" className="size-full object-cover" style={{ objectPosition: 'var(--kol-media-focus, center)' }} /> : back
+  /* the media turn is the stack layout's (file · slide · article — the app card is file); flip-card wraps any body */
+  const backMode = backNode && !noMedia && (box.layout === 'stack' || backReveal === 'flip-card') ? backReveal : null
+  const backFace = backMode ? <div className="kol-card-face kol-card-face--back"><ContentMedia ratio={null} {...{ radius: !framed, fit: 'cover' }}>{backNode}</ContentMedia></div> : null
+
   const textNode = hasPlate ? (
     <div
       className="kol-card-plate relative"
@@ -393,7 +429,16 @@ export default function ContentCard({
           * positions against the media box, and there is none */}
         {!noMedia && (
           <div className="relative">
-            <ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia>
+            {backMode && backMode !== 'flip-card' ? (
+              <div className="kol-card-turn">
+                <div className="kol-card-turn-inner">
+                  <div className="kol-card-face kol-card-face--front"><ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia></div>
+                  {backFace}
+                </div>
+              </div>
+            ) : (
+              <ContentMedia ratio={r} {...mediaProps}>{media}</ContentMedia>
+            )}
             {controlNode}
             {controlStartNode}
           </div>
@@ -471,6 +516,9 @@ export default function ContentCard({
       </>
     )
 
+  /* `flip-card` wraps the ROOT below — the whole card is the front face (AppCardWholeFlip) */
+  const turned = body
+
   /* THE ROOT FOLLOWS THE AFFORDANCE. A card that navigates must be a real <a>:
    * middle-click, cmd-click, focus order, "copy link address" and every screen
    * reader's link list all come from the tag, and none of them can be added
@@ -491,6 +539,10 @@ export default function ContentCard({
 
   const common = {
     'data-tags': isHero && Array.isArray(text.tags) && text.tags.length ? text.tags.join(' ') : undefined,
+    /* flip-card's attributes ride the turner around the root (below); the other two treatments mark the root */
+    'data-back': backMode && backMode !== 'flip-card' ? backMode : undefined,
+    'data-back-hover': backMode && backMode !== 'flip-card' && backHover ? '' : undefined,
+    'data-flipped': backMode && backMode !== 'flip-card' && flipped ? '' : undefined,
     className: `kol-card group flex ${toneClass(tone)} ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
       /* same reason as ContentRow: rest colors are PROPERTIES, because an
@@ -510,11 +562,24 @@ export default function ContentCard({
     },
   }
 
+  /* THE TURNER AROUND THE ROOT (`flip-card`, AppCardWholeFlip): the card is the front face, the back a full face on
+   * the card's surface — perspective, preserve-3d, both faces backface-hidden, kol-theme's `[data-back="flip-card"]` */
+  const turn = (root) => backMode === 'flip-card' ? (
+    <div className="kol-card-turn" data-back="flip-card" data-back-hover={backHover ? '' : undefined} data-flipped={flipped ? '' : undefined} style={{ gridColumn: common.style.gridColumn, gridRow: common.style.gridRow }}>
+      <div className="kol-card-turn-inner">
+        <div className="kol-card-face kol-card-face--front">{root}</div>
+        <div className="kol-card-face kol-card-face--back overflow-hidden rounded-[var(--kol-radius-sm)] bg-surface-secondary" aria-hidden={!flipped || undefined}>
+          <ContentMedia ratio={null} radius={false} fit="cover">{backNode}</ContentMedia>
+        </div>
+      </div>
+    </div>
+  ) : root
+
   if (href) {
-    return <a href={href} onClick={nav} {...common}>{body}</a>
+    return turn(<a href={href} onClick={nav} {...common}>{turned}</a>)
   }
   if (onClick) {
-    return (
+    return turn(
       <article
         onClick={onClick}
         onContextMenu={onContextMenu}
@@ -533,9 +598,9 @@ export default function ContentCard({
         }}
         {...common}
       >
-        {body}
-      </article>
+        {turned}
+      </article>,
     )
   }
-  return <article {...common}>{body}</article>
+  return turn(<article {...common}>{turned}</article>)
 }

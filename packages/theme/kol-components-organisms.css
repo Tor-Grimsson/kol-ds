@@ -99,6 +99,15 @@
   white-space: nowrap;
 }
 
+/* the WRAPPING body cell (TableWrapTextCell, kol-studio 2026-10-24): a long free-text column — a roster's notes — at the
+ * body cell's face and size, wrapping inside a measure instead of pushing the table sideways. `Table` puts it on a
+ * column's `wrap: true`; the measure is the meta cell's idea at the body size. */
+.kol-table-cell-text--wrap {
+  white-space: normal;
+  min-width: 12rem;
+  max-width: 32rem;
+}
+
 .kol-table-cell-meta {
   padding: 12px 16px;
   font-family: var(--kol-font-family-mono);

@@ -39,6 +39,8 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *   size="sm" / "md" (default) / "lg" — matched padding + type class
  *
  * Sizing:
+ *   preset — `rail` (2026-10-25): the control in a rail's row — its rung's height, 8 at the sides instead of the
+ *     rung's 12 (*"call it a variant or preset for input on rails"*); the Slider's readout passes it through
  *   chars — HTML `size` attribute on the inner input. When set, the inner
  *     <input> sizes to N characters and the shell hugs (padding + prefix +
  *     N chars + suffix + padding). Use for known-format values (hex,
@@ -72,6 +74,7 @@ export default function Input({
   onChange,
   onCommit,
   variant,
+  preset,
   tone = 'default',
   size = 'md',
   chars,
@@ -109,6 +112,8 @@ export default function Input({
     /* no variant → no modifier: the shell inherits a wrapper's tone, else filled (2026-09-03) */
     resolvedVariant && `kol-control--${resolvedVariant}`,
     `kol-control-${size}`,
+    /* the rail preset (2026-10-25): 8 at the sides for a rail row's chip — `.kol-control--rail` */
+    preset && `kol-control--${preset}`,
     SIZE_TYPE[size],
     'cursor-text',
     /* the dark chip on a washed plane (ControlToneInverse, kol-website 2026-08-27) */
