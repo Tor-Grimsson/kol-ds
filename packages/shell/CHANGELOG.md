@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-shell
 
+## 0.83.0 — 2026-10-27
+
+- **`PhoneNav` as the phone panel picker** (PhoneNavTopAndFold, kol-fxr 2026-10-27, frame E): `placement="top"` (the pill on top, More's sheet below it), `border`, `active="circle"`, `foldable` · `folded` · `onFoldChange` (fold to a left edge tab), `moreKeepsOpen` (More opens without collapsing the pill to the ×, lights only while open, and the open panel stays — a clear scrim). An item may carry `onPress` (a panel the app owns, a second tap its call) and `selected`.
+- **New: `TransportPill`** (TransportPill, kol-fxr 2026-10-27): the phone transport as PhoneNav's pill of action slots — `items` `{ id, icon, label, onPress?, selected? }`, `sheetFor` (a slot that opens a sheet of rows centred above it, lit while open), the shadow, the circle, `foldable` to a right edge tab, `placement`. Same TabsRow, so it is the nav's size and look.
+- **`MoreRows` rows take `checked`** — a pick list's 22px check, its space kept when false (the loop lengths).
+- Needs kol-component ≥0.304.0 and kol-icons ≥0.47.0 (`stopwatch-solid`).
+
 ## 0.82.0 — 2026-10-24
 
 - **`HubHome` takes `backReveal`** (HubHomeBackReveal, kol-monitor 2026-10-24): a page-level `backReveal` (`flip-image` · `flip-card` · `hover`) for every Home card, and a file's own `backReveal` wins. Home's file → card map dropped it, so Home's cards were always the default `flip-image` while the Library's turned whole. Monitor passes `home={{ …, backReveal: 'flip-card' }}`.

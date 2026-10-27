@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-theme
 
+## 0.191.0 — 2026-10-26
+
+- **Every app has a ground and clears the status bar on the home screen** (StandaloneSafeAreaAndPageGround, kol-mirror 2026-10-26 — Mirror's title sat under the iOS status bar and a white strip showed below the shell, standalone). `kol-base-tokens.css`, so `core` and the umbrella both carry it: `html` paints `--kol-surface-primary` (kol-framework did, so apps without it showed the bare canvas), and `@media (display-mode: standalone)` pads `body` by `env(safe-area-inset-top)` — the overflow that padding makes covers the bottom, on purpose. A browser tab is unchanged.
+
 ## 0.190.0 — 2026-10-25
 
 - **The rail's inset is 16 on every rail; the nav rail opens to 380** (his second review, 2026-10-25 — *"the entire padding on the bottom rail and side rail is completely different then the navrail? why dont we unify?"* · *"MAKE 16!!!"* · *"navrail expanded also gets the same width as we just set"*): `--kol-pad-rail-app` is `--kol-spacing-4` (16) on every width; it was the overlay inset (20 · 24 from 768). `--kol-shell-rail-open` is 380 flat (was 264 · 320 from 1536). **`.kol-control--rail`** — the Input's rail preset, `padding-inline: 8px`. **`.kol-rail-grab--top` · `--bottom`** (kol-animation.css) — the grab pill on a horizontal edge, travelling on x, for `Rail resizable` on a bottom or top rail.

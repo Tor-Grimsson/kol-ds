@@ -31,13 +31,17 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 54 entries
+## Queue — 58 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [SiteRailTitleNavigatesOnly](done/SiteRailTitleNavigatesOnly.md) | **kol-branding** — site rail folder title both navigates and discloses; title should only navigate, the chevron discloses. Plus: rail behaviors get a default + prop, not hardcoded | 2026-10-27 | 2026-10-27 | `closed` — **kol-component 0.305.0** live (`discloseOnTitle` · `defaultOpen` · `openOnRoute`); receipt to kol-branding |
+| 🟢 | [PhoneNavTopAndFold](done/PhoneNavTopAndFold.md) | **kol-fxr** — PhoneNav at the top as the phone panel picker: `placement="top"`, optional hairline, 1:1 active circle, swipe to fold into an edge tab, More opens without collapsing the pill or closing the open panel. Approved frame E | 2026-10-27 | 2026-10-27 | `closed` — **kol-shell 0.83.0** + **kol-component 0.304.0** live; Round 22; receipt to kol-fxr |
+| 🟢 | [TransportPill](done/TransportPill.md) | **kol-fxr** — the phone transport as a PhoneNav-shaped pill of action slots (play, pause, loop length, stop, rewind), one slot opening a sheet anchored above it, foldable to a right edge tab. Approved frame E | 2026-10-27 | 2026-10-27 | `closed` — **kol-shell 0.83.0** (`TransportPill`) + kol-component 0.304.0 + kol-icons 0.47.0 (`stopwatch-solid`) live; Round 22; receipt to kol-fxr |
+| 🟢 | [StandaloneSafeAreaAndPageGround](done/StandaloneSafeAreaAndPageGround.md) | **kol-mirror** — home-screen apps: standalone top safe-area padding + `html` on `--kol-surface-primary`, in `kol-base-tokens.css` (`core` and the umbrella) | 2026-10-26 | 2026-10-26 | `closed` — **kol-theme 0.191.0** live; doc `07-apps-tier/10-save-to-home-screen.md`; receipt to kol-mirror |
 | ⚫ | [QuoteDocument](archive/QuoteDocument.md) | **kol-atlas** — a printable A4 quote layout for client work: three mockups (v1 original · v2 invoice-synced · v3 split), assets in `_assets/2026-10-20-quote-document/` | 2026-10-20 | ⚫ `retired` — user ruling: not built in kol-ds-ui; `apps/stationery` stays live, the layout lives in the Stationery artifact |
 | 🟢 | [ModalPromptPassword](done/ModalPromptPassword.md) | **kol-atlas** — `useModal().prompt` has no masked mode; add `{ type: 'password' }` for the family's sign-in prompts | 2026-10-19 | `closed` — **kol-component 0.281.0**: `{ type: 'password' }` masks the field; OK bright, keyboard trapped in the dialog; verified in the useModal preview |
 | 🟢 | [QuickLookFit](done/QuickLookFit.md) | **kol-atlas** — `MediaInspector` draws every SVG in a fixed 640px box; fit images (SVG too) to the window, click toggles fit ↔ fill width | 2026-10-19 | `closed` — **kol-component 0.280.0 · kol-theme 0.178.0**: SVGs ≥640 fit the window, click toggles fill width; verified in apps/media |
@@ -438,6 +442,12 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-27 | **`SiteRailTitleNavigatesOnly` closed** — kol-component 0.305.0 live: the foldernote title navigates only (`discloseOnTitle` restores the coupling), plus `defaultOpen` and `openOnRoute`; receipt to kol-branding |
+| 2026-10-27 | **`SiteRailTitleNavigatesOnly` filed from kol-branding** — folder title click only navigates; the chevron discloses; rail behaviors settable by the consumer |
+| 2026-10-27 | **`PhoneNavTopAndFold` and `TransportPill` closed** — kol-component 0.304.0 (the pill: `edge` · `border` · `shadow` · `active="circle"` · `foldable`), kol-shell 0.83.0 (`PhoneNav` top · fold · `moreKeepsOpen` · panel items; `TransportPill`; `MoreRows checked`), kol-icons 0.47.0 (`stopwatch-solid`) live; Round 22; receipts to kol-fxr. Also live: kol-framework 0.57.0 · kol-component 0.303.0 (Round 21, the site rail) |
+| 2026-10-27 | **`PhoneNavTopAndFold` and `TransportPill` filed from kol-fxr** — the phone Labs layout (frame E, user-approved): nav pill on top, transport pill at the bottom, both foldable to edge tabs |
+| 2026-10-26 | **`StandaloneSafeAreaAndPageGround` closed** — kol-theme 0.191.0 live: `html` paints `--kol-surface-primary`, standalone `body` pads the top inset; the save-to-home-screen playbook at `docs/operations/07-apps-tier/10-save-to-home-screen.md`; receipt to kol-mirror |
+| 2026-10-26 | **`StandaloneSafeAreaAndPageGround` filed from kol-mirror** — standalone safe-area padding + dark `html` for every app; verified in the iOS simulator |
 | 2026-10-25 | **`CanvasStudioSnapPositions` closed** — kol-component 0.302.0 live; receipt to kol-mirror. **The rail wave published**: kol-theme 0.190.0 · kol-framework 0.56.0 · kol-component 0.302.0 (`Rail role`, the standard header and foot, `RailNav`, 380 · 16, the DS grab on resizable rails, slider rows, `Input preset="rail"`, the site rail's 20 gutter) |
 | 2026-10-25 | **`RailRolesOnMonitor` filed into kol-monitor** — the MODULES list out of the nav rail (his review: not asked for, not correct), `Rail role` + `useRailKey` on the bump, the bottom rail beside the rail |
 | 2026-10-25 | **`CanvasStudioSnapPositions` filed from kol-mirror, built the same day** — `1–9` snap on CanvasStudio, unpublished with the rail wave |

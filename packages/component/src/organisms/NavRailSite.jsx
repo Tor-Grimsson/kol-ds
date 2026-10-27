@@ -121,6 +121,14 @@ import useDragResize from '../hooks/useDragResize.js'
  *                      ruling "pressing any icon would expand the sidebar"): a
  *                      collapsed rail stays collapsed, the press does its job
  *   `defaultCollapsed` boots collapsed when nothing is stored (useDragResize)
+ * THE RAIL'S BEHAVIOURS ARE PROPS (SiteRailTitleNavigatesOnly, kol-branding 2026-10-27 — user: "clicking on title
+ * shouldnt also expand, that is what the chevron is for", and: a small rail behaviour should never need a ticket here —
+ * a sensible default plus a prop the consumer sets in its own repo):
+ *   `discloseOnTitle`  `true` lets a foldernote's TITLE also open its pages; default `false` — the title navigates, the
+ *                      chevron alone expands and collapses
+ *   `defaultOpen`      category ids open on first render (default none — the rail loads closed, elder ruling 2026-08-06)
+ *   `openOnRoute`      `true` opens the category holding the current route whenever the route changes (default `false`
+ *                      — nothing auto-expands on arrival); it only adds, never closes what you opened
  * `background` (2026-08-09, prop): `true` (default) paints the rail surface;
  * `false` renders chromeless so the rail can float over a consumer's media
  * (the brand-hero model — the consumer owns the plane). `hairline` (2026-08-26,
@@ -129,13 +137,18 @@ import useDragResize from '../hooks/useDragResize.js'
  */
 
 const pageBase =
-  'kol-sidenav-link kol-helper-10 block relative py-[4px] pl-[calc(var(--kol-pad-chrome-x)+2rem)] pr-6 no-underline transition-colors duration-150'
+  'kol-sidenav-link kol-helper-10 block relative py-[4px] pr-6 no-underline transition-colors duration-150'
 
 /* The active-dot pseudo-element is positioned by `--kol-sidenav-dot-left`
  * (kol-components-atoms.css). The page row indents one step past the chrome inset
  * (`--kol-pad-chrome-x` + the icon column + the gap, 2026-10-24 — it was a literal
  * 3.5rem); the dot sits 0.875rem inside that, in the gutter the icon column leaves. */
-const pageStyle = { '--kol-sidenav-dot-left': 'calc(var(--kol-pad-chrome-x) + 1.125rem)' }
+/* ON THE TITLE COLUMN (user 2026-10-27: "that line doesnt align with the page titles"): a section's own pages start where
+ * its title starts, the rail's gutter + the icon column + the gap (52), and 2px in, as a group's pages sit (user: "I would
+ * have left it at 2px to the right") — they sat on --kol-pad-chrome-x, 4 right of the title.
+ * A group's pages keep their step under the group label (below), as ruled 2026-10-24. */
+/* inline, as the group's pages are: a new arbitrary utility in package source is never generated in a consumer */
+const pageStyle = { paddingLeft: 'calc(var(--kol-sidenav-pad-x) + 2rem + 2px)', '--kol-sidenav-dot-left': 'calc(var(--kol-sidenav-pad-x) + 1.125rem + 2px)' }
 /* Category and page must not share a stop: category `emphasis`, page `strong`
  * — two rungs of one ladder, so the tree reads as hierarchy (elder ruling). */
 const pageCls = `${pageBase} text-strong hover:text-emphasis`
@@ -188,6 +201,9 @@ export default function NavRailSite({
   iconComponent,
   expandOnSelect = false,
   defaultCollapsed = false,
+  discloseOnTitle = false,
+  defaultOpen = [],
+  openOnRoute = false,
 }) {
   const Glyph = iconComponent ?? Icon
   const isPageActive = (to) => (isActive ? isActive(to) : pathname === to)
@@ -221,7 +237,7 @@ export default function NavRailSite({
   /* Which categories are disclosed. INDEPENDENT per category (elder ruling
    * 2026-08-01) — arriving somewhere must not silently close wherever you
    * were. Loads closed, in-memory only (elder ruling 2026-08-06). */
-  const [openCats, setOpenCats] = useState(() => new Set())
+  const [openCats, setOpenCats] = useState(() => new Set(defaultOpen))
   /* the ONE open panel leaf (by id) and where its panel sits */
   const [openPanel, setOpenPanel] = useState(null)
   const [panelBox, setPanelBox] = useState(null)
@@ -231,6 +247,13 @@ export default function NavRailSite({
     return next
   })
   const discloseCat = (id) => setOpenCats((prev) => new Set(prev).add(id))
+  /* `openOnRoute`: the category holding the route opens on arrival, adding to what is open */
+  useEffect(() => {
+    if (!openOnRoute) return
+    const here = [...navTree, ...bottomItems].find((c) => c.id != null && (isActiveCat(c) || (c.to && isPageActive(c.to))))
+    if (here) discloseCat(here.id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openOnRoute, pathname])
 
   /* One collapse contract, two gestures — the hook owns the stamp, the
    * storage schema and the state; the chip Button and the grab edge both
@@ -343,10 +366,10 @@ export default function NavRailSite({
                  definition, and an <a href> would promise a page that does
                  not exist. Clicking it discloses its pages. */
               const head = isFolder ? (
-                /* the row opens the page and discloses; the caret beside it (a sibling — a button cannot sit
-                 * inside a link) toggles the disclosure alone */
+                /* the row opens the page (and discloses only with `discloseOnTitle`); the caret beside it (a sibling — a
+                 * button cannot sit inside a link) toggles the disclosure */
                 <>
-                  <RouteLeaf {...leafProps(cat.to)} onPress={() => discloseCat(cat.id)} className={(active) => `${rowCls}${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
+                  <RouteLeaf {...leafProps(cat.to)} onPress={discloseOnTitle ? () => discloseCat(cat.id) : undefined} className={(active) => `${rowCls}${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
                     {glyph}
                     <span className="kol-sidenav-hop-label flex-1 min-w-0">{cat.label}</span>
                   </RouteLeaf>

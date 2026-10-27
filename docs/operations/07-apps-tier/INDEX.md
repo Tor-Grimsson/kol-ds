@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-10-24
+updated: 2026-10-26
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -12,6 +12,7 @@ tags:
 related:
   - "[[../INDEX|Operations]]"
   - "[[04-stationery-desk|Stationery desk]]"
+  - "[[10-save-to-home-screen|Save to home screen]]"
 ---
 
 # Apps tier
@@ -28,6 +29,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | [[07-app-dev-with-local-worker\|App dev with a local worker]] | The rule for every app with a D1 worker — one `pnpm dev` runs the app and the worker locally, kol-fxr's `scripts/dev.mjs` file for file; dev saves never reach the live database |
 | [[08-site-adoption\|Site adoption]] | The playbook a site on the site rail runs to take the frame as shipped — SiteLayout for its BrandLayout, the tree's foldernotes and groups, the pages on the parts, site-hub's walks as the check |
 | [[09-app-adoption\|App adoption]] | The playbook a tool on the app rail runs to take the frame as shipped — AppShell for its hand-rolled layout, the rows and the enter/expand rule, the pages on PageShell, `apps/shell` as the walk's reference. A consumer picks a frame, never a rail |
+| [[10-save-to-home-screen\|Save to home screen]] | What an app ships to open from the iPhone home screen — head tags, manifest, icon — and what kol-theme does for it (the ground and the top inset, 0.191.0) |
 | [[02-media-app-plan\|Media app plan]] | The first app — phases, acceptance, and the one decision still held |
 | [[03-candidate-apps\|Candidate apps]] | The roster the tier will absorb, one at a time. Only media is committed |
 | [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — the quote, invoice and letter layouts designed on a canvas against the brand book's set; where they ship |
@@ -79,6 +81,6 @@ A media feature ships in the DS and shows in `apps/media`; `apps/media-hub` adds
 
 **Nothing hidden (2026-09-29):** `pnpm validate:views` (in `pnpm validate`) fails on a view a package exports — a name ending View · Page · Screen · Layout · Editor · Library · Explorer · Dashboard · Book · Hub · Shell · Studio — that no app and no showcase page renders, directly or through a parent. design-editor's `LabsView` and `MobileView` went unmounted here for months; the bug that emptied their media picker had no page to show up on. Packages with no app of their own yet — kol-dashboards · kol-chess · kol-content · kol-foundry · kol-store — are reached through showcase pages and go to the showcase review.
 
-**Save to home screen:** the tool apps carry a web manifest (`public/apps/<name>.webmanifest`, `display: standalone`) and the Apple meta tags. A consumer repo that wants the same sets both — each app's home in the showcase says so.
+**Save to home screen:** the tool apps carry a web manifest (`public/apps/<name>.webmanifest`, `display: standalone`) and the Apple meta tags. A consumer repo that wants the same follows [[10-save-to-home-screen|Save to home screen]].
 
 Build order came in as a ticket: `lobby/inbox/apps-tier-media-first.md`.

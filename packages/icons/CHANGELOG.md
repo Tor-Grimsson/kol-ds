@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-icons
 
+## 0.47.0 — 2026-10-27
+
+- **New:** `stopwatch-solid` in `playback` (TransportPill, kol-fxr 2026-10-27) — the loop-length slot of the phone transport, filled like `play` and `stop` so the transport row reads as one set. The outline `misc/stopwatch` stays for its own uses.
+
+## 0.46.0 — 2026-10-26
+
+- **`mirror` redrawn, `mirror-mir` new** in `identity` (kol-mirror's app-icon round, 2026-10-26). `mirror` is the user's pick: the same MR-over-reflection mark, stretched as one group to FXR's box so it reads the size of `fxr` and `monitor`. `mirror-mir` is the alternate he keeps: MIR as one tall row, cut and slid ±1, drawn like FXR and MON. Both filled `currentColor` on the identity keyline (`translate(3 3) scale(0.75)`), clip ids namespaced. The old `mirror` is in `_tmp/2026-10-26-mirror-identity-glyph/`.
+
 ## 0.45.0 — 2026-10-24
 
 - **A registered glyph never overrides a DS name** (user 2026-10-24: kol-mirror's `registerIcons` of its own set put its `refresh` into the settings rail's reset — *"whats the point of standardizing if we let this slip so easily"*). The packaged sets resolve first for every name they ship; a consumer's glyph resolves only for names the DS has none for, and dev warns once per collision. Until now a registration won over the set — a repo could redraw any DS glyph app-wide without a word.

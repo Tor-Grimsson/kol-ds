@@ -203,7 +203,8 @@ body {
 .kol-sidenav-hop-caret {
   position: absolute;
   top: 0.75rem;
-  right: 0.75rem;
+  /* 16 from the edge, where the app rail's chevron glyph ends (user 2026-10-27: "a bit padding right missing" — it was 12) */
+  right: 1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import CloseButton from '../atoms/CloseButton.jsx'
 import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -38,7 +38,17 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  *        phone bar collapses into one round × at its right end — the pill shrinks to a 56 circle where More was, the bar
  *        keeps its width and shows the × in More's slot — while a sheet is open; `onExpand` is the ×. It expands back
  * @param {Function} [onExpand]  the ×'s press
- * Tabs are `{ id, label }` or `{ value, label }` (either key), plus `icon` for stacked.
+ * THE PILL'S OPTIONS (PhoneNavTopAndFold + TransportPill, kol-fxr 2026-10-27, frame E — one pill that the phone nav and
+ * the transport both compose, so the two stay one size and one look):
+ * @param {'bottom'|'top'} [edge='bottom']  the pill's edge; `top` sits TABBAR_PILL_INSET under the top safe-area inset
+ * @param {boolean} [border=true]   the pill's 1px oq-08 hairline
+ * @param {boolean} [shadow=false]  a drop shadow — for a pill that floats over content (the transport), not the nav
+ * @param {'fill'|'circle'} [active='fill']  the lit slot: `fill` its whole 56 slot (today), `circle` a 44×44 1:1 circle
+ * @param {boolean} [foldable=false]  a sideways swipe (> 40px) folds the pill into a 28×72 edge tab; a tap restores it
+ * @param {boolean} [folded] · {Function} [onFoldChange]  the folded state, controlled (else the pill holds it)
+ * @param {'left'|'right'} [foldSide='left']  the screen edge the tab sits on
+ * Tabs are `{ id, label }` or `{ value, label }` (either key), plus `icon` for stacked; a stacked tab's `selected`
+ * lights it whatever `value` is — action slots (the transport) light more than one.
  */
 export const TABBAR_H = 56
 /* the pill's air off the bottom edge — a page under it owes TABBAR_H + this */
@@ -49,11 +59,11 @@ export const tabbarPillWidth = (count) => count * TABBAR_PILL_TAB + 14
 /* the collapse's motion — one duration for the width and the glyph swap (300, user 2026-10-23: 180 read as abrupt) */
 const COLLAPSE_MS = 300
 
-export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', shape = 'bar', collapsed = false, onExpand, size, tracked = false, ariaLabel, className, style }) {
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, ariaLabel, className, style }) {
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
   if (look === 'chip') return <ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} ariaLabel={ariaLabel} className={className ?? ''} />
   if (look === 'text') return <TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={className ?? 'gap-6'} style={style} />
-  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} className={className ?? ''} />
+  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} ariaLabel={ariaLabel} className={className ?? ''} />
   return <UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} />
 }
 
@@ -93,14 +103,56 @@ function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
 }
 
 /* stacked — MobileTabBar's tab verbatim; its fixed bottom pill is `placement="phone"`, inline is a plain row */
-function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, className }) {
+/* the fold: a sideways swipe past this folds the pill, as frame E's prototype measures it */
+const FOLD_SWIPE = 40
+
+function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', ariaLabel = 'Sections', className }) {
+  const [foldedOwn, setFoldedOwn] = useState(false)
+  const swipe = useRef({ x: null, swiped: false })
   if (tabs.length === 0) return null
   const phone = placement === 'phone'
   const pill = phone && shape === 'pill'
   const isCollapsed = phone && collapsed
   const W = tabbarPillWidth(tabs.length)
+  const top = pill && edge === 'top'
+  const isFolded = pill && foldable && (foldedProp ?? foldedOwn)
+  const setFolded = (v) => { if (foldedProp === undefined) setFoldedOwn(v); onFoldChange?.(v) }
+  /* the edge offset: the pill's inset from the safe area on its edge */
+  const inset = `calc(env(safe-area-inset-${top ? 'top' : 'bottom'}, 0px) + ${TABBAR_PILL_INSET}px)`
+  const swipeProps = pill && foldable ? {
+    onPointerDown: (e) => { swipe.current.x = e.clientX },
+    onPointerUp: (e) => {
+      const { x } = swipe.current
+      swipe.current.x = null
+      if (x != null && Math.abs(e.clientX - x) > FOLD_SWIPE) { swipe.current.swiped = true; setFolded(true) }
+    },
+    /* a swipe that ended on a slot must not also press it */
+    onClickCapture: (e) => { if (swipe.current.swiped) { swipe.current.swiped = false; e.stopPropagation(); e.preventDefault() } },
+    style: { touchAction: 'pan-y' },
+  } : {}
+  if (isFolded) {
+    /* THE EDGE TAB (frame E): 28×72 flush to the screen edge, the pill's ground, no border, a chevron pointing back in */
+    return (
+      <button
+        type="button"
+        aria-label={`Show ${ariaLabel.toLowerCase()}`}
+        onClick={() => setFolded(false)}
+        className="kol-mobile-tabbar-tab md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] flex items-center justify-center cursor-pointer"
+        style={{
+          [foldSide]: 0,
+          [top ? 'top' : 'bottom']: `calc(env(safe-area-inset-${top ? 'top' : 'bottom'}, 0px) + ${TABBAR_PILL_INSET + 8}px)`,
+          width: 28, height: 72, padding: 0, border: 'none',
+          borderRadius: foldSide === 'left' ? '0 16px 16px 0' : '16px 0 0 16px',
+          background: 'var(--kol-surface-secondary)', color: RAIL_ROW.rest,
+        }}
+      >
+        <Icon name={foldSide === 'left' ? 'chevron-right' : 'chevron-left'} size={18} />
+      </button>
+    )
+  }
   return (
     <nav
+      {...swipeProps}
       className={`${pill
         ? 'kol-mobile-tabbar kol-mobile-tabbar-pill md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] rounded-full p-1.5 overflow-hidden '
         : phone ? 'kol-mobile-tabbar md:hidden fixed inset-x-0 bottom-0 z-[var(--kol-z-sticky)] ' : ''}flex items-stretch ${className}`.trim()}
@@ -111,10 +163,13 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         height: TABBAR_H,
         width: isCollapsed ? TABBAR_H : W,
         right: `calc(50% - ${W / 2}px)`,
-        bottom: `calc(env(safe-area-inset-bottom, 0px) + ${TABBAR_PILL_INSET}px)`,
+        [top ? 'top' : 'bottom']: inset,
         background: 'var(--kol-surface-secondary)',
-        border: '1px solid var(--kol-oq-08)',
+        /* without the hairline the 1px it took stays, transparent, so the slots never move */
+        border: `1px solid ${border ? 'var(--kol-oq-08)' : 'transparent'}`,
+        boxShadow: shadow ? '0 8px 40px rgba(0, 0, 0, 0.45)' : undefined,
         transition: `width ${COLLAPSE_MS}ms ease`,
+        ...swipeProps.style,
       } : phone ? {
         height: TABBAR_H,
         /* the pill's own ground, not the page's — it floats OVER content, so a
@@ -123,11 +178,12 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         borderTop: '1px solid var(--kol-oq-08)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       } : { height: TABBAR_H }}
-      aria-label="Sections"
+      aria-label={ariaLabel}
     >
       <div className={`flex items-stretch ${pill ? 'flex-none' : 'flex-1 min-w-0'}`} style={{ width: pill ? W - 14 : undefined, opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? 'none' : 'auto', transition: `opacity ${COLLAPSE_MS}ms ease` }}>
       {tabs.map((t) => {
-        const active = t.id === value
+        const active = t.selected ?? t.id === value
+        const circle = pill && activeShape === 'circle'
         return (
           <button
             key={t.id}
@@ -140,9 +196,12 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
             className={pill ? 'flex items-center justify-center rounded-full cursor-pointer' : 'flex-1 min-w-0 flex flex-col items-center justify-center gap-1 cursor-pointer'}
             /* the PHONE bar wears the rail's row type and ink (review 2, § 7.1 — RAIL_ROW, the one constant the rail reads);
              * an inline stacked row keeps MobileTabBar's own */
-            style={{ background: pill && active ? 'var(--kol-oq-08)' : 'transparent', border: 'none', width: pill ? 56 : undefined, color: phone ? (active ? RAIL_ROW.active : RAIL_ROW.rest) : (active ? 'var(--kol-fg-default)' : 'var(--kol-fg-48)') }}
+            style={{ background: pill && active && !circle ? 'var(--kol-oq-08)' : 'transparent', border: 'none', width: pill ? 56 : undefined, color: phone ? (active ? RAIL_ROW.active : RAIL_ROW.rest) : (active ? 'var(--kol-fg-default)' : 'var(--kol-fg-48)') }}
           >
-            {t.icon && <Icon name={t.icon} size={pill ? 28 : phone ? 24 : 18} />}
+            {/* the circle: 44×44, 1:1 inside the 56 slot (frame E — the fill stretched to the slot's width) */}
+            {t.icon && (circle
+              ? <span className="inline-flex items-center justify-center rounded-full" style={{ width: 44, height: 44, background: active ? 'var(--kol-oq-08)' : 'transparent' }}><Icon name={t.icon} size={28} /></span>
+              : <Icon name={t.icon} size={pill ? 28 : phone ? 24 : 18} />)}
             {/* helper is single-line chrome, which a tab label always is */}
             {!phone && <span className="kol-helper-10 truncate max-w-full px-1">{t.label}</span>}
           </button>

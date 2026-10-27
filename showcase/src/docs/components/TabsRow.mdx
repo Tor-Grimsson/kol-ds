@@ -55,6 +55,13 @@ render verbatim — no text-transform. Controlled: the parent owns `value`.
   {"prop":"onClose / onMinimise","type":"function","def":"—","desc":"Show + wire the leading close / trailing chevron (underline look)."},
   {"prop":"look","type":"underline | chip | text | stacked","def":"underline","desc":"The four looks of the one tab component — chip was TabChips, text was TabStrip, stacked (icon over label) was MobileTabBar."},
   {"prop":"placement","type":"inline | phone","def":"inline","desc":"`phone` floats a stacked bar fixed to the bottom below md."},
+  {"prop":"edge","type":"bottom | top","def":"bottom","desc":"The phone pill's edge; `top` sits 16 under the top safe-area inset."},
+  {"prop":"border","type":"boolean","def":"true","desc":"The phone pill's 1px oq-08 hairline; off keeps the 1px, transparent, so the slots never move."},
+  {"prop":"shadow","type":"boolean","def":"false","desc":"A drop shadow, for a pill that floats over content (TransportPill), not the nav."},
+  {"prop":"active","type":"fill | circle","def":"fill","desc":"The lit slot: `fill` its whole 56 slot, `circle` a 44×44 1:1 circle (frame E)."},
+  {"prop":"foldable","type":"boolean","def":"false","desc":"A sideways swipe past 40px folds the pill into a 28×72 edge tab; a tap on the tab restores it."},
+  {"prop":"folded · onFoldChange","type":"boolean · (folded) => void","def":"—","desc":"The folded state, controlled; uncontrolled the pill holds it."},
+  {"prop":"foldSide","type":"left | right","def":"left","desc":"The screen edge the folded tab sits on."},
   {"prop":"size","type":"rung | number","def":"—","desc":"chip: the control rung (sm); text: the helper size (14)."},
   {"prop":"tracked","type":"boolean","def":"false","desc":"text: 1px letter-spacing."},
   {"prop":"ariaLabel · className · style","type":"—","def":"—","desc":"Passed to the row."}

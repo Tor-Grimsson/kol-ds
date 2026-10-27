@@ -145,7 +145,7 @@ export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
-export { default as TabsRow, TABBAR_H, TABBAR_PILL_INSET, tabbarPillWidth } from './molecules/TabsRow.jsx'
+export { default as TabsRow, TABBAR_H, TABBAR_PILL_INSET, TABBAR_PILL_TAB, tabbarPillWidth } from './molecules/TabsRow.jsx'
 /** @deprecated 2026-10-17 — alias of `TabsRow look="chip"` */
 export { default as TabChips } from './molecules/TabChips.jsx'
 

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.57.0 — 2026-10-27
+
+- **The site rail's chevron sits 16 from the edge** (Round 21, user 2026-10-27 — *"a bit padding right missing"*). `.kol-sidenav-hop-caret` is `right: 1rem` (was 0.75rem, 12), where the app rail's chevron glyph ends. Nothing else on the rail moves.
+
 ## 0.56.0 — 2026-10-25
 
 - **The site rail has its own 20px gutter** (user 2026-10-25 — *"why is the rail collapsed 18px padded while open 24px?"*). `--kol-sidenav-pad-x` (1.25rem) on every rail row, header, group, section, footer and the phone drawer, open and collapsed; `--kol-sidenav-w-collapsed` is derived from it (`pad × 2 + 1.25rem` = 60, was a flat 56), so the 20px glyph sits 20 in both ways and never moves on collapse. The rail no longer reads the chrome inset (24 on a desk read too padded against the glyph).

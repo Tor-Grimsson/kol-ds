@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CodeBlock, Dropdown, MultiSelect, TabChips } from '@kolkrabbi/kol-component'
+import { CodeBlock, MultiSelect, TabChips } from '@kolkrabbi/kol-component'
 import PreviewStage from './PreviewStage.jsx'
 
 /**
@@ -50,20 +50,16 @@ export const ToolbarDivider = () => (
 const RAMP = ['xs', 'sm', 'md', 'lg', 'xl']
 const byRamp = (list) => (list.every((v) => RAMP.includes(v)) ? [...list].sort((a, b) => RAMP.indexOf(a) - RAMP.indexOf(b)) : list)
 
-/* One axis, one control, and it says what it is (open-questions Round 6, ruled 2026-10-01 — user:
- * "can we have in the variant dropdown say first item 'variant' then divider then the list?", and
- * on the size toggle: "it clashes with the dropdown having that border. maybe we change to
- * dropdown?"). Every axis is a Dropdown: its name as the first row, a divider, the list. Labels
- * are capitalised (user, twice: "everything is always in lowercase"); the value passed on is raw. */
+/* Labels are capitalised (user, twice: "everything is always in lowercase"); the value passed on is raw. */
 const capitalise = (v) => (typeof v === 'string' && v ? v[0].toUpperCase() + v.slice(1) : v)
-const AxisPicker = ({ options, value, onChange, label }) => (
-  <Dropdown
-    size="sm"
-    options={[{ heading: label }, { divider: true }, ...options.map((v) => ({ value: v, label: capitalise(v) }))]}
-    value={value}
-    onChange={onChange}
-  />
-)
+
+/* THE BACKGROUND (user 2026-10-27: "sometimes you want super dark sometimes not"): the canvas ground, one pick
+ * for every preview, remembered in this browser. Sunken is what every preview sat on before. */
+const GROUNDS = { sunken: 'bg-surface-sunken', primary: 'bg-surface-primary', secondary: 'bg-surface-secondary' }
+/* the closed dropdown shows only its value, and Tone also lists Sunken: name each one as a background */
+const GROUND_LABELS = { sunken: 'Sunken bg', primary: 'Primary bg', secondary: 'Secondary bg' }
+const GROUND_KEY = 'kol-showcase-preview-ground'
+const readGround = () => { try { const v = localStorage.getItem(GROUND_KEY); return GROUNDS[v] ? v : 'sunken' } catch { return 'sunken' } }
 
 export default function PreviewCard({
   entry,
@@ -104,6 +100,8 @@ export default function PreviewCard({
   /* the third axis (2026-09-30, the names audit: *"can props not be set like buttons variants
    * … in dropdown?"*): a preview exports `states` for what it would otherwise stack twice —
    * CurveOverlay's empty · handles · both */
+  const [ground, setGroundState] = useState(readGround)
+  const setGround = (v) => { setGroundState(v); try { localStorage.setItem(GROUND_KEY, v) } catch { /* private window */ } }
   const states = entry?.states ?? null
   const [state, setState] = useState(states?.[0] ?? null)
   /* the axes that have more than one value, in toolbar order — what the MultiSelect picker shows */
@@ -112,6 +110,8 @@ export default function PreviewCard({
     { id: 'tone', label: 'Tone', options: tones, value: tone, set: setTone },
     { id: 'size', label: 'Size', options: sizes && byRamp(sizes), value: size, set: setSize },
     { id: 'state', label: 'State', options: states, value: state, set: setState },
+    /* the background rides only the plain canvas — a block's iframe or a custom body paints its own */
+    { id: 'ground', label: 'Background', options: !renderTab && !renderBody && !entry?.frame ? Object.keys(GROUNDS) : null, labels: GROUND_LABELS, value: ground, set: setGround },
   ].filter((a) => a.options?.length > 1)
 
   return (
@@ -130,28 +130,15 @@ export default function PreviewCard({
           </>
         )}
         <div className="ml-auto flex items-center gap-2">
-          {/* `picker = 'multi'` (2026-10-02 — user: "I'd also wanna preview the multiselect, can we see
-            * that on the button and dropdown component page?"): the same axes as ONE MultiSelect, a
-            * column each, where the default is a Dropdown per axis. Opt-in per preview. */}
-          {entry?.picker === 'multi' && tab === 'preview' && axes.length > 0 && (
+          {/* ONE MULTI-DROPDOWN (user 2026-10-27 — "shouldnt we be using the multi-dropdown?"): every axis a column,
+            * Background included. It was opt-in per preview (`picker = 'multi'`, 2026-10-02) beside a Dropdown per axis. */}
+          {tab === 'preview' && axes.length > 0 && (
             <MultiSelect
               size="sm"
-              groups={axes.map((a) => ({ id: a.id, label: a.label, options: a.options.map((v) => ({ value: v, label: capitalise(v) })) }))}
+              groups={axes.map((a) => ({ id: a.id, label: a.label, options: a.options.map((v) => ({ value: v, label: a.labels?.[v] ?? capitalise(v) })) }))}
               value={Object.fromEntries(axes.map((a) => [a.id, a.value]))}
               onChange={(id, v) => axes.find((a) => a.id === id)?.set(v)}
             />
-          )}
-          {entry?.picker !== 'multi' && variants?.length > 1 && tab === 'preview' && (
-            <AxisPicker options={variants} value={variant} onChange={setVariant} label="Variant" />
-          )}
-          {entry?.picker !== 'multi' && tones?.length > 1 && tab === 'preview' && (
-            <AxisPicker options={tones} value={tone} onChange={setTone} label="Tone" />
-          )}
-          {entry?.picker !== 'multi' && sizes?.length > 1 && tab === 'preview' && (
-            <AxisPicker options={byRamp(sizes)} value={size} onChange={setSize} label="Size" />
-          )}
-          {entry?.picker !== 'multi' && states?.length > 1 && tab === 'preview' && (
-            <AxisPicker options={states} value={state} onChange={setState} label="State" />
           )}
           {actions && <div className="flex items-center gap-1">{actions(tab)}</div>}
         </div>
@@ -169,7 +156,7 @@ export default function PreviewCard({
         )
       ) : (
         tab === 'preview' && (
-          <div className={`flex ${minH} items-center justify-center bg-surface-sunken p-10`}>
+          <div className={`flex ${minH} items-center justify-center ${GROUNDS[ground]} p-10`}>
             {entry?.Component ? (
               <PreviewStage entry={entry} variant={variant} tone={tone} size={size} state={state} />
             ) : children || (

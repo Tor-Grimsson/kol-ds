@@ -15,6 +15,7 @@ export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { NavRail } from '@kolkrabbi/kol-component' // lives in kol-component since 2026-10-22
 export { default as PhoneNav } from './PhoneNav.jsx'
+export { default as TransportPill } from './TransportPill.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
 /* PageHeader MOVED to @kolkrabbi/kol-component 2026-09-03 (page-header-one-masthead).
  * Not re-exported: every kol-shell consumer already has kol-component as a peer,

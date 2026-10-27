@@ -3,7 +3,7 @@ title: App icons
 type: reference
 status: active
 created: 2026-10-09
-updated: 2026-10-09
+updated: 2026-10-26
 description: The home-screen icon every KOL app ships
 aliases:
   - app icon
@@ -15,6 +15,7 @@ tags:
 related:
   - "[[INDEX|icons]]"
   - "[[01-inventory|icon inventory]]"
+  - "[[../../operations/07-apps-tier/10-save-to-home-screen|Save to home screen]]"
 ---
 
 # App icons

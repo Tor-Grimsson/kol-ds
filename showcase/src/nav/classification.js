@@ -126,7 +126,7 @@ export const TIERS = {
   Logomark: 'atoms',
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
-  NavRail: 'organisms', PhoneNav: 'organisms', WalkthroughPanel: 'organisms',
+  NavRail: 'organisms', PhoneNav: 'organisms', TransportPill: 'organisms', WalkthroughPanel: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
   PageShell: 'utilities',
@@ -227,7 +227,7 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
+  useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', TransportPill: 'action', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */

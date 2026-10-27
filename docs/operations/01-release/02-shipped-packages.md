@@ -31,11 +31,11 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.190.0** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.45.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.302.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
-| `@kolkrabbi/kol-framework` | **0.56.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
-| `@kolkrabbi/kol-shell` | **0.82.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
+| `@kolkrabbi/kol-theme` | **0.191.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.47.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.305.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
+| `@kolkrabbi/kol-framework` | **0.57.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
+| `@kolkrabbi/kol-shell` | **0.83.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.41.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
 | `@kolkrabbi/kol-dashboards` | **0.5.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
 | `@kolkrabbi/kol-hardware` | **0.7.0** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |

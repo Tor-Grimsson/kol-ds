@@ -3,7 +3,7 @@ title: Site frame
 type: reference
 status: active
 created: 2026-10-24
-updated: 2026-10-24
+updated: 2026-10-27
 description: The frame a site stands in
 aliases:
   - site frame
@@ -51,7 +51,7 @@ The tree is `SideNav`'s; the shape is the opt-in, there is no mode prop.
 | Node | Written as | Renders as |
 |---|---|---|
 | category | `{ id, label, icon, pages }` | a disclosure row with a caret; its pages open under it |
-| foldernote | `{ id, label, icon, to, pages }` | the category IS a page: its row opens `to` and discloses, the caret alone toggles; lit by its route or any page beneath |
+| foldernote | `{ id, label, icon, to, pages }` | the category IS a page: its title opens `to`, the caret alone expands and collapses (`discloseOnTitle` lets the title expand too); lit by its route or any page beneath |
 | link category | `{ id, label, icon, to }` | a plain link row (Home) |
 | page | `{ to, label }` | a route row; `to` may be `/page#section` for a section of one page, lit by scroll |
 | group | `{ label, children }` among a category's pages | an uppercase label over its rows, one ink, never lit; used whole or not at all within a category |
@@ -66,6 +66,7 @@ The tree is `SideNav`'s; the shape is the opt-in, there is no mode prop.
 | collapse | the grab edge: a press toggles, a drag resizes; a press from collapsed lands on the rung for the viewport, not a remembered drag width |
 | the toggle | one motion: the narrow row is the wide row with its gutter eased and its label faded on the grid's 180ms clock; nothing remounts |
 | a press when collapsed | does its job and the rail stays collapsed (`expandOnSelect` is off by default) |
+| opening on load | nothing opens: `defaultOpen` (category ids) opens some on first render, `openOnRoute` opens the route's category on every arrival |
 | the phone | below 768 the rail is the app rail's drawer: off-canvas, a 32px nav Button top-right (hamburger, ×), a scrim that closes on tap, closed by a destination or Escape |
 | the TOC rail | a page registers it through `ShellTocContext`; `DocsToc` draws it from the page's headings |
 | the wash | `pageWash` paints the plane; the strip and a nested `PageShell` read it, never paint it twice |

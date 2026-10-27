@@ -242,3 +242,16 @@
  * Nine apps each carried their own copy; this file is loaded by both `core` and the umbrella, so every
  * KOL app gets it. `none`, not `-x` — that stopped only the sideways bounce. */
 html { overscroll-behavior: none; }
+
+/* THE PAGE HAS A GROUND (StandaloneSafeAreaAndPageGround, kol-mirror 2026-10-26): saved to the iPhone
+ * home screen with `black-translucent` + `viewport-fit=cover`, the viewport is shorter than the screen by
+ * the top inset, and an unpainted `html` shows the bare canvas white below the shell and behind the status
+ * bar. Tokens alone paint nothing; kol-framework painted it, and apps without it (Mirror, Monitor) did not. */
+html { background: var(--kol-surface-primary); }
+
+/* Standalone, the status bar sits over the page: pad the top inset so a title clears it. The padding also
+ * pushes the content one inset past the short viewport, so the overflow covers the bottom — deliberate, and
+ * the ground above keeps whatever shows there dark. A browser tab reports no inset and pays nothing. */
+@media (display-mode: standalone) {
+  body { padding-top: env(safe-area-inset-top, 0px); }
+}
